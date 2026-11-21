@@ -1,0 +1,2683 @@
+{
+ "scene": "lago",
+ "made": "node docs/proyecto/pixel/lago-sheet-make.js, from lago-set.html (window.LAGO_SET) and coqui/ref/escenas/lago/. Order 35a.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": 4
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "pairPicture": [196, 104],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin (El camino's and El campo's); a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]",
+  "floor": "the lake and its dock are built round the old picture: a place keeps its screen place, and its world point is the walkable surface under it (lago-set.html surfaceAt): the dock's planks (z 0.28) where the deck or its landing is under the screen point at that height, else the lawn (z 0) on the land side of the shore, else the water's surface (z -0.16). A frog place q: under (q.x + 16, q.y + 25); a person's, Canelo's, a duck's, a bird's, a boat's, the bread's, the bag's, the sack's or the flower's place (x, y): under (x, y - 1). So every position of lago.js, its stories and its pairs keeps its numbers, but those in moves and the story positions remap moves; the sheet names each one (spots, remap, code) with its world point",
+  "relative": "what the old code draws or moves relative to a person, the frog, a duck, a bird, a boat or the fish (what is carried, the brush, the bread in a beak, a splash, a wake, the bubbles) keeps its offsets",
+  "sky": "screen-space effects keep their old numbers: the stars of the happy endings (final18, final19, final20), the heart (heartAt), the birds' and the duck's circle in the sky (anima: 150 + 46 cos, 58 + 16 sin)",
+  "view": "one view, zoom 1: the 196 x 216 window from x0 22, the old wide one",
+  "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2 (every old picture of cual-lago is a 113 x 60 or 100 x 53 window: about 2 x). The old rectangles (remap cam and crop) say which pictures they were"
+ },
+ "layout": {
+  "what": "the park's lake seen nearer, on the world's axes at the engine's 30 degrees (shadows to screen right): the lawn (El frente's grass, calm, as El camino's and El campo's) up to the left of one straight shore along y; the lake (El campo's water: the same helper, colours, bank and glints) on its near side, filling the picture down and to the right; the dock running out from the shore along x over the water, its planks across it, on pilings, its landing on the lawn at its root; the post standing alone in the water past the dock's end; the reed bed in the shallows at the lower left; El camino's hills and day sky over it, the sun upper left, the old picture's three clouds",
+  "lines": {
+   "shore": "x = 0.4351 (screen sx + 2 sy = 360)",
+   "deck": "x 0.3751 to 3.25, y 1.62 to 5.22, z 0.28 (its underside 0.13); the landing x -0.3 to 0.3851, y 3.82 to 5.22"
+  },
+  "why": "the brief and page 11 decision 9: the set stands on the world's axes; nothing is built square to the camera. The old picture had a horizontal far bank and a horizontal dock: neither can lie on a world axis. One straight shore along y keeps the old strip of lawn at the back on the left (Luis and Carmen sitting, Canelo) and the old left bank under the dock's root, and gives the lake more of the view than the old water had (water); the old far bank at the right becomes water, and what stood there moves onto the lawn up the shore (moves: Carmen of los-botes, the flower, the duck that climbs out, the bird of pájaro.si). The dock runs out from the shore along x; as every place on the old dock keeps its screen point (the frog, the children, the bag, the sack, the ducks that waddle onto it: on the screen a level row 100 px long), its deck is as wide as that row needs, on a world axis a row level on the screen runs across both axes. The post moved past the dock's end, the reeds to the shallows at the lower left: the right of the lake is where the ducks, the boats and the fish of the stories swim"
+ },
+ "behind": {
+  "what": "nothing: the sun and the clouds are baked into the set's sky (El camino's and El campo's); every bird, flying or perched, is drawn in front of everything as the old (its sort y + 200)",
+  "items": []
+ },
+ "setKey": {
+  "params": {},
+  "key": "\"lago\" (one baked state)",
+  "baked": [
+   {
+    "key": "lago",
+    "query": "?"
+   }
+  ],
+  "bakedWhy": "order 06 found 10 states, made by five keys: bolsa (the bag of bread on the dock, mkBolsa), fila (how many pieces of bread lie in the row on the dock, mkPan), flor (the yellow flower), pincel (the brush the frog holds: drawn by rana()) and saco (the sack on the dock). Each is a thing drawn by the sprite layer (lago.js draw and rana()), none the day's light or the ground's, so they stay in the sprite layer as the old draws them (their places moved where moves says), and this one baked state draws all 10 (and every review and level picture)"
+ },
+ "things": {
+  "luis": {
+   "sprite": true,
+   "why": "a child (today's sprite, drawn 1:1). caja(id) (lago.js:65): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "carmen": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "pato_blanco": {
+   "sprite": true,
+   "why": "a duck (mkPato): [x - 12, y - 17 - dy, 24, 18] where it is (lago.js:68): unchanged"
+  },
+  "pato_negro": {
+   "sprite": true,
+   "why": "as pato_blanco"
+  },
+  "pato_amarillo": {
+   "sprite": true,
+   "why": "as pato_blanco (drawn at .78)"
+  },
+  "ave_blanco": {
+   "sprite": true,
+   "why": "a bird (mkPajaro): [x - 10, y - 15, 20, 18] (lago.js:69): unchanged"
+  },
+  "ave_negro": {
+   "sprite": true,
+   "why": "as ave_blanco"
+  },
+  "bote_rojo": {
+   "sprite": true,
+   "why": "a toy boat in the row on the dock (mkBote): [x - 10, y - 20, 20, 22] (lago.js:70): unchanged; the row's places moved (moves: FX, FYB)"
+  },
+  "bote_azul": {
+   "sprite": true,
+   "why": "as bote_rojo"
+  },
+  "bote_verde": {
+   "sprite": true,
+   "why": "as bote_rojo"
+  },
+  "pez": {
+   "sprite": true,
+   "why": "the fish (mkPez): [x - 11, y - 10 - dy, 22, 18]: unchanged"
+  },
+  "pajaro": {
+   "sprite": true,
+   "why": "the blue bird (mkPajaro): [x - 10, y - 15, 20, 18]: unchanged"
+  },
+  "perro": {
+   "sprite": true,
+   "why": "Canelo (KIT.mkPerro): [x - 14, y - 14, 28, 16]: unchanged"
+  },
+  "flor": {
+   "sprite": true,
+   "why": "the yellow flower (W.flor, drawn by lago.js draw): [x - 5, y - 16, 10, 17]: unchanged; its place moved onto the lawn (moves)"
+  },
+  "juncos": {
+   "set": true,
+   "world": [2.91, -1.6046, 0, 3.7803, -0.7343, 1.2435],
+   "box": [187, 96, 32, 44],
+   "screen": [187, 96, 219, 140],
+   "what": "the reeds: every stalk, head and blade of the bed in the shallows",
+   "old": {
+    "box": [178, 120, 40, 46]
+   },
+   "hintBox": [187, 96, 17, 44],
+   "hintWhy": "hintBox: the part of its touch box the hint frame shows (the frame, box + 12, 2 px inside the view); the touch box answers the touches",
+   "hand": [196, 118],
+   "handWhy": "the middle of its hint box"
+  },
+  "poste": {
+   "set": true,
+   "world": [3.6987, 0.6527, 0, 3.9163, 0.8703, 1.4212],
+   "box": [172, 120, 8, 36],
+   "screen": [172, 120, 180, 156],
+   "what": "the post standing in the water",
+   "old": {
+    "box": [147, 120, 10, 36]
+   },
+   "hand": [176, 142],
+   "handWhy": "on the post (the old: the middle of its box)"
+  },
+  "muelle": {
+   "set": true,
+   "world": [-0.1224, 1.8086, 0, 3.4403, 5.3713, 0.1554],
+   "box": [19, 124, 131, 69],
+   "screen": [19, 124, 150, 193],
+   "what": "the dock: its deck, its edge, its pilings, its landing on the lawn and its two mooring posts",
+   "old": {
+    "box": [26, 150, 112, 17]
+   },
+   "hintBox": [36, 124, 114, 69],
+   "hintWhy": "hintBox: the part of its touch box the hint frame shows (the frame, box + 12, 2 px inside the view); the touch box answers the touches",
+   "hand": [96, 160],
+   "handWhy": "on the planks before the people's feet (the old: the middle of the old dock's box, 82, 158)"
+  },
+  "agua": {
+   "set": true,
+   "ground": true,
+   "what": "the water: the lake from the shore to the picture's edges, under the horizon",
+   "old": {
+    "box": [0, 118, 240, 98]
+   },
+   "box": [0, 100, 240, 116],
+   "world": null,
+   "hintBox": [36, 100, 168, 102],
+   "hintWhy": "hintBox: the part of its touch box the hint frame shows (the frame, box + 12, 2 px inside the view); the touch box answers the touches",
+   "hand": [176, 196],
+   "handWhy": "on open water past the dock (the old: the middle of the old water, 120, 167, now on the dock)"
+  },
+  "lago": {
+   "set": true,
+   "ground": true,
+   "what": "the lake and its lawn: everything under the horizon; last in the hit order",
+   "old": {
+    "box": [0, 94, 240, 122]
+   },
+   "box": [0, 100, 240, 116],
+   "hintBox": [36, 100, 168, 102],
+   "hintWhy": "hintBox: the part of its touch box the hint frame shows (the frame, box + 12, 2 px inside the view); the touch box answers the touches",
+   "hand": [176, 196],
+   "handWhy": "on open water past the dock"
+  }
+ },
+ "spots": {
+  "frog.inicio": {
+   "world": [2.3011, 2.5186, 0.28],
+   "on": "dock",
+   "new": [100, 125],
+   "scale": 1,
+   "old": [100, 125],
+   "what": "LUGAR.inicio: the frog on the dock"
+  },
+  "frog.muelle": {
+   "world": [2.3011, 2.5186, 0.28],
+   "on": "dock",
+   "new": [100, 125],
+   "scale": 1,
+   "old": [100, 125],
+   "what": "LUGAR.muelle: the frog on the dock"
+  },
+  "frog.inicio19": {
+   "world": [1.2132, 3.6065, 0.28],
+   "on": "dock",
+   "new": [60, 125],
+   "scale": 1,
+   "old": [60, 125],
+   "what": "the frog's place in acts.inicio19"
+  },
+  "frog.inicio20": {
+   "world": [1.2676, 3.5521, 0.28],
+   "on": "dock",
+   "new": [62, 125],
+   "scale": 1,
+   "old": [62, 125],
+   "what": "the frog's place in acts.inicio20"
+  },
+  "frog.ranapinta": {
+   "world": [1.8659, 2.9538, 0.28],
+   "on": "dock",
+   "new": [84, 125],
+   "scale": 1,
+   "old": [84, 125],
+   "what": "the frog's place in acts.ranapinta (Luis's x - 44)"
+  },
+  "frog.pequeno": {
+   "world": [1.9203, 2.8994, 0.28],
+   "on": "dock",
+   "new": [86, 125],
+   "scale": 1,
+   "old": [86, 125],
+   "what": "the frog's place in d-pato-pequeno beats.1"
+  },
+  "frog.ranaa": {
+   "world": [2.4099, 2.4099, 0.28],
+   "on": "dock",
+   "new": [104, 125],
+   "scale": 1,
+   "old": [104, 125],
+   "what": "the frog's place in acts.ranaa (d-pato-pequeno beats.37)"
+  },
+  "frog.hlago": {
+   "world": [2.5186, 2.3011, 0.28],
+   "on": "dock",
+   "new": [108, 125],
+   "scale": 1,
+   "old": [108, 125],
+   "what": "the frog's place in h-lago beats.1"
+  },
+  "luis.inicio18": {
+   "world": [0.5061, 4.64, 0.28],
+   "on": "dock",
+   "new": [44, 154],
+   "old": [44, 154],
+   "what": "acts.inicio18: Luis sits on the dock (its landing), at its root"
+  },
+  "carmen.inicio18": {
+   "world": [1.2676, 3.8785, 0.28],
+   "on": "dock",
+   "new": [72, 154],
+   "old": [72, 154],
+   "what": "acts.inicio18: Carmen on the dock, the bag in her hand"
+  },
+  "luis.inicio19": {
+   "world": [2.7906, 2.3555, 0.28],
+   "on": "dock",
+   "new": [128, 154],
+   "old": [128, 154],
+   "what": "acts.inicio19: Luis at the dock's end"
+  },
+  "carmen.inicio19": {
+   "world": [-1.4686, 1.795, 0],
+   "on": "lawn",
+   "new": [60, 116],
+   "old": [196, 117],
+   "moved": true,
+   "what": "acts.inicio19: Carmen across the water (ORILLA + (18, 1))"
+  },
+  "luis.inicio20": {
+   "world": [-0.9791, 1.523, 0],
+   "on": "lawn",
+   "new": [74, 118],
+   "old": [74, 118],
+   "what": "acts.inicio20: Luis sits on the lawn up the shore"
+  },
+  "carmen.inicio20": {
+   "world": [2.3555, 2.7906, 0.28],
+   "on": "dock",
+   "new": [112, 154],
+   "old": [112, 154],
+   "what": "acts.inicio20: Carmen on the dock"
+  },
+  "perro": {
+   "world": [-1.6862, 2.3389, 0],
+   "on": "lawn",
+   "new": [46, 119],
+   "old": [46, 119],
+   "what": "acts.inicio20: Canelo lies on the lawn"
+  },
+  "bolsa": {
+   "world": [1.8659, 3.1714, 0.28],
+   "on": "dock",
+   "new": [96, 153],
+   "old": [96, 153],
+   "what": "acts.inicio20: the bag on the dock (W.bolsa)"
+  },
+  "saco": {
+   "world": [2.2467, 2.7906, 0.28],
+   "on": "dock",
+   "new": [110, 153],
+   "old": [110, 153],
+   "what": "acts.inicio19: the sack on the dock (W.saco)"
+  },
+  "flor": {
+   "world": [-0.2176, -0.1088, 0],
+   "on": "lawn",
+   "new": [118, 110],
+   "old": [196, 119],
+   "moved": true,
+   "what": "acts.inicio20: the yellow flower (W.flor)"
+  },
+  "pato.casa": {
+   "world": [4.2643, 3.0676, -0.16],
+   "on": "water",
+   "new": [142, 184],
+   "old": [142, 184],
+   "what": "acts.inicio18, baja, alagua: the white duck's place on the water"
+  },
+  "pez.inicio18": {
+   "world": [3.9923, 4.4274, -0.16],
+   "on": "water",
+   "new": [112, 194],
+   "old": [92, 192],
+   "moved": true,
+   "what": "acts.inicio18: the fish, swimming to and fro"
+  },
+  "ave.poste": {
+   "world": [1.8166, -1.2294, -0.16],
+   "on": "water",
+   "new": [176, 122],
+   "old": [152, 122],
+   "moved": true,
+   "what": "POSTE[1] - 24: the bird on the post"
+  },
+  "ave.pm0": {
+   "world": [-0.7071, 3.6443, 0],
+   "on": "lawn",
+   "new": [40, 140],
+   "old": [40, 140],
+   "what": "PM[0] - 1: a bird on the left mooring post"
+  },
+  "ave.pm1": {
+   "world": [1.6262, 0.9191, -0.16],
+   "on": "water",
+   "new": [133, 140],
+   "old": [133, 140],
+   "what": "PM[1] - 1: a bird on the right mooring post"
+  },
+  "bote.fila0": {
+   "world": [0.5605, 4.5856, 0.28],
+   "on": "dock",
+   "new": [46, 154],
+   "old": [46, 165],
+   "moved": true,
+   "what": "FX[0], FY: the first boat of the row on the dock"
+  },
+  "bote.fila1": {
+   "world": [1.6484, 4.5856, 0.28],
+   "on": "dock",
+   "new": [66, 164],
+   "old": [68, 165],
+   "moved": true,
+   "what": "FX[1], FY"
+  },
+  "bote.fila2": {
+   "world": [2.709, 4.6128, 0.28],
+   "on": "dock",
+   "new": [85, 174],
+   "old": [90, 165],
+   "moved": true,
+   "what": "FX[2], FY"
+  },
+  "sale.0": {
+   "world": [3.8291, 2.1973, -0.16],
+   "on": "water",
+   "new": [150, 172],
+   "old": [150, 172],
+   "what": "SALE[0]: where a boat is set on the water"
+  },
+  "sale.1": {
+   "world": [4.7538, 2.1429, -0.16],
+   "on": "water",
+   "new": [168, 180],
+   "old": [168, 180],
+   "what": "SALE[1]"
+  },
+  "sale.2": {
+   "world": [4.8626, 3.122, -0.16],
+   "on": "water",
+   "new": [152, 190],
+   "old": [152, 190],
+   "what": "SALE[2]"
+  },
+  "pega.0": {
+   "world": [3.6659, -0.2504, -0.16],
+   "on": "water",
+   "new": [192, 148],
+   "old": [182, 166],
+   "moved": true,
+   "what": "PEGA[0]: where a drifting boat sticks in the reeds"
+  },
+  "pega.1": {
+   "world": [3.6115, -0.7399, -0.16],
+   "on": "water",
+   "new": [200, 143],
+   "old": [196, 172],
+   "moved": true,
+   "what": "PEGA[1]"
+  },
+  "pega.2": {
+   "world": [3.9923, -0.1416, -0.16],
+   "on": "water",
+   "new": [196, 152],
+   "old": [210, 168],
+   "moved": true,
+   "what": "PEGA[2]"
+  },
+  "pega.3": {
+   "world": [3.2308, -1.0119, -0.16],
+   "on": "water",
+   "new": [198, 137],
+   "old": [190, 178],
+   "moved": true,
+   "what": "PEGA[3]"
+  },
+  "pato.orilla.agua": {
+   "world": [0.7287, 0.076, -0.16],
+   "on": "water",
+   "new": [132, 124],
+   "old": [124, 126],
+   "moved": true,
+   "what": "acts.orilla: the duck at the shore"
+  },
+  "pato.orilla": {
+   "world": [-0.4351, 0.3264, 0],
+   "on": "lawn",
+   "new": [106, 112],
+   "old": [120, 118],
+   "moved": true,
+   "what": "acts.orilla: the duck out on the lawn"
+  }
+ },
+ "lugar": {
+  "inicio": {
+   "spot": "frog.inicio",
+   "q": [100, 125],
+   "scale": 1,
+   "old": [100, 125]
+  },
+  "muelle": {
+   "spot": "frog.muelle",
+   "q": [100, 125],
+   "scale": 1,
+   "old": [100, 125]
+  }
+ },
+ "hops": [],
+ "hopsWhat": "each pair of the frog's places (LUGAR and every place an act or a story puts him) whose hop count (kit.js acts.ir: round(d / 30), 1 to 4, d the screen distance between the two frog points) is not the old one; every other pair keeps its count (hopsAll: all 21 pairs)",
+ "hopsAll": [
+  {
+   "a": "inicio",
+   "b": "inicio19",
+   "old": 1,
+   "new": 1,
+   "dOld": 40,
+   "dNew": 40
+  },
+  {
+   "a": "inicio",
+   "b": "inicio20",
+   "old": 1,
+   "new": 1,
+   "dOld": 38,
+   "dNew": 38
+  },
+  {
+   "a": "inicio",
+   "b": "ranapinta",
+   "old": 1,
+   "new": 1,
+   "dOld": 16,
+   "dNew": 16
+  },
+  {
+   "a": "inicio",
+   "b": "pequeno",
+   "old": 1,
+   "new": 1,
+   "dOld": 14,
+   "dNew": 14
+  },
+  {
+   "a": "inicio",
+   "b": "ranaa",
+   "old": 1,
+   "new": 1,
+   "dOld": 4,
+   "dNew": 4
+  },
+  {
+   "a": "inicio",
+   "b": "hlago",
+   "old": 1,
+   "new": 1,
+   "dOld": 8,
+   "dNew": 8
+  },
+  {
+   "a": "inicio19",
+   "b": "inicio20",
+   "old": 0,
+   "new": 0,
+   "dOld": 2,
+   "dNew": 2
+  },
+  {
+   "a": "inicio19",
+   "b": "ranapinta",
+   "old": 1,
+   "new": 1,
+   "dOld": 24,
+   "dNew": 24
+  },
+  {
+   "a": "inicio19",
+   "b": "pequeno",
+   "old": 1,
+   "new": 1,
+   "dOld": 26,
+   "dNew": 26
+  },
+  {
+   "a": "inicio19",
+   "b": "ranaa",
+   "old": 1,
+   "new": 1,
+   "dOld": 44,
+   "dNew": 44
+  },
+  {
+   "a": "inicio19",
+   "b": "hlago",
+   "old": 2,
+   "new": 2,
+   "dOld": 48,
+   "dNew": 48
+  },
+  {
+   "a": "inicio20",
+   "b": "ranapinta",
+   "old": 1,
+   "new": 1,
+   "dOld": 22,
+   "dNew": 22
+  },
+  {
+   "a": "inicio20",
+   "b": "pequeno",
+   "old": 1,
+   "new": 1,
+   "dOld": 24,
+   "dNew": 24
+  },
+  {
+   "a": "inicio20",
+   "b": "ranaa",
+   "old": 1,
+   "new": 1,
+   "dOld": 42,
+   "dNew": 42
+  },
+  {
+   "a": "inicio20",
+   "b": "hlago",
+   "old": 2,
+   "new": 2,
+   "dOld": 46,
+   "dNew": 46
+  },
+  {
+   "a": "ranapinta",
+   "b": "pequeno",
+   "old": 0,
+   "new": 0,
+   "dOld": 2,
+   "dNew": 2
+  },
+  {
+   "a": "ranapinta",
+   "b": "ranaa",
+   "old": 1,
+   "new": 1,
+   "dOld": 20,
+   "dNew": 20
+  },
+  {
+   "a": "ranapinta",
+   "b": "hlago",
+   "old": 1,
+   "new": 1,
+   "dOld": 24,
+   "dNew": 24
+  },
+  {
+   "a": "pequeno",
+   "b": "ranaa",
+   "old": 1,
+   "new": 1,
+   "dOld": 18,
+   "dNew": 18
+  },
+  {
+   "a": "pequeno",
+   "b": "hlago",
+   "old": 1,
+   "new": 1,
+   "dOld": 22,
+   "dNew": 22
+  },
+  {
+   "a": "ranaa",
+   "b": "hlago",
+   "old": 1,
+   "new": 1,
+   "dOld": 4,
+   "dNew": 4
+  }
+ ],
+ "points": {
+  "shore": {
+   "screen": [
+    [128, 116],
+    [18, 171]
+   ],
+   "world": 0.4351,
+   "what": "the lake's shore: the line x = 0.4351 (on the screen sx + 2 sy = 360), wavering a little as El campo's; the lawn on its far side (up to the left), the water on its near side, its surface 0.16 under the lawn"
+  },
+  "dock": {
+   "world": [0.3751, 1.62, 0.28, 3.25, 5.22, 0.28],
+   "landing": [-0.3, 3.82, 0.3851, 5.22],
+   "screen": [
+    [97.11, 124.04],
+    [149.97, 150.46],
+    [83.78, 183.55],
+    [18.52, 150.92]
+   ],
+   "what": "the dock's deck: the planks at z 0.28 over x 0.3751 to 3.25, y 1.62 to 5.22, and its landing on the lawn (landing: x0, y0, x1, y1); screen: its far corner, its right corner, its near corner, the landing's left corner"
+  },
+  "postes": {
+   "screen": [
+    [40, 141],
+    [133, 141]
+   ],
+   "world": [
+    [0.3447, 4.6962, 0.77],
+    [2.874, 2.1669, 0.77]
+   ],
+   "old": [
+    [40, 141],
+    [133, 141]
+   ],
+   "what": "the two mooring posts on the deck (the old PM, where the birds perch): their tops at the old screen points, 0.49 over the planks"
+  },
+  "poste": {
+   "screen": [176, 122],
+   "foot": [176, 154],
+   "world": [3.6115, 0.5655, 1.2612],
+   "old": [152, 122],
+   "what": "the post in the water: its top (where the bird perches: POSTE[1] - 24) and its foot at the water (POSTE[1] + 8): moved (moves)"
+  },
+  "corazon": {
+   "screen": [110, 30],
+   "old": [110, 30],
+   "what": "heartAt: the heart of a happy ending, in the sky (unchanged)"
+  },
+  "sol": {
+   "screen": [38, 47],
+   "radius": 9,
+   "what": "the sun: baked into the set's sky (El camino's and El campo's, in the same place: upper left, every shadow falls to the right), whole inside the view; no story touches it or names its place (the old sun was at the upper right)"
+  },
+  "nubes": {
+   "screen": [
+    [188, 12, 0.7],
+    [204, 34, 0.8],
+    [108, 10, 0.6]
+   ],
+   "old": [
+    [36, 16, 1],
+    [112, 9, 0.7],
+    [168, 26, 0.8]
+   ],
+   "what": "the old picture's three clouds (engine.js sky()), baked into the set's sky as El campo's, clear of the corner card, the sun and the answer cards' place; no story names them"
+  }
+ },
+ "views": {
+  "wide": {
+   "zoom": 1,
+   "x0": 22,
+   "world": [2.0669, 2.0669, 0],
+   "region": null,
+   "old": [22, 0, 196, 216],
+   "what": "the lake: the lawn and the shore at the back and left, the dock from the shore, the water, the post, the reeds, the sky"
+  }
+ },
+ "remap": [
+  {
+   "kind": "cam",
+   "old": [44, 112, 113, 60],
+   "uses": ["cual-lago.json pato.si.cam", "cual-lago.json pato.no.cam", "cual-lago.json vuela.no.cam", "cual-lago.json verde.si.cam", "cual-lago.json verde.no.cam"],
+   "to": {
+    "pictures": ["pato.si", "pato.no", "vuela.no", "verde.si", "verde.no"]
+   },
+   "crops": {
+    "pato.si": {
+     "crop": [51, 114, 98, 52],
+     "zoom": 2
+    },
+    "pato.no": {
+     "crop": [51, 114, 98, 52],
+     "zoom": 2
+    },
+    "vuela.no": {
+     "crop": [49, 114, 98, 52],
+     "zoom": 2
+    },
+    "verde.si": {
+     "crop": [49, 114, 98, 52],
+     "zoom": 2
+    },
+    "verde.no": {
+     "crop": [49, 114, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [84, 84, 113, 60],
+   "uses": [
+    "cual-lago.json pájaro.si.cam"
+   ],
+   "to": {
+    "pictures": ["pajaro.si"]
+   },
+   "crops": {
+    "pajaro.si": {
+     "crop": [67, 76, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [84, 116, 100, 53.1],
+   "uses": ["cual-lago.json blanco.si.cam", "cual-lago.json blanco.no.cam"],
+   "to": {
+    "pictures": ["blanco.si", "blanco.no"]
+   },
+   "crops": {
+    "blanco.si": {
+     "crop": [84, 104, 98, 52],
+     "zoom": 2
+    },
+    "blanco.no": {
+     "crop": [84, 104, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [96, 30, 113, 60],
+   "uses": ["cual-lago.json nada.no.cam", "cual-lago.json vuela.si.cam"],
+   "to": {
+    "pictures": ["nada.no", "vuela.si"]
+   },
+   "crops": {
+    "nada.no": {
+     "crop": [101, 30, 98, 52],
+     "zoom": 2
+    },
+    "vuela.si": {
+     "crop": [103, 30, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [100, 156, 113, 60],
+   "uses": [
+    "cual-lago.json pez.si.cam",
+    "cual-lago.json pez.no.cam",
+    "cual-lago.json pájaro.no.cam",
+    "cual-lago.json nada.si.cam",
+    "cual-lago.json rojo.si.cam",
+    "cual-lago.json rojo.no.cam",
+    "cual-lago.json azul.si.cam",
+    "cual-lago.json azul.no.cam",
+    "cual-lago.json amarillo.si.cam",
+    "cual-lago.json amarillo.no.cam",
+    "cual-lago.json negro.si.cam",
+    "cual-lago.json negro.no.cam"
+   ],
+   "to": {
+    "pictures": ["pez.si", "pez.no", "pajaro.no", "nada.si", "rojo.si", "rojo.no", "azul.si", "azul.no", "amarillo.si", "amarillo.no", "negro.si", "negro.no"]
+   },
+   "crops": {
+    "pez.si": {
+     "crop": [107, 158, 98, 52],
+     "zoom": 2
+    },
+    "pez.no": {
+     "crop": [107, 158, 98, 52],
+     "zoom": 2
+    },
+    "pajaro.no": {
+     "crop": [101, 154, 98, 52],
+     "zoom": 2
+    },
+    "nada.si": {
+     "crop": [101, 154, 98, 52],
+     "zoom": 2
+    },
+    "rojo.si": {
+     "crop": [101, 154, 98, 52],
+     "zoom": 2
+    },
+    "rojo.no": {
+     "crop": [101, 154, 98, 52],
+     "zoom": 2
+    },
+    "azul.si": {
+     "crop": [101, 158, 98, 52],
+     "zoom": 2
+    },
+    "azul.no": {
+     "crop": [101, 158, 98, 52],
+     "zoom": 2
+    },
+    "amarillo.si": {
+     "crop": [101, 154, 98, 52],
+     "zoom": 2
+    },
+    "amarillo.no": {
+     "crop": [101, 154, 98, 52],
+     "zoom": 2
+    },
+    "negro.si": {
+     "crop": [101, 154, 98, 52],
+     "zoom": 2
+    },
+    "negro.no": {
+     "crop": [101, 154, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [68.83, 112, 54.34, 60],
+   "uses": [
+    "nivel.js NV vuela.p1",
+    "nivel.js NV rojo.p2"
+   ],
+   "to": {
+    "pictures": ["vuela.no", "verde.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [72.83, 112, 54.34, 60],
+   "uses": [
+    "nivel.js NV pato.p0",
+    "nivel.js NV pato.p1"
+   ],
+   "to": {
+    "pictures": ["pato.si", "pato.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [108.95, 116, 48.09, 53.1],
+   "uses": [
+    "nivel.js NV negro.p3"
+   ],
+   "to": {
+    "pictures": ["blanco.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [122.83, 156, 54.34, 60],
+   "uses": [
+    "nivel.js NV vuela.p2",
+    "nivel.js NV rojo.p0",
+    "nivel.js NV rojo.p1",
+    "nivel.js NV rojo.p3",
+    "nivel.js NV negro.p0",
+    "nivel.js NV negro.p1",
+    "nivel.js NV negro.p2"
+   ],
+   "to": {
+    "pictures": ["nada.si", "rojo.si", "rojo.no", "azul.si", "negro.si", "negro.no", "amarillo.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [124.83, 30, 54.34, 60],
+   "uses": [
+    "nivel.js NV vuela.p0"
+   ],
+   "to": {
+    "pictures": ["vuela.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [128.83, 156, 54.34, 60],
+   "uses": [
+    "nivel.js NV pato.p2",
+    "nivel.js NV vuela.p3"
+   ],
+   "to": {
+    "pictures": ["pez.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [148.83, 156, 54.34, 60],
+   "uses": [
+    "nivel.js NV pato.p3"
+   ],
+   "to": {
+    "pictures": ["pajaro.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "point",
+   "old": [0, 0],
+   "uses": [
+    "cual-lago.json pato.si.set.cq",
+    "cual-lago.json pato.no.set.cq",
+    "cual-lago.json pez.si.set.cq",
+    "cual-lago.json pez.no.set.cq",
+    "cual-lago.json pájaro.si.set.cq",
+    "cual-lago.json pájaro.no.set.cq",
+    "cual-lago.json nada.si.set.cq",
+    "cual-lago.json nada.no.set.cq",
+    "cual-lago.json vuela.si.set.cq",
+    "cual-lago.json vuela.no.set.cq",
+    "cual-lago.json rojo.si.set.cq",
+    "cual-lago.json rojo.no.set.cq",
+    "cual-lago.json azul.si.set.cq",
+    "cual-lago.json azul.no.set.cq",
+    "cual-lago.json verde.si.set.cq",
+    "cual-lago.json verde.no.set.cq",
+    "cual-lago.json amarillo.si.set.cq",
+    "cual-lago.json amarillo.no.set.cq",
+    "cual-lago.json blanco.si.set.cq",
+    "cual-lago.json blanco.no.set.cq",
+    "cual-lago.json negro.si.set.cq",
+    "cual-lago.json negro.no.set.cq"
+   ],
+   "to": {
+    "none": true
+   },
+   "what": "the frog out of the picture (vis 0) in a review picture: not a place"
+  },
+  {
+   "kind": "point",
+   "old": [42, 154],
+   "uses": ["d-pato-pequeno.json beats.1.set.gente.carmen"],
+   "to": {
+    "dock": [0.4517, 4.6944, 0.28]
+   },
+   "new": [42, 154],
+   "what": "a place (x, y): the surface under (x, y - 1): dock; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [58, 153],
+   "uses": ["d-pato-pequeno.json beats.1.set.bolsa"],
+   "to": {
+    "dock": [0.8325, 4.2048, 0.28]
+   },
+   "new": [58, 153],
+   "what": "a place (x, y): the surface under (x, y - 1): dock; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [64, 118],
+   "uses": ["h-lago.json beats.1.set.gente.carmen"],
+   "to": {
+    "lawn": [-1.251, 1.795, 0]
+   },
+   "new": [64, 118],
+   "what": "a place (x, y): the surface under (x, y - 1): lawn; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [86, 125],
+   "uses": ["d-pato-pequeno.json beats.1.set.cq"],
+   "to": {
+    "dock": [1.9203, 2.8994, 0.28]
+   },
+   "new": [86, 125],
+   "what": "the frog's place q (x, y): the surface under (x + 16, y + 25): dock; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [96, 118],
+   "uses": ["d-pato-pequeno.json beats.1.set.gente.luis", "h-lago.json beats.1.set.gente.luis"],
+   "to": {
+    "lawn": [-0.5983, 0.9247, 0]
+   },
+   "new": [92, 116],
+   "moved": true,
+   "why": "d-pato-pequeno and h-lago beats.1: Luis sits on the lawn up the shore: 8 px of lawn round him (the bank is nearer here than the old far bank was); 4 px left, 2 rows up",
+   "what": "a place (x, y): the surface under (x, y - 1): lawn; moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [96, 153],
+   "uses": ["cual-lago.json verde.si.set.botes.a", "cual-lago.json verde.no.set.botes.a"],
+   "to": {
+    "dock": [1.8659, 3.1714, 0.28]
+   },
+   "new": [96, 153],
+   "what": "a place (x, y): the surface under (x, y - 1): dock; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [96, 154],
+   "uses": ["cual-lago.json vuela.no.set.aves.a"],
+   "to": {
+    "dock": [1.9203, 3.2257, 0.28]
+   },
+   "new": [96, 154],
+   "what": "a place (x, y): the surface under (x, y - 1): dock; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [100, 154],
+   "uses": ["cual-lago.json pato.si.set.patos.a", "cual-lago.json pato.no.set.aves.a"],
+   "to": {
+    "dock": [2.0291, 3.117, 0.28]
+   },
+   "new": [100, 154],
+   "what": "a place (x, y): the surface under (x, y - 1): dock; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [104, 125],
+   "uses": ["d-pato-pequeno.json beats.37"],
+   "to": {
+    "dock": [2.4099, 2.4099, 0.28]
+   },
+   "new": [104, 125],
+   "what": "the frog's place q (x, y): the surface under (x + 16, y + 25): dock; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [104, 172],
+   "uses": ["d-pato-pequeno.json beats.33"],
+   "to": {
+    "water": [4.2099, 4.2099, -0.16]
+   },
+   "new": [120, 194],
+   "moved": true,
+   "why": "d-pato-pequeno beats.33 (patoa): the old point is under the new deck; in front of the dock's near corner, water all round",
+   "what": "a place (x, y): the surface under (x, y - 1): water; moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [108, 125],
+   "uses": ["h-lago.json beats.1.set.cq"],
+   "to": {
+    "dock": [2.5186, 2.3011, 0.28]
+   },
+   "new": [108, 125],
+   "what": "the frog's place q (x, y): the surface under (x + 16, y + 25): dock; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [124, 176],
+   "uses": ["d-pato-pequeno.json beats.34"],
+   "to": {
+    "water": [4.373, 3.394, -0.16]
+   },
+   "new": [138, 188],
+   "moved": true,
+   "why": "d-pato-pequeno beats.34 (patoa): the old point is at the new deck's end; past it, water all round",
+   "what": "a place (x, y): the surface under (x, y - 1): water; moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [133, 140],
+   "uses": ["cual-lago.json blanco.si.set.aves.a", "cual-lago.json blanco.no.set.aves.a"],
+   "to": {
+    "water": [1.6262, 0.9191, -0.16]
+   },
+   "new": [133, 140],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [140, 119],
+   "uses": [
+    "cual-lago.json pájaro.si.set.aves.a"
+   ],
+   "to": {
+    "lawn": [-0.272, -0.0544, 0]
+   },
+   "new": [116, 110],
+   "moved": true,
+   "why": "the pair pájaro.si: the bird with the crust stood on the old far bank (140, 119), open water here: on the lawn by the shore",
+   "what": "a place (x, y): the surface under (x, y - 1): lawn; moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [143, 184],
+   "uses": [
+    "cual-lago.json pájaro.no.set.pan"
+   ],
+   "to": {
+    "water": [4.2914, 3.0404, -0.16]
+   },
+   "new": [143, 184],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [150, 62],
+   "uses": ["cual-lago.json nada.no.set.patos.a"],
+   "to": {
+    "lawn": [-1.9581, -3.5899, 0]
+   },
+   "new": [150, 62],
+   "what": "a place (x, y): the surface under (x, y - 1): lawn; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [150, 188],
+   "uses": ["cual-lago.json nada.si.set.patos.a"],
+   "to": {
+    "water": [4.6994, 3.0676, -0.16]
+   },
+   "new": [150, 188],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [150, 190],
+   "uses": ["cual-lago.json rojo.si.set.botes.a", "cual-lago.json rojo.no.set.botes.a", "cual-lago.json amarillo.si.set.patos.a", "cual-lago.json amarillo.no.set.patos.a", "cual-lago.json negro.si.set.patos.a", "cual-lago.json negro.no.set.patos.a"],
+   "to": {
+    "water": [4.8082, 3.1764, -0.16]
+   },
+   "new": [150, 190],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [150, 192],
+   "uses": ["cual-lago.json azul.si.set.peces.a", "cual-lago.json azul.no.set.peces.a"],
+   "to": {
+    "water": [4.917, 3.2852, -0.16]
+   },
+   "new": [150, 192],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [152, 60],
+   "uses": ["cual-lago.json vuela.si.set.aves.a"],
+   "to": {
+    "lawn": [-2.0125, -3.7531, 0]
+   },
+   "new": [152, 60],
+   "what": "a place (x, y): the surface under (x, y - 1): lawn; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [152, 122],
+   "uses": ["h-lago.json beats.14.set.aves.a"],
+   "to": {
+    "water": [1.8166, -1.2294, -0.16]
+   },
+   "new": [176, 122],
+   "moved": true,
+   "why": "h-lago beats.14: the bird on the post (POSTE[1] - 24): the post moved (moves)",
+   "what": "a place (x, y): the surface under (x, y - 1): water; moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [152, 178],
+   "uses": ["d-pato-pequeno.json beats.39"],
+   "to": {
+    "water": [4.2099, 2.4693, -0.16]
+   },
+   "new": [152, 178],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [156, 186],
+   "uses": [
+    "cual-lago.json pájaro.no.set.peces.a"
+   ],
+   "to": {
+    "water": [4.7538, 2.7956, -0.16]
+   },
+   "new": [156, 186],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [156, 190],
+   "uses": ["cual-lago.json pez.no.set.patos.a"],
+   "to": {
+    "water": [4.9714, 3.0132, -0.16]
+   },
+   "new": [156, 190],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [156, 196],
+   "uses": ["cual-lago.json pez.si.set.peces.a"],
+   "to": {
+    "water": [5.2977, 3.3396, -0.16]
+   },
+   "new": [156, 196],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [164, 200],
+   "uses": ["d-pato-pequeno.json beats.23"],
+   "to": {
+    "water": [5.7329, 3.3396, -0.16]
+   },
+   "new": [164, 200],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [178, 184],
+   "uses": ["d-pato-pequeno.json beats.19"],
+   "to": {
+    "water": [5.2433, 2.0885, -0.16]
+   },
+   "new": [178, 184],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [192, 192],
+   "uses": ["h-lago.json beats.14.set.peces.a"],
+   "to": {
+    "water": [6.0592, 2.1429, -0.16]
+   },
+   "new": [192, 192],
+   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+  },
+  {
+   "kind": "x",
+   "old": [96],
+   "uses": [
+    "nivel.js NV vuela.p1",
+    "nivel.js NV rojo.p2"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [100],
+   "uses": [
+    "nivel.js NV pato.p0",
+    "nivel.js NV pato.p1"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [133],
+   "uses": [
+    "nivel.js NV negro.p3"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [150],
+   "uses": [
+    "nivel.js NV vuela.p2",
+    "nivel.js NV rojo.p0",
+    "nivel.js NV rojo.p1",
+    "nivel.js NV rojo.p3",
+    "nivel.js NV negro.p0",
+    "nivel.js NV negro.p1",
+    "nivel.js NV negro.p2"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [152],
+   "uses": [
+    "nivel.js NV vuela.p0"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [156],
+   "uses": [
+    "nivel.js NV pato.p2",
+    "nivel.js NV vuela.p3"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [176],
+   "uses": [
+    "nivel.js NV pato.p3"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  }
+ ],
+ "pictures": {
+  "pato.si": {
+   "world": [1.322, 2.4099, 0.28],
+   "screen": [100, 140],
+   "zoom": 2,
+   "crop": [51, 114, 98, 52],
+   "what": "a duck walking on the dock"
+  },
+  "pato.no": {
+   "world": [1.322, 2.4099, 0.28],
+   "screen": [100, 140],
+   "zoom": 2,
+   "crop": [51, 114, 98, 52],
+   "what": "a bird on the dock"
+  },
+  "pez.si": {
+   "world": [4.6994, 2.7413, -0.16],
+   "screen": [156, 184],
+   "zoom": 2,
+   "crop": [107, 158, 98, 52],
+   "what": "a fish leaping from the water"
+  },
+  "pez.no": {
+   "world": [4.6994, 2.7413, -0.16],
+   "screen": [156, 184],
+   "zoom": 2,
+   "crop": [107, 158, 98, 52],
+   "what": "a duck on the water, eating"
+  },
+  "pajaro.si": {
+   "world": [-0.6527, -0.4351, 0],
+   "screen": [116, 102],
+   "zoom": 2,
+   "crop": [67, 76, 98, 52],
+   "what": "a bird with a crust, on the lawn by the water"
+  },
+  "pajaro.no": {
+   "world": [4.3186, 2.6869, -0.16],
+   "screen": [150, 180],
+   "zoom": 2,
+   "crop": [101, 154, 98, 52],
+   "what": "a fish under the water by a crust"
+  },
+  "nada.si": {
+   "world": [4.3186, 2.6869, -0.16],
+   "screen": [150, 180],
+   "zoom": 2,
+   "crop": [101, 154, 98, 52],
+   "what": "a duck swimming"
+  },
+  "nada.no": {
+   "world": [-2.2301, -3.8619, 0],
+   "screen": [150, 56],
+   "zoom": 2,
+   "crop": [101, 30, 98, 52],
+   "what": "a duck flying"
+  },
+  "vuela.si": {
+   "world": [-2.1757, -3.9163, 0],
+   "screen": [152, 56],
+   "zoom": 2,
+   "crop": [103, 30, 98, 52],
+   "what": "a bird flying"
+  },
+  "vuela.no": {
+   "world": [1.2676, 2.4642, 0.28],
+   "screen": [98, 140],
+   "zoom": 2,
+   "crop": [49, 114, 98, 52],
+   "what": "a bird on the dock with a crust"
+  },
+  "rojo.si": {
+   "world": [4.3186, 2.6869, -0.16],
+   "screen": [150, 180],
+   "zoom": 2,
+   "crop": [101, 154, 98, 52],
+   "what": "a red boat on the water"
+  },
+  "rojo.no": {
+   "world": [4.3186, 2.6869, -0.16],
+   "screen": [150, 180],
+   "zoom": 2,
+   "crop": [101, 154, 98, 52],
+   "what": "a blue boat on the water"
+  },
+  "azul.si": {
+   "world": [4.5362, 2.9044, -0.16],
+   "screen": [150, 184],
+   "zoom": 2,
+   "crop": [101, 158, 98, 52],
+   "what": "a blue fish"
+  },
+  "azul.no": {
+   "world": [4.5362, 2.9044, -0.16],
+   "screen": [150, 184],
+   "zoom": 2,
+   "crop": [101, 158, 98, 52],
+   "what": "a green fish"
+  },
+  "verde.si": {
+   "world": [1.2676, 2.4642, 0.28],
+   "screen": [98, 140],
+   "zoom": 2,
+   "crop": [49, 114, 98, 52],
+   "what": "a green boat on the dock"
+  },
+  "verde.no": {
+   "world": [1.2676, 2.4642, 0.28],
+   "screen": [98, 140],
+   "zoom": 2,
+   "crop": [49, 114, 98, 52],
+   "what": "a red boat on the dock"
+  },
+  "amarillo.si": {
+   "world": [4.3186, 2.6869, -0.16],
+   "screen": [150, 180],
+   "zoom": 2,
+   "crop": [101, 154, 98, 52],
+   "what": "the yellow duck"
+  },
+  "amarillo.no": {
+   "world": [4.3186, 2.6869, -0.16],
+   "screen": [150, 180],
+   "zoom": 2,
+   "crop": [101, 154, 98, 52],
+   "what": "the white duck"
+  },
+  "blanco.si": {
+   "world": [1.1367, 0.4296, -0.16],
+   "screen": [133, 130],
+   "zoom": 2,
+   "crop": [84, 104, 98, 52],
+   "what": "a white bird on the post"
+  },
+  "blanco.no": {
+   "world": [1.1367, 0.4296, -0.16],
+   "screen": [133, 130],
+   "zoom": 2,
+   "crop": [84, 104, 98, 52],
+   "what": "a black bird on the post"
+  },
+  "negro.si": {
+   "world": [4.3186, 2.6869, -0.16],
+   "screen": [150, 180],
+   "zoom": 2,
+   "crop": [101, 154, 98, 52],
+   "what": "the black duck"
+  },
+  "negro.no": {
+   "world": [4.3186, 2.6869, -0.16],
+   "screen": [150, 180],
+   "zoom": 2,
+   "crop": [101, 154, 98, 52],
+   "what": "the yellow duck"
+  }
+ },
+ "level": [
+  {
+   "w": "pato",
+   "index": 0,
+   "picture": "pato.si",
+   "old": [72.83, 112, 54.34, 60],
+   "crop": [51, 114, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "pato",
+   "index": 1,
+   "picture": "pato.no",
+   "old": [72.83, 112, 54.34, 60],
+   "crop": [51, 114, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "pato",
+   "index": 2,
+   "picture": "pez.si",
+   "old": [128.83, 156, 54.34, 60],
+   "crop": [107, 158, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "pato",
+   "index": 3,
+   "picture": "pajaro.no",
+   "old": [148.83, 156, 54.34, 60],
+   "crop": [101, 154, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "vuela",
+   "index": 0,
+   "picture": "vuela.si",
+   "old": [124.83, 30, 54.34, 60],
+   "crop": [103, 30, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "vuela",
+   "index": 1,
+   "picture": "vuela.no",
+   "old": [68.83, 112, 54.34, 60],
+   "crop": [49, 114, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "vuela",
+   "index": 2,
+   "picture": "nada.si",
+   "old": [122.83, 156, 54.34, 60],
+   "crop": [101, 154, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "vuela",
+   "index": 3,
+   "picture": "pez.si",
+   "old": [128.83, 156, 54.34, 60],
+   "crop": [107, 158, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "rojo",
+   "index": 0,
+   "picture": "rojo.si",
+   "old": [122.83, 156, 54.34, 60],
+   "crop": [101, 154, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "rojo",
+   "index": 1,
+   "picture": "rojo.no",
+   "old": [122.83, 156, 54.34, 60],
+   "crop": [101, 154, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "rojo",
+   "index": 2,
+   "picture": "verde.si",
+   "old": [68.83, 112, 54.34, 60],
+   "crop": [49, 114, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "rojo",
+   "index": 3,
+   "picture": "azul.si",
+   "old": [122.83, 156, 54.34, 60],
+   "crop": [101, 158, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "negro",
+   "index": 0,
+   "picture": "negro.si",
+   "old": [122.83, 156, 54.34, 60],
+   "crop": [101, 154, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "negro",
+   "index": 1,
+   "picture": "negro.no",
+   "old": [122.83, 156, 54.34, 60],
+   "crop": [101, 154, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "negro",
+   "index": 2,
+   "picture": "amarillo.no",
+   "old": [122.83, 156, 54.34, 60],
+   "crop": [101, 154, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "negro",
+   "index": 3,
+   "picture": "blanco.si",
+   "old": [108.95, 116, 48.09, 53.1],
+   "crop": [84, 104, 98, 52],
+   "zoom": 2
+  }
+ ],
+ "clips": {},
+ "clipsWhat": "lago.js never calls clip()",
+ "front": {
+  "how": "the old background (fondo: the dock, its posts, the post) was drawn before everyone, and its reeds were in the sorted list; now the reeds, the post and the dock's mooring posts are set things someone can be behind. At its entry in the list lago.js draw sorts by y (sortY 9999: after everyone), for each item drawn before it (a child, the frog, Canelo, a duck, a bird, a boat, the fish, the bread, the bag, the sack: each item says what it is), the set's own pixels of the part (lago-set.html part(), PART_TAGS) are drawn again inside the item's box, only where that pixel is nearer to the camera than the item: bakedZ[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S, v = (x + y) / R2 of the surface point under it (rules.floor: the deck's, the lawn's or the water's). \"Behind the post\" is that depth test, not a row",
+  "plane": "v / COS - (row + .5 - OY) * tan(30 deg) / S",
+  "boxes": "a child: [x - 24, y - 46 - dy, 48, 49 + dy]; the frog: frogBox with dy; Canelo: [x - 16, y - 24 - dy, 32, 27 + dy]; a duck: [x - 14, y - 23 - dy, 28, 26]; a bird: [x - 9, y - 14 - dy, 18, 16]; a boat: [x - 12, y - 22, 24, 26]; the fish: [x - 11, y - 9 - dy, 22, 16]; the bread: [x - 6, y - z - 8, 13, 12]; the bag: [x - 7, y - 13, 14, 15]; the sack: [x - 9, y - 13, 18, 15]; its ground point under (x, y - 1)",
+  "parts": {
+   "juncos": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"juncos\"})",
+    "why": "a boat stuck in the reeds, a duck or the fish among them: the reeds nearer than it drawn over it"
+   },
+   "poste": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"poste\"})",
+    "why": "a duck paddling round the post (acts.rema), behind it: the post drawn over it"
+   },
+   "muelle.postes": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"muelle.postes\"})",
+    "why": "whoever stands on the dock behind a mooring post: the post drawn over them"
+   }
+  },
+  "tags": [
+   [
+    "L.push({y:p.y,d:()=>gente(c,id,a)})",
+    "L.push({y:p.y,id,d:()=>gente(c,id,a)})"
+   ],
+   [
+    "L.push({y:o.pose===\"vuela\"?o.y+200:o.y,d:()=>pato(c,o,a)})",
+    "L.push({y:o.pose===\"vuela\"?o.y+200:o.y,pato:k,d:()=>pato(c,o,a)})"
+   ],
+   [
+    "L.push({y:o.y+200,d:()=>ave(c,o,a)})",
+    "L.push({y:o.y+200,ave:k,d:()=>ave(c,o,a)})"
+   ],
+   [
+    "L.push({y:o.y+(o.en===\"juncos\"?14:1),d:()=>bote(c,o)})",
+    "L.push({y:o.y+(o.en===\"juncos\"?14:1),bote:k,d:()=>bote(c,o)})"
+   ],
+   [
+    "L.push({y:(o.dy||0)>4?o.y+40:AGUA+1,d:()=>pez(c,o)})",
+    "L.push({y:(o.dy||0)>4?o.y+40:AGUA+1,pez:k,d:()=>pez(c,o)})"
+   ],
+   [
+    "if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)})",
+    "if(q.vis)L.push({y:q.y+27,id:\"coqui\",d:()=>rana(c,q,a)})"
+   ],
+   [
+    "if(W.perro&&W.perro.vis!==0)L.push({y:W.perro.y,d:",
+    "if(W.perro&&W.perro.vis!==0)L.push({y:W.perro.y,k:\"perro\",d:"
+   ]
+  ],
+  "tagsWhat": "each item of the sorted list says what it is (the front masks read it); nothing else changes"
+ },
+ "shadows": {
+  "rule": "every shadow is cast from the ground point (z 0) under the screen point of the thing's feet (unproject), as El campo's, and darkens only pixels that take a cast shadow: the lawn and the dock's planks (ground, at its own depth). The water takes none (lago-set.html LOOK.noShade): what floats or swims has its ring instead (helps.ring); the dock's own shade on the water is baked into the set, joined to it",
+  "coqui": {
+   "radius": 0.45,
+   "at": "unproject(b.x + b.w / 2, q.y + 25)",
+   "when": "W.cq.vis and al > .5, on the lawn or the dock",
+   "cast": "castShadow(g.x, g.y, .3, .45)"
+  },
+  "people": {
+   "radius": {
+    "nino": 0.3
+   },
+   "at": "unproject(x, y - 1)",
+   "when": "visible (vis !== 0, al > .5)",
+   "cast": "for (z = .3; z <= 1.7; z += .35) castShadow(g.x, g.y, z, .3) (sitting: z to 1.35)"
+  },
+  "perro": {
+   "radius": 0.32,
+   "at": "unproject(x, y - 1)",
+   "when": "W.perro shown",
+   "cast": "castShadow(g.x, g.y, .25, .32)"
+  },
+  "pato": {
+   "radius": 0.26,
+   "at": "unproject(x, y - 1)",
+   "when": "a duck that walks (pose anda) on the lawn or the dock",
+   "cast": "castShadow(g.x, g.y, .2, .26)"
+  },
+  "ave": {
+   "radius": 0.16,
+   "at": "unproject(x, y - 1)",
+   "when": "a bird standing (not flying, not on a post top) on the lawn or the dock",
+   "cast": "castShadow(g.x, g.y, .1, .16)"
+  },
+  "bote": {
+   "radius": 0.3,
+   "at": "unproject(x, y - 1)",
+   "when": "a boat on the dock (en muelle)",
+   "cast": "castShadow(g.x, g.y, .15, .3)"
+  },
+  "pan": {
+   "radius": 0.18,
+   "at": "unproject(x, y - 1) of each piece: the row (W.fila, at its places in moves) and a piece lying on the dock",
+   "cast": "castShadow(g.x, g.y, .1, .18)"
+  },
+  "bolsa": {
+   "radius": 0.22,
+   "at": "unproject(x, y - 1)",
+   "when": "W.bolsa",
+   "cast": "castShadow(g.x, g.y, .15, .22)"
+  },
+  "saco": {
+   "radius": 0.3,
+   "at": "unproject(x, y - 1)",
+   "when": "W.saco",
+   "cast": "castShadow(g.x, g.y, .15, .3)"
+  },
+  "dropped": "none of the old code's own: lago.js draws no shadow"
+ },
+ "dropped": [
+  {
+   "line": 112,
+   "src": "c.drawImage(spr(\"lago\",fondo),0,0);",
+   "to": "",
+   "why": "the background: the set, for setKey(W)"
+  },
+  {
+   "line": 116,
+   "src": "JUNCOS.forEach((p,i)=>L.push({y:p[1],d:()=>c.drawImage(spr(\"jn\"+i,()=>mkJunco(i)),p[0]-11,p[1]-33)}));",
+   "to": "",
+   "why": "the reeds (mkJunco, in the sorted list): the set's bed of reeds (things.juncos); whoever is behind them has them drawn again over them (front.juncos)"
+  }
+ ],
+ "moves": [
+  {
+   "line": 17,
+   "act": "*",
+   "src": "POSTE=[152,146]",
+   "to": "POSTE=[176,146]",
+   "places": [
+    {
+     "who": "ave",
+     "old": [152, 122],
+     "new": [176, 122],
+     "world": [1.8166, -1.2294, -0.16]
+    }
+   ],
+   "shift": {
+    "who": "pato",
+    "when": "rema",
+    "by": [24, 0]
+   },
+   "why": "the post in the water: its old foot (152, 154) lies at the dock's right corner (the deck is as wide as its row of places needs: layout); 24 px right, past the dock's end, so that the post, the bird on it (POSTE[1] - 24) and the duck paddling round it (acts.rema) have water all round, clear of the dock"
+  },
+  {
+   "line": 17,
+   "act": "inicio19",
+   "src": "ORILLA=[178,116]",
+   "to": "ORILLA=[42,115]",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [196, 117],
+     "new": [60, 116],
+     "world": [-1.4686, 1.795, 0]
+    }
+   ],
+   "why": "acts.inicio19 (los-botes): Carmen on the far bank (ORILLA + (18, 1)). The shore is one straight line on a world axis: the lawn is up to the left, and the old far bank at the right (196, 117) is open water. She stands on the lawn at the back, across the water from the dock's end; the boats Luis sends gather at the water's edge up the shore (slotC), as the old row spread along the far bank beside her. Not nearer the water: the hint hand at the answer cards in the sky would reach her face"
+  },
+  {
+   "line": 61,
+   "act": "*",
+   "src": "FX=[46,68,90],FY=165",
+   "to": "FX=[46,66,85],FY=165,FYB=[154,164,174]",
+   "places": [
+    {
+     "who": "bote",
+     "old": [46, 165],
+     "new": [46, 154],
+     "world": [0.5605, 4.5856, 0.28]
+    },
+    {
+     "who": "bote",
+     "old": [68, 165],
+     "new": [66, 164],
+     "world": [1.6484, 4.5856, 0.28]
+    },
+    {
+     "who": "bote",
+     "old": [90, 165],
+     "new": [85, 174],
+     "world": [2.709, 4.6128, 0.28]
+    }
+   ],
+   "why": "the row of three boats on the dock (repone): the old row lay along the old dock's face (row 165); here the boats stand on the planks in a row along the dock's near edge (each with planks under its whole keel and 3 px of plank to the edge), in front of the frog as the old"
+  },
+  {
+   "line": 205,
+   "act": "*",
+   "src": "x:FX[i],y:FY,en:\"muelle\"",
+   "to": "x:FX[i],y:FYB[i],en:\"muelle\"",
+   "why": "repone: each boat of the row at its own row (FYB)"
+  },
+  {
+   "line": 205,
+   "act": "*",
+   "src": "{W.botes[id].x=FX[i];}",
+   "to": "{W.botes[id].x=FX[i];W.botes[id].y=FYB[i];}",
+   "why": "repone: a boat put back in the row takes its row too (the old row had one row for all three)"
+  },
+  {
+   "line": 207,
+   "act": "*",
+   "src": "await boteA(id,134,FY,7)",
+   "to": "await boteA(id,112,160,7)",
+   "places": [
+    {
+     "who": "bote",
+     "old": [134, 165],
+     "new": [112, 160],
+     "world": [2.6818, 3.117, 0.28]
+    }
+   ],
+   "why": "acts.empuja: the frog pushes the boat along the dock to Luis: the old point (134, 165) is off the new dock's end; on the planks before Luis's feet"
+  },
+  {
+   "line": 208,
+   "act": "*",
+   "src": "await boteA(id,134,FY-6,8)",
+   "to": "await boteA(id,120,156,8)",
+   "places": [
+    {
+     "who": "bote",
+     "old": [134, 159],
+     "new": [120, 156],
+     "world": [2.6818, 2.6818, 0.28]
+    }
+   ],
+   "why": "acts.luiscoge: Luis carries the boat back to his place at the dock's end: before his feet, on the planks"
+  },
+  {
+   "line": 272,
+   "act": "*",
+   "src": "await patoA(k,136,172,\"nada\",6)",
+   "to": "await patoA(k,150,184,\"nada\",6)",
+   "places": [
+    {
+     "who": "pato",
+     "old": [136, 172],
+     "new": [150, 184],
+     "world": [4.4818, 2.85, -0.16]
+    }
+   ],
+   "why": "acts.final20: the ducks gather before the dock's end before they waddle onto it: the old point is under the new deck's end; 8 px of water past it"
+  },
+  {
+   "line": 121,
+   "act": "*",
+   "src": "L.push({y:FY+1,d:()=>c.drawImage(spr(\"pan\",mkPan),36+i*12-5,FY-8)})",
+   "to": "L.push({y:158,d:()=>c.drawImage(spr(\"pan\",mkPan),54+i*12-5,149)})",
+   "why": "the row of bread on the dock (W.fila): the old row lay on the old dock's face; here on the planks, in front of the people"
+  },
+  {
+   "line": 62,
+   "act": "*",
+   "src": "const slotC=i=>[98+(i%13)*6,119+(i>=13?4:0)];",
+   "to": "const slotC=i=>[134+(i%10)*4+(i>=10?4:0),129-(i%10)*1.6+(i>=10?3:0)];",
+   "why": "the boats that reach Carmen (sopla, conpez): the old row at her feet on the far bank (row 119); here a row on the water along the shore at her new place (ORILLA), 8 px and more from the bank and from the dock"
+  },
+  {
+   "line": 61,
+   "act": "*",
+   "src": "PEGA=[[182,166],[196,172],[210,168],[190,178]]",
+   "to": "PEGA=[[192,148],[200,143],[196,152],[198,137]]",
+   "places": [
+    {
+     "who": "bote",
+     "old": [182, 166],
+     "new": [192, 148],
+     "world": [3.6659, -0.2504, -0.16]
+    },
+    {
+     "who": "bote",
+     "old": [196, 172],
+     "new": [200, 143],
+     "world": [3.6115, -0.7399, -0.16]
+    },
+    {
+     "who": "bote",
+     "old": [210, 168],
+     "new": [196, 152],
+     "world": [3.9923, -0.1416, -0.16]
+    },
+    {
+     "who": "bote",
+     "old": [190, 178],
+     "new": [198, 137],
+     "world": [3.2308, -1.0119, -0.16]
+    }
+   ],
+   "why": "acts.deriva: where a drifting boat sticks in the reeds: at the front of the reed bed, which stands higher up the water than the old (layout)"
+  },
+  {
+   "line": 185,
+   "act": "*",
+   "src": "await patoA(\"blanco\",124,126,\"nada\");d.pose=\"anda\";await patoA(\"blanco\",120,118,\"anda\",4)",
+   "to": "await patoA(\"blanco\",132,124,\"nada\");d.pose=\"anda\";await patoA(\"blanco\",106,112,\"anda\",4)",
+   "places": [
+    {
+     "who": "pato",
+     "old": [124, 126],
+     "new": [132, 124],
+     "world": [0.7287, 0.076, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [120, 118],
+     "new": [106, 112],
+     "world": [-0.4351, 0.3264, 0]
+    }
+   ],
+   "why": "acts.orilla (pan-para-el-pato): the duck climbs out onto the far bank: the old bank at row 118 is water here; it swims to the shore up the lake (8 px of water round it) and walks out onto the lawn (8 px of lawn round its feet)"
+  },
+  {
+   "line": 186,
+   "act": "*",
+   "src": "await patoA(\"blanco\",124,126,\"anda\",4);d.pose=\"nada\";salpica(124,128);",
+   "to": "await patoA(\"blanco\",132,124,\"anda\",4);d.pose=\"nada\";salpica(132,126);",
+   "why": "acts.alagua: back into the water where it came out (orilla)"
+  },
+  {
+   "line": 176,
+   "act": "inicio18",
+   "src": "async inicio18(){W.gente=",
+   "to": "async inicio18(){W.respEn=[121,75];W.gente=",
+   "respEn": [121, 75],
+   "why": "acts.inicio18 (pan-para-el-pato): the answer cards (vuela, nada) stand over the frog as the old, a little higher and to the right: clear of Carmen's head, under the circle the duck and the bird fly round (its lowest row 74), the hand at the first card off her face"
+  },
+  {
+   "line": 202,
+   "act": "inicio19",
+   "src": "async inicio19(){W.gente=",
+   "to": "async inicio19(){W.respEn=[132,32];W.gente=",
+   "respEn": [132, 32],
+   "why": "acts.inicio19 (los-botes): the answer cards stand in the sky (W.respEn, as El campo's): over the frog on the dock they covered Carmen across the water, Luis and the boats; under the rounds card, right of the sun, inside the view with their lit frames and glow"
+  },
+  {
+   "line": 241,
+   "act": "inicio20",
+   "src": "async inicio20(){W.gente=",
+   "to": "async inicio20(){W.respEn=[132,32];W.gente=",
+   "respEn": [132, 32],
+   "why": "acts.inicio20 (cual, d-pato-pequeno, h-lago): the answer cards stand in the sky (W.respEn): over the frog they covered Luis and Canelo on the lawn and Carmen"
+  },
+  {
+   "line": 63,
+   "act": "*",
+   "src": "const P7=i=>[134+(i-1)*9.5,177+(i-1)*2]",
+   "to": "const P7=i=>[156+(i-1)*4.5,186+(i-1)*1]",
+   "places": [
+    {
+     "who": "pato",
+     "old": [120, 168],
+     "new": [142, 177],
+     "world": [3.8835, 2.6869, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [148, 170],
+     "new": [170, 179],
+     "world": [4.7538, 2.0341, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [134, 189],
+     "new": [156, 198],
+     "world": [5.4065, 3.4484, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [130, 170],
+     "new": [147, 178],
+     "world": [4.0739, 2.6053, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [158, 172],
+     "new": [175, 180],
+     "world": [4.9442, 1.9526, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [144, 191],
+     "new": [161, 199],
+     "world": [5.5969, 3.3668, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [139, 172],
+     "new": [151, 179],
+     "world": [4.2371, 2.5509, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [167, 174],
+     "new": [179, 181],
+     "world": [5.1073, 1.8982, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [153, 193],
+     "new": [165, 200],
+     "world": [5.7601, 3.3124, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [149, 174],
+     "new": [156, 180],
+     "world": [4.4274, 2.4693, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [177, 176],
+     "new": [184, 182],
+     "world": [5.2977, 1.8166, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [163, 195],
+     "new": [170, 201],
+     "world": [5.9504, 3.2308, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [158, 176],
+     "new": [160, 181],
+     "world": [4.5906, 2.4149, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [186, 178],
+     "new": [188, 183],
+     "world": [5.4609, 1.7622, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [172, 197],
+     "new": [174, 202],
+     "world": [6.1136, 3.1764, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [168, 178],
+     "new": [165, 182],
+     "world": [4.781, 2.3333, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [196, 180],
+     "new": [193, 184],
+     "world": [5.6513, 1.6806, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [182, 199],
+     "new": [179, 203],
+     "world": [6.304, 3.0948, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [177, 180],
+     "new": [169, 183],
+     "world": [4.9442, 2.2789, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [205, 182],
+     "new": [197, 185],
+     "world": [5.8144, 1.6262, -0.16]
+    },
+    {
+     "who": "pato",
+     "old": [191, 201],
+     "new": [183, 204],
+     "world": [6.4672, 3.0404, -0.16]
+    }
+   ],
+   "why": "story 20: the seven places of the three ducks, from the dock outward: the old first places lay under the new dock's end (as wide as its row of places needs); they start 8 px of water past its end and end 6 px from the view's right edge (the ducks closer together, their order and offsets OFF unchanged)"
+  },
+  {
+   "line": 177,
+   "act": "*",
+   "src": "W.peces={a:{c:\"pardo\",x:92,y:192,x0:92,dir:1,vaiven:1}}",
+   "to": "W.peces={a:{c:\"pardo\",x:112,y:194,x0:112,dir:1,vaiven:1}}",
+   "places": [
+    {
+     "who": "pez",
+     "old": [92, 192],
+     "new": [112, 194],
+     "world": [3.9923, 4.4274, -0.16]
+    }
+   ],
+   "why": "acts.inicio18: the fish swimming to and fro (x0 +- 12): the old place passed under the new dock's near corner; on open water in front of it"
+  },
+  {
+   "line": 86,
+   "act": "*",
+   "src": "o.x=120+13*Math.cos(t);o.y=192+4*Math.sin(t)",
+   "to": "o.x=124+13*Math.cos(t);o.y=186+4*Math.sin(t)",
+   "why": "anima: the fish circling before the dock (pezviene, h-lago): its hint frame (box + 12) 2 px inside the view at the bottom of its circle"
+  },
+  {
+   "line": 222,
+   "act": "*",
+   "src": "await pezA(\"a\",134,192,16)",
+   "to": "await pezA(\"a\",137,186,16)",
+   "places": [
+    {
+     "who": "pez",
+     "old": [134, 192],
+     "new": [137, 186],
+     "world": [4.2371, 3.3124, -0.16]
+    }
+   ],
+   "why": "acts.pezviene: the fish swims up to its circle (anima, moved)"
+  },
+  {
+   "line": 241,
+   "act": "inicio20",
+   "src": "W.flor=[196,119]",
+   "to": "W.flor=[118,110]",
+   "places": [
+    {
+     "who": "flor",
+     "old": [196, 119],
+     "new": [118, 110],
+     "world": [-0.2176, -0.1088, 0]
+    }
+   ],
+   "why": "acts.inicio20: the yellow flower stood on the old far bank (196, 119), which is open water here; on the lawn by the shore, as the old by the water"
+  }
+ ],
+ "helps": {
+  "what": "drawn by the sprite layer just before the thing they help, 1:1 (lines: each drawing function of a thing on the water gains one call): El campo's ripple ring on the water round whatever floats or swims at the surface: a duck swimming, a boat on the water or in the reeds, the bread lying on the water",
+  "margin": 8,
+  "edge": 6,
+  "deckMargin": 3,
+  "marginWhat": "whatever rests near the shore or the dock's edge is on one side: on the lawn with at least `margin` px of lawn round its foot (the lowest 2 rows of its sprite); on the dock with planks under its whole foot and at least `deckMargin` px of plank to the dock's edge; in the water with `margin` px of water all round its foot, the ring and the thing `edge` px and more from the picture's edges",
+  "ring": {
+   "inner": 0.45,
+   "colour": [212, 236, 246],
+   "pato": {
+    "rx": 13,
+    "ry": 3,
+    "dy": 0
+   },
+   "bote": {
+    "rx": 11,
+    "ry": 3,
+    "dy": 0
+   },
+   "pan": {
+    "rx": 7,
+    "ry": 2.5,
+    "dy": 0
+   },
+   "when": "a duck swimming (pose nada, not in the air: dy <= 3); a boat on the water or in the reeds (en agua, juncos, carmen, or on its way: meta); the bread lying on the water (W.pan, not carried, z <= 1, its point over the water)",
+   "how": "every pixel (x, y) with .45 < ((x + .5 - cx) / rx)^2 + ((y + .5 - cy) / ry)^2 <= 1 that shows the water (the set's surface) takes the colour: a duck's at (x, y) (rx scaled .78 for the yellow one), a boat's at (x, y + bob), the bread's at (x, y)"
+  },
+  "lines": [
+   [
+    "function pato(c,o,a){if(!o||o.vis===0)return;",
+    "function pato(c,o,a){if(!o||o.vis===0)return;PREVIEW.ring(c,\"pato\",o);"
+   ],
+   [
+    "function bote(c,o){if(!o||o.vis===0)return;",
+    "function bote(c,o){if(!o||o.vis===0)return;PREVIEW.ring(c,\"bote\",o);"
+   ],
+   [
+    "L.push({y:999,d:()=>c.drawImage(spr(\"pan\",mkPan),R(W.pan.x)-5,R(W.pan.y)-R(W.pan.z||0)-7)});",
+    "L.push({y:999,d:()=>{PREVIEW.ring(c,\"pan\",W.pan);c.drawImage(spr(\"pan\",mkPan),R(W.pan.x)-5,R(W.pan.y)-R(W.pan.z||0)-7);}});"
+   ]
+  ],
+  "linesWhat": "the lines lago.js gains: the help is drawn first, then the thing; the port draws them the same way"
+ },
+ "bubbles": {
+  "what": "each bubble's rectangle relative to its tail's tip, as lago.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]",
+  "rects": {
+   "hola": [-16, -46, 34, 44],
+   "amor": [-14, -38, 30, 36],
+   "como": [-32, -40, 66, 38],
+   "bien": [-14, -40, 30, 38],
+   "mal": [-14, -40, 30, 38],
+   "quien": [-22, -40, 46, 38],
+   "lluvia": [-22, -40, 46, 38]
+  }
+ },
+ "talk": {
+  "what": "where a bubble goes (lago.js draw: line 129 for a child, 130 for the frog). The first of these places whose bubble is wholly inside the view, clear of the corner card shown (hud: the rounds) and of every face (each visible child's and the frog's, its own too); if none is, the first (the old)",
+  "top": "a child: (x, y - alto - 1) as the old tail; the frog: (b.x + (b.w >> 1), b.y + 2)",
+  "places": [
+   [0, 0],
+   [1, 7],
+   [-1, 7],
+   [1, 30],
+   [-1, 30],
+   [1, 44],
+   [-1, 44],
+   [2, 7],
+   [-2, 7],
+   [2, 30],
+   [-2, 30],
+   [2, 44],
+   [-2, 44],
+   [1, 58],
+   [-1, 58],
+   [2, 58],
+   [-2, 58]
+  ],
+  "placesWhat": "[side, dy]: the tail's tip at (top.x + side * (h + 16), top.y + dy), h the head's half width: a child 6, the frog b.w >> 1",
+  "faces": "a child's face: [hx - 6, y - dy + top + 5, 12, 10] (eyes to chin, not the hair), hx the head's middle; the frog's: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]",
+  "heads": {
+   "luis": {
+    "top": -41,
+    "head": 0
+   },
+   "luis.s": {
+    "top": -38,
+    "head": 0
+   },
+   "carmen": {
+    "top": -41,
+    "head": 0
+   },
+   "carmen.s": {
+    "top": -38,
+    "head": 0
+   }
+  },
+  "headsWhat": "each sprite (idle; .s sitting): top, the first opaque row relative to the feet row y; head, the middle of its top 10 rows relative to x (facing right; facing left: x - head + 1)",
+  "board": [2, 2, 68, 26],
+  "boardWhat": "in the 196 x 216 display, then + the view's x0: W.tarjeta (the rounds card) [2, 2, 68, 26]"
+ },
+ "code": [
+  {
+   "line": 17,
+   "old": "MUELLE [26,152,112,13]; POSTE [152,146]; PM[] [40,141]; PM[] [133,141]; JUNCOS[] [190,150]; JUNCOS[] [200,144]; JUNCOS[] [210,152]; JUNCOS[] [196,158]; JUNCOS[] [206,162]; ORILLA [178,116]",
+   "to": {
+    "points": ["shore", "dock", "postes", "poste"],
+    "moves": [
+     "POSTE",
+     "ORILLA"
+    ]
+   },
+   "note": "the set's things: the shore and the water (points.shore), the dock (points.dock), the mooring posts at the old PM tops (points.postes), the post (moved: moves), the reeds (dropped: the set's bed), Carmen's far bank (ORILLA: moved)"
+  },
+  {
+   "line": 60,
+   "old": "LUGAR.inicio [100,125,1]; LUGAR.muelle [100,125,1]",
+   "to": {
+    "spots": ["frog.inicio", "frog.muelle"]
+   },
+   "note": "the floor rule: the same screen places, on the dock"
+  },
+  {
+   "line": 61,
+   "old": "FX [46,68,90]; SALE[] [150,172]; SALE[] [168,180]; SALE[] [152,190]; PEGA[] [182,166]; PEGA[] [196,172]; PEGA[] [210,168]; PEGA[] [190,178]",
+   "to": {
+    "moves": [
+     "FX",
+     "PEGA"
+    ],
+    "spots": ["sale.0", "sale.1", "sale.2"]
+   },
+   "note": "the row of boats on the dock (moves), SALE unchanged (on the water), PEGA in the reeds (moves)"
+  },
+  {
+   "line": 63,
+   "old": "OFF[] [-14,-9]; OFF[] [14,-7]; OFF[] [0,12]",
+   "to": "unchanged",
+   "note": "the ducks' seven places on the water (story 20): the floor rule, unchanged"
+  },
+  {
+   "line": 76,
+   "old": "box [178,120,40,46]",
+   "to": {
+    "things": ["juncos", "poste", "muelle", "agua", "lago"]
+   },
+   "note": "the set things' boxes (things)"
+  },
+  {
+   "line": 77,
+   "old": "box [0,94,240,122]",
+   "to": {
+    "things": ["agua", "lago"]
+   },
+   "note": "the water's and the lake's boxes (things.agua, things.lago)"
+  },
+  {
+   "line": 91,
+   "old": "c.scale(-1,1) args 0,1 [-1,1]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 97,
+   "old": "c.scale(-1,1) args 0,1 [-1,1]; c.drawImage(im,0,0,26,18,-13,…,26,18) args 1,2 [0,0]; c.drawImage(im,-13,-21) args 1,2 [-13,-21]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 100,
+   "old": "c.scale(-1,1) args 0,1 [-1,1]; c.drawImage(im,-9,-6) args 1,2 [-9,-6]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 102,
+   "old": "c.scale(-1,1) args 0,1 [-1,1]; c.drawImage(im,-7,-12) args 1,2 [-7,-12]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 105,
+   "old": "c.drawImage(im,-10,-19) args 1,2 [-10,-19]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 110,
+   "old": "c.scale(2,2) args 0,1 [2,2]; bub(c,k,0,0,a) args 2,3 [0,0]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 112,
+   "old": "c.drawImage(spr(\"_\",fondo),0,0) [sprite \"lago\"] args 1,2 [0,0]",
+   "to": {
+    "dropped": true
+   },
+   "note": "dropped: the set (dropped)"
+  },
+  {
+   "line": 113,
+   "old": "[] [-3,-14]; [] [1,-14]; [] [-3,-10]; [] [1,-10]; [] [-1,-16]; [] [-1,-9]; [] [-4,-12]; [] [2,-12]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 124,
+   "old": "c.scale(-1,1) args 0,1 [-1,1]; c.drawImage(im,-13,0) args 1,2 [-13,0]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 137,
+   "old": "tarjeta(g,3,3,66,24) args 1,2 [3,3]",
+   "to": "unchanged",
+   "note": "a sprite's, a card's or an effect's own drawing, relative to where it is drawn: unchanged"
+  },
+  {
+   "line": 176,
+   "old": "x:,y: [44,154]; x:,y: [72,154]; x:,y: [100,125]",
+   "to": {
+    "moves": [
+     "async inicio18(){W.gente="
+    ]
+   },
+   "note": "moved: async inicio18(){W.gente= (moves); the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 177,
+   "old": "x:,y: [142,184]; x:,y: [92,192]",
+   "to": {
+    "moves": [
+     "W.peces={a:{c:\"pardo\",x:92,y:192,x0:92,dir:1,vaiven:1}}"
+    ]
+   },
+   "note": "moved: W.peces={a:{c:\"pardo\",x:92,y:192,x0:92,dir:1,vaiven:1}} (moves); the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 180,
+   "old": "patoA(\"_\",142,184,…) args 1,2 [142,184]; salpica(142,184) args 0,1 [142,184]",
+   "to": {
+    "floor": true
+   },
+   "note": "the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 185,
+   "old": "patoA(\"_\",124,126,\"_\") args 1,2 [124,126]; patoA(\"_\",120,118,\"_\",4) args 1,2 [120,118]",
+   "to": {
+    "moves": [
+     "await patoA(\"blanco\",124,126,\"nada\");d.pose=\"anda\";await patoA(\"blanco\",120,118,\"anda\",4)"
+    ]
+   },
+   "note": "moved: await patoA(\"blanco\",124,126,\"nada\");d.pose=\"anda\";await patoA(\"blanco\",120,118,\"anda\",4) (moves); the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 186,
+   "old": "patoA(\"_\",124,126,\"_\",4) args 1,2 [124,126]; salpica(124,128) args 0,1 [124,128]; patoA(\"_\",142,184,\"_\") args 1,2 [142,184]",
+   "to": {
+    "moves": [
+     "await patoA(\"blanco\",124,126,\"anda\",4);d.pose=\"nada\";salpica(124,128);"
+    ]
+   },
+   "note": "moved: await patoA(\"blanco\",124,126,\"anda\",4);d.pose=\"nada\";salpica(124,128); (moves); the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 197,
+   "old": "pts[] [70,60]; pts[] [196,70]; pts[] [136,50]; pts[] [110,90]; pts[] [170,96]",
+   "to": "unchanged",
+   "note": "screen effect: the stars, unchanged"
+  },
+  {
+   "line": 202,
+   "old": "W.saco [110,153]; x:,y: [128,154]; x:,y: [60,125]",
+   "to": {
+    "moves": [
+     "async inicio19(){W.gente="
+    ]
+   },
+   "note": "moved: async inicio19(){W.gente= (moves); the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 208,
+   "old": "mueve(\"_\",128,154) args 1,2 [128,154]",
+   "to": {
+    "moves": [
+     "await boteA(id,134,FY-6,8)"
+    ]
+   },
+   "note": "moved: await boteA(id,134,FY-6,8) (moves); the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 222,
+   "old": "x:,y: [232,192]; pezA(\"_\",134,192,16) args 1,2 [134,192]",
+   "to": {
+    "moves": [
+     "await pezA(\"a\",134,192,16)"
+    ]
+   },
+   "note": "moved: await pezA(\"a\",134,192,16) (moves); the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 238,
+   "old": "pts[] [70,60]; pts[] [196,70]; pts[] [136,50]; pts[] [110,90]; pts[] [170,96]",
+   "to": "unchanged",
+   "note": "screen effect: the stars, unchanged"
+  },
+  {
+   "line": 241,
+   "old": "W.bolsa [96,153]; W.flor [196,119]; x:,y: [74,118]; x:,y: [112,154]; x:,y: [62,125]; x:,y: [46,119]",
+   "to": {
+    "moves": [
+     "async inicio20(){W.gente=",
+     "W.flor=[196,119]"
+    ]
+   },
+   "note": "moved: async inicio20(){W.gente=; W.flor=[196,119] (moves); the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 242,
+   "old": "W.orden [0,1,2]; x:,y: [0,0]",
+   "to": {
+    "floor": true
+   },
+   "note": "the floor rule: every other place here keeps its screen place; offsets and orders, not places: unchanged"
+  },
+  {
+   "line": 254,
+   "old": "x:,y: [-10,60]; x:,y: [250,50]",
+   "to": {
+    "floor": true
+   },
+   "note": "the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 259,
+   "old": "panA(…,4,6) args 1,2 [4,6]; panA([p[0],p[1]-6],0,22) args 1,2 [0,22]",
+   "to": {
+    "floor": true
+   },
+   "note": "the floor rule: every other place here keeps its screen place"
+  },
+  {
+   "line": 272,
+   "old": "xs [104,118,131]; pts[] [70,60]; pts[] [196,70]; pts[] [136,50]; pts[] [110,90]; pts[] [170,96]; patoA(k,136,172,\"_\",6) args 1,2 [136,172]",
+   "to": {
+    "moves": [
+     "await patoA(k,136,172,\"nada\",6)"
+    ]
+   },
+   "note": "moved: await patoA(k,136,172,\"nada\",6) (moves); the floor rule: every other place here keeps its screen place; screen effect: the stars, unchanged"
+  },
+  {
+   "line": 279,
+   "old": "for(…) [-2,1,-1,0]",
+   "to": "unchanged",
+   "note": "offsets and orders, not places: unchanged"
+  },
+  {
+   "line": 294,
+   "old": "CAM.wide [22,0,196,216]; heartAt [110,30]",
+   "to": {
+    "view": "wide",
+    "point": "corazon"
+   },
+   "note": "the view (views.wide) and the heart (points.corazon): unchanged"
+  },
+  {
+   "line": 76,
+   "old": "box juncos [178,120,40,46]",
+   "to": {
+    "thing": "juncos",
+    "box": [187, 96, 32, 44],
+    "hand": [196, 118]
+   }
+  },
+  {
+   "line": 76,
+   "old": "box poste [147,120,10,36]",
+   "to": {
+    "thing": "poste",
+    "box": [172, 120, 8, 36],
+    "hand": [176, 142]
+   }
+  },
+  {
+   "line": 76,
+   "old": "box muelle [26,150,112,17]",
+   "to": {
+    "thing": "muelle",
+    "box": [19, 124, 131, 69],
+    "hand": [96, 160]
+   }
+  },
+  {
+   "line": 77,
+   "old": "box agua [0,118,240,98]",
+   "to": {
+    "thing": "agua",
+    "box": [0, 100, 240, 116],
+    "hand": [176, 196]
+   }
+  },
+  {
+   "line": 77,
+   "old": "box lago [0,94,240,122]",
+   "to": {
+    "thing": "lago",
+    "box": [0, 100, 240, 116],
+    "hand": [176, 196]
+   }
+  },
+  {
+   "line": 205,
+   "old": "x:FX[i],y:FY,en:\"muelle\"",
+   "to": {
+    "moves": [
+     "x:FX[i],y:FY,en:\"muelle\""
+    ]
+   },
+   "note": "moved (moves): repone"
+  },
+  {
+   "line": 207,
+   "old": "await boteA(id,134,FY,7)",
+   "to": {
+    "moves": [
+     "await boteA(id,134,FY,7)"
+    ]
+   },
+   "note": "moved (moves): acts.empuja"
+  },
+  {
+   "line": 121,
+   "old": "L.push({y:FY+1,d:()=>c.drawImage(spr(\"pan\",mkPan),36+i*12-5,FY-8)})",
+   "to": {
+    "moves": [
+     "L.push({y:FY+1,d:()=>c.drawImage(spr(\"pan\",mkPan),36+i*12-5,FY-8)})"
+    ]
+   },
+   "note": "moved (moves): the row of bread on the dock (W.fila)"
+  },
+  {
+   "line": 62,
+   "old": "const slotC=i=>[98+(i%13)*6,119+(i>=13?4:0)];",
+   "to": {
+    "moves": [
+     "const slotC=i=>[98+(i%13)*6,119+(i>=13?4:0)];"
+    ]
+   },
+   "note": "moved (moves): the boats that reach Carmen (sopla, conpez)"
+  },
+  {
+   "line": 86,
+   "old": "o.x=120+13*Math.cos(t);o.y=192+4*Math.sin(t)",
+   "to": {
+    "moves": [
+     "o.x=120+13*Math.cos(t);o.y=192+4*Math.sin(t)"
+    ]
+   },
+   "note": "moved (moves): anima"
+  },
+  {
+   "line": 65,
+   "old": "caja(id): [x - 11, y - alto(id), 22, alto(id)]",
+   "to": "relative to the child: unchanged"
+  },
+  {
+   "line": 127,
+   "old": "the sorted list",
+   "to": {
+    "front": ["juncos", "poste", "muelle.postes"]
+   },
+   "note": "entries added before the sort (front.parts), each item tagged (front.tags)"
+  },
+  {
+   "line": "juego.js:16",
+   "old": "fresh(): cq x 150 y 178 s 1",
+   "to": "not used here: lago's fresh() puts him at LUGAR.inicio"
+  },
+  {
+   "line": "cual.js:21",
+   "old": "panelW(): cq x 123 y 150 s .86",
+   "to": "a pair picture that shows the frog sets cq itself (remap); otherwise he is not seen (vis 0)"
+  }
+ ],
+ "checks": {
+  "notes": [
+   "inventory: 19 things (old 19), 2 frog places of LUGAR (old 2) and 8 frog places in all, 1 view (old 1), 48 positions (old 48), 11 review pairs of cual-lago (22 pictures here; none is another scene's), 16 level pictures (old 16), 98 places of lago.js and every moved line named in code, 1 baked state (the old 10)",
+   "hops: all 21 pairs of the frog's 7 places keep the old count; his walks in the runs: hlago-inicio20, inicio-inicio19, inicio-inicio20, inicio-pequeno, inicio-ranaa, inicio19-ranapinta, inicio20-pequeno, pequeno-ranaa",
+   "boxes: every pixel of each set thing inside its touch box (nothing sways: no leaf, no reed moves at any wind step): muelle [19,124,131,69] (4572 px), poste [172,120,8,36] (278 px), juncos [187,96,32,44] (613 px); every pixel answers its own thing in the hit order; the set's parts are juncos, muelle, muelle.postes, poste (each a touch key's: nothing decorative); the water and the lawn are the ground of agua and lago",
+   "shadows of the set: every castShadow call has strength 1 and a radius; each casting part darkens pixels, its shadow in one piece with it and short (a contact shadow at the foot of the thin mooring posts): muelle.postes 4 calls, 18 px darkened",
+   "water: none of its 16553 px takes a cast shadow (people, animals and things cast theirs on the lawn and the planks only); the dock's shade, 801 px on the water beside and under it, every one within 9 px of the dock",
+   "water: El campo's (mean 60,127,163, 27 from the nearest sky band; 12.4% ripples; 100 glints, none in the dock's shade); the lake in the view (every pixel whose ground is past the shore, the dock over it counted, as the old dock over the old water) 17977 px against the old 17435 (103%); open water shown 13171 px against the old 13298 (99%): the deck covers more of it than the old strip of a dock did",
+   "sides: 17835 ticks inside the acts of the port's play of the 15 runs, every step's end and every pair picture: 165086 rests (300 ms or more in one place), each clearly on one side: on the lawn with 8 px of lawn round its foot (ave a, carmen, flor, luis, pato blanco, perro), on the dock with planks under its whole foot and 3 px of plank to the edge (ave a, bolsa, bote a, bote f_azul, bote f_rojo, bote f_verde, carmen, luis, pan fila.0, pan fila.1, pan fila.2, pan fila.3, pan fila.4, pan fila.5, pato a, pato amarillo, pato blanco, pato negro, saco, the frog), in the water with 8 px of water round it (bote a, bote b0, bote b1, bote b10, bote b11, bote b12, bote b13, bote b14, bote b15, bote b16, bote b2, bote b3, bote b4, bote b5, bote b6, bote b7, bote b8, bote b9, pan, pato a, pato amarillo, pato blanco, pato negro), whatever floats 7 px at least from the view's edges",
+   "rings: 75897 moments of a duck swimming, a boat on the water or the bread on it, each with its ring (resting ones 100% on the water at the least); the fish under the surface over open water (8188 moments) or leaping with its splash (450)",
+   "perches: 10358 moments of a bird on a post's top (the mooring posts' or the post's), each with the post under its feet; behind a front part, drawn over them by front: pato amarillo at 136,162 behind muelle.postes (25 px), pato amarillo at 131,154 behind muelle.postes (44 px), carmen at 42,154 behind muelle.postes (44 px), the frog at 120,151 behind muelle.postes (50 px), the frog at 124,151 behind muelle.postes (74 px), bote f_verde at 46,154 behind muelle.postes (22 px), bote f_verde at 46,152 behind muelle.postes (41 px), bote f_verde at 46,153 behind muelle.postes (38 px), luis at 128,154 behind muelle.postes (39 px), bote f_rojo at 46,154 behind muelle.postes (22 px), luis at 123,154 behind muelle.postes (1 px), bote b0 at 144,156 behind muelle.postes (1 px), bote b0 at 143,154 behind muelle.postes (2 px), bote b0 at 143,152 behind muelle.postes (6 px), bote b0 at 142,151 behind muelle.postes (11 px), bote b0 at 141,149 behind muelle.postes (19 px), bote b0 at 141,147 behind muelle.postes (19 px), bote b0 at 140,145 behind muelle.postes (23 px), bote b0 at 139,144 behind muelle.postes (26 px), bote b0 at 139,142 behind muelle.postes (14 px), bote b0 at 138,140 behind muelle.postes (6 px), bote f_azul at 46,154 behind muelle.postes (22 px), bote b3 at 140,140 behind muelle.postes (3 px), bote b3 at 142,147 behind muelle.postes (11 px), bote b3 at 144,153 behind muelle.postes (2 px), bote b4 at 140,140 behind muelle.postes (3 px), bote b4 at 142,147 behind muelle.postes (11 px), bote b4 at 144,153 behind muelle.postes (2 px), bote b5 at 140,140 behind muelle.postes (3 px), bote b5 at 142,147 behind muelle.postes (11 px), bote b5 at 144,153 behind muelle.postes (2 px), bote b6 at 143,142 behind muelle.postes (1 px), bote b7 at 140,143 behind muelle.postes (16 px), bote b7 at 143,153 behind muelle.postes (6 px), bote b6 at 164,154 behind poste (3 px), bote b8 at 140,140 behind muelle.postes (3 px), bote b8 at 142,147 behind muelle.postes (11 px), bote b8 at 144,153 behind muelle.postes (2 px), bote b8 at 177,156 behind poste (90 px), bote b8 at 178,156 behind poste (83 px), bote b8 at 180,155 behind poste (87 px), bote b8 at 181,154 behind poste (72 px), bote b8 at 182,154 behind poste (54 px), bote b8 at 183,153 behind poste (41 px), bote b8 at 185,152 behind poste (19 px), bote b8 at 186,152 behind poste (11 px), bote b8 at 187,151 behind poste (6 px), bote b8 at 188,150 behind poste (2 px), bote b9 at 164,125 behind poste (2 px), bote b10 at 140,140 behind muelle.postes (3 px), bote b10 at 142,147 behind muelle.postes (11 px), bote b10 at 144,153 behind muelle.postes (2 px), bote b10 at 164,133 behind poste (3 px), bote b10 at 164,131 behind poste (3 px), bote b10 at 165,130 behind poste (9 px), bote b10 at 165,128 behind poste (9 px), bote b10 at 166,127 behind poste (14 px), bote b10 at 166,125 behind poste (9 px), bote b10 at 167,124 behind poste (12 px), bote b10 at 167,122 behind poste (4 px), bote b10 at 168,121 behind poste (3 px), bote b11 at 140,140 behind muelle.postes (3 px), bote b11 at 142,147 behind muelle.postes (11 px), bote b11 at 144,153 behind muelle.postes (2 px), bote b12 at 143,142 behind muelle.postes (1 px), bote b11 at 144,152 behind muelle.postes (2 px), bote b11 at 143,150 behind muelle.postes (6 px), bote b11 at 143,148 behind muelle.postes (6 px), bote b11 at 142,145 behind muelle.postes (11 px), bote b11 at 141,143 behind muelle.postes (12 px), bote b11 at 141,141 behind muelle.postes (4 px), bote b9 at 178,156 behind poste (83 px), bote b9 at 179,155 behind poste (99 px), bote b9 at 181,154 behind poste (72 px), bote b9 at 182,153 behind poste (55 px), bote b9 at 184,152 behind poste (29 px), bote b9 at 185,152 behind poste (19 px), bote b9 at 187,151 behind poste (6 px), bote b9 at 188,150 behind poste (2 px), bote b10 at 164,125 behind poste (2 px), bote b11 at 187,156 behind poste (2 px), bote b12 at 140,140 behind muelle.postes (3 px), bote b12 at 142,147 behind muelle.postes (11 px), bote b12 at 144,153 behind muelle.postes (2 px), bote b12 at 164,133 behind poste (3 px), bote b12 at 164,131 behind poste (3 px), bote b12 at 165,130 behind poste (9 px), bote b12 at 165,128 behind poste (9 px), bote b12 at 166,127 behind poste (14 px), bote b12 at 166,125 behind poste (9 px), bote b12 at 167,124 behind poste (12 px), bote b12 at 167,122 behind poste (4 px), bote b12 at 168,121 behind poste (3 px), bote b13 at 140,143 behind muelle.postes (16 px), bote b13 at 143,153 behind muelle.postes (6 px), bote b13 at 182,156 behind poste (37 px), bote b13 at 183,154 behind poste (40 px), bote b13 at 184,153 behind poste (29 px), bote b13 at 186,151 behind poste (11 px), bote b13 at 187,149 behind poste (6 px), bote b13 at 195,140 behind juncos (6 px), bote b13 at 197,139 behind juncos (11 px), bote b13 at 198,137 behind juncos (85 px), bote b14 at 140,143 behind muelle.postes (16 px), bote b14 at 143,153 behind muelle.postes (6 px), bote b14 at 182,156 behind poste (37 px), bote b14 at 183,154 behind poste (40 px), bote b14 at 184,153 behind poste (29 px), bote b14 at 186,151 behind poste (11 px), bote b14 at 187,149 behind poste (6 px), bote b14 at 195,140 behind juncos (6 px), bote b14 at 197,139 behind juncos (11 px), bote b14 at 198,137 behind juncos (85 px), bote b15 at 140,140 behind muelle.postes (3 px), bote b15 at 142,147 behind muelle.postes (11 px), bote b15 at 144,153 behind muelle.postes (2 px), bote b16 at 143,142 behind muelle.postes (1 px), bote b15 at 144,152 behind muelle.postes (2 px), bote b15 at 143,150 behind muelle.postes (6 px), bote b15 at 143,148 behind muelle.postes (6 px), bote b15 at 142,145 behind muelle.postes (11 px), bote b15 at 141,143 behind muelle.postes (12 px), bote b15 at 141,141 behind muelle.postes (4 px), bote b10 at 178,156 behind poste (83 px), bote b10 at 179,155 behind poste (99 px), bote b10 at 181,154 behind poste (72 px), bote b10 at 182,153 behind poste (55 px), bote b10 at 184,152 behind poste (29 px), bote b10 at 185,152 behind poste (19 px), bote b10 at 187,151 behind poste (6 px), bote b10 at 188,150 behind poste (2 px), bote b11 at 164,133 behind poste (3 px), bote b11 at 164,131 behind poste (3 px), bote b11 at 165,130 behind poste (9 px), bote b11 at 165,128 behind poste (9 px), bote b11 at 166,127 behind poste (14 px), bote b11 at 166,125 behind poste (9 px), bote b11 at 167,124 behind poste (12 px), bote b11 at 167,122 behind poste (4 px), bote b11 at 168,121 behind poste (3 px), bote b12 at 140,143 behind muelle.postes (16 px), bote b12 at 143,153 behind muelle.postes (6 px), bote b13 at 140,140 behind muelle.postes (3 px), bote b13 at 142,147 behind muelle.postes (11 px), bote b13 at 144,153 behind muelle.postes (2 px), bote b14 at 143,142 behind muelle.postes (1 px), bote b13 at 144,152 behind muelle.postes (2 px), bote b13 at 143,150 behind muelle.postes (6 px), bote b13 at 143,148 behind muelle.postes (6 px), bote b13 at 142,145 behind muelle.postes (11 px), bote b13 at 141,143 behind muelle.postes (12 px), bote b13 at 141,141 behind muelle.postes (4 px), luis at 44,154 behind muelle.postes (44 px), pato blanco at 139,163 behind muelle.postes (24 px), pato blanco at 138,160 behind muelle.postes (44 px), pato blanco at 137,154 behind muelle.postes (44 px), pato blanco at 137,151 behind muelle.postes (68 px), pato blanco at 136,148 behind muelle.postes (50 px), pato blanco at 136,145 behind muelle.postes (32 px), pato blanco at 135,142 behind muelle.postes (14 px), pato blanco at 180,111 behind juncos (2 px), pato blanco at 181,114 behind juncos (11 px), pato blanco at 182,116 behind juncos (17 px), pato blanco at 182,119 behind juncos (23 px), pato blanco at 183,122 behind juncos (33 px), pato blanco at 183,122 behind poste (9 px), pato blanco at 184,125 behind juncos (39 px), pato blanco at 184,125 behind poste (26 px), pato blanco at 185,128 behind juncos (31 px), pato blanco at 185,128 behind poste (42 px), pato blanco at 186,131 behind juncos (20 px), pato blanco at 186,131 behind poste (56 px), pato blanco at 187,133 behind juncos (27 px), pato blanco at 187,133 behind poste (58 px), pato blanco at 188,136 behind juncos (31 px), pato blanco at 188,136 behind poste (47 px), pato blanco at 189,139 behind poste (35 px), pato blanco at 190,142 behind poste (24 px), pato blanco at 191,145 behind poste (14 px), pato blanco at 191,148 behind poste (14 px), pato blanco at 192,151 behind poste (6 px), pato blanco at 193,102 behind juncos (3 px), pato blanco at 194,105 behind juncos (22 px), pato blanco at 194,108 behind juncos (47 px), pato blanco at 194,111 behind juncos (87 px), pato blanco at 194,114 behind juncos (119 px), pato blanco at 194,117 behind juncos (132 px), pato blanco at 194,120 behind juncos (132 px), pato blanco at 194,123 behind juncos (116 px), pato blanco at 194,126 behind juncos (109 px), pato blanco at 195,129 behind juncos (95 px), pato blanco at 195,132 behind juncos (105 px), pato blanco at 195,135 behind juncos (100 px), pato blanco at 195,138 behind juncos (22 px), pato blanco at 164,156 behind poste (10 px), pato blanco at 165,156 behind poste (14 px), pato blanco at 166,156 behind poste (19 px), pato blanco at 167,156 behind poste (30 px), pato blanco at 168,156 behind poste (41 px), pato blanco at 169,155 behind poste (69 px), pato blanco at 170,155 behind poste (80 px), pato blanco at 171,155 behind poste (90 px), pato blanco at 172,155 behind poste (99 px), pato blanco at 173,155 behind poste (107 px), pato blanco at 174,155 behind poste (109 px), pato blanco at 175,155 behind poste (109 px), pato blanco at 176,155 behind poste (107 px), pato blanco at 177,155 behind poste (105 px), pato blanco at 178,155 behind poste (103 px), pato blanco at 179,155 behind poste (102 px), pato blanco at 180,155 behind poste (102 px), pato blanco at 181,155 behind poste (102 px), pato blanco at 182,155 behind poste (100 px), pato blanco at 183,155 behind poste (97 px), pato blanco at 184,156 behind poste (71 px), pato blanco at 185,156 behind poste (66 px), pato blanco at 186,156 behind poste (59 px), pato blanco at 187,156 behind poste (47 px), pato blanco at 188,156 behind poste (35 px); nobody has the deck or its pilings nearer than them",
+   "bubbles: 209 bubbles at 19077 moments (each child's recorded one and \"amor\" when touched, the frog's): wholly inside the view (6 px from its edge at the least), clear of the rounds card, on no face",
+   "asks: 75 distinct asks (for bote_azul, bote_rojo, bote_verde, di_azul, di_blanco, di_cual, di_nada, di_negro, di_rojo, di_verde, di_vuela, pajaro, pato_amarillo, pato_blanco, pato_negro, pez, pote_azul, pote_rojo, pote_verde): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the things that run off the picture by their hintBox), no frame's rings across a face where the old frame's were not (as the old: los-botes beats.11 (bote_rojo) the frog's face), the hint hand on no face; 81 answer cards, each with its lit frame and glow inside the view with 4 px to spare (0 at the least), over no one, no duck, bird, boat, fish, bread, the post or the dock, the sun under none; 210 times a duck, a bird, a boat or the fish a learner must tell apart: whole in the view, on plain water, lawn, planks or sky, apart where the old had them apart; a boat's colour against the water 29 at the least (CIE76)",
+   "NOT the scene's: the hand juego.js draws at an answer card reaches onto the frog's face where the cards are over him (respBox and hand() are the game's): at the asks for di_vuela",
+   "sky: the sun at 38,47 (radius 9), upper left, whole in the view, under no card and no board at any moment; the old picture's three clouds at 188,12; 204,34; 108,10, clear of the sun and of the corner card",
+   "preview: at every step's end of the 15 recorded runs (12450 places of the children, the frog, Canelo, the ducks, the birds, the boats, the fish and the things) lago-preview.html puts everyone exactly where the sheet's rule does (0 differ); and the rule puts each of the 6850 places at rest where the port's play has them (0 differ)",
+   "pairs: 22 review pictures (and the 16 level pictures, the same pictures), all zoom 2: everything in each whole with 2 px to spare, on its side of the shore and the dock (sides); what differs: pato: patos, aves; pez: patos, peces; pajaro: aves, peces, pan, the window; nada: patos, the window; vuela: aves, the window; rojo: botes; azul: peces; verde: botes; amarillo: patos; blanco: aves; negro: patos; no picture shows the dock's shade without the dock",
+   "states: 1 baked state reached (every moment, pair and level picture)"
+  ]
+ }
+}

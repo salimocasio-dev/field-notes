@@ -330,7 +330,8 @@ function planeQuad(P0, e1, e2, fn) {
 // the surface, with the depth of that point (so a reed standing in it, a person on the bank and a ball floating on it sort as they should).
 // The surface is the water's ground: kinds KIND_WATER (mapa.js; no grass blade grows on it), ground 1 (a shadow falls on it).
 // look: { deep, shallow: colours far from and near the shore; bank: the earth of the bank's face; wet: the dark wet line along its foot;
-//         sky: the colour the ripples catch; reflect: the width (world) of the bank's dark reflection on the water; glints: [] to collect glints }
+//         sky: the colour the ripples catch; reflect: the width (world) of the bank's dark reflection on the water; glints: [] to collect glints;
+//         noShade: true (order 35a, El lago): the surface is not ground, so no cast shadow falls on it (El campo leaves it out: unchanged) }
 const WSTEP = COS / SIN / R2;   // as z falls by 1 along a sight line, x and y each fall by this
 function waterPixel(ix, iy, i, g, depth, shore, look) {
   let wx = g.x - depth * WSTEP, wy = g.y - depth * WSTEP;
@@ -356,7 +357,7 @@ function waterPixel(ix, iy, i, g, depth, shore, look) {
   // ripples: short dashes along the picture's rows (the light of the sky on the crest of a small wave), sparse, longer far out
   const rowH = hash(iy * 7, 13), run = Math.floor((ix + rowH * 40) / (5 + (rowH * 4 | 0)));
   if (d > look.reflect && hash(run, iy) < .16 && hash(run * 3, iy + 1) > .3) c = [lerp(c[0], look.sky[0], .55), lerp(c[1], look.sky[1], .55), lerp(c[2], look.sky[2], .55)];
-  pix[i] = rgb(...c); zb[i] = p.d; kinds[i] = KIND_WATER; ground[i] = 1;
+  pix[i] = rgb(...c); zb[i] = p.d; kinds[i] = KIND_WATER; ground[i] = look.noShade ? 0 : 1;   // look.noShade (El lago): no shadow is cast on the surface
   if (look.glints && d > look.reflect + .15 && hash(ix * 5 + 1, iy * 3 + 7) < .006) look.glints.push({ i, ix, iy, phase: hash(ix, iy + 9) * 6.283 });
 }
 // the glints on the water, each frame (wind time t, stepped as the grass: 8 a second, still when the OS asks for reduced motion): a glint
