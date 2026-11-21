@@ -1,0 +1,218 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La parada · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of La parada (parada-set.html, drawn in a hidden frame; the guaguas are drawn by the set itself through its <code>autos=</code> parameter, in the game they are sprites) with the characters and the small things drawn over it as sprites, each placed from parada-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand or sit. Then cropped to the 196 x 216 view (sheet: views.wide). The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the heads at the guagua's glass, the chofer, the tickets, the boxes, the basket of rolls and the ball are stand-ins drawn here, not final art. The people inside the guagua at its back door's glass are the guagua sprite's: not drawn here.
+The make reads the moments through <code>PREVIEW.inspect(m)</code> and the sprites' silhouettes through <code>PREVIEW.sil()</code> (<code>?nodraw=1</code> skips the first drawing, <code>?nosheet=1</code> does not read the sheet).
+Address: <code>?m=1</code> story 51 opening (morning), <code>?m=2</code> story 51 game, <code>?m=3</code> story 52 opening, <code>?m=4</code> story 52 game, <code>?m=5</code> story 53 start (early), <code>?m=6</code> story 53 ending (night) (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane, <code>&amp;also=chofer,ventana2,senor.llega</code> to add a sprite at those spots. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<p id="cap"></p>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart):
+   1. The sheet gives each spot's world point, screen point and depth.
+   2. The set for the moment's state (hora, and the guaguas that stand at the stop: autos=) is drawn by parada-set.html in a hidden frame, with the shadows of
+      those who stand or sit cast (frame(t, casts): radius by character, sheet: shadows; at the spot's own z).
+   3. Each sprite is drawn 1:1 with its feet (its lowest drawn row) resting on the spot's screen row and its middle column on its screen column. A sprite pixel is hidden
+      where the set's baked depth (window.DEPTH.z) is nearer than the character's feet plus .3: the upright plane through the feet,
+      depth(r) = d + (sy - (r + .5)) * tan 30 / S (sheet: front). Between two sprites the nearer pixel wins. A head at the guagua's glass is shown only through the pane.
+   4. The picture is cropped to the view (196 x 216 at x0, sheet: views.wide). */
+(() => {
+  const A = new URLSearchParams(location.search);
+  const PV = window.PREVIEW = {};
+  let SHEET = null;
+  const ready = A.get('nosheet') === '1' ? Promise.resolve() : fetch('parada-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; });
+  const T30 = Math.tan(Math.PI / 6);
+
+  /* ---------- the people: today's sprite makers, with these outfits ---------- */
+  const PIEL = KIT.PIEL, PELO = KIT.PELO, FAM = KIT.FAM;
+  const LUIS = FAM.hermano, CARMEN = FAM.hermana;
+  // El banco's two (historia/escenas/banco.js QUIEN: senora, senor), without that scene's own extras
+  const SENORA = { piel: PIEL.a, pelo: PELO.castano, peinado: 'corto', ropa: RP.grn, falda: 1, zapato: '#F2F2F8' };
+  const SENOR = { piel: PIEL.a, pelo: PELO.blanco, peinado: 'corto', ropa: RP.wood, abajo: RP.grey, bigote: 1 };
+  const NINO3 = { nino: 1, piel: PIEL.c, pelo: PELO.castano, peinado: 'corto', ropa: RP.yel, abajo: RP.grey, zapato: '#F2F2F8' };   // a third child (not a family one)
+  const CHOFER = { piel: PIEL.b, pelo: PELO.negro, peinado: 'corto', ropa: RP.blue, abajo: RP.grey, bigote: 1 };                       // the driver: a blue uniform; the cap is drawn over by chofer() below
+
+  /* ---------- small things: stand-ins with a dark outline ---------- */
+  const mk = (w, h, fn) => { const b = new Buf(w, h); fn(b); return b.outline().done(); };
+  const THING = {
+    pelota: () => mk(11, 11, b => { b.ell(5, 5, 4, 4, RP.red); b.rect(3, 3, 2, 1, '#FFFFFF'); b.rect(2, 6, 7, 1, RP.yel[3]); }),
+    // abuela's strip of four tickets: a strip of pale yellow with a tear mark between each
+    boletos: () => mk(14, 9, b => { b.rect(1, 1, 12, 7, '#F6E7A0'); b.rect(1, 1, 12, 1, '#FFF6C8'); for (const x of [4, 7, 10]) for (let y = 2; y < 8; y += 2) b.px(x, y, '#B8A050'); b.rect(2, 4, 10, 1, '#C8B060'); }),
+    // two small boxes tied with string
+    cajas: () => mk(21, 10, b => { for (const x0 of [1, 11]) { b.rect(x0, 2, 9, 7, '#B8804A'); b.rect(x0, 2, 9, 1, '#D8A46A'); b.rect(x0 + 4, 2, 1, 7, '#F4ECD8'); b.rect(x0, 5, 9, 1, '#F4ECD8'); } }),
+    cesta: () => mk(20, 12, b => { b.rect(1, 3, 18, 8, '#C8853C'); for (let y = 3; y < 11; y += 2) for (let x = 1; x < 19; x += 2) b.px(x + (y >> 1) % 2, y, '#A8682C'); b.rect(0, 2, 20, 2, '#E2A85A'); }),
+    // the basket of three warm rolls (story 52) on the sill, seen from the front: a wicker rim and three rolls (12 x 9), a thread of steam
+    panes: () => mk(12, 10, b => {
+      b.rect(1, 6, 10, 3, '#C8853C'); for (let x = 1; x < 11; x += 2) b.px(x + 1 - (x >> 1) % 2, 7, '#A8682C'); b.rect(0, 5, 12, 1, '#E2A85A');
+      [3, 6, 9].forEach(x => b.ell(x, 3.6, 1.9, 1.6, ['#A8682C', '#C48440', '#E2A85A']));
+      b.px(5, 0, '#FFFFFF'); b.px(7, 1, '#FFFFFF');
+    }),
+  };
+  const CACHE = {};
+  const thing = k => CACHE[k] || (CACHE[k] = THING[k]());
+  // the sprite's lowest drawn row (its feet, outline included) rests on the row above the spot's: its bottom edge is on sy
+  const inkBottom = cv => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let y = cv.height - 1; y >= 0; y--) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) return y + 1; return cv.height; };
+  const anchor = (cv, ax, ay) => ({ cv, ax, ay: ay == null ? inkBottom(cv) : ay });
+  const crop = (cv, rows) => { const c2 = document.createElement('canvas'); c2.width = cv.width; c2.height = rows; c2.getContext('2d').drawImage(cv, 0, 0, cv.width, rows, 0, 0, cv.width, rows); return c2; };
+  const SP = {
+    persona: (w, pose, sent) => anchor(KIT.mkPersona(w, pose || 'idle', 0, sent ? 1 : 0), KIT.PX),
+    abuela: () => anchor(mkAbuela('idle', 0), 30),
+    abuelaS: () => anchor(KIT.mkAbuelaS('idle', 0, false), 17),                          // abuela sitting
+    coqui: () => anchor(mkCoqui(1, 0, 0), 16),
+    perro: pose => anchor(KIT.mkPerro(pose, 0), 13),
+    thing: k => anchor(thing(k), Math.floor(thing(k).width / 2)),
+    // heads at the guagua's glass: the point is the head's middle (the face's centre), so ay is that row of the canvas
+    headAbuela: () => anchor(crop(mkAbuela('idle', 0), 22), 30, 12),
+    // the chofer at the front end: head, cap and shoulders; the point is the middle of his face
+    chofer: () => { const cv = crop(KIT.mkPersona(CHOFER, 'idle', 0, 0), 32), g = cv.getContext('2d'), X = KIT.PX; g.fillStyle = '#1E3A5C'; g.fillRect(X - 7, 2, 14, 4); g.fillRect(X - 8, 6, 16, 1); g.fillStyle = '#2A1810'; g.fillRect(X - 8, 7, 16, 1); return anchor(cv, X, 11); },
+  };
+  // a thing drawn over the person's own sprite (x, y: its top left on the person's canvas)
+  const holding = (s, items) => { const c2 = document.createElement('canvas'); c2.width = s.cv.width; c2.height = s.cv.height; const g = c2.getContext('2d'); g.drawImage(s.cv, 0, 0); for (const [cv, x, y] of items) g.drawImage(cv, x, y); return Object.assign({}, s, { cv: c2 }); };
+
+  /* ---------- the silhouettes the make reads: [dx, dy] of each drawn pixel from the spot's column and row (dy -1 is the feet's row) ---------- */
+  const silOf = s => {
+    const d = s.cv.getContext('2d').getImageData(0, 0, s.cv.width, s.cv.height).data, px = [];
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (let y = 0; y < s.cv.height; y++) for (let x = 0; x < s.cv.width; x++) if (d[(y * s.cv.width + x) * 4 + 3]) { const dx = x - s.ax, dy = y - s.ay; px.push(dx, dy); x0 = Math.min(x0, dx); x1 = Math.max(x1, dx); y0 = Math.min(y0, dy); y1 = Math.max(y1, dy); }
+    return { w: s.cv.width, h: s.cv.height, ax: s.ax, ay: s.ay, box: [x0, y0, x1, y1], px };
+  };
+  PV.sil = () => {
+    const S_ = { adulto: SP.persona(SENORA), senor: SP.persona(SENOR), abuela: SP.abuela(), abuela_sent: SP.abuelaS(), senora_sent: SP.persona(SENORA, 'idle', 1), senor_sent: SP.persona(SENOR, 'idle', 1),
+      nino: SP.persona(LUIS), carmen: SP.persona(CARMEN), nino3: SP.persona(NINO3), coqui: SP.coqui(), perro_lie: SP.perro('lie'), perro_sit: SP.perro('sit'), cabeza_abuela: SP.headAbuela(), chofer: SP.chofer() };
+    const out = {}; for (const [k, s] of Object.entries(S_)) out[k] = silOf(s); return out;
+  };
+
+  /* ---------- the six moments ---------- */
+  const strip = () => [thing('boletos'), 17, 31];                                      // abuela's strip in her hand
+  const MOMENTS = {
+    1: { what: 'story 51, opening, morning: the family at the kerb (abuela with her strip of tickets at bordillo.abuela, Luis with his ball, Carmen with her basket, the frog), the señora on the seat at banco1, the two guaguas at the stop (the tree at P1, the awning at P2)',
+      set: E => ({ hora: 'manana', autos: [['arbol', E.P1], ['toldo', E.P2]] }),
+      layers: () => [{ at: 'bordillo.luis', s: () => holding(SP.persona(LUIS), [[thing('pelota'), 12, 27]]), who: 'nino' },
+        { at: 'bordillo.abuela', s: () => holding(SP.abuela(), [strip()]), who: 'adulto' },
+        { at: 'bordillo.coqui', s: () => SP.coqui(), who: 'coqui' },
+        { at: 'bordillo.carmen', s: () => holding(SP.persona(CARMEN), [[thing('cesta'), 1, 28]]), who: 'nino' },
+        { at: 'banco1', s: () => SP.persona(SENORA, 'idle', 1), who: 'adulto' }] },
+    2: { what: 'story 51, the game: abuela (with her strip) and the frog at the kerb, the two guaguas at the stop (the tree at P1, the house at P2)',
+      set: E => ({ hora: 'manana', autos: [['arbol', E.P1], ['casa', E.P2]] }),
+      layers: () => [{ at: 'bordillo.abuela', s: () => holding(SP.abuela(), [strip()]), who: 'adulto' },
+        { at: 'bordillo.coqui', s: () => SP.coqui(), who: 'coqui' }] },
+    3: { what: 'story 52, opening: the guagua with the tree at P1; abuela\'s head at ventana1 with the basket of rolls on the sill; Luis about to get on at espera_sube, the frog at the front button, Canelo at bajo_banco, the señor just off the back door at espera_baja',
+      set: E => ({ hora: 'manana', autos: [['arbol', E.P1]] }),
+      layers: () => [{ at: 'ventana1', s: () => SP.headAbuela(), who: null, pane: true },
+        { at: 'ventana1', off: [0, 0, -.3], s: () => SP.thing('panes'), who: null, pane: true },
+        { at: 'espera_sube', s: () => SP.persona(LUIS), who: 'nino' },
+        { at: 'coqui.boton_sube', s: () => SP.coqui(), who: 'coqui' },
+        { at: 'bajo_banco', s: () => SP.perro('lie'), who: 'perro' },
+        { at: 'espera_baja', s: () => SP.persona(SENOR), who: 'adulto' }] },
+    4: { what: 'story 52, the game: the guagua at P1, three people at cola1 to cola3 (a señora, a señor, a child), the frog between the two buttons at coqui.botones, Canelo at bajo_banco',
+      set: E => ({ hora: 'manana', autos: [['arbol', E.P1]] }),
+      layers: () => [{ at: 'cola1', s: () => SP.persona(SENORA), who: 'adulto' }, { at: 'cola2', s: () => SP.persona(SENOR), who: 'adulto' }, { at: 'cola3', s: () => SP.persona(NINO3), who: 'nino' },
+        { at: 'coqui.botones', s: () => SP.coqui(), who: 'coqui' },
+        { at: 'bajo_banco', s: () => SP.perro('lie'), who: 'perro' }] },
+    5: { what: 'story 53, early morning: abuela sitting at banco2 with her two boxes, the ball at banco3, the señor at banco1, the frog at the walking post',
+      set: E => ({ hora: 'temprano', autos: [] }),
+      layers: () => [{ at: 'banco1', s: () => SP.persona(SENOR, 'idle', 1), who: 'adulto' },
+        { at: 'banco2', s: () => holding(SP.abuelaS(), [[thing('cajas'), 22, 33]]), who: 'adulto' },
+        { at: 'banco3', s: () => SP.thing('pelota'), who: null },
+        { at: 'poste', s: () => SP.coqui(), who: 'coqui' }] },
+    6: { what: 'story 53, the ending, night (the lamp lit): abuela, Luis with the ball, Carmen and the frog on the pavement at fin.abuela, fin.luis, fin.carmen, fin.coqui',
+      set: E => ({ hora: 'noche', autos: [] }),
+      layers: () => [{ at: 'fin.abuela', s: () => SP.abuela(), who: 'adulto' },
+        { at: 'fin.luis', s: () => holding(SP.persona(LUIS), [[thing('pelota'), 13, 27]]), who: 'nino' },
+        { at: 'fin.carmen', s: () => SP.persona(CARMEN), who: 'nino' },
+        { at: 'fin.coqui', s: () => SP.coqui(), who: 'coqui' }] },
+  };
+  const RADIUS = () => SHEET.shadows.radius, RAD = { coqui: 'coqui', adulto: 'adultos', nino: 'ninos', perro: 'perro' };
+  // the sprites added by &also=: one for each spot named
+  function alsoLayers(list) {
+    return list.split(',').filter(Boolean).map(n => {
+      const sp = SHEET.spots[n]; if (!sp) throw new Error('no spot ' + n);
+      const who = sp.who === 'head' || sp.who === 'chofer' ? null : sp.who;
+      return { at: n, who, pane: n.startsWith('ventana'), s: () => n === 'chofer' ? SP.chofer() : sp.who === 'head' ? SP.headAbuela() : sp.who === 'coqui' ? SP.coqui() : sp.who === 'nino' ? SP.persona(LUIS) : sp.who === 'perro' ? SP.perro('lie') : SP.persona(SENOR) };
+    });
+  }
+
+  /* ---------- the set: one hidden frame per state ---------- */
+  const SETS = {};
+  const qOf = st => 'hora=' + st.hora + (st.autos.length ? '&autos=' + encodeURIComponent(st.autos.map(([b, x]) => 'guagua@' + x + ',' + SHEET.constants.guagua.y + ',i,' + b).join(';')) : '');
+  async function setFrame(st) {
+    const q = qOf(st);
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'parada-set.html?' + q; }); SETS[q] = fr; }
+    return fr.contentWindow;
+  }
+
+  /* ---------- the placed sprites of a moment: where each stands (and what it draws), shared by the picture and by the make's checks ---------- */
+  const layersOf = (M, w, extra) => M.layers().concat(extra || []).map(l => {
+    const sp = SHEET.spots[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at);
+    let world = sp.world, sx = sp.screen[0], sy = sp.screen[1], d = sp.depth;
+    if (l.off) { world = [sp.world[0] + l.off[0], sp.world[1] + l.off[1], sp.world[2] + l.off[2]]; const q = w.project(world[0], world[1], world[2]); sx = Math.round(q.sx); sy = Math.round(q.sy); d = q.d; }
+    return Object.assign({}, l, { sp, world, sx, sy, d, spr: l.s() });
+  });
+  // a head at the glass shows only through a pane of the guagua at P1: is the screen pixel (X, Y) in a pane? (the lit side is the plane y = side; the panes' x and z are the sheet's constants.guagua.windows)
+  const inPane = (w, X, Y) => {
+    const GU = SHEET.constants.guagua, WN = GU.windows, y = GU.side, x = y + (X + .5 - w.DEPTH.OX) / w.DEPTH.S * Math.SQRT2, z = ((x + y) / Math.SQRT2 * .5 - (Y + .5 - w.DEPTH.OY) / w.DEPTH.S) / (Math.sqrt(3) / 2);
+    const dn = x - (SHEET.constants.E.P1 - GU.length / 2);
+    return z > WN.z[0] && z < WN.z[1] && dn > WN.from && dn < GU.length - WN.from && ((dn - WN.from) % WN.period) < WN.pane;
+  };
+  // the pixels a placed sprite draws, as [X, Y, hidden by the set (the depth rule), the sprite's own depth plane] on the 240 x 216 picture
+  const inkOf = (l, Z, S, bias, w) => {
+    const c = l.spr, id = c.cv.getContext('2d').getImageData(0, 0, c.cv.width, c.cv.height).data, dx = l.offPx ? l.offPx[0] : 0, dy = l.offPx ? l.offPx[1] : 0, px = [];
+    for (let py = 0; py < c.cv.height; py++) for (let qx = 0; qx < c.cv.width; qx++) {
+      if (!id[(py * c.cv.width + qx) * 4 + 3]) continue;
+      const X = l.sx - c.ax + qx + dx, Y = l.sy - c.ay + py + dy; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue;
+      const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
+      px.push([X, Y, (Z[Y * 240 + X] > plane + bias) || (l.pane && !inPane(w, X, Y)) ? 1 : 0, plane]);
+    }
+    return px;
+  };
+  // for the make: every layer of a moment with its spot, its character kind and its drawn pixels
+  PV.inspect = async function (m) {
+    await ready;
+    const M = MOMENTS[m], st = M.set(SHEET.constants.E), w = await setFrame(st), Z = w.DEPTH.z, S = w.DEPTH.S, bias = SHEET.front.bias;
+    return { m, set: st, layers: layersOf(M, w).map(l => ({ at: l.at || null, who: l.who === undefined ? null : l.who, kind: l.sp.kind, sx: l.sx, sy: l.sy, d: l.d, world: l.world, ax: l.spr.ax, ay: l.spr.ay, px: inkOf(l, Z, S, bias, w) })) };
+  };
+
+  /* ---------- a picture ---------- */
+  PV.render = async function (m, opts = {}) {
+    await ready;
+    const M = MOMENTS[m] || MOMENTS[1], scale = opts.scale || 1, flat = opts.depth === 'flat', bias = SHEET.front.bias;
+    const st = M.set(SHEET.constants.E), w = await setFrame(st), Z = w.DEPTH.z, S = w.DEPTH.S;
+    const LS = layersOf(M, w, opts.also ? alsoLayers(opts.also) : null);
+    // the shadows: for those who stand or sit (a head at the glass casts none): at the world x, y, z of their spot
+    const casts = [];
+    for (const l of LS) if (l.who) casts.push([l.world[0], l.world[1], l.sp.world[2], RADIUS()[RAD[l.who]]]);
+    const img = w.frame(0, casts), out = new Uint8ClampedArray(img.data), zs = new Float32Array(240 * 216).fill(-1e9);
+    for (const l of LS) {
+      const c = l.spr, g = c.cv.getContext('2d'), id = g.getImageData(0, 0, c.cv.width, c.cv.height).data, dx = l.offPx ? l.offPx[0] : 0, dy = l.offPx ? l.offPx[1] : 0;
+      for (let py = 0; py < c.cv.height; py++) {
+        const Y = l.sy - c.ay + py + dy; if (Y < 0 || Y >= 216) continue;
+        const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
+        for (let px = 0; px < c.cv.width; px++) {
+          const X = l.sx - c.ax + px + dx; if (X < 0 || X >= 240) continue;
+          const o = (py * c.cv.width + px) * 4; if (!id[o + 3]) continue;
+          const i = Y * 240 + X;
+          if (l.pane && !inPane(w, X, Y)) continue;                                   // a head at the glass: only through the pane
+          if (Z[i] > (flat ? l.d : plane) + bias) continue;                          // a set pixel nearer than the feet hides it
+          if (zs[i] > plane) continue;                                              // a nearer sprite pixel is already there
+          zs[i] = plane; out[i * 4] = id[o]; out[i * 4 + 1] = id[o + 1]; out[i * 4 + 2] = id[o + 2]; out[i * 4 + 3] = 255;
+        }
+      }
+    }
+    if (opts.marks) for (const l of LS) for (const [dx, dy] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) { const X = l.sx + dx, Y = l.sy + dy, i = (Y * 240 + X) * 4; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; out[i] = 255; out[i + 1] = 0; out[i + 2] = 255; out[i + 3] = 255; }
+    const full = document.createElement('canvas'); full.width = 240; full.height = 216; full.getContext('2d').putImageData(new ImageData(out, 240, 216), 0, 0);
+    const V = SHEET.views.wide, cv = document.getElementById('out');
+    cv.width = V.region[2] * scale; cv.height = V.region[3] * scale;
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(full, V.region[0], V.region[1], V.region[2], V.region[3], 0, 0, cv.width, cv.height);
+    document.getElementById('cap').textContent = 'm=' + m + ': ' + M.what + '.';
+    return cv.toDataURL();
+  };
+  PV.done = ready.then(() => A.get('nodraw') === '1' || A.get('nosheet') === '1' ? null : PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth'), also: A.get('also') }));
+})();
+</script></body></html>
