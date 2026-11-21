@@ -29,8 +29,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
 - `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's, La sala's, El
-  patio's, El camino's, El campo's and El lago's factories make the real scenes (their sheets read first: `loadScene`); the
-  other four are stubs that throw `UnimplementedError('not converted yet')`.
+  patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
+  `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
 
@@ -52,8 +52,9 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   "query": "?door=shut&win=shut"}`), listed in `coqui/tool/ref/pp/states.json` and made by `make.js --only <ids>`: El balcón's four
   (order 30b), La sala's five (`sala/luz-1-fotos-000` ..., order 31b) and El patio's fifteen (`patio/hora-dia-door-shut-gate-shut`
   ..., order 32b), El camino's two (`camino/gran-1`, `camino/gran-0`, order 33b), El campo's one with two more frames of it at
-  other wind times (`campo/campo`, `campo/campo-t-1.5`, `campo/campo-t-3.25`: the page's `?t=`, its glints, order 34b) and El
-  lago's the same way (`lago/lago`, `lago/lago-t-1.5`, `lago/lago-t-3.25`, order 35b).
+  other wind times (`campo/campo`, `campo/campo-t-1.5`, `campo/campo-t-3.25`: the page's `?t=`, its glints, order 34b), El
+  lago's the same way (`lago/lago`, `lago/lago-t-1.5`, `lago/lago-t-3.25`, order 35b) and El banco's seven reached states
+  (`banco/luz-dia-luna-0-carro-abierto` ..., order 36b).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
@@ -270,6 +271,48 @@ has that the earlier ones did not, or uses differently, and how the port uses it
   `lago_preview_test`, `lago_boxes_test`, `lago_pictures_test`, `lago_acts_test`; the preview's rule for moving a recorded W
   is `test/support/lago_preview_remap.dart`.
 
+## A paved corner with benches, a cart and a gate (order 36b, El banco)
+
+banco.js is on the kit too (`class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces`). What El banco's sheet
+has that the earlier ones did not, or uses differently, and how the port uses it, as banco-preview.html does:
+
+- **The set by its light** (`banco_set.dart`): `setKey` is `luz.luna.carro` (`dia`, `tarde`, `noche`; the moon only at night;
+  the cart `abierto`, `cerrado` or `no`: gone, or rolling); 7 states are reached. Evening and night are the set under another
+  light (`lightPass`), the lamp's glass lit (`plotGlow`) with its pool of light round its foot, the wire's colour by the
+  light, the sun by day and in the evening, the moon (`luna`) and no sun at night: the old page's copied patch over its sun
+  (banco.js:194) is kept so (the sheet's `patch`). The sprites are not darkened: the old overlays (banco.js:192 to :195) are
+  dropped. No shadow at night (the set casts none; `Banco.shadows` gives none).
+- **The draw order as it is drawn** (`front`): every item of the sorted list owns the pixels it drew last (`Banco.item`:
+  their colour changed, as the preview's PV.item compares the canvas before and after); at each front part's entry (the
+  three benches, the cart, the lamp post, the pole, the gate's posts, the hedge: sortY 9999, after everyone) the set's own
+  pixels of the part are drawn again where their owner stands behind them (`Banco.front`, `frontBox`: a person, the frog, a
+  dog, a pigeon not in the air or on the wire, the pushchair, a thing), never over whoever sits on that bench (their plane
+  the seat's front under their lap) or what lies on its seat (`onSeat`, `perch`: the back, the seat).
+- **The cart** (`carro`): standing it is the set's; rolling (`W.carroX`, the cart going home at night) the set has none and
+  `Banco.cart` draws the set's own cart (the pixels tagged `carro` in the state with the same light and moon and the cart
+  closed, that state's frame at time 0), moved by `cartAt` (dx = R(W.carroX) - CARRO[0], dy = R((CARRO[0] - W.carroX) / 2),
+  CARRO banco.js's own as moved: 36), at its row in the sorted list (moves line 198); its touch box moves with it.
+  banco-preview.html's PV.cartAt takes the old CARRO (47): those preview pictures differ (reported by order 36b).
+- **`helps`**: a pigeon in the air has its shadow: palomaA keeps `o.gs` (`Banco.GS`, the sheet's `helps.shadow.gsSource`, its
+  numbers read from the source).
+- **`moves`** (42), read from the moved sources (`BancoPlaces.to(line, src, [pattern])`; a move named on several lines, the
+  sheet's `lines`): PORTON and every way out through the gate (PORTON[1] + 12), SY and AS (the seats' edges), CARRO, POSA,
+  JUGEN, respEn (in `fresh`), the sitters, the things on the seats, the dogs, the frog's home, Carmen, the queue, the
+  señora leaning; every other place by `BancoPlaces.floor(line, x, y)` (a move's place, else the line's `code` entry: the
+  sheet's maker read banco.js for every line) and `keep(line, v)`.
+- **Two acts named twice** in banco.js's object of acts (`manos`: lines 280 and 407; `sale`: 291 and 399): the later wins,
+  as it did in the old game.
+- **`talk`** with each sprite's height (`talk.heights`), abuela's face from her sprite; **`shadows`**: the frog, the people
+  (sitting: from the ground under their feet), the dogs, the pushchair, the pigeons (on the ground, or in the air), the
+  things on the ground; **hint box**: the park.
+- **Remap**: the story positions the sheet moved (d-vamos-a-casa's ways out, h-banco's sitters and the rucksack on the seat,
+  the piragua man with his cart); a pair's own W (`Banco.placePair`: the preview's `remapW` for cual-banco, the sitters at SY).
+- No random draw: the registry's factory takes no source.
+- Files: `lib/src/banco/banco_set.dart`, `banco_places.dart`, `banco_sprites.dart` (banco.js's own sprites), `banco.dart`.
+  Tests: `banco_set_test`, `banco_sprites_test`, `banco_preview_test`, `banco_boxes_test`, `banco_pictures_test`,
+  `banco_acts_test`; the preview's rule for moving a recorded W is `test/support/banco_preview_remap.dart` (the scene's own
+  `remapW`, the frog's part included).
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its
@@ -296,6 +339,10 @@ has that the earlier ones did not, or uses differently, and how the port uses it
   asset list in `pubspec.yaml`, and the test fixtures `old_sample.dart`, `old_hashes.dart`) for every scene NOT in
   `convertedScenes`, and removes the folder of any other; `--check` fails when something is stale or when a folder exists for a
   converted scene; it also fails for every picture a course item names that has no file.
+- **The tests of the old pictures' path** do not depend on which real scenes are converted (order 36b): they use a test-only
+  scene (`prueba`, test/support/fixtures/test_scene.dart: three of order 06's pictures of El banco), never converted, read
+  through `TestSceneBundle` (test/support/sheet_bundle.dart). An id the registry does not hold is a scene for ScenePictures
+  only when the bundle holds its old pictures; once every real scene is converted the path is still tested so.
 - **A picture handed another picture in place** (the same widget with another ref, name, size or `animated`) starts over and
   shows the new one: its state mixes in `TickerProviderStateMixin`, because it disposes its ticker and starts another, which
   a single-ticker state refuses (Flutter threw and the picture showed the red error box). `test/pictures_test.dart` ("handed
@@ -311,16 +358,16 @@ has that the earlier ones did not, or uses differently, and how the port uses it
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/ and .../lago/ for the browser set tests
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/ and .../lago/
-node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo|lago] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/ and .../banco/ for the browser set tests
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/ and .../banco/
+node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo|lago|banco] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
                                                   the scene's stories)
-COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo|lago] flutter test tool/compare_all_test.dart   every picture of
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo|lago|banco] flutter test tool/compare_all_test.dart   every picture of
                                                   preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago]   bake times
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago|banco]   bake times
                                                   (each state's first bake, then again on the same engine; for a set with glints on its
                                                   water, what drawing them costs a frame)
 ```
