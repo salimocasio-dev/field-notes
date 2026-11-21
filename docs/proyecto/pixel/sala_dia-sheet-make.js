@@ -72,7 +72,7 @@ function defs(E) {
   // abuela
   add('estante', [1.8, 1.0, 0], 'person', 'abuela', 'adulto', 'abuela on the floor in front of the shelf of books (the shelf runs from u ' + E.SHELF.u0 + ' to ' + E.SHELF.u1 + ', its front is v ' + r4(E.SHELF.hd * 2) + ')');
   add('cocina', [3.22, .7, 0], 'person', 'abuela', 'adulto', 'abuela in the kitchen\'s door (the door runs from u ' + E.DOOR[0] + ' to ' + E.DOOR[1] + ', in the back wall)');
-  add('ventana_abuela', [-.3, 1.0, 0], 'person', 'abuela', 'adulto', 'abuela by the window (the window runs from u ' + E.WINDOW[0] + ' to ' + E.WINDOW[1] + ')');
+  add('ventana_abuela', [-1.3, .9, 0], 'person', 'abuela', 'adulto', 'abuela by the window (the window runs from u ' + E.WINDOW[0] + ' to ' + E.WINDOW[1] + ')');
   // the frog
   add('junto_mesa_coqui', [-1.75, 4.7, 0], 'place', 'coqui', 'coqui', 'the frog on the floor at the low table\'s left end (the table runs from u ' + r4(L.u - L.hw) + ' to ' + r4(L.u + L.hw) + ', v ' + r4(L.v - L.hd) + ' to ' + r4(L.v + L.hd) + ')');
   add('brazo_coqui', [SD.u, SD.v, SD.h], 'place', 'coqui', 'coqui', 'the frog on the small table\'s top (SIDE u ' + SD.u + ', v ' + SD.v + ', its top z ' + SD.h + '), beside abuelo\'s head', { on: 'mesita' });
