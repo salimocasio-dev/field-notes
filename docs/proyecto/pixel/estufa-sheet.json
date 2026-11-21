@@ -20,6 +20,7 @@
   "what": "La cocina's room (cocina-kit.js) cut open as La sala's, on the world's axes at the engine's 30 degrees: one run along the back wall, the left counter from the corner, the stove, the right counter running off the picture at the right; the shelf with its jars over the left counter, the hood and a steel splashback over the stove, the window with its bush over the right counter; the stool on the floor in front of the stove; the checker floor; dark above the cut walls",
   "why": "the brief: the stove and the two counters in one run along one axis against a far wall. A run along x falls half a row a pixel to the right; it is placed as low as the right cook (LADO[1], 171, 176) lets it (whoever stands at the run is on clear floor in front of it, its front 1.4 from the wall), so the stove's pots and the right counter's things move least and the left counter's most (moves). Its tops are 1.4 deep (the kit's counters are 0.9) so that the tray, 46 px wide, and the plates stand wholly on them. The stove is as wide as two 34 px pots side by side need, in the kit's look",
   "numbers": {
+   "WH": [177, 191, 205],
    "FYS": [96, 115],
    "FDY": [-25, -6],
    "ENX": {
@@ -49,8 +50,8 @@
    "SALY": 116,
    "SVY": [134, 143, 153],
    "ES": [27, 33],
-   "WY": [75, 78, 87],
-   "SILL": [109, 115, 121],
+   "WY": [78, 82, 92],
+   "SILL": [107, 114, 121],
    "STEAM": {
     "pot": -27,
     "potSmoke": -31,
@@ -444,26 +445,26 @@
    "what": "the sack of rice and the jar of beans on the shelf (W.estante)"
   },
   "ventana.183_30": {
-   "world": [4.7594, -4.1067, 0],
+   "world": [4.8138, -3.8347, 0],
    "on": "mueble",
    "old": [183, 30],
-   "new": [181, 75],
+   "new": [177, 78],
    "moved": true,
    "what": "the family at the window (familia27)"
   },
   "ventana.195_33": {
-   "world": [5.4121, -4.1067, 0],
+   "world": [5.5753, -3.8347, 0],
    "on": "mueble",
    "old": [195, 33],
-   "new": [193, 81],
+   "new": [191, 85],
    "moved": true,
    "what": "the family at the window (familia27)"
   },
   "ventana.207_30": {
-   "world": [6.0648, -4.1067, 0],
+   "world": [6.3368, -3.8347, 0],
    "on": "mueble",
    "old": [207, 30],
-   "new": [205, 87],
+   "new": [205, 92],
    "moved": true,
    "what": "the family at the window (familia27)"
   },
@@ -833,11 +834,11 @@
    "what": "the stool: its square top (half width 0.32) at z 0.72, its middle under the frog's feet (the old BANCO); four legs, a rail"
   },
   "ventana": {
-   "world": [8.1, 0, 1.95, 10.55, 0, 3.1],
+   "world": [8.1, 0, 1.95, 10.6, 0, 3.1],
    "hole": [
     [166.92, 98.55],
-    [211.96, 121.07],
-    [211.96, 95.18],
+    [212.88, 121.53],
+    [212.88, 95.64],
     [166.92, 72.66]
    ],
    "what": "the window on the back wall over the right counter (the kit's: frame with depth, the cross bars, the sill), the bush and the sky outside; hole: its opening on the screen (four corners)"
@@ -923,12 +924,12 @@
    },
    "crops": {
     "huele.si": {
-     "crop": [51, 72, 98, 52],
-     "zoom": 2
+     "crop": [6, 66, 196, 104],
+     "zoom": 1
     },
     "huele.no": {
-     "crop": [51, 72, 98, 52],
-     "zoom": 2
+     "crop": [6, 66, 196, 104],
+     "zoom": 1
     }
    }
   },
@@ -1479,17 +1480,17 @@
    "what": "pepper from the mill"
   },
   "huele.si": {
-   "world": [5.3997, 0.9395, 1.3],
-   "screen": [100, 98],
-   "zoom": 2,
-   "crop": [51, 72, 98, 52],
-   "what": "papá smelling the pan"
+   "world": [5.0041, 0.3264, 0],
+   "screen": [104, 118],
+   "zoom": 1,
+   "crop": [6, 66, 196, 104],
+   "what": "papá smelling the pan. Zoom 1: the smell's lines from the pan (row 74) to papá's nose and his whole head (to row 127) are 53 rows: a 98 x 52 window cannot hold them"
   },
   "huele.no": {
-   "world": [5.3997, 0.9395, 1.3],
-   "screen": [100, 98],
-   "zoom": 2,
-   "crop": [51, 72, 98, 52],
+   "world": [5.0041, 0.3264, 0],
+   "screen": [104, 118],
+   "zoom": 1,
+   "crop": [6, 66, 196, 104],
    "what": "papá eating"
   },
   "caliente.si": {
@@ -1684,7 +1685,7 @@
    "old": "estufa.js:134 clip rect [176, 22, 38, 36]",
    "thing": "cocina",
    "face": "the window's opening in the back wall (points.ventana.hole)",
-   "how": "not clipped: the family stands outside, behind the window's deep recess (their plane y = -0.85), and the set's own pixels nearer than them (the wall, the recess, the frame, the sill, the counter, the room) are drawn again over them (front.parts.ventana); so they are seen only through the opening, cut at the chest by the recess's bottom, as whoever looks in from outside. The plates on the sill are drawn after, in the room"
+   "how": "not clipped: the family stands outside, behind the window's deep recess (their plane y = -0.57), and the set's own pixels nearer than them (the wall, the recess, the frame, the sill, the counter, the room) are drawn again over them (front.parts.ventana); so they are seen only through the opening, cut at the chest by the recess's bottom, as whoever looks in from outside. The plates on the sill are drawn after, in the room"
   }
  },
  "smoothing": "estufa.js turns smoothing off (respIcon) and never on",
@@ -1699,7 +1700,7 @@
    },
    "ventana": {
     "parts": ["banco", "banco.patas", "campana", "campana.arriba", "campana.bajo", "campana.tubo", "der", "estante", "estante.mensula", "estufa", "izq", "pared", "salpicadero", "ventana", "ventana.alfeizar", "ventana.hondo"],
-    "y": -0.85,
+    "y": -0.57,
     "after": "the window's people (draw: the line of W.ventana)",
     "plane": "world y = front.parts.ventana.y (outside, behind the recess) under each one's column"
    }
@@ -2041,28 +2042,28 @@
    "line": 134,
    "act": "*",
    "src": "if(W.ventana&&W.ventana.length){c.save();c.beginPath();c.rect(176,22,38,36);c.clip();W.ventana.forEach((id,j)=>{const w=QUIEN[id],im=spr(\"pm\"+id+\"idle00\",()=>KIT.mkPersona(w,\"idle\",0,0));c.drawImage(im,176+j*12-KIT.PX+7,30+(j%2)*3);if(W.ventanacome)tenida(c,\"plato\",183+j*12,57);});c.restore();}",
-   "to": "if(W.ventana&&W.ventana.length){c.save();W.ventana.forEach((id,j)=>{const w=QUIEN[id],im=spr(\"pm\"+id+\"idle00\",()=>KIT.mkPersona(w,\"idle\",0,0));c.drawImage(im,174+j*12-KIT.PX+7,[75,78,87][j]+(j%2)*3);});c.restore();}if(W.ventana&&W.ventana.length&&W.ventanacome)W.ventana.forEach((id,j)=>tenida(c,\"plato\",181+j*12,[109,115,121][j]));",
+   "to": "if(W.ventana&&W.ventana.length){c.save();W.ventana.forEach((id,j)=>{const w=QUIEN[id],im=spr(\"pm\"+id+\"idle00\",()=>KIT.mkPersona(w,\"idle\",0,0));c.drawImage(im,170+j*14-KIT.PX+7,[78,82,92][j]+(j%2)*3);});c.restore();}if(W.ventana&&W.ventana.length&&W.ventanacome)W.ventana.forEach((id,j)=>tenida(c,\"plato\",177+j*14,[107,114,121][j]));",
    "places": [
     {
      "who": "ventana",
      "old": [183, 30],
-     "new": [181, 75],
-     "world": [4.7594, -4.1067, 0]
+     "new": [177, 78],
+     "world": [4.8138, -3.8347, 0]
     },
     {
      "who": "ventana",
      "old": [195, 33],
-     "new": [193, 81],
-     "world": [5.4121, -4.1067, 0]
+     "new": [191, 85],
+     "world": [5.5753, -3.8347, 0]
     },
     {
      "who": "ventana",
      "old": [207, 30],
-     "new": [205, 87],
-     "world": [6.0648, -4.1067, 0]
+     "new": [205, 92],
+     "world": [6.3368, -3.8347, 0]
     }
    ],
-   "why": "the family at the window (familia27): each one stands outside the window, .85 behind the wall's face (front.parts.ventana.y), 2 px left of their old x (clear of the recess's left side), seen from the chest up: their sprites placed so that the far edge of the recess's bottom cuts them 21 rows under their tops, 45 to 57 rows from the old (the window is on the wall over the right counter). The clip to the old window rectangle goes: the wall, the recess and everything of the room are nearer than they are and are drawn again over them (front.ventana), so they are seen only through the opening. The plates they eat from stand on the sill in the room, drawn after that (a second statement: before, they were drawn inside the clip with the people)"
+   "why": "the family at the window (familia27): each one stands outside the window, .85 behind the wall's face (front.parts.ventana.y), 14 px apart (the old 12), the first 6 px left of its old x, the third as the old, so that no face is covered by the next one or by the recess's side or the frame, seen from the chest up: their sprites placed so that the far edge of the recess's bottom cuts them 21 rows under their tops, 48 to 62 rows from the old (the window is on the wall over the right counter). The clip to the old window rectangle goes: the wall, the recess and everything of the room are nearer than they are and are drawn again over them (front.ventana), so they are seen only through the opening. The plates they eat from stand on the sill in the room, drawn after that (a second statement: before, they were drawn inside the clip with the people)"
   },
   {
    "line": 216,
@@ -4672,19 +4673,19 @@
   "notes": [
    "inventory: 17 things (old 17), 2 frog places of LUGAR (old 2) and 9 frog places in all, 1 view (old 1), 35 positions (old 35), 12 review pairs of cual-estufa (24 pictures), 16 level pictures (old 16), 227 lines of estufa.js with numbers named in code (76 of them with places, each with its fate), 38 moves, 2 baked states (the old 164)",
    "hops: all 28 pairs of the frog's 8 places keep the old count; at 1117 step ends of the port's play he stands where the recorded run had him, or where moves puts that place (0 differ)",
-   "set things: the stove's pixels all inside its touch box [87,86,78,69] and answering it; every other part the room's (cocina, its box the whole picture, its hint box [36,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: estante x 26-83 y 20-51; estante.mensula x 32-78 y 31-54; izq x 0-111 y 39-125; salpicadero x 92-163 y 42-111; campana.arriba x 105-163 y 48-77; campana.tubo x 117-153 y 48-70; campana x 104-163 y 52-80; campana.bajo x 104-163 y 55-81; ventana.hondo x 171-210 y 68-115; ventana x 164-213 y 70-121; estufa x 88-162 y 87-153; ventana.alfeizar x 159-214 y 98-126; der x 139-239 y 112-192; banco x 114-137 y 178-190; banco.patas x 116-135 y 186-204",
+   "set things: the stove's pixels all inside its touch box [87,86,78,69] and answering it; every other part the room's (cocina, its box the whole picture, its hint box [36,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: estante x 26-83 y 20-51; estante.mensula x 32-78 y 31-54; izq x 0-111 y 39-125; salpicadero x 92-163 y 42-111; campana.arriba x 105-163 y 48-77; campana.tubo x 117-153 y 48-70; campana x 104-163 y 52-80; campana.bajo x 104-163 y 55-81; ventana x 164-214 y 70-122; ventana.hondo x 167-211 y 74-119; estufa x 88-162 y 87-153; ventana.alfeizar x 159-214 y 98-126; der x 139-239 y 112-192; banco x 114-137 y 178-190; banco.patas x 116-135 y 186-204",
    "light: the kit's one rule; every castShadow call of the set darkens the floor, each shadow within 4 px of its own thing (the set casts none: the run stands against the wall with its lit front to the room, the stool casts none); no floor pixel within 3 px of the stool (the thin thing on the floor) on its lit side differs from the floor without it (the stool is drawn after the room is baked: no ring of the engine's ambient occlusion round its legs); the run against the wall casts none (its lit front faces the room)",
-   "window: its opening (1170 px) shows the outside: 332 px of sky, 356 of the patio's yard wall, 0 of the hedge, 224 of the recess and the frame (the outside is the kit's backdrop, 1.92 behind the wall's face)",
-   "round 2: the window's recess (the wall's thickness, seen on its far side and its bottom) 263 px and its sill 338 px in the wide view (keep 40 each), the patio's yard wall and the sky behind; the hood's top, front and underside three tones (contrast 2.03, 2.39, 4.86), its back edge on the wall along its whole length (142 px, 0 not the hood), its duct up to the wall's cut edge; the shelf's two brackets 34 and 35 px",
+   "window: its opening (1196 px) shows the outside: 390 px of sky, 403 of the patio's yard wall, 0 of the hedge, 143 of the recess and the frame (the outside is the kit's backdrop, 1.92 behind the wall's face)",
+   "round 2: the window's recess (the wall's thickness, seen on its far side and its bottom) 260 px and its sill 342 px in the wide view (keep 40 each), the patio's yard wall and the sky behind; the hood's top, front and underside three tones (contrast 2.03, 2.39, 4.86), its back edge on the wall along its whole length (142 px, 0 not the hood), its duct up to the wall's cut edge; the shelf's two brackets 34 and 35 px",
    "thin things of the set against what is behind them (WCAG contrast ratio of the mean luminances; each part's pixels): estante 3.69 (94% of its pixels at 2.0 or more); estante.mensula 7.46 (100% of its pixels at 2.0 or more); banco.patas 6.75 (100% of its pixels at 2.0 or more)",
-   "drawn: at 16908 moments (every tick inside the acts of the port's play of the 12 runs, every step's end, every pair picture) composed as estufa.js draws them (each item owns what it drew last; the stool drawn again over whoever stands behind it, the room over the window's people): no part of the set over any face; 139 things standing on a top (the pots and the pan, the cups, the tray, the plates, the jug, the board, the sack and the jar on the shelf), each with 90% and more of its foot over it and nothing of the set over it; 14225 moments of the frog on the stool, his feet on its top; 3211 step ends of someone standing in the view, each on clear floor at least .15 in front of the run; 1458 faces at the window, each 75% and more seen through its opening; at 10206 columns of their heads the lowest row seen is the row just above the far edge of the recess's bottom (1.5 px), cut there as whoever looks in from outside, and nothing of them shows outside the opening",
+   "drawn: at 16908 moments (every tick inside the acts of the port's play of the 12 runs, every step's end, every pair picture) composed as estufa.js draws them (each item owns what it drew last; the stool drawn again over whoever stands behind it, the room over the window's people): no part of the set over any face; 139 things standing on a top (the pots and the pan, the cups, the tray, the plates, the jug, the board, the sack and the jar on the shelf), each with 90% and more of its foot over it and nothing of the set over it; 14225 moments of the frog on the stool, his feet on its top; 3211 step ends of someone standing in the view, each on clear floor at least .15 in front of the run; 1458 faces at the window, each seen no less than in the old picture (the face's own pixels not covered by the next person, the room or the old clip; the old: 83%, 95%, 100%; now each at least 0 points over the old); at 10206 columns of their heads the lowest row seen is the row just above the far edge of the recess's bottom (2.5 px: the kit's own reveal, the same surface, is plotted a pixel or two over it), cut there as whoever looks in from outside, and nothing of them shows outside the opening",
    "seen: at 4295 person- and frog-moments (every step's end of the 12 runs) each seen no less than in the old picture less 10%, the face no less (0 less); everyone and everything wholly inside the view in the old picture of a moment wholly inside with 3 px to spare (0 not)",
    "bubbles: 1850 bubbles (each person's recorded one and \"amor\" when touched, the frog's) at every moment: wholly inside the view (1 px from its edge at the least), clear of the rounds card, on no face",
    "asks: 44 distinct asks (for abuela, abuelo, di_arroz, di_hab, di_huevo, di_pollo, espera, jarra, luis, mama, olla0, olla1, papa, pzhuevo, pzpollo, saca, saco, salhuevo, salpollo, tazon): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the room by its hint box), no frame's rings across a face where the old frame's were not (as the old: cuidado beats.27 (abuelo) luis's face; cuidado beats.27 (abuelo) mama's face; cuidado beats.28 (mama) abuelo's face; cuidado beats.58 (papa) mama's face; el-pollo-y-el-huevo beats.27 (pzhuevo) the frog's face), the hint hand on no face and not cut by the view's edge where the old was not (as the old: arroz-con-habichuelas beats.22 (olla1): on luis's face; cuidado beats.11 (olla1): on luis's face; h-estufa beats.11 (olla1): on abuela's face); 28 answer cards, each with its lit frame and glow 4 px and more inside the view (4 at the least), 2 px clear of the rounds card and of everyone's head and body, over no pot, pan or thing; the hint round each card 2 px inside the view and across no head, its hand on no face; 37 times a thing asked for or among the choices: whole in the view, covered no more than in the old picture (saco (arroz-con-habichuelas right beats.13, as the old: tazon); saco (arroz-con-habichuelas right beats.41, as the old: tazon); jarra (cuidado right beats.14, as the old: tazas); saco (h-estufa right beats.3, as the old: tazon); saco (h-estufa right beats.4, as the old: tazon); saco (h-estufa right beats.6, as the old: tazon)), a plain surface round it",
    "heads: at 4319 face-moments (step ends) nobody's head against the window, the hood or the shelf where the old picture kept it clear",
    "steam and smoke: 447 distinct puffs (every frame of their rise) against what is directly behind them, the contrast ratio of the mean luminances 2.13 at the least (smoke over the pan (el-pollo-y-el-huevo right t 14290))",
    "preview: at every step's end of the 12 recorded runs (4706 places) estufa-preview.html puts everyone exactly where the sheet's rule does (0 differ); the rule puts each of the 4515 places at rest where the port's play has them (0 differ)",
-   "pairs: 24 review pictures (the 16 level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet, as the old close pictures; in a zoom 1 picture of people, a pot or the pan behind them may be cut by its edge), no zoom 2 picture with a cut-off piece of the set; what differs: arroz: fuegos; habichuelas: gente; olla: gente; hace: gente, cosas; pollo: plata; huevo: gente, fuegos, the window; sal: vuelos; huele: olor, gente, fuegos; caliente: cosas; frio: fuegos, cosas, the window; cuidado: gente, the window; ya: gente; the pixels that differ between yes and no (keep 1.5%): arroz 2.55%, habichuelas 1.61%, olla 12.09%, hace 5.16%, pollo 8.42%, huevo 8.32%, sal 3.22%, huele 8.81%, caliente 3.06%, frio 15.23%, cuidado 12.08%, ya 18.05%",
+   "pairs: 24 review pictures (the 16 level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet, as the old close pictures; in a zoom 1 picture of people, a pot or the pan behind them may be cut by its edge), no zoom 2 picture with a cut-off piece of the set; what differs: arroz: fuegos; habichuelas: gente; olla: gente; hace: gente, cosas; pollo: plata; huevo: gente, fuegos, the window; sal: vuelos; huele: olor, gente, fuegos; caliente: cosas; frio: fuegos, cosas, the window; cuidado: gente, the window; ya: gente; the pixels that differ between yes and no (keep 1.5%): arroz 2.55%, habichuelas 1.61%, olla 12.09%, hace 5.16%, pollo 8.42%, huevo 8.32%, sal 3.22%, huele 2.21%, caliente 3.06%, frio 15.23%, cuidado 12.08%, ya 18.05%; 7 people in zoom 2 pictures, each with the whole head inside with 2 px to spare",
    "states: 2 baked states reached (every moment, pair and level picture); each first bake in a fresh page under 150 ms (the median of five)"
   ],
   "walked": ["banco-olla1"],

@@ -33,8 +33,8 @@ cocinaCheckScene();
 const D = 1.4;                                   // the run's depth from the wall (the tops; the kit's K.CD is .9: see the header)
 const AL0 = 0, AS0 = 5.19, AS1 = 7.96, AR1 = 12.4;    // the left counter from the corner to the stove, the stove, the right counter (runs off the picture)
 const BURN = [[5.79, .95], [7.36, .45]], BR = .36;    // the two burners: [a, d] of each middle, their radius (a pot's foot stands on each)
-const WIN = { name: 'ventana', face: 'y', a0: 8.1, a1: 10.55, z0: 1.95, z1: 3.1, view: 'patio', bars: 'none', door: true, horizon: 2.62 };   // the kit's hole, reveal, backdrop and three frame boards (door: no sill of its own: estufa's sill is deeper)
-const DEEP = .5, OUTSIDE_Y = -(DEEP + .35);       // round 2: the window sits in a deep recess (the wall's thickness seen on its far side and bottom); whoever looks in stands outside at y = OUTSIDE_Y
+const WIN = { name: 'ventana', face: 'y', a0: 8.1, a1: 10.6, z0: 1.95, z1: 3.1, view: 'patio', bars: 'none', door: true, horizon: 2.62 };   // the kit's hole, reveal, backdrop and three frame boards (door: no sill of its own: estufa's sill is deeper)
+const DEEP = .22, OUTSIDE_Y = -(DEEP + .35);   // round 3: the recess .22 deep, the wall's own thickness (was .5): its left side no longer hides the first face       // round 2: the window sits in a deep recess (the wall's thickness seen on its far side and bottom); whoever looks in stands outside at y = OUTSIDE_Y
 const SHELF = { a0: 1.05, a1: 3.6, z: 2.55, d: .62 }, JARS = [[2.65, [72, 168, 72]], [3.15, [88, 180, 236]]];
 const STOOL = { sx: 126, sy: 184, h: .72, hw: .32, leg: .035 };   // round 2: La nevera's stool (nevera-set.html stool(): h .72, r .32, legs .07 square, two cross rails, the seat KC.woodL); its top's middle under the frog's feet (126, 184)
 const SPLASH = [172, 176, 188];                  // the splashback behind the stove: brushed steel, a light mid grey (white steam and dark smoke both stand out from it by 2.0 and more)
@@ -124,7 +124,8 @@ function furnish() {
 // K.OUTD behind its outer face. The sill stands .3 out into the room at the opening's foot, a frame board under it, its shadow under that
 function windowDeep() {
   const { a0, a1, z0, z1 } = WIN, Pl = rampOf(KC.plaster), Sl = rampOf(KC.sill), Fr = rampOf(KC.frame);
-  P('ventana.hondo', () => { planeQuad([a0, 0, z0], [0, -DEEP, 0], [0, 0, z1 - z0], () => Pl[1]); planeQuad([a0, 0, z0], [a1 - a0, 0, 0], [0, -DEEP, 0], (s, t) => t > .93 ? Pl[2] : Pl[3]); });
+  // (a hair in front of the kit's own reveal, which is the same faces .22 deep: these are drawn over it)
+  P('ventana.hondo', () => { planeQuad([a0 + .02, 0, z0], [0, -DEEP, 0], [0, 0, z1 - z0], () => Pl[1]); planeQuad([a0, 0, z0 + .02], [a1 - a0, 0, 0], [0, -DEEP, 0], (s, t) => t > .9 ? Pl[2] : Pl[3]); });
   P('ventana.alfeizar', () => { kBox('y', a0 - .14, a1 + .14, 0, .3, z0 - .07, z0, (f, p, q, sh) => f === 'top' ? Sl[4] : Sl[sh ? 1 : 2]);
     kBox('y', a0 - .1, a1 + .1, 0, .05, z0 - .2, z0 - .07, (f, p, q, sh) => f === 'top' ? Fr[3] : Fr[sh ? 1 : 2]); });
   // the sill's shadow: the wall a little under the board, darker (the light from the upper left, the sill .3 out)
