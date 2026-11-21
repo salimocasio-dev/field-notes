@@ -2,6 +2,15 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 21, part 26: El banco; El parque whole in the new app; the lane no longer works in series
+
+- El banco (order 36): designed in two read rounds and two fix passes, ported with one stop (a hop count inside an act), stories 21 to 23 play (build 11). All twelve stories of El parque now play in the Flutter app, each against its recorded runs.
+- Salim changed how the lane works (page 13, under "Orders 30 to 39"): two reader rounds at the most for an old scene's design, up to four scenes in flight, places 4 to 10 port only, one build and one link per place with the hours per scene. Since then the kitchen's three designs ran at the same time on one shared kit (`cocina-kit.js`); La estufa's is merged and in port; A comer's groundwork (order 06 for `comer`) is done on its branch.
+- Order 45, preview content: a build can carry places 4 to 10's stories inside itself and play them silent, so that nothing is pushed under `historia/cuentos/` before it has played.
+- Hours per scene in El parque, from one build to the next: El camino 3.1, El campo 5.2 (Opus reached its limit in the middle), El lago 4.2, El banco 6.9 (three design rounds before the new rule, then the hop stop).
+- Spent: nothing. No audio recorded. Asked of Salim: a yes for ten single words of A comer (78 characters).
+- Problems caused by the orchestrator's own work: El banco's first two design briefs let checks pass that measured the wrong thing (sitters "behind" the benches, the wire at night, the gate), which cost a round; the "bench whole inside the view" wish in round 2 moved a sitter and broke a hop count that only the port's recorded-run check caught; the kitchen's briefs said "9 states" for scenes with 87 to 164 (corrected by a message).
+
 ## Nov 21, part 25: La sala and El patio; La casa whole in the new app
 
 - La sala (order 31): designed in two rounds, ported with no stop, stories 6 to 8 play (build 6).

@@ -29,7 +29,7 @@ void main() {
 
   test('the fixture is there', () {
     expect(sessions.length, greaterThan(25));
-    expect(course.levelItems.length, 48);
+    expect(course.levelItems.length, 52);
   });
 
   for (final entry in sessions) {

@@ -1,47 +1,29 @@
-// A story whose scene is not converted yet (every story from la-piragua on, at the banco and the scenes after it): the
-// screen says so, in the middle of the lesson frame, with one button back to the map, and shows nothing else but the X.
-// Any other failure to open a story keeps the lesson frame and its X, as before.
-import 'dart:convert';
-import 'dart:io';
-
+// A story whose scene is not converted yet: the screen says so, in the middle of the lesson frame, with one button back to
+// the map, and shows nothing else but the X. Any other failure to open a story keeps the lesson frame and its X, as before.
+// The story is a test's own, at a test scene that is never converted (test/support/test_scene.dart), whose factory throws
+// as the registry's stub of a scene not converted yet does: so the test does not depend on which real scenes are
+// converted (order 36b; El banco's la-piragua was its story until order 36b, El balcón's el-jugo until 30b, La sala's
+// la-familia until 31b, El patio's las-flores until 32b, El camino's uno-dos-tres until 33b, El campo's la-bola until
+// 34b, El lago's pan-para-el-pato until 35b).
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:feature_story/src/screen/scene_frame.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'support/screen_harness.dart';
-
-/// The sample course, and the real `la-piragua` of historia/ (a story at the banco, which is not converted yet; El
-/// balcón's el-jugo was this test's story until order 30b converted it, La sala's la-familia until order 31b, El patio's
-/// las-flores until order 32b, El camino's uno-dos-tres until order 33b, El campo's la-bola until order 34b, El lago's
-/// pan-para-el-pato until order 35b).
-class _WithBanco extends EditedCourse {
-  _WithBanco() : super((id, f) {});
-
-  @override
-  Future<Map<String, dynamic>> story(String id) => id == 'la-piragua'
-      ? Future.value(
-          jsonDecode(
-            File(
-              '${Directory.current.path}/../../../../historia/cuentos/la-piragua.json',
-            ).readAsStringSync(),
-          ) as Map<String, dynamic>,
-        )
-      : super.story(id);
-}
+import 'support/test_scene.dart';
 
 const _line = 'This story is not in the new app yet.';
 const _button = 'Back to the map';
 
 void main() {
   testWidgets(
-    'la-piragua on the real registry: the line and one button in the middle of the frame, and nothing else but the X',
+    'a story at a scene not converted, on the registry: the line and one button in the middle of the frame, and nothing else but the X',
     (tester) async {
       final s = await openScreen(
         tester,
-        id: 'la-piragua',
-        course: _WithBanco(),
-        scenes: registryScenes,
+        id: testStoryId,
+        course: WithTestScene(),
+        scenes: scenesWithTestScene,
       );
       expect(tester.takeException(), isNull);
       expect(find.text(_line), findsOneWidget);
@@ -83,9 +65,9 @@ void main() {
   testWidgets('the button closes the lesson as the X does', (tester) async {
     final viaButton = await openScreen(
       tester,
-      id: 'la-piragua',
-      course: _WithBanco(),
-      scenes: registryScenes,
+      id: testStoryId,
+      course: WithTestScene(),
+      scenes: scenesWithTestScene,
     );
     await tester.tap(find.text(_button));
     await tester.pump();
@@ -96,9 +78,9 @@ void main() {
   testWidgets('the X still closes it', (tester) async {
     final s = await openScreen(
       tester,
-      id: 'la-piragua',
-      course: _WithBanco(),
-      scenes: registryScenes,
+      id: testStoryId,
+      course: WithTestScene(),
+      scenes: scenesWithTestScene,
     );
     await tester.tap(find.byType(LessonCloseButton));
     await tester.pump();
@@ -111,7 +93,7 @@ void main() {
       final s = await openScreen(
         tester,
         id: 'la-lluvia',
-        scenes: (id, rng) => registryScenes('banco', rng),
+        scenes: (id, rng) => scenesWithTestScene(testSceneId, rng),
       );
       expect(find.text(_line), findsOneWidget);
       await tester.tap(find.text(_button));

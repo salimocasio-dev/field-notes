@@ -13,6 +13,8 @@
 // (camino's `parque`, drawn by patio) has that side in the other scene's folder, as PictureRef.of's scene says.
 //
 // When a scene is converted: add it to convertedScenes (lib/src/converted_scenes.dart), run this tool; its folder goes.
+// A scene the content names (a review set's `scene`) that is not in the registry yet, but whose old pictures order 06 made
+// (coqui/ref/escenas/<id>/pairs.json; A comer, until its port), gets a folder too, after the registry's scenes.
 //
 // Also written: the assets listed in pubspec.yaml (one folder each); test/support/fixtures/old_sample.dart, the last
 // scene's folder as text, for the tests that run in a browser (the root bundle never answers there); and
@@ -89,6 +91,18 @@ Map<String, String> picturesOf(String id) {
     for (var i = 0; i < pics.length; i++) {
       add('nivel.${l['w']}.$i', pics[i], 'level picture ${l['w']}.$i');
     }
+  }
+  return out;
+}
+
+/// The scenes of the content's review sets (curso.json's `cual`, each file's `scene`), in course order, each once.
+List<String> contentScenes() {
+  final curso = readJson('$historia/datos/curso.json') as Map<String, dynamic>;
+  final out = <String>[];
+  for (final f in (curso['cual'] as List).cast<String>()) {
+    final j = readJson('$historia/cuentos/$f.json') as Map<String, dynamic>;
+    final s = j['scene'] as String;
+    if (!out.contains(s)) out.add(s);
   }
   return out;
 }
@@ -226,6 +240,11 @@ void main(List<String> args) {
   final todo = [
     for (final id in ids)
       if (!convertedScenes.contains(id)) id,
+    for (final id in contentScenes())
+      if (!ids.contains(id) &&
+          !convertedScenes.contains(id) &&
+          File('$refRoot/$id/pairs.json').existsSync())
+        id,
   ];
   final index = <String, Map<String, String>>{};
   final hashes = <String, String>{};
@@ -325,7 +344,7 @@ void main(List<String> args) {
   for (final (scene, name) in names) {
     if (convertedScenes.contains(scene)) continue;
     old++;
-    if (!ids.contains(scene)) {
+    if (!todo.contains(scene)) {
       problem('$scene: "$name" is drawn by a scene that does not exist');
       missing++;
     } else if (!index[scene]!.containsKey(name)) {

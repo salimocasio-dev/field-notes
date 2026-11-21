@@ -21196,4 +21196,11580 @@ const Map<String, String> sheetTexts = {
  }
 }
 ''',
+  'banco': r'''{
+ "scene": "banco",
+ "made": "node docs/proyecto/pixel/banco-sheet-make.js, from banco-set.html (window.BANCO_SET) and coqui/ref/escenas/banco/. Order 36a.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": 4
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "pairPicture": [196, 104],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin (El camino's, El campo's and El lago's); a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]",
+  "floor": "the corner is built round the old picture: a place keeps its screen place and its world point is the ground under it (the paving or the lawn, z 0): a frog place q under (q.x + 16, q.y + 25); a person's, a dog's, a pigeon's on the ground, the pushchair's or a thing's place (x, y) under (x, y - 1). Whoever sits (sent) is on a seat: their world point the seat under their lap (x, y - 11, z 0.42), their feet at SY(x) (moves). A thing on a seat, under (x, y - 1) at the seat's height; a pigeon on a bench's back, on its top; on the wire, on the wire (points.cable). So every position of banco.js, its stories and its pairs keeps its numbers, but those in moves and the story positions remap moves; the sheet names each (spots, remap, code)",
+  "relative": "what the old code draws or moves relative to a person, the frog, a dog, a pigeon or the pushchair (what is carried, a frog place by whoever he serves, a toy thrown from the pushchair, the bubbles) keeps its offsets: a sitter's moved feet move what is relative to them",
+  "sky": "screen-space effects keep their old numbers: the stars of the endings, the heart (heartAt)",
+  "view": "one view, zoom 1: the 196 x 216 window from x0 22, the old wide one",
+  "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2, zoom 1 = the 196 x 104 window. The old rectangles (remap cam and crop) say which pictures they were"
+ },
+ "layout": {
+  "what": "the paved corner of the park on the world's axes at the engine's 30 degrees: the paving (flags along x and y) from the benches to the picture's lower edge, its far edge stepped along the axes behind the benches; the lawn beyond it with El camino's three trees and the pole; the three benches each along x, stepped so that each one's seat edge passes its old point; the cart along y at the left; the lamp post behind the benches; the wire from the pole to the lamp post and on; the hedge along y across the lower right corner with the gate in it, the paving running out through it; El camino's hills and day sky, by the hour",
+  "why": "the brief and page 11 decision 9: the set stands on the world's axes, nothing square to the camera. The old benches stood in one level row facing us, the old paving began on one level row and the old hedge ran down the right edge: none of these lies on a world axis. Each bench lies along x (its seat and back facing +y, the lit side, towards the camera), its middle at the old BANCOS; a seat along x falls half a row a px, so whoever sits keeps the old x and sits on its edge (moves: SY), with the back behind them. The paving's far edge runs behind each bench along x (hidden by it) and steps along y between them, so that behind every head on a bench is the lawn as in the old picture (the old paving began behind the backs), and the trees stand on the lawn. Left of the first bench the edge turns along y, so the cart and its way out (it rolls along +y) are on the paving. The hedge lies along y across the lower right corner, the gate in it where the old gate was, so that whoever leaves (to x 246 on the old gate's rows) walks out through its opening",
+  "edge": "a look candidate (banco-set.html ?edge=straight): the paving's far edge one straight line along y, from the left edge up to the right: it reaches the horizon right of the middle, so the paving runs to the hills behind the third bench and the lamp post; kept recoverable, not built on"
+ },
+ "behind": {
+  "what": "nothing: the sun, the moon and the clouds are baked into the set's sky",
+  "items": []
+ },
+ "setKey": {
+  "params": {
+   "luz": "W.noche ? \"noche\" : W.tarde ? \"tarde\" : \"dia\"",
+   "luna": "W.noche && W.luna ? 1 : 0",
+   "carro": "W.carroX != null || W.carro === 0 ? \"no\" : W.carro === \"cerrado\" ? \"cerrado\" : \"abierto\""
+  },
+  "key": "luz + \".\" + luna + \".\" + carro",
+  "baked": [
+   {
+    "key": "dia.0.abierto",
+    "query": "?luz=dia&luna=0&carro=abierto"
+   },
+   {
+    "key": "dia.0.no",
+    "query": "?luz=dia&luna=0&carro=no"
+   },
+   {
+    "key": "tarde.0.abierto",
+    "query": "?luz=tarde&luna=0&carro=abierto"
+   },
+   {
+    "key": "noche.0.abierto",
+    "query": "?luz=noche&luna=0&carro=abierto"
+   },
+   {
+    "key": "noche.0.cerrado",
+    "query": "?luz=noche&luna=0&carro=cerrado"
+   },
+   {
+    "key": "noche.0.no",
+    "query": "?luz=noche&luna=0&carro=no"
+   },
+   {
+    "key": "noche.1.abierto",
+    "query": "?luz=noche&luna=1&carro=abierto"
+   }
+  ],
+  "notReached": ["dia.0.cerrado", "tarde.0.cerrado", "tarde.0.no", "noche.1.cerrado", "noche.1.no"],
+  "bakedWhy": "order 06 found 49 states made by eleven keys. Three are the set's: tarde and noche (the light of the hour: the evening's warm light and sky, the night's light, sky and lit lamp; noche always comes with tarde), luna (the moon in the night sky) and carro with carroX (the cart open, closed or gone; rolling, it is the sprite layer's and the set has none). The other seven are things the sprite layer draws, as the old: bandeja (the tray over the frog), coche (the pushchair, which moves), encaja (what is in the box), encima (what the frog carries on his head), manos (what he holds), seva (the cart and the dogs going home: it moves them in draw()). So setKey reads luz, luna and carro; every other key is the sprite layer's",
+  "spriteKeys": {
+   "bandeja": "rana(): the tray over the frog",
+   "coche": "coche(): the pushchair (a moving thing: W.coche.x, y)",
+   "encaja": "draw(): what lies in the box (W.cosas caja)",
+   "encima": "rana(): what he carries on his head",
+   "manos": "rana(): what he holds",
+   "seva": "draw(): moves the cart, the piragua man and the dogs (the rolling cart: carro.rolling)",
+   "carroX": "the rolling cart's place (carro.rolling); a set key only as \"rolling or not\" (carro no)"
+  }
+ },
+ "light": {
+  "tarde": "the evening (W.tarde): the set under a warm light (set-kit.js lightPass m .9 .9 .9, a 25.5 15 6: the old page's own evening tint, rgba(255, 150, 60, .10), the blades keep their lit colours, El frente's dusk), the evening sky, the sun where it is by day (the old evening kept its sun), the lantern lit with a faint pool of light; the sun still casts the shadows",
+  "noche": "the night (W.noche): the set under El patio's night light (m .56 .62 .82, a 6 10 30; every blade in its shade colour), El patio's night sky, no sun, the moon when W.luna, the lantern lit (its glass keeps its colour) and its pool of light on the ground round the lamp post's foot; nothing casts a shadow (the one rule: the sun casts every shadow, and at night there is none; the set bakes none and the engine casts none for anyone)",
+  "sprites": "not darkened, as the old page: banco.js draw() laid the night's colour (rgba(30, 24, 90, .32)) and the evening's (rgba(255, 150, 60, .10)) over its background only, before the sorted list; every person, animal and thing was drawn after it in its own colours. The port draws the sprite layer as by day at every hour (dropped)",
+  "shadows": "day and evening: the sun's (upper left), cast to screen right, for the set and for everyone (shadows); night: none"
+ },
+ "patch": {
+  "old": "banco.js:194: at night the old page copied a 46 x 38 patch of its own background from (84, 6) to (196, 6), before the night colour",
+  "what": "it hid the sun: the old sun was baked into the background at (210, 17) (engine.js sky(): W - 30, radius 8), and the patch laid a piece of the sky (with the cloud at 112, 9) over it, so that the night sky had no sun",
+  "kept": "by the set: the night sky (setKey luz noche) is drawn without a sun (and with the moon when W.luna). The port copies nothing: there is no snapshot of the picture in El banco (Ctx.snapshot is not called)"
+ },
+ "carro": {
+  "standing": "the set's: setKey carro abierto (its umbrella open) or cerrado (furled); banco.js draws nothing for it; its box things.carro.box; whoever stands behind it (the piragua man) has its pixels drawn over them (front)",
+  "rolling": "while W.carroX is set the set is baked with no cart (setKey carro no) and the sprite layer draws the cart: the pixels the set's part \"carro\" has in the baked state with the same luz and luna and carro cerrado (each pixel's colour and depth: the same cart, pixel for pixel), moved by dx = R(W.carroX) - CARRO[0], dy = R((CARRO[0] - W.carroX) / 2) (along +y: the cart rolls on its wheels' line), drawn in the sorted list at y CARRO[1] + (CARRO[0] - W.carroX) / 2 (moves). It rolls only at night: no shadow. Its touch box moves with it (things.carro.rolling)",
+  "sprite": {
+   "from": "state <luz>.<luna>.cerrado, part carro",
+   "at": "dx = R(W.carroX) - CARRO[0], dy = R((CARRO[0] - W.carroX) / 2)"
+  }
+ },
+ "things": {
+  "luis": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (banco.js:126): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "carmen": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "abuela": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "hombre": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "mujer": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "senor": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "joven": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "senora": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "piraguero": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "perro_viejo": {
+   "sprite": true,
+   "why": "a dog (mkCan): [x - 15, y - 22, 30, 24] (banco.js:128): unchanged"
+  },
+  "perro_joven": {
+   "sprite": true,
+   "why": "as perro_viejo"
+  },
+  "perro": {
+   "sprite": true,
+   "why": "as perro_viejo (Canelo)"
+  },
+  "coche": {
+   "sprite": true,
+   "why": "the pushchair (mkCoche): [x - 19, y - 42, 38, 44]: unchanged"
+  },
+  "pajaro": {
+   "sprite": true,
+   "why": "the pigeons (mkPaloma): the box round every one shown: unchanged"
+  },
+  "carro": {
+   "set": true,
+   "world": [0.8159, 4.7322, 0, 1.9581, 5.8744, 3.1088],
+   "box": [27, 93, 43, 91],
+   "screen": [27, 93, 69, 184],
+   "what": "the cart: its box, wheels, umbrella (open or closed), the bottles and the glass case",
+   "old": {
+    "box": [23, 106, 48, 74]
+   },
+   "rolling": "while it rolls (W.carroX) its box moves with it: [box x + R(W.carroX) - CARRO[0], box y + R((CARRO[0] - W.carroX) / 2), w, h]",
+   "hand": [49, 139]
+  },
+  "farol": {
+   "set": true,
+   "world": [2.774, -0.1632, 0, 3.1004, 0.1632, 4.6188],
+   "box": [168, 31, 12, 111],
+   "screen": [168, 32, 180, 142],
+   "what": "the lamp post: its foot, its post, its lantern",
+   "old": {
+    "box": [161, 34, 14, 126]
+   },
+   "hand": [174, 100],
+   "handWhy": "on the post, under the wire"
+  },
+  "banco0": {
+   "set": true,
+   "world": [1.4006, 2.4613, 0, 2.5157, 3.5763, 0.9993],
+   "box": [80, 125, 41, 43],
+   "screen": [80, 125, 121, 168],
+   "what": "the first bench: seat, back, legs",
+   "old": {
+    "box": [74, 127, 44, 36]
+   },
+   "hand": [101, 147]
+  },
+  "banco1": {
+   "set": true,
+   "world": [2.706, 1.1558, 0, 3.8211, 2.2709, 0.9993],
+   "box": [128, 124, 41, 44],
+   "screen": [128, 125, 169, 168],
+   "what": "the second bench",
+   "old": {
+    "box": [122, 127, 44, 36]
+   },
+   "hand": [149, 146]
+  },
+  "banco2": {
+   "set": true,
+   "world": [3.8891, 0.0272, 0, 4.705, 0.8431, 1.0215],
+   "box": [176, 124, 30, 39],
+   "screen": [176, 125, 206, 163],
+   "what": "the third bench",
+   "old": {
+    "box": [170, 127, 44, 36]
+   },
+   "hand": [191, 144]
+  },
+  "parque": {
+   "set": true,
+   "ground": true,
+   "box": [0, 40, 240, 176],
+   "what": "the park: the paving, the lawn, the trees, the hedge and its gate, the pole and the wire; last in the hit order",
+   "old": {
+    "box": [0, 60, 240, 156]
+   },
+   "hintBox": [36, 40, 168, 162],
+   "hintWhy": "hintBox: the part of its touch box the hint frame shows (the frame, box + 12, 2 px inside the view); the touch box answers the touches",
+   "hand": [120, 186],
+   "handWhy": "on the open paving before the benches"
+  }
+ },
+ "spots": {
+  "frog.inicio": {
+   "world": [1.0879, 5.7656, 0],
+   "on": "pave",
+   "old": [18, 150],
+   "new": [18, 150],
+   "scale": 1,
+   "what": "LUGAR.inicio: the frog's place q (his feet at q.x + 16, q.y + 25)"
+  },
+  "frog.centro": {
+   "world": [5.0585, 5.0585, 0],
+   "on": "pave",
+   "old": [104, 180],
+   "new": [104, 180],
+   "scale": 1,
+   "what": "LUGAR.centro: the frog's place q (his feet at q.x + 16, q.y + 25)"
+  },
+  "sitio.0": {
+   "world": [1.9286, 3.234, 0.42],
+   "on": "seat",
+   "old": [96, 161],
+   "new": [96, 161],
+   "moved": true,
+   "what": "BANCOS[0]: whoever sits at the middle of bench 0 (their feet; SY gives every other x)"
+  },
+  "sitio.1": {
+   "world": [3.234, 1.9286, 0.42],
+   "on": "seat",
+   "old": [144, 161],
+   "new": [144, 161],
+   "moved": true,
+   "what": "BANCOS[1]: whoever sits at the middle of bench 1 (their feet; SY gives every other x)"
+  },
+  "sitio.2": {
+   "world": [4.5395, 0.6232, 0.42],
+   "on": "seat",
+   "old": [192, 161],
+   "new": [192, 161],
+   "moved": true,
+   "what": "BANCOS[2]: whoever sits at the middle of bench 2 (their feet; SY gives every other x)"
+  },
+  "carro": {
+   "world": [1.251, 5.82, 0],
+   "on": "pave",
+   "old": [47, 178],
+   "new": [36, 178],
+   "moved": true,
+   "what": "CARRO: the cart standing (its place in the sorted list; the set's cart is built round it, points.carro); the rolling cart starts here (W.carroX = CARRO[0])"
+  },
+  "piraguero": {
+   "world": [1.0335, 5.3849, 0],
+   "on": "pave",
+   "old": [51, 172],
+   "new": [40, 172],
+   "moved": true,
+   "what": "CARRO + (4, -6): the piragua man, behind his cart"
+  },
+  "porton": {
+   "world": [7.0439, 2.7468, 0],
+   "on": "pave",
+   "old": [188, 197],
+   "new": [199, 203],
+   "moved": true,
+   "what": "PORTON: where one stands at the gate, in its opening (moves)"
+  },
+  "porton.fuera": {
+   "world": [8.9748, 2.1213, 0],
+   "on": "out",
+   "old": [246, 197],
+   "new": [246, 215],
+   "moved": true,
+   "what": "where whoever leaves goes, out through the gate along the path and off the picture (moves)"
+  },
+  "cable.0": {
+   "world": [-0.0239, 2.9133, 3.711],
+   "on": "wire",
+   "old": [66, 55],
+   "new": [66, 55],
+   "what": "CABLE(0): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
+  },
+  "cable.1": {
+   "world": [0.4507, 2.4633, 3.6767],
+   "on": "wire",
+   "old": [83, 56],
+   "new": [83, 56],
+   "what": "CABLE(1): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
+  },
+  "cable.2": {
+   "world": [0.9254, 2.0133, 3.6423],
+   "on": "wire",
+   "old": [100, 57],
+   "new": [100, 57],
+   "what": "CABLE(2): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
+  },
+  "cable.3": {
+   "world": [1.4001, 1.5632, 3.6524],
+   "on": "wire",
+   "old": [117, 57],
+   "new": [117, 57],
+   "what": "CABLE(3): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
+  },
+  "cable.4": {
+   "world": [1.8747, 1.1132, 3.6625],
+   "on": "wire",
+   "old": [134, 57],
+   "new": [134, 57],
+   "what": "CABLE(4): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
+  },
+  "respaldo.0": {
+   "world": [2.2827, 2.8266, 1.02],
+   "on": "back",
+   "old": [110, 127],
+   "new": [110, 137],
+   "moved": true,
+   "what": "POSA[0]: a pigeon on a bench's back (moves)"
+  },
+  "respaldo.1": {
+   "world": [3.5881, 1.5212, 1.02],
+   "on": "back",
+   "old": [158, 127],
+   "new": [158, 137],
+   "moved": true,
+   "what": "POSA[1]: a pigeon on a bench's back (moves)"
+  },
+  "respaldo.2": {
+   "world": [3.9145, 0.2158, 1.02],
+   "on": "back",
+   "old": [176, 127],
+   "new": [188, 128],
+   "moved": true,
+   "what": "POSA[2]: a pigeon on a bench's back (moves)"
+  },
+  "respaldo.3": {
+   "world": [4.4312, 0.243, 1.02],
+   "on": "back",
+   "old": [208, 127],
+   "new": [197, 133],
+   "moved": true,
+   "what": "POSA[3]: a pigeon on a bench's back (moves)"
+  }
+ },
+ "lugar": {
+  "inicio": {
+   "spot": "frog.inicio",
+   "q": [18, 150],
+   "scale": 1,
+   "old": [18, 150]
+  },
+  "centro": {
+   "spot": "frog.centro",
+   "q": [104, 180],
+   "scale": 1,
+   "old": [104, 180]
+  }
+ },
+ "hops": [],
+ "hopsAll": [
+  {
+   "a": [104, 180],
+   "b": [88, 181],
+   "a2": [104, 180],
+   "b2": [88, 181],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 16.03,
+   "dNew": 16.03
+  },
+  {
+   "a": [88, 181],
+   "b": [62, 173],
+   "a2": [88, 181],
+   "b2": [62, 173],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 27.2,
+   "dNew": 27.2
+  },
+  {
+   "a": [62, 173],
+   "b": [88, 181],
+   "a2": [62, 173],
+   "b2": [88, 181],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 27.2,
+   "dNew": 27.2
+  },
+  {
+   "a": [104, 180],
+   "b": [28, 183],
+   "a2": [104, 180],
+   "b2": [28, 183],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 2,
+   "new": 2,
+   "dOld": 76.06,
+   "dNew": 76.06
+  },
+  {
+   "a": [104, 180],
+   "b": [140, 180],
+   "a2": [104, 180],
+   "b2": [140, 180],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 36,
+   "dNew": 36
+  },
+  {
+   "a": [140, 180],
+   "b": [216, 177],
+   "a2": [140, 180],
+   "b2": [216, 177],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 2,
+   "new": 2,
+   "dOld": 76.06,
+   "dNew": 76.06
+  },
+  {
+   "a": [104, 180],
+   "b": [118, 179],
+   "a2": [104, 180],
+   "b2": [118, 179],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 14.04,
+   "dNew": 14.04
+  },
+  {
+   "a": [104, 180],
+   "b": [108, 179],
+   "a2": [104, 180],
+   "b2": [108, 179],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 4.12,
+   "dNew": 4.12
+  },
+  {
+   "a": [108, 179],
+   "b": [71, 156],
+   "a2": [108, 179],
+   "b2": [71, 152],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 43.57,
+   "dNew": 45.8
+  },
+  {
+   "a": [71, 156],
+   "b": [108, 179],
+   "a2": [71, 152],
+   "b2": [108, 179],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 43.57,
+   "dNew": 45.8
+  },
+  {
+   "a": [108, 179],
+   "b": [119, 156],
+   "a2": [108, 179],
+   "b2": [119, 152],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 25.5,
+   "dNew": 29.15
+  },
+  {
+   "a": [119, 156],
+   "b": [108, 179],
+   "a2": [119, 152],
+   "b2": [108, 179],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 25.5,
+   "dNew": 29.15
+  },
+  {
+   "a": [104, 180],
+   "b": [108, 178],
+   "a2": [104, 180],
+   "b2": [118, 178],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 4.47,
+   "dNew": 14.14
+  },
+  {
+   "a": [108, 178],
+   "b": [119, 156],
+   "a2": [118, 178],
+   "b2": [119, 152],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 24.6,
+   "dNew": 26.02
+  },
+  {
+   "a": [119, 156],
+   "b": [108, 178],
+   "a2": [119, 152],
+   "b2": [118, 178],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 24.6,
+   "dNew": 26.02
+  },
+  {
+   "a": [108, 178],
+   "b": [52, 170],
+   "a2": [118, 178],
+   "b2": [66, 170],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 2,
+   "new": 2,
+   "dOld": 56.57,
+   "dNew": 52.61
+  },
+  {
+   "a": [52, 170],
+   "b": [108, 178],
+   "a2": [66, 170],
+   "b2": [118, 178],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 2,
+   "new": 2,
+   "dOld": 56.57,
+   "dNew": 52.61
+  },
+  {
+   "a": [108, 178],
+   "b": [104, 170],
+   "a2": [118, 178],
+   "b2": [118, 170],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 8.94,
+   "dNew": 8
+  },
+  {
+   "a": [104, 170],
+   "b": [108, 178],
+   "a2": [118, 170],
+   "b2": [118, 178],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 8.94,
+   "dNew": 8
+  },
+  {
+   "a": [108, 178],
+   "b": [84, 178],
+   "a2": [118, 178],
+   "b2": [98, 178],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 24,
+   "dNew": 20
+  },
+  {
+   "a": [84, 178],
+   "b": [112, 178],
+   "a2": [98, 178],
+   "b2": [112, 178],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 28,
+   "dNew": 14
+  },
+  {
+   "a": [112, 178],
+   "b": [68, 184],
+   "a2": [112, 178],
+   "b2": [68, 184],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 44.41,
+   "dNew": 44.41
+  },
+  {
+   "a": [68, 184],
+   "b": [108, 163],
+   "a2": [68, 184],
+   "b2": [108, 163],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 45.18,
+   "dNew": 45.18
+  },
+  {
+   "a": [104, 170],
+   "b": [52, 170],
+   "a2": [118, 170],
+   "b2": [66, 170],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 2,
+   "new": 2,
+   "dOld": 52,
+   "dNew": 52
+  },
+  {
+   "a": [112, 178],
+   "b": [90, 184],
+   "a2": [112, 178],
+   "b2": [90, 184],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 22.8,
+   "dNew": 22.8
+  },
+  {
+   "a": [90, 184],
+   "b": [108, 163],
+   "a2": [90, 184],
+   "b2": [108, 163],
+   "by": "banco.js ranaA (34 px a hop)",
+   "old": 1,
+   "new": 1,
+   "dOld": 27.66,
+   "dNew": 27.66
+  }
+ ],
+ "points": {
+  "bancos": [
+   {
+    "middle": [96, 151],
+    "seat": [1.133, 2.7884, 0.42, 2.833, 3.2884, 0.42],
+    "back": 1.02,
+    "corners": [
+     [80.37, 143.19],
+     [111.63, 158.81],
+     [120.82, 154.22],
+     [89.57, 138.59]
+    ]
+   },
+   {
+    "middle": [144, 151],
+    "seat": [2.4384, 1.483, 0.42, 4.1384, 1.983, 0.42],
+    "back": 1.02,
+    "corners": [
+     [128.37, 143.19],
+     [159.63, 158.81],
+     [168.82, 154.22],
+     [137.57, 138.59]
+    ]
+   },
+   {
+    "middle": [192, 151],
+    "seat": [3.7439, 0.1776, 0.42, 4.8639, 0.6776, 0.42],
+    "back": 1.02,
+    "corners": [
+     [176.37, 143.19],
+     [196.96, 153.48],
+     [206.16, 148.89],
+     [185.57, 138.59]
+    ]
+   }
+  ],
+  "bancosWhat": "each bench along x: its seat (x0, y0, z, x1, y1, z) at z 0.42, its back up to z 1.02 along its far side (y0); middle: the screen point of its seat's front edge at its middle (the old BANCOS x, row 151); corners: its seat's front left, front right, back right, back left on the screen",
+  "borde": {
+   "what": "the paving's far edge, on the axes: behind each bench a stretch along x 6.5 rows behind its back legs' feet (hidden by the bench), a step along y between two benches (from column 110 and 158), and left of the first bench a stretch along y from column 80 down to the picture's left edge; the lawn beyond it",
+   "rows": [
+    [0, 176.76],
+    [40, 156.76],
+    [80, 136.76],
+    [96, 144.76],
+    [110, 151.76],
+    [120, 146.76],
+    [134, 139.76],
+    [144, 144.76],
+    [158, 151.76],
+    [170, 145.76],
+    [192, 144.76],
+    [240, 168.76]
+   ]
+  },
+  "seto": {
+   "line": "sx + 2 sy = 604",
+   "x": 7.2311,
+   "thick": 0.32,
+   "high": 0.7,
+   "what": "the hedge along y across the lower right corner (its +x face on the line x = 7.2311, on the screen sx + 2 sy = 604), 0.7 high"
+  },
+  "porton": {
+   "posts": [
+    [180, 212],
+    [212, 196]
+   ],
+   "world": [
+    [7.0711, 3.8075, 0],
+    [7.0711, 2.0669, 0]
+   ],
+   "high": 1.55,
+   "what": "the gate: the opening in the hedge between two stone posts (El camino's, without the arch) at the old gate's rows; the paving runs out through it along +x, between the lines through the two posts (sy - sx / 2 from 90 to 122)"
+  },
+  "poste": {
+   "foot": [24, 138],
+   "top": [24, 48],
+   "world": [-1.1966, 4.0251, 0],
+   "what": "the pole at the left (the old one, rows 48 to 138), on the lawn"
+  },
+  "farol": {
+   "foot": [174, 140],
+   "lantern": [174, 34, 48],
+   "world": [2.9916, 0.0544, 0],
+   "what": "the lamp post: its foot on the paving behind the gap between the second and third bench, its lantern at the old lantern's rows (34 to 48)"
+  },
+  "cable": {
+   "what": "the wire: it hangs from the pole's top to the lamp post and on off the picture; its plan the line on the ground from the pole's foot through the lamp post's; at every column it lies on the old wire's row (cableY), so every pigeon on it keeps its old point",
+   "plan": [
+    [24, 138],
+    [174, 140]
+   ],
+   "groundRow": "the ground under the wire at column c: row 138 + (c - 24) * 0.0133"
+  },
+  "luz": {
+   "pool": [2.9916, 0.0544, 2.4],
+   "what": "the lamp's light (evening and night): a pool on the ground round its foot, radius 2.4 (world), lighter towards the post; at night stronger"
+  },
+  "arboles": [
+   {
+    "foot": [86, 102],
+    "world": [-1.4686, 0.3807, 0]
+   },
+   {
+    "foot": [121, 114],
+    "world": [0.136, 0.0816, 0]
+   },
+   {
+    "foot": [220, 124],
+    "world": [3.3724, -2.0669, 0]
+   }
+  ],
+  "arbolesWhat": "El camino's small trees on the lawn beyond the paving (the old three, behind the benches): their feet; a lone tree's crown shade, lighter and solid (El campo's rule), on the lawn",
+  "carro": {
+   "world": [1.1935, 4.7149, 0.34, 1.8535, 6.1549, 0.9],
+   "wheels": 0.3,
+   "what": "the cart: a box along y on two wheels (at its two ends, on its +x side), its back face just in front of the piragua man (CARRO + (4, -6)); its umbrella's pole from its middle; open, a cone of eight panels red and white; closed, furled"
+  },
+  "sol": {
+   "screen": [34, 40],
+   "radius": 4,
+   "what": "the sun (day and evening): upper left (every shadow falls to the right), right of the corner card's place, over the wire"
+  },
+  "luna": {
+   "screen": [34, 40],
+   "radius": 4,
+   "old": [64, 26, 9],
+   "what": "the moon (W.luna, at night): in the night sky, under the corner card's place (the old one, at 64, 26, lay under it)"
+  },
+  "nubes": {
+   "screen": [
+    [150, 12, 0.7],
+    [196, 30, 0.8],
+    [160, 40, 0.6]
+   ],
+   "old": [
+    [36, 16, 1],
+    [112, 9, 0.7],
+    [168, 26, 0.8]
+   ],
+   "what": "the old picture's three clouds (engine.js sky()), clear of the sun, the moon and the corner card"
+  },
+  "corazon": {
+   "screen": [110, 30],
+   "what": "heartAt: unchanged"
+  }
+ },
+ "views": {
+  "wide": {
+   "zoom": 1,
+   "x0": 22,
+   "world": [2.0669, 2.0669, 0],
+   "region": null,
+   "old": [22, 0, 196, 216],
+   "what": "the corner: the benches in the middle, the cart at the left, the lamp post, the gate at the right, the lawn and trees behind, the sky"
+  }
+ },
+ "remap": [
+  {
+   "kind": "cam",
+   "old": [64, 154, 113, 60],
+   "uses": ["cual-banco.json viejo.si.cam", "cual-banco.json viejo.no.cam", "cual-banco.json duerme.si.cam", "cual-banco.json duerme.no.cam", "cual-banco.json triste.si.cam", "cual-banco.json triste.no.cam"],
+   "to": {
+    "pictures": ["viejo.si", "viejo.no", "duerme.si", "duerme.no", "triste.si", "triste.no"]
+   },
+   "crops": {
+    "viejo.si": {
+     "crop": [49, 164, 98, 52],
+     "zoom": 2
+    },
+    "viejo.no": {
+     "crop": [49, 164, 98, 52],
+     "zoom": 2
+    },
+    "duerme.si": {
+     "crop": [49, 164, 98, 52],
+     "zoom": 2
+    },
+    "duerme.no": {
+     "crop": [49, 164, 98, 52],
+     "zoom": 2
+    },
+    "triste.si": {
+     "crop": [49, 164, 98, 52],
+     "zoom": 2
+    },
+    "triste.no": {
+     "crop": [49, 164, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [84, 136, 124.3, 66],
+   "uses": [
+    "cual-banco.json mujer.si.cam",
+    "cual-banco.json mujer.no.cam",
+    "cual-banco.json señora.si.cam",
+    "cual-banco.json señora.no.cam",
+    "cual-banco.json joven.si.cam",
+    "cual-banco.json joven.no.cam"
+   ],
+   "to": {
+    "pictures": ["mujer.si", "mujer.no", "senora.si", "senora.no", "joven.si", "joven.no"]
+   },
+   "crops": {
+    "mujer.si": {
+     "crop": [44, 108, 196, 104],
+     "zoom": 1
+    },
+    "mujer.no": {
+     "crop": [44, 108, 196, 104],
+     "zoom": 1
+    },
+    "senora.si": {
+     "crop": [44, 108, 196, 104],
+     "zoom": 1
+    },
+    "senora.no": {
+     "crop": [44, 108, 196, 104],
+     "zoom": 1
+    },
+    "joven.si": {
+     "crop": [44, 108, 196, 104],
+     "zoom": 1
+    },
+    "joven.no": {
+     "crop": [44, 108, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [88, 106, 113, 60],
+   "uses": [
+    "cual-banco.json hombre.si.cam",
+    "cual-banco.json hombre.no.cam",
+    "cual-banco.json señor.si.cam",
+    "cual-banco.json señor.no.cam",
+    "cual-banco.json come.si.cam",
+    "cual-banco.json come.no.cam",
+    "cual-banco.json cansado.si.cam",
+    "cual-banco.json cansado.no.cam",
+    "cual-banco.json contento.si.cam",
+    "cual-banco.json contento.no.cam"
+   ],
+   "to": {
+    "pictures": ["hombre.si", "hombre.no", "senor.si", "senor.no", "come.si", "come.no", "cansado.si", "cansado.no", "contento.si", "contento.no"]
+   },
+   "crops": {
+    "hombre.si": {
+     "crop": [113, 111, 98, 52],
+     "zoom": 2
+    },
+    "hombre.no": {
+     "crop": [113, 111, 98, 52],
+     "zoom": 2
+    },
+    "senor.si": {
+     "crop": [113, 110, 98, 52],
+     "zoom": 2
+    },
+    "senor.no": {
+     "crop": [113, 110, 98, 52],
+     "zoom": 2
+    },
+    "come.si": {
+     "crop": [113, 111, 98, 52],
+     "zoom": 2
+    },
+    "come.no": {
+     "crop": [113, 111, 98, 52],
+     "zoom": 2
+    },
+    "cansado.si": {
+     "crop": [113, 112, 98, 52],
+     "zoom": 2
+    },
+    "cansado.no": {
+     "crop": [113, 112, 98, 52],
+     "zoom": 2
+    },
+    "contento.si": {
+     "crop": [113, 111, 98, 52],
+     "zoom": 2
+    },
+    "contento.no": {
+     "crop": [113, 111, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [112, 116, 90, 47.8],
+   "uses": ["cual-banco.json bebe.si.cam", "cual-banco.json bebe.no.cam"],
+   "to": {
+    "pictures": ["bebe.si", "bebe.no"]
+   },
+   "crops": {
+    "bebe.si": {
+     "crop": [103, 114, 98, 52],
+     "zoom": 2
+    },
+    "bebe.no": {
+     "crop": [103, 114, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [93.33, 154, 54.34, 60],
+   "uses": [
+    "nivel.js NV viejo.p0",
+    "nivel.js NV viejo.p1",
+    "nivel.js NV viejo.p2",
+    "nivel.js NV viejo.p3",
+    "nivel.js NV triste.p0",
+    "nivel.js NV triste.p1"
+   ],
+   "to": {
+    "pictures": ["viejo.si", "viejo.no", "duerme.no", "triste.si", "triste.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [116.11, 136, 59.77, 66],
+   "uses": [
+    "nivel.js NV señora.p0",
+    "nivel.js NV señora.p1",
+    "nivel.js NV señora.p3"
+   ],
+   "to": {
+    "pictures": ["senora.si", "senora.no", "mujer.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [117.33, 106, 54.34, 60],
+   "uses": [
+    "nivel.js NV come.p0",
+    "nivel.js NV come.p1",
+    "nivel.js NV come.p3",
+    "nivel.js NV señora.p2",
+    "nivel.js NV triste.p2",
+    "nivel.js NV triste.p3"
+   ],
+   "to": {
+    "pictures": ["come.si", "come.no", "cansado.si", "senor.si", "contento.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [130.35, 116, 43.29, 47.8],
+   "uses": [
+    "nivel.js NV come.p2"
+   ],
+   "to": {
+    "pictures": ["bebe.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "point",
+   "old": [0, 0],
+   "uses": [
+    "cual-banco.json hombre.si.set.cq",
+    "cual-banco.json hombre.no.set.cq",
+    "cual-banco.json mujer.si.set.cq",
+    "cual-banco.json mujer.no.set.cq",
+    "cual-banco.json señor.si.set.cq",
+    "cual-banco.json señor.no.set.cq",
+    "cual-banco.json joven.si.set.cq",
+    "cual-banco.json joven.no.set.cq",
+    "cual-banco.json viejo.si.set.cq",
+    "cual-banco.json viejo.no.set.cq",
+    "cual-banco.json come.si.set.cq",
+    "cual-banco.json come.no.set.cq",
+    "cual-banco.json bebe.si.set.cq",
+    "cual-banco.json bebe.no.set.cq",
+    "cual-banco.json duerme.si.set.cq",
+    "cual-banco.json duerme.no.set.cq",
+    "cual-banco.json cansado.si.set.cq",
+    "cual-banco.json cansado.no.set.cq",
+    "cual-banco.json contento.si.set.cq",
+    "cual-banco.json contento.no.set.cq",
+    "cual-banco.json triste.si.set.cq",
+    "cual-banco.json triste.no.set.cq"
+   ],
+   "to": {
+    "none": true
+   },
+   "what": "the frog out of the picture (vis 0) in a review picture: not a place"
+  },
+  {
+   "kind": "point",
+   "old": [28, 183],
+   "uses": ["d-vamos-a-casa.json beats.0.set.cq"],
+   "to": {
+    "pave": [3.1548, 7.2886, 0]
+   },
+   "new": [28, 183],
+   "what": "the frog's place q: the ground under (x + 16, y + 25); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [44, 210],
+   "uses": ["d-vamos-a-casa.json beats.0.set.casa"],
+   "to": {
+    "pave": [3.2092, 7.343, 0]
+   },
+   "new": [44, 210],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [51, 172],
+   "uses": ["d-piragua-luis.json beats.0.set.gente.piraguero", "d-vamos-a-casa.json beats.0.set.gente.piraguero", "h-banco.json beats.0.set.gente.piraguero"],
+   "to": {
+    "pave": [1.0335, 5.3849, 0]
+   },
+   "new": [40, 172],
+   "moved": true,
+   "why": "the piragua man behind his cart: CARRO moved (moves)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [54, 194],
+   "uses": ["h-banco.json beats.0.set.perros.viejo"],
+   "to": {
+    "pave": [2.6109, 6.2008, 0]
+   },
+   "new": [54, 194],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [62, 206],
+   "uses": ["d-piragua-luis.json beats.0.set.gente.carmen"],
+   "to": {
+    "pave": [3.4811, 6.6359, 0]
+   },
+   "new": [62, 206],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [66, 55],
+   "uses": ["h-banco.json beats.0.set.palomas.0"],
+   "to": {
+    "sky": [-4.6234, -1.6862, 0]
+   },
+   "new": [66, 55],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [76, 200],
+   "uses": ["d-vamos-a-casa.json beats.0.set.gente.abuela"],
+   "to": {
+    "pave": [3.5355, 5.9288, 0]
+   },
+   "new": [76, 200],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [78, 200],
+   "uses": ["d-piragua-luis.json beats.24"],
+   "to": {
+    "pave": [3.5899, 5.8744, 0]
+   },
+   "new": [78, 200],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [83, 56],
+   "uses": ["h-banco.json beats.0.set.palomas.1"],
+   "to": {
+    "sky": [-4.1067, -2.0941, 0]
+   },
+   "new": [83, 56],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [86, 190],
+   "uses": ["d-piragua-luis.json beats.0.set.gente.luis"],
+   "to": {
+    "pave": [3.2636, 5.1129, 0]
+   },
+   "new": [86, 190],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [87, 161],
+   "uses": ["d-vamos-a-casa.json beats.0.set.gente.senor"],
+   "to": {
+    "seat": [1.4663, 3.2612, 0.42]
+   },
+   "new": [87, 157],
+   "moved": true,
+   "why": "sitting on the bench at x 87: on its seat's edge (SY)",
+   "what": "sitting on a bench: the seat under the lap (x, y - 11); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [88, 181],
+   "uses": ["d-piragua-luis.json beats.0.set.cq"],
+   "to": {
+    "pave": [4.6778, 5.5481, 0]
+   },
+   "new": [88, 181],
+   "what": "the frog's place q: the ground under (x + 16, y + 25); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [90, 194],
+   "uses": ["h-banco.json beats.0.set.perros.joven"],
+   "to": {
+    "pave": [3.5899, 5.2217, 0]
+   },
+   "new": [90, 194],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [92, 210],
+   "uses": ["d-vamos-a-casa.json beats.0.set.perros.canelo"],
+   "to": {
+    "pave": [4.5146, 6.0376, 0]
+   },
+   "new": [92, 210],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [96, 161],
+   "uses": ["h-banco.json beats.0.set.gente.mujer"],
+   "to": {
+    "seat": [1.9286, 3.234, 0.42]
+   },
+   "new": [96, 161],
+   "what": "sitting on a bench: the seat under the lap (x, y - 11); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [100, 57],
+   "uses": ["d-piragua-luis.json beats.0.set.palomas.0", "d-vamos-a-casa.json beats.0.set.palomas.0", "h-banco.json beats.0.set.palomas.2"],
+   "to": {
+    "sky": [-3.5899, -2.5021, 0]
+   },
+   "new": [100, 57],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [104, 204],
+   "uses": ["d-vamos-a-casa.json beats.0.set.gente.luis"],
+   "to": {
+    "pave": [4.5146, 5.3849, 0]
+   },
+   "new": [104, 204],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [104, 208],
+   "uses": ["d-piragua-luis.json beats.0.set.casa", "d-piragua-luis.json beats.29"],
+   "to": {
+    "pave": [4.7322, 5.6025, 0]
+   },
+   "new": [104, 208],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [106, 172],
+   "uses": [
+    "cual-banco.json señora.si.set.cq",
+    "cual-banco.json señora.no.set.cq"
+   ],
+   "to": {
+    "pave": [4.6778, 4.569, 0]
+   },
+   "new": [106, 172],
+   "what": "the frog's place q: the ground under (x + 16, y + 25); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [117, 57],
+   "uses": ["h-banco.json beats.0.set.palomas.3"],
+   "to": {
+    "sky": [-3.1276, -2.9644, 0]
+   },
+   "new": [117, 57],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [118, 179],
+   "uses": ["h-banco.json beats.0.set.cq"],
+   "to": {
+    "pave": [5.3849, 4.6234, 0]
+   },
+   "new": [118, 179],
+   "what": "the frog's place q: the ground under (x + 16, y + 25); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [118, 208],
+   "uses": ["d-vamos-a-casa.json beats.35"],
+   "to": {
+    "pave": [5.1129, 5.2217, 0]
+   },
+   "new": [118, 208],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [120, 204],
+   "uses": ["cual-banco.json viejo.si.set.perros.viejo", "cual-banco.json viejo.no.set.perros.joven", "cual-banco.json duerme.si.set.perros.canelo", "cual-banco.json duerme.no.set.perros.canelo", "cual-banco.json triste.si.set.perros.canelo", "cual-banco.json triste.no.set.perros.canelo"],
+   "to": {
+    "pave": [4.9497, 4.9497, 0]
+   },
+   "new": [120, 204],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [124, 188],
+   "uses": ["d-piragua-luis.json beats.17"],
+   "to": {
+    "pave": [4.1882, 3.9707, 0]
+   },
+   "new": [124, 188],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [126, 208],
+   "uses": ["d-vamos-a-casa.json beats.0.set.gente.carmen"],
+   "to": {
+    "pave": [5.3305, 5.0041, 0]
+   },
+   "new": [126, 208],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [134, 57],
+   "uses": ["h-banco.json beats.0.set.palomas.4"],
+   "to": {
+    "sky": [-2.6652, -3.4267, 0]
+   },
+   "new": [134, 57],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [134, 206],
+   "uses": ["h-banco.json beats.0.set.casa"],
+   "to": {
+    "pave": [5.4393, 4.6778, 0]
+   },
+   "new": [134, 206],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [135, 161],
+   "uses": ["d-vamos-a-casa.json beats.0.set.gente.mujer"],
+   "to": {
+    "seat": [2.7717, 1.9558, 0.42]
+   },
+   "new": [135, 157],
+   "moved": true,
+   "why": "sitting on the bench at x 135: on its seat's edge (SY)",
+   "what": "sitting on a bench: the seat under the lap (x, y - 11); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [138, 161],
+   "uses": ["h-banco.json beats.0.set.gente.joven"],
+   "to": {
+    "seat": [2.9077, 1.9286, 0.42]
+   },
+   "new": [138, 158],
+   "moved": true,
+   "why": "sitting on the bench at x 138: on its seat's edge (SY)",
+   "what": "sitting on a bench: the seat under the lap (x, y - 11); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [144, 161],
+   "uses": [
+    "cual-banco.json hombre.si.set.gente.hombre",
+    "cual-banco.json hombre.no.set.gente.mujer",
+    "cual-banco.json señor.si.set.gente.senor",
+    "cual-banco.json señor.no.set.gente.luis",
+    "cual-banco.json come.si.set.gente.hombre",
+    "cual-banco.json come.no.set.gente.hombre",
+    "cual-banco.json cansado.si.set.gente.luis",
+    "cual-banco.json cansado.no.set.gente.luis",
+    "cual-banco.json contento.si.set.gente.hombre",
+    "cual-banco.json contento.no.set.gente.hombre"
+   ],
+   "to": {
+    "seat": [3.234, 1.9286, 0.42]
+   },
+   "new": [144, 161],
+   "what": "sitting on a bench: the seat under the lap (x, y - 11); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [146, 145],
+   "uses": ["cual-banco.json bebe.no.set.cosas.0"],
+   "to": {
+    "seat": [3.0165, 1.6022, 0.42]
+   },
+   "new": [146, 146],
+   "moved": true,
+   "why": "cual-banco bebe.no: the piragua lying on the second bench's seat (AS - 4, as the old ASIENTO - 4)",
+   "what": "on a bench's seat: the seat under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [146, 198],
+   "uses": ["cual-banco.json mujer.si.set.gente.mujer", "cual-banco.json mujer.no.set.gente.carmen", "cual-banco.json joven.si.set.gente.joven", "cual-banco.json joven.no.set.gente.senor"],
+   "to": {
+    "pave": [5.3305, 3.9163, 0]
+   },
+   "new": [146, 198],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [150, 186],
+   "uses": ["d-piragua-luis.json beats.8"],
+   "to": {
+    "pave": [4.7866, 3.1548, 0]
+   },
+   "new": [150, 186],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [152, 149],
+   "uses": ["cual-banco.json bebe.si.set.cosas.0"],
+   "to": {
+    "seat": [3.0981, 1.847, 0.42]
+   },
+   "new": [143, 149],
+   "moved": true,
+   "why": "cual-banco bebe.si: the bottle on the second bench's seat (AS), 9 px left: the pigeon by it moved left (the old point is past the seat's right end), its beak at the bottle as the old",
+   "what": "on a bench's seat: the seat under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [158, 190],
+   "uses": ["d-piragua-luis.json beats.11"],
+   "to": {
+    "pave": [5.2217, 3.1548, 0]
+   },
+   "new": [158, 190],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [160, 150],
+   "uses": ["h-banco.json beats.0.set.cosas.0"],
+   "to": {
+    "seat": [3.8324, 1.8742, 0.42]
+   },
+   "new": [156, 156],
+   "moved": true,
+   "why": "h-banco: the rucksack on the second bench's seat (AS), 4 px left, clear of its right end",
+   "what": "on a bench's seat: the seat under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [160, 198],
+   "uses": [
+    "cual-banco.json señora.si.set.gente.mujer",
+    "cual-banco.json señora.no.set.gente.joven"
+   ],
+   "to": {
+    "pave": [5.7112, 3.5355, 0]
+   },
+   "new": [160, 198],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [162, 149],
+   "uses": ["cual-banco.json bebe.si.set.palomas.0"],
+   "to": {
+    "seat": [3.8596, 1.847, 0.42]
+   },
+   "new": [157, 156],
+   "moved": true,
+   "why": "cual-banco bebe.si: the pigeon drinking on the second bench's seat, at its right end (AS)",
+   "what": "on a bench's seat: the seat under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [164, 149],
+   "uses": ["cual-banco.json bebe.no.set.palomas.0"],
+   "to": {
+    "seat": [3.8596, 1.847, 0.42]
+   },
+   "new": [157, 156],
+   "moved": true,
+   "why": "cual-banco bebe.no: the pigeon eating on the second bench's seat, at its right end (AS)",
+   "what": "on a bench's seat: the seat under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [168, 196],
+   "uses": ["d-vamos-a-casa.json beats.20"],
+   "to": {
+    "pave": [5.82, 3.2092, 0]
+   },
+   "new": [168, 196],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [170, 191],
+   "uses": ["d-piragua-luis.json beats.38"],
+   "to": {
+    "pave": [5.6025, 2.8828, 0]
+   },
+   "new": [170, 191],
+   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [186, 204],
+   "uses": ["d-vamos-a-casa.json beats.21"],
+   "to": {
+    "pave": [6.7447, 2.8284, 0]
+   },
+   "new": [192, 201],
+   "moved": true,
+   "why": "d-vamos-a-casa: Carmen by the gate, in front of its opening (at the old point she stood behind its left post)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [188, 197],
+   "uses": ["d-vamos-a-casa.json beats.7", "d-vamos-a-casa.json beats.12"],
+   "to": {
+    "pave": [7.0439, 2.7468, 0]
+   },
+   "new": [199, 203],
+   "moved": true,
+   "why": "PORTON moved into the gate's opening (moves)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [188, 200],
+   "uses": ["d-vamos-a-casa.json beats.47"],
+   "to": {
+    "pave": [7.207, 2.91, 0]
+   },
+   "new": [199, 206],
+   "moved": true,
+   "why": "by PORTON, as PORTON (moves)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [192, 161],
+   "uses": ["h-banco.json beats.0.set.gente.senor"],
+   "to": {
+    "seat": [4.5395, 0.6232, 0.42]
+   },
+   "new": [192, 161],
+   "what": "sitting on a bench: the seat under the lap (x, y - 11); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [240, 202],
+   "uses": ["d-vamos-a-casa.json beats.41"],
+   "to": {
+    "out": [8.5397, 2.0125, 0]
+   },
+   "new": [240, 210],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [246, 197],
+   "uses": ["d-vamos-a-casa.json beats.11", "d-vamos-a-casa.json beats.15"],
+   "to": {
+    "out": [8.7572, 1.9037, 0]
+   },
+   "new": [246, 211],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [246, 198],
+   "uses": ["d-vamos-a-casa.json beats.44"],
+   "to": {
+    "out": [8.8116, 1.9581, 0]
+   },
+   "new": [246, 212],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [246, 204],
+   "uses": ["d-vamos-a-casa.json beats.45"],
+   "to": {
+    "out": [8.9204, 2.0669, 0]
+   },
+   "new": [246, 214],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [250, 200],
+   "uses": ["d-vamos-a-casa.json beats.49"],
+   "to": {
+    "out": [8.9204, 1.8494, 0]
+   },
+   "new": [250, 212],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [250, 208],
+   "uses": ["d-vamos-a-casa.json beats.42"],
+   "to": {
+    "out": [8.5941, 1.523, 0]
+   },
+   "new": [250, 206],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
+  },
+  {
+   "kind": "x",
+   "old": [146],
+   "uses": [
+    "nivel.js NV señora.p0",
+    "nivel.js NV señora.p1",
+    "nivel.js NV señora.p3"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [152],
+   "uses": [
+    "nivel.js NV come.p2"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  }
+ ],
+ "pictures": {
+  "hombre.si": {
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
+   "zoom": 2,
+   "crop": [113, 111, 98, 52],
+   "what": "the man sitting on the second bench, reading"
+  },
+  "hombre.no": {
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
+   "zoom": 2,
+   "crop": [113, 111, 98, 52],
+   "what": "the woman sitting there, reading"
+  },
+  "senor.si": {
+   "world": [2.4477, 0.1632, 0],
+   "screen": [162, 136],
+   "zoom": 2,
+   "crop": [113, 110, 98, 52],
+   "what": "the old man sitting on the bench"
+  },
+  "senor.no": {
+   "world": [2.4477, 0.1632, 0],
+   "screen": [162, 136],
+   "zoom": 2,
+   "crop": [113, 110, 98, 52],
+   "what": "Luis sitting there"
+  },
+  "come.si": {
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
+   "zoom": 2,
+   "crop": [113, 111, 98, 52],
+   "what": "the man on the bench eating a piragua"
+  },
+  "come.no": {
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
+   "zoom": 2,
+   "crop": [113, 111, 98, 52],
+   "what": "the man drinking water"
+  },
+  "cansado.si": {
+   "world": [2.5565, 0.272, 0],
+   "screen": [162, 138],
+   "zoom": 2,
+   "crop": [113, 112, 98, 52],
+   "what": "Luis on the bench, tired"
+  },
+  "cansado.no": {
+   "world": [2.5565, 0.272, 0],
+   "screen": [162, 138],
+   "zoom": 2,
+   "crop": [113, 112, 98, 52],
+   "what": "Luis on the bench, happy, waving"
+  },
+  "contento.si": {
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
+   "zoom": 2,
+   "crop": [113, 111, 98, 52],
+   "what": "the man on the bench, happy"
+  },
+  "contento.no": {
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
+   "zoom": 2,
+   "crop": [113, 111, 98, 52],
+   "what": "the man on the bench, crying"
+  },
+  "mujer.si": {
+   "world": [3.318, 1.9037, 0],
+   "screen": [146, 160],
+   "zoom": 1,
+   "crop": [44, 108, 196, 104],
+   "what": "the woman walking on the paving"
+  },
+  "mujer.no": {
+   "world": [3.318, 1.9037, 0],
+   "screen": [146, 160],
+   "zoom": 1,
+   "crop": [44, 108, 196, 104],
+   "what": "Carmen walking there"
+  },
+  "senora.si": {
+   "world": [3.318, 1.9037, 0],
+   "screen": [146, 160],
+   "zoom": 1,
+   "crop": [44, 108, 196, 104],
+   "what": "the woman with a bag, the frog"
+  },
+  "senora.no": {
+   "world": [3.318, 1.9037, 0],
+   "screen": [146, 160],
+   "zoom": 1,
+   "crop": [44, 108, 196, 104],
+   "what": "the young man with a bag, the frog"
+  },
+  "joven.si": {
+   "world": [3.318, 1.9037, 0],
+   "screen": [146, 160],
+   "zoom": 1,
+   "crop": [44, 108, 196, 104],
+   "what": "the young man walking"
+  },
+  "joven.no": {
+   "world": [3.318, 1.9037, 0],
+   "screen": [146, 160],
+   "zoom": 1,
+   "crop": [44, 108, 196, 104],
+   "what": "the old man walking"
+  },
+  "viejo.si": {
+   "world": [3.6443, 4.841, 0],
+   "screen": [98, 190],
+   "zoom": 2,
+   "crop": [49, 164, 98, 52],
+   "what": "the old dog walking"
+  },
+  "viejo.no": {
+   "world": [3.6443, 4.841, 0],
+   "screen": [98, 190],
+   "zoom": 2,
+   "crop": [49, 164, 98, 52],
+   "what": "the young dog walking"
+  },
+  "duerme.si": {
+   "world": [3.6443, 4.841, 0],
+   "screen": [98, 190],
+   "zoom": 2,
+   "crop": [49, 164, 98, 52],
+   "what": "Canelo asleep"
+  },
+  "duerme.no": {
+   "world": [3.6443, 4.841, 0],
+   "screen": [98, 190],
+   "zoom": 2,
+   "crop": [49, 164, 98, 52],
+   "what": "Canelo lying with a bone"
+  },
+  "triste.si": {
+   "world": [3.6443, 4.841, 0],
+   "screen": [98, 190],
+   "zoom": 2,
+   "crop": [49, 164, 98, 52],
+   "what": "Canelo sad"
+  },
+  "triste.no": {
+   "world": [3.6443, 4.841, 0],
+   "screen": [98, 190],
+   "zoom": 2,
+   "crop": [49, 164, 98, 52],
+   "what": "Canelo tired"
+  },
+  "bebe.si": {
+   "world": [2.3933, 0.6527, 0],
+   "screen": [152, 140],
+   "zoom": 2,
+   "crop": [103, 114, 98, 52],
+   "what": "a pigeon drinking from a bottle on the bench"
+  },
+  "bebe.no": {
+   "world": [2.3933, 0.6527, 0],
+   "screen": [152, 140],
+   "zoom": 2,
+   "crop": [103, 114, 98, 52],
+   "what": "a pigeon eating a piragua on the bench"
+  }
+ },
+ "level": [
+  {
+   "w": "come",
+   "index": 0,
+   "picture": "come.si",
+   "old": [117.33, 106, 54.34, 60],
+   "crop": [113, 111, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "come",
+   "index": 1,
+   "picture": "come.no",
+   "old": [117.33, 106, 54.34, 60],
+   "crop": [113, 111, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "come",
+   "index": 2,
+   "picture": "bebe.si",
+   "old": [130.35, 116, 43.29, 47.8],
+   "crop": [103, 114, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "come",
+   "index": 3,
+   "picture": "cansado.si",
+   "old": [117.33, 106, 54.34, 60],
+   "crop": [113, 112, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "señora",
+   "index": 0,
+   "picture": "senora.si",
+   "old": [116.11, 136, 59.77, 66],
+   "crop": [44, 108, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "señora",
+   "index": 1,
+   "picture": "senora.no",
+   "old": [116.11, 136, 59.77, 66],
+   "crop": [44, 108, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "señora",
+   "index": 2,
+   "picture": "senor.si",
+   "old": [117.33, 106, 54.34, 60],
+   "crop": [113, 110, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "señora",
+   "index": 3,
+   "picture": "mujer.no",
+   "old": [116.11, 136, 59.77, 66],
+   "crop": [44, 108, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "viejo",
+   "index": 0,
+   "picture": "viejo.si",
+   "old": [93.33, 154, 54.34, 60],
+   "crop": [49, 164, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "viejo",
+   "index": 1,
+   "picture": "viejo.no",
+   "old": [93.33, 154, 54.34, 60],
+   "crop": [49, 164, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "viejo",
+   "index": 2,
+   "picture": "duerme.no",
+   "old": [93.33, 154, 54.34, 60],
+   "crop": [49, 164, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "viejo",
+   "index": 3,
+   "picture": "triste.si",
+   "old": [93.33, 154, 54.34, 60],
+   "crop": [49, 164, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "triste",
+   "index": 0,
+   "picture": "triste.si",
+   "old": [93.33, 154, 54.34, 60],
+   "crop": [49, 164, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "triste",
+   "index": 1,
+   "picture": "triste.no",
+   "old": [93.33, 154, 54.34, 60],
+   "crop": [49, 164, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "triste",
+   "index": 2,
+   "picture": "contento.si",
+   "old": [117.33, 106, 54.34, 60],
+   "crop": [113, 111, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "triste",
+   "index": 3,
+   "picture": "cansado.si",
+   "old": [117.33, 106, 54.34, 60],
+   "crop": [113, 112, 98, 52],
+   "zoom": 2
+  }
+ ],
+ "clips": {},
+ "clipsWhat": "banco.js never calls clip()",
+ "smoothing": "banco.js never turns smoothing on (respIcon turns it off)",
+ "front": {
+  "how": "the old background (fondo: the benches, the lamp post, the pole, the hedge and its posts) was drawn before everyone, and the cart was in the sorted list; now each is a set thing someone can be behind. At its entry in the list banco.js draw sorts by y (sortY 9999: after everyone), for each item drawn before it (a person, the frog, a dog, a pigeon, the pushchair, a thing: each item says what it is), the set's own pixels of the part (banco-set.html part(), PART_TAGS) are drawn again inside the item's box, only where that pixel is nearer to the camera than the item: bakedZ[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S, v = (x + y) / R2 of the ground point under it (rules.floor). Whoever sits on a bench (sent) stands in the plane of that bench's seat front (its y1) + .03: so nothing of their bench is drawn over them, and its back stays behind them. A thing or a pigeon on a seat stands in the plane of the seat's point under its lowest row + 1 (at the seat's height) + .02: under (x, y), and under (x, y + 5) for a thing lying on its side (rot: the piragua, whose width reaches forward), a pigeon on a bench's back in that of the back's top; a pigeon on the wire is drawn over everything. \"Behind the bench\" is that depth test, not a row",
+  "plane": "v / COS - (row + .5 - OY) * tan(30 deg) / S",
+  "boxes": "a person: [x - 24, y - 60 - dy, 48, 63 + dy]; the frog: frogBox with dy; a dog: [x - 16, y - 24 - dy, 32, 27 + dy]; a pigeon: [x - 10, y - 14, 20, 16]; the pushchair: [x - 21, y - 42, 42, 45]; a thing: [x - 15, y - 34, 30, 36]; its ground point under (x, y - 1)",
+  "parts": {
+   "banco0": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"banco0\"})"
+   },
+   "banco1": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"banco1\"})"
+   },
+   "banco2": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"banco2\"})"
+   },
+   "carro": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"carro\"})"
+   },
+   "farol": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"farol\"})"
+   },
+   "poste": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"poste\"})"
+   },
+   "porton": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"porton\"})"
+   },
+   "seto": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"seto\"})"
+   }
+  },
+  "tags": [
+   [
+    "L.push({y:p.sent?p.y-8:p.y,d:()=>gente(c,id,a)})",
+    "L.push({y:p.sent?p.y-8:p.y,id,d:()=>gente(c,id,a)})"
+   ],
+   [
+    "(W.palomas||[]).forEach(o=>{if(o.vis!==0)L.push({y:o.z!=null?o.z:o.y,d:()=>{",
+    "(W.palomas||[]).forEach(o=>{if(o.vis!==0)L.push({y:o.z!=null?o.z:o.y,pal:o,d:()=>{"
+   ],
+   [
+    "(W.cosas||[]).forEach(o=>{if(o.vis!==0)L.push({y:o.z!=null?o.z:o.y+1,d:()=>{",
+    "(W.cosas||[]).forEach(o=>{if(o.vis!==0)L.push({y:o.z!=null?o.z:o.y+1,cosa:o,d:()=>{"
+   ],
+   [
+    "if(o&&o.vis!==0)L.push({y:o.y,d:()=>perro(c,n,a)})",
+    "if(o&&o.vis!==0)L.push({y:o.y,perro:n,d:()=>perro(c,n,a)})"
+   ],
+   [
+    "if(W.coche)L.push({y:W.coche.y,d:()=>coche(c,a)});",
+    "if(W.coche)L.push({y:W.coche.y,coche:1,d:()=>coche(c,a)});"
+   ],
+   [
+    "if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)});",
+    "if(q.vis)L.push({y:q.y+27,id:\"coqui\",d:()=>rana(c,q,a)});"
+   ]
+  ],
+  "tagsWhat": "each item of the sorted list says what it is (the front masks read it); nothing else changes"
+ },
+ "shadows": {
+  "rule": "every shadow is the sun's (day and evening; at night none: light.noche), cast from the ground point (z 0) under the screen point of the thing's feet (unproject), and darkens only pixels that take a cast shadow (the paving and the lawn, at their own depth)",
+  "coqui": {
+   "radius": 0.45,
+   "at": "unproject(b.x + b.w / 2, q.y + 25)",
+   "when": "W.cq.vis and al > .5, not W.noche",
+   "cast": "castShadow(g.x, g.y, .3, .45)"
+  },
+  "people": {
+   "radius": 0.32,
+   "at": "unproject(x, y - 1); sitting: the ground under their feet, unproject(x, y)",
+   "when": "visible (vis !== 0, al > .5), not W.noche",
+   "cast": "for (z = .3; z <= 1.7; z += .35) castShadow(g.x, g.y, z, .32) (sitting: z .3 and .65)"
+  },
+  "perros": {
+   "radius": 0.32,
+   "at": "unproject(x, y - 1)",
+   "when": "every dog shown (not in the air: dy <= 3), not W.noche",
+   "cast": "castShadow(g.x, g.y, .25, .32)"
+  },
+  "coche": {
+   "radius": 0.45,
+   "at": "unproject(x, y - 1)",
+   "when": "W.coche, not W.noche",
+   "cast": "castShadow(g.x, g.y, .3, .45), castShadow(g.x, g.y, .9, .4)"
+  },
+  "paloma": {
+   "radius": 0.16,
+   "at": "on the ground: unproject(x, y - 1); in the air (palomaA, pose vuela): unproject(o.gs) (helps.shadow)",
+   "when": "on the ground or in the air, not on the wire, a bench's back or seat, the pushchair, not W.noche",
+   "cast": "castShadow(g.x, g.y, .1, .16)"
+  },
+  "cosas": {
+   "radius": 0.18,
+   "at": "unproject(x, y - 1)",
+   "when": "a thing lying on the ground (not on a seat, not in the air: z unset or <= its y), not W.noche",
+   "cast": "castShadow(g.x, g.y, .1, .18) (the box: .4)"
+  },
+  "dropped": "none of the old code's own: banco.js draws no shadow"
+ },
+ "helps": {
+  "what": "a pigeon in the air has its shadow on the ground under it: palomaA keeps, at every step of its flight, the screen point on the ground under it (o.gs): between the ground under where it took off and the ground under where it lands, as far along as it has flown (GS); landed, none",
+  "lines": [
+   [
+    "o.x=x0+(x-x0)*t;o.y=y0+(y-y0)*t-Math.sin(Math.PI*t)*8;await wait(TICK);}o.x=x;o.y=y;o.pose=\"\";",
+    "o.x=x0+(x-x0)*t;o.y=y0+(y-y0)*t-Math.sin(Math.PI*t)*8;o.gs=GS(x0,y0,x,y,t);await wait(TICK);}o.x=x;o.y=y;o.pose=\"\";o.gs=null;"
+   ]
+  ],
+  "linesWhat": "the lines banco.js gains; GS (shadow.gsSource) is defined in the line of B and ASIENTO (const GS=..., B=BANCOS, ...); the port draws the rolling cart where the edited line calls CARRORUEDA (carro.rolling)",
+  "shadow": {
+   "gs": "GS(x0, y0, x1, y1, t): the ground under a perch (x, y): on the wire (|y - cableY(x)| <= 2, y < 80): [x, 138 + (x - 24) * 0.0133] (points.cable); on a bench's back (a POSA): [x, y - 1 + (ZS + BACK_H) * COS * S]; on a seat (a bench's seat at that row): [x, y - 1 + ZS * COS * S]; else [x, y - 1]. The shadow: lerp of the two by t",
+   "gsSource": "(x0,y0,x1,y1,t)=>{const g=(x,y)=>Math.abs(y-cableY(x))<=2&&y<80?[x,138+(x-24)*0.0133]:POSA.some(p=>Math.abs(p[0]-x)<=1&&Math.abs(p[1]-y)<=1)?[x,y-1+22.967]:(y>=140&&y<=170&&Math.abs(y-AS(x))<=2&&x>75&&x<215)?[x,y-1+9.457]:[x,y-1],a=g(x0,y0),b=g(x1,y1);return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];}"
+  },
+  "margin": 6,
+  "marginWhat": "whatever rests near the paving's edge, the hedge, a bench, the lamp post or the gate is on one side: on the paving with at least `margin` px of paving round its foot (the lowest 2 rows of its sprite), or on the lawn with `margin` px of lawn, and `margin` px from the footprint of every set thing (where it meets the ground: a bench's leg, the lamp post's foot, the cart's wheels, a trunk; banco-set.html FOOTS), 3 px from a gate's post (the opening is just wide enough to walk through) and from the hedge (round 2: it may hide feet, never a face); what stands behind a thing is drawn behind it (front), what stands in front of it before it"
+ },
+ "moves": [
+  {
+   "line": 19,
+   "act": "*",
+   "src": "PORTON=[188,197];",
+   "to": "PORTON=[199,203],SY=x=>{const k=x<120?0:x<168?1:2;return Math.round(161+(x-BANCOS[k][0])/2);},AS=x=>SY(x)-12;",
+   "places": [
+    {
+     "who": "porton",
+     "old": [188, 197],
+     "new": [199, 203],
+     "world": [7.0439, 2.7468, 0]
+    },
+    {
+     "who": "porton",
+     "old": [184, 199],
+     "new": [195, 205],
+     "world": [7.0439, 2.9644, 0]
+    },
+    {
+     "who": "porton",
+     "old": [184, 197],
+     "new": [195, 203],
+     "world": [6.9351, 2.8556, 0]
+    },
+    {
+     "who": "cq",
+     "old": [176, 172],
+     "new": [187, 178],
+     "world": [7.207, 2.6924, 0]
+    }
+   ],
+   "why": "round 2: PORTON, where one stands at the gate, 11 px right and 6 rows down: inside the gate's opening (the hedge along y across the lower right corner, its two posts at 180, 212 and 212, 196); every place made from it moves with it (luisve, pasa, sale, turno22, adios, sevade, alza, final22, sevan22: the way out at PORTON[1]). And two rules the moves below use. SY(x): where whoever sits on a bench at x has their feet: the benches stand on the world's axes (along x), so each seat's front edge falls half a row for every px to the right; whoever sits keeps the old x and sits on that edge, their feet over the paving below it; at each bench's middle the old 161. AS(x) = SY(x) - 12: a thing put on the seat at x (the old ASIENTO, 149 at each bench's middle), two rows behind the edge"
+  },
+  {
+   "line": 231,
+   "act": "*",
+   "src": "await mueve(id,q[0]+(lado||0)*10,q[1]+11);",
+   "to": "await mueve(id,q[0]+(lado||0)*10,SY(q[0]+(lado||0)*10));",
+   "why": "sienta: whoever sits down sits on the seat's edge at their x (SY)"
+  },
+  {
+   "line": 267,
+   "act": "inicio21",
+   "src": "hombre:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[2][0],y:161,dir:1,sent:1}",
+   "to": "hombre:{x:B[0][0]-9,y:SY(B[0][0]-9),dir:1,sent:1},mujer:{x:B[1][0]-9,y:SY(B[1][0]-9),dir:1,sent:1},luis:{x:B[2][0],y:SY(B[2][0]),dir:1,sent:1}",
+   "places": [
+    {
+     "who": "hombre",
+     "old": [87, 161],
+     "new": [87, 157],
+     "world": [1.4663, 3.2612, 0.42]
+    },
+    {
+     "who": "mujer",
+     "old": [135, 161],
+     "new": [135, 157],
+     "world": [2.7717, 1.9558, 0.42]
+    },
+    {
+     "who": "luis",
+     "old": [192, 161],
+     "new": [192, 161],
+     "world": [4.5395, 0.6232, 0.42]
+    }
+   ],
+   "why": "acts.inicio21: the three on the benches sit on the seats' edges (SY)"
+  },
+  {
+   "line": 302,
+   "act": "inicio22",
+   "src": "senor:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},joven:{x:B[2][0]-9,y:161,dir:1,sent:1,sin:{mochila:1}},hombre:{x:B[0][0]+11,y:161,dir:1,sent:1,lee:1}",
+   "to": "senor:{x:B[0][0]-9,y:SY(B[0][0]-9),dir:1,sent:1},mujer:{x:B[1][0]-9,y:SY(B[1][0]-9),dir:1,sent:1},joven:{x:B[2][0]-9,y:SY(B[2][0]-9),dir:1,sent:1,sin:{mochila:1}},hombre:{x:B[0][0]+11,y:SY(B[0][0]+11),dir:1,sent:1,lee:1}",
+   "places": [
+    {
+     "who": "senor",
+     "old": [87, 161],
+     "new": [87, 157],
+     "world": [1.4663, 3.2612, 0.42]
+    },
+    {
+     "who": "mujer",
+     "old": [135, 161],
+     "new": [135, 157],
+     "world": [2.7717, 1.9558, 0.42]
+    },
+    {
+     "who": "joven",
+     "old": [183, 161],
+     "new": [183, 157],
+     "world": [4.0771, 0.6504, 0.42]
+    },
+    {
+     "who": "hombre",
+     "old": [107, 161],
+     "new": [107, 167],
+     "world": [2.5541, 3.2612, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: the four on the benches (SY)"
+  },
+  {
+   "line": 308,
+   "act": "sientan",
+   "src": "await mueve(k[0],B[k[1]][0]+k[2],161);",
+   "to": "await mueve(k[0],B[k[1]][0]+k[2],SY(B[k[1]][0]+k[2]));",
+   "why": "acts.sientan: they sit down again on the seats' edges (SY)"
+  },
+  {
+   "line": 339,
+   "act": "inicio23",
+   "src": "senora:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[0][0]-13,y:161,dir:1,sent:1,animo:\"cansado\"},hombre:{x:B[2][0]+2,y:161,dir:1,sent:1,animo:\"triste\"}",
+   "to": "senora:{x:B[1][0]-9,y:SY(B[1][0]-9),dir:1,sent:1},luis:{x:B[0][0]-13,y:SY(B[0][0]-13),dir:1,sent:1,animo:\"cansado\"},hombre:{x:B[2][0]+1,y:SY(B[2][0]+1),dir:1,sent:1,animo:\"triste\"}",
+   "places": [
+    {
+     "who": "senora",
+     "old": [135, 161],
+     "new": [135, 157],
+     "world": [2.7717, 1.9558, 0.42]
+    },
+    {
+     "who": "luis",
+     "old": [83, 161],
+     "new": [83, 155],
+     "world": [1.2487, 3.2612, 0.42]
+    },
+    {
+     "who": "hombre",
+     "old": [194, 161],
+     "new": [193, 162],
+     "world": [4.6211, 0.6504, 0.42]
+    }
+   ],
+   "why": "acts.inicio23: the three on the benches (SY); the man on the third bench 1 px left, so that his hint frame stays inside the view (it did not in the old), and the frog's walk to him (alegra) still takes its old 4 hops (round 4: 2 px left made it 3)"
+  },
+  {
+   "line": 344,
+   "act": "abuelallega",
+   "src": "a.x=B[0][0]+5;a.y=161;",
+   "to": "a.x=B[0][0]+7;a.y=SY(B[0][0]+7);",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [101, 161],
+     "new": [103, 165],
+     "world": [2.3366, 3.2612, 0.42]
+    }
+   ],
+   "why": "acts.abuelallega: abuela sits down on the first bench (SY), 2 px further right than the old, apart from Luis (on the slanted seat she sits lower than he)"
+  },
+  {
+   "line": 361,
+   "act": "mira23",
+   "src": "s.x+=4;await wait(700);s.x-=4;",
+   "to": "s.x+=4;s.y+=2;await wait(700);s.x-=4;s.y-=2;",
+   "why": "acts.mira23: the señora leans 4 px to the right along the seat: she keeps to its edge (2 rows lower)"
+  },
+  {
+   "line": 272,
+   "act": "dejan",
+   "src": "{id:\"pir\",k:\"piragua\",x:101,y:ASIENTO-4,rot:Math.PI/2},{id:\"bot\",k:\"agua\",x:153,y:ASIENTO}",
+   "to": "{id:\"pir\",k:\"piragua\",x:97,y:AS(97)-4,rot:Math.PI/2},{id:\"bot\",k:\"agua\",x:153,y:AS(153)}",
+   "places": [
+    {
+     "who": "cosa",
+     "old": [101, 145],
+     "new": [97, 146],
+     "world": [1.6838, 2.9349, 0.42]
+    },
+    {
+     "who": "cosa",
+     "old": [153, 149],
+     "new": [153, 154],
+     "world": [3.642, 1.847, 0.42]
+    }
+   ],
+   "why": "acts.dejan: the piragua and the bottle left on the seats (AS); the piragua 4 px left, so that it lies on the seat's top clear of its right end, by the man who leaves it"
+  },
+  {
+   "line": 274,
+   "act": "paloma",
+   "src": "await palomaA(pg,119,ASIENTO);",
+   "to": "await palomaA(pg,109,AS(109));",
+   "places": [
+    {
+     "who": "paloma",
+     "old": [119, 149],
+     "new": [109, 156],
+     "world": [2.5541, 3.1524, 0.42]
+    }
+   ],
+   "why": "acts.paloma: the pigeon lands on the seat by the piragua: the old point (119) is past the new seat's right end; on the seat, 10 px left, its beak at the piragua (moved 4 px left too)"
+  },
+  {
+   "line": 274,
+   "act": "paloma",
+   "src": "await palomaA(pg,163,ASIENTO);",
+   "to": "await palomaA(pg,157,AS(157));",
+   "places": [
+    {
+     "who": "paloma",
+     "old": [163, 149],
+     "new": [157, 156],
+     "world": [3.8596, 1.847, 0.42]
+    }
+   ],
+   "why": "acts.paloma: the pigeon lands on the seat by the bottle: on the seat, 6 px left (the old point is past the new seat's right end)"
+  },
+  {
+   "line": 303,
+   "act": "inicio22",
+   "src": "{id:\"cartera\",k:\"cartera\",x:157,y:ASIENTO},{id:\"mochila\",k:\"mochila\",x:204,y:ASIENTO+1}",
+   "to": "{id:\"cartera\",k:\"cartera\",x:154,y:AS(154)},{id:\"mochila\",k:\"mochila\",x:197,y:AS(197)+1}",
+   "places": [
+    {
+     "who": "cosa",
+     "old": [157, 149],
+     "new": [154, 154],
+     "world": [3.6692, 1.8198, 0.42]
+    },
+    {
+     "who": "cosa",
+     "old": [204, 150],
+     "new": [197, 153],
+     "world": [4.7842, 0.596, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: the handbag and the rucksack on the seats (AS), clear of the seats' right ends (the third bench ends 5 px right of its middle, round 2)"
+  },
+  {
+   "line": 315,
+   "act": "turno22",
+   "src": "{id:\"periodico\",k:\"periodico\",x:108,y:ASIENTO}",
+   "to": "{id:\"periodico\",k:\"periodico\",x:105,y:AS(105)}",
+   "places": [
+    {
+     "who": "cosa",
+     "old": [108, 149],
+     "new": [105, 154],
+     "world": [2.3366, 3.1524, 0.42]
+    }
+   ],
+   "why": "acts.turno22: the newspaper left on the seat (AS), 3 px left, clear of its right end"
+  },
+  {
+   "line": 343,
+   "act": "cojin",
+   "src": "{id:\"cojin\",k:\"mochila\",x:B[0][0]-21,y:ASIENTO+1,z:150}",
+   "to": "{id:\"cojin\",k:\"mochila\",x:B[0][0]+12,y:AS(B[0][0]+12)+1,z:150}",
+   "places": [
+    {
+     "who": "cosa",
+     "old": [75, 150],
+     "new": [108, 156],
+     "world": [2.5269, 3.1796, 0.42]
+    }
+   ],
+   "why": "acts.cojin: Carmen puts the rucksack on the first bench as a cushion: the old point (B - 21) is past the new seat's left end, and Luis sits at its left end (B - 13); at its right end"
+  },
+  {
+   "line": 238,
+   "act": "*",
+   "src": "POSA=[[110,127],[158,127],[176,127],[208,127]]",
+   "to": "POSA=[[110,137],[158,137],[188,128],[197,133]]",
+   "places": [
+    {
+     "who": "paloma",
+     "old": [110, 127],
+     "new": [110, 137],
+     "world": [2.2827, 2.8266, 1.02]
+    },
+    {
+     "who": "paloma",
+     "old": [158, 127],
+     "new": [158, 137],
+     "world": [3.5881, 1.5212, 1.02]
+    },
+    {
+     "who": "paloma",
+     "old": [176, 127],
+     "new": [188, 128],
+     "world": [3.9145, 0.2158, 1.02]
+    },
+    {
+     "who": "paloma",
+     "old": [208, 127],
+     "new": [197, 133],
+     "world": [4.4312, 0.243, 1.02]
+    }
+   ],
+   "why": "where the pigeons perch on the benches' backs (posa): on the top of each back at its x, which falls half a row a px to the right; the third (176) was past the third back's left end: 12 px right; the fourth 11 px left (the third bench is shorter, round 2)"
+  },
+  {
+   "line": 19,
+   "act": "*",
+   "src": "CARRO=[47,178]",
+   "to": "CARRO=[36,178]",
+   "places": [
+    {
+     "who": "piraguero",
+     "old": [51, 172],
+     "new": [40, 172],
+     "world": [1.0335, 5.3849, 0]
+    },
+    {
+     "who": "carro",
+     "old": [47, 178],
+     "new": [36, 178],
+     "world": [1.251, 5.82, 0]
+    }
+   ],
+   "why": "the cart and its man 11 px to the left: the cart lies along y in front of the man (down to the right of him on the screen, where the old one was drawn round him), so its middle is right of him; at the old point its right wheel stood where the frog serves whoever sits at the first bench's left (87, 179). W.carroX starts at CARRO[0] (carrova) and every place made from CARRO moves with it (the man: CARRO + (4, -6))"
+  },
+  {
+   "line": 426,
+   "act": "*",
+   "src": "fresh:()=>({respEn:[120,64],",
+   "to": "fresh:()=>({respEn:[128,31],",
+   "why": "where the answer cards stand (W.respEn, every story of the scene): in the sky under the rounds card, so that the hint drawn round a card (its frame, box + 12, and the hint hand under it, 45 px tall) falls on nobody's face: at the old (120, 64) the hand lay on the faces of whoever sits on the benches. Its frames and glow 4 px inside the view, right of the sun; over the wire's pigeons and the lamp's lantern (no ask with cards names them)"
+  },
+  {
+   "line": 305,
+   "act": "inicio22",
+   "src": "W.casa=[124,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;",
+   "to": "W.casa=[134,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;",
+   "places": [
+    {
+     "who": "cq",
+     "old": [108, 178],
+     "new": [118, 178],
+     "world": [5.3305, 4.569, 0]
+    }
+   ],
+   "why": "acts.inicio22 (senor-senora): the frog's home 10 px right, so that his walks to the young dog (moved, below) take their old two hops; every other walk from it keeps its count (hops)"
+  },
+  {
+   "line": 304,
+   "act": "inicio22",
+   "src": "W.perros={viejo:{x:90,y:193,pose:\"sit\",dir:1},joven:{x:38,y:193,pose:\"sit\",dir:1}}",
+   "to": "W.perros={viejo:{x:104,y:193,pose:\"sit\",dir:1},joven:{x:52,y:193,pose:\"sit\",dir:1}}",
+   "places": [
+    {
+     "who": "perro",
+     "old": [38, 193],
+     "new": [52, 193],
+     "world": [2.4725, 6.1712, 0.42]
+    },
+    {
+     "who": "perro",
+     "old": [90, 193],
+     "new": [104, 193],
+     "world": [3.8867, 4.757, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: the two dogs 14 px right: at 38 the young dog's hint frame (box + 12) left the view (as in the old); the old dog with it, and the frog's home (above), so that every walk of the frog between them and to them takes its old hops"
+  },
+  {
+   "line": 318,
+   "act": "sale22",
+   "src": "W.casa=[100,205];",
+   "to": "W.casa=[114,205];",
+   "places": [
+    {
+     "who": "cq",
+     "old": [84, 178],
+     "new": [98, 178],
+     "world": [4.7866, 5.1129, 0]
+    }
+   ],
+   "why": "acts.sale22: the frog's home when the dogs have moved aside, 14 px right with them (moved, below), so that he stands where he stood beside the young dog and his walks take their old hops"
+  },
+  {
+   "line": 309,
+   "lines": [309, 311],
+   "act": "*",
+   "src": "mueve(\"carmen\",158,210)",
+   "to": "mueve(\"carmen\",160,215)",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [158, 210],
+     "new": [160, 215],
+     "world": [6.6064, 4.4307, 0.42]
+    }
+   ],
+   "why": "bolsa, hueso: where Carmen hands the bag and the bone, 2 px right and 5 rows nearer (round 3: 1 px from the picture's lower edge, not 3: no place holds, see checks.notFixed) (round 3: 3 px and more inside the picture's lower edge, as the old): Luis and the frog's home moved 14 px right (round 2), and 14 px would put her behind the gate's left post; here she is clear of the frog, of the post, and of Luis but his feet"
+  },
+  {
+   "line": 335,
+   "act": "carrova",
+   "src": "v.y=196;j.y=204;",
+   "to": "v.y=206;j.y=210;",
+   "why": "acts.carrova: when the cart goes home the two dogs walk 10 and 6 rows nearer: the cart now rolls toward the viewer (+y) with its man pushing it, and at the old rows he walked over the old dog; here both dogs stay in front of him while they are in the view (the young one still in front of the old)"
+  },
+  {
+   "line": 327,
+   "act": "perros22",
+   "src": "L=[38,193],D=[90,193]",
+   "to": "L=[52,193],D=[104,193]",
+   "why": "acts.perros22: the dogs' two places, as at the start (inicio22)"
+  },
+  {
+   "line": 318,
+   "act": "sale22",
+   "src": "perroA(\"viejo\",36,193,\"walk\"),perroA(\"joven\",64,194,\"run\")",
+   "to": "perroA(\"viejo\",52,193,\"walk\"),perroA(\"joven\",54,210,\"run\")",
+   "places": [
+    {
+     "who": "perro",
+     "old": [36, 193],
+     "new": [52, 193],
+     "world": [2.4725, 6.1712, 0.42]
+    },
+    {
+     "who": "perro",
+     "old": [64, 194],
+     "new": [54, 210],
+     "world": [3.4516, 7.0415, 0.42]
+    }
+   ],
+   "why": "acts.sale22: the dogs move aside to the left: the old one 16 px less far (his hint frame inside the view), the young one 10 px farther and 16 rows nearer (round 3: 3 px and more inside the picture's lower edge), in front of the old one (moved) and of the frog when he serves whoever queues first at the cart (cola22: at the old row he stood over the dog)"
+  },
+  {
+   "line": 302,
+   "act": "inicio22",
+   "src": "carmen:{x:176,y:208,dir:-1}",
+   "to": "carmen:{x:198,y:211,dir:-1}",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [176, 208],
+     "new": [198, 211],
+     "world": [7.4223, 3.1796, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: Carmen 18 px right and 4 rows down, on the path just beyond the gate: at the old point she stood on the gate's left post; the frog's home, Luis and the box moved 14 px right (round 2), and she keeps her distance from them"
+  },
+  {
+   "line": 302,
+   "act": "inicio22",
+   "src": "luis:{x:148,y:186,dir:1}",
+   "to": "luis:{x:162,y:186,dir:1}",
+   "places": [
+    {
+     "who": "luis",
+     "old": [148, 186],
+     "new": [162, 186],
+     "world": [5.0834, 2.7989, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: Luis by the box, 14 px right with the frog's home (moved), so that the frog does not stand on his feet (round 2)"
+  },
+  {
+   "line": 317,
+   "lines": [317, 326],
+   "act": "*",
+   "src": "mueve(\"luis\",148,186)",
+   "to": "mueve(\"luis\",162,186)",
+   "why": "luiscaja, luisguarda: Luis back to his place by the box (moved, inicio22)"
+  },
+  {
+   "line": 303,
+   "act": "inicio22",
+   "src": "{id:\"caja\",k:\"caja\",x:167,y:187}",
+   "to": "{id:\"caja\",k:\"caja\",x:185,y:187}",
+   "places": [
+    {
+     "who": "cosa",
+     "old": [167, 187],
+     "new": [185, 187],
+     "world": [6.3072, 2.7717, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: the box beside Luis, 18 px right (he moved 14), so that it hides no more of his legs than the old (round 2)"
+  },
+  {
+   "line": 306,
+   "act": "alcarro",
+   "src": "const en={senor:[80,184],mujer:[96,188],joven:[112,184]}",
+   "to": "const en={senor:[80,190],mujer:[96,192],joven:[120,186]}",
+   "places": [
+    {
+     "who": "senor",
+     "old": [80, 184],
+     "new": [80, 190],
+     "world": [3.0709, 5.2466, 0.42]
+    },
+    {
+     "who": "mujer",
+     "old": [96, 188],
+     "new": [96, 192],
+     "world": [3.6148, 4.9202, 0.42]
+    },
+    {
+     "who": "joven",
+     "old": [112, 184],
+     "new": [120, 186],
+     "world": [3.9411, 3.9411, 0.42]
+    }
+   ],
+   "why": "acts.alcarro: the three queue at the cart 6, 4 and 2 rows nearer, the young man 8 px right, behind the old dog (moved) as before it: the man reading on the first bench sits up to 6 rows lower than the old (SY), and their heads stood in front of his face (round 2)"
+  },
+  {
+   "line": 238,
+   "act": "*",
+   "src": "JUGEN=[[182,188],[195,196],[183,209],[196,211]]",
+   "to": "JUGEN=[[182,188],[195,196],[190,208],[196,211]]",
+   "places": [
+    {
+     "who": "cosa",
+     "old": [183, 209],
+     "new": [190, 208],
+     "world": [7.5855, 3.778, 0.42]
+    }
+   ],
+   "why": "where the third toy lands (despierta): 7 px right, in the gate's opening: the old point is on its left post"
+  },
+  {
+   "line": 323,
+   "act": "pasa",
+   "src": "await mueve(o.a,PORTON[0]+8,PORTON[1]);",
+   "to": "await mueve(o.a,PORTON[0]-2,PORTON[1]+5);",
+   "places": [
+    {
+     "who": "porton",
+     "old": [196, 197],
+     "new": [197, 208],
+     "world": [7.2614, 3.0732, 0]
+    }
+   ],
+   "why": "acts.pasa: who walks through the gate stops just beyond it on the path, clear of the right post and the hedge (round 2), and 3 px and more inside the picture's right edge with what they carry, as the old (round 3)"
+  },
+  {
+   "line": 325,
+   "act": "sevade",
+   "src": "p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;},",
+   "to": "p.dir=1;await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,246,PORTON[1]+12);p.vis=0;},",
+   "why": "acts.sevade: who says goodbye walks out through the gate's opening (PORTON) and along the path: from the benches straight to the old exit point the way crossed the hedge (round 2)"
+  },
+  {
+   "line": 333,
+   "act": "alza",
+   "src": "p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;W.cq.dy=0;",
+   "to": "p.dir=1;await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,246,PORTON[1]+12);p.vis=0;W.cq.dy=0;",
+   "why": "acts.alza: as sevade"
+  },
+  {
+   "line": 344,
+   "act": "abuelallega",
+   "src": "W.gente.abuela={x:250,y:204,dir:-1,paso:1}",
+   "to": "W.gente.abuela={x:250,y:212,dir:-1,paso:1}",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [250, 204],
+     "new": [250, 212],
+     "world": [8.8909, 1.8198, 0.42]
+    }
+   ],
+   "why": "acts.abuelallega: abuela comes in along the path and through the gate's opening (from 8 rows lower, off the picture)"
+  },
+  {
+   "line": 334,
+   "act": "final22",
+   "src": "mueve(\"carmen\",190,204)",
+   "to": "mueve(\"carmen\",192,200)",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [190, 204],
+     "new": [192, 200],
+     "world": [6.6608, 2.7445, 0.42]
+    }
+   ],
+   "why": "acts.final22: Carmen waits at the gate in front of its opening, clear of the left post (round 2)"
+  },
+  {
+   "line": 334,
+   "act": "final22",
+   "src": "h.pose=\"idle\";await mueve(\"hombre\",246,PORTON[1]);h.vis=0;}else",
+   "to": "h.pose=\"idle\";await mueve(\"hombre\",PORTON[0],PORTON[1]);await mueve(\"hombre\",246,PORTON[1]+12);h.vis=0;}else",
+   "why": "acts.final22: the man who came for his paper leaves through the gate's opening (PORTON) and along the path: from beside Luis straight to the exit the way crossed the line of the gate at its right post (round 2)"
+  },
+  {
+   "line": 322,
+   "lines": [322, 325, 332, 333, 334],
+   "act": "*",
+   "src": "246,PORTON[1])",
+   "to": "246,PORTON[1]+12)",
+   "why": "whoever leaves walks to (246, PORTON[1] + 12): through the middle of the gate's opening and out along the path (round 2; the old went to PORTON[1], past the right post)"
+  },
+  {
+   "line": 315,
+   "act": "*",
+   "src": "244,PORTON[1])",
+   "to": "244,PORTON[1]+12)",
+   "why": "as 246, PORTON[1] (turno22)"
+  },
+  {
+   "line": 296,
+   "act": "final21",
+   "src": "cx()+46,pies()+2",
+   "to": "cx()+36,pies()+2",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [170, 208],
+     "new": [160, 208],
+     "world": [6.2256, 4.0499, 0.42]
+    }
+   ],
+   "why": "acts.final21: Carmen comes to the frog's right 10 px nearer: at the old offset from his home she stood on the gate's left post (round 2)"
+  },
+  {
+   "line": 391,
+   "act": "sevan23",
+   "src": "mueve(\"abuela\",250,200),mueve(\"carmen\",250,206),mueve(\"luis\",250,196),perroA(\"canelo\",250,210",
+   "to": "mueve(\"abuela\",250,210),mueve(\"carmen\",250,206),mueve(\"luis\",250,206),perroA(\"canelo\",250,214",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [250, 200],
+     "new": [250, 210],
+     "world": [8.7821, 1.711, 0.42]
+    },
+    {
+     "who": "luis",
+     "old": [250, 196],
+     "new": [250, 206],
+     "world": [8.5645, 1.4935, 0.42]
+    },
+    {
+     "who": "perro",
+     "old": [250, 210],
+     "new": [250, 214],
+     "world": [8.9997, 1.9286, 0.42]
+    }
+   ],
+   "why": "acts.sevan23: everyone leaves through the gate's opening and out along the path (the old walked out over the hedge's line)"
+  },
+  {
+   "line": 196,
+   "act": "*",
+   "src": "if(pi)pi.x=W.carroX+30;",
+   "to": "if(pi){pi.x=W.carroX+30;pi.y=CARRO[1]+2+(CARRO[0]-W.carroX)/2;}",
+   "why": "the cart rolling away (W.seva): it rolls along +y (down to the left on the screen, half a row for every px), the piragua man pushing it from behind"
+  },
+  {
+   "line": 198,
+   "act": "*",
+   "src": "if(W.carro!==0)L.push({y:CARRO[1],d:()=>c.drawImage(spr(\"carro\"+(W.carro===\"cerrado\"?1:0),()=>mkCarro(W.carro===\"cerrado\")),R(W.carroX!=null?W.carroX:CARRO[0])-24,CARRO[1]-72)});",
+   "to": "if(W.carro!==0&&W.carroX!=null)L.push({y:CARRO[1]+(CARRO[0]-W.carroX)/2,carro:1,d:()=>CARRORUEDA(c,W)});",
+   "why": "the cart: while it stands it is the set's (setKey carro abierto or cerrado: banco.js draws nothing); while it rolls (W.carroX) the set has none (carro no) and the sprite layer draws the set's own cart, pixel for pixel (sheet carro.rolling), moved by (R(W.carroX) - CARRO[0], R((CARRO[0] - W.carroX) / 2)), in the sorted list at its new row"
+  }
+ ],
+ "dropped": [
+  {
+   "line": 192,
+   "src": "c.drawImage(spr(\"banco\",fondo),0,0);",
+   "to": "",
+   "why": "the background (fondo): the set, for setKey(W)"
+  },
+  {
+   "line": 193,
+   "src": "if(W.luna){c.fillStyle=OUT;c.beginPath();c.arc(64,26,9,0,7);c.fill();c.fillStyle=\"#FFF8D8\";c.beginPath();c.arc(64,26,8,0,7);c.fill();c.fillStyle=\"#E8DCA8\";c.fillRect(60,22,3,3);c.fillRect(66,28,2,2);}   // the moon",
+   "to": "",
+   "why": "the moon: baked into the night sky (setKey luna; points.luna)"
+  },
+  {
+   "line": 194,
+   "src": "if(W.noche){c.drawImage(spr(\"banco\",fondo),84,6,46,38,196,6,46,38);c.fillStyle=\"rgba(30,24,90,.32)\";c.fillRect(0,0,SW,SH);fr(c,FAROL[0]-5,36,11,11,\"#FFF8C8\");c.fillStyle=\"rgba(255,240,160,.16)\";c.beginPath();c.ellipse(FAROL[0],FAROL[1]+18,46,22,0,0,7);c.fill();}",
+   "to": "",
+   "why": "the night (setKey luz noche): its colour laid over the background is the set's night light (set-kit.js lightPass), its lit lantern and pool of light the set's; the patch of sky it copies over the sun (patch) is the night sky's, which has no sun"
+  },
+  {
+   "line": 195,
+   "src": "if(W.tarde&&!W.noche){c.fillStyle=\"rgba(255,150,60,.10)\";c.fillRect(0,0,SW,SH);}",
+   "to": "",
+   "why": "the evening (setKey luz tarde): the set's warm light and evening sky"
+  }
+ ],
+ "bubbles": {
+  "what": "each bubble's rectangle relative to its tail's tip, as banco.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]",
+  "rects": {
+   "hola": [-16, -46, 34, 44],
+   "amor": [-14, -38, 30, 36],
+   "como": [-32, -40, 66, 38],
+   "bien": [-14, -40, 30, 38],
+   "mal": [-14, -40, 30, 38],
+   "quien": [-22, -40, 46, 38],
+   "lluvia": [-22, -40, 46, 38]
+  }
+ },
+ "talk": {
+  "what": "where a bubble goes (banco.js draw: line 207 for a person, 208 for the frog). The first of these places whose bubble is wholly inside the view, clear of the corner card shown (hud) and of every face; if none is, the first (the old)",
+  "top": "a person: (x, y - alto - 1) as the old tail; the frog: (b.x + (b.w >> 1), b.y + 2)",
+  "places": [
+   [0, 0],
+   [1, 7],
+   [-1, 7],
+   [1, 30],
+   [-1, 30],
+   [1, 44],
+   [-1, 44],
+   [2, 7],
+   [-2, 7],
+   [2, 30],
+   [-2, 30],
+   [2, 44],
+   [-2, 44],
+   [1, 58],
+   [-1, 58],
+   [2, 58],
+   [-2, 58]
+  ],
+  "placesWhat": "[side, dy]: the tail's tip at (top.x + side * (h + 16), top.y + dy), h the head's half width: a person 6, the frog b.w >> 1",
+  "faces": "a person's face: [x - 6, top + 6, 12, 10] (eyes to chin), top the sprite's first row (y - height + 1 - dy, + 3 tired, + 1 sad: banco.js gente; heights); abuela's: from her sprite (the middle of its top 10 rows); the frog's: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]",
+  "heights": {
+   "luis.0": 44,
+   "luis.1": 41,
+   "carmen.0": 44,
+   "carmen.1": 41,
+   "hombre.0": 56,
+   "hombre.1": 49,
+   "mujer.0": 56,
+   "mujer.1": 49,
+   "senor.0": 56,
+   "senor.1": 49,
+   "joven.0": 56,
+   "joven.1": 49,
+   "senora.0": 56,
+   "senora.1": 49,
+   "piraguero.0": 56,
+   "piraguero.1": 49
+  },
+  "board": [2, 2, 68, 26],
+  "boardWhat": "in the 196 x 216 display, then + the view's x0: W.tarjeta (the rounds card) [2, 2, 68, 26]"
+ },
+ "code": [
+  {
+   "line": 3,
+   "numbers": {
+    "other": ["2"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 19,
+   "numbers": {
+    "other": ["132"],
+    "place": ["96", "150", "144", "150", "192", "150", "47", "178", "168", "154", "188", "197"]
+   },
+   "to": {
+    "moves": [
+     "PORTON=[188,197];"
+    ],
+    "points": ["bancos", "carro", "farol", "porton"],
+    "spots": ["sitio.0", "sitio.1", "sitio.2", "carro", "porton"]
+   },
+   "note": "SUELO (the old paving's first row): the set's paving (points.borde); BANCOS: the benches, each along x, the middle of its seat's edge at the old point (points.bancos; whoever sits: SY, moves); CARRO: the cart (the set's, built round it: points.carro; its place in the list unchanged); FAROL: the lamp post (the set's: points.farol, things.farol); PORTON: unchanged (spots.porton)"
+  },
+  {
+   "line": 20,
+   "numbers": {
+    "other": ["50", "1", "2"],
+    "scale": ["7", "98"],
+    "offset": ["120"]
+   },
+   "to": {
+    "points": ["cable"]
+   },
+   "note": "the wire's rows: the set's wire lies on them (points.cable): every pigeon on it keeps its point"
+  },
+  {
+   "line": 21,
+   "numbers": {
+    "other": ["66", "66"],
+    "scale": ["17", "17"]
+   },
+   "to": {
+    "spots": ["cable.0", "cable.1", "cable.2", "cable.3", "cable.4"]
+   },
+   "note": "where the pigeons sit on the wire: unchanged (the wire is under them)"
+  },
+  {
+   "line": 22,
+   "numbers": {
+    "place": ["0", "1"],
+    "offset": ["23"]
+   },
+   "to": "unchanged",
+   "note": "RESP (the top of a bench's back, B - 23): used by no act or draw (the pigeons perch at POSA)"
+  },
+  {
+   "line": 26,
+   "numbers": {
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 27,
+   "numbers": {
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 28,
+   "numbers": {
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 29,
+   "numbers": {
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 30,
+   "numbers": {
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 34,
+   "numbers": {
+    "dropped": ["96", "92", "1"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 36,
+   "numbers": {
+    "dropped": ["40", "98", "122", "94", "218", "98", "0", "3", "1", "6", "34", "1", "0", "3", "1", "2", "34", "3", "0", "1", "10", "24", "17", "0", "1", "10", "23", "16", "0", "8", "1", "15", "9", "5", "3", "4"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 38,
+   "numbers": {
+    "dropped": ["0", "14", "2", "12", "24", "14", "0", "2", "12", "24", "0", "7", "3", "5", "1", "60", "1", "1", "6"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 39,
+   "numbers": {
+    "dropped": ["0", "1", "0"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 41,
+   "numbers": {
+    "dropped": ["0", "1", "48", "3", "1", "44", "0", "4", "1", "3", "9", "3", "0", "5", "36", "11", "11", "0", "6", "35", "13", "13", "0", "4", "33", "9", "2"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 42,
+   "numbers": {
+    "dropped": ["21", "48", "3", "90"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 43,
+   "numbers": {
+    "dropped": ["22"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 45,
+   "numbers": {
+    "dropped": ["0", "21", "1", "2", "22", "2", "34", "0", "38", "22", "2", "34", "0", "22", "16", "10", "42", "4", "2", "42", "1", "4", "3", "42", "1", "1", "1", "3", "44", "5", "3", "1", "3", "44", "1", "4", "1", "1", "44", "1", "1", "2", "4", "46", "7", "1", "23", "44", "17", "3", "3", "3", "9", "0", "36", "3", "3", "9", "0"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 47,
+   "numbers": {
+    "dropped": ["160", "203", "180", "200", "203", "160", "20", "4", "3", "34", "0", "5", "50", "1", "2"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 48,
+   "numbers": {
+    "dropped": ["160", "20", "198", "16", "197", "0", "8", "1", "197", "0", "2", "1", "203", "0", "2", "1", "196", "0", "1", "10", "1", "2", "195", "0", "3", "12", "3", "194", "0", "4", "14", "5", "201", "0", "7", "3.4", "3.4", "201", "0", "7", "2.6", "2.6"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 49,
+   "numbers": {
+    "dropped": ["181", "200", "206", "1", "1", "8"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 52,
+   "numbers": {
+    "drawing": ["48", "74", "23", "14", "2", "34"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 53,
+   "numbers": {
+    "drawing": ["21", "2", "6", "26", "23", "2", "2", "26", "20", "1", "8", "28"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 54,
+   "numbers": {
+    "drawing": ["0", "5", "2", "4", "8", "6", "2", "2", "8", "7", "2", "3", "12", "42", "2", "24", "5", "4", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 55,
+   "numbers": {
+    "drawing": ["5", "46", "38", "18", "5", "46", "38", "3", "5", "61", "38", "3", "4", "45", "40", "20", "10", "51", "28", "7", "13", "52", "19", "52", "25", "52", "31", "52", "0", "1", "3", "5", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 56,
+   "numbers": {
+    "drawing": ["8", "36", "13", "10", "8", "36", "13", "2", "7", "35", "15", "12", "26", "38", "31", "38", "36", "38", "0", "1", "4", "8", "2", "0", "1", "1", "3", "2", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 57,
+   "numbers": {
+    "drawing": ["12", "36", "68", "6", "6", "68", "5", "5", "68", "1.5", "1.5"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 60,
+   "numbers": {
+    "drawing": ["9", "13", "4.5", "4", "3.6", "3.4", "2", "2", "2", "2", "0", "6", "2", ".42", "7", "5", ".84", "1", "4", "12"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 61,
+   "numbers": {
+    "drawing": ["13", "18", "6.5", "6", "5.6", "5.2", "1", "5", "4", "4", "5", "1", "4", "7", "9", "5", "3", "4", "3", "2", "2", "3", "9", "2", "2", "3", "0", "8", "3", ".45", "10", "7", ".9", "1", "6", "17"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 62,
+   "numbers": {
+    "drawing": ["7", "8", "0", "6", "1", ".42", "1", "5", ".84", "1", "3", "7"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 63,
+   "numbers": {
+    "drawing": ["7", "13", "1", "4", "5", "8", "1", "4", "2", "8", "2", "1", "3", "3", "1", "6", "5", "1", "2", "0", "3", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 64,
+   "numbers": {
+    "drawing": ["7", "13", "1", "4", "5", "8", "2", "1", "3", "3", "1", "11", "5", "1", "2", "0", "3", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 65,
+   "numbers": {
+    "drawing": ["16", "8", "4", "1", "8", "5", "4", "1", "8", "1", "4", "4", "8", "1", "1", "6", "14", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 66,
+   "numbers": {
+    "drawing": ["11", "32", "5", "6", "1", "24", "8", "28", "12", "1", "8", "1", "23", "3", "24", "1", "3", "5", "2", "1", "1", "2", "2", "5", "0", "5", "1", "1", "6", "6", "0", "3", "1", "9", "1", "1", "3", "5", "30", "1", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 67,
+   "numbers": {
+    "drawing": ["15", "11", "1", "1", "13", "9", "1", "1", "13", "2", "1", "5", "13", "1", "6", "4", "3", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 68,
+   "numbers": {
+    "drawing": ["15", "17", "1", "3", "13", "13", "1", "3", "13", "2", "3", "8", "9", "6", "3", "8", "9", "1", "5", "0", "5", "3", "7", "11"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 69,
+   "numbers": {
+    "drawing": ["8", "30", "3", "3", "2", "26", "3", "1", "5", "2", "7", "2", "1", "3", "3", "28", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 70,
+   "numbers": {
+    "drawing": ["13", "13", "1", "5", "11", "7", "1", "5", "11", "2", "6", "8", "3", "1", "1", "4", "9", "1", "1", "4", "3", "0", "7", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 71,
+   "numbers": {
+    "drawing": ["14", "7", "1", "1", "9", "5", "1", "1", "9", "1", "9", "4", "5", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 72,
+   "numbers": {
+    "drawing": ["15", "8", "1", "1", "13", "6", "2", "4", "2", "11", "1", "7", "1", "1", "6"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 73,
+   "numbers": {
+    "drawing": ["10", "13", "1", "3", "8", "9", "1", "3", "3", "9", "1", "1", "8", "2", "2", "0", "6", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 74,
+   "numbers": {
+    "drawing": ["13", "7", "3", "2", "7", "3", "2", "1", "2", "5", "10", "1", "10", "5", "0", "1", "1.6", "1.6"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 75,
+   "numbers": {
+    "drawing": ["28", "16", "1", "5", "26", "10", "1", "5", "26", "2", "1", "13", "26", "2", "3", "2", "22", "3", "12", "8", "4", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 76,
+   "numbers": {
+    "drawing": ["8", "12", "4", "4", "3", "3", "3", "3", "3", "7", "2", "4"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 77,
+   "numbers": {
+    "drawing": ["15", "10", "1", "4", "13", "3", "4", "1", "7", "3", "5", "2", "2", "2", "8", "2", "2", "2", "1", "4", "13", "1", "4", "11", "7.5", "1.8", "1.8", "7"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 78,
+   "numbers": {
+    "drawing": ["9", "9", "1", "1", "7", "7", "1", "1", "7", "2", "3", "3", "3", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 79,
+   "numbers": {
+    "drawing": ["11", "9", "5", "5.5", "4", "2.6", "8", "2.5", "2", "2", "9", "2", "10", "3", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 80,
+   "numbers": {
+    "drawing": ["20", "10", "10", "5", "9", "4", "2", "18", "3", "9"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 81,
+   "numbers": {
+    "drawing": ["9", "9", "4.5", "4.5", "3.6", "3.6", "2", "4", "5", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 82,
+   "numbers": {
+    "drawing": ["22", "6", "1", "2", "20", "3", "1", "2", "20", "1", "0", "1", "2", "2", "20", "1", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 85,
+   "numbers": {
+    "drawing": ["18", "13"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 86,
+   "numbers": {
+    "drawing": ["7", "7", "4.4", "2.6", "6", "6", "4", "1", "11", "1.6", "2", "8", "6", "10", "1", "11", "1.6", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 87,
+   "numbers": {
+    "drawing": ["6", "7", "4.6", "3.2", "2", "7", "0", "5", "1.2", "0", "5", "10", "1", "2", "8", "10", "1", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 88,
+   "numbers": {
+    "drawing": ["11", "12", "9", "10", "8", "2", "3", "6", "4", "9", "6", "1", "1.4", "1", "2.4", "2.4", "1", "2", "1", "1", "1", "2", "1", "0", "2", "1", "8", "5", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 89,
+   "numbers": {
+    "drawing": ["14", "11", "16", "10", "15", "6", "1", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 91,
+   "numbers": {
+    "drawing": ["32", "24", "13", "13"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 92,
+   "numbers": {
+    "drawing": ["1", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 93,
+   "numbers": {
+    "drawing": ["12", "5", "10", "3", "1", "1", "12", "6", "1", "1", "9", "1", "0", "1", "1.4", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 94,
+   "numbers": {
+    "drawing": ["6", "10", "4", "6", "8", "6", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 95,
+   "numbers": {
+    "drawing": ["1", "4", "7", "6", "1", "0", "3", "5", "2", "6", "1", "6", "5", "2", "6", "2", "4", "9", "4", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 96,
+   "numbers": {
+    "drawing": ["2", "10", "6", "5"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 97,
+   "numbers": {
+    "drawing": ["6", "5", "11", "2", "9", "1.3", "1", "3", "5", "7", "2", "10", "1.3", "0", "5", "5", "10", "2", "9", "1.3", "1", "7", "5", "12", "2", "10", "1.3", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 98,
+   "numbers": {
+    "drawing": ["0", "7", "6", "2", "5", "1", "4", "6", "2", "5", "0", "4", "6", "2", "5", "1", "7", "6", "2", "5", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 99,
+   "numbers": {
+    "drawing": ["3", "5", "3", "1", "3", "2.4", "4", "7", "6", "3", "2", "1.6"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 101,
+   "numbers": {
+    "drawing": ["10", "1", "0", "4", "1", "2", "3", "2", "0", "4", "4", "5", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 102,
+   "numbers": {
+    "drawing": ["5", ".6", "0", "4.6", ".4", "0", "4", "1.5", "3", "2.2", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 104,
+   "numbers": {
+    "drawing": ["3", "3", "4", "3", "1.6", "0", "3", "3", "5", "2", "1.5", "0", "1", "4", "2", "7", "1.3", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 105,
+   "numbers": {
+    "drawing": ["2", "3", "6", "2", "3", "5", "4", "1", "3", "1", "5", "2", "3", "4", "1", "6", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 106,
+   "numbers": {
+    "drawing": ["1", "2", "2", "1", "2", "3", "4", "3", "2", "4", "5", "2", "4", "3", "1", "6", "1", "0", "2", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 107,
+   "numbers": {
+    "drawing": ["1", "3", "1", "1", "1", "3", "3", "4", "2", "3", "3", "3", "2", "3", "4", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 108,
+   "numbers": {
+    "drawing": ["6", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 109,
+   "numbers": {
+    "drawing": ["2", "1", "1", "2", "1", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 112,
+   "numbers": {
+    "drawing": ["38", "42"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 113,
+   "numbers": {
+    "drawing": ["10", "28", "37", "4", "4", "37", "3", "3", "37"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 114,
+   "numbers": {
+    "drawing": ["9", "31", "20", "2", "33", "9", "29", "30", "1", "31", "7", "6", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 115,
+   "numbers": {
+    "drawing": ["4", "19", "26", "12", "1", "4", "19", "26", "2", "2", "4", "29", "26", "2", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 116,
+   "numbers": {
+    "drawing": ["15", "15", "12", "10", "3", "17", "26", "3", "0", "6", "26", "5", "8", "1", "9", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 117,
+   "numbers": {
+    "drawing": ["8", "14", "6", "9", "0", "1", "12", "16", "16", "4"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 118,
+   "numbers": {
+    "drawing": ["19", "12", "5.4", "5.2", "1", "2", "3", "16", "6", "6", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 119,
+   "numbers": {
+    "drawing": ["16", "11", "2", "1", "21", "11", "2", "1", "17", "13", "5", "3", "15", "12", "1", "3", "1", "0", "23", "12", "1", "3", "0", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 120,
+   "numbers": {
+    "drawing": ["17", "11", "21", "11", "17", "13", "5", "2", "18", "13", "3", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 121,
+   "numbers": {
+    "drawing": ["16", "11", "2", "1", "21", "11", "2", "1", "19", "14"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 124,
+   "numbers": {
+    "drawing": ["18", "150", "1", "104", "180", "1"]
+   },
+   "to": {
+    "spots": ["frog.inicio", "frog.centro"]
+   },
+   "note": "the floor rule: the same screen places, on the paving"
+  },
+  {
+   "line": 125,
+   "numbers": {
+    "drawing": ["48", "51", "40", "44", "49", "56"]
+   },
+   "to": "unchanged",
+   "note": "heights of the sprites (alto), not places"
+  },
+  {
+   "line": 126,
+   "numbers": {
+    "drawing": ["0", "11", "22"]
+   },
+   "to": "unchanged",
+   "note": "a person's box relative to them: unchanged"
+  },
+  {
+   "line": 127,
+   "numbers": {
+    "drawing": ["1", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 128,
+   "numbers": {
+    "drawing": ["2", "0", "15", "22", "30", "24"]
+   },
+   "to": "unchanged",
+   "note": "a dog's box relative to it: unchanged"
+  },
+  {
+   "line": 131,
+   "numbers": {
+    "drawing": ["19", "42", "38", "44", "1"]
+   },
+   "to": "unchanged",
+   "note": "the pushchair's box relative to it: unchanged"
+  },
+  {
+   "line": 132,
+   "numbers": {
+    "drawing": ["0", "0", "9", "14", "18", "18", "0"]
+   },
+   "to": "unchanged",
+   "note": "the pigeons' box relative to them: unchanged"
+  },
+  {
+   "line": 133,
+   "numbers": {
+    "drawing": ["0", "24", "1", "72", "48", "74", "0", "0", "7", "34", "14", "1", "28", "0"]
+   },
+   "to": {
+    "things": ["carro", "farol"]
+   },
+   "note": "the set things' boxes (things.carro, things.farol; the cart's moves with it while it rolls)"
+  },
+  {
+   "line": 134,
+   "numbers": {
+    "drawing": ["0", "0", "22", "0", "1", "23", "44", "36", "0", "1", "0", "22", "1", "1", "23", "44", "36", "0", "2", "0", "22", "2", "1", "23", "44", "36", "0"]
+   },
+   "to": {
+    "things": ["banco0", "banco1", "banco2"]
+   },
+   "note": "the benches' boxes (things)"
+  },
+  {
+   "line": 135,
+   "numbers": {
+    "drawing": ["0", "60", "240", "156", "0"]
+   },
+   "to": {
+    "things": ["parque"]
+   },
+   "note": "the park's box: unchanged, its hint box (things.parque.hintBox)"
+  },
+  {
+   "line": 140,
+   "numbers": {
+    "drawing": ["5", "2", "10", "4", "2", "3", "4", "1", "6", "1", "1", "4", "5", "1", "1", "4"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 141,
+   "numbers": {
+    "drawing": ["7", "8", "14", "5", "6", "7", "12", "3", "5", "0", "5", "0", "4", "6", "2", "5", "0", "4", "0", "4", "5", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 142,
+   "numbers": {
+    "drawing": ["11", "0", "1", "5", "8", "6", "16", "11", "0", "0", "4", "9", "4", "14", "6", "10", "1", "12", "5", "10", "1", "12"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 143,
+   "numbers": {
+    "drawing": ["6", "13", "12", "7", "5", "12", "10", "5", "5", "8", "10", "1", "9", "7", "18", "3", "8", "6", "16", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 144,
+   "numbers": {
+    "drawing": ["8", "0", "0", "3", "5", "4", "11", "8", "0", "1", "2", "4", "2", "9", "6", "0", "0", "2", "6", "3", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 145,
+   "numbers": {
+    "drawing": ["12", "1", "12", "3", "24", "13", "1", "26", "3", "11", "6", "3", "2", "12", "4", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 146,
+   "numbers": {
+    "drawing": ["6", "12", "12", "14", "6", "12", "12", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 148,
+   "numbers": {
+    "drawing": ["3", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 149,
+   "numbers": {
+    "drawing": ["3", "3", "6", "2", "2", "4", "4", "1", "3", "5", "1", "1", "2", "5", "1", "1", "5", "3", "2", "1", "3", "4", "1", "1", "3", "3", "2", "1", "2", "4", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 150,
+   "numbers": {
+    "drawing": ["5", "1", "2", "4", "3", "1", "2", "3", "1", "5", "8", "2", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 151,
+   "numbers": {
+    "drawing": ["4", "1", "3", "1", "1", "1", "3", "1", "4", "3", "1", "1", "3", "1", "3", "3", "6", "2", "2", "4", "4", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 152,
+   "numbers": {
+    "drawing": ["6", "7", "2", "3", "8", "5", "2", "3", "8", "2", "11", "1", "14", "4", "2", "4", "0", "1", "1", "1", "5", "4", "0", "1", "3", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 153,
+   "numbers": {
+    "drawing": ["3", "3", "6", "2", "2", "3", "4", "1", "4", "2", "1", "1", "3", "2", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 154,
+   "numbers": {
+    "drawing": ["1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 155,
+   "numbers": {
+    "drawing": ["0", "2", "1", "0", "0", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 156,
+   "numbers": {
+    "drawing": ["48", "0", "17", "4", "12", "3", "1", "1", "12", "3", "1", "14", "16"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 157,
+   "numbers": {
+    "drawing": ["2", "50", "2", "1", "0", "0", "1", "1", "30", "0", "12", "14"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 158,
+   "numbers": {
+    "drawing": ["2", "1", "0", "1", "2", "1", "0", "0", "3", "1", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 159,
+   "numbers": {
+    "drawing": ["0", "1", "1", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 160,
+   "numbers": {
+    "drawing": ["11", "11"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 161,
+   "numbers": {
+    "drawing": ["5", "24", "2", "11", "7", "2", "2.3", "2.45"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 162,
+   "numbers": {
+    "drawing": ["10", "34", "38"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 163,
+   "numbers": {
+    "drawing": ["11", "40", "46"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 164,
+   "numbers": {
+    "drawing": ["8", "24", "16", "9", "7", "25", "14", "7", "25", "1", "7", "27", "29", "6", "5", "1", "2", "4", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 165,
+   "numbers": {
+    "drawing": ["47", "2", "1", "0", "2", "1", "0", "2", "0", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 166,
+   "numbers": {
+    "drawing": ["1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 167,
+   "numbers": {
+    "drawing": ["11", "4", "1", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 169,
+   "numbers": {
+    "drawing": ["1", "1", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 170,
+   "numbers": {
+    "drawing": ["1", "3", "10", "1", "2", "2.2", "1.9", "1", "2", "21", "2", "1", "17", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 171,
+   "numbers": {
+    "drawing": ["2", "4", "15", "8"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 172,
+   "numbers": {
+    "drawing": ["18", "6", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 173,
+   "numbers": {
+    "drawing": ["3", "2", "13", "3", "1", "2", "14", "5", "1", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 174,
+   "numbers": {
+    "drawing": ["2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 175,
+   "numbers": {
+    "drawing": ["0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 176,
+   "numbers": {
+    "drawing": ["44", "22", "22", "44", "22", "34", "22", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 177,
+   "numbers": {
+    "drawing": ["130", "65", "65", "130", "65", "16", "65", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 178,
+   "numbers": {
+    "drawing": ["0", "1", "2", "0", "1", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 179,
+   "numbers": {
+    "drawing": ["2", "0", "0", "1", "1", "13", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 180,
+   "numbers": {
+    "drawing": ["16", "1", "17", "12"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 181,
+   "numbers": {
+    "drawing": ["14", "10"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 182,
+   "numbers": {
+    "drawing": ["3", "3", "14", "20", "21", "27", "1", "0", "5", "0", "1", "1", "1", "3", "3", "0", "5", "0", "1", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 183,
+   "numbers": {
+    "drawing": ["1", "0", "5", "5", ".5", "10.5", ".5", ".5"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 184,
+   "numbers": {
+    "drawing": ["1", "2", "1", "0", "2", "1", "1", "5", "2", "0", "19", "40"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 186,
+   "numbers": {
+    "drawing": ["3", "3", "27", "2", "3", "3", "1", "28", "3", "3", "1", "1", "27", "4", "3", "3", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 187,
+   "numbers": {
+    "drawing": ["1", "6", "4", "1", "2", "3", "9", "2", "15", "1", "10", "0", "2", "6", "1", "2", "3", "9", "1", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 188,
+   "numbers": {
+    "drawing": ["2", "2", "13", "2", "1", "5", "6", "14", "2", "2", "3", "4", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 189,
+   "numbers": {
+    "drawing": ["2", "3", "12", "2", "2", "1", "18", "4", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the old cart, the small things, the pigeon, the dogs, the pushchair) or what is drawn relative to someone (extra, animo, tenida, gente, rana, perro, coche): relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 190,
+   "numbers": {
+    "drawing": ["2", "2", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "the bubble drawn twice its size: unchanged"
+  },
+  {
+   "line": 192,
+   "numbers": {
+    "place": ["0"],
+    "other": ["0"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, for setKey(W)"
+  },
+  {
+   "line": 193,
+   "numbers": {
+    "other": ["64", "7", "64", "7", "60", "3", "66", "2"],
+    "place": ["26", "9", "0", "26", "8", "0", "22", "3", "28", "2"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the moon: baked into the night sky (setKey luna; points.luna)"
+  },
+  {
+   "line": 194,
+   "numbers": {
+    "place": ["84", "6", "46", "38", "196", "6", "46", "0", "0", "36", "11", "11", "0", "1", "46", "22", "0", "0"],
+    "other": ["38", "0", "7"],
+    "offset": ["5", "18"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the night (setKey luz noche): its colour laid over the background is the set's night light (set-kit.js lightPass), its lit lantern and pool of light the set's; the patch of sky it copies over the sun (patch) is the night sky's, which has no sun"
+  },
+  {
+   "line": 195,
+   "numbers": {
+    "other": ["0"],
+    "place": ["0"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the evening (setKey luz tarde): the set's warm light and evening sky"
+  },
+  {
+   "line": 196,
+   "numbers": {
+    "count": ["1", "3"],
+    "other": ["1.1", "1"],
+    "offset": ["30", "1"],
+    "place": [".35"],
+    "scale": [".5", "34", "7"]
+   },
+   "to": {
+    "moves": [
+     "if(pi)pi.x=W.carroX+30;"
+    ]
+   },
+   "note": "moved (moves): the cart rolling away (W.seva); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 198,
+   "numbers": {
+    "count": ["0", "1"],
+    "place": ["1", "0", "1"],
+    "other": ["0"],
+    "offset": ["24", "72"]
+   },
+   "to": {
+    "moves": [
+     "if(W.carro!==0)L.push({y:CARRO[1],d:()=>c.drawImage(spr(\"carro\"+(W.carro===\"cerrado\"?1:0),()=>mkCarro(W.carro===\"cerrado\")),R(W.carroX!=null?W.carroX:CARRO[0])-24,CARRO[1]-72)});"
+    ]
+   },
+   "note": "moved (moves): the cart; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 199,
+   "numbers": {
+    "count": ["0"],
+    "offset": ["8"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset"
+  },
+  {
+   "line": 200,
+   "numbers": {
+    "count": ["0", "0", "2", "0"],
+    "other": ["1", "1"],
+    "offset": ["1", "12"],
+    "place": ["7"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 201,
+   "numbers": {
+    "count": ["0", "2"],
+    "offset": ["1", "13", "9"],
+    "scale": ["9", "2"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset, scale"
+  },
+  {
+   "line": 202,
+   "numbers": {
+    "offset": ["9", "1", "6", "1"],
+    "place": ["16", "2", "10", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 203,
+   "numbers": {
+    "count": ["0"]
+   },
+   "to": "unchanged",
+   "note": "no place: count"
+  },
+  {
+   "line": 205,
+   "numbers": {
+    "offset": ["27"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset"
+  },
+  {
+   "line": 207,
+   "numbers": {
+    "count": ["0"],
+    "offset": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset"
+  },
+  {
+   "line": 208,
+   "numbers": {
+    "count": ["1"],
+    "offset": ["2"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset"
+  },
+  {
+   "line": 210,
+   "numbers": {
+    "drawing": ["0", "1", "38", "0"]
+   },
+   "to": "unchanged",
+   "note": "the frog's doing bubbles, the music note, talkAt's offset over the head: relative, unchanged"
+  },
+  {
+   "line": 212,
+   "numbers": {
+    "drawing": ["1", "0", "1", "2", "2", "0", "3", "0", "1", "10", "11", "0", "1", "9", "3", "0", "9", "2", "0", "8", "4", "3", "8", "7", "4", "3"]
+   },
+   "to": "unchanged",
+   "note": "the frog's doing bubbles, the music note, talkAt's offset over the head: relative, unchanged"
+  },
+  {
+   "line": 213,
+   "numbers": {
+    "drawing": ["0", "15", "2", "2", "3", "2", "12", "2", "3", "2"]
+   },
+   "to": "unchanged",
+   "note": "the frog's doing bubbles, the music note, talkAt's offset over the head: relative, unchanged"
+  },
+  {
+   "line": 215,
+   "numbers": {
+    "drawing": ["2", "2", "1", "0", ".6", "0", "2", "3"]
+   },
+   "to": "unchanged",
+   "note": "the frog's doing bubbles, the music note, talkAt's offset over the head: relative, unchanged"
+  },
+  {
+   "line": 217,
+   "numbers": {
+    "drawing": ["28", "32", "2", "2", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "the frog's doing bubbles, the music note, talkAt's offset over the head: relative, unchanged"
+  },
+  {
+   "line": 218,
+   "numbers": {
+    "drawing": ["31", "31", "2", "2", "0", "0", ".75", ".15"]
+   },
+   "to": "unchanged",
+   "note": "the frog's doing bubbles, the music note, talkAt's offset over the head: relative, unchanged"
+  },
+  {
+   "line": 219,
+   "numbers": {
+    "drawing": ["24", "5", "2", "22", "24", "26", "27", "31", "23", "0", "1", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "the frog's doing bubbles, the music note, talkAt's offset over the head: relative, unchanged"
+  },
+  {
+   "line": 220,
+   "numbers": {
+    "drawing": ["24", "10", "1"]
+   },
+   "to": "unchanged",
+   "note": "the frog's doing bubbles, the music note, talkAt's offset over the head: relative, unchanged"
+  },
+  {
+   "line": 222,
+   "numbers": {
+    "drawing": ["3", "3", "66", "24"]
+   },
+   "to": "unchanged",
+   "note": "the rounds card in the corner (hud): screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 223,
+   "numbers": {
+    "drawing": ["10", "20", "6"]
+   },
+   "to": "unchanged",
+   "note": "the rounds card in the corner (hud): screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 224,
+   "numbers": {
+    "drawing": ["0", "1", "1", "3", "3", "0", "2", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "the rounds card in the corner (hud): screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 225,
+   "numbers": {
+    "drawing": ["0", "11", "1", "4", "3", "10", "1", "4", "3", "0", "11", "1", "2", "2", "1", "11", "2", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "the rounds card in the corner (hud): screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 226,
+   "numbers": {
+    "drawing": ["1", "13", "12", "1", "1", "1", "1", "12", "12", "1", "1", "12", "1", "1", "12", "1"]
+   },
+   "to": "unchanged",
+   "note": "the rounds card in the corner (hud): screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 227,
+   "numbers": {
+    "drawing": ["0"]
+   },
+   "to": "unchanged",
+   "note": "the rounds card in the corner (hud): screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 230,
+   "numbers": {
+    "count": ["3", "3", "1"],
+    "scale": ["5"],
+    "state": ["0", "1", "1", "0"],
+    "offset": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, scale, state, offset"
+  },
+  {
+   "line": 231,
+   "numbers": {
+    "place": ["0", "1"],
+    "count": ["0"],
+    "scale": ["10"],
+    "offset": ["11"],
+    "state": ["1", "1"]
+   },
+   "to": {
+    "moves": [
+     "await mueve(id,q[0]+(lado||0)*10,q[1]+11);"
+    ]
+   },
+   "note": "moved (moves): sienta; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 232,
+   "numbers": {
+    "count": ["5", "3", "1"],
+    "scale": ["9", "8"],
+    "order": ["400"],
+    "offset": ["1"],
+    "state": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, scale, order, offset, state"
+  },
+  {
+   "line": 233,
+   "numbers": {
+    "count": ["4", "8", "2", "3", "1"],
+    "other": ["4"],
+    "offset": ["1"],
+    "state": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, other, offset, state"
+  },
+  {
+   "line": 234,
+   "numbers": {
+    "time": ["1500", "0", ".05", ".04", "1900", "1300", ".07", ".05", ".04", "1700"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 235,
+   "numbers": {
+    "sound": ["0", "1", "520", ".26", ".07", ".05", "300", "400", ".26", ".07", ".1", ".05", "240"]
+   },
+   "to": "unchanged",
+   "note": "a sound"
+  },
+  {
+   "line": 238,
+   "numbers": {
+    "other": ["149"],
+    "place": ["110", "127", "158", "127", "176", "127", "208", "127", "182", "188", "195", "196", "183", "209", "196", "211"]
+   },
+   "to": {
+    "moves": [
+     "POSA=[[110,127],[158,127],[176,127],[208,127]]"
+    ],
+    "spots": ["respaldo.0", "respaldo.1", "respaldo.2", "respaldo.3"]
+   },
+   "note": "ASIENTO: a thing put on a seat (AS, moves); POSA: the pigeons on the backs (moved); JUGEN: where the toys land from the pushchair: the floor rule (on the paving, the last two on the path out through the gate)"
+  },
+  {
+   "line": 239,
+   "numbers": {
+    "offset": ["16", "27"]
+   },
+   "to": "unchanged",
+   "note": "the frog's middle and feet relative to q: unchanged"
+  },
+  {
+   "line": 240,
+   "numbers": {
+    "scale": ["16", "27", "34"],
+    "count": ["3", "1", "4"],
+    "offset": ["16", "27"]
+   },
+   "to": "unchanged",
+   "note": "ranaA: q relative to the point; the hop count by the distance (34 px a hop): unchanged"
+  },
+  {
+   "line": 241,
+   "numbers": {
+    "place": ["0", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 242,
+   "numbers": {
+    "offset": ["30", "1"],
+    "state": ["1", "1"],
+    "time": ["250", "300"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, state, time"
+  },
+  {
+   "line": 246,
+   "numbers": {
+    "place": ["0", "1"],
+    "count": ["2", "1"],
+    "offset": ["1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 247,
+   "numbers": {
+    "count": ["3", "0", "0"],
+    "offset": ["1"],
+    "place": ["0", "1"],
+    "order": ["140"],
+    "state": ["1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 248,
+   "numbers": {
+    "other": ["0"],
+    "count": ["4"],
+    "time": ["150"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, count, time"
+  },
+  {
+   "line": 250,
+   "numbers": {
+    "sound": ["0", ".24", ".48", "760", ".2", ".07", "520"]
+   },
+   "to": "unchanged",
+   "note": "sounds"
+  },
+  {
+   "line": 251,
+   "numbers": {
+    "sound": ["0", ".12", ".24", ".36", "420", "2", "90", ".09", ".05", "380"]
+   },
+   "to": "unchanged",
+   "note": "sounds"
+  },
+  {
+   "line": 252,
+   "numbers": {
+    "sound": ["0", ".3", "330", ".24", ".08", "240"]
+   },
+   "to": "unchanged",
+   "note": "sounds"
+  },
+  {
+   "line": 253,
+   "numbers": {
+    "sound": ["620", "0", ".45", ".07", "860"]
+   },
+   "to": "unchanged",
+   "note": "sounds"
+  },
+  {
+   "line": 254,
+   "numbers": {
+    "sound": ["120", "0", ".45", ".05", "90"]
+   },
+   "to": "unchanged",
+   "note": "sounds"
+  },
+  {
+   "line": 255,
+   "numbers": {
+    "sound": ["0", ".5", "1400", ".09", ".025", "1500", "2100", ".12", ".14", ".025", "2500"]
+   },
+   "to": "unchanged",
+   "note": "sounds"
+  },
+  {
+   "line": 256,
+   "numbers": {
+    "sound": ["0", ".14", "900", ".04", ".06", "500"]
+   },
+   "to": "unchanged",
+   "note": "sounds"
+  },
+  {
+   "line": 257,
+   "numbers": {
+    "count": ["0", "3", "3"],
+    "state": ["1", "0"],
+    "time": ["350"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, state, time"
+  },
+  {
+   "line": 258,
+   "numbers": {
+    "offset": ["30", "1", "30", "30"],
+    "order": ["400"],
+    "state": ["1"],
+    "count": ["8"],
+    "scale": ["8", "16"],
+    "place": ["0", "1", "0", "1"],
+    "time": ["450"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 259,
+   "numbers": {
+    "state": ["0", "1", "0"],
+    "time": ["1500", "300"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 263,
+   "numbers": {
+    "time": ["250"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 266,
+   "numbers": {
+    "other": ["21"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 267,
+   "numbers": {
+    "place": ["0", "1", "62", "206", "0", "0", "161", "1", "0", "161", "2", "0", "161"],
+    "offset": ["4", "6", "9", "9"],
+    "state": ["1", "1", "1", "1", "1", "1", "1", "1"]
+   },
+   "to": {
+    "moves": [
+     "hombre:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[2][0],y:161,dir:1,sent:1}"
+    ]
+   },
+   "note": "moved (moves): acts.inicio21; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 268,
+   "numbers": {
+    "place": ["0", "1", "2", "3", "4", "0", "1", "124", "206", "0", "1"],
+    "count": ["2", "1"],
+    "offset": ["1", "16", "27"],
+    "state": ["1", "1", "0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 269,
+   "numbers": {
+    "time": ["250", "300"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 270,
+   "numbers": {
+    "offset": ["26", "22"],
+    "state": ["1"],
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, state, time"
+  },
+  {
+   "line": 271,
+   "numbers": {
+    "offset": ["26", "22", "30"],
+    "state": ["1", "4", "1", "0"],
+    "time": ["300", "900"],
+    "order": ["400"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, state, time, order"
+  },
+  {
+   "line": 272,
+   "numbers": {
+    "state": ["1", "1"],
+    "place": ["101", "153"],
+    "offset": ["4"],
+    "scale": ["2"],
+    "time": ["500"]
+   },
+   "to": {
+    "moves": [
+     "{id:\"pir\",k:\"piragua\",x:101,y:ASIENTO-4,rot:Math.PI/2},{id:\"bot\",k:\"agua\",x:153,y:ASIENTO}"
+    ]
+   },
+   "note": "moved (moves): acts.dejan; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 273,
+   "numbers": {
+    "place": ["104", "182", "150", "182", "62", "206"],
+    "time": ["250", "250", "500"],
+    "state": ["1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 274,
+   "numbers": {
+    "place": ["119", "163"],
+    "state": ["1", "1"],
+    "order": ["152"],
+    "time": ["700"]
+   },
+   "to": {
+    "moves": [
+     "await palomaA(pg,119,ASIENTO);",
+     "await palomaA(pg,163,ASIENTO);"
+    ]
+   },
+   "note": "moved (moves): acts.paloma; acts.paloma; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 275,
+   "numbers": {
+    "state": ["0", "1", "3", "0"],
+    "time": ["150", "250"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 276,
+   "numbers": {
+    "state": ["0", "1"],
+    "time": ["300"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 277,
+   "numbers": {
+    "state": ["0", "1"],
+    "time": ["900"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 278,
+   "numbers": {
+    "place": ["104", "182", "150", "182", "62", "206"],
+    "state": ["1"],
+    "other": ["1"],
+    "time": ["200"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 279,
+   "numbers": {
+    "time": ["150"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 282,
+   "numbers": {
+    "time": ["900"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 283,
+   "numbers": {
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 284,
+   "numbers": {
+    "place": ["0", ".2", ".4", "0", ".25", ".5"],
+    "time": ["300", ".05", ".03", "240", "500", ".08", ".04", "380", "650"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 285,
+   "numbers": {
+    "time": ["350", "250"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 288,
+   "numbers": {
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 289,
+   "numbers": {
+    "offset": ["1", "9"],
+    "other": ["1"],
+    "state": ["5", "0"],
+    "time": ["500", "1100", "400", "300"],
+    "scale": ["17"],
+    "order": ["400"],
+    "count": ["0"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, other, state, time, scale, order, count"
+  },
+  {
+   "line": 290,
+   "numbers": {
+    "offset": ["3", "9", "10"],
+    "state": ["1"],
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, state, time"
+  },
+  {
+   "line": 291,
+   "numbers": {
+    "offset": ["1"],
+    "other": ["1"],
+    "order": ["400"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, other, order"
+  },
+  {
+   "line": 292,
+   "numbers": {
+    "scale": ["22"],
+    "other": ["4"],
+    "time": ["450", "350"]
+   },
+   "to": "unchanged",
+   "note": "no place: scale, other, time"
+  },
+  {
+   "line": 293,
+   "numbers": {
+    "scale": ["17"],
+    "offset": ["9"],
+    "other": ["4"],
+    "time": ["1000", "300"]
+   },
+   "to": "unchanged",
+   "note": "no place: scale, offset, other, time"
+  },
+  {
+   "line": 294,
+   "numbers": {
+    "scale": ["17", "26", "2", "36"],
+    "offset": ["9", "3"],
+    "other": ["4", "1", "3"],
+    "time": ["1000"]
+   },
+   "to": "unchanged",
+   "note": "no place: scale, offset, other, time"
+  },
+  {
+   "line": 296,
+   "numbers": {
+    "count": ["0", "1"],
+    "offset": ["46", "2"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "moves": [
+     "cx()+46,pies()+2"
+    ]
+   },
+   "note": "moved (moves): acts.final21"
+  },
+  {
+   "line": 297,
+   "numbers": {
+    "count": ["4", "4", "4", "4", "0", "1"],
+    "place": ["34", "2", "22", "12", "26", "14", "44", "6", "0", "1", "0"],
+    "offset": ["1"],
+    "time": ["400"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 298,
+   "numbers": {
+    "state": ["2"],
+    "time": ["200", "300"],
+    "scale": ["3"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time, scale"
+  },
+  {
+   "line": 299,
+   "numbers": {
+    "time": ["300"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 301,
+   "numbers": {
+    "other": ["22"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 302,
+   "numbers": {
+    "place": ["0", "1", "0", "0", "161", "1", "0", "161", "2", "0", "161", "0", "0", "161", "176", "208", "148", "186"],
+    "offset": ["4", "6", "9", "9", "9", "11"],
+    "state": ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"],
+    "other": ["1"]
+   },
+   "to": {
+    "moves": [
+     "senor:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},joven:{x:B[2][0]-9,y:161,dir:1,sent:1,sin:{mochila:1}},hombre:{x:B[0][0]+11,y:161,dir:1,sent:1,lee:1}",
+     "carmen:{x:176,y:208,dir:-1}",
+     "luis:{x:148,y:186,dir:1}"
+    ]
+   },
+   "note": "moved (moves): acts.inicio22; acts.inicio22; acts.inicio22; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 303,
+   "numbers": {
+    "place": ["72", "163", "157", "204", "167", "187"],
+    "offset": ["1"]
+   },
+   "to": {
+    "moves": [
+     "{id:\"cartera\",k:\"cartera\",x:157,y:ASIENTO},{id:\"mochila\",k:\"mochila\",x:204,y:ASIENTO+1}",
+     "{id:\"caja\",k:\"caja\",x:167,y:187}"
+    ]
+   },
+   "note": "moved (moves): acts.inicio22; acts.inicio22; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 304,
+   "numbers": {
+    "place": ["90", "193", "38", "193", "0", "1", "2", "3", "4", "0", "1"],
+    "state": ["1", "1"],
+    "count": ["2", "1"],
+    "offset": ["1"]
+   },
+   "to": {
+    "moves": [
+     "W.perros={viejo:{x:90,y:193,pose:\"sit\",dir:1},joven:{x:38,y:193,pose:\"sit\",dir:1}}"
+    ]
+   },
+   "note": "moved (moves): acts.inicio22; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 305,
+   "numbers": {
+    "place": ["124", "205", "0", "1"],
+    "offset": ["16", "27"],
+    "state": ["1", "1"]
+   },
+   "to": {
+    "moves": [
+     "W.casa=[124,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;"
+    ]
+   },
+   "note": "moved (moves): acts.inicio22 (senor-senora); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 306,
+   "numbers": {
+    "place": ["80", "184", "96", "188", "112", "184", "0", "1"],
+    "state": ["1"],
+    "time": ["400"]
+   },
+   "to": {
+    "moves": [
+     "const en={senor:[80,184],mujer:[96,188],joven:[112,184]}"
+    ]
+   },
+   "note": "moved (moves): acts.alcarro; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 307,
+   "numbers": {
+    "other": ["0", "1", "2"],
+    "state": ["1", "3", "0"],
+    "time": ["350", "160", "250"],
+    "place": ["0", "172"],
+    "offset": ["9"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 308,
+   "numbers": {
+    "place": ["0", "9", "1", "9", "2", "9", "0", "0", "1", "0", "2", "161", "3"],
+    "state": ["1", "1"],
+    "time": ["300"]
+   },
+   "to": {
+    "moves": [
+     "await mueve(k[0],B[k[1]][0]+k[2],161);"
+    ]
+   },
+   "note": "moved (moves): acts.sientan; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 309,
+   "numbers": {
+    "place": ["122", "174", "158", "210"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "moves": [
+     "mueve(\"carmen\",158,210)"
+    ]
+   },
+   "note": "moved (moves): bolsa, hueso; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 310,
+   "numbers": {
+    "offset": ["2", "22", "25", "1"],
+    "count": ["1"],
+    "time": ["400"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, count, time"
+  },
+  {
+   "line": 311,
+   "numbers": {
+    "place": ["146", "176", "158", "210"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "moves": [
+     "mueve(\"carmen\",158,210)"
+    ]
+   },
+   "note": "moved (moves): bolsa, hueso; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 312,
+   "numbers": {
+    "offset": ["30", "4"],
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, time"
+  },
+  {
+   "line": 313,
+   "numbers": {
+    "count": ["0"],
+    "other": ["1"],
+    "state": ["1"],
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, other, state, time"
+  },
+  {
+   "line": 314,
+   "numbers": {
+    "count": ["0"],
+    "other": ["1"],
+    "state": ["1"],
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, other, state, time"
+  },
+  {
+   "line": 315,
+   "numbers": {
+    "state": ["0", "0"],
+    "place": ["108", "0", "1", "244", "1"],
+    "time": ["400", "300"]
+   },
+   "to": {
+    "moves": [
+     "{id:\"periodico\",k:\"periodico\",x:108,y:ASIENTO}",
+     "244,PORTON[1])"
+    ]
+   },
+   "note": "moved (moves): acts.turno22; as 246, PORTON[1] (turno22); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 316,
+   "numbers": {
+    "state": ["1", "1"],
+    "time": ["300", "200"],
+    "place": ["112", "178", "0", "1"],
+    "offset": ["4", "2"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 317,
+   "numbers": {
+    "other": ["0"],
+    "count": ["3"],
+    "time": ["160", "300"],
+    "place": ["148", "186"],
+    "state": ["1"]
+   },
+   "to": {
+    "moves": [
+     "mueve(\"luis\",148,186)"
+    ]
+   },
+   "note": "moved (moves): luiscaja, luisguarda; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 318,
+   "numbers": {
+    "place": ["36", "193", "64", "194", "100", "205"],
+    "state": ["1", "1"]
+   },
+   "to": {
+    "moves": [
+     "W.casa=[100,205];",
+     "perroA(\"viejo\",36,193,\"walk\"),perroA(\"joven\",64,194,\"run\")"
+    ]
+   },
+   "note": "moved (moves): acts.sale22; acts.sale22; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 319,
+   "numbers": {
+    "state": ["0", "1"],
+    "offset": ["4", "8", "22", "22", "4"],
+    "place": ["176", "3", "3"],
+    "order": ["400"],
+    "count": ["6"],
+    "scale": ["26", "6"],
+    "time": ["90", "350"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 320,
+   "numbers": {
+    "place": ["0", "1"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 321,
+   "numbers": {
+    "state": ["1", "3", "0"],
+    "time": ["300", "160", "200"],
+    "offset": ["10", "2"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time, offset"
+  },
+  {
+   "line": 322,
+   "numbers": {
+    "state": ["1", "0"],
+    "time": ["600"],
+    "place": ["0", "1", "246", "1"]
+   },
+   "to": {
+    "moves": [
+     "246,PORTON[1])"
+    ]
+   },
+   "note": "moved (moves): whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 323,
+   "numbers": {
+    "place": ["0", "1", "0", "1"],
+    "offset": ["8"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "moves": [
+     "await mueve(o.a,PORTON[0]+8,PORTON[1]);"
+    ]
+   },
+   "note": "moved (moves): acts.pasa; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 324,
+   "numbers": {
+    "count": ["0", "1"],
+    "state": ["3", "0"],
+    "time": ["200"],
+    "offset": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, state, time, offset"
+  },
+  {
+   "line": 325,
+   "numbers": {
+    "state": ["1", "1", "0"],
+    "time": ["700"],
+    "place": ["246", "1"]
+   },
+   "to": {
+    "moves": [
+     "p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;},",
+     "246,PORTON[1])"
+    ]
+   },
+   "note": "moved (moves): acts.sevade; whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 326,
+   "numbers": {
+    "offset": ["10", "6", "22"],
+    "state": ["0", "1"],
+    "place": ["148", "186"],
+    "time": ["300"]
+   },
+   "to": {
+    "moves": [
+     "mueve(\"luis\",148,186)"
+    ]
+   },
+   "note": "moved (moves): luiscaja, luisguarda; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 327,
+   "numbers": {
+    "place": ["38", "193", "90", "193", "0", "1", "0", "1"],
+    "state": ["0", "0", "1", "1"],
+    "time": ["300"]
+   },
+   "to": {
+    "moves": [
+     "L=[38,193],D=[90,193]"
+    ]
+   },
+   "note": "moved (moves): acts.perros22; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 328,
+   "numbers": {
+    "state": ["1"],
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 329,
+   "numbers": {
+    "offset": ["30", "4"],
+    "time": ["4", "500"],
+    "state": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, time, state"
+  },
+  {
+   "line": 330,
+   "numbers": {
+    "count": ["0", "1"],
+    "other": ["1", "0"],
+    "place": ["82", "186", "104", "186"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 331,
+   "numbers": {
+    "place": ["0", "1", "128", "205", "0", "1"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 332,
+   "numbers": {
+    "count": ["0"],
+    "scale": ["350"],
+    "place": ["0", "1", "246", "1"],
+    "state": ["0"]
+   },
+   "to": {
+    "moves": [
+     "246,PORTON[1])"
+    ]
+   },
+   "note": "moved (moves): whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 333,
+   "numbers": {
+    "state": ["7", "1", "0", "0"],
+    "time": ["500", "700"],
+    "place": ["246", "1"]
+   },
+   "to": {
+    "moves": [
+     "p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;W.cq.dy=0;",
+     "246,PORTON[1])"
+    ]
+   },
+   "note": "moved (moves): acts.alza; whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 334,
+   "numbers": {
+    "state": ["1", "1", "1", "1", "1", "0", "1", "1"],
+    "place": ["124", "190", "190", "204", "244", "1", "0", "1", "246", "1"],
+    "time": ["500", "200", "400", "700", "300"],
+    "offset": ["4", "20"],
+    "other": ["0"],
+    "count": ["3"]
+   },
+   "to": {
+    "moves": [
+     "mueve(\"carmen\",190,204)",
+     "h.pose=\"idle\";await mueve(\"hombre\",246,PORTON[1]);h.vis=0;}else",
+     "246,PORTON[1])"
+    ]
+   },
+   "note": "moved (moves): acts.final22; acts.final22; whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 335,
+   "numbers": {
+    "time": ["400", "300"],
+    "place": ["0", "1", "0", "196", "204"],
+    "offset": ["30", "2"],
+    "state": ["1", "1", "0", "0", "1", "1"],
+    "other": ["70", "0", "0"],
+    "count": ["1", "1"]
+   },
+   "to": {
+    "moves": [
+     "v.y=196;j.y=204;"
+    ]
+   },
+   "note": "moved (moves): acts.carrova; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 336,
+   "numbers": {
+    "state": ["2", "0", "1", "1", "1", "3"],
+    "time": ["900", "1400"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 338,
+   "numbers": {
+    "other": ["23"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 339,
+   "numbers": {
+    "place": ["0", "1", "1", "0", "161", "0", "0", "161", "2", "0", "161", "38", "210"],
+    "offset": ["4", "6", "9", "13", "2"],
+    "state": ["1", "1", "1", "1", "1", "1", "1", "1"]
+   },
+   "to": {
+    "moves": [
+     "senora:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[0][0]-13,y:161,dir:1,sent:1,animo:\"cansado\"},hombre:{x:B[2][0]+2,y:161,dir:1,sent:1,animo:\"triste\"}"
+    ]
+   },
+   "note": "moved (moves): acts.inicio23; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 340,
+   "numbers": {
+    "place": ["164", "176", "112", "208", "184", "178"],
+    "state": ["0", "1", "0", "0"],
+    "other": ["1"],
+    "scale": ["2"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 341,
+   "numbers": {
+    "place": ["0", "1", "2", "3", "4", "0", "1", "156", "207", "0", "1"],
+    "count": ["2", "1"],
+    "offset": ["1", "16", "27"],
+    "state": ["1", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 342,
+   "numbers": {
+    "place": ["70", "190"],
+    "offset": ["4", "26", "22", "2"],
+    "time": ["700"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 343,
+   "numbers": {
+    "place": ["0", "0", "180", "0", "0", "38", "210"],
+    "offset": ["4", "21", "1"],
+    "order": ["150"],
+    "time": ["400"],
+    "state": ["1"]
+   },
+   "to": {
+    "moves": [
+     "{id:\"cojin\",k:\"mochila\",x:B[0][0]-21,y:ASIENTO+1,z:150}"
+    ]
+   },
+   "note": "moved (moves): acts.cojin; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 344,
+   "numbers": {
+    "place": ["250", "204", "0", "0", "176", "0", "0", "161", "124", "180"],
+    "state": ["1", "1", "1", "1", "1", "1"],
+    "offset": ["6", "5"],
+    "time": ["400", "300"],
+    "other": ["1"]
+   },
+   "to": {
+    "moves": [
+     "a.x=B[0][0]+5;a.y=161;",
+     "W.gente.abuela={x:250,y:204,dir:-1,paso:1}"
+    ]
+   },
+   "note": "moved (moves): acts.abuelallega; acts.abuelallega; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 345,
+   "numbers": {
+    "time": ["350", "250"],
+    "state": ["0"],
+    "other": ["0"]
+   },
+   "to": "unchanged",
+   "note": "no place: time, state, other"
+  },
+  {
+   "line": 346,
+   "numbers": {
+    "other": ["1"],
+    "time": ["600"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, time"
+  },
+  {
+   "line": 347,
+   "numbers": {
+    "other": ["0"],
+    "count": ["2"],
+    "place": ["196", "208", "124", "180"],
+    "state": ["1"],
+    "time": ["500"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 348,
+   "numbers": {
+    "time": ["350", "500"],
+    "place": ["0", "0", "160"],
+    "offset": ["19"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 349,
+   "numbers": {
+    "count": ["1", "7", "6", "2"],
+    "other": ["0", "0", "30", "0", "1"],
+    "offset": ["16", "16", "14", "2"],
+    "place": ["178", "178", "124", "180"],
+    "state": ["1", "1"],
+    "scale": ["7", "7"],
+    "time": ["200"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 350,
+   "numbers": {
+    "other": ["0"],
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, time"
+  },
+  {
+   "line": 351,
+   "numbers": {
+    "time": ["300", "400"],
+    "state": ["1"],
+    "other": ["0"]
+   },
+   "to": "unchanged",
+   "note": "no place: time, state, other"
+  },
+  {
+   "line": 352,
+   "numbers": {
+    "time": ["600", "400"],
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: time, other"
+  },
+  {
+   "line": 354,
+   "numbers": {
+    "other": ["1", "1"],
+    "state": ["3", "0"],
+    "time": ["400"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, state, time"
+  },
+  {
+   "line": 355,
+   "numbers": {
+    "offset": ["16"],
+    "place": ["178", "8", "2.5", "3"],
+    "state": ["1", "0"],
+    "count": ["7", "4"],
+    "time": ["600"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 356,
+   "numbers": {
+    "other": ["1", "1"],
+    "state": ["0", "0"],
+    "count": ["8", "2", "3"],
+    "offset": ["3"],
+    "time": ["90", "700"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, state, count, offset, time"
+  },
+  {
+   "line": 357,
+   "numbers": {
+    "other": ["1", "0", "1"],
+    "time": ["700", "220", "160"],
+    "count": ["2"],
+    "state": ["7", "0"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, time, count, state"
+  },
+  {
+   "line": 358,
+   "numbers": {
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 359,
+   "numbers": {
+    "state": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: state"
+  },
+  {
+   "line": 360,
+   "numbers": {
+    "state": ["1", "1"],
+    "time": ["300", "350"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 361,
+   "numbers": {
+    "place": ["4", "4"],
+    "time": ["700", "250"]
+   },
+   "to": {
+    "moves": [
+     "s.x+=4;await wait(700);s.x-=4;"
+    ]
+   },
+   "note": "moved (moves): acts.mira23; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 362,
+   "numbers": {
+    "time": ["400"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 363,
+   "numbers": {
+    "time": ["1300"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 364,
+   "numbers": {
+    "time": ["1300"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 365,
+   "numbers": {
+    "state": ["0", "0"],
+    "place": ["0", ".12", ".24"],
+    "time": ["900", "120", ".07", ".03", "1100", "800"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 366,
+   "numbers": {
+    "state": ["0", "0"],
+    "time": ["300"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 369,
+   "numbers": {
+    "state": ["0", "1", "1"],
+    "time": ["500", "300", "400"],
+    "place": ["92", "192"],
+    "offset": ["14", "33"],
+    "order": ["400"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 370,
+   "numbers": {
+    "time": ["8", "200", "500"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 371,
+   "numbers": {
+    "time": ["300"],
+    "state": ["0"],
+    "other": ["0"]
+   },
+   "to": "unchanged",
+   "note": "no place: time, state, other"
+  },
+  {
+   "line": 372,
+   "numbers": {
+    "place": ["190", "204", "150", "150", "196", "204", "124", "199"],
+    "time": ["200", "250"],
+    "state": ["1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 373,
+   "numbers": {
+    "time": ["500", "300", "900", "500"],
+    "place": ["70", "196"],
+    "scale": ["2"],
+    "state": ["1", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 374,
+   "numbers": {
+    "place": ["0", "0", "184"],
+    "offset": ["8", "46", "2", "13", "1", "1"],
+    "state": ["1"],
+    "time": ["400"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 376,
+   "numbers": {
+    "offset": ["2", "24"],
+    "state": ["2", "0", "3", "0"],
+    "time": ["200", "140", "140"],
+    "other": ["0"],
+    "count": ["3"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, state, time, other, count"
+  },
+  {
+   "line": 378,
+   "numbers": {
+    "offset": ["4", "24", "36", "22", "2"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset"
+  },
+  {
+   "line": 379,
+   "numbers": {
+    "place": ["0", "0", "184", "0", "0", "184"],
+    "offset": ["8", "8"],
+    "state": ["0", "3", "0", "2", "0", "1"],
+    "time": ["700", "700"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 380,
+   "numbers": {
+    "place": ["70", "190"],
+    "time": ["500", "400", "300"],
+    "state": ["4", "0"],
+    "other": ["1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 381,
+   "numbers": {
+    "other": ["0"],
+    "count": ["2"],
+    "state": ["5", "0", "2", "0", "3", "0"],
+    "time": ["150", "150", "700", "700"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, count, state, time"
+  },
+  {
+   "line": 383,
+   "numbers": {
+    "place": ["0", "0", "180"],
+    "offset": ["6", "30", "2", "13", "1", "1"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 384,
+   "numbers": {
+    "place": ["70", "196"],
+    "offset": ["18", "4"],
+    "time": ["300"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 385,
+   "numbers": {
+    "place": ["38", "210"],
+    "state": ["1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 386,
+   "numbers": {
+    "count": ["0"],
+    "state": ["0", "0", "0", "0"],
+    "time": ["400", "300"],
+    "place": ["0", "0", "180"],
+    "offset": ["10"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 387,
+   "numbers": {
+    "count": ["1"],
+    "place": ["0"],
+    "offset": ["14", "6", "28", "10"],
+    "time": ["300"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 388,
+   "numbers": {
+    "place": ["0"],
+    "offset": ["12", "2"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 390,
+   "numbers": {
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 391,
+   "numbers": {
+    "place": ["250", "200", "250", "206", "250", "196", "250", "210", "232", "204", "4"],
+    "time": ["500"]
+   },
+   "to": {
+    "moves": [
+     "mueve(\"abuela\",250,200),mueve(\"carmen\",250,206),mueve(\"luis\",250,196),perroA(\"canelo\",250,210"
+    ]
+   },
+   "note": "moved (moves): acts.sevan23; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 395,
+   "numbers": {
+    "count": ["4"],
+    "scale": ["2"],
+    "state": ["1", "1", "0"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, scale, state"
+  },
+  {
+   "line": 396,
+   "numbers": {
+    "time": ["750"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 397,
+   "numbers": {
+    "other": ["0"],
+    "count": ["2", "4"],
+    "time": ["130", "130"],
+    "state": ["0"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, count, time, state"
+  },
+  {
+   "line": 399,
+   "numbers": {
+    "place": ["0", "1", "236", "1", "2"],
+    "offset": ["4", "2", "2"],
+    "state": ["0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 400,
+   "numbers": {
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 402,
+   "numbers": {
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 403,
+   "numbers": {
+    "count": ["0"],
+    "time": ["150"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, time"
+  },
+  {
+   "line": 404,
+   "numbers": {
+    "count": ["10"],
+    "state": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, state"
+  },
+  {
+   "line": 405,
+   "numbers": {
+    "state": ["1"],
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 406,
+   "numbers": {
+    "other": ["0"],
+    "count": ["3"],
+    "place": ["6", "10", "6", "0"],
+    "time": ["60"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+  },
+  {
+   "line": 407,
+   "numbers": {
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 408,
+   "numbers": {
+    "time": ["200"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 409,
+   "numbers": {
+    "count": ["1", "1"],
+    "other": ["0"],
+    "state": ["3", "0"],
+    "time": ["140", "140"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, other, state, time"
+  },
+  {
+   "line": 410,
+   "numbers": {
+    "state": ["1", "0", "1"],
+    "time": ["1500"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 413,
+   "numbers": {
+    "count": ["1"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba: a test act no story of this scene calls (only la-foto, another scene, names \"prueba\"): its places unchanged; whoever sits there sits at the old 161"
+  },
+  {
+   "line": 414,
+   "numbers": {
+    "place": ["0", "1", "0", "1", "2", "3", "4", "0", "1"],
+    "offset": ["4", "6", "1"],
+    "state": ["1"],
+    "count": ["2", "1"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 415,
+   "numbers": {
+    "count": ["5", "4", "2", "0"],
+    "state": ["0", "1", "0"],
+    "place": ["50", "160"],
+    "scale": ["46", "26"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 416,
+   "numbers": {
+    "count": ["2"],
+    "place": ["0", "0", "0", "1", "1", "0", "1", "1", "2", "0", "2", "1", "2", "0", "2", "1", "186", "200", "150", "204"],
+    "offset": ["8", "11", "8", "11", "10", "11", "11", "11"],
+    "state": ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 417,
+   "numbers": {
+    "place": ["112", "180", "40", "204", "68", "206", "0", "206", "1", "0", "1", "1"],
+    "state": ["1", "1", "1"],
+    "offset": ["14", "5"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 418,
+   "numbers": {
+    "place": ["0", "0", "0", "1", "0", "0", "161", "1", "0", "1", "1", "2", "0", "2", "1", "52", "208"],
+    "offset": ["13", "11", "5", "9", "11", "2", "11"],
+    "state": ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 419,
+   "numbers": {
+    "place": ["130", "175", "164", "176", "124", "180", "0", "0", "160"],
+    "state": ["1", "1"],
+    "count": ["0", "0", "0"],
+    "offset": ["19"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 420,
+   "numbers": {
+    "place": ["0", "1"],
+    "state": ["1"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 422,
+   "numbers": {
+    "other": ["300"]
+   },
+   "to": "unchanged",
+   "note": "stake, poke and estado: sounds and the state line, no place"
+  },
+  {
+   "line": 424,
+   "numbers": {
+    "other": ["0", "0", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "stake, poke and estado: sounds and the state line, no place"
+  },
+  {
+   "line": 425,
+   "numbers": {
+    "place": ["22", "0", "196", "216", "110", "30"]
+   },
+   "to": {
+    "view": "wide",
+    "point": "corazon"
+   },
+   "note": "the view (views.wide) and the heart (points.corazon): unchanged"
+  },
+  {
+   "line": 426,
+   "numbers": {
+    "place": ["120", "64", "0", "1"],
+    "state": ["0", "0", "1", "0", "0", "0", "1", "0", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "respEn (where the answer cards stand: the sky over the frog's place) and the frog's first place: unchanged"
+  },
+  {
+   "line": "juego.js:16",
+   "to": "unchanged",
+   "note": "fresh(): not used here: banco's fresh() puts the frog at LUGAR.centro"
+  },
+  {
+   "line": "cual.js:21",
+   "to": "unchanged",
+   "note": "panelW(): cq x 123 y 150 s .86: a pair picture that shows the frog sets cq itself (remap); otherwise he is not seen (vis 0)"
+  }
+ ],
+ "checks": {
+  "notes": [
+   "code: banco.js read here: 331 lines hold numbers, every one with its entry; 486 numbers are places on the picture, each named in its line's entry with what becomes of it (moved, the floor rule, a set thing, dropped); 2847 are not places (other 89, scale 37, offset 179, dropped 215, drawing 1701, count 101, state 260, order 10, time 192, sound 63: each line's entry lists them by kind)",
+   "inventory: 20 things (old 20), 2 frog places of LUGAR (old 2), 1 view (old 1), 62 positions (old 62), 12 review pairs of cual-banco (24 pictures here; none is another scene's), 16 level pictures (old 16), 7 baked states reached (the old 49)",
+   "hops (round 4): every walk of the frog in the 18 runs, at any moment (107 calls of hopTo, the old page's run and the port's walk by walk): each the old number of hops (0 differ)",
+   "hops: the frog's 86 walks between steps in the 18 runs, recorded and the port's, each the old number of hops (26 distinct walks; 0 changed)",
+   "boxes, two touch things side by side (as the old, whose lamp post's box also reached over the second bench's end): banco1 -> farol 24 px, banco2 -> farol 24 px",
+   "boxes: every pixel of each set thing inside its touch box in every baked state (nothing sways): carro [27,93,43,91], farol [168,31,12,111], banco0 [80,125,41,43], banco1 [128,124,41,44], banco2 [176,124,30,39]; every pixel answers its own thing in the hit order (the wire answers the lamp only where it hangs from it, 8 px); no two boxes overlap; the trees, the hedge, the gate, the pole and the wire are the park's",
+   "shadows of the set: 1580 castShadow calls over the 12 states, each with strength 1 and a radius, none at night; each casting part darkens pixels, its shadow joined to it; the thin pole, lamp post and gate posts only a contact shadow at their foot: arbol0 960 px, arbol1 960 px, arbol2 690 px, poste 78 px, farol 84 px, carro 1100 px, banco0 1554 px, banco1 1554 px, banco2 834 px, seto 888 px, porton 222 px",
+   "the lamp's pool (evening and night): 3628 and 3628 px round its foot, joined to it, none by day; the trees' crown shades (day and evening), lighter and solid, on the lawn only",
+   "sides: 20565 ticks inside the acts of the port's play of the 18 runs, every step's end and every pair picture: 117257 rests (300 ms or more in one place) on the ground, each clearly on one side with 6 px of that ground round its foot: on the paving (abuela, carmen, coche, cosa billetera, cosa bola, cosa caida, cosa caja, cosa cojin, cosa hielo, cosa jug0, cosa jug1, cosa jug2, cosa jug3, cosa sombrilla, hombre, joven, luis, mujer, paloma 1, paloma 2, paloma 3, perro canelo, perro joven, perro viejo, piraguero, senor, senora, the frog), on the lawn (none); 3907 moments of someone beyond the hedge's line (on the pavement outside), 205 crossings of it, each in the gate's opening",
+   "sitting: 50312 moments of someone on a bench: the seat under the lap, the feet over the paving, nothing of the bench nearer than them (its back behind them); 10621 moments of a thing or a pigeon on a seat, on it",
+   "pigeons: 87478 wire, 1434 air, 1086 ground, 49 coche, 602 seat, 243 frog, 4698 back (moments): on the wire with the wire under their feet, on a back with its top under them; 1434 moments in the air, each with its shadow on the ground (helps)",
+   "behind a front part, drawn over them by front: piraguero behind carro, paloma 2 behind porton, senor behind banco0, senor behind porton, senor behind seto, mujer behind banco1, mujer behind porton, luis behind porton, luis behind seto, carmen behind porton, carmen behind seto, cosa bola behind seto, cosa bola behind porton, perro canelo behind seto, perro canelo behind porton, abuela behind porton, abuela behind seto, the frog behind porton, the frog behind seto, coche behind porton, cosa caida behind porton, luis behind banco0, cosa jug0 behind porton, paloma 0 behind porton, senora behind banco1, senora behind porton, cosa sombrilla behind carro, cosa caja behind porton, mujer behind banco0, joven behind banco1, joven behind porton, joven behind banco2, hombre behind banco0, hombre behind porton, hombre behind seto, mujer behind seto, joven behind seto; nobody has another part of the set nearer than them",
+   "bubbles: 7486 bubbles at 21886 moments (each person's recorded one and \"amor\" when touched, the frog's): wholly inside the view (0 px from its edge at the least), clear of the rounds card, on no face; but where no place is free the \"amor\" of a touch keeps the old place, as the old (abuela \"amor\" (el-bebe-duerme wrong), luis \"amor\" (el-bebe-duerme wrong), hombre \"amor\" (senor-senora right), mujer \"amor\" (senor-senora right), mujer \"amor\" (senor-senora wrong))",
+   "drawn (round 2): at 21910 moments the sorted list composed as it is drawn (each item owns what it drew last; a front part drawn again only over an owner behind it): no bench drawn over whoever sits on it or what lies on its seat (50312 sittings), the lamp post drawn over nobody and nothing, no part of the set (a bench, the cart, the lamp post, the pole, the hedge, a gate post) over any face (so every sitter's face and the vendor's are hidden by nothing of the set; by another sprite only as in the old picture: seen)",
+   "edge (round 3): at 9101 person-, dog-, frog- and pushchair-moments (every step's end of the 18 runs) whoever was wholly inside the view in the old picture is wholly inside now with 3 px to spare (or the old's, when it had less): 0 not; not fixed: Carmen where she hands the bag and the bone (160, 215), 1 px from the lower edge, at 202 step ends",
+   "seen (round 2): at 9024 person-, dog- and frog-moments (every step's end of the 18 runs) each seen no less than in the old picture of that moment less 10%, and their face too (0 less)",
+   "seen, not fixed (round 2): 3 step ends: senor-senora right final.5 (95): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo; senor-senora wrong final.5 (108): piraguero seen 86% (face 100%), the old 100% (100%), by perro viejo; senor-senora alternate final.5 (98): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo: the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view",
+   "gate (round 2): two stone posts 43 rows high with their balls, whole in the view ([174,154,217,212]; round 3 asked 3 px inside the right edge: the right post has 0, not done), no fringe beside them (pixels within 3 px of a post's left side differing from the set without the posts: dia 0 of 209, tarde 0 of 209, noche 0 of 209), 32 px apart, PORTON 199,203 in the opening, the hedge 16 rows high joined to both (73 and 63 px of it beside the left and the right post; 46 px of it right of the right post), the paving running out through the opening as a path, lawn beyond the hedge; the lamp's foot behind the benches' line (40 px of it seen in the gap), its pool round its foot reaching the paving in front of the benches (round 3: tarde: centre 0.57 px from the foot, inner half 67% brighter; noche: centre 0.57 px from the foot, inner half 306% brighter); the wire against the sky dia 5.39 (against the first tree's crown top, not done: 1.35), tarde 6.22 (against the first tree's crown top, not done: 1.8), noche 4.72 (against the first tree's crown top, not done: 1.1) (round 3: the least luminance contrast with the sky just above and below it, WCAG, 2 kept; round 2: CIE76); the pole whole, 3 px wide; the sun and moon (radius 4; round 3 asked El camino's 9 with 10 px from the wire and 14 from the pole: not done, no place holds it) from the wire and the pole by sun-wire 7.42, sun-pole 8.1, moon-wire 7.42, moon-pole 8.1 px (6 kept), in the left half, clear of the rounds board; every bench whole in the view with 2 px",
+   "umbrella (round 2): at 1288 step ends with the cart open and its man at it, the rim of the umbrella 7 px and more above his hair (3 kept); the cart over no face (drawn)",
+   "asks: 46 distinct asks (for bebe, canta, come, di_bebe, di_cansado, di_come, di_contento, di_joven, di_senor, di_senora, di_triste, hombre, joven, luis, mujer, perro_joven, perro_viejo, quieto, senor): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the park by its hintBox), no frame's rings across a face where the old frame's were not (as the old: el-bebe-duerme beats.57 (luis) abuela's face; senor-senora beats.20 (mujer) hombre's face; senor-senora beats.20 (mujer) luis's face; senor-senora beats.25 (perro_viejo) the frog's face; senor-senora beats.52 (senor) joven's face), the hint hand on no face (but as the old: el-bebe-duerme beats.57 (luis): on luis's face; h-banco beats.4 (joven): on the frog's face; h-banco beats.7 (joven): on the frog's face; la-piragua beats.11 (mujer): on the frog's face; la-piragua beats.44 (mujer): on the frog's face; senor-senora beats.20 (mujer): on carmen's face; senor-senora beats.20 (mujer): on luis's face; senor-senora beats.20 (mujer): on the frog's face); 52 answer cards, each with its lit frame and glow 4 px and more inside the view (4 at the least), 2 px clear of the rounds card and of everyone's head and body, over no dog, the pushchair or a thing, nor what the ask names (over the wire's pigeons at no ask that names them: el-bebe-duerme, la-piragua, senor-senora; over farol of the set, named by no ask with cards), the sun and the moon under none; (new) at each of the 52 cards the hint drawn round it: its frame 2 px inside the view, across no head, its hand on no face; 69 times someone a learner must find or tell apart: whole in the view, on plain paving, lawn, sky or their own bench, apart where the old had them apart, 42 at the least from their backdrop in the evening and at night (CIE76, their fill or their dark outline against the 2 px round them; 15 kept, or no less than the old picture: none lower)",
+   "heads: at 65023 face-moments (everyone at rest) no face has a tree, the lamp post, the pole or the wire behind it where the old picture did not",
+   "sky: the sun at 34,40 (radius 4), upper left, whole in the view, under no card and no board at any moment; the moon at 34,40 (at night, W.luna) the same; the old picture's three clouds at 150,12; 196,30; 160,40, clear of both and of the corner card; by night no sun (patch)",
+   "preview: at every step's end of the 18 recorded runs (16127 places of the people, the frog, the dogs, the pigeons, the things and the pushchair) banco-preview.html puts everyone exactly where the sheet's rule does (0 differ); and the rule puts each of the 9920 places at rest where the port's play has them (0 differ)",
+   "pairs: 24 review pictures (and the 16 level pictures, the same pictures), 18 at zoom 2, the others at zoom 1 (a standing person is taller than 52 rows): everything in each whole with 1 px to spare at zoom 2 (2 at zoom 1); no zoom 2 picture shows a shadow without its caster; what differs: hombre: gente; mujer: gente; senor: gente; senora: gente; joven: gente; viejo: perros; come: gente; bebe: palomas, cosas; duerme: perros; cansado: gente; contento: gente; triste: perros",
+   "states: 7 baked states reached (dia.0.abierto, dia.0.no, tarde.0.abierto, noche.0.abierto, noche.0.cerrado, noche.0.no, noche.1.abierto; every moment, pair and level picture), of the 12 the set can bake"
+  ],
+  "notFixed": [
+   {
+    "what": "senor-senora right final.5 (95): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo",
+    "why": "the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view"
+   },
+   {
+    "what": "senor-senora wrong final.5 (108): piraguero seen 86% (face 100%), the old 100% (100%), by perro viejo",
+    "why": "the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view"
+   },
+   {
+    "what": "senor-senora alternate final.5 (98): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo",
+    "why": "the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view"
+   },
+   {
+    "what": "senor-senora, every plan: Carmen at (160, 215) (bolsa, hueso) at 202 step ends, 1 px from the picture's lower edge (3 asked; the old had her 6 px from it)",
+    "why": "round 3: no place holds her: right of it the gate's left post goes over her face, the hedge's line is within 6 px of her feet; higher up she stands over Luis (seen); left of it she stands over the frog"
+   }
+  ]
+ }
+}
+''',
+  'estufa': r'''{
+ "scene": "estufa",
+ "made": "node docs/proyecto/pixel/estufa-sheet-make.js, from estufa-set.html (window.ESTUFA_SET) and coqui/ref/escenas/estufa/. Order 38a.",
+ "S": 26,
+ "origin": {
+  "originX": -102,
+  "originY": -40
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "pairPicture": [196, 104],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin; a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]",
+  "floor": "the kitchen is built round the old picture: a place keeps its screen place, its world point the surface under it (estufa-set.html surfaceAt): the stool's top, a top of the run (z 1.3), the shelf, or the floor (z 0). A frog place q: under (q.x + 16, q.y + 26); a person's or a thing's place (x, y): under (x, y - 1). So every position of estufa.js, its stories and its pairs keeps its numbers, but those in moves and the story positions remap moves; the sheet names each (spots, remap, code)",
+  "relative": "what the old code draws or moves relative to a person, the frog, a pot, a plate or a counter's place (what is carried, the steam, the flames, the helpings, the pieces on a plate, the bubbles, the clouds) keeps its offsets",
+  "view": "one view, zoom 1: the 196 x 216 window from x0 22, the old wide one",
+  "pair": "a review or level picture is pictures[word.side]: zoom 2 = the 98 x 52 crop shown at 2 x 2, zoom 1 = the 196 x 104 window. The old rectangles (remap cam and crop) say which pictures they were"
+ },
+ "layout": {
+  "what": "La cocina's room (cocina-kit.js) cut open as La sala's, on the world's axes at the engine's 30 degrees: one run along the back wall, the left counter from the corner, the stove, the right counter running off the picture at the right; the shelf with its jars over the left counter, the hood and a steel splashback over the stove, the window with its bush over the right counter; the stool on the floor in front of the stove; the checker floor; dark above the cut walls",
+  "why": "the brief: the stove and the two counters in one run along one axis against a far wall. A run along x falls half a row a pixel to the right; it is placed as low as the right cook (LADO[1], 171, 176) lets it (whoever stands at the run is on clear floor in front of it, its front 1.4 from the wall), so the stove's pots and the right counter's things move least and the left counter's most (moves). Its tops are 1.4 deep (the kit's counters are 0.9) so that the tray, 46 px wide, and the plates stand wholly on them. The stove is as wide as two 34 px pots side by side need, in the kit's look",
+  "numbers": {
+   "WH": [177, 191, 205],
+   "FYS": [96, 115],
+   "FDY": [-25, -6],
+   "ENX": {
+    "saco": 49,
+    "tazon": 67,
+    "platos": 189,
+    "basura": 207,
+    "jarra": 188,
+    "tazas": 201,
+    "masa": 38,
+    "fuente": 64,
+    "apartes": 222
+   },
+   "ENY": {
+    "saco": 68,
+    "tazon": 77,
+    "platos": 138,
+    "basura": 147,
+    "jarra": 133,
+    "tazas": 145,
+    "masa": 63,
+    "fuente": 76,
+    "apartes": 155
+   },
+   "BJ": 69,
+   "REPY": 131,
+   "SALY": 116,
+   "SVY": [134, 143, 153],
+   "ES": [27, 33],
+   "WY": [78, 82, 92],
+   "SILL": [107, 114, 121],
+   "STEAM": {
+    "pot": -27,
+    "potSmoke": -31,
+    "pan": -20
+   }
+  }
+ },
+ "behind": {
+  "what": "nothing: the outside (sky, bush) is baked into the window",
+  "items": []
+ },
+ "setKey": {
+  "params": {
+   "banco": "W.banco ? 1 : 0 (the stool)"
+  },
+  "key": "\"banco\" + (W.banco ? 1 : 0)",
+  "baked": [
+   {
+    "key": "banco1",
+    "query": "?banco=1"
+   },
+   {
+    "key": "banco0",
+    "query": "?banco=0"
+   }
+  ],
+  "notReached": [],
+  "bakedWhy": "order 06 found 164 states made by fourteen keys. One is the set's: banco (the stool; the review pictures leave it out). The other thirteen are things the sprite layer draws, as the old: basura and cubo (the waste bucket and what lies in it), der and izq (what stands on the counters), encima (on the frog's head), estante (the sack and the jar on the shelf), fuegos (the pots and the pan, their contents, flames, steam and smoke), mat (the frog's plate), olor (the smell), plata (abuela's plate), repisa (the plates put by), salero (the shaker), ventanacome (the plates on the sill). So setKey reads banco only",
+  "spriteKeys": {
+   "basura": "draw(): what lies in the bucket",
+   "cubo": "draw(): the bucket (sorted list)",
+   "der": "draw(): the right counter's things (and the left counter's board and fritter plate)",
+   "izq": "draw(): the left counter's things",
+   "encima": "rana()",
+   "estante": "draw(): on the shelf (moves)",
+   "fuegos": "fuego()",
+   "mat": "draw()",
+   "olor": "draw()",
+   "plata": "draw()",
+   "repisa": "draw() (moves: REP)",
+   "salero": "draw() (moves: SALY)",
+   "ventanacome": "draw(): on the sill (moves)"
+  }
+ },
+ "things": {
+  "luis": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (estufa.js:105): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "carmen": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "abuelo": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "mama": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "papa": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "abuela": {
+   "sprite": true,
+   "why": "as luis"
+  },
+  "olla0": {
+   "sprite": true,
+   "why": "the pot at burner 0 (fuegos[0], drawn by the sprite layer): [FX[0] - 17, FYi(0) - 24, 34, 28] (moves: FYS)"
+  },
+  "olla1": {
+   "sprite": true,
+   "why": "the pot at burner 1: [FX[1] - 17, FYi(1) - 24, 34, 28] (moves)"
+  },
+  "saco": {
+   "sprite": true,
+   "why": "the cups of rice on the left counter (W.izq.saco): [EN.saco x - 12, y - 16, 24, 18] (moves: EN)"
+  },
+  "tazon": {
+   "sprite": true,
+   "why": "the cups of beans (W.izq.tazon): [EN.tazon x - 12, y - 16, 24, 18] (moves: EN)"
+  },
+  "pzpollo": {
+   "sprite": true,
+   "why": "the drumstick on abuela's plate (W.plata): [plata.x - 24, plata.y - 22, 24, 24]: unchanged"
+  },
+  "pzhuevo": {
+   "sprite": true,
+   "why": "the egg on her plate: [plata.x, plata.y - 22, 24, 24]: unchanged"
+  },
+  "sarten": {
+   "sprite": true,
+   "why": "the pan at burner 0: [FX[0] - 17, FYi(0) - 14, 36, 16] (moves)"
+  },
+  "bandeja": {
+   "sprite": true,
+   "why": "the tray on the left counter: [28, BJ - 15, 46, 16] (moves)"
+  },
+  "jarra": {
+   "sprite": true,
+   "why": "the jug on the right counter: [EN.jarra x - 11, y - 22, 20, 24] (moves: EN)"
+  },
+  "estufa": {
+   "set": true,
+   "world": [5.19, 0, 0, 7.96, 1.4, 1.3],
+   "box": [87, 86, 78, 69],
+   "screen": [88, 87, 163, 154],
+   "what": "the stove: its top with the two burners, its front with the knobs and the oven door",
+   "old": {
+    "box": [86, 104, 80, 54]
+   },
+   "hand": [126, 132],
+   "handWhy": "on the stove's front, under its top between the burners"
+  },
+  "cocina": {
+   "set": true,
+   "ground": true,
+   "box": [0, 0, 240, 216],
+   "what": "the kitchen: the floor, the walls, the counters, the shelf, the hood, the splashback, the window, the stool; last in the hit order",
+   "old": {
+    "box": [22, 16, 196, 198]
+   },
+   "hintBox": [36, 14, 168, 188],
+   "hintWhy": "hintBox: the part of its touch box the hint frame shows (the frame, box + 12, 2 px inside the view); the touch box answers the touches",
+   "hand": [60, 180],
+   "handWhy": "on the open floor at the left"
+  }
+ },
+ "spots": {
+  "frog.inicio": {
+   "world": [10.0198, 4.1454, 0.72],
+   "on": "banco",
+   "old": [110, 157],
+   "new": [110, 157],
+   "scale": 1,
+   "what": "LUGAR.inicio: the frog on the stool (his feet on its top)"
+  },
+  "frog.centro": {
+   "world": [10.0198, 4.1454, 0.72],
+   "on": "banco",
+   "old": [110, 157],
+   "new": [110, 157],
+   "scale": 1,
+   "what": "LUGAR.centro: the frog on the stool (his feet on its top)"
+  },
+  "frog.saco": {
+   "world": [7.207, 5.4121, 0],
+   "on": "suelo",
+   "old": [35, 159],
+   "new": [35, 159],
+   "scale": 1,
+   "what": "ranaA: the frog on the floor before the cups of rice (echa)"
+  },
+  "frog.tazon": {
+   "world": [7.8054, 4.8138, 0],
+   "on": "suelo",
+   "old": [57, 159],
+   "new": [57, 159],
+   "scale": 1,
+   "what": "ranaA: the frog on the floor before the cups of beans (echa)"
+  },
+  "frog.fuego0": {
+   "world": [8.9476, 4.1067, 0],
+   "on": "suelo",
+   "old": [91, 163],
+   "new": [91, 163],
+   "scale": 1,
+   "what": "ranaA: the frog on the floor before burner 0 (echa)"
+  },
+  "frog.fuego1": {
+   "world": [9.9811, 3.0732, 0],
+   "on": "suelo",
+   "old": [129, 163],
+   "new": [129, 163],
+   "scale": 1,
+   "what": "ranaA: the frog on the floor before burner 1 (echa)"
+  },
+  "frog.olla1": {
+   "world": [10.0899, 3.182, 0],
+   "on": "suelo",
+   "old": [129, 165],
+   "new": [129, 165],
+   "scale": 1,
+   "what": "ranaA: the frog on the floor before the chocolate pot (ranallena)"
+  },
+  "frog.jarra": {
+   "world": [11.1505, 2.1213, 0],
+   "on": "suelo",
+   "old": [161, 165],
+   "new": [168, 165],
+   "scale": 1,
+   "moved": true,
+   "what": "ranaA: the frog on the floor before the jug (ranallena: EN.jarra[0] - 4, moved with it)"
+  },
+  "frog.servir": {
+   "world": [11.1233, 4.1067, 0],
+   "on": "suelo",
+   "old": [146, 185],
+   "new": [131, 183],
+   "scale": 1,
+   "moved": true,
+   "what": "ranaA: the frog on the floor before whoever came in for a cup (ranallena: x - 22, y + 8; moved with them)"
+  },
+  "lado.0": {
+   "world": [7.4518, 3.9707, 0],
+   "on": "suelo",
+   "old": [82, 174],
+   "new": [82, 174],
+   "what": "LADO[0]: the cook at the left of the stove"
+  },
+  "lado.1": {
+   "world": [9.9811, 1.659, 0],
+   "on": "suelo",
+   "old": [171, 176],
+   "new": [171, 176],
+   "what": "LADO[1]: the cook at the right of the stove"
+  },
+  "ayuda": {
+   "world": [6.4727, 5.1673, 0],
+   "on": "suelo",
+   "old": [42, 176],
+   "new": [42, 176],
+   "what": "AYUDA: the helper at the left counter"
+  },
+  "puerta": {
+   "world": [10.9874, 1.0879, 0],
+   "on": "mueble",
+   "old": [200, 180],
+   "new": [200, 180],
+   "what": "PUERTA: whoever comes in (acts.prueba only)"
+  },
+  "banco": {
+   "world": [10.0742, 4.1998, 0.72],
+   "on": "banco",
+   "old": [126, 184],
+   "new": [126, 184],
+   "what": "BANCO: the stool's top under the frog's feet (the set's stool, points.banco)"
+  },
+  "cubo": {
+   "world": [7.9957, 7.1255, 0],
+   "on": "suelo",
+   "old": [34, 208],
+   "new": [34, 208],
+   "what": "CUBO: the waste bucket on the floor"
+  },
+  "fuego.0": {
+   "world": [5.5356, 0.6947, 1.3],
+   "on": "estufa",
+   "old": [107, 122],
+   "new": [107, 97],
+   "moved": true,
+   "what": "FX[0], FY: where burner 0's pot stands (moved: FYS)"
+  },
+  "fuego.1": {
+   "world": [7.6026, 0.6947, 1.3],
+   "on": "estufa",
+   "old": [145, 122],
+   "new": [145, 116],
+   "moved": true,
+   "what": "FX[1], FY: where burner 1's pot stands (moved: FYS)"
+  },
+  "cubo.34_208": {
+   "world": [8.0773, 7.0439, 0],
+   "on": "suelo",
+   "old": [34, 208],
+   "new": [37, 208],
+   "moved": true,
+   "what": "the places on the run's tops (layout"
+  },
+  "plato.190_113": {
+   "world": [9.6423, 0.2867, 1.3],
+   "on": "der",
+   "old": [190, 113],
+   "new": [190, 131],
+   "moved": true,
+   "what": "the places on the run's tops (layout"
+  },
+  "salero.126_127": {
+   "world": [7.0858, 1.2114, 1.3],
+   "on": "estufa",
+   "old": [126, 127],
+   "new": [126, 116],
+   "moved": true,
+   "what": "the places on the run's tops (layout"
+  },
+  "plato.180_122": {
+   "world": [9.5335, 0.7219, 1.3],
+   "on": "der",
+   "old": [180, 122],
+   "new": [180, 134],
+   "moved": true,
+   "what": "the places on the run's tops (layout"
+  },
+  "plato.199_122": {
+   "world": [10.5398, 0.6947, 1.3],
+   "on": "der",
+   "old": [199, 122],
+   "new": [199, 143],
+   "moved": true,
+   "what": "the places on the run's tops (layout"
+  },
+  "plato.218_122": {
+   "world": [11.6004, 0.7219, 1.3],
+   "on": "der",
+   "old": [218, 122],
+   "new": [218, 153],
+   "moved": true,
+   "what": "the places on the run's tops (layout"
+  },
+  "saco.45_122": {
+   "world": [2.3809, 0.6947, 1.3],
+   "on": "izq",
+   "old": [45, 122],
+   "new": [49, 68],
+   "moved": true,
+   "what": "EN"
+  },
+  "tazon.67_122": {
+   "world": [3.3599, 0.6947, 1.3],
+   "on": "izq",
+   "old": [67, 122],
+   "new": [67, 77],
+   "moved": true,
+   "what": "EN"
+  },
+  "platos.184_121": {
+   "world": [9.8599, 0.8307, 1.3],
+   "on": "der",
+   "old": [184, 121],
+   "new": [184, 138],
+   "moved": true,
+   "what": "EN"
+  },
+  "jarra.181_121": {
+   "world": [9.6967, 0.4499, 1.3],
+   "on": "der",
+   "old": [181, 121],
+   "new": [188, 133],
+   "moved": true,
+   "what": "EN"
+  },
+  "tazas.195_121": {
+   "world": [10.5398, 0.9123, 1.3],
+   "on": "der",
+   "old": [195, 121],
+   "new": [195, 145],
+   "moved": true,
+   "what": "EN"
+  },
+  "masa.38_121": {
+   "world": [1.8097, 0.7219, 1.3],
+   "on": "izq",
+   "old": [38, 121],
+   "new": [38, 63],
+   "moved": true,
+   "what": "EN"
+  },
+  "fuente.64_121": {
+   "world": [3.224, 0.7219, 1.3],
+   "on": "izq",
+   "old": [64, 121],
+   "new": [64, 76],
+   "moved": true,
+   "what": "EN"
+  },
+  "bandeja.50_123": {
+   "world": [2.4625, 0.7219, 1.3],
+   "on": "izq",
+   "old": [50, 123],
+   "new": [50, 69],
+   "moved": true,
+   "what": "the tray of drumsticks and eggs on the left counter (BJ), what lies on it with it"
+  },
+  "saco.38_50": {
+   "world": [1.3825, 0.2947, 2.55],
+   "on": "estante",
+   "old": [38, 50],
+   "new": [38, 27],
+   "moved": true,
+   "what": "the sack of rice and the jar of beans on the shelf (W.estante)"
+  },
+  "frasco.50_50": {
+   "world": [2.0352, 0.2947, 2.55],
+   "on": "estante",
+   "old": [50, 50],
+   "new": [50, 33],
+   "moved": true,
+   "what": "the sack of rice and the jar of beans on the shelf (W.estante)"
+  },
+  "ventana.183_30": {
+   "world": [4.8138, -3.8347, 0],
+   "on": "mueble",
+   "old": [183, 30],
+   "new": [177, 78],
+   "moved": true,
+   "what": "the family at the window (familia27)"
+  },
+  "ventana.195_33": {
+   "world": [5.5753, -3.8347, 0],
+   "on": "mueble",
+   "old": [195, 33],
+   "new": [191, 85],
+   "moved": true,
+   "what": "the family at the window (familia27)"
+  },
+  "ventana.207_30": {
+   "world": [6.3368, -3.8347, 0],
+   "on": "mueble",
+   "old": [207, 30],
+   "new": [205, 92],
+   "moved": true,
+   "what": "the family at the window (familia27)"
+  },
+  "abuela.188_180": {
+   "world": [10.8786, 1.6318, 0],
+   "on": "suelo",
+   "old": [188, 180],
+   "new": [188, 184],
+   "moved": true,
+   "what": "platos27"
+  },
+  "carmen.206_188": {
+   "world": [11.8032, 1.6862, 0],
+   "on": "suelo",
+   "old": [206, 188],
+   "new": [204, 193],
+   "moved": true,
+   "what": "platos27"
+  },
+  "papa.184_204": {
+   "world": [11.3409, 3.1276, 0],
+   "on": "suelo",
+   "old": [184, 204],
+   "new": [169, 202],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "papa.207_212": {
+   "world": [11.9664, 2.5021, 0],
+   "on": "suelo",
+   "old": [207, 212],
+   "new": [192, 202],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "mama.184_204": {
+   "world": [11.3409, 3.1276, 0],
+   "on": "suelo",
+   "old": [184, 204],
+   "new": [169, 202],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "mama.207_212": {
+   "world": [11.9664, 2.5021, 0],
+   "on": "suelo",
+   "old": [207, 212],
+   "new": [192, 202],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "abuelo.184_204": {
+   "world": [11.3409, 3.1276, 0],
+   "on": "suelo",
+   "old": [184, 204],
+   "new": [169, 202],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "abuelo.207_212": {
+   "world": [11.9664, 2.5021, 0],
+   "on": "suelo",
+   "old": [207, 212],
+   "new": [192, 202],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "carmen.184_204": {
+   "world": [11.3409, 3.1276, 0],
+   "on": "suelo",
+   "old": [184, 204],
+   "new": [169, 202],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "carmen.207_212": {
+   "world": [11.9664, 2.5021, 0],
+   "on": "suelo",
+   "old": [207, 212],
+   "new": [192, 202],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "luis.164_206": {
+   "world": [10.9058, 3.7803, 0],
+   "on": "suelo",
+   "old": [164, 206],
+   "new": [149, 204],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "luis.187_214": {
+   "world": [11.5313, 3.1548, 0],
+   "on": "suelo",
+   "old": [187, 214],
+   "new": [172, 204],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "cq.146_185": {
+   "world": [10.1558, 4.0094, 0.72],
+   "on": "banco",
+   "old": [146, 185],
+   "new": [131, 183],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "cq.161_165": {
+   "world": [9.3012, 1.1422, 0],
+   "on": "mueble",
+   "old": [161, 165],
+   "new": [168, 165],
+   "moved": true,
+   "what": "viene (cuidado)"
+  },
+  "carmen.204_202": {
+   "world": [12.2384, 2.2301, 0],
+   "on": "suelo",
+   "old": [204, 202],
+   "new": [202, 202],
+   "moved": true,
+   "what": "final27"
+  },
+  "luis.160_176": {
+   "world": [9.0836, 1.9037, 0],
+   "on": "suelo",
+   "old": [160, 176],
+   "new": [150, 170],
+   "moved": true,
+   "what": "cuidado"
+  }
+ },
+ "lugar": {
+  "inicio": {
+   "spot": "frog.inicio",
+   "q": [110, 157],
+   "scale": 1,
+   "old": [110, 157]
+  },
+  "centro": {
+   "spot": "frog.centro",
+   "q": [110, 157],
+   "scale": 1,
+   "old": [110, 157]
+  }
+ },
+ "hops": [
+  {
+   "a": "saco",
+   "b": "servir",
+   "old": 3,
+   "new": 2
+  }
+ ],
+ "hopsAll": [
+  {
+   "a": "banco",
+   "b": "saco",
+   "old": 2,
+   "new": 2
+  },
+  {
+   "a": "banco",
+   "b": "tazon",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "banco",
+   "b": "fuego0",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "banco",
+   "b": "fuego1",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "banco",
+   "b": "olla1",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "banco",
+   "b": "jarra",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "banco",
+   "b": "servir",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "saco",
+   "b": "tazon",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "saco",
+   "b": "fuego0",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "saco",
+   "b": "fuego1",
+   "old": 2,
+   "new": 2
+  },
+  {
+   "a": "saco",
+   "b": "olla1",
+   "old": 2,
+   "new": 2
+  },
+  {
+   "a": "saco",
+   "b": "jarra",
+   "old": 3,
+   "new": 3
+  },
+  {
+   "a": "saco",
+   "b": "servir",
+   "old": 3,
+   "new": 2
+  },
+  {
+   "a": "tazon",
+   "b": "fuego0",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "tazon",
+   "b": "fuego1",
+   "old": 2,
+   "new": 2
+  },
+  {
+   "a": "tazon",
+   "b": "olla1",
+   "old": 2,
+   "new": 2
+  },
+  {
+   "a": "tazon",
+   "b": "jarra",
+   "old": 3,
+   "new": 3
+  },
+  {
+   "a": "tazon",
+   "b": "servir",
+   "old": 2,
+   "new": 2
+  },
+  {
+   "a": "fuego0",
+   "b": "fuego1",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "fuego0",
+   "b": "olla1",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "fuego0",
+   "b": "jarra",
+   "old": 2,
+   "new": 2
+  },
+  {
+   "a": "fuego0",
+   "b": "servir",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "fuego1",
+   "b": "olla1",
+   "old": 0,
+   "new": 0
+  },
+  {
+   "a": "fuego1",
+   "b": "jarra",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "fuego1",
+   "b": "servir",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "olla1",
+   "b": "jarra",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "olla1",
+   "b": "servir",
+   "old": 1,
+   "new": 1
+  },
+  {
+   "a": "jarra",
+   "b": "servir",
+   "old": 1,
+   "new": 1
+  }
+ ],
+ "hopsWhat": "each pair of the frog's places (FROG_PLACES: the stool and the floor places of ranaA), old against new (where he serves whoever came in for a cup moved with them): every count is the old",
+ "points": {
+  "run": {
+   "world": [0, 0, 0, 12.4, 1.4, 1.3],
+   "left": [0, 5.19],
+   "stove": [5.19, 7.96],
+   "right": [7.96, 12.4],
+   "what": "the run along the back wall (x from 0 to 12.4, y from 0 to 1.4, its tops at z 1.3): the left counter (izq), the stove, the right counter (der); its front edge at column sx on the screen falls half a row a pixel to the right",
+   "frontRow": [
+    [22, 66.47],
+    [80, 95.47],
+    [126, 118.47],
+    [180, 145.47],
+    [218, 164.47]
+   ],
+   "backRow": [
+    [22, 40.73],
+    [80, 69.73],
+    [126, 92.73],
+    [180, 119.73],
+    [218, 138.73]
+   ]
+  },
+  "burners": [
+   {
+    "world": [5.79, 0.95, 1.3],
+    "screen": [106.98, 100.69],
+    "pot": [107, 97],
+    "old": [107, 122]
+   },
+   {
+    "world": [7.36, 0.45, 1.3],
+    "screen": [145.04, 110.52],
+    "pot": [145, 116],
+    "old": [145, 122]
+   }
+  ],
+  "burnersWhat": "each burner's middle on the stove's top; pot: where its pot's sprite stands (FX, FYS + 1: the bottom of its sprite), old: the old (FX, FY + 1)",
+  "banco": {
+   "world": [10.1286, 4.2542, 0.72],
+   "top": [126, 184],
+   "half": 0.32,
+   "what": "the stool: its square top (half width 0.32) at z 0.72, its middle under the frog's feet (the old BANCO); four legs, a rail"
+  },
+  "ventana": {
+   "world": [8.1, 0, 1.95, 10.6, 0, 3.1],
+   "hole": [
+    [166.92, 98.55],
+    [212.88, 121.53],
+    [212.88, 95.64],
+    [166.92, 72.66]
+   ],
+   "what": "the window on the back wall over the right counter (the kit's: frame with depth, the cross bars, the sill), the bush and the sky outside; hole: its opening on the screen (four corners)"
+  },
+  "estante": {
+   "world": [1.05, 0, 2.55, 3.6, 0.62, 2.55],
+   "jars": [2.65, 3.15],
+   "what": "the shelf on the wall over the left counter (the kit's), its two jars (green, blue; the old background's)"
+  },
+  "campana": {
+   "world": [5.19, 0, 2.36, 7.96, 0.62, 2.62],
+   "what": "the kit's hood over the stove, as wide as it"
+  },
+  "salpicadero": {
+   "world": [5.19, 0, 1.3, 7.96, 0.03, 2.36],
+   "colour": [172, 176, 188],
+   "what": "the steel splashback behind the stove, from its top to the hood (estufa-set.html): what the steam and smoke rise against"
+  },
+  "corazon": {
+   "screen": [124, 24],
+   "what": "heartAt: unchanged"
+  }
+ },
+ "views": {
+  "wide": {
+   "zoom": 1,
+   "x0": 22,
+   "world": [7.2342, 1.6862, 0],
+   "region": null,
+   "old": [22, 0, 196, 216],
+   "what": "the kitchen's run: the left counter, the stove under its hood, the right counter under the window, the stool in front, the floor"
+  }
+ },
+ "remap": [
+  {
+   "kind": "cam",
+   "old": [52, 148, 94.2, 50],
+   "uses": ["cual-estufa.json huevo.no.cam"],
+   "to": {
+    "pictures": ["huevo.no"]
+   },
+   "crops": {
+    "huevo.no": {
+     "crop": [48, 146, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [58, 90, 139, 74],
+   "uses": ["cual-estufa.json cuidado.si.cam"],
+   "to": {
+    "pictures": ["cuidado.si"]
+   },
+   "crops": {
+    "cuidado.si": {
+     "crop": [26, 70, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [58, 104, 139, 74],
+   "uses": ["cual-estufa.json cuidado.no.cam"],
+   "to": {
+    "pictures": ["cuidado.no"]
+   },
+   "crops": {
+    "cuidado.no": {
+     "crop": [26, 78, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [60, 92, 113, 60],
+   "uses": ["cual-estufa.json huele.si.cam", "cual-estufa.json huele.no.cam"],
+   "to": {
+    "pictures": ["huele.si", "huele.no"]
+   },
+   "crops": {
+    "huele.si": {
+     "crop": [6, 66, 196, 104],
+     "zoom": 1
+    },
+    "huele.no": {
+     "crop": [6, 66, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [60, 150, 75.3, 40],
+   "uses": ["cual-estufa.json habichuelas.si.cam", "cual-estufa.json habichuelas.no.cam"],
+   "to": {
+    "pictures": ["habichuelas.si", "habichuelas.no"]
+   },
+   "crops": {
+    "habichuelas.si": {
+     "crop": [48, 146, 98, 52],
+     "zoom": 2
+    },
+    "habichuelas.no": {
+     "crop": [48, 146, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [70, 84, 75.3, 40],
+   "uses": ["cual-estufa.json arroz.si.cam", "cual-estufa.json arroz.no.cam", "cual-estufa.json huevo.si.cam"],
+   "to": {
+    "pictures": ["arroz.si", "arroz.no", "huevo.si"]
+   },
+   "crops": {
+    "arroz.si": {
+     "crop": [58, 60, 98, 52],
+     "zoom": 2
+    },
+    "arroz.no": {
+     "crop": [58, 60, 98, 52],
+     "zoom": 2
+    },
+    "huevo.si": {
+     "crop": [52, 66, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [84, 146, 113, 60],
+   "uses": ["cual-estufa.json olla.si.cam", "cual-estufa.json olla.no.cam", "cual-estufa.json ya.si.cam", "cual-estufa.json ya.no.cam"],
+   "to": {
+    "pictures": ["olla.si", "olla.no", "ya.si", "ya.no"]
+   },
+   "crops": {
+    "olla.si": {
+     "crop": [81, 146, 98, 52],
+     "zoom": 2
+    },
+    "olla.no": {
+     "crop": [81, 146, 98, 52],
+     "zoom": 2
+    },
+    "ya.si": {
+     "crop": [87, 146, 98, 52],
+     "zoom": 2
+    },
+    "ya.no": {
+     "crop": [87, 146, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [98, 100, 56.5, 30],
+   "uses": [
+    "cual-estufa.json caliente.si.cam",
+    "cual-estufa.json caliente.no.cam",
+    "cual-estufa.json frío.si.cam"
+   ],
+   "to": {
+    "pictures": ["caliente.si", "caliente.no", "frio.si"]
+   },
+   "crops": {
+    "caliente.si": {
+     "crop": [77, 73, 98, 52],
+     "zoom": 2
+    },
+    "caliente.no": {
+     "crop": [77, 73, 98, 52],
+     "zoom": 2
+    },
+    "frio.si": {
+     "crop": [77, 73, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [98, 148, 94.2, 50],
+   "uses": ["cual-estufa.json sal.si.cam", "cual-estufa.json sal.no.cam"],
+   "to": {
+    "pictures": ["sal.si", "sal.no"]
+   },
+   "crops": {
+    "sal.si": {
+     "crop": [97, 146, 98, 52],
+     "zoom": 2
+    },
+    "sal.no": {
+     "crop": [97, 146, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [110, 84, 75.3, 40],
+   "uses": [
+    "cual-estufa.json frío.no.cam"
+   ],
+   "to": {
+    "pictures": ["frio.no"]
+   },
+   "crops": {
+    "frio.no": {
+     "crop": [96, 82, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [116, 86, 105.5, 56],
+   "uses": ["cual-estufa.json hace.si.cam", "cual-estufa.json hace.no.cam"],
+   "to": {
+    "pictures": ["hace.si", "hace.no"]
+   },
+   "crops": {
+    "hace.si": {
+     "crop": [44, 79, 196, 104],
+     "zoom": 1
+    },
+    "hace.no": {
+     "crop": [44, 79, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [157, 84, 75.3, 40],
+   "uses": ["cual-estufa.json pollo.si.cam", "cual-estufa.json pollo.no.cam"],
+   "to": {
+    "pictures": ["pollo.si", "pollo.no"]
+   },
+   "crops": {
+    "pollo.si": {
+     "crop": [142, 103, 98, 52],
+     "zoom": 2
+    },
+    "pollo.no": {
+     "crop": [142, 103, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [79.54, 150, 36.23, 40],
+   "uses": [
+    "nivel.js NV olla.p2"
+   ],
+   "to": {
+    "pictures": ["habichuelas.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [89.54, 84, 36.23, 40],
+   "uses": [
+    "nivel.js NV arroz.p0",
+    "nivel.js NV arroz.p1",
+    "nivel.js NV pollo.p2",
+    "nivel.js NV azúcar.p3"
+   ],
+   "to": {
+    "pictures": ["arroz.si", "arroz.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [112.67, 100, 27.17, 30],
+   "uses": [
+    "nivel.js NV caliente.p0",
+    "nivel.js NV caliente.p1",
+    "nivel.js NV caliente.p2"
+   ],
+   "to": {
+    "pictures": ["caliente.si", "caliente.no", "frio.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [113.33, 146, 54.34, 60],
+   "uses": [
+    "nivel.js NV arroz.p3",
+    "nivel.js NV olla.p0",
+    "nivel.js NV olla.p1",
+    "nivel.js NV olla.p3",
+    "nivel.js NV caliente.p3"
+   ],
+   "to": {
+    "pictures": ["olla.no", "olla.si", "ya.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [122.46, 148, 45.28, 50],
+   "uses": [
+    "nivel.js NV pollo.p3"
+   ],
+   "to": {
+    "pictures": ["sal.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [176.54, 84, 36.23, 40],
+   "uses": [
+    "nivel.js NV arroz.p2",
+    "nivel.js NV pollo.p0",
+    "nivel.js NV pollo.p1"
+   ],
+   "to": {
+    "pictures": ["pollo.si", "pollo.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "point",
+   "old": [0, 0],
+   "uses": [
+    "cual-estufa.json arroz.si.set.cq",
+    "cual-estufa.json arroz.no.set.cq",
+    "cual-estufa.json habichuelas.si.set.cq",
+    "cual-estufa.json habichuelas.no.set.cq",
+    "cual-estufa.json olla.si.set.cq",
+    "cual-estufa.json olla.no.set.cq",
+    "cual-estufa.json hace.si.set.cq",
+    "cual-estufa.json hace.no.set.cq",
+    "cual-estufa.json pollo.si.set.cq",
+    "cual-estufa.json pollo.no.set.cq",
+    "cual-estufa.json huevo.si.set.cq",
+    "cual-estufa.json huevo.no.set.cq",
+    "cual-estufa.json huele.si.set.cq",
+    "cual-estufa.json huele.no.set.cq",
+    "cual-estufa.json caliente.si.set.cq",
+    "cual-estufa.json caliente.no.set.cq",
+    "cual-estufa.json frío.si.set.cq",
+    "cual-estufa.json frío.no.set.cq",
+    "cual-estufa.json cuidado.si.set.cq",
+    "cual-estufa.json cuidado.no.set.cq",
+    "cual-estufa.json ya.si.set.cq",
+    "cual-estufa.json ya.no.set.cq"
+   ],
+   "to": {
+    "none": true
+   },
+   "what": "the frog out of the picture (vis 0) in a review picture: not a place"
+  },
+  {
+   "kind": "point",
+   "old": [82, 158],
+   "uses": ["cual-estufa.json huele.si.set.gente.papa", "cual-estufa.json huele.no.set.gente.papa"],
+   "to": {
+    "suelo": [6.5815, 3.1004, 0]
+   },
+   "new": [82, 158],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [84, 150],
+   "uses": ["cual-estufa.json cuidado.si.set.gente.luis"],
+   "to": {
+    "suelo": [6.2008, 2.6109, 0]
+   },
+   "new": [84, 150],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [84, 196],
+   "uses": ["cual-estufa.json habichuelas.si.set.gente.luis", "cual-estufa.json habichuelas.no.set.gente.luis", "cual-estufa.json huevo.no.set.gente.luis"],
+   "to": {
+    "suelo": [8.7029, 5.1129, 0]
+   },
+   "new": [84, 196],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [110, 157],
+   "uses": ["cual-estufa.json sal.si.set.cq", "cual-estufa.json sal.no.set.cq"],
+   "to": {
+    "banco": [10.0198, 4.1454, 0.72]
+   },
+   "new": [110, 157],
+   "what": "the frog's place q: the surface under (x + 16, y + 26) (banco); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [112, 178],
+   "uses": ["cual-estufa.json cuidado.no.set.gente.luis"],
+   "to": {
+    "suelo": [8.4853, 3.3724, 0]
+   },
+   "new": [112, 178],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [112, 200],
+   "uses": ["cual-estufa.json olla.si.set.gente.abuela", "cual-estufa.json olla.no.set.gente.abuela", "cual-estufa.json ya.si.set.gente.abuela", "cual-estufa.json ya.no.set.gente.abuela"],
+   "to": {
+    "suelo": [9.6819, 4.569, 0]
+   },
+   "new": [112, 200],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [126, 127],
+   "uses": [
+    "cual-estufa.json caliente.si.set.cosas.0",
+    "cual-estufa.json caliente.no.set.cosas.0",
+    "cual-estufa.json frío.si.set.cosas.0"
+   ],
+   "to": {
+    "estufa": [6.5963, 0.7219, 1.3]
+   },
+   "new": [126, 107],
+   "moved": true,
+   "why": "caliente, frío: the cup on the stove's top between the burners, at its x (the old stood it on the stove's front)",
+   "what": "a place (x, y): the surface under (x, y - 1) (estufa); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [150, 113],
+   "uses": ["cual-estufa.json hace.si.set.cosas.0"],
+   "to": {
+    "estufa": [7.249, 0.0692, 1.3]
+   },
+   "new": [150, 107],
+   "moved": true,
+   "why": "hace.si: the ladle in the pot at burner 1 moves with that pot (FYS)",
+   "what": "a place (x, y): the surface under (x, y - 1) (estufa); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [150, 176],
+   "uses": ["cual-estufa.json sal.si.set.vuelos.0", "cual-estufa.json sal.no.set.vuelos.0", "cual-estufa.json cuidado.no.set.gente.abuela"],
+   "to": {
+    "suelo": [9.41, 2.2301, 0]
+   },
+   "new": [150, 176],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [156, 164],
+   "uses": ["cual-estufa.json cuidado.si.set.gente.abuela"],
+   "to": {
+    "suelo": [9.138, 1.6318, 0]
+   },
+   "new": [156, 168],
+   "moved": true,
+   "why": "cuidado.si: abuela on clear floor in front of the stove and the right counter, at her x",
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [157, 181],
+   "uses": ["cual-estufa.json sal.si.set.vuelos.1", "cual-estufa.json sal.no.set.vuelos.1"],
+   "to": {
+    "suelo": [9.8723, 2.3117, 0]
+   },
+   "new": [157, 181],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [158, 187],
+   "uses": ["cual-estufa.json sal.si.set.vuelos.2", "cual-estufa.json sal.no.set.vuelos.2"],
+   "to": {
+    "suelo": [10.2259, 2.6109, 0]
+   },
+   "new": [158, 187],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [158, 196],
+   "uses": ["cual-estufa.json sal.si.set.mat", "cual-estufa.json sal.no.set.mat"],
+   "to": {
+    "suelo": [10.7154, 3.1004, 0]
+   },
+   "new": [158, 196],
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [176, 152],
+   "uses": ["cual-estufa.json hace.si.set.gente.mama", "cual-estufa.json hace.no.set.gente.mama"],
+   "to": {
+    "suelo": [10.2259, 1.6318, 0]
+   },
+   "new": [176, 178],
+   "moved": true,
+   "why": "hace (both pictures): mamá stood at the old counter's foot; here on clear floor in front of the right counter, at her x",
+   "what": "a place (x, y): the surface under (x, y - 1) (suelo); moved (why)"
+  },
+  {
+   "kind": "point",
+   "old": [195, 123],
+   "uses": ["cual-estufa.json pollo.si.set.plata", "cual-estufa.json pollo.no.set.plata"],
+   "to": {
+    "der": [10.3222, 0.6947, 1.3]
+   },
+   "new": [195, 141],
+   "moved": true,
+   "why": "pollo (both pictures): the plate on the right counter's top, at its x",
+   "what": "a place (x, y): the surface under (x, y - 1) (der); moved (why)"
+  },
+  {
+   "kind": "rect",
+   "old": [106, 104, 90, 117],
+   "uses": ["cual-estufa.json huele.si.set.olor"],
+   "to": {
+    "olor": true
+   },
+   "new": [106, 79, 90, 117],
+   "moved": true,
+   "why": "huele.si: the smell rises from the pan at burner 0 (moved with it, FYS) to papá's nose (unchanged)",
+   "what": "the smell's curve (W.olor: from x0, y0 to x1, y1)"
+  }
+ ],
+ "pictures": {
+  "arroz.si": {
+   "world": [4.9373, 0.0964, 1.3],
+   "screen": [107, 86],
+   "zoom": 2,
+   "crop": [58, 60, 98, 52],
+   "what": "the pot at burner 0 full of rice"
+  },
+  "arroz.no": {
+   "world": [4.9373, 0.0964, 1.3],
+   "screen": [107, 86],
+   "zoom": 2,
+   "crop": [58, 60, 98, 52],
+   "what": "the pot full of beans"
+  },
+  "habichuelas.si": {
+   "world": [7.751, 3.4539, 0],
+   "screen": [97, 172],
+   "zoom": 2,
+   "crop": [48, 146, 98, 52],
+   "what": "Luis holding up a bowl of beans"
+  },
+  "habichuelas.no": {
+   "world": [7.751, 3.4539, 0],
+   "screen": [97, 172],
+   "zoom": 2,
+   "crop": [48, 146, 98, 52],
+   "what": "Luis holding up a bowl of rice"
+  },
+  "olla.si": {
+   "world": [8.6485, 2.5565, 0],
+   "screen": [130, 172],
+   "zoom": 2,
+   "crop": [81, 146, 98, 52],
+   "what": "abuela holding up a pot"
+  },
+  "olla.no": {
+   "world": [8.6485, 2.5565, 0],
+   "screen": [130, 172],
+   "zoom": 2,
+   "crop": [81, 146, 98, 52],
+   "what": "abuela holding up a pan"
+  },
+  "hace.si": {
+   "world": [8.8264, 1.1026, 1.3],
+   "screen": [160, 131],
+   "zoom": 1,
+   "crop": [44, 79, 196, 104],
+   "what": "mamá at the stove, the ladle in the pot. Zoom 1: what the pair is about runs from the ladle in the pot at burner 1 (row 92) to the plate in her hands (row 156), 64 rows: a 98 x 52 window cannot hold it"
+  },
+  "hace.no": {
+   "world": [8.8264, 1.1026, 1.3],
+   "screen": [160, 131],
+   "zoom": 1,
+   "crop": [44, 79, 196, 104],
+   "what": "mamá eating from a plate"
+  },
+  "pollo.si": {
+   "world": [9.6151, 0.0964, 1.3],
+   "screen": [193, 129],
+   "zoom": 2,
+   "crop": [142, 103, 98, 52],
+   "what": "a drumstick on a plate"
+  },
+  "pollo.no": {
+   "world": [9.6151, 0.0964, 1.3],
+   "screen": [193, 129],
+   "zoom": 2,
+   "crop": [142, 103, 98, 52],
+   "what": "a fried egg on a plate"
+  },
+  "huevo.si": {
+   "world": [5.1005, 0.5859, 1.3],
+   "screen": [101, 92],
+   "zoom": 2,
+   "crop": [52, 66, 98, 52],
+   "what": "an egg frying in the pan"
+  },
+  "huevo.no": {
+   "world": [7.751, 3.4539, 0],
+   "screen": [97, 172],
+   "zoom": 2,
+   "crop": [48, 146, 98, 52],
+   "what": "Luis holding up the shaker"
+  },
+  "sal.si": {
+   "world": [9.0836, 2.1213, 0],
+   "screen": [146, 172],
+   "zoom": 2,
+   "crop": [97, 146, 98, 52],
+   "what": "salt falling from the shaker over the frog's plate"
+  },
+  "sal.no": {
+   "world": [9.0836, 2.1213, 0],
+   "screen": [146, 172],
+   "zoom": 2,
+   "crop": [97, 146, 98, 52],
+   "what": "pepper from the mill"
+  },
+  "huele.si": {
+   "world": [5.0041, 0.3264, 0],
+   "screen": [104, 118],
+   "zoom": 1,
+   "crop": [6, 66, 196, 104],
+   "what": "papá smelling the pan. Zoom 1: the smell's lines from the pan (row 74) to papá's nose and his whole head (to row 127) are 53 rows: a 98 x 52 window cannot hold them"
+  },
+  "huele.no": {
+   "world": [5.0041, 0.3264, 0],
+   "screen": [104, 118],
+   "zoom": 1,
+   "crop": [6, 66, 196, 104],
+   "what": "papá eating"
+  },
+  "caliente.si": {
+   "world": [6.1612, 0.2867, 1.3],
+   "screen": [126, 99],
+   "zoom": 2,
+   "crop": [77, 73, 98, 52],
+   "what": "a hot cup of chocolate, steaming"
+  },
+  "caliente.no": {
+   "world": [6.1612, 0.2867, 1.3],
+   "screen": [126, 99],
+   "zoom": 2,
+   "crop": [77, 73, 98, 52],
+   "what": "a cold glass of chocolate"
+  },
+  "frio.si": {
+   "world": [6.1612, 0.2867, 1.3],
+   "screen": [126, 99],
+   "zoom": 2,
+   "crop": [77, 73, 98, 52],
+   "what": "a glass of cold water"
+  },
+  "frio.no": {
+   "world": [7.1674, 0.2595, 1.3],
+   "screen": [145, 108],
+   "zoom": 2,
+   "crop": [96, 82, 98, 52],
+   "what": "the pot of water on the fire"
+  },
+  "cuidado.si": {
+   "world": [5.7656, 0, 0],
+   "screen": [124, 122],
+   "zoom": 1,
+   "crop": [26, 70, 196, 104],
+   "what": "Luis and abuela, both warning. Zoom 1: the two of them stand 72 px apart and 72 rows tall together: a 98 x 52 window cannot hold them"
+  },
+  "cuidado.no": {
+   "world": [6.2008, 0.4351, 0],
+   "screen": [124, 130],
+   "zoom": 1,
+   "crop": [26, 78, 196, 104],
+   "what": "Luis and abuela offering a plate"
+  },
+  "ya.si": {
+   "world": [8.8116, 2.3933, 0],
+   "screen": [136, 172],
+   "zoom": 2,
+   "crop": [87, 146, 98, 52],
+   "what": "abuela holding up the plate of fritters"
+  },
+  "ya.no": {
+   "world": [8.8116, 2.3933, 0],
+   "screen": [136, 172],
+   "zoom": 2,
+   "crop": [87, 146, 98, 52],
+   "what": "abuela holding up a bowl"
+  }
+ },
+ "level": [
+  {
+   "w": "arroz",
+   "index": 0,
+   "picture": "arroz.si",
+   "old": [89.54, 84, 36.23, 40],
+   "crop": [58, 60, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "arroz",
+   "index": 1,
+   "picture": "arroz.no",
+   "old": [89.54, 84, 36.23, 40],
+   "crop": [58, 60, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "arroz",
+   "index": 2,
+   "picture": "pollo.si",
+   "old": [176.54, 84, 36.23, 40],
+   "crop": [142, 103, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "arroz",
+   "index": 3,
+   "picture": "olla.no",
+   "old": [113.33, 146, 54.34, 60],
+   "crop": [81, 146, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "olla",
+   "index": 0,
+   "picture": "olla.si",
+   "old": [113.33, 146, 54.34, 60],
+   "crop": [81, 146, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "olla",
+   "index": 1,
+   "picture": "olla.no",
+   "old": [113.33, 146, 54.34, 60],
+   "crop": [81, 146, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "olla",
+   "index": 2,
+   "picture": "habichuelas.si",
+   "old": [79.54, 150, 36.23, 40],
+   "crop": [48, 146, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "olla",
+   "index": 3,
+   "picture": "ya.si",
+   "old": [113.33, 146, 54.34, 60],
+   "crop": [87, 146, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "pollo",
+   "index": 0,
+   "picture": "pollo.si",
+   "old": [176.54, 84, 36.23, 40],
+   "crop": [142, 103, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "pollo",
+   "index": 1,
+   "picture": "pollo.no",
+   "old": [176.54, 84, 36.23, 40],
+   "crop": [142, 103, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "pollo",
+   "index": 2,
+   "picture": "arroz.si",
+   "old": [89.54, 84, 36.23, 40],
+   "crop": [58, 60, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "pollo",
+   "index": 3,
+   "picture": "sal.si",
+   "old": [122.46, 148, 45.28, 50],
+   "crop": [97, 146, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "caliente",
+   "index": 0,
+   "picture": "caliente.si",
+   "old": [112.67, 100, 27.17, 30],
+   "crop": [77, 73, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "caliente",
+   "index": 1,
+   "picture": "caliente.no",
+   "old": [112.67, 100, 27.17, 30],
+   "crop": [77, 73, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "caliente",
+   "index": 2,
+   "picture": "frio.si",
+   "old": [112.67, 100, 27.17, 30],
+   "crop": [77, 73, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "caliente",
+   "index": 3,
+   "picture": "olla.si",
+   "old": [113.33, 146, 54.34, 60],
+   "crop": [81, 146, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "azúcar",
+   "index": 3,
+   "picture": "arroz.si",
+   "old": [89.54, 84, 36.23, 40],
+   "crop": [58, 60, 98, 52],
+   "zoom": 2
+  }
+ ],
+ "clips": {
+  "ventana": {
+   "old": "estufa.js:134 clip rect [176, 22, 38, 36]",
+   "thing": "cocina",
+   "face": "the window's opening in the back wall (points.ventana.hole)",
+   "how": "not clipped: the family stands outside, behind the window's deep recess (their plane y = -0.57), and the set's own pixels nearer than them (the wall, the recess, the frame, the sill, the counter, the room) are drawn again over them (front.parts.ventana); so they are seen only through the opening, cut at the chest by the recess's bottom, as whoever looks in from outside. The plates on the sill are drawn after, in the room"
+  }
+ },
+ "smoothing": "estufa.js turns smoothing off (respIcon) and never on",
+ "front": {
+  "how": "the stool is now a set thing someone can stand behind; the window's people stand outside. At its entry in the sorted list (sortY 9999: after everyone) the stool's pixels (part banco, banco.patas) are drawn again over each item drawn before it that owns them (each item says what it is), only where that pixel is nearer to the camera than the item: bakedZ[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S, v = (x + y) / R2 of the surface point under the item (rules.floor). After the window's people (drawn first of all), the set's pixels of front.parts.ventana nearer than their plane are drawn again over them. \"Behind the stool\" is that depth test, not a row",
+  "plane": "v / COS - (row + .5 - OY) * tan(30 deg) / S",
+  "parts": {
+   "banco": {
+    "parts": ["banco", "banco.patas"],
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"banco\"})"
+   },
+   "ventana": {
+    "parts": ["banco", "banco.patas", "campana", "campana.arriba", "campana.bajo", "campana.tubo", "der", "estante", "estante.mensula", "estufa", "izq", "pared", "salpicadero", "ventana", "ventana.alfeizar", "ventana.hondo"],
+    "y": -0.57,
+    "after": "the window's people (draw: the line of W.ventana)",
+    "plane": "world y = front.parts.ventana.y (outside, behind the recess) under each one's column"
+   }
+  },
+  "tags": [
+   [
+    "L.push({y:p.y,d:()=>gente(c,id,a)})",
+    "L.push({y:p.y,id,d:()=>gente(c,id,a)})"
+   ],
+   [
+    "if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)})",
+    "if(q.vis)L.push({y:q.y+27,id:\"coqui\",d:()=>rana(c,q,a)})"
+   ]
+  ],
+  "tagsWhat": "each item of the sorted list says what it is (the front masks read it); nothing else changes"
+ },
+ "shadows": {
+  "rule": "the kitchen's one light (cocina-kit.js): from the upper left, shadows to screen right, low and joined to the thing. Whoever stands on the floor casts a small shadow from the floor point under their feet; what stands on a top, the frog on the stool and the window's people cast none (a shadow falls on the floor only)",
+  "coqui": {
+   "radius": 0.45,
+   "at": "the floor under (b.x + b.w / 2, q.y + 26)",
+   "when": "W.cq.vis and al > .5 and his place is on the floor (not on the stool)",
+   "cast": "castShadow(g.x, g.y, .3, .45)"
+  },
+  "people": {
+   "radius": {
+    "abuela": 0.35,
+    "nino": 0.3,
+    "other": 0.35
+   },
+   "at": "the floor under (x, y - 1)",
+   "when": "visible (vis !== 0, al > .5), on the floor",
+   "cast": "for (z = .3; z <= 1.7; z += .35) castShadow(g.x, g.y, z, r)"
+  },
+  "dropped": "none of the old code's own: estufa.js draws no shadow"
+ },
+ "dropped": [
+  {
+   "line": 133,
+   "src": "c.drawImage(spr(\"estufa\",fondo),0,0);",
+   "to": "",
+   "why": "the background (fondo): the set, for setKey(W)"
+  },
+  {
+   "line": 154,
+   "src": "if(W.banco)L.push({y:BANCO[1]+1,d:()=>tenida(c,\"banco\",BANCO[0],BANCO[1]+18)});",
+   "to": "",
+   "why": "the stool (W.banco): the set's (setKey banco); whoever stands behind it has it drawn again over them (front.banco)"
+  }
+ ],
+ "moves": [
+  {
+   "line": 20,
+   "act": "*",
+   "src": "const REP=[190,ENC+1],SVX=i=>180+i*19,ESX=EST[0]+26,CUBO=[34,208],SALX=EST[0]+40;",
+   "to": "const REP=[190,131],SVX=i=>180+i*19,SVY=i=>[134,143,153][i],ESX=EST[0]+26,CUBO=[37,208],SALX=EST[0]+40,SALY=116,FYS=[96,115],FYi=i=>FYS[i],BJ=69;",
+   "places": [
+    {
+     "who": "cubo",
+     "old": [34, 208],
+     "new": [37, 208],
+     "world": [8.0773, 7.0439, 0]
+    },
+    {
+     "who": "plato",
+     "old": [190, 113],
+     "new": [190, 131],
+     "world": [9.6423, 0.2867, 1.3]
+    },
+    {
+     "who": "salero",
+     "old": [126, 127],
+     "new": [126, 116],
+     "world": [7.0858, 1.2114, 1.3]
+    },
+    {
+     "who": "plato",
+     "old": [180, 122],
+     "new": [180, 134],
+     "world": [9.5335, 0.7219, 1.3]
+    },
+    {
+     "who": "plato",
+     "old": [199, 122],
+     "new": [199, 143],
+     "world": [10.5398, 0.6947, 1.3]
+    },
+    {
+     "who": "plato",
+     "old": [218, 122],
+     "new": [218, 153],
+     "world": [11.6004, 0.7219, 1.3]
+    }
+   ],
+   "why": "the places on the run's tops (layout: the run falls half a row a pixel to the right, so a place on its top keeps its x and takes the top's row there): REP, the two plates put by on the right counter (at its back); SVY(i), the row of the plate served to each child on the right counter (SVX keeps its x); SALY, the shaker on the stove's top at its front edge between the burners (SALX keeps its x; the old stood it on the stove's front at row 127); FYS, the row each burner's pot stands at (FX keeps its x: the old FY was one row for both; on the world's axes the two burners, side by side along the stove, are 19 rows apart, -25 and -6 rows from the old); BJ, the tray's row on the left counter; CUBO, the waste bucket on the floor, 3 px right (what is thrown in it whole inside the view with 3 px to spare)"
+  },
+  {
+   "line": 23,
+   "act": "*",
+   "src": "const EN={saco:[45,ENC+10],tazon:[67,ENC+10],platos:[184,ENC+9],basura:[207,ENC+10],jarra:[181,ENC+9],tazas:[195,ENC+9],masa:[38,ENC+9],fuente:[64,ENC+9],apartes:[222,ENC+9]};",
+   "to": "const EN={saco:[49,68],tazon:[67,77],platos:[184,138],basura:[207,147],jarra:[188,133],tazas:[195,145],masa:[38,63],fuente:[64,76],apartes:[222,155]};",
+   "places": [
+    {
+     "who": "saco",
+     "old": [45, 122],
+     "new": [49, 68],
+     "world": [2.3809, 0.6947, 1.3]
+    },
+    {
+     "who": "tazon",
+     "old": [67, 122],
+     "new": [67, 77],
+     "world": [3.3599, 0.6947, 1.3]
+    },
+    {
+     "who": "platos",
+     "old": [184, 121],
+     "new": [184, 138],
+     "world": [9.8599, 0.8307, 1.3]
+    },
+    {
+     "who": "jarra",
+     "old": [181, 121],
+     "new": [188, 133],
+     "world": [9.6967, 0.4499, 1.3]
+    },
+    {
+     "who": "tazas",
+     "old": [195, 121],
+     "new": [195, 145],
+     "world": [10.5398, 0.9123, 1.3]
+    },
+    {
+     "who": "masa",
+     "old": [38, 121],
+     "new": [38, 63],
+     "world": [1.8097, 0.7219, 1.3]
+    },
+    {
+     "who": "fuente",
+     "old": [64, 121],
+     "new": [64, 76],
+     "world": [3.224, 0.7219, 1.3]
+    }
+   ],
+   "why": "EN: where each thing stands on a counter takes the row of the top there, its whole bottom row on the top (the cups of rice and beans, the plates, the jug and the cups, the board of batter, the fritter plate): the left counter's -54 to -58 rows, the right counter's 12 to 24 rows from the old; each keeps its x but the cups of rice, 4 px right so that their hint frame (box + 12) is 2 px inside the view (the old was not); where the frog and Carmen stand before them does not move (echa, carmenecha). The jug of cold chocolate 7 px right, at the back of the counter (cuidado): its hint hand off the face of whoever came in for a cup; the frog's place before the jug moves with it (ranallena: EN.jarra[0] - 4; his hops there are the old ones)"
+  },
+  {
+   "line": 96,
+   "act": "*",
+   "src": "function llama(c,x,a){const t=(F>>2)%2;[[-13,4],[-7,6],[-1,5],[5,6],[11,4]].forEach((q,i)=>{const h=q[1]+((i+t)%2);fr(c,x+q[0],FY+4-h,3,h,\"#F08020\");fr(c,x+q[0]+1,FY+5-h+1,1,h-2,\"#FFE070\");});}",
+   "to": "function llama(c,x,a){const t=(F>>2)%2;[[-13,4],[-7,6],[-1,5],[5,6],[11,4]].forEach((q,i)=>{const h=q[1]+((i+t)%2);fr(c,x+q[0],FYi(+(x!==FX[0]))+4-h,3,h,\"#F08020\");fr(c,x+q[0]+1,FYi(+(x!==FX[0]))+5-h+1,1,h-2,\"#FFE070\");});}",
+   "why": "llama: a burner's flames at its own row"
+  },
+  {
+   "line": 99,
+   "act": "*",
+   "src": "if(f.k===\"olla\"){tenida(c,\"olla\",x,FY+1,0,0,f.negra&&!f.n?\"negra\":f.n?f.con:(f.con===\"agua\"||f.con===\"choco\"?f.con:\"vacia\"));if(f.negra)c.drawImage(cosa(\"quemada\"),x-17,FY-23);",
+   "to": "if(f.k===\"olla\"){tenida(c,\"olla\",x,FYi(i)+1,0,0,f.negra&&!f.n?\"negra\":f.n?f.con:(f.con===\"agua\"||f.con===\"choco\"?f.con:\"vacia\"));if(f.negra)c.drawImage(cosa(\"quemada\"),x-17,FYi(i)-23);",
+   "why": "fuego: the pot, its contents, foam, smoke and steam at its burner's row"
+  },
+  {
+   "line": 100,
+   "act": "*",
+   "src": "if(f.mal)tenida(c,\"monton\",x,FY-13,0,0,f.mal);if(f.espuma){tenida(c,\"espuma\",x,FY+3,0,0,f.espuma);tenida(c,\"monton\",i?x-21:x+21,FY+6,0,0,f.espuma);}if(f.humo)vapor(c,x,FY-26,1);else if(f.vapor&&f.llama)vapor(c,x,FY-22,0);}",
+   "to": "if(f.mal)tenida(c,\"monton\",x,FYi(i)-13,0,0,f.mal);if(f.espuma){tenida(c,\"espuma\",x,FYi(i)+3,0,0,f.espuma);tenida(c,\"monton\",i?x-21:x+21,FYi(i)+6,0,0,f.espuma);}if(f.humo)vapor(c,x,FYi(i)-31,1);else if(f.vapor&&f.llama)vapor(c,x,FYi(i)-27,0);}",
+   "why": "fuego: as above"
+  },
+  {
+   "line": 101,
+   "act": "*",
+   "src": "else{tenida(c,\"sarten\",x+6,FY+1);(f.cosas||[]).forEach((o,j)=>{const px=x+j*12-((f.cosas.length-1)*6);pieza(c,o,px,FY-3);if(o.humo)vapor(c,px,FY-14,1);});if(f.humo)vapor(c,x,FY-14,1);else if(f.vapor)vapor(c,x,FY-14,0);}",
+   "to": "else{tenida(c,\"sarten\",x+6,FYi(i)+1);(f.cosas||[]).forEach((o,j)=>{const px=x+j*12-((f.cosas.length-1)*6);pieza(c,o,px,FYi(i)-3);if(o.humo)vapor(c,px,FYi(i)-20,1);});if(f.humo)vapor(c,x,FYi(i)-20,1);else if(f.vapor)vapor(c,x,FYi(i)-20,0);}",
+   "why": "fuego: the pan and what fries in it at its burner's row"
+  },
+  {
+   "line": 109,
+   "act": "*",
+   "src": "{id:\"olla0\",si:w=>!!(w.fuegos[0]&&w.fuegos[0].k===\"olla\"),box:[FX[0]-17,FY-24,34,28],m:1,z:1},{id:\"olla1\",si:w=>!!(w.fuegos[1]&&w.fuegos[1].k===\"olla\"),box:[FX[1]-17,FY-24,34,28],m:1,z:1},",
+   "to": "{id:\"olla0\",si:w=>!!(w.fuegos[0]&&w.fuegos[0].k===\"olla\"),box:[FX[0]-17,FYi(0)-24,34,28],m:1,z:1},{id:\"olla1\",si:w=>!!(w.fuegos[1]&&w.fuegos[1].k===\"olla\"),box:[FX[1]-17,FYi(1)-24,34,28],m:1,z:1},",
+   "why": "the pots' boxes at their burners"
+  },
+  {
+   "line": 112,
+   "act": "*",
+   "src": "{id:\"sarten\",si:w=>!!(w.fuegos[0]&&w.fuegos[0].k===\"sarten\"),box:[FX[0]-17,FY-14,36,16],m:0},{id:\"bandeja\",si:w=>!!w.izq.bandeja,box:[28,ENC-4,46,16],m:0},",
+   "to": "{id:\"sarten\",si:w=>!!(w.fuegos[0]&&w.fuegos[0].k===\"sarten\"),box:[FX[0]-17,FYi(0)-14,36,16],m:0},{id:\"bandeja\",si:w=>!!w.izq.bandeja,box:[28,BJ-15,46,16],m:0},",
+   "why": "the pan's box at burner 0; the tray's box at the tray (BJ)"
+  },
+  {
+   "line": 161,
+   "act": "*",
+   "src": "if(W.salero)tenida(c,\"salero\",SALX,FY+6);",
+   "to": "if(W.salero)tenida(c,\"salero\",SALX,SALY);",
+   "why": "the shaker on the stove's top (SALY)"
+  },
+  {
+   "line": 204,
+   "act": "*",
+   "src": "async echa(o){const k=clase(o.k),i=olla(o.a),key=k===\"arroz\"?\"saco\":\"tazon\",e=EN[key];const pr=(async()=>{await ranaA(e[0]+6,186);if(W.izq[key])W.izq[key]--;W.encima={k:\"medida\",v:k};SFX.blip();await ranaA(FX[i],190);await wait(100);W.encima=null;await vuela({k:\"medida\",v:k},FX[i],165,FX[i],FY-18,5);V.mal=cae(i,k)?\"1\":\"\";await wait(250);await alBanco();})();return corre(o,pr);},",
+   "to": "async echa(o){const k=clase(o.k),i=olla(o.a),key=k===\"arroz\"?\"saco\":\"tazon\",e=EN[key];const pr=(async()=>{await ranaA(e[0]+(key===\"saco\"?2:6),186);if(W.izq[key])W.izq[key]--;W.encima={k:\"medida\",v:k};SFX.blip();await ranaA(FX[i],190);await wait(100);W.encima=null;await vuela({k:\"medida\",v:k},FX[i],165,FX[i],FYi(i)-18,5);V.mal=cae(i,k)?\"1\":\"\";await wait(250);await alBanco();})();return corre(o,pr);},",
+   "why": "echa: the cup flies into its pot; the frog still stands where he stood before the cups of rice (EN.saco moved 4 px right)"
+  },
+  {
+   "line": 206,
+   "act": "*",
+   "src": "async carmenecha(o){const k=clase(o.k),i=olla(o.a),c=G(\"carmen\"),key=k===\"arroz\"?\"saco\":\"tazon\",e=EN[key];if(!W.izq[key])return;const pr=(async()=>{await mueve(\"carmen\",e[0]+4,AYUDA[1]);W.izq[key]--;c.lleva={k:\"medida\",v:k};SFX.blip();await mueve(\"carmen\",FX[i]-(i?10:22),AYUDA[1]+8);await wait(100);c.lleva=null;await vuela({k:\"medida\",v:k},c.x+8,c.y-30,FX[i],FY-18,5);V.mal=cae(i,k)?\"1\":\"\";await wait(250);await mueve(\"carmen\",AYUDA[0],AYUDA[1]);c.dir=1;})();return corre(o,pr);},",
+   "to": "async carmenecha(o){const k=clase(o.k),i=olla(o.a),c=G(\"carmen\"),key=k===\"arroz\"?\"saco\":\"tazon\",e=EN[key];if(!W.izq[key])return;const pr=(async()=>{await mueve(\"carmen\",e[0]+(key===\"saco\"?0:4),AYUDA[1]);W.izq[key]--;c.lleva={k:\"medida\",v:k};SFX.blip();await mueve(\"carmen\",FX[i]-(i?10:22),AYUDA[1]+8);await wait(100);c.lleva=null;await vuela({k:\"medida\",v:k},c.x+8,c.y-30,FX[i],FYi(i)-18,5);V.mal=cae(i,k)?\"1\":\"\";await wait(250);await mueve(\"carmen\",AYUDA[0],AYUDA[1]);c.dir=1;})();return corre(o,pr);},",
+   "why": "carmenecha: as echa; Carmen too"
+  },
+  {
+   "line": 208,
+   "act": "*",
+   "src": "async ultimas27(){for(const i of [0,1]){const f=W.fuegos[i],key=f.con===\"arroz\"?\"saco\":\"tazon\";while(f.n&&f.n<3&&W.izq[key]>0){W.izq[key]--;await vuela({k:\"medida\",v:f.con},EN[key][0],EN[key][1]-8,FX[i],FY-18,6);cae(i,f.con);await wait(150);}}},",
+   "to": "async ultimas27(){for(const i of [0,1]){const f=W.fuegos[i],key=f.con===\"arroz\"?\"saco\":\"tazon\";while(f.n&&f.n<3&&W.izq[key]>0){W.izq[key]--;await vuela({k:\"medida\",v:f.con},EN[key][0],EN[key][1]-8,FX[i],FYi(i)-18,6);cae(i,f.con);await wait(150);}}},",
+   "why": "ultimas27: as echa"
+  },
+  {
+   "line": 210,
+   "act": "*",
+   "src": "async saca(o){const i=olla(o.a),f=W.fuegos[i],k=f.mal||(f.n?f.con:null);if(!k)return;const id=cocinero(i),p=G(id);for(const d of [-1,1,-1,1]){p.dir=d;await wait(150);}p.dir=i?-1:1;p.lleva=\"espumadera\";await wait(350);if(f.mal)f.mal=null;else{f.n=0;f.con=\"agua\";}await vuela({k:\"monton\",v:k},FX[i],FY-16,CUBO[0],CUBO[1]-14,9);W.basura.push(k);p.lleva=null;SFX.bonk();await wait(400);},",
+   "to": "async saca(o){const i=olla(o.a),f=W.fuegos[i],k=f.mal||(f.n?f.con:null);if(!k)return;const id=cocinero(i),p=G(id);for(const d of [-1,1,-1,1]){p.dir=d;await wait(150);}p.dir=i?-1:1;p.lleva=\"espumadera\";await wait(350);if(f.mal)f.mal=null;else{f.n=0;f.con=\"agua\";}await vuela({k:\"monton\",v:k},FX[i],FYi(i)-16,CUBO[0],CUBO[1]-14,9);W.basura.push(k);p.lleva=null;SFX.bonk();await wait(400);},",
+   "why": "saca: what is lifted out of a pot starts at it"
+  },
+  {
+   "line": 225,
+   "act": "*",
+   "src": "for(const i of [0,1]){const f=W.fuegos[i];if(!f.n)continue;const arroz=f.con===\"arroz\";for(const j of (arroz?[0,2,1]:[1,2,0])){if(!f.n||!P[j])continue;f.n--;await vuela({k:\"monton\",v:f.con},FX[i],FY-16,EN.platos[0]-8+j*13,EN.platos[1]-6,4);if(arroz)P[j].arroz=1;else P[j].hab=1;SFX.blip();}}",
+   "to": "for(const i of [0,1]){const f=W.fuegos[i];if(!f.n)continue;const arroz=f.con===\"arroz\";for(const j of (arroz?[0,2,1]:[1,2,0])){if(!f.n||!P[j])continue;f.n--;await vuela({k:\"monton\",v:f.con},FX[i],FYi(i)-16,EN.platos[0]-8+j*13,EN.platos[1]-6,4);if(arroz)P[j].arroz=1;else P[j].hab=1;SFX.blip();}}",
+   "why": "sirve27: each helping starts at its pot"
+  },
+  {
+   "line": 243,
+   "act": "*",
+   "src": "async toma28(o){const pr=(async()=>{if(o.deja){W.encima=null;await vuela({k:\"salero\"},cx(),pies()-24,SALX,FY+6,5);W.salero=1;SFX.blip();return;}W.salero=0;await vuela({k:\"salero\"},SALX,FY+6,cx(),pies()-24,5);W.encima={k:\"salero\"};SFX.blip();})();return corre(o,pr);},",
+   "to": "async toma28(o){const pr=(async()=>{if(o.deja){W.encima=null;await vuela({k:\"salero\"},cx(),pies()-24,SALX,SALY,5);W.salero=1;SFX.blip();return;}W.salero=0;await vuela({k:\"salero\"},SALX,SALY,cx(),pies()-24,5);W.encima={k:\"salero\"};SFX.blip();})();return corre(o,pr);},",
+   "why": "toma28: the shaker from its place (SALY)"
+  },
+  {
+   "line": 245,
+   "act": "*",
+   "src": "async sala(o){const k=pz(o.k),f=W.fuegos[0],j=f.cosas.findIndex(c=>c.k===k),px=FX[0]+j*12-6;const pr=(async()=>{W.encima=null;await vuela({k:\"salero\"},cx(),pies()-24,px+4,FY-18,5);await cae28(px,FY-12);await cae28(px,FY-12);f.cosas[j].sal=(f.cosas[j].sal||0)+1;W.encima={k:\"salero\"};})();return corre(o,pr);},",
+   "to": "async sala(o){const k=pz(o.k),f=W.fuegos[0],j=f.cosas.findIndex(c=>c.k===k),px=FX[0]+j*12-6;const pr=(async()=>{W.encima=null;await vuela({k:\"salero\"},cx(),pies()-24,px+4,FYi(0)-18,5);await cae28(px,FYi(0)-12);await cae28(px,FYi(0)-12);f.cosas[j].sal=(f.cosas[j].sal||0)+1;W.encima={k:\"salero\"};})();return corre(o,pr);},",
+   "why": "sala: salt over the pan at burner 0"
+  },
+  {
+   "line": 254,
+   "act": "*",
+   "src": "async par(o){const t=W.izq.bandeja,f=W.fuegos[0],ab=G(\"abuela\");ab.dir=1;G(\"mama\").bebe=1;f.cosas=[];t.pollo--;await vuela({k:\"muslo\",v:\"crudo\"},40,ENC+4,FX[0]-6,FY-6,5);f.cosas.push({k:\"muslo\",v:\"crudo\",sal:0});SFX.blip();t.huevo--;await vuela({k:\"huevo\"},60,ENC+4,FX[0]+6,FY-6,5);f.cosas.push({k:\"frito\",v:\"crudo\",sal:0});SFX.blip();await wait(250);",
+   "to": "async par(o){const t=W.izq.bandeja,f=W.fuegos[0],ab=G(\"abuela\");ab.dir=1;G(\"mama\").bebe=1;f.cosas=[];t.pollo--;await vuela({k:\"muslo\",v:\"crudo\"},40,BJ-7,FX[0]-6,FYi(0)-6,5);f.cosas.push({k:\"muslo\",v:\"crudo\",sal:0});SFX.blip();t.huevo--;await vuela({k:\"huevo\"},60,BJ-7,FX[0]+6,FYi(0)-6,5);f.cosas.push({k:\"frito\",v:\"crudo\",sal:0});SFX.blip();await wait(250);",
+   "why": "par: the pair from the tray (BJ) into the pan"
+  },
+  {
+   "line": 255,
+   "act": "*",
+   "src": "W.salero=0;await vuela({k:\"salero\"},SALX,FY+6,FX[0],FY-18,4);await cae28(FX[0]-4,FY-12);f.cosas.forEach(c=>c.sal=o&&o.sinsal&&pz(o.sinsal)===c.k?0:1);await vuela({k:\"salero\"},FX[0],FY-18,SALX,FY+6,4);W.salero=1;await wait(200);},",
+   "to": "W.salero=0;await vuela({k:\"salero\"},SALX,SALY,FX[0],FYi(0)-18,4);await cae28(FX[0]-4,FYi(0)-12);f.cosas.forEach(c=>c.sal=o&&o.sinsal&&pz(o.sinsal)===c.k?0:1);await vuela({k:\"salero\"},FX[0],FYi(0)-18,SALX,SALY,4);W.salero=1;await wait(200);},",
+   "why": "par: abuela salts the pan"
+  },
+  {
+   "line": 257,
+   "act": "*",
+   "src": "async sirve28(o){const f=W.fuegos[0],its=f.cosas.map(c=>({k:c.k,v:c.v,sal:c.sal})),i=W.der.servidos.findIndex(s=>s.de===o.a);f.cosas=[];await vuela({k:\"plato\"},FX[0],FY-8,SVX(i),ENC+6,7);W.der.servidos[i].items=its;SFX.blip();await wait(250);},",
+   "to": "async sirve28(o){const f=W.fuegos[0],its=f.cosas.map(c=>({k:c.k,v:c.v,sal:c.sal})),i=W.der.servidos.findIndex(s=>s.de===o.a);f.cosas=[];await vuela({k:\"plato\"},FX[0],FYi(0)-8,SVX(i),SVY(i)-4,7);W.der.servidos[i].items=its;SFX.blip();await wait(250);},",
+   "why": "sirve28: from the pan to the plate (SVY)"
+  },
+  {
+   "line": 261,
+   "act": "*",
+   "src": "async salplato(o){const k=pz(o.k),i=W.der.servidos.findIndex(s=>s.de===o.a),pl=W.der.servidos[i],it=pl.items.find(c=>c.k===k),j=pl.items.indexOf(it),px=SVX(i)-6+j*12;if(W.salero){W.salero=0;await vuela({k:\"salero\"},SALX,FY+6,cx(),pies()-24,5);}W.encima=null;await vuela({k:\"salero\"},cx(),pies()-24,px+4,ENC-6,9);await cae28(px,ENC+2);await cae28(px,ENC+2);it.sal=(it.sal||0)+1;await vuela({k:\"salero\"},px+4,ENC-6,SALX,FY+6,8);W.salero=1;},",
+   "to": "async salplato(o){const k=pz(o.k),i=W.der.servidos.findIndex(s=>s.de===o.a),pl=W.der.servidos[i],it=pl.items.find(c=>c.k===k),j=pl.items.indexOf(it),px=SVX(i)-6+j*12;if(W.salero){W.salero=0;await vuela({k:\"salero\"},SALX,SALY,cx(),pies()-24,5);}W.encima=null;await vuela({k:\"salero\"},cx(),pies()-24,px+4,SVY(i)-16,9);await cae28(px,SVY(i)-8);await cae28(px,SVY(i)-8);it.sal=(it.sal||0)+1;await vuela({k:\"salero\"},px+4,SVY(i)-16,SALX,SALY,8);W.salero=1;},",
+   "why": "salplato: the shaker from its place to the plate (SVY)"
+  },
+  {
+   "line": 291,
+   "act": "*",
+   "src": "async ranallena(o){const k=[\"olla1\",\"cal\",\"di_cal\"].includes(o.k)?\"cal\":\"frio\",p=G(o.a);const pr=(async()=>{if(!W.encima)await acts.copa();if(k===\"cal\"){await ranaA(FX[1],192);const cu={k:\"cucharon\",x:FX[1]+9,y:FY-5,z:999};W.cosas.push(cu);await wait(450);W.cosas.splice(W.cosas.indexOf(cu),1);}else{await ranaA(EN.jarra[0]-4,192);await wait(150);}W.encima={k:\"taza\",v:k};SFX.blip();await wait(250);await ranaA(p.x-22,p.y+8);await wait(100);W.encima=null;p.bebe=k;SFX.blip();await wait(200);await alBanco();})();return corre(o,pr);},",
+   "to": "async ranallena(o){const k=[\"olla1\",\"cal\",\"di_cal\"].includes(o.k)?\"cal\":\"frio\",p=G(o.a);const pr=(async()=>{if(!W.encima)await acts.copa();if(k===\"cal\"){await ranaA(FX[1],192);const cu={k:\"cucharon\",x:FX[1]+9,y:FYi(1)-5,z:999};W.cosas.push(cu);await wait(450);W.cosas.splice(W.cosas.indexOf(cu),1);}else{await ranaA(EN.jarra[0]-4,192);await wait(150);}W.encima={k:\"taza\",v:k};SFX.blip();await wait(250);await ranaA(p.x-22,p.y+8);await wait(100);W.encima=null;p.bebe=k;SFX.blip();await wait(200);await alBanco();})();return corre(o,pr);},",
+   "why": "ranallena: the ladle in the pot at burner 1"
+  },
+  {
+   "line": 299,
+   "act": "*",
+   "src": "async frie(){const f=W.fuegos[0],ab=G(\"abuela\");ab.dir=1;if(W.der.masa>0)W.der.masa--;await vuela({k:\"fritura\",v:\"cruda\"},EN.masa[0],EN.masa[1]-8,FX[0],FY-8,5);f.cosas=[{k:\"fritura\",v:\"cruda\"}];SFX.blip();await wait(350);f.cosas[0].v=\"burbujas\";await wait(600);},",
+   "to": "async frie(){const f=W.fuegos[0],ab=G(\"abuela\");ab.dir=1;if(W.der.masa>0)W.der.masa--;await vuela({k:\"fritura\",v:\"cruda\"},EN.masa[0],EN.masa[1]-8,FX[0],FYi(0)-8,5);f.cosas=[{k:\"fritura\",v:\"cruda\"}];SFX.blip();await wait(350);f.cosas[0].v=\"burbujas\";await wait(600);},",
+   "why": "frie: the batter into the pan"
+  },
+  {
+   "line": 307,
+   "act": "*",
+   "src": "await vuela({k:\"fritura\",v:\"dorada\"},FX[0],FY-10,EN.fuente[0],EN.fuente[1]-6,6);W.der.frituras.push(\"dorada\");SFX.blip();await wait(250);},",
+   "to": "await vuela({k:\"fritura\",v:\"dorada\"},FX[0],FYi(0)-10,EN.fuente[0],EN.fuente[1]-6,6);W.der.frituras.push(\"dorada\");SFX.blip();await wait(250);},",
+   "why": "saca29: as above"
+  },
+  {
+   "line": 144,
+   "act": "*",
+   "src": "(D.servidos||[]).forEach((pl,i)=>{const x=SVX(i),y=ENC+10;tenida(c,\"plato\",x,y,0,2);pl.items.forEach((o,j)=>pieza(c,o,x-6+j*12,y-3-(o.aparte?4:0)));});",
+   "to": "(D.servidos||[]).forEach((pl,i)=>{const x=SVX(i),y=SVY(i);tenida(c,\"plato\",x,y,0,2);pl.items.forEach((o,j)=>pieza(c,o,x-6+j*12,y-3-(o.aparte?4:0)));});",
+   "why": "the plates served to the children: each on the right counter's top at its own row (SVY)"
+  },
+  {
+   "line": 142,
+   "act": "*",
+   "src": "if(I.bandeja){const t=I.bandeja;tenida(c,\"bandeja\",50,ENC+11);for(let i=0;i<t.pollo;i++)tenida(c,\"muslo\",36+i*8,ENC+8-(i%2),0,0,\"crudo\");for(let i=0;i<t.huevo;i++)tenida(c,\"huevo\",58+i*7,ENC+8-(i%2));}",
+   "to": "if(I.bandeja){const t=I.bandeja;tenida(c,\"bandeja\",50,BJ);for(let i=0;i<t.pollo;i++)tenida(c,\"muslo\",36+i*8,BJ-3-(i%2),0,0,\"crudo\");for(let i=0;i<t.huevo;i++)tenida(c,\"huevo\",58+i*7,BJ-3-(i%2));}",
+   "places": [
+    {
+     "who": "bandeja",
+     "old": [50, 123],
+     "new": [50, 69],
+     "world": [2.4625, 0.7219, 1.3]
+    }
+   ],
+   "why": "the tray of drumsticks and eggs on the left counter (BJ), what lies on it with it"
+  },
+  {
+   "line": 135,
+   "act": "*",
+   "src": "if(W.estante){const v=W.estante===2?\"vacio\":null;tenida(c,\"saco\",38,50,0,0,v);tenida(c,\"frasco\",50,50,0,0,v);}",
+   "to": "if(W.estante){const v=W.estante===2?\"vacio\":null;tenida(c,\"saco\",38,27,0,0,v);tenida(c,\"frasco\",50,33,0,0,v);}",
+   "places": [
+    {
+     "who": "saco",
+     "old": [38, 50],
+     "new": [38, 27],
+     "world": [1.3825, 0.2947, 2.55]
+    },
+    {
+     "who": "frasco",
+     "old": [50, 50],
+     "new": [50, 33],
+     "world": [2.0352, 0.2947, 2.55]
+    }
+   ],
+   "why": "the sack of rice and the jar of beans on the shelf (W.estante): on its board at their x (the shelf on the wall over the left counter, -23 rows from the old)"
+  },
+  {
+   "line": 134,
+   "act": "*",
+   "src": "if(W.ventana&&W.ventana.length){c.save();c.beginPath();c.rect(176,22,38,36);c.clip();W.ventana.forEach((id,j)=>{const w=QUIEN[id],im=spr(\"pm\"+id+\"idle00\",()=>KIT.mkPersona(w,\"idle\",0,0));c.drawImage(im,176+j*12-KIT.PX+7,30+(j%2)*3);if(W.ventanacome)tenida(c,\"plato\",183+j*12,57);});c.restore();}",
+   "to": "if(W.ventana&&W.ventana.length){c.save();W.ventana.forEach((id,j)=>{const w=QUIEN[id],im=spr(\"pm\"+id+\"idle00\",()=>KIT.mkPersona(w,\"idle\",0,0));c.drawImage(im,170+j*14-KIT.PX+7,[78,82,92][j]+(j%2)*3);});c.restore();}if(W.ventana&&W.ventana.length&&W.ventanacome)W.ventana.forEach((id,j)=>tenida(c,\"plato\",177+j*14,[107,114,121][j]));",
+   "places": [
+    {
+     "who": "ventana",
+     "old": [183, 30],
+     "new": [177, 78],
+     "world": [4.8138, -3.8347, 0]
+    },
+    {
+     "who": "ventana",
+     "old": [195, 33],
+     "new": [191, 85],
+     "world": [5.5753, -3.8347, 0]
+    },
+    {
+     "who": "ventana",
+     "old": [207, 30],
+     "new": [205, 92],
+     "world": [6.3368, -3.8347, 0]
+    }
+   ],
+   "why": "the family at the window (familia27): each one stands outside the window, .85 behind the wall's face (front.parts.ventana.y), 14 px apart (the old 12), the first 6 px left of its old x, the third as the old, so that no face is covered by the next one or by the recess's side or the frame, seen from the chest up: their sprites placed so that the far edge of the recess's bottom cuts them 21 rows under their tops, 48 to 62 rows from the old (the window is on the wall over the right counter). The clip to the old window rectangle goes: the wall, the recess and everything of the room are nearer than they are and are drawn again over them (front.ventana), so they are seen only through the opening. The plates they eat from stand on the sill in the room, drawn after that (a second statement: before, they were drawn inside the clip with the people)"
+  },
+  {
+   "line": 216,
+   "act": "platos27",
+   "src": "await Promise.all([mueve(\"abuela\",EN.platos[0]+4,LADO[1][1]+4),mueve(\"luis\",EN.platos[0]-16,LADO[1][1]+12),mueve(\"carmen\",EN.platos[0]+22,LADO[1][1]+12)]);ab.dir=1;l.dir=1;ca.dir=-1;while(W.der.platos.length<3&&W.der.pila>0){W.der.pila--;W.der.platos.push({});SFX.blip();await wait(180);}},",
+   "to": "await Promise.all([mueve(\"abuela\",EN.platos[0]+4,LADO[1][1]+8),mueve(\"luis\",EN.platos[0]-16,LADO[1][1]+12),mueve(\"carmen\",EN.platos[0]+20,LADO[1][1]+17)]);ab.dir=1;l.dir=1;ca.dir=-1;while(W.der.platos.length<3&&W.der.pila>0){W.der.pila--;W.der.platos.push({});SFX.blip();await wait(180);}},",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [188, 180],
+     "new": [188, 184],
+     "world": [10.8786, 1.6318, 0]
+    },
+    {
+     "who": "carmen",
+     "old": [206, 188],
+     "new": [204, 193],
+     "world": [11.8032, 1.6862, 0]
+    }
+   ],
+   "why": "platos27: abuela and Carmen set the plates out standing on clear floor in front of the right counter (its front, D from the wall, falls to the right): 4 and 5 rows nearer (Carmen 2 px left: her whole sprite 3 px inside the view's right edge)"
+  },
+  {
+   "line": 145,
+   "act": "*",
+   "src": "if(I.jarra)tenida(c,\"jarra\",EN.jarra[0],EN.jarra[1]);for(let i=(I.tazas||0)-1;i>=0;i--)tenida(c,\"taza\",EN.tazas[0]-3+(i%3)*9,EN.tazas[1]-Math.floor(i/3)*6);",
+   "to": "if(I.jarra)tenida(c,\"jarra\",EN.jarra[0],EN.jarra[1]);for(let i=(I.tazas||0)-1;i>=0;i--)tenida(c,\"taza\",EN.tazas[0]-3+(i%3)*9,EN.tazas[1]-Math.floor(i/3)*3);",
+   "why": "the nine clean cups (cuidado): their three rows 3 rows apart (the old 6): on the counter's top they stand before the jug, not over it"
+  },
+  {
+   "line": 140,
+   "act": "*",
+   "src": "if(I.llenando){tenida(c,\"saco\",EN.saco[0]-9,EN.saco[1]-9);tenida(c,\"frasco\",EN.tazon[0]+9,EN.tazon[1]-9);}",
+   "to": "if(I.llenando){tenida(c,\"saco\",EN.saco[0]-9,64);tenida(c,\"frasco\",EN.tazon[0]+9,82);}",
+   "why": "llenando: the sack and the jar Carmen fills the cups from, on the left counter's top beside the cups (the old stood them 9 rows behind the cups, here behind the top's back edge)"
+  },
+  {
+   "line": 148,
+   "act": "*",
+   "src": "for(let i=0;i<(D.pila||0);i++)tenida(c,\"plato\",EN.platos[0]+12,EN.platos[1]-9-i*2);if(D.platito)tenida(c,\"platito\",EN.platos[0]-10,EN.platos[1]-10);",
+   "to": "for(let i=0;i<(D.pila||0);i++)tenida(c,\"plato\",EN.platos[0]+12,138-i*2);if(D.platito)tenida(c,\"platito\",EN.platos[0]-10,125);",
+   "why": "the pile of clean plates and the small plate on the right counter, on its top behind the row of plates (the old stood them 9 and 10 rows behind it, here behind the top's back edge)"
+  },
+  {
+   "line": 285,
+   "act": "viene",
+   "src": "const p=G(o.quien),x=o.lugar==2?207:184,y=o.lugar==2?212:204;",
+   "to": "const p=G(o.quien),x=o.lugar==2?192:169,y=o.lugar==2?202:202;",
+   "places": [
+    {
+     "who": "papa",
+     "old": [184, 204],
+     "new": [169, 202],
+     "world": [11.3409, 3.1276, 0]
+    },
+    {
+     "who": "papa",
+     "old": [207, 212],
+     "new": [192, 202],
+     "world": [11.9664, 2.5021, 0]
+    },
+    {
+     "who": "mama",
+     "old": [184, 204],
+     "new": [169, 202],
+     "world": [11.3409, 3.1276, 0]
+    },
+    {
+     "who": "mama",
+     "old": [207, 212],
+     "new": [192, 202],
+     "world": [11.9664, 2.5021, 0]
+    },
+    {
+     "who": "abuelo",
+     "old": [184, 204],
+     "new": [169, 202],
+     "world": [11.3409, 3.1276, 0]
+    },
+    {
+     "who": "abuelo",
+     "old": [207, 212],
+     "new": [192, 202],
+     "world": [11.9664, 2.5021, 0]
+    },
+    {
+     "who": "carmen",
+     "old": [184, 204],
+     "new": [169, 202],
+     "world": [11.3409, 3.1276, 0]
+    },
+    {
+     "who": "carmen",
+     "old": [207, 212],
+     "new": [192, 202],
+     "world": [11.9664, 2.5021, 0]
+    },
+    {
+     "who": "luis",
+     "old": [164, 206],
+     "new": [149, 204],
+     "world": [10.9058, 3.7803, 0]
+    },
+    {
+     "who": "luis",
+     "old": [187, 214],
+     "new": [172, 204],
+     "world": [11.5313, 3.1548, 0]
+    },
+    {
+     "who": "cq",
+     "old": [146, 185],
+     "new": [131, 183],
+     "world": [10.1558, 4.0094, 0.72]
+    },
+    {
+     "who": "cq",
+     "old": [161, 165],
+     "new": [168, 165],
+     "world": [9.3012, 1.1422, 0]
+    }
+   ],
+   "why": "viene (cuidado): whoever comes in for a cup stands 15 px left and 2 rows further back, a second one beside the first (23 px right) rather than in front of it: at the old places their hint frames (box + 12) left the view at the bottom and the right (the old's too), and the jug's hint hand lay on the face of the one who stood under it. What is relative to them moves with them: where Luis hands them the cup (luisda: x - 20, y + 2) and where the frog serves the first one (ranallena: x - 22, y + 8; his hops there and back are the old ones)"
+  },
+  {
+   "line": 233,
+   "act": "final27",
+   "src": "mueve(\"carmen\",204,202)",
+   "to": "mueve(\"carmen\",202,202)",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [204, 202],
+     "new": [202, 202],
+     "world": [12.2384, 2.2301, 0]
+    }
+   ],
+   "why": "final27: Carmen with her plate held up 2 px left: wholly inside the view with 3 px to spare (the old was 1 px inside)"
+  },
+  {
+   "line": 282,
+   "act": "*",
+   "src": "async inicio29(){W.gente={abuela:{x:LADO[0][0],y:LADO[0][1],dir:1},luis:{x:LADO[1][0]-11,y:LADO[1][1],dir:1},carmen:{vis:0},abuelo:{vis:0},mama:{vis:0},papa:{vis:0}};",
+   "to": "async inicio29(){W.gente={abuela:{x:LADO[0][0],y:LADO[0][1],dir:1},luis:{x:LADO[1][0]-21,y:LADO[1][1]-6,dir:1},carmen:{vis:0},abuelo:{vis:0},mama:{vis:0},papa:{vis:0}};",
+   "places": [
+    {
+     "who": "luis",
+     "old": [160, 176],
+     "new": [150, 170],
+     "world": [9.0836, 1.9037, 0]
+    }
+   ],
+   "why": "cuidado: Luis's place at the right (inicio29, and where he goes back to: luisda, luisbebe, luiscome) 10 px left and 6 rows back, clear of whoever comes in for a cup and of the jug's hint frame"
+  },
+  {
+   "line": 294,
+   "act": "*",
+   "src": "async luisda(o){const l=G(\"luis\"),p=G(o.a),k=V.taza;const pr=(async()=>{await mueve(\"luis\",p.x-20,p.y+2);await wait(100);l.lleva=null;p.bebe=k;SFX.blip();await wait(200);if(!o.queda){await mueve(\"luis\",LADO[1][0]-11,LADO[1][1]);l.dir=1;}})();return corre(o,pr);},",
+   "to": "async luisda(o){const l=G(\"luis\"),p=G(o.a),k=V.taza;const pr=(async()=>{await mueve(\"luis\",p.x-20,p.y+2);await wait(100);l.lleva=null;p.bebe=k;SFX.blip();await wait(200);if(!o.queda){await mueve(\"luis\",LADO[1][0]-21,LADO[1][1]-6);l.dir=1;}})();return corre(o,pr);},",
+   "places": [
+    {
+     "who": "luis",
+     "old": [160, 176],
+     "new": [150, 170],
+     "world": [9.0836, 1.9037, 0]
+    }
+   ],
+   "why": "cuidado: Luis's place at the right (inicio29, and where he goes back to: luisda, luisbebe, luiscome) 10 px left and 6 rows back, clear of whoever comes in for a cup and of the jug's hint frame"
+  },
+  {
+   "line": 297,
+   "act": "*",
+   "src": "async luisbebe(o){const l=G(\"luis\"),p=G(o.a),k=p.bebe;if(Math.hypot(l.x-p.x,l.y-p.y)>30)await mueve(\"luis\",p.x-20,p.y+2);p.bebe=null;l.bebe=k;SFX.blip();await wait(900);l.bebe=null;l.dir=-1;await vuela({k:\"taza\"},l.x-6,l.y-26,CUBO[0],CUBO[1]-14,10);W.basura.push(\"taza\");W.izq.sucias=(W.izq.sucias||0)+1;SFX.bonk();await mueve(\"luis\",LADO[1][0]-11,LADO[1][1]);l.dir=1;await wait(300);},",
+   "to": "async luisbebe(o){const l=G(\"luis\"),p=G(o.a),k=p.bebe;if(Math.hypot(l.x-p.x,l.y-p.y)>30)await mueve(\"luis\",p.x-20,p.y+2);p.bebe=null;l.bebe=k;SFX.blip();await wait(900);l.bebe=null;l.dir=-1;await vuela({k:\"taza\"},l.x-6,l.y-26,CUBO[0],CUBO[1]-14,10);W.basura.push(\"taza\");W.izq.sucias=(W.izq.sucias||0)+1;SFX.bonk();await mueve(\"luis\",LADO[1][0]-21,LADO[1][1]-6);l.dir=1;await wait(300);},",
+   "places": [
+    {
+     "who": "luis",
+     "old": [160, 176],
+     "new": [150, 170],
+     "world": [9.0836, 1.9037, 0]
+    }
+   ],
+   "why": "cuidado: Luis's place at the right (inicio29, and where he goes back to: luisda, luisbebe, luiscome) 10 px left and 6 rows back, clear of whoever comes in for a cup and of the jug's hint frame"
+  },
+  {
+   "line": 312,
+   "act": "*",
+   "src": "async luiscome(){const l=G(\"luis\");await mueve(\"luis\",EN.fuente[0]+18,LADO[0][1]+16);W.der.frituras.pop();l.come={k:\"fritura\",v:\"dorada\"};SFX.blip();await wait(800);l.come=null;SFX.blip();await wait(300);await mueve(\"luis\",LADO[1][0]-11,LADO[1][1]);l.dir=1;},",
+   "to": "async luiscome(){const l=G(\"luis\");await mueve(\"luis\",EN.fuente[0]+18,LADO[0][1]+16);W.der.frituras.pop();l.come={k:\"fritura\",v:\"dorada\"};SFX.blip();await wait(800);l.come=null;SFX.blip();await wait(300);await mueve(\"luis\",LADO[1][0]-21,LADO[1][1]-6);l.dir=1;},",
+   "places": [
+    {
+     "who": "luis",
+     "old": [160, 176],
+     "new": [150, 170],
+     "world": [9.0836, 1.9037, 0]
+    }
+   ],
+   "why": "cuidado: Luis's place at the right (inicio29, and where he goes back to: luisda, luisbebe, luiscome) 10 px left and 6 rows back, clear of whoever comes in for a cup and of the jug's hint frame"
+  },
+  {
+   "line": 331,
+   "act": "*",
+   "src": "fresh:()=>({respEn:[125,46],",
+   "to": "fresh:()=>({respEn:[146,20],",
+   "why": "where the answer cards stand (W.respEn, every story of the scene): 21 px right and 26 rows up, over the hood and the cut top of the wall, clear of the pots, the pan and the steam and smoke over them, the tray and the rounds card"
+  }
+ ],
+ "helps": {
+  "what": "none yet",
+  "lines": []
+ },
+ "bubbles": {
+  "what": "each bubble's rectangle relative to its tail's tip, as estufa.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]",
+  "rects": {
+   "hola": [-16, -46, 34, 44],
+   "amor": [-14, -38, 30, 36],
+   "como": [-32, -40, 66, 38],
+   "bien": [-14, -40, 30, 38],
+   "mal": [-14, -40, 30, 38],
+   "quien": [-22, -40, 46, 38],
+   "lluvia": [-22, -40, 46, 38]
+  }
+ },
+ "talk": {
+  "what": "where a bubble goes (estufa.js draw: bub2 over the head for a person, over the frog): the first of these places whose bubble is wholly inside the view, clear of the corner card and of every face; if none is, the first (the old)",
+  "top": "a person: (x, y - alto - 1) as the old tail; the frog: (b.x + (b.w >> 1), b.y + 2)",
+  "places": [
+   [0, 0],
+   [1, 7],
+   [-1, 7],
+   [1, 30],
+   [-1, 30],
+   [1, 44],
+   [-1, 44],
+   [2, 7],
+   [-2, 7],
+   [2, 30],
+   [-2, 30],
+   [2, 44],
+   [-2, 44],
+   [1, 58],
+   [-1, 58],
+   [2, 58],
+   [-2, 58]
+  ],
+  "placesWhat": "[side, dy]: the tail's tip at (top.x + side * (h + 16), top.y + dy), h the head's half width: a person 6, the frog b.w >> 1",
+  "faces": "a person's face: [x - 6, top + 6, 12, 10], top = y - height + 1 + dy; abuela's: [x + f * abuelaHead - 6, y - 50 + 6, 12, 10], f = 1 facing right (her pose offer or bless turns her), -1 left; the frog's: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]",
+  "heights": {
+   "luis": 44,
+   "carmen": 44,
+   "abuelo": 56,
+   "mama": 56,
+   "papa": 56
+  },
+  "abuelaHead": 0,
+  "board": [2, 2, 68, 26]
+ },
+ "faults": [
+  {
+   "line": 122,
+   "and": 125,
+   "what": "a cup held by mamá is drawn as the baby: gente() draws the baby whenever mamá has p.bebe, and p.bebe is also the cup a person drinks from (luisda, ranallena set p.bebe = \"cal\" or \"frio\" when mamá is the one served in cuidado); the line after skips the cup for mamá, so her cup is never drawn and the baby appears in her arms (mkBebe(e) with e the cup's kind)",
+   "kept": "as the old: estufa-preview.html and the sheet's checks draw it so; the port is told, not asked to change it here"
+  }
+ ],
+ "code": [
+  {
+   "line": 3,
+   "numbers": {
+    "other": ["3"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 11,
+   "numbers": {
+    "other": ["0", "2"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 19,
+   "numbers": {
+    "other": ["150", "112", "121"],
+    "place": ["86", "106", "80", "54", "107", "145", "24", "54", "172", "46", "126", "184"]
+   },
+   "to": {
+    "points": ["run", "burners", "banco"],
+    "spots": ["fuego.0", "fuego.1", "banco"],
+    "moves": [
+     "FYS (on line 20)"
+    ]
+   },
+   "note": "PISO and ENC (the old floor's and counters' first rows), EST, IZQ, DER (the old stove and counters): the set's run (points.run); FX: unchanged (the pots keep their x); FY: each burner's own row (FYS, moves); BANCO: the stool's top (points.banco, spots.banco)"
+  },
+  {
+   "line": 20,
+   "numbers": {
+    "place": ["190", "0", "34", "208", "0"],
+    "offset": ["1", "26", "40"],
+    "count": ["180"],
+    "scale": ["19"]
+   },
+   "to": {
+    "moves": [
+     "const REP=[190,ENC+1],SVX=i=>180+i*19,ESX=EST[0]+26,CUBO=[34"
+    ]
+   },
+   "note": "moved (moves): the places on the run's tops (layout; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 22,
+   "numbers": {
+    "place": ["82", "174", "171", "176", "42", "176", "200", "180"]
+   },
+   "to": {
+    "spots": ["lado.0", "lado.1", "ayuda", "puerta"]
+   },
+   "note": "where the cooks and the helper stand: the floor rule, unchanged (on clear floor in front of the run)"
+  },
+  {
+   "line": 23,
+   "numbers": {
+    "place": ["45", "67", "184", "207", "181", "195", "38", "64", "222"],
+    "offset": ["10", "10", "9", "10", "9", "9", "9", "9", "9"]
+   },
+   "to": {
+    "moves": [
+     "const EN={saco:[45,ENC+10],tazon:[67,ENC+10],platos:[184,ENC"
+    ]
+   },
+   "note": "moved (moves): EN; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 27,
+   "numbers": {
+    "dropped": ["0", "0", "5", "2", "2", "6"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 28,
+   "numbers": {
+    "dropped": ["72", "22", "8", "0", "8", "0"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 29,
+   "numbers": {
+    "dropped": ["0", "12", "6", "16", "12", "0", "6", "16", "0", "2"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 30,
+   "numbers": {
+    "dropped": ["0", "1"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 32,
+   "numbers": {
+    "dropped": ["176", "22", "38", "36", "204", "48", "10", "9", "174", "20", "42", "40", "1", "175", "21", "40", "38", "3", "194", "22", "2", "36", "2", "176", "39", "38", "2", "2"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 33,
+   "numbers": {
+    "dropped": ["26", "50", "50", "3", "2", "26", "53", "50", "1", "0", "58", "68", "0", "40", "7", "10", "1", "0", "38", "7", "2", "0", "1", "37", "9", "14"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 35,
+   "numbers": {
+    "dropped": ["96", "18", "60", "18", "96", "18", "60", "2", "90", "36", "72", "6", "95", "17", "62", "20", "89", "35", "74", "8"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 37,
+   "numbers": {
+    "dropped": ["0", "12", "1", "4", "12", "2", "0", "12", "1", "2", "0", "0", "1", "11", "1", "2", "6", "12", "0", "1", "1", "1", "15", "2", "20", "0"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 38,
+   "numbers": {
+    "dropped": ["0", "2", "1", "4", "12", "0", "2", "1", "4", "2", "0", "2", "10", "1", "4", "2", "0", "3", "1", "1", "6", "14"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 40,
+   "numbers": {
+    "dropped": ["0", "1", "2", "3", "0", "1", "2", "20", "0", "1", "2", "2", "0", "1", "20", "2", "2", "0", "1", "1", "1", "2", "2", "3", "2"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 41,
+   "numbers": {
+    "dropped": ["4", "15", "5", "4", "11", "3.4"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 42,
+   "numbers": {
+    "dropped": ["0", "6", "1", "32", "2", "12", "18", "0", "14", "1", "35", "2", "28", "2"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, dropped"
+  },
+  {
+   "line": 46,
+   "numbers": {
+    "drawing": ["34", "24"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 47,
+   "numbers": {
+    "drawing": ["4", "8", "26", "14", "4", "8", "5", "14", "4", "19", "26", "3", "1", "10", "3", "4", "30", "10", "3", "4"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 48,
+   "numbers": {
+    "drawing": ["17", "8", "13", "5", "17", "8.4", "11", "3.8"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 49,
+   "numbers": {
+    "drawing": ["9", "8", "13", "6", "17", "7", "21", "6", "24", "8", "11", "10", "15", "9", "19", "10", "22", "10", "7", "9", "0", "1", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 50,
+   "numbers": {
+    "drawing": ["10", "8", "15", "7", "20", "9", "24", "8", "13", "10", "19", "6", "0", "1", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 52,
+   "numbers": {
+    "drawing": ["34", "24", "6", "10", "3", "10", "12", "13", "2", "8", "20", "11", "4", "10", "27", "12", "2", "9", "0", "1", "2", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 53,
+   "numbers": {
+    "drawing": ["46", "14", "17", "8", "15", "5", "17", "7.4", "12.6", "3.6", "31", "7", "13", "3", "31", "7", "13", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 54,
+   "numbers": {
+    "drawing": ["20", "22", "2", "14", "16", "7", "2", "14", "4", "7", "2", "18", "16", "3", "4", "12", "13", "2", "12", "10", "6", "2", "2", "5", "16", "16", "2", "5", "4", "16", "2", "18", "16", "3", "10", "5", "7", "2.6", "6", "11", "10", "13", "13", "10", "8", "15", "12", "16", "0", "1", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 55,
+   "numbers": {
+    "drawing": ["22", "14", "11", "10", "8", "3.4", "11", "6", "9.6", "4", "11", "5", "7.8", "3.4", "11", "3.6", "5", "2.2", "5", "5", "8", "3", "11", "2", "14", "3", "16", "5", "7", "6", "11", "5", "14", "6", "10", "7", "0", "1", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 56,
+   "numbers": {
+    "drawing": ["11", "11", "1", "5", "7", "5", "1", "5", "2", "5", "8", "6", "2", "1", "9", "7", "1", "2", "4.5", "3.6", "3.6", "2.6", "3", "3", "6", "4", "4", "2", "4.5", "3.6", "3.6", "2.6", "3", "3", "6", "4", "2", "4", "5", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 57,
+   "numbers": {
+    "drawing": ["24", "13", "12", "9", "9", "3.4", "12", "5", "10.6", "4", "12", "4.8", "8.6", "2.8"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 58,
+   "numbers": {
+    "drawing": ["11", "7", "5.5", "4", "4.4", "2.4", "3", "3", "0", "7", "5", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 59,
+   "numbers": {
+    "drawing": ["15", "7", "7.5", "3.5", "6.6", "2.8", "7.5", "3.2", "4", "1.5"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 60,
+   "numbers": {
+    "drawing": ["6", "16", "1", "1", "4", "5", "2", "6", "2", "9"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 61,
+   "numbers": {
+    "drawing": ["18", "8", "5", "4", "4", "2.6", "4", "4", "6", "3", "8", "3", "9", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 62,
+   "numbers": {
+    "drawing": ["6", "18", "2", "1", "2", "12", "3", "14", "2.6", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 63,
+   "numbers": {
+    "drawing": ["20", "22", "3", "3", "12", "18", "3", "8", "12", "13", "3", "3", "3", "18", "5", "6", "10", "7", "7", "11", "11", "13", "0", "1", "4", "4", "0", "1", "2", "2", "15", "6", "2", "1", "17", "7", "1", "7", "15", "14", "2", "1", "1", "3", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 64,
+   "numbers": {
+    "drawing": ["12", "12", "1", "4", "7", "7", "1", "4", "2", "7", "1", "10", "7", "1", "8", "5", "2", "1", "10", "6", "1", "3", "8", "9", "2", "1", "2", "4", "5", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 65,
+   "numbers": {
+    "drawing": ["1", "1", "3", "4", "1", "1", "2", "2", "5", "0", "3", "4", "5", "0", "6", "1", "3", "0", "1", "3", "6", "1", "1", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 66,
+   "numbers": {
+    "drawing": ["15", "9", "7.5", "5", "6", "3", "3", "4", "6", "2", "9", "4", "11", "6", "5", "6", "8", "6", "0", "1", "2", "2", "0", "1", "13", "8", "6.5", "4", "5", "2.8", "3", "3", "0", "9", "5", "0", "6", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 67,
+   "numbers": {
+    "drawing": ["24", "10", "1", "6", "22", "3", "1", "6", "22", "1", "4", "5", "9", "5", "14", "5", "19", "5", "0", "4", "0", "1", "1", "2.4", "2.2", "0", "3", "1", "4", "6", "6"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 68,
+   "numbers": {
+    "drawing": ["24", "9", "12", "5", "10.6", "3.4", "12", "4.6", "7.6", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 69,
+   "numbers": {
+    "drawing": ["6", "16", "1", "1", "1", "13", "4", "1", "1", "13", "1", "0", "4", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 70,
+   "numbers": {
+    "drawing": ["11", "6", "5.5", "3", "4.6", "2.2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 72,
+   "numbers": {
+    "drawing": ["16", "10", "6", "5", "5", "3.6", "10", "4", "4", "2", "14", "4", "1.4", "1.4", "14", "6", "1.4", "1.4"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 73,
+   "numbers": {
+    "drawing": ["14", "9", "7", "4.5", "5.6", "3.4", "7", "4", "2.2", "1.8", "2", "5", "11", "6", "4", "7"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 74,
+   "numbers": {
+    "drawing": ["8", "9", "4", "4.6", "2.8", "3.6"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 75,
+   "numbers": {
+    "drawing": ["8", "12", "1", "5", "6", "6", "2", "6", "4", "5", "1", "5", "1", "6", "2", "3", "4", "2", "4", "2.4", "2.6", "1.8", "3", "2", "5", "2", "4", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 76,
+   "numbers": {
+    "drawing": ["34", "7", "1", "1", "32", "5", "1", "33", "4", "1", "2", "5", "1", "3", "32", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 77,
+   "numbers": {
+    "drawing": ["7", "8", "1", "1", "4", "2", "2", "4", "5", "5", "1", "6", "0", "1", "1", "1", "3", "3", "1", "1", "4", "2", "2", "4", "5", "5", "1", "6", "0", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 78,
+   "numbers": {
+    "drawing": ["11", "8", "5.5", "5.4", "4.6", "2.4", "5.5", "3.4", "2.6", "2", "5", "0"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 79,
+   "numbers": {
+    "drawing": ["46", "9", "1", "3", "44", "5", "1", "3", "44", "1", "2", "4", "42", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 80,
+   "numbers": {
+    "drawing": ["22", "20", "3", "5", "16", "14", "3", "5", "4", "14", "3", "16", "16", "3", "11", "5", "8.6", "3", "11", "5", "6.6", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 81,
+   "numbers": {
+    "drawing": ["14", "18", "1", "4", "12", "13", "1", "4", "2", "13", "2", "7", "10", "10", "3", "8", "7", "9", "10", "8", "4", "12", "8", "13", "5", "15", "10", "15", "0", "1", "2", "1", "2", "1", "10", "3", "2", "1", "10", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 82,
+   "numbers": {
+    "drawing": ["15", "9", "7.5", "5.5", "6.6", "2.8", "5", "7.5", "4", "3", "2", "10", "7.5", "4.4", "3", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 83,
+   "numbers": {
+    "drawing": ["24", "12", "12", "8", "10.6", "3.4", "7", "6", "13", "5", "17", "7", "10", "8", "0", "3", "0", "1", "3.4", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 84,
+   "numbers": {
+    "drawing": ["13", "9", "6.5", "6", "5.6", "2.4", "6.5", "4", "3.6", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 85,
+   "numbers": {
+    "drawing": ["7", "8", "1", "1", "4", "2", "2", "4", "5", "5", "1", "6", "0", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 86,
+   "numbers": {
+    "drawing": ["10", "14", "1", "1", "8", "12", "1", "4", "8", "9", "1", "1", "2", "12", "1", "4", "1", "9", "3", "3", "3", "3", "3", "3", "5", "6", "3", "3", "5", "6"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 87,
+   "numbers": {
+    "drawing": ["9", "8", "2.6", "2.6", "2.2", "2", "4", "4", "8", "7", "4", "5", "7", "7"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 88,
+   "numbers": {
+    "drawing": ["44", "36", "12", "19", "3", "7", "21", "20", "4", "9", "30", "19", "3", "6", "0", "1", "2", "3", "1", "0", "2", "2", "1", "3", "2", "2", "0.6", "1.8", "10", "16", "5", "4", "16", "13", "6", "5", "25", "12", "6", "5", "32", "15", "6", "5", "21", "17", "10", "4", "0", "1", "2", "3", "5", "33", "5", "2.2", "39", "33", "5", "2.2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 89,
+   "numbers": {
+    "drawing": ["8", "13", "2", "4", "4", "8", "2", "4", "1", "8", "4", "3", "2.6", "2.2", "3", "0", "2", "2"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 90,
+   "numbers": {
+    "drawing": ["10", "14", "1", "1", "8", "12", "1", "4", "8", "9", "1", "1", "2", "12", "3", "3", "3", "3", "5", "6", "3", "3"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 91,
+   "numbers": {
+    "drawing": ["22", "13", "11", "9", "8", "3.4", "11", "5", "9.6", "4", "11", "4.6", "7.6", "2.8", "13", "0", "2", "5"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 92,
+   "numbers": {
+    "drawing": ["26", "20", "2", "1", "22", "4", "3", "2", "1", "22", "1", "4", "4", "5", "3", "14", "1", "19", "5", "3", "14", "1", "5", "11", "16", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 94,
+   "numbers": {
+    "drawing": ["1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a sprite's own drawing (the pots, the pan, the cups, the plates, the food, the stool, the bucket...) and tenida: relative to where it is drawn, unchanged"
+  },
+  {
+   "line": 96,
+   "numbers": {
+    "time": ["2"],
+    "count": ["2", "2"],
+    "place": ["13", "4", "7", "6", "1", "5", "5", "6", "11", "4", "1", "0", "3", "0", "1"],
+    "offset": ["4", "1", "5", "1", "2"]
+   },
+   "to": {
+    "moves": [
+     "function llama(c,x,a){const t=(F>>2)%2;[[-13,4],[-7,6],[-1,5"
+    ]
+   },
+   "note": "moved (moves): llama; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 97,
+   "numbers": {
+    "drawing": ["2", "6", "6", "2", "5", "1", "4", "6", "6", "1", "4", "2", "10", "5", "1", "2", "6", "2", "0", "3", "1", "2", "1", "1", "2", "2", "1", "1", "3", "3", "7", "0", "0", "4", "6", "1", "1", "2", "6", "0", "3", "1", "2", "3"]
+   },
+   "to": "unchanged",
+   "note": "the steam and smoke: relative to the point it is drawn at, unchanged"
+  },
+  {
+   "line": 99,
+   "numbers": {
+    "offset": ["1", "17", "23"],
+    "place": ["0", "0"]
+   },
+   "to": {
+    "moves": [
+     "if(f.k===\"olla\"){tenida(c,\"olla\",x,FY+1,0,0,f.negra&&!f.n?\"n"
+    ]
+   },
+   "note": "moved (moves): fuego; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 100,
+   "numbers": {
+    "offset": ["13", "3", "21", "21", "6", "26", "22"],
+    "place": ["0", "0", "0", "0", "0", "0"],
+    "other": ["1", "0"]
+   },
+   "to": {
+    "moves": [
+     "if(f.mal)tenida(c,\"monton\",x,FY-13,0,0,f.mal);if(f.espuma){t"
+    ]
+   },
+   "note": "moved (moves): fuego; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 101,
+   "numbers": {
+    "offset": ["6", "1", "1", "3", "14", "14", "14"],
+    "scale": ["12", "6"],
+    "other": ["1", "1", "0"]
+   },
+   "to": {
+    "moves": [
+     "else{tenida(c,\"sarten\",x+6,FY+1);(f.cosas||[]).forEach((o,j)"
+    ]
+   },
+   "note": "moved (moves): fuego"
+  },
+  {
+   "line": 103,
+   "numbers": {
+    "drawing": ["0", "0", "1", "2", "3", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "pieza, alto and caja: sizes and offsets relative to a piece or a person, unchanged"
+  },
+  {
+   "line": 104,
+   "numbers": {
+    "drawing": ["51", "44", "56"]
+   },
+   "to": "unchanged",
+   "note": "the sprites' heights (alto), not places"
+  },
+  {
+   "line": 105,
+   "numbers": {
+    "drawing": ["0", "11", "22"]
+   },
+   "to": "unchanged",
+   "note": "pieza, alto and caja: sizes and offsets relative to a piece or a person, unchanged"
+  },
+  {
+   "line": 106,
+   "numbers": {
+    "drawing": ["1", "0"]
+   },
+   "to": "unchanged",
+   "note": "pieza, alto and caja: sizes and offsets relative to a piece or a person, unchanged"
+  },
+  {
+   "line": 109,
+   "numbers": {
+    "place": ["0", "0", "0", "34", "28", "1", "1", "1", "34", "28"],
+    "offset": ["17", "24", "17", "24"],
+    "other": ["1", "1"],
+    "order": ["1", "1"]
+   },
+   "to": {
+    "moves": [
+     "{id:\"olla0\",si:w=>!!(w.fuegos[0]&&w.fuegos[0].k===\"olla\"),bo"
+    ]
+   },
+   "note": "moved (moves): the pots' boxes at their burners; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 110,
+   "numbers": {
+    "place": ["0", "1", "24", "18", "0", "1", "24", "18"],
+    "offset": ["12", "16", "12", "16"],
+    "other": ["1", "1"],
+    "order": ["1", "1"]
+   },
+   "to": {
+    "things": ["saco", "tazon"]
+   },
+   "note": "the cups' boxes relative to EN (moved: EN)"
+  },
+  {
+   "line": 111,
+   "numbers": {
+    "offset": ["24", "22", "22"],
+    "place": ["24", "24", "24", "24"],
+    "other": ["0", "0"],
+    "order": ["3", "3"]
+   },
+   "to": {
+    "things": ["pzpollo", "pzhuevo"]
+   },
+   "note": "the pieces' boxes relative to abuela's plate: unchanged"
+  },
+  {
+   "line": 112,
+   "numbers": {
+    "place": ["0", "0", "0", "36", "16", "28", "46", "16"],
+    "offset": ["17", "14", "4"],
+    "other": ["0", "0"]
+   },
+   "to": {
+    "moves": [
+     "{id:\"sarten\",si:w=>!!(w.fuegos[0]&&w.fuegos[0].k===\"sarten\")"
+    ]
+   },
+   "note": "moved (moves): the pan's box at burner 0; the tray's box at the tray (BJ); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 113,
+   "numbers": {
+    "place": ["0", "1", "20", "24"],
+    "offset": ["11", "22"],
+    "other": ["1"],
+    "order": ["2"]
+   },
+   "to": {
+    "things": ["jarra"]
+   },
+   "note": "the jug's box relative to EN.jarra (moved: EN)"
+  },
+  {
+   "line": 114,
+   "numbers": {
+    "place": ["0", "1", "2", "3", "22", "16", "196", "198"],
+    "offset": ["2"],
+    "other": ["0", "0"]
+   },
+   "to": {
+    "things": ["estufa", "cocina"]
+   },
+   "note": "the stove's box and the room's: the set things (things.estufa, things.cocina, its hint box)"
+  },
+  {
+   "line": 117,
+   "numbers": {
+    "drawing": ["0", "2", "1", "0", "0", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 118,
+   "numbers": {
+    "drawing": ["50", "2", "1", "0", "0", "1", "1", "30", "0"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 119,
+   "numbers": {
+    "drawing": ["14", "17", "0", "0", "8", "24", "2", "0", "0", "18", "22", "0", "0", "2", "7", "30", "2", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 120,
+   "numbers": {
+    "drawing": ["1", "0", "1", "2", "1", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 121,
+   "numbers": {
+    "drawing": ["0", "1", "1", "0"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 122,
+   "numbers": {
+    "drawing": ["1", "2", "2", "2", "13", "8", "42"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 123,
+   "numbers": {
+    "drawing": ["10", "34", "38", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 124,
+   "numbers": {
+    "drawing": ["13", "30", "34", "0", "0", "2"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 125,
+   "numbers": {
+    "drawing": ["6", "26", "30", "2", "0", "0", "6", "22", "2", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 126,
+   "numbers": {
+    "drawing": ["1", "1", "28", "22", "26", "20", "10", "20", "4", "4", "11", "21", "2", "2", "13", "18", "0", "0", "19", "11", "0.6"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 127,
+   "numbers": {
+    "drawing": ["1", "1", "22", "20", "20", "18", "8", "18", "4", "4", "9", "19", "2", "2", "10", "16", "0", "0", "3", "2", "6", "1", "1", "3", "10", "1", "3"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 128,
+   "numbers": {
+    "drawing": ["47", "2", "1", "0", "2", "1", "0", "1"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 129,
+   "numbers": {
+    "drawing": ["1"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 130,
+   "numbers": {
+    "drawing": ["3", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 131,
+   "numbers": {
+    "drawing": ["2", "2", "0", "0"]
+   },
+   "to": "unchanged",
+   "note": "a person, the thought clouds, the frog, what each holds: drawn relative to them, unchanged"
+  },
+  {
+   "line": 133,
+   "numbers": {
+    "place": ["0"],
+    "other": ["0"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the background (fondo): the set, for setKey(W)"
+  },
+  {
+   "line": 134,
+   "numbers": {
+    "other": ["176", "36", "0", "176", "30"],
+    "place": ["22", "38", "0", "183", "57"],
+    "scale": ["12", "3", "12"],
+    "offset": ["7"],
+    "count": ["2"]
+   },
+   "to": {
+    "moves": [
+     "if(W.ventana&&W.ventana.length){c.save();c.beginPath();c.rec"
+    ]
+   },
+   "note": "moved (moves): the family at the window (familia27); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 135,
+   "numbers": {
+    "count": ["2"],
+    "place": ["38", "50", "0", "0", "50", "50", "0", "0"]
+   },
+   "to": {
+    "moves": [
+     "if(W.estante){const v=W.estante===2?\"vacio\":null;tenida(c,\"s"
+    ]
+   },
+   "note": "moved (moves): the sack of rice and the jar of beans on the shelf (W.estante); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 136,
+   "numbers": {
+    "place": ["0", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 138,
+   "numbers": {
+    "time": ["3"],
+    "count": ["2", "30"],
+    "state": ["0"],
+    "scale": ["30", "2", "2", "0.8", "1.5", "1.6", "2"],
+    "other": ["1"],
+    "place": ["0", "2", "1", "3", "0", "2", "1", "3", "0", "1", "3", "3", "0", "1", "1", "1"],
+    "offset": ["16", "1", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 140,
+   "numbers": {
+    "place": ["0", "1", "0", "1"],
+    "offset": ["9", "9", "9", "9"]
+   },
+   "to": {
+    "moves": [
+     "if(I.llenando){tenida(c,\"saco\",EN.saco[0]-9,EN.saco[1]-9);te"
+    ]
+   },
+   "note": "moved (moves): llenando; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 141,
+   "numbers": {
+    "place": ["0", "0", "0", "5", "6", "0", "6", "0", "0", "0", "1", "1", "0", "0", "1"],
+    "count": ["0"],
+    "other": ["0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 142,
+   "numbers": {
+    "place": ["50", "36", "0", "0", "58"],
+    "offset": ["11", "8", "8"],
+    "state": ["0", "0"],
+    "scale": ["8", "7"],
+    "count": ["2", "2"]
+   },
+   "to": {
+    "moves": [
+     "if(I.bandeja){const t=I.bandeja;tenida(c,\"bandeja\",50,ENC+11"
+    ]
+   },
+   "note": "moved (moves): the tray of drumsticks and eggs on the left counter (BJ), what lies on it with it; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 143,
+   "numbers": {
+    "place": ["0", "1", "0", "1"],
+    "offset": ["2"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 144,
+   "numbers": {
+    "offset": ["10", "6", "3"],
+    "place": ["0", "2"],
+    "scale": ["12"],
+    "count": ["4"],
+    "other": ["0"]
+   },
+   "to": {
+    "moves": [
+     "(D.servidos||[]).forEach((pl,i)=>{const x=SVX(i),y=ENC+10;te"
+    ]
+   },
+   "note": "moved (moves): the plates served to the children; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 145,
+   "numbers": {
+    "place": ["0", "1", "0", "1"],
+    "count": ["0", "0", "3"],
+    "offset": ["1", "3"],
+    "scale": ["9", "3", "6"]
+   },
+   "to": {
+    "moves": [
+     "if(I.jarra)tenida(c,\"jarra\",EN.jarra[0],EN.jarra[1]);for(let"
+    ]
+   },
+   "note": "moved (moves): the nine clean cups (cuidado); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 147,
+   "numbers": {
+    "place": ["0", "1", "0", "0", "0", "0"],
+    "offset": ["8", "2", "2", "3", "1"],
+    "scale": ["13"],
+    "count": ["2"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 148,
+   "numbers": {
+    "state": ["0"],
+    "count": ["0"],
+    "place": ["0", "1", "0", "1"],
+    "offset": ["12", "9", "10", "10"],
+    "scale": ["2"]
+   },
+   "to": {
+    "moves": [
+     "for(let i=0;i<(D.pila||0);i++)tenida(c,\"plato\",EN.platos[0]+"
+    ]
+   },
+   "note": "moved (moves): the pile of clean plates and the small plate on the right counter, on its top behind the row of plates (the old stood them 9 and 10 rows behind it, here behind the top's back edge); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 150,
+   "numbers": {
+    "place": ["0", "1", "0", "0", "0", "1", "0", "1", "0", "0"],
+    "offset": ["6", "3"],
+    "scale": ["6"],
+    "count": ["2"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 153,
+   "numbers": {
+    "place": ["1", "0", "1", "0", "1", "0", "1", "0", "0", "0", "1", "0", "0"],
+    "offset": ["1", "8", "10", "0.5", "4", "13", "4", "13"],
+    "scale": ["6", "2", "5", "2", "5", "2"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 154,
+   "numbers": {
+    "place": ["1", "0", "1"],
+    "offset": ["1", "18"]
+   },
+   "to": {
+    "dropped": true
+   },
+   "note": "the stool (W.banco): the set's (setKey banco); whoever stands behind it has it drawn again over them (front.banco)"
+  },
+  {
+   "line": 155,
+   "numbers": {
+    "count": ["0"]
+   },
+   "to": "unchanged",
+   "note": "no place: count"
+  },
+  {
+   "line": 156,
+   "numbers": {
+    "count": ["0"],
+    "offset": ["1", "1", "15"],
+    "place": ["0"],
+    "other": ["0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 157,
+   "numbers": {
+    "offset": ["27"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset"
+  },
+  {
+   "line": 159,
+   "numbers": {
+    "place": ["0", "3"],
+    "offset": ["11", "6"],
+    "scale": ["22"],
+    "other": ["2"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 160,
+   "numbers": {
+    "place": ["0", "2", "0", "0"],
+    "count": ["0"],
+    "offset": ["4", "7", "3"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 161,
+   "numbers": {
+    "offset": ["6"]
+   },
+   "to": {
+    "moves": [
+     "if(W.salero)tenida(c,\"salero\",SALX,FY+6);"
+    ]
+   },
+   "note": "moved (moves): the shaker on the stove's top (SALY)"
+  },
+  {
+   "line": 162,
+   "numbers": {
+    "place": ["0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 163,
+   "numbers": {
+    "count": ["0", "0", "0"],
+    "offset": ["14", "26", "14", "24"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset"
+  },
+  {
+   "line": 164,
+   "numbers": {
+    "count": ["0"],
+    "offset": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset"
+  },
+  {
+   "line": 165,
+   "numbers": {
+    "count": ["1"],
+    "offset": ["2"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset"
+  },
+  {
+   "line": 167,
+   "numbers": {
+    "drawing": ["0", "1"]
+   },
+   "to": "unchanged",
+   "note": "talkAt's offset over the head, the answer icons, the rounds card in the corner (hud): relative or screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 168,
+   "numbers": {
+    "drawing": ["1", "14", "1", "9", "1", "1", "1", "9", "1", "2", "3", "0", "2", "1", "8", "14", "0.7", "2", "1", "4", "8", "0.5", "2", "1", "6", "4", "0", "2"]
+   },
+   "to": "unchanged",
+   "note": "talkAt's offset over the head, the answer icons, the rounds card in the corner (hud): relative or screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 169,
+   "numbers": {
+    "drawing": ["3", "3", "66", "24"]
+   },
+   "to": "unchanged",
+   "note": "talkAt's offset over the head, the answer icons, the rounds card in the corner (hud): relative or screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 170,
+   "numbers": {
+    "drawing": ["10", "20", "6"]
+   },
+   "to": "unchanged",
+   "note": "talkAt's offset over the head, the answer icons, the rounds card in the corner (hud): relative or screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 171,
+   "numbers": {
+    "drawing": ["0", "1", "1", "3", "3", "0", "2", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "talkAt's offset over the head, the answer icons, the rounds card in the corner (hud): relative or screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 172,
+   "numbers": {
+    "drawing": ["0", "11", "1", "4", "3", "10", "1", "4", "3", "0", "11", "1", "2", "2", "1", "11", "2", "2", "1"]
+   },
+   "to": "unchanged",
+   "note": "talkAt's offset over the head, the answer icons, the rounds card in the corner (hud): relative or screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 173,
+   "numbers": {
+    "drawing": ["1", "13", "12", "1", "1", "1", "1", "12", "12", "1", "1", "12", "1", "1", "12", "1"]
+   },
+   "to": "unchanged",
+   "note": "talkAt's offset over the head, the answer icons, the rounds card in the corner (hud): relative or screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 174,
+   "numbers": {
+    "drawing": ["0"]
+   },
+   "to": "unchanged",
+   "note": "talkAt's offset over the head, the answer icons, the rounds card in the corner (hud): relative or screen space, unchanged (talk.board)"
+  },
+  {
+   "line": 178,
+   "numbers": {
+    "count": ["3", "3", "1"],
+    "scale": ["6"],
+    "other": ["0"],
+    "state": ["1", "1", "0"],
+    "offset": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, scale, other, state, offset"
+  },
+  {
+   "line": 179,
+   "numbers": {
+    "count": ["5"],
+    "state": ["1"],
+    "scale": ["8"],
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, state, scale, other"
+  },
+  {
+   "line": 180,
+   "numbers": {
+    "count": ["5"],
+    "state": ["1"],
+    "scale": ["10"],
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, state, scale, other"
+  },
+  {
+   "line": 181,
+   "numbers": {
+    "offset": ["16", "27"]
+   },
+   "to": "unchanged",
+   "note": "the frog's middle and feet relative to q: unchanged"
+  },
+  {
+   "line": 182,
+   "numbers": {
+    "scale": ["16", "27", "40"],
+    "count": ["3", "1", "3"],
+    "offset": ["16", "27"]
+   },
+   "to": "unchanged",
+   "note": "ranaA: q relative to the point; the hop count by the distance (40 px a hop): unchanged"
+  },
+  {
+   "line": 183,
+   "numbers": {
+    "offset": ["4", "4", "2"],
+    "other": ["0.7", "1", "1"],
+    "state": ["0"],
+    "count": ["3"],
+    "scale": ["2", "2"],
+    "time": ["110", "150"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, other, state, count, scale, time"
+  },
+  {
+   "line": 184,
+   "numbers": {
+    "place": ["0", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 186,
+   "numbers": {
+    "count": ["1", "0"]
+   },
+   "to": "unchanged",
+   "note": "no place: count"
+  },
+  {
+   "line": 191,
+   "numbers": {
+    "count": ["3", "0"],
+    "offset": ["1"],
+    "other": ["0", "1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset, other"
+  },
+  {
+   "line": 194,
+   "numbers": {
+    "time": ["250"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 198,
+   "numbers": {
+    "other": ["27"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 200,
+   "numbers": {
+    "place": ["1", "0", "1", "1", "0", "0", "0", "1", "0", "1"],
+    "state": ["1", "1", "1", "0", "0", "0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 201,
+   "numbers": {
+    "state": ["0", "1", "1", "0", "1", "1", "3", "3", "6", "1", "1", "1"]
+   },
+   "to": "unchanged",
+   "note": "no place: state"
+  },
+  {
+   "line": 204,
+   "numbers": {
+    "place": ["0", "186", "190", "165", "5"],
+    "offset": ["6", "18"],
+    "time": ["100", "250"]
+   },
+   "to": {
+    "moves": [
+     "async echa(o){const k=clase(o.k),i=olla(o.a),key=k===\"arroz\""
+    ]
+   },
+   "note": "moved (moves): echa; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 206,
+   "numbers": {
+    "place": ["0", "1", "1", "0", "1"],
+    "offset": ["4", "8", "8", "30", "18"],
+    "count": ["10"],
+    "other": ["22", "5"],
+    "time": ["100", "250"],
+    "state": ["1"]
+   },
+   "to": {
+    "moves": [
+     "async carmenecha(o){const k=clase(o.k),i=olla(o.a),c=G(\"carm"
+    ]
+   },
+   "note": "moved (moves): carmenecha; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 208,
+   "numbers": {
+    "place": ["0", "1", "0", "1"],
+    "count": ["3", "0"],
+    "offset": ["8", "18"],
+    "other": ["6"],
+    "time": ["150"]
+   },
+   "to": {
+    "moves": [
+     "async ultimas27(){for(const i of [0,1]){const f=W.fuegos[i],"
+    ]
+   },
+   "note": "moved (moves): ultimas27; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 210,
+   "numbers": {
+    "place": ["1", "1", "1", "1", "0", "1"],
+    "time": ["150", "350", "400"],
+    "offset": ["1", "16", "14"],
+    "other": ["1", "9"],
+    "state": ["0"]
+   },
+   "to": {
+    "moves": [
+     "async saca(o){const i=olla(o.a),f=W.fuegos[i],k=f.mal||(f.n?"
+    ]
+   },
+   "note": "moved (moves): saca; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 211,
+   "numbers": {
+    "time": ["900"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 213,
+   "numbers": {
+    "state": ["1"],
+    "count": ["16"],
+    "other": ["11"],
+    "offset": ["6", "4"],
+    "time": ["250"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, count, other, offset, time"
+  },
+  {
+   "line": 215,
+   "numbers": {
+    "place": ["1", "0", "1", "1", "0", "0", "0", "1", "0", "1"],
+    "state": ["1", "1", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 216,
+   "numbers": {
+    "place": ["0", "1", "1", "0", "1", "1", "0", "1", "1"],
+    "offset": ["4", "4", "16", "12", "22", "12"],
+    "state": ["1", "1", "1"],
+    "count": ["3", "0"],
+    "time": ["180"]
+   },
+   "to": {
+    "moves": [
+     "await Promise.all([mueve(\"abuela\",EN.platos[0]+4,LADO[1][1]+"
+    ]
+   },
+   "note": "moved (moves): platos27; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 218,
+   "numbers": {
+    "state": ["0"],
+    "time": ["350"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 219,
+   "numbers": {
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 220,
+   "numbers": {
+    "time": ["400", "700", "400"],
+    "state": ["4", "0"],
+    "count": ["0"],
+    "offset": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: time, state, count, offset"
+  },
+  {
+   "line": 222,
+   "numbers": {
+    "state": ["0", "1", "1"],
+    "time": ["300"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 224,
+   "numbers": {
+    "state": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: state"
+  },
+  {
+   "line": 225,
+   "numbers": {
+    "place": ["0", "1", "0", "2", "1", "1", "2", "0", "0", "1"],
+    "offset": ["16", "8", "6"],
+    "scale": ["13"],
+    "other": ["4", "1", "1"]
+   },
+   "to": {
+    "moves": [
+     "for(const i of [0,1]){const f=W.fuegos[i];if(!f.n)continue;c"
+    ]
+   },
+   "note": "moved (moves): sirve27; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 226,
+   "numbers": {
+    "state": ["1", "0", "0"],
+    "time": ["300"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 228,
+   "numbers": {
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 229,
+   "numbers": {
+    "place": ["0", "1", "0", "1"],
+    "offset": ["18", "10"],
+    "time": ["300", "1200"],
+    "state": ["1", "1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 231,
+   "numbers": {
+    "state": ["0", "0", "1", "2", "1"],
+    "other": ["1", "1", "0"],
+    "place": ["46", "1", "0", "1"],
+    "offset": ["2"],
+    "time": ["300", "400", "160", "250", "300"],
+    "count": ["3"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 233,
+   "numbers": {
+    "place": ["155", "202", "204", "202"],
+    "state": ["1", "1", "1"]
+   },
+   "to": {
+    "moves": [
+     "mueve(\"carmen\",204,202)"
+    ]
+   },
+   "note": "moved (moves): final27; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 234,
+   "numbers": {
+    "state": ["2"],
+    "count": ["16", "8", "300"],
+    "other": ["4", "10", "1100"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, count, other"
+  },
+  {
+   "line": 236,
+   "numbers": {
+    "state": ["0"],
+    "offset": ["24", "4", "26", "2", "21", "3"],
+    "time": ["1500"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, offset, time"
+  },
+  {
+   "line": 238,
+   "numbers": {
+    "other": ["28"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 240,
+   "numbers": {
+    "place": ["0", "0", "0", "1"],
+    "state": ["1", "0", "1", "0", "0", "0", "0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 241,
+   "numbers": {
+    "state": ["1", "0", "0", "3", "3", "1"],
+    "place": ["0", "1"],
+    "offset": ["30", "24"],
+    "other": ["1"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 243,
+   "numbers": {
+    "offset": ["24", "6", "6", "24"],
+    "other": ["5", "1", "0", "5"]
+   },
+   "to": {
+    "moves": [
+     "async toma28(o){const pr=(async()=>{if(o.deja){W.encima=null"
+    ]
+   },
+   "note": "moved (moves): toma28"
+  },
+  {
+   "line": 245,
+   "numbers": {
+    "place": ["0", "0"],
+    "scale": ["12"],
+    "offset": ["6", "24", "4", "18", "12", "12", "1"],
+    "other": ["5"],
+    "count": ["0"]
+   },
+   "to": {
+    "moves": [
+     "async sala(o){const k=pz(o.k),f=W.fuegos[0],j=f.cosas.findIn"
+    ]
+   },
+   "note": "moved (moves): sala; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 246,
+   "numbers": {
+    "state": ["1", "1"],
+    "place": ["20", "204", "0", "204"],
+    "offset": ["2"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 248,
+   "numbers": {
+    "state": ["1"],
+    "time": ["400"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 249,
+   "numbers": {
+    "place": ["0"],
+    "state": ["1"],
+    "time": ["400"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 251,
+   "numbers": {
+    "place": ["0"],
+    "state": ["1", "1", "1", "0", "0"],
+    "time": ["350", "250", "250"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 252,
+   "numbers": {
+    "place": ["0"],
+    "time": ["500", "400", "300", "300"],
+    "state": ["0", "0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 254,
+   "numbers": {
+    "place": ["0", "40", "0", "5", "60", "0", "5"],
+    "state": ["1", "1", "0", "0"],
+    "offset": ["4", "6", "6", "4", "6", "6"],
+    "time": ["250"]
+   },
+   "to": {
+    "moves": [
+     "async par(o){const t=W.izq.bandeja,f=W.fuegos[0],ab=G(\"abuel"
+    ]
+   },
+   "note": "moved (moves): par; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 255,
+   "numbers": {
+    "other": ["0", "1", "1"],
+    "offset": ["6", "18", "4", "12", "18", "6"],
+    "place": ["0", "4", "0", "0", "4"],
+    "count": ["0"],
+    "time": ["200"]
+   },
+   "to": {
+    "moves": [
+     "W.salero=0;await vuela({k:\"salero\"},SALX,FY+6,FX[0],FY-18,4)"
+    ]
+   },
+   "note": "moved (moves): par; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 257,
+   "numbers": {
+    "place": ["0", "0"],
+    "offset": ["8", "6"],
+    "other": ["7"],
+    "time": ["250"]
+   },
+   "to": {
+    "moves": [
+     "async sirve28(o){const f=W.fuegos[0],its=f.cosas.map(c=>({k:"
+    ]
+   },
+   "note": "moved (moves): sirve28; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 258,
+   "numbers": {
+    "count": ["2"],
+    "other": ["1"],
+    "time": ["600", "200"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, other, time"
+  },
+  {
+   "line": 259,
+   "numbers": {
+    "time": ["350", "150"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 261,
+   "numbers": {
+    "offset": ["6", "6", "24", "24", "4", "6", "2", "2", "1", "4", "6", "6"],
+    "scale": ["12"],
+    "other": ["0", "5", "9", "1"],
+    "count": ["0"],
+    "place": ["8"]
+   },
+   "to": {
+    "moves": [
+     "async salplato(o){const k=pz(o.k),i=W.der.servidos.findIndex"
+    ]
+   },
+   "note": "moved (moves): salplato; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 262,
+   "numbers": {
+    "count": ["2"],
+    "time": ["300", "500", "500"],
+    "state": ["2", "0"],
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, time, state, other"
+  },
+  {
+   "line": 263,
+   "numbers": {
+    "count": ["12"],
+    "other": ["0"],
+    "time": ["250"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, other, time"
+  },
+  {
+   "line": 265,
+   "numbers": {
+    "state": ["1", "1", "1"],
+    "place": ["236", "198", "178", "198", "199", "206"],
+    "scale": ["8"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 267,
+   "numbers": {
+    "place": ["0", "94", "181"],
+    "state": ["1", "0"],
+    "time": ["400"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 269,
+   "numbers": {
+    "other": ["1", "7"],
+    "offset": ["8", "12", "36"]
+   },
+   "to": "unchanged",
+   "note": "no place: other, offset"
+  },
+  {
+   "line": 270,
+   "numbers": {
+    "offset": ["12", "36", "28", "6", "28", "6"],
+    "other": ["6"],
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, other, time"
+  },
+  {
+   "line": 271,
+   "numbers": {
+    "time": ["800"],
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: time, other"
+  },
+  {
+   "line": 272,
+   "numbers": {
+    "state": ["1", "1"],
+    "time": ["300"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 274,
+   "numbers": {
+    "state": ["1"],
+    "other": ["1"],
+    "time": ["500"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, other, time"
+  },
+  {
+   "line": 277,
+   "numbers": {
+    "place": ["0"],
+    "offset": ["8", "4"],
+    "other": ["6"],
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 278,
+   "numbers": {
+    "state": ["1", "1"],
+    "time": ["600"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 280,
+   "numbers": {
+    "other": ["29"]
+   },
+   "to": "unchanged",
+   "note": "no place: other"
+  },
+  {
+   "line": 282,
+   "numbers": {
+    "place": ["0", "0", "0", "1", "1", "0", "1", "1"],
+    "state": ["1", "1", "0", "0", "0", "0"],
+    "offset": ["11"]
+   },
+   "to": {
+    "moves": [
+     "async inicio29(){W.gente={abuela:{x:LADO[0][0],y:LADO[0][1],"
+    ]
+   },
+   "note": "moved (moves): cuidado; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 283,
+   "numbers": {
+    "state": ["1", "2", "1", "1", "9", "4", "1", "1"],
+    "other": ["1", "0"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, other"
+  },
+  {
+   "line": 285,
+   "numbers": {
+    "count": ["2", "207", "2", "212", "2", "5"],
+    "other": ["184", "204", "4"],
+    "state": ["1", "1"],
+    "place": ["236"]
+   },
+   "to": {
+    "moves": [
+     "const p=G(o.quien),x=o.lugar==2?207:184,y=o.lugar==2?212:204"
+    ]
+   },
+   "note": "moved (moves): viene (cuidado); every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 287,
+   "numbers": {
+    "time": ["300"],
+    "place": ["238"],
+    "state": ["0"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 288,
+   "numbers": {
+    "time": ["250"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 290,
+   "numbers": {
+    "time": ["250"],
+    "offset": ["8", "24", "24"],
+    "other": ["5"]
+   },
+   "to": "unchanged",
+   "note": "no place: time, offset, other"
+  },
+  {
+   "line": 291,
+   "numbers": {
+    "place": ["1", "192", "1", "0", "192"],
+    "offset": ["9", "5", "4", "22", "8"],
+    "order": ["999"],
+    "time": ["450", "150", "250", "100", "200"],
+    "other": ["1"]
+   },
+   "to": {
+    "moves": [
+     "async ranallena(o){const k=[\"olla1\",\"cal\",\"di_cal\"].includes"
+    ]
+   },
+   "note": "moved (moves): ranallena; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 293,
+   "numbers": {
+    "time": ["350"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 294,
+   "numbers": {
+    "offset": ["20", "2", "11"],
+    "time": ["100", "200"],
+    "place": ["1", "0", "1", "1"],
+    "state": ["1"]
+   },
+   "to": {
+    "moves": [
+     "async luisda(o){const l=G(\"luis\"),p=G(o.a),k=V.taza;const pr"
+    ]
+   },
+   "note": "moved (moves): cuidado; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 296,
+   "numbers": {
+    "place": ["1", "1", "1", "1"],
+    "time": ["170"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 297,
+   "numbers": {
+    "count": ["30", "0"],
+    "offset": ["20", "2", "6", "26", "14", "1", "11"],
+    "time": ["900", "300"],
+    "state": ["1", "1"],
+    "place": ["0", "1", "1", "0", "1", "1"],
+    "other": ["10"]
+   },
+   "to": {
+    "moves": [
+     "async luisbebe(o){const l=G(\"luis\"),p=G(o.a),k=p.bebe;if(Mat"
+    ]
+   },
+   "note": "moved (moves): cuidado; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 299,
+   "numbers": {
+    "place": ["0", "0", "1", "0", "0"],
+    "state": ["1"],
+    "count": ["0"],
+    "offset": ["8", "8"],
+    "other": ["5"],
+    "time": ["350", "600"]
+   },
+   "to": {
+    "moves": [
+     "async frie(){const f=W.fuegos[0],ab=G(\"abuela\");ab.dir=1;if("
+    ]
+   },
+   "note": "moved (moves): frie; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 300,
+   "numbers": {
+    "state": ["1", "1", "0"],
+    "time": ["450", "150"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 302,
+   "numbers": {
+    "state": ["1"],
+    "time": ["300"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, time"
+  },
+  {
+   "line": 303,
+   "numbers": {
+    "time": ["700"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 305,
+   "numbers": {
+    "place": ["0"],
+    "state": ["4", "0"],
+    "time": ["120"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 306,
+   "numbers": {
+    "place": ["0", "0", "0"],
+    "offset": ["10", "4", "34", "4", "34"],
+    "other": ["7"],
+    "time": ["400"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 307,
+   "numbers": {
+    "place": ["0", "0", "1"],
+    "offset": ["10", "6"],
+    "other": ["6"],
+    "time": ["250"]
+   },
+   "to": {
+    "moves": [
+     "await vuela({k:\"fritura\",v:\"dorada\"},FX[0],FY-10,EN.fuente[0"
+    ]
+   },
+   "note": "moved (moves): saca29; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 309,
+   "numbers": {
+    "place": ["0", "0", "1"],
+    "time": ["500", "600", "300", "500", "300"],
+    "state": ["1", "1", "0"],
+    "offset": ["20", "14"],
+    "other": ["8"]
+   },
+   "to": {
+    "floor": true
+   },
+   "note": "places on the picture: each keeps its screen place, its world point the surface under it (rules.floor)"
+  },
+  {
+   "line": 310,
+   "numbers": {
+    "state": ["1"],
+    "count": ["0"]
+   },
+   "to": "unchanged",
+   "note": "no place: state, count"
+  },
+  {
+   "line": 312,
+   "numbers": {
+    "place": ["0", "0", "1", "1", "0", "1", "1"],
+    "offset": ["18", "16", "11"],
+    "time": ["800", "300"],
+    "state": ["1"]
+   },
+   "to": {
+    "moves": [
+     "async luiscome(){const l=G(\"luis\");await mueve(\"luis\",EN.fue"
+    ]
+   },
+   "note": "moved (moves): cuidado; every other place here keeps its screen place (the floor rule)"
+  },
+  {
+   "line": 314,
+   "numbers": {
+    "state": ["1"]
+   },
+   "to": "unchanged",
+   "note": "no place: state"
+  },
+  {
+   "line": 315,
+   "numbers": {
+    "time": ["250", "250"]
+   },
+   "to": "unchanged",
+   "note": "no place: time"
+  },
+  {
+   "line": 316,
+   "numbers": {
+    "offset": ["26", "6"],
+    "state": ["4"],
+    "time": ["250"]
+   },
+   "to": "unchanged",
+   "note": "no place: offset, state, time"
+  },
+  {
+   "line": 317,
+   "numbers": {
+    "count": ["0"],
+    "time": ["250"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, time"
+  },
+  {
+   "line": 318,
+   "numbers": {
+    "count": ["0"],
+    "offset": ["26", "6"],
+    "time": ["700"]
+   },
+   "to": "unchanged",
+   "note": "no place: count, offset, time"
+  },
+  {
+   "line": 321,
+   "numbers": {
+    "count": ["1"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 322,
+   "numbers": {
+    "place": ["1", "0", "1", "1", "0", "0", "0", "1", "0", "1", "0", "1"],
+    "state": ["1", "1", "1", "1"],
+    "offset": ["6"],
+    "count": ["2", "1"],
+    "other": ["0"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 323,
+   "numbers": {
+    "count": ["1", "2"],
+    "state": ["2", "1", "1", "1", "1", "1", "0", "1", "1", "0", "0", "1", "2", "1", "1"],
+    "other": ["1"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 324,
+   "numbers": {
+    "count": ["3", "2", "1", "3", "3", "3", "1", "3", "1"],
+    "other": ["1", "2", "1", "1", "1", "0"],
+    "state": ["9", "3", "2", "1", "3", "1"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 325,
+   "numbers": {
+    "state": ["1", "1", "1"],
+    "place": ["0", "1"],
+    "offset": ["16", "27"],
+    "count": ["2"]
+   },
+   "to": "unchanged",
+   "note": "acts.prueba (a test act no story calls): unchanged"
+  },
+  {
+   "line": 327,
+   "numbers": {
+    "other": ["200"]
+   },
+   "to": "unchanged",
+   "note": "stake, poke and estado: no place"
+  },
+  {
+   "line": 329,
+   "numbers": {
+    "other": ["0"]
+   },
+   "to": "unchanged",
+   "note": "stake, poke and estado: no place"
+  },
+  {
+   "line": 330,
+   "numbers": {
+    "place": ["22", "0", "196", "216", "124", "24", "0", "1", "1", "0", "1", "1"],
+    "offset": ["16", "27", "16", "27"]
+   },
+   "to": {
+    "view": "wide",
+    "point": "corazon",
+    "spots": ["frog.inicio", "frog.centro"]
+   },
+   "note": "the view (views.wide), the heart (points.corazon) and LUGAR (the frog on the stool): unchanged"
+  },
+  {
+   "line": 331,
+   "numbers": {
+    "place": ["125", "46", "0", "1"],
+    "state": ["0", "0", "0", "0", "1", "1", "0", "1", "1"],
+    "other": ["0"],
+    "offset": ["16", "27"]
+   },
+   "to": {
+    "moves": [
+     "fresh:()=>({respEn:[125,46],"
+    ]
+   },
+   "note": "respEn: where the answer cards stand, moved (moves); the frog's first place (the stool): unchanged"
+  },
+  {
+   "line": "juego.js:16",
+   "to": "unchanged",
+   "note": "fresh(): not used here: estufa's fresh() puts the frog at LUGAR.inicio"
+  },
+  {
+   "line": "cual.js:21",
+   "to": "unchanged",
+   "note": "panelW(): cq x 123 y 150 s .86: a pair picture that shows the frog sets cq itself (remap); otherwise he is not seen (vis 0)"
+  }
+ ],
+ "checks": {
+  "notes": [
+   "inventory: 17 things (old 17), 2 frog places of LUGAR (old 2) and 9 frog places in all, 1 view (old 1), 35 positions (old 35), 12 review pairs of cual-estufa (24 pictures), 17 level pictures (old 17), 227 lines of estufa.js with numbers named in code (76 of them with places, each with its fate), 38 moves, 2 baked states (the old 165)",
+   "hops: all 28 pairs of the frog's 8 places keep the old count; at 1117 step ends of the port's play he stands where the recorded run had him, or where moves puts that place (0 differ)",
+   "set things: the stove's pixels all inside its touch box [87,86,78,69] and answering it; every other part the room's (cocina, its box the whole picture, its hint box [36,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: estante x 26-83 y 20-51; estante.mensula x 32-78 y 31-54; izq x 0-111 y 39-125; salpicadero x 92-163 y 42-111; campana.arriba x 105-163 y 48-77; campana.tubo x 117-153 y 48-70; campana x 104-163 y 52-80; campana.bajo x 104-163 y 55-81; ventana x 164-214 y 70-122; ventana.hondo x 167-211 y 74-119; estufa x 88-162 y 87-153; ventana.alfeizar x 159-214 y 98-126; der x 139-239 y 112-192; banco x 114-137 y 178-190; banco.patas x 116-135 y 186-204",
+   "light: the kit's one rule; every castShadow call of the set darkens the floor, each shadow within 4 px of its own thing (the set casts none: the run stands against the wall with its lit front to the room, the stool casts none); no floor pixel within 3 px of the stool (the thin thing on the floor) on its lit side differs from the floor without it (the stool is drawn after the room is baked: no ring of the engine's ambient occlusion round its legs); the run against the wall casts none (its lit front faces the room)",
+   "window: its opening (1196 px) shows the outside: 390 px of sky, 403 of the patio's yard wall, 0 of the hedge, 143 of the recess and the frame (the outside is the kit's backdrop, 1.92 behind the wall's face)",
+   "round 2: the window's recess (the wall's thickness, seen on its far side and its bottom) 260 px and its sill 342 px in the wide view (keep 40 each), the patio's yard wall and the sky behind; the hood's top, front and underside three tones (contrast 2.03, 2.39, 4.86), its back edge on the wall along its whole length (142 px, 0 not the hood), its duct up to the wall's cut edge; the shelf's two brackets 34 and 35 px",
+   "thin things of the set against what is behind them (WCAG contrast ratio of the mean luminances; each part's pixels): estante 3.69 (94% of its pixels at 2.0 or more); estante.mensula 7.46 (100% of its pixels at 2.0 or more); banco.patas 6.75 (100% of its pixels at 2.0 or more)",
+   "drawn: at 16908 moments (every tick inside the acts of the port's play of the 12 runs, every step's end, every pair picture) composed as estufa.js draws them (each item owns what it drew last; the stool drawn again over whoever stands behind it, the room over the window's people): no part of the set over any face; 139 things standing on a top (the pots and the pan, the cups, the tray, the plates, the jug, the board, the sack and the jar on the shelf), each with 90% and more of its foot over it and nothing of the set over it; 14225 moments of the frog on the stool, his feet on its top; 3211 step ends of someone standing in the view, each on clear floor at least .15 in front of the run; 1458 faces at the window, each seen no less than in the old picture (the face's own pixels not covered by the next person, the room or the old clip; the old: 83%, 95%, 100%; now each at least 0 points over the old); at 10206 columns of their heads the lowest row seen is the row just above the far edge of the recess's bottom (2.5 px: the kit's own reveal, the same surface, is plotted a pixel or two over it), cut there as whoever looks in from outside, and nothing of them shows outside the opening",
+   "seen: at 4295 person- and frog-moments (every step's end of the 12 runs) each seen no less than in the old picture less 10%, the face no less (0 less); everyone and everything wholly inside the view in the old picture of a moment wholly inside with 3 px to spare (0 not)",
+   "bubbles: 1850 bubbles (each person's recorded one and \"amor\" when touched, the frog's) at every moment: wholly inside the view (1 px from its edge at the least), clear of the rounds card, on no face",
+   "asks: 44 distinct asks (for abuela, abuelo, di_arroz, di_hab, di_huevo, di_pollo, espera, jarra, luis, mama, olla0, olla1, papa, pzhuevo, pzpollo, saca, saco, salhuevo, salpollo, tazon): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the room by its hint box), no frame's rings across a face where the old frame's were not (as the old: cuidado beats.27 (abuelo) luis's face; cuidado beats.27 (abuelo) mama's face; cuidado beats.28 (mama) abuelo's face; cuidado beats.58 (papa) mama's face; el-pollo-y-el-huevo beats.27 (pzhuevo) the frog's face), the hint hand on no face and not cut by the view's edge where the old was not (as the old: arroz-con-habichuelas beats.22 (olla1): on luis's face; cuidado beats.11 (olla1): on luis's face; h-estufa beats.11 (olla1): on abuela's face); 28 answer cards, each with its lit frame and glow 4 px and more inside the view (4 at the least), 2 px clear of the rounds card and of everyone's head and body, over no pot, pan or thing; the hint round each card 2 px inside the view and across no head, its hand on no face; 37 times a thing asked for or among the choices: whole in the view, covered no more than in the old picture (saco (arroz-con-habichuelas right beats.13, as the old: tazon); saco (arroz-con-habichuelas right beats.41, as the old: tazon); jarra (cuidado right beats.14, as the old: tazas); saco (h-estufa right beats.3, as the old: tazon); saco (h-estufa right beats.4, as the old: tazon); saco (h-estufa right beats.6, as the old: tazon)), a plain surface round it",
+   "heads: at 4319 face-moments (step ends) nobody's head against the window, the hood or the shelf where the old picture kept it clear",
+   "steam and smoke: 447 distinct puffs (every frame of their rise) against what is directly behind them, the contrast ratio of the mean luminances 2.13 at the least (smoke over the pan (el-pollo-y-el-huevo right t 14290))",
+   "preview: at every step's end of the 12 recorded runs (4706 places) estufa-preview.html puts everyone exactly where the sheet's rule does (0 differ); the rule puts each of the 4515 places at rest where the port's play has them (0 differ)",
+   "pairs: 24 review pictures (the 17 level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet, as the old close pictures; in a zoom 1 picture of people, a pot or the pan behind them may be cut by its edge), no zoom 2 picture with a cut-off piece of the set; what differs: arroz: fuegos; habichuelas: gente; olla: gente; hace: gente, cosas; pollo: plata; huevo: gente, fuegos, the window; sal: vuelos; huele: olor, gente, fuegos; caliente: cosas; frio: fuegos, cosas, the window; cuidado: gente, the window; ya: gente; the pixels that differ between yes and no (keep 1.5%): arroz 2.55%, habichuelas 1.61%, olla 12.09%, hace 5.16%, pollo 8.42%, huevo 8.32%, sal 3.22%, huele 2.21%, caliente 3.06%, frio 15.23%, cuidado 12.08%, ya 18.05%; 7 people in zoom 2 pictures, each with the whole head inside with 2 px to spare",
+   "states: 2 baked states reached (every moment, pair and level picture); each first bake in a fresh page under 150 ms (the median of five)"
+  ],
+  "walked": ["banco-olla1"],
+  "asks": [
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "saco"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.14",
+    "before": "beats.13",
+    "spot": "tazon"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.17",
+    "before": "beats.16",
+    "spot": "di_arroz"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.19",
+    "before": "beats.18",
+    "spot": "di_hab"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.22",
+    "before": "beats.21",
+    "spot": "olla1"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.23",
+    "before": "beats.22",
+    "spot": "olla0"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.41",
+    "before": "beats.40",
+    "spot": "tazon"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.51",
+    "before": "beats.50",
+    "spot": "di_hab"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "right",
+    "path": "beats.60",
+    "before": "beats.59",
+    "spot": "olla0"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "saco"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.14",
+    "before": "beats.13",
+    "spot": "tazon"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.17",
+    "before": "beats.16",
+    "spot": "di_arroz"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.19",
+    "before": "beats.18",
+    "spot": "di_hab"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.22",
+    "before": "beats.21",
+    "spot": "olla1"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.23",
+    "before": "beats.22",
+    "spot": "olla0"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.41",
+    "before": "beats.40",
+    "spot": "tazon"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.51",
+    "before": "beats.50",
+    "spot": "di_arroz"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "wrong",
+    "path": "beats.60",
+    "before": "beats.59",
+    "spot": "olla0"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "saco"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.14",
+    "before": "beats.13",
+    "spot": "tazon"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.17",
+    "before": "beats.16",
+    "spot": "di_arroz"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.19",
+    "before": "beats.18",
+    "spot": "di_hab"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.22",
+    "before": "beats.21",
+    "spot": "olla1"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.23",
+    "before": "beats.22",
+    "spot": "olla0"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.41",
+    "before": "beats.40",
+    "spot": "tazon"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.51",
+    "before": "beats.50",
+    "spot": "di_hab"
+   },
+   {
+    "story": "arroz-con-habichuelas",
+    "plan": "alternate",
+    "path": "beats.60",
+    "before": "beats.59",
+    "spot": "olla0"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.11",
+    "before": "beats.10",
+    "spot": "olla1"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.14",
+    "before": "beats.13",
+    "spot": "jarra"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.18",
+    "before": "beats.17",
+    "spot": "espera"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.20",
+    "before": "beats.19",
+    "spot": "saca"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.27",
+    "before": "beats.26",
+    "spot": "abuelo"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.28",
+    "before": "beats.27",
+    "spot": "mama"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.40",
+    "before": "beats.39",
+    "spot": "saca"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.47",
+    "before": "beats.46",
+    "spot": "jarra"
+   },
+   {
+    "story": "cuidado",
+    "plan": "right",
+    "path": "beats.58",
+    "before": "beats.57",
+    "spot": "papa"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.11",
+    "before": "beats.10",
+    "spot": "olla1"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.14",
+    "before": "beats.13",
+    "spot": "jarra"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.18",
+    "before": "beats.17",
+    "spot": "espera"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.20",
+    "before": "beats.19",
+    "spot": "saca"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.27",
+    "before": "beats.26",
+    "spot": "abuelo"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.28",
+    "before": "beats.27",
+    "spot": "mama"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.40",
+    "before": "beats.39",
+    "spot": "saca"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.47",
+    "before": "beats.46",
+    "spot": "jarra"
+   },
+   {
+    "story": "cuidado",
+    "plan": "wrong",
+    "path": "beats.58",
+    "before": "beats.57",
+    "spot": "papa"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.11",
+    "before": "beats.10",
+    "spot": "olla1"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.14",
+    "before": "beats.13",
+    "spot": "jarra"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.18",
+    "before": "beats.17",
+    "spot": "espera"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.20",
+    "before": "beats.19",
+    "spot": "saca"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.27",
+    "before": "beats.26",
+    "spot": "abuelo"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.28",
+    "before": "beats.27",
+    "spot": "mama"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.40",
+    "before": "beats.39",
+    "spot": "saca"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.47",
+    "before": "beats.46",
+    "spot": "jarra"
+   },
+   {
+    "story": "cuidado",
+    "plan": "alternate",
+    "path": "beats.58",
+    "before": "beats.57",
+    "spot": "papa"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.12",
+    "before": "beats.11",
+    "spot": "salpollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "salhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.20",
+    "before": "beats.19",
+    "spot": "di_pollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.23",
+    "before": "beats.22",
+    "spot": "di_huevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.26",
+    "before": "beats.25",
+    "spot": "pzpollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.27",
+    "before": "beats.26",
+    "spot": "pzhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.43",
+    "before": "beats.42",
+    "spot": "di_huevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.51",
+    "before": "beats.50",
+    "spot": "salhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "right",
+    "path": "beats.59",
+    "before": "beats.58",
+    "spot": "pzpollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.12",
+    "before": "beats.11",
+    "spot": "salpollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "salhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.20",
+    "before": "beats.19",
+    "spot": "di_pollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.23",
+    "before": "beats.22",
+    "spot": "di_huevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.26",
+    "before": "beats.25",
+    "spot": "pzpollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.27",
+    "before": "beats.26",
+    "spot": "pzhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.43",
+    "before": "beats.42",
+    "spot": "di_huevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.51",
+    "before": "beats.50",
+    "spot": "salhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "wrong",
+    "path": "beats.59",
+    "before": "beats.58",
+    "spot": "pzpollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.12",
+    "before": "beats.11",
+    "spot": "salpollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "salhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.20",
+    "before": "beats.19",
+    "spot": "di_pollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.23",
+    "before": "beats.22",
+    "spot": "di_huevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.26",
+    "before": "beats.25",
+    "spot": "pzpollo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.27",
+    "before": "beats.26",
+    "spot": "pzhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.43",
+    "before": "beats.42",
+    "spot": "di_huevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.51",
+    "before": "beats.50",
+    "spot": "salhuevo"
+   },
+   {
+    "story": "el-pollo-y-el-huevo",
+    "plan": "alternate",
+    "path": "beats.59",
+    "before": "beats.58",
+    "spot": "pzpollo"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "right",
+    "path": "beats.3",
+    "before": "beats.2",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "right",
+    "path": "beats.4",
+    "before": "beats.3",
+    "spot": "tazon"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "right",
+    "path": "beats.6",
+    "before": "beats.5",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "right",
+    "path": "beats.7",
+    "before": "beats.6",
+    "spot": "tazon"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "right",
+    "path": "beats.8",
+    "before": "beats.7",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "right",
+    "path": "beats.11",
+    "before": "beats.10",
+    "spot": "olla1"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "right",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "abuela"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "right",
+    "path": "beats.15",
+    "before": "beats.14",
+    "spot": "luis"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "wrong",
+    "path": "beats.3",
+    "before": "beats.2",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "wrong",
+    "path": "beats.4",
+    "before": "beats.3",
+    "spot": "tazon"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "wrong",
+    "path": "beats.6",
+    "before": "beats.5",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "wrong",
+    "path": "beats.7",
+    "before": "beats.6",
+    "spot": "tazon"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "wrong",
+    "path": "beats.8",
+    "before": "beats.7",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "wrong",
+    "path": "beats.11",
+    "before": "beats.10",
+    "spot": "olla1"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "wrong",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "abuela"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "wrong",
+    "path": "beats.15",
+    "before": "beats.14",
+    "spot": "luis"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "alternate",
+    "path": "beats.3",
+    "before": "beats.2",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "alternate",
+    "path": "beats.4",
+    "before": "beats.3",
+    "spot": "tazon"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "alternate",
+    "path": "beats.6",
+    "before": "beats.5",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "alternate",
+    "path": "beats.7",
+    "before": "beats.6",
+    "spot": "tazon"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "alternate",
+    "path": "beats.8",
+    "before": "beats.7",
+    "spot": "saco"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "alternate",
+    "path": "beats.11",
+    "before": "beats.10",
+    "spot": "olla1"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "alternate",
+    "path": "beats.13",
+    "before": "beats.12",
+    "spot": "abuela"
+   },
+   {
+    "story": "h-estufa",
+    "plan": "alternate",
+    "path": "beats.15",
+    "before": "beats.14",
+    "spot": "luis"
+   }
+  ]
+ }
+}
+''',
 };

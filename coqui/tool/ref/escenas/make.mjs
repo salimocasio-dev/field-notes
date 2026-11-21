@@ -1,10 +1,13 @@
-// ref/escenas: for each of the eleven old scenes, what it holds and where, and frames of every state it reaches. See README.md in
+// ref/escenas: for each of the twelve old scenes, what it holds and where, and frames of every state it reaches. See README.md in
 // coqui/ref/escenas/. The old site is only read and run: nothing under historia/ changes.
 //
 //   node coqui/tool/ref/escenas/make.mjs                    plays every story (order 05's juega.mjs --states, into a temp folder), then writes coqui/ref/escenas/
 //   node coqui/tool/ref/escenas/make.mjs --work DIR         reuse DIR/trazas and DIR/states from an earlier run (juega.mjs --out DIR/trazas --states DIR/states)
 //   node coqui/tool/ref/escenas/make.mjs --only balcon      one scene (into the repo folder of that scene only)
 //   node coqui/tool/ref/escenas/make.mjs --out DIR          write into DIR instead of coqui/ref/escenas
+//   node coqui/tool/ref/escenas/make.mjs --without A,B --out DIR   as if the story and review files A, B were not in historia/cuentos/: their runs, their
+//                                                           pairs and the level items that ask their words are left out, and so is a scene left with no
+//                                                           story (for proving that what a new file adds is all that changes; never into the repo)
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -27,6 +30,8 @@ const HIST = path.join(ROOT, "historia");
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : d; };
 const OUT = path.resolve(arg("--out", path.join(ROOT, "coqui/ref/escenas")));
 const ONLY = arg("--only", null);
+const WITHOUT = (arg("--without", "") || "").split(",").filter(Boolean);
+if (WITHOUT.length && !process.argv.includes("--out")) throw new Error("--without writes a partial picture of the site: it needs --out DIR");
 const PLANS = ["right", "wrong", "alternate"];
 const TICK = 70, F_PAIR = 8;   // F for a review or level picture: a fixed frame (the frog's eyes open, the even half of every two-frame pose)
 const sha = b => crypto.createHash("sha256").update(b).digest("hex");
@@ -51,7 +56,8 @@ function runs() {
 }
 
 // ---------- 2. the files: stories, review pairs ----------
-const FILES = fs.readdirSync(path.join(HIST, "cuentos")).filter(f => f.endsWith(".json")).sort().map(f => ({ id: f.slice(0, -5), j: JSON.parse(fs.readFileSync(path.join(HIST, "cuentos", f), "utf8")) }));
+const FILES = fs.readdirSync(path.join(HIST, "cuentos")).filter(f => f.endsWith(".json") && !WITHOUT.includes(f.slice(0, -5))).sort().map(f => ({ id: f.slice(0, -5), j: JSON.parse(fs.readFileSync(path.join(HIST, "cuentos", f), "utf8")) }));
+const cualOf = w => FILES.find(f => f.j.tipo === "cual" && (f.j.items || []).some(x => x.w === w));
 const storiesOf = id => FILES.filter(f => f.j.scene === id && f.j.tipo !== "cual").map(f => f.id);
 const SRC = Object.fromEntries([...SCENES, "kit"].map(id => [id, fs.readFileSync(path.join(HIST, "escenas", id + ".js"), "utf8")]));
 const SRCL = Object.fromEntries(Object.entries(SRC).map(([k, v]) => [k, v.split("\n")]));
@@ -93,17 +99,20 @@ function keepPix(p) { if (p && p.b64 && !PIX.has(p.sha)) PIX.set(p.sha, { w: p.w
 // ---------- 4. review pairs and level-check pictures, on cual.html and nivel.html as they are ----------
 async function pairsAndLevel(browser, base) {
   const P = await open(browser, base, "/historia/cual.html", "typeof CU!=='undefined'&&!!CU&&!!CU.items&&CU.items.length>0");
-  const items = await P.page.evaluate("__E6.pairs()");
+  const items = (await P.page.evaluate("__E6.pairs()")).filter(it => cualOf(it.w));   // (--without: the pairs of a file left out are dropped)
   for (const it of items) {
-    it.file = FILES.find(f => f.j.tipo === "cual" && (f.j.items || []).some(x => x.w === it.w)).id;
+    it.file = cualOf(it.w).id;
     for (const k of ["si", "no"]) { const r = await P.page.evaluate(([w, k]) => __E6.pairW(w, k), [it.w, k]); it[k].scene = r.scene; it[k].W = r.W; it[k].png = keepPix(await P.page.evaluate(([w, k, f]) => __E6.pairPic(w, k, f), [it.w, k, F_PAIR])); }
   }
   const sayText = Object.fromEntries(FILES.filter(f => f.j.tipo === "cual").flatMap(f => Object.entries(f.j.clips || {}).map(([k, v]) => [k, v.text])));
   if (P.errors.length) throw new Error("cual.html: " + P.errors.join("; "));
   await P.ctx.close();
   const N = await open(browser, base, "/historia/nivel.html", "typeof CU!=='undefined'&&!!CU&&!!CU.items&&CU.items.length>0&&typeof NV!=='undefined'");
-  const nv = await N.page.evaluate("__E6.nivel()");
-  for (let i = 0; i < nv.length; i++) for (let j = 0; j < nv[i].p.length; j++) { const r = await N.page.evaluate(([i, j, f]) => __E6.nivelPic(i, j, f), [i, j, F_PAIR]); nv[i].p[j] = { pair: nv[i].p[j][0], side: nv[i].p[j][1], x: nv[i].p[j][2] == null ? null : nv[i].p[j][2], crop: r.crop, scene: r.scene, png: keepPix(r.pic) }; }
+  const nv0 = await N.page.evaluate("__E6.nivel()");
+  for (let i = 0; i < nv0.length; i++) nv0[i].at = i;   // its place in the page's NV
+  const nv = nv0.filter(q => q.p.every(p => cualOf(p[0])));   // (--without: an item with a picture of a file left out is dropped)
+  for (const q of nv) for (let j = 0; j < q.p.length; j++) { const r = await N.page.evaluate(([i, j, f]) => __E6.nivelPic(i, j, f), [q.at, j, F_PAIR]); q.p[j] = { pair: q.p[j][0], side: q.p[j][1], x: q.p[j][2] == null ? null : q.p[j][2], crop: r.crop, scene: r.scene, png: keepPix(r.pic) }; }
+  for (const q of nv) delete q.at;
   if (N.errors.length) throw new Error("nivel.html: " + N.errors.join("; "));
   await N.ctx.close();
   const nivelJson = JSON.parse(fs.readFileSync(path.join(HIST, "datos/nivel.json"), "utf8"));
@@ -440,6 +449,12 @@ const NOTES = {
   mesa: ["W.afuera swaps the whole background for mkPuesto (mesa.js:156) and drops the table (mesa.js:171); set only by cual-mesa (order 05: no story reaches it).", "Things in the air, the pouring jug and what is held up (mesa.js:182-184) are drawn after the sorted list: over everyone."],
   estufa: ["People seen through the window are clipped to it (estufa.js:134) and drawn before the counters."],
   nevera: ["The yard in the window (patio(), nevera.js:105) is clipped to the window: the cart, the birds on the wall and people outside.", "The fridge is drawn by nevera() (nevera.js:115) every frame, after the background: open, half shut or shut (W.nev.abierta)."],
+  comer: ["One background (fondo, comer.js:31) for every state; the table (mkMesa, comer.js:58) is not part of it: it is an item of the sorted list at y TZ 173 (comer.js:552).",
+    "Each person is two items of the sorted list (comer.js:551): the body without the holding arms (cuerpo) and the arms, hands and what they hold (objetos). Their depths come from capa() (comer.js:546-547): somebody seated or at a corner (est) has his body at his feet and his hands over the table (TZ+.9); somebody standing behind the table (detrasMesa) is drawn behind everyone, body and hands, at 40+y/100; anyone else by his feet.",
+    "Things on the table (W.cosas inside the table top, enMesa) are drawn at TZ+y/1000, just after the table; a thing elsewhere at its y+1; a thing with z at z (comer.js:553). The frog is over the table (TZ+(y+27)/1000) unless W.cq.sobre===0 (comer.js:558).",
+    "Things in the air (W.vuelos) and pouring streams (chorro) are drawn after the sorted list: over everyone (comer.js:560). The thought clouds, a person's and then the frog's, are drawn last (comer.js:567-568).",
+    "With ?txt=no every speaker gets an empty speech bubble (hab, comer.js:561-566); the recorded runs do not use txt=no, so no frame here has one.",
+    "**An old-site fault in the review and level pictures (kept here as the old site draws them):** the table is asked of the sprite cache as spr(\"mesa\",mkMesa) (comer.js:552), the same key as El balcón's round table (balcon.js:136). On cual.html and nivel.html every scene is loaded and El balcón draws first, so A comer's pairs/*.png (review and level pictures) show El balcón's round wooden table at the place of A comer's long checkered one. The story page loads one scene, so the frames/ of the states (drawn there) show the right table; the states that a review picture reaches are drawn there too, with the right table. The set is A comer's long table: do not copy the round one from the pair pictures."],
 };
 
 async function main() {
@@ -450,13 +465,13 @@ async function main() {
   const PL = await pairsAndLevel(browser, base);
   console.log(`  ${PL.items.length} pairs, ${PL.nv.length} level items; datos/nivel.json ${PL.nivelJsonSame ? "is" : "is NOT"} the same as nivel.js NV`);
   const done = [];
-  for (const id of ONLY ? [ONLY] : SCENES) { console.log(`scene ${id} ...`); done.push(await scene(browser, base, id, PL, work)); }
+  for (const id of (ONLY ? [ONLY] : SCENES).filter(id => storiesOf(id).length)) { console.log(`scene ${id} ...`); done.push(await scene(browser, base, id, PL, work)); }
   await browser.close(); srv.close();
   if (work.temp) fs.rmSync(work.temp, { recursive: true, force: true });
   if (!ONLY) {
     const sum = done.map(d => { const p = JSON.parse(fs.readFileSync(path.join(OUT, d.id, "positions.json"), "utf8")); return { ...d, positions: p.count }; });
     writeJSON(path.join(OUT, "summary.json"), { made: "node coqui/tool/ref/escenas/make.mjs", nivelJsonSameAsNV: PL.nivelJsonSame, scenes: sum });
-    fs.writeFileSync(path.join(OUT, "README.md"), readme(sum, PL));
+    fs.writeFileSync(path.join(OUT, "README.md"), readme(sum, PL, done.reduce((n, d) => n + storiesOf(d.id).length, 0)));
   }
   console.log("done:", done.map(d => `${d.id} ${d.things} things, ${d.states} states, ${d.views} views, ${d.pairs} pairs, ${d.frames} frames`).join("; "));
 }

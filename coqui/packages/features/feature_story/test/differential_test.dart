@@ -1,7 +1,7 @@
-// The runner against the old page's recorded runs (coqui/ref/trazas/, 51 files, three plans each).
+// The runner against the old page's recorded runs (coqui/ref/trazas/, 57 files, three plans each).
 //
 // - On a stand-in scene that replays what the old scene did (tool/replay_scene.dart, from test/fixtures/acts/): every one of
-//   the 153 runs, the whole trace equal: decisions, marks, lost, ending, the story result, the order of clips, the steps,
+//   the 171 runs, the whole trace equal: decisions, marks, lost, ending, the story result, the order of clips, the steps,
 //   choices and touches, the number of random draws, the memory, and every time (`t`, virtualMs, the minutes). Only the
 //   touches' places on the old screen (x, y) are left out.
 // - On the real El frente: the traces of every file that plays on it, all three plans, once its scene is in the registry.
@@ -12,6 +12,8 @@
 //   everyone leaves in a file) is the new act's: its runs differ from the old there and after in time only.
 // - On the real El campo (order 34b): the same, for its five files.
 // - On the real El lago (order 35b): the same, for its five files.
+// - On the real El banco (order 36b): the same, for its six files.
+// - On the real La estufa (order 38b): the same, for its four files.
 import 'dart:convert';
 import 'dart:io';
 
@@ -76,6 +78,12 @@ final Map<String, String?> campoWhole = {}, campoTimeless = {};
 /// Each lago run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
 final Map<String, String?> lagoWhole = {}, lagoTimeless = {};
 
+/// Each banco run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> bancoWhole = {}, bancoTimeless = {};
+
+/// Each estufa run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> estufaWhole = {}, estufaTimeless = {};
+
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
 
@@ -122,11 +130,10 @@ void main() {
   // buttons), so the comparison above never saw them, with the old story file or the new one. Here they are read from the view
   // the run was played on, on the real tree: the real story files and the real course (datos/curso.json).
   //
-  // The one place where the app's end screen differs from the old page's: the old page shows "Next story" for any `next`;
-  // the app, only for a `next` the course names (a staged story is in no list: the shell opens no address for it). So
-  // jugo-de-china, whose file now says `next: que-quieres`, ends on the screen of a story with no `next`. Were these runs to
-  // hold the buttons, this is the one point where the app's trace would differ from the old page's (coqui/AGENTS.md,
-  // "Stories staged by another session").
+  // The one place where the app's end screen can differ from the old page's: the old page shows "Next story" for any
+  // `next`; the app, only for a `next` the course names (a staged story is in no list: the shell opens no address for it).
+  // Until the course named A comer's stories, jugo-de-china (`next: que-quieres`) ended so; now it leads on, as la-lluvia
+  // does (coqui/AGENTS.md, "Stories staged by another session").
   group('the end screen of the recorded runs: Next story where the course names the next story', () {
     const mapMain = StoryFoot(next: false, again: true, home: true, map: false);
     const nextWaits = StoryFoot(
@@ -153,16 +160,11 @@ void main() {
       expect(await footOf('la-lluvia'), nextWaits);
     });
 
-    test('(b) jugo-de-china: its next, que-quieres, is a staged story the course does not name: no Next story, Map is the main button', () async {
+    test('(b) jugo-de-china: its next, que-quieres, is a story of the course since A comer is in it: Next story, as for la-lluvia', () async {
       expect((await course.story('jugo-de-china'))['next'], 'que-quieres');
-      // when the course names que-quieres, this test is the one to change: Next story shows then, as for la-lluvia
-      expect(
-        course.meta('que-quieres'),
-        isNull,
-        reason: 'the course names que-quieres now',
-      );
+      expect(course.meta('que-quieres'), isNotNull);
       for (final plan in ['right', 'wrong', 'alternate']) {
-        expect(await footOf('jugo-de-china', plan), mapMain, reason: plan);
+        expect(await footOf('jugo-de-china', plan), nextWaits, reason: plan);
       }
     });
 
@@ -173,7 +175,7 @@ void main() {
       }
     });
 
-    test('every one of the 51 files: Next story exactly when its next is listed in a place of the course', () async {
+    test('every one of the 57 files: Next story exactly when its next is listed in a place of the course', () async {
       var withNext = 0, withoutNext = 0;
       final listed = {
         for (final p in course.places) ...[
@@ -188,9 +190,10 @@ void main() {
         named ? withNext++ : withoutNext++;
         expect(await footOf(s), named ? nextWaits : mapMain, reason: s);
       }
-      // 31 stories lead on to a story of the course; the other 20 have no next (19) or lead to a staged one (jugo-de-china)
-      expect(withNext, 31);
-      expect(withoutNext, 20);
+      // 34 stories lead on to a story of the course; the other 23 have no next (cafe-con-azucar's is none until El colmado is
+      // out; the picture stories and the routines have none)
+      expect(withNext, 34);
+      expect(withoutNext, 23);
     });
   });
 
@@ -772,6 +775,169 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in lagoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${lagoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real El banco (order 36b): the corner is built round the old picture, so its places keep their screen numbers
+  // but the ones the sheet moves (`moves`: the gate and every way out through it, the cart and its man, the sitters on
+  // the seats' edges and what lies on the seats, the pigeons' perches, the dogs, the frog's home, Carmen, the answer
+  // cards; `remap`: the story positions it moved, d-vamos-a-casa's ways out through the gate). All hop counts are the old
+  // ones (the sheet's `hops` is empty). The scene draws no random number. The state line writes where each person is
+  // (`gente=k@x,y`), which `placeless` leaves out.
+  group('the recorded runs, on the real El banco (order 36b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final banco = {
+      for (final r in runs)
+        if (r['scene'] == 'banco') r['story'] as String,
+    };
+    test('the six files of El banco', () {
+      expect(banco, {
+        'la-piragua',
+        'senor-senora',
+        'el-bebe-duerme',
+        'd-piragua-luis',
+        'd-vamos-a-casa',
+        'h-banco',
+      });
+    });
+    for (final s in banco) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('banco'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              placeless(forTimeless(c.committed)),
+              placeless(forTimeless(c.trace)),
+            );
+            bancoTimeless['$s $plan'] = timeless;
+
+            expect(
+              timeless,
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            // every walk of the frog takes its old hops (the sheet's round 4: the man of el-bebe-duerme 1 px left)
+            expect(hops(c.committed), hops(c.trace), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            bancoWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/banco-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in bancoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${bancoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real La estufa (order 38b): the kitchen is built round the old picture, so its places keep their screen numbers
+  // but the ones the sheet moves (`moves`: what stands on the run's tops, the pots at each burner's row, the family at the
+  // window, abuela and Carmen at the right counter, whoever comes in for a cup, Luis's place in cuidado, the answer
+  // cards). The hop counts are the old ones but saco-servir's (the sheet's `hops`), walked by no run. The scene draws no
+  // random number. The state line writes where each person is (`gente=k@x,y`), which `placeless` leaves out.
+  group('the recorded runs, on the real La estufa (order 38b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final estufa = {
+      for (final r in runs)
+        if (r['scene'] == 'estufa') r['story'] as String,
+    };
+    test('the four files of La estufa', () {
+      expect(estufa, {
+        'arroz-con-habichuelas',
+        'el-pollo-y-el-huevo',
+        'cuidado',
+        'h-estufa',
+      });
+    });
+    for (final s in estufa) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('estufa'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              placeless(forTimeless(c.committed)),
+              placeless(forTimeless(c.trace)),
+            );
+            estufaTimeless['$s $plan'] = timeless;
+            expect(
+              timeless,
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            expect(hops(c.committed), hops(c.trace), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            estufaWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/estufa-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in estufaWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${estufaTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
         );
     });
   });

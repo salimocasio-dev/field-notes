@@ -264,8 +264,14 @@ class ScenePictures implements PictureSource {
     int? height,
   ) async {
     final id = ref.scene;
+    // an id the registry does not hold is a scene only when the bundle holds its old pictures: a test's own scene, which
+    // is never converted (order 36b), or a scene the content names before its port (A comer, order 06)
     if (!sceneRegistry.containsKey(id)) {
-      throw PictureError('"$id" is not a scene');
+      try {
+        await _old.indexOf(id);
+      } on PictureError {
+        throw PictureError('"$id" is not a scene');
+      }
     }
     final n = name ?? ref.name;
     if (n == null) {

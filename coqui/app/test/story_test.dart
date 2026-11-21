@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:app/src/switches.dart';
+import 'package:coqui_scenes/coqui_scenes.dart' show convertedScenes;
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -129,5 +130,58 @@ void main() {
       expect(no, isNull);
     },
     timeout: const Timeout(Duration(minutes: 5)),
+  );
+
+  testWidgets(
+    '(q) A comer\'s three stories and La cocina\'s three routines are in the course; one whose scene is not converted '
+    'yet opens on "This story is not in the new app yet." and returns to the map; one whose scene is converted opens on '
+    'its start disc (the list of converted scenes decides, so no port has to change this test)',
+    (tester) async {
+      final curso = jsonDecode(
+        repoFile('historia/datos/curso.json'),
+      ) as Map<String, dynamic>;
+      final cocina = (curso['lugares'] as List).firstWhere(
+        (p) => (p as Map)['id'] == 'cocina',
+      ) as Map;
+      const stories = ['que-quieres', 'buen-provecho', 'cafe-con-azucar'];
+      const routines = ['h-mesa', 'h-estufa', 'h-nevera'];
+      expect(cocina['cuentos'] as List, containsAllInOrder(stories));
+      expect(cocina['haz'], routines);
+      for (final id in [...stories, ...routines]) {
+        final scene =
+            (jsonDecode(repoFile('historia/cuentos/$id.json')) as Map)['scene']
+                as String;
+        final app = TestApp(tester);
+        await app.open(stored: seed('curso'), location: '/cuento/$id');
+        if (convertedScenes.contains(scene)) {
+          await app.until(
+            () => find.byType(LessonStartButton).evaluate().isNotEmpty,
+            what:
+                '$id: the story\'s start disc (its scene $scene is converted)',
+          );
+          expect(
+            find.text('This story is not in the new app yet.'),
+            findsNothing,
+            reason: id,
+          );
+          expect(tester.takeException(), isNull, reason: id);
+        } else {
+          await app.until(
+            () => find
+                .text('This story is not in the new app yet.')
+                .evaluate()
+                .isNotEmpty,
+            what:
+                '$id: the not-converted screen (its scene $scene is not converted)',
+          );
+          expect(tester.takeException(), isNull, reason: id);
+          await app.tap(find.text('Back to the map'));
+          await app.settle(rounds: 5);
+          expect(app.selectedTab, 'map', reason: id);
+        }
+        await tester.pumpWidget(const SizedBox());
+      }
+    },
+    timeout: const Timeout(Duration(minutes: 10)),
   );
 }

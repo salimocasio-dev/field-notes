@@ -86,7 +86,7 @@
     "t_pan": null,
     "t_fruta": null
    },
-   "drawnFrom": "jugo-de-china/right@start",
+   "drawnFrom": "h-nevera/right@start",
    "cam": [
     22,
     0,
@@ -97,6 +97,9 @@
    "distinctW": 1,
    "reachedBy": {
     "steps": {
+     "h-nevera/right": "start",
+     "h-nevera/wrong": "start",
+     "h-nevera/alternate": "start",
      "jugo-de-china/right": "start",
      "jugo-de-china/wrong": "start",
      "jugo-de-china/alternate": "start",
@@ -248,7 +251,7 @@
     "t_pan": null,
     "t_fruta": null
    },
-   "drawnFrom": "jugo-de-china/right@0",
+   "drawnFrom": "h-nevera/right@0",
    "cam": [
     22,
     0,
@@ -256,9 +259,12 @@
     216
    ],
    "F": 2,
-   "distinctW": 101,
+   "distinctW": 129,
    "reachedBy": {
     "steps": {
+     "h-nevera/right": "0-26",
+     "h-nevera/wrong": "0-26",
+     "h-nevera/alternate": "0-26",
      "jugo-de-china/right": "0-15,18,21-23,26-28,31,33-38,40-46,48-53,55-61,63-127",
      "jugo-de-china/wrong": "0-15,18,21-23,26-28,31,33-38,40-46,48-53,55-61,63-96,99-112,115-125,127",
      "jugo-de-china/alternate": "0-15,18,21-23,26-28,31,33-38,40-46,48-53,55-61,63-107,110-132"
@@ -273,6 +279,443 @@
     "full.wide": "s002.full.wide.png",
     "nochar": "s002.nochar.png",
     "nochar.wide": "s002.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "a",
+    "repisa": [
+     {
+      "k": "vista",
+      "v": "rojo:1",
+      "x": 170,
+      "dy": -12
+     },
+     {
+      "k": "vista",
+      "v": "azul:0",
+      "x": 206,
+      "dy": -12
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": [
+     173,
+     103,
+     18,
+     23
+    ],
+    "v_amarillo": [
+     185,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": [
+     161,
+     103,
+     18,
+     23
+    ],
+    "v_azul": [
+     197,
+     103,
+     18,
+     23
+    ],
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "h-nevera/right@27",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 92,
+   "distinctW": 10,
+   "reachedBy": {
+    "steps": {
+     "h-nevera/right": "27-31,33",
+     "h-nevera/wrong": "27-31,33",
+     "h-nevera/alternate": "27-31,33"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "a",
+    "repisa": [
+     {
+      "k": "vista",
+      "v": "rojo:1",
+      "x": 170,
+      "dy": -12
+     },
+     {
+      "k": "vista",
+      "v": "azul:1",
+      "x": 206,
+      "dy": -12
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": [
+     173,
+     103,
+     18,
+     23
+    ],
+    "v_amarillo": [
+     185,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": [
+     161,
+     103,
+     18,
+     23
+    ],
+    "v_azul": [
+     197,
+     103,
+     18,
+     23
+    ],
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "h-nevera/right@34",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 173,
+   "distinctW": 11,
+   "reachedBy": {
+    "steps": {
+     "h-nevera/right": "32,34-37,40-51",
+     "h-nevera/wrong": "32,34-37,40-51",
+     "h-nevera/alternate": "32,34-37,40-51"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": []
+    },
+    "patio": {},
+    "pila": "a",
+    "repisa": [
+     {
+      "k": "vista",
+      "v": "rojo:1",
+      "x": 170,
+      "dy": -12
+     },
+     {
+      "k": "vista",
+      "v": "azul:1",
+      "x": 206,
+      "dy": -12
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": [
+     173,
+     103,
+     18,
+     23
+    ],
+    "v_amarillo": [
+     185,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": [
+     161,
+     103,
+     18,
+     23
+    ],
+    "v_azul": [
+     197,
+     103,
+     18,
+     23
+    ],
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "h-nevera/right@38",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 183,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "h-nevera/right": "38-39",
+     "h-nevera/wrong": "38-39",
+     "h-nevera/alternate": "38-39"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -425,12 +868,12 @@
    }
   },
   {
-   "id": "s003",
+   "id": "s006",
    "files": {
-    "full": "s003.full.png",
-    "full.wide": "s003.full.wide.png",
-    "nochar": "s003.nochar.png",
-    "nochar.wide": "s003.nochar.wide.png",
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -583,12 +1026,12 @@
    }
   },
   {
-   "id": "s004",
+   "id": "s007",
    "files": {
-    "full": "s004.full.png",
-    "full.wide": "s004.full.wide.png",
-    "nochar": "s004.nochar.png",
-    "nochar.wide": "s004.nochar.wide.png",
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -741,12 +1184,12 @@
    }
   },
   {
-   "id": "s005",
+   "id": "s008",
    "files": {
-    "full": "s005.full.png",
-    "full.wide": "s005.full.wide.png",
-    "nochar": "s005.nochar.png",
-    "nochar.wide": "s005.nochar.wide.png",
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "nochar": "s008.nochar.png",
+    "nochar.wide": "s008.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -873,12 +1316,12 @@
    }
   },
   {
-   "id": "s006",
+   "id": "s009",
    "files": {
-    "full": "s006.full.png",
-    "full.wide": "s006.full.wide.png",
-    "nochar": "s006.nochar.png",
-    "nochar.wide": "s006.nochar.wide.png",
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "nochar": "s009.nochar.png",
+    "nochar.wide": "s009.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -997,12 +1440,12 @@
    }
   },
   {
-   "id": "s007",
+   "id": "s010",
    "files": {
-    "full": "s007.full.png",
-    "full.wide": "s007.full.wide.png",
-    "nochar": "s007.nochar.png",
-    "nochar.wide": "s007.nochar.wide.png",
+    "full": "s010.full.png",
+    "full.wide": "s010.full.wide.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s010.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -1123,12 +1566,12 @@
    }
   },
   {
-   "id": "s008",
+   "id": "s011",
    "files": {
-    "full": "s008.full.png",
-    "full.wide": "s008.full.wide.png",
-    "nochar": "s008.nochar.png",
-    "nochar.wide": "s008.nochar.wide.png",
+    "full": "s011.full.png",
+    "full.wide": "s011.full.wide.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s011.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -1271,12 +1714,12 @@
    }
   },
   {
-   "id": "s009",
+   "id": "s012",
    "files": {
-    "full": "s009.full.png",
-    "full.wide": "s009.full.wide.png",
-    "nochar": "s009.nochar.png",
-    "nochar.wide": "s009.nochar.wide.png",
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -1411,12 +1854,12 @@
    }
   },
   {
-   "id": "s010",
+   "id": "s013",
    "files": {
-    "full": "s010.full.png",
-    "full.wide": "s010.full.wide.png",
-    "nochar": "s010.nochar.png",
-    "nochar.wide": "s010.nochar.wide.png",
+    "full": "s013.full.png",
+    "full.wide": "s013.full.wide.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s013.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -1551,12 +1994,12 @@
    }
   },
   {
-   "id": "s011",
+   "id": "s014",
    "files": {
-    "full": "s011.full.png",
-    "full.wide": "s011.full.wide.png",
-    "nochar": "s011.nochar.png",
-    "nochar.wide": "s011.nochar.wide.png",
+    "full": "s014.full.png",
+    "full.wide": "s014.full.wide.png",
+    "nochar": "s014.nochar.png",
+    "nochar.wide": "s014.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -1691,12 +2134,12 @@
    }
   },
   {
-   "id": "s012",
+   "id": "s015",
    "files": {
-    "full": "s012.full.png",
-    "full.wide": "s012.full.wide.png",
-    "nochar": "s012.nochar.png",
-    "nochar.wide": "s012.nochar.wide.png",
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "nochar": "s015.nochar.png",
+    "nochar.wide": "s015.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -1834,12 +2277,12 @@
    }
   },
   {
-   "id": "s013",
+   "id": "s016",
    "files": {
-    "full": "s013.full.png",
-    "full.wide": "s013.full.wide.png",
-    "nochar": "s013.nochar.png",
-    "nochar.wide": "s013.nochar.wide.png",
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "nochar": "s016.nochar.png",
+    "nochar.wide": "s016.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -1974,12 +2417,12 @@
    }
   },
   {
-   "id": "s014",
+   "id": "s017",
    "files": {
-    "full": "s014.full.png",
-    "full.wide": "s014.full.wide.png",
-    "nochar": "s014.nochar.png",
-    "nochar.wide": "s014.nochar.wide.png",
+    "full": "s017.full.png",
+    "full.wide": "s017.full.wide.png",
+    "nochar": "s017.nochar.png",
+    "nochar.wide": "s017.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -2114,12 +2557,12 @@
    }
   },
   {
-   "id": "s015",
+   "id": "s018",
    "files": {
-    "full": "s015.full.png",
-    "full.wide": "s015.full.wide.png",
-    "nochar": "s015.nochar.png",
-    "nochar.wide": "s015.nochar.wide.png",
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "nochar": "s018.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -2249,12 +2692,12 @@
    }
   },
   {
-   "id": "s016",
+   "id": "s019",
    "files": {
-    "full": "s016.full.png",
-    "full.wide": "s016.full.wide.png",
-    "nochar": "s016.nochar.png",
-    "nochar.wide": "s016.nochar.wide.png",
+    "full": "s019.full.png",
+    "full.wide": "s019.full.wide.png",
+    "nochar": "s019.nochar.png",
+    "nochar.wide": "s019.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -2379,12 +2822,12 @@
    }
   },
   {
-   "id": "s017",
+   "id": "s020",
    "files": {
-    "full": "s017.full.png",
-    "full.wide": "s017.full.wide.png",
-    "nochar": "s017.nochar.png",
-    "nochar.wide": "s017.nochar.wide.png",
+    "full": "s020.full.png",
+    "full.wide": "s020.full.wide.png",
+    "nochar": "s020.nochar.png",
+    "nochar.wide": "s020.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -2507,12 +2950,12 @@
    }
   },
   {
-   "id": "s018",
+   "id": "s021",
    "files": {
-    "full": "s018.full.png",
-    "full.wide": "s018.full.wide.png",
-    "nochar": "s017.nochar.png",
-    "nochar.wide": "s017.nochar.wide.png",
+    "full": "s021.full.png",
+    "full.wide": "s021.full.wide.png",
+    "nochar": "s020.nochar.png",
+    "nochar.wide": "s020.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -2637,12 +3080,12 @@
    }
   },
   {
-   "id": "s019",
+   "id": "s022",
    "files": {
-    "full": "s015.full.png",
-    "full.wide": "s015.full.wide.png",
-    "nochar": "s015.nochar.png",
-    "nochar.wide": "s015.nochar.wide.png",
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "nochar": "s018.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -2772,12 +3215,12 @@
    }
   },
   {
-   "id": "s020",
+   "id": "s023",
    "files": {
-    "full": "s016.full.png",
-    "full.wide": "s016.full.wide.png",
-    "nochar": "s016.nochar.png",
-    "nochar.wide": "s016.nochar.wide.png",
+    "full": "s019.full.png",
+    "full.wide": "s019.full.wide.png",
+    "nochar": "s019.nochar.png",
+    "nochar.wide": "s019.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -2902,12 +3345,12 @@
    }
   },
   {
-   "id": "s021",
+   "id": "s024",
    "files": {
-    "full": "s018.full.png",
-    "full.wide": "s018.full.wide.png",
-    "nochar": "s017.nochar.png",
-    "nochar.wide": "s017.nochar.wide.png",
+    "full": "s021.full.png",
+    "full.wide": "s021.full.wide.png",
+    "nochar": "s020.nochar.png",
+    "nochar.wide": "s020.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -3032,12 +3475,12 @@
    }
   },
   {
-   "id": "s022",
+   "id": "s025",
    "files": {
-    "full": "s022.full.png",
-    "full.wide": "s022.full.wide.png",
-    "nochar": "s022.nochar.png",
-    "nochar.wide": "s022.nochar.wide.png",
+    "full": "s025.full.png",
+    "full.wide": "s025.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s025.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -3168,12 +3611,12 @@
    }
   },
   {
-   "id": "s023",
+   "id": "s026",
    "files": {
-    "full": "s022.full.png",
-    "full.wide": "s023.full.wide.png",
-    "nochar": "s022.nochar.png",
-    "nochar.wide": "s023.nochar.wide.png",
+    "full": "s025.full.png",
+    "full.wide": "s026.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s026.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -3301,12 +3744,12 @@
    }
   },
   {
-   "id": "s024",
+   "id": "s027",
    "files": {
-    "full": "s024.full.png",
-    "full.wide": "s024.full.wide.png",
-    "nochar": "s024.nochar.png",
-    "nochar.wide": "s024.nochar.wide.png",
+    "full": "s027.full.png",
+    "full.wide": "s027.full.wide.png",
+    "nochar": "s027.nochar.png",
+    "nochar.wide": "s027.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -3444,12 +3887,12 @@
    }
   },
   {
-   "id": "s025",
+   "id": "s028",
    "files": {
-    "full": "s025.full.png",
-    "full.wide": "s025.full.wide.png",
-    "nochar": "s025.nochar.png",
-    "nochar.wide": "s025.nochar.wide.png",
+    "full": "s028.full.png",
+    "full.wide": "s028.full.wide.png",
+    "nochar": "s028.nochar.png",
+    "nochar.wide": "s028.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -3587,12 +4030,12 @@
    }
   },
   {
-   "id": "s026",
+   "id": "s029",
    "files": {
-    "full": "s026.full.png",
-    "full.wide": "s026.full.wide.png",
-    "nochar": "s026.nochar.png",
-    "nochar.wide": "s026.nochar.wide.png",
+    "full": "s029.full.png",
+    "full.wide": "s029.full.wide.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -3732,12 +4175,12 @@
    }
   },
   {
-   "id": "s027",
+   "id": "s030",
    "files": {
-    "full": "s027.full.png",
-    "full.wide": "s027.full.wide.png",
-    "nochar": "s027.nochar.png",
-    "nochar.wide": "s027.nochar.wide.png",
+    "full": "s030.full.png",
+    "full.wide": "s030.full.wide.png",
+    "nochar": "s030.nochar.png",
+    "nochar.wide": "s030.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -3874,12 +4317,12 @@
    }
   },
   {
-   "id": "s028",
+   "id": "s031",
    "files": {
-    "full": "s028.full.png",
-    "full.wide": "s028.full.wide.png",
-    "nochar": "s028.nochar.png",
-    "nochar.wide": "s028.nochar.wide.png",
+    "full": "s031.full.png",
+    "full.wide": "s031.full.wide.png",
+    "nochar": "s031.nochar.png",
+    "nochar.wide": "s031.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -4011,12 +4454,12 @@
    }
   },
   {
-   "id": "s029",
+   "id": "s032",
    "files": {
-    "full": "s029.full.png",
-    "full.wide": "s029.full.wide.png",
-    "nochar": "s029.nochar.png",
-    "nochar.wide": "s029.nochar.wide.png",
+    "full": "s032.full.png",
+    "full.wide": "s032.full.wide.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s032.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -4143,12 +4586,12 @@
    }
   },
   {
-   "id": "s030",
+   "id": "s033",
    "files": {
-    "full": "s022.full.png",
-    "full.wide": "s030.full.wide.png",
-    "nochar": "s022.nochar.png",
-    "nochar.wide": "s030.nochar.wide.png",
+    "full": "s025.full.png",
+    "full.wide": "s033.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s033.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -4274,12 +4717,12 @@
    }
   },
   {
-   "id": "s031",
+   "id": "s034",
    "files": {
-    "full": "s031.full.png",
-    "full.wide": "s031.full.wide.png",
-    "nochar": "s031.nochar.png",
-    "nochar.wide": "s031.nochar.wide.png",
+    "full": "s034.full.png",
+    "full.wide": "s034.full.wide.png",
+    "nochar": "s034.nochar.png",
+    "nochar.wide": "s034.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -4409,12 +4852,12 @@
    }
   },
   {
-   "id": "s032",
+   "id": "s035",
    "files": {
-    "full": "s032.full.png",
-    "full.wide": "s032.full.wide.png",
-    "nochar": "s032.nochar.png",
-    "nochar.wide": "s032.nochar.wide.png",
+    "full": "s035.full.png",
+    "full.wide": "s035.full.wide.png",
+    "nochar": "s035.nochar.png",
+    "nochar.wide": "s035.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -4550,12 +4993,12 @@
    }
   },
   {
-   "id": "s033",
+   "id": "s036",
    "files": {
-    "full": "s033.full.png",
-    "full.wide": "s033.full.wide.png",
-    "nochar": "s033.nochar.png",
-    "nochar.wide": "s033.nochar.wide.png",
+    "full": "s036.full.png",
+    "full.wide": "s036.full.wide.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s036.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -4695,12 +5138,12 @@
    }
   },
   {
-   "id": "s034",
+   "id": "s037",
    "files": {
-    "full": "s034.full.png",
-    "full.wide": "s034.full.wide.png",
-    "nochar": "s034.nochar.png",
-    "nochar.wide": "s034.nochar.wide.png",
+    "full": "s037.full.png",
+    "full.wide": "s037.full.wide.png",
+    "nochar": "s037.nochar.png",
+    "nochar.wide": "s037.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -4837,12 +5280,12 @@
    }
   },
   {
-   "id": "s035",
+   "id": "s038",
    "files": {
-    "full": "s035.full.png",
-    "full.wide": "s035.full.wide.png",
-    "nochar": "s035.nochar.png",
-    "nochar.wide": "s035.nochar.wide.png",
+    "full": "s038.full.png",
+    "full.wide": "s038.full.wide.png",
+    "nochar": "s038.nochar.png",
+    "nochar.wide": "s038.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -4974,12 +5417,12 @@
    }
   },
   {
-   "id": "s036",
+   "id": "s039",
    "files": {
-    "full": "s036.full.png",
-    "full.wide": "s036.full.wide.png",
-    "nochar": "s036.nochar.png",
-    "nochar.wide": "s036.nochar.wide.png",
+    "full": "s039.full.png",
+    "full.wide": "s039.full.wide.png",
+    "nochar": "s039.nochar.png",
+    "nochar.wide": "s039.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -5106,12 +5549,12 @@
    }
   },
   {
-   "id": "s037",
+   "id": "s040",
    "files": {
-    "full": "s037.full.png",
-    "full.wide": "s037.full.wide.png",
-    "nochar": "s037.nochar.png",
-    "nochar.wide": "s037.nochar.wide.png",
+    "full": "s040.full.png",
+    "full.wide": "s040.full.wide.png",
+    "nochar": "s040.nochar.png",
+    "nochar.wide": "s040.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -5247,12 +5690,12 @@
    }
   },
   {
-   "id": "s038",
+   "id": "s041",
    "files": {
-    "full": "s038.full.png",
-    "full.wide": "s038.full.wide.png",
-    "nochar": "s038.nochar.png",
-    "nochar.wide": "s038.nochar.wide.png",
+    "full": "s041.full.png",
+    "full.wide": "s041.full.wide.png",
+    "nochar": "s041.nochar.png",
+    "nochar.wide": "s041.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -5391,12 +5834,12 @@
    }
   },
   {
-   "id": "s039",
+   "id": "s042",
    "files": {
-    "full": "s039.full.png",
-    "full.wide": "s039.full.wide.png",
-    "nochar": "s039.nochar.png",
-    "nochar.wide": "s039.nochar.wide.png",
+    "full": "s042.full.png",
+    "full.wide": "s042.full.wide.png",
+    "nochar": "s042.nochar.png",
+    "nochar.wide": "s042.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -5532,12 +5975,12 @@
    }
   },
   {
-   "id": "s040",
+   "id": "s043",
    "files": {
-    "full": "s040.full.png",
-    "full.wide": "s040.full.wide.png",
-    "nochar": "s040.nochar.png",
-    "nochar.wide": "s040.nochar.wide.png",
+    "full": "s043.full.png",
+    "full.wide": "s043.full.wide.png",
+    "nochar": "s043.nochar.png",
+    "nochar.wide": "s043.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -5668,12 +6111,12 @@
    }
   },
   {
-   "id": "s041",
+   "id": "s044",
    "files": {
-    "full": "s041.full.png",
-    "full.wide": "s041.full.wide.png",
-    "nochar": "s041.nochar.png",
-    "nochar.wide": "s041.nochar.wide.png",
+    "full": "s044.full.png",
+    "full.wide": "s044.full.wide.png",
+    "nochar": "s044.nochar.png",
+    "nochar.wide": "s044.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -5799,12 +6242,12 @@
    }
   },
   {
-   "id": "s042",
+   "id": "s045",
    "files": {
-    "full": "s042.full.png",
-    "full.wide": "s042.full.wide.png",
-    "nochar": "s042.nochar.png",
-    "nochar.wide": "s042.nochar.wide.png",
+    "full": "s045.full.png",
+    "full.wide": "s045.full.wide.png",
+    "nochar": "s045.nochar.png",
+    "nochar.wide": "s045.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -5940,12 +6383,12 @@
    }
   },
   {
-   "id": "s043",
+   "id": "s046",
    "files": {
-    "full": "s043.full.png",
-    "full.wide": "s043.full.wide.png",
-    "nochar": "s043.nochar.png",
-    "nochar.wide": "s043.nochar.wide.png",
+    "full": "s046.full.png",
+    "full.wide": "s046.full.wide.png",
+    "nochar": "s046.nochar.png",
+    "nochar.wide": "s046.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -6084,12 +6527,12 @@
    }
   },
   {
-   "id": "s044",
+   "id": "s047",
    "files": {
-    "full": "s044.full.png",
-    "full.wide": "s044.full.wide.png",
-    "nochar": "s044.nochar.png",
-    "nochar.wide": "s044.nochar.wide.png",
+    "full": "s047.full.png",
+    "full.wide": "s047.full.wide.png",
+    "nochar": "s047.nochar.png",
+    "nochar.wide": "s047.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -6225,12 +6668,12 @@
    }
   },
   {
-   "id": "s045",
+   "id": "s048",
    "files": {
-    "full": "s045.full.png",
-    "full.wide": "s045.full.wide.png",
-    "nochar": "s045.nochar.png",
-    "nochar.wide": "s045.nochar.wide.png",
+    "full": "s048.full.png",
+    "full.wide": "s048.full.wide.png",
+    "nochar": "s048.nochar.png",
+    "nochar.wide": "s048.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -6354,12 +6797,12 @@
    }
   },
   {
-   "id": "s046",
+   "id": "s049",
    "files": {
-    "full": "s046.full.png",
-    "full.wide": "s046.full.wide.png",
-    "nochar": "s046.nochar.png",
-    "nochar.wide": "s046.nochar.wide.png",
+    "full": "s049.full.png",
+    "full.wide": "s049.full.wide.png",
+    "nochar": "s049.nochar.png",
+    "nochar.wide": "s049.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -6505,12 +6948,12 @@
    }
   },
   {
-   "id": "s047",
+   "id": "s050",
    "files": {
-    "full": "s047.full.png",
-    "full.wide": "s047.full.wide.png",
-    "nochar": "s047.nochar.png",
-    "nochar.wide": "s047.nochar.wide.png",
+    "full": "s050.full.png",
+    "full.wide": "s050.full.wide.png",
+    "nochar": "s050.nochar.png",
+    "nochar.wide": "s050.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -6657,12 +7100,12 @@
    }
   },
   {
-   "id": "s048",
+   "id": "s051",
    "files": {
-    "full": "s046.full.png",
-    "full.wide": "s046.full.wide.png",
-    "nochar": "s046.nochar.png",
-    "nochar.wide": "s046.nochar.wide.png",
+    "full": "s049.full.png",
+    "full.wide": "s049.full.wide.png",
+    "nochar": "s049.nochar.png",
+    "nochar.wide": "s049.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -6809,12 +7252,12 @@
    }
   },
   {
-   "id": "s049",
+   "id": "s052",
    "files": {
-    "full": "s049.full.png",
-    "full.wide": "s049.full.wide.png",
-    "nochar": "s049.nochar.png",
-    "nochar.wide": "s049.nochar.wide.png",
+    "full": "s052.full.png",
+    "full.wide": "s052.full.wide.png",
+    "nochar": "s052.nochar.png",
+    "nochar.wide": "s052.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -6969,12 +7412,12 @@
    }
   },
   {
-   "id": "s050",
+   "id": "s053",
    "files": {
-    "full": "s050.full.png",
-    "full.wide": "s050.full.wide.png",
-    "nochar": "s050.nochar.png",
-    "nochar.wide": "s050.nochar.wide.png",
+    "full": "s053.full.png",
+    "full.wide": "s053.full.wide.png",
+    "nochar": "s053.nochar.png",
+    "nochar.wide": "s053.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -7132,12 +7575,12 @@
    }
   },
   {
-   "id": "s051",
+   "id": "s054",
    "files": {
-    "full": "s051.full.png",
-    "full.wide": "s051.full.wide.png",
-    "nochar": "s051.nochar.png",
-    "nochar.wide": "s051.nochar.wide.png",
+    "full": "s054.full.png",
+    "full.wide": "s054.full.wide.png",
+    "nochar": "s054.nochar.png",
+    "nochar.wide": "s054.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -7298,12 +7741,12 @@
    }
   },
   {
-   "id": "s052",
+   "id": "s055",
    "files": {
-    "full": "s052.full.png",
-    "full.wide": "s052.full.wide.png",
-    "nochar": "s052.nochar.png",
-    "nochar.wide": "s052.nochar.wide.png",
+    "full": "s055.full.png",
+    "full.wide": "s055.full.wide.png",
+    "nochar": "s055.nochar.png",
+    "nochar.wide": "s055.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -7459,12 +7902,12 @@
    }
   },
   {
-   "id": "s053",
+   "id": "s056",
    "files": {
-    "full": "s053.full.png",
-    "full.wide": "s053.full.wide.png",
-    "nochar": "s053.nochar.png",
-    "nochar.wide": "s053.nochar.wide.png",
+    "full": "s056.full.png",
+    "full.wide": "s056.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s056.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -7615,12 +8058,12 @@
    }
   },
   {
-   "id": "s054",
+   "id": "s057",
    "files": {
-    "full": "s054.full.png",
-    "full.wide": "s054.full.wide.png",
-    "nochar": "s054.nochar.png",
-    "nochar.wide": "s054.nochar.wide.png",
+    "full": "s057.full.png",
+    "full.wide": "s057.full.wide.png",
+    "nochar": "s057.nochar.png",
+    "nochar.wide": "s057.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -7771,12 +8214,12 @@
    }
   },
   {
-   "id": "s055",
+   "id": "s058",
    "files": {
-    "full": "s055.full.png",
-    "full.wide": "s055.full.wide.png",
-    "nochar": "s054.nochar.png",
-    "nochar.wide": "s054.nochar.wide.png",
+    "full": "s058.full.png",
+    "full.wide": "s058.full.wide.png",
+    "nochar": "s057.nochar.png",
+    "nochar.wide": "s057.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -7927,12 +8370,12 @@
    }
   },
   {
-   "id": "s056",
+   "id": "s059",
    "files": {
-    "full": "s056.full.png",
-    "full.wide": "s056.full.wide.png",
-    "nochar": "s056.nochar.png",
-    "nochar.wide": "s056.nochar.wide.png",
+    "full": "s059.full.png",
+    "full.wide": "s059.full.wide.png",
+    "nochar": "s059.nochar.png",
+    "nochar.wide": "s059.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -8083,12 +8526,12 @@
    }
   },
   {
-   "id": "s057",
+   "id": "s060",
    "files": {
-    "full": "s057.full.png",
-    "full.wide": "s057.full.wide.png",
-    "nochar": "s057.nochar.png",
-    "nochar.wide": "s057.nochar.wide.png",
+    "full": "s060.full.png",
+    "full.wide": "s060.full.wide.png",
+    "nochar": "s060.nochar.png",
+    "nochar.wide": "s060.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -8256,12 +8699,12 @@
    }
   },
   {
-   "id": "s058",
+   "id": "s061",
    "files": {
-    "full": "s058.full.png",
-    "full.wide": "s058.full.wide.png",
-    "nochar": "s058.nochar.png",
-    "nochar.wide": "s058.nochar.wide.png",
+    "full": "s061.full.png",
+    "full.wide": "s061.full.wide.png",
+    "nochar": "s061.nochar.png",
+    "nochar.wide": "s061.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -8422,12 +8865,12 @@
    }
   },
   {
-   "id": "s059",
+   "id": "s062",
    "files": {
-    "full": "s059.full.png",
-    "full.wide": "s059.full.wide.png",
-    "nochar": "s059.nochar.png",
-    "nochar.wide": "s059.nochar.wide.png",
+    "full": "s062.full.png",
+    "full.wide": "s062.full.wide.png",
+    "nochar": "s062.nochar.png",
+    "nochar.wide": "s062.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -8579,12 +9022,12 @@
    }
   },
   {
-   "id": "s060",
+   "id": "s063",
    "files": {
-    "full": "s060.full.png",
-    "full.wide": "s060.full.wide.png",
-    "nochar": "s060.nochar.png",
-    "nochar.wide": "s060.nochar.wide.png",
+    "full": "s063.full.png",
+    "full.wide": "s063.full.wide.png",
+    "nochar": "s063.nochar.png",
+    "nochar.wide": "s063.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -8753,12 +9196,12 @@
    }
   },
   {
-   "id": "s061",
+   "id": "s064",
    "files": {
-    "full": "s061.full.png",
-    "full.wide": "s061.full.wide.png",
-    "nochar": "s061.nochar.png",
-    "nochar.wide": "s061.nochar.wide.png",
+    "full": "s064.full.png",
+    "full.wide": "s064.full.wide.png",
+    "nochar": "s064.nochar.png",
+    "nochar.wide": "s064.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -8919,12 +9362,12 @@
    }
   },
   {
-   "id": "s062",
+   "id": "s065",
    "files": {
-    "full": "s062.full.png",
-    "full.wide": "s062.full.wide.png",
-    "nochar": "s062.nochar.png",
-    "nochar.wide": "s062.nochar.wide.png",
+    "full": "s065.full.png",
+    "full.wide": "s065.full.wide.png",
+    "nochar": "s065.nochar.png",
+    "nochar.wide": "s065.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -9076,12 +9519,12 @@
    }
   },
   {
-   "id": "s063",
+   "id": "s066",
    "files": {
-    "full": "s063.full.png",
-    "full.wide": "s063.full.wide.png",
-    "nochar": "s063.nochar.png",
-    "nochar.wide": "s063.nochar.wide.png",
+    "full": "s066.full.png",
+    "full.wide": "s066.full.wide.png",
+    "nochar": "s066.nochar.png",
+    "nochar.wide": "s066.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -9236,12 +9679,12 @@
    }
   },
   {
-   "id": "s064",
+   "id": "s067",
    "files": {
-    "full": "s064.full.png",
-    "full.wide": "s064.full.wide.png",
-    "nochar": "s064.nochar.png",
-    "nochar.wide": "s064.nochar.wide.png",
+    "full": "s067.full.png",
+    "full.wide": "s067.full.wide.png",
+    "nochar": "s067.nochar.png",
+    "nochar.wide": "s067.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -9421,12 +9864,12 @@
    }
   },
   {
-   "id": "s065",
+   "id": "s068",
    "files": {
-    "full": "s065.full.png",
-    "full.wide": "s065.full.wide.png",
-    "nochar": "s065.nochar.png",
-    "nochar.wide": "s065.nochar.wide.png",
+    "full": "s068.full.png",
+    "full.wide": "s068.full.wide.png",
+    "nochar": "s068.nochar.png",
+    "nochar.wide": "s068.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -9600,12 +10043,12 @@
    }
   },
   {
-   "id": "s066",
+   "id": "s069",
    "files": {
-    "full": "s066.full.png",
-    "full.wide": "s066.full.wide.png",
-    "nochar": "s066.nochar.png",
-    "nochar.wide": "s066.nochar.wide.png",
+    "full": "s069.full.png",
+    "full.wide": "s069.full.wide.png",
+    "nochar": "s069.nochar.png",
+    "nochar.wide": "s069.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -9778,12 +10221,12 @@
    }
   },
   {
-   "id": "s067",
+   "id": "s070",
    "files": {
-    "full": "s067.full.png",
-    "full.wide": "s067.full.wide.png",
-    "nochar": "s067.nochar.png",
-    "nochar.wide": "s067.nochar.wide.png",
+    "full": "s070.full.png",
+    "full.wide": "s070.full.wide.png",
+    "nochar": "s070.nochar.png",
+    "nochar.wide": "s070.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -9955,12 +10398,12 @@
    }
   },
   {
-   "id": "s068",
+   "id": "s071",
    "files": {
-    "full": "s068.full.png",
-    "full.wide": "s068.full.wide.png",
-    "nochar": "s068.nochar.png",
-    "nochar.wide": "s068.nochar.wide.png",
+    "full": "s071.full.png",
+    "full.wide": "s071.full.wide.png",
+    "nochar": "s071.nochar.png",
+    "nochar.wide": "s071.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -10135,12 +10578,12 @@
    }
   },
   {
-   "id": "s069",
+   "id": "s072",
    "files": {
-    "full": "s069.full.png",
-    "full.wide": "s069.full.wide.png",
-    "nochar": "s069.nochar.png",
-    "nochar.wide": "s069.nochar.wide.png",
+    "full": "s072.full.png",
+    "full.wide": "s072.full.wide.png",
+    "nochar": "s072.nochar.png",
+    "nochar.wide": "s072.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -10317,12 +10760,12 @@
    }
   },
   {
-   "id": "s070",
+   "id": "s073",
    "files": {
-    "full": "s070.full.png",
-    "full.wide": "s070.full.wide.png",
-    "nochar": "s070.nochar.png",
-    "nochar.wide": "s070.nochar.wide.png",
+    "full": "s073.full.png",
+    "full.wide": "s073.full.wide.png",
+    "nochar": "s073.nochar.png",
+    "nochar.wide": "s073.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -10491,12 +10934,12 @@
    }
   },
   {
-   "id": "s071",
+   "id": "s074",
    "files": {
-    "full": "s071.full.png",
-    "full.wide": "s071.full.wide.png",
-    "nochar": "s071.nochar.png",
-    "nochar.wide": "s071.nochar.wide.png",
+    "full": "s074.full.png",
+    "full.wide": "s074.full.wide.png",
+    "nochar": "s074.nochar.png",
+    "nochar.wide": "s074.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -10658,12 +11101,12 @@
    }
   },
   {
-   "id": "s072",
+   "id": "s075",
    "files": {
-    "full": "s072.full.png",
-    "full.wide": "s072.full.wide.png",
-    "nochar": "s072.nochar.png",
-    "nochar.wide": "s072.nochar.wide.png",
+    "full": "s075.full.png",
+    "full.wide": "s075.full.wide.png",
+    "nochar": "s075.nochar.png",
+    "nochar.wide": "s075.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -10837,12 +11280,12 @@
    }
   },
   {
-   "id": "s073",
+   "id": "s076",
    "files": {
-    "full": "s073.full.png",
-    "full.wide": "s073.full.wide.png",
-    "nochar": "s073.nochar.png",
-    "nochar.wide": "s073.nochar.wide.png",
+    "full": "s076.full.png",
+    "full.wide": "s076.full.wide.png",
+    "nochar": "s076.nochar.png",
+    "nochar.wide": "s076.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -11017,12 +11460,12 @@
    }
   },
   {
-   "id": "s074",
+   "id": "s077",
    "files": {
-    "full": "s074.full.png",
-    "full.wide": "s074.full.wide.png",
-    "nochar": "s074.nochar.png",
-    "nochar.wide": "s074.nochar.wide.png",
+    "full": "s077.full.png",
+    "full.wide": "s077.full.wide.png",
+    "nochar": "s077.nochar.png",
+    "nochar.wide": "s077.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -11197,12 +11640,12 @@
    }
   },
   {
-   "id": "s075",
+   "id": "s078",
    "files": {
-    "full": "s075.full.png",
-    "full.wide": "s075.full.wide.png",
-    "nochar": "s075.nochar.png",
-    "nochar.wide": "s075.nochar.wide.png",
+    "full": "s078.full.png",
+    "full.wide": "s078.full.wide.png",
+    "nochar": "s078.nochar.png",
+    "nochar.wide": "s078.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -11383,12 +11826,12 @@
    }
   },
   {
-   "id": "s076",
+   "id": "s079",
    "files": {
-    "full": "s076.full.png",
-    "full.wide": "s076.full.wide.png",
-    "nochar": "s076.nochar.png",
-    "nochar.wide": "s076.nochar.wide.png",
+    "full": "s079.full.png",
+    "full.wide": "s079.full.wide.png",
+    "nochar": "s079.nochar.png",
+    "nochar.wide": "s079.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -11571,12 +12014,12 @@
    }
   },
   {
-   "id": "s077",
+   "id": "s080",
    "files": {
-    "full": "s077.full.png",
-    "full.wide": "s077.full.wide.png",
-    "nochar": "s077.nochar.png",
-    "nochar.wide": "s077.nochar.wide.png",
+    "full": "s080.full.png",
+    "full.wide": "s080.full.wide.png",
+    "nochar": "s080.nochar.png",
+    "nochar.wide": "s080.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -11751,12 +12194,12 @@
    }
   },
   {
-   "id": "s078",
+   "id": "s081",
    "files": {
-    "full": "s078.full.png",
-    "full.wide": "s078.full.wide.png",
-    "nochar": "s078.nochar.png",
-    "nochar.wide": "s078.nochar.wide.png",
+    "full": "s081.full.png",
+    "full.wide": "s081.full.wide.png",
+    "nochar": "s081.nochar.png",
+    "nochar.wide": "s081.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -11927,12 +12370,12 @@
    }
   },
   {
-   "id": "s079",
+   "id": "s082",
    "files": {
-    "full": "s079.full.png",
-    "full.wide": "s079.full.wide.png",
-    "nochar": "s079.nochar.png",
-    "nochar.wide": "s079.nochar.wide.png",
+    "full": "s082.full.png",
+    "full.wide": "s082.full.wide.png",
+    "nochar": "s082.nochar.png",
+    "nochar.wide": "s082.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -12105,12 +12548,12 @@
    }
   },
   {
-   "id": "s080",
+   "id": "s083",
    "files": {
-    "full": "s080.full.png",
-    "full.wide": "s080.full.wide.png",
-    "nochar": "s080.nochar.png",
-    "nochar.wide": "s080.nochar.wide.png",
+    "full": "s083.full.png",
+    "full.wide": "s083.full.wide.png",
+    "nochar": "s083.nochar.png",
+    "nochar.wide": "s083.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -12289,12 +12732,12 @@
    }
   },
   {
-   "id": "s081",
+   "id": "s084",
    "files": {
-    "full": "s081.full.png",
-    "full.wide": "s081.full.wide.png",
-    "nochar": "s081.nochar.png",
-    "nochar.wide": "s081.nochar.wide.png",
+    "full": "s084.full.png",
+    "full.wide": "s084.full.wide.png",
+    "nochar": "s084.nochar.png",
+    "nochar.wide": "s084.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -12475,12 +12918,12 @@
    }
   },
   {
-   "id": "s082",
+   "id": "s085",
    "files": {
-    "full": "s082.full.png",
-    "full.wide": "s082.full.wide.png",
-    "nochar": "s082.nochar.png",
-    "nochar.wide": "s082.nochar.wide.png",
+    "full": "s085.full.png",
+    "full.wide": "s085.full.wide.png",
+    "nochar": "s085.nochar.png",
+    "nochar.wide": "s085.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -12652,12 +13095,12 @@
    }
   },
   {
-   "id": "s083",
+   "id": "s086",
    "files": {
-    "full": "s083.full.png",
-    "full.wide": "s083.full.wide.png",
-    "nochar": "s083.nochar.png",
-    "nochar.wide": "s083.nochar.wide.png",
+    "full": "s086.full.png",
+    "full.wide": "s086.full.wide.png",
+    "nochar": "s086.nochar.png",
+    "nochar.wide": "s086.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -12822,12 +13265,12 @@
    }
   },
   {
-   "id": "s084",
+   "id": "s087",
    "files": {
-    "full": "s084.full.png",
-    "full.wide": "s084.full.wide.png",
-    "nochar": "s084.nochar.png",
-    "nochar.wide": "s084.nochar.wide.png",
+    "full": "s087.full.png",
+    "full.wide": "s087.full.wide.png",
+    "nochar": "s087.nochar.png",
+    "nochar.wide": "s087.nochar.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -12932,12 +13375,12 @@
    }
   },
   {
-   "id": "s085",
+   "id": "s088",
    "files": {
-    "full": "s085.full.png",
-    "full.wide": "s085.full.wide.png",
-    "nochar": "s085.full.png",
-    "nochar.wide": "s085.full.wide.png",
+    "full": "s088.full.png",
+    "full.wide": "s088.full.wide.png",
+    "nochar": "s088.full.png",
+    "nochar.wide": "s088.full.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [
@@ -13033,12 +13476,12 @@
    }
   },
   {
-   "id": "s086",
+   "id": "s089",
    "files": {
-    "full": "s086.full.png",
-    "full.wide": "s086.full.wide.png",
-    "nochar": "s086.full.png",
-    "nochar.wide": "s086.full.wide.png",
+    "full": "s089.full.png",
+    "full.wide": "s089.full.wide.png",
+    "nochar": "s089.full.png",
+    "nochar.wide": "s089.full.wide.png",
     "bg": "bg.nevera.png"
    },
    "background": [

@@ -36,3 +36,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # The preview content (lib/src/previa.dart), made by coqui/tool/make_previa.py: never edited by hand.
+  assets:
+    - assets/previa/
+    - assets/previa/cuentos/

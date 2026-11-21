@@ -456,6 +456,22 @@ Future<void> _drain() {
 /// - [micStub]: the stub's results, if a story with speaking turns is played (the learner writes into it).
 /// - [startFrog], [frogShadow]: where the frog starts and whether he keeps the old shadow, for a converted scene (what its
 ///   sheet says); the old numbers and the old shadow when not given.
+/// A trace's speech events as the old page writes them (page-drive.js): each speaking turn and each answer in the order
+/// they happened, by their virtual time `t`; at the same `t`, a turn before an answer, and each list in its own order (a
+/// stable sort).
+List<Map<String, dynamic>> speechInTimeOrder(
+  List<Map<String, dynamic>> turns,
+  List<Map<String, dynamic>> answers,
+) {
+  final all = [...turns, ...answers];
+  final order = List<int>.generate(all.length, (i) => i)
+    ..sort((a, b) {
+      final c = (all[a]['t'] as num).compareTo(all[b]['t'] as num);
+      return c != 0 ? c : a.compareTo(b);
+    });
+  return [for (final i in order) all[i]];
+}
+
 Future<Map<String, dynamic>> play({
   required Map<String, dynamic> story,
   required String plan,
@@ -709,7 +725,7 @@ Map<String, dynamic> _finish({
     'minutes': rec.minutesGiven,
     'speech': {
       'turns': [for (final r in runner.HAB.log) Map<String, dynamic>.of(r)],
-      'events': [...driver.speechEvents, ...rec.answers],
+      'events': speechInTimeOrder(driver.speechEvents, rec.answers),
     },
     'memory': Map<String, dynamic>.of(mem),
     'errors': errors,

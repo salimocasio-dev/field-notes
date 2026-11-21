@@ -1,0 +1,270 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El banco · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px;width:588px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The OLD sprite layer (historia/escenas/banco.js) drawn over the NEW set (banco-set.html): banco.js is loaded with every screen position the sheet moves replaced by the sheet's (as the Flutter port does it, line for line), its background, its moon, its night and evening colours taken out (dropped: the set's), the rolling cart drawn from the set's own pixels, a flying pigeon's shadow kept (helps), the shadows the engine casts, and the set's own pixels of the benches, the cart, the lamp post, the pole, the hedge and the gate's posts drawn again over whoever is behind them (sheet: front). Then cropped to the view.
+Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&amp;hud=1&amp;story=&lt;id&gt;</code>, or <code>?pair=hombre&amp;side=si</code> (a review picture, as the sheet says). <code>old=1</code>: the old picture, as historia/ draws it. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart), as lago-preview.html:
+   1. banco.js is fetched and every screen position it holds that the sheet changes is replaced by the sheet's (the set things' boxes and hands,
+      moves, helps); its background, moon, night and evening colours are taken out (dropped); the rolling cart is drawn from the set's own
+      pixels (sheet carro.rolling); the bubbles go where sheet.talk says; the front parts are drawn again from the set's own pixels over whoever is
+      behind them (sheet: front: one entry after everyone for each, each item of the sorted list saying who or what it is).
+   2. A W in old positions is moved by the sheet's rule (remapW): whoever sits on a bench at SY(x), the places of moves and of the story
+      positions remap moves. A W recorded from the port's own play (banco.js with the moves, the stories through remap) needs no moving: remap=false.
+   3. The set (the baked state setKey(W)) is drawn by banco-set.html in a hidden frame, with the characters' and the things' shadows cast (sheet
+      shadows; none at night).
+   4. The picture is cropped to the view (196 x 216 at x0 22) or the pair's crop (98 x 52 shown at zoom 2, or 196 x 104 at zoom 1). */
+(() => {
+  const PV = window.PREVIEW = {}, A = new URLSearchParams(location.search), OLD = A.get('old') === '1';
+  let SHEET = null;
+  const R = Math.round;
+
+  /* ---------- 1. the old scene file with the sheet's positions ---------- */
+  function edit(src) {
+    if (OLD) return src;
+    const S = SHEET, X = (a, b) => { if (!src.includes(a)) throw new Error('banco.js changed: ' + a); src = src.split(a).join(b); };
+    const bx = k => '[' + S.things[k].box.join(',') + ']', hd = k => S.things[k].hand ? ',hand:[' + S.things[k].hand.join(',') + ']' : '';
+    for (const d of S.dropped) X(d.src, d.to);
+    const cb = S.things.carro.box;
+    X('{id:"carro",box:[CARRO[0]-24,CARRO[1]-72,48,74],m:0},{id:"farol",box:[FAROL[0]-7,34,14,FAROL[1]-28],m:0},',
+      `{id:"carro",box:w=>w.carroX!=null?[${cb[0]}+R(w.carroX)-CARRO[0],${cb[1]}+R((CARRO[0]-w.carroX)/2),${cb[2]},${cb[3]}]:${bx('carro')}${hd('carro')},m:0},{id:"farol",box:${bx('farol')}${hd('farol')},m:0},`);
+    X('{id:"banco0",box:[BANCOS[0][0]-22,BANCOS[0][1]-23,44,36],m:0},{id:"banco1",box:[BANCOS[1][0]-22,BANCOS[1][1]-23,44,36],m:0},{id:"banco2",box:[BANCOS[2][0]-22,BANCOS[2][1]-23,44,36],m:0},',
+      `{id:"banco0",box:${bx('banco0')}${hd('banco0')},m:0},{id:"banco1",box:${bx('banco1')}${hd('banco1')},m:0},{id:"banco2",box:${bx('banco2')}${hd('banco2')},m:0},`);
+    X('{id:"parque",box:[0,60,240,156],m:0}]);', `{id:"parque",box:${bx('parque')}${hd('parque')},m:0}]);`);
+    { const done = new Set(); for (const m of S.moves) { if (done.has(m.src)) continue; done.add(m.src); X(m.src, m.to); } }   // a move named on several lines replaces them all at once
+    for (const [a, b] of S.front.tags) X(a, b);
+    for (const [a, b] of S.helps.lines) X(a, b);
+    X('const B=BANCOS,', 'const GS=' + S.helps.shadow.gsSource + ',CARRORUEDA=(c,W)=>PREVIEW.cart(c,W),B=BANCOS,');
+    const fronts = Object.entries(S.front.parts).map(([p, f]) => `L.push({y:${f.sortY},front:"${p}",d:()=>PREVIEW.front(c,"${p}",L)});`).join('');
+    X('L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());', fronts + 'PREVIEW.OWN=null;L.sort((m,n)=>m.y-n.y).forEach(o=>PREVIEW.item(c,o));');
+    // the bubbles: the first free place (sheet: talk)
+    X('Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});',
+      'Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0){const t=PREVIEW.talk([R(p.x),R(p.y)-alto(id)-1],6,p.bub,W);bub2(c,p.bub,t[0],t[1],a);}});');
+    X('if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}',
+      'if(q.vis&&q.bub){const b=frogBox(q),t=PREVIEW.talk([b.x+(b.w>>1),b.y+2],b.w>>1,q.bub,W);bub2(c,q.bub,t[0],t[1],a);}');
+    // the scene's own names the preview reads (not the port's)
+    X('KIT.escena({id:"banco"', 'window.BANCO_OLD={SY:typeof SY==="function"?SY:null,QUIEN,alto};KIT.escena({id:"banco"');
+    return src;
+  }
+  const ready = fetch('banco-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; })
+    .then(() => fetch('../../../historia/escenas/banco.js')).then(r => r.text()).then(t => {
+      PV.SRC = edit(t);
+      const s = document.createElement('script'); s.textContent = PV.SRC + '\n//# sourceURL=banco-new.js'; document.body.appendChild(s);
+    });
+
+  /* ---------- the set: a hidden frame per baked state; the front masks; the rolling cart ---------- */
+  const SETS = {};
+  let CUR = null;
+  PV.keyOf = w => (w.noche ? 'noche' : w.tarde ? 'tarde' : 'dia') + '.' + (w.noche && w.luna ? 1 : 0) + '.' + (w.carroX != null || w.carro === 0 ? 'no' : w.carro === 'cerrado' ? 'cerrado' : 'abierto');
+  const queryOf = k => { const [luz, luna, carro] = k.split('.'); return 'luz=' + luz + '&luna=' + luna + '&carro=' + carro; };
+  async function frameOf(key) {
+    const q = queryOf(key) + '&tags=1';
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'banco-set.html?' + q; }); SETS[q] = fr; }
+    return fr.contentWindow;
+  }
+  async function setFrame(key, t, casts) {
+    const w = await frameOf(key), img = w.frame(t, casts);
+    CUR = { img: new ImageData(new Uint8ClampedArray(img.data), 240, 216), tags: w.TAGS, z: Float32Array.from(w.DEPTH.live()), win: w.DEPTH, fw: w, set: w.BANCO_SET, key };
+    return CUR.img;
+  }
+  // (sheet carro.rolling) the cart's own pixels in the state with the same light and the cart closed, moved along +y
+  PV.cartSprite = null;
+  async function cartSprite(w) {
+    const key = PV.keyOf(Object.assign({}, w, { carroX: null, carro: 'cerrado' })), fw = await frameOf(key);
+    const img = fw.frame(0, []), T = fw.TAGS, Z = fw.DEPTH.live(), px = [];
+    for (let i = 0; i < 240 * 216; i++) if (T[i] === 'carro') px.push(i, img.data[i * 4], img.data[i * 4 + 1], img.data[i * 4 + 2], Z[i]);
+    PV.cartSprite = { key, px };
+  }
+  PV.cartAt = w => [R(w.carroX) - SHEET.spots.carro.new[0], R((SHEET.spots.carro.new[0] - w.carroX) / 2)];   // round 4: from where the standing cart stands (CARRO), no jump
+  PV.cart = function (c, w) {
+    const s = PV.cartSprite; if (!s) return; const [dx, dy] = PV.cartAt(w), id = c.getImageData(0, 0, 240, 216), d = id.data;
+    for (let n = 0; n < s.px.length; n += 5) { const i = s.px[n], x = i % 240 + dx, y = Math.floor(i / 240) + dy; if (x < 0 || y < 0 || x >= 240 || y >= 216) continue; const j = (y * 240 + x) * 4; d[j] = s.px[n + 1]; d[j + 1] = s.px[n + 2]; d[j + 2] = s.px[n + 3]; d[j + 3] = 255; }
+    c.putImageData(id, 0, 0);
+  };
+  const vOf = (sx, sy) => { const g = CUR.set.Gs(sx, sy, 0); return (g[0] + g[1]) / Math.SQRT2; };
+  PV.vOf = vOf;
+  // a thing on a seat or a pigeon on a bench's back: the plane of the point it rests on (at that height), a little in front
+  PV.vAt = (sx, sy, z) => { const g = CUR.set.Gs(sx, sy, z); return (g[0] + g[1]) / Math.SQRT2 + .02; };
+  // (sheet: front) the set's own pixels of a part, again, inside each item drawn before its entry in the sorted list, only where that pixel is
+  // nearer to the camera than the item: z[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S
+  // (sheet front) every item of the sorted list owns the pixels it drew last; at a front part's entry the set's own pixels of the part are drawn
+  // again where the pixel's owner stands behind them (bakedZ[i] > the owner's plane at that row), never over whoever sits on that bench or
+  // what lies on its seat (the owner's own bench)
+  PV.item = function (c, o) {
+    if (o.front) return o.d();
+    if (!PV.OWN) PV.OWN = new Array(240 * 216).fill(null);
+    const a = c.getImageData(0, 0, 240, 216).data; o.d(); const b = c.getImageData(0, 0, 240, 216).data;
+    for (let i = 0; i < 240 * 216; i++) { const j = i * 4; if (a[j] !== b[j] || a[j + 1] !== b[j + 1] || a[j + 2] !== b[j + 2]) PV.OWN[i] = o; }
+  };
+  PV.front = function (c, part, L) {
+    const fw = CUR.win, COS = Math.sqrt(3) / 2, T30 = Math.tan(Math.PI / 6), O = PV.OWN; if (!O) return;
+    const id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, T = CUR.tags, Z = CUR.z, cache = new Map();
+    for (let i = 0; i < 240 * 216; i++) { if (T[i] !== part || !O[i]) continue; const o = O[i];
+      if (!cache.has(o)) cache.set(o, PV.frontBox(o, W)); const r = cache.get(o); if (!r || r[2] === part) continue;
+      const y = (i / 240) | 0; if (!(Z[i] > r[1] / COS - (y + .5 - fw.OY) * T30 / fw.S)) continue;
+      d[i * 4] = s[i * 4]; d[i * 4 + 1] = s[i * 4 + 1]; d[i * 4 + 2] = s[i * 4 + 2]; d[i * 4 + 3] = 255; }
+    c.putImageData(id, 0, 0);
+  };
+  const benchAt = x => 'banco' + (x < 120 ? 0 : x < 168 ? 1 : 2);
+  // a list item's box and the v of the ground under it (sheet front.boxes); whoever sits: their bench's seat front
+  PV.seatV = (x) => { const k = x < 120 ? 0 : x < 168 ? 1 : 2, b = CUR.set.BENCH[k]; return (x + b.y1) / Math.SQRT2 + .03; };
+  PV.frontBox = function (o, w) {
+    if (o.id === 'coqui') { const q = w.cq, b = frogBox(q); return [[b.x, b.y + R(q.dy || 0), b.w, b.h], vOf(b.x + b.w / 2, q.y + 25)]; }
+    if (o.id) { const p = w.gente[o.id]; const x = R(p.x), y = R(p.y), dy = R(p.dy || 0); if (p.sent) { const k = x < 120 ? 0 : x < 168 ? 1 : 2, b = CUR.set.BENCH[k], g = CUR.set.Gs(x, y - 11, CUR.set.ZS); return [[x - 24, y - 60 - dy, 48, 63 + dy], (g[0] + b.y1) / Math.SQRT2 + .03, 'banco' + k]; } return [[x - 24, y - 60 - dy, 48, 63 + dy], vOf(x, y - 1)]; }
+    if (o.perro) { const p = w.perros[o.perro]; return [[R(p.x) - 16, R(p.y) - 24 - R(p.dy || 0), 32, 27 + R(p.dy || 0)], vOf(R(p.x), R(p.y) - 1)]; }
+    if (o.pal) { const p = o.pal, k = PV.perch(p); if (k === 'air' || k === 'wire') return null; return [[R(p.x) - 10, R(p.y) - 14, 20, 16], k === 'back' ? PV.vAt(R(p.x), R(p.y), CUR.set.ZS + CUR.set.BACK_H) : k === 'seat' ? PV.vAt(R(p.x), R(p.y), CUR.set.ZS) : vOf(R(p.x), R(p.y) - 1), k === 'back' || k === 'seat' ? benchAt(R(p.x)) : null]; }
+    if (o.coche) { const p = w.coche; return [[R(p.x) - 21, R(p.y) - 42, 42, 45], vOf(R(p.x), R(p.y) - 1)]; }
+    if (o.cosa) { const p = o.cosa; return [[R(p.x) - 15, R(p.y) - 34, 30, 36], PV.onSeat(R(p.x), R(p.y)) ? PV.vAt(R(p.x), R(p.y) + (p.rot ? 5 : 0), CUR.set.ZS) : vOf(R(p.x), R(p.y) - 1), PV.onSeat(R(p.x), R(p.y)) ? benchAt(R(p.x)) : null]; }
+    return null;
+  };
+  // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
+  const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+  PV.faces = function (w) {
+    const T = SHEET.talk, faces = [];
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.vis === 0 || (p.al != null && p.al < .5)) continue; const dy = R(p.dy || 0);
+      if (id === 'abuela') { const top = R(p.y) - (p.sent ? 48 : 50) - dy, hx = p.sent ? R(p.x) : R(p.x) + (p.dir < 0 ? 6 : -6); faces.push([hx - 6, top + 6, 12, 10]); continue; }
+      const h = T.heights[id + '.' + (p.sent ? 1 : 0)], top = R(p.y) - h + 1 - dy + (p.animo === 'cansado' ? 3 : p.animo === 'triste' ? 1 : 0); faces.push([R(p.x) - 6, top + 6, 12, 10]); }
+    if (w.cq && w.cq.vis && !(w.cq.al < .5)) { const b = frogBox(w.cq); faces.push([b.x + 2, b.y + R(w.cq.dy || 0), b.w - 4, R(b.h * .6)]); }
+    return faces;
+  };
+  PV.talk = function (top, h, k, w) {
+    if (!k || !SHEET.bubbles.rects[k]) return top;
+    const T = SHEET.talk, Rc = SHEET.bubbles.rects[k], x0 = cam[0], faces = PV.faces(w), boards = [];
+    if (w.tarjeta) boards.push(SHEET.talk.board.slice());
+    for (const b of boards) b[0] += x0;
+    for (const [side, dy] of T.places) { const tx = top[0] + side * (h + 16), ty = top[1] + dy, r = [tx + Rc[0], ty + Rc[1], Rc[2], Rc[3]];
+      if (r[0] >= x0 && r[1] >= 0 && r[0] + r[2] <= x0 + 196 && r[1] + r[3] <= 216 && !boards.some(b => meets(r, b)) && !faces.some(f => meets(r, f))) return [tx, ty]; }
+    return top;
+  };
+
+  /* ---------- 2. a W in old positions, moved by the sheet's rule ---------- */
+  PV.story = null;
+  const SYf = x => { const k = x < 120 ? 0 : x < 168 ? 1 : 2, B = [96, 144, 192]; return Math.round(161 + (x - B[k]) / 2); };
+  PV.remapW = w0 => { const w = JSON.parse(JSON.stringify(w0)), st = PV.story;
+    const MV = SHEET.moves.flatMap(m => (m.places || []));
+    const RM = SHEET.remap.filter(e => e.moved && e.kind === 'point' && (!st || e.uses.some(u => u.startsWith(st.id + '.json'))));
+    const find = (who, p) => MV.find(q => q.who === who && q.old[0] === R(p.x) && q.old[1] === R(p.y)) || RM.find(e => e.old[0] === R(p.x) && e.old[1] === R(p.y));
+    for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.sent && R(p.y) === 161) { const m = MV.find(q => q.who === id && q.old[0] === R(p.x) && q.old[1] === 161); if (m) p.x = m.new[0] + (p.x - R(p.x)); p.y = SYf(R(p.x)) + (p.y - R(p.y)); }
+    for (const p of w.palomas || []) if (p && p.x != null) { const m = find('paloma', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    for (const p of w.cosas || []) if (p && p.x != null) { const m = find('cosa', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    for (const p of Object.values(w.perros || {})) if (p && p.x != null) { const m = find('perro', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    if (w.seva) { const v = (w.perros || {}).viejo, j = (w.perros || {}).joven; if (v && v.y === 196) v.y = 206; if (j && j.y === 204) j.y = 210; }   // the cart going home: the dogs walk 10 and 6 rows nearer (carrova)
+    const sitters = Object.values(w0.gente || {}).filter(p => p && p.sent && R(p.y) === 161 && p.vis !== 0);
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null || p.sent) continue; const m = MV.find(q => (q.who === id || q.who === 'porton') && q.old[0] === R(p.x) && q.old[1] === R(p.y)) || RM.find(e => e.old[0] === R(p.x) && e.old[1] === R(p.y) && e.uses.some(u => / (beats|.*gente)/.test(u))); if (m) { p.x = m.new[0] + (p.x - R(p.x)); p.y = m.new[1] + (p.y - R(p.y)); } }
+    if (w.cq) { const mq = MV.find(m2 => m2.who === 'cq' && m2.old[0] === w.cq.x && m2.old[1] === w.cq.y); if (mq) { w.cq.x = mq.new[0]; w.cq.y = mq.new[1]; } }
+    if (w.cq) for (const d of Object.values(w0.perros || {})) { if (!d || d.x == null || w.cq.x !== R(d.x) + 14 || w.cq.y !== R(d.y) - 23) continue; const m = MV.find(m2 => m2.who === 'perro' && m2.old[0] === R(d.x) && m2.old[1] === R(d.y)); if (m) { w.cq.x += m.new[0] - m.old[0]; w.cq.y += m.new[1] - m.old[1]; } break; }
+    if (w.cq) { const q = w.cq, s = sitters.find(p => [0, -2, -4].includes(q.x + 16 - R(p.x)) && [156, 158].includes(q.y)); if (s) { const m = MV.find(m2 => m2.old[0] === R(s.x) && m2.old[1] === 161 && m2.who !== 'sitting'), nx = m ? m.new[0] : R(s.x); q.x += nx - R(s.x); q.y += SYf(nx) - 161; }
+    }
+    if (w.carroX != null) { w.carroX += -11; if (w.gente && w.gente.piraguero && w.seva) { const pi = w.gente.piraguero; pi.x += -11; pi.y = 178 + 2 + (36 - w.carroX) / 2; } }
+    return w; };
+
+  /* ---------- 3. the picture ---------- */
+  function baseW(over) { return Object.assign({ spot: null, twinkle: null, glow: null, fx: [], heart: 0, lost: 0, resp: null }, ESCENAS.banco.fresh({}), over || {}); }
+  PV.baseW = baseW;
+  // the shadows the engine casts (sheet: shadows), from the ground point under each one on the screen; none at night
+  PV.casts = function (w, fw) {
+    const out = [], q = w.cq, SH = SHEET.shadows, on = (sx, sy) => { const g = fw.unproject(sx, sy); return [g.x, g.y]; };
+    if (w.noche) return out;
+    if (q && q.vis && !(q.al <= .5)) { const b = frogBox(q), g = on(b.x + b.w / 2, q.y + 25); out.push([g[0], g[1], .3, SH.coqui.radius]); }
+    for (const [id, p] of Object.entries(w.gente || {})) {
+      if (!p || p.vis === 0 || (p.al != null && p.al <= .5)) continue;
+      const g = p.sent ? on(R(p.x), R(p.y)) : on(R(p.x), R(p.y) - 1);
+      for (const z of p.sent ? [.3, .65] : [.3, .65, 1, 1.35, 1.7]) out.push([g[0], g[1], z, SH.people.radius]);
+    }
+    for (const o of Object.values(w.perros || {})) if (o && o.vis !== 0 && o.x != null && !((o.dy || 0) > 3)) { const g = on(R(o.x), R(o.y) - 1); out.push([g[0], g[1], .25, SH.perros.radius]); }
+    if (w.coche) { const g = on(R(w.coche.x), R(w.coche.y) - 1); out.push([g[0], g[1], .3, SH.coche.radius], [g[0], g[1], .9, .4]); }
+    for (const o of w.palomas || []) { if (!o || o.vis === 0) continue; const k = PV.perch(o);
+      if (k === 'air') { if (o.gs) { const g = on(o.gs[0], o.gs[1]); out.push([g[0], g[1], .1, SH.paloma.radius]); } continue; }
+      if (k === 'ground') { const g = on(R(o.x), R(o.y) - 1); out.push([g[0], g[1], .1, SH.paloma.radius]); } }
+    for (const o of w.cosas || []) { if (!o || o.vis === 0 || o.z === 400 || (o.z != null && o.z > o.y + 30)) continue; if (PV.onSeat(R(o.x), R(o.y))) continue; const g = on(R(o.x), R(o.y) - 1); out.push([g[0], g[1], .1, o.k === 'caja' ? .4 : SH.cosas.radius]); }
+    return out;
+  };
+  PV.backTop = x => { const S = CUR.set; for (const b of S.BENCH) { const yy = b.y0 + .065, z = S.ZS + S.BACK_H - .02, wx = (x - S.OXY[0]) / 26 * Math.SQRT2 + yy; if (wx >= b.x0 + .02 && wx <= b.x1 - .02) { const v = (wx + yy) / Math.SQRT2; return S.OXY[1] + (v * .5 - z * Math.sqrt(3) / 2) * 26; } } return null; };
+  PV.onSeat = (x, y) => { if (y >= 172) return false; const S = CUR.set, w = S.Gs(x, y - 1, S.ZS); return S.BENCH.some(b => w[0] >= b.x0 - .02 && w[0] <= b.x1 + .02 && w[1] >= b.y0 - .02 && w[1] <= b.y1 + .02); };
+  PV.perch = o => { const x = R(o.x), y = R(o.y), S = CUR.set; if (o.pose === 'vuela') return 'air'; if (Math.abs(y - S.cableY(x)) <= 1 && y < 80) return 'wire';
+    { const bt = PV.backTop(x); if (bt != null && Math.abs(y - 1 - bt) <= 1.5) return 'back'; }
+    if (PV.onSeat(x, y)) return 'seat'; if (W && W.coche && Math.abs(x - R(W.coche.x) - 14) <= 2 && Math.abs(y - R(W.coche.y) + 33) <= 2) return 'coche'; return 'ground'; };
+  // where everyone is (the sheet's check reads it)
+  PV.places = w => { const o = {};
+    for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.vis !== 0) o[id] = [R(p.x), R(p.y)];
+    if (w.cq && w.cq.vis) o.cq = [w.cq.x, w.cq.y];
+    for (const [n, d] of Object.entries(w.perros || {})) if (d && d.vis !== 0 && d.x != null) o['perro.' + n] = [R(d.x), R(d.y)];
+    (w.palomas || []).forEach((p, i) => { if (p && p.vis !== 0) o['paloma.' + (p.i != null ? p.i : i)] = [R(p.x), R(p.y)]; });
+    (w.cosas || []).forEach((c, i) => { if (c && c.vis !== 0) o['cosa.' + (c.id || c.k + i)] = [R(c.x), R(c.y)]; });
+    if (w.coche) o.coche = [R(w.coche.x), R(w.coche.y)];
+    return o; };
+  PV.render = async function (wOld, opts = {}) {
+    await ready;
+    if (sc.width !== 240 || sc.height !== 216) { sc.width = 240; sc.height = 216; }
+    E = ESCENAS.banco; F = opts.F == null ? 8 : opts.F; TALK = null;
+    W = OLD || opts.remap === false ? JSON.parse(JSON.stringify(wOld)) : PV.remapW(wOld); if (!W.fx) W.fx = []; if (!W.gente) W.gente = {};
+    const x0 = opts.crop ? opts.crop[0] : 22;
+    cam = [x0, 0, 196, 216];
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.imageSmoothingEnabled = false;
+    if (OLD) { c.fillStyle = '#000'; c.fillRect(0, 0, 240, 216); }
+    else { const key = PV.keyOf(W), fw = await frameOf(key); CUR = { set: fw.BANCO_SET }; if (W.carroX != null) await cartSprite(W); c.putImageData(await setFrame(key, opts.t || 0, PV.casts(W, fw)), 0, 0); }
+    E.draw(c, W, F >> 1);
+    if (W.resp) respDraw(c, F >> 1);
+    if (opts.signs) {
+      const a = F >> 1;
+      const hb = k => (SHEET.things[k] && SHEET.things[k].hintBox) || bx(k);
+      if (W.twinkle && bx(W.twinkle)) twinkle(c, hb(W.twinkle));
+      if (W.spot) spot(c, respBox(W.spot) || hb(W.spot), a);
+      W.fx.forEach(e => { if (e.t === 'star') e.pts.forEach((p, i) => star(c, p[0], p[1], (i + a) % 2 ? 4 : 2, (i + a) % 2)); });
+      if (W.heart) heart(c, E.heartAt[0], E.heartAt[1] - (a % 2), 3);
+    }
+    const cr = opts.crop || [x0, 0, 196, 216], z = opts.crop ? (opts.zoom || 1) : 1;
+    const out = document.getElementById('out'); out.width = cr[2] * z; out.height = cr[3] * z;
+    const g = out.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(sc, cr[0], cr[1], cr[2], cr[3], 0, 0, cr[2] * z, cr[3] * z);
+    if (opts.hud && E.hud) E.hud(g, W, F >> 1);
+    if (opts.signs && W.spot && (respBox(W.spot) || E.handAt[W.spot])) { const rb = respBox(W.spot), p = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : E.handAt[W.spot], k = 3, hx = Math.round(p[0] - cam[0]) - 4 * k, hy = Math.round(p[1] - cam[1]); hand(g, hx, hy, (F >> 2) % 2 === 1, k); }
+    return out.toDataURL();
+  };
+  // the signs of a story step as juego.js sets them (ask, decide), as lago-preview.html
+  PV.askW = function (w, st, V, on) {
+    const sub = x => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
+    const vmapa = m => m ? Object.fromEntries(Object.entries(m).map(e => [sub(e[0]), sub(e[1])])) : null;
+    const keep = w.resp; w.resp = null; w.respVoz = null; w.respOn = null; w.spot = null;
+    if (st.ask) { w.spot = sub(st.ask); if (st.resp) { w.resp = st.resp.map(sub); w.respVoz = vmapa(st.voces); } }
+    else if (st.decide) { const ops = st.options.map(sub), bur = (st.burbujas || []).map(sub); w.spot = sub(st.pick) || ops[0];
+      if (st.decide === 'say') { w.resp = ops; w.respVoz = vmapa(st.voces); } else if (bur.length) { w.resp = bur; w.respVoz = vmapa(st.voces); } }
+    else if (st.kind === 'say' && st.options) w.resp = st.options.map(sub);
+    else return null;
+    if (!w.resp && keep) w.resp = keep;
+    if (on && w.respVoz && w.resp) w.respOn = on === 'spot' ? (w.resp.includes(w.spot) ? w.spot : null) : on;
+    return w;
+  };
+  // a review picture: panelW() of cual.js, cropped and zoomed as the sheet's pictures say (old=1: the old cam rectangle, stretched as cual.html does)
+  PV.pair = async function (word, side, file = 'cual-banco') {
+    await ready;
+    const it = PV.CUAL.items.find(i => i.w.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_') === word), spec = it[side];
+    const w = baseW();
+    w.cq = { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: spec.set && spec.set.resp ? 1 : 0, bub: null };
+    Object.assign(w, JSON.parse(JSON.stringify(spec.set || {})));
+    if (OLD) { await PV.render(w, { F: 8, remap: false }); const o = document.getElementById('out'), cm = spec.cam, k = document.createElement('canvas'); k.width = 196; k.height = 104; const g = k.getContext('2d'); g.imageSmoothingEnabled = false;
+      g.drawImage(sc, cm[0], cm[1], cm[2], cm[3], 0, 0, 196, 104); o.width = 196; o.height = 104; o.getContext('2d').drawImage(k, 0, 0); return o.toDataURL(); }
+    const pc = SHEET.pictures[word + '.' + side];
+    PV.story = { id: file };
+    const ww = PV.remapW(w);
+    PV.story = null;
+    return PV.render(ww, { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false });
+  };
+  PV.ready = ready.then(() => fetch('../../../historia/cuentos/cual-banco.json').then(r => r.json())).then(a => { PV.CUAL = a; });
+
+  PV.done = PV.ready.then(() => {
+    if (A.get('pair')) return PV.pair(A.get('pair'), A.get('side') || 'si');
+    if (A.get('story')) PV.story = { id: A.get('story') };
+    const w = A.get('w') ? baseW(JSON.parse(A.get('w'))) : baseW();
+    return PV.render(w, { F: +(A.get('F') || 8), t: +(A.get('t') || 0), hud: A.get('hud') === '1', signs: A.get('signs') === '1', remap: A.get('remap') !== '0' });
+  });
+})();
+</script></body></html>

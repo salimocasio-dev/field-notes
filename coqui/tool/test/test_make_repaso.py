@@ -1697,10 +1697,10 @@ class RealData(unittest.TestCase):
         D = self.R["D"]
         words = [w["word"] for w in self.R["words"]]
         self.assertNotIn("palabras-solas", D.story)                                         # it is not a story
-        self.assertEqual(len(D.palabras), 133)
+        self.assertEqual(len(D.palabras), 143)
         solo = mr.solo_clips(D, words)
-        self.assertEqual(list(solo), words)                                                 # all 156, course order
-        self.assertEqual(sum(1 for c in solo.values() if c in D.palabras), 133)             # the others (23) are story clips
+        self.assertEqual(list(solo), words)                                                 # all 167, course order
+        self.assertEqual(sum(1 for c in solo.values() if c in D.palabras), 143)             # the others (24) are story clips
         self.assertTrue(all(c in D.audio for c in solo.values()))
         for w, cid in solo.items():
             text = D.palabras[cid]["text"] if cid in D.palabras else next(st["clips"][cid]["text"] for st in D.story.values() if cid in st["clips"])
@@ -1754,8 +1754,8 @@ class RealData(unittest.TestCase):
     def test_every_pair_has_its_pictures(self):
         plans, stops = mr.plan_pairs(self.R)
         self.assertEqual(stops, [])
-        self.assertEqual(len(plans), 128)
-        self.assertEqual(len({p["slug"] for p in plans.values()}), 128)
+        self.assertEqual(len(plans), 140)
+        self.assertEqual(len({p["slug"] for p in plans.values()}), 140)
         self.assertTrue(all(p["si"].is_file() and p["no"].is_file() and p["letter"] in "AB" for p in plans.values()))
         self.assertEqual({p["letter"] for p in plans.values()}, {"A", "B"})
         self.assertEqual(list(plans), [w["word"] for w in self.R["words"] if w["pair"]])         # course order

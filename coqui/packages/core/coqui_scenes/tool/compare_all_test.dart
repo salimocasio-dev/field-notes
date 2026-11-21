@@ -2,7 +2,7 @@
 // pictures) against the Dart frame, on the vm, as test/preview_test.dart (test/balcon_preview_test.dart) does for the
 // fixture's few:
 //
-//   COQUI_PREVIEW_DIR=<--out of preview_shots.mjs> COQUI_REPORT_DIR=<dir> [COQUI_SCENE=balcon|sala|patio|camino|campo|lago] flutter test tool/compare_all_test.dart
+//   COQUI_PREVIEW_DIR=<--out of preview_shots.mjs> COQUI_REPORT_DIR=<dir> [COQUI_SCENE=balcon|sala|patio|camino|campo|lago|banco|estufa] flutter test tool/compare_all_test.dart
 //
 // COQUI_SCENE is the scene the pictures are of (frente when not set); the report is preview-all.vm.txt for El frente,
 // preview-all-<scene>.vm.txt for another.
@@ -13,8 +13,10 @@ import 'dart:ui' as ui;
 
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/balcon/balcon.dart';
+import 'package:coqui_scenes/src/banco/banco.dart';
 import 'package:coqui_scenes/src/camino/camino.dart';
 import 'package:coqui_scenes/src/campo/campo.dart';
+import 'package:coqui_scenes/src/estufa/estufa.dart';
 import 'package:coqui_scenes/src/frente/frente.dart';
 import 'package:coqui_scenes/src/lago/lago.dart';
 import 'package:coqui_scenes/src/patio/patio.dart';
@@ -23,9 +25,11 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../test/support/balcon_preview_remap.dart';
+import '../test/support/banco_preview_remap.dart';
 import '../test/support/camino_preview_remap.dart';
 import '../test/support/campo_preview_remap.dart';
 import '../test/support/channels.dart';
+import '../test/support/estufa_preview_remap.dart';
 import '../test/support/lago_preview_remap.dart';
 import '../test/support/patio_preview_remap.dart';
 import '../test/support/preview_remap.dart';
@@ -90,6 +94,16 @@ void main() {
         k.sheet,
         story: story,
         acts: acts,
+      ),
+      Banco k => bancoPreviewRemapW(
+        bancoPreviewBaseW(k.fresh(const {}), w),
+        k,
+        story: story,
+      ),
+      Estufa k => estufaPreviewRemapW(
+        estufaPreviewBaseW(k.fresh(const {}), w),
+        k.sheet,
+        story: story,
       ),
       _ => throw StateError('no preview rule for $id'),
     };
