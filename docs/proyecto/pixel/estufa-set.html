@@ -110,7 +110,7 @@ function furnish() {
 }
 // the run stands against the back wall, its fronts lit: its shadow would fall to screen right, along the wall, past its end off the picture.
 // So it casts none here (a shadow on its lit side, in front of it, would be a fringe)
-const PLAN = { XR: AR1 + 2, YL: 6, windows: [WIN], band: { y: [[0, SPLASH_A[0]], [SPLASH_A[1], AR1 + 2]] }, furnish };
+const PLAN = { XR: AR1 + 2, YL: 6, windows: [WIN], band: { y: [[0, SPLASH_A[0]], [SPLASH_A[1], AR1 + 2]] }, furnish, occlusion: 'shade' };   // the floor dimmed on the shadow side only (the kit's, as La mesa's)
 function buildSet() { cocinaBuild(PLAN); if (SET.banco) { stool(); bakedPix.set(pix); bakedZ.set(zb); } }
 
 /* ---------- what is under a screen point: the stool's top, a top of the run, the floor (for the sheet's places) ---------- */
