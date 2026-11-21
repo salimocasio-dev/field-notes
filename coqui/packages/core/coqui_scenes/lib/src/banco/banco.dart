@@ -868,10 +868,9 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
     }();
   }
 
-  // sheet carro.sprite.at: dx = R(W.carroX) - CARRO[0], dy = R((CARRO[0] - W.carroX) / 2). DECISION(order 36b): CARRO
-  // is banco.js's own as the sheet moves it (moves line 19: 36), as the box (things.carro.rolling) and the sorted list
-  // (moves line 198) take it; banco-preview.html's PV.cartAt takes the old CARRO (spots.carro.old, 47), which draws the
-  // cart 11 px left and 6 rows lower than its box from the moment it starts to roll (reported)
+  // sheet carro.sprite.at: dx = R(W.carroX) - CARRO[0], dy = R((CARRO[0] - W.carroX) / 2). CARRO is banco.js's own as
+  // the sheet moves it (moves line 19: 36), as the box (things.carro.rolling), the sorted list (moves line 198) and
+  // banco-preview.html's PV.cartAt (spots.carro.new, round 4) take it: the cart starts to roll from where it stands
   List<int> cartAt(Map<String, dynamic> w) {
     final x = w['carroX'] as num;
     return [_round(x) - CARRO[0], _round((CARRO[0] - x) / 2)];
@@ -2078,6 +2077,12 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
     }
   }
 
+  // A sitter's place as the sheet's move at [line] seats them: x = B[i][0] + d, y = SY(x) (banco_places seat)
+  Map<String, dynamic> _seat(int line, String who) {
+    final s = _p.seat(line, who), x = B[s.bench][0] + s.dx;
+    return <String, dynamic>{'x': x, 'y': SY(x)};
+  }
+
   // banco.js: `[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}))`, the pigeons on the wire
   List<dynamic> _cable() => <dynamic>[
     for (var i = 0; i < 5; i++)
@@ -2135,23 +2140,12 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
         },
         'carmen': <String, dynamic>{'x': ca[0], 'y': ca[1], 'dir': 1},
         'hombre': <String, dynamic>{
-          'x': B[0][0] - 9,
-          'y': SY(B[0][0] - 9),
+          ..._seat(267, 'hombre'),
           'dir': 1,
           'sent': 1,
         },
-        'mujer': <String, dynamic>{
-          'x': B[1][0] - 9,
-          'y': SY(B[1][0] - 9),
-          'dir': 1,
-          'sent': 1,
-        },
-        'luis': <String, dynamic>{
-          'x': B[2][0],
-          'y': SY(B[2][0]),
-          'dir': 1,
-          'sent': 1,
-        },
+        'mujer': <String, dynamic>{..._seat(267, 'mujer'), 'dir': 1, 'sent': 1},
+        'luis': <String, dynamic>{..._seat(267, 'luis'), 'dir': 1, 'sent': 1},
       };
       W['palomas'] = _cable();
       final casa = _p.floor(268, 124, 206);
@@ -2564,28 +2558,16 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
           'y': CARRO[1] - 6,
           'dir': 1,
         },
-        'senor': <String, dynamic>{
-          'x': B[0][0] - 9,
-          'y': SY(B[0][0] - 9),
-          'dir': 1,
-          'sent': 1,
-        },
-        'mujer': <String, dynamic>{
-          'x': B[1][0] - 9,
-          'y': SY(B[1][0] - 9),
-          'dir': 1,
-          'sent': 1,
-        },
+        'senor': <String, dynamic>{..._seat(302, 'senor'), 'dir': 1, 'sent': 1},
+        'mujer': <String, dynamic>{..._seat(302, 'mujer'), 'dir': 1, 'sent': 1},
         'joven': <String, dynamic>{
-          'x': B[2][0] - 9,
-          'y': SY(B[2][0] - 9),
+          ..._seat(302, 'joven'),
           'dir': 1,
           'sent': 1,
           'sin': <String, dynamic>{'mochila': 1},
         },
         'hombre': <String, dynamic>{
-          'x': B[0][0] + 11,
-          'y': SY(B[0][0] + 11),
+          ..._seat(302, 'hombre'),
           'dir': 1,
           'sent': 1,
           'lee': 1,
@@ -3187,21 +3169,18 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
           'dir': 1,
         },
         'senora': <String, dynamic>{
-          'x': B[1][0] - 9,
-          'y': SY(B[1][0] - 9),
+          ..._seat(339, 'senora'),
           'dir': 1,
           'sent': 1,
         },
         'luis': <String, dynamic>{
-          'x': B[0][0] - 13,
-          'y': SY(B[0][0] - 13),
+          ..._seat(339, 'luis'),
           'dir': 1,
           'sent': 1,
           'animo': 'cansado',
         },
         'hombre': <String, dynamic>{
-          'x': B[2][0],
-          'y': SY(B[2][0]),
+          ..._seat(339, 'hombre'),
           'dir': 1,
           'sent': 1,
           'animo': 'triste',

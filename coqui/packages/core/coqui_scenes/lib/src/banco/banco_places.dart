@@ -103,6 +103,25 @@ class BancoPlaces {
     throw SheetError('the sheet moves nothing at banco.js:$line from "$src"');
   }
 
+  /// Where a move at [line] seats [who] on a bench (`who:{x:B[i][0]+d,y:SY(B[i][0]+d),...`): the bench i and d. The
+  /// x and the SY of the source must name the same place; SheetError otherwise, or when no move at the line seats them.
+  ({int bench, int dx}) seat(int line, String who) {
+    final r = RegExp(
+      '(?:^|[{,])$who:\\{x:B\\[(\\d)\\]\\[0\\]([+-]\\d+)?,y:SY\\(B\\[(\\d)\\]\\[0\\]([+-]\\d+)?\\)',
+    );
+    for (final m in _movesAt(line)) {
+      final g = r.firstMatch(m.to);
+      if (g == null) continue;
+      if (g[1] != g[3] || (g[2] ?? '') != (g[4] ?? '')) {
+        throw SheetError(
+          'the move at banco.js:$line seats $who at an x that is not its SY\'s: ${m.to}',
+        );
+      }
+      return (bench: int.parse(g[1]!), dx: int.parse(g[2] ?? '0'));
+    }
+    throw SheetError('the sheet seats no $who on a bench at banco.js:$line');
+  }
+
   /// The source a move gives at [line] for [src] (its `to`), as it is.
   String source(int line, String src) {
     for (final m in _movesAt(line)) {

@@ -56,6 +56,14 @@ void main() {
     expect(scene.fresh(const {})['respEn'], [128, 31]);
     expect(scene.LUGAR['centro'], [104, 180, 1]);
     expect(scene.CAM['wide'], [22, 0, 196, 216]);
+    // the sitters as the moves seat them (moves lines 267, 302, 339): the man of el-bebe-duerme at B[2][0] + 1
+    final man = scene.places.seat(339, 'hombre');
+    expect(man, (bench: 2, dx: 1));
+    final x = scene.B[man.bench][0] + man.dx;
+    expect([x, scene.SY(x)], [193, 162]);
+    expect(scene.places.seat(302, 'hombre'), (bench: 0, dx: 11));
+    expect(scene.places.seat(267, 'luis'), (bench: 2, dx: 0));
+    expect(() => scene.places.seat(339, 'joven'), throwsA(isA<SheetError>()));
     // a place the sheet does not name stops the scene
     expect(
       () => BancoPlacesProbe(scene).floor(9, 1, 2),

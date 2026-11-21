@@ -6,8 +6,8 @@
 // the benches, the cart, the lamp post, the pole, the gate's posts and the hedge are drawn again only where their owner
 // stands behind them (the sheet's front); a pigeon in the air has its shadow (the sheet's helps); the shadows are the
 // sun's, none at night (the sheet's shadows); the bubbles go where the sheet's talk says; the evening and the night are
-// the set's own light. The cart rolling home is drawn where the sheet's rule puts it (carro.sprite.at, CARRO 36), the
-// preview 11 px left and 6 rows lower (its PV.cartAt takes the old CARRO, 47): those moments differ there (reported).
+// the set's own light. The cart rolling home is drawn where the sheet's rule puts it (carro.sprite.at, CARRO 36), as
+// the preview's PV.cartAt puts it (spots.carro.new, the sheet's round 4).
 //
 // As El frente's (test/preview_test.dart): the browser's canvas smooths a sprite at a fractional position and the Dart
 // canvas does not (decided, order 05), so a pixel counts as different only when a channel differs by more than 24.
