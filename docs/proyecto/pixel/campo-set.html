@@ -47,12 +47,13 @@ const BANK = (568 - 344) / (S * R2);
 const WDEPTH = .16;                                               // the surface under the lawn: a bank 4 rows high
 const shore = (x, y) => BANK + .035 * Math.sin(y * 2.3 + 1) + .025 * Math.sin(y * 5.1) - x;   // > 0 land; the shore wavers a little, along y
 // the reeds (round 2): a bed all along the shore, as the old row along the pond's rim, from y REED_Y0 (down to the left; no foot left of x 179)
-// to past the picture's right edge (REED_Y1), from the damp lip of the land out into the shallows. It runs off the picture's right edge as the
+// to past the picture's right edge (REED_Y1), from the damp lip of the land out into the shallows, round the balls the stories hide in the reeds
+// (JUNCO, 180, 197; 178, 199). It runs off the picture's right edge as the
 // old reeds ran to the view's: its hint frame goes round its hint box (sheet things.juncos.hintBox). Down the shore from its end the bank is open:
 // there Canelo drinks and wades and sits by the water, the balls roll in, as in the old picture, where everyone was drawn over the old reeds;
 // standing reeds there would stand in front of them (the sheet checks: nobody has reeds over them but where the old picture had them in the
 // reeds). For the same reason no reed whose foot is left of x REED_LOW[0] reaches over row REED_LOW[1] (Canelo barking at 176, 176)
-const REED_Y0 = 3.1, REED_Y1 = -.7, REED_X0 = BANK - .16, REED_X1 = BANK + .62, REED_LOW = [200, 178];
+const REED_Y0 = 3.3, REED_Y1 = -.7, REED_X0 = BANK - .16, REED_X1 = BANK + .62, REED_LOW = [200, 178];
 // the sky, the hills, the sun: El camino's (El frente's by day), the sun in the same place (upper left: every shadow falls to the right)
 const SKY = { bands: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]], far: [[116, 180, 162], [156, 208, 188], [94, 158, 144]], near: [[78, 158, 94], [124, 203, 122], [62, 136, 80]], sun: [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]] };
 const SUN = [38, 47, 9];

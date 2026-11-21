@@ -225,7 +225,7 @@ function make(G) {
   /* ---- the places that move (the floor rule keeps every other one). Each is an exact piece of campo.js source and its replacement ---- */
   // the answer cards in the sky (W.respEn, juego.js respBox: "a scene that needs its people seen while he chooses puts the bubbles elsewhere", as
   // El camino's): over the frog they covered Luis and Carmen; under the rounds card (rows 2 to 28), right of the sun with their frames
-  const EN = [134, 32], MALA17 = [158, 204];
+  const EN = [134, 32], MALA17 = [158, 204], BEBE = [160, 204];
   const MOVES = [
     { line: lineOf('async inicio15()'), act: 'inicio15', src: 'async inicio15(){W.gente=', to: 'async inicio15(){W.respEn=[' + EN + '];W.gente=', respEn: EN,
       why: 'acts.inicio15 (la-bola, d-bola-canelo): the answer cards stand in the sky (W.respEn ' + EN + '): over the frog at the field\'s middle they covered Luis (88, 178), the hand at a card reached his face; under the rounds card, right of the sun with their lit frames and glow, inside the view with 2 px to spare' },
@@ -235,6 +235,8 @@ function make(G) {
       why: 'acts.inicio17 (otra-vez): the answer cards (three: tira, aguanta, da) stand in the sky (W.respEn ' + EN + '): over the frog they ran over Luis\'s head and the tree\'s crown' },
     { line: lineOf('async malA17('), act: 'malA17', src: 'await vuela(n,[168,206],22,8);', to: 'await vuela(n,[' + MALA17 + '],22,8);', pts: [['bola', [168, 206], MALA17]],
       why: 'acts.malA17 (otra-vez, wrong): the ball he throws lands at the water\'s edge, a little way off, and Canelo does not go after it. The old point (168, 206) was on the old pond\'s rim; here it is on the water past the straight shore: ' + (MALA17[0] - 168) + ' px, ' + (MALA17[1] - 206) + ' rows to the lip of the bank (the ball then rolls back to the row, vuelvefila, from where it lies)' },
+    { line: lineOf('async aguanta('), act: 'aguanta', src: 'await perroA(ORILLA[0]-10,ORILLA[1]+2,"walk");pe.dir=1;pe.pose="eat";', to: 'await perroA(' + BEBE + ',"walk");pe.dir=1;pe.pose="eat";',
+      why: 'acts.aguanta (otra-vez): Canelo goes down and drinks at the water\'s edge: at the old point (180, 200: ORILLA - 10, + 2) the reeds stand in front of his head; ' + (BEBE[0] - 180) + ' px, ' + (BEBE[1] - 200) + ' rows to the open bank down the shore from the reeds (the same place as the pair más.no\'s, remap)' },
   ];
   for (const m of MOVES) for (const q of m.pts || []) q.push(q[0] === 'cq' ? frogW(q[2]) : W4(personW(q[2])));
   // the old code's own drawing the engine replaces (the background, the shadows it now casts); the preview and the port take each out
@@ -292,11 +294,10 @@ function make(G) {
   things.arbol.hand = [OLD.COPA[0], OLD.COPA[1]]; things.arbol.handWhy = 'the old hand point: the crown\'s middle (COPA)';
   things.juncos.hand = [188, 190]; things.juncos.handWhy = 'the old hand point (188, 190): in the reeds';
   // the reeds run along the shore off the picture's right edge, as the old row ran to the view's: the hint frame and its twinkle go round its hint
-  // box, the part of its touch box inside the view shrunk so that the frame (box + 12) is inside it, and its top no higher than row HINT_TOP, so
-  // that the frame's rings stay clear of the frog's face where he waits at esconde16's place (136, 136), as the old frame did
-  { const b = things.juncos.box, HINT_TOP = 164, hx0 = Math.max(b[0], 22 + 12), hy0 = Math.max(b[1], HINT_TOP), hx1 = Math.min(b[0] + b[2], 22 + 196 - 12), hy1 = Math.min(b[1] + b[3], 216 - 12);
+  // box, the part of its touch box inside the view shrunk so that the frame (box + 12) is inside it (as El camino's big tree's)
+  { const b = things.juncos.box, hx0 = Math.max(b[0], 22 + 12), hy0 = Math.max(b[1], 12), hx1 = Math.min(b[0] + b[2], 22 + 196 - 12), hy1 = Math.min(b[1] + b[3], 216 - 12);
     things.juncos.hintBox = [hx0, hy0, hx1 - hx0, hy1 - hy0];
-    things.juncos.hintWhy = 'hintBox: the part of the touch box the hint frame shows (the frame and the twinkle are drawn round hintBox; the touch box answers the touches): the bed runs off the picture\'s right edge, and the frame\'s top stays under row ' + (HINT_TOP - 12) + ' (the frog\'s face at esconde16\'s place, 136, 136: the old frame did not cross it)'; }
+    things.juncos.hintWhy = 'hintBox: the part of the touch box the hint frame shows (the frame and the twinkle are drawn round hintBox; the touch box answers the touches): the bed runs off the picture\'s right edge, as El camino\'s big tree\'s crown'; }
 
   /* ---- views: one, zoom 1, the old wide window ---- */
   const views = { wide: { zoom: 1, x0: 22, world: floor(120, 150), region: null, old: [22, 0, 196, 216], what: 'the field: the tree, the lawn, the reeds, the corner of the lake, the sky' } };
@@ -312,7 +313,7 @@ function make(G) {
 
   /* ---- remap: every distinct position of positions.json ---- */
   const POS = JSON.parse(fs.readFileSync(path.join(REF, 'positions.json'), 'utf8'));
-  const STORY_MOVES = [];
+  const STORY_MOVES = [{ old: [178, 197], new: BEBE, who: 'perro', why: 'the pair más.no: Canelo drinks at the water: at the old point (178, 197) the reeds stand in front of his head (the subject hidden); on the open bank down the shore from the reeds, as acts.aguanta (moves)' }];
   const remap = POS.positions.map(p => {
     const e = { kind: p.kind, old: p.kind === 'point' ? [p.x, p.y] : p.kind === 'x' ? [p.x] : p.kind === 'numbers' ? [p.x, p.y, p.w] : [p.x, p.y, p.w, p.h], uses: p.uses.map(u => u.file.replace(/^cuentos\//, '') + ' ' + u.at) };
     if (p.kind === 'cam') { const names = [...new Set(p.uses.map(u => { const m = u.at.match(/^(.+)\.(si|no)\.cam$/); return m ? deacc(m[1]) + '.' + m[2] : null; }).filter(Boolean))];
@@ -327,7 +328,8 @@ function make(G) {
       else { const mv = STORY_MOVES.find(m => m.old[0] === p.x && m.old[1] === p.y), at = mv ? mv.new : [p.x, p.y], w = personW(at);
         e.to = { floor: w }; e.new = personQ(w); if (mv) { e.moved = true; e.why = mv.why; }
         e.what = ats.every(a => /\.cq$/.test(a)) ? 'the frog\'s place q (x, y): the ground under (x + 16, y + 25); the same screen place' + (p.y < 120 ? ' (in the tree\'s crown: abajo.no)' : '') : ats.every(a => /bolas\./.test(a) || /flor$/.test(a)) ? 'a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place' : ats.every(a => /\.perro$/.test(a) || /^beats/.test(a)) ? 'Canelo\'s place (x, y): the ground under it; the same screen place' : 'a child\'s feet (x, y): the ground under them; the same screen place';
-        if (ats.every(a => /^beats/.test(a))) e.what = 'Canelo\'s place in a perro step of the picture story (x, y): the ground under it; the same screen place'; }
+        if (ats.every(a => /^beats/.test(a))) e.what = 'Canelo\'s place in a perro step of the picture story (x, y): the ground under it; the same screen place';
+        if (mv) e.what = e.what.replace('; the same screen place', '; moved (why)'); }
     }
     return e;
   });
@@ -435,7 +437,7 @@ function make(G) {
     // they show two places: the ball in the tree, the ball in the reeds). An old 75 x 40 or 113 x 60 view (1.73 to 2.6 x) is zoom 2 when its
     // subject is whole in 98 x 52; tira, coge (1.46 x) and abajo (1.31 x) are zoom 1
     return {
-      'bola.si': pic(137, 166, 2, 'a ball on the grass, close'), 'bola.no': pic(137, 166, 2, 'a flower there, close'),
+      'bola.si': pic(148, 166, 2, 'a ball on the grass, close'), 'bola.no': pic(148, 166, 2, 'a flower there, close'),
       'tiene.si': pic(131, 156, 1, 'Canelo lies with the ball by him'), 'tiene.no': pic(131, 156, 1, 'Canelo jumps, the ball in the air before him'),
       'tira.si': pic(151, 148, 1, 'Luis throws the ball: it flies away from him'), 'tira.no': pic(151, 148, 1, 'Luis holds his hands up, the ball drops to him'),
       'coge.si': pic(151, 148, 1, 'Carmen catches the ball over her head'), 'coge.no': pic(151, 148, 1, 'Carmen throws the ball away'),
@@ -445,7 +447,7 @@ function make(G) {
       'tu.si': pic(126, 160, 2, 'Carmen points at Luis'), 'tu.no': pic(126, 160, 2, 'Carmen points at herself'),
       'arriba.si': pic(62, 114, 2, 'the big ball up in the tree, in its fork'), 'arriba.no': pic(170, 182, 2, 'the big ball down in the reeds'),
       'abajo.si': pic(89, 118, 1, 'the frog on the grass under the tree'), 'abajo.no': pic(89, 118, 1, 'the frog up in the tree\'s crown'),
-      'mas.si': pic(152, 176, 2, 'Canelo sniffs at the ball, wet'), 'mas.no': pic(152, 176, 2, 'Canelo drinks at the water'),
+      'mas.si': pic(152, 180, 2, 'Canelo sniffs at the ball, wet'), 'mas.no': pic(152, 180, 2, 'Canelo drinks at the water'),
     };
   }
 
@@ -695,6 +697,7 @@ function check(sh, G, runs) {
       const v = vItem(it.feet[0], it.feet[1]), near = nearerRows(it.rows, v, SOLID);
       for (const [part, n] of Object.entries(near)) { const fp = sh.front.parts[part];
         if (fp) { const b = it.who + ' at ' + it.at + ' behind ' + part; behind.set(b, (behind.get(b) || 0) + n);
+          if (/^pair /.test(where)) P.push('pair: ' + where + ' ' + it.who + ' at ' + it.at + ' has ' + n + ' px of reeds over them (the subject not hidden)');
           const o = it.old || it.feet, dOld = enAguaOld(o[0], o[1] + 1), oldReed = within([o[0], o[1], 1, 1], OLDBOX.juncos);
           if (!(dOld < 1.1 || oldReed)) P.push('reeds: ' + where + ' ' + it.who + ' at ' + it.at + ' has ' + n + ' px of reeds over them, where the old picture had them away from the reeds (old pond ' + r2(dOld) + ')');
           continue; }
@@ -897,6 +900,7 @@ function check(sh, G, runs) {
 
   { const reached = new Set(); for (const r of runs) for (const L of r.lines) reached.add(keyOf(L.W)); for (const ps of pairSides) reached.add(keyOf(ps.spec.set || {}));
     for (const k of STATES) if (!reached.has(k)) P.push('state ' + k + ' is baked but nothing reaches it');
-    notes.push('states: ' + reached.size + ' baked state reached (every moment, pair and level picture); bake in headless Chrome: the first ' + Math.round(G.ms.first || 0) + ' ms, again ' + Math.round(G.ms.warm || 0) + ' ms (the ground cached)'); }
+    notes.push('states: ' + reached.size + ' baked state reached (every moment, pair and level picture)');
+    console.log('  (not in the sheet, it changes from run to run) bake in headless Chrome: the first ' + Math.round(G.ms.first || 0) + ' ms, again ' + Math.round(G.ms.warm || 0) + ' ms (the ground cached)'); }
   return P;
 }

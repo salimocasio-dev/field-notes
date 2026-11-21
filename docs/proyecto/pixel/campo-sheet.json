@@ -21,13 +21,13 @@
   "what": "the open field of the park, on the world's axes, seen at the engine's 30 degrees (shadows to screen right): the lawn (El frente's grass, calm, as El camino's) from the horizon (row 100) to the bottom; at the left the tree, its foot and its crown where the old ones were, the trodden earth round its foot reaching Canelo's spot; at the lower right a corner of the lake, its shore a straight bank along y (up to the right on the screen), the water on the near side under a low bank of earth; along the shore the bed of reeds, at the water's edge and in the shallows. El camino's far hills and day sky over it, its sun in the upper left, the old picture's three clouds",
   "lines": {
    "shore": "the lake's shore: x = 6.092 (screen sx + 2 sy = 582), from the bottom (x 150) to the picture's right edge (row 171); its surface 0.16 under the lawn (a bank 4 rows high)",
-   "reeds": "the reeds: a bed along the shore from y 3.1 (down to the left) to -0.7 (up to the right), x 5.932 to 6.712 (from the damp lip to the shallows); on the screen from (168, 202) up to (205, 185)"
+   "reeds": "the reeds: a bed along the shore from y 3.3 (down to the left) to -0.7 (up to the right), x 5.932 to 6.712 (from the damp lip to the shallows); on the screen from (168, 202) up to (205, 185)"
   },
   "why": "the brief and page 11 decision 9: the set stands on the world's axes and is seen at the engine's angle; nothing is built square to the camera. The old pond's rim ran from the bottom (x 160) up to the right; its four reed clusters stood on one line within 5 px of the screen line sx + 2 sy = 565, which is a line along y: so the shore runs along y, the water on its near side, and the reeds along it. The shore is placed so that every place the stories put someone on the land is on it (Canelo, the frog and the children at most at sx + 2 sy = 565), every ball they float on the lake is beyond it (603 and more), and the balls they hide in the reeds are in the bed (574, 576). The tree keeps its old foot and crown. Every place on the ground keeps its old screen point (rules.floor)",
   "moved": [
    "the tree's crown: its middle 2 px right of the old (62, 100), 27 x 25 px (the old 30 x 26), so its hint frame is inside the view (things.arbol)",
    "the lake: a straight shore along y (the old an ellipse round 232, 228): at the bottom it starts 10 px left of the old rim (x 150; the old 160), at the view's right edge it is 7 rows lower (182; the old 175)",
-   "the reeds: a bed of about 74 stalks along the shore (the old four clusters of five); its right end at x 205 (the old 217), so that the hint frame round it is inside the view",
+   "the reeds: a bed of about 75 stalks along the shore (the old four clusters of five); its right end at x 205 (the old 217), so that the hint frame round it is inside the view",
    "the sun: upper left (the old upper right), as El camino's; the clouds moved clear of the corner card and the answer cards",
    "unchanged: every place of a person, the frog, Canelo, a ball and the basket"
   ]
@@ -90,17 +90,17 @@
   },
   "juncos": {
    "set": true,
-   "world": [5.82, 0.9247, 0, 7.4518, 2.5565, 1.1103],
-   "box": [180, 149, 60, 55],
-   "screen": [180, 149, 240, 204],
+   "world": [5.9832, 1.0879, 0, 7.615, 2.7196, 1.2435],
+   "box": [180, 149, 60, 58],
+   "screen": [180, 149, 240, 207],
    "what": "the reeds: every stalk, head and blade of the bed along the shore",
    "old": {
     "box": [160, 168, 60, 48]
    },
    "hand": [188, 190],
    "handWhy": "the old hand point (188, 190): in the reeds",
-   "hintBox": [180, 164, 26, 40],
-   "hintWhy": "hintBox: the part of the touch box the hint frame shows (the frame and the twinkle are drawn round hintBox; the touch box answers the touches): the bed runs off the picture's right edge, and the frame's top stays under row 152 (the frog's face at esconde16's place, 136, 136: the old frame did not cross it)"
+   "hintBox": [180, 149, 26, 55],
+   "hintWhy": "hintBox: the part of the touch box the hint frame shows (the frame and the twinkle are drawn round hintBox; the touch box answers the touches): the bed runs off the picture's right edge, as El camino's big tree's crown"
   },
   "campo": {
    "set": true,
@@ -1266,11 +1266,11 @@
    },
    "crops": {
     "bola.si": {
-     "crop": [88, 140, 98, 52],
+     "crop": [99, 140, 98, 52],
      "zoom": 2
     },
     "bola.no": {
-     "crop": [88, 140, 98, 52],
+     "crop": [99, 140, 98, 52],
      "zoom": 2
     },
     "salta.si": {
@@ -1295,11 +1295,11 @@
    },
    "crops": {
     "mas.si": {
-     "crop": [103, 150, 98, 52],
+     "crop": [103, 154, 98, 52],
      "zoom": 2
     },
     "mas.no": {
-     "crop": [103, 150, 98, 52],
+     "crop": [103, 154, 98, 52],
      "zoom": 2
     }
    }
@@ -1830,10 +1830,12 @@
     "cual-campo.json más.no.set.perro"
    ],
    "to": {
-    "floor": [6.1464, 2.9916, 0]
+    "floor": [6.0376, 3.8619, 0]
    },
-   "new": [178, 197],
-   "what": "Canelo's place (x, y): the ground under it; the same screen place"
+   "new": [160, 204],
+   "moved": true,
+   "why": "the pair más.no: Canelo drinks at the water: at the old point (178, 197) the reeds stand in front of his head (the subject hidden); on the open bank down the shore from the reeds, as acts.aguanta (moves)",
+   "what": "Canelo's place (x, y): the ground under it; moved (why)"
   },
   {
    "kind": "x",
@@ -1952,17 +1954,17 @@
  ],
  "pictures": {
   "bola.si": {
-   "world": [3.3996, 2.4749, 0],
-   "screen": [137, 166],
+   "world": [3.6987, 2.1757, 0],
+   "screen": [148, 166],
    "zoom": 2,
-   "crop": [88, 140, 98, 52],
+   "crop": [99, 140, 98, 52],
    "what": "a ball on the grass, close"
   },
   "bola.no": {
-   "world": [3.3996, 2.4749, 0],
-   "screen": [137, 166],
+   "world": [3.6987, 2.1757, 0],
+   "screen": [148, 166],
    "zoom": 2,
-   "crop": [88, 140, 98, 52],
+   "crop": [99, 140, 98, 52],
    "what": "a flower there, close"
   },
   "tiene.si": {
@@ -2092,17 +2094,17 @@
    "what": "the frog up in the tree's crown"
   },
   "mas.si": {
-   "world": [4.3514, 2.6109, 0],
-   "screen": [152, 176],
+   "world": [4.569, 2.8284, 0],
+   "screen": [152, 180],
    "zoom": 2,
-   "crop": [103, 150, 98, 52],
+   "crop": [103, 154, 98, 52],
    "what": "Canelo sniffs at the ball, wet"
   },
   "mas.no": {
-   "world": [4.3514, 2.6109, 0],
-   "screen": [152, 176],
+   "world": [4.569, 2.8284, 0],
+   "screen": [152, 180],
    "zoom": 2,
-   "crop": [103, 150, 98, 52],
+   "crop": [103, 154, 98, 52],
    "what": "Canelo drinks at the water"
   }
  },
@@ -2390,6 +2392,13 @@
     }
    ],
    "why": "acts.malA17 (otra-vez, wrong): the ball he throws lands at the water's edge, a little way off, and Canelo does not go after it. The old point (168, 206) was on the old pond's rim; here it is on the water past the straight shore: -10 px, -2 rows to the lip of the bank (the ball then rolls back to the row, vuelvefila, from where it lies)"
+  },
+  {
+   "line": 326,
+   "act": "aguanta",
+   "src": "await perroA(ORILLA[0]-10,ORILLA[1]+2,\"walk\");pe.dir=1;pe.pose=\"eat\";",
+   "to": "await perroA(160,204,\"walk\");pe.dir=1;pe.pose=\"eat\";",
+   "why": "acts.aguanta (otra-vez): Canelo goes down and drinks at the water's edge: at the old point (180, 200: ORILLA - 10, + 2) the reeds stand in front of his head; -20 px, 4 rows to the open bank down the shore from the reeds (the same place as the pair más.no's, remap)"
   }
  ],
  "bubbles": {
@@ -3128,7 +3137,7 @@
    "old": "box juncos [160,168,60,48]; hand [188,190]",
    "to": {
     "thing": "juncos",
-    "box": [180, 149, 60, 55],
+    "box": [180, 149, 60, 58],
     "hand": [188, 190]
    }
   },
@@ -3178,10 +3187,10 @@
   "notes": [
    "inventory: 10 things (old 10), 2 frog places of LUGAR (old 2) and 15 frog places in all, 1 view (old 1), 66 positions (old 66), 11 review pairs of cual-campo (22 pictures here; none is another scene's), 16 level pictures (old 16), 241 places of campo.js named in code, 1 baked state (the old 7)",
    "hops: all 91 pairs of the frog's 14 places (LUGAR and every place an act hops him to; round(d / 30), 1 to 4, kit.js acts.ir) keep the old count",
-   "boxes: every pixel of each set thing inside its touch box: arbol [34,71,55,84] (2545 px), juncos [180,149,60,55] (1023 px) (still: no leaf or reed moves at any wind step); every pixel of each answers that thing in the hit order; the set's parts are arbol, juncos (each a touch key's: nothing decorative); the lake is the field's ground",
+   "boxes: every pixel of each set thing inside its touch box: arbol [34,71,55,84] (2545 px), juncos [180,149,60,58] (1026 px) (still: no leaf or reed moves at any wind step); every pixel of each answers that thing in the hit order; the set's parts are arbol, juncos (each a touch key's: nothing decorative); the lake is the field's ground",
    "shadows: every castShadow call of the bake has strength 1 and a radius, each casting part darkens: arbol 50 calls, 4158 px set (0 calls wholly over shadow already); juncos 34 calls, 280 px set (4 calls wholly over shadow already); the reeds (thin) cast only contact shadows, every pixel within 2.24 px of a reed's foot",
    "ground: the lawn, the trodden earth round the tree's foot out to Canelo's spot (730 px with the bank's lip, joined to the trunk's foot: 185 px beside it), the bank's face (225 px) and the water (2347 px); nothing else but the shadows the tree and the reeds cast",
-   "water: 1412 px in the view, mean colour 51,103,127 (38 from the nearest sky band, CIE76), 9.6% of it ripples (baked) and 19 glints that come and go each frame (drawGlints, 8 steps a second, still when the OS asks); the bank's face (or the reeds standing on it) over the water at 75 of the 75 columns it reaches",
+   "water: 1412 px in the view, mean colour 50,103,127 (39 from the nearest sky band, CIE76), 9.5% of it ripples (baked) and 19 glints that come and go each frame (drawGlints, 8 steps a second, still when the OS asks); the bank's face (or the reeds standing on it) over the water at 75 of the 75 columns it reaches",
    "preview: at every moment of the 15 runs (8241 places of the children, the frog, Canelo, the balls and the cards) campo-preview.html puts everyone exactly where the sheet does (0 differ)",
    "asks: 44 distinct asks (for abajo, aguanta, arbol, arriba, bola_carmen, bola_cq, bola_luis, carmen, coge, da, di_abajo, di_coge, di_dame, di_mi, di_tu, juncos, luis, perro, salta, tira): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), no frame's rings across a face where the old frame's were not (as the old: arriba-abajo right beats.23 (arbol) luis's face; la-bola right beats.22 (carmen) luis's face; la-bola right beats.25 (luis) carmen's face; la-bola right beats.25 (luis) the frog's face; la-bola right beats.50 (carmen) luis's face; la-bola wrong beats.50 (carmen) luis's face), the hint hand on no face; 64 answer cards, each with its lit frame and glow (+- 12) inside the view (2 px to spare at the least), over no one's body, no ball and not the tree",
    "sun: at 38,47, radius 9: under no corner card (437 shown, 10 px to spare at the least) and under no answer card with its frame and glow (64 cards, 5 px to spare at the least), at every moment and ask of every run",
@@ -3189,12 +3198,12 @@
    "tree: its crown on the screen [34,71,88,154] (the old [30,74,90,126]), its trunk's foot at row 154 (the old 152), the hollow over the fork darker than the crown round it (lightness 30 against 48); at least 11 rows of lawn between anyone's feet and the trunk's foot behind them (arriba-abajo right beats.15.after.0: the frog at 50,140)",
    "shadows: each in one piece with its thing (arbol 1092 px, juncos 21 px)",
    "sky: the sun at 38,47 (radius 9), left of the middle, whole in the view, nothing of the set within 2 px; the old picture's three clouds at 188,12; 204,34; 108,10 (the old 36,16; 112,9; 168,26), each clear of the sun, the crown and the corner card by 2 px",
-   "ground: 54 distinct stands of the children, the frog, Canelo and the basket: nothing of the tree nearer than them inside their sprites; behind reeds (front.juncos draws them over): the frog at 160,166 behind juncos (107 px), perro at 168,192 behind juncos (3 px), perro at 196,204 behind juncos (49 px); in the water or the reeds, each where the old picture had them by the pond: the frog at 160,166 in the reeds, perro at 196,204 in the water",
+   "ground: 54 distinct stands of the children, the frog, Canelo and the basket: nothing of the tree nearer than them inside their sprites; behind reeds (front.juncos draws them over): the frog at 160,166 behind juncos (107 px), perro at 168,192 behind juncos (3 px), perro at 196,204 behind juncos (49 px); in the water or the reeds, each where the old picture had them by the pond: the frog at 160,166 in the reeds, perro at 166,198 in the reeds, perro at 196,204 in the water",
    "balls: 51 distinct balls at every moment and in every pair: on the ground with lawn (or the trodden earth) round them (100% of the ring at the least), at the water's edge on the land where the old picture had them on its pond's rim (luis at 158,204 (36% lawn round it)), in the air with their shadow point on the land (3), floating with water all round (100% at the least) and no reed over them, in the reeds partly hidden and at least half seen (juego at 180,197 65% seen, juego at 178,199 83% seen, cq at 170,197 100% seen), in the tree with the crown behind them (100% at the least) and standing out from it (47 at the least, CIE76); no two loose balls overlap (Canelo's pile and the balls floating on the lake, as the old, not counted: the stories never ask for them)",
-   "pairs, what differs: bola: bolas a, flor; tiene: bolas a, perro pose/dy; tira: luis x/pose, bolas a; coge: carmen x/pose, bolas a; salta: bolas a, perro x/y/dy/polvo; dame: bolas a; mi: luis pose, bolas a/b; tu: carmen pose, bolas b; arriba: bolas a, the window; abajo: cq x/y/s; mas: perro x/y/pose/dir",
+   "pairs, what differs: bola: bolas a, flor; tiene: bolas a, perro pose/dy; tira: luis x/pose, bolas a; coge: carmen x/pose, bolas a; salta: bolas a, perro x/y/dy/polvo; dame: bolas a; mi: luis pose, bolas a/b; tu: carmen pose, bolas b; arriba: bolas a, the window; abajo: cq x/y/s; mas: perro y/pose/dir",
    "pairs: 22 review pictures (and the 16 level pictures, the same pictures): everyone, the frog, Canelo, the balls and the flower whole in their crop (no zoom 2 crop cuts what the old window did not), on clear ground",
    "lawn: El frente's grass (GRASS), mean colour 119,139,61 (hue 75; the old lawn 64,163,63); the sprite layer's things on it, by their mean colour against it (CIE76; keep 25), each with its dark outline and its cast shadow: Luis's ball 49 (the old 77), Carmen's ball 67 (the old 83), the frog's ball 26 (the old 50), Canelo 32 (the old 62), the basket 42 (the old 71), the flower's petals 85 (the old 113). The frog's small yellow ball is the nearest to the olive lawn: it keeps its dark outline and its shadow (no help needed: El patio's flowerLeaves rule; a reader to judge)",
-   "states: 1 baked state reached (every moment, pair and level picture); bake in headless Chrome: the first 38 ms, again 21 ms (the ground cached)"
+   "states: 1 baked state reached (every moment, pair and level picture)"
   ]
  }
 }
