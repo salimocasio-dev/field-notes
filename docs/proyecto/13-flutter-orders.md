@@ -689,6 +689,18 @@ Designed by Opus agents in six rounds; the orchestrator looked at every round's 
 - Seen by the last reader and not changed: at night an empty bed is a dark oval of low contrast (no story has empty beds at night); the nest reads as a flat dish until the bird sits on it.
 - Bake: about 100 to 150 ms the first time, 26 to 52 ms warm, in headless Chrome.
 
+### Order 32 (patio), step b. **Result (Nov 21): done, merged; stories 9 to 11 play in the app (build 7). La casa is whole.**
+
+Ported by an Opus builder with no stop; the orchestrator ran `test_all.sh` on the branch merged with that day's main (passes whole); a fresh reader went through the three stories as they play in the real app.
+
+- All 15 baked states: 0 of 51,840 differ from the JavaScript. Preview pictures: 595, 127 identical, none over 2%, the most 0.22% (the soft edge of the sun's disc). El frente, El balcón and La sala unchanged.
+- All 18 recorded runs match in everything but time, with the old hop sounds and the old number of random draws: las-flores and hasta-manana 70 ms longer, que-es-esto 20 ms, d-la-bola and h-patio 70 ms shorter, d-buenas-noches 350 ms shorter, each from a walk to a moved place.
+- In the real app las-flores, que-es-esto and hasta-manana play to the end by touches, right and wrong, no touch lost.
+- Built for later scenes: a scene can draw sprite-layer things behind the set (the sun, moon and stars: the sheet's `behind`); `flowerLeaves`; `Sheet` reads `hops`, the sun's heights, moves that change a value or a card's place, remaps that name another scene's picture; `BakedSet` keeps the grass blades' colours of its hour; a position an act reads from its story file goes through the sheet's remap as a set step's does.
+- Bake: the very first state, which also builds the ground, 133 to 157 ms (over the limit in 2 of 4 loads); every other first bake 26 to 61 ms.
+- What the reader of the real app found is the old stories' own (the hint hand running off the bottom under the beds; a thing shown over the frog's head; the two answer cards that look alike; asks with nothing marked; a heart on a wrong touch; fireflies over a face), with these from the new set, left: a flower's clump of leaves read to this reader as "a dark-green rounded shell" (an earlier reader named it stem and leaves); the gate's hint frame crosses papá's face at one ask; the heart bubble of a touched Luis sits over the bird.
+- Reported in the JavaScript set, not fixed: the trunk's and the nest's shadows are never cast (a call with a point spread wrongly; the pictures the readers passed are without them); the nest's branch, the crown's leaves at some wind steps (1 px) and the beds' ragged earth (1 to 2 px) reach outside their touch boxes; the sheet's `behind` names its two source lines one too high; at one moment of las-flores the preview puts Carmen 8 px from where the sheet's remap (and so the app) puts her.
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.

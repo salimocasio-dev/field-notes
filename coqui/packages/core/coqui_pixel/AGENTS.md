@@ -54,6 +54,20 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
     (`bubbleRects`) and `talk` (`SheetTalk`: places, heads, and `board(name, field)` for the corner cards the sheet gives in
     words). El frente's and El balcón's sheets read as before.
   - `test/sala_sheet_test.dart`: the reader against La sala's real sheet (the file on the vm, the fixture in chrome).
+- Since order 32b (El patio), only as far as that scene needs:
+  - `Sheet` reads what El patio's sheet writes that the earlier ones do not: `behind` (`SheetBehind`: what the sprite layer draws
+    behind the set, in words, and its items; El balcón's `behind` stays a number), `flowerLeaves` (`SheetFlowerLeaves`: the
+    palette as colours, the stages `open` and `bud` with their rows and head, the lines that get them and those that do not),
+    `hops` and `hopsAll` (`SheetHop`: two places of the frog, the old and today's count and distance; El balcón's and La sala's
+    `hops` too, no longer in `unknown`), a point given by its x and its rows (`points.sol`: `SheetScreenPoint.x`, `heights`),
+    `moves` with no places, with the values of W they change (`SheetMove.values`), a person's sort row (`z`) and where the
+    answer cards stand (`respEn`), a thing's hand point given as a point (`SheetThing.hand`), remap entries that moved
+    (`SheetRemap.moved`), that stay a screen point (`RemapTo.screen`), that are no place (`to.none` true) or that name another
+    scene's picture (`cropsElsewhere`), and corner cards of two parts with terms `p + q max(m, f)` (`SheetTalk.boardsOf`).
+    El frente's, El balcón's and La sala's sheets read as before.
+  - `BakedSet` keeps the blades' colours of its bake (`tuftLit`, `tuftDark`) and puts them back: a set whose blades take the
+    light of its hour (El patio) sets them in its bake. For the earlier sets they are the engine's own, unchanged.
+  - `test/patio_sheet_test.dart`: the reader against El patio's real sheet (the file on the vm, the fixture in chrome).
 - Since order 12b it also holds `hexColour` (`colour.dart`): `"#RRGGBB"` as the int `0xFFBBGGRR`, for a colour that is made once. `hexColours` (a list of them) stays under `src/`.
 
 ## Run and test it alone
@@ -89,7 +103,7 @@ node tool/make_dash_ref.mjs [--check]    # test/support/fixtures/ref_dash.dart: 
 ```
 
 ```
-dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart and sala_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
+dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart, sala_sheet.dart and patio_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
 ```
 
 `test/pp_frente_test.dart` rebuilds the Nov 14 one-state El frente (an old frente-set.html) as a test of `PpBuild`'s helpers at S = 26. That picture is no longer in `coqui/ref/pp/` (order 07 replaced it with El frente's 25 states): its bytes are `test/support/fixtures/frente_nov14.dart`, read on every platform, and nothing makes that file again. The 25 states are order 14's.

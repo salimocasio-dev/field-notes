@@ -3,10 +3,12 @@
 // the Dart scene must draw), rendered in headless Chrome, for the comparison test (test/preview_test.dart,
 // test/balcon_preview_test.dart).
 //
-//   node tool/preview_shots.mjs [--scene frente|balcon|sala] --states DIR --out DIR [--fixture]
+//   node tool/preview_shots.mjs [--scene frente|balcon|sala|patio] --states DIR --out DIR [--fixture]
 //
 // --scene: the converted scene (frente when not given). La sala's cases carry the acts their story names (`acts`): its
-//   preview moves a person only at a moved place of an act the story uses (PREVIEW.acts, the sheet's `moves`). --states: the folder
+//   preview moves a person only at a moved place of an act the story uses (PREVIEW.acts, the sheet's `moves`). El patio's
+//   carry them too, and the story is given to its preview (PREVIEW.story: the moves of the acts it names, the story
+//   positions the sheet moved for it); its pairs are cual-patio's and cual-camino's parque.no (a picture of the yard). --states: the folder
 //   `node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR` wrote (W after every step of every run of the
 //   scene's stories: El frente's five, El balcón's four, La sala's six). --out: where every picture and cases.json go. --fixture: also
 //   write the package's fixture (El frente: test/support/fixtures/preview_fixture.dart; El balcón:
@@ -39,16 +41,20 @@ const SCENES = {
   frente: { stories: ['la-lluvia', 'el-bizcocho', 'donde-esta-el-pajaro', 'd-toc-toc', 'h-frente'], fixture: 'preview_fixture.dart', cases: 'previewCases', pictures: 'previewPictures' },
   balcon: { stories: ['el-jugo', 'que-calor', 'd-agua-pajaro', 'h-balcon'], fixture: 'balcon_preview_fixture.dart', cases: 'balconPreviewCases', pictures: 'balconPreviewPictures' },
   sala: { stories: ['la-familia', 'la-foto', 'quien-eres-tu', 'd-bizcocho-bebe', 'd-foto-familia', 'h-sala'], fixture: 'sala_preview_fixture.dart', cases: 'salaPreviewCases', pictures: 'salaPreviewPictures' },
+  patio: { stories: ['las-flores', 'que-es-esto', 'hasta-manana', 'd-la-bola', 'd-buenas-noches', 'h-patio'], fixture: 'patio_preview_fixture.dart', cases: 'patioPreviewCases', pictures: 'patioPreviewPictures' },
 };
-if (!STATES || !OUT || !SCENES[SCENE]) { console.error('usage: node tool/preview_shots.mjs [--scene frente|balcon|sala] --states DIR --out DIR [--fixture]'); process.exit(2); }
+if (!STATES || !OUT || !SCENES[SCENE]) { console.error('usage: node tool/preview_shots.mjs [--scene frente|balcon|sala|patio] --states DIR --out DIR [--fixture]'); process.exit(2); }
 const PKG = process.cwd(), ROOT = path.resolve(PKG, '../../../..');
 if (!fs.existsSync(path.join(ROOT, `docs/proyecto/pixel/${SCENE}-preview.html`))) { console.error('run this in coqui/packages/core/coqui_scenes'); process.exit(2); }
 
 const STORIES = SCENES[SCENE].stories, PLANS = ['right', 'wrong', 'alternate'];
 const SHEET = JSON.parse(fs.readFileSync(path.join(ROOT, `docs/proyecto/pixel/${SCENE}-sheet.json`), 'utf8'));
 const CUAL = JSON.parse(fs.readFileSync(path.join(ROOT, `historia/cuentos/cual-${SCENE}.json`), 'utf8'));
-// a word with its accents folded: La sala's sheet and preview name a pair's pictures so (mamá.si is mama.si)
-const fold = w => w.replace(/[áéíóú]/g, c => 'aeiou'['áéíóú'.indexOf(c)]);
+// El patio draws one picture of another file's pair: cual-camino's parque.no (the yard, not the park)
+const OTHER = SCENE === 'patio' ? [{ file: 'cual-camino', items: JSON.parse(fs.readFileSync(path.join(ROOT, 'historia/cuentos/cual-camino.json'), 'utf8')).items.filter(i => i.w === 'parque'), sides: ['no'] }] : [];
+// a word with its accents folded: La sala's sheet and preview name a pair's pictures so (mamá.si is mama.si); El patio's
+// also fold ñ and write a space as _ (hasta mañana.si is hasta_manana.si)
+const fold = w => SCENE === 'patio' ? w.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_') : w.replace(/[áéíóú]/g, c => 'aeiou'['áéíóú'.indexOf(c)]);
 const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
 const viewOf = cam => Object.keys(SHEET.views).find(k => same(SHEET.views[k].old, cam)) || null;
 // the acts a story file names (sala-sheet-make.js actsOf): La sala's preview moves a person only at a moved place of an act
@@ -58,9 +64,12 @@ const actsOf = st => [...new Set((JSON.stringify(JSON.parse(fs.readFileSync(path
 function cases() {
   const out = [];
   // a level picture names its pair picture as the sheet does (La sala's: folded)
-  const spec = (w, side) => { const it = CUAL.items.find(i => i.w === w) || CUAL.items.find(i => fold(i.w) === w); return { set: it[side].set || null, cam: it[side].cam }; };
+  const items = [...CUAL.items, ...OTHER.flatMap(o => o.items)];
+  const fileOf = w => (OTHER.find(o => o.items.some(i => i.w === w || fold(i.w) === w)) || { file: `cual-${SCENE}` }).file;
+  const spec = (w, side) => { const it = items.find(i => i.w === w) || items.find(i => fold(i.w) === w); return { set: it[side].set || null, cam: it[side].cam }; };
   for (const it of CUAL.items) for (const side of ['si', 'no']) out.push(Object.assign({ id: `pair.${it.w}.${side}`, kind: 'pair', word: it.w, side }, spec(it.w, side)));
-  for (const L of SHEET.level) { const [w, s] = L.picture.split('.'); out.push(Object.assign({ id: `level.${L.w}.${L.index}`, kind: 'pair', word: w, side: s }, spec(w, s))); }
+  for (const o of OTHER) for (const it of o.items) for (const side of o.sides) out.push(Object.assign({ id: `pair.${it.w}.${side}`, kind: 'pair', word: it.w, side, cual: o.file }, spec(it.w, side)));
+  for (const L of SHEET.level) { const [w, s] = L.picture.split('.'); out.push(Object.assign({ id: `level.${L.w}.${L.index}`, kind: 'pair', word: w, side: s, cual: fileOf(w) }, spec(w, s))); }
   const seenView = new Set();
   for (const st of STORIES) for (const plan of PLANS) {
     const lines = fs.readFileSync(path.join(STATES, st, plan + '.states.jsonl'), 'utf8').trim().split('\n').map(l => JSON.parse(l));
@@ -75,7 +84,7 @@ function cases() {
       if (key === prev) continue;
       prev = key;
       const c = { id: `story.${st}.${plan}.${String(n).padStart(3, '0')}`, kind: 'story', story: st, plan, n, step: s.path, view, F: Math.floor(s.t / 70), W };
-      if (SCENE === 'sala') c.acts = actsOf(st);
+      if (SCENE === 'sala' || SCENE === 'patio') c.acts = actsOf(st);
       c.keep = plan === 'right' && (n % 3 === 0 || !seenView.has(view));
       if (plan === 'right') seenView.add(view);
       out.push(c);
@@ -116,7 +125,9 @@ function server() {
   const pngs = {};
   for (const c of all) {
     const url = c.kind === 'pair'
-      ? await page.evaluate(([w, s]) => window.PREVIEW.pair(w, s), [SCENE === 'sala' ? fold(c.word) : c.word, c.side])
+      ? await page.evaluate(([w, s, f]) => window.PREVIEW.pair(w, s, f || undefined), [SCENE === 'sala' || SCENE === 'patio' ? fold(c.word) : c.word, c.side, c.cual || null])
+      : SCENE === 'patio'
+      ? await page.evaluate(async ([w, F, st]) => { window.PREVIEW.story = await (await fetch('../../../historia/cuentos/' + st + '.json')).json(); return window.PREVIEW.render(window.PREVIEW.baseW(w), { F, t: 0 }); }, [c.W, c.F, c.story])
       : await page.evaluate(([w, v, F, acts]) => { if (acts) window.PREVIEW.acts = acts; return window.PREVIEW.render(window.PREVIEW.baseW(w), { view: v, F, t: 0 }); }, [c.W, c.view, c.F, c.acts || null]);
     const png = Buffer.from(url.split(',')[1], 'base64');
     c.file = c.id + '.png';

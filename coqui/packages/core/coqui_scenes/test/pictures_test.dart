@@ -505,8 +505,9 @@ void main() {
           n++;
         }
       }
-      // on the vm: 329 old pictures of the 8 scenes not converted (El balcón's 36 went at order 30b, La sala's 50 at 31b)
-      expect(n, kIsWeb ? greaterThan(30) : 329);
+      // on the vm: 277 old pictures of the 7 scenes not converted (El balcón's 36 went at order 30b, La sala's 50 at 31b,
+      // El patio's 52 at 32b)
+      expect(n, kIsWeb ? greaterThan(30) : 277);
     });
   });
 

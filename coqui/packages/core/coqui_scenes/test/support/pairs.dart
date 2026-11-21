@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:coqui_contracts/coqui_contracts.dart';
 
 import 'fixtures/balcon_preview_fixture.dart';
+import 'fixtures/patio_preview_fixture.dart';
 import 'fixtures/preview_fixture.dart';
 import 'fixtures/sala_preview_fixture.dart';
 
@@ -18,9 +19,34 @@ List<ReviewPair> balconPairs() => _pairsOf('balcon', balconPreviewCases);
 /// from historia/cuentos/cual-sala.json).
 List<ReviewPair> salaPairs() => _pairsOf('sala', salaPreviewCases);
 
-List<ReviewPair> _pairsOf(String scene, String json) {
+/// The 12 review pairs of cual-patio, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene patio reads them
+/// from historia/cuentos/cual-patio.json; cual-camino's parque, whose "no" side is a picture of the yard, is not one of
+/// them: [patioParqueNo]).
+List<ReviewPair> patioPairs() =>
+    _pairsOf('patio', patioPreviewCases, only: (c) => c['cual'] == null);
+
+/// cual-camino's parque.no, the picture of the yard in El camino's pair (its state and view), from the same cases.
+PictureSpec patioParqueNo() {
+  final c = (jsonDecode(patioPreviewCases) as List)
+      .cast<Map<String, dynamic>>()
+      .firstWhere((c) => c['id'] == 'pair.parque.no');
+  return PictureSpec(
+    scene: 'patio',
+    set: c['set'] as Map<String, dynamic>?,
+    cam: (c['cam'] as List).cast<num>(),
+  );
+}
+
+List<ReviewPair> _pairsOf(
+  String scene,
+  String json, {
+  bool Function(Map<String, dynamic> c)? only,
+}) {
   final cases = (jsonDecode(json) as List).cast<Map<String, dynamic>>().where(
-    (c) => c['kind'] == 'pair' && (c['id'] as String).startsWith('pair.'),
+    (c) =>
+        c['kind'] == 'pair' &&
+        (c['id'] as String).startsWith('pair.') &&
+        (only == null || only(c)),
   );
   final byWord = <String, Map<String, PictureSpec>>{};
   for (final c in cases) {
