@@ -342,6 +342,11 @@ has that the earlier ones did not, or uses differently, and how the port uses it
     on the floor (none for the frog on the stool); the kitchen's **hint box**; **`hops`**: ranaA's counts are the old but
     saco-servir's, walked by no run.
   - **The old fault is kept** (`faults`): line 122 draws the baby whenever mamá has `p.bebe`, also the cup she is handed.
+  - **One old fault is fixed** (order 38b's fix, decided): a piece on abuela's plate (`pzpollo`, `pzhuevo`) is there while
+    it lies on the plate (`Estufa._onPlate`) and its box is the half of the plate it is drawn in (`Estufa._pieceBox`); the
+    old box was its kind's half always while the pieces are drawn by their order, so the egg's ask after Mamá has the
+    drumstick framed, pointed at and was tapped at the empty half, and a touch of the egg was the drumstick
+    (el-pollo-y-el-huevo beats.27). Every other ask's box and hand are the preview's (`estufa_asks_test`).
   - **Remap**: the pairs' moved positions (the cups and pots on the stove, mamá at the stove, abuela, her plate), the smell's
     curve (`rect`); a pair's own W (`Estufa.placePair`: the preview's remapW for cual-estufa).
   - estufa.js's `cosa` is `Estufa.cosaSpr` (the kit's Escena has a `cosa` of its own); its sprite makers `Estufa.cosaMake`.
@@ -349,8 +354,9 @@ has that the earlier ones did not, or uses differently, and how the port uses it
     sheet's `crop`, which is what ScenePictures and the preview cut.
   - No random draw: the registry's factory takes no source.
   - Files: `lib/src/estufa/estufa_set.dart`, `estufa_places.dart`, `estufa.dart`. Tests: `estufa_set_test`,
-    `estufa_sprites_test`, `estufa_preview_test`, `estufa_boxes_test`, `estufa_pictures_test`, `estufa_acts_test`; the
-    preview's rule for moving a recorded W is `test/support/estufa_preview_remap.dart`.
+    `estufa_sprites_test`, `estufa_preview_test`, `estufa_boxes_test`, `estufa_pictures_test`, `estufa_acts_test`,
+    `estufa_asks_test` (every ask of the 12 recorded runs: the preview's box and hand, the thing's pixels inside it as far
+    as the old); the preview's rule for moving a recorded W is `test/support/estufa_preview_remap.dart`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 
@@ -403,6 +409,10 @@ dart run tool/make_sheets.dart [--check]          the sheets as assets (and thei
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
 dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/, .../banco/ and .../estufa/ for the browser set tests
 node tool/make_cocina_kit_ref.mjs [--check]       the kitchen's kit drawn by cocina-kit.js, for test/cocina_kit_test.dart
+node tool/estufa_asks_ref.mjs --states DIR --plays PLAYS [--check]   every ask of La estufa's recorded runs and of the app's plays as estufa-preview.html frames it
+                                                  (DIR from juega.mjs --states, its four stories; PLAYS from the app's
+                                                  tool/gate_a_frames_test.dart with ASKW=yes, the four stories), for
+                                                  test/estufa_asks_test.dart
 dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/, .../banco/ and .../estufa/
 node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo|lago|banco|estufa] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
