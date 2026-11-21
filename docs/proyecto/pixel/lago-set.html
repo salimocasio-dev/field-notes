@@ -45,28 +45,34 @@ const HZ = 100;                                                   // the horizon
 // the shore: the line x = BANK (screen sx + 2 sy = SHORE_K), wavering a little as El campo's. On its far side the lawn: the old strip at the back
 // (Luis and Carmen sitting at 74, 96 and 64 on row 118, Canelo at 46, 119) and the old left bank under the dock's left end; on its near side the
 // lake, as much of the view as the old water and more (sheet: water)
-const SHORE_K = 360, BANK = (SHORE_K - OX - 2 * OY) / (S * R2);
+const SHORE_K = 354, BANK = (SHORE_K - OX - 2 * OY) / (S * R2);
+// round 3: the second shore, on the world's other axis: the right bank, a strip of lawn in the picture's upper right whose bank runs down to the right
+// (the old picture's far bank at the right, where Carmen stood, the reeds grew and the flower stood): the line y = BANK2 (screen sx - 2 sy = SHORE2_K),
+// the lawn on its far side (-y, up to the right). The two shores reach the horizon 6 px apart: the bay opens to the hills between them
+const SHORE2_K = -40, BANK2 = (SHORE2_K - OX + 2 * OY) / -(S * R2);
 const WDEPTH = .16;                                               // the surface under the lawn: a bank 4 rows high (El campo's)
-const shore = (x, y) => BANK + .035 * Math.sin(y * 2.3 + 1) + .025 * Math.sin(y * 5.1) - x;   // > 0 land
+const shore = (x, y) => Math.max(BANK + .035 * Math.sin(y * 2.3 + 1) + .025 * Math.sin(y * 5.1) - x, BANK2 + .03 * Math.sin(x * 2.1 + .5) + .02 * Math.sin(x * 4.7) - y);   // > 0 land (either bank)
 // the dock: its deck (top ZD, planks and fascia TH thick) over [x0, x1] x [y0, y1]; the landing on the lawn at its root under the old dock's
 // left end (where Carmen stands, Luis sits and the left post is); the planks are PW wide, across the dock (long in y)
 const ZD = .28, TH = .15, PW = .25;
-const DECK = SET.dock === 'narrow' ? { x0: BANK - .06, x1: 3.25, y0: 3.1, y1: 5.22 } : { x0: BANK - .06, x1: 3.25, y0: 1.62, y1: 5.22 };
-const LANDING = { x0: -.3, x1: DECK.x0 + .01, y0: 3.82, y1: DECK.y1 };
+const DECK = SET.dock === 'narrow' ? { x0: BANK - .06, x1: 3.25, y0: 3.1, y1: 5.22 } : { x0: BANK - .06, x1: 3.25, y0: 1.32, y1: 5.22 };   // round 3: y0 1.32, so that the mooring posts stand 5 px inside its far edge
+const LANDING = { x0: -.45, x1: DECK.x0 + .01, y0: 3.82, y1: DECK.y1 };
 const onDeck = (x, y) => (x >= DECK.x0 && x <= DECK.x1 && y >= DECK.y0 && y <= DECK.y1) || (x >= LANDING.x0 && x <= LANDING.x1 && y >= LANDING.y0 && y <= LANDING.y1);
 // the mooring posts (the old PM, where the two birds perch): their tops at the old screen points (40, 141) and (133, 141), PM_H over the deck:
 // their feet 4 rows behind the feet of whoever stands on the dock beside them (the old row 150 to 154), so that everyone is in front of them, as the old
 const PM_H = .26, PM_R = .085;
-const PM = [[40, 141], [126, 141]].map(([sx, sy]) => { const g = Gs(sx, sy + PM_H * COS * S, ZD); return { x: g[0], y: g[1], top: [sx, sy] }; });
+// round 3: back at the old points (the deck wider at the back, the landing longer)
+const PM = [[40, 141], [133, 141]].map(([sx, sy]) => { const g = Gs(sx, sy + PM_H * COS * S, ZD); return { x: g[0], y: g[1], top: [sx, sy] }; });
 // the post in the water (the old POSTE: its foot at POSTE[1] + 8, its top at POSTE[1] - 24): moved past the dock's end (sheet moves)
-const POSTE = [176, 146], POST_R = .12;
+const POSTE = [166, 156], POST_R = .12;
 const POST = (() => { const g = Gs(POSTE[0], POSTE[1] + 8, -WDEPTH), topZ = -WDEPTH + 32 / (COS * S); return { x: g[0], y: g[1], top: topZ }; })();
 // the reeds: a bed of them in the shallows at the right, as the old (JUNCOS), but higher up the water: past the post and clear of the ducks'
 // and the boats' places of the stories below it; clumps round these feet
-const JUNCOS = [[190, 128], [200, 122], [210, 130], [196, 136], [207, 139], [214, 124]];
+const JUNCOS = [[204, 157], [211, 155], [218, 158], [208, 163], [215, 165], [222, 161], [221, 170]];   // near the old reeds' feet (190..210, 144..162), below the boats' row at Carmen's feet
+const REED_H = [.6, .25];   // round 3: a little shorter than El campo's (13 to 19 rows), their heads below the boats at Carmen's feet   
 // the sky, the hills, the sun: El camino's and El campo's (the sun upper left: every shadow falls to the right)
 const SKY = { bands: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]], far: [[116, 180, 162], [156, 208, 188], [94, 158, 144]], near: [[78, 158, 94], [124, 203, 122], [62, 136, 80]], sun: [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]] };
-const SUN = [33, 47, 9];   // El camino's and El campo's sun, 5 px further left: the answer cards in the sky keep 2 px off it (sheet: asks)
+const SUN = [31, 47, 8];   // El camino's and El campo's sun, 7 px further left and 1 px smaller: the answer cards in the sky, their frames and glow keep off it (sheet: asks)
 // the old picture's three clouds (engine.js sky(): 36, 16; 112, 9; 168, 26), El campo's places (clear of the corner card, the sun and the cards)
 const CLOUDS = [[188, 12, .7], [204, 34, .8], [108, 10, .6]];
 const cloudAt = (ix, iy) => { for (const [cx, cy, s] of CLOUDS) {
@@ -105,15 +111,16 @@ const SHADED = new Uint8Array(W * H);
 
 /* ---------- the dock ---------- */
 const WOOD = [170, 122, 74], WOOD_D = [128, 88, 52], PILE = [112, 80, 52];
-const plankTone = k => hash(k * 7 + 3, 11) * 1.2;                   // each plank a little lighter or darker than its neighbours
+const PLANK = [0, .55, .2, .8, .35, .05, .65, .25, .9, .45, .1, .7];   // round 3: each plank's tone, no two light ones side by side (a reader saw a light band)
+const plankTone = k => PLANK[((k % 12) + 12) % 12];
 function deckTop(R) {
   // one sample a pixel (planeQuad), the planks across the dock: a dark gap every PW along x, each plank its own tone, a little grain
   planeQuad([R.x0, R.y0, ZD], [R.x1 - R.x0, 0, 0], [0, R.y1 - R.y0, 0], (a, b) => {
     const x = R.x0 + a * (R.x1 - R.x0), y = R.y0 + b * (R.y1 - R.y0), f = (x - DECK.x0 + 40 * PW) / PW, k = Math.floor(f), fr = f - k;
     if (fr < .14) return rampOf(WOOD)[0];                                 // the gap between two planks
     if (fr > .86) return rampOf(WOOD)[1];                                  // its shaded edge, the same on every plank
-    const t = 2.3 + plankTone(k) * .7 + (noise(k * 3.1, y * 2.2) - .5) * .9;
-    return rampOf(WOOD)[clamp(Math.floor(t), 2, 4)];                       // round 2: no dark patch inside a plank (a reader saw a "brown speck")
+    const t = 2.2 + plankTone(k) * .95 + (hash(Math.floor(y * 9), k) - .5) * .35;   // the plank's own tone, a little grain along it
+    return rampOf(WOOD)[clamp(Math.floor(t), 2, 3)];                       // round 2: no dark patch inside a plank; round 3: no light band
   });
 }
 // the dock's edge on the two sides the camera sees: the plank ends (the top TH_P), the fascia board under them; on the lawn it goes down to the ground
@@ -175,8 +182,10 @@ const REEDS = (() => { const out = []; let k = 0;
   for (const [sx, sy] of JUNCOS) {
     const c = Gs(sx, sy, -WDEPTH);
     for (let j = 0; j < 5; j++) {
-      const x = c[0] + (hash(k, j * 7 + 1) - .5) * .4, y = c[1] + (hash(k, j * 7 + 2) - .5) * .4, h = .75 + hash(k, j * 7 + 3) * .45;
+      const x = c[0] + (hash(k, j * 7 + 1) - .5) * .4, y = c[1] + (hash(k, j * 7 + 2) - .5) * .4, h = REED_H[0] + hash(k, j * 7 + 3) * REED_H[1];
       out.push({ x, y, h, lean: (hash(k, j * 7 + 4) - .5) * .12, head: hash(k, j * 7 + 5) < .6, blade: hash(k, j * 7 + 6) < .25, k: k * 10 + j, foot: SCR(x, y, -WDEPTH).map(Math.round) });
+    }
+    { const cl = out.slice(-5); let f = cl[0]; for (const r of cl) if (r.x + r.y > f.x + f.y) f = r; f.outer = true;   // round 3: the frontmost reed of each clump has the waterline
     }
     k++;
   }
@@ -187,7 +196,7 @@ function reeds() {
       const z0 = -WDEPTH, top = z0 + r.h, G = REED_G[r.k % 3];
       for (let z = z0; z <= top; z += .012) { const f = (z - z0) / r.h; plot(r.x + r.lean * f, r.y, z, rgb(...(f < .3 ? REED_G[0] : G))); }
       if (r.head) { const hz = top - .1; for (let z = hz - .18; z <= hz + .06; z += .01) for (const w of [-.016, .016]) plot(r.x + r.lean * (z - z0) / r.h + w, r.y - w, z, rgb(...HEAD[z > hz - .04 && w < 0 ? 1 : 0])); }
-      FEET.push([r.x, r.y, 1, 'junco']);
+      if (r.outer) FEET.push([r.x, r.y, 1, 'junco']);
       if (r.blade) { const s = r.k % 2 ? 1 : -1; for (let t = 0; t <= 1; t += .01) plot(r.x + .04 * t, r.y + s * .22 * t * t, z0 + r.h * .75 * Math.sin(t * 1.3), rgb(...REED_G[t > .5 ? 2 : 1])); }
     }
   });
@@ -197,16 +206,18 @@ function reeds() {
    light round its foot (2 rows, a few px each side): it stands in the water, not on it. Only on the surface where it shows, never on the thing */
 const WATERLINE = [];
 function waterlines() {
-  WATERLINE.length = 0;
+  WATERLINE.length = 0; const TAKEN = new Set();
   for (const [x, y, hw, what] of FEET) {
-    const p = project(x, y, -WDEPTH), px = [], rx = hw + 3, ry = 1.8;
+    const reed = what === 'junco', p = project(x, y, -WDEPTH), px = [], rx = hw + (reed ? 2.5 : 3), ry = reed ? .7 : 1.8;   // a reed: one short dash, one row
     for (let iy = Math.floor(p.sy - ry); iy <= Math.ceil(p.sy + ry); iy++) for (let ix = Math.floor(p.sx - rx - 1); ix <= Math.ceil(p.sx + rx + 1); ix++) {
       if (ix < 0 || iy < 0 || ix >= W || iy >= H) continue;
       const i = iy * W + ix, dx = (ix + .5 - p.sx) / rx, dy = (iy + .5 - p.sy) / ry;
       if (dx * dx + dy * dy > 1 || Math.abs(ix + .5 - p.sx) < hw - .5 || kinds[i] !== KIND_WATER || zb[i] !== groundZ[i]) continue;
+      if (reed && (TAKEN.has(i - 1) || TAKEN.has(i + 1) || TAKEN.has(i - W) || TAKEN.has(i + W) || TAKEN.has(i - W - 1) || TAKEN.has(i - W + 1) || TAKEN.has(i + W - 1) || TAKEN.has(i + W + 1))) continue;   // separate dashes, never a merged patch
       const c = pix[i], u = SHADED[i] ? SHADE_M : [1, 1, 1];   // the ripple light of the water as it is out of the dock's shade
       pix[i] = rgb(lerp((c & 255) / u[0], LOOK.sky[0], .55), lerp((c >> 8 & 255) / u[1], LOOK.sky[1], .55), lerp((c >> 16 & 255) / u[2], LOOK.sky[2], .55)); px.push(i);
     }
+    for (const i of px) TAKEN.add(i);
     WATERLINE.push({ what, foot: [Math.round(p.sx), Math.round(p.sy)], hw, px });
   }
 }
@@ -254,7 +265,7 @@ function surfaceAt(sx, sy) { const d = Gs(sx, sy, ZD); if (onDeck(d[0], d[1])) r
   const g = Gs(sx, sy, 0); if (shore(g[0], g[1]) >= 0 || sy < HZ) return { on: 'lawn', z: 0, x: g[0], y: g[1] };
   const w = Gs(sx, sy, -WDEPTH); return { on: 'water', z: -WDEPTH, x: w[0], y: w[1] }; }
 
-window.LAGO_SET = { SET, HZ, BANK, SHORE_K, WDEPTH, ZD, TH, PW, DECK, LANDING, PM, PM_H, PM_R, POSTE, POST, JUNCOS, SUN, CLOUDS, OXY: [OX, OY],
+window.LAGO_SET = { SET, HZ, BANK, SHORE_K, BANK2, SHORE2_K, PLANK, WDEPTH, ZD, TH, PW, DECK, LANDING, PM, PM_H, PM_R, POSTE, POST, JUNCOS, SUN, CLOUDS, OXY: [OX, OY],
   REEDS: REEDS.map(r => [r.x, r.y, r.h]), REED_FEET: REEDS.map(r => r.foot), LOOK: { deep: LOOK.deep, shallow: LOOK.shallow, sky: LOOK.sky, wet: LOOK.wet }, SHADE_M,
   WATERLINE: () => WATERLINE.map(w => ({ what: w.what, foot: w.foot, hw: w.hw, px: w.px.slice() })),
   buildSet, shore, onDeck, surfaceAt, Gs,

@@ -250,7 +250,7 @@ function engine(G) {
   const atZ = (sx, sy, z) => { const u = (sx - OX) / S, v = (sy - OY + z * COS * S) / (S * SIN); return [(u + v) / R2, (v - u) / R2, z]; };
   // the walkable surface under a screen point (lago-set.html surfaceAt): the deck's planks, the lawn or the water's surface
   const F = G.F, onDeck = (x, y) => (x >= F.DECK.x0 && x <= F.DECK.x1 && y >= F.DECK.y0 && y <= F.DECK.y1) || (x >= F.LANDING.x0 && x <= F.LANDING.x1 && y >= F.LANDING.y0 && y <= F.LANDING.y1);
-  const shore = (x, y) => F.BANK + .035 * Math.sin(y * 2.3 + 1) + .025 * Math.sin(y * 5.1) - x;
+  const shore = (x, y) => Math.max(F.BANK + .035 * Math.sin(y * 2.3 + 1) + .025 * Math.sin(y * 5.1) - x, F.BANK2 + .03 * Math.sin(x * 2.1 + .5) + .02 * Math.sin(x * 4.7) - y);
   const surface = (sx, sy) => { const d = atZ(sx, sy, F.ZD); if (onDeck(d[0], d[1])) return { on: 'dock', w: d };
     const g = atZ(sx, sy, 0); if (shore(g[0], g[1]) >= 0 || sy < F.HZ) return { on: 'lawn', w: g }; return { on: 'water', w: atZ(sx, sy, -F.WDEPTH) }; };
   return { W, H, S, R2, SIN, COS, OX, OY, project, atZ, surface, onDeck, shore };
@@ -281,12 +281,12 @@ const boardsOf = (w, x0) => w.tarjeta ? [['the rounds card', [BOARD[0] + x0, BOA
 
 /* ---------- the design: what moves and why, the pictures, the rules (make() reads it) ---------- */
 const DESIGN = (() => {
-  const POSTE = [176, 146], ORILLA = [89, 111], SLOTS = [[169,118],[163,122],[160,115],[157,124],[155,118],[152,127],[146,131],[149,120],[141,132],[144,123],[139,127],[133,128]], FX = [46, 66, 85], FYB = [154, 164, 174], EN = [132, 32];
+  const POSTE = [166, 156], ORILLA = [188, 109], SLOTS = [[160,122],[166,125],[166,116],[171,128],[172,119],[177,130],[183,133],[189,136],[178,122],[184,125],[190,128],[196,131]], FX = [46, 66, 85], FYB = [154, 164, 174], EN = [132, 32];
   const moves = [
     { act: '*', src: 'POSTE=[152,146]', to: 'POSTE=[' + POSTE + ']', pts: [['ave', [152, 122], [POSTE[0], POSTE[1] - 24]]], shift: { who: 'pato', when: 'rema', by: [POSTE[0] - 152, POSTE[1] - 146] },
-      why: 'the post in the water: its old foot (152, 154) lies at the dock\'s right corner (the deck is as wide as its row of places needs: layout); ' + (POSTE[0] - 152) + ' px right, past the dock\'s end, so that the post, the bird on it (POSTE[1] - 24) and the duck paddling round it (acts.rema) have water all round, clear of the dock' },
+      why: 'the post in the water: its old foot (152, 154) lies at the dock\'s right corner (the deck is as wide as its row of places needs: layout); ' + (POSTE[0] - 152) + ' px right and ' + (POSTE[1] - 146) + ' rows down, past the dock\'s end, so that the post, the bird on it (POSTE[1] - 24) and the duck paddling round it (acts.rema) have water all round, clear of the dock, of the boats\' row at Carmen\'s feet and of the reeds (round 3)' },
     { act: 'inicio19', src: 'ORILLA=[178,116]', to: 'ORILLA=[' + ORILLA + ']', pts: [['carmen', [196, 117], [ORILLA[0] + 18, ORILLA[1] + 1]]],
-      why: 'acts.inicio19 (los-botes): Carmen on the far bank (ORILLA + (18, 1)). The shore is one straight line on a world axis: the lawn is up to the left, and the old far bank at the right (196, 117) is open water. Round 2: she stands on the lawn at the shore across the water from the dock\'s end, where the boats Luis sends arrive at her feet (slotC), as the old row lay at hers; as far right as she can with 8 px of lawn round her feet and the answer cards in the sky clear of her head (2 px) with their hands off her face (respEn below)' },
+      why: 'acts.inicio19 (los-botes): Carmen on the far bank (ORILLA + (18, 1)). The shore is one straight line on a world axis: the lawn is up to the left, and the old far bank at the right (196, 117) is open water. Round 3: the lake has its right bank again (layout): she stands on it near her old point, 8 px of lawn round her feet, facing the water, and the boats Luis sends arrive at her feet (slotC), as the old row ended at hers; as low on the bank as she can (the answer cards in the sky 2 px over her head, the hand at the right card off her face)' },
     { act: '*', src: 'FX=[46,68,90],FY=165', to: 'FX=[' + FX + '],FY=165,FYB=[' + FYB + ']', pts: [['bote', [46, 165], [FX[0], FYB[0]]], ['bote', [68, 165], [FX[1], FYB[1]]], ['bote', [90, 165], [FX[2], FYB[2]]]],
       why: 'the row of three boats on the dock (repone): the old row lay along the old dock\'s face (row 165); here the boats stand on the planks in a row along the dock\'s near edge (each with planks under its whole keel and 3 px of plank to the edge), in front of the frog as the old' },
     { act: '*', src: 'x:FX[i],y:FY,en:"muelle"', to: 'x:FX[i],y:FYB[i],en:"muelle"', why: 'repone: each boat of the row at its own row (FYB)' },
@@ -296,31 +296,27 @@ const DESIGN = (() => {
     { act: '*', src: 'await patoA(k,136,172,"nada",6)', to: 'await patoA(k,150,184,"nada",6)', pts: [['pato', [136, 172], [150, 184]]], why: 'acts.final20: the ducks gather before the dock\'s end before they waddle onto it: the old point is under the new deck\'s end; 8 px of water past it' },
     { act: '*', src: 'L.push({y:FY+1,d:()=>c.drawImage(spr("pan",mkPan),36+i*12-5,FY-8)})', to: 'L.push({y:158,d:()=>c.drawImage(spr("pan",mkPan),54+i*12-5,149)})', why: 'the row of bread on the dock (W.fila): the old row lay on the old dock\'s face; here on the planks, in front of the people' },
     { act: '*', src: 'const slotC=i=>[98+(i%13)*6,119+(i>=13?4:0)];', to: 'const SLOTC=' + JSON.stringify(SLOTS) + ',slotC=i=>SLOTC[Math.min(i,11)];', slot: true,
-      why: 'round 2: the boats that reach Carmen (sopla, conpez; 12 at the most in a run): the old row lay at her feet on the far bank (row 119), filled from its far end towards her; here two rows on the water along the shore at her feet, the nearest 8 to 12 px of water from the lip in front of her, filled from the farthest towards her as the old, neighbours 6 px apart at the least (the old spacing), each slot no further from her than the old slot was (+ 10 px)' },
-    { act: '*', src: 'PEGA=[[182,166],[196,172],[210,168],[190,178]]', to: 'PEGA=[[192,148],[200,143],[196,152],[198,137]]', pts: [['bote', [182, 166], [192, 148]], ['bote', [196, 172], [200, 143]], ['bote', [210, 168], [196, 152]], ['bote', [190, 178], [198, 137]]],
-      why: 'acts.deriva: where a drifting boat sticks in the reeds: at the front of the reed bed, which stands higher up the water than the old (layout)' },
-    { act: '*', src: 'await patoA("blanco",124,126,"nada");d.pose="anda";await patoA("blanco",120,118,"anda",4)', to: 'await patoA("blanco",132,124,"nada");d.pose="anda";await patoA("blanco",106,112,"anda",4)', pts: [['pato', [124, 126], [132, 124]], ['pato', [120, 118], [106, 112]]],
+      why: 'round 3: the boats that reach Carmen (sopla, conpez; 12 at the most in a run): the old row lay along the far bank and ended at her feet, filled from its far end towards her; here two rows on the water along the right bank, running from her feet up the bank, the last slot 8 to 12 px of water straight in front of her, filled from the farthest towards her as the old, neighbours 6 px apart at the least (the old spacing), each slot no further from her than the old slot was from the old Carmen (+ 10 px), none behind the post or in the reeds' },
+    { act: '*', src: 'PEGA=[[182,166],[196,172],[210,168],[190,178]]', to: 'PEGA=[[201,150],[199,144],[201,157],[196,151]]', pts: [['bote', [182, 166], [201, 150]], ['bote', [196, 172], [199, 144]], ['bote', [210, 168], [201, 157]], ['bote', [190, 178], [196, 151]]],
+      why: 'acts.deriva: where a drifting boat sticks in the reeds: at the front of the reed bed in the shallows of the right bank (round 3), 6 px and more from the view\'s edge' },
+    { act: '*', src: 'await patoA("blanco",124,126,"nada");d.pose="anda";await patoA("blanco",120,118,"anda",4)', to: 'await patoA("blanco",132,124,"nada");d.pose="anda";await patoA("blanco",102,110,"anda",4)', pts: [['pato', [124, 126], [132, 124]], ['pato', [120, 118], [102, 110]]],
       why: 'acts.orilla (pan-para-el-pato): the duck climbs out onto the far bank: the old bank at row 118 is water here; it swims to the shore up the lake (8 px of water round it) and walks out onto the lawn (8 px of lawn round its feet)' },
     { act: '*', src: 'await patoA("blanco",124,126,"anda",4);d.pose="nada";salpica(124,128);', to: 'await patoA("blanco",132,124,"anda",4);d.pose="nada";salpica(132,126);', why: 'acts.alagua: back into the water where it came out (orilla)' },
     { act: 'inicio18', src: 'async inicio18(){W.gente=', to: 'async inicio18(){W.respEn=[121,75];W.gente=', respEn: [121, 75], why: 'acts.inicio18 (pan-para-el-pato): the answer cards (vuela, nada) stand over the frog as the old, a little higher and to the right: clear of Carmen\'s head, under the circle the duck and the bird fly round (its lowest row 74), the hand at the first card off her face' },
-    { act: 'inicio19', src: 'async inicio19(){W.gente=', to: 'async inicio19(){W.respEn=[127,31];W.gente=', respEn: [127, 31], why: 'acts.inicio19 (los-botes): the answer cards stand in the sky (W.respEn): over the frog on the dock they covered Carmen across the water, Luis and the boats. Round 2: under the rounds card by 2 px, over Carmen\'s head by 2 px, right of the sun, 4 px inside the view with their lit frames and glow; three cards at x 127, the hand at each off her face (respEn is set again before each ask: 108 for two cards or one, below)' },
-    { act: 'ranapinta', src: 'async ranapinta(o){', to: 'async ranapinta(o){W.respEn=[108,31];', respEn: [108, 31], why: 'round 2, los-botes: after the frog paints a boat the next ask has two cards or one (beats.22, 23, 52): their centre at x 108, so that the hand at each stays off Carmen\'s face and the cards off the sun' },
-    { act: 'pezviene', src: 'async pezviene(o){', to: 'async pezviene(o){W.respEn=[127,31];', respEn: [127, 31], why: 'round 2, los-botes: the next ask has three cards (beats.15, 18, 42): their centre at x 127 (as inicio19)' },
-    { act: 'saca', src: 'async saca(o){', to: 'async saca(o){W.respEn=[127,31];', respEn: [127, 31], why: 'round 2, los-botes: as pezviene (beats.21)' },
-    { act: 'dosbotes', src: 'async dosbotes(o){', to: 'async dosbotes(o){W.respEn=[127,31];', respEn: [127, 31], why: 'round 2, los-botes: as pezviene (beats.51)' },
-    { act: '*', src: 'PM=[[40,141],[133,141]]', to: 'PM=[[40,141],[126,141]]', pts: [['ave', [133, 140], [126, 140]]], why: 'round 2: the right mooring post (where a bird perches: PM[1] - 1) stands on the planks 2 px and more inside the deck\'s far edge and behind the frog at the dock\'s end (104 and 108, 125): 7 px left of the old, its top on the old row' },
+    { act: 'inicio19', src: 'async inicio19(){W.gente=', to: 'async inicio19(){W.respEn=[127,31];W.gente=', respEn: [127, 31], why: 'acts.inicio19 (los-botes): the answer cards stand in the sky (W.respEn): over the frog on the dock they covered Carmen across the water, Luis and the boats. Round 3: under the rounds card by 2 px, over Carmen\'s head on the right bank by 2 px, their frames and glow off the sun and 4 px inside the view; the hand at each card off her face' },
     { act: 'inicio20', src: 'async inicio20(){W.gente=', to: 'async inicio20(){W.respEn=['+EN+'];W.gente=', respEn: [132, 32], why: 'acts.inicio20 (cual, d-pato-pequeno, h-lago): the answer cards stand in the sky (W.respEn): over the frog they covered Luis and Canelo on the lawn and Carmen' },
     { act: '*', src: 'const P7=i=>[134+(i-1)*9.5,177+(i-1)*2]', to: 'const P7=i=>[156+(i-1)*4.5,186+(i-1)*1]', pts: (() => { const OFF = [[-14, -9], [14, -7], [0, 12]], out = []; for (let i = 1; i <= 7; i++) for (const o of OFF) out.push(['pato', [Math.round(134 + (i - 1) * 9.5 + o[0]), Math.round(177 + (i - 1) * 2 + o[1])], [Math.round(156 + (i - 1) * 4.5 + o[0]), 186 + (i - 1) * 1 + o[1]]]); return out; })(), why: 'story 20: the seven places of the three ducks, from the dock outward: the old first places lay under the new dock\'s end (as wide as its row of places needs); they start 8 px of water past its end and end 6 px from the view\'s right edge (the ducks closer together, their order and offsets OFF unchanged)' },
-    { act: '*', src: 'W.peces={a:{c:"pardo",x:92,y:192,x0:92,dir:1,vaiven:1}}', to: 'W.peces={a:{c:"pardo",x:112,y:194,x0:112,dir:1,vaiven:1}}', pts: [['pez', [92, 192], [112, 194]]], why: 'acts.inicio18: the fish swimming to and fro (x0 +- 12): the old place passed under the new dock\'s near corner; on open water in front of it' },
-    { act: '*', src: 'o.x=120+13*Math.cos(t);o.y=192+4*Math.sin(t)', to: 'o.x=128+13*Math.cos(t);o.y=187+4*Math.sin(t)', why: 'anima: the fish circling before the dock (pezviene, h-lago): its hint frame (box + 12) 2 px inside the view at the bottom of its circle' },
-    { act: '*', src: 'await pezA("a",134,192,16)', to: 'await pezA("a",141,187,16)', pts: [['pez', [134, 192], [141, 187]]], why: 'acts.pezviene: the fish swims up to its circle (anima, moved)' },
-    { act: 'inicio20', src: 'W.flor=[196,119]', to: 'W.flor=[118,110]', pts: [['flor', [196, 119], [118, 110]]], why: 'acts.inicio20: the yellow flower stood on the old far bank (196, 119), which is open water here; on the lawn by the shore, as the old by the water' },
+    { act: '*', src: 'W.peces={a:{c:"pardo",x:92,y:192,x0:92,dir:1,vaiven:1}}', to: 'W.peces={a:{c:"pardo",x:130,y:194,x0:130,dir:1,vaiven:1}}', pts: [['pez', [92, 192], [130, 194]]], why: 'acts.inicio18: the fish swimming to and fro (x0 +- 12): the old place passed under the new dock\'s near corner; on open water in front of its end, out of its shade (round 3)' },
+    { act: '*', src: 'o.x=120+13*Math.cos(t);o.y=192+4*Math.sin(t)', to: 'o.x=132+8*Math.cos(t);o.y=190+4*Math.sin(t)', why: 'anima: the fish circling before the dock (pezviene, h-lago): its hint frame (box + 12) 2 px inside the view at the bottom of its circle, its patch out of the dock\'s shade, its circle narrower (13 to 8 px) so that it keeps clear of the ducks (round 3)' },
+    { act: '*', src: 'await pezA("a",134,192,16)', to: 'await pezA("a",140,190,16)', pts: [['pez', [134, 192], [140, 190]]], why: 'acts.pezviene: the fish swims up to its circle (anima, moved)' },
+    { act: '*', src: 'const b=W.botes[o.sigue];o.x=b.x-4;o.y=b.y+9;', to: 'const b=W.botes[o.sigue];o.x=b.x+10;o.y=b.y+12;', why: 'anima: the fish swimming with a boat to Carmen (conpez): below the boat\'s right instead of its left, so that its path keeps out of the dock\'s shade at the dock\'s end (round 3)' },
+    { act: '*', src: 'await pezA("a",SALE[0][0]-4,SALE[0][1]+9,6)', to: 'await pezA("a",SALE[0][0]+10,SALE[0][1]+12,6)', why: 'acts.conpez: the fish comes to the boat\'s right (anima, round 3)' },
+    { act: 'inicio20', src: 'W.flor=[196,119]', to: 'W.flor=[212,116]', pts: [['flor', [196, 119], [212, 116]]], why: 'acts.inicio20: the yellow flower on the right bank (round 3), as the old: 16 px right and 3 rows up of its old point, where it has 8 px of lawn round its foot and plain lawn behind it (lower, its head would be against the water; higher, against the hills)' },
   ];
   const storyMoves = [
     { old: [152, 122], new: [POSTE[0], POSTE[1] - 24], who: 'ave', why: 'h-lago beats.14: the bird on the post (POSTE[1] - 24): the post moved (moves)' },
-    { old: [96, 118], new: [92, 116], who: 'luis', why: 'd-pato-pequeno and h-lago beats.1: Luis sits on the lawn up the shore: 8 px of lawn round him (the bank is nearer here than the old far bank was); 4 px left, 2 rows up' },
-    { old: [133, 140], new: [126, 140], who: 'ave', why: 'the pairs blanco.si and blanco.no: the bird on the right mooring post (moves: PM)' },
-    { old: [140, 119], new: [116, 110], who: 'ave', why: 'the pair pájaro.si: the bird with the crust stood on the old far bank (140, 119), open water here: on the lawn by the shore' },
+    { old: [96, 118], new: [86, 113], who: 'luis', why: 'd-pato-pequeno and h-lago beats.1: Luis sits on the lawn up the shore: 8 px of lawn round him, clear of the dock\'s far corner (the bank is nearer here than the old far bank was); 10 px left, 5 rows up' },
+    { old: [140, 119], new: [208, 110], who: 'ave', why: 'the pair pájaro.si: the bird with the crust stood on the old far bank (140, 119), open water here: on the right bank (round 3)' },
     { old: [104, 172], new: [120, 194], who: 'pato', why: 'd-pato-pequeno beats.33 (patoa): the old point is under the new deck; in front of the dock\'s near corner, water all round' },
     { old: [124, 176], new: [138, 188], who: 'pato', why: 'd-pato-pequeno beats.34 (patoa): the old point is at the new deck\'s end; past it, water all round' },
   ];
@@ -353,7 +349,7 @@ const DESIGN = (() => {
     pictures: pic => ({
       'pato.si': pic(100, 140, 2, 'a duck walking on the dock'), 'pato.no': pic(100, 140, 2, 'a bird on the dock'),
       'pez.si': pic(156, 184, 2, 'a fish leaping from the water'), 'pez.no': pic(156, 184, 2, 'a duck on the water, eating'),
-      'pajaro.si': pic(116, 102, 2, 'a bird with a crust, on the lawn by the water'), 'pajaro.no': pic(150, 180, 2, 'a fish under the water by a crust'),
+      'pajaro.si': pic(200, 102, 2, 'a bird with a crust, on the lawn by the water'), 'pajaro.no': pic(150, 180, 2, 'a fish under the water by a crust'),
       'nada.si': pic(150, 180, 2, 'a duck swimming'), 'nada.no': pic(150, 56, 2, 'a duck flying'),
       'vuela.si': pic(152, 56, 2, 'a bird flying'), 'vuela.no': pic(98, 140, 2, 'a bird on the dock with a crust'),
       'rojo.si': pic(150, 180, 2, 'a red boat on the water'), 'rojo.no': pic(150, 180, 2, 'a blue boat on the water'),
@@ -426,13 +422,13 @@ Object.assign(DESIGN, {
     what: 'drawn by the sprite layer just before the thing they help, 1:1 (lines: each drawing function of a thing on the water gains one call): El campo\'s ripple ring on the water round whatever floats or swims at the surface: a duck swimming, a boat on the water or in the reeds, the bread lying on the water',
     margin: 8, edge: 6, deckMargin: 3,
     marginWhat: 'whatever rests near the shore or the dock\'s edge is on one side: on the lawn with at least `margin` px of lawn round its foot (the lowest 2 rows of its sprite); on the dock with planks under its whole foot and at least `deckMargin` px of plank to the dock\'s edge; in the water with `margin` px of water all round its foot, the ring and the thing `edge` px and more from the picture\'s edges',
-    ring: { inner: .45, colour: [212, 236, 246], pato: { rx: 13, ry: 3, dy: 0 }, bote: { rx: 11, ry: 3, dy: 0 }, pan: { rx: 7, ry: 2.5, dy: 0 }, pez: { rx: 10, ry: 2.5, dy: 0, light: { colours: ['azul'], colour: [244, 250, 254], why: 'round 2: a fish whose colour stands out from the water by less than 30 (CIE76: the blue one) has its ring one tone lighter, the help that belongs to it' } },
-      when: 'a duck swimming (pose nada, not in the air: dy <= 3); a boat on the water or in the reeds (en agua, juncos, carmen, or on its way: meta); the bread lying on the water (W.pan, not carried, z <= 1, its point over the water); round 2: the fish swimming at the surface (dy <= 4; leaping, it has its splash as the old)',
+    ring: { inner: .45, colour: [212, 236, 246], pato: { rx: 13, ry: 3, dy: 0 }, bote: { rx: 11, ry: 3, dy: 0 }, pan: { rx: 7, ry: 2.5, dy: 0 }, pez: { rx: 13, ry: 5, dy: -1, patch: [166, 210, 224], rim: [212, 236, 246], soft: .35, why: 'round 3 (replaces round 2\'s lighter ring): the fish at the surface swims in a small patch of pale stirred water of its own, the old water\'s pale tone (#A6D2E0), its edge dithered over the last .35 of its radius, the ring\'s light line at its rim (d .82 to 1): its whole outline seen; every fish colour 45 and more from it' },
+      when: 'a duck swimming (pose nada, not in the air: dy <= 3); a boat on the water or in the reeds (en agua, juncos, carmen, or on its way: meta); the bread lying on the water (W.pan, not carried, z <= 1, its point over the water); round 3: the fish swimming at the surface (dy <= 4) has its pale patch instead (pez; leaping, it has its splash as the old)',
       how: 'every pixel (x, y) with .45 < ((x + .5 - cx) / rx)^2 + ((y + .5 - cy) / ry)^2 <= 1 that shows the water (the set\'s surface) takes the colour: a duck\'s at (x, y) (rx scaled .78 for the yellow one), a boat\'s at (x, y + bob), the bread\'s at (x, y)' },
     lines: [
       ['function pato(c,o,a){if(!o||o.vis===0)return;', 'function pato(c,o,a){if(!o||o.vis===0)return;PREVIEW.ring(c,"pato",o);'],
       ['function bote(c,o){if(!o||o.vis===0)return;', 'function bote(c,o){if(!o||o.vis===0)return;PREVIEW.ring(c,"bote",o);'],
-      ['function pez(c,o){if(!o||o.vis===0)return;', 'function pez(c,o){if(!o||o.vis===0)return;PREVIEW.ring(c,"pez",o);'],
+      ['function pez(c,o){if(!o||o.vis===0)return;', 'function pez(c,o){if(!o||o.vis===0)return;PREVIEW.patch(c,o);'],
       ['L.push({y:999,d:()=>c.drawImage(spr("pan",mkPan),R(W.pan.x)-5,R(W.pan.y)-R(W.pan.z||0)-7)});', 'L.push({y:999,d:()=>{PREVIEW.ring(c,"pan",W.pan);c.drawImage(spr("pan",mkPan),R(W.pan.x)-5,R(W.pan.y)-R(W.pan.z||0)-7);}});'],
     ],
     linesWhat: 'the lines lago.js gains: the help is drawn first, then the thing; the port draws them the same way',
@@ -832,7 +828,11 @@ function check(sh, G, runs) {
       if (it.kind === 'bird' && it.perch) { stats.perched++; const fx = R(it.o.x), fy = R(it.o.y); let n = 0; for (let x = fx - 2; x <= fx + 2; x++) for (let y = fy; y <= fy + 2; y++) { const t = TAG[y * 240 + x]; if (t === 'muelle.postes' || t === 'poste') n++; } if (n < 4) perchBad.set(it.id + ' at ' + it.at, where + ': only ' + n + ' px of post under its feet'); continue; }
       // the fish: under the surface, every pixel of it over open water; or leaping
       if (it.kind === 'fish') { if (it.air) { stats.fishUp++; continue; } stats.fishUnder++;
-        { const ring = ringOf(it); stats.rings++; const rp = ringPx(...ring), on = rp.filter(([x, y]) => zoneAt(x, y) === 'w' || zoneAt(x, y) === 'out').length / rp.length; if (resting) { stats.worstRing = Math.min(stats.worstRing, on); if (on < .9) ringBad.set(it.id + ' at ' + it.at, Math.round(on * 100) + '% of its ring on the water, ' + where); } } let bad = 0; for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) { const z = zoneAt(x, y); if (z !== 'w' && z !== 'out') bad++; } if (bad && resting) fishBad.set(it.id + ' at ' + it.at, where + ': ' + bad + ' px of it over something but the water'); continue; }
+        { const H = sh.helps.ring.pez, cx = R(it.o.x), cy = R(it.o.y) + H.dy; let n = 0, on = 0, shd = 0; stats.rings++;   // its pale patch: on the water, out of the dock's shade
+          for (let y = Math.floor(cy - H.ry); y <= Math.ceil(cy + H.ry); y++) for (let x = Math.floor(cx - H.rx); x <= Math.ceil(cx + H.rx); x++) { if (((x + .5 - cx) / H.rx) ** 2 + ((y + .5 - cy) / H.ry) ** 2 > 1) continue; n++; const z = zoneAt(x, y); if (z === 'w' || z === 'out') on++; if (z === 'w' && SHD[y * 240 + x]) shd++; }
+          if (resting) { stats.worstRing = Math.min(stats.worstRing, on / n); if (on < .9 * n) ringBad.set(it.id + ' at ' + it.at, Math.round(on / n * 100) + '% of its patch on the water, ' + where); }
+          let own = 0; for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) if (zoneAt(x, y) === 'w' && SHD[y * 240 + x]) own++;
+          if (resting && shd) fishBad.set(it.id + ' at ' + it.at + ' (shade)', where + ': ' + shd + ' px of its patch in the dock\'s shade'); if (own) fishBad.set(it.id + ' at ' + it.at + ' (path)', where + ': ' + own + ' px of it in the dock\'s shade'); } let bad = 0; for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) { const z = zoneAt(x, y); if (z !== 'w' && z !== 'out') bad++; } if (bad && resting) fishBad.set(it.id + ' at ' + it.at, where + ': ' + bad + ' px of it over something but the water'); continue; }
       if (it.air) continue;
       // a set thing nearer than it inside its sprite: the dock never (nobody under or behind the deck); the reeds, the post, the mooring posts are front parts
       { const v = vSurf(it.at[0], it.at[1] - 1), near = nearerRows(it.rows, v, SOLID);
@@ -925,7 +925,7 @@ function check(sh, G, runs) {
       if (askSeen.has(key)) return; askSeen.add(key); askedFor.add(spot);
       const faces = facesOf(w), facesOld = facesOf(wo), items = itemsOf(w);
       if (w.resp) for (const k of w.resp) { const c = respBox(w, k); nC++;
-        { const fr2 = [c[0] - 12, c[1] - 12, c[2] + 24, c[3] + 24]; if (meets(SUNR, fr2)) P.push('sun: ' + where + ' the card ' + k + ' covers the sun'); }
+        { const fr2 = [c[0] - 16, c[1] - 16, c[2] + 32, c[3] + 32]; if (meets(SUNR, fr2)) P.push('sun: ' + where + ' the card ' + k + ', its frame or its glow covers the sun'); }   // round 3: the glow too
         { const f = [c[0] - 16, c[1] - 16, c[2] + 32, c[3] + 32]; cardSpare = Math.min(cardSpare, f[0] - x0, x0 + 196 - f[0] - f[2], f[1], 216 - f[1] - f[3]); if (!within([f[0] - 4, f[1] - 4, f[2] + 8, f[3] + 8], VIEW)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ': its lit frame and glow are not 4 px inside the view'); }
         const c2 = [c[0] - 2, c[1] - 2, c[2] + 4, c[3] + 4];
         for (const [bn, bb] of boardsOf(w, x0)) if (meets(c2, bb)) P.push('cards: ' + where + ' the card ' + k + ' is not 2 px clear of ' + bn);
@@ -964,16 +964,18 @@ function check(sh, G, runs) {
   { const SL = JSON.parse(sh.moves.find(m => m.src.startsWith('const slotC=')).to.match(/SLOTC=(\[\[.*?\]\])/)[1]), CAR = [196, 117];
     const oldD = i => Math.hypot(98 + (i % 13) * 6 - CAR[0], 119 + (i >= 13 ? 4 : 0) - CAR[1]);
     for (let i = 1; i < SL.length; i++) { const d = Math.hypot(SL[i][0] - SL[i - 1][0], SL[i][1] - SL[i - 1][1]); if (d < 6) P.push('boats: slots ' + (i - 1) + ' and ' + i + ' are ' + r2(d) + ' px apart (the old 6)'); }
-    let n = 0, worst = -99, maxI = -1; const behindB = new Set();
+    let n = 0, worst = -99, maxI = -1, hullMin = 99; const behindB = new Set();
     runs.forEach((r, ri) => { if (r.story.id !== 'los-botes') return; for (const t of NEW[ri].ticks.map(t => t.W).concat(NEW[ri].states.map(L => L.W))) { const ca = (t.gente || {}).carmen; if (!ca) continue;
       for (const [k, o] of Object.entries(t.botes || {})) { if (!o || o.en !== 'carmen') continue; const i = SL.findIndex(q => q[0] === R(o.x) && q[1] === R(o.y)); if (i < 0) { P.push('boats: ' + k + ' reached Carmen at ' + R(o.x) + ',' + R(o.y) + ', no slot'); continue; } n++; maxI = Math.max(maxI, i);
-        const d = Math.hypot(R(o.x) - R(ca.x), R(o.y) - R(ca.y)); worst = Math.max(worst, d - oldD(i)); if (d > oldD(i) + 10) P.push('boats: slot ' + i + ' is ' + r2(d) + ' px from Carmen\'s feet, the old ' + r2(oldD(i)));
+        const d = Math.hypot(R(o.x) - R(ca.x), R(o.y) - R(ca.y)); worst = Math.max(worst, d - oldD(i));
+        { let h = 99; for (const [yy, a, b] of boatRows(o).filter(q => q[0] >= R(o.y) - 4)) for (let xx = a; xx <= b; xx++) h = Math.min(h, Math.hypot(xx - R(ca.x), yy - R(ca.y))); hullMin = Math.min(hullMin, h); } if (d > oldD(i) + 10) P.push('boats: slot ' + i + ' is ' + r2(d) + ' px from Carmen\'s feet, the old ' + r2(oldD(i)));
         const near = nearerRows(boatRows(o), vSurf(R(o.x), R(o.y) - 1), ['poste', 'juncos']); if (Object.keys(near).length) behindB.add(k + ' slot ' + i); } } });
     for (const b of behindB) P.push('boats: ' + b + ' is behind the post or the reeds');
+    if (hullMin > 20) P.push('boats: the nearest boat\'s hull is ' + r2(hullMin) + ' px from Carmen\'s feet (keep 20)');
     // the nearest slot's water to the lip: from its waterline to the nearest pixel that is not water (the bank's face, its lip, the lawn)
     const near = SL[SL.length - 1]; let lip = 99; for (let y = near[1] - 20; y <= near[1] + 20; y++) for (let x = near[0] - 20; x <= near[0] + 20; x++) { const z = zoneAt(x, y); if (z === 'b' || z === 'p' || z === 'l') lip = Math.min(lip, Math.hypot(x - near[0], y - (near[1] - 1))); }
     if (lip < 8 || lip > 12) P.push('boats: the nearest slot ' + near + ' has ' + r2(lip) + ' px of water to the lip (keep 8 to 12)');
-    notes.push('boats to Carmen (round 2): ' + n + ' moments of a boat arrived (slots 0 to ' + maxI + '), each no further from Carmen\'s feet than the old slot from hers + 10 px (the most: ' + r2(worst) + ' px over the old); neighbours ' + r2(Math.min(...SL.slice(1).map((q, i) => Math.hypot(q[0] - SL[i][0], q[1] - SL[i][1])))) + ' px apart at the least (the old 6); the nearest ' + r2(lip) + ' px of water from the lip; none behind the post or the reeds'); }
+    notes.push('boats to Carmen (round 3): ' + n + ' moments of a boat arrived (slots 0 to ' + maxI + '), the nearest boat\'s hull ' + r2(hullMin) + ' px from her feet at the most (keep 20), each no further from Carmen\'s feet than the old slot from hers + 10 px (the most: ' + r2(worst) + ' px over the old); neighbours ' + r2(Math.min(...SL.slice(1).map((q, i) => Math.hypot(q[0] - SL[i][0], q[1] - SL[i][1])))) + ' px apart at the least (the old 6); the nearest ' + r2(lip) + ' px of water from the lip; none behind the post or the reeds'); }
 
   /* round 2, point 2: where the post, each piling that shows and each reed meet the water, a short waterline of the water's ripple light round the
      foot (baked: lago-set.html waterlines), small: within its half width + 4 px of the foot and 2 rows */
@@ -983,22 +985,44 @@ function check(sh, G, runs) {
       if (w.px.length < (w.what === 'junco' ? 1 : 2)) P.push('waterline: the ' + w.what + ' at ' + w.foot + ' meets the water with ' + w.px.length + ' px of waterline');
       for (const i of w.px) { const x = i % 240, y = Math.floor(i / 240); if (Math.abs(x + .5 - w.foot[0]) > w.hw + 4 || Math.abs(y - w.foot[1]) > 2) small = false; } }
     if (!small) P.push('waterline: a waterline reaches further than its foot\'s half width + 4 px or 2 rows');
-    notes.push('waterlines (round 2): ' + Object.entries(by).map(([k, b]) => k + ' ' + b.shown + ' of ' + b.n + ' feet that show, ' + b.min + ' px at the least').join('; ') + ', each within its half width + 4 px of its foot and 2 rows (smaller than any ring); no dark patch inside a plank (each plank one tone, its edge shaded the same on every plank)'); }
+    // round 3: at the reeds, separate short dashes only: no two reeds' waterline pixels touch, each dash 8 px at the most
+    { const reedPx = WL.filter(w => w.what === 'junco').map(w => w.px); let touch = 0, big = 0; const own = new Map(); reedPx.forEach((l, k) => l.forEach(i => own.set(i, k)));
+      reedPx.forEach((l, k) => { if (l.length > 8) big++; for (const i of l) for (const d of [-1, 1, -240, 240, -241, -239, 239, 241]) { const o = own.get(i + d); if (o != null && o !== k) touch++; } });
+      if (touch || big) P.push('waterline: at the reeds ' + touch + ' px of two dashes touch, ' + big + ' dashes longer than 8 px'); by.dashes = reedPx.filter(l => l.length).length; }
+    notes.push('waterlines (round 3): ' + Object.entries(by).filter(e => typeof e[1] === 'object').map(([k, b]) => k + ' ' + b.shown + ' of ' + b.n + ' feet that show, ' + b.min + ' px at the least').join('; ') + '; at the reeds ' + by.dashes + ' separate dashes, the frontmost reed of each clump' + ', each within its half width + 4 px of its foot and 2 rows (smaller than any ring); no dark patch inside a plank (each plank one tone, its edge shaded the same on every plank)'); }
 
   /* round 2, point 3: each mooring post stands on the planks, 2 px and more inside the deck's edge all round its foot, its contact shadow on the planks */
   { const res = [];
     for (const p of F.PM) { let bad = 0; for (let a = 0; a < 16; a++) { const q = E.project(p.x + F.PM_R * Math.cos(a / 16 * 6.283), p.y + F.PM_R * Math.sin(a / 16 * 6.283), F.ZD), qx = R(q.sx), qy = R(q.sy);
-        for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) if (dx * dx + dy * dy <= 4 && zoneAt(qx + dx, qy + dy) !== 'd') bad++; }
-      if (bad) P.push('posts: the mooring post at ' + p.top + ' has ' + bad + ' px within 2 px of its foot off the planks'); res.push(p.top.join(',')); }
+        for (let dy = -5; dy <= 5; dy++) for (let dx = -5; dx <= 5; dx++) if (dx * dx + dy * dy <= 25 && zoneAt(qx + dx, qy + dy) !== 'd') bad++; }
+      for (let dx = -2; dx <= 2; dx++) for (const dy of [1, 2]) if (zoneAt(p.top[0] + dx, p.top[1] - 1 - dy) !== 'd') bad++;   // planks seen over its top too
+      if (bad) P.push('posts: the mooring post at ' + p.top + ' has ' + bad + ' px within 5 px of its foot (or over its top) off the planks'); res.push(p.top.join(',')); }
     const sp = G.shadowPx[KEY]['muelle.postes'] || [], off = sp.filter(i => OG[i] && ZONE[i] !== 'd').length, on = sp.filter(i => OG[i] && ZONE[i] === 'd').length;
     if (off || !on) P.push('posts: their contact shadows darken ' + on + ' px of planks and ' + off + ' px off them');
-    notes.push('mooring posts (round 2): each (tops at ' + res.join('; ') + ') on the planks with 2 px of plank round its foot, its contact shadow on the planks (' + on + ' px)'); }
+    notes.push('mooring posts (round 3): each (tops at ' + res.join('; ') + ') on the planks with 5 px of plank round its foot and planks over its top, its contact shadow on the planks (' + on + ' px)'); }
 
   /* round 2, point 4: the fish against the water round it (CIE76, mean against mean): 30 at the least, or the help (its ring a tone lighter);
      the blue boat's sail, measured the same way (reported) */
-  { const W0 = waterMean, light = sh.helps.ring.pez.light.colours, res = [];
-    for (const c of ['pardo', 'rojo', 'azul', 'verde']) { const d = dE(M.colours['pez.' + c], W0); res.push(c + ' ' + Math.round(d) + (light.includes(c) ? ' (its ring a tone lighter)' : '')); if (d < 30 && !light.includes(c)) P.push('fish: the ' + c + ' fish stands out from the water by ' + Math.round(d) + ' and has no help'); }
-    notes.push('fish against the water (round 2, CIE76, water ' + W0.map(Math.round) + '): ' + res.join(', ') + '; the sails: ' + ['rojo', 'azul', 'verde'].map(c => c + ' ' + Math.round(dE(M.colours['vela.' + c], W0))).join(', ') + '; the fish at the surface has its ring at every moment (rings), leaping its splash (the old salpica)'); }
+  { const W0 = waterMean, PT = sh.helps.ring.pez.patch, res = [];
+    for (const c of ['pardo', 'rojo', 'azul', 'verde']) { const d = dE(M.colours['pez.' + c], PT), d0 = dE(M.colours['pez.' + c], W0); res.push(c + ' ' + Math.round(d) + ' (the open water ' + Math.round(d0) + ')'); if (d < 45) P.push('fish: the ' + c + ' fish stands out from its patch by ' + Math.round(d) + ' (keep 45)'); }
+    notes.push('fish (round 3, CIE76) against its pale patch ' + PT + ': ' + res.join(', ') + '; the sails against the water ' + W0.map(Math.round) + ': ' + ['rojo', 'azul', 'verde'].map(c => c + ' ' + Math.round(dE(M.colours['vela.' + c], W0))).join(', ') + '; the fish at the surface swims in its patch at every moment, out of the dock\'s shade; leaping, its splash (the old salpica)'); }
+
+  /* round 3, point 5: the planks' tones vary plank by plank, no run of light ones: the mean lightness of each plank's pixels on the deck,
+     no two side by side both lighter than the deck's mean by 3 (CIE L*) */
+  { const byK = new Map(); for (let i = 0; i < 240 * 216; i++) { if (ZONE[i] !== 'd' || TAG[i] !== 'muelle') continue; const w = E.atZ(i % 240 + .5, Math.floor(i / 240) + .5, F.ZD), f = (w[0] - F.DECK.x0 + 40 * F.PW) / F.PW, k = Math.floor(f); if (f - k < .14 || f - k > .86) continue;
+      const L = lab(rgbAt(i))[0], b = byK.get(k) || [0, 0]; b[0] += L; b[1]++; byK.set(k, b); }
+    const ks = [...byK.keys()].sort((a, b) => a - b).filter(k => byK.get(k)[1] > 20), Ls = ks.map(k => byK.get(k)[0] / byK.get(k)[1]), mean = Ls.reduce((a, b) => a + b, 0) / Ls.length; let run = 0;
+    for (let j = 1; j < Ls.length; j++) if (Ls[j] > mean + 3 && Ls[j - 1] > mean + 3) run++;
+    if (run) P.push('planks: ' + run + ' pairs of light planks side by side (a band)');
+    notes.push('planks (round 3): ' + ks.length + ' planks, their lightness ' + Ls.map(Math.round).join(' ') + ' (CIE L*; mean ' + Math.round(mean) + '): no two light ones side by side'); }
+
+  /* round 3: the flower on the right bank: plain lawn round it (2 px), nobody in front of it at any moment */
+  { let bad = 0, n = 0; const over = new Set();
+    for (const [where, w] of allW) { if (!w.flor) continue; n++; const fr = rowsAt(M.things.flor, w.flor[0], w.flor[1]);
+      if (n === 1) for (const [y, a, b] of fr) for (let x = a - 2; x <= b + 2; x++) { const z = zoneAt(x, y); if (z !== 'l' && z !== 'out') bad++; }   // behind it and 2 px each side, on its own rows
+      for (const it of itemsOf(w)) if (it.kind !== 'flower' && rowsOverlap(it.rows, fr)) over.add(it.id + ' (' + where + ')'); }
+    if (bad) P.push('flower: ' + bad + ' px round it are not lawn'); for (const o of [...over].slice(0, 10)) P.push('flower: ' + o + ' is in front of it');
+    notes.push('flower (round 3): on the right bank, plain lawn round it, nobody in front of it at any of ' + n + ' moments'); }
 
   /* the sky */
   { const [sx, sy, sr] = F.SUN;

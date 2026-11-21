@@ -103,11 +103,20 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     const H = SHEET.helps.ring;
     if (kind === 'pato') { if (o.pose !== 'nada' && !o.aletea || (o.dy || 0) > 3 || o.pose === 'vuela' || o.pose === 'anda') return null; const s = o.k === 'amarillo' ? .78 : 1; return [R(o.x), R(o.y), H.pato.rx * s, H.pato.ry]; }
     if (kind === 'bote') { if (o.en === 'muelle') return null; const bob = o.en === 'agua' || o.en === 'juncos' ? ((F >> 3) % 2) : 0; return [R(o.x), R(o.y) + bob, H.bote.rx, H.bote.ry]; }
-    if (kind === 'pez') { if ((o.dy || 0) > 4) return null; return [R(o.x), R(o.y), H.pez.rx, H.pez.ry, H.pez.light && H.pez.light.colours.includes(o.c) ? H.pez.light.colour : null]; }
+    if (kind === 'pez') return null;   // the fish has its patch (PV.patch)
     if (kind === 'pan') { if (!o || o.con != null || o.vis === 0 || (o.z || 0) > 1) return null; if (CUR.set.surfaceAt(R(o.x), R(o.y) - 1).on !== 'water') return null; return [R(o.x), R(o.y), H.pan.rx, H.pan.ry]; }
     return null;
   };
   PV.ring = function (c, kind, o) { if (OLD) return; const r = PV.ringWhere(kind, o); if (r) ringOn(c, r[0], r[1], r[2], r[3], r[4]); };
+  // (sheet: helps.ring.pez) the fish at the surface swims in a pale patch of stirred water of its own: the old water's pale tone, its edge dithered,
+  // the ring's light line at its rim; on the water only
+  PV.patch = function (c, o) { if (OLD || !o || (o.dy || 0) > 4) return; const H = SHEET.helps.ring.pez, fw = CUR.fw, cx = R(o.x), cy = R(o.y) + H.dy;
+    for (let y = Math.floor(cy - H.ry - 1); y <= Math.ceil(cy + H.ry + 1); y++) for (let x = Math.floor(cx - H.rx - 1); x <= Math.ceil(cx + H.rx + 1); x++) {
+      const d = Math.sqrt(((x + .5 - cx) / H.rx) ** 2 + ((y + .5 - cy) / H.ry) ** 2); if (d > 1 || !fw.LAGO_SET.waterShown(x, y)) continue;
+      const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5][(y & 3) * 4 + (x & 3)] / 16, edge = (d - (1 - H.soft)) / H.soft;
+      if (d > .82) { c.fillStyle = 'rgb(' + H.rim + ')'; c.fillRect(x, y, 1, 1); continue; }
+      if (edge > 0 && B < edge) continue;
+      c.fillStyle = 'rgb(' + H.patch + ')'; c.fillRect(x, y, 1, 1); } };
   // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
   const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
   PV.faces = function (w) {
