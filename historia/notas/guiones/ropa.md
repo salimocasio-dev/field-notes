@@ -68,7 +68,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 1. NARR: "¡Una ola grande!" The wave slides back; the things rock in the water. NARR: "Abuela dice: ¡Ay! ¡Mi sombrero! Coquí, busca mi sombrero." Ask (signed, the sun hat): "¿Dónde está el sombrero?" He touches it: the frog hops in and pushes the hat to the edge with his nose; abuela shakes it. NARR: "Abuela dice: Gracias. ¡El sombrero está mojado!" A small wave takes it out of her hand again.
 2. Luis points. NARR: "Luis dice: Mira: una toalla. La toalla está allá." Ask (signed, the floating towel): "¿Dónde está la toalla?" He touches it: the frog drags the towel in; Luis wrings it out and hangs it on the line beside the dry one.
-3. Abuela points at each thing in turn. NARR: "Abuela dice: Mira, ahí están las chancletas." **(ahí: heard)** Ask (signed, the sandals): "¿Dónde están las chancletas?" He touches them: they bob. NARR: "Abuela dice: Ahí están las gafas." Ask (signed, the glasses): "¿Y las gafas?" He touches them. NARR: "Abuela dice: Y ahí está el traje de baño. Las chancletas, las gafas, el traje de baño y mi sombrero."
+3. Abuela points at each thing in turn. NARR: "Abuela dice: Mira, ahí están las chancletas." **(ahí: heard)** Ask (signed, the sandals): "¿Dónde están las chancletas?" He touches them: they bob. NARR: "Abuela dice: Ahí están las gafas." Ask (signed, the glasses): "¿Y las gafas?" He touches them. NARR: "Carmen dice: ¡Y mi traje de baño!" NARR: "Abuela dice: Sí, ahí está el traje de baño. Las chancletas, las gafas, el traje de baño y mi sombrero."
 4. NARR: "Luis dice: ¡Avanza, Coquí!" **(avanza: heard)** COQUÍ [TURN: voy (voy)]: "¡Voy!" The frog hops to the edge.
 
 **The turn**
@@ -90,7 +90,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - Two things lost: two on the line; abuela waves goodbye to the sea, and the children laugh.
 9. Abuela takes the dry towel from the line. NARR: "Abuela dice: Toma, Coquí. Una toalla seca." She wraps him up. COQUÍ [TURN: gracias (gracias)]: "¡Gracias!" NARR: "El sombrero está mojado. Y Coquí está seco."
 
-**Fewest hearings before a word can cost:** chancletas 4, gafas 4, traje de baño 3, sombrero 6 (steps 1, 3). Not deciding: toalla 3 (step 2), and once in the ending.
+**Fewest hearings before a word can cost:** chancletas 3, gafas 3, traje de baño 3, sombrero 5 (steps 1, 3). Not deciding: toalla 3 (step 2), and once in the ending.
 **A miss is filed under:** the thing that was asked for.
 **Chance without the Spanish:** one in four in round A; one in three or one in two in round B. Abuela asks every time, so who owns what gives nothing away.
 **Speaking turns:** two (steps 4, 9): voy; gracias.
@@ -110,7 +110,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 1. NARR: "Es tarde. La guagua está esperando." **(esperando: a form of espera)** The driver holds up three fingers. Luis pulls his red shirt over his head; we see him do it. NARR: "Luis se pone la camisa." Then he puts on a straw hat. NARR: "Y se pone el sombrero." Ask (signed, Luis): "¿Quién tiene puesto un sombrero?" He touches him: Luis tips his hat.
 2. Carmen pulls her yellow dress on over her swimming suit. NARR: "Carmen se pone el vestido." She puts her dark glasses on, too. NARR: "Carmen tiene puestas las gafas." Abuela shakes her head and points at the low sun. NARR: "Abuela dice: Carmen, ya no hay sol." Carmen takes them off. NARR: "Carmen se quita las gafas." Ask (signed, Carmen): "¿Quién tiene puesto un vestido?" He touches her: she spins.
-3. Luis takes his hat off and fans himself; puts it on again. NARR: "Luis se quita el sombrero... y se pone el sombrero." NARR: "Luis dice: Coquí, ¿vienes?" COQUÍ [TURN: voy (voy)]: "¡Voy!" But the two run off along the sand for one last game.
+3. Luis takes his hat off and fans himself; puts it on again. NARR: "Luis se quita el sombrero... y se pone el sombrero." Carmen kicks off her sandals to shake the sand out. NARR: "Carmen se quita las chancletas." NARR: "Luis dice: Coquí, ¿vienes?" COQUÍ [TURN: voy (voy)]: "¡Voy!" But the two run off along the sand for one last game.
 
 **The turn**
 
@@ -131,7 +131,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - One finger: the guagua has started to roll; abuela waves the towel, it stops, and they climb on, out of breath.
 8. Abuela counts heads at the guagua's door, and looks about her. NARR: "Abuela dice: ¿Y Canelo? ¿Dónde está Canelo?" Canelo is under the frog, with abuela's sun hat on. COQUÍ [TURN: aquí (aquí, aqui)]: "¡Aquí!" NARR: "Canelo tiene puesto el sombrero de abuela. Y la guagua se va."
 
-**Fewest hearings before a word can cost:** se pone 4 (steps 1, 2, 3), se quita 3 (steps 2, 3). Not deciding: tiene puesto 3 with "tiene puestas" (steps 1, 2), and once in the ending.
+**Fewest hearings before a word can cost:** se pone 4 (steps 1, 2, 3), se quita 3 (steps 2, 3: the glasses, the hat, the sandals). Not deciding: tiene puesto 3 with "tiene puestas" (steps 1, 2), and once in the ending.
 **Forms:** tiene puestas, tiene puesta count with tiene puesto.
 **A miss is filed under:** the one that was said (se pone or se quita).
 **Chance without the Spanish:** one in two, each round on its own: the two are alike and do opposite things with the same thing.
