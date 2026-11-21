@@ -138,10 +138,12 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
 
   /* ---------- 2. a W in old positions, moved by the sheet's rule ---------- */
   PV.story = null;
+  // whoever stands outside (the maker's HXS): [old x, new x, rows on PA + the old offset, the old offset it holds for]; null: any x, the same x
+  const SHEET_HXS = { abuelo: [[207, 207, -9], [null, null, -1]], papa: [[158, 154, 0], [null, null, 0]], luis: [[173, 166, 0], [158, 158, -6, 8]], mama: [[200, 200, -4]] };
   PV.remapW = w0 => { const w = JSON.parse(JSON.stringify(w0)), sh = SHEET, N = sh.layout.numbers, f = c => x => Math.round(c + x / 2), CT = f(N.CT), SL = f(N.SL), PA = f(N.PA), CB = f(N.CB);
     const ENC = 112, top = sh.points.nevera.top, st = PV.story, done = new Set();
     if (st) for (const e of sh.remap) if (e.moved && e.kind === 'point' && e.uses.some(u => u.startsWith(st.id + '.json'))) for (const o of (w.cosas || [])) if (o && !done.has(o) && Math.round(o.x) === e.old[0] && Math.round(o.y) === e.old[1]) { o.x = e.new[0]; o.y = e.new[1]; done.add(o); }
-    for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.fuera) { p.y = PA(Math.round(p.x)) + (p.y - 120) + 0; const HX = { abuelo: [207, 214, -1], papa: [158, 154, 4], luis: [173, 166, 0] }[id]; if (HX && Math.round(p.x) === HX[0]) { p.x = HX[1]; p.y = PA(HX[1]) + (w0.gente[id].y - 120); } if (HX) p.y += HX[2]; }
+    for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.fuera) { p.y = PA(Math.round(p.x)) + (p.y - 120) + 0; const HX = (SHEET_HXS[id] || []).find(h => (h[0] == null || Math.round(p.x) === h[0]) && (h[3] == null || Math.round(w0.gente[id].y) - 120 === h[3])); if (HX) { if (HX[1] != null) p.x = HX[1]; p.y = PA(Math.round(p.x)) + (w0.gente[id].y - 120) + HX[2]; } }
     const named = {}; for (const m of sh.moves) for (const q of m.places || []) if (/^(carta_|v_)/.test(q.who)) named[q.who + '@' + q.old.join(',')] = q.new;
     for (const m of sh.moves) for (const q of m.places || []) if (q.who === 'abuela') { const p = (w.gente || {}).abuela; if (p && Math.round(p.x) === q.old[0] && Math.round(p.y) === q.old[1]) { p.x = q.new[0]; p.y = q.new[1]; } }
     for (const o of w.cosas || []) { if (!o || o.x == null || done.has(o)) continue; const x = Math.round(o.x), nm = named[o.id + '@' + Math.round(o.x) + ',' + Math.round(o.y)]; if (nm) { o.x = nm[0]; o.y = nm[1]; continue; }

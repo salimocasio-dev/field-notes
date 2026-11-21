@@ -18,16 +18,16 @@
   "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2, zoom 1 = the 196 x 104 window. The old rectangles (remap cam and crop) say which pictures they were"
  },
  "layout": {
-  "what": "La cocina's room (cocina-kit.js), cut open as La sala: of its four walls the two far ones stand (the left one on x = 0, the back one on y = 0), cut at 3.2 with the plain dark backdrop above; the checker floor runs off the picture. Along the back wall from the corner, the counter (the kit's cupboards and white top) to past the right edge, the sink set into it near the corner, its tap at the wall; over it the big window (the kit's, view \"patio\": sky and a cloud, the yard's cream wall, the hedge), its sill a ledge. Against the left wall, a little way from the corner, the big fridge, its front looking +x, its door hinged on its far edge; the stool on the floor in front, where the frog stands",
-  "why": "the brief and page 11 decision 9: the set stands on the world's axes, nothing square to the camera; the kit fixes the room's plan (the corner at (0, 0), the walls on its axes). The old picture had the fridge, the counter and the window side by side on one flat wall: on a world axis a wall falls half a row a pixel, so the fridge (left of the counter, standing as low as the counter's foot) cannot share the counter's wall. The fridge stands on the left wall, the counter and the window on the back wall: both feet stay near their old rows where people stand at them, and the counter's top passes its old row (122) at x 170, the middle of what stands on it; to either side it falls half a row a pixel (CT: whatever stands on it moves to that row at its old x, as El banco's sitters to SY). The fridge is as high as the wall (3.15, a little under its cut at 3.2: 1.4 times abuela, the old one was 2.3 times her); its two shelves hold the four old places side by side as the old, moved down to where they show whole through its opening (HUECO), above the heads of whoever stands before it. The window is as wide as the old one, from the sill just over the counter to just under the wall's cut: what happens outside shows through it, the yard wall's top on its slope (MU), whoever stands outside with their feet on PA",
+  "what": "La cocina's room (cocina-kit.js), cut open as La sala: of its four walls the two far ones stand (the left one on x = 0, the back one on y = 0), cut at 4.95 (round 2: higher than the kit's 3.2, this set's own override round its call of cocinaBuild, for the tall window) with the plain dark backdrop above; the checker floor runs off the picture. Along the back wall from the corner, the counter (the kit's cupboards and white top) to past the right edge, the sink set into it near the corner, its tap at the wall; over it the big window (the kit's, view \"patio\": sky and a cloud, the yard's cream wall, the hedge), its frame standing out of the wall, the reveal the wall's thickness, its sill a ledge. Against the left wall, a little way from the corner, the fridge, its front looking +x, its door hinged on its far edge (open, it stands out into the room at the fridge's side, its inner face seen); the stool on the floor in front, where the frog stands",
+  "why": "the brief and page 11 decision 9: the set stands on the world's axes, nothing square to the camera; the kit fixes the room's plan (the corner at (0, 0), the walls on its axes). The old picture had the fridge, the counter and the window side by side on one flat wall: on a world axis a wall falls half a row a pixel, so the fridge (left of the counter, standing as low as the counter's foot) cannot share the counter's wall. The fridge stands on the left wall, the counter and the window on the back wall: both feet stay near their old rows where people stand at them, and the counter's top passes its old row (122) at x 170, the middle of what stands on it; to either side it falls half a row a pixel (CT: whatever stands on it moves to that row at its old x, as El banco's sitters to SY). The fridge is 3.15 high (1.4 times abuela, the old one was 2.3 times her) and 2.65 wide, so that it stands whole in the view, its door open too; its two shelves hold the four old places side by side as the old, moved down to where they show whole through its opening (HUECO), above the heads of whoever stands before it. The window is as wide as the old one and as tall (62 rows where the family stands outside: z 1.6 to 4.7), its glass's bottom on the old sill's row at x 154: whoever stands outside shows through it as through the old one, cut at the chest by the sill, the sky and the yard's wall round their head; the yard wall's top on its slope (MU), whoever stands outside with their feet on PA",
   "numbers": {
    "CT": 36.5,
-   "SL": 28.5,
-   "MU": 4,
-   "PA": 40,
+   "SL": 25,
+   "MU": -16.5,
+   "PA": 38,
    "CB": 80,
-   "VT": -10,
-   "VB": 25
+   "VT": -46,
+   "VB": 16
   }
  },
  "behind": {
@@ -193,53 +193,51 @@
   },
   "frutas": {
    "set": true,
-   "box": [40, 58, 79, 106],
+   "box": [58, 52, 59, 102],
    "boxes": [
-    [40, 58, 65, 100],
-    [40, 58, 79, 106]
+    [58, 52, 48, 98],
+    [58, 52, 59, 102]
    ],
    "boxesWhat": "its box by W.nev.cajonver: [0] the drawer in, [1] the drawer pulled out (the box the port uses: FRUTAS[cajonver ? 1 : 0])",
    "what": "the inside of the open fridge: its back, sides, shelves and bin (every state with nev 1)",
    "old": {
     "box": [44, 60, 48, 48]
    },
-   "hand": [81, 111],
-   "hintBox": [42, 58, 77, 106],
-   "hintWhy": "hintBox: the part of its touch box the hint frame shows (the frame, box + 12, 2 px inside the view); the touch box answers the touches",
+   "hand": [88, 103],
    "hintBoxes": [
-    [42, 58, 63, 100],
-    [42, 58, 77, 106]
+    [58, 52, 48, 98],
+    [58, 52, 59, 102]
    ],
    "hands": [
-    [74, 108],
-    [81, 111]
+    [82, 101],
+    [88, 103]
    ]
   },
   "nevera": {
    "set": true,
-   "box": [0, 45, 119, 129],
+   "box": [33, 39, 84, 145],
    "boxes": [
-    [16, 45, 91, 114],
-    [0, 45, 119, 129],
-    [16, 45, 95, 114]
+    [33, 39, 74, 112],
+    [33, 39, 84, 145],
+    [33, 39, 78, 113]
    ],
    "boxesWhat": "its box by W.nev.abierta: [0] shut, [1] open, [2] half open (the box the port uses: NEVERA[abierta]); box: all three together",
    "what": "the fridge: its body, its door shut, half open or open, its inside and the drawer pulled out (every state)",
    "old": {
     "box": [40, 40, 56, 116]
    },
-   "hand": [81, 110],
-   "hintBox": [42, 45, 77, 129],
+   "hand": [80, 112],
+   "hintBox": [42, 39, 75, 145],
    "hintWhy": "hintBox: the part of its touch box the hint frame shows (the frame, box + 12, 2 px inside the view); the touch box answers the touches",
    "hintBoxes": [
-    [42, 45, 65, 114],
-    [42, 45, 77, 129],
-    [42, 45, 69, 114]
+    [42, 39, 65, 112],
+    [42, 39, 75, 145],
+    [42, 39, 69, 113]
    ],
    "hands": [
-    [75, 102],
-    [81, 110],
-    [77, 102]
+    [75, 95],
+    [80, 112],
+    [77, 96]
    ]
   },
   "cocina": {
@@ -273,58 +271,58 @@
    "what": "LUGAR.centro: the frog on the stool (BANCO), his feet on its top"
   },
   "nevera.55,79": {
-   "world": [1.2188, 3.1226, 1.95],
+   "world": [1.0625, 2.6399, 2],
    "on": "shelf",
    "old": [55, 79],
-   "new": [64, 104],
+   "new": [70, 97],
    "moved": true,
    "what": "the four places on the fridge's two shelves"
   },
   "nevera.81,79": {
-   "world": [1.2188, 1.7083, 1.95],
+   "world": [0.9265, 1.5792, 2],
    "on": "shelf",
    "old": [81, 79],
-   "new": [90, 91],
+   "new": [87, 86],
    "moved": true,
    "what": "the four places on the fridge's two shelves"
   },
   "nevera.55,105": {
-   "world": [1.2179, 3.2848, 0.95],
+   "world": [1.0138, 2.5912, 0.85],
    "on": "shelf",
    "old": [55, 105],
-   "new": [61, 128],
+   "new": [70, 122],
    "moved": true,
    "what": "the four places on the fridge's two shelves"
   },
   "nevera.81,105": {
-   "world": [1.2179, 1.8706, 0.95],
+   "world": [0.8235, 1.585, 0.85],
    "on": "shelf",
    "old": [81, 105],
-   "new": [87, 115],
+   "new": [85, 111],
    "moved": true,
    "what": "the four places on the fridge's two shelves"
   },
   "cesta.68,40": {
-   "world": [0.9479, 2.6341, 3.15],
+   "world": [0.9278, 2.6139, 3.4],
    "on": "fridge top",
    "old": [68, 40],
-   "new": [68, 70],
+   "new": [68, 64],
    "moved": true,
    "what": "the counter's places (CT) and the bread basket on the fridge's top"
   },
   "cajon.55,148": {
-   "world": [1.4117, 3.6962, 0.22],
+   "world": [1.4661, 2.7715, 0.22],
    "on": "drawer",
    "old": [55, 148],
-   "new": [57, 150],
+   "new": [75, 142],
    "moved": true,
    "what": "the guineos in the drawer pulled out"
   },
   "cajon.78,148": {
-   "world": [1.874, 3.0163, 0.22],
+   "world": [1.6293, 2.1732, 0.22],
    "on": "drawer",
    "old": [78, 148],
-   "new": [78, 148],
+   "new": [89, 138],
    "moved": true,
    "what": "the manzanas in the drawer pulled out"
   },
@@ -345,26 +343,26 @@
    "what": "acts.abuelamira"
   },
   "carta_leche.114,86": {
-   "world": [-1.0879, -2.1757, 0],
+   "world": [-1.1151, -2.1485, 0],
    "on": "floor",
    "old": [114, 86],
-   "new": [119, 78],
+   "new": [118, 78],
    "moved": true,
    "what": "acts.inicio30"
   },
   "carta_queso.132,86": {
-   "world": [-0.7071, -2.5565, 0],
+   "world": [-0.7343, -2.5293, 0],
    "on": "floor",
    "old": [132, 86],
-   "new": [133, 78],
+   "new": [132, 78],
    "moved": true,
    "what": "acts.inicio30"
   },
   "respEn.142,10": {
-   "world": [-3.2908, -6.2824, 0],
+   "world": [-4.1611, -7.1527, 0],
    "on": "floor",
    "old": [142, 10],
-   "new": [154, 20],
+   "new": [154, 4],
    "moved": true,
    "what": "the answer cards"
   },
@@ -384,19 +382,11 @@
    "moved": true,
    "what": "the frog on the counter"
   },
-  "abuelo.207,120": {
-   "world": null,
-   "on": "outside",
-   "old": [207, 120],
-   "new": [214, 146],
-   "moved": true,
-   "what": "whoever stands outside the window"
-  },
   "papa.158,120": {
    "world": null,
    "on": "outside",
    "old": [158, 120],
-   "new": [154, 121],
+   "new": [154, 115],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -404,7 +394,15 @@
    "world": null,
    "on": "outside",
    "old": [173, 116],
-   "new": [166, 119],
+   "new": [166, 117],
+   "moved": true,
+   "what": "whoever stands outside the window"
+  },
+  "abuelo.207,120": {
+   "world": null,
+   "on": "outside",
+   "old": [207, 120],
+   "new": [207, 133],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -412,7 +410,7 @@
    "world": null,
    "on": "outside",
    "old": [160, 120],
-   "new": [160, 124],
+   "new": [160, 118],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -420,7 +418,7 @@
    "world": null,
    "on": "outside",
    "old": [176, 120],
-   "new": [176, 128],
+   "new": [176, 126],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -428,7 +426,7 @@
    "world": null,
    "on": "outside",
    "old": [200, 120],
-   "new": [200, 140],
+   "new": [200, 134],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -436,7 +434,7 @@
    "world": null,
    "on": "outside",
    "old": [136, 120],
-   "new": [136, 112],
+   "new": [136, 106],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -444,7 +442,7 @@
    "world": null,
    "on": "outside",
    "old": [230, 116],
-   "new": [230, 151],
+   "new": [230, 149],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -452,7 +450,7 @@
    "world": null,
    "on": "outside",
    "old": [186, 120],
-   "new": [186, 137],
+   "new": [186, 131],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -460,7 +458,7 @@
    "world": null,
    "on": "outside",
    "old": [198, 120],
-   "new": [198, 139],
+   "new": [198, 137],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -468,7 +466,7 @@
    "world": null,
    "on": "outside",
    "old": [170, 120],
-   "new": [170, 125],
+   "new": [170, 123],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -476,7 +474,7 @@
    "world": null,
    "on": "outside",
    "old": [158, 128],
-   "new": [158, 127],
+   "new": [158, 119],
    "moved": true,
    "what": "whoever stands outside the window"
   },
@@ -537,50 +535,50 @@
    "what": "acts.inicio31"
   },
   "pan32.160,98": {
-   "world": [3.3668, 0.0488, 1.35],
+   "world": [3.3329, 0.015, 1.5],
    "on": "sill",
    "old": [160, 98],
-   "new": [160, 109],
+   "new": [160, 105],
    "moved": true,
    "what": "acts.inicio32"
   },
   "mant.178,98": {
-   "world": [4.3459, 0.0488, 1.35],
+   "world": [4.312, 0.015, 1.5],
    "on": "sill",
    "old": [178, 98],
-   "new": [178, 118],
+   "new": [178, 114],
    "moved": true,
    "what": "acts.inicio32"
   },
   "c1.76,40": {
-   "world": [0.7848, 2.0358, 3.15],
+   "world": [0.819, 2.07, 3.4],
    "on": "fridge top",
    "old": [76, 40],
-   "new": [76, 63],
+   "new": [76, 58],
    "moved": true,
    "what": "acts.inicio32"
   },
   "c2.88,40": {
-   "world": [0.7848, 1.3831, 3.15],
+   "world": [0.819, 1.4173, 3.4],
    "on": "fridge top",
    "old": [88, 40],
-   "new": [88, 57],
+   "new": [88, 52],
    "moved": true,
    "what": "acts.inicio32"
   },
   "v_rojo.190,98": {
-   "world": [4.747, -0.0396, 1.3],
+   "world": [4.5838, -0.2028, 1.3],
    "on": "counter",
    "old": [190, 98],
-   "new": [187, 122],
+   "new": [187, 119],
    "moved": true,
    "what": "acts.mama32"
   },
   "v_azul.203,98": {
-   "world": [5.3997, -0.0396, 1.3],
+   "world": [5.2365, -0.2028, 1.3],
    "on": "counter",
    "old": [203, 98],
-   "new": [199, 128],
+   "new": [199, 125],
    "moved": true,
    "what": "acts.mama32"
   },
@@ -741,41 +739,41 @@
    "what": "the counter along the back wall from the corner, its top at z 1.3 (the kit's): a thing on it stands at row CT(x) = 36.5 + x / 2 (its top's middle, d .45)"
   },
   "pila": {
-   "world": [1.35, 0.2, 1.3, 2.35, 0.72, 1.3],
-   "screen": [124.55, 98.96],
+   "world": [1.25, 0.12, 1.3, 2.4, 0.8, 1.3],
+   "screen": [124.1, 98.73],
    "what": "the sink set into the counter near the corner (the old EN.pila 124), its tap at the wall behind it"
   },
   "ventana": {
-   "world": [2.45, 0, 1.45, 7.6, 0, 3.1],
+   "world": [2.35, 0, 1.6, 8, 0, 4.7],
    "rows": {
-    "SL": 28.5,
-    "VT": -10,
-    "VB": 25,
-    "MU": 4,
-    "PA": 40
+    "SL": 25,
+    "VT": -46,
+    "VB": 16,
+    "MU": -16.5,
+    "PA": 38
    },
-   "what": "the big window on the back wall over the counter (the kit's, view \"patio\"), from x 2.45 to 7.6 (the old 150 to 214), z 1.45 to 3.1; its sill (the kit's ledge) at z 1.35: SL(x) = 28.5 + x / 2; the yard wall's top seen through it MU(x) = 4 + x / 2; whoever stands outside has their feet at PA(x) = 40 + x / 2"
+   "what": "the big window on the back wall over the counter (the kit's, view \"patio\"), from x 2.35 to 8 (the old 150 to 214), z 1.6 to 4.7; its sill (the kit's ledge) at z 1.5: SL(x) = 25 + x / 2; the yard wall's top seen through it MU(x) = -16.5 + x / 2; whoever stands outside has their feet at PA(x) = 38 + x / 2"
   },
   "nevera": {
-   "world": [0, 0.95, 0, 1.3, 4.5, 3.15],
-   "shelves": [1.95, 0.95],
-   "bin": [0.16, 0.86],
+   "world": [0, 0.95, 0, 1.35, 3.6, 3.4],
+   "shelves": [2, 0.85],
+   "bin": [0.16, 0.74],
    "huecos": [
-    [64, 104],
-    [90, 91],
-    [61, 128],
-    [87, 115]
+    [70, 97],
+    [87, 86],
+    [70, 122],
+    [85, 111]
    ],
    "drawer": {
-    "guineo": [57, 150],
-    "manzana": [78, 148]
+    "guineo": [75, 142],
+    "manzana": [89, 138]
    },
    "top": {
-    "cesta": [68, 70],
-    "c1": [76, 63],
-    "c2": [88, 57]
+    "cesta": [68, 64],
+    "c1": [76, 58],
+    "c2": [88, 52]
    },
-   "what": "the fridge against the left wall from y 0.95 to 4.5, 1.3 deep, 3.15 high, its front looking +x; its door hinged on its far edge (y 4.5: the left on the screen); two glass shelves at z 1.95 and 0.95, the bin under them (z 0.16 to 0.86)"
+   "what": "the fridge against the left wall from y 0.95 to 3.6, 1.35 deep, 3.4 high, its front looking +x; its door hinged on its far edge (y 3.6: the left on the screen); two glass shelves at z 2 and 0.85, the bin under them (z 0.16 to 0.74)"
   },
   "banco": {
    "foot": [120, 206.21],
@@ -795,7 +793,7 @@
    "world": [3.0732, 1.6046, 0],
    "region": null,
    "old": [22, 0, 196, 216],
-   "why": "the old window moved 6 px right (x0 28 for 22): so that the hint frame of every thing on the counter's right end (the cups at 201) is inside the view, and the fridge's side runs off the left edge",
+   "why": "the old window moved 6 px right (x0 28 for 22): so that the hint frame of every thing on the counter's right end (the cups at 201) is inside the view; the fridge stands whole inside it (round 2)",
    "what": "the kitchen's corner: the fridge at the left, the counter with the sink and the window at the right, the stool in front"
   }
  },
@@ -812,11 +810,11 @@
    },
    "crops": {
     "no_hay.si": {
-     "crop": [28, 64, 98, 52],
+     "crop": [30, 58, 98, 52],
      "zoom": 2
     },
     "no_hay.no": {
-     "crop": [28, 64, 98, 52],
+     "crop": [30, 58, 98, 52],
      "zoom": 2
     }
    }
@@ -830,28 +828,28 @@
    },
    "crops": {
     "fruta.si": {
-     "crop": [44, 112, 196, 104],
-     "zoom": 1
+     "crop": [101, 146, 98, 52],
+     "zoom": 2
     },
     "fruta.no": {
-     "crop": [44, 112, 196, 104],
-     "zoom": 1
+     "crop": [101, 146, 98, 52],
+     "zoom": 2
     },
     "guineo.si": {
-     "crop": [44, 112, 196, 104],
-     "zoom": 1
+     "crop": [101, 146, 98, 52],
+     "zoom": 2
     },
     "guineo.no": {
-     "crop": [44, 112, 196, 104],
-     "zoom": 1
+     "crop": [101, 146, 98, 52],
+     "zoom": 2
     },
     "china.si": {
-     "crop": [44, 112, 196, 104],
-     "zoom": 1
+     "crop": [113, 146, 98, 52],
+     "zoom": 2
     },
     "china.no": {
-     "crop": [44, 112, 196, 104],
-     "zoom": 1
+     "crop": [113, 146, 98, 52],
+     "zoom": 2
     }
    }
   },
@@ -867,12 +865,12 @@
    },
    "crops": {
     "vacio.si": {
-     "crop": [44, 112, 196, 104],
-     "zoom": 1
+     "crop": [101, 143, 98, 52],
+     "zoom": 2
     },
     "vacio.no": {
-     "crop": [44, 112, 196, 104],
-     "zoom": 1
+     "crop": [101, 143, 98, 52],
+     "zoom": 2
     }
    }
   },
@@ -929,11 +927,11 @@
    },
    "crops": {
     "busca.si": {
-     "crop": [135, 54, 98, 52],
+     "crop": [126, 47, 98, 52],
      "zoom": 2
     },
     "busca.no": {
-     "crop": [135, 54, 98, 52],
+     "crop": [126, 47, 98, 52],
      "zoom": 2
     }
    }
@@ -955,12 +953,12 @@
      "zoom": 2
     },
     "mantequilla.si": {
-     "crop": [44, 79, 196, 104],
-     "zoom": 1
+     "crop": [123, 105, 98, 52],
+     "zoom": 2
     },
     "mantequilla.no": {
-     "crop": [44, 79, 196, 104],
-     "zoom": 1
+     "crop": [123, 105, 98, 52],
+     "zoom": 2
     }
    }
   },
@@ -1230,7 +1228,7 @@
    "to": {
     "outside": null
    },
-   "new": [184, 132],
+   "new": [184, 130],
    "moved": true,
    "why": "outside the window: PA(x) + (y - 120)",
    "what": "a place outside (moved: why)"
@@ -1339,9 +1337,9 @@
    "uses": ["h-nevera.json beats.6.set.cosas.6"],
    "from": "h-nevera (not in positions.json: newer than the reference folder)",
    "to": {
-    "sill": [4.3459, 0.0488, 1.35]
+    "sill": [4.312, 0.015, 1.5]
    },
-   "new": [178, 118],
+   "new": [178, 114],
    "moved": true,
    "why": "on the sill: SL(x) + (y - 98)",
    "what": "a place sill (moved: why)"
@@ -1352,13 +1350,15 @@
    "screen": [150, 178],
    "zoom": 2,
    "crop": [101, 152, 98, 52],
-   "what": "Carmen drinking a glass of milk"
+   "what": "Carmen drinking a glass of milk",
+   "why": "zoom 2, the window that holds the most of what differs: 0.88% of it (no 98 x 52 window holds 1.5%: what differs is the old sprites' own, 45 px; at zoom 1 it is 0.22%)"
   },
   "leche.no": {
    "screen": [150, 178],
    "zoom": 2,
    "crop": [101, 152, 98, 52],
-   "what": "Carmen drinking a glass of juice"
+   "what": "Carmen drinking a glass of juice",
+   "why": "zoom 2, the window that holds the most of what differs: 0.88% of it (no 98 x 52 window holds 1.5%: what differs is the old sprites' own, 45 px; at zoom 1 it is 0.22%)"
   },
   "queso.si": {
    "screen": [168, 105],
@@ -1373,51 +1373,51 @@
    "what": "butter on its dish on the counter"
   },
   "no_hay.si": {
-   "screen": [77, 90],
+   "screen": [79, 84],
    "zoom": 2,
-   "crop": [28, 64, 98, 52],
+   "crop": [30, 58, 98, 52],
    "what": "the open fridge: the holder empty, the cheese beside it"
   },
   "no_hay.no": {
-   "screen": [77, 90],
+   "screen": [79, 84],
    "zoom": 2,
-   "crop": [28, 64, 98, 52],
+   "crop": [30, 58, 98, 52],
    "what": "the open fridge: the milk in its holder, no cheese"
   },
   "busca.si": {
-   "screen": [184, 80],
+   "screen": [175, 73],
    "zoom": 2,
-   "crop": [135, 54, 98, 52],
+   "crop": [126, 47, 98, 52],
    "what": "papá outside the window with a bag, thinking of bread"
   },
   "busca.no": {
-   "screen": [184, 80],
+   "screen": [175, 73],
    "zoom": 2,
-   "crop": [135, 54, 98, 52],
+   "crop": [126, 47, 98, 52],
    "what": "papá outside the window eating a slice"
   },
   "fruta.si": {
    "screen": [150, 172],
-   "zoom": 1,
-   "crop": [44, 112, 196, 104],
+   "zoom": 2,
+   "crop": [101, 146, 98, 52],
    "what": "abuelo holding up a plate of fruit"
   },
   "fruta.no": {
    "screen": [150, 172],
-   "zoom": 1,
-   "crop": [44, 112, 196, 104],
+   "zoom": 2,
+   "crop": [101, 146, 98, 52],
    "what": "abuelo holding up a plate of rolls"
   },
   "guineo.si": {
    "screen": [150, 172],
-   "zoom": 1,
-   "crop": [44, 112, 196, 104],
+   "zoom": 2,
+   "crop": [101, 146, 98, 52],
    "what": "mamá with the baby eating a banana"
   },
   "guineo.no": {
    "screen": [150, 172],
-   "zoom": 1,
-   "crop": [44, 112, 196, 104],
+   "zoom": 2,
+   "crop": [101, 146, 98, 52],
    "what": "mamá with the baby eating an apple"
   },
   "manzana.si": {
@@ -1434,14 +1434,14 @@
   },
   "china.si": {
    "screen": [162, 172],
-   "zoom": 1,
-   "crop": [44, 112, 196, 104],
+   "zoom": 2,
+   "crop": [113, 146, 98, 52],
    "what": "abuelo giving Carmen an orange"
   },
   "china.no": {
    "screen": [162, 172],
-   "zoom": 1,
-   "crop": [44, 112, 196, 104],
+   "zoom": 2,
+   "crop": [113, 146, 98, 52],
    "what": "abuelo giving Carmen a banana"
   },
   "pan.si": {
@@ -1458,14 +1458,14 @@
   },
   "mantequilla.si": {
    "screen": [172, 131],
-   "zoom": 1,
-   "crop": [44, 79, 196, 104],
+   "zoom": 2,
+   "crop": [123, 105, 98, 52],
    "what": "abuela offering bread being buttered"
   },
   "mantequilla.no": {
    "screen": [172, 131],
-   "zoom": 1,
-   "crop": [44, 79, 196, 104],
+   "zoom": 2,
+   "crop": [123, 105, 98, 52],
    "what": "abuela offering bread with cheese"
   },
   "lleno.si": {
@@ -1481,15 +1481,15 @@
    "what": "Luis holding an empty plate"
   },
   "vacio.si": {
-   "screen": [150, 172],
-   "zoom": 1,
-   "crop": [44, 112, 196, 104],
+   "screen": [150, 169],
+   "zoom": 2,
+   "crop": [101, 143, 98, 52],
    "what": "papá holding an empty glass upside down"
   },
   "vacio.no": {
-   "screen": [150, 172],
-   "zoom": 1,
-   "crop": [44, 112, 196, 104],
+   "screen": [150, 169],
+   "zoom": 2,
+   "crop": [101, 143, 98, 52],
    "what": "papá drinking a full glass of juice"
   }
  },
@@ -1555,32 +1555,32 @@
    "index": 3,
    "picture": "fruta.si",
    "old": [139.33, 146, 54.34, 60],
-   "crop": [44, 112, 196, 104],
-   "zoom": 1
+   "crop": [101, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "guineo",
    "index": 0,
    "picture": "guineo.si",
    "old": [139.33, 146, 54.34, 60],
-   "crop": [44, 112, 196, 104],
-   "zoom": 1
+   "crop": [101, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "guineo",
    "index": 1,
    "picture": "guineo.no",
    "old": [139.33, 146, 54.34, 60],
-   "crop": [44, 112, 196, 104],
-   "zoom": 1
+   "crop": [101, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "guineo",
    "index": 2,
    "picture": "china.si",
    "old": [139.33, 146, 54.34, 60],
-   "crop": [44, 112, 196, 104],
-   "zoom": 1
+   "crop": [113, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "guineo",
@@ -1611,16 +1611,16 @@
    "index": 2,
    "picture": "vacio.si",
    "old": [135.54, 142, 36.23, 40],
-   "crop": [44, 112, 196, 104],
-   "zoom": 1
+   "crop": [101, 143, 98, 52],
+   "zoom": 2
   },
   {
    "w": "lleno",
    "index": 3,
    "picture": "mantequilla.si",
    "old": [151.54, 92, 36.23, 40],
-   "crop": [44, 79, 196, 104],
-   "zoom": 1
+   "crop": [123, 105, 98, 52],
+   "zoom": 2
   }
  ],
  "clips": {
@@ -1700,53 +1700,53 @@
    "line": 15,
    "act": "*",
    "src": "SILL=98,PATIO=120,MURO=70;",
-   "to": "SILL=98,PATIO=120,MURO=70,CT=x=>Math.round(36.5+x/2),SL=x=>Math.round(28.5+x/2),MU=x=>Math.round(4+x/2),PA=x=>Math.round(40+x/2),CB=x=>Math.round(80+x/2),VT=x=>Math.round(-10+x/2),NEVERA=[[16,45,91,114],[0,45,119,129],[16,45,95,114]],FRUTAS=[[40,58,65,100],[40,58,79,106]];",
+   "to": "SILL=98,PATIO=120,MURO=70,CT=x=>Math.round(36.5+x/2),SL=x=>Math.round(25+x/2),MU=x=>Math.round(-16.5+x/2),PA=x=>Math.round(38+x/2),CB=x=>Math.round(80+x/2),VT=x=>Math.round(-46+x/2),NEVERA=[[33,39,74,112],[33,39,84,145],[33,39,78,113]],FRUTAS=[[58,52,48,98],[58,52,59,102]];",
    "why": "the rows of the new set's surfaces, each a line falling half a row a pixel (the counter along the back wall, a world axis): CT where a thing stands on the counter (the old ENC + 10), SL on the window's sill (the old SILL), MU the yard wall's top seen through the window (the old MURO), PA where whoever stands outside has their feet (the old PATIO), CB the floor just before the counter's foot, VT the top row of the outside seen through the window; each place that stood on an old level row keeps its x and stands on the new row there"
   },
   {
    "line": 16,
    "act": "*",
    "src": "const HUECO=[[55,79],[81,79],[55,105],[81,105]];",
-   "to": "const HUECO=[[64,104],[90,91],[61,128],[87,115]];",
+   "to": "const HUECO=[[70,97],[87,86],[70,122],[85,111]];",
    "places": [
     {
      "who": "nevera",
      "old": [55, 79],
-     "new": [64, 104],
-     "world": [1.2188, 3.1226, 1.95]
+     "new": [70, 97],
+     "world": [1.0625, 2.6399, 2]
     },
     {
      "who": "nevera",
      "old": [81, 79],
-     "new": [90, 91],
-     "world": [1.2188, 1.7083, 1.95]
+     "new": [87, 86],
+     "world": [0.9265, 1.5792, 2]
     },
     {
      "who": "nevera",
      "old": [55, 105],
-     "new": [61, 128],
-     "world": [1.2179, 3.2848, 0.95]
+     "new": [70, 122],
+     "world": [1.0138, 2.5912, 0.85]
     },
     {
      "who": "nevera",
      "old": [81, 105],
-     "new": [87, 115],
-     "world": [1.2179, 1.8706, 0.95]
+     "new": [85, 111],
+     "world": [0.8235, 1.585, 0.85]
     }
    ],
-   "why": "the four places on the fridge's two shelves: the old fridge was 116 px high (twice abuela) and its shelves at rows 79 and 105; the new one stands to the wall's cut (3.15, 71 px), so each thing stands where it shows whole through the open door's opening on its shelf, the nearest to its old point (searched on the set's pixels), the two of a shelf side by side 26 px apart as the old"
+   "why": "the four places on the fridge's two shelves: the old fridge was 116 px high (twice abuela) and its shelves at rows 79 and 105; the new one is 3.15 high (71 px) and narrower (round 2: it stands whole in the view), so each thing stands where it shows whole through the open door's opening on its shelf, the nearest to its old point (searched on the set's pixels), the two of a shelf side by side 22 px apart and more (the old 26)"
   },
   {
    "line": 17,
    "act": "*",
    "src": "const EN={pan:[160,ENC+10],frutero:[170,ENC+10],vasos:[202,ENC+9],pila:[124,ENC+10],cesta:[68,NEV[1]]};",
-   "to": "const EN={pan:[160,CT(160)],frutero:[170,CT(170)],vasos:[202,CT(202)-1],pila:[124,CT(124)],cesta:[68,70]};",
+   "to": "const EN={pan:[160,CT(160)],frutero:[170,CT(170)],vasos:[202,CT(202)-1],pila:[124,CT(124)],cesta:[68,64]};",
    "places": [
     {
      "who": "cesta",
      "old": [68, 40],
-     "new": [68, 70],
-     "world": [0.9479, 2.6341, 3.15]
+     "new": [68, 64],
+     "world": [0.9278, 2.6139, 3.4]
     }
    ],
    "why": "the counter's places (CT) and the bread basket on the fridge's top: the old fridge's top was at row 40; the new top's middle at that column"
@@ -1783,13 +1783,13 @@
    "line": 122,
    "act": "*",
    "src": "tenida(c,\"guineo\",x+15,148-i*11);",
-   "to": "tenida(c,\"guineo\",57,150-i*11);",
+   "to": "tenida(c,\"guineo\",75,142-i*11);",
    "places": [
     {
      "who": "cajon",
      "old": [55, 148],
-     "new": [57, 150],
-     "world": [1.4117, 3.6962, 0.22]
+     "new": [75, 142],
+     "world": [1.4661, 2.7715, 0.22]
     }
    ],
    "why": "the guineos in the drawer pulled out: on the drawer's floor, piled as the old (11 rows apart)"
@@ -1798,13 +1798,13 @@
    "line": 122,
    "act": "*",
    "src": "tenida(c,\"manzana\",x+38,148-i*12);",
-   "to": "tenida(c,\"manzana\",78,148-i*12);",
+   "to": "tenida(c,\"manzana\",89,138-i*12);",
    "places": [
     {
      "who": "cajon",
      "old": [78, 148],
-     "new": [78, 148],
-     "world": [1.874, 3.0163, 0.22]
+     "new": [89, 138],
+     "world": [1.6293, 2.1732, 0.22]
     }
    ],
    "why": "the manzanas in the drawer pulled out: on the drawer's floor, piled as the old (12 rows apart)"
@@ -1813,7 +1813,7 @@
    "line": 126,
    "act": "*",
    "src": "if(p.fuera)return [R(p.x)-12,VEN[1]+6,24,SILL-VEN[1]-6];",
-   "to": "if(p.fuera)return [R(p.x)-12,VT(p.x)+2,24,33];",
+   "to": "if(p.fuera)return [R(p.x)-12,VT(p.x)+2,24,60];",
    "why": "whoever stands outside: the part of the window that shows them (its glass, VT down to the sill), at their x"
   },
   {
@@ -1871,22 +1871,22 @@
    "line": 208,
    "act": "inicio30",
    "src": "{id:\"carta_leche\",k:\"carta\",v:\"leche\",x:114,y:86,z:50},{id:\"carta_queso\",k:\"carta\",v:\"queso\",x:132,y:86,z:50}",
-   "to": "{id:\"carta_leche\",k:\"carta\",v:\"leche\",x:119,y:78,z:50},{id:\"carta_queso\",k:\"carta\",v:\"queso\",x:133,y:78,z:50}",
+   "to": "{id:\"carta_leche\",k:\"carta\",v:\"leche\",x:118,y:78,z:50},{id:\"carta_queso\",k:\"carta\",v:\"queso\",x:132,y:78,z:50}",
    "places": [
     {
      "who": "carta_leche",
      "old": [114, 86],
-     "new": [119, 78],
-     "world": [-1.0879, -2.1757, 0]
+     "new": [118, 78],
+     "world": [-1.1151, -2.1485, 0]
     },
     {
      "who": "carta_queso",
      "old": [132, 86],
-     "new": [133, 78],
-     "world": [-0.7071, -2.5565, 0]
+     "new": [132, 78],
+     "world": [-0.7343, -2.5293, 0]
     }
    ],
-   "why": "acts.inicio30: the frog's two cards hang on the tile band over the counter, 8 rows higher and a little right of the old: over the tap at the wall, clear of the fridge's half open door"
+   "why": "acts.inicio30: the frog's two cards hang on the tile band over the counter, 8 rows higher and the first 4 px right of the old: over the tap at the wall, clear of the fridge's half-open door and of the window's frame's half open door"
   },
   {
    "line": 248,
@@ -1899,16 +1899,16 @@
    "line": 347,
    "act": "*",
    "src": "fresh:()=>({respEn:[142,10],",
-   "to": "fresh:()=>({respEn:[154,20],",
+   "to": "fresh:()=>({respEn:[154,4],",
    "places": [
     {
      "who": "respEn",
      "old": [142, 10],
-     "new": [154, 20],
-     "world": [-3.2908, -6.2824, 0]
+     "new": [154, 4],
+     "world": [-4.1611, -7.1527, 0]
     }
    ],
-   "why": "the answer cards: in the dark over the back wall, 2 px clear of the rounds card, their lit frame and glow 4 px inside the view (the old [142, 10] put them 6 px over the top edge)"
+   "why": "the answer cards: high on the back wall and over the window's sky (round 2: the walls are higher), 6 rows over the old row (so that the hint drawn round them, and the hand at the right one, stay over the heads of whoever stands at the window, as the old), 12 px right of the old: 2 px clear of the rounds card (the view moved 6 px right), the hint hand at the right one clear of the faces at the window; their lit frame inside the view, the glow over the top edge as the old"
   },
   {
    "line": 160,
@@ -2041,35 +2041,19 @@
    "why": "acts.final30: the piragua handed in over the sill onto the counter"
   },
   {
-   "line": 270,
-   "lines": [270, 271],
-   "act": "*",
-   "src": "ao.x=207",
-   "to": "ao.x=214",
-   "places": [
-    {
-     "who": "abuelo",
-     "old": [207, 120],
-     "new": [214, 146],
-     "world": null
-    }
-   ],
-   "why": "acts.abuelo31: abuelo at the window 7 px right of the old, so that the hint hand at the right answer card stays off his face"
-  },
-  {
    "line": 206,
    "act": "*",
    "src": "papa:{x:158,y:PATIO,",
-   "to": "papa:{x:154,y:PA(154)+4,",
+   "to": "papa:{x:154,y:PA(154),",
    "places": [
     {
      "who": "papa",
      "old": [158, 120],
-     "new": [154, 121],
+     "new": [154, 115],
      "world": null
     }
    ],
-   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; papá 4 px left of the old (154 for 158), so that the hint hand at the right answer card (over the window, its glow inside the view) stays off their faces; papá 4 rows lower (PA + 4), so that the hint frames of the answer cards stay off his head"
+   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; papá 4 px left of the old (154 for 158), so that the hint hand at the right answer card (over the window, its glow inside the view) stays off their faces"
   },
   {
    "line": 206,
@@ -2080,7 +2064,7 @@
     {
      "who": "luis",
      "old": [173, 116],
-     "new": [166, 119],
+     "new": [166, 117],
      "world": null
     }
    ],
@@ -2090,31 +2074,31 @@
    "line": 239,
    "act": "*",
    "src": "abuelo:{x:207,y:PATIO,",
-   "to": "abuelo:{x:214,y:PA(214)-1,",
+   "to": "abuelo:{x:207,y:PA(207)-9,",
    "places": [
     {
      "who": "abuelo",
      "old": [207, 120],
-     "new": [214, 146],
+     "new": [207, 133],
      "world": null
     }
    ],
-   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; abuelo 7 px right of the old (214 for 207), so that the hint hand at the right answer card (over the window, its glow inside the view) stays off their faces; abuelo 1 row higher (PA - 1), so that the hint frames of the tray's things stay off his face"
+   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; abuelo at 207 9 rows higher (PA - 9, round 2): the hint hand at the right answer card over his face, the hint frames of the tray's things under it"
   },
   {
    "line": 286,
    "act": "*",
    "src": "papa:{x:160,y:PATIO,",
-   "to": "papa:{x:160,y:PA(160)+4,",
+   "to": "papa:{x:160,y:PA(160),",
    "places": [
     {
      "who": "papa",
      "old": [160, 120],
-     "new": [160, 124],
+     "new": [160, 118],
      "world": null
     }
    ],
-   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; papá 4 rows lower (PA + 4), so that the hint frames of the answer cards stay off his head"
+   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture"
   },
   {
    "line": 286,
@@ -2125,7 +2109,7 @@
     {
      "who": "abuelo",
      "old": [176, 120],
-     "new": [176, 128],
+     "new": [176, 126],
      "world": null
     }
    ],
@@ -2135,12 +2119,27 @@
    "line": 286,
    "act": "*",
    "src": "mama:{x:200,y:PATIO,",
-   "to": "mama:{x:200,y:PA(200),",
+   "to": "mama:{x:200,y:PA(200)-4,",
    "places": [
     {
      "who": "mama",
      "old": [200, 120],
-     "new": [200, 140],
+     "new": [200, 134],
+     "world": null
+    }
+   ],
+   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; mamá 4 rows higher at the counter's right end (round 2), where the children's cups stand in front of her: as much of her seen as through the old window"
+  },
+  {
+   "line": 221,
+   "act": "*",
+   "src": "mueve(\"papa\",136,PATIO)",
+   "to": "mueve(\"papa\",136,PA(136))",
+   "places": [
+    {
+     "who": "papa",
+     "old": [136, 120],
+     "new": [136, 106],
      "world": null
     }
    ],
@@ -2148,34 +2147,19 @@
   },
   {
    "line": 221,
-   "act": "*",
-   "src": "mueve(\"papa\",136,PATIO)",
-   "to": "mueve(\"papa\",136,PA(136)+4)",
-   "places": [
-    {
-     "who": "papa",
-     "old": [136, 120],
-     "new": [136, 112],
-     "world": null
-    }
-   ],
-   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; papá 4 rows lower (PA + 4), so that the hint frames of the answer cards stay off his head"
-  },
-  {
-   "line": 221,
    "lines": [221, 234, 235],
    "act": "*",
    "src": "mueve(\"papa\",158,PATIO)",
-   "to": "mueve(\"papa\",154,PA(154)+4)",
+   "to": "mueve(\"papa\",154,PA(154))",
    "places": [
     {
      "who": "papa",
      "old": [158, 120],
-     "new": [154, 121],
+     "new": [154, 115],
      "world": null
     }
    ],
-   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; papá 4 px left of the old (154 for 158), so that the hint hand at the right answer card (over the window, its glow inside the view) stays off their faces; papá 4 rows lower (PA + 4), so that the hint frames of the answer cards stay off his head"
+   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; papá 4 px left of the old (154 for 158), so that the hint hand at the right answer card (over the window, its glow inside the view) stays off their faces"
   },
   {
    "line": 222,
@@ -2186,7 +2170,7 @@
     {
      "who": "luis",
      "old": [230, 116],
-     "new": [230, 151],
+     "new": [230, 149],
      "world": null
     }
    ],
@@ -2201,7 +2185,7 @@
     {
      "who": "luis",
      "old": [230, 116],
-     "new": [230, 151],
+     "new": [230, 149],
      "world": null
     }
    ],
@@ -2216,7 +2200,7 @@
     {
      "who": "luis",
      "old": [173, 116],
-     "new": [166, 119],
+     "new": [166, 117],
      "world": null
     }
    ],
@@ -2226,31 +2210,31 @@
    "line": 234,
    "act": "*",
    "src": "mueve(\"papa\",186,PATIO)",
-   "to": "mueve(\"papa\",186,PA(186)+4)",
+   "to": "mueve(\"papa\",186,PA(186))",
    "places": [
     {
      "who": "papa",
      "old": [186, 120],
-     "new": [186, 137],
+     "new": [186, 131],
      "world": null
     }
    ],
-   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; papá 4 rows lower (PA + 4), so that the hint frames of the answer cards stay off his head"
+   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture"
   },
   {
    "line": 234,
    "act": "*",
    "src": "mueve(\"papa\",160,PATIO)",
-   "to": "mueve(\"papa\",160,PA(160)+4)",
+   "to": "mueve(\"papa\",160,PA(160))",
    "places": [
     {
      "who": "papa",
      "old": [160, 120],
-     "new": [160, 124],
+     "new": [160, 118],
      "world": null
     }
    ],
-   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture; papá 4 rows lower (PA + 4), so that the hint frames of the answer cards stay off his head"
+   "why": "whoever stands outside the window: feet at PA (the old PATIO) at the old x, so that their head and shoulders show through the window as in the old picture"
   },
   {
    "line": 314,
@@ -2262,7 +2246,7 @@
     {
      "who": "mama",
      "old": [198, 120],
-     "new": [198, 139],
+     "new": [198, 137],
      "world": null
     }
    ],
@@ -2277,7 +2261,7 @@
     {
      "who": "mama",
      "old": [170, 120],
-     "new": [170, 125],
+     "new": [170, 123],
      "world": null
     }
    ],
@@ -2287,16 +2271,16 @@
    "line": 325,
    "act": "*",
    "src": "p.x=158;p.y=PATIO+8;",
-   "to": "p.x=158;p.y=PA(158)+8;",
+   "to": "p.x=158;p.y=PA(158)+2;",
    "places": [
     {
      "who": "luis",
      "old": [158, 128],
-     "new": [158, 127],
+     "new": [158, 119],
      "world": null
     }
    ],
-   "why": "whoever stands outside the window: feet at PA (the old PATIO + 8) at the old x, so that their head and shoulders show through the window as in the old picture"
+   "why": "whoever stands outside the window: feet at PA (the old PATIO + 8) at the old x, so that their head and shoulders show through the window as in the old picture; Luis peeking in at the sink 6 rows higher than the old PATIO + 8 (round 2): his head over the sill, 2 px inside the window"
   },
   {
    "line": 288,
@@ -2433,8 +2417,8 @@
     {
      "who": "pan32",
      "old": [160, 98],
-     "new": [160, 109],
-     "world": [3.3668, 0.0488, 1.35]
+     "new": [160, 105],
+     "world": [3.3329, 0.015, 1.5]
     }
    ],
    "why": "acts.inicio32: the plate of bread on the sill (SL)"
@@ -2448,8 +2432,8 @@
     {
      "who": "mant",
      "old": [178, 98],
-     "new": [178, 118],
-     "world": [4.3459, 0.0488, 1.35]
+     "new": [178, 114],
+     "world": [4.312, 0.015, 1.5]
     }
    ],
    "why": "acts.inicio32: the butter on the sill (SL)"
@@ -2458,19 +2442,19 @@
    "line": 291,
    "act": "inicio32",
    "src": "{id:\"c1\",k:\"claro\",v:0,x:76,y:NEV[1],z:90},{id:\"c2\",k:\"claro\",v:0,x:88,y:NEV[1],z:90}",
-   "to": "{id:\"c1\",k:\"claro\",v:0,x:76,y:63,z:90},{id:\"c2\",k:\"claro\",v:0,x:88,y:57,z:90}",
+   "to": "{id:\"c1\",k:\"claro\",v:0,x:76,y:58,z:90},{id:\"c2\",k:\"claro\",v:0,x:88,y:52,z:90}",
    "places": [
     {
      "who": "c1",
      "old": [76, 40],
-     "new": [76, 63],
-     "world": [0.7848, 2.0358, 3.15]
+     "new": [76, 58],
+     "world": [0.819, 2.07, 3.4]
     },
     {
      "who": "c2",
      "old": [88, 40],
-     "new": [88, 57],
-     "world": [0.7848, 1.3831, 3.15]
+     "new": [88, 52],
+     "world": [0.819, 1.4173, 3.4]
     }
    ],
    "why": "acts.inicio32: the two clear glasses on the fridge's top (the old top at row 40): the middle of the new top at their columns"
@@ -2519,14 +2503,14 @@
     {
      "who": "v_rojo",
      "old": [190, 98],
-     "new": [187, 122],
-     "world": [4.747, -0.0396, 1.3]
+     "new": [187, 119],
+     "world": [4.5838, -0.2028, 1.3]
     },
     {
      "who": "v_azul",
      "old": [203, 98],
-     "new": [199, 128],
-     "world": [5.3997, -0.0396, 1.3]
+     "new": [199, 125],
+     "world": [5.2365, -0.2028, 1.3]
     }
    ],
    "why": "acts.mama32: mamá sets the two cups on the sill (SL); the red one at 187 and the blue one at 199 (the old 190 and 203), so that the blue one's hint frame is inside the view and the two stand apart"
@@ -4594,11 +4578,9 @@
     "time": ["400"]
    },
    "to": {
-    "moves": [
-     "ao.x=207"
-    ]
+    "floor": true
    },
-   "note": "moved (moves): acts.abuelo31; every other place here keeps its screen place: on the floor (rules.floor), or its x on its row (CT, SL, MU, PA)"
+   "note": "every other place here keeps its screen place: on the floor (rules.floor), or its x on its row (CT, SL, MU, PA)"
   },
   {
    "line": 271,
@@ -4608,11 +4590,9 @@
     "time": ["300"]
    },
    "to": {
-    "moves": [
-     "ao.x=207"
-    ]
+    "floor": true
    },
-   "note": "moved (moves): acts.abuelo31; every other place here keeps its screen place: on the floor (rules.floor), or its x on its row (CT, SL, MU, PA)"
+   "note": "every other place here keeps its screen place: on the floor (rules.floor), or its x on its row (CT, SL, MU, PA)"
   },
   {
    "line": 272,
@@ -5341,22 +5321,34 @@
    "code: nevera.js read here: 244 lines hold numbers, every one with its entry; 527 numbers are places on the picture, each named in its line's entry with what becomes of it (moved, the floor rule, a set thing, dropped); 2323 are not places (other 54, offset 276, dropped 168, drawing 1324, count 102, scale 20, order 36, time 91, state 252)",
    "inventory: 26 things (old 26), 2 frog places of LUGAR (old 2), 1 view (old 1), 29 positions (old 29) and 7 of h-nevera (newer than the reference folder), 12 review pairs of cual-nevera (24 pictures), 16 level pictures (old 16), 10 baked states reached (the old 87)",
    "hops: the frog's 103 walks between steps in the 12 runs, recorded and the port's, each the old number of hops (10 distinct walks; 0 changed)",
-   "boxes: every pixel of the fridge (body, door, inside, drawer) inside its touch box in every state, its inside in frutas's: nevera [0,45,119,129], frutas [40,58,79,106]; in the view every pixel of the fridge answers the fridge (or its inside, open); the room (walls, counter, window, sink, stool: cocina, whose box holds every box as the old) shows inside the fridge's boxes, a rectangle round a slanting front, at nevera 26424, frutas 6798 pixel-states (no decoration: every set part is the fridge's or the kitchen's)",
-   "shadows of the set: 930 castShadow calls over the 30 states, each with strength 1 and a radius; each casting part darkens pixels, its shadow joined to it: nevera 13908 px, banco 465 px; the stool's legs: a contact shadow at the foot on the shadow side only (23655 floor pixels on their lit side within 3 px, every one as the floor without the stool)",
+   "walks: every walk of the frog in the 12 runs (every call of hopTo, acts included), the old page and the port each played: 246 walks, 0 with another number of hops",
+   "boxes: every pixel of the fridge (body, door, inside, drawer) inside its touch box in every state, its inside in frutas's: nevera [33,39,84,145], frutas [58,52,59,102]; in the view every pixel of the fridge answers the fridge (or its inside, open); the room (walls, counter, window, sink, stool: cocina, whose box holds every box as the old) shows inside the fridge's boxes, a rectangle round a slanting front, at nevera 36516, frutas 4770 pixel-states (no decoration: every set part is the fridge's or the kitchen's)",
+   "shadows of the set: 690 castShadow calls over the 30 states, each with strength 1 and a radius; each casting part darkens pixels, its shadow joined to it: nevera 10752 px, banco 465 px; the stool's legs: a contact shadow at the foot on the shadow side only (23655 floor pixels on their lit side within 3 px, every one as the floor without the stool)",
    "drawn: at 29068 moments (every tick inside the acts and every step's end of the 12 runs, every pair picture) the sprite layer composed as it is drawn (each item owns what it drew last; the yard clipped to the window's outside; a set part drawn again only over an owner behind it): no set part over any face; nothing of the set over a thing standing on the counter, the sill, the fridge's top or a shelf, nor nearer than anything the sprite layer draws before the sorted list (the fridge's things, the sill's, the basket, the yard's); 118811 thing-moments by their surface: sill 21410, counter 54004, fridge top 14838, floor 1602, wall 26957",
-   "seen, as the old or not fixed: mama behind someone (46 step ends), papa outside (366 step ends), papa outside, behind the frog hopping along the counter (8 step ends), luis outside, behind the frog hopping along the counter (4 step ends)",
-   "seen: at 6555 person-, outside- and frog-moments (every step's end of the 12 runs) each seen no less than in the old picture of that moment less 10%, and their face no less at all (0 less); edge: 13118 item-moments wholly inside the old view, each wholly inside the new one with 3 px to spare",
-   "edge: every set thing in every state whole inside the view by 3 px or off it by 12 px and more (the walls, the floor and the counter run off): nevera [16,45,106,158], ventana [138,57,239,149], pila [111,83,137,105], banco [108,184,131,210], nevera [0,45,104,173], ventana [138,57,239,149], pila [111,83,137,105], banco [108,184,131,210]",
+   "seen, as the old or not fixed: mama behind someone (46 step ends), papa outside, behind the frog hopping along the counter (4 step ends), luis outside, behind the frog hopping along the counter (4 step ends)",
+   "seen: at 6555 person-, outside- and frog-moments (every step's end of the 12 runs) each seen no less than in the old picture of that moment less 10%, and their face no less at all (0 less); edge: 16901 item-moments wholly inside the old view, each wholly inside the new one with 3 px to spare",
+   "edge: every set thing in every state whole inside the view by 3 px or off it by 12 px and more (the walls, the floor and the counter run off): ventana [136,20,239,147], nevera [33,39,106,150], pila [107,82,139,106], banco [108,184,131,210], ventana [136,20,239,147], nevera [33,39,105,183], pila [107,82,139,106], banco [108,184,131,210]",
    "stands: 249665 item-moments at rest (300 ms or more in one place): every person on clear floor (2 px of floor round their feet), the frog on the floor, the stool or the counter, every thing on the floor, the counter, the sill, the fridge's top or a shelf",
    "bubbles: 4886 bubbles at 29068 moments (each person's recorded one and \"amor\" when touched, the frog's): wholly inside the view (0 px from its edge at the least), clear of the rounds card, on no face",
-   "asks: 38 distinct asks (for c_leche, c_queso, carmen, di_guineo, di_leche, di_manzana, di_queso, luis, mant, nevera, red, t_fruta, t_pan, v_amarillo, v_azul, v_rojo, v_verde): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the fridge and the kitchen by their hint box), no frame's rings across a face where the old frame's were not (as the old: h-nevera beats.19 (nevera) the frog's face; jugo-de-china beats.42 (v_rojo) abuelo's face; para-los-pajaros beats.27 (luis) abuela's face; para-los-pajaros beats.27 (luis) the frog's face), the hint hand on no face and cut by no edge where the old was not (but as the old: h-nevera beats.9 (red): on abuela's face; jugo-de-china beats.47 (v_amarillo): on abuela's face; jugo-de-china beats.88 (v_amarillo): on abuela's face); 26 answer cards, each with its lit frame and glow 4 px and more inside the view (4 at the least), 2 px clear of the rounds card and of everyone's head and body, over no thing, the fridge's inside or door, the window or the sink (over the fridge's top in no-hay-leche, where nothing stands); at each of the 26 cards the hint drawn round it: its frame 2 px inside the view, across no head, its hand on no face; 43 times a thing or a person a learner must find or tell apart: whole in the view, seen as much as in the old picture, the set over none, on a plain backdrop, apart where the old had them apart",
+   "asks: 38 distinct asks (for c_leche, c_queso, carmen, di_guineo, di_leche, di_manzana, di_queso, luis, mant, nevera, red, t_fruta, t_pan, v_amarillo, v_azul, v_rojo, v_verde): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the fridge and the kitchen by their hint box), no frame's rings across a face where the old frame's were not (as the old: jugo-de-china beats.42 (v_rojo) abuelo's face; para-los-pajaros beats.27 (luis) abuela's face; para-los-pajaros beats.27 (luis) the frog's face), the hint hand on no face and cut by no edge where the old was not (but as the old: h-nevera beats.9 (red): on abuela's face; jugo-de-china beats.47 (v_amarillo): on abuela's face; jugo-de-china beats.88 (v_amarillo): on abuela's face); 26 answer cards, each with its lit frame inside the view (round 2: their glow over the top edge as the old, 4 px inside at its sides and foot), 2 px clear of the rounds card and of everyone's head and body, over no thing, the fridge's inside or door, the window or the sink (over the fridge's top in no-hay-leche, where nothing stands); at each of the 26 cards the hint drawn round it: its frame 2 px inside the view at its sides and foot (its top over the top edge, as the old), across no head, its hand on no face; 43 times a thing or a person a learner must find or tell apart: whole in the view, seen as much as in the old picture, the set over none, on a plain backdrop, apart where the old had them apart",
    "heads: at 2957 face-moments no face has the window's frame, its sill or the fridge's door behind it",
-   "contrast (WCAG, each pixel against the one beside it that is not the thing, the mean): the tap 3 (27 px), the shelves' edges 2.22 (185 px), the stool's legs 6.71 (104 px), the window's frame 3.61 (528 px), the fridge's handle 2.74 (154 px)",
-   "window: 2790 px of the outside through it (the kit's patio: sky and a cloud, the yard's wall, the hedge, 1.28 behind the wall), its frame and bars 1720 px standing out of the wall, its sill a ledge (501 px)",
+   "contrast (WCAG, each pixel against the one beside it that is not the thing, the mean): the tap 3.91 (39 px), the shelves' edges 2.9 (94 px), the stool's legs 6.71 (104 px), the window's frame 3.16 (541 px), the fridge's handle 2.74 (71 px)",
+   "window: 5952 px of the outside through it (the kit's patio: sky and a cloud, the yard's wall, the hedge, 1.7 behind the wall), its frame and bars 1983 px standing out of the wall, its sill a ledge (563 px)",
    "preview: at every step's end of the 12 recorded runs (12883 places of the people, the frog and the things) nevera-preview.html puts everyone exactly where the sheet's rule does (0 differ); and the rule puts each of the 11821 places at rest where the port's play has them (0 differ by more than 1 px)",
-   "pairs: 24 review pictures (and the 16 level pictures, the same pictures), 14 at zoom 2, the others at zoom 1: everything in each whole with 1 px to spare at zoom 2 (2 at zoom 1); no zoom 2 picture shows a shadow without its caster; what differs: leche: gente; queso: cosas; no_hay: nev; busca: gente; fruta: gente; guineo: gente; manzana: gente; china: gente; pan: cosas; mantequilla: cosas; lleno: gente; vacio: gente",
-   "states: 10 baked states reached (0.0.0.1, 0.0.0.0, 0.0.a.1, 0.0.j.1, 1.0.0.1, 1.0.0.0, 1.0.a.1, 1.1.0.1, 1.2.0.1, 2.0.0.1; every moment, pair and level picture), of the 30 the set can bake"
+   "pairs, what differs between yes and no in each picture (1.5% and more, or where no 98 x 52 window holds that, the window that holds the most; the old picture's share beside it): leche 0.88% (zoom 2; the old 2.59%), queso 3.38% (zoom 2; the old 9.98%), no_hay 5.63% (zoom 2; the old 9.61%), busca 17.27% (zoom 2; the old 15.55%), fruta 8.83% (zoom 2; the old 6.65%), guineo 2.41% (zoom 2; the old 1.84%), manzana 5.89% (zoom 2; the old 6.26%), china 8.99% (zoom 2; the old 6.75%), pan 12.28% (zoom 2; the old 20.58%), mantequilla 5.12% (zoom 2; the old 8.34%), lleno 16.48% (zoom 2; the old 17.71%), vacio 8.3% (zoom 2; the old 13.9%); leche: zoom 2, the window that holds the most of what differs: 0.88% of it (no 98 x 52 window holds 1.5%: what differs is the old sprites' own, 45 px; at zoom 1 it is 0.22%)",
+   "pairs: 24 review pictures (and the 16 level pictures, the same pictures), 24 at zoom 2, the others at zoom 1: everything in each whole with 1 px to spare at zoom 2 (2 at zoom 1); no zoom 2 picture shows a shadow without its caster; what differs: leche: gente; queso: cosas; no_hay: nev; busca: gente; fruta: gente; guineo: gente; manzana: gente; china: gente; pan: cosas; mantequilla: cosas; lleno: gente; vacio: gente",
+   "states: 10 baked states reached (0.0.0.1, 0.0.0.0, 0.0.a.1, 0.0.j.1, 1.0.0.1, 1.0.0.0, 1.0.a.1, 1.1.0.1, 1.2.0.1, 2.0.0.1; every moment, pair and level picture), of the 30 the set can bake",
+   "outside: at 29068 moments (every tick and step end of the 12 runs, every pair picture) 53460 person-moments outside the window: what is drawn of them only through the opening (the clip: the outside seen through it); at rest (step ends, pairs) all of them over the sill's line inside the opening: 0 px are not, 0 px of a head less than 2 px inside it; the sky or the yard's wall over every head (27 rows of it at the least); the glass's bottom (the sill) 14.50149069196857 rows and more over the counter's top behind them, so the sill cuts them, not the counter",
+   "fridge open (the inside's luminance: its back and sides, 1.0): 1.0.0.1: inner face 1330 px, handle 77, rim 333, the inside's mean luminance 0.65; 1.1.0.1: inner face 1330 px, handle 77, rim 333, the inside's mean luminance 0.65; 1.2.0.1: inner face 1330 px, handle 77, rim 263, the inside's mean luminance 0.65",
+   "shelves: 26532 shelf-thing-moments, each thing's outline against the inside behind it 10.28 (WCAG mean) at the least (nevera 1 queso (no-hay-leche right t 0)), its foot on its shelf (its middle half all; 100% of a foot at the least); 20919 moments of a thing on the fridge's top, its whole foot on it",
+   "fridge states: each against its neighbour, the pixels that differ in the fridge's box [33,39,84,145]: no drawer / the drawer shut 4.99%, the drawer shut / pulled out 11.86%, shut / half open 5.65%",
+   "sink: the basin 269 px seen; against the empty basin by WCAG 2.0 and more: dishwater 120 px, juice 126 px",
+   "counter: 5222 floor pixel-checks within 3 px of the counter on its lit side, 0 differ from the floor without the counter (g={\"bare\":1})"
   ],
+  "walks": {
+   "checked": 246,
+   "differ": 0
+  },
   "notFixed": [
    {
     "what": "mama behind someone",
@@ -5364,19 +5356,14 @@
     "why": "the old picture stacked these two people the same way (a stack kept, page 13: as the old)"
    },
    {
-    "what": "papa outside",
-    "moments": 366,
-    "why": "the window is as high as the kit's wall allows (cut at 3.2: 40 rows of it, the old 62), and the counter's things (the jug, the plates) stand right under it, so less of the body of whoever stands outside shows; their face shows as much as in the old picture, and never less than half of what showed"
-   },
-   {
     "what": "papa outside, behind the frog hopping along the counter",
-    "moments": 8,
-    "why": "the frog hops along the counter in front of the window (sacamoneda, mandado); the window is lower over the counter than the old one (the kit's wall), so for the moment he passes he covers the face of whoever stands outside behind him (between his hops: no rest place)"
+    "moments": 4,
+    "why": "the frog hops along the counter in front of the window (sacamoneda, mandado); the counter falls half a row a pixel and stands higher than the old one at the window's left, so for the moment he passes he covers the face of whoever stands outside behind him (between his hops: no rest place)"
    },
    {
     "what": "luis outside, behind the frog hopping along the counter",
     "moments": 4,
-    "why": "the frog hops along the counter in front of the window (sacamoneda, mandado); the window is lower over the counter than the old one (the kit's wall), so for the moment he passes he covers the face of whoever stands outside behind him (between his hops: no rest place)"
+    "why": "the frog hops along the counter in front of the window (sacamoneda, mandado); the counter falls half a row a pixel and stands higher than the old one at the window's left, so for the moment he passes he covers the face of whoever stands outside behind him (between his hops: no rest place)"
    }
   ]
  }

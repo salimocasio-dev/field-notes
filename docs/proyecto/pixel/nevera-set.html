@@ -8,11 +8,13 @@
    The layout stands on the world's axes (the kit's plan: the corner of the two standing walls at (0, 0), the left wall on x = 0 facing +x, the
    back wall on y = 0 facing +y):
      the counter runs along the back wall from the corner to past the picture's right edge, the sink set into it near the corner, its tap at the
-       wall; over it the big window on the patio (the kit's 'patio' view: sky and a cloud, the yard's cream wall, the hedge's green), its sill a
-       ledge under it;
-     the fridge stands against the left wall a little way from the corner, its front looking +x (towards the counter), its door hinged on its
-       far edge (the left on the screen) so that open it swings back along the wall and shows the inside: two glass shelves, the lower bin with its
-       drawer, the door's own racks; half open, the door stands out a little and the dark gap shows at its free edge; the freezer door above;
+       wall; over it the big window on the patio (the kit's 'patio' view: sky and a cloud, the yard's cream wall, the hedge's green), as tall as
+       the old one (round 2: this set raises its own walls for it), its reveal the wall's thickness, its sill a ledge under it;
+     the fridge stands against the left wall a little way from the corner, whole in the view, its front looking +x (towards the counter), its one
+       door hinged on its far edge (the left on the screen): open, it stands out into the room at the fridge's side, its inner face (white, the
+       racks) and its handle seen, and shows the white inside: two shelves with a dark edge, the lower bin with its drawer (shut: a white front
+       and a dark handle; pulled out: a drawer box with sides, the fruit in it); half open, the door turned a little out of the light, the dark
+       inside seen past its top;
      the wooden stool stands on the floor in front, where the frog stands on it (the old BANCO).
    The state comes from the address; these become the builder's setKey:
      nev    = 0 | 1 | 2      W.nev.abierta: shut, open, half open
@@ -45,15 +47,23 @@ cocinaCheckScene();
 const g = (k, d) => GQ[k] == null ? d : GQ[k];
 const XR = 9, YL = 9;                                          // the walls run past the picture's right and left edges
 const CA1 = g('ca1', 6.8);                                     // the counter: from the corner (a 0) along the back wall; it ends inside the view, so that whoever comes in from the right walks in front of it
-const WIN = { face: 'y', a0: g('wa0', 2.45), a1: g('wa1', 7.6), z0: g('wz0', 1.45), z1: g('wz1', 3.1), view: 'patio', bars: 'none', horizon: g('hz', 2.4), name: 'ventana' };
-const FR = { a0: g('fa0', .95), a1: g('fa1', 4.5), d: g('fd', 1.3), h: g('fh', 3.15) };   // the fridge on the left wall: along y from a0 to a1, depth d, height h
+// round 2: the window as tall as the old one where the family stands outside (z 1.6 to 4.7: the outside seen through it 62 rows and more, its
+// lowest row, over the sill and the reveal, 22 rows over the feet of whoever stands outside, as the old sill); the kit's walls are cut at K.WH 3.2, so this set raises its own walls to WALL_H round its call of cocinaBuild (the other scenes keep theirs)
+const WIN = { face: 'y', a0: g('wa0', 2.35), a1: g('wa1', 8.0), z0: g('wz0', 1.6), z1: g('wz1', 4.7), view: 'patio', bars: 'none', horizon: g('hz', 3.3), name: 'ventana' };
+const WALL_H = g('wh', 4.95);
+const FR = { a0: g('fa0', .95), a1: g('fa1', 3.6), d: g('fd', 1.35), h: g('fh', 3.4) };   // the fridge on the left wall: along y from a0 to a1, depth d, height h (round 2: a1 3.6, so that its far side ends inside the view)
 FR.fz = FR.h - .02;                                            // one door, from the plinth to the top (the old freezer door is gone: the inside needs the height)
-FR.shelves = [g('s1', 1.95), g('s2', .95)];                   // the two glass shelves (their top surfaces)
-FR.bin = [.16, g('bin', .86)];                                 // the lower bin (the drawer's place): from z bin[0] to bin[1]
-const SINK = { a0: g('ka0', 1.35), a1: g('ka1', 2.35), d0: .2, d1: .72 };   // the basin in the counter top, along a from a0 to a1, d from d0 to d1
+FR.shelves = [g('s1', 2.0), g('s2', .85)];                   // the two glass shelves (their top surfaces)
+FR.bin = [.16, g('bin', .74)];                                 // the lower bin (the drawer's place): from z bin[0] to bin[1]
+const SINK = { a0: g('ka0', 1.25), a1: g('ka1', 2.4), d0: .12, d1: .8 };   // the basin in the counter top, along a from a0 to a1, d from d0 to d1 (round 2: larger, its middle still at the old EN.pila 124)
 const STOOL = { sx: 120, sy: g('stsy', 190), h: .72, r: .32 };  // the stool: its top's middle on the screen (where the frog's feet are), its height and half width
 
-const SHELF_EDGE = [48, 86, 112], WHITE = [240, 242, 248], WHITE_D = [214, 218, 230], INSIDE = [232, 246, 250], INSIDE_D = [200, 226, 236], GLASS = [150, 196, 214], GASKET = [150, 154, 170], HANDLE = [138, 142, 160];
+const SHELF_EDGE = [30, 58, 82], WHITE = [240, 242, 248], WHITE_D = [214, 218, 230], INSIDE = [236, 240, 244], INSIDE_D = [206, 212, 220], GLASS = [150, 196, 214], GASKET = [150, 154, 170], HANDLE = [96, 100, 118];
+const DARK = [44, 52, 66], SHELF = [226, 230, 236];   // round 2: the inside white (a fridge, not a display case), the shelves white with a dark front edge
+// round 2, for the sheet's checks: the pixels each named piece drew that are still seen after the bake (mark(name, fn))
+const MARKS = {}, MARKING = Q.get('tags') === '1';
+function mark(name, fn) { if (!MARKING) { fn(); return; } const b = zb.slice(); fn(); const m = MARKS[name] = MARKS[name] || new Map(); for (let i = 0; i < zb.length; i++) if (zb[i] !== b[i]) m.set(i, zb[i]); }
+const marked = () => Object.fromEntries(Object.entries(MARKS).map(([k, m]) => [k, [...m].filter(([i, z]) => bakedZ[i] === z).map(([i]) => i)]));
 const at = (sx, sy, z = 0) => { const u = (sx - OX) / S, v = (sy - OY + z * COS * S) / (S * SIN); return [(u + v) / R2, (v - u) / R2, z]; };   // the point at height z under a screen point
 </script>
 <script>
@@ -91,52 +101,66 @@ function doorShut() {
   // the handle: an upright bar standing off the door
   kSolid('x', a0 + .3, a0 + .38, d + .06, d + .14, fz - 1.45, fz - .4, HANDLE);
 }
-// the inside: the back and the walls in pale blue-white, the two glass shelves, the lower bin; the drawer (shut or pulled out)
+// the inside: the back and the walls white, the two shelves (white, a dark front edge), the lower bin; the drawer (shut or pulled out).
+// Half open: the same hollow, unlit (a dark gap seen down past the leaf's top)
 function inside() {
-  const { a0, a1, d, fz } = FR, In = rampOf(INSIDE), w = .08, z0 = .14, z1 = fz - .1;
-  // the hollow, seen through the front: its far wall (the back, x = w) and its floor, its near side wall (a0 + w, looking +y)
-  planeQuad([w, a0 + w, z0], [0, a1 - a0 - 2 * w, 0], [0, 0, z1 - z0], () => In[2]);
-  planeQuad([w, a0 + w, z0], [d - w, 0, 0], [0, 0, z1 - z0], (s, t) => In[3]);
-  planeQuad([w, a0 + w, z0], [d - w, 0, 0], [0, a1 - a0 - 2 * w, 0], () => In[2]);
+  const { a0, a1, d, fz } = FR, half = SET.nev === 2, w = .09, z0 = .14, z1 = fz - .1;
+  const In = rampOf(half ? DARK : INSIDE), Sh = half ? DARK : SHELF;
+  // the hollow, seen through the front: its far wall (the back, x = w) and its floor, its near side wall (a0 + w, looking +y), its roof
+  planeQuad([w, a0 + w, z0], [0, a1 - a0 - 2 * w, 0], [0, 0, z1 - z0], () => In[3]);
+  planeQuad([w, a0 + w, z0], [d - w, 0, 0], [0, 0, z1 - z0], () => In[2]);
+  planeQuad([w, a0 + w, z0], [d - w, 0, 0], [0, a1 - a0 - 2 * w, 0], () => In[3]);
   planeQuad([w, a0 + w, z1], [d - w, 0, 0], [0, a1 - a0 - 2 * w, 0], () => In[1]);
-  // the front rim of the cabinet round the opening (its walls' thickness), white
-  kSolid('x', a0, a0 + w, d - .02, d, z0, z1, WHITE, 'f');
-  kSolid('x', a1 - w, a1, d - .02, d, z0, z1, WHITE, 'f');
-  kSolid('x', a0, a1, d - .02, d, z1, fz, WHITE, 'f');
-  kSolid('x', a0, a1, d - .02, d, .08, z0, WHITE, 'f');
-  // the two glass shelves: a pale plate with a darker front edge
-  for (const z of FR.shelves) kBox('x', a0 + w, a1 - w, w, d - .03, z - .04, z, (f, p, q, sh) => f === 'top' ? kRgb(q > d - .1 ? SHELF_EDGE : [214, 236, 244]) : kRgb(kLit([200, 226, 236], sh)), 'tf');
-  // the lower bin: a pale box with its own front, the drawer's place
+  // the front rim of the cabinet round the opening: its walls' thickness, white, a grey gasket line on its inner edge
+  const rim = (b0, b1, c0, c1) => kBox('x', b0, b1, d - .06, d, c0, c1, (f, p, q, sh) => kRgb(f === 'top' ? WHITE_D : kLit(WHITE, sh)), 'tfe');
+  mark('rim', () => { rim(a0, a0 + w, z0, z1); rim(a1 - w, a1, z0, z1); rim(a0, a1, z1, fz); rim(a0, a1, .08, z0); });
+  // the two shelves: a white plate with a dark front edge
+  for (const z of FR.shelves) kBox('x', a0 + w, a1 - w, w, d - .06, z - .05, z, (f, p, q, sh) => f === 'top' ? kRgb(q > d - .08 || q < w + .06 || p < a0 + w + .07 || p > a1 - w - .07 ? SHELF_EDGE : Sh) : kRgb(kLit(Sh, sh)), 'tf');   // a dark edge all round its top
+  // the lower bin: the drawer's place
   const [b0, b1] = FR.bin;
   if (SET.cajon === 2) {
-    // pulled out: the drawer stands out of the front, its inside seen from above (the fruit in it is the sprite layer's)
-    const out = .9, top = b0 + .1;   // an open tray: low walls, so that what is in it shows
-    kBox('x', a0 + .15, a1 - .15, d - .3, d + out, b0, top, (f, p, q, sh) => f === 'top' ? 0 : kRgb(kLit(f === 'end' ? INSIDE_D : INSIDE, sh)), 'fe');
-    planeQuad([d - .3, a0 + .2, b0 + .06], [out + .25, 0, 0], [0, a1 - a0 - .4, 0], () => In[1]);   // its floor
-    kSolid('x', a0 + .15, a1 - .15, d + out - .04, d + out, top - .04, top, GASKET, 't');
-  } else {
+    // pulled out: a drawer box standing out of the front on the bin's floor, joined to the fridge's foot: its floor, its two sides, its back
+    // and its front panel with a dark handle; low, so that the fruit in it shows over its front (the fruit is the sprite layer's)
+    const out = DRAWER_OUT, x0 = d - .3, x1 = d + out, s0 = a0 + .2, s1 = a1 - .2, fl = b0 + .06, top = b0 + .3, th = .05;
+    const Dr = rampOf(INSIDE_D);
+    planeQuad([x0, s0, fl], [x1 - x0, 0, 0], [0, s1 - s0, 0], () => kRgb([168, 180, 192]));                     // its floor (zone r)
+    kBox('x', s0, s0 + th, x0, x1, b0, top, (f, p, q, sh) => kRgb(f === 'top' ? WHITE : kLit(INSIDE_D, sh)), 'tfe');   // the far side
+    kBox('x', s1 - th, s1, x0, x1, b0, top, (f, p, q, sh) => kRgb(f === 'top' ? WHITE : kLit(WHITE_D, sh)), 'tfe');   // the near side (its outer face lit)
+    kBox('x', s0, s1, x1 - th, x1, b0, top, (f, p, q, sh) => { if (f === 'top') return kRgb(WHITE); if (Math.abs(q - (top - .1)) < .035 && Math.abs(p - (s0 + s1) / 2) < .35) return kRgb(HANDLE); if (q < b0 + .03 || q > top - .03) return kRgb(GASKET); return kRgb(kLit(WHITE, sh)); }, 'tfe');   // the front panel
+    // the bin's empty mouth behind it, dark
+    planeQuad([d - .07, a0 + w, b0], [0, a1 - a0 - 2 * w, 0], [0, 0, b1 - b0], () => kRgb(DARK));
+  } else if (SET.cajon === 1) {
+    // shut: the drawer's white front across the bin, a dark gap round it and a long dark handle
     kBox('x', a0 + w, a1 - w, w, d - .04, b0, b1, (f, p, q, sh) => {
-      if (f === 'top') return kRgb(q > d - .1 ? GLASS : [214, 236, 244]);
-      if (SET.cajon === 1) { if (q > b1 - .05 || q < b0 + .04) return kRgb(kLit(GASKET, sh)); if (Math.abs(q - (b1 - .16)) < .035 && Math.abs(p - (a0 + a1) / 2) < .3) return kRgb(kLit(HANDLE, sh)); return kRgb(kLit([244, 248, 252], sh)); }
-      return kRgb(kLit(q > b1 - .05 ? GLASS : INSIDE_D, sh));
+      if (f === 'top') return kRgb(SHELF);
+      if (q > b1 - .05 || q < b0 + .05 || p < a0 + w + .05 || p > a1 - w - .05) return kRgb(DARK);
+      if (Math.abs(q - (b1 - .18)) < .04 && Math.abs(p - (a0 + a1) / 2) < .55) return kRgb(HANDLE);
+      return kRgb(kLit(WHITE, sh));
     }, 'tf');
+  } else {
+    // no drawer: the bin's floor and its low glass lip, the inside behind
+    kBox('x', a0 + w, a1 - w, w, d - .06, b0, b0 + .06, (f, p, q, sh) => f === 'top' ? kRgb(Sh) : kRgb(kLit(SHELF_EDGE, sh)), 'tf');
   }
 }
-// the door open: turned back along the wall about its hinge (FR.d, a1) by DOOR_OPEN; its inner face (the racks) looks +x
-const DOOR_OPEN = g('dopen', Math.PI + .12), DOOR_HALF = g('dhalf', .06);
+// the door: a leaf turned about its hinge (FR.d, a1) by an angle (0 shut). Open (DOOR_OPEN, round 2: 150 degrees) it stands out into the
+// room at the fridge's side, its inner face (white, the racks) looking at the camera, its handle a bar on its free edge; half open
+// (DOOR_HALF, 1 degree) its outer face turned a little, out of the light, the dark inside seen past its top edge
+const DOOR_OPEN = g('dopen', 2.62), DOOR_HALF = g('dhalf', .02), DRAWER_OUT = g('dout', .8);
 function leafAt(ang) {
   const { a0, a1, d, fz } = FR, len = a1 - a0, hx = d, hy = a1;
-  // the leaf's direction from the hinge to its free edge: shut, -y; turned by ang about z towards +x then +y
   const dx = Math.sin(ang), dy = -Math.cos(ang), th = .1;
   const nx = Math.cos(ang), ny = Math.sin(ang);              // the leaf's outer face's normal (shut: +x)
   const P0 = [hx, hy, .08], E1 = [dx * len, dy * len, 0], E2 = [0, 0, fz - .1];
-  const outer = (s, t) => { const q = .08 + (fz - .1) * t; return kRgb(kLit(q < .12 || q > fz - .06 || s > .98 ? GASKET : WHITE, nx > .3)); };
-  const inner = (s, t) => { const q = .08 + (fz - .1) * t, rack = [.28, .52, .76].some(r => Math.abs(t - r) < .035) && s > .1 && s < .9; return kRgb(kLit(s > .96 || s < .04 || t < .03 || t > .97 ? GASKET : rack ? GLASS : INSIDE, -nx > .3)); };
-  // both faces: the depth test keeps the one nearer the camera
-  planeQuad([P0[0] + nx * th, P0[1] + ny * th, P0[2]], E1, E2, outer);
-  planeQuad(P0, E1, E2, inner);
-  // the free edge's thickness
-  planeQuad([P0[0] + E1[0], P0[1] + E1[1], P0[2]], [nx * th, ny * th, 0], E2, () => kRgb(GASKET));
+  const outer = (s, t) => { const q = .08 + (fz - .1) * t; return kRgb(kLit(q < .12 || q > fz - .06 || s > .98 ? GASKET : WHITE, nx + ny < 0 || (ang > 0 && ang < .5))); };
+  const inner = (s, t) => { const rack = [.3, .55, .8].some(r => Math.abs(t - r) < .03) && s > .12 && s < .88; return kRgb(s > .95 || s < .05 || t < .03 || t > .97 ? GASKET : rack ? SHELF_EDGE : INSIDE_D); };
+  mark('door.outer', () => planeQuad([P0[0] + nx * th, P0[1] + ny * th, P0[2]], E1, E2, outer));
+  mark('door.inner', () => planeQuad(P0, E1, E2, inner));
+  // the free edge's thickness, and the handle: an upright bar on the outer side at the free edge, standing .1 off it
+  const F0 = [P0[0] + E1[0], P0[1] + E1[1], P0[2]];
+  planeQuad(F0, [nx * th, ny * th, 0], E2, () => kRgb(GASKET));
+  const H0 = [F0[0] + nx * th, F0[1] + ny * th, fz - 1.5];
+  mark('door.handle', () => { planeQuad(H0, [nx * .12, ny * .12, 0], [0, 0, 1.1], () => kRgb(HANDLE));
+    planeQuad([H0[0] - dx * .06, H0[1] - dy * .06, H0[2]], [nx * .12, ny * .12, 0], [0, 0, 1.1], () => kRgb(HANDLE)); });
   return { dx, dy, len };
 }
 function doorOpen() { leafAt(DOOR_OPEN); }
@@ -144,23 +168,24 @@ function doorHalf() { leafAt(DOOR_HALF); }
 
 /* ---------- the sink and its tap ---------- */
 function sink() {
-  const { a0, a1, d0, d1 } = SINK, z = K.CZ + .004, St = rampOf([200, 204, 218]);
+  const { a0, a1, d0, d1 } = SINK, z = K.CZ + .004, St = rampOf([206, 210, 222]);
   part('pila', () => {
-    // the basin, seen from above: a steel rim, its far inner wall in shade, its bottom (the water when there is some)
-    planeQuad([a0, d0, z], [a1 - a0, 0, 0], [0, d1 - d0, 0], (s, t) => {
+    // the basin, seen from above: a steel rim, its far inner wall in shade, its bottom; the dishwater (grey-blue, suds) or the juice (orange)
+    // filling it (round 2: larger, and what is in it dark enough to tell from the empty steel at a glance)
+    mark('basin', () => planeQuad([a0, d0, z], [a1 - a0, 0, 0], [0, d1 - d0, 0], (s, t) => {
       const ea = s * (a1 - a0), ed = t * (d1 - d0);
-      if (ea < .05 || ea > a1 - a0 - .05 || ed < .05 || ed > d1 - d0 - .05) return St[3];
-      if (ed < .16) return St[1];                                     // the far inner wall, in shade
-      if (ea < .1) return St[2];
-      if (SET.pila === 'a') return kRgb(ed < .2 ? [156, 192, 216] : [220, 238, 248]);
-      if (SET.pila === 'j') return kRgb(ed < .2 ? [192, 96, 8] : [240, 160, 64]);
-      return St[2];
-    });
-    // the tap: a pipe up from the counter top at the wall, its spout over the basin
-    const ta = (a0 + a1) / 2, Tp = [170, 174, 190];
-    kSolid('y', ta - .05, ta + .05, .06, .16, K.CZ, K.CZ + .5, Tp);
-    kSolid('y', ta - .05, ta + .05, .06, .34, K.CZ + .44, K.CZ + .52, Tp);
-    kSolid('y', ta - .05, ta + .05, .26, .34, K.CZ + .34, K.CZ + .44, Tp);
+      if (ea < .07 || ea > a1 - a0 - .07 || ed < .07 || ed > d1 - d0 - .07) return St[4];
+      if (ea < .1 || ed > d1 - d0 - .1) return kRgb([120, 124, 140]);                // the rim's inner lip, dark
+      if (SET.pila === 'a') return kRgb(((Math.floor(ea * 14) * 7 + Math.floor(ed * 14) * 3) % 11 === 0) ? [214, 228, 236] : ed < .2 ? [72, 98, 120] : [96, 128, 150]);
+      if (SET.pila === 'j') return kRgb(ed < .2 ? [150, 66, 4] : [196, 94, 10]);
+      if (ed < .2) return St[1];                                                       // the far inner wall, in shade
+      return St[3];
+    }));
+    // the tap: a pipe up from the counter top at the wall, its spout over the basin's middle
+    const ta = (a0 + a1) / 2, Tp = [150, 154, 172];
+    kSolid('y', ta - .05, ta + .05, .02, .12, K.CZ, K.CZ + .55, Tp);
+    kSolid('y', ta - .05, ta + .05, .02, .42, K.CZ + .49, K.CZ + .57, Tp);
+    kSolid('y', ta - .05, ta + .05, .34, .42, K.CZ + .38, K.CZ + .49, Tp);
   });
 }
 
@@ -185,19 +210,38 @@ function stool() {
   applyShadows(groundZ);
 }
 
+/* ---------- the floor's dimming (round 2) ----------
+   The kit's cocinaOcclusion dims a floor pixel by whatever stands to its left on the screen; the counter's front falls to the right along the
+   back wall, so the floor all along its lit foot was dimmed in a dotted fringe. Here the same dimming, by everything but the counter (its own
+   shade is on its shadow side, its right end, where the kit's light does not reach) */
+const CNTZ = new Float64Array(W * H).fill(NaN);
+function occlusion() {
+  const offsets = [];
+  for (const r of [2, 4]) for (let k = 0; k < 8; k++) { const ox = Math.round(Math.cos(k * Math.PI / 4) * r), oy = Math.round(Math.sin(k * Math.PI / 4) * r * .7); if (ox < 0) offsets.push([ox, oy]); }
+  const n = offsets.length;
+  for (let iy = 4; iy < H - 4; iy++) for (let ix = 4; ix < W - 4; ix++) {
+    const i = iy * W + ix; if (!ground[i] || zb[i] !== groundZ[i]) continue;
+    let hits = 0; for (const [ox, oy] of offsets) { const j = (iy + oy) * W + ix + ox; if (zb[j] !== groundZ[j] && zb[j] !== CNTZ[j]) hits++; }
+    if (!hits) continue;
+    if (hits >= n) tint(i, .56, .54, .72); else if (hits / n > bayerAt(ix, iy)) tint(i, .74, .72, .84);
+  }
+}
+
 /* ---------- bake one state ---------- */
 function buildSet() {
-  cocinaBuild({
-    XR, YL, windows: [WIN], band: { y: [[0, CA1]] },
+  for (const k of Object.keys(MARKS)) delete MARKS[k];
+  const WH0 = K.WH; K.WH = WALL_H;   // round 2: this set's walls are higher than the kit's (the tall window); restored at once after
+  try { cocinaBuild({
+    XR, YL, windows: [WIN], band: { y: [[0, CA1]] }, occlusion: 'none',   // round 2: the floor's dimming is this set's own (occlusion(), below)
     furnish() {
-      part('mostrador', () => cocinaBase('y', 0, CA1, { noEnd: false }));
-      sink();
+      if (!GQ.bare) { const b = zb.slice(); part('mostrador', () => cocinaBase('y', 0, CA1, { noEnd: false })); for (let i = 0; i < zb.length; i++) CNTZ[i] = zb[i] !== b[i] ? zb[i] : NaN; sink(); } else CNTZ.fill(NaN)   // g={"bare":1}: the floor without the counter (a check's picture: the fringe at its foot)
       fridge();
     },
     shadows() {
       part('nevera', () => cocinaShadowBlock(FR.d - .05, FR.a0 + .1, FR.d + .05, FR.a1 - .1, .25));
     },
-  });
+  }); } finally { K.WH = WH0; }
+  occlusion();
   stool();
   bakedPix.set(pix); bakedZ.set(zb);
 }
@@ -234,12 +278,12 @@ function rows() {
   for (let x = 0; x < W; x++) cols.push(x);
   const Z = zones(), yt = kRgb(KC.yardTop);
   for (let x = 0; x < W; x++) for (let y = 0; y < H; y++) if (Z.zone[y * W + x] === 'o' && pix[y * W + x] === yt) { yard[x] = y; break; }
-  const glassTop = {}; for (let x = 0; x < W; x++) for (let y = 0; y < H; y++) if (Z.zone[y * W + x] === 'o') { glassTop[x] = y; break; }
-  return { glassTop, counter: cols.map(x => row('y', .45, K.CZ, x)), sill: cols.map(x => row('y', .08, WIN.z0 - .1, x)), winTop: cols.map(x => row('y', 0, WIN.z1, x)), winBottom: cols.map(x => row('y', 0, WIN.z0, x)),
+  const glassTop = {}, glassBottom = {}; for (let x = 0; x < W; x++) for (let y = 0; y < H; y++) if (Z.zone[y * W + x] === 'o') { if (glassTop[x] == null) glassTop[x] = y; glassBottom[x] = y; }
+  return { glassTop, glassBottom, counter: cols.map(x => row('y', .45, K.CZ, x)), sill: cols.map(x => row('y', .08, WIN.z0 - .1, x)), winTop: cols.map(x => row('y', 0, WIN.z1, x)), winBottom: cols.map(x => row('y', 0, WIN.z0, x)),
     front: cols.map(x => row('y', K.CD, 0, x)), yard, fridgeTop: cols.map(x => { const a = (FR.d - .65) - (x - OX) / S * R2; return project(FR.d - .65, a, FR.h).sy; }) };
 }
 
-window.NEVERA_SET = { SET, XR, YL, CA1, WIN, FR, SINK, STOOL, STOOL_AT: stoolFoot(), buildSet, zones, rows, OXY: [OX, OY], CZ: K.CZ, CD: K.CD, at };
+window.NEVERA_SET = { SET, XR, YL, CA1, WIN, WALL_H, FR, SINK, STOOL, STOOL_AT: stoolFoot(), buildSet, zones, rows, marked, OXY: [OX, OY], CZ: K.CZ, CD: K.CD, at };
 if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
 const t0 = performance.now();
 buildSet();

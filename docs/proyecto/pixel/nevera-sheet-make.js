@@ -15,7 +15,8 @@
    nevera.js draws it (each item owns the pixels it drew last; a set part drawn again only where it is nearer than that owner). Nothing in the
    repo is written but the sheet. A second run writes the same bytes. El banco's maker (orden/36a) and El lago's are the models.
    NEVERA_NOCHECK=1: write the sheet only (for designing). NEVERA_DUMP=<folder>: also write each run's step ends and ticks, the recorded and the
-   port's, there (for the pictures; not in the repo). Temporary files go where os.tmpdir() says (TMPDIR). */
+   port's, there (for the pictures; not in the repo). Temporary files go where os.tmpdir() says (TMPDIR). Design only: NEVERA_CACHE=<file> (the runs
+   and ticks reused while the moves are the same), SEEN_BY=1 (who covers whom in the seen check), HUECO_DBG=<file> (the fridge's candidate places). */
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -65,16 +66,19 @@ const FRONT = ['nevera', 'nevera.dentro', 'nevera.puerta', 'mostrador', 'pila', 
       castShadow = cs0; part = part0;
       const onGround = []; for (let i = 0; i < W * H; i++) onGround.push(ground[i] && bakedZ[i] === groundZ[i] ? 1 : 0);
       return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(bakedZ), rgb: rgbA, calls, bake: BAKE_MS, first, warm,
-        shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), onGround, zone: zone.zone, outside: zone.outside, rows: rowsT };
+        shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), onGround, zone: zone.zone, outside: zone.outside, rows: rowsT, marks: NEVERA_SET.marked() };
     });
     G.ms[key] = { first: g.first, warm: g.warm, page: g.bake };
     if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, ROWS: g.rows });
     G.parts[key] = g.parts; G.z[key] = g.z; G.rgb[key] = g.rgb; G.shadows[key] = g.calls;
-    for (const k of ['shadowPx', 'onGround', 'zone', 'outside']) (G[k] = G[k] || {})[key] = g[k];
+    for (const k of ['shadowPx', 'onGround', 'zone', 'outside', 'marks']) (G[k] = G[k] || {})[key] = g[k];
   }
+  // round 2: the floor without the counter (g={"bare":1}, a design-only picture): the fringe check at the counter's foot
+  { await page.goto('file://' + path.join(__dirname, 'nevera-set.html') + '?tags=1&' + queryOf('0.0.0.1') + '&g=' + encodeURIComponent('{"bare":1}'));
+    G.bare = await page.evaluate(() => { const cd = document.getElementById('c').getContext('2d').getImageData(0, 0, W, H).data, rgb = []; for (let i = 0; i < W * H; i++) rgb.push(cd[i * 4], cd[i * 4 + 1], cd[i * 4 + 2]); return { rgb, zone: NEVERA_SET.zones().zone }; }); }
   // the first bake of every state in a fresh page (the floor built too)
   G.fresh = {};
-  for (const key of ALL_STATES) for (let n = 0; n < 3; n++) { const p2 = await browser.newPage(); await p2.goto('file://' + path.join(__dirname, 'nevera-set.html') + '?' + queryOf(key)); const ms = await p2.evaluate(() => BAKE_MS); G.fresh[key] = Math.min(G.fresh[key] || 1e9, ms); await p2.close(); }   // the least of three fresh pages (the machine is shared)
+  G.fresh5 = {}; for (const key of ALL_STATES) for (let n = 0; n < 5; n++) { const p2 = await browser.newPage(); await p2.goto('file://' + path.join(__dirname, 'nevera-set.html') + '?' + queryOf(key)); const ms = await p2.evaluate(() => BAKE_MS); G.fresh[key] = Math.min(G.fresh[key] || 1e9, ms); (G.fresh5[key] = G.fresh5[key] || []).push(ms); await p2.close(); }   // five fresh pages: the check takes the least (the machine is shared), the report the median
   if (errs.length) throw new Error(errs.join('; '));
   const mpage = await browser.newPage(); mpage.on('pageerror', e => errs.push(String(e)));
   G.M = await measure(mpage);
@@ -86,11 +90,14 @@ const FRONT = ['nevera', 'nevera.dentro', 'nevera.puerta', 'mostrador', 'pila', 
   if (process.env.NEVERA_NOCHECK) { await browser.close(); console.log('wrote ' + path.relative(REPO, OUT) + ' (no checks)'); return; }
   const movesSig = JSON.stringify([sheet.moves, sheet.remap, sheet.dropped]);
   if (cached && cached.sig === movesSig) { G.TICKS = cached.TICKS; } else G.TICKS = await tickStates(browser, runs, sheet);
+  G.OLDHOPS = cached && cached.oldHops ? cached.oldHops : (await tickStates(browser, runs, null, true)).map(r => r.hops);   // the old page's walks (they do not depend on the sheet)
   G.PV = await previewPlaces(browser, runs);
+  G.PAIRPX = await pairPictures(browser);
   if (process.env.NEVERA_DUMP) { fs.mkdirSync(process.env.NEVERA_DUMP, { recursive: true }); runs.forEach((r, i) => fs.writeFileSync(path.join(process.env.NEVERA_DUMP, r.story.id + '.' + r.plan + '.json'), JSON.stringify({ old: r.lines, port: G.TICKS[i].states, ticks: G.TICKS[i].ticks }))); }
   // the sprite layer's shapes for every item seen at any moment (measured in the browser, nevera.js draw() itself)
   G.MASK = await masks(mpage, collectKeys(sheet, G, runs));
-  if (CACHE) fs.writeFileSync(CACHE, JSON.stringify({ runs, TICKS: G.TICKS, sig: movesSig }));
+  if (CACHE) fs.writeFileSync(CACHE, JSON.stringify({ runs, TICKS: G.TICKS, sig: movesSig, oldHops: G.OLDHOPS }));
+  choosePics(sheet, G);   // round 2: each review picture as close as it can be (zoom 2) where its window holds what the pair is about
   await browser.close();
   if (errs.length) throw new Error(errs.join('; '));
   const problems = check(sheet, G, runs);
@@ -184,6 +191,9 @@ async function masks(page, list) {
       const bg = bgs[bk], d = shot(Object.assign(JSON.parse(JSON.stringify(b0)), JSON.parse(JSON.stringify(spec)))), rows = []; let n = 0; const s = [0, 0, 0];
       for (let y = 0; y < 216; y++) { let a = -1, b = -1; for (let x = 0; x < 240; x++) { const i = (y * 240 + x) * 4; if (d[i] !== bg[i] || d[i + 1] !== bg[i + 1] || d[i + 2] !== bg[i + 2]) { if (a < 0) a = x; b = x; n++; s[0] += d[i]; s[1] += d[i + 1]; s[2] += d[i + 2]; } } if (a >= 0) rows.push([y - at[1], a - at[0], b - at[0]]); }
       out[key] = { rows, mean: s.map(v => Math.round(v / Math.max(1, n))) };
+      if (/^n\|/.test(key)) { const inS = (x, y) => { if (x < 0 || y < 0 || x >= 240 || y >= 216) return false; const i = (y * 240 + x) * 4; return d[i] !== bg[i] || d[i + 1] !== bg[i + 1] || d[i + 2] !== bg[i + 2]; }, edge = [];
+        for (let y = 0; y < 216; y++) for (let x = 0; x < 240; x++) if (inS(x, y)) for (const [ex, ey] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) if (!inS(x + ex, y + ey)) { const i = (y * 240 + x) * 4; edge.push([y - at[1], x - at[0], ex, ey, d[i], d[i + 1], d[i + 2]]); }
+        out[key].edge = edge; }
     }
     return out;
   }, [list, BASE_W()]);
@@ -213,6 +223,53 @@ async function previewPlaces(browser, runs) {
   });
 }
 
+/* ---------- round 2: the review pictures drawn whole (the view, 196 x 216 from x0) by nevera-preview.html, yes and no, to choose their windows ---------- */
+async function pairPictures(browser) {
+  return serve(async base => {
+    const page = await browser.newPage(), errs = []; page.on('pageerror', e => errs.push(String(e)));
+    await page.goto(base + '/docs/proyecto/pixel/nevera-preview.html'); await page.evaluate(() => PREVIEW.ready);
+    const out = {};
+    for (const ps of pairSidesOf()) { const nm = deacc(ps.w) + '.' + ps.side;
+      out[nm] = await page.evaluate(async ([w, side]) => { const u = await PREVIEW.pair(w, side, 'cual-nevera', true), im = await new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = u; });
+        const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0); const d = g.getImageData(0, 0, im.width, im.height).data, o = []; for (let i = 0; i < im.width * im.height; i++) o.push(d[i * 4], d[i * 4 + 1], d[i * 4 + 2]); return { w: im.width, h: im.height, rgb: o }; }, [deacc(ps.w), ps.side]); }
+    const po = await browser.newPage(); po.on('pageerror', e => errs.push(String(e))); await po.goto(base + '/docs/proyecto/pixel/nevera-preview.html?old=1'); await po.evaluate(() => PREVIEW.ready);
+    for (const ps of pairSidesOf()) { const nm = deacc(ps.w) + '.' + ps.side;
+      out['old:' + nm] = await po.evaluate(async ([w, side]) => { const u = await PREVIEW.pair(w, side), im = await new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = u; });
+        const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0); const d = g.getImageData(0, 0, im.width, im.height).data, o = []; for (let i = 0; i < im.width * im.height; i++) o.push(d[i * 4], d[i * 4 + 1], d[i * 4 + 2]); return { w: im.width, h: im.height, rgb: o }; }, [deacc(ps.w), ps.side]); }
+    if (errs.length) throw new Error('preview (pairs): ' + errs.join('; '));
+    await page.close(); await po.close(); return out; });
+}
+// the heads in a world: each person's (and outside, too) bare sprite's top 14 rows, a box in the picture
+function headsOf(w, MASK) { const out = [];
+  for (const r of rawItems(w)) { if (r.kind !== 'bare') continue; const p = r.o, m = MASK[r.key]; if (!m || !m.rows.length) continue; const ax = R(p.x), ay = R(p.y) + R(p.dy || 0), top = Math.min(...m.rows.map(q => q[0])), hr = m.rows.filter(q => q[0] < top + 14);
+    out.push([r.id, [ax + Math.min(...hr.map(q => q[1])), ay + top, Math.max(...hr.map(q => q[2])) - Math.min(...hr.map(q => q[1])) + 1, 14]]); }
+  return out; }
+// a review picture's pixels that differ between yes and no, inside a crop of the picture (240 x 216 coordinates)
+function pairDiffIn(G, nm, crop, x0) { const a = G.PAIRPX[nm + '.si'], b = G.PAIRPX[nm + '.no']; if (!a || !b) return null;
+  const SAT = (G.SAT = G.SAT || {})[nm] || (G.SAT[nm] = (() => { const W1 = a.w + 1, t = new Int32Array(W1 * (a.h + 1));
+    for (let y = 0; y < a.h; y++) for (let x = 0; x < a.w; x++) { const i = (y * a.w + x) * 3, d = a.rgb[i] !== b.rgb[i] || a.rgb[i + 1] !== b.rgb[i + 1] || a.rgb[i + 2] !== b.rgb[i + 2] ? 1 : 0; t[(y + 1) * W1 + x + 1] = d + t[y * W1 + x + 1] + t[(y + 1) * W1 + x] - t[y * W1 + x]; }
+    return { t, W1, w: a.w, h: a.h }; })());
+  const cx0 = Math.max(0, crop[0] - x0), cy0 = Math.max(0, crop[1]), cx1 = Math.min(SAT.w, crop[0] + crop[2] - x0), cy1 = Math.min(SAT.h, crop[1] + crop[3]); if (cx1 <= cx0 || cy1 <= cy0) return 0;
+  const T = SAT.t, W1 = SAT.W1; return T[cy1 * W1 + cx1] - T[cy0 * W1 + cx1] - T[cy1 * W1 + cx0] + T[cy0 * W1 + cx0]; }
+const headRule = (heads, crop) => heads.every(([, h]) => !meets(h, crop) || within([h[0] - 2, h[1] - 2, h[2] + 4, h[3] + 4], crop));
+function choosePics(sh, G) {
+  const x0 = sh.views.wide.x0, byWord = {}; for (const ps of pairSidesOf()) (byWord[deacc(ps.w)] = byWord[deacc(ps.w)] || {})[ps.side] = ps;
+  for (const [nm, sides] of Object.entries(byWord)) { if (!sides.si || !sides.no) continue;
+    const heads = ['si', 'no'].flatMap(sd => headsOf(pairW(sides[sd], sh), G.MASK)), c0 = sh.pictures[nm + '.si'].screen;
+    let best = null, most = null;
+    for (let y = 0; y <= 164; y++) for (let x = x0; x <= x0 + 196 - 98; x++) { const crop = [x, y, 98, 52]; if (!headRule(heads, crop)) continue; const n = pairDiffIn(G, nm, crop, x0);
+      if (!most || n > most[2] || (n === most[2] && Math.hypot(x + 49 - c0[0], y + 26 - c0[1]) < most[0])) most = [Math.hypot(x + 49 - c0[0], y + 26 - c0[1]), crop, n];
+      if (n < 98 * 52 * .015) continue;
+      const sc = n - .5 * Math.hypot(x + 49 - c0[0], y + 26 - c0[1]); if (!best || sc > best[0]) best = [sc, crop, n]; }
+    const z1n = pairDiffIn(G, nm, sh.pictures[nm + '.si'].zoom === 1 ? sh.pictures[nm + '.si'].crop : [Math.max(0, Math.min(44, R(c0[0] - 98))), Math.max(0, Math.min(112, R(c0[1] - 52))), 196, 104], x0) / (196 * 104);
+    for (const sd of ['si', 'no']) { const pc = sh.pictures[nm + '.' + sd];
+      if (best) { pc.zoom = 2; pc.crop = best[1]; pc.screen = [best[1][0] + 49, best[1][1] + 26]; delete pc.why; }
+      else if (most && most[2] / (98 * 52) > z1n) { pc.zoom = 2; pc.crop = most[1]; pc.screen = [most[1][0] + 49, most[1][1] + 26]; pc.why = 'zoom 2, the window that holds the most of what differs: ' + r2(most[2] / (98 * 52) * 100) + '% of it (no 98 x 52 window holds 1.5%: what differs is the old sprites\' own, ' + most[2] + ' px; at zoom 1 it is ' + r2(z1n * 100) + '%)'; }
+      else pc.why = 'zoom 1: no 98 x 52 window holds what differs between yes and no (1.5% of it and more) with every head in it whole (2 px to spare) or out of it'; } }
+  for (const l of sh.level) { const pc = sh.pictures[l.picture]; if (pc) { l.crop = pc.crop; l.zoom = pc.zoom; } }
+  for (const e of sh.remap) if (e.crops) for (const n of Object.keys(e.crops)) e.crops[n] = { crop: sh.pictures[n].crop, zoom: sh.pictures[n].zoom };
+}
+
 /* ---------- nevera.js as the port will have it: the sheet's moves, drops and helps applied (the same edit as nevera-preview.html's, without its drawing) ---------- */
 function portSource(sheet) {
   let src = NEV_JS; const done = new Set();
@@ -240,9 +297,11 @@ const TICK_HOOK = `(() => { const H = window.__H, d = H.drain; window.__TICKS = 
       pila: W.pila, vista: W.vista, olfato: W.olfato, banco: W.banco, encima: W.encima, tarjeta: W.tarjeta, marcas: W.marcas, respEn: W.respEn, resp: W.resp, spot: W.spot, twinkle: W.twinkle, F: typeof F === 'number' ? F : 0 };
     const s = JSON.stringify(o, (k, x) => typeof x === 'function' || (x && x.nodeType) || x instanceof HTMLCanvasElement ? undefined : x); if (s !== last) { last = s; window.__TICKS.push({ t: H.now, W: JSON.parse(s) }); } } catch (e) {} };
   H.drain = () => d().then(() => { keep(); }); })();`;
-async function tickStates(browser, runs, sheet) {
+// round 2: every walk of the frog (every call of juego.js hopTo, acts included): where from, where to, and the hops it takes
+const HOP_WRAP = `(() => { const f = window.hopTo; window.__HOPS = []; window.hopTo = function (x, y, hops, s1) { const q = W.cq; window.__HOPS.push([q.x, q.y, x, y, hops]); return f.apply(this, arguments); }; })()`;
+async function tickStates(browser, runs, sheet, old) {
   const INIT = fs.readFileSync(path.join(TRAZAS, 'page-init.js'), 'utf8').replace('__SEED__', '1'), DRIVE = fs.readFileSync(path.join(TRAZAS, 'page-drive.js'), 'utf8');
-  const SRC = portSource(sheet);
+  const SRC = old ? null : portSource(sheet);   // old: the old page as it is (nevera.js and the story files untouched)
   return serve(async base => { const out = [];
     for (const r of runs) {
       const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, timezoneId: 'UTC', locale: 'en-US' });
@@ -250,16 +309,16 @@ async function tickStates(browser, runs, sheet) {
         await ctx.addInitScript(INIT); await ctx.addInitScript(TICK_HOOK);
         await ctx.route(/\/historia\/audio\/[^/]+\.mp3(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop());
           return fs.existsSync(path.join(REPO, 'historia/audio', name)) ? route.fulfill({ status: 200, contentType: 'audio/mpeg', body: 'ID3' }) : route.fulfill({ status: 404, body: '' }); });
-        await ctx.route(/\/historia\/escenas\/nevera\.js(\?.*)?$/, route => route.fulfill({ status: 200, contentType: 'text/javascript; charset=utf-8', body: SRC }));
-        await ctx.route(/\/historia\/cuentos\/[^/]+\.json(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()).replace(/\.json$/, '');
+        if (!old) await ctx.route(/\/historia\/escenas\/nevera\.js(\?.*)?$/, route => route.fulfill({ status: 200, contentType: 'text/javascript; charset=utf-8', body: SRC }));
+        if (!old) await ctx.route(/\/historia\/cuentos\/[^/]+\.json(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()).replace(/\.json$/, '');
           return route.fulfill({ status: 200, contentType: 'application/json', body: portStory(name, sheet) }); });
         const page = await ctx.newPage();
         await page.goto(base + '/historia/index.html?cuento=' + r.story.id + '&fast=1&rec=1&mic=stub:none&abiertas=todas');
         for (let i = 0; ; i++) { if (await page.evaluate("!!(window.Story&&Story.ready&&typeof voiceReady!=='undefined'&&voiceReady)")) break; if (i > 600) throw new Error('the page did not load ' + r.story.id); await new Promise(z => setTimeout(z, 50)); }
-        await page.evaluate('voiceReady'); await page.evaluate(DRIVE);
+        await page.evaluate('voiceReady'); await page.evaluate(HOP_WRAP); await page.evaluate(DRIVE);
         const tr = await page.evaluate(cfg => window.__drive(cfg), { plan: r.plan, think: 700, limitMs: 4 * 3600e3, states: true });
         if (tr.end !== 'finished') throw new Error('ticks: ' + r.story.id + ' ' + r.plan + ' ended: ' + tr.end);
-        out.push({ ticks: await page.evaluate(() => window.__TICKS), states: tr.states });
+        out.push(old ? { hops: await page.evaluate(() => window.__HOPS) } : { ticks: await page.evaluate(() => window.__TICKS), states: tr.states, hops: await page.evaluate(() => window.__HOPS) });
       } finally { await ctx.close(); }
     }
     return out; });
@@ -327,13 +386,14 @@ function design(G, E) {
   const F = G.F, RW = G.ROWS, xs = []; for (let x = 100; x <= 230; x++) xs.push(x);
   const yx = Object.keys(RW.yard).map(Number);
   const gx = Object.keys(RW.glassTop).map(Number).filter(x => x >= 160 && x <= 205);
-  const C = { ct: fitRow(RW.counter, xs), sl: fitRow(RW.sill, xs), vt: Math.ceil(fitRow(Object.assign([], RW.glassTop), gx)), vb: fitRow(RW.winBottom, xs), cb: fitRow(RW.front, xs) + 6, mu: fitRow(Object.assign([], RW.yard), yx) };
-  C.pa = C.vt + 50;   // whoever stands outside: a grown-up's face 2 rows under the top of what shows of the outside through the window (VT: the top of their hair under the frame), so their face and shoulders show and stay clear of the hint frames of what stands on the counter
+  const C = { ct: fitRow(RW.counter, xs), sl: fitRow(RW.sill, xs), vt: Math.ceil(fitRow(Object.assign([], RW.glassTop), gx)), vb: Math.floor(fitRow(Object.assign([], RW.glassBottom), gx)),   // VB (round 2): the lowest row of the outside seen through the glass (over the sill, the frame and the reveal)
+   cb: fitRow(RW.front, xs) + 6, mu: fitRow(Object.assign([], RW.yard), yx) };
+  C.pa = C.vb + (OLD.PATIO - OLD.SILL);   // round 2: whoever stands outside has their feet as far under the outside's lowest row (VB) as the old under its sill (PATIO - SILL = 22 rows): the sill cuts them at the chest, their head and shoulders inside the window (62 rows high, as the old) with the sky and the yard's wall round the head
   const f = c => x => Math.round(c + x / 2);
   C.CT = f(C.ct); C.SL = f(C.sl); C.MU = f(C.mu); C.PA = f(C.pa); C.CB = f(C.cb); C.VT = f(C.vt);
   // the fridge's places: each HUECO thing whole over the inside of the open fridge (zones d, e: nothing of the fridge, its door or its rim in front
-  // of it) and its feet on its shelf (HUECO 0 and 1 the upper shelf, 2 and 3 the lower), well inside the shelf; the two on a shelf as far apart
-  // as the old (26 px); the nearest to the old points (the sum of the two distances). What stands in a slot in any story (nevera.js tenida draws
+  // of it) and its feet on its shelf (HUECO 0 and 1 the upper shelf, 2 and 3 the lower), well inside the shelf; the two on a shelf 22 px apart
+  // and more (the old 26; round 2: the fridge is narrower, so that it stands whole in the view: its two widest things, 22 px, side by side); the nearest to the old points (the sum of the two distances). What stands in a slot in any story (nevera.js tenida draws
   // a thing w x h with its foot's middle at the point): 0 leche 12 x 19, platofruta 22 x 12, soporte 16 x 7; 1 queso 18 x 13, platofruta,
   // platoazul 20 x 6 (one row lower); 2 and 3 platofruta
   const SIZES = [[[12, 19], [22, 12], [16, 7]], [[18, 13], [22, 12], [20, 7]], [[22, 12]], [[22, 12]]];
@@ -341,15 +401,20 @@ function design(G, E) {
   // and nothing of the set nearer than it (a shelf's glass in front of a thing deep on the shelf below): the front test's plane (front.plane)
   const ZB = G.z['1.0.0.1'], T30 = Math.tan(Math.PI / 6);
   const fits = (slot, x, y, z) => { const pl = { face: 'x', at: E.atZ(x, y, z)[0] };
-    for (const [w, h] of SIZES[slot]) for (let yy = y - h; yy < y; yy++) for (let xx = x - (w >> 1); xx < x - (w >> 1) + w; xx++) { if (!inside(xx, yy)) return false; if (ZB[yy * 240 + xx] > planeDepth(E, pl, xx, yy) + 1e-3) return false; } return true; };
+    for (const [w] of SIZES[slot]) { let on = 0, mid = true; for (let xx = x - (w >> 1); xx < x - (w >> 1) + w; xx++) { const o = [0, 1, 2].some(d => { const i = (y - 1 + d) * 240 + xx, g = E.atZ(xx + .5, y - 1 + d + .5, z); return Z[i] === 'e' && Math.abs(ZB[i] - ((g[0] + g[1]) / E.R2 * E.COS + z * E.SIN)) < .02; }); if (o) on++; else if (Math.abs(xx - x) <= w / 4) mid = false; } if (!mid) return false; }   // round 2: its foot on the shelf's top (as the check: shelves)
+    for (const [w, h] of SIZES[slot]) for (let yy = y - h; yy < y; yy++) for (let xx = x - (w >> 1); xx < x - (w >> 1) + w; xx++) { if (!inside(xx, yy)) return false; if (yy < y - 3 && Z[yy * 240 + xx] !== 'e' && ZB[yy * 240 + xx] > planeDepth(E, pl, xx, yy) + 1e-3) return false; } return true; };   // (the shelf's top it stands on, and its lowest 3 rows, are not in front of it: as the front test)
   const onShelf = (x, y, z) => { const w = E.atZ(x, y - 1, z); return w[0] >= .14 && w[0] <= F.FR.d - .08 && w[1] >= F.FR.a0 + .2 && w[1] <= F.FR.a1 - .2; };
-  const cands = (slot, z) => { const o = OLD.HUECO[slot], out = []; for (let y = o[1] - 60; y <= o[1] + 60; y++) for (let x = o[0] - 30; x <= o[0] + 30; x++) if (onShelf(x, y, z) && fits(slot, x, y, z)) out.push([x, y, Math.hypot(x - o[0], y - o[1])]); return out; };
+  const cands = (slot, z) => { const o = OLD.HUECO[slot], out = []; for (let y = o[1] - 60; y <= o[1] + 60; y++) for (let x = o[0] - 45; x <= o[0] + 45; x++) if (onShelf(x, y, z) && fits(slot, x, y, z)) out.push([x, y, Math.hypot(x - o[0], y - o[1])]); return out; };
   const H = OLD.HUECO.map(p => p.slice());
   for (const [i, j, z] of [[0, 1, F.FR.shelves[0]], [2, 3, F.FR.shelves[1]]]) {
     const A = cands(i, z), B = cands(j, z); let best = null;
+    // round 2: the two of a shelf apart: whatever stands in the one and in the other, their boxes apart, a foot's row at the most shared (side by side, or one behind the
+    // other higher up the shelf: the fridge is narrower, its shelves seen aslant)
+    const apart = (i, a, j, b) => SIZES[i].every(([wa, ha]) => SIZES[j].every(([wb, hb]) => { const A = [a[0] - (wa >> 1), a[1] - ha, wa, ha], B = [b[0] - (wb >> 1), b[1] - hb, wb, hb]; return !meets([A[0], A[1], A[2], A[3] - 1], [B[0], B[1], B[2], B[3] - 1]); }));
     const clear = q => i < 2 || [0, 1].every(u => { const o = H[u]; return Math.abs(q[0] - o[0]) >= 22 || q[1] - 12 >= o[1] + 2 || q[1] <= o[1] - 21; });
-    for (const a of A) for (const b of B) { if (b[0] - a[0] < 26 || !clear(a) || !clear(b)) continue; const s = a[2] + b[2]; if (!best || s < best[0] || (s === best[0] && a[1] + b[1] < best[1][1] + best[2][1])) best = [s, a, b]; }
-    if (!best) throw new Error('design: no place in the fridge for HUECO ' + i + ' and ' + j);
+    for (const a of A) for (const b of B) { if (!apart(i, a, j, b) || !clear(a) || !clear(b)) continue; const s = a[2] + b[2]; if (!best || s < best[0] || (s === best[0] && a[1] + b[1] < best[1][1] + best[2][1])) best = [s, a, b]; }
+    if (!best && process.env.HUECO_DBG) fs.writeFileSync(process.env.HUECO_DBG, JSON.stringify({ i, A, B }));
+    if (!best) throw new Error("design: no place in the fridge for HUECO " + i + " and " + j + " (" + A.length + " and " + B.length + " candidates; " + JSON.stringify([A.slice(0, 3), B.slice(0, 3), A.length ? [Math.min(...A.map(q => q[0])), Math.max(...A.map(q => q[0]))] : null, B.length ? [Math.min(...B.map(q => q[0])), Math.max(...B.map(q => q[0]))] : null]) + ")");
     H[i] = best[1].slice(0, 2); H[j] = best[2].slice(0, 2);
   }
   C.HUECO = H;
@@ -373,14 +438,14 @@ function designMoves(C, G, E) {
   const ctS = x => 'CT(' + x + ')', fn = (n, c) => n + '=x=>Math.round(' + c + '+x/2)';
   // the fridge's top: where the bread basket and the two glasses stand (the old row 40 is over its top): the middle of its top at their columns
   const topRow = x => Math.round(G.ROWS.fridgeTop[x]);
-  const CES = [68, topRow(68) + 6], C1 = [76, topRow(76) + 3], C2 = [88, topRow(88) + 3];
+  const CES = [68, topRow(68) + 5], C1 = [76, topRow(76) + 3], C2 = [88, topRow(88) + 3];
   C.CES = CES; C.C1 = C1; C.C2 = C2; C.DR = DR;
   const M = [];
   const mv = (act, src, to, why, pts) => M.push(Object.assign({ act, src, to, why }, pts ? { pts } : {}));
   mv('*', 'SILL=98,PATIO=120,MURO=70;', 'SILL=98,PATIO=120,MURO=70,' + [fn('CT', C.ct), fn('SL', C.sl), fn('MU', C.mu), fn('PA', C.pa), fn('CB', C.cb), fn('VT', C.vt)].join(',') + ';',
     'the rows of the new set\'s surfaces, each a line falling half a row a pixel (the counter along the back wall, a world axis): CT where a thing stands on the counter (the old ENC + 10), SL on the window\'s sill (the old SILL), MU the yard wall\'s top seen through the window (the old MURO), PA where whoever stands outside has their feet (the old PATIO), CB the floor just before the counter\'s foot, VT the top row of the outside seen through the window; each place that stood on an old level row keeps its x and stands on the new row there');
   mv('*', 'const HUECO=[[55,79],[81,79],[55,105],[81,105]];', 'const HUECO=' + JSON.stringify(H) + ';',
-    'the four places on the fridge\'s two shelves: the old fridge was 116 px high (twice abuela) and its shelves at rows 79 and 105; the new one stands to the wall\'s cut (3.15, 71 px), so each thing stands where it shows whole through the open door\'s opening on its shelf, the nearest to its old point (searched on the set\'s pixels), the two of a shelf side by side 26 px apart as the old',
+    'the four places on the fridge\'s two shelves: the old fridge was 116 px high (twice abuela) and its shelves at rows 79 and 105; the new one is 3.15 high (71 px) and narrower (round 2: it stands whole in the view), so each thing stands where it shows whole through the open door\'s opening on its shelf, the nearest to its old point (searched on the set\'s pixels), the two of a shelf side by side 22 px apart and more (the old 26)',
     OLD.HUECO.map((o, i) => ['nevera', o, H[i]]));
   mv('*', 'const EN={pan:[160,ENC+10],frutero:[170,ENC+10],vasos:[202,ENC+9],pila:[124,ENC+10],cesta:[68,NEV[1]]};', 'const EN={pan:[160,CT(160)],frutero:[170,CT(170)],vasos:[202,CT(202)-1],pila:[124,CT(124)],cesta:[' + CES + ']};',
     'the counter\'s places (CT) and the bread basket on the fridge\'s top: the old fridge\'s top was at row 40; the new top\'s middle at that column', [['cesta', OLD.CESTA, CES]]);
@@ -398,9 +463,9 @@ function designMoves(C, G, E) {
   mv('*', 'box:w=>{const o=w.cosas.find(o=>o.id===id);return [R(o.x)-9,R(o.y)-19,18,23];},m:1,z:3', 'box:w=>{const o=w.cosas.find(o=>o.id===id);return [R(o.x)-9,R(o.y)-19,18,23];},hand:w=>{const o=w.cosas.find(o=>o.id===id);return o?[R(o.x),R(o.y)-17]:null;},m:1,z:3', 'a thing of W.cosas with a name (the cups, the tray\'s roll and plate): the hint hand points at its top (y - 17), not at its middle: on the counter\'s right end the things stand lower than the old row, and the hand at their middle reached the faces of whoever stands before the counter');
   mv('*', 'ab.lleva={k:"platopan",v:2};await mueve("abuela",216,196);', 'ab.lleva={k:"platopan",v:2};await mueve("abuela",216,210);', 'acts.abuelamira (sale): abuela with the bread going to the door: 14 rows nearer, clear of the cups\' hint frames on the counter\'s right end', [['abuela', [216, 196], [216, 210]]]);
   mv('*', 'await mueve("abuela",200,184);', 'await mueve("abuela",200,199);', 'acts.abuelamira: abuela looks into the children\'s cups at the counter\'s right end: the cups stand lower there than the old row, and their hint frames reached her face; 15 rows nearer, still at the counter', [['abuela', [200, 184], [200, 199]]]);
-  mv('inicio30', '{id:"carta_leche",k:"carta",v:"leche",x:114,y:86,z:50},{id:"carta_queso",k:"carta",v:"queso",x:132,y:86,z:50}', '{id:"carta_leche",k:"carta",v:"leche",x:119,y:78,z:50},{id:"carta_queso",k:"carta",v:"queso",x:133,y:78,z:50}', 'acts.inicio30: the frog\'s two cards hang on the tile band over the counter, 8 rows higher and a little right of the old: over the tap at the wall, clear of the fridge\'s half open door', [['carta_leche', [114, 86], [119, 78]], ['carta_queso', [132, 86], [133, 78]]]);
+  mv('inicio30', '{id:"carta_leche",k:"carta",v:"leche",x:114,y:86,z:50},{id:"carta_queso",k:"carta",v:"queso",x:132,y:86,z:50}', '{id:"carta_leche",k:"carta",v:"leche",x:118,y:78,z:50},{id:"carta_queso",k:"carta",v:"queso",x:132,y:78,z:50}', 'acts.inicio30: the frog\'s two cards hang on the tile band over the counter, 8 rows higher and the first 4 px right of the old: over the tap at the wall, clear of the fridge\'s half-open door and of the window\'s frame\'s half open door', [['carta_leche', [114, 86], [118, 78]], ['carta_queso', [132, 86], [132, 78]]]);
   mv('*', 'await mueve("abuela",t.x,176);', 'await mueve("abuela",t.x,Math.max(176,CB(t.x)+2));', 'acts.huele31: abuela bends over a thing on the tray: on the floor before the counter\'s foot (CB + 2) where the counter comes further forward than row 176');
-  mv('*', 'fresh:()=>({respEn:[142,10],', 'fresh:()=>({respEn:[154,20],', 'the answer cards: in the dark over the back wall, 2 px clear of the rounds card, their lit frame and glow 4 px inside the view (the old [142, 10] put them 6 px over the top edge)', [['respEn', [142, 10], [154, 20]]]);
+  mv('*', 'fresh:()=>({respEn:[142,10],', 'fresh:()=>({respEn:[154,4],', 'the answer cards: high on the back wall and over the window\'s sky (round 2: the walls are higher), 6 rows over the old row (so that the hint drawn round them, and the hand at the right one, stay over the heads of whoever stands at the window, as the old), 12 px right of the old: 2 px clear of the rounds card (the view moved 6 px right), the hint hand at the right one clear of the faces at the window; their lit frame inside the view, the glow over the top edge as the old', [['respEn', [142, 10], [154, 4]]]);
   mv('*', '(M.vasos||[]).forEach((v,i)=>tenida(c,"vaso",v.x!=null?v.x:EN.vasos[0]-i*11,EN.vasos[1],0,0,v.de));', '(M.vasos||[]).forEach((v,i)=>tenida(c,"vaso",v.x!=null?v.x:EN.vasos[0]-i*11,CT(v.x!=null?v.x:EN.vasos[0]-i*11)-1,0,0,v.de));', 'the counter\'s cups (W.mos, used by no story): on the counter (CT) at their x');
   mv('*', 'const x=p.x!=null?p.x:150+i*20,y=ENC+10;', 'const x=p.x!=null?p.x:150+i*20,y=CT(x);', 'the counter\'s plates (W.mos, used by no story): on the counter (CT)');
   mv('*', 'ky=K.y||ENC+11;', 'ky=K.y||CT(K.x)+1;', 'the picnic basket on the counter: on its top (CT + 1) at its x');
@@ -417,15 +482,15 @@ function designMoves(C, G, E) {
   mv('*', 'vuela({k:"piragua",v:n},pa.x-8,SILL-12,160,ENC+2,6)', 'vuela({k:"piragua",v:n},pa.x-8,SL(pa.x-8)-12,160,CT(160)-8,6)', 'acts.final30: the piragua handed in over the sill onto the counter');
   // whoever stands outside: feet at PA (the old PATIO), at their old x
   const pa = (x, d) => 'PA(' + x + ')' + (d ? (d > 0 ? '+' : '') + d : '');
-  const outs = [['papa:{x:158,y:PATIO,', 'papa:{x:154,y:' + pa(154, 4) + ',', 'papa', 154, 4], ['luis:{x:173,y:PATIO-4,', 'luis:{x:166,y:' + pa(166, -4) + ',', 'luis', 166, -4], ['abuelo:{x:207,y:PATIO,', 'abuelo:{x:214,y:' + pa(214, -1) + ',', 'abuelo', 214, -1],
-    ['papa:{x:160,y:PATIO,', 'papa:{x:160,y:' + pa(160, 4) + ',', 'papa', 160, 4], ['abuelo:{x:176,y:PATIO,', 'abuelo:{x:176,y:' + pa(176) + ',', 'abuelo', 176, 0], ['mama:{x:200,y:PATIO,', 'mama:{x:200,y:' + pa(200) + ',', 'mama', 200, 0],
-    ['mueve("papa",136,PATIO)', 'mueve("papa",136,' + pa(136, 4) + ')', 'papa', 136, 4], ['mueve("papa",158,PATIO)', 'mueve("papa",154,' + pa(154, 4) + ')', 'papa', 154, 4], ['mueve("luis",230,PATIO-4)', 'mueve("luis",230,' + pa(230, -4) + ')', 'luis', 230, -4],
-    ['l.y=PATIO-4;', 'l.y=' + pa(230, -4) + ';', 'luis', 230, -4], ['mueve("luis",173,PATIO-4)', 'mueve("luis",166,' + pa(166, -4) + ')', 'luis', 166, -4], ['mueve("papa",186,PATIO)', 'mueve("papa",186,' + pa(186, 4) + ')', 'papa', 186, 4],
-    ['mueve("papa",160,PATIO)', 'mueve("papa",160,' + pa(160, 4) + ')', 'papa', 160, 4], ['mueve("mama",198,PATIO)', 'mueve("mama",198,' + pa(198) + ')', 'mama', 198, 0], ['mueve("mama",170,PATIO)', 'mueve("mama",170,' + pa(170) + ')', 'mama', 170, 0],
-    ['p.x=158;p.y=PATIO+8;', 'p.x=158;p.y=' + pa(158, 8) + ';', 'luis', 158, 8]];
-  mv('*', 'ao.x=207', 'ao.x=214', 'acts.abuelo31: abuelo at the window 7 px right of the old, so that the hint hand at the right answer card stays off his face', [['abuelo', [207, OLD.PATIO], [214, PA(214) - 1]]]);
-  const OLDX = { 154: 158, 166: 173, 214: 207 };
-  for (const [src, to, who, x, d] of outs) { const od = who === 'papa' || who === 'abuelo' ? 0 : d, ox = (who === 'papa' && x === 154) || (who === 'luis' && x === 166) || (who === 'abuelo' && x === 214) ? OLDX[x] : x; mv('*', src, to, 'whoever stands outside the window: feet at PA (the old PATIO' + (od ? (od > 0 ? ' + ' : ' - ') + Math.abs(od) : '') + ') at the old x, so that their head and shoulders show through the window as in the old picture' + (ox !== x ? '; ' + (who === 'papa' ? 'papá 4 px left of the old (154 for 158)' : who === 'abuelo' ? 'abuelo 7 px right of the old (214 for 207)' : 'Luis 7 px left of the old (166 for 173)') + ', so that the hint hand at the right answer card (over the window, its glow inside the view) stays off their faces' : '') + (who === 'papa' ? '; papá 4 rows lower (PA + 4), so that the hint frames of the answer cards stay off his head' : who === 'abuelo' ? '; abuelo 1 row higher (PA - 1), so that the hint frames of the tray\'s things stay off his face' : ''), [[who, [ox, OLD.PATIO + od], [x, PA(x) + d]]]); }
+  const outs = [['papa:{x:158,y:PATIO,', 'papa:{x:154,y:' + pa(154) + ',', 'papa', 154, 0], ['luis:{x:173,y:PATIO-4,', 'luis:{x:166,y:' + pa(166, -4) + ',', 'luis', 166, -4], ['abuelo:{x:207,y:PATIO,', 'abuelo:{x:207,y:' + pa(207, -9) + ',', 'abuelo', 207, -9],
+    ['papa:{x:160,y:PATIO,', 'papa:{x:160,y:' + pa(160) + ',', 'papa', 160, 0], ['abuelo:{x:176,y:PATIO,', 'abuelo:{x:176,y:' + pa(176) + ',', 'abuelo', 176, 0], ['mama:{x:200,y:PATIO,', 'mama:{x:200,y:' + pa(200, -4) + ',', 'mama', 200, -4],
+    ['mueve("papa",136,PATIO)', 'mueve("papa",136,' + pa(136) + ')', 'papa', 136, 0], ['mueve("papa",158,PATIO)', 'mueve("papa",154,' + pa(154) + ')', 'papa', 154, 0], ['mueve("luis",230,PATIO-4)', 'mueve("luis",230,' + pa(230, -4) + ')', 'luis', 230, -4],
+    ['l.y=PATIO-4;', 'l.y=' + pa(230, -4) + ';', 'luis', 230, -4], ['mueve("luis",173,PATIO-4)', 'mueve("luis",166,' + pa(166, -4) + ')', 'luis', 166, -4], ['mueve("papa",186,PATIO)', 'mueve("papa",186,' + pa(186) + ')', 'papa', 186, 0],
+    ['mueve("papa",160,PATIO)', 'mueve("papa",160,' + pa(160) + ')', 'papa', 160, 0], ['mueve("mama",198,PATIO)', 'mueve("mama",198,' + pa(198) + ')', 'mama', 198, 0], ['mueve("mama",170,PATIO)', 'mueve("mama",170,' + pa(170) + ')', 'mama', 170, 0],
+    ['p.x=158;p.y=PATIO+8;', 'p.x=158;p.y=' + pa(158, 2) + ';', 'luis', 158, 2]];
+  // round 2: abuelo at the window at his old x (207): the people outside stand lower than round 1's, the answer cards' hint hand is clear of his face, and at 214 the view's right edge cut him
+  const OLDX = { 154: 158, 166: 173 };
+  for (const [src, to, who, x, d] of outs) { const od = who === 'papa' || who === 'abuelo' || who === 'mama' ? 0 : who === 'luis' && x === 158 ? 8 : d, ox = (who === 'papa' && x === 154) || (who === 'luis' && x === 166) ? OLDX[x] : x; mv('*', src, to, 'whoever stands outside the window: feet at PA (the old PATIO' + (od ? (od > 0 ? ' + ' : ' - ') + Math.abs(od) : '') + ') at the old x, so that their head and shoulders show through the window as in the old picture' + (ox !== x ? '; ' + (who === 'papa' ? 'papá 4 px left of the old (154 for 158)' : who === 'abuelo' ? 'abuelo 7 px right of the old (214 for 207)' : 'Luis 7 px left of the old (166 for 173)') + ', so that the hint hand at the right answer card (over the window, its glow inside the view) stays off their faces' : '') + (who === 'mama' && d ? '; mamá 4 rows higher at the counter\'s right end (round 2), where the children\'s cups stand in front of her: as much of her seen as through the old window' : '') + (who === 'luis' && x === 158 ? '; Luis peeking in at the sink 6 rows higher than the old PATIO + 8 (round 2): his head over the sill, 2 px inside the window' : '') + (who === 'papa' ? '' : who === 'abuelo' ? (x === 207 ? '; abuelo at 207 9 rows higher (PA - 9, round 2): the hint hand at the right answer card over his face, the hint frames of the tray\'s things under it' : '; abuelo 1 row higher (PA - 1), so that the hint frames of the tray\'s things stay off his face') : ''), [[who, [ox, OLD.PATIO + od], [x, PA(x) + d]]]); }
   // things on the counter: on its top (CT) at the old x
   const ctThings = [['{id:"red",k:"red",v:4,x:142,y:ENC+10,', 142, 'red'], ['{id:"jarra",k:"jarra",v:3,x:156,y:ENC+10,', 156, 'jarra'], ['{id:"v_rojo",k:"vaso",v:"rojo",x:170,y:ENC+10,', 170, 'v_rojo'], ['{id:"v_azul",k:"vaso",v:"azul",x:180,y:ENC+10,', 180, 'v_azul'],
     ['{id:"v_verde",k:"vaso",v:"verde",x:191,y:ENC+10,', 191, 'v_verde'], ['{id:"v_amarillo",k:"vaso",v:"amarillo",x:201,y:ENC+10,', 201, 'v_amarillo']];
@@ -525,7 +590,7 @@ function make(G, runs) {
   };
 
   /* views */
-  const views = { wide: { zoom: 1, x0: VX0, world: floorW(VX0 + 98, 150), region: null, old: [22, 0, 196, 216], why: 'the old window moved 6 px right (x0 28 for 22): so that the hint frame of every thing on the counter\'s right end (the cups at 201) is inside the view, and the fridge\'s side runs off the left edge', what: 'the kitchen\'s corner: the fridge at the left, the counter with the sink and the window at the right, the stool in front' } };
+  const views = { wide: { zoom: 1, x0: VX0, world: floorW(VX0 + 98, 150), region: null, old: [22, 0, 196, 216], why: 'the old window moved 6 px right (x0 28 for 22): so that the hint frame of every thing on the counter\'s right end (the cups at 201) is inside the view; the fridge stands whole inside it (round 2)', what: 'the kitchen\'s corner: the fridge at the left, the counter with the sink and the window at the right, the stool in front' } };
 
   /* the review and level pictures */
   const pic = (cx, cy, zoom, what) => { const crop = zoom === 1 ? [Math.max(0, Math.min(44, R(cx - 98))), Math.max(0, Math.min(112, R(cy - 52))), 196, 104] : [Math.max(0, Math.min(142, R(cx - 49))), Math.max(0, Math.min(164, R(cy - 26))), 98, 52]; return { screen: [cx, cy], zoom, crop, what }; };
@@ -549,7 +614,7 @@ function make(G, runs) {
       let at = [p.x, p.y], on = 'floor', z = 0;
       if (isCosa && p.y >= 110 && p.y <= 130) { const nx = p.extra ? ({ 182: 180, 194: 190, 206: 201 }[p.x] || p.x) : p.x; at = [nx, C.CT(nx) + p.y - (OLD.ENC + 10)]; on = 'counter'; z = F.CZ; }
       else if (isCosa && p.y >= 94 && p.y <= 102) { at = [p.x, C.SL(p.x) + p.y - OLD.SILL]; on = 'sill'; z = F.WIN.z0 - .1; }
-      else if (isOut) { at = [p.x, C.PA(p.x) + p.y - OLD.PATIO]; on = 'outside'; }
+      else if (isOut) { const id = (p.uses.map(u => (u.at.match(/gente\.(\w+)$/) || [])[1]).find(Boolean)), hx = id ? hxOf(id, p.x, p.y - OLD.PATIO) : null, nx = hx && hx[1] != null ? hx[1] : p.x; at = [nx, C.PA(nx) + p.y - OLD.PATIO + (hx ? hx[2] : 0)]; on = 'outside'; }   // with the moves' own offsets (HXS)
       e.to = { [on]: on === 'outside' ? null : W4(E.atZ(at[0], at[1] - 1, z)) }; e.new = at; if (at[1] !== p.y || at[0] !== p.x) { e.moved = true; e.why = on === 'counter' ? 'on the counter: its row CT(x) + (y - ' + (OLD.ENC + 10) + ')' + (at[0] !== p.x ? '; three of the row of cups 2 to 5 px left (180, 190, 201 for 182, 194, 206; 170 stays), so that the last one\'s hint frame is inside the view and each stands apart' : '') : on === 'sill' ? 'on the sill: SL(x) + (y - ' + OLD.SILL + ')' : 'outside the window: PA(x) + (y - ' + OLD.PATIO + ')'; }
       e.what = on === 'floor' ? 'a place (x, y): the floor under (x, y - 1); the same screen place' : 'a place ' + on + (e.moved ? ' (moved: why)' : '');
     }
@@ -633,8 +698,8 @@ function DESIGN_PICS(pic, C) {
 }
 function LAYOUT(F, C) {
   return {
-    what: 'La cocina\'s room (cocina-kit.js), cut open as La sala: of its four walls the two far ones stand (the left one on x = 0, the back one on y = 0), cut at ' + 3.2 + ' with the plain dark backdrop above; the checker floor runs off the picture. Along the back wall from the corner, the counter (the kit\'s cupboards and white top) to past the right edge, the sink set into it near the corner, its tap at the wall; over it the big window (the kit\'s, view "patio": sky and a cloud, the yard\'s cream wall, the hedge), its sill a ledge. Against the left wall, a little way from the corner, the big fridge, its front looking +x, its door hinged on its far edge; the stool on the floor in front, where the frog stands',
-    why: 'the brief and page 11 decision 9: the set stands on the world\'s axes, nothing square to the camera; the kit fixes the room\'s plan (the corner at (0, 0), the walls on its axes). The old picture had the fridge, the counter and the window side by side on one flat wall: on a world axis a wall falls half a row a pixel, so the fridge (left of the counter, standing as low as the counter\'s foot) cannot share the counter\'s wall. The fridge stands on the left wall, the counter and the window on the back wall: both feet stay near their old rows where people stand at them, and the counter\'s top passes its old row (122) at x 170, the middle of what stands on it; to either side it falls half a row a pixel (CT: whatever stands on it moves to that row at its old x, as El banco\'s sitters to SY). The fridge is as high as the wall (3.15, a little under its cut at 3.2: 1.4 times abuela, the old one was 2.3 times her); its two shelves hold the four old places side by side as the old, moved down to where they show whole through its opening (HUECO), above the heads of whoever stands before it. The window is as wide as the old one, from the sill just over the counter to just under the wall\'s cut: what happens outside shows through it, the yard wall\'s top on its slope (MU), whoever stands outside with their feet on PA',
+    what: 'La cocina\'s room (cocina-kit.js), cut open as La sala: of its four walls the two far ones stand (the left one on x = 0, the back one on y = 0), cut at ' + F.WALL_H + ' (round 2: higher than the kit\'s 3.2, this set\'s own override round its call of cocinaBuild, for the tall window) with the plain dark backdrop above; the checker floor runs off the picture. Along the back wall from the corner, the counter (the kit\'s cupboards and white top) to past the right edge, the sink set into it near the corner, its tap at the wall; over it the big window (the kit\'s, view "patio": sky and a cloud, the yard\'s cream wall, the hedge), its frame standing out of the wall, the reveal the wall\'s thickness, its sill a ledge. Against the left wall, a little way from the corner, the fridge, its front looking +x, its door hinged on its far edge (open, it stands out into the room at the fridge\'s side, its inner face seen); the stool on the floor in front, where the frog stands',
+    why: 'the brief and page 11 decision 9: the set stands on the world\'s axes, nothing square to the camera; the kit fixes the room\'s plan (the corner at (0, 0), the walls on its axes). The old picture had the fridge, the counter and the window side by side on one flat wall: on a world axis a wall falls half a row a pixel, so the fridge (left of the counter, standing as low as the counter\'s foot) cannot share the counter\'s wall. The fridge stands on the left wall, the counter and the window on the back wall: both feet stay near their old rows where people stand at them, and the counter\'s top passes its old row (122) at x 170, the middle of what stands on it; to either side it falls half a row a pixel (CT: whatever stands on it moves to that row at its old x, as El banco\'s sitters to SY). The fridge is 3.15 high (1.4 times abuela, the old one was 2.3 times her) and 2.65 wide, so that it stands whole in the view, its door open too; its two shelves hold the four old places side by side as the old, moved down to where they show whole through its opening (HUECO), above the heads of whoever stands before it. The window is as wide as the old one and as tall (62 rows where the family stands outside: z ' + F.WIN.z0 + ' to ' + F.WIN.z1 + '), its glass\'s bottom on the old sill\'s row at x 154: whoever stands outside shows through it as through the old one, cut at the chest by the sill, the sky and the yard\'s wall round their head; the yard wall\'s top on its slope (MU), whoever stands outside with their feet on PA',
     numbers: { CT: C.ct, SL: C.sl, MU: C.mu, PA: C.pa, CB: C.cb, VT: C.vt, VB: C.vb },
   };
 }
@@ -732,12 +797,16 @@ function codeEntries(MOVES, DROPPED) {
 
 /* ---------- the sheet's rule for a world written in old positions (what nevera-preview.html PREVIEW.remapW does; the port has its moves and
    the story files' remap) ---------- */
+// whoever stands outside: [old x, new x, rows (on PA + the old offset), the old offset this holds for (any if none)] (moves: the same)
+// (null: any x, the same x)
+const HXS = { abuelo: [[207, 207, -9], [null, null, -1]], papa: [[158, 154, 0], [null, null, 0]], luis: [[173, 166, 0], [158, 158, -6, 8]], mama: [[200, 200, -4]] };
+const hxOf = (id, x, off) => (HXS[id] || []).find(h => (h[0] == null || x === h[0]) && (h[3] == null || off === h[3]));
 function remapW(sh, w0, story) {
   const w = JSON.parse(JSON.stringify(w0)), N = sh.layout.numbers, f = c => x => Math.round(c + x / 2), CT = f(N.CT), SL = f(N.SL), PA = f(N.PA), CB = f(N.CB);
   const ENC = OLD.ENC, top = sh.points.nevera.top, done = new Set();
   // the story file's own positions first (the host passes them through the sheet's remap)
   if (story) for (const e of sh.remap) if (e.moved && e.kind === 'point' && e.uses.some(u => u.startsWith(story + '.json'))) for (const o of (w.cosas || [])) if (o && !done.has(o) && Math.round(o.x) === e.old[0] && Math.round(o.y) === e.old[1]) { o.x = e.new[0]; o.y = e.new[1]; done.add(o); }
-  for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.fuera) { p.y = PA(Math.round(p.x)) + (p.y - OLD.PATIO) + 0; const HX = { abuelo: [207, 214, -1], papa: [158, 154, 4], luis: [173, 166, 0] }[id]; if (HX && Math.round(p.x) === HX[0]) { p.x = HX[1]; p.y = PA(HX[1]) + (w0.gente[id].y - OLD.PATIO); } if (HX) p.y += HX[2]; }
+  for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.fuera) { p.y = PA(Math.round(p.x)) + (p.y - OLD.PATIO) + 0; const HX = hxOf(id, Math.round(p.x), Math.round(w0.gente[id].y) - OLD.PATIO); if (HX) { if (HX[1] != null) p.x = HX[1]; p.y = PA(Math.round(p.x)) + (w0.gente[id].y - OLD.PATIO) + HX[2]; } }
   const named = {}; for (const m of sh.moves) for (const q of m.places || []) if (/^(carta_|v_)/.test(q.who)) named[q.who + '@' + q.old.join(',')] = q.new;
   for (const m of sh.moves) for (const q of m.places || []) if (q.who === 'abuela') { const p = (w.gente || {}).abuela; if (p && Math.round(p.x) === q.old[0] && Math.round(p.y) === q.old[1]) { p.x = q.new[0]; p.y = q.new[1]; } }
   for (const o of w.cosas || []) { if (!o || o.x == null || done.has(o)) continue; const x = Math.round(o.x), nm = named[o.id + '@' + Math.round(o.x) + ',' + Math.round(o.y)]; if (nm) { o.x = nm[0]; o.y = nm[1]; continue; }
@@ -822,6 +891,15 @@ function check(sh, G, runs) {
         if (ho[K] !== hn[K]) P.push('hops: ' + r.story.id + ' ' + r.plan + ' ' + o[i].path + ': the frog\'s walk ' + key + ' took ' + ho[K] + ' hops, the port\'s ' + hn[K]); } });
     sh.hopsAll = [...all.values()]; sh.hops = sh.hopsAll.filter(h => h.old !== h.new);
     notes.push('hops: the frog\'s ' + nW + ' walks between steps in the ' + runs.length + ' runs, recorded and the port\'s, each the old number of hops (' + all.size + ' distinct walks; ' + sh.hops.length + ' changed)'); }
+  /* round 2: every walk of the frog, acts included: the old page and the port each played (the same machine, seed and clock), every call of
+     juego.js hopTo recorded in order; walk by walk the port's takes the old number of hops */
+  { let n = 0, bad = 0; const res = [];
+    runs.forEach((r, ri) => { const o = G.OLDHOPS[ri] || [], p = NEW[ri].hops || [];
+      if (o.length !== p.length) { P.push('walks: ' + r.story.id + ' ' + r.plan + ': the old page made ' + o.length + ' walks, the port ' + p.length); bad++; }
+      for (let i = 0; i < Math.min(o.length, p.length); i++) { n++; if (o[i][4] !== p[i][4]) { bad++; if (res.length < 30) res.push(r.story.id + ' ' + r.plan + ' walk ' + (i + 1) + ': old ' + JSON.stringify(o[i]) + ' port ' + JSON.stringify(p[i])); } } });
+    for (const l of res) P.push('walks: ' + l + ' ([from x, from y, to x, to y, hops]: the hops differ)');
+    sh.checks.walks = { checked: n, differ: bad };
+    notes.push('walks: every walk of the frog in the ' + runs.length + ' runs (every call of hopTo, acts included), the old page and the port each played: ' + n + ' walks, ' + bad + ' with another number of hops'); }
 
   /* the set's pixels, every baked state */
   const TAGS = {}; for (const k of ALL_STATES) { const m = new Array(240 * 216).fill(null); for (const [p, list] of Object.entries(G.parts[k])) for (const i of list) m[i] = p; TAGS[k] = m; }
@@ -859,7 +937,80 @@ function check(sh, G, runs) {
     if (litBad) P.push('shadow: ' + litBad + ' floor pixels on the stool legs\' lit side (up and left, within 3 px) differ from the floor without the stool');
     notes.push('shadows of the set: ' + nCalls + ' castShadow calls over the ' + ALL_STATES.length + ' states, each with strength 1 and a radius; each casting part darkens pixels, its shadow joined to it: ' + Object.entries(pieces).map(([p, n]) => p + ' ' + n + ' px').join(', ') + '; the stool\'s legs: a contact shadow at the foot on the shadow side only (' + litN + ' floor pixels on their lit side within 3 px, every one as the floor without the stool)'); }
 
-  return checkMoments(sh, G, runs, P, { E, F, COS, T30, M, MASK, NEW, x0, VIEW, TAGS, zoneAt, pairSides, notes });
+  const C0 = { E, F, COS, T30, M, MASK, NEW, x0, VIEW, TAGS, zoneAt, pairSides, notes };
+  const out = checkMoments(sh, G, runs, P, C0);
+  checkRound2(sh, G, runs, P, C0);
+  return out;
+}
+
+/* ---------- round 2's checks (the readers' faults, each measured) ---------- */
+function checkRound2(sh, G, runs, P, C) {
+  const { E, F, x0, VIEW, notes, itemsOf, allW, planeAt, MASK } = C;
+  const rgbOf = (k, i) => [G.rgb[k][i * 3], G.rgb[k][i * 3 + 1], G.rgb[k][i * 3 + 2]], Z = k => G.zone[k];
+  /* 1. whoever stands outside is seen only through the window's opening: every pixel of them over the sill's line (the glass's bottom at their
+     column) inside the hole cut in the wall (the wall's inner face, a0..a1 by z0..z1), their head 2 px inside it all round (the sky or the
+     yard's wall round it); below the glass's bottom the sill and the wall hide them (the clip), so the counter's top never cuts them */
+  { const { a0, a1, z0, z1 } = F.WIN, wallAt = (x, y) => { const xx = (x + .5 - E.OX) / E.S * E.R2, z = (xx / E.R2 * E.SIN - (y + .5 - E.OY) / E.S) / E.COS; return [xx, z]; };
+    const inHole = (x, y) => { const [a, z] = wallAt(x, y); return a > a0 && a < a1 && z > z0 && z < z1; };
+    let nM = 0, nP = 0, out = 0, headBad = 0, minTop = 99, minGap = 99; const bad = new Map();
+    for (const [where, w, kind] of allW) { nM++; const rest = kind !== 'tick', OUTS = new Set(G.outside[keyOf(w)]);
+      for (const it of itemsOf(w, false)) { if (!(it.clip && it.person)) continue; nP++; const rs = it.bare || it.rows, top = Math.min(...rs.map(r => r[0]));
+        // at every moment: what is drawn of them is drawn only on the outside seen through the opening (the clip); at rest (a step's end, a
+        // pair picture) all of them over the sill's line inside the opening, the head 2 px inside it all round
+        if (!rest) { for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) if (OUTS.has(y * 240 + x) && !inHole(x, y)) { out++; if (!bad.has(it.id)) bad.set(it.id, where + ' at (' + x + ', ' + y + ')'); } continue; }
+        for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) { const [, z] = wallAt(x, y); if (z <= z0) continue; if (!inHole(x, y)) { out++; if (!bad.has(it.id)) bad.set(it.id, where + ' at (' + x + ', ' + y + ')'); } }
+        for (const [y, a, b] of rs) { if (y >= top + 14) continue; for (let x = a; x <= b; x++) if (!(inHole(x - 2, y) && inHole(x + 2, y) && inHole(x, y - 2))) { headBad++; if (!bad.has(it.id + ' head')) bad.set(it.id + ' head', where + ' at (' + x + ', ' + y + ')'); } }
+        { const hx = R((Math.min(...rs.filter(r => r[0] < top + 14).map(r => r[1])) + Math.max(...rs.filter(r => r[0] < top + 14).map(r => r[2]))) / 2); let yy = top; while (yy > 0 && inHole(hx, yy - 1)) yy--; minTop = Math.min(minTop, top - yy); }
+        { const fx = R(it.at[0]); let yb = 0; while (yb < 215 && (wallAt(fx, yb)[1] > z0)) yb++; minGap = Math.min(minGap, G.ROWS.counter[fx] - yb); } } }
+    for (const [k, w] of bad) P.push('outside: ' + k + ' shows outside the window\'s opening (' + w + ')');
+    notes.push('outside: at ' + nM + ' moments (every tick and step end of the ' + runs.length + ' runs, every pair picture) ' + nP + ' person-moments outside the window: what is drawn of them only through the opening (the clip: the outside seen through it); at rest (step ends, pairs) all of them over the sill\'s line inside the opening: ' + out + ' px are not, ' + headBad + ' px of a head less than 2 px inside it; the sky or the yard\'s wall over every head (' + minTop + ' rows of it at the least); the glass\'s bottom (the sill) ' + minGap + ' rows and more over the counter\'s top behind them, so the sill cuts them, not the counter'); }
+
+  /* 2b. open, the fridge reads as a fridge: its door's inner face seen (white, the racks), its handle on the free edge, the walls' thickness round
+     the opening (the rim), a white inside */
+  { const res = [];
+    for (const k of ['1.0.0.1', '1.1.0.1', '1.2.0.1']) { const m = G.marks[k], n = q => (m[q] || []).length; let s = 0, c = 0; for (let i = 0; i < 240 * 216; i++) if (Z('1.0.0.1')[i] === 'd') { s += lum(rgbOf('1.0.0.1', i)); c++; }   // the inside's white: its back and sides as no drawer hides them (1.0)
+      const L = c ? s / c : 0; res.push(k + ': inner face ' + n('door.inner') + ' px, handle ' + n('door.handle') + ', rim ' + n('rim') + ', the inside\'s mean luminance ' + r2(L));
+      if (n('door.inner') < 600) P.push('fridge: ' + k + ' the open door\'s inner face shows ' + n('door.inner') + ' px (keep 600)'); if (n('door.handle') < 12) P.push('fridge: ' + k + ' the handle shows ' + n('door.handle') + ' px (keep 12)');
+      if (n('rim') < 150) P.push('fridge: ' + k + ' the rim (the walls\' thickness) shows ' + n('rim') + ' px (keep 150)'); if (L < .6) P.push('fridge: ' + k + ' the inside is not white (mean luminance ' + r2(L) + ', keep .6)'); }
+    notes.push('fridge open (the inside\'s luminance: its back and sides, 1.0): ' + res.join('; ')); }
+
+  /* 2c, 2d. what stands on a shelf is told at a glance: its outline against the inside directly behind it, WCAG 2.0 and more (the mean for each
+     thing at each moment); its whole foot on the shelf. What stands on the fridge's top (the basket, the clear glasses) has its whole foot on it */
+  { let nT = 0, worst = 99, worstAt = '', nTop = 0, footWorst = 1; const bad = new Map();
+    for (const [where, w] of allW) { const key = keyOf(w), Zk = Z(key);
+      for (const it of itemsOf(w, false)) {
+        // the foot: the sprite's lowest row, each pixel over the surface within 2 rows under it. On a shelf, whose front edge and ends run
+        // aslant across a level foot, its middle half on it (a wide flat plate's corner may reach past the shelf's end); on the top, all of it
+        const foot = (zs, what, part) => { const last = Math.max(...it.rows.map(r => r[0])), br = it.rows.filter(r => r[0] === last), a0 = Math.min(...br.map(r => r[1])), b0 = Math.max(...br.map(r => r[2])), mx = (a0 + b0) / 2, q = (b0 - a0 + 1) / 4; let off = 0, n = 0, midOff = 0; for (const [y, a, b] of br) for (let x = a; x <= b; x++) { n++; if (![0, 1, 2].some(d => zs.includes(Zk[(y + d) * 240 + x]))) { off++; if (Math.abs(x - mx) <= q) midOff++; } }
+          footWorst = Math.min(footWorst, 1 - off / n); if (part ? midOff : off) bad.set(it.id + ' ' + what, where + ': ' + off + ' of ' + n + ' px of its foot are not on it' + (midOff ? ' (' + midOff + ' of its middle half)' : '')); };
+        if (it.kind === 'fridge') { const m = MASK[it.key]; nT++; let s = 0, c = 0;
+          for (const [dy, dx, ex, ey, r, g, b] of (m && m.edge) || []) { const x = it.at[0] + dx + ex, y = it.at[1] + dy + ey; if (x < 0 || y < 0 || x >= 240 || y >= 216 || !'de'.includes(Zk[y * 240 + x])) continue; s += wcag([r, g, b], rgbOf(key, y * 240 + x)); c++; }
+          if (c) { const mm = s / c; if (mm < worst) { worst = mm; worstAt = it.id + ' (' + where + ')'; } if (mm < 2) bad.set(it.id + ' contrast', where + ': ' + r2(mm)); }
+          foot('e', 'on its shelf', true); }
+        if (it.kind === 'top' || (it.kind === 'thing' && planeAt(key, it.at[0], it.at[1])[1] === 'fridge top')) { nTop++; foot('q', 'on the fridge\'s top'); } } }
+    for (const [k, w] of [...bad].slice(0, 30)) P.push('shelf: ' + k + ' (' + w + ')');
+    notes.push('shelves: ' + nT + ' shelf-thing-moments, each thing\'s outline against the inside behind it ' + r2(worst) + ' (WCAG mean) at the least (' + worstAt + '), its foot on its shelf (its middle half all; ' + R(footWorst * 100) + '% of a foot at the least); ' + nTop + ' moments of a thing on the fridge\'s top, its whole foot on it'); }
+
+  /* 3. the drawer and the half-open door: each state differs from its neighbour in 3% of the fridge's box and more */
+  { const res = [];
+    for (const [a, b, what] of [['1.0.0.1', '1.1.0.1', 'no drawer / the drawer shut'], ['1.1.0.1', '1.2.0.1', 'the drawer shut / pulled out'], ['0.0.0.1', '2.0.0.1', 'shut / half open']]) {
+      const bx = sh.things.nevera.box; let n = 0; for (let y = bx[1]; y < bx[1] + bx[3]; y++) for (let x = bx[0]; x < bx[0] + bx[2]; x++) { const i = y * 240 + x; if (G.rgb[a][i * 3] !== G.rgb[b][i * 3] || G.rgb[a][i * 3 + 1] !== G.rgb[b][i * 3 + 1] || G.rgb[a][i * 3 + 2] !== G.rgb[b][i * 3 + 2]) n++; }
+      const f = n / (bx[2] * bx[3]); res.push(what + ' ' + r2(f * 100) + '%'); if (f < .03) P.push('states: ' + what + ' (' + a + ', ' + b + ') differ in ' + r2(f * 100) + '% of the fridge\'s box (keep 3%)'); }
+    notes.push('fridge states: each against its neighbour, the pixels that differ in the fridge\'s box ' + JSON.stringify(sh.things.nevera.box) + ': ' + res.join(', ')); }
+
+  /* 4. the sink: the dishwater and the juice seen in the basin: WCAG 2.0 and more against the empty basin over 40 px and more */
+  { const res = [];
+    for (const [k, what] of [['0.0.a.1', 'dishwater'], ['0.0.j.1', 'juice']]) { const k0 = '0.0.0.1'; let n = 0; for (const i of G.marks[k0].basin || []) if (wcag(rgbOf(k, i), rgbOf(k0, i)) >= 2) n++;
+      res.push(what + ' ' + n + ' px'); if (n < 40) P.push('sink: the ' + what + ' stands out from the empty basin (WCAG 2.0) over ' + n + ' px (keep 40)'); }
+    notes.push('sink: the basin ' + (G.marks['0.0.0.1'].basin || []).length + ' px seen; against the empty basin by WCAG 2.0 and more: ' + res.join(', ')); }
+
+  /* 6. the counter has only its shade on its shadow side: no floor pixel within 3 px of the counter on its lit side (left of and under it: not
+     right of its end) differs from the floor without the counter */
+  { const k = '0.0.0.1', Zk = Z(k), cnt = new Set((G.parts[k].mostrador || [])), maxX = Math.max(...[...cnt].map(i => i % 240)); let n = 0, bad = 0;
+    for (const i of cnt) { const x = i % 240, y = Math.floor(i / 240); for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) { const xx = x + dx, yy = y + dy, j = yy * 240 + xx; if (xx < 0 || yy < 0 || xx >= 240 || yy >= 216 || xx > maxX - 2 || cnt.has(j) || Zk[j] !== 'f' || G.bare.zone[j] !== 'f') continue; n++;
+      if (G.rgb[k][j * 3] !== G.bare.rgb[j * 3] || G.rgb[k][j * 3 + 1] !== G.bare.rgb[j * 3 + 1] || G.rgb[k][j * 3 + 2] !== G.bare.rgb[j * 3 + 2]) bad++; } }
+    if (bad) P.push('counter: ' + bad + ' floor pixels within 3 px of the counter on its lit side differ from the floor without it');
+    notes.push('counter: ' + n + ' floor pixel-checks within 3 px of the counter on its lit side, ' + bad + ' differ from the floor without the counter (g={"bare":1})'); }
 }
 
 function checkMoments(sh, G, runs, P, C) {
@@ -957,30 +1108,30 @@ function checkMoments(sh, G, runs, P, C) {
         if (['person', 'outside', 'frog'].includes(q.it.kind) && !q.it.air && p.tot && q.tot) { n++;
           const sN = q.vis / q.tot, sO = p.vis / p.tot, fN = q.fTot ? q.fVis / q.fTot : 1, fO = p.fTot ? p.fVis / p.fTot : 1;
           { const wk = q.it.id + (q.it.clip ? ' (outside)' : ''), d = Math.min(sN - sO, (fN - fO) * 10); if (!worstBy[wk] || d < worstBy[wk][0]) worstBy[wk] = [d, R(sN * 100) + '/' + R(sO * 100) + ' face ' + R(fN * 100) + '/' + R(fO * 100) + ' ' + r.story.id + ' ' + ln.path + ' new ' + JSON.stringify([q.hid, q.by, q.face, q.fTot, q.tot, q.fdbg]) + ' old ' + JSON.stringify([p.hid, p.face, p.fTot, p.tot])]; }
-          // known, not fixed (sheet checks.notFixed): whoever stands outside the window shows less of their body than through the old window,
-          // which was 62 rows high; the kit's wall is cut at 3.2, so the new window is 40 rows high at the most, and the counter's things
-          // stand right under it; their face is seen as much as in the old picture. And a face covered by another person as in the old picture (a stack kept)
+          // known, not fixed (sheet checks.notFixed): a face covered by another person as in the old picture (a stack kept); whoever stands
+          // outside behind the frog hopping along the counter. (Round 1 also let whoever stands outside show less of their body than through the
+          // old window, whose 62 rows the kit's wall did not allow; round 2's window is as tall as the old one, and that exception is gone)
           const byPerson = h => Object.keys(h).filter(k => !/^(cosa|repisa|vuelo|nevera|cesta|canasta|encima|muro|carrito|ave)/.test(k));
           const stackOld = fN < fO && byPerson(q.hid).some(k => byPerson(p.hid).includes(k)) && fN >= fO - .05;
           if (q.it.clip && q.hid['the frog'] && (fN < fO - 1e-9 || sN < sO - .1)) { known.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + q.it.id + ' (outside) behind the frog: face ' + R(fN * 100) + '%, the old ' + R(fO * 100) + '%'); continue; }
-          if (q.it.clip && fN >= fO - 1e-9 && sN < sO - .1 && sN >= sO * .5) { known.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + q.it.id + ' (outside) seen ' + R(sN * 100) + '%, the old ' + R(sO * 100) + '%, face ' + R(fN * 100) + '%'); continue; }
           if (stackOld && sN >= sO - .1) { known.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + q.it.id + '\'s face ' + R(fN * 100) + '%, the old ' + R(fO * 100) + '%, behind ' + byPerson(q.hid).join(', ') + ' as in the old picture'); continue; }
           if (fN < fO - 1e-9 || sN < sO - .1) lows.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + q.it.id + ' seen ' + R(sN * 100) + '% (face ' + R(fN * 100) + '%), the old ' + R(sO * 100) + '% (' + R(fO * 100) + '%)' + (process.env.SEEN_BY ? ' new by ' + JSON.stringify(Object.assign({}, q.hid, q.by)) + ' old by ' + JSON.stringify(p.hid) : '')); }
         // nobody new at the edge
-        if (q.it.clip) continue; const bO = rowsBox(p.it.rows), bN = rowsBox(q.it.rows); if (!within(bO, VIEW)) continue; nE++;
+        // (round 2: whoever stands outside too)
+        const bO = rowsBox(p.it.rows), bN = rowsBox(q.it.rows); if (!within(bO, VIEW)) continue; nE++;
         if (!within([bN[0] - 3, bN[1] - 3, bN[2] + 6, bN[3] + 6], VIEW)) edges.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + q.it.id + ' ' + JSON.stringify(bN) + ' (wholly inside the old view at ' + JSON.stringify(bO) + ')'); } }); });
-    { const by = {}; for (const l of lows) { const m = l.match(/: (.+?) seen/); by[m[1]] = (by[m[1]] || 0) + 1; } if (lows.length) console.log('  seen less, by who: ' + JSON.stringify(by) + ' worst: ' + JSON.stringify(worstBy)); }
+    { const by = {}, first = {}; for (const l of lows) { const m = l.match(/: (.+?) seen/); by[m[1]] = (by[m[1]] || 0) + 1; first[m[1]] = first[m[1]] || l; } if (lows.length) console.log('  seen less, by who: ' + JSON.stringify(by) + ' first: ' + JSON.stringify(first)); }
     for (const l of [...new Set(lows)].slice(0, 40)) P.push('seen: ' + l);
     for (const l of [...new Set(edges)].slice(0, 40)) P.push('edge: ' + l + ' is not inside the view with 3 px to spare');
     { const kinds = {}; for (const k of known) { const m = k.match(/: (.+?)( \(outside\)|'s face)/); const kk = m[1] + (m[2] === ' (outside)' ? (/behind the frog/.test(k) ? ' outside, behind the frog hopping along the counter' : ' outside') : ' behind someone'); kinds[kk] = (kinds[kk] || 0) + 1; }
-      sh.checks.notFixed = Object.entries(kinds).map(([k, n]) => ({ what: k, moments: n, why: /behind the frog/.test(k) ? 'the frog hops along the counter in front of the window (sacamoneda, mandado); the window is lower over the counter than the old one (the kit\'s wall), so for the moment he passes he covers the face of whoever stands outside behind him (between his hops: no rest place)' : /outside/.test(k) ? 'the window is as high as the kit\'s wall allows (cut at 3.2: 40 rows of it, the old 62), and the counter\'s things (the jug, the plates) stand right under it, so less of the body of whoever stands outside shows; their face shows as much as in the old picture, and never less than half of what showed' : 'the old picture stacked these two people the same way (a stack kept, page 13: as the old)' }));
+      sh.checks.notFixed = Object.entries(kinds).map(([k, n]) => ({ what: k, moments: n, why: /behind the frog/.test(k) ? 'the frog hops along the counter in front of the window (sacamoneda, mandado); the counter falls half a row a pixel and stands higher than the old one at the window\'s left, so for the moment he passes he covers the face of whoever stands outside behind him (between his hops: no rest place)' : /outside/.test(k) ? 'the window is as high as the kit\'s wall allows (cut at 3.2: 40 rows of it, the old 62), and the counter\'s things (the jug, the plates) stand right under it, so less of the body of whoever stands outside shows; their face shows as much as in the old picture, and never less than half of what showed' : 'the old picture stacked these two people the same way (a stack kept, page 13: as the old)' }));
       if (known.length) notes.push('seen, as the old or not fixed: ' + sh.checks.notFixed.map(k => k.what + ' (' + k.moments + ' step ends)').join(', ')); }
     notes.push('seen: at ' + n + ' person-, outside- and frog-moments (every step\'s end of the ' + runs.length + ' runs) each seen no less than in the old picture of that moment less 10%, and their face no less at all (' + lows.length + ' less); edge: ' + nE + ' item-moments wholly inside the old view, each wholly inside the new one with 3 px to spare'); }
   /* a set thing is whole inside the view by 3 px or clearly runs off it (by 12 px or more) */
   { const res = [];
     for (const k of ALL_STATES) { const byThing = {}; for (const [p, list] of Object.entries(G.parts[k])) { const th = p === 'pared' || p === 'mostrador' ? null : p.split('.')[0]; if (!th) continue; for (const i of list) { const x = i % 240, y = Math.floor(i / 240), b = byThing[th] = byThing[th] || [1e9, 1e9, -1e9, -1e9]; b[0] = Math.min(b[0], x); b[1] = Math.min(b[1], y); b[2] = Math.max(b[2], x); b[3] = Math.max(b[3], y); } }
       for (const [th, b] of Object.entries(byThing)) { const L = b[0] - x0, Rt = x0 + 195 - b[2], B = 215 - b[3];
-        for (const [side, d, off] of [['left', L, x0 - b[0]], ['right', Rt, b[2] - (x0 + 195)], ['bottom', B, 0]]) if (d < 3 && !(off >= 12)) P.push('edge: ' + k + ' the ' + th + ' ends ' + d + ' px from the view\'s ' + side + ' edge (whole inside by 3 px, or off it by 12)');
+        for (const [side, d, off] of [['left', L, x0 - b[0]], ['right', Rt, b[2] - (x0 + 195)], ['bottom', B, 0]]) if (d < 3 && (!(off >= 12) || ['nevera', 'pila', 'banco'].includes(th))) P.push('edge: ' + k + ' the ' + th + ' ends ' + d + ' px from the view\'s ' + side + ' edge (whole inside by 3 px, or off it by 12)');
         if (k === '1.0.0.1' || k === '0.0.0.1') res.push(th + ' ' + JSON.stringify(b)); } }
     notes.push('edge: every set thing in every state whole inside the view by 3 px or off it by 12 px and more (the walls, the floor and the counter run off): ' + res.join(', ')); }
 
@@ -1051,16 +1202,20 @@ function checkAsks(sh, G, runs, P, C) {
       if (askSeen.has(sig)) return; askSeen.add(sig); askedFor.add(spot);
       const faces = facesOf(w, false), facesOld = facesOf(wo, true), items = itemsOf(w, false);
       if (w.resp) for (const k of w.resp) { const c = respBox(w, k); nC++;
-        { const f = [c[0] - 16, c[1] - 16, c[2] + 32, c[3] + 32]; cardSpare = Math.min(cardSpare, f[0] - x0, x0 + 196 - f[0] - f[2], f[1], 216 - f[1] - f[3]); if (!within([f[0] - 4, f[1] - 4, f[2] + 8, f[3] + 8], VIEW)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ': its lit frame and glow are not 4 px inside the view'); }
+        { const f = [c[0] - 16, c[1] - 16, c[2] + 32, c[3] + 32]; cardSpare = Math.min(cardSpare, f[0] - x0, x0 + 196 - f[0] - f[2], f[1], 216 - f[1] - f[3]);
+          // round 2: the cards stand 6 rows over the old row (respEn y 4), so that the hint drawn round them stays over the heads of whoever stands at the window,
+          // as the old; their lit frame (card + 4) inside the view, the soft glow beyond it may run off the top edge, as the old
+          if (!within([c[0] - 4, c[1] - 4, c[2] + 8, c[3] + 8], VIEW)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ': its lit frame is not inside the view');
+          if (!within([f[0] - 4, 0, f[2] + 8, f[3] + f[1] + 4], VIEW)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ': its glow is not 4 px inside the view at its sides and foot'); }
         const c2 = [c[0] - 2, c[1] - 2, c[2] + 4, c[3] + 4];
         for (const [bn, bb] of boardsOf(w, x0)) if (meets(c2, bb)) P.push('cards: ' + where + ' the card ' + k + ' is not 2 px clear of ' + bn);
         for (const it of items) { if (it.clip) { const n = rowsMeet(it.rows, c2); if (n && it.person) P.push('cards: ' + where + ' the card ' + k + ' covers ' + n + ' px of ' + it.id + ' (outside)'); continue; }
           if (it.kind === 'frog') { const f = frogBox(w.cq); if (meets(c, [f.x + 2, f.y + 2, f.w - 4, f.h - 3])) P.push('cards: ' + where + ' the card ' + k + ' covers the frog'); continue; }
           const n = rowsMeet(it.rows, it.person ? c2 : c); if (n) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ' covers ' + n + ' px of ' + it.id); }
-        for (const name of ['nevera.dentro', 'nevera.puerta', 'ventana', 'pila']) { const n = (G.parts[key][name] || []).filter(i => meets([i % 240, Math.floor(i / 240), 1, 1], c)).length; if (n > 3) P.push('cards: ' + where + ' the card ' + k + ' covers ' + n + ' px of ' + name); }
+        for (const name of ['nevera.dentro', 'nevera.puerta', 'pila']) { const rim = new Set(G.marks[key].rim || []), inner = new Set(G.marks[key]['door.inner'] || []); const n = (G.parts[key][name] || []).filter(i => (name !== 'nevera.dentro' || !rim.has(i)) && (name !== 'nevera.puerta' || inner.has(i)) && meets([i % 240, Math.floor(i / 240), 1, 1], c)).length;   /* round 2: the inside (not the rim, the front's edge round it) and the open door's inner face */ if (n > 3) P.push('cards: ' + where + ' the card ' + k + ' covers ' + n + ' px of ' + name); }   // round 2: the window is as tall as the old, the walls under the old cards' place: a card may cover its glass's sky and frame, never whoever stands outside (above)
         // the hint drawn round a card: its frame (box + 12) 2 px inside the view and across no head; its hand on no face
         cardHint++; const fr = [c[0] - FRAME_OUT, c[1] - FRAME_OUT, c[2] + 2 * FRAME_OUT, c[3] + 2 * FRAME_OUT];
-        if (!within(fr, [x0 + 2, 2, 192, 212])) P.push('card hint: ' + where + ' the frame round the card ' + k + ' is not 2 px inside the view');
+        if (!within([fr[0], Math.max(fr[1], 2), fr[2], fr[3] - (Math.max(fr[1], 2) - fr[1])], [x0 + 2, 2, 192, 212])) P.push('card hint: ' + where + ' the frame round the card ' + k + ' is not 2 px inside the view at its sides and foot');   // round 2: the cards at the old row: its top over the top edge, as the old
         for (const [fn, f] of faces) if (ringMeets(c, headOf(f))) P.push('card hint: ' + where + ' the frame round the card ' + k + ' crosses ' + fn.replace('face', 'head'));
         const hp = [c[0] + c[2] / 2, c[1] + c[3] - 6]; for (const [fn, f] of faces) if (handOn(hp, f)) P.push('card hint: ' + where + ' the hand at the card ' + k + ' ' + JSON.stringify(hp) + ' is on ' + fn + ' ' + JSON.stringify(f)); }
       const rb = w.resp && w.resp.includes(spot) ? respBox(w, spot) : null, b = rb || boxOf(w, spot) || (() => { const f = frogBox(w.cq); return [f.x, f.y, f.w, f.h]; })();
@@ -1068,7 +1223,7 @@ function checkAsks(sh, G, runs, P, C) {
       const fr = [b[0] - FRAME_OUT, b[1] - FRAME_OUT, b[2] + 2 * FRAME_OUT, b[3] + 2 * FRAME_OUT];
       if (!rb) { if (!within(fr, [x0 + 2, 2, 192, 212])) P.push('hint frame: ' + where + ' ' + JSON.stringify(b) + ' +- ' + FRAME_OUT + ' is not inside the view with 2 px to spare'); else worstF = Math.min(worstF, fr[0] - x0, x0 + 196 - fr[0] - fr[2], fr[1], 216 - fr[1] - fr[3]);
         const bo = boxOf(wo, spot, true) || b;
-        for (const [fn, f] of faces) if (ringMeets(b, f)) { const fo = facesOld.find(e => e[0] === fn); if (!fo || !ringMeets(bo, fo[1])) P.push('hint frame: ' + where + ' its rings cross ' + fn + ' (the old frame did not)'); else crossedOld.add(where.replace(/ (right|wrong|alternate) /, ' ') + ' ' + fn); } }
+        for (const [fn, f] of faces) if (ringMeets(b, f)) { const fo = facesOld.find(e => e[0] === fn); if (!fo || !ringMeets(bo, fo[1])) P.push('hint frame: ' + where + ' its rings ' + JSON.stringify(b) + ' +- 12 cross ' + fn + ' ' + JSON.stringify(f) + ' (the old frame did not)'); else crossedOld.add(where.replace(/ (right|wrong|alternate) /, ' ') + ' ' + fn); } }
       const hp = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : handOf(w, spot);
       if (!hp) { P.push('hand: ' + where + ' no place for the hand at ' + spot); return; }
       if (!rb) { const hr = handRects(hp); if (hr.some(q => !within(q, VIEW))) { const ho = handOf(wo, spot, true); if (!ho || handRects(ho).every(q => within(q, VIEW))) P.push('hand: ' + where + ' the hand at ' + JSON.stringify(hp) + ' is cut by the view\'s edge (the old was not)'); } }
@@ -1090,7 +1245,7 @@ function checkAsks(sh, G, runs, P, C) {
         if (n && ok < n * .8) P.push('tell: ' + where + ' ' + a.id + ' at ' + a.at + ': only ' + R(ok / n * 100) + '% of what is round it is plain counter, tile, wall, fridge, floor or sky');
         for (const b2 of tell) if (a.id < b2.id) { const nn = rowsOverlap(a.rows, b2.rows); if (!nn) continue; const ao = itemsO.find(x => x.id === a.id), bo2 = itemsO.find(x => x.id === b2.id); if (ao && bo2 && rowsOverlap(ao.rows, bo2.rows)) continue; P.push('tell: ' + where + ' ' + a.id + ' and ' + b2.id + ' overlap by ' + nn + ' px (apart in the old picture)'); } }
     }); });
-  notes.push('asks: ' + nF + ' distinct asks (for ' + [...askedFor].sort().join(', ') + '): every hint frame (box +- 12) inside the view with 2 px to spare (' + worstF + ' at the least; the fridge and the kitchen by their hint box), no frame\'s rings across a face where the old frame\'s were not' + (crossedOld.size ? ' (as the old: ' + [...crossedOld].join('; ') + ')' : '') + ', the hint hand on no face and cut by no edge where the old was not' + (handOld.size ? ' (but as the old: ' + [...handOld].join('; ') + ')' : '') + '; ' + nC + ' answer cards, each with its lit frame and glow 4 px and more inside the view (' + cardSpare + ' at the least), 2 px clear of the rounds card and of everyone\'s head and body, over no thing, the fridge\'s inside or door, the window or the sink (over the fridge\'s top in no-hay-leche, where nothing stands); at each of the ' + cardHint + ' cards the hint drawn round it: its frame 2 px inside the view, across no head, its hand on no face; ' + nTell + ' times a thing or a person a learner must find or tell apart: whole in the view, seen as much as in the old picture, the set over none, on a plain backdrop, apart where the old had them apart');
+  notes.push('asks: ' + nF + ' distinct asks (for ' + [...askedFor].sort().join(', ') + '): every hint frame (box +- 12) inside the view with 2 px to spare (' + worstF + ' at the least; the fridge and the kitchen by their hint box), no frame\'s rings across a face where the old frame\'s were not' + (crossedOld.size ? ' (as the old: ' + [...crossedOld].join('; ') + ')' : '') + ', the hint hand on no face and cut by no edge where the old was not' + (handOld.size ? ' (but as the old: ' + [...handOld].join('; ') + ')' : '') + '; ' + nC + ' answer cards, each with its lit frame inside the view (round 2: their glow over the top edge as the old, 4 px inside at its sides and foot), 2 px clear of the rounds card and of everyone\'s head and body, over no thing, the fridge\'s inside or door, the window or the sink (over the fridge\'s top in no-hay-leche, where nothing stands); at each of the ' + cardHint + ' cards the hint drawn round it: its frame 2 px inside the view at its sides and foot (its top over the top edge, as the old), across no head, its hand on no face; ' + nTell + ' times a thing or a person a learner must find or tell apart: whole in the view, seen as much as in the old picture, the set over none, on a plain backdrop, apart where the old had them apart');
 
   /* heads: nobody's face against the window's frame or bars, the fridge's edge or a cupboard's edge where the old picture kept it clear */
   { const bad = new Map(); let n = 0;
@@ -1114,7 +1269,7 @@ function checkAsks(sh, G, runs, P, C) {
   { const K0 = '0.0.0.1', Z = G.zone[K0], nO = G.outside[K0].length, nV = [...Z].filter(z => z === 'v').length; let sill = 0;
     for (let x = 0; x < 240; x++) for (let y = 0; y < 216; y++) if (Z[y * 240 + x] === 'v' && y > G.ROWS.winBottom[x] + 1) sill++;
     if (nO < 1000) P.push('window: only ' + nO + ' px of the outside show through it'); if (sill < 60) P.push('window: its sill shows ' + sill + ' px');
-    notes.push('window: ' + nO + ' px of the outside through it (the kit\'s patio: sky and a cloud, the yard\'s wall, the hedge, ' + (3.2 - 1.92).toFixed(2) + ' behind the wall), its frame and bars ' + nV + ' px standing out of the wall, its sill a ledge (' + sill + ' px)'); }
+    notes.push('window: ' + nO + ' px of the outside through it (the kit\'s patio: sky and a cloud, the yard\'s wall, the hedge, ' + 1.7 + ' behind the wall), its frame and bars ' + nV + ' px standing out of the wall, its sill a ledge (' + sill + ' px)'); }
 
   /* the preview puts everyone where the sheet's rule does, at every recorded moment; the rule puts everyone at rest where the port's play has them */
   { let nP = 0, bad = 0, nR = 0, badR = 0; const off = new Map();
@@ -1127,12 +1282,16 @@ function checkAsks(sh, G, runs, P, C) {
     notes.push('preview: at every step\'s end of the ' + runs.length + ' recorded runs (' + nP + ' places of the people, the frog and the things) nevera-preview.html puts everyone exactly where the sheet\'s rule does (' + bad + ' differ); and the rule puts each of the ' + nR + ' places at rest where the port\'s play has them (' + badR + ' differ by more than 1 px)'); }
 
   /* the review pictures */
-  { let nPic = 0; const pairDiff = [], zoom2 = [];
+  { let nPic = 0; const pairDiff = [], zoom2 = [], diffShare = [], zoom1 = [], zoomWhy = [];
     const byWord = {}; for (const ps of pairSides) (byWord[ps.w] = byWord[ps.w] || {})[ps.side] = ps;
     for (const [word, sides2] of Object.entries(byWord)) { const ws = {};
       for (const side of Object.keys(sides2)) { const ps = sides2[side], nm = deacc(word) + '.' + side, pc = sh.pictures[nm], w = pairW(ps, sh), key = keyOf(w); ws[side] = w; nPic++;
         const crop = pc.crop, mrg = pc.zoom === 2 ? 1 : 2;
-        for (const it of itemsOf(w, false)) { if (it.clip) continue; const b = rowsBox(it.rows); if (!within([b[0] - mrg, b[1] - mrg, b[2] + 2 * mrg, b[3] + 2 * mrg], crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(b) + ' is not whole with ' + mrg + ' px to spare in ' + JSON.stringify(crop)); }
+        // round 2: at zoom 2 (a close picture) a person may be cut below, as the old close pictures cut them: their head whole with 2 px to
+        // spare, or not in it; a thing whole with 1 px to spare, or not in it. At zoom 1 everything whole with 2 px to spare
+        if (pc.zoom === 2) { for (const [id, h] of headsOf(w, G.MASK)) if (meets(h, crop) && !within([h[0] - 2, h[1] - 2, h[2] + 4, h[3] + 4], crop)) P.push('pair ' + nm + ': ' + id + '\'s head ' + JSON.stringify(h) + ' is cut by the window ' + JSON.stringify(crop));
+          for (const it of itemsOf(w, false)) { if (it.clip || it.person || it.kind === 'frog') continue; const b = rowsBox(it.rows); if (meets(b, crop) && !within([b[0] - 1, b[1] - 1, b[2] + 2, b[3] + 2], crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(b) + ' is cut by the window ' + JSON.stringify(crop)); } }
+        else for (const it of itemsOf(w, false)) { if (it.clip) continue; const b = rowsBox(it.rows); if (!within([b[0] - mrg, b[1] - mrg, b[2] + 2 * mrg, b[3] + 2 * mrg], crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(b) + ' is not whole with ' + mrg + ' px to spare in ' + JSON.stringify(crop)); }
         if (pc.zoom === 2) { const inC = i => { const x = i % 240, y = Math.floor(i / 240); return x >= crop[0] && x < crop[0] + crop[2] && y >= crop[1] && y < crop[1] + crop[3]; };
           for (const [part, list] of Object.entries(G.shadowPx[key])) { const s2 = list.filter(i => G.onGround[key][i] && inC(i)).length, own = Object.entries(G.parts[key]).filter(([p]) => THING_OF(p) === THING_OF(part) || p === part).reduce((n, [, l]) => n + l.filter(inC).length, 0); if (s2 > 4 && own < 6) P.push('pair ' + nm + ': shows ' + s2 + ' px of ' + part + '\'s shadow and not ' + part); }
           zoom2.push(nm); } }
@@ -1140,14 +1299,18 @@ function checkAsks(sh, G, runs, P, C) {
       const diff = []; for (const k of new Set([...Object.keys(ws.si), ...Object.keys(ws.no)])) if (JSON.stringify(ws.si[k]) !== JSON.stringify(ws.no[k])) diff.push(k);
       if (JSON.stringify(sh.pictures[deacc(word) + '.si'].crop) !== JSON.stringify(sh.pictures[deacc(word) + '.no'].crop)) diff.push('the window');
       if (!diff.length) P.push('pair ' + word + ': the two pictures are the same');
+      { const pc = sh.pictures[deacc(word) + '.si'], n = pairDiffIn(G, deacc(word), pc.crop, x0), f = n / (pc.crop[2] * pc.crop[3]);
+        // the old picture's own share (the old cam, as cual.html showed it): where the old pair differed in less than 1.5% too (the same sprites), as the old
+        const oa = G.PAIRPX['old:' + deacc(word) + '.si'], ob = G.PAIRPX['old:' + deacc(word) + '.no']; let on = 0; for (let i = 0; i < oa.rgb.length; i += 3) if (oa.rgb[i] !== ob.rgb[i] || oa.rgb[i + 1] !== ob.rgb[i + 1] || oa.rgb[i + 2] !== ob.rgb[i + 2]) on++; const fo = on / (oa.w * oa.h);
+        diffShare.push(deacc(word) + ' ' + r2(f * 100) + '% (zoom ' + pc.zoom + '; the old ' + r2(fo * 100) + '%)'); if (f < .015 && !(pc.why && /the most of what differs/.test(pc.why))) P.push('pair ' + word + ': yes and no differ in ' + r2(f * 100) + '% of the picture (keep 1.5%)'); if (pc.why) zoomWhy.push(deacc(word) + ': ' + pc.why); if (pc.zoom === 1) zoom1.push(deacc(word) + ': ' + (pc.why || 'no why')); }
       pairDiff.push(deacc(word) + ': ' + diff.join(', ')); }
-    notes.push('pairs: ' + nPic + ' review pictures (and the ' + sh.level.length + ' level pictures, the same pictures), ' + zoom2.length + ' at zoom 2, the others at zoom 1: everything in each whole with 1 px to spare at zoom 2 (2 at zoom 1); no zoom 2 picture shows a shadow without its caster; what differs: ' + pairDiff.join('; ')); }
+    notes.push('pairs, what differs between yes and no in each picture (1.5% and more, or where no 98 x 52 window holds that, the window that holds the most; the old picture\'s share beside it): ' + diffShare.join(', ') + (zoomWhy.length ? '; ' + zoomWhy.join('; ') : '') + (zoom1.length ? '; at zoom 1: ' + zoom1.join('; ') : '')); notes.push('pairs: ' + nPic + ' review pictures (and the ' + sh.level.length + ' level pictures, the same pictures), ' + zoom2.length + ' at zoom 2, the others at zoom 1: everything in each whole with 1 px to spare at zoom 2 (2 at zoom 1); no zoom 2 picture shows a shadow without its caster; what differs: ' + pairDiff.join('; ')); }
 
   { const reached = new Set(); for (const r of runs) for (const L of r.lines) reached.add(keyOf(L.W)); for (const T of NEW) for (const t of T.ticks) reached.add(keyOf(t.W)); for (const ps of pairSides) reached.add(keyOf(pairW(ps, sh)));
     for (const b of sh.setKey.baked) if (!reached.has(b.key)) P.push('state ' + b.key + ' is baked but nothing reaches it');
     for (const k of reached) if (!sh.setKey.baked.some(b => b.key === k)) P.push('state ' + k + ' is reached but not baked');
     notes.push('states: ' + sh.setKey.baked.length + ' baked states reached (' + sh.setKey.baked.map(b => b.key).join(', ') + '; every moment, pair and level picture), of the ' + ALL_STATES.length + ' the set can bake');
     const slow = [...reached].filter(k => G.fresh[k] >= 150); for (const k of slow) P.push('bake: the first bake of ' + k + ' in a fresh page took ' + R(G.fresh[k]) + ' ms (keep under 150)');
-    console.log('  (not in the sheet, it changes from run to run) bake in headless Chrome, each reached state: the first in a fresh page ' + [...reached].sort().map(k => k + ' ' + R(G.fresh[k])).join(', ') + ' ms; again in the same page ' + [...reached].sort().map(k => R(G.ms[k].warm)).join(', ') + ' ms'); }
+    console.log('  (not in the sheet, it changes from run to run) bake in headless Chrome, each reached state: the first in a fresh page, the median of five ' + [...reached].sort().map(k => k + ' ' + R(G.fresh5[k].slice().sort((a, b) => a - b)[2])).join(', ') + ' ms (the least ' + [...reached].sort().map(k => R(G.fresh[k])).join(', ') + '); again in the same page ' + [...reached].sort().map(k => R(G.ms[k].warm)).join(', ') + ' ms'); }
   return P;
 }
