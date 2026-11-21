@@ -347,3 +347,12 @@ function cocinaOcclusion() {
     else if (hits / n > bayerAt(ix, iy)) tint(i, .74, .72, .84);
   }
 }
+
+/* ---------- added (order 37a, La mesa): the panel behind the stove ----------
+   A dark steel panel on the wall behind the stove, from the hob up to the hood's lip (K.HZ0), as wide as the stove and its hood: what rises from
+   a pot (steam, white) is seen against it (the tile band and the plaster are too pale for white: contrast under 2). Its rim a step lighter. */
+KC.guard = [66, 68, 82]; KC.guardRim = [118, 120, 136];
+function cocinaBackguard(face, a0, opts = {}) {
+  const a1 = a0 + K.STW, m = .05, z0 = K.CZ, z1 = opts.top || K.HZ0, G = kRgb(KC.guard), Rm = kRgb(KC.guardRim);
+  kBox(face, a0 - m, a1 + m, 0, .015, z0, z1, (f, p, q, sh) => f !== 'front' ? 0 : (p < a0 - m + .04 || p > a1 + m - .04 || q > z1 - .04) ? Rm : G, 'f');
+}
