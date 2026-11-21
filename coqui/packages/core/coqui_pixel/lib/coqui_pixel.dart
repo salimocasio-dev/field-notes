@@ -19,6 +19,7 @@ export 'package:coqui_pixel/src/pp_build.dart';
 export 'package:coqui_pixel/src/pp_engine.dart';
 export 'package:coqui_pixel/src/scene.dart';
 export 'package:coqui_pixel/src/scene_host.dart';
+export 'package:coqui_pixel/src/scene_sheet.dart';
 export 'package:coqui_pixel/src/sheet.dart';
 export 'package:coqui_pixel/src/signs.dart';
 export 'package:coqui_pixel/src/sprite.dart';
