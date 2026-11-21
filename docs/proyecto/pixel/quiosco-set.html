@@ -55,8 +55,8 @@ function stand() {
   });
   PZ.box(mid, (F.v0 + F.v1) / 2, 0, E.CH, (F.u1 - F.u0) / 2, (F.v1 - F.v0) / 2, WH, (s, t, z, face) => face === 'front' ? panel(s, z, (F.u1 - F.u0) / 2) : face === 'top' ? shade(TOPC, 3.4, s, t) : 0);
   for (const u of [W.uL, W.uR]) PZ.box(u, (W.v0 + W.v1) / 2, 0, E.CH, W.hw, (W.v1 - W.v0) / 2, WH, (s, t, z, face) => face === 'front' ? panel(s, z, W.hw + .06) : face === 'top' ? shade(TOPC, 3.4, s, t) : 0);
-  PZ.box(.3, -.36, E.CH, E.CH + .5, .16, .1, [176, 60, 50], (s, t, z, face) => face === 'front' && z > E.CH + .3 && Math.abs(s) < .09 ? rgb(60, 50, 50) : 0);   // the coffee pot
-  for (let k = 0; k < 3; k++) PZ.box(.62, -.36, E.CH + k * .1, E.CH + k * .1 + .08, .07, .07, [250, 250, 250]);                                                    // a stack of cups
+  PZ.box(-.8, -.36, E.CH, E.CH + .5, .16, .1, [176, 60, 50], (s, t, z, face) => face === 'front' && z > E.CH + .3 && Math.abs(s) < .09 ? rgb(60, 50, 50) : 0);   // the coffee pot
+  for (let k = 0; k < 3; k++) PZ.box(-.52, -.36, E.CH + k * .1, E.CH + k * .1 + .08, .07, .07, [250, 250, 250]);                                                    // a stack of cups
   for (const u of [W.uL - .1, W.uR + .1]) PZ.post(u, .1, E.CH, E.ROOF - .12, .06, [240, 232, 212]);                      // four posts
   /* the roof: a striped edge, a slope up to a flat top with a little ball (the booth has eight sides; from the front we see three of them) */
   const r0 = W.uL - .35, r1 = W.uR + .35, vf = .22, vb = E.BACK - .1, zt = E.ROOF + 1.0, vm = (vf + vb) / 2;
