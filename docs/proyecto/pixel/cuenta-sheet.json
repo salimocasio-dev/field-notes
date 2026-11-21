@@ -1,0 +1,807 @@
+{
+ "scene": "cuenta",
+ "made": "node docs/proyecto/pixel/cuenta-sheet-make.js, from cuenta-set.html (window.CUENTA.E) and the design of La cuenta (the orchestrator's p8-spec, section cuenta). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": -42
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 66. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the back wall at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 66 + 13 v - 22.5 z; the picture holds u from -4.62 to 4.62",
+  "spot": "a spot is a world point of the feet (z 0: the floor; z 1: the counter's top; z 0.44: a seat's top; z 0.8: the cart's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): the cup, the flans, the tub, the machine and the jar have their bottom middle on the spot; the cover (tapa) hangs: its top middle on the spot (z .5, at the cart's right side); the cart has its bottom middle on the spot (its feet) and its top surface 18 px above that. scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), 41 for a child; abuela standing (engine.js mkAbuela, 48 x 51): column 30 (her middle); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a grown-up or a child sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41; t 7 a child: 33) on (sx, sy); a small thing: see spot. Whoever sits at the table sits on the far side facing the camera: no sprite is turned (the makers draw them from the front)",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "cart": "the dessert cart is a sprite 76 x 22 with its feet (bottom middle) on carrito (carrito2 at the next table): its top surface is z 0.8, 18 px above its feet, so the things that stand on it have their spot at z 0.8 and their bottom edge on the cart's top surface (canvas row 4 of the sprite is the first row below them). The same five places at the next table are the first five shifted by (u -1.25, v +3.5)",
+  "counter": "things stand on the counter's top at z 1, v 1.2 to 1.3 (the top spans v 0.9 to 1.5); whoever serves stands behind it at v .45 and is hidden below the counter's far edge (and below the register) by the depth rule, as the set draws them",
+  "waist": "the spec says \"whole from the waist up\" and \"whole from the chest up\" without rows: the top 35 rows of a grown-up's sprite (27 of a child's) are the waist up, the top 29 (25) the chest up (a grown-up's hips are canvas rows 35 to 41, the torso's centre is row 29; the head is the top 14 rows)"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["noche"],
+    "note": "always night"
+   },
+   "guagua": {
+    "values": ["no", "lejos", "medio", "cerca"],
+    "note": "the guagua's lights in the window: none (93, 94, 95 opening), under the far lamp, under the middle lamp, under the near lamp"
+   },
+   "sillas": {
+    "values": ["abajo", "arriba"],
+    "note": "the next table's chairs on the floor, or up on the table (closing time: 95)"
+   }
+  },
+  "key": "guagua + sillas, e.g. \"no-abajo\"",
+  "baked": ["?guagua=no&sillas=abajo", "?guagua=no&sillas=arriba", "?guagua=lejos&sillas=abajo", "?guagua=lejos&sillas=arriba", "?guagua=medio&sillas=abajo", "?guagua=medio&sillas=arriba", "?guagua=cerca&sillas=abajo", "?guagua=cerca&sillas=arriba"]
+ },
+ "things": {
+  "gaveta": {
+   "set": true,
+   "uv": [-0.62, 1.42, 1, 0.02, 1.42, 1.13],
+   "world": [0.5657, 0.9899, 1, 1.0182, 1.4425, 1.13],
+   "box": [103, 59, 18, 3],
+   "what": "the register's drawer: the lower part of its front (the set draws it dark with a brass pull), from the register's left edge to its right (u -0.62 to 0.02) and from the counter's top to .13 above it (z 1 to 1.13), on the plane v 1.42 (the register's front: COUNTER.v1 - .08); a poke",
+   "quad": [
+    [0.5657, 1.4425, 1],
+    [1.0182, 0.9899, 1],
+    [1.0182, 0.9899, 1.13],
+    [0.5657, 1.4425, 1.13]
+   ]
+  },
+  "mentas": {
+   "set": true,
+   "uv": [0.09, 1.07, 1, 0.35, 1.33, 1.08],
+   "world": [0.8202, 0.5091, 1, 1.1879, 0.8768, 1.08],
+   "box": [122, 55, 8, 6],
+   "what": "the bowl of mints on the counter's top: the set's drum (u 0.22, v 1.2, radius .13, z 1 to 1.08), its bounding box; a poke"
+  },
+  "ventana": {
+   "set": true,
+   "uv": [0.25, 0, 1.5, 2, 0, 2.5],
+   "world": [0.1768, -1.4142, 1.5, 1.4142, -0.1768, 2.5],
+   "box": [126, 9, 46, 24],
+   "what": "the window on the street (the wall's hole at v 0: u 0.25 to 2, z 1.5 to 2.5), without its frame; a poke",
+   "quad": [
+    [0.1768, -0.1768, 1.5],
+    [1.4142, -1.4142, 1.5],
+    [1.4142, -1.4142, 2.5],
+    [0.1768, -0.1768, 2.5]
+   ]
+  },
+  "puerta": {
+   "set": true,
+   "uv": [2.35, 0, 0, 3.62, 0, 2.2],
+   "world": [1.6617, -2.5597, 0, 2.5597, -1.6617, 2.2],
+   "box": [181, 16, 34, 50],
+   "what": "the open door to the street (the wall's hole at v 0: u 2.35 to 3.62, z 0 to 2.2), without its frame; a poke",
+   "quad": [
+    [1.6617, -1.6617, 0],
+    [2.5597, -2.5597, 0],
+    [2.5597, -2.5597, 2.2],
+    [1.6617, -1.6617, 2.2]
+   ]
+  },
+  "flanes": "sprite",
+  "mantecado": "sprite",
+  "tapa": "sprite",
+  "copa": "sprite",
+  "cuenta": "sprite",
+  "maquina": "sprite",
+  "frasco": "sprite",
+  "mesera": "sprite",
+  "mesero": "sprite",
+  "cocinero": "sprite",
+  "abuela": "sprite",
+  "abuelo": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "senor": "sprite",
+  "senora": "sprite",
+  "joven": "sprite",
+  "mujer": "sprite",
+  "coqui": "sprite"
+ },
+ "parts": {
+  "vitrina": {
+   "set": true,
+   "uv": [-2.95, 0.94, 1, -2.15, 1.46, 1.56],
+   "world": [-1.4213, 2.185, 1, -0.4879, 3.1183, 1.56],
+   "box": [43, 43, 22, 20],
+   "what": "the glass case of desserts on the counter (not a touch key: the frog must not cover it): u -2.95 to -2.15, v 0.94 to 1.46, z 1 to 1.56"
+  },
+  "pincho": {
+   "set": true,
+   "uv": [-0.85, 1.11, 1, -0.71, 1.29, 1.3],
+   "world": [0.1838, 1.2869, 1, 0.4101, 1.5132, 1.3],
+   "box": [97, 51, 5, 10],
+   "what": "the spike of slips on the counter (not a touch key: the frog must not cover it): its base, paper and post, u -0.85 to -0.71, z 1 to 1.3"
+  }
+ },
+ "spots": {
+  "silla1": {
+   "world": [1.4248, 5.8442, 0.44],
+   "uv": [-3.125, 5.14, 0.44],
+   "screen": [39, 123],
+   "depth": 4.6714,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela's chair at the long table (the far side, left to right: abuela, abuelo, Luis, Carmen): on its seat's top, z 0.44; whoever sits is hung by the lap",
+   "sprite": "abuelaS",
+   "who": "adulto",
+   "on": "mesas",
+   "fixed": 1
+  },
+  "silla2": {
+   "world": [2.0966, 5.1725, 0.44],
+   "uv": [-2.175, 5.14, 0.44],
+   "screen": [63, 123],
+   "depth": 4.6714,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuelo's chair at the long table (the far side, left to right: abuela, abuelo, Luis, Carmen): on its seat's top, z 0.44; whoever sits is hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "mesas",
+   "fixed": 1
+  },
+  "silla3": {
+   "world": [2.7683, 4.5007, 0.44],
+   "uv": [-1.225, 5.14, 0.44],
+   "screen": [88, 123],
+   "depth": 4.6714,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis's chair at the long table (the far side, left to right: abuela, abuelo, Luis, Carmen): on its seat's top, z 0.44; whoever sits is hung by the lap",
+   "sprite": "ninoS",
+   "who": "nino",
+   "on": "mesas",
+   "fixed": 1
+  },
+  "silla4": {
+   "world": [3.4401, 3.829, 0.44],
+   "uv": [-0.275, 5.14, 0.44],
+   "screen": [113, 123],
+   "depth": 4.6714,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen's chair at the long table (the far side, left to right: abuela, abuelo, Luis, Carmen): on its seat's top, z 0.44; whoever sits is hung by the lap",
+   "sprite": "ninoS",
+   "who": "nino",
+   "on": "mesas",
+   "fixed": 1
+  },
+  "mostrador_coqui": {
+   "world": [-0.1768, 1.9445, 1],
+   "uv": [-1.5, 1.25, 1],
+   "screen": [81, 60],
+   "depth": 1.5825,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the counter's top (z 1, v 1.25), left of the register",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "mostrador"
+  },
+  "maquina": {
+   "world": [1.4001, 0.4384, 1],
+   "uv": [0.68, 1.3, 1],
+   "screen": [138, 60],
+   "depth": 1.6258,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the card machine on the counter's top: a 12 x 10 px stand-in, its bottom middle on the point",
+   "box": [132, 50, 12, 10],
+   "anchor": "bottom",
+   "on": "mostrador"
+  },
+  "frasco": {
+   "world": [1.7536, 0.0849, 1],
+   "uv": [1.18, 1.3, 1],
+   "screen": [151, 60],
+   "depth": 1.6258,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the glass jar on the counter's top: a 10 x 12 px stand-in, its bottom middle on the point",
+   "box": [146, 48, 10, 12],
+   "anchor": "bottom",
+   "on": "mostrador"
+  },
+  "caja": {
+   "world": [-0.1909, 0.2333, 0],
+   "uv": [-0.3, 0.03, 0],
+   "screen": [112, 66],
+   "depth": 0.026,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the mesera behind the register (behind the counter: seen from the waist up)",
+   "sprite": "adulto",
+   "who": "adulto",
+   "moved": {
+    "from": [-0.3, 0.45, 0],
+    "by": [0, -0.42],
+    "why": "waist-up, moments 3, 4, 7: at v .45 the register hid her from the first row of her torso (row 47 on the picture, her top 35 rows are rows 18 to 52): 92 px of her waist-up hidden. Moving her back to v .03 (against the wall) puts the waist above the register's top (u would have to move 2.9 or more, out from behind the register)"
+   }
+  },
+  "paga": {
+   "world": [3.1113, 0.4243, 0],
+   "uv": [1.9, 2.5, 0],
+   "screen": [169, 99],
+   "depth": 2.1651,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "whoever pays: in front of the register, to the right of the machine and the jar",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "fila1": {
+   "world": [4.4901, 0.601, 0],
+   "uv": [2.75, 3.6, 0],
+   "screen": [191, 113],
+   "depth": 3.1177,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the line behind the one who pays: first",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "fila2": {
+   "world": [5.7276, 1.0607, 0],
+   "uv": [3.3, 4.8, 0],
+   "screen": [206, 128],
+   "depth": 4.1569,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the line behind the one who pays: second",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "familia1": {
+   "world": [-0.2192, 3.8962, 0],
+   "uv": [-2.91, 2.6, 0],
+   "screen": [44, 100],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela standing in front of the counter (story 94 opening)",
+   "sprite": "adulto",
+   "who": "adulto",
+   "moved": {
+    "from": [-2.9, 2.6, 0],
+    "by": [-0.01, 0],
+    "why": "sprites-apart, moment 3: abuela at familia1 and Luis at familia3 were 23 px apart sideways (boxes need 24) with their feet 5 px apart up-down. The least move is u -.01 (u +.02 on familia3, or v -.49 on familia1 / +.5 on familia3, also pass)"
+   }
+  },
+  "familia3": {
+   "world": [0.7071, 3.5355, 0],
+   "uv": [-2, 3, 0],
+   "screen": [68, 105],
+   "depth": 2.5981,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis standing in front of the counter (story 94 opening)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "familia4": {
+   "world": [1.3789, 2.8638, 0],
+   "uv": [-1.05, 3, 0],
+   "screen": [93, 105],
+   "depth": 2.5981,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen standing in front of the counter (story 94 opening)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "carrito": {
+   "world": [5.3387, 3.288, 0],
+   "uv": [1.45, 6.1, 0],
+   "screen": [158, 145],
+   "depth": 5.2828,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the dessert cart beside the family's table (its middle): a sprite 76 x 22, its top (z 0.8) 18 px above its feet",
+   "box": [120, 123, 76, 22],
+   "anchor": "bottom"
+  },
+  "carrito_coqui": {
+   "world": [5.169, 4.2497, 0.8],
+   "uv": [0.65, 6.66, 0.8],
+   "screen": [137, 135],
+   "depth": 6.1677,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the cart's top (z 0.8)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "carrito",
+   "moved": {
+    "from": [0.65, 6.1, 0.8],
+    "by": [0, 0.56],
+    "why": "sprites-apart, moment 1: the frog on the cart (box 32 wide) overlapped Carmen at silla4 (24 wide) by 4 px sideways with her feet 4 px above his (needs 28 across or 12 down). Moving u to the right makes him cover the cup (copa) until u 3.37, so v: +.56 puts his feet 12 px below hers (the u alternative does not exist within 3)"
+   }
+  },
+  "copa": {
+   "world": [5.3387, 3.288, 0.8],
+   "uv": [1.45, 6.1, 0.8],
+   "screen": [158, 127],
+   "depth": 5.6828,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the frog's small cup on the cart's top: 8 x 10, bottom middle on the point",
+   "box": [154, 117, 8, 10],
+   "anchor": "bottom",
+   "on": "carrito"
+  },
+  "flanes": {
+   "world": [5.6922, 2.9345, 0.8],
+   "uv": [1.95, 6.1, 0.8],
+   "screen": [171, 127],
+   "depth": 5.6828,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the flans on the cart's top: 14 x 8, bottom middle on the point",
+   "box": [164, 119, 14, 8],
+   "anchor": "bottom",
+   "on": "carrito"
+  },
+  "mantecado": {
+   "world": [6.0811, 2.5456, 0.8],
+   "uv": [2.5, 6.1, 0.8],
+   "screen": [185, 127],
+   "depth": 5.6828,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the tub of ice cream on the cart's top: 12 x 10, bottom middle on the point",
+   "box": [179, 117, 12, 10],
+   "anchor": "bottom",
+   "on": "carrito"
+  },
+  "tapa": {
+   "world": [6.3993, 2.2274, 0.5],
+   "uv": [2.95, 6.1, 0.5],
+   "screen": [197, 134],
+   "depth": 5.5328,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the domed cover hanging at the cart's right side (z .5): 12 x 10, its top middle on the point (open point: the spec gives the point, not where it hangs from)",
+   "box": [191, 134, 12, 10],
+   "anchor": "top",
+   "on": "carrito"
+  },
+  "mesera93": {
+   "world": [5.374, 2.1213, 0],
+   "uv": [2.3, 5.3, 0],
+   "screen": [180, 135],
+   "depth": 4.5899,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the mesera behind the cart (the next row back), pushing it",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "carrito2": {
+   "world": [6.9296, 6.6468, 0],
+   "uv": [0.2, 9.6, 0],
+   "screen": [125, 191],
+   "depth": 8.3138,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the dessert cart at the next table (its middle): a sprite 76 x 22, its top (z 0.8) 18 px above its feet",
+   "box": [87, 169, 76, 22],
+   "anchor": "bottom"
+  },
+  "carrito_coqui2": {
+   "world": [6.364, 7.2125, 0.8],
+   "uv": [-0.6, 9.6, 0.8],
+   "screen": [104, 173],
+   "depth": 8.7138,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the cart's top (z 0.8)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "carrito"
+  },
+  "copa2": {
+   "world": [6.9296, 6.6468, 0.8],
+   "uv": [0.2, 9.6, 0.8],
+   "screen": [125, 173],
+   "depth": 8.7138,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the frog's small cup on the cart's top: 8 x 10, bottom middle on the point",
+   "box": [121, 163, 8, 10],
+   "anchor": "bottom",
+   "on": "carrito"
+  },
+  "flanes2": {
+   "world": [7.2832, 6.2933, 0.8],
+   "uv": [0.7, 9.6, 0.8],
+   "screen": [138, 173],
+   "depth": 8.7138,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the flans on the cart's top: 14 x 8, bottom middle on the point",
+   "box": [131, 165, 14, 8],
+   "anchor": "bottom",
+   "on": "carrito"
+  },
+  "mantecado2": {
+   "world": [7.6721, 5.9043, 0.8],
+   "uv": [1.25, 9.6, 0.8],
+   "screen": [153, 173],
+   "depth": 8.7138,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the tub of ice cream on the cart's top: 12 x 10, bottom middle on the point",
+   "box": [147, 163, 12, 10],
+   "anchor": "bottom",
+   "on": "carrito"
+  },
+  "tapa2": {
+   "world": [7.9903, 5.5861, 0.5],
+   "uv": [1.7, 9.6, 0.5],
+   "screen": [164, 180],
+   "depth": 8.5638,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the domed cover hanging at the cart's right side (z .5): 12 x 10, its top middle on the point (open point: the spec gives the point, not where it hangs from)",
+   "box": [158, 180, 12, 10],
+   "anchor": "top",
+   "on": "carrito"
+  },
+  "mesera93b": {
+   "world": [5.3387, 7.8135, 0],
+   "uv": [-1.75, 9.3, 0],
+   "screen": [75, 187],
+   "depth": 8.054,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the mesera with the cart at the next table (to its left)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "otra_mesa1": {
+   "world": [7.757, 4.5326, 0.44],
+   "uv": [2.28, 8.69, 0.44],
+   "screen": [179, 169],
+   "depth": 7.7458,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a chair of the next table (NEXT u 2.75, v 9.4; the far side, left): what FD.setTable returned for it, its seat's top z 0.44 (the spec's u NEXT.u -/+ .45, v NEXT.v - .45 - .26 worked out the way FD.setTable does, read from the set)",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "mesas",
+   "fixed": 1
+  },
+  "otra_mesa2": {
+   "world": [8.4216, 3.8679, 0.44],
+   "uv": [3.22, 8.69, 0.44],
+   "screen": [204, 169],
+   "depth": 7.7458,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a chair of the next table (NEXT u 2.75, v 9.4; the far side, right): what FD.setTable returned for it, its seat's top z 0.44 (the spec's u NEXT.u -/+ .45, v NEXT.v - .45 - .26 worked out the way FD.setTable does, read from the set)",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "mesas",
+   "fixed": 1
+  },
+  "junto_mesa": {
+   "world": [4.2073, 3.1466, 0],
+   "uv": [0.75, 5.2, 0],
+   "screen": [140, 134],
+   "depth": 4.5033,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the mesero beside the family's table (at its right end)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "cocina": {
+   "world": [-2.2557, 2.4112, 0],
+   "uv": [-3.3, 0.11, 0],
+   "screen": [34, 67],
+   "depth": 0.0953,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the cocinero in the kitchen's door (seen from the chest up at least)",
+   "sprite": "adulto",
+   "who": "adulto",
+   "moved": {
+    "from": [-3.3, 0.45, 0],
+    "by": [0, -0.34],
+    "why": "chest-up, moments 5 and 7: at v .45 the glass case (its top is row 43) hid 12 px of the cocinero's right hand and arm in the top 29 rows. v -.34 passes; the u move (-.11) would cut his sprite by 3 px at the window's left edge (x0 22)"
+   }
+  },
+  "sillas_mesera": {
+   "world": [7.7075, 5.869, 0],
+   "uv": [1.3, 9.6, 0],
+   "screen": [154, 191],
+   "depth": 8.3138,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the mesera putting the chairs up at the next table (to its left)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "umbral1": {
+   "world": [2.0294, -1.3223, 0],
+   "uv": [2.37, 0.5, 0],
+   "screen": [182, 73],
+   "depth": 0.433,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela waiting in the doorway",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "umbral2": {
+   "world": [2.687, -1.9799, 0],
+   "uv": [3.3, 0.5, 0],
+   "screen": [206, 73],
+   "depth": 0.433,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuelo waiting in the doorway",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "umbral3": {
+   "world": [2.7365, -0.6152, 0],
+   "uv": [2.37, 1.5, 0],
+   "screen": [182, 86],
+   "depth": 1.299,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis waiting in the doorway",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "umbral4": {
+   "world": [3.3941, -1.2728, 0],
+   "uv": [3.3, 1.5, 0],
+   "screen": [206, 86],
+   "depth": 1.299,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen waiting in the doorway",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "puerta_coqui": {
+   "world": [3.8537, -0.1768, 0],
+   "uv": [2.85, 2.6, 0],
+   "screen": [194, 100],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the floor just inside the door",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "sale": {
+   "world": [2.7224, -1.3081, 0],
+   "uv": [2.85, 1, 0],
+   "screen": [194, 79],
+   "depth": 0.866,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a guest going out through the door, past the family",
+   "sprite": "adulto",
+   "who": "adulto"
+  }
+ },
+ "groups": {
+  "sillas": ["silla1", "silla2", "silla3", "silla4"],
+  "otra_mesa": ["otra_mesa1", "otra_mesa2"],
+  "fila": ["paga", "fila1", "fila2"],
+  "familia": ["familia1", "familia3", "familia4"],
+  "umbral": ["umbral1", "umbral2", "umbral3", "umbral4"],
+  "carrito": ["carrito", "carrito_coqui", "copa", "flanes", "mantecado", "tapa"],
+  "carrito2": ["carrito2", "carrito_coqui2", "copa2", "flanes2", "mantecado2", "tapa2"]
+ },
+ "notes": [
+  "every number of a spot is the orchestrator's (the p8-spec, \"cuenta\"), given in (u, v, z); the counter's, the register's, the machine's, the jar's, the frog's, the table's and the next table's numbers are read from the set (E); the spots that failed a check and were moved the least distance that passes are marked \"moved\" (from, by)",
+  "silla1 to silla4 are the long table's chairs, left to right (abuela, abuelo, Luis, Carmen), read from E.SEATS; otra_mesa1 and otra_mesa2 are the next table's two chairs, worked out as FD.setTable does",
+  "carrito2, carrito_coqui2, copa2, flanes2, mantecado2 and tapa2 are the cart's places at the next table: the first six shifted by (u -1.25, v +3.5)",
+  "gaveta is the register's drawer, its box from the set's own front (the dark lower part of the register: z 1 to 1.13 at v 1.42); mentas is the bowl of mints' bounding box; ventana and puerta are the holes of the back wall (without their frames); vitrina and pincho in parts are the dessert case and the spike of slips: not touch keys, the frog must not cover them",
+  "cuenta (a slip, 8 x 10) has no spot: the spec gives it as a thing in a hand; it is a sprite carried by whoever holds it",
+  "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)"
+ ],
+ "views": {
+  "wide": {
+   "world": [2.2845, 2.2845, 0],
+   "uv": [0, 3.2308, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [93, 94, 95],
+   "holds": ["silla1", "silla2", "silla3", "silla4", "mostrador_coqui", "maquina", "frasco", "caja", "paga", "fila1", "fila2", "familia1", "familia3", "familia4", "carrito", "carrito_coqui", "copa", "flanes", "mantecado", "tapa", "mesera93", "carrito2", "carrito_coqui2", "copa2", "flanes2", "mantecado2", "tapa2", "mesera93b", "otra_mesa1", "otra_mesa2", "junto_mesa", "cocina", "sillas_mesera", "umbral1", "umbral2", "umbral3", "umbral4", "puerta_coqui", "sale"],
+   "extent": [22, 217],
+   "x0Range": [22, 22],
+   "what": "the one view of stories 93, 94 and 95: the 196 x 216 window over the 240 x 216 picture. The spec: every spot of every moment is inside it (a person with his sprite whole, a small thing with its box). x0 22 to 22 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 22 to 217). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the counter, the register and the glass case hide whoever stands behind them from the counter's top down, the table hides the lower body of whoever sits at it.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El calendario's sheet: the upright plane through the feet",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn (the things on the cart, and the frog on it, are a tie with the cart: they are drawn after it)"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "abuelo": 0.35,
+   "mesera": 0.35,
+   "mesero": 0.35,
+   "cocinero": 0.35,
+   "senor": 0.35,
+   "senora": 0.35,
+   "joven": 0.35,
+   "mujer": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El calendario's (frog .45, grown-ups .35, children .28) (open point)",
+  "none": ["silla1", "silla2", "silla3", "silla4", "mostrador_coqui", "maquina", "frasco", "carrito_coqui", "copa", "flanes", "mantecado", "tapa", "carrito_coqui2", "copa2", "flanes2", "mantecado2", "tapa2", "otra_mesa1", "otra_mesa2"],
+  "onSeat": "whoever sits at a table, stands on the counter or on the cart (z above 0) casts none: none of them is ground (a shadow cast at the floor under them would show in front of them)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 39 spots held span columns 22 to 217 (196 of the window's 196); x0 that hold them all: 22 to 22 (the one nearest 22, the window centred on the picture)"
+    ]
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 39 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the cart carrito is box [120,123,76,22], carrito2 [87,169,76,22]; the leftmost sprite column is 22 (cocina), the rightmost 217"
+    ]
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 9 spots on the seats and the counter (silla1, silla2, silla3, silla4, otra_mesa1, otra_mesa2, mostrador_coqui, maquina, frasco) are on a surface the set draws (the chairs' own places, a chair drawn alone has its seat's top at the depth of a spot at z 0.44; the counter's top z 1 part mostrador: depth within .1 of the spot's); the cart's 8 places stand on its top surface (z 0.8, canvas row 4: the cart's own ink is under each, tapa touches the cart) and the next table's five are the first five shifted by (-1.25, 3.5)",
+     "       silla1 z 0.44: the chair's own place (E.SEATS); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 5.34, the table's)",
+     "       silla2 z 0.44: the chair's own place (E.SEATS); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 5.34, the table's)",
+     "       silla3 z 0.44: the chair's own place (E.SEATS); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 5.34, the table's)",
+     "       silla4 z 0.44: the chair's own place (E.SEATS); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 5.34, the table's)",
+     "       otra_mesa1 z 0.44: the chair's own place (FD.setTable's return for the next table); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 8.41, the table's)",
+     "       otra_mesa2 z 0.44: the chair's own place (FD.setTable's return for the next table); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 8.41, the table's)",
+     "       mostrador_coqui z 1: part mostrador, depth 1.6 against the spot's 1.58 (0.02)",
+     "       maquina z 1: part mostrador, depth 1.6 against the spot's 1.63 (0.03)",
+     "       frasco z 1: part mostrador, depth 1.6 against the spot's 1.63 (0.03)"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of gaveta, mentas, ventana and puerta are inside the window [22, 218) and the picture; the drawer is the register's own front (gaveta [103,59,18,3] mostrador 54; mentas [122,55,8,6] mostrador 48; ventana [126,9,46,24] pared 1104; puerta [181,16,34,50] pared 1172, ground 528; part vitrina [43,43,22,20] mostrador 440; part pincho [97,51,5,10] pared 11, mostrador 39)"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 145 pairs in the 7 moments of the preview: no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 silla4 ~ carrito_coqui (24 across, 12 down), m2 silla2 ~ mesera93b (12 across, 64 down), m2 silla3 ~ mesera93b (13 across, 64 down), m2 silla3 ~ carrito_coqui2 (16 across, 50 down), m2 silla4 ~ carrito_coqui2 (9 across, 50 down), m3 caja ~ familia4 (19 across, 39 down), m3 mostrador_coqui ~ familia3 (13 across, 45 down), m3 mostrador_coqui ~ familia4 (12 across, 45 down), m4 paga ~ fila1 (22 across, 14 down), m4 fila1 ~ fila2 (15 across, 15 down), m5 silla1 ~ cocina (5 across, 56 down), m5 silla2 ~ mostrador_coqui (18 across, 63 down), m5 silla3 ~ mostrador_coqui (7 across, 63 down), m5 junto_mesa ~ sillas_mesera (14 across, 57 down), m6 umbral1 ~ umbral3 (0 across, 13 down), m6 umbral1 ~ paga (13 across, 26 down), m6 umbral2 ~ umbral4 (0 across, 13 down), m6 umbral3 ~ paga (13 across, 13 down), m6 paga ~ sillas_mesera (15 across, 92 down), m7 umbral1 ~ umbral3 (0 across, 13 down), m7 umbral1 ~ puerta_coqui (12 across, 27 down), m7 umbral2 ~ umbral4 (0 across, 13 down), m7 umbral2 ~ puerta_coqui (12 across, 27 down), m7 umbral3 ~ puerta_coqui (12 across, 14 down), m7 umbral4 ~ puerta_coqui (12 across, 14 down)",
+     "       closest pair in each moment (px across / px down): m1 silla4 ~ carrito_coqui 24/12 (needs 28 across or 12 down); m2 silla4 ~ carrito_coqui2 9/50 (needs 28 across or 12 down); m3 mostrador_coqui ~ familia4 12/45 (needs 28 across or 12 down); m4 fila1 ~ fila2 15/15 (needs 24 across or 12 down); m5 silla3 ~ mostrador_coqui 7/63 (needs 28 across or 12 down); m6 umbral1 ~ umbral3 0/13 (needs 24 across or 12 down); m7 umbral1 ~ umbral3 0/13 (needs 24 across or 12 down)"
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 7 moments (0 px hidden or covered by anything): m1 carrito_coqui 137,135: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 carrito_coqui2 104,173: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m7 puerta_coqui 194,100: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "heads-clear",
+    "ok": true,
+    "lines": [
+     "heads-clear: the head (the top 14 rows) of everyone who sits at a table (the family at the long table in moments 1, 2 and 5; the two guests at the next table in moment 2) is covered by nobody and hidden by nothing: m1 silla1 (abuela): head rows 87 to 100, 206 px, 0 covered, 0 hidden by the set; m1 silla2 (abuelo): head rows 86 to 99, 192 px, 0 covered, 0 hidden by the set; m1 silla3 (luis): head rows 92 to 105, 182 px, 0 covered, 0 hidden by the set; m1 silla4 (carmen): head rows 92 to 105, 244 px, 0 covered, 0 hidden by the set; m2 silla1 (abuela): head rows 87 to 100, 206 px, 0 covered, 0 hidden by the set; m2 silla2 (abuelo): head rows 86 to 99, 192 px, 0 covered, 0 hidden by the set; m2 silla3 (luis): head rows 92 to 105, 182 px, 0 covered, 0 hidden by the set; m2 silla4 (carmen): head rows 92 to 105, 244 px, 0 covered, 0 hidden by the set; m2 otra_mesa1 (senor): head rows 130 to 143, 182 px, 0 covered, 0 hidden by the set; m2 otra_mesa2 (mujer): head rows 129 to 142, 214 px, 0 covered, 0 hidden by the set; m5 silla1 (abuela): head rows 87 to 100, 206 px, 0 covered, 0 hidden by the set; m5 silla2 (abuelo): head rows 86 to 99, 192 px, 0 covered, 0 hidden by the set; m5 silla3 (luis): head rows 92 to 105, 182 px, 0 covered, 0 hidden by the set; m5 silla4 (carmen): head rows 92 to 105, 244 px, 0 covered, 0 hidden by the set"
+    ]
+   },
+   {
+    "name": "waist-up",
+    "ok": true,
+    "lines": [
+     "waist-up: the mesera is whole from the waist up (the top 35 rows of her sprite) at caja (moments 3, 4, 7) and behind the cart (moment 1 mesera93, moment 2 mesera93b): m1 mesera93 180,135: top 35 rows (81 to 115): 0 hidden by the set, 0 under a nearer sprite; m2 mesera93b 75,187: top 35 rows (133 to 167): 0 hidden by the set, 0 under a nearer sprite; m3 caja 112,66: top 35 rows (12 to 46): 0 hidden by the set, 0 under a nearer sprite; m4 caja 112,66: top 35 rows (12 to 46): 0 hidden by the set, 0 under a nearer sprite; m7 caja 112,66: top 35 rows (12 to 46): 0 hidden by the set, 0 under a nearer sprite"
+    ]
+   },
+   {
+    "name": "chest-up",
+    "ok": true,
+    "lines": [
+     "chest-up: the guests at otra_mesa1 and otra_mesa2 (moment 2) and the cocinero at cocina (moments 5, 7) are whole from the chest up (the top 29 rows) and inside the window: m2 otra_mesa1 179,169: top 29 rows: 0 hidden by the set, 0 under a nearer sprite, window cut 0; m2 otra_mesa2 204,169: top 29 rows: 0 hidden by the set, 0 under a nearer sprite, window cut 0; m5 cocina 34,67: top 29 rows: 0 hidden by the set, 0 under a nearer sprite, window cut 0; m7 cocina 34,67: top 29 rows: 0 hidden by the set, 0 under a nearer sprite, window cut 0"
+    ]
+   },
+   {
+    "name": "things-free",
+    "ok": true,
+    "lines": [
+     "things-free: the machine, the jar and the drawer are covered by nobody in moments 3, 4 and 6 (the payer's box starts at column 157, the jar's ends at column 155), and the cup, the flans, the tub and the cover are covered by nobody (the frog among them) on the cart in moments 1 and 2: m1 copa [154,117,8,10] free; m1 flanes [164,119,14,8] free; m1 mantecado [179,117,12,10] free; m1 tapa [191,134,12,10] free; m2 copa2 [121,163,8,10] free; m2 flanes2 [131,165,14,8] free; m2 mantecado2 [147,163,12,10] free; m2 tapa2 [158,180,12,10] free; m3 maquina [132,50,12,10] free; m3 frasco [146,48,10,12] free; m3 gaveta [103,59,18,3] free; m4 maquina [132,50,12,10] free; m4 frasco [146,48,10,12] free; m4 gaveta [103,59,18,3] free; m6 maquina [132,50,12,10] free; m6 frasco [146,48,10,12] free; m6 gaveta [103,59,18,3] free"
+    ]
+   },
+   {
+    "name": "frog-counter",
+    "ok": true,
+    "lines": [
+     "frog-counter: the frog at mostrador_coqui (moments 3, 4, 5, 6) covers no pixel of the dessert case [43,43,22,20] nor of the spike [97,51,5,10]: m3: the frog's columns 66 to 95 (the case ends at column 64, the spike starts at 97); m4: the frog's columns 66 to 95 (the case ends at column 64, the spike starts at 97); m5: the frog's columns 66 to 95 (the case ends at column 64, the spike starts at 97); m6: the frog's columns 66 to 95 (the case ends at column 64, the spike starts at 97)"
+    ]
+   },
+   {
+    "name": "window-lights",
+    "ok": true,
+    "lines": [
+     "window-lights: in moments 6 (guagua medio: 36 px of lights) and 7 (guagua cerca: 55 px) nobody covers the window's 89 px of lamps or the guagua's lights (the lamps and lights found by re-baking the set with the street picture marked); m6 what is drawn over the window [126,9,46,24] (1104 px): nobody; m7 what is drawn over the window [126,9,46,24] (1104 px): nobody"
+    ]
+   },
+   {
+    "name": "info-stand-ins",
+    "ok": true,
+    "lines": [
+     "info-stand-ins: not a check. m3 the mesera at caja 112,66: her top row 12, the lowest row of hers that shows is 52 (sprite row 40 of 54), the counter's far edge is row 55.2; m4 the mesera at caja 112,66: her top row 12, the lowest row of hers that shows is 52 (sprite row 40 of 54), the counter's far edge is row 55.2; m7 the mesera at caja 112,66: her top row 12, the lowest row of hers that shows is 52 (sprite row 40 of 54), the counter's far edge is row 55.2"
+    ]
+   }
+  ]
+ }
+}
