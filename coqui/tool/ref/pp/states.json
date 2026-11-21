@@ -50,5 +50,7 @@
   { "id": "patio/hora-crepusculo-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=crepusculo&door=open&gate=shut" },
   { "id": "patio/hora-noche-door-shut-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=shut&gate=shut" },
   { "id": "patio/hora-noche-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=open&gate=shut" },
-  { "id": "patio/hora-noche-door-open-gate-open", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=open&gate=open" }
+  { "id": "patio/hora-noche-door-open-gate-open", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=open&gate=open" },
+  { "id": "camino/gran-1", "kind": "set", "page": "docs/proyecto/pixel/camino-set.html", "query": "?gran=1" },
+  { "id": "camino/gran-0", "kind": "set", "page": "docs/proyecto/pixel/camino-set.html", "query": "?gran=0" }
 ]

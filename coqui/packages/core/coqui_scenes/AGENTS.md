@@ -28,9 +28,9 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's, La sala's and El
-  patio's factories make the real scenes (their sheets read first: `loadScene`); the other seven are stubs that throw
-  `UnimplementedError('not converted yet')`.
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's, La sala's, El
+  patio's and El camino's factories make the real scenes (their sheets read first: `loadScene`); the other six are stubs
+  that throw `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
 
@@ -51,7 +51,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   state of the sheet's `setKey.baked` (`{"id": "<id>/door-shut-win-shut", "kind": "set", "page": "docs/proyecto/pixel/<id>-set.html",
   "query": "?door=shut&win=shut"}`), listed in `coqui/tool/ref/pp/states.json` and made by `make.js --only <ids>`: El balcón's four
   (order 30b), La sala's five (`sala/luz-1-fotos-000` ..., order 31b) and El patio's fifteen (`patio/hora-dia-door-shut-gate-shut`
-  ..., order 32b).
+  ..., order 32b) and El camino's two (`camino/gran-1`, `camino/gran-0`, order 33b).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
@@ -148,6 +148,40 @@ the earlier ones did not, and how the port uses it, as patio-preview.html does:
   is `test/support/patio_preview_remap.dart` (the moves of the acts its story names, the story's own positions the sheet
   moved: the case's `story` and `acts`).
 
+## A park with a gate, a bench and a big tree (order 33b, El camino)
+
+camino.js is on the kit too (`class Camino extends Escena implements SetScene, SetOverSprites`). What El camino's sheet has
+that the earlier ones did not, and how the port uses it, as camino-preview.html does:
+
+- **A hint box** (`things.grande.hintBox`). The big tree's touch box runs off the picture; its `Thing` carries the sheet's
+  `hintBox` (`Thing.hintBox`, coqui_pixel), and the signs draw its hint frame and twinkle round that (`Signs.hintBoxOf`); a
+  touch still answers in its box. Any thing of any scene can carry one; no other does.
+- **`sevan`** (the sheet's `moves` at line 258, `Sheet.sevan`). At the end of story 14 everyone leaves through the arch in a
+  file: abuela, Carmen, Luis, Canelo and the frog, 3 ticks apart (`sevan.delay`), each in 4 steps to a point just inside
+  the opening and 4 more past its line (`sevan.points`), fading (al 1 - i / 8); the frog's two hops are the act's own (two
+  hop sounds, no hopTo). Canelo is drawn with his `al` (`moves` at line 84). 20 ticks; the recorded runs of
+  rapido-despacio were made with the old act: there and after they are 140 ms later, nothing else differs.
+- **`moves`** at their lines: W.respEn at the start of stories 12, 13 and 14 (the answer cards in the sky:
+  `CaminoPlaces.respEn(line)`), perroEn's x at most 188 (spots perro.7, perro.8), the cat on the bench (inicio13:
+  `points.gato_banco`), the bird on the bench (`points.ave_banco`), the cat's hint hand at its back, the frog's place at
+  the first tree (LUGAR.arbol0). The other places of the old file keep their numbers (the floor rule:
+  `CaminoPlaces.floor(line, x, y)` finds each in the sheet's `code`, a place it does not name throws). `hops` is empty: all
+  21 counts are the old ones (`camino_acts_test` checks each against the kit).
+- **`front`**: the bench (`front.parts.banco`, `sortY` 134.5) and the arch (`porton`, `sortY` 9999: after everyone) are set
+  things someone can be behind: at their entries in the list sorted by y their own pixels are drawn again inside each
+  item drawn before them, only where nearer (`Camino.front`, `frontBox`: a person, the frog, Canelo or the cat; the cat on
+  the bench takes `points.gato_banco.v`, the seat's front edge). The pixels of each part are recorded at the first bake of
+  each state, as La sala's.
+- **`talk`** as El patio's (its corner cards `tarjeta galletas` and `tarjeta guineos`); **`shadows`**: the frog's, the
+  people's, Canelo's, the cat's (on the ground, not on the bench) and the bush's (the sprite layer's prop).
+- **Remap**: a story position the sheet moved (the cat on the bench, Canelo at the first tree in d-corre), where the answer
+  cards stand in h-camino (`respEn`: the runner sends it through remap since order 33b), three counts that are no place
+  (`numbers`: W.pajaros, given back). cual-camino's `parque.no` is El patio's picture; `parque.si` is El camino's.
+- **Random draws** (`gatoarbol`: two) from the game's `Rng`, as El patio's.
+- Files: `lib/src/camino/camino_set.dart`, `camino_places.dart`, `camino.dart`. Tests: `camino_set_test`,
+  `camino_sprites_test`, `camino_preview_test`, `camino_boxes_test`, `camino_pictures_test`, `camino_acts_test`; the
+  preview's rule for moving a recorded W is `test/support/camino_preview_remap.dart`.
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its
@@ -189,16 +223,16 @@ the earlier ones did not, and how the port uses it, as patio-preview.html does:
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/ and .../patio/ for the browser set tests
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/ and .../patio/
-node tool/preview_shots.mjs [--scene balcon|sala|patio] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/ and .../camino/ for the browser set tests
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/ and .../camino/
+node tool/preview_shots.mjs [--scene balcon|sala|patio|camino] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
                                                   the scene's stories)
-COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio] flutter test tool/compare_all_test.dart   every picture of
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino] flutter test tool/compare_all_test.dart   every picture of
                                                   preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio]   bake times
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino]   bake times
                                                   (each state's first bake, then again on the same engine)
 ```
 

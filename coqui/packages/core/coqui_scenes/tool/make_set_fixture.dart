@@ -4,8 +4,9 @@
 //
 //   dart run tool/make_set_fixture.dart          (in this package) writes test/support/fixtures/set_refs.dart (El frente)
 //                                                test/support/fixtures/balcon_set_refs.dart (El balcón),
-//                                                test/support/fixtures/sala_set_refs.dart (La sala) and
-//                                                test/support/fixtures/patio_set_refs.dart (El patio)
+//                                                test/support/fixtures/sala_set_refs.dart (La sala),
+//                                                test/support/fixtures/patio_set_refs.dart (El patio) and
+//                                                test/support/fixtures/camino_set_refs.dart (El camino)
 //   dart run tool/make_set_fixture.dart --check  fails when a file is not what coqui/ref/pp/<id>/ gives
 import 'dart:convert';
 import 'dart:io';
@@ -33,6 +34,11 @@ void main(List<String> args) {
       file: 'patio_set_refs.dart',
       constant: 'patioSetRefs',
       what: "El patio's baked states",
+    ),
+    'camino': (
+      file: 'camino_set_refs.dart',
+      constant: 'caminoSetRefs',
+      what: "El camino's baked states",
     ),
   };
   var stale = 0;

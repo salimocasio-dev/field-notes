@@ -376,6 +376,16 @@ class Signs {
     return [b.x, b.y, b.w, b.h];
   }
 
+  // (sheet things.<id>.hintBox, order 33b: camino-preview.html `hb`) the frame and the twinkle of a thing are drawn round
+  // its hint box where it has one; touches use its box
+  /// The hint box of the scene's thing [k] (`Thing.hintBox`), or null when it has none.
+  List<num>? hintBoxOf(String k) {
+    for (final t in scene.cosas) {
+      if (t.id == k && t.hintBox != null) return t.hintBox;
+    }
+    return null;
+  }
+
   // juego.js: respDraw
   void respDraw(Ctx g, int a) {
     final W = _W, F = host.F, lib = host.lib;
@@ -462,9 +472,14 @@ class Signs {
     final W = _W, F = host.F, cam = host.cam;
     if (W['resp'] != null) respDraw(c, a);
     final tw = W['twinkle'];
-    if (jsTruthy(tw)) twinkle(c, bx(tw as String));
+    if (jsTruthy(tw)) {
+      twinkle(c, hintBoxOf(tw as String) ?? bx(tw));
+    }
     final sp = W['spot'];
-    if (jsTruthy(sp)) spot(c, bx(sp as String), a, scene.SW, scene.SH);
+    if (jsTruthy(sp)) {
+      final k = sp as String;
+      spot(c, respBox(k) ?? hintBoxOf(k) ?? bx(k), a, scene.SW, scene.SH);
+    }
     final fxs = (W['fx'] as List<dynamic>)
         .cast<Map<String, dynamic>>()
         .where((e) => F - (e['f0'] as num) < (e['n'] as num))

@@ -18,6 +18,7 @@ class Thing {
     this.hand,
     this.m,
     this.z = false,
+    this.hintBox,
   });
 
   String id;
@@ -39,6 +40,11 @@ class Thing {
 
   /// In front of the frog: it takes a touch before him (kit.js: `z:1`).
   bool z;
+
+  /// Where its hint frame and its twinkle are drawn, [x, y, w, h], when not round its [box] (El camino's big tree, whose
+  /// box runs off the picture: the sheet's `things.<id>.hintBox`, order 33b); null: round its box. Touches answer in
+  /// [box] either way.
+  List<num>? hintBox;
 }
 
 /// What KIT.escena() takes and returns (kit.js, function escena), and what juego.js reads from a scene (`E`).
