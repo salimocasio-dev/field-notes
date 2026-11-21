@@ -7,7 +7,7 @@
 #
 # Where the script or its Needs list leaves a value open, this file fixes it in ONE place (and the report says so):
 #   Things as act values: a thing he can touch is passed to the acts as its own key (the convention of the other scenes). `lleva114` {que}: bizcocho, regalo, flores. `foto115` {cual}: foto_3m, foto_3a, foto_7m, foto_7a.
-#       `empuja116` {a}: carmen, abuelo, or the guest's key (don_pepe, maestra, piraguero). A wrong touch (`$x`) is the thing key itself.
+#       `empuja116` {a}: carmen, abuelo, or the guest's key (pepe, maestra, piraguero). A wrong touch (`$x`) is the thing key itself.
 #   114: `cortina114` {como}: the script names the argument and not its values: "cierra" (the one use: the frog pulls the curtain shut, step 1). `suena114` {quien}: abuelo (step 3, before the ask), coqui (after the touch).
 #       `pinzas` {n} = the curtain's pegs: 3 at the start, 2 / 1 after a loss; `final114` {n} = what is left. A wrong move runs `lleva114` ok 0 started loose with the correction line (the script puts the line between the carrying and the hurrying back).
 #       Round A: touch one of three (bizcocho, regalo, flores); round B: the thing round A did not ask for, or the flowers (round A's thing is on the table: the script's "one in two in round B"). Which comes first is drawn (qa; qb the other).
@@ -16,15 +16,15 @@
 #       (the pair of round B and the photo of round A's pair that was not asked: the script's "one in three in round B"). `tests`: mes or año (the variable holds "ano", `palabras` maps it).
 #       The photos' order on the table is drawn (`reparte` into fa fb fc fd) and given to `viento115` as fotos1..fotos4 (the spots' names): the Needs list names no argument for this value (reported).
 #       Step 7: `final115` {n} is taken to hang the last two photos and bring abuelo down (no act of its own); `sopla115` in step 8 after abuela's line.
-#   116: guests: ga, gb are dealt out of don_pepe, maestra, piraguero (`reparte`: round B's is not round A's); what each does (va, vb: da or recibe) is drawn on its own. The 12 lines of the game are clips: "Don Pepe da el regalo." ... "El piragüero recibe el regalo."
+#   116: guests: ga, gb are dealt out of pepe, maestra, piraguero (`reparte`: round B's is not round A's); what each does (va, vb: da or recibe) is drawn on its own. The 12 lines of the game are clips: "Don Pepe da el regalo." ... "El piragüero recibe el regalo."
 #       and their 6 corrections ("¡No, Coquí! La maestra da el regalo."). Right: `empuja116` {a, ok 1}: a = the one who receives (carmen if the guest gives, the guest if he receives); the other claps (`aplaude`) and the star, both only when the first touch was right.
 #       Wrong: `empuja116` {a = the one touched, ok 0}, the correction, the loss, the cross; the sign's touch then runs `empuja116` ok 1 on the right one. `sorpresas` {n} = 3 at the start, 2 / 1 after a loss; `final116` {n}.
 #       `abre116` {quien, que}: que = sombrero (Carmen's hat), abanico (abuelo's fan), sombrerito (the frog's very small hat): the script names the things, not these keys.
 #       `empuja116` is used for every push, in the opening too (ok 1); the opening's openings are `abre116`. If `empuja116` opens by itself (its Needs text says "he opens it"), steps 1 to 3 would open twice (reported).
-#       Between the rounds guest A goes back to his waiting place (`llega` to espera1 / 2 / 3: don_pepe, maestra, piraguero: the order of the script's Start), so guest B has the stool's right side to himself.
+#       Between the rounds guest A goes back to his waiting place (`llega` to espera1 / 2 / 3: pepe, maestra, piraguero: the order of the script's Start), so guest B has the stool's right side to himself.
 #   Where the people stand at the start (`llega`, `ir`), from the spots of the Needs list (the scene has no default for them):
 #       114: abuela tras_mesa, luis arco, abuelo junto_banco, the frog mesa_coqui (the script's Start). 115: carmen tras_mesa2, abuela tras_mesa (beside her), abuelo junto_banco (the script says "beside the table": no such spot), luis arco,
-#       don_pepe espera1 and maestra espera2 (the script says "behind": the Needs list has no such spot), the frog mesa_coqui. 116: carmen banqueta_izq, abuelo banqueta_der (he gives across the stool), abuela tras_mesa, luis arco,
+#       pepe espera1 and maestra espera2 (the script says "behind": the Needs list has no such spot), the frog mesa_coqui. 116: carmen banqueta_izq, abuelo banqueta_der (he gives across the stool), abuela tras_mesa, luis arco,
 #       the guests espera1 to espera3, the frog mesa_coqui; at the turn abuelo goes to junto_banco, so the guest can come to banqueta_der.
 #   114, step 7: "Everybody gets down behind it" = `llega` abuela, abuelo, luis to `escondidos` (the Needs list's spot), then `final114` {n} (Carmen at the arch and the curtain, by the pegs). "Luis puts the flowers on the table" has no act (reported).
 #   `gesto` targets the script does not name: 114 step 4 "everybody stands still" = abuela, abuelo, luis (`quieto`) while the shadow comes and goes; 115 step 1 Luis counts on his fingers (`dedos`) while the frog carries the candles;
@@ -36,7 +36,7 @@ N=lambda t:{"who":"narr","text":t}
 T=lambda t:{"who":"tu","text":t}
 def D(quien,pre,t): return {"who":"narr","habla":quien,"text":pre+" dice: "+t}
 AB=lambda t:D("abuela","Abuela",t); ABO=lambda t:D("abuelo","Abuelo",t); L=lambda t:D("luis","Luis",t); CA=lambda t:D("carmen","Carmen",t)
-PE=lambda t:D("don_pepe","Don Pepe",t); MAE=lambda t:D("maestra","La maestra",t)
+PE=lambda t:D("pepe","Don Pepe",t); MAE=lambda t:D("maestra","La maestra",t)
 tw=lambda k:{"set":{"twinkle":k}}                                              # the engine's own twinkle on a thing he can touch (the script's `brilla`)
 def act(_n,**k): return dict({"act":_n},**k)
 def gesto(quien,que,**k): return act("gesto",quien=quien,que=que,**k)
@@ -61,7 +61,7 @@ for f in sorted(glob.glob("cuentos/*.json")):
     if nm in MINE or nm.startswith("z"): continue
     for cid,cl in json.load(open(f,encoding="utf-8")).get("clips",{}).items(): ex_add(cid,cl,ORD.get(nm,9999))
 def best(k): return min(EX[k],key=lambda cid:(-EX[k][cid][0],EX[k][cid][1],cid))
-DIN=set()   # ids that are put together in the story ("c116_don_pepe_da"): never renamed
+DIN=set()   # ids that are put together in the story ("c116_pepe_da"): never renamed
 def reuse(st,turnos):
     ren={}
     for cid,cl in list(st["clips"].items()):
@@ -199,7 +199,7 @@ s115={"id":"las-velas","title":"Las velas","place":"El fuerte","scene":"regalos"
  "focus_words":["vela","año","mes","¡felicidades!"],"formas_foco":{"mes":["meses"],"año":["años"],"vela":["velas","velitas"]},
  "back_again":["cumpleaños","bizcocho","feliz","bebé","¿cuántos años tienes?","tengo … años","siete","tres","¿quién?","tú","trae","falta","un momento","viento","un poco","aquí","ahora","tiene","mira","sí","no"],
  "also_heard":[],"names":nm,"palabras":{"ano":"año"},"clips":c,
- "beats":[START]+juntos(act("llega",quien="carmen",a="tras_mesa2"),act("llega",quien="abuela",a="tras_mesa"),act("llega",quien="abuelo",a="junto_banco"),act("llega",quien="luis",a="arco"),act("llega",quien="don_pepe",a="espera1"),act("llega",quien="maestra",a="espera2"),act("ir",a="mesa_coqui"))+[{"wait":500},
+ "beats":[START]+juntos(act("llega",quien="carmen",a="tras_mesa2"),act("llega",quien="abuela",a="tras_mesa"),act("llega",quien="abuelo",a="junto_banco"),act("llega",quien="luis",a="arco"),act("llega",quien="pepe",a="espera1"),act("llega",quien="maestra",a="espera2"),act("ir",a="mesa_coqui"))+[{"wait":500},
   # 1: abuela asks Carmen her age; don Pepe's line; abuela asks for the candles (signed ask on the box); the frog carries them to the cake one by one while Luis counts on his fingers
   {"dots":1},"c115_ab_feliz","c115_ca_siete","c115_pepe_felicidades",ask("caja_velas","c115_ab_velas")]+[dict(gesto("luis","dedos"),suelto=1),dict(act("velas115"),suelto=1),"c115_l_cuenta",act("ya")]+[
   # 2: abuelo takes two photos out of his envelope (no act named); his line is the signed ask on the baby's photo: the frog holds it up, abuelo hangs it; the second line is the signed ask on the girl with the ball
@@ -227,7 +227,7 @@ c.update({"c116_ab_tiene":AB("Carmen, abuelo tiene un regalo."),"c116_abo_para_t
  "c116_l_doy":L("Yo también te doy un regalo. Para ti, Carmen."),"c116_ab_luis_da":AB("Luis da. ¿Y quién recibe?"),"c116_cq_ella":T("¡Ella!"),"c116_ab_si":AB("¡Sí! Carmen recibe."),
  "c116_ab_viento":AB("¡Ay, el viento!"),"c116_ca_para_ti":CA("Coquí, este regalo es para ti."),"c116_cq_para_mi":T("¿Para mí?"),"c116_ca_si":CA("¡Sí, para ti!"),
  "c116_fin":N("Carmen recibe regalos. Y Carmen da regalos también.")})
-GUEST={"don_pepe":"Don Pepe","maestra":"La maestra","piraguero":"El piragüero"}
+GUEST={"pepe":"Don Pepe","maestra":"La maestra","piraguero":"El piragüero"}
 for g,w in GUEST.items():   # the six sentences the draw can make (3 guests x da, recibe) and the six corrections
     for v in ("da","recibe"):
         c["c116_%s_%s"%(g,v)]=AB("%s %s el regalo."%(w,v)); c["c116_no_%s_%s"%(g,v)]=AB("¡No, Coquí! %s %s el regalo."%(w,v)); DIN.update(["c116_%s_%s"%(g,v),"c116_no_%s_%s"%(g,v)])
@@ -238,8 +238,8 @@ def ronda116(s):
     g,v,p,o="g"+s,"v"+s,"p"+s,"o"+s
     pre=[{"reparte":["ga","gb"],"options":list(GUEST)}] if s=="a" else []
     pre+=[{"draw":v,"options":["da","recibe"]},{"calc":p,"cond":v+"=da","then":"carmen","else":"$"+g},{"calc":o,"cond":v+"=da","then":"$"+g,"else":"carmen"}]
-    if s=="a":   # where guest A goes back to wait: espera1 (don_pepe), espera2 (maestra), espera3 (piraguero)
-        pre+=[{"calc":"ea","cond":"ga=don_pepe","then":"espera1","else":"espera3"},{"calc":"ea","cond":"ga=maestra","then":"espera2","else":"$ea"}]
+    if s=="a":   # where guest A goes back to wait: espera1 (pepe), espera2 (maestra), espera3 (piraguero)
+        pre+=[{"calc":"ea","cond":"ga=pepe","then":"espera1","else":"espera3"},{"calc":"ea","cond":"ga=maestra","then":"espera2","else":"$ea"}]
     else: pre=[act("llega",quien="$ga",a="$ea")]+pre
     pre+=[act("pareja116",quien="$"+g)]+juntos(gesto("carmen","manos"),gesto("$"+g,"manos"),gesto("carmen","mira",a="abuela"),gesto("$"+g,"mira",a="abuela"))
     return pre+[{"decide":"do","options":["carmen","$"+g],"pick":"$"+p,"tests":"$"+v,"lock":True,"lead":[],"line":"c116_$%s_$%s"%(g,v),
@@ -252,7 +252,7 @@ s116={"id":"para-ti","title":"Para ti","place":"El fuerte","scene":"regalos","ne
  "back_again":["regalo","cumpleaños","sorpresa","sombrero","ella","él","tiene","tengo","¿quién?","viento","para mí","también","ahora","bonito","gracias","sí","no"],
  "also_heard":[],"names":nm,"palabras":{},"clips":c,
  "beats":[START,act("sorpresas",n=3)]+juntos(act("llega",quien="carmen",a="banqueta_izq"),act("llega",quien="abuelo",a="banqueta_der"),act("llega",quien="abuela",a="tras_mesa"),act("llega",quien="luis",a="arco"),
-   act("llega",quien="don_pepe",a="espera1"),act("llega",quien="maestra",a="espera2"),act("llega",quien="piraguero",a="espera3"),act("ir",a="mesa_coqui"))+[{"wait":500},
+   act("llega",quien="pepe",a="espera1"),act("llega",quien="maestra",a="espera2"),act("llega",quien="piraguero",a="espera3"),act("ir",a="mesa_coqui"))+[{"wait":500},
   # 1: abuela says abuelo has a present; abuelo puts his box on the stool (no act named); his line is the signed ask on Carmen: the frog pushes the box across to her
   {"dots":1},"c116_ab_tiene",ask("carmen","c116_abo_para_ti",after=[act("empuja116",a="carmen",ok=1)]),"c116_ab_da",
   # 2: Carmen opens it: a straw hat; she puts a small thing on the stool (no act named); her line is the signed ask on abuelo: the frog pushes it across; he opens it: a paper fan
@@ -263,10 +263,10 @@ s116={"id":"para-ti","title":"Para ti","place":"El fuerte","scene":"regalos","ne
   {"dots":4},act("etiquetas116"),"c116_ab_viento",act("llega",quien="abuelo",a="junto_banco"),CARD,{"wait":400},
   # 5: A. 6: B (another guest; the second packet). The guest and what he does: drawn afresh each round
   {"dots":5}]+ronda116("a")+[{"dots":6}]+ronda116("b"),
- "final":[{"dots":7},baja3(lambda n:act("final116",n=n))]+juntos(*[gesto(q,"mira",a="coqui") for q in ("abuela","abuelo","luis","carmen","don_pepe","maestra","piraguero")])+[   # 7: one packet left; abuela looks up at the frog and everybody looks at him; the torn papers by the stool, by what was lost
+ "final":[{"dots":7},baja3(lambda n:act("final116",n=n))]+juntos(*[gesto(q,"mira",a="coqui") for q in ("abuela","abuelo","luis","carmen","pepe","maestra","piraguero")])+[   # 7: one packet left; abuela looks up at the frog and everybody looks at him; the torn papers by the stool, by what was lost
   {"dots":8},"c116_ca_para_ti","c116_cq_para_mi",act("abre116",quien="coqui",que="sombrerito"),"c116_ca_si","c116_fin",act("fin")],   # 8: Carmen puts the last packet on the stool in front of the frog (no act named); a speaking turn (para mí); he opens it: a very small straw hat
  "leer":["c116_ab_tiene","c116_abo_para_ti","c116_ab_da","c116_ca_sombrero","c116_ca_tengo","c116_ab_ahora","c116_l_doy","c116_ab_luis_da","c116_cq_ella","c116_ab_si","c116_ab_viento",
-  "c116_don_pepe_da","c116_no_don_pepe_da","c116_maestra_recibe","c116_ca_para_ti","c116_cq_para_mi","c116_ca_si","c116_fin"]}
+  "c116_pepe_da","c116_no_pepe_da","c116_maestra_recibe","c116_ca_para_ti","c116_cq_para_mi","c116_ca_si","c116_fin"]}
 s116=reuse(s116,{"c116_cq_ella":TG(("ella",["ella","carmen"])),"c116_cq_para_mi":TG(("para mí",["para mí","¿para mí?"]))})
 json.dump(s116,open("cuentos/para-ti.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
