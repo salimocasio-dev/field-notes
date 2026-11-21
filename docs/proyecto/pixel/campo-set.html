@@ -1,0 +1,234 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El campo: the open field of the park (place 2, El parque, its second scene), as a set on the Pixel Plays engine (order 34a).
+   The same park as El camino: the same lawn (El frente's GRASS ramp, calm), the same day sky, hills, sun, light and scale (S 26, the engine's
+   30 degree camera, shadows to screen right), the same origin, the same kind of tree.
+   The layout stands on the world's axes, every place on the ground at its old screen point (campo-sheet.json rules.floor):
+     the lake: its shore runs along y (up to the right on the screen) at x = BANK, the water on its near side (+x, down to the right), so a
+       corner of it fills the picture's lower right, as the old pond did; its surface lies WDEPTH under the lawn, so the lawn ends in a low bank
+       of earth all along the shore (set-kit.js waterPixel: the park's water, made once for El lago too);
+     the reeds: a bed of them along the shore (along y), standing at the water's edge and in the shallows, as the old row of reeds;
+     the tree: one round tree with a low fork, its foot at the old tree's foot, its crown where the old crown was (the same kind of tree as
+       El camino's small trees, as big as the old one); round its foot a patch of bare, trodden earth that reaches Canelo's old spot (SITIO).
+   The state comes from the address; these become the builder's setKey:
+     (none: every old state of the scene is one baked set; the basket, the balls, the flower, the frog's puddle and the darkness of acts.esconde16
+      are the sprite layer's, as campo-sheet.json setKey says)
+     t      = wind time in seconds (0 for the reference); ox, oy = the origin (defaults: El camino's)
+     water  = lake | still   a look candidate, not a state: still draws the surface with no ripples and no glints (see the report)
+   It draws one frame: the baked set, then drawLeaves(t), drawTufts(t) and the water's glints (drawGlints(t)). No characters. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = {
+  water: pick('water', ['lake', 'still'], 'lake'),
+  t: +(Q.get('t') || 0),
+};
+window.PP_SCENE = { w: 240, h: 216, s: 26, originX: +(Q.get('ox') || 0), originY: +(Q.get('oy') || 4), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script>
+'use strict';
+/* ---------- the plan: every thing placed from its old screen point (the ground under it) ----------
+   With origin (0, 4) a ground point (x, y) is on the screen at (120 + 18.385 (x - y), 112 + 9.192 (x + y)); a height z lifts it 22.5 rows.
+   +x runs down to the right on the screen, -y up to the right; a line x = c is the screen line sx + 2 sy = 344 + 36.77 c. */
+const Gs = (sx, sy) => { const g = unproject(sx, sy); return [g.x, g.y, 0]; };
+const SCR = (x, y, z = 0) => { const p = project(x, y, z); return [p.sx, p.sy]; };
+const HZ = 100;                                                   // the horizon (screen row): the old picture's
+// the old tree: its foot, its crown's middle and radii on the screen, the fork where a ball sticks; Canelo's spot
+const ARBOL = [60, 152], COPA = [60, 100, 30, 26], HORQ = [64, 116], SITIO = [46, 168];
+// the lake's shore (round 1): the line x = BANK (screen sx + 2 sy = 568, through the old reeds' feet, where the old pond's water began): every
+// place the stories walk, sit or lie on is on its land side (Canelo, the frog and the children at most at 564), the balls they float on it far
+// beyond it (603 and more), the balls they hide in the reeds in the bed (574, 576), the ball of acts.malA17 (168, 206: 580) in the shallows at
+// the bed's foot, as the old one lay on the old pond's rim
+const BANK = (568 - 344) / (S * R2);
+const WDEPTH = .16;                                               // the surface under the lawn: a bank 4 rows high
+const shore = (x, y) => BANK + .035 * Math.sin(y * 2.3 + 1) + .025 * Math.sin(y * 5.1) - x;   // > 0 land; the shore wavers a little, along y
+// the reeds (round 2): a bed all along the shore, as the old row along the pond's rim, from y REED_Y0 (down to the left; no foot left of x 179)
+// to past the picture's right edge (REED_Y1), from the damp lip of the land out into the shallows. It runs off the picture's right edge as the
+// old reeds ran to the view's: its hint frame goes round its hint box (sheet things.juncos.hintBox). Down the shore from its end the bank is open:
+// there Canelo drinks and wades and sits by the water, the balls roll in, as in the old picture, where everyone was drawn over the old reeds;
+// standing reeds there would stand in front of them (the sheet checks: nobody has reeds over them but where the old picture had them in the
+// reeds). For the same reason no reed whose foot is left of x REED_LOW[0] reaches over row REED_LOW[1] (Canelo barking at 176, 176)
+const REED_Y0 = 3.1, REED_Y1 = -.7, REED_X0 = BANK - .16, REED_X1 = BANK + .62, REED_LOW = [200, 178];
+// the sky, the hills, the sun: El camino's (El frente's by day), the sun in the same place (upper left: every shadow falls to the right)
+const SKY = { bands: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]], far: [[116, 180, 162], [156, 208, 188], [94, 158, 144]], near: [[78, 158, 94], [124, 203, 122], [62, 136, 80]], sun: [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]] };
+const SUN = [38, 47, 9];
+// the old picture's three clouds (engine.js sky(): 36, 16; 112, 9; 168, 26), moved clear of the corner board's place (x 24 to 92, rows 2 to 28),
+// of the sun, of the crown and of the answer cards' place in the sky (sheet moves: respEn)
+const CLOUDS = [[188, 12, .7], [204, 34, .8], [108, 10, .6]];
+const cloudAt = (ix, iy) => { for (const [cx, cy, s] of CLOUDS) {
+    const e = (x0, y0, rx, ry) => { const dx = (ix + .5 - x0) / rx, dy = (iy + .5 - y0) / ry; return dx * dx + dy * dy <= 1; };
+    if (e(cx, cy, 13 * s, 5 * s) || e(cx - 9 * s, cy + 2, 8 * s, 4 * s) || e(cx + 10 * s, cy + 2, 9 * s, 4 * s)) return rgb(...(iy + .5 > cy + 2 * s ? [214, 230, 248] : [244, 248, 255])); }
+  return 0; };
+
+/* ---------- the ground: the lawn (El frente's grass, calm, as El camino's), the trodden earth under the tree, the lake ---------- */
+const LAWN = GRASS, LAWN_T = 3.45;
+const BLADE = [2, 2, 3, 3, 4];
+for (let k = 0; k < 5; k++) { const c = LAWN[BLADE[k]]; tuftLit[k] = rgb(...c); tuftDark[k] = rgb(c[0] * .54, c[1] * .52, c[2] * .72); }
+const lawnAt = (x, y, ix, iy) => { const t = LAWN_T + (noise(x * .3, y * .3) - .5) * .6 + (bayerAt(ix, iy) - .5) * .8 + (hash(ix, iy) - .5) * .25;
+  return rgb(...LAWN[clamp(Math.floor(t), 2, 4)]); };
+// the trodden earth: El camino's path colours; round the tree's foot and out to Canelo's spot (the old worn patch, SITIO, 15 x 5 on the screen)
+const EARTH = [[184, 150, 96], [200, 164, 104], [216, 182, 122], [232, 206, 150], [242, 222, 172]];
+const FOOT = Gs(ARBOL[0], ARBOL[1]), SPOT = Gs(SITIO[0], SITIO[1] + 1);
+function earthAt(x, y) {   // > 0 inside the worn patch (how far in, world units)
+  const e = (c, r) => r - Math.hypot(x - c[0], y - c[1]);
+  // the two worn places and the ground between them, softened by noise so the edge is ragged into the lawn
+  const a = e(FOOT, .52), b = e(SPOT, .55), t = clamp(((x - FOOT[0]) * (SPOT[0] - FOOT[0]) + (y - FOOT[1]) * (SPOT[1] - FOOT[1])) / ((SPOT[0] - FOOT[0]) ** 2 + (SPOT[1] - FOOT[1]) ** 2), 0, 1);
+  const mx = FOOT[0] + (SPOT[0] - FOOT[0]) * t, my = FOOT[1] + (SPOT[1] - FOOT[1]) * t, c = .34 - Math.hypot(x - mx, y - my);
+  return Math.max(a, b, c) + (noise(x * 4, y * 4) - .5) * .16;
+}
+const LOOK = { deep: [30, 84, 128], shallow: [62, 130, 146], bank: [120, 92, 60], wet: [58, 48, 40], sky: [200, 230, 244], reflect: .14, fade: 1.4, glints: [] };
+if (SET.water === 'still') { LOOK.sky = LOOK.deep; LOOK.glints = null; }
+function campoGround(x, y, ix, iy, i, g) {
+  if (iy + .5 < HZ) return 0;                                          // above the horizon: the hills and the sky
+  const s = shore(x, y);
+  if (s < 0) { waterPixel(ix, iy, i, g, WDEPTH, shore, LOOK); return -1; }
+  const e = earthAt(x, y);
+  if (e > 0) {
+    kinds[i] = KIND_ROAD;
+    if (e < .07 && bayerAt(ix, iy) > e / .07 + (hash(ix, iy) - .5) * .3) { kinds[i] = KIND_GRASS; return lawnAt(x, y, ix, iy); }
+    const t = 2.7 + (e > .2 ? .3 : 0) + (noise(x * 1.7, y * 1.7) - .5) * .9 + (bayerAt(ix, iy) - .5) * .7 + (hash(ix, iy) - .5) * .3;
+    return rgb(...EARTH[clamp(Math.floor(t), 2, 4)]);
+  }
+  // the lip of the bank: a thin strip of damp earth, ragged into the lawn
+  if (s < .07 && bayerAt(ix, iy) > s / .07 - .15) { kinds[i] = KIND_ROAD; return rgb(...[[150, 118, 76], [168, 134, 88]][hash(ix, iy) > .5 ? 1 : 0]); }
+  kinds[i] = KIND_GRASS;
+  return lawnAt(x, y, ix, iy);
+}
+
+/* ---------- the tree: El camino's kind (a straight trunk, a round crown of leaf clusters), as big as the old one, with its low fork ----------
+   The trunk rises from the old foot to the fork (the old HORQ, 36 rows over the foot), where two limbs part into the crown; the crown's clusters
+   are an ellipsoid round the old crown's middle (60, 100), as wide and as tall as the old (60 x 52 px). In the crown's front, over the fork, a
+   hollow is left (no clusters there): through it the limbs show, dark, as the old picture's "dark hollow where a ball can sit"; a ball the
+   stories put in the tree (HORQ, 64, 119; or the crown's middle, acts.esconde16) is seen against it. Its leaves are still (at their height the
+   wind moves none a pixel, as El camino's small trees') */
+const TRUNK = [118, 82, 50];
+const LEAF = [[52, 128, 66], [66, 148, 76], [86, 170, 88], [118, 196, 108]];
+const TCROWN = { cx: 63, cy: 99, rx: 25, ry: 25 };                    // on the screen: its middle and radii (the old 60, 100, 30, 26: 4 px in on the left, for its hint frame)
+const HOLLOW = { cx: 64, cy: 111, rx: 10, ry: 9 };                    // on the screen: the hollow over the fork (the ball there: rows 103 to 119)
+function tree() {
+  const [fx, fy] = FOOT, tu = (fx - fy) / R2, tv = (fx + fy) / R2, Pu = (u, v, z = 0) => UVW(u, v, z);
+  const ZF = (ARBOL[1] - HORQ[1]) / (COS * S);                        // the fork's height
+  const UX = sx => (sx - OX) / S, ZS = sy => (OY + tv * SIN * S - sy) / (COS * S);   // a screen x, row (in the trunk's plane) to u, z
+  part('arbol', () => {
+    capsule(Pu(tu, tv, 0), Pu(tu, tv, ZF + .15), .2, .16, () => TRUNK, 'rough');
+    capsule(Pu(tu - .22, tv, 0), Pu(tu + .22, tv, 0), .11, .11, () => TRUNK, 'rough');                 // the flare of its roots
+    // the fork: two limbs up into the crown, one to each side, a little back
+    capsule(Pu(tu, tv, ZF - .05), Pu(tu - .5, tv - .08, ZF + .85), .14, .09, () => TRUNK, 'rough');
+    capsule(Pu(tu, tv, ZF - .05), Pu(tu + .48, tv - .08, ZF + .9), .14, .09, () => TRUNK, 'rough');
+    capsule(Pu(tu, tv, ZF), Pu(tu + .04, tv - .35, ZF + 1), .1, .07, () => TRUNK, 'rough');
+    // its shadow, one piece from its foot: the trunk's, cast up to the crown, then the crown's
+    for (let z = .03; z < ZF + .3; z += .08) castShadow(fx, fy, z, .17, 1, 0);
+    const zc = ZS(TCROWN.cy), ru = TCROWN.rx / S, rz = TCROWN.ry / (COS * S), rv = .75, cu = UX(TCROWN.cx);
+    castShadow(...Pu(cu, tv).slice(0, 2), zc, .85, 1, .5);
+    const n = 300;
+    for (let k = 0; k < n; k++) {
+      const h = (a, b) => hash(k * 13 + 211 + a, b);
+      const th = h(1, 7) * 6.283, ph = Math.acos(2 * h(2, 8) - 1), d = Math.cbrt(h(3, 9)) * .9;
+      const du = Math.cos(th) * Math.sin(ph) * d, dv = Math.sin(th) * Math.sin(ph) * d, dz = Math.cos(ph) * d;
+      const u = cu + du * ru, v = tv + dv * rv, z = zc + dz * rz, r = .17 + h(5, 11) * .11;
+      const c = project(...Pu(u, v, z));
+      // the hollow over the fork: no cluster in front of the trunk's plane whose disc reaches into it
+      const hx = (c.sx - HOLLOW.cx) / (HOLLOW.rx + r * S * .6), hy = (c.sy - HOLLOW.cy) / (HOLLOW.ry + r * S * .6);
+      const inHollow = hx * hx + hy * hy < 1;
+      if (dv > -.1 && inHollow) continue;
+      const tone = h(4, 10) * .6 + dz * .5 - du * .25 + .3 - (dv < -.2 ? .25 : 0) - (inHollow ? .7 : 0);   // in the hollow: the crown's inside, in its own shade
+      sphere(...Pu(u, v, z), r, LEAF[tone > 1 ? 3 : tone > .62 ? 2 : tone > .25 ? 1 : 0], 'rough');
+    }
+  });
+}
+
+/* ---------- the reeds: a bed of them along the shore (along y), each a thin stalk with a brown head, and a few long blades ----------
+   Round 2: loose clumps all along the shore, 16 to 25 rows tall as the old ones (12 to 19 and a head of 5), the ones on the land standing on
+   the damp lip, the others in the shallows (their foot at the surface); a brown head 2 px wide and 6 rows long on half of them. A thin thing: only a short contact
+   shadow at the foot of each clump on the land. Still: at their height the wind moves none of them a pixel */
+const REED_G = [[58, 104, 52], [92, 142, 62], [130, 170, 78]], HEAD = [[88, 50, 24], [132, 80, 38]];
+const REEDS = (() => { const out = [];
+  let k = 0;
+  for (let y = REED_Y1; y <= REED_Y0; y += .11) {
+    const x0 = REED_X0, x1 = REED_X1, clump = 1 + (hash(k, 3) * 3 | 0);
+    for (let j = 0; j < clump; j++) {
+      const x = x0 + hash(k, j * 7 + 1) * (x1 - x0), yy = y + (hash(k, j * 7 + 2) - .5) * .13, z0 = shore(x, yy) < 0 ? -WDEPTH : 0;
+      const f = SCR(x, yy, z0);
+      if (f[0] < 179) continue;
+      // 17 to 24 rows tall, as the old; lower where REED_LOW says
+      const h = Math.min(.7 + hash(k, j * 7 + 3) * .4, f[0] < REED_LOW[0] ? (f[1] - REED_LOW[1]) / (COS * S) : 9);
+      out.push({ x, y: yy, h, lean: (hash(k, j * 7 + 4) - .5) * .12, head: hash(k, j * 7 + 5) < .5, blade: hash(k, j * 7 + 6) < .2 && f[0] > REED_LOW[0] + 4, k: k * 10 + j, foot: [Math.round(f[0]), Math.round(f[1])] });
+    }
+    k++;
+  }
+  return out; })();
+function reeds() {
+  part('juncos', () => {
+    for (const r of REEDS) {
+      const z0 = shore(r.x, r.y) < 0 ? -WDEPTH : 0, top = z0 + r.h, G = REED_G[r.k % 3 === 0 ? 0 : r.k % 3 === 1 ? 1 : 2];
+      // the stalk: 1 px, a little lean towards x (the light side darker below)
+      for (let z = z0; z <= top; z += .012) { const f = (z - z0) / r.h; plot(r.x + r.lean * f, r.y, z, rgb(...(f < .3 ? REED_G[0] : G))); }
+      if (r.head) { const hz = top - .1; for (let z = hz - .18; z <= hz + .06; z += .01) for (const w of [-.016, .016]) plot(r.x + r.lean * (z - z0) / r.h + w, r.y - w, z, rgb(...HEAD[z > hz - .04 && w < 0 ? 1 : 0])); }
+      if (r.blade) { // a long blade from the foot, bending out along y
+        const s = r.k % 2 ? 1 : -1;
+        for (let t = 0; t <= 1; t += .01) plot(r.x + .04 * t, r.y + s * .22 * t * t, z0 + r.h * .75 * Math.sin(t * 1.3), rgb(...REED_G[t > .5 ? 2 : 1]));
+      }
+    }
+    // a short contact shadow at the foot of each reed on the land (on the water: the bank's reflection is enough)
+    for (const r of REEDS) if (shore(r.x, r.y) >= 0) castShadow(r.x, r.y, .02, .06, 1, 0);
+  });
+}
+
+/* ---------- bake the one state ---------- */
+let GROUND_CACHE = null;
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  if (!GROUND_CACHE) {
+    if (LOOK.glints) LOOK.glints.length = 0;
+    for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+      const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = campoGround(g.x, g.y, ix, iy, i, g);
+      if (!c) continue;
+      if (c === -1) continue;                                           // the lake drew it (its own depth and kind)
+      pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+    }
+    growGrass();
+    GROUND_CACHE = { pix: pix.slice(), zb: zb.slice(), kinds: kinds.slice(), ground: ground.slice(), tufts: tufts.slice() };
+  } else {
+    pix.set(GROUND_CACHE.pix); zb.set(GROUND_CACHE.zb); kinds.set(GROUND_CACHE.kinds); ground.set(GROUND_CACHE.ground); tufts.push(...GROUND_CACHE.tufts);
+  }
+  groundZ.set(zb);
+  tree(); reeds();
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  skyFill((ix, iy) => {
+    const s = skyDisc(SUN[0], SUN[1], SUN[2], SKY.sun, ix, iy); if (s) return s;
+    const c = cloudAt(ix, iy); if (c) return c;
+    return skyHills(HZ, SKY.far, SKY.near, ix, iy) || skyBands(SKY.bands, 0, HZ, ix, iy);
+  });
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+
+window.CAMPO_SET = { SET, HZ, ARBOL, COPA, HORQ, SITIO, BANK, WDEPTH, REED_Y0, REED_Y1, REED_X0, REED_X1, REED_LOW, TCROWN, HOLLOW, SUN, CLOUDS, OXY: [OX, OY],
+  REEDS: REEDS.map(r => [r.x, r.y, r.h]), REED_FEET: REEDS.map(r => r.foot), buildSet, shore, earthAt };
+
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+const GLINT = rgb(236, 246, 252);
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
+  drawLeaves(windT); drawTufts(windT);
+  if (LOOK.glints) drawGlints(LOOK.glints, windT, bakedZ, GLINT);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+if (PART_TAGS) tagLeaves(zb);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S, live: () => zb };
+window.frame = frame;
+</script></body></html>
