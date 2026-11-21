@@ -294,14 +294,14 @@
    "on": "banco"
   },
   "bajo": {
-   "world": [-1.096, 1.591, 0],
-   "uv": [-1.9, 0.35, 0],
-   "screen": [71, 123],
-   "depth": 0.3031,
+   "world": [3.0406, 2.4749, 0],
+   "uv": [0.4, 3.9, 0],
+   "screen": [130, 169],
+   "depth": 3.3775,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "Canelo lying at the seat's left end",
+   "what": "Canelo lying on the paving in front, where nobody stands before him",
    "sprite": "perro",
    "who": "perro"
   },
@@ -885,8 +885,8 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 157 pairs in the 6 moments of the preview (m1 (asiento4, suelo3, suelo4, bajo, frente2, cerca1, cerca2, frente1); m2 (asiento4, suelo3, suelo4, suelo2, frente3, frente2, frente4, bajo); m3 (tablero1, tablero2, suelo3, suelo4, asiento1); m4 (tablero1, tablero2, suelo3, suelo4, frente3, frente4, frente5); m5 (carro_pie, carro_borde, turno, fila1, suelo3, suelo4); m6 (carro_pie, carro_borde, turno, fila1, fila2, fila3, fila4, ayuda1, ayuda2, suelo3, suelo4)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 suelo3 ~ frente2 (14 across, 17 down), m1 bajo ~ frente2 (14 across, 29 down), m1 bajo ~ cerca2 (2 across, 46 down), m1 bajo ~ frente1 (16 across, 29 down), m1 frente2 ~ cerca2 (16 across, 17 down), m1 cerca1 ~ frente1 (16 across, 17 down), m1 cerca2 ~ frente1 (14 across, 17 down), m2 suelo3 ~ frente3 (16 across, 17 down), m2 suelo3 ~ frente2 (14 across, 17 down), m2 suelo4 ~ frente3 (14 across, 17 down), m2 suelo4 ~ frente4 (16 across, 17 down), m2 suelo2 ~ frente2 (16 across, 17 down), m2 suelo2 ~ bajo (2 across, 12 down), m2 frente2 ~ bajo (14 across, 29 down), m3 suelo3 ~ asiento1 (2 across, 27 down), m4 suelo3 ~ frente3 (16 across, 17 down), m4 suelo4 ~ frente3 (14 across, 17 down), m4 suelo4 ~ frente4 (16 across, 17 down), m5 carro_pie ~ carro_borde (13 across, 13 down), m5 carro_borde ~ turno (24 across, 22 down), m5 fila1 ~ suelo4 (3 across, 32 down), m6 carro_pie ~ carro_borde (13 across, 13 down), m6 carro_borde ~ turno (24 across, 22 down), m6 carro_borde ~ ayuda2 (23 across, 43 down), m6 turno ~ ayuda2 (1 across, 21 down), m6 fila1 ~ ayuda1 (1 across, 19 down), m6 fila1 ~ suelo4 (3 across, 32 down), m6 fila2 ~ suelo3 (3 across, 35 down), m6 ayuda1 ~ suelo4 (4 across, 51 down)",
-     "       closest pair in each moment (px across / px down): m1 bajo ~ cerca2 2/46 (needs 26 across or 12 down); m2 suelo2 ~ bajo 2/12 (needs 26 across or 12 down); m3 suelo3 ~ asiento1 2/27 (needs 24 across or 12 down); m4 suelo4 ~ frente3 14/17 (needs 24 across or 12 down); m5 fila1 ~ suelo4 3/32 (needs 24 across or 12 down); m6 turno ~ ayuda2 1/21 (needs 24 across or 12 down)"
+     "sprites-apart: 157 pairs in the 6 moments of the preview (m1 (asiento4, suelo3, suelo4, bajo, frente2, cerca1, cerca2, frente1); m2 (asiento4, suelo3, suelo4, suelo2, frente3, frente2, frente4, bajo); m3 (tablero1, tablero2, suelo3, suelo4, asiento1); m4 (tablero1, tablero2, suelo3, suelo4, frente3, frente4, frente5); m5 (carro_pie, carro_borde, turno, fila1, suelo3, suelo4); m6 (carro_pie, carro_borde, turno, fila1, fila2, fila3, fila4, ayuda1, ayuda2, suelo3, suelo4)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 suelo3 ~ frente2 (14 across, 17 down), m1 suelo4 ~ bajo (1 across, 34 down), m1 frente2 ~ cerca2 (16 across, 17 down), m1 cerca1 ~ frente1 (16 across, 17 down), m1 cerca2 ~ frente1 (14 across, 17 down), m2 suelo3 ~ frente3 (16 across, 17 down), m2 suelo3 ~ frente2 (14 across, 17 down), m2 suelo4 ~ frente3 (14 across, 17 down), m2 suelo4 ~ frente4 (16 across, 17 down), m2 suelo4 ~ bajo (1 across, 34 down), m2 suelo2 ~ frente2 (16 across, 17 down), m2 frente3 ~ bajo (15 across, 17 down), m2 frente4 ~ bajo (15 across, 17 down), m3 suelo3 ~ asiento1 (2 across, 27 down), m4 suelo3 ~ frente3 (16 across, 17 down), m4 suelo4 ~ frente3 (14 across, 17 down), m4 suelo4 ~ frente4 (16 across, 17 down), m5 carro_pie ~ carro_borde (13 across, 13 down), m5 carro_borde ~ turno (24 across, 22 down), m5 fila1 ~ suelo4 (3 across, 32 down), m6 carro_pie ~ carro_borde (13 across, 13 down), m6 carro_borde ~ turno (24 across, 22 down), m6 carro_borde ~ ayuda2 (23 across, 43 down), m6 turno ~ ayuda2 (1 across, 21 down), m6 fila1 ~ ayuda1 (1 across, 19 down), m6 fila1 ~ suelo4 (3 across, 32 down), m6 fila2 ~ suelo3 (3 across, 35 down), m6 ayuda1 ~ suelo4 (4 across, 51 down)",
+     "       closest pair in each moment (px across / px down): m1 suelo4 ~ bajo 1/34 (needs 26 across or 12 down); m2 suelo4 ~ bajo 1/34 (needs 26 across or 12 down); m3 suelo3 ~ asiento1 2/27 (needs 24 across or 12 down); m4 suelo4 ~ frente3 14/17 (needs 24 across or 12 down); m5 fila1 ~ suelo4 3/32 (needs 24 across or 12 down); m6 turno ~ ayuda2 1/21 (needs 24 across or 12 down)"
     ],
     "pairs": [
      {
@@ -911,8 +911,8 @@
       "moment": 1,
       "a": "asiento4",
       "b": "bajo",
-      "across": 104,
-      "down": 15,
+      "across": 45,
+      "down": 61,
       "needAcross": 30,
       "ok": true
      },
@@ -965,8 +965,8 @@
       "moment": 1,
       "a": "suelo3",
       "b": "bajo",
-      "across": 28,
-      "down": 12,
+      "across": 31,
+      "down": 34,
       "needAcross": 26,
       "ok": true
      },
@@ -1010,8 +1010,8 @@
       "moment": 1,
       "a": "suelo4",
       "b": "bajo",
-      "across": 58,
-      "down": 12,
+      "across": 1,
+      "down": 34,
       "needAcross": 26,
       "ok": true
      },
@@ -1055,8 +1055,8 @@
       "moment": 1,
       "a": "bajo",
       "b": "frente2",
-      "across": 14,
-      "down": 29,
+      "across": 45,
+      "down": 17,
       "needAcross": 26,
       "ok": true
      },
@@ -1064,8 +1064,8 @@
       "moment": 1,
       "a": "bajo",
       "b": "cerca1",
-      "across": 32,
-      "down": 46,
+      "across": 91,
+      "down": 0,
       "needAcross": 26,
       "ok": true
      },
@@ -1073,8 +1073,8 @@
       "moment": 1,
       "a": "bajo",
       "b": "cerca2",
-      "across": 2,
-      "down": 46,
+      "across": 61,
+      "down": 0,
       "needAcross": 26,
       "ok": true
      },
@@ -1082,8 +1082,8 @@
       "moment": 1,
       "a": "bajo",
       "b": "frente1",
-      "across": 16,
-      "down": 29,
+      "across": 75,
+      "down": 17,
       "needAcross": 26,
       "ok": true
      },
@@ -1199,8 +1199,8 @@
       "moment": 2,
       "a": "asiento4",
       "b": "bajo",
-      "across": 104,
-      "down": 15,
+      "across": 45,
+      "down": 61,
       "needAcross": 30,
       "ok": true
      },
@@ -1253,8 +1253,8 @@
       "moment": 2,
       "a": "suelo3",
       "b": "bajo",
-      "across": 28,
-      "down": 12,
+      "across": 31,
+      "down": 34,
       "needAcross": 26,
       "ok": true
      },
@@ -1298,8 +1298,8 @@
       "moment": 2,
       "a": "suelo4",
       "b": "bajo",
-      "across": 58,
-      "down": 12,
+      "across": 1,
+      "down": 34,
       "needAcross": 26,
       "ok": true
      },
@@ -1334,8 +1334,8 @@
       "moment": 2,
       "a": "suelo2",
       "b": "bajo",
-      "across": 2,
-      "down": 12,
+      "across": 61,
+      "down": 34,
       "needAcross": 26,
       "ok": true
      },
@@ -1361,8 +1361,8 @@
       "moment": 2,
       "a": "frente3",
       "b": "bajo",
-      "across": 44,
-      "down": 29,
+      "across": 15,
+      "down": 17,
       "needAcross": 26,
       "ok": true
      },
@@ -1379,8 +1379,8 @@
       "moment": 2,
       "a": "frente2",
       "b": "bajo",
-      "across": 14,
-      "down": 29,
+      "across": 45,
+      "down": 17,
       "needAcross": 26,
       "ok": true
      },
@@ -1388,8 +1388,8 @@
       "moment": 2,
       "a": "frente4",
       "b": "bajo",
-      "across": 74,
-      "down": 29,
+      "across": 15,
+      "down": 17,
       "needAcross": 26,
       "ok": true
      },

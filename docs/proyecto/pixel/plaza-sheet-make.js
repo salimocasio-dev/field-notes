@@ -52,7 +52,7 @@ const spotsOf = E => {
   const add = (name, uvz, kind, sil, who, what, on) => S.push([name, uvz, kind, sil, who, what, on]);
   [[-.9, 'adultoS'], [.1, 'adultoS'], [1.1, 'adultoS'], [2.1, 'coqui']].forEach(([u, sil], i) => add('asiento' + (i + 1), [u, 0, SEAT_Z.asiento], 'person', sil, sil === 'coqui' ? 'coqui' : 'adulto', 'a place on the seat, on its top (z ' + SEAT_Z.asiento + '); whoever sits faces us' + (sil === 'coqui' ? ' (the frog, 32 wide: the seat\'s right end, where nobody stands in front of him)' : ' (a grown-up sitting, 24 wide)'), 'banco'));
   [-1.2, -.3, .6].forEach((u, i) => add('respaldo' + (i + 1), [u, -.24, SEAT_Z.respaldo], 'thing', 'paloma', null, 'a pigeon on the seat\'s back (the top slat, z ' + SEAT_Z.respaldo + ' at v - .24): a sprite', 'banco'));
-  add('bajo', [-1.9, .35, 0], 'person', 'perro', 'perro', 'Canelo lying at the seat\'s left end');
+  add('bajo', [.4, 3.9, 0], 'person', 'perro', 'perro', 'Canelo lying on the paving in front, where nobody stands before him');
   [-3.1, -1.95, -.8, .35, 1.5, 2.65].forEach((u, i) => add('suelo' + (i + 1), [u, 1.3, 0], 'person', 'adulto', 'adulto', 'the first row in front of the seat (v 1.3)'));
   [-2.5, -1.35, -.2, .95, 2.1, 3.25].forEach((u, i) => add('frente' + (i + 1), [u, 2.6, 0], 'person', 'adulto', 'adulto', 'the second row, half a step to the side (v 2.6)'));
   [-3.1, -1.95, -.8, .35, 1.5, 2.65].forEach((u, i) => add('cerca' + (i + 1), [u, 3.9, 0], 'person', 'adulto', 'adulto', 'the third row (v 3.9)'));
