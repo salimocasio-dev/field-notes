@@ -96,7 +96,8 @@ const PLAN = {
     P('fregadero', sink);
     P('alacena', () => { cocinaWallCupboard('x', UP[0], UP[1]); });
     P('estufa', () => { cocinaStove('y', STX, { noEnd: true }); });
-    P('campana', () => { cocinaBackguard('y', STX); cocinaHood('y', STX); });
+    P('salpicadero', () => { cocinaBackguard('y', STX); });
+    P('campana', () => { cocinaHood('y', STX); });
     P('mostrador2', () => { cocinaBase('y', STX + K.STW, XR); });
     P('sillas.patas', chairLegs);
     CHAIRS.forEach((c, i) => P('silla' + i, () => chair(c)));
@@ -105,7 +106,6 @@ const PLAN = {
   },
   shadows() {
     P('mesa.patas', () => { for (const [lx, ly] of LEGS) cocinaShadowFoot(lx + .04, ly + .04, .08); });
-    P('sillas.patas', () => { for (const c of CHAIRS) for (const lx of [c.x - CH.hw + .025, c.x + CH.hw - .025]) cocinaShadowFoot(lx, c.y - CH.hd + .025, .035); });
   },
 };
 const NOSHADE = Q.get('noshade') === '1', EMPTY = Q.get('empty') === '1';
