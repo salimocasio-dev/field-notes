@@ -15,7 +15,7 @@
   "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), 41 for a child; abuela standing (engine.js mkAbuela, 48 x 51): column 30 (her middle); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a grown-up or a child sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41; t 7 a child: 33) on (sx, sy); a small thing: see spot. Whoever sits at the table sits on the far side facing the camera: no sprite is turned (the makers draw them from the front)",
   "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
   "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
-  "cart": "the dessert cart is a sprite 76 x 22 with its feet (bottom middle) on carrito (carrito2 at the next table): its top surface is z 0.8, 18 px above its feet, so the things that stand on it have their spot at z 0.8 and their bottom edge on the cart's top surface (canvas row 4 of the sprite is the first row below them). The same five places at the next table are the first five shifted by (u -1.25, v +3.5)",
+  "cart": "the dessert cart is a sprite 76 x 22 with its feet (bottom middle) on carrito (carrito2 at the next table): its top surface is z 0.8, 18 px above its feet, so the things that stand on it have their spot at z 0.8 and their bottom edge on the cart's top surface (canvas row 4 of the sprite is the first row below them). The same five places at the next table are the first five shifted by (u -1.45, v +3.5)",
   "counter": "things stand on the counter's top at z 1, v 1.2 to 1.3 (the top spans v 0.9 to 1.5); whoever serves stands behind it at v .45 and is hidden below the counter's far edge (and below the register) by the depth rule, as the set draws them",
   "waist": "the spec says \"whole from the waist up\" and \"whole from the chest up\" without rows: the top 35 rows of a grown-up's sprite (27 of a child's) are the waist up, the top 29 (25) the chest up (a grown-up's hips are canvas rows 35 to 41, the torso's centre is row 29; the head is the top 14 rows)"
  },
@@ -311,84 +311,79 @@
    "who": "nino"
   },
   "carrito": {
-   "world": [5.3387, 3.288, 0],
-   "uv": [1.45, 6.1, 0],
-   "screen": [158, 145],
+   "world": [5.4801, 3.1466, 0],
+   "uv": [1.65, 6.1, 0],
+   "screen": [163, 145],
    "depth": 5.2828,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the dessert cart beside the family's table (its middle): a sprite 76 x 22, its top (z 0.8) 18 px above its feet",
-   "box": [120, 123, 76, 22],
+   "box": [125, 123, 76, 22],
    "anchor": "bottom"
   },
   "carrito_coqui": {
-   "world": [5.169, 4.2497, 0.8],
-   "uv": [0.65, 6.66, 0.8],
-   "screen": [137, 135],
-   "depth": 6.1677,
+   "world": [4.9144, 3.7123, 0.8],
+   "uv": [0.85, 6.1, 0.8],
+   "screen": [142, 127],
+   "depth": 5.6828,
    "scale": 1,
    "kind": "place",
    "view": "wide",
    "what": "the frog on the cart's top (z 0.8)",
    "sprite": "coqui",
    "who": "coqui",
-   "on": "carrito",
-   "moved": {
-    "from": [0.65, 6.1, 0.8],
-    "by": [0, 0.56],
-    "why": "sprites-apart, moment 1: the frog on the cart (box 32 wide) overlapped Carmen at silla4 (24 wide) by 4 px sideways with her feet 4 px above his (needs 28 across or 12 down). Moving u to the right makes him cover the cup (copa) until u 3.37, so v: +.56 puts his feet 12 px below hers (the u alternative does not exist within 3)"
-   }
+   "on": "carrito"
   },
   "copa": {
-   "world": [5.3387, 3.288, 0.8],
-   "uv": [1.45, 6.1, 0.8],
-   "screen": [158, 127],
+   "world": [5.4801, 3.1466, 0.8],
+   "uv": [1.65, 6.1, 0.8],
+   "screen": [163, 127],
    "depth": 5.6828,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the frog's small cup on the cart's top: 8 x 10, bottom middle on the point",
-   "box": [154, 117, 8, 10],
+   "box": [159, 117, 8, 10],
    "anchor": "bottom",
    "on": "carrito"
   },
   "flanes": {
-   "world": [5.6922, 2.9345, 0.8],
-   "uv": [1.95, 6.1, 0.8],
-   "screen": [171, 127],
+   "world": [5.8336, 2.7931, 0.8],
+   "uv": [2.15, 6.1, 0.8],
+   "screen": [176, 127],
    "depth": 5.6828,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the flans on the cart's top: 14 x 8, bottom middle on the point",
-   "box": [164, 119, 14, 8],
+   "box": [169, 119, 14, 8],
    "anchor": "bottom",
    "on": "carrito"
   },
   "mantecado": {
-   "world": [6.0811, 2.5456, 0.8],
-   "uv": [2.5, 6.1, 0.8],
-   "screen": [185, 127],
+   "world": [6.2225, 2.4042, 0.8],
+   "uv": [2.7, 6.1, 0.8],
+   "screen": [190, 127],
    "depth": 5.6828,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the tub of ice cream on the cart's top: 12 x 10, bottom middle on the point",
-   "box": [179, 117, 12, 10],
+   "box": [184, 117, 12, 10],
    "anchor": "bottom",
    "on": "carrito"
   },
   "tapa": {
-   "world": [6.3993, 2.2274, 0.5],
-   "uv": [2.95, 6.1, 0.5],
-   "screen": [197, 134],
+   "world": [6.5407, 2.086, 0.5],
+   "uv": [3.15, 6.1, 0.5],
+   "screen": [202, 134],
    "depth": 5.5328,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the domed cover hanging at the cart's right side (z .5): 12 x 10, its top middle on the point (open point: the spec gives the point, not where it hangs from)",
-   "box": [191, 134, 12, 10],
+   "box": [196, 134, 12, 10],
    "anchor": "top",
    "on": "carrito"
   },
@@ -647,7 +642,7 @@
  "notes": [
   "every number of a spot is the orchestrator's (the p8-spec, \"cuenta\"), given in (u, v, z); the counter's, the register's, the machine's, the jar's, the frog's, the table's and the next table's numbers are read from the set (E); the spots that failed a check and were moved the least distance that passes are marked \"moved\" (from, by)",
   "silla1 to silla4 are the long table's chairs, left to right (abuela, abuelo, Luis, Carmen), read from E.SEATS; otra_mesa1 and otra_mesa2 are the next table's two chairs, worked out as FD.setTable does",
-  "carrito2, carrito_coqui2, copa2, flanes2, mantecado2 and tapa2 are the cart's places at the next table: the first six shifted by (u -1.25, v +3.5)",
+  "carrito2, carrito_coqui2, copa2, flanes2, mantecado2 and tapa2 are the cart's places at the next table: the first six shifted by (u -1.45, v +3.5)",
   "gaveta is the register's drawer, its box from the set's own front (the dark lower part of the register: z 1 to 1.13 at v 1.42); mentas is the bowl of mints' bounding box; ventana and puerta are the holes of the back wall (without their frames); vitrina and pincho in parts are the dessert case and the spike of slips: not touch keys, the frog must not cover them",
   "cuenta (a slip, 8 x 10) has no spot: the spec gives it as a thing in a hand; it is a sprite carried by whoever holds it",
   "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)"
@@ -712,14 +707,14 @@
     "name": "spots-in-view",
     "ok": true,
     "lines": [
-     "spots-in-view: 39 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the cart carrito is box [120,123,76,22], carrito2 [87,169,76,22]; the leftmost sprite column is 22 (cocina), the rightmost 217"
+     "spots-in-view: 39 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the cart carrito is box [125,123,76,22], carrito2 [87,169,76,22]; the leftmost sprite column is 22 (cocina), the rightmost 217"
     ]
    },
    {
     "name": "spots-on-surface",
     "ok": true,
     "lines": [
-     "spots-on-surface: 9 spots on the seats and the counter (silla1, silla2, silla3, silla4, otra_mesa1, otra_mesa2, mostrador_coqui, maquina, frasco) are on a surface the set draws (the chairs' own places, a chair drawn alone has its seat's top at the depth of a spot at z 0.44; the counter's top z 1 part mostrador: depth within .1 of the spot's); the cart's 8 places stand on its top surface (z 0.8, canvas row 4: the cart's own ink is under each, tapa touches the cart) and the next table's five are the first five shifted by (-1.25, 3.5)",
+     "spots-on-surface: 9 spots on the seats and the counter (silla1, silla2, silla3, silla4, otra_mesa1, otra_mesa2, mostrador_coqui, maquina, frasco) are on a surface the set draws (the chairs' own places, a chair drawn alone has its seat's top at the depth of a spot at z 0.44; the counter's top z 1 part mostrador: depth within .1 of the spot's); the cart's 8 places stand on its top surface (z 0.8, canvas row 4: the cart's own ink is under each, tapa touches the cart) and the next table's five are the first five shifted by (-1.45, 3.5)",
      "       silla1 z 0.44: the chair's own place (E.SEATS); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 5.34, the table's)",
      "       silla2 z 0.44: the chair's own place (E.SEATS); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 5.34, the table's)",
      "       silla3 z 0.44: the chair's own place (E.SEATS); drawn alone its seat's top is at depth 7.2 against the 7.15 of a spot at z 0.44; in the picture the table hides it (the pixel under the spot is part mesas at depth 5.34, the table's)",
@@ -742,15 +737,15 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 145 pairs in the 7 moments of the preview: no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 silla4 ~ carrito_coqui (24 across, 12 down), m2 silla2 ~ mesera93b (12 across, 64 down), m2 silla3 ~ mesera93b (13 across, 64 down), m2 silla3 ~ carrito_coqui2 (16 across, 50 down), m2 silla4 ~ carrito_coqui2 (9 across, 50 down), m3 caja ~ familia4 (19 across, 39 down), m3 mostrador_coqui ~ familia3 (13 across, 45 down), m3 mostrador_coqui ~ familia4 (12 across, 45 down), m4 paga ~ fila1 (22 across, 14 down), m4 fila1 ~ fila2 (15 across, 15 down), m5 silla1 ~ cocina (5 across, 56 down), m5 silla2 ~ mostrador_coqui (18 across, 63 down), m5 silla3 ~ mostrador_coqui (7 across, 63 down), m5 junto_mesa ~ sillas_mesera (14 across, 57 down), m6 umbral1 ~ umbral3 (0 across, 13 down), m6 umbral1 ~ paga (13 across, 26 down), m6 umbral2 ~ umbral4 (0 across, 13 down), m6 umbral3 ~ paga (13 across, 13 down), m6 paga ~ sillas_mesera (15 across, 92 down), m7 umbral1 ~ umbral3 (0 across, 13 down), m7 umbral1 ~ puerta_coqui (12 across, 27 down), m7 umbral2 ~ umbral4 (0 across, 13 down), m7 umbral2 ~ puerta_coqui (12 across, 27 down), m7 umbral3 ~ puerta_coqui (12 across, 14 down), m7 umbral4 ~ puerta_coqui (12 across, 14 down)",
-     "       closest pair in each moment (px across / px down): m1 silla4 ~ carrito_coqui 24/12 (needs 28 across or 12 down); m2 silla4 ~ carrito_coqui2 9/50 (needs 28 across or 12 down); m3 mostrador_coqui ~ familia4 12/45 (needs 28 across or 12 down); m4 fila1 ~ fila2 15/15 (needs 24 across or 12 down); m5 silla3 ~ mostrador_coqui 7/63 (needs 28 across or 12 down); m6 umbral1 ~ umbral3 0/13 (needs 24 across or 12 down); m7 umbral1 ~ umbral3 0/13 (needs 24 across or 12 down)"
+     "sprites-apart: 145 pairs in the 7 moments of the preview: no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m2 silla2 ~ mesera93b (12 across, 64 down), m2 silla3 ~ mesera93b (13 across, 64 down), m2 silla3 ~ carrito_coqui2 (16 across, 50 down), m2 silla4 ~ carrito_coqui2 (9 across, 50 down), m3 caja ~ familia4 (19 across, 39 down), m3 mostrador_coqui ~ familia3 (13 across, 45 down), m3 mostrador_coqui ~ familia4 (12 across, 45 down), m4 paga ~ fila1 (22 across, 14 down), m4 fila1 ~ fila2 (15 across, 15 down), m5 silla1 ~ cocina (5 across, 56 down), m5 silla2 ~ mostrador_coqui (18 across, 63 down), m5 silla3 ~ mostrador_coqui (7 across, 63 down), m5 junto_mesa ~ sillas_mesera (14 across, 57 down), m6 umbral1 ~ umbral3 (0 across, 13 down), m6 umbral1 ~ paga (13 across, 26 down), m6 umbral2 ~ umbral4 (0 across, 13 down), m6 umbral3 ~ paga (13 across, 13 down), m6 paga ~ sillas_mesera (15 across, 92 down), m7 umbral1 ~ umbral3 (0 across, 13 down), m7 umbral1 ~ puerta_coqui (12 across, 27 down), m7 umbral2 ~ umbral4 (0 across, 13 down), m7 umbral2 ~ puerta_coqui (12 across, 27 down), m7 umbral3 ~ puerta_coqui (12 across, 14 down), m7 umbral4 ~ puerta_coqui (12 across, 14 down)",
+     "       closest pair in each moment (px across / px down): m1 silla1 ~ silla2 24/0 (needs 24 across or 12 down); m2 silla4 ~ carrito_coqui2 9/50 (needs 28 across or 12 down); m3 mostrador_coqui ~ familia4 12/45 (needs 28 across or 12 down); m4 fila1 ~ fila2 15/15 (needs 24 across or 12 down); m5 silla3 ~ mostrador_coqui 7/63 (needs 28 across or 12 down); m6 umbral1 ~ umbral3 0/13 (needs 24 across or 12 down); m7 umbral1 ~ umbral3 0/13 (needs 24 across or 12 down)"
     ]
    },
    {
     "name": "frog-seen",
     "ok": true,
     "lines": [
-     "frog-seen: the frog is seen whole in all 7 moments (0 px hidden or covered by anything): m1 carrito_coqui 137,135: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 carrito_coqui2 104,173: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m7 puerta_coqui 194,100: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+     "frog-seen: the frog is seen whole in all 7 moments (0 px hidden or covered by anything): m1 carrito_coqui 142,127: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 carrito_coqui2 104,173: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 mostrador_coqui 81,60: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m7 puerta_coqui 194,100: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
     ]
    },
    {
@@ -778,7 +773,7 @@
     "name": "things-free",
     "ok": true,
     "lines": [
-     "things-free: the machine, the jar and the drawer are covered by nobody in moments 3, 4 and 6 (the payer's box starts at column 157, the jar's ends at column 155), and the cup, the flans, the tub and the cover are covered by nobody (the frog among them) on the cart in moments 1 and 2: m1 copa [154,117,8,10] free; m1 flanes [164,119,14,8] free; m1 mantecado [179,117,12,10] free; m1 tapa [191,134,12,10] free; m2 copa2 [121,163,8,10] free; m2 flanes2 [131,165,14,8] free; m2 mantecado2 [147,163,12,10] free; m2 tapa2 [158,180,12,10] free; m3 maquina [132,50,12,10] free; m3 frasco [146,48,10,12] free; m3 gaveta [103,59,18,3] free; m4 maquina [132,50,12,10] free; m4 frasco [146,48,10,12] free; m4 gaveta [103,59,18,3] free; m6 maquina [132,50,12,10] free; m6 frasco [146,48,10,12] free; m6 gaveta [103,59,18,3] free"
+     "things-free: the machine, the jar and the drawer are covered by nobody in moments 3, 4 and 6 (the payer's box starts at column 157, the jar's ends at column 155), and the cup, the flans, the tub and the cover are covered by nobody (the frog among them) on the cart in moments 1 and 2: m1 copa [159,117,8,10] free; m1 flanes [169,119,14,8] free; m1 mantecado [184,117,12,10] free; m1 tapa [196,134,12,10] free; m2 copa2 [121,163,8,10] free; m2 flanes2 [131,165,14,8] free; m2 mantecado2 [147,163,12,10] free; m2 tapa2 [158,180,12,10] free; m3 maquina [132,50,12,10] free; m3 frasco [146,48,10,12] free; m3 gaveta [103,59,18,3] free; m4 maquina [132,50,12,10] free; m4 frasco [146,48,10,12] free; m4 gaveta [103,59,18,3] free; m6 maquina [132,50,12,10] free; m6 frasco [146,48,10,12] free; m6 gaveta [103,59,18,3] free"
     ]
    },
    {

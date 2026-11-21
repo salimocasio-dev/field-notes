@@ -52,7 +52,6 @@ for (const guagua of ['no', 'lejos', 'medio', 'cerca']) for (const sillas of ['a
 
 /* the moves: where one of the spec's numbers failed a check, the spot moved the least distance that passes (v first, then u; never z): name -> [du, dv, why] added to the spec's (u, v) */
 const MOVED = {
-  carrito_coqui: [0, .56, 'sprites-apart, moment 1: the frog on the cart (box 32 wide) overlapped Carmen at silla4 (24 wide) by 4 px sideways with her feet 4 px above his (needs 28 across or 12 down). Moving u to the right makes him cover the cup (copa) until u 3.37, so v: +.56 puts his feet 12 px below hers (the u alternative does not exist within 3)'],
   familia1: [-.01, 0, 'sprites-apart, moment 3: abuela at familia1 and Luis at familia3 were 23 px apart sideways (boxes need 24) with their feet 5 px apart up-down. The least move is u -.01 (u +.02 on familia3, or v -.49 on familia1 / +.5 on familia3, also pass)'],
   caja: [0, -.42, 'waist-up, moments 3, 4, 7: at v .45 the register hid her from the first row of her torso (row 47 on the picture, her top 35 rows are rows 18 to 52): 92 px of her waist-up hidden. Moving her back to v .03 (against the wall) puts the waist above the register\'s top (u would have to move 2.9 or more, out from behind the register)'],
   cocina: [0, -.34, 'chest-up, moments 5 and 7: at v .45 the glass case (its top is row 43) hid 12 px of the cocinero\'s right hand and arm in the top 29 rows. v -.34 passes; the u move (-.11) would cut his sprite by 3 px at the window\'s left edge (x0 22)'],
@@ -87,7 +86,7 @@ function defs(E) {
     add('mantecado' + s, [r4(2.5 + du), r4(6.1 + dv), CART.z], 'thing', null, null, 'the tub of ice cream on the cart\'s top: ' + SIZE.mantecado.join(' x ') + ', bottom middle on the point', { size: SIZE.mantecado, anchor: 'bottom', on: 'carrito' });
     add('tapa' + s, [r4(2.95 + du), r4(6.1 + dv), .5], 'thing', null, null, 'the domed cover hanging at the cart\'s right side (z .5): ' + SIZE.tapa.join(' x ') + ', its top middle on the point (open point: the spec gives the point, not where it hangs from)', { size: SIZE.tapa, anchor: 'top', on: 'carrito' });
   };
-  cart('', [0, 0]);
+  cart('', [.2, 0]);                                                 // the cart stands .2 further right than the spec said, so that the frog on its top is clear of Carmen at silla4
   add('mesera93', [2.3, 5.3, 0], 'person', 'adulto', 'adulto', 'the mesera behind the cart (the next row back), pushing it');
   cart('2', shift);
   add('mesera93b', [-1.75, 9.3, 0], 'person', 'adulto', 'adulto', 'the mesera with the cart at the next table (to its left)');
