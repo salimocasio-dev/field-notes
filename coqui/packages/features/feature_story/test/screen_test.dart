@@ -15,6 +15,7 @@ import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/screen_harness.dart';
+import 'support/test_scene.dart';
 
 const _gold = 0xFF40E0FF; // "#FFE040", the touch sign's frame
 
@@ -169,7 +170,7 @@ void main() {
         await openScreen(
           tester,
           id: 'la-lluvia',
-          scenes: (id, rng) => registryScenes('banco', rng),
+          scenes: (id, rng) => scenesWithTestScene(testSceneId, rng),
         );
         expect(find.byType(LessonFrame), findsOneWidget);
         expect(find.byType(LessonCloseButton), findsOneWidget);

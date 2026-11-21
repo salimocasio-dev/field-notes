@@ -41,14 +41,17 @@ void main() {
     expect(sheet.clips, isEmpty);
     expect(sheet.raw['clips'], contains('ventana'));
     expect(sheet.frames, isEmpty);
-    expect(sheet.points.keys, ['banco']);
-    expect(sheet.screenPoints.keys, [
+    expect(sheet.points.keys, isEmpty);
+    expect(sheet.screenPoints.keys, ['corazon']);
+    expect(sheet.otherPoints.keys, [
       'run',
+      'burners',
+      'burnersWhat',
+      'banco',
       'ventana',
       'estante',
       'campana',
       'salpicadero',
-      'corazon',
     ]);
     expect(sheet.remapTable, hasLength(35));
     expect(sheet.moves, hasLength(38));
@@ -71,20 +74,29 @@ void main() {
     expect(sheet.smoothingWhat, contains('never on'));
   });
 
-  test('points: the burners as a list (raw), the run and the window as world boxes, the hole on the screen', () {
-    final burners = (sheet.raw['points'] as Map)['burners'] as List;
+  test('points: the burners as a list, the run, the stool and the window as world points and boxes (as written)', () {
+    final burners = sheet.otherPoints['burners'] as List;
     expect(burners, hasLength(2));
     expect((burners[0] as Map)['pot'], [107, 97]);
     expect((burners[1] as Map)['pot'], [145, 116]);
-    expect(sheet.screenPoint('run').raw.containsKey('screen'), isFalse);
-    expect(sheet.screenPoint('run').raw['world'], [0, 0, 0, 12.4, 1.4, 1.3]);
-    expect(sheet.screenPoint('ventana').raw['hole'], hasLength(4));
+    expect((sheet.otherPoints['run'] as Map)['world'], [
+      0,
+      0,
+      0,
+      12.4,
+      1.4,
+      1.3,
+    ]);
+    expect((sheet.otherPoints['ventana'] as Map)['hole'], hasLength(4));
     expect(sheet.screenPoint('corazon').xy, [124, 24]);
-    // the stool: a world point with no screen place given, its screen the projection
-    final b = sheet.anchor('banco'),
-        p = e.project(b.world[0], b.world[1], b.world[2]);
-    expect(b.screen, [p.sx, p.sy]);
-    expect([_round(p.sx), _round(p.sy)], [126, 183]);
+    // the stool: its top's middle under the frog's feet (the old BANCO)
+    final w = [
+      for (final v in (sheet.otherPoints['banco'] as Map)['world'] as List)
+        v as num,
+    ];
+    final p = e.project(w[0], w[1], w[2]);
+    expect([_round(p.sx), _round(p.sy)], [126, 184]);
+    expect((sheet.otherPoints['banco'] as Map)['top'], [126, 184]);
   });
 
   test('the floor rule: a person\'s or a thing\'s spot is under (x, y - 1); the frog\'s, under (q.x + 16, q.y + 25)', () {

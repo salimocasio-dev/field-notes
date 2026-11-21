@@ -12,6 +12,7 @@
 //   everyone leaves in a file) is the new act's: its runs differ from the old there and after in time only.
 // - On the real El campo (order 34b): the same, for its five files.
 // - On the real El lago (order 35b): the same, for its five files.
+// - On the real El banco (order 36b): the same, for its six files.
 import 'dart:convert';
 import 'dart:io';
 
@@ -75,6 +76,9 @@ final Map<String, String?> campoWhole = {}, campoTimeless = {};
 
 /// Each lago run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
 final Map<String, String?> lagoWhole = {}, lagoTimeless = {};
+
+/// Each banco run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> bancoWhole = {}, bancoTimeless = {};
 
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
@@ -767,6 +771,90 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in lagoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${lagoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real El banco (order 36b): the corner is built round the old picture, so its places keep their screen numbers
+  // but the ones the sheet moves (`moves`: the gate and every way out through it, the cart and its man, the sitters on
+  // the seats' edges and what lies on the seats, the pigeons' perches, the dogs, the frog's home, Carmen, the answer
+  // cards; `remap`: the story positions it moved, d-vamos-a-casa's ways out through the gate). All hop counts are the old
+  // ones (the sheet's `hops` is empty). The scene draws no random number. The state line writes where each person is
+  // (`gente=k@x,y`), which `placeless` leaves out.
+  group('the recorded runs, on the real El banco (order 36b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final banco = {
+      for (final r in runs)
+        if (r['scene'] == 'banco') r['story'] as String,
+    };
+    test('the six files of El banco', () {
+      expect(banco, {
+        'la-piragua',
+        'senor-senora',
+        'el-bebe-duerme',
+        'd-piragua-luis',
+        'd-vamos-a-casa',
+        'h-banco',
+      });
+    });
+    for (final s in banco) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('banco'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              placeless(forTimeless(c.committed)),
+              placeless(forTimeless(c.trace)),
+            );
+            bancoTimeless['$s $plan'] = timeless;
+
+            expect(
+              timeless,
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            // every walk of the frog takes its old hops (the sheet's round 4: the man of el-bebe-duerme 1 px left)
+            expect(hops(c.committed), hops(c.trace), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            bancoWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/banco-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in bancoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${bancoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
         );
     });
   });

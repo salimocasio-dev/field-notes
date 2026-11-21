@@ -12,6 +12,7 @@ import 'support/fixture_decode.dart';
 import 'support/fixtures/ref_ctx.dart';
 import 'support/fixtures/ref_kit.dart';
 import 'support/fixtures/balcon_sheet.dart';
+import 'support/fixtures/banco_sheet.dart';
 import 'support/fixtures/camino_sheet.dart';
 import 'support/fixtures/campo_sheet.dart';
 import 'support/fixtures/estufa_sheet.dart';
@@ -111,6 +112,10 @@ void main() {
 
   test('the sheet fixture is the text of El lago\'s sheet', () {
     expect(lagoSheetJson, lagoSheetText());
+  });
+
+  test('the sheet fixture is the text of El banco\'s sheet', () {
+    expect(bancoSheetJson, bancoSheetText());
   });
 
   test('the sheet fixture is the text of La estufa\'s sheet', () {
