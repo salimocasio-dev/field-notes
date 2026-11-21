@@ -31,7 +31,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 **The turn**
 
-5. Luis goes off down the path with his paper, to ask more people. Carmen sits down by the tree with her basket and takes out the first lantern; the wind pulls at it. The card shows two places. The signs go.
+5. Luis goes off down the path with his paper, to ask more people; he stops a woman on the path. NARR: "Luis dice: ¡Hola! Hay una fiesta. ¿Quieres venir?" She nods. Carmen sits down by the tree with her basket and takes out the first lantern; the wind pulls at it. The card shows two places. The signs go.
 
 **The game.** Carmen, untangling the lanterns' strings with her eyes on her hands, says where the next lantern goes (drawn, each round on its own, and round B's is not round A's): on the wall, on the flag's pole, on the gate. The frog carries it there.
 
@@ -48,7 +48,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - One lantern, on the gate.
 9. Luis comes back up the path, and people behind him. NARR: "Luis dice: ¡Coquí! Esta noche, la fiesta. ¿Vamos?" COQUÍ [TURN: vamos (vamos, sí vamos)]: "¡Vamos!" NARR: "Hoy hay una fiesta en el fuerte. La bandera, la muralla y la puerta tienen luz."
 
-**Fewest hearings before a word can cost:** muralla 4 (steps 2, 4), bandera 4 (steps 3, 4). Not deciding: fuerte 6 (steps 1, 2, 4); fiesta 4 (steps 1, 4); ¿quieres venir? 2 before the game (steps 1, 4) (to fix in the reviews: a third).
+**Fewest hearings before a word can cost:** muralla 4 (steps 2, 4), bandera 4 (steps 3, 4). Not deciding: fuerte 6 (steps 1, 2, 4); fiesta 4 (steps 1, 4); ¿quieres venir? 3 (steps 1, 4, 5).
 **A miss is filed under:** the place that was said (muralla or bandera; for the gate, puerta).
 **Chance without the Spanish:** one in three, each round on its own.
 **Speaking turns:** two (steps 1, 9): quiero; vamos.
@@ -68,7 +68,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 1. NARR: "Abuela dice: Hoy hay una fiesta en el fuerte. Yo invito." **(invito: a form of invita)** Ask (signed, abuela's picture on the paper): "Abuela invita. ¿Dónde está abuela?" He touches it: the picture shines. NARR: "Luis dice: Abuela invita a la fiesta."
 2. Don Pepe comes up the path. NARR: "Luis dice: ¡Hola! Hay una fiesta. ¿Quieres venir?" NARR: "Don Pepe dice: ¿Una fiesta? ¿Quién invita?" Ask (signed, abuela's picture): "¿Quién invita?" He touches it: it shines; abuela waves. NARR: "Don Pepe dice: ¡Abuela invita! ¿Y cuándo es la fiesta?" Ask (signed, the moon and the clock): "¿Cuándo es la fiesta?" He touches it: it shines. NARR: "Luis dice: Hoy, a las siete de la noche."
-3. NARR: "Don Pepe dice: Voy. Yo traigo jugo." **(traigo: a form of trae)** Abuela writes on her list; a small jug shows beside don Pepe. NARR: "Abuela dice: Don Pepe trae jugo. La maestra trae frutas. Y el piragüero trae hielo." NARR: "Abuela dice: ¿Y tú, Coquí? ¿Quién trae a Coquí?" The frog hops onto Luis's shoulder. COQUÍ [TURN: hermano? (to settle in the reviews)]: "¡Luis!"
+3. NARR: "Don Pepe dice: Voy. Yo traigo jugo." **(traigo: a form of trae)** Abuela writes on her list; a small jug shows beside don Pepe. NARR: "Abuela dice: Don Pepe trae jugo. La maestra trae frutas. Y el piragüero trae hielo." NARR: "Abuela dice: ¿Y quién trae a Coquí?" The frog hops onto Luis's shoulder. NARR: "Luis dice: ¡Yo! Coquí, ¿vienes con abuela o con Luis?" COQUÍ [TURN: con (con luis, contigo, con Luis)]: "¡Con Luis!"
 
 **The turn**
 
@@ -87,13 +87,13 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - Three guests wait with abuela. Stars and a heart.
    - Two guests.
    - One guest.
-8. NARR: "Abuela dice: ¡Bienvenidos! Coquí, ¿quién trae hielo?" The piragüero comes up the path with his cart. COQUÍ [TURN: piragüero? (to settle in the reviews)]: "¡Él!" NARR: "Abuela invita. La gente trae jugo, frutas y hielo. Hoy, a las siete, hay fiesta."
+8. NARR: "Abuela dice: ¡Bienvenidos! Coquí, ¿quién trae hielo?" The piragüero comes up the path with his cart. COQUÍ [TURN: él (él, el piragüero)]: "¡Él!" NARR: "Abuela invita. La gente trae jugo, frutas y hielo. Hoy, a las siete, hay fiesta."
 
 **Fewest hearings before a word can cost:** ¿quién? 3 (steps 2, 3), ¿cuándo? 3 (step 2). Not deciding: invita 5 with invito (steps 1, 2); trae 4 with traigo (step 3).
 **Forms:** invito with invita; traigo with trae.
 **A miss is filed under:** the question that was asked (¿quién? or ¿cuándo?).
 **Chance without the Spanish:** one in two, each round on its own.
-**Speaking turns:** two (steps 3, 8): to settle (the frog's answers must be words of earlier stories: "él" is one).
+**Speaking turns:** two (steps 3, 8): con; él.
 
 ---
 
@@ -132,7 +132,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - One lit.
 9. Abuela puts down her match. NARR: "Abuela dice: Coquí, ¿tienes hambre?" COQUÍ [TURN: tengo hambre (tengo hambre, sí tengo hambre, sí)]: "¡Sí, tengo hambre!" NARR: "Abuela dice: Vamos a comer juntos." They go to the table. NARR: "En la fiesta, la gente come, toma y juega. Juntos."
 
-**Fewest hearings before a word can cost:** voy a 3 (steps 1, 2, 3) and va a three times in the asks; comer, tomar and dormir once each with their pictures before the game (a known verb in a new form: the reviews must say if once is enough); jugar 2 (step 4). Not deciding: vamos a 2 (step 4) and juntos 2 before the game (to fix in the reviews: a third each).
+**Fewest hearings before a word can cost:** voy a 3 (steps 1, 2, 3) and va a three times in the asks; comer, tomar and dormir once each with their pictures before the game (a known verb in a new form: the reviews must say if once is enough); jugar 2 (step 4). Not deciding: vamos a 2 (step 4) before the game, and once more in the ending (step 9); juntos 2 before the game (step 4), and twice in the ending.
 **A miss is filed under:** the verb of the plan (come, toma, duerme or juega: the words he has).
 **Chance without the Spanish:** one in four, each round on its own.
 **Speaking turns:** two (steps 4, 9): voy; tengo hambre.

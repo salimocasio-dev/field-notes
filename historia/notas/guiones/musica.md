@@ -26,7 +26,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 1. NARR: "Abuela dice: Coquí, en una fiesta hay música. Mira." (signed, the stage.) He touches it: the músico with the hat waves. NARR: "El músico dice: ¡Hola, Coquí! ¿Quieres música?" COQUÍ [TURN: sí (sí, si)]: "¡Sí!"
 2. NARR: "El músico dice: Para la música, la guitarra, por favor." (signed, the guitar.) He touches it: the frog pushes the guitar off its stand into his hands; he strums: small notes float up; the couples sway. NARR: "El músico dice: Esta es mi guitarra."
-3. The músico with the beard taps his knees. NARR: "El otro músico dice: Y yo toco el tambor." (signed, the drum.) He touches it: the frog pushes the drum over; he beats it: bigger notes; the couples step. NARR: "Abuela dice: La guitarra y el tambor. ¡Qué bonita la música!"
+3. The músico with the beard taps his knees. NARR: "El otro músico dice: Y yo toco el tambor." (signed, the drum.) He touches it: the frog pushes the drum over; he beats it: bigger notes; the couples step. NARR: "El otro músico dice: Este es mi tambor." NARR: "Abuela dice: La guitarra y el tambor. ¡Qué bonita la música!"
 4. They play together, and stop. NARR: "El músico dice: Esa es una canción. ¿Te gusta la canción?" COQUÍ [TURN: mucho (mucho, sí mucho)]: "¡Sí, mucho!" NARR: "El músico dice: Ahora, otra canción." They hang the instruments back on the stand.
 
 **The turn**
@@ -48,7 +48,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - One couple; two watch from the bench, and tap their feet.
 9. NARR: "Abuela dice: ¡Qué bonita canción! Coquí, ¿quieres otra?" COQUÍ [TURN: otro (otra, otra por favor, otro)]: "¡Otra, por favor!" NARR: "En la fiesta hay música: una guitarra, un tambor y una canción."
 
-**Fewest hearings before a word can cost:** guitarra 3 (steps 2, 3), tambor 2 (step 3) (to fix in the reviews: a third). Not deciding: música 4 (steps 1, 2, 3), canción 3 (step 4).
+**Fewest hearings before a word can cost:** guitarra 3 (steps 2, 3), tambor 3 (step 3). Not deciding: música 4 (steps 1, 2, 3), canción 3 (step 4).
 **A miss is filed under:** the instrument that was asked for.
 **Chance without the Spanish:** one in two, each round on its own.
 **Speaking turns:** three (steps 1, 4, 9): sí; mucho; otro.
@@ -67,9 +67,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 **The opening** (big sign)
 
 1. Abuelo bows to abuela. NARR: "Abuelo dice: ¿Quieres bailar?" NARR: "Abuela dice: ¡Claro!" (signed, the open floor.) He touches it: the frog leads them onto the floor; they dance. NARR: "Luis dice: Mira, Coquí. Abuela baila con abuelo."
-2. Carmen runs to the microphone. NARR: "Carmen dice: ¡Yo canto!" **(canto: a form of canta)** (signed, the microphone.) He touches it: the frog tips it down to her height; she sings: notes. NARR: "Luis dice: Carmen canta la canción."
+2. Carmen runs to the microphone. NARR: "Carmen dice: ¡Yo canto!" **(canto: a form of canta)** NARR: "El músico dice: ¡Claro, Carmen!" (signed, the microphone.) He touches it: the frog tips it down to her height; she sings: notes. NARR: "Luis dice: Carmen canta la canción." NARR: "Abuela dice: ¡Qué bonito canta Carmen!"
 3. NARR: "Carmen dice: Luis, ¿quieres bailar?" NARR: "Luis dice: No... Yo no bailo." **(bailo: a form of baila)** He looks at his feet. NARR: "Carmen dice: ¡Claro que sí! Luis baila y yo canto." She pushes him onto the floor; he dances, stiff, then well.
-4. Abuela, turning, calls. NARR: "Abuela dice: Coquí, ¿quieres bailar?" COQUÍ [TURN: quiero (quiero, sí quiero)]: "¡Sí, quiero!" He hops in a circle. NARR: "Abuela dice: ¡Coquí baila!"
+4. Abuela, turning, calls. NARR: "Abuela dice: Coquí, ¿quieres bailar?" COQUÍ [TURN: quiero (quiero, sí quiero)]: "¡Sí, quiero!" He hops in a circle. NARR: "Abuela dice: ¡Coquí baila! Y Carmen canta."
 
 **The turn**
 
@@ -90,7 +90,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - One note lit: a short song.
 9. NARR: "Carmen dice: Coquí, ¿tú cantas?" **(cantas: a form of canta)** The frog hops onto the stage and sings into the microphone: "¡Coquí! ¡Coquí!" NARR: "El músico dice: ¡Qué bonita canción! ¿Otra?" COQUÍ [TURN: otro (otra, sí otra, otro)]: "¡Otra!" NARR: "Abuela baila, Carmen canta. Y Coquí canta también."
 
-**Fewest hearings before a word can cost:** baila 3 and bailo once (steps 1, 3, 4), canta 2 and canto twice (steps 2, 3) (to weigh: a third exact). Not deciding: ¿quieres bailar? 3 (steps 1, 3, 4); claro 2 (steps 1, 3) (to fix: a third).
+**Fewest hearings before a word can cost:** baila 3 and bailo once (steps 1, 3, 4), canta 3 and canto twice (steps 2, 3, 4). Not deciding: ¿quieres bailar? 3 (steps 1, 3, 4); claro 3 (steps 1, 2, 3).
 **Forms:** bailo with baila; canto, cantas with canta.
 **A miss is filed under:** the one that was said (baila or canta).
 **Chance without the Spanish:** one in two, each round on its own: who is named does not say where he goes.
@@ -110,7 +110,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 **The opening** (big sign)
 
 1. Luis tells Carmen something in her ear; Carmen laughs, bent double. NARR: "Abuela dice: Mira, Coquí: Carmen ríe." (signed, Carmen.) He touches her: she laughs harder. NARR: "Abuela dice: Carmen ríe mucho. ¡Está feliz!"
-2. NARR: "Luis dice: ¡Qué fiesta divertida!" He laughs too. NARR: "Abuela dice: Luis ríe también. La fiesta es divertida."
+2. NARR: "Luis dice: ¡Qué divertido!" He laughs too. NARR: "Abuela dice: Luis ríe también. La fiesta es divertida."
 3. Abuela lifts her camera. NARR: "Abuela dice: Quiero una foto de alguien que ríe." **(alguien: heard; a word of the last scene)** (signed, Carmen.) He touches her: a flash; a paper photo slides out of the camera: Carmen, laughing. NARR: "Abuela dice: ¡Qué bueno! Mira la foto: Carmen ríe."
 4. Abuela hangs the camera round the frog's neck; its small window shows three squares. NARR: "Abuela dice: Ahora tú, Coquí. ¿Estás feliz?" COQUÍ [TURN: contento (contento, sí contento, muy contento)]: "¡Sí, contento!" NARR: "Abuela dice: ¡Qué bueno!"
 
@@ -131,9 +131,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - Three squares were left: three photos in the album, and the frog's. Stars and a heart.
    - Two squares.
    - One square: the frog's photo only just comes out.
-9. NARR: "Abuela dice: Coquí, ¿quieres bailar?" COQUÍ [TURN: claro (claro, claro que sí)]: "¡Claro!" They dance. NARR: "La fiesta es divertida. Todos ríen. ¡Qué bueno!" **(todos, ríen: heard)**
+9. NARR: "Abuela dice: Coquí, ¿quieres bailar?" COQUÍ [TURN: claro (claro, claro que sí)]: "¡Claro!" They dance. NARR: "La fiesta es divertida. Todos ríen. Coquí está feliz. ¡Qué bueno!" **(todos, ríen: heard)**
 
-**Fewest hearings before a word can cost:** ríe 5 (steps 1, 2, 3). Not deciding: feliz 2 (steps 1, 4), divertido 2 with divertida (step 2) and once in the ending, ¡qué bueno! 2 (steps 3, 4) and in each right round.
+**Fewest hearings before a word can cost:** ríe 5 (steps 1, 2, 3). Not deciding: feliz 2 (steps 1, 4) and once in the ending; divertido once and divertida once (step 2), divertida once more in the ending; ¡qué bueno! 2 (steps 3, 4), in each right round, and in the ending.
 **Forms:** divertida with divertido; ríen with ríe.
 **A miss is filed under:** the thing that was asked for (ríe, baila, canta or come).
 **Chance without the Spanish:** one in four, each round on its own.
