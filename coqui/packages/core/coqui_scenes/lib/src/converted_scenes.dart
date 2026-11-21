@@ -11,4 +11,5 @@ const Set<String> convertedScenes = {
   'camino',
   'campo',
   'lago',
+  'banco',
 };

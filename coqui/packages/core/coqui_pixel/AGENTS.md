@@ -103,6 +103,21 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
     its centre, radii, soft edge and two colours); a move that takes another thing with it (`SheetMove.shift`: who, while
     which field is set, by how much). The earlier sheets read as before.
   - `test/lago_sheet_test.dart`: the reader against El lago's real sheet (the file on the vm, the fixture in chrome).
+- Since order 36b (El banco), only as far as that scene needs:
+  - `Sheet` reads what El banco's sheet writes that the earlier ones do not: `setKey.params` given in words (each its
+    `fromW`), each baked state's `key` (`SheetBaked.key`) and the states not reached (`SheetSetKey.notReached`); `code`
+    entries that list their numbers by kind (`SheetCode.numbers`, no `old` words: `old` is empty); `points` that are neither
+    an anchor nor a screen point (the benches as a list, the paving's edge, the hedge, the gate's posts, the pole, the lamp
+    post, the wire, the pool, the trees, the cart: `otherPoints`, kept as written); `smoothing` as words
+    (`smoothingWhat`); `talk.heights` (each sprite's height; `heads` empty); `hopsAll` between screen points
+    (`SheetHop.aAt`, `bAt`, `aNow`, `bNow`, `by`: `a` and `b` are then `"x,y"`); `helps` with no ring and a pigeon's shadow
+    in the air (`SheetHelps.shadowGs`, `shadowGsSource`, `linesWhat`; `ring` throws for a sheet that has none); a move on
+    several lines (`SheetMove.lines`); the remap's surfaces (`RemapTo.on`: `pave`, `seat`, `sky`, `out`, and `onWorld`); a
+    spot's surface (`SheetAnchor.on`); a thing's `rolling` (the cart); the new parts `light` and `patch` (words by name) and
+    `carro` (`SheetCarro`: standing, rolling, the sprite's `from` and `at`); and `checks` (`SheetChecks`: notes, and
+    `notFixed`, what and why), read from `raw` while `checks` stays in `unknown` as for the earlier sheets. The earlier
+    sheets read as before.
+  - `test/banco_sheet_test.dart`: the reader against El banco's real sheet (the file on the vm, the fixture in chrome).
 - Since order 12b it also holds `hexColour` (`colour.dart`): `"#RRGGBB"` as the int `0xFFBBGGRR`, for a colour that is made once. `hexColours` (a list of them) stays under `src/`.
 
 ## Run and test it alone
@@ -138,7 +153,7 @@ node tool/make_dash_ref.mjs [--check]    # test/support/fixtures/ref_dash.dart: 
 ```
 
 ```
-dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart, sala_sheet.dart, patio_sheet.dart, camino_sheet.dart, campo_sheet.dart and lago_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
+dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart, sala_sheet.dart, patio_sheet.dart, camino_sheet.dart, campo_sheet.dart, lago_sheet.dart and banco_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
 ```
 
 `test/pp_frente_test.dart` rebuilds the Nov 14 one-state El frente (an old frente-set.html) as a test of `PpBuild`'s helpers at S = 26. That picture is no longer in `coqui/ref/pp/` (order 07 replaced it with El frente's 25 states): its bytes are `test/support/fixtures/frente_nov14.dart`, read on every platform, and nothing makes that file again. The 25 states are order 14's.

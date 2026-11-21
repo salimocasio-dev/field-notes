@@ -1,6 +1,7 @@
 // The app in a widget test: the real modules, the real progress store, the real catalog reading the real files under
 // historia/ from disk, the real scene pictures; fakes only where a phone is needed (sound, speech, the call, the clock,
 // haptics, the build facts).
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/src/app.dart';
@@ -12,8 +13,8 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_ui/material_ui.dart';
 
 /// The repository's root (the tests run in coqui/app).
 final String repoRoot = Directory.current.parent.parent.path;
@@ -99,6 +100,9 @@ class TestApp {
   /// The network is down: every fetch fails.
   bool offline = false;
 
+  /// Changes a content file as it is fetched (its path under historia/, its text): a test's own content.
+  String Function(String path, String text)? editContent;
+
   /// The preview content the app is built with (`previa.dart`); null: none, as the tests of the site's own files want.
   PreviaRead? previa;
 
@@ -153,8 +157,10 @@ class TestApp {
       if (offline) return Future.error(const SocketException('offline'));
       final f = File('$repoRoot/historia/$path');
       if (!f.existsSync()) return Future.error(StateError('404 $path'));
-      return Future.value(f.readAsStringSync());
+      final text = f.readAsStringSync();
+      return Future.value(editContent?.call(path, text) ?? text);
     },
+    bundle: TestSceneBundle(),
     contentBase: contentBaseOf(Uri.parse('http://127.0.0.1/field-notes/app/')),
     storage: () async => spaces.storage,
     clipPlayer: (lookup) => clips = TimedClips(lookup),
@@ -240,3 +246,43 @@ Finder byTypeName(String name) =>
 /// feature reads it, without naming its type.
 dynamic stateNamed(WidgetTester tester, String name) =>
     tester.state(byTypeName(name));
+
+/// TEST-ONLY. A scene that is not converted and never will be: no scene of coqui_scenes' registry has its id. Its old
+/// pictures are order 06's pictures of El banco (coqui/ref/escenas/banco/pairs/), as they were before order 36b converted
+/// El banco. The test of ¿Cuál?'s old pictures puts a review set at it (TestApp.editContent), so that it does not depend
+/// on which real scenes are converted (order 36b).
+const String testSceneId = 'prueba';
+
+/// Where the test scene's old pictures are: the folder of order 06's pictures it takes them from.
+String get testScenePictures => '$repoRoot/coqui/ref/escenas/banco/pairs';
+
+/// The root bundle, with the old pictures of the test scene ([testSceneId]) added, read from [testScenePictures]: what
+/// ScenePictures reads them from, as it reads a real scene's from the package's assets.
+class TestSceneBundle extends CachingAssetBundle {
+  static const _at = 'packages/coqui_scenes/assets/old_pictures/$testSceneId/';
+
+  ByteData _bytes(List<int> b) => ByteData.sublistView(Uint8List.fromList(b));
+
+  @override
+  Future<ByteData> load(String key) async {
+    if (key.startsWith(_at)) {
+      final file = key.substring(_at.length);
+      if (file == 'index.json') {
+        final names = [
+          for (final f in Directory(testScenePictures).listSync())
+            if (f.path.endsWith('.png')) f.uri.pathSegments.last,
+        ]..sort();
+        return _bytes(
+          utf8.encode(
+            jsonEncode({
+              for (final f in names) f.substring(0, f.length - 4): f,
+            }),
+          ),
+        );
+      }
+      final f = File('$testScenePictures/$file');
+      if (f.existsSync()) return _bytes(f.readAsBytesSync());
+    }
+    return rootBundle.load(key);
+  }
+}

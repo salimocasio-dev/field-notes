@@ -16,6 +16,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'support/content_files.dart';
 import 'support/fixtures/old_hashes.dart';
+import 'support/fixtures/test_scene.dart';
 import 'support/hash.dart';
 import 'support/pairs.dart';
 import 'support/sheet_bundle.dart';
@@ -323,8 +324,11 @@ void main() {
   });
 
   group('a scene that is not converted shows its old picture', () {
-    // the scene whose old pictures a browser test has (the last one that is not converted); on the vm every scene is there
-    final scene = oldSampleScene, index = oldSampleIndex;
+    // the test scene (test/support/fixtures/test_scene.dart): a scene that is never converted, its old pictures three of
+    // order 06's; so these tests do not depend on which real scenes are converted yet (order 36b: they used the last real
+    // scene not converted, El banco's la-piragua and its pictures until then)
+    const scene = testSceneId;
+    final index = testSceneIndex;
     final review = index.keys.firstWhere((n) => n.endsWith('.si'));
     final level = index.keys.firstWhere((n) => n.startsWith('nivel.'));
     PictureRef named(String name) =>
@@ -333,22 +337,22 @@ void main() {
     testWidgets('a review picture is 196 x 104, a level cell 96 x 106', (
       tester,
     ) async {
-      final source = ScenePictures(bundle: testBundle());
+      final source = ScenePictures(bundle: TestSceneBundle());
       await show(tester, source.of(named(review)));
       var view = tester.widget<PixelView>(find.byType(PixelView));
       expect([view.width, view.height], [196, 104]);
-      expect(hashOf(view.pixels), oldHashes['$scene/$review']);
+      expect(hashOf(view.pixels), testSceneHashes[review]);
       await show(tester, source.of(named(level), width: 96, height: 106));
       view = tester.widget<PixelView>(find.byType(PixelView));
       expect([view.width, view.height], [96, 106]);
-      expect(hashOf(view.pixels), oldHashes['$scene/$level']);
+      expect(hashOf(view.pixels), testSceneHashes[level]);
       await settle(tester);
     });
 
     testWidgets(
       'the names are the ones PictureRef.of and PictureRef.ofLevel make',
       (tester) async {
-        final source = ScenePictures(bundle: testBundle());
+        final source = ScenePictures(bundle: TestSceneBundle());
         final word = review.substring(0, review.length - 3);
         final pair = ReviewPair(
           word: word,
@@ -361,7 +365,7 @@ void main() {
         await show(tester, source.of(PictureRef.of(pair, pair.yes)));
         expect(
           hashOf(tester.widget<PixelView>(find.byType(PixelView)).pixels),
-          oldHashes['$scene/$review'],
+          testSceneHashes[review],
         );
         // a level cell: nivel.<item word>.<index>
         final parts = level.split('.');
@@ -381,14 +385,14 @@ void main() {
         await show(tester, source.of(ref, width: 96, height: 106));
         expect(
           hashOf(tester.widget<PixelView>(find.byType(PixelView)).pixels),
-          oldHashes['$scene/$level'],
+          testSceneHashes[level],
         );
         await settle(tester);
       },
     );
 
     testWidgets('any other size fails clearly', (tester) async {
-      final source = ScenePictures(bundle: testBundle());
+      final source = ScenePictures(bundle: TestSceneBundle());
       for (final (w, h) in [(98, 52), (196, 106), (96, 104)]) {
         await show(tester, source.of(named(review), width: w, height: h));
         expect(find.byType(PixelView), findsNothing, reason: '$w x $h');
@@ -407,7 +411,7 @@ void main() {
     testWidgets(
       'a reference with no name fails clearly, saying how to make one',
       (tester) async {
-        final source = ScenePictures(bundle: testBundle());
+        final source = ScenePictures(bundle: TestSceneBundle());
         await show(
           tester,
           source.of(PictureRef(scene: scene, cam: const [0, 0, 196, 104])),
@@ -428,7 +432,7 @@ void main() {
     testWidgets(
       'a name with no old picture, and a scene that is not one, fail clearly',
       (tester) async {
-        final source = ScenePictures(bundle: testBundle());
+        final source = ScenePictures(bundle: TestSceneBundle());
         await show(tester, source.of(named('nada.si')));
         expect(
           errorText(tester),
@@ -450,7 +454,7 @@ void main() {
     );
 
     testWidgets('animated does nothing for an old picture', (tester) async {
-      final source = ScenePictures(bundle: testBundle());
+      final source = ScenePictures(bundle: TestSceneBundle());
       await show(tester, source.of(named(review), animated: true));
       final view = tester.widget<PixelView>(find.byType(PixelView));
       final first = List<int>.of(view.pixels);
@@ -458,18 +462,18 @@ void main() {
         await tester.pump(const Duration(milliseconds: 70));
       }
       expect(view.pixels, first);
-      expect(hashOf(view.pixels), oldHashes['$scene/$review']);
+      expect(hashOf(view.pixels), testSceneHashes[review]);
       await settle(tester);
     });
 
     test(
       'warm decodes ahead, and fails for a reference it cannot find',
       () async {
-        final source = ScenePictures(bundle: testBundle());
+        final source = ScenePictures(bundle: TestSceneBundle());
         await source.warm([named(review), named(level)]);
         expect(
           hashOf(await source.pixels(named(review))),
-          oldHashes['$scene/$review'],
+          testSceneHashes[review],
         );
         await expectLater(
           source.warm([
@@ -484,13 +488,25 @@ void main() {
       },
     );
 
-    test('every old picture of every scene that is not converted decodes to its hash', () async {
+    test('every old picture of the test scene decodes to its hash', () async {
+      final source = OldPictures(bundle: TestSceneBundle());
+      final idx = await source.indexOf(scene);
+      expect(idx.keys, testSceneHashes.keys);
+      for (final name in idx.keys) {
+        final pic = await source.picture(scene, name);
+        final size = name.startsWith('nivel.') ? [96, 106] : [196, 104];
+        expect([pic.width, pic.height], size, reason: name);
+        expect(hashOf(pic.pixels), testSceneHashes[name], reason: name);
+      }
+    });
+
+    test('every old picture of every real scene that is not converted decodes to its hash', () async {
       final source = OldPictures(bundle: testBundle());
       var n = 0;
       for (final id in sceneRegistry.keys) {
         if (convertedScenes.contains(id)) continue;
         // on the vm every scene's folder is there; in a browser only the sample scene's
-        if (kIsWeb && id != scene) continue;
+        if (kIsWeb && id != oldSampleScene) continue;
         final idx = await source.indexOf(id);
         expect(idx, isNotEmpty, reason: id);
         for (final name in idx.keys) {
@@ -505,9 +521,9 @@ void main() {
           n++;
         }
       }
-      // on the vm: 160 old pictures of the 4 scenes not converted (El balcón's 36 went at order 30b, La sala's 50 at 31b,
-      // El patio's 52 at 32b, El camino's 41 at 33b, El campo's 38 at 34b, El lago's 38 at 35b)
-      expect(n, kIsWeb ? greaterThan(30) : 160);
+      // on the vm: every old picture of the real scenes not converted yet (tool/make_old_pictures.dart writes their
+      // hashes; none once every scene is converted)
+      if (!kIsWeb) expect(n, oldHashes.length);
     });
   });
 

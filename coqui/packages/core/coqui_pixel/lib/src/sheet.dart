@@ -179,6 +179,7 @@ class SheetThing {
     this.hand,
     this.hintBox,
     this.screenRect,
+    this.rolling,
   });
 
   final String id;
@@ -190,6 +191,9 @@ class SheetThing {
   /// El camino's (order 33b): the screen box of a set thing given as its corners (`screen`: `[x0, y0, x1, y1]`); the
   /// same rectangle as [box]. Null when `screen` is a shape (the sun's, [screen]) or absent.
   final List<int>? screenRect;
+
+  /// El banco's cart (order 36b): how its box moves while it rolls, in the sheet's words (`rolling`), or null.
+  final String? rolling;
 
   /// El patio's (order 32b): the point the hint hand points at (`hand`, kit.js cosas: `hand`, given as `[x, y]`), when
   /// the box's middle is not the place; null for a thing with none (or one that gives it otherwise: El balcón's door).
@@ -264,6 +268,10 @@ class SheetAnchor {
   /// `q.y` (the floor point under `q.x + 16`, `q.y + 25` is [world]); a person's: their `x`, `y` (the floor point
   /// under `x`, `y - 1`). The room is built round the old picture, so it is the old place but where the sheet moves it.
   final List<num>? now;
+
+  /// El banco's (order 36b): the surface the place is on, in the sheet's word (`pave`, `seat`, `wire`, `back`, `out`), or
+  /// null.
+  String? get on => raw['on'] is String ? raw['on'] as String : null;
 
   /// The old screen position; empty for a point the old scene had no place for (El camino's `arco`).
   final List<num> old;
@@ -460,7 +468,15 @@ class RemapTo {
     this.level = false,
     this.floor,
     this.screen,
+    this.on,
+    this.onWorld,
   });
+
+  /// El banco's (order 36b): the surface under the place (`pave`, `seat`, `sky`, `out`: the paving, a bench's seat, the
+  /// ground under a point in the air, the path beyond the gate) and its world point there; the place today is
+  /// [SheetRemap.now]. Null for the earlier sheets.
+  final String? on;
+  final List<double>? onWorld;
 
   final String? point;
   final List<double>? world;
@@ -571,7 +587,10 @@ class SetKeyParam {
 
 /// One baked state: the reference folder and the page's query that made it.
 class SheetBaked {
-  SheetBaked._(this.ref, this.query, this.reached);
+  SheetBaked._(this.ref, this.query, this.reached, {this.key});
+
+  /// The state's key (`setKey.key` of its W), when the sheet gives it (El banco's: `"dia.0.abierto"`).
+  final String? key;
 
   /// The reference folder (`coqui/ref/pp/frente/<state>`), when the sheet names it.
   final String? ref;
@@ -590,8 +609,12 @@ class SheetSetKey {
     this.bakedWhy,
     this.notRead,
     this.old,
-    this.raw,
-  );
+    this.raw, {
+    this.notReached = const [],
+  });
+
+  /// The keys of the states the set can bake that nothing reaches (El banco's), when the sheet lists them.
+  final List<String> notReached;
 
   /// In the sheet's order: `door`, `win`, `lights`, `sky`, `hide`, `rustle`, `side`.
   final Map<String, SetKeyParam> params;
@@ -643,11 +666,25 @@ class SheetShadow {
 /// What a screen position of the old scene file becomes (`code`): the old file's line, the old numbers in words, and
 /// what replaces them. Data for the porting builder, as the sheet has it.
 class SheetCode {
-  SheetCode._(this.line, this.old, this.to, this.note, this.raw);
+  SheetCode._(
+    this.line,
+    this.old,
+    this.to,
+    this.note,
+    this.raw, {
+    this.numbers = const {},
+  });
 
   /// The old file's line (a number), or a line of another file (`"juego.js:16"`).
   final Object line;
+
+  /// The old numbers in words (`"MUELLE [26,152,112,13]; ..."`); empty when the sheet lists them by kind instead
+  /// ([numbers], El banco's).
   final String old;
+
+  /// El banco's (order 36b): every number of the line, as its source writes it, by kind (`place`, `offset`, `scale`,
+  /// `count`, `time`, `sound`, `drawing`, `state`, `order`, `other`, `dropped`). Empty for the earlier sheets.
+  final Map<String, List<String>> numbers;
 
   /// A string (what happens to it: `"sky: unchanged"`, `"dropped: the set"`) or an object (`point`, `spot`, `frame`,
   /// `clip`, `thing`, `view` with its numbers).
@@ -780,9 +817,14 @@ class SheetMove {
     this.values = const [],
     this.respEn,
     this.shift,
+    this.lines = const [],
   });
 
   final int line;
+
+  /// El banco's (order 36b): every line of the old file the same piece of source is on (`lines`: the move replaces it
+  /// on each), [line] the first; empty when the sheet gives one line only.
+  final List<int> lines;
   final String act;
   final String src, to;
 
@@ -831,9 +873,14 @@ class SheetTalk {
     this.boards,
     this.raw, {
     this.boardRect,
+    this.heights = const {},
   });
 
   final String? what, top, faces;
+
+  /// El banco's (order 36b): each person's sprite's height by `<who>.<sent>` (`luis.0`: standing, `luis.1`: sitting),
+  /// from which the sheet's words in [faces] place the face. Empty for the earlier sheets ([heads]).
+  final Map<String, int> heights;
 
   /// El campo's (order 34b): its one corner card's rectangle in the display (`board`: W.tarjeta, the rounds card),
   /// `[x, y, w, h]`, plus the view's x0 on the picture; null for a sheet that gives its cards in words ([boards]).
@@ -957,10 +1004,19 @@ class SheetHop {
     this.now,
     this.dOld,
     this.dNow,
-    this.raw,
-  );
+    this.raw, {
+    this.aAt,
+    this.bAt,
+    this.aNow,
+    this.bNow,
+    this.by,
+  });
 
+  /// The two ends: names of the frog's places, or (El banco's) `"x,y"`, a screen point of his feet ([aAt], [bAt]: the
+  /// old points; [aNow], [bNow]: today's; [by]: what walks it).
   final String a, b;
+  final List<num>? aAt, bAt, aNow, bNow;
+  final String? by;
   final int old, now;
   final double dOld, dNow;
   final Map<String, dynamic> raw;
@@ -1087,16 +1143,27 @@ class SheetPatch {
 class SheetHelps {
   SheetHelps._(
     this.what,
-    this.ring,
+    this._ring,
     this.margin,
     this.edge,
     this.shore,
     this.lines,
-    this.raw,
-  );
+    this.raw, {
+    this.shadowGs,
+    this.shadowGsSource,
+    this.linesWhat,
+  });
 
   final String? what, shore;
-  final SheetRing ring;
+  final SheetRing? _ring;
+
+  /// The ripple ring (El campo's and El lago's). A sheet with none (El banco's, order 36b) throws [SheetError].
+  SheetRing get ring =>
+      _ring ?? (throw SheetError('the sheet\'s helps have no ring'));
+
+  /// El banco's (order 36b): the shadow of a pigeon in the air (`helps.shadow`): the rule in words ([shadowGs]) and the
+  /// function the sheet's lines call (`GS`), as its source ([shadowGsSource]). [linesWhat]: the lines in words.
+  final String? shadowGs, shadowGsSource, linesWhat;
   final num? margin, edge;
   final List<({String src, String to})> lines;
   final Map<String, dynamic> raw;
@@ -1104,6 +1171,39 @@ class SheetHelps {
 
 SheetHelps _readHelps(Object? v, String at) {
   final m = _obj(v, at);
+  // El banco's helps (order 36b) have no ring: a pigeon's shadow in the air (`shadow`)
+  if (!m.containsKey('ring') && m.containsKey('shadow')) {
+    final sh = _obj(m['shadow'], '$at.shadow');
+    final lines = m.containsKey('lines')
+        ? _list(m['lines'], '$at.lines')
+        : const [];
+    return SheetHelps._(
+      _opt(m, 'what', (v) => _str(v, '$at.what')),
+      null,
+      _opt(m, 'margin', (v) => _num(v, '$at.margin')),
+      _opt(m, 'edge', (v) => _num(v, '$at.edge')),
+      _opt(m, 'shore', (v) => _str(v, '$at.shore')),
+      [
+        for (var i = 0; i < lines.length; i++)
+          () {
+            final l = _strs(lines[i], '$at.lines[$i]');
+            if (l.length != 2) {
+              throw SheetError(
+                '$at.lines[$i]: two pieces of source were expected',
+              );
+            }
+            return (src: l[0], to: l[1]);
+          }(),
+      ],
+      m,
+      shadowGs: _opt(sh, 'gs', (v) => _str(v, '$at.shadow.gs')),
+      shadowGsSource: _str(
+        _need(sh, 'gsSource', '$at.shadow'),
+        '$at.shadow.gsSource',
+      ),
+      linesWhat: _opt(m, 'linesWhat', (v) => _str(v, '$at.linesWhat')),
+    );
+  }
   final r = _obj(_need(m, 'ring', at), '$at.ring');
   double n(Map<String, dynamic> o, String k, String a) =>
       _num(_need(o, k, a), '$a.$k').toDouble();
@@ -1171,6 +1271,26 @@ SheetHelps _readHelps(Object? v, String at) {
   );
 }
 
+/// El banco's cart (`carro`, order 36b): standing it is the set's (setKey carro abierto or cerrado); rolling (W.carroX)
+/// the set has none and the sprite layer draws the set's own cart: the pixels of the part `carro` in the state [from]
+/// names (its light and moon, the cart closed), moved as [at] says. Each in the sheet's words.
+class SheetCarro {
+  SheetCarro._(this.standing, this.rolling, this.from, this.at, this.raw);
+
+  final String standing, rolling, from, at;
+  final Map<String, dynamic> raw;
+}
+
+/// The checks the sheet's maker ran (`checks`): its [notes], and what it found and did not fix ([notFixed], El banco's,
+/// order 36b: what and why).
+class SheetChecks {
+  SheetChecks._(this.notes, this.notFixed, this.raw);
+
+  final List<String> notes;
+  final List<({String what, String why})> notFixed;
+  final Map<String, dynamic> raw;
+}
+
 /// Everyone leaving through a gate in a file (`sevan`, El camino's, order 33b: acts.sevan as the sheet's `moves` gives
 /// it): each one's [delay] in ticks after the first, and each one's two [points] on the screen, just inside the
 /// opening and just past it (a person's or an animal's feet, the frog's `q`); [a], [b]: the same, from the opening's
@@ -1233,6 +1353,7 @@ class Sheet {
     required this.raw,
     required this.unknown,
     this.screenPoints = const {},
+    this.otherPoints = const {},
     this.moves = const [],
     this.smoothing = const [],
     this.smoothingWhat,
@@ -1247,6 +1368,9 @@ class Sheet {
     this.helps,
     this.frontWaterDepth,
     this.frontTags = const [],
+    this.light = const {},
+    this.patch = const {},
+    this.carro,
   });
 
   /// Parses the text of a sheet. Throws [SheetError], naming where, when it is not a sheet.
@@ -1298,7 +1422,8 @@ class Sheet {
     }
 
     final pointsRaw = _obj(_need(m, 'points', at), '$at.points');
-    final smoothingRaw = m.containsKey('smoothing')
+    // El banco's `smoothing` (order 36b) is words only: the scene never turns smoothing on
+    final smoothingRaw = m.containsKey('smoothing') && m['smoothing'] is! String
         ? _obj(m['smoothing'], '$at.smoothing')
         : null;
     const known = {
@@ -1334,6 +1459,9 @@ class Sheet {
       'flowerLeaves',
       'sevan',
       'helps',
+      'light',
+      'patch',
+      'carro',
     };
     // El patio's `behind` (a part: what is drawn behind the set) is not El balcón's (a number, old and new)
     final behindPart =
@@ -1397,7 +1525,7 @@ class Sheet {
           : const {},
       points: {
         for (final e in pointsRaw.entries)
-          if (_isWorldPoint(_obj(e.value, '$at.points.${e.key}')['world']))
+          if (_pointKind(e.value) == 'anchor')
             e.key: _readAnchor(
               e.key,
               e.value as Map<String, dynamic>,
@@ -1409,12 +1537,16 @@ class Sheet {
         for (final e in pointsRaw.entries)
           // El campo's shore (`orilla_linea`, order 34b) is a line, its world a number (x = c): a screen point; El lago's
           // dock (a box, six numbers) and mooring posts (a list of points), order 35b, too
-          if (!_isWorldPoint((e.value as Map<String, dynamic>)['world']))
+          if (_pointKind(e.value) == 'screen')
             e.key: _readScreenPoint(
               e.key,
               e.value as Map<String, dynamic>,
               '$at.points.${e.key}',
             ),
+      },
+      otherPoints: {
+        for (final e in pointsRaw.entries)
+          if (_pointKind(e.value) == 'other') e.key: e.value,
       },
       views: _byName(
         _need(m, 'views', at),
@@ -1544,7 +1676,9 @@ class Sheet {
                   );
                 }(),
             ],
-      smoothingWhat: smoothingRaw == null
+      smoothingWhat: m['smoothing'] is String
+          ? m['smoothing'] as String
+          : smoothingRaw == null
           ? null
           : _opt(smoothingRaw, 'what', (v) => _str(v, '$at.smoothing.what')),
       notSmoothing: smoothingRaw == null
@@ -1581,6 +1715,15 @@ class Sheet {
           : null,
       helps: m.containsKey('helps')
           ? _readHelps(m['helps'], '$at.helps')
+          : null,
+      light: m.containsKey('light')
+          ? _words(m['light'], '$at.light')
+          : const {},
+      patch: m.containsKey('patch')
+          ? _words(m['patch'], '$at.patch')
+          : const {},
+      carro: m.containsKey('carro')
+          ? _readCarro(m['carro'], '$at.carro')
           : null,
       frontWaterDepth: _opt(
         front,
@@ -1692,6 +1835,27 @@ class Sheet {
   /// La sala's (order 31b): the named points given on the screen only (`points` with no world point); [points] holds
   /// those with one.
   final Map<String, SheetScreenPoint> screenPoints;
+
+  /// El banco's (order 36b): the light of each hour and the rules that go with it (`light`: `tarde`, `noche`,
+  /// `sprites`, `shadows`), in the sheet's words; empty for the earlier sheets.
+  final Map<String, String> light;
+
+  /// El banco's (order 36b): the old page's copied patch of its background (`patch`: `old`, `what`, `kept`), in words.
+  final Map<String, String> patch;
+
+  /// El banco's cart (order 36b): standing (the set's) and rolling (the sprite layer's), or null.
+  final SheetCarro? carro;
+
+  /// The checks the sheet's maker ran (`checks`: `notes`, and El banco's `notFixed`, order 36b), read from [raw]: the
+  /// part stays in [unknown], as for the earlier sheets. Null when the sheet has none.
+  SheetChecks? get checks => raw.containsKey('checks')
+      ? _readChecks(raw['checks'], r'$.checks')
+      : null;
+
+  /// The `points` that are neither (El banco's, order 36b: the benches as a list, the paving's edge, the hedge, the
+  /// gate's posts, the pole, the lamp post, the wire, the pool, the trees, the cart, and their words), as the sheet
+  /// writes them. The scene takes their numbers from the set itself (banco-set.html); they are kept to check against.
+  final Map<String, Object?> otherPoints;
 
   /// The places of the old scene file the sheet moves (`moves`), in the sheet's order.
   final List<SheetMove> moves;
@@ -2051,6 +2215,7 @@ SheetThing _readThing(String id, Map<String, dynamic> m, String at) {
     hand: m['hand'] is List ? _ints(m['hand'], '$at.hand', length: 2) : null,
     hintBox: _opt(m, 'hintBox', (v) => _ints(v, '$at.hintBox', length: 4)),
     screenRect: screenRect,
+    rolling: _opt(m, 'rolling', (v) => _str(v, '$at.rolling')),
   );
 }
 
@@ -2081,10 +2246,66 @@ SheetAnchor _readAnchor(
   );
 }
 
+// A part of the sheet that is words by name (El banco's `light`, `patch`)
+Map<String, String> _words(Object? v, String at) => {
+  for (final e in _obj(v, at).entries) e.key: _str(e.value, '$at.${e.key}'),
+};
+
+SheetCarro _readCarro(Object? v, String at) {
+  final m = _obj(v, at);
+  final sp = _obj(_need(m, 'sprite', at), '$at.sprite');
+  return SheetCarro._(
+    _str(_need(m, 'standing', at), '$at.standing'),
+    _str(_need(m, 'rolling', at), '$at.rolling'),
+    _str(_need(sp, 'from', '$at.sprite'), '$at.sprite.from'),
+    _str(_need(sp, 'at', '$at.sprite'), '$at.sprite.at'),
+    m,
+  );
+}
+
+SheetChecks _readChecks(Object? v, String at) {
+  final m = _obj(v, at);
+  final nf = m.containsKey('notFixed')
+      ? _list(m['notFixed'], '$at.notFixed')
+      : const [];
+  return SheetChecks._(
+    m.containsKey('notes') ? _strs(m['notes'], '$at.notes') : const [],
+    [
+      for (var i = 0; i < nf.length; i++)
+        () {
+          final o = _obj(nf[i], '$at.notFixed[$i]');
+          return (
+            what: _str(
+              _need(o, 'what', '$at.notFixed[$i]'),
+              '$at.notFixed[$i].what',
+            ),
+            why: _str(
+              _need(o, 'why', '$at.notFixed[$i]'),
+              '$at.notFixed[$i].why',
+            ),
+          );
+        }(),
+    ],
+    m,
+  );
+}
+
 // A point's `world` that is one world point (x, y, z), so the point is an anchor: not El campo's shore (one number), not
 // El lago's dock (a box of six) or its mooring posts (a list of points)
 bool _isWorldPoint(Object? w) =>
     w is List && w.length == 3 && w.every((v) => v is num);
+
+// What a `points` entry is: an anchor (a world point, with its screen place or its `new`), a screen point (a `screen`,
+// its world not one point), or neither (El banco's, order 36b: a list, words, or a part of the set given by its
+// numbers: the benches, the paving's edge, the hedge, the gate's posts, the pole, the lamp post, the wire, the pool, the
+// trees, the cart), kept as it is ([Sheet.otherPoints])
+String _pointKind(Object? v) {
+  if (v is! Map<String, dynamic>) return 'other';
+  if (_isWorldPoint(v['world'])) {
+    return v.containsKey('screen') || v.containsKey('new') ? 'anchor' : 'other';
+  }
+  return v.containsKey('screen') ? 'screen' : 'other';
+}
 
 SheetScreenPoint _readScreenPoint(
   String name,
@@ -2198,6 +2419,9 @@ List<SheetMove> _readMoves(Object? v, String at) {
               }(),
           ],
           respEn: _opt(o, 'respEn', (v) => _ints(v, '$p.respEn', length: 2)),
+          lines: o.containsKey('lines')
+              ? _ints(o['lines'], '$p.lines')
+              : const [],
           shift: _opt(o, 'shift', (v) {
             final sh = _obj(v, '$p.shift');
             return (
@@ -2217,14 +2441,26 @@ List<SheetHop> _readHops(Object? v, String at) {
     for (var i = 0; i < l.length; i++)
       () {
         final p = '$at[$i]', o = _obj(l[i], p);
+        // El banco's (order 36b): the two ends are screen points of the frog's feet (a walk recorded in the runs), the
+        // old ones and today's (`a2`, `b2`), and the act that walks it (`by`)
+        String end(String k) => o[k] is List
+            ? _nums(o[k], '$p.$k', length: 2).join(',')
+            : _str(_need(o, k, p), '$p.$k');
+        List<num>? pt(String k) =>
+            o[k] is List ? _nums(o[k], '$p.$k', length: 2) : null;
         return SheetHop._(
-          _str(_need(o, 'a', p), '$p.a'),
-          _str(_need(o, 'b', p), '$p.b'),
+          end('a'),
+          end('b'),
           _int(_need(o, 'old', p), '$p.old'),
           _int(_need(o, 'new', p), '$p.new'),
           _num(_need(o, 'dOld', p), '$p.dOld').toDouble(),
           _num(_need(o, 'dNew', p), '$p.dNew').toDouble(),
           o,
+          aAt: pt('a'),
+          bAt: pt('b'),
+          aNow: pt('a2'),
+          bNow: pt('b2'),
+          by: _opt(o, 'by', (v) => _str(v, '$p.by')),
         );
       }(),
   ];
@@ -2309,7 +2545,10 @@ SheetFlowerLeaves _readFlowerLeaves(Object? v, String at) {
 SheetTalk _readTalk(Object? v, String at) {
   final m = _obj(v, at);
   final places = _list(_need(m, 'places', at), '$at.places');
-  final heads = _obj(_need(m, 'heads', at), '$at.heads');
+  // El banco's (order 36b) gives each sprite's height (`heights`) and its faces in words, no `heads`
+  final heads = m.containsKey('heads') || !m.containsKey('heights')
+      ? _obj(_need(m, 'heads', at), '$at.heads')
+      : const <String, dynamic>{};
   return SheetTalk._(
     _opt(m, 'what', (v) => _str(v, '$at.what')),
     _opt(m, 'top', (v) => _str(v, '$at.top')),
@@ -2343,6 +2582,12 @@ SheetTalk _readTalk(Object? v, String at) {
         : _str(_need(m, 'boardWhat', at), '$at.boardWhat'),
     m,
     boardRect: _opt(m, 'board', (v) => _ints(v, '$at.board', length: 4)),
+    heights: m.containsKey('heights')
+        ? {
+            for (final e in _obj(m['heights'], '$at.heights').entries)
+              e.key: _int(e.value, '$at.heights.${e.key}'),
+          }
+        : const {},
   );
 }
 
@@ -2499,6 +2744,14 @@ SheetShadow _readShadow(String who, Map<String, dynamic> m, String at) {
   );
 }
 
+// El banco's remap (order 36b): the surface a point's `to` names (its world point under it)
+String? _surfaceOf(Map<String, dynamic> to) {
+  for (final k in const ['pave', 'seat', 'sky', 'out']) {
+    if (to.containsKey(k)) return k;
+  }
+  return null;
+}
+
 List<SheetRemap> _readRemapTable(Object? v, String at) {
   final l = _list(v, at);
   return [
@@ -2545,6 +2798,14 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
               'screen',
               (v) => _doubles(v, '$p.to.screen', length: 2),
             ),
+            on: _surfaceOf(t),
+            onWorld: _surfaceOf(t) == null
+                ? null
+                : _doubles(
+                    t[_surfaceOf(t)],
+                    '$p.to.${_surfaceOf(t)}',
+                    length: 3,
+                  ),
           ),
           _opt(m, 'screen', (v) => _doubles(v, '$p.screen', length: 2)),
           _opt(m, 'crop', (v) => _ints(v, '$p.crop', length: 4)),
@@ -2601,6 +2862,10 @@ SheetSetKey _readSetKey(Object? v, String at) {
     {
       for (final e in params.entries)
         e.key: () {
+          // El banco's (order 36b): a parameter is the words of how W gives it, its values in the baked keys
+          if (e.value is String) {
+            return SetKeyParam._(e.key, const [], e.value as String, const {});
+          }
           final p = _obj(e.value, '$at.params.${e.key}');
           final values = _need(p, 'values', '$at.params.${e.key}');
           return SetKeyParam._(
@@ -2626,6 +2891,7 @@ SheetSetKey _readSetKey(Object? v, String at) {
             _opt(b, 'ref', (v) => _str(v, '$at.baked[$i].ref')),
             _str(_need(b, 'query', '$at.baked[$i]'), '$at.baked[$i].query'),
             _opt(b, 'reached', (v) => _str(v, '$at.baked[$i].reached')),
+            key: _opt(b, 'key', (v) => _str(v, '$at.baked[$i].key')),
           );
         }(),
     ],
@@ -2633,6 +2899,9 @@ SheetSetKey _readSetKey(Object? v, String at) {
     _opt(m, 'notRead', (v) => _str(v, '$at.notRead')),
     _opt(m, 'old', (v) => _str(v, '$at.old')),
     m,
+    notReached: m.containsKey('notReached')
+        ? _strs(m['notReached'], '$at.notReached')
+        : const [],
   );
 }
 
@@ -2654,12 +2923,22 @@ List<SheetCode> _readCodeList(Object? v, String at) {
             '$at[$i].to: a string or an object was expected, found ${_what(to)}',
           );
         }
+        // El banco's entries (order 36b) list their numbers by kind, with no `old` words; an entry may have neither
+        final numbers = m['numbers'];
         return SheetCode._(
           line!,
-          _str(_need(m, 'old', '$at[$i]'), '$at[$i].old'),
+          m.containsKey('old') || numbers == null && !m.containsKey('note')
+              ? _str(_need(m, 'old', '$at[$i]'), '$at[$i].old')
+              : '',
           to,
           _opt(m, 'note', (v) => _str(v, '$at[$i].note')),
           m,
+          numbers: numbers == null
+              ? const {}
+              : {
+                  for (final e in _obj(numbers, '$at[$i].numbers').entries)
+                    e.key: _strs(e.value, '$at[$i].numbers.${e.key}'),
+                },
         );
       }(),
   ];

@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 492,
-  "totalBytes": 32452299,
+  "files": 548,
+  "totalBytes": 35864227,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -162,6 +162,286 @@
       "path": "balcon/door-shut-win-shut/zb.json",
       "bytes": 322,
       "sha256": "38eecdec7315580a5ee4b9e6a185ed7d823c8cad18953cfee51c7e2ddb4f124c"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-abierto/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a01d522b1e429491121c45ef0849f8403863efeb262f807372c1c3ed903721ba"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-abierto/kinds.json",
+      "bytes": 305,
+      "sha256": "cc747693f111accc50122b2f567606d4d7d69ea8a18deffa157ee08fd5e39b89"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-abierto/pix.bin",
+      "bytes": 207360,
+      "sha256": "6a69d3f52d25c0d327e9e1e1801f087ddc18d1cc9464588149f481b8778d2be8"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-abierto/pix.json",
+      "bytes": 370,
+      "sha256": "83edc4d8bea391994a5a2495183093ae31200e77755459334bbdb09feabe0a32"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-abierto/pix.png",
+      "bytes": 13934,
+      "sha256": "a4ea6f1bed9d500ec019927202a35835910b6a47c6275f394c362ea76c0f9e70"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-abierto/state.json",
+      "bytes": 961,
+      "sha256": "199ad728f1ff64ff1a09babf8c497f53a5591ec4888fa2e380691bd083746e0f"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-abierto/zb.bin",
+      "bytes": 207360,
+      "sha256": "049424f95574212fa15454aeeb3bb3881c17be2c0def1ba7ef9ea21081158964"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-abierto/zb.json",
+      "bytes": 322,
+      "sha256": "779a301e4177572c76159be04e6f52d6ea0602656183be976e787b524953667b"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-no/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a01d522b1e429491121c45ef0849f8403863efeb262f807372c1c3ed903721ba"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-no/kinds.json",
+      "bytes": 305,
+      "sha256": "cc747693f111accc50122b2f567606d4d7d69ea8a18deffa157ee08fd5e39b89"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-no/pix.bin",
+      "bytes": 207360,
+      "sha256": "2615c96f60ee101180bc049f122d088a03137699626826698a526b02f55f9ee5"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-no/pix.json",
+      "bytes": 370,
+      "sha256": "4338e289809f778e427be700e7c334bceb1c1cbd1b36dc638d1945b68fb9abff"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-no/pix.png",
+      "bytes": 12836,
+      "sha256": "d2c006b695af987ece47d0b79d0ce8f832f5dd9b25b8a86e2cd7134d1f0c8093"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-no/state.json",
+      "bytes": 951,
+      "sha256": "048e868f14289a8b200ee06feb749d347087963791ca69448dafeac6fff35f21"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-no/zb.bin",
+      "bytes": 207360,
+      "sha256": "709eef3590a9a8b5fd69e1409b944ffbdefcba1531032bbe24989123ca373dd4"
+    },
+    {
+      "path": "banco/luz-dia-luna-0-carro-no/zb.json",
+      "bytes": 322,
+      "sha256": "bcdb985417f25bf540a1cde4ef14f86a857343ea7735245fd2d76caba2a7df7e"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-abierto/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a01d522b1e429491121c45ef0849f8403863efeb262f807372c1c3ed903721ba"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-abierto/kinds.json",
+      "bytes": 305,
+      "sha256": "cc747693f111accc50122b2f567606d4d7d69ea8a18deffa157ee08fd5e39b89"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-abierto/pix.bin",
+      "bytes": 207360,
+      "sha256": "96776f5458d825661cea20330848271ba1cd73797c48f8c84caf5aa983a6b19d"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-abierto/pix.json",
+      "bytes": 370,
+      "sha256": "a0fe051f8329904948d4083861db569c6dce0a3011b5e38fb60d256698e25cdf"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-abierto/pix.png",
+      "bytes": 21337,
+      "sha256": "4ef8820b7c3312514b65e01c17fe1d59b8cc4431d0bc1ffb57cfb40b796f1686"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-abierto/state.json",
+      "bytes": 965,
+      "sha256": "faf699acc53bcde3fab0ae8f70c11c93d193f8412b6fe77606082b51d2201f81"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-abierto/zb.bin",
+      "bytes": 207360,
+      "sha256": "049424f95574212fa15454aeeb3bb3881c17be2c0def1ba7ef9ea21081158964"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-abierto/zb.json",
+      "bytes": 322,
+      "sha256": "779a301e4177572c76159be04e6f52d6ea0602656183be976e787b524953667b"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-cerrado/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a01d522b1e429491121c45ef0849f8403863efeb262f807372c1c3ed903721ba"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-cerrado/kinds.json",
+      "bytes": 305,
+      "sha256": "cc747693f111accc50122b2f567606d4d7d69ea8a18deffa157ee08fd5e39b89"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-cerrado/pix.bin",
+      "bytes": 207360,
+      "sha256": "e7e6295978e7e42557f082f36e53ac76880ca835a6eb4411b50088d93e55fa3d"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-cerrado/pix.json",
+      "bytes": 370,
+      "sha256": "71ceb722144ec659b8650e3a1768b1d2e258a23852dccecf2f361149a0f2d3a0"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-cerrado/pix.png",
+      "bytes": 21323,
+      "sha256": "65dbad4ee20a88d1d3b5a40851bfd3e9941b5d59131b0aadfe6dc2d3bb8b3d80"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-cerrado/state.json",
+      "bytes": 965,
+      "sha256": "d15e2b89be80d93e838f76150b6ab8a0c47b7f8701a765efccbb35a1726ec3c7"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-cerrado/zb.bin",
+      "bytes": 207360,
+      "sha256": "4f97ec8c926d798effa518ae1b9e2df446c1046552b8f7f5578a8b36f9f5a2cd"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-cerrado/zb.json",
+      "bytes": 322,
+      "sha256": "c1bb05564eac5df124c090c3282b7cc13b2b6fa40f9b9eeb8c67e1b44a83bf36"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-no/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a01d522b1e429491121c45ef0849f8403863efeb262f807372c1c3ed903721ba"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-no/kinds.json",
+      "bytes": 305,
+      "sha256": "cc747693f111accc50122b2f567606d4d7d69ea8a18deffa157ee08fd5e39b89"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-no/pix.bin",
+      "bytes": 207360,
+      "sha256": "ede735ce7deff20b2bf4ebff5a7457b3b943f82aa18d7b8ba57bc61256850fc6"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-no/pix.json",
+      "bytes": 370,
+      "sha256": "ea03ac9a13682d1e60873e7d9d13bf18db397520f68cb20c4e1974802ba4eced"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-no/pix.png",
+      "bytes": 20431,
+      "sha256": "aa1ca180c005dfc1f9c05c5efe01ac2a9e60eab3c552c34e4a7b8edc24a5e562"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-no/state.json",
+      "bytes": 955,
+      "sha256": "c21a3791f204bffcfd20061b1e7017aaabfb2fa75bbd460657c6dd439343175e"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-no/zb.bin",
+      "bytes": 207360,
+      "sha256": "709eef3590a9a8b5fd69e1409b944ffbdefcba1531032bbe24989123ca373dd4"
+    },
+    {
+      "path": "banco/luz-noche-luna-0-carro-no/zb.json",
+      "bytes": 322,
+      "sha256": "bcdb985417f25bf540a1cde4ef14f86a857343ea7735245fd2d76caba2a7df7e"
+    },
+    {
+      "path": "banco/luz-noche-luna-1-carro-abierto/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a01d522b1e429491121c45ef0849f8403863efeb262f807372c1c3ed903721ba"
+    },
+    {
+      "path": "banco/luz-noche-luna-1-carro-abierto/kinds.json",
+      "bytes": 305,
+      "sha256": "cc747693f111accc50122b2f567606d4d7d69ea8a18deffa157ee08fd5e39b89"
+    },
+    {
+      "path": "banco/luz-noche-luna-1-carro-abierto/pix.bin",
+      "bytes": 207360,
+      "sha256": "168517e9d1b5dd3c10a22e812616cc07d1f2b427a7561f611a970bbe4e60d7c2"
+    },
+    {
+      "path": "banco/luz-noche-luna-1-carro-abierto/pix.json",
+      "bytes": 370,
+      "sha256": "525295597de38e4af08d52470bd192c454aad19d8ad32d3fa2742d0fe81473b1"
+    },
+    {
+      "path": "banco/luz-noche-luna-1-carro-abierto/pix.png",
+      "bytes": 21399,
+      "sha256": "55734ee65d51517ca8c2fd7c5b3e95e9eb2e6148913e5ae24650a37cffb20913"
+    },
+    {
+      "path": "banco/luz-noche-luna-1-carro-abierto/state.json",
+      "bytes": 965,
+      "sha256": "2da67ecf997f7f9b24a33898309149269217ac54ea5def10a0862207ad1846ab"
+    },
+    {
+      "path": "banco/luz-noche-luna-1-carro-abierto/zb.bin",
+      "bytes": 207360,
+      "sha256": "049424f95574212fa15454aeeb3bb3881c17be2c0def1ba7ef9ea21081158964"
+    },
+    {
+      "path": "banco/luz-noche-luna-1-carro-abierto/zb.json",
+      "bytes": 322,
+      "sha256": "779a301e4177572c76159be04e6f52d6ea0602656183be976e787b524953667b"
+    },
+    {
+      "path": "banco/luz-tarde-luna-0-carro-abierto/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a01d522b1e429491121c45ef0849f8403863efeb262f807372c1c3ed903721ba"
+    },
+    {
+      "path": "banco/luz-tarde-luna-0-carro-abierto/kinds.json",
+      "bytes": 305,
+      "sha256": "cc747693f111accc50122b2f567606d4d7d69ea8a18deffa157ee08fd5e39b89"
+    },
+    {
+      "path": "banco/luz-tarde-luna-0-carro-abierto/pix.bin",
+      "bytes": 207360,
+      "sha256": "ffe56199320a70913bc360cce45a84734d6caa1537a4185402b7a2f2ae9f0be4"
+    },
+    {
+      "path": "banco/luz-tarde-luna-0-carro-abierto/pix.json",
+      "bytes": 370,
+      "sha256": "495fd670061b6ad8202ebb2f7655a9756afe25bcf7082717f434a9dc047cb121"
+    },
+    {
+      "path": "banco/luz-tarde-luna-0-carro-abierto/pix.png",
+      "bytes": 21042,
+      "sha256": "af958e09e3073f2426f4bb68b8c783180a8f5e880713950252402e6ded66fccf"
+    },
+    {
+      "path": "banco/luz-tarde-luna-0-carro-abierto/state.json",
+      "bytes": 965,
+      "sha256": "011c317b8995f794ad6be1687e018d52886231dd8da970371e840456c1456ca9"
+    },
+    {
+      "path": "banco/luz-tarde-luna-0-carro-abierto/zb.bin",
+      "bytes": 207360,
+      "sha256": "049424f95574212fa15454aeeb3bb3881c17be2c0def1ba7ef9ea21081158964"
+    },
+    {
+      "path": "banco/luz-tarde-luna-0-carro-abierto/zb.json",
+      "bytes": 322,
+      "sha256": "779a301e4177572c76159be04e6f52d6ea0602656183be976e787b524953667b"
     },
     {
       "path": "camino/gran-0/kinds.bin",
