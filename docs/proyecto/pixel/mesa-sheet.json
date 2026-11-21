@@ -300,10 +300,10 @@
    "what": "ranaAl(1): the frog serving place 1 (q; his feet at SILLA - 14 + FRX, 188 + FR), in front of the table"
   },
   "rana.2": {
-   "world": [6.0376, 5.6025, 0],
+   "world": [6.1464, 5.6025, 0],
    "on": "floor",
    "old": [122, 163],
-   "new": [116, 168],
+   "new": [118, 169],
    "scale": 1,
    "moved": true,
    "what": "ranaAl(2): the frog serving place 2 (q; his feet at SILLA - 14 + FRX, 188 + FR), in front of the table"
@@ -487,10 +487,10 @@
    "what": "the pastel on the stove's top (draw)"
   },
   "frog.ranaa": {
-   "world": [2.2301, 7.0167, 0],
+   "world": [2.3389, 6.9079, 0],
    "on": "floor",
-   "old": [20, 146],
-   "new": [20, 146],
+   "old": [24, 146],
+   "new": [24, 146],
    "scale": 1,
    "what": "acts.rana (la-mesa beats.53: 40, 173): the frog by the counter"
   },
@@ -525,16 +525,7 @@
    "old": [104, 161]
   }
  },
- "hops": [
-  {
-   "a": "frog.ranaa",
-   "b": "rana.2",
-   "old": 3,
-   "new": 2,
-   "dOld": 103.41,
-   "dNew": 98.49
-  }
- ],
+ "hops": [],
  "hopsWhat": "each pair of the frog's places (LUGAR, the places at each seat and those the acts and the stories give him) whose hop count (mesa.js ranaA: round(d / 40), 1 to 3, d the screen distance between the two frog points) is not the old one; every other pair keeps its count (hopsAll: all 36 pairs)",
  "hopsAll": [
   {
@@ -558,8 +549,8 @@
    "b": "frog.ranaa",
    "old": 2,
    "new": 2,
-   "dOld": 85.33,
-   "dNew": 85.33
+   "dOld": 81.39,
+   "dNew": 81.39
   },
   {
    "a": "frog.centro",
@@ -591,7 +582,7 @@
    "old": 1,
    "new": 1,
    "dOld": 18.11,
-   "dNew": 13.89
+   "dNew": 16.12
   },
   {
    "a": "frog.centro",
@@ -614,8 +605,8 @@
    "b": "frog.ranaa",
    "old": 1,
    "new": 1,
-   "dOld": 31.38,
-   "dNew": 31.38
+   "dOld": 29.55,
+   "dNew": 29.55
   },
   {
    "a": "frog.hm",
@@ -647,7 +638,7 @@
    "old": 2,
    "new": 2,
    "dOld": 86.58,
-   "dNew": 80.16
+   "dNew": 82.1
   },
   {
    "a": "frog.hm",
@@ -662,8 +653,8 @@
    "b": "frog.ranaa",
    "old": 2,
    "new": 2,
-   "dOld": 85.33,
-   "dNew": 85.33
+   "dOld": 81.39,
+   "dNew": 81.39
   },
   {
    "a": "frog.inicio",
@@ -695,7 +686,7 @@
    "old": 1,
    "new": 1,
    "dOld": 18.11,
-   "dNew": 13.89
+   "dNew": 16.12
   },
   {
    "a": "frog.inicio",
@@ -710,40 +701,40 @@
    "b": "frog.th",
    "old": 1,
    "new": 1,
-   "dOld": 38.95,
-   "dNew": 38.95
+   "dOld": 35.51,
+   "dNew": 35.51
   },
   {
    "a": "frog.ranaa",
    "b": "rana.0",
    "old": 1,
    "new": 1,
-   "dOld": 56.61,
-   "dNew": 56.61
+   "dOld": 52.81,
+   "dNew": 52.81
   },
   {
    "a": "frog.ranaa",
    "b": "rana.1",
    "old": 2,
    "new": 2,
-   "dOld": 79.83,
-   "dNew": 79.83
+   "dOld": 75.93,
+   "dNew": 75.93
   },
   {
    "a": "frog.ranaa",
    "b": "rana.2",
-   "old": 3,
+   "old": 2,
    "new": 2,
-   "dOld": 103.41,
-   "dNew": 98.49
+   "dOld": 99.46,
+   "dNew": 96.77
   },
   {
    "a": "frog.ranaa",
    "b": "rana.3",
    "old": 3,
    "new": 3,
-   "dOld": 127.14,
-   "dNew": 130.82
+   "dOld": 123.18,
+   "dNew": 126.91
   },
   {
    "a": "frog.th",
@@ -767,7 +758,7 @@
    "old": 2,
    "new": 2,
    "dOld": 68.03,
-   "dNew": 62.07
+   "dNew": 64.12
   },
   {
    "a": "frog.th",
@@ -791,7 +782,7 @@
    "old": 1,
    "new": 1,
    "dOld": 48,
-   "dNew": 42.3
+   "dNew": 44.41
   },
   {
    "a": "rana.0",
@@ -807,7 +798,7 @@
    "old": 1,
    "new": 1,
    "dOld": 24,
-   "dNew": 18.68
+   "dNew": 20.88
   },
   {
    "a": "rana.1",
@@ -823,7 +814,7 @@
    "old": 1,
    "new": 1,
    "dOld": 24,
-   "dNew": 32.39
+   "dNew": 30.27
   }
  ],
  "points": {
@@ -1175,6 +1166,28 @@
   },
   {
    "kind": "point",
+   "old": [48, 168],
+   "uses": ["h-mesa.json beats.5"],
+   "to": {
+    "floor": [2.3389, 6.4727, 0]
+   },
+   "new": [48, 168],
+   "what": "a place (x, y): the floor under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [104, 150],
+   "uses": ["h-mesa.json beats.2"],
+   "to": {
+    "seat": [2.421, 3.5089, 0.6]
+   },
+   "new": [104, 135],
+   "moved": true,
+   "why": "sitting at place 0 (x 104): on its chair (150 + SD[0])",
+   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why)"
+  },
+  {
+   "kind": "point",
    "old": [110, 206],
    "uses": ["cual-mesa.json plato.si.set.gente.luis", "cual-mesa.json plato.no.set.gente.luis", "cual-mesa.json taza.si.set.gente.carmen", "cual-mesa.json taza.no.set.gente.carmen", "cual-mesa.json cuchara.si.set.gente.abuelo", "cual-mesa.json cuchara.no.set.gente.abuelo", "cual-mesa.json tenedor.si.set.gente.papa", "cual-mesa.json tenedor.no.set.gente.papa"],
    "to": {
@@ -1188,7 +1201,7 @@
   {
    "kind": "point",
    "old": [128, 150],
-   "uses": ["cual-mesa.json tengo hambre.si.set.gente.luis", "cual-mesa.json tengo hambre.no.set.gente.luis", "cual-mesa.json tengo sed.si.set.gente.carmen", "cual-mesa.json tengo sed.no.set.gente.carmen"],
+   "uses": ["h-mesa.json beats.3", "cual-mesa.json tengo hambre.si.set.gente.luis", "cual-mesa.json tengo hambre.no.set.gente.luis", "cual-mesa.json tengo sed.si.set.gente.carmen", "cual-mesa.json tengo sed.no.set.gente.carmen"],
    "to": {
     "seat": [3.7265, 3.5089, 0.6]
    },
@@ -1216,6 +1229,18 @@
    },
    "new": [140, 153],
    "what": "a thing on the table's top: the top under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [176, 150],
+   "uses": ["h-mesa.json beats.4"],
+   "to": {
+    "seat": [6.3373, 3.5089, 0.6]
+   },
+   "new": [176, 171],
+   "moved": true,
+   "why": "sitting at place 3 (x 176): on its chair (150 + SD[3])",
+   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why)"
   },
   {
    "kind": "point",
@@ -1301,54 +1326,7 @@
    "what": "a place (x, y): the floor under (x, y - 1); the same screen place"
   }
  ],
- "storyPlaces": [
-  {
-   "kind": "point",
-   "old": [104, 150],
-   "uses": ["h-mesa.json beats.2"],
-   "to": {
-    "seat": [2.421, 3.5089, 0.6]
-   },
-   "new": [104, 135],
-   "moved": true,
-   "why": "sitting at place 0 (x 104): on its chair (150 + SD[0])",
-   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why) (h-mesa, not in positions.json: read from the story file)"
-  },
-  {
-   "kind": "point",
-   "old": [128, 150],
-   "uses": ["h-mesa.json beats.3"],
-   "to": {
-    "seat": [3.7265, 3.5089, 0.6]
-   },
-   "new": [128, 147],
-   "moved": true,
-   "why": "sitting at place 1 (x 128): on its chair (150 + SD[1])",
-   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why) (h-mesa, not in positions.json: read from the story file)"
-  },
-  {
-   "kind": "point",
-   "old": [176, 150],
-   "uses": ["h-mesa.json beats.4"],
-   "to": {
-    "seat": [6.3373, 3.5089, 0.6]
-   },
-   "new": [176, 171],
-   "moved": true,
-   "why": "sitting at place 3 (x 176): on its chair (150 + SD[3])",
-   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why) (h-mesa, not in positions.json: read from the story file)"
-  },
-  {
-   "kind": "point",
-   "old": [48, 168],
-   "uses": ["h-mesa.json beats.5"],
-   "to": {
-    "floor": [2.3389, 6.4727, 0]
-   },
-   "new": [48, 168],
-   "what": "a place (x, y): the floor under (x, y - 1); the same screen place (h-mesa, not in positions.json: read from the story file)"
-  }
- ],
+ "storyPlaces": [],
  "pictures": {
   "mesa.si": {
    "world": [4.6515, 3.7812, 1],
@@ -1480,7 +1458,7 @@
    "scene": "frutas",
    "query": "?surtido=frutas",
    "zoom1": "another scene's picture, El colmado's stall, drawn whole as its page draws it",
-   "port": "El colmado is ported later: until then the port draws this picture from the web page itself. File docs/proyecto/pixel/frutas-set.html with the query ?surtido=frutas (its canvas, 240 x 216, as the page draws it: no state of mesa-set.html, no mesa sprite but abuela); the window: crop [22, 112, 196, 104] at zoom 1 (the 196 x 104 picture; x0 22 is the view of every scene); abuela: the sprite layer of mesa.js (W.afuera 1, gente.abuela with dir -1 as cual-mesa.json gives) at frutas's spot abuela.delante, screen (115, 203) (storyMoves: old 176, 176), her feet there; nothing else of mesa.js is drawn (its old stall, mkPuesto, is dropped). When El colmado is in Dart, its set at that state and that spot replace the page"
+   "port": "El colmado is ported later: until then the port draws this picture from the web page itself. File docs/proyecto/pixel/frutas-set.html with the query ?surtido=frutas (its canvas, 240 x 216, as the page draws it: no state of mesa-set.html, no mesa sprite but abuela); the window: crop [20, 112, 196, 104] at zoom 1 (the 196 x 104 picture, as the picture's crop here and mesa-preview.html draw it); abuela: the sprite layer of mesa.js (W.afuera 1, gente.abuela with dir -1 as cual-mesa.json gives) at frutas's spot abuela.delante, screen (115, 203) (storyMoves: old 176, 176), her feet there; nothing else of mesa.js is drawn (its old stall, mkPuesto, is dropped). When El colmado is in Dart, its set at that state and that spot replace the page"
   },
   "pone.si": {
    "world": [4.6778, 2.0669, 0],
@@ -1833,7 +1811,7 @@
    "line": 24,
    "act": "*",
    "src": "const LUIS=[75,160],FOGON=[205,170],CAN=[196,204];",
-   "to": "const LUIS=[75,160],FOGON=[202,194],CAN=[196,204],FRX=[0,0,-6,2],FAX=[24,24,24,26],FR=[0,0,5,10],FT=[0,0,10,10],FL=[0,0,0,0],FA=[0,0,0,0],FP=[0,4,3,3],FC=[0,0,0,0],FI=[0,0,0,0];",
+   "to": "const LUIS=[75,160],FOGON=[202,194],CAN=[196,204],FRX=[0,0,-4,2],FAX=[24,24,24,26],FR=[0,0,6,10],FT=[0,0,10,10],FL=[0,0,0,0],FA=[0,0,0,0],FP=[0,4,3,3],FC=[0,0,0,0],FI=[0,0,0,0];",
    "places": [
     {
      "who": "abuela",
@@ -1853,8 +1831,8 @@
     {
      "who": "cq",
      "old": [122, 163],
-     "new": [116, 168],
-     "world": [4.1882, 4.6234, 0]
+     "new": [118, 169],
+     "world": [4.297, 4.6234, 0]
     },
     {
      "who": "cq",
@@ -4977,9 +4955,11 @@
  ],
  "checks": {
   "notes": [
-   "inventory: 19 things (old 19), 2 frog places of LUGAR (old 2), 1 view (old 1), 26 positions (old 26) and 4 of h-mesa (no recorded run in coqui/ref/trazas: played here), 12 review pairs of cual-mesa (24 pictures), 16 level pictures (old 16), 3 baked states for the old 141",
+   "inventory: 19 things (old 19), 2 frog places of LUGAR (old 2), 1 view (old 1), 29 positions (old 29) (h-mesa's among them), 12 review pairs of cual-mesa (24 pictures), 16 level pictures (old 16), 3 baked states for the old 144",
    "code: every one of the 377 lines of mesa.js read here; 242 hold numbers, each with an entry (101 other, 320 place, 204 offset, 364 dropped, 916 drawing, 132 count, 178 state, 5 order, 26 scale, 78 time); every one of order 06's 288 places named by its line's entry; 43 moves, each line holding its source",
-   "hops: all 36 pairs of the frog's places keep the old count but frog.ranaa-rana.2 3 -> 2 (walked in no run); his walks between them in the runs: frog.centro-frog.hm, frog.centro-frog.th, frog.hm-rana.0, frog.hm-rana.1, frog.hm-rana.2, frog.hm-rana.3, frog.th-rana.0, frog.th-rana.1, frog.th-rana.2, rana.0-rana.1, rana.1-rana.2, rana.1-rana.3",
+   "walks: every walk of the frog (every call of hopTo, acts included) in the 12 runs, the old page against the port's play, walk by walk: 181 walks, each with the old hop count (0 differ)",
+   "runs: the 12 runs (h-mesa, la-cuchara, la-mesa, tengo-hambre, three plans each) are played by juega.mjs on the old page, each trace byte for byte its recorded run in coqui/ref/trazas/ (12 of 12)",
+   "hops: all 36 pairs of the frog's places keep the old count; his walks between them in the runs: frog.centro-frog.hm, frog.centro-frog.th, frog.hm-frog.ranaa, frog.hm-rana.0, frog.hm-rana.1, frog.hm-rana.2, frog.hm-rana.3, frog.ranaa-rana.3, frog.th-rana.0, frog.th-rana.1, frog.th-rana.2, rana.0-rana.1, rana.1-rana.2, rana.1-rana.3",
    "boxes: every pixel of each set thing inside its touch box in every baked state: mesa [64,102,124,91], estufa [195,61,37,87]; every pixel answers its own thing in the hit order; every part of the set is a touch key's (nothing decorative): the room's pieces (the counters, the wall cupboard, the door, the window, the walls) are la cocina's, the whole room; where the table's or the stove's box (a rectangle) reaches over them a touch answers the table or the stove, as the old boxes did over the old background (45 px of ventana under estufa, 448 px of mostrador under mesa, 20 px of puerta.umbral under mesa, 542 px of mostrador2 under estufa)",
    "shadows of the set: every castShadow call has strength 1 and a radius; each casting part darkens pixels, its shadow within 4 px of it (a contact shadow at the foot of each thin leg): mesa.patas 4 calls, 36 px darkened; sillas.patas 8 calls, 7 px darkened",
    "light: the kitchen's one rule (cocina-kit: shadows to screen right, low, joined); on the lit side (left) of every leg, chair, counter and the stove, 231 floor px within 3 px checked: none differs from the floor without the thing (no ring, no fringe; cocinaOcclusion dims the shadow side only)",
@@ -4988,12 +4968,12 @@
    "door (round 2): in the wide view its leaf 1615 px (open into the room against the wall towards the corner, its brass handle 7 px), the wall's thickness in the opening 234 px, the threshold 48 px (30 kept each); through it the patio's ground at the floor's level, El patio's stone step then the lawn, out to the yard's wall and hedge: the lowest outside pixel of each of the opening's 13 columns is ground (13); whoever comes in appears on the step (PUERTA), seen in the opening (the wall, its frame, its thickness and the threshold drawn over what of them is behind: front), and steps in onto the walkway's end",
    "specks (round 2): in every baked state, every group of floor pixels of one colour (4-connected) of fewer than 6 px has a pixel of its own colour next to it, on the floor or of the set (no lone speck: mesa-set.html noSpecks): m0h0 0, m1h0 0, m0h1 0, m1h1 0",
    "edges: every set thing whole inside the view by 3 px or running off it by 12 (px to each edge, negative off the view): the table and chairs left 42 right 30 top 102 bottom 39; the stove, hood and panel left 173 right -14 top 61 bottom 68; the left counter left -22 right 130 top 83 bottom 54; the right counter left 193 right -22 top 111 bottom 58; the wall cupboard left 3 right 146 top 48 bottom 129; the door left 52 right 120 top 36 bottom 115; the window left 146 right 20 top 44 bottom 132",
-   "drawn: at 21840 moments (every tick inside the acts of the port's play of the 12 runs, every step's end, every pair picture) the sorted list composed as it is drawn (each item owns what it drew last; a front part drawn again only over an owner behind it): no part of the set over any face; at 65213 sitter-moments the table over no part of a sitter the old table did not cover (0 px more at the worst); nothing on the table's top under any part of the set",
-   "rests: 52092 moments of someone standing still on the floor, each on clear floor (nothing of the set under or within .08 of the foot); 65212 of someone sitting, the seat under the lap; every stack on the counter and every thing on the stove on its top",
+   "drawn: at 21890 moments (every tick inside the acts of the port's play of the 12 runs, every step's end, every pair picture) the sorted list composed as it is drawn (each item owns what it drew last; a front part drawn again only over an owner behind it): no part of the set over any face; at 65328 sitter-moments the table over no part of a sitter the old table did not cover (0 px more at the worst); nothing on the table's top under any part of the set",
+   "rests: 52161 moments of someone standing still on the floor, each on clear floor (nothing of the set under or within .08 of the foot); 65327 of someone sitting, the seat under the lap; every stack on the counter and every thing on the stove on its top",
    "seen: at 7663 person-, dog- and frog-moments (every step's end of the 12 runs) each seen no less than in the old picture of that moment less 10%, and their face no less (0 less; 18 person-moments where the port's play has them elsewhere than the rule puts the old moment's place, mid-walk, are not compared); whoever was wholly inside the old view is wholly inside it with 3 px to spare",
    "bubbles: 0 distinct bubbles at every moment: wholly inside the view (99 px from its edge at the least), clear of the rounds card, on no face (talk)",
    "asks: 41 distinct asks (for abuelo, bebe, carmen, comidas, cuchara, di_cuchara, di_cuchillo, di_hambre, di_plato, di_sed, di_taza, di_tenedor, luis, mama, papa, platos, tazas, tenedor, vasos): every hint frame (box +- 12) inside the view with 2 px to spare (3 at the least), no frame's rings across a face where the old frame's were not (as the old: h-mesa beats.8 (platos): its frame past the view as the old; h-mesa beats.8 (platos) abuela's face; h-mesa beats.11 (platos): its frame past the view as the old; h-mesa beats.11 (platos) abuela's face; h-mesa beats.13 (platos): its frame past the view as the old; h-mesa beats.13 (platos) abuela's face; h-mesa beats.17 (bebe) mama's face; h-mesa beats.19 (papa) abuelo's face; la-cuchara beats.72 (abuelo) mama's face; la-mesa beats.23 (platos): its frame past the view as the old; la-mesa beats.33 (papa) abuelo's face; la-mesa beats.78 (papa) abuelo's face; la-mesa beats.78 (papa) carmen's face; tengo-hambre beats.16 (comidas): its frame past the view as the old; tengo-hambre beats.32 (carmen) luis's face; tengo-hambre beats.70 (papa) mama's face), the hint hand on no face and not cut by the view's edge where the old was not (but as the old: h-mesa beats.8 (platos): on abuela's face; h-mesa beats.9 (tazas): on luis's face; h-mesa beats.9 (tazas): on abuela's face; h-mesa beats.11 (platos): on abuela's face; h-mesa beats.12 (tazas): on luis's face; h-mesa beats.12 (tazas): on abuela's face; h-mesa beats.13 (platos): on abuela's face; la-cuchara beats.34 (luis): on the frog's face; la-mesa beats.33 (papa): on abuela's face; la-mesa beats.40 (tazas): on luis's face; la-mesa beats.66 (tazas): on luis's face; la-mesa beats.66 (tazas): on the frog's face; la-mesa beats.78 (papa): on abuela's face); nothing of the set over the thing asked for (but where Luis holds a thing up at the counter, LUIS: it reaches over the table's near left corner, under its top's edge by the depth test: la-cuchara beats.34 (luis) luis; a row or two nearer, his hint frame would cross the frog's face at his home by the counter); 40 answer cards, each with its lit frame and glow 4 px and more inside the view (4 at the least), 2 px clear of everyone's head and body, over no thing, and of the rounds card but where the old card met it too (la-cuchara beats.81 (di_tenedor) di_cuchara; la-mesa beats.85 (di_taza) di_plato; tengo-hambre beats.48 (di_sed) di_hambre: there the rounds card covers the top rows of the first card, as the old touched it; lower, the hint hand under the cards would fall on the sitters' faces); at each of the 40 cards the hint drawn round it: its frame 2 px inside the view, across no head, its hand on no face; 38 times someone or something a learner must find or tell apart: whole in the view, apart where the old had them apart (plain surface round them under 80%: abuelo 79%, luis 50%, abuelo 70%)",
-   "heads: at 54113 face-moments (everyone at rest) no face has the window, the door's frame, the wall cupboard or the hood behind it; the door's open leaf (round 2: a plain wooden panel, its lower edge at the face's top rows) behind the face of whoever sits at the first seat: abuelo h-mesa, abuelo la-cuchara, abuelo la-mesa, abuelo tengo-hambre",
+   "heads: at 54137 face-moments (everyone at rest) no face has the window, the door's frame, the wall cupboard or the hood behind it; the door's open leaf (round 2: a plain wooden panel, its lower edge at the face's top rows) behind the face of whoever sits at the first seat: abuelo h-mesa, abuelo la-cuchara, abuelo la-mesa, abuelo tengo-hambre",
    "preview: at every step's end of the 12 recorded runs (8511 places of the people, the frog, the dog and the things) mesa-preview.html puts everyone exactly where the sheet's rule does (0 differ); and the rule puts each of the 8075 places at rest where the port's play has them (0 differ)",
    "pairs: 24 review pictures (and the 16 level pictures, the same pictures), 22 at zoom 2, at zoom 1: cocina.si (zoom 2 cannot hold it: the pot with its steam (25 rows) and abuela's whole head by the stove need 55 rows of a 52-row window; and its other picture, cocina.no, is El colmado's stall at zoom 1) (cocina.no is El colmado's stall); in each, everyone who is in it has their whole head inside with 2 px to spare (17 heads; a person may be cut by the window's edges, as the old close pictures), every other sprite whole with 1 px to spare (2 at zoom 1) or out of it, the thing the pair is about whole with 1 px to spare, a plain surface round half its outline at least (mesa.si 59%, mesa.no 63%, plato.si 82%, plato.no 83%, taza.si 82%, taza.no 80%, cuchara.si 85%, cuchara.no 78%, tenedor.si 78%, tenedor.no 83%, cuchillo.si 61%, cuchillo.no 72%, comida.si 80%, comida.no 79%, cocina.si 63%, pone.si 56%, pone.no 53%, tengo_hambre.si 75%, tengo_hambre.no 75%, tengo_sed.si 13%, tengo_sed.no 18%, listo.si 77%, listo.no 77%; under half, as written in the picture: tengo_sed.si 13% (the glass is at her mouth: round it her face and hair, which are hers (left out), and the chair's back behind her, as the old); tengo_sed.no 18% (the fork is at her mouth: round it her face, which is hers (left out), and the chair's back behind her, as the old)); the two pictures of each pair differ in 1.5% of their pixels at least (mesa 94.0%, plato 5.6%, taza 21.4%, cuchara 5.8%, tenedor 8.3%, cuchillo 6.6%, comida 1.6%, pone 2.9%, tengo_hambre 2.7%, tengo_sed 4.0%, listo 29.4%); no zoom 2 picture shows a shadow without its caster; what differs: mesa: cosas, estufa, mantel, the window; plato: gente; taza: gente; cuchara: gente; tenedor: gente; cuchillo: gente; comida: puestos; cocina: gente, estufa, afuera, the window; pone: cosas; tengo_hambre: gente; tengo_sed: gente, puestos; listo: cosas, estufa, mantel",
    "states: 3 baked states reached (m0h0, m1h0, m0h1; every moment, pair and level picture), of the 4 the set can bake"
