@@ -207,7 +207,7 @@ def ronda47(s,q):
                                                      {"if":"%s=17"%p,"then":con(act("cambio",n=3,ok=1),"c47_cambio_17"),"else":con(act("cambio",n=2,ok=1),"c47_cambio_18")},"c47_mas_chavos",OK],
                        "else":[{"if":"%s=17"%p,"then":[act("cambio",n=3,ok=0)],"else":[act("cambio",n=2,ok=0)]}]},act("sale",quien=q)],
       "wrong":[act("suena",n="$"+d),act("etiqueta",ver=1),act("cuenta47",ok=0)]+X+["c47_no_$"+p]}]
-s47={"id":"el-cambio","title":"El cambio","place":"El colmado","scene":"caja",
+s47={"id":"el-cambio","title":"El cambio","place":"El colmado","scene":"caja","next":"la-calle",
  "goal":"Ring each price on the register's keys, so the change goes into the jar and the children can buy the ball.","stake":{"thing":"cambio","steps":2},"dots":6,"bien":"si_muy_bien",
  "focus_words":["cambio","chavos","diecisiete","dieciocho","diecinueve","veinte"],"formas_foco":{},"back_again":["peso","¿cuánto es?","paga","bola","niño","quiere","dieciséis","compra","para","aquí tiene","mañana"],
  "also_heard":["billete","faltan","mañana"],"names":{"luis":"p_n_luis","carmen":"p_n_carmen","senor":"b_n_senor","senora":"b_n_senora","coqui":"yo_coqui"},"palabras":{"17":"diecisiete","18":"dieciocho"},"clips":c,

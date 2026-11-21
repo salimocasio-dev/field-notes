@@ -207,7 +207,7 @@ def ronda53(s):
       "lead":["c53_%s_$dice"%s],"line":"c53_%s_$dice"%s,
       "right":[{"if":"dice=lejos","then":[act("monta53",ok=1)],"else":[act("camina53",ok=1)]},{"if":"ok","then":[OK]}],
       "wrong":[{"if":"dice=lejos","then":[act("camina53",ok=0)]+sol+[gesto("coqui","lengua")],"else":[act("espera53")]+sol}]+X+["c53_no_$dice"]}]
-s53={"id":"cerca-y-lejos","title":"Cerca y lejos","place":"La calle","scene":"parada",
+s53={"id":"cerca-y-lejos","title":"Cerca y lejos","place":"La calle","scene":"parada","next":"las-tiendas",
  "goal":"Walk to the near houses and ride to the far ones, so the day stays early and there is time left to play with Luis and Carmen's ball.","stake":{"thing":"dia","steps":2},"dots":7,"bien":"si_muy_bien",
  "focus_words":["cerca","lejos","temprano","tarde"],"formas_foco":{},
  "back_again":["parada","guagua","llega","voy","vas","casa","colmado","parque","señor","caja","otro","toma","juega","cansado","bien","no","camina","vamos","espera","aquí","mañana"],
