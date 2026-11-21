@@ -1,0 +1,814 @@
+{
+ "id": "algo-mas",
+ "title": "¿Algo más?",
+ "place": "El colmado",
+ "scene": "mostrador",
+ "next": "esto-y-eso",
+ "goal": "Buy abuela's three things with Carmen's coins, and save what is left for piraguas.",
+ "stake": {
+  "thing": "monedas",
+  "steps": 2
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "¿tiene…?",
+  "¿algo más?",
+  "bolsa",
+  "compra"
+ ],
+ "formas_foco": {
+  "¿tiene…?": [
+   "¿tienes…?"
+  ]
+ },
+ "back_again": [
+  "buenos días",
+  "necesito",
+  "aquí tiene",
+  "colmado",
+  "queso",
+  "café",
+  "azúcar",
+  "pan",
+  "sí",
+  "no",
+  "tengo",
+  "gracias",
+  "todo",
+  "piragua",
+  "casa",
+  "bien"
+ ],
+ "also_heard": [],
+ "names": {
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "senora": "b_n_senora"
+ },
+ "palabras": {
+  "algomas": "¿algo más?",
+  "bolsa": "bolsa"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "c37_estan": {
+   "who": "narr",
+   "text": "Carmen y Coquí están en el colmado."
+  },
+  "c37_ca_dias": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Buenos días, don Pepe!"
+  },
+  "c37_pepe_dias_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Buenos días! ¿Dónde está Luis?"
+  },
+  "c37_cq_luis_casa": {
+   "who": "tu",
+   "text": "Luis está en casa.",
+   "tu_turno": [
+    {
+     "palabra": "casa",
+     "formas": [
+      "casa"
+     ]
+    }
+   ]
+  },
+  "c37_ca_compra3": {
+   "who": "narr",
+   "text": "Carmen compra tres cosas para abuela."
+  },
+  "c37_ca_tiene_queso": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Tiene queso?"
+  },
+  "c37_donde_queso": {
+   "who": "narr",
+   "text": "¿Dónde está el queso?"
+  },
+  "c37_pepe_si_tienes": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Sí. Aquí tienes."
+  },
+  "c37_ca_compra_queso": {
+   "who": "narr",
+   "text": "Carmen compra queso."
+  },
+  "c37_pepe_algo_mas": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Algo más?"
+  },
+  "c37_ca_si_cafe": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Sí. ¿Tiene café?"
+  },
+  "c37_toca_cafe": {
+   "who": "narr",
+   "text": "Toca el café."
+  },
+  "c37_ca_si_azucar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Sí. ¿Tiene azúcar?"
+  },
+  "c37_toca_azucar": {
+   "who": "narr",
+   "text": "Toca el azúcar."
+  },
+  "c37_ca_no_gracias": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, gracias."
+  },
+  "c37_ca_tiene_bolsa": {
+   "who": "narr",
+   "text": "Carmen tiene una bolsa."
+  },
+  "c37_en_la_bolsa": {
+   "who": "narr",
+   "text": "El queso, el café y el azúcar van en la bolsa."
+  },
+  "c37_donde_bolsa": {
+   "who": "narr",
+   "text": "¿Dónde está la bolsa?"
+  },
+  "c37_sra_hola": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Hola, Coquí! ¿Cómo estás?"
+  },
+  "bien_gracias": {
+   "who": "tu",
+   "text": "¡Bien, gracias!",
+   "tu_turno": [
+    {
+     "palabra": "bien",
+     "formas": [
+      "bien"
+     ]
+    }
+   ]
+  },
+  "c37_sra_nec_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Necesito pan."
+  },
+  "c37_pepe_aqui_bolsa": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí tiene. ¿Tiene bolsa?"
+  },
+  "c37_sra_no_bolsa": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No. No tengo bolsa."
+  },
+  "c37_pepe_tienes_bolsa": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Tienes bolsa?"
+  },
+  "cq_no_gracias": {
+   "who": "tu",
+   "text": "No, gracias."
+  },
+  "c37_cq_no": {
+   "who": "tu",
+   "text": "No."
+  },
+  "cq_si": {
+   "who": "tu",
+   "text": "¡Sí!"
+  },
+  "c37_ca_tengo_todo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Tengo todo."
+  },
+  "c37_ca_tengo_bolsa": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Tengo bolsa."
+  },
+  "c37_ca_adios": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Adiós, don Pepe!"
+  },
+  "c37_pepe_adios": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Adiós! ¡Gracias!"
+  },
+  "c37_ca_compra2": {
+   "who": "narr",
+   "text": "Carmen compra dos piraguas."
+  },
+  "c37_cq_gracias_carmen": {
+   "who": "tu",
+   "text": "¡Gracias, Carmen!"
+  },
+  "c37_ca_compra1": {
+   "who": "narr",
+   "text": "Carmen compra una piragua."
+  },
+  "c37_ca_no_compra": {
+   "who": "narr",
+   "text": "Carmen no compra piraguas."
+  },
+  "c37_van_casa": {
+   "who": "narr",
+   "text": "Carmen y Coquí van para la casa con la bolsa."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana"
+   }
+  },
+  {
+   "cam": "dentro",
+   "n": 1
+  },
+  {
+   "act": "lista"
+  },
+  {
+   "act": "entra",
+   "quien": "carmen"
+  },
+  {
+   "act": "entra",
+   "quien": "coqui"
+  },
+  {
+   "wait": 500
+  },
+  "c37_estan",
+  "c37_ca_dias",
+  "c37_pepe_dias_luis",
+  "c37_cq_luis_casa",
+  {
+   "dots": 1
+  },
+  {
+   "act": "monedas",
+   "n": 5
+  },
+  {
+   "set": {
+    "twinkle": "carrito"
+   }
+  },
+  {
+   "act": "piensa",
+   "quien": "coqui",
+   "k": "piragua"
+  },
+  "c37_ca_compra3",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "lista",
+   "k": "queso",
+   "hecho": 0
+  },
+  "c37_ca_tiene_queso",
+  {
+   "ask": "queso",
+   "lead": [],
+   "line": "c37_donde_queso",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "carmen",
+     "n": 1
+    },
+    {
+     "act": "lista",
+     "k": "queso",
+     "hecho": 1
+    },
+    "c37_ca_compra_queso"
+   ],
+   "after": [
+    {
+     "act": "baja",
+     "k": "queso"
+    },
+    "c37_pepe_si_tienes"
+   ]
+  },
+  {
+   "dots": 2
+  },
+  "c37_pepe_algo_mas",
+  {
+   "act": "lista",
+   "k": "cafe",
+   "hecho": 0
+  },
+  "c37_ca_si_cafe",
+  {
+   "ask": "cafe",
+   "lead": [],
+   "line": "c37_toca_cafe",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "carmen",
+     "n": 1
+    },
+    {
+     "act": "lista",
+     "k": "cafe",
+     "hecho": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "baja",
+     "k": "cafe"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  "c37_pepe_algo_mas",
+  {
+   "act": "lista",
+   "k": "azucar",
+   "hecho": 0
+  },
+  "c37_ca_si_azucar",
+  {
+   "ask": "azucar",
+   "lead": [],
+   "line": "c37_toca_azucar",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "carmen",
+     "n": 1
+    },
+    {
+     "act": "lista",
+     "k": "azucar",
+     "hecho": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "baja",
+     "k": "azucar"
+    }
+   ]
+  },
+  "c37_pepe_algo_mas",
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "lista"
+  },
+  "c37_ca_no_gracias",
+  {
+   "dots": 4
+  },
+  "c37_ca_tiene_bolsa",
+  {
+   "act": "guarda",
+   "quien": "carmen",
+   "k": "queso"
+  },
+  {
+   "act": "guarda",
+   "quien": "carmen",
+   "k": "cafe"
+  },
+  {
+   "act": "guarda",
+   "quien": "carmen",
+   "k": "azucar"
+  },
+  "c37_en_la_bolsa",
+  {
+   "ask": "bolsa",
+   "lead": [],
+   "line": "c37_donde_bolsa",
+   "then": [
+    {
+     "act": "gesto",
+     "quien": "carmen",
+     "que": "bolsa"
+    }
+   ],
+   "after": []
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "entra",
+   "quien": "senora"
+  },
+  "c37_sra_hola",
+  "bien_gracias",
+  "c37_sra_nec_pan",
+  {
+   "act": "baja",
+   "k": "pan"
+  },
+  "c37_pepe_aqui_bolsa",
+  {
+   "act": "gesto",
+   "quien": "senora",
+   "que": "manos"
+  },
+  "c37_sra_no_bolsa",
+  {
+   "act": "bolsapapel",
+   "a": "senora"
+  },
+  {
+   "act": "paga",
+   "quien": "senora",
+   "n": 1
+  },
+  {
+   "act": "sale",
+   "quien": "senora",
+   "por": "puerta"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "algomas",
+    "bolsa"
+   ]
+  },
+  {
+   "calc": "ra",
+   "cond": "qa=algomas",
+   "then": "no",
+   "else": "si"
+  },
+  {
+   "calc": "la",
+   "cond": "qa=algomas",
+   "then": "c37_pepe_algo_mas",
+   "else": "c37_pepe_tienes_bolsa"
+  },
+  {
+   "calc": "na",
+   "cond": "qa=algomas",
+   "then": "cq_no_gracias",
+   "else": "c37_cq_no"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "si",
+    "no"
+   ],
+   "baraja": true,
+   "pick": "$ra",
+   "tests": "$qa",
+   "said": {
+    "si": "cq_si",
+    "no": "$na"
+   },
+   "lead": [],
+   "line": "$la",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "if": "qa=algomas",
+       "then": [
+        {
+         "act": "gesto",
+         "quien": "pepe",
+         "que": "si"
+        }
+       ],
+       "else": [
+        {
+         "act": "gesto",
+         "quien": "carmen",
+         "que": "bolsa"
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "qa=algomas",
+     "then": [
+      {
+       "act": "malta"
+      },
+      {
+       "act": "paga",
+       "quien": "carmen",
+       "n": 1
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      },
+      "c37_ca_tengo_todo"
+     ],
+     "else": [
+      {
+       "act": "bolsapapel",
+       "a": "carmen"
+      },
+      {
+       "act": "paga",
+       "quien": "carmen",
+       "n": 1
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      },
+      "c37_ca_tengo_bolsa",
+      {
+       "act": "gesto",
+       "quien": "carmen",
+       "que": "bolsas"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "qb",
+   "options": [
+    "algomas",
+    "bolsa"
+   ]
+  },
+  {
+   "calc": "rb",
+   "cond": "qb=algomas",
+   "then": "no",
+   "else": "si"
+  },
+  {
+   "calc": "lb",
+   "cond": "qb=algomas",
+   "then": "c37_pepe_algo_mas",
+   "else": "c37_pepe_tienes_bolsa"
+  },
+  {
+   "calc": "nb",
+   "cond": "qb=algomas",
+   "then": "cq_no_gracias",
+   "else": "c37_cq_no"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "si",
+    "no"
+   ],
+   "baraja": true,
+   "pick": "$rb",
+   "tests": "$qb",
+   "said": {
+    "si": "cq_si",
+    "no": "$nb"
+   },
+   "lead": [],
+   "line": "$lb",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "if": "qb=algomas",
+       "then": [
+        {
+         "act": "gesto",
+         "quien": "pepe",
+         "que": "si"
+        }
+       ],
+       "else": [
+        {
+         "act": "gesto",
+         "quien": "carmen",
+         "que": "bolsa"
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "qb=algomas",
+     "then": [
+      {
+       "act": "malta"
+      },
+      {
+       "act": "paga",
+       "quien": "carmen",
+       "n": 1
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      },
+      "c37_ca_tengo_todo"
+     ],
+     "else": [
+      {
+       "act": "bolsapapel",
+       "a": "carmen"
+      },
+      {
+       "act": "paga",
+       "quien": "carmen",
+       "n": 1
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      },
+      "c37_ca_tengo_bolsa",
+      {
+       "act": "gesto",
+       "quien": "carmen",
+       "que": "bolsas"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "monedas"
+  },
+  "c37_ca_adios",
+  "c37_pepe_adios",
+  {
+   "act": "sale",
+   "quien": "carmen",
+   "por": "puerta"
+  },
+  {
+   "act": "sale",
+   "quien": "coqui",
+   "por": "puerta"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "piraguas",
+     "n": 2
+    },
+    "c37_ca_compra2",
+    "c37_cq_gracias_carmen"
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "piraguas",
+       "n": 1
+      },
+      "c37_ca_compra1"
+     ],
+     "else": [
+      {
+       "act": "piraguas",
+       "n": 0
+      },
+      "c37_ca_no_compra"
+     ]
+    }
+   ]
+  },
+  "c37_van_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c37_estan",
+  "c37_ca_dias",
+  "c37_pepe_dias_luis",
+  "c37_cq_luis_casa",
+  "c37_ca_compra3",
+  "c37_ca_tiene_queso",
+  "c37_donde_queso",
+  "c37_pepe_si_tienes",
+  "c37_ca_compra_queso",
+  "c37_pepe_algo_mas",
+  "c37_ca_si_cafe",
+  "c37_toca_cafe",
+  "c37_pepe_algo_mas",
+  "c37_ca_si_azucar",
+  "c37_toca_azucar",
+  "c37_pepe_algo_mas",
+  "c37_ca_no_gracias",
+  "c37_ca_tiene_bolsa",
+  "c37_en_la_bolsa",
+  "c37_donde_bolsa",
+  "c37_sra_hola",
+  "bien_gracias",
+  "c37_sra_nec_pan",
+  "c37_pepe_aqui_bolsa",
+  "c37_sra_no_bolsa",
+  "c37_pepe_algo_mas",
+  "cq_no_gracias",
+  "c37_pepe_tienes_bolsa",
+  "cq_si",
+  "c37_ca_adios",
+  "c37_pepe_adios",
+  "c37_ca_compra2",
+  "c37_cq_gracias_carmen",
+  "c37_van_casa"
+ ]
+}

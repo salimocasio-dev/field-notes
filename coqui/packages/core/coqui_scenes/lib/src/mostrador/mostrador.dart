@@ -116,8 +116,8 @@ class Mostrador extends Escena implements SetScene, SetOverSprites {
 
   /* ---------- the state ---------- */
 
-  // which picture: the story's W.donde when set; else the camera's (the views' x0 are the sheet's, 21 inside and 22 in
-  // the street); with no host (a picture), inside
+  // which picture: W.donde (fresh sets it from the story's first `cam`, `entra` moves it inside); with none, the
+  // camera's (the views' x0 are the sheet's, 21 inside and 22 in the street); with no host (a picture), inside
   String donde(Map<String, dynamic> w) {
     final d = w['donde'];
     if (d is String) return d;
@@ -270,7 +270,9 @@ class Mostrador extends Escena implements SetScene, SetOverSprites {
         ? LUGAR['fuera']!
         : LUGAR['mostrador']!;
     return {
-      'donde': null,
+      // the picture the story starts in (its first `cam`): the runner's first frames are on `wide` (the inside view's
+      // window) before that step moves the camera
+      'donde': calle ? 'calle' : 'dentro',
       'hora': 'manana',
       'atras': 'shut',
       'puerta': 'shut',
@@ -1240,7 +1242,13 @@ class Mostrador extends Escena implements SetScene, SetOverSprites {
         final busy = g.values.any(
           (p) => (p as Map)['vis'] != 0 && p['spot'] == 'cliente',
         );
-        return busy ? 'cola1' : 'cliente';
+        // OPEN: the sheet says coqui.frente2 and cliente are never taken together ("the frog of story 37 has no
+        // customer"), but in story 37 step 6 the señora comes in while the frog stands at coqui.frente2 (4 px from
+        // cliente): she waits at cola1, the nearest named place clear of him
+        final q = W['cq'] as Map<String, dynamic>, f2 = LUGAR['frente2']!;
+        final frogThere =
+            jsTruthy(q['vis']) && q['x'] == f2[0] && q['y'] == f2[1];
+        return busy || frogThere ? 'cola1' : 'cliente';
     }
     return 'puerta';
   }
@@ -1274,7 +1282,8 @@ class Mostrador extends Escena implements SetScene, SetOverSprites {
     // `entra` {quien}: comes in at the street door, bell (36: 2, 7; 37: 6; 38: 1, 5, 8)
     'entra': (o) async {
       final quien = o['quien'] as String;
-      if (donde(W) == 'dentro') _adentro();
+      // coming in at the street door: the story is inside from now (story 36: who was in the street is left outside)
+      _adentro();
       _campana();
       if (quien == 'coqui') {
         final q = W['cq'] as Map<String, dynamic>;
@@ -1955,6 +1964,17 @@ class Mostrador extends Escena implements SetScene, SetOverSprites {
       if (quien == 'coqui') host.bounce(5);
       host.SFX.munch();
       await wait(TICK * 6);
+    },
+    // `ir` {a}: the shared act (kit.js comunes.ir: hops of about 30 px, 1 to 4), on the sheet's spots, with the frog's
+    // height kept (on the counter he stands on its top, z 1: in front of what is behind it)
+    'ir': (o) async {
+      final a = o['a'], key = jsTruthy(a) ? a : o['en'];
+      if (key is! String || !LUGAR.containsKey(key)) return;
+      await _salta(
+        key.startsWith('mostrador')
+            ? 'coqui.mostrador'
+            : (_p.has('coqui.$key') ? 'coqui.$key' : key),
+      );
     },
     // `marca` {que}: the star or the cross on the rounds card (comer.js marca)
     'marca': (o) async {
