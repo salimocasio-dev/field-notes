@@ -284,9 +284,9 @@ function make(G) {
   const things = Object.assign({ luis: person('luis'), carmen: person('carmen'), abuela: person('abuela') }, aves, {
     perro: { sprite: true, why: 'Canelo (KIT.mkPerro): box [x - 14, y - 20, 28, 22] at W.perro, unchanged' },
     gato: { sprite: true, why: 'the cat (mkGato): box [x - 12, y - 18, 24, 20] at W.gato (on the ground), unchanged; up a tree it is the tree\'s' },
-    arbol0: T('arbol0', 'small tree 0: its trunk and crown (still: at its height the wind moves no leaf a pixel)', { hand: [OLD.ARBOL[0][0], OLD.ARBOL[0][1] - 12], handWhy: 'the old hand point (the trunk, 12 rows over the foot)' }),
-    arbol1: T('arbol1', 'small tree 1', { hand: [OLD.ARBOL[1][0], OLD.ARBOL[1][1] - 12] }),
-    arbol2: T('arbol2', 'small tree 2', { hand: [OLD.ARBOL[2][0], OLD.ARBOL[2][1] - 12] }),
+    arbol0: T('arbol0', 'small tree 0: its trunk and crown (still: at its height the wind moves no leaf a pixel)', { hand: [OLD.ARBOL[0][0], OLD.ARBOL[0][1] - 12], handWhy: 'the old hand point (the trunk, 12 rows over the foot). No point in the tree\'s box keeps the hand off every face at its asks and off the cat\'s tail, its face and the birds in the tree: the hand hangs 54 rows, and Luis waits under it (donde-esta-el-gato beats.32, 39, 70) as in the old picture (see checks: hand, as the old)' }),
+    arbol1: T('arbol1', 'small tree 1', { hand: [OLD.ARBOL[1][0] - 8, OLD.ARBOL[1][1] - 12], handWhy: 'the trunk\'s left side, 12 rows over the foot (the old point 8 px right): there the hand is on no face at the tree\'s asks and off the cat\'s tail and face and the birds in the tree' }),
+    arbol2: T('arbol2', 'small tree 2', { hand: [OLD.ARBOL[2][0] - 8, OLD.ARBOL[2][1] - 12], handWhy: 'as arbol1\'s: at the old point the hand lay on Luis\'s face by the big tree (h-camino beats.13), as in the old picture' }),
     banco: T('banco', 'the bench: its seat, backrest and legs'),
     grande: T('grande', 'the big tree: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk (gran 1). As the old, its box has no si: it stays when sinGran hides the tree (story 13 never names it)'),
     porton: T('porton', 'the arch: its two posts and the iron arch over them'),
@@ -475,7 +475,7 @@ function make(G) {
     c(L('const AVES=[];'), 'ave box [ARBOL[i][0] + NIDO[k][0] - 8, ARBOL[i][1] + NIDO[k][1] - 6, 15, 12]', 'relative to the tree: unchanged');
     c(L('{id:"perro",si:'), 'perro box [x - 14, y - 20, 28, 22]', 'relative: unchanged');
     c(L('{id:"gato",si:'), 'gato box [x - 12, y - 18, 24, 20]', 'relative: unchanged');
-    for (const i of [0, 1, 2]) c(L('{id:"arbol0",box:'), 'box arbol' + i + ' [ARBOL[' + i + '][0]-17,ARBOL[' + i + '][1]-46,34,48] = ' + JSON.stringify(OLDBOX['arbol' + i]) + '; hand [ARBOL[' + i + '][0],ARBOL[' + i + '][1]-12]', { thing: 'arbol' + i, box: things['arbol' + i].box, hand: things['arbol' + i].hand });
+    for (const i of [0, 1, 2]) c(L('{id:"arbol0",box:'), 'box arbol' + i + ' [ARBOL[' + i + '][0]-17,ARBOL[' + i + '][1]-46,34,48] = ' + JSON.stringify(OLDBOX['arbol' + i]) + '; hand [ARBOL[' + i + '][0],ARBOL[' + i + '][1]-12]', { thing: 'arbol' + i, box: things['arbol' + i].box, hand: things['arbol' + i].hand }, 'the hand: things.arbol' + i + '.handWhy');
     c(L('{id:"banco",box:'), 'box banco [BANCO[0]-1,BANCO[1]-2,BANCO[2]+2,18] = [97,126,32,18]', { thing: 'banco', box: things.banco.box });
     c(L('{id:"banco",box:'), 'box grande [GRAN[0]-40,GRAN[1]-112,58,116] = [160,16,58,116]', { thing: 'grande', box: things.grande.box, hand: things.grande.hand }, 'and a hand (new: the old had none, so the box\'s middle)');
     c(L('{id:"banco",box:'), 'box porton [22,116,36,60]', { thing: 'porton', box: things.porton.box });
@@ -787,7 +787,7 @@ function check(sh, G, runs) {
   const handOf = (w, k, old) => { const t = sh.things[k]; if (t && t.hand && !(old && k === 'grande')) return t.hand; const b = boxOf(w, k, old); return b ? [Math.round(b[0] + b[2] / 2), Math.round(b[1] + b[3] / 2)] : null; };
   const respBox = (w, k) => { const q = w.cq, b = frogBox(q), n = w.resp.length, i = w.resp.indexOf(k), m = n > 2 ? 76 : 60, en = w.respEn, cx = en ? en[0] : Math.max(x0 + m, Math.min(x0 + 196 - m, b.x + b.w / 2)), y = en ? en[1] : Math.max(4, b.y - 46);
     return n > 2 ? [Math.round(cx - 70 + i * 50), y, 40, 36] : i === 0 ? [Math.round(cx - 50), y, 40, 36] : [Math.round(cx + 10), y, 40, 36]; };
-  let nF = 0, nC = 0, worstF = 99; const askSeen = new Set(), askedFor = new Set(), cardHand = new Set(), crossedOld = [];
+  let nF = 0, nC = 0, worstF = 99; const askSeen = new Set(), askedFor = new Set(), cardHand = new Set(), crossedOld = [], handOld = new Set();
   for (const r of runs) { const Ls = r.lines; forRun(r);
     Ls.forEach(L => { if (L.kind !== 'ask' && L.kind !== 'decide') return;
       const j = Ls.findIndex(Mm => Mm.path === L.path || (Mm.path || '').startsWith(L.path + '.')); if (j < 1) return;
@@ -814,12 +814,18 @@ function check(sh, G, runs) {
         const bo = boxOf(wo, spot, true) || b;
         for (const [fn, f] of faces) if (ringMeets(b, f)) { const fo = facesOld.find(e => e[0] === fn); if (!fo || !ringMeets(bo, fo[1])) P.push('hint frame: ' + where + ' its rings cross ' + fn + ' ' + JSON.stringify(f) + ' (the old frame ' + JSON.stringify(bo) + ' did not)'); else crossedOld.push(where + ' ' + fn); } }
       const hp = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : handOf(w, spot);
+      // the clue the ask is about: the cat in that tree (its tail or its face) and its birds, not under the hand
+      if (!rb && /^arbol\d$/.test(spot)) { const i = +spot[5], A = sh.points['arbol.' + i].screen, clue = [];
+        if (w.gato && w.gato.en === i && (w.gato.pose === 'cara' || w.gato.pose === 'cola')) clue.push(['the cat\'s ' + (w.gato.pose === 'cara' ? 'face' : 'tail'), rowsBox(w.gato.pose === 'cara' ? rowsAt(M.cara, A[0] - 12, A[1] - 34) : rowsAt(M.cola, A[0] + (w.gato.lado || 1) * 9 - 12, A[1] - 20))]);
+        for (let j = 0; j < ((w.pajaros || [])[i] || 0); j++) clue.push(['bird ' + i + j, sh.things['ave' + i + j].box]);
+        for (const [cn, cr] of clue) if (handOn(hp, cr)) { if (i === 0) handOld.add(where.replace(/ (right|wrong|alternate) /, ' ') + ': over ' + cn); else P.push('hand: ' + where + ' the hand at ' + JSON.stringify(hp) + ' is over ' + cn); } }
       for (const [fn, f] of faces) if (handOn(hp, f)) { if (rb && fn === 'the frog\'s face') { cardHand.add(spot); continue; }
         const ho = rb ? null : handOf(wo, spot, true), fo = facesOld.find(e => e[0] === fn);
-        if (ho && fo && handOn(ho, fo[1]) && JSON.stringify(ho) === JSON.stringify(hp)) { crossedOld.push(where + ' hand on ' + fn + ' (as the old)'); continue; }
+        if (ho && fo && handOn(ho, fo[1]) && JSON.stringify(ho) === JSON.stringify(hp)) { handOld.add(where.replace(/ (right|wrong|alternate) /, ' ') + ': on ' + fn); continue; }
         P.push('hand: ' + where + ' the hand at ' + JSON.stringify(hp) + ' is on ' + fn + ' ' + JSON.stringify(f)); }
     }); }
   notes.push('asks: ' + nF + ' distinct asks (for ' + [...askedFor].sort().join(', ') + '): every hint frame (box +- ' + FRAME_OUT + ') wholly inside the view (' + worstF + ' px from its edge at the least), no frame\'s rings across a face where the old frame\'s were not' + (crossedOld.length ? ' (as the old: ' + [...new Set(crossedOld)].join('; ') + ')' : '') + ', the hint hand on no face; ' + nC + ' answer cards inside the view, over no one\'s body (no opaque pixel of anyone\'s sprite, in their pose, under a card)');
+  if (handOld.size) notes.push('NOT solved, as the old picture: the hint hand at the first small tree (its old point; no point in the tree keeps it off every face and off the cat\'s tail and the birds) lies on a face at ' + [...handOld].join('; '));
   if (cardHand.size) notes.push('NOT the scene\'s: the hand juego.js draws at an answer card reaches onto the frog\'s face, 46 px under it, in every scene (the card\'s place and the hand are the game\'s, respBox and hand()): at the asks for ' + [...cardHand].join(', '));
   notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments of ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + '), each its recorded one and the ones an act can show there (anyone\'s "amor" when touched, at any moment; Carmen\'s "q" at mirarriba; the frog\'s "amor" at lame and acaricia; the cat\'s at ronronea; Canelo\'s at final13, final14): wholly inside the view (' + worstView + ' px from its edge at the least), clear of the cards shown in the corner (' + (worstBoard === 99 ? 'no card shown with a bubble near' : worstBoard + ' px') + '), on no face');
 

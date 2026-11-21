@@ -132,7 +132,7 @@
     "box": [53, 74, 34, 48]
    },
    "hand": [70, 108],
-   "handWhy": "the old hand point (the trunk, 12 rows over the foot)"
+   "handWhy": "the old hand point (the trunk, 12 rows over the foot). No point in the tree's box keeps the hand off every face at its asks and off the cat's tail, its face and the birds in the tree: the hand hangs 54 rows, and Luis waits under it (donde-esta-el-gato beats.32, 39, 70) as in the old picture (see checks: hand, as the old)"
   },
   "arbol1": {
    "set": true,
@@ -143,7 +143,8 @@
    "old": {
     "box": [95, 70, 34, 48]
    },
-   "hand": [112, 104]
+   "hand": [104, 104],
+   "handWhy": "the trunk's left side, 12 rows over the foot (the old point 8 px right): there the hand is on no face at the tree's asks and off the cat's tail and face and the birds in the tree"
   },
   "arbol2": {
    "set": true,
@@ -154,7 +155,8 @@
    "old": {
     "box": [137, 66, 34, 48]
    },
-   "hand": [154, 100]
+   "hand": [146, 100],
+   "handWhy": "as arbol1's: at the old point the hand lay on Luis's face by the big tree (h-camino beats.13), as in the old picture"
   },
   "banco": {
    "set": true,
@@ -2036,7 +2038,8 @@
     "thing": "arbol0",
     "box": [51, 74, 37, 47],
     "hand": [70, 108]
-   }
+   },
+   "note": "the hand: things.arbol0.handWhy"
   },
   {
    "line": 70,
@@ -2044,8 +2047,9 @@
    "to": {
     "thing": "arbol1",
     "box": [95, 68, 35, 49],
-    "hand": [112, 104]
-   }
+    "hand": [104, 104]
+   },
+   "note": "the hand: things.arbol1.handWhy"
   },
   {
    "line": 70,
@@ -2053,8 +2057,9 @@
    "to": {
     "thing": "arbol2",
     "box": [135, 66, 38, 47],
-    "hand": [154, 100]
-   }
+    "hand": [146, 100]
+   },
+   "note": "the hand: things.arbol2.handWhy"
   },
   {
    "line": 71,
@@ -2476,7 +2481,8 @@
    "preview: at every moment of the 15 runs (5081 places of people, the frog, Canelo and the cat) camino-preview.html puts everyone exactly where the sheet does (0 differ)",
    "find them: Canelo and the cat have the lawn or the path behind them but gato at 46,172 before porton (60 px), perro at 88,134 before arbol0 (9 px), perro at 88,134 before banco (126 px), perro at 46,177 before porton (28 px), perro at 191,133 before grande (119 px), perro at 178,137 before grande (23 px), perro at 204,130 before grande (93 px) (the snail always the path or the lawn)",
    "ground: 80 distinct stands of people, the frog, Canelo and the cat: nothing of the arch, the trees or the bench nearer than them inside their sprites, but where they are behind the bench or the arch and drawn before its entry (front): perro behind banco (2); at least 5 rows of lawn between anyone's feet and the foot of what stands behind them: the least behind a trunk 10 rows, uno-dos-tres right beats.38.right.0: perro at 204,130; a post 9 rows, d-corre right null: the frog at 44,148; the bench 5 rows, d-corre right beats.49: perro at 88,134",
-   "asks: 63 distinct asks (for arbol0, arbol1, arbol2, camina, carmen, con_2, con_3, corre, despacio, di_despacio, di_rapido, espera, gato, grande, luis, perro, rapido): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), no frame's rings across a face where the old frame's were not (as the old: donde-esta-el-gato right beats.32 (arbol0) hand on luis's face (as the old); donde-esta-el-gato right beats.39 (arbol0) the frog's face; donde-esta-el-gato right beats.39 (arbol0) hand on luis's face (as the old); donde-esta-el-gato right beats.39 (arbol0) hand on the frog's face (as the old); donde-esta-el-gato right beats.70 (arbol0) hand on luis's face (as the old); donde-esta-el-gato wrong beats.32 (arbol0) hand on luis's face (as the old); donde-esta-el-gato wrong beats.39 (arbol0) the frog's face; donde-esta-el-gato wrong beats.39 (arbol0) hand on luis's face (as the old); donde-esta-el-gato wrong beats.39 (arbol0) hand on the frog's face (as the old); donde-esta-el-gato wrong beats.70 (arbol0) hand on luis's face (as the old); h-camino right beats.8 (perro) carmen's face; h-camino right beats.13 (arbol2) luis's face; h-camino right beats.21 (carmen) the frog's face; rapido-despacio right beats.8 (perro) the frog's face; uno-dos-tres right beats.11 (perro) carmen's face), the hint hand on no face; 103 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
+   "asks: 63 distinct asks (for arbol0, arbol1, arbol2, camina, carmen, con_2, con_3, corre, despacio, di_despacio, di_rapido, espera, gato, grande, luis, perro, rapido): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), no frame's rings across a face where the old frame's were not (as the old: donde-esta-el-gato right beats.39 (arbol0) the frog's face; donde-esta-el-gato wrong beats.39 (arbol0) the frog's face; h-camino right beats.8 (perro) carmen's face; h-camino right beats.13 (arbol2) luis's face; h-camino right beats.21 (carmen) the frog's face; rapido-despacio right beats.8 (perro) the frog's face; uno-dos-tres right beats.11 (perro) carmen's face), the hint hand on no face; 103 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
+   "NOT solved, as the old picture: the hint hand at the first small tree (its old point; no point in the tree keeps it off every face and off the cat's tail and the birds) lies on a face at donde-esta-el-gato beats.32 (arbol0): over the cat's tail; donde-esta-el-gato beats.32 (arbol0): on luis's face; donde-esta-el-gato beats.39 (arbol0): over the cat's tail; donde-esta-el-gato beats.39 (arbol0): on luis's face; donde-esta-el-gato beats.39 (arbol0): on the frog's face; donde-esta-el-gato beats.70 (arbol0): on luis's face",
    "NOT the scene's: the hand juego.js draws at an answer card reaches onto the frog's face, 46 px under it, in every scene (the card's place and the hand are the game's, respBox and hand()): at the asks for di_rapido, despacio",
    "bubbles: 111 bubbles at 1066 moments of 15 runs (d-corre, donde-esta-el-gato, h-camino, rapido-despacio, uno-dos-tres), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, at any moment; Carmen's \"q\" at mirarriba; the frog's \"amor\" at lame and acaricia; the cat's at ronronea; Canelo's at final13, final14): wholly inside the view (0 px from its edge at the least), clear of the cards shown in the corner (11 px), on no face",
    "birds: every bird of the nine places perches on its own tree's crown (its leaves under at least 67% of its feet' columns), with nothing but that crown or the sky behind it, none overlapping another of its tree; a bird's blue stands out from the leaves behind it by 53 at the least (mean CIE76)",
