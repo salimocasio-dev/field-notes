@@ -29,7 +29,7 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 const E = {
   HW: 1.25, PV: .7,                                                  // half a street's width; a pavement's width beside it
   TREE: [0, -5.0], PLAZA: { u0: 2.2, v0: 2.6, u1: 5.7, v1: 7.6 },      // the big tree at the end of the street straight on; the small square (in u, v)
-  SEAT: { u: 3.7, v: 4.5, hw: 1.05 }, TREE2: [5.2, 3.0], WALL: { v: 3.5 },
+  SEAT: { u: 3.7, v: 4.5, hw: 1.05 }, TREE2: [5.3, 6.6], WALL: { v: 3.5 },
   CONES: 2.45,                                                       // the cones that close the right street stand at u = CONES
   uv: (x, y) => [(x - y) / R2, (x + y) / R2], xy: (u, v) => [(u + v) / R2, (v - u) / R2],
 };
