@@ -343,16 +343,16 @@
    "drawn_px": 1971
   },
   "alto_guagua": {
-   "world": [6.7, 4.8, 0],
-   "screen": [185, 206],
-   "depth": 7.0423,
+   "world": [7, 4.8, 0],
+   "screen": [190, 208],
+   "depth": 7.226,
    "scale": 1,
    "kind": "vehicle",
    "what": "story 49: where the guagua stops, the middle of its floor, in the near lane behind the car, heading to -x (its front at x 4.5)",
    "sprite": "guagua",
    "heading": "i",
-   "drawn": [132, 131, 237, 225],
-   "drawn_px": 6593
+   "drawn": [138, 133, 242, 227],
+   "drawn_px": 6549
   },
   "carril_a.carro": {
    "world": [-0.9, 4.8, 0],
@@ -663,8 +663,8 @@
     "lines": [
      "spots-in-view: 43 spots: every point inside the 240 x 216 picture and the window [12, 208) x [0, 216) and every sprite whole (a vehicle may be cut at the right and the bottom of the picture, vuelta is an exit: 5 such cut(s), below)",
      "       not a failure: vuelta 205,87 is an exit, only its point has to be inside; the stand-in sprite would be cut by 9 px at the right",
-     "       not a failure: alto_guagua (vehicle) 185,206: cut by the window 30 px at the right (its drawn pixels reach column 237, the window ends at 207)",
-     "       not a failure: alto_guagua (vehicle) 185,206: cut by the picture 10 rows at the bottom (its drawn pixels reach row 225, the picture ends at 215)",
+     "       not a failure: alto_guagua (vehicle) 190,208: cut by the window 35 px at the right (its drawn pixels reach column 242, the window ends at 207)",
+     "       not a failure: alto_guagua (vehicle) 190,208: cut by the picture 12 rows at the bottom (its drawn pixels reach row 227, the picture ends at 215)",
      "       not a failure: carril_b.guagua (vehicle) 178,202: cut by the window 22 px at the right (its drawn pixels reach column 229, the window ends at 207)",
      "       not a failure: carril_b.guagua (vehicle) 178,202: cut by the picture 6 rows at the bottom (its drawn pixels reach row 221, the picture ends at 215)",
      "       info, not a check: the x0 that keep every spot point inside, with the sprites each cuts that count (columns only: the spec's widths and the car's and the guagua's drawn pixels): x0 10: 0 sprite(s), 0 px; x0 11: 0 sprite(s), 0 px; x0 12: 0 sprite(s), 0 px; x0 13: 0 sprite(s), 0 px; x0 14: 0 sprite(s), 0 px; x0 15: 1 sprite(s), 1 px; x0 16: 1 sprite(s), 2 px; x0 17: 1 sprite(s), 3 px; x0 18: 1 sprite(s), 4 px; x0 19: 1 sprite(s), 5 px; x0 20: 1 sprite(s), 6 px; x0 21: 1 sprite(s), 7 px; x0 22: 1 sprite(s), 8 px; x0 23: 1 sprite(s), 9 px; x0 24: 1 sprite(s), 10 px; x0 25: 1 sprite(s), 11 px; x0 26: 1 sprite(s), 12 px; x0 27: 1 sprite(s), 13 px; x0 28: 1 sprite(s), 14 px; x0 29: 4 sprite(s), 18 px; x0 30: 4 sprite(s), 22 px; x0 31: 4 sprite(s), 26 px; x0 32: 4 sprite(s), 30 px; x0 33: 4 sprite(s), 34 px; x0 34: 5 sprite(s), 39 px; x0 35: 5 sprite(s), 44 px; x0 36: 5 sprite(s), 49 px; x0 37: 5 sprite(s), 54 px; x0 38: 5 sprite(s), 59 px; x0 39: 5 sprite(s), 64 px; x0 40: 5 sprite(s), 69 px",

@@ -46,7 +46,7 @@ const ON_STREET = ['obrero.paleta'];
 const STATES = [];
 for (const hora of ['manana', 'tarde']) for (const obra of [0, 1]) for (const puerta of ['shut', 'open']) STATES.push({ hora, obra, puerta });
 const qOf = (s, autos) => 'hora=' + s.hora + '&obra=' + s.obra + '&puerta=' + s.puerta + (autos ? '&autos=' + encodeURIComponent(autos) : '');
-const AUTOS_49 = 'carro@3.5,4.8,i;guagua@6.7,4.8,i';               // story 49: the traffic stopped in the near lane, one behind the other (alto_carro, alto_guagua)
+const AUTOS_49 = 'carro@3.5,4.8,i;guagua@7.0,4.8,i';               // story 49: the traffic stopped in the near lane, one behind the other (alto_carro, alto_guagua)
 const AUTOS_48 = 'carro@0.7,4.8,i;guagua@4.5,4.8,i';               // story 48: the car and the guagua at the kerb (para48_carro, para48_guagua)
 const BASE_STATE = { hora: 'tarde', obra: 0, puerta: 'shut' };
 
@@ -115,7 +115,7 @@ async function partBoxes(page, load) {
 
 /* ---------- the pixel box of each thing that drives, as the set draws it (autos=kind@x,y,heading; tags=1: part 'auto'): [x0, y0, x1, y1], read from a picture larger than the game's so that nothing is clipped ---------- */
 const VEH = {                                            // spot: [what the set draws, x, y, heading]
-  para48_carro: ['carro', .7, 4.8, 'i'], para48_guagua: ['guagua', 4.5, 4.8, 'i'], alto_carro: ['carro', 3.5, 4.8, 'i'], alto_guagua: ['guagua', 6.7, 4.8, 'i'],
+  para48_carro: ['carro', .7, 4.8, 'i'], para48_guagua: ['guagua', 4.5, 4.8, 'i'], alto_carro: ['carro', 3.5, 4.8, 'i'], alto_guagua: ['guagua', 7.0, 4.8, 'i'],
   'carril_a.carro': ['azul', -.9, 4.8, 'd'], 'carril_b.carro': ['carro', 5.1, 4.8, 'i'], 'carril_b.guagua': ['guagua', 6.3, 4.8, 'i'],
 };
 const BIG = 'pw=480&ph=320&ox=-90&oy=-60&';                // a picture twice the size with the same OX, OY (150, 100): what the set draws beyond the 240 x 216 picture is seen too
@@ -168,7 +168,7 @@ async function make(G, proj, parts, veh) {
   person('toca_carro', [1.3, 6.05, 0], 'coqui', 'the frog knocks at the car, on the near pavement beside the kerb');
   person('toca_guagua', [3.6, 6.05, 0], 'coqui', 'the frog knocks at the guagua, on the near pavement beside the kerb');
   car('alto_carro', [3.5, 4.8, 0], 'carro', 'i', 'story 49: where the car stops at the stop line, the middle of its floor, in the near lane, heading to -x (its front at x 2.4, the stop line at x 2.2); the guagua stops behind it');
-  car('alto_guagua', [6.7, 4.8, 0], 'guagua', 'i', 'story 49: where the guagua stops, the middle of its floor, in the near lane behind the car, heading to -x (its front at x 4.5)');
+  car('alto_guagua', [7.0, 4.8, 0], 'guagua', 'i', 'story 49: where the guagua stops, the middle of its floor, in the near lane behind the car, heading to -x (its front at x 4.5)');
   // story 50
   car('carril_a.carro', [-.9, 4.8, 0], 'azul', 'd', 'carril_a, the left end of the one lane (the near lane): a car\'s middle, heading to +x; the guagua never waits here');
   car('carril_a.bici', [-.5, 4.8, 0], 'bici', 'd', 'carril_a: a bicycle\'s middle, heading to +x (an alternative of the car; the set has no bicycle: a sprite)');
