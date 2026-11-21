@@ -722,6 +722,18 @@ Designed by an Opus agent in four rounds (El patio took six: the brief carried i
 - Seen by readers and not changed: the bench has no back (each named it a bench); a crown's shadow lies a little apart from its trunk's foot; the frog at the bench sits in front of it.
 - Bake: 57 to 99 ms the first time, 19 to 47 ms warm, in headless Chrome.
 
+### Order 33 (camino), step b. **Result (Nov 21): done, merged; stories 12 to 14 play in the app (build 8).**
+
+Ported by an Opus builder with no stop; the orchestrator ran `test_all.sh` on the branch (passes whole); a fresh reader went through the three stories as they play in the real app.
+
+- Both baked states: 0 of 51,840 differ from the JavaScript. Preview pictures: 527, 518 identical, none over 2%, the most 0.04% (the rings round the counted trees). The four earlier scenes unchanged.
+- All 15 recorded runs match in everything but time, with the old hop sounds and the old number of random draws: uno-dos-tres equal whole; h-camino equal in time (the cat's place on the bench differs in the state line); donde-esta-el-gato 70 ms shorter; d-corre 210 ms shorter; rapido-despacio 140 ms longer, from the new walk out through the arch.
+- In the real app uno-dos-tres, donde-esta-el-gato and rapido-despacio play to the end by touches, right and wrong, no touch lost.
+- Built for later scenes: any thing of any scene can carry a hint box (`Thing.hintBox`: the frame and the twinkle go round it, touches answer in the box); a set step's `respEn` goes through the scene's remap (one small change in the runner); `Sheet` reads a box given as corners, cloud points, a `numbers` remap, front parts placed by `insert`, `sevan`.
+- Bake: the first state, which also builds the ground, 104 to 126 ms; the other first bake 17 to 22 ms; later 13 to 27 ms. Under the limit.
+- What the reader of the real app found is the old stories' own (the dog in front of the frog at the arch; people in front of one another at the ends; the cat as a tail; answer cards that look alike; asks with nothing marked; a heart on a wrong touch; the dog behind the bush). The walk out through the arch at the end of story 14 plays between two captured frames, so the reader saw only "everyone gone".
+- Reported, not changed: the dog's, the cat's and abuela's sprites reach past their old touch boxes (as in the old scene); the sheet's world boxes for the path and the park do not project to their screen boxes (nothing uses them).
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
