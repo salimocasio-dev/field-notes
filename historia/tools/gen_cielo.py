@@ -10,13 +10,13 @@
 #       The script gives the correction only for the moon ("¡No, Coquí! ¡La luna!"): for the star it is "¡No, Coquí! ¡La estrella grande!" (the call's own words, without "mira").
 #   `pick` of the games: a calc turns the drawn weather into the thing key (81: viento -> chiringa, sol -> sombrilla, nubes -> bola; 82: lluvia -> cuerda, frio -> chal, viento -> tapa).
 #   `palabras`: the drawn value -> the word the miss is filed under ("nubes" -> nube; "frio" -> hace frío).
-#   Right move: the thing's act and `tiempo81` / `tiempo82` {que} start together (`juntos`: the script says "as the wind arrives"). A wrong touch in 81 runs the weather and the failing act of the thing he touched ($x) together;
+#   Right move: the thing's act and `tiempo81` / `tiempo82` {que} start together (`juntos`: the script says "as the wind arrives"). A wrong touch in 81 runs `tiempo81` (what comes) and then `tropiezo81` {que: the thing he touched, $x}: one picture for every pair of thing and weather;
 #       in 82 "what comes finds the table as it was": only `tiempo82` {que} runs, the thing he touched is not acted on. After the correction the `right` steps run again (the same pattern as the other generators).
 #   83: `mira83` {a, cae}: cae=1 where the light goes by, 0 where nothing is; the right move is mira83 a=$donde cae=1 and Carmen's wish (`gesto ojos`) only when the first touch was right, and cae=0 after a correction ("only the moon").
 #   83: `deseos` {n} is the stake's count of wishes still possible (3 at the start, 2 and 1 after a loss); the opening's two fingers ("two more") are `gesto dedos` n=2. The stake thing is `deseos` (the script's At stake names the three falling lights).
 #   83 step 7: the frog's song before the three endings is `canta83` n=0 (the song with no voice answering yet); the voices that answer are `final83` {n}.
 #   Counts of the stake after a wrong move (`jugos` 81, `velas` 82, `deseos` 83) are set from `lost`, after the picture and the line, before X (before the cross is counted, lost=0 means this is the first).
-#   Start of each story: the sky state (azul / gris / noche), the frog's spot (manta / piso / telescopio) and the stake's count; 82 also puts the awning up, the shawl on the chair's arm, the cover on the floor (the script's Start); 83 puts the shawl on abuela.
+#   Start of each story: the sky state (azul / gris / noche), the frog's spot (manta / piso / telescopio) and the stake's count; 82 also puts the blind up, the shawl on the chair's arm, the cover on the floor (the script's Start); 83 puts the shawl on abuela.
 #   Before round B (82): the three things back as they were with toldo abajo=0, chal puesto=0, tapa82 puesta=0 (their own acts). In 81 only the umbrella has an act that does it (sombrilla81 abierta=0).
 #   (heard) words of a Back again list are in back_again as written AND in also_heard (the precedent of gen_caja).
 import json,glob,os,re,collections
@@ -110,8 +110,7 @@ for w in ("viento","sol","nubes"):
 def ronda81(s):
     # one round: the radio says what comes (drawn); he touches the thing to get ready (the umbrella, the kite, the ball)
     right=sw("viene",[("viento",juntos(act("tiempo81",que="viento"),act("vuela81",ok=1))),("sol",juntos(act("tiempo81",que="sol"),act("sombrilla81",abierta=1))),("nubes",juntos(act("tiempo81",que="nubes"),act("bola81",ok=1)))])
-    mal=[{"if":"x=sombrilla","then":juntos(act("tiempo81",que="$viene"),act("sombrilla81",abierta=1)),
-          "else":[{"if":"x=chiringa","then":juntos(act("tiempo81",que="$viene"),act("vuela81",ok=0)),"else":juntos(act("tiempo81",que="$viene"),act("bola81",ok=0))}]}]
+    mal=[act("tiempo81",que="$viene"),act("tropiezo81",que="$x")]
     return [{"draw":"viene","options":["viento","sol","nubes"]},{"calc":"p","cond":"viene=viento","then":"chiringa","else":"bola"},{"calc":"p","cond":"viene=sol","then":"sombrilla","else":"$p"},
      {"decide":"do","options":["sombrilla","chiringa","bola"],"pick":"$p","tests":"$viene","lock":True,"lead":[],"line":"c81_%s_$viene"%s,
       "right":right+[star],
@@ -127,8 +126,8 @@ s81={"id":"como-esta-el-tiempo","title":"¿Cómo está el tiempo?","place":"La p
   {"dots":1},act("radio",on=1),"c81_radio_cielo",ask("cielo","c81_donde_cielo"),"c81_ab_calor","c81_cq_poco",
   # 2: the signed ask on the umbrella: it opens over the blanket
   {"dots":2},"c81_ca_sombrilla",ask("sombrilla","c81_donde_sombrilla",after=[act("sombrilla81",abierta=1)]),
-  # 3: the music again, the leaves stir; Carmen shuts the umbrella; the signed ask on the kite: it climbs
-  {"dots":3},act("radio",on=1),act("tiempo81",que="viento"),"c81_radio_viento","c81_ab_viento",act("sombrilla81",abierta=0),
+  # 3: the music again; Carmen shuts the umbrella, only then the wind arrives and the leaves stir; the signed ask on the kite: it climbs
+  {"dots":3},act("radio",on=1),"c81_radio_viento","c81_ab_viento",act("sombrilla81",abierta=0),act("tiempo81",que="viento"),
   ask("chiringa","c81_que_vuela",after=[act("vuela81",ok=1)]),"c81_l_vuela",
   # 4: the cloud slides over the sun; the signed ask on the ball: the two kick it to and fro
   {"dots":4},act("tiempo81",que="nubes"),"c81_l_nube","c81_radio_nubes","c81_ca_nubes",ask("bola","c81_donde_bola",after=[act("bola81",ok=1)]),
@@ -145,10 +144,10 @@ json.dump(s81,open("cuentos/como-esta-el-tiempo.json","w",encoding="utf-8"),ensu
 
 
 # ---------------- 82. Está lloviendo ----------------
-# The radio says what is coming (lluvia, frio, viento), drawn each round on its own; the frog makes ready with the awning's cord, the shawl or the glass cover. A miss: what comes finds the table as it was, a candle is lost.
+# The radio says what is coming (lluvia, frio, viento), drawn each round on its own; the frog makes ready with the blind's cord, the shawl or the glass cover. A miss: what comes finds the table as it was, a candle is lost.
 nm,nc=nombres("abuela","luis","carmen","coqui"); c=dict(comunes); c.update(nc)
 c.update({"c82_ca_feo":CA("Mira el cielo. Hay nubes grandes. ¡Qué feo!"),"c82_ab_feo":AB("Sí. El cielo está feo."),"c82_radio_lluvia":RA("¿Cómo está el tiempo? Viene lluvia. Mucha lluvia."),"c82_l_lluvia":L("¡Lluvia! ¡Está lloviendo!"),
- "c82_que_bajamos":N("Está lloviendo. ¿Qué bajamos?"),"c82_l_ya_no":L("Ya no está lloviendo."),"c82_ab_frio":AB("¡Uy! Ahora hace frío. Tengo frío."),"c82_que_necesita":N("Hace frío. ¿Qué necesita abuela?"),
+ "c82_que_bajamos":N("Está lloviendo. ¿Qué bajamos?"),"c82_l_ya_no":L("Ya no está lloviendo."),"c82_ab_frio":AB("¡Uy! Ahora hace frío. Tengo frío."),"c82_l_frio":L("Sí, hace frío."),"c82_que_necesita":N("Hace frío. ¿Qué necesita abuela?"),
  "c82_ab_gracias":AB("Gracias, Coquí. Ya no tengo frío."),"c82_ca_viento":CA("¡Viento!"),"c82_que_ponemos":N("Hay viento. ¿Qué ponemos en la mesa?"),"c82_radio_dia":RA("Hoy, lluvia, viento y frío. ¡Qué día feo! Mañana hay sol: un día bonito."),
  "c82_ca_bonito":CA("¡Un día bonito! Me gusta."),"c82_ab_hambre":AB("Coquí, ¿tienes hambre?"),"c82_cq_hambre":T("¡Sí, tengo hambre!"),"c82_ab_comer":AB("¡A comer! Coquí, ¿qué dice el radio?"),
  "c82_ca_gusta":CA("Mira, Coquí. Ahora el cielo está bonito. ¿Te gusta?"),"c82_cq_gusta":T("¡Sí, me gusta!"),"c82_fin":N("La comida está caliente. Y mañana hay sol.")})
@@ -167,28 +166,28 @@ def ronda82(s):
       "right":right+[star],
       "wrong":[act("tiempo82",que="$viene"),resta(lambda n:act("velas",n=n)),"c82_no_$viene"]+X}]
 s82={"id":"esta-lloviendo","title":"Está lloviendo","place":"La playa","scene":"cielo","next":"la-luna",
- "goal":"Make ready for the weather the radio says is coming (the awning's cord for rain, the shawl for cold, the glass cover for wind) so that the three candles burning on the porch table stay lit: every wrong thing lets the weather put one out or carry it indoors.",
+ "goal":"Make ready for the weather the radio says is coming (the blind's cord for rain, the shawl for cold, the glass cover for wind) so that the three candles burning on the porch table stay lit: every wrong thing lets the weather put one out or carry it indoors.",
  "stake":{"thing":"velas","steps":3},"dots":9,"bien":"si_muy_bien",
  "focus_words":["lluvia","está lloviendo","hace frío","bonito","feo"],"formas_foco":{},
  "back_again":["cielo","nube","viento","¿cómo está el tiempo?","hace calor","sol","viene","ahora","mañana","día","abuela","mesa","come","comida","caliente","frío","tengo","tengo hambre","gracias","no","sí","mira","grande","me gusta"],
  "also_heard":["bajamos"],"names":nm,"palabras":{"lluvia":"lluvia","frio":"hace frío","viento":"viento"},"clips":c,
  "beats":[{"set":{"cielo":"gris"}},act("ir",a="piso"),act("velas",n=3),act("toldo",abajo=0),act("chal",puesto=0),act("tapa82",puesta=0),{"wait":500},
-  # 1: Carmen looks up; the radio on; the first drop; the signed ask on the awning's cord: it rolls down, the rain drums on it
+  # 1: Carmen looks up; the radio on; the first drop; the signed ask on the blind's cord: it rolls down, the rain drums on it
   {"dots":1},gesto("carmen","mira",a="cielo"),"c82_ca_feo","c82_ab_feo",act("radio",on=1),"c82_radio_lluvia","c82_l_lluvia",
   ask("cuerda","c82_que_bajamos",after=[act("toldo",abajo=1),act("tiempo82",que="lluvia")]),
-  # 2: the rain stops, Luis rolls the awning up; the cold: abuela rubs her arms; the signed ask on the shawl
-  {"dots":2},act("toldo",abajo=0),"c82_l_ya_no",gesto("abuela","brazos"),"c82_ab_frio",ask("chal","c82_que_necesita",after=[act("chal",puesto=1)]),"c82_ab_gracias",
+  # 2: the rain stops, Luis rolls the blind up; the cold: abuela rubs her arms; the signed ask on the shawl
+  {"dots":2},act("toldo",abajo=0),"c82_l_ya_no",gesto("abuela","brazos"),"c82_ab_frio","c82_l_frio",ask("chal","c82_que_necesita",after=[act("chal",puesto=1)]),"c82_ab_gracias",
   # 3: the flames lean; the signed ask on the glass cover; the radio sums up the day, the small sun in its bubble
   {"dots":3},"c82_ca_viento",ask("tapa","c82_que_ponemos",after=[act("tapa82",puesta=1)]),act("radio",on=1),"c82_radio_dia",act("radio",sol=1),"c82_ca_bonito",
   # 4: a speaking turn (tengo hambre)
   {"dots":4},"c82_ab_hambre","c82_cq_hambre",
-  # 5: the turn: the shawl off, the cover off, the awning up; the card shows two places
+  # 5: the turn: the shawl off, the cover off, the blind up; the card shows two places
   {"dots":5},act("chal",puesto=0),act("tapa82",puesta=0),"c82_ab_comer",CARD,{"wait":400},
   # 6: A. 7: B (the three things back as they were). Each drawn afresh
   {"dots":6}]+ronda82("a")+[{"dots":7},act("toldo",abajo=0),act("chal",puesto=0),act("tapa82",puesta=0)]+ronda82("b"),
  "final":[{"dots":8},{"set":{"cielo":"rosa"}},baja3(lambda n:act("final82",n=n)),   # 8: the clouds out to sea, the sky pink; they eat; the table, by the candles left
   {"dots":9},"c82_ca_gusta","c82_cq_gusta","c82_fin",act("fin")],
- "leer":["c82_ca_feo","c82_ab_feo","c82_radio_lluvia","c82_l_lluvia","c82_que_bajamos","c82_l_ya_no","c82_ab_frio","c82_que_necesita","c82_ab_gracias","c82_ca_viento","c82_que_ponemos","c82_radio_dia","c82_ca_bonito","c82_ab_hambre","c82_cq_hambre","c82_ab_comer",
+ "leer":["c82_ca_feo","c82_ab_feo","c82_radio_lluvia","c82_l_lluvia","c82_que_bajamos","c82_l_ya_no","c82_ab_frio","c82_l_frio","c82_que_necesita","c82_ab_gracias","c82_ca_viento","c82_que_ponemos","c82_radio_dia","c82_ca_bonito","c82_ab_hambre","c82_cq_hambre","c82_ab_comer",
   "c82_a_lluvia","c82_b_frio","c82_ca_gusta","c82_cq_gusta","c82_fin"]}
 s82=reuse(s82,{"c82_cq_hambre":TG(("tengo hambre",["tengo hambre","sí tengo hambre","si tengo hambre"])),"c82_cq_gusta":TG(("me gusta",["me gusta","sí me gusta","si me gusta"]))})
 json.dump(s82,open("cuentos/esta-lloviendo.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
