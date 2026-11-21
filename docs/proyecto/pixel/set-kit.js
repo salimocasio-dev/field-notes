@@ -343,7 +343,7 @@ function waterPixel(ix, iy, i, g, depth, shore, look) {
     // the face: lighter earth at the top lip, darker down to the wet line at the water
     const tone = f > .78 ? 0 : f < .2 ? 3 : 2 - (hash(ix, iy * 3) > .7 ? 1 : 0);
     pix[i] = f > .78 ? rgb(...look.wet) : B[clamp(tone, 0, 4)];
-    zb[i] = p.d; kinds[i] = KIND_NONE; ground[i] = 0;
+    zb[i] = p.d; kinds[i] = KIND_NONE; ground[i] = 1;   // a shadow falls on the bank's face too (a ball's thrown over it)
     return;
   }
   // the surface: shallow near the shore, deep away from it, dithered; the bank's dark reflection along the shore; sparse light ripples
@@ -367,5 +367,16 @@ function drawGlints(glints, t, refZ, color) {
     if (s < .35) continue;
     const w = s > .8 ? 1 : 0;
     for (let dx = -w; dx <= w; dx++) { const j = gl.i + dx; if (gl.ix + dx < 0 || gl.ix + dx >= W || zb[j] !== refZ[j]) continue; pix[j] = color; }
+  }
+}
+// a shadow at a reduced strength (order 34a, round 2): castShadow's ellipse, of which only the pixels whose Bayer threshold is under `cover`
+// (0 to 1) take the engine's shadow tint; the shadow reads lighter, dithered as the look's big flat surfaces are
+function castShadowCover(x, y, z, r, cover, dither = .4) {
+  const saved = shadowMask.slice();
+  shadowMask.fill(0);
+  castShadow(x, y, z, r, 1, dither);
+  for (let i = 0; i < W * H; i++) {
+    if (shadowMask[i] && bayerAt(i % W, (i / W) | 0) >= cover) shadowMask[i] = 0;
+    if (saved[i] > shadowMask[i]) shadowMask[i] = saved[i];
   }
 }

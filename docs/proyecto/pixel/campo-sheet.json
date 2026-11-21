@@ -27,7 +27,7 @@
   "moved": [
    "the tree's crown: its middle 2 px right of the old (62, 100), 27 x 25 px (the old 30 x 26), so its hint frame is inside the view (things.arbol)",
    "the lake: a straight shore along y (the old an ellipse round 232, 228): at the bottom it starts 10 px left of the old rim (x 150; the old 160), at the view's right edge it is 7 rows lower (182; the old 175)",
-   "the reeds: a bed of about 75 stalks along the shore (the old four clusters of five); its right end at x 205 (the old 217), so that the hint frame round it is inside the view",
+   "the reeds: a bed of about 63 stalks along the shore (the old four clusters of five); its right end at x 205 (the old 217), so that the hint frame round it is inside the view",
    "the sun: upper left (the old upper right), as El camino's; the clouds moved clear of the corner card and the answer cards",
    "unchanged: every place of a person, the frog, Canelo, a ball and the basket"
   ]
@@ -90,9 +90,9 @@
   },
   "juncos": {
    "set": true,
-   "world": [5.9832, 1.0879, 0, 7.615, 2.7196, 1.2435],
-   "box": [180, 149, 60, 58],
-   "screen": [180, 149, 240, 207],
+   "world": [5.82, 0.9247, 0, 7.4518, 2.5565, 1.1103],
+   "box": [180, 149, 60, 55],
+   "screen": [180, 149, 240, 204],
    "what": "the reeds: every stalk, head and blade of the bed along the shore",
    "old": {
     "box": [160, 168, 60, 48]
@@ -1206,27 +1206,27 @@
      "zoom": 1
     },
     "dame.si": {
-     "crop": [75, 134, 98, 52],
+     "crop": [90, 98, 98, 52],
      "zoom": 2
     },
     "dame.no": {
-     "crop": [75, 134, 98, 52],
+     "crop": [90, 98, 98, 52],
      "zoom": 2
     },
     "mi.si": {
-     "crop": [81, 135, 98, 52],
+     "crop": [89, 98, 98, 52],
      "zoom": 2
     },
     "mi.no": {
-     "crop": [81, 135, 98, 52],
+     "crop": [89, 98, 98, 52],
      "zoom": 2
     },
     "tu.si": {
-     "crop": [77, 134, 98, 52],
+     "crop": [90, 98, 98, 52],
      "zoom": 2
     },
     "tu.no": {
-     "crop": [77, 134, 98, 52],
+     "crop": [90, 98, 98, 52],
      "zoom": 2
     }
    }
@@ -1266,19 +1266,19 @@
    },
    "crops": {
     "bola.si": {
-     "crop": [99, 140, 98, 52],
+     "crop": [99, 101, 98, 52],
      "zoom": 2
     },
     "bola.no": {
-     "crop": [99, 140, 98, 52],
+     "crop": [99, 101, 98, 52],
      "zoom": 2
     },
     "salta.si": {
-     "crop": [88, 140, 98, 52],
+     "crop": [90, 100, 98, 52],
      "zoom": 2
     },
     "salta.no": {
-     "crop": [88, 140, 98, 52],
+     "crop": [90, 100, 98, 52],
      "zoom": 2
     }
    }
@@ -1295,12 +1295,12 @@
    },
    "crops": {
     "mas.si": {
-     "crop": [103, 154, 98, 52],
-     "zoom": 2
+     "crop": [44, 112, 196, 104],
+     "zoom": 1
     },
     "mas.no": {
-     "crop": [103, 154, 98, 52],
-     "zoom": 2
+     "crop": [44, 112, 196, 104],
+     "zoom": 1
     }
    }
   },
@@ -1313,7 +1313,7 @@
    },
    "crops": {
     "arriba.no": {
-     "crop": [121, 156, 98, 52],
+     "crop": [131, 156, 98, 52],
      "zoom": 2
     }
    }
@@ -1506,30 +1506,36 @@
    "old": [88, 155],
    "uses": ["cual-campo.json dame.si.set.cq", "cual-campo.json dame.no.set.cq"],
    "to": {
-    "floor": [1.4142, 3.1548, 0]
+    "floor": [-0.4351, 0.8703, 0]
    },
-   "new": [88, 155],
-   "what": "the frog's place q (x, y): the ground under (x + 16, y + 25); the same screen place"
+   "new": [96, 117],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "the frog's place q (x, y): the ground under (x + 16, y + 25); moved (why)"
   },
   {
    "kind": "point",
    "old": [92, 184],
    "uses": ["cual-campo.json mi.no.set.bolas.a"],
    "to": {
-    "floor": [3.1004, 4.6234, 0]
+    "floor": [1.251, 2.3389, 0]
    },
-   "new": [92, 184],
-   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place"
+   "new": [100, 146],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; moved (why)"
   },
   {
    "kind": "point",
    "old": [94, 184],
    "uses": ["cual-campo.json tu.si.set.bolas.b"],
    "to": {
-    "floor": [3.1548, 4.569, 0]
+    "floor": [1.3054, 2.2845, 0]
    },
-   "new": [94, 184],
-   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place"
+   "new": [102, 146],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; moved (why)"
   },
   {
    "kind": "point",
@@ -1549,10 +1555,12 @@
    "old": [110, 182],
    "uses": ["cual-campo.json mi.si.set.gente.luis", "cual-campo.json mi.no.set.gente.luis"],
    "to": {
-    "floor": [3.4811, 4.0251, 0]
+    "floor": [1.6318, 1.7406, 0]
    },
-   "new": [110, 182],
-   "what": "a child's feet (x, y): the ground under them; the same screen place"
+   "new": [118, 144],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a child's feet (x, y): the ground under them; moved (why)"
   },
   {
    "kind": "point",
@@ -1573,10 +1581,12 @@
    "old": [112, 182],
    "uses": ["cual-campo.json tu.si.set.gente.carmen", "cual-campo.json tu.no.set.gente.carmen"],
    "to": {
-    "floor": [3.5355, 3.9707, 0]
+    "floor": [1.6862, 1.6862, 0]
    },
-   "new": [112, 182],
-   "what": "a child's feet (x, y): the ground under them; the same screen place"
+   "new": [120, 144],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a child's feet (x, y): the ground under them; moved (why)"
   },
   {
    "kind": "point",
@@ -1613,30 +1623,36 @@
    "old": [128, 184],
    "uses": ["cual-campo.json salta.no.set.perro"],
    "to": {
-    "floor": [4.0795, 3.6443, 0]
+    "floor": [2.0125, 1.5774, 0]
    },
-   "new": [128, 184],
-   "what": "Canelo's place (x, y): the ground under it; the same screen place"
+   "new": [128, 146],
+   "moved": true,
+   "why": "round 2, the pair salta (zoom 2): moved 0 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "Canelo's place (x, y): the ground under it; moved (why)"
   },
   {
    "kind": "point",
    "old": [137, 178],
    "uses": ["cual-campo.json bola.si.set.bolas.a", "cual-campo.json bola.no.set.flor"],
    "to": {
-    "floor": [3.9979, 3.0732, 0]
+    "floor": [2.0397, 1.1151, 0]
    },
-   "new": [137, 178],
-   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place"
+   "new": [137, 142],
+   "moved": true,
+   "why": "round 2, the pair bola (zoom 2): moved 0 px, -36 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; moved (why)"
   },
   {
    "kind": "point",
    "old": [137, 186],
    "uses": ["cual-campo.json salta.si.set.perro"],
    "to": {
-    "floor": [4.433, 3.5083, 0]
+    "floor": [2.3661, 1.4414, 0]
    },
-   "new": [137, 186],
-   "what": "Canelo's place (x, y): the ground under it; the same screen place"
+   "new": [137, 148],
+   "moved": true,
+   "why": "round 2, the pair salta (zoom 2): moved 0 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "Canelo's place (x, y): the ground under it; moved (why)"
   },
   {
    "kind": "point",
@@ -1653,20 +1669,24 @@
    "old": [138, 187],
    "uses": ["cual-campo.json salta.si.set.bolas.a"],
    "to": {
-    "floor": [4.5146, 3.5355, 0]
+    "floor": [2.4477, 1.4686, 0]
    },
-   "new": [138, 187],
-   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place"
+   "new": [138, 149],
+   "moved": true,
+   "why": "round 2, the pair salta (zoom 2): moved 0 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; moved (why)"
   },
   {
    "kind": "point",
    "old": [140, 184],
    "uses": ["cual-campo.json mi.no.set.bolas.b"],
    "to": {
-    "floor": [4.4058, 3.318, 0]
+    "floor": [2.5565, 1.0335, 0]
    },
-   "new": [140, 184],
-   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place"
+   "new": [148, 146],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; moved (why)"
   },
   {
    "kind": "point",
@@ -1696,10 +1716,12 @@
    "old": [144, 153],
    "uses": ["cual-campo.json mi.si.set.cq", "cual-campo.json mi.no.set.cq"],
    "to": {
-    "floor": [2.8284, 1.523, 0]
+    "floor": [0.9791, -0.7615, 0]
    },
-   "new": [144, 153],
-   "what": "the frog's place q (x, y): the ground under (x + 16, y + 25); the same screen place"
+   "new": [152, 115],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "the frog's place q (x, y): the ground under (x + 16, y + 25); moved (why)"
   },
   {
    "kind": "point",
@@ -1726,10 +1748,12 @@
    "old": [150, 182],
    "uses": ["cual-campo.json dame.si.set.gente.carmen", "cual-campo.json dame.no.set.gente.carmen", "cual-campo.json tu.si.set.gente.luis", "cual-campo.json tu.no.set.gente.luis"],
    "to": {
-    "floor": [4.569, 2.9372, 0]
+    "floor": [2.7196, 0.6527, 0]
    },
-   "new": [150, 182],
-   "what": "a child's feet (x, y): the ground under them; the same screen place"
+   "new": [158, 144],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a child's feet (x, y): the ground under them; moved (why)"
   },
   {
    "kind": "point",
@@ -1746,10 +1770,12 @@
    "old": [152, 184],
    "uses": ["cual-campo.json mi.si.set.bolas.b"],
    "to": {
-    "floor": [4.7322, 2.9916, 0]
+    "floor": [2.8828, 0.7071, 0]
    },
-   "new": [152, 184],
-   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place"
+   "new": [160, 146],
+   "moved": true,
+   "why": "round 2, the pair dame, mi or tu (zoom 2): moved 8 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; moved (why)"
   },
   {
    "kind": "point",
@@ -1766,10 +1792,12 @@
    "old": [160, 187],
    "uses": ["cual-campo.json salta.no.set.bolas.a"],
    "to": {
-    "floor": [5.1129, 2.9372, 0]
+    "floor": [3.046, 0.8703, 0]
    },
-   "new": [160, 187],
-   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place"
+   "new": [160, 149],
+   "moved": true,
+   "why": "round 2, the pair salta (zoom 2): moved 0 px, -38 rows up the lawn with the whole picture, so that it shows none of the tree's shadow (it lies on rows 154 to 182, left of x 131) and none of the tree",
+   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; moved (why)"
   },
   {
    "kind": "point",
@@ -1788,10 +1816,12 @@
    "old": [168, 192],
    "uses": ["d-bola-canelo.json beats.27"],
    "to": {
-    "floor": [5.6025, 2.9916, 0]
+    "floor": [5.1945, 2.8556, 0]
    },
-   "new": [168, 192],
-   "what": "Canelo's place in a perro step of the picture story (x, y): the ground under it; the same screen place"
+   "new": [163, 187],
+   "moved": true,
+   "why": "round 2: d-bola-canelo beats.27, Canelo barking by the water: he stood across the lip of the bank; 5 px, 5 rows, on the lawn",
+   "what": "Canelo's place in a perro step of the picture story (x, y): the ground under it; moved (why)"
   },
   {
    "kind": "point",
@@ -1818,10 +1848,12 @@
    "old": [176, 196],
    "uses": ["cual-campo.json arriba.no.set.bolas.a"],
    "to": {
-    "floor": [6.0376, 2.9916, 0]
+    "floor": [6.5543, 3.1276, 0]
    },
-   "new": [176, 196],
-   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; the same screen place"
+   "new": [183, 202],
+   "moved": true,
+   "why": "round 2: the pair arriba.no, the big ball down in the reeds: it lay across the lip of the bank; 7 px, 6 rows into the water among the reeds (water all round it, its ring)",
+   "what": "a ball (or the flower) where it lies (x, y; its height z is kept): the ground under it; moved (why)"
   },
   {
    "kind": "point",
@@ -1830,11 +1862,11 @@
     "cual-campo.json más.no.set.perro"
    ],
    "to": {
-    "floor": [6.0376, 3.8619, 0]
+    "floor": [6.6087, 4.0523, 0]
    },
-   "new": [160, 204],
+   "new": [167, 211],
    "moved": true,
-   "why": "the pair más.no: Canelo drinks at the water: at the old point (178, 197) the reeds stand in front of his head (the subject hidden); on the open bank down the shore from the reeds, as acts.aguanta (moves)",
+   "why": "the pair más.no: Canelo drinks at the water: at the old point (178, 197) the reeds stand in front of his head (the subject hidden); in the shallows down the shore from the reeds, wading as he drinks (his ring), as acts.aguanta (moves)",
    "what": "Canelo's place (x, y): the ground under it; moved (why)"
   },
   {
@@ -1954,17 +1986,17 @@
  ],
  "pictures": {
   "bola.si": {
-   "world": [3.6987, 2.1757, 0],
-   "screen": [148, 166],
+   "world": [1.5774, 0.0544, 0],
+   "screen": [148, 127],
    "zoom": 2,
-   "crop": [99, 140, 98, 52],
+   "crop": [99, 101, 98, 52],
    "what": "a ball on the grass, close"
   },
   "bola.no": {
-   "world": [3.6987, 2.1757, 0],
-   "screen": [148, 166],
+   "world": [1.5774, 0.0544, 0],
+   "screen": [148, 127],
    "zoom": 2,
-   "crop": [99, 140, 98, 52],
+   "crop": [99, 101, 98, 52],
    "what": "a flower there, close"
   },
   "tiene.si": {
@@ -2010,59 +2042,59 @@
    "what": "Carmen throws the ball away"
   },
   "salta.si": {
-   "world": [3.3996, 2.4749, 0],
-   "screen": [137, 166],
+   "world": [1.2782, 0.2448, 0],
+   "screen": [139, 126],
    "zoom": 2,
-   "crop": [88, 140, 98, 52],
+   "crop": [90, 100, 98, 52],
    "what": "Canelo jumps over the ball"
   },
   "salta.no": {
-   "world": [3.3996, 2.4749, 0],
-   "screen": [137, 166],
+   "world": [1.2782, 0.2448, 0],
+   "screen": [139, 126],
    "zoom": 2,
-   "crop": [88, 140, 98, 52],
+   "crop": [90, 100, 98, 52],
    "what": "Canelo runs, the ball before him"
   },
   "dame.si": {
-   "world": [2.7196, 2.5021, 0],
-   "screen": [124, 160],
+   "world": [1.1694, 0.136, 0],
+   "screen": [139, 124],
    "zoom": 2,
-   "crop": [75, 134, 98, 52],
+   "crop": [90, 98, 98, 52],
    "what": "Carmen holds out her hand, the frog has the ball"
   },
   "dame.no": {
-   "world": [2.7196, 2.5021, 0],
-   "screen": [124, 160],
+   "world": [1.1694, 0.136, 0],
+   "screen": [139, 124],
    "zoom": 2,
-   "crop": [75, 134, 98, 52],
+   "crop": [90, 98, 98, 52],
    "what": "Carmen has the ball"
   },
   "mi.si": {
-   "world": [2.9372, 2.3933, 0],
-   "screen": [130, 161],
+   "world": [1.1422, 0.1632, 0],
+   "screen": [138, 124],
    "zoom": 2,
-   "crop": [81, 135, 98, 52],
+   "crop": [89, 98, 98, 52],
    "what": "Luis points at himself, his ball in his hands"
   },
   "mi.no": {
-   "world": [2.9372, 2.3933, 0],
-   "screen": [130, 161],
+   "world": [1.1422, 0.1632, 0],
+   "screen": [138, 124],
    "zoom": 2,
-   "crop": [81, 135, 98, 52],
+   "crop": [89, 98, 98, 52],
    "what": "Luis points at the frog, his ball on the grass"
   },
   "tu.si": {
-   "world": [2.774, 2.4477, 0],
-   "screen": [126, 160],
+   "world": [1.1694, 0.136, 0],
+   "screen": [139, 124],
    "zoom": 2,
-   "crop": [77, 134, 98, 52],
+   "crop": [90, 98, 98, 52],
    "what": "Carmen points at Luis"
   },
   "tu.no": {
-   "world": [2.774, 2.4477, 0],
-   "screen": [126, 160],
+   "world": [1.1694, 0.136, 0],
+   "screen": [139, 124],
    "zoom": 2,
-   "crop": [77, 134, 98, 52],
+   "crop": [90, 98, 98, 52],
    "what": "Carmen points at herself"
   },
   "arriba.si": {
@@ -2073,10 +2105,10 @@
    "what": "the big ball up in the tree, in its fork"
   },
   "arriba.no": {
-   "world": [5.1673, 2.4477, 0],
-   "screen": [170, 182],
+   "world": [5.4393, 2.1757, 0],
+   "screen": [180, 182],
    "zoom": 2,
-   "crop": [121, 156, 98, 52],
+   "crop": [131, 156, 98, 52],
    "what": "the big ball down in the reeds"
   },
   "abajo.si": {
@@ -2094,17 +2126,17 @@
    "what": "the frog up in the tree's crown"
   },
   "mas.si": {
-   "world": [4.569, 2.8284, 0],
-   "screen": [152, 180],
-   "zoom": 2,
-   "crop": [103, 154, 98, 52],
-   "what": "Canelo sniffs at the ball, wet"
+   "world": [3.4267, 2.2301, 0],
+   "screen": [142, 164],
+   "zoom": 1,
+   "crop": [44, 112, 196, 104],
+   "what": "Canelo sniffs at the ball, wet (zoom 1 with the trunk: round 2)"
   },
   "mas.no": {
-   "world": [4.569, 2.8284, 0],
-   "screen": [152, 180],
-   "zoom": 2,
-   "crop": [103, 154, 98, 52],
+   "world": [3.4267, 2.2301, 0],
+   "screen": [142, 164],
+   "zoom": 1,
+   "crop": [44, 112, 196, 104],
    "what": "Canelo drinks at the water"
   }
  },
@@ -2130,7 +2162,7 @@
    "index": 2,
    "picture": "dame.si",
    "old": [100.83, 126, 54.34, 60],
-   "crop": [75, 134, 98, 52],
+   "crop": [90, 98, 98, 52],
    "zoom": 2
   },
   {
@@ -2162,7 +2194,7 @@
    "index": 2,
    "picture": "dame.no",
    "old": [100.83, 126, 54.34, 60],
-   "crop": [75, 134, 98, 52],
+   "crop": [90, 98, 98, 52],
    "zoom": 2
   },
   {
@@ -2170,7 +2202,7 @@
    "index": 3,
    "picture": "salta.si",
    "old": [119.48, 150, 36.05, 39.8],
-   "crop": [88, 140, 98, 52],
+   "crop": [90, 100, 98, 52],
    "zoom": 2
   },
   {
@@ -2186,7 +2218,7 @@
    "index": 1,
    "picture": "arriba.no",
    "old": [148.83, 150, 54.34, 60],
-   "crop": [121, 156, 98, 52],
+   "crop": [131, 156, 98, 52],
    "zoom": 2
   },
   {
@@ -2202,7 +2234,7 @@
    "index": 3,
    "picture": "salta.no",
    "old": [119.48, 150, 36.05, 39.8],
-   "crop": [88, 140, 98, 52],
+   "crop": [90, 100, 98, 52],
    "zoom": 2
   },
   {
@@ -2210,7 +2242,7 @@
    "index": 0,
    "picture": "mi.si",
    "old": [86.83, 126, 54.34, 60],
-   "crop": [81, 135, 98, 52],
+   "crop": [89, 98, 98, 52],
    "zoom": 2
   },
   {
@@ -2218,7 +2250,7 @@
    "index": 1,
    "picture": "mi.no",
    "old": [98.83, 126, 54.34, 60],
-   "crop": [81, 135, 98, 52],
+   "crop": [89, 98, 98, 52],
    "zoom": 2
   },
   {
@@ -2382,25 +2414,159 @@
    "line": 317,
    "act": "malA17",
    "src": "await vuela(n,[168,206],22,8);",
-   "to": "await vuela(n,[158,204],22,8);",
+   "to": "await vuela(n,[165,210],22,8);",
    "places": [
     {
      "who": "bola",
      "old": [168, 206],
-     "new": [158, 204],
-     "world": [5.9832, 3.9163, 0]
+     "new": [165, 210],
+     "world": [6.4999, 4.0523, 0]
     }
    ],
-   "why": "acts.malA17 (otra-vez, wrong): the ball he throws lands at the water's edge, a little way off, and Canelo does not go after it. The old point (168, 206) was on the old pond's rim; here it is on the water past the straight shore: -10 px, -2 rows to the lip of the bank (the ball then rolls back to the row, vuelvefila, from where it lies)"
+   "why": "acts.malA17 (otra-vez, wrong): the ball he throws lands at the water's edge, a little way off, and Canelo does not go after it. The old point (168, 206) was on the old pond's rim; here it lay across the lip of the bank: -3 px, 4 rows into the water at the edge, round 2 (water all round it, its ring: on the land every point near enough lay on Canelo or on the row of balls); Canelo then noses it back (vuelvefila) (the ball then rolls back to the row, vuelvefila, from where it lies)"
   },
   {
    "line": 326,
    "act": "aguanta",
    "src": "await perroA(ORILLA[0]-10,ORILLA[1]+2,\"walk\");pe.dir=1;pe.pose=\"eat\";",
-   "to": "await perroA(160,204,\"walk\");pe.dir=1;pe.pose=\"eat\";",
-   "why": "acts.aguanta (otra-vez): Canelo goes down and drinks at the water's edge: at the old point (180, 200: ORILLA - 10, + 2) the reeds stand in front of his head; -20 px, 4 rows to the open bank down the shore from the reeds (the same place as the pair más.no's, remap)"
+   "to": "await perroA(167,211,\"walk\");pe.dir=1;pe.pose=\"eat\";",
+   "places": [
+    {
+     "who": "perro",
+     "old": [180, 200],
+     "new": [167, 211],
+     "world": [6.6087, 4.0523, 0]
+    }
+   ],
+   "why": "acts.aguanta (otra-vez): Canelo goes down and drinks at the water's edge: at the old point (180, 200: ORILLA - 10, + 2) the reeds stand in front of his head; -13 px, 11 rows to the open bank down the shore from the reeds (the same place as the pair más.no's, remap)"
+  },
+  {
+   "line": 50,
+   "act": "*",
+   "src": "JUNCO=[180,197]",
+   "to": "JUNCO=[188,201]",
+   "places": [
+    {
+     "who": "bola",
+     "old": [180, 197],
+     "new": [188, 201],
+     "world": [6.6359, 2.9372, 0]
+    },
+    {
+     "who": "bola",
+     "old": [178, 199],
+     "new": [186, 203],
+     "world": [6.6903, 3.1004, 0]
+    }
+   ],
+   "why": "round 2: JUNCO, where a ball hides in the reeds (ruedabajo, esconde16, sol: and sol's JUNCO - 2, + 2): the old point lay across the lip of the bank; 8 px, 4 rows out into the water among the reeds (water all round it, its ring; the reeds in front of it)"
+  },
+  {
+   "line": 238,
+   "act": "luisbusca",
+   "src": "await mueve(\"luis\",ar?82:166,ar?166:194,null,1)",
+   "to": "await mueve(\"luis\",ar?82:165,ar?166:193,null,1)",
+   "places": [
+    {
+     "who": "luis",
+     "old": [166, 194],
+     "new": [165, 193],
+     "world": [5.5753, 3.1276, 0]
+    }
+   ],
+   "why": "round 2: acts.luisbusca, Luis looks in the reeds: his feet were 2 px from the lip of the bank; 1 px up and left, on the lawn"
+  },
+  {
+   "line": 274,
+   "act": "perrotumba",
+   "src": "await perroA(166,198,\"run\");pe.pose=\"husmea\"",
+   "to": "await perroA(158,190,\"run\");pe.pose=\"husmea\"",
+   "places": [
+    {
+     "who": "perro",
+     "old": [166, 198],
+     "new": [158, 190],
+     "world": [5.2217, 3.1548, 0]
+    }
+   ],
+   "why": "round 2: acts.perrotumba, Canelo noses at the reeds: he stood across the lip of the bank; -8 px, -8 rows, on the lawn by the water"
+  },
+  {
+   "line": 307,
+   "act": "tira17",
+   "src": "await perroA(ORILLA[0]-12,ORILLA[1]+2,\"run\")",
+   "to": "await perroA(184,206,\"run\")",
+   "places": [
+    {
+     "who": "perro",
+     "old": [178, 200],
+     "new": [184, 206],
+     "world": [6.7991, 3.318, 0]
+    }
+   ],
+   "why": "round 2: acts.tira17, Canelo fetches the ball from the water: he stood across the lip of the bank (178, 200); 6 px, 6 rows into the water, wading (his ring)"
+  },
+  {
+   "line": 333,
+   "act": "final17",
+   "src": "await perroA(160,196,\"walk\");if(b){await vuela(\"cq\",[170,197],0,4,0);}",
+   "to": "await perroA(158,191,\"walk\");if(b){await vuela(\"cq\",[169,193],0,4,0);}",
+   "places": [
+    {
+     "who": "perro",
+     "old": [160, 196],
+     "new": [158, 191],
+     "world": [5.2761, 3.2092, 0]
+    },
+    {
+     "who": "bola",
+     "old": [170, 197],
+     "new": [169, 193],
+     "world": [5.6841, 3.0188, 0]
+    }
+   ],
+   "why": "round 2: acts.final17, Canelo lies down by the water with the small ball: both lay across the lip of the bank; Canelo -2 px, -5 rows, the ball -1 px, -4 rows, on the lawn"
   }
  ],
+ "helps": {
+  "what": "drawn by the sprite layer just before the thing they help, 1:1, in the same sorted list (two lines added to campo.js, below): a ripple ring on the water round whatever floats or wades (a ball in the water, Canelo wading), so that a learner sees \"in the water\"; a darker rim round a ball that lies on the lawn, where its colour alone does not stand out from the lawn (the frog's yellow ball: notes, balls on the lawn)",
+  "margin": 3,
+  "marginWhat": "whatever rests at the shore is on one side: on the land with at least this many px of lawn (not the bank's lip, its face or the water) round its foot (the lowest 2 rows of its sprite), or in the water with water all round its foot (2 px) and its ring",
+  "shore": "over the water: the ground point (z 0) under the screen point (x, y - 1) is past the shore: x > 6.092 + .035 sin(2.3 y + 1) + .025 sin(5.1 y) (world x, y: pp-engine.js unproject)",
+  "ring": {
+   "inner": 0.45,
+   "colour": [212, 236, 246],
+   "ball": {
+    "rx": 4,
+    "ry": 2.5
+   },
+   "dog": {
+    "rx": 15,
+    "ry": 3.5,
+    "dy": 1
+   },
+   "when": "a ball (not carried) that floats (o.flota) or lies over the water (bolaXY height <= 1 and its point over the water); Canelo, not in the air (dy <= 3), with his point over the water",
+   "how": "every pixel (x, y) with .45 < ((x + .5 - cx) / rx)^2 + ((y + .5 - cy) / ry)^2 <= 1 takes the colour: a ball's ring at cx = bolaXY x, cy = bolaXY y (a floating ball: + its bob, (F >> 3) % 2, as unaBola), rx = radio(k) + 4, ry = 2.5; Canelo's at cx = x, cy = y + 1, rx = 15, ry = 3.5"
+  },
+  "contact": {
+   "balls": ["q"],
+   "colour": [42, 60, 30],
+   "halo": 2,
+   "when": "a ball of these kinds (the frog's small yellow one: the other two stand out from the lawn without it, balls), not carried, not floating, on the land (its point not over the water), its height <= 3, not in the tree",
+   "how": "a darker rim round the ball: every pixel within 2 px (either way, the square round each) of an opaque pixel of the ball's sprite, as unaBola places it, and not one of them, takes the colour (a deep shade of the lawn); then the ball is drawn over it"
+  },
+  "lines": [
+   [
+    "function unaBola(c,o){const p=bolaXY(o),r=radio(o.k),im=spr(\"bola\"+o.k,()=>mkBola(o.k));",
+    "function unaBola(c,o){const p=bolaXY(o),r=radio(o.k),im=spr(\"bola\"+o.k,()=>mkBola(o.k));PREVIEW.under(c,o,p,r,im);"
+   ],
+   [
+    "function perro(c,a){const o=W.perro;if(!o||o.vis===0)return;",
+    "function perro(c,a){const o=W.perro;if(!o||o.vis===0)return;PREVIEW.wade(c,o);"
+   ]
+  ],
+  "linesWhat": "the two lines campo.js gains (unaBola, perro): the help is drawn first, then the thing; the port draws them the same way"
+ },
  "bubbles": {
   "what": "each bubble's rectangle relative to its tail's tip, as campo.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]",
   "rects": {
@@ -3137,7 +3303,7 @@
    "old": "box juncos [160,168,60,48]; hand [188,190]",
    "to": {
     "thing": "juncos",
-    "box": [180, 149, 60, 58],
+    "box": [180, 149, 60, 55],
     "hand": [188, 190]
    }
   },
@@ -3187,22 +3353,28 @@
   "notes": [
    "inventory: 10 things (old 10), 2 frog places of LUGAR (old 2) and 15 frog places in all, 1 view (old 1), 66 positions (old 66), 11 review pairs of cual-campo (22 pictures here; none is another scene's), 16 level pictures (old 16), 241 places of campo.js named in code, 1 baked state (the old 7)",
    "hops: all 91 pairs of the frog's 14 places (LUGAR and every place an act hops him to; round(d / 30), 1 to 4, kit.js acts.ir) keep the old count",
-   "boxes: every pixel of each set thing inside its touch box: arbol [34,71,55,84] (2545 px), juncos [180,149,60,58] (1026 px) (still: no leaf or reed moves at any wind step); every pixel of each answers that thing in the hit order; the set's parts are arbol, juncos (each a touch key's: nothing decorative); the lake is the field's ground",
-   "shadows: every castShadow call of the bake has strength 1 and a radius, each casting part darkens: arbol 50 calls, 4158 px set (0 calls wholly over shadow already); juncos 34 calls, 280 px set (4 calls wholly over shadow already); the reeds (thin) cast only contact shadows, every pixel within 2.24 px of a reed's foot",
-   "ground: the lawn, the trodden earth round the tree's foot out to Canelo's spot (730 px with the bank's lip, joined to the trunk's foot: 185 px beside it), the bank's face (225 px) and the water (2347 px); nothing else but the shadows the tree and the reeds cast",
-   "water: 1412 px in the view, mean colour 50,103,127 (39 from the nearest sky band, CIE76), 9.5% of it ripples (baked) and 19 glints that come and go each frame (drawGlints, 8 steps a second, still when the OS asks); the bank's face (or the reeds standing on it) over the water at 75 of the 75 columns it reaches",
+   "boxes: every pixel of each set thing inside its touch box: arbol [34,71,55,84] (2545 px), juncos [180,149,60,55] (868 px) (still: no leaf or reed moves at any wind step); every pixel of each answers that thing in the hit order; the set's parts are arbol, juncos (each a touch key's: nothing decorative); the lake is the field's ground",
+   "shadows: every castShadow call of the bake has strength 1 and a radius, each casting part darkens: arbol 50 calls, 4158 px set (0 calls wholly over shadow already); juncos 28 calls, 226 px set (4 calls wholly over shadow already); the reeds (thin) cast only contact shadows, every pixel within 2.24 px of a reed's foot",
+   "ground: the lawn, Canelo's patch of dug earth (232 px, on the screen [32,163,60,173], 8 rows of lawn under the trunk's foot: apart from it), the bank's face (246 px) and the water (2347 px); nothing else but the shadows the tree and the reeds cast",
+   "patch (round 2): its mean colour 92,70,49 (the old oval 202,166,107); against it (CIE76): Canelo's coat 26 (the old oval 21), the red-and-white ball 32 (the old oval 28), the yellow ball 49 (the old oval 17)",
+   "water: 1412 px in the view, mean colour 67,130,161 (28 from the nearest sky band, CIE76), 9.2% of it ripples (baked) and 19 glints that come and go each frame (drawGlints, 8 steps a second, still when the OS asks); the bank's face (or the reeds standing on it) over the water at 75 of the 75 columns it reaches",
    "preview: at every moment of the 15 runs (8241 places of the children, the frog, Canelo, the balls and the cards) campo-preview.html puts everyone exactly where the sheet does (0 differ)",
    "asks: 44 distinct asks (for abajo, aguanta, arbol, arriba, bola_carmen, bola_cq, bola_luis, carmen, coge, da, di_abajo, di_coge, di_dame, di_mi, di_tu, juncos, luis, perro, salta, tira): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), no frame's rings across a face where the old frame's were not (as the old: arriba-abajo right beats.23 (arbol) luis's face; la-bola right beats.22 (carmen) luis's face; la-bola right beats.25 (luis) carmen's face; la-bola right beats.25 (luis) the frog's face; la-bola right beats.50 (carmen) luis's face; la-bola wrong beats.50 (carmen) luis's face), the hint hand on no face; 64 answer cards, each with its lit frame and glow (+- 12) inside the view (2 px to spare at the least), over no one's body, no ball and not the tree",
    "sun: at 38,47, radius 9: under no corner card (437 shown, 10 px to spare at the least) and under no answer card with its frame and glow (64 cards, 5 px to spare at the least), at every moment and ask of every run",
    "bubbles: 64 bubbles at 1193 moments of 15 runs (arriba-abajo, d-bola-canelo, h-campo, la-bola, otra-vez), each its recorded one and anyone's \"amor\" when touched: wholly inside the view (12 px from its edge at the least), clear of the rounds card (55 px), on no face",
    "tree: its crown on the screen [34,71,88,154] (the old [30,74,90,126]), its trunk's foot at row 154 (the old 152), the hollow over the fork darker than the crown round it (lightness 30 against 48); at least 11 rows of lawn between anyone's feet and the trunk's foot behind them (arriba-abajo right beats.15.after.0: the frog at 50,140)",
-   "shadows: each in one piece with its thing (arbol 1092 px, juncos 21 px)",
+   "shadows: each in one piece with its thing (arbol 1092 px, juncos 33 px)",
    "sky: the sun at 38,47 (radius 9), left of the middle, whole in the view, nothing of the set within 2 px; the old picture's three clouds at 188,12; 204,34; 108,10 (the old 36,16; 112,9; 168,26), each clear of the sun, the crown and the corner card by 2 px",
-   "ground: 54 distinct stands of the children, the frog, Canelo and the basket: nothing of the tree nearer than them inside their sprites; behind reeds (front.juncos draws them over): the frog at 160,166 behind juncos (107 px), perro at 168,192 behind juncos (3 px), perro at 196,204 behind juncos (49 px); in the water or the reeds, each where the old picture had them by the pond: the frog at 160,166 in the reeds, perro at 166,198 in the reeds, perro at 196,204 in the water",
-   "balls: 51 distinct balls at every moment and in every pair: on the ground with lawn (or the trodden earth) round them (100% of the ring at the least), at the water's edge on the land where the old picture had them on its pond's rim (luis at 158,204 (36% lawn round it)), in the air with their shadow point on the land (3), floating with water all round (100% at the least) and no reed over them, in the reeds partly hidden and at least half seen (juego at 180,197 65% seen, juego at 178,199 83% seen, cq at 170,197 100% seen), in the tree with the crown behind them (100% at the least) and standing out from it (47 at the least, CIE76); no two loose balls overlap (Canelo's pile and the balls floating on the lake, as the old, not counted: the stories never ask for them)",
-   "pairs, what differs: bola: bolas a, flor; tiene: bolas a, perro pose/dy; tira: luis x/pose, bolas a; coge: carmen x/pose, bolas a; salta: bolas a, perro x/y/dy/polvo; dame: bolas a; mi: luis pose, bolas a/b; tu: carmen pose, bolas b; arriba: bolas a, the window; abajo: cq x/y/s; mas: perro y/pose/dir",
+   "ground: 54 distinct stands of the children, the frog, Canelo and the basket: nothing of the tree nearer than them inside their sprites; behind reeds (front.juncos draws them over): the frog at 160,166 behind juncos (34 px), perro at 196,204 behind juncos (19 px); in the water or the reeds, each where the old picture had them by the pond: the frog at 160,166 in the reeds, perro at 196,204 in the water",
+   "balls: 51 distinct balls at every moment and in every pair: on the ground with lawn (or the trodden earth) round them (100% of the ring at the least), at the water's edge on the land where the old picture had them on its pond's rim (cq at 169,193 (100% lawn round it)), in the air with their shadow point on the land (3), floating with water all round (100% at the least) and no reed over them, in the reeds partly hidden and at least half seen (juego at 188,201 89% seen, juego at 186,203 90% seen), in the tree with the crown behind them (100% at the least) and standing out from it (47 at the least, CIE76); no two loose balls overlap (Canelo's pile and the balls floating on the lake, as the old, not counted: the stories never ask for them)",
+   "shore (round 2): 7020 ticks inside the acts of the 15 runs (every timer of the old page, played as the recorded runs), every step's end and every pair picture: 4925 rests near the shore (300 ms or more in one place, or a step's end), each clearly on one side (on the land with 3 px of lawn at least round its foot: luis at 165,193, perro at 158,190, luis at 150,194, perro at 163,187, perro at 160,190, perro at 164,188, perro at 160,191, perro at 158,191, bola cq at 169,193, perro at 160,188; in the water with water all round and its ring: bola juego at 188,201, bola flota0 at 196,205, bola juego at 186,203, bola flota1 at 207,198, bola flota2 at 200,212, bola flota3 at 212,208, perro at 184,206, perro at 167,211, perro at 196,204, bola luis at 165,210, bola a at 183,202); 3474 moments of something floating or wading, each with its ring (resting ones 90% on the water at the least); 1973 ticks of a ball in flight, each with its shadow on the ground under it (at least 30% of the 9 x 5 px round its point is ground that shows: no trunk or reed over it)",
+   "shade (round 2, point 2): the crown's shadow at a reduced strength: the engine's shadow tint on 25% of its pixels (Bayer, castShadowCover), the trunk's shadow whole; the lit lawn 124,145,63, the shaded lawn (mean over the crown's shadow) 104,122,56; each thing against the lit / the shaded lawn (CIE76; keep 0.8): Luis's ball 51 / 46, Carmen's ball 69 / 61, the frog's ball 25 / 30, the flower 87 / 82, Canelo 34 / 30, the frog 31 / 28, Luis's dark hair 64 / 52, Carmen's dark hair 54 / 43",
+   "balls on the lawn (round 2, point 5): at 23 places where a ball rests on the land, the ball against the 3 px band round it as drawn (lawn, the engine's shadow under it, its rim; CIE76, keep 38), the least, with the help / without: C lit 65 / 65 (at 128,195), L lit 42 / 42 (at 40,173), q lit 41 / 26 (at 169,193); the contact rim drawn for q (the old: the frog's ball against the old lawn 50)",
+   "water (round 2, point 1): lighter and bluer than round 1 (CIE L*a*b* 52,-11,-23, round 1 41,-10,-19); against it (CIE76): the bank's lip 54, the frog's ball 75, Luis's 55, Canelo 61",
+   "pairs, what differs: bola: bolas a, flor; tiene: bolas a, perro pose/dy; tira: luis x/pose, bolas a; coge: carmen x/pose, bolas a; salta: bolas a, perro x/y/dy/polvo; dame: bolas a; mi: luis pose, bolas a/b; tu: carmen pose, bolas b; arriba: bolas a, the window; abajo: cq x/y/s; mas: perro x/y/pose/dir",
+   "pairs (round 2): the zoom 2 pictures show none of the tree's shadow without its trunk: bola.si, bola.no, salta.si, salta.no, dame.si, dame.no, mi.si, mi.no, tu.si, tu.no, arriba.si, arriba.no; in each picture Canelo whole with 2 px to spare and every ball's shadow inside it",
    "pairs: 22 review pictures (and the 16 level pictures, the same pictures): everyone, the frog, Canelo, the balls and the flower whole in their crop (no zoom 2 crop cuts what the old window did not), on clear ground",
-   "lawn: El frente's grass (GRASS), mean colour 119,139,61 (hue 75; the old lawn 64,163,63); the sprite layer's things on it, by their mean colour against it (CIE76; keep 25), each with its dark outline and its cast shadow: Luis's ball 49 (the old 77), Carmen's ball 67 (the old 83), the frog's ball 26 (the old 50), Canelo 32 (the old 62), the basket 42 (the old 71), the flower's petals 85 (the old 113). The frog's small yellow ball is the nearest to the olive lawn: it keeps its dark outline and its shadow (no help needed: El patio's flowerLeaves rule; a reader to judge)",
+   "lawn: El frente's grass (GRASS), mean colour 121,140,61 (hue 75; the old lawn 64,163,63); the sprite layer's things on it, by their mean colour against it (CIE76; keep 25), each with its dark outline and its cast shadow: Luis's ball 49 (the old 77), Carmen's ball 67 (the old 83), the frog's ball 25 (the old 50), Canelo 33 (the old 62), the basket 42 (the old 71), the flower's petals 86 (the old 113). The frog's small yellow ball is the nearest to the olive lawn: it keeps its dark outline and its shadow (no help needed: El patio's flowerLeaves rule; a reader to judge)",
    "states: 1 baked state reached (every moment, pair and level picture)"
   ]
  }

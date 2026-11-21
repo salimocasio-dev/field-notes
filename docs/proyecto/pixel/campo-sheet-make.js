@@ -54,22 +54,23 @@ const SOLID = ['arbol', 'juncos'];   // what stands on the ground
       const raw = Array.from(GROUND_CACHE.pix), lit = [], shade = Array.from(staticShadow); for (let i = 0; i < W * H; i++) lit.push(kinds[i] === KIND_GRASS && bakedZ[i] === groundZ[i] && !staticShadow[i] ? 1 : 0);
       const onGround = []; for (let i = 0; i < W * H; i++) onGround.push(ground[i] && bakedZ[i] === groundZ[i] ? 1 : 0);
       // over the lake: the ground point (z 0) under each pixel is past the shore
-      const wet = []; for (let i = 0; i < W * H; i++) { const g = unproject(i % W + .5, Math.floor(i / W) + .5); wet.push(Math.floor(i / W) + .5 >= CAMPO_SET.HZ && CAMPO_SET.shore(g.x, g.y) < 0 ? 1 : 0); }
+      const wet = [], shoreV = []; for (let i = 0; i < W * H; i++) { const g = unproject(i % W + .5, Math.floor(i / W) + .5), up = Math.floor(i / W) + .5 >= CAMPO_SET.HZ, v = up ? CAMPO_SET.shore(g.x, g.y) : 9; wet.push(v < 0 ? 1 : 0); shoreV.push(Math.round(v * 1e4) / 1e4); }
       // the reed bed's footprint on the ground (where a reed stands), and the earth patch's
       return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z), kinds: Array.from(kinds), K: { road: KIND_ROAD, grass: KIND_GRASS, water: KIND_WATER, none: KIND_NONE }, rgb: rgbA, leaf, calls, bake: BAKE_MS,
-        first, warm, shown0, shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), raw, lit, onGround, shade, wet, glints: LOOK.glints ? LOOK.glints.map(g => g.i) : [],
-        EARTH: EARTH.map(c => rgb(...c)), SKYB: SKY.bands };
+        first, warm, shown0, shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), raw, lit, onGround, shade, wet, shoreV, glints: LOOK.glints ? LOOK.glints.map(g => g.i) : [],
+        PATCH: PATCH.map(c => rgb(...c)), SKYB: SKY.bands };
     });
     G.ms = { first: g.first, warm: g.warm, page: g.bake };
-    if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, K: g.K, EARTH: g.EARTH, SKYB: g.SKYB });
+    if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, K: g.K, PATCH: g.PATCH, SKYB: g.SKYB });
     G.parts[key] = g.parts; G.z[key] = g.z; G.kinds[key] = g.kinds; G.rgb[key] = g.rgb; G.leaf[key] = g.leaf; G.shadows[key] = g.calls;
-    for (const k of ['shown0', 'shadowPx', 'raw', 'lit', 'onGround', 'shade', 'wet', 'glints']) (G[k] = G[k] || {})[key] = g[k];
+    for (const k of ['shown0', 'shadowPx', 'raw', 'lit', 'onGround', 'shade', 'wet', 'shoreV', 'glints']) (G[k] = G[k] || {})[key] = g[k];
   }
   if (errs.length) throw new Error(errs.join('; '));
   G.M = await measure(await browser.newPage());
   const sheet = make(G);
   fs.writeFileSync(OUT, text(sheet));   // the preview reads the sheet: written first, then checked (and written again with the checks' notes)
   const runs = storyStates();
+  G.TICKS = await tickStates(browser, runs);
   G.PV = await previewPlaces(browser, runs);
   await browser.close();
   if (errs.length) throw new Error(errs.join('; '));
@@ -101,6 +102,9 @@ async function measure(page) {
     // the old lawn's mean colour (s000 without characters: rows 120 on, its green pixels, the pond and the patch left out)
     const oldLawn = await new Promise(res => { const im = new Image(); im.onload = () => { const cv = document.createElement('canvas'); cv.width = 240; cv.height = 216; const g = cv.getContext('2d'); g.drawImage(im, 0, 0);
       const d = g.getImageData(0, 0, 240, 216).data; let n = 0, s = [0, 0, 0]; for (let y = 120; y < 216; y++) for (let x = 0; x < 150; x++) { const i = (y * 240 + x) * 4; if (d[i + 1] > d[i] && d[i + 1] > d[i + 2]) { n++; s[0] += d[i]; s[1] += d[i + 1]; s[2] += d[i + 2]; } } res(s.map(v => v / n)); }; im.src = oldPng; });
+    // the old oval of Canelo's spot (campo.js fondo: ell(SITIO, 15, 5)): its mean colour as the old picture draws it
+    const oldOval = await new Promise(res => { const im = new Image(); im.onload = () => { const cv = document.createElement('canvas'); cv.width = 240; cv.height = 216; const g = cv.getContext('2d'); g.drawImage(im, 0, 0);
+      const d = g.getImageData(0, 0, 240, 216).data; let n = 0, s = [0, 0, 0]; for (let y = 160; y < 176; y++) for (let x = 28; x < 66; x++) { const dx = (x + .5 - 46) / 15, dy = (y + .5 - 168) / 5; if (dx * dx + dy * dy > .8) continue; const i = (y * 240 + x) * 4; n++; s[0] += d[i]; s[1] += d[i + 1]; s[2] += d[i + 2]; } res(s.map(v => v / n)); }; im.src = oldPng; });
     const keys = Object.keys(BUB).concat(Object.keys(BUBL)), bubbles = {};
     for (const k of keys) {
       let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
@@ -134,9 +138,14 @@ async function measure(page) {
     const balls = {}; for (const k of ['L', 'C', 'q']) balls[k] = rowsOf((g, x, y) => { const im = MK.mkBola(k); g.drawImage(im, x - (im.width >> 1), y - im.height + 1); });
     const cesta = rowsOf((g, x, y) => { const im = MK.mkBola('q'); for (let i = 0; i < 4; i++) g.drawImage(im, x - 10 + i * 5, y - 16 - (i % 2) * 2); g.drawImage(KIT.mkCesta(), x - 10, y - 11); });
     const flor = rowsOf((g, x, y) => { g.fillStyle = '#2E8A34'; g.fillRect(x, y - 9, 1, 9); g.fillRect(x - 3, y - 4, 3, 2); g.fillStyle = '#F06A9A'; [[-3, -13], [1, -13], [-3, -9], [1, -9], [-1, -15], [-1, -8], [-4, -11], [2, -11]].forEach(d => g.fillRect(x + d[0], y + d[1], 3, 3)); g.fillStyle = '#F0C020'; g.fillRect(x - 1, y - 12, 3, 3); });
+    // each ball's pixels as unaBola draws it on the ground at (0, 0): [dy, dx, r, g, b]
+    const ballPx = {}; for (const k of ['L', 'C', 'q']) { const im = MK.mkBola(k), d = im.getContext('2d').getImageData(0, 0, im.width, im.height).data, out = [];
+      for (let y = 0; y < im.height; y++) for (let x = 0; x < im.width; x++) { const i = (y * im.width + x) * 4; if (d[i + 3] > 40) out.push([y - im.height + 1, x - (im.width >> 1), d[i], d[i + 1], d[i + 2]]); } ballPx[k] = out; }
     const meanOf = im => { const g = im.getContext('2d'), d = g.getImageData(0, 0, im.width, im.height).data; let n = 0, s = [0, 0, 0]; for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 40) { n++; s[0] += d[i]; s[1] += d[i + 1]; s[2] += d[i + 2]; } return s.map(v => Math.round(v / n)); };
-    const colours = { L: meanOf(MK.mkBola('L')), C: meanOf(MK.mkBola('C')), q: meanOf(MK.mkBola('q')), perro: meanOf(KIT.mkPerro('sit', 0)), cesta: meanOf(KIT.mkCesta()), flor: [240, 106, 154] };
-    return { bubbles, masks, heads, animals, balls, cesta, flor, colours, oldLawn, PX: KIT.PX, R: { L: MK.BOLA.L.r, C: MK.BOLA.C.r, q: MK.BOLA.q.r } };
+    const mean3 = a => { const n = a.length; return [0, 1, 2].map(k => a.reduce((t, c) => t + c[k], 0) / n); }, hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+    const hairOf = f => mean3([].concat(f.pelo).map(hex));
+    const colours = { frog: meanOf(mkCoqui(1, 0, 0)), pelo_luis: hairOf(KIT.FAM.hermano), pelo_carmen: hairOf(KIT.FAM.hermana), L: meanOf(MK.mkBola('L')), C: meanOf(MK.mkBola('C')), q: meanOf(MK.mkBola('q')), perro: meanOf(KIT.mkPerro('sit', 0)), cesta: meanOf(KIT.mkCesta()), flor: [240, 106, 154] };
+    return { bubbles, masks, heads, animals, balls, ballPx, cesta, flor, colours, oldLawn, oldOval, PX: KIT.PX, R: { L: MK.BOLA.L.r, C: MK.BOLA.C.r, q: MK.BOLA.q.r } };
   }, oldPng);
 }
 
@@ -162,6 +171,43 @@ async function previewPlaces(browser, runs) {
     await page.close();
     return out;
   } finally { await new Promise(r => srv.close(r)); }
+}
+
+/* ---------- every tick inside the acts: the old page played by the same machine as the recorded runs (coqui/tool/ref/trazas: page-init.js and
+   page-drive.js, as they are, the same seed, think time and clock), with one more script, read only: after each timer the runner fires, the
+   scene's W (the children, the frog, Canelo, the balls, the basket) is kept when it changed. So a throw, a roll or a wade is seen tick by tick */
+const TRAZAS = path.join(REPO, 'coqui/tool/ref/trazas');
+const TICK_HOOK = `(() => { const H = window.__H, d = H.drain; window.__TICKS = []; let last = '';
+  const keep = () => { try { if (typeof W === 'undefined' || !W || !W.cq) return; const o = { gente: W.gente, perro: W.perro, bolas: W.bolas, cq: W.cq, cesta: W.cesta, tarjeta: W.tarjeta, mojado: W.mojado };
+    const s = JSON.stringify(o, (k, x) => typeof x === 'function' || (x && x.nodeType) || x instanceof HTMLCanvasElement ? undefined : x); if (s !== last) { last = s; window.__TICKS.push({ t: H.now, W: JSON.parse(s) }); } } catch (e) {} };
+  H.drain = () => d().then(() => { keep(); }); })();`;
+async function serve(fn) {
+  const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.woff2': 'font/woff2', '.css': 'text/css', '.mp3': 'audio/mpeg' };
+  const srv = http.createServer((req, res) => { const u = decodeURIComponent(new URL(req.url, 'http://x').pathname), f = path.join(REPO, u);
+    if (!f.startsWith(REPO + path.sep) || !fs.existsSync(f) || !fs.statSync(f).isFile()) { res.writeHead(404); res.end(); return; }
+    res.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream', 'Cache-Control': 'no-store' }); fs.createReadStream(f).pipe(res); });
+  await new Promise(r => srv.listen(0, '127.0.0.1', r));
+  try { return await fn('http://127.0.0.1:' + srv.address().port); } finally { await new Promise(r => srv.close(r)); }
+}
+async function tickStates(browser, runs) {
+  const INIT = fs.readFileSync(path.join(TRAZAS, 'page-init.js'), 'utf8').replace('__SEED__', '1'), DRIVE = fs.readFileSync(path.join(TRAZAS, 'page-drive.js'), 'utf8');
+  return serve(async base => { const out = [];
+    for (const r of runs) {
+      const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, timezoneId: 'UTC', locale: 'en-US' });
+      try {
+        await ctx.addInitScript(INIT); await ctx.addInitScript(TICK_HOOK);
+        await ctx.route(/\/historia\/audio\/[^/]+\.mp3(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop());
+          return fs.existsSync(path.join(REPO, 'historia/audio', name)) ? route.fulfill({ status: 200, contentType: 'audio/mpeg', body: 'ID3' }) : route.fulfill({ status: 404, body: '' }); });
+        const page = await ctx.newPage();
+        await page.goto(base + '/historia/index.html?cuento=' + r.story.id + '&fast=1&rec=1&mic=stub:none&abiertas=todas');
+        for (let i = 0; ; i++) { if (await page.evaluate("!!(window.Story&&Story.ready&&typeof voiceReady!=='undefined'&&voiceReady)")) break; if (i > 600) throw new Error('the page did not load ' + r.story.id); await new Promise(z => setTimeout(z, 50)); }
+        await page.evaluate('voiceReady'); await page.evaluate(DRIVE);
+        const tr = await page.evaluate(cfg => window.__drive(cfg), { plan: r.plan, think: 700, limitMs: 4 * 3600e3, states: false });
+        if (tr.end !== 'finished') throw new Error('ticks: ' + r.story.id + ' ' + r.plan + ' ended: ' + tr.end);
+        out.push(await page.evaluate(() => window.__TICKS));
+      } finally { await ctx.close(); }
+    }
+    return out; });
 }
 
 /* ---------- the engine's projection, as pp-engine.js has it ---------- */
@@ -225,7 +271,7 @@ function make(G) {
   /* ---- the places that move (the floor rule keeps every other one). Each is an exact piece of campo.js source and its replacement ---- */
   // the answer cards in the sky (W.respEn, juego.js respBox: "a scene that needs its people seen while he chooses puts the bubbles elsewhere", as
   // El camino's): over the frog they covered Luis and Carmen; under the rounds card (rows 2 to 28), right of the sun with their frames
-  const EN = [134, 32], MALA17 = [158, 204], BEBE = [160, 204];
+  const EN = [134, 32], MALA17 = [165, 210], BEBE = [167, 211], CONTACT_BALLS = ['q'], JUNCO = [188, 201], LUISJ = [165, 193], HUSMEA = [158, 190], NADA = [184, 206], ECHA = [158, 191], BOLA17 = [169, 193];
   const MOVES = [
     { line: lineOf('async inicio15()'), act: 'inicio15', src: 'async inicio15(){W.gente=', to: 'async inicio15(){W.respEn=[' + EN + '];W.gente=', respEn: EN,
       why: 'acts.inicio15 (la-bola, d-bola-canelo): the answer cards stand in the sky (W.respEn ' + EN + '): over the frog at the field\'s middle they covered Luis (88, 178), the hand at a card reached his face; under the rounds card, right of the sun with their lit frames and glow, inside the view with 2 px to spare' },
@@ -234,9 +280,22 @@ function make(G) {
     { line: lineOf('async inicio17()'), act: 'inicio17', src: 'async inicio17(){W.gente=', to: 'async inicio17(){W.respEn=[' + EN + '];W.gente=', respEn: EN,
       why: 'acts.inicio17 (otra-vez): the answer cards (three: tira, aguanta, da) stand in the sky (W.respEn ' + EN + '): over the frog they ran over Luis\'s head and the tree\'s crown' },
     { line: lineOf('async malA17('), act: 'malA17', src: 'await vuela(n,[168,206],22,8);', to: 'await vuela(n,[' + MALA17 + '],22,8);', pts: [['bola', [168, 206], MALA17]],
-      why: 'acts.malA17 (otra-vez, wrong): the ball he throws lands at the water\'s edge, a little way off, and Canelo does not go after it. The old point (168, 206) was on the old pond\'s rim; here it is on the water past the straight shore: ' + (MALA17[0] - 168) + ' px, ' + (MALA17[1] - 206) + ' rows to the lip of the bank (the ball then rolls back to the row, vuelvefila, from where it lies)' },
+      why: 'acts.malA17 (otra-vez, wrong): the ball he throws lands at the water\'s edge, a little way off, and Canelo does not go after it. The old point (168, 206) was on the old pond\'s rim; here it lay across the lip of the bank: ' + (MALA17[0] - 168) + ' px, ' + (MALA17[1] - 206) + ' rows into the water at the edge, round 2 (water all round it, its ring: on the land every point near enough lay on Canelo or on the row of balls); Canelo then noses it back (vuelvefila) (the ball then rolls back to the row, vuelvefila, from where it lies)' },
     { line: lineOf('async aguanta('), act: 'aguanta', src: 'await perroA(ORILLA[0]-10,ORILLA[1]+2,"walk");pe.dir=1;pe.pose="eat";', to: 'await perroA(' + BEBE + ',"walk");pe.dir=1;pe.pose="eat";',
+      pts: [['perro', [180, 200], BEBE]],
       why: 'acts.aguanta (otra-vez): Canelo goes down and drinks at the water\'s edge: at the old point (180, 200: ORILLA - 10, + 2) the reeds stand in front of his head; ' + (BEBE[0] - 180) + ' px, ' + (BEBE[1] - 200) + ' rows to the open bank down the shore from the reeds (the same place as the pair más.no\'s, remap)' },
+    // round 2, the shore: whatever rests at the shore is clearly on one side (helps.margin); each old point that lay across the lip of the bank,
+    // moved the least (the nearest point on that side: on the land with 3 px of lawn round its foot, or in the water with water round it)
+    { line: lineOf('const FILA='), act: '*', src: 'JUNCO=[180,197]', to: 'JUNCO=[' + JUNCO + ']', pts: [['bola', [180, 197], JUNCO], ['bola', [178, 199], [JUNCO[0] - 2, JUNCO[1] + 2]]],
+      why: 'round 2: JUNCO, where a ball hides in the reeds (ruedabajo, esconde16, sol: and sol\'s JUNCO - 2, + 2): the old point lay across the lip of the bank; ' + (JUNCO[0] - 180) + ' px, ' + (JUNCO[1] - 197) + ' rows out into the water among the reeds (water all round it, its ring; the reeds in front of it)' },
+    { line: lineOf('await mueve("luis",ar?82:166,ar?166:194,null,1)'), act: 'luisbusca', src: 'await mueve("luis",ar?82:166,ar?166:194,null,1)', to: 'await mueve("luis",ar?82:' + LUISJ[0] + ',ar?166:' + LUISJ[1] + ',null,1)', pts: [['luis', [166, 194], LUISJ]],
+      why: 'round 2: acts.luisbusca, Luis looks in the reeds: his feet were 2 px from the lip of the bank; 1 px up and left, on the lawn' },
+    { line: lineOf('await perroA(166,198,"run");pe.pose="husmea"'), act: 'perrotumba', src: 'await perroA(166,198,"run");pe.pose="husmea"', to: 'await perroA(' + HUSMEA + ',"run");pe.pose="husmea"', pts: [['perro', [166, 198], HUSMEA]],
+      why: 'round 2: acts.perrotumba, Canelo noses at the reeds: he stood across the lip of the bank; ' + (HUSMEA[0] - 166) + ' px, ' + (HUSMEA[1] - 198) + ' rows, on the lawn by the water' },
+    { line: lineOf('await perroA(ORILLA[0]-12,ORILLA[1]+2,"run")'), act: 'tira17', src: 'await perroA(ORILLA[0]-12,ORILLA[1]+2,"run")', to: 'await perroA(' + NADA + ',"run")', pts: [['perro', [178, 200], NADA]],
+      why: 'round 2: acts.tira17, Canelo fetches the ball from the water: he stood across the lip of the bank (178, 200); ' + (NADA[0] - 178) + ' px, ' + (NADA[1] - 200) + ' rows into the water, wading (his ring)' },
+    { line: lineOf('await perroA(160,196,"walk");if(b){await vuela("cq",[170,197],0,4,0);}'), act: 'final17', src: 'await perroA(160,196,"walk");if(b){await vuela("cq",[170,197],0,4,0);}', to: 'await perroA(' + ECHA + ',"walk");if(b){await vuela("cq",[' + BOLA17 + '],0,4,0);}', pts: [['perro', [160, 196], ECHA], ['bola', [170, 197], BOLA17]],
+      why: 'round 2: acts.final17, Canelo lies down by the water with the small ball: both lay across the lip of the bank; Canelo ' + (ECHA[0] - 160) + ' px, ' + (ECHA[1] - 196) + ' rows, the ball ' + (BOLA17[0] - 170) + ' px, ' + (BOLA17[1] - 197) + ' rows, on the lawn' },
   ];
   for (const m of MOVES) for (const q of m.pts || []) q.push(q[0] === 'cq' ? frogW(q[2]) : W4(personW(q[2])));
   // the old code's own drawing the engine replaces (the background, the shadows it now casts); the preview and the port take each out
@@ -313,7 +372,17 @@ function make(G) {
 
   /* ---- remap: every distinct position of positions.json ---- */
   const POS = JSON.parse(fs.readFileSync(path.join(REF, 'positions.json'), 'utf8'));
-  const STORY_MOVES = [{ old: [178, 197], new: BEBE, who: 'perro', why: 'the pair más.no: Canelo drinks at the water: at the old point (178, 197) the reeds stand in front of his head (the subject hidden); on the open bank down the shore from the reeds, as acts.aguanta (moves)' }];
+  // round 2: the zoom 2 pairs dame, mi, tu (they share 150, 182) shift up the lawn by PAIR_A, bola and salta by PAIR_B: their pictures then hold
+  // none of the tree's shadow (it falls on rows 154 to 182 left of x 131) and none of the tree; d-bola-canelo's Canelo barking by the water
+  // off the lip of the bank
+  const PAIR_A = [8, -38], PAIR_B = [0, -38], sh_ = (p, v) => [p[0] + v[0], p[1] + v[1]];
+  const pairMove = (o, v, what) => ({ old: o, new: sh_(o, v), who: 'pair', why: 'round 2, the pair ' + what + ' (zoom 2): moved ' + v[0] + ' px, ' + v[1] + ' rows up the lawn with the whole picture, so that it shows none of the tree\'s shadow (it lies on rows 154 to 182, left of x 131) and none of the tree' });
+  const STORY_MOVES = [
+    ...[[150, 182], [88, 155], [110, 182], [144, 153], [92, 184], [94, 184], [152, 184], [140, 184], [112, 182]].map(o => pairMove(o, PAIR_A, 'dame, mi or tu')),
+    ...[[137, 178], [137, 186], [138, 187], [128, 184], [160, 187]].map(o => pairMove(o, o[0] === 137 && o[1] === 178 ? [0, -36] : PAIR_B, o[0] === 137 && o[1] === 178 ? 'bola' : 'salta')),
+    { old: [176, 196], new: [183, 202], who: 'bola', why: 'round 2: the pair arriba.no, the big ball down in the reeds: it lay across the lip of the bank; 7 px, 6 rows into the water among the reeds (water all round it, its ring)' },
+    { old: [168, 192], new: [163, 187], who: 'perro', why: 'round 2: d-bola-canelo beats.27, Canelo barking by the water: he stood across the lip of the bank; 5 px, 5 rows, on the lawn' },
+    { old: [178, 197], new: BEBE, who: 'perro', why: 'the pair más.no: Canelo drinks at the water: at the old point (178, 197) the reeds stand in front of his head (the subject hidden); in the shallows down the shore from the reeds, wading as he drinks (his ring), as acts.aguanta (moves)' }];
   const remap = POS.positions.map(p => {
     const e = { kind: p.kind, old: p.kind === 'point' ? [p.x, p.y] : p.kind === 'x' ? [p.x] : p.kind === 'numbers' ? [p.x, p.y, p.w] : [p.x, p.y, p.w, p.h], uses: p.uses.map(u => u.file.replace(/^cuentos\//, '') + ' ' + u.at) };
     if (p.kind === 'cam') { const names = [...new Set(p.uses.map(u => { const m = u.at.match(/^(.+)\.(si|no)\.cam$/); return m ? deacc(m[1]) + '.' + m[2] : null; }).filter(Boolean))];
@@ -349,6 +418,24 @@ function make(G) {
     key: '"campo" (one baked state)',
     baked: STATES.map(k => ({ key: k, query: '?' + queryOf(k) })),
     bakedWhy: 'order 06 found 7 states, made by six keys of the sprite layer: cesta and cestaN (the basket and how many balls are in it: KIT.mkCesta and mkBola, drawn in the sorted list), flor (the flower of the pair bola.no), mojado (the frog\'s wetness: the puddle he stands in, which rana() draws under him, wider the wetter he is, and the drops on him), cierra (his eyes shut) and oscuro (acts.esconde16: the picture goes dark while he shuts his eyes and somebody hides the ball; draw() line ' + lineOf('if(W.oscuro){') + ' darkens everything and draws him again over it). None of them is the set\'s: none is the day\'s light or the ground\'s (mojado is his puddle, not wet ground; oscuro is his shut eyes, a curtain over the whole picture, people and all, for 10 ticks, not the hour), so they stay in the sprite layer as the old draws them, and this one baked state draws all 7 (and every review and level picture)',
+  };
+
+  /* ---- round 2: the helps the sprite layer draws for things (as El patio's flowerLeaves: the help belongs to the thing) ---- */
+  const HELPS = {
+    what: 'drawn by the sprite layer just before the thing they help, 1:1, in the same sorted list (two lines added to campo.js, below): a ripple ring on the water round whatever floats or wades (a ball in the water, Canelo wading), so that a learner sees "in the water"; a darker rim round a ball that lies on the lawn, where its colour alone does not stand out from the lawn (the frog\'s yellow ball: notes, balls on the lawn)',
+    margin: 3, marginWhat: 'whatever rests at the shore is on one side: on the land with at least this many px of lawn (not the bank\'s lip, its face or the water) round its foot (the lowest 2 rows of its sprite), or in the water with water all round its foot (2 px) and its ring',
+    shore: 'over the water: the ground point (z 0) under the screen point (x, y - 1) is past the shore: x > ' + r4(F.BANK) + ' + .035 sin(2.3 y + 1) + .025 sin(5.1 y) (world x, y: pp-engine.js unproject)',
+    ring: { inner: .45, colour: [212, 236, 246], ball: { rx: 4, ry: 2.5 }, dog: { rx: 15, ry: 3.5, dy: 1 },
+      when: 'a ball (not carried) that floats (o.flota) or lies over the water (bolaXY height <= 1 and its point over the water); Canelo, not in the air (dy <= 3), with his point over the water',
+      how: 'every pixel (x, y) with .45 < ((x + .5 - cx) / rx)^2 + ((y + .5 - cy) / ry)^2 <= 1 takes the colour: a ball\'s ring at cx = bolaXY x, cy = bolaXY y (a floating ball: + its bob, (F >> 3) % 2, as unaBola), rx = radio(k) + 4, ry = 2.5; Canelo\'s at cx = x, cy = y + 1, rx = 15, ry = 3.5' },
+    contact: { balls: CONTACT_BALLS, colour: [42, 60, 30], halo: 2,
+      when: 'a ball of these kinds (the frog\'s small yellow one: the other two stand out from the lawn without it, balls), not carried, not floating, on the land (its point not over the water), its height <= 3, not in the tree',
+      how: 'a darker rim round the ball: every pixel within 2 px (either way, the square round each) of an opaque pixel of the ball\'s sprite, as unaBola places it, and not one of them, takes the colour (a deep shade of the lawn); then the ball is drawn over it' },
+    lines: [
+      ['function unaBola(c,o){const p=bolaXY(o),r=radio(o.k),im=spr("bola"+o.k,()=>mkBola(o.k));', 'function unaBola(c,o){const p=bolaXY(o),r=radio(o.k),im=spr("bola"+o.k,()=>mkBola(o.k));PREVIEW.under(c,o,p,r,im);'],
+      ['function perro(c,a){const o=W.perro;if(!o||o.vis===0)return;', 'function perro(c,a){const o=W.perro;if(!o||o.vis===0)return;PREVIEW.wade(c,o);'],
+    ],
+    linesWhat: 'the two lines campo.js gains (unaBola, perro): the help is drawn first, then the thing; the port draws them the same way',
   };
 
   const LAYOUT = {
@@ -418,6 +505,7 @@ function make(G) {
     },
     dropped: DROPPED,
     moves: MOVES.map(m => Object.assign({ line: m.line, act: m.act, src: m.src, to: m.to }, m.respEn ? { respEn: m.respEn } : {}, m.pts ? { places: m.pts.map(q => ({ who: q[0] || 'whoever', old: q[1], new: q[2], world: q[3] })) } : {}, { why: m.why })),
+    helps: HELPS,
     bubbles: { what: 'each bubble\'s rectangle relative to its tail\'s tip, as campo.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]', rects: G.M.bubbles },
     talk: {
       what: 'where a bubble goes (campo.js draw: line ' + lineOf('Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2') + ' for a child, ' + lineOf('if(q.vis&&q.bub){const b=frogBox(q);bub2') + ' for the frog, ' + lineOf('if(o.bub)bub2(c,o.bub') + ' for Canelo). The first of these places whose bubble is wholly inside the view, clear of the corner card shown (hud: the rounds) and of every face (each visible child\'s and the frog\'s, its own too); if none is, the first (the old)',
@@ -437,17 +525,17 @@ function make(G) {
     // they show two places: the ball in the tree, the ball in the reeds). An old 75 x 40 or 113 x 60 view (1.73 to 2.6 x) is zoom 2 when its
     // subject is whole in 98 x 52; tira, coge (1.46 x) and abajo (1.31 x) are zoom 1
     return {
-      'bola.si': pic(148, 166, 2, 'a ball on the grass, close'), 'bola.no': pic(148, 166, 2, 'a flower there, close'),
+      'bola.si': pic(148, 127, 2, 'a ball on the grass, close'), 'bola.no': pic(148, 127, 2, 'a flower there, close'),
       'tiene.si': pic(131, 156, 1, 'Canelo lies with the ball by him'), 'tiene.no': pic(131, 156, 1, 'Canelo jumps, the ball in the air before him'),
       'tira.si': pic(151, 148, 1, 'Luis throws the ball: it flies away from him'), 'tira.no': pic(151, 148, 1, 'Luis holds his hands up, the ball drops to him'),
       'coge.si': pic(151, 148, 1, 'Carmen catches the ball over her head'), 'coge.no': pic(151, 148, 1, 'Carmen throws the ball away'),
-      'salta.si': pic(137, 166, 2, 'Canelo jumps over the ball'), 'salta.no': pic(137, 166, 2, 'Canelo runs, the ball before him'),
-      'dame.si': pic(124, 160, 2, 'Carmen holds out her hand, the frog has the ball'), 'dame.no': pic(124, 160, 2, 'Carmen has the ball'),
-      'mi.si': pic(130, 161, 2, 'Luis points at himself, his ball in his hands'), 'mi.no': pic(130, 161, 2, 'Luis points at the frog, his ball on the grass'),
-      'tu.si': pic(126, 160, 2, 'Carmen points at Luis'), 'tu.no': pic(126, 160, 2, 'Carmen points at herself'),
-      'arriba.si': pic(62, 114, 2, 'the big ball up in the tree, in its fork'), 'arriba.no': pic(170, 182, 2, 'the big ball down in the reeds'),
+      'salta.si': pic(139, 126, 2, 'Canelo jumps over the ball'), 'salta.no': pic(139, 126, 2, 'Canelo runs, the ball before him'),
+      'dame.si': pic(139, 124, 2, 'Carmen holds out her hand, the frog has the ball'), 'dame.no': pic(139, 124, 2, 'Carmen has the ball'),
+      'mi.si': pic(138, 124, 2, 'Luis points at himself, his ball in his hands'), 'mi.no': pic(138, 124, 2, 'Luis points at the frog, his ball on the grass'),
+      'tu.si': pic(139, 124, 2, 'Carmen points at Luis'), 'tu.no': pic(139, 124, 2, 'Carmen points at herself'),
+      'arriba.si': pic(62, 114, 2, 'the big ball up in the tree, in its fork'), 'arriba.no': pic(180, 182, 2, 'the big ball down in the reeds'),
       'abajo.si': pic(89, 118, 1, 'the frog on the grass under the tree'), 'abajo.no': pic(89, 118, 1, 'the frog up in the tree\'s crown'),
-      'mas.si': pic(152, 180, 2, 'Canelo sniffs at the ball, wet'), 'mas.no': pic(152, 180, 2, 'Canelo drinks at the water'),
+      'mas.si': pic(142, 164, 1, 'Canelo sniffs at the ball, wet (zoom 1 with the trunk: round 2)'), 'mas.no': pic(142, 164, 1, 'Canelo drinks at the water'),
     };
   }
 
@@ -594,14 +682,21 @@ function check(sh, G, runs) {
     if (far) P.push('reeds\' shadow: ' + far + ' px further than 4 px from a reed\'s foot');
     notes.push('shadows: every castShadow call of the bake has strength 1 and a radius, each casting part darkens: ' + Object.entries(byPart).map(([k, b]) => k + ' ' + b.calls + ' calls, ' + b.set + ' px set (' + b.zero + ' calls wholly over shadow already)').join('; ') + '; the reeds (thin) cast only contact shadows, every pixel within ' + r2(worst) + ' px of a reed\'s foot'); }
 
-  /* the ground: lawn, trodden earth (round the tree's foot, joined to it), the bank's lip, the bank's face and the water; nothing else */
-  { let other = 0, nW = 0, nE = 0, nF = 0; const earth = []; for (let i = 0; i < 240 * 216; i++) { const y = Math.floor(i / 240); if (y < F.HZ) continue; const k = K[i];
-      if (k === G.K.water) nW++; else if (k === G.K.road) { nE++; if (!WET[i]) earth.push(i); } else if (k === G.K.none && Z[i] > -1e8 && !TAG[i]) nF++; else if (k !== G.K.grass && !TAG[i]) other++; }
-    if (other) P.push('ground: ' + other + ' px of the ground are none of lawn, earth, the bank or the water');
-    // the trodden earth is explained by the tree: the patch round its foot touches the trunk (one piece with it)
-    const trunkFoot = G.parts[KEY].arbol.filter(i => Math.floor(i / 240) >= OLDY(OLD.ARBOL[1]) - 3); const near = earth.filter(i => trunkFoot.some(j => Math.abs(i % 240 - j % 240) <= 2 && Math.abs(Math.floor(i / 240) - Math.floor(j / 240)) <= 2)).length;
-    if (!near) P.push('ground: the trodden earth does not reach the tree\'s foot (a patch round an empty place)');
-    notes.push('ground: the lawn, the trodden earth round the tree\'s foot out to Canelo\'s spot (' + earth.length + ' px with the bank\'s lip, joined to the trunk\'s foot: ' + near + ' px beside it), the bank\'s face (' + nF + ' px) and the water (' + nW + ' px); nothing else but the shadows the tree and the reeds cast'); }
+  /* the ground: lawn, Canelo's patch of dug earth, the bank's lip, the bank's face and the water; nothing else. Round 2: the patch is a small one
+     of its own where the old oval was (SITIO), apart from the trunk (lawn between them); his coat and the balls stand out from it at least as
+     well as from the old oval */
+  { let other = 0, nW = 0, nF = 0; const patch = []; for (let i = 0; i < 240 * 216; i++) { const y = Math.floor(i / 240); if (y < F.HZ) continue; const k = K[i];
+      if (k === G.K.water) nW++; else if (k === G.K.road) { if (G.shoreV[KEY][i] > .2) patch.push(i); } else if (k === G.K.none && Z[i] > -1e8 && !TAG[i]) nF++; else if (k !== G.K.grass && !TAG[i]) other++; }
+    if (other) P.push('ground: ' + other + ' px of the ground are none of lawn, the patch, the bank or the water');
+    const trunkFootRow0 = Math.max(...G.parts[KEY].arbol.map(i => Math.floor(i / 240))), top = Math.min(...patch.map(i => Math.floor(i / 240))), xs = patch.map(i => i % 240), ys = patch.map(i => Math.floor(i / 240));
+    const gap = top - trunkFootRow0 - 1, pb = [Math.min(...xs), top, Math.max(...xs), Math.max(...ys)];
+    if (gap < 3) P.push('patch: only ' + gap + ' rows of lawn between the trunk\'s foot and Canelo\'s patch');
+    if (Math.abs((pb[0] + pb[2]) / 2 - OLD.SITIO[0]) > 4 || Math.abs((pb[1] + pb[3]) / 2 - OLD.SITIO[1]) > 4) P.push('patch: not where the old oval was ' + JSON.stringify(pb));
+    const pm = [0, 1, 2].map(c => patch.reduce((t, i) => t + RGB[i * 3 + c], 0) / patch.length), res = [];
+    for (const [k, nm] of [['perro', 'Canelo\'s coat'], ['L', 'the red-and-white ball'], ['q', 'the yellow ball']]) { const dn = dE(M.colours[k], pm), dO = dE(M.colours[k], M.oldOval); res.push(nm + ' ' + Math.round(dn) + ' (the old oval ' + Math.round(dO) + ')');
+      if (dn < dO) P.push('patch: ' + nm + ' stands out from the patch by ' + Math.round(dn) + ', from the old oval by ' + Math.round(dO)); }
+    notes.push('ground: the lawn, Canelo\'s patch of dug earth (' + patch.length + ' px, on the screen ' + JSON.stringify(pb) + ', ' + gap + ' rows of lawn under the trunk\'s foot: apart from it), the bank\'s face (' + nF + ' px) and the water (' + nW + ' px); nothing else but the shadows the tree and the reeds cast');
+    notes.push('patch (round 2): its mean colour ' + pm.map(Math.round) + ' (the old oval ' + M.oldOval.map(Math.round) + '); against it (CIE76): ' + res.join(', ')); }
   function OLDY(y) { return y; }
 
   /* the water reads as water: its colour apart from the sky's, its ripples, its bank */
@@ -659,7 +754,8 @@ function check(sh, G, runs) {
     for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null) mv(id, p);
     if (w.perro && w.perro.x != null) mv('perro', w.perro);
     for (const [k, o] of Object.entries(w.bolas || {})) if (o && !o.con && o.x != null) mv('bola', o);
-    if (w.cq) { const m = MV.find(q => q.who === 'cq' && q.old[0] === Math.round(w.cq.x) && q.old[1] === Math.round(w.cq.y)); if (m) { w.cq.x = m.new[0]; w.cq.y = m.new[1]; } }
+    if (w.cq) { const m = MV.find(q => q.who === 'cq' && q.old[0] === Math.round(w.cq.x) && q.old[1] === Math.round(w.cq.y)); if (m) { w.cq.x = m.new[0]; w.cq.y = m.new[1]; } else { const r = RM.find(q => q.old[0] === w.cq.x && q.old[1] === w.cq.y); if (r) { w.cq.x = r.new[0]; w.cq.y = r.new[1]; } } }
+    if (w.flor) { const r = RM.find(q => q.old[0] === w.flor[0] && q.old[1] === w.flor[1]); if (r) w.flor = r.new.slice(); }
     if (w.respEn) { const r = RM.find(q => q.old[0] === w.respEn[0] && q.old[1] === w.respEn[1]); if (r) w.respEn = r.new.slice(); }
     return w; };
   const actsOf = st => new Set((JSON.stringify(st).match(/"act":\s*"[A-Za-z0-9]+"/g) || []).map(a => a.split('"')[3]));
@@ -737,7 +833,7 @@ function check(sh, G, runs) {
         if (!oldIn) P.push('ball: ' + where + ' the ball ' + k + ' at ' + p + ' is in the reeds (' + hid + ' px hidden), where the old picture had it on the grass');
         if (hid > tot * .5) P.push('ball: ' + where + ' the ball ' + k + ' at ' + p + ': ' + hid + ' of its ' + tot + ' px behind reeds (keep half seen)');
         stats.inReeds = hid / tot < stats.inReeds[0] ? [hid / tot, k + ' ' + p] : stats.inReeds; continue; }
-      if (wetB && p[2] <= 3) P.push('ball: ' + where + ' the ball ' + k + ' at ' + p + ' lies on the water but does not float');
+      if (wetB && p[2] <= 3) { stats.wetRing = (stats.wetRing || 0) + 1; continue; }   // round 2: in the water with its ring (the shore check)
       if (p[2] <= 3) { const ob = oldW && oldW.bolas && oldW.bolas[k] && !oldW.bolas[k].con ? [Math.round(oldW.bolas[k].x), Math.round(oldW.bolas[k].y)] : p, g = lawnRing(p[0], p[1], r), oldEdge = enAguaOld(ob[0], ob[1]) < 1.07;   // the old picture had it on the old pond's rim: at the water's edge
         if (oldEdge) { edge.add(k + ' at ' + p.slice(0, 2) + ' (' + Math.round(g * 100) + '% lawn round it)'); if (wetB) P.push('ball: ' + where + ' the ball ' + k + ' at the water\'s edge at ' + p + ' is on the water'); }
         else { stats.grassRing = Math.min(stats.grassRing, g); if (g < .75) P.push('ball: ' + where + ' the ball ' + k + ' on the ground at ' + p + ' has lawn on only ' + Math.round(g * 100) + '% of the ring round it'); } }
@@ -857,8 +953,128 @@ function check(sh, G, runs) {
   notes.push('ground: ' + stats.stand + ' distinct stands of the children, the frog, Canelo and the basket: nothing of the tree nearer than them inside their sprites; behind reeds (front.juncos draws them over): ' + (behind.size ? [...behind.entries()].map(([k, n]) => k + ' (' + n + ' px)').join(', ') : 'no one') + '; in the water or the reeds, each where the old picture had them by the pond: ' + (wade.size ? [...wade.keys()].join(', ') : 'no one'));
   notes.push('balls: ' + stats.balls + ' distinct balls at every moment and in every pair: on the ground with lawn (or the trodden earth) round them (' + Math.round(stats.grassRing * 100) + '% of the ring at the least), at the water\'s edge on the land where the old picture had them on its pond\'s rim (' + ([...edge].join(', ') || '-') + '), in the air with their shadow point on the land (' + stats.air + '), floating with water all round (' + Math.round(stats.float * 100) + '% at the least) and no reed over them, in the reeds partly hidden and at least half seen (' + ([...ballSeen.entries()].map(([k, v]) => k + ' ' + v + '% seen').join(', ') || '-') + '), in the tree with the crown behind them (' + Math.round(stats.tree[0] * 100) + '% at the least) and standing out from it (' + Math.round(stats.tree[1]) + ' at the least, CIE76); no two loose balls overlap (Canelo\'s pile and the balls floating on the lake, as the old, not counted: the stories never ask for them)');
 
+  /* round 2, the shore: at every tick inside every act (G.TICKS) and at every step's end. Whatever rests at the shore (a ball, Canelo, the frog,
+     a child, the basket) is clearly on one side: on the land with at least SHORE_M px of lawn between its foot and the lip of the bank, or in the
+     water with water all round its foot (and its ripple ring: helps.ring). Whatever floats or wades has its ring on the water. Every ball in
+     flight has its shadow on the ground under it (a ground pixel of the set, no trunk or reed over it) */
+  const SV = G.shoreV[KEY], LIP = .07, SHORE_M = sh.helps.margin;
+  const zoneAt = (x, y) => { if (x < 0 || x >= 240 || y < 0 || y >= 216) return 'out'; const i = y * 240 + x, v = SV[i]; return v > LIP ? 'lawn' : v >= 0 ? 'lip' : K[i] === G.K.water ? 'water' : 'bank'; };
+  const nearShore = (x, y) => { for (let dy = -10; dy <= 10; dy += 2) for (let dx = -10; dx <= 10; dx += 2) { const z = zoneAt(x + dx, y + dy); if (z !== 'lawn' && z !== 'out') return true; } return false; };
+  const footOf = rs => { const last = Math.max(...rs.map(r => r[0])); return rs.filter(r => r[0] >= last - 1); };
+  const sideOf = (foot, m) => { let land = true, water = true;
+    for (const [y, a, b] of foot) for (let x = a - m; x <= b + m; x++) for (let dy = -m; dy <= m; dy++) { const z = zoneAt(x, y + dy); if (z === 'out') continue; if (z !== 'lawn') land = false; }
+    for (const [y, a, b] of foot) for (let x = a - 2; x <= b + 2; x++) for (let dy = -2; dy <= 2; dy++) { const z = zoneAt(x, y + dy); if (z === 'out') continue; if (z !== 'water') water = false; }
+    return land ? 'land' : water ? 'water' : 'across'; };
+  const ringPx = (cx, cy, rx, ry) => { const out = []; for (let y = Math.floor(cy - ry - 1); y <= Math.ceil(cy + ry + 1); y++) for (let x = Math.floor(cx - rx - 1); x <= Math.ceil(cx + rx + 1); x++) { const d = ((x + .5 - cx) / rx) ** 2 + ((y + .5 - cy) / ry) ** 2; if (d > sh.helps.ring.inner && d <= 1) out.push([x, y]); } return out; };
+  const RG = sh.helps.ring, REST_MS = 300, restBalls = new Set();
+  const overWater = (x, y) => { const z = zoneAt(Math.round(x), Math.round(y)); return z === 'water' || z === 'bank'; };
+  { let nT = 0, nRest = 0, nFly = 0, nRing = 0, worstRing = 1; const ballOver = new Map(), poses = new Map(), across = new Map(), sides = new Map(), flyBad = new Map(), ringBad = new Map();
+    const overlapAt = (w, o) => { const rs = ballRows(w, o); if (!rs) return 0; const S = new Set(); for (const [y, a, b] of rs) for (let x = a; x <= b; x++) S.add(y * 240 + x); let n = 0;
+      const cnt = r2s => { for (const [y, a, b] of r2s) for (let x = a; x <= b; x++) if (S.has(y * 240 + x)) n++; }; if (dogShown(w) && o.con !== 'perro') cnt(dogRows(w.perro)); for (const [id, pp] of people(w)) if (o.con !== id) cnt(personRows(id, pp)); return n; };
+    const look = (where, w, prev, w0) => {
+      const items = [];
+      for (const [k, o] of Object.entries(w.bolas || {})) { if (!o || o.vis === 0 || o.con) continue; const p = ballXY(w, o); if (!p) continue; items.push({ id: 'bola ' + k, kind: 'ball', o, p, rs: ballRows(w, o) }); }
+      if (dogShown(w)) items.push({ id: 'perro', kind: 'dog', pose: w.perro.pose, dir: w.perro.dir, p: [Math.round(w.perro.x), Math.round(w.perro.y), Math.round(w.perro.dy || 0)], rs: dogRows(w.perro) });
+      for (const [id, pp] of people(w)) items.push({ id, kind: 'person', p: [Math.round(pp.x), Math.round(pp.y), Math.round(pp.dy || 0)], rs: personRows(id, pp) });
+      if (w.cq && w.cq.vis) { const b = frogBox(w.cq), rs = []; for (let y = b.y; y < b.y + b.h; y++) rs.push([y, b.x + 2, b.x + b.w - 3]); items.push({ id: 'the frog', kind: 'frog', p: [w.cq.x, w.cq.y, Math.round(-(w.cq.dy || 0))], rs }); }
+      if (w.cesta) items.push({ id: 'the basket', kind: 'basket', p: [w.cesta[0], w.cesta[1], 0], rs: rowsAt(M.cesta, w.cesta[0], w.cesta[1]) });
+      for (const it of items) {
+        const resting = prev === null || (prev && prev[it.id + '@' + it.p.join(',')] >= REST_MS);
+        if (it.kind === 'ball' && it.p[2] > 3 && !inTree(it.o, it.p) && !it.o.flota) { nFly++;   // in flight: its shadow on the ground under it
+          const x = it.p[0], y = it.p[1] - 1, i = y * 240 + x; if (!(x >= 0 && x < 240 && y >= 0 && y < 216)) continue;
+          { let n = 0, ok = 0; for (let dy = -2; dy <= 2; dy++) for (let dx = -4; dx <= 4; dx++) { const j = (y + dy) * 240 + x + dx; if (y + dy < 0 || y + dy >= 216 || x + dx < 0 || x + dx >= 240) continue; n++; if (OG[j] && !TAG[j]) ok++; }
+            if (ok < n * .3) { const kk = it.id + ' at ' + it.p; flyBad.set(kk, where); } }
+          continue; }
+        if (it.kind === 'ball' && inTree(it.o, it.p)) continue;
+        if (it.p[2] > 3) continue;   // a jump: in the air over the ground
+        const wet = it.kind === 'ball' ? (it.o.flota || overWater(it.p[0], it.p[1] - 1)) : it.kind === 'dog' ? overWater(it.p[0], it.p[1] - 1) : false;
+        if (wet) { nRing++; const r = it.kind === 'ball' ? M.R[it.o.k] : 0, cy = it.p[1] + (it.kind === 'dog' ? RG.dog.dy : 0), rp = ringPx(it.p[0], cy, it.kind === 'dog' ? RG.dog.rx : r + RG.ball.rx, it.kind === 'dog' ? RG.dog.ry : RG.ball.ry), on = rp.filter(([x, y]) => zoneAt(x, y) === 'water').length / rp.length;
+          if (resting) { worstRing = Math.min(worstRing, on); if (on < .9) ringBad.set(it.id + ' at ' + it.p.slice(0, 2), Math.round(on * 100) + '% of its ring on the water, ' + where); } }
+        if (resting && it.kind === 'ball' && !wet && it.p[2] <= 3) restBalls.add(it.o.k + ',' + it.p[0] + ',' + it.p[1]);
+        if (resting && it.kind === 'ball' && w0) { const k0 = it.id.slice(5), o0 = (w0.bolas || {})[k0], n = overlapAt(w, it.o), n0 = o0 ? overlapAt(w0, o0) : 0; if (n > n0) ballOver.set(it.id + ' at ' + it.p.slice(0, 2), n + ' px over Canelo or a child (the old: ' + n0 + '), ' + where); }
+        if (!resting || !nearShore(it.p[0], it.p[1])) continue;
+        nRest++; const side = sideOf(footOf(it.rs), SHORE_M), kk = it.id + ' at ' + it.p.slice(0, 2);
+        sides.set(kk, side);
+        if (side === 'across') { across.set(kk, where); poses.set(kk, [it.pose, it.dir]); }
+        if (side === 'land' && wet) across.set(kk + ' (drawn as in the water)', where);
+        if (side === 'water' && !wet) across.set(kk + ' (in the water, drawn with no ring)', where);
+      } };
+    // a thing rests where it stays REST_MS or more (from the first tick it is there to the first tick it is not); every step's end is a rest
+    const posOf = w => { const o = {};
+      for (const [k, b] of Object.entries(w.bolas || {})) if (b && !b.con && b.vis !== 0) { const p = ballXY(w, b); if (p) o['bola ' + k] = p; }
+      if (dogShown(w)) o.perro = [Math.round(w.perro.x), Math.round(w.perro.y), Math.round(w.perro.dy || 0)];
+      for (const [id, pp] of people(w)) o[id] = [Math.round(pp.x), Math.round(pp.y), Math.round(pp.dy || 0)];
+      if (w.cq && w.cq.vis) o['the frog'] = [w.cq.x, w.cq.y, Math.round(-(w.cq.dy || 0))];
+      if (w.cesta) o['the basket'] = [w.cesta[0], w.cesta[1], 0];
+      return o; };
+    runs.forEach((r, ri) => { forRun(r); const T = G.TICKS[ri], Ws = T.map(tk => remapW(tk.W)), P0 = Ws.map(posOf), dwell = P0.map(() => ({}));
+      for (let i = 0; i < T.length; i++) for (const [id, p] of Object.entries(P0[i])) { const key = id + '@' + p.join(','); if (i > 0 && P0[i - 1][id] && P0[i - 1][id].join(',') === p.join(',')) { dwell[i][key] = dwell[i - 1][key]; continue; }
+        let j = i; while (j + 1 < T.length && P0[j + 1][id] && P0[j + 1][id].join(',') === p.join(',')) j++; dwell[i][key] = (j + 1 < T.length ? T[j + 1].t : T[j].t + REST_MS) - T[i].t; }
+      for (let i = 0; i < T.length; i++) { nT++; look(r.story.id + ' ' + r.plan + ' t ' + T[i].t, Ws[i], dwell[i], T[i].W); }
+      for (const L of r.lines) look(r.story.id + ' ' + r.plan + ' ' + L.path, remapW(L.W), null, L.W); });
+    MV = MVall.filter(q => q.act === '*'); RM = RMall.filter(q => q.files.includes('cual-campo')); EN = null;
+    for (const ps of pairSides) look('pair ' + deacc(ps.w) + '.' + ps.side, remapW(Object.assign({ gente: {}, cq: { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: 0, bub: null }, bolas: {} }, JSON.parse(JSON.stringify(ps.spec.set || {})))), null);
+    for (const [k, where] of across) P.push('shore: ' + k + ' rests across the lip of the bank (' + where + ')');
+    if (process.env.CAMPO_SUGGEST) for (const k of across.keys()) { const m = k.match(/^(.*) at (-?\d+),(-?\d+)/); if (!m) continue; const id = m[1], x = +m[2], y = +m[3], best = {};
+      for (let d = 1; d <= 24; d++) for (let dy = -d; dy <= d; dy++) for (let dx = -d; dx <= d; dx++) { if (Math.max(Math.abs(dx), Math.abs(dy)) !== d) continue;
+        let rs; if (/^bola/.test(id)) { const kk = id.split(' ')[1], o = { k: /luis/.test(kk) ? 'L' : /carmen/.test(kk) ? 'C' : 'q', x: x + dx, y: y + dy, z: 0 }; rs = ballRows({}, o); }
+        else if (id === 'perro') rs = dogRows({ x: x + dx, y: y + dy, pose: (poses.get(k) || [])[0] || 'sit', dir: (poses.get(k) || [])[1] || 1 }); else if (id === 'the frog') { const b = frogBox({ x: x + dx, y: y + dy, s: 1 }); rs = []; for (let yy = b.y; yy < b.y + b.h; yy++) rs.push([yy, b.x + 2, b.x + b.w - 3]); } else rs = personRows(id, { x: x + dx, y: y + dy, pose: 'idle', dir: 1 });
+        const sd = sideOf(footOf(rs), SHORE_M); if (sd !== 'across' && !best[sd]) best[sd] = [x + dx, y + dy, d]; }
+      console.log('SUGGEST ' + k + ' ' + JSON.stringify(poses.get(k)) + ' -> ' + JSON.stringify(best)); }
+    for (const [k, why] of ballOver) P.push('ball: ' + k + ' rests ' + why);
+    for (const [k, where] of flyBad) P.push('flight: the ball ' + k + ' has no ground under it for its shadow (' + where + ')');
+    for (const [k, why] of ringBad) P.push('ring: ' + k + ': ' + why);
+    const land = [...sides].filter(e => e[1] === 'land').map(e => e[0]), water = [...sides].filter(e => e[1] === 'water').map(e => e[0]);
+    notes.push('shore (round 2): ' + nT + ' ticks inside the acts of the ' + runs.length + ' runs (every timer of the old page, played as the recorded runs), every step\'s end and every pair picture: ' + nRest + ' rests near the shore (' + REST_MS + ' ms or more in one place, or a step\'s end), each clearly on one side (on the land with ' + SHORE_M + ' px of lawn at least round its foot: ' + land.join(', ') + '; in the water with water all round and its ring: ' + water.join(', ') + '); ' + nRing + ' moments of something floating or wading, each with its ring (resting ones ' + Math.round(worstRing * 100) + '% on the water at the least); ' + nFly + ' ticks of a ball in flight, each with its shadow on the ground under it (at least 30% of the 9 x 5 px round its point is ground that shows: no trunk or reed over it)'); }
+
+  /* round 2, the tree's shadow (point 2): the crown's shadow is cast at a reduced strength (castShadowCover: only the share CROWN_SHADE of its
+     pixels, by the Bayer threshold, takes the engine's shadow tint), so that the things the stories are about stand out from the shaded lawn
+     about as well as from the lit lawn (CIE76 between each thing's mean colour and the lawn's mean colour, in the shade and in the light: at
+     least SHADE_K of it); the trunk's own shadow stays whole */
+  const SHADE_K = .8;
+  const crownCall = G.shadows[KEY].filter(c => c.part === 'arbol').sort((a, b) => b.args[3] - a.args[3])[0];
+  const crownRegion = (() => { const [x, y, z, r] = crownCall.args, p = E.project(x + .9 * z, y - .1 * z, 0), rx = r * E.S * 1.05, ry = rx * .5 + 1, out = [];
+    for (let iy = Math.floor(p.sy - ry); iy <= Math.ceil(p.sy + ry); iy++) for (let ix = Math.floor(p.sx - rx); ix <= Math.ceil(p.sx + rx); ix++) { const dx = (ix + .5 - p.sx) / rx, dy = (iy + .5 - p.sy) / ry; if (dx * dx + dy * dy <= .8) out.push(iy * 240 + ix); } return out; })();
+  { const inR = new Set(crownRegion), meanOfPx = l => [0, 1, 2].map(c => l.reduce((t, i) => t + RGB[i * 3 + c], 0) / l.length);
+    const shaded = crownRegion.filter(i => K[i] === G.K.grass && !TAG[i]), litL = []; for (let i = 120 * 240; i < 240 * 216; i++) if (K[i] === G.K.grass && !SH[i] && !inR.has(i) && !TAG[i]) litL.push(i);
+    const ms = meanOfPx(shaded), ml = meanOfPx(litL), res = [];
+    const NM = { L: 'Luis\'s ball', C: 'Carmen\'s ball', q: 'the frog\'s ball', flor: 'the flower', perro: 'Canelo', frog: 'the frog', pelo_luis: 'Luis\'s dark hair', pelo_carmen: 'Carmen\'s dark hair' };
+    for (const [k, nm] of Object.entries(NM)) { const a = dE(M.colours[k], ml), b = dE(M.colours[k], ms); res.push(nm + ' ' + Math.round(a) + ' / ' + Math.round(b));
+      if (b < SHADE_K * a) P.push('shade: ' + nm + ' stands out from the shaded lawn by ' + Math.round(b) + ', from the lit lawn by ' + Math.round(a) + ' (keep ' + SHADE_K + ' of it)'); }
+    notes.push('shade (round 2, point 2): the crown\'s shadow at a reduced strength: the engine\'s shadow tint on ' + Math.round(F.CROWN_SHADE * 100) + '% of its pixels (Bayer, castShadowCover), the trunk\'s shadow whole; the lit lawn ' + ml.map(Math.round) + ', the shaded lawn (mean over the crown\'s shadow) ' + ms.map(Math.round) + '; each thing against the lit / the shaded lawn (CIE76; keep ' + SHADE_K + '): ' + res.join(', ')); }
+
+  /* round 2, point 5: a ball on the lawn stands out from the lawn where it lies, by 38 at least: the ball's mean colour against the mean of the
+     3 px band round it as the picture shows it (the lawn, lit or shaded, the shadow the engine casts under the ball, its contact rim: helps.contact),
+     at every place a ball rests on the land in every run and pair (G.TICKS, the steps' ends, the pictures) */
+  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(v => (v + .5) / 16), bay = (x, y) => BAYER[(y & 3) * 4 + (x & 3)];
+  const bandOf = (k, x, y, help) => { const px = new Map(), get = (ix, iy) => { const i = iy * 240 + ix; if (!px.has(i)) px.set(i, [RGB[i * 3], RGB[i * 3 + 1], RGB[i * 3 + 2]]); return px.get(i); };
+    const g = E.atZ(x, y - 1, 0), R = sh.shadows.bola.radius[k], p = E.project(g[0] + .045, g[1] - .005, 0), rx = R * E.S * 1.05, ry = rx * .5 + 1;
+    for (let iy = Math.floor(p.sy - ry); iy <= Math.ceil(p.sy + ry); iy++) for (let ix = Math.floor(p.sx - rx); ix <= Math.ceil(p.sx + rx); ix++) { const dx = (ix + .5 - p.sx) / rx, dy = (iy + .5 - p.sy) / ry;
+      if (dx * dx + dy * dy + (bay(ix, iy) - .5) * .4 > 1 || !OG[iy * 240 + ix]) continue; const c = get(ix, iy); px.set(iy * 240 + ix, [c[0] * .54, c[1] * .52, c[2] * .72]); }
+    const r = M.R[k], C = sh.helps.contact;
+    const ball = new Set(M.ballPx[k].map(([dy, dx]) => (y + dy) * 240 + x + dx)), band = [];
+    if (help) for (const i of ball) { const bx = i % 240, by = Math.floor(i / 240); for (let dy = -C.halo; dy <= C.halo; dy++) for (let dx = -C.halo; dx <= C.halo; dx++) { const j = (by + dy) * 240 + bx + dx; if (!ball.has(j)) px.set(j, C.colour.slice()); } }
+    for (const i of ball) { const bx = i % 240, by = Math.floor(i / 240); for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) { const j = (by + dy) * 240 + bx + dx; if (!ball.has(j) && !band.includes(j)) band.push(j); } }
+    const bm = [0, 1, 2].map(c => band.reduce((t, j) => t + get(j % 240, Math.floor(j / 240))[c], 0) / band.length), bmean = [0, 1, 2].map(c => M.ballPx[k].reduce((t, q) => t + q[2 + c], 0) / M.ballPx[k].length);
+    return dE(bmean, bm); };
+  { const inR = new Set(crownRegion), worst = {}, worstNo = {}; let n = 0;
+    MV = MVall.filter(q => q.act === '*'); RM = RMall.filter(q => q.files.includes('cual-campo')); EN = null;
+    for (const ps of pairSides) { const w = remapW(Object.assign({ gente: {}, cq: { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: 0, bub: null }, bolas: {} }, JSON.parse(JSON.stringify(ps.spec.set || {}))));
+      for (const o of Object.values(w.bolas || {})) { if (o.con || o.flota) continue; const p = ballXY(w, o); if (p && p[2] <= 3 && !overWater(p[0], p[1] - 1)) restBalls.add(o.k + ',' + p[0] + ',' + p[1]); } }
+    for (const e of restBalls) { const [k, xs, ys] = e.split(','), x = +xs, y = +ys; n++; const shd = inR.has((y - 1) * 240 + x) ? 'shaded' : 'lit';
+      const d = bandOf(k, x, y, sh.helps.contact.balls.includes(k)), d0 = bandOf(k, x, y, false), key = k + ' ' + shd;
+      if (!worst[key] || d < worst[key][0]) worst[key] = [Math.round(d), x + ',' + y]; if (!worstNo[key] || d0 < worstNo[key][0]) worstNo[key] = [Math.round(d0), x + ',' + y];
+      if (d < 38) P.push('ball: ' + k + ' at ' + x + ',' + y + ' (' + shd + ' lawn) stands out from the lawn round it by ' + Math.round(d) + ' (keep 38)'); }
+    for (const k of sh.helps.contact.balls) { const need = ['lit', 'shaded'].some(s2 => worstNo[k + ' ' + s2] && worstNo[k + ' ' + s2][0] < 38); if (!need) P.push('ball: ' + k + ' has the contact rim but needs none (' + JSON.stringify([worstNo[k + ' lit'], worstNo[k + ' shaded']]) + ')'); }
+    notes.push('balls on the lawn (round 2, point 5): at ' + n + ' places where a ball rests on the land, the ball against the 3 px band round it as drawn (lawn, the engine\'s shadow under it, its rim; CIE76, keep 38), the least, with the help / without: ' + Object.keys(worst).sort().map(key => key + ' ' + worst[key][0] + ' / ' + worstNo[key][0] + ' (at ' + worst[key][1] + ')').join(', ') + '; the contact rim drawn for ' + sh.helps.contact.balls.join(', ') + ' (the old: the frog\'s ball against the old lawn ' + Math.round(dE(M.colours.q, M.oldLawn)) + ')'); }
+
+  /* round 2: the water lighter and bluer than round 1's, a measured distance from every sky tone (above: water) */
+  { const r1 = lab([50, 103, 127]); let n = 0, s3 = [0, 0, 0]; for (let i = 0; i < 240 * 216; i++) if (K[i] === G.K.water && i % 240 >= x0 && i % 240 < x0 + 196) { n++; for (let c = 0; c < 3; c++) s3[c] += RGB[i * 3 + c]; }
+    const m = s3.map(v => v / n), L = lab(m); if (!(L[0] > r1[0] + 5 && L[2] < r1[2] - 3)) P.push('water: not lighter and bluer than round 1 (' + L.map(Math.round) + ' against ' + r1.map(Math.round) + ')');
+    notes.push('water (round 2, point 1): lighter and bluer than round 1 (CIE L*a*b* ' + L.map(Math.round) + ', round 1 ' + r1.map(Math.round) + '); against it (CIE76): the bank\'s lip ' + Math.round(dE(m, [150, 118, 76])) + ', the frog\'s ball ' + Math.round(dE(m, M.colours.q)) + ', Luis\'s ' + Math.round(dE(m, M.colours.L)) + ', Canelo ' + Math.round(dE(m, M.colours.perro))); }
+
   /* the review pictures (and the level pictures, the same pictures): everyone whole in their crop, every bubble inside, on the ground; what differs */
-  let nPic = 0; const pairDiff = [];
+  let nPic = 0; const pairDiff = [], zoom2 = [];
   const byWord = {}; for (const ps of pairSides) (byWord[ps.w] = byWord[ps.w] || {})[ps.side] = ps;
   for (const [word, sides] of Object.entries(byWord)) {
     const ws = {};
@@ -874,6 +1090,12 @@ function check(sh, G, runs) {
       for (const [id, b] of who) { const cut = !within(b, crop), oldCut = !within(b, ocr);
         if (cut && !oldCut) P.push('pair ' + nm + ': ' + id + ' ' + JSON.stringify(b) + ' is cut by the picture ' + JSON.stringify(crop)); }
       for (const [who2, rect] of bubblesOf(w, crop).filter(e => !/"amor"/.test(e[0]))) if (!within(rect, crop)) P.push('pair ' + nm + ': ' + who2 + ' bubble is cut');
+      // round 2: Canelo whole with 2 px to spare; every ball's shadow (or contact rim) inside the picture
+      if (dogShown(w)) { const b = rowsBox(dogRows(w.perro)); if (!within([b[0] - 2, b[1] - 2, b[2] + 4, b[3] + 4], crop)) P.push('pair ' + nm + ': Canelo ' + JSON.stringify(b) + ' not whole with 2 px to spare in ' + JSON.stringify(crop)); }
+      for (const [k, o] of Object.entries(w.bolas || {})) { if (o.con) continue; const p = ballXY(w, o); if (p && !inTree(o, p) && !within([p[0] - 4, p[1] - 3, 8, 6], crop)) P.push('pair ' + nm + ': the ball ' + k + '\'s shadow at ' + p.slice(0, 2) + ' is not inside the picture'); }
+      // round 2: a zoom 2 picture shows none of the tree's shadow, unless the trunk is in it
+      if (pc.zoom === 2) { const trunk = G.parts[KEY].arbol.some(i => Math.floor(i / 240) > OLD.COPA[1] + OLD.COPA[3] && within([i % 240, Math.floor(i / 240), 1, 1], crop)), shd = (G.shadowPx[KEY].arbol || []).filter(i => OG[i] && within([i % 240, Math.floor(i / 240), 1, 1], crop)).length;
+        if (shd && !trunk) P.push('pair ' + nm + ': shows ' + shd + ' px of the tree\'s shadow and not its trunk'); zoom2.push(nm + (shd ? ' (' + shd + ' px of shadow, with the trunk)' : '')); }
       groundCheck('pair ' + nm + ':', w, null);
     }
     if (!ws.si || !ws.no) continue;
@@ -885,6 +1107,7 @@ function check(sh, G, runs) {
     pairDiff.push(deacc(word) + ': ' + diff.join(', '));
   }
   notes.push('pairs, what differs: ' + pairDiff.join('; '));
+  notes.push('pairs (round 2): the zoom 2 pictures show none of the tree\'s shadow without its trunk: ' + zoom2.join(', ') + '; in each picture Canelo whole with 2 px to spare and every ball\'s shadow inside it');
   notes.push('pairs: ' + nPic + ' review pictures (and the ' + sh.level.length + ' level pictures, the same pictures): everyone, the frog, Canelo, the balls and the flower whole in their crop (no zoom 2 crop cuts what the old window did not), on clear ground');
 
   /* the lawn is green; the sprite layer's things stand out from it */

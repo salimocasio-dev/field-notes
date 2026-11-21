@@ -36,6 +36,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     for (const m of S.moves) X(m.src, m.to);
     // the sorted list: each item says who or what it is (for the front masks); the reeds' entry (sheet: front)
     for (const [a, b] of S.front.tags) X(a, b);
+    for (const [a, b] of S.helps.lines) X(a, b);
     const F = S.front.parts;
     X('L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());', `L.push({y:${F.juncos.sortY},front:"juncos",d:()=>PREVIEW.front(c,"juncos",L)});L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());`);
     // the bubbles: the first free place (sheet: talk)
@@ -94,6 +95,17 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     if (o.cesta) { const p = w.cesta; return [[p[0] - 12, p[1] - 20, 24, 21], vOf(p[0], p[1] - 1)]; }
     return null;
   };
+  // (sheet: helps) the ripple ring round whatever floats or wades, the dark contact rim under a ball on the lawn: drawn just before the thing
+  const over = (x, y) => { const g = CUR.fw.unproject(x + .5, y + .5); return CUR.fw.CAMPO_SET.shore(g.x, g.y) < 0; };
+  const ell = (c, cx, cy, rx, ry, inner, col) => { c.fillStyle = 'rgb(' + col + ')';
+    for (let y = Math.floor(cy - ry - 1); y <= Math.ceil(cy + ry + 1); y++) for (let x = Math.floor(cx - rx - 1); x <= Math.ceil(cx + rx + 1); x++) { const d = ((x + .5 - cx) / rx) ** 2 + ((y + .5 - cy) / ry) ** 2; if (d > inner && d <= 1) c.fillRect(x, y, 1, 1); } };
+  PV.under = function (c, o, p, r, im) { if (OLD || !o || o.con) return; const H = SHEET.helps, T = SHEET.shadows.bola.tree, wet = o.flota || (p[2] <= 1 && over(p[0], p[1] - 1));
+    if (wet) { ell(c, p[0], p[1] + (o.flota ? (F >> 3) % 2 : 0), r + H.ring.ball.rx, H.ring.ball.ry, H.ring.inner, H.ring.colour); return; }
+    if (p[2] <= 3 && H.contact.balls.includes(o.k) && !(p[2] >= T.z && Math.abs(p[0] - T.x) <= T.dx && p[1] <= T.y)) {   // the darker rim round the ball
+      const x0 = p[0] - (im.width >> 1), y0 = p[1] - p[2] - im.height + 1, d = im.getContext('2d').getImageData(0, 0, im.width, im.height).data, n = H.contact.halo, on = (x, y) => x >= 0 && y >= 0 && x < im.width && y < im.height && d[(y * im.width + x) * 4 + 3] > 40;
+      c.fillStyle = 'rgb(' + H.contact.colour + ')';
+      for (let y = -n; y < im.height + n; y++) for (let x = -n; x < im.width + n; x++) { if (on(x, y)) continue; let near = false; for (let dy = -n; dy <= n && !near; dy++) for (let dx = -n; dx <= n; dx++) if (on(x + dx, y + dy)) { near = true; break; } if (near) c.fillRect(x0 + x, y0 + y, 1, 1); } } };
+  PV.wade = function (c, o) { if (OLD || (o.dy || 0) > 3) return; const x = Math.round(o.x), y = Math.round(o.y), D = SHEET.helps.ring.dog; if (over(x, y - 1)) ell(c, x, y + D.dy, D.rx, D.ry, SHEET.helps.ring.inner, SHEET.helps.ring.colour); };
   // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
   const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
   PV.faces = function (w) {
@@ -125,7 +137,8 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null) mv(id, p);
     if (w.perro && w.perro.x != null) mv('perro', w.perro);
     for (const [k, o] of Object.entries(w.bolas || {})) if (o && !o.con && o.x != null) mv('bola', o);
-    if (w.cq) { const m = MV.find(q => q.who === 'cq' && q.old[0] === Math.round(w.cq.x) && q.old[1] === Math.round(w.cq.y)); if (m) { w.cq.x = m.new[0]; w.cq.y = m.new[1]; } }
+    if (w.cq) { const m = MV.find(q => q.who === 'cq' && q.old[0] === Math.round(w.cq.x) && q.old[1] === Math.round(w.cq.y)); if (m) { w.cq.x = m.new[0]; w.cq.y = m.new[1]; } else { const r = RM.find(q => q.old[0] === w.cq.x && q.old[1] === w.cq.y); if (r) { w.cq.x = r.new[0]; w.cq.y = r.new[1]; } } }
+    if (w.flor) { const r = RM.find(q => q.old[0] === w.flor[0] && q.old[1] === w.flor[1]); if (r) w.flor = r.new.slice(); }
     // a story's own W.respEn (h-campo beats.1) through remap
     if (w.respEn) { const r = RM.find(e => e.old[0] === w.respEn[0] && e.old[1] === w.respEn[1]); if (r) w.respEn = r.new.slice(); }
     // the answer cards in the sky (moves: the acts that set W.respEn), once the act has run

@@ -71,17 +71,19 @@ const BLADE = [2, 2, 3, 3, 4];
 for (let k = 0; k < 5; k++) { const c = LAWN[BLADE[k]]; tuftLit[k] = rgb(...c); tuftDark[k] = rgb(c[0] * .54, c[1] * .52, c[2] * .72); }
 const lawnAt = (x, y, ix, iy) => { const t = LAWN_T + (noise(x * .3, y * .3) - .5) * .6 + (bayerAt(ix, iy) - .5) * .8 + (hash(ix, iy) - .5) * .25;
   return rgb(...LAWN[clamp(Math.floor(t), 2, 4)]); };
-// the trodden earth: El camino's path colours; round the tree's foot and out to Canelo's spot (the old worn patch, SITIO, 15 x 5 on the screen)
-const EARTH = [[184, 150, 96], [200, 164, 104], [216, 182, 122], [232, 206, 150], [242, 222, 172]];
-const FOOT = Gs(ARBOL[0], ARBOL[1]), SPOT = Gs(SITIO[0], SITIO[1] + 1);
-function earthAt(x, y) {   // > 0 inside the worn patch (how far in, world units)
-  const e = (c, r) => r - Math.hypot(x - c[0], y - c[1]);
-  // the two worn places and the ground between them, softened by noise so the edge is ragged into the lawn
-  const a = e(FOOT, .52), b = e(SPOT, .55), t = clamp(((x - FOOT[0]) * (SPOT[0] - FOOT[0]) + (y - FOOT[1]) * (SPOT[1] - FOOT[1])) / ((SPOT[0] - FOOT[0]) ** 2 + (SPOT[1] - FOOT[1]) ** 2), 0, 1);
-  const mx = FOOT[0] + (SPOT[0] - FOOT[0]) * t, my = FOOT[1] + (SPOT[1] - FOOT[1]) * t, c = .34 - Math.hypot(x - mx, y - my);
-  return Math.max(a, b, c) + (noise(x * 4, y * 4) - .5) * .16;
+// Canelo's spot (round 2): a small patch of dug earth of its own, where the old oval was (SITIO, 15 x 5 on the screen), apart from the trunk
+// (lawn between them), where he lies and piles the balls he takes (PILA). Brown dug earth, darker than his coat and than the balls, with lighter
+// crumbs and darker clods: his coat, the red-and-white ball and the yellow ball each stand out from it at least as well as from the old pale oval
+// (sheet: patch). Round 1's pale patch wrapped the trunk and read as a path's stub, and the dog on it as a tan lump
+const PATCH = [[74, 56, 40], [90, 68, 48], [104, 80, 56], [128, 100, 70]];
+const PATCH_E = { cx: SITIO[0], cy: SITIO[1] + .5, rx: 15, ry: 5.5 };            // on the screen
+function earthAt(x, y) {   // > 0 inside the patch (how far in, as a fraction of its radius)
+  const p = project(x, y, 0), dx = (p.sx - PATCH_E.cx) / PATCH_E.rx, dy = (p.sy - PATCH_E.cy) / PATCH_E.ry;
+  return 1 - Math.hypot(dx, dy) + (noise(x * 5, y * 5) - .5) * .22;
 }
-const LOOK = { deep: [30, 84, 128], shallow: [62, 130, 146], bank: [120, 92, 60], wet: [58, 48, 40], sky: [200, 230, 244], reflect: .14, fade: 1.4, glints: [] };
+// the water (round 2): lighter and bluer than round 1's (a ball on it and the bank beside it told apart at a glance), still a measured distance
+// from every tone of the sky (sheet: water); the bank's lip keeps its dark wet line
+const LOOK = { deep: [50, 120, 166], shallow: [76, 152, 180], bank: [120, 92, 60], wet: [52, 42, 34], sky: [214, 238, 248], reflect: .12, fade: 1.4, glints: [] };
 if (SET.water === 'still') { LOOK.sky = LOOK.deep; LOOK.glints = null; }
 function campoGround(x, y, ix, iy, i, g) {
   if (iy + .5 < HZ) return 0;                                          // above the horizon: the hills and the sky
@@ -90,9 +92,9 @@ function campoGround(x, y, ix, iy, i, g) {
   const e = earthAt(x, y);
   if (e > 0) {
     kinds[i] = KIND_ROAD;
-    if (e < .07 && bayerAt(ix, iy) > e / .07 + (hash(ix, iy) - .5) * .3) { kinds[i] = KIND_GRASS; return lawnAt(x, y, ix, iy); }
-    const t = 2.7 + (e > .2 ? .3 : 0) + (noise(x * 1.7, y * 1.7) - .5) * .9 + (bayerAt(ix, iy) - .5) * .7 + (hash(ix, iy) - .5) * .3;
-    return rgb(...EARTH[clamp(Math.floor(t), 2, 4)]);
+    if (e < .12 && bayerAt(ix, iy) > e / .12 + (hash(ix, iy) - .5) * .3) { kinds[i] = KIND_GRASS; return lawnAt(x, y, ix, iy); }
+    const h = hash(ix * 3 + 1, iy * 5 + 2), t = 1.6 + (noise(x * 6, y * 6) - .5) * 1.2 + (bayerAt(ix, iy) - .5) * .6;
+    return rgb(...PATCH[h > .9 ? 3 : h < .08 ? 0 : clamp(Math.floor(t), 1, 2)]);   // crumbs and clods
   }
   // the lip of the bank: a thin strip of damp earth, ragged into the lawn
   if (s < .07 && bayerAt(ix, iy) > s / .07 - .15) { kinds[i] = KIND_ROAD; return rgb(...[[150, 118, 76], [168, 134, 88]][hash(ix, iy) > .5 ? 1 : 0]); }
@@ -109,9 +111,10 @@ function campoGround(x, y, ix, iy, i, g) {
 const TRUNK = [118, 82, 50];
 const LEAF = [[52, 128, 66], [66, 148, 76], [86, 170, 88], [118, 196, 108]];
 const TCROWN = { cx: 63, cy: 99, rx: 25, ry: 25 };                    // on the screen: its middle and radii (the old 60, 100, 30, 26: 4 px in on the left, for its hint frame)
+const CROWN_SHADE = .25;                                                // the share of the crown's shadow's pixels the engine's shadow tint takes (Bayer)
 const HOLLOW = { cx: 64, cy: 111, rx: 10, ry: 9 };                    // on the screen: the hollow over the fork (the ball there: rows 103 to 119)
 function tree() {
-  const [fx, fy] = FOOT, tu = (fx - fy) / R2, tv = (fx + fy) / R2, Pu = (u, v, z = 0) => UVW(u, v, z);
+  const [fx, fy] = Gs(ARBOL[0], ARBOL[1]), tu = (fx - fy) / R2, tv = (fx + fy) / R2, Pu = (u, v, z = 0) => UVW(u, v, z);
   const ZF = (ARBOL[1] - HORQ[1]) / (COS * S);                        // the fork's height
   const UX = sx => (sx - OX) / S, ZS = sy => (OY + tv * SIN * S - sy) / (COS * S);   // a screen x, row (in the trunk's plane) to u, z
   part('arbol', () => {
@@ -124,7 +127,7 @@ function tree() {
     // its shadow, one piece from its foot: the trunk's, cast up to the crown, then the crown's
     for (let z = .03; z < ZF + .3; z += .08) castShadow(fx, fy, z, .17, 1, 0);
     const zc = ZS(TCROWN.cy), ru = TCROWN.rx / S, rz = TCROWN.ry / (COS * S), rv = .75, cu = UX(TCROWN.cx);
-    castShadow(...Pu(cu, tv).slice(0, 2), zc, .85, 1, .5);
+    castShadowCover(...Pu(cu, tv).slice(0, 2), zc, .85, CROWN_SHADE, .5);   // round 2: the crown's shadow at a reduced strength (sheet: shade)
     const n = 300;
     for (let k = 0; k < n; k++) {
       const h = (a, b) => hash(k * 13 + 211 + a, b);
@@ -155,6 +158,7 @@ const REEDS = (() => { const out = [];
       const x = x0 + hash(k, j * 7 + 1) * (x1 - x0), yy = y + (hash(k, j * 7 + 2) - .5) * .13, z0 = shore(x, yy) < 0 ? -WDEPTH : 0;
       const f = SCR(x, yy, z0);
       if (f[0] < 179) continue;
+      if (f[0] < 194 && hash(k, j * 7 + 9) < .55) continue;   // round 2: sparse at the bed's foot, where the balls are thrown in and hidden: the water shows between the stalks
       // 17 to 24 rows tall, as the old; lower where REED_LOW says
       const h = Math.min(.7 + hash(k, j * 7 + 3) * .4, f[0] < REED_LOW[0] ? (f[1] - REED_LOW[1]) / (COS * S) : 9);
       out.push({ x, y: yy, h, lean: (hash(k, j * 7 + 4) - .5) * .12, head: hash(k, j * 7 + 5) < .5, blade: hash(k, j * 7 + 6) < .2 && f[0] > REED_LOW[0] + 4, k: k * 10 + j, foot: [Math.round(f[0]), Math.round(f[1])] });
@@ -210,7 +214,7 @@ function buildSet() {
 }
 
 window.CAMPO_SET = { SET, HZ, ARBOL, COPA, HORQ, SITIO, BANK, WDEPTH, REED_Y0, REED_Y1, REED_X0, REED_X1, REED_LOW, TCROWN, HOLLOW, SUN, CLOUDS, OXY: [OX, OY],
-  REEDS: REEDS.map(r => [r.x, r.y, r.h]), REED_FEET: REEDS.map(r => r.foot), buildSet, shore, earthAt };
+  REEDS: REEDS.map(r => [r.x, r.y, r.h]), REED_FEET: REEDS.map(r => r.foot), PATCH, PATCH_E, CROWN_SHADE, LOOK: { deep: LOOK.deep, shallow: LOOK.shallow, sky: LOOK.sky, wet: LOOK.wet }, buildSet, shore, earthAt };
 
 if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
 const t0 = performance.now();
