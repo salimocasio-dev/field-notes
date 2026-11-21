@@ -14,9 +14,6 @@ import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
-// the scene's own type (its placed sprites): a test reaches it through the package's file
-// ignore: implementation_imports
-import 'package:coqui_scenes/src/mostrador/mostrador.dart';
 
 /// What went against a rule: when, which rule, the details.
 typedef MostradorBreach = ({String at, String rule, String what});
@@ -25,9 +22,12 @@ final double _t30 = math.tan(math.pi / 6);
 
 /// Watches a real El mostrador while a story plays: [wrap] its acts, then read [breaches] and [checked].
 class MostradorRules {
-  MostradorRules(this.scene);
+  MostradorRules(this.scene) : _m = scene;
 
-  final Mostrador scene;
+  /// The scene (El mostrador's; its own members, `placed`, `places`, `donde`, are reached as the scene's, untyped: a
+  /// feature may not import a package's src/).
+  final SetScene scene;
+  final dynamic _m;
 
   // the baked depth of each state, made once for every run of the process (the set is the same in every one)
   static final Map<String, Float32List> _zb = {};
@@ -56,8 +56,8 @@ class MostradorRules {
       tag != 'persona:luis' &&
       tag != 'persona:carmen';
 
-  List<int>? _ink(MostradorItem it) {
-    final s = it.s;
+  List<int>? _ink(dynamic it) {
+    final s = it.s as Sprite;
     var x0 = s.w, y0 = s.h, x1 = -1, y1 = -1;
     for (var y = 0; y < s.h; y++) {
       for (var x = 0; x < s.w; x++) {
@@ -75,9 +75,9 @@ class MostradorRules {
   void check(String at) {
     final W = scene.host.W;
     checked++;
-    final items = scene.placed(W, 0);
-    final S = scene.places.e.S;
-    double planeK(MostradorItem it) => it.d + it.sy * _t30 / S;
+    final items = (_m.placed(W, 0) as List).cast<dynamic>();
+    final S = (_m.places.e.S as num).toDouble();
+    double planeK(dynamic it) => (it.d as double) + (it.sy as num) * _t30 / S;
     // the frog is never behind a grown-up
     for (final f in items.where((i) => i.tag == 'coqui')) {
       for (final p in items.where((i) => i.tag != null && _adult(i.tag!))) {
@@ -101,7 +101,7 @@ class MostradorRules {
       }
     }
     // inside the picture and the view
-    final cam = scene.CAM[scene.donde(W)]!;
+    final cam = scene.CAM[_m.donde(W) as String]!;
     for (final it in items) {
       final b = _ink(it);
       if (b == null) continue;
@@ -123,7 +123,7 @@ class MostradorRules {
     // the children's heads at the door
     final key = scene.setKey(W);
     final z = _zbOf(key);
-    final bias = scene.places.bias;
+    final bias = (_m.places.bias as num).toDouble();
     for (final it in items.where(
       (i) => i.tag != null && i.tag!.startsWith('persona:nino'),
     )) {

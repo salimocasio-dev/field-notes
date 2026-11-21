@@ -3,8 +3,7 @@
 // (playMostrador). Used by test/mostrador_stories_test.dart (a part of the paths) and tool/mostrador_paths_test.dart (all).
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_pixel/coqui_pixel.dart' show Scene;
-// ignore: implementation_imports
-import 'package:coqui_scenes/src/mostrador/mostrador.dart';
+import 'package:coqui_scenes/coqui_scenes.dart' show SetScene;
 import 'package:feature_story/src/play/play.dart';
 
 import '../../tool/tool_progress.dart';
@@ -79,7 +78,7 @@ Future<Map<String, dynamic>> playMostrador(
     draws: draws,
     seed: 1,
     sceneFor: (rng) {
-      final s = make(rng) as Mostrador;
+      final s = make(rng) as SetScene;
       if (watch) rules = MostradorRules(s)..wrap();
       return s;
     },
