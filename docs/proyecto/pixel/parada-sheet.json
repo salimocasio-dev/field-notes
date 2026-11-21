@@ -487,25 +487,25 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 36 pairs in the 6 moments of the preview (m1 (fila1, fila2, fila3, fila4, banco1); m2 (fila2, fila3); m3 (fila3, coqui.boton_sube, bajo_banco, puerta_baja); m4 (fila3, fila4, fila5, coqui.botones, bajo_banco); m5 (banco1, banco2, coqui.poste); m6 (fila2, fila3, fila4, fila5)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 fila2 ~ banco1 (17 px across, 31 down), m1 fila3 ~ banco1 (13 px across, 16 down), m3 fila3 ~ bajo_banco (8 px across, 45 down), m3 fila3 ~ puerta_baja (3 px across, 27 down), m3 bajo_banco ~ puerta_baja (5 px across, 72 down), m4 fila3 ~ bajo_banco (8 px across, 45 down), m4 fila4 ~ bajo_banco (21 px across, 31 down)",
-     "       closest in each moment (px across / px down): m1 fila3 ~ banco1 13/16 (needs 28 across or 12 down); m2 fila2 ~ fila3 30/15 (needs 28 across or 12 down); m3 fila3 ~ puerta_baja 3/27 (needs 24 across or 12 down); m4 fila3 ~ bajo_banco 8/45 (needs 26 across or 12 down); m5 banco1 ~ coqui.poste 29/6 (needs 28 across or 12 down); m6 fila3 ~ fila4 29/14 (needs 28 across or 12 down)"
+     "sprites-apart: 36 pairs in the 6 moments of the preview (m1 (fila1, fila3, fila2, fila4, banco2); m2 (fila3, fila2); m3 (fila3, coqui.boton_sube, bajo_banco, puerta_baja); m4 (fila3, fila4, fila5, coqui.botones, bajo_banco); m5 (banco1, banco2, coqui.poste); m6 (fila2, fila3, fila4, fila5)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 fila3 ~ banco2 (16 px across, 31 down), m1 fila4 ~ banco2 (13 px across, 17 down), m3 fila3 ~ bajo_banco (8 px across, 45 down), m3 fila3 ~ puerta_baja (3 px across, 27 down), m3 bajo_banco ~ puerta_baja (5 px across, 72 down), m4 fila3 ~ bajo_banco (8 px across, 45 down), m4 fila4 ~ bajo_banco (21 px across, 31 down)",
+     "       closest in each moment (px across / px down): m1 fila4 ~ banco2 13/17 (needs 24 across or 12 down); m2 fila3 ~ fila2 30/15 (needs 28 across or 12 down); m3 fila3 ~ puerta_baja 3/27 (needs 24 across or 12 down); m4 fila3 ~ bajo_banco 8/45 (needs 26 across or 12 down); m5 banco1 ~ coqui.poste 29/6 (needs 28 across or 12 down); m6 fila3 ~ fila4 29/14 (needs 28 across or 12 down)"
     ],
     "pairs": [
-     {
-      "moment": 1,
-      "a": "fila1",
-      "b": "fila2",
-      "across": 29,
-      "down": 15,
-      "needAcross": 24,
-      "ok": true
-     },
      {
       "moment": 1,
       "a": "fila1",
       "b": "fila3",
       "across": 59,
       "down": 30,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "fila1",
+      "b": "fila2",
+      "across": 29,
+      "down": 15,
       "needAcross": 28,
       "ok": true
      },
@@ -521,37 +521,19 @@
      {
       "moment": 1,
       "a": "fila1",
-      "b": "banco1",
-      "across": 46,
-      "down": 46,
+      "b": "banco2",
+      "across": 75,
+      "down": 61,
       "needAcross": 24,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "fila2",
-      "b": "fila3",
+      "a": "fila3",
+      "b": "fila2",
       "across": 30,
       "down": 15,
       "needAcross": 28,
-      "ok": true
-     },
-     {
-      "moment": 1,
-      "a": "fila2",
-      "b": "fila4",
-      "across": 59,
-      "down": 29,
-      "needAcross": 24,
-      "ok": true
-     },
-     {
-      "moment": 1,
-      "a": "fila2",
-      "b": "banco1",
-      "across": 17,
-      "down": 31,
-      "needAcross": 24,
       "ok": true
      },
      {
@@ -560,31 +542,49 @@
       "b": "fila4",
       "across": 29,
       "down": 14,
-      "needAcross": 28,
+      "needAcross": 24,
       "ok": true
      },
      {
       "moment": 1,
       "a": "fila3",
-      "b": "banco1",
-      "across": 13,
-      "down": 16,
+      "b": "banco2",
+      "across": 16,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "fila2",
+      "b": "fila4",
+      "across": 59,
+      "down": 29,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "fila2",
+      "b": "banco2",
+      "across": 46,
+      "down": 46,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 1,
       "a": "fila4",
-      "b": "banco1",
-      "across": 42,
-      "down": 2,
+      "b": "banco2",
+      "across": 13,
+      "down": 17,
       "needAcross": 24,
       "ok": true
      },
      {
       "moment": 2,
-      "a": "fila2",
-      "b": "fila3",
+      "a": "fila3",
+      "b": "fila2",
       "across": 30,
       "down": 15,
       "needAcross": 28,
@@ -819,19 +819,9 @@
    },
    {
     "name": "frog-seen",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "frog-seen: the frog not whole:",
-     "  moment 1 fila3: 0 px hidden by the set, 176 px covered by a grown-up or dog, 5 px covered by a child (banco1 176, fila4 5)",
-     "    nearest passing, moment 1 fila3 0.9,7,0 (the other sprites where they are): x 0.9 -> 2.5 (+1.6)",
-     "      or moment 1 banco1 2,8.8,0.46 (the frog where he is; the set's hiding of it is not re-tested): y 8.8 -> 9.43 (+0.63)",
-     "      or moment 1 banco1 at another spot of the same kind: banco2 3.6,8.8,0.46 covers 47 px",
-     "       moment 1 fila3 [78,165]: 536 px drawn, 0 hidden by the set, 176 covered by a nearer grown-up or dog, 5 by a child (up to 40 allowed) (banco1 176, fila4 5); 310 px of other sprites lie over his 32 x 25 box",
-     "       moment 2 fila3 [78,165]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box",
-     "       moment 3 coqui.boton_sube [30,121]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box",
-     "       moment 4 coqui.botones [47,129]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box",
-     "       moment 5 coqui.poste [36,187]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box",
-     "       moment 6 fila3 [78,165]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box"
+     "frog-seen: in all 6 moments the frog is whole (nothing hidden by the set, nothing of him under a grown-up, at most 40 px under a child): moment 1 fila2 [48,150]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box; moment 2 fila2 [48,150]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box; moment 3 coqui.boton_sube [30,121]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box; moment 4 coqui.botones [47,129]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box; moment 5 coqui.poste [36,187]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box; moment 6 fila3 [78,165]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box"
     ]
    },
    {
@@ -875,10 +865,10 @@
     "name": "kerb-front",
     "ok": true,
     "lines": [
-     "kerb-front: nobody at the row or at a button is hidden by the guagua, the sign or the seat (hidden px / drawn px): by spot fila1 19,135 (adulto) 0/878, fila1 19,135 (nino) 0/600, fila2 48,150 (adulto) 0/878, fila2 48,150 (nino) 0/600, fila3 78,165 (adulto) 0/878, fila3 78,165 (nino) 0/600, fila3 78,165 (coqui) 0/536, fila4 107,179 (adulto) 0/878, fila4 107,179 (nino) 0/600, fila5 137,194 (adulto) 0/878, fila5 137,194 (nino) 0/600, coqui.boton_sube 30,121 (coqui) 0/536, coqui.boton_baja 62,136 (coqui) 0/536, coqui.botones 47,129 (coqui) 0/536, coqui.boton_sube.2 130,170 (coqui) 0/536, coqui.boton_baja.2 161,186 (coqui) 0/536, coqui.botones.2 146,178 (coqui) 0/536; in the moments m1: fila1 0/628, fila2 0/899, fila3 0/536, fila4 0/816; m2: fila2 0/899, fila3 0/536; m3: fila3 0/600, coqui.boton_sube 0/536; m4: fila3 0/878, fila4 0/834, fila5 0/600, coqui.botones 0/536; m5: nobody at the row or a button; m6: fila2 0/895, fila3 0/536, fila4 0/628, fila5 0/724",
-     "       info, not a check: characters drawn over the stop's sign or the walking post (their pixels shown over the sign's or the post's): m1 fila4 is drawn over the sign 66 px; m4 fila4 is drawn over the sign 81 px; m5 banco2 is drawn over the sign 32 px; m5 coqui.poste is drawn over the post 60 px; m6 fila4 is drawn over the sign 31 px",
+     "kerb-front: nobody at the row or at a button is hidden by the guagua, the sign or the seat (hidden px / drawn px): by spot fila1 19,135 (adulto) 0/878, fila1 19,135 (nino) 0/600, fila2 48,150 (adulto) 0/878, fila2 48,150 (nino) 0/600, fila3 78,165 (adulto) 0/878, fila3 78,165 (nino) 0/600, fila3 78,165 (coqui) 0/536, fila4 107,179 (adulto) 0/878, fila4 107,179 (nino) 0/600, fila5 137,194 (adulto) 0/878, fila5 137,194 (nino) 0/600, coqui.boton_sube 30,121 (coqui) 0/536, coqui.boton_baja 62,136 (coqui) 0/536, coqui.botones 47,129 (coqui) 0/536, coqui.boton_sube.2 130,170 (coqui) 0/536, coqui.boton_baja.2 161,186 (coqui) 0/536, coqui.botones.2 146,178 (coqui) 0/536; in the moments m1: fila1 0/628, fila3 0/899, fila2 0/536, fila4 0/816; m2: fila3 0/899, fila2 0/536; m3: fila3 0/600, coqui.boton_sube 0/536; m4: fila3 0/878, fila4 0/834, fila5 0/600, coqui.botones 0/536; m5: nobody at the row or a button; m6: fila2 0/895, fila3 0/536, fila4 0/628, fila5 0/724",
+     "       info, not a check: characters drawn over the stop's sign or the walking post (their pixels shown over the sign's or the post's): m1 fila4 is drawn over the sign 66 px; m1 banco2 is drawn over the sign 20 px; m4 fila4 is drawn over the sign 81 px; m5 banco2 is drawn over the sign 32 px; m5 coqui.poste is drawn over the post 60 px; m6 fila4 is drawn over the sign 31 px",
      "       info, not a check: characters with pixels hidden by the set, in all six moments (the sitters too): m3 bajo_banco 4/313 px hidden by the seat 4; m4 bajo_banco 4/313 px hidden by the seat 4; m5 banco2 15/919 px hidden by the seat 15",
-     "       info, not a check: shown pixels that lie over a set pixel nearer than the sprite's own plane (the bias 0.3 lets them through): m1 banco1 over the seat 34; m3 bajo_banco over the seat 57; m3 puerta_baja over the guagua 73; m4 bajo_banco over the seat 57; m5 banco1 over the seat 22; m5 banco2 over the seat 57; m5 coqui.poste over the seat 2",
+     "       info, not a check: shown pixels that lie over a set pixel nearer than the sprite's own plane (the bias 0.3 lets them through): m1 banco2 over the seat 37; m3 bajo_banco over the seat 57; m3 puerta_baja over the guagua 73; m4 bajo_banco over the seat 57; m5 banco1 over the seat 22; m5 banco2 over the seat 57; m5 coqui.poste over the seat 2",
      "       info, not a check: the sitters (banco1, banco2) with pixels hidden by the set: banco1 abuela_sent 87/884 (the seat 87); banco2 abuela_sent 14/884 (the seat 14)"
     ]
    },
