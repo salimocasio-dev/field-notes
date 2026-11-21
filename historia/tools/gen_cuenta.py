@@ -16,7 +16,7 @@
 #   `copa` {n}: 0 at the start, 1, 2, 3 as she fills it; a wrong move leaves 2 (first mix-up) or 1 (second). `frasco` {n}: 0 at the start, 1 after abuelo's coin; after a clean round the coins in it (A: 2; B: 3, or 2 if A was a muddle).
 #   `final93` / `final94` / `final95` {n}: n = what is left (scoops, coins, lamps between the guagua and the stop) = 3 minus the steps lost (3: all right; 1: both rounds lost).
 #   The opening of 94 and 95 is the Needs list's own: `cuenta94` {n=40}; `moneda94` {quien=abuelo, mete=1}; 95: the family goes to umbral1 to umbral4 in the order of the script's People line (abuela, abuelo, Luis, Carmen).
-#   `ir`: only the spots the script names for the frog (carrito_coqui in 93; mostrador_coqui in 94 and 95). The family's own places at the start (silla1 to silla4, familia1 to familia4) are the scene's default: no `llega` is issued for them.
+#   `ir`: only the spots the script names for the frog (carrito_coqui in 93; mostrador_coqui in 94 and 95; puerta_coqui at the end of 95). The family's own places at the start (silla1 to silla4, familia1 to familia4) are the scene's default: no `llega` is issued for them.
 #   94, 95: at the turn the two guests of the rounds come up behind the one at the register (llega to fila1, fila2); each round the guest of it steps up to `paga`.
 #     94: nobody leaves in the script until "the last guest goes" (step 9), and `paga` would be taken: the señor of the opening leaves after the change, and the guest of round A leaves at the start of round B (`sale`, the script's own act). Two lines to drop if the scene frees `paga` by itself.
 #   `gesto` targets the script does not name: 94 step 6 points at the guests' coins (a = fila1, the first of the line) and at the jar (frasco); 95 step 3 Carmen looks at the dessert case (a = flanes). 95 step 3 "they laugh" = the four of the family.
@@ -194,16 +194,16 @@ s94={"id":"la-cuenta-por-favor","title":"La cuenta, por favor","place":"La fonda
  "back_again":["nada más","¿algo más?","¿cuánto es?","peso","cambio","caja","paga","cierra","veinte","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa","mesera","aquí tiene","toma","toca","con","todo","mira","por favor","gracias","no"],
  "also_heard":["cash"],"names":nm,"palabras":{},"clips":c,
  "beats":[START,act("frasco",n=0),act("ir",a="mostrador_coqui"),{"wait":500},
-  # 1: abuelo asks for the bill; the mesera pulls a slip off the spike (no act named); signed ask on it ("the frog carries the slip to abuelo": no act named)
-  {"dots":1},"c94_ab_cuenta","c94_me_aqui_tiene",ask("cuenta","c94_donde_cuenta"),
+  # 1: abuelo asks for the bill; the mesera gives him the slip (signed ask on it; she pulls it off the spike and the frog carries it to abuelo: `lleva94`, run after the touch)
+  {"dots":1},"c94_ab_cuenta","c94_me_aqui_tiene",ask("cuenta","c94_donde_cuenta",after=[act("lleva94",a="abuelo")]),
   # 2: abuelo holds the slip far off and near (no act named); the total is forty; the slip grows (signed ask on the number at its foot: the engine's twinkle)
   {"dots":2},"c94_abo_cuanto","c94_me_total_40",act("cuenta94",n=40),"c94_ab_total",ask("cuenta","c94_donde_total",after=[tw("cuenta"),{"wait":700},tw(None)]),
   # 3: tarjeta or efectivo; abuelo opens his wallet and takes out the card (no act named); signed ask on the machine; his coin in the jar
   {"dots":3},"c94_me_tarjeta_o","c94_abo_tarjeta",ask("maquina","c94_paga_tarjeta",after=[act("cobra94",como="tarjeta",ok=1)]),"c94_me_con_tarjeta",act("moneda94",quien="abuelo",mete=1),act("frasco",n=1),
   # 4: the señor steps up with bills (signed ask on the drawer); he goes after the change (`sale`: the script does not say, see the header)
   {"dots":4},act("llega",quien="senor",a="paga"),"c94_t_30","c94_senor_cash","c94_me_en_efectivo",ask("gaveta","c94_paga_efectivo",after=[act("cobra94",como="efectivo",ok=1)]),"c94_me_cambio",act("sale",quien="senor"),
-  # 5: the mesera holds out the bowl of mints and he takes one (no act named); a speaking turn (nada más)
-  {"dots":5},"c94_me_toma","c94_cq_nada_mas",
+  # 5: the mesera holds out the bowl of mints and he takes one (`menta94`); a speaking turn (nada más)
+  {"dots":5},act("menta94"),"c94_me_toma","c94_cq_nada_mas",
   # 6: the turn: two more guests come up behind one another (dealt out of the pool); the mesera shakes the jar and points at the guests' coins and at the jar; the card shows two places
   {"reparte":["ga","gb"],"options":POOL94},{"reparte":["ta","tb"],"options":[str(n) for n in TENS]},
   {"dots":6}]+juntos(act("llega",quien="$ga",a="fila1"),act("llega",quien="$gb",a="fila2"))+[gesto("mesera","agita"),gesto("mesera","senala",a="fila1"),gesto("mesera","senala",a="frasco"),CARD,{"wait":400},
@@ -247,10 +247,10 @@ s95={"id":"buenas-noches","title":"Buenas noches","place":"La fonda","scene":"cu
  "back_again":["cuenta","caja","peso","mesero","mesera","cocinero","flan","delicioso","para","otro","guagua","vamos","también","todo","bien","casa","adiós","esto","aquí","hay","más","¿algo más?","pone","por favor","gracias","no"],
  "also_heard":[],"names":nm,"palabras":{},"clips":c,
  "beats":[START,act("ir",a="mostrador_coqui"),act("llega",quien="mesero",a="junto_mesa"),act("llega",quien="cocinero",a="cocina"),{"wait":500},
-  # 1: the mesero asks "¿algo más?"; abuelo looks at the frog and nods; a speaking turn (la cuenta por favor); the mesero brings the slip and abuelo lays bills on the counter (no act named); signed ask on the drawer
-  {"dots":1},"c95_mo_buenas_noches",gesto("abuelo","mira",a="coqui"),gesto("abuelo","si"),"c95_cq_cuenta","c95_abo_cuenta",ask("gaveta","c95_donde_cuenta",after=[act("guarda95",donde="gaveta",ok=1)]),
-  # 2: abuelo takes two more bills out of his pocket (no act named); signed ask on the jar; thanks; abuela's tip for the cocinero, who bows (her bills go into the jar: no act named)
-  {"dots":2},"c95_abo_propina",ask("frasco","c95_donde_propina",after=[act("guarda95",donde="frasco",ok=1)]),"c95_mo_gracias_propina","c95_ab_otra_propina",gesto("cocinero","reverencia"),
+  # 1: the mesero asks "¿algo más?"; abuelo looks at the frog and nods; a speaking turn (la cuenta por favor); the mesero brings the slip (no act named) and abuelo lays bills on the counter (`paga95`); signed ask on the drawer
+  {"dots":1},"c95_mo_buenas_noches",gesto("abuelo","mira",a="coqui"),gesto("abuelo","si"),"c95_cq_cuenta",act("paga95",quien="abuelo",que="cuenta"),"c95_abo_cuenta",ask("gaveta","c95_donde_cuenta",after=[act("guarda95",donde="gaveta",ok=1)]),
+  # 2: abuelo takes two more bills out of his pocket (`paga95`); signed ask on the jar; thanks; abuela takes out hers (`paga95`) and tips the cocinero, who bows (her bills go into the jar: no act named)
+  {"dots":2},act("paga95",quien="abuelo",que="propina"),"c95_abo_propina",ask("frasco","c95_donde_propina",after=[act("guarda95",donde="frasco",ok=1)]),"c95_mo_gracias_propina",act("paga95",quien="abuela",que="propina"),"c95_ab_otra_propina",gesto("cocinero","reverencia"),
   # 3: "¿Todo bien?"; abuelo and Luis are full; Carmen is not; they laugh
   {"dots":3},"c95_mo_todo_bien",gesto("abuelo","barriga"),"c95_abo_todo_bien","c95_l_lleno",gesto("carmen","mira",a="flanes"),"c95_ca_llena"]+juntos(*[gesto(q,"rie") for q in ("abuela","abuelo","luis","carmen")])+[
   # 4: the family goes to the door; the goodbyes; abuela sees the guagua, far off, under the last lamp
@@ -261,7 +261,7 @@ s95={"id":"buenas-noches","title":"Buenas noches","place":"La fonda","scene":"cu
   {"dots":5}]+juntos(act("llega",quien="$ga",a="fila1"),act("llega",quien="$gb",a="fila2"),act("llega",quien="mesera",a="sillas_mesera"))+con(act("sillas95"),"c95_me_caja")+[gesto("abuela","mira",a="puerta"),CARD,{"wait":400},
   # 6: A. 7: B. Which guest, and what the bills are for: drawn afresh each round
   {"dots":6}]+ronda95("a","ga")+[{"dots":7}]+ronda95("b","gb"),
- "final":[{"dots":8}]+juntos(gesto("mesera","saluda"),gesto("mesero","saluda"),gesto("cocinero","saluda"))+["c95_me_adios","c95_cq_adios",   # 8: the frog hops across to the door (no spot named for it: not issued); the three wave; a speaking turn (adiós)
+ "final":[{"dots":8},act("ir",a="puerta_coqui")]+juntos(gesto("mesera","saluda"),gesto("mesero","saluda"),gesto("cocinero","saluda"))+["c95_me_adios","c95_cq_adios",   # 8: the frog hops down and across to the door (`ir` puerta_coqui); the three wave; a speaking turn (adiós)
   {"dots":9},baja3(lambda n:act("final95",n=n)),"c95_fin",act("fin")],   # 9: the stop, by where the guagua's lights stood (far; the middle lamp; the stop)
  "leer":["c95_mo_buenas_noches","c95_cq_cuenta","c95_abo_cuenta","c95_donde_cuenta","c95_abo_propina","c95_donde_propina","c95_mo_gracias_propina","c95_ab_otra_propina","c95_mo_todo_bien","c95_abo_todo_bien","c95_l_lleno","c95_ca_llena",
   "c95_me_hasta_luego","c95_ab_hasta_luego","c95_co_hasta_luego","c95_ab_guagua","c95_me_caja","c95_senor_propina","c95_a_senor","c95_mujer_cuenta","c95_b_mujer","c95_me_adios","c95_cq_adios","c95_fin"]}
