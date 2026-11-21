@@ -58,7 +58,8 @@ const double HZ = 100; // the horizon (screen row): the park's
 // the shore: the line x = BANK (screen sx + 2 sy = SHORE_K); the second shore, on the world's other axis: the right bank,
 // the line y = BANK2 (screen sx - 2 sy = SHORE2_K)
 const double SHORE_K = 354, SHORE2_K = -40;
-const double WDEPTH = .16; // the surface under the lawn: a bank 4 rows high (El campo's)
+const double WDEPTH =
+    .16; // the surface under the lawn: a bank 4 rows high (El campo's)
 
 // lago-set.html: BANK
 double lagoBank(PpEngine e) => (SHORE_K - e.OX - 2 * e.OY) / (e.S * e.R2);
@@ -101,7 +102,8 @@ bool lagoOnDeck(PpEngine e, double x, double y) {
 
 // lago-set.html: Gs. The world point at height z under a screen point
 List<double> lagoGs(PpEngine e, num sx, num sy, [num z = 0]) {
-  final u = (sx - e.OX) / e.S, v = (sy - e.OY + z * e.COS * e.S) / (e.S * e.SIN);
+  final u = (sx - e.OX) / e.S,
+      v = (sy - e.OY + z * e.COS * e.S) / (e.S * e.SIN);
   return [(u + v) / e.R2, (v - u) / e.R2, z.toDouble()];
 }
 
@@ -178,8 +180,23 @@ const List<int> BLADE = [2, 2, 3, 3, 4];
 const List<double> SHADE_M = [.6, .6, .74];
 
 /* ---------- the dock ---------- */
-const List<int> WOOD = [170, 122, 74], WOOD_D = [128, 88, 52], PILE = [112, 80, 52];
-const List<double> PLANK = [0, .55, .2, .8, .35, .05, .65, .25, .9, .45, .1, .7];
+const List<int> WOOD = [170, 122, 74],
+    WOOD_D = [128, 88, 52],
+    PILE = [112, 80, 52];
+const List<double> PLANK = [
+  0,
+  .55,
+  .2,
+  .8,
+  .35,
+  .05,
+  .65,
+  .25,
+  .9,
+  .45,
+  .1,
+  .7,
+];
 const double TH_P = .06;
 
 /* ---------- the reeds ---------- */
@@ -218,7 +235,12 @@ typedef LagoFoot = ({double x, double y, double hw, String what});
 
 /// A waterline (lago-set.html: an entry of `WATERLINE`): what stands there, its foot on the screen, its half width and
 /// the pixels it lit.
-typedef LagoWaterline = ({String what, List<int> foot, double hw, List<int> px});
+typedef LagoWaterline = ({
+  String what,
+  List<int> foot,
+  double hw,
+  List<int> px,
+});
 
 /// The ground, its grass, the dock's shade on the water and the glints on its water (lago-set.html: `GROUND_CACHE`,
 /// `SHADED` and `LOOK.glints`, which only the first bake fills): made once per page, so here once per engine.
@@ -409,8 +431,7 @@ class LagoSet {
   /* ---------- the dock ---------- */
 
   // lago-set.html: plankTone
-  double plankTone(int kk) =>
-      PLANK[((kk.remainder(12)) + 12).remainder(12)];
+  double plankTone(int kk) => PLANK[((kk.remainder(12)) + 12).remainder(12)];
 
   // lago-set.html: deckTop. One sample a pixel (planeQuad), the planks across the dock: a dark gap every PW along x, each
   // plank its own tone
@@ -430,10 +451,9 @@ class LagoSet {
       }
       // round 4: each plank one even tone along its whole length: its two wood tones mixed by a fixed dither
       final p = e.project(x, y, ZD);
-      return e.rampOf(WOOD)[e.bayerAt(p.sx.floor(), p.sy.floor()) <
-              plankTone(kk) * .85
-          ? 3
-          : 2];
+      return e.rampOf(
+        WOOD,
+      )[e.bayerAt(p.sx.floor(), p.sy.floor()) < plankTone(kk) * .85 ? 3 : 2];
     });
   }
 
@@ -457,9 +477,9 @@ class LagoSet {
                   3,
                 )]; // the plank ends
         }
-        return e.rampOf(
-          WOOD_D,
-        )[z > ZD - TH_P - .025 ? 1 : 2]; // the fascia, a shadow line under the planks
+        return e.rampOf(WOOD_D)[z > ZD - TH_P - .025
+            ? 1
+            : 2]; // the fascia, a shadow line under the planks
       });
     }
     if (sides.contains('x')) {
@@ -479,12 +499,11 @@ class LagoSet {
 
   // lago-set.html: landingSides. Over the lawn the dock's side goes down to the ground (a solid landing)
   void landingSides(LagoRect R) {
-    k.planeQuad(
-      [R.x0, R.y1, 0],
-      [R.x1 - R.x0, 0, 0],
-      [0, 0, ZD - TH],
-      (a, bb) => e.rampOf(WOOD_D)[1],
-    );
+    k.planeQuad([R.x0, R.y1, 0], [R.x1 - R.x0, 0, 0], [
+      0,
+      0,
+      ZD - TH,
+    ], (a, bb) => e.rampOf(WOOD_D)[1]);
   }
 
   // lago-set.html: FEET. Where a thing standing in the water meets its surface (round 2: their waterlines)
@@ -494,18 +513,16 @@ class LagoSet {
   void piling(double x, double y, double z1, [double w = .13]) {
     const z0 = -WDEPTH - .5;
     FEET.add((x: x + w / 2, y: y + w / 2, hw: 2.5, what: 'piling'));
-    k.planeQuad(
-      [x - w / 2, y + w / 2, z0],
-      [w, 0, 0],
-      [0, 0, z1 - z0],
-      (a, bb) => e.rampOf(PILE)[a < .3 ? 2 : 1],
-    );
-    k.planeQuad(
-      [x + w / 2, y - w / 2, z0],
-      [0, w, 0],
-      [0, 0, z1 - z0],
-      (a, bb) => e.rampOf(PILE)[0],
-    );
+    k.planeQuad([x - w / 2, y + w / 2, z0], [w, 0, 0], [
+      0,
+      0,
+      z1 - z0,
+    ], (a, bb) => e.rampOf(PILE)[a < .3 ? 2 : 1]);
+    k.planeQuad([x + w / 2, y - w / 2, z0], [0, w, 0], [
+      0,
+      0,
+      z1 - z0,
+    ], (a, bb) => e.rampOf(PILE)[0]);
   }
 
   // lago-set.html: mooringPost. A round post through the deck, PM_H over it, a darker cap; its contact shadow on the
@@ -534,12 +551,11 @@ class LagoSet {
       deckSides(LANDING, 'y');
       landingSides(LANDING);
       // the part of the main deck that stands on the lawn: its side down to the ground too
-      k.planeQuad(
-        [DECK.x0, DECK.y1, 0],
-        [math.max(0, BANK - DECK.x0), 0, 0],
-        [0, 0, ZD - TH],
-        (a, bb) => e.rampOf(WOOD_D)[1],
-      );
+      k.planeQuad([DECK.x0, DECK.y1, 0], [math.max(0, BANK - DECK.x0), 0, 0], [
+        0,
+        0,
+        ZD - TH,
+      ], (a, bb) => e.rampOf(WOOD_D)[1]);
       // the pilings along the near side and the end
       const zU = ZD - TH;
       for (var x = DECK.x0 + .55; x <= DECK.x1 - .05; x += .82) {
@@ -811,7 +827,8 @@ class LagoSet {
     e.bakedZ.setAll(0, e.zb);
     // round 4: a glint registered by the ground pass where the dock, the post or a reed now stands is dropped
     LOOK.glints!.removeWhere(
-      (gl) => !(e.kinds[gl.i] == KIND_WATER && e.bakedZ[gl.i] == e.groundZ[gl.i]),
+      (gl) =>
+          !(e.kinds[gl.i] == KIND_WATER && e.bakedZ[gl.i] == e.groundZ[gl.i]),
     );
     // the glints the frame draws (lago-set.html `frame`: drawGlints(LOOK.glints, windT, bakedZ, GLINT))
     e.glints

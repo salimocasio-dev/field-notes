@@ -33,7 +33,9 @@ class LagoPlaces {
   static bool _keepsLine(SheetCode c) {
     final to = c.to;
     return (to is Map && to['floor'] == true) ||
-        (c.note ?? '').contains('every other place here keeps its screen place');
+        (c.note ?? '').contains(
+          'every other place here keeps its screen place',
+        );
   }
 
   /// A place of the old file at [line] that the floor rule keeps or `moves` moves:

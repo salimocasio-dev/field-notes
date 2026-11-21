@@ -1055,7 +1055,8 @@ class SheetRing {
 
   /// The patch of a kind. Throws [SheetError] when the sheet gives none.
   SheetPatch patch(String name) =>
-      patches[name] ?? (throw SheetError('the sheet gives no patch for "$name"'));
+      patches[name] ??
+      (throw SheetError('the sheet gives no patch for "$name"'));
   final String? when, how;
   final Map<String, dynamic> raw;
 }
@@ -2037,9 +2038,7 @@ SheetThing _readThing(String id, Map<String, dynamic> m, String at) {
     flag('hud'),
     flag('sky'),
     // El lago's water (order 35b) gives its world as null: the ground under the horizon, no box of its own
-    m['world'] == null
-        ? null
-        : _doubles(m['world'], '$at.world', length: 6),
+    m['world'] == null ? null : _doubles(m['world'], '$at.world', length: 6),
     box,
     hit,
     places,
@@ -2084,7 +2083,8 @@ SheetAnchor _readAnchor(
 
 // A point's `world` that is one world point (x, y, z), so the point is an anchor: not El campo's shore (one number), not
 // El lago's dock (a box of six) or its mooring posts (a list of points)
-bool _isWorldPoint(Object? w) => w is List && w.length == 3 && w.every((v) => v is num);
+bool _isWorldPoint(Object? w) =>
+    w is List && w.length == 3 && w.every((v) => v is num);
 
 SheetScreenPoint _readScreenPoint(
   String name,

@@ -758,12 +758,7 @@ class Lago extends Escena implements SetScene, SetOverSprites, PairPlaces {
           ? ((F >> 3) % 2)
           : 0;
       final R = _ring.kind('bote');
-      return [
-        _round(o0['x'] as num),
-        _round(o0['y'] as num) + bob,
-        R.rx,
-        R.ry,
-      ];
+      return [_round(o0['x'] as num), _round(o0['y'] as num) + bob, R.rx, R.ry];
     }
     if (kind == 'pez') return null; // the fish has its patch (patch)
     if (kind == 'pan') {
@@ -1287,11 +1282,7 @@ class Lago extends Escena implements SetScene, SetOverSprites, PairPlaces {
     c.drawImage(im, -7, -12);
     c.restore();
     if (jsTruthy(o['pan'])) {
-      c.drawImage(
-        spr('pan', mkPan),
-        _round(o['x'] as num) + d * 9 - 5,
-        y - 11,
-      );
+      c.drawImage(spr('pan', mkPan), _round(o['x'] as num) + d * 9 - 5, y - 11);
     }
   }
 
@@ -1318,9 +1309,7 @@ class Lago extends Escena implements SetScene, SetOverSprites, PairPlaces {
   void rana(Ctx g, Map<String, dynamic> q, int a) {
     final b = frogBox(q),
         bl = (F % 47) < 2 ? 1 : 0,
-        op = (q['bub'] == 'hola' || host.TALK == 'coqui') && a % 2 != 0
-            ? 1
-            : 0,
+        op = (q['bub'] == 'hola' || host.TALK == 'coqui') && a % 2 != 0 ? 1 : 0,
         dy = _round(q['dy'] as num);
     final s = q['s'] as num;
     g.globalAlpha = (q['al'] as num).toDouble();
@@ -2011,8 +2000,7 @@ class Lago extends Escena implements SetScene, SetOverSprites, PairPlaces {
       ((W['marcas'] as List?) ?? const []).where((m) => m == 'ok').length;
 
   // JavaScript: `W.marcas&&W.marcas[2]===null`
-  bool get _third =>
-      W['marcas'] is List && _at(W['marcas'] as List, 2) == null;
+  bool get _third => W['marcas'] is List && _at(W['marcas'] as List, 2) == null;
 
   // JavaScript: `W.marcas&&W.marcas[2]!==null`
   bool get _thirdTaken =>
@@ -2550,12 +2538,7 @@ class Lago extends Escena implements SetScene, SetOverSprites, PairPlaces {
     'pezviene': (o) async {
       final p0 = _p.floor(222, 232, 192);
       W['peces'] = <String, dynamic>{
-        'a': <String, dynamic>{
-          'c': o['c'],
-          'x': p0[0],
-          'y': p0[1],
-          'dir': -1,
-        },
+        'a': <String, dynamic>{'c': o['c'], 'x': p0[0], 'y': p0[1], 'dir': -1},
       };
       final n = _p.to(222, 'await pezA("a",134,192,16)');
       await pezA('a', n[0], n[1], n[2]);
@@ -3197,12 +3180,7 @@ class Lago extends Escena implements SetScene, SetOverSprites, PairPlaces {
             final d = _pato(k);
             if (d == null) return;
             d['dir'] = 1;
-            await patoA(
-              k,
-              _p.floorRule(278, 252),
-              (d['y'] as num) + 8,
-              'nada',
-            );
+            await patoA(k, _p.floorRule(278, 252), (d['y'] as num) + 8, 'nada');
             d['vis'] = 0;
           }(),
       ]);
