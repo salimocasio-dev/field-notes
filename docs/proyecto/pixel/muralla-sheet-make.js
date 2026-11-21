@@ -3,8 +3,6 @@
 /* La muralla's sheet (place 10, El fuerte, scene 4, stories 117 to 119): writes docs/proyecto/pixel/muralla-sheet.json from muralla-set.html and the design (the orchestrator's p10-spec, general rules and section "muralla"), then checks it.
    Run from the repo root:  node docs/proyecto/pixel/muralla-sheet-make.js        (needs Node 22 and the pre-installed Playwright, Chrome at /usr/bin/google-chrome)
    Add --suggest to print, for every failing check, the nearest place of each spot it names that would pass (v first, then u; never z).
-   Add --cord-ok to read the checks with the cord's own pixels (the 1 px line of the set between the two boxes, nearer than the bench and the road) counted as hiding nothing: the default counts them (the spec says
-   "covered by nobody and by nothing" for a head and "hidden by nothing of the set" for the guagua); the sheet's numbers do not depend on it.
    A NEW scene: no old scene file, no old positions, no remap. The set is laid out square to the picture: a spot is given in (u, v, z), u across the picture, v down it
    (plaza-base.js: PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world place); the make projects it with the engine's own project() (pp-engine.js).
    In the picture sx = OX + u S and sy = OY + (v / 2 - z cos 30) S (OX 120, OY 84 here). The parapet, the sentry boxes (and their doors), the cord, the bench, the table, the steps and the road
@@ -26,7 +24,6 @@ const PAGE = BASE + '/docs/proyecto/pixel/muralla-set.html';
 const CHROME = '/usr/bin/google-chrome';
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.png': 'image/png' };
 const SUGGEST = process.argv.includes('--suggest');
-const CORD_OK = process.argv.includes('--cord-ok');       // an alternative reading of the spec (see the checks heads-clear and guagua-clear): the cord's own 1 px line hides nothing
 
 // every request to BASE is answered from the files of this tree
 const serve = route => {
@@ -44,6 +41,8 @@ const BIAS = .3;                                         // the depth rule: the 
 const EPS = .001;                                        // two sprite planes this near are a tie: the later layer wins
 const WIDTH = { coqui: 32, adulto: 24, nino: 24 }, UPDOWN = 12;     // sprite boxes (the feet's spot in the middle): two that stand together do not overlap sideways unless their feet are UPDOWN px or more apart up-down
 const HEAD_ROWS = 14;                                    // the head of a person: the top 14 rows of the sprite
+const CORD_COLOUR = [70, 60, 60];                         // FT.cord's own colour
+const INSIDE_TOP = 2;                                    // whoever is inside a sentry box: the top of his sprite this many px under the top of the door's box
 const SEAT_Z = .46, TABLE_Z = .74, DOOR_Z = 1.18;        // the bench's seat; the table's top; the top of a sentry box's door
 const SZ = { farol: [10, 12], camara: [12, 22], vela: [8, 16], jugo: [6, 10], plato: [12, 6], silla: [14, 24], guitarra: [10, 22], sombrero: [12, 8], bolsa: [10, 12], caja: [12, 10], libro: [10, 8], guagua: [22, 10], lejos: [4, 7] };
 const MOMENTS = [1, 2, 3, 4, 5, 6];
@@ -55,11 +54,11 @@ const MOVES = {
   ventana_azul: { to: [2.15, 1.42, 0], why: 'sprites-apart: in moment 3 Luis at the blue box\'s window was 17 px sideways from centro4 and his feet 8 px above theirs (needs 24 across or 12 down): v 1.7 -> 1.42 (-.28; the other way, centro4 v 2.3 -> 2.58, +.28, would move the group\'s back row)' },
   mesa_coqui: { to: [-1.56, 5.8, TABLE_Z], why: 'sprites-apart: in moment 4 the frog on the table was 18 px sideways from the dancer at baile4 and his feet 2 px apart (needs 28 across or 12 down): u -1.2 -> -1.56 (-.36; no v on the table\'s top passes; the other way, baile4 u -.5 -> -.13, +.37, or v 4.4 -> 5.43, +1.03)' },
   escalera_abuela: { to: [1.40, 5.6, 0], why: 'sprites-apart: in moment 5 abuela at the head of the steps was 14 px sideways from the guest at escalera1 and 3 px above him (needs 24 across or 12 down): u 1.75 -> 1.40 (-.35; v 5.6 -> 6.27, +.67, also passes)' },
-  pretil_coqui: { to: [1.37, 1.9, 0], why: 'sprites-apart: in moment 6 the frog at the parapet was 26 px sideways from Luis at pretil3 and 4 px below him (needs 28 across or 12 down): u 1.3 -> 1.37 (+.07; v 1.9 -> 2.58, +.68, also passes)' },
-  juego_coqui: { to: [.91, 5.0, 0], why: 'frog-seen: in moments 2 and 3 the frog in the game stood behind abuela (v 6.9) and the camera (v 6.0): 319 of his 536 px were under them: u .2 -> .91 (+.71; v 5.0 -> 7.81, +2.81, also passes)' },
+  juego_coqui: { to: [.79, 5.0, 0], why: 'frog-seen: in moments 2 and 3 the frog in the game stood behind the camera (v 6.0) and abuela beside it (v 6.3): 114 of his 536 px were under them (the camera 99, abuela 15): u .2 -> .79 (+.59; v 5.0 -> 7.81, +2.81, also passes). Before abuela moved to (-.75, 6.3) it was u .91' },
+  pretil2: { to: [.45, 1.74, 0], why: 'end-clear and guagua-clear: in moment 6 abuelo at the parapet covered 2 px of the guagua going off (his head reaches row 53, the guagua\'s box is rows 46 to 55): v 1.66 -> 1.74 (+.08, his head top on row 56; the other way, the guagua u column 136 -> 145, +9 px, or pretil2 u -2.09)' },
+  pretil_coqui: { to: [2.45, 1.9, 0], why: 'sprites-apart: in moment 6 the frog at the parapet was 23 px sideways from Luis at pretil3 and 3 px below him (needs 28 across or 12 down): u 2.25 -> 2.45 (+.2; v 1.9 -> 2.58, +.68, also passes)' },
   vela: { to: [-1.52, 0, 1.0], why: 'candle-clear: in moment 4 the lantern farol3 (u 1.2, v 1.0, nearer than the parapet) covers 58 of the candle\'s 98 px at u 1.1. The parapet holds a candle only on a merlon (u .94 to 1.46, 1.84 to 2.36 ... every .9); to the right of farol3 the next merlon has muro2 in front of it (5 px of the candle\'s last row at u 1.99), in the middle the músicos\' heads and farol2 fill the way: u 1.1 -> -1.52 (-2.62, the least that leaves the candle uncovered on a merlon; v is the parapet\'s, 0). The other way: u 1.99 (+.89) with muro2 v 2.2 -> 2.28 (+.08, a second spot)' },
   guagua: { screen: [167, 53], why: 'guagua-clear: in moment 5 the lantern farol3 (box [146, 48, 10, 12]) covers 29 px of the guagua (box [149, 44, 22, 10]): column 160 -> 167 (+7, the least that clears it: its box [156, 43, 22, 10]); the road\'s row there is 53. It now overlaps the columns of the two músicos walking off (170 to 178: not in a moment with it). The cord is not cured by a column: see the open point of guagua-clear' },
-  pretil1: { to: [-1.6, 1.66, 0], why: 'heads-clear: in moment 6 abuela at the parapet covered 2 px of the head of the guest sitting at banco1: v 1.6 -> 1.66 (+.06; u -1.6 -> -1.68, -.08, also passes)' },
 };
 
 /* the spots: { name, uvz, kind, sil, who, what, on, size, anchor, fixed, clip, px }
@@ -80,14 +79,14 @@ function defs(E, G) {
   [-1.5, -.5, .5, 1.5].forEach((u, i) => add('centro' + (i + 1), [u, 2.3, 0], 'person', 'adulto', 'adulto', 'the back row of the group under the lanterns, place ' + (i + 1) + ' of 4 (u ' + u + ', v 2.3): grown-ups', {}));
   [-1.0, 0, 1.0].forEach((u, i) => add('centro' + (i + 5), [u, 3.5, 0], 'person', 'nino', 'nino', 'the front row of the group, place ' + (i + 1) + ' of 3 (u ' + u + ', v 3.5): children', {}));
   add('camara', [0, 6.0, 0], 'thing', null, null, 'abuela\'s camera on its three legs (' + SZ.camara.join(' x ') + ' px stand-in): its bottom middle on the point', { size: SZ.camara, anchor: 'bottom' });
-  add('camara_abuela', [0, 6.9, 0], 'person', 'adulto', 'adulto', 'abuela at her camera, her back to us (drawn standing, as everybody: nobody is drawn turned); v 6.9, nearer the camera of the picture than the tripod (v 6.0)', {});
+  add('camara_abuela', [-.75, 6.3, 0], 'person', 'adulto', 'adulto', 'abuela beside her camera (to its left; v 6.3, a little nearer the camera of the picture than the tripod at v 6.0); drawn standing facing us: nobody is drawn turned', {});
   add('junto_camara', [1.25, 6.9, 0], 'place', 'coqui', 'coqui', 'the frog beside the camera (117, opening)', {});
   add('ante_todos', [0, 4.7, 0], 'place', 'coqui', 'coqui', 'the frog in front of the others (117, "aqui")', {});
   add('juego_coqui', [.2, 5.0, 0], 'place', 'coqui', 'coqui', 'the frog in the game (117)', {});
   add('junto_coqui', [-1.0, 5.0, 0], 'person', 'nino', 'nino', 'Luis beside the frog (117, the game)', {});
   // the doors: the red one at the left box, the blue one at the right (the door boxes are things); whoever is inside is clipped to the door's box
-  add('dentro_roja', [B[0].u, r4(B[0].v + .52), 0], 'person', 'nino', 'nino', 'whoever is inside the red box (BOXES[0].u, BOXES[0].v + .52): drawn standing there and CLIPPED to puerta_roja\'s box (only what falls inside the door shows); Carmen (117, the game)', { clip: 'puerta_roja' });
-  add('dentro_azul', [B[1].u, r4(B[1].v + .52), 0], 'person', 'nino', 'nino', 'whoever is inside the blue box (BOXES[1].u, BOXES[1].v + .52): as dentro_roja, clipped to puerta_azul\'s box', { clip: 'puerta_azul' });
+  add('dentro_roja', [B[0].u, r4(B[0].v + .52), 0], 'person', 'nino', 'nino', 'whoever is inside the red box (BOXES[0].u, BOXES[0].v + .52): the spot is the door\'s foot (its middle column); he is drawn from the HEAD down, the top of his sprite 2 px under the top of puerta_roja\'s box, and CLIPPED to that box (his legs are cut by the box\'s bottom); Carmen (117, the game)', { clip: 'puerta_roja' });
+  add('dentro_azul', [B[1].u, r4(B[1].v + .52), 0], 'person', 'nino', 'nino', 'whoever is inside the blue box (BOXES[1].u, BOXES[1].v + .52): as dentro_roja, from the head down and clipped to puerta_azul\'s box', { clip: 'puerta_azul' });
   add('ventana_roja', [r4(B[0].u + .85), r4(B[0].v + .7), 0], 'person', 'nino', 'nino', 'Luis beside the red box, looking in at its window (BOXES[0].u + .85, BOXES[0].v + .7)', {});
   add('ventana_azul', [r4(B[1].u - .85), r4(B[1].v + .7), 0], 'person', 'nino', 'nino', 'Luis beside the blue box, looking in at its window (BOXES[1].u - .85, BOXES[1].v + .7)', {});
   add('sale_roja', [-2.1, 2.4, 0], 'person', 'nino', 'nino', 'someone who has just come out of the red box (117: Carmen; a child)', {});
@@ -117,15 +116,15 @@ function defs(E, G) {
   add('musico_lejos1', [0, 0, 0], 'thing', null, null, 'the first of the two músicos walking off along the road (119, step 2): a ' + SZ.lejos.join(' x ') + ' figure, bottom middle at column 172 on the road\'s row (' + r2(L.road + 68 * .1) + '); not a name of the spec', { size: SZ.lejos, anchor: 'bottom', px: [172, road(172)] });
   add('musico_lejos2', [0, 0, 0], 'thing', null, null, 'the second músico walking off: a ' + SZ.lejos.join(' x ') + ' figure, bottom middle at column 177 on the road\'s row (' + r2(L.road + 63 * .1) + '); not a name of the spec', { size: SZ.lejos, anchor: 'bottom', px: [177, road(177)] });
   // at the end: the family at the parapet
-  [[-1.6, 1.6, 'adulto', 'abuela'], [-.65, 1.6, 'adulto', 'abuelo'], [.3, 1.6, 'nino', 'Luis'], [-2.5, 2.6, 'nino', 'Carmen']].forEach(([u, v, w, who], i) => add('pretil' + (i + 1), [u, v, 0], 'person', w, w, 'at the parapet at the end (119), place ' + (i + 1) + ' of 4 (u ' + u + ', v ' + v + '): ' + who, {}));
-  add('pretil_coqui', [1.3, 1.9, 0], 'place', 'coqui', 'coqui', 'the frog at the parapet at the end (119)', {});
+  [[-.5, 1.66, 'adulto', 'abuela'], [.45, 1.66, 'adulto', 'abuelo'], [1.4, 1.66, 'nino', 'Luis'], [-2.5, 2.6, 'nino', 'Carmen']].forEach(([u, v, w, who], i) => add('pretil' + (i + 1), [u, v, 0], 'person', w, w, 'at the parapet at the end (119), place ' + (i + 1) + ' of 4 (u ' + u + ', v ' + v + '): ' + who, {}));
+  add('pretil_coqui', [2.25, 1.9, 0], 'place', 'coqui', 'coqui', 'the frog at the parapet at the end (119)', {});
   return D.map(d => MOVES[d.name] ? Object.assign({}, d, { spec: d.px ? d.px : d.uvz, uvz: MOVES[d.name].to || d.uvz, px: MOVES[d.name].screen || d.px, moved: MOVES[d.name].why }) : d);
 }
 
 /* the checks (each is a line of the output and of the sheet's checks.results):
    views-x0 (x0 holds every spot), spots-in-view (every spot inside the picture and the window, its sprite whole), spots-on-surface (the spots on the bench, the table, the parapet are on what the set draws),
    things-in-view (the set things' boxes), sprites-apart (the people of a moment), frog-seen (the frog whole in every moment), heads-clear (the head of everyone who sits covered by nobody and by nothing),
-   lanterns-clear, doors-clear, candle-clear, table-clear (m4), table-clear5 (m5), guagua-clear, steps-clear.
+   lanterns-clear, doors-clear (the doors' boxes, whoever is inside from the head down and clipped, his head whole), candle-clear, table-clear (m4, m5), guagua-clear, camera-clear (m1 to m3), end-clear (m6), steps-clear.
    A failing line names its numbers; with --suggest, the nearest value that would pass. */
 (async () => {
   const browser = await chromium.launch(fs.existsSync(CHROME) ? { executablePath: CHROME } : {});
@@ -136,16 +135,6 @@ function defs(E, G) {
 
   await page.goto(PAGE + '?tags=1');
   const G = await page.evaluate(() => ({ E: MURALLA.E, scene: PP_SCENE, W, H, S, OX, OY }));
-  // a second copy of the set with the cord left out: the pixels that differ are the cord's (the guagua is far behind it)
-  const pp = await browser.newPage();
-  pp.on('pageerror', e => errs.push(String(e)));
-  await pp.route(BASE + '/**', serve);
-  await pp.goto(PAGE + '?tags=1');
-  G.cord = await pp.evaluate(() => {
-    const was = Float32Array.from(bakedZ); FT.cord = () => {}; buildSet();
-    const cells = []; for (let i = 0; i < W * H; i++) if (was[i] !== bakedZ[i]) cells.push([i % W, Math.floor(i / W)]);
-    return cells;
-  });
   // the engine's own projection of (u, v, z): [sx, sy, depth, world x, world y]
   const proj = uvz => page.evaluate(a => a.map(([u, v, z]) => { const x = (u + v) / Math.SQRT2, y = (v - u) / Math.SQRT2, q = project(x, y, z); return [q.sx, q.sy, q.d, x, y]; }), uvz);
   const sheet = await make(G, proj);
@@ -278,7 +267,8 @@ async function make(G, proj) {
       uv: 'the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the parapet at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = ' + G.OX + ' + 26 u, and sy = OY + (v / 2 - z * COS) * S = ' + G.OY + ' + 13 v - 22.5 z (22.52 exactly); the picture holds u from ' + r2((0 - G.OX) / G.S) + ' to ' + r2((G.W - G.OX) / G.S),
       spot: 'a spot is a world point of the feet (z 0: the walk; z ' + SEAT_Z + ': the bench\'s top; z ' + TABLE_Z + ': the table\'s top; z ' + E.PARAPET + ': the parapet\'s top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot\'s box): the camera, the candle, the glass, the plate, the chair, the table\'s five things, the guagua and the two walking músicos have their bottom middle on the spot (the box [sx - floor(w / 2), sy - h, w, h]); a lantern HANGS: its top middle on the spot (the box [sx - 5, sy, 10, 12]). scale is the frog\'s: 1 everywhere',
       anchor: 'the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41) on (sx, sy), the spot being the bench\'s top; a small thing: see spot. Nobody is drawn turned: whoever is said to have his back to us (abuela at her camera, the guests at the steps) is drawn facing us',
-      clip: 'whoever is inside a sentry box (dentro_roja, dentro_azul) is drawn standing at the spot and CLIPPED to the door\'s box (things.puerta_roja.box, things.puerta_azul.box): only the pixels that fall inside it show; the door is drawn open (a dark inside) under him. He casts no shadow',
+      inside: 'whoever is inside a sentry box (dentro_roja, dentro_azul) is drawn from the HEAD down: the top of his sprite (its first drawn row) ' + INSIDE_TOP + ' px under the top of the door\'s box (things.puerta_roja.box, things.puerta_azul.box: the top row of the box + ' + INSIDE_TOP + '), his middle column on the spot\'s column, and CLIPPED to the door\'s box: only the pixels that fall inside it show, so his legs are cut by the box\'s bottom (the spot, the door\'s foot, is only where he would stand). His head (the top 14 rows of the sprite) is whole inside the door. The door is drawn open (a dark inside) under him. He casts no shadow. His depth is that of the plane through the spot (a row of the figure has the depth of the same row of a figure standing on the spot)',
+      cord: 'the lanterns\' cord is a SPRITE (a decor layer, sheet.decor.cuerda), not part of the set: a 1 px line of colour ' + JSON.stringify(CORD_COLOUR) + ' from u ' + E.CORD.u0 + ' to ' + E.CORD.u1 + ' at v ' + E.CORD.v + ', z ' + E.CORD.z + ' minus sin(pi (u - u0) / (u1 - u0)) * ' + E.CORD.sag + ' (the three lanterns hang from it at CORD.at), one pixel per 1/26 u at the engine\'s plot rounding (sx | 0, sy | 0). It is drawn BEHIND every person and every thing, and behind every pixel the set bakes: its depth is the far depth of the sky (decor.cuerda.depth), so it never covers a head, a lantern or the guagua (it is not hidden by anything but is covered by everything)',
       far: farNote,
       view: 'one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction',
       depth: 'a spot\'s depth is the engine\'s d of its world point; front.plane turns it into the depth of each row of a character',
@@ -290,6 +280,7 @@ async function make(G, proj) {
       note: 'the geometry (and so the depth) is the same in both states: the sheet\'s numbers are read from the set with hora noche. The lanterns, the candle, the camera, the guagua and everything on the table are sprites',
     },
     things,
+    decor: { cuerda: { sprite: true, u0: E.CORD.u0, u1: E.CORD.u1, v: E.CORD.v, z: E.CORD.z, sag: E.CORD.sag, at: E.CORD.at, colour: CORD_COLOUR, depth: -50, what: 'the lanterns\' cord: a 1 px line, a sprite of the far depth of the sky (rules.cord): behind every person, every thing and every pixel the set bakes' } },
     spots,
     groups: {
       centro: ['centro1', 'centro2', 'centro3', 'centro4', 'centro5', 'centro6', 'centro7'], banco: ['banco1', 'banco2', 'banco3', 'banco4'], baile: ['baile1', 'baile2', 'baile3', 'baile4', 'baile5', 'baile6'], muro: ['muro1', 'muro2', 'muro3'],
@@ -298,8 +289,9 @@ async function make(G, proj) {
     },
     moves,
     notes: [
-      'every number of a spot is the orchestrator\'s (the p10-spec, "muralla"), given in (u, v, z); the parapet, the boxes, the cord, the bench, the table, the steps and the road are read from the set',
+      'every number of a spot is the orchestrator\'s (the p10-spec, "muralla" and the coordinator\'s later numbers: camara_abuela (-.75, 6.3, 0), pretil1 to pretil3 (-.5, .45, 1.4; v 1.66), pretil_coqui (2.25, 1.9, 0)), given in (u, v, z); the parapet, the boxes, the bench, the table, the steps and the road are read from the set; the cord is not in the set: it is a sprite (decor.cuerda, rules.cord) and hides nobody',
       'things: puerta_roja, puerta_azul (the two doors\' faces, from u BOX.u - .3 to + .3, z 0 to ' + DOOR_Z + ', on the boxes\' front face at v ' + doorV + '), banco (the bench\'s seat box) and escalera (the steps\' hole on the floor) are set things with a box; camara, silla, jugo, plato, vela, guitarra, sombrero, bolsa, caja, libro, guagua and farol1 to farol3 are sprites at the spots of the same name (silla at junto_mesa, guitarra to libro at mesa1 to mesa5); the people are sprites',
+      'whoever is inside a sentry box is drawn from the head down, clipped to the door\'s box (rules.inside; the preview draws Carmen so in moment 2); the door is open (a dark stand-in) under her',
       'the spec gives no name for the guagua going off (column 136), the two walking músicos (columns 172 and 177), nor for the place of the guagua\'s own column in a second moment: guagua_se_va, musico_lejos1 and musico_lejos2 are the make\'s names (open points)',
       'whoever sits on the bench (banco1 to banco4) is hung by the lap on the seat\'s top; the spot\'s sprite is a grown-up sitting; in the preview the two músicos of story 118 sit at banco2 and banco3 and a guest at banco1 in story 119',
       'the spec gives no sizes for the glass of juice\'s and plate\'s sprites other than 6 x 10 and 12 x 6, the chair 14 x 24, the table\'s five things 10 x 22, 12 x 8, 10 x 12, 12 x 10 and 10 x 8, the camera 12 x 22, the candle 8 x 16, the lantern 10 x 12 and the guagua 22 x 10: those are used; the preview\'s drawings of them are stand-ins',
@@ -353,23 +345,20 @@ async function checksAsync(sheet, G, probes, PV) {
   const x0 = V.wide.x0, key = (x, y) => y * G.W + x;
   const inside = (b, x, y) => x >= b[0] && x < b[0] + b[2] && y >= b[1] && y < b[1] + b[3];
   const add = (name, bad, okLine, failLines) => { const o = { name, ok: !bad.length, lines: bad.length ? [name + ': ' + failLines[0], ...failLines.slice(1)] : [name + ': ' + okLine] }; OUTS.push(o); return o; };
-  const cordCells = new Set(G.cord.map(c => key(c[0], c[1])));
-  const fixCord = ins => { if (CORD_OK) for (const l of ins.layers) for (const p of l.px) if (p[2] && cordCells.has(key(p[0], p[1]))) p[2] = 0; return ins; };
-  if (CORD_OK) { for (const m of MOMENTS) fixCord(PV.inspect[m]); const t = PV.try; PV.try = async (m, ov) => fixCord(await t(m, ov)); }
 
   // per pixel the shown pixels of every layer of a moment: key -> [{plane, i}]
   const planes = L => { const M = new Map(); L.forEach((l, i) => { for (const p of l.px) if (!p[2]) { const k = key(p[0], p[1]); if (!M.has(k)) M.set(k, []); M.get(k).push({ plane: p[3], i }); } }); return M; };
   // the pixels of layer t (its top `rows` rows only when given: [from, to)) covered by a nearer shown pixel of the layers `by` (indices; null: any other); who covers them
   const coverOf = (L, M, t, by, rows) => {
-    const l = L[t], top = l.px.length ? Math.min(...l.px.map(p => p[1])) : 0; let tot = 0, hid = 0, cov = 0, cord = 0; const who = {};
+    const l = L[t], top = l.px.length ? Math.min(...l.px.map(p => p[1])) : 0; let tot = 0, hid = 0, cov = 0; const who = {};
     for (const p of l.px) {
       if (rows && !(p[1] >= top + rows[0] && p[1] < top + rows[1])) continue;
-      tot++; if (p[2]) { hid++; if (cordCells.has(key(p[0], p[1]))) cord++; continue; }
+      tot++; if (p[2]) { hid++; continue; }
       let nearest = null;
       for (const b of M.get(key(p[0], p[1])) || []) if (b.i !== t && (!by || by.includes(b.i)) && b.plane > p[3] + EPS && (!nearest || b.plane > nearest.plane)) nearest = b;
       if (nearest) { cov++; const a = L[nearest.i].at; who[a] = (who[a] || 0) + 1; }
     }
-    return { tot, hid, cov, who, out: l.out, top, cord };
+    return { tot, hid, cov, who, out: l.out, top };
   };
   const whoTxt = c => Object.entries(c.who).map(([k, v]) => k + ' ' + v).join(', ');
   const shownIn = (L, i, box) => L[i].px.filter(p => !p[2] && inside(box, p[0], p[1])).length;
@@ -398,7 +387,7 @@ async function checksAsync(sheet, G, probes, PV) {
       if (l.group !== 'head') continue;
       const [a, b] = colsOf(S[l.at]), cutL = Math.max(0, o.x0 - a), cutR = Math.max(0, b - (o.x0 + 195)), c = coverOf(L, M, i, null, [0, HEAD_ROWS]);
       if (cutL || cutR || l.out) rec('heads-clear', [l.at], 'moment ' + m + ' ' + l.at + ': not whole in the window (' + (cutL + cutR) + ' px cut by the window, ' + l.out + ' px outside the picture)');
-      if (c.cov || c.hid) rec('heads-clear', [l.at, ...Object.keys(c.who)], 'moment ' + m + ' ' + l.at + ' ' + [l.sx, l.sy] + ': ' + (c.cov + c.hid) + ' of the ' + c.tot + ' px of his head (rows ' + c.top + ' to ' + (c.top + HEAD_ROWS - 1) + ') are not seen: ' + c.cov + ' covered by ' + (whoTxt(c) || 'nobody') + ', ' + c.hid + ' hidden by the set (' + c.cord + ' of them by the cord)');
+      if (c.cov || c.hid) rec('heads-clear', [l.at, ...Object.keys(c.who)], 'moment ' + m + ' ' + l.at + ' ' + [l.sx, l.sy] + ': ' + (c.cov + c.hid) + ' of the ' + c.tot + ' px of his head (rows ' + c.top + ' to ' + (c.top + HEAD_ROWS - 1) + ') are not seen: ' + c.cov + ' covered by ' + (whoTxt(c) || 'nobody') + ', ' + c.hid + ' hidden by the set');
     }
     // lanterns-clear: the lanterns are covered by nobody and not hidden by the set
     for (const [i, l] of L.entries()) {
@@ -415,12 +404,27 @@ async function checksAsync(sheet, G, probes, PV) {
       for (const [i, l] of L.entries()) if (l.clip) {
         const box = T[l.clip].box, off = l.px.filter(p => !inside(box, p[0], p[1])).length, hid = l.px.filter(p => p[2]).length;
         if (off || hid) rec('doors-clear', [l.at], 'moment ' + m + ': ' + l.at + ' inside ' + l.clip + ' is not clipped to its box [' + box + ']: ' + off + ' px outside it, ' + hid + ' hidden by the set');
+        const all = l.px.map(p => p[1]).concat(l.clippedPx.map(p => p[1])), top = Math.min(...all), cut = l.clippedPx.filter(p => p[1] < top + HEAD_ROWS).length;
+        if (top !== box[1] + INSIDE_TOP || cut) rec('doors-clear', [l.at], 'moment ' + m + ': ' + l.at + ' inside ' + l.clip + ': the top of his sprite is on row ' + top + ' (the rule: ' + (box[1] + INSIDE_TOP) + ', 2 px under the door\'s top ' + box[1] + '), ' + cut + ' px of his head (rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ') fall outside the door\'s box [' + box + ']');
       }
     }
-    // candle-clear (moment 4): the candle is covered by nobody and nothing of the set but the cord's own line hides it (the spec says "covered by nobody")
+    // camera-clear (moments 1, 2, 3): the camera is covered by nobody and not hidden by the set
+    if (m <= 3) {
+      const i = L.findIndex(l => l.group === 'camara');
+      if (i >= 0) { const c = coverOf(L, M, i, null); if (c.cov || c.hid || c.out) rec('camera-clear', [L[i].at, ...Object.keys(c.who)], 'moment ' + m + ' camara ' + [L[i].sx, L[i].sy] + ': ' + c.cov + ' of its ' + c.tot + ' px covered by ' + (whoTxt(c) || 'nobody') + ', ' + c.hid + ' hidden by the set, ' + c.out + ' outside the picture'); }
+    }
+    // end-clear (moment 6): the guest on the bench has his head covered by nobody, and no grown-up at the parapet covers the guagua's box
+    if (m === 6) {
+      const g = L.findIndex(l => l.group === 'guagua');
+      for (const [i, l] of L.entries()) {
+        if (l.group === 'head') { const c = coverOf(L, M, i, null, [0, HEAD_ROWS]); if (c.cov || c.hid) rec('end-clear', [l.at, ...Object.keys(c.who)], 'moment ' + m + ' ' + l.at + ': ' + c.cov + ' of the ' + c.tot + ' px of the head of the guest on the bench covered by ' + (whoTxt(c) || 'nobody') + ', ' + c.hid + ' hidden by the set'); }
+        if (g >= 0 && l.who === 'adulto' && /^pretil/.test(l.at)) { const n = shownIn(L, i, boxOfLayer(L[g])); if (n) rec('end-clear', [l.at, L[g].at], 'moment ' + m + ': ' + l.at + ' (a grown-up at the parapet) has ' + n + ' px in the guagua\'s box [' + boxOfLayer(L[g]) + ']'); }
+      }
+    }
+    // candle-clear (moment 4): the candle is covered by nobody (and not hidden by the set: it stands on a merlon of the parapet)
     if (m === 4) {
       const i = L.findIndex(l => l.group === 'vela');
-      if (i >= 0) { const c = coverOf(L, M, i, null); if (c.cov || c.out || c.hid - c.cord) rec('candle-clear', [L[i].at, ...Object.keys(c.who)], 'moment ' + m + ' vela ' + [L[i].sx, L[i].sy] + ': ' + c.cov + ' of its ' + c.tot + ' px covered by ' + (whoTxt(c) || 'nobody') + ' (' + c.hid + ' hidden by the set, ' + c.cord + ' of them by the cord), ' + c.out + ' outside the picture'); }
+      if (i >= 0) { const c = coverOf(L, M, i, null); if (c.cov || c.out || c.hid) rec('candle-clear', [L[i].at, ...Object.keys(c.who)], 'moment ' + m + ' vela ' + [L[i].sx, L[i].sy] + ': ' + c.cov + ' of its ' + c.tot + ' px covered by ' + (whoTxt(c) || 'nobody') + ', ' + c.hid + ' hidden by the set, ' + c.out + ' outside the picture'); }
     }
     // table-clear (moments 4 and 5): the things on the table (and the chair) are covered by nobody, and the frog covers none
     if (m === 4 || m === 5) {
@@ -438,7 +442,7 @@ async function checksAsync(sheet, G, probes, PV) {
       if (i >= 0) {
         const c = coverOf(L, M, i, null), box = boxOfLayer(L[i]), others = [];
         for (const [j, l] of L.entries()) if (j !== i) { const n = shownIn(L, j, box); if (n) others.push(l.at + ' ' + n); }
-        if (c.cov || c.hid || c.out || others.length) rec('guagua-clear', [L[i].at, ...new Set([...Object.keys(c.who), ...others.map(s => s.split(' ')[0])])], 'moment ' + m + ' ' + L[i].at + ' ' + [L[i].sx, L[i].sy] + ' box [' + box + ']: ' + c.cov + ' of its ' + c.tot + ' px covered by ' + (whoTxt(c) || 'nobody') + '; other sprites have shown pixels in its box: ' + (others.join(', ') || 'none') + '; ' + c.hid + ' px hidden by the set (' + c.cord + ' of them by the cord, ' + (c.hid - c.cord) + ' by the rest of the set), ' + c.out + ' outside the picture');
+        if (c.cov || c.hid || c.out || others.length) rec('guagua-clear', [L[i].at, ...new Set([...Object.keys(c.who), ...others.map(s => s.split(' ')[0])])], 'moment ' + m + ' ' + L[i].at + ' ' + [L[i].sx, L[i].sy] + ' box [' + box + ']: ' + c.cov + ' of its ' + c.tot + ' px covered by ' + (whoTxt(c) || 'nobody') + '; other sprites have shown pixels in its box: ' + (others.join(', ') || 'none') + '; ' + c.hid + ' px hidden by the set, ' + c.out + ' outside the picture');
       }
     }
     return R;
@@ -585,11 +589,6 @@ async function checksAsync(sheet, G, probes, PV) {
     for (const m of MOMENTS) { const L = PV.inspect[m].layers, M = planes(L); for (const [i, l] of L.entries()) { if (l.group !== 'head') continue; const c = coverOf(L, M, i, null, [0, HEAD_ROWS]); lines.push('m' + m + ' ' + l.at + ' ' + [l.sx, l.sy] + ' (' + l.s + '): head rows ' + c.top + ' to ' + (c.top + HEAD_ROWS - 1) + ': ' + c.tot + ' px, ' + c.cov + ' covered' + (c.cov ? ' by ' + whoTxt(c) : '') + ', ' + c.hid + ' hidden by the set'); } }
     const o = add('heads-clear', bad, 'everyone who sits (' + MOMENTS.map(m => 'm' + m + ': ' + (PV.inspect[m].layers.filter(l => l.group === 'head').map(l => l.at).join(', ') || 'nobody')).join('; ') + ') is whole in the window and his head (the top ' + HEAD_ROWS + ' rows) is covered by nobody and by nothing: ' + lines.length + ' heads, 0 px covered, 0 hidden by the set', [bad.length + ' problem(s) with the people who sit:'].concat(bad.map(b => '  ' + b.text)));
     o.lines.push('       info, not a check: ' + lines.join('; '));
-    if (bad.length) {
-      let cov = 0, hid = 0, cord = 0;
-      for (const m of MOMENTS) { const L = PV.inspect[m].layers, M = planes(L); for (const [i, l] of L.entries()) if (l.group === 'head') { const c = coverOf(L, M, i, null, [0, HEAD_ROWS]); cov += c.cov; hid += c.hid; cord += c.cord; } }
-      o.lines.push('       OPEN POINT: ' + cov + ' px of the heads are covered by a person and ' + hid + ' are hidden by the set, ' + cord + ' of those by the cord (a 1 px line of the set at v ' + E.CORD.v + ', z ' + r2(E.CORD.z - E.CORD.sag) + ' to ' + E.CORD.z + ': nearer than the bench at v ' + E.BENCH.v + ', it crosses the head of everyone who sits anywhere under it: rows ' + (() => { const rs = G.cord.filter(c => c[0] >= 55 && c[0] <= 185).map(c => c[1]); return Math.min(...rs) + ' to ' + Math.max(...rs); })() + ' against heads at rows 38 to 55); no place on the bench passes while the cord counts. Read with --cord-ok (the cord\'s pixels hide nothing) the check ' + (hid === cord && cov === 0 ? 'passes' : 'still fails'));
-    }
     await hint(o, bad);
   }
 
@@ -606,16 +605,20 @@ async function checksAsync(sheet, G, probes, PV) {
     const bad = recOf('doors-clear'), lines = [];
     for (const m of [2, 3]) {
       const L = PV.inspect[m].layers, clipped = L.filter(l => l.clip);
-      lines.push('m' + m + ': ' + (clipped.length ? clipped.map(l => l.at + ' (' + l.s + ') is inside ' + l.clip + ' [' + T[l.clip].box + '], ' + l.px.length + ' px shown, ' + l.clipped + ' px cut off by the clip, ' + l.px.filter(p => !inside(T[l.clip].box, p[0], p[1])).length + ' px outside the box').join('; ') : 'nobody inside; both doors\' boxes under nobody'));
+      lines.push('m' + m + ': ' + (clipped.length ? clipped.map(l => { const all = l.px.map(p => p[1]).concat(l.clippedPx.map(p => p[1])), top = Math.min(...all); return l.at + ' (' + l.s + ') is inside ' + l.clip + ' [' + T[l.clip].box + '], drawn from the head down (the top of his sprite on row ' + top + ', the door\'s top ' + T[l.clip].box[1] + ' + ' + INSIDE_TOP + '), his head rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ': ' + l.clippedPx.filter(p => p[1] < top + HEAD_ROWS).length + ' px outside the door; ' + l.px.length + ' px shown, ' + l.clipped + ' px cut off by the clip, ' + l.px.filter(p => !inside(T[l.clip].box, p[0], p[1])).length + ' px outside the box'; }).join('; ') : 'nobody inside; both doors\' boxes under nobody'));
     }
-    const o = add('doors-clear', bad, 'in moments 2 and 3 the two doors\' boxes (puerta_roja [' + T.puerta_roja.box + '], puerta_azul [' + T.puerta_azul.box + ']) are covered by nobody, and whoever is inside is clipped to the door: ' + lines.join('; '), [bad.length + ' problem(s):'].concat(bad.map(b => '  ' + b.text)));
+    const o = add('doors-clear', bad, 'in moments 2 and 3 the two doors\' boxes (puerta_roja [' + T.puerta_roja.box + '], puerta_azul [' + T.puerta_azul.box + ']) are covered by nobody, and whoever is inside is drawn from the head down, clipped to the door, his head whole inside it: ' + lines.join('; '), [bad.length + ' problem(s):'].concat(bad.map(b => '  ' + b.text)));
+    if (bad.some(b => /fall outside/.test(b.text))) {
+      const l = PV.inspect[2].layers.find(q => q.clip), box = T[l.clip].box, top = Math.min(...l.px.map(p => p[1]).concat(l.clippedPx.map(p => p[1]))), cut = l.clippedPx.filter(p => p[1] < top + HEAD_ROWS), cols = cut.map(p => p[0]), rows = cut.map(p => p[1]), all = l.px.concat(l.clippedPx).filter(p => p[1] < top + HEAD_ROWS).map(p => p[0]);
+      o.lines.push('       OPEN POINT: the head of ' + l.s + ' (rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ') is ' + (Math.max(...all) - Math.min(...all) + 1) + ' px wide (columns ' + Math.min(...all) + ' to ' + Math.max(...all) + ': her plaits and bows hang beside the face from row ' + Math.min(...rows) + ') and the door is ' + box[2] + ' px wide (columns ' + box[0] + ' to ' + (box[0] + box[2] - 1) + '): ' + cut.length + ' px of the head are cut, in columns ' + [...new Set(cols)].sort((a, b) => a - b).join(', ') + '. Her sprite is centred on the door; no place for the spot passes (u moves one side out, v does not change the width). Options: a wider door in the set, a narrower head, or the head test on the face only');
+    }
     await hint(o, bad);
   }
 
   // 10. candle-clear (moment 4): the candle is covered by nobody (the músicos' heads: heads-clear)
   {
     const bad = recOf('candle-clear'), L = PV.inspect[4].layers, M = planes(L), i = L.findIndex(l => l.group === 'vela'), c = coverOf(L, M, i, null);
-    const o = add('candle-clear', bad, 'in moment 4 the candle (vela ' + [L[i].sx, L[i].sy] + ' box [' + S.vela.box + ']) is covered by nobody: ' + c.tot + ' px, ' + c.cov + ' covered, ' + c.hid + ' hidden by the set (' + c.cord + ' of them by the cord\'s line; the spec says "covered by nobody": nothing else of the set hides it), on a merlon of the parapet; the músicos\' heads are heads-clear', [bad.length + ' problem(s):'].concat(bad.map(b => '  ' + b.text)));
+    const o = add('candle-clear', bad, 'in moment 4 the candle (vela ' + [L[i].sx, L[i].sy] + ' box [' + S.vela.box + ']) is covered by nobody: ' + c.tot + ' px, ' + c.cov + ' covered, ' + c.hid + ' hidden by the set, on a merlon of the parapet; the músicos\' heads are heads-clear', [bad.length + ' problem(s):'].concat(bad.map(b => '  ' + b.text)));
     await hint(o, bad);
   }
 
@@ -633,10 +636,28 @@ async function checksAsync(sheet, G, probes, PV) {
 
   // 12. guagua-clear (moments 5 and 6)
   {
-    const bad = recOf('guagua-clear'), lines = []; let rest = 0;                                                  // rest: what is left to fail when the cord is not counted
-    for (const m of [5, 6]) { const L = PV.inspect[m].layers, M = planes(L), i = L.findIndex(l => l.group === 'guagua'), c = coverOf(L, M, i, null); rest += c.cov + c.hid - c.cord + c.out + L.reduce((a, l, j) => a + (j === i ? 0 : shownIn(L, j, boxOfLayer(L[i]))), 0); lines.push('m' + m + ' ' + L[i].at + ' ' + [L[i].sx, L[i].sy] + ' box [' + S[L[i].at].box + ']: ' + c.tot + ' px, ' + c.cov + ' covered, ' + c.hid + ' hidden by the set (' + c.cord + ' by the cord)'); }
-    const o = add('guagua-clear', bad, 'the guagua\'s box is covered by nobody and hidden by nothing of the set in moments 5 and 6: ' + lines.join('; '), [bad.length + ' problem(s):'].concat(bad.map(b => '  ' + b.text)));
-    if (bad.length) o.lines.push('       OPEN POINT: ' + lines.join('; ') + '. The cord (a 1 px line of the set at v ' + E.CORD.v + ', nearer than the road) crosses the guagua\'s box in the rows ' + (() => { const rs = G.cord.filter(c => { const b = S.guagua.box; return c[0] >= b[0] && c[0] < b[0] + b[2]; }).map(c => c[1]); return rs.length ? Math.min(...rs) + ' to ' + Math.max(...rs) : 'none'; })() + ' and hides one pixel of it per column wherever the guagua stands on the road (the road, from column ' + E.LAND.x0 + ', lies under the cord, which runs from column ' + Math.round(G.OX + E.CORD.u0 * G.S) + ' to ' + Math.round(G.OX + E.CORD.u1 * G.S) + ', at every column of it): no column passes "hidden by nothing of the set" while the cord counts. Read with --cord-ok it ' + (rest === 0 ? 'passes' : 'still fails'));
+    const bad = recOf('guagua-clear'), lines = [];
+    for (const m of [5, 6]) { const L = PV.inspect[m].layers, M = planes(L), i = L.findIndex(l => l.group === 'guagua'), c = coverOf(L, M, i, null); lines.push('m' + m + ' ' + L[i].at + ' ' + [L[i].sx, L[i].sy] + ' box [' + boxOfLayer(L[i]) + ']: ' + c.tot + ' px, ' + c.cov + ' covered, ' + c.hid + ' hidden by the set, shown pixels of others in its box: ' + (L.map((l, j) => [l, j]).filter(([, j]) => j !== i).map(([l, j]) => [l.at, shownIn(L, j, boxOfLayer(L[i]))]).filter(q => q[1]).map(q => q.join(' ')).join(', ') || 'none')); }
+    const o = add('guagua-clear', bad, 'the guagua\'s box is covered by nobody and hidden by nothing of the set in moments 5 and 6 (the cord is a sprite behind it): ' + lines.join('; '), [bad.length + ' problem(s):'].concat(bad.map(b => '  ' + b.text)));
+    await hint(o, bad);
+  }
+
+  // 12b. camera-clear (moments 1, 2, 3): abuela's camera is covered by nobody
+  {
+    const bad = recOf('camera-clear'), lines = [];
+    for (const m of [1, 2, 3]) { const L = PV.inspect[m].layers, M = planes(L), i = L.findIndex(l => l.group === 'camara'), c = coverOf(L, M, i, null); lines.push('m' + m + ' camara ' + [L[i].sx, L[i].sy] + ' box [' + boxOfLayer(L[i]) + ']: ' + c.tot + ' px, ' + c.cov + ' covered' + (c.cov ? ' by ' + whoTxt(c) : '') + ', ' + c.hid + ' hidden by the set'); }
+    const o = add('camera-clear', bad, 'the camera is covered by nobody and hidden by nothing of the set in moments 1, 2 and 3: ' + lines.join('; '), [bad.length + ' problem(s):'].concat(bad.map(b => '  ' + b.text)));
+    await hint(o, bad);
+  }
+
+  // 12c. end-clear (moment 6): the family stands clear of the guest on the bench (his head is covered by nobody) and no grown-up at the parapet covers the guagua's box
+  {
+    const bad = recOf('end-clear'), L = PV.inspect[6].layers, M = planes(L), parts = [];
+    for (const [i, l] of L.entries()) {
+      if (l.group === 'head') { const c = coverOf(L, M, i, null, [0, HEAD_ROWS]); parts.push(l.at + '\'s head (rows ' + c.top + ' to ' + (c.top + HEAD_ROWS - 1) + '): ' + c.tot + ' px, ' + c.cov + ' covered' + (c.cov ? ' by ' + whoTxt(c) : '') + ', ' + c.hid + ' hidden by the set'); }
+      if (l.who === 'adulto' && /^pretil/.test(l.at)) { const g = L.findIndex(q => q.group === 'guagua'); parts.push(l.at + ' (a grown-up) has ' + shownIn(L, i, boxOfLayer(L[g])) + ' px in the guagua\'s box [' + boxOfLayer(L[g]) + ']'); }
+    }
+    const o = add('end-clear', bad, 'in moment 6 the guest\'s head on the bench is covered by nobody and no grown-up at the parapet covers the guagua\'s box: ' + parts.join('; '), [bad.length + ' problem(s):'].concat(bad.map(b => '  ' + b.text)));
     await hint(o, bad);
   }
 
