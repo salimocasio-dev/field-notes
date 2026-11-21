@@ -1,0 +1,1304 @@
+{
+ "scene": "esquina",
+ "made": "node docs/proyecto/pixel/esquina-sheet-make.js, from esquina-set.html (window.ESQUINA.E, calle-base.js) and the design of La esquina (the orchestrator's p5-spec). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 30,
+  "originY": -8
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY (here OX 150, OY 100). That is sx = OX + (x - y) * 18.38, sy = OY + (x + y) * 9.19 - z * 22.5. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)] (clipped to the picture where the thing says so). screen is the projection rounded to whole pixels. The colmado's front wall is y = 0 (it faces +y); its pavement runs y 0 to 1.6, the street A from y 1.8 to 5.8 (lanes at y 2.8 far, 4.8 near), the near pavement from y 6 to 7.6",
+  "spot": "a spot is a world point of the feet (z 0: the pavement or the street; z .3: the top of the obrero's bucket) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere. A thing that drives: its spot is the middle of its floor",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty: the lowest drawn row is 54); abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy); the obrero sitting on his bucket (obrero.cubo): the sitting persona (mkPersona with sent = 1), column 24 and the row of his hips, 38, on (sx, sy), the spot being the bucket's top (as abuela sitting in El mostrador: lap row on the spot); the bebé on an arm is a part of the carrier's sprite; a cone, the bucket, a bicycle: its bottom middle on the point; a car, a guagua: the pixels the set draws for it (its autos= parameter), the spot being the middle of its floor (spots[name].drawn is their screen box)",
+  "view": "a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = clamp(round(sx - 98), 0, 44), sx the projection of its world point. Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character. The cars and the guagua are baked into the set (autos=), so the same rule puts them in front of a person standing behind them",
+  "nearest": "the make's lines \"nearest passing\": where a number of the spec fails a check, the least move of one spot along x or y (steps of .01, up to 3, either way, staying on its own strip: the colmado's pavement y .1 to 1.6, the street y 1.8 to 5.8, the near pavement y 5.8 to 7.6) that passes it. The spec's numbers are kept in the sheet",
+  "widths": "the sprite boxes the checks use: the frog 32 wide, a grown-up 24, a child 24 (the spec; the dog's 28 is not used here), the feet's spot in the middle of the bottom edge; a car or a guagua is the pixels the set draws; a cone, a bicycle, a lamp, the button: the point only (the spec gives no size)"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["manana", "tarde"]
+   },
+   "obra": {
+    "values": [0, 1],
+    "note": "the dug-up far lane with its cones, no stripes, and the two squares of cement in the near pavement (story 50)"
+   },
+   "puerta": {
+    "values": ["shut", "open"],
+    "note": "the colmado's door; the set's default is shut"
+   },
+   "autos": {
+    "note": "for the readers' renders and the preview only: \"kind@x,y,heading\" joined by \";\" (carro, azul, guagua; i = to -x, d = to +x). In the game things that drive are sprites and the baked sets have none"
+   },
+   "t": {
+    "note": "wind time, 0 for the reference"
+   }
+  },
+  "key": "hora + obra + puerta, e.g. \"manana-0-shut\"",
+  "baked": ["?hora=manana&obra=0&puerta=shut", "?hora=manana&obra=0&puerta=open", "?hora=manana&obra=1&puerta=shut", "?hora=manana&obra=1&puerta=open", "?hora=tarde&obra=0&puerta=shut", "?hora=tarde&obra=0&puerta=open", "?hora=tarde&obra=1&puerta=shut", "?hora=tarde&obra=1&puerta=open"]
+ },
+ "things": {
+  "colmado": {
+   "set": true,
+   "world": [-10, -9, 0, 0, 0, 3.5],
+   "box": [0, 0, 240, 100],
+   "what": "the building: the screen box of the pixels the set draws for the parts colmado, puerta and vitrina (its front wall, its top, the side wall, the door, the shop window and its awning); its world box is the block x -10 to 0, y -9 to 0, up to E.WH. It runs off the picture at the left and at the top: a touch on the door (puerta) wins over it"
+  },
+  "puerta": {
+   "set": true,
+   "world": [-2.5, 0, 0, -1.2, 0.02, 2.55],
+   "box": [103, 19, 25, 71],
+   "what": "the colmado's door, a poke (the doorway, in either state of the door)"
+  },
+  "boton": {
+   "set": true,
+   "world": [1.54, 1.52, 0.62, 1.78, 1.66, 0.98],
+   "box": [147, 106, 8, 12],
+   "what": "the button box on the pole (the yellow box with the red button, the pole's box(x - .12, y + .02, .62, x + .12, y + .16, .98) of calle-base.js trafficLight): where he touches to press"
+  },
+  "calle": {
+   "set": true,
+   "world": [-9, 1.8, 0, 9, 5.8, 0],
+   "box": [0, 33, 240, 183],
+   "what": "the street's asphalt, the whole of street A from the colmado's kerb to the near kerb, as far as the set builds it (x -9 to 9); with obra = 1 the hole is part of it"
+  },
+  "esquina": {
+   "set": true,
+   "world": [0, 0, 0, 1.6, 1.6, 0],
+   "box": [120, 100, 60, 30],
+   "what": "the corner: the colmado's pavement from x 0 to 1.6 (y 0 to 1.6), where the pole stands"
+  },
+  "cemento": {
+   "set": true,
+   "world": [1.2, 6.15, 0, 2.2, 7.05, 0],
+   "box": [42, 167, 36, 19],
+   "what": "the wet square of cement (obra = 1), the one with three cones round it",
+   "when": "obra = 1"
+  },
+  "gente": "sprite",
+  "carro": "sprite",
+  "azul": "sprite",
+  "guagua": "sprite",
+  "bicicleta": "sprite",
+  "abuela": "sprite",
+  "bebe": "sprite",
+  "mama": "sprite",
+  "papa": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "senora": "sprite",
+  "senor": "sprite",
+  "pepe": "sprite",
+  "obrero": "sprite",
+  "coqui": "sprite"
+ },
+ "spots": {
+  "puerta": {
+   "world": [-1.85, 0.35, 0],
+   "screen": [110, 86],
+   "depth": -0.9186,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "at the colmado's door, in front of it: abuela coming out (story 49 opening)"
+  },
+  "pepe.puerta": {
+   "world": [-1.3, 0.45, 0],
+   "screen": [118, 92],
+   "depth": -0.5205,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "don Pepe at the colmado's door with his broom (story 49)"
+  },
+  "esquina": {
+   "world": [1, 1.1, 0],
+   "screen": [148, 119],
+   "depth": 1.286,
+   "scale": 1,
+   "kind": "frog",
+   "who": "coqui",
+   "what": "the frog at the traffic light's pole (story 49); when the group of four stands at cola, he stands at esquina2 instead"
+  },
+  "boton": {
+   "world": [1.66, 1.665, 0.8],
+   "screen": [150, 113],
+   "depth": 2.4361,
+   "scale": 1,
+   "kind": "point",
+   "what": "the button on the pole: E.LUZ.button (the red disc on the yellow box, at frog height)"
+  },
+  "bordillo1": {
+   "world": [0.4, 1.35, 0],
+   "screen": [133, 116],
+   "depth": 1.0717,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "one of the two people at the kerb, at the crossing (story 49 game: la señora, el señor, Luis or Carmen)"
+  },
+  "bordillo2": {
+   "world": [1.15, 1.4, 0],
+   "screen": [145, 123],
+   "depth": 1.5615,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "the other of the two people at the kerb"
+  },
+  "cola1": {
+   "world": [-0.9, 1.3, 0],
+   "screen": [110, 104],
+   "depth": 0.2449,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "the group of the opening of story 49, place 1 of 4 (la señora, el señor, Carmen, Luis; alternatives of bordillo1, bordillo2 and esquina)"
+  },
+  "cola2": {
+   "world": [-0.3, 1.35, 0],
+   "screen": [120, 110],
+   "depth": 0.643,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "the group of the opening of story 49, place 2 of 4 (la señora, el señor, Carmen, Luis; alternatives of bordillo1, bordillo2 and esquina)"
+  },
+  "cola3": {
+   "world": [0.35, 1.35, 0],
+   "screen": [132, 116],
+   "depth": 1.041,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "the group of the opening of story 49, place 3 of 4 (la señora, el señor, Carmen, Luis; alternatives of bordillo1, bordillo2 and esquina)"
+  },
+  "cola4": {
+   "world": [0.95, 1.4, 0],
+   "screen": [142, 122],
+   "depth": 1.4391,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "the group of the opening of story 49, place 4 of 4 (la señora, el señor, Carmen, Luis; alternatives of bordillo1, bordillo2 and esquina)"
+  },
+  "esquina2": {
+   "world": [1.75, 0.9, 0],
+   "screen": [166, 124],
+   "depth": 1.6228,
+   "scale": 1,
+   "kind": "frog",
+   "who": "coqui",
+   "what": "the frog right of the pole when the group of four stands at cola (an alternative of esquina)"
+  },
+  "vuelta": {
+   "world": [0.8, -2.2, 0],
+   "screen": [205, 87],
+   "depth": -0.8573,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "where somebody who goes round the corner leaves the picture; he walks along the pavement to (0.8, 0.2, 0), then up the side wall to here",
+   "path": [
+    {
+     "world": [0.8, 0.2, 0],
+     "screen": [161, 109]
+    },
+    {
+     "world": [0.8, -2.2, 0],
+     "screen": [205, 87]
+    }
+   ]
+  },
+  "enfrente": {
+   "world": [0.45, 6.7, 0],
+   "screen": [35, 166],
+   "depth": 4.3785,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "mamá, with the bebé on her arm, on the near pavement at the crossing's near end"
+  },
+  "cruce_fin": {
+   "world": [1.1, 6.35, 0],
+   "screen": [53, 168],
+   "depth": 4.5622,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "where somebody who crossed stops and waves"
+  },
+  "abuela.enfrente": {
+   "world": [1.5, 6.9, 0],
+   "screen": [51, 177],
+   "depth": 5.1439,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "abuela after they cross (the ending of story 49)"
+  },
+  "coqui.enfrente": {
+   "world": [2.2, 6.6, 0],
+   "screen": [69, 181],
+   "depth": 5.3889,
+   "scale": 1,
+   "kind": "frog",
+   "who": "coqui",
+   "what": "the frog after they cross (the ending of story 49)"
+  },
+  "abuela.acera": {
+   "world": [3, 6.9, 0],
+   "screen": [78, 191],
+   "depth": 6.0625,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "story 48: abuela on the near pavement, with the bebé on her arm"
+  },
+  "coqui.acera": {
+   "world": [3.9, 6.6, 0],
+   "screen": [100, 197],
+   "depth": 6.4299,
+   "scale": 1,
+   "kind": "frog",
+   "who": "coqui",
+   "what": "story 48: the frog on the near pavement"
+  },
+  "luis.bici": {
+   "world": [5, 7, 0],
+   "screen": [113, 210],
+   "depth": 7.3485,
+   "scale": 1,
+   "kind": "person",
+   "who": "nino",
+   "what": "story 48: Luis on his bicycle, then standing beside it"
+  },
+  "junto": {
+   "world": [3.4, 6.5, 0],
+   "screen": [93, 191],
+   "depth": 6.0625,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "where somebody who got out of the car or the guagua walks to, on the near pavement (mamá, papá)"
+  },
+  "papa.acera": {
+   "world": [4.3, 6.9, 0],
+   "screen": [102, 203],
+   "depth": 6.8586,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "papá on the near pavement in the ending of story 48 (the spec gives the point without a name: this name is the builder's)"
+  },
+  "para_carro": {
+   "world": [3.5, 4.8, 0],
+   "screen": [126, 176],
+   "depth": 5.0827,
+   "scale": 1,
+   "kind": "vehicle",
+   "what": "where the car stops, the middle of its floor, in the near lane, heading to -x (its front at x 2.4, at the stop line x 2.2)",
+   "sprite": "carro",
+   "heading": "i",
+   "drawn": [95, 139, 156, 187],
+   "drawn_px": 1971
+  },
+  "para_guagua": {
+   "world": [4.6, 2.8, 0],
+   "screen": [183, 168],
+   "depth": 4.5316,
+   "scale": 1,
+   "kind": "vehicle",
+   "what": "where the guagua stops, the middle of its floor, in the far lane, heading to -x (its front at x 2.4)",
+   "sprite": "guagua",
+   "heading": "i",
+   "drawn": [130, 93, 235, 187],
+   "drawn_px": 6592
+  },
+  "sale_carro": {
+   "world": [3.5, 5.75, 0],
+   "screen": [109, 185],
+   "depth": 5.6644,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "where somebody gets out of the car (mamá, papá), on the street at its near side",
+   "street": true
+  },
+  "sale_guagua": {
+   "world": [3.15, 3.85, 0],
+   "screen": [137, 164],
+   "depth": 4.2866,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "where somebody gets out of the guagua (its front door), on the street at its near side",
+   "street": true
+  },
+  "toca_carro": {
+   "world": [4, 5.85, 0],
+   "screen": [116, 191],
+   "depth": 6.0319,
+   "scale": 1,
+   "kind": "frog",
+   "who": "coqui",
+   "what": "the frog knocks at the car, on the kerb stone beside the near lane"
+  },
+  "toca_guagua": {
+   "world": [3, 3.95, 0],
+   "screen": [133, 164],
+   "depth": 4.256,
+   "scale": 1,
+   "kind": "frog",
+   "who": "coqui",
+   "what": "the frog knocks at the guagua, on the street at its near side",
+   "street": true
+  },
+  "carril_a.carro": {
+   "world": [-1.3, 4.8, 0],
+   "screen": [38, 132],
+   "depth": 2.1433,
+   "scale": 1,
+   "kind": "vehicle",
+   "what": "carril_a, the left end of the one lane (the near lane): a car's middle, heading to +x; the guagua never waits here",
+   "sprite": "azul",
+   "heading": "d",
+   "drawn": [7, 94, 68, 143],
+   "drawn_px": 1994
+  },
+  "carril_a.bici": {
+   "world": [-0.8, 4.8, 0],
+   "screen": [47, 137],
+   "depth": 2.4495,
+   "scale": 1,
+   "kind": "vehicle",
+   "what": "carril_a: a bicycle's middle, heading to +x (an alternative of the car; the set has no bicycle: a sprite)",
+   "sprite": "bici",
+   "heading": "d"
+  },
+  "carril_b.carro": {
+   "world": [5.5, 4.8, 0],
+   "screen": [163, 195],
+   "depth": 6.3074,
+   "scale": 1,
+   "kind": "vehicle",
+   "what": "carril_b, the right end of the one lane: a car's middle, heading to -x",
+   "sprite": "carro",
+   "heading": "i",
+   "drawn": [132, 158, 193, 205],
+   "drawn_px": 1961
+  },
+  "carril_b.guagua": {
+   "world": [6.6, 4.8, 0],
+   "screen": [183, 205],
+   "depth": 6.981,
+   "scale": 1,
+   "kind": "vehicle",
+   "what": "carril_b: the guagua's middle, heading to -x",
+   "sprite": "guagua",
+   "heading": "i",
+   "drawn": [130, 130, 235, 224],
+   "drawn_px": 6581
+  },
+  "carril_b.bici": {
+   "world": [4.9, 4.8, 0],
+   "screen": [152, 189],
+   "depth": 5.94,
+   "scale": 1,
+   "kind": "vehicle",
+   "what": "carril_b: a bicycle's middle, heading to -x (the set has no bicycle: a sprite)",
+   "sprite": "bici",
+   "heading": "i"
+  },
+  "obrero.paleta": {
+   "world": [3.2, 3.6, 0],
+   "screen": [143, 163],
+   "depth": 4.1641,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "the obrero at the lane with his paddle, on the street at the hole's right end",
+   "street": true
+  },
+  "obrero.cubo": {
+   "world": [3.2, 6.6, 0.3],
+   "screen": [87, 183],
+   "depth": 6.1512,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "the obrero sitting on his bucket (a sprite; its top is z .3); the sitting sprite is anchored by his lap row on the spot's row (rules.anchor)",
+   "seated": true
+  },
+  "coqui.cerca": {
+   "world": [2.55, 6.3, 0],
+   "screen": [81, 181],
+   "depth": 5.4195,
+   "scale": 1,
+   "kind": "frog",
+   "who": "coqui",
+   "what": "story 50: the frog near the cement, on the pavement right of the wet square"
+  },
+  "luis.obra": {
+   "world": [0.35, 7.3, 0],
+   "screen": [22, 170],
+   "depth": 4.6846,
+   "scale": 1,
+   "kind": "person",
+   "who": "nino",
+   "what": "story 50: Luis, in front of the old dry square"
+  },
+  "coqui.cemento": {
+   "world": [1.7, 6.6, 0],
+   "screen": [60, 176],
+   "depth": 5.0827,
+   "scale": 1,
+   "kind": "frog",
+   "who": "coqui",
+   "what": "the frog on the wet square (the ending of story 50)"
+  },
+  "luis.cemento": {
+   "world": [2.45, 7.3, 0],
+   "screen": [61, 190],
+   "depth": 5.9706,
+   "scale": 1,
+   "kind": "person",
+   "who": "nino",
+   "what": "Luis beside the wet square (the ending of story 50)"
+  },
+  "obrero.fin": {
+   "world": [2.9, 7.4, 0],
+   "screen": [67, 195],
+   "depth": 6.3074,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "what": "the obrero standing in the ending of story 50 (the spec gives the point without a name: this name is the builder's)"
+  },
+  "cono1": {
+   "world": [1.1, 6.05, 0],
+   "screen": [59, 166],
+   "depth": 4.3785,
+   "scale": 1,
+   "kind": "small",
+   "what": "a cone round the wet square (a sprite)"
+  },
+  "cono2": {
+   "world": [2.3, 6.05, 0],
+   "screen": [81, 177],
+   "depth": 5.1133,
+   "scale": 1,
+   "kind": "small",
+   "what": "a cone round the wet square (a sprite); the one that is knocked over in a wrong move"
+  },
+  "cono3": {
+   "world": [2.35, 7.15, 0],
+   "screen": [62, 187],
+   "depth": 5.8175,
+   "scale": 1,
+   "kind": "small",
+   "what": "a cone round the wet square (a sprite)"
+  },
+  "lamps.1": {
+   "world": [1.66, 1.625, 3.27],
+   "screen": [151, 57],
+   "depth": 3.6466,
+   "scale": 1,
+   "kind": "point",
+   "what": "a lamp of the traffic light, from E.LUZ.lamps, top to bottom: red; the lit lamp is a sprite",
+   "lamp": "red"
+  },
+  "lamps.2": {
+   "world": [1.66, 1.625, 2.88],
+   "screen": [151, 65],
+   "depth": 3.4516,
+   "scale": 1,
+   "kind": "point",
+   "what": "a lamp of the traffic light, from E.LUZ.lamps, top to bottom: amber; the lit lamp is a sprite",
+   "lamp": "amber"
+  },
+  "lamps.3": {
+   "world": [1.66, 1.625, 2.49],
+   "screen": [151, 74],
+   "depth": 3.2566,
+   "scale": 1,
+   "kind": "point",
+   "what": "a lamp of the traffic light, from E.LUZ.lamps, top to bottom: green; the lit lamp is a sprite",
+   "lamp": "green"
+  }
+ },
+ "groups": {
+  "cola": ["cola1", "cola2", "cola3", "cola4"],
+  "bordillo": ["bordillo1", "bordillo2"],
+  "lamps": ["lamps.1", "lamps.2", "lamps.3"],
+  "conos": ["cono1", "cono2", "cono3"]
+ },
+ "alternatives": {
+  "groups": [
+   ["esquina", "esquina2"],
+   ["sale_carro", "sale_guagua"],
+   ["toca_carro", "toca_guagua"],
+   ["carril_a.carro", "carril_a.bici"],
+   ["carril_b.carro", "carril_b.guagua", "carril_b.bici"]
+  ],
+  "vsGroup": {
+   "cola": ["bordillo1", "bordillo2", "esquina"]
+  },
+  "what": "spots that are never in the same picture: each list is alternatives of each other; vsGroup: the listed spots are alternatives of the whole group (cola is together: its four people are compared with each other, never with bordillo1, bordillo2 or esquina; the frog stands at esquina2 when the group is there)"
+ },
+ "routes": {
+  "trafico": {
+   "what": "traffic passing along street A: it enters at the right and leaves at the left, in its lane; in story 49 it stops at the stop line at para_carro and para_guagua. These points are outside the picture on purpose: they are where a sprite enters and leaves, not spots",
+   "lanes": {
+    "lejos": {
+     "entra": {
+      "world": [9.5, 2.8, 0],
+      "screen": [273, 213]
+     },
+     "sale": {
+      "world": [-6, 2.8, 0],
+      "screen": [-12, 71]
+     }
+    },
+    "cerca": {
+     "entra": {
+      "world": [9.5, 4.8, 0],
+      "screen": [236, 231]
+     },
+     "sale": {
+      "world": [-6, 4.8, 0],
+      "screen": [-49, 89]
+     }
+    }
+   }
+  }
+ },
+ "notes": [
+  "things.gente is a sprite key (the spec gives no box): the people at the kerb, who are the members of the group cola in the opening of story 49 and of the group bordillo in its game",
+  "the spec gives papá at (4.3, 6.9) in moment 3 and the obrero at (2.9, 7.4) in moment 8 without a name: papa.acera and obrero.fin are the builder's names",
+  "the section of the spec for La esquina has no \"step until\" rule: every number in it is kept as given, and where it fails a check the make says so and gives the nearest value that passes (rules.nearest)",
+  "the preview gives moments 1 to 6 the afternoon and 7 and 8 the morning (the scripts' hours), the door shut in all; obra = 1 in 7 and 8"
+ ],
+ "views": {
+  "wide": {
+   "world": [2.1138, 3.8, 0],
+   "screen": [119, 154.36],
+   "zoom": 1,
+   "x0": 21,
+   "region": [21, 0, 196, 216],
+   "what": "the one view: the 196 x 216 window over the 240 x 216 picture, centred on this point (on the street's middle line y 3.8), x0 = clamp(round(sx - 98), 0, 44). x0 21 is the one that keeps every spot's point inside the window (x0 10 to 22 do) with the fewest sprites cut: 4 cut, 63 px in all; see the check spots-in-view for which and by how much",
+   "choice": {
+    "feasible": [10, 22],
+    "rule": "every spot's point inside the window; then the fewest spots whose sprite box is cut; then the fewest px cut; then the least x0",
+    "table": [
+     [10, 4, 74],
+     [11, 5, 73],
+     [12, 5, 72],
+     [13, 5, 71],
+     [14, 5, 70],
+     [15, 5, 69],
+     [16, 5, 68],
+     [17, 5, 67],
+     [18, 5, 66],
+     [19, 5, 65],
+     [20, 5, 64],
+     [21, 4, 63],
+     [22, 4, 63]
+    ]
+   }
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3), so the colmado's wall hides nobody who stands in front of it, and a car or a guagua baked into the set (autos=) hides whoever stands behind it.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The upright plane through the feet, as El mostrador's front; the same test for people and small things",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adulto": 0.35,
+   "nino": 0.28,
+   "cono": 0.16
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "pepe": 0.35,
+   "abuela": 0.35,
+   "mama": 0.35,
+   "papa": 0.35,
+   "senora": 0.35,
+   "senor": 0.35,
+   "obrero": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "cono": 0.16
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0); the cones .16 as the set's own cones (calle-base.js cone)",
+  "none": ["obrero.cubo"],
+  "onBucket": "the obrero sitting on his bucket (z .3) casts none: the rule casts only for z 0, and the bucket is a sprite"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "spots-in-view",
+    "ok": false,
+    "lines": [
+     "spots-in-view: 5 finding(s) (window x0 21; the best x0: every spot point is inside for x0 10 to 22; 5 sprite(s) cut):",
+     "  para_guagua (vehicle) 183,168: sprite cut by the window: 19 px at the right",
+     "  carril_a.carro (vehicle) 38,132: sprite cut by the window: 14 px at the left",
+     "  carril_b.guagua (vehicle) 183,205: sprite cut by the window: 19 px at the right",
+     "  luis.obra (nino) 22,170: sprite cut by the window: 11 px at the left",
+     "  carril_b.guagua 183,205: sprite cut by the picture: 9 rows at the bottom",
+     "       info, not a check: the x0 that keep every spot point inside, with the sprites each cuts (columns only: the spec's widths and the car's and the guagua's drawn pixels): x0 10: 4 sprite(s), 74 px; x0 11: 5 sprite(s), 73 px; x0 12: 5 sprite(s), 72 px; x0 13: 5 sprite(s), 71 px; x0 14: 5 sprite(s), 70 px; x0 15: 5 sprite(s), 69 px; x0 16: 5 sprite(s), 68 px; x0 17: 5 sprite(s), 67 px; x0 18: 5 sprite(s), 66 px; x0 19: 5 sprite(s), 65 px; x0 20: 5 sprite(s), 64 px; x0 21: 4 sprite(s), 63 px; x0 22: 4 sprite(s), 63 px",
+     "       info, not a check: the pixels the stand-in people actually draw that the window cuts (the check above uses the spec's widths): luis.obra 260 px at the left",
+     "       info, not a check: the people sprites (the frog and the grown-ups and children, not the vehicles) span columns 10 (luis.obra) to 216 (vuelta): 207 px, the window is 196 wide, so no window holds them all whole"
+    ],
+    "x0": 21
+   },
+   {
+    "name": "sprites-apart",
+    "ok": false,
+    "lines": [
+     "sprites-apart: 17 pair(s) with overlapping boxes and feet closer than 12 px up-down:",
+     "  moment 1: abuela.acera [78,191] (24 wide) ~ coqui.acera [100,197] (32 wide): 22 px sideways (the boxes need 28), 6 px up-down (needs 12): short by 6 px sideways or 6 px up-down",
+     "  moment 3: abuela.acera [78,191] (24 wide) ~ coqui.acera [100,197] (32 wide): 22 px sideways (the boxes need 28), 6 px up-down (needs 12): short by 6 px sideways or 6 px up-down",
+     "  moment 3: abuela.acera [78,191] (24 wide) ~ junto [93,191] (24 wide): 15 px sideways (the boxes need 24), 0 px up-down (needs 12): short by 9 px sideways or 12 px up-down",
+     "  moment 3: coqui.acera [100,197] (32 wide) ~ junto [93,191] (24 wide): 7 px sideways (the boxes need 28), 6 px up-down (needs 12): short by 21 px sideways or 6 px up-down",
+     "  moment 3: coqui.acera [100,197] (32 wide) ~ papa.acera [102,203] (24 wide): 2 px sideways (the boxes need 28), 6 px up-down (needs 12): short by 26 px sideways or 6 px up-down",
+     "  moment 3: papa.acera [102,203] (24 wide) ~ luis.bici [113,210] (24 wide): 11 px sideways (the boxes need 24), 7 px up-down (needs 12): short by 13 px sideways or 5 px up-down",
+     "  moment 4: esquina2 [166,124] (32 wide) ~ cola4 [142,122] (24 wide): 24 px sideways (the boxes need 28), 2 px up-down (needs 12): short by 4 px sideways or 10 px up-down",
+     "  moment 4: cola1 [110,104] (24 wide) ~ cola2 [120,110] (24 wide): 10 px sideways (the boxes need 24), 6 px up-down (needs 12): short by 14 px sideways or 6 px up-down",
+     "  moment 4: cola2 [120,110] (24 wide) ~ cola3 [132,116] (24 wide): 12 px sideways (the boxes need 24), 6 px up-down (needs 12): short by 12 px sideways or 6 px up-down",
+     "  moment 4: cola3 [132,116] (24 wide) ~ cola4 [142,122] (24 wide): 10 px sideways (the boxes need 24), 6 px up-down (needs 12): short by 14 px sideways or 6 px up-down",
+     "  moment 5: esquina [148,119] (32 wide) ~ bordillo1 [133,116] (24 wide): 15 px sideways (the boxes need 28), 3 px up-down (needs 12): short by 13 px sideways or 9 px up-down",
+     "  moment 5: esquina [148,119] (32 wide) ~ bordillo2 [145,123] (24 wide): 3 px sideways (the boxes need 28), 4 px up-down (needs 12): short by 25 px sideways or 8 px up-down",
+     "  moment 5: bordillo1 [133,116] (24 wide) ~ bordillo2 [145,123] (24 wide): 12 px sideways (the boxes need 24), 7 px up-down (needs 12): short by 12 px sideways or 5 px up-down",
+     "  moment 6: abuela.enfrente [51,177] (24 wide) ~ coqui.enfrente [69,181] (32 wide): 18 px sideways (the boxes need 28), 4 px up-down (needs 12): short by 10 px sideways or 8 px up-down",
+     "  moment 6: abuela.enfrente [51,177] (24 wide) ~ enfrente [35,166] (24 wide): 16 px sideways (the boxes need 24), 11 px up-down (needs 12): short by 8 px sideways or 1 px up-down",
+     "  moment 7: obrero.cubo [87,183] (24 wide) ~ coqui.cerca [81,181] (32 wide): 6 px sideways (the boxes need 28), 2 px up-down (needs 12): short by 22 px sideways or 10 px up-down",
+     "  moment 8: obrero.fin [67,195] (24 wide) ~ luis.cemento [61,190] (24 wide): 6 px sideways (the boxes need 24), 5 px up-down (needs 12): short by 18 px sideways or 7 px up-down",
+     "       nearest passing, moment 1 abuela.acera ~ coqui.acera: abuela.acera 3,6.9,0: x 3 -> 2.68 (-0.32) or y 6.9 -> 7.22 (+0.32); or coqui.acera 3.9,6.6,0: x 3.9 -> 4.18 (+0.28) or y 6.6 -> 6.32 (-0.28)",
+     "       nearest passing, moment 3 abuela.acera ~ coqui.acera: abuela.acera 3,6.9,0: x 3 -> 2.68 (-0.32) or y 6.9 -> 7.22 (+0.32); or coqui.acera 3.9,6.6,0: x 3.9 -> 4.18 (+0.28) or y 6.6 -> 6.32 (-0.28)",
+     "       nearest passing, moment 3 abuela.acera ~ junto: abuela.acera 3,6.9,0: x 3 -> 2.52 (-0.48) or y 6.9 -> 7.38 (+0.48); or junto 3.4,6.5,0: x 3.4 -> 3.87 (+0.47) or y 6.5 -> 6.03 (-0.47)",
+     "       nearest passing, moment 3 coqui.acera ~ junto: coqui.acera 3.9,6.6,0: x 3.9 -> 4.56 (+0.66) or y 6.6 -> 7.26 (+0.66); or junto 3.4,6.5,0: x 3.4 -> 2.8 (-0.6) or y 6.5 -> 5.9 (-0.6)",
+     "       nearest passing, moment 3 coqui.acera ~ papa.acera: coqui.acera 3.9,6.6,0: x 3.9 -> 3.35 (-0.55) or y 6.6 -> 6.05 (-0.55); or papa.acera 4.3,6.9,0: x 4.3 -> 4.91 (+0.61) or y 6.9 -> 7.51 (+0.61)",
+     "       nearest passing, moment 3 papa.acera ~ luis.bici: papa.acera 4.3,6.9,0: x 4.3 -> 3.81 (-0.49) or y 6.9 -> 6.41 (-0.49); or luis.bici 5,7,0: x 5 -> 5.46 (+0.46) or y 7 -> 7.46 (+0.46)",
+     "       nearest passing, moment 4 esquina2 ~ cola4: esquina2 1.75,0.9,0: x 1.75 -> 1.97 (+0.22) or y 0.9 -> 0.68 (-0.22); or cola4 0.95,1.4,0: x 0.95 -> 0.77 (-0.18) or y 1.4 -> 1.58 (+0.18)",
+     "       nearest passing, moment 4 cola1 ~ cola2: cola1 -0.9,1.3,0: x -0.9 -> -1.47 (-0.57) or y 1.3 -> 0.73 (-0.57); or cola2 -0.3,1.35,0: x -0.3 -> 0.34 (+0.64)",
+     "       nearest passing, moment 4 cola2 ~ cola3: cola2 -0.3,1.35,0: x -0.3 -> -0.87 (-0.57) or y 1.35 -> 0.78 (-0.57); or cola3 0.35,1.35,0: x 0.35 -> 0.99 (+0.64)",
+     "       nearest passing, moment 4 cola3 ~ cola4: cola3 0.35,1.35,0: x 0.35 -> -0.21 (-0.56) or y 1.35 -> 0.79 (-0.56); or cola4 0.95,1.4,0: x 0.95 -> 1.6 (+0.65)",
+     "       nearest passing, moment 5 esquina ~ bordillo1: esquina 1,1.1,0: x 1 -> 1.68 (+0.68) or y 1.1 -> 0.42 (-0.68); or bordillo1 0.4,1.35,0: x 0.4 -> -0.26 (-0.66)",
+     "       nearest passing, moment 5 esquina ~ bordillo2: esquina 1,1.1,0: x 1 -> 0.15 (-0.85) or y 1.1 -> 0.25 (-0.85); or bordillo2 1.15,1.4,0: x 1.15 -> 1.92 (+0.77)",
+     "       nearest passing, moment 5 bordillo1 ~ bordillo2: bordillo1 0.4,1.35,0: x 0.4 -> -0.1 (-0.5) or y 1.35 -> 0.85 (-0.5); or bordillo2 1.15,1.4,0: x 1.15 -> 1.6 (+0.45)",
+     "       nearest passing, moment 6 abuela.enfrente ~ coqui.enfrente: abuela.enfrente 1.5,6.9,0: x 1.5 -> 0.99 (-0.51) or y 6.9 -> 7.41 (+0.51); or coqui.enfrente 2.2,6.6,0: x 2.2 -> 2.72 (+0.52) or y 6.6 -> 6.08 (-0.52)",
+     "       nearest passing, moment 6 abuela.enfrente ~ enfrente: abuela.enfrente 1.5,6.9,0: x 1.5 -> 1.54 (+0.04) or y 6.9 -> 6.94 (+0.04); or enfrente 0.45,6.7,0: x 0.45 -> 0.42 (-0.03) or y 6.7 -> 6.67 (-0.03)",
+     "       nearest passing, moment 7 obrero.cubo ~ coqui.cerca: obrero.cubo 3.2,6.6,0.3: x 3.2 -> 4.2 (+1) or y 6.6 -> 7.6 (+1); or coqui.cerca 2.55,6.3,0: x 2.55 -> 1.47 (-1.08)",
+     "       nearest passing, moment 8 obrero.fin ~ luis.cemento: obrero.fin 2.9,7.4,0: x 2.9 -> 3.65 (+0.75); or luis.cemento 2.45,7.3,0: x 2.45 -> 1.78 (-0.67) or y 7.3 -> 6.63 (-0.67)",
+     "       closest in each moment (px across / px down): m1 abuela.acera ~ coqui.acera 22/6 (needs 28 across or 12 down); m2 abuela.acera ~ toca_guagua 55/27 (needs 28 across or 12 down); m3 coqui.acera ~ papa.acera 2/6 (needs 28 across or 12 down); m4 pepe.puerta ~ cola2 2/18 (needs 24 across or 12 down); m5 esquina ~ bordillo2 3/4 (needs 28 across or 12 down); m6 abuela.enfrente ~ coqui.enfrente 18/4 (needs 28 across or 12 down); m7 obrero.cubo ~ coqui.cerca 6/2 (needs 28 across or 12 down); m8 coqui.cemento ~ luis.cemento 1/14 (needs 28 across or 12 down)",
+     "       info, not a check: pairs of spots the scripts put together but no moment shows (px across / px down; the boxes need 28 across for a grown-up and the frog, 24 for two grown-ups, or 12 down): sale_carro ~ toca_carro 7/6; sale_guagua ~ toca_guagua 4/0; cruce_fin ~ enfrente 18/2"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "abuela.acera",
+      "b": "coqui.acera",
+      "across": 22,
+      "down": 6,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 2,
+      "a": "abuela.acera",
+      "b": "toca_guagua",
+      "across": 55,
+      "down": 27,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela.acera",
+      "b": "coqui.acera",
+      "across": 22,
+      "down": 6,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 3,
+      "a": "abuela.acera",
+      "b": "junto",
+      "across": 15,
+      "down": 0,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 3,
+      "a": "abuela.acera",
+      "b": "papa.acera",
+      "across": 24,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela.acera",
+      "b": "luis.bici",
+      "across": 35,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui.acera",
+      "b": "junto",
+      "across": 7,
+      "down": 6,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 3,
+      "a": "coqui.acera",
+      "b": "papa.acera",
+      "across": 2,
+      "down": 6,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 3,
+      "a": "coqui.acera",
+      "b": "luis.bici",
+      "across": 13,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "junto",
+      "b": "papa.acera",
+      "across": 9,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "junto",
+      "b": "luis.bici",
+      "across": 20,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "papa.acera",
+      "b": "luis.bici",
+      "across": 11,
+      "down": 7,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 4,
+      "a": "pepe.puerta",
+      "b": "esquina2",
+      "across": 48,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "pepe.puerta",
+      "b": "cola1",
+      "across": 8,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "pepe.puerta",
+      "b": "cola2",
+      "across": 2,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "pepe.puerta",
+      "b": "cola3",
+      "across": 14,
+      "down": 24,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "pepe.puerta",
+      "b": "cola4",
+      "across": 24,
+      "down": 30,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "pepe.puerta",
+      "b": "enfrente",
+      "across": 83,
+      "down": 74,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "esquina2",
+      "b": "cola1",
+      "across": 56,
+      "down": 20,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "esquina2",
+      "b": "cola2",
+      "across": 46,
+      "down": 14,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "esquina2",
+      "b": "cola3",
+      "across": 34,
+      "down": 8,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "esquina2",
+      "b": "cola4",
+      "across": 24,
+      "down": 2,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 4,
+      "a": "esquina2",
+      "b": "enfrente",
+      "across": 131,
+      "down": 42,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cola1",
+      "b": "cola2",
+      "across": 10,
+      "down": 6,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 4,
+      "a": "cola1",
+      "b": "cola3",
+      "across": 22,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cola1",
+      "b": "cola4",
+      "across": 32,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cola1",
+      "b": "enfrente",
+      "across": 75,
+      "down": 62,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cola2",
+      "b": "cola3",
+      "across": 12,
+      "down": 6,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 4,
+      "a": "cola2",
+      "b": "cola4",
+      "across": 22,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cola2",
+      "b": "enfrente",
+      "across": 85,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cola3",
+      "b": "cola4",
+      "across": 10,
+      "down": 6,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 4,
+      "a": "cola3",
+      "b": "enfrente",
+      "across": 97,
+      "down": 50,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cola4",
+      "b": "enfrente",
+      "across": 107,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "esquina",
+      "b": "bordillo1",
+      "across": 15,
+      "down": 3,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 5,
+      "a": "esquina",
+      "b": "bordillo2",
+      "across": 3,
+      "down": 4,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 5,
+      "a": "esquina",
+      "b": "enfrente",
+      "across": 113,
+      "down": 47,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "bordillo1",
+      "b": "bordillo2",
+      "across": 12,
+      "down": 7,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 5,
+      "a": "bordillo1",
+      "b": "enfrente",
+      "across": 98,
+      "down": 50,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "bordillo2",
+      "b": "enfrente",
+      "across": 110,
+      "down": 43,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "abuela.enfrente",
+      "b": "coqui.enfrente",
+      "across": 18,
+      "down": 4,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 6,
+      "a": "abuela.enfrente",
+      "b": "enfrente",
+      "across": 16,
+      "down": 11,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 6,
+      "a": "coqui.enfrente",
+      "b": "enfrente",
+      "across": 34,
+      "down": 15,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 7,
+      "a": "obrero.cubo",
+      "b": "coqui.cerca",
+      "across": 6,
+      "down": 2,
+      "needAcross": 28,
+      "ok": false
+     },
+     {
+      "moment": 7,
+      "a": "obrero.cubo",
+      "b": "luis.obra",
+      "across": 65,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 7,
+      "a": "coqui.cerca",
+      "b": "luis.obra",
+      "across": 59,
+      "down": 11,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 8,
+      "a": "obrero.fin",
+      "b": "coqui.cemento",
+      "across": 7,
+      "down": 19,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 8,
+      "a": "obrero.fin",
+      "b": "luis.cemento",
+      "across": 6,
+      "down": 5,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 8,
+      "a": "coqui.cemento",
+      "b": "luis.cemento",
+      "across": 1,
+      "down": 14,
+      "needAcross": 28,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": false,
+    "lines": [
+     "frog-seen: 6 moment(s) where the frog is behind something (his pixels hidden by the depth rule; the spec: his whole box is seen):",
+     "  moment 2 the frog at toca_guagua [133,164]: 536 px drawn, 492 hidden by the set (492 by auto; by each vehicle drawn alone: 492 by carro at 3.5,4.8), 0 covered by a nearer sprite",
+     "  moment 3 the frog at coqui.acera [100,197]: 536 px drawn, 0 hidden by the set, 417 covered by a nearer sprite (262 by papa.acera, 155 by luis.bici)",
+     "  moment 4 the frog at esquina2 [166,124]: 536 px drawn, 27 hidden by the set (27 by semaforo), 0 covered by a nearer sprite",
+     "  moment 5 the frog at esquina [148,119]: 536 px drawn, 506 hidden by the set (506 by auto; by each vehicle drawn alone: 506 by guagua at 4.6,2.8), 30 covered by a nearer sprite (30 by bordillo2)",
+     "  moment 7 the frog at coqui.cerca [81,181]: 536 px drawn, 0 hidden by the set, 346 covered by a nearer sprite (346 by obrero.cubo)",
+     "  moment 8 the frog at coqui.cemento [60,176]: 536 px drawn, 0 hidden by the set, 412 covered by a nearer sprite (86 by luis.cemento, 326 by obrero.fin)",
+     "       nearest passing, moment 2 toca_guagua 3,3.95,0: x 3 -> 1.21 (-1.79)",
+     "       nearest passing, moment 3 coqui.acera 3.9,6.6,0: x 3.9 -> 5.41 (+1.51)",
+     "       nearest passing, moment 4 esquina2 1.75,0.9,0: x 1.75 -> 1.95 (+0.2)",
+     "       nearest passing, moment 5 esquina 1,1.1,0: x 1 -> -1.27 (-2.27)",
+     "       nearest passing, moment 7 coqui.cerca 2.55,6.3,0: x 2.55 -> 3.5 (+0.95)",
+     "       nearest passing, moment 8 coqui.cemento 1.7,6.6,0: x 1.7 -> 0.64 (-1.06)"
+    ],
+    "frog": [
+     {
+      "moment": 1,
+      "at": "coqui.acera",
+      "drawn": 536,
+      "hiddenBySet": 0,
+      "hiddenBySprite": 0
+     },
+     {
+      "moment": 2,
+      "at": "toca_guagua",
+      "drawn": 536,
+      "hiddenBySet": 492,
+      "hiddenBySprite": 0
+     },
+     {
+      "moment": 3,
+      "at": "coqui.acera",
+      "drawn": 536,
+      "hiddenBySet": 0,
+      "hiddenBySprite": 417
+     },
+     {
+      "moment": 4,
+      "at": "esquina2",
+      "drawn": 536,
+      "hiddenBySet": 27,
+      "hiddenBySprite": 0
+     },
+     {
+      "moment": 5,
+      "at": "esquina",
+      "drawn": 536,
+      "hiddenBySet": 506,
+      "hiddenBySprite": 30
+     },
+     {
+      "moment": 6,
+      "at": "coqui.enfrente",
+      "drawn": 536,
+      "hiddenBySet": 0,
+      "hiddenBySprite": 0
+     },
+     {
+      "moment": 7,
+      "at": "coqui.cerca",
+      "drawn": 536,
+      "hiddenBySet": 0,
+      "hiddenBySprite": 346
+     },
+     {
+      "moment": 8,
+      "at": "coqui.cemento",
+      "drawn": 536,
+      "hiddenBySet": 0,
+      "hiddenBySprite": 412
+     }
+    ]
+   },
+   {
+    "name": "door-people",
+    "ok": true,
+    "lines": [
+     "door-people: puerta and pepe.puerta stand in front of the colmado's door and none of their pixels is hidden by the wall or the door in any of the 8 states of the set: puerta 110,86 (y 0.35 in front of the wall y 0; x -1.85 in the door x -2.5 to -1.2, 0.65 from its left jamb and 0.65 from its right): 0 of the 895 pixels of abuela hidden by the set in the worst of the 8 states; pepe.puerta 118,92 (y 0.45 in front of the wall y 0; x -1.3 in the door x -2.5 to -1.2, 1.2 from its left jamb and 0.1 from its right): 0 of the 834 pixels of pepe hidden by the set in the worst of the 8 states",
+     "       info, not a check: with the door open its leaf is drawn over pixels [127,34,144,103] (columns, rows) that the shut door leaves to the wall; don Pepe at pepe.puerta draws columns 106 to 129, rows 39 to 91"
+    ]
+   },
+   {
+    "name": "street-people",
+    "ok": true,
+    "lines": [
+     "street-people: every person and the frog (31 spots) stands off the street (y 1.8 to 5.8) and the hole, except the ones the spec puts on the street: sale_carro y 5.75, sale_guagua y 3.85, toca_guagua y 3.95, obrero.paleta y 3.6; toca_carro y 5.85 is 0.05 past the street's edge y 5.8, on the kerb stone (the kerb is y 5.8 to 6); the spots of the moments with obra = 1 (obrero.cubo, coqui.cerca, luis.obra, cono1, cono2, cono3, obrero.fin, coqui.cemento, luis.cemento) are off the two squares of cement but the frog on the wet one at coqui.cemento",
+     "       info, not a check: spots of the stories without the dug-up street that lie on the footprint of a cement square (the squares are there only with obra = 1): enfrente 0.45,6.7,0 (dry), abuela.enfrente 1.5,6.9,0 (wet), coqui.enfrente 2.2,6.6,0 (wet)"
+    ]
+   },
+   {
+    "name": "seat-top",
+    "ok": true,
+    "lines": [
+     "seat-top: the set has no seat; the only person off the ground is the obrero at obrero.cubo (z 0.3, the top of his bucket): the preview draws the bucket on the ground under him (its base on row 190, 7 rows below the spot's row 183, which is z .3 = 6.75 px up) and his lap row 38 on the spot's row"
+    ]
+   },
+   {
+    "name": "frog-clear-of-vehicles",
+    "ok": false,
+    "lines": [
+     "frog-clear-of-vehicles: the frog is covered by what stands at the stop line:",
+     "  esquina 148,119 (536 px drawn): 0 covered by the car at para_carro, 506 by the guagua at para_guagua, 506 by both (apart from these, 136 hidden by the pole)",
+     "  esquina2 166,124 (536 px drawn): 0 covered by the car at para_carro, 526 by the guagua at para_guagua, 526 by both (apart from these, 27 hidden by the pole)",
+     "       nearest passing, esquina 1,1.1,0: x 1 -> -0.51 (-1.51)",
+     "       nearest passing, esquina2 1.75,0.9,0: x 1.75 -> -0.49 (-2.24)"
+    ],
+    "covered": {
+     "esquina": {
+      "drawn": 536,
+      "car": 0,
+      "guagua": 506,
+      "both": 506,
+      "hiddenByThePole": 136
+     },
+     "esquina2": {
+      "drawn": 536,
+      "car": 0,
+      "guagua": 526,
+      "both": 526,
+      "hiddenByThePole": 27
+     }
+    }
+   },
+   {
+    "name": "enfrente-in-window",
+    "ok": true,
+    "lines": [
+     "enfrente-in-window: mamá at enfrente 35,166 is whole inside the window [21, 217): moment 4: columns 23 to 46, rows 112 to 165 (954 of 954 px in the picture; 2 px from the window's left edge, 170 from its right); moment 5: columns 23 to 46, rows 112 to 165 (954 of 954 px in the picture; 2 px from the window's left edge, 170 from its right); moment 6: columns 23 to 46, rows 112 to 165 (954 of 954 px in the picture; 2 px from the window's left edge, 170 from its right)"
+    ]
+   },
+   {
+    "name": "hole-shows",
+    "ok": false,
+    "lines": [
+     "hole-shows: moment 7: the hole shows 522 of its 901 pixels (57.94%, needs 60%); covered: 379 by the vehicles (0 by azul at -1.3,4.8 alone, 379 by guagua at 6.6,4.8 alone), 0 by sprites",
+     "       info, not a check: counting the whole image of the hole's rectangle (1628 pixels, with its barrier, cones, heaps and spade) the vehicles and people cover 559 and 1069 show: 65.66%",
+     "       nearest passing: carril_b.guagua 6.6,4.8,0: x 6.6 -> 6.65 (+0.05) (the guagua drawn there with the blue car at carril_a.carro: the hole shows 60.04%)"
+    ],
+    "hole": {
+     "pixels": 901,
+     "shown": 522,
+     "byVehicles": 379,
+     "bySprites": 0,
+     "share": 0.5794,
+     "wholeImage": {
+      "pixels": 1628,
+      "shown": 1069,
+      "share": 0.6566
+     }
+    }
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: 6 things with a box (colmado [0,0,240,100], puerta [103,19,25,71], boton [147,106,8,12], calle [0,33,240,183], esquina [120,100,60,30], cemento [42,167,36,19]) inside the picture; puerta, boton, esquina and cemento whole inside the window; what draws each world box (the middle pixel, or 9 pixels for a flat one): puerta 1 puerta, boton 1 semaforo, calle 9 ground, esquina 8 ground + 1 semaforo, cemento 9 ground; colmado [0,0,240,100] is cut by the window: 21 px at the left, 23 at the right; calle [0,33,240,183] is cut by the window: 21 px at the left, 23 at the right"
+    ]
+   }
+  ]
+ }
+}
