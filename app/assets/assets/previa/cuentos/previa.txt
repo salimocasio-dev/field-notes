@@ -1,0 +1,2 @@
+The preview story files: coqui/tool/make_previa.py writes them here, byte for byte as their generators make them. Never by hand.
+This file keeps the folder (which pubspec.yaml lists) in git when no place is previewed.
