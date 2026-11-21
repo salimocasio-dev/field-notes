@@ -33,7 +33,9 @@ Future<Uint8List> oldPicture(
   final assets =
       '$repoRoot/coqui/packages/core/coqui_scenes/assets/old_pictures/$scene';
   final index = File('$assets/index.json');
-  final file = index.existsSync()
+  final file = scene == testSceneId
+      ? File('$testScenePictures/$name.png')
+      : index.existsSync()
       ? File('$assets/${(jsonDecode(index.readAsStringSync()) as Map)[name]}')
       : File('$repoRoot/coqui/ref/escenas/$scene/pairs/${plain(name)}.png');
   final bytes = file.readAsBytesSync();
@@ -220,9 +222,14 @@ void main() {
         final ear = (r as Map)['ear'] as Map;
         ear['n'] = (ear['n'] as int) ~/ 2 * 2;
       }
-      // and one word of a scene that is not converted (El banco's hombre: the seed's words reach no further than El
-      // lago, converted at order 35b; pájaro, of cual-lago, was this test's old picture until then), as the seed's casa
-      // but the most overdue, so that the session (up to 10 words, the most overdue first) asks it
+      // and one word of a scene that is not converted: El banco's hombre, its review set put at the test scene (a scene
+      // that is never converted, its old pictures order 06's of El banco: harness.dart, testSceneId), so that the test
+      // does not depend on which real scenes are converted (order 36b; El banco's own hombre until then, cual-lago's
+      // pájaro until order 35b), as the seed's casa but the most overdue, so that the session (up to 10 words, the most
+      // overdue first) asks it
+      app.editContent = (path, text) => path == 'cuentos/cual-banco.json'
+          ? text.replaceFirst('"scene": "banco"', '"scene": "$testSceneId"')
+          : text;
       final palabras = db['palabras'] as Map<String, dynamic>;
       final hombre =
           jsonDecode(jsonEncode(palabras['casa'])) as Map<String, dynamic>;
