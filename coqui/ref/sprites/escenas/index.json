@@ -47,15 +47,26 @@
    "bytes": 358408
   },
   {
+   "scene": "comer",
+   "files": 172,
+   "keys": 172,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 2,
+   "sites": 11,
+   "sitesNeverReached": [],
+   "bytes": 817912
+  },
+  {
    "scene": "estufa",
-   "files": 82,
-   "keys": 82,
+   "files": 85,
+   "keys": 85,
    "differsBetweenRuns": [],
    "outsideCache": 0,
    "notDumped": 2,
    "sites": 7,
    "sitesNeverReached": [],
-   "bytes": 445040
+   "bytes": 473072
   },
   {
    "scene": "frente",
@@ -81,8 +92,8 @@
   },
   {
    "scene": "mesa",
-   "files": 76,
-   "keys": 76,
+   "files": 79,
+   "keys": 79,
    "differsBetweenRuns": [],
    "outsideCache": 0,
    "notDumped": 2,
@@ -90,18 +101,18 @@
    "sitesNeverReached": [
     "156:24 spr(\"puesto\")"
    ],
-   "bytes": 512176
+   "bytes": 540400
   },
   {
    "scene": "nevera",
-   "files": 93,
-   "keys": 93,
+   "files": 94,
+   "keys": 94,
    "differsBetweenRuns": [],
    "outsideCache": 0,
    "notDumped": 2,
    "sites": 6,
    "sitesNeverReached": [],
-   "bytes": 442624
+   "bytes": 444928
   },
   {
    "scene": "patio",

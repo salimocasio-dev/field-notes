@@ -503,7 +503,11 @@ void main() {
     test('every old picture of every real scene that is not converted decodes to its hash', () async {
       final source = OldPictures(bundle: testBundle());
       var n = 0;
-      for (final id in sceneRegistry.keys) {
+      // the registry's scenes, and a scene with old pictures that is not in the registry yet (A comer)
+      for (final id in {
+        ...sceneRegistry.keys,
+        for (final k in oldHashes.keys) k.split('/').first,
+      }) {
         if (convertedScenes.contains(id)) continue;
         // on the vm every scene's folder is there; in a browser only the sample scene's
         if (kIsWeb && id != oldSampleScene) continue;
@@ -522,8 +526,41 @@ void main() {
         }
       }
       // on the vm: every old picture of the real scenes not converted yet (tool/make_old_pictures.dart writes their
-      // hashes; none once every scene is converted)
+      // hashes; none once every scene is converted). Now 160: the 200 of A comer's order 06 (El balcón's 36 went at order
+      // 30b, La sala's 50 at 31b, El patio's 52 at 32b, El camino's 41 at 33b, El campo's 38 at 34b, El lago's 38 at 35b;
+      // A comer brought 36 and 4 level cells of La estufa and La nevera) less El banco's 40 (order 36b)
       if (!kIsWeb) expect(n, oldHashes.length);
+    });
+
+    test('a scene with old pictures that is not in the registry (A comer) is a scene for ScenePictures', () async {
+      // the bundle holds its old index, the one rule for an id the registry does not hold (the test scene's too)
+      final notInRegistry = {
+        for (final k in oldHashes.keys)
+          if (!sceneRegistry.containsKey(k.split('/').first))
+            k.split('/').first,
+      };
+      expect(notInRegistry, contains('comer'));
+      final source = ScenePictures(bundle: testBundle());
+      for (final id in notInRegistry) {
+        // on the vm every scene's folder is there; in a browser only the sample scene's
+        if (kIsWeb && id != oldSampleScene) continue;
+        final idx = await OldPictures(bundle: testBundle()).indexOf(id);
+        final review = idx.keys.firstWhere((n) => n.endsWith('.si'));
+        final level = idx.keys.firstWhere((n) => n.startsWith('nivel.'));
+        for (final (name, w, h) in [(review, 196, 104), (level, 96, 106)]) {
+          expect(
+            hashOf(
+              await source.pixels(
+                PictureRef(scene: id, cam: const [0, 0, 196, 104], name: name),
+                width: w,
+                height: h,
+              ),
+            ),
+            oldHashes['$id/$name'],
+            reason: '$id/$name',
+          );
+        }
+      }
     });
   });
 

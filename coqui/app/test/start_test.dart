@@ -39,7 +39,7 @@ void main() {
       '/tab/nada',
       '/cuento/NO',
       '/cuento/no-es-un-cuento',
-      '/cuento/que-quieres', // a staged story: its file is in historia/cuentos/, the course does not name it
+      '/cuento/palabras-solas', // a file of historia/cuentos/ the course does not name (the word list, not a story)
       '/llamada/luna',
     ]) {
       final app = TestApp(tester);

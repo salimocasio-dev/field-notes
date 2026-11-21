@@ -1,7 +1,7 @@
 {
  "scene": "nevera",
  "made": "node coqui/tool/ref/escenas/make.mjs",
- "count": 29,
+ "count": 38,
  "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
  "positions": [
   {
@@ -232,6 +232,12 @@
      "at": "lleno.p2",
      "owner": "level picture",
      "note": "pair vacío.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mucho.p3",
+     "owner": "level picture",
+     "note": "pair vacío.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
     }
    ]
   },
@@ -257,6 +263,12 @@
     {
      "file": "nivel.js NV",
      "at": "queso.p2",
+     "owner": "level picture",
+     "note": "pair leche.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "café.p3",
      "owner": "level picture",
      "note": "pair leche.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
     }
@@ -313,6 +325,12 @@
      "at": "lleno.p1",
      "owner": "level picture",
      "note": "pair lleno.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "un poco.p3",
+     "owner": "level picture",
+     "note": "pair lleno.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
     }
    ]
   },
@@ -548,6 +566,22 @@
   },
   {
    "kind": "point",
+   "x": 142,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.6.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "red",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
    "x": 150,
    "y": 200,
    "uses": [
@@ -670,6 +704,22 @@
   },
   {
    "kind": "point",
+   "x": 156,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.6.set.cosas.1",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "jarra",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
    "x": 158,
    "y": 157,
    "uses": [
@@ -763,6 +813,38 @@
   },
   {
    "kind": "point",
+   "x": 170,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.6.set.cosas.2",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "v_rojo",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 178,
+   "y": 98,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.6.set.cosas.6",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "mant",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
    "x": 178,
    "y": 118,
    "uses": [
@@ -801,6 +883,22 @@
      "at": "mantequilla.no.set.cosas.0",
      "owner": "set.cosas[]",
      "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 182,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.6.set.cosas.3",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "v_verde",
       "cocina"
      ]
     }
@@ -858,6 +956,22 @@
   },
   {
    "kind": "point",
+   "x": 194,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.6.set.cosas.4",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "v_amarillo",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
    "x": 198,
    "y": 124,
    "uses": [
@@ -876,6 +990,58 @@
      "insideThings": [
       "cocina"
      ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 206,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.6.set.cosas.5",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "v_azul",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 170,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.15.set.repisa.0",
+     "owner": "set.repisa[]",
+     "note": "x alone (y comes from the scene)"
+    },
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.17.right.1.set.repisa.0",
+     "owner": "set.repisa[]",
+     "note": "x alone (y comes from the scene)"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 206,
+   "uses": [
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.15.set.repisa.1",
+     "owner": "set.repisa[]",
+     "note": "x alone (y comes from the scene)"
+    },
+    {
+     "file": "cuentos/h-nevera.json",
+     "at": "beats.17.right.1.set.repisa.1",
+     "owner": "set.repisa[]",
+     "note": "x alone (y comes from the scene)"
     }
    ]
   }

@@ -1,1 +1,10 @@
-{ "palabra": "lleno", "frases": { "lleno:1": "B", "lleno:2": "ninguna", "lleno:3": "ninguna" } }
+{
+ "palabra": "lleno",
+ "frases": {
+  "lleno:1": "B",
+  "lleno:2": "A",
+  "lleno:3": "ninguna",
+  "lleno:4": "ninguna",
+  "lleno:5": "ninguna"
+ }
+}

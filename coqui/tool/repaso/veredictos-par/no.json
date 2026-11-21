@@ -12,14 +12,14 @@
   "no:9": "duda",
   "no:10": "ninguna",
   "no:11": "ninguna",
-  "no:12": "ninguna",
+  "no:12": "duda",
   "no:13": "ninguna",
   "no:14": "ninguna",
   "no:15": "ninguna",
-  "no:16": "ninguna",
+  "no:16": "ambas",
   "no:17": "ninguna",
   "no:18": "ninguna",
-  "no:19": "ninguna",
+  "no:19": "duda",
   "no:20": "ninguna",
   "no:21": "ninguna",
   "no:22": "ninguna",
@@ -31,6 +31,10 @@
   "no:28": "ninguna",
   "no:29": "ninguna",
   "no:30": "ninguna",
-  "no:31": "ninguna"
+  "no:31": "duda",
+  "no:32": "ninguna",
+  "no:33": "ninguna",
+  "no:34": "ninguna",
+  "no:35": "ninguna"
  }
 }

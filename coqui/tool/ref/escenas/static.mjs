@@ -77,11 +77,12 @@ export function positions(text, exclude) {
       if (/^mk[A-Z]/.test(short)) continue;   // a sprite maker's own parameters (scale, frame), not a place
       const SLOTS = { fr: [[1, 2]], fillRect: [[0, 1]], rect: [[0, 1]], clearRect: [[0, 1]], strokeRect: [[0, 1]], arc: [[0, 1]], ellipse: [[0, 1]], translate: [[0, 1]], moveTo: [[0, 1]], lineTo: [[0, 1]],
         drawImage: args.length >= 9 ? [[1, 2], [5, 6]] : [[1, 2]], hopTo: [[0, 1]], aveA: [[0, 1]], aveVa: [[0, 1]], tenida: [[2, 3]], cosa: [[2, 3]], bub: [[2, 3]], bub2: [[2, 3]], luna: [[1, 2]], sol: [[1, 2]], mano: [[1, 2]], tarjeta: [[1, 2]], heart: [[1, 2]], star: [[1, 2]], hand: [[1, 2]], vaso: [[1, 2]], jarra: [[1, 2]], medio: [[1, 2]], abanico: [[1, 2]], bizcocho: [[1, 2]], trozo: [[1, 2]], plato: [[1, 2]], dish: [[1, 2]] };
-      let pairs = SLOTS[short];
+      const slot = Object.hasOwn(SLOTS, short) ? SLOTS[short] : null;   // (a call named like an Object member, toString( or constructor(, has no slots)
+      let pairs = slot;
       if (!pairs) { pairs = []; for (let k = 0; k + 1 < args.length; k++) if (isLit(args[k]) && isLit(args[k + 1])) { pairs.push([k, k + 1]); k++; } }
       const sk = /spr\(\s*"([^"]*)"/.exec(src.slice(m.index, m.index + 160));
       for (const [i0, i1] of pairs) if (isLit(args[i0]) && isLit(args[i1])) {
-        const four = SLOTS[short] && isLit(args[i1 + 1]) && isLit(args[i1 + 2]) && /^(fr|fillRect|rect|clearRect|strokeRect)$/.test(short);
+        const four = slot && isLit(args[i1 + 1]) && isLit(args[i1 + 2]) && /^(fr|fillRect|rect|clearRect|strokeRect)$/.test(short);
         push(m.index, four ? "rect" : "point", four ? [+args[i0], +args[i1], +args[i1 + 1], +args[i1 + 2]] : [+args[i0], +args[i1]], `${name}(${args.map(a => a.trim().length > 18 ? "…" : a.trim()).join(",")})` + (sk ? ` [sprite "${sk[1]}"]` : "") + ` args ${i0},${i1}`);
       }
     }

@@ -1,1 +1,18 @@
-{ "palabra": "mantequilla", "frases": { "mantequilla:1": "B", "mantequilla:2": "ninguna", "mantequilla:3": "duda", "mantequilla:4": "B", "mantequilla:5": "ninguna", "mantequilla:6": "ninguna", "mantequilla:7": "ninguna" } }
+{
+ "palabra": "mantequilla",
+ "frases": {
+  "mantequilla:1": "B",
+  "mantequilla:2": "ninguna",
+  "mantequilla:3": "ninguna",
+  "mantequilla:4": "B",
+  "mantequilla:5": "ninguna",
+  "mantequilla:6": "B",
+  "mantequilla:7": "ninguna",
+  "mantequilla:8": "ninguna",
+  "mantequilla:9": "duda",
+  "mantequilla:10": "ninguna",
+  "mantequilla:11": "ninguna",
+  "mantequilla:12": "ninguna",
+  "mantequilla:13": "ninguna"
+ }
+}

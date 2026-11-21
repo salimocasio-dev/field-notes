@@ -1136,6 +1136,9 @@ void main() {
           await t.tap(find.text(RepasoStrings.next));
         } else {
           acted = sc.s.entry;
+          await t.pump(
+            const Duration(milliseconds: 300),
+          ); // a ¿Cuál? item's pictures are on screen a frame later
           await sc.down(choice(sc.s.choices.indexWhere((c) => c.right)));
         }
       }

@@ -343,6 +343,10 @@ has that the earlier ones did not, or uses differently, and how the port uses it
   scene (`prueba`, test/support/fixtures/test_scene.dart: three of order 06's pictures of El banco), never converted, read
   through `TestSceneBundle` (test/support/sheet_bundle.dart). An id the registry does not hold is a scene for ScenePictures
   only when the bundle holds its old pictures; once every real scene is converted the path is still tested so.
+- **A scene the content names before it is in the registry** (A comer: its review set and level items are in the course, its
+  port is not done): the tool makes its folder too, after the registry's scenes (a review set's `scene` with a
+  `coqui/ref/escenas/<id>/pairs.json`), and `ScenePictures` shows it by the rule above (the bundle holds its old index; no
+  list of such scenes). When it is ported: it goes into the registry and `convertedScenes`, and its folder goes.
 - **A picture handed another picture in place** (the same widget with another ref, name, size or `animated`) starts over and
   shows the new one: its state mixes in `TickerProviderStateMixin`, because it disposes its ticker and starts another, which
   a single-ticker state refuses (Flutter threw and the picture showed the red error box). `test/pictures_test.dart` ("handed
