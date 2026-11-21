@@ -1,0 +1,168 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La estufa: abuela's stove, the second scene of La cocina, as a set on the Pixel Plays engine (order 38a).
+   The kitchen's own kit (cocina-kit.js, La mesa's designer's) builds the room as La sala's: the two far walls stand (cream plaster, the pale
+   blue tile band at counter height, the skirting), the near ones are not built, the checker floor runs off the picture, plain dark above
+   the cut walls. One light: from the upper left, shadows to screen right.
+   THE LAYOUT. One run along the back wall (world x; its fronts face +y, lit): the left counter (izq) from the corner, the stove, the right
+   counter (der) running off the picture at the right. Its tops are deep (D) so that what the old picture stood on them (a tray 46 px wide,
+   the plates, the sack and the jar, the jug and the cups) stands on them; on the world's axes the run falls half a row a pixel to the right,
+   so the old places on the tops move onto them (the sheet's moves). The stove is wide, in the kit's look (its colours, its front with
+   knobs and the oven door), its two burners far enough apart that a pot stands on each (34 px sprites): the kit's stove (K.STW 1.06, its
+   burners .45 apart, 8 px on the screen) cannot carry two. Behind it, from its top to the hood, a steel splashback (so that steam and smoke
+   show against it); the kit's hood over it, as wide as the stove. The shelf with its two jars on the wall over the left counter, the window
+   with its bush over the right counter, the stool on the floor in front of the stove where the frog stands.
+   The state comes from the address; these become the builder's setKey:
+     banco = 1 | 0     W.banco: the stool in front of the stove (the review pictures leave it out)
+     ox, oy            the origin (defaults are La estufa's)
+   ?tags=1 records which part drew each pixel (window.TAGS); ?sin=<part> leaves one part out (for the checks: what is behind it). */
+const Q = new URLSearchParams(location.search);
+const SET = { banco: Q.get('banco') !== '0', sin: Q.get('sin') || '' };
+window.PP_SCENE = { w: 240, h: 216, s: 26, originX: +(Q.get('ox') || -102), originY: +(Q.get('oy') || -40), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="cocina-kit.js"></script>
+<script>
+'use strict';
+cocinaCheckScene();
+/* ---------- the plan (world units; the kit's frame: the back wall on y = 0, the left wall on x = 0) ---------- */
+const D = 1.4;                                   // the run's depth from the wall (the tops; the kit's K.CD is .9: see the header)
+const AL0 = 0, AS0 = 5.19, AS1 = 7.96, AR1 = 12.4;    // the left counter from the corner to the stove, the stove, the right counter (runs off the picture)
+const BURN = [[5.79, .95], [7.36, .45]], BR = .36;    // the two burners: [a, d] of each middle, their radius (a pot's foot stands on each)
+const WIN = { name: 'ventana', face: 'y', a0: 8.1, a1: 10.6, z0: 1.95, z1: 3.1, view: 'patio', bars: 'none', door: true, horizon: 2.62 };   // the kit's hole, reveal, backdrop and three frame boards (door: no sill of its own: estufa's sill is deeper)
+const DEEP = .22, OUTSIDE_Y = -(DEEP + .35);   // round 3: the recess .22 deep, the wall's own thickness (was .5): its left side no longer hides the first face       // round 2: the window sits in a deep recess (the wall's thickness seen on its far side and bottom); whoever looks in stands outside at y = OUTSIDE_Y
+const SHELF = { a0: 1.05, a1: 3.6, z: 2.55, d: .62 }, JARS = [[2.65, [72, 168, 72]], [3.15, [88, 180, 236]]];
+const STOOL = { sx: 126, sy: 184, h: .72, hw: .32, leg: .035 };   // round 2: La nevera's stool (nevera-set.html stool(): h .72, r .32, legs .07 square, two cross rails, the seat KC.woodL); its top's middle under the frog's feet (126, 184)
+const SPLASH = [172, 176, 188];                  // the splashback behind the stove: brushed steel, a light mid grey (white steam and dark smoke both stand out from it by 2.0 and more)
+const HOOD_Z = [2.8, 3.05], HOOD_D = .45;        // the hood's canopy, higher and shallower than the kit's (2.36, .62): the steam over the pots rises against the splashback, under it
+const STOOL_C = (() => { const g = unproject(STOOL.sx, STOOL.sy + STOOL.h * COS * S); return [g.x, g.y]; })();   // the floor under the top's middle
+const CZ = K.CZ;
+const P = (name, fn) => (SET.sin && (name === SET.sin || name.startsWith(SET.sin + '.'))) ? null : part(name, fn);
+
+/* ---------- the stove: the kit's look (its colours, the hob, the knobs on the front panel, the oven door), as wide as two pots need ---------- */
+function stove() {
+  const a0 = AS0, a1 = AS1, d1 = D, zt = CZ, St = KC.steel, panel0 = zt - .2, door1 = zt - .3, door0 = .14, Wd = a1 - a0;
+  kBox('y', a0, a1, 0, d1, 0, zt, (f, p, q, sh) => {
+    if (f === 'top') {
+      for (const [ba, bd] of BURN) {
+        const r = Math.hypot(p - ba, q - bd);
+        if (r < BR * .4) return kRgb(KC.cap);
+        if (r < BR) return kRgb(r > BR - .05 || Math.abs(r - BR * .7) < .03 ? KC.cap : KC.burner);
+      }
+      return kRgb(p < a0 + .04 || p > a1 - .04 || q > d1 - .04 ? KC.steelD : KC.hob);
+    }
+    if (f === 'end') return kRgb(kLit(q > zt - .04 ? KC.steelD : St, sh));
+    if (q < .06) return kRgb(KC.burner);
+    if (q > zt - .03) return kRgb(kLit(KC.steelD, sh));
+    if (q > panel0) {                                                      // the panel: a knob before each burner
+      for (const [ba] of BURN) if (Math.abs(p - ba) < .07 && Math.abs(q - (panel0 + .1)) < .055) return kRgb(kLit(KC.red, sh));
+      return kRgb(kLit(q < panel0 + .025 ? KC.steelD : St, sh));
+    }
+    const da = p - a0, inDoor = da > .12 && da < Wd - .12 && q > door0 && q < door1;
+    if (!inDoor) return kRgb(kLit(St, sh));
+    if (da < .16 || da > Wd - .16 || q < door0 + .03 || q > door1 - .03) return kRgb(kLit(KC.steelD, sh));
+    if (Math.abs(q - (door1 - .1)) < .03 && da > .35 && da < Wd - .35) return kRgb(kLit(KC.handle, sh));
+    if (da > .35 && da < Wd - .35 && q > door0 + .14 && q < door1 - .2) return kRgb(kLit(KC.ovenGlass, sh));
+    return kRgb(kLit(St, sh));
+  }, 'tf');
+}
+// the splashback: a steel panel on the wall behind the stove, from its top to the hood
+// (it reaches past the stove's left end: the steam over the left pot rises in front of it, not in front of the pale tiles)
+const SPLASH_A = [4.05, AS1];
+function splash() { kSolid('y', SPLASH_A[0], SPLASH_A[1], 0, .03, CZ, HOOD_Z[0], SPLASH, 'tf'); }
+// the kit's hood, as wide as this stove (cocinaHood reads K.STW for its width)
+// round 2: the hood joined to the wall: its canopy's back on the wall's own line (y = 0) above the splashback, its top lit, its front a step
+// darker, the dark underside's lip along its foot (where the steam goes in), its duct up to the wall's cut edge
+function hood() {
+  const a0 = AS0 - .06, a1 = AS1 + .02, z0 = HOOD_Z[0], zl = z0 + .07, zt = z0 + .2, dd = HOOD_D, H = rampOf(KC.hood), U = kRgb([76, 76, 90]), w = a1 - a0;
+  P('campana.bajo', () => kBox('y', a0, a1, 0, dd, z0, zl, (f, p, q, sh) => U, 'fe'));
+  P('campana', () => kBox('y', a0, a1, 0, dd, zl, zt, (f, p, q, sh) => H[sh ? 1 : 2], 'fe'));
+  P('campana.arriba', () => kBox('y', a0, a1, 0, dd, zl, zt, () => H[4], 't'));
+  P('campana.tubo', () => kBox('y', a0 + w * .2, a1 - w * .2, 0, dd * .7, zt, K.WH, (f, p, q, sh) => f === 'top' ? H[4] : H[sh ? 1 : 3]));
+}
+// the kit's base cupboard with its top, as deep as this run (cocinaBase reads K.CD for its depth)
+function base(a0, a1, opts) { const c0 = K.CD; K.CD = D; try { return cocinaBase('y', a0, a1, opts); } finally { K.CD = c0; } }
+function shelf() {
+  P('estante', () => cocinaShelf('y', SHELF.a0, SHELF.a1, SHELF.z, { depth: SHELF.d }));
+  // round 2: two brackets under it, seen (the kit's own sit under the board, hidden by it)
+  for (const a of [SHELF.a0 + .3, SHELF.a1 - .35]) P('estante.mensula', () => kSolid('y', a - .05, a + .05, 0, SHELF.d * .85, SHELF.z - .44, SHELF.z - .06, KC.woodD));
+  for (const [a, c] of JARS) P('estante', () => {                          // the old picture's two jars on it (green, blue), white lids, at its back
+    kSolid('y', a - .13, a + .13, .06, .25, SHELF.z, SHELF.z + .42, c);
+    kSolid('y', a - .13, a + .13, .06, .25, SHELF.z + .42, SHELF.z + .5, [242, 242, 248]);
+  });
+}
+// the stool: a square wooden seat on four legs, on the world's axes. It is drawn after the room is baked (cocinaBuild), so the engine's ambient
+// occlusion makes no ring round its thin legs. It casts no shadow: a contact shadow at each foot read as four loose specks on the tiles
+function stool() {
+  const [cx, cy] = STOOL_C, r = STOOL.hw, hh = STOOL.h, before = zb.slice();
+  P('banco.patas', () => {
+    for (const [ex, ey] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) kSolid('y', cx + ex * (r - .07) - .035, cx + ex * (r - .07) + .035, cy + ey * (r - .07) - .035, cy + ey * (r - .07) + .035, 0, hh - .06, KC.woodD, 'fe');
+    kSolid('y', cx - r + .07, cx + r - .07, cy - .02, cy + .02, .22, .28, KC.woodD, 'fe');
+    kSolid('y', cx - .02, cx + .02, cy - r + .07, cy + r - .07, .22, .28, KC.woodD, 'fe');
+  });
+  P('banco', () => kSolid('y', cx - r, cx + r, cy - r, cy + r, hh - .06, hh, KC.woodL));
+  // its silhouette against the floor (shadeEdges' rule, for its own pixels only), as La nevera's; no shadow (no ring, no specks on the floor)
+  const b0 = project(cx - r, cy + r, 0), b1 = project(cx + r, cy - r, 0), b2 = project(cx - r, cy - r, hh), b3 = project(cx + r, cy + r, 0);
+  for (let iy = Math.floor(b2.sy) - 1; iy <= Math.ceil(b3.sy) + 1; iy++) for (let ix = Math.floor(b0.sx) - 1; ix <= Math.ceil(b1.sx) + 1; ix++) { const i = iy * W + ix; if (zb[i] === before[i]) continue; const a = i - W, bb = i + W, c = i - 1, e = i + 1; if (zb[a] === groundZ[a] || zb[bb] === groundZ[bb] || zb[c] === groundZ[c] || zb[e] === groundZ[e]) tint(i, .68, .66, .76); }
+}
+
+function furnish() {
+  P('izq', () => base(AL0, AS0, { noEnd: true, doors: 6 }));
+  P('estufa', stove);
+  P('der', () => base(AS1, AR1, { noEnd: true, doors: 6 }));
+  P('salpicadero', splash);
+  hood();
+  shelf();
+  windowDeep();
+}
+// round 2: the window's deep recess, its sill and the sill's shadow on the wall. The left jamb (x = a0, facing the room's +x) and the bottom
+// (z = z0, facing up) of the recess run DEEP back from the wall's face; the kit's backdrop (the patio's yard wall, the hedge, the sky) is
+// K.OUTD behind its outer face. The sill stands .3 out into the room at the opening's foot, a frame board under it, its shadow under that
+function windowDeep() {
+  const { a0, a1, z0, z1 } = WIN, Pl = rampOf(KC.plaster), Sl = rampOf(KC.sill), Fr = rampOf(KC.frame);
+  // (a hair in front of the kit's own reveal, which is the same faces .22 deep: these are drawn over it)
+  P('ventana.hondo', () => { planeQuad([a0 + .02, 0, z0], [0, -DEEP, 0], [0, 0, z1 - z0], () => Pl[1]); planeQuad([a0, 0, z0 + .02], [a1 - a0, 0, 0], [0, -DEEP, 0], (s, t) => t > .9 ? Pl[2] : Pl[3]); });
+  P('ventana.alfeizar', () => { kBox('y', a0 - .14, a1 + .14, 0, .3, z0 - .07, z0, (f, p, q, sh) => f === 'top' ? Sl[4] : Sl[sh ? 1 : 2]);
+    kBox('y', a0 - .1, a1 + .1, 0, .05, z0 - .2, z0 - .07, (f, p, q, sh) => f === 'top' ? Fr[3] : Fr[sh ? 1 : 2]); });
+  // the sill's shadow: the wall a little under the board, darker (the light from the upper left, the sill .3 out)
+  const q0 = project(a0 - .04, 0, z0 - .2), q1 = project(a1 + .2, 0, z0 - .32);
+  for (let iy = Math.floor(q0.sy) - 1; iy <= Math.ceil(q1.sy) + 1; iy++) for (let ix = Math.floor(q0.sx) - 1; ix <= Math.ceil(q1.sx) + 1; ix++) { const w = kWallPixel('y', 0, ix, iy), i = iy * W + ix;
+    if (w.a < a0 - .04 || w.a > a1 + .2 || w.z < z0 - .32 || w.z > z0 - .2 || Math.abs(zb[i] - w.d) > 1e-4) continue; tint(i, .78, .76, .86); }
+}
+// the run stands against the back wall, its fronts lit: its shadow would fall to screen right, along the wall, past its end off the picture.
+// So it casts none here (a shadow on its lit side, in front of it, would be a fringe)
+const PLAN = { XR: AR1 + 2, YL: 6, windows: [WIN], band: { y: [[0, SPLASH_A[0]], [SPLASH_A[1], AR1 + 2]] }, furnish, occlusion: 'shade' };   // the floor dimmed on the shadow side only (the kit's, as La mesa's)
+function buildSet() { cocinaBuild(PLAN); if (SET.banco) { stool(); bakedPix.set(pix); bakedZ.set(zb); } }
+
+/* ---------- what is under a screen point: the stool's top, a top of the run, the floor (for the sheet's places) ---------- */
+const atZ = (sx, sy, z) => { const u = (sx - OX) / S, v = (sy - OY + z * COS * S) / (S * SIN); return [(u + v) / R2, (v - u) / R2, z]; };
+function surfaceAt(sx, sy) {
+  if (SET.banco) { const s = atZ(sx, sy, STOOL.h); if (Math.abs(s[0] - STOOL_C[0]) <= STOOL.hw && Math.abs(s[1] - STOOL_C[1]) <= STOOL.hw) return { on: 'banco', w: s }; }
+  const t = atZ(sx, sy, CZ); if (t[1] >= 0 && t[1] <= D && t[0] >= AL0 && t[0] <= AR1) return { on: t[0] < AS0 ? 'izq' : t[0] <= AS1 ? 'estufa' : 'der', w: t };
+  const sl = atZ(sx, sy, SHELF.z); if (sl[1] >= 0 && sl[1] <= SHELF.d && sl[0] >= SHELF.a0 && sl[0] <= SHELF.a1) return { on: 'estante', w: sl };
+  const g = atZ(sx, sy, 0); if (g[0] >= 0 && g[1] > D) return { on: 'suelo', w: g };
+  return { on: g[1] >= 0 ? 'mueble' : 'pared', w: g };
+}
+// the screen row of a top of the run at column sx and depth d from the wall
+const topRow = (sx, d) => { const a = d + (sx - OX) / S * R2; return project(a, d, CZ).sy; };
+const holePoly = [[WIN.a0, WIN.z0], [WIN.a1, WIN.z0], [WIN.a1, WIN.z1], [WIN.a0, WIN.z1]].map(([a, z]) => { const p = project(a, 0, z); return [Math.round(p.sx * 100) / 100, Math.round(p.sy * 100) / 100]; });
+window.ESTUFA_SET = { SET, D, CZ, AL0, AS0, AS1, AR1, BURN, BR, WIN, SHELF, JARS, STOOL, STOOL_C, SPLASH, holePoly,
+  burners: BURN.map(([a, d]) => { const p = project(a, d, CZ); return { world: [a, d, CZ], screen: [p.sx, p.sy] }; }),
+  K: { CZ: K.CZ, HZ0: K.HZ0, HZ1: K.HZ1, HD: K.HD, BAND0: K.BAND0, BAND1: K.BAND1, WH: K.WH, T: K.T, OUTD: K.OUTD },
+  THIN: ['estante', 'estante.mensula', 'banco.patas'], DEEP, OUTSIDE_Y, HOOD: { a0: AS0 - .06, a1: AS1 + .02, z0: HOOD_Z[0], zt: HOOD_Z[0] + .2, d: HOOD_D }, surfaceAt, topRow, atZ };
+
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+// one frame: the baked set, then the shadows of whoever the sheet names (casts: [x, y, z, r] on the floor), as the port's frame step 3
+function frame(t, casts = []) { pix.set(bakedPix); zb.set(bakedZ); shadowMask.fill(0); for (const c of casts) castShadow(c[0], c[1], c[2], c[3]); applyShadows(groundZ); ctx.putImageData(image, 0, 0); return image; }
+frame();
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>
