@@ -27,7 +27,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 1. NARR: "Es mediodía. La gente viene al quiosco." **(mediodía: heard)** The maestra walks up with her books and sits on the first stool. NARR: "El vendedor dice: ¡Buenas tardes, maestra!" Carmen jumps up and waves. NARR: "Carmen dice: ¡Mira! Es mi maestra. La maestra viene de la escuela." Ask (signed, the maestra): "¿Dónde está la maestra?" He touches her: she lifts the apple.
 2. The doctor walks up, his stethoscope swinging, and sits on the second stool. NARR: "El vendedor dice: ¡Buenas tardes, doctor!" NARR: "Luis dice: El doctor viene del hospital." NARR: "Carmen dice: ¡Hola, doctor!" The doctor listens to his own chest and smiles.
 3. The cocinero and the policía come together; they take the last two stools. NARR: "Luis dice: ¡Mira, un cocinero! El cocinero hace la comida." The cocinero twirls his spoon. NARR: "Carmen dice: Y un policía. El policía mira los carros." The policía touches his cap. Ask (signed, the cocinero): "¿Quién es el cocinero?" He touches him: the spoon again.
-4. NARR: "El vendedor dice: Coquí, ¿me ayudas?" **(me ayudas: heard)** COQUÍ [TURN: sí (sí, si)]: "¡Sí!" The vendedor fills a cup and sets it on the frog's tray. NARR: "El vendedor dice: Un café para el policía." Ask (signed, the policía): "¿Quién es el policía?" He touches him: the frog slides along the counter with the tray. COQUÍ: "Aquí tiene." NARR: "El policía dice: Gracias." He drinks it in one go, blows his whistle once, and hands the cup back.
+4. NARR: "El vendedor dice: Coquí, ¿me ayudas?" **(me ayudas: heard)** COQUÍ [TURN: sí (sí, si)]: "¡Sí!" The vendedor fills a cup and sets it on the frog's tray. NARR: "El vendedor dice: Un café para el policía." Ask (signed, the policía): "¿Quién es el policía?" He touches him: the frog slides along the counter with the tray. COQUÍ: "¡Aquí tiene!" NARR: "El policía dice: Gracias." He drinks it in one go, blows his whistle once, and hands the cup back.
 
 **The turn**
 
@@ -36,7 +36,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 **The game.** The vendedor fills a cup or a glass and says who it is for: one of the four, drawn, each round on its own (round B's can be the same one again). What is in it is drawn too (un café, un jugo de china, un vaso de leche). The one who is served drinks and hands the cup back, so nobody is left holding one.
 
 6. **Decision A, touch a person (the four on the stools; tests the word for the one named).** NARR: "El vendedor dice: Un café para la maestra." (Drawn.)
-   - Right: the frog slides the tray to her. COQUÍ: "Aquí tiene." She takes the cup and nods. A star.
+   - Right: the frog slides the tray to her. COQUÍ: "¡Aquí tiene!" She takes the cup and nods. A star.
    - Wrong: the frog slides it to another, who pushes the tray back: the cup tips over and the coffee runs along the counter. The one who was named holds out empty hands. NARR: "El vendedor dice: No, Coquí. El café es para la maestra." He wipes the counter, lifts the dome, and sets a quesito on a saucer for her: two are left under the glass. A cross. He fills another cup. The sign is on the right one; he touches her: the cup goes to her.
 7. **Decision B, touch a person (the same game).** NARR: "El vendedor dice: Y un vaso de leche para el doctor." (Drawn.) Right and wrong as in A.
 
@@ -46,12 +46,12 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - Three quesitos left: one for Luis, one for Carmen, one for the frog, which is as big as he is. Stars and a heart.
    - Two left: Luis and Carmen take one each and each break off a piece for the frog.
    - One left: the vendedor cuts it in three.
-9. NARR: "El vendedor dice: ¿Quieres un quesito, Coquí?" **(quesito: heard; the picture carries it)** COQUÍ [TURN: por favor (por favor, sí por favor)]: "¡Sí, por favor!" NARR: "La maestra va a la escuela. El doctor va al hospital. Y Coquí come."
+9. NARR: "El vendedor dice: ¿Quieres un quesito, Coquí?" **(quesito: heard; the picture carries it)** COQUÍ [TURN: quiero (quiero, sí quiero)]: "¡Sí, quiero!" NARR: "La maestra va a la escuela. El doctor va al hospital. Y Coquí come."
 
 **Fewest hearings before a word can cost:** maestra 4 (step 1), doctor 3 (step 2), cocinero 3 (step 3), policía 4 (steps 3, 4).
 **A miss is filed under:** the word for the one who was named.
 **Chance without the Spanish:** one in four, each round on its own. The clothes show who is who; only the word says who the cup is for. Nobody holds a cup when a round starts.
-**Speaking turns:** two (steps 4, 9): sí; por favor. ("Aquí tiene" is said in the frog's own voice.)
+**Speaking turns:** two (steps 4, 9): sí; quiero. ("¡Aquí tiene!" is said in the frog's own voice.)
 
 ---
 
@@ -67,7 +67,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 **The opening** (big sign)
 
 1. NARR: "Mira al vendedor. El vendedor trabaja en el quiosco." NARR: "El vendedor dice: Yo trabajo aquí. Soy vendedor. ¡Y tengo mucho trabajo!" He lifts the box onto the counter and takes off its lid, shaking his head: the things people forgot. Ask (signed, the box): "¿Qué hay en la caja?" He touches it: the frog hops over, looks in, and lifts out a thick book.
-2. A young man sits down on a stool. NARR: "Abuela dice: Y tú, ¿en qué trabajas?" NARR: "El joven dice: No trabajo. Soy estudiante. Voy a la universidad." **(universidad: heard)** NARR: "Abuela dice: ¡Un estudiante! Muy bien." The frog looks at the book, and at him. Ask (signed, the young man): "¿Quién es el estudiante?" He touches him: the frog carries the book over on his head. NARR: "El joven dice: ¡Mi libro! ¡Gracias, Coquí!" **(libro: heard)** COQUÍ [TURN: de nada (de nada)]: "¡De nada!"
+2. A young man sits down on a stool. NARR: "Abuela dice: Y tú, ¿en qué trabajas?" NARR: "El joven dice: No trabajo. Soy estudiante. Voy a la universidad." **(universidad: heard)** NARR: "Abuela dice: ¡Un estudiante! Muy bien." The frog looks at the book, and at him. Ask (signed, the young man): "¿Quién es el estudiante?" He touches him: the frog carries the book over on his head. COQUÍ [TURN: toma (toma)]: "¡Toma!" NARR: "El joven dice: ¡Mi libro! ¡Gracias, Coquí!" **(libro: heard)**
 3. The señor sits down beside him. NARR: "Abuela dice: ¿Y usted? ¿En qué trabaja?" NARR: "El señor dice: Soy cocinero. Trabajo en la escuela." The frog lifts a tall white hat out of the box. Ask (signed, the señor): "¿Quién trabaja en la escuela?" He touches him: the frog brings the hat; the señor puts it on, and everybody claps.
 4. Luis bends down to the frog. NARR: "Luis dice: Y tú, Coquí, ¿en qué trabajas?" The frog shakes his head. NARR: "Abuela dice: Coquí no trabaja. ¡Coquí juega!"
 
@@ -91,14 +91,14 @@ Round B: the thing is a school bag full of books, or a shop's apron. The two are
    - Three limbers left: a red one, a yellow one and a white one in a row before the frog; his tongue sticks to the first. Stars and a heart.
    - Two left: two, and a cup of juice.
    - One left: one; Canelo laps at the two melted cups.
-9. NARR: "El vendedor dice: ¿Quieres un limber, Coquí?" **(limber: heard; the picture carries it)** COQUÍ [TURN: quiero (quiero, sí quiero)]: "¡Sí, quiero!" NARR: "Abuela dice: ¡Mira! Ahora Coquí también trabaja."
+9. NARR: "El vendedor dice: ¿Quieres un limber, Coquí?" **(limber: heard; the picture carries it)** COQUÍ [TURN: gracias (gracias, sí gracias)]: "¡Sí, gracias!" NARR: "Abuela dice: ¡Mira! Ahora Coquí también trabaja."
 
 **Fewest hearings before a word can cost:** estudiante 3 (step 2), vendedor 3 in this story (step 1) and many times as the speaker's name in stories 63 and 66. Not deciding: trabaja 4, trabajo 4, ¿en qué trabajas? 3 with "¿en qué trabaja?" (steps 2, 3, 4) before the game.
 **Forms:** trabajas counts with trabaja; "¿en qué trabaja?" with "¿en qué trabajas?"; vendedora with vendedor; maestro with maestra; doctora with doctor; "trabajo" is one clip for "I work" and "a job".
 **A miss is filed under:** round A, the word for the owner (maestra, doctor or policía); round B, estudiante or vendedor, whichever the owner said.
 **Chance without the Spanish:** one in two, each round on its own: nothing about the two shows what they do, and either of them can be anything.
 **What round A tests:** story 66's words, said by people about themselves, with the place they work in beside them. The words new in this story decide in round B only.
-**Speaking turns:** two (steps 2, 9): de nada; quiero.
+**Speaking turns:** two (steps 2, 9): toma; gracias.
 
 ---
 
@@ -122,7 +122,7 @@ Round B: the thing is a school bag full of books, or a shop's apron. The two are
 
 5. The children of the square have seen the tray: a niño and a niña run up, and more behind them. The vendedor points at the tray, and at Beto's tower: that one is Beto's. NARR: "El vendedor dice: Un bizcocho para cada niño. ¡Con su número!" **(cada, número: heard)** Beto puts both arms round his tower. The card shows two places. The signs go.
 
-**The game.** A child at the counter says how old he is, and how many brothers or sisters he has (which is said first is drawn). Three number candles lie on the tray: his years, his brothers or sisters, and one more number. Years are drawn from five to twelve; brothers or sisters from two to four; never the pairs seis and siete, once and doce on one tray. The tray is cleared after each round.
+**The game.** A child at the counter says how old he is, and how many brothers or sisters he has (which is said first is drawn). Three number candles lie on the tray: his years, his brothers or sisters, and one more number. Years are drawn from five to twelve; brothers or sisters from two to four; the third candle is another number from one to twelve; never the pairs seis and siete, once and doce on one tray. The tray is cleared after each round. Each answer is two clips, one for each sentence ("El niño dice: Tengo nueve años." and "Y tengo dos hermanos."; or "El niño dice: Tengo dos hermanos." and "Y tengo nueve años."), so that the draws share their recordings.
 
 6. **Decision A, touch a candle (three candles; tests años).** The niño stands at the counter. NARR: "El vendedor dice: ¿Cuántos años tienes?" NARR: "El niño dice: Tengo nueve años. Y tengo dos hermanos." (Drawn.)
    - Right: the frog pushes the candle into a bizcocho from the tray; the vendedor hands it over; the niño holds it up. A star.
@@ -152,7 +152,7 @@ Two fresh reviewers read draft 1 with his rules and nothing else: one as a begin
 
 Fixed:
 - 66: the picture marked who was still to be served (two held drinks, two looked at their watches), so round A was one in two and round B was certain: now nobody holds a cup when a round starts, the watches are gone, and each round is drawn from all four. A quesito given "to say sorry" looked like a present: the cup is pushed back and spills, and the dome is seen to go from three to two. "Una leche" is not an order: "un vaso de leche". "Para la maestra." was a fragment. "¿Y el doctor? ¿Dónde está el doctor?" asked twice to make up a count: Carmen greets him. Fewer touch-the-person asks in a row.
-- 67: "¿Qué haces?" said bare is "what are you doing?": the question is "¿En qué trabajas?", and to a grown stranger abuela says "¿Y usted? ¿En qué trabaja?". Round A gave itself away (the señora was never the doctor, the hombre never the maestra): either can be anything. Why would the owner not just say "that is mine"? Now the frog lifts the thing out of the box where the two at the counter do not see it, and they are only talking to abuela. The box showed a stethoscope from the start and was "empty" with things still in it: it has a lid. A grown-up who is a student does not go to "la escuela": "Voy a la universidad", and the student answers "No trabajo. Soy estudiante." "Trabajo en la calle" is also the street life: "Trabajo aquí, en la plaza". Two turns stood almost back to back, and the turn "No, gracias" to a job muddled the ending: the turns are "de nada" and "quiero".
+- 67: "¿Qué haces?" said bare is "what are you doing?": the question is "¿En qué trabajas?", and to a grown stranger abuela says "¿Y usted? ¿En qué trabaja?". Round A gave itself away (the señora was never the doctor, the hombre never the maestra): either can be anything. Why would the owner not just say "that is mine"? Now the frog lifts the thing out of the box where the two at the counter do not see it, and they are only talking to abuela. The box showed a stethoscope from the start and was "empty" with things still in it: it has a lid. A grown-up who is a student does not go to "la escuela": "Voy a la universidad", and the student answers "No trabajo. Soy estudiante." "Trabajo en la calle" is also the street life: "Trabajo aquí, en la plaza". Two turns stood almost back to back, and the turn "No, gracias" to a job muddled the ending: the turns are "toma" and "gracias" ("de nada" and "por favor" have never been a story's new word, so they cannot be a turn's word; the builder's check found it).
 - 68: only the number decided, and numbers are old words: now each child says two numbers ("Tengo nueve años. Y tengo dos hermanos."), and only "años" says which is his age. Round B's tray still held round A's candles: it is cleared. "¡Con sus años!" is what is said of old people: "¡Con su número!". Ana would not ask her own brother his age on his birthday: the vendedor asks. Nothing set up the frog's "tres": he holds up three fingers as the question lands. The three stories all ended with food shared three ways: 68 ends on Beto's tower and 67 on the frog's own limbers.
 
 Left, and why:

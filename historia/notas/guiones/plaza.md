@@ -120,24 +120,24 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 **The game.** A visitor asks for something; the piragüero asks who speaks English. Two people come up, drawn each round from the señor, the señora, the hombre, the mujer and the joven (nobody twice); each says what he speaks; who can help, and who speaks first, is drawn. The frog touches the one who can help.
 
 5. **Decision A, touch a person (two people; tests inglés).** NARR: "El piragüero dice: ¿Quién habla inglés?" NARR: "La mujer dice: Yo hablo inglés." NARR: "El hombre dice: Yo solo hablo español." **(solo: heard)** (Drawn.)
-   - Right: the helper listens to the visitor, and tells the piragüero; over the helper a bubble with both flags. The piragüero makes the piragua; a coin drops into the jar. A star.
-   - Wrong: the one he touched listens to the visitor, and shrugs. NARR: "El hombre dice: Perdón. No entiendo." At the end of the line a visitor looks at his watch and walks away. A cross. The sign is on the right one; he touches her: she helps; the piragua, the coin.
+   - Right: the helper listens to the visitor, and tells the piragüero; over the helper a bubble with both flags. The piragüero makes the piragua; a coin drops into the jar. The visitor goes off with her piragua, and the two who came up walk away. A star.
+   - Wrong: the one he touched listens to the visitor, and shrugs. NARR: "El hombre dice: Perdón. No entiendo." At the end of the line a visitor looks at his watch and walks away. A cross. The sign is on the right one; he touches her: she helps; the piragua, the coin; the visitor and the two go, as after a right move.
 6. **Decision B, touch a person (two others; tests hablo against no hablo).** The next visitor steps up: the flag, and a small piragua. NARR: "El piragüero dice: ¿Y ahora? ¿Quién habla inglés?" NARR: "El joven dice: No hablo inglés." NARR: "La señora dice: Hablo inglés y español." (Drawn.)
    - Right and wrong as in A. The line of the one who cannot help: "Perdón. No entiendo."
 
 **The ending**
 
-7. Ana comes back, out of breath, and helps the visitors who are still at the back of the line, one after another: piraguas, coins.
+7. Ana comes back, out of breath, and helps the visitors who are still at the back of the line, one after another: piraguas, coins. The piragüero counts the coins in his jar and turns to the frog. NARR: "El piragüero dice: ¿Quieres una piragua, Coquí?" COQUÍ [TURN: sí (sí, si, sí por favor)]: "¡Sí, por favor!"
    - Three were still waiting: the jar is full to the top. The piragüero makes the piragua of his painting, three colours, as big as the frog, and gives it to him. Stars and a heart.
    - Two: a piragua of two colours.
    - One: a small red one.
-8. NARR: "El piragüero dice: ¿Quieres una piragua, Coquí?" COQUÍ [TURN: por favor (por favor)]: "¡Sí, por favor!" NARR: "Ana dice: Yo hablo inglés y español. ¡Y tú hablas español, Coquí!" NARR: "Coquí habla español. Y come piragua."
+8. NARR: "Ana dice: Yo hablo inglés y español. ¡Y tú hablas español, Coquí!" NARR: "Coquí habla español. Y come piragua."
 
 **Fewest hearings before a word can cost:** inglés 4 (steps 1 twice, 2, and the piragüero's question), hablo 5 with habla (steps 1 to 3). Not deciding: español 3 (steps 1, 2, 3); entiendo 4 with entiendes (steps 1, 2 twice, 4); no sé 3 (steps 3 twice, 4).
 **Forms:** habla, hablas count with hablo; entiendes with entiendo.
 **A miss is filed under:** inglés in round A, hablo in round B.
 **Chance without the Spanish:** one in two, each round on its own: nothing about the two shows what they speak. In round B both say "inglés": only "no hablo" and "hablo" say who can help.
-**Speaking turns:** two (steps 2, 8): no; por favor.
+**Speaking turns:** two (steps 2, 7): no; sí.
 
 ---
 
@@ -148,7 +148,7 @@ Two fresh reviewers read draft 1 with his rules and nothing else: one as a begin
 Fixed:
 - 60: the game set the new question against "¿cómo estás?", an old line, so the new one was never needed: now both lines are new (his name is asked, or he is greeted by name), and the bubbles change sides. Carmen asked a name she had just heard twice: Ana asks the dog's name. "Toca aquí. Y aquí." was a drill with bare labels: the bubbles come in inside Ana's own meeting with the frog. A pigeon flying off because a grown-up said a line again was thin: everybody bursts out laughing. Lines with no verb or the wrong moment ("Una niña nueva en la plaza", "¡mucho gusto! ¿Juegan?") are whole sentences. Counts put right.
 - 61: the game's people had things that gave the answer away (the piragüero at his cart lives here; the abuela with a camera is a visitor), and the draw could contradict story 62: now the señora and the señor, with nothing to go by. The round never asked the board's question: the narrator asks "¿De dónde es la señora?" after her answer. A child asks a grown-up with usted. The cards sat on the seat and the stone rolled by itself: they are on the board's ledge, and the frog knocks the stone as he reaches for the wrong photo. "Hacen fotos" is Spain's: "tienen fotos". "Vivo en" was heard twice: Ana's abuela is the opposite case of Ana (from the island, lives in the city), which also shows that where he is FROM decides. Two turns stood one line apart: one is cut. "En la casa de abuela" copied the new pattern and could mean Ana's abuela: "¡Cerca!".
-- 62: rebuilt. Round B could not be settled by the Spanish (whoever says "Hablo inglés" in Spanish speaks both), and the story said Ana's abuela and Beto spoke no Spanish after both had spoken it. Now the ones who speak only English are visitors; the piragüero, who speaks only Spanish, asks "¿Quién habla inglés?", which is what people ask; round B sets "No hablo inglés" against "Hablo inglés y español". The stake had no link to the move: now a helper who cannot help costs a visitor from the line. Both turns used new words: they are "no" and "por favor". "Ana dice: Abuela dice: ..." had two speakers: Ana says what the visitor wants. "No sé" was heard once: three times. Luis could be drawn speaking English after saying he does not: the family is out of the draw. The joke about mantecado is cut.
+- 62: rebuilt. Round B could not be settled by the Spanish (whoever says "Hablo inglés" in Spanish speaks both), and the story said Ana's abuela and Beto spoke no Spanish after both had spoken it. Now the ones who speak only English are visitors; the piragüero, who speaks only Spanish, asks "¿Quién habla inglés?", which is what people ask; round B sets "No hablo inglés" against "Hablo inglés y español". The stake had no link to the move: now a helper who cannot help costs a visitor from the line. Both turns used new words: they are "no" and "sí" ("por favor" has never been a story's new word, so it cannot be the turn's word; the builder's check found it). "Ana dice: Abuela dice: ..." had two speakers: Ana says what the visitor wants. "No sé" was heard once: three times. Luis could be drawn speaking English after saying he does not: the family is out of the draw. The joke about mantecado is cut.
 
 Left, and why:
 - The island often puts the pronoun in: "¿Cómo tú te llamas?", "¿De dónde tú eres?". Both ways are said there; the reviewer was not sure which is more usual. The plain form is kept: it is the one he will be asked on the call, and it is understood everywhere.
