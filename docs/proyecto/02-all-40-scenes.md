@@ -64,9 +64,9 @@ A day at the beach. The call: say how the weather is, what you are wearing, what
 
 Eating out. The call: get a table, order food and a drink, say how it is, ask for the bill.
 - **La entrada (the way in).** Getting a table. fonda, mesero, mesera, menú, para dos, libre, ocupado, adelante, bienvenido, un momento, con, sin
-- **El pedido (the order).** Choosing. sopa, carne, pescado, ensalada, tostones, mofongo, bebida, refresco, limonada, para mí, para él, quisiera
+- **El pedido (the order).** Choosing. sopa, carne, pescado, ensalada, tostones, mofongo, bebida, refresco, limonada, para mí, para él, me da
 - **La comida (the meal).** How it tastes. salado, dulce, picante, delicioso, mejor, menos, bastante, prueba, falta, está bien, servilleta, hielo
-- **La cuenta (the bill).** Paying and leaving. cuenta, tarjeta, efectivo, propina, total, postre, flan, helado, nada más, satisfecho, hasta luego, buenas noches
+- **La cuenta (the bill).** Paying and leaving. cuenta, tarjeta, efectivo, propina, total, postre, flan, mantecado, nada más, estoy lleno, hasta luego, buenas noches
 
 ## 9. La casa, un día entero
 
