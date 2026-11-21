@@ -2,7 +2,7 @@
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
 <p class="dev"><b>DEV TOOL, not part of the game.</b> The set of La parada (parada-set.html, drawn in a hidden frame; the guaguas are drawn by the set itself through its <code>autos=</code> parameter, in the game they are sprites) with the characters and the small things drawn over it as sprites, each placed from parada-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand or sit. Then cropped to the 196 x 216 view (sheet: views.wide). The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the heads at the guagua's glass, the chofer, the tickets, the boxes, the basket of rolls and the ball are stand-ins drawn here, not final art. The people inside the guagua at its back door's glass are the guagua sprite's: not drawn here.
 The make reads the moments through <code>PREVIEW.inspect(m)</code> and the sprites' silhouettes through <code>PREVIEW.sil()</code> (<code>?nodraw=1</code> skips the first drawing, <code>?nosheet=1</code> does not read the sheet).
-Address: <code>?m=1</code> story 51 opening (morning), <code>?m=2</code> story 51 game, <code>?m=3</code> story 52 opening, <code>?m=4</code> story 52 game, <code>?m=5</code> story 53 start (early), <code>?m=6</code> story 53 ending (night) (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane, <code>&amp;also=chofer,ventana2,senor.llega</code> to add a sprite at those spots. Serve the repo over http.</p>
+Address: <code>?m=1</code> story 51 opening (morning), <code>?m=2</code> story 51 game, <code>?m=3</code> story 52 opening, <code>?m=4</code> story 52 game, <code>?m=5</code> story 53 start (early), <code>?m=6</code> story 53 ending (night) (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane, <code>&amp;also=chofer,ventana2,fila5</code> to add a sprite at those spots. Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -90,42 +90,43 @@ Address: <code>?m=1</code> story 51 opening (morning), <code>?m=2</code> story 5
   /* ---------- the six moments ---------- */
   const strip = () => [thing('boletos'), 17, 31];                                      // abuela's strip in her hand
   const MOMENTS = {
-    1: { what: 'story 51, opening, morning: the family at the kerb (abuela with her strip of tickets at bordillo.abuela, Luis with his ball, Carmen with her basket, the frog), the señora on the seat at banco1, the two guaguas at the stop (the tree at P1, the awning at P2)',
+    1: { what: 'story 51, opening, morning: the family waits in the row: Luis with his ball at fila1, abuela with her strip of tickets at fila2, the frog at fila3, Carmen with her basket at fila4; the señora on the seat at banco1; the two guaguas at the stop (the tree at P1, the awning at P2)',
       set: E => ({ hora: 'manana', autos: [['arbol', E.P1], ['toldo', E.P2]] }),
-      layers: () => [{ at: 'bordillo.luis', s: () => holding(SP.persona(LUIS), [[thing('pelota'), 12, 27]]), who: 'nino' },
-        { at: 'bordillo.abuela', s: () => holding(SP.abuela(), [strip()]), who: 'adulto' },
-        { at: 'bordillo.coqui', s: () => SP.coqui(), who: 'coqui' },
-        { at: 'bordillo.carmen', s: () => holding(SP.persona(CARMEN), [[thing('cesta'), 1, 28]]), who: 'nino' },
+      layers: () => [{ at: 'fila1', s: () => holding(SP.persona(LUIS), [[thing('pelota'), 12, 27]]), who: 'nino' },
+        { at: 'fila2', s: () => holding(SP.abuela(), [strip()]), who: 'adulto' },
+        { at: 'fila3', s: () => SP.coqui(), who: 'coqui' },
+        { at: 'fila4', s: () => holding(SP.persona(CARMEN), [[thing('cesta'), 1, 28]]), who: 'nino' },
         { at: 'banco1', s: () => SP.persona(SENORA, 'idle', 1), who: 'adulto' }] },
-    2: { what: 'story 51, the game: abuela (with her strip) and the frog at the kerb, the two guaguas at the stop (the tree at P1, the house at P2)',
+    2: { what: 'story 51, the game: abuela (with her strip) at fila2 and the frog at fila3, the two guaguas at the stop (the tree at P1, the house at P2)',
       set: E => ({ hora: 'manana', autos: [['arbol', E.P1], ['casa', E.P2]] }),
-      layers: () => [{ at: 'bordillo.abuela', s: () => holding(SP.abuela(), [strip()]), who: 'adulto' },
-        { at: 'bordillo.coqui', s: () => SP.coqui(), who: 'coqui' }] },
-    3: { what: 'story 52, opening: the guagua with the tree at P1; abuela\'s head at ventana1 with the basket of rolls on the sill; Luis about to get on at espera_sube, the frog at the front button, Canelo at bajo_banco, the señor just off the back door at espera_baja',
+      layers: () => [{ at: 'fila2', s: () => holding(SP.abuela(), [strip()]), who: 'adulto' },
+        { at: 'fila3', s: () => SP.coqui(), who: 'coqui' }] },
+    3: { what: 'story 52, opening: the guagua with the tree at P1; abuela\'s head at ventana1 with the basket of rolls on the sill; the frog at the front button (coqui.boton_sube), Luis waiting at fila1, the señor just off the back door at puerta_baja, Canelo at bajo_banco',
       set: E => ({ hora: 'manana', autos: [['arbol', E.P1]] }),
       layers: () => [{ at: 'ventana1', s: () => SP.headAbuela(), who: null, pane: true },
         { at: 'ventana1', off: [0, 0, -.3], s: () => SP.thing('panes'), who: null, pane: true },
-        { at: 'espera_sube', s: () => SP.persona(LUIS), who: 'nino' },
+        { at: 'fila1', s: () => SP.persona(LUIS), who: 'nino' },
         { at: 'coqui.boton_sube', s: () => SP.coqui(), who: 'coqui' },
         { at: 'bajo_banco', s: () => SP.perro('lie'), who: 'perro' },
-        { at: 'espera_baja', s: () => SP.persona(SENOR), who: 'adulto' }] },
-    4: { what: 'story 52, the game: the guagua at P1, three people at cola1 to cola3 (a señora, a señor, a child), the frog between the two buttons at coqui.botones, Canelo at bajo_banco',
+        { at: 'puerta_baja', s: () => SP.persona(SENOR), who: 'adulto' }] },
+    4: { what: 'story 52, the game: the guagua at P1, three people waiting at fila1 to fila3 (a señora, a señor, a child), the frog between the two buttons at coqui.botones, Canelo at bajo_banco',
       set: E => ({ hora: 'manana', autos: [['arbol', E.P1]] }),
-      layers: () => [{ at: 'cola1', s: () => SP.persona(SENORA), who: 'adulto' }, { at: 'cola2', s: () => SP.persona(SENOR), who: 'adulto' }, { at: 'cola3', s: () => SP.persona(NINO3), who: 'nino' },
+      layers: () => [{ at: 'fila1', s: () => SP.persona(SENORA), who: 'adulto' }, { at: 'fila2', s: () => SP.persona(SENOR), who: 'adulto' }, { at: 'fila3', s: () => SP.persona(NINO3), who: 'nino' },
         { at: 'coqui.botones', s: () => SP.coqui(), who: 'coqui' },
         { at: 'bajo_banco', s: () => SP.perro('lie'), who: 'perro' }] },
-    5: { what: 'story 53, early morning: abuela sitting at banco2 with her two boxes, the ball at banco3, the señor at banco1, the frog at the walking post',
+    5: { what: 'story 53, early morning: the señor sitting at banco1, abuela at banco2, her two boxes between them at banco_medio, the ball at banco3, the frog at the walking post (coqui.poste)',
       set: E => ({ hora: 'temprano', autos: [] }),
       layers: () => [{ at: 'banco1', s: () => SP.persona(SENOR, 'idle', 1), who: 'adulto' },
-        { at: 'banco2', s: () => holding(SP.abuelaS(), [[thing('cajas'), 22, 33]]), who: 'adulto' },
+        { at: 'banco2', s: () => SP.abuelaS(), who: 'adulto' },
+        { at: 'banco_medio', s: () => SP.thing('cajas'), who: null },
         { at: 'banco3', s: () => SP.thing('pelota'), who: null },
-        { at: 'poste', s: () => SP.coqui(), who: 'coqui' }] },
-    6: { what: 'story 53, the ending, night (the lamp lit): abuela, Luis with the ball, Carmen and the frog on the pavement at fin.abuela, fin.luis, fin.carmen, fin.coqui',
+        { at: 'coqui.poste', s: () => SP.coqui(), who: 'coqui' }] },
+    6: { what: 'story 53, the ending, night (the lamp lit): abuela at fila2, the frog at fila3, Luis with the ball at fila4, Carmen at fila5',
       set: E => ({ hora: 'noche', autos: [] }),
-      layers: () => [{ at: 'fin.abuela', s: () => SP.abuela(), who: 'adulto' },
-        { at: 'fin.luis', s: () => holding(SP.persona(LUIS), [[thing('pelota'), 13, 27]]), who: 'nino' },
-        { at: 'fin.carmen', s: () => SP.persona(CARMEN), who: 'nino' },
-        { at: 'fin.coqui', s: () => SP.coqui(), who: 'coqui' }] },
+      layers: () => [{ at: 'fila2', s: () => SP.abuela(), who: 'adulto' },
+        { at: 'fila3', s: () => SP.coqui(), who: 'coqui' },
+        { at: 'fila4', s: () => holding(SP.persona(LUIS), [[thing('pelota'), 12, 27]]), who: 'nino' },
+        { at: 'fila5', s: () => SP.persona(CARMEN), who: 'nino' }] },
   };
   const RADIUS = () => SHEET.shadows.radius, RAD = { coqui: 'coqui', adulto: 'adultos', nino: 'ninos', perro: 'perro' };
   // the sprites added by &also=: one for each spot named

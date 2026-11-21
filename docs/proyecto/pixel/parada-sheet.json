@@ -10,11 +10,11 @@
  "view": [196, 216],
  "rules": {
   "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels. The houses' wall is y = 0 (it faces +y); the street runs from y 1.6 to 5.6, the stop's lane is y 4.6, the near pavement from y 5.8 to 9.2",
-  "spot": "a spot is a world point of the feet (z 0: the pavement; z 0.46: the seat's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere. kind: person (a character stands there), seat (sits on the seat's top), door (a person at the guagua's door, y 5.3, in front of its lit side 5.25), button (a point on the guagua's side, no sprite), head (a head at the guagua's glass: a sprite detail, the point is the middle of the face), vehicle (the guagua's middle), exit (where something leaves the picture). who: the width class of the sprite box (the frog 32, a grown-up 24, a child 24, a dog 28); sprite: the box the make takes the sprite to fill, [x0, y0, x1, y1] from the spot's column and row (the spec's width and the real drawn pixels)",
+  "spot": "a spot is a world point of the feet (z 0: the pavement; z 0.46: the seat's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere. kind: person (a character stands there), seat (sits on the seat's top), door (a person stepping on or off at the guagua's door, y 5.45, in front of its lit side 5.25), button (a point on the guagua's side, no sprite), head (a head at the guagua's glass: a sprite detail, the point is the middle of the face), vehicle (the guagua's middle), exit (where something leaves the picture). who: the width class of the sprite box (the frog 32, a grown-up 24, a child 24, a dog 28); sprite: the box the make takes the sprite to fill, [x0, y0, x1, y1] from the spot's column and row (the spec's width and the real drawn pixels)",
   "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty: the lowest drawn row is 54), sitting (sent = 1) the same column, its bottom edge on the seat's top; abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; abuela sitting KIT.mkAbuelaS (52 x 50): column 17, its bottom edge on the seat's top; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy); Canelo KIT.mkPerro (30 x 22): column 13, its bottom edge on sy; a small thing: its bottom middle on the point; a head at the glass: the middle of the face on the point (abuela mkAbuela row 12 of the canvas, column 30; persona row 11, column 24), shown only through a pane of the guagua's window",
   "view": "a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0, the window's left edge. Never a fraction",
   "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
-  "guagua": "a guagua at the stop stands with its middle at (P, 4.6), heading i (towards -x): its front end is its -x end; the front door is 0.35 to 1.15 and the back door 3.2 to 4 from the front end, the buttons 1.32 and 3.04 from the front end at z 0.8. puerta_sube is the door at x P - 1.45, puerta_baja at x P + 1.4; the person about to get on stands at (P - 1.45, 5.95), the one who got off at (P + 1.4, 5.95); the frog at a button at (the button's x, 5.85)"
+  "guagua": "a guagua at the stop stands with its middle at (P, 4.6), heading i (towards -x): its front end is its -x end; the front door is 0.35 to 1.15 and the back door 3.2 to 4 from the front end, the buttons 1.32 and 3.04 from the front end at z 0.8. puerta_sube is the door at x P - 1.45, puerta_baja at x P + 1.4, a person stepping on or off stands at y 5.45; the frog at a button at (the button's x, 5.9), between the buttons at (P, 5.9). The waiting row is y 7.3 (fila1 to fila5)"
  },
  "setKey": {
   "params": {
@@ -41,21 +41,21 @@
    "LANE2": 4.6,
    "P1": -1.9,
    "P2": 3.5,
-   "SIGN": [-0.5, 6.05],
-   "SEAT": [0.3, 7.35, 2.5],
-   "POST": [4.3, 8.9],
-   "LAMP": [1.2, 0.9],
+   "SIGN": [0.8, 6],
+   "SEAT": [0.2, 8.55, 3.4],
+   "POST": [4.6, 8.8],
+   "LAMP": [0.2, 0.9],
    "PATH": [4.6, 5.7],
    "SUN": {
-    "temprano": [227, 9, 7],
+    "temprano": null,
     "manana": null,
-    "tarde": [231, 15, 8],
+    "tarde": null,
     "noche": null
    }
   },
   "seat": {
-   "x": [0.3, 2.5],
-   "y": [7.35, 7.85],
+   "x": [0.2, 3.4],
+   "y": [8.55, 9.05],
    "top": 0.46
   },
   "guagua": {
@@ -88,24 +88,24 @@
    "boxes": [
     {
      "part": "sign",
-     "world": [-0.81, 6.005, 0, -0.19, 6.11, 2.3],
-     "box": [62, 89, 12, 54],
-     "from_world": [62, 87, 15, 60]
+     "world": [0.49, 5.955, 0, 1.11, 6.06, 2.3],
+     "box": [87, 100, 12, 55],
+     "from_world": [87, 99, 14, 59]
     },
     {
      "part": "seat",
-     "world": [0.3, 7.33, 0, 2.5, 7.85, 1],
-     "box": [51, 139, 51, 47],
-     "from_world": [51, 139, 51, 49]
+     "world": [0.2, 8.53, 0, 3.4, 9.05, 1],
+     "box": [27, 149, 69, 56],
+     "from_world": [27, 149, 69, 58]
     }
    ],
    "what": "the stop: the sign on its pole (E.SIGN) and the seat (E.SEAT): TWO boxes, a touch on either is a touch on parada; each box is the screen box of the pixels the set draws for that part (tags=1: parada, asiento); from_world is the world box projected (the worlds are read from the set's calls)"
   },
   "poste": {
    "set": true,
-   "world": [4.05, 8.855, 0, 4.55, 8.96, 1.5],
-   "box": [99, 178, 10, 36],
-   "from_world": [99, 176, 12, 41],
+   "world": [4.35, 8.755, 0, 4.85, 8.86, 1.5],
+   "box": [107, 179, 9, 37],
+   "from_world": [107, 178, 12, 41],
    "what": "the walking post (E.POST) with its board: the screen box of the pixels the set draws for part poste (tags=1); its world box is read from the set's call (CL.signPole, 1.5 high, .5 wide) and from_world is that box projected"
   },
   "puerta_sube": {
@@ -133,50 +133,65 @@
   "perro": "sprite"
  },
  "spots": {
-  "bordillo.abuela": {
-   "world": [-2.3, 6.4, 0],
-   "screen": [30, 130],
-   "depth": 2.5107,
+  "fila1": {
+   "world": [-2.3, 7.3, 0],
+   "screen": [14, 138],
+   "depth": 3.0619,
    "scale": 1,
    "kind": "person",
    "who": "adulto",
    "sprite": [-13, -53, 12, -1],
-   "what": "abuela at the kerb (51's start)"
+   "also": ["adulto", "nino"],
+   "what": "the waiting row, place 1 (y 7.3): people wait here, not at the kerb; somebody who gets off the guagua walks from puerta_baja to a free place of the row, or out of the picture at the left"
   },
-  "bordillo.coqui": {
-   "world": [-1.5, 6.3, 0],
-   "screen": [47, 136],
-   "depth": 2.9394,
+  "fila2": {
+   "world": [-0.7, 7.3, 0],
+   "screen": [43, 153],
+   "depth": 4.0417,
+   "scale": 1,
+   "kind": "person",
+   "who": "adulto",
+   "sprite": [-13, -53, 12, -1],
+   "also": ["adulto", "nino"],
+   "what": "the waiting row, place 2 (y 7.3): people wait here, not at the kerb; somebody who gets off the guagua walks from puerta_baja to a free place of the row, or out of the picture at the left"
+  },
+  "fila3": {
+   "world": [0.9, 7.3, 0],
+   "screen": [72, 167],
+   "depth": 5.0215,
    "scale": 1,
    "kind": "person",
    "who": "coqui",
-   "sprite": [-16, -24, 15, -1],
-   "what": "the frog at the kerb (51's start)"
+   "sprite": [-16, -53, 15, -1],
+   "also": ["adulto", "nino"],
+   "what": "the waiting row, place 3 (y 7.3): people wait here, not at the kerb; somebody who gets off the guagua walks from puerta_baja to a free place of the row, or out of the picture at the left"
   },
-  "bordillo.luis": {
-   "world": [-3.1, 6.5, 0],
-   "screen": [14, 123],
-   "depth": 2.0821,
+  "fila4": {
+   "world": [2.5, 7.3, 0],
+   "screen": [102, 182],
+   "depth": 6.0012,
    "scale": 1,
    "kind": "person",
    "who": "nino",
-   "sprite": [-12, -41, 11, -1],
-   "what": "Luis at the kerb (51's start)"
+   "sprite": [-13, -53, 12, -1],
+   "also": ["adulto", "nino"],
+   "what": "the waiting row, place 4 (y 7.3): people wait here, not at the kerb; somebody who gets off the guagua walks from puerta_baja to a free place of the row, or out of the picture at the left"
   },
-  "bordillo.carmen": {
-   "world": [-0.8, 6.5, 0],
-   "screen": [56, 144],
-   "depth": 3.4905,
+  "fila5": {
+   "world": [4.1, 7.3, 0],
+   "screen": [131, 197],
+   "depth": 6.981,
    "scale": 1,
    "kind": "person",
    "who": "nino",
-   "sprite": [-12, -41, 11, -1],
-   "what": "Carmen at the kerb (51's start)"
+   "sprite": [-13, -53, 12, -1],
+   "also": ["adulto", "nino"],
+   "what": "the waiting row, place 5 (y 7.3): people wait here, not at the kerb; somebody who gets off the guagua walks from puerta_baja to a free place of the row, or out of the picture at the left"
   },
   "banco1": {
-   "world": [0.75, 7.6, 0.46],
-   "screen": [64, 158],
-   "depth": 5.3433,
+   "world": [0.9, 8.8, 0.46],
+   "screen": [45, 171],
+   "depth": 6.17,
    "scale": 1,
    "kind": "seat",
    "who": "adulto",
@@ -184,32 +199,40 @@
    "what": "on the seat, the first place: the señora (51), the señor (53); a person sits on the top of the seat (z 0.46)"
   },
   "banco2": {
-   "world": [1.4, 7.6, 0.46],
-   "screen": [76, 164],
-   "depth": 5.7414,
+   "world": [2.5, 8.8, 0.46],
+   "screen": [74, 186],
+   "depth": 7.1498,
    "scale": 1,
    "kind": "seat",
    "who": "adulto",
    "sprite": [-12, -50, 25, -1],
    "what": "on the seat, the second place: abuela (53)"
   },
-  "banco3": {
-   "world": [2.05, 7.6, 0.46],
-   "screen": [88, 170],
-   "depth": 6.1394,
+  "banco_medio": {
+   "world": [1.7, 8.8, 0.46],
+   "screen": [59, 178],
+   "depth": 6.6599,
    "scale": 1,
    "kind": "seat",
-   "what": "on the seat, the third place: the ball (53); a small thing: its bottom middle on the point"
+   "what": "on the seat between banco1 and banco2: the ball or abuela's boxes; a small thing: its bottom middle on the point"
+  },
+  "banco3": {
+   "world": [3.1, 8.8, 0.46],
+   "screen": [85, 191],
+   "depth": 7.5172,
+   "scale": 1,
+   "kind": "seat",
+   "what": "on the seat, right of banco2: the ball in story 53's start; a small thing: its bottom middle on the point"
   },
   "bajo_banco": {
-   "world": [1.5, 8.2, 0],
-   "screen": [67, 181],
-   "depth": 5.94,
+   "world": [2.9, 9.15, 0],
+   "screen": [75, 203],
+   "depth": 7.3791,
    "scale": 1,
    "kind": "person",
    "who": "perro",
    "sprite": [-14, -22, 16, -1],
-   "what": "Canelo lying in front of the seat"
+   "what": "Canelo lying in front of the seat's right end"
   },
   "parada1": {
    "world": [-1.9, 4.6, 0],
@@ -220,46 +243,26 @@
    "what": "where the first guagua (middle x -1.9) stands (its middle, in the stop's lane): the set draws it with autos=guagua@-1.9,4.6,i,<board>"
   },
   "puerta_sube": {
-   "world": [-3.35, 5.3, 0],
-   "screen": [31, 110],
-   "depth": 1.1941,
+   "world": [-3.35, 5.45, 0],
+   "screen": [28, 111],
+   "depth": 1.286,
    "scale": 1,
    "kind": "door",
    "who": "adulto",
    "sprite": [-13, -53, 12, -1],
-   "what": "the front door of the first guagua (middle x -1.9): in front of its lit side (y 5.25)",
+   "what": "the front door of the first guagua (middle x -1.9): a person stepping on, .2 in front of its lit side (y 5.25)",
    "on_street": true
   },
   "puerta_baja": {
-   "world": [-0.5, 5.3, 0],
-   "screen": [83, 136],
-   "depth": 2.9394,
+   "world": [-0.5, 5.45, 0],
+   "screen": [81, 138],
+   "depth": 3.0312,
    "scale": 1,
    "kind": "door",
    "who": "adulto",
    "sprite": [-13, -53, 12, -1],
-   "what": "the back door of the first guagua (middle x -1.9)",
+   "what": "the back door of the first guagua (middle x -1.9): a person stepping off",
    "on_street": true
-  },
-  "espera_sube": {
-   "world": [-3.35, 5.95, 0],
-   "screen": [19, 116],
-   "depth": 1.5922,
-   "scale": 1,
-   "kind": "person",
-   "who": "adulto",
-   "sprite": [-13, -53, 12, -1],
-   "what": "a person about to get on, at the front door of the first guagua (middle x -1.9)"
-  },
-  "espera_baja": {
-   "world": [-0.5, 5.95, 0],
-   "screen": [71, 142],
-   "depth": 3.3374,
-   "scale": 1,
-   "kind": "person",
-   "who": "adulto",
-   "sprite": [-13, -53, 12, -1],
-   "what": "a person who got off, at the back door of the first guagua (middle x -1.9)"
   },
   "boton_sube": {
    "world": [-2.78, 5.26, 0.8],
@@ -278,9 +281,9 @@
    "what": "the back door's button of the first guagua (middle x -1.9)"
   },
   "coqui.boton_sube": {
-   "world": [-2.78, 5.85, 0],
-   "screen": [31, 120],
-   "depth": 1.88,
+   "world": [-2.78, 5.9, 0],
+   "screen": [30, 121],
+   "depth": 1.9106,
    "scale": 1,
    "kind": "person",
    "who": "coqui",
@@ -288,14 +291,24 @@
    "what": "the frog pressing the front door's button of the first guagua (middle x -1.9) (on the pavement, at the button's x)"
   },
   "coqui.boton_baja": {
-   "world": [-1.06, 5.85, 0],
-   "screen": [63, 136],
-   "depth": 2.9333,
+   "world": [-1.06, 5.9, 0],
+   "screen": [62, 136],
+   "depth": 2.9639,
    "scale": 1,
    "kind": "person",
    "who": "coqui",
    "sprite": [-16, -24, 15, -1],
    "what": "the frog pressing the back door's button of the first guagua (middle x -1.9)"
+  },
+  "coqui.botones": {
+   "world": [-1.9, 5.9, 0],
+   "screen": [47, 129],
+   "depth": 2.4495,
+   "scale": 1,
+   "kind": "person",
+   "who": "coqui",
+   "sprite": [-16, -24, 15, -1],
+   "what": "the frog between the two buttons of the first guagua (middle x -1.9)"
   },
   "parada2": {
    "world": [3.5, 4.6, 0],
@@ -306,46 +319,26 @@
    "what": "where the second guagua (middle x 3.5) stands (its middle, in the stop's lane): the set draws it with autos=guagua@3.5,4.6,i,<board>"
   },
   "puerta_sube.2": {
-   "world": [2.05, 5.3, 0],
-   "screen": [130, 160],
-   "depth": 4.5009,
+   "world": [2.05, 5.45, 0],
+   "screen": [127, 161],
+   "depth": 4.5928,
    "scale": 1,
    "kind": "door",
    "who": "adulto",
    "sprite": [-13, -53, 12, -1],
-   "what": "the front door of the second guagua (middle x 3.5): in front of its lit side (y 5.25)",
+   "what": "the front door of the second guagua (middle x 3.5): a person stepping on, .2 in front of its lit side (y 5.25)",
    "on_street": true
   },
   "puerta_baja.2": {
-   "world": [4.9, 5.3, 0],
-   "screen": [183, 186],
-   "depth": 6.2462,
+   "world": [4.9, 5.45, 0],
+   "screen": [180, 187],
+   "depth": 6.3381,
    "scale": 1,
    "kind": "door",
    "who": "adulto",
    "sprite": [-13, -53, 12, -1],
-   "what": "the back door of the second guagua (middle x 3.5)",
+   "what": "the back door of the second guagua (middle x 3.5): a person stepping off",
    "on_street": true
-  },
-  "espera_sube.2": {
-   "world": [2.05, 5.95, 0],
-   "screen": [118, 166],
-   "depth": 4.899,
-   "scale": 1,
-   "kind": "person",
-   "who": "adulto",
-   "sprite": [-13, -53, 12, -1],
-   "what": "a person about to get on, at the front door of the second guagua (middle x 3.5)"
-  },
-  "espera_baja.2": {
-   "world": [4.9, 5.95, 0],
-   "screen": [171, 192],
-   "depth": 6.6442,
-   "scale": 1,
-   "kind": "person",
-   "who": "adulto",
-   "sprite": [-13, -53, 12, -1],
-   "what": "a person who got off, at the back door of the second guagua (middle x 3.5)"
   },
   "boton_sube.2": {
    "world": [2.62, 5.26, 0.8],
@@ -364,9 +357,9 @@
    "what": "the back door's button of the second guagua (middle x 3.5)"
   },
   "coqui.boton_sube.2": {
-   "world": [2.62, 5.85, 0],
-   "screen": [131, 170],
-   "depth": 5.1868,
+   "world": [2.62, 5.9, 0],
+   "screen": [130, 170],
+   "depth": 5.2174,
    "scale": 1,
    "kind": "person",
    "who": "coqui",
@@ -374,54 +367,24 @@
    "what": "the frog pressing the front door's button of the second guagua (middle x 3.5) (on the pavement, at the button's x)"
   },
   "coqui.boton_baja.2": {
-   "world": [4.34, 5.85, 0],
-   "screen": [162, 186],
-   "depth": 6.2401,
+   "world": [4.34, 5.9, 0],
+   "screen": [161, 186],
+   "depth": 6.2707,
    "scale": 1,
    "kind": "person",
    "who": "coqui",
    "sprite": [-16, -24, 15, -1],
    "what": "the frog pressing the back door's button of the second guagua (middle x 3.5)"
   },
-  "coqui.botones": {
-   "world": [-1.9, 5.9, 0],
-   "screen": [47, 129],
-   "depth": 2.4495,
+  "coqui.botones.2": {
+   "world": [3.5, 5.9, 0],
+   "screen": [146, 178],
+   "depth": 5.7563,
    "scale": 1,
    "kind": "person",
    "who": "coqui",
    "sprite": [-16, -24, 15, -1],
-   "what": "the frog between the two buttons of the guagua at P1 (52's game)"
-  },
-  "cola1": {
-   "world": [-3.5, 6, 0],
-   "screen": [15, 115],
-   "depth": 1.5309,
-   "scale": 1,
-   "kind": "person",
-   "who": "adulto",
-   "sprite": [-13, -53, 12, -1],
-   "what": "a person waiting to get on at the first guagua"
-  },
-  "cola2": {
-   "world": [-4.1, 6.4, 0],
-   "screen": [-3, 113],
-   "depth": 1.4085,
-   "scale": 1,
-   "kind": "person",
-   "who": "adulto",
-   "sprite": [-13, -53, 12, -1],
-   "what": "a person waiting to get on at the first guagua"
-  },
-  "cola3": {
-   "world": [-2.9, 6.5, 0],
-   "screen": [17, 125],
-   "depth": 2.2045,
-   "scale": 1,
-   "kind": "person",
-   "who": "nino",
-   "sprite": [-12, -41, 11, -1],
-   "what": "a person waiting to get on at the first guagua"
+   "what": "the frog between the two buttons of the second guagua (middle x 3.5)"
   },
   "ventana1": {
    "world": [-2.3, 5.25, 1.5],
@@ -453,25 +416,15 @@
    "sprite": [-12, -9, 11, 20],
    "what": "the driver leaning out at the front end of the guagua at P1 (head and shoulders); a sprite detail"
   },
-  "poste": {
-   "world": [4.3, 8.9, 0],
-   "screen": [105, 213],
-   "depth": 8.0833,
+  "coqui.poste": {
+   "world": [3.8, 8.3, 0],
+   "screen": [107, 203],
+   "depth": 7.4097,
    "scale": 1,
    "kind": "person",
    "who": "coqui",
    "sprite": [-16, -24, 15, -1],
-   "what": "the walking post (E.POST): the frog stands at it (53); the post is drawn by the set"
-  },
-  "coqui.arranca": {
-   "world": [5, 9, 0],
-   "screen": [116, 221],
-   "depth": 8.5732,
-   "scale": 1,
-   "kind": "person",
-   "who": "coqui",
-   "sprite": [-16, -24, 15, -1],
-   "what": "the frog starting to walk off along the path (E.POST x + .7, y 9)"
+   "what": "the frog at the walking post (E.POST); the post is drawn by the set"
   },
   "camino": {
    "world": [5.15, 10.6, 0],
@@ -480,70 +433,19 @@
    "scale": 1,
    "kind": "exit",
    "who": "coqui",
-   "sprite": [-16, -24, 15, -1],
-   "what": "where the footpath across the grass leaves the picture (the middle of E.PATH, y 10.6): the frog walking off leaves the picture here",
+   "what": "where the footpath across the grass leaves the picture (the middle of E.PATH, y 10.6): an exit, only its point has to be inside",
    "on_street": true
-  },
-  "senor.llega": {
-   "world": [3.6, 8, 0],
-   "screen": [109, 199],
-   "depth": 7.1035,
-   "scale": 1,
-   "kind": "person",
-   "who": "adulto",
-   "sprite": [-13, -53, 12, -1],
-   "what": "the señor arriving (53); then he sits at banco1"
-  },
-  "fin.abuela": {
-   "world": [0.2, 6.6, 0],
-   "screen": [72, 155],
-   "depth": 4.1641,
-   "scale": 1,
-   "kind": "person",
-   "who": "adulto",
-   "sprite": [-13, -53, 12, -1],
-   "what": "story 53's ending, on the pavement: abuela (the places are the spec's four, in the order its names are listed)"
-  },
-  "fin.luis": {
-   "world": [1, 6.4, 0],
-   "screen": [91, 160],
-   "depth": 4.5316,
-   "scale": 1,
-   "kind": "person",
-   "who": "nino",
-   "sprite": [-12, -41, 11, -1],
-   "what": "story 53's ending: Luis with the ball"
-  },
-  "fin.carmen": {
-   "world": [1.8, 6.6, 0],
-   "screen": [102, 169],
-   "depth": 5.1439,
-   "scale": 1,
-   "kind": "person",
-   "who": "nino",
-   "sprite": [-12, -41, 11, -1],
-   "what": "story 53's ending: Carmen"
-  },
-  "fin.coqui": {
-   "world": [2.6, 6.4, 0],
-   "screen": [120, 175],
-   "depth": 5.5114,
-   "scale": 1,
-   "kind": "person",
-   "who": "coqui",
-   "sprite": [-16, -24, 15, -1],
-   "what": "story 53's ending: the frog"
   }
  },
  "views": {
   "wide": {
-   "world": [1.3959, 6.4, 0],
-   "screen": [98, 163.66],
+   "world": [2.3503, 7.3, 0],
+   "screen": [99, 180.71],
    "zoom": 1,
-   "x0": 0,
-   "region": [0, 0, 196, 216],
-   "extent": [0, 195],
-   "what": "the one view: the 196 x 216 window over the 240 x 216 picture. x0 is the least x0 (of 0 to 44) that leaves the fewest spots' sprites cut, then the fewest pixels of the two guaguas cut (the window can hold the spots' sprites, columns 0 to 195, but not both guaguas whole: see the check guaguas-whole). Its point is the ground point (at y 6.4) under the window's middle column"
+   "x0": 1,
+   "region": [1, 0, 196, 216],
+   "extent": [1, 192],
+   "what": "the one view: the 196 x 216 window over the 240 x 216 picture. x0 is the least x0 (of 0 to 44) that leaves the first guagua and every spot of the waiting row and the seat whole, then the fewest other spots cut, then the fewest pixels of the second guagua cut (it is cut at its back end: see the check guaguas-whole). Its point is the ground point (at y 7.3) under the window's middle column"
   }
  },
  "front": {
@@ -579,173 +481,150 @@
     "name": "in-view",
     "ok": false,
     "lines": [
-     "in-view: 2 finding(s) (spots' sprite boxes: the spec's width and the real drawn pixels, rules.spot):",
-     "  cola2 -3,113 (adulto, sprite box columns -16 to 9, rows 60 to 112): outside the picture by 16 px left; outside the window [0, 196) by 16 px left",
-     "  coqui.arranca 116,221 (coqui, sprite box columns 100 to 131, rows 197 to 220): outside the picture by 5 px below; outside the window [0, 196) by 5 px below",
-     "    nearest passing cola2 -4.1,6.4,0: x -4.1 -> -3.25 (+0.85) or y 6.4 -> 5.55 (-0.85)",
-     "    nearest passing coqui.arranca 5,9,0: x 5 -> 4.54 (-0.46) or y 9 -> 8.54 (-0.46)",
-     "  camino 90,237 is OUTSIDE the picture: 22 rows below its bottom edge (rows 0 to 215) (the spec puts camino where the path leaves the picture: it is by design outside; the frog starting to walk is coqui.arranca)",
-     "       sprite boxes used, [x0, y0, x1, y1] from the spot (the spec's width and the real drawn pixels): adulto [-13,-53,12,-1], nino [-12,-41,11,-1], coqui [-16,-24,15,-1], perro [-14,-22,16,-1], head [-10,-12,9,9], chofer [-12,-9,11,20], seated adulto [-12,-50,25,-1]; real ink columns of the drawn sprites: adulto -12 to 11, abuela -13 to 12, senor -12 to 11, nino -11 to 10, carmen -11 to 10, coqui -15 to 14, perro_lie -13 to 16, perro_sit -13 to 16",
-     "       info, not a check: the screen box of each set thing's pixels (tags=1) against its world box projected [x, y, w, h]: sign [62,89,12,54] vs [62,87,15,60], seat [51,139,51,47] vs [51,139,51,49], post [99,178,10,36] vs [99,176,12,41]",
-     "       info, not a check: the sun (E.SUN: the picture's pixels, hora temprano and tarde): temprano sun [x 227, y 9, r 7] columns 220 to 234: OUTSIDE the window [0, 196) (it needs x0 39 or more); tarde sun [x 231, y 15, r 8] columns 223 to 239: OUTSIDE the window [0, 196) (it needs x0 44 or more); the street lamp (part farol, lit at noche) pixels columns 183 to 200, rows 31 to 111: 100 of its 372 px outside the window",
-     "       view: x0 0; the spots' sprites span columns 0 to 195 (196 px, those the picture itself holds); every spot but those listed above is inside",
-     "       camino 90,237 is OUTSIDE the picture: 22 rows below its bottom edge (rows 0 to 215)"
+     "in-view: 1 finding(s) (spots' sprite boxes: the spec's width and the real drawn pixels, rules.spot; an exit: its point only):",
+     "  camino 90,237 (coqui, sprite box columns 90 to 90, rows 237 to 237): outside the picture by 22 px below; outside the window [1, 197) by 22 px below",
+     "    nearest passing camino 5.15,10.6,0: x 5.15 -> 2.83 (-2.32) or y 10.6 -> 8.28 (-2.32)",
+     "       info, not a check: the footpath (E.PATH, beyond y 9.2) starts at row 224 at its middle, the picture has rows 0 to 215: the picture's bottom edge is the line x + y = 13.49 of the world",
+     "       sprite boxes used, [x0, y0, x1, y1] from the spot (the spec's width and the real drawn pixels): adulto [-13,-53,12,-1], nino [-13,-53,12,-1], coqui [-16,-53,15,-1], perro [-14,-22,16,-1], head [-10,-12,9,9], chofer [-12,-9,11,20], seated adulto [-12,-50,25,-1]; real ink columns of the drawn sprites: adulto -12 to 11, abuela -13 to 12, senor -12 to 11, nino -11 to 10, carmen -11 to 10, coqui -15 to 14, perro_lie -13 to 16, perro_sit -13 to 16",
+     "       info, not a check: the screen box of each set thing's pixels (tags=1) against its world box projected [x, y, w, h]: sign [87,100,12,55] vs [87,99,14,59], seat [27,149,69,56] vs [27,149,69,58], post [107,179,9,37] vs [107,178,12,41]",
+     "       info, not a check: the sun (E.SUN: the picture's pixels): none, the sky has no sun in any hora; the street lamp (part farol, lit at noche) pixels columns 164 to 181, rows 22 to 102: 0 of its 445 px outside the window",
+     "       view: x0 1; the spots' sprites span columns 1 to 192 (those the picture itself holds); every spot but those listed above is inside"
     ],
-    "x0": 0
+    "x0": 1
    },
    {
     "name": "sprites-apart",
     "ok": false,
     "lines": [
-     "sprites-apart: 11 pair(s) with overlapping boxes and feet closer than 12 px up-down:",
-     "moment 1: bordillo.luis [14,123] (24 wide) ~ bordillo.abuela [30,130] (24 wide): 16 px sideways (the boxes need 24), 7 px up-down (needs 12): short by 8 px sideways or 5 px up-down",
-     "moment 1: bordillo.abuela [30,130] (24 wide) ~ bordillo.coqui [47,136] (32 wide): 17 px sideways (the boxes need 28), 6 px up-down (needs 12): short by 11 px sideways or 6 px up-down",
-     "moment 1: bordillo.coqui [47,136] (32 wide) ~ bordillo.carmen [56,144] (24 wide): 9 px sideways (the boxes need 28), 8 px up-down (needs 12): short by 19 px sideways or 4 px up-down",
-     "moment 2: bordillo.abuela [30,130] (24 wide) ~ bordillo.coqui [47,136] (32 wide): 17 px sideways (the boxes need 28), 6 px up-down (needs 12): short by 11 px sideways or 6 px up-down",
-     "moment 3: espera_sube [19,116] (24 wide) ~ coqui.boton_sube [31,120] (32 wide): 12 px sideways (the boxes need 28), 4 px up-down (needs 12): short by 16 px sideways or 8 px up-down",
-     "moment 4: cola1 [15,115] (24 wide) ~ cola2 [-3,113] (24 wide): 18 px sideways (the boxes need 24), 2 px up-down (needs 12): short by 6 px sideways or 10 px up-down",
-     "moment 4: cola1 [15,115] (24 wide) ~ cola3 [17,125] (24 wide): 2 px sideways (the boxes need 24), 10 px up-down (needs 12): short by 22 px sideways or 2 px up-down",
-     "moment 5: banco1 [64,158] (24 wide) ~ banco2 [76,164] (24 wide): 12 px sideways (the boxes need 24), 6 px up-down (needs 12): short by 12 px sideways or 6 px up-down",
-     "moment 6: fin.abuela [72,155] (24 wide) ~ fin.luis [91,160] (24 wide): 19 px sideways (the boxes need 24), 5 px up-down (needs 12): short by 5 px sideways or 7 px up-down",
-     "moment 6: fin.luis [91,160] (24 wide) ~ fin.carmen [102,169] (24 wide): 11 px sideways (the boxes need 24), 9 px up-down (needs 12): short by 13 px sideways or 3 px up-down",
-     "moment 6: fin.carmen [102,169] (24 wide) ~ fin.coqui [120,175] (32 wide): 18 px sideways (the boxes need 28), 6 px up-down (needs 12): short by 10 px sideways or 6 px up-down",
-     "       nearest passing, moment 1 bordillo.luis ~ bordillo.abuela: bordillo.luis -3.1,6.5,0: x -3.1 -> -3.49 (-0.39) or y 6.5 -> 6.89 (+0.39); or bordillo.abuela -2.3,6.4,0: x -2.3 -> -1.89 (+0.41) or y 6.4 -> 5.99 (-0.41)",
-     "       nearest passing, moment 1 bordillo.abuela ~ bordillo.coqui: bordillo.abuela -2.3,6.4,0: x -2.3 -> -2.87 (-0.57) or y 6.4 -> 5.83 (-0.57); or bordillo.coqui -1.5,6.3,0: x -1.5 -> -0.91 (+0.59) or y 6.3 -> 6.89 (+0.59)",
-     "       nearest passing, moment 1 bordillo.coqui ~ bordillo.carmen: bordillo.coqui -1.5,6.3,0: x -1.5 -> -1.9 (-0.4) or y 6.3 -> 5.9 (-0.4); or bordillo.carmen -0.8,6.5,0: x -0.8 -> -0.46 (+0.34) or y 6.5 -> 6.84 (+0.34)",
-     "       nearest passing, moment 2 bordillo.abuela ~ bordillo.coqui: bordillo.abuela -2.3,6.4,0: x -2.3 -> -2.87 (-0.57) or y 6.4 -> 5.83 (-0.57); or bordillo.coqui -1.5,6.3,0: x -1.5 -> -0.91 (+0.59) or y 6.3 -> 6.89 (+0.59)",
-     "       nearest passing, moment 3 espera_sube ~ coqui.boton_sube: espera_sube -3.35,5.95,0: x -3.35 -> -4.16 (-0.81) or y 5.95 -> 5.14 (-0.81); or coqui.boton_sube -2.78,5.85,0: x -2.78 -> -1.98 (+0.8) or y 5.85 -> 6.65 (+0.8)",
-     "       nearest passing, moment 4 cola1 ~ cola2: cola1 -3.5,6,0: x -3.5 -> -3.21 (+0.29) or y 6 -> 5.71 (-0.29); or cola2 -4.1,6.4,0: x -4.1 -> -4.4 (-0.3) or y 6.4 -> 6.7 (+0.3)",
-     "       nearest passing, moment 4 cola1 ~ cola3: cola1 -3.5,6,0: x -3.5 -> -3.67 (-0.17) or y 6 -> 5.83 (-0.17); or cola3 -2.9,6.5,0: x -2.9 -> -2.74 (+0.16) or y 6.5 -> 6.66 (+0.16)",
-     "       nearest passing, moment 5 banco1 ~ banco2: banco1 0.75,7.6,0.46: x 0.75 -> 0.12 (-0.63) or y 7.6 -> 8.23 (+0.63); or banco2 1.4,7.6,0.46: x 1.4 -> 1.96 (+0.56) or y 7.6 -> 8.16 (+0.56)",
-     "       nearest passing, moment 6 fin.abuela ~ fin.luis: fin.abuela 0.2,6.6,0: x 0.2 -> -0.07 (-0.27) or y 6.6 -> 6.87 (+0.27); or fin.luis 1,6.4,0: x 1 -> 1.26 (+0.26) or y 6.4 -> 6.14 (-0.26)",
-     "       nearest passing, moment 6 fin.luis ~ fin.carmen: fin.luis 1,6.4,0: x 1 -> 0.72 (-0.28) or y 6.4 -> 6.12 (-0.28); or fin.carmen 1.8,6.6,0: x 1.8 -> 2.05 (+0.25) or y 6.6 -> 6.85 (+0.25)",
-     "       nearest passing, moment 6 fin.carmen ~ fin.coqui: fin.carmen 1.8,6.6,0: x 1.8 -> 1.29 (-0.51) or y 6.6 -> 7.11 (+0.51); or fin.coqui 2.6,6.4,0: x 2.6 -> 3.11 (+0.51) or y 6.4 -> 5.89 (-0.51)",
-     "       closest in each moment (px across / px down): m1 bordillo.coqui ~ bordillo.carmen 9/8 (needs 28 across or 12 down); m2 bordillo.abuela ~ bordillo.coqui 17/6 (needs 28 across or 12 down); m3 bajo_banco ~ espera_baja 4/39 (needs 26 across or 12 down); m4 cola1 ~ cola3 2/10 (needs 24 across or 12 down); m5 banco1 ~ banco2 12/6 (needs 24 across or 12 down); m6 fin.luis ~ fin.carmen 11/9 (needs 24 across or 12 down)"
+     "sprites-apart: 1 pair(s) with overlapping boxes and feet closer than 12 px up-down:",
+     "moment 1: fila3 [72,167] (32 wide) ~ banco1 [45,171] (24 wide): 27 px sideways (the boxes need 28), 4 px up-down (needs 12): short by 1 px sideways or 8 px up-down",
+     "       nearest passing, moment 1 fila3 ~ banco1: fila3 0.9,7.3,0: x 0.9 -> 0.91 (+0.01) or y 7.3 -> 7.29 (-0.01); or banco1 0.9,8.8,0.46: x 0.9 -> 0.88 (-0.02) or y 8.8 -> 8.82 (+0.02)",
+     "       closest in each moment (px across / px down): m1 fila2 ~ banco1 2/18 (needs 24 across or 12 down); m2 fila2 ~ fila3 29/14 (needs 28 across or 12 down); m3 bajo_banco ~ puerta_baja 6/65 (needs 26 across or 12 down); m4 fila2 ~ coqui.botones 4/24 (needs 28 across or 12 down); m5 banco1 ~ banco2 29/15 (needs 24 across or 12 down); m6 fila2 ~ fila3 29/14 (needs 28 across or 12 down)"
     ],
     "pairs": [
      {
       "moment": 1,
-      "a": "bordillo.luis",
-      "b": "bordillo.abuela",
-      "across": 16,
-      "down": 7,
+      "a": "fila1",
+      "b": "fila2",
+      "across": 29,
+      "down": 15,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 1,
-      "a": "bordillo.luis",
-      "b": "bordillo.coqui",
-      "across": 33,
-      "down": 13,
+      "a": "fila1",
+      "b": "fila3",
+      "across": 58,
+      "down": 29,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "bordillo.luis",
-      "b": "bordillo.carmen",
-      "across": 42,
-      "down": 21,
+      "a": "fila1",
+      "b": "fila4",
+      "across": 88,
+      "down": 44,
       "needAcross": 24,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "bordillo.luis",
+      "a": "fila1",
       "b": "banco1",
-      "across": 50,
-      "down": 35,
+      "across": 31,
+      "down": 33,
       "needAcross": 24,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "bordillo.abuela",
-      "b": "bordillo.coqui",
-      "across": 17,
-      "down": 6,
-      "needAcross": 28,
-      "ok": false
-     },
-     {
-      "moment": 1,
-      "a": "bordillo.abuela",
-      "b": "bordillo.carmen",
-      "across": 26,
+      "a": "fila2",
+      "b": "fila3",
+      "across": 29,
       "down": 14,
-      "needAcross": 24,
-      "ok": true
-     },
-     {
-      "moment": 1,
-      "a": "bordillo.abuela",
-      "b": "banco1",
-      "across": 34,
-      "down": 28,
-      "needAcross": 24,
-      "ok": true
-     },
-     {
-      "moment": 1,
-      "a": "bordillo.coqui",
-      "b": "bordillo.carmen",
-      "across": 9,
-      "down": 8,
-      "needAcross": 28,
-      "ok": false
-     },
-     {
-      "moment": 1,
-      "a": "bordillo.coqui",
-      "b": "banco1",
-      "across": 17,
-      "down": 22,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "bordillo.carmen",
-      "b": "banco1",
-      "across": 8,
-      "down": 14,
+      "a": "fila2",
+      "b": "fila4",
+      "across": 59,
+      "down": 29,
       "needAcross": 24,
       "ok": true
      },
      {
-      "moment": 2,
-      "a": "bordillo.abuela",
-      "b": "bordillo.coqui",
-      "across": 17,
-      "down": 6,
-      "needAcross": 28,
-      "ok": false
+      "moment": 1,
+      "a": "fila2",
+      "b": "banco1",
+      "across": 2,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
      },
      {
-      "moment": 3,
-      "a": "espera_sube",
-      "b": "coqui.boton_sube",
-      "across": 12,
+      "moment": 1,
+      "a": "fila3",
+      "b": "fila4",
+      "across": 30,
+      "down": 15,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "fila3",
+      "b": "banco1",
+      "across": 27,
       "down": 4,
       "needAcross": 28,
       "ok": false
      },
      {
+      "moment": 1,
+      "a": "fila4",
+      "b": "banco1",
+      "across": 57,
+      "down": 11,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "fila2",
+      "b": "fila3",
+      "across": 29,
+      "down": 14,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
       "moment": 3,
-      "a": "espera_sube",
+      "a": "fila1",
+      "b": "coqui.boton_sube",
+      "across": 16,
+      "down": 17,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "fila1",
       "b": "bajo_banco",
-      "across": 48,
+      "across": 61,
       "down": 65,
       "needAcross": 26,
       "ok": true
      },
      {
       "moment": 3,
-      "a": "espera_sube",
-      "b": "espera_baja",
-      "across": 52,
-      "down": 26,
+      "a": "fila1",
+      "b": "puerta_baja",
+      "across": 67,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      },
@@ -753,107 +632,107 @@
       "moment": 3,
       "a": "coqui.boton_sube",
       "b": "bajo_banco",
-      "across": 36,
-      "down": 61,
+      "across": 45,
+      "down": 82,
       "needAcross": 30,
       "ok": true
      },
      {
       "moment": 3,
       "a": "coqui.boton_sube",
-      "b": "espera_baja",
-      "across": 40,
-      "down": 22,
+      "b": "puerta_baja",
+      "across": 51,
+      "down": 17,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 3,
       "a": "bajo_banco",
-      "b": "espera_baja",
-      "across": 4,
-      "down": 39,
+      "b": "puerta_baja",
+      "across": 6,
+      "down": 65,
       "needAcross": 26,
       "ok": true
      },
      {
       "moment": 4,
-      "a": "cola1",
-      "b": "cola2",
-      "across": 18,
-      "down": 2,
+      "a": "fila1",
+      "b": "fila2",
+      "across": 29,
+      "down": 15,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 4,
-      "a": "cola1",
-      "b": "cola3",
-      "across": 2,
-      "down": 10,
+      "a": "fila1",
+      "b": "fila3",
+      "across": 58,
+      "down": 29,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 4,
-      "a": "cola1",
+      "a": "fila1",
       "b": "coqui.botones",
-      "across": 32,
+      "across": 33,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "fila1",
+      "b": "bajo_banco",
+      "across": 61,
+      "down": 65,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "fila2",
+      "b": "fila3",
+      "across": 29,
       "down": 14,
-      "needAcross": 28,
-      "ok": true
-     },
-     {
-      "moment": 4,
-      "a": "cola1",
-      "b": "bajo_banco",
-      "across": 52,
-      "down": 66,
-      "needAcross": 26,
-      "ok": true
-     },
-     {
-      "moment": 4,
-      "a": "cola2",
-      "b": "cola3",
-      "across": 20,
-      "down": 12,
       "needAcross": 24,
       "ok": true
      },
      {
       "moment": 4,
-      "a": "cola2",
+      "a": "fila2",
       "b": "coqui.botones",
-      "across": 50,
-      "down": 16,
+      "across": 4,
+      "down": 24,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 4,
-      "a": "cola2",
+      "a": "fila2",
       "b": "bajo_banco",
-      "across": 70,
-      "down": 68,
+      "across": 32,
+      "down": 50,
       "needAcross": 26,
       "ok": true
      },
      {
       "moment": 4,
-      "a": "cola3",
+      "a": "fila3",
       "b": "coqui.botones",
-      "across": 30,
-      "down": 4,
+      "across": 25,
+      "down": 38,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 4,
-      "a": "cola3",
+      "a": "fila3",
       "b": "bajo_banco",
-      "across": 50,
-      "down": 56,
+      "across": 3,
+      "down": 36,
       "needAcross": 26,
       "ok": true
      },
@@ -861,8 +740,8 @@
       "moment": 4,
       "a": "coqui.botones",
       "b": "bajo_banco",
-      "across": 20,
-      "down": 52,
+      "across": 28,
+      "down": 74,
       "needAcross": 30,
       "ok": true
      },
@@ -870,82 +749,82 @@
       "moment": 5,
       "a": "banco1",
       "b": "banco2",
-      "across": 12,
-      "down": 6,
+      "across": 29,
+      "down": 15,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 5,
       "a": "banco1",
-      "b": "poste",
-      "across": 41,
-      "down": 55,
+      "b": "coqui.poste",
+      "across": 62,
+      "down": 32,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 5,
       "a": "banco2",
-      "b": "poste",
-      "across": 29,
-      "down": 49,
+      "b": "coqui.poste",
+      "across": 33,
+      "down": 17,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 6,
-      "a": "fin.abuela",
-      "b": "fin.luis",
-      "across": 19,
-      "down": 5,
-      "needAcross": 24,
-      "ok": false
-     },
-     {
-      "moment": 6,
-      "a": "fin.abuela",
-      "b": "fin.carmen",
-      "across": 30,
+      "a": "fila2",
+      "b": "fila3",
+      "across": 29,
       "down": 14,
-      "needAcross": 24,
-      "ok": true
-     },
-     {
-      "moment": 6,
-      "a": "fin.abuela",
-      "b": "fin.coqui",
-      "across": 48,
-      "down": 20,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 6,
-      "a": "fin.luis",
-      "b": "fin.carmen",
-      "across": 11,
-      "down": 9,
+      "a": "fila2",
+      "b": "fila4",
+      "across": 59,
+      "down": 29,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 6,
-      "a": "fin.luis",
-      "b": "fin.coqui",
-      "across": 29,
+      "a": "fila2",
+      "b": "fila5",
+      "across": 88,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "fila3",
+      "b": "fila4",
+      "across": 30,
       "down": 15,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 6,
-      "a": "fin.carmen",
-      "b": "fin.coqui",
-      "across": 18,
-      "down": 6,
+      "a": "fila3",
+      "b": "fila5",
+      "across": 59,
+      "down": 30,
       "needAcross": 28,
-      "ok": false
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "fila4",
+      "b": "fila5",
+      "across": 29,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
      }
     ]
    },
@@ -954,92 +833,112 @@
     "ok": false,
     "lines": [
      "frog-seen: the frog not whole:",
-     "  moment 1 bordillo.coqui: 0 px hidden by the set, 412 px covered by bordillo.carmen, banco1",
-     "    nearest passing, moment 1 bordillo.coqui -1.5,6.3,0 (the other sprites where they are): y 6.3 -> 7.2 (+0.9)",
-     "       moment 1 bordillo.coqui [47,136]: 536 px drawn, 0 hidden by the set, 412 covered by a nearer sprite (bordillo.carmen 355, banco1 57); 658 px of other sprites lie over his 32 x 25 box",
-     "       moment 2 bordillo.coqui [47,136]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer sprite; 0 px of other sprites lie over his 32 x 25 box",
-     "       moment 3 coqui.boton_sube [31,120]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer sprite; 0 px of other sprites lie over his 32 x 25 box",
-     "       moment 4 coqui.botones [47,129]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer sprite; 0 px of other sprites lie over his 32 x 25 box",
-     "       moment 5 poste [105,213]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer sprite; 0 px of other sprites lie over his 32 x 25 box",
-     "       moment 6 fin.coqui [120,175]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer sprite; 0 px of other sprites lie over his 32 x 25 box"
+     "  moment 1 fila3: 44 px hidden by the set, 0 px covered by a grown-up or dog, 0 px covered by a child ()",
+     "  moment 2 fila3: 44 px hidden by the set, 0 px covered by a grown-up or dog, 0 px covered by a child ()",
+     "  moment 3 coqui.boton_sube: 0 px hidden by the set, 0 px covered by a grown-up or dog, 71 px covered by a child (fila1 71)",
+     "  moment 4 coqui.botones: 0 px hidden by the set, 353 px covered by a grown-up or dog, 0 px covered by a child (fila2 353)",
+     "  moment 5 coqui.poste: 134 px hidden by the set, 0 px covered by a grown-up or dog, 0 px covered by a child ()",
+     "  moment 6 fila3: 44 px hidden by the set, 0 px covered by a grown-up or dog, 0 px covered by a child ()",
+     "    nearest passing, moment 1 fila3 0.9,7.3,0 (the other sprites where they are): y 7.3 -> 7.07 (-0.23)",
+     "    nearest passing, moment 2 fila3 0.9,7.3,0 (the other sprites where they are): y 7.3 -> 7.07 (-0.23)",
+     "    nearest passing, moment 3 coqui.boton_sube -2.78,5.9,0 (the other sprites where they are): x -2.78 -> -2.72 (+0.06) or y 5.9 -> 5.84 (-0.06)",
+     "    nearest passing, moment 4 coqui.botones -1.9,5.9,0 (the other sprites where they are): y 5.9 -> 7.38 (+1.48)",
+     "    nearest passing, moment 5 coqui.poste 3.8,8.3,0 (the other sprites where they are): y 8.3 -> 8.95 (+0.65)",
+     "    nearest passing, moment 6 fila3 0.9,7.3,0 (the other sprites where they are): y 7.3 -> 7.07 (-0.23)",
+     "       moment 1 fila3 [72,167]: 536 px drawn, 44 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 6 px of other sprites lie over his 32 x 25 box",
+     "       moment 2 fila3 [72,167]: 536 px drawn, 44 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box",
+     "       moment 3 coqui.boton_sube [30,121]: 536 px drawn, 0 hidden by the set, 0 covered by a nearer grown-up or dog, 71 by a child (up to 40 allowed) (fila1 71); 170 px of other sprites lie over his 32 x 25 box",
+     "       moment 4 coqui.botones [47,129]: 536 px drawn, 0 hidden by the set, 353 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed) (fila2 353); 420 px of other sprites lie over his 32 x 25 box",
+     "       moment 5 coqui.poste [107,203]: 536 px drawn, 134 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box",
+     "       moment 6 fila3 [72,167]: 536 px drawn, 44 hidden by the set, 0 covered by a nearer grown-up or dog, 0 by a child (up to 40 allowed); 0 px of other sprites lie over his 32 x 25 box"
     ]
    },
    {
     "name": "door-front",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "door-front: a person at a door is partly inside the guagua's wall (a grown-up's sprite, 24 wide: the columns more than about 9 px right of his feet lie behind the lit side when his feet are .05 in front of it):",
-     "  puerta_sube 31,110 y 5.3: 49 of 878 px (5.58%) hidden by the guagua: the right side of his sprite lies inside the wall",
-     "  puerta_baja 83,136 y 5.3: 44 of 878 px (5.01%) hidden by the guagua: the right side of his sprite lies inside the wall",
-     "  puerta_sube.2 130,160 y 5.3: 44 of 878 px (5.01%) hidden by the guagua: the right side of his sprite lies inside the wall",
-     "  puerta_baja.2 183,186 y 5.3: 68 of 878 px (7.74%) hidden by the guagua: the right side of his sprite lies inside the wall",
-     "    nearest passing puerta_sube -3.35,5.3,0: y 5.3 -> 5.39 (+0.09)",
-     "    nearest passing puerta_baja -0.5,5.3,0: y 5.3 -> 5.41 (+0.11)",
-     "    nearest passing puerta_sube.2 2.05,5.3,0: y 5.3 -> 5.4 (+0.1)",
-     "    nearest passing puerta_baja.2 4.9,5.3,0: y 5.3 -> 5.39 (+0.09)",
-     "       info, not a check: the pixels these places lose to another part of the set (the stop's sign): puerta_baja: 11 of 878 px hidden by parada 11; espera_baja: 30 of 878 px hidden by parada 29, asiento 1; coqui.boton_baja: 72 of 536 px hidden by parada 72"
+     "door-front: at both guaguas a grown-up at puerta_sube and puerta_baja (y 5.45) is in front of the guagua's lit side (y 5.25) and 0 px of him are hidden by the guagua: puerta_sube 28,111 y 5.45: 0 of 878 px hidden by the guagua; puerta_baja 81,138 y 5.45: 0 of 878 px hidden by the guagua; puerta_sube.2 127,161 y 5.45: 0 of 878 px hidden by the guagua; puerta_baja.2 180,187 y 5.45: 0 of 878 px hidden by the guagua",
+     "       info, not a check: the pixels these places lose to another part of the set: puerta_baja: 72 of 878 px hidden by parada 72"
     ]
    },
    {
     "name": "seat-top",
     "ok": true,
     "lines": [
-     "seat-top: banco1 to banco3 are on the seat's top (z 0.46, x 0.3,2.5, y 7.35,7.85), drawn by the set there; Canelo in front of it: banco1 0.75,7.6,0.46: on the seat's top yes, 9 of the 3 x 3 pixels at its point are the seat's (part asiento), the set's depth there is 0.03 from the spot's; banco2 1.4,7.6,0.46: on the seat's top yes, 9 of the 3 x 3 pixels at its point are the seat's (part asiento), the set's depth there is 0.04 from the spot's; banco3 2.05,7.6,0.46: on the seat's top yes, 9 of the 3 x 3 pixels at its point are the seat's (part asiento), the set's depth there is 0.04 from the spot's; bajo_banco 1.5,8.2,0: in front of the seat (y > 7.85)"
+     "seat-top: banco1, banco2, banco_medio and banco3 are on the seat's top (z 0.46, x 0.2,3.4, y 8.55,9.05), drawn by the set there; Canelo in front of its right end: banco1 0.9,8.8,0.46: on the seat's top yes, 9 of the 3 x 3 pixels at its point are the seat's (part asiento), the set's depth there is 0.06 from the spot's; banco2 2.5,8.8,0.46: on the seat's top yes, 9 of the 3 x 3 pixels at its point are the seat's (part asiento), the set's depth there is 0.07 from the spot's; banco_medio 1.7,8.8,0.46: on the seat's top yes, 9 of the 3 x 3 pixels at its point are the seat's (part asiento), the set's depth there is 0.05 from the spot's; banco3 3.1,8.8,0.46: on the seat's top yes, 9 of the 3 x 3 pixels at its point are the seat's (part asiento), the set's depth there is 0.06 from the spot's; bajo_banco 2.9,9.15,0: in front of the seat (y > 9.05), at its right end (x 3.4)"
     ]
    },
    {
     "name": "nobody-on-street",
     "ok": true,
     "lines": [
-     "nobody-on-street: 27 places where somebody stands or sits are on the near pavement (y 5.8 to 9.2); the street is y 1.6 to 5.6; the spec puts 5 spots elsewhere: puerta_sube y 5.3, puerta_baja y 5.3, puerta_sube.2 y 5.3, puerta_baja.2 y 5.3, camino y 10.6"
+     "nobody-on-street: 17 places where somebody stands or sits are on the near pavement (y 5.8 to 9.2); the street is y 1.6 to 5.6; the spec puts 5 spots elsewhere: puerta_sube y 5.45, puerta_baja y 5.45, puerta_sube.2 y 5.45, puerta_baja.2 y 5.45, camino y 10.6"
     ]
    },
    {
     "name": "spots-on-set",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "spots-on-set: the set does not draw it there:",
-     "  ventana2 64,92: the set draws part parada at its point (colour 40,110,200), not the guagua's glass: the window is behind it"
+     "spots-on-set: the set draws what the spec puts at its places: boton_sube 21 green px of 25, boton_baja 6 orange px of 25; boton_sube.2 20 green px of 25, boton_baja.2 6 orange px of 25; ventana1 pixel 70,84,104 (auto); ventana2 pixel 70,84,104 (auto); chofer pixel tag auto; ventana1 x -2.3 from the front end 1.8: in pane 1 (its middle 1.82); ventana2 x -1.6 from the front end 2.5: in pane 2 (its middle 2.5); chofer 0.2 from the front end",
+     "       info, not a check: coqui.poste 107,203 is 0 px sideways and 0 rows from the post's pixel box [107,179,9,37] (the post stands at E.POST 4.6,8.8, its foot at 113,215)"
     ]
    },
    {
     "name": "guaguas-whole",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "guaguas-whole: 1 guagua(s) cut by the window [0, 196):",
-     "  parada1 (P -1.9) pixels columns 18 to 122, rows 40 to 136: 0 of its 6369 px outside the window [0, 196): 0 column(s) at the left (0 px), 0 at the right (0 px)",
-     "  parada2 (P 3.5) pixels columns 117 to 222, rows 89 to 185: 1496 of its 6633 px outside the window [0, 196): 0 column(s) at the left (0 px), 27 at the right (1496 px)",
-     "  the two guaguas together span columns 18 to 222 = 205 px, more than the 196-wide window: the least cut of both is 401 px, at x0 22 (parada1 179, parada2 222), where the spots' sprites at the left are cut: bordillo.abuela, bordillo.luis, puerta_sube, espera_sube, coqui.boton_sube, cola1, cola2, cola3, chofer"
+     "guaguas-whole: the first guagua (the pixels the set draws for it) is whole inside the window [1, 197); the second may be cut at its back end: parada1 (P -1.9) pixels columns 18 to 122, rows 40 to 136: 0 of its 6362 px outside the window [1, 197): 0 column(s) at the left (0 px), 0 at the right (0 px); parada2 (P 3.5) pixels columns 117 to 222, rows 89 to 185: 1429 of its 6633 px outside the window [1, 197): 0 column(s) at the left (0 px), 26 at the right (1429 px) (the second guagua may be cut: not a failure)"
     ]
    },
    {
     "name": "kerb-front",
     "ok": false,
     "lines": [
-     "kerb-front: hidden by the set:",
-     "  moment 1 bordillo.carmen: 22 of 888 px hidden by the seat 22",
-     "  moment 3 espera_baja: 30 of 834 px hidden by the sign 29, the seat 1",
-     "  m1: bordillo.luis 0/628, bordillo.abuela 0/899, bordillo.coqui 0/536, bordillo.carmen 22/888 (the seat 22), banco1 0/798",
-     "  m2: bordillo.abuela 0/899, bordillo.coqui 0/536",
-     "  m3: espera_sube 0/600, coqui.boton_sube 0/536, bajo_banco 0/313, espera_baja 30/834 (the sign 29, the seat 1)",
-     "  m4: cola1 0/878, cola2 0/259, cola3 0/600, coqui.botones 0/536, bajo_banco 0/313",
-     "       info, not a check: characters drawn over the stop's sign or the walking post (their pixels shown over the sign's or the post's): m1 banco1 is drawn over the sign 80 px; m3 espera_baja is drawn over the sign 216 px; m5 banco1 is drawn over the sign 80 px; m5 banco2 is drawn over the sign 63 px; m5 poste is drawn over the post 66 px; m6 fin.abuela is drawn over the sign 123 px",
-     "       info, not a check: characters with pixels hidden by the set, in all six moments: m1 bordillo.carmen 22/888 px hidden by the seat 22; m3 espera_baja 30/834 px hidden by the sign 29, the seat 1; m5 banco2 86/919 px hidden by the seat 86; m6 fin.abuela 174/895 px hidden by the seat 174; m6 fin.luis 91/621 px hidden by the seat 91; m6 fin.carmen 88/724 px hidden by the seat 88",
-     "       info, not a check: shown pixels that lie over a set pixel nearer than the sprite's own plane (the bias 0.3 lets them through): m1 banco1 over the seat 36; m3 bajo_banco over the seat 15; m3 espera_baja over the sign 206; m4 bajo_banco over the seat 15; m5 banco1 over the seat 24; m5 banco2 over the seat 38; m5 poste over the post 63"
+     "kerb-front: hidden by the set (px):",
+     "  spot fila2 43,153 with a adulto sprite: 17 of 878 px hidden by the seat 17",
+     "  spot fila2 43,153 with a nino sprite: 17 of 600 px hidden by the seat 17",
+     "  spot fila3 72,167 with a adulto sprite: 13 of 878 px hidden by the seat 13",
+     "  spot fila3 72,167 with a nino sprite: 13 of 600 px hidden by the seat 13",
+     "  spot fila3 72,167 with a coqui sprite: 44 of 536 px hidden by the seat 44",
+     "  spot fila4 102,182 with a adulto sprite: 8 of 878 px hidden by the seat 4, poste 4",
+     "  spot fila4 102,182 with a nino sprite: 8 of 600 px hidden by the seat 4, poste 4",
+     "  moment 1 fila2: 19 of 899 px hidden by the seat 19",
+     "  moment 1 fila3: 44 of 536 px hidden by the seat 44",
+     "  moment 1 fila4: 84 of 888 px hidden by the seat 80, poste 4",
+     "  moment 2 fila2: 19 of 899 px hidden by the seat 19",
+     "  moment 2 fila3: 44 of 536 px hidden by the seat 44",
+     "  moment 4 fila2: 17 of 834 px hidden by the seat 17",
+     "  moment 4 fila3: 13 of 600 px hidden by the seat 13",
+     "  moment 6 fila2: 19 of 895 px hidden by the seat 19",
+     "  moment 6 fila3: 44 of 536 px hidden by the seat 44",
+     "  moment 6 fila4: 8 of 628 px hidden by the seat 4, poste 4",
+     "    nearest passing fila2 (adulto) -0.7,7.3,0: y 7.3 -> 7.15 (-0.15)",
+     "    nearest passing fila2 (nino) -0.7,7.3,0: y 7.3 -> 7.15 (-0.15)",
+     "    nearest passing fila3 (adulto) 0.9,7.3,0: y 7.3 -> 7.18 (-0.12)",
+     "    nearest passing fila3 (nino) 0.9,7.3,0: y 7.3 -> 7.18 (-0.12)",
+     "    nearest passing fila3 (coqui) 0.9,7.3,0: y 7.3 -> 7.07 (-0.23)",
+     "    nearest passing fila4 (adulto) 2.5,7.3,0: y 7.3 -> 7.04 (-0.26)",
+     "    nearest passing fila4 (nino) 2.5,7.3,0: y 7.3 -> 7.04 (-0.26)",
+     "  by spot: fila1 14,138 (adulto) 0/878, fila1 14,138 (nino) 0/600, fila2 43,153 (adulto) 17/878 (the seat 17), fila2 43,153 (nino) 17/600 (the seat 17), fila3 72,167 (adulto) 13/878 (the seat 13), fila3 72,167 (nino) 13/600 (the seat 13), fila3 72,167 (coqui) 44/536 (the seat 44), fila4 102,182 (adulto) 8/878 (the seat 4, poste 4), fila4 102,182 (nino) 8/600 (the seat 4, poste 4), fila5 131,197 (adulto) 0/878, fila5 131,197 (nino) 0/600, coqui.boton_sube 30,121 (coqui) 0/536, coqui.boton_baja 62,136 (coqui) 0/536, coqui.botones 47,129 (coqui) 0/536, coqui.boton_sube.2 130,170 (coqui) 0/536, coqui.boton_baja.2 161,186 (coqui) 0/536, coqui.botones.2 146,178 (coqui) 0/536",
+     "  in the moments: m1: fila1 0/628, fila2 19/899 (the seat 19), fila3 44/536 (the seat 44), fila4 84/888 (the seat 80, poste 4); m2: fila2 19/899 (the seat 19), fila3 44/536 (the seat 44); m3: fila1 0/600, coqui.boton_sube 0/536; m4: fila1 0/878, fila2 17/834 (the seat 17), fila3 13/600 (the seat 13), coqui.botones 0/536; m5: nobody at the row or a button; m6: fila2 19/895 (the seat 19), fila3 44/536 (the seat 44), fila4 8/628 (the seat 4, poste 4), fila5 0/724",
+     "       info, not a check: characters drawn over the stop's sign or the walking post (their pixels shown over the sign's or the post's): m1 fila4 is drawn over the sign 31 px; m6 fila4 is drawn over the sign 9 px",
+     "       info, not a check: characters with pixels hidden by the set, in all six moments (the sitters too): m1 fila2 19/899 px hidden by the seat 19; m1 fila3 44/536 px hidden by the seat 44; m1 fila4 84/888 px hidden by the seat 80, poste 4; m2 fila2 19/899 px hidden by the seat 19; m2 fila3 44/536 px hidden by the seat 44; m3 bajo_banco 3/313 px hidden by the seat 3; m3 puerta_baja 72/834 px hidden by the sign 72; m4 fila2 17/834 px hidden by the seat 17; m4 fila3 13/600 px hidden by the seat 13; m4 bajo_banco 3/313 px hidden by the seat 3; m5 banco2 71/884 px hidden by the seat 71; m5 coqui.poste 134/536 px hidden by poste 134; m6 fila2 19/895 px hidden by the seat 19; m6 fila3 44/536 px hidden by the seat 44; m6 fila4 8/628 px hidden by the seat 4, poste 4",
+     "       info, not a check: shown pixels that lie over a set pixel nearer than the sprite's own plane (the bias 0.3 lets them through): m1 banco1 over the seat 38; m3 bajo_banco over the seat 92; m3 puerta_baja over the guagua 15; m4 bajo_banco over the seat 92; m5 banco1 over the seat 26; m5 banco2 over the seat 43",
+     "       info, not a check: the sitters (banco1, banco2) with pixels hidden by the set: banco1 abuela_sent 88/884 (the seat 88); banco2 abuela_sent 71/884 (the seat 71)"
     ]
    },
    {
     "name": "frog-button-door",
     "ok": true,
     "lines": [
-     "frog-button-door: the frog at each button (coqui.boton_sube, coqui.boton_baja, at both guaguas) covers 0 px of the other door: coqui.boton_sube 31,120: covers 0 px of the baja door (x -1.18 to -0.1), 107 px of its own; coqui.boton_baja 63,136: covers 0 px of the sube door (x -3.75 to -2.66), 19 px of its own; coqui.boton_sube.2 131,170: covers 0 px of the baja door (x 4.22 to 5.3), 110 px of its own; coqui.boton_baja.2 162,186: covers 0 px of the sube door (x 1.65 to 2.74), 18 px of its own; info: the frog between the buttons, coqui.botones 47,129, covers 15 px of the front door and 0 of the back door"
+     "frog-button-door: the frog at each button (coqui.boton_sube, coqui.boton_baja, at both guaguas) covers 0 px of the other door: coqui.boton_sube 30,121: covers 0 px of the baja door (x -1.18 to -0.1), 78 px of its own; coqui.boton_baja 62,136: covers 0 px of the sube door (x -3.75 to -2.66), 9 px of its own; coqui.boton_sube.2 130,170: covers 0 px of the baja door (x 4.22 to 5.3), 98 px of its own; coqui.boton_baja.2 161,186: covers 0 px of the sube door (x 1.65 to 2.74), 8 px of its own; info: the frog between the buttons, coqui.botones 47,129, covers 15 px of the front door and 0 of the back door; info: the frog between the buttons, coqui.botones.2 146,178, covers 19 px of the front door and 0 of the back door"
     ]
    },
    {
     "name": "canelo-shown",
     "ok": true,
     "lines": [
-     "canelo-shown: Canelo at bajo_banco 67,181 shows 60% or more: lying: 313 of 313 px show (100%); sitting: 384 of 384 px show (100%); moment 3 (lying, with the people of the moment): 313 of 313 px shown by the set; moment 4 (lying, with the people of the moment): 313 of 313 px shown by the set"
+     "canelo-shown: Canelo at bajo_banco 75,203 shows 60% or more: lying: 310 of 313 px show (99.04%), hidden by asiento 3; sitting: 384 of 384 px show (100%); moment 3 (lying, with the people of the moment): 310 of 313 px shown by the set; moment 4 (lying, with the people of the moment): 310 of 313 px shown by the set"
     ]
    }
   ]
