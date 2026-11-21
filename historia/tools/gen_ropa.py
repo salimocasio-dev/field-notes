@@ -147,7 +147,7 @@ nm,nc=nombres("abuela","luis","carmen","coqui","perro"); c=dict(comunes); c.upda
 c.update({"c79_ola":N("¡Una ola grande!"),"c79_ab_sombrero":AB("¡Ay! ¡Mi sombrero! Coquí, busca mi sombrero."),"c79_donde_sombrero":N("¿Dónde está el sombrero?"),"c79_ab_mojado":AB("Gracias. ¡El sombrero está mojado!"),
  "c79_l_toalla":L("Mira: una toalla. La toalla está allá."),"c79_donde_toalla":N("¿Dónde está la toalla?"),
  "c79_ab_chancletas":AB("Mira, ahí están las chancletas."),"c79_donde_chancletas":N("¿Dónde están las chancletas?"),"c79_ab_gafas":AB("Ahí están las gafas."),"c79_y_gafas":N("¿Y las gafas?"),
- "c79_ab_traje":AB("Y ahí está el traje de baño. Las chancletas, las gafas, el traje de baño y mi sombrero."),"c79_l_avanza":L("¡Avanza, Coquí!"),"c79_cq_voy":T("¡Voy!"),
+ "c79_ca_traje":CA("¡Y mi traje de baño!"),"c79_ab_traje":AB("Sí, ahí está el traje de baño. Las chancletas, las gafas, el traje de baño y mi sombrero."),"c79_l_avanza":L("¡Avanza, Coquí!"),"c79_cq_voy":T("¡Voy!"),
  "c79_ab_cuidado":AB("¡Cuidado! Viene una ola. Ahora tú, Coquí."),"c79_ab_toma":AB("Toma, Coquí. Una toalla seca."),"c79_cq_gracias":T("¡Gracias!"),"c79_fin":N("El sombrero está mojado. Y Coquí está seco.")})
 for k in T79:
     c["c79_busca_%s"%k]=AB("¡Coquí, busca %s!"%W79[k]); c["c79_no_%s"%k]=AB("¡No! ¡%s!"%(W79[k][0].upper()+W79[k][1:])); DIN.update(["c79_busca_%s"%k,"c79_no_%s"%k])
@@ -181,9 +181,9 @@ s79={"id":"mi-sombrero","title":"¡Mi sombrero!","place":"La playa","scene":"rop
   {"dots":1},"c79_ola","c79_ab_sombrero",ask("sombrero","c79_donde_sombrero",after=[act("trae79",que="sombrero")]),"c79_ab_mojado",
   # 2: Luis points at the towel; signed ask; the frog drags it in (Luis wrings it out and hangs it: no act named)
   {"dots":2},gesto("luis","senala",a="toalla"),"c79_l_toalla",ask("toalla","c79_donde_toalla",after=[act("trae79",que="toalla")]),
-  # 3: abuela points at each thing in turn; signed asks on the sandals and on the glasses
+  # 3: abuela points at each thing in turn; signed asks on the sandals and on the glasses; Carmen calls her swimming suit (no act named for her); abuela says yes and lists them
   {"dots":3},gesto("abuela","senala",a="chancletas"),"c79_ab_chancletas",ask("chancletas","c79_donde_chancletas"),
-  gesto("abuela","senala",a="gafas"),"c79_ab_gafas",ask("gafas","c79_y_gafas"),gesto("abuela","senala",a="traje"),"c79_ab_traje",
+  gesto("abuela","senala",a="gafas"),"c79_ab_gafas",ask("gafas","c79_y_gafas"),"c79_ca_traje",gesto("abuela","senala",a="traje"),"c79_ab_traje",
   # 4: Luis calls him; the second turn (voy); the frog hops to the edge (no spot named for him)
   {"dots":4},"c79_l_avanza","c79_cq_voy",
   # 5: four things in a dealt order; abuela holds the bag open; the wave is building; the card shows two places
@@ -192,7 +192,7 @@ s79={"id":"mi-sombrero","title":"¡Mi sombrero!","place":"La playa","scene":"rop
   {"dots":6}]+ronda79("a",T79,flags=True)+[{"dots":7}]+arbolB(),
  "final":[{"dots":8},gesto("abuela","mira",a="bolsa"),baja3(lambda n:act("final79",n=n)),   # 8: the last wave; the things on the line, by what was lost
   {"dots":9},"c79_ab_toma","c79_cq_gracias","c79_fin",act("fin")],
- "leer":["c79_ola","c79_ab_sombrero","c79_donde_sombrero","c79_ab_mojado","c79_l_toalla","c79_donde_toalla","c79_ab_chancletas","c79_donde_chancletas","c79_ab_gafas","c79_y_gafas","c79_ab_traje","c79_l_avanza","c79_cq_voy",
+ "leer":["c79_ola","c79_ab_sombrero","c79_donde_sombrero","c79_ab_mojado","c79_l_toalla","c79_donde_toalla","c79_ab_chancletas","c79_donde_chancletas","c79_ab_gafas","c79_y_gafas","c79_ca_traje","c79_ab_traje","c79_l_avanza","c79_cq_voy",
   "c79_ab_cuidado","c79_busca_chancletas","c79_busca_gafas","c79_ab_toma","c79_cq_gracias","c79_fin"]}
 s79=reuse(s79,{"c79_cq_voy":TG(("voy",["voy"])),"c79_cq_gracias":TG(("gracias",["gracias"]))})
 json.dump(s79,open("cuentos/mi-sombrero.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
@@ -204,7 +204,7 @@ json.dump(s79,open("cuentos/mi-sombrero.json","w",encoding="utf-8"),ensure_ascii
 nm,nc=nombres("abuela","luis","carmen","coqui","perro"); c=dict(comunes); c.update(nc)
 c.update({"c80_tarde":N("Es tarde. La guagua está esperando."),"c80_l_sombrero":N("Y se pone el sombrero."),"c80_quien_sombrero":N("¿Quién tiene puesto un sombrero?"),
  "c80_ca_gafas":N("Carmen tiene puestas las gafas."),"c80_ab_sol":AB("Carmen, ya no hay sol."),"c80_ca_quita":N("Carmen se quita las gafas."),"c80_quien_vestido":N("¿Quién tiene puesto un vestido?"),
- "c80_l_quita_pone":N("Luis se quita el sombrero... y se pone el sombrero."),"c80_l_vienes":L("Coquí, ¿vienes?"),"c80_cq_voy":T("¡Voy!"),
+ "c80_l_quita_pone":N("Luis se quita el sombrero... y se pone el sombrero."),"c80_ca_chancletas":N("Carmen se quita las chancletas."),"c80_l_vienes":L("Coquí, ¿vienes?"),"c80_cq_voy":T("¡Voy!"),
  "c80_ab_donde":AB("¿Dónde está Luis? ¿Dónde está Carmen? Coquí, búscalos."),"c80_ab_canelo":AB("¿Y Canelo? ¿Dónde está Canelo?"),"c80_cq_aqui":T("¡Aquí!"),
  "c80_fin":N("Canelo tiene puesto el sombrero de abuela. Y la guagua se va.")})
 ART80={"sombrero":"el sombrero","camisa":"la camisa","vestido":"el vestido"}
@@ -233,15 +233,15 @@ s80={"id":"se-pone-y-se-quita","title":"Se pone y se quita","place":"La playa","
   # 2: Carmen puts on her dress and her glasses; abuela says no sun; she takes them off; signed ask on her (she spins)
   {"dots":2},act("pone80",quien="carmen",que="vestido"),"c80_b_pone_vestido",act("pone80",quien="carmen",que="gafas"),"c80_ca_gafas",gesto("abuela","no"),"c80_ab_sol",
   act("quita80",quien="carmen",que="gafas"),"c80_ca_quita",ask("carmen","c80_quien_vestido",after=[gesto("carmen","gira")]),
-  # 3: Luis takes his hat off, fans himself, puts it on; the first turn (voy); the two run off (no act named)
-  {"dots":3},act("quita80",quien="luis",que="sombrero"),gesto("luis","abanica"),act("pone80",quien="luis",que="sombrero"),"c80_l_quita_pone","c80_l_vienes","c80_cq_voy",
+  # 3: Luis takes his hat off, fans himself, puts it on; Carmen kicks off her sandals; the first turn (voy); the two run off (no act named)
+  {"dots":3},act("quita80",quien="luis",que="sombrero"),gesto("luis","abanica"),act("pone80",quien="luis",que="sombrero"),"c80_l_quita_pone",act("quita80",quien="carmen",que="chancletas"),"c80_ca_chancletas","c80_l_vienes","c80_cq_voy",
   # 4: the four children at the water's edge (no act named); abuela shades her eyes; the driver looks at his watch (no act named); the card shows two places
   {"dots":4},gesto("abuela","ojos"),"c80_ab_donde",CARD,{"wait":400},
   # 5: A (the two boys). 6: B (the two girls). Each drawn afresh
   {"dots":5}]+ronda80("a","chicos",["sombrero","camisa"],"chico")+[{"dots":6}]+ronda80("b","chicas",["sombrero","vestido"],"chica"),
  "final":[{"dots":7},baja3(lambda n:act("final80",n=n)),   # 7: the four run for the road; the driver's fingers, by what was lost
   {"dots":8},"c80_ab_canelo","c80_cq_aqui","c80_fin",act("fin")],
- "leer":["c80_tarde","c80_a_pone_camisa","c80_l_sombrero","c80_quien_sombrero","c80_b_pone_vestido","c80_ca_gafas","c80_ab_sol","c80_ca_quita","c80_quien_vestido","c80_l_quita_pone","c80_l_vienes","c80_cq_voy","c80_ab_donde",
+ "leer":["c80_tarde","c80_a_pone_camisa","c80_l_sombrero","c80_quien_sombrero","c80_b_pone_vestido","c80_ca_gafas","c80_ab_sol","c80_ca_quita","c80_quien_vestido","c80_l_quita_pone","c80_ca_chancletas","c80_l_vienes","c80_cq_voy","c80_ab_donde",
   "c80_a_quita_sombrero","c80_b_pone_sombrero","c80_ab_canelo","c80_cq_aqui","c80_fin"]}
 s80=reuse(s80,{"c80_cq_voy":TG(("voy",["voy"])),"c80_cq_aqui":TG(("aquí",["aquí","aqui"]))})
 json.dump(s80,open("cuentos/se-pone-y-se-quita.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
