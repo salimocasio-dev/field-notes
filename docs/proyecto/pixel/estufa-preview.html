@@ -39,7 +39,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;signs=1&amp;hud=1
     for (const [a, b] of S.helps.lines) X(a, b);
     // the window's people: the room drawn again over them where it is nearer (front.parts.ventana)
     const vn = S.moves.find(m => m.src.startsWith('if(W.ventana&&W.ventana.length)')).to;
-    X(vn, 'PREVIEW.winA(c);' + vn + 'PREVIEW.winB(c);');
+    { const cut = vn.indexOf('}if(W.ventana&&W.ventana.length&&W.ventanacome)') + 1; X(vn, 'PREVIEW.winA(c);' + vn.slice(0, cut) + 'PREVIEW.winB(c);' + vn.slice(cut)); }
     const fronts = Object.entries(S.front.parts).filter(e => e[1].sortY != null).map(([p, f]) => `L.push({y:${f.sortY},front:"${p}",d:()=>PREVIEW.front(c,"${p}")});`).join('');
     X('L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());', fronts + 'PREVIEW.OWN=null;L.sort((m,n)=>m.y-n.y).forEach(o=>PREVIEW.item(c,o));');
     X('Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});',
@@ -96,12 +96,12 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;signs=1&amp;hud=1
     if (o.id) { const p = w.gente[o.id]; return vOf(R(p.x), R(p.y) - 1); }
     return null;
   };
-  // the window's people: what they drew, then the room's own pixels nearer than their plane (world y = -0.05) drawn again over them
+  // the window's people: what they drew, then the room's own pixels nearer than their plane (world y = front.parts.ventana.y, outside) drawn again over them
   PV.winA = c => { PV.WA = c.getImageData(0, 0, 240, 216).data; };
   PV.winB = function (c) {
     const a = PV.WA, id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, T = CUR.tags, Z = CUR.z, fw = CUR.win, parts = SHEET.front.parts.ventana.parts;
     for (let i = 0; i < 240 * 216; i++) { const j = i * 4; if (a[j] === d[j] && a[j + 1] === d[j + 1] && a[j + 2] === d[j + 2]) continue; if (!parts.includes(T[i])) continue;
-      const x = i % 240, y = (i / 240) | 0, v = (x + .5 - fw.OX) / fw.S - .05 * Math.SQRT2;
+      const x = i % 240, y = (i / 240) | 0, v = (x + .5 - fw.OX) / fw.S + SHEET.front.parts.ventana.y * Math.SQRT2;
       if (!(Z[i] > v / COS - (y + .5 - fw.OY) * T30 / fw.S)) continue; d[j] = s[j]; d[j + 1] = s[j + 1]; d[j + 2] = s[j + 2]; d[j + 3] = 255; }
     c.putImageData(id, 0, 0);
   };
