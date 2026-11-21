@@ -175,10 +175,15 @@ class SheetThing {
     this.old,
     this.what,
     this.why,
-    this.raw,
-  );
+    this.raw, {
+    this.hand,
+  });
 
   final String id;
+
+  /// El patio's (order 32b): the point the hint hand points at (`hand`, kit.js cosas: `hand`, given as `[x, y]`), when
+  /// the box's middle is not the place; null for a thing with none (or one that gives it otherwise: El balcón's door).
+  final List<int>? hand;
 
   /// It is part of the set: it has a world box (or, with [sky], a shape on the screen).
   final bool set;
@@ -444,6 +449,7 @@ class RemapTo {
     this.pictures,
     this.level = false,
     this.floor,
+    this.screen,
   });
 
   final String? point;
@@ -463,6 +469,9 @@ class RemapTo {
   /// The floor point under a place that keeps its screen place (La sala's `to.floor`: the frog's or a person's feet);
   /// the place today is [SheetRemap.now].
   final List<double>? floor;
+
+  /// El patio's (order 32b): a screen point that stays as it is (`to.screen`: in the air, the bird's loop), or null.
+  final List<double>? screen;
 }
 
 /// One entry of `remap`: a position written in a story, pair or level file, and its place today.
@@ -486,6 +495,8 @@ class SheetRemap {
     this.ab,
     this.crops,
     this.now,
+    this.moved = false,
+    this.cropsElsewhere = const {},
   });
 
   final String kind;
@@ -514,6 +525,14 @@ class SheetRemap {
 
   /// The sheet's `new` (La sala's): the place today, as the file writes it (`x, y`).
   final List<int>? now;
+
+  /// El patio's (order 32b): the place today is not the old one (`moved`: a story's own position the sheet moved;
+  /// [now] says where).
+  final bool moved;
+
+  /// El patio's: the pictures of [RemapTo.pictures] another scene draws (`crops.<name>.scene`: cual-camino's
+  /// `parque.si`, El camino's), by name, their scene.
+  final Map<String, String> cropsElsewhere;
 }
 
 /// How one parameter of the set's key reads W (`setKey.params`).
@@ -664,13 +683,23 @@ class SheetScreenPoint {
     this.what,
     this.angle,
     this.nail,
-    this.raw,
-  );
+    this.raw, {
+    this.heights,
+  });
 
   final String name;
 
-  /// The numbers of a point or a rectangle; empty for a list of points.
+  /// The numbers of a point or a rectangle; empty for a list of points. A point that moves up and down (El patio's sun,
+  /// order 32b) has its `x` only, and its rows are [heights].
   final List<double> screen;
+
+  /// El patio's sun (`points.sol`): the rows it stands at (`heights`), its `x` the one number of [screen].
+  final List<double>? heights;
+
+  /// The `x` of a point given by its `x` and its [heights]. Throws [SheetError] when it is not one.
+  double get x => heights != null && screen.length == 1
+      ? screen[0]
+      : (throw SheetError('point "$name" is not an x with heights'));
 
   /// A list of points (`[[x, y], ...]`), or null.
   final List<List<double>>? points;
@@ -705,16 +734,30 @@ class SheetMove {
     this.to,
     this.places,
     this.why,
-    this.raw,
-  );
+    this.raw, {
+    this.values = const [],
+    this.respEn,
+  });
 
   final int line;
   final String act;
   final String src, to;
-  final List<({String who, List<num> old, List<num> now, List<double> world})>
+
+  /// Who moves from where to where (none for a move that is not a person's place: El patio's sun, stars, flowers). [z]:
+  /// the row a person is sorted by when it is not their feet (El patio's baby in mamá's arms), or null.
+  final List<
+    ({String who, List<num> old, List<num> now, List<double> world, num? z})
+  >
   places;
   final String? why;
   final Map<String, dynamic> raw;
+
+  /// El patio's (order 32b): a value of W the move changes (`values`: `W.soly` 24 is 26), each its key and its old and
+  /// new value.
+  final List<({String key, num old, num now})> values;
+
+  /// El patio's: where the answer cards stand after this act (`respEn`, juego.js `W.respEn`), or null.
+  final List<int>? respEn;
 }
 
 /// One place where the old code turns smoothing on (`smoothing.places`): where ([at], "sala.js:120"), what it does, and
@@ -779,6 +822,60 @@ class SheetTalk {
     }
     return [for (final t in parts) term(t)];
   }
+
+  /// Every rectangle of the corner card [name] in the display (El patio's, order 32b): `W.<name> [x, y, w, h]`, or
+  /// `W.<name>: [...] and [...]` for a card of two parts (the scores: the basket's and the nest's). A term is a number,
+  /// `p + q * f`, or `p + q max(m, f)` (`26 + 15 max(3, canasta.length)`), [field] giving W's number `f` (0 when it has
+  /// none; `canasta.length` the length of W's list). Empty when the sheet names no such card.
+  List<List<num>> boardsOf(String name, num Function(String field) field) {
+    final m = RegExp(
+      'W\\.${RegExp.escape(name)}:? (\\[[^\\]]*\\](?: and \\[[^\\]]*\\])*)',
+    ).firstMatch(boards);
+    if (m == null) return const [];
+    num term(String t) {
+      final n = num.tryParse(t.trim());
+      if (n != null) return n;
+      final e = RegExp(r'^\s*(-?[\d.]+)\s*\+\s*(-?[\d.]+)\s*\*\s*([\w.]+)\s*$')
+          .firstMatch(t);
+      if (e != null) return num.parse(e[1]!) + num.parse(e[2]!) * field(e[3]!);
+      final x = RegExp(
+        r'^\s*(-?[\d.]+)\s*\+\s*(-?[\d.]+)\s*\*?\s*max\(\s*(-?[\d.]+)\s*,\s*([\w.]+)\s*\)\s*$',
+      ).firstMatch(t);
+      if (x != null) {
+        return num.parse(x[1]!) +
+            num.parse(x[2]!) * math.max(num.parse(x[3]!), field(x[4]!));
+      }
+      throw SheetError(
+        'talk.boards: "$t" of W.$name is not a number, p + q * field or p + q max(m, field)',
+      );
+    }
+
+    // the numbers of one rectangle, split at the commas outside brackets
+    List<String> split(String s) {
+      final out = <String>[];
+      var depth = 0, from = 0;
+      for (var i = 0; i < s.length; i++) {
+        if (s[i] == '(') depth++;
+        if (s[i] == ')') depth--;
+        if (s[i] == ',' && depth == 0) {
+          out.add(s.substring(from, i));
+          from = i + 1;
+        }
+      }
+      return out..add(s.substring(from));
+    }
+
+    return [
+      for (final r in RegExp(r'\[([^\]]*)\]').allMatches(m[1]!))
+        () {
+          final parts = split(r[1]!);
+          if (parts.length != 4) {
+            throw SheetError('talk.boards: W.$name is not 4 numbers');
+          }
+          return [for (final t in parts) term(t)];
+        }(),
+    ];
+  }
 }
 
 /// A number of the old scene file and what it is today: a top-level entry of the sheet with a number `old` and a number
@@ -794,6 +891,74 @@ class SheetNumber {
   final num now;
   final String? what;
   final Map<String, dynamic> raw;
+}
+
+/// One pair of the frog's places (`lugar`) and the hops between them (`hops`, `hopsAll`): kit.js acts.ir hops
+/// `round(d / 30)` times (1 to 4), d the screen distance between the two places. [old] and [now] are the counts with the
+/// old places and today's, [dOld] and [dNow] the distances.
+class SheetHop {
+  SheetHop._(
+    this.a,
+    this.b,
+    this.old,
+    this.now,
+    this.dOld,
+    this.dNow,
+    this.raw,
+  );
+
+  final String a, b;
+  final int old, now;
+  final double dOld, dNow;
+  final Map<String, dynamic> raw;
+}
+
+/// What the sprite layer draws behind the set (`behind`, El patio's, order 32b): each item is drawn first, then the
+/// set's own pixels again wherever the set has drawn anything (its depth over -1e8, the leaves of that frame
+/// included). [what] is the rule in the sheet's words; [items] each old line (`at`), what, and its boxes in words.
+class SheetBehind {
+  SheetBehind._(this.what, this.items, this.raw);
+
+  final String what;
+  final List<({String at, String what, String? boxes})> items;
+  final Map<String, dynamic> raw;
+}
+
+/// One stage of a flower's leaves (`flowerLeaves.stages`): pixel `(x + x0 + col, y + y0 + row)` of `rows[row][col]` is
+/// the palette's colour of that letter, `.` none. [head]: where the flower's head is, `[dx, dy, w, h]` from its foot.
+class SheetLeafStage {
+  SheetLeafStage._(this.name, this.x0, this.y0, this.rows, this.head, this.raw);
+
+  final String name;
+  final int x0, y0;
+  final List<String> rows;
+  final List<int>? head;
+  final Map<String, dynamic> raw;
+}
+
+/// A flower's own leaves (`flowerLeaves`, El patio's round 6): drawn by the sprite layer immediately before every
+/// flower planted in a bed, at its foot, 1:1, not dimmed. [palette]: each letter's colour (`0xFFBBGGRR`, made once);
+/// [stages]: `open` and `bud`; [gets] and [not]: the old lines that get them and those that do not (a number, or a
+/// string such as `"juego.js"`), with what they are.
+class SheetFlowerLeaves {
+  SheetFlowerLeaves._(
+    this.what,
+    this.palette,
+    this.stages,
+    this.gets,
+    this.not,
+    this.raw,
+  );
+
+  final String? what;
+  final Map<String, int> palette;
+  final Map<String, SheetLeafStage> stages;
+  final List<({Object line, String what})> gets, not;
+  final Map<String, dynamic> raw;
+
+  /// The stage [name] (`open`, `bud`). Throws [SheetError] when there is none.
+  SheetLeafStage stage(String name) =>
+      stages[name] ?? (throw SheetError('flowerLeaves has no stage "$name"'));
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -848,6 +1013,10 @@ class Sheet {
     this.notSmoothing,
     this.bubbleRects = const {},
     this.talk,
+    this.hops = const [],
+    this.hopsAll = const [],
+    this.behind,
+    this.flowerLeaves,
   });
 
   /// Parses the text of a sheet. Throws [SheetError], naming where, when it is not a sheet.
@@ -930,7 +1099,16 @@ class Sheet {
       'moves',
       'bubbles',
       'talk',
+      'hops',
+      'hopsAll',
+      'flowerLeaves',
     };
+    // El patio's `behind` (a part: what is drawn behind the set) is not El balcón's (a number, old and new)
+    final behindPart =
+        m['behind'] is Map<String, dynamic> &&
+            (m['behind'] as Map<String, dynamic>).containsKey('items')
+        ? _readBehind(m['behind'], '$at.behind')
+        : null;
     final partsRaw = front.containsKey('parts')
         ? _obj(front['parts'], '$at.front.parts')
         : const <String, dynamic>{};
@@ -1122,10 +1300,20 @@ class Sheet {
             }
           : const {},
       talk: m.containsKey('talk') ? _readTalk(m['talk'], '$at.talk') : null,
+      hops: m.containsKey('hops') ? _readHops(m['hops'], '$at.hops') : const [],
+      hopsAll: m.containsKey('hopsAll')
+          ? _readHops(m['hopsAll'], '$at.hopsAll')
+          : const [],
+      behind: behindPart,
+      flowerLeaves: m.containsKey('flowerLeaves')
+          ? _readFlowerLeaves(m['flowerLeaves'], '$at.flowerLeaves')
+          : null,
       raw: m,
       unknown: {
         for (final e in m.entries)
-          if (!known.contains(e.key) && !numbers.containsKey(e.key))
+          if (!known.contains(e.key) &&
+              !numbers.containsKey(e.key) &&
+              !(e.key == 'behind' && behindPart != null))
             e.key: e.value,
       },
     );
@@ -1218,6 +1406,16 @@ class Sheet {
 
   /// Where a bubble goes (`talk`), or null.
   final SheetTalk? talk;
+
+  /// The pairs of the frog's places whose hop count is not the old one (`hops`: El patio's 8; El balcón's and La sala's
+  /// list every pair), and every pair (`hopsAll`, El patio's 91). Empty when the sheet has none.
+  final List<SheetHop> hops, hopsAll;
+
+  /// What the sprite layer draws behind the set (`behind`, El patio's), or null.
+  final SheetBehind? behind;
+
+  /// A flower's own leaves (`flowerLeaves`, El patio's), or null.
+  final SheetFlowerLeaves? flowerLeaves;
 
   /// A screen point of [screenPoints]. Throws [SheetError] when the sheet has none of that name.
   SheetScreenPoint screenPoint(String name) =>
@@ -1529,6 +1727,8 @@ SheetThing _readThing(String id, Map<String, dynamic> m, String at) {
     _opt(m, 'what', (v) => _str(v, '$at.what')),
     _opt(m, 'why', (v) => _str(v, '$at.why')),
     m,
+    // (El balcón's door gives its hand as an object, a point's name: kept in raw)
+    hand: m['hand'] is List ? _ints(m['hand'], '$at.hand', length: 2) : null,
   );
 }
 
@@ -1565,9 +1765,18 @@ SheetScreenPoint _readScreenPoint(
 ) {
   final sc = _list(_need(m, 'screen', at), '$at.screen');
   final many = sc.isNotEmpty && sc.first is List;
+  // a point that moves up and down (El patio's sun): `screen` is [x, null] and its rows are `heights`
+  final heights = _opt(m, 'heights', (v) => _doubles(v, '$at.heights'));
+  if (heights != null && (sc.length != 2 || sc[1] != null)) {
+    throw SheetError('$at.screen: a point with heights is [x, null]');
+  }
   return SheetScreenPoint._(
     name,
-    many ? const [] : _doubles(sc, '$at.screen'),
+    many
+        ? const []
+        : heights != null
+        ? [_num(sc[0], '$at.screen[0]').toDouble()]
+        : _doubles(sc, '$at.screen'),
     many
         ? [
             for (var i = 0; i < sc.length; i++)
@@ -1579,6 +1788,7 @@ SheetScreenPoint _readScreenPoint(
     _opt(m, 'angle', (v) => _num(v, '$at.angle').toDouble()),
     _opt(m, 'nail', (v) => _ints(v, '$at.nail', length: 2)),
     m,
+    heights: heights,
   );
 }
 
@@ -1588,7 +1798,12 @@ List<SheetMove> _readMoves(Object? v, String at) {
     for (var i = 0; i < l.length; i++)
       () {
         final p = '$at[$i]', o = _obj(l[i], p);
-        final places = _list(_need(o, 'places', p), '$p.places');
+        final places = o.containsKey('places')
+            ? _list(o['places'], '$p.places')
+            : const [];
+        final values = o.containsKey('values')
+            ? _list(o['values'], '$p.values')
+            : const [];
         return SheetMove._(
           _int(_need(o, 'line', p), '$p.line'),
           _str(_need(o, 'act', p), '$p.act'),
@@ -1603,14 +1818,122 @@ List<SheetMove> _readMoves(Object? v, String at) {
                   old: _nums(_need(pl, 'old', q), '$q.old', length: 2),
                   now: _nums(_need(pl, 'new', q), '$q.new', length: 2),
                   world: _doubles(_need(pl, 'world', q), '$q.world', length: 3),
+                  z: _opt(pl, 'z', (v) => _num(v, '$q.z')),
                 );
               }(),
           ],
           _opt(o, 'why', (v) => _str(v, '$p.why')),
           o,
+          values: [
+            for (var j = 0; j < values.length; j++)
+              () {
+                final q = '$p.values[$j]', vl = _obj(values[j], q);
+                return (
+                  key: _str(_need(vl, 'key', q), '$q.key'),
+                  old: _num(_need(vl, 'old', q), '$q.old'),
+                  now: _num(_need(vl, 'new', q), '$q.new'),
+                );
+              }(),
+          ],
+          respEn: _opt(o, 'respEn', (v) => _ints(v, '$p.respEn', length: 2)),
         );
       }(),
   ];
+}
+
+List<SheetHop> _readHops(Object? v, String at) {
+  final l = _list(v, at);
+  return [
+    for (var i = 0; i < l.length; i++)
+      () {
+        final p = '$at[$i]', o = _obj(l[i], p);
+        return SheetHop._(
+          _str(_need(o, 'a', p), '$p.a'),
+          _str(_need(o, 'b', p), '$p.b'),
+          _int(_need(o, 'old', p), '$p.old'),
+          _int(_need(o, 'new', p), '$p.new'),
+          _num(_need(o, 'dOld', p), '$p.dOld').toDouble(),
+          _num(_need(o, 'dNew', p), '$p.dNew').toDouble(),
+          o,
+        );
+      }(),
+  ];
+}
+
+SheetBehind _readBehind(Object? v, String at) {
+  final m = _obj(v, at);
+  final items = _list(_need(m, 'items', at), '$at.items');
+  return SheetBehind._(_str(_need(m, 'what', at), '$at.what'), [
+    for (var i = 0; i < items.length; i++)
+      () {
+        final p = '$at.items[$i]', o = _obj(items[i], p);
+        return (
+          at: _str(_need(o, 'at', p), '$p.at'),
+          what: _str(_need(o, 'what', p), '$p.what'),
+          boxes: _opt(o, 'boxes', (v) => _str(v, '$p.boxes')),
+        );
+      }(),
+  ], m);
+}
+
+SheetFlowerLeaves _readFlowerLeaves(Object? v, String at) {
+  final m = _obj(v, at);
+  final palette = _obj(_need(m, 'palette', at), '$at.palette');
+  final stages = _obj(_need(m, 'stages', at), '$at.stages');
+  List<({Object line, String what})> lines(String key) {
+    final l = _list(_need(m, key, at), '$at.$key');
+    return [
+      for (var i = 0; i < l.length; i++)
+        () {
+          final p = '$at.$key[$i]', o = _obj(l[i], p);
+          final line = _need(o, 'line', p);
+          if (line is! int && line is! String) {
+            throw SheetError(
+              '$p.line: a number or a string was expected, found ${_what(line)}',
+            );
+          }
+          return (line: line!, what: _str(_need(o, 'what', p), '$p.what'));
+        }(),
+    ];
+  }
+
+  final pal = <String, int>{
+    for (final e in palette.entries)
+      e.key: () {
+        final c = _ints(e.value, '$at.palette.${e.key}', length: 3);
+        return 0xFF000000 | (c[2] << 16) | (c[1] << 8) | c[0];
+      }(),
+  };
+  final st = <String, SheetLeafStage>{
+    for (final e in stages.entries)
+      e.key: () {
+        final p = '$at.stages.${e.key}', o = _obj(e.value, p);
+        final rows = _strs(_need(o, 'rows', p), '$p.rows');
+        for (var r = 0; r < rows.length; r++) {
+          for (final ch in rows[r].split('')) {
+            if (ch != '.' && !pal.containsKey(ch)) {
+              throw SheetError('$p.rows[$r]: "$ch" is not in the palette');
+            }
+          }
+        }
+        return SheetLeafStage._(
+          e.key,
+          _int(_need(o, 'x0', p), '$p.x0'),
+          _int(_need(o, 'y0', p), '$p.y0'),
+          rows,
+          _opt(o, 'head', (v) => _ints(v, '$p.head', length: 4)),
+          o,
+        );
+      }(),
+  };
+  return SheetFlowerLeaves._(
+    _opt(m, 'what', (v) => _str(v, '$at.what')),
+    pal,
+    st,
+    lines('gets'),
+    lines('not'),
+    m,
+  );
 }
 
 SheetTalk _readTalk(Object? v, String at) {
@@ -1818,13 +2141,25 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
             _opt(t, 'world', (v) => _doubles(v, '$p.to.world', length: 3)),
             _opt(t, 'view', (v) => _str(v, '$p.to.view')),
             _opt(t, 'spot', (v) => _str(v, '$p.to.spot')),
-            _opt(t, 'none', (v) => _str(v, '$p.to.none')),
+            // `none` is the sheet's words, or (El patio's) `true`, its words then in the entry's `what`
+            _opt(
+              t,
+              'none',
+              (v) => v == true
+                  ? (m['what'] is String ? m['what'] as String : '')
+                  : _str(v, '$p.to.none'),
+            ),
             pictures: _opt(t, 'pictures', (v) => _strs(v, '$p.to.pictures')),
             level: t.containsKey('level') && _bool(t['level'], '$p.to.level'),
             floor: _opt(
               t,
               'floor',
               (v) => _doubles(v, '$p.to.floor', length: 3),
+            ),
+            screen: _opt(
+              t,
+              'screen',
+              (v) => _doubles(v, '$p.to.screen', length: 2),
             ),
           ),
           _opt(m, 'screen', (v) => _doubles(v, '$p.screen', length: 2)),
@@ -1837,24 +2172,36 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
           m,
           ab: _opt(m, 'ab', (v) => _ints(v, '$p.ab', length: 2)),
           now: _opt(m, 'new', (v) => _ints(v, '$p.new', length: 2)),
+          moved: m.containsKey('moved') && _bool(m['moved'], '$p.moved'),
+          cropsElsewhere: m.containsKey('crops')
+              ? {
+                  for (final e in _obj(m['crops'], '$p.crops').entries)
+                    if (_obj(e.value, '$p.crops.${e.key}').containsKey('scene'))
+                      e.key: _str(
+                        (e.value as Map<String, dynamic>)['scene'],
+                        '$p.crops.${e.key}.scene',
+                      ),
+                }
+              : const {},
           crops: _opt(m, 'crops', (v) {
             final c = _obj(v, '$p.crops');
             return {
               for (final e in c.entries)
-                e.key: () {
-                  final o = _obj(e.value, '$p.crops.${e.key}');
-                  return (
-                    crop: _ints(
-                      _need(o, 'crop', '$p.crops.${e.key}'),
-                      '$p.crops.${e.key}.crop',
-                      length: 4,
-                    ),
-                    zoom: _zoom(
-                      _need(o, 'zoom', '$p.crops.${e.key}'),
-                      '$p.crops.${e.key}.zoom',
-                    ),
-                  );
-                }(),
+                if (!_obj(e.value, '$p.crops.${e.key}').containsKey('scene'))
+                  e.key: () {
+                    final o = _obj(e.value, '$p.crops.${e.key}');
+                    return (
+                      crop: _ints(
+                        _need(o, 'crop', '$p.crops.${e.key}'),
+                        '$p.crops.${e.key}.crop',
+                        length: 4,
+                      ),
+                      zoom: _zoom(
+                        _need(o, 'zoom', '$p.crops.${e.key}'),
+                        '$p.crops.${e.key}.zoom',
+                      ),
+                    );
+                  }(),
             };
           }),
         );

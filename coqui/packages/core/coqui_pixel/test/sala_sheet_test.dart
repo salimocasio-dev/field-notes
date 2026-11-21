@@ -43,7 +43,8 @@ void main() {
     expect(sheet.frames, isEmpty);
     expect(sheet.points, isEmpty, reason: 'every point is on the screen only');
     expect(sheet.screenPoints, hasLength(13));
-    expect(sheet.unknown.keys, ['room', 'top', 'hops', 'checks']);
+    expect(sheet.unknown.keys, ['room', 'top', 'checks']);
+    expect(sheet.hops, hasLength(36));
   });
 
   test('setKey: luz by its values, fotos in words; five baked states', () {

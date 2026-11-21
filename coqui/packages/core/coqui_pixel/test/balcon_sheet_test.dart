@@ -38,7 +38,8 @@ void main() {
     expect(sheet.pictures, hasLength(20));
     expect(sheet.clips.keys, ['puerta.hueco']);
     expect(sheet.frames, isEmpty, reason: 'the sheet has no frames');
-    expect(sheet.unknown.keys, containsAll(['roof', 'hops', 'checks']));
+    expect(sheet.unknown.keys, containsAll(['roof', 'checks']));
+    expect(sheet.hops, hasLength(55));
   });
 
   test('front: three parts of the set drawn again at their old lines', () {

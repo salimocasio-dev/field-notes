@@ -20,3 +20,6 @@ String balconSheetText() => _sheetText('balcon');
 
 /// The text of La sala's sheet, read from the file.
 String salaSheetText() => _sheetText('sala');
+
+/// The text of El patio's sheet, read from the file.
+String patioSheetText() => _sheetText('patio');
