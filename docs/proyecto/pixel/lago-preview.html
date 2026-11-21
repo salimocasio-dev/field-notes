@@ -110,11 +110,13 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
   PV.ring = function (c, kind, o) { if (OLD) return; const r = PV.ringWhere(kind, o); if (r) ringOn(c, r[0], r[1], r[2], r[3], r[4]); };
   // (sheet: helps.ring.pez) the fish at the surface swims in a pale patch of stirred water of its own: the old water's pale tone, its edge dithered,
   // the ring's light line at its rim; on the water only
-  PV.patchAt = function (o, x, y) { const H = SHEET.helps.ring.pez, b = H.box, q = H.round, X0 = R(o.x) + b[0] + q, Y0 = R(o.y) + b[1] + q, dx = Math.max(0, X0 - (x + .5), (x + .5) - (X0 + b[2] - 2 * q)), dy = Math.max(0, Y0 - (y + .5), (y + .5) - (Y0 + b[3] - 2 * q)), e = Math.hypot(dx, dy) - q;   // its box with rounded corners (radius round + its distance)
-    if (e <= H.pad) return H.patch; if (e <= H.pad + H.soft) { const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5][(y & 3) * 4 + (x & 3)] / 16; return B < 1 - (e - H.pad) / H.soft ? H.patch : null; }
-    if (e <= H.pad + H.soft + H.rim) return H.rimColour; return null; };
-  PV.patch = function (c, o) { if (OLD || !o || (o.dy || 0) > 4) return; const H = SHEET.helps.ring.pez, fw = CUR.fw, b = H.box, m = H.pad + H.soft + H.rim + 1;
-    for (let y = Math.floor(R(o.y) + b[1] - m); y <= Math.ceil(R(o.y) + b[1] + b[3] + m); y++) for (let x = Math.floor(R(o.x) + b[0] - m); x <= Math.ceil(R(o.x) + b[0] + b[2] + m); x++) {
+  PV.patchAt = (o, x, y) => { const H = SHEET.helps.ring.pez, cx = R(o.x) + H.centre[0], cy = R(o.y) + H.centre[1], dx = x + .5 - cx, dy = y + .5 - cy, d = Math.hypot(dx / H.rx, dy / H.ry);   // round 5: an ellipse of lighter water
+    if (d > 1) return null; const g = Math.hypot(dx / (H.rx * H.rx), dy / (H.ry * H.ry)) / Math.max(d, 1e-6), t = (1 - d) / g;                  // t: px inside its edge
+    if (t < H.soft && [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5][(y & 3) * 4 + (x & 3)] / 16 >= t / H.soft) return null;            // its edge breaks into the lake by dither
+    const hs = (a, b) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); }, rowH = hs(y * 7, 13), run = Math.floor((x + rowH * 40) / (5 + (rowH * 4 | 0)));
+    return hs(run, y) < .16 && hs(run * 3, y + 1) > .3 ? H.dash : H.patch; };
+  PV.patch = function (c, o) { if (OLD || !o || (o.dy || 0) > 4) return; const H = SHEET.helps.ring.pez, fw = CUR.fw;
+    for (let y = Math.floor(R(o.y) - H.ry - 2); y <= Math.ceil(R(o.y) + H.ry + 2); y++) for (let x = Math.floor(R(o.x) - H.rx - 2); x <= Math.ceil(R(o.x) + H.rx + 2); x++) {
       if (!fw.LAGO_SET.waterShown(x, y)) continue; const col = PV.patchAt(o, x, y); if (col) { c.fillStyle = 'rgb(' + col + ')'; c.fillRect(x, y, 1, 1); } } };
   // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
   const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
