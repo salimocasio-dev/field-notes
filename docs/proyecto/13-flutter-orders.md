@@ -758,6 +758,19 @@ Designed by an Opus agent in three rounds (it was cut off in round 2 when Opus r
 - Seen by the last readers and not changed: a few reed stems at the bank read as "short brown posts"; the crown's shade lies a little apart from the trunk's shadow.
 - Bake: 45 ms the first time, 22 to 28 ms warm, in headless Chrome.
 
+### Order 34 (campo), step b. **Result (Nov 21): done, merged; stories 15 to 17 play in the app (build 9).**
+
+Ported by an Opus builder with no stop; the orchestrator ran `test_all.sh` on the branch merged with that day's main (passes whole); a fresh reader went through the three stories as they play in the real app.
+
+- The baked state: 0 of 51,840 differ from the JavaScript, and a frame at two other times (other glints showing) differs in 0 too. Preview pictures: 584, 547 identical, none over 2%, the most 0.02% (the edge of the frog's puddle). The five earlier scenes unchanged.
+- All 15 recorded runs match in everything but time, with the old hop sounds and the old number of random draws: h-campo equal whole; la-bola 140 ms shorter; d-bola-canelo 280 ms shorter; arriba-abajo 420 to 770 ms shorter; otra-vez between 70 ms shorter and 280 ms longer; each from walks to the places that moved at the shore.
+- In the real app la-bola, arriba-abajo and otra-vez play to the end by touches, right and wrong, no touch lost. The reader placed everything near the water on the right side of the bank (75 to 90% sure each).
+- Built for later scenes: the park's water as a kit helper (`waterPixel`: El lago reuses it); glints as a per-frame step of any set that has water (on the engine, kept by `BakedSet`, drawn after the tufts; a set without water draws as before); `helps.ring`; a pair picture's own places go through the scene's remap (`PairPlaces`); `Sheet` reads `helps`, dropped lines as source, a point on a line, the water's depth for the front test.
+- Bake: 63 to 87 ms the first time, 25 to 30 ms later. The glints cost under 0.01 ms a frame.
+- A gap in the sheet, accepted: two lines of `campo.js` (233, `aparta`; 286, the balls of `final16`) have no entry in the sheet's `code`; their places are unchanged from the old scene and the port keeps their numbers by a rule that allows exactly these two lines. The preview check passes with them.
+- What the reader of the real app found is the old stories' own (a held ball in front of a face; Luis's hand over his eyes when he looks up; balls heaped by Canelo; the frog at the trunk's foot; answer cards that look alike; asks with nothing marked; no clear sign for a wrong touch), with one from the new set, left for El lago to settle: **a person's shadow that falls on the water shows as a dark patch on the blue**, and the reader could not explain it.
+- Reported in the JavaScript set, not fixed: at its moved place the ball "in the reeds" lies in front of the reed bed and no reed covers it (the sheet's text says the reeds stand before it); the reeds' screen box is 1 px narrower than their box.
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
