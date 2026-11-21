@@ -18,7 +18,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 - **Goal he can see:** under the glass dome on the counter, three quesitos, golden and shiny. The vendedor taps the dome and winks at the frog, Luis and Carmen: for the helpers, after the work.
 - **At stake:** the quesitos (3). A cup taken to the wrong person is pushed back and spills; the vendedor takes a quesito from under the dome and sets it on a saucer for the one who was left waiting.
 - **New words:** maestra, doctor, cocinero, policía.
-- **Back again:** café, jugo, china, leche, vaso, quiere, para, aquí tiene, buenas tardes, hola, gracias, por favor, escuela, hospital, hace, comida, carro, viene, va, mira, ¿quién?, sí, come, ahora, tú.
+- **Back again:** café, jugo, china, leche, vaso, quiere, quiero, para, aquí tiene, buenas tardes, hola, gracias, escuela, hospital, hace, comida, carro, viene, va, mira, ¿quién?, sí, come, ahora, tú.
 
 **Start:** midday. The vendedor behind his counter; the frog on the counter beside the tray; Luis and Carmen at the round table. The four stools are empty.
 
@@ -60,7 +60,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 - **Goal he can see:** on the end of the counter, in the sun, three limbers in their little cups, frosty: the vendedor has taken them out of his cooler for when the box is empty.
 - **At stake:** the limbers (3). Each time a thing goes to the wrong person and has to come back, one limber melts into its cup.
 - **New words:** trabajo, trabaja, ¿en qué trabajas?, vendedor, estudiante.
-- **Back again:** maestra, doctor, cocinero, policía, escuela, hospital, tienda, plaza, soy, es, caja, hay, eso, aquí, gracias, de nada, quiero, quieres, juega, joven, señor, señora, hombre, mujer, abuela, mucho, también, voy.
+- **Back again:** maestra, doctor, cocinero, policía, escuela, hospital, tienda, plaza, soy, es, caja, hay, eso, aquí, gracias, toma, quieres, juega, joven, señor, señora, hombre, mujer, abuela, mucho, también, voy.
 
 **Start:** an afternoon with no work. The vendedor behind his counter with a box, its lid on. Abuela at her table with a coffee; the frog on the table; Luis and Carmen beside her. Nobody wears work clothes.
 
@@ -122,7 +122,7 @@ Round B: the thing is a school bag full of books, or a shop's apron. The two are
 
 5. The children of the square have seen the tray: a niño and a niña run up, and more behind them. The vendedor points at the tray, and at Beto's tower: that one is Beto's. NARR: "El vendedor dice: Un bizcocho para cada niño. ¡Con su número!" **(cada, número: heard)** Beto puts both arms round his tower. The card shows two places. The signs go.
 
-**The game.** A child at the counter says how old he is, and how many brothers or sisters he has (which is said first is drawn). Three number candles lie on the tray: his years, his brothers or sisters, and one more number. Years are drawn from five to twelve; brothers or sisters from two to four; the third candle is another number from one to twelve; never the pairs seis and siete, once and doce on one tray. The tray is cleared after each round. Each answer is two clips, one for each sentence ("El niño dice: Tengo nueve años." and "Y tengo dos hermanos."; or "El niño dice: Tengo dos hermanos." and "Y tengo nueve años."), so that the draws share their recordings.
+**The game.** A child at the counter says how old he is, and how many brothers or sisters he has (which is said first is drawn). Three number candles lie on the tray: his years, his brothers or sisters, and one more number. Years are drawn from five to twelve; brothers or sisters from two to four; the third candle is another number from one to twelve; never the pairs seis and siete, once and doce on one tray. The tray is cleared after each round. Each answer is ONE clip (both sentences): when he waits, the whole answer is said again, not its second half.
 
 6. **Decision A, touch a candle (three candles; tests años).** The niño stands at the counter. NARR: "El vendedor dice: ¿Cuántos años tienes?" NARR: "El niño dice: Tengo nueve años. Y tengo dos hermanos." (Drawn.)
    - Right: the frog pushes the candle into a bizcocho from the tray; the vendedor hands it over; the niño holds it up. A star.
