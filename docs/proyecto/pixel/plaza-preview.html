@@ -109,22 +109,22 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
   };
 
   /* ---------- the moments ---------- */
-  const P3 = [{ at: 'respaldo1', s: 'palomaD', kind: 'paloma' }, { at: 'respaldo2', s: 'palomaI', kind: 'paloma' }, { at: 'respaldo3', s: 'palomaI', kind: 'paloma' }];     // the three pigeons on the seat's back, turned towards the frog
+  const P3 = [{ at: 'respaldo1', s: 'palomaD', kind: 'paloma' }, { at: 'respaldo2', s: 'palomaD', kind: 'paloma' }, { at: 'respaldo3', s: 'palomaD', kind: 'paloma' }];     // the three pigeons on the seat's back, turned towards the frog
   const COQ = at => ({ at, s: 'coqui', who: 'coqui' });
   const ADU = (at, s) => ({ at, s, who: 'adulto' }), NIN = (at, s) => ({ at, s, who: 'nino' });
   const S1 = { hora: 'manana', tablero: 0, carrito: 0 }, S3 = { hora: 'tarde', tablero: 1, carrito: 0 }, S5 = { hora: 'mediodia', tablero: 0, carrito: 1 };
   const HOOK = (row, i) => ({ uvz: SHEET.ganchos[row][i].uvz, s: 'foto', kind: 'foto', hook: row + (i + 1) });                                                         // a photo on a hook
   const MOMENTS = {
-    1: { set: S1, what: 'story 60, the opening: morning. The frog on the seat at asiento2 with three pigeons on its back; Luis suelo3, Carmen suelo4, Canelo at bajo; Ana frente2, her mamá cerca1, her abuela cerca2, Beto frente1',
-      layers: () => [...P3, COQ('asiento2'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen'), { at: 'bajo', s: 'perro', who: 'perro' }, NIN('frente2', 'ana'), ADU('cerca1', 'mamaAna'), ADU('cerca2', 'abuelaAna'), NIN('frente1', 'beto')] },
-    2: { set: S1, what: 'story 60, the game: the frog at asiento2 with the two answer bubbles over him; Luis suelo3, Carmen suelo4, Ana suelo2, her mamá frente3, her abuela frente2, Beto frente4, Canelo at bajo (the spec lists no pigeons here: moment 7 adds them)',
+    1: { set: S1, what: 'story 60, the opening: morning. The frog on the seat\'s right end at asiento4, three pigeons on its back (respaldo1 to 3, at the left, turned towards him); Luis suelo3, Carmen suelo4, Canelo at bajo (the seat\'s left end); Ana frente2, her mamá cerca1, her abuela cerca2, Beto frente1',
+      layers: () => [...P3, COQ('asiento4'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen'), { at: 'bajo', s: 'perro', who: 'perro' }, NIN('frente2', 'ana'), ADU('cerca1', 'mamaAna'), ADU('cerca2', 'abuelaAna'), NIN('frente1', 'beto')] },
+    2: { set: S1, what: 'story 60, the game: the frog at asiento4 with the two answer bubbles over him; Luis suelo3, Carmen suelo4, Ana suelo2, her mamá frente3, her abuela frente2, Beto frente4, Canelo at bajo (the spec lists no pigeons here: moment 7 adds them)',
       overlays: ['burbuja_a', 'burbuja_b'],
-      layers: () => [COQ('asiento2'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen'), NIN('suelo2', 'ana'), ADU('frente3', 'mamaAna'), ADU('frente2', 'abuelaAna'), NIN('frente4', 'beto'), { at: 'bajo', s: 'perro', who: 'perro' }] },
+      layers: () => [COQ('asiento4'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen'), NIN('suelo2', 'ana'), ADU('frente3', 'mamaAna'), ADU('frente2', 'abuelaAna'), NIN('frente4', 'beto'), { at: 'bajo', s: 'perro', who: 'perro' }] },
     3: { set: S3, what: 'story 61, the opening: afternoon, the notice board up. Ana at tablero1, the frog at tablero2, Luis suelo3, Carmen suelo4, Ana\'s abuela sitting at asiento1, the three cards under their stone at repisa',
       layers: () => [{ at: 'repisa', s: 'tarjetas', kind: 'tarjetas' }, NIN('tablero1', 'ana'), COQ('tablero2'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen'), ADU('asiento1', 'abuelaAnaS')] },
-    4: { set: S3, what: 'story 61, the game: as 3, with Ana\'s abuela standing at frente2, the señora frente3, the señor frente4, and two photos on each row of hooks (the first two hooks of each row)',
+    4: { set: S3, what: 'story 61, the game: as 3, with Ana\'s abuela standing at frente3, the señora frente4, the señor frente5 (frente2 left empty), and two photos on each row of hooks (the first two hooks of each row)',
       layers: () => [{ at: 'repisa', s: 'tarjetas', kind: 'tarjetas' }, HOOK('isla', 0), HOOK('isla', 1), HOOK('ciudad', 0), HOOK('ciudad', 1), NIN('tablero1', 'ana'), COQ('tablero2'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen'),
-        ADU('frente2', 'abuelaAna'), ADU('frente3', 'senora'), ADU('frente4', 'senor')] },
+        ADU('frente3', 'abuelaAna'), ADU('frente4', 'senora'), ADU('frente5', 'senor')] },
     5: { set: S5, what: 'story 62, the opening: midday, the cart up. The piragüero behind his cart at carro_pie, the frog on its top at carro_borde, a visitor at turno, Ana fila1, Luis suelo3, Carmen suelo4',
       layers: () => [ADU('carro_pie', 'piraguero'), COQ('carro_borde'), ADU('turno', 'visita1'), NIN('fila1', 'ana'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen')] },
     6: { set: S5, what: 'story 62, the game: the piragüero, the frog; visitors at turno and fila1 to fila4; two helpers at ayuda1 and ayuda2; Luis suelo3, Carmen suelo4',
@@ -132,7 +132,7 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
         ADU('ayuda1', 'mujer'), ADU('ayuda2', 'hombre'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen')] },
     7: { set: S1, extra: true, what: 'a dev aid, not one of the spec\'s six: moment 2 with the three pigeons on the seat\'s back and the two bubbles over the frog (the check bubbles reads this)',
       overlays: ['burbuja_a', 'burbuja_b'],
-      layers: () => [...P3, COQ('asiento2'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen'), NIN('suelo2', 'ana'), ADU('frente3', 'mamaAna'), ADU('frente2', 'abuelaAna'), NIN('frente4', 'beto'), { at: 'bajo', s: 'perro', who: 'perro' }] },
+      layers: () => [...P3, COQ('asiento4'), NIN('suelo3', 'luis'), NIN('suelo4', 'carmen'), NIN('suelo2', 'ana'), ADU('frente3', 'mamaAna'), ADU('frente2', 'abuelaAna'), NIN('frente4', 'beto'), { at: 'bajo', s: 'perro', who: 'perro' }] },
   };
   const RADIUS = () => SHEET.shadows.radius, RKEY = { coqui: 'coqui', adulto: 'adultos', nino: 'ninos', perro: 'perro' };
 

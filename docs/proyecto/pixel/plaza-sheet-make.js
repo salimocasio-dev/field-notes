@@ -50,9 +50,9 @@ const MOMENTS = [1, 2, 3, 4, 5, 6], EXTRA_MOMENTS = [7];
 const spotsOf = E => {
   const B = E.BOARD, K = E.CART, S = [];
   const add = (name, uvz, kind, sil, who, what, on) => S.push([name, uvz, kind, sil, who, what, on]);
-  [[-.9, 'adultoS'], [.1, 'coqui'], [1.1, 'adultoS'], [2.1, 'adultoS']].forEach(([u, sil], i) => add('asiento' + (i + 1), [u, 0, SEAT_Z.asiento], 'person', sil, sil === 'coqui' ? 'coqui' : 'adulto', 'a place on the seat, on its top (z ' + SEAT_Z.asiento + '); whoever sits faces us' + (sil === 'coqui' ? ' (the frog, 32 wide)' : ' (a grown-up sitting, 24 wide)'), 'banco'));
-  [-.4, .6, 1.6].forEach((u, i) => add('respaldo' + (i + 1), [u, -.24, SEAT_Z.respaldo], 'thing', 'paloma', null, 'a pigeon on the seat\'s back (the top slat, z ' + SEAT_Z.respaldo + ' at v - .24): a sprite', 'banco'));
-  add('bajo', [1.6, .45, 0], 'person', 'perro', 'perro', 'Canelo lying in front of the seat\'s right half');
+  [[-.9, 'adultoS'], [.1, 'adultoS'], [1.1, 'adultoS'], [2.1, 'coqui']].forEach(([u, sil], i) => add('asiento' + (i + 1), [u, 0, SEAT_Z.asiento], 'person', sil, sil === 'coqui' ? 'coqui' : 'adulto', 'a place on the seat, on its top (z ' + SEAT_Z.asiento + '); whoever sits faces us' + (sil === 'coqui' ? ' (the frog, 32 wide: the seat\'s right end, where nobody stands in front of him)' : ' (a grown-up sitting, 24 wide)'), 'banco'));
+  [-1.2, -.3, .6].forEach((u, i) => add('respaldo' + (i + 1), [u, -.24, SEAT_Z.respaldo], 'thing', 'paloma', null, 'a pigeon on the seat\'s back (the top slat, z ' + SEAT_Z.respaldo + ' at v - .24): a sprite', 'banco'));
+  add('bajo', [-1.9, .35, 0], 'person', 'perro', 'perro', 'Canelo lying at the seat\'s left end');
   [-3.1, -1.95, -.8, .35, 1.5, 2.65].forEach((u, i) => add('suelo' + (i + 1), [u, 1.3, 0], 'person', 'adulto', 'adulto', 'the first row in front of the seat (v 1.3)'));
   [-2.5, -1.35, -.2, .95, 2.1, 3.25].forEach((u, i) => add('frente' + (i + 1), [u, 2.6, 0], 'person', 'adulto', 'adulto', 'the second row, half a step to the side (v 2.6)'));
   [-3.1, -1.95, -.8, .35, 1.5, 2.65].forEach((u, i) => add('cerca' + (i + 1), [u, 3.9, 0], 'person', 'adulto', 'adulto', 'the third row (v 3.9)'));
@@ -61,7 +61,7 @@ const spotsOf = E => {
   add('repisa', [(B.u0 + B.u1) / 2, B.v + .1, B.z0], 'thing', 'tarjetas', null, 'the middle of the board\'s ledge (its top is z0 = ' + B.z0 + ', at v + .1): the three blank cards under their stone: a sprite', 'tablero');
   add('entrada', [-4.7, 2.6, 0], 'entry', 'adulto', 'adulto', 'where people come in, at the left: outside the window on purpose');
   add('carro_pie', [K.u, K.v - K.hd - .18, 0], 'person', 'adulto', 'adulto', 'the piragüero behind his cart: (CART.u, CART.v - CART.hd - .18)');
-  add('carro_borde', [K.u - .5, K.v, CART_TOP], 'person', 'coqui', 'coqui', 'the frog on the cart\'s top (z ' + CART_TOP + '): (CART.u - .5, CART.v)', 'carrito');
+  add('carro_borde', [K.u - .5, K.v + .2, CART_TOP], 'person', 'coqui', 'coqui', 'the frog on the cart\'s top (z ' + CART_TOP + '): (CART.u - .5, CART.v + .2)', 'carrito');
   add('turno', [1.6, 3.6, 0], 'person', 'adulto', 'adulto', 'the visitor at the cart (story 62)');
   [[.45, 3.8], [-.7, 4.0], [-1.85, 4.2], [-3.0, 4.4]].forEach(([u, v], i) => add('fila' + (i + 1), [u, v, 0], 'person', 'adulto', 'adulto', 'the line behind her: place ' + (i + 1)));
   [[.5, 5.2], [1.65, 5.2]].forEach(([u, v], i) => add('ayuda' + (i + 1), [u, v, 0], 'person', 'adulto', 'adulto', 'one of the two who come up to help: place ' + (i + 1)));
@@ -176,8 +176,7 @@ async function make(G, proj, page) {
   hookPts.forEach((p, i) => { const q = hq[i], o = { n: (i % BOARD.n) + 1, uvz: W4(p), world: W4([q[3], q[4], p[2]]), screen: [Math.round(q[0]), Math.round(q[1])], depth: r4(q[2]) }; ganchos[i < BOARD.n ? 'isla' : 'ciudad'].push(o); });
   ganchos.rule = 'five hooks in each row, at hu = .1, .3, .5, .7, .9 of the picture\'s half (u from the half\'s left edge), at the height of the hook marks (fz ' + BOARD.hooks.at + ' of the board: z ' + r4(zOf(BOARD.hooks.at)) + '), on the board\'s plane (v ' + B.v + '). The island is the left half, the city the right. A photo (5 x 6 px, a stand-in) hangs by its top middle from a hook: its top row is the hook\'s row (screen), its middle column the hook\'s. In moment 4 the first two hooks of each row hold one';
 
-  /* ---- the bubbles: the rule, and the boxes for the frog at asiento2 (computed from the frog's drawn head: see the checks, where the silhouette is known) ---- */
-  const a2 = spots.asiento2;
+  /* ---- the bubbles: the rule, and the boxes for the frog at asiento4 (computed from the frog's drawn head: see the checks, where the silhouette is known) ---- */
 
   /* ---- things he can touch ---- */
   const boxOfUVZ = async (u0, v0, z0, u1, v1, z1) => {                                                  // a box in u, v, z: its world axis box and its screen box (the projected corners)
@@ -204,13 +203,13 @@ async function make(G, proj, page) {
       things[name] = { set: true, when: 'tablero = 1', uv: fb.uv, world: fb.world, box: fb.box, what: what + ': from the hooks\' lower edge (fz ' + BOARD.hooks.fz[0] + ' of the board) up to the picture\'s top (fz ' + BOARD.pic.fz[1] + '), across the half (hu ' + BOARD.hooks.hu.join(' to ') + '); a poke. The hooks are in ganchos' };
     }
     things.tarjetas = { sprite: true, at: 'repisa', when: 'tablero = 1', why: 'the blank cards under their stone: a sprite at repisa (a stand-in 16 x 12 in the preview); a poke' };
-    const cb = await boxOfUVZ(K.u - K.hw - .12, K.v - K.hd - .1, 0, K.u + K.hw + .12, K.v + K.hd + .14, 3.22);
+    const cb = await boxOfUVZ(K.u - K.hw - .12, K.v - K.hd - .1, 0, K.u + K.hw + .12, K.v + K.hd + .14, 3.7);
     things.carrito = { set: true, when: 'carrito = 1', uv: cb.uv, world: cb.world, box: await tagBox('carrito'), what: 'the piragüero\'s cart with its striped awning: the screen box of the pixels the set draws for the part carrito (the body, the two wheels, the four posts, the awning); a poke' };
   }
   things.palomas = { sprite: true, at: ['respaldo1', 'respaldo2', 'respaldo3'], why: 'the pigeons: sprites (a stand-in in the preview: the El parque bird at the size drawAve draws it, 29 x 22)' };
   for (const k of ['ana', 'mama_ana', 'beto', 'abuela_ana', 'luis', 'carmen', 'senor', 'senora', 'hombre', 'mujer', 'joven', 'piraguero', 'turista', 'coqui', 'perro']) things[k] = 'sprite';
-  things.burbuja_a = { set: false, at: 'asiento2', box: null, rule: null, what: 'the first answer bubble: a 22 x 22 square, at the left of the two (the act burbujas {izq} says which line is there; a poke)' };
-  things.burbuja_b = { set: false, at: 'asiento2', box: null, rule: null, what: 'the second answer bubble: a 22 x 22 square, at the right of the two' };
+  things.burbuja_a = { set: false, at: 'asiento4', box: null, rule: null, what: 'the first answer bubble: a 22 x 22 square, at the left of the two (the act burbujas {izq} says which line is there; a poke)' };
+  things.burbuja_b = { set: false, at: 'asiento4', box: null, rule: null, what: 'the second answer bubble: a 22 x 22 square, at the right of the two' };
 
   const stateKeys = [];
   for (const hora of ['manana', 'mediodia', 'tarde']) for (const tablero of [0, 1]) for (const carrito of [0, 1]) stateKeys.push('?hora=' + hora + '&tablero=' + tablero + '&carrito=' + carrito);
@@ -225,7 +224,7 @@ async function make(G, proj, page) {
       anchor: null,
       view: 'a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = the window\'s left edge (22 centres it). Never a fraction',
       depth: 'a spot\'s depth is the engine\'s d of its world point; front.plane turns it into the depth of each row of a character',
-      bubbles: 'the two answer bubbles (burbuja_a at the left, burbuja_b at the right; the act says which line each carries): two ' + BUBBLE.w + ' x ' + BUBBLE.h + ' px squares, ' + BUBBLE.gap + ' px apart, together centred on the frog\'s middle column, their foot (the bottom edge) ' + BUBBLE.above + ' px above the top row of his head: bottom edge = (his top ink row) - ' + BUBBLE.above + '; so for a frog at a spot (sx, sy) with his top ink row sy - 24: a = [sx - 24, sy - 49, 22, 22] (columns sx - 24 to sx - 3), b = [sx + 2, sy - 49, 22, 22]. The boxes in things are those of the frog at asiento2',
+      bubbles: 'the two answer bubbles (burbuja_a at the left, burbuja_b at the right; the act says which line each carries): two ' + BUBBLE.w + ' x ' + BUBBLE.h + ' px squares, ' + BUBBLE.gap + ' px apart, together centred on the frog\'s middle column, their foot (the bottom edge) ' + BUBBLE.above + ' px above the top row of his head: bottom edge = (his top ink row) - ' + BUBBLE.above + '; so for a frog at a spot (sx, sy) with his top ink row sy - 24: a = [sx - 24, sy - 49, 22, 22] (columns sx - 24 to sx - 3), b = [sx + 2, sy - 49, 22, 22]. The boxes in things are those of the frog at asiento4',
     },
     setKey: {
       params: { hora: { values: ['manana', 'mediodia', 'tarde'], note: '60 manana, 61 tarde, 62 mediodia (the script)' }, tablero: { values: [0, 1], note: 'the notice board with its two pictures, two rows of hooks and ledge (story 61)' }, carrito: { values: [0, 1], note: 'the piragüero\'s cart at the right (story 62)' } },
@@ -242,7 +241,7 @@ async function make(G, proj, page) {
       tablero: ['tablero1', 'tablero2', 'repisa'], carro: ['carro_pie', 'carro_borde', 'turno'], fila: ['fila1', 'fila2', 'fila3', 'fila4'], ayuda: ['ayuda1', 'ayuda2'],
     },
     notes: [
-      'every number of a spot is the orchestrator\'s (the p6-spec, section plaza), given in (u, v, z); the spots the spec gives as a rule are computed: repisa = ((BOARD.u0 + BOARD.u1) / 2, BOARD.v + .1, BOARD.z0), carro_pie = (CART.u, CART.v - CART.hd - .18, 0), carro_borde = (CART.u - .5, CART.v, 1.02)',
+      'every number of a spot is the orchestrator\'s (the p6-spec, section plaza), given in (u, v, z); the spots the spec gives as a rule are computed: repisa = ((BOARD.u0 + BOARD.u1) / 2, BOARD.v + .1, BOARD.z0), carro_pie = (CART.u, CART.v - CART.hd - .18, 0), carro_borde = (CART.u - .5, CART.v + .2, 1.02)',
       'entrada is outside the window on purpose (a person walks in from the left)',
       'people with no sprite maker yet are drawn in the preview by the nearest maker (mkPersona, a grown-up or a child) in other clothes, for size: Ana (niña, yellow dress), Beto (niño, red cap), Ana\'s mamá (señora), Ana\'s abuela (señora, white hair, sun hat; sitting at asiento1), the piragüero (the señor\'s drawing, white shirt, red hat), the visitors (grown-ups in other clothes), the two helpers (la mujer, el hombre); Luis and Carmen are the real ones; Canelo lies (mkPerro lie)',
       'the pigeons have no maker: the preview draws the El parque bird (mkAve) at the size drawAve draws it (AVK 1.6: 29 x 22), grey. A different pigeon drawing changes the bubbles\' check (bubbles)',
@@ -297,11 +296,11 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
   const hw = who => WIDTH[who] / 2;
   const frogTop = SIL.coqui.box[1];                                                                  // the frog's top ink row relative to his feet's edge (-24)
 
-  // the bubbles' boxes (for the frog at asiento2) go into the sheet's things now that the frog's drawn head is known
+  // the bubbles' boxes (for the frog at asiento4) go into the sheet's things now that the frog's drawn head is known
   {
-    const [sx, sy] = S.asiento2.screen, top = sy + frogTop, y = top - BUBBLE.above - BUBBLE.h, x = sx - (BUBBLE.w + BUBBLE.gap / 2);
+    const [sx, sy] = S.asiento4.screen, top = sy + frogTop, y = top - BUBBLE.above - BUBBLE.h, x = sx - (BUBBLE.w + BUBBLE.gap / 2);
     T.burbuja_a.box = [x, y, BUBBLE.w, BUBBLE.h]; T.burbuja_b.box = [x + BUBBLE.w + BUBBLE.gap, y, BUBBLE.w, BUBBLE.h];
-    T.burbuja_a.rule = T.burbuja_b.rule = 'for the frog at asiento2 ' + [sx, sy] + ': his top ink row is ' + top + ' (his feet\'s edge ' + sy + ' minus ' + (-frogTop) + '); the foot of the bubbles is ' + BUBBLE.above + ' px above it, so their bottom edge is ' + (top - BUBBLE.above) + ' and their top row ' + y + '; together they span columns ' + x + ' to ' + (x + 2 * BUBBLE.w + BUBBLE.gap - 1) + ', centred on his column ' + sx + ' (rules.bubbles)';
+    T.burbuja_a.rule = T.burbuja_b.rule = 'for the frog at asiento4 ' + [sx, sy] + ': his top ink row is ' + top + ' (his feet\'s edge ' + sy + ' minus ' + (-frogTop) + '); the foot of the bubbles is ' + BUBBLE.above + ' px above it, so their bottom edge is ' + (top - BUBBLE.above) + ' and their top row ' + y + '; together they span columns ' + x + ' to ' + (x + 2 * BUBBLE.w + BUBBLE.gap - 1) + ', centred on his column ' + sx + ' (rules.bubbles)';
   }
 
   // 1. the view: x0 holds every spot (a person's sprite whole), entrada apart
@@ -540,7 +539,7 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
     const inRect = (b, p) => p[0] >= b[0] && p[0] < b[0] + b[2] && p[1] >= b[1] && p[1] < b[1] + b[3];
     const coverOf = (b, l) => l.px.filter(p => inRect(b, p)).length;
     const inside = b => b[0] >= 0 && b[1] >= 0 && b[0] + b[2] <= G.W && b[1] + b[3] <= G.H && b[0] >= V.x0 && b[0] + b[2] <= V.x0 + 196;
-    lines.push('the frog at asiento2 ' + [frog.sx, frog.sy] + ': his drawn head top row ' + Math.min(...frog.px.map(p => p[1])) + '; burbuja_a [' + ba + '], burbuja_b [' + bb + '] (foot ' + BUBBLE.above + ' px above his head: bottom edge row ' + (ba[1] + ba[3]) + ')');
+    lines.push('the frog at asiento4 ' + [frog.sx, frog.sy] + ': his drawn head top row ' + Math.min(...frog.px.map(p => p[1])) + '; burbuja_a [' + ba + '], burbuja_b [' + bb + '] (foot ' + BUBBLE.above + ' px above his head: bottom edge row ' + (ba[1] + ba[3]) + ')');
     if (!inside(ba) || !inside(bb)) bad.push('a bubble is outside the picture or the window');
     const fa = coverOf(ba, frog), fb = coverOf(bb, frog);
     if (fa || fb) bad.push('the bubbles cover ' + (fa + fb) + ' px of the frog (a ' + fa + ', b ' + fb + ')');

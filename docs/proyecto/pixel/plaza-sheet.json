@@ -15,7 +15,7 @@
   "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up, 41 for a child; the frog mkCoqui(1) (32 x 27): column 16, 24 rows drawn (row 25 of the canvas is on sy); a grown-up sitting (mkPersona with sent = 1: Ana's abuela at asiento1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11: 41) on (sx, sy), 41 rows drawn above it; Canelo lying mkPerro('lie') (30 x 22): column 15 and its bottom edge; a pigeon (stand-in: the El parque bird, 29 x 22): its bottom middle on the point; a small thing (the cards, a photo hung by its top middle: its top row on the hook's row): a stand-in on the point",
   "view": "a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = the window's left edge (22 centres it). Never a fraction",
   "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
-  "bubbles": "the two answer bubbles (burbuja_a at the left, burbuja_b at the right; the act says which line each carries): two 22 x 22 px squares, 4 px apart, together centred on the frog's middle column, their foot (the bottom edge) 3 px above the top row of his head: bottom edge = (his top ink row) - 3; so for a frog at a spot (sx, sy) with his top ink row sy - 24: a = [sx - 24, sy - 49, 22, 22] (columns sx - 24 to sx - 3), b = [sx + 2, sy - 49, 22, 22]. The boxes in things are those of the frog at asiento2"
+  "bubbles": "the two answer bubbles (burbuja_a at the left, burbuja_b at the right; the act says which line each carries): two 22 x 22 px squares, 4 px apart, together centred on the frog's middle column, their foot (the bottom edge) 3 px above the top row of his head: bottom edge = (his top ink row) - 3; so for a frog at a spot (sx, sy) with his top ink row sy - 24: a = [sx - 24, sy - 49, 22, 22] (columns sx - 24 to sx - 3), b = [sx + 2, sy - 49, 22, 22]. The boxes in things are those of the frog at asiento4"
  },
  "setKey": {
   "params": {
@@ -45,7 +45,7 @@
    "set": true,
    "uv": [-1.4, -0.3, 0, 2.6, 0.26, 1.17],
    "world": [-1.2021, -2.0506, 0, 2.0223, 1.1738, 1.17],
-   "box": [83, 87, 105, 34],
+   "box": [83, 87, 106, 34],
    "what": "the long seat with its back: the screen box of the pixels the set draws for the part banco; its world box is the block u -1.4 to 2.6, v -.3 to .26, up to z 1.17 (the top of its back); a poke"
   },
   "arbol": {
@@ -87,9 +87,9 @@
   "carrito": {
    "set": true,
    "when": "carrito = 1",
-   "uv": [2.27, 2.98, 0, 3.83, 4.06, 3.22],
-   "world": [3.7123, -0.601, 0, 5.5791, 1.2657, 3.22],
-   "box": [177, 84, 44, 85],
+   "uv": [2.27, 2.98, 0, 3.83, 4.06, 3.7],
+   "world": [3.7123, -0.601, 0, 5.5791, 1.2657, 3.7],
+   "box": [177, 73, 44, 96],
    "what": "the piragüero's cart with its striped awning: the screen box of the pixels the set draws for the part carrito (the body, the two wheels, the four posts, the awning); a poke"
   },
   "palomas": {
@@ -114,16 +114,16 @@
   "perro": "sprite",
   "burbuja_a": {
    "set": false,
-   "at": "asiento2",
-   "box": [99, 59, 22, 22],
-   "rule": "for the frog at asiento2 123,108: his top ink row is 84 (his feet's edge 108 minus 24); the foot of the bubbles is 3 px above it, so their bottom edge is 81 and their top row 59; together they span columns 99 to 146, centred on his column 123 (rules.bubbles)",
+   "at": "asiento4",
+   "box": [151, 59, 22, 22],
+   "rule": "for the frog at asiento4 175,108: his top ink row is 84 (his feet's edge 108 minus 24); the foot of the bubbles is 3 px above it, so their bottom edge is 81 and their top row 59; together they span columns 151 to 198, centred on his column 175 (rules.bubbles)",
    "what": "the first answer bubble: a 22 x 22 square, at the left of the two (the act burbujas {izq} says which line is there; a poke)"
   },
   "burbuja_b": {
    "set": false,
-   "at": "asiento2",
-   "box": [125, 59, 22, 22],
-   "rule": "for the frog at asiento2 123,108: his top ink row is 84 (his feet's edge 108 minus 24); the foot of the bubbles is 3 px above it, so their bottom edge is 81 and their top row 59; together they span columns 99 to 146, centred on his column 123 (rules.bubbles)",
+   "at": "asiento4",
+   "box": [177, 59, 22, 22],
+   "rule": "for the frog at asiento4 175,108: his top ink row is 84 (his feet's edge 108 minus 24); the foot of the bubbles is 3 px above it, so their bottom edge is 81 and their top row 59; together they span columns 151 to 198, centred on his column 175 (rules.bubbles)",
    "what": "the second answer bubble: a 22 x 22 square, at the right of the two"
   }
  },
@@ -226,9 +226,9 @@
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "a place on the seat, on its top (z 0.46); whoever sits faces us (the frog, 32 wide)",
-   "sprite": "coqui",
-   "who": "coqui",
+   "what": "a place on the seat, on its top (z 0.46); whoever sits faces us (a grown-up sitting, 24 wide)",
+   "sprite": "adultoS",
+   "who": "adulto",
    "on": "banco"
   },
   "asiento3": {
@@ -252,15 +252,15 @@
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "a place on the seat, on its top (z 0.46); whoever sits faces us (a grown-up sitting, 24 wide)",
-   "sprite": "adultoS",
-   "who": "adulto",
+   "what": "a place on the seat, on its top (z 0.46); whoever sits faces us (the frog, 32 wide: the seat's right end, where nobody stands in front of him)",
+   "sprite": "coqui",
+   "who": "coqui",
    "on": "banco"
   },
   "respaldo1": {
-   "world": [-0.4525, 0.1131, 1.17],
-   "uv": [-0.4, -0.24, 1.17],
-   "screen": [110, 89],
+   "world": [-1.0182, 0.6788, 1.17],
+   "uv": [-1.2, -0.24, 1.17],
+   "screen": [89, 89],
    "depth": 0.3772,
    "scale": 1,
    "kind": "thing",
@@ -270,6 +270,18 @@
    "on": "banco"
   },
   "respaldo2": {
+   "world": [-0.3818, 0.0424, 1.17],
+   "uv": [-0.3, -0.24, 1.17],
+   "screen": [112, 89],
+   "depth": 0.3772,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "a pigeon on the seat's back (the top slat, z 1.17 at v - .24): a sprite",
+   "sprite": "paloma",
+   "on": "banco"
+  },
+  "respaldo3": {
    "world": [0.2546, -0.594, 1.17],
    "uv": [0.6, -0.24, 1.17],
    "screen": [136, 89],
@@ -281,27 +293,15 @@
    "sprite": "paloma",
    "on": "banco"
   },
-  "respaldo3": {
-   "world": [0.9617, -1.3011, 1.17],
-   "uv": [1.6, -0.24, 1.17],
-   "screen": [162, 89],
-   "depth": 0.3772,
-   "scale": 1,
-   "kind": "thing",
-   "view": "wide",
-   "what": "a pigeon on the seat's back (the top slat, z 1.17 at v - .24): a sprite",
-   "sprite": "paloma",
-   "on": "banco"
-  },
   "bajo": {
-   "world": [1.4496, -0.8132, 0],
-   "uv": [1.6, 0.45, 0],
-   "screen": [162, 124],
-   "depth": 0.3897,
+   "world": [-1.096, 1.591, 0],
+   "uv": [-1.9, 0.35, 0],
+   "screen": [71, 123],
+   "depth": 0.3031,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "Canelo lying in front of the seat's right half",
+   "what": "Canelo lying at the seat's left end",
    "sprite": "perro",
    "who": "perro"
   },
@@ -582,14 +582,14 @@
    "who": "adulto"
   },
   "carro_borde": {
-   "world": [4.278, 0.6718, 1.02],
-   "uv": [2.55, 3.5, 1.02],
-   "screen": [186, 141],
-   "depth": 3.5411,
+   "world": [4.4194, 0.8132, 1.02],
+   "uv": [2.55, 3.7, 1.02],
+   "screen": [186, 143],
+   "depth": 3.7143,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "the frog on the cart's top (z 1.02): (CART.u - .5, CART.v)",
+   "what": "the frog on the cart's top (z 1.02): (CART.u - .5, CART.v + .2)",
    "sprite": "coqui",
    "who": "coqui",
    "on": "carrito"
@@ -691,7 +691,7 @@
   "ayuda": ["ayuda1", "ayuda2"]
  },
  "notes": [
-  "every number of a spot is the orchestrator's (the p6-spec, section plaza), given in (u, v, z); the spots the spec gives as a rule are computed: repisa = ((BOARD.u0 + BOARD.u1) / 2, BOARD.v + .1, BOARD.z0), carro_pie = (CART.u, CART.v - CART.hd - .18, 0), carro_borde = (CART.u - .5, CART.v, 1.02)",
+  "every number of a spot is the orchestrator's (the p6-spec, section plaza), given in (u, v, z); the spots the spec gives as a rule are computed: repisa = ((BOARD.u0 + BOARD.u1) / 2, BOARD.v + .1, BOARD.z0), carro_pie = (CART.u, CART.v - CART.hd - .18, 0), carro_borde = (CART.u - .5, CART.v + .2, 1.02)",
   "entrada is outside the window on purpose (a person walks in from the left)",
   "people with no sprite maker yet are drawn in the preview by the nearest maker (mkPersona, a grown-up or a child) in other clothes, for size: Ana (niña, yellow dress), Beto (niño, red cap), Ana's mamá (señora), Ana's abuela (señora, white hair, sun hat; sitting at asiento1), the piragüero (the señor's drawing, white shirt, red hat), the visitors (grown-ups in other clothes), the two helpers (la mujer, el hombre); Luis and Carmen are the real ones; Canelo lies (mkPerro lie)",
   "the pigeons have no maker: the preview draws the El parque bird (mkAve) at the size drawAve draws it (AVK 1.6: 29 x 22), grey. A different pigeon drawing changes the bubbles' check (bubbles)",
@@ -778,11 +778,11 @@
      "       asiento2 z 0.46: part banco, depth 0.25 against the spot's 0.23 (0.02)",
      "       asiento3 z 0.46: part banco, depth 0.25 against the spot's 0.23 (0.02)",
      "       asiento4 z 0.46: part banco, depth 0.25 against the spot's 0.23 (0.02)",
-     "       respaldo1 z 1.17: part banco, depth 0.38 against the spot's 0.38 (0)",
-     "       respaldo2 z 1.17: part banco, depth 0.38 against the spot's 0.38 (0)",
-     "       respaldo3 z 1.17: part banco, depth 0.36 against the spot's 0.38 (0.02)",
+     "       respaldo1 z 1.17: part banco, depth 0.36 against the spot's 0.38 (0.02)",
+     "       respaldo2 z 1.17: part banco, depth 0.36 against the spot's 0.38 (0.02)",
+     "       respaldo3 z 1.17: part banco, depth 0.38 against the spot's 0.38 (0)",
      "       repisa z 1: part tablero, depth -0.53 against the spot's -0.54 (0.01)",
-     "       carro_borde z 1.02: part carrito, depth 3.57 against the spot's 3.54 (0.03)"
+     "       carro_borde z 1.02: part carrito, depth 3.7 against the spot's 3.71 (0.02)"
     ],
     "surfaces": [
      {
@@ -825,27 +825,27 @@
       "spot": "respaldo1",
       "z": 1.17,
       "part": "banco",
-      "depthSet": 0.38,
+      "depthSet": 0.36,
       "depthSpot": 0.38,
-      "dz": 0,
+      "dz": 0.02,
       "ok": true
      },
      {
       "spot": "respaldo2",
       "z": 1.17,
       "part": "banco",
-      "depthSet": 0.38,
+      "depthSet": 0.36,
       "depthSpot": 0.38,
-      "dz": 0,
+      "dz": 0.02,
       "ok": true
      },
      {
       "spot": "respaldo3",
       "z": 1.17,
       "part": "banco",
-      "depthSet": 0.36,
+      "depthSet": 0.38,
       "depthSpot": 0.38,
-      "dz": 0.02,
+      "dz": 0,
       "ok": true
      },
      {
@@ -861,9 +861,9 @@
       "spot": "carro_borde",
       "z": 1.02,
       "part": "carrito",
-      "depthSet": 3.57,
-      "depthSpot": 3.54,
-      "dz": 0.03,
+      "depthSet": 3.7,
+      "depthSpot": 3.71,
+      "dz": 0.02,
       "ok": true
      }
     ]
@@ -872,82 +872,82 @@
     "name": "things-in-view",
     "ok": true,
     "lines": [
-     "things-in-view: the two bubbles' boxes (burbuja_a [99,59,22,22], burbuja_b [125,59,22,22]) are inside the picture and the window [22, 218)",
-     "       info, not a check: banco [83,87,105,34]",
+     "things-in-view: the two bubbles' boxes (burbuja_a [151,59,22,22], burbuja_b [177,59,22,22]) are inside the picture and the window [22, 218)",
+     "       info, not a check: banco [83,87,106,34]",
      "       info, not a check: arbol [91,0,90,89]",
      "       info, not a check: tablero [20,34,66,67]; the window cuts 2 px at the left",
      "       info, not a check: fila_isla [24,44,28,22]",
      "       info, not a check: fila_ciudad [54,44,28,22]",
-     "       info, not a check: carrito [177,84,44,85]; the window cuts 3 px at the right"
+     "       info, not a check: carrito [177,73,44,96]; the window cuts 3 px at the right"
     ]
    },
    {
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 157 pairs in the 6 moments of the preview (m1 (asiento2, suelo3, suelo4, bajo, frente2, cerca1, cerca2, frente1); m2 (asiento2, suelo3, suelo4, suelo2, frente3, frente2, frente4, bajo); m3 (tablero1, tablero2, suelo3, suelo4, asiento1); m4 (tablero1, tablero2, suelo3, suelo4, frente2, frente3, frente4); m5 (carro_pie, carro_borde, turno, fila1, suelo3, suelo4); m6 (carro_pie, carro_borde, turno, fila1, fila2, fila3, fila4, ayuda1, ayuda2, suelo3, suelo4)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 asiento2 ~ suelo3 (24 across, 27 down), m1 asiento2 ~ suelo4 (6 across, 27 down), m1 suelo3 ~ frente2 (14 across, 17 down), m1 frente2 ~ cerca2 (16 across, 17 down), m1 cerca1 ~ frente1 (16 across, 17 down), m1 cerca2 ~ frente1 (14 across, 17 down), m2 asiento2 ~ suelo3 (24 across, 27 down), m2 asiento2 ~ suelo4 (6 across, 27 down), m2 asiento2 ~ frente3 (8 across, 44 down), m2 asiento2 ~ frente4 (22 across, 44 down), m2 suelo3 ~ frente3 (16 across, 17 down), m2 suelo3 ~ frente2 (14 across, 17 down), m2 suelo4 ~ frente3 (14 across, 17 down), m2 suelo4 ~ frente4 (16 across, 17 down), m2 suelo2 ~ frente2 (16 across, 17 down), m2 frente4 ~ bajo (17 across, 28 down), m3 suelo3 ~ asiento1 (2 across, 27 down), m4 tablero2 ~ frente2 (18 across, 25 down), m4 suelo3 ~ frente2 (14 across, 17 down), m4 suelo3 ~ frente3 (16 across, 17 down), m4 suelo4 ~ frente3 (14 across, 17 down), m4 suelo4 ~ frente4 (16 across, 17 down), m5 carro_pie ~ carro_borde (13 across, 15 down), m5 carro_borde ~ turno (24 across, 24 down), m5 fila1 ~ suelo4 (3 across, 32 down), m6 carro_pie ~ carro_borde (13 across, 15 down), m6 carro_borde ~ turno (24 across, 24 down), m6 carro_borde ~ ayuda2 (23 across, 45 down), m6 turno ~ ayuda2 (1 across, 21 down), m6 fila1 ~ ayuda1 (1 across, 19 down), m6 fila1 ~ suelo4 (3 across, 32 down), m6 fila2 ~ suelo3 (3 across, 35 down), m6 ayuda1 ~ suelo4 (4 across, 51 down)",
-     "       closest pair in each moment (px across / px down): m1 asiento2 ~ suelo4 6/27 (needs 28 across or 12 down); m2 asiento2 ~ suelo4 6/27 (needs 28 across or 12 down); m3 suelo3 ~ asiento1 2/27 (needs 24 across or 12 down); m4 tablero2 ~ frente2 18/25 (needs 28 across or 12 down); m5 fila1 ~ suelo4 3/32 (needs 24 across or 12 down); m6 turno ~ ayuda2 1/21 (needs 24 across or 12 down)"
+     "sprites-apart: 157 pairs in the 6 moments of the preview (m1 (asiento4, suelo3, suelo4, bajo, frente2, cerca1, cerca2, frente1); m2 (asiento4, suelo3, suelo4, suelo2, frente3, frente2, frente4, bajo); m3 (tablero1, tablero2, suelo3, suelo4, asiento1); m4 (tablero1, tablero2, suelo3, suelo4, frente3, frente4, frente5); m5 (carro_pie, carro_borde, turno, fila1, suelo3, suelo4); m6 (carro_pie, carro_borde, turno, fila1, fila2, fila3, fila4, ayuda1, ayuda2, suelo3, suelo4)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 suelo3 ~ frente2 (14 across, 17 down), m1 bajo ~ frente2 (14 across, 29 down), m1 bajo ~ cerca2 (2 across, 46 down), m1 bajo ~ frente1 (16 across, 29 down), m1 frente2 ~ cerca2 (16 across, 17 down), m1 cerca1 ~ frente1 (16 across, 17 down), m1 cerca2 ~ frente1 (14 across, 17 down), m2 suelo3 ~ frente3 (16 across, 17 down), m2 suelo3 ~ frente2 (14 across, 17 down), m2 suelo4 ~ frente3 (14 across, 17 down), m2 suelo4 ~ frente4 (16 across, 17 down), m2 suelo2 ~ frente2 (16 across, 17 down), m2 suelo2 ~ bajo (2 across, 12 down), m2 frente2 ~ bajo (14 across, 29 down), m3 suelo3 ~ asiento1 (2 across, 27 down), m4 suelo3 ~ frente3 (16 across, 17 down), m4 suelo4 ~ frente3 (14 across, 17 down), m4 suelo4 ~ frente4 (16 across, 17 down), m5 carro_pie ~ carro_borde (13 across, 13 down), m5 carro_borde ~ turno (24 across, 22 down), m5 fila1 ~ suelo4 (3 across, 32 down), m6 carro_pie ~ carro_borde (13 across, 13 down), m6 carro_borde ~ turno (24 across, 22 down), m6 carro_borde ~ ayuda2 (23 across, 43 down), m6 turno ~ ayuda2 (1 across, 21 down), m6 fila1 ~ ayuda1 (1 across, 19 down), m6 fila1 ~ suelo4 (3 across, 32 down), m6 fila2 ~ suelo3 (3 across, 35 down), m6 ayuda1 ~ suelo4 (4 across, 51 down)",
+     "       closest pair in each moment (px across / px down): m1 bajo ~ cerca2 2/46 (needs 26 across or 12 down); m2 suelo2 ~ bajo 2/12 (needs 26 across or 12 down); m3 suelo3 ~ asiento1 2/27 (needs 24 across or 12 down); m4 suelo4 ~ frente3 14/17 (needs 24 across or 12 down); m5 fila1 ~ suelo4 3/32 (needs 24 across or 12 down); m6 turno ~ ayuda2 1/21 (needs 24 across or 12 down)"
     ],
     "pairs": [
      {
       "moment": 1,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "suelo3",
-      "across": 24,
+      "across": 76,
       "down": 27,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "suelo4",
-      "across": 6,
+      "across": 46,
       "down": 27,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "bajo",
-      "across": 39,
-      "down": 16,
+      "across": 104,
+      "down": 15,
       "needAcross": 30,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "frente2",
-      "across": 38,
+      "across": 90,
       "down": 44,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "cerca1",
-      "across": 84,
+      "across": 136,
       "down": 61,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "cerca2",
-      "across": 54,
+      "across": 106,
       "down": 61,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "frente1",
-      "across": 68,
+      "across": 120,
       "down": 44,
       "needAcross": 28,
       "ok": true
@@ -965,8 +965,8 @@
       "moment": 1,
       "a": "suelo3",
       "b": "bajo",
-      "across": 63,
-      "down": 11,
+      "across": 28,
+      "down": 12,
       "needAcross": 26,
       "ok": true
      },
@@ -1010,8 +1010,8 @@
       "moment": 1,
       "a": "suelo4",
       "b": "bajo",
-      "across": 33,
-      "down": 11,
+      "across": 58,
+      "down": 12,
       "needAcross": 26,
       "ok": true
      },
@@ -1055,8 +1055,8 @@
       "moment": 1,
       "a": "bajo",
       "b": "frente2",
-      "across": 77,
-      "down": 28,
+      "across": 14,
+      "down": 29,
       "needAcross": 26,
       "ok": true
      },
@@ -1064,8 +1064,8 @@
       "moment": 1,
       "a": "bajo",
       "b": "cerca1",
-      "across": 123,
-      "down": 45,
+      "across": 32,
+      "down": 46,
       "needAcross": 26,
       "ok": true
      },
@@ -1073,8 +1073,8 @@
       "moment": 1,
       "a": "bajo",
       "b": "cerca2",
-      "across": 93,
-      "down": 45,
+      "across": 2,
+      "down": 46,
       "needAcross": 26,
       "ok": true
      },
@@ -1082,8 +1082,8 @@
       "moment": 1,
       "a": "bajo",
       "b": "frente1",
-      "across": 107,
-      "down": 28,
+      "across": 16,
+      "down": 29,
       "needAcross": 26,
       "ok": true
      },
@@ -1143,64 +1143,64 @@
      },
      {
       "moment": 2,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "suelo3",
-      "across": 24,
+      "across": 76,
       "down": 27,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 2,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "suelo4",
-      "across": 6,
+      "across": 46,
       "down": 27,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 2,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "suelo2",
-      "across": 54,
+      "across": 106,
       "down": 27,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 2,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "frente3",
-      "across": 8,
+      "across": 60,
       "down": 44,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 2,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "frente2",
-      "across": 38,
+      "across": 90,
       "down": 44,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 2,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "frente4",
-      "across": 22,
+      "across": 30,
       "down": 44,
       "needAcross": 28,
       "ok": true
      },
      {
       "moment": 2,
-      "a": "asiento2",
+      "a": "asiento4",
       "b": "bajo",
-      "across": 39,
-      "down": 16,
+      "across": 104,
+      "down": 15,
       "needAcross": 30,
       "ok": true
      },
@@ -1253,8 +1253,8 @@
       "moment": 2,
       "a": "suelo3",
       "b": "bajo",
-      "across": 63,
-      "down": 11,
+      "across": 28,
+      "down": 12,
       "needAcross": 26,
       "ok": true
      },
@@ -1298,8 +1298,8 @@
       "moment": 2,
       "a": "suelo4",
       "b": "bajo",
-      "across": 33,
-      "down": 11,
+      "across": 58,
+      "down": 12,
       "needAcross": 26,
       "ok": true
      },
@@ -1334,8 +1334,8 @@
       "moment": 2,
       "a": "suelo2",
       "b": "bajo",
-      "across": 93,
-      "down": 11,
+      "across": 2,
+      "down": 12,
       "needAcross": 26,
       "ok": true
      },
@@ -1361,8 +1361,8 @@
       "moment": 2,
       "a": "frente3",
       "b": "bajo",
-      "across": 47,
-      "down": 28,
+      "across": 44,
+      "down": 29,
       "needAcross": 26,
       "ok": true
      },
@@ -1379,8 +1379,8 @@
       "moment": 2,
       "a": "frente2",
       "b": "bajo",
-      "across": 77,
-      "down": 28,
+      "across": 14,
+      "down": 29,
       "needAcross": 26,
       "ok": true
      },
@@ -1388,8 +1388,8 @@
       "moment": 2,
       "a": "frente4",
       "b": "bajo",
-      "across": 17,
-      "down": 28,
+      "across": 74,
+      "down": 29,
       "needAcross": 26,
       "ok": true
      },
@@ -1513,15 +1513,6 @@
      {
       "moment": 4,
       "a": "tablero1",
-      "b": "frente2",
-      "across": 48,
-      "down": 22,
-      "needAcross": 24,
-      "ok": true
-     },
-     {
-      "moment": 4,
-      "a": "tablero1",
       "b": "frente3",
       "across": 78,
       "down": 22,
@@ -1533,6 +1524,15 @@
       "a": "tablero1",
       "b": "frente4",
       "across": 108,
+      "down": 22,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "tablero1",
+      "b": "frente5",
+      "across": 138,
       "down": 22,
       "needAcross": 24,
       "ok": true
@@ -1558,15 +1558,6 @@
      {
       "moment": 4,
       "a": "tablero2",
-      "b": "frente2",
-      "across": 18,
-      "down": 25,
-      "needAcross": 28,
-      "ok": true
-     },
-     {
-      "moment": 4,
-      "a": "tablero2",
       "b": "frente3",
       "across": 48,
       "down": 25,
@@ -1584,19 +1575,19 @@
      },
      {
       "moment": 4,
-      "a": "suelo3",
-      "b": "suelo4",
-      "across": 30,
-      "down": 0,
-      "needAcross": 24,
+      "a": "tablero2",
+      "b": "frente5",
+      "across": 108,
+      "down": 25,
+      "needAcross": 28,
       "ok": true
      },
      {
       "moment": 4,
       "a": "suelo3",
-      "b": "frente2",
-      "across": 14,
-      "down": 17,
+      "b": "suelo4",
+      "across": 30,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      },
@@ -1620,9 +1611,9 @@
      },
      {
       "moment": 4,
-      "a": "suelo4",
-      "b": "frente2",
-      "across": 44,
+      "a": "suelo3",
+      "b": "frente5",
+      "across": 76,
       "down": 17,
       "needAcross": 24,
       "ok": true
@@ -1647,19 +1638,10 @@
      },
      {
       "moment": 4,
-      "a": "frente2",
-      "b": "frente3",
-      "across": 30,
-      "down": 0,
-      "needAcross": 24,
-      "ok": true
-     },
-     {
-      "moment": 4,
-      "a": "frente2",
-      "b": "frente4",
-      "across": 60,
-      "down": 0,
+      "a": "suelo4",
+      "b": "frente5",
+      "across": 46,
+      "down": 17,
       "needAcross": 24,
       "ok": true
      },
@@ -1673,11 +1655,29 @@
       "ok": true
      },
      {
+      "moment": 4,
+      "a": "frente3",
+      "b": "frente5",
+      "across": 60,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "frente4",
+      "b": "frente5",
+      "across": 30,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
       "moment": 5,
       "a": "carro_pie",
       "b": "carro_borde",
       "across": 13,
-      "down": 15,
+      "down": 13,
       "needAcross": 28,
       "ok": true
      },
@@ -1722,7 +1722,7 @@
       "a": "carro_borde",
       "b": "turno",
       "across": 24,
-      "down": 24,
+      "down": 22,
       "needAcross": 28,
       "ok": true
      },
@@ -1731,7 +1731,7 @@
       "a": "carro_borde",
       "b": "fila1",
       "across": 54,
-      "down": 26,
+      "down": 24,
       "needAcross": 28,
       "ok": true
      },
@@ -1740,7 +1740,7 @@
       "a": "carro_borde",
       "b": "suelo3",
       "across": 87,
-      "down": 6,
+      "down": 8,
       "needAcross": 28,
       "ok": true
      },
@@ -1749,7 +1749,7 @@
       "a": "carro_borde",
       "b": "suelo4",
       "across": 57,
-      "down": 6,
+      "down": 8,
       "needAcross": 28,
       "ok": true
      },
@@ -1812,7 +1812,7 @@
       "a": "carro_pie",
       "b": "carro_borde",
       "across": 13,
-      "down": 15,
+      "down": 13,
       "needAcross": 28,
       "ok": true
      },
@@ -1902,7 +1902,7 @@
       "a": "carro_borde",
       "b": "turno",
       "across": 24,
-      "down": 24,
+      "down": 22,
       "needAcross": 28,
       "ok": true
      },
@@ -1911,7 +1911,7 @@
       "a": "carro_borde",
       "b": "fila1",
       "across": 54,
-      "down": 26,
+      "down": 24,
       "needAcross": 28,
       "ok": true
      },
@@ -1920,7 +1920,7 @@
       "a": "carro_borde",
       "b": "fila2",
       "across": 84,
-      "down": 29,
+      "down": 27,
       "needAcross": 28,
       "ok": true
      },
@@ -1929,7 +1929,7 @@
       "a": "carro_borde",
       "b": "fila3",
       "across": 114,
-      "down": 32,
+      "down": 30,
       "needAcross": 28,
       "ok": true
      },
@@ -1938,7 +1938,7 @@
       "a": "carro_borde",
       "b": "fila4",
       "across": 144,
-      "down": 34,
+      "down": 32,
       "needAcross": 28,
       "ok": true
      },
@@ -1947,7 +1947,7 @@
       "a": "carro_borde",
       "b": "ayuda1",
       "across": 53,
-      "down": 45,
+      "down": 43,
       "needAcross": 28,
       "ok": true
      },
@@ -1956,7 +1956,7 @@
       "a": "carro_borde",
       "b": "ayuda2",
       "across": 23,
-      "down": 45,
+      "down": 43,
       "needAcross": 28,
       "ok": true
      },
@@ -1965,7 +1965,7 @@
       "a": "carro_borde",
       "b": "suelo3",
       "across": 87,
-      "down": 6,
+      "down": 8,
       "needAcross": 28,
       "ok": true
      },
@@ -1974,7 +1974,7 @@
       "a": "carro_borde",
       "b": "suelo4",
       "across": 57,
-      "down": 6,
+      "down": 8,
       "needAcross": 28,
       "ok": true
      },
@@ -2306,33 +2306,17 @@
    },
    {
     "name": "frog-seen",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "frog-seen: 5 moment(s) where the frog is not seen whole:",
-     "  moment 1: the frog at asiento2 123,108: 209 of his 536 px are not seen (0 hidden by the set, 209 under suelo4 209 (209 by a child), 0 outside the picture)",
-     "  moment 2: the frog at asiento2 123,108: 298 of his 536 px are not seen (0 hidden by the set, 298 under suelo4 183, frente3 115 (183 by a child, 115 by a grown-up), 0 outside the picture)",
-     "  moment 4: the frog at tablero2 67,127: 67 of his 536 px are not seen (0 hidden by the set, 67 under frente2 67 (67 by a grown-up), 0 outside the picture)",
-     "  moment 5: the frog at carro_borde 186,141: 72 of his 536 px are not seen (65 hidden by the set: carrito 65, in columns 182,183,184, 7 under turno 7 (7 by a grown-up), 0 outside the picture)",
-     "  moment 6: the frog at carro_borde 186,141: 72 of his 536 px are not seen (65 hidden by the set: carrito 65, in columns 182,183,184, 7 under turno 7 (7 by a grown-up), 0 outside the picture)",
-     "       nearest passing, moment 1, move the frog: asiento2 0.1,0,0.46: u 0.1 -> 1.6 (+1.5); v 0 -> 1.3 (+1.3); z 0.46 -> 1.05 (+0.59)",
-     "       nearest passing, moment 1, move suelo4 0.35,1.3,0 (carmen) alone off the frog: u 0.35 -> 1.06 (+0.71); v 1.3 -> 2.35 (+1.05)",
-     "       nearest passing, moment 2, move the frog: asiento2 0.1,0,0.46: u 0.1 -> 1.6 (+1.5); v 0 -> -1.4 (-1.4); z 0.46 -> 1.05 (+0.59)",
-     "       nearest passing, moment 2, move suelo4 0.35,1.3,0 (carmen) alone off the frog: u 0.35 -> 1.06 (+0.71); v 1.3 -> 2.35 (+1.05)",
-     "       nearest passing, moment 2, move frente3 -0.2,2.6,0 (mamaAna) alone off the frog: u -0.2 -> -0.76 (-0.56); v 2.6 -> 3.35 (+0.75)",
-     "       nearest passing, moment 4, move the frog: tablero2 -2.05,0.7,0: u: none within 3; v 0.7 -> 2.6 (+1.9); z 0 -> 1.19 (+1.19)",
-     "       nearest passing, moment 4, move frente2 -1.35,2.6,0 (abuelaAna) alone off the frog: u -1.35 -> -1.05 (+0.3); v 2.6 -> 0.7 (-1.9)",
-     "       nearest passing, moment 5, move the frog: carro_borde 2.55,3.5,1.02: u: none within 3; v 3.5 -> 3.66 (+0.16); z 1.02 -> 2.86 (+1.84)",
-     "       nearest passing, moment 5, move turno 1.6,3.6,0 (visita1) alone off the frog: u 1.6 -> 1.55 (-0.05); v 3.6 -> 3.5 (-0.1)",
-     "       nearest passing, moment 6, move the frog: carro_borde 2.55,3.5,1.02: u: none within 3; v 3.5 -> 3.66 (+0.16); z 1.02 -> 2.86 (+1.84)",
-     "       nearest passing, moment 6, move turno 1.6,3.6,0 (visita1) alone off the frog: u 1.6 -> 1.55 (-0.05); v 3.6 -> 3.5 (-0.1)",
-     "       info, not a check: m1 asiento2 123,108: 536 px, 0 hidden by the set, 209 under a nearer person (suelo4 209; 209 by a child), 0 outside the picture, 0 under the dog; his 32 x 25 box: 244 px with a nearer sprite on them; m2 asiento2 123,108: 536 px, 0 hidden by the set, 298 under a nearer person (suelo4 183, frente3 115; 183 by a child, 115 by a grown-up), 0 outside the picture, 0 under the dog; his 32 x 25 box: 352 px with a nearer sprite on them; m3 tablero2 67,127: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m4 tablero2 67,127: 536 px, 0 hidden by the set, 67 under a nearer person (frente2 67; 67 by a grown-up), 0 outside the picture, 0 under the dog; his 32 x 25 box: 171 px with a nearer sprite on them; m5 carro_borde 186,141: 536 px, 65 hidden by the set (carrito 65; columns 182,183,184), 7 under a nearer person (turno 7; 7 by a grown-up), 0 outside the picture, 0 under the dog; his 32 x 25 box: 43 px with a nearer sprite on them; m6 carro_borde 186,141: 536 px, 65 hidden by the set (carrito 65; columns 182,183,184), 7 under a nearer person (turno 7; 7 by a grown-up), 0 outside the picture, 0 under the dog; his 32 x 25 box: 43 px with a nearer sprite on them; m7 asiento2 123,108: 536 px, 0 hidden by the set, 298 under a nearer person (suelo4 183, frente3 115; 183 by a child, 115 by a grown-up), 0 outside the picture, 0 under the dog; his 32 x 25 box: 352 px with a nearer sprite on them"
+     "frog-seen: the frog is seen whole in all 6 moments (a nearer dog aside): m1 asiento4 175,108: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m2 asiento4 175,108: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m3 tablero2 67,127: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m4 tablero2 67,127: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m5 carro_borde 186,143: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m6 carro_borde 186,143: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them",
+     "       info, not a check: m1 asiento4 175,108: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m2 asiento4 175,108: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m3 tablero2 67,127: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m4 tablero2 67,127: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m5 carro_borde 186,143: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m6 carro_borde 186,143: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m7 asiento4 175,108: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them"
     ]
    },
    {
     "name": "board-clear",
     "ok": true,
     "lines": [
-     "board-clear: in moments 3 and 4 nobody covers a pixel of the board's two pictures or of its two rows of hooks: picture of the island px 25-50 x 44-58, row of hooks of the island px 24-51 x 62-65, picture of the city px 55-80 x 44-58, row of hooks of the city px 54-81 x 62-65; m3: the people's top rows tablero1 89, tablero2 103, suelo3 94, suelo4 94, asiento1 67; m4: the people's top rows tablero1 89, tablero2 103, suelo3 94, suelo4 94, frente2 97, frente3 99, frente4 99",
+     "board-clear: in moments 3 and 4 nobody covers a pixel of the board's two pictures or of its two rows of hooks: picture of the island px 25-50 x 44-58, row of hooks of the island px 24-51 x 62-65, picture of the city px 55-80 x 44-58, row of hooks of the city px 54-81 x 62-65; m3: the people's top rows tablero1 89, tablero2 103, suelo3 94, suelo4 94, asiento1 67; m4: the people's top rows tablero1 89, tablero2 103, suelo3 94, suelo4 94, frente3 97, frente4 99, frente5 99",
      "       info, not a check: the three cards at repisa 53,80 (rows 68 to 79) over the regions: picture of the island 0, row of hooks of the island 0, picture of the city 0, row of hooks of the city 0 px"
     ],
     "regions": [
@@ -2410,14 +2394,8 @@
      },
      {
       "moment": 4,
-      "at": "frente2",
-      "topRow": 97,
-      "covers": {}
-     },
-     {
-      "moment": 4,
       "at": "frente3",
-      "topRow": 99,
+      "topRow": 97,
       "covers": {}
      },
      {
@@ -2425,45 +2403,42 @@
       "at": "frente4",
       "topRow": 99,
       "covers": {}
+     },
+     {
+      "moment": 4,
+      "at": "frente5",
+      "topRow": 99,
+      "covers": {}
      }
     ]
    },
    {
     "name": "piraguero-head",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "piraguero-head: 2 moment(s) where his head is covered:",
-     "  moment 5: his head (204 px, rows 101 to 114) is covered: 82 px by the set (82 awning, 0 cart: carrito 82; rows 101 to 106)",
-     "  moment 6: his head (204 px, rows 101 to 114) is covered: 82 px by the set (82 awning, 0 cart: carrito 82; rows 101 to 106)",
-     "       nearest passing (his head clear of the set and of the sprites of moment 5), carro_pie 3.05,2.9,0: u 3.05 -> 4.14 (+1.09, but then he is outside the window (his column 228, the window ends at 217)); v 2.9 -> 3.5 (+0.6, but then he stands inside the cart's footprint (v 3.08 to 3.92): the cart hides him from the waist down); the awning's front edge and valance hang over rows 101 to 106 of his head at his spot, so no spot from v 2.3 to the cart's back edge (v 3.08) clears it (the search goes 0.6 either way of his spot)",
-     "       m5 carro_pie 199,156: head rows 101 to 114 (204 px): 82 covered by the set (82 by the awning, 0 by the cart; parts carrito 82; rows 101 to 106), 0 by a nearer sprite",
-     "       m6 carro_pie 199,156: head rows 101 to 114 (204 px): 82 covered by the set (82 by the awning, 0 by the cart; parts carrito 82; rows 101 to 106), 0 by a nearer sprite"
+     "piraguero-head: the top 14 rows of the piragüero's sprite at carro_pie 199,156 are covered by neither the awning, the cart nor a sprite: m5 carro_pie 199,156: head rows 101 to 114 (204 px): 0 covered by the set (none), 0 by a nearer sprite; m6 carro_pie 199,156: head rows 101 to 114 (204 px): 0 covered by the set (none), 0 by a nearer sprite"
     ],
     "heads": [
      {
       "moment": 5,
       "headRows": [101, 114],
       "headPx": 204,
-      "coveredBySet": 82,
-      "awning": 82,
+      "coveredBySet": 0,
+      "awning": 0,
       "cart": 0,
-      "byPart": {
-       "carrito": 82
-      },
-      "rowsCovered": [101, 106],
+      "byPart": {},
+      "rowsCovered": null,
       "coveredBySprites": 0
      },
      {
       "moment": 6,
       "headRows": [101, 114],
       "headPx": 204,
-      "coveredBySet": 82,
-      "awning": 82,
+      "coveredBySet": 0,
+      "awning": 0,
       "cart": 0,
-      "byPart": {
-       "carrito": 82
-      },
-      "rowsCovered": [101, 106],
+      "byPart": {},
+      "rowsCovered": null,
       "coveredBySprites": 0
      }
     ]
@@ -2472,8 +2447,8 @@
     "name": "frog-on-cart",
     "ok": true,
     "lines": [
-     "frog-on-cart: the frog at carro_borde 186,141 covers no more than a quarter of the piragüero's box (by his drawn pixels over it): m5: his box [187,101,24,55] (1320 px): the frog's drawn pixels over it 250 (18.9%); over his own drawn pixels 103; his 32 x 25 box over it 375 px (28.4%); the frog's hidden pixels 65; m6: his box [187,101,24,55] (1320 px): the frog's drawn pixels over it 250 (18.9%); over his own drawn pixels 103; his 32 x 25 box over it 375 px (28.4%); the frog's hidden pixels 65",
-     "       info, not a check: m5: his box [187,101,24,55] (1320 px): the frog's drawn pixels over it 250 (18.9%); over his own drawn pixels 103; his 32 x 25 box over it 375 px (28.4%); the frog's hidden pixels 65; m6: his box [187,101,24,55] (1320 px): the frog's drawn pixels over it 250 (18.9%); over his own drawn pixels 103; his 32 x 25 box over it 375 px (28.4%); the frog's hidden pixels 65",
+     "frog-on-cart: the frog at carro_borde 186,143 covers no more than a quarter of the piragüero's box (by his drawn pixels over it): m5: his box [187,101,24,55] (1320 px): the frog's drawn pixels over it 250 (18.9%); over his own drawn pixels 92; his 32 x 25 box over it 375 px (28.4%); the frog's hidden pixels 0; m6: his box [187,101,24,55] (1320 px): the frog's drawn pixels over it 250 (18.9%); over his own drawn pixels 92; his 32 x 25 box over it 375 px (28.4%); the frog's hidden pixels 0",
+     "       info, not a check: m5: his box [187,101,24,55] (1320 px): the frog's drawn pixels over it 250 (18.9%); over his own drawn pixels 92; his 32 x 25 box over it 375 px (28.4%); the frog's hidden pixels 0; m6: his box [187,101,24,55] (1320 px): the frog's drawn pixels over it 250 (18.9%); over his own drawn pixels 92; his 32 x 25 box over it 375 px (28.4%); the frog's hidden pixels 0",
      "       info, not a check: read as the frog's 32 x 25 box over the piragüero's box 187,101,24,55, it is 28.4% (375 of 1320 px): MORE than a quarter (by that reading, the nearest passing: carro_borde u 2.55 -> 2.48 (-0.07), his column 184)"
     ],
     "cover": [
@@ -2483,10 +2458,10 @@
       "area": 1320,
       "frogPxOverBox": 250,
       "fraction": 0.1894,
-      "frogPxOverHisPx": 103,
+      "frogPxOverHisPx": 92,
       "boxOverBox": 375,
       "boxOverBoxFraction": 0.2841,
-      "frogHidden": 65
+      "frogHidden": 0
      },
      {
       "moment": 6,
@@ -2494,56 +2469,48 @@
       "area": 1320,
       "frogPxOverBox": 250,
       "fraction": 0.1894,
-      "frogPxOverHisPx": 103,
+      "frogPxOverHisPx": 92,
       "boxOverBox": 375,
       "boxOverBoxFraction": 0.2841,
-      "frogHidden": 65
+      "frogHidden": 0
      }
     ],
     "whole": "the frog's whole drawing at carro_borde is checked by frog-seen (moments 5 and 6)"
    },
    {
     "name": "bubbles",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "bubbles: 2 problem(s):",
-     "  the bubbles cover 210 px of the pigeon at respaldo1 110,89 (a 210, b 0)",
-     "  the bubbles cover 214 px of the pigeon at respaldo2 136,89 (a 0, b 214)",
-     "       the frog at asiento2 123,108: his drawn head top row 84; burbuja_a [99,59,22,22], burbuja_b [125,59,22,22] (foot 3 px above his head: bottom edge row 81)",
-     "       respaldo1 110,89 (a 361 px pigeon, rows 69 to 88, columns 96 to 124): covered by burbuja_a 210 px, by burbuja_b 0 px",
-     "       respaldo2 136,89 (a 361 px pigeon, rows 69 to 88, columns 122 to 150): covered by burbuja_a 0 px, by burbuja_b 214 px",
-     "       respaldo3 162,89 (a 361 px pigeon, rows 69 to 88, columns 148 to 176): covered by burbuja_a 0 px, by burbuja_b 0 px",
-     "       the size of the pigeon does not matter: its feet are on row 88 at respaldo1 to 3 and the bubbles end on row 80, so a pigeon taller than 8 px at respaldo1 (column 110, under burbuja_a, columns 99 to 120) or at respaldo2 (column 136, under burbuja_b, columns 125 to 146) is covered; respaldo3 (column 162) is clear",
-     "       nearest passing: the foot 15 px above his head instead of 3 (the bubbles' top row 47, bottom edge 69) with the centring kept; sideways no shift clears both pigeons while the bubbles stay centred on him (the two pigeons at respaldo1 and respaldo2 span columns 96 to 176 in rows 69 to 88)"
+     "bubbles: both bubbles (a [151,59,22,22], b [177,59,22,22]) are inside the picture and the window and cover neither the frog nor a pigeon: the frog at asiento4 175,108: his drawn head top row 84; burbuja_a [151,59,22,22], burbuja_b [177,59,22,22] (foot 3 px above his head: bottom edge row 81); respaldo1 89,89 (a 361 px pigeon, rows 69 to 88, columns 75 to 103): covered by burbuja_a 0 px, by burbuja_b 0 px; respaldo2 112,89 (a 361 px pigeon, rows 69 to 88, columns 98 to 126): covered by burbuja_a 0 px, by burbuja_b 0 px; respaldo3 136,89 (a 361 px pigeon, rows 69 to 88, columns 122 to 150): covered by burbuja_a 0 px, by burbuja_b 0 px"
     ],
     "boxes": {
-     "burbuja_a": [99, 59, 22, 22],
-     "burbuja_b": [125, 59, 22, 22],
+     "burbuja_a": [151, 59, 22, 22],
+     "burbuja_b": [177, 59, 22, 22],
      "frogHeadTopRow": 84,
      "pigeons": [
       {
        "at": "respaldo1",
-       "sx": 110,
+       "sx": 89,
        "sy": 89,
-       "box": [96, 69, 29, 20],
-       "a": 210,
+       "box": [75, 69, 29, 20],
+       "a": 0,
        "b": 0,
        "n": 361
       },
       {
        "at": "respaldo2",
-       "sx": 136,
+       "sx": 112,
        "sy": 89,
-       "box": [122, 69, 29, 20],
+       "box": [98, 69, 29, 20],
        "a": 0,
-       "b": 214,
+       "b": 0,
        "n": 361
       },
       {
        "at": "respaldo3",
-       "sx": 162,
+       "sx": 136,
        "sy": 89,
-       "box": [148, 69, 29, 20],
+       "box": [122, 69, 29, 20],
        "a": 0,
        "b": 0,
        "n": 361
