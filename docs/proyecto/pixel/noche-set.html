@@ -1,0 +1,119 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La noche: the living room at night (place 9, scene 4), as a set on the Pixel Plays engine. A NEW scene.
+   Laid out square to the picture, in u, v. The back wall faces us at v = 0: at the far left a wide arch, a hole through which a corner of
+   the bedroom shows, with a bed (its head to the bedroom's far wall); then a standing lamp (luz1), a window with the moon, a lamp on a
+   wall shelf (luz2), a wall clock (no hands), a sideboard against the wall with a wall lamp over its right end (luz3). In the middle a
+   sofa that faces us, an armchair at its left, a rug in front of them. At the left front the television on a low stand (its screen faces
+   us). At the right front, with mesa = 1, the dinner table with four chairs along its far side.
+   The state comes from the address; these become the builder's setKey:
+     luz1, luz2, luz3 = 0 | 1     the three lamps (the room is a little brighter with each one that is lit)
+     tele = 0 | 1                 the television's screen
+     mesa = 0 | 1                 the dinner table
+     oscuro = 0 | 1               every lamp out: only the moon
+   It draws one frame: the baked set. No people, no knitting, no dishes, no candle, no tray, no book. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const on = (k, def = 0) => (Q.get(k) === null ? def : +(Q.get(k) === '1'));
+const SET = { luz1: on('luz1'), luz2: on('luz2', 1), luz3: on('luz3'), tele: on('tele'), mesa: on('mesa'), oscuro: on('oscuro'), t: +(Q.get('t') || 0) };
+if (SET.oscuro) SET.luz1 = SET.luz2 = SET.luz3 = 0;
+const ORIGIN = [0, -42];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="fonda-base.js"></script>
+<script src="casa-base.js"></script>
+<script>
+'use strict';
+const E = {
+  WALL: 3.1,
+  ARCH: [-3.72, -2.0, 0, 2.3],                                        // the arch into the bedroom: a hole
+  ROOM: -2.9,                                                         // the bedroom's far wall (v)
+  BED: { u: -2.86, v0: -2.8, v1: -.3, hw: .66 },                      // the bed seen through the arch (its mattress top is z .5)
+  LAMP1: [-1.62, .42],                                                // the standing lamp (u, v)
+  WINDOW: [-1.25, -.05, 1.35, 2.45],
+  LAMP2: { u: .55, z: 1.25 },                                         // the lamp on a wall shelf (the shelf's top is z)
+  CLOCK: [1.3, 2.35],
+  SIDEBOARD: { u: 2.3, v: .4, hw: 1.32, hd: .3, h: .9 },              // the sideboard: its top is its shelf
+  LAMP3: [3.3, 1.9],                                                  // the wall lamp over the sideboard's right end (u, z)
+  SOFA: { u: -.35, v: 2.7, hw: 1.5 },                                 // the sofa: seats at u -1.3, -.35, .6 (top z .44); its right arm's top is z .72 at u + hw + .1
+  ARMCHAIR: [-2.75, 2.7],
+  RUG: [-2.3, 3.5, .9, 4.9],
+  TV: { u: -3.0, v: 5.9, hw: .6, z0: .45, z1: 1.2 },                  // the television on its stand
+  TABLE: { u: 1.9, v: 5.0, hw: 1.75, hd: .6 },                        // the dinner table (mesa = 1): four chairs along its far side
+  BOWL: [3.35, 1.7],                                                  // Canelo's bowl
+};
+const LIT = SET.luz1 + SET.luz2 + SET.luz3;
+const groundAt = (x, y, ix, iy) => { const [u, v] = PZ.uv(x, y); return v < E.ROOM ? 0 : CS.boards(u, v, ix, iy, v < -.02 ? [170, 140, 110] : [196, 150, 104]); };
+function backWall() {
+  PZ.wall(E.ARCH[0] - .3, E.ARCH[1] + .3, E.ROOM, 0, 3.4, (u, z) => CS.paint(u, z, [200, 196, 226]));                  // the bedroom's far wall
+  CS.bed(E.BED.u, E.BED.v0, E.BED.v1, E.BED.hw, [236, 190, 110]);
+  PZ.wall(-5, 5, 0, 0, E.WALL, (u, z) => {
+    const A = E.ARCH, am = (A[0] + A[1]) / 2, ah = (A[1] - A[0]) / 2;
+    const inArch = u > A[0] && u < A[1] && (z < A[3] - ah * .5 || Math.hypot((u - am) / ah, (z - (A[3] - ah * .5)) / (ah * .5)) < 1);
+    if (inArch) return 0;
+    if (u > A[0] - .1 && u < A[1] + .1 && z < A[3] + .1 && (z < A[3] - ah * .5 || Math.hypot((u - am) / (ah + .1), (z - (A[3] - ah * .5)) / (ah * .5 + .1)) < 1)) return rgb(250, 246, 236);
+    const L = E.LAMP2; if (z > L.z - .07 && z < L.z && Math.abs(u - L.u) < .34) return rgb(...FD.WOOD);
+    const S = E.SIDEBOARD; if (false && S) return 0;
+    return CS.windowAt(u, z, E.WINDOW, 'noche') || CS.clockAt(u, z, E.CLOCK[0], E.CLOCK[1]) || CS.paint(u, z, [226, 206, 180]);
+  });
+  PZ.box(E.LAMP2.u, .12, E.LAMP2.z - .07, E.LAMP2.z, .34, .12, FD.WOOD_L);
+  CS.lampSmall(E.LAMP2.u, .12, E.LAMP2.z, SET.luz2);
+  CS.lampStanding(E.LAMP1[0], E.LAMP1[1], SET.luz1);
+  CS.lampWall(E.LAMP3[0], E.LAMP3[1], SET.luz3);
+}
+function room() {
+  const S = E.SIDEBOARD;
+  for (const du of [-S.hw + .1, S.hw - .1]) PZ.post(S.u + du, S.v + S.hd - .08, 0, .14, .04, FD.WOOD_D);
+  PZ.box(S.u, S.v, .12, S.h, S.hw, S.hd, FD.WOOD, (s, t, z, face) => face === 'top' ? rgb(226, 196, 150) : face !== 'front' ? 0 : (Math.hypot((Math.abs(Math.abs(s) - S.hw / 2) - .08) * 26, (z - .5) * 22.5) < 1.3) ? rgb(...FD.BRASS) : (z > .2 && z < S.h - .1 && Math.abs(Math.abs(s) - S.hw / 2) < S.hw / 2 - .07 && Math.abs(Math.abs(s) - S.hw / 2) > .03) ? rgb(...FD.WOOD_L) : 0);
+  for (let du = -S.hw; du <= S.hw; du += .3) PZ.shadow(S.u + du, S.v, .5, .4);
+  const [bx, by] = PZ.xy(E.BOWL[0], E.BOWL[1]); drum(bx, by, 0, .12, .16, [196, 60, 54], (a, b) => Math.hypot(a, b) < .11 ? rgb(120, 84, 60) : 0);
+  CS.rug(...E.RUG, [150, 90, 110], [240, 220, 170]);
+  CS.armchair(E.ARMCHAIR[0], E.ARMCHAIR[1], [176, 110, 90]);
+  CS.sofa(E.SOFA.u, E.SOFA.v, E.SOFA.hw, [96, 140, 150]);
+  const T = E.TV;
+  PZ.box(T.u, T.v, 0, T.z0, T.hw + .1, .26, FD.WOOD, (s, t, z, face) => face === 'top' ? rgb(...FD.WOOD_L) : 0);
+  PZ.box(T.u, T.v - .02, T.z0, T.z1, T.hw, .08, [50, 52, 62], (s, t, z, face) => face === 'front' && Math.abs(s) < T.hw - .06 && z > T.z0 + .06 && z < T.z1 - .06 ? (SET.tele ? ((Math.floor(s * 9 + 9) + Math.floor(z * 9)) % 3 === 0 ? rgb(250, 220, 120) : rgb(120, 200, 240)) : rgb(30, 34, 46)) : 0);
+  PZ.shadow(T.u, T.v, .4, .6);
+  if (SET.mesa) E.SEATS = FD.setTable(E.TABLE.u, E.TABLE.v, E.TABLE.hw, { seats: 4, span: 2.6, hd: E.TABLE.hd });
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('pared', backWall);
+  part('sala', room);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  { const k = SET.oscuro ? 0 : LIT; lightPass([[.5, .54, .8], [.84, .8, .82], [.94, .9, .86], [1.0, .97, .9]][k], [[-6, -4, 18], [2, 0, 6], [3, 1, 2], [4, 2, -2]][k], false); }
+  skyFill(() => rgb(30, 24, 30));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.NOCHE = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>
