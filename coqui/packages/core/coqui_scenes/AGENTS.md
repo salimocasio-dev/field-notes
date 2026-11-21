@@ -29,8 +29,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
 - `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's, La sala's, El
-  patio's, El camino's and El campo's factories make the real scenes (their sheets read first: `loadScene`); the other
-  five are stubs that throw `UnimplementedError('not converted yet')`.
+  patio's, El camino's, El campo's and El lago's factories make the real scenes (their sheets read first: `loadScene`); the
+  other four are stubs that throw `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
 
@@ -51,8 +51,9 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   state of the sheet's `setKey.baked` (`{"id": "<id>/door-shut-win-shut", "kind": "set", "page": "docs/proyecto/pixel/<id>-set.html",
   "query": "?door=shut&win=shut"}`), listed in `coqui/tool/ref/pp/states.json` and made by `make.js --only <ids>`: El balcón's four
   (order 30b), La sala's five (`sala/luz-1-fotos-000` ..., order 31b) and El patio's fifteen (`patio/hora-dia-door-shut-gate-shut`
-  ..., order 32b), El camino's two (`camino/gran-1`, `camino/gran-0`, order 33b) and El campo's one with two more frames of it at
-  other wind times (`campo/campo`, `campo/campo-t-1.5`, `campo/campo-t-3.25`: the page's `?t=`, its glints, order 34b).
+  ..., order 32b), El camino's two (`camino/gran-1`, `camino/gran-0`, order 33b), El campo's one with two more frames of it at
+  other wind times (`campo/campo`, `campo/campo-t-1.5`, `campo/campo-t-3.25`: the page's `?t=`, its glints, order 34b) and El
+  lago's the same way (`lago/lago`, `lago/lago-t-1.5`, `lago/lago-t-3.25`, order 35b).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
@@ -223,6 +224,52 @@ has that the earlier ones did not, and how the port uses it, as campo-preview.ht
   `campo_preview_test`, `campo_boxes_test`, `campo_pictures_test`, `campo_acts_test`; the preview's rule for moving a recorded W
   is `test/support/campo_preview_remap.dart`.
 
+## A lake with its dock (order 35b, El lago)
+
+lago.js is on the kit too (`class Lago extends Escena implements SetScene, SetOverSprites, PairPlaces`). What El lago's sheet
+has that the earlier ones did not, or uses differently, and how the port uses it, as lago-preview.html does:
+
+- **The water takes no cast shadow** (`set_kit.dart`: `WaterLook.noShade`, set-kit.js's `look.noShade`: the surface is not
+  ground). El campo leaves it out: its pictures are unchanged. The dock's own shade on the water is baked into the set
+  (`lago_set.dart`: `SHADED`, kept with the ground cache, as the glints the shade and the dock drop).
+- **The set** (`lago_set.dart`): two shores on the world's two axes, the deck with its planks, pilings, landing and mooring
+  posts, the post in the water, the reeds, the waterlines, the dock's shade, the glints; one baked state. `lagoSurfaceAt` (the
+  page's `surfaceAt`: the planks, the lawn or the water under a screen point) is what the scene asks for the rings, the
+  shadows and the front test.
+- **`helps`**: El campo's ripple ring before whatever floats or swims, a size per kind (`helps.ring.<kind>`: a duck swimming,
+  the yellow one's .78 as wide; a boat on the water or in the reeds, bobbing; the bread lying on the water: `Lago.ring`,
+  `ringWhere`); and the fish's patch (`helps.ring.pez`: `Lago.patch`, `patchAt`, the preview's function pixel for pixel: an
+  ellipse 26 x 17 of the patch's colour, the lake's ripple dashes going on inside it in the dash colour, its outer 3 px
+  dithered into the lake by a 4 x 4 Bayer; none when the fish leaps). Both only where the set's water shows
+  (`Lago.waterShown`: the baked state's water with nothing standing over it, recorded at its bake; a scene that has not baked
+  bakes once on an engine of its own).
+- **`moves`** (23): read from the moved source itself (`LagoPlaces.to(line, src, [pattern])`: the numbers of the sheet's new
+  source for that old source) for the post (POSTE), Carmen's right bank (ORILLA), the boats' row on the planks (FX, FYB),
+  where boats stick (PEGA), the row at Carmen's feet (SLOTC, 12 slots), the ducks' seven places (P7), the bread row, the
+  fish's circle and its place beside a boat, and the moved patoA, pezA and boteA calls; a moved place by its old numbers
+  (`LagoPlaces.floor(line, x, y)`: a move's `places`, else the line's `code` entry that keeps every other place on it; else
+  SheetError); `respEn` at inicio18, 19, 20. Three lines have numbers the sheet's code names nowhere (263: the birds rise to
+  row 70; 276: the bread falls to `o.y || 178`; 278: the ducks swim out to x 252): kept by `LagoPlaces.floorRule`, those three
+  lines only (reported by order 35b).
+- **`hops`** is empty: all 21 counts are the old ones (`lago_acts_test` checks each).
+- **`front`**: the reeds, the post and the mooring posts (`front.parts`, each sortY 9999: after everyone) drawn again over
+  each item before them, only where nearer, the item's depth that of the surface under it (the planks', the lawn's or the
+  water's: `Lago.vOf`); the items say what they are (`LagoItem`: a child, the frog, Canelo, a duck not flying, a boat, the
+  fish; a bird, the bread, the bag and the sack are not drawn over, as the preview's `frontBox`). Nobody has the deck or its
+  pilings drawn over them.
+- **`shadows`**: on the lawn and the planks only: the frog, the children (sitting: to 1.35), Canelo, a duck walking, a bird
+  standing (not on a post's top: `Lago.perched`), a boat on the dock, the row of bread, the bread lying, the bag, the sack.
+- **`talk`** as El campo's; a sitting child's head is `heads.<id>.s`.
+- **Remap**: the story positions the sheet moved (d-pato-pequeno's ducks, Luis in h-lago and d-pato-pequeno, the bird on
+  the post); a pair's own W (`Lago.placePair`, the preview's `remapW` for cual-lago: the ducks, with the post's `shift`; the
+  birds and their post; the boats, one at Carmen's to its slot; the fish; the flower, the bag, the sack).
+- **Random draws** (mueven's `baraja`, rina's) from the game's `Rng` (the registry's factory takes it), as El camino's.
+- lago.js's own `aveA` is `Lago.pajaroA` (the kit gives every scene its own bird's `aveA`). lago.js:237 ends in a comment that
+  holds the rest of its line: that code never ran, and the port keeps it so.
+- Files: `lib/src/lago/lago_set.dart`, `lago_places.dart`, `lago.dart`. Tests: `lago_set_test`, `lago_sprites_test`,
+  `lago_preview_test`, `lago_boxes_test`, `lago_pictures_test`, `lago_acts_test`; the preview's rule for moving a recorded W
+  is `test/support/lago_preview_remap.dart`.
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its
@@ -264,16 +311,16 @@ has that the earlier ones did not, and how the port uses it, as campo-preview.ht
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/ and .../campo/ for the browser set tests
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/ and .../campo/
-node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/ and .../lago/ for the browser set tests
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/ and .../lago/
+node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo|lago] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
                                                   the scene's stories)
-COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo] flutter test tool/compare_all_test.dart   every picture of
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo|lago] flutter test tool/compare_all_test.dart   every picture of
                                                   preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo]   bake times
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago]   bake times
                                                   (each state's first bake, then again on the same engine; for a set with glints on its
                                                   water, what drawing them costs a frame)
 ```

@@ -94,6 +94,15 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
     by `BakedSet`; `drawFrame` draws them after `drawTufts` at the same wind time when there are any. A set with no water
     leaves none: every earlier scene's frame is as before.
   - `test/campo_sheet_test.dart`: the reader against El campo's real sheet (the file on the vm, the fixture in chrome).
+- Since order 35b (El lago), only as far as that scene needs:
+  - `Sheet` reads what El lago's sheet writes that the earlier ones do not: a thing whose `world` is null (the water,
+    `things.agua`: no box of its own in the world); a point whose `world` is not one point (the dock, a box of six numbers;
+    the mooring posts, a list of points) as a screen point, its numbers in `raw`; the ripple rings by kind
+    (`SheetRing.kinds`, `kind(name)`: El lago's `pato`, `bote`, `pan`, El campo's `ball` and `dog`, still read by
+    `ring.ball` and `ring.dog`) and a patch of paler water (`SheetRing.patches`, `patch(name)`, `SheetPatch`: El lago's fish,
+    its centre, radii, soft edge and two colours); a move that takes another thing with it (`SheetMove.shift`: who, while
+    which field is set, by how much). The earlier sheets read as before.
+  - `test/lago_sheet_test.dart`: the reader against El lago's real sheet (the file on the vm, the fixture in chrome).
 - Since order 12b it also holds `hexColour` (`colour.dart`): `"#RRGGBB"` as the int `0xFFBBGGRR`, for a colour that is made once. `hexColours` (a list of them) stays under `src/`.
 
 ## Run and test it alone
@@ -129,7 +138,7 @@ node tool/make_dash_ref.mjs [--check]    # test/support/fixtures/ref_dash.dart: 
 ```
 
 ```
-dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart, sala_sheet.dart, patio_sheet.dart, camino_sheet.dart and campo_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
+dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart, sala_sheet.dart, patio_sheet.dart, camino_sheet.dart, campo_sheet.dart and lago_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
 ```
 
 `test/pp_frente_test.dart` rebuilds the Nov 14 one-state El frente (an old frente-set.html) as a test of `PpBuild`'s helpers at S = 26. That picture is no longer in `coqui/ref/pp/` (order 07 replaced it with El frente's 25 states): its bytes are `test/support/fixtures/frente_nov14.dart`, read on every platform, and nothing makes that file again. The 25 states are order 14's.

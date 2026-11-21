@@ -395,13 +395,13 @@ void main() {
   int setPixelsOver(Map<String, dynamic> W, List<num> box) {
     draw(W);
     final withIt = Uint32List.fromList(frame.picture);
-    final W0 = {
+    final w0 = {
       ...W,
       'patos': <String, dynamic>{},
       'botes': <String, dynamic>{},
     };
-    (W0['cq'] as Map<String, dynamic>)['vis'] = 0;
-    draw(W0);
+    (w0['cq'] as Map<String, dynamic>)['vis'] = 0;
+    draw(w0);
     var n = 0;
     for (var y = box[1].toInt(); y < box[1] + box[3]; y++) {
       for (var x = box[0].toInt(); x < box[0] + box[2]; x++) {
@@ -490,12 +490,12 @@ void main() {
     );
     // a shadow cast over the water darkens nothing there (noShade): the frame with a swimming child's shadow is the frame
     // without it on the water
-    final W2 = fresh();
-    (W2['cq'] as Map<String, dynamic>)['vis'] = 0;
-    draw(W2);
+    final w2 = fresh();
+    (w2['cq'] as Map<String, dynamic>)['vis'] = 0;
+    draw(w2);
     final before = Uint32List.fromList(frame.picture);
     final kindsNow = Uint8List.fromList(frame.engine.kinds);
-    W2['patos'] = <String, dynamic>{
+    w2['patos'] = <String, dynamic>{
       'blanco': <String, dynamic>{
         'k': 'blanco',
         'x': 120,
@@ -505,7 +505,7 @@ void main() {
         'vis': 0,
       },
     };
-    draw(W2);
+    draw(w2);
     var water = 0;
     for (var i = 0; i < before.length; i++) {
       if (kindsNow[i] == 2 && before[i] != frame.picture[i]) water++;
