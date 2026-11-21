@@ -1,8 +1,8 @@
 // La mesa's acts and what is new in its sheet. The numbers the port reads from the sheet's moved sources (the seats
 // stepped down the table, the doorway and the walkway, the places in front of each seat, the counter's stacks, the
 // answer cards per story); every moved source is a piece of mesa.js at its line; the hops between the frog's places are
-// the old ones but the one pair the sheet names (frog.ranaa - rana.2, 3 to 2), and the walk of the STOP (from abuela's
-// hand at the counter to Carmen's place, 2 to 1: tengo-hambre); whoever comes in to sit appears on the step outside the
+// the old ones (the sheet's `hops` is empty), the walk of order 37b's STOP too (from abuela's hand at the counter to
+// Carmen's place, tengo-hambre); whoever comes in to sit appears on the step outside the
 // doorway and walks behind the chairs; the table and the wall are drawn again over whoever is behind them, a chair never
 // over whoever sits (`front`); the shadows on the clear floor only, none on El colmado's stall; remap gives the sheet's
 // places (h-mesa's sitters on their chairs), a pair picture's own W through the story moves, and cocina.no puts abuela at
@@ -118,8 +118,8 @@ void main() {
     expect(scene.FOGON, scene.sheet.spots['fogon']!.now);
     expect(scene.LUIS, [75, 160]);
     expect(scene.CAN, [196, 204]);
-    expect(scene.FRX, [0, 0, -6, 2]);
-    expect(scene.FR, [0, 0, 5, 10]);
+    expect(scene.FRX, [0, 0, -4, 2]);
+    expect(scene.FR, [0, 0, 6, 10]);
     expect(scene.FAX, [24, 24, 24, 26]);
     for (final k in scene.EN.keys) {
       expect(scene.EN[k], scene.sheet.spots['mostrador.$k']!.now, reason: k);
@@ -161,29 +161,26 @@ void main() {
     },
   );
 
-  test('hops: all 36 pairs keep the old count but frog.ranaa - rana.2 (3 to 2); the STOP walk takes one fewer', () {
+  test('hops: all 36 pairs keep the old count (the sheet\'s hops is empty); the walk of the STOP takes its old 2 again', () {
     final sh = scene.sheet;
     List<num> spot(String n, bool now) {
       final s = sh.spots[n]!;
       return now ? s.now! : s.old;
     }
 
-    final changed = <String>[];
     for (final h in sh.hopsAll) {
       final o = hopsOf(spot(h.a, false), spot(h.b, false)),
           n = hopsOf(spot(h.a, true), spot(h.b, true));
       expect([o, n], [h.old, h.now], reason: '${h.a} - ${h.b}');
-      if (o != n) changed.add('${h.a} - ${h.b}');
+      expect(n, o, reason: '${h.a} - ${h.b}');
     }
-    expect(changed, ['frog.ranaa - rana.2']);
-    expect(sh.hops.single.a, 'frog.ranaa');
-    // the STOP of order 37b: from abuela's hand at the counter (acts.lleva26 `de: "abuela"`, q = (ab.x - 46, ab.y - 17),
-    // abuela at ENQ.jarron + (26, 182 - ...): q 58,165) to Carmen's place at seat 2 (rana.2): 64 px, 2 hops, became 58,
-    // 1 hop (tengo-hambre beats.32.after.0, beats.70.right.0; feature_story's differential test, mesaHopStop)
+    expect(sh.hops, isEmpty);
+    // the STOP of order 37b, fixed in the sheet: from abuela's hand at the counter (acts.lleva26 `de: "abuela"`, q 58,165)
+    // to Carmen's place at seat 2 (rana.2, now 118,169): 2 hops, as the old (tengo-hambre beats.32.after.0, .70.right.0)
     final hand = [scene.ENQ['jarron']![0] + 26 - 30 - 16, 182 + 10 - 27];
     expect(hand, [58, 165]);
     expect(hopsOf(hand, spot('rana.2', false)), 2);
-    expect(hopsOf(hand, spot('rana.2', true)), 1);
+    expect(hopsOf(hand, spot('rana.2', true)), 2);
   });
 
   test('whoever comes in to sit appears on the step outside the doorway, walks behind the chairs and sits at 150 + SD', () async {

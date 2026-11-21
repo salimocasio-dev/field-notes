@@ -109,11 +109,14 @@ void main() {
     expect(sheet.spots['fogon']!.now, [202, 194]);
   });
 
-  test('hops: one pair changes, 3 to 2; 36 in all', () {
-    expect(sheet.hops, hasLength(1));
-    final h = sheet.hops.single;
-    expect([h.a, h.b, h.old, h.now], ['frog.ranaa', 'rana.2', 3, 2]);
+  test('hops: none changes (the sheet\'s fix of rana.2); 36 in all', () {
+    expect(sheet.hops, isEmpty);
     expect(sheet.hopsAll, hasLength(36));
+    for (final h in sheet.hopsAll) {
+      expect(h.now, h.old, reason: '${h.a} - ${h.b}');
+    }
+    expect(sheet.spots['rana.2']!.now, [118, 169]);
+    expect(sheet.spots['frog.ranaa']!.old, [24, 146]);
   });
 
   test('the things of the set: their boxes, hint boxes and hands', () {
@@ -163,6 +166,10 @@ void main() {
 
   test('the pictures: cocina.no is El colmado\'s stall, cocina.si wide, the rest close', () {
     expect(sheet.pictures['cocina.no']!.crop, [20, 112, 196, 104]);
+    expect(
+      sheet.pictures['cocina.no']!.raw['port'],
+      contains('[20, 112, 196, 104]'),
+    );
     expect(sheet.pictures['cocina.si']!.zoom, 1);
     expect(sheet.pictures.values.where((p) => p.zoom == 2), hasLength(22));
   });
