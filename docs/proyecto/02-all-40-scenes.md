@@ -72,7 +72,7 @@ Eating out. The call: get a table, order food and a drink, say how it is, ask fo
 
 A whole day at home, morning to night. The call: say what you do in the morning, the afternoon and at night, and at what time.
 - **El cuarto (the bedroom).** Morning. cuarto, cama, almohada, ropa, luz, se despierta, se levanta, se viste, la mañana, a las siete, primero, tiene sueño
-- **El baño (the bathroom).** Getting clean. baño, ducha, jabón, cepillo, dientes, espejo, peine, se baña, se lava, limpio, sucio, después
+- **El baño (the bathroom).** Getting clean. baño, ducha, jabón, cepillo, dientes, espejo, peinilla, se baña, se lava, limpio, sucio (después is La calle's)
 - **La sala, de día (the living room by day).** Work and study. estudia, lee, escribe, libro, papel, teléfono, computadora, llama, escucha, habla, la tarde, a veces
 - **La noche (the night).** Dinner, TV, bed. cena, televisión, ve, prende, apaga, se acuesta, descansa, la noche, antes, siempre, nunca, todos los días
 
