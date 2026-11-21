@@ -10,7 +10,9 @@ three plans each, every source of chance and time pinned. The Dart player of ord
 node coqui/tool/ref/trazas/juega.mjs                    # all 51 x 3; replaces coqui/ref/trazas/ and coqui/ref/sprites/escenas/
 node coqui/tool/ref/trazas/juega.mjs --only la-lluvia   # one file, three plans, into a temp folder (prints where); the repo is not touched
 node coqui/tool/ref/trazas/juega.mjs --out DIR          # all of it into DIR (DIR/_sprites for the sprites) instead of the repo
+node coqui/tool/ref/trazas/juega.mjs --replace la-lluvia   # after that story's file changed: its three plan files and its entries of runs.json, in place in the repo
 ```
+`--replace STORY` writes nothing else (the sprites, the other stories and the rest of `runs.json` keep every byte) and stops without writing if the story has no runs yet, a run fails, or `juego.js` is not the one `runs.json` was recorded with (then a full run is needed); a story whose file did not change comes out byte-identical (checked), and a change that makes the story reach a sprite no run made before needs a full run, for the sprites.
 
 Options: `--jobs N` pages at once (default 6; the output does not depend on it); `--states DIR` also writes, per run, `DIR/<story>/<plan>.states.jsonl`:
 one line at the start (`kind: "start"`, right after `fresh()`) and one after every step ends (`n` and `path` as in `steps`), each with `t`, `cam`, `W` and `V`

@@ -4,6 +4,7 @@
 //   node coqui/tool/ref/trazas/juega.mjs                       all 51 files x 3 plans; writes coqui/ref/trazas/ and coqui/ref/sprites/escenas/
 //   node coqui/tool/ref/trazas/juega.mjs --only la-lluvia      one story, three plans, into a scratch folder (--out DIR, default: a temp folder); nothing in the repo changes
 //   node coqui/tool/ref/trazas/juega.mjs --out DIR             everything, into DIR instead of the repo
+//   node coqui/tool/ref/trazas/juega.mjs --replace STORY       one story, three plans, put in place in the repo: its three files and its entries of runs.json (nothing else, not the sprites)
 //   options: --jobs N (pages at once, default 6); --states DIR (also W, V and cam after every step, one JSONL per run, into DIR: for order 06)
 import fs from "node:fs";
 import os from "node:os";
@@ -24,8 +25,10 @@ const HIST = path.join(ROOT, "historia");
 const SEED = 1, THINK = 700, LIMIT = 4 * 3600e3;
 const PLANS = ["right", "wrong", "alternate"];
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : d; };
-const ONLY = arg("--only", null), JOBS = +arg("--jobs", 6), STATES = arg("--states", null);   // --states DIR: also write W after every step there (for order 06; never into the repo)
-const SCRATCH = ONLY || arg("--out", null) !== null;   // --only or --out: write somewhere else, never into the repo
+const REPLACE = arg("--replace", null);   // --replace STORY: play that story and write its three plans and its entries of runs.json into the repo, in place; every other byte stays (the sprites too)
+if (REPLACE && (arg("--only", null) || arg("--out", null) !== null)) throw new Error("--replace writes into the repo: it cannot go with --only or --out");
+const ONLY = arg("--only", null) || REPLACE, JOBS = +arg("--jobs", 6), STATES = arg("--states", null);   // --states DIR: also write W after every step there (for order 06; never into the repo)
+const SCRATCH = (ONLY && !REPLACE) || arg("--out", null) !== null;   // --only or --out: write somewhere else, never into the repo
 const OUT = SCRATCH ? path.resolve(arg("--out", null) || fs.mkdtempSync(path.join(os.tmpdir(), "trazas-"))) : path.join(ROOT, "coqui/ref/trazas");
 const SPR_OUT = SCRATCH ? path.join(OUT, "_sprites") : path.join(ROOT, "coqui/ref/sprites/escenas");
 const sha = b => crypto.createHash("sha256").update(b).digest("hex");
@@ -100,6 +103,12 @@ async function main() {
   if (ONLY && !todo.length && folder.includes(ONLY)) todo = [{ id: ONLY, list: "none", place: null }];   // a file in no list (for testing the tool)
   if (!todo.length) throw new Error("no such story in curso.js: " + ONLY);
   console.log(`curso.js: ${ids.length} files to play (${ids.filter(x => x.list === "cuentos").length} stories, ${ids.filter(x => x.list === "dibujos").length} picture stories, ${ids.filter(x => x.list === "haz").length} routines); ${cual.length} review sets not played; folder: ${folder.length} files; missing: ${missing.length}; in the folder but in no list: ${unlisted.length}`);
+  let old = null;   // --replace: the runs.json to put the story's entries into; it must be the recording of this juego.js
+  if (REPLACE) {
+    old = JSON.parse(fs.readFileSync(path.join(OUT, "runs.json"), "utf8"));
+    if (!old.runs.some(r => r.story === REPLACE)) throw new Error(`--replace: ${REPLACE} has no runs in runs.json (a story that was never recorded needs a full run)`);
+    if (old.juegoSha256 !== sha(fs.readFileSync(path.join(HIST, "juego.js")))) throw new Error("--replace: juego.js is not the one runs.json was recorded with (every story needs a full run)");
+  }
   const srv = await server(), base = `http://127.0.0.1:${srv.address().port}`;
   const browser = await chromium.launch();
   if (!ONLY) { fs.rmSync(OUT, { recursive: true, force: true }); fs.rmSync(SPR_OUT, { recursive: true, force: true }); }   // a full run replaces everything
@@ -120,8 +129,8 @@ async function main() {
       // the scene's own sprites: the metadata of every run is kept and merged in job order at the end (so the order runs finish in does not matter);
       // the pixels of each distinct picture are fetched once
       const scene = file.scene, own = `escenas/${scene}.js`;
-      for (const x of spr.cache) if (x.callerFile === own && x.sha256 && !PIX.has(x.sha256)) PIX.set(x.sha256, Buffer.from(await page.evaluate(k => window.__pixels(k), x.key), "base64"));
-      for (let i = 0; i < spr.outside.length; i++) { const x = spr.outside[i]; if (x.file === own && !PIX.has(x.sha256)) PIX.set(x.sha256, Buffer.from(await page.evaluate(n => window.__pixels(null, n), i), "base64")); }
+      if (!REPLACE) for (const x of spr.cache) if (x.callerFile === own && x.sha256 && !PIX.has(x.sha256)) PIX.set(x.sha256, Buffer.from(await page.evaluate(k => window.__pixels(k), x.key), "base64"));
+      if (!REPLACE) for (let i = 0; i < spr.outside.length; i++) { const x = spr.outside[i]; if (x.file === own && !PIX.has(x.sha256)) PIX.set(x.sha256, Buffer.from(await page.evaluate(n => window.__pixels(null, n), i), "base64")); }
       SPR[j] = { scene, run: `${s.id}/${p}`, cache: spr.cache, outside: spr.outside.filter(x => x.file === own) };
       await ctx.close();
       const trace = {
@@ -142,6 +151,7 @@ async function main() {
   await Promise.all(Array.from({ length: Math.min(JOBS, jobs.length) }, worker));
   await browser.close();
   srv.close();
+  if (REPLACE && results.some(r => r.failed)) throw new Error(`--replace ${REPLACE}: a run failed, nothing was written`);
 
   // the traces, and runs.json
   const runs = [];
@@ -161,6 +171,15 @@ async function main() {
     if (by.right && by.alternate && body(by.right) === body(by.alternate)) flags.push("right-equals-alternate");
     if (by.right && by.wrong && body(by.right) === body(by.wrong)) flags.push("right-equals-wrong");
     for (const r of runs) if (r.story === s.id && flags.length) r.identical = flags;
+  }
+  if (REPLACE) {   // in place: the story's three entries keep their places in runs.json, the rest of the file is not touched but for the totals of `count`
+    const mine = new Map(runs.map(r => [r.plan, r]));
+    old.runs = old.runs.map(r => r.story === REPLACE ? mine.get(r.plan) || r : r);
+    old.count.runs = old.runs.length; old.count.finished = old.runs.filter(r => r.finished).length;
+    old.count.notFinished = old.runs.filter(r => !r.finished).map(r => `${r.story}/${r.plan}: ${r.end || r.failed}`);
+    fs.writeFileSync(path.join(OUT, "runs.json"), JSON.stringify(old, null, 1) + "\n");
+    console.log(`${runs.filter(r => r.finished).length}/${runs.length} runs of ${REPLACE} finished; its three files and its entries of runs.json replaced in ${OUT}`);
+    return;
   }
   const index = {
     made: ONLY ? `node coqui/tool/ref/trazas/juega.mjs --only ${ONLY}` : "node coqui/tool/ref/trazas/juega.mjs",

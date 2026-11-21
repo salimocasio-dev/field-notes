@@ -43,6 +43,17 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
   - `Sheet` reads what El balcón's sheet writes that El frente's does not: no `frames` (empty); `front` as `parts`, each drawn again at an old line (`frontParts`, `SheetFrontPart`: name, `line`, `replaces`; `frontHow`, `frontPlane`: the depth test in words; `front` is then the parts' names); top-level `old`/`new` numbers (`numbers`, `numberOf`: `MESA_Y`, `behind`; no longer in `unknown`); a lugar's `q` for `frog` and its `old`; abuela's spots with `ab` (`SheetAnchor.ab`; `abuelaAt` takes them); the remap's `pictures`, `level`, `ab` and `crops`; baked states with no `ref` (`SheetBaked.ref` is null) and a `reached`. El frente's sheet reads as before.
   - `frame.dart`: `SetOverSprites`, a scene whose sprite layer draws parts of the set again over what it has drawn (El balcón's furniture, the sheet's `front.parts`). `drawFrame` calls its `setFramed(engine, baked, W)` after step 3, before `scene.draw`: the engine's `pix` is then the set as the frame shows it, `baked.zb` the set's own depth. Any other scene is drawn as before.
   - `test/balcon_sheet_test.dart`: the reader against El balcón's real sheet (the file on the vm, `test/support/fixtures/balcon_sheet.dart` in chrome).
+- Since order 31b (La sala), only as far as that scene needs:
+  - `Sheet` reads what La sala's sheet writes that the earlier ones do not: spots and views with no `screen` (their screen is
+    the projection of their world point by the sheet's own scale and origin) and a spot's `new` (`SheetAnchor.now`: the place
+    the old file writes, today); points given on the screen only (`screenPoints`, `SheetScreenPoint`: a point `xy`, a
+    rectangle `rect` or a list `points`, a photo frame's `angle` and `nail`; `points` keeps those with a world point); the
+    remap's floor points (`RemapTo.floor`, `SheetRemap.now`); a shadow radius by kind (`SheetShadow.radii`; `radius` throws
+    for it); a front part's `sortY` and `boxes`; a set parameter whose values are words (`SetKeyParam.valuesWhat`); and the
+    new parts `moves` (`SheetMove`), `smoothing` (`SheetSmoothingPlace`, `smoothingWhat`, `notSmoothing`), `bubbles.rects`
+    (`bubbleRects`) and `talk` (`SheetTalk`: places, heads, and `board(name, field)` for the corner cards the sheet gives in
+    words). El frente's and El balcón's sheets read as before.
+  - `test/sala_sheet_test.dart`: the reader against La sala's real sheet (the file on the vm, the fixture in chrome).
 - Since order 12b it also holds `hexColour` (`colour.dart`): `"#RRGGBB"` as the int `0xFFBBGGRR`, for a colour that is made once. `hexColours` (a list of them) stays under `src/`.
 
 ## Run and test it alone
@@ -78,7 +89,7 @@ node tool/make_dash_ref.mjs [--check]    # test/support/fixtures/ref_dash.dart: 
 ```
 
 ```
-dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart and balcon_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
+dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart and sala_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
 ```
 
 `test/pp_frente_test.dart` rebuilds the Nov 14 one-state El frente (an old frente-set.html) as a test of `PpBuild`'s helpers at S = 26. That picture is no longer in `coqui/ref/pp/` (order 07 replaced it with El frente's 25 states): its bytes are `test/support/fixtures/frente_nov14.dart`, read on every platform, and nothing makes that file again. The 25 states are order 14's.

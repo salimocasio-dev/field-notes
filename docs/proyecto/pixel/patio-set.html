@@ -1,0 +1,462 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El patio: the yard behind abuela's house, as a set on the Pixel Plays engine (order 32a, round 2).
+   The same house as El frente, El balcón and La sala (teal siding, white trim, the wooden door in its white frame, red tiles), seen from its
+   back yard and built as La sala is: two walls on the world's axes, seen at the engine's 30 degrees, coming together in a far corner over the
+   middle of the picture, and the ground running off the picture's sides and bottom.
+     the house's back wall stands on x = CX (it faces +x, in shade, as El frente's side wall) on the LEFT of the yard, from its far corner
+       (a white corner board) down off the picture's left edge; in it the back door in its white frame, a stone step before it; a hip roof.
+     the fence stands on y = CY (it faces +y, lit) as the far right side of the yard, from the far corner off the picture's right edge;
+       in it the garden gate (el portón) between two taller posts; posts with caps along it (the bird perches on one).
+     the flamboyán stands at the fence, right of the gate, the nest on a branch; its crown is where the old one was.
+   The house stops 2 units short of the corner (its far corner board at screen x 76): between the house and the fence's first post the yard
+   opens on a field and low hills, where the sun goes down (at the old SOLX 100: the old picture's sun sank there behind the fence).
+   Every place on the lawn keeps its old screen point (the corner is raised until the lawn holds them all: see patio-sheet.json layout).
+   The state comes from the address; these become the builder's setKey:
+     hora   = dia | tarde | tarde2 | ocaso | crepusculo | noche
+              the time of day, baked into the sky and the light on the set (El frente's way; the characters are not dimmed):
+              W.noche ? noche : [dia, tarde, tarde2][min(3, W.sol)] or, at 3, W.osc >= .25 ? crepusculo : ocaso
+     door   = shut | open        W.pdoor 0 | 1 (the back door)
+     gate   = shut | open        W.porton 0 | 1 (the garden gate)
+     t      = wind time in seconds (0 for the reference); ox, oy = the origin (defaults are El patio's)
+   It draws one frame: the baked set, then drawLeaves(t) and drawTufts(t). No characters. The sun, the moon and the stars are the sprite
+   layer's (they move, or twinkle), drawn behind the set (sheet: behind). */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = {
+  hora: pick('hora', ['dia', 'tarde', 'tarde2', 'ocaso', 'crepusculo', 'noche'], 'dia'),
+  door: pick('door', ['shut', 'open'], 'shut'),
+  gate: pick('gate', ['shut', 'open'], 'shut'),
+  t: +(Q.get('t') || 0),
+};
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || 0), originY: +(Q.get('oy') || 4), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script>
+'use strict';
+/* ---------- the plan (world units; x, y on the ground, z up). The yard is x > CX, y > CY ----------
+   With origin (0, 4) a ground point (x, y) is on the screen at (120 + 18.385 (x - y), 112 + 9.192 (x + y)); a height z lifts it 22.5 z rows.
+   So the house wall's foot (x = CX) is the screen line row = 172 + 18.385 CX - sx / 2, the fence's foot (y = CY) the line row
+   52 + 18.385 CY + sx / 2. Round 3 moved both back (up the picture) LIFT_W and LIFT_F rows from round 2's (138 - sx / 2, 23.5 + sx / 2), so
+   that everyone who stands on the lawn has at least 5 rows of lawn between their feet and the foot of the wall, the door's step, the fence,
+   the gate or the trunk behind them (patio-sheet-make.js checks it at every moment of every run). Whatever stands on the two lines keeps its
+   screen x (the door, the gate, the posts, the trunk, the house's far end) and goes up with its line */
+const P = (x, y, z = 0) => [x, y, z];
+const UX = sx => (sx - OX) / S, SY = (v, z = 0) => OY + (v * SIN - z * COS) * S;     // screen-aligned u, v (set-kit.js UVW): u of a screen x; row of (v, z)
+const TEAL = [92, 190, 186], WOOD = [150, 98, 56], WHITE = [244, 240, 228];
+const FENCEW = [184, 128, 64], GATE = [251, 240, 210], SOIL = [122, 78, 42];
+
+const LIFT_W = 1, LIFT_F = 1;                                       // round 3: rows the wall's and the fence's lines went up from round 2's
+const CX = -1.85 - LIFT_W / 18.385, CY = -1.55 - LIFT_F / 18.385;    // the far corner: the house wall's plane x = CX, the fence's plane y = CY
+const AT = sx => (sx - 120) / 18.385;                                 // along a line, from its plane's own coordinate, to screen x sx: x = CY + AT(sx), y = CX - AT(sx)
+// the house: its back wall on x = CX from its far corner (y = YH) down off the picture's left edge (y = YW); the back door in it
+const YH = CX - AT(76), YW = CX + 9.25, HH = 3.24;                   // the wall's far end (screen x 76), its near end, its height: a strip of wall over the door
+const FLOOR = .1;                                                     // the house floor: one step up from the yard
+// the door: width, height from the floor, its middle (y): screen x 52. Round 3: about as wide as El frente's front door and the old picture's
+// (round 2's 1.05 was narrower than abuela: she covered it, and stood in front of the wall), so abuela fits in it as in the old picture, the
+// dark doorway round her head and shoulders; its middle 4 px right of round 2's, so its hint frame stays inside the view
+const DW = 1.5, DH = 2.55, DM = CX - AT(52);
+const D0 = DM - DW / 2, D1 = DM + DW / 2, DF = .12;                   // its opening (D0 the far jamb, upper right on the screen); the white frame's width
+const STEP = [CX, CX + .28, D0 - DF - .22, D1 + DF + .22];           // the stone step before it: x from, x to, y from, y to
+const EAVE = .25, HDEPTH = 3.2, RISE = .75;                           // the roof: eaves out over the walls, the house's depth (x), the ridge over the eaves
+// the fence: boards on y = CY from the corner to off the picture's right edge; the garden gate between two taller posts
+const FX0 = CX, FX1 = 6.4, FH = 1.33;                                 // the fence's ends (x), its boards' height
+// the gate's two posts: their middles (x; screen 133 and 159: round 3, 4 px narrower, so its leaf swung open stays right of the sun's way down), half width, height
+const GP0 = CY + AT(133), GP1 = CY + AT(159), GPW = .07, GPH = 1.9;
+const GX0 = GP0 + GPW, GX1 = GP1 - GPW, GH = 1.42, GARCH = .18;      // the gate's opening (x); the leaf: height at its sides, its arched top's rise
+// open (round 3), the leaf is swung INTO the yard on its left post, this far from shut (75 degrees): its face is seen (round 2's, swung out
+// and almost edge on behind the post, read as a sign or a flag), the opening is empty and the path is seen through it. Its far edge stays
+// right of the sun's way down (x 111)
+const GATE_OPEN = 78 * Math.PI / 180;
+const PERCH = CY + AT(178);                                           // the post the bird perches on (screen 178): its cap's top under its feet
+const POSTS = [CX + .25, PERCH, CY + 4.7, CY + 6.25, CY + 7.8];       // the fence's own posts (x): the first clear of the sun's way down
+const POSTW = .07, CAPW = .15, PERCH_ROW = 84;                        // a post's half width, its cap's; the perch cap's top row (the bird's feet are on row 83)
+// the flamboyán: its trunk a little in front of the fence (screen x 204); its crown and the nest where the old ones were
+const TREE_OFF = .12;                                                 // round 3: the trunk against the fence (round 2: .35 in front of it; the frog at the tree stood on its foot)
+const TREE = [UX(204), (2 * CY + 2 * TREE_OFF + AT(204)) / R2];      // (screen-aligned u, v): the trunk's foot on the ground at y CY + TREE_OFF, screen x 204
+const NEST_CLEAR = 58;                                                // the crown's lowest row over the nest
+const NEST = [UX(181), TREE[1] - .08], NEST_Z = (SY(TREE[1] - .08) - 68) / (COS * S);   // the nest's middle on the screen at (181, 68), as the old one
+// the two beds of earth (the old CAMA): ellipses on the lawn, their middles and radii on the screen as the old ones; five holes each
+const BEDS = { L: { sx: 68, sy: 186 }, R: { sx: 172, sy: 186 } }, BED_RX = 28, BED_RY = 10;
+const HOLES = { L: [0, 1, 2, 3, 4].map(i => [48 + i * 10, 186]), R: [0, 1, 2, 3, 4].map(i => [192 - i * 10, 186]) };
+// beyond the yard: a field up to the horizon (screen row HZ), low hills behind it; they dip where the sun goes down (x 100)
+const HZ = 84;
+const bump = (x, c, w) => { const t = (x - c) / w; return t * t >= 1 ? 0 : (1 - t * t) ** 2; };
+const hillFar = x => HZ - 1 - 15 * bump(x, 30, 62) - 20 * bump(x, 196, 74) - 7 * bump(x, 146, 22);
+const hillNear = x => HZ + 1 - 7 * bump(x, 52, 40) - 9 * bump(x, 214, 46) - 17 * bump(x, 152, 30);   // round 3: a rise behind the gate, the path goes up it
+
+/* ---------- the hour ---------- */
+const SKIES = {   // top to the horizon, as the old cielo(n)
+  dia: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]],
+  tarde: [[78, 152, 236], [124, 184, 246], [176, 214, 250], [232, 226, 200], [252, 228, 168]],
+  tarde2: [[106, 132, 208], [168, 146, 204], [232, 160, 136], [248, 180, 104], [255, 210, 124]],
+  ocaso: [[52, 48, 110], [116, 68, 138], [196, 84, 108], [238, 116, 68], [255, 174, 60]],
+  crepusculo: [[40, 38, 92], [92, 56, 118], [158, 72, 100], [200, 98, 70], [222, 146, 64]],
+  noche: [[10, 14, 42], [16, 22, 62], [24, 32, 82], [34, 48, 106], [46, 62, 128]],
+};
+const LIGHTS = {   // the light of the hour on the set: c * m + a (set-kit.js lightPass)
+  dia: null,
+  tarde: { m: [.97, .95, .9], a: [10, 6, 0] },
+  tarde2: { m: [.8, .86, .74], a: [24, 12, 6] },        // El frente's dusk, less red on the lawn (round 2: El frente's turned it brown here; round 4, on El frente's grass, less red again: it read olive)
+  // round 2: the sun is down behind the hills: a dim light, a little warm, that leaves the lawn green (round 1's turned it brown: red over green)
+  ocaso: { m: [.74, .86, .88], a: [14, 4, 16] },
+  crepusculo: { m: [.62, .74, .86], a: [8, 6, 26] },                  // the dusk after it: dimmer and bluer, the lawn a grey green
+  noche: { m: [.56, .62, .82], a: [6, 10, 30] },
+};
+const LIGHT = LIGHTS[SET.hora], SKY = SKIES[SET.hora], DARK = ['ocaso', 'crepusculo', 'noche'].includes(SET.hora);
+const CLOUDS = [[136, 14, 1], [64, -1, .8]];                           // two clouds (screen), by day and in the afternoon: in the sky, clear of the roof and the crown
+// the hills: [body, lit crest, shade]; at dusk and at night silhouettes darker than the sky behind them (see FIELD)
+const HILLS = SET.hora === 'noche' ? { far: [[44, 50, 56], [52, 58, 62], [38, 44, 52]], near: [[30, 40, 24], [36, 48, 28], [26, 34, 22]] }
+  : ['ocaso', 'crepusculo'].includes(SET.hora) ? { far: [[104, 104, 118], [118, 112, 124], [92, 94, 110]], near: [[62, 92, 70], [74, 104, 76], [54, 82, 64]] }
+  : { far: [[124, 178, 160], [160, 204, 182], [104, 158, 142]], near: [[86, 150, 96], [122, 184, 118], [70, 130, 82]] };
+
+/* ---------- the ground: the lawn and the beds; beyond the yard the field (and through the gate a path) ---------- */
+// round 4: the lawn is the same grass as El frente's and El balcón's lawns: the engine's GRASS ramp (frente-set.html's frontGround), centred
+// where El frente's lawn is (its mean tone 2.95 of the ramp's 0..4; here 3.0), but calm, as round 3's was: mostly one tone, Bayer-mixed with
+// its two neighbours, over a faint slow noise (no lighter patch that reads as a mound; El frente's own noise spreads it over four tones). Its
+// blades (growGrass) take the same tones, the tip a step lighter (tuftLit, tuftDark: this page's own copies of the engine's)
+const LAWN = GRASS, LAWN_T = 3.45, BLADE = [2, 2, 3, 3, 4];
+// Round 4: the blades take the light of the hour as the lawn under them does (lit, set-kit.js), at every hour: the engine's way at dusk and at
+// night (lightPass darkTufts: every blade in its shade colour) turns this ramp's light tones olive brown, specks of brown on a green lawn
+for (let k = 0; k < 5; k++) { const c = lit(LAWN[BLADE[k]], LIGHT); tuftLit[k] = rgb(...c); tuftDark[k] = rgb(c[0] * .54, c[1] * .52, c[2] * .72); }
+const lawnAt = (x, y, ix, iy) => { const t = LAWN_T + (noise(x * .3, y * .3) - .5) * .6 + (bayerAt(ix, iy) - .5) * .8 + (hash(ix, iy) - .5) * .25;
+  return rgb(...LAWN[clamp(Math.floor(t), 2, 4)]); };
+// (round 6: the beds are turned earth only, the lawn right up to them: round 4's darker grass round them and round 5's border of leaves read
+// as a pit, a shadow or a hole round an empty bed. A flower's leaves are its own, drawn by the sprite layer with it: patio-sheet.json flowerLeaves)
+// the beds (round 3: dug earth, not a mat): a ragged edge, loose clods (a lit top, a dark underside), a low rim of thrown-up earth at the
+// back, the five holes each a dark pit with a lit lip on its far side
+const inBed = (ix, iy, k) => { const b = BEDS[k], dx = (ix + .5 - b.sx) / BED_RX, dy = (iy + .5 - b.sy) / BED_RY, a = Math.atan2(dy, dx);
+  return (dx * dx + dy * dy) / (1 + .04 * Math.sin(a * 3 + (k === 'L' ? 0 : 2)) + .03 * Math.sin(a * 7 + 1) + (hash(ix, iy * 3) - .5) * .08) ** 2; };
+function bedEarth(ix, iy, k, r) {
+  const E = rampOf(SOIL), b = BEDS[k];
+  for (const h of HOLES[k]) { const hx = (ix + .5 - h[0]) / 3.2, hy = (iy + .5 - h[1]) / 1.8, q = hx * hx + hy * hy;
+    if (q <= 1) return hy < -.4 ? rgb(78, 48, 24) : rgb(28, 14, 6);                         // the pit, its far lip in the light
+    if (q <= 1.8 && hy > .3) return E[3]; }                                                   // the earth heaped on its near side
+  if (r > .88) return iy + .5 < b.sy ? E[3] : rgb(50, 28, 12);                                // the rim: thrown-up earth at the back, a dark foot at the front
+  // turned earth: lumps a few pixels across (value noise), each lit on its upper left and dark below; the bed mounded (lighter at its crown)
+  const n = (x, y) => noise(x / 2.3 + (k === 'L' ? 0 : 40), y / 1.5), here = n(ix, iy), up = n(ix - .7, iy - 1);
+  let t = 2 - r * 1.1 - (iy + .5 - b.sy) / BED_RY * .35;
+  if (here > .58) t += here - up > .04 ? -.9 : 1;                                              // a lump: its top lit, its underside in shade
+  else if (here < .3) t -= .8;                                                                  // a hollow between lumps
+  return E[clamp(Math.floor(t + (hash(ix, iy) - .5) * .5), 0, 4)];
+}
+const GM = (GX0 + GX1) / 2;                                           // the gate's middle (x): the path goes out from it
+// the path beyond the gate: out through it, then straight away from the camera (along -x - y), so it climbs the picture through the opening
+// (as the old picture's path did) to the field's far edge, and on up the hill (hills: PATH_SX)
+const PATH_U = (GM - CY) / R2, PATH_V = (GM + CY) / R2, PATH_SX = OX + PATH_U * S;
+// the field and the hills by the hour (round 3): by day green; at dusk and at night darker than the sky over them (round 2's, paler than the
+// night sky, read as mist or a lake). Colours before the light of the hour (lightPass) falls on them
+const DUSK = SET.hora === 'ocaso' || SET.hora === 'crepusculo', NIGHT = SET.hora === 'noche';
+const PATHC = NIGHT ? [150, 140, 116] : DUSK ? [140, 124, 98] : [196, 176, 128];   // the path up the hill: trodden earth
+const FIELD = NIGHT ? [[30, 46, 14], [36, 54, 18]] : DUSK ? [[60, 104, 54], [72, 116, 60]] : [[70, 128, 64], [88, 146, 70]];
+function patioGround(x, y, ix, iy, i) {
+  if (x < CX && y > YH - .02) return 0;                               // under the house (its wall hides it)
+  if (x < CX || y < CY) {                                             // beyond the yard: the field, to the horizon
+    if (iy + .5 < HZ) return 0;
+    const u = (x - y) / R2, v = (x + y) / R2, pu = Math.abs(u - PATH_U);
+    if (y < CY + .02 && v < PATH_V + .3 && pu < .21) {                  // the path: trodden earth, a darker edge, worn lighter down its middle
+      kinds[i] = KIND_ROAD; const P = PATHC, e = pu > .16 ? .8 : pu < .07 ? 1.06 : 1, h = 1 + (hash(ix, iy) - .5) * .1;
+      return rgb(P[0] * e * h, P[1] * e * h, P[2] * e * h);
+    }
+    const t = noise(x * .45, y * .45) * 1.1 + (hash(ix, iy) - .5) * .5;
+    return rgb(...FIELD[t > .55 ? 1 : 0]);                            // no blades: they would stand as tall as the lawn's
+  }
+  for (const k of ['L', 'R']) {
+    const r = inBed(ix, iy, k);
+    if (r > 1) continue;
+    kinds[i] = KIND_ROAD;
+    return bedEarth(ix, iy, k, r);
+  }
+  kinds[i] = KIND_GRASS;
+  return lawnAt(x, y, ix, iy);
+}
+// the hills behind everything, in the sky's place: drawn (after the set) only where nothing else is, at a far depth, so the sky objects go
+// behind them (sheet: behind) and the light of the hour falls on them
+const HILL_Z = -1e7;
+function hills() {
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const i = iy * W + ix, y = iy + .5;
+    if (zb[i] > -1e8) continue;
+    const yn = hillNear(ix + .5), yf = hillFar(ix + .5);
+    let c = 0;
+    // the path from the gate goes on up the rise behind it, narrowing as it climbs, a little to the left at its top
+    const ph = HZ + 1 - y, pw = 5.4 - ph * .3, pc = PATH_SX + 3 * Math.sin(ph * .3) - ph * .25;
+    if (y >= yn && y < HZ + 1 && pw > .9 && Math.abs(ix + .5 - pc) < pw) c = Math.abs(ix + .5 - pc) > pw - 1 ? HILLS.near[2] : PATHC.map(v => v * (1 - ph * .012));
+    else if (y >= yn) c = y - yn < 1 ? HILLS.near[1] : bayerAt(ix, iy) < (y - yn) / 8 ? HILLS.near[2] : HILLS.near[0];
+    else if (y >= yf) c = y - yf < 1 ? HILLS.far[1] : bayerAt(ix, iy) < (y - yf) / 18 ? HILLS.far[2] : HILLS.far[0];
+    if (!c) continue;
+    pix[i] = rgb(...c); zb[i] = HILL_Z;
+  }
+}
+
+/* ---------- the house ---------- */
+function house() {
+  const Tr = rampOf(TEAL), Wh = rampOf(WHITE);
+  part('casa', () => {
+    // the back wall (faces +x, in shade as El frente's side wall): wooden siding (a darker line under each board), a darker band at its foot,
+    // the shade under the eaves, the white corner board at its far end
+    planeFace('x', CX, YH, YW, 0, HH, (a, z) => {
+      if (a > D0 && a < D1 && z < FLOOR + DH) return 0;                                       // the doorway
+      if (a < YH + .14) return Wh[1];                                                          // the corner board
+      if (z < .3 || z > HH - .16) return Tr[0];
+      return shade(TEAL, z % .21 < .21 * .17 ? .5 : 1.3, a, z);
+    });
+    roof();
+  });
+  part('puerta', doorway);
+  part('escalon', () => slab(STEP[0], STEP[2], STEP[1], STEP[3], FLOOR, C.stone));
+}
+// the roof: a hip roof, its ridge along y (the house's length), the hip over the far corner; red tiles in rows (El frente's hipRoof look:
+// the slope facing +x the darkest, the others a step lighter). Three flat slopes drawn pixel by pixel (planeQuad), each cut at the hips
+function roof() {
+  const R = rampOf(C.red), E = rampOf(WHITE), ROW = .19, TILE = .3, z0 = HH;
+  const xe = CX + EAVE, xw = CX - HDEPTH - EAVE, ye = YH - EAVE, run = (xe - xw) / 2, xr = xe - run, yfar = YW + 1;
+  const tile = (along, across, base, cap, k) => {                         // along: up the slope from its eave; across: along the eave
+    const r = Math.floor(along / ROW), t = (along % ROW) / ROW, s = ((across / TILE + (r % 2) * .5) % 1 + 1) % 1, n = Math.floor(across / TILE + (r % 2) * .5);
+    let lit = base; if (t < .22) lit -= 1; else if (s < .1) lit -= 1; else if (t > .8 && base > 1) lit += 1;
+    const h = hash(n * 3 + r, r * 7 + k); if (h > .9) lit += 1; else if (h < .07) lit -= 1;
+    if (cap) lit = base + 2;
+    return R[clamp(lit, 0, 4)];
+  };
+  // the slope facing +x (the yard): from the eave (xe, z0) up to the ridge (xr, z0 + RISE), from the hip down off the picture
+  planeQuad(P(xe, ye, z0), [0, yfar - ye, 0], [xr - xe, 0, RISE], (a, b) => {
+    const y = ye + a * (yfar - ye), up = b * run;
+    if (up > y - ye + 1e-6) return 0;                                    // past the hip
+    return tile(up, y, 1, Math.abs(up - (y - ye)) < .05 || b > .975, 0);
+  });
+  // the hip end over the far corner (faces -y): from the eave along y = ye up to the ridge's end
+  planeQuad(P(xw, ye, z0), [xe - xw, 0, 0], [0, run, RISE], (a, b) => {
+    const x = xw + a * (xe - xw), up = b * run;
+    if (up > Math.min(xe - x, x - xw) + 1e-6) return 0;
+    return tile(up, x, 2, Math.abs(up - Math.min(xe - x, x - xw)) < .05, 50);
+  });
+  // the far slope (faces -x), seen over the ridge
+  planeQuad(P(xw, ye, z0), [0, yfar - ye, 0], [run, 0, RISE], (a, b) => {
+    const y = ye + a * (yfar - ye), up = b * run;
+    if (up > y - ye + 1e-6) return 0;
+    return tile(up, y, 2, b > .975, 90);
+  });
+  // the fascia: a white board along the eave over the yard, in front of the tiles' edge
+  planeFace('x', xe + .01, ye, yfar, z0 - .12, z0, () => E[1]);
+}
+
+// the room behind the open back door: a dim floor, the far wall and the side wall (El frente's, the lights off; no story lights it). Only what
+// shows through the door. Round 3: darker than El frente's (this wall is in shade, and round 2's grey room under a pale lit jamb read as glass,
+// a window, and at night as a lit room): dark warm brown, as the old picture's open door
+const BACK = CX - 1.3;
+function room() {
+  const wallC = (a, z) => { if (z < FLOOR + .16) return rgb(22, 14, 10); const k = (z - FLOOR) / 2.6; return rgb(46 - k * 18, 32 - k * 14, 26 - k * 10); };
+  const y0 = Math.max(D0 - .9, YH + .06), y1 = D1 + .2;                                    // inside the house only
+  planeFace('x', BACK, y0, y1, FLOOR, FLOOR + DH + .4, wallC);                                  // the far wall (faces +x)
+  planeFace('y', y0, BACK, CX - .02, FLOOR, FLOOR + DH + .4, (a, z) => { const c = wallC(a, z); return rgb((c & 255) * 1.12, (c >> 8 & 255) * 1.12, (c >> 16 & 255) * 1.1); });   // the side wall (faces +y)
+  planeQuad(P(BACK, y0, FLOOR), [CX - .02 - BACK, 0, 0], [0, y1 - y0, 0], (a, b) => { const x = BACK + a * (CX - BACK); return rgb(...(((x + 5) % .22) < .03 ? [30, 20, 14] : [44, 30, 22])); });
+}
+function doorway() {
+  const z0 = FLOOR, z1 = FLOOR + DH, Fw = rampOf(WHITE), Wd = rampOf(WOOD);
+  // the reveal: the wall's thickness seen through the opening (the far jamb, which faces +y, and the sill), in the wall's shade (round 2's lit
+  // teal jamb, the brightest thing in the doorway, read as glass)
+  revealX(CX, D0, D1, z0, z1, .22, TEAL.map(v => v * .45));
+  if (SET.door === 'open') room();
+  const panel = (t, z) => {                                                    // t: from the hinge (the far jamb, D0) to the knob's edge
+    const uu = t * DW, edge = uu < .08 || uu > DW - .08 || z < z0 + .08 || z > z1 - .08;
+    const inPanel = uu > .2 && uu < DW - .2 && ((z > z0 + .3 && z < z0 + 1.1) || (z > z0 + 1.3 && z < z1 - .25));
+    const rim = inPanel && (uu < .26 || uu > DW - .26 || Math.abs(z - (z0 + .3)) < .06 || Math.abs(z - (z0 + 1.1)) < .06 || Math.abs(z - (z0 + 1.3)) < .06 || Math.abs(z - (z1 - .25)) < .06);
+    return edge || rim ? 0 : inPanel ? 2 : 1;
+  };
+  if (SET.door === 'shut') {
+    // in the opening, a little behind the wall's face, in shade as the wall; the knob at the near side (left on the screen)
+    planeFace('x', CX - .06, D0, D1, z0, z1, (a, z) => {
+      const t = (a - D0) / DW;
+      if (t > (DW - .22) / DW && t < (DW - .12) / DW && Math.abs(z - z0 - 1.15) < .05) return rgb(250, 210, 80);
+      return Wd[panel(t, z)];
+    });
+  } else {
+    // open: the leaf swung in on the near jamb (left on the screen), back towards the inside of the wall: only its edge and a sliver of its
+    // face at the opening's left, the dark room filling the doorway (round 2's leaf, at 57 degrees, took a third of the opening)
+    leaf(CX - .06, D1 - .03, DW, z0, z1, Math.PI + 1.42, (t, z) => t > .94 ? Wd[0] : Wd[Math.max(0, panel(t, z) - 1)]);
+  }
+  // the white frame round the opening, on the wall's face
+  const fz1 = z1 + DF;
+  planeFace('x', CX + .03, D0 - DF, D0, 0, fz1, () => Fw[2]);
+  planeFace('x', CX + .03, D1, D1 + DF, 0, fz1, () => Fw[2]);
+  planeFace('x', CX + .03, D0 - DF, D1 + DF, z1, fz1, () => Fw[2]);
+}
+
+/* ---------- the fence and the gate ---------- */
+// a square post with a flat cap (the cap's top takes a perching bird's feet): block()'s faces, +y lit, +x in shade
+function post(x, y, h, cap, c) {
+  block(x - POSTW, y - POSTW, 0, x + POSTW, y + POSTW, h, c, c);
+  block(x - cap, y - cap, h, x + cap, y + cap, h + .07, c, c.map(v => Math.min(255, v * 1.12)));
+}
+// the height of a cap's top that puts its far corner (its highest point on the screen) on row PERCH_ROW
+const capTop = (x, y) => (OY + (x + y - 2 * CAPW) / R2 * SIN * S - PERCH_ROW) / (COS * S);
+function fence() {
+  const Fr = rampOf(FENCEW);
+  part('cerca', () => {
+    // the boards: 7 px wide (x .38), a dark gap between them, their tops cut a little unevenly; two rails across their fronts
+    const BW = 7 / 18.385, rails = [[.36, .46], [.92, 1.02]];
+    const top = k => FH + ((k * 7) % 3 === 0 ? .04 : (k * 5) % 4 === 1 ? -.05 : 0);
+    for (const [x0, x1] of [[FX0, GP0 - GPW], [GP1 + GPW, FX1]]) {
+      planeFace('y', CY, x0, x1, 0, FH + .1, (a, z) => {
+        const k = Math.floor((a + 10) / BW), f = (a + 10) / BW - k;
+        if (z > top(k)) return 0;
+        if (f > .86) return Fr[0];                                                               // the gap
+        return Fr[clamp(Math.floor(2.6 + (f < .16 ? .8 : 0) - (z < .25 ? .6 : 0) + (hash(k, 3) - .5) * .7 + (bayerAt(a * 400 | 0, z * 90 | 0) - .5) * .4), 0, 4)];
+      });
+      // the boards' tops (their thickness, seen from above)
+      for (let a = x0; a < x1; a += BW) { const k = Math.floor((a + 10 + BW / 2) / BW), a2 = Math.min(x1, a + BW * .86);
+        planeQuad(P(a, CY - .07, top(k)), [a2 - a, 0, 0], [0, .07, 0], () => Fr[4]); }
+      for (const [z0, z1] of rails) {
+        planeFace('y', CY + .05, x0, x1, z0, z1, (a, z) => Fr[z > z0 + (z1 - z0) * .7 ? 3 : 1]);
+        planeQuad(P(x0, CY, z1), [x1 - x0, 0, 0], [0, .05, 0], () => Fr[4]);
+      }
+    }
+    // the posts, in front of the boards, a little taller, with caps; the perch's cap has its top at row PERCH_ROW
+    for (const x of POSTS) { const y = CY + .07, h = x === PERCH ? capTop(x, y) - .07 : FH + .04; post(x, y, h, CAPW, FENCEW); }
+  });
+  part('porton', () => {
+    // the two gate posts, taller, with caps
+    for (const x of [GP0, GP1]) post(x, CY + .02, GPH, GPW + .04, FENCEW);
+    // the leaf: cream boards, an arched top, two rails, the yellow latch at the far post. Open (round 3), it is swung into the yard on its
+    // left post, GATE_OPEN from shut: its face is seen (in the wall's shade, as the house wall: it faces the same way, nearly), its latch
+    // out at its free edge; the opening is empty and the path is seen through it, going off over the field and up the hill
+    const G = rampOf(GATE), gw = GX1 - GX0, open = SET.gate === 'open';
+    const leafCol = (t, z) => {                                                    // t: from the hinge (the left post) to the latch
+      const uu = t * gw, k = Math.floor(uu / (gw / 6)), f = uu / (gw / 6) - k, arch = GH + GARCH * Math.sin(Math.PI * t), d = open ? 1 : 0;
+      if (z > arch) return 0;
+      if (arch - z < .05) return G[1];                                                      // the arch's edge
+      if (Math.abs(z - .55) < .05 || Math.abs(z - 1.05) < .05) return G[2 - d];            // the rails
+      if (t > .8 && t < .92 && z > .76 && z < .9) return rgb(244, 196, 56);                // the latch
+      return G[(f > .85 ? 1 : f < .14 ? 4 : 3) - d];
+    };
+    if (!open) planeFace('y', CY - .03, GX0, GX1, .05, .05 + GH + GARCH, (a, z) => leafCol((a - GX0) / gw, z - .05));
+    else {
+      const dx = Math.cos(GATE_OPEN) * gw, dy = Math.sin(GATE_OPEN) * gw;
+      planeQuad(P(GX0, CY + .02, .05), [dx, dy, 0], [0, 0, GH + GARCH], (a, b) => leafCol(a, b * (GH + GARCH)));
+      for (let t = .1; t <= 1; t += .15) for (let z = .2; z <= GH; z += .3) castShadow(GX0 + dx * t, CY + .02 + dy * t, z, .1);   // its shadow on the lawn
+    }
+  });
+}
+
+/* ---------- the flamboyán, its branch and the nest (screen-aligned u, v: set-kit.js UVW) ---------- */
+const TRUNK = [118, 76, 44];
+function tree() {
+  const [tu, tv] = TREE, Pu = (u, v, z = 0) => UVW(u, v, z);
+  const TOP = (SY(tv) - 58) / (COS * S);                                     // the trunk's top: row 58 over its foot, under the crown
+  part('arbol', () => {
+    // the trunk, a flare at its foot, two limbs into the crown
+    capsule(Pu(tu, tv, 0), Pu(tu - .05, tv, TOP), .26, .2, () => TRUNK, 'rough');
+    capsule(Pu(tu - .2, tv, 0), Pu(tu + .2, tv, 0), .16, .16, () => TRUNK, 'rough');
+    capsule(Pu(tu - .05, tv, TOP - .1), Pu(tu - .7, tv - .1, TOP + .7), .15, .1, () => TRUNK, 'rough');
+    capsule(Pu(tu - .05, tv, TOP - .1), Pu(tu + .6, tv - .2, TOP + .8), .15, .1, () => TRUNK, 'rough');
+    for (let z = .2; z < TOP; z += .3) castShadow(...Pu(tu, tv), z, .2);
+    // the crown: leaf clusters that sway (as growTree's), in three lobes as the old one (screen: (204, 34), (180, 46), (229, 48); the left one
+    // 4 px right and a little smaller, round 2, so its leaves stay out of the gate's box), the flamboyán's red and orange flowers on its outside
+    const lobes = [[204, 34, 38, 27, 300], [184, 46, 16, 13, 60], [229, 48, 17, 14, 60]], cv = tv - .1;
+    const LEAF = [[62, 150, 84], [84, 176, 96], [118, 204, 112]], FLOWER = [[240, 80, 64], [248, 134, 64]];
+    let n = 0;
+    for (const [sx, sy, rx, ry, count] of lobes) {
+      const cu = UX(sx), cz = (SY(cv) - sy) / (COS * S), ru = rx / S, rz = Math.sqrt(Math.max(.01, ry * ry - (ru * S * SIN) ** 2)) / (COS * S);
+      for (let k = 0; k < count; k++, n++) {
+        const a = hash(n, 7) * 6.283, tilt = hash(n, 8) * 2 - 1, d = Math.cbrt(hash(n, 9)) * .92, flat = Math.sqrt(1 - tilt * tilt);
+        const du = Math.cos(a) * flat * d, dv = Math.sin(a) * flat * d, dz = tilt * d;
+        const pu = cu + du * ru, pv = cv + dv * ru, pz = cz + dz * rz;
+        const outside = d > .55 && (dz > -.35 || dv > .1), fl = outside && hash(n, 12) < .5;
+        const tone = hash(n, 10) + dz * .35 + (dv + du * -.3) * .2;
+        const col = fl ? FLOWER[hash(n, 13) < .6 ? 0 : 1] : LEAF[tone > .78 ? 2 : tone > .35 ? 1 : 0];
+        capture = [];
+        sphere(...Pu(pu, pv, pz), (fl ? .13 : .17 + hash(n, 11) * .16), lit(col, LIGHT), fl ? 'solid' : 'rough');
+        // over the nest the crown stops at row NEST_CLEAR (with the wind's step of 1 px, its leaves stay out of the nest's box, as the old crown did)
+        const px = capture; capture = [];
+        // and on its left it stops at x 166 (with the wind's 2 px, out of the gate's box)
+        for (let m = 0; m < px.length; m += 4) if (!(px[m + 1] > NEST_CLEAR && px[m] >= 166 && px[m] <= 196) && px[m] >= 166) capture.push(px[m], px[m + 1], px[m + 2], px[m + 3]);
+        // k odd: the leaves cast no shadow (round 3: the crown's shadow fell on the lawn at the picture's right edge, far from any tree, and
+        // read as a dark wedge, "a shadow of nothing"); the trunk's is kept
+        leaves.push({ x: Pu(pu, pv)[0], y: Pu(pu, pv)[1], z: pz, k: n * 2 + 1, r: .3, pixels: capture });
+        capture = null;
+      }
+    }
+  });
+  // the branch to the nest, and the nest (a bowl of twigs): baked, still, so the bird sits on it
+  part('nido', () => {
+    const [nu, nv] = NEST, nz = NEST_Z;
+    capsule(Pu(tu - .1, tv - .02, nz - .45), Pu(nu + .25, nv - .02, nz - .2), .09, .07, () => TRUNK, 'rough');
+    const N = [[96, 62, 32], [132, 90, 50], [160, 116, 66]];
+    for (let a = 0; a < 6.283; a += .12) for (let r = .1; r <= .35; r += .05) for (let h = -.14; h <= 0; h += .035) {
+      const rr = r * (1 + h * 1.2), col = N[clamp(Math.floor(hash(a * 30 | 0, h * 99 | 0) * 2.4 + (r > .3 ? .6 : 0)), 0, 2)];
+      if (r < .3 && h > -.02) continue;                                                       // the hollow
+      plot(...Pu(nu + Math.cos(a) * rr, nv + Math.sin(a) * rr * .9, nz + h), rgb(...col));
+    }
+    for (let a = 0; a < 6.283; a += .2) for (let r = 0; r < .3; r += .05) plot(...Pu(nu + Math.cos(a) * r, nv + Math.sin(a) * r * .9, nz - .04), rgb(48, 26, 12));
+    castShadow(...Pu(nu, nv), nz, .3);
+  });
+}
+
+/* ---------- bake one state ---------- */
+// where the lawn stays plain (no white or yellow blooms in its grass): behind and round the beds' flowers, the crate, the ball's places
+const QUIET = [[30, 150, 80, 52], [130, 150, 80, 52], [96, 100, 48, 42], [138, 106, 52, 50]];
+let GROUND_CACHE = null;
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  if (!GROUND_CACHE) {
+    for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+      const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = patioGround(g.x, g.y, ix, iy, i);
+      if (!c) continue;
+      pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+    }
+    growGrass();
+    GROUND_CACHE = { pix: pix.slice(), zb: zb.slice(), kinds: kinds.slice(), ground: ground.slice(), tufts: tufts.slice() };
+  } else {
+    pix.set(GROUND_CACHE.pix); zb.set(GROUND_CACHE.zb); kinds.set(GROUND_CACHE.kinds); ground.set(GROUND_CACHE.ground); tufts.push(...GROUND_CACHE.tufts);
+  }
+  // after sunset the grass has no flowers: a white or yellow bloom on a dark lawn reads as a firefly (the fireflies are the sprite layer's);
+  // and none, at any hour, behind the beds' flowers, the crate's and the ball's places (round 3: the flowers' colours told at a glance)
+  const calm = (x, y) => QUIET.some(r => x >= r[0] && x < r[0] + r[2] && y >= r[1] && y < r[1] + r[3]);
+  for (let k = 0; k < tufts.length; k++) if (tufts[k].bloom && (DARK || calm(tufts[k].ix, tufts[k].iy))) tufts[k] = Object.assign({}, tufts[k], { bloom: 0 });
+  groundZ.set(zb);
+  house(); fence(); tree();
+  // the shadows: the fence's along its foot (it is low), the gate posts'; the house's kept behind it (the yard before it in the sun, as El frente's porch)
+  for (let x = FX0 + .1; x <= FX1; x += .25) for (let z = .2; z <= FH; z += .3) castShadow(x, CY - .04, z, .16);
+  for (const x of [GP0, GP1]) for (let z = .2; z <= GPH; z += .3) castShadow(x, CY + .02, z, .1);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  hills();
+  if (LIGHT) lightPass(LIGHT.m, LIGHT.a, false);                       // (the blades are lit already: tuftLit)
+  const day = SET.hora === 'dia' || SET.hora === 'tarde';
+  skyFill((ix, iy) => {
+    if (day) for (const [cx, cy, s] of CLOUDS) {
+      const e = (x0, y0, rx, ry) => { const dx = (ix + .5 - x0) / rx, dy = (iy + .5 - y0) / ry; return dx * dx + dy * dy <= 1; };
+      if (e(cx, cy, 13 * s, 5 * s) || e(cx - 9 * s, cy + 2, 8 * s, 4 * s) || e(cx + 10 * s, cy + 2, 9 * s, 4 * s)) return rgb(...(iy + .5 > cy + 2 * s ? [214, 230, 248] : [244, 248, 255]));
+    }
+    return skyBands(SKY, 0, HZ, ix, iy);
+  });
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+
+/* ---------- for the sheet ---------- */
+window.PATIO_SET = { SET, LIFT_W, LIFT_F, TREE_OFF, CX, CY, YH, YW, HH, FLOOR, DW, DH, DM, D0, D1, DF, STEP, EAVE, HDEPTH, RISE, FX0, FX1, FH, GP0, GP1, GPW, GPH, GX0, GX1, GH, GARCH, GATE_OPEN, PERCH, POSTS, POSTW, CAPW, PERCH_ROW, TREE, NEST, NEST_Z, BEDS, BED_RX, BED_RY, HOLES, HZ, HILL_Z, OXY: [OX, OY], buildSet };
+
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
+  drawLeaves(windT); drawTufts(windT);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+if (PART_TAGS) tagLeaves(zb);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S, live: () => zb };   // live: the depth of the frame just drawn (the leaves where the wind has them), for the sky objects behind the set (sheet: behind)
+window.frame = frame;
+</script></body></html>

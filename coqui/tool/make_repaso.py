@@ -15,6 +15,8 @@ historia/libros/*.json and libros/img/, docs/hablar/02-marcas.json. A file of hi
     no candidate sentence and no page, and is read only for the clips of the words alone (solo_clips);
   - STAGED: any other file (a story another session has pushed before the course lists it). It is ignored entirely: never read, so it is not a
     story, makes no candidate, gives no word alone, and its words are not "known". The output is the same, byte for byte, with or without it.
+A book, historia/libros/<id>.json, is the book of the story <id>: it is read only when the course names that story. The book of a staged story
+(and its pictures in libros/img/) may be there before the course names the story; the tool ignores it the same way.
 Writes into <dir>:
 
     candidatos.json     the 156 words, every candidate sentence, the proposed wrong pictures, the false sentences for a
@@ -696,7 +698,8 @@ class Data:
 def course_files(curso):
     """{name} of the files of historia/cuentos/ the course names (curso.json): the stories, picture stories (`dibujos`) and routines (`haz`)
     of its places, the ids of its `cuentos`, and its review sets (`cual`). A file of that folder that is neither one of these nor the word
-    list palabras-solas.json is STAGED: the tool does not read it."""
+    list palabras-solas.json is STAGED: the tool does not read it. The same names tell the books: historia/libros/<id>.json is the book of the
+    story <id>, and the tool reads it only when the course names <id>."""
     names = set(curso.get("cuentos", {})) | set(curso.get("cual", []))
     for l in curso["lugares"]:
         for key in ("cuentos", "dibujos", "haz"):
@@ -741,6 +744,8 @@ def load(root):
         D.place_last[D.place_of[s]] = D.idx[s]
     D.book = {}
     for p in sorted((H / "libros").glob("*.json")):
+        if p.stem not in named:
+            continue    # a STAGED book (libros/<id>.json of a story the course does not name yet): not read, nothing of it is used
         d = read_json(p)
         D.book[d["id"]] = d
     mp = root / "docs" / "hablar" / "02-marcas.json"

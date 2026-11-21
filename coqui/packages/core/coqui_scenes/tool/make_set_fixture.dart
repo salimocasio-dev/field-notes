@@ -3,7 +3,8 @@
 // the differing elements; in a browser they compare the hashes: equal hashes, equal buffers (0 elements differ).
 //
 //   dart run tool/make_set_fixture.dart          (in this package) writes test/support/fixtures/set_refs.dart (El frente)
-//                                                and test/support/fixtures/balcon_set_refs.dart (El balcón)
+//                                                test/support/fixtures/balcon_set_refs.dart (El balcón) and
+//                                                test/support/fixtures/sala_set_refs.dart (La sala)
 //   dart run tool/make_set_fixture.dart --check  fails when a file is not what coqui/ref/pp/<id>/ gives
 import 'dart:convert';
 import 'dart:io';
@@ -21,6 +22,11 @@ void main(List<String> args) {
       file: 'balcon_set_refs.dart',
       constant: 'balconSetRefs',
       what: "El balcón's baked states",
+    ),
+    'sala': (
+      file: 'sala_set_refs.dart',
+      constant: 'salaSetRefs',
+      what: "La sala's baked states",
     ),
   };
   var stale = 0;

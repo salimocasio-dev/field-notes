@@ -4,6 +4,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 
 import 'fixtures/balcon_preview_fixture.dart';
 import 'fixtures/preview_fixture.dart';
+import 'fixtures/sala_preview_fixture.dart';
 
 /// The 12 review pairs of cual-frente, as the content gives them (word, and each side's state and view), from the cases
 /// of the preview comparison (tool/preview_shots.mjs reads them from historia/cuentos/cual-frente.json).
@@ -12,6 +13,10 @@ List<ReviewPair> frentePairs() => _pairsOf('frente', previewCases);
 /// The 10 review pairs of cual-balcon, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene balcon reads
 /// them from historia/cuentos/cual-balcon.json).
 List<ReviewPair> balconPairs() => _pairsOf('balcon', balconPreviewCases);
+
+/// The 11 review pairs of cual-sala, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene sala reads them
+/// from historia/cuentos/cual-sala.json).
+List<ReviewPair> salaPairs() => _pairsOf('sala', salaPreviewCases);
 
 List<ReviewPair> _pairsOf(String scene, String json) {
   final cases = (jsonDecode(json) as List).cast<Map<String, dynamic>>().where(

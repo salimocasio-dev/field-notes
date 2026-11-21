@@ -3,7 +3,8 @@
 // differential check against the recorded runs. A clip exists exactly when it is in ready.json, has marks and its mp3 is
 // in the worktree (the recording tool's rule: the runner answered "ID3" for a file that exists, 404 when not).
 //
-// Only what a story needs is implemented: places, a story file, a clip, a fixed line. The rest throws.
+// Only what a story needs is implemented: places, which stories the course names (`meta`), a story file, a clip, a fixed
+// line. The rest throws.
 import 'dart:convert';
 import 'dart:io';
 
@@ -30,6 +31,7 @@ class DiskCourse implements CourseCatalog {
   final Directory root;
   final String _hist;
   List<Place> _places = const [];
+  Map<String, StoryMeta> _metas = const {};
   Map<String, String> _fixed = const {};
   Map<String, Map<String, dynamic>> _lines = {};
   Set<String> _have = {};
@@ -47,6 +49,13 @@ class DiskCourse implements CourseCatalog {
       for (final l in curso['lugares'] as List)
         Place.fromJson(Map<String, dynamic>.from(l as Map)),
     ];
+    _metas = {
+      for (final e in (curso['cuentos'] as Map).entries)
+        e.key as String: StoryMeta.fromJson(
+          e.key as String,
+          Map<String, dynamic>.from(e.value as Map),
+        ),
+    };
     final fijos = _json('datos/fijos.json') as Map<String, dynamic>;
     _fixed = Map<String, String>.from(fijos['clips'] as Map);
     _lines = {
@@ -65,6 +74,10 @@ class DiskCourse implements CourseCatalog {
 
   @override
   List<Place> get places => _places;
+
+  /// A story the course names (`datos/curso.json`, `cuentos`), or null: a file only in `cuentos/` is not one.
+  @override
+  StoryMeta? meta(String id) => _metas[id];
 
   @override
   Future<Map<String, dynamic>> story(String id) async => _stories[id] ??=

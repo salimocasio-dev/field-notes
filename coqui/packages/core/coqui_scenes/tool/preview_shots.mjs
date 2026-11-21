@@ -3,11 +3,12 @@
 // the Dart scene must draw), rendered in headless Chrome, for the comparison test (test/preview_test.dart,
 // test/balcon_preview_test.dart).
 //
-//   node tool/preview_shots.mjs [--scene frente|balcon] --states DIR --out DIR [--fixture]
+//   node tool/preview_shots.mjs [--scene frente|balcon|sala] --states DIR --out DIR [--fixture]
 //
-// --scene: the converted scene (frente when not given). --states: the folder
+// --scene: the converted scene (frente when not given). La sala's cases carry the acts their story names (`acts`): its
+//   preview moves a person only at a moved place of an act the story uses (PREVIEW.acts, the sheet's `moves`). --states: the folder
 //   `node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR` wrote (W after every step of every run of the
-//   scene's stories: El frente's five, El balcón's four). --out: where every picture and cases.json go. --fixture: also
+//   scene's stories: El frente's five, El balcón's four, La sala's six). --out: where every picture and cases.json go. --fixture: also
 //   write the package's fixture (El frente: test/support/fixtures/preview_fixture.dart; El balcón:
 //   test/support/fixtures/balcon_preview_fixture.dart): the cases the test keeps and their pictures (PNG, base64; a
 //   picture two cases share is kept once), read by the test on the vm and in Chrome.
@@ -17,6 +18,8 @@
 // The cases, by a fixed rule:
 //   pair.<word>.<side>: the 24 pictures of cual-frente (PV.pair), and level.<word>.<index>: the level pictures of the
 //     sheet (PV.pair of the picture each names).
+//   blur.<k> (La sala only): five moments of quien-eres-tu's right run with W.borroso set (the blur keeps its smoothing),
+//     all kept.
 //   story.<story>.<plan>.<n>: every moment at rest of every run: the state after a step whose view is one of the sheet's
 //     views exactly (not mid-slide), with no character half faded (the frog seen at al 1, abuela at al 1), skipping a
 //     state equal to the one kept just before it in that run. Drawn at the frame counter it had, floor(t / 70), wind
@@ -35,20 +38,27 @@ const STATES = arg('--states', null), OUT = arg('--out', null), FIXTURE = proces
 const SCENES = {
   frente: { stories: ['la-lluvia', 'el-bizcocho', 'donde-esta-el-pajaro', 'd-toc-toc', 'h-frente'], fixture: 'preview_fixture.dart', cases: 'previewCases', pictures: 'previewPictures' },
   balcon: { stories: ['el-jugo', 'que-calor', 'd-agua-pajaro', 'h-balcon'], fixture: 'balcon_preview_fixture.dart', cases: 'balconPreviewCases', pictures: 'balconPreviewPictures' },
+  sala: { stories: ['la-familia', 'la-foto', 'quien-eres-tu', 'd-bizcocho-bebe', 'd-foto-familia', 'h-sala'], fixture: 'sala_preview_fixture.dart', cases: 'salaPreviewCases', pictures: 'salaPreviewPictures' },
 };
-if (!STATES || !OUT || !SCENES[SCENE]) { console.error('usage: node tool/preview_shots.mjs [--scene frente|balcon] --states DIR --out DIR [--fixture]'); process.exit(2); }
+if (!STATES || !OUT || !SCENES[SCENE]) { console.error('usage: node tool/preview_shots.mjs [--scene frente|balcon|sala] --states DIR --out DIR [--fixture]'); process.exit(2); }
 const PKG = process.cwd(), ROOT = path.resolve(PKG, '../../../..');
 if (!fs.existsSync(path.join(ROOT, `docs/proyecto/pixel/${SCENE}-preview.html`))) { console.error('run this in coqui/packages/core/coqui_scenes'); process.exit(2); }
 
 const STORIES = SCENES[SCENE].stories, PLANS = ['right', 'wrong', 'alternate'];
 const SHEET = JSON.parse(fs.readFileSync(path.join(ROOT, `docs/proyecto/pixel/${SCENE}-sheet.json`), 'utf8'));
 const CUAL = JSON.parse(fs.readFileSync(path.join(ROOT, `historia/cuentos/cual-${SCENE}.json`), 'utf8'));
+// a word with its accents folded: La sala's sheet and preview name a pair's pictures so (mamá.si is mama.si)
+const fold = w => w.replace(/[áéíóú]/g, c => 'aeiou'['áéíóú'.indexOf(c)]);
 const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
 const viewOf = cam => Object.keys(SHEET.views).find(k => same(SHEET.views[k].old, cam)) || null;
+// the acts a story file names (sala-sheet-make.js actsOf): La sala's preview moves a person only at a moved place of an act
+// the story uses (PREVIEW.acts, sheet: moves)
+const actsOf = st => [...new Set((JSON.stringify(JSON.parse(fs.readFileSync(path.join(ROOT, `historia/cuentos/${st}.json`), 'utf8'))).match(/"act":\s*"[a-z0-9]+"/g) || []).map(a => a.split('"')[3]))];
 
 function cases() {
   const out = [];
-  const spec = (w, side) => { const it = CUAL.items.find(i => i.w === w); return { set: it[side].set || null, cam: it[side].cam }; };
+  // a level picture names its pair picture as the sheet does (La sala's: folded)
+  const spec = (w, side) => { const it = CUAL.items.find(i => i.w === w) || CUAL.items.find(i => fold(i.w) === w); return { set: it[side].set || null, cam: it[side].cam }; };
   for (const it of CUAL.items) for (const side of ['si', 'no']) out.push(Object.assign({ id: `pair.${it.w}.${side}`, kind: 'pair', word: it.w, side }, spec(it.w, side)));
   for (const L of SHEET.level) { const [w, s] = L.picture.split('.'); out.push(Object.assign({ id: `level.${L.w}.${L.index}`, kind: 'pair', word: w, side: s }, spec(w, s))); }
   const seenView = new Set();
@@ -65,11 +75,19 @@ function cases() {
       if (key === prev) continue;
       prev = key;
       const c = { id: `story.${st}.${plan}.${String(n).padStart(3, '0')}`, kind: 'story', story: st, plan, n, step: s.path, view, F: Math.floor(s.t / 70), W };
+      if (SCENE === 'sala') c.acts = actsOf(st);
       c.keep = plan === 'right' && (n % 3 === 0 || !seenView.has(view));
       if (plan === 'right') seenView.add(view);
       out.push(c);
       n++;
     }
+  }
+  // La sala's blur (W.borroso: sala.js:120 and :121 keep their smoothing, the sheet's smoothing.places): no moment at rest
+  // has it (it is on for 1.1 s inside acts.tropieza), so five moments of quien-eres-tu's right run are drawn with it set
+  if (SCENE === 'sala') {
+    const lines = fs.readFileSync(path.join(STATES, 'quien-eres-tu', 'right.states.jsonl'), 'utf8').trim().split('\n').map(l => JSON.parse(l));
+    [5, 12, 20, 30, 40].forEach((i, k) => { const s = lines[Math.min(i, lines.length - 1)];
+      out.push({ id: `blur.${k}`, kind: 'story', story: 'quien-eres-tu', plan: 'right', n: i, step: s.path, view: 'wide', F: Math.floor(s.t / 70), W: Object.assign({}, s.W, { borroso: 1 }), acts: actsOf('quien-eres-tu'), keep: true }); });
   }
   return out;
 }
@@ -98,8 +116,8 @@ function server() {
   const pngs = {};
   for (const c of all) {
     const url = c.kind === 'pair'
-      ? await page.evaluate(([w, s]) => window.PREVIEW.pair(w, s), [c.word, c.side])
-      : await page.evaluate(([w, v, F]) => window.PREVIEW.render(window.PREVIEW.baseW(w), { view: v, F, t: 0 }), [c.W, c.view, c.F]);
+      ? await page.evaluate(([w, s]) => window.PREVIEW.pair(w, s), [SCENE === 'sala' ? fold(c.word) : c.word, c.side])
+      : await page.evaluate(([w, v, F, acts]) => { if (acts) window.PREVIEW.acts = acts; return window.PREVIEW.render(window.PREVIEW.baseW(w), { view: v, F, t: 0 }); }, [c.W, c.view, c.F, c.acts || null]);
     const png = Buffer.from(url.split(',')[1], 'base64');
     c.file = c.id + '.png';
     fs.writeFileSync(path.join(OUT, c.file), png);

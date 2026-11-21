@@ -73,6 +73,7 @@ void main() {
     () async {
       final r = await Rig.make(
         story(beats: ['q'], clips: clips, extra: {'next': 'otra'}),
+        course: TestCourse(stories: {'otra'}),
         listen: true,
       );
       await r.finish((pn) => null);

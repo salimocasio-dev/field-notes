@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 268,
-  "totalBytes": 18989328,
+  "files": 308,
+  "totalBytes": 21370233,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -1332,6 +1332,206 @@
       "path": "map/hecho-3/zb.json",
       "bytes": 322,
       "sha256": "da1b8a9af598a53e6502ff3ae24004f54bb2f09a080383a7c621f4c37b699211"
+    },
+    {
+      "path": "sala/luz-1-fotos-000/kinds.bin",
+      "bytes": 51840,
+      "sha256": "9cce618b938e86402af4afe5239750bc13e5b66b174717de846f332e16698eb3"
+    },
+    {
+      "path": "sala/luz-1-fotos-000/kinds.json",
+      "bytes": 305,
+      "sha256": "56a39433128f5f5563a9df5d0ac0b2ebf6574f40fb90af4398dfc7e410798777"
+    },
+    {
+      "path": "sala/luz-1-fotos-000/pix.bin",
+      "bytes": 207360,
+      "sha256": "0ebcdb8f79a8eeb0ca8a6c583190abcc3a3067ae73a0d60d75f3c5290c01c96a"
+    },
+    {
+      "path": "sala/luz-1-fotos-000/pix.json",
+      "bytes": 370,
+      "sha256": "bb1cb81f3ea82ffa8bc8ca86734c50e4904c20b7043b7656941c74648c2d0898"
+    },
+    {
+      "path": "sala/luz-1-fotos-000/pix.png",
+      "bytes": 7585,
+      "sha256": "dcc883927b60cb7744d7362d168289db4dacde0d7ee6c2457071c5e42b2a248d"
+    },
+    {
+      "path": "sala/luz-1-fotos-000/state.json",
+      "bytes": 937,
+      "sha256": "5faec7abadabbeda1745b26b0dd79e026beccf2faf007d1c816695633eafdf33"
+    },
+    {
+      "path": "sala/luz-1-fotos-000/zb.bin",
+      "bytes": 207360,
+      "sha256": "24592a804da5f213b2f3bfcdb982d876b31348e3173ec9d4ddb144b19a0a0684"
+    },
+    {
+      "path": "sala/luz-1-fotos-000/zb.json",
+      "bytes": 322,
+      "sha256": "f6d471a52af9b6ff969d56a6cf17d0da1ac8f79b9d6e812a5c2624806b5b9c92"
+    },
+    {
+      "path": "sala/luz-1-fotos-010/kinds.bin",
+      "bytes": 51840,
+      "sha256": "9cce618b938e86402af4afe5239750bc13e5b66b174717de846f332e16698eb3"
+    },
+    {
+      "path": "sala/luz-1-fotos-010/kinds.json",
+      "bytes": 305,
+      "sha256": "56a39433128f5f5563a9df5d0ac0b2ebf6574f40fb90af4398dfc7e410798777"
+    },
+    {
+      "path": "sala/luz-1-fotos-010/pix.bin",
+      "bytes": 207360,
+      "sha256": "a02bf9ce64d31400262232be4f42e5a30d77d4b53a16f1bc8a1b9ec7ee67e334"
+    },
+    {
+      "path": "sala/luz-1-fotos-010/pix.json",
+      "bytes": 370,
+      "sha256": "f224a7fe682f49307f6035e798e55fca18e5a18d6b8982d3d68b3e60db742128"
+    },
+    {
+      "path": "sala/luz-1-fotos-010/pix.png",
+      "bytes": 7670,
+      "sha256": "713158664906473cc05e488f748dfd863b1e50870056cbe0bbcccfec0141ea3c"
+    },
+    {
+      "path": "sala/luz-1-fotos-010/state.json",
+      "bytes": 937,
+      "sha256": "10938e29974e401c7037a4b2f054df698fa53a63b09c768067eb3a20d5bbfb8e"
+    },
+    {
+      "path": "sala/luz-1-fotos-010/zb.bin",
+      "bytes": 207360,
+      "sha256": "62764c6e2f160a337a05bf0b7edf04d9bd989fcf9a53de41677e28fec8775357"
+    },
+    {
+      "path": "sala/luz-1-fotos-010/zb.json",
+      "bytes": 322,
+      "sha256": "759481d6dfa46d22eef4ac91e06bebb0be73a3e5e749aaad288cd2a5c8ee2cb0"
+    },
+    {
+      "path": "sala/luz-1-fotos-100/kinds.bin",
+      "bytes": 51840,
+      "sha256": "9cce618b938e86402af4afe5239750bc13e5b66b174717de846f332e16698eb3"
+    },
+    {
+      "path": "sala/luz-1-fotos-100/kinds.json",
+      "bytes": 305,
+      "sha256": "56a39433128f5f5563a9df5d0ac0b2ebf6574f40fb90af4398dfc7e410798777"
+    },
+    {
+      "path": "sala/luz-1-fotos-100/pix.bin",
+      "bytes": 207360,
+      "sha256": "e43b6212ae8b95eebd5efedb0036b549c36532e59a3129790a54a90339b3b3f3"
+    },
+    {
+      "path": "sala/luz-1-fotos-100/pix.json",
+      "bytes": 370,
+      "sha256": "30bd06bfc69c533dc1080c2a7fc8dbfe6a8c583073bcc04d10a3b9a8cb586ab7"
+    },
+    {
+      "path": "sala/luz-1-fotos-100/pix.png",
+      "bytes": 7689,
+      "sha256": "e0ef3868b63f63131735b479aaf90a28b9162966ae8fefbbcb437b4271de210f"
+    },
+    {
+      "path": "sala/luz-1-fotos-100/state.json",
+      "bytes": 937,
+      "sha256": "227876c205e883420ab09808369531e4bf4140c0270228eb11afd76dcc00999a"
+    },
+    {
+      "path": "sala/luz-1-fotos-100/zb.bin",
+      "bytes": 207360,
+      "sha256": "2556996b266640ffda0f35325a88fb172f7d3cbe8e41fca55d44876fa8e7c592"
+    },
+    {
+      "path": "sala/luz-1-fotos-100/zb.json",
+      "bytes": 322,
+      "sha256": "63c5d00aa2e54cf1c1b1f3cc3d80f27ef10142af86a7ad12198e6c7b2ade3814"
+    },
+    {
+      "path": "sala/luz-1-fotos-110/kinds.bin",
+      "bytes": 51840,
+      "sha256": "9cce618b938e86402af4afe5239750bc13e5b66b174717de846f332e16698eb3"
+    },
+    {
+      "path": "sala/luz-1-fotos-110/kinds.json",
+      "bytes": 305,
+      "sha256": "56a39433128f5f5563a9df5d0ac0b2ebf6574f40fb90af4398dfc7e410798777"
+    },
+    {
+      "path": "sala/luz-1-fotos-110/pix.bin",
+      "bytes": 207360,
+      "sha256": "c7edd9de9270c8542f7155b6b146f2798b83f49fd5570d171515871e70e51ce3"
+    },
+    {
+      "path": "sala/luz-1-fotos-110/pix.json",
+      "bytes": 370,
+      "sha256": "d4fc8cb09bcf75ad39262ddd530b3fb1982915181b134366d27230c53a84c5de"
+    },
+    {
+      "path": "sala/luz-1-fotos-110/pix.png",
+      "bytes": 7733,
+      "sha256": "5bcadb0c0b83217def7edf78e00ea4bb0dd57c245d0645eae8405bb9a55597cf"
+    },
+    {
+      "path": "sala/luz-1-fotos-110/state.json",
+      "bytes": 937,
+      "sha256": "e92dc63353b2fb6223337898feda1b72a7ec06b1f73f326923fd9facc60422d4"
+    },
+    {
+      "path": "sala/luz-1-fotos-110/zb.bin",
+      "bytes": 207360,
+      "sha256": "4e539299c77634633e9d6b98e43dae001c9d53b7f0497347cad9cd745b0bbb50"
+    },
+    {
+      "path": "sala/luz-1-fotos-110/zb.json",
+      "bytes": 322,
+      "sha256": "c458dac7e9f0ed314065846acacea37d843ae87bc050d603f9454a627b9c9611"
+    },
+    {
+      "path": "sala/luz-1-fotos-111/kinds.bin",
+      "bytes": 51840,
+      "sha256": "9cce618b938e86402af4afe5239750bc13e5b66b174717de846f332e16698eb3"
+    },
+    {
+      "path": "sala/luz-1-fotos-111/kinds.json",
+      "bytes": 305,
+      "sha256": "56a39433128f5f5563a9df5d0ac0b2ebf6574f40fb90af4398dfc7e410798777"
+    },
+    {
+      "path": "sala/luz-1-fotos-111/pix.bin",
+      "bytes": 207360,
+      "sha256": "3b824385ead35df83e803b1dcffcf85025021183afc430112b312c84add715e1"
+    },
+    {
+      "path": "sala/luz-1-fotos-111/pix.json",
+      "bytes": 370,
+      "sha256": "78758cddfc6931d11e83efb2417bd75521a41c0649439a0df64c4cdbdcd050dc"
+    },
+    {
+      "path": "sala/luz-1-fotos-111/pix.png",
+      "bytes": 7758,
+      "sha256": "dbd11d186f9351fe24993c562673d41ee04dcacccfcf853a1b29005e6ddfb83e"
+    },
+    {
+      "path": "sala/luz-1-fotos-111/state.json",
+      "bytes": 937,
+      "sha256": "059b35c13ddd13cfca5c870550af0fce077eac6d75e23901ddc79352bcac8cd9"
+    },
+    {
+      "path": "sala/luz-1-fotos-111/zb.bin",
+      "bytes": 207360,
+      "sha256": "def5771fd8072f52b3f90d5f7c2b4df92d338f71b69367e18e41be26c2ec70cb"
+    },
+    {
+      "path": "sala/luz-1-fotos-111/zb.json",
+      "bytes": 322,
+      "sha256": "e5be005a94c312d3bcc4f2de1e37885fb76a4202c463f6b555b073a8f04d3e2d"
     },
     {
       "path": "unit/unit-s26.json",

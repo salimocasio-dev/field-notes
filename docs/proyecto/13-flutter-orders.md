@@ -649,7 +649,47 @@ Ported by an Opus builder; three files it could not touch were finished by a Son
 - Left as the old game has it: the glass beside abuela's head; a glass on the floor beside the frog when he carries it; the board game's asks with no hint; the two answer cards that look alike.
 - Not solved: the door's hint frame reaches 3 px past the view (no story asks for the door); `coqui_scenes`' picture widget fails when it is given another picture in place (found by order 27; a fix is queued).
 
-## From the content lane (Nov 20): A comer is out; orders 50 to 53, El colmado's four new scenes
+### Order 31 (sala), step a. **Result (Nov 20): done, merged.**
+
+Designed by Opus agents in two rounds (El balcón took five: this time the brief carried every rule the porch and the balcony taught, and the sheet maker's checks were built before the design); the orchestrator looked at both rounds' pictures; three fresh readers saw them with no words.
+
+- Files in `docs/proyecto/pixel/`: `sala-set.html`, `sala-sheet-make.js` (writes `sala-sheet.json` and checks it over 1,101 moments of 18 recorded runs), `sala-preview.html`; `set-kit.js` gained `revealX` and `planeFace` (El frente's and El balcón's pictures are byte-identical).
+- The room is cut open like a model: the two far walls stand, the near ones are not built, the floor runs off the picture, plain dark above the walls (the orchestrator's choice over lawn). Every place on the floor keeps its old screen point, so who stands in front of whom is as in the old picture. In the set: walls, the door to the porch with its open leaf and the porch tiles through it, three framed pictures each on a wire from a nail, the window with curtains, the floor lamp, the sofa, abuelo's armchair, the low table, the baby's blanket, a plant. In the sprite layer: the seven people and the frog, the photos inside the frames, the cake and the camera, bubbles and signs.
+- State parameters: `luz` 1 or 0, `fotos` (which frames hang crooked). 5 baked states cover all 27 old states. Both views are one window.
+- All 16 things, 9 frog places, 46 positions, 11 review pairs and 28 level pictures of the old scene are there; hop counts for all 36 pairs are the old ones.
+- New rules from this scene, for the next ones: a picture on a wall hangs upright, turned to the camera like the furniture, with its whole photo inside the frame at 1:1 (sheared along the wall, a reader could not tell whose face it was); a crooked one turns 14 degrees beside straight ones; a lamp's foot shows on the floor; where a bubble would land on a face, the sheet gives the next free place beside the head (`talk`); a standing person covers no more of a sitting person's face than the old picture did.
+- Three places where smoothing is on are kept as the old code has them (the sheet's `smoothing` part).
+- Left as the old game has it: people appear and change places between steps; the two answer cards that look alike; a slice of cake shown over the frog; abuela standing in front of the sofa over a sitting person's body.
+- Bake: 112 to 194 ms the first time, 59 to 66 ms warm, in headless Chrome (flat walls are drawn one sample a pixel).
+
+### Order 31 (sala), step b. **Result (Nov 20): done, merged; stories 6 to 8 play in the app (build 6).**
+
+Ported by an Opus builder with no stop; the orchestrator ran `test_all.sh` on the branch (passes whole); a fresh reader went through the three stories as they play in the real app.
+
+- All five baked states: 0 of 51,840 differ from the JavaScript. Preview pictures: 609, 486 identical, none over 2%, the most 0.07% (along the turned edges of crooked photos). El frente and El balcón unchanged.
+- All 18 recorded runs match in everything but time, with the old number of random draws. la-familia, d-bizcocho-bebe and h-sala are equal whole; la-foto is 700 ms longer, quien-eres-tu 770 to 980 ms, d-foto-familia 140 ms, each because a walk starts from or ends at a place the sheet moved.
+- In the real app la-familia, la-foto and quien-eres-tu play to the end by touches, right and wrong, no touch lost.
+- `Sheet` now also reads: spots and views given by a world point only, points given only on the screen, floor remaps, `moves`, `smoothing`, `talk`. The three smoothed places are kept exactly (a snapshot of the picture drawn small with smoothing on and back up; identical to Chrome).
+- Bake: the very first state, which also builds the floor, 150 to 195 ms (over the limit in 4 of 5 loads); the other first bakes 50 to 102 ms; later ones about 60 ms.
+- What the reader of the real app found is the old stories' own: the hint hand runs off the bottom edge under the children and the baby (same places as the old picture); a person standing in front of a seated one; the two answer cards that look alike; the last asks of la-familia with nothing marked; the end heart between the board and the lamp. quien-eres-tu cannot be followed from pictures alone: its choices are made by sound.
+- Reported in the JavaScript set, not fixed: the sofa, armchair and door each draw one column 1 px outside their touch box.
+
+### Order 32 (patio), step a. **Result (Nov 20): done, merged.**
+
+Designed by Opus agents in six rounds; the orchestrator looked at every round's pictures and decided the changes; seven fresh readers in all saw them with no words.
+
+- Files in `docs/proyecto/pixel/`: `patio-set.html`, `patio-sheet-make.js` (writes `patio-sheet.json` and checks it over 1,128 moments of 18 recorded runs), `patio-preview.html`; `set-kit.js` gained `UVW` and `planeQuad` (the other three sets' 68 pictures are byte-identical).
+- The yard is a corner, like La sala: the back of the house along one world axis on the left (its door, step, roof), the fence with the gate along the other, far right, the tree and its nest at the right edge, the lawn between, a field and hills in the gap. Round 1 stood square to the camera and looked like the old flat picture: the orchestrator's decision to turn it. In the set: house, door (shut or open onto a dim room), fence, gate (shut, or its leaf swung into the yard with the path seen through it), tree, nest, the two beds of turned earth, sky and hills by the hour. In the sprite layer: the people, the frog, the bird, the crate, the flowers, the ball, the sun, moon and stars (drawn behind the set: the sheet's `behind`), bubbles and signs.
+- State parameters: `hora` (dia, tarde, tarde2, ocaso, crepusculo, noche), `door`, `gate`. 15 baked states are reached. One view (x0 22).
+- All 21 things, 14 frog places, 73 positions, 25 review pictures and 27 level pictures of the old scene are there. Every place keeps its old screen point but two: the frog's place at the gate and where he leaves follow the gate, so that he goes out through it (the old picture had him so; round 3 had him fade on the lawn). For that, 8 pairs of places take one hop more than before (the sheet's `hops`; none of them is walked in the recorded runs). This is the one exception to "hop counts as the old ones".
+- The lawn is El frente's grass (the same ramp), calm; green at dusk and at night.
+- New for this scene, and a rule for the next ones: **a thing the set paints round an empty place needs something to explain it.** A soft darker patch round each bed (round 4) read as a hole or a shadow of nothing; a border of low leaves (round 5) read as a pit with walls. What holds (round 6): the beds are earth only, and every flower planted in the ground brings its own small clump of leaves, drawn by the sprite layer just before the flower (the sheet's `flowerLeaves`: two stages, open 11 x 22 px, bud 9 x 13 px, three greens). A yellow head stands out from what is round it by 69 (the old lawn: 57).
+- Other rules it kept from the earlier scenes, now checked by its sheet maker: the whole door in the view with wall over it; abuela in the doorway with dark round her head; at least 5 rows of lawn between anyone's feet and the foot of the wall, fence or trunk behind them; hint frames and bubbles inside the view; cards over no body; the bird's perches under its feet; stars wholly in the sky or wholly hidden.
+- Left as the old game has it: people appear and leave between steps; a thing shown over the frog's head (drink, ball, cake); the two answer cards that look alike; people's feet at the back rim of a bed; the ball in the tree among red apples; the hint hand running off the bottom under the beds.
+- Seen by the last reader and not changed: at night an empty bed is a dark oval of low contrast (no story has empty beds at night); the nest reads as a flat dish until the bird sits on it.
+- Bake: about 100 to 150 ms the first time, 26 to 52 ms warm, in headless Chrome.
+
+## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
 

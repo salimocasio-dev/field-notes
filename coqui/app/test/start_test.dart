@@ -39,6 +39,7 @@ void main() {
       '/tab/nada',
       '/cuento/NO',
       '/cuento/no-es-un-cuento',
+      '/cuento/que-quieres', // a staged story: its file is in historia/cuentos/, the course does not name it
       '/llamada/luna',
     ]) {
       final app = TestApp(tester);
