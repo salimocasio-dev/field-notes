@@ -15,7 +15,7 @@
 #   97 step 8: `corre97` is ONE act (Luis runs, stops, goes on tiptoe): started loose with the turn line, `ya` after it (`con`).
 #   98 `silla98` {a, b} takes clothing keys (pantalon, zapatos / camisa, zapatos / sombrero, reloj); `ropa_a` is the thing at a, `ropa_b` the thing at b (the script's "two things on the chair"). The opening's chair holds the trousers (a) and the shoes (b):
 #       the signed ask of step 2 is on the trousers, which the Needs list has no key for: taken as ropa_a. `viste98` {cual, ok}: cual = ropa_a or ropa_b (the thing pushed over: the right one, or on a wrong touch `$x`).
-#   98 `zapatos98` is ONE act in the Needs list for the two halves of step 2 (the fall; after the touch, the shoes off, the trousers on, the shoes on): called twice, with no argument.
+#   98 step 2: `zapatos98` (he falls) before Carmen's line, `corrige98` (the shoes off, the trousers on, the shoes on) in the signed ask's `after`; the chair holds the trousers (ropa_a) and the shoes (ropa_b).
 #   98 the wrong move: `viste98` with ok 0 carries the other first AND Carmen making him take it off and put both on again; started loose with her correction line (`con`); the correction line names the thing that goes FIRST
 #       (the script's one example is "¡No! Primero la camisa."; the other three, and the one for each draw where the named thing goes afterwards, follow it).
 #   Beats with no act named in Needs are left out (and listed in the report): nothing is invented.
@@ -113,12 +113,12 @@ def otro(out,inv,e,opts):
 # A miss: the frog looks, nothing there, Canelo's nose goes up over the plate and a piece of bread is gone; the sign shows the right place.
 PL=["cama","almohada","silla"]; PLN={"cama":"la cama","almohada":"la almohada","silla":"la silla"}
 nm,nc=nombres("abuela","luis","carmen","perro","coqui"); c=dict(comunes); c.update(nc)
-c.update({"c96_ab_buenos":AB("Buenos días, Coquí. Mira: el cuarto de Luis y Carmen. Luis duerme en la cama."),"c96_donde_cama":N("¿Dónde está la cama de Luis?"),"c96_l_no":L("No... Tengo sueño."),
+c.update({"c96_ab_buenos":AB("Buenos días, Coquí. Mira: el cuarto de Luis y Carmen. Luis duerme en la cama."),"c96_donde_cama":N("¿Dónde está la cama de Luis?"),"c96_l_no":L("No... Tengo sueño. ¡Mi cama!"),
  "c96_ab_luz":AB("Luis tiene sueño. Coquí, la luz, por favor."),"c96_l_luz_no":L("¡No! ¡La luz no!"),"c96_ca_ay":CA("¡Ay, la luz! ¡Hola, Coquí!"),"c96_cq_dias":T("¡Buenos días!"),
  "c96_ca_toma":CA("¡Luis, toma mi almohada!"),"c96_l_no_quiero":L("¡Ay! ¡No quiero tu almohada!"),"c96_donde_almohada":N("¿Dónde está la almohada de Carmen?"),"c96_l_camisa":L("¿Dónde está mi camisa?"),
  "c96_ca_se":CA("Yo sé dónde está. Yo tengo sueño... Busca tú, Coquí."),"c96_ab_cuarto":AB("¡Este cuarto! Vengo ahora."),
  "c96_l_zapatos":L("¿Y mis zapatos?"),"c96_l_gracias_camisa":L("¡Mi camisa! Gracias, Coquí."),"c96_l_gracias_zapatos":L("¡Mis zapatos! Gracias."),
- "c96_ab_tienes":AB("¿Y tú, Coquí? ¿Tienes sueño?"),"c96_cq_si":T("¡Sí!"),"c96_fin":N("Coquí tiene sueño. Duerme en la almohada.")})
+ "c96_ab_tienes":AB("¿Y tú, Coquí? ¿Tienes sueño?"),"c96_cq_si":T("¡Sí!"),"c96_fin":N("Coquí tiene sueño. Duerme en la almohada, en el cuarto de Luis y Carmen.")})
 for p in PL:   # Carmen says where to look; and the correction for each place
     c["c96_busca_%s"%p]=CA("Busca cerca de %s."%PLN[p]); c["c96_no_%s"%p]=CA("No, Coquí. Cerca de %s."%PLN[p]); DIN.update(["c96_busca_%s"%p,"c96_no_%s"%p])
 VARS96={"da":PL,"db":PL}
@@ -162,7 +162,7 @@ json.dump(s96,open("cuentos/buenos-dias.json","w",encoding="utf-8"),ensure_ascii
 # The bell always wakes a sleeper (he sits up); the blanket always gets him up (he stands, cold). A miss: the other thing is done and makes a noise, abuela says it again, a Z pops over the cradle; the sign shows the right thing.
 nm,nc=nombres("abuela","abuelo","luis","carmen","bebe","coqui"); c=dict(comunes); c.update(nc)
 c.update({"c97_ab_shh":AB("Shh. El bebé duerme. Despacio, Coquí."),"c97_donde_reloj":N("¿Dónde está el reloj, Coquí?"),"c97_ab_siete":AB("Son las siete de la mañana."),
- "c97_ab_carmen_despierta":AB("A las siete, Carmen se despierta."),"c97_ca_mmm":CA("Mmm. Buenos días."),"c97_ab_carmen_levanta":AB("Ahora Carmen se levanta."),"c97_ca_ya":CA("¡Ya me levanto!"),
+ "c97_ab_carmen_despierta":AB("A las siete, Carmen se despierta."),"c97_ca_mmm":CA("Mmm. Buenos días."),"c97_ab_carmen_levanta":AB("Ahora Carmen se levanta."),"c97_ca_ya":CA("¡Ya me levanto! ¡Qué bonita la mañana!"),
  "c97_ab_que_hora":AB("Luis duerme. ¿Qué hora es, Coquí?"),"c97_cq_son_las":T("Son las siete."),"c97_ab_luis_despierta":AB("Sí. A las siete Luis se despierta."),"c97_ab_y_media":AB("Y a las siete y media se levanta."),
  "c97_ca_yo":CA("Luis se despierta. Yo me levanto."),"c97_cq_despacio":T("¡Despacio, Luis!"),
  "c97_fin":N("Son las siete y media de la mañana. Luis y Carmen se levantan.")})
@@ -238,7 +238,7 @@ s98={"id":"se-viste","title":"Se viste","place":"La casa, un día entero","scene
   # 1: signed ask on the chair: the frog hops onto it
   {"dots":1},ask("silla","c98_ab_mira",after=[act("ir",a="silla_coqui")]),"c98_ab_viste",
   # 2: Luis pulls his shoes on, then his trousers stick, he falls onto the bed; Carmen laughs; signed ask on the trousers (the thing at a): the shoes come off, the trousers go on, then the shoes
-  {"dots":2},act("zapatos98"),gesto("carmen","rie"),"c98_ca_no",ask("ropa_a","c98_que_primero",after=[act("zapatos98")]),
+  {"dots":2},act("zapatos98"),gesto("carmen","rie"),"c98_ca_no",ask("ropa_a","c98_que_primero",after=[act("corrige98")]),
   # 3: Luis still has his pyjama top on; a speaking turn (camisa)
   {"dots":3},"c98_ab_falta","c98_cq_camisa","c98_ca_sim",
   # 4: the turn: abuela lifts her camera and lowers it, Luis takes his shoes off again (no act named); Carmen stands on her bed like a captain; the shirt and the shoes lie on the chair; the card shows two places
