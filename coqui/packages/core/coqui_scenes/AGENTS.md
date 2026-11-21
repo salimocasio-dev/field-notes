@@ -28,7 +28,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
   `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
@@ -312,6 +312,36 @@ has that the earlier ones did not, or uses differently, and how the port uses it
   Tests: `banco_set_test`, `banco_sprites_test`, `banco_preview_test`, `banco_boxes_test`, `banco_pictures_test`,
   `banco_acts_test`; the preview's rule for moving a recorded W is `test/support/banco_preview_remap.dart` (the scene's own
   `remapW`, the frog's part included).
+
+## A new scene of places 4 to 10 (order 50b, El mostrador; El colmado's first)
+
+There is no old scene file: the scene is written new from its script's "Needs" list (`historia/notas/guiones/<id>.md`), its
+set ported call for call from `<id>-set.html`, every place from the content lane's sheet, read by coqui_pixel's `SceneSheet`
+(not `Sheet`: another shape). How El mostrador does it, as the pattern for the 27 after it:
+
+- **The place's kits and cast** (`lib/src/colmado/`, one first writer, the others add only): `colmado_dentro.dart` and
+  `colmado_fuera.dart` (colmado-dentro.js and colmado-fuera.js whole; `test/colmado_kit_test.dart` against the JavaScript,
+  `tool/make_colmado_kit_ref.mjs`), `colmado_cast.dart` (don Pepe, the three children, the goat, coins, bags, the goods:
+  mkPersona and Buf as the family is drawn; `Anchored`, `inkBottom`, `overSprite`). `tool/make_colmado_sprites_test.dart`
+  writes the sprite sheets for the content lane (`docs/proyecto/pixel/port/colmado-sprites.png`, `mostrador-sprites.png`).
+- **The sheet.** `sheet_cache.dart` reads a sheet with no `pairPicture` as a `SceneSheet` (`sceneSheetOf(id)`); `sheetOf(id)`
+  then gives its `legacy()` Sheet, which is the scene's `sheet` for the shared code (no places, no pictures; the start frog
+  the runner's own, the scene's `fresh` places him).
+- **The set** (`mostrador_set.dart`): `setKey` is the sheet's (`hora-atras-nevera` inside, `hora-puerta` in the street). A
+  state on another origin (the street, `calle`, the sheet's part) is built on an engine of its own and handed to the
+  scene's engine (every buffer a bake leaves), so one engine serves both; its shadows are cast at the scene engine's world
+  point under the same screen point. 12 states in `coqui/ref/pp/mostrador/` (0 of 51,840 differ).
+- **The scene** (`mostrador.dart`, `class Mostrador extends Escena implements SetScene, SetOverSprites`): people and things
+  are kept in W by world point and picture (`gente`, `cosas`); `items` places every sprite by rules.anchor, `placed` adds the
+  frog (drawn by the host's `frog` into a small picture); `draw` composes them by the sheet's `front` (a set pixel nearer
+  than the upright plane through the feet plus `bias` hides a sprite pixel; between sprites the nearer wins) and draws the
+  covered box. Touch boxes of sprite things are their drawn pixels' box; the set's things the sheet's boxes. The scene's
+  state at the start follows the story's acts (`fresh` reads them: who is there, what is on the shelf, the list). Each act
+  does what the Needs line says; where the sheet names no place or the script settles no picture, an `OPEN:` comment.
+- **Tests**: `mostrador_set_test` (12 states), `mostrador_acts_test` (every act of the three stories on a StillHost, both
+  branches; boxes and touches after each), `colmado_kit_test`, `colmado_cast_test`; in feature_story `mostrador_stories_test`
+  and `tool/mostrador_paths_test.dart` (every path, the sheet's rules at every act's end: `test/support/mostrador_rules.dart`).
+- Bake: `?page=bake&scene=mostrador`, `node tool/bake_time.mjs --scene mostrador`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 
