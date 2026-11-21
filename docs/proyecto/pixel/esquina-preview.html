@@ -1,7 +1,7 @@
 <!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La esquina · preview (dev tool)</title>
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
 <p class="dev"><b>DEV TOOL, not part of the game.</b> The set of La esquina (esquina-set.html, drawn in a hidden frame; the cars and the guagua come from the set's own <code>autos=</code> parameter, as the set's header says) with the characters and the small things drawn over it as sprites, each placed from esquina-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule: this is what puts a car or a guagua in front of a person behind it), with the shadows of those who stand on the ground. Then cropped to the 196 x 216 view <code>wide</code>. The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the obrero, the bebé on an arm, the bicycle, the bucket, the cones and the broom are stand-ins drawn here, not final art.
-Address: <code>?m=1</code> story 48 opening, <code>?m=2</code> story 48 game, <code>?m=3</code> story 48 ending, <code>?m=4</code> story 49 opening, <code>?m=5</code> story 49 game, <code>?m=6</code> story 49 ending, <code>?m=7</code> story 50 game, <code>?m=8</code> story 50 ending (default 1). The make reads the moments through <code>PREVIEW.inspect(m)</code> (<code>?nodraw=1</code> skips the first drawing). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane, <code>&amp;down=1</code> to draw the cone at cono2 knocked over (moment 7). Serve the repo over http.</p>
+Address: <code>?m=1</code> story 48 opening, <code>?m=2</code> story 48 game, <code>?m=3</code> story 48 ending, <code>?m=4</code> story 49 opening, <code>?m=5</code> story 49 game, <code>?m=6</code> story 49 ending, <code>?m=7</code> story 50 game, <code>?m=8</code> story 50 ending (default 1). The make reads the moments through <code>PREVIEW.inspect(m)</code> (<code>?nodraw=1</code> skips the first drawing). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane, <code>&amp;down=1</code> to draw the cone at cono2 knocked over in moment 7 (in moment 8 it always is). Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -93,39 +93,39 @@ Address: <code>?m=1</code> story 48 opening, <code>?m=2</code> story 48 game, <c
 
   /* ---------- the eight moments ---------- */
   const TARDE = { hora: 'tarde', obra: 0, puerta: 'shut' }, MANANA_OBRA = { hora: 'manana', obra: 1, puerta: 'shut' };
-  const AUTOS_48 = 'carro@3.5,4.8,i;guagua@4.6,2.8,i';
+  const AUTOS_48 = 'carro@0.7,4.8,i;guagua@4.5,4.8,i', AUTOS_49 = 'carro@3.5,2.8,i;guagua@4.6,4.8,i';
+  const ABUELA_BEBE = () => withBebe(SP.abuela(), 14, 14), MAMA_BEBE = () => withBebe(SP.persona(MAMA), 10, 14);
+  const CONOS = down => [{ at: 'cono1', s: () => SP.thing('cono'), who: 'cono' }, { at: 'cono2', s: () => SP.thing(down ? 'cono_caido' : 'cono'), who: 'cono' }, { at: 'cono3', s: () => SP.thing('cono'), who: 'cono' }];
   const MOMENTS = {
-    1: { what: 'story 48, opening, the afternoon: abuela with the bebé on her arm at abuela.acera, the frog at coqui.acera, the red car passing in the far lane (carro@1.0,2.8,i)',
+    1: { what: 'story 48, opening, the afternoon: abuela with the bebé on her arm at acera2, the frog at acera5, the red car passing in the far lane (carro@1.0,2.8,i)',
       set: Object.assign({ autos: 'carro@1.0,2.8,i' }, TARDE),
-      layers: () => [{ at: 'abuela.acera', s: () => withBebe(SP.abuela(), 14, 14), who: 'adulto' }, { at: 'coqui.acera', s: () => SP.coqui(), who: 'coqui' }] },
-    2: { what: 'story 48, the game: the red car stopped in the near lane (carro@3.5,4.8,i) and the guagua in the far lane (guagua@4.6,2.8,i), the frog at toca_guagua, abuela with the bebé at abuela.acera',
+      layers: () => [{ at: 'acera2', s: ABUELA_BEBE, who: 'adulto' }, { at: 'acera5', s: () => SP.coqui(), who: 'coqui' }] },
+    2: { what: 'story 48, the game: the red car and the guagua stopped in the near lane, one behind the other (carro@0.7,4.8,i; guagua@4.5,4.8,i), the frog at toca_guagua, abuela with the bebé at acera2',
       set: Object.assign({ autos: AUTOS_48 }, TARDE),
-      layers: () => [{ at: 'abuela.acera', s: () => withBebe(SP.abuela(), 14, 14), who: 'adulto' }, { at: 'toca_guagua', s: () => SP.coqui(), who: 'coqui' }] },
-    3: { what: 'story 48, the ending: mamá at junto, papá at papa.acera (4.3, 6.9), Luis at luis.bici with his bicycle beside him, abuela with the bebé at abuela.acera, the frog at coqui.acera (the street empty)',
+      layers: () => [{ at: 'acera2', s: ABUELA_BEBE, who: 'adulto' }, { at: 'toca_guagua', s: () => SP.coqui(), who: 'coqui' }] },
+    3: { what: 'story 48, the ending: papá at acera1, abuela with the bebé at acera2, mamá at acera3, Luis at acera4 with his bicycle beside him, the frog at acera5 (the street empty)',
       set: Object.assign({ autos: '' }, TARDE),
-      layers: () => [{ at: 'abuela.acera', s: () => withBebe(SP.abuela(), 14, 14), who: 'adulto' }, { at: 'coqui.acera', s: () => SP.coqui(), who: 'coqui' },
-        { at: 'junto', s: () => SP.persona(MAMA), who: 'adulto' }, { at: 'papa.acera', s: () => SP.persona(PAPA), who: 'adulto' },
-        { at: 'luis.bici', s: () => SP.persona(LUIS), who: 'nino' }, { at: 'luis.bici', offPx: [26, 0], s: () => SP.thing('bici') }] },
-    4: { what: 'story 49, opening: the frog at esquina2, right of the pole; the four people at cola1 to cola4 (la señora, el señor, Carmen, Luis); mamá with the bebé at enfrente; don Pepe with his broom at pepe.puerta (the door shut)',
+      layers: () => [{ at: 'acera1', s: () => SP.persona(PAPA), who: 'adulto' }, { at: 'acera2', s: ABUELA_BEBE, who: 'adulto' }, { at: 'acera3', s: () => SP.persona(MAMA), who: 'adulto' },
+        { at: 'acera4', s: () => SP.persona(LUIS), who: 'nino' }, { at: 'acera4', offPx: [26, 0], s: () => SP.thing('bici') }, { at: 'acera5', s: () => SP.coqui(), who: 'coqui' }] },
+    4: { what: 'story 49, opening: the frog at esquina; the group of four at the kerb (la señora at bordillo1, el señor at bordillo2, Carmen at fondo1, Luis at fondo2); mamá with the bebé at acera1; don Pepe with his broom at pepe.puerta (the door shut)',
       set: Object.assign({ autos: '' }, TARDE),
-      layers: () => [{ at: 'pepe.puerta', s: () => holding(SP.pepe(), [[thing('escoba'), 33, 8]]), who: 'adulto' }, { at: 'esquina2', s: () => SP.coqui(), who: 'coqui' },
-        { at: 'cola1', s: () => SP.persona(SENORA), who: 'adulto' }, { at: 'cola2', s: () => SP.persona(SENOR), who: 'adulto' }, { at: 'cola3', s: () => SP.persona(CARMEN), who: 'nino' }, { at: 'cola4', s: () => SP.persona(LUIS), who: 'nino' },
-        { at: 'enfrente', s: () => withBebe(SP.persona(MAMA), 10, 14), who: 'adulto' }] },
-    5: { what: 'story 49, the game: the frog at esquina, la señora and el señor at bordillo1 and bordillo2, the traffic stopped at the stop line (carro@3.5,4.8,i; guagua@4.6,2.8,i), mamá with the bebé at enfrente',
-      set: Object.assign({ autos: AUTOS_48 }, TARDE),
+      layers: () => [{ at: 'pepe.puerta', s: () => holding(SP.pepe(), [[thing('escoba'), 33, 8]]), who: 'adulto' }, { at: 'fondo1', s: () => SP.persona(CARMEN), who: 'nino' }, { at: 'fondo2', s: () => SP.persona(LUIS), who: 'nino' },
+        { at: 'bordillo1', s: () => SP.persona(SENORA), who: 'adulto' }, { at: 'bordillo2', s: () => SP.persona(SENOR), who: 'adulto' }, { at: 'esquina', s: () => SP.coqui(), who: 'coqui' },
+        { at: 'acera1', s: MAMA_BEBE, who: 'adulto' }] },
+    5: { what: 'story 49, the game: the frog at esquina, la señora and el señor at bordillo1 and bordillo2, the traffic stopped at the stop line (carro@3.5,2.8,i in the far lane; guagua@4.6,4.8,i in the near lane), mamá with the bebé at acera1',
+      set: Object.assign({ autos: AUTOS_49 }, TARDE),
       layers: () => [{ at: 'esquina', s: () => SP.coqui(), who: 'coqui' }, { at: 'bordillo1', s: () => SP.persona(SENORA), who: 'adulto' }, { at: 'bordillo2', s: () => SP.persona(SENOR), who: 'adulto' },
-        { at: 'enfrente', s: () => withBebe(SP.persona(MAMA), 10, 14), who: 'adulto' }] },
-    6: { what: 'story 49, the ending: abuela at abuela.enfrente and the frog at coqui.enfrente with mamá and the bebé at enfrente, on the near pavement',
+        { at: 'acera1', s: MAMA_BEBE, who: 'adulto' }] },
+    6: { what: 'story 49, the ending: mamá with the bebé at acera1, abuela at acera2 and the frog at acera5, on the near pavement (the street empty)',
       set: Object.assign({ autos: '' }, TARDE),
-      layers: () => [{ at: 'abuela.enfrente', s: () => SP.abuela(), who: 'adulto' }, { at: 'coqui.enfrente', s: () => SP.coqui(), who: 'coqui' }, { at: 'enfrente', s: () => withBebe(SP.persona(MAMA), 10, 14), who: 'adulto' }] },
-    7: { what: 'story 50, the game, the morning, obra = 1: the blue car at the lane\'s left end (azul@-1.3,4.8,d) and the guagua at its right end (guagua@6.6,4.8,i); the obrero sitting on his bucket at obrero.cubo, the frog at coqui.cerca, Luis at luis.obra, the three cones at cono1, cono2, cono3 (cono2 knocked over with &down=1)',
-      set: Object.assign({ autos: 'azul@-1.3,4.8,d;guagua@6.6,4.8,i' }, MANANA_OBRA),
+      layers: () => [{ at: 'acera1', s: MAMA_BEBE, who: 'adulto' }, { at: 'acera2', s: () => SP.abuela(), who: 'adulto' }, { at: 'acera5', s: () => SP.coqui(), who: 'coqui' }] },
+    7: { what: 'story 50, the game, the morning, obra = 1: the blue car at the lane\'s left end (azul@-0.9,4.8,d) and the guagua at its right end (guagua@6.2,4.8,i); the obrero sitting on his bucket at obrero.cubo, the frog at coqui.cerca, Luis at acera6, the three cones at cono1, cono2, cono3 (cono2 knocked over with &down=1)',
+      set: Object.assign({ autos: 'azul@-0.9,4.8,d;guagua@6.2,4.8,i' }, MANANA_OBRA),
       layers: () => [{ at: 'obrero.cubo', off: [0, 0, -.3], s: () => SP.thing('cubo'), bucket: true }, { at: 'obrero.cubo', s: () => SP.obreroSentado(), who: 'adulto' },
-        { at: 'coqui.cerca', s: () => SP.coqui(), who: 'coqui' }, { at: 'luis.obra', s: () => SP.persona(LUIS), who: 'nino' },
-        { at: 'cono1', s: () => SP.thing('cono'), who: 'cono' }, { at: 'cono2', s: () => SP.thing(A.get('down') === '1' ? 'cono_caido' : 'cono'), who: 'cono' }, { at: 'cono3', s: () => SP.thing('cono'), who: 'cono' }] },
-    8: { what: 'story 50, the ending, the morning, obra = 1: the frog on the wet square at coqui.cemento, Luis at luis.cemento, the obrero standing at obrero.fin (2.9, 7.4)',
+        { at: 'coqui.cerca', s: () => SP.coqui(), who: 'coqui' }, { at: 'acera6', s: () => SP.persona(LUIS), who: 'nino' }, ...CONOS(A.get('down') === '1')] },
+    8: { what: 'story 50, the ending, the morning, obra = 1: the frog on the wet square at coqui.cemento, Luis at luis.cemento, the obrero standing at obrero.fin, the three cones (the middle one knocked over)',
       set: Object.assign({ autos: '' }, MANANA_OBRA),
-      layers: () => [{ at: 'obrero.fin', s: () => SP.obrero(), who: 'adulto' }, { at: 'coqui.cemento', s: () => SP.coqui(), who: 'coqui' }, { at: 'luis.cemento', s: () => SP.persona(LUIS), who: 'nino' }] },
+      layers: () => [{ at: 'obrero.fin', s: () => SP.obrero(), who: 'adulto' }, { at: 'coqui.cemento', s: () => SP.coqui(), who: 'coqui' }, { at: 'luis.cemento', s: () => SP.persona(LUIS), who: 'nino' }, ...CONOS(true)] },
   };
   const RADIUS = () => SHEET.shadows.radius;
 
