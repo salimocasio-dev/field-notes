@@ -48,8 +48,18 @@ class _Silent implements ClipPlayer {
   );
   final to = c.to;
   if (to is String) {
-    final m = RegExp(r'cq x (-?[\d.]+) y (-?[\d.]+) s (-?[\d.]+)')
-        .firstMatch(c.old);
+    // El banco's sheet (order 36b) gives the old numbers in the entry's note, or none: `"unchanged"`, juego.js's own
+    final m =
+        RegExp(r'cq x (-?[\d.]+) y (-?[\d.]+) s (-?[\d.]+)')
+            .firstMatch(c.old) ??
+        RegExp(r'cq x (-?[\d.]+) y (-?[\d.]+) s (-?[\d.]+)')
+            .firstMatch(c.note ?? '');
+    if (m == null &&
+        c.old.isEmpty &&
+        to == 'unchanged' &&
+        line == 'juego.js:16') {
+      return _juegoFresh;
+    }
     if (m != null) {
       return (
         x: int.parse(m[1]!),
@@ -63,6 +73,11 @@ class _Silent implements ClipPlayer {
   }
   return sheet.frogAt(to['spot'] as String, e);
 }
+
+// juego.js:16, fresh: `cq x 150 y 178 s 1`, the frog's place before the scene's own fresh() puts him at its own (the runner's
+// own numbers too, StoryRunner.fresh); a sheet whose entry for the line says it is unchanged and gives no numbers (El
+// banco's) keeps them
+const ({int x, int y, num scale}) _juegoFresh = (x: 150, y: 178, scale: 1);
 
 // JavaScript: Math.round
 int _round(num v) => (v + 0.5).floor();
