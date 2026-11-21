@@ -36,29 +36,29 @@
  "things": {
   "puerta_roja": {
    "set": true,
-   "uv": [-3.3, 1.5, 0, -2.7, 1.5, 1.18],
-   "world": [-1.2728, 2.9698, 0, -0.8485, 3.3941, 1.18],
-   "box": [34, 76, 16, 28],
+   "uv": [-3.46, 1.5, 0, -2.54, 1.5, 1.18],
+   "world": [-1.3859, 2.8567, 0, -0.7354, 3.5072, 1.18],
+   "box": [30, 76, 24, 28],
    "what": "the red sentry box's door (BOXES[0] u -3, v 1: its front face is at v 1.5, the door from u -3.3 to -2.7, z 0 to 1.18); a touch",
    "quad": [
-    [-1.2728, 3.3941, 0],
-    [-0.8485, 2.9698, 0],
-    [-0.8485, 2.9698, 1.18],
-    [-1.2728, 3.3941, 1.18]
+    [-1.3859, 3.5072, 0],
+    [-0.7354, 2.8567, 0],
+    [-0.7354, 2.8567, 1.18],
+    [-1.3859, 3.5072, 1.18]
    ],
    "colour": [206, 70, 64]
   },
   "puerta_azul": {
    "set": true,
-   "uv": [2.7, 1.5, 0, 3.3, 1.5, 1.18],
-   "world": [2.9698, -1.2728, 0, 3.3941, -0.8485, 1.18],
-   "box": [190, 76, 16, 28],
+   "uv": [2.54, 1.5, 0, 3.46, 1.5, 1.18],
+   "world": [2.8567, -1.3859, 0, 3.5072, -0.7354, 1.18],
+   "box": [186, 76, 24, 28],
    "what": "the blue sentry box's door (BOXES[1] u 3: as puerta_roja); a touch",
    "quad": [
-    [2.9698, -0.8485, 0],
-    [3.3941, -1.2728, 0],
-    [3.3941, -1.2728, 1.18],
-    [2.9698, -0.8485, 1.18]
+    [2.8567, -0.7354, 0],
+    [3.5072, -1.3859, 0],
+    [3.5072, -1.3859, 1.18],
+    [2.8567, -0.7354, 1.18]
    ],
    "colour": [70, 110, 206]
   },
@@ -350,9 +350,9 @@
    "who": "nino"
   },
   "ventana_azul": {
-   "world": [2.5244, -0.5162, 0],
-   "uv": [2.15, 1.42, 0],
-   "screen": [176, 102],
+   "world": [2.4395, -0.4313, 0],
+   "uv": [2.03, 1.42, 0],
+   "screen": [173, 102],
    "depth": 1.2298,
    "scale": 1,
    "kind": "person",
@@ -938,7 +938,7 @@
   {
    "spot": "ventana_azul",
    "spec": [2.15, 1.7, 0],
-   "now": [2.15, 1.42, 0],
+   "now": [2.03, 1.42, 0],
    "why": "sprites-apart: in moment 3 Luis at the blue box's window was 17 px sideways from centro4 and his feet 8 px above theirs (needs 24 across or 12 down): v 1.7 -> 1.42 (-.28; the other way, centro4 v 2.3 -> 2.58, +.28, would move the group's back row)"
   },
   {
@@ -980,7 +980,7 @@
  ],
  "notes": [
   "every number of a spot is the orchestrator's (the p10-spec, \"muralla\" and the coordinator's later numbers: camara_abuela (-.75, 6.3, 0), pretil1 to pretil3 (-.5, .45, 1.4; v 1.66), pretil_coqui (2.25, 1.9, 0)), given in (u, v, z); the parapet, the boxes, the bench, the table, the steps and the road are read from the set; the cord is not in the set: it is a sprite (decor.cuerda, rules.cord) and hides nobody",
-  "things: puerta_roja, puerta_azul (the two doors' faces, from u BOX.u - .3 to + .3, z 0 to 1.18, on the boxes' front face at v 1.5), banco (the bench's seat box) and escalera (the steps' hole on the floor) are set things with a box; camara, silla, jugo, plato, vela, guitarra, sombrero, bolsa, caja, libro, guagua and farol1 to farol3 are sprites at the spots of the same name (silla at junto_mesa, guitarra to libro at mesa1 to mesa5); the people are sprites",
+  "things: puerta_roja, puerta_azul (the two doors' faces, from u BOX.u - .46 to + .46, z 0 to 1.18, on the boxes' front face at v 1.5), banco (the bench's seat box) and escalera (the steps' hole on the floor) are set things with a box; camara, silla, jugo, plato, vela, guitarra, sombrero, bolsa, caja, libro, guagua and farol1 to farol3 are sprites at the spots of the same name (silla at junto_mesa, guitarra to libro at mesa1 to mesa5); the people are sprites",
   "whoever is inside a sentry box is drawn from the head down, clipped to the door's box (rules.inside; the preview draws Carmen so in moment 2); the door is open (a dark stand-in) under her",
   "the spec gives no name for the guagua going off (column 136), the two walking músicos (columns 172 and 177), nor for the place of the guagua's own column in a second moment: guagua_se_va, musico_lejos1 and musico_lejos2 are the make's names (open points)",
   "whoever sits on the bench (banco1 to banco4) is hung by the lap on the seat's top; the spot's sprite is a grown-up sitting; in the preview the two músicos of story 118 sit at banco2 and banco3 and a guest at banco1 in story 119",
@@ -988,7 +988,7 @@
   "the spec gives no radius for the shadows: El cruce's are used (frog .45, grown-ups .35, children .28)",
   "abuelo is kit's FAM.abuelo (a grown-up man); the two músicos, don Pepe, the maestra, the piragüero, the señor, the señora and two guest children are kit's mkPersona in other colours (the preview says which)",
   "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
-  "moves: juego_coqui [0.2,5,0] -> [0.79,5,0] (frog-seen: in moments 2 and 3 the frog in the game stood behind the camera (v 6.0) and abuela beside it (v 6.3): 114 of his 536 px were under them (the camera 99, abuela 15): u .2 -> .79 (+.59; v 5.0 -> 7.81, +2.81, also passes). Before abuela moved to (-.75, 6.3) it was u .91); ventana_azul [2.15,1.7,0] -> [2.15,1.42,0] (sprites-apart: in moment 3 Luis at the blue box's window was 17 px sideways from centro4 and his feet 8 px above theirs (needs 24 across or 12 down): v 1.7 -> 1.42 (-.28; the other way, centro4 v 2.3 -> 2.58, +.28, would move the group's back row)); vela [1.1,0,1] -> [-1.52,0,1] (candle-clear: in moment 4 the lantern farol3 (u 1.2, v 1.0, nearer than the parapet) covers 58 of the candle's 98 px at u 1.1. The parapet holds a candle only on a merlon (u .94 to 1.46, 1.84 to 2.36 ... every .9); to the right of farol3 the next merlon has muro2 in front of it (5 px of the candle's last row at u 1.99), in the middle the músicos' heads and farol2 fill the way: u 1.1 -> -1.52 (-2.62, the least that leaves the candle uncovered on a merlon; v is the parapet's, 0). The other way: u 1.99 (+.89) with muro2 v 2.2 -> 2.28 (+.08, a second spot)); mesa_coqui [-1.2,5.8,0.74] -> [-1.56,5.8,0.74] (sprites-apart: in moment 4 the frog on the table was 18 px sideways from the dancer at baile4 and his feet 2 px apart (needs 28 across or 12 down): u -1.2 -> -1.56 (-.36; no v on the table's top passes; the other way, baile4 u -.5 -> -.13, +.37, or v 4.4 -> 5.43, +1.03)); escalera_abuela [1.75,5.6,0] -> [1.4,5.6,0] (sprites-apart: in moment 5 abuela at the head of the steps was 14 px sideways from the guest at escalera1 and 3 px above him (needs 24 across or 12 down): u 1.75 -> 1.40 (-.35; v 5.6 -> 6.27, +.67, also passes)); guagua [160,54] -> [167,53] (guagua-clear: in moment 5 the lantern farol3 (box [146, 48, 10, 12]) covers 29 px of the guagua (box [149, 44, 22, 10]): column 160 -> 167 (+7, the least that clears it: its box [156, 43, 22, 10]); the road's row there is 53. It now overlaps the columns of the two músicos walking off (170 to 178: not in a moment with it). The cord is not cured by a column: see the open point of guagua-clear); pretil2 [0.45,1.66,0] -> [0.45,1.74,0] (end-clear and guagua-clear: in moment 6 abuelo at the parapet covered 2 px of the guagua going off (his head reaches row 53, the guagua's box is rows 46 to 55): v 1.66 -> 1.74 (+.08, his head top on row 56; the other way, the guagua u column 136 -> 145, +9 px, or pretil2 u -2.09)); pretil_coqui [2.25,1.9,0] -> [2.45,1.9,0] (sprites-apart: in moment 6 the frog at the parapet was 23 px sideways from Luis at pretil3 and 3 px below him (needs 28 across or 12 down): u 2.25 -> 2.45 (+.2; v 1.9 -> 2.58, +.68, also passes))"
+  "moves: juego_coqui [0.2,5,0] -> [0.79,5,0] (frog-seen: in moments 2 and 3 the frog in the game stood behind the camera (v 6.0) and abuela beside it (v 6.3): 114 of his 536 px were under them (the camera 99, abuela 15): u .2 -> .79 (+.59; v 5.0 -> 7.81, +2.81, also passes). Before abuela moved to (-.75, 6.3) it was u .91); ventana_azul [2.15,1.7,0] -> [2.03,1.42,0] (sprites-apart: in moment 3 Luis at the blue box's window was 17 px sideways from centro4 and his feet 8 px above theirs (needs 24 across or 12 down): v 1.7 -> 1.42 (-.28; the other way, centro4 v 2.3 -> 2.58, +.28, would move the group's back row)); vela [1.1,0,1] -> [-1.52,0,1] (candle-clear: in moment 4 the lantern farol3 (u 1.2, v 1.0, nearer than the parapet) covers 58 of the candle's 98 px at u 1.1. The parapet holds a candle only on a merlon (u .94 to 1.46, 1.84 to 2.36 ... every .9); to the right of farol3 the next merlon has muro2 in front of it (5 px of the candle's last row at u 1.99), in the middle the músicos' heads and farol2 fill the way: u 1.1 -> -1.52 (-2.62, the least that leaves the candle uncovered on a merlon; v is the parapet's, 0). The other way: u 1.99 (+.89) with muro2 v 2.2 -> 2.28 (+.08, a second spot)); mesa_coqui [-1.2,5.8,0.74] -> [-1.56,5.8,0.74] (sprites-apart: in moment 4 the frog on the table was 18 px sideways from the dancer at baile4 and his feet 2 px apart (needs 28 across or 12 down): u -1.2 -> -1.56 (-.36; no v on the table's top passes; the other way, baile4 u -.5 -> -.13, +.37, or v 4.4 -> 5.43, +1.03)); escalera_abuela [1.75,5.6,0] -> [1.4,5.6,0] (sprites-apart: in moment 5 abuela at the head of the steps was 14 px sideways from the guest at escalera1 and 3 px above him (needs 24 across or 12 down): u 1.75 -> 1.40 (-.35; v 5.6 -> 6.27, +.67, also passes)); guagua [160,54] -> [167,53] (guagua-clear: in moment 5 the lantern farol3 (box [146, 48, 10, 12]) covers 29 px of the guagua (box [149, 44, 22, 10]): column 160 -> 167 (+7, the least that clears it: its box [156, 43, 22, 10]); the road's row there is 53. It now overlaps the columns of the two músicos walking off (170 to 178: not in a moment with it). The cord is not cured by a column: see the open point of guagua-clear); pretil2 [0.45,1.66,0] -> [0.45,1.74,0] (end-clear and guagua-clear: in moment 6 abuelo at the parapet covered 2 px of the guagua going off (his head reaches row 53, the guagua's box is rows 46 to 55): v 1.66 -> 1.74 (+.08, his head top on row 56; the other way, the guagua u column 136 -> 145, +9 px, or pretil2 u -2.09)); pretil_coqui [2.25,1.9,0] -> [2.45,1.9,0] (sprites-apart: in moment 6 the frog at the parapet was 23 px sideways from Luis at pretil3 and 3 px below him (needs 28 across or 12 down): u 2.25 -> 2.45 (+.2; v 1.9 -> 2.58, +.68, also passes))"
  ],
  "views": {
   "wide": {
@@ -1073,14 +1073,14 @@
     "name": "things-in-view",
     "ok": true,
     "lines": [
-     "things-in-view: the boxes of puerta_roja, puerta_azul, banco, escalera are inside the window [22, 218) and the picture (puerta_roja [34,76,16,28], puerta_azul [190,76,16,28], banco [70,76,100,18], escalera [177,164,40,30])"
+     "things-in-view: the boxes of puerta_roja, puerta_azul, banco, escalera are inside the window [22, 218) and the picture (puerta_roja [30,76,24,28], puerta_azul [186,76,24,28], banco [70,76,100,18], escalera [177,164,40,30])"
     ]
    },
    {
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 204 pairs in the 6 moments of the preview (m1 (centro1, centro2, centro3, centro4, centro5, centro6, centro7, camara_abuela, junto_camara); m2 (centro1, centro2, centro3, centro4, centro5, centro6, camara_abuela, juego_coqui, junto_coqui, dentro_roja); m3 (centro1, centro2, centro3, centro4, centro5, centro6, camara_abuela, juego_coqui, ventana_azul); m4 (banco2, banco3, muro1, muro2, baile1, baile2, baile3, baile4, mesa_coqui); m5 (escalera_abuela, escalera_abuelo, escalera1, escalera2, escalera3, escalera4, junto_mesa_coqui, baile1, baile2); m6 (pretil1, pretil2, pretil3, pretil4, pretil_coqui, banco1)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 centro1 ~ centro5 (13 across, 16 down), m1 centro1 ~ camara_abuela (20 across, 52 down), m1 centro2 ~ centro5 (13 across, 16 down), m1 centro2 ~ centro6 (13 across, 16 down), m1 centro2 ~ camara_abuela (6 across, 52 down), m1 centro3 ~ centro6 (13 across, 16 down), m1 centro3 ~ centro7 (13 across, 16 down), m1 centro3 ~ junto_camara (20 across, 60 down), m1 centro4 ~ centro7 (13 across, 16 down), m1 centro4 ~ junto_camara (6 across, 60 down), m1 centro5 ~ camara_abuela (7 across, 36 down), m1 centro6 ~ camara_abuela (19 across, 36 down), m1 centro7 ~ junto_camara (7 across, 44 down), m2 centro1 ~ centro5 (13 across, 16 down), m2 centro1 ~ camara_abuela (20 across, 52 down), m2 centro1 ~ junto_coqui (13 across, 35 down), m2 centro2 ~ centro5 (13 across, 16 down), m2 centro2 ~ centro6 (13 across, 16 down), m2 centro2 ~ camara_abuela (6 across, 52 down), m2 centro2 ~ junto_coqui (13 across, 35 down), m2 centro3 ~ centro6 (13 across, 16 down), m2 centro3 ~ juego_coqui (8 across, 35 down), m2 centro4 ~ juego_coqui (18 across, 35 down), m2 centro5 ~ camara_abuela (7 across, 36 down), m2 centro5 ~ junto_coqui (0 across, 19 down), m2 centro6 ~ camara_abuela (19 across, 36 down), m2 centro6 ~ juego_coqui (21 across, 19 down), m2 camara_abuela ~ junto_coqui (7 across, 17 down), m3 centro1 ~ centro5 (13 across, 16 down), m3 centro1 ~ camara_abuela (20 across, 52 down), m3 centro2 ~ centro5 (13 across, 16 down), m3 centro2 ~ centro6 (13 across, 16 down), m3 centro2 ~ camara_abuela (6 across, 52 down), m3 centro3 ~ centro6 (13 across, 16 down), m3 centro3 ~ juego_coqui (8 across, 35 down), m3 centro4 ~ juego_coqui (18 across, 35 down), m3 centro4 ~ ventana_azul (17 across, 12 down), m3 centro5 ~ camara_abuela (7 across, 36 down), m3 centro6 ~ camara_abuela (19 across, 36 down), m3 centro6 ~ juego_coqui (21 across, 19 down), m4 banco2 ~ baile1 (14 across, 44 down), m4 banco2 ~ baile2 (12 across, 44 down), m4 banco2 ~ baile4 (1 across, 62 down), m4 banco3 ~ baile2 (12 across, 44 down), m4 banco3 ~ baile3 (14 across, 44 down), m4 muro1 ~ mesa_coqui (14 across, 30 down), m4 baile1 ~ baile4 (13 across, 18 down), m4 baile1 ~ mesa_coqui (15 across, 20 down), m4 baile2 ~ baile4 (13 across, 18 down), m5 escalera_abuela ~ escalera_abuelo (6 across, 22 down), m5 escalera_abuelo ~ escalera1 (18 across, 25 down), m5 escalera_abuelo ~ escalera3 (18 across, 40 down), m5 escalera1 ~ escalera3 (0 across, 15 down), m5 escalera2 ~ escalera4 (1 across, 15 down), m5 junto_mesa_coqui ~ baile1 (23 across, 43 down), m5 junto_mesa_coqui ~ baile2 (3 across, 43 down)",
+     "sprites-apart: 204 pairs in the 6 moments of the preview (m1 (centro1, centro2, centro3, centro4, centro5, centro6, centro7, camara_abuela, junto_camara); m2 (centro1, centro2, centro3, centro4, centro5, centro6, camara_abuela, juego_coqui, junto_coqui, dentro_roja); m3 (centro1, centro2, centro3, centro4, centro5, centro6, camara_abuela, juego_coqui, ventana_azul); m4 (banco2, banco3, muro1, muro2, baile1, baile2, baile3, baile4, mesa_coqui); m5 (escalera_abuela, escalera_abuelo, escalera1, escalera2, escalera3, escalera4, junto_mesa_coqui, baile1, baile2); m6 (pretil1, pretil2, pretil3, pretil4, pretil_coqui, banco1)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 centro1 ~ centro5 (13 across, 16 down), m1 centro1 ~ camara_abuela (20 across, 52 down), m1 centro2 ~ centro5 (13 across, 16 down), m1 centro2 ~ centro6 (13 across, 16 down), m1 centro2 ~ camara_abuela (6 across, 52 down), m1 centro3 ~ centro6 (13 across, 16 down), m1 centro3 ~ centro7 (13 across, 16 down), m1 centro3 ~ junto_camara (20 across, 60 down), m1 centro4 ~ centro7 (13 across, 16 down), m1 centro4 ~ junto_camara (6 across, 60 down), m1 centro5 ~ camara_abuela (7 across, 36 down), m1 centro6 ~ camara_abuela (19 across, 36 down), m1 centro7 ~ junto_camara (7 across, 44 down), m2 centro1 ~ centro5 (13 across, 16 down), m2 centro1 ~ camara_abuela (20 across, 52 down), m2 centro1 ~ junto_coqui (13 across, 35 down), m2 centro2 ~ centro5 (13 across, 16 down), m2 centro2 ~ centro6 (13 across, 16 down), m2 centro2 ~ camara_abuela (6 across, 52 down), m2 centro2 ~ junto_coqui (13 across, 35 down), m2 centro3 ~ centro6 (13 across, 16 down), m2 centro3 ~ juego_coqui (8 across, 35 down), m2 centro4 ~ juego_coqui (18 across, 35 down), m2 centro5 ~ camara_abuela (7 across, 36 down), m2 centro5 ~ junto_coqui (0 across, 19 down), m2 centro6 ~ camara_abuela (19 across, 36 down), m2 centro6 ~ juego_coqui (21 across, 19 down), m2 camara_abuela ~ junto_coqui (7 across, 17 down), m3 centro1 ~ centro5 (13 across, 16 down), m3 centro1 ~ camara_abuela (20 across, 52 down), m3 centro2 ~ centro5 (13 across, 16 down), m3 centro2 ~ centro6 (13 across, 16 down), m3 centro2 ~ camara_abuela (6 across, 52 down), m3 centro3 ~ centro6 (13 across, 16 down), m3 centro3 ~ juego_coqui (8 across, 35 down), m3 centro4 ~ juego_coqui (18 across, 35 down), m3 centro4 ~ ventana_azul (14 across, 12 down), m3 centro5 ~ camara_abuela (7 across, 36 down), m3 centro6 ~ camara_abuela (19 across, 36 down), m3 centro6 ~ juego_coqui (21 across, 19 down), m4 banco2 ~ baile1 (14 across, 44 down), m4 banco2 ~ baile2 (12 across, 44 down), m4 banco2 ~ baile4 (1 across, 62 down), m4 banco3 ~ baile2 (12 across, 44 down), m4 banco3 ~ baile3 (14 across, 44 down), m4 muro1 ~ mesa_coqui (14 across, 30 down), m4 baile1 ~ baile4 (13 across, 18 down), m4 baile1 ~ mesa_coqui (15 across, 20 down), m4 baile2 ~ baile4 (13 across, 18 down), m5 escalera_abuela ~ escalera_abuelo (6 across, 22 down), m5 escalera_abuelo ~ escalera1 (18 across, 25 down), m5 escalera_abuelo ~ escalera3 (18 across, 40 down), m5 escalera1 ~ escalera3 (0 across, 15 down), m5 escalera2 ~ escalera4 (1 across, 15 down), m5 junto_mesa_coqui ~ baile1 (23 across, 43 down), m5 junto_mesa_coqui ~ baile2 (3 across, 43 down)",
      "       closest pair in each moment (px across / px down): m1 centro4 ~ junto_camara 6/60 (needs 28 across or 12 down); m2 centro5 ~ junto_coqui 0/19 (needs 24 across or 12 down); m3 centro3 ~ juego_coqui 8/35 (needs 28 across or 12 down); m4 banco2 ~ baile4 1/62 (needs 24 across or 12 down); m5 junto_mesa_coqui ~ baile2 3/43 (needs 28 across or 12 down); m6 pretil1 ~ banco1 24/27 (needs 24 across or 12 down)"
     ],
     "pairs": [
@@ -1880,7 +1880,7 @@
       "moment": 3,
       "a": "centro1",
       "b": "ventana_azul",
-      "across": 95,
+      "across": 92,
       "down": 12,
       "needAcross": 24,
       "ok": true
@@ -1943,7 +1943,7 @@
       "moment": 3,
       "a": "centro2",
       "b": "ventana_azul",
-      "across": 69,
+      "across": 66,
       "down": 12,
       "needAcross": 24,
       "ok": true
@@ -1997,7 +1997,7 @@
       "moment": 3,
       "a": "centro3",
       "b": "ventana_azul",
-      "across": 43,
+      "across": 40,
       "down": 12,
       "needAcross": 24,
       "ok": true
@@ -2042,7 +2042,7 @@
       "moment": 3,
       "a": "centro4",
       "b": "ventana_azul",
-      "across": 17,
+      "across": 14,
       "down": 12,
       "needAcross": 24,
       "ok": true
@@ -2078,7 +2078,7 @@
       "moment": 3,
       "a": "centro5",
       "b": "ventana_azul",
-      "across": 82,
+      "across": 79,
       "down": 28,
       "needAcross": 24,
       "ok": true
@@ -2105,7 +2105,7 @@
       "moment": 3,
       "a": "centro6",
       "b": "ventana_azul",
-      "across": 56,
+      "across": 53,
       "down": 28,
       "needAcross": 24,
       "ok": true
@@ -2123,7 +2123,7 @@
       "moment": 3,
       "a": "camara_abuela",
       "b": "ventana_azul",
-      "across": 75,
+      "across": 72,
       "down": 64,
       "needAcross": 24,
       "ok": true
@@ -2132,7 +2132,7 @@
       "moment": 3,
       "a": "juego_coqui",
       "b": "ventana_azul",
-      "across": 35,
+      "across": 32,
       "down": 47,
       "needAcross": 28,
       "ok": true
@@ -2946,11 +2946,9 @@
    },
    {
     "name": "doors-clear",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "doors-clear: 1 problem(s):",
-     "  moment 2: dentro_roja inside puerta_roja: the top of his sprite is on row 78 (the rule: 78, 2 px under the door's top 76), 34 px of his head (rows 78 to 91) fall outside the door's box [34,76,16,28]",
-     "       OPEN POINT: the head of carmen (rows 78 to 91) is 20 px wide (columns 32 to 51: her plaits and bows hang beside the face from row 83) and the door is 16 px wide (columns 34 to 49): 34 px of the head are cut, in columns 32, 33, 50, 51. Her sprite is centred on the door; no place for the spot passes (u moves one side out, v does not change the width). Options: a wider door in the set, a narrower head, or the head test on the face only"
+     "doors-clear: in moments 2 and 3 the two doors' boxes (puerta_roja [30,76,24,28], puerta_azul [186,76,24,28]) are covered by nobody, and whoever is inside is drawn from the head down, clipped to the door, his head whole inside it: m2: dentro_roja (carmen) is inside puerta_roja [30,76,24,28], drawn from the head down (the top of his sprite on row 78, the door's top 76 + 2), his head rows 78 to 91: 0 px outside the door; 488 px shown, 236 px cut off by the clip, 0 px outside the box; m3: nobody inside; both doors' boxes under nobody"
     ]
    },
    {

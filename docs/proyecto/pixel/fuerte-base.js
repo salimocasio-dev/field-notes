@@ -72,10 +72,10 @@ const FT = (() => {
     const hd = .5;
     PZ.box(u, v, 0, h, hw, hd, STONE, (s, t, z, face) => {
       if (face !== 'front') return face === 'top' ? rgb(...STONE_D) : stone(s + u + t * .3, z, STONE_D);
-      if (door && Math.abs(s) < .3 && z < 1.18) {
-        if (Math.abs(s) > .25 || z > 1.13) return rgb(...door.map(k => k - 60));
-        if (Math.hypot((s - .17) * 26, (z - .6) * 22.5) < 1.4) return rgb(240, 206, 110);
-        return ((s + .3) % .125) < .02 ? rgb(...door.map(k => k - 34)) : rgb(...door);
+      if (door && Math.abs(s) < .46 && z < 1.18) {                                                             // the door: .92 wide, so that a head with plaits fits in it
+        if (Math.abs(s) > .41 || z > 1.13) return rgb(...door.map(k => k - 60));
+        if (Math.hypot((s - .3) * 26, (z - .6) * 22.5) < 1.4) return rgb(240, 206, 110);
+        return ((s + .46) % .153) < .02 ? rgb(...door.map(k => k - 34)) : rgb(...door);
       }
       if (Math.abs(s) < .17 && z > 1.3 && z < 1.58) return (Math.abs(s) > .13 || z > 1.54 || z < 1.34) ? rgb(...STONE_D.map(k => k - 30)) : (lit ? rgb(255, 232, 150) : rgb(40, 44, 70));
       return stone(s + u, z);
