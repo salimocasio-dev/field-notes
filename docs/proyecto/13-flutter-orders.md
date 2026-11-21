@@ -43,6 +43,7 @@ Every "Done when" includes, without saying so each time: `flutter analyze` clean
 | 30a to 39a | Each other scene's set reference and sheet | orchestrator (design), one at a time | Gate A |
 | 30b to 39b | Each other scene in Dart | builder, coqui_scenes, one at a time | its "a" |
 | 50 to 53 | El colmado's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 39b, or sooner if the lane is free |
+| 54 to 57 | La calle's four new scenes in Dart (sets are done; sheets in the making) | builder, coqui_scenes, one at a time | 53b |
 | 40 | Every story against its recorded runs | orchestrator | 39b |
 | 41 | Books' pictures captured again | orchestrator | 40 |
 | 42 | Cutover | orchestrator | 41 |
@@ -685,6 +686,23 @@ New scenes: there is no old scene file and no `ref/escenas/` folder. Step a (des
 4. The sheet's rules hold in the scene: the frog is never behind a grown-up; nothing stands on the amount plate; the two children outside the shop window show only through its panes and the third stands in the doorway; a customer's thing has its price tag at the sheet's `etiqueta` offset.
 
 **Done when:** every state within 0.5% of the reference; every touch box contains its thing; `tool/juega.dart` plays each of the scene's three stories on every path the checker walks, to the end, right and wrong; a fresh reader of the frames with no sound and no words says what happens in each story. Then the content lane measures length and silences, records, and makes the place's pairs, Escuchar set, books and level items.
+
+### Orders 54 to 57. La calle (place 5): esquina, parada, tiendas, cruce
+
+New scenes, as El colmado's: no old scene file, no `ref/escenas/` folder. Step a (design) is the content lane's; step b is this lane's, after El colmado's four.
+
+**What exists, in `docs/proyecto/pixel/`:**
+- `calle-base.js`: the streets' shared kit (painters for faces and tops, pavement, asphalt, kerb; a wall along x and along y; a door, a picture sign, a window, an awning; a house front; a tree; a traffic light whose three lamps show unlit; a cone; a seat; a sign on a pole; the sky by hour) and `vehicle(kind, x, y, heading, board)`: the red car, the blue car and the guagua, built on the engine. In the game they are sprites: bake each once from this function (both headings; the guagua with each of its three roof pictures: `arbol` the park, `toldo` the colmado's basket, `casa`), so that the port and the readers' pictures come from one drawing. A bicycle with its rider is not drawn yet.
+- `esquina-set.html`: the colmado's corner at a T-junction. States `hora` manana or tarde, `obra` 0 or 1 (the far lane dug up, a barrier and cones, no stripes; two squares of cement in the near pavement), `puerta`. The traffic light's lit lamp is a sprite.
+- `parada-set.html`: a bus stop on a street of houses. States `hora` temprano, manana, tarde, noche (noche: lit windows, the lamp and its pool of light).
+- `tiendas-set.html`: `fila` tiendas (four fronts with picture signs: toys, coins, a green cross, a letter; a little horse; a post box; a seat) or altos (a tall old building and a low new one; `par` a or b, `lado` izq or der: four baked states); `hora`; `nube` 0, 1, 2 (the sky and the light; rain itself is a sprite layer).
+- `cruce-set.html`: a crossing drawn square to the picture: its streets are turned 45 degrees to the engine's axes (the set's `E.xy(u, v)` and `E.uv(x, y)`), so that the frog's left is the picture's left. States `hora` mediodia, tarde, ocaso; `cerrada` 0 or 1 (a barrier and cones across the right street). Two views of one picture, `wide` and `plaza`.
+- One fresh reader saw each set with no words; what was not read is fixed. Bake, headless Chrome on the build machine: 55 to 110 ms for every state.
+- Sheets (`<id>-sheet-make.js`, `<id>-sheet.json`) and previews (`<id>-preview.html`): being made; this entry is updated when they pass their checks.
+
+**The stories.** Scripts with their reviews and a "Needs" list each: `historia/notas/guiones/esquina.md` (stories 48 to 50), `parada.md` (51 to 53), `tiendas.md` (54 to 56), `cruce.md` (57 to 59). Generators: `historia/tools/gen_esquina.py`, `gen_parada.py`, `gen_tiendas.py`, `gen_cruce.py`, run in that order after El colmado's four (each sees what was recorded before it). The checker passes all 12 with 0 errors. As El colmado's, the story files are not on main and must not be pushed until they have played in the app.
+
+**Step b** and **Done when**: as orders 50 to 53. Two things are new for this place: sprites that drive (they come along a lane, stop at a named spot, drive on; a person in front of one is drawn after it by the sheet's depth rule), and the frog pressing a button on a thing that is itself a sprite (the guagua's doors in story 52).
 
 ## Order 40. Every story against its recorded runs (orchestrator)
 
