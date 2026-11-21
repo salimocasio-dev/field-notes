@@ -52,5 +52,8 @@
   { "id": "patio/hora-noche-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=open&gate=shut" },
   { "id": "patio/hora-noche-door-open-gate-open", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=open&gate=open" },
   { "id": "camino/gran-1", "kind": "set", "page": "docs/proyecto/pixel/camino-set.html", "query": "?gran=1" },
-  { "id": "camino/gran-0", "kind": "set", "page": "docs/proyecto/pixel/camino-set.html", "query": "?gran=0" }
+  { "id": "camino/gran-0", "kind": "set", "page": "docs/proyecto/pixel/camino-set.html", "query": "?gran=0" },
+  { "id": "campo/campo", "kind": "set", "page": "docs/proyecto/pixel/campo-set.html", "query": "?" },
+  { "id": "campo/campo-t-1.5", "kind": "set", "page": "docs/proyecto/pixel/campo-set.html", "query": "?t=1.5" },
+  { "id": "campo/campo-t-3.25", "kind": "set", "page": "docs/proyecto/pixel/campo-set.html", "query": "?t=3.25" }
 ]

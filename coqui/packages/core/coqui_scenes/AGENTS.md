@@ -29,8 +29,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
 - `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's, La sala's, El
-  patio's and El camino's factories make the real scenes (their sheets read first: `loadScene`); the other six are stubs
-  that throw `UnimplementedError('not converted yet')`.
+  patio's, El camino's and El campo's factories make the real scenes (their sheets read first: `loadScene`); the other
+  five are stubs that throw `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
 
@@ -51,7 +51,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   state of the sheet's `setKey.baked` (`{"id": "<id>/door-shut-win-shut", "kind": "set", "page": "docs/proyecto/pixel/<id>-set.html",
   "query": "?door=shut&win=shut"}`), listed in `coqui/tool/ref/pp/states.json` and made by `make.js --only <ids>`: El balcón's four
   (order 30b), La sala's five (`sala/luz-1-fotos-000` ..., order 31b) and El patio's fifteen (`patio/hora-dia-door-shut-gate-shut`
-  ..., order 32b) and El camino's two (`camino/gran-1`, `camino/gran-0`, order 33b).
+  ..., order 32b), El camino's two (`camino/gran-1`, `camino/gran-0`, order 33b) and El campo's one with two more frames of it at
+  other wind times (`campo/campo`, `campo/campo-t-1.5`, `campo/campo-t-3.25`: the page's `?t=`, its glints, order 34b).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
@@ -182,6 +183,46 @@ that the earlier ones did not, and how the port uses it, as camino-preview.html 
   `camino_sprites_test`, `camino_preview_test`, `camino_boxes_test`, `camino_pictures_test`, `camino_acts_test`; the
   preview's rule for moving a recorded W is `test/support/camino_preview_remap.dart`.
 
+## A field by a lake (order 34b, El campo)
+
+campo.js is on the kit too (`class Campo extends Escena implements SetScene, SetOverSprites, PairPlaces`). What El campo's sheet
+has that the earlier ones did not, and how the port uses it, as campo-preview.html does:
+
+- **The park's water** (`set_kit.dart`: `waterPixel`, `WSTEP`, `KIND_WATER`, `WaterLook`, `drawGlints`, set-kit.js's, for El lago
+  too). The set's ground pass hands a pixel over the water to `waterPixel`, which draws the bank's face or the surface with their
+  depth and collects the glints (`look.glints`) on the first bake (`campo_set.dart`'s ground cache keeps them, as the page's).
+  `campoShore` (the set's `shore`) is what the scene asks too: over the water or not.
+- **The glints, a per-frame step.** The bake leaves them in the engine (`PpEngine.glints`, `glintColour`), `BakedSet` keeps and
+  restores them, and `drawFrame` draws them after `drawTufts` at the same wind time (coqui_pixel's `drawGlints`): deterministic
+  from the frame's time, still when the OS asks for reduced motion. A set with no water has none: its frames are as before.
+  `CampoSet.frame(t)` is the page's own frame (the reference states at t 0, 1.5 and 3.25).
+- **`helps.ring`**: before a ball that floats or lies on the water (`Campo.under`, in unaBola) and under Canelo wading
+  (`Campo.wade`, in perro), a ripple ring, `helps.ring`'s colour, every pixel between `inner` and 1 of its ellipse: the sheet's
+  two lines added to campo.js.
+- **`moves`** at their lines (`CampoPlaces.floor(line, x, y)`: a moved place gives its `new`; a move named on several lines
+  gives its places on the first; a `moves` entry whose new source keeps the numbers (line 238's `ar?82:`), the same; a `code`
+  entry of that line that names `[x,y]` or keeps every place on its line (`floor: true`), the same; else SheetError). Lines 233
+  and 286 have no `code` entry: their places are kept by the sheet's `rules.floor` only (`CampoPlaces.floorRule`, those two lines
+  only; reported by order 34b). `respEn` at inicio15, 16, 17 (`CampoPlaces.respEn`), JUNCO, the floating balls, Canelo's places
+  by the water, the frog's at the reeds, the ball in a raised hand (manos, line 59).
+- **`hops`**: LUGAR is the sheet's (centro, inicio); the acts' hopTo give their own counts; the 6 pairs one hop fewer are
+  walked in no recorded run (`campo_acts_test` checks all 91 against the kit's count).
+- **`shadows`**: the frog's, the children's, Canelo's (on the ground under him in the air too), the basket's and each ball's not
+  carried, afloat, in the tree (`shadows.bola.tree`) or on the water, from its middle, on the ground under it in the air too.
+- **`front`**: the reeds (`front.parts.juncos`, sortY 9999: after everyone) drawn again over each item before them, only where
+  nearer (`Campo.front`, `frontBox`: a child, the frog, Canelo, a ball, the basket, each tagged as `front.tags`); over the water
+  the test takes the surface (`front.waterDepth`).
+- **`talk`** with one corner card as a rectangle (`SheetTalk.boardRect`, W.tarjeta); the faces lifted by `dy`.
+- **Hint boxes** for the tree and the reeds (`things.<id>.hintBox`).
+- **Remap**: a story position the sheet moved (d-bola-canelo's Canelo by the water), where the answer cards stand (h-campo
+  beats.1, `respEn`), a ball's flight direction (`to.none`). A pair's own W holds places deeper than its top level
+  (`gente.<id>`, `bolas.<k>`, `flor: [x, y]`): `ScenePictures.pictureW` gives them to a `PairPlaces` scene (`Campo.placePair`),
+  which sends each through remap (the pairs dame, mi, tu, salta and bola moved up the lawn with their pictures).
+- No random draw: the registry's factory takes no source.
+- Files: `lib/src/campo/campo_set.dart`, `campo_places.dart`, `campo.dart`. Tests: `campo_set_test`, `campo_sprites_test`,
+  `campo_preview_test`, `campo_boxes_test`, `campo_pictures_test`, `campo_acts_test`; the preview's rule for moving a recorded W
+  is `test/support/campo_preview_remap.dart`.
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its
@@ -223,17 +264,18 @@ that the earlier ones did not, and how the port uses it, as camino-preview.html 
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/ and .../camino/ for the browser set tests
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/ and .../camino/
-node tool/preview_shots.mjs [--scene balcon|sala|patio|camino] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/ and .../campo/ for the browser set tests
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/ and .../campo/
+node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
                                                   the scene's stories)
-COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino] flutter test tool/compare_all_test.dart   every picture of
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo] flutter test tool/compare_all_test.dart   every picture of
                                                   preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino]   bake times
-                                                  (each state's first bake, then again on the same engine)
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo]   bake times
+                                                  (each state's first bake, then again on the same engine; for a set with glints on its
+                                                  water, what drawing them costs a frame)
 ```
 
 Numbers for a report: `COQUI_REPORT_DIR=DIR flutter test` writes them on the vm; `--dart-define=COQUI_SHOW=true`

@@ -8,7 +8,8 @@ import 'package:coqui_pixel/src/pp_engine.dart';
 /// depth (`bakedPix`, `bakedZ`), which pixels are ground (`ground`), the ground's own depth (`groundZ`: `applyShadows`
 /// and `drawTufts` test `zb == groundZ`), what kind of surface each pixel is (`kinds`: the tufts grow on grass), what
 /// was in shadow at the bake (`staticShadow`: a tuft in it is drawn dark), the tufts and leaves that sway
-/// (`tufts`, `leaves`), and the colours the tufts are drawn in (`tuftLit`, `tuftDark`). Two states of a set differ in all of these. A [BakedSet] holds a copy of them, taken from the
+/// (`tufts`, `leaves`), the colours the tufts are drawn in (`tuftLit`, `tuftDark`), and the glints on the water
+/// (`glints`, `glintColour`). Two states of a set differ in all of these. A [BakedSet] holds a copy of them, taken from the
 /// engine right after the bake ([capture]), and puts them back ([restoreInto]) before a frame of that state.
 ///
 /// What a frame reads and the bake does not leave behind is not here: the picture (`pix`, `zb`: copied from the baked
@@ -25,6 +26,8 @@ class BakedSet {
     this.leaves = const [],
     this.tuftLit,
     this.tuftDark,
+    this.glints = const [],
+    this.glintColour = 0,
   });
 
   /// A copy of what the engine holds after a bake. Call it when the bake is done and has set `bakedPix` and `bakedZ`
@@ -40,6 +43,8 @@ class BakedSet {
     leaves: List.of(e.leaves),
     tuftLit: List.of(e.tuftLit),
     tuftDark: List.of(e.tuftDark),
+    glints: List.of(e.glints),
+    glintColour: e.glintColour,
   );
 
   /// The baked picture and its depth.
@@ -63,6 +68,12 @@ class BakedSet {
   /// page loads, one hour a page). Null: the engine's are left as they are.
   final List<int>? tuftLit, tuftDark;
 
+  /// The glints on the set's water and their colour (the engine's `glints`, `glintColour`: set-kit.js `waterPixel`
+  /// collects them at the bake, `drawGlints` draws them each frame; El campo's, order 34b). Empty for a set with no
+  /// water. Shared, not copied: a frame does not change them.
+  final List<Glint> glints;
+  final int glintColour;
+
   /// Puts every one of these into [e], and the baked picture and depth into its `pix` and `zb`, so that the engine is
   /// as it was when this state was baked. The frame does this first.
   void restoreInto(PpEngine e) {
@@ -81,6 +92,10 @@ class BakedSet {
     final lit = tuftLit, dark = tuftDark;
     if (lit != null) e.tuftLit.setAll(0, lit);
     if (dark != null) e.tuftDark.setAll(0, dark);
+    e.glints
+      ..clear()
+      ..addAll(glints);
+    e.glintColour = glintColour;
     e.pix.setAll(0, pix);
     e.zb.setAll(0, zb);
   }

@@ -31,6 +31,14 @@ abstract class SetScene extends Scene {
   bool get frogShadow => !sheet.shadows.containsKey('coqui');
 }
 
+/// A converted scene whose review pictures hold places deeper in W than a top-level `{x, y}` (El campo's, order 34b:
+/// `gente.<id>`, `bolas.<k>` and the flower `flor: [x, y]`). [ScenePictures]' `pictureW` remaps the top-level ones as for
+/// every scene, then gives the scene the rest of the picture's own W ([placePair]), which sends each place through its
+/// sheet's remap as campo-preview.html's `remapW` moves them.
+abstract interface class PairPlaces {
+  void placePair(Map<String, dynamic> set);
+}
+
 /// The baked states of one scene's set, each baked once on first use (page 12, section 5, step 1: "bake it first if
 /// not cached"), with the engine they were baked on. A [BakedSet] is put back into the engine before each frame.
 class SetBakes {

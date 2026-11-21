@@ -237,6 +237,8 @@ class ScenePictures implements PictureSource {
         }
       }
     }
+    // a scene whose pictures hold places deeper in W (El campo's people, balls and flower)
+    if (scene is PairPlaces) (scene as PairPlaces).placePair(own);
     w.addAll(own);
     return w;
   }

@@ -7,9 +7,34 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
+import 'package:coqui_pixel/coqui_pixel.dart' as pixel show drawGlints;
 
 /// mapa.js: `KIND_ROAD` (the engine has `KIND_NONE` and `KIND_GRASS`; mapa.js adds sand, water and road).
 const int KIND_ROAD = 4;
+
+/// mapa.js: `KIND_WATER` (the park's water, set-kit.js `waterPixel`: no grass blade grows on it).
+const int KIND_WATER = 2;
+
+/// The look of a body of water (set-kit.js `waterPixel`'s `look`): [deep] and [shallow], its colours far from and near
+/// the shore; [bank], the earth of the bank's face; [wet], the dark wet line along its foot; [sky], the colour the
+/// ripples catch; [reflect], the width (world) of the bank's dark reflection on the water; [fade], how far from the shore
+/// the water is deep; [glints], a list to collect the glints in (null: none).
+class WaterLook {
+  WaterLook({
+    required this.deep,
+    required this.shallow,
+    required this.bank,
+    required this.wet,
+    required this.sky,
+    required this.reflect,
+    required this.fade,
+    this.glints,
+  });
+
+  final List<num> deep, shallow, bank, wet, sky;
+  final double reflect, fade;
+  final List<Glint>? glints;
+}
 
 /// The light of the hour (frente-set.html: an entry of `LIGHT`): `c' = c * m + a` per channel. [litTufts]: the grass
 /// blades keep their lit colours (a warm light).
@@ -817,6 +842,108 @@ class SetKit {
       }
     }
   }
+
+  /* ---------- the park's water (order 34a, El campo; for El lago too) ---------- */
+
+  // set-kit.js: WSTEP
+  /// As z falls by 1 along a sight line, x and y each fall by this.
+  double get WSTEP => e.COS / e.SIN / e.R2;
+
+  // set-kit.js: waterPixel
+  /// A body of water lying under the ground: its surface [depth] below the land, so the land ends in a bank (a low face
+  /// of earth) all along its shore. [shore] (x, y) is a signed distance in world units: > 0 on land, < 0 over the water.
+  /// Called by a set's ground pass for a screen pixel ([ix], [iy], index [i]) whose ground point [g] (at z 0) is over the
+  /// water: it follows the pixel's sight line down and draws what it meets first, the bank's face or the surface, with
+  /// the depth of that point. The surface is the water's ground: kinds [KIND_WATER], ground 1 (a shadow falls on it).
+  void waterPixel(
+    int ix,
+    int iy,
+    int i,
+    Unprojected g,
+    double depth,
+    double Function(double x, double y) shore,
+    WaterLook look,
+  ) {
+    final WSTEP = this.WSTEP;
+    final wx = g.x - depth * WSTEP, wy = g.y - depth * WSTEP;
+    if (shore(wx, wy) >= 0) {
+      // the sight line meets the bank's face before the surface: find where (bisection along t from 0 to depth)
+      double a = 0, bb = depth;
+      for (var kk = 0; kk < 14; kk++) {
+        final m = (a + bb) / 2;
+        if (shore(g.x - m * WSTEP, g.y - m * WSTEP) < 0) {
+          a = m;
+        } else {
+          bb = m;
+        }
+      }
+      final t = (a + bb) / 2,
+          x = g.x - t * WSTEP,
+          y = g.y - t * WSTEP,
+          p = e.project(x, y, -t);
+      final f = t / depth, B = e.rampOf(look.bank);
+      // the face: lighter earth at the top lip, darker down to the wet line at the water
+      final tone = f > .78
+          ? 0
+          : f < .2
+          ? 3
+          : 2 - (e.hash(ix, iy * 3) > .7 ? 1 : 0);
+      e.pix[i] = f > .78 ? _rgbOf(look.wet) : B[e.clamp(tone, 0, 4)];
+      e.zb[i] = p.d;
+      e.kinds[i] = e.KIND_NONE;
+      e.ground[i] =
+          1; // a shadow falls on the bank's face too (a ball's thrown over it)
+      return;
+    }
+    // the surface: shallow near the shore, deep away from it, dithered; the bank's dark reflection along the shore; sparse
+    // light ripples
+    final p = e.project(wx, wy, -depth), d = -shore(wx, wy);
+    final D = look.deep, Sh = look.shallow;
+    var t =
+        e.clamp<double>(d / look.fade, 0, 1) +
+        (e.bayerAt(ix, iy) - .5) * .35 +
+        (e.noise(wx * 1.3, wy * 1.3) - .5) * .25;
+    t = e.clamp<double>(t, 0, 1);
+    var c = <double>[
+      e.lerp(Sh[0], D[0], t),
+      e.lerp(Sh[1], D[1], t),
+      e.lerp(Sh[2], D[2], t),
+    ];
+    if (d < look.reflect && e.bayerAt(ix, iy) < 1 - d / look.reflect * .6) {
+      c = [for (final v in c) v * .72]; // the bank's reflection
+    }
+    // ripples: short dashes along the picture's rows (the light of the sky on the crest of a small wave), sparse, longer
+    // far out
+    final rowH = e.hash(iy * 7, 13),
+        run = ((ix + rowH * 40) / (5 + (rowH * 4).truncate())).floor();
+    if (d > look.reflect &&
+        e.hash(run, iy) < .16 &&
+        e.hash(run * 3, iy + 1) > .3) {
+      c = [
+        e.lerp(c[0], look.sky[0], .55),
+        e.lerp(c[1], look.sky[1], .55),
+        e.lerp(c[2], look.sky[2], .55),
+      ];
+    }
+    e.pix[i] = e.rgb(c[0], c[1], c[2]);
+    e.zb[i] = p.d;
+    e.kinds[i] = KIND_WATER;
+    e.ground[i] = 1;
+    final gl = look.glints;
+    if (gl != null &&
+        d > look.reflect + .15 &&
+        e.hash(ix * 5 + 1, iy * 3 + 7) < .006) {
+      gl.add(Glint(i: i, ix: ix, iy: iy, phase: e.hash(ix, iy + 9) * 6.283));
+    }
+  }
+
+  // set-kit.js: drawGlints
+  /// The glints on the water, each frame (wind time [t], stepped as the grass: 8 a second, still when the OS asks for
+  /// reduced motion): a glint shows 1 or 3 px of light on the surface for part of its cycle, and only where the surface
+  /// itself shows (nothing stands over it). The frame recipe draws them (coqui_pixel's `drawGlints`, from the engine's
+  /// `glints` that a bake leaves): this is the same function, with set-kit.js's parameters.
+  void drawGlints(List<Glint> glints, double t, Float32List refZ, int color) =>
+      pixel.drawGlints(e, glints, t, refZ, color);
 
   /* ---------- for the checks: which object drew each pixel ---------- */
 

@@ -26,3 +26,6 @@ String patioSheetText() => _sheetText('patio');
 
 /// The text of El camino's sheet, read from the file.
 String caminoSheetText() => _sheetText('camino');
+
+/// The text of El campo's sheet, read from the file.
+String campoSheetText() => _sheetText('campo');

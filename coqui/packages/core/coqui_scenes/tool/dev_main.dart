@@ -7,7 +7,7 @@
 //   ?w=<W as JSON>&view=<name>&F=<n>   the scene in that state (W over the fresh world, in today's places), through a view
 //                                      of the sheet (wide, casa, puerta, ventana, cuadro, wide@donde-esta-el-pajaro)
 //   ?page=pairs                        the 12 review pairs of cual-frente and the level pictures, through ScenePictures
-//   ?page=bake[&scene=balcon|sala|patio|camino] every baked state of the sheet (El frente's, or the scene given), each baked on a
+//   ?page=bake[&scene=balcon|sala|patio|camino|campo] every baked state of the sheet (El frente's, or the scene given), each baked on a
 //                                      fresh engine's cache, one after the other; the times are on the page and in
 //                                      `window.coquiBakes` (JSON) for a script
 // Every page shows how long each state it baked took, in ms.
@@ -20,6 +20,7 @@ import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/balcon/balcon_set.dart';
 import 'package:coqui_scenes/src/camino/camino_set.dart';
+import 'package:coqui_scenes/src/campo/campo_set.dart';
 import 'package:coqui_scenes/src/frente/frente_set.dart';
 import 'package:coqui_scenes/src/patio/patio_set.dart';
 import 'package:coqui_scenes/src/sala/sala_set.dart';
@@ -329,6 +330,7 @@ class _BakePageState extends State<BakePage> {
           'sala' => SalaState.fromQuery(b.query).key,
           'patio' => PatioState.fromQuery(b.query).key,
           'camino' => CaminoState.fromQuery(b.query).key,
+          'campo' => CampoState.fromQuery(b.query).key,
           _ => FrenteState.fromQuery(b.query).key,
         };
         bakes.bakeKey(key);
@@ -341,6 +343,21 @@ class _BakePageState extends State<BakePage> {
         f.scene.buildSetFor(bakes.engine, bakes.build, key);
         final ms = sw.elapsedMicroseconds / 1000;
         setState(() => _ms['$key again'] = ms);
+      }
+      // a set whose bake leaves glints on its water (El campo's): what drawing them costs a frame (drawGlints, the
+      // frame recipe's step beside the tufts), over 400 frames of 8 wind steps a second
+      final e = bakes.engine;
+      if (e.glints.isNotEmpty) {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        const n = 400;
+        final sw = Stopwatch()..start();
+        for (var k = 0; k < n; k++) {
+          drawGlints(e, e.glints, k / e.WIND_FPS, e.bakedZ, e.glintColour);
+        }
+        setState(
+          () => _ms['glints per frame (${e.glints.length} glints)'] =
+              sw.elapsedMicroseconds / 1000 / n,
+        );
       }
       globalContext['coquiBakes'] = jsonEncode(_ms).toJS;
       setState(() => _done = true);

@@ -13,6 +13,7 @@ import 'support/fixtures/ref_ctx.dart';
 import 'support/fixtures/ref_kit.dart';
 import 'support/fixtures/balcon_sheet.dart';
 import 'support/fixtures/camino_sheet.dart';
+import 'support/fixtures/campo_sheet.dart';
 import 'support/fixtures/frente_sheet.dart';
 import 'support/fixtures/patio_sheet.dart';
 import 'support/fixtures/ref_pp.dart';
@@ -100,5 +101,9 @@ void main() {
 
   test('the sheet fixture is the text of El camino\'s sheet', () {
     expect(caminoSheetJson, caminoSheetText());
+  });
+
+  test('the sheet fixture is the text of El campo\'s sheet', () {
+    expect(campoSheetJson, campoSheetText());
   });
 }

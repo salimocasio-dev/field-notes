@@ -10,6 +10,7 @@
 // - On the real El patio (order 32b): the same, for its six files.
 // - On the real El camino (order 33b): the same, for its five files; rapido-despacio's end (acts.sevan, the sheet's sevan:
 //   everyone leaves in a file) is the new act's: its runs differ from the old there and after in time only.
+// - On the real El campo (order 34b): the same, for its five files.
 import 'dart:convert';
 import 'dart:io';
 
@@ -53,6 +54,23 @@ Map<String, dynamic> caminoPlaceless(Map<String, dynamic> t) {
       ),
   };
 }
+
+/// [placeless], and the place campo.js's state line writes for Canelo (`perro=x,y:`): the sheet moves a few of his
+/// places by the water (`moves`).
+Map<String, dynamic> campoPlaceless(Map<String, dynamic> t) {
+  final p = placeless(t);
+  return {
+    ...p,
+    if (p['estado'] is String)
+      'estado': (p['estado'] as String).replaceAllMapped(
+        RegExp(r'(perro)=-?[\d.]+,-?[\d.]+:'),
+        (m) => '${m[1]}=_:',
+      ),
+  };
+}
+
+/// Each campo run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> campoWhole = {}, campoTimeless = {};
 
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
@@ -588,6 +606,86 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in caminoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${caminoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real El campo (order 34b): the field is built round the old picture, so its places keep their screen numbers but
+  // the ones the sheet moves (`moves`: the places at the shore, the answer cards in the sky, the ball in a raised hand;
+  // `remap`: the story positions it moved, d-bola-canelo's Canelo by the water). 6 pairs of the frog's places take one
+  // hop fewer (the sheet's `hops`), but none of them is walked in a recorded run: the hop sounds are the old ones. The
+  // scene draws no random number of its own; the runner's draws are the old ones.
+  group('the recorded runs, on the real El campo (order 34b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final campo = {
+      for (final r in runs)
+        if (r['scene'] == 'campo') r['story'] as String,
+    };
+    test('the five files of El campo', () {
+      expect(campo, {
+        'la-bola',
+        'arriba-abajo',
+        'otra-vez',
+        'd-bola-canelo',
+        'h-campo',
+      });
+    });
+    for (final s in campo) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('campo'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              campoPlaceless(forTimeless(c.committed)),
+              campoPlaceless(forTimeless(c.trace)),
+            );
+            campoTimeless['$s $plan'] = timeless;
+            expect(
+              timeless,
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            expect(hops(c.trace), hops(c.committed), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            campoWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/campo-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in campoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${campoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
         );
     });
   });

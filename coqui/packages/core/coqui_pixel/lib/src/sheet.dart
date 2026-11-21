@@ -614,9 +614,14 @@ class SheetShadow {
     this.cast,
     this.raw, {
     this.radii,
+    this.tree,
   });
 
   final String who;
+
+  /// El campo's balls (`shadows.bola.tree`, order 34b): where a ball is in the tree's crown and casts none: its height
+  /// at least `z`, its x within `dx` of `x`, its row at most `y`. Null for every other shadow.
+  final ({num x, num dx, num y, num z})? tree;
   final double? _radius;
 
   /// The radius. Throws [SheetError] for a shadow whose radius is by kind ([radii]).
@@ -702,9 +707,22 @@ class SheetScreenPoint {
     this.heights,
     this.v,
     this.radius,
+    this.radii,
+    this.hollow,
+    this.line,
   });
 
   final String name;
+
+  /// El campo's crown (`points.copa.radii`, order 34b): its radii on the screen, `[rx, ry]`.
+  final List<double>? radii;
+
+  /// El campo's fork (`points.horq.hollow`, order 34b): the hollow in the crown over it, `[cx, cy, rx, ry]` on the screen.
+  final List<double>? hollow;
+
+  /// El campo's shore (`points.orilla_linea`, order 34b): a line on the ground, `x = line` in the world (its `world` is
+  /// that one number); its two ends on the screen are [points].
+  final double? line;
 
   /// El camino's cat on the bench (`points.gato_banco.v`, order 33b): the depth the sheet's front test takes for
   /// whoever is at this point, `v = (x + y) / R2` of the seat's front edge.
@@ -805,10 +823,15 @@ class SheetTalk {
     this.faces,
     this.heads,
     this.boards,
-    this.raw,
-  );
+    this.raw, {
+    this.boardRect,
+  });
 
   final String? what, top, faces;
+
+  /// El campo's (order 34b): its one corner card's rectangle in the display (`board`: W.tarjeta, the rounds card),
+  /// `[x, y, w, h]`, plus the view's x0 on the picture; null for a sheet that gives its cards in words ([boards]).
+  final List<int>? boardRect;
 
   /// `[side, dy]`: the tail's tip at `top.x + side * (h + 16)`, `top.y + dy`.
   final List<({int side, int dy})> places;
@@ -985,6 +1008,96 @@ class SheetFlowerLeaves {
       stages[name] ?? (throw SheetError('flowerLeaves has no stage "$name"'));
 }
 
+/// A ripple ring on the water (`helps.ring`, El campo's): every pixel `(x, y)` with
+/// `inner < ((x + .5 - cx) / rx)^2 + ((y + .5 - cy) / ry)^2 <= 1` takes [colour]. A ball's ring has `rx` its radius plus
+/// [ball]'s `rx` and `ry` [ball]'s; Canelo's is [dog]'s, its middle `dy` rows under his feet.
+class SheetRing {
+  SheetRing._(
+    this.inner,
+    this.colour,
+    this.ball,
+    this.dog,
+    this.when,
+    this.how,
+    this.raw,
+  );
+
+  final double inner;
+
+  /// `0xFFBBGGRR`, made once from the sheet's `[r, g, b]`.
+  final int colour;
+  final ({double rx, double ry}) ball;
+  final ({double rx, double ry, double dy}) dog;
+  final String? when, how;
+  final Map<String, dynamic> raw;
+}
+
+/// What the sprite layer draws just before a thing to help it read (`helps`, El campo's, order 34b): [ring], the ripple
+/// ring round whatever floats or wades; [margin] and [edge] (px), the room every place near the shore keeps (checked by
+/// the sheet maker); [lines], the old scene file's lines that gain the help, as pairs of source (old, new).
+class SheetHelps {
+  SheetHelps._(
+    this.what,
+    this.ring,
+    this.margin,
+    this.edge,
+    this.shore,
+    this.lines,
+    this.raw,
+  );
+
+  final String? what, shore;
+  final SheetRing ring;
+  final num? margin, edge;
+  final List<({String src, String to})> lines;
+  final Map<String, dynamic> raw;
+}
+
+SheetHelps _readHelps(Object? v, String at) {
+  final m = _obj(v, at);
+  final r = _obj(_need(m, 'ring', at), '$at.ring');
+  final ball = _obj(_need(r, 'ball', '$at.ring'), '$at.ring.ball');
+  final dog = _obj(_need(r, 'dog', '$at.ring'), '$at.ring.dog');
+  double n(Map<String, dynamic> o, String k, String a) =>
+      _num(_need(o, k, a), '$a.$k').toDouble();
+  final c = _ints(_need(r, 'colour', '$at.ring'), '$at.ring.colour', length: 3);
+  final lines = m.containsKey('lines')
+      ? _list(m['lines'], '$at.lines')
+      : const [];
+  return SheetHelps._(
+    _opt(m, 'what', (v) => _str(v, '$at.what')),
+    SheetRing._(
+      n(r, 'inner', '$at.ring'),
+      0xFF000000 | (c[2] << 16) | (c[1] << 8) | c[0],
+      (rx: n(ball, 'rx', '$at.ring.ball'), ry: n(ball, 'ry', '$at.ring.ball')),
+      (
+        rx: n(dog, 'rx', '$at.ring.dog'),
+        ry: n(dog, 'ry', '$at.ring.dog'),
+        dy: n(dog, 'dy', '$at.ring.dog'),
+      ),
+      _opt(r, 'when', (v) => _str(v, '$at.ring.when')),
+      _opt(r, 'how', (v) => _str(v, '$at.ring.how')),
+      r,
+    ),
+    _opt(m, 'margin', (v) => _num(v, '$at.margin')),
+    _opt(m, 'edge', (v) => _num(v, '$at.edge')),
+    _opt(m, 'shore', (v) => _str(v, '$at.shore')),
+    [
+      for (var i = 0; i < lines.length; i++)
+        () {
+          final l = _strs(lines[i], '$at.lines[$i]');
+          if (l.length != 2) {
+            throw SheetError(
+              '$at.lines[$i]: two pieces of source were expected',
+            );
+          }
+          return (src: l[0], to: l[1]);
+        }(),
+    ],
+    m,
+  );
+}
+
 /// Everyone leaving through a gate in a file (`sevan`, El camino's, order 33b: acts.sevan as the sheet's `moves` gives
 /// it): each one's [delay] in ticks after the first, and each one's two [points] on the screen, just inside the
 /// opening and just past it (a person's or an animal's feet, the frog's `q`); [a], [b]: the same, from the opening's
@@ -1042,6 +1155,7 @@ class Sheet {
     required this.shadows,
     required this.shadowsNote,
     required this.dropped,
+    this.droppedCode = const [],
     required this.code,
     required this.raw,
     required this.unknown,
@@ -1057,6 +1171,9 @@ class Sheet {
     this.behind,
     this.flowerLeaves,
     this.sevan,
+    this.helps,
+    this.frontWaterDepth,
+    this.frontTags = const [],
   });
 
   /// Parses the text of a sheet. Throws [SheetError], naming where, when it is not a sheet.
@@ -1143,6 +1260,7 @@ class Sheet {
       'hopsAll',
       'flowerLeaves',
       'sevan',
+      'helps',
     };
     // El patio's `behind` (a part: what is drawn behind the set) is not El balcón's (a number, old and new)
     final behindPart =
@@ -1206,7 +1324,7 @@ class Sheet {
           : const {},
       points: {
         for (final e in pointsRaw.entries)
-          if (_obj(e.value, '$at.points.${e.key}').containsKey('world'))
+          if (_obj(e.value, '$at.points.${e.key}')['world'] is List)
             e.key: _readAnchor(
               e.key,
               e.value as Map<String, dynamic>,
@@ -1216,7 +1334,8 @@ class Sheet {
       },
       screenPoints: {
         for (final e in pointsRaw.entries)
-          if (!(e.value as Map<String, dynamic>).containsKey('world'))
+          // El campo's shore (`orilla_linea`, order 34b) is a line, its world a number (x = c): a screen point
+          if ((e.value as Map<String, dynamic>)['world'] is! List)
             e.key: _readScreenPoint(
               e.key,
               e.value as Map<String, dynamic>,
@@ -1292,7 +1411,33 @@ class Sheet {
       shadowsNote: shadowsRaw.containsKey('dropped')
           ? _str(shadowsRaw['dropped'], '$at.shadows.dropped')
           : null,
-      dropped: _strs(_need(m, 'dropped', at), '$at.dropped'),
+      dropped: [
+        for (final (i, d) in _list(
+          _need(m, 'dropped', at),
+          '$at.dropped',
+        ).indexed)
+          d is Map<String, dynamic>
+              ? '${d['line']}: ${_str(_need(d, 'why', '$at.dropped[$i]'), '$at.dropped[$i].why')}'
+              : _str(d, '$at.dropped[$i]'),
+      ],
+      droppedCode: [
+        for (final (i, d) in _list(
+          _need(m, 'dropped', at),
+          '$at.dropped',
+        ).indexed)
+          if (d is Map<String, dynamic>)
+            (
+              line: _int(
+                _need(d, 'line', '$at.dropped[$i]'),
+                '$at.dropped[$i].line',
+              ),
+              src: _str(
+                _need(d, 'src', '$at.dropped[$i]'),
+                '$at.dropped[$i].src',
+              ),
+              to: _str(_need(d, 'to', '$at.dropped[$i]'), '$at.dropped[$i].to'),
+            ),
+      ],
       code: _readCodeList(_need(m, 'code', at), '$at.code'),
       moves: m.containsKey('moves')
           ? _readMoves(m['moves'], '$at.moves')
@@ -1360,6 +1505,31 @@ class Sheet {
       sevan: m.containsKey('sevan')
           ? _readSevan(m['sevan'], '$at.sevan')
           : null,
+      helps: m.containsKey('helps')
+          ? _readHelps(m['helps'], '$at.helps')
+          : null,
+      frontWaterDepth: _opt(
+        front,
+        'waterDepth',
+        (v) => _num(v, '$at.front.waterDepth').toDouble(),
+      ),
+      frontTags: front.containsKey('tags')
+          ? [
+              for (final (i, t) in _list(
+                front['tags'],
+                '$at.front.tags',
+              ).indexed)
+                () {
+                  final l = _strs(t, '$at.front.tags[$i]');
+                  if (l.length != 2) {
+                    throw SheetError(
+                      '$at.front.tags[$i]: two pieces of source were expected',
+                    );
+                  }
+                  return (src: l[0], to: l[1]);
+                }(),
+            ]
+          : const [],
       raw: m,
       unknown: {
         for (final e in m.entries)
@@ -1439,6 +1609,10 @@ class Sheet {
 
   /// The old code the set replaces, as the sheet lists it (`dropped`), and every old line with what replaces it (`code`).
   final List<String> dropped;
+
+  /// El campo's (order 34b): the old lines the sheet drops given as pieces of source (`dropped`: each its line, the
+  /// exact source and what it becomes, `""`); empty for a sheet that lists them in words. [dropped] holds their `why`.
+  final List<({int line, String src, String to})> droppedCode;
   final List<SheetCode> code;
 
   /// La sala's (order 31b): the named points given on the screen only (`points` with no world point); [points] holds
@@ -1471,6 +1645,18 @@ class Sheet {
 
   /// Everyone leaving in a file (`sevan`, El camino's), or null.
   final SheetSevan? sevan;
+
+  /// What the sprite layer draws just before a thing to help it read (`helps`, El campo's, order 34b: the ripple ring
+  /// round whatever floats or wades), or null.
+  final SheetHelps? helps;
+
+  /// El campo's (order 34b): how far the water's surface lies under the lawn, for the front test of whoever stands over
+  /// it (`front.waterDepth`); null for a set with no water.
+  final double? frontWaterDepth;
+
+  /// El campo's (order 34b): the pieces of the old scene file the sheet's preview gives a tag (`front.tags`: each item of
+  /// the sorted list says what it is, for the front test), as pairs of source; empty for the others.
+  final List<({String src, String to})> frontTags;
 
   /// A screen point of [screenPoints]. Throws [SheetError] when the sheet has none of that name.
   SheetScreenPoint screenPoint(String name) =>
@@ -1856,6 +2042,9 @@ SheetScreenPoint _readScreenPoint(
     heights: heights,
     v: _opt(m, 'v', (v) => _num(v, '$at.v').toDouble()),
     radius: _opt(m, 'radius', (v) => _num(v, '$at.radius').toDouble()),
+    radii: _opt(m, 'radii', (v) => _doubles(v, '$at.radii', length: 2)),
+    hollow: _opt(m, 'hollow', (v) => _doubles(v, '$at.hollow', length: 4)),
+    line: _opt(m, 'world', (v) => _num(v, '$at.world').toDouble()),
   );
 }
 
@@ -2060,8 +2249,12 @@ SheetTalk _readTalk(Object? v, String at) {
           );
         }(),
     },
-    _str(_need(m, 'boards', at), '$at.boards'),
+    // El campo's (order 34b): one corner card, its rectangle `board` and its words `boardWhat`
+    m.containsKey('boards') || !m.containsKey('board')
+        ? _str(_need(m, 'boards', at), '$at.boards')
+        : _str(_need(m, 'boardWhat', at), '$at.boardWhat'),
     m,
+    boardRect: _opt(m, 'board', (v) => _ints(v, '$at.board', length: 4)),
   );
 }
 
@@ -2208,6 +2401,13 @@ SheetShadow _readShadow(String who, Map<String, dynamic> m, String at) {
     _opt(m, 'cast', (v) => _str(v, '$at.cast')),
     m,
     radii: radii,
+    tree: m.containsKey('tree')
+        ? () {
+            final t = _obj(m['tree'], '$at.tree');
+            num n(String k) => _num(_need(t, k, '$at.tree'), '$at.tree.$k');
+            return (x: n('x'), dx: n('dx'), y: n('y'), z: n('z'));
+          }()
+        : null,
   );
 }
 

@@ -4,6 +4,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 
 import 'fixtures/balcon_preview_fixture.dart';
 import 'fixtures/camino_preview_fixture.dart';
+import 'fixtures/campo_preview_fixture.dart';
 import 'fixtures/patio_preview_fixture.dart';
 import 'fixtures/preview_fixture.dart';
 import 'fixtures/sala_preview_fixture.dart';
@@ -46,6 +47,10 @@ List<ReviewPair> caminoPairs() => _pairsOf(
   caminoPreviewCases,
   otherNo: {'parque': patioParqueNo()},
 );
+
+/// The 11 review pairs of cual-campo, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene campo reads them
+/// from historia/cuentos/cual-campo.json).
+List<ReviewPair> campoPairs() => _pairsOf('campo', campoPreviewCases);
 
 List<ReviewPair> _pairsOf(
   String scene,
