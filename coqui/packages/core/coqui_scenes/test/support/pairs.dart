@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:coqui_contracts/coqui_contracts.dart';
 
 import 'fixtures/balcon_preview_fixture.dart';
+import 'fixtures/banco_preview_fixture.dart';
 import 'fixtures/camino_preview_fixture.dart';
 import 'fixtures/campo_preview_fixture.dart';
 import 'fixtures/lago_preview_fixture.dart';
@@ -56,6 +57,10 @@ List<ReviewPair> campoPairs() => _pairsOf('campo', campoPreviewCases);
 /// The 11 review pairs of cual-lago, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene lago reads them
 /// from historia/cuentos/cual-lago.json).
 List<ReviewPair> lagoPairs() => _pairsOf('lago', lagoPreviewCases);
+
+/// The 12 review pairs of cual-banco, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene banco reads them
+/// from historia/cuentos/cual-banco.json).
+List<ReviewPair> bancoPairs() => _pairsOf('banco', bancoPreviewCases);
 
 List<ReviewPair> _pairsOf(
   String scene,
