@@ -49,8 +49,8 @@
    "SALY": 116,
    "SVY": [134, 143, 153],
    "ES": [27, 33],
-   "WY": [82, 88, 94],
-   "SILL": [104, 110, 116],
+   "WY": [80, 86, 92],
+   "SILL": [109, 115, 121],
    "STEAM": {
     "pot": -27,
     "potSmoke": -31,
@@ -444,26 +444,26 @@
    "what": "the sack of rice and the jar of beans on the shelf (W.estante)"
   },
   "ventana.183_30": {
-   "world": [4.9769, -3.5627, 0],
+   "world": [4.9497, -3.7531, 0],
    "on": "mueble",
    "old": [183, 30],
-   "new": [175, 82],
+   "new": [178, 80],
    "moved": true,
    "what": "the family at the window (familia27)"
   },
   "ventana.195_33": {
-   "world": [5.7928, -3.3996, 0],
+   "world": [5.7656, -3.5899, 0],
    "on": "mueble",
    "old": [195, 33],
-   "new": [187, 91],
+   "new": [190, 89],
    "moved": true,
    "what": "the family at the window (familia27)"
   },
   "ventana.207_30": {
-   "world": [6.2824, -3.5627, 0],
+   "world": [6.2552, -3.7531, 0],
    "on": "mueble",
    "old": [207, 30],
-   "new": [199, 94],
+   "new": [202, 92],
    "moved": true,
    "what": "the family at the window (familia27)"
   },
@@ -833,12 +833,12 @@
    "what": "the stool: its square top (half width 0.33) at z 0.55, its middle under the frog's feet (the old BANCO); four legs, a rail"
   },
   "ventana": {
-   "world": [8.65, 0, 2.1, 10.55, 0, 3.05],
+   "world": [8.4, 0, 1.95, 10.55, 0, 3.08],
    "hole": [
-    [177.03, 100.23],
-    [211.96, 117.69],
-    [211.96, 96.3],
-    [177.03, 78.84]
+    [172.43, 101.31],
+    [211.96, 121.07],
+    [211.96, 95.63],
+    [172.43, 75.86]
    ],
    "what": "the window on the back wall over the right counter (the kit's: frame with depth, the cross bars, the sill), the bush and the sky outside; hole: its opening on the screen (four corners)"
   },
@@ -2040,28 +2040,28 @@
    "line": 134,
    "act": "*",
    "src": "if(W.ventana&&W.ventana.length){c.save();c.beginPath();c.rect(176,22,38,36);c.clip();W.ventana.forEach((id,j)=>{const w=QUIEN[id],im=spr(\"pm\"+id+\"idle00\",()=>KIT.mkPersona(w,\"idle\",0,0));c.drawImage(im,176+j*12-KIT.PX+7,30+(j%2)*3);if(W.ventanacome)tenida(c,\"plato\",183+j*12,57);});c.restore();}",
-   "to": "if(W.ventana&&W.ventana.length){c.save();W.ventana.forEach((id,j)=>{const w=QUIEN[id],im=spr(\"pm\"+id+\"idle00\",()=>KIT.mkPersona(w,\"idle\",0,0));c.drawImage(im,168+j*12-KIT.PX+7,[82,88,94][j]+(j%2)*3);if(W.ventanacome)tenida(c,\"plato\",175+j*12,[104,110,116][j]);});c.restore();}",
+   "to": "if(W.ventana&&W.ventana.length){c.save();W.ventana.forEach((id,j)=>{const w=QUIEN[id],im=spr(\"pm\"+id+\"idle00\",()=>KIT.mkPersona(w,\"idle\",0,0));c.drawImage(im,171+j*12-KIT.PX+7,[80,86,92][j]+(j%2)*3);if(W.ventanacome)tenida(c,\"plato\",178+j*12,[109,115,121][j]);});c.restore();}",
    "places": [
     {
      "who": "ventana",
      "old": [183, 30],
-     "new": [175, 82],
-     "world": [4.9769, -3.5627, 0]
+     "new": [178, 80],
+     "world": [4.9497, -3.7531, 0]
     },
     {
      "who": "ventana",
      "old": [195, 33],
-     "new": [187, 91],
-     "world": [5.7928, -3.3996, 0]
+     "new": [190, 89],
+     "world": [5.7656, -3.5899, 0]
     },
     {
      "who": "ventana",
      "old": [207, 30],
-     "new": [199, 94],
-     "world": [6.2824, -3.5627, 0]
+     "new": [202, 92],
+     "world": [6.2552, -3.7531, 0]
     }
    ],
-   "why": "the family at the window (familia27): each one stands outside, close to the glass, the head in the opening, 8 px left of their old x (the third one whole inside the view with 3 px to spare), 52 to 64 rows from the old (the window is on the wall over the right counter); the plates on the sill under each one. The clip to the old window rectangle goes: the wall, the window's frame and the room are nearer than they are and are drawn again over them (front.ventana), so they are seen only through the opening, in front of its bars as the old"
+   "why": "the family at the window (familia27): each one stands outside, close to the glass, the head in the opening, 5 px left of their old x (the third one whole inside the view with 3 px to spare), 50 to 62 rows from the old (the window is on the wall over the right counter); the plates on the sill under each one. The clip to the old window rectangle goes: the wall, the window's frame and the room are nearer than they are and are drawn again over them (front.ventana), so they are seen only through the opening, in front of its bars as the old"
   },
   {
    "line": 216,
@@ -4663,11 +4663,11 @@
   "notes": [
    "inventory: 17 things (old 17), 2 frog places of LUGAR (old 2) and 9 frog places in all, 1 view (old 1), 35 positions (old 35), 12 review pairs of cual-estufa (24 pictures), 16 level pictures (old 16), 227 lines of estufa.js with numbers named in code (76 of them with places, each with its fate), 38 moves, 2 baked states (the old 164)",
    "hops: all 28 pairs of the frog's 8 places keep the old count; at 1117 step ends of the port's play he stands where the recorded run had him, or where moves puts that place (0 differ)",
-   "set things: the stove's pixels all inside its touch box [87,86,78,69] and answering it; every other part the room's (cocina, its box the whole picture, its hint box [36,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: estante x 26-83 y 20-51; izq x 0-111 y 39-125; salpicadero x 92-166 y 42-113; campana x 104-164 y 47-81; ventana x 171-214 y 76-123; estufa x 88-162 y 87-153; der x 139-239 y 112-192; banco x 113-138 y 177-191; banco.patas x 114-137 y 185-201",
+   "set things: the stove's pixels all inside its touch box [87,86,78,69] and answering it; every other part the room's (cocina, its box the whole picture, its hint box [36,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: estante x 26-83 y 20-51; izq x 0-111 y 39-125; salpicadero x 92-166 y 42-113; campana x 104-164 y 47-81; ventana x 167-214 y 73-126; estufa x 88-162 y 87-153; der x 139-239 y 112-192; banco x 113-138 y 177-191; banco.patas x 114-137 y 185-201",
    "light: the kit's one rule; every castShadow call of the set darkens the floor, each shadow within 4 px of its own thing (the set casts none: the run stands against the wall with its lit front to the room, the stool casts none); no floor pixel within 3 px of the stool (the thin thing on the floor) on its lit side differs from the floor without it (the stool is drawn after the room is baked: no ring of the engine's ambient occlusion round its legs); the run against the wall casts none (its lit front faces the room)",
-   "window: its opening (735 px) shows the outside: 205 px of sky, 105 of the bush and the hedge, 425 of its bars, the reveal and the frame (the kit's, with depth and a sill)",
+   "window: its opening (1020 px) shows the outside: 303 px of sky, 162 of the bush and the hedge, 555 of its bars, the reveal and the frame (the kit's, with depth and a sill)",
    "thin things of the set against what is behind them (WCAG contrast ratio of the mean luminances; each part's pixels): estante 3.68 (94% of its pixels at 2.0 or more); banco.patas 5.42 (98% of its pixels at 2.0 or more)",
-   "drawn: at 16908 moments (every tick inside the acts of the port's play of the 12 runs, every step's end, every pair picture) composed as estufa.js draws them (each item owns what it drew last; the stool drawn again over whoever stands behind it, the room over the window's people): no part of the set over any face; 138 things standing on a top (the pots and the pan, the cups, the tray, the plates, the jug, the board, the sack and the jar on the shelf), each with 90% and more of its foot over it and nothing of the set over it; 14225 moments of the frog on the stool, his feet on its top; 3211 step ends of someone standing in the view, each on clear floor at least .15 in front of the run",
+   "drawn: at 16908 moments (every tick inside the acts of the port's play of the 12 runs, every step's end, every pair picture) composed as estufa.js draws them (each item owns what it drew last; the stool drawn again over whoever stands behind it, the room over the window's people): no part of the set over any face; 138 things standing on a top (the pots and the pan, the cups, the tray, the plates, the jug, the board, the sack and the jar on the shelf), each with 90% and more of its foot over it and nothing of the set over it; 14225 moments of the frog on the stool, his feet on its top; 3211 step ends of someone standing in the view, each on clear floor at least .15 in front of the run; 1458 faces at the window, each 75% and more seen through its opening",
    "seen: at 4295 person- and frog-moments (every step's end of the 12 runs) each seen no less than in the old picture less 10%, the face no less (0 less); everyone and everything wholly inside the view in the old picture of a moment wholly inside with 3 px to spare (0 not)",
    "bubbles: 1850 bubbles (each person's recorded one and \"amor\" when touched, the frog's) at every moment: wholly inside the view (1 px from its edge at the least), clear of the rounds card, on no face",
    "asks: 44 distinct asks (for abuela, abuelo, di_arroz, di_hab, di_huevo, di_pollo, espera, jarra, luis, mama, olla0, olla1, papa, pzhuevo, pzpollo, saca, saco, salhuevo, salpollo, tazon): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the room by its hint box), no frame's rings across a face where the old frame's were not (as the old: cuidado beats.27 (abuelo) luis's face; cuidado beats.27 (abuelo) mama's face; cuidado beats.28 (mama) abuelo's face; cuidado beats.58 (papa) mama's face; el-pollo-y-el-huevo beats.27 (pzhuevo) the frog's face), the hint hand on no face and not cut by the view's edge where the old was not (as the old: arroz-con-habichuelas beats.22 (olla1): on luis's face; cuidado beats.11 (olla1): on luis's face; h-estufa beats.11 (olla1): on abuela's face); 28 answer cards, each with its lit frame and glow 4 px and more inside the view (4 at the least), 2 px clear of the rounds card and of everyone's head and body, over no pot, pan or thing; the hint round each card 2 px inside the view and across no head, its hand on no face; 37 times a thing asked for or among the choices: whole in the view, covered no more than in the old picture (saco (arroz-con-habichuelas right beats.13, as the old: tazon); saco (arroz-con-habichuelas right beats.41, as the old: tazon); jarra (cuidado right beats.14, as the old: tazas); saco (h-estufa right beats.3, as the old: tazon); saco (h-estufa right beats.4, as the old: tazon); saco (h-estufa right beats.6, as the old: tazon)), a plain surface round it",

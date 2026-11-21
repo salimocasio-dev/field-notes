@@ -60,7 +60,7 @@ const VIEW_X0 = 22, VIEW = [VIEW_X0, 0, 196, 216];
   fs.writeFileSync(OUT, t);
   console.log('wrote ' + path.relative(REPO, OUT) + ' (' + t.length + ' bytes)');
   for (const n of sheet.checks.notes) console.log('  ' + n);
-  console.log('  (not in the sheet, it changes from run to run) bake in headless Chrome, a fresh page each: ' + STATES.map(k => k + ' first ' + R(G.ms[k].first) + ' ms, again ' + R(G.ms[k].warm) + ' ms').join('; '));
+  console.log('  (not in the sheet, it changes from run to run) bake in headless Chrome, the slowest of three fresh pages: ' + STATES.map(k => k + ' first ' + R(G.ms[k].first) + ' ms, again ' + R(G.ms[k].warm) + ' ms').join('; '));
   if (problems.length) { const g = new Map(); for (const q of problems) { const k = q.replace(/ \((?:[^()]|\([^()]*\))*\)$/, ''); if (!g.has(k)) g.set(k, [q, 0]); g.get(k)[1]++; }
     console.log('CHECK FAILED (' + problems.length + ', ' + g.size + ' kinds):\n  ' + [...g.values()].slice(0, 200).map(([q, n]) => (n > 1 ? n + ' x ' : '') + q).join('\n  ')); process.exit(1); }
   console.log('check: ok (every rule above)');
@@ -90,7 +90,10 @@ async function setData(browser, errs) {
       return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(bakedZ), rgb: rgbA, calls, first: BAKE_MS, warm, shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), onGround, surf };
     });
     await page.close();
-    G.ms[key] = { first: g.first, warm: g.warm };
+    // the bake as the port does it (no part tags), in three fresh pages: the slowest first bake, and a second bake in the same page
+    { const firsts = [], warms = []; for (let n = 0; n < 3; n++) { const pg = await browser.newPage(); await pg.goto('file://' + path.join(__dirname, 'estufa-set.html') + '?' + queryOf(key));
+        const t = await pg.evaluate(() => { const t1 = performance.now(); buildSet(); return [BAKE_MS, performance.now() - t1]; }); firsts.push(t[0]); warms.push(t[1]); await pg.close(); }
+      G.ms[key] = { first: Math.max(...firsts), warm: Math.max(...warms) }; }
     if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S });
     G.parts[key] = g.parts; G.z[key] = g.z; G.rgb[key] = g.rgb; G.shadows[key] = g.calls; G.shadowPx[key] = g.shadowPx; G.onGround[key] = g.onGround; G.surf[key] = g.surf;
     // the set without each standing part: what is behind it (thin things' contrast, the lit side of each thing)
@@ -362,7 +365,7 @@ function designMoves(E, F) {
   ENY.tazas = Math.floor(Gm.rowOn(EN.tazas[0], EN.tazas[1]).hi);   // the clean cups at the front of the right counter, before the jug   // the jug at the back of the right counter: its hint hand ends above the faces of whoever stands before it
   const BJ = Gm.rowOn(50, 46).y + 1, REPY = R(Gm.topY(190, .3)) + 1, SALY = R(Gm.topY(126, F.D - .2)) + 1;
   const SVY = [0, 1, 2].map(i => Gm.rowOn(180 + i * 19, 30).y + 1);
-  const ES = [Gm.shelfRow(38) + 1, Gm.shelfRow(50) + 1], WY = [0, 1, 2].map(j => Gm.holeTop(175 + j * 12) + 4), SILL = [0, 1, 2].map(j => Gm.sillRow(175 + j * 12) + 1);
+  const ES = [Gm.shelfRow(38) + 1, Gm.shelfRow(50) + 1], WY = [0, 1, 2].map(j => Gm.holeTop(178 + j * 12) + 1), SILL = [0, 1, 2].map(j => Gm.sillRow(178 + j * 12) + 1);
   const STEAM = { pot: -27, potSmoke: -31, pan: -20 };
   const NUM = { FYS, FDY, ENX: Object.fromEntries(Object.entries(EN).map(([k, v]) => [k, v[0]])), ENY, BJ, REPY, SALY, SVY, ES, WY, SILL, STEAM };
   const M = [];
@@ -408,9 +411,9 @@ function designMoves(E, F) {
   mv('*', es, es.replace('tenida(c,"saco",38,50,0,0,v)', 'tenida(c,"saco",38,' + ES[0] + ',0,0,v)').replace('tenida(c,"frasco",50,50,0,0,v)', 'tenida(c,"frasco",50,' + ES[1] + ',0,0,v)'),
     'the sack of rice and the jar of beans on the shelf (W.estante): on its board at their x (the shelf on the wall over the left counter, ' + (ES[0] - 50) + ' rows from the old)', [['saco', [38, 50], [38, ES[0]]], ['frasco', [50, 50], [50, ES[1]]]]);
   const vn = LINES[lineOf('if(W.ventana&&W.ventana.length){c.save();') - 1].trim();
-  mv('*', vn, vn.replace('c.save();c.beginPath();c.rect(176,22,38,36);c.clip();', 'c.save();').replace('176+j*12-KIT.PX+7', '168+j*12-KIT.PX+7').replace('30+(j%2)*3', JSON.stringify(WY) + '[j]+(j%2)*3').replace('tenida(c,"plato",183+j*12,57)', 'tenida(c,"plato",175+j*12,' + JSON.stringify(SILL) + '[j])'),
-    'the family at the window (familia27): each one stands outside, close to the glass, the head in the opening, 8 px left of their old x (the third one whole inside the view with 3 px to spare), ' + (WY[0] - 30) + ' to ' + (WY[2] - 30) + ' rows from the old (the window is on the wall over the right counter); the plates on the sill under each one. The clip to the old window rectangle goes: the wall, the window\'s frame and the room are nearer than they are and are drawn again over them (front.ventana), so they are seen only through the opening, in front of its bars as the old',
-    [0, 1, 2].map(j => ['ventana', [183 + j * 12, 30 + (j % 2) * 3], [175 + j * 12, WY[j] + (j % 2) * 3]]));
+  mv('*', vn, vn.replace('c.save();c.beginPath();c.rect(176,22,38,36);c.clip();', 'c.save();').replace('176+j*12-KIT.PX+7', '171+j*12-KIT.PX+7').replace('30+(j%2)*3', JSON.stringify(WY) + '[j]+(j%2)*3').replace('tenida(c,"plato",183+j*12,57)', 'tenida(c,"plato",178+j*12,' + JSON.stringify(SILL) + '[j])'),
+    'the family at the window (familia27): each one stands outside, close to the glass, the head in the opening, 5 px left of their old x (the third one whole inside the view with 3 px to spare), ' + (WY[0] - 30) + ' to ' + (WY[2] - 30) + ' rows from the old (the window is on the wall over the right counter); the plates on the sill under each one. The clip to the old window rectangle goes: the wall, the window\'s frame and the room are nearer than they are and are drawn again over them (front.ventana), so they are seen only through the opening, in front of its bars as the old',
+    [0, 1, 2].map(j => ['ventana', [183 + j * 12, 30 + (j % 2) * 3], [178 + j * 12, WY[j] + (j % 2) * 3]]));
   // people who stand at the right counter: on clear floor in front of it
   const pl = LINES[lineOf('await Promise.all([mueve("abuela",EN.platos[0]+4,LADO[1][1]+4)') - 1].trim(), ya = Gm.clearY(188), yc = Gm.clearY(206);
   mv('platos27', pl, pl.replace('mueve("abuela",EN.platos[0]+4,LADO[1][1]+4)', 'mueve("abuela",EN.platos[0]+4,LADO[1][1]+' + Math.max(4, ya - 176) + ')').replace('mueve("carmen",EN.platos[0]+22,LADO[1][1]+12)', 'mueve("carmen",EN.platos[0]+20,LADO[1][1]+' + Math.max(12, yc - 176) + ')'),
@@ -802,19 +805,24 @@ function check(sh, G, runs) {
     if (side === 'n') { const Z = G.z[key], TG = TAGS[key], PL = its.map(it => it.group === 'list' ? planeOf(it, w) : null);
       if (key === 'banco1') for (const part of FRONT.banco) for (const i of G.parts[key][part] || []) { if (STAMP[i] !== stampN) continue; const j = OWN[i], pl = PL[j]; if (pl == null) continue; const y = Math.floor(i / 240); if (Z[i] > pl / COS - (y + .5 - E.OY) * T30 / E.S) cov.set(i, part); }
       const wi = its.findIndex(it => it.kind === 'ventana'); if (wi >= 0) for (const it of [its[wi]]) for (const [y, a, b] of it.rows) for (let x = Math.max(0, a); x <= Math.min(239, b); x++) { const i = y * 240 + x; if (STAMP[i] !== stampN || OWN[i] !== wi || !FRONT.ventana.includes(TG[i])) continue; const v = (x + .5 - E.OX) / E.S - .05 * E.R2; if (Z[i] > v / COS - (y + .5 - E.OY) * T30 / E.S) cov.set(i, TG[i]); } }
+    LASTCOV = cov;
     return its.map(it => { let tot = 0, vis = 0, fTot = 0, fVis = 0; const by = {}, hid = {}, face = faceOf(it);
       for (const [y, a, b] of it.rows) { if (y < 0 || y >= 216) continue; for (let x = Math.max(0, a); x <= Math.min(239, b); x++) { const i = y * 240 + x; tot++; const inF = face && x >= face[0] && x < face[0] + face[2] && y >= face[1] && y < face[1] + face[3]; if (inF) fTot++;
         const mine = STAMP[i] === stampN && OWN[i] === it.j, c = cov.get(i); if (!mine) { const h = its[OWN[i]].id; hid[h] = (hid[h] || 0) + 1; } else if (c) { hid[c] = (hid[c] || 0) + 1; by[c] = (by[c] || 0) + (inF ? 1000 : 1); } else { vis++; if (inF) fVis++; } } }
       return { it, tot, vis, fTot, fVis, by, hid, face }; }); };
+  const STAMPv = (x, y, it) => { if (x < 0 || y < 0 || x >= 240 || y >= 216) return false; const i = y * 240 + x; return STAMP[i] === stampN && OWN[i] === it.j && !LASTCOV.has(i); };
+  let LASTCOV = new Map();
 
   // the moments: every tick inside the acts of the port's play and every step's end, every pair picture
   const allW = []; runs.forEach((r, ri) => { for (const t of NEW[ri].ticks) allW.push([r.story.id + ' ' + r.plan + ' t ' + t.t, t.W, 'tick']); for (const L of NEW[ri].states) allW.push([r.story.id + ' ' + r.plan + ' ' + L.path, L.W, 'step']); });
   for (const ps of pairSides) allW.push(['pair ' + deacc(ps.w) + '.' + ps.side, pairW(ps, sh), 'pair']);
   const TOPS = ['izq', 'estufa', 'der'];
-  { const bad = new Map(), restBad = new Map(), stoolBad = new Map(), floorBad = new Map(); let nM = 0, nRest = 0, nStool = 0, nFloor = 0; const restSeen = new Set();
+  { const bad = new Map(), restBad = new Map(), stoolBad = new Map(), floorBad = new Map(), winBad = new Map(); let nM = 0, nRest = 0, nStool = 0, nFloor = 0, nWin = 0; const restSeen = new Set();
     for (const [where, w, kind] of allW) { nM++; const C = compose(w, 'n'), key = keyOf(w);
       for (const r of C) { const it = r.it;
         for (const [part, n] of Object.entries(r.by)) { const faceN = Math.floor(n / 1000); if (faceN) bad.set(part + ' over ' + it.id + '\'s face', where + ': ' + faceN + ' px'); }
+        if (it.kind === 'ventana') { const NUMv = sh.layout.numbers; (w.ventana || []).forEach((id, j) => { const f = [178 + j * 12 - 6, NUMv.WY[j] + (j % 2) * 3 + 6, 12, 10]; let n = 0, v = 0;
+            for (let y = f[1]; y < f[1] + f[3]; y++) for (let x = f[0]; x < f[0] + f[2]; x++) { n++; if (STAMPv(x, y, it)) v++; } nWin++; if (v < n * .75) winBad.set(id + ' at the window', where + ': ' + v + ' of ' + n + ' px of the face seen'); }); }
         // what stands on a top rests on it: its lowest row over the top (or the shelf), and nothing of the set over it
         if (it.group === 'pre' && ['pot', 'thing'].includes(it.kind) && !restSeen.has(it.key + key)) { restSeen.add(it.key + key); nRest++; const rs = it.rows.filter(q => q[0] >= 0 && q[0] < 216); if (!rs.length) continue; const last = Math.max(...rs.map(q => q[0])), on = it.id === 'estante' ? ['estante'] : TOPS; let n = 0, ok = 0;
           for (const [y, a, b] of rs) if (y >= last - 1) for (let x = a; x <= b; x++) { if (x < x0 || x >= x0 + 196) continue; n++; if (on.includes(E.surf(key, x + .5, y + 1.5))) ok++; }
@@ -827,7 +835,8 @@ function check(sh, G, runs) {
     for (const [k, v] of [...restBad].slice(0, 30)) P.push('on a top: ' + k + ' (' + v + ')');
     for (const [k, v] of [...stoolBad].slice(0, 10)) P.push('stool: the frog ' + k + ' (' + v + ')');
     for (const [k, v] of [...floorBad].slice(0, 30)) P.push('floor: ' + k + ' (' + v + ')');
-    notes.push('drawn: at ' + nM + ' moments (every tick inside the acts of the port\'s play of the ' + runs.length + ' runs, every step\'s end, every pair picture) composed as estufa.js draws them (each item owns what it drew last; the stool drawn again over whoever stands behind it, the room over the window\'s people): no part of the set over any face; ' + nRest + ' things standing on a top (the pots and the pan, the cups, the tray, the plates, the jug, the board, the sack and the jar on the shelf), each with 90% and more of its foot over it and nothing of the set over it; ' + nStool + ' moments of the frog on the stool, his feet on its top; ' + nFloor + ' step ends of someone standing in the view, each on clear floor at least .15 in front of the run'); }
+    for (const [k, v] of [...winBad].slice(0, 10)) P.push('window: ' + k + ' (' + v + ')');
+    notes.push('drawn: at ' + nM + ' moments (every tick inside the acts of the port\'s play of the ' + runs.length + ' runs, every step\'s end, every pair picture) composed as estufa.js draws them (each item owns what it drew last; the stool drawn again over whoever stands behind it, the room over the window\'s people): no part of the set over any face; ' + nRest + ' things standing on a top (the pots and the pan, the cups, the tray, the plates, the jug, the board, the sack and the jar on the shelf), each with 90% and more of its foot over it and nothing of the set over it; ' + nStool + ' moments of the frog on the stool, his feet on its top; ' + nFloor + ' step ends of someone standing in the view, each on clear floor at least .15 in front of the run; ' + nWin + ' faces at the window, each 75% and more seen through its opening'); }
 
   /* at every step's end each person's and the frog's share seen no less than in the old picture of that moment less 10%, their face no less at all;
      whoever was wholly inside the view in the old picture is wholly inside with 3 px to spare */
