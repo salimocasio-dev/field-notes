@@ -7,6 +7,7 @@
 // - On the real El frente: the traces of every file that plays on it, all three plans, once its scene is in the registry.
 // - On the real El balcón (order 30b): the same, for its four files.
 // - On the real La sala (order 31b): the same, for its six files.
+// - On the real El patio (order 32b): the same, for its six files.
 import 'dart:convert';
 import 'dart:io';
 
@@ -42,6 +43,9 @@ final Map<String, String?> balconWhole = {};
 
 /// Each sala run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> salaWhole = {};
+
+/// Each patio run's first difference with the old trace, time and hops included (null: equal whole).
+final Map<String, String?> patioWhole = {};
 
 void main() {
   final root = findRoot();
@@ -361,6 +365,103 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in salaWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real El patio (order 32b): the yard is built round the old picture, so its places keep their screen numbers but
+  // the few the sheet moves (`moves`); the runs are the old ones in everything but time and the places its state line
+  // writes. The frog's two places at the gate moved (8 pairs of places take one hop more: the sheet's hops), and no
+  // recorded run walks one of those pairs, so the hops are the old ones too. The scene draws its random numbers (`azar`:
+  // which side of the crate each child stands) from the game's one source, as the old one drew from Math.random.
+  group('the recorded runs, on the real El patio (order 32b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final patio = {
+      for (final r in runs)
+        if (r['scene'] == 'patio') r['story'] as String,
+    };
+    test('the six files of El patio', () {
+      expect(patio, {
+        'las-flores',
+        'que-es-esto',
+        'hasta-manana',
+        'd-la-bola',
+        'd-buenas-noches',
+        'h-patio',
+      });
+    });
+    for (final s in patio) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            // a new scene for each run, given the run's random source
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('patio'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            expect(
+              firstDifference(
+                placeless(forTimeless(c.committed)),
+                placeless(forTimeless(c.trace)),
+              ),
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            // the hops and the random draws are the old ones (the sheet's hops: no recorded run walks a pair that changed)
+            expect(hops(c.trace), hops(c.committed), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            // the whole trace, time and hops included: printed for the order's report, not a condition
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            patioWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    // the screen's scene factory gives the scene the story runner's random source: `lados` draws which side of the crate
+    // each child is on, once, from it
+    test(
+      'registryScenes gives El patio the random source it is given',
+      () async {
+        final rng = CountingRng(Mulberry32(1));
+        final made = await registryScenes('patio', rng);
+        final host = StillFrame(made.scene as SetScene).host..fresh();
+        expect(rng.draws, 0);
+        await (made.scene as Escena).acts['inicio9']!({});
+        expect(host.W['gente'], contains('luis'));
+        await (made.scene as Escena).acts['lados']!({});
+        expect(rng.draws, 1);
+      },
+    );
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/patio-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in patioWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}'].join('\n')}\n',
         );
     });
   });

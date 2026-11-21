@@ -35,5 +35,20 @@
   { "id": "sala/luz-1-fotos-100", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=100" },
   { "id": "sala/luz-1-fotos-110", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=110" },
   { "id": "sala/luz-1-fotos-111", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=111" },
-  { "id": "sala/luz-1-fotos-010", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=010" }
+  { "id": "sala/luz-1-fotos-010", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=010" },
+  { "id": "patio/hora-dia-door-shut-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=dia&door=shut&gate=shut" },
+  { "id": "patio/hora-dia-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=dia&door=open&gate=shut" },
+  { "id": "patio/hora-dia-door-shut-gate-open", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=dia&door=shut&gate=open" },
+  { "id": "patio/hora-tarde-door-shut-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=tarde&door=shut&gate=shut" },
+  { "id": "patio/hora-tarde-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=tarde&door=open&gate=shut" },
+  { "id": "patio/hora-tarde2-door-shut-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=tarde2&door=shut&gate=shut" },
+  { "id": "patio/hora-tarde2-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=tarde2&door=open&gate=shut" },
+  { "id": "patio/hora-ocaso-door-shut-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=ocaso&door=shut&gate=shut" },
+  { "id": "patio/hora-ocaso-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=ocaso&door=open&gate=shut" },
+  { "id": "patio/hora-ocaso-door-open-gate-open", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=ocaso&door=open&gate=open" },
+  { "id": "patio/hora-crepusculo-door-shut-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=crepusculo&door=shut&gate=shut" },
+  { "id": "patio/hora-crepusculo-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=crepusculo&door=open&gate=shut" },
+  { "id": "patio/hora-noche-door-shut-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=shut&gate=shut" },
+  { "id": "patio/hora-noche-door-open-gate-shut", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=open&gate=shut" },
+  { "id": "patio/hora-noche-door-open-gate-open", "kind": "set", "page": "docs/proyecto/pixel/patio-set.html", "query": "?hora=noche&door=open&gate=open" }
 ]

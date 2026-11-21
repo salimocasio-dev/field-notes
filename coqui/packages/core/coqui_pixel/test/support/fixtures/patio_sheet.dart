@@ -1,0 +1,3942 @@
+// Made by tool/make_sheet_fixture.dart from docs/proyecto/pixel/patio-sheet.json. Do not edit.
+// ignore_for_file: lines_longer_than_80_chars
+
+/// El patio's sheet (order 32a), the text of the file, for the tests that run in a browser.
+const String patioSheetJson = r'''{
+ "scene": "patio",
+ "made": "node docs/proyecto/pixel/patio-sheet-make.js, from patio-set.html (window.PATIO_SET) and coqui/ref/escenas/patio/. Order 32a.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": 4
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "pairPicture": [196, 104],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin; a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]",
+  "floor": "the yard is built round the old picture: a place on its lawn keeps its screen place. A frog place q: the ground point under (q.x + 16, q.y + 25), new q = old q. A person's place (x, y): the ground point under (x, y - 1), new (x, y) = old. So every ground position of patio.js, its stories and its pairs keeps its numbers, but for the few in moves; the sheet names each one (spots, remap, code, moves) with its world point",
+  "relative": "what the old code draws or moves relative to a person, the frog or a point (what they carry, the flower in Carmen's hair, the fireflies \"with\" someone, the bubbles, the ball at p.x + 12) keeps its offsets",
+  "sky": "screen-space effects keep their old numbers: the stars of the happy endings (final9, final10, final11), the heart (heartAt), the bird's loop (aveloop) and its flights, the fireflies' way out (stake: 226, 58)",
+  "view": "one view, zoom 1: the 196 x 216 window from x0 22, the old wide one",
+  "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were"
+ },
+ "layout": {
+  "what": "the yard built as La sala is: two walls on the world's axes, seen at the engine's 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture's sides and bottom. On the LEFT the back of the house: its back wall on x = -1.904392167527876 (it faces +x, in shade, teal siding as El frente's side wall), from its far corner (a white corner board, screen x 76) down off the picture's left edge; in it the back door in its white frame on a stone step (screen x 34 to 69); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = -1.604392167527876 (it faces +y, lit), from the far corner off the picture's right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x 115 to 163); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence's first post the yard opens on a field and low hills (the horizon at row 84), where the sun goes down. The gate opens into the yard: its leaf swung on its left post, its face seen; through the empty opening a path of trodden earth goes out over the field and winds up the hill behind. Through the open door a dark room (no story lights it): abuela stands in the doorway, on its threshold. The lawn is the same grass as El frente's and El balcón's (round 4: the engine's GRASS ramp, centred where El frente's lawn is), calm (mostly one tone, Bayer-mixed with its neighbours), no blooms in its grass round the beds, the crate and the ball, right up to the beds; the beds are turned earth in lumps, a hole for each flower, nothing round them (round 6: a flower's leaves are its own, the sprite layer's: flowerLeaves)",
+  "lines": {
+   "corner": [114.48, 79.75],
+   "cornerWhat": "the far corner (where the two lines meet), on the screen",
+   "wall": {
+    "foot": "row = 136.99 - x / 2",
+    "leftEdge": [0, 136.99],
+    "viewLeft": [22, 125.99],
+    "farEnd": [76, 98.99],
+    "what": "the house wall's foot: from the house's far corner down to the left; it leaves the picture at its left edge (and the view at x 22)"
+   },
+   "fence": {
+    "foot": "row = 22.5 + x / 2",
+    "rightEdge": [240, 142.5],
+    "viewRight": [218, 131.5],
+    "what": "the fence's foot: from the far corner down to the right; it leaves the picture at its right edge (and the view at x 218)"
+   },
+   "gap": "between the house's far corner (x 76) and the fence's first post (x 114): the field and the hills, where the sun goes down"
+  },
+  "gate": {
+   "porton": {
+    "at": [126, 86],
+    "before": 17.5,
+    "oldPicture": 17,
+    "round3": {
+     "at": [128, 104],
+     "before": 34.5
+    }
+   },
+   "sale": {
+    "at": [130, 68],
+    "before": -2.5,
+    "oldPicture": -3,
+    "round3": {
+     "at": [134, 84],
+     "before": 11.5
+    }
+   },
+   "what": "the frog's two places at the gate (LUGAR.porton: he stops at it; LUGAR.sale: he goes out through it and fades), in rows his feet are in front of the fence's line at his column (< 0: past it). The old picture: porton 17 rows before its gate, sale 3 rows past it. Round 4: they follow the gate (moves): porton 17.5 rows before it, his middle at x 142 (the opening x 135 to 157); sale 2.5 rows past it, on the path, his box between the posts. Round 3 had left them where the old hop counts put them: porton 34.5 rows before, sale 11.5 rows before (on the lawn). So some hop counts of pairs with porton or sale are not the old ones: hops lists them"
+  },
+  "why": "page 11 decision 9 and the owner's three approved sets (El frente, El balcón, La sala): walls run along the world's axes and are seen at the engine's angle. Every place on the lawn keeps its old screen point (rules.floor). Round 3: everyone on the lawn has at least 5 rows of lawn between their feet and the foot of what stands behind them (round 2 put the lines as low as the places allowed, and the frog read as standing on the wall's base, the boy on the fence's): the wall's line went up 1 row, held by the frog at the door (LUGAR.puerta) before the door's step; the fence's 1 row, held by Carmen at the open gate (pair vamos, 168, 120) and the walk to the gate; the trunk stands against the fence, held by the frog at the tree. The old sun sank at x 100, right where the corner rises: a house wall there would hide it at every height, so the house ends short of the corner and the sun goes down in the gap, behind the field and the hills",
+  "moved": [
+   "the back door: its middle 10 px right of the old one (x 42 to 52), 1.5 units wide (round 3; the old opening 30 px), its threshold on the house wall's foot (row 109, the old 112); box [34,40,35,80] (old [27, 57, 30, 56]). Follow it: abuela in the door (asoma) and whoever goes in (seva), in moves",
+   "the gate: its middle 1 px left of the old one (x 147 to 146), its posts at x 133 and 159, its foot on the fence's line, 16 rows further back (row 112 to 96); box [115,42,48,63] (old [127, 70, 40, 43]; it holds the leaf shut and swung open into the yard). Follow it: the walk to the gate (juntos, luiscorre) and (round 4) the frog's two places there, LUGAR.porton and LUGAR.sale (layout.gate), in moves",
+   "the flamboyán: its trunk's foot 13 rows lower (row 114 to 127), at the same x (204), against the fence (round 3: 0.12 in front of it, round 2 .35): the trunk is longer; its crown where the old one was (its left lobe 4 px right, clear of the gate's box). Nothing follows: the frog at the tree (LUGAR.arbol) is before the trunk, 5 rows of lawn and more between them",
+   "the sixth star: from (112, 58) to [100,44] (moves)",
+   "unchanged: the nest (181, 66) and every landing of the bird on it; the bird on the fence (178, 83), on a post's cap; the ball in the tree (196, 64); the sun (SOLX 100), the moon (150, 26)"
+  ]
+ },
+ "behind": {
+  "what": "the sky is the set's (baked per hour); what moves or twinkles in it is the sprite layer's, drawn behind the set: the sun (sol(), its rays turning with F, sinking with W.soly), the moon (luna()) and the stars (ESTRELLAS, twinkling). Each is drawn first in the sprite layer, then the set's own pixels are drawn again inside its box wherever the set has drawn anything (bakedZ > -1e8, and the leaves of that frame): the sky objects are farther than everything (depth -1e9, SetOverSprites). The hills are the set's, at depth -10000000 (farther than any of the set's things, nearer than the sky objects). So the sun goes down behind the field and the hills in the gap between the house and the fence, and the house hides the stars at 40, 46 (as the old picture did), 60, 18 and 72, 64",
+  "items": [
+   {
+    "at": "patio.js:131",
+    "what": "the stars (W.estrella, W.noche)",
+    "boxes": "each star [x - 1, y - 1, 4, 4]"
+   },
+   {
+    "at": "patio.js:132",
+    "what": "the moon (W.luna) at 150, 26; the sun at SOLX, soly (W.soly < 110)",
+    "boxes": "moon [139, 15, 24, 22]; sun [SOLX - 21, soly - 21, 42, 42] (its rays)"
+   }
+  ]
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["dia", "tarde", "tarde2", "ocaso", "crepusculo", "noche"],
+    "fromW": "W.noche ? \"noche\" : n = min(3, W.sol || 0): n < 3 ? [\"dia\", \"tarde\", \"tarde2\"][n] : (W.osc >= .25 ? \"crepusculo\" : \"ocaso\"). The sky (the old cielo(n)) and the light of the hour on the set (the old overlays of patio.js:147-148, W.osc) are baked, as El frente's dusk; the characters are not dimmed"
+   },
+   "door": {
+    "values": ["shut", "open"],
+    "fromW": "W.pdoor ? \"open\" : \"shut\" (the back door)"
+   },
+   "gate": {
+    "values": ["shut", "open"],
+    "fromW": "W.porton ? \"open\" : \"shut\" (the garden gate)"
+   }
+  },
+  "key": "hora + \"-\" + door + \"-\" + gate, e.g. \"dia-shut-shut\"",
+  "baked": [
+   {
+    "key": "dia-shut-shut",
+    "query": "?hora=dia&door=shut&gate=shut"
+   },
+   {
+    "key": "dia-open-shut",
+    "query": "?hora=dia&door=open&gate=shut"
+   },
+   {
+    "key": "dia-shut-open",
+    "query": "?hora=dia&door=shut&gate=open"
+   },
+   {
+    "key": "tarde-shut-shut",
+    "query": "?hora=tarde&door=shut&gate=shut"
+   },
+   {
+    "key": "tarde-open-shut",
+    "query": "?hora=tarde&door=open&gate=shut"
+   },
+   {
+    "key": "tarde2-shut-shut",
+    "query": "?hora=tarde2&door=shut&gate=shut"
+   },
+   {
+    "key": "tarde2-open-shut",
+    "query": "?hora=tarde2&door=open&gate=shut"
+   },
+   {
+    "key": "ocaso-shut-shut",
+    "query": "?hora=ocaso&door=shut&gate=shut"
+   },
+   {
+    "key": "ocaso-open-shut",
+    "query": "?hora=ocaso&door=open&gate=shut"
+   },
+   {
+    "key": "ocaso-open-open",
+    "query": "?hora=ocaso&door=open&gate=open"
+   },
+   {
+    "key": "crepusculo-shut-shut",
+    "query": "?hora=crepusculo&door=shut&gate=shut"
+   },
+   {
+    "key": "crepusculo-open-shut",
+    "query": "?hora=crepusculo&door=open&gate=shut"
+   },
+   {
+    "key": "noche-shut-shut",
+    "query": "?hora=noche&door=shut&gate=shut"
+   },
+   {
+    "key": "noche-open-shut",
+    "query": "?hora=noche&door=open&gate=shut"
+   },
+   {
+    "key": "noche-open-open",
+    "query": "?hora=noche&door=open&gate=open"
+   }
+  ],
+  "bakedWhy": "order 06 found 73 states: what makes them is the sky (W.sol, W.noche, W.osc), the back door, the gate, the crate, the flowers in the beds and the sack. Only the hour, the door and the gate are the set's; the crate, the flowers, the sack, the ball, the sun, the moon and the stars are drawn by the sprite layer, so these 15 baked states draw all 73 (and every review and level picture)"
+ },
+ "things": {
+  "luis": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "carmen": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "bebe": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "abuela": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "abuelo": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "mama": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "papa": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "bola": {
+   "sprite": true,
+   "prop": true,
+   "why": "the ball (sprite layer): box [x - 7, y - 13, 14, 14] at W.bola, unchanged"
+  },
+  "saco": {
+   "sprite": true,
+   "prop": true,
+   "why": "the sack (sprite layer): box [x - 13, y - 23, 26, 24] at W.saco, unchanged"
+  },
+  "caja": {
+   "sprite": true,
+   "prop": true,
+   "why": "the crate of potted flowers (sprite layer, mkCaja at points.caja): box [104, 112, 32, 24], unchanged",
+   "box": [104, 112, 32, 24]
+  },
+  "camaL": {
+   "set": true,
+   "world": [1.7406, 4.569, 0, 3.2636, 6.092, 0.4441],
+   "box": [40, 159, 57, 39],
+   "what": "bed L: the earth (the set, painted on the lawn at the old ellipse) and the flowers over it (the sprite layer): the box round both, as the old one",
+   "old": {
+    "box": [40, 160, 56, 38]
+   }
+  },
+  "camaR": {
+   "set": true,
+   "world": [4.569, 1.7406, 0, 6.092, 3.2636, 0.4441],
+   "box": [144, 159, 56, 39],
+   "what": "bed R, as bed L",
+   "old": {
+    "box": [144, 160, 56, 38]
+   }
+  },
+  "sol": {
+   "sprite": true,
+   "prop": true,
+   "why": "the sun (the sprite layer, drawn behind the set: sheet behind): box [SOLX - 14, soly - 14, 28, 28] while !W.noche and soly < 80, unchanged (SOLY[0] 26: moves)"
+  },
+  "porton": {
+   "set": true,
+   "world": [-1.1723, -2.2208, 0, 0.1005, -0.948, 1.6877],
+   "box": [115, 42, 48, 63],
+   "what": "the garden gate in the fence: its two posts and the leaf, shut and open (open, round 3: the leaf swung into the yard on its left post, 78 degrees, its face seen; the opening empty, the path through it)",
+   "old": {
+    "box": [127, 70, 40, 43]
+   },
+   "hand": [133, 46],
+   "handWhy": "the hint hand's point (kit.js cosas: hand, as El frente's house has one): the near post's cap, the gate's top left. The hand hangs 54 rows below its point; Luis waits before the gate (hasta-manana beats.32, at 138, 138), right of it (beats.5, 178, 126) and further right (h-patio beats.12, 180, 150): from the cap the hand ends over his head and left of him (lower on the leaf, or at its middle, it is on his face)"
+  },
+  "nido": {
+   "set": true,
+   "world": [-0.8975, -4.2154, 0, -0.2992, -3.6171, 0.2221],
+   "box": [170, 60, 22, 16],
+   "what": "the nest on its branch (the box round it and the bird on it, as the old one)",
+   "old": {
+    "box": [170, 60, 22, 16]
+   }
+  },
+  "arbol": {
+   "set": true,
+   "world": [1.2238, -3.2908, 0, 3.2364, -1.2782, 3.9526],
+   "box": [166, 3, 74, 127],
+   "what": "the flamboyán: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk",
+   "old": {
+    "box": [168, 8, 60, 106]
+   }
+  },
+  "pajaro": {
+   "sprite": true,
+   "why": "the bird (kit.js drawAve, sprite layer): box [p.x - 10, p.y - 20, 20, 22] at avePos, unchanged"
+  },
+  "puerta": {
+   "set": true,
+   "world": [-2.3769, 1.3368, 0, -1.4619, 2.2518, 2.77],
+   "box": [34, 40, 35, 80],
+   "what": "the back door in its white frame, on the house wall",
+   "old": {
+    "box": [27, 57, 30, 56]
+   }
+  },
+  "casa": {
+   "set": true,
+   "world": [-1.7014, 2.5088, 0, 0.6155, 4.8257, 5.3037],
+   "box": [0, -1, 86, 164],
+   "what": "the back of the house: its wall (from its far corner down off the picture's left edge), its step and its roof; the box is the part on the picture",
+   "old": {
+    "box": [0, 14, 61, 100]
+   }
+  },
+  "cerca": {
+   "set": true,
+   "world": [0.486, -2.5176, 0, 4.0096, 1.006, 2.0717],
+   "box": [110, 46, 130, 113],
+   "what": "the fence, from the far corner to the picture's right edge (the box is the part on the picture)",
+   "old": {
+    "box": [60, 80, 180, 33]
+   }
+  },
+  "patio": {
+   "set": true,
+   "world": [-0.8703, -0.8703, 0, 5.6569, 5.6569, 0.755],
+   "box": [0, 79, 240, 137],
+   "what": "the lawn, from the far corner (row 79) to the bottom, the whole width: last in the hit order",
+   "old": {
+    "box": [0, 113, 240, 103]
+   }
+  }
+ },
+ "spots": {
+  "frog.puerta": {
+   "world": [-1.0879, 2.9372, 0],
+   "new": [30, 104],
+   "scale": 0.8,
+   "old": [30, 104],
+   "what": "LUGAR.puerta: the frog"
+  },
+  "frog.inicio": {
+   "world": [2.0125, 4.841, 0],
+   "new": [52, 150],
+   "scale": 1,
+   "old": [52, 150],
+   "what": "LUGAR.inicio: the frog"
+  },
+  "frog.centro": {
+   "world": [4.9497, 4.9497, 0],
+   "new": [104, 178],
+   "scale": 1,
+   "old": [104, 178],
+   "what": "LUGAR.centro: the frog"
+  },
+  "frog.caja": {
+   "world": [3.4267, 3.4267, 0],
+   "new": [104, 150],
+   "scale": 1,
+   "old": [104, 150],
+   "what": "LUGAR.caja: the frog"
+  },
+  "frog.camaL": {
+   "world": [3.8075, 4.569, 0],
+   "new": [90, 164],
+   "scale": 0.9,
+   "old": [90, 164],
+   "what": "LUGAR.camaL: the frog"
+  },
+  "frog.camaR": {
+   "world": [4.569, 3.8075, 0],
+   "new": [118, 164],
+   "scale": 0.9,
+   "old": [118, 164],
+   "what": "LUGAR.camaR: the frog"
+  },
+  "frog.luis": {
+   "world": [3.1004, 2.6652, 0],
+   "new": [112, 140],
+   "scale": 1,
+   "old": [112, 140],
+   "what": "LUGAR.luis: the frog"
+  },
+  "frog.carmen": {
+   "world": [1.1966, 3.4811, 0],
+   "new": [62, 130],
+   "scale": 1,
+   "old": [62, 130],
+   "what": "LUGAR.carmen: the frog"
+  },
+  "frog.carmenA": {
+   "world": [1.795, 1.3598, 0],
+   "new": [112, 116],
+   "scale": 0.9,
+   "old": [112, 116],
+   "what": "LUGAR.carmenA: the frog"
+  },
+  "frog.abuela": {
+   "world": [3.5899, 5.4393, 0],
+   "new": [70, 170],
+   "scale": 1,
+   "old": [70, 170],
+   "what": "LUGAR.abuela: the frog"
+  },
+  "frog.porton": {
+   "world": [0.5439, -0.6527, 0],
+   "new": [126, 86],
+   "scale": 0.85,
+   "old": [128, 104],
+   "what": "LUGAR.porton: the frog at the gate, on the lawn before its opening (moved: see moves)"
+  },
+  "frog.arbol": {
+   "world": [3.5899, -0.8703, 0],
+   "new": [186, 112],
+   "scale": 0.8,
+   "old": [186, 112],
+   "what": "LUGAR.arbol: the frog"
+  },
+  "frog.luisC": {
+   "world": [2.6652, 3.1004, 0],
+   "new": [96, 140],
+   "scale": 0.95,
+   "old": [96, 140],
+   "what": "LUGAR.luisC: the frog"
+  },
+  "frog.sale": {
+   "world": [-0.3264, -1.7406, 0],
+   "new": [130, 68],
+   "scale": 0.5,
+   "old": [134, 84],
+   "what": "LUGAR.sale: the frog through the gate, on the path just past the fence's line, where he fades (moved: see moves)"
+  },
+  "detras.L": {
+   "world": [2.0125, 4.841, 0],
+   "new": [68, 176],
+   "old": [68, 176],
+   "what": "DETRAS.L: a child behind bed L, planting (acts.dale, final9)"
+  },
+  "detras.R": {
+   "world": [4.841, 2.0125, 0],
+   "new": [172, 176],
+   "old": [172, 176],
+   "what": "DETRAS.R: a child behind bed R, planting (acts.dale, final9)"
+  },
+  "espera.luis": {
+   "world": [1.9037, -0.272, 0],
+   "new": [160, 128],
+   "old": [160, 128],
+   "what": "ESPERA.luis: luis waits (acts.anda a = espera)"
+  },
+  "espera.carmen": {
+   "world": [-0.272, 1.9037, 0],
+   "new": [80, 128],
+   "old": [80, 128],
+   "what": "ESPERA.carmen: carmen waits (acts.anda a = espera)"
+  },
+  "lados.0": {
+   "world": [2.2301, 4.1882, 0],
+   "new": [84, 172],
+   "old": [84, 172],
+   "what": "LADOS[0]: a child either side of the crate, hands out (acts.lados)"
+  },
+  "lados.1": {
+   "world": [4.1882, 2.2301, 0],
+   "new": [156, 172],
+   "old": [156, 172],
+   "what": "LADOS[1]: a child either side of the crate, hands out (acts.lados)"
+  },
+  "asoma": {
+   "world": [-2.1213, 1.5774, 0],
+   "new": [52, 108],
+   "old": [42, 116],
+   "what": "acts.asoma: abuela in the back door, on its threshold, in the doorway (moved: see moves)"
+  },
+  "seva": {
+   "world": [-1.5502, 1.7678, 0],
+   "new": [59, 115],
+   "old": [44, 118],
+   "what": "acts.seva: before the back door's step, where whoever goes in is last seen (moved: see moves)"
+  },
+  "juntos": {
+   "world": [1.387, -1.0607, 0],
+   "new": [165, 116],
+   "old": [170, 124],
+   "what": "acts.juntos, acts.luiscorre: right of the gate, before its right post (moved: see moves)"
+  }
+ },
+ "lugar": {
+  "puerta": {
+   "spot": "frog.puerta",
+   "q": [30, 104],
+   "scale": 0.8,
+   "old": [30, 104]
+  },
+  "inicio": {
+   "spot": "frog.inicio",
+   "q": [52, 150],
+   "scale": 1,
+   "old": [52, 150]
+  },
+  "centro": {
+   "spot": "frog.centro",
+   "q": [104, 178],
+   "scale": 1,
+   "old": [104, 178]
+  },
+  "caja": {
+   "spot": "frog.caja",
+   "q": [104, 150],
+   "scale": 1,
+   "old": [104, 150]
+  },
+  "camaL": {
+   "spot": "frog.camaL",
+   "q": [90, 164],
+   "scale": 0.9,
+   "old": [90, 164]
+  },
+  "camaR": {
+   "spot": "frog.camaR",
+   "q": [118, 164],
+   "scale": 0.9,
+   "old": [118, 164]
+  },
+  "luis": {
+   "spot": "frog.luis",
+   "q": [112, 140],
+   "scale": 1,
+   "old": [112, 140]
+  },
+  "carmen": {
+   "spot": "frog.carmen",
+   "q": [62, 130],
+   "scale": 1,
+   "old": [62, 130]
+  },
+  "carmenA": {
+   "spot": "frog.carmenA",
+   "q": [112, 116],
+   "scale": 0.9,
+   "old": [112, 116]
+  },
+  "abuela": {
+   "spot": "frog.abuela",
+   "q": [70, 170],
+   "scale": 1,
+   "old": [70, 170]
+  },
+  "porton": {
+   "spot": "frog.porton",
+   "q": [126, 86],
+   "scale": 0.85,
+   "old": [128, 104]
+  },
+  "arbol": {
+   "spot": "frog.arbol",
+   "q": [186, 112],
+   "scale": 0.8,
+   "old": [186, 112]
+  },
+  "luisC": {
+   "spot": "frog.luisC",
+   "q": [96, 140],
+   "scale": 0.95,
+   "old": [96, 140]
+  },
+  "sale": {
+   "spot": "frog.sale",
+   "q": [130, 68],
+   "scale": 0.5,
+   "old": [134, 84]
+  }
+ },
+ "hops": [
+  {
+   "a": "centro",
+   "b": "sale",
+   "old": 3,
+   "new": 4,
+   "dOld": 98.67,
+   "dNew": 113.03
+  },
+  {
+   "a": "caja",
+   "b": "sale",
+   "old": 2,
+   "new": 3,
+   "dOld": 72.5,
+   "dNew": 86.02
+  },
+  {
+   "a": "camaL",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 71.02,
+   "dNew": 85.91
+  },
+  {
+   "a": "camaR",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 60.83,
+   "dNew": 78.41
+  },
+  {
+   "a": "luis",
+   "b": "porton",
+   "old": 1,
+   "new": 2,
+   "dOld": 39.4,
+   "dNew": 55.79
+  },
+  {
+   "a": "carmen",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 70.94,
+   "dNew": 77.67
+  },
+  {
+   "a": "carmenA",
+   "b": "sale",
+   "old": 1,
+   "new": 2,
+   "dOld": 38.83,
+   "dNew": 51.26
+  },
+  {
+   "a": "luisC",
+   "b": "sale",
+   "old": 2,
+   "new": 3,
+   "dOld": 67.68,
+   "dNew": 79.62
+  }
+ ],
+ "hopsWhat": "round 4: each pair of LUGAR places whose hop count (kit.js acts.ir: round(d / 30), 1 to 4, d the screen distance between the two frog points) is not the old one, with the old and the new count and distance; every one has porton or sale (their places followed the gate: moves). Every other pair keeps its count (hopsAll: all 91 pairs). acts.sevan hops 3 times to sale from wherever he is, whatever the distance",
+ "hopsAll": [
+  {
+   "a": "puerta",
+   "b": "inicio",
+   "old": 2,
+   "new": 2,
+   "dOld": 50.99,
+   "dNew": 50.99
+  },
+  {
+   "a": "puerta",
+   "b": "centro",
+   "old": 3,
+   "new": 3,
+   "dOld": 104.65,
+   "dNew": 104.65
+  },
+  {
+   "a": "puerta",
+   "b": "caja",
+   "old": 3,
+   "new": 3,
+   "dOld": 87.13,
+   "dNew": 87.13
+  },
+  {
+   "a": "puerta",
+   "b": "camaL",
+   "old": 3,
+   "new": 3,
+   "dOld": 84.85,
+   "dNew": 84.85
+  },
+  {
+   "a": "puerta",
+   "b": "camaR",
+   "old": 4,
+   "new": 4,
+   "dOld": 106.51,
+   "dNew": 106.51
+  },
+  {
+   "a": "puerta",
+   "b": "luis",
+   "old": 3,
+   "new": 3,
+   "dOld": 89.55,
+   "dNew": 89.55
+  },
+  {
+   "a": "puerta",
+   "b": "carmen",
+   "old": 1,
+   "new": 1,
+   "dOld": 41.23,
+   "dNew": 41.23
+  },
+  {
+   "a": "puerta",
+   "b": "carmenA",
+   "old": 3,
+   "new": 3,
+   "dOld": 82.87,
+   "dNew": 82.87
+  },
+  {
+   "a": "puerta",
+   "b": "abuela",
+   "old": 3,
+   "new": 3,
+   "dOld": 77.18,
+   "dNew": 77.18
+  },
+  {
+   "a": "puerta",
+   "b": "porton",
+   "old": 3,
+   "new": 3,
+   "dOld": 98,
+   "dNew": 97.67
+  },
+  {
+   "a": "puerta",
+   "b": "arbol",
+   "old": 4,
+   "new": 4,
+   "dOld": 156.2,
+   "dNew": 156.2
+  },
+  {
+   "a": "puerta",
+   "b": "luisC",
+   "old": 3,
+   "new": 3,
+   "dOld": 75.18,
+   "dNew": 75.18
+  },
+  {
+   "a": "puerta",
+   "b": "sale",
+   "old": 4,
+   "new": 4,
+   "dOld": 105.91,
+   "dNew": 106.28
+  },
+  {
+   "a": "inicio",
+   "b": "centro",
+   "old": 2,
+   "new": 2,
+   "dOld": 59.06,
+   "dNew": 59.06
+  },
+  {
+   "a": "inicio",
+   "b": "caja",
+   "old": 2,
+   "new": 2,
+   "dOld": 52,
+   "dNew": 52
+  },
+  {
+   "a": "inicio",
+   "b": "camaL",
+   "old": 1,
+   "new": 1,
+   "dOld": 40.5,
+   "dNew": 40.5
+  },
+  {
+   "a": "inicio",
+   "b": "camaR",
+   "old": 2,
+   "new": 2,
+   "dOld": 67.47,
+   "dNew": 67.47
+  },
+  {
+   "a": "inicio",
+   "b": "luis",
+   "old": 2,
+   "new": 2,
+   "dOld": 60.83,
+   "dNew": 60.83
+  },
+  {
+   "a": "inicio",
+   "b": "carmen",
+   "old": 1,
+   "new": 1,
+   "dOld": 22.36,
+   "dNew": 22.36
+  },
+  {
+   "a": "inicio",
+   "b": "carmenA",
+   "old": 2,
+   "new": 2,
+   "dOld": 68.96,
+   "dNew": 68.96
+  },
+  {
+   "a": "inicio",
+   "b": "abuela",
+   "old": 1,
+   "new": 1,
+   "dOld": 26.91,
+   "dNew": 26.91
+  },
+  {
+   "a": "inicio",
+   "b": "porton",
+   "old": 3,
+   "new": 3,
+   "dOld": 88.84,
+   "dNew": 97.84
+  },
+  {
+   "a": "inicio",
+   "b": "arbol",
+   "old": 4,
+   "new": 4,
+   "dOld": 139.28,
+   "dNew": 139.28
+  },
+  {
+   "a": "inicio",
+   "b": "luisC",
+   "old": 2,
+   "new": 2,
+   "dOld": 45.12,
+   "dNew": 45.12
+  },
+  {
+   "a": "inicio",
+   "b": "sale",
+   "old": 4,
+   "new": 4,
+   "dOld": 105.26,
+   "dNew": 113.17
+  },
+  {
+   "a": "centro",
+   "b": "caja",
+   "old": 1,
+   "new": 1,
+   "dOld": 28,
+   "dNew": 28
+  },
+  {
+   "a": "centro",
+   "b": "camaL",
+   "old": 1,
+   "new": 1,
+   "dOld": 19.8,
+   "dNew": 19.8
+  },
+  {
+   "a": "centro",
+   "b": "camaR",
+   "old": 1,
+   "new": 1,
+   "dOld": 19.8,
+   "dNew": 19.8
+  },
+  {
+   "a": "centro",
+   "b": "luis",
+   "old": 1,
+   "new": 1,
+   "dOld": 38.83,
+   "dNew": 38.83
+  },
+  {
+   "a": "centro",
+   "b": "carmen",
+   "old": 2,
+   "new": 2,
+   "dOld": 63.78,
+   "dNew": 63.78
+  },
+  {
+   "a": "centro",
+   "b": "carmenA",
+   "old": 2,
+   "new": 2,
+   "dOld": 62.51,
+   "dNew": 62.51
+  },
+  {
+   "a": "centro",
+   "b": "abuela",
+   "old": 1,
+   "new": 1,
+   "dOld": 34.93,
+   "dNew": 34.93
+  },
+  {
+   "a": "centro",
+   "b": "porton",
+   "old": 3,
+   "new": 3,
+   "dOld": 77.79,
+   "dNew": 94.59
+  },
+  {
+   "a": "centro",
+   "b": "arbol",
+   "old": 4,
+   "new": 4,
+   "dOld": 105.26,
+   "dNew": 105.26
+  },
+  {
+   "a": "centro",
+   "b": "luisC",
+   "old": 1,
+   "new": 1,
+   "dOld": 38.83,
+   "dNew": 38.83
+  },
+  {
+   "a": "centro",
+   "b": "sale",
+   "old": 3,
+   "new": 4,
+   "dOld": 98.67,
+   "dNew": 113.03
+  },
+  {
+   "a": "caja",
+   "b": "camaL",
+   "old": 1,
+   "new": 1,
+   "dOld": 19.8,
+   "dNew": 19.8
+  },
+  {
+   "a": "caja",
+   "b": "camaR",
+   "old": 1,
+   "new": 1,
+   "dOld": 19.8,
+   "dNew": 19.8
+  },
+  {
+   "a": "caja",
+   "b": "luis",
+   "old": 1,
+   "new": 1,
+   "dOld": 12.81,
+   "dNew": 12.81
+  },
+  {
+   "a": "caja",
+   "b": "carmen",
+   "old": 2,
+   "new": 2,
+   "dOld": 46.52,
+   "dNew": 46.52
+  },
+  {
+   "a": "caja",
+   "b": "carmenA",
+   "old": 1,
+   "new": 1,
+   "dOld": 34.93,
+   "dNew": 34.93
+  },
+  {
+   "a": "caja",
+   "b": "abuela",
+   "old": 1,
+   "new": 1,
+   "dOld": 39.45,
+   "dNew": 39.45
+  },
+  {
+   "a": "caja",
+   "b": "porton",
+   "old": 2,
+   "new": 2,
+   "dOld": 51.88,
+   "dNew": 67.68
+  },
+  {
+   "a": "caja",
+   "b": "arbol",
+   "old": 3,
+   "new": 3,
+   "dOld": 90.38,
+   "dNew": 90.38
+  },
+  {
+   "a": "caja",
+   "b": "luisC",
+   "old": 1,
+   "new": 1,
+   "dOld": 12.81,
+   "dNew": 12.81
+  },
+  {
+   "a": "caja",
+   "b": "sale",
+   "old": 2,
+   "new": 3,
+   "dOld": 72.5,
+   "dNew": 86.02
+  },
+  {
+   "a": "camaL",
+   "b": "camaR",
+   "old": 1,
+   "new": 1,
+   "dOld": 28,
+   "dNew": 28
+  },
+  {
+   "a": "camaL",
+   "b": "luis",
+   "old": 1,
+   "new": 1,
+   "dOld": 32.56,
+   "dNew": 32.56
+  },
+  {
+   "a": "camaL",
+   "b": "carmen",
+   "old": 1,
+   "new": 1,
+   "dOld": 44.05,
+   "dNew": 44.05
+  },
+  {
+   "a": "camaL",
+   "b": "carmenA",
+   "old": 2,
+   "new": 2,
+   "dOld": 52.8,
+   "dNew": 52.8
+  },
+  {
+   "a": "camaL",
+   "b": "abuela",
+   "old": 1,
+   "new": 1,
+   "dOld": 20.88,
+   "dNew": 20.88
+  },
+  {
+   "a": "camaL",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 71.02,
+   "dNew": 85.91
+  },
+  {
+   "a": "camaL",
+   "b": "arbol",
+   "old": 4,
+   "new": 4,
+   "dOld": 109.18,
+   "dNew": 109.18
+  },
+  {
+   "a": "camaL",
+   "b": "luisC",
+   "old": 1,
+   "new": 1,
+   "dOld": 24.74,
+   "dNew": 24.74
+  },
+  {
+   "a": "camaL",
+   "b": "sale",
+   "old": 3,
+   "new": 3,
+   "dOld": 91.3,
+   "dNew": 104
+  },
+  {
+   "a": "camaR",
+   "b": "luis",
+   "old": 1,
+   "new": 1,
+   "dOld": 24.74,
+   "dNew": 24.74
+  },
+  {
+   "a": "camaR",
+   "b": "carmen",
+   "old": 2,
+   "new": 2,
+   "dOld": 65.51,
+   "dNew": 65.51
+  },
+  {
+   "a": "camaR",
+   "b": "carmenA",
+   "old": 2,
+   "new": 2,
+   "dOld": 48.37,
+   "dNew": 48.37
+  },
+  {
+   "a": "camaR",
+   "b": "abuela",
+   "old": 2,
+   "new": 2,
+   "dOld": 48.37,
+   "dNew": 48.37
+  },
+  {
+   "a": "camaR",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 60.83,
+   "dNew": 78.41
+  },
+  {
+   "a": "camaR",
+   "b": "arbol",
+   "old": 3,
+   "new": 3,
+   "dOld": 85.6,
+   "dNew": 85.6
+  },
+  {
+   "a": "camaR",
+   "b": "luisC",
+   "old": 1,
+   "new": 1,
+   "dOld": 32.56,
+   "dNew": 32.56
+  },
+  {
+   "a": "camaR",
+   "b": "sale",
+   "old": 3,
+   "new": 3,
+   "dOld": 81.58,
+   "dNew": 96.75
+  },
+  {
+   "a": "luis",
+   "b": "carmen",
+   "old": 2,
+   "new": 2,
+   "dOld": 50.99,
+   "dNew": 50.99
+  },
+  {
+   "a": "luis",
+   "b": "carmenA",
+   "old": 1,
+   "new": 1,
+   "dOld": 24,
+   "dNew": 24
+  },
+  {
+   "a": "luis",
+   "b": "abuela",
+   "old": 2,
+   "new": 2,
+   "dOld": 51.61,
+   "dNew": 51.61
+  },
+  {
+   "a": "luis",
+   "b": "porton",
+   "old": 1,
+   "new": 2,
+   "dOld": 39.4,
+   "dNew": 55.79
+  },
+  {
+   "a": "luis",
+   "b": "arbol",
+   "old": 3,
+   "new": 3,
+   "dOld": 79.12,
+   "dNew": 79.12
+  },
+  {
+   "a": "luis",
+   "b": "luisC",
+   "old": 1,
+   "new": 1,
+   "dOld": 16,
+   "dNew": 16
+  },
+  {
+   "a": "luis",
+   "b": "sale",
+   "old": 2,
+   "new": 2,
+   "dOld": 60.17,
+   "dNew": 74.22
+  },
+  {
+   "a": "carmen",
+   "b": "carmenA",
+   "old": 2,
+   "new": 2,
+   "dOld": 51.92,
+   "dNew": 51.92
+  },
+  {
+   "a": "carmen",
+   "b": "abuela",
+   "old": 1,
+   "new": 1,
+   "dOld": 40.79,
+   "dNew": 40.79
+  },
+  {
+   "a": "carmen",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 70.94,
+   "dNew": 77.67
+  },
+  {
+   "a": "carmen",
+   "b": "arbol",
+   "old": 4,
+   "new": 4,
+   "dOld": 125.3,
+   "dNew": 125.3
+  },
+  {
+   "a": "carmen",
+   "b": "luisC",
+   "old": 1,
+   "new": 1,
+   "dOld": 35.44,
+   "dNew": 35.44
+  },
+  {
+   "a": "carmen",
+   "b": "sale",
+   "old": 3,
+   "new": 3,
+   "dOld": 85.44,
+   "dNew": 92.02
+  },
+  {
+   "a": "carmenA",
+   "b": "abuela",
+   "old": 2,
+   "new": 2,
+   "dOld": 68.41,
+   "dNew": 68.41
+  },
+  {
+   "a": "carmenA",
+   "b": "porton",
+   "old": 1,
+   "new": 1,
+   "dOld": 20,
+   "dNew": 33.11
+  },
+  {
+   "a": "carmenA",
+   "b": "arbol",
+   "old": 2,
+   "new": 2,
+   "dOld": 74.11,
+   "dNew": 74.11
+  },
+  {
+   "a": "carmenA",
+   "b": "luisC",
+   "old": 1,
+   "new": 1,
+   "dOld": 28.84,
+   "dNew": 28.84
+  },
+  {
+   "a": "carmenA",
+   "b": "sale",
+   "old": 1,
+   "new": 2,
+   "dOld": 38.83,
+   "dNew": 51.26
+  },
+  {
+   "a": "abuela",
+   "b": "porton",
+   "old": 3,
+   "new": 3,
+   "dOld": 87.86,
+   "dNew": 100.96
+  },
+  {
+   "a": "abuela",
+   "b": "arbol",
+   "old": 4,
+   "new": 4,
+   "dOld": 129.69,
+   "dNew": 129.69
+  },
+  {
+   "a": "abuela",
+   "b": "luisC",
+   "old": 1,
+   "new": 1,
+   "dOld": 39.7,
+   "dNew": 39.7
+  },
+  {
+   "a": "abuela",
+   "b": "sale",
+   "old": 4,
+   "new": 4,
+   "dOld": 107.2,
+   "dNew": 118.34
+  },
+  {
+   "a": "porton",
+   "b": "arbol",
+   "old": 2,
+   "new": 2,
+   "dOld": 58.55,
+   "dNew": 65.39
+  },
+  {
+   "a": "porton",
+   "b": "luisC",
+   "old": 2,
+   "new": 2,
+   "dOld": 48.17,
+   "dNew": 61.77
+  },
+  {
+   "a": "porton",
+   "b": "sale",
+   "old": 1,
+   "new": 1,
+   "dOld": 20.88,
+   "dNew": 18.44
+  },
+  {
+   "a": "arbol",
+   "b": "luisC",
+   "old": 3,
+   "new": 3,
+   "dOld": 94.25,
+   "dNew": 94.25
+  },
+  {
+   "a": "arbol",
+   "b": "sale",
+   "old": 2,
+   "new": 2,
+   "dOld": 59.06,
+   "dNew": 71.22
+  },
+  {
+   "a": "luisC",
+   "b": "sale",
+   "old": 2,
+   "new": 3,
+   "dOld": 67.68,
+   "dNew": 79.62
+  }
+ ],
+ "points": {
+  "nido": {
+   "screen": [181, 66],
+   "old": [181, 66],
+   "world": [2.4025, -0.9155, 2.5612],
+   "what": "the bird on its nest (W.ave x, y: its feet): fresh(), aveVa(181, 66) in aveloop, avenido, alnido. The nest (the set) is on a branch of the flamboyán, its rim under the bird's feet, as the old one; its middle on the screen at 181,68"
+  },
+  "cerca.ave": {
+   "screen": [178, 83],
+   "old": [178, 83],
+   "what": "inicio11: the bird sits on the fence, right of the gate (W.ave x 178, y 83): on the cap of a fence post there, whose top is under its feet (the fence's boards run down to the right, a flat cap takes both feet)"
+  },
+  "sol": {
+   "screen": [100, null],
+   "old": [
+    100,
+    [24, 40, 56, 73]
+   ],
+   "heights": [26, 40, 56, 73],
+   "what": "the sun (sol(c, SOLX, soly, n, brilla)): drawn by the sprite layer behind the set (sheet: behind); SOLX unchanged, SOLY[0] 2 px lower (moves); it goes down where the old one did, now in the gap between the house and the fence, behind the field and the low hills (soly 109: hidden)"
+  },
+  "luna": {
+   "screen": [150, 26],
+   "old": [150, 26],
+   "what": "luna(c, 150, 26): the moon, behind the set (sheet: behind)"
+  },
+  "estrellas": {
+   "screen": [
+    [60, 18],
+    [84, 40],
+    [124, 12],
+    [150, 36],
+    [40, 46],
+    [100, 44],
+    [72, 64],
+    [140, 60]
+   ],
+   "old": [
+    [60, 18],
+    [84, 40],
+    [124, 12],
+    [150, 36],
+    [40, 46],
+    [112, 58],
+    [72, 64],
+    [140, 60]
+   ],
+   "what": "ESTRELLAS: the stars, behind the set (sheet: behind): the house hides the ones at 40, 46 (as the old picture did), 60, 18 and 72, 64 (the house now reaches further up and right), the gate's left post the one at 140, 60; the sixth moved from 112, 58 (moves); the other four are in the sky, none touching the set"
+  },
+  "corazon": {
+   "screen": [118, 36],
+   "old": [118, 36],
+   "what": "heartAt: the heart of a happy ending: in the sky between the house and the tree (unchanged)"
+  },
+  "caja": {
+   "screen": [104, 112],
+   "old": [104, 112],
+   "what": "mkCaja at (104, 112): the crate of potted flowers on the lawn (the sprite layer, its sort y 136): its bottom row 135 on the lawn, the lawn behind it up to the far corner"
+  },
+  "hoyos.L": {
+   "screen": [
+    [48, 186],
+    [58, 186],
+    [68, 186],
+    [78, 186],
+    [88, 186]
+   ],
+   "old": [
+    [48, 186],
+    [58, 186],
+    [68, 186],
+    [78, 186],
+    [88, 186]
+   ],
+   "what": "hoyo(L, i): the five holes of bed L (the set draws them at the old points): a flower (florEn) stands in each"
+  },
+  "hoyos.R": {
+   "screen": [
+    [192, 186],
+    [182, 186],
+    [172, 186],
+    [162, 186],
+    [152, 186]
+   ],
+   "old": [
+    [192, 186],
+    [182, 186],
+    [172, 186],
+    [162, 186],
+    [152, 186]
+   ],
+   "what": "hoyo(R, i): the five holes of bed R (the set draws them at the old points): a flower (florEn) stands in each"
+  }
+ },
+ "views": {
+  "wide": {
+   "zoom": 1,
+   "x0": 22,
+   "world": [2.0669, 2.0669, 0],
+   "region": null,
+   "old": [22, 0, 196, 216],
+   "what": "the yard: the back of the house with its door, the fence with the gate, the flamboyán with the nest, the two beds, the sky"
+  }
+ },
+ "remap": [
+  {
+   "kind": "cam",
+   "old": [16, 146, 113, 60],
+   "uses": ["cual-patio.json flor.si.cam", "cual-patio.json flor.no.cam"],
+   "to": {
+    "pictures": ["flor.si", "flor.no"]
+   },
+   "crops": {
+    "flor.si": {
+     "crop": [23, 150, 98, 52],
+     "zoom": 2
+    },
+    "flor.no": {
+     "crop": [23, 150, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [22, 30, 196, 104],
+   "uses": ["cual-camino.json parque.no.cam"],
+   "to": {
+    "pictures": ["parque.no"]
+   },
+   "crops": {
+    "parque.no": {
+     "crop": [22, 30, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [22, 84, 196, 104],
+   "uses": ["cual-camino.json parque.si.cam"],
+   "to": {
+    "pictures": ["parque.si"]
+   },
+   "crops": {
+    "parque.si": {
+     "scene": "camino",
+     "what": "drawn by El camino (its sheet's picture): listed here because the pair's other side is this scene's"
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [24, 40, 180, 95.5],
+   "uses": [
+    "cual-patio.json hasta mañana.si.cam",
+    "cual-patio.json hasta mañana.no.cam"
+   ],
+   "to": {
+    "pictures": [
+     "hasta_manana.si",
+     "hasta_manana.no"
+    ]
+   },
+   "crops": {
+    "hasta_manana.si": {
+     "crop": [16, 36, 196, 104],
+     "zoom": 1
+    },
+    "hasta_manana.no": {
+     "crop": [16, 36, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [30, 0, 170, 90.2],
+   "uses": ["cual-patio.json sol.si.cam", "cual-patio.json sol.no.cam"],
+   "to": {
+    "pictures": ["sol.si", "sol.no"]
+   },
+   "crops": {
+    "sol.si": {
+     "crop": [17, 0, 196, 104],
+     "zoom": 1
+    },
+    "sol.no": {
+     "crop": [17, 0, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [30, 124, 150, 79.6],
+   "uses": ["cual-patio.json juega.si.cam", "cual-patio.json juega.no.cam"],
+   "to": {
+    "pictures": ["juega.si", "juega.no"]
+   },
+   "crops": {
+    "juega.si": {
+     "crop": [7, 112, 196, 104],
+     "zoom": 1
+    },
+    "juega.no": {
+     "crop": [7, 112, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [40, 80, 113, 60],
+   "uses": [
+    "cual-patio.json niña.si.cam",
+    "cual-patio.json niña.no.cam"
+   ],
+   "to": {
+    "pictures": ["nina.si", "nina.no"]
+   },
+   "crops": {
+    "nina.si": {
+     "crop": [0, 80, 196, 104],
+     "zoom": 1
+    },
+    "nina.no": {
+     "crop": [0, 80, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [40, 100, 170, 90.2],
+   "uses": ["cual-patio.json ven.si.cam", "cual-patio.json ven.no.cam", "cual-patio.json mira.si.cam", "cual-patio.json mira.no.cam"],
+   "to": {
+    "pictures": ["ven.si", "ven.no", "mira.si", "mira.no"]
+   },
+   "crops": {
+    "ven.si": {
+     "crop": [27, 93, 196, 104],
+     "zoom": 1
+    },
+    "ven.no": {
+     "crop": [27, 93, 196, 104],
+     "zoom": 1
+    },
+    "mira.si": {
+     "crop": [27, 93, 196, 104],
+     "zoom": 1
+    },
+    "mira.no": {
+     "crop": [27, 93, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [42, 118, 156, 82.8],
+   "uses": [
+    "cual-patio.json aquí.si.cam",
+    "cual-patio.json aquí.no.cam",
+    "cual-patio.json allá.si.cam",
+    "cual-patio.json allá.no.cam"
+   ],
+   "to": {
+    "pictures": ["aqui.si", "aqui.no", "alla.si", "alla.no"]
+   },
+   "crops": {
+    "aqui.si": {
+     "crop": [22, 107, 196, 104],
+     "zoom": 1
+    },
+    "aqui.no": {
+     "crop": [22, 107, 196, 104],
+     "zoom": 1
+    },
+    "alla.si": {
+     "crop": [22, 107, 196, 104],
+     "zoom": 1
+    },
+    "alla.no": {
+     "crop": [22, 107, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [50, 130, 113, 60],
+   "uses": ["cual-patio.json amigo.si.cam", "cual-patio.json amigo.no.cam"],
+   "to": {
+    "pictures": ["amigo.si", "amigo.no"]
+   },
+   "crops": {
+    "amigo.si": {
+     "crop": [58, 134, 98, 52],
+     "zoom": 2
+    },
+    "amigo.no": {
+     "crop": [58, 134, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [64, 118, 113, 60],
+   "uses": [
+    "cual-patio.json niño.si.cam",
+    "cual-patio.json niño.no.cam"
+   ],
+   "to": {
+    "pictures": ["nino.si", "nino.no"]
+   },
+   "crops": {
+    "nino.si": {
+     "crop": [71, 122, 98, 52],
+     "zoom": 2
+    },
+    "nino.no": {
+     "crop": [71, 122, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [70, 62, 150, 79.6],
+   "uses": ["cual-patio.json vamos.si.cam", "cual-patio.json vamos.no.cam"],
+   "to": {
+    "pictures": ["vamos.si", "vamos.no"]
+   },
+   "crops": {
+    "vamos.si": {
+     "crop": [44, 42, 196, 104],
+     "zoom": 1
+    },
+    "vamos.no": {
+     "crop": [44, 42, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [32.83, 146, 54.34, 60],
+   "uses": [
+    "nivel.js NV flor.p0",
+    "nivel.js NV flor.p1"
+   ],
+   "to": {
+    "pictures": ["flor.si", "flor.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [72.83, 80, 54.34, 60],
+   "uses": [
+    "nivel.js NV familia.p3",
+    "nivel.js NV niña.p0",
+    "nivel.js NV niña.p2",
+    "nivel.js NV juega.p2",
+    "nivel.js NV hasta mañana.p3"
+   ],
+   "to": {
+    "pictures": ["nina.si", "nina.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [72.83, 130, 54.34, 60],
+   "uses": [
+    "nivel.js NV amigo.p0",
+    "nivel.js NV amigo.p1"
+   ],
+   "to": {
+    "pictures": ["amigo.si", "amigo.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [74.15, 0, 81.69, 90.2],
+   "uses": [
+    "nivel.js NV puerta.p3",
+    "nivel.js NV juega.p3"
+   ],
+   "to": {
+    "pictures": ["sol.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [76.75, 40, 86.49, 95.5],
+   "uses": [
+    "nivel.js NV hasta mañana.p0",
+    "nivel.js NV hasta mañana.p1"
+   ],
+   "to": {
+    "pictures": [
+     "hasta_manana.si",
+     "hasta_manana.no"
+    ],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [93.33, 118, 54.34, 60],
+   "uses": [
+    "nivel.js NV se sienta.p2",
+    "nivel.js NV niña.p1",
+    "nivel.js NV amigo.p2",
+    "nivel.js NV ven.p2"
+   ],
+   "to": {
+    "pictures": ["nino.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [93.95, 124, 72.09, 79.6],
+   "uses": [
+    "nivel.js NV hola.p3",
+    "nivel.js NV juega.p0",
+    "nivel.js NV juega.p1",
+    "nivel.js NV vamos.p3"
+   ],
+   "to": {
+    "pictures": ["juega.si", "juega.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [101.15, 100, 81.69, 90.2],
+   "uses": [
+    "nivel.js NV ven.p0",
+    "nivel.js NV ven.p1",
+    "nivel.js NV vamos.p2"
+   ],
+   "to": {
+    "pictures": ["ven.si", "ven.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [109.15, 0, 81.69, 90.2],
+   "uses": [
+    "nivel.js NV flor.p2"
+   ],
+   "to": {
+    "pictures": ["sol.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [113.95, 62, 72.09, 79.6],
+   "uses": [
+    "nivel.js NV vamos.p0",
+    "nivel.js NV vamos.p1"
+   ],
+   "to": {
+    "pictures": ["vamos.si", "vamos.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "point",
+   "old": [-16, -27],
+   "uses": [
+    "cual-patio.json niño.si.set.cq",
+    "cual-patio.json niño.no.set.cq",
+    "cual-patio.json niña.si.set.cq",
+    "cual-patio.json niña.no.set.cq",
+    "cual-patio.json juega.si.set.cq",
+    "cual-patio.json juega.no.set.cq",
+    "cual-patio.json flor.si.set.cq",
+    "cual-patio.json flor.no.set.cq",
+    "cual-patio.json sol.si.set.cq",
+    "cual-patio.json sol.no.set.cq",
+    "cual-patio.json aquí.si.set.cq",
+    "cual-patio.json aquí.no.set.cq",
+    "cual-patio.json allá.si.set.cq",
+    "cual-patio.json allá.no.set.cq",
+    "cual-patio.json amigo.no.set.cq",
+    "cual-camino.json parque.no.set.cq"
+   ],
+   "to": {
+    "none": true
+   },
+   "what": "the frog out of the picture (vis 0): not a place"
+  },
+  {
+   "kind": "point",
+   "old": [1, -1],
+   "uses": ["d-la-bola.json beats.22", "que-es-esto.json beats.6.after.0"],
+   "to": {
+    "none": true
+   },
+   "what": "acts.ojos x, y: where the frog's eyes look (a direction), not a place"
+  },
+  {
+   "kind": "point",
+   "old": [1, 0],
+   "uses": ["que-es-esto.json beats.10.after.0"],
+   "to": {
+    "none": true
+   },
+   "what": "acts.ojos x, y: where the frog's eyes look (a direction), not a place"
+  },
+  {
+   "kind": "point",
+   "old": [30, 104],
+   "uses": ["d-la-bola.json beats.0.set.cq"],
+   "to": {
+    "floor": [-1.0879, 2.9372, 0]
+   },
+   "new": [30, 104],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [34, 136],
+   "uses": [
+    "cual-patio.json hasta mañana.si.set.gente.abuela",
+    "cual-patio.json hasta mañana.no.set.gente.abuela"
+   ],
+   "to": {
+    "floor": [-1.0879, 3.5899, 0]
+   },
+   "new": [34, 136],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [48, 188],
+   "uses": ["cual-patio.json flor.no.set.bola"],
+   "to": {
+    "floor": [2.1213, 6.0376, 0]
+   },
+   "new": [48, 188],
+   "what": "on the lawn (the ball, the dust of a hop): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [50, 160],
+   "uses": ["que-es-esto.json beats.26"],
+   "to": {
+    "floor": [0.6527, 4.4602, 0]
+   },
+   "new": [50, 160],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [60, 126],
+   "uses": [
+    "cual-patio.json hasta mañana.si.set.gente.abuelo",
+    "cual-patio.json hasta mañana.no.set.gente.abuelo"
+   ],
+   "to": {
+    "floor": [-0.9247, 2.3389, 0]
+   },
+   "new": [60, 126],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [62, 128],
+   "uses": ["hasta-manana.json beats.25.then.6.right.4", "hasta-manana.json beats.25.else.2.right.4"],
+   "to": {
+    "floor": [-0.7615, 2.3933, 0]
+   },
+   "new": [62, 128],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [64, 153],
+   "uses": ["cual-patio.json ven.no.set.cq"],
+   "to": {
+    "floor": [2.5021, 4.6778, 0]
+   },
+   "new": [64, 153],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [68, 176],
+   "uses": [
+    "cual-patio.json aquí.si.set.gente.carmen",
+    "cual-patio.json aquí.no.set.gente.carmen",
+    "cual-patio.json allá.si.set.gente.luis",
+    "cual-patio.json allá.no.set.gente.luis"
+   ],
+   "to": {
+    "floor": [2.0125, 4.841, 0]
+   },
+   "new": [68, 176],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [72, 157],
+   "uses": ["cual-patio.json amigo.si.set.cq"],
+   "to": {
+    "floor": [2.9372, 4.6778, 0]
+   },
+   "new": [72, 157],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [84, 150],
+   "uses": ["d-la-bola.json beats.0.set.gente.carmen", "h-patio.json beats.0.set.gente.carmen", "h-patio.json beats.20"],
+   "to": {
+    "floor": [0.9247, 3.1004, 0]
+   },
+   "new": [80, 150],
+   "moved": true,
+   "why": "Carmen at the start of d-la-bola and h-patio (and h-patio beats.20): 4 px further left (the hint hand pointing at her, h-patio beats.23, reached the frog's face at the crate's place)",
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [86, 136],
+   "uses": [
+    "las-flores.json beats.29",
+    "cual-patio.json niña.si.set.gente.carmen",
+    "cual-patio.json hasta mañana.si.set.gente.mama",
+    "cual-patio.json hasta mañana.no.set.gente.mama"
+   ],
+   "to": {
+    "floor": [0.3264, 2.1757, 0]
+   },
+   "new": [86, 136],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [86, 138],
+   "uses": [
+    "cual-patio.json niña.no.set.gente.mama"
+   ],
+   "to": {
+    "floor": [0.4351, 2.2845, 0]
+   },
+   "new": [86, 138],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [90, 182],
+   "uses": ["cual-patio.json amigo.no.set.bola"],
+   "to": {
+    "floor": [2.9372, 4.569, 0]
+   },
+   "new": [90, 182],
+   "what": "on the lawn (the ball, the dust of a hop): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [102, 155],
+   "uses": ["cual-patio.json mira.si.set.cq"],
+   "to": {
+    "floor": [3.6443, 3.7531, 0]
+   },
+   "new": [102, 155],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [106, 178],
+   "uses": ["cual-patio.json ven.si.set.polvo"],
+   "to": {
+    "floor": [3.1548, 3.9163, 0]
+   },
+   "new": [106, 178],
+   "what": "on the lawn (the ball, the dust of a hop): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [106, 180],
+   "uses": ["cual-patio.json mira.no.set.polvo"],
+   "to": {
+    "floor": [3.2636, 4.0251, 0]
+   },
+   "new": [106, 180],
+   "what": "on the lawn (the ball, the dust of a hop): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [112, 126],
+   "uses": [
+    "cual-patio.json hasta mañana.si.set.gente.papa",
+    "cual-patio.json hasta mañana.no.set.gente.papa"
+   ],
+   "to": {
+    "floor": [0.4895, 0.9247, 0]
+   },
+   "new": [112, 126],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [112, 153],
+   "uses": ["cual-patio.json ven.si.set.cq"],
+   "to": {
+    "floor": [3.8075, 3.3724, 0]
+   },
+   "new": [112, 153],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [112, 155],
+   "uses": ["cual-patio.json mira.no.set.cq"],
+   "to": {
+    "floor": [3.9163, 3.4811, 0]
+   },
+   "new": [112, 155],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [118, 105],
+   "uses": [
+    "cual-patio.json hasta mañana.no.set.cq"
+   ],
+   "to": {
+    "floor": [1.3598, 0.5983, 0]
+   },
+   "new": [118, 105],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [118, 180],
+   "uses": ["cual-patio.json amigo.si.set.gente.luis", "cual-patio.json amigo.no.set.gente.luis"],
+   "to": {
+    "floor": [3.5899, 3.6987, 0]
+   },
+   "new": [118, 180],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [120, 170],
+   "uses": [
+    "cual-patio.json niño.si.set.gente.luis",
+    "cual-patio.json niño.no.set.gente.carmen"
+   ],
+   "to": {
+    "floor": [3.1004, 3.1004, 0]
+   },
+   "new": [120, 170],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [122, 111],
+   "uses": ["cual-patio.json vamos.no.set.cq"],
+   "to": {
+    "floor": [1.795, 0.8159, 0]
+   },
+   "new": [122, 111],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [124, 124],
+   "uses": ["cual-patio.json ven.no.set.rizo", "cual-patio.json mira.si.set.rizo"],
+   "to": {
+    "screen": [124, 124]
+   },
+   "what": "in the air (the bird, the loop it flew): a screen point over the yard, unchanged"
+  },
+  {
+   "kind": "point",
+   "old": [124, 128],
+   "uses": ["cual-patio.json ven.no.set.ave", "cual-patio.json mira.si.set.ave"],
+   "to": {
+    "screen": [124, 128]
+   },
+   "what": "in the air (the bird, the loop it flew): a screen point over the yard, unchanged"
+  },
+  {
+   "kind": "point",
+   "old": [126, 172],
+   "uses": ["cual-patio.json juega.si.set.gente.luis", "cual-patio.json juega.no.set.gente.luis"],
+   "to": {
+    "floor": [3.3724, 3.046, 0]
+   },
+   "new": [126, 172],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [128, 99],
+   "uses": ["cual-patio.json vamos.si.set.cq"],
+   "to": {
+    "floor": [1.3054, 0, 0]
+   },
+   "new": [128, 99],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [130, 101],
+   "uses": [
+    "cual-patio.json hasta mañana.si.set.cq"
+   ],
+   "to": {
+    "floor": [1.4686, 0.0544, 0]
+   },
+   "new": [130, 101],
+   "what": "the frog (cq x, y): the ground under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [134, 132],
+   "uses": ["cual-patio.json vamos.si.set.polvo"],
+   "to": {
+    "floor": [1.4142, 0.6527, 0]
+   },
+   "new": [134, 132],
+   "what": "on the lawn (the ball, the dust of a hop): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [136, 164],
+   "uses": ["d-buenas-noches.json beats.4"],
+   "to": {
+    "floor": [3.2092, 2.3389, 0]
+   },
+   "new": [136, 164],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [140, 172],
+   "uses": ["cual-patio.json juega.si.set.bola"],
+   "to": {
+    "floor": [3.7531, 2.6652, 0]
+   },
+   "new": [140, 172],
+   "what": "on the lawn (the ball, the dust of a hop): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [146, 174],
+   "uses": ["cual-patio.json juega.no.set.bola"],
+   "to": {
+    "floor": [4.0251, 2.6109, 0]
+   },
+   "new": [146, 174],
+   "what": "on the lawn (the ball, the dust of a hop): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [150, 150],
+   "uses": ["d-la-bola.json beats.0.set.gente.luis", "h-patio.json beats.0.set.gente.luis"],
+   "to": {
+    "floor": [3.6443, 0.3807, 0]
+   },
+   "new": [180, 150],
+   "moved": true,
+   "why": "Luis at the start of d-la-bola and h-patio: right of the gate, not before it (the hint hand pointing at the gate, h-patio beats.12, was on his face)",
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [160, 178],
+   "uses": ["cual-patio.json mira.si.set.gente.luis"],
+   "to": {
+    "floor": [4.6234, 2.4477, 0]
+   },
+   "new": [160, 178],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [162, 150],
+   "uses": ["d-la-bola.json beats.0.set.bola", "h-patio.json beats.0.set.bola"],
+   "to": {
+    "floor": [3.1548, 0.8703, 0]
+   },
+   "new": [162, 150],
+   "what": "on the lawn (the ball, the dust of a hop): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [168, 120],
+   "uses": ["cual-patio.json vamos.si.set.gente.carmen"],
+   "to": {
+    "floor": [1.6862, -0.9247, 0]
+   },
+   "new": [168, 120],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [170, 138],
+   "uses": ["cual-patio.json vamos.no.set.gente.carmen"],
+   "to": {
+    "floor": [2.7196, 0, 0]
+   },
+   "new": [170, 138],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [170, 160],
+   "uses": ["d-buenas-noches.json beats.5"],
+   "to": {
+    "floor": [3.9163, 1.1966, 0]
+   },
+   "new": [170, 160],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [170, 176],
+   "uses": ["cual-patio.json ven.si.set.gente.carmen", "cual-patio.json ven.no.set.gente.carmen"],
+   "to": {
+    "floor": [4.7866, 2.0669, 0]
+   },
+   "new": [170, 176],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [170, 178],
+   "uses": ["cual-patio.json mira.no.set.gente.luis"],
+   "to": {
+    "floor": [4.8954, 2.1757, 0]
+   },
+   "new": [170, 178],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [186, 170],
+   "uses": ["hasta-manana.json beats.21"],
+   "to": {
+    "floor": [4.8954, 1.3054, 0]
+   },
+   "new": [186, 170],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [198, 166],
+   "uses": ["hasta-manana.json beats.25.then.2.right.2", "hasta-manana.json beats.25.else.6.right.2"],
+   "to": {
+    "floor": [5.0041, 0.7615, 0]
+   },
+   "new": [198, 166],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "x",
+   "old": [60],
+   "uses": [
+    "nivel.js NV flor.p0",
+    "nivel.js NV flor.p1"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [100],
+   "uses": [
+    "nivel.js NV familia.p3",
+    "nivel.js NV niña.p0",
+    "nivel.js NV niña.p2",
+    "nivel.js NV juega.p2",
+    "nivel.js NV amigo.p0",
+    "nivel.js NV amigo.p1",
+    "nivel.js NV hasta mañana.p3"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [120],
+   "uses": [
+    "nivel.js NV hasta mañana.p0",
+    "nivel.js NV hasta mañana.p1"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [130],
+   "uses": [
+    "nivel.js NV hola.p3",
+    "nivel.js NV juega.p0",
+    "nivel.js NV juega.p1",
+    "nivel.js NV vamos.p3"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [142],
+   "uses": [
+    "nivel.js NV ven.p0",
+    "nivel.js NV ven.p1",
+    "nivel.js NV vamos.p2"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [150],
+   "uses": [
+    "nivel.js NV flor.p2",
+    "nivel.js NV vamos.p0",
+    "nivel.js NV vamos.p1"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  }
+ ],
+ "pictures": {
+  "nino.si": {
+   "world": [1.9581, 1.9581, 0],
+   "screen": [120, 148],
+   "zoom": 2,
+   "crop": [71, 122, 98, 52],
+   "what": "Luis on the lawn, close"
+  },
+  "nino.no": {
+   "world": [1.9581, 1.9581, 0],
+   "screen": [120, 148],
+   "zoom": 2,
+   "crop": [71, 122, 98, 52],
+   "what": "Carmen there, close"
+  },
+  "nina.si": {
+   "world": [0.4351, 1.7406, 0],
+   "screen": [96, 132],
+   "zoom": 1,
+   "crop": [0, 80, 196, 104],
+   "what": "Carmen by the crate"
+  },
+  "nina.no": {
+   "world": [0.4351, 1.7406, 0],
+   "screen": [96, 132],
+   "zoom": 1,
+   "crop": [0, 80, 196, 104],
+   "what": "mamá there"
+  },
+  "juega.si": {
+   "world": [2.4205, 3.2364, 0],
+   "screen": [105, 164],
+   "zoom": 1,
+   "crop": [7, 112, 196, 104],
+   "what": "Luis kicks the ball up"
+  },
+  "juega.no": {
+   "world": [2.4205, 3.2364, 0],
+   "screen": [105, 164],
+   "zoom": 1,
+   "crop": [7, 112, 196, 104],
+   "what": "Luis holds a pot, the ball at his feet"
+  },
+  "flor.si": {
+   "world": [2.1757, 4.7866, 0],
+   "screen": [72, 176],
+   "zoom": 2,
+   "crop": [23, 150, 98, 52],
+   "what": "one red flower in bed L, close"
+  },
+  "flor.no": {
+   "world": [2.1757, 4.7866, 0],
+   "screen": [72, 176],
+   "zoom": 2,
+   "crop": [23, 150, 98, 52],
+   "what": "the ball by bed L, no flower, close"
+  },
+  "sol.si": {
+   "world": [-3.7803, -3.5083, 0],
+   "screen": [115, 45],
+   "zoom": 1,
+   "crop": [17, 0, 196, 104],
+   "what": "the sun over the fence, by day"
+  },
+  "sol.no": {
+   "world": [-3.7803, -3.5083, 0],
+   "screen": [115, 45],
+   "zoom": 1,
+   "crop": [17, 0, 196, 104],
+   "what": "the moon, at night"
+  },
+  "aqui.si": {
+   "world": [2.5565, 2.5565, 0],
+   "screen": [120, 159],
+   "zoom": 1,
+   "crop": [22, 107, 196, 104],
+   "what": "Carmen beside bed L, a flower in it"
+  },
+  "aqui.no": {
+   "world": [2.5565, 2.5565, 0],
+   "screen": [120, 159],
+   "zoom": 1,
+   "crop": [22, 107, 196, 104],
+   "what": "Carmen beside bed L, the flower in bed R"
+  },
+  "alla.si": {
+   "world": [2.5565, 2.5565, 0],
+   "screen": [120, 159],
+   "zoom": 1,
+   "crop": [22, 107, 196, 104],
+   "what": "Luis beside bed L, the flower in bed R"
+  },
+  "alla.no": {
+   "world": [2.5565, 2.5565, 0],
+   "screen": [120, 159],
+   "zoom": 1,
+   "crop": [22, 107, 196, 104],
+   "what": "Luis beside bed L, a flower in it"
+  },
+  "amigo.si": {
+   "world": [2.2573, 2.9644, 0],
+   "screen": [107, 160],
+   "zoom": 2,
+   "crop": [58, 134, 98, 52],
+   "what": "Luis, the frog beside him, close"
+  },
+  "amigo.no": {
+   "world": [2.2573, 2.9644, 0],
+   "screen": [107, 160],
+   "zoom": 2,
+   "crop": [58, 134, 98, 52],
+   "what": "Luis, the ball beside him, close"
+  },
+  "ven.si": {
+   "world": [1.9309, 1.659, 0],
+   "screen": [125, 145],
+   "zoom": 1,
+   "crop": [27, 93, 196, 104],
+   "what": "Carmen calls, the frog hops to her"
+  },
+  "ven.no": {
+   "world": [1.9309, 1.659, 0],
+   "screen": [125, 145],
+   "zoom": 1,
+   "crop": [27, 93, 196, 104],
+   "what": "Carmen points up, the frog looks at the bird"
+  },
+  "mira.si": {
+   "world": [1.9309, 1.659, 0],
+   "screen": [125, 145],
+   "zoom": 1,
+   "crop": [27, 93, 196, 104],
+   "what": "Luis points up, the frog looks at the bird"
+  },
+  "mira.no": {
+   "world": [1.9309, 1.659, 0],
+   "screen": [125, 145],
+   "zoom": 1,
+   "crop": [27, 93, 196, 104],
+   "what": "Luis calls, the frog hops to him"
+  },
+  "vamos.si": {
+   "world": [-0.2992, -1.659, 0],
+   "screen": [145, 94],
+   "zoom": 1,
+   "crop": [44, 42, 196, 104],
+   "what": "Carmen at the open gate, the frog hops after her"
+  },
+  "vamos.no": {
+   "world": [-0.2992, -1.659, 0],
+   "screen": [145, 94],
+   "zoom": 1,
+   "crop": [44, 42, 196, 104],
+   "what": "Carmen sits with a glass, the frog holds one"
+  },
+  "hasta_manana.si": {
+   "world": [-1.4686, -1.1422, 0],
+   "screen": [114, 88],
+   "zoom": 1,
+   "crop": [16, 36, 196, 104],
+   "what": "the family at the back door waves, sunset, the gate open, the frog going"
+  },
+  "hasta_manana.no": {
+   "world": [-1.4686, -1.1422, 0],
+   "screen": [114, 88],
+   "zoom": 1,
+   "crop": [16, 36, 196, 104],
+   "what": "the family at the back door waves, by day, the frog stays"
+  },
+  "parque.no": {
+   "world": [-1.6318, -1.6318, 0],
+   "screen": [120, 82],
+   "zoom": 1,
+   "crop": [22, 30, 196, 104],
+   "what": "cual-camino's \"parque\" pair, its \"no\" side: the yard, not the park (the old window [22, 30, 196, 104])"
+  }
+ },
+ "level": [
+  {
+   "w": "puerta",
+   "index": 3,
+   "picture": "sol.si",
+   "old": [74.15, 0, 81.69, 90.2],
+   "crop": [17, 0, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "hola",
+   "index": 3,
+   "picture": "juega.si",
+   "old": [93.95, 124, 72.09, 79.6],
+   "crop": [7, 112, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "se sienta",
+   "index": 2,
+   "picture": "nino.si",
+   "old": [93.33, 118, 54.34, 60],
+   "crop": [71, 122, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "familia",
+   "index": 3,
+   "picture": "nina.si",
+   "old": [72.83, 80, 54.34, 60],
+   "crop": [0, 80, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "niña",
+   "index": 0,
+   "picture": "nina.si",
+   "old": [72.83, 80, 54.34, 60],
+   "crop": [0, 80, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "niña",
+   "index": 1,
+   "picture": "nino.si",
+   "old": [93.33, 118, 54.34, 60],
+   "crop": [71, 122, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "niña",
+   "index": 2,
+   "picture": "nina.no",
+   "old": [72.83, 80, 54.34, 60],
+   "crop": [0, 80, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "flor",
+   "index": 0,
+   "picture": "flor.si",
+   "old": [32.83, 146, 54.34, 60],
+   "crop": [23, 150, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "flor",
+   "index": 1,
+   "picture": "flor.no",
+   "old": [32.83, 146, 54.34, 60],
+   "crop": [23, 150, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "flor",
+   "index": 2,
+   "picture": "sol.no",
+   "old": [109.15, 0, 81.69, 90.2],
+   "crop": [17, 0, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "juega",
+   "index": 0,
+   "picture": "juega.si",
+   "old": [93.95, 124, 72.09, 79.6],
+   "crop": [7, 112, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "juega",
+   "index": 1,
+   "picture": "juega.no",
+   "old": [93.95, 124, 72.09, 79.6],
+   "crop": [7, 112, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "juega",
+   "index": 2,
+   "picture": "nina.si",
+   "old": [72.83, 80, 54.34, 60],
+   "crop": [0, 80, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "juega",
+   "index": 3,
+   "picture": "sol.si",
+   "old": [74.15, 0, 81.69, 90.2],
+   "crop": [17, 0, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "amigo",
+   "index": 0,
+   "picture": "amigo.si",
+   "old": [72.83, 130, 54.34, 60],
+   "crop": [58, 134, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "amigo",
+   "index": 1,
+   "picture": "amigo.no",
+   "old": [72.83, 130, 54.34, 60],
+   "crop": [58, 134, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "amigo",
+   "index": 2,
+   "picture": "nino.si",
+   "old": [93.33, 118, 54.34, 60],
+   "crop": [71, 122, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "ven",
+   "index": 0,
+   "picture": "ven.si",
+   "old": [101.15, 100, 81.69, 90.2],
+   "crop": [27, 93, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "ven",
+   "index": 1,
+   "picture": "ven.no",
+   "old": [101.15, 100, 81.69, 90.2],
+   "crop": [27, 93, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "ven",
+   "index": 2,
+   "picture": "nino.si",
+   "old": [93.33, 118, 54.34, 60],
+   "crop": [71, 122, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "vamos",
+   "index": 0,
+   "picture": "vamos.si",
+   "old": [113.95, 62, 72.09, 79.6],
+   "crop": [44, 42, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "vamos",
+   "index": 1,
+   "picture": "vamos.no",
+   "old": [113.95, 62, 72.09, 79.6],
+   "crop": [44, 42, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "vamos",
+   "index": 2,
+   "picture": "ven.no",
+   "old": [101.15, 100, 81.69, 90.2],
+   "crop": [27, 93, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "vamos",
+   "index": 3,
+   "picture": "juega.si",
+   "old": [93.95, 124, 72.09, 79.6],
+   "crop": [7, 112, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "hasta mañana",
+   "index": 0,
+   "picture": "hasta_manana.si",
+   "old": [76.75, 40, 86.49, 95.5],
+   "crop": [16, 36, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "hasta mañana",
+   "index": 1,
+   "picture": "hasta_manana.no",
+   "old": [76.75, 40, 86.49, 95.5],
+   "crop": [16, 36, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "hasta mañana",
+   "index": 3,
+   "picture": "nina.si",
+   "old": [72.83, 80, 54.34, 60],
+   "crop": [0, 80, 196, 104],
+   "zoom": 1
+  }
+ ],
+ "clips": {},
+ "clipsWhat": "patio.js never calls clip()",
+ "front": {
+  "how": "nothing of the set covers a character: in the old picture the background (fondo: the house, the fence, the gate, the tree, the nest, the beds) was drawn before everyone, and every place is on the lawn before the house, the fence and the tree (checked: floor). The crate, the flowers, the sack and the ball stay in the sprite layer, in its list sorted by y, as before",
+  "parts": {}
+ },
+ "shadows": {
+  "bola": {
+   "radius": 0.28,
+   "at": "the ground point under it on screen (unproject(x, y - 1)), whether it lies there or is in the air over it (W.bola.h > 0: the shadow stays on the ground under it)",
+   "when": "W.bola, and that ground point is on the lawn (x > CX, y > CY: not the ball in the tree, 196, 64, nor its flight there)",
+   "cast": "castShadow(g.x, g.y, .05, .28)",
+   "why": "round 3: the ball had no shadow and read as hanging in the air in front of the fence"
+  },
+  "coqui": {
+   "radius": 0.45,
+   "at": "the ground point under his feet on screen (unproject(b.x + b.w / 2, q.y + 25))",
+   "when": "W.cq.vis and al > .5",
+   "cast": "castShadow(g.x, g.y, .3, .45)"
+  },
+  "people": {
+   "radius": {
+    "grown": 0.35,
+    "nino": 0.3,
+    "bebe": 0.25
+   },
+   "at": "the ground point under their feet on screen (unproject(x, y - 1))",
+   "when": "visible (vis !== 0, al > .5); the baby only on the ground, not in mamá's arms (bebe.z)",
+   "cast": "standing: for (z = .3; z <= 1.7; z += .35) castShadow(g.x, g.y, z, r); sitting on the grass (sent): castShadow(g.x, g.y, .3, r)"
+  },
+  "dropped": "patio.js:108 rana()'s dotted shadow under the frog is not drawn: the engine casts his"
+ },
+ "dropped": [
+  "patio.js:129 c.drawImage(spr(\"cielo\" + n)) and patio.js:132 c.drawImage(spr(\"patio\"...), fondo()) -> the set, for setKey(W)",
+  "patio.js:147 the light of the hour (orange .10 at sol 2, red .17 at 3) and patio.js:148 W.osc (dark blue over everything) -> baked into the set (setKey hora); the characters, the props and the fireflies are not dimmed (El frente's rule)",
+  "patio.js:108 the frog's dotted shadow -> the engine's cast shadow"
+ ],
+ "flowerLeaves": {
+  "what": "round 6: a flower in the ground comes with its own leaves: a clump drawn by the sprite layer immediately before the flower (moves: the line of the beds), at its foot (x, y = hoyo(k, i)), 1:1, not dimmed by the hour (the characters are not; the set bakes the light). Each stage: pixel (x + x0 + col, y + y0 + row) of rows[row][col] is palette[that letter], \".\" none. open: the flower open (f.k), its head x - 4 to x + 4, rows y - 18 to y - 10: the clump 11 wide (x - 5 to x + 5), from y - 1 up to 1 to 4 rows over the head (y - 19 to y - 22), narrower at its foot. bud: the bud (!f.k), x - 2 to x + 2, rows y - 10 to y - 5: 9 wide (x - 4 to x + 4), up to y - 13. A clump stays inside its own hole's 10 px: a neighbour's head is never under it, and neighbours in a full bed join into one row of leaves",
+  "palette": {
+   "d": [20, 83, 45],
+   "l": [28, 108, 54],
+   "t": [46, 154, 72]
+  },
+  "stages": {
+   "open": {
+    "x0": -5,
+    "y0": -22,
+    "rows": [".....t.....", "...tddd.d..", "..dltlttd..", ".ttldllllt.", ".dllllltld.", "dltdlllllld", "dllllldltld", "dldtllllldd", "dlllldllltd", "ddlltllldld", "dllldllllld", "dlllltldlld", "dlldlllllld", "dllllltllld", "dtdlllllldd", "dlllldltlld", "ddtlllllddd", "..dldllld..", "..dtllldd..", "..ddlllld..", "..dltldld..", "..ddddddd.."],
+    "head": [-4, -18, 9, 9]
+   },
+   "bud": {
+    "x0": -4,
+    "y0": -13,
+    "rows": ["....t....", "..tdldt..", ".dltttdd.", ".ddlllld.", "tlllltllt", "ddlllllld", "dllldltld", "dtllllldd", "dlldllltd", "ddtlllddd", "..dllld..", "..dtldd..", "..ddddd.."],
+    "head": [-2, -10, 5, 6]
+   }
+  },
+  "gets": [
+   {
+    "line": 135,
+    "what": "the flowers in the beds (florEn at hoyo(k, i)): every one, open or bud, in every story, review and level picture (cual-patio flor, aquí, allá: the flower in bed L's or R's first hole)"
+   }
+  ],
+  "not": [
+   {
+    "line": 60,
+    "what": "mkCaja: the tulips in the crate (in pots, not in the ground)"
+   },
+   {
+    "line": 69,
+    "what": "mkCosa flor: a flower in a hand, flying (vuelaA), in Carmen's hair (alpelo), in the basket, the nest or a card"
+   },
+   {
+    "line": 144,
+    "what": "the butterflies (FLOR colours): not flowers"
+   },
+   {
+    "line": "juego.js",
+    "what": "the bubbles and the answer cards (bub, respIcon): drawn by the game"
+   }
+  ]
+ },
+ "moves": [
+  {
+   "line": 16,
+   "act": "*",
+   "src": "SOLY=[24,40,56,73]",
+   "to": "SOLY=[26,40,56,73]",
+   "values": [
+    {
+     "key": "W.soly",
+     "old": 24,
+     "new": 26
+    }
+   ],
+   "why": "the sun at its highest 2 px lower: its touch box ([SOLX - 14, soly - 14, 28, 28]) and so its hint frame (12 px round it) wholly inside the view (las-flores and h-patio ask for the sun; at soly 24 the frame reached 2 px over the picture's top). W.soly 24 in a recorded run is 26"
+  },
+  {
+   "line": 58,
+   "act": "*",
+   "src": "ESTRELLAS=[[60,18],[84,40],[124,12],[150,36],[40,46],[112,58],[72,64],[140,60]]",
+   "to": "ESTRELLAS=[[60,18],[84,40],[124,12],[150,36],[40,46],[100,44],[72,64],[140,60]]",
+   "why": "round 3: the sixth star (112, 58) sat half hidden on the top of the fence's first post (raised with the fence) and read as a lamp on it; it goes up and left into the open sky over the gap between the house and the fence. The others are as before: in the sky, or wholly behind the set (60, 18, 40, 46 and 72, 64 behind the house, 140, 60 behind the gate's left post)"
+  },
+  {
+   "line": 208,
+   "act": "asoma",
+   "src": "W.gente.abuela={x:42,y:116,pose:\"wave\",dir:1}",
+   "to": "W.gente.abuela={x:52,y:108,pose:\"wave\",dir:1}",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [42, 116],
+     "new": [52, 108],
+     "world": [-2.1213, 1.5774, 0]
+    }
+   ],
+   "why": "acts.asoma: abuela in the back door, in the doorway: on its threshold (the house floor, just inside the wall's face), in its middle, the dark room round her head and shoulders, as the old one stood in the old door (round 3: round 2 had her on the step's front edge, and she read as standing in front of the wall). The door stands on the house wall, seen at the angle: its middle is 10 px right of the old one (the whole door, its hint frame and who stands in it inside the wide view with a margin, as El balcón and La sala keep it): 10 px right, -8 rows"
+  },
+  {
+   "line": 240,
+   "act": "seva",
+   "src": "await mueve(id,44,118)",
+   "to": "await mueve(id,59,115)",
+   "places": [
+    {
+     "who": "whoever",
+     "old": [44, 118],
+     "new": [59, 115],
+     "world": [-1.5502, 1.7678, 0]
+    }
+   ],
+   "why": "acts.seva: whoever goes in walks to the back door (the step's front, in the door's middle: moved with it), then is gone"
+  },
+  {
+   "line": 295,
+   "act": "juntos",
+   "src": "await Promise.all([mueve(id,170,124),acts.ir({a:\"porton\"})])",
+   "to": "await Promise.all([mueve(id,165,116),acts.ir({a:\"porton\"})])",
+   "places": [
+    {
+     "who": "whoever",
+     "old": [170, 124],
+     "new": [165, 116],
+     "world": [1.387, -1.0607, 0]
+    }
+   ],
+   "why": "acts.juntos: two go to the gate together: the one who walks ends right of the gate, before its right post. The fence runs up towards the far corner, so the gate stands 16 rows further back than the old one; the walk follows it 8 rows up and 5 px left (as far as the fence behind them allows: 5 rows of lawn between the feet and the fence's foot, round 3). The frog's place at the gate (LUGAR.porton) went up with the gate too (round 4, below): he stands left of the one who walks, before the opening"
+  },
+  {
+   "line": 308,
+   "act": "luiscorre",
+   "src": "await mueve(\"luis\",170,124,8)",
+   "to": "await mueve(\"luis\",165,116,8)",
+   "places": [
+    {
+     "who": "luis",
+     "old": [170, 124],
+     "new": [165, 116],
+     "world": [1.387, -1.0607, 0]
+    }
+   ],
+   "why": "acts.luiscorre: Luis runs to the gate (then opens it, acts.abre): to the same place as acts.juntos"
+  },
+  {
+   "line": 135,
+   "act": "*",
+   "src": "const h=hoyo(k,i);florEn(c,h[0],h[1],f);",
+   "to": "const h=hoyo(k,i);flowerLeaves(c,h[0],h[1],f);florEn(c,h[0],h[1],f);",
+   "why": "round 6: draw the clump first: every flower in a bed (the only place patio.js plants one: florEn at hoyo(k, i), the beds' entry in the sprite list at y CAMA[k][1] + 12) gets its own leaves, drawn immediately before it at its foot (flowerLeaves), so at its depth: whoever stands behind the bed is behind the leaves, whoever stands in front is in front, as with the flower. flowerLeaves(g, x, y, f): the stage f.k ? open : bud, each pixel of its rows at (x + x0 + col, y + y0 + row), colours palette"
+  },
+  {
+   "line": 86,
+   "act": "*",
+   "src": "porton:[128,104,.85]",
+   "to": "porton:[126,86,.85]",
+   "places": [
+    {
+     "who": "cq",
+     "old": [128, 104],
+     "new": [126, 86],
+     "world": [0.5439, -0.6527, 0]
+    }
+   ],
+   "why": "round 4: LUGAR.porton, the frog at the gate (acts.ir a porton; acts.juntos), follows the gate: on the lawn before its opening, 17.5 rows before the fence's line (the old picture: 17; round 3 left him 34.5 rows before it, where the old hop counts put him), his middle at x 142 inside the opening's columns. -2 px, -18 rows. W.cq at (128, 104) in a recorded run is here (places: who cq). Some hop counts change: hops"
+  },
+  {
+   "line": 86,
+   "act": "*",
+   "src": "sale:[134,84,.5]",
+   "to": "sale:[130,68,.5]",
+   "places": [
+    {
+     "who": "cq",
+     "old": [134, 84],
+     "new": [130, 68],
+     "world": [-0.3264, -1.7406, 0]
+    }
+   ],
+   "why": "round 4: LUGAR.sale, where the frog fades (acts.sevan: three hops from the gate), is through the opening, on the path 2.5 rows past the fence's line (the old picture: 3; round 3: 11.5 rows before it, on the lawn), his box wholly between the posts: he is seen to go out through the gate before he fades. -4 px, -16 rows. Some hop counts change: hops"
+  },
+  {
+   "line": 195,
+   "act": "inicio9",
+   "src": "carmen:{x:86,y:136,pose:\"idle\"}}",
+   "to": "carmen:{x:94,y:137,pose:\"idle\"}}",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [86, 136],
+     "new": [94, 137],
+     "world": [0.5983, 2.0125, 0]
+    }
+   ],
+   "why": "acts.inicio9: Carmen 8 px further right, in front of the crate's left corner: the hint hand pointing at her (las-flores beats.12) was on the frog's face, at the door's place (LUGAR.inicio)"
+  },
+  {
+   "line": 248,
+   "act": "inicio10",
+   "src": "carmen:{x:50,y:160,pose:\"idle\",dir:1}",
+   "to": "carmen:{x:37,y:178,pose:\"idle\",dir:1}",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [50, 160],
+     "new": [37, 178],
+     "world": [1.2782, 5.7928, 0]
+    }
+   ],
+   "why": "acts.inicio10: Carmen at the left, lower, beside bed L: the answer cards over the frog at the door and by her (que-es-esto beats.3, 10) covered her head, and the hand at the left card her face"
+  },
+  {
+   "line": 290,
+   "act": "inicio11",
+   "src": "W.gente={abuela:{x:34,y:136,pose:\"idle\",dir:1},abuelo:{x:60,y:126,pose:\"ojos\",lleva:\"bizcocho\",dir:1},mama:{x:86,y:136,pose:\"idle\"},bebe:{x:97,y:109,z:137,est:\"idle\"},papa:{x:112,y:126,pose:\"idle\"},",
+   "to": "W.gente={abuela:{x:46,y:136,pose:\"idle\",dir:1},abuelo:{x:70,y:129,pose:\"ojos\",lleva:\"bizcocho\",dir:1},mama:{x:92,y:136,pose:\"idle\"},bebe:{x:103,y:109,z:137,est:\"idle\"},papa:{x:114,y:136,pose:\"idle\"},",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [34, 136],
+     "new": [46, 136],
+     "world": [-0.7615, 3.2636, 0]
+    },
+    {
+     "who": "abuelo",
+     "old": [60, 126],
+     "new": [70, 129],
+     "world": [-0.4895, 2.2301, 0]
+    },
+    {
+     "who": "mama",
+     "old": [86, 136],
+     "new": [92, 136],
+     "world": [0.4895, 2.0125, 0]
+    },
+    {
+     "who": "bebe",
+     "old": [97, 109],
+     "new": [103, 109],
+     "z": 137,
+     "world": [-0.6799, 0.2448, 0]
+    },
+    {
+     "who": "papa",
+     "old": [112, 126],
+     "new": [114, 136],
+     "world": [1.0879, 1.4142, 0]
+    }
+   ],
+   "why": "acts.inicio11: the family by the back door, a little further right and closer together, in one row (abuelo 3 px, papá 10 px lower): abuela's hint frame (hasta-manana beats.8) reached 11 px past the view's left side; abuelo's and papá's bubbles (\"amor\", when touched) lay over the fireflies card; the hand at an answer card in the sky (below) was on papá's face. The baby stays in mamá's arms (moved with her)"
+  },
+  {
+   "line": 291,
+   "act": "inicio11",
+   "src": "luis:{x:150,y:160,pose:\"idle\",dir:-1},carmen:{x:188,y:158,pose:\"alto\",dir:-1}};W.pdoor=1;",
+   "to": "luis:{x:178,y:126,pose:\"idle\",dir:-1},carmen:{x:200,y:168,pose:\"alto\",dir:-1}};W.pdoor=1;W.respEn=[164,4];",
+   "respEn": [164, 4],
+   "places": [
+    {
+     "who": "luis",
+     "old": [150, 160],
+     "new": [178, 126],
+     "world": [2.2845, -0.8703, 0]
+    },
+    {
+     "who": "carmen",
+     "old": [188, 158],
+     "new": [200, 168],
+     "world": [5.1673, 0.8159, 0]
+    }
+   ],
+   "why": "acts.inicio11: Luis waits right of the gate, by the fence, Carmen in front of the tree: the hint hand pointing at the gate (hasta-manana beats.5) was on Luis's face. And the answer cards stand in the sky at the top right (W.respEn, juego.js: \"a scene that needs its people seen while he chooses puts the bubbles elsewhere\", as banco, mesa, estufa, nevera and comer do): over the frog, at abuela's place and in the middle, they covered the family and Luis (hasta-manana beats.10, 25)"
+  }
+ ],
+ "bubbles": {
+  "what": "each bubble's rectangle relative to its tail's tip, as patio.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]",
+  "rects": {
+   "hola": [-16, -46, 34, 44],
+   "amor": [-14, -38, 30, 36],
+   "como": [-32, -40, 66, 38],
+   "bien": [-14, -40, 30, 38],
+   "mal": [-14, -40, 30, 38],
+   "quien": [-22, -40, 46, 38],
+   "lluvia": [-22, -40, 46, 38],
+   "q": [-12, -40, 26, 38]
+  }
+ },
+ "talk": {
+  "what": "where a bubble goes (patio.js draw: line 150 for a person, 151 for the frog). The first of these places whose bubble is wholly inside the view, clear of the corner cards shown (hud: the sun card, the basket and the nest, the fireflies) and of every face (each visible person's and the frog's, its own too); if none is, the first (the old)",
+  "top": "a person: (x, y - alto - 1) as the old tail; the frog: (b.x + (b.w >> 1), b.y + 2 - (W.lleva ? 18 : 0))",
+  "places": [
+   [0, 0],
+   [1, 7],
+   [-1, 7],
+   [1, 30],
+   [-1, 30],
+   [1, 44],
+   [-1, 44],
+   [2, 7],
+   [-2, 7],
+   [2, 30],
+   [-2, 30],
+   [2, 44],
+   [-2, 44],
+   [1, 58],
+   [-1, 58],
+   [2, 58],
+   [-2, 58]
+  ],
+  "placesWhat": "[side, dy]: the tail's tip at (top.x + side * (h + 16), top.y + dy), h the head's half width: a person 6, the frog b.w >> 1",
+  "faces": "a person's face: [hx - 6, y + top + 5 (the baby: + 4), 12, 10] (eyes to chin, not the hair), hx the head's middle; the frog's: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]",
+  "heads": {
+   "luis": {
+    "top": -41,
+    "head": 0
+   },
+   "luis.sent": {
+    "top": -38,
+    "head": 0
+   },
+   "carmen": {
+    "top": -41,
+    "head": 0
+   },
+   "carmen.sent": {
+    "top": -38,
+    "head": 0
+   },
+   "mama": {
+    "top": -54,
+    "head": 0
+   },
+   "mama.sent": {
+    "top": -47,
+    "head": 0
+   },
+   "papa": {
+    "top": -53,
+    "head": 0
+   },
+   "papa.sent": {
+    "top": -46,
+    "head": 0
+   },
+   "abuelo": {
+    "top": -51,
+    "head": 0
+   },
+   "abuelo.sent": {
+    "top": -44,
+    "head": 0
+   },
+   "abuela": {
+    "top": -50,
+    "head": 0
+   },
+   "bebe": {
+    "top": -28,
+    "head": 0
+   }
+  },
+  "headsWhat": "each sprite (idle; .sent: sitting): top, the first opaque row relative to the feet row y; head, the middle of its top 10 rows relative to x (facing right; facing left: x - head, + 1 for the family sprites drawn at -PX)",
+  "boards": "in the 196 x 216 display, then + the view's x0: W.tarjeta sol [2, 2, 36, 54]; W.tarjeta luces [2, 2, 86, 32]; W.tanteo: [2, 2, 26 + 15 max(3, canasta.length), 28] and [119, 2, 75, 28]"
+ },
+ "code": [
+  {
+   "line": 16,
+   "old": "CAMA L [40,176,56,20], R [144,176,56,20]",
+   "to": "the beds (the set paints each at the old ellipse: middle (c[0] + 28, c[1] + 10), radii 28, 10); hoyo() unchanged",
+   "note": "points.hoyos.L, hoyos.R"
+  },
+  {
+   "line": 16,
+   "old": "SOLX=100, SOLY=[24,40,56,73]",
+   "to": {
+    "moved": "SOLY=[26,40,56,73]"
+   },
+   "note": "see moves"
+  },
+  {
+   "line": 58,
+   "old": "ESTRELLAS [60,18] [84,40] [124,12] [150,36] [40,46] [112,58] [72,64] [140,60]",
+   "to": {
+    "moved": "the sixth, [112,58], to [100,44]",
+    "point": "estrellas"
+   },
+   "note": "behind the set (sheet behind); see moves"
+  },
+  {
+   "line": 85,
+   "old": "LUGAR.puerta [30,104,0.8]",
+   "to": {
+    "spot": "frog.puerta",
+    "new": [30, 104, 0.8]
+   }
+  },
+  {
+   "line": 85,
+   "old": "LUGAR.inicio [52,150,1]",
+   "to": {
+    "spot": "frog.inicio",
+    "new": [52, 150, 1]
+   }
+  },
+  {
+   "line": 85,
+   "old": "LUGAR.centro [104,178,1]",
+   "to": {
+    "spot": "frog.centro",
+    "new": [104, 178, 1]
+   }
+  },
+  {
+   "line": 85,
+   "old": "LUGAR.caja [104,150,1]",
+   "to": {
+    "spot": "frog.caja",
+    "new": [104, 150, 1]
+   }
+  },
+  {
+   "line": 85,
+   "old": "LUGAR.camaL [90,164,0.9]",
+   "to": {
+    "spot": "frog.camaL",
+    "new": [90, 164, 0.9]
+   }
+  },
+  {
+   "line": 85,
+   "old": "LUGAR.camaR [118,164,0.9]",
+   "to": {
+    "spot": "frog.camaR",
+    "new": [118, 164, 0.9]
+   }
+  },
+  {
+   "line": 86,
+   "old": "LUGAR.luis [112,140,1]",
+   "to": {
+    "spot": "frog.luis",
+    "new": [112, 140, 1]
+   }
+  },
+  {
+   "line": 86,
+   "old": "LUGAR.carmen [62,130,1]",
+   "to": {
+    "spot": "frog.carmen",
+    "new": [62, 130, 1]
+   }
+  },
+  {
+   "line": 86,
+   "old": "LUGAR.carmenA [112,116,0.9]",
+   "to": {
+    "spot": "frog.carmenA",
+    "new": [112, 116, 0.9]
+   }
+  },
+  {
+   "line": 86,
+   "old": "LUGAR.abuela [70,170,1]",
+   "to": {
+    "spot": "frog.abuela",
+    "new": [70, 170, 1]
+   }
+  },
+  {
+   "line": 86,
+   "old": "LUGAR.porton [128,104,0.85]",
+   "to": {
+    "spot": "frog.porton",
+    "new": [126, 86, 0.85],
+    "moved": "round 4: follows the gate (see moves; hop counts: hops)"
+   }
+  },
+  {
+   "line": 86,
+   "old": "LUGAR.arbol [186,112,0.8]",
+   "to": {
+    "spot": "frog.arbol",
+    "new": [186, 112, 0.8]
+   }
+  },
+  {
+   "line": 86,
+   "old": "LUGAR.luisC [96,140,0.95]",
+   "to": {
+    "spot": "frog.luisC",
+    "new": [96, 140, 0.95]
+   }
+  },
+  {
+   "line": 86,
+   "old": "LUGAR.sale [134,84,0.5]",
+   "to": {
+    "spot": "frog.sale",
+    "new": [130, 68, 0.5],
+    "moved": "round 4: follows the gate (see moves; hop counts: hops)"
+   }
+  },
+  {
+   "line": 87,
+   "old": "DETRAS.L [68,176]",
+   "to": {
+    "spot": "detras.L",
+    "new": [68, 176]
+   }
+  },
+  {
+   "line": 87,
+   "old": "DETRAS.R [172,176]",
+   "to": {
+    "spot": "detras.R",
+    "new": [172, 176]
+   }
+  },
+  {
+   "line": 87,
+   "old": "ESPERA.luis [160,128]",
+   "to": {
+    "spot": "espera.luis",
+    "new": [160, 128]
+   }
+  },
+  {
+   "line": 87,
+   "old": "ESPERA.carmen [80,128]",
+   "to": {
+    "spot": "espera.carmen",
+    "new": [80, 128]
+   }
+  },
+  {
+   "line": 87,
+   "old": "LADOS[0] [84,172]",
+   "to": {
+    "spot": "lados.0",
+    "new": [84, 172]
+   }
+  },
+  {
+   "line": 87,
+   "old": "LADOS[1] [156,172]",
+   "to": {
+    "spot": "lados.1",
+    "new": [156, 172]
+   }
+  },
+  {
+   "line": 89,
+   "old": "caja(id): [x - 11, y - alto(id), 22, alto(id)]",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 93,
+   "old": "box caja [104,112,32,24]",
+   "to": {
+    "thing": "caja",
+    "box": [104, 112, 32, 24]
+   },
+   "note": "the sprite layer's crate: unchanged"
+  },
+  {
+   "line": 93,
+   "old": "box camaL [40,160,56,38]",
+   "to": {
+    "thing": "camaL",
+    "box": [40, 159, 57, 39]
+   }
+  },
+  {
+   "line": 93,
+   "old": "box camaR [144,160,56,38]",
+   "to": {
+    "thing": "camaR",
+    "box": [144, 159, 56, 39]
+   }
+  },
+  {
+   "line": 93,
+   "old": "box bola [x - 7, y - 13, 14, 14]; saco [x - 13, y - 23, 26, 24]",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 94,
+   "old": "box sol [SOLX-14, soly-14, 28, 28]",
+   "to": "relative to the sun: unchanged (SOLY: moves)"
+  },
+  {
+   "line": 94,
+   "old": "box porton [127,70,40,43]",
+   "to": {
+    "thing": "porton",
+    "box": [115, 42, 48, 63],
+    "hand": [133, 46]
+   },
+   "note": "and hand: the hint hand's point (new: the old had none, so the box's middle)"
+  },
+  {
+   "line": 94,
+   "old": "box nido [170,60,22,16]",
+   "to": {
+    "thing": "nido",
+    "box": [170, 60, 22, 16]
+   }
+  },
+  {
+   "line": 94,
+   "old": "box arbol [168,8,60,106]",
+   "to": {
+    "thing": "arbol",
+    "box": [166, 3, 74, 127]
+   }
+  },
+  {
+   "line": 95,
+   "old": "box pajaro [p[0]-10, p[1]-20, 20, 22]",
+   "to": "relative to the bird: unchanged"
+  },
+  {
+   "line": 95,
+   "old": "box puerta [27,57,30,56]",
+   "to": {
+    "thing": "puerta",
+    "box": [34, 40, 35, 80]
+   }
+  },
+  {
+   "line": 95,
+   "old": "box casa [0,14,61,100]",
+   "to": {
+    "thing": "casa",
+    "box": [0, -1, 86, 164]
+   }
+  },
+  {
+   "line": 95,
+   "old": "box cerca [60,80,180,33]",
+   "to": {
+    "thing": "cerca",
+    "box": [110, 46, 130, 113]
+   }
+  },
+  {
+   "line": 95,
+   "old": "box patio [0,113,240,103]",
+   "to": {
+    "thing": "patio",
+    "box": [0, 79, 240, 137]
+   }
+  },
+  {
+   "line": 99,
+   "old": "gente bebe: drawImage at x - 13, y - 28",
+   "to": "relative to the baby: unchanged"
+  },
+  {
+   "line": 100,
+   "old": "gente abuela: translate(x, y - 50), scale(-1,1) when dir < 0; drawImage(im,-30,0)",
+   "to": "relative to her: unchanged"
+  },
+  {
+   "line": 102,
+   "old": "gente: scale(-1,1) when dir < 0; drawImage(im, -PX, 0) at x, y - im.height + 1",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 103,
+   "old": "the flower in her hair at x + 3, y - h + 2",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 104,
+   "old": "what a person holds: cosa at x + d * 14, y - h + 13 (alto, 2 x); x - d * 20, y - h + 30 (offer, 1.4 x); x, y - h + 34 / 38 (1.4 x)",
+   "to": "relative: unchanged (the old code's own 1.4 x and 2 x drawings of the small things, kept as they are)"
+  },
+  {
+   "line": 108,
+   "old": "rana: the dotted shadow at b.x + 2, q.y + 25",
+   "to": "dropped: the engine casts his shadow (shadows.coqui)"
+  },
+  {
+   "line": 110,
+   "old": "rana: the eyes at b.x + b.w * .3, .7",
+   "to": "relative to the frog: unchanged"
+  },
+  {
+   "line": 113,
+   "old": "rana: what he carries at b.x + b.w / 2, b.y + dy + 1; the basket at b.x + b.w - 6, b.y + b.h - 17",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 116,
+   "old": "bub2: c.scale(2,2), bub(c,k,0,0,a)",
+   "to": "relative: unchanged (the bubbles are drawn at twice their size)"
+  },
+  {
+   "line": 129,
+   "old": "c.drawImage(spr(\"cielo\"+n,...),0,0)",
+   "to": "dropped: the set's sky, for setKey(W)"
+  },
+  {
+   "line": 130,
+   "old": "the stars at ESTRELLAS",
+   "to": "behind the set (sheet behind)"
+  },
+  {
+   "line": 131,
+   "old": "luna(c,150,26); sol(c, SOLX, soly, n, brilla)",
+   "to": {
+    "points": ["luna", "sol"]
+   },
+   "note": "behind the set (sheet behind): unchanged places"
+  },
+  {
+   "line": 132,
+   "old": "c.drawImage(spr(\"patio\"+...,()=>fondo(W.porton,W.pdoor)),0,0)",
+   "to": "dropped: the set, for setKey(W) (then the sky objects' box redrawn from the set: behind)"
+  },
+  {
+   "line": 136,
+   "old": "if(W.caja) c.drawImage(spr(\"caja\",mkCaja),104,112) (sort y 136)",
+   "to": {
+    "point": "caja",
+    "new": [104, 112]
+   },
+   "note": "the sprite layer: unchanged"
+  },
+  {
+   "line": 135,
+   "old": "the flowers in the beds: florEn at hoyo(k, i), sort y CAMA[k][1] + 12",
+   "to": {
+    "moved": "round 6: each flower's own leaves drawn first (moves; flowerLeaves)"
+   },
+   "note": "the sprite layer (the set's holes are at hoyo())"
+  },
+  {
+   "line": 142,
+   "old": "the loop the bird flew: setLineDash([2,3]) arc at z.x, z.y",
+   "to": "screen: unchanged"
+  },
+  {
+   "line": 147,
+   "old": "the light of the hour: c.fillRect(0,0,SW,SH)",
+   "to": "dropped: baked into the set (setKey hora)"
+  },
+  {
+   "line": 148,
+   "old": "W.osc: c.fillRect(0,0,SW,SH)",
+   "to": "dropped: baked into the set (setKey hora); the characters are not dimmed"
+  },
+  {
+   "line": 150,
+   "old": "a person's bubble at x, y - alto - 1",
+   "to": {
+    "talk": true
+   },
+   "note": "sheet talk: the first free place"
+  },
+  {
+   "line": 151,
+   "old": "the frog's bubble at b.x + (b.w >> 1), b.y + 2 - (W.lleva ? 18 : 0)",
+   "to": {
+    "talk": true
+   },
+   "note": "sheet talk: the first free place"
+  },
+  {
+   "line": 153,
+   "old": "talkAt: [x, y - alto - 1 - (bub ? 38 : 0)]",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 156,
+   "old": "respIcon ir: [13,27] ...",
+   "to": "the answer card's own drawing: unchanged"
+  },
+  {
+   "line": 158,
+   "old": "respIcon ver: the eyes at x + 13, x + 27",
+   "to": "the answer card's own drawing: unchanged"
+  },
+  {
+   "line": 159,
+   "old": "respIcon ver: the rays [4,6] [20,3] [36,6]",
+   "to": "the answer card's own drawing: unchanged"
+  },
+  {
+   "line": 164,
+   "old": "hud sun card tarjeta(g,3,3,34,52); g.fillRect(5,5,30,40)",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 166,
+   "old": "hud sun card: the fence g.fillRect(5,42,30,1)",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 167,
+   "old": "hud tanteo tarjeta(g,3,3,...,26); the basket at 5,7",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 169,
+   "old": "hud fireflies card tarjeta(g,3,3,84,30); the frog at 5,9",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 195,
+   "old": "inicio9: luis {x:160,y:128}, carmen {x:86,y:136}, bola {x:174,y:128}",
+   "to": {
+    "floor": [
+     [1.9037, -0.272, 0],
+     [0.3264, 2.1757, 0],
+     [2.2845, -0.6527, 0]
+    ],
+    "new": [
+     [160, 128],
+     [86, 136],
+     [174, 128]
+    ]
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 205,
+   "old": "ensena: for(const k of [0,1,2,3])",
+   "to": "not a place: the sun card's four steps"
+  },
+  {
+   "line": 208,
+   "old": "asoma: W.gente.abuela={x:42,y:116,...}",
+   "to": {
+    "spot": "asoma",
+    "new": [52, 108]
+   },
+   "note": "moved (see moves)"
+  },
+  {
+   "line": 219,
+   "old": "final9: the stars [60,150] [180,150] [120,120] [90,170] [150,170]; the butterflies at 48 + i * 24 + (i % 2) 6, 150 + (i % 3) 8",
+   "to": "screen effect: unchanged (over the lawn)"
+  },
+  {
+   "line": 220,
+   "old": "final9: a firefly at 150, 150",
+   "to": "over the lawn: unchanged"
+  },
+  {
+   "line": 223,
+   "old": "pelota: mueve(\"luis\",166,150), mueve(\"carmen\",60,150)",
+   "to": {
+    "floor": [
+     [3.2636, 0.7615, 0],
+     [0.3807, 3.6443, 0]
+    ],
+    "new": [
+     [166, 150],
+     [60, 150]
+    ]
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 231,
+   "old": "bolaarbol: the ball to 196, 64 (in the tree, by the nest)",
+   "to": "the crown is where it was: unchanged"
+  },
+  {
+   "line": 232,
+   "old": "avesale: KIT.aveVa(184,60,5,1)",
+   "to": "by the nest, in the air: unchanged"
+  },
+  {
+   "line": 240,
+   "old": "seva: mueve(id,44,118)",
+   "to": {
+    "spot": "seva",
+    "new": [59, 115]
+   },
+   "note": "moved (see moves)"
+  },
+  {
+   "line": 244,
+   "old": "luzsale: P [70,160] [150,150] [112,190]",
+   "to": {
+    "floor": [1.1966, 3.9163, 0],
+    "new": [70, 160]
+   },
+   "note": "over the lawn: the same screen places"
+  },
+  {
+   "line": 248,
+   "old": "inicio10: luis {x:190,y:160} (sitting), carmen {x:50,y:160}, saco {x:164,y:165}",
+   "to": {
+    "floor": [
+     [4.4602, 0.6527, 0],
+     [0.6527, 4.4602, 0],
+     [4.0251, 1.6318, 0]
+    ],
+    "new": [
+     [190, 160],
+     [50, 160],
+     [164, 165]
+    ]
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 250,
+   "old": "aveloop: the loop round 150, 40, r 18; KIT.aveVa(181,66,7,-1)",
+   "to": {
+    "point": "nido",
+    "new": [181, 66]
+   },
+   "note": "the loop: screen, unchanged; the nest where it was"
+  },
+  {
+   "line": 252,
+   "old": "avenido: KIT.aveVa(181,66,8,-1)",
+   "to": {
+    "point": "nido",
+    "new": [181, 66]
+   }
+  },
+  {
+   "line": 270,
+   "old": "prepA: mueve(\"carmen\",150,140)",
+   "to": {
+    "floor": [2.2845, 0.6527, 0],
+    "new": [150, 140]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 284,
+   "old": "alnido: KIT.aveVa(181,66,9,-1)",
+   "to": {
+    "point": "nido",
+    "new": [181, 66]
+   }
+  },
+  {
+   "line": 287,
+   "old": "final10: the stars [60,40] [150,44] [104,30] [80,60] [130,56]",
+   "to": "screen effect: unchanged (in the sky)"
+  },
+  {
+   "line": 290,
+   "old": "inicio11: abuela {x:34,y:136}, abuelo {x:60,y:126}, mama {x:86,y:136}, bebe {x:97,y:109,z:137} (in mamá's arms), papa {x:112,y:126}",
+   "to": {
+    "floor": [
+     [-1.0879, 3.5899, 0],
+     [-0.9247, 2.3389, 0],
+     [0.3264, 2.1757, 0],
+     [0.4895, 0.9247, 0]
+    ],
+    "new": [
+     [34, 136],
+     [60, 126],
+     [86, 136],
+     [112, 126]
+    ]
+   },
+   "note": "the floor rule: the same screen places; the baby relative to mamá"
+  },
+  {
+   "line": 291,
+   "old": "inicio11: luis {x:150,y:160}, carmen {x:188,y:158}; ave {x:178,y:83} on the fence",
+   "to": {
+    "floor": [
+     [3.3724, 1.7406, 0],
+     [4.297, 0.5983, 0]
+    ],
+    "new": [
+     [150, 160],
+     [188, 158]
+    ],
+    "point": "cerca.ave"
+   },
+   "note": "the floor rule; the bird on the fence, on a post's cap (points cerca.ave)"
+  },
+  {
+   "line": 295,
+   "old": "juntos: mueve(id,170,124)",
+   "to": {
+    "spot": "juntos",
+    "new": [165, 116]
+   },
+   "note": "moved (see moves): right of the gate"
+  },
+  {
+   "line": 296,
+   "old": "vuelveluis: mueve(\"luis\",138,138)",
+   "to": {
+    "floor": [1.8494, 0.8703, 0],
+    "new": [138, 138]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 297,
+   "old": "alcentro: +o.x || 160, +o.y || 190",
+   "to": {
+    "floor": [5.2761, 3.1004, 0],
+    "new": [160, 190]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 301,
+   "old": "viene: mueve(\"carmen\",186,174), mueve(\"abuelo\",52,174)",
+   "to": {
+    "floor": [
+     [5.1129, 1.523, 0],
+     [1.4686, 5.1673, 0]
+    ],
+    "new": [
+     [186, 174],
+     [52, 174]
+    ]
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 308,
+   "old": "luiscorre: mueve(\"luis\",170,124,8)",
+   "to": {
+    "spot": "juntos",
+    "new": [165, 116]
+   },
+   "note": "moved (see moves): right of the gate"
+  },
+  {
+   "line": 313,
+   "old": "final11: the stars [110,70] [170,66] [140,56] [124,96] [160,96]",
+   "to": "screen effect: unchanged"
+  },
+  {
+   "line": 316,
+   "old": "final11: a firefly comes from 214,120; luzA(l, f[0]+12, f[1]-8, 14, 1)",
+   "to": "over the yard: unchanged; relative to the frog"
+  },
+  {
+   "line": 318,
+   "old": "sevan: KIT.aveA(150,70,10); hopTo(LUGAR.sale)",
+   "to": "the bird in the air: unchanged; the frog out through the gate (LUGAR.sale, moved: see moves), where he fades"
+  },
+  {
+   "line": 323,
+   "old": "stake: luzA(l,226,58,14,0)",
+   "to": "screen: the firefly leaves to the top right, unchanged"
+  },
+  {
+   "line": 328,
+   "old": "CAM.wide [22,0,196,216]",
+   "to": {
+    "view": "wide",
+    "zoom": 1,
+    "x0": 22
+   }
+  },
+  {
+   "line": 328,
+   "old": "heartAt [118,36]",
+   "to": {
+    "point": "corazon",
+    "new": [118, 36]
+   }
+  },
+  {
+   "line": 330,
+   "old": "fresh(): ave {x:181,y:66}; soly: SOLY[0]",
+   "to": {
+    "point": "nido",
+    "new": [181, 66]
+   },
+   "note": "the nest where it was; SOLY: moves"
+  },
+  {
+   "line": "juego.js:16",
+   "old": "fresh(): cq x 150 y 178 s 1",
+   "to": "not used here: patio's fresh() puts him at LUGAR.centro"
+  },
+  {
+   "line": "cual.js:21",
+   "old": "panelW(): cq x 123 y 150 s .86",
+   "to": "a pair picture that shows the frog sets cq itself (remap); otherwise he is not seen (vis 0)"
+  }
+ ],
+ "checks": {
+  "notes": [
+   "inventory: 21 things (old 21), 14 frog places (old 14), 1 view (old 1), 73 positions (old 73), 12 review pairs of cual-patio and cual-camino's parque.no (25 pictures), 27 level pictures (old 27), 120 places of patio.js named in code",
+   "hops: 91 pairs of LUGAR places (round(d / 30), 1 to 4, kit.js acts.ir): every count as the old one but these 8, each with porton or sale (round 4: their places followed the gate; the other 12 places keep their points), exactly sheet hops: centro - sale 3 -> 4, caja - sale 2 -> 3, camaL - porton 2 -> 3, camaR - porton 2 -> 3, luis - porton 1 -> 2, carmen - porton 2 -> 3, carmenA - sale 1 -> 2, luisC - sale 2 -> 3",
+   "greenery: the crown's lower left lobe reaches 280 px into the bird's box on its nest (behind the bird: the sprite layer draws the bird over it, as the old picture did)",
+   "greenery: no pixel the crown's leaves can take (at any wind step) inside the box of the gate, the nest, the door, the house, the beds, the sun at any of its heights or the bird on the fence; the set's parts are arbol, casa, cerca, escalon, nido, porton, puerta (the step is the door's): nothing decorative",
+   "wide view (x0 22): the door, its frame and abuela in it from x 33 to 72 (11 px from the left side), from row 40",
+   "a strip of wall: 7 px of wall over the door's frame, under the roof's fascia",
+   "hint frames, asked or not: the door, the gate, the nest and the sun at each height inside the view (px from its edge: the door 0, the gate 30, the nest 14, the sun at 26 0, the sun at 40 14, the sun at 56 30, the sun at 73 47); the tree's [154,-9,98,151] is not (-34 px on the right, -9 at the top), as the old one: no story or pair asks for the tree",
+   "abuela in the door: her feet (52,108) on the threshold (row 108.74 in her column), between the jambs (x 38 to 66); the dark doorway round her head: 7 rows over it, at least 5 px on her left and 5 on her right at every row of her head (idle; waving, over her raised arm)",
+   "walks: whoever goes in ends at 59,115, on the door's step in its width (the door 34 to 69, its foot row 120); abuela in the door at 52,108; the walk to the gate ends at 165,116, 6 px right of its right post's foot and 14 rows before it",
+   "perch: the bird on its nest has the nest under its feet (6 of 6 columns, its feet row 67); on the fence (inicio11), the boards' tops under its feet (6 of 6)",
+   "beds: each of the ten holes is in its bed's earth where the old one was; behind every flower's head (9 x 9 over its hole) only the lawn, in every baked state; the crate's bottom row on the lawn, nothing of the set behind it",
+   "lawn (round 4): El frente's grass (GRASS), green at every hour (mean colour of the lawn, El frente's by day hue 76: dia 125,146,63 (hue 75); tarde 131,144,56 (hue 69); tarde2 124,137,52 (hue 69); ocaso 106,129,71 (hue 84); crepusculo 85,114,79 (hue 110); noche 75,100,81 (hue 134))",
+   "flowers (round 6): a yellow head at each hole stands out from what is behind it, its leaves (flowerLeaves) and the lawn round them, by 69 at the least (mean CIE76, the 1 px round the head; the old picture's lawn 57); from the lawn 2 to 7 rows over it (flowers.py's measure, every clump drawn) by 46 to 49",
+   "sun: the part of its disc in the sky at soly 26: 100%, 40: 100%, 56: 100%, 73: 98%, 109: 0% (the old: the fence hid 2 rows at 73, all at 109; now the field, the hills and the far corner's lawn)",
+   "gate (round 3): shut, its leaf fills 99% of the opening (571 px); open, the opening has no pixel of the gate or the fence, and 100 px of the path (day; 100 at night); the open leaf stands in the yard beside it, its face 18.04 px wide on the screen (round 2: edge on)",
+   "door (round 3): open, the doorway is a dim room: its pixels' mean / brightest luminance dia 54/72, tarde 58/74, tarde2 59/74, ocaso 52/68, ocaso 52/68, crepusculo 47/61, noche 44/56, noche 44/56 (0 to 255; El frente's dim room is about 60)",
+   "stars: 60,18 hidden, 84,40 in the sky, 124,12 in the sky, 150,36 in the sky, 40,46 hidden, 100,44 in the sky, 72,64 hidden, 140,60 hidden (none half hidden, none touching the set, in the night states)",
+   "hops in the recorded runs: the frog walks from place to place puerta - centro (6), puerta - arbol (3), centro - arbol (3), centro - caja (3), centro - porton (4), abuela - porton (3), centro - abuela (3), centro - luisC (2), porton - luisC (2), inicio - centro (3), inicio - caja (3), puerta - luis (8), luis - carmen (6), puerta - carmenA (1), luis - carmenA (1); none of these takes a hop more or less (sevan, porton to sale, hops 3 times, as before)",
+   "ball: at its 4 places on the lawn the lawn alone behind it, at least 5 rows of lawn between it and the foot of the fence behind it, its ground point on the lawn, where its shadow is cast (shadows.bola) (in the tree, by the nest, as the old: the crown; no shadow)",
+   "asks: 69 distinct asks (for abuela, bola, camaL, camaR, carmen, es_flor, es_silla, gracias_abuelo, hm, hm_abuela, ir, luis, pajaro, porton, q_que, sol, ver): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), the hint hand on no face; 52 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
+   "NOT the scene's: the hand juego.js draws at an answer card (the left one) reaches onto the frog's face, 46 px under it, in every scene (the card's place and the hand are the game's, respBox and hand()): at the asks for ir, es_flor, q_que, es_silla",
+   "bubbles: 84 bubbles at 1128 moments of 18 runs (d-buenas-noches, d-la-bola, h-patio, hasta-manana, las-flores, que-es-esto), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, at any moment; the \"q\" of duda, encoge and turno at their steps; the frog's \"amor\"): wholly inside the view (0 px from its edge at the least), clear of the cards shown in the corners (0 px), on no face",
+   "clear lawn (round 3): at every place where someone stands, at every column of their feet, at least 5 rows of lawn between their feet and the foot of what stands behind them; the least: behind the wall or the step 5 rows, d-la-bola right beats.0: the frog at 30,104; the fence or the gate 6 rows, hasta-manana right beats.5.after.0: luis at 165,116; the trunk 7 rows, d-la-bola right beats.20: the frog at 186,112",
+   "ground: 109 distinct places where someone stands (and the frog), 1 where someone sits on the grass: on the lawn of the yard (x > CX, y > CY; abuela in the doorway), none behind the fence or inside the house, nothing of the house, the fence, the gate or the tree nearer than them inside their body",
+   "flowerLeaves (round 6): at 189 distinct moments with flowers in the beds no leaf on anyone's face, nor on anyone standing in front of a bed; behind the leaves, as behind the flowers in the old picture: carmen at 200,168, carmen at 68,176, carmen at 186,170, carmen at 186,174, carmen at 198,166, abuelo at 52,174, luis at 172,176, carmen at 84,172, carmen at 37,178",
+   "the frog at the gate (round 4): porton 126,86, 17.5 rows before the fence's line (the old picture 17, round 3 34.5), his middle at x 142 (the opening x 137 to 154); sale 130,68, 2.5 rows past it (the old 3; round 3 11.5 rows before it, on the lawn), on the path, his box x 138 to 154 between the posts (their pixels at x 135 and 156). On his way out (15 steps of 3 hops, in 3 open-gate states) no pixel of the leaf, the posts, the fence or the set nearer than him; at sale his bubbles inside the view, on no face (3 runs); nobody where he stands (42 moments at the gate, and his way out): the nearest anyone comes is 0.94 (hasta-manana alternate final.3: luis at 165,116, the frog at 126,86)",
+   "standing over sitting: at 158 distinct moments no standing person's sprite covers more of a sitting person's face (the baby in mamá's arms, Luis on the grass) than the old picture did there",
+   "pair vamos.si: the gate whole in the picture, 99% of its opening seen (open: the path through it)",
+   "pair vamos.no: the gate whole in the picture, 100% of its opening seen (shut: the leaf in it)",
+   "pairs (round 6): the single flower with its leaves whole in flor.si, aqui.si, aqui.no, alla.si, alla.no",
+   "pairs, what differs (the same window both sides): nino: luis only in si, carmen only in no; nina: carmen only in si, mama only in no; juega: luis pose/lleva, bola; flor: flores, bola; sol: noche, luna, osc; aqui: flores; alla: flores; amigo: bola, the frog x/y/vis; ven: carmen pose/dir, ave, polvo, rizo, the frog x/dy/ojos/ojx/ojy; mira: luis x/pose/dir, ave, rizo, polvo, the frog x/dy/ojos/ojx/ojy; vamos: carmen x/y/pose/dir/sent/lleva, porton, polvo, lleva, the frog x/y/dy; hasta_manana: soly, sol, osc, porton, the frog x/y/s",
+   "pairs: 25 review pictures (and the 27 level pictures, the same pictures): everyone, the frog, the ball and the sun or moon whole in their crop, on clear ground",
+   "states: 15 baked states reached (crepusculo-open-shut, crepusculo-shut-shut, dia-open-shut, dia-shut-open, dia-shut-shut, noche-open-open, noche-open-shut, noche-shut-shut, ocaso-open-open, ocaso-open-shut, ocaso-shut-shut, tarde-open-shut, tarde-shut-shut, tarde2-open-shut, tarde2-shut-shut)"
+  ]
+ }
+}
+''';

@@ -155,6 +155,34 @@ void main() {
       expect(e.ground, setB.ground);
     });
 
+    test('the blades\' colours of a bake come back with it (a set that lights its blades by its hour, El patio)', () {
+      final e = tinyEngine();
+      final lit0 = List.of(e.tuftLit), dark0 = List.of(e.tuftDark);
+      bake(e, 'a');
+      final day = BakedSet.capture(e);
+      bake(e, 'b');
+      for (var k = 0; k < e.tuftLit.length; k++) {
+        e.tuftLit[k] = e.rgb(10 * k, 20, 30);
+        e.tuftDark[k] = e.rgb(5 * k, 10, 15);
+      }
+      final dusk = BakedSet.capture(e);
+      final litDusk = List.of(e.tuftLit), darkDusk = List.of(e.tuftDark);
+      day.restoreInto(e);
+      expect([e.tuftLit, e.tuftDark], [lit0, dark0]);
+      dusk.restoreInto(e);
+      expect([e.tuftLit, e.tuftDark], [litDusk, darkDusk]);
+      // a BakedSet made without them leaves the engine's as they are
+      BakedSet(
+        pix: day.pix,
+        zb: day.zb,
+        ground: day.ground,
+        groundZ: day.groundZ,
+        kinds: day.kinds,
+        staticShadow: day.staticShadow,
+      ).restoreInto(e);
+      expect([e.tuftLit, e.tuftDark], [litDusk, darkDusk]);
+    });
+
     test('the captures of the shared engine are the solo engines\'', () {
       expect(setA.pix, soloSetA.pix);
       expect(setA.ground, soloSetA.ground);

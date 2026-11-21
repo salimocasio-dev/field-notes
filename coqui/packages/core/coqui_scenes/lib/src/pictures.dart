@@ -52,14 +52,20 @@ Object? _copy(Object? v) => v is Map
 // one string for a JSON-shaped value, its keys in order, a number written as JavaScript writes it
 /// The name a review picture has in [sheet]: [n] (`<word>.<side>`) as it is, or, when the sheet has no picture of that
 /// name, with its accents folded (`mamá.si` is `mama.si`): La sala's sheet names its pictures so, as sala-preview.html's
-/// `PV.pair` finds a pair's pictures (order 31b). [n] as it is when the sheet has neither.
+/// `PV.pair` finds a pair's pictures (order 31b). El patio's sheet folds `ñ` too and writes a space as `_`
+/// (`hasta mañana.si` is `hasta_manana.si`), as patio-preview.html's `PV.pair` does (order 32b). [n] as it is when the
+/// sheet has neither.
 String sheetPictureName(Sheet sheet, String n) {
   if (sheet.pictures.containsKey(n)) return n;
-  const from = 'áéíóú', to = 'aeiou';
-  final folded = n.split('').map((c) {
-    final i = from.indexOf(c);
-    return i < 0 ? c : to[i];
-  }).join();
+  const from = 'áéíóúñ', to = 'aeioun';
+  final folded = n
+      .split('')
+      .map((c) {
+        final i = from.indexOf(c);
+        return i < 0 ? c : to[i];
+      })
+      .join()
+      .replaceAll(' ', '_');
   return sheet.pictures.containsKey(folded) ? folded : n;
 }
 

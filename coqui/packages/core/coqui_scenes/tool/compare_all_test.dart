@@ -2,7 +2,7 @@
 // pictures) against the Dart frame, on the vm, as test/preview_test.dart (test/balcon_preview_test.dart) does for the
 // fixture's few:
 //
-//   COQUI_PREVIEW_DIR=<--out of preview_shots.mjs> COQUI_REPORT_DIR=<dir> [COQUI_SCENE=balcon|sala] flutter test tool/compare_all_test.dart
+//   COQUI_PREVIEW_DIR=<--out of preview_shots.mjs> COQUI_REPORT_DIR=<dir> [COQUI_SCENE=balcon|sala|patio] flutter test tool/compare_all_test.dart
 //
 // COQUI_SCENE is the scene the pictures are of (frente when not set); the report is preview-all.vm.txt for El frente,
 // preview-all-<scene>.vm.txt for another.
@@ -14,12 +14,14 @@ import 'dart:ui' as ui;
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/balcon/balcon.dart';
 import 'package:coqui_scenes/src/frente/frente.dart';
+import 'package:coqui_scenes/src/patio/patio.dart';
 import 'package:coqui_scenes/src/sala/sala.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../test/support/balcon_preview_remap.dart';
 import '../test/support/channels.dart';
+import '../test/support/patio_preview_remap.dart';
 import '../test/support/preview_remap.dart';
 import '../test/support/report.dart';
 import '../test/support/sala_preview_remap.dart';
@@ -44,23 +46,29 @@ void main() {
     final frame = await pictures.frameOf(id);
     final scene = frame.scene;
     // the preview's own rule for moving a recorded W to the new places (a dev tool's, per scene)
-    Map<String, dynamic> moved(Map<String, dynamic> w, List<String>? acts) =>
-        switch (scene) {
-          Frente f => previewRemapW(
-            previewBaseW(f.fresh(const {}), w),
-            f.sheet,
-          ),
-          Balcon b => balconPreviewRemapW(
-            balconPreviewBaseW(b.fresh(const {}), w),
-            b.sheet,
-          ),
-          Sala s => salaPreviewRemapW(
-            salaPreviewBaseW(s.fresh(const {}), w),
-            s.sheet,
-            acts: acts,
-          ),
-          _ => throw StateError('no preview rule for $id'),
-        };
+    Map<String, dynamic> moved(
+      Map<String, dynamic> w,
+      List<String>? acts,
+      String? story,
+    ) => switch (scene) {
+      Frente f => previewRemapW(previewBaseW(f.fresh(const {}), w), f.sheet),
+      Balcon b => balconPreviewRemapW(
+        balconPreviewBaseW(b.fresh(const {}), w),
+        b.sheet,
+      ),
+      Sala s => salaPreviewRemapW(
+        salaPreviewBaseW(s.fresh(const {}), w),
+        s.sheet,
+        acts: acts,
+      ),
+      Patio p => patioPreviewRemapW(
+        patioPreviewBaseW(p.fresh(const {}), w),
+        p.sheet,
+        story: story,
+        acts: acts,
+      ),
+      _ => throw StateError('no preview rule for $id'),
+    };
     final rows = <String>[];
     var over = 0, max = 0.0, exact = 0;
     final cases = (jsonDecode(
@@ -82,6 +90,7 @@ void main() {
         final W = moved(
           c['W'] as Map<String, dynamic>,
           (c['acts'] as List?)?.cast<String>(),
+          c['story'] as String?,
         );
         final cam = scene.sheet.viewOf(c['view'] as String, scene.projection);
         frame.draw(W, F: c['F'] as int, cam: cam, tick: 0, allSigns: false);

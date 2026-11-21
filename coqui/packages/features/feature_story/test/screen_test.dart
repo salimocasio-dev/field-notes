@@ -169,7 +169,7 @@ void main() {
         await openScreen(
           tester,
           id: 'la-lluvia',
-          scenes: (id, rng) => registryScenes('patio', rng),
+          scenes: (id, rng) => registryScenes('camino', rng),
         );
         expect(find.byType(LessonFrame), findsOneWidget);
         expect(find.byType(LessonCloseButton), findsOneWidget);

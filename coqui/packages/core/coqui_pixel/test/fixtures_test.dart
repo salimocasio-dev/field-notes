@@ -13,6 +13,7 @@ import 'support/fixtures/ref_ctx.dart';
 import 'support/fixtures/ref_kit.dart';
 import 'support/fixtures/balcon_sheet.dart';
 import 'support/fixtures/frente_sheet.dart';
+import 'support/fixtures/patio_sheet.dart';
 import 'support/fixtures/ref_pp.dart';
 import 'support/fixtures/ref_sprites.dart';
 import 'support/fixtures/sala_sheet.dart';
@@ -90,5 +91,9 @@ void main() {
 
   test('the sheet fixture is the text of La sala\'s sheet', () {
     expect(salaSheetJson, salaSheetText());
+  });
+
+  test('the sheet fixture is the text of El patio\'s sheet', () {
+    expect(patioSheetJson, patioSheetText());
   });
 }
