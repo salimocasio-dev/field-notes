@@ -146,10 +146,9 @@ function arch() {
       for (let yy = ay - bw; yy <= ay + bw; yy += .01) for (let zz = bz0; zz <= bz1; zz += .01) { const edge = Math.abs(yy - ay) > bw - .035 || zz < bz0 + .03 || zz > bz1 - .03;
         plot(ax + .04, yy, zz, edge ? rampOf([236, 226, 190])[3] : G[(Math.floor((yy + zz * 3) * 40) % 7 === 0) ? 3 : 2]); }
       for (const yy of [ay - bw + .06, ay + bw - .06]) for (let zz = bz1; zz <= APH + .1 + ARISE * .55; zz += .01) plot(ax + .04, yy, zz, Ir[1]); }
-    // its shadow: the two posts' and the top's (the arches, the bar, the board), falling to the right as the trees' (round 2: round 1 cast only
-    // the posts', two long strips along the path's edge that read as a kerb)
-    for (const s of [1, -1]) for (let z = .05; z <= APH + .1; z += .1) castShadow(ax, ay + s * AH, z, .1, 1, 0);
-    for (let t = 0; t <= 1; t += .02) { const a = Math.PI * t, yy = ay + AH * Math.cos(a); castShadow(ax, yy, APH + .1 + ARISE * Math.sin(a), .05, 1, 0); castShadow(ax, yy, APH + .07, .045, 1, 0); }
+    // its shadow (round 3): only a short contact shadow at each post's foot (the posts' long shadows ran along the path's own edge and read as a
+    // kerb; the iron top's lay on the lawn as a separate oval): the iron top and the board cast nothing on the ground
+    for (const s of [1, -1]) for (let z = .02; z <= .1; z += .04) castShadow(ax, ay + s * AH, z, .1, 1, 0);
   });
 }
 
@@ -256,10 +255,12 @@ function bigTree() {
 
 /* ---------- the sky, the hills, the sun: El frente's by day ---------- */
 const SKY = { bands: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]], far: [[116, 180, 162], [156, 208, 188], [94, 158, 144]], near: [[78, 158, 94], [124, 203, 122], [62, 136, 80]], sun: [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]] };
-// round 2: the sun in the upper LEFT of the sky (every shadow falls to the right), whole inside the wide view and clear of every crown; the old
+// round 2: the sun in the LEFT of the sky (every shadow falls to the right), whole inside the wide view and clear of every crown; the old
 // picture's three clouds back in the sky (El patio's way), each moved where it is clear of the sun and of the crowns (the old: 36, 16; 112, 9; 168, 26)
-const SUN = [44, 24, 9];
-const CLOUDS = [[90, 15, 1], [128, 6, .7], [124, 42, .8]];
+// round 3: left of the middle, under the corner boards' place (x 24 to 114, rows 2 to 33) and left of every answer card's frame (from x 52), with
+// 2 px to spare: the boards and the cards' frames covered the sun at (44, 24). The clouds clear of the boards' place, the sun and the crowns
+const SUN = [38, 47, 9];
+const CLOUDS = [[128, 6, .7], [140, 24, .8], [120, 44, .8]];
 const cloudAt = (ix, iy) => { for (const [cx, cy, s] of CLOUDS) {
     const e = (x0, y0, rx, ry) => { const dx = (ix + .5 - x0) / rx, dy = (iy + .5 - y0) / ry; return dx * dx + dy * dy <= 1; };
     if (e(cx, cy, 13 * s, 5 * s) || e(cx - 9 * s, cy + 2, 8 * s, 4 * s) || e(cx + 10 * s, cy + 2, 9 * s, 4 * s)) return rgb(...(iy + .5 > cy + 2 * s ? [214, 230, 248] : [244, 248, 255])); }

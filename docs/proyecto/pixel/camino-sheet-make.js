@@ -52,14 +52,14 @@ const SOLID = ['porton', 'arbol0', 'arbol1', 'arbol2', 'banco', 'grande'];   // 
       PART_TAGS = null; const t0 = performance.now(); buildSet(); const warm = performance.now() - t0;
       castShadow = cs0; part = part0;
       // the ground as the set lays it (before shadows and occlusion), and which of its pixels are lit lawn in the baked picture
-      const raw = Array.from(GROUND_CACHE.pix), lit = []; for (let i = 0; i < W * H; i++) lit.push(kinds[i] === KIND_GRASS && bakedZ[i] === groundZ[i] && !staticShadow[i] ? 1 : 0);
+      const raw = Array.from(GROUND_CACHE.pix), lit = [], shade = Array.from(staticShadow); for (let i = 0; i < W * H; i++) lit.push(kinds[i] === KIND_GRASS && bakedZ[i] === groundZ[i] && !staticShadow[i] ? 1 : 0);
       const onGround = []; for (let i = 0; i < W * H; i++) onGround.push(ground[i] && bakedZ[i] === groundZ[i] ? 1 : 0);
       return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z), kinds: Array.from(kinds), K: { road: KIND_ROAD, grass: KIND_GRASS }, rgb: rgbA, leaf, calls, bake: BAKE_MS,
-        shown0, shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), raw, lit, onGround, PATHC: PATHC.map(c => rgb(...c)) };
+        shown0, shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), raw, lit, onGround, shade, PATHC: PATHC.map(c => rgb(...c)) };
     });
     if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, K: g.K });
     G.parts[key] = g.parts; G.z[key] = g.z; G.kinds[key] = g.kinds; G.rgb[key] = g.rgb; G.leaf[key] = g.leaf; G.shadows[key] = g.calls;
-    for (const k of ['shown0', 'shadowPx', 'raw', 'lit', 'onGround']) (G[k] = G[k] || {})[key] = g[k]; G.PATHC = g.PATHC;
+    for (const k of ['shown0', 'shadowPx', 'raw', 'lit', 'onGround', 'shade']) (G[k] = G[k] || {})[key] = g[k]; G.PATHC = g.PATHC;
   }
   if (errs.length) throw new Error(errs.join('; '));
   G.M = await measure(await browser.newPage());
@@ -241,12 +241,12 @@ function make(G) {
   // El patio's inicio11 and h-camino's own beats.5): over the frog they covered Luis by the big tree (uno-dos-tres) and Luis and Carmen (the
   // asks con_n of donde-esta-el-gato), and their hand reached Carmen's and Luis's faces
   // round 2: every card, its lit frame and the frame's glow (the card +- 12) wholly inside the view with 2 px to spare, for two cards and three
-  const EN12 = [134, 14], EN13 = [86, 34], EN14 = [134, 34];
+  const EN12 = [134, 14], EN13 = [120, 34], EN14 = [134, 34];
   const MOVES = [
     { line: lineOf('async inicio12()'), act: 'inicio12', src: 'async inicio12(){W.gente={luis:{x:174,y:138,pose:"wave",dir:-1}', to: 'async inicio12(){W.respEn=[' + EN12 + '];W.gente={luis:{x:174,y:138,pose:"wave",dir:-1}', respEn: EN12,
       why: 'acts.inicio12 (uno-dos-tres, d-corre, h-camino): the answer cards stand in the sky (W.respEn ' + EN12 + ', as h-camino sets for itself at its beats.5: [96, 30], remapped to the same; two or three cards, their lit frames and glow, inside the view with 2 px to spare need 106 <= x <= 134 and y >= 14, and the sun at the top left keeps clear of them at 134): over the frog at the far marks they covered Luis, who waits by the big tree (uno-dos-tres beats.19 to 38), and the hand at a card reached his and Carmen\'s faces' },
     { line: lineOf('async inicio13()'), act: 'inicio13', src: 'async inicio13(){W.sinGran=1;', to: 'async inicio13(){W.sinGran=1;W.respEn=[' + EN13 + '];', respEn: EN13,
-      why: 'acts.inicio13 (donde-esta-el-gato): the answer cards (con_1, con_2, con_3: which tree the cat is in, by its birds; two at a time) stand in the sky over the trees (W.respEn ' + EN13 + '): under the biscuits card (rows 2 to 33), left of every bird\'s place, their frames inside the view with 2 px to spare: over the frog at the path\'s middle they covered Luis and Carmen (beats.47, 85) and the hand at a card was on Carmen\'s face' },
+      why: 'acts.inicio13 (donde-esta-el-gato): the answer cards (con_1, con_2, con_3: which tree the cat is in, by its birds; two at a time) stand in the sky over the trees (W.respEn ' + EN13 + '): under the biscuits card (rows 2 to 33), above every bird\'s place, right of the sun with their frames (round 3), their frames inside the view with 2 px to spare: over the frog at the path\'s middle they covered Luis and Carmen (beats.47, 85) and the hand at a card was on Carmen\'s face' },
     { line: lineOf('async inicio14(){'), act: 'inicio14', src: 'async inicio14(){W.gente={abuela:', to: 'async inicio14(){W.respEn=[' + EN14 + '];W.gente={abuela:', respEn: EN14,
       why: 'acts.inicio14 (rapido-despacio): the answer cards stand in the sky under the guineos card (W.respEn ' + EN14 + '): over the frog walking down the path to the arch they ran off the view\'s left edge (juego.js respBox clamps their middle 76 or 60 px from the edge: the first card\'s frame is cut)' },
     { line: lineOf('const perroEn='), act: '*', src: 'Math.min(204,MARCA[i][0]+34)', to: 'Math.min(188,MARCA[i][0]+34)', pts: [['perro', [204, 130], [188, 130]], ['perro', [191, 133], [188, 133]]],
@@ -294,7 +294,7 @@ function make(G) {
   pt('gato_banco', { screen: F.CAT_BENCH, old: [113, 134], v: r4(F.CAT_BENCH_V), what: 'the cat on the bench (story files d-corre, h-camino beats.1, cual-camino gato.si: x 113, y 134 -> remap): its lowest pixels on the seat\'s top; drawn after the bench\'s entry in the sorted list (front.banco), so no shadow on the lawn (shadows.gato)' });
   pt('ave_banco', { screen: AVEB, old: [106, 117], what: 'the bird on the bench (W.avebanco): drawn at (x, y) 15 x 12, its feet on the seat\'s back plank (moves)' });
   pt('corazon', { screen: [110, 30], old: [110, 30], what: 'heartAt: the heart of a happy ending, in the sky (unchanged)' });
-  pt('sol', { screen: F.SUN.slice(0, 2), radius: F.SUN[2], what: 'the sun: baked into the set\'s sky (El frente\'s colours), round 2 in the upper left of the sky (every shadow falls to the right), whole inside the wide view; no story touches it or names its place' });
+  pt('sol', { screen: F.SUN.slice(0, 2), radius: F.SUN[2], what: 'the sun: baked into the set\'s sky (El frente\'s colours), left of the middle (every shadow falls to the right), round 3 under the corner boards\' place and left of every answer card\'s frame, whole inside the wide view; no story touches it or names its place' });
   pt('nubes', { screen: F.CLOUDS, old: [[36, 16, 1], [112, 9, .7], [168, 26, .8]], what: 'the old picture\'s three clouds (x, y, size: engine.js sky()), baked into the set\'s sky as El patio\'s, each moved clear of the sun and of the crowns; no story names them' });
 
   /* ---- things: the 22 touch keys ---- */
@@ -782,6 +782,8 @@ function check(sh, G, runs) {
 
   /* the bubbles: every bubble wholly inside the view, clear of the corner cards, on no face */
   let nM = 0, nB = 0, worstView = 99, worstBoard = 99; const seen = new Set();
+  // round 3: the sun's disc with 2 px to spare: under no corner board at any moment, under no answer card with its frame and glow at any ask
+  const SUNR = [F.SUN[0] - F.SUN[2] - 2, F.SUN[1] - F.SUN[2] - 2, 2 * F.SUN[2] + 4, 2 * F.SUN[2] + 4]; let sunBoard = 99, sunCard = 99, nSunB = 0, nSunC = 0;
   const talk = (k, top, view, boards, faces, h = 6) => { for (const [side, dy] of sh.talk.places) { const r = bubRect(k, top[0] + side * (h + 16), top[1] + dy);
       if (within(r, view) && !boards.some(b => meets(r, b[1])) && !faces.some(f => meets(r, f[1]))) return r; } return bubRect(k, top[0], top[1]); };
   // each person's recorded bubble and "amor" (poke: anyone touched, at any moment), Carmen's "q" (mirarriba); the frog's recorded one, his "amor"
@@ -803,6 +805,7 @@ function check(sh, G, runs) {
   for (const r of runs) { forRun(r); for (const L of r.lines) {
     if (JSON.stringify(L.cam) !== '[22,0,196,216]') P.push(r.story.id + ' ' + r.plan + ' ' + L.path + ': a view the sheet does not have ' + JSON.stringify(L.cam));
     const w = remapW(L.W), boards = boardsOf(w, x0), faces = facesOf(w); nM++;
+    for (const [bn, b] of boards) if (meets(SUNR, b)) P.push('sun: ' + r.story.id + ' ' + r.plan + ' ' + L.path + ': ' + bn + ' ' + JSON.stringify(b) + ' covers the sun (2 px to spare)'); else sunBoard = Math.min(sunBoard, gapTo(SUNR, b) + 2), nSunB++;
     const st = L.path && at(r.story, L.path), extra = st && typeof st === 'object' && EXTRA[st.act] || {};
     for (const [who, rect] of bubblesOf(w, extra)) { const key = JSON.stringify([who, rect, boards, faces]); if (seen.has(key)) continue; seen.add(key); nB++; judge(r.story.id + ' ' + r.plan + ' ' + L.path + ': ' + who, rect, VIEW, boards, faces); }
   } }
@@ -831,6 +834,7 @@ function check(sh, G, runs) {
       if (askSeen.has(key)) return; askSeen.add(key); askedFor.add(spot);
       const faces = facesOf(w), facesOld = facesOf(wo);
       if (w.resp) for (const k of w.resp) { const c = respBox(w, k); nC++;
+        { const fr2 = [c[0] - 12, c[1] - 12, c[2] + 24, c[3] + 24 + (w.respEn ? 0 : 4)]; if (meets(SUNR, fr2)) P.push('sun: ' + where + ' the card ' + k + ' with its frame ' + JSON.stringify(fr2) + ' covers the sun (2 px to spare)'); else { sunCard = Math.min(sunCard, gapTo(SUNR, fr2) + 2); nSunC++; } }
         { const f = [c[0] - 12 - 2, c[1] - 12 - 2, c[2] + 28, c[3] + 28 + (w.respEn ? 0 : 4)]; if (!within(f, VIEW)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ': its lit frame and glow (+- 12) are not inside the view with 2 px to spare'); else cardSpare = Math.min(cardSpare, f[0] + 2 - x0, x0 + 196 - f[0] - f[2] + 2, f[1] + 2, 216 - f[1] - f[3] + 2); }
         for (const [bn, bb] of boardsOf(w, x0)) if (meets(c, bb)) P.push('cards: ' + where + ' the card ' + k + ' is over ' + bn);
         for (const [id, p] of people(w)) { const n = rowsMeet(personRows(id, p), c); if (n) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ' covers ' + n + ' px of ' + id); }
@@ -857,6 +861,7 @@ function check(sh, G, runs) {
         P.push('hand: ' + where + ' the hand at ' + JSON.stringify(hp) + ' is on ' + fn + ' ' + JSON.stringify(f)); }
     }); }
   notes.push('asks: ' + nF + ' distinct asks (for ' + [...askedFor].sort().join(', ') + '): every hint frame (box +- ' + FRAME_OUT + ') wholly inside the view (' + worstF + ' px from its edge at the least), no frame\'s rings across a face where the old frame\'s were not' + (crossedOld.length ? ' (as the old: ' + [...new Set(crossedOld)].join('; ') + ')' : '') + ', the hint hand on no face; ' + nC + ' answer cards, each with its lit frame and glow (+- 12) inside the view (' + cardSpare + ' px to spare at the least), over no one\'s body (no opaque pixel of anyone\'s sprite, in their pose, under a card)');
+  notes.push('sun (round 3): at ' + F.SUN.slice(0, 2) + ', radius ' + F.SUN[2] + ': under no corner board (' + nSunB + ' boards shown, ' + sunBoard + ' px to spare at the least) and under no answer card with its frame and glow (' + nSunC + ' cards, ' + sunCard + ' px to spare at the least), at every moment and ask of every run');
   if (handOld.size) notes.push('NOT solved, as the old picture: the hint hand at the first small tree (its old point; no point in the tree keeps it off every face and off the cat\'s tail and the birds) lies on a face at ' + [...handOld].join('; '));
   if (cardHand.size) notes.push('NOT the scene\'s: the hand juego.js draws at an answer card reaches onto the frog\'s face, 46 px under it, in every scene (the card\'s place and the hand are the game\'s, respBox and hand()): at the asks for ' + [...cardHand].join(', '));
   notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments of ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + '), each its recorded one and the ones an act can show there (anyone\'s "amor" when touched, at any moment; Carmen\'s "q" at mirarriba; the frog\'s "amor" at lame and acaricia; the cat\'s at ronronea; Canelo\'s at final13, final14): wholly inside the view (' + worstView + ' px from its edge at the least), clear of the cards shown in the corner (' + (worstBoard === 99 ? 'no card shown with a bubble near' : worstBoard + ' px') + '), on no face');
@@ -970,13 +975,32 @@ function check(sh, G, runs) {
       while (stack.length) { const i = stack.pop(), x = i % 240, y = Math.floor(i / 240); for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) { const j = (y + dy) * 240 + x + dx; if (x + dx < 0 || x + dx >= 240 || y + dy < 0 || y + dy >= 216 || seen.has(j) || !all.has(j)) continue; seen.add(j); stack.push(j); } }
       const lost = sp.filter(i => !seen.has(i)).length; if (lost > 2) P.push('shadow: ' + lost + ' of the ' + sp.length + ' shadow px of ' + part + ' are not joined to it (a piece apart)');
       pieces.push(part + ' ' + sp.length + ' px'); }
-    // the arch's top casts: its arches' shadow seen on the ground
-    { const arc = G.shadows['1'].filter(c => c.part === 'porton' && c.args[2] > F.APH).length; if (!arc) P.push('shadow: the arch\'s top casts nothing'); }
+    /* round 3: the arch casts no long shadow: only a short contact shadow at each post's foot (no pixel of its shadow further than 5 px from a
+       post's foot); and the path's first leg (from the view's left edge to mark 0) has no dark band along either edge: in the strip .3 either
+       side of each edge, outside 6 px round the posts' feet, the share of pixels in shadow and the strip's mean lightness against the lawn's and
+       the path's (measured) */
+    { const feet = [[F.AC[0], F.AC[1] + F.AH], [F.AC[0], F.AC[1] - F.AH]].map(p => E.project(p[0], p[1], 0)), sp = G.shadowPx['1'].porton || [];
+      let far = 0, worst = 0; for (const i of sp) { const x = i % 240 + .5, y = Math.floor(i / 240) + .5, d = Math.min(...feet.map(f => Math.hypot(x - f.sx, y - f.sy))); worst = Math.max(worst, d); if (d > 5) far++; }
+      if (far) P.push('arch shadow: ' + far + ' px of it further than 5 px from a post\'s foot (' + r2(worst) + ')');
+      const C = G.rgb['1'], SH = G.shade['1'], K = G.kinds['1'], lum = i => .3 * C[i * 3] + .59 * C[i * 3 + 1] + .11 * C[i * 3 + 2], m0 = E.atZ(22, 0, 0);
+      const m = E.atZ(sh.points['marca.0'].screen[0], sh.points['marca.0'].screen[1], 0), yLeg = F.AC[1], xs = [], strips = { near: new Set(), far: new Set() }, mid = new Set();
+      // the leg runs along x at y = AC[1]: its edges at y +- PATH_HALF ('near': + y, down to the left on the screen; 'far': - y)
+      for (let x = F.AC[0] - 4; x <= m[0] - .3; x += .01) for (const [side, sg] of [['near', 1], ['far', -1]]) for (let d = -.3; d <= .3; d += .02) {
+        const q = E.project(x, yLeg + sg * (F.PATH_HALF + d), 0), ix = Math.floor(q.sx), iy = Math.floor(q.sy); if (ix < 22 || ix >= 218 || iy < 0 || iy >= 216) continue;
+        if (feet.some(f => Math.hypot(q.sx - f.sx, q.sy - f.sy) < 6)) continue; strips[side].add(iy * 240 + ix);
+        const c = E.project(x, yLeg + sg * .1, 0); const ci = Math.floor(c.sy) * 240 + Math.floor(c.sx); if (Math.floor(c.sx) >= 22) mid.add(ci); }
+      let lawnL = 0, nL = 0; for (let i = 0; i < 240 * 216; i++) if (K[i] === G.K.grass && !SH[i] && Math.floor(i / 240) > 140 && i % 240 >= 22 && i % 240 < 120) { lawnL += lum(i); nL++; } lawnL /= nL;
+      const pathL = [...mid].reduce((a, i) => a + lum(i), 0) / mid.size, res = [];
+      for (const [side, set] of Object.entries(strips)) { const a = [...set], sh2 = a.filter(i => SH[i]).length / a.length, L = a.reduce((t, i) => t + lum(i), 0) / a.length;
+        if (sh2 > .02) P.push('path\'s first leg: ' + Math.round(sh2 * 100) + '% of its ' + side + ' edge strip in shadow (a band)');
+        if (L < Math.min(lawnL, pathL) - 12) P.push('path\'s first leg: its ' + side + ' edge strip is darker (' + Math.round(L) + ') than the lawn (' + Math.round(lawnL) + ') and the path (' + Math.round(pathL) + ')');
+        res.push(side + ' edge ' + a.length + ' px, ' + Math.round(sh2 * 1000) / 10 + '% in shadow, lightness ' + Math.round(L)); }
+      notes.push('arch shadow (round 3): only a contact shadow at each post\'s foot (' + sp.length + ' px, all within ' + r2(worst) + ' px of a post\'s foot; keep 5); the path\'s first leg, from the view\'s left edge to mark 0: ' + res.join('; ') + ' (the lawn ' + Math.round(lawnL) + ', the path\'s middle ' + Math.round(pathL) + '): no dark band along either edge'); }
     // the path's edge is soft earth: the ground lays only the path's own tones (2 to 4) on it, no edge colour
     { const raw = G.raw['1'], K = G.kinds['1'], allowed = new Set(G.PATHC.slice(2)); let bad = 0; for (let i = 0; i < raw.length; i++) if (K[i] === G.K.road && !allowed.has(raw[i] >>> 0) && !allowed.has(raw[i])) bad++;
       if (bad) P.push('path: ' + bad + ' px of the path take a colour that is not its own (an edge line)'); }
     notes.push('big tree (round 2): its trunk ' + tw + ' px wide (a small one ' + sw + '), its crown ' + Math.round(crownW) + ' px wide (a small one ' + smallW + ', running off the picture\'s right and top edges), its middle at x ' + Math.round(mid) + ' over the trunk at ' + F.GRAN[0] + '; no limb seen outside the trunk\'s columns; its hint box ' + JSON.stringify(hb) + ' (its touch box ' + JSON.stringify(sh.things.grande.box) + '), the frame inside the view, its hand ' + hp + ' in it; the foot of its trunk seen at every moment (' + Math.round(leastSeen * 100) + '% at the least: ' + leastAt + ')');
-    notes.push('shadows (round 2): each in one piece with its thing, from its foot (' + pieces.join(', ') + '); the arch\'s shadow is its two posts\' and its top\'s; the path\'s edge is the path\'s own earth, ragged into the lawn (no edge line)'); }
+    notes.push('shadows (round 2): each in one piece with its thing, from its foot (' + pieces.join(', ') + '); the path\'s edge is the path\'s own earth, ragged into the lawn (no edge line)'); }
 
   /* round 2, the sky: the sun in the upper left, whole inside the wide view, nothing of the set within 2 px of its disc (a crown's leaves at
      any wind step); the three clouds in the sky, clear of the sun and of every crown by 2 px */
@@ -988,7 +1012,7 @@ function check(sh, G, runs) {
     for (const [cx, cy, s2] of F.CLOUDS) { const b = [Math.floor(cx - 17 * s2 - 2), Math.floor(cy - 5 * s2 - 2), Math.ceil(cx + 19 * s2 + 2), Math.ceil(cy + 6 * s2 + 2)];
       const n = clear(...b); if (n) P.push('cloud at ' + cx + ',' + cy + ': ' + n + ' px of the set within 2 px');
       if (b[2] >= sx - sr && b[0] <= sx + sr && b[3] >= sy - sr && b[1] <= sy + sr) P.push('cloud at ' + cx + ',' + cy + ': on the sun'); }
-    notes.push('sky (round 2): the sun at ' + F.SUN.slice(0, 2) + ' (radius ' + sr + '), in the upper left, whole in the view, nothing of the set within 2 px; the old picture\'s three clouds back, at ' + F.CLOUDS.map(c => c.slice(0, 2).join(',')).join('; ') + ' (the old 36,16; 112,9; 168,26: moved clear of the sun and the crowns), each clear of them by 2 px; no story or pair names the sun or a cloud by a position'); }
+    notes.push('sky (round 2): the sun at ' + F.SUN.slice(0, 2) + ' (radius ' + sr + '), left of the middle, whole in the view, nothing of the set within 2 px; the old picture\'s three clouds back, at ' + F.CLOUDS.map(c => c.slice(0, 2).join(',')).join('; ') + ' (the old 36,16; 112,9; 168,26: moved clear of the sun and the crowns), each clear of them by 2 px; no story or pair names the sun or a cloud by a position'); }
 
   /* round 2, the bench: whatever sits on it (the cat at its place on the seat, in the stories and the pair gato.si; the bird in the pair gato.no)
      has only the bench under it or lit lawn behind its head and body (no trunk, no crown, no tree's shadow) */
