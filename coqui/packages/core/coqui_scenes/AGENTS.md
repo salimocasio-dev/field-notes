@@ -296,6 +296,10 @@ has that the earlier ones did not, or uses differently, and how the port uses it
   asset list in `pubspec.yaml`, and the test fixtures `old_sample.dart`, `old_hashes.dart`) for every scene NOT in
   `convertedScenes`, and removes the folder of any other; `--check` fails when something is stale or when a folder exists for a
   converted scene; it also fails for every picture a course item names that has no file.
+- **A scene the content names before it is in the registry** (A comer: its review set and level items are in the course, its
+  port is not done): the tool makes its folder too, after the registry's scenes (a review set's `scene` with a
+  `coqui/ref/escenas/<id>/pairs.json`), and `oldPictureScenes` (`lib/src/old_pictures.dart`) lets `ScenePictures` show it.
+  When it is ported: it goes into the registry and `convertedScenes`, out of `oldPictureScenes`, and its folder goes.
 - **A picture handed another picture in place** (the same widget with another ref, name, size or `animated`) starts over and
   shows the new one: its state mixes in `TickerProviderStateMixin`, because it disposes its ticker and starts another, which
   a single-ticker state refuses (Flutter threw and the picture showed the red error box). `test/pictures_test.dart` ("handed
