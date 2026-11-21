@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 548,
-  "totalBytes": 35864227,
+  "files": 580,
+  "totalBytes": 37771400,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -1932,6 +1932,166 @@
       "path": "map/hecho-3/zb.json",
       "bytes": 322,
       "sha256": "da1b8a9af598a53e6502ff3ae24004f54bb2f09a080383a7c621f4c37b699211"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "575eccd920b411777e22f055e8574bc7506aa8a6a591f65b592d13faef08a95e"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "51a4438a714174e93cebf713151f647e2a1bd6c5b3fa1a9939ab8fd1f3299e20"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.png",
+      "bytes": 10597,
+      "sha256": "125824bbea162dc41d29ee3a74b16255b618677d0e31219985e4d90941d1bc50"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/state.json",
+      "bytes": 943,
+      "sha256": "e78741474f19a05c0657edbd2d925384ae62f650643d1d491f344af8301d4c1b"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "39617ac409c5b4b6113b56f2b44d9e44aa5bef5200f864880e57db377784b5a7"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "4e47694321cf15a9460c91a14be4d72fa2b4ee3c45541f286077ada0ebced7a0"
+    },
+    {
+      "path": "mesa/m0h0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m0h0/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m0h0/pix.bin",
+      "bytes": 207360,
+      "sha256": "636e78e051a77ee9d5c531c3de94d78628a46f79de09b215bc11d6106d76edbc"
+    },
+    {
+      "path": "mesa/m0h0/pix.json",
+      "bytes": 370,
+      "sha256": "cbb602d3e57b690bf5c5ebc6d73ffda22c33306f44c357e3e6c700c375d3c8c9"
+    },
+    {
+      "path": "mesa/m0h0/pix.png",
+      "bytes": 7583,
+      "sha256": "2490289c800ddfe7e0efd7f674bc6f9fca6316af2134e5e28fce113246223e9a"
+    },
+    {
+      "path": "mesa/m0h0/state.json",
+      "bytes": 923,
+      "sha256": "c3ad8a296b1a4bdc0bf735d220ffe495e3fb089825ab224ce047e61db67437e7"
+    },
+    {
+      "path": "mesa/m0h0/zb.bin",
+      "bytes": 207360,
+      "sha256": "31543eb70a00f19e29d616c1cb51a3ca593acc710d949eb65ffed97f9dd2346a"
+    },
+    {
+      "path": "mesa/m0h0/zb.json",
+      "bytes": 322,
+      "sha256": "743010725d003452ca994f5ec73ab158cd3f4c68279947160f8e2705dba2929c"
+    },
+    {
+      "path": "mesa/m0h1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m0h1/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m0h1/pix.bin",
+      "bytes": 207360,
+      "sha256": "6da4b9eb0b66913720e5bd306dd2e10b0a9a6460eac0ee54ccd42c9e225447ff"
+    },
+    {
+      "path": "mesa/m0h1/pix.json",
+      "bytes": 370,
+      "sha256": "c215fb431e179d0a12ee9a551d1ced5c435c851cd19139a74ab1f916f0f0679f"
+    },
+    {
+      "path": "mesa/m0h1/pix.png",
+      "bytes": 7583,
+      "sha256": "f13190d531aefedf77c757820758ef46e8416af34f6c8aecf54ea8f1a9a3dd20"
+    },
+    {
+      "path": "mesa/m0h1/state.json",
+      "bytes": 923,
+      "sha256": "aa35c1717951d1665b9d958778caa69686e1d20ac06fbaa466ddd624e5e00b42"
+    },
+    {
+      "path": "mesa/m0h1/zb.bin",
+      "bytes": 207360,
+      "sha256": "31543eb70a00f19e29d616c1cb51a3ca593acc710d949eb65ffed97f9dd2346a"
+    },
+    {
+      "path": "mesa/m0h1/zb.json",
+      "bytes": 322,
+      "sha256": "743010725d003452ca994f5ec73ab158cd3f4c68279947160f8e2705dba2929c"
+    },
+    {
+      "path": "mesa/m1h0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m1h0/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m1h0/pix.bin",
+      "bytes": 207360,
+      "sha256": "571bcc53f77f317304f55342d755b215c65a6c7dc27d593314f7adc520f85216"
+    },
+    {
+      "path": "mesa/m1h0/pix.json",
+      "bytes": 370,
+      "sha256": "015af87118573b0c5fd159fbabedb3ad87edc91b6fcd528561902a68388c932e"
+    },
+    {
+      "path": "mesa/m1h0/pix.png",
+      "bytes": 7470,
+      "sha256": "f55e01b5394b34ade378870decb0037f100a14e197a1860e1c3ad6207d0644bb"
+    },
+    {
+      "path": "mesa/m1h0/state.json",
+      "bytes": 923,
+      "sha256": "43a17c9078ae8419e1156903122bdbc7732fb156c909a85837d44980be95676b"
+    },
+    {
+      "path": "mesa/m1h0/zb.bin",
+      "bytes": 207360,
+      "sha256": "95e210e965ebae7f2f1c2a6bf78aa9bd624064c16306d201b00959cd6ff77316"
+    },
+    {
+      "path": "mesa/m1h0/zb.json",
+      "bytes": 322,
+      "sha256": "02a48bea42941cc96e3c7cb3c4d3850a35f692890d0cf947abcff3dda7536f8a"
     },
     {
       "path": "patio/hora-crepusculo-door-open-gate-shut/kinds.bin",
