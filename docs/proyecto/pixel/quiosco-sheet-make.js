@@ -38,7 +38,8 @@ const EPS = .001;                                        // two sprite planes th
 const WIDTH = { coqui: 32, adulto: 24, nino: 24, perro: 28 }, UPDOWN = 12;     // sprite boxes (the feet's spot in the middle): two that stand together do not overlap sideways unless their feet are UPDOWN px or more apart up-down
 const HEAD_ROWS = 14;                                    // the head of a person: the top 14 rows of the sprite
 const SEAT_Z = { taburete: .68, silla: .42, mesa: .72 }; // the stools' seat top, the chairs' seat top, the table's top (the spec gives them; read back from the set's depth: spots-on-surface)
-const SIGN = { u: 0, v: .25, z: 3.54, r: 10.5 };         // the cup sign on the roof's front (quiosco-set.html: PZ.wall at v = .25, a disc of 10.5 px round (u 0, z ROOF + .54))
+const SIGN = { u: 0, v: .25, z: 0, r: 10.5 };            // the cup sign on the roof's front (quiosco-set.html: PZ.wall at v = .25, a disc of 10.5 px round (u 0, z ROOF + .54: z is set from the set's ROOF))
+const X0 = 22;                                           // the view's x0: the orchestrator's decision (the picture's own centre); the make checks that it holds every spot
 const MOMENTS = [1, 2, 3, 4, 5, 6];
 const STANDIN = { cupula: 'the glass dome of barra_izq (20 x 18)', torre: 'the cake stand with its tower (20 x 28 inked)', caja: 'the box (16 x 12)', vela_a: 'candle (8 x 12)', vela_b: 'candle (8 x 12)', vela_c: 'candle (8 x 12)' };
 
@@ -51,22 +52,23 @@ const spotsOf = E => {
     ['taburete3', [ST[2][0], ST[2][1], SEAT_Z.taburete], 'person', 'doctor.S', 'adulto', 'stool', 'the third stool (right, beside the front counter): faces left', { face: 'left' }],
     ['taburete4', [ST[3][0], ST[3][1], SEAT_Z.taburete], 'person', 'doctor.S', 'adulto', 'stool', 'the fourth stool (the far right): faces left', { face: 'left' }],
     ['barra1', [WG.uL, 1.35, CH], 'person', 'coqui', 'coqui', 'wing', 'the frog on the left wing\'s top, near the camera, beside stool 1: on the wing, z ' + CH],
-    ['barra2', [WG.uL, .1, CH], 'person', 'coqui', 'coqui', 'wing', 'the frog on the left wing\'s top, at its far end, beside stool 2'],
-    ['barra3', [WG.uR, .1, CH], 'person', 'coqui', 'coqui', 'wing', 'the frog on the right wing\'s top, at its far end, beside stool 3'],
+    ['barra2', [-1.55, .1, CH], 'person', 'coqui', 'coqui', 'wing', 'the frog on the left wing\'s top, at its far end, beside stool 2 (u -1.55: the orchestrator moved it .2 in from the wing\'s middle, so his box clears the sitter of stool 2)'],
+    ['barra3', [1.55, .1, CH], 'person', 'coqui', 'coqui', 'wing', 'the frog on the right wing\'s top, at its far end, beside stool 3 (u 1.55: .2 in from the wing\'s middle)'],
     ['barra4', [WG.uR, 1.35, CH], 'person', 'coqui', 'coqui', 'wing', 'the frog on the right wing\'s top, near the camera, beside stool 4'],
     ['barra_c', [0, -.2, CH], 'person', 'coqui', 'coqui', 'counter', 'the frog in the middle of the front counter\'s top (z ' + CH + ')'],
     ['barra_izq', [-1.2, -.2, CH], 'thing', null, null, 'counter', 'the counter\'s left end: the glass dome (66) and the cake stand (68): two sprites at one spot', { standin: ['cupula', 'torre'] }],
-    ['barra_fin', [1.2, -.25, CH], 'thing', null, null, 'counter', 'the counter\'s right end: the box with its lid (67)', { standin: ['caja'] }],
-    ['barra_e', [1.25, -.2, CH], 'person', 'coqui', 'coqui', 'counter', 'the frog at the counter\'s right end in story 68'],
-    ['vela_a', [.2, -.15, CH], 'thing', null, null, 'counter', 'a number candle on the tray (68): the first of three, 8 x 12 stand-in', { standin: ['vela_a'] }],
-    ['vela_b', [.5, -.15, CH], 'thing', null, null, 'counter', 'a number candle on the tray: the second', { standin: ['vela_b'] }],
-    ['vela_c', [.8, -.15, CH], 'thing', null, null, 'counter', 'a number candle on the tray: the third', { standin: ['vela_c'] }],
+    ['barra_fin', [WG.uL, 1.45, CH], 'thing', null, null, 'wing', 'the box with its lid (67), on the near end of the LEFT wing\'s top', { standin: ['caja'] }],
+    ['barra_caja', [WG.uL, .75, CH], 'person', 'coqui', 'coqui', 'wing', 'the frog beside the box on the left wing\'s top (67): .7 back along the wing from barra_fin'],
+    ['barra_e', [1.0, -.2, CH], 'person', 'coqui', 'coqui', 'counter', 'the frog at the counter\'s right end in story 68'],
+    ['vela_a', [-.35, -.15, CH], 'thing', null, null, 'counter', 'a number candle on the tray (68): the first of three, 8 x 12 stand-in', { standin: ['vela_a'] }],
+    ['vela_b', [-.05, -.15, CH], 'thing', null, null, 'counter', 'a number candle on the tray: the second', { standin: ['vela_b'] }],
+    ['vela_c', [.25, -.15, CH], 'thing', null, null, 'counter', 'a number candle on the tray: the third', { standin: ['vela_c'] }],
     ['limbers', [WG.uR, 1.5, CH], 'thing', null, null, 'wing', 'the three limbers in their cups (67), a row along the right wing\'s top: the spot is the row\'s near end (the front cup); the other two stand .3 and .6 back along the wing', { standin: ['limber_rojo', 'limber_amarillo', 'limber_blanco'] }],
     ['detras', [0, -.85, 0], 'person', 'vendedor', 'adulto', 'ground', 'the vendedor behind his counter, in the booth'],
-    ['cola1', [-1.05, .75, 0], 'person', 'senora', 'adulto', 'ground', 'the first of the two at the counter (a round\'s two), standing between the wings, left'],
-    ['cola2', [1.05, .75, 0], 'person', 'senora', 'adulto', 'ground', 'the other of the round\'s two, between the wings, right'],
-    ['cola3', [-1.05, 2.2, 0], 'person', 'senora', 'adulto', 'ground', 'the next one, behind cola1 (nearer the camera)'],
-    ['cola4', [1.05, 2.2, 0], 'person', 'senora', 'adulto', 'ground', 'the next one, behind cola2'],
+    ['cola1', [-.65, .75, 0], 'person', 'senora', 'adulto', 'ground', 'the first of the two at the counter (a round\'s two), standing between the wings, left'],
+    ['cola2', [.65, .75, 0], 'person', 'senora', 'adulto', 'ground', 'the other of the round\'s two, between the wings, right'],
+    ['cola3', [-.65, 2.2, 0], 'person', 'senora', 'adulto', 'ground', 'the next one, behind cola1 (nearer the camera)'],
+    ['cola4', [.65, 2.2, 0], 'person', 'senora', 'adulto', 'ground', 'the next one, behind cola2'],
     ['mesa_a', [T[0] - .5, T[1] - .5, SEAT_Z.silla], 'person', 'doctor.S', 'adulto', 'chair', 'the left chair of the round table (abuela\'s place), on its seat, z ' + SEAT_Z.silla + '; the sitter faces the camera, the table in front of him', { face: 'front' }],
     ['mesa_b', [T[0] + .5, T[1] - .5, SEAT_Z.silla], 'person', 'doctor.S', 'adulto', 'chair', 'the right chair of the round table, on its seat, z ' + SEAT_Z.silla, { face: 'front' }],
     ['mesa', [T[0], T[1], SEAT_Z.mesa], 'person', 'coqui', 'coqui', 'table', 'the frog on the table\'s top, z ' + SEAT_Z.mesa],
@@ -77,7 +79,7 @@ const spotsOf = E => {
 };
 // the people of the six moments: the stand-in each is drawn with (the make's report and the sheet's notes)
 const STANDINS_PEOPLE = {
-  vendedor: 'a grown-up (the señor) in an apron', maestra: 'a grown-up (the señora)', doctor: 'a grown-up (the hombre) in white', cocinero: 'a grown-up (the hombre) in white', policia: 'a grown-up (the hombre) in blue',
+  vendedor: 'a grown-up (the señor) in an apron and a 4-row paper hat', maestra: 'a grown-up (the señora)', doctor: 'a grown-up (the hombre) in white', cocinero: 'a grown-up (the hombre) in white', policia: 'a grown-up (the hombre) in blue',
   joven: 'the joven of El parque (the young man)', la_joven: 'a grown-up (the mujer)', mama_ana: 'mamá (a grown-up)', beto: 'a child (Luis\'s drawing, other colours)', ana: 'a child (Carmen\'s drawing, other colours)',
   nino: 'a child (Luis\'s drawing, other colours)', nina: 'a child (Carmen\'s drawing, other colours)', abuela: 'abuela sitting (mkAbuelaS)', luis: 'Luis', carmen: 'Carmen', senor: 'the señor', senora: 'the señora', hombre: 'the hombre', mujer: 'the mujer',
 };
@@ -91,6 +93,7 @@ const STANDINS_PEOPLE = {
 
   await page.goto(PAGE + '?hora=mediodia&fiesta=0&tags=1');
   const G = await page.evaluate(() => ({ E: JSON.parse(JSON.stringify(QUIOSCO.E)), scene: PP_SCENE, W, H, S, OX, OY, pzxy: PZ.xy(.7, -1.3) }));
+  SIGN.z = G.E.ROOF + .54;
   // the engine's own projection of (u, v, z): [sx, sy, depth, world x, world y]
   const proj = uvz => page.evaluate(a => a.map(([u, v, z]) => { const x = (u + v) / Math.SQRT2, y = (v - u) / Math.SQRT2, q = project(x, y, z); return [q.sx, q.sy, q.d, x, y]; }), uvz);
   const sheet0 = await make(G, proj, null);
@@ -126,7 +129,7 @@ async function previewData(browser, errs) {
   PV.boxes = await p.evaluate(() => window.PREVIEW.boxes());
   for (const m of MOMENTS) { PV.inspect[m] = await p.evaluate(m => window.PREVIEW.inspect(m), m); PV.moment[m] = await p.evaluate(m => window.PREVIEW.moment(m), m); }
   PV.layers = (st, specs) => p.evaluate(a => window.PREVIEW.inspectLayers(a.st, a.specs), { st, specs });
-  PV.nearest = (st, specs, idx, allow, head, guard) => p.evaluate(x => window.PREVIEW.nearest(x.st, x.specs, x.idx, x.allow, x.head, x.guard), { st, specs, idx, allow: allow || 0, head: head || 0, guard: guard || [] });
+  PV.nearest = (st, specs, idx, allow, head, guard, selfOff) => p.evaluate(x => window.PREVIEW.nearest(x.st, x.specs, x.idx, x.allow, x.head, x.guard, x.selfOff), { st, specs, idx, allow: allow || 0, head: head || 0, guard: guard || [], selfOff: !!selfOff });
   return PV;
 }
 
@@ -176,13 +179,13 @@ async function make(G, proj, BOX) {
     let better = !best; if (best) for (let i = 0; i < key.length; i++) { if (key[i] !== best.key[i]) { better = key[i] < best.key[i]; break; } }
     if (better) best = { x0, key };
   }
-  const x0 = best.x0;
+  const x0 = X0, byRule = best.x0;
   const okAll = []; for (let x = 0; x <= G.W - 196; x++) if (holds.every(k => !cutAt(spots[k], x))) okAll.push(x);
   const vu = (x0 + 98 - G.OX) / G.S, vv = (G.H / 2 - G.OY) / (G.S * .5), vq = (await proj([[vu, vv, 0]]))[0];
   const views = {
     wide: { world: W4([vq[3], vq[4], 0]), uv: W4([vu, vv, 0]), screen: [r2(vq[0]), r2(vq[1])], zoom: 1, x0, region: [x0, 0, 196, 216], stories: [66, 67, 68], holds, extent: [lo, hi],
       holdsAll: okAll.length ? [okAll[0], okAll[okAll.length - 1]] : null,
-      what: 'the one view of stories 66, 67 and 68: the 196 x 216 window over the 240 x 216 picture. The spec: every spot of every moment inside it with its sprite whole (entrada is outside on purpose). ' + (best.key[0] ? 'No x0 holds them all: x0 ' + x0 + ' cuts the fewest of them (' + best.key[0] + ', ' + best.key[1] + ' px)' : 'x0 ' + x0 + ' holds them all (the spots span columns ' + lo + ' to ' + hi + '; every x0 from ' + okAll[0] + ' to ' + okAll[okAll.length - 1] + ' holds them; the one nearest the middle of the spots\' extent is taken; 22, the picture\'s own centre, is among them)') + '. The window\'s point is the ground point under its middle column at the picture\'s middle row' },
+      what: 'the one view of stories 66, 67 and 68: the 196 x 216 window over the 240 x 216 picture. The spec: every spot of every moment inside it with its sprite whole (entrada is outside on purpose). x0 ' + x0 + ' is the orchestrator\'s decision (the picture\'s own centre); ' + (okAll.includes(x0) ? 'it holds them all (the spots span columns ' + lo + ' to ' + hi + '; every x0 from ' + okAll[0] + ' to ' + okAll[okAll.length - 1] + ' holds them; the one nearest the middle of the spots\' extent would be ' + byRule + ')' : 'it cuts ' + holds.filter(k => cutAt(spots[k], x0)).length + ' spot(s); the best by the rule is ' + byRule) + '. The window\'s point is the ground point under its middle column at the picture\'s middle row' },
   };
 
   /* ---- things he can touch ---- */
@@ -254,8 +257,11 @@ async function make(G, proj, BOX) {
       'every number of a spot is the orchestrator\'s (the quiosco section of p6-spec), given in (u, v, z); the stools, the wings, the table come from the set\'s own constants (QUIOSCO.E: STOOLS, WING, TABLE, CH), the rest are the spec\'s numbers',
       'the sheet\'s spots are generic: a stool or a chair holds whoever the story puts there (a grown-up or a child: the same 24 px box); `who` is the default box kind',
       'the view is one: wide (x0 ' + x0 + '); the picture\'s right edge is at column 240 and entrada (u 4.7) is at column ' + spots.entrada.screen[0] + ', outside on purpose',
-      'the limbers row runs back along the right wing from the spot (the spec gives the spot and says "three small cups in a row along the wing"): open point',
-      'the tray the frog carries in the game of 66 is drawn on his head, like the thing of 67 (the spec says only "with a tray"): open point',
+      'the limbers row runs back along the right wing from the spot (the orchestrator: that reading is right)',
+      'second pass of the spec (the orchestrator): barra2 and barra3 at u -1.55 and 1.55; barra_e at u 1.0 and the candles at u -.35, -.05, .25; the box at barra_fin on the left wing\'s near end with the frog beside it at barra_caja; cola1 to cola4 at u -.65 and .65; the roof is higher (ROOF 3.25)',
+    
+      'the tray the frog carries in the game of 66 is drawn on his head, like the thing of 67 (the orchestrator: as drawn)',
+      'the vendedor stand-in wears a paper hat 4 rows above the plain grown-up\'s top, so his head check (the top 14 rows) covers the hat',
     ],
     views,
     front: {
@@ -434,6 +440,13 @@ async function checks(sheet, G, probes, PV) {
     o.pairs = all.map(q => ({ moment: q.m, a: q.ai + '@' + q.a, b: q.bi + '@' + q.b, across: q.dx, down: q.dy, needAcross: q.half, ok: q.ok }));
   }
 
+  // the least shift (u, v or z, steps of .01) of the layer that covers a victim, which frees the victim (the victim and the shifted layer are layers of a moment, by id)
+  const freeing = async (m, coverer, victim) => {
+    const M = PV.moment[m], ci = M.layers.findIndex(l => l.id === coverer || l.at === coverer);
+    if (ci < 0) return '';
+    const r = await PV.nearest(M.set, M.layers, ci, 0, 0, [victim], true), at = M.layers[ci].at, uv = S[at].uv;
+    return coverer + ' at ' + at + ' ' + uv + ': ' + ['u', 'v', 'z'].map((a, i) => r.axis[a] ? a + ' ' + uv[i] + ' -> ' + r.axis[a].to + ' (' + sgn(r.axis[a].d) + ')' : a + ': none within 3').join('; ');
+  };
   // the coverage of one layer by the others: per drawn pixel hidden by the set (p[2]), or under a nearer shown sprite pixel (not the layers attached to him: held)
   const coverage = (L, ti, keep = () => true, skip = l => l.held === L[ti].id || l.held === 'velas') => {
     const best = new Map();
@@ -459,24 +472,26 @@ async function checks(sheet, G, probes, PV) {
     }
     const o = add('frog-seen', bad, 'the frog is seen whole in all 6 moments: ' + lines.join('; '), [bad.length + ' moment(s) where the frog is not seen whole:'].concat(bad.map(b => '  ' + b)));
     for (const [m, fi] of fails) {
+      const cv = coverage(PV.inspect[m].layers, fi);
+      for (const id of Object.keys(cv.by)) { const t = await freeing(m, id, 'coqui'); if (t) o.lines.push('       or, moment ' + m + ', the one that covers him moves: ' + t); }
       const M = PV.moment[m], specs = M.layers, r = await PV.nearest(M.set, specs, fi, 0, 0, m === 6 ? ['vela_a', 'vela_b', 'vela_c'] : []);
       o.lines.push('       nearest passing, moment ' + m + ' ' + specs[fi].at + ' ' + S[specs[fi].at].uv + ': ' + (['u', 'v', 'z'].map(a => r.axis[a] ? a + ' ' + (S[specs[fi].at].uv[['u', 'v', 'z'].indexOf(a)]) + ' -> ' + r.axis[a].to + ' (' + sgn(r.axis[a].d) + ')' : a + ': none within 3').join('; ')));
     }
     o.lines.push('       info, not a check: ' + lines.join('; '));
   }
 
-  // 8. frog-bar: the frog at barra_c (moments 1, 3, 4) and at barra_e (5, 6) is covered by nobody (the pixels reported: by the set, by each person or thing)
+  // 8. frog-bar: the frog at barra_c (moment 1), barra_caja (3, 4) and barra_e (5, 6) is covered by nobody (the pixels reported: by the set, by each person or thing)
   {
     const bad = [], lines = [];
     for (const m of MOMENTS) {
       const L = PV.inspect[m].layers, fi = L.findIndex(l => l.who === 'coqui'), f = L[fi];
-      if (f.at !== 'barra_c' && f.at !== 'barra_e') continue;
+      if (f.at !== 'barra_c' && f.at !== 'barra_e' && f.at !== 'barra_caja') continue;
       const c = coverage(L, fi);
       lines.push('m' + m + ' ' + f.at + ': ' + (c.hid + c.cov) + ' of his ' + c.total + ' px covered (' + c.hid + ' by the set, ' + c.cov + ' by people or things' + (c.cov ? ': ' + byTxt(c.by) : '') + ')');
       if (c.hid + c.cov) bad.push('moment ' + m + ': the frog at ' + f.at + ' ' + [f.sx, f.sy] + ' is covered at ' + (c.hid + c.cov) + ' of his ' + c.total + ' px (' + c.hid + ' by the set, ' + c.cov + ' by ' + (byTxt(c.by) || 'sprites') + ')');
     }
-    const o = add('frog-bar', bad, 'the frog at barra_c and barra_e is covered by nobody: ' + lines.join('; '), [bad.length + ' moment(s) with the frog covered:'].concat(bad.map(b => '  ' + b)));
-    for (const m of MOMENTS) { const M = PV.moment[m], fi = M.layers.findIndex(l => l.who === 'coqui'); if (!bad.some(b => b.startsWith('moment ' + m + ':'))) continue; const r = await PV.nearest(M.set, M.layers, fi, 0, 0, m === 6 ? ['vela_a', 'vela_b', 'vela_c'] : []); o.lines.push('       nearest passing, moment ' + m + ' ' + M.layers[fi].at + ' ' + S[M.layers[fi].at].uv + ': ' + (['u', 'v', 'z'].map(a => r.axis[a] ? a + ' ' + (S[M.layers[fi].at].uv[['u', 'v', 'z'].indexOf(a)]) + ' -> ' + r.axis[a].to + ' (' + sgn(r.axis[a].d) + ')' : a + ': none within 3').join('; '))); }
+    const o = add('frog-bar', bad, 'the frog at barra_c, barra_caja and barra_e is covered by nobody: ' + lines.join('; '), [bad.length + ' moment(s) with the frog covered:'].concat(bad.map(b => '  ' + b)));
+    for (const m of MOMENTS) { const M = PV.moment[m], fi = M.layers.findIndex(l => l.who === 'coqui'); if (!bad.some(b => b.startsWith('moment ' + m + ':'))) continue; for (const id of Object.keys(coverage(PV.inspect[m].layers, fi).by)) { const t = await freeing(m, id, 'coqui'); if (t) o.lines.push('       or, moment ' + m + ', the one that covers him moves: ' + t); } const r = await PV.nearest(M.set, M.layers, fi, 0, 0, m === 6 ? ['vela_a', 'vela_b', 'vela_c'] : []); o.lines.push('       nearest passing, moment ' + m + ' ' + M.layers[fi].at + ' ' + S[M.layers[fi].at].uv + ': ' + (['u', 'v', 'z'].map(a => r.axis[a] ? a + ' ' + (S[M.layers[fi].at].uv[['u', 'v', 'z'].indexOf(a)]) + ' -> ' + r.axis[a].to + ' (' + sgn(r.axis[a].d) + ')' : a + ': none within 3').join('; '))); }
   }
 
   // 9. frog-stool: the frog at barra1 to barra4 does not overlap the box of the one on the stool beside him (the box: its width, 32 and 24, round the spot's column; its rows from the drawn sprite: the frog 25 rows above his feet, a grown-up sitting from the lap row up and down)
@@ -531,7 +546,7 @@ async function checks(sheet, G, probes, PV) {
       o.lines.push('       nearest passing, moment ' + m + ' detras ' + S.detras.uv + ' (head only): ' + (['u', 'v', 'z'].map(a => r.axis[a] ? a + ' ' + S.detras.uv[['u', 'v', 'z'].indexOf(a)] + ' -> ' + r.axis[a].to + ' (' + sgn(r.axis[a].d) + ')' : a + ': none within 3').join('; ')));
     }
     o.lines.push('       info, not a check: ' + lines.join('; '));
-    o.lines.push('       info, not a check: the stand-in is the plain 53-row grown-up; a paper hat on the real vendedor would put his head higher, into the roof\'s edge');
+    o.lines.push('       info, not a check: the stand-in wears a white paper hat 4 rows above the plain 53-row grown-up\'s top (57 rows in all), and the head is its top 14 rows: the hat and the top of the hair');
   }
 
   // 12. candles-clear: in moment 6 no candle is covered (not by the set, not by a person or the frog)
@@ -543,7 +558,7 @@ async function checks(sheet, G, probes, PV) {
       if (c.hid + c.cov) bad.push('moment 6: ' + id + ' at ' + L[ci].at + ' ' + [L[ci].sx, L[ci].sy] + ' is covered at ' + (c.hid + c.cov) + ' of ' + c.total + ' px (' + c.hid + ' by the set, ' + c.cov + ' by ' + (byTxt(c.by) || 'sprites') + ')');
     }
     const o = add('candles-clear', bad, 'in moment 6 no candle is covered: ' + lines.join('; '), [bad.length + ' candle(s) covered in moment 6:'].concat(bad.map(b => '  ' + b)));
-    for (const id of ['vela_a', 'vela_b', 'vela_c']) { if (!bad.some(b => b.includes(id))) continue; const M = PV.moment[m], ci = M.layers.findIndex(l => l.id === id), r = await PV.nearest(M.set, M.layers, ci); o.lines.push('       nearest passing, ' + id + ' ' + S[id].uv + ': ' + (['u', 'v', 'z'].map(a => r.axis[a] ? a + ' ' + S[id].uv[['u', 'v', 'z'].indexOf(a)] + ' -> ' + r.axis[a].to + ' (' + sgn(r.axis[a].d) + ')' : a + ': none within 3').join('; '))); }
+    for (const id of ['vela_a', 'vela_b', 'vela_c']) { if (!bad.some(b => b.includes(id))) continue; const ci0 = L.findIndex(l => l.id === id); for (const cid of Object.keys(coverage(L, ci0, () => true, () => false).by)) { const t = await freeing(m, cid, id); if (t) o.lines.push('       or the one that covers ' + id + ' moves: ' + t); } const M = PV.moment[m], ci = M.layers.findIndex(l => l.id === id), r = await PV.nearest(M.set, M.layers, ci); o.lines.push('       nearest passing, ' + id + ' ' + S[id].uv + ': ' + (['u', 'v', 'z'].map(a => r.axis[a] ? a + ' ' + S[id].uv[['u', 'v', 'z'].indexOf(a)] + ' -> ' + r.axis[a].to + ' (' + sgn(r.axis[a].d) + ')' : a + ': none within 3').join('; '))); }
     o.lines.push('       info, not a check: ' + lines.join('; '));
   }
 
