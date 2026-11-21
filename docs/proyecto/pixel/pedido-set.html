@@ -1,0 +1,112 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El pedido: the family's table and the kitchen's hatch, inside the fonda (place 8, scene 2), as a set on the Pixel Plays engine. A NEW scene.
+   Laid out square to the picture, in u, v (plaza-base.js, fonda-base.js). The back wall faces us at v = 0. In it, a wide hatch into the
+   kitchen: a hole, with a shelf that comes out towards us (plates stand on it, and the frog); the kitchen's own back wall is behind it, so
+   whoever stands in the kitchen is seen in the hatch from the chest up. Left of the hatch, two boards (the food, the drinks): each has four
+   pale panels, and the pictures on them are sprites. Right of the hatch, a hook; under the shelf's end, a low stool.
+   In front, a long table with four chairs along its far side. At the lower right the next table (its guests are seen from the chest up);
+   at the lower left the corner of another.
+   The state comes from the address:
+     hora = noche            (one state: the lamps are lit)
+     t = 0; ox, oy = the origin
+   It draws one frame: the baked set. No people, no plates, no pictures on the boards, no plantains, no cat, no bell's ring. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['noche'], 'noche'), t: +(Q.get('t') || 0) };
+const ORIGIN = [0, -42];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="fonda-base.js"></script>
+<script>
+'use strict';
+const E = {
+  WALL: 3.1,
+  BOARDS: [[-3.7, -2.42, 1.15, 2.6], [-2.28, -1.0, 1.15, 2.6]],        // the food board, the drinks board: u0, u1, z0, z1; each has 2 x 2 panels
+  HATCH: [-.85, 2.95, 1.0, 2.62],                                     // the hatch: a hole in the wall
+  SHELF: { z: 1.0, v1: .5 },                                          // its shelf: the top is at z, and it comes out to v1
+  BELL: [.5, .25],                                                    // the bell on the shelf
+  HOOK: [3.36, 2.2],                                                  // the hook at the hatch's right: u, z
+  STOOL: [2.55, .95],                                                 // the low stool under the shelf's end
+  KITCHEN: -1.5,                                                      // the kitchen's back wall (v)
+  TABLE: { u: .2, v: 5.0, hw: 1.9, hd: .6 },                          // the family's table: four chairs along its far side
+  NEXT: { u: 2.75, v: 9.3, hw: .95 },                                 // the next table, lower right
+  FAR: { u: -3.3, v: 10.7, hw: 1.0 },                                 // another table's corner, lower left
+};
+const panels = r => { const w = (r[1] - r[0] - .3) / 2, h = (r[3] - r[2] - .3) / 2, out = []; for (let j = 1; j >= 0; j--) for (let i = 0; i < 2; i++) out.push([r[0] + .1 + i * (w + .1), r[0] + .1 + i * (w + .1) + w, r[2] + .1 + j * (h + .1), r[2] + .1 + j * (h + .1) + h]); return out; };
+E.PANELS = E.BOARDS.map(panels);                                      // cuadro1 to cuadro4 of each board: top left, top right, bottom left, bottom right
+const groundAt = (x, y, ix, iy) => { const [u, v] = PZ.uv(x, y); return v < -.02 ? rgb(150, 150, 156) : FD.tiles(u, v, ix, iy); };
+function backWall() {
+  const Hh = E.HATCH;
+  PZ.wall(-1.6, 3.6, E.KITCHEN, 0, 3.2, (u, z) => {                                                                      // the kitchen: white tiles, a rail of pans, a shelf of pots
+    if (z < .95) return (z > .86) ? rgb(70, 70, 80) : ((u + 9) % .9 < .04) ? rgb(120, 122, 130) : rgb(168, 170, 178);            // the stove's front
+    if (z > 1.5 && z < 1.55) return rgb(90, 90, 100);                                                                     // a rail of pans
+    for (const [pu, r, col] of [[-.2, 4.2, [60, 60, 70]], [.6, 3.4, [176, 96, 60]], [1.9, 4.6, [70, 70, 80]], [2.55, 3.2, [176, 96, 60]]]) { const d = Math.hypot((u - pu) * 26, (z - 1.28) * 22.5); if (d < r) return d > r - 1.2 ? rgb(...col.map(c => c - 24)) : rgb(...col); if (Math.abs(u - pu) < .03 && z > 1.32 && z < 1.5) return rgb(60, 60, 70); }
+    return ((u + 9) % .32 < .03 || (z % .3) < .035) ? rgb(206, 208, 214) : rgb(240, 240, 236);
+  });
+  PZ.wall(-5, 5, 0, 0, E.WALL, (u, z) => {
+    if (FD.inside(u, z, Hh)) return 0;
+    if (FD.onFrame(u, z, Hh, .08)) return rgb(...FD.WOOD);
+    for (let k = 0; k < 2; k++) {
+      const B = E.BOARDS[k];
+      if (FD.onFrame(u, z, B, .06)) return rgb(...FD.WOOD_L);
+      if (FD.inside(u, z, B)) { for (const p of E.PANELS[k]) if (FD.inside(u, z, p)) return rgb(250, 244, 226); return k ? rgb(60, 84, 110) : rgb(52, 92, 82); }
+    }
+    const hk = E.HOOK; if (Math.abs(u - hk[0]) < .03 && z > hk[1] - .02 && z < hk[1] + .2) return rgb(60, 60, 70);
+    return FD.paint(u, z);
+  });
+  const mid = (Hh[0] + Hh[1]) / 2, hw = (Hh[1] - Hh[0]) / 2 + .12;
+  PZ.box(mid, E.SHELF.v1 / 2, E.SHELF.z - .08, E.SHELF.z, hw, E.SHELF.v1 / 2, FD.WOOD_L, (s, t, z, face) => face === 'top' ? shade(FD.WOOD_L, 3.3, s, t, .15) : rgb(...FD.WOOD));
+  for (const du of [-hw + .15, hw - .15]) PZ.box(mid + du, E.SHELF.v1 * .45, E.SHELF.z - .4, E.SHELF.z - .08, .04, E.SHELF.v1 * .4, FD.WOOD);   // its brackets
+  const [bx, by] = PZ.xy(E.BELL[0], E.BELL[1]); sphere(bx, by, E.SHELF.z + .06, .1, FD.BRASS, 'gloss'); drum(bx, by, E.SHELF.z + .14, E.SHELF.z + .19, .025, FD.BRASS);
+  PZ.box(E.HOOK[0], .08, E.HOOK[1] - .04, E.HOOK[1], .03, .08, [60, 60, 70]);
+  FD.sconce(3.36, 0, 1.45);
+  const [sx, sy] = PZ.xy(E.STOOL[0], E.STOOL[1]); drum(sx, sy, .3, .38, .24, FD.WOOD_L); for (const [a, b] of [[-.15, -.1], [.15, -.1], [0, .16]]) PZ.post(E.STOOL[0] + a, E.STOOL[1] + b, 0, .3, .03, FD.WOOD); castShadow(sx, sy, .3, .28);
+}
+function tables() {
+  const T = E.TABLE;
+  E.SEATS = FD.setTable(T.u, T.v, T.hw, { seats: 4, span: 2.85, hd: T.hd });
+  FD.setTable(E.NEXT.u, E.NEXT.v, E.NEXT.hw, { seats: 2, span: .9, cloth: [236, 214, 150] });
+  FD.table(E.FAR.u, E.FAR.v, E.FAR.hw, .45, [200, 222, 214]);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('pared', backWall);
+  part('mesas', tables);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  lightPass([1.0, .97, .9], [4, 1, -4], false);
+  skyFill(() => rgb(30, 24, 30));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.PEDIDO = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

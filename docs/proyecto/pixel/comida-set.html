@@ -1,0 +1,108 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La comida: the fonda's terrace at night (place 8, scene 3), as a set on the Pixel Plays engine. A NEW scene.
+   Laid out square to the picture, in u, v (plaza-base.js, fonda-base.js). A wooden floor (v >= 0). At its back a rail with a string of small
+   lights along it, low; beyond the rail the dark sea, and the night sky. In the middle a long table with four chairs along its far side.
+   At the right the mesera's station: a low top (the frog stands on it) and, behind and above it, a shelf with four places for the salt,
+   the sugar, the ice and the napkins (sprites). At the left a serving table with the cocinero's big pot and a pile of plates.
+   There is no roof and nothing is strung over anyone's head.
+   The state comes from the address:
+     hora = noche            (one state)
+     t = 0; ox, oy = the origin
+   It draws one frame: the baked set. No people, no dog, no bowls, no jar, no small plates, nothing on the station's shelf. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['noche'], 'noche'), t: +(Q.get('t') || 0) };
+const ORIGIN = [0, -48];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="fonda-base.js"></script>
+<script>
+'use strict';
+const E = {
+  B: { hor: -2.7 },                                                   // the sea runs from the rail to the horizon (v)
+  RAIL: { v: .15, h: .9, posts: [-4.4, -3.3, -2.2, -1.1, 0, 1.1, 2.2, 3.3, 4.4], lights: 1.3 },
+  TABLE: { u: .1, v: 4.9, hw: 1.9, hd: .6 },                          // the long table: four chairs along its far side
+  STATION: { u: 2.78, v: 2.0, hw: .92, hd: .42, shelf: 1.6, sv: 1.66, things: [2.1, 2.55, 3.0, 3.45] },   // the mesera's station: its low top (z .74), its shelf (z), the shelf's v, the four things' u
+  SERVE: { u: -2.9, v: 2.0, hw: .85, hd: .42, pot: [-3.2, 1.95, .3], plates: [-2.45, 1.85] },            // the serving table; the pot (u, v, radius); the pile of plates
+};
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y);
+  if (v >= -.02) return FD.planks(u, v, ix, iy);
+  if (v < E.B.hor) return 0;
+  const glint = hash(ix * 3, iy * 7) < .03 && ((iy + Math.floor(ix / 5)) % 3 === 0);
+  return glint ? rgb(120, 140, 200) : (iy % 4 === 0 && hash(ix >> 2, iy) < .3) ? rgb(30, 44, 96) : rgb(22, 32, 78);
+}
+function skyOf(ix, iy) {
+  const hz = OY + E.B.hor * 13, t = clamp(iy / hz, 0, 1);
+  if (Math.hypot(ix + .5 - 60, iy + .5 - 12) < 7) return rgb(250, 250, 240);                                              // the moon
+  if (hash(ix * 7, iy * 13) < .02) return rgb(240, 240, 255);
+  return rgb(14 + t * 26, 18 + t * 30, 56 + t * 50);
+}
+function rail() {
+  const R = E.RAIL;
+  for (const u of R.posts) { PZ.post(u, R.v, 0, R.h, .05, FD.WOOD_L); }
+  PZ.box(0, R.v, R.h, R.h + .08, 5, .07, FD.WOOD_L);
+  PZ.box(0, R.v, .38, .44, 5, .03, FD.WOOD);
+  for (const u of [-4.4, -2.2, 0, 2.2, 4.4]) PZ.post(u, R.v, R.h, R.lights + .12, .035, FD.WOOD);                          // taller posts carry the string of lights
+  const cols = [[255, 226, 140], [255, 170, 120], [180, 230, 255]];
+  for (let u = -4.4; u <= 4.4; u += .05) { const t = ((u + 4.4) % 2.2) / 2.2, z = R.lights - .22 * 4 * t * (1 - t), [x, y] = PZ.xy(u, R.v); plot(x, y, z, rgb(80, 70, 60)); }
+  let k = 0;
+  for (let u = -4.4 + .28; u < 4.4; u += .37) { const t = ((u + 4.4) % 2.2) / 2.2, z = R.lights - .22 * 4 * t * (1 - t) - .06, [x, y] = PZ.xy(u, R.v + .03), c = cols[k++ % 3]; for (const [a, b] of [[0, 0], [.055, 0], [0, .05], [.055, .05], [.028, .1]]) plotGlow(x + a * .7, y - a * .7, z + b, rgb(...c)); }
+}
+function station() {
+  const S = E.STATION, W1 = [226, 214, 196];
+  PZ.box(S.u, S.v, 0, .74, S.hw, S.hd, FD.WOOD, (s, t, z, face) => face === 'top' ? rgb(...W1) : (face === 'front' && z > .12 && z < .62 && Math.abs(Math.abs(s) - S.hw / 2) < S.hw / 2 - .08) ? rgb(...FD.WOOD_L) : 0);
+  PZ.box(S.u, S.sv, .74, S.shelf, S.hw, .12, FD.WOOD, (s, t, z, face) => face === 'top' ? rgb(...W1) : (face === 'front' && z > .84 && z < S.shelf - .1 && Math.abs(s) < S.hw - .08) ? rgb(...FD.WOOD_L) : 0);
+  for (let du = -S.hw; du <= S.hw; du += .3) PZ.shadow(S.u + du, S.v, .5, .45);
+  const V = E.SERVE;
+  FD.table(V.u, V.v, V.hw, V.hd, [236, 214, 150]);
+  const [px, py] = PZ.xy(V.pot[0], V.pot[1]);
+  drum(px, py, .74, 1.12, V.pot[2], [84, 86, 96], (a, b) => Math.hypot(a, b) < V.pot[2] - .05 ? rgb(238, 206, 110) : 0);                               // the pot, rice to its brim
+  for (const s of [-1, 1]) PZ.box(V.pot[0] + s * (V.pot[2] + .04), V.pot[1], 1.0, 1.06, .05, .04, [60, 60, 70]);
+  for (let k = 0; k < 5; k++) { const [x, y] = PZ.xy(V.plates[0], V.plates[1]); drum(x, y, .74 + k * .035, .74 + k * .035 + .03, .2, [250, 250, 250]); }
+}
+function tableLong() { const T = E.TABLE; E.SEATS = FD.setTable(T.u, T.v, T.hw, { seats: 4, span: 2.85, hd: T.hd, cloth: [250, 246, 236] }); }
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    const [gu, gv] = PZ.uv(g.x, g.y);
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = gv < -.02 ? KIND_WATER : KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('baranda', rail);
+  part('auxiliar', station);
+  part('mesa', tableLong);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  lightPass([.95, .92, .95], [2, 0, 4], false);
+  skyFill(skyOf);
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.COMIDA = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

@@ -1,0 +1,127 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La entrada: the room of a small fonda, seen from inside (place 8, scene 1), as a set on the Pixel Plays engine. A NEW scene.
+   Laid out square to the picture, in u, v (plaza-base.js, fonda-base.js). The back wall faces us at v = 0. At its left the open door to the
+   street, a runner rug leading in from it, and a bench to wait on against the wall. Then the mesera's stand, and a rope on two posts that
+   runs down the picture: left of it is the way in, right of it the room. In the room three tables, one behind another: the far one by the
+   kitchen's swing door, the middle one, the near one. Against the back wall, the vellonera; over the tables, a window.
+   The state comes from the address; these become the builder's setKey:
+     hora = ocaso | noche | tarde_noche    what the door and the window show (the room's lamps are lit in all three)
+     cuerda = puesta | abierta             the rope across the way, or unhooked and hanging from its far post
+     t = 0; ox, oy = the origin
+   It draws one frame: the baked set. No people, no cloths of another colour, no flowers, no card, no candles, no plates. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['ocaso', 'noche', 'tarde_noche'], 'ocaso'), cuerda: pick('cuerda', ['puesta', 'abierta'], 'puesta'), t: +(Q.get('t') || 0) };
+const ORIGIN = [0, -42];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="fonda-base.js"></script>
+<script>
+'use strict';
+const E = {
+  WALL: 3.1,                                                          // the back wall's height (it fills the picture's top)
+  DOOR: [-3.6, -2.55, 0, 2.2],                                        // the open door: u0, u1, z0, z1
+  RUG: [-3.5, .12, -2.2, 4.6],                                        // the runner rug from the door: u0, v0, u1, v1
+  BENCH: { u: -1.2, v: .38, hw: .62 },                                // the bench against the wall (its seat's top is z .46)
+  STAND: { u: -.95, v: 5.0, hw: .27, hd: .2, h: .95 },                // the mesera's stand (she stands behind it, at v 4.6)
+  ROPE: { u: -.35, v0: 1.5, v1: 5.6, h: .86 },                        // the rope on two posts, down the picture
+  TABLES: [[1.75, 2.9], [1.75, 6.0], [1.75, 9.1]], THW: 1.1,          // mesa1 (far, by the kitchen's door), mesa2, mesa3 (near): middles; half-width
+  WINDOW: [1.0, 2.5, 1.3, 2.35],                                      // the window over the tables
+  KITCHEN: [2.8, 3.62, 0, 2.05],                                      // the kitchen's swing door
+  VELLONERA: { u: .5, v: .3, hw: .36, hd: .22, h: 1.5 },
+};
+const groundAt = (x, y, ix, iy) => { const [u, v] = PZ.uv(x, y); return v < -.02 ? (SET.hora === 'ocaso' ? rgb(150, 118, 110) : SET.hora === 'noche' ? rgb(52, 54, 84) : rgb(34, 36, 60)) : FD.tiles(u, v, ix, iy); };
+function backWall() {
+  PZ.wall(-5, 5, 0, 0, E.WALL, (u, z) => {
+    const D = E.DOOR, W = E.WINDOW, K = E.KITCHEN;
+    if (FD.inside(u, z, D)) return 0;                                                                                   // the door: a hole (the street is painted behind it)
+    if (FD.onFrame(u, z, D, .09)) return rgb(...FD.WOOD);
+    if (FD.inside(u, z, W)) { const a = (u - W[0]) / (W[1] - W[0]), b = (z - W[2]) / (W[3] - W[2]); if (Math.abs(a - .5) < .02 || Math.abs(b - .5) < .03) return rgb(...FD.WOOD_L); return 0; }
+    if (FD.onFrame(u, z, W)) return rgb(...FD.WOOD_L);
+    if (FD.inside(u, z, K)) {                                                                                           // the swing door: two leaves, a round window in each
+      const mid = (K[0] + K[1]) / 2, a = Math.abs(u - mid), leaf = u < mid ? K[0] + (mid - K[0]) / 2 : mid + (K[1] - mid) / 2;
+      if (a < .012) return rgb(60, 50, 44);
+      if (Math.hypot((u - leaf) * 26, (z - 1.45) * 22.5) < 3.6) return Math.hypot((u - leaf) * 26, (z - 1.45) * 22.5) > 2.6 ? rgb(...FD.BRASS) : rgb(255, 226, 150);
+      if (z < .3) return rgb(...FD.BRASS.map(c => c - 30));
+      return shade([214, 96, 70], 2.3, u * 4, z * 2, .2);
+    }
+    if (FD.onFrame(u, z, K, .06)) return rgb(...FD.WOOD_D);
+    return FD.paint(u, z);
+  });
+  // behind the holes: the street in the door, the sky in the window
+  PZ.wall(E.DOOR[0] - .2, E.DOOR[1] + .2, -1.2, 0, 3.2, (u, z) => { const [sx, sy] = [Math.round(u * 26), Math.round(z * 22.5)]; return FD.outside(SET.hora, .5, (z + .2) / 3.0, sx, sy); });
+  PZ.wall(E.WINDOW[0] - .2, E.WINDOW[1] + .2, -.5, 1.0, 2.7, (u, z) => { const [sx, sy] = [Math.round(u * 26), Math.round(z * 22.5)]; return FD.outside(SET.hora, .5, .4 + (z - 1.0) / 2.8, sx, sy); });
+  for (const u of [-2.2, -.1, 2.66]) FD.sconce(u, 0, 1.95);
+}
+function entry() {
+  const R = E.RUG;
+  PZ.flat(R[0], R[1], R[2], R[3], .012, (u, v) => (u - R[0] < .1 || R[2] - u < .1 || v - R[1] < .16 || R[3] - v < .16) ? rgb(236, 196, 96) : shade([176, 52, 58], 3.2, u * 2, v, .12));
+  PZ.seat(E.BENCH.u, E.BENCH.v, E.BENCH.hw, true, [176, 118, 70]);
+  const S = E.STAND;
+  PZ.box(S.u, S.v, 0, S.h, S.hw, S.hd, FD.WOOD, (s, t, z, face) => face === 'front' && z > .12 && z < S.h - .12 && Math.abs(s) < S.hw - .07 ? shade(FD.WOOD_L, 2.2, s * 4, z) : face === 'top' ? shade(FD.WOOD_L, 3.3, s, t) : 0);
+  PZ.box(S.u, S.v - .02, S.h, S.h + .05, .17, .13, [250, 248, 240]);                                                    // her list, on the stand
+  PZ.shadow(S.u, S.v, .6, .35);
+  const P = E.ROPE;
+  for (const v of [P.v0, P.v1]) { PZ.box(P.u, v, 0, .06, .13, .13, FD.BRASS.map(c => c - 30)); PZ.post(P.u, v, 0, P.h, .04, FD.BRASS); PZ.ball(P.u, v, P.h + .05, .07, FD.BRASS, 'gloss'); }
+  if (SET.cuerda === 'puesta') {
+    const n = 40;
+    for (let k = 0; k <= n; k++) { const t = k / n, v = P.v0 + (P.v1 - P.v0) * t, z = P.h - .08 - .22 * 4 * t * (1 - t); PZ.box(P.u, v, z - .035, z + .035, .03, (P.v1 - P.v0) / n * .6, FD.RED); }
+  } else PZ.box(P.u + .05, P.v0 + .03, .14, P.h - .06, .028, .028, FD.RED);
+}
+function room() {
+  const V = E.VELLONERA;
+  PZ.box(V.u, V.v, 0, V.h, V.hw, V.hd, [150, 60, 70], (s, t, z, face) => {                                               // the vellonera: a lit arch, a window of records, a grille
+    if (face !== 'front') return 0;
+    const px = s * 26, pz = (z - V.h + .36) * 22.5;
+    if (z > V.h - .5 && Math.hypot(px, Math.max(0, pz)) > 7.4) return rgb(250, 206, 70);
+    if (z > V.h - .62) return Math.abs(px) < 5.5 ? (Math.floor((px + 6) / 2) % 2 ? rgb(70, 60, 70) : rgb(200, 220, 240)) : rgb(250, 150, 70);
+    if (z > V.h - .7) return rgb(250, 206, 70);
+    if (z > .2 && z < V.h - .8 && Math.abs(px) < 6.5) return (Math.floor(z * 22.5) % 2) ? rgb(90, 50, 56) : rgb(222, 178, 82);
+    return 0;
+  });
+  PZ.shadow(V.u, V.v + .2, .6, .45);
+  E.TABLES.forEach(([u, v]) => FD.setTable(u, v, E.THW, { seats: 2, span: 1.1, ends: true }));
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('pared', backWall);
+  part('entrada', entry);
+  part('salon', room);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  lightPass([1.0, .97, .9], [4, 1, -4], false);
+  skyFill(() => rgb(30, 24, 30));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.ENTRADA = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>
