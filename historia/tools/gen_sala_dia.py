@@ -155,7 +155,7 @@ json.dump(s102,open("cuentos/lee-y-escribe.json","w",encoding="utf-8"),ensure_as
 # Decision A and B: touch a place (abuelo's ear, abuelo's mouth; tests escucha against habla). A miss: the telephone at the wrong end, the call runs on and nobody hears anybody; a bar of the battery blinks and goes.
 nm,nc=nombres("abuela","abuelo","luis","carmen","coqui"); c=dict(comunes); c.update(nc)
 c.update({"c103_ab_telefono":AB("¡El teléfono! Coquí, por favor."),"c103_ab_llama":AB("Llama mamá. ¡Hola!"),"c103_ma_hola":MA("¡Hola! ¿Cómo estás?"),"c103_ab_escucho":AB("Yo escucho... y ahora hablo. Bien, gracias."),
- "c103_abo_quien":ABO("¿Quién llama?"),"c103_ab_oreja":AB("Llama mamá. Abuelo escucha."),"c103_ahora_habla":CA("Ahora abuelo habla."),"c103_abo_hola":ABO("¡Hola! Yo estoy bien."),"c103_ab_habla_con":AB("Abuelo habla con mamá."),
+ "c103_abo_quien":ABO("¿Quién llama?"),"c103_ab_oreja":AB("Llama mamá por teléfono. Abuelo escucha."),"c103_l_escucha_mama":L("Abuelo escucha a mamá."),"c103_ahora_habla":CA("Ahora abuelo habla."),"c103_abo_hola":ABO("¡Hola! Yo estoy bien."),"c103_ab_habla_con":AB("Abuelo habla con mamá."),
  "c103_ma_coqui":MA("¿Y Coquí? ¿Cómo estás, Coquí?"),"c103_cq_bien":T("¡Bien, gracias!"),
  "c103_ahora_escucha":CA("Ahora abuelo escucha."),"c103_no_escucha":CA("¡No, Coquí! Abuelo escucha."),"c103_no_habla":CA("¡No, Coquí! Abuelo habla."),
  "c103_ma_hola_hola":{"who":"narr","habla":"mama","text":"¿Hola? ¿Hola?"},
@@ -181,7 +181,7 @@ s103={"id":"el-telefono","title":"El teléfono","place":"La casa, un día entero
   # 2: mamá speaks; abuela holds the telephone to her ear and then before her mouth
   {"dots":2},"c103_ma_hola",act("oido103",quien="abuela"),act("boca103",quien="abuela"),"c103_ab_escucho",
   # 3: abuelo wakes and cups a hand behind his ear; signed ask on his ear (the line is the ask): the telephone at his ear, mamá's voice as small pictures (abuelo smiles: no act named); signed ask on his mouth: the telephone before it
-  {"dots":3},gesto("abuelo","oreja"),"c103_abo_quien",ask("oreja_abuelo","c103_ab_oreja",after=[act("pone103",donde="oreja_abuelo",ok=1)]),
+  {"dots":3},gesto("abuelo","oreja"),"c103_abo_quien",ask("oreja_abuelo","c103_ab_oreja",after=[act("pone103",donde="oreja_abuelo",ok=1)]),"c103_l_escucha_mama",
   ask("boca_abuelo","c103_ahora_habla",after=[act("pone103",donde="boca_abuelo",ok=1)]),"c103_abo_hola","c103_ab_habla_con",
   # 4: mamá asks for the frog; a speaking turn (bien); the frog opens his mouth to sing and abuela lays a finger on her lips; the battery shows three bars
   {"dots":4},"c103_ma_coqui","c103_cq_bien",act("anillos103"),gesto("abuela","silencio"),act("bateria",n=3),
@@ -191,7 +191,7 @@ s103={"id":"el-telefono","title":"El teléfono","place":"La casa, un día entero
   {"dots":6}]+ronda103("a")+[{"dots":7}]+ronda103("b"),
  "final":[{"dots":8},"c103_ma_hasta_luego","c103_cq_hasta_manana",baja3(lambda n:act("final103",n=n)),   # 8: abuelo holds the telephone out (no act named); a speaking turn (hasta mañana); the frog sings into it, by the bars left
   {"dots":9},"c103_fin",act("fin")],
- "leer":["c103_ab_telefono","c103_ab_llama","c103_ma_hola","c103_ab_escucho","c103_abo_quien","c103_ab_oreja","c103_ahora_habla","c103_abo_hola","c103_ab_habla_con","c103_ma_coqui","c103_cq_bien",
+ "leer":["c103_ab_telefono","c103_ab_llama","c103_ma_hola","c103_ab_escucho","c103_abo_quien","c103_ab_oreja","c103_l_escucha_mama","c103_ahora_habla","c103_abo_hola","c103_ab_habla_con","c103_ma_coqui","c103_cq_bien",
   "c103_ahora_escucha","c103_ahora_habla","c103_ma_hasta_luego","c103_cq_hasta_manana","c103_fin"]}
 s103=reuse(s103,{"c103_cq_bien":TG(("bien",["bien","muy bien","bien gracias"])),"c103_cq_hasta_manana":TG(("hasta mañana",["hasta mañana","hasta manana"]))})
 json.dump(s103,open("cuentos/el-telefono.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
