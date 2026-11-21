@@ -1,0 +1,105 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La muralla, de noche: the top of the fort's wall at night (place 10, scene 4), as a set on the Pixel Plays engine. A NEW scene.
+   Laid out square to the picture, in u, v. The walk on the wall's top is the floor (v >= 0), of flagstones. At its back, at v = 0, the
+   low parapet with its battlements; beyond it the sea with the moon's road on it, the moon and the stars, and at the right, far
+   below, a point of land with the road on it (the guagua and whoever walks there are sprites). On the walk, at the left and at the
+   right, two sentry boxes of stone with domed tops: the left one has a red door, the right one a blue door; each has a small lit
+   window. Between them, over the middle, three lanterns hang on a cord (the cord and the lanterns are sprites: E.CORD says where). Against the parapet, in the middle, a long bench.
+   At the left front a table with a cloth (the chair beside it is a sprite). At the right front, the head of the steps that go down.
+   The state comes from the address:  hora = noche | tarde_noche   (tarde_noche: the moon is low over the sea, and yellow)
+   It draws one frame: the baked set. No people, no lanterns, no camera, no candle, no things on the table, no guagua. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['noche', 'tarde_noche'], 'noche'), t: +(Q.get('t') || 0) };
+const ORIGIN = [0, -24];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="fonda-base.js"></script>
+<script src="fuerte-base.js"></script>
+<script>
+'use strict';
+const E = {
+  PARAPET: 1.0,                                                        // the parapet's height at v 0 (its gaps come down to .66)
+  HOR: 34,                                                             // the horizon's row in the picture
+  LAND: { x0: 128, y0: 40, road: 46 },                                 // the point of land below at the right (screen px): where it begins, its top row at the right edge, the road's row
+  BOXES: [{ u: -3.0, v: 1.0, door: [206, 70, 64] }, { u: 3.0, v: 1.0, door: [70, 110, 206] }],   // the two sentry boxes (hw .62, hd .5, h 1.75; the door is .92 wide, from u - .46 to u + .46, z 0 to 1.18)
+  CORD: { u0: -2.5, u1: 2.5, v: 1.0, z: 2.38, sag: .25, at: [-1.2, 0, 1.2] },   // the lanterns' cord, and where the three hang (u)
+  BENCH: { u: 0, v: .45, hw: 1.9 },                                    // the bench against the parapet: four can sit on it
+  TABLE: { u: -2.1, v: 5.7, hw: 1.5, hd: .6 },                         // the table (top z .74); the chair beside it is a sprite
+  STEPS: { u0: 2.2, u1: 3.7, v0: 6.2, v1: 8.4 },                       // the head of the steps: a hole in the walk
+  MID: [0, 3.0],                                                       // the middle of the walk, under the lanterns
+};
+const LOW = SET.hora === 'tarde_noche';
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y), S = E.STEPS;
+  if (v < 0) return 0;
+  if (u > S.u0 && u < S.u1 && v > S.v0 && v < S.v1) {                                                              // the steps going down: darker and darker
+    const k = Math.floor((v - S.v0) / .36), a = ((v - S.v0) % .36) / .36;
+    return a < .16 ? rgb(150 - k * 16, 136 - k * 15, 116 - k * 13) : rgb(118 - k * 15, 106 - k * 14, 92 - k * 12);
+  }
+  if (u > S.u0 - .09 && u < S.u1 + .09 && v > S.v0 - .12 && v < S.v1) return rgb(226, 206, 170);                    // the kerb round the hole
+  return FT.flags(u, v, ix, iy);
+}
+function parapet() {
+  PZ.wall(-4.7, 4.7, 0, 0, E.PARAPET, (u, z) => FT.solid(u, z, E.PARAPET) ? (z > E.PARAPET - .44 && z < E.PARAPET - .36 ? rgb(...FT.STONE_L) : FT.stone(u, z + .1)) : 0);
+  for (const B of E.BOXES) FT.garita(B.u, B.v, B.door, true);
+  // the lanterns' cord (E.CORD) is not drawn here: it is a sprite with its lanterns, so that it hides nobody's head
+}
+function walk() {
+  PZ.seat(E.BENCH.u, E.BENCH.v, E.BENCH.hw, false);
+  const T = E.TABLE;
+  FT.table(T.u, T.v, T.hw, T.hd, [206, 150, 70]);
+  const S = E.STEPS;                                                                                              // a rail at the steps' far side and right side
+  for (const u of [S.u0, S.u1]) PZ.post(u, S.v0 - .06, 0, .8, .04, FT.IRON);
+  PZ.box((S.u0 + S.u1) / 2, S.v0 - .06, .76, .82, (S.u1 - S.u0) / 2, .03, FT.IRON);
+}
+function skyOf(ix, iy) {
+  const L = E.LAND, top = L.y0 + (240 - ix) * .1;
+  if (ix > L.x0 && iy + .5 > top && iy > E.HOR) {                                                                  // the land below, and its road
+    if (Math.abs(iy + .5 - (L.road + (240 - ix) * .1)) < 1.6) return (ix % 9 < 5 && Math.abs(iy + .5 - (L.road + (240 - ix) * .1)) < .6) ? rgb(206, 196, 150) : rgb(96, 96, 112);
+    return iy + .5 - top < 1.5 ? rgb(46, 70, 66) : (hash(ix * 3, iy * 7) < .1 ? rgb(40, 66, 60) : rgb(30, 52, 56));
+  }
+  return FT.night(ix, iy, E.HOR, LOW ? [70, E.HOR - 9, 9] : [92, 13, 9], LOW);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('pretil', parapet);
+  part('paseo', walk);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  lightPass([.7, .72, .9], [-2, -2, 14], false);
+  skyFill(skyOf);
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.MURALLA = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

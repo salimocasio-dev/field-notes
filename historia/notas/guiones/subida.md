@@ -5,7 +5,7 @@ Place 10, El fuerte. Scene 1 of 4 (scene id `subida`). Stories 108 to 110. The l
 Scene words (page 02): fuerte, muralla, bandera, fiesta, invita, trae, voy a (comer, tomar, dormir), vamos a (jugar, bailar), ¿quieres venir?, ¿cuándo?, ¿quién?, juntos.
 How they are shared out: 108 fuerte, muralla, bandera, fiesta, ¿quieres venir?; 109 invita, trae, ¿quién?, ¿cuándo?; 110 voy a, vamos a, juntos.
 
-The picture: the wide lawn in front of the old fort, late in the afternoon. One view. At the back, across the whole picture, the fort's wall (the muralla), with battlements, the fort's gate (an arch) in its middle, an iron lamp at each side of the gate, and a small sentry box on its top at the right; over the gate, on a pole, a flag. Beyond the wall, over its top, the sea and the sky. A path of pale stone runs from the picture's foot up to the gate. At the left of the path, a tree with a flat stone beside it; at the right, a party table, a hammock between two posts, and open grass. No roof.
+The picture: the wide lawn in front of the old fort, late in the afternoon. One view. At the back, across the whole picture, the fort's wall (the muralla), with battlements, the fort's gate (an arch) in its middle, an iron lamp at each side of the gate, and a small sentry box on its top at the right; over the gate, on a pole, a flag. Beyond the wall, over its top, the sea and the sky. A path of pale stone runs from the picture's foot up to the gate. At the left of the path, a tree with a flat stone beside it; at the right, a party table, and open grass in front of it; at the left front, a hammock between two posts. No roof.
 
 People: the family (abuela, abuelo, Luis, Carmen), and the people of every place: don Pepe (the colmado), the maestra, the piragüero, a boy with his dog, a girl, the señora, the joven.
 
@@ -46,9 +46,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - Three: on the wall, on the flag's pole, on the gate. Stars and a heart.
    - Two: one of the two places is dark.
    - One: on the gate.
-9. Luis comes back up the path, and people behind him. NARR: "Carmen dice: Mira, Coquí. ¿Te gusta?" COQUÍ [TURN: bonito (bonito, qué bonito, sí bonito)]: "¡Qué bonito!" NARR: "Hoy hay una fiesta en el fuerte. Hay luz en la muralla."
+9. Luis comes back up the path, and people behind him. NARR: "Carmen dice: Mira, Coquí. ¿Te gusta?" COQUÍ [TURN: bonito (bonito, qué bonito, sí bonito)]: "¡Qué bonito!" NARR: "Hoy hay una fiesta en el fuerte. ¡Hay luz en el fuerte!"
 
-**Fewest hearings before a word can cost:** muralla 4 (steps 2, 4), bandera 4 (steps 3, 4). Not deciding: fuerte 6 (steps 1, 2, 4); fiesta 4 (steps 1, 4, 5); ¿quieres venir? 3 (steps 1, 4, 5).
+**Fewest hearings before a word can cost:** muralla 4 (steps 2, 4), bandera 4 (steps 3, 4). Not deciding: fuerte 6 (steps 1, 2, 4), and twice in the last line; fiesta 4 (steps 1, 4, 5); ¿quieres venir? 3 (steps 1, 4, 5).
 **A miss is filed under:** the place that was said (muralla or bandera).
 **Chance without the Spanish:** one in three, each round: the gate can always be touched, and round A's place can be touched again.
 **Speaking turns:** two (steps 1, 9): quiero; bonito.
@@ -89,7 +89,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - One guest.
 8. The piragüero pushes his cart up to the gate. NARR: "El piragüero dice: Aquí está el hielo. Coquí, ¿quieres una piragua?" COQUÍ [TURN: gracias (gracias, sí gracias)]: "¡Sí, gracias!" He gets a small one. NARR: "Abuela invita. La gente trae jugo y hielo. Hoy, a las siete, hay fiesta."
 
-**Fewest hearings before a word can cost:** ¿quién? 3 (steps 1, 2, 3), ¿cuándo? 4 (steps 1, 2, 3). Not deciding: invita 2 and invito once before the game (steps 1, 2), and once in the ending; trae 2 and traigo once (step 3), and once in the ending.
+**Fewest hearings before a word can cost:** ¿quién? 3 (steps 1, 2, 3), ¿cuándo? 3 (steps 1, 2, 3). Not deciding: invita 2 and invito once before the game (steps 1, 2), and once in the ending; trae 2 and traigo once (step 3), and once in the ending.
 **Forms:** invito with invita; traigo with trae.
 **A miss is filed under:** the question that was asked (¿quién? or ¿cuándo?).
 **Chance without the Spanish:** one in two, each round on its own.
@@ -144,7 +144,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 A beginner's reviewer and a Puerto Rican Spanish reviewer read draft 1; each had only the script and the owner's rules.
 
-- 108: the lanterns have a name he knows ("una luz", "Esta luz va en..."). The game asks the wall and the flag, in a drawn order; the gate is only a third thing to touch, and Carmen hangs the last lantern there herself, so the last picture shows the lanterns where they were hung. A wrong lantern is lost at the wrong place, held up in the wind, not on the way back. The frog starts each round beside Carmen. Luis asks two children, so "¿Quieres venir?" is right. The last turn is not an echo. "Hay luz en la muralla", not "tienen luz" (which is electricity).
+- 108: the lanterns have a name he knows ("una luz", "Esta luz va en..."). The game asks the wall and the flag, in a drawn order; the gate is only a third thing to touch, and Carmen hangs the last lantern there herself, so the last picture shows the lanterns where they were hung. A wrong lantern is lost at the wrong place, held up in the wind, not on the way back. The frog starts each round beside Carmen. Luis asks two children, so "¿Quieres venir?" is right. The last turn is not an echo. "Hay luz en el fuerte", not "tienen luz" (which is electricity), and true whichever lanterns are left.
 - 109: the two questions differ only in their first words ("¿De quién es?", which is what people ask, against "¿Cuándo es?"), so "invita" cannot give the answer away. Abuela is at the gate, not beside her picture. "Yo invito a todos"; "tu abuela". Three hearings of each question without a line said twice. The turns are a greeting and a thank-you, not a quiz.
 - 110: nothing is lit in the opening; the lanterns are for the three guests who come after. Carmen sleeps and then plays, so the hammock is free; every place is empty at the turn. "Voy a tomar algo", so "jugo" does not give the jugs away. Each plain form is heard three times with its place. The game has three plans and four places. "Tengo sueño. Voy a dormir." "¡Los tres juntos!" "Toma jugo" in the last line (bare "toma" is drinking). The turns are not echoes.
 - Not taken: making voy a against vamos a decide by touch (it needs a contrived picture; the plan after the frame decides, and a miss is filed under voy a).
@@ -156,11 +156,11 @@ A beginner's reviewer and a Puerto Rican Spanish reviewer read draft 1; each had
 The set `subida`:
 - View: `wide` (zoom 1).
 - States: `hora` tarde, ocaso, noche; `fiesta` 0 or 1 (the party table and the hammock's posts: story 110).
-- In the set: the fort's wall across the whole back, with battlements, its gate in the middle, an iron lamp at each side of the gate (lit at night), a small sentry box on its top at the right, and over the gate a pole (the flag is a sprite: it waves); the sea beyond the wall; a wide lawn; a path of pale stone from the picture's foot to the gate; a tree at the left of the path with a flat stone beside it; at the right (fiesta 1) a long table, two posts for a hammock, open grass. No roof.
+- In the set: the fort's wall across the whole back, with battlements, its gate in the middle, an iron lamp at each side of the gate (lit at night), a small sentry box on its top at the right, and over the gate a pole (the flag is a sprite: it waves); the sea beyond the wall; a wide lawn; a path of pale stone from the picture's foot to the gate; a tree at the left of the path with a flat stone beside it; at the right (fiesta 1) a long table and open grass; at the left front (fiesta 1) two posts for a hammock. No roof.
 - Things he can touch: puerta (the gate), muralla (the wall, away from the gate), bandera, cartel (Luis's paper on the tree) and its two round pictures (cartel_quien, cartel_cuando), comida (the table's end with the food), jugos (its end with the jugs), hamaca, grama (the grass with the ball), faroles (the lanterns by the gate), canasta (Carmen's basket), each person.
 - Spots: camino1 to camino4 (people coming up the path, one behind another), ante_puerta (the frog at the gate), puerta_abuela (abuela beside the gate), muro_coqui (the frog on the wall's top), gancho_muralla, gancho_bandera, gancho_puerta (the three hooks for a lantern), arbol (Carmen sitting by the tree), junto_carmen (the frog beside her), piedra (the frog on the stone by the tree), junto_cartel (someone reading the paper), sale_grama (the way off across the lawn), mesa_comida, mesa_jugos (a guest at each end of the table, behind it), hamaca_dentro (someone in the hammock), grama1 to grama3 (three on the grass), bajo_arbol1, bajo_arbol2 (don Pepe and the maestra by the tree).
 - New sprites: the flag, waving; paper lanterns (in the basket, carried, held up, hung on a hook, lit or not, sailing off on the wind); a hook that shines; Luis's paper with the fort and its two round pictures, and small things on its foot (a jug, a block of ice); abuela's list; a small piragua; the party table's food and jugs; a plate and a glass carried; the hammock, empty and with someone in it; the ball; abuela's long match; three lanterns by the gate, lit or not; a boy with a dog; a girl.
-- Speaker keys: `don_pepe`, `maestra`, `piraguero`, `senora`, `joven`, `abuela`, `luis`, `carmen` (all exist, or are named in earlier places' orders).
+- Speaker keys: `pepe` (don Pepe: the key his recorded lines have), `maestra`, `piraguero`, `senora`, `joven`, `abuela`, `luis`, `carmen` (all exist, or are named in earlier places' orders).
 
 Acts (name: what it does on screen; story and step):
 - `llega` {quien, a}, `sale` {quien} (108 to 110). `bandera108`: the flag waves hard (108: 3). `ganchos108`: the three hooks shine one after another (108: 4). `farol108` {donde, ok}: the frog carries a lantern to a place and hangs it; with ok 0 he holds it up there, and a gust takes it over the wall. `faroles` {donde}: the lanterns that hang, and where. `final108` (108: 8).

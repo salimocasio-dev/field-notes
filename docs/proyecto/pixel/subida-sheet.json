@@ -1,0 +1,1302 @@
+{
+ "scene": "subida",
+ "made": "node docs/proyecto/pixel/subida-sheet-make.js, from subida-set.html (window.SUBIDA.E) and the design of El camino al fuerte (the orchestrator's p10-spec, general rules and section subida). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": -4
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 104. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the fort's wall at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 104 + 13 v - 22.5 z; the picture holds u from -4.62 to 4.62",
+  "spot": "a spot is a world point of the feet (z 0: the ground; z 2.5: the battlements' top at the wall; z 0.2: the flat stone's top; z 0.74: the table's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): the basket, the dish, the jugs, the ball and the three lanterns by the gate have their bottom middle on the spot, the three hooks' lanterns and the paper hang by their top middle, the flag has its left middle on the pole, the hammock its middle (the box [sx - floor(w / 2), sy - h, w, h] for a bottom one; [sx - floor(w / 2), sy, w, h] for a hanging one; [sx, sy - floor(h / 2), w, h] for the flag; [sx - floor(w / 2), sy - floor(h / 2), w, h] for the hammock). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up, 40 for a child; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30; a small thing: see spot. Carmen \"sitting by the tree\" (arbol) is drawn standing. Whoever lies in the hammock is part of the hammock sprite (hamaca_dentro is the same point). Nobody is drawn turned",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character. The tree's leaves sway: the depth is the LIVE depth of the still frame (frame(0), t = 0), see front.how"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["tarde", "ocaso", "noche"],
+    "default": "tarde",
+    "note": "the sky, the sea and the light (noche: the moon, the gate's two lamps lit)"
+   },
+   "fiesta": {
+    "values": [0, 1],
+    "default": 0,
+    "note": "the party table and the hammock's two posts (story 110)"
+   }
+  },
+  "key": "hora, fiesta, e.g. \"hora=tarde&fiesta=0\"",
+  "baked": ["?hora=tarde&fiesta=0", "?hora=noche&fiesta=1"],
+  "note": "the geometry (and so the depth) is the same in every state but fiesta: the table and the posts are in the depth of fiesta = 1 only. The sheet's numbers are read from the set with hora noche and fiesta 1"
+ },
+ "things": {
+  "puerta": {
+   "set": true,
+   "uv": [-0.72, 0, 0, 0.72, 0, 1.85],
+   "world": [-0.5091, -0.5091, 0, 0.5091, 0.5091, 1.85],
+   "box": [101, 62, 38, 42],
+   "what": "the gate (the arch: u -0.72 to 0.72, z 0 to 1.85 on the wall at v 0: the hole the dark passage shows through); a poke",
+   "quad": [
+    [-0.5091, 0.5091, 0],
+    [0.5091, -0.5091, 0],
+    [0.5091, -0.5091, 1.85],
+    [-0.5091, 0.5091, 1.85]
+   ]
+  },
+  "muralla": {
+   "set": true,
+   "uv": [1, 0, 0.3, 2.6, 0, 2.1],
+   "world": [0.7071, -1.8385, 0.3, 1.8385, -0.7071, 2.1],
+   "box": [146, 56, 42, 42],
+   "what": "the wall's face from u 1.0 to 2.6, z .3 to 2.1 (away from the gate: the frog goes up it and walks along its top; WALL.h 2.5); a poke",
+   "quad": [
+    [0.7071, -0.7071, 0.3],
+    [1.8385, -1.8385, 0.3],
+    [1.8385, -1.8385, 2.1],
+    [0.7071, -0.7071, 2.1]
+   ]
+  },
+  "grama": {
+   "set": true,
+   "uv": [0.9, 4.6, 0, 3.5, 8, 0],
+   "world": [3.8891, 0.7778, 0, 8.1317, 5.0205, 0],
+   "box": [143, 163, 68, 45],
+   "what": "the open grass where they play (GRASS u 0.9 to 3.5, v 4.6 to 8, on the ground): the GRASS box on the picture; a poke"
+  },
+  "bandera": {
+   "sprite": true,
+   "spot": "bandera",
+   "anchor": "left",
+   "size": [16, 10],
+   "box": [120, 6, 16, 10],
+   "what": "the flag (16 x 10 px, its left middle on the pole at z 3.95): a poke; it waves"
+  },
+  "cartel": {
+   "sprite": true,
+   "spot": "cartel",
+   "anchor": "top",
+   "size": [30, 30],
+   "box": [39, 94, 30, 30],
+   "what": "Luis's paper on the tree's trunk (30 x 30 px, its top middle at (TREE.u, TREE.v + .05, 1.55)): a poke"
+  },
+  "cartel_quien": {
+   "sprite": true,
+   "spot": "cartel",
+   "size": [12, 12],
+   "box": [41, 110, 12, 12],
+   "what": "the paper's left round picture, abuela's face (12 x 12 px: the paper's columns 2 to 13, rows 16 to 27, its lower half; the spec gives the size, the order and \"2 px apart\": the row is the sheet's); a poke"
+  },
+  "cartel_cuando": {
+   "sprite": true,
+   "spot": "cartel",
+   "size": [12, 12],
+   "box": [55, 110, 12, 12],
+   "what": "the paper's right round picture, a moon over a clock (12 x 12 px: columns 16 to 27, rows 16 to 27, 2 px from the left one); a poke"
+  },
+  "canasta": {
+   "sprite": true,
+   "spot": "canasta",
+   "anchor": "bottom",
+   "size": [12, 10],
+   "box": [53, 134, 12, 10],
+   "what": "Carmen's basket (12 x 10 px, its bottom middle on the ground at canasta; in moments 1 and 2 it stands beside Carmen at camino_lado, 18 px to the right of her feet: made for the preview, not a spot of the spec): a poke"
+  },
+  "comida": {
+   "sprite": true,
+   "spot": "comida",
+   "anchor": "bottom",
+   "size": [20, 10],
+   "box": [152, 107, 20, 10],
+   "what": "the dish of food on the table's left end (20 x 10 px, its bottom middle on the table's top): a poke"
+  },
+  "jugos": {
+   "sprite": true,
+   "spot": "jugos",
+   "anchor": "bottom",
+   "size": [16, 12],
+   "box": [187, 105, 16, 12],
+   "what": "the two jugs on the table's right end (16 x 12 px, its bottom middle on the table's top): a poke"
+  },
+  "hamaca": {
+   "sprite": true,
+   "spot": "hamaca",
+   "anchor": "centre",
+   "size": [50, 12],
+   "box": [33, 165, 50, 12],
+   "what": "the hammock (50 x 12 px, its middle at ((HAMMOCK.u0 + HAMMOCK.u1) / 2, HAMMOCK.v, 0.7)): a poke; whoever lies in it is part of the sprite"
+  },
+  "faroles": {
+   "sprite": true,
+   "spot": ["faroles1", "faroles2", "faroles3"],
+   "box": [107, 57, 26, 10],
+   "boxes": [
+    [107, 57, 8, 10],
+    [116, 57, 8, 10],
+    [125, 57, 8, 10]
+   ],
+   "what": "the three lanterns by the gate: one box over the three (8 x 10 px each, their bottom middle at faroles1 to faroles3); a poke"
+  },
+  "abuela": "sprite",
+  "abuelo": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "coqui": "sprite",
+  "don_pepe": "sprite",
+  "maestra": "sprite",
+  "piraguero": "sprite",
+  "senora": "sprite",
+  "joven": "sprite"
+ },
+ "spots": {
+  "camino1": {
+   "world": [2.1213, 2.1213, 0],
+   "uv": [0, 3, 0],
+   "screen": [120, 143],
+   "depth": 2.5981,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the path, first: somebody coming up (108, 109: not drawn in a moment of the spec)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "camino2": {
+   "world": [3.3163, 3.1891, 0],
+   "uv": [0.09, 4.6, 0],
+   "screen": [122, 164],
+   "depth": 3.9837,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the path, second: Luis (m1, m2)",
+   "sprite": "nino",
+   "who": "nino",
+   "spec": [0.1, 4.6, 0],
+   "moved": "sprites-apart: in moments 1 and 2 Luis at camino2 and Carmen at camino_lado were 23 px apart sideways on rows 8 px apart (24 and 12 needed): u .1 -> .09 (-.01; the other spot, camino_lado: u 1 -> 1.02, +.02, or v 4 -> 3.73, -.27; camino2 v 4.6 -> 4.89, +.29)"
+  },
+  "camino3": {
+   "world": [4.3134, 4.4548, 0],
+   "uv": [-0.1, 6.2, 0],
+   "screen": [117, 185],
+   "depth": 5.3694,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the path, third: a boy (m2), el joven (m4)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "camino4": {
+   "world": [5.5861, 5.4447, 0],
+   "uv": [0.1, 7.8, 0],
+   "screen": [123, 205],
+   "depth": 6.755,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the path, fourth: el piragüero (m4)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "camino_lado": {
+   "world": [3.5355, 2.1213, 0],
+   "uv": [1, 4, 0],
+   "screen": [146, 156],
+   "depth": 3.4641,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen beside the path, with her basket (m1, m2)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "ante_puerta": {
+   "world": [0.6364, 0.6364, 0],
+   "uv": [0, 0.9, 0],
+   "screen": [120, 116],
+   "depth": 0.7794,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog at the gate (m1)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "junto_puerta": {
+   "world": [0.3536, 1.7678, 0],
+   "uv": [-1, 1.5, 0],
+   "screen": [94, 124],
+   "depth": 1.299,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog beside the gate (m5, story 110)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "entra": {
+   "world": [1.1031, 1.0182, 0],
+   "uv": [0.06, 1.5, 0],
+   "screen": [122, 124],
+   "depth": 1.299,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a guest who has just come in at the gate (m5)",
+   "sprite": "adulto",
+   "who": "adulto",
+   "spec": [0, 1.3, 0],
+   "moved": "sprites-apart: in moment 5 the frog at junto_puerta and the guest at entra were 26 px apart sideways on rows 3 px apart (28 and 12 needed): u 0 -> .06 (+.06; the same distance by the other spot: junto_puerta u -1 -> -1.06; by v: entra v 1.3 -> .65, junto_puerta v 1.5 -> 2.2). Tie: the guest moved, the frog stays"
+  },
+  "puerta_abuela": {
+   "world": [2.2274, -1.096, 0],
+   "uv": [2.35, 0.8, 0],
+   "screen": [181, 114],
+   "depth": 0.6928,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela beside the gate (m4, m5, m6)",
+   "sprite": "abuela",
+   "who": "adulto"
+  },
+  "muro_coqui": {
+   "world": [1.0182, -1.0182, 2.5],
+   "uv": [1.44, 0, 2.5],
+   "screen": [157, 48],
+   "depth": 1.25,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the wall's top, right of the gate (u 1.6, v 0, z WALL.h = 2.5: the battlements' top)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "fuerte",
+   "spec": [1.6, 0, 2.5],
+   "moved": "spots-on-surface: at u 1.6 the spot falls in a gap between two merlons ((u + 60.26) mod .9 = .66; merlons are 0 to .52), so the set's pixel under the frog's feet is the walk behind them (depth .69, not 1.25 = z 2.5 x .5): u 1.6 -> 1.44 (-.16: the nearest u whose pixel is a merlon's top: the merlon from u .94 to 1.46; the next one up starts at u 1.84, +.23)"
+  },
+  "gancho_muralla": {
+   "world": [1.4284, -1.4001, 1.6],
+   "uv": [2, 0.02, 1.6],
+   "screen": [172, 68],
+   "depth": 0.8173,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the hook on the wall for a lantern (108): it hangs (a lantern) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [168, 68, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
+  },
+  "gancho_puerta": {
+   "world": [0.0141, 0.0141, 2.1],
+   "uv": [0, 0.02, 2.1],
+   "screen": [120, 57],
+   "depth": 1.0673,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the hook over the gate for a lantern (108): it hangs (a lantern) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [116, 57, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
+  },
+  "gancho_bandera": {
+   "world": [-0.2121, -0.2121, 3],
+   "uv": [0, -0.3, 3],
+   "screen": [120, 33],
+   "depth": 1.2402,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the hook on the flag's pole for a lantern (108): it hangs (a lantern) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [116, 33, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
+  },
+  "bandera": {
+   "world": [-0.2121, -0.2121, 3.95],
+   "uv": [0, -0.3, 3.95],
+   "screen": [120, 11],
+   "depth": 1.7152,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the flag on its pole (the pole's top is z 4.3) (a 16 x 10 px stand-in): its left middle on the point",
+   "box": [120, 6, 16, 10],
+   "anchor": "left",
+   "on": "fuerte"
+  },
+  "arbol": {
+   "world": [0.601, 3.2173, 0],
+   "uv": [-1.85, 2.7, 0],
+   "screen": [72, 139],
+   "depth": 2.3383,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen sitting by the tree (108 game): drawn standing",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "canasta": {
+   "world": [0.5303, 3.8537, 0],
+   "uv": [-2.35, 3.1, 0],
+   "screen": [59, 144],
+   "depth": 2.6847,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "Carmen's basket by the tree (108 game) (a 12 x 10 px stand-in): its bottom middle on the point",
+   "box": [53, 134, 12, 10],
+   "anchor": "bottom"
+  },
+  "junto_carmen": {
+   "world": [1.8314, 2.8921, 0],
+   "uv": [-0.75, 3.34, 0],
+   "screen": [101, 147],
+   "depth": 2.8925,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog beside Carmen (108 game)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "spec": [-0.75, 3.6, 0],
+   "moved": "frog-seen: in moment 3 the flat stone (STONE u -1.25, v 3.9, top z .2) hid 11 px of the frog's feet: v 3.6 -> 3.34 (-.26; by u: -.75 -> -.48, +.27)"
+  },
+  "cartel": {
+   "world": [-0.4243, 3.182, 1.55],
+   "uv": [-2.55, 1.95, 1.55],
+   "screen": [54, 94],
+   "depth": 2.4637,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "Luis's paper on the tree's trunk (TREE u -2.55, v 1.9 + .05; in front of the trunk); its two round pictures are things.cartel_quien and things.cartel_cuando (a 30 x 30 px stand-in): its top middle on the point",
+   "box": [39, 94, 30, 30],
+   "anchor": "top",
+   "on": "grama"
+  },
+  "piedra": {
+   "world": [1.8738, 3.6416, 0.2],
+   "uv": [-1.25, 3.9, 0.2],
+   "screen": [88, 150],
+   "depth": 3.4775,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the flat stone (STONE u -1.25, v 3.9): its top, z 0.2",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "grama"
+  },
+  "luis_cartel": {
+   "world": [1.8385, 5.5154, 0],
+   "uv": [-2.6, 5.2, 0],
+   "screen": [52, 172],
+   "depth": 4.5033,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis below the paper (109)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "junto_cartel": {
+   "world": [2.3335, 2.3335, 0],
+   "uv": [0, 3.3, 0],
+   "screen": [120, 147],
+   "depth": 2.8579,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a passer-by who has stopped at the paper (109)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "sale_grama": {
+   "world": [3.1113, 7.6368, 0],
+   "uv": [-3.2, 7.6, 0],
+   "screen": [37, 203],
+   "depth": 6.5818,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the way off across the lawn (109: a passer-by who walks on; in no moment of the spec)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "mesa_comida": {
+   "world": [2.3688, 0.1061, 0],
+   "uv": [1.6, 1.75, 0],
+   "screen": [162, 127],
+   "depth": 1.5155,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a guest behind the table's food end (TABLE.u - .65, TABLE.v - TABLE.hd - .1; the table is u 1.05 to 3.45, v 1.85 to 2.75)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "mesa_jugos": {
+   "world": [3.288, -0.8132, 0],
+   "uv": [2.9, 1.75, 0],
+   "screen": [195, 127],
+   "depth": 1.5155,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a guest behind the table's jugs end (TABLE.u + .65, TABLE.v - TABLE.hd - .1)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "comida": {
+   "world": [2.7577, 0.495, 0.74],
+   "uv": [1.6, 2.3, 0.74],
+   "screen": [162, 117],
+   "depth": 2.3619,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the dish on the table (TABLE.u - .65, TABLE.v): on its top, z 0.74 (a 20 x 10 px stand-in): its bottom middle on the point",
+   "box": [152, 107, 20, 10],
+   "anchor": "bottom",
+   "on": "grama"
+  },
+  "jugos": {
+   "world": [3.677, -0.4243, 0.74],
+   "uv": [2.9, 2.3, 0.74],
+   "screen": [195, 117],
+   "depth": 2.3619,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the two jugs on the table (TABLE.u + .65, TABLE.v): on its top, z 0.74 (a 16 x 12 px stand-in): its bottom middle on the point",
+   "box": [187, 105, 16, 12],
+   "anchor": "bottom",
+   "on": "grama"
+  },
+  "hamaca": {
+   "world": [2.8284, 6.2225, 0.7],
+   "uv": [-2.4, 6.4, 0.7],
+   "screen": [58, 171],
+   "depth": 5.8926,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the hammock between its two posts (HAMMOCK u -3.4 and -1.4, v 6.4; the posts are 1.25 high): at z 0.7; whoever lies in it (Carmen: her head at its left end) is part of the sprite (a 50 x 12 px stand-in): its middle on the point",
+   "box": [33, 165, 50, 12],
+   "anchor": "centre",
+   "on": "ground"
+  },
+  "hamaca_dentro": {
+   "world": [2.8284, 6.2225, 0.7],
+   "uv": [-2.4, 6.4, 0.7],
+   "screen": [58, 171],
+   "depth": 5.8926,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the same point as hamaca: whoever lies in the hammock is part of that sprite (a 50 x 12 px stand-in): its middle on the point",
+   "box": [33, 165, 50, 12],
+   "anchor": "centre",
+   "on": "ground"
+  },
+  "grama1": {
+   "world": [4.9497, 2.9698, 0],
+   "uv": [1.4, 5.6, 0],
+   "screen": [156, 177],
+   "depth": 4.8497,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "on the grass: Luis (m6)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "grama2": {
+   "world": [6.364, 2.687, 0],
+   "uv": [2.6, 6.4, 0],
+   "screen": [188, 187],
+   "depth": 5.5426,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "on the grass: Carmen (m6)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "grama3": {
+   "world": [6.5761, 3.8891, 0],
+   "uv": [1.9, 7.4, 0],
+   "screen": [169, 200],
+   "depth": 6.4086,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "on the grass: the frog (m6)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "bola": {
+   "world": [7.6368, 3.1113, 0],
+   "uv": [3.2, 7.6, 0],
+   "screen": [203, 203],
+   "depth": 6.5818,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the ball on the grass (m6) (an 8 x 8 px stand-in): its bottom middle on the point",
+   "box": [199, 195, 8, 8],
+   "anchor": "bottom"
+  },
+  "faroles1": {
+   "world": [-0.2263, 0.2546, 2.1],
+   "uv": [-0.34, 0.02, 2.1],
+   "screen": [111, 57],
+   "depth": 1.0673,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "lantern 1 of 3 over the gate: it hangs on the wall above the arch (the orchestrator moved the three off their stakes by the gate, where the guests behind the table covered them) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [107, 57, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
+  },
+  "faroles2": {
+   "world": [0.0141, 0.0141, 2.1],
+   "uv": [0, 0.02, 2.1],
+   "screen": [120, 57],
+   "depth": 1.0673,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "lantern 2 of 3 over the gate: it hangs on the wall above the arch (the orchestrator moved the three off their stakes by the gate, where the guests behind the table covered them) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [116, 57, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
+  },
+  "faroles3": {
+   "world": [0.2546, -0.2263, 2.1],
+   "uv": [0.34, 0.02, 2.1],
+   "screen": [129, 57],
+   "depth": 1.0673,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "lantern 3 of 3 over the gate: it hangs on the wall above the arch (the orchestrator moved the three off their stakes by the gate, where the guests behind the table covered them) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [125, 57, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
+  },
+  "bajo_arbol1": {
+   "world": [0.8132, 3.288, 0],
+   "uv": [-1.75, 2.9, 0],
+   "screen": [75, 142],
+   "depth": 2.5115,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a guest under the tree, the left one: don Pepe (m6)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "bajo_arbol2": {
+   "world": [1.4849, 2.6163, 0],
+   "uv": [-0.8, 2.9, 0],
+   "screen": [99, 142],
+   "depth": 2.5115,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a guest under the tree, the right one: la maestra (m6)",
+   "sprite": "adulto",
+   "who": "adulto"
+  }
+ },
+ "groups": {
+  "camino": ["camino1", "camino2", "camino3", "camino4"],
+  "ganchos": ["gancho_muralla", "gancho_puerta", "gancho_bandera"],
+  "faroles": ["faroles1", "faroles2", "faroles3"],
+  "mesa": ["mesa_comida", "mesa_jugos", "comida", "jugos"],
+  "grama": ["grama1", "grama2", "grama3", "bola"],
+  "hamaca": ["hamaca", "hamaca_dentro"],
+  "bajo_arbol": ["bajo_arbol1", "bajo_arbol2"],
+  "touch": {
+   "puerta": "ante_puerta",
+   "muralla": "muro_coqui",
+   "bandera": "bandera",
+   "cartel": "cartel",
+   "cartel_quien": "cartel",
+   "cartel_cuando": "cartel",
+   "canasta": "canasta",
+   "comida": "comida",
+   "jugos": "jugos",
+   "hamaca": "hamaca",
+   "grama": "grama3",
+   "faroles": "faroles2",
+   "abuela": "puerta_abuela",
+   "luis": "luis_cartel",
+   "carmen": "arbol",
+   "coqui": "ante_puerta"
+  }
+ },
+ "moves": [
+  {
+   "spot": "camino2",
+   "spec": [0.1, 4.6, 0],
+   "now": [0.09, 4.6, 0],
+   "why": "sprites-apart: in moments 1 and 2 Luis at camino2 and Carmen at camino_lado were 23 px apart sideways on rows 8 px apart (24 and 12 needed): u .1 -> .09 (-.01; the other spot, camino_lado: u 1 -> 1.02, +.02, or v 4 -> 3.73, -.27; camino2 v 4.6 -> 4.89, +.29)"
+  },
+  {
+   "spot": "entra",
+   "spec": [0, 1.3, 0],
+   "now": [0.06, 1.5, 0],
+   "why": "sprites-apart: in moment 5 the frog at junto_puerta and the guest at entra were 26 px apart sideways on rows 3 px apart (28 and 12 needed): u 0 -> .06 (+.06; the same distance by the other spot: junto_puerta u -1 -> -1.06; by v: entra v 1.3 -> .65, junto_puerta v 1.5 -> 2.2). Tie: the guest moved, the frog stays"
+  },
+  {
+   "spot": "muro_coqui",
+   "spec": [1.6, 0, 2.5],
+   "now": [1.44, 0, 2.5],
+   "why": "spots-on-surface: at u 1.6 the spot falls in a gap between two merlons ((u + 60.26) mod .9 = .66; merlons are 0 to .52), so the set's pixel under the frog's feet is the walk behind them (depth .69, not 1.25 = z 2.5 x .5): u 1.6 -> 1.44 (-.16: the nearest u whose pixel is a merlon's top: the merlon from u .94 to 1.46; the next one up starts at u 1.84, +.23)"
+  },
+  {
+   "spot": "junto_carmen",
+   "spec": [-0.75, 3.6, 0],
+   "now": [-0.75, 3.34, 0],
+   "why": "frog-seen: in moment 3 the flat stone (STONE u -1.25, v 3.9, top z .2) hid 11 px of the frog's feet: v 3.6 -> 3.34 (-.26; by u: -.75 -> -.48, +.27)"
+  }
+ ],
+ "notes": [
+  "every number of a spot is the orchestrator's (the p10-spec, \"subida\"), given in (u, v, z); the wall, the gate, the pole, the tree, the stone, the table and the hammock's posts are read from the set",
+  "things: puerta, muralla and grama are set things with a box (the gate's hole, the wall's face, the GRASS box on the picture); bandera, cartel, cartel_quien, cartel_cuando, canasta, comida, jugos, hamaca and faroles are sprites at the spots of the same name; the people are sprites",
+  "the three lanterns by the gate: the spec's one spot \"faroles\" holds three points; they are faroles1, faroles2 and faroles3 here (group faroles); the three hooks are gancho_muralla, gancho_puerta and gancho_bandera",
+  "cartel_quien and cartel_cuando: the spec gives the size (12 x 12), the order and \"2 px apart\"; the row (the paper's rows 16 to 27, its lower half) and the 2 px margins at the sides are the sheet's: left box at the paper's column 2, right box at column 16",
+  "the basket in moments 1 and 2 stands beside Carmen at camino_lado, 18 px to the right of her feet (layer px [18, 0]): the spec says \"beside her\" and gives the spot canasta only for moment 3; it is not a spot",
+  "the tree's leaves sway, so the sprites are tested against the live depth of the still frame (t = 0). The paper and the lanterns are clear of the crown at t = 0 (checks hooks-flag, cartel-clear); the leaves move a pixel or two in the wind: the checks do not cover the other frames",
+  "muro_coqui is at z WALL.h (2.5), the top of the battlements, where the wall is a plane with no top face: the spec's u 1.6 falls in a gap between two merlons ((u + 60.26) mod .9 = 0.66, merlons are 0 to .52), where the set's pixel under the feet is the walk behind them (spots-on-surface failed), so the spot moved to u 1.44 (the end of the merlon from u .94 to 1.46): the picture row is the same (row 48), the frog stands on a merlon's top",
+  "stand-ins: abuelo is kit's FAM.abuelo; don Pepe, la maestra, el piragüero, la señora, el joven and the boy are other makers of mkPersona in other clothes (don Pepe an orange shirt, la maestra blue, el piragüero white with a red cap, la señora green, el joven teal, the boy yellow); in m4 la señora is the passer-by at junto_cartel, el joven camino3, el piragüero camino4; in m5 don Pepe is mesa_comida, la maestra mesa_jugos, el piragüero entra; in m6 don Pepe and la maestra are bajo_arbol1 and bajo_arbol2",
+  "the three lanterns of story 110 hang in a row on the wall over the gate",
+  "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
+  "moves: camino2 [0.1,4.6,0] -> [0.09,4.6,0] (sprites-apart: in moments 1 and 2 Luis at camino2 and Carmen at camino_lado were 23 px apart sideways on rows 8 px apart (24 and 12 needed): u .1 -> .09 (-.01; the other spot, camino_lado: u 1 -> 1.02, +.02, or v 4 -> 3.73, -.27; camino2 v 4.6 -> 4.89, +.29)); entra [0,1.3,0] -> [0.06,1.5,0] (sprites-apart: in moment 5 the frog at junto_puerta and the guest at entra were 26 px apart sideways on rows 3 px apart (28 and 12 needed): u 0 -> .06 (+.06; the same distance by the other spot: junto_puerta u -1 -> -1.06; by v: entra v 1.3 -> .65, junto_puerta v 1.5 -> 2.2). Tie: the guest moved, the frog stays); muro_coqui [1.6,0,2.5] -> [1.44,0,2.5] (spots-on-surface: at u 1.6 the spot falls in a gap between two merlons ((u + 60.26) mod .9 = .66; merlons are 0 to .52), so the set's pixel under the frog's feet is the walk behind them (depth .69, not 1.25 = z 2.5 x .5): u 1.6 -> 1.44 (-.16: the nearest u whose pixel is a merlon's top: the merlon from u .94 to 1.46; the next one up starts at u 1.84, +.23)); junto_carmen [-0.75,3.6,0] -> [-0.75,3.34,0] (frog-seen: in moment 3 the flat stone (STONE u -1.25, v 3.9, top z .2) hid 11 px of the frog's feet: v 3.6 -> 3.34 (-.26; by u: -.75 -> -.48, +.27))"
+ ],
+ "views": {
+  "wide": {
+   "world": [0.2176, 0.2176, 0],
+   "uv": [0, 0.3077, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [108, 109, 110],
+   "holds": ["camino1", "camino2", "camino3", "camino4", "camino_lado", "ante_puerta", "junto_puerta", "entra", "puerta_abuela", "muro_coqui", "gancho_muralla", "gancho_puerta", "gancho_bandera", "bandera", "arbol", "canasta", "junto_carmen", "cartel", "piedra", "luis_cartel", "junto_cartel", "sale_grama", "mesa_comida", "mesa_jugos", "comida", "jugos", "hamaca", "hamaca_dentro", "grama1", "grama2", "grama3", "bola", "faroles1", "faroles2", "faroles3", "bajo_arbol1", "bajo_arbol2"],
+   "extent": [25, 206],
+   "x0Range": [11, 25],
+   "what": "the one view of stories 108, 109 and 110: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 11 to 25 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 25 to 206). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the set's depth, with the feet's depth plus 0.3): the wall hides what is behind it, the table hides the legs of the guests behind it, the tree's trunk and leaves hide what is behind them. The set's depth is the baked depth (window.DEPTH.z) plus the tree's leaves at the still frame (t = 0: window.DEPTH.live() after frame(0)); with the wind the leaves move a pixel or two, so a sprite that shows at t = 0 may lose a pixel or two behind a leaf at another frame",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where the set's depth (window.DEPTH.live() of the set page after frame(0), for the moment's state) is more than depth(r) + bias. The same rule as El cruce's sheet: the upright plane through the feet",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "abuelo": 0.35,
+   "don_pepe": 0.35,
+   "maestra": 0.35,
+   "piraguero": 0.35,
+   "senora": 0.35,
+   "joven": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28) (open point)",
+  "none": ["muro_coqui", "gancho_muralla", "gancho_puerta", "gancho_bandera", "bandera", "cartel", "piedra", "comida", "jugos", "hamaca", "hamaca_dentro", "faroles1", "faroles2", "faroles3"],
+  "onSurface": "the frog on the wall (muro_coqui), on the stone (piedra) casts none: neither is the ground (a shadow cast at the ground under him would show in front of him); the things on the table, on a hook, on the pole, on the trunk or hung between the posts cast none"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 37 spots held span columns 25 to 206 (182 of the window's 196); x0 that hold them all: 11 to 25 (the one nearest 22, the window centred on the picture)"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 37 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 25 (sale_grama), the rightmost 206 (mesa_jugos)"
+    ]
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 12 spots above the ground (muro_coqui, gancho_muralla, gancho_puerta, gancho_bandera, bandera, cartel, piedra, comida, jugos, faroles1, faroles2, faroles3) are on a surface the set draws (depth within .1 of the spot's, the live frame): the wall, the pole (part fuerte), the stone z 0.2, the table's top z 0.74 and the trunk (part grama)",
+     "       muro_coqui z 2.5: part fuerte, depth 1.23 against the spot's 1.25 (0.02)",
+     "       gancho_muralla z 1.6: part fuerte, depth 0.81 against the spot's 0.82 (0.01)",
+     "       gancho_puerta z 2.1: part fuerte, depth 1.05 against the spot's 1.07 (0.01)",
+     "       gancho_bandera z 3: part fuerte, depth 1.25 against the spot's 1.24 (0.01)",
+     "       bandera z 3.95: part fuerte, depth 1.73 against the spot's 1.72 (0.02)",
+     "       cartel z 1.55: part grama, depth 2.51 against the spot's 2.46 (0.05)",
+     "       piedra z 0.2: part grama, depth 3.46 against the spot's 3.48 (0.01)",
+     "       comida z 0.74: part grama, depth 2.34 against the spot's 2.36 (0.02)",
+     "       jugos z 0.74: part grama, depth 2.34 against the spot's 2.36 (0.02)",
+     "       faroles1 z 2.1: part fuerte, depth 1.05 against the spot's 1.07 (0.01)",
+     "       faroles2 z 2.1: part fuerte, depth 1.05 against the spot's 1.07 (0.01)",
+     "       faroles3 z 2.1: part fuerte, depth 1.05 against the spot's 1.07 (0.01)"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of puerta, muralla, grama, bandera, cartel, cartel_quien, cartel_cuando, canasta, comida, jugos, hamaca, faroles are inside the window [22, 218) and the picture (puerta [101,62,38,42], muralla [146,56,42,42], grama [143,163,68,45], bandera [120,6,16,10], cartel [39,94,30,30], cartel_quien [41,110,12,12], cartel_cuando [55,110,12,12], canasta [53,134,12,10], comida [152,107,20,10], jugos [187,105,16,12], hamaca [33,165,50,12], faroles [107,57,26,10])"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 50 pairs in the 6 moments of the preview (m1 (camino2, camino_lado, ante_puerta); m2 (camino2, camino_lado, camino3, muro_coqui); m3 (arbol, junto_carmen); m4 (piedra, luis_cartel, junto_cartel, puerta_abuela, camino3, camino4); m5 (mesa_comida, mesa_jugos, puerta_abuela, junto_puerta, entra); m6 (grama1, grama2, grama3, puerta_abuela, bajo_arbol1, bajo_arbol2)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 camino2 ~ ante_puerta (2 across, 48 down), m1 camino_lado ~ ante_puerta (26 across, 40 down), m2 camino2 ~ camino3 (5 across, 21 down), m2 camino_lado ~ muro_coqui (11 across, 108 down), m4 junto_cartel ~ camino3 (3 across, 38 down), m4 junto_cartel ~ camino4 (3 across, 58 down), m4 camino3 ~ camino4 (6 across, 20 down), m5 mesa_comida ~ puerta_abuela (19 across, 13 down), m5 mesa_jugos ~ puerta_abuela (14 across, 13 down), m6 grama1 ~ grama3 (13 across, 23 down), m6 grama2 ~ grama3 (19 across, 13 down), m6 grama2 ~ puerta_abuela (7 across, 73 down), m6 grama3 ~ puerta_abuela (12 across, 86 down)",
+     "       closest pair in each moment (px across / px down): m1 camino2 ~ ante_puerta 2/48 (needs 28 across or 12 down); m2 camino2 ~ camino3 5/21 (needs 24 across or 12 down); m3 arbol ~ junto_carmen 29/8 (needs 28 across or 12 down); m4 junto_cartel ~ camino3 3/38 (needs 24 across or 12 down); m5 mesa_jugos ~ puerta_abuela 14/13 (needs 24 across or 12 down); m6 grama2 ~ puerta_abuela 7/73 (needs 24 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "camino2",
+      "b": "camino_lado",
+      "across": 24,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "camino2",
+      "b": "ante_puerta",
+      "across": 2,
+      "down": 48,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "camino_lado",
+      "b": "ante_puerta",
+      "across": 26,
+      "down": 40,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camino2",
+      "b": "camino_lado",
+      "across": 24,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camino2",
+      "b": "camino3",
+      "across": 5,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camino2",
+      "b": "muro_coqui",
+      "across": 35,
+      "down": 116,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camino_lado",
+      "b": "camino3",
+      "across": 29,
+      "down": 29,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camino_lado",
+      "b": "muro_coqui",
+      "across": 11,
+      "down": 108,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camino3",
+      "b": "muro_coqui",
+      "across": 40,
+      "down": 137,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "arbol",
+      "b": "junto_carmen",
+      "across": 29,
+      "down": 8,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "piedra",
+      "b": "luis_cartel",
+      "across": 36,
+      "down": 22,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "piedra",
+      "b": "junto_cartel",
+      "across": 32,
+      "down": 3,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "piedra",
+      "b": "puerta_abuela",
+      "across": 93,
+      "down": 36,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "piedra",
+      "b": "camino3",
+      "across": 29,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "piedra",
+      "b": "camino4",
+      "across": 35,
+      "down": 55,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "luis_cartel",
+      "b": "junto_cartel",
+      "across": 68,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "luis_cartel",
+      "b": "puerta_abuela",
+      "across": 129,
+      "down": 58,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "luis_cartel",
+      "b": "camino3",
+      "across": 65,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "luis_cartel",
+      "b": "camino4",
+      "across": 71,
+      "down": 33,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "junto_cartel",
+      "b": "puerta_abuela",
+      "across": 61,
+      "down": 33,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "junto_cartel",
+      "b": "camino3",
+      "across": 3,
+      "down": 38,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "junto_cartel",
+      "b": "camino4",
+      "across": 3,
+      "down": 58,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "puerta_abuela",
+      "b": "camino3",
+      "across": 64,
+      "down": 71,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "puerta_abuela",
+      "b": "camino4",
+      "across": 58,
+      "down": 91,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "camino3",
+      "b": "camino4",
+      "across": 6,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "mesa_comida",
+      "b": "mesa_jugos",
+      "across": 33,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "mesa_comida",
+      "b": "puerta_abuela",
+      "across": 19,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "mesa_comida",
+      "b": "junto_puerta",
+      "across": 68,
+      "down": 3,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "mesa_comida",
+      "b": "entra",
+      "across": 40,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "mesa_jugos",
+      "b": "puerta_abuela",
+      "across": 14,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "mesa_jugos",
+      "b": "junto_puerta",
+      "across": 101,
+      "down": 3,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "mesa_jugos",
+      "b": "entra",
+      "across": 73,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "puerta_abuela",
+      "b": "junto_puerta",
+      "across": 87,
+      "down": 10,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "puerta_abuela",
+      "b": "entra",
+      "across": 59,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "junto_puerta",
+      "b": "entra",
+      "across": 28,
+      "down": 0,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama1",
+      "b": "grama2",
+      "across": 32,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama1",
+      "b": "grama3",
+      "across": 13,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama1",
+      "b": "puerta_abuela",
+      "across": 25,
+      "down": 63,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama1",
+      "b": "bajo_arbol1",
+      "across": 81,
+      "down": 35,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama1",
+      "b": "bajo_arbol2",
+      "across": 57,
+      "down": 35,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama2",
+      "b": "grama3",
+      "across": 19,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama2",
+      "b": "puerta_abuela",
+      "across": 7,
+      "down": 73,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama2",
+      "b": "bajo_arbol1",
+      "across": 113,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama2",
+      "b": "bajo_arbol2",
+      "across": 89,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama3",
+      "b": "puerta_abuela",
+      "across": 12,
+      "down": 86,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama3",
+      "b": "bajo_arbol1",
+      "across": 94,
+      "down": 58,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "grama3",
+      "b": "bajo_arbol2",
+      "across": 70,
+      "down": 58,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "puerta_abuela",
+      "b": "bajo_arbol1",
+      "across": 106,
+      "down": 28,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "puerta_abuela",
+      "b": "bajo_arbol2",
+      "across": 82,
+      "down": 28,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "bajo_arbol1",
+      "b": "bajo_arbol2",
+      "across": 24,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 ante_puerta 120,116: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 muro_coqui 157,48: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 junto_carmen 101,147: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 piedra 88,150: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 junto_puerta 94,124: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 grama3 169,200: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "heads-clear",
+    "ok": true,
+    "lines": [
+     "heads-clear: Carmen by the tree (m3, standing) and Carmen in the hammock (m5) are whole in the window and her head (the top 14 rows) is covered by nobody and by nothing: m3 arbol 72,139 (carmen): head rows 98 to 111: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 hamaca 58,171 (hamacaCabeza): head rows 165 to 178: 342 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
+    ]
+   },
+   {
+    "name": "hooks-flag",
+    "ok": true,
+    "lines": [
+     "hooks-flag: in moment 3 the three lanterns on their hooks (gancho_muralla, gancho_puerta, gancho_bandera) and the flag (bandera) are covered by nobody and hidden by nothing (neither the set nor the tree's leaves, live frame t = 0): m3: bandera (bandera) [120,6,16,10]: 156 px, 0 covered, 0 hidden by the set, 0 outside the picture; gancho_muralla [168,68,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; gancho_puerta [116,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; gancho_bandera [116,33,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; the flag's box [120,6,16,10] is inside the picture (240 x 216) and the window [22, 218)"
+    ]
+   },
+   {
+    "name": "cartel-clear",
+    "ok": true,
+    "lines": [
+     "cartel-clear: in moment 4 the paper (cartel) and its two round pictures (cartel_quien, cartel_cuando) are covered by nobody and hidden by nothing (not the tree's leaves, live frame t = 0), and the frog on the stone (piedra) covers neither picture: cartel [39,94,30,30]: 896 px, 0 covered, 0 hidden by the set, 0 outside the picture; cartel_quien [41,110,12,12]: 144 px of the paper in it, 0 covered, 0 hidden by the set, 0 px of the frog in its box, 0 px of anybody in its box; cartel_cuando [55,110,12,12]: 144 px of the paper in it, 0 covered, 0 hidden by the set, 0 px of the frog in its box, 0 px of anybody in its box"
+    ]
+   },
+   {
+    "name": "faroles-clear",
+    "ok": true,
+    "lines": [
+     "faroles-clear: in moments 5 and 6 the three lanterns by the gate (faroles1 to faroles3) are covered by nobody and hidden by nothing: m5: faroles1 (faroles) [107,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles2 (faroles) [116,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles3 (faroles) [125,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; m6: faroles1 (faroles) [107,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles2 (faroles) [116,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles3 (faroles) [125,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "mesa-clear",
+    "ok": true,
+    "lines": [
+     "mesa-clear: in moment 5 the dish (comida) and the jugs (jugos) on the table are covered by nobody and hidden by nothing (the guests behind the table are farther): m5: comida (comida) [152,107,20,10]: 131 px, 0 covered, 0 hidden by the set, 0 outside the picture; jugos (jugos) [187,105,16,12]: 137 px, 0 covered, 0 hidden by the set, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "frog-muro",
+    "ok": true,
+    "lines": [
+     "frog-muro: the frog at muro_coqui 157,48 (u 1.44, v 0, z 2.5) on the wall's top is whole in moment 2: 536 px, 0 covered, 0 hidden by the set, 0 outside the picture, 0 px cut by the window (columns 141 to 172 of the window's 22 to 217); his box over the sky and the walk: nothing of the set is nearer"
+    ]
+   },
+   {
+    "name": "mesa-waist",
+    "ok": true,
+    "lines": [
+     "mesa-waist: in moment 5 the guests behind the table (mesa_comida, mesa_jugos) show from the waist up (canvas row 38: the hips' centre; the set's table hides none of the rows above it, no person covers them): mesa_comida 162,127: rows 74 to 109 above the waist (row 110): 618 px, 0 covered by people, 0 hidden by the set (the table); the dish or the jugs on the table cover 19 of them (not counted: a thing on the table in front of her belly); the table hides from row 113 (3 below the waist) to the feet (row 126); mesa_jugos 195,127: rows 73 to 109 above the waist (row 110): 702 px, 0 covered by people, 0 hidden by the set (the table); the dish or the jugs on the table cover 40 of them (not counted: a thing on the table in front of her belly); the table hides from row 113 (3 below the waist) to the feet (row 126)"
+    ]
+   },
+   {
+    "name": "info-touch",
+    "ok": true,
+    "lines": [
+     "info-touch: not a check. m1: camino_lado (canasta) 0 of 92 px covered, 0 hidden by the set; m2: camino_lado (canasta) 0 of 92 px covered, 0 hidden by the set; m3: canasta (canasta) 0 of 92 px covered, 0 hidden by the set; m4: none drawn; m5: hamaca (hamaca) 0 of 342 px covered, 0 hidden by the set; m6: bola (bola) 0 of 52 px covered, 0 hidden by the set, hamaca (hamaca) 0 of 256 px covered, 0 hidden by the set"
+    ]
+   }
+  ]
+ }
+}

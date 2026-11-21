@@ -6,8 +6,8 @@
    Laid out square to the picture, in u, v (plaza-base.js, fuerte-base.js). The fort's wall faces us at v = 0, across most of the picture:
    stone, across the whole picture, with battlements, an arched gate in its middle (a hole: a dark passage behind it), an iron lamp at each side of the gate, a pole
    over the gate (the flag is a sprite), and a small sentry box on its top at the right. Beyond the wall, over its top, the sea, and the sky. In front of it a lawn, with a path of pale stone from the picture's foot up to the gate; a tree at the left of
-   the path with a flat stone beside it; at the right, with fiesta = 1, a long party table and the two posts of a hammock (the hammock
-   itself is a sprite), and open grass.
+   the path with a flat stone beside it; at the right, with fiesta = 1, a long party table, and in front of it open grass; at the left front, with
+   fiesta = 1, the two posts of a hammock (the hammock itself is a sprite).
    The state comes from the address; these become the builder's setKey:
      hora = tarde | ocaso | noche     the sky, the sea and the light (noche: the moon, the gate's two lamps lit)
      fiesta = 0 | 1                   the party table and the hammock's posts
@@ -35,10 +35,10 @@ const E = {
   BOX: { u: 3.0, v: -.28, z0: 2.16, hw: .42, h: 1.05 },             // the sentry box on the wall's right corner
   EDGE: -.75, HOR: -5.9,                                             // where the lawn ends behind the wall (the sea begins); the horizon (v)
   PATH: { mid: 0, hw: .62 },
-  TREE: [-2.55, 1.9, 2.5, 1.15], STONE: [-1.62, 3.5],                // the tree (u, v, height, crown); the flat stone beside it
+  TREE: [-2.55, 1.9, 2.5, 1.15], STONE: [-1.25, 3.9],                // the tree (u, v, height, crown); the flat stone beside it
   TABLE: { u: 2.25, v: 2.3, hw: 1.2, hd: .45 },                      // fiesta: the party table (top z .74)
-  HAMMOCK: { u0: 1.2, u1: 3.3, v: 5.2, h: 1.25 },                    // fiesta: the hammock's two posts
-  GRASS: [1.1, 6.9, 3.5, 8.3],                                       // the open grass where they play
+  HAMMOCK: { u0: -3.4, u1: -1.4, v: 6.4, h: 1.25 },                  // fiesta: the hammock's two posts, at the left front
+  GRASS: [.9, 4.6, 3.5, 8.0],                                       // the open grass where they play
 };
 const NIGHT = SET.hora === 'noche';
 function groundAt(x, y, ix, iy) {
@@ -65,11 +65,11 @@ function fort() {
   });
   for (const [u, z] of E.LAMPS) FT.wallLamp(u, 0, z, NIGHT);
   const P = E.POLE;
-  PZ.post(P.u, P.v, W.walk, P.z1, .035, [236, 236, 230]); PZ.ball(P.u, P.v, P.z1 + .04, .07, [240, 206, 110], 'smooth');
+  { const [px, py] = PZ.xy(P.u, P.v); drum(px, py, W.walk, P.z1, .035, [236, 236, 230]); } PZ.ball(P.u, P.v, P.z1 + .04, .07, [240, 206, 110], 'smooth');   // no shadow: it would fall as a long streak on the lawn
   const B = E.BOX;                                                                                                                                                // the sentry box: a small domed turret
   PZ.box(B.u, B.v, B.z0, B.z0 + B.h, B.hw, .34, FT.STONE, (s, t, z, face) => face === 'front' ? ((Math.abs(s) < .09 && z > B.z0 + .4 && z < B.z0 + .8) ? rgb(50, 44, 60) : FT.stone(s + B.u, z)) : 0);
   PZ.box(B.u, B.v, B.z0 + B.h, B.z0 + B.h + .1, B.hw + .06, .4, FT.STONE_L);
-  PZ.ball(B.u, B.v, B.z0 + B.h + .08, B.hw - .05, FT.STONE, 'smooth'); PZ.ball(B.u, B.v, B.z0 + B.h + B.hw + .04, .08, FT.STONE_L, 'smooth');
+  FT.cap(B.u, B.v, B.z0 + B.h + .1, B.hw - .06);
 }
 function lawn() {
   const [tu, tv, th, tr] = E.TREE;
@@ -79,7 +79,7 @@ function lawn() {
   PZ.shadow(su, sv, .2, .4);
   if (!SET.fiesta) return;
   const T = E.TABLE;
-  FD.table(T.u, T.v, T.hw, T.hd, [226, 96, 84]);
+  FT.table(T.u, T.v, T.hw, T.hd);
   const H = E.HAMMOCK;
   for (const u of [H.u0, H.u1]) { PZ.post(u, H.v, 0, H.h, .06, [150, 104, 62]); PZ.ball(u, H.v, H.h + .03, .08, [120, 84, 52], 'smooth'); }
 }

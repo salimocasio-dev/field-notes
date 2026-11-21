@@ -72,18 +72,35 @@ const FT = (() => {
     const hd = .5;
     PZ.box(u, v, 0, h, hw, hd, STONE, (s, t, z, face) => {
       if (face !== 'front') return face === 'top' ? rgb(...STONE_D) : stone(s + u + t * .3, z, STONE_D);
-      if (door && Math.abs(s) < .3 && z < 1.18) {
-        if (Math.abs(s) > .25 || z > 1.13) return rgb(...door.map(k => k - 60));
-        if (Math.hypot((s - .17) * 26, (z - .6) * 22.5) < 1.4) return rgb(240, 206, 110);
-        return ((s + .3) % .125) < .02 ? rgb(...door.map(k => k - 34)) : rgb(...door);
+      if (door && Math.abs(s) < .46 && z < 1.18) {                                                             // the door: .92 wide, so that a head with plaits fits in it
+        if (Math.abs(s) > .41 || z > 1.13) return rgb(...door.map(k => k - 60));
+        if (Math.hypot((s - .3) * 26, (z - .6) * 22.5) < 1.4) return rgb(240, 206, 110);
+        return ((s + .46) % .153) < .02 ? rgb(...door.map(k => k - 34)) : rgb(...door);
       }
       if (Math.abs(s) < .17 && z > 1.3 && z < 1.58) return (Math.abs(s) > .13 || z > 1.54 || z < 1.34) ? rgb(...STONE_D.map(k => k - 30)) : (lit ? rgb(255, 232, 150) : rgb(40, 44, 70));
       return stone(s + u, z);
     });
     PZ.box(u, v, h, h + .12, hw + .07, hd + .07, STONE_L);                                                     // the cornice
-    PZ.ball(u, v, h + .1, hw - .04, STONE, 'smooth');                                                          // the dome
-    PZ.ball(u, v, h + .1 + hw - .02, .1, STONE_L, 'smooth');                                                   // its knob
+    cap(u, v, h + .12, hw - .08);
     for (let du = -hw; du <= hw; du += .3) PZ.shadow(u + du, v, .6, .55);
+  }
+  // a sentry box's top: a stepped dome (three rings, each smaller) and a knob
+  function cap(u, v, z, r) {
+    const [x, y] = PZ.xy(u, v), T = [236, 214, 176];
+    drum(x, y, z, z + .2, r, STONE_L, () => rgb(...T));
+    drum(x, y, z + .2, z + .38, r * .72, STONE_L, () => rgb(...T));
+    drum(x, y, z + .38, z + .52, r * .42, STONE_L, () => rgb(...T));
+    PZ.ball(u, v, z + .6, .08, [240, 206, 110], 'smooth');
+  }
+  // a party table, long across the picture: a white top with red squares, an apron that hangs nearly to the ground (top z .74)
+  function table(u, v, hw, hd = .5, c = [214, 84, 74]) {
+    for (const [du, dv] of [[-hw + .1, -hd + .1], [hw - .1, -hd + .1], [-hw + .1, hd - .1], [hw - .1, hd - .1]]) PZ.post(u + du, v + dv, 0, .7, .04, [120, 84, 52]);
+    PZ.box(u, v, .16, .74, hw, hd, [250, 246, 236], (s, t, z, face) => {
+      if (face === 'top') return ((Math.floor((s + 20) / .2) + Math.floor((t + 20) / .2)) & 1) ? rgb(...c.map(k => Math.min(255, k + 26))) : rgb(252, 250, 244);
+      if (face === 'front') return z < .22 ? (((s + 20) % .2) < .1 ? 0 : rgb(...c)) : (z > .66 ? rgb(...c.map(k => k - 30)) : (((s + 20) % .4) < .2 ? rgb(...c) : rgb(244, 238, 226)));
+      return rgb(...c.map(k => k - 40));
+    });
+    for (let du = -hw; du <= hw; du += .3) PZ.shadow(u + du, v, .4, hd + .1);
   }
   // a line (a cord) across the picture at v, from (u0, z0) to (u1, z1), sagging a little: for lanterns, a curtain, photos
   function cord(u0, u1, v, z0, z1 = z0, sag = .12, c = [70, 60, 60]) {
@@ -91,11 +108,27 @@ const FT = (() => {
     for (let k = 0; k <= n; k++) { const a = k / n, [x, y] = PZ.xy(u0 + (u1 - u0) * a, v); plot(x, y, z0 + (z1 - z0) * a - Math.sin(a * Math.PI) * sag, rgb(...c)); }
   }
   // a wooden stool
-  function stool(u, v, h = .46, r = .22, c = [176, 122, 76]) {
+  function stool(u, v, h = .46, r = .22, c = [176, 122, 76], z0 = 0) {
     const [x, y] = PZ.xy(u, v);
-    for (const [a, b] of [[-.13, -.13], [.13, -.13], [-.13, .13], [.13, .13]]) PZ.post(u + a, v + b, 0, h - .06, .03, c.map(k => k - 40));
-    drum(x, y, h - .07, h, r, c);
-    PZ.shadow(u, v, .3, r + .05);
+    for (const [a, b] of [[-.13, -.13], [.13, -.13], [-.13, .13], [.13, .13]]) PZ.post(u + a, v + b, z0, z0 + h - .06, .03, c.map(k => k - 40));
+    drum(x, y, z0 + h - .07, z0 + h, r, c);
+    if (!z0) PZ.shadow(u, v, .3, r + .05);
   }
-  return { STONE, STONE_D, STONE_L, IRON, stone, solid, inArch, archRing, flags, grass, onPath, pathStone, night, day, wallLamp, garita, cord, stool };
+  // the yard's inner wall at v = 0, across the picture: stone, battlements, the sky over it; holes = arches (each [u0, u1, z0, z1])
+  function yardWall(h = 2.6, holes = [], u0 = -4.7, u1 = 4.7) {
+    PZ.flat(u0, -.6, u1, 0, h - .34, (u, v) => flags(u, v * 2, 0, 0, [176, 156, 124]));
+    PZ.wall(u0, u1, 0, 0, h, (u, z) => {
+      if (!solid(u, z, h)) return 0;
+      for (const r of holes) { if (inArch(u, z, r)) return 0; const c = archRing(u, z, r); if (c) return c; }
+      if (z > h - .44 && z < h - .36) return rgb(...STONE_L);
+      return stone(u, z);
+    });
+  }
+  // a string of small lights along a wall, at height z, on the plane v (every other one warm)
+  function lights(u0, u1, v, z, sag = .1) {
+    const n = Math.round((u1 - u0) / .42);
+    cord(u0, u1, v, z, z, sag, [60, 56, 60]);
+    for (let k = 0; k <= n; k++) { const a = k / n, [x, y] = PZ.xy(u0 + (u1 - u0) * a, v + .02), zz = z - Math.sin(a * Math.PI) * sag - .07; for (const [dx, dz] of [[0, 0], [.03, 0], [0, -.04], [.03, -.04]]) plotGlow(x + dx * .7, y - dx * .7, zz + dz, k % 2 ? rgb(255, 236, 150) : rgb(255, 176, 120)); }
+  }
+  return { STONE, STONE_D, STONE_L, IRON, stone, solid, inArch, archRing, flags, grass, onPath, pathStone, night, day, wallLamp, garita, cap, table, cord, stool, yardWall, lights };
 })();

@@ -80,6 +80,6 @@ A whole day at home, morning to night. The call: say what you do in the morning,
 
 A party at the fort. Everyone from every place is there. The call: invite someone, say what you are going to do, say how you feel. Then the A1 final check.
 - **El camino al fuerte (the way up).** The invitation. fuerte, muralla, bandera, fiesta, invita, trae, voy a (comer, tomar, dormir), vamos a (jugar, bailar), ¿quieres venir?, ¿cuándo?, ¿quién?, juntos
-- **La música (the music).** Dancing and singing. música, canción, baila, canta, guitarra, tambor, ríe, feliz, divertido, ¿quieres bailar?, claro, ¡qué bueno!
+- **La música (the music).** Dancing and singing. música, canción, baila, canta, guitarra, tambor, se ríe, feliz, divertido, ¿quieres bailar?, claro, ¡qué bueno!
 - **Los regalos (the presents).** A birthday. regalo, cumpleaños, bizcocho, vela, da, recibe, para ti, sorpresa, ¡felicidades!, mes, año
 - **La muralla, de noche (the wall at night).** Winding down and goodbyes. porque, ¿por qué?, pero, todos, nadie, alguien, nos vemos, hasta pronto, gracias por venir
