@@ -1175,6 +1175,28 @@
   },
   {
    "kind": "point",
+   "old": [48, 168],
+   "uses": ["h-mesa.json beats.5"],
+   "to": {
+    "floor": [2.3389, 6.4727, 0]
+   },
+   "new": [48, 168],
+   "what": "a place (x, y): the floor under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [104, 150],
+   "uses": ["h-mesa.json beats.2"],
+   "to": {
+    "seat": [2.421, 3.5089, 0.6]
+   },
+   "new": [104, 135],
+   "moved": true,
+   "why": "sitting at place 0 (x 104): on its chair (150 + SD[0])",
+   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why)"
+  },
+  {
+   "kind": "point",
    "old": [110, 206],
    "uses": ["cual-mesa.json plato.si.set.gente.luis", "cual-mesa.json plato.no.set.gente.luis", "cual-mesa.json taza.si.set.gente.carmen", "cual-mesa.json taza.no.set.gente.carmen", "cual-mesa.json cuchara.si.set.gente.abuelo", "cual-mesa.json cuchara.no.set.gente.abuelo", "cual-mesa.json tenedor.si.set.gente.papa", "cual-mesa.json tenedor.no.set.gente.papa"],
    "to": {
@@ -1188,7 +1210,7 @@
   {
    "kind": "point",
    "old": [128, 150],
-   "uses": ["cual-mesa.json tengo hambre.si.set.gente.luis", "cual-mesa.json tengo hambre.no.set.gente.luis", "cual-mesa.json tengo sed.si.set.gente.carmen", "cual-mesa.json tengo sed.no.set.gente.carmen"],
+   "uses": ["h-mesa.json beats.3", "cual-mesa.json tengo hambre.si.set.gente.luis", "cual-mesa.json tengo hambre.no.set.gente.luis", "cual-mesa.json tengo sed.si.set.gente.carmen", "cual-mesa.json tengo sed.no.set.gente.carmen"],
    "to": {
     "seat": [3.7265, 3.5089, 0.6]
    },
@@ -1216,6 +1238,18 @@
    },
    "new": [140, 153],
    "what": "a thing on the table's top: the top under (x, y - 1); the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [176, 150],
+   "uses": ["h-mesa.json beats.4"],
+   "to": {
+    "seat": [6.3373, 3.5089, 0.6]
+   },
+   "new": [176, 171],
+   "moved": true,
+   "why": "sitting at place 3 (x 176): on its chair (150 + SD[3])",
+   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why)"
   },
   {
    "kind": "point",
@@ -1301,54 +1335,7 @@
    "what": "a place (x, y): the floor under (x, y - 1); the same screen place"
   }
  ],
- "storyPlaces": [
-  {
-   "kind": "point",
-   "old": [104, 150],
-   "uses": ["h-mesa.json beats.2"],
-   "to": {
-    "seat": [2.421, 3.5089, 0.6]
-   },
-   "new": [104, 135],
-   "moved": true,
-   "why": "sitting at place 0 (x 104): on its chair (150 + SD[0])",
-   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why) (h-mesa, not in positions.json: read from the story file)"
-  },
-  {
-   "kind": "point",
-   "old": [128, 150],
-   "uses": ["h-mesa.json beats.3"],
-   "to": {
-    "seat": [3.7265, 3.5089, 0.6]
-   },
-   "new": [128, 147],
-   "moved": true,
-   "why": "sitting at place 1 (x 128): on its chair (150 + SD[1])",
-   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why) (h-mesa, not in positions.json: read from the story file)"
-  },
-  {
-   "kind": "point",
-   "old": [176, 150],
-   "uses": ["h-mesa.json beats.4"],
-   "to": {
-    "seat": [6.3373, 3.5089, 0.6]
-   },
-   "new": [176, 171],
-   "moved": true,
-   "why": "sitting at place 3 (x 176): on its chair (150 + SD[3])",
-   "what": "sitting at the table: the seat under the lap (x, y - 8); moved (why) (h-mesa, not in positions.json: read from the story file)"
-  },
-  {
-   "kind": "point",
-   "old": [48, 168],
-   "uses": ["h-mesa.json beats.5"],
-   "to": {
-    "floor": [2.3389, 6.4727, 0]
-   },
-   "new": [48, 168],
-   "what": "a place (x, y): the floor under (x, y - 1); the same screen place (h-mesa, not in positions.json: read from the story file)"
-  }
- ],
+ "storyPlaces": [],
  "pictures": {
   "mesa.si": {
    "world": [4.6515, 3.7812, 1],
@@ -4977,7 +4964,7 @@
  ],
  "checks": {
   "notes": [
-   "inventory: 19 things (old 19), 2 frog places of LUGAR (old 2), 1 view (old 1), 26 positions (old 26) and 4 of h-mesa (no recorded run in coqui/ref/trazas: played here), 12 review pairs of cual-mesa (24 pictures), 16 level pictures (old 16), 3 baked states for the old 141",
+   "inventory: 19 things (old 19), 2 frog places of LUGAR (old 2), 1 view (old 1), 29 positions (old 29) and 0 of h-mesa (no recorded run in coqui/ref/trazas: played here), 12 review pairs of cual-mesa (24 pictures), 16 level pictures (old 16), 3 baked states for the old 144",
    "code: every one of the 377 lines of mesa.js read here; 242 hold numbers, each with an entry (101 other, 320 place, 204 offset, 364 dropped, 916 drawing, 132 count, 178 state, 5 order, 26 scale, 78 time); every one of order 06's 288 places named by its line's entry; 43 moves, each line holding its source",
    "hops: all 36 pairs of the frog's places keep the old count but frog.ranaa-rana.2 3 -> 2 (walked in no run); his walks between them in the runs: frog.centro-frog.hm, frog.centro-frog.th, frog.hm-rana.0, frog.hm-rana.1, frog.hm-rana.2, frog.hm-rana.3, frog.th-rana.0, frog.th-rana.1, frog.th-rana.2, rana.0-rana.1, rana.1-rana.2, rana.1-rana.3",
    "boxes: every pixel of each set thing inside its touch box in every baked state: mesa [64,102,124,91], estufa [195,61,37,87]; every pixel answers its own thing in the hit order; every part of the set is a touch key's (nothing decorative): the room's pieces (the counters, the wall cupboard, the door, the window, the walls) are la cocina's, the whole room; where the table's or the stove's box (a rectangle) reaches over them a touch answers the table or the stove, as the old boxes did over the old background (45 px of ventana under estufa, 448 px of mostrador under mesa, 20 px of puerta.umbral under mesa, 542 px of mostrador2 under estufa)",
