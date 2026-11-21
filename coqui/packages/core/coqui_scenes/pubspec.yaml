@@ -26,6 +26,5 @@ flutter:
   assets:
     - assets/sheets/
     - assets/old_pictures/mesa/
-    - assets/old_pictures/estufa/
     - assets/old_pictures/nevera/
     - assets/old_pictures/comer/
