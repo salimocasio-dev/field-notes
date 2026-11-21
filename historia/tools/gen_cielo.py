@@ -211,7 +211,7 @@ def ronda83():
      {"decide":"do","options":["luna","estrella"],"pick":"$donde","tests":"$donde","lock":True,"lead":[],"line":"c83_ll_$quien_$donde",
       "right":[{"if":"ok","then":[act("mira83",a="$donde",cae=1),gesto("carmen","ojos"),OK],"else":[act("mira83",a="$donde",cae=0)]}],
       "wrong":[act("mira83",a="$otro",cae=0),"c83_no_$quien_$donde",resta(lambda n:act("deseos",n=n))]+X}]
-s83={"id":"la-luna","title":"La luna","place":"La playa","scene":"cielo","next":None,
+s83={"id":"la-luna","title":"La luna","place":"La playa","scene":"cielo","next":"bienvenidos",
  "goal":"Turn Luis's cardboard telescope to the moon or the big star, whichever is called, so Carmen can make her three wishes on the falling lights: every time it is turned to the wrong one the light is gone before it swings back.",
  "stake":{"thing":"deseos","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["luna","estrella","noche"],"formas_foco":{"estrella":["estrellas"]},
