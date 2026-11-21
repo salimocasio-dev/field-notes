@@ -57,7 +57,7 @@ const onDeck = (x, y) => (x >= DECK.x0 && x <= DECK.x1 && y >= DECK.y0 && y <= D
 // the mooring posts (the old PM, where the two birds perch): their tops at the old screen points (40, 141) and (133, 141), PM_H over the deck:
 // their feet 4 rows behind the feet of whoever stands on the dock beside them (the old row 150 to 154), so that everyone is in front of them, as the old
 const PM_H = .26, PM_R = .085;
-const PM = [[40, 141], [133, 141]].map(([sx, sy]) => { const g = Gs(sx, sy + PM_H * COS * S, ZD); return { x: g[0], y: g[1], top: [sx, sy] }; });
+const PM = [[40, 141], [126, 141]].map(([sx, sy]) => { const g = Gs(sx, sy + PM_H * COS * S, ZD); return { x: g[0], y: g[1], top: [sx, sy] }; });
 // the post in the water (the old POSTE: its foot at POSTE[1] + 8, its top at POSTE[1] - 24): moved past the dock's end (sheet moves)
 const POSTE = [176, 146], POST_R = .12;
 const POST = (() => { const g = Gs(POSTE[0], POSTE[1] + 8, -WDEPTH), topZ = -WDEPTH + 32 / (COS * S); return { x: g[0], y: g[1], top: topZ }; })();
@@ -66,7 +66,7 @@ const POST = (() => { const g = Gs(POSTE[0], POSTE[1] + 8, -WDEPTH), topZ = -WDE
 const JUNCOS = [[190, 128], [200, 122], [210, 130], [196, 136], [207, 139], [214, 124]];
 // the sky, the hills, the sun: El camino's and El campo's (the sun upper left: every shadow falls to the right)
 const SKY = { bands: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]], far: [[116, 180, 162], [156, 208, 188], [94, 158, 144]], near: [[78, 158, 94], [124, 203, 122], [62, 136, 80]], sun: [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]] };
-const SUN = [38, 47, 9];
+const SUN = [33, 47, 9];   // El camino's and El campo's sun, 5 px further left: the answer cards in the sky keep 2 px off it (sheet: asks)
 // the old picture's three clouds (engine.js sky(): 36, 16; 112, 9; 168, 26), El campo's places (clear of the corner card, the sun and the cards)
 const CLOUDS = [[188, 12, .7], [204, 34, .8], [108, 10, .6]];
 const cloudAt = (ix, iy) => { for (const [cx, cy, s] of CLOUDS) {
@@ -111,8 +111,9 @@ function deckTop(R) {
   planeQuad([R.x0, R.y0, ZD], [R.x1 - R.x0, 0, 0], [0, R.y1 - R.y0, 0], (a, b) => {
     const x = R.x0 + a * (R.x1 - R.x0), y = R.y0 + b * (R.y1 - R.y0), f = (x - DECK.x0 + 40 * PW) / PW, k = Math.floor(f), fr = f - k;
     if (fr < .14) return rampOf(WOOD)[0];                                 // the gap between two planks
-    const t = 2.3 + plankTone(k) * .7 + (noise(k * 3.1, y * 2.2) - .5) * .9 - (fr > .86 ? .6 : 0);
-    return rampOf(WOOD)[clamp(Math.floor(t), 1, 4)];
+    if (fr > .86) return rampOf(WOOD)[1];                                  // its shaded edge, the same on every plank
+    const t = 2.3 + plankTone(k) * .7 + (noise(k * 3.1, y * 2.2) - .5) * .9;
+    return rampOf(WOOD)[clamp(Math.floor(t), 2, 4)];                       // round 2: no dark patch inside a plank (a reader saw a "brown speck")
   });
 }
 // the dock's edge on the two sides the camera sees: the plank ends (the top TH_P), the fascia board under them; on the lawn it goes down to the ground
@@ -135,8 +136,10 @@ function landingSides(R) {
   planeQuad([R.x0, R.y1, 0], [R.x1 - R.x0, 0, 0], [0, 0, ZD - TH], () => rampOf(WOOD_D)[1]);
 }
 // a piling: a square post from under the water up to the deck's underside, just inside the edge
+const FEET = [];   // where a thing standing in the water meets its surface: [world x, world y, half width in px, what] (round 2: their waterlines)
 function piling(x, y, z1, w = .13) {
   const z0 = -WDEPTH - .5;
+  FEET.push([x + w / 2, y + w / 2, 2.5, 'piling']);
   planeQuad([x - w / 2, y + w / 2, z0], [w, 0, 0], [0, 0, z1 - z0], (a, b) => rampOf(PILE)[a < .3 ? 2 : 1]);
   planeQuad([x + w / 2, y - w / 2, z0], [0, w, 0], [0, 0, z1 - z0], () => rampOf(PILE)[0]);
 }
@@ -162,6 +165,7 @@ function dock() {
 function post() {
   part('poste', () => {
     drum(POST.x, POST.y, -WDEPTH - .6, POST.top, POST_R, PILE, (dx, dy) => rampOf(PILE)[dx + dy < 0 ? 3 : 2]);
+    FEET.push([POST.x + POST_R * .7, POST.y + POST_R * .7, 3.5, 'poste']);   // its front, where the camera sees it meet the water
   });
 }
 
@@ -183,9 +187,28 @@ function reeds() {
       const z0 = -WDEPTH, top = z0 + r.h, G = REED_G[r.k % 3];
       for (let z = z0; z <= top; z += .012) { const f = (z - z0) / r.h; plot(r.x + r.lean * f, r.y, z, rgb(...(f < .3 ? REED_G[0] : G))); }
       if (r.head) { const hz = top - .1; for (let z = hz - .18; z <= hz + .06; z += .01) for (const w of [-.016, .016]) plot(r.x + r.lean * (z - z0) / r.h + w, r.y - w, z, rgb(...HEAD[z > hz - .04 && w < 0 ? 1 : 0])); }
+      FEET.push([r.x, r.y, 1, 'junco']);
       if (r.blade) { const s = r.k % 2 ? 1 : -1; for (let t = 0; t <= 1; t += .01) plot(r.x + .04 * t, r.y + s * .22 * t * t, z0 + r.h * .75 * Math.sin(t * 1.3), rgb(...REED_G[t > .5 ? 2 : 1])); }
     }
   });
+}
+
+/* ---------- round 2: the waterlines. Where the post, a piling that shows and a reed meet the surface, a short line of the water's own ripple
+   light round its foot (2 rows, a few px each side): it stands in the water, not on it. Only on the surface where it shows, never on the thing */
+const WATERLINE = [];
+function waterlines() {
+  WATERLINE.length = 0;
+  for (const [x, y, hw, what] of FEET) {
+    const p = project(x, y, -WDEPTH), px = [], rx = hw + 3, ry = 1.8;
+    for (let iy = Math.floor(p.sy - ry); iy <= Math.ceil(p.sy + ry); iy++) for (let ix = Math.floor(p.sx - rx - 1); ix <= Math.ceil(p.sx + rx + 1); ix++) {
+      if (ix < 0 || iy < 0 || ix >= W || iy >= H) continue;
+      const i = iy * W + ix, dx = (ix + .5 - p.sx) / rx, dy = (iy + .5 - p.sy) / ry;
+      if (dx * dx + dy * dy > 1 || Math.abs(ix + .5 - p.sx) < hw - .5 || kinds[i] !== KIND_WATER || zb[i] !== groundZ[i]) continue;
+      const c = pix[i], u = SHADED[i] ? SHADE_M : [1, 1, 1];   // the ripple light of the water as it is out of the dock's shade
+      pix[i] = rgb(lerp((c & 255) / u[0], LOOK.sky[0], .55), lerp((c >> 8 & 255) / u[1], LOOK.sky[1], .55), lerp((c >> 16 & 255) / u[2], LOOK.sky[2], .55)); px.push(i);
+    }
+    WATERLINE.push({ what, foot: [Math.round(p.sx), Math.round(p.sy)], hw, px });
+  }
 }
 
 /* ---------- bake the one state ---------- */
@@ -209,11 +232,12 @@ function buildSet() {
   }
   groundZ.set(zb);
   // the deck's top: walked on, so it takes the characters' shadows like the ground (joinSlabs, after the occlusion)
+  FEET.length = 0;
   const before = zb.slice();
   dock();
   for (let i = 0; i < W * H; i++) if (zb[i] !== before[i] && DECK_TOP(i)) slabTops.push(i, zb[i]);
   post(); reeds();
-  flushShadows(); pendingShadows.length = 0;
+  waterlines(); flushShadows(); pendingShadows.length = 0;
   bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
   skyFill((ix, iy) => {
     const s = skyDisc(SUN[0], SUN[1], SUN[2], SKY.sun, ix, iy); if (s) return s;
@@ -230,8 +254,9 @@ function surfaceAt(sx, sy) { const d = Gs(sx, sy, ZD); if (onDeck(d[0], d[1])) r
   const g = Gs(sx, sy, 0); if (shore(g[0], g[1]) >= 0 || sy < HZ) return { on: 'lawn', z: 0, x: g[0], y: g[1] };
   const w = Gs(sx, sy, -WDEPTH); return { on: 'water', z: -WDEPTH, x: w[0], y: w[1] }; }
 
-window.LAGO_SET = { SET, HZ, BANK, SHORE_K, WDEPTH, ZD, TH, PW, DECK, LANDING, PM, PM_H, POSTE, POST, JUNCOS, SUN, CLOUDS, OXY: [OX, OY],
+window.LAGO_SET = { SET, HZ, BANK, SHORE_K, WDEPTH, ZD, TH, PW, DECK, LANDING, PM, PM_H, PM_R, POSTE, POST, JUNCOS, SUN, CLOUDS, OXY: [OX, OY],
   REEDS: REEDS.map(r => [r.x, r.y, r.h]), REED_FEET: REEDS.map(r => r.foot), LOOK: { deep: LOOK.deep, shallow: LOOK.shallow, sky: LOOK.sky, wet: LOOK.wet }, SHADE_M,
+  WATERLINE: () => WATERLINE.map(w => ({ what: w.what, foot: w.foot, hw: w.hw, px: w.px.slice() })),
   buildSet, shore, onDeck, surfaceAt, Gs,
   waterShown: (x, y) => { if (x < 0 || y < 0 || x >= W || y >= H) return false; const i = y * W + x; return kinds[i] === KIND_WATER && bakedZ[i] === groundZ[i]; } };
 

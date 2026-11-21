@@ -252,9 +252,9 @@
    "what": "acts.inicio19: Luis at the dock's end"
   },
   "carmen.inicio19": {
-   "world": [-1.4686, 1.795, 0],
+   "world": [-0.4079, 0.2992, 0],
    "on": "lawn",
-   "new": [60, 116],
+   "new": [107, 112],
    "old": [196, 117],
    "moved": true,
    "what": "acts.inicio19: Carmen across the water (ORILLA + (18, 1))"
@@ -333,10 +333,11 @@
    "what": "PM[0] - 1: a bird on the left mooring post"
   },
   "ave.pm1": {
-   "world": [1.6262, 0.9191, -0.16],
-   "on": "water",
-   "new": [133, 140],
+   "world": [1.9747, 1.6484, 0.28],
+   "on": "dock",
+   "new": [126, 140],
    "old": [133, 140],
+   "moved": true,
    "what": "PM[1] - 1: a bird on the right mooring post"
   },
   "bote.fila0": {
@@ -642,11 +643,11 @@
   "postes": {
    "screen": [
     [40, 141],
-    [133, 141]
+    [126, 141]
    ],
    "world": [
     [0.063, 4.4145, 0.54],
-    [2.5923, 1.8852, 0.54]
+    [2.4019, 2.0756, 0.54]
    ],
    "old": [
     [40, 141],
@@ -667,7 +668,7 @@
    "what": "heartAt: the heart of a happy ending, in the sky (unchanged)"
   },
   "sol": {
-   "screen": [38, 47],
+   "screen": [33, 47],
    "radius": 9,
    "what": "the sun: baked into the set's sky (El camino's and El campo's, in the same place: upper left, every shadow falls to the right), whole inside the view; no story touches it or names its place (the old sun was at the upper right)"
   },
@@ -1098,10 +1099,12 @@
    "old": [133, 140],
    "uses": ["cual-lago.json blanco.si.set.aves.a", "cual-lago.json blanco.no.set.aves.a"],
    "to": {
-    "water": [1.6262, 0.9191, -0.16]
+    "dock": [1.9747, 1.6484, 0.28]
    },
-   "new": [133, 140],
-   "what": "a place (x, y): the surface under (x, y - 1): water; the same screen place"
+   "new": [126, 140],
+   "moved": true,
+   "why": "the pairs blanco.si and blanco.no: the bird on the right mooring post (moves: PM)",
+   "what": "a place (x, y): the surface under (x, y - 1): dock; moved (why)"
   },
   {
    "kind": "point",
@@ -1789,16 +1792,16 @@
    "line": 17,
    "act": "inicio19",
    "src": "ORILLA=[178,116]",
-   "to": "ORILLA=[42,115]",
+   "to": "ORILLA=[89,111]",
    "places": [
     {
      "who": "carmen",
      "old": [196, 117],
-     "new": [60, 116],
-     "world": [-1.4686, 1.795, 0]
+     "new": [107, 112],
+     "world": [-0.4079, 0.2992, 0]
     }
    ],
-   "why": "acts.inicio19 (los-botes): Carmen on the far bank (ORILLA + (18, 1)). The shore is one straight line on a world axis: the lawn is up to the left, and the old far bank at the right (196, 117) is open water. She stands on the lawn at the back, across the water from the dock's end; the boats Luis sends gather at the water's edge up the shore (slotC), as the old row spread along the far bank beside her. Not nearer the water: the hint hand at the answer cards in the sky would reach her face"
+   "why": "acts.inicio19 (los-botes): Carmen on the far bank (ORILLA + (18, 1)). The shore is one straight line on a world axis: the lawn is up to the left, and the old far bank at the right (196, 117) is open water. Round 2: she stands on the lawn at the shore across the water from the dock's end, where the boats Luis sends arrive at her feet (slotC), as the old row lay at hers; as far right as she can with 8 px of lawn round her feet and the answer cards in the sky clear of her head (2 px) with their hands off her face (respEn below)"
   },
   {
    "line": 61,
@@ -1897,8 +1900,8 @@
    "line": 62,
    "act": "*",
    "src": "const slotC=i=>[98+(i%13)*6,119+(i>=13?4:0)];",
-   "to": "const slotC=i=>[134+(i%10)*4+(i>=10?4:0),129-(i%10)*1.6+(i>=10?3:0)];",
-   "why": "the boats that reach Carmen (sopla, conpez): the old row at her feet on the far bank (row 119); here a row on the water along the shore at her new place (ORILLA), 8 px and more from the bank and from the dock"
+   "to": "const SLOTC=[[169,118],[163,122],[160,115],[157,124],[155,118],[152,127],[146,131],[149,120],[141,132],[144,123],[139,127],[133,128]],slotC=i=>SLOTC[Math.min(i,11)];",
+   "why": "round 2: the boats that reach Carmen (sopla, conpez; 12 at the most in a run): the old row lay at her feet on the far bank (row 119), filled from its far end towards her; here two rows on the water along the shore at her feet, the nearest 8 to 12 px of water from the lip in front of her, filled from the farthest towards her as the old, neighbours 6 px apart at the least (the old spacing), each slot no further from her than the old slot was (+ 10 px)"
   },
   {
    "line": 61,
@@ -1973,9 +1976,56 @@
    "line": 202,
    "act": "inicio19",
    "src": "async inicio19(){W.gente=",
-   "to": "async inicio19(){W.respEn=[132,32];W.gente=",
-   "respEn": [132, 32],
-   "why": "acts.inicio19 (los-botes): the answer cards stand in the sky (W.respEn, as El campo's): over the frog on the dock they covered Carmen across the water, Luis and the boats; under the rounds card, right of the sun, inside the view with their lit frames and glow"
+   "to": "async inicio19(){W.respEn=[127,31];W.gente=",
+   "respEn": [127, 31],
+   "why": "acts.inicio19 (los-botes): the answer cards stand in the sky (W.respEn): over the frog on the dock they covered Carmen across the water, Luis and the boats. Round 2: under the rounds card by 2 px, over Carmen's head by 2 px, right of the sun, 4 px inside the view with their lit frames and glow; three cards at x 127, the hand at each off her face (respEn is set again before each ask: 108 for two cards or one, below)"
+  },
+  {
+   "line": 228,
+   "act": "ranapinta",
+   "src": "async ranapinta(o){",
+   "to": "async ranapinta(o){W.respEn=[108,31];",
+   "respEn": [108, 31],
+   "why": "round 2, los-botes: after the frog paints a boat the next ask has two cards or one (beats.22, 23, 52): their centre at x 108, so that the hand at each stays off Carmen's face and the cards off the sun"
+  },
+  {
+   "line": 222,
+   "act": "pezviene",
+   "src": "async pezviene(o){",
+   "to": "async pezviene(o){W.respEn=[127,31];",
+   "respEn": [127, 31],
+   "why": "round 2, los-botes: the next ask has three cards (beats.15, 18, 42): their centre at x 127 (as inicio19)"
+  },
+  {
+   "line": 218,
+   "act": "saca",
+   "src": "async saca(o){",
+   "to": "async saca(o){W.respEn=[127,31];",
+   "respEn": [127, 31],
+   "why": "round 2, los-botes: as pezviene (beats.21)"
+  },
+  {
+   "line": 233,
+   "act": "dosbotes",
+   "src": "async dosbotes(o){",
+   "to": "async dosbotes(o){W.respEn=[127,31];",
+   "respEn": [127, 31],
+   "why": "round 2, los-botes: as pezviene (beats.51)"
+  },
+  {
+   "line": 17,
+   "act": "*",
+   "src": "PM=[[40,141],[133,141]]",
+   "to": "PM=[[40,141],[126,141]]",
+   "places": [
+    {
+     "who": "ave",
+     "old": [133, 140],
+     "new": [126, 140],
+     "world": [1.9747, 1.6484, 0.28]
+    }
+   ],
+   "why": "round 2: the right mooring post (where a bird perches: PM[1] - 1) stands on the planks 2 px and more inside the deck's far edge and behind the frog at the dock's end (104 and 108, 125): 7 px left of the old, its top on the old row"
   },
   {
    "line": 241,
@@ -2139,20 +2189,20 @@
    "line": 86,
    "act": "*",
    "src": "o.x=120+13*Math.cos(t);o.y=192+4*Math.sin(t)",
-   "to": "o.x=124+13*Math.cos(t);o.y=186+4*Math.sin(t)",
+   "to": "o.x=128+13*Math.cos(t);o.y=187+4*Math.sin(t)",
    "why": "anima: the fish circling before the dock (pezviene, h-lago): its hint frame (box + 12) 2 px inside the view at the bottom of its circle"
   },
   {
    "line": 222,
    "act": "*",
    "src": "await pezA(\"a\",134,192,16)",
-   "to": "await pezA(\"a\",137,186,16)",
+   "to": "await pezA(\"a\",141,187,16)",
    "places": [
     {
      "who": "pez",
      "old": [134, 192],
-     "new": [137, 186],
-     "world": [4.2371, 3.3124, -0.16]
+     "new": [141, 187],
+     "world": [4.4002, 3.258, -0.16]
     }
    ],
    "why": "acts.pezviene: the fish swims up to its circle (anima, moved)"
@@ -2197,7 +2247,17 @@
     "ry": 2.5,
     "dy": 0
    },
-   "when": "a duck swimming (pose nada, not in the air: dy <= 3); a boat on the water or in the reeds (en agua, juncos, carmen, or on its way: meta); the bread lying on the water (W.pan, not carried, z <= 1, its point over the water)",
+   "pez": {
+    "rx": 10,
+    "ry": 2.5,
+    "dy": 0,
+    "light": {
+     "colours": ["azul"],
+     "colour": [244, 250, 254],
+     "why": "round 2: a fish whose colour stands out from the water by less than 30 (CIE76: the blue one) has its ring one tone lighter, the help that belongs to it"
+    }
+   },
+   "when": "a duck swimming (pose nada, not in the air: dy <= 3); a boat on the water or in the reeds (en agua, juncos, carmen, or on its way: meta); the bread lying on the water (W.pan, not carried, z <= 1, its point over the water); round 2: the fish swimming at the surface (dy <= 4; leaping, it has its splash as the old)",
    "how": "every pixel (x, y) with .45 < ((x + .5 - cx) / rx)^2 + ((y + .5 - cy) / ry)^2 <= 1 that shows the water (the set's surface) takes the colour: a duck's at (x, y) (rx scaled .78 for the yellow one), a boat's at (x, y + bob), the bread's at (x, y)"
   },
   "lines": [
@@ -2208,6 +2268,10 @@
    [
     "function bote(c,o){if(!o||o.vis===0)return;",
     "function bote(c,o){if(!o||o.vis===0)return;PREVIEW.ring(c,\"bote\",o);"
+   ],
+   [
+    "function pez(c,o){if(!o||o.vis===0)return;",
+    "function pez(c,o){if(!o||o.vis===0)return;PREVIEW.ring(c,\"pez\",o);"
    ],
    [
     "L.push({y:999,d:()=>c.drawImage(spr(\"pan\",mkPan),R(W.pan.x)-5,R(W.pan.y)-R(W.pan.z||0)-7)});",
@@ -2470,10 +2534,11 @@
    "old": "x:,y: [232,192]; pezA(\"_\",134,192,16) args 1,2 [134,192]",
    "to": {
     "moves": [
+     "async pezviene(o){",
      "await pezA(\"a\",134,192,16)"
     ]
    },
-   "note": "moved: await pezA(\"a\",134,192,16) (moves); the floor rule: every other place here keeps its screen place"
+   "note": "moved: async pezviene(o){; await pezA(\"a\",134,192,16) (moves); the floor rule: every other place here keeps its screen place"
   },
   {
    "line": 238,
@@ -2624,7 +2689,37 @@
      "const slotC=i=>[98+(i%13)*6,119+(i>=13?4:0)];"
     ]
    },
-   "note": "moved (moves): the boats that reach Carmen (sopla, conpez)"
+   "note": "moved (moves): round 2"
+  },
+  {
+   "line": 228,
+   "old": "async ranapinta(o){",
+   "to": {
+    "moves": [
+     "async ranapinta(o){"
+    ]
+   },
+   "note": "moved (moves): round 2, los-botes"
+  },
+  {
+   "line": 218,
+   "old": "async saca(o){",
+   "to": {
+    "moves": [
+     "async saca(o){"
+    ]
+   },
+   "note": "moved (moves): round 2, los-botes"
+  },
+  {
+   "line": 233,
+   "old": "async dosbotes(o){",
+   "to": {
+    "moves": [
+     "async dosbotes(o){"
+    ]
+   },
+   "note": "moved (moves): round 2, los-botes"
   },
   {
    "line": 86,
@@ -2664,17 +2759,21 @@
   "notes": [
    "inventory: 19 things (old 19), 2 frog places of LUGAR (old 2) and 8 frog places in all, 1 view (old 1), 48 positions (old 48), 11 review pairs of cual-lago (22 pictures here; none is another scene's), 16 level pictures (old 16), 98 places of lago.js and every moved line named in code, 1 baked state (the old 10)",
    "hops: all 21 pairs of the frog's 7 places keep the old count; his walks in the runs: hlago-inicio20, inicio-inicio19, inicio-inicio20, inicio-pequeno, inicio-ranaa, inicio19-ranapinta, inicio20-pequeno, pequeno-ranaa",
-   "boxes: every pixel of each set thing inside its touch box (nothing sways: no leaf, no reed moves at any wind step): muelle [19,124,131,69] (4572 px), poste [172,120,8,36] (278 px), juncos [187,96,32,44] (613 px); every pixel answers its own thing in the hit order; the set's parts are juncos, muelle, muelle.postes, poste (each a touch key's: nothing decorative); the water and the lawn are the ground of agua and lago",
+   "boxes: every pixel of each set thing inside its touch box (nothing sways: no leaf, no reed moves at any wind step): muelle [19,124,131,69] (4558 px), poste [172,120,8,36] (278 px), juncos [187,96,32,44] (613 px); every pixel answers its own thing in the hit order; the set's parts are juncos, muelle, muelle.postes, poste (each a touch key's: nothing decorative); the water and the lawn are the ground of agua and lago",
    "shadows of the set: every castShadow call has strength 1 and a radius; each casting part darkens pixels, its shadow in one piece with it and short (a contact shadow at the foot of the thin mooring posts): muelle.postes 4 calls, 16 px darkened",
-   "water: none of its 16553 px takes a cast shadow (people, animals and things cast theirs on the lawn and the planks only); the dock's shade, 801 px on the water beside and under it, every one within 9 px of the dock",
-   "water: El campo's (mean 60,127,163, 27 from the nearest sky band; 12.4% ripples; 100 glints, none in the dock's shade); the lake in the view (every pixel whose ground is past the shore, the dock over it counted, as the old dock over the old water) 17977 px against the old 17435 (103%); open water shown 13171 px against the old 13298 (99%): the deck covers more of it than the old strip of a dock did",
-   "sides: 17835 ticks inside the acts of the port's play of the 15 runs, every step's end and every pair picture: 165086 rests (300 ms or more in one place), each clearly on one side: on the lawn with 8 px of lawn round its foot (ave a, carmen, flor, luis, pato blanco, perro), on the dock with planks under its whole foot and 3 px of plank to the edge (ave a, bolsa, bote a, bote f_azul, bote f_rojo, bote f_verde, carmen, luis, pan fila.0, pan fila.1, pan fila.2, pan fila.3, pan fila.4, pan fila.5, pato a, pato amarillo, pato blanco, pato negro, saco, the frog), in the water with 8 px of water round it (bote a, bote b0, bote b1, bote b10, bote b11, bote b12, bote b13, bote b14, bote b15, bote b16, bote b2, bote b3, bote b4, bote b5, bote b6, bote b7, bote b8, bote b9, pan, pato a, pato amarillo, pato blanco, pato negro), whatever floats 7 px at least from the view's edges",
-   "rings: 75897 moments of a duck swimming, a boat on the water or the bread on it, each with its ring (resting ones 100% on the water at the least); the fish under the surface over open water (8188 moments) or leaping with its splash (450)",
-   "perches: 10358 moments of a bird on a post's top (the mooring posts' or the post's), each with the post under its feet; behind a front part, drawn over them by front: bote b0 at 141,149 behind muelle.postes (6 px), bote b0 at 141,147 behind muelle.postes (18 px), bote b0 at 140,145 behind muelle.postes (23 px), bote b0 at 139,144 behind muelle.postes (26 px), bote b0 at 139,142 behind muelle.postes (14 px), bote b0 at 138,140 behind muelle.postes (6 px), bote b3 at 140,140 behind muelle.postes (3 px), bote b3 at 142,147 behind muelle.postes (11 px), bote b4 at 140,140 behind muelle.postes (3 px), bote b4 at 142,147 behind muelle.postes (11 px), bote b5 at 140,140 behind muelle.postes (3 px), bote b5 at 142,147 behind muelle.postes (11 px), bote b6 at 143,142 behind muelle.postes (1 px), bote b7 at 140,143 behind muelle.postes (16 px), bote b6 at 164,154 behind poste (3 px), bote b8 at 140,140 behind muelle.postes (3 px), bote b8 at 142,147 behind muelle.postes (11 px), bote b8 at 177,156 behind poste (90 px), bote b8 at 178,156 behind poste (83 px), bote b8 at 180,155 behind poste (87 px), bote b8 at 181,154 behind poste (72 px), bote b8 at 182,154 behind poste (54 px), bote b8 at 183,153 behind poste (41 px), bote b8 at 185,152 behind poste (19 px), bote b8 at 186,152 behind poste (11 px), bote b8 at 187,151 behind poste (6 px), bote b8 at 188,150 behind poste (2 px), bote b9 at 164,125 behind poste (2 px), bote b10 at 140,140 behind muelle.postes (3 px), bote b10 at 142,147 behind muelle.postes (11 px), bote b10 at 164,133 behind poste (3 px), bote b10 at 164,131 behind poste (3 px), bote b10 at 165,130 behind poste (9 px), bote b10 at 165,128 behind poste (9 px), bote b10 at 166,127 behind poste (14 px), bote b10 at 166,125 behind poste (9 px), bote b10 at 167,124 behind poste (12 px), bote b10 at 167,122 behind poste (4 px), bote b10 at 168,121 behind poste (3 px), bote b11 at 140,140 behind muelle.postes (3 px), bote b11 at 142,147 behind muelle.postes (11 px), bote b12 at 143,142 behind muelle.postes (1 px), bote b11 at 143,148 behind muelle.postes (6 px), bote b11 at 142,145 behind muelle.postes (11 px), bote b11 at 141,143 behind muelle.postes (12 px), bote b11 at 141,141 behind muelle.postes (4 px), bote b9 at 178,156 behind poste (83 px), bote b9 at 179,155 behind poste (99 px), bote b9 at 181,154 behind poste (72 px), bote b9 at 182,153 behind poste (55 px), bote b9 at 184,152 behind poste (29 px), bote b9 at 185,152 behind poste (19 px), bote b9 at 187,151 behind poste (6 px), bote b9 at 188,150 behind poste (2 px), bote b10 at 164,125 behind poste (2 px), bote b11 at 187,156 behind poste (2 px), bote b12 at 140,140 behind muelle.postes (3 px), bote b12 at 142,147 behind muelle.postes (11 px), bote b12 at 164,133 behind poste (3 px), bote b12 at 164,131 behind poste (3 px), bote b12 at 165,130 behind poste (9 px), bote b12 at 165,128 behind poste (9 px), bote b12 at 166,127 behind poste (14 px), bote b12 at 166,125 behind poste (9 px), bote b12 at 167,124 behind poste (12 px), bote b12 at 167,122 behind poste (4 px), bote b12 at 168,121 behind poste (3 px), bote b13 at 140,143 behind muelle.postes (16 px), bote b13 at 182,156 behind poste (37 px), bote b13 at 183,154 behind poste (40 px), bote b13 at 184,153 behind poste (29 px), bote b13 at 186,151 behind poste (11 px), bote b13 at 187,149 behind poste (6 px), bote b13 at 195,140 behind juncos (6 px), bote b13 at 197,139 behind juncos (11 px), bote b13 at 198,137 behind juncos (85 px), bote b14 at 140,143 behind muelle.postes (16 px), bote b14 at 182,156 behind poste (37 px), bote b14 at 183,154 behind poste (40 px), bote b14 at 184,153 behind poste (29 px), bote b14 at 186,151 behind poste (11 px), bote b14 at 187,149 behind poste (6 px), bote b14 at 195,140 behind juncos (6 px), bote b14 at 197,139 behind juncos (11 px), bote b14 at 198,137 behind juncos (85 px), bote b15 at 140,140 behind muelle.postes (3 px), bote b15 at 142,147 behind muelle.postes (11 px), bote b16 at 143,142 behind muelle.postes (1 px), bote b15 at 143,148 behind muelle.postes (6 px), bote b15 at 142,145 behind muelle.postes (11 px), bote b15 at 141,143 behind muelle.postes (12 px), bote b15 at 141,141 behind muelle.postes (4 px), bote b10 at 178,156 behind poste (83 px), bote b10 at 179,155 behind poste (99 px), bote b10 at 181,154 behind poste (72 px), bote b10 at 182,153 behind poste (55 px), bote b10 at 184,152 behind poste (29 px), bote b10 at 185,152 behind poste (19 px), bote b10 at 187,151 behind poste (6 px), bote b10 at 188,150 behind poste (2 px), bote b11 at 164,133 behind poste (3 px), bote b11 at 164,131 behind poste (3 px), bote b11 at 165,130 behind poste (9 px), bote b11 at 165,128 behind poste (9 px), bote b11 at 166,127 behind poste (14 px), bote b11 at 166,125 behind poste (9 px), bote b11 at 167,124 behind poste (12 px), bote b11 at 167,122 behind poste (4 px), bote b11 at 168,121 behind poste (3 px), bote b12 at 140,143 behind muelle.postes (16 px), bote b13 at 140,140 behind muelle.postes (3 px), bote b13 at 142,147 behind muelle.postes (11 px), bote b14 at 143,142 behind muelle.postes (1 px), bote b13 at 143,148 behind muelle.postes (6 px), bote b13 at 142,145 behind muelle.postes (11 px), bote b13 at 141,143 behind muelle.postes (12 px), bote b13 at 141,141 behind muelle.postes (4 px), pato blanco at 136,148 behind muelle.postes (40 px), pato blanco at 136,145 behind muelle.postes (32 px), pato blanco at 135,142 behind muelle.postes (14 px), pato blanco at 180,111 behind juncos (2 px), pato blanco at 181,114 behind juncos (11 px), pato blanco at 182,116 behind juncos (17 px), pato blanco at 182,119 behind juncos (23 px), pato blanco at 183,122 behind juncos (33 px), pato blanco at 183,122 behind poste (9 px), pato blanco at 184,125 behind juncos (39 px), pato blanco at 184,125 behind poste (26 px), pato blanco at 185,128 behind juncos (31 px), pato blanco at 185,128 behind poste (42 px), pato blanco at 186,131 behind juncos (20 px), pato blanco at 186,131 behind poste (56 px), pato blanco at 187,133 behind juncos (27 px), pato blanco at 187,133 behind poste (58 px), pato blanco at 188,136 behind juncos (31 px), pato blanco at 188,136 behind poste (47 px), pato blanco at 189,139 behind poste (35 px), pato blanco at 190,142 behind poste (24 px), pato blanco at 191,145 behind poste (14 px), pato blanco at 191,148 behind poste (14 px), pato blanco at 192,151 behind poste (6 px), pato blanco at 193,102 behind juncos (3 px), pato blanco at 194,105 behind juncos (22 px), pato blanco at 194,108 behind juncos (47 px), pato blanco at 194,111 behind juncos (87 px), pato blanco at 194,114 behind juncos (119 px), pato blanco at 194,117 behind juncos (132 px), pato blanco at 194,120 behind juncos (132 px), pato blanco at 194,123 behind juncos (116 px), pato blanco at 194,126 behind juncos (109 px), pato blanco at 195,129 behind juncos (95 px), pato blanco at 195,132 behind juncos (105 px), pato blanco at 195,135 behind juncos (100 px), pato blanco at 195,138 behind juncos (22 px), pato blanco at 164,156 behind poste (10 px), pato blanco at 165,156 behind poste (14 px), pato blanco at 166,156 behind poste (19 px), pato blanco at 167,156 behind poste (30 px), pato blanco at 168,156 behind poste (41 px), pato blanco at 169,155 behind poste (69 px), pato blanco at 170,155 behind poste (80 px), pato blanco at 171,155 behind poste (90 px), pato blanco at 172,155 behind poste (99 px), pato blanco at 173,155 behind poste (107 px), pato blanco at 174,155 behind poste (109 px), pato blanco at 175,155 behind poste (109 px), pato blanco at 176,155 behind poste (107 px), pato blanco at 177,155 behind poste (105 px), pato blanco at 178,155 behind poste (103 px), pato blanco at 179,155 behind poste (102 px), pato blanco at 180,155 behind poste (102 px), pato blanco at 181,155 behind poste (102 px), pato blanco at 182,155 behind poste (100 px), pato blanco at 183,155 behind poste (97 px), pato blanco at 184,156 behind poste (71 px), pato blanco at 185,156 behind poste (66 px), pato blanco at 186,156 behind poste (59 px), pato blanco at 187,156 behind poste (47 px), pato blanco at 188,156 behind poste (35 px); nobody has the deck or its pilings nearer than them",
-   "bubbles: 209 bubbles at 19077 moments (each child's recorded one and \"amor\" when touched, the frog's): wholly inside the view (6 px from its edge at the least), clear of the rounds card, on no face",
-   "asks: 75 distinct asks (for bote_azul, bote_rojo, bote_verde, di_azul, di_blanco, di_cual, di_nada, di_negro, di_rojo, di_verde, di_vuela, pajaro, pato_amarillo, pato_blanco, pato_negro, pez, pote_azul, pote_rojo, pote_verde): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the things that run off the picture by their hintBox), no frame's rings across a face where the old frame's were not (as the old: los-botes beats.11 (bote_rojo) the frog's face), the hint hand on no face; 81 answer cards, each with its lit frame and glow inside the view with 4 px to spare (0 at the least), over no one, no duck, bird, boat, fish, bread, the post or the dock, the sun under none; 210 times a duck, a bird, a boat or the fish a learner must tell apart: whole in the view, on plain water, lawn, planks or sky, apart where the old had them apart; a boat's colour against the water 29 at the least (CIE76)",
+   "water: none of its 16567 px takes a cast shadow (people, animals and things cast theirs on the lawn and the planks only); the dock's shade, 801 px on the water beside and under it, every one within 9 px of the dock",
+   "water: El campo's (mean 62,129,164, 27 from the nearest sky band; 14.3% ripples; 100 glints, none in the dock's shade); the lake in the view (every pixel whose ground is past the shore, the dock over it counted, as the old dock over the old water) 17977 px against the old 17435 (103%); open water shown 13185 px against the old 13298 (99%): the deck covers more of it than the old strip of a dock did",
+   "sides: 17831 ticks inside the acts of the port's play of the 15 runs, every step's end and every pair picture: 164738 rests (300 ms or more in one place), each clearly on one side: on the lawn with 8 px of lawn round its foot (ave a, carmen, flor, luis, pato blanco, perro), on the dock with planks under its whole foot and 3 px of plank to the edge (ave a, bolsa, bote a, bote f_azul, bote f_rojo, bote f_verde, carmen, luis, pan fila.0, pan fila.1, pan fila.2, pan fila.3, pan fila.4, pan fila.5, pato a, pato amarillo, pato blanco, pato negro, saco, the frog), in the water with 8 px of water round it (bote a, bote b0, bote b1, bote b10, bote b11, bote b12, bote b13, bote b14, bote b15, bote b16, bote b2, bote b3, bote b4, bote b5, bote b6, bote b7, bote b8, bote b9, pan, pato a, pato amarillo, pato blanco, pato negro), whatever floats 7 px at least from the view's edges",
+   "rings: 83841 moments of a duck swimming, a boat on the water or the bread on it, each with its ring (resting ones 92% on the water at the least); the fish under the surface over open water (8244 moments) or leaping with its splash (450)",
+   "perches: 10372 moments of a bird on a post's top (the mooring posts' or the post's), each with the post under its feet; behind a front part, drawn over them by front: bote b1 at 166,155 behind poste (16 px), bote b1 at 166,153 behind poste (17 px), bote b1 at 166,152 behind poste (17 px), bote b1 at 165,150 behind poste (9 px), bote b1 at 165,148 behind poste (9 px), bote b1 at 165,146 behind poste (9 px), bote b1 at 165,144 behind poste (9 px), bote b1 at 165,142 behind poste (9 px), bote b1 at 165,140 behind poste (9 px), bote b0 at 164,133 behind poste (3 px), bote b1 at 164,138 behind poste (3 px), bote b0 at 165,131 behind poste (9 px), bote b1 at 164,136 behind poste (3 px), bote b0 at 165,129 behind poste (9 px), bote b1 at 164,135 behind poste (3 px), bote b0 at 166,127 behind poste (14 px), bote b1 at 164,133 behind poste (3 px), bote b0 at 166,125 behind poste (9 px), bote b1 at 164,131 behind poste (3 px), bote b0 at 167,124 behind poste (12 px), bote b1 at 164,129 behind poste (3 px), bote b0 at 168,122 behind poste (7 px), bote b8 at 177,156 behind poste (90 px), bote b8 at 178,156 behind poste (83 px), bote b8 at 180,155 behind poste (87 px), bote b8 at 181,154 behind poste (72 px), bote b8 at 182,154 behind poste (54 px), bote b8 at 183,153 behind poste (41 px), bote b8 at 185,152 behind poste (19 px), bote b8 at 186,152 behind poste (11 px), bote b8 at 187,151 behind poste (6 px), bote b8 at 188,150 behind poste (2 px), bote b9 at 178,156 behind poste (83 px), bote b9 at 179,155 behind poste (99 px), bote b9 at 181,154 behind poste (72 px), bote b9 at 182,153 behind poste (55 px), bote b9 at 184,152 behind poste (29 px), bote b9 at 185,152 behind poste (19 px), bote b9 at 187,151 behind poste (6 px), bote b9 at 188,150 behind poste (2 px), bote b11 at 187,156 behind poste (2 px), bote b13 at 182,156 behind poste (37 px), bote b13 at 183,154 behind poste (40 px), bote b13 at 184,153 behind poste (29 px), bote b13 at 186,151 behind poste (11 px), bote b13 at 187,149 behind poste (6 px), bote b13 at 195,140 behind juncos (6 px), bote b13 at 197,139 behind juncos (11 px), bote b13 at 198,137 behind juncos (85 px), bote b14 at 182,156 behind poste (37 px), bote b14 at 183,154 behind poste (40 px), bote b14 at 184,153 behind poste (29 px), bote b14 at 186,151 behind poste (11 px), bote b14 at 187,149 behind poste (6 px), bote b14 at 195,140 behind juncos (6 px), bote b14 at 197,139 behind juncos (11 px), bote b14 at 198,137 behind juncos (85 px), bote b10 at 178,156 behind poste (83 px), bote b10 at 179,155 behind poste (99 px), bote b10 at 181,154 behind poste (72 px), bote b10 at 182,153 behind poste (55 px), bote b10 at 184,152 behind poste (29 px), bote b10 at 185,152 behind poste (19 px), bote b10 at 187,151 behind poste (6 px), bote b10 at 188,150 behind poste (2 px), pato blanco at 135,142 behind muelle.postes (7 px), pato blanco at 136,145 behind muelle.postes (16 px), pato blanco at 136,148 behind muelle.postes (23 px), pato blanco at 180,111 behind juncos (2 px), pato blanco at 181,114 behind juncos (11 px), pato blanco at 182,116 behind juncos (17 px), pato blanco at 182,119 behind juncos (23 px), pato blanco at 183,122 behind juncos (33 px), pato blanco at 183,122 behind poste (9 px), pato blanco at 184,125 behind juncos (39 px), pato blanco at 184,125 behind poste (26 px), pato blanco at 185,128 behind juncos (31 px), pato blanco at 185,128 behind poste (42 px), pato blanco at 186,131 behind juncos (20 px), pato blanco at 186,131 behind poste (56 px), pato blanco at 187,133 behind juncos (27 px), pato blanco at 187,133 behind poste (58 px), pato blanco at 188,136 behind juncos (31 px), pato blanco at 188,136 behind poste (47 px), pato blanco at 189,139 behind poste (35 px), pato blanco at 190,142 behind poste (24 px), pato blanco at 191,145 behind poste (14 px), pato blanco at 191,148 behind poste (14 px), pato blanco at 192,151 behind poste (6 px), pato blanco at 193,102 behind juncos (3 px), pato blanco at 194,105 behind juncos (22 px), pato blanco at 194,108 behind juncos (47 px), pato blanco at 194,111 behind juncos (87 px), pato blanco at 194,114 behind juncos (119 px), pato blanco at 194,117 behind juncos (132 px), pato blanco at 194,120 behind juncos (132 px), pato blanco at 194,123 behind juncos (116 px), pato blanco at 194,126 behind juncos (109 px), pato blanco at 195,129 behind juncos (95 px), pato blanco at 195,132 behind juncos (105 px), pato blanco at 195,135 behind juncos (100 px), pato blanco at 195,138 behind juncos (22 px), pato blanco at 164,156 behind poste (10 px), pato blanco at 165,156 behind poste (14 px), pato blanco at 166,156 behind poste (19 px), pato blanco at 167,156 behind poste (30 px), pato blanco at 168,156 behind poste (41 px), pato blanco at 169,155 behind poste (69 px), pato blanco at 170,155 behind poste (80 px), pato blanco at 171,155 behind poste (90 px), pato blanco at 172,155 behind poste (99 px), pato blanco at 173,155 behind poste (107 px), pato blanco at 174,155 behind poste (109 px), pato blanco at 175,155 behind poste (109 px), pato blanco at 176,155 behind poste (107 px), pato blanco at 177,155 behind poste (105 px), pato blanco at 178,155 behind poste (103 px), pato blanco at 179,155 behind poste (102 px), pato blanco at 180,155 behind poste (102 px), pato blanco at 181,155 behind poste (102 px), pato blanco at 182,155 behind poste (100 px), pato blanco at 183,155 behind poste (97 px), pato blanco at 184,156 behind poste (71 px), pato blanco at 185,156 behind poste (66 px), pato blanco at 186,156 behind poste (59 px), pato blanco at 187,156 behind poste (47 px), pato blanco at 188,156 behind poste (35 px); nobody has the deck or its pilings nearer than them",
+   "bubbles: 209 bubbles at 19073 moments (each child's recorded one and \"amor\" when touched, the frog's): wholly inside the view (6 px from its edge at the least), clear of the rounds card, on no face",
+   "asks: 75 distinct asks (for bote_azul, bote_rojo, bote_verde, di_azul, di_blanco, di_cual, di_nada, di_negro, di_rojo, di_verde, di_vuela, pajaro, pato_amarillo, pato_blanco, pato_negro, pez, pote_azul, pote_rojo, pote_verde): every hint frame (box +- 12) inside the view with 2 px to spare (2 at the least; the things that run off the picture by their hintBox), no frame's rings across a face where the old frame's were not (as the old: los-botes beats.11 (bote_rojo) the frog's face), the hint hand on no face; 81 answer cards, each with its lit frame and glow 4 px and more inside the view (5 at the least), 2 px clear of the rounds card and of everyone's head and body, over no duck, bird, boat, fish, bread, the post or the dock, the sun under none; 210 times a duck, a bird, a boat or the fish a learner must tell apart: whole in the view, on plain water, lawn, planks or sky, apart where the old had them apart; a boat's colour against the water 29 at the least (CIE76)",
    "NOT the scene's: the hand juego.js draws at an answer card reaches onto the frog's face where the cards are over him (respBox and hand() are the game's): at the asks for di_vuela",
-   "sky: the sun at 38,47 (radius 9), upper left, whole in the view, under no card and no board at any moment; the old picture's three clouds at 188,12; 204,34; 108,10, clear of the sun and of the corner card",
+   "boats to Carmen (round 2): 39821 moments of a boat arrived (slots 0 to 11), each no further from Carmen's feet than the old slot from hers + 10 px (the most: -1.53 px over the old); neighbours 6.08 px apart at the least (the old 6); the nearest 9.22 px of water from the lip; none behind the post or the reeds",
+   "waterlines (round 2): piling 8 of 8 feet that show, 16 px at the least; poste 1 of 1 feet that show, 16 px at the least; junco 30 of 30 feet that show, 1 px at the least, each within its half width + 4 px of its foot and 2 rows (smaller than any ring); no dark patch inside a plank (each plank one tone, its edge shaded the same on every plank)",
+   "mooring posts (round 2): each (tops at 40,141; 126,141) on the planks with 2 px of plank round its foot, its contact shadow on the planks (16 px)",
+   "fish against the water (round 2, CIE76, water 62,128,164): pardo 53, rojo 75, azul 32 (its ring a tone lighter), verde 62; the sails: rojo 85, azul 39, verde 68; the fish at the surface has its ring at every moment (rings), leaping its splash (the old salpica)",
+   "sky: the sun at 33,47 (radius 9), upper left, whole in the view, under no card and no board at any moment; the old picture's three clouds at 188,12; 204,34; 108,10, clear of the sun and of the corner card",
    "preview: at every step's end of the 15 recorded runs (12450 places of the children, the frog, Canelo, the ducks, the birds, the boats, the fish and the things) lago-preview.html puts everyone exactly where the sheet's rule does (0 differ); and the rule puts each of the 6850 places at rest where the port's play has them (0 differ)",
    "pairs: 22 review pictures (and the 16 level pictures, the same pictures), all zoom 2: everything in each whole with 2 px to spare, on its side of the shore and the dock (sides); what differs: pato: patos, aves; pez: patos, peces; pajaro: aves, peces, pan, the window; nada: patos, the window; vuela: aves, the window; rojo: botes; azul: peces; verde: botes; amarillo: patos; blanco: aves; negro: patos; no picture shows the dock's shade without the dock",
    "states: 1 baked state reached (every moment, pair and level picture)"

@@ -96,17 +96,18 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     return null;
   };
   // (sheet: helps) El campo's ripple ring round whatever floats or swims at the surface, on the water only, drawn just before the thing
-  const ringOn = (c, cx, cy, rx, ry) => { const H = SHEET.helps.ring, fw = CUR.fw; c.fillStyle = 'rgb(' + H.colour + ')';
+  const ringOn = (c, cx, cy, rx, ry, col) => { const H = SHEET.helps.ring, fw = CUR.fw; c.fillStyle = 'rgb(' + (col || H.colour) + ')';
     for (let y = Math.floor(cy - ry - 1); y <= Math.ceil(cy + ry + 1); y++) for (let x = Math.floor(cx - rx - 1); x <= Math.ceil(cx + rx + 1); x++) {
       const d = ((x + .5 - cx) / rx) ** 2 + ((y + .5 - cy) / ry) ** 2; if (d > H.inner && d <= 1 && fw.LAGO_SET.waterShown(x, y)) c.fillRect(x, y, 1, 1); } };
   PV.ringWhere = function (kind, o) {
     const H = SHEET.helps.ring;
     if (kind === 'pato') { if (o.pose !== 'nada' && !o.aletea || (o.dy || 0) > 3 || o.pose === 'vuela' || o.pose === 'anda') return null; const s = o.k === 'amarillo' ? .78 : 1; return [R(o.x), R(o.y), H.pato.rx * s, H.pato.ry]; }
     if (kind === 'bote') { if (o.en === 'muelle') return null; const bob = o.en === 'agua' || o.en === 'juncos' ? ((F >> 3) % 2) : 0; return [R(o.x), R(o.y) + bob, H.bote.rx, H.bote.ry]; }
+    if (kind === 'pez') { if ((o.dy || 0) > 4) return null; return [R(o.x), R(o.y), H.pez.rx, H.pez.ry, H.pez.light && H.pez.light.colours.includes(o.c) ? H.pez.light.colour : null]; }
     if (kind === 'pan') { if (!o || o.con != null || o.vis === 0 || (o.z || 0) > 1) return null; if (CUR.set.surfaceAt(R(o.x), R(o.y) - 1).on !== 'water') return null; return [R(o.x), R(o.y), H.pan.rx, H.pan.ry]; }
     return null;
   };
-  PV.ring = function (c, kind, o) { if (OLD) return; const r = PV.ringWhere(kind, o); if (r) ringOn(c, r[0], r[1], r[2], r[3]); };
+  PV.ring = function (c, kind, o) { if (OLD) return; const r = PV.ringWhere(kind, o); if (r) ringOn(c, r[0], r[1], r[2], r[3], r[4]); };
   // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
   const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
   PV.faces = function (w) {
@@ -147,7 +148,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     return w; };
   // a boat that reached Carmen: the old slotC(i) row to the new one (moves: slotC)
   PV.slot = o => { const i = Math.round((o.x - 98) / 6) + (o.y > 121 ? 13 : 0); if (i < 0 || i > 25) return null;
-    const m = SHEET.moves.find(m => m.src.startsWith('const slotC=')), f = new Function('return ' + m.to.replace(/^const slotC=/, '').replace(/;$/, ''))(); return f(i); };
+    const m = SHEET.moves.find(m => m.src.startsWith('const slotC=')), SL = JSON.parse(m.to.match(/SLOTC=(\[\[.*?\]\])/)[1]); return SL[Math.min(i, 11)].slice(); };
 
   /* ---------- 3. the picture ---------- */
   function baseW(over) { return Object.assign({ spot: null, twinkle: null, glow: null, fx: [], heart: 0, lost: 0, resp: null }, ESCENAS.lago.fresh({}), over || {}); }
