@@ -67,5 +67,15 @@
   { "id": "banco/luz-noche-luna-0-carro-no", "kind": "set", "page": "docs/proyecto/pixel/banco-set.html", "query": "?luz=noche&luna=0&carro=no" },
   { "id": "banco/luz-noche-luna-1-carro-abierto", "kind": "set", "page": "docs/proyecto/pixel/banco-set.html", "query": "?luz=noche&luna=1&carro=abierto" },
   { "id": "estufa/banco1", "kind": "set", "page": "docs/proyecto/pixel/estufa-set.html", "query": "?banco=1" },
-  { "id": "estufa/banco0", "kind": "set", "page": "docs/proyecto/pixel/estufa-set.html", "query": "?banco=0" }
+  { "id": "estufa/banco0", "kind": "set", "page": "docs/proyecto/pixel/estufa-set.html", "query": "?banco=0" },
+  { "id": "nevera/nev-0-cajon-0-pila-0-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=0&cajon=0&pila=0&banco=1" },
+  { "id": "nevera/nev-0-cajon-0-pila-0-banco-0", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=0&cajon=0&pila=0&banco=0" },
+  { "id": "nevera/nev-0-cajon-0-pila-a-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=0&cajon=0&pila=a&banco=1" },
+  { "id": "nevera/nev-0-cajon-0-pila-j-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=0&cajon=0&pila=j&banco=1" },
+  { "id": "nevera/nev-1-cajon-0-pila-0-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=1&cajon=0&pila=0&banco=1" },
+  { "id": "nevera/nev-1-cajon-0-pila-0-banco-0", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=1&cajon=0&pila=0&banco=0" },
+  { "id": "nevera/nev-1-cajon-0-pila-a-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=1&cajon=0&pila=a&banco=1" },
+  { "id": "nevera/nev-1-cajon-1-pila-0-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=1&cajon=1&pila=0&banco=1" },
+  { "id": "nevera/nev-1-cajon-2-pila-0-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=1&cajon=2&pila=0&banco=1" },
+  { "id": "nevera/nev-2-cajon-0-pila-0-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=2&cajon=0&pila=0&banco=1" }
 ]
