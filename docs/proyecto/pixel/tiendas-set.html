@@ -26,11 +26,11 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 <script>
 'use strict';
 const E = {
-  X0: -4.9, FW: 2.45, H: 3.6, PV: 2.6, S0: 2.8,                      // the row starts at X0; a front's width and height; the pavement from y = 0 to PV; the street from S0
+  X0: -4.5, FW: 2.25, H: 3.6, PV: 2.6, S0: 2.8,                      // the row starts at X0; a front's width and height; the pavement from y = 0 to PV; the street from S0
   FRONTS: ['tienda', 'banco', 'farmacia', 'correo'],
   COLOR: { tienda: [[250, 214, 120], [206, 150, 70]], banco: [[214, 214, 220], [130, 136, 150]], farmacia: [[226, 244, 226], [70, 150, 90]], correo: [[250, 232, 190], [60, 90, 170]] },
-  DOOR: .68, DW: 1.1, DH: 2.4,                                       // a front's door: its left edge from the front's left edge, its width, its height
-  HORSE: [-4.45, .75], BUZON: [4.35, .5], SEAT: [-1.2, 1.9, .8],     // the little horse (left of the tienda's door); the post box (right of the correo's door); the seat
+  DOOR: .58, DW: 1.1, DH: 2.4,                                       // a front's door: its left edge from the front's left edge, its width, its height
+  HORSE: [-4.15, 1.3], BUZON: [4.25, .5], SEAT: [-1.2, 1.9, .8],      // the little horse (left of the tienda's door); the post box (right of the correo's door); the seat
   ALTO: { h: 4.6, w: 3.9 }, NUEVO: { h: 2.75, w: 3.9 }, AX: [-4.2, .4],   // story 55's buildings: heights, widths, and the two places' left edges
 };
 E.frontX = k => E.X0 + E.FW * E.FRONTS.indexOf(k);
@@ -53,13 +53,13 @@ function tiendas() {
     const x0 = E.frontX(k), x1 = x0 + E.FW, d0 = x0 + E.DOOR, [c, trim] = E.COLOR[k], h = E.H + (k === 'banco' ? .25 : 0);
     const s0 = x0 + .22, s1 = x1 - .22, sz0 = E.DH + .18, sz1 = h - .06;                        // the sign: nearly as wide as the front
     const holes = [[d0 - .12, d0 + E.DW + .12, 0, E.DH + .12], [s0, s1, sz0, sz1]];
-    if (k === 'tienda') holes.push([x0 + .12, x0 + .56, .7, 1.9]);
+    if (k === 'tienda') holes.push([x0 + .1, x0 + .5, .7, 1.9]);
     CL.top(x0, -1.0, x1, 0, h, (a, b) => shade(trim, 3.2, a, b));
     CL.wallAlongX(0, x0, x1, h, c, trim, holes);
     CL.faceX(x1, -1.0, 0, 0, h, (b, z) => shade(c, 1.7, b, z));
     CL.doorX(0, d0, d0 + E.DW, E.DH, false, k === 'banco' ? [120, 130, 150] : k === 'farmacia' ? [236, 240, 236] : k === 'correo' ? [60, 90, 170] : CL.WOOD, true);
     CL.signX(0, s0, s1, sz0, sz1, PIC[k]);
-    if (k === 'tienda') CL.faceY(.02, x0 + .12, x0 + .56, .7, 1.9, (a, z) => { const u = (a - x0 - .12) / .44, v = (z - .7) / 1.2; if (u < .1 || u > .9 || v < .04 || v > .96) return rgb(244, 240, 228); if (Math.hypot(u - .5, (v - .72) * 2.2) < .32) return rgb(226, 60, 50); if (Math.abs(u - .5) < .3 - Math.abs(v - .25) * 1.6 && v < .44) return rgb(60, 150, 200); return rgb(170, 210, 222); }, CL.PP);   // its window: a ball and a top
+    if (k === 'tienda') CL.faceY(.02, x0 + .1, x0 + .5, .7, 1.9, (a, z) => { const u = (a - x0 - .1) / .4, v = (z - .7) / 1.2; if (u < .1 || u > .9 || v < .04 || v > .96) return rgb(244, 240, 228); if (Math.hypot(u - .5, (v - .72) * 2.2) < .32) return rgb(226, 60, 50); if (Math.abs(u - .5) < .3 - Math.abs(v - .25) * 1.6 && v < .44) return rgb(60, 150, 200); return rgb(170, 210, 222); }, CL.PP);   // its window: a ball and a top
   });
   part('caballito', () => {                                           // the little horse: a red base, a brown horse with a white mane, a coin box
     const [x, y] = E.HORSE;
