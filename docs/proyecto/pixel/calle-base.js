@@ -84,13 +84,13 @@ const CL = (() => {
   function trafficLight(x, y) {
     const M = [70, 74, 84], Dk = [36, 38, 46];
     for (let z = 0; z <= 2.5; z += PZ) for (let t = 0; t < 6.3; t += .4) plot(x + Math.cos(t) * .055, y + Math.sin(t) * .055, z, shade(M, 1.2 + Math.cos(t - .8) * 1.2, t, z));
-    box(x - .2, y - .12, 2.3, x + .2, y + .12, 3.4, Dk);
-    const lamps = [];
-    for (let k = 0; k < 3; k++) { const z = 3.2 - k * .34; lamps.push({ x, y: y + .125, z }); for (let a = -.12; a <= .12; a += .02) for (let b = -.12; b <= .12; b += .02) if (a * a + b * b < .0144) plot(x + a, y + .125, z + b, rgb(64, 60, 60)); }
+    box(x - .24, y - .12, 2.25, x + .24, y + .12, 3.5, Dk);
+    const lamps = [], DIM = [[150, 50, 46], [150, 120, 40], [50, 120, 66]];             // unlit, each lamp still shows its colour: red, amber, green
+    for (let k = 0; k < 3; k++) { const z = 3.27 - k * .39; lamps.push({ x, y: y + .125, z }); for (let a = -.16; a <= .16; a += .02) for (let b = -.16; b <= .16; b += .02) { const r = a * a + b * b; if (r < .0256) plot(x + a, y + .125, z + b, r > .017 ? rgb(20, 20, 26) : rgb(...DIM[k])); } }
     box(x - .12, y + .02, .62, x + .12, y + .16, .98, [236, 196, 60]);
     for (let a = -.05; a <= .05; a += .015) for (let b = -.05; b <= .05; b += .015) if (a * a + b * b < .003) plot(x + a, y + .165, .8 + b, rgb(206, 60, 50));
     for (let z = .15; z <= 2.4; z += .12) castShadow(x, y, z, .07);
-    castShadow(x, y, 2.8, .3);
+    castShadow(x, y, 2.8, .18);
     return { lamps, button: { x, y: y + .165, z: .8 } };
   }
   // a row of traffic cones, baked (the ones a story knocks over are sprites)
@@ -104,6 +104,7 @@ const CL = (() => {
     const F = rampOf([244, 240, 228]);
     faceY(at + .02, a0 - .1, a1 + .1, z0 - .1, z1 + .1, (a, z) => {
       if (a < a0 || a > a1 || z < z0 || z > z1 || Math.abs(a - (a0 + a1) / 2) < .04) return F[3];
+      if (api.NIGHT) return rgb(255, 226, 140);                          // a lit window
       const s = ((a - a0) * 1.4 + z) % 1.2; return s < .18 ? rgb(226, 244, 248) : (s > .5 && s < .58) ? rgb(196, 226, 236) : rgb(150, 200, 214);
     }, PP);
     box(a0 - .16, at, z0 - .2, a1 + .16, at + .14, z0 - .1, [240, 234, 220]);
@@ -118,7 +119,7 @@ const CL = (() => {
      (the face at +x is its front; the side we see is its left). Dark windows: nobody is seen inside. */
   const BOARDS = {                                                    // the pictures of where a guagua goes
     arbol: (u, v) => (Math.hypot(u - .5, v - .62) < .27 || Math.hypot(u - .34, v - .5) < .17 || Math.hypot(u - .66, v - .5) < .17) ? rgb(70, 150, 70) : (Math.abs(u - .5) < .06 && v < .5 && v > .12) ? rgb(120, 84, 56) : 0,
-    toldo: (u, v) => (v > .52 && v < .84 && u > .14 && u < .86) ? (Math.floor((u - .14) / .12) % 2 ? rgb(226, 60, 50) : rgb(252, 250, 244)) : (v > .14 && v <= .52 && u > .2 && u < .8) ? (u > .4 && u < .6 ? rgb(120, 76, 44) : rgb(240, 150, 116)) : 0,
+    toldo: (u, v) => { const dx = (u - .5) * 2.6, dy = v - .46; if (dy < 0 && dy > -.34 && Math.abs(dx) < .7 + dy) return rgb(176, 124, 70); if (Math.hypot(dx + .34, dy - .13) < .22) return rgb(226, 60, 50); if (Math.hypot(dx - .02, dy - .22) < .22) return rgb(244, 200, 70); if (Math.hypot(dx - .38, dy - .11) < .2) return rgb(110, 170, 70); return 0; },   // the colmado: the basket of fruit of its own sign
     casa: (u, v) => (v > .5 && v < .88 && Math.abs(u - .5) < (.88 - v) * .95) ? rgb(206, 80, 60) : (v > .14 && v <= .5 && u > .26 && u < .74) ? (u > .44 && u < .58 && v < .38 ? rgb(120, 76, 44) : rgb(250, 214, 120)) : 0,
   };
   function vehicle(kind, x, y, heading = 'i', board = null) {
@@ -131,15 +132,22 @@ const CL = (() => {
       top(x0, y0, x1, y1, H1, (a, b) => shade([226, 226, 220], 3.4, a, b));
       faceY(y1, x0, x1, H0, H1, (a, z) => {                              // the side: a band, a row of dark windows, the door near the front end
         const u = a - x0, dn = front ? (x1 - a) : u;                     // distance from the front end
-        if (dn > .35 && dn < 1.15 && z < H1 - .2) return (Math.abs(dn - .75) < .03) ? rgb(30, 34, 44) : (z > .95 ? rgb(...(((dn * 3 + z) % 1.3) < .2 ? G2 : G)) : rgb(86, 96, 110));   // the door: two leaves with glass
-        if (z > 1.15 && z < 1.85 && dn > 1.35 && dn < L - .25 && ((dn - 1.35) % .78) < .62) return rgb(...(((a * 2 + z) % 1.6) < .22 ? G2 : G));
+        const door = d => d > 0 && d < .8, leaf = d => (Math.abs(d - .4) < .03) ? rgb(30, 34, 44) : (z > .95 ? rgb(...(((d * 3 + z) % 1.3) < .2 ? G2 : G)) : rgb(86, 96, 110));
+        if (z < H1 - .2 && door(dn - .35)) return leaf(dn - .35);                         // the front door: two leaves with glass
+        if (z < H1 - .2 && door(dn - (L - 1.2))) return leaf(dn - (L - 1.2));             // the back door
+        for (const [d0, col, out] of [[1.2, [40, 170, 90], 0], [L - 1.48, [240, 140, 40], 1]]) {   // beside each door: an arrow (in: green, towards the door; out: orange, away from it) and a round button
+          const q = dn - d0, zz = z - 1.32;
+          if (q > 0 && q < .24 && Math.abs(zz) < .2) { const t = out ? (d0 > L / 2 ? q : .24 - q) : (d0 > L / 2 ? .24 - q : q); if (Math.abs(zz) < .05 || Math.abs(zz) < (t < .1 ? t * 1.8 : 0)) return rgb(...col); return rgb(250, 250, 250); }
+          if (Math.hypot(q - .12, z - .8) < .075) return rgb(...col);
+        }
+        if (z > 1.15 && z < 1.85 && dn > 1.55 && dn < L - 1.55 && ((dn - 1.55) % .68) < .54) return rgb(...(((a * 2 + z) % 1.6) < .22 ? G2 : G));
         if (z > .62 && z < .86) return shade(BAND, 2.4, a, z);
         return shade(c, 2.4, a, z);
       });
       faceX(x1, y0, y1, H0, H1, (b, z) => {                              // the end we see: the front (a big windscreen, a picture board over it, two lamps) or the back
         const v = b - y0;
         if (front) { if (z > 1.72 && z < 2.05 && v > .2 && v < Wd - .2) return rgb(250, 244, 226); if (z > .95 && z < 1.66 && v > .1 && v < Wd - .1) return rgb(...G); if (z > .45 && z < .62 && (v < .3 || v > Wd - .3)) return rgb(250, 232, 150); }
-        else { if (z > 1.15 && z < 1.8 && v > .15 && v < Wd - .15) return rgb(...G); if (z > .5 && z < .66 && (v < .25 || v > Wd - .25)) return rgb(206, 50, 44); }
+        else { if (z > 1.15 && z < 1.8 && v > .15 && v < Wd - .15) return rgb(...G); if (z > .46 && z < .72 && (v < .3 || v > Wd - .3)) return rgb(226, 40, 40); }
         return z > .62 && z < .86 ? shade(BAND, 1.4, b, z) : shade(c, 1.4, b, z);
       });
       if (board && BOARDS[board]) {                                     // where it goes: a picture on a plate that stands on its roof, over the door
@@ -154,7 +162,7 @@ const CL = (() => {
       top(C0, y0 + .06, C1, y1 - .06, H2, (a, b) => shade(c, 3.4, a, b));
       faceY(y1, x0, x1, H0, H1, (a, z) => shade(c, 2.4, a, z));
       faceY(y1 - .06, C0, C1, H1, H2, (a, z) => (a > C0 + .1 && a < C1 - .1 && z < H2 - .08 && Math.abs(a - (C0 + C1) / 2) > .04) ? rgb(...(((a * 2 + z) % 1.4) < .2 ? G2 : G)) : shade(c, 2.4, a, z));
-      faceX(x1, y0, y1, H0, H1, (b, z) => { const v = b - y0; if (z > .46 && z < .62 && (v < .26 || v > Wd - .26)) return front ? rgb(250, 232, 150) : rgb(206, 50, 44); return shade(c, 1.4, b, z); });
+      faceX(x1, y0, y1, H0, H1, (b, z) => { const v = b - y0; if (z > .42 && z < .66 && (v < .3 || v > Wd - .3)) return front ? rgb(255, 240, 160) : rgb(226, 40, 40); if (front && z > .34 && z < .6 && v > .36 && v < Wd - .36) return (Math.floor(v / .06) % 2) ? rgb(40, 40, 48) : rgb(120, 120, 130); if (!front && z > .3 && z < .42 && v > .3 && v < Wd - .3) return rgb(250, 250, 250); return shade(c, 1.4, b, z); });
       faceX(C1, y0 + .06, y1 - .06, H1, H2, (b, z) => (b > y0 + .14 && b < y1 - .14 && z < H2 - .08) ? rgb(...G) : shade(c, 1.4, b, z));
       wheel(x0 + .5); wheel(x1 - .5);
       for (let a = x0 + .3; a <= x1; a += .5) castShadow(a, y, .5, .65);
@@ -192,5 +200,6 @@ const CL = (() => {
     const T = hora === 'tarde' || hora === 'noche' ? [[250, 150, 60], [254, 190, 90], [255, 226, 150]] : [[246, 222, 130], [252, 238, 168], [255, 250, 212]];
     return (ix, iy) => (sun && skyDisc(sun[0], sun[1], sun[2], T, ix, iy)) || skyBands(B || [[150, 200, 252]], 0, H, ix, iy);
   }
-  return { PX, PZ, PA, PP, ASPH, KERB, LINE, WHITE, SALMON, TEAL, WOOD, WOOD_L, LEAF, LEAF_L, faceY, faceX, top, box, slab, asphalt, kerb, paint, grass, wallAlongX, wallAlongY, doorX, signX, signY, windowY, awningY, windowX, awningX, vehicle, tree, trafficLight, cone, seat, signPole, houseX, sky };
+  const api = { NIGHT: false };
+  return Object.assign(api, { PX, PZ, PA, PP, ASPH, KERB, LINE, WHITE, SALMON, TEAL, WOOD, WOOD_L, LEAF, LEAF_L, faceY, faceX, top, box, slab, asphalt, kerb, paint, grass, wallAlongX, wallAlongY, doorX, signX, signY, windowY, awningY, windowX, awningX, vehicle, tree, trafficLight, cone, seat, signPole, houseX, sky });
 })();

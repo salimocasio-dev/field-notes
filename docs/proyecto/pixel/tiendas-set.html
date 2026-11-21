@@ -26,7 +26,7 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 <script>
 'use strict';
 const E = {
-  X0: -4.9, FW: 2.45, H: 3.1, PV: 2.6, S0: 2.8,                      // the row starts at X0; a front's width and height; the pavement from y = 0 to PV; the street from S0
+  X0: -4.9, FW: 2.45, H: 3.6, PV: 2.6, S0: 2.8,                      // the row starts at X0; a front's width and height; the pavement from y = 0 to PV; the street from S0
   FRONTS: ['tienda', 'banco', 'farmacia', 'correo'],
   COLOR: { tienda: [[250, 214, 120], [206, 150, 70]], banco: [[214, 214, 220], [130, 136, 150]], farmacia: [[226, 244, 226], [70, 150, 90]], correo: [[250, 232, 190], [60, 90, 170]] },
   DOOR: .68, DW: 1.1, DH: 2.4,                                       // a front's door: its left edge from the front's left edge, its width, its height
@@ -36,10 +36,10 @@ const E = {
 E.frontX = k => E.X0 + E.FW * E.FRONTS.indexOf(k);
 E.doorX = k => E.frontX(k) + E.DOOR;
 const PIC = {
-  tienda: (u, v) => { const dx = u - .5, dy = v - .56; if (Math.abs(dx) + Math.abs(dy) * 1.25 < .3) return (dx * dy > 0) ? rgb(226, 60, 50) : rgb(250, 200, 60); if (Math.abs(dx - .02 + (v - .3) * .2) < .025 && v < .32 && v > .1) return rgb(90, 90, 100); return 0; },   // a kite
-  banco: (u, v) => { const r = Math.hypot((u - .5) * 1.5, v - .5); return r < .34 ? (r > .26 ? rgb(196, 150, 40) : (Math.abs(u - .5) < .035 && Math.abs(v - .5) < .2) ? rgb(150, 110, 30) : rgb(250, 210, 80)) : 0; },                                       // a coin
+  tienda: (u, v) => { const X = (u - .5) * 2.0, Y = v - .5; if (Math.hypot(X + .52, Y) < .3) return (Math.abs(X + .52) < .05 || Math.abs(Y) < .04) ? rgb(250, 250, 250) : (X + .52) * Y > 0 ? rgb(226, 60, 50) : rgb(60, 120, 220); const bx = X - .42; if (Math.hypot(bx, Y + .04) < .27 || Math.hypot(bx - .22, Y - .24) < .11 || Math.hypot(bx + .22, Y - .24) < .11) return (Math.hypot(bx, Y + .1) < .1) ? rgb(240, 214, 170) : (Math.hypot(bx - .1, Y - .02) < .035 || Math.hypot(bx + .1, Y - .02) < .035) ? rgb(40, 30, 30) : rgb(170, 110, 60); return 0; },   // toys: a ball and a teddy bear's head
+  banco: (u, v) => { const X = (u - .5) * 2.0, Y = v - .5; for (const [cx, cy] of [[-.5, -.2], [-.5, -.06], [-.5, .08], [.0, -.2], [.0, -.06], [.5, -.2]]) { const ex = (X - cx) / .3, ey = (Y - cy) / .1; if (ex * ex + ey * ey < 1) return ey > .35 ? rgb(196, 150, 40) : rgb(250, 210, 80); } const r = Math.hypot(X - .5, Y - .16); if (r < .24) return r > .18 ? rgb(196, 150, 40) : rgb(250, 210, 80); return 0; },   // money: stacks of gold coins and one coin standing
   farmacia: (u, v) => ((Math.abs(u - .5) < .07 && Math.abs(v - .5) < .34) || (Math.abs(u - .5) < .21 && Math.abs(v - .5) < .12)) ? rgb(40, 160, 80) : 0,                                                                                                    // a green cross
-  correo: (u, v) => { if (u < .22 || u > .78 || v < .24 || v > .76) return 0; const t = (u - .22) / .56, top = .76 - Math.min(t, 1 - t) * .5; return (v > top - .035 && v < top + .035) || u < .25 || u > .75 || v < .28 || v > .72 ? rgb(60, 90, 170) : rgb(252, 252, 250); },   // a letter
+  correo: (u, v) => { if (u < .16 || u > .84 || v < .18 || v > .82) return rgb(250, 214, 90); const t = (u - .16) / .68, flap = .82 - Math.min(t, 1 - t) * .62; if (u > .68 && u < .8 && v > .56 && v < .78) return rgb(226, 60, 50); return (Math.abs(v - flap) < .045 || u < .2 || u > .8 || v < .23 || v > .77) ? rgb(40, 50, 90) : rgb(255, 255, 255); },   // a letter: a white envelope with its flap and a red stamp, on yellow
 };
 function groundAt(x, y, ix, iy) {
   if (y < -3.2) return 0;                                             // behind the row: sky
@@ -51,13 +51,14 @@ function groundAt(x, y, ix, iy) {
 function tiendas() {
   for (const k of E.FRONTS) part(k, () => {
     const x0 = E.frontX(k), x1 = x0 + E.FW, d0 = x0 + E.DOOR, [c, trim] = E.COLOR[k], h = E.H + (k === 'banco' ? .25 : 0);
-    const holes = [[d0 - .12, d0 + E.DW + .12, 0, E.DH + .12], [d0 - .25, d0 + E.DW + .25, E.DH + .2, E.DH + .95]];
+    const s0 = x0 + .22, s1 = x1 - .22, sz0 = E.DH + .18, sz1 = h - .06;                        // the sign: nearly as wide as the front
+    const holes = [[d0 - .12, d0 + E.DW + .12, 0, E.DH + .12], [s0, s1, sz0, sz1]];
     if (k === 'tienda') holes.push([x0 + .12, x0 + .56, .7, 1.9]);
     CL.top(x0, -1.0, x1, 0, h, (a, b) => shade(trim, 3.2, a, b));
     CL.wallAlongX(0, x0, x1, h, c, trim, holes);
     CL.faceX(x1, -1.0, 0, 0, h, (b, z) => shade(c, 1.7, b, z));
-    CL.doorX(0, d0, d0 + E.DW, E.DH, false, k === 'banco' ? [90, 96, 110] : k === 'farmacia' ? [236, 240, 236] : k === 'correo' ? [60, 90, 170] : CL.WOOD, k !== 'banco');
-    CL.signX(0, d0 - .25, d0 + E.DW + .25, E.DH + .2, E.DH + .95, PIC[k]);
+    CL.doorX(0, d0, d0 + E.DW, E.DH, false, k === 'banco' ? [120, 130, 150] : k === 'farmacia' ? [236, 240, 236] : k === 'correo' ? [60, 90, 170] : CL.WOOD, true);
+    CL.signX(0, s0, s1, sz0, sz1, PIC[k]);
     if (k === 'tienda') CL.faceY(.02, x0 + .12, x0 + .56, .7, 1.9, (a, z) => { const u = (a - x0 - .12) / .44, v = (z - .7) / 1.2; if (u < .1 || u > .9 || v < .04 || v > .96) return rgb(244, 240, 228); if (Math.hypot(u - .5, (v - .72) * 2.2) < .32) return rgb(226, 60, 50); if (Math.abs(u - .5) < .3 - Math.abs(v - .25) * 1.6 && v < .44) return rgb(60, 150, 200); return rgb(170, 210, 222); }, CL.PP);   // its window: a ball and a top
   });
   part('caballito', () => {                                           // the little horse: a red base, a brown horse with a white mane, a coin box
@@ -71,7 +72,12 @@ function tiendas() {
     CL.box(x - .5, y - .1, 0, x - .38, y + .1, .8, [70, 74, 84]); CL.box(x - .52, y - .12, .8, x - .36, y + .12, .98, [236, 196, 60]);   // the coin box on its post
     castShadow(x, y, .5, .45);
   });
-  part('buzon', () => { const [x, y] = E.BUZON; CL.box(x - .2, y - .18, 0, x + .2, y + .18, 1.05, [60, 90, 170]); CL.faceY(y + .19, x - .14, x + .14, .78, .86, () => rgb(20, 30, 60)); castShadow(x, y, .6, .3); });
+  part('buzon', () => {                                               // the post box: blue, a dark slot, a white envelope painted on its front
+    const [x, y] = E.BUZON; CL.box(x - .12, y - .1, 0, x + .12, y + .1, .3, [50, 60, 90]); CL.box(x - .24, y - .2, .3, x + .24, y + .2, 1.2, [60, 100, 200]);
+    CL.faceY(y + .21, x - .2, x + .2, .98, 1.08, () => rgb(20, 30, 60), CL.PP);
+    CL.faceY(y + .21, x - .17, x + .17, .48, .84, (a, z) => { const t = (a - x + .17) / .34, fl = .84 - Math.min(t, 1 - t) * .3; return Math.abs(z - fl) < .03 ? rgb(60, 100, 200) : rgb(255, 255, 255); }, CL.PP);
+    castShadow(x, y, .6, .32);
+  });
   part('asiento', () => CL.seat(E.SEAT[0], E.SEAT[1], E.SEAT[0] + 2.0));
 }
 function altos() {
@@ -112,12 +118,12 @@ function buildSet() {
   if (SET.fila === 'altos') altos(); else tiendas();
   flushShadows(); pendingShadows.length = 0;
   bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
-  if (SET.nube >= 1) lightPass(SET.nube === 2 ? [.72, .76, .84] : [.88, .9, .94], SET.nube === 2 ? [-4, 0, 10] : [0, 0, 4]);
+  if (SET.nube >= 1) lightPass(SET.nube === 2 ? [.82, .85, .9] : [.92, .94, .96], SET.nube === 2 ? [-2, 0, 8] : [0, 0, 4]);
   else if (SET.hora === 'tarde') lightPass([1.0, .93, .84], [10, 2, -8]);
   const base = CL.sky(SET.nube === 2 ? 'gris' : SET.hora, null);
   skyFill((ix, iy) => {                                               // the dark cloud: at the left edge, or over everything
     if (SET.nube === 1 || (SET.nube === 0 && Q.get('nube') === '0' && false)) { const d = Math.hypot((ix - 40) / 60, (iy - 6) / 16) + Math.sin(ix * .21) * .08; if (d < 1) return rgb(...(d < .6 ? [86, 90, 108] : [112, 116, 132])); }
-    if (SET.nube === 2) { const d = (iy - 22 - Math.sin(ix * .17) * 4) / 22; if (d < 1) return rgb(...(d < .5 ? [78, 82, 100] : [104, 108, 124])); }
+    if (SET.nube === 2) { let m = 9; for (let k = 0; k < 9; k++) m = Math.min(m, Math.hypot((ix - 14 - k * 28) / 26, (iy - 10 - (k % 2) * 9) / 15)); if (m < 1) return rgb(...(m < .55 ? [70, 74, 94] : m < .85 ? [96, 100, 120] : [150, 154, 170])); }   // a bank of round dark clouds
     return base(ix, iy);
   });
   bakedPix.set(pix); bakedZ.set(zb);

@@ -28,7 +28,7 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 'use strict';
 const E = {
   HW: 1.25, PV: .7,                                                  // half a street's width; a pavement's width beside it
-  TREE: [0, -5.0], PLAZA: { u0: 2.2, v0: 2.6, u1: 5.7, v1: 7.6 },      // the big tree at the end of the street straight on; the small square (in u, v)
+  TREE: [-2.5, -4.4], PLAZA: { u0: 2.2, v0: 2.6, u1: 5.7, v1: 7.6 },      // the big tree at the end of the street straight on; the small square (in u, v)
   SEAT: { u: 3.7, v: 4.5, hw: 1.05 }, TREE2: [5.3, 6.6], WALL: { v: 3.5 },
   CONES: 2.45,                                                       // the cones that close the right street stand at u = CONES
   uv: (x, y) => [(x - y) / R2, (x + y) / R2], xy: (u, v) => [(u + v) / R2, (v - u) / R2],
@@ -36,7 +36,6 @@ const E = {
 function groundAt(x, y, ix, iy) {
   const [u, v] = E.uv(x, y), au = Math.abs(u), av = Math.abs(v), H = E.HW, P = E.PV;
   const inV = au <= H && v < 9, inU = av <= H;                        // the street up and down (it goes on down past the camera), and the street across
-  if (v < -8.2 && !inV) return 0;                                    // far off: sky
   if (inV || inU) {
     if (inV && inU) return CL.asphalt(ix, iy);
     if (inV && au < .05 && (v < -H - .3 || v > H + .3) && ((v + 40) % 1.3) < .8) return CL.paint(CL.LINE);
@@ -66,7 +65,7 @@ function buildSet() {
   groundZ.set(zb);
   const H0 = E.HW + E.PV + .3;
   part('setos', () => {                                               // the hedges: behind each pavement, the same on all three ways (none where the square is)
-    hedge(-H0, -H0, -H0, -4.4); hedge(H0, -H0, H0, -4.4);             // the street straight on
+    hedge(-H0, -H0, -H0, -3.2); hedge(H0, -H0, H0, -8);             // the street straight on
     hedge(-H0, -H0, -5.6, -H0); hedge(-H0, H0, -5.6, H0);             // the street to the left
     hedge(H0, -H0, 5.6, -H0);                                         // the street to the right, its far side
     hedge(-H0, H0, -H0, 4.6);                                         // the street he comes up, its left side
@@ -81,7 +80,12 @@ function buildSet() {
     for (let du = -s.hw; du <= s.hw; du += .3) { const [qx, qy] = E.xy(s.u + du, s.v); castShadow(qx, qy, .4, .3); }
     const [wx, wy] = E.xy(E.SEAT.u + .2, E.WALL.v); turnedBox(wx, wy, 0, .5, 1.6, .1, -Math.PI / 4, [196, 186, 168]);   // the low wall behind the seat
   });
-  if (SET.cerrada) part('conos', () => { for (let v = -E.HW + .2; v <= E.HW - .1; v += .55) { const [x, y] = E.xy(E.CONES, v); CL.cone(x, y); } });
+  if (SET.cerrada) part('conos', () => {                              // the right street is shut: a red and white board on two feet right across it, and cones before it
+    const [bx, by] = E.xy(E.CONES + .5, 0);
+    turnedBox(bx, by, .5, .82, .05, E.HW + .1, -Math.PI / 4, [250, 250, 250], (s, t, z) => (Math.floor((t + 40) / .3) % 2) ? rgb(226, 50, 44) : rgb(252, 252, 250));
+    for (const dv of [-E.HW + .15, E.HW - .15]) { const [fx, fy] = E.xy(E.CONES + .5, dv); turnedBox(fx, fy, 0, .5, .05, .08, -Math.PI / 4, [70, 74, 84]); castShadow(fx, fy, .4, .25); }
+    for (let v = -E.HW + .25; v <= E.HW - .1; v += .75) { const [x, y] = E.xy(E.CONES, v); CL.cone(x, y); }
+  });
   flushShadows(); pendingShadows.length = 0;
   bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
   const L = { tarde: [[1.0, .95, .86], [8, 3, -6]], ocaso: [[1.0, .88, .78], [14, 0, -10]] }[SET.hora];

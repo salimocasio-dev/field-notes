@@ -44,8 +44,8 @@ function groundAt(x, y, ix, iy) {
   const inA = y >= E.S0 && y <= E.S1, inB = x >= E.B0 && x <= E.B1 && y < E.S0;
   if (inA || inB) {
     if (SET.obra && inA && y <= 3.8 && x >= E.OBRA[0] && x <= E.OBRA[1]) {                      // the hole: earth, darker at its edges, stones
-      const n = noise(x * 3, y * 3), edge = y < E.S0 + .12 || y > 3.68 || x < E.OBRA[0] + .12 || x > E.OBRA[1] - .12;
-      return edge ? rgb(74, 62, 56) : rgb(...(hash(ix, iy) < .06 ? [150, 140, 128] : n > .62 ? [136, 100, 70] : [112, 82, 60]));
+      const n = noise(x * 3, y * 3), rim = y > 3.66 || x > E.OBRA[1] - .14, deep = y < E.S0 + .5 || x < E.OBRA[0] + .5;                 // a hole with depth: its far walls in the dark, its near rim lit
+      return rim ? rgb(196, 170, 130) : deep ? rgb(52, 42, 40) : rgb(...(hash(ix, iy) < .06 ? [150, 140, 128] : n > .62 ? [136, 100, 70] : [104, 76, 56]));
     }
     if (!SET.obra && inA && x >= E.ZEBRA[0] && x <= E.ZEBRA[1] && ((y - E.S0) % .5) < .28) return CL.paint(CL.WHITE);     // the stripes
     if (!SET.obra && inA && x >= E.STOP - .13 && x <= E.STOP) return CL.paint(CL.WHITE);                                  // the stop line
@@ -96,7 +96,10 @@ function buildSet() {
   part('semaforo', () => { E.LUZ = CL.trafficLight(E.POLE[0], E.POLE[1]); });
   part('muro', () => CL.box(-9, 7.6, 0, 9, 7.82, .5, STONE));          // the park's low wall, beyond the near pavement
   if (SET.obra) part('obra', () => {
-    for (let x = E.OBRA[0]; x <= E.OBRA[1] + .01; x += .8) CL.cone(x, 3.95);
+    CL.faceY(4.0, E.OBRA[0] - .1, E.OBRA[1] + .1, .5, .86, (a, z) => (Math.floor((a + 40) / .3) % 2) ? rgb(226, 50, 44) : rgb(252, 252, 250));   // a red and white board along the hole, on two feet
+    for (const x of [E.OBRA[0], E.OBRA[1]]) CL.box(x - .05, 3.94, 0, x + .05, 4.04, .5, [70, 74, 84]);
+    for (let x = E.OBRA[0] + .3; x <= E.OBRA[1]; x += .9) CL.cone(x, 4.25);
+    CL.box(1.55, 2.6, 0, 1.6, 2.65, 1.0, [150, 104, 62]); CL.box(1.48, 2.58, 1.0, 1.67, 2.67, 1.08, [150, 104, 62]); CL.box(1.5, 2.6, .0, 1.65, 2.66, .22, [120, 124, 134]);   // a spade standing in the earth
     CL.cone(E.OBRA[0] - .3, 2.3); CL.cone(E.OBRA[0] - .3, 3.3); CL.cone(E.OBRA[1] + .3, 2.3); CL.cone(E.OBRA[1] + .3, 3.3);
     for (const [x, y, r] of [[1.0, 2.5, .26], [2.1, 3.0, .3]]) { sphere(x, y, .05, r, [124, 92, 66], 'rough'); sphere(x + .25, y + .1, .02, r * .7, [150, 140, 128], 'rough'); }   // heaps of earth and stones
   });
