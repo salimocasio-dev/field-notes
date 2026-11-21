@@ -102,7 +102,7 @@
    "spot": "canasta",
    "anchor": "bottom",
    "size": [12, 10],
-   "box": [80, 133, 12, 10],
+   "box": [53, 134, 12, 10],
    "what": "Carmen's basket (12 x 10 px, its bottom middle on the ground at canasta; in moments 1 and 2 it stands beside Carmen at camino_lado, 18 px to the right of her feet: made for the preview, not a spot of the spec): a poke"
   },
   "comida": {
@@ -132,11 +132,11 @@
   "faroles": {
    "sprite": true,
    "spot": ["faroles1", "faroles2", "faroles3"],
-   "box": [141, 94, 23, 10],
+   "box": [107, 57, 26, 10],
    "boxes": [
-    [141, 94, 8, 10],
-    [149, 94, 8, 10],
-    [156, 94, 8, 10]
+    [107, 57, 8, 10],
+    [116, 57, 8, 10],
+    [125, 57, 8, 10]
    ],
    "what": "the three lanterns by the gate: one box over the three (8 x 10 px each, their bottom middle at faroles1 to faroles3); a poke"
   },
@@ -239,10 +239,10 @@
    "who": "coqui"
   },
   "entra": {
-   "world": [0.9617, 0.8768, 0],
-   "uv": [0.06, 1.3, 0],
-   "screen": [122, 121],
-   "depth": 1.1258,
+   "world": [1.1031, 1.0182, 0],
+   "uv": [0.06, 1.5, 0],
+   "screen": [122, 124],
+   "depth": 1.299,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -344,15 +344,15 @@
    "who": "nino"
   },
   "canasta": {
-   "world": [1.2021, 3.0406, 0],
-   "uv": [-1.3, 3, 0],
-   "screen": [86, 143],
-   "depth": 2.5981,
+   "world": [0.5303, 3.8537, 0],
+   "uv": [-2.35, 3.1, 0],
+   "screen": [59, 144],
+   "depth": 2.6847,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "Carmen's basket by the tree (108 game) (a 12 x 10 px stand-in): its bottom middle on the point",
-   "box": [80, 133, 12, 10],
+   "box": [53, 134, 12, 10],
    "anchor": "bottom"
   },
   "junto_carmen": {
@@ -432,32 +432,28 @@
    "who": "adulto"
   },
   "mesa_comida": {
-   "world": [2.7224, -0.2475, 0],
-   "uv": [2.1, 1.75, 0],
-   "screen": [175, 127],
+   "world": [2.3688, 0.1061, 0],
+   "uv": [1.6, 1.75, 0],
+   "screen": [162, 127],
    "depth": 1.5155,
    "scale": 1,
    "kind": "person",
    "view": "wide",
    "what": "a guest behind the table's food end (TABLE.u - .65, TABLE.v - TABLE.hd - .1; the table is u 1.05 to 3.45, v 1.85 to 2.75)",
    "sprite": "adulto",
-   "who": "adulto",
-   "spec": [1.6, 1.75, 0],
-   "moved": "faroles-clear: in moment 5 the guest behind the table's food end (1.6, 1.75), nearer the camera than the gate, covered 47 of the 80 px of the second lantern by the gate and 54 of the third (faroles2, faroles3: their boxes are at columns 149 to 156 and 156 to 163, the guest's sprite at 150 to 173): u 1.6 -> 2.1 (+.50: the least u that clears both; v .88 would put him behind the lanterns, -.87, beside the gate wall; the lanterns have no free axis)"
+   "who": "adulto"
   },
   "mesa_jugos": {
-   "world": [3.3729, -0.898, 0],
-   "uv": [3.02, 1.75, 0],
-   "screen": [199, 127],
+   "world": [3.288, -0.8132, 0],
+   "uv": [2.9, 1.75, 0],
+   "screen": [195, 127],
    "depth": 1.5155,
    "scale": 1,
    "kind": "person",
    "view": "wide",
    "what": "a guest behind the table's jugs end (TABLE.u + .65, TABLE.v - TABLE.hd - .1)",
    "sprite": "adulto",
-   "who": "adulto",
-   "spec": [2.9, 1.75, 0],
-   "moved": "sprites-apart: after mesa_comida moved to u 2.1 the two guests behind the table (moment 5) were 20 px apart sideways on the same row (24 needed): u 2.9 -> 3.02 (+.12; the other way, mesa_comida u 2.1 -> 1.98, would put him back over the lanterns)"
+   "who": "adulto"
   },
   "comida": {
    "world": [2.7577, 0.495, 0.74],
@@ -548,55 +544,55 @@
    "who": "coqui"
   },
   "bola": {
-   "world": [5.7983, 2.687, 0],
-   "uv": [2.2, 6, 0],
-   "screen": [177, 182],
-   "depth": 5.1962,
+   "world": [7.6368, 3.1113, 0],
+   "uv": [3.2, 7.6, 0],
+   "screen": [203, 203],
+   "depth": 6.5818,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the ball on the grass (m6) (an 8 x 8 px stand-in): its bottom middle on the point",
-   "box": [173, 174, 8, 8],
+   "box": [199, 195, 8, 8],
    "anchor": "bottom"
   },
   "faroles1": {
-   "world": [1.3081, -0.0354, 0.5],
-   "uv": [0.95, 0.9, 0.5],
-   "screen": [145, 104],
-   "depth": 1.0294,
+   "world": [-0.2263, 0.2546, 2.1],
+   "uv": [-0.34, 0.02, 2.1],
+   "screen": [111, 57],
+   "depth": 1.0673,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
-   "what": "lantern 1 of 3 by the gate, on its short stake (right of the gate; the spec's \"faroles\": three points) (an 8 x 10 px stand-in): its bottom middle on the point",
-   "box": [141, 94, 8, 10],
-   "anchor": "bottom",
-   "on": "ground"
+   "what": "lantern 1 of 3 over the gate: it hangs on the wall above the arch (the orchestrator moved the three off their stakes by the gate, where the guests behind the table covered them) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [107, 57, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
   },
   "faroles2": {
-   "world": [1.5203, -0.2475, 0.5],
-   "uv": [1.25, 0.9, 0.5],
-   "screen": [153, 104],
-   "depth": 1.0294,
+   "world": [0.0141, 0.0141, 2.1],
+   "uv": [0, 0.02, 2.1],
+   "screen": [120, 57],
+   "depth": 1.0673,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
-   "what": "lantern 2 of 3 by the gate, on its short stake (right of the gate; the spec's \"faroles\": three points) (an 8 x 10 px stand-in): its bottom middle on the point",
-   "box": [149, 94, 8, 10],
-   "anchor": "bottom",
-   "on": "ground"
+   "what": "lantern 2 of 3 over the gate: it hangs on the wall above the arch (the orchestrator moved the three off their stakes by the gate, where the guests behind the table covered them) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [116, 57, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
   },
   "faroles3": {
-   "world": [1.7324, -0.4596, 0.5],
-   "uv": [1.55, 0.9, 0.5],
-   "screen": [160, 104],
-   "depth": 1.0294,
+   "world": [0.2546, -0.2263, 2.1],
+   "uv": [0.34, 0.02, 2.1],
+   "screen": [129, 57],
+   "depth": 1.0673,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
-   "what": "lantern 3 of 3 by the gate, on its short stake (right of the gate; the spec's \"faroles\": three points) (an 8 x 10 px stand-in): its bottom middle on the point",
-   "box": [156, 94, 8, 10],
-   "anchor": "bottom",
-   "on": "ground"
+   "what": "lantern 3 of 3 over the gate: it hangs on the wall above the arch (the orchestrator moved the three off their stakes by the gate, where the guests behind the table covered them) (an 8 x 10 px stand-in): its top middle on the point",
+   "box": [125, 57, 8, 10],
+   "anchor": "top",
+   "on": "fuerte"
   },
   "bajo_arbol1": {
    "world": [0.8132, 3.288, 0],
@@ -660,7 +656,7 @@
   {
    "spot": "entra",
    "spec": [0, 1.3, 0],
-   "now": [0.06, 1.3, 0],
+   "now": [0.06, 1.5, 0],
    "why": "sprites-apart: in moment 5 the frog at junto_puerta and the guest at entra were 26 px apart sideways on rows 3 px apart (28 and 12 needed): u 0 -> .06 (+.06; the same distance by the other spot: junto_puerta u -1 -> -1.06; by v: entra v 1.3 -> .65, junto_puerta v 1.5 -> 2.2). Tie: the guest moved, the frog stays"
   },
   {
@@ -674,18 +670,6 @@
    "spec": [-0.75, 3.6, 0],
    "now": [-0.75, 3.34, 0],
    "why": "frog-seen: in moment 3 the flat stone (STONE u -1.25, v 3.9, top z .2) hid 11 px of the frog's feet: v 3.6 -> 3.34 (-.26; by u: -.75 -> -.48, +.27)"
-  },
-  {
-   "spot": "mesa_comida",
-   "spec": [1.6, 1.75, 0],
-   "now": [2.1, 1.75, 0],
-   "why": "faroles-clear: in moment 5 the guest behind the table's food end (1.6, 1.75), nearer the camera than the gate, covered 47 of the 80 px of the second lantern by the gate and 54 of the third (faroles2, faroles3: their boxes are at columns 149 to 156 and 156 to 163, the guest's sprite at 150 to 173): u 1.6 -> 2.1 (+.50: the least u that clears both; v .88 would put him behind the lanterns, -.87, beside the gate wall; the lanterns have no free axis)"
-  },
-  {
-   "spot": "mesa_jugos",
-   "spec": [2.9, 1.75, 0],
-   "now": [3.02, 1.75, 0],
-   "why": "sprites-apart: after mesa_comida moved to u 2.1 the two guests behind the table (moment 5) were 20 px apart sideways on the same row (24 needed): u 2.9 -> 3.02 (+.12; the other way, mesa_comida u 2.1 -> 1.98, would put him back over the lanterns)"
   }
  ],
  "notes": [
@@ -697,9 +681,9 @@
   "the tree's leaves sway, so the sprites are tested against the live depth of the still frame (t = 0). The paper and the lanterns are clear of the crown at t = 0 (checks hooks-flag, cartel-clear); the leaves move a pixel or two in the wind: the checks do not cover the other frames",
   "muro_coqui is at z WALL.h (2.5), the top of the battlements, where the wall is a plane with no top face: the spec's u 1.6 falls in a gap between two merlons ((u + 60.26) mod .9 = 0.66, merlons are 0 to .52), where the set's pixel under the feet is the walk behind them (spots-on-surface failed), so the spot moved to u 1.44 (the end of the merlon from u .94 to 1.46): the picture row is the same (row 48), the frog stands on a merlon's top",
   "stand-ins: abuelo is kit's FAM.abuelo; don Pepe, la maestra, el piragüero, la señora, el joven and the boy are other makers of mkPersona in other clothes (don Pepe an orange shirt, la maestra blue, el piragüero white with a red cap, la señora green, el joven teal, the boy yellow); in m4 la señora is the passer-by at junto_cartel, el joven camino3, el piragüero camino4; in m5 don Pepe is mesa_comida, la maestra mesa_jugos, el piragüero entra; in m6 don Pepe and la maestra are bajo_arbol1 and bajo_arbol2",
-  "the lanterns on short stakes by the gate: the stake is a stand-in sprite on the ground under each lantern (group decor, not a spot of the spec)",
+  "the three lanterns of story 110 hang in a row on the wall over the gate",
   "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
-  "moves: camino2 [0.1,4.6,0] -> [0.09,4.6,0] (sprites-apart: in moments 1 and 2 Luis at camino2 and Carmen at camino_lado were 23 px apart sideways on rows 8 px apart (24 and 12 needed): u .1 -> .09 (-.01; the other spot, camino_lado: u 1 -> 1.02, +.02, or v 4 -> 3.73, -.27; camino2 v 4.6 -> 4.89, +.29)); entra [0,1.3,0] -> [0.06,1.3,0] (sprites-apart: in moment 5 the frog at junto_puerta and the guest at entra were 26 px apart sideways on rows 3 px apart (28 and 12 needed): u 0 -> .06 (+.06; the same distance by the other spot: junto_puerta u -1 -> -1.06; by v: entra v 1.3 -> .65, junto_puerta v 1.5 -> 2.2). Tie: the guest moved, the frog stays); muro_coqui [1.6,0,2.5] -> [1.44,0,2.5] (spots-on-surface: at u 1.6 the spot falls in a gap between two merlons ((u + 60.26) mod .9 = .66; merlons are 0 to .52), so the set's pixel under the frog's feet is the walk behind them (depth .69, not 1.25 = z 2.5 x .5): u 1.6 -> 1.44 (-.16: the nearest u whose pixel is a merlon's top: the merlon from u .94 to 1.46; the next one up starts at u 1.84, +.23)); junto_carmen [-0.75,3.6,0] -> [-0.75,3.34,0] (frog-seen: in moment 3 the flat stone (STONE u -1.25, v 3.9, top z .2) hid 11 px of the frog's feet: v 3.6 -> 3.34 (-.26; by u: -.75 -> -.48, +.27)); mesa_comida [1.6,1.75,0] -> [2.1,1.75,0] (faroles-clear: in moment 5 the guest behind the table's food end (1.6, 1.75), nearer the camera than the gate, covered 47 of the 80 px of the second lantern by the gate and 54 of the third (faroles2, faroles3: their boxes are at columns 149 to 156 and 156 to 163, the guest's sprite at 150 to 173): u 1.6 -> 2.1 (+.50: the least u that clears both; v .88 would put him behind the lanterns, -.87, beside the gate wall; the lanterns have no free axis)); mesa_jugos [2.9,1.75,0] -> [3.02,1.75,0] (sprites-apart: after mesa_comida moved to u 2.1 the two guests behind the table (moment 5) were 20 px apart sideways on the same row (24 needed): u 2.9 -> 3.02 (+.12; the other way, mesa_comida u 2.1 -> 1.98, would put him back over the lanterns))"
+  "moves: camino2 [0.1,4.6,0] -> [0.09,4.6,0] (sprites-apart: in moments 1 and 2 Luis at camino2 and Carmen at camino_lado were 23 px apart sideways on rows 8 px apart (24 and 12 needed): u .1 -> .09 (-.01; the other spot, camino_lado: u 1 -> 1.02, +.02, or v 4 -> 3.73, -.27; camino2 v 4.6 -> 4.89, +.29)); entra [0,1.3,0] -> [0.06,1.5,0] (sprites-apart: in moment 5 the frog at junto_puerta and the guest at entra were 26 px apart sideways on rows 3 px apart (28 and 12 needed): u 0 -> .06 (+.06; the same distance by the other spot: junto_puerta u -1 -> -1.06; by v: entra v 1.3 -> .65, junto_puerta v 1.5 -> 2.2). Tie: the guest moved, the frog stays); muro_coqui [1.6,0,2.5] -> [1.44,0,2.5] (spots-on-surface: at u 1.6 the spot falls in a gap between two merlons ((u + 60.26) mod .9 = .66; merlons are 0 to .52), so the set's pixel under the frog's feet is the walk behind them (depth .69, not 1.25 = z 2.5 x .5): u 1.6 -> 1.44 (-.16: the nearest u whose pixel is a merlon's top: the merlon from u .94 to 1.46; the next one up starts at u 1.84, +.23)); junto_carmen [-0.75,3.6,0] -> [-0.75,3.34,0] (frog-seen: in moment 3 the flat stone (STONE u -1.25, v 3.9, top z .2) hid 11 px of the frog's feet: v 3.6 -> 3.34 (-.26; by u: -.75 -> -.48, +.27))"
  ],
  "views": {
   "wide": {
@@ -711,9 +695,9 @@
    "region": [22, 0, 196, 216],
    "stories": [108, 109, 110],
    "holds": ["camino1", "camino2", "camino3", "camino4", "camino_lado", "ante_puerta", "junto_puerta", "entra", "puerta_abuela", "muro_coqui", "gancho_muralla", "gancho_puerta", "gancho_bandera", "bandera", "arbol", "canasta", "junto_carmen", "cartel", "piedra", "luis_cartel", "junto_cartel", "sale_grama", "mesa_comida", "mesa_jugos", "comida", "jugos", "hamaca", "hamaca_dentro", "grama1", "grama2", "grama3", "bola", "faroles1", "faroles2", "faroles3", "bajo_arbol1", "bajo_arbol2"],
-   "extent": [25, 210],
-   "x0Range": [15, 25],
-   "what": "the one view of stories 108, 109 and 110: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 15 to 25 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 25 to 210). The window's point is the ground point under its middle column at the picture's middle row"
+   "extent": [25, 206],
+   "x0Range": [11, 25],
+   "what": "the one view of stories 108, 109 and 110: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 11 to 25 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 25 to 206). The window's point is the ground point under its middle column at the picture's middle row"
   }
  },
  "front": {
@@ -751,7 +735,7 @@
     "name": "views-x0",
     "ok": true,
     "lines": [
-     "views-x0: wide: x0 22 (window columns 22 to 217); the 37 spots held span columns 25 to 210 (186 of the window's 196); x0 that hold them all: 15 to 25 (the one nearest 22, the window centred on the picture)"
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 37 spots held span columns 25 to 206 (182 of the window's 196); x0 that hold them all: 11 to 25 (the one nearest 22, the window centred on the picture)"
     ],
     "x0": {
      "wide": 22
@@ -761,14 +745,14 @@
     "name": "spots-in-view",
     "ok": true,
     "lines": [
-     "spots-in-view: 37 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 25 (sale_grama), the rightmost 210 (mesa_jugos)"
+     "spots-in-view: 37 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 25 (sale_grama), the rightmost 206 (mesa_jugos)"
     ]
    },
    {
     "name": "spots-on-surface",
     "ok": true,
     "lines": [
-     "spots-on-surface: 9 spots above the ground (muro_coqui, gancho_muralla, gancho_puerta, gancho_bandera, bandera, cartel, piedra, comida, jugos) are on a surface the set draws (depth within .1 of the spot's, the live frame): the wall, the pole (part fuerte), the stone z 0.2, the table's top z 0.74 and the trunk (part grama)",
+     "spots-on-surface: 12 spots above the ground (muro_coqui, gancho_muralla, gancho_puerta, gancho_bandera, bandera, cartel, piedra, comida, jugos, faroles1, faroles2, faroles3) are on a surface the set draws (depth within .1 of the spot's, the live frame): the wall, the pole (part fuerte), the stone z 0.2, the table's top z 0.74 and the trunk (part grama)",
      "       muro_coqui z 2.5: part fuerte, depth 1.23 against the spot's 1.25 (0.02)",
      "       gancho_muralla z 1.6: part fuerte, depth 0.81 against the spot's 0.82 (0.01)",
      "       gancho_puerta z 2.1: part fuerte, depth 1.05 against the spot's 1.07 (0.01)",
@@ -777,22 +761,25 @@
      "       cartel z 1.55: part grama, depth 2.51 against the spot's 2.46 (0.05)",
      "       piedra z 0.2: part grama, depth 3.46 against the spot's 3.48 (0.01)",
      "       comida z 0.74: part grama, depth 2.34 against the spot's 2.36 (0.02)",
-     "       jugos z 0.74: part grama, depth 2.34 against the spot's 2.36 (0.02)"
+     "       jugos z 0.74: part grama, depth 2.34 against the spot's 2.36 (0.02)",
+     "       faroles1 z 2.1: part fuerte, depth 1.05 against the spot's 1.07 (0.01)",
+     "       faroles2 z 2.1: part fuerte, depth 1.05 against the spot's 1.07 (0.01)",
+     "       faroles3 z 2.1: part fuerte, depth 1.05 against the spot's 1.07 (0.01)"
     ]
    },
    {
     "name": "things-in-view",
     "ok": true,
     "lines": [
-     "things-in-view: the boxes of puerta, muralla, grama, bandera, cartel, cartel_quien, cartel_cuando, canasta, comida, jugos, hamaca, faroles are inside the window [22, 218) and the picture (puerta [101,62,38,42], muralla [146,56,42,42], grama [143,163,68,45], bandera [120,6,16,10], cartel [39,94,30,30], cartel_quien [41,110,12,12], cartel_cuando [55,110,12,12], canasta [80,133,12,10], comida [152,107,20,10], jugos [187,105,16,12], hamaca [33,165,50,12], faroles [141,94,23,10])"
+     "things-in-view: the boxes of puerta, muralla, grama, bandera, cartel, cartel_quien, cartel_cuando, canasta, comida, jugos, hamaca, faroles are inside the window [22, 218) and the picture (puerta [101,62,38,42], muralla [146,56,42,42], grama [143,163,68,45], bandera [120,6,16,10], cartel [39,94,30,30], cartel_quien [41,110,12,12], cartel_cuando [55,110,12,12], canasta [53,134,12,10], comida [152,107,20,10], jugos [187,105,16,12], hamaca [33,165,50,12], faroles [107,57,26,10])"
     ]
    },
    {
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 50 pairs in the 6 moments of the preview (m1 (camino2, camino_lado, ante_puerta); m2 (camino2, camino_lado, camino3, muro_coqui); m3 (arbol, junto_carmen); m4 (piedra, luis_cartel, junto_cartel, puerta_abuela, camino3, camino4); m5 (mesa_comida, mesa_jugos, puerta_abuela, junto_puerta, entra); m6 (grama1, grama2, grama3, puerta_abuela, bajo_arbol1, bajo_arbol2)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 camino2 ~ ante_puerta (2 across, 48 down), m1 camino_lado ~ ante_puerta (26 across, 40 down), m2 camino2 ~ camino3 (5 across, 21 down), m2 camino_lado ~ muro_coqui (11 across, 108 down), m4 junto_cartel ~ camino3 (3 across, 38 down), m4 junto_cartel ~ camino4 (3 across, 58 down), m4 camino3 ~ camino4 (6 across, 20 down), m5 mesa_comida ~ puerta_abuela (6 across, 13 down), m5 mesa_jugos ~ puerta_abuela (18 across, 13 down), m6 grama1 ~ grama3 (13 across, 23 down), m6 grama2 ~ grama3 (19 across, 13 down), m6 grama2 ~ puerta_abuela (7 across, 73 down), m6 grama3 ~ puerta_abuela (12 across, 86 down)",
-     "       closest pair in each moment (px across / px down): m1 camino2 ~ ante_puerta 2/48 (needs 28 across or 12 down); m2 camino2 ~ camino3 5/21 (needs 24 across or 12 down); m3 arbol ~ junto_carmen 29/8 (needs 28 across or 12 down); m4 junto_cartel ~ camino3 3/38 (needs 24 across or 12 down); m5 mesa_comida ~ puerta_abuela 6/13 (needs 24 across or 12 down); m6 grama2 ~ puerta_abuela 7/73 (needs 24 across or 12 down)"
+     "sprites-apart: 50 pairs in the 6 moments of the preview (m1 (camino2, camino_lado, ante_puerta); m2 (camino2, camino_lado, camino3, muro_coqui); m3 (arbol, junto_carmen); m4 (piedra, luis_cartel, junto_cartel, puerta_abuela, camino3, camino4); m5 (mesa_comida, mesa_jugos, puerta_abuela, junto_puerta, entra); m6 (grama1, grama2, grama3, puerta_abuela, bajo_arbol1, bajo_arbol2)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 camino2 ~ ante_puerta (2 across, 48 down), m1 camino_lado ~ ante_puerta (26 across, 40 down), m2 camino2 ~ camino3 (5 across, 21 down), m2 camino_lado ~ muro_coqui (11 across, 108 down), m4 junto_cartel ~ camino3 (3 across, 38 down), m4 junto_cartel ~ camino4 (3 across, 58 down), m4 camino3 ~ camino4 (6 across, 20 down), m5 mesa_comida ~ puerta_abuela (19 across, 13 down), m5 mesa_jugos ~ puerta_abuela (14 across, 13 down), m6 grama1 ~ grama3 (13 across, 23 down), m6 grama2 ~ grama3 (19 across, 13 down), m6 grama2 ~ puerta_abuela (7 across, 73 down), m6 grama3 ~ puerta_abuela (12 across, 86 down)",
+     "       closest pair in each moment (px across / px down): m1 camino2 ~ ante_puerta 2/48 (needs 28 across or 12 down); m2 camino2 ~ camino3 5/21 (needs 24 across or 12 down); m3 arbol ~ junto_carmen 29/8 (needs 28 across or 12 down); m4 junto_cartel ~ camino3 3/38 (needs 24 across or 12 down); m5 mesa_jugos ~ puerta_abuela 14/13 (needs 24 across or 12 down); m6 grama2 ~ puerta_abuela 7/73 (needs 24 across or 12 down)"
     ],
     "pairs": [
      {
@@ -1024,7 +1011,7 @@
       "moment": 5,
       "a": "mesa_comida",
       "b": "mesa_jugos",
-      "across": 24,
+      "across": 33,
       "down": 0,
       "needAcross": 24,
       "ok": true
@@ -1033,7 +1020,7 @@
       "moment": 5,
       "a": "mesa_comida",
       "b": "puerta_abuela",
-      "across": 6,
+      "across": 19,
       "down": 13,
       "needAcross": 24,
       "ok": true
@@ -1042,7 +1029,7 @@
       "moment": 5,
       "a": "mesa_comida",
       "b": "junto_puerta",
-      "across": 81,
+      "across": 68,
       "down": 3,
       "needAcross": 28,
       "ok": true
@@ -1051,8 +1038,8 @@
       "moment": 5,
       "a": "mesa_comida",
       "b": "entra",
-      "across": 53,
-      "down": 6,
+      "across": 40,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -1060,7 +1047,7 @@
       "moment": 5,
       "a": "mesa_jugos",
       "b": "puerta_abuela",
-      "across": 18,
+      "across": 14,
       "down": 13,
       "needAcross": 24,
       "ok": true
@@ -1069,7 +1056,7 @@
       "moment": 5,
       "a": "mesa_jugos",
       "b": "junto_puerta",
-      "across": 105,
+      "across": 101,
       "down": 3,
       "needAcross": 28,
       "ok": true
@@ -1078,8 +1065,8 @@
       "moment": 5,
       "a": "mesa_jugos",
       "b": "entra",
-      "across": 77,
-      "down": 6,
+      "across": 73,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -1097,7 +1084,7 @@
       "a": "puerta_abuela",
       "b": "entra",
       "across": 59,
-      "down": 7,
+      "down": 10,
       "needAcross": 24,
       "ok": true
      },
@@ -1106,7 +1093,7 @@
       "a": "junto_puerta",
       "b": "entra",
       "across": 28,
-      "down": 3,
+      "down": 0,
       "needAcross": 28,
       "ok": true
      },
@@ -1279,7 +1266,7 @@
     "name": "faroles-clear",
     "ok": true,
     "lines": [
-     "faroles-clear: in moments 5 and 6 the three lanterns by the gate (faroles1 to faroles3) are covered by nobody and hidden by nothing: m5: faroles1 (faroles) [141,94,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles2 (faroles) [149,94,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles3 (faroles) [156,94,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; m6: faroles1 (faroles) [141,94,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles2 (faroles) [149,94,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles3 (faroles) [156,94,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture"
+     "faroles-clear: in moments 5 and 6 the three lanterns by the gate (faroles1 to faroles3) are covered by nobody and hidden by nothing: m5: faroles1 (faroles) [107,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles2 (faroles) [116,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles3 (faroles) [125,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; m6: faroles1 (faroles) [107,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles2 (faroles) [116,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture; faroles3 (faroles) [125,57,8,10]: 54 px, 0 covered, 0 hidden by the set, 0 outside the picture"
     ]
    },
    {
@@ -1300,14 +1287,14 @@
     "name": "mesa-waist",
     "ok": true,
     "lines": [
-     "mesa-waist: in moment 5 the guests behind the table (mesa_comida, mesa_jugos) show from the waist up (canvas row 38: the hips' centre; the set's table hides none of the rows above it, no person covers them): mesa_comida 175,127: rows 74 to 109 above the waist (row 110): 618 px, 0 covered by people, 0 hidden by the set (the table); the dish or the jugs on the table cover 1 of them (not counted: a thing on the table in front of her belly); the table hides from row 113 (3 below the waist) to the feet (row 126); mesa_jugos 199,127: rows 73 to 109 above the waist (row 110): 702 px, 0 covered by people, 0 hidden by the set (the table); the dish or the jugs on the table cover 40 of them (not counted: a thing on the table in front of her belly); the table hides from row 113 (3 below the waist) to the feet (row 126)"
+     "mesa-waist: in moment 5 the guests behind the table (mesa_comida, mesa_jugos) show from the waist up (canvas row 38: the hips' centre; the set's table hides none of the rows above it, no person covers them): mesa_comida 162,127: rows 74 to 109 above the waist (row 110): 618 px, 0 covered by people, 0 hidden by the set (the table); the dish or the jugs on the table cover 19 of them (not counted: a thing on the table in front of her belly); the table hides from row 113 (3 below the waist) to the feet (row 126); mesa_jugos 195,127: rows 73 to 109 above the waist (row 110): 702 px, 0 covered by people, 0 hidden by the set (the table); the dish or the jugs on the table cover 40 of them (not counted: a thing on the table in front of her belly); the table hides from row 113 (3 below the waist) to the feet (row 126)"
     ]
    },
    {
     "name": "info-touch",
     "ok": true,
     "lines": [
-     "info-touch: not a check. m1: camino_lado (canasta) 0 of 92 px covered, 0 hidden by the set; m2: camino_lado (canasta) 0 of 92 px covered, 0 hidden by the set; m3: canasta (canasta) 31 of 92 px covered by junto_carmen 31, 0 hidden by the set; m4: none drawn; m5: hamaca (hamaca) 0 of 342 px covered, 0 hidden by the set; m6: bola (bola) 41 of 52 px covered by grama2 9, grama3 32, 0 hidden by the set, hamaca (hamaca) 0 of 256 px covered, 0 hidden by the set"
+     "info-touch: not a check. m1: camino_lado (canasta) 0 of 92 px covered, 0 hidden by the set; m2: camino_lado (canasta) 0 of 92 px covered, 0 hidden by the set; m3: canasta (canasta) 0 of 92 px covered, 0 hidden by the set; m4: none drawn; m5: hamaca (hamaca) 0 of 342 px covered, 0 hidden by the set; m6: bola (bola) 0 of 52 px covered, 0 hidden by the set, hamaca (hamaca) 0 of 256 px covered, 0 hidden by the set"
     ]
    }
   ]

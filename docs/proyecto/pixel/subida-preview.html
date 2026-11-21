@@ -121,7 +121,7 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
   const FLAG = { at: 'bandera', s: 'bandera', group: 'bandera', thing: 'bandera' };
   const BASKET1 = { at: 'camino_lado', px: [18, 0], s: 'canasta', group: 'canasta', thing: 'canasta' };                                  // m1, m2: the basket beside Carmen (not a spot of the spec: made for the preview: 18 px right of her feet)
   const HOOK = (at, s) => ({ at, s, group: 'gancho' });
-  const FAROLES = [1, 2, 3].flatMap(i => [{ at: 'faroles' + i, s: 'faroleLuz', group: 'farol', thing: 'faroles' }, { at: 'faroles' + i, s: 'estaca', group: 'decor', off: [0, 0, -.5], dd: -.1 }]);   // the three lanterns by the gate, lit, each on its stake (the stake stands on the ground under it)
+  const FAROLES = [1, 2, 3].map(i => ({ at: 'faroles' + i, s: 'farolLuz', group: 'farol', thing: 'faroles' }));   // the three lanterns of story 110, lit, hanging over the gate
   const MOMENTS = {
     1: { view: 'wide', what: 'story 108, opening: late afternoon. Luis (camino2), Carmen (camino_lado) with her basket beside her, the frog at the gate (ante_puerta), the flag',
       set: TARDE, layers: () => [FLAG, NIN('camino2', 'luis'), NIN('camino_lado', 'carmen'), BASKET1, COQ('ante_puerta')] },

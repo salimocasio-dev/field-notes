@@ -53,9 +53,7 @@ const SILKEY = { adulto: 'abuelo', nino: 'luis', coqui: 'coqui', abuela: 'abuela
 const MOVES = {
   muro_coqui: { to: [1.44, 0, 2.5], why: 'spots-on-surface: at u 1.6 the spot falls in a gap between two merlons ((u + 60.26) mod .9 = .66; merlons are 0 to .52), so the set\'s pixel under the frog\'s feet is the walk behind them (depth .69, not 1.25 = z 2.5 x .5): u 1.6 -> 1.44 (-.16: the nearest u whose pixel is a merlon\'s top: the merlon from u .94 to 1.46; the next one up starts at u 1.84, +.23)' },
   camino2: { to: [.09, 4.6, 0], why: 'sprites-apart: in moments 1 and 2 Luis at camino2 and Carmen at camino_lado were 23 px apart sideways on rows 8 px apart (24 and 12 needed): u .1 -> .09 (-.01; the other spot, camino_lado: u 1 -> 1.02, +.02, or v 4 -> 3.73, -.27; camino2 v 4.6 -> 4.89, +.29)' },
-  entra: { to: [.06, 1.3, 0], why: 'sprites-apart: in moment 5 the frog at junto_puerta and the guest at entra were 26 px apart sideways on rows 3 px apart (28 and 12 needed): u 0 -> .06 (+.06; the same distance by the other spot: junto_puerta u -1 -> -1.06; by v: entra v 1.3 -> .65, junto_puerta v 1.5 -> 2.2). Tie: the guest moved, the frog stays' },
-  mesa_comida: { to: [2.1, 1.75, 0], why: 'faroles-clear: in moment 5 the guest behind the table\'s food end (1.6, 1.75), nearer the camera than the gate, covered 47 of the 80 px of the second lantern by the gate and 54 of the third (faroles2, faroles3: their boxes are at columns 149 to 156 and 156 to 163, the guest\'s sprite at 150 to 173): u 1.6 -> 2.1 (+.50: the least u that clears both; v .88 would put him behind the lanterns, -.87, beside the gate wall; the lanterns have no free axis)' },
-  mesa_jugos: { to: [3.02, 1.75, 0], why: 'sprites-apart: after mesa_comida moved to u 2.1 the two guests behind the table (moment 5) were 20 px apart sideways on the same row (24 needed): u 2.9 -> 3.02 (+.12; the other way, mesa_comida u 2.1 -> 1.98, would put him back over the lanterns)' },
+  entra: { to: [.06, 1.5, 0], why: 'sprites-apart: in moment 5 the frog at junto_puerta and the guest at entra were 26 px apart sideways on rows 3 px apart (28 and 12 needed): u 0 -> .06 (+.06; the same distance by the other spot: junto_puerta u -1 -> -1.06; by v: entra v 1.3 -> .65, junto_puerta v 1.5 -> 2.2). Tie: the guest moved, the frog stays' },
   junto_carmen: { to: [-.75, 3.34, 0], why: 'frog-seen: in moment 3 the flat stone (STONE u -1.25, v 3.9, top z .2) hid 11 px of the frog\'s feet: v 3.6 -> 3.34 (-.26; by u: -.75 -> -.48, +.27)' },
 };
 
@@ -89,7 +87,7 @@ function defs(E) {
   th('bandera', [P.u, P.v, FLAG_Z], SZ.bandera, 'left', 'the flag on its pole (the pole\'s top is z ' + P.z1 + ')', { on: 'fuerte' });
   // by the tree
   add('arbol', [-1.85, 2.7, 0], 'person', 'nino', 'nino', 'Carmen sitting by the tree (108 game): drawn standing', {});
-  th('canasta', [-1.3, 3.0, 0], SZ.canasta, 'bottom', 'Carmen\'s basket by the tree (108 game)', {});
+  th('canasta', [-2.35, 3.1, 0], SZ.canasta, 'bottom', 'Carmen\'s basket by the tree (108 game)', {});
   add('junto_carmen', [-.75, 3.6, 0], 'place', 'coqui', 'coqui', 'the frog beside Carmen (108 game)', {});
   th('cartel', [r4(TR[0]), r4(TR[1] + .05), PAPER_Z], SZ.cartel, 'top', 'Luis\'s paper on the tree\'s trunk (TREE u ' + TR[0] + ', v ' + TR[1] + ' + .05; in front of the trunk); its two round pictures are things.cartel_quien and things.cartel_cuando', { on: 'grama' });
   add('piedra', [ST[0], ST[1], STONE_Z], 'place', 'coqui', 'coqui', 'the frog on the flat stone (STONE u ' + ST[0] + ', v ' + ST[1] + '): its top, z ' + STONE_Z, { on: 'grama' });
@@ -106,8 +104,8 @@ function defs(E) {
   add('grama1', [1.4, 5.6, 0], 'person', 'nino', 'nino', 'on the grass: Luis (m6)', {});
   add('grama2', [2.6, 6.4, 0], 'person', 'nino', 'nino', 'on the grass: Carmen (m6)', {});
   add('grama3', [1.9, 7.4, 0], 'place', 'coqui', 'coqui', 'on the grass: the frog (m6)', {});
-  th('bola', [2.2, 6.0, 0], SZ.bola, 'bottom', 'the ball on the grass (m6)', {});
-  [.95, 1.25, 1.55].forEach((u, i) => th('faroles' + (i + 1), [u, .9, FAROL_Z], SZ.farol, 'bottom', 'lantern ' + (i + 1) + ' of 3 by the gate, on its short stake (right of the gate; the spec\'s "faroles": three points)', {}));
+  th('bola', [3.2, 7.6, 0], SZ.bola, 'bottom', 'the ball on the grass (m6)', {});
+  [-.34, 0, .34].forEach((u, i) => th('faroles' + (i + 1), [u, .02, 2.1], SZ.farol, 'top', 'lantern ' + (i + 1) + ' of 3 over the gate: it hangs on the wall above the arch (the orchestrator moved the three off their stakes by the gate, where the guests behind the table covered them)', { on: 'fuerte' }));
   add('bajo_arbol1', [-1.75, 2.9, 0], 'person', 'adulto', 'adulto', 'a guest under the tree, the left one: don Pepe (m6)', {});
   add('bajo_arbol2', [-.8, 2.9, 0], 'person', 'adulto', 'adulto', 'a guest under the tree, the right one: la maestra (m6)', {});
   return D.map(d => MOVES[d.name] ? Object.assign({}, d, { spec: d.uvz, uvz: MOVES[d.name].to, moved: MOVES[d.name].why }) : d);
@@ -286,7 +284,7 @@ async function make(G, proj) {
       'the tree\'s leaves sway, so the sprites are tested against the live depth of the still frame (t = 0). The paper and the lanterns are clear of the crown at t = 0 (checks hooks-flag, cartel-clear); the leaves move a pixel or two in the wind: the checks do not cover the other frames',
       'muro_coqui is at z WALL.h (' + E.WALL.h + '), the top of the battlements, where the wall is a plane with no top face: the spec\'s u 1.6 falls in a gap between two merlons ((u + 60.26) mod .9 = ' + r2((1.6 + 60.26) % .9) + ', merlons are 0 to .52), where the set\'s pixel under the feet is the walk behind them (spots-on-surface failed), so the spot moved to u ' + spots.muro_coqui.uv[0] + ' (the end of the merlon from u .94 to 1.46): the picture row is the same (row ' + spots.muro_coqui.screen[1] + '), the frog stands on a merlon\'s top',
       'stand-ins: abuelo is kit\'s FAM.abuelo; don Pepe, la maestra, el piragüero, la señora, el joven and the boy are other makers of mkPersona in other clothes (don Pepe an orange shirt, la maestra blue, el piragüero white with a red cap, la señora green, el joven teal, the boy yellow); in m4 la señora is the passer-by at junto_cartel, el joven camino3, el piragüero camino4; in m5 don Pepe is mesa_comida, la maestra mesa_jugos, el piragüero entra; in m6 don Pepe and la maestra are bajo_arbol1 and bajo_arbol2',
-      'the lanterns on short stakes by the gate: the stake is a stand-in sprite on the ground under each lantern (group decor, not a spot of the spec)',
+      'the three lanterns of story 110 hang in a row on the wall over the gate',
       'the view\'s x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)',
       moves.length ? 'moves: ' + moves.map(m => m.spot + ' [' + m.spec + '] -> [' + m.now + '] (' + m.why + ')').join('; ') : 'no spot of the spec was moved',
     ],
