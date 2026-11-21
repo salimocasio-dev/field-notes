@@ -65,12 +65,12 @@ const THING_OF = p => /^(arbol|seto|porton|cable|poste)/.test(p) ? 'parque' : p;
         const ix = i % W, iy = Math.floor(i / W), s = BANCO_SET.surfaceAt(ix + .5, iy + .5);
         surf.push(s.on === 'sky' ? 's' : s.on === 'pave' ? 'p' : 'l'); }
       return { foot: FOOTPX(), F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(bakedZ), kinds: Array.from(kinds), rgb: rgbA, calls, bake: BAKE_MS, first, warm,
-        shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), onGround, surf: surf.join(''), crown: CROWNPX(), pool: POOLPX(), GR: GRASS.map(c => rgb(...c)) };
+        shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), onGround, surf: surf.join(''), crown: CROWNPX(), pool: POOLPX(), foot2: FOOTPX2(), GR: GRASS.map(c => rgb(...c)) };
     });
     G.ms[key] = { first: g.first, warm: g.warm, page: g.bake };
     if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, GR: g.GR, surf: g.surf });
     G.parts[key] = g.parts; G.z[key] = g.z; G.kinds[key] = g.kinds; G.rgb[key] = g.rgb; G.shadows[key] = g.calls;
-    for (const k of ['shadowPx', 'onGround', 'crown', 'pool', 'foot']) (G[k] = G[k] || {})[key] = g[k];
+    for (const k of ['shadowPx', 'onGround', 'crown', 'pool', 'foot', 'foot2']) (G[k] = G[k] || {})[key] = g[k];
   }
   if (errs.length) throw new Error(errs.join('; '));
   const mpage = await browser.newPage(); mpage.on('pageerror', e => errs.push(String(e)));
@@ -144,6 +144,7 @@ function collectKeys(sheet, G, runs) {
   for (const r of runs) for (const l of r.lines) add(l.W);
   for (const T of G.TICKS) { for (const t of T.ticks) add(t.W); for (const L of T.states) add(L.W); }
   for (const ps of pairSidesOf()) add(pairW(ps, sheet));
+  keys.set('oc|1', { carro: 1 }); keys.set('oc|cerrado', { carro: 'cerrado' });   // the old cart (drawn in the old sorted list), for the old picture's composite
   return [...keys.entries()];
 }
 // the things a world shows, raw: their kind, id, the object, its key and the spec that draws it alone
@@ -309,8 +310,8 @@ function designMoves(F, POSA) {
   const B = OLD.BANCOS.map(b => b[0]);
   const sit = (who, x) => [who, [x, 161], [x, SYf(x)]];
   return [
-    { act: '*', src: 'PORTON=[188,197];', to: 'PORTON=[188,197],' + SYSRC + ';', def: true,
-      why: 'two rules the moves below use. SY(x): where whoever sits on a bench at x has their feet: the benches stand on the world\'s axes (along x), so each seat\'s front edge falls half a row for every px to the right; whoever sits keeps the old x and sits on that edge, their feet over the paving below it; at each bench\'s middle the old 161. AS(x) = SY(x) - 12: a thing put on the seat at x (the old ASIENTO, 149 at each bench\'s middle), two rows behind the edge' },
+    { act: '*', src: 'PORTON=[188,197];', to: 'PORTON=[199,203],' + SYSRC + ';', def: true, pts: [['porton', [188, 197], [199, 203]], ['porton', [184, 199], [195, 205]], ['porton', [184, 197], [195, 203]], ['cq', [176, 172], [187, 178]]],
+      why: 'round 2: PORTON, where one stands at the gate, 11 px right and 6 rows down: inside the gate\'s opening (the hedge along y across the lower right corner, its two posts at 180, 212 and 212, 196); every place made from it moves with it (luisve, pasa, sale, turno22, adios, sevade, alza, final22, sevan22: the way out at PORTON[1]). And two rules the moves below use. SY(x): where whoever sits on a bench at x has their feet: the benches stand on the world\'s axes (along x), so each seat\'s front edge falls half a row for every px to the right; whoever sits keeps the old x and sits on that edge, their feet over the paving below it; at each bench\'s middle the old 161. AS(x) = SY(x) - 12: a thing put on the seat at x (the old ASIENTO, 149 at each bench\'s middle), two rows behind the edge' },
     { act: '*', src: 'await mueve(id,q[0]+(lado||0)*10,q[1]+11);', to: 'await mueve(id,q[0]+(lado||0)*10,SY(q[0]+(lado||0)*10));', why: 'sienta: whoever sits down sits on the seat\'s edge at their x (SY)' },
     { act: 'inicio21', src: 'hombre:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[2][0],y:161,dir:1,sent:1}', to: 'hombre:{x:B[0][0]-9,y:SY(B[0][0]-9),dir:1,sent:1},mujer:{x:B[1][0]-9,y:SY(B[1][0]-9),dir:1,sent:1},luis:{x:B[2][0],y:SY(B[2][0]),dir:1,sent:1}',
       pts: [sit('hombre', B[0] - 9), sit('mujer', B[1] - 9), sit('luis', B[2])], why: 'acts.inicio21: the three on the benches sit on the seats\' edges (SY)' },
@@ -327,22 +328,41 @@ function designMoves(F, POSA) {
       pts: [['cosa', [101, OLD.ASIENTO - 4], [97, ASf(97) - 4]], ['cosa', [153, OLD.ASIENTO], [153, ASf(153)]]], why: 'acts.dejan: the piragua and the bottle left on the seats (AS); the piragua 4 px left, so that it lies on the seat\'s top clear of its right end, by the man who leaves it' },
     { act: 'paloma', src: 'await palomaA(pg,119,ASIENTO);', to: 'await palomaA(pg,109,AS(109));', pts: [['paloma', [119, OLD.ASIENTO], [109, ASf(109)]]], why: 'acts.paloma: the pigeon lands on the seat by the piragua: the old point (119) is past the new seat\'s right end; on the seat, 10 px left, its beak at the piragua (moved 4 px left too)' },
     { act: 'paloma', src: 'await palomaA(pg,163,ASIENTO);', to: 'await palomaA(pg,157,AS(157));', pts: [['paloma', [163, OLD.ASIENTO], [157, ASf(157)]]], why: 'acts.paloma: the pigeon lands on the seat by the bottle: on the seat, 6 px left (the old point is past the new seat\'s right end)' },
-    { act: 'inicio22', src: '{id:"cartera",k:"cartera",x:157,y:ASIENTO},{id:"mochila",k:"mochila",x:204,y:ASIENTO+1}', to: '{id:"cartera",k:"cartera",x:154,y:AS(154)},{id:"mochila",k:"mochila",x:201,y:AS(201)+1}',
-      pts: [['cosa', [157, OLD.ASIENTO], [154, ASf(154)]], ['cosa', [204, OLD.ASIENTO + 1], [201, ASf(201) + 1]]], why: 'acts.inicio22: the handbag and the rucksack on the seats (AS), 3 px left, clear of the seats\' right ends' },
+    { act: 'inicio22', src: '{id:"cartera",k:"cartera",x:157,y:ASIENTO},{id:"mochila",k:"mochila",x:204,y:ASIENTO+1}', to: '{id:"cartera",k:"cartera",x:154,y:AS(154)},{id:"mochila",k:"mochila",x:197,y:AS(197)+1}',
+      pts: [['cosa', [157, OLD.ASIENTO], [154, ASf(154)]], ['cosa', [204, OLD.ASIENTO + 1], [197, ASf(197) + 1]]], why: 'acts.inicio22: the handbag and the rucksack on the seats (AS), clear of the seats\' right ends (the third bench ends 5 px right of its middle, round 2)' },
     { act: 'turno22', src: '{id:"periodico",k:"periodico",x:108,y:ASIENTO}', to: '{id:"periodico",k:"periodico",x:105,y:AS(105)}', pts: [['cosa', [108, OLD.ASIENTO], [105, ASf(105)]]], why: 'acts.turno22: the newspaper left on the seat (AS), 3 px left, clear of its right end' },
     { act: 'cojin', src: '{id:"cojin",k:"mochila",x:B[0][0]-21,y:ASIENTO+1,z:150}', to: '{id:"cojin",k:"mochila",x:B[0][0]+12,y:AS(B[0][0]+12)+1,z:150}', pts: [['cosa', [OLD.BANCOS[0][0] - 21, OLD.ASIENTO + 1], [OLD.BANCOS[0][0] + 12, ASf(OLD.BANCOS[0][0] + 12) + 1]]],
       why: 'acts.cojin: Carmen puts the rucksack on the first bench as a cushion: the old point (B - 21) is past the new seat\'s left end, and Luis sits at its left end (B - 13); at its right end' },
     { act: '*', src: 'POSA=[[110,127],[158,127],[176,127],[208,127]]', to: 'POSA=' + JSON.stringify(POSA), pts: OLD.POSA.map((p, i) => ['paloma', p, POSA[i]]),
-      why: 'where the pigeons perch on the benches\' backs (posa): on the top of each back at its x, which falls half a row a px to the right; the third (176) was past the third back\'s left end: 12 px right' },
-    { act: '*', src: 'CARRO=[47,178]', to: 'CARRO=[34,178]', pts: [['piraguero', [51, 172], [38, 172]], ['carro', [47, 178], [34, 178]]], carroShift: -13,
-      why: 'the cart and its man 13 px to the left: the cart lies along y in front of the man (down to the right of him on the screen, where the old one was drawn round him), so its middle is right of him; at the old point its right wheel stood where the frog serves whoever sits at the first bench\'s left (87, 179). W.carroX starts at CARRO[0] (carrova) and every place made from CARRO moves with it (the man: CARRO + (4, -6))' },
-    { act: '*', src: 'fresh:()=>({respEn:[120,64],', to: 'fresh:()=>({respEn:[126,31],', respEn: [126, 31],
+      why: 'where the pigeons perch on the benches\' backs (posa): on the top of each back at its x, which falls half a row a px to the right; the third (176) was past the third back\'s left end: 12 px right; the fourth 11 px left (the third bench is shorter, round 2)' },
+    { act: '*', src: 'CARRO=[47,178]', to: 'CARRO=[36,178]', pts: [['piraguero', [51, 172], [40, 172]], ['carro', [47, 178], [36, 178]]], carroShift: -11,
+      why: 'the cart and its man 11 px to the left: the cart lies along y in front of the man (down to the right of him on the screen, where the old one was drawn round him), so its middle is right of him; at the old point its right wheel stood where the frog serves whoever sits at the first bench\'s left (87, 179). W.carroX starts at CARRO[0] (carrova) and every place made from CARRO moves with it (the man: CARRO + (4, -6))' },
+    { act: '*', src: 'fresh:()=>({respEn:[120,64],', to: 'fresh:()=>({respEn:[128,31],', respEn: [128, 31],
       why: 'where the answer cards stand (W.respEn, every story of the scene): in the sky under the rounds card, so that the hint drawn round a card (its frame, box + 12, and the hint hand under it, 45 px tall) falls on nobody\'s face: at the old (120, 64) the hand lay on the faces of whoever sits on the benches. Its frames and glow 4 px inside the view, right of the sun; over the wire\'s pigeons and the lamp\'s lantern (no ask with cards names them)' },
-    { act: 'inicio22', src: 'W.casa=[124,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;', to: 'W.casa=[138,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;', pts: [['cq', [108, 178], [122, 178]]],
-      why: 'acts.inicio22 (senor-senora): the frog\'s home 14 px right, so that his walks to the young dog (moved, below) take their old two hops; every other walk from it keeps its count (hops)' },
+    { act: 'inicio22', src: 'W.casa=[124,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;', to: 'W.casa=[134,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;', pts: [['cq', [108, 178], [118, 178]]],
+      why: 'acts.inicio22 (senor-senora): the frog\'s home 10 px right, so that his walks to the young dog (moved, below) take their old two hops; every other walk from it keeps its count (hops)' },
     { act: 'inicio22', src: 'W.perros={viejo:{x:90,y:193,pose:"sit",dir:1},joven:{x:38,y:193,pose:"sit",dir:1}}', to: 'W.perros={viejo:{x:104,y:193,pose:"sit",dir:1},joven:{x:52,y:193,pose:"sit",dir:1}}', pts: [['perro', [38, 193], [52, 193]], ['perro', [90, 193], [104, 193]]], why: 'acts.inicio22: the two dogs 14 px right: at 38 the young dog\'s hint frame (box + 12) left the view (as in the old); the old dog with it, and the frog\'s home (above), so that every walk of the frog between them and to them takes its old hops' },
+    { act: 'sale22', src: 'W.casa=[100,205];', to: 'W.casa=[114,205];', pts: [['cq', [84, 178], [98, 178]]], why: 'acts.sale22: the frog\'s home when the dogs have moved aside, 14 px right with them (moved, below), so that he stands where he stood beside the young dog and his walks take their old hops' },
+    { act: '*', src: 'mueve("carmen",158,210)', to: 'mueve("carmen",160,215)', pts: [['carmen', [158, 210], [160, 215]]], why: 'bolsa, hueso: where Carmen hands the bag and the bone, 2 px right and 5 rows nearer: Luis and the frog\'s home moved 14 px right (round 2), and 14 px would put her behind the gate\'s left post; here she is clear of the frog, of the post, and of Luis but his feet' },
+    { act: 'carrova', src: 'v.y=196;j.y=204;', to: 'v.y=206;j.y=212;', why: 'acts.carrova: when the cart goes home the two dogs walk 10 and 8 rows nearer: the cart now rolls toward the viewer (+y) with its man pushing it, and at the old rows he walked over the old dog; here both dogs stay in front of him while they are in the view (the young one still in front of the old)' },
     { act: 'perros22', src: 'L=[38,193],D=[90,193]', to: 'L=[52,193],D=[104,193]', why: 'acts.perros22: the dogs\' two places, as at the start (inicio22)' },
-    { act: 'sale22', src: 'perroA("viejo",36,193,"walk"),perroA("joven",64,194,"run")', to: 'perroA("viejo",52,193,"walk"),perroA("joven",78,194,"run")', pts: [['perro', [36, 193], [52, 193]], ['perro', [64, 194], [78, 194]]], why: 'acts.sale22: the dogs move aside to the left: 16 and 14 px less far (their hint frames inside the view)' },
+    { act: 'sale22', src: 'perroA("viejo",36,193,"walk"),perroA("joven",64,194,"run")', to: 'perroA("viejo",52,193,"walk"),perroA("joven",54,214,"run")', pts: [['perro', [36, 193], [52, 193]], ['perro', [64, 194], [54, 214]]], why: 'acts.sale22: the dogs move aside to the left: the old one 16 px less far (his hint frame inside the view), the young one 10 px farther and 20 rows nearer, in front of the old one (moved) and of the frog when he serves whoever queues first at the cart (cola22: at the old row he stood over the dog)' },
+    { act: 'inicio22', src: 'carmen:{x:176,y:208,dir:-1}', to: 'carmen:{x:198,y:211,dir:-1}', pts: [['carmen', [176, 208], [198, 211]]], why: 'acts.inicio22: Carmen 18 px right and 4 rows down, on the path just beyond the gate: at the old point she stood on the gate\'s left post; the frog\'s home, Luis and the box moved 14 px right (round 2), and she keeps her distance from them' },
+    { act: 'inicio22', src: 'luis:{x:148,y:186,dir:1}', to: 'luis:{x:162,y:186,dir:1}', pts: [['luis', [148, 186], [162, 186]]], why: 'acts.inicio22: Luis by the box, 14 px right with the frog\'s home (moved), so that the frog does not stand on his feet (round 2)' },
+    { act: '*', src: 'mueve("luis",148,186)', to: 'mueve("luis",162,186)', why: 'luiscaja, luisguarda: Luis back to his place by the box (moved, inicio22)' },
+    { act: 'inicio22', src: '{id:"caja",k:"caja",x:167,y:187}', to: '{id:"caja",k:"caja",x:185,y:187}', pts: [['cosa', [167, 187], [185, 187]]], why: 'acts.inicio22: the box beside Luis, 18 px right (he moved 14), so that it hides no more of his legs than the old (round 2)' },
+    { act: 'alcarro', src: 'const en={senor:[80,184],mujer:[96,188],joven:[112,184]}', to: 'const en={senor:[80,190],mujer:[96,192],joven:[120,186]}', pts: [['senor', [80, 184], [80, 190]], ['mujer', [96, 188], [96, 192]], ['joven', [112, 184], [120, 186]]], why: 'acts.alcarro: the three queue at the cart 6, 4 and 2 rows nearer, the young man 8 px right, behind the old dog (moved) as before it: the man reading on the first bench sits up to 6 rows lower than the old (SY), and their heads stood in front of his face (round 2)' },
+    { act: '*', src: 'JUGEN=[[182,188],[195,196],[183,209],[196,211]]', to: 'JUGEN=[[182,188],[195,196],[190,208],[196,211]]', pts: [['cosa', [183, 209], [190, 208]]], why: 'where the third toy lands (despierta): 7 px right, in the gate\'s opening: the old point is on its left post' },
+    { act: 'pasa', src: 'await mueve(o.a,PORTON[0]+8,PORTON[1]);', to: 'await mueve(o.a,PORTON[0]+6,PORTON[1]+4);', pts: [['porton', [196, 197], [205, 207]]], why: 'acts.pasa: who walks through the gate stops just beyond it on the path, clear of the right post and the hedge (round 2)' },
+    { act: 'sevade', src: 'p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;},', to: 'p.dir=1;await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,246,PORTON[1]+12);p.vis=0;},', why: 'acts.sevade: who says goodbye walks out through the gate\'s opening (PORTON) and along the path: from the benches straight to the old exit point the way crossed the hedge (round 2)' },
+    { act: 'alza', src: 'p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;W.cq.dy=0;', to: 'p.dir=1;await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,246,PORTON[1]+12);p.vis=0;W.cq.dy=0;', why: 'acts.alza: as sevade' },
+    { act: 'abuelallega', src: 'W.gente.abuela={x:250,y:204,dir:-1,paso:1}', to: 'W.gente.abuela={x:250,y:212,dir:-1,paso:1}', pts: [['abuela', [250, 204], [250, 212]]], why: 'acts.abuelallega: abuela comes in along the path and through the gate\'s opening (from 8 rows lower, off the picture)' },
+    { act: 'final22', src: 'mueve("carmen",190,204)', to: 'mueve("carmen",192,200)', pts: [['carmen', [190, 204], [192, 200]]], why: 'acts.final22: Carmen waits at the gate in front of its opening, clear of the left post (round 2)' },
+    { act: 'final22', src: 'h.pose="idle";await mueve("hombre",246,PORTON[1]);h.vis=0;}else', to: 'h.pose="idle";await mueve("hombre",PORTON[0],PORTON[1]);await mueve("hombre",246,PORTON[1]+12);h.vis=0;}else', why: 'acts.final22: the man who came for his paper leaves through the gate\'s opening (PORTON) and along the path: from beside Luis straight to the exit the way crossed the line of the gate at its right post (round 2)' },
+    { act: '*', src: '246,PORTON[1])', to: '246,PORTON[1]+12)', why: 'whoever leaves walks to (246, PORTON[1] + 12): through the middle of the gate\'s opening and out along the path (round 2; the old went to PORTON[1], past the right post)' },
+    { act: '*', src: '244,PORTON[1])', to: '244,PORTON[1]+12)', why: 'as 246, PORTON[1] (turno22)' },
+    { act: 'final21', src: 'cx()+46,pies()+2', to: 'cx()+36,pies()+2', pts: [['carmen', [170, 208], [160, 208]]], why: 'acts.final21: Carmen comes to the frog\'s right 10 px nearer: at the old offset from his home she stood on the gate\'s left post (round 2)' },
+    { act: 'sevan23', src: 'mueve("abuela",250,200),mueve("carmen",250,206),mueve("luis",250,196),perroA("canelo",250,210', to: 'mueve("abuela",250,210),mueve("carmen",250,206),mueve("luis",250,206),perroA("canelo",250,214', pts: [['abuela', [250, 200], [250, 210]], ['luis', [250, 196], [250, 206]], ['perro', [250, 210], [250, 214]]], why: 'acts.sevan23: everyone leaves through the gate\'s opening and out along the path (the old walked out over the hedge\'s line)' },
     { act: '*', src: 'if(pi)pi.x=W.carroX+30;', to: 'if(pi){pi.x=W.carroX+30;pi.y=CARRO[1]+2+(CARRO[0]-W.carroX)/2;}', why: 'the cart rolling away (W.seva): it rolls along +y (down to the left on the screen, half a row for every px), the piragua man pushing it from behind' },
     { act: '*', src: 'if(W.carro!==0)L.push({y:CARRO[1],d:()=>c.drawImage(spr("carro"+(W.carro==="cerrado"?1:0),()=>mkCarro(W.carro==="cerrado")),R(W.carroX!=null?W.carroX:CARRO[0])-24,CARRO[1]-72)});',
       to: 'if(W.carro!==0&&W.carroX!=null)L.push({y:CARRO[1]+(CARRO[0]-W.carroX)/2,carro:1,d:()=>CARRORUEDA(c,W)});',
@@ -353,7 +373,11 @@ function designMoves(F, POSA) {
 function designStoryMoves() {
   const out = [], sit = x => ({ old: [x, 161], new: [x, SYf(x)], who: 'sitting', why: 'sitting on the bench at x ' + x + ': on its seat\'s edge (SY)' });
   for (const x of [87, 135, 138]) out.push(sit(x));
-  out.push({ old: [51, 172], new: [38, 172], who: 'piraguero', why: 'the piragua man behind his cart: CARRO moved (moves)' });
+  out.push({ old: [188, 197], new: [199, 203], who: 'porton', why: 'PORTON moved into the gate\'s opening (moves)' });
+  out.push({ old: [188, 200], new: [199, 206], who: 'porton', why: 'by PORTON, as PORTON (moves)' });
+  out.push({ old: [186, 204], new: [192, 201], who: 'porton', why: 'd-vamos-a-casa: Carmen by the gate, in front of its opening (at the old point she stood behind its left post)' });
+  for (const [o, n] of [[[246, 197], [246, 211]], [[246, 198], [246, 212]], [[246, 204], [246, 214]], [[250, 200], [250, 212]], [[250, 208], [250, 206]], [[240, 202], [240, 210]]]) out.push({ old: o, new: n, who: 'fuera', why: 'd-vamos-a-casa: out through the middle of the gate\'s opening along the path (round 2)' });
+  out.push({ old: [51, 172], new: [40, 172], who: 'piraguero', why: 'the piragua man behind his cart: CARRO moved (moves)' });
   out.push({ old: [160, 150], new: [156, ASf(156) + 1], who: 'cosa', why: 'h-banco: the rucksack on the second bench\'s seat (AS), 4 px left, clear of its right end' });
   out.push({ old: [152, 149], new: [143, ASf(143)], who: 'cosa', why: 'cual-banco bebe.si: the bottle on the second bench\'s seat (AS), 9 px left: the pigeon by it moved left (the old point is past the seat\'s right end), its beak at the bottle as the old' });
   out.push({ old: [146, 145], new: [146, ASf(146) - 4], who: 'cosa', why: 'cual-banco bebe.no: the piragua lying on the second bench\'s seat (AS - 4, as the old ASIENTO - 4)' });
@@ -381,7 +405,7 @@ function make(G, runs) {
 
   /* the back's top (where a pigeon perches on a bench's back), at column c of bench k: the old POSA moved onto it */
   const backTop = (k, c) => { const b = F.BENCH[k], y = b.y0 + .065, z = F.ZS + F.BACK_H - .02, x = (c - E.OX) / E.S * E.R2 + y; return E.project(x, y, z).sy; };
-  const POSA = [[110, 0], [158, 1], [188, 2], [208, 2]].map(([c, k]) => [c, Math.floor(backTop(k, c)) + 1]);
+  const POSA = [[110, 0], [158, 1], [188, 2], [197, 2]].map(([c, k]) => [c, Math.floor(backTop(k, c)) + 1]);
   const MOVES = designMoves(F, POSA).map(m => Object.assign({ line: lineOf(m.src) }, m, { lines: linesOf(m.src) }));
   for (const m of MOVES) for (const q of m.pts || []) q.push(q[0] === 'paloma' && m.src.startsWith('POSA') ? W4(E.atZ(q[2][0], q[2][1] - 1, F.ZS + F.BACK_H)) : q[0] === 'cosa' || q[0] === 'paloma' ? onSeatW(q[2]).world : q[0] === 'cq' ? frogW(q[2]).world : ['porton', 'piraguero', 'carro'].includes(q[0]) ? placeW(q[2]).world : seatW(q[2][0], q[2][1]).world);
   const STORY = designStoryMoves();
@@ -402,8 +426,8 @@ function make(G, runs) {
   OLD.BANCOS.forEach((b, i) => spot('sitio.' + i, [b[0], 161], 'BANCOS[' + i + ']: whoever sits at the middle of bench ' + i + ' (their feet; SY gives every other x)', 'sit', [b[0], SYf(b[0])]));
   spot('carro', OLD.CARRO, 'CARRO: the cart standing (its place in the sorted list; the set\'s cart is built round it, points.carro)');
   spot('piraguero', [OLD.CARRO[0] + 4, OLD.CARRO[1] - 6], 'CARRO + (4, -6): the piragua man, behind his cart');
-  spot('porton', OLD.PORTON, 'PORTON: where one stands at the gate, before its opening');
-  spot('porton.fuera', [246, OLD.PORTON[1]], 'where whoever leaves goes, out through the gate and off the picture');
+  spot('porton', OLD.PORTON, 'PORTON: where one stands at the gate, in its opening (moves)', 'place', [199, 203]);
+  spot('porton.fuera', [246, OLD.PORTON[1]], 'where whoever leaves goes, out through the gate along the path and off the picture (moves)', 'place', [246, 215]);
   for (let i = 0; i < 5; i++) { const x = 66 + i * 17, y = R(50 + 7 * (1 - Math.pow((x - 120) / 98, 2))); SPOTS['cable.' + i] = { world: W4(cableWorld(F, x, y)), on: 'wire', old: [x, y], new: [x, y], what: 'CABLE(' + i + '): a pigeon on the wire (its feet on it): the wire hangs where the old one was' }; }
   OLD.POSA.forEach((p, i) => { SPOTS['respaldo.' + i] = { world: W4(E.atZ(POSA[i][0], POSA[i][1] - 1, F.ZS + F.BACK_H)), on: 'back', old: p, new: POSA[i], moved: true, what: 'POSA[' + i + ']: a pigeon on a bench\'s back (moves)' }; });
 
@@ -454,11 +478,11 @@ function make(G, runs) {
       : [Math.max(0, Math.min(142, R(cx - 49))), Math.max(0, Math.min(164, R(cy - 26))), 98, 52];
     const w = floorW(cx, cy); return { world: w.world, screen: [cx, cy], zoom, crop, what }; };
   const PICS = {
-    'hombre.si': pic(144, 137, 2, 'the man sitting on the second bench, reading'), 'hombre.no': pic(144, 137, 2, 'the woman sitting there, reading'),
-    'senor.si': pic(144, 136, 2, 'the old man sitting on the bench'), 'senor.no': pic(144, 136, 2, 'Luis sitting there'),
-    'come.si': pic(144, 137, 2, 'the man on the bench eating a piragua'), 'come.no': pic(144, 137, 2, 'the man drinking water'),
-    'cansado.si': pic(144, 138, 2, 'Luis on the bench, tired'), 'cansado.no': pic(144, 138, 2, 'Luis on the bench, happy, waving'),
-    'contento.si': pic(144, 137, 2, 'the man on the bench, happy'), 'contento.no': pic(144, 137, 2, 'the man on the bench, crying'),
+    'hombre.si': pic(162, 137, 2, 'the man sitting on the second bench, reading'), 'hombre.no': pic(162, 137, 2, 'the woman sitting there, reading'),
+    'senor.si': pic(162, 136, 2, 'the old man sitting on the bench'), 'senor.no': pic(162, 136, 2, 'Luis sitting there'),
+    'come.si': pic(162, 137, 2, 'the man on the bench eating a piragua'), 'come.no': pic(162, 137, 2, 'the man drinking water'),
+    'cansado.si': pic(162, 138, 2, 'Luis on the bench, tired'), 'cansado.no': pic(162, 138, 2, 'Luis on the bench, happy, waving'),
+    'contento.si': pic(162, 137, 2, 'the man on the bench, happy'), 'contento.no': pic(162, 137, 2, 'the man on the bench, crying'),
     'mujer.si': pic(146, 160, 1, 'the woman walking on the paving'), 'mujer.no': pic(146, 160, 1, 'Carmen walking there'),
     'senora.si': pic(146, 160, 1, 'the woman with a bag, the frog'), 'senora.no': pic(146, 160, 1, 'the young man with a bag, the frog'),
     'joven.si': pic(146, 160, 1, 'the young man walking'), 'joven.no': pic(146, 160, 1, 'the old man walking'),
@@ -582,7 +606,7 @@ function make(G, runs) {
         gs: 'GS(x0, y0, x1, y1, t): the ground under a perch (x, y): on the wire (|y - cableY(x)| <= 2, y < 80): [x, ' + F.POLE.at[1] + ' + (x - ' + F.POLE.at[0] + ') * ' + r4((F.FAROL.at[1] - F.POLE.at[1]) / (F.FAROL.at[0] - F.POLE.at[0])) + '] (points.cable); on a bench\'s back (a POSA): [x, y - 1 + (ZS + BACK_H) * COS * S]; on a seat (a bench\'s seat at that row): [x, y - 1 + ZS * COS * S]; else [x, y - 1]. The shadow: lerp of the two by t',
         gsSource: gsSource(F, POSA),
       },
-      margin: 6, marginWhat: 'whatever rests near the paving\'s edge, the hedge, a bench, the lamp post or the gate is on one side: on the paving with at least `margin` px of paving round its foot (the lowest 2 rows of its sprite), or on the lawn with `margin` px of lawn, and `margin` px from the footprint of every set thing (where it meets the ground: a bench\'s leg, a post, the hedge, the lamp post\'s foot, the cart, a trunk; banco-set.html FOOTS); what stands behind a thing is drawn behind it (front), what stands in front of it before it',
+      margin: 6, marginWhat: 'whatever rests near the paving\'s edge, the hedge, a bench, the lamp post or the gate is on one side: on the paving with at least `margin` px of paving round its foot (the lowest 2 rows of its sprite), or on the lawn with `margin` px of lawn, and `margin` px from the footprint of every set thing (where it meets the ground: a bench\'s leg, the lamp post\'s foot, the cart\'s wheels, a trunk; banco-set.html FOOTS), 3 px from a gate\'s post (the opening is just wide enough to walk through) and from the hedge (round 2: it may hide feet, never a face); what stands behind a thing is drawn behind it (front), what stands in front of it before it',
     },
     moves: MOVES.map(m => Object.assign({ line: m.line }, m.lines.length > 1 ? { lines: m.lines } : {}, { act: m.act, src: m.src, to: m.to }, m.pts && m.pts.length ? { places: m.pts.map(q => ({ who: q[0], old: q[1], new: q[2], world: q[3] })) } : {}, { why: m.why })),
     dropped: DROPPED,
@@ -717,6 +741,7 @@ function remapW(sh, w0, story) {
   for (const p of w.palomas || []) if (p && p.x != null) { const m = find('paloma', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
   for (const p of w.cosas || []) if (p && p.x != null) { const m = find('cosa', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
   for (const p of Object.values(w.perros || {})) if (p && p.x != null) { const m = find('perro', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    if (w.seva) { const v = (w.perros || {}).viejo, j = (w.perros || {}).joven; if (v && v.y === 196) v.y = 206; if (j && j.y === 204) j.y = 212; }   // the cart going home: the dogs walk 10 and 8 rows nearer (carrova)
   const sitters = Object.values(w0.gente || {}).filter(p => p && p.sent && R(p.y) === 161 && p.vis !== 0);
   for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null || p.sent) continue; const m = MV.find(q => (q.who === id || q.who === 'porton') && q.old[0] === R(p.x) && q.old[1] === R(p.y)) || RM.find(e => e.old[0] === R(p.x) && e.old[1] === R(p.y) && e.uses.some(u => / (beats|.*gente)/.test(u))); if (m) { p.x = m.new[0] + (p.x - R(p.x)); p.y = m.new[1] + (p.y - R(p.y)); } }
   // the frog serving whoever sits (ranaA(p.x - 0, 2 or 4, p.y + 22 or 24)) moves with them; the frog at the gate (PORTON + 4) with it
@@ -724,7 +749,7 @@ function remapW(sh, w0, story) {
   if (w.cq) for (const d of Object.values(w0.perros || {})) { if (!d || d.x == null || w.cq.x !== R(d.x) + 14 || w.cq.y !== R(d.y) - 23) continue; const m = MV.find(m2 => m2.who === 'perro' && m2.old[0] === R(d.x) && m2.old[1] === R(d.y)); if (m) { w.cq.x += m.new[0] - m.old[0]; w.cq.y += m.new[1] - m.old[1]; } break; }
   if (w.cq) { const q = w.cq, s = sitters.find(p => [0, -2, -4].includes(q.x + 16 - R(p.x)) && [156, 158].includes(q.y)); if (s) { const m = MV.find(m2 => m2.old[0] === R(s.x) && m2.old[1] === 161 && m2.who !== 'sitting'), nx = m ? m.new[0] : R(s.x); q.x += nx - R(s.x); q.y += SYf(nx) - 161; }
   }
-  if (w.carroX != null) { w.carroX += -13; if (w.gente && w.gente.piraguero && w.seva) { const pi = w.gente.piraguero; pi.x += -13; pi.y = 178 + 2 + (34 - w.carroX) / 2; } }
+  if (w.carroX != null) { w.carroX += -11; if (w.gente && w.gente.piraguero && w.seva) { const pi = w.gente.piraguero; pi.x += -11; pi.y = 178 + 2 + (36 - w.carroX) / 2; } }
   return w;
 }
 const placesOf = w => { const o = {}; for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.vis !== 0) o[id] = [R(p.x), R(p.y)];
@@ -867,9 +892,9 @@ function checkMoments(sh, G, runs, P, C) {
     for (const [y, a, b] of rs) { if (y < 0 || y >= 216) continue; for (let x = Math.max(0, a); x <= Math.min(239, b); x++) { const i = y * 240 + x; if (names.includes(TG[i]) && Z[i] > v / COS - (y + .5 - E.OY) * T30 / E.S) out[TG[i]] = (out[TG[i]] || 0) + 1; } }
     return out; };
   const footOf = rs => { const last = Math.max(...rs.map(r => r[0])); return rs.filter(r => r[0] >= last - 1); };
-  const FOOTS = {}; for (const k of ALL_STATES) FOOTS[k] = new Set(G.foot[k]);
+  const FOOTS = {}, FOOTS2 = {}; for (const k of ALL_STATES) { FOOTS[k] = new Set(G.foot[k]); FOOTS2[k] = new Set(G.foot2[k]); }
   const sideOf = (key, foot) => { const m = sh.helps.margin; let pave = true, lawn = true;
-    for (const [y, a, b] of foot) for (let x = a - m; x <= b + m; x++) for (let dy = -m; dy <= m; dy++) { const dx = x < a ? a - x : x > b ? x - b : 0, d2 = dx * dx + dy * dy; if (d2 > m * m) continue; const yy = y + dy, z = x < 0 || x >= 240 || yy < 0 || yy >= 216 ? 'out' : FOOTS[key].has(yy * 240 + x) ? 'F' : G.surf[yy * 240 + x]; if (z !== 'out' && z !== 'p') pave = false; if (z !== 'out' && z !== 'l') lawn = false; }
+    for (const [y, a, b] of foot) for (let x = a - m; x <= b + m; x++) for (let dy = -m; dy <= m; dy++) { const dx = x < a ? a - x : x > b ? x - b : 0, d2 = dx * dx + dy * dy; if (d2 > m * m) continue; const yy = y + dy, z = x < 0 || x >= 240 || yy < 0 || yy >= 216 ? 'out' : FOOTS[key].has(yy * 240 + x) || (FOOTS2[key].has(yy * 240 + x) && d2 <= 9) ? 'F' : G.surf[yy * 240 + x]; if (z !== 'out' && z !== 'p') pave = false; if (z !== 'out' && z !== 'l') lawn = false; }
     return pave ? 'pave' : lawn ? 'lawn' : 'across'; };
 
   /* every moment: the port's play at every tick inside the acts and every step's end, and every pair picture */
@@ -917,7 +942,7 @@ function checkMoments(sh, G, runs, P, C) {
     // whoever crosses the hedge's line crosses it in the gate's opening, between the posts (nobody walks through the hedge)
     for (let i = 1; i < T.length; i++) for (const [id, p] of Object.entries(P0[i])) { const q = P0[i - 1][id]; if (!q || /^paloma|^cosa/.test(id)) continue;
       const k0 = q[0] + 2 * (q[1] - 1) - HK, k1 = p[0] + 2 * (p[1] - 1) - HK; if ((k0 < 0) === (k1 < 0)) continue; const t = k0 / (k0 - k1), cx = q[0] + (p[0] - q[0]) * t; if (cx >= 240) continue; stats.cross++;
-      if (cx < F.GATE[0][0] + 4 || cx > F.GATE[1][0] - 4) hedgeBad.set(id + ' ' + r.story.id + ' ' + r.plan, 'at t ' + T[i].t + ' crosses the hedge\'s line at x ' + R(cx) + ', not in the gate\'s opening (' + (F.GATE[0][0] + 4) + ' to ' + (F.GATE[1][0] - 4) + ')'); }
+      if (cx < F.GATE[0][0] + 3 || cx > F.GATE[1][0] - 3) hedgeBad.set(id + ' ' + r.story.id + ' ' + r.plan, 'at t ' + T[i].t + ' crosses the hedge\'s line at x ' + R(cx) + ', not in the gate\'s opening (' + (F.GATE[0][0] + 4) + ' to ' + (F.GATE[1][0] - 4) + ')'); }
     for (const L of NEW[ri].states) { let j = -1; for (let k = 0; k < T.length && T[k].t <= L.t; k++) j = k; const dw = {}; const P1 = posOf(L.W);
         for (const [id, p] of Object.entries(P1)) { const key = id + '@' + p.join(','); dw[key] = j >= 0 && dwell[j][key] != null ? dwell[j][key] : (j < 0 ? 999 : 0); }
         look(r.story.id + ' ' + r.plan + ' ' + L.path, L.W, dw); allW.push([r.story.id + ' ' + r.plan + ' ' + L.path, L.W]); } });
@@ -955,11 +980,101 @@ function checkMoments(sh, G, runs, P, C) {
       for (const [bn, b] of boards) if (meets(rect, b)) P.push('bubble: ' + where + ' ' + who + ' is over ' + bn);
       for (const [fn, f] of faces) if (meets(rect, f)) P.push('bubble: ' + where + ' ' + who + ' is on ' + fn); } }
   notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments (each person\'s recorded one and "amor" when touched, the frog\'s): wholly inside the view (' + worstView + ' px from its edge at the least), clear of the rounds card, on no face; but where no place is free the "amor" of a touch keeps the old place, as the old (' + ([...asOldB].join(', ') || 'none') + ')');
+  /* round 2: the picture as it is drawn. Every item of the sorted list (banco.js draw: its y, then its place in the list) owns the pixels it
+     drew last; then each front part is drawn again where its owner stands behind it, never over whoever sits on that bench or what lies on its
+     seat (front.how). Round 1 measured nearer set pixels inside each item's sprite with every sitter in one plane, and the preview redrew a
+     part inside each item's whole box (so a bench was drawn over whatever came after in that box: the baby in the pushchair, a sitter's thighs);
+     now both measure and draw by owner. The old picture: the same list, with the old cart in it, and no set drawn over anyone */
+  const STAMP = new Int32Array(240 * 216), OWN = new Int16Array(240 * 216); let stampN = 0;
+  const rankOf = { oldcart: 0, person: 1, pigeon: 2, thing: 3, dog: 4, coche: 5, frog: 6 };
+  const compose = (w, isOld) => { const key = keyOf(w), its = itemsOf(w).map((it, n) => Object.assign(it, { n }));
+    if (isOld && w.carro !== 0) { const m = MASK[w.carro === 'cerrado' ? 'oc|cerrado' : 'oc|1']; if (m) { const dx = w.carroX != null ? R(w.carroX) - 47 : 0; its.push({ id: 'the old cart', kind: 'oldcart', rows: m.rows.map(r => [150 + r[0], 120 + r[1] + dx, 120 + r[2] + dx]), at: [47 + dx, 178], n: -1 }); } }
+    const sk = it => it.kind === 'oldcart' ? 178 : it.kind === 'person' ? (it.o.sent ? it.o.y - 8 : it.o.y) : it.kind === 'pigeon' ? (it.o.z != null ? it.o.z : it.o.y) : it.kind === 'thing' ? (it.o.z != null ? it.o.z : it.o.y + 1) : it.kind === 'frog' ? it.o.y + 27 : it.o.y;
+    its.sort((a, b) => sk(a) - sk(b) || rankOf[a.kind] - rankOf[b.kind] || a.n - b.n);
+    stampN++; its.forEach((it, j) => { it.j = j; for (const [y, a, b] of it.rows) { if (y < 0 || y >= 216) continue; for (let x = Math.max(0, a); x <= Math.min(239, b); x++) { const i = y * 240 + x; STAMP[i] = stampN; OWN[i] = j; } } });
+    const cov = new Map();
+    if (!isOld) { const Z = G.z[key], TG = TAGS[key];
+      const plane = it => { if (it.air) return null; const x = it.at[0], y = it.at[1];
+        if (it.kind === 'person' && it.o.sent) { const k = benchOf(x); return [vSeat(k, x) + .03, 'banco' + k]; }
+        if (it.kind === 'thing' && it.onSeat) return [vAt(x, Math.max(...it.rows.map(q => q[0])) + 1, F.ZS), 'banco' + benchOf(x)];
+        if (it.kind === 'pigeon') { if (it.perch === 'seat' || it.perch === 'back') return [vAt(x, Math.max(...it.rows.map(q => q[0])) + 1, it.perch === 'seat' ? F.ZS : F.ZS + F.BACK_H), 'banco' + benchOf(x)]; if (it.perch !== 'ground') return null; }
+        if (it.kind === 'frog') { const b = frogBox(it.o); return [vGround(b.x + b.w / 2, it.o.y + 25), null]; }
+        return [vGround(x, y - 1), null]; };
+      const PL = its.map(plane);
+      for (const part of FRONT) for (const i of G.parts[key][part] || []) { if (STAMP[i] !== stampN) continue; const j = OWN[i], pl = PL[j]; if (!pl || pl[1] === part) continue; const y = Math.floor(i / 240);
+        if (Z[i] > pl[0] / COS - (y + .5 - E.OY) * T30 / E.S) cov.set(i, part); } }
+    return its.map(it => { let tot = 0, vis = 0, fTot = 0, fVis = 0; const by = {}, hid = {}, face = it.kind === 'person' ? faceOf(it.id, it.o, it.rows) : it.kind === 'frog' ? frogFace(it.o) : null;
+      for (const [y, a, b] of it.rows) { if (y < 0 || y >= 216) continue; for (let x = Math.max(0, a); x <= Math.min(239, b); x++) { const i = y * 240 + x; tot++; const inF = face && x >= face[0] && x < face[0] + face[2] && y >= face[1] && y < face[1] + face[3]; if (inF) fTot++;
+        const mine = STAMP[i] === stampN && OWN[i] === it.j, c = cov.get(i); if (!mine && STAMP[i] === stampN) { const h = its[OWN[i]].id + (process.env.SEEN_BY ? "@" + its[OWN[i]].at : ""); hid[h] = (hid[h] || 0) + 1; } if (mine && c) hid[c] = (hid[c] || 0) + 1; if (mine && c) by[c] = (by[c] || 0) + (inF ? 1000 : 1); if (mine && !c) { vis++; if (inF) fVis++; } } }
+      return { it, tot, vis, fTot, fVis, by, hid }; }); };
+  { const bad = new Map(); let nMom = 0, nSit = 0;
+    const lookC = (where, w) => { nMom++; for (const r of compose(w, false)) { const it = r.it;
+      for (const [part, n] of Object.entries(r.by)) { const faceN = Math.floor(n / 1000), bodyN = n % 1000;
+        if (/^banco/.test(part) && ((it.kind === 'person' && it.o.sent) || (it.kind === 'thing' && it.onSeat) || (it.kind === 'pigeon' && (it.perch === 'seat' || it.perch === 'back')))) bad.set('a bench over ' + it.id + ' (on a seat)', where + ': ' + (faceN + bodyN) + ' px of ' + part);
+        if (part === 'farol') bad.set('the lamp post over ' + it.id, where + ': ' + (faceN + bodyN) + ' px');
+        if (faceN && !((part === 'porton' || part === 'seto') && / t \d+$/.test(where))) bad.set(part + ' over ' + it.id + '\'s face', where + ': ' + faceN + ' px'); }
+      if (it.kind === 'person' && it.o.sent) nSit++; } };
+    runs.forEach((r, ri) => { for (const t of NEW[ri].ticks) lookC(r.story.id + ' ' + r.plan + ' t ' + t.t, t.W); for (const L of NEW[ri].states) lookC(r.story.id + ' ' + r.plan + ' ' + L.path, L.W); });
+    for (const ps of pairSides) lookC('pair ' + deacc(ps.w) + '.' + ps.side, pairW(ps, sh));
+    for (const [k, w] of [...bad].slice(0, 40)) P.push('drawn: ' + k + ' (' + w + ')');
+    notes.push('drawn (round 2): at ' + nMom + ' moments the sorted list composed as it is drawn (each item owns what it drew last; a front part drawn again only over an owner behind it): no bench drawn over whoever sits on it or what lies on its seat (' + nSit + ' sittings), the lamp post drawn over nobody and nothing, no part of the set (a bench, the cart, the lamp post, the pole, the hedge, a gate post) over any face (so every sitter\'s face and the vendor\'s are hidden by nothing of the set; by another sprite only as in the old picture: seen)'); }
+  /* round 2, item 6: at every step's end each person's, dog's and the frog's share seen, and their face's, no smaller than in the old picture
+     of that moment (less 10%) */
+  { const lows = [], known = []; let n = 0;
+    // what cannot be fixed (listed in the notes and in the report, with the two pictures side by side): a few step ends where the old picture had
+    // nobody over the man of the cart; the cart now rolls toward the viewer as it goes home, so he walks down past the old dog, who walks slower
+    const KNOWN = [{ story: 'senor-senora', who: 'piraguero', path: /^final\.\d+$/, by: 'perro viejo', why: 'the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view' }];
+    runs.forEach((r, ri) => { const Ls = NEW[ri].states; r.lines.forEach((ln, li) => { const tw = Ls.find(L => L.path === ln.path && L.kind === ln.kind); if (!tw) return;
+      const o = new Map(compose(ln.W, true).map(q => [q.it.id, q])), nw = compose(tw.W, false);
+      for (const q of nw) { if (!['person', 'dog', 'frog'].includes(q.it.kind) || q.it.air || q.it.at[0] < x0 || q.it.at[0] >= x0 + 196) continue; const p = o.get(q.it.id); if (!p || !p.tot || !q.tot) continue; n++;
+        const sN = q.vis / q.tot, sO = p.vis / p.tot, fN = q.fTot ? q.fVis / q.fTot : 1, fO = p.fTot ? p.fVis / p.fTot : 1;
+        const kn = KNOWN.find(k => k.story === r.story.id && k.who === q.it.id && k.path.test(ln.path) && Object.keys(q.hid).some(h => h.split('@')[0] === k.by) && fN >= fO - .1);
+        if ((fN < fO - .1 || sN < sO - .1) && kn) known.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ' (' + li + '): ' + q.it.id + ' seen ' + R(sN * 100) + '% (face ' + R(fN * 100) + '%), the old ' + R(sO * 100) + '% (' + R(fO * 100) + '%), by ' + kn.by);
+        else if (fN < fO - .1 || sN < sO - .1) lows.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ' (' + li + '): ' + q.it.id + ' seen ' + R(sN * 100) + '% (face ' + R(fN * 100) + '%), the old ' + R(sO * 100) + '% (' + R(fO * 100) + '%)' + (process.env.SEEN_BY ? ' new by ' + JSON.stringify(q.hid) + ' old by ' + JSON.stringify(p.hid) + ' at ' + JSON.stringify(q.it.at) + ' old at ' + JSON.stringify(p.it.at) : '')); } }); });
+    for (const l of lows.slice(0, process.env.SEEN_BY ? 9999 : 40)) P.push('seen: ' + l);
+    notes.push('seen (round 2): at ' + n + ' person-, dog- and frog-moments (every step\'s end of the ' + runs.length + ' runs) each seen no less than in the old picture of that moment less 10%, and their face too (' + lows.length + ' less)'); sh.checks.notFixed = known.map(t => ({ what: t, why: KNOWN[0].why })); if (known.length) notes.push('seen, not fixed (round 2): ' + known.length + ' step ends: ' + known.join('; ') + ': ' + KNOWN[0].why); }
+  /* round 2: the gate, the lamp, the wire, the pole, the sun, the third bench */
+  const wireC = [];
+  { const K0 = 'dia.0.abierto', TG = TAGS[K0], Z0 = G.z[K0], RGB = G.rgb[K0];
+    const pb = name => { let x0b = 1e9, y0b = 1e9, x1b = -1e9, y1b = -1e9; for (const i of G.parts[K0][name] || []) { const x = i % 240, y = Math.floor(i / 240); x0b = Math.min(x0b, x); x1b = Math.max(x1b, x); y0b = Math.min(y0b, y); y1b = Math.max(y1b, y); } return [x0b, y0b, x1b, y1b]; };
+    const po = pb('porton'), gw = F.GATE[1][0] - F.GATE[0][0];
+    if (po[0] < x0 + 1 || po[2] > x0 + 195 || po[3] > 215) P.push('gate: the posts ' + JSON.stringify(po) + ' are not whole inside the view');
+    const ph = Math.round((F.POST_H + .38) * COS * E.S); if (ph < 40) P.push('gate: the posts are ' + ph + ' rows high (a person\'s height: 40 and more)');
+    if (gw < 20 || gw > 32) P.push('gate: the opening is ' + gw + ' px between the posts (20 to 32)');
+    const PT = sh.spots.porton.new, kP = PT[0] + 2 * PT[1] - F.HEDGE_K; if (Math.abs(kP) > 4 || PT[0] < F.GATE[0][0] + 6 || PT[0] > F.GATE[1][0] - 6) P.push('gate: PORTON ' + PT + ' is not inside the opening');
+    const he = pb('seto'); const hedgeRows = Math.round(F.HEDGE_H * COS * E.S); if (hedgeRows < 12 || hedgeRows > 24) P.push('gate: the hedge is ' + hedgeRows + ' rows high (knee to hip: 12 to 24)');
+    let rightHedge = 0; for (const i of G.parts[K0].seto || []) if (i % 240 > F.GATE[1][0] + 3 && i % 240 < x0 + 196) rightHedge++; if (rightHedge < 20) P.push('gate: only ' + rightHedge + ' px of hedge right of the right post');
+    // round 2: the hedge joined to each post: hedge pixels seen within 2 px of each post's pixels, on its own side of the opening
+    const postPx = G.parts[K0].porton || [], hedgeSet = new Set(G.parts[K0].seto || []), midX = (F.GATE[0][0] + F.GATE[1][0]) / 2, joined = [0, 0];
+    for (const [k, side] of [[0, x => x < midX], [1, x => x >= midX]]) { const near = new Set(); for (const i of postPx) { const x = i % 240, y = Math.floor(i / 240); if (!side(x)) continue;
+        for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) { const j = (y + dy) * 240 + x + dx; if (hedgeSet.has(j) && (k === 0 ? x + dx < F.GATE[0][0] + 2 : x + dx > F.GATE[1][0] - 2)) near.add(j); } }
+      joined[k] = near.size; if (near.size < 8) P.push('gate: the hedge is not joined to the ' + (k ? 'right' : 'left') + ' post (' + near.size + ' px of it beside the post)'); }
+    // the lamp: its foot seen in the gap, on the lawn or the paving's far edge, behind the benches' line; its pool round its foot, reaching the paving in front of the benches
+    const lf = F.FAROL.at; let footSeen = 0; for (let y = lf[1] - 4; y <= lf[1]; y++) for (let x = lf[0] - 4; x <= lf[0] + 4; x++) if (TG[y * 240 + x] === 'farol') footSeen++;
+    if (footSeen < 12) P.push('lamp: only ' + footSeen + ' px of its foot seen');
+    if (lf[1] > edgeRow(F, lf[0]) + 2) P.push('lamp: its foot is in front of the paving\'s far edge');
+    for (const k of ['noche.0.abierto', 'tarde.0.abierto']) { let front = 0; for (const i of G.pool[k]) { const x = i % 240, y = Math.floor(i / 240); if (G.surf[i] === 'p' && y > 160) front++; } if (front < 60) P.push('lamp: its pool shows ' + front + ' px on the paving in front of the benches (' + k + ')'); }
+    // the wire against the sky in every light; the sun and the moon clear of the pole's top and the wire
+    for (const k of ['dia.0.abierto', 'tarde.0.abierto', 'noche.0.abierto']) { const T2 = TAGS[k], C2 = G.rgb[k]; let n = 0, s = 0; for (let i = 0; i < 240 * 216; i++) { if (T2[i] !== 'cable' || i % 240 < x0 + 10 || i % 240 > 160) continue; const a = i - 240 * 2; if (T2[a] || G.z[k][a] > -1e8) continue; n++; s += dE([C2[i * 3], C2[i * 3 + 1], C2[i * 3 + 2]], [C2[a * 3], C2[a * 3 + 1], C2[a * 3 + 2]]); }
+      const d = n ? s / n : 0; if (d < 20) P.push('wire: it stands out from the sky by ' + R(d) + ' (' + k + ')'); wireC.push(k.split('.')[0] + ' ' + R(d)); }
+    const pl = pb('poste'); if (pl[0] < x0 || pl[2] - pl[0] < 2) P.push('pole: ' + JSON.stringify(pl) + ' not whole in the view, 3 px wide');
+    for (const [nm, d] of [['sun', F.SUN], ['moon', F.MOON]]) { let near = 99; for (const part of ['poste', 'cable']) for (const k of ALL_STATES) for (const i of G.parts[k][part] || []) { const x = i % 240, y = Math.floor(i / 240); near = Math.min(near, Math.hypot(x + .5 - d[0], y + .5 - d[1]) - d[2]); } if (near < 6) P.push('sky: the ' + nm + ' is ' + r2(near) + ' px from the pole or the wire (6)'); }
+    for (const k of BENCHES) { const b = sh.things[k].box; if (b[0] < x0 + 2 || b[0] + b[2] > x0 + 194) P.push('bench: ' + k + ' ' + JSON.stringify(b) + ' not whole in the view with 2 px'); }
+    notes.push('gate (round 2): two stone posts ' + ph + ' rows high with their balls, whole in the view (' + JSON.stringify(po) + '), ' + gw + ' px apart, PORTON ' + PT + ' in the opening, the hedge ' + hedgeRows + ' rows high joined to both (' + joined.join(' and ') + ' px of it beside the left and the right post; ' + rightHedge + ' px of it right of the right post), the paving running out through the opening as a path, lawn beyond the hedge; the lamp\'s foot behind the benches\' line (' + footSeen + ' px of it seen in the gap), its pool round its foot reaching the paving in front of the benches; the wire against the sky ' + wireC.join(', ') + ' (CIE76, 20 kept); the pole whole, 3 px wide; the sun and moon 6 px and more from the pole and the wire; every bench whole in the view with 2 px'); }
+  /* round 2, item 3: the umbrella's rim at least 3 px above the vendor's hair, at every step's end where he stands at his cart with it open */
+  { let nV = 0, worst = 99; const bad = new Map();
+    runs.forEach((r, ri) => { for (const L of NEW[ri].states) { const w = L.W; if (w.carro === 0 || w.carro === 'cerrado' || w.seva) continue; const key = keyOf(w); if (!key.endsWith('abierto')) continue;
+      const v = itemsOf(w).find(it => it.id === 'piraguero'); if (!v || v.air) continue; const top = Math.min(...v.rows.map(q => q[0])), xs = v.rows.filter(q => q[0] <= top + 3), xa = Math.min(...xs.map(q => q[1])), xb = Math.max(...xs.map(q => q[2]));
+      const rowsC = {}; for (const i of G.parts[key].carro || []) { const y = Math.floor(i / 240), x = i % 240; if (y < top) (rowsC[y] = rowsC[y] || []).push(x); }
+      let rim = -1; for (const [y, xsC] of Object.entries(rowsC)) if (xsC.length >= 8 && xsC.some(x => x >= xa - 2 && x <= xb + 2)) rim = Math.max(rim, +y);
+      if (rim < 0) continue; nV++; const gap = top - rim - 1; worst = Math.min(worst, gap); if (gap < 3) bad.set(r.story.id + ' ' + L.path, gap); } });
+    for (const [k, g] of [...bad].slice(0, 10)) P.push('umbrella: its rim ' + g + ' px above the vendor\'s hair (' + k + ')');
+    notes.push('umbrella (round 2): at ' + nV + ' step ends with the cart open and its man at it, the rim of the umbrella ' + worst + ' px and more above his hair (3 kept); the cart over no face (drawn)'); }
   return checkAsks(sh, G, runs, P, Object.assign(C, { itemsOf, facesOf, headOf, rowsBox, rowsMeet, rowsOverlap, shown, alto, SUNR, MOONR, discOf, allW, faceOf }));
 }
 
 function checkAsks(sh, G, runs, P, C) {
-  const { E, F, M, NEW, x0, VIEW, TAGS, ZONES, zoneAt, pairSides, notes, itemsOf, facesOf, headOf, rowsBox, rowsMeet, rowsOverlap, shown, alto, SUNR, discOf, allW, faceOf } = C;
+  const { E, F, M, MASK, NEW, x0, VIEW, TAGS, ZONES, zoneAt, pairSides, notes, itemsOf, facesOf, headOf, rowsBox, rowsMeet, rowsOverlap, shown, alto, SUNR, discOf, allW, faceOf } = C;
   /* the asks: hint frames, the hand, the answer cards and the hint drawn round a card; the things a learner must find or tell apart */
   const cajaBox = (id, p) => [R(p.x) - 11, R(p.y) - alto(id, p), 22, alto(id, p)];
   const boxOf = (w, k, old) => { const t = sh.things[k];
@@ -979,8 +1094,9 @@ function checkAsks(sh, G, runs, P, C) {
   const plainZ = (z, it) => 'pls'.includes(z) || z === 'out' || (it.kind === 'person' && it.sent && z === 'b' + it.bench) || (it.kind === 'pigeon' && ((it.perch === 'wire' && z === 'w') || (it.perch === 'back' && /^b/.test(z)) || (it.perch === 'seat' && /^b/.test(z))));
   // the old picture's backdrop round a thing at its old place: the share of it that is plain (its paving, lawn and sky colours, banco.js fondo)
   const OLDPLAIN = [[216, 208, 186], [226, 218, 198], [206, 198, 176], [184, 174, 152], [138, 130, 112]].concat([[94, 186, 98], [70, 160, 80], [116, 206, 112], [58, 134, 230], [120, 186, 250], [162, 211, 255]]);
-  const plainOld = it => { let n = 0, ok = 0; const own = new Set(); for (const [y, x1, x2] of it.rows) for (let x = x1; x <= x2; x++) own.add(y * 240 + x);
-    for (const [y, x1, x2] of it.rows) for (let x = x1 - 2; x <= x2 + 2; x++) for (const dy of [-2, 0, 2]) { const yy = y + dy, i = yy * 240 + x; if (own.has(i) || x < 0 || x >= 240 || yy < 0 || yy >= 216) continue; n++; const c = [M.oldBg[i * 4], M.oldBg[i * 4 + 1], M.oldBg[i * 4 + 2]]; if (yy >= 132 ? c[0] > 180 && Math.abs(c[0] - c[2]) < 50 : OLDPLAIN.some(q => dE(q, c) < 22)) ok++; }
+  let wcur = null; const plainOld = it => { let n = 0, ok = 0; const own = new Set(); for (const [y, x1, x2] of it.rows) for (let x = x1; x <= x2; x++) own.add(y * 240 + x);
+    const oc = new Set(); if (wcur && wcur.carro !== 0 && MASK['oc|1']) for (const [y, a, b] of MASK[wcur.carro === 'cerrado' ? 'oc|cerrado' : 'oc|1'].rows) for (let x = a; x <= b; x++) oc.add((150 + y) * 240 + 120 + x);
+    for (const [y, x1, x2] of it.rows) for (let x = x1 - 2; x <= x2 + 2; x++) for (const dy of [-2, 0, 2]) { const yy = y + dy, i = yy * 240 + x; if (own.has(i) || x < 0 || x >= 240 || yy < 0 || yy >= 216) continue; n++; if (oc.has(i)) continue; const c = [M.oldBg[i * 4], M.oldBg[i * 4 + 1], M.oldBg[i * 4 + 2]]; if (yy >= 132 ? c[0] > 180 && Math.abs(c[0] - c[2]) < 50 : OLDPLAIN.some(q => dE(q, c) < 22)) ok++; }
     return n ? ok / n : 1; };
   let nF = 0, nC = 0, worstF = 99, cardSpare = 99, nTell = 0, nightWorst = 99, cardHint = 0; const lowAsOld = new Set(), cardsOverPigeons = new Set(), cardsOverSet = new Set(), askSeen = new Set(), askedFor = new Set(), crossedOld = new Set(), handOld = new Set();
   runs.forEach((r, ri) => { const Ls = NEW[ri].states, Lo = r.lines;
@@ -1032,7 +1148,7 @@ function checkAsks(sh, G, runs, P, C) {
         if (!within(bxA, VIEW) && !(a.at[0] > x0 + 196 || a.at[0] < x0)) P.push('tell: ' + where + ' ' + a.id + ' ' + JSON.stringify(bxA) + ' is not whole in the view');
         let n = 0, ok = 0; const own = new Set(), ring = [0, 0, 0]; let nr = 0; for (const [y, x1, x2] of a.rows) for (let x = x1; x <= x2; x++) own.add(y * 240 + x);
         for (const [y, x1, x2] of a.rows) for (let x = x1 - 2; x <= x2 + 2; x++) for (const dy of [-2, 0, 2]) { const i = (y + dy) * 240 + x; if (own.has(i)) continue; const z = zoneAt(key, x, y + dy); if (z === 'out') continue; n++; if (plainZ(z, a)) ok++; const c = G.rgb[key]; ring[0] += c[i * 3]; ring[1] += c[i * 3 + 1]; ring[2] += c[i * 3 + 2]; nr++; }
-        const ao0 = itemsO.find(x => x.id === a.id), oldPlain = ao0 ? plainOld(ao0) : 0;
+        wcur = wo; const ao0 = itemsO.find(x => x.id === a.id), oldPlain = ao0 ? plainOld(ao0) : 0;
         if (n && ok < n * .8 && ok / n < oldPlain - .03 && a.at[0] >= x0 && a.at[0] < x0 + 196) P.push('tell: ' + where + ' ' + a.id + ' at ' + a.at + ': only ' + R(ok / n * 100) + '% of what is round it is plain paving, lawn or sky (or its own bench, wire or back)');
         if (nr) { const d = Math.max(dE(a.mean, ring.map(v => v / nr)), dE(OUTC, ring.map(v => v / nr))); if (!key.startsWith('dia')) nightWorst = Math.min(nightWorst, d);
           // the old picture's backdrop round the same thing at its old place (its background, banco.js fondo)
@@ -1068,8 +1184,8 @@ function checkAsks(sh, G, runs, P, C) {
     runs.forEach((r, ri) => { const Ls = NEW[ri].states;
       r.lines.forEach((ln, li) => { const mine = placesOf(remapW(sh, ln.W, r.story.id)), pv = G.PV[ri][li];
         for (const k of new Set([...Object.keys(mine), ...Object.keys(pv)])) { nP++; if (JSON.stringify(mine[k]) !== JSON.stringify(pv[k])) { bad++; if (bad < 20) P.push('preview: ' + r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + k + ' at ' + JSON.stringify(pv[k]) + ' in the preview, ' + JSON.stringify(mine[k]) + ' in the sheet'); } }
-        const tw = Ls.find(L => L.path === ln.path && L.kind === ln.kind); if (!tw || li === 0) return; const prev = placesOf(remapW(sh, r.lines[li - 1].W, r.story.id)), port = placesOf(tw.W);
-        for (const [k, p] of Object.entries(mine)) { if (!prev[k] || prev[k].join() !== p.join() || !port[k] || /^perro\.joven|^paloma/.test(k)) continue; nR++; if (port[k].join() !== p.join()) { badR++; off.set(k + ' ' + JSON.stringify(p) + ' -> ' + JSON.stringify(port[k]), r.story.id + ' ' + ln.path); } } }); });
+        const twI = Ls.findIndex(L => L.path === ln.path && L.kind === ln.kind), tw = Ls[twI]; if (!tw || li === 0 || twI < 1) return; const prev = placesOf(remapW(sh, r.lines[li - 1].W, r.story.id)), port = placesOf(tw.W), portPrev = placesOf(Ls[twI - 1].W);
+        for (const [k, p] of Object.entries(mine)) { if (!prev[k] || prev[k].join() !== p.join() || !port[k] || !portPrev[k] || portPrev[k].join() !== port[k].join() || /^perro\.joven|^paloma/.test(k) || p[0] >= x0 + 196) continue; nR++; if (Math.abs(port[k][0] - p[0]) + Math.abs(port[k][1] - p[1]) > 3) { badR++; off.set(k + ' ' + JSON.stringify(p) + ' -> ' + JSON.stringify(port[k]), r.story.id + ' ' + ln.path); } } }); });
     if (badR) for (const [k, w] of [...off].slice(0, 30)) P.push('rule: ' + k + ' in the port\'s play (' + w + ')');
     notes.push('preview: at every step\'s end of the ' + runs.length + ' recorded runs (' + nP + ' places of the people, the frog, the dogs, the pigeons, the things and the pushchair) banco-preview.html puts everyone exactly where the sheet\'s rule does (' + bad + ' differ); and the rule puts each of the ' + nR + ' places at rest where the port\'s play has them (' + badR + ' differ)'); }
 

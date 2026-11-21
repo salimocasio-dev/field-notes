@@ -153,26 +153,26 @@
   },
   "carro": {
    "set": true,
-   "world": [0.7615, 4.7866, 0, 1.9037, 5.9288, 2.5315],
-   "box": [25, 105, 43, 79],
-   "screen": [25, 106, 67, 184],
+   "world": [0.8159, 4.7322, 0, 1.9581, 5.8744, 3.1088],
+   "box": [27, 93, 43, 91],
+   "screen": [27, 93, 69, 184],
    "what": "the cart: its box, wheels, umbrella (open or closed), the bottles and the glass case",
    "old": {
     "box": [23, 106, 48, 74]
    },
    "rolling": "while it rolls (W.carroX) its box moves with it: [box x + R(W.carroX) - CARRO[0], box y + R((CARRO[0] - W.carroX) / 2), w, h]",
-   "hand": [47, 145]
+   "hand": [49, 139]
   },
   "farol": {
    "set": true,
-   "world": [3.4267, 0.5983, 0, 3.7531, 0.9247, 5.1962],
-   "box": [166, 32, 12, 123],
-   "screen": [166, 32, 178, 155],
+   "world": [2.774, -0.1632, 0, 3.1004, 0.1632, 4.6188],
+   "box": [168, 31, 12, 111],
+   "screen": [168, 32, 180, 142],
    "what": "the lamp post: its foot, its post, its lantern",
    "old": {
     "box": [161, 34, 14, 126]
    },
-   "hand": [172, 100],
+   "hand": [174, 100],
    "handWhy": "on the post, under the wire"
   },
   "banco0": {
@@ -199,14 +199,14 @@
   },
   "banco2": {
    "set": true,
-   "world": [4.0115, -0.1496, 0, 5.1265, 0.9655, 0.9993],
-   "box": [176, 125, 41, 43],
-   "screen": [176, 125, 217, 168],
+   "world": [3.8891, 0.0272, 0, 4.705, 0.8431, 1.0215],
+   "box": [176, 124, 30, 39],
+   "screen": [176, 125, 206, 163],
    "what": "the third bench",
    "old": {
     "box": [170, 127, 44, 36]
    },
-   "hand": [197, 147]
+   "hand": [191, 144]
   },
   "parque": {
    "set": true,
@@ -278,49 +278,51 @@
    "what": "CARRO + (4, -6): the piragua man, behind his cart"
   },
   "porton": {
-   "world": [6.4184, 2.7196, 0],
+   "world": [7.0439, 2.7468, 0],
    "on": "pave",
    "old": [188, 197],
-   "new": [188, 197],
-   "what": "PORTON: where one stands at the gate, before its opening"
+   "new": [199, 203],
+   "moved": true,
+   "what": "PORTON: where one stands at the gate, in its opening (moves)"
   },
   "porton.fuera": {
-   "world": [7.9957, 1.1422, 0],
+   "world": [8.9748, 2.1213, 0],
    "on": "out",
    "old": [246, 197],
-   "new": [246, 197],
-   "what": "where whoever leaves goes, out through the gate and off the picture"
+   "new": [246, 215],
+   "moved": true,
+   "what": "where whoever leaves goes, out through the gate along the path and off the picture (moves)"
   },
   "cable.0": {
-   "world": [0.1849, 3.1221, 3.8816],
+   "world": [-0.0239, 2.9133, 3.711],
    "on": "wire",
    "old": [66, 55],
    "new": [66, 55],
    "what": "CABLE(0): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
   },
   "cable.1": {
-   "world": [0.7397, 2.7523, 3.9127],
+   "world": [0.4507, 2.4633, 3.6767],
    "on": "wire",
    "old": [83, 56],
    "new": [83, 56],
    "what": "CABLE(1): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
   },
   "cable.2": {
-   "world": [1.2945, 2.3824, 3.9437],
+   "world": [0.9254, 2.0133, 3.6423],
    "on": "wire",
    "old": [100, 57],
    "new": [100, 57],
    "what": "CABLE(2): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
   },
   "cable.3": {
-   "world": [1.8494, 2.0125, 4.0192],
+   "world": [1.4001, 1.5632, 3.6524],
    "on": "wire",
    "old": [117, 57],
    "new": [117, 57],
    "what": "CABLE(3): a pigeon on the wire (its feet on it): the wire hangs where the old one was"
   },
   "cable.4": {
-   "world": [2.4042, 1.6427, 4.0947],
+   "world": [1.8747, 1.1132, 3.6625],
    "on": "wire",
    "old": [134, 57],
    "new": [134, 57],
@@ -351,10 +353,10 @@
    "what": "POSA[2]: a pigeon on a bench's back (moves)"
   },
   "respaldo.3": {
-   "world": [5.0023, 0.2158, 1.02],
+   "world": [4.4312, 0.243, 1.02],
    "on": "back",
    "old": [208, 127],
-   "new": [208, 138],
+   "new": [197, 133],
    "moved": true,
    "what": "POSA[3]: a pigeon on a bench's back (moves)"
   }
@@ -511,100 +513,100 @@
    "a": [104, 180],
    "b": [108, 178],
    "a2": [104, 180],
-   "b2": [122, 178],
+   "b2": [118, 178],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 1,
    "new": 1,
    "dOld": 4.47,
-   "dNew": 18.11
+   "dNew": 14.14
   },
   {
    "a": [108, 178],
    "b": [119, 156],
-   "a2": [122, 178],
+   "a2": [118, 178],
    "b2": [119, 152],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 1,
    "new": 1,
    "dOld": 24.6,
-   "dNew": 26.17
+   "dNew": 26.02
   },
   {
    "a": [119, 156],
    "b": [108, 178],
    "a2": [119, 152],
-   "b2": [122, 178],
+   "b2": [118, 178],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 1,
    "new": 1,
    "dOld": 24.6,
-   "dNew": 26.17
+   "dNew": 26.02
   },
   {
    "a": [108, 178],
    "b": [52, 170],
-   "a2": [122, 178],
+   "a2": [118, 178],
    "b2": [66, 170],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 2,
    "new": 2,
    "dOld": 56.57,
-   "dNew": 56.57
+   "dNew": 52.61
   },
   {
    "a": [52, 170],
    "b": [108, 178],
    "a2": [66, 170],
-   "b2": [122, 178],
+   "b2": [118, 178],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 2,
    "new": 2,
    "dOld": 56.57,
-   "dNew": 56.57
+   "dNew": 52.61
   },
   {
    "a": [108, 178],
    "b": [104, 170],
-   "a2": [122, 178],
+   "a2": [118, 178],
    "b2": [118, 170],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 1,
    "new": 1,
    "dOld": 8.94,
-   "dNew": 8.94
+   "dNew": 8
   },
   {
    "a": [104, 170],
    "b": [108, 178],
    "a2": [118, 170],
-   "b2": [122, 178],
+   "b2": [118, 178],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 1,
    "new": 1,
    "dOld": 8.94,
-   "dNew": 8.94
+   "dNew": 8
   },
   {
    "a": [108, 178],
    "b": [84, 178],
-   "a2": [122, 178],
-   "b2": [84, 178],
+   "a2": [118, 178],
+   "b2": [98, 178],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 1,
    "new": 1,
    "dOld": 24,
-   "dNew": 38
+   "dNew": 20
   },
   {
    "a": [84, 178],
    "b": [112, 178],
-   "a2": [84, 178],
+   "a2": [98, 178],
    "b2": [112, 178],
    "by": "banco.js ranaA (34 px a hop)",
    "old": 1,
    "new": 1,
    "dOld": 28,
-   "dNew": 28
+   "dNew": 14
   },
   {
    "a": [112, 178],
@@ -688,12 +690,12 @@
    },
    {
     "middle": [192, 151],
-    "seat": [3.7439, 0.1776, 0.42, 5.4439, 0.6776, 0.42],
+    "seat": [3.7439, 0.1776, 0.42, 4.8639, 0.6776, 0.42],
     "back": 1.02,
     "corners": [
      [176.37, 143.19],
-     [207.63, 158.81],
-     [216.82, 154.22],
+     [196.96, 153.48],
+     [206.16, 148.89],
      [185.57, 138.59]
     ]
    }
@@ -717,52 +719,52 @@
    ]
   },
   "seto": {
-   "line": "sx + 2 sy = 588",
-   "x": 6.7959,
+   "line": "sx + 2 sy = 604",
+   "x": 7.2311,
    "thick": 0.32,
-   "high": 0.38,
-   "what": "the hedge along y across the lower right corner (its +x face on the line x = 6.7959, on the screen sx + 2 sy = 588), 0.38 high"
+   "high": 0.7,
+   "what": "the hedge along y across the lower right corner (its +x face on the line x = 7.2311, on the screen sx + 2 sy = 604), 0.7 high"
   },
   "porton": {
    "posts": [
-    [152, 218],
-    [214, 187]
+    [180, 212],
+    [212, 196]
    ],
    "world": [
-    [6.6359, 4.8954, 0],
-    [6.6359, 1.523, 0]
+    [7.0711, 3.8075, 0],
+    [7.0711, 2.0669, 0]
    ],
-   "high": 0.5,
-   "what": "the gate: the opening in the hedge between two stone posts (El camino's, without the arch) at the old gate's rows; the paving runs out through it along +x, between the lines through the two posts (sy - sx / 2 from 80 to 142)"
+   "high": 1.55,
+   "what": "the gate: the opening in the hedge between two stone posts (El camino's, without the arch) at the old gate's rows; the paving runs out through it along +x, between the lines through the two posts (sy - sx / 2 from 90 to 122)"
   },
   "poste": {
-   "foot": [22, 138],
-   "top": [22, 48],
-   "world": [-1.251, 4.0795, 0],
+   "foot": [24, 138],
+   "top": [24, 48],
+   "world": [-1.1966, 4.0251, 0],
    "what": "the pole at the left (the old one, rows 48 to 138), on the lawn"
   },
   "farol": {
-   "foot": [172, 153],
-   "lantern": [172, 34, 48],
-   "world": [3.6443, 0.8159, 0],
+   "foot": [174, 140],
+   "lantern": [174, 34, 48],
+   "world": [2.9916, 0.0544, 0],
    "what": "the lamp post: its foot on the paving behind the gap between the second and third bench, its lantern at the old lantern's rows (34 to 48)"
   },
   "cable": {
    "what": "the wire: it hangs from the pole's top to the lamp post and on off the picture; its plan the line on the ground from the pole's foot through the lamp post's; at every column it lies on the old wire's row (cableY), so every pigeon on it keeps its old point",
    "plan": [
-    [22, 138],
-    [172, 153]
+    [24, 138],
+    [174, 140]
    ],
-   "groundRow": "the ground under the wire at column c: row 138 + (c - 22) * 0.1"
+   "groundRow": "the ground under the wire at column c: row 138 + (c - 24) * 0.0133"
   },
   "luz": {
-   "pool": [3.6443, 0.8159, 1.4],
-   "what": "the lamp's light (evening and night): a pool on the ground round its foot, radius 1.4 (world), lighter towards the post; at night stronger"
+   "pool": [2.9916, 0.0544, 2.4],
+   "what": "the lamp's light (evening and night): a pool on the ground round its foot, radius 2.4 (world), lighter towards the post; at night stronger"
   },
   "arboles": [
    {
-    "foot": [60, 104],
-    "world": [-2.0669, 1.1966, 0]
+    "foot": [86, 102],
+    "world": [-1.4686, 0.3807, 0]
    },
    {
     "foot": [121, 114],
@@ -775,18 +777,18 @@
   ],
   "arbolesWhat": "El camino's small trees on the lawn beyond the paving (the old three, behind the benches): their feet; a lone tree's crown shade, lighter and solid (El campo's rule), on the lawn",
   "carro": {
-   "world": [1.1391, 4.7693, 0.34, 1.7991, 6.2093, 0.9],
+   "world": [1.1935, 4.7149, 0.34, 1.8535, 6.1549, 0.9],
    "wheels": 0.3,
    "what": "the cart: a box along y on two wheels (at its two ends, on its +x side), its back face just in front of the piragua man (CARRO + (4, -6)); its umbrella's pole from its middle; open, a cone of eight panels red and white; closed, furled"
   },
   "sol": {
-   "screen": [32, 39],
-   "radius": 6,
+   "screen": [34, 40],
+   "radius": 4,
    "what": "the sun (day and evening): upper left (every shadow falls to the right), right of the corner card's place, over the wire"
   },
   "luna": {
-   "screen": [32, 39],
-   "radius": 6,
+   "screen": [34, 40],
+   "radius": 4,
    "old": [64, 26, 9],
    "what": "the moon (W.luna, at night): in the night sky, under the corner card's place (the old one, at 64, 26, lay under it)"
   },
@@ -914,43 +916,43 @@
    },
    "crops": {
     "hombre.si": {
-     "crop": [95, 111, 98, 52],
+     "crop": [113, 111, 98, 52],
      "zoom": 2
     },
     "hombre.no": {
-     "crop": [95, 111, 98, 52],
+     "crop": [113, 111, 98, 52],
      "zoom": 2
     },
     "senor.si": {
-     "crop": [95, 110, 98, 52],
+     "crop": [113, 110, 98, 52],
      "zoom": 2
     },
     "senor.no": {
-     "crop": [95, 110, 98, 52],
+     "crop": [113, 110, 98, 52],
      "zoom": 2
     },
     "come.si": {
-     "crop": [95, 111, 98, 52],
+     "crop": [113, 111, 98, 52],
      "zoom": 2
     },
     "come.no": {
-     "crop": [95, 111, 98, 52],
+     "crop": [113, 111, 98, 52],
      "zoom": 2
     },
     "cansado.si": {
-     "crop": [95, 112, 98, 52],
+     "crop": [113, 112, 98, 52],
      "zoom": 2
     },
     "cansado.no": {
-     "crop": [95, 112, 98, 52],
+     "crop": [113, 112, 98, 52],
      "zoom": 2
     },
     "contento.si": {
-     "crop": [95, 111, 98, 52],
+     "crop": [113, 111, 98, 52],
      "zoom": 2
     },
     "contento.no": {
-     "crop": [95, 111, 98, 52],
+     "crop": [113, 111, 98, 52],
      "zoom": 2
     }
    }
@@ -1086,9 +1088,9 @@
    "old": [51, 172],
    "uses": ["d-piragua-luis.json beats.0.set.gente.piraguero", "d-vamos-a-casa.json beats.0.set.gente.piraguero", "h-banco.json beats.0.set.gente.piraguero"],
    "to": {
-    "pave": [0.9791, 5.4393, 0]
+    "pave": [1.0335, 5.3849, 0]
    },
-   "new": [38, 172],
+   "new": [40, 172],
    "moved": true,
    "why": "the piragua man behind his cart: CARRO moved (moves)",
    "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
@@ -1511,30 +1513,36 @@
    "old": [186, 204],
    "uses": ["d-vamos-a-casa.json beats.21"],
    "to": {
-    "pave": [6.7447, 3.1548, 0]
+    "pave": [6.7447, 2.8284, 0]
    },
-   "new": [186, 204],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [192, 201],
+   "moved": true,
+   "why": "d-vamos-a-casa: Carmen by the gate, in front of its opening (at the old point she stood behind its left post)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "point",
    "old": [188, 197],
    "uses": ["d-vamos-a-casa.json beats.7", "d-vamos-a-casa.json beats.12"],
    "to": {
-    "pave": [6.4184, 2.7196, 0]
+    "pave": [7.0439, 2.7468, 0]
    },
-   "new": [188, 197],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [199, 203],
+   "moved": true,
+   "why": "PORTON moved into the gate's opening (moves)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "point",
    "old": [188, 200],
    "uses": ["d-vamos-a-casa.json beats.47"],
    "to": {
-    "pave": [6.5815, 2.8828, 0]
+    "pave": [7.207, 2.91, 0]
    },
-   "new": [188, 200],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [199, 206],
+   "moved": true,
+   "why": "by PORTON, as PORTON (moves)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "point",
@@ -1551,60 +1559,72 @@
    "old": [240, 202],
    "uses": ["d-vamos-a-casa.json beats.41"],
    "to": {
-    "out": [8.1045, 1.5774, 0]
+    "out": [8.5397, 2.0125, 0]
    },
-   "new": [240, 202],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [240, 210],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "point",
    "old": [246, 197],
    "uses": ["d-vamos-a-casa.json beats.11", "d-vamos-a-casa.json beats.15"],
    "to": {
-    "out": [7.9957, 1.1422, 0]
+    "out": [8.7572, 1.9037, 0]
    },
-   "new": [246, 197],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [246, 211],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "point",
    "old": [246, 198],
    "uses": ["d-vamos-a-casa.json beats.44"],
    "to": {
-    "out": [8.0501, 1.1966, 0]
+    "out": [8.8116, 1.9581, 0]
    },
-   "new": [246, 198],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [246, 212],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "point",
    "old": [246, 204],
    "uses": ["d-vamos-a-casa.json beats.45"],
    "to": {
-    "out": [8.3765, 1.523, 0]
+    "out": [8.9204, 2.0669, 0]
    },
-   "new": [246, 204],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [246, 214],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "point",
    "old": [250, 200],
    "uses": ["d-vamos-a-casa.json beats.49"],
    "to": {
-    "out": [8.2677, 1.1966, 0]
+    "out": [8.9204, 1.8494, 0]
    },
-   "new": [250, 200],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [250, 212],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "point",
    "old": [250, 208],
    "uses": ["d-vamos-a-casa.json beats.42"],
    "to": {
-    "out": [8.7029, 1.6318, 0]
+    "out": [8.5941, 1.523, 0]
    },
-   "new": [250, 208],
-   "what": "a place (x, y): the ground under (x, y - 1); the same screen place"
+   "new": [250, 206],
+   "moved": true,
+   "why": "d-vamos-a-casa: out through the middle of the gate's opening along the path (round 2)",
+   "what": "a place (x, y): the ground under (x, y - 1); moved (why)"
   },
   {
    "kind": "x",
@@ -1633,73 +1653,73 @@
  ],
  "pictures": {
   "hombre.si": {
-   "world": [2.0125, 0.7071, 0],
-   "screen": [144, 137],
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
    "zoom": 2,
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "what": "the man sitting on the second bench, reading"
   },
   "hombre.no": {
-   "world": [2.0125, 0.7071, 0],
-   "screen": [144, 137],
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
    "zoom": 2,
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "what": "the woman sitting there, reading"
   },
   "senor.si": {
-   "world": [1.9581, 0.6527, 0],
-   "screen": [144, 136],
+   "world": [2.4477, 0.1632, 0],
+   "screen": [162, 136],
    "zoom": 2,
-   "crop": [95, 110, 98, 52],
+   "crop": [113, 110, 98, 52],
    "what": "the old man sitting on the bench"
   },
   "senor.no": {
-   "world": [1.9581, 0.6527, 0],
-   "screen": [144, 136],
+   "world": [2.4477, 0.1632, 0],
+   "screen": [162, 136],
    "zoom": 2,
-   "crop": [95, 110, 98, 52],
+   "crop": [113, 110, 98, 52],
    "what": "Luis sitting there"
   },
   "come.si": {
-   "world": [2.0125, 0.7071, 0],
-   "screen": [144, 137],
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
    "zoom": 2,
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "what": "the man on the bench eating a piragua"
   },
   "come.no": {
-   "world": [2.0125, 0.7071, 0],
-   "screen": [144, 137],
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
    "zoom": 2,
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "what": "the man drinking water"
   },
   "cansado.si": {
-   "world": [2.0669, 0.7615, 0],
-   "screen": [144, 138],
+   "world": [2.5565, 0.272, 0],
+   "screen": [162, 138],
    "zoom": 2,
-   "crop": [95, 112, 98, 52],
+   "crop": [113, 112, 98, 52],
    "what": "Luis on the bench, tired"
   },
   "cansado.no": {
-   "world": [2.0669, 0.7615, 0],
-   "screen": [144, 138],
+   "world": [2.5565, 0.272, 0],
+   "screen": [162, 138],
    "zoom": 2,
-   "crop": [95, 112, 98, 52],
+   "crop": [113, 112, 98, 52],
    "what": "Luis on the bench, happy, waving"
   },
   "contento.si": {
-   "world": [2.0125, 0.7071, 0],
-   "screen": [144, 137],
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
    "zoom": 2,
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "what": "the man on the bench, happy"
   },
   "contento.no": {
-   "world": [2.0125, 0.7071, 0],
-   "screen": [144, 137],
+   "world": [2.5021, 0.2176, 0],
+   "screen": [162, 137],
    "zoom": 2,
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "what": "the man on the bench, crying"
   },
   "mujer.si": {
@@ -1807,7 +1827,7 @@
    "index": 0,
    "picture": "come.si",
    "old": [117.33, 106, 54.34, 60],
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "zoom": 2
   },
   {
@@ -1815,7 +1835,7 @@
    "index": 1,
    "picture": "come.no",
    "old": [117.33, 106, 54.34, 60],
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "zoom": 2
   },
   {
@@ -1831,7 +1851,7 @@
    "index": 3,
    "picture": "cansado.si",
    "old": [117.33, 106, 54.34, 60],
-   "crop": [95, 112, 98, 52],
+   "crop": [113, 112, 98, 52],
    "zoom": 2
   },
   {
@@ -1855,7 +1875,7 @@
    "index": 2,
    "picture": "senor.si",
    "old": [117.33, 106, 54.34, 60],
-   "crop": [95, 110, 98, 52],
+   "crop": [113, 110, 98, 52],
    "zoom": 2
   },
   {
@@ -1919,7 +1939,7 @@
    "index": 2,
    "picture": "contento.si",
    "old": [117.33, 106, 54.34, 60],
-   "crop": [95, 111, 98, 52],
+   "crop": [113, 111, 98, 52],
    "zoom": 2
   },
   {
@@ -1927,7 +1947,7 @@
    "index": 3,
    "picture": "cansado.si",
    "old": [117.33, 106, 54.34, 60],
-   "crop": [95, 112, 98, 52],
+   "crop": [113, 112, 98, 52],
    "zoom": 2
   }
  ],
@@ -2050,19 +2070,45 @@
   ],
   "linesWhat": "the lines banco.js gains; GS (shadow.gsSource) is defined in the line of B and ASIENTO (const GS=..., B=BANCOS, ...); the port draws the rolling cart where the edited line calls CARRORUEDA (carro.rolling)",
   "shadow": {
-   "gs": "GS(x0, y0, x1, y1, t): the ground under a perch (x, y): on the wire (|y - cableY(x)| <= 2, y < 80): [x, 138 + (x - 22) * 0.1] (points.cable); on a bench's back (a POSA): [x, y - 1 + (ZS + BACK_H) * COS * S]; on a seat (a bench's seat at that row): [x, y - 1 + ZS * COS * S]; else [x, y - 1]. The shadow: lerp of the two by t",
-   "gsSource": "(x0,y0,x1,y1,t)=>{const g=(x,y)=>Math.abs(y-cableY(x))<=2&&y<80?[x,138+(x-22)*0.1]:POSA.some(p=>Math.abs(p[0]-x)<=1&&Math.abs(p[1]-y)<=1)?[x,y-1+22.967]:(y>=140&&y<=170&&Math.abs(y-AS(x))<=2&&x>75&&x<215)?[x,y-1+9.457]:[x,y-1],a=g(x0,y0),b=g(x1,y1);return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];}"
+   "gs": "GS(x0, y0, x1, y1, t): the ground under a perch (x, y): on the wire (|y - cableY(x)| <= 2, y < 80): [x, 138 + (x - 24) * 0.0133] (points.cable); on a bench's back (a POSA): [x, y - 1 + (ZS + BACK_H) * COS * S]; on a seat (a bench's seat at that row): [x, y - 1 + ZS * COS * S]; else [x, y - 1]. The shadow: lerp of the two by t",
+   "gsSource": "(x0,y0,x1,y1,t)=>{const g=(x,y)=>Math.abs(y-cableY(x))<=2&&y<80?[x,138+(x-24)*0.0133]:POSA.some(p=>Math.abs(p[0]-x)<=1&&Math.abs(p[1]-y)<=1)?[x,y-1+22.967]:(y>=140&&y<=170&&Math.abs(y-AS(x))<=2&&x>75&&x<215)?[x,y-1+9.457]:[x,y-1],a=g(x0,y0),b=g(x1,y1);return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];}"
   },
   "margin": 6,
-  "marginWhat": "whatever rests near the paving's edge, the hedge, a bench, the lamp post or the gate is on one side: on the paving with at least `margin` px of paving round its foot (the lowest 2 rows of its sprite), or on the lawn with `margin` px of lawn, and `margin` px from the footprint of every set thing (where it meets the ground: a bench's leg, a post, the hedge, the lamp post's foot, the cart, a trunk; banco-set.html FOOTS); what stands behind a thing is drawn behind it (front), what stands in front of it before it"
+  "marginWhat": "whatever rests near the paving's edge, the hedge, a bench, the lamp post or the gate is on one side: on the paving with at least `margin` px of paving round its foot (the lowest 2 rows of its sprite), or on the lawn with `margin` px of lawn, and `margin` px from the footprint of every set thing (where it meets the ground: a bench's leg, the lamp post's foot, the cart's wheels, a trunk; banco-set.html FOOTS), 3 px from a gate's post (the opening is just wide enough to walk through) and from the hedge (round 2: it may hide feet, never a face); what stands behind a thing is drawn behind it (front), what stands in front of it before it"
  },
  "moves": [
   {
    "line": 19,
    "act": "*",
    "src": "PORTON=[188,197];",
-   "to": "PORTON=[188,197],SY=x=>{const k=x<120?0:x<168?1:2;return Math.round(161+(x-BANCOS[k][0])/2);},AS=x=>SY(x)-12;",
-   "why": "two rules the moves below use. SY(x): where whoever sits on a bench at x has their feet: the benches stand on the world's axes (along x), so each seat's front edge falls half a row for every px to the right; whoever sits keeps the old x and sits on that edge, their feet over the paving below it; at each bench's middle the old 161. AS(x) = SY(x) - 12: a thing put on the seat at x (the old ASIENTO, 149 at each bench's middle), two rows behind the edge"
+   "to": "PORTON=[199,203],SY=x=>{const k=x<120?0:x<168?1:2;return Math.round(161+(x-BANCOS[k][0])/2);},AS=x=>SY(x)-12;",
+   "places": [
+    {
+     "who": "porton",
+     "old": [188, 197],
+     "new": [199, 203],
+     "world": [7.0439, 2.7468, 0]
+    },
+    {
+     "who": "porton",
+     "old": [184, 199],
+     "new": [195, 205],
+     "world": [7.0439, 2.9644, 0]
+    },
+    {
+     "who": "porton",
+     "old": [184, 197],
+     "new": [195, 203],
+     "world": [6.9351, 2.8556, 0]
+    },
+    {
+     "who": "cq",
+     "old": [176, 172],
+     "new": [187, 178],
+     "world": [7.207, 2.6924, 0]
+    }
+   ],
+   "why": "round 2: PORTON, where one stands at the gate, 11 px right and 6 rows down: inside the gate's opening (the hedge along y across the lower right corner, its two posts at 180, 212 and 212, 196); every place made from it moves with it (luisve, pasa, sale, turno22, adios, sevade, alza, final22, sevan22: the way out at PORTON[1]). And two rules the moves below use. SY(x): where whoever sits on a bench at x has their feet: the benches stand on the world's axes (along x), so each seat's front edge falls half a row for every px to the right; whoever sits keeps the old x and sits on that edge, their feet over the paving below it; at each bench's middle the old 161. AS(x) = SY(x) - 12: a thing put on the seat at x (the old ASIENTO, 149 at each bench's middle), two rows behind the edge"
   },
   {
    "line": 231,
@@ -2242,7 +2288,7 @@
    "line": 303,
    "act": "inicio22",
    "src": "{id:\"cartera\",k:\"cartera\",x:157,y:ASIENTO},{id:\"mochila\",k:\"mochila\",x:204,y:ASIENTO+1}",
-   "to": "{id:\"cartera\",k:\"cartera\",x:154,y:AS(154)},{id:\"mochila\",k:\"mochila\",x:201,y:AS(201)+1}",
+   "to": "{id:\"cartera\",k:\"cartera\",x:154,y:AS(154)},{id:\"mochila\",k:\"mochila\",x:197,y:AS(197)+1}",
    "places": [
     {
      "who": "cosa",
@@ -2253,11 +2299,11 @@
     {
      "who": "cosa",
      "old": [204, 150],
-     "new": [201, 155],
-     "world": [5.0018, 0.596, 0.42]
+     "new": [197, 153],
+     "world": [4.7842, 0.596, 0.42]
     }
    ],
-   "why": "acts.inicio22: the handbag and the rucksack on the seats (AS), 3 px left, clear of the seats' right ends"
+   "why": "acts.inicio22: the handbag and the rucksack on the seats (AS), clear of the seats' right ends (the third bench ends 5 px right of its middle, round 2)"
   },
   {
    "line": 315,
@@ -2293,7 +2339,7 @@
    "line": 238,
    "act": "*",
    "src": "POSA=[[110,127],[158,127],[176,127],[208,127]]",
-   "to": "POSA=[[110,137],[158,137],[188,128],[208,138]]",
+   "to": "POSA=[[110,137],[158,137],[188,128],[197,133]]",
    "places": [
     {
      "who": "paloma",
@@ -2316,54 +2362,54 @@
     {
      "who": "paloma",
      "old": [208, 127],
-     "new": [208, 138],
-     "world": [5.0023, 0.2158, 1.02]
+     "new": [197, 133],
+     "world": [4.4312, 0.243, 1.02]
     }
    ],
-   "why": "where the pigeons perch on the benches' backs (posa): on the top of each back at its x, which falls half a row a px to the right; the third (176) was past the third back's left end: 12 px right"
+   "why": "where the pigeons perch on the benches' backs (posa): on the top of each back at its x, which falls half a row a px to the right; the third (176) was past the third back's left end: 12 px right; the fourth 11 px left (the third bench is shorter, round 2)"
   },
   {
    "line": 19,
    "act": "*",
    "src": "CARRO=[47,178]",
-   "to": "CARRO=[34,178]",
+   "to": "CARRO=[36,178]",
    "places": [
     {
      "who": "piraguero",
      "old": [51, 172],
-     "new": [38, 172],
-     "world": [0.9791, 5.4393, 0]
+     "new": [40, 172],
+     "world": [1.0335, 5.3849, 0]
     },
     {
      "who": "carro",
      "old": [47, 178],
-     "new": [34, 178],
-     "world": [1.1966, 5.8744, 0]
+     "new": [36, 178],
+     "world": [1.251, 5.82, 0]
     }
    ],
-   "why": "the cart and its man 13 px to the left: the cart lies along y in front of the man (down to the right of him on the screen, where the old one was drawn round him), so its middle is right of him; at the old point its right wheel stood where the frog serves whoever sits at the first bench's left (87, 179). W.carroX starts at CARRO[0] (carrova) and every place made from CARRO moves with it (the man: CARRO + (4, -6))"
+   "why": "the cart and its man 11 px to the left: the cart lies along y in front of the man (down to the right of him on the screen, where the old one was drawn round him), so its middle is right of him; at the old point its right wheel stood where the frog serves whoever sits at the first bench's left (87, 179). W.carroX starts at CARRO[0] (carrova) and every place made from CARRO moves with it (the man: CARRO + (4, -6))"
   },
   {
    "line": 426,
    "act": "*",
    "src": "fresh:()=>({respEn:[120,64],",
-   "to": "fresh:()=>({respEn:[126,31],",
+   "to": "fresh:()=>({respEn:[128,31],",
    "why": "where the answer cards stand (W.respEn, every story of the scene): in the sky under the rounds card, so that the hint drawn round a card (its frame, box + 12, and the hint hand under it, 45 px tall) falls on nobody's face: at the old (120, 64) the hand lay on the faces of whoever sits on the benches. Its frames and glow 4 px inside the view, right of the sun; over the wire's pigeons and the lamp's lantern (no ask with cards names them)"
   },
   {
    "line": 305,
    "act": "inicio22",
    "src": "W.casa=[124,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;",
-   "to": "W.casa=[138,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;",
+   "to": "W.casa=[134,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;",
    "places": [
     {
      "who": "cq",
      "old": [108, 178],
-     "new": [122, 178],
-     "world": [5.4393, 4.4602, 0]
+     "new": [118, 178],
+     "world": [5.3305, 4.569, 0]
     }
    ],
-   "why": "acts.inicio22 (senor-senora): the frog's home 14 px right, so that his walks to the young dog (moved, below) take their old two hops; every other walk from it keeps its count (hops)"
+   "why": "acts.inicio22 (senor-senora): the frog's home 10 px right, so that his walks to the young dog (moved, below) take their old two hops; every other walk from it keeps its count (hops)"
   },
   {
    "line": 304,
@@ -2387,6 +2433,44 @@
    "why": "acts.inicio22: the two dogs 14 px right: at 38 the young dog's hint frame (box + 12) left the view (as in the old); the old dog with it, and the frog's home (above), so that every walk of the frog between them and to them takes its old hops"
   },
   {
+   "line": 318,
+   "act": "sale22",
+   "src": "W.casa=[100,205];",
+   "to": "W.casa=[114,205];",
+   "places": [
+    {
+     "who": "cq",
+     "old": [84, 178],
+     "new": [98, 178],
+     "world": [4.7866, 5.1129, 0]
+    }
+   ],
+   "why": "acts.sale22: the frog's home when the dogs have moved aside, 14 px right with them (moved, below), so that he stands where he stood beside the young dog and his walks take their old hops"
+  },
+  {
+   "line": 309,
+   "lines": [309, 311],
+   "act": "*",
+   "src": "mueve(\"carmen\",158,210)",
+   "to": "mueve(\"carmen\",160,215)",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [158, 210],
+     "new": [160, 215],
+     "world": [6.6064, 4.4307, 0.42]
+    }
+   ],
+   "why": "bolsa, hueso: where Carmen hands the bag and the bone, 2 px right and 5 rows nearer: Luis and the frog's home moved 14 px right (round 2), and 14 px would put her behind the gate's left post; here she is clear of the frog, of the post, and of Luis but his feet"
+  },
+  {
+   "line": 335,
+   "act": "carrova",
+   "src": "v.y=196;j.y=204;",
+   "to": "v.y=206;j.y=212;",
+   "why": "acts.carrova: when the cart goes home the two dogs walk 10 and 8 rows nearer: the cart now rolls toward the viewer (+y) with its man pushing it, and at the old rows he walked over the old dog; here both dogs stay in front of him while they are in the view (the young one still in front of the old)"
+  },
+  {
    "line": 327,
    "act": "perros22",
    "src": "L=[38,193],D=[90,193]",
@@ -2397,7 +2481,7 @@
    "line": 318,
    "act": "sale22",
    "src": "perroA(\"viejo\",36,193,\"walk\"),perroA(\"joven\",64,194,\"run\")",
-   "to": "perroA(\"viejo\",52,193,\"walk\"),perroA(\"joven\",78,194,\"run\")",
+   "to": "perroA(\"viejo\",52,193,\"walk\"),perroA(\"joven\",54,214,\"run\")",
    "places": [
     {
      "who": "perro",
@@ -2408,11 +2492,229 @@
     {
      "who": "perro",
      "old": [64, 194],
-     "new": [78, 194],
-     "world": [3.234, 5.5185, 0.42]
+     "new": [54, 214],
+     "world": [3.6692, 7.2591, 0.42]
     }
    ],
-   "why": "acts.sale22: the dogs move aside to the left: 16 and 14 px less far (their hint frames inside the view)"
+   "why": "acts.sale22: the dogs move aside to the left: the old one 16 px less far (his hint frame inside the view), the young one 10 px farther and 20 rows nearer, in front of the old one (moved) and of the frog when he serves whoever queues first at the cart (cola22: at the old row he stood over the dog)"
+  },
+  {
+   "line": 302,
+   "act": "inicio22",
+   "src": "carmen:{x:176,y:208,dir:-1}",
+   "to": "carmen:{x:198,y:211,dir:-1}",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [176, 208],
+     "new": [198, 211],
+     "world": [7.4223, 3.1796, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: Carmen 18 px right and 4 rows down, on the path just beyond the gate: at the old point she stood on the gate's left post; the frog's home, Luis and the box moved 14 px right (round 2), and she keeps her distance from them"
+  },
+  {
+   "line": 302,
+   "act": "inicio22",
+   "src": "luis:{x:148,y:186,dir:1}",
+   "to": "luis:{x:162,y:186,dir:1}",
+   "places": [
+    {
+     "who": "luis",
+     "old": [148, 186],
+     "new": [162, 186],
+     "world": [5.0834, 2.7989, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: Luis by the box, 14 px right with the frog's home (moved), so that the frog does not stand on his feet (round 2)"
+  },
+  {
+   "line": 317,
+   "lines": [317, 326],
+   "act": "*",
+   "src": "mueve(\"luis\",148,186)",
+   "to": "mueve(\"luis\",162,186)",
+   "why": "luiscaja, luisguarda: Luis back to his place by the box (moved, inicio22)"
+  },
+  {
+   "line": 303,
+   "act": "inicio22",
+   "src": "{id:\"caja\",k:\"caja\",x:167,y:187}",
+   "to": "{id:\"caja\",k:\"caja\",x:185,y:187}",
+   "places": [
+    {
+     "who": "cosa",
+     "old": [167, 187],
+     "new": [185, 187],
+     "world": [6.3072, 2.7717, 0.42]
+    }
+   ],
+   "why": "acts.inicio22: the box beside Luis, 18 px right (he moved 14), so that it hides no more of his legs than the old (round 2)"
+  },
+  {
+   "line": 306,
+   "act": "alcarro",
+   "src": "const en={senor:[80,184],mujer:[96,188],joven:[112,184]}",
+   "to": "const en={senor:[80,190],mujer:[96,192],joven:[120,186]}",
+   "places": [
+    {
+     "who": "senor",
+     "old": [80, 184],
+     "new": [80, 190],
+     "world": [3.0709, 5.2466, 0.42]
+    },
+    {
+     "who": "mujer",
+     "old": [96, 188],
+     "new": [96, 192],
+     "world": [3.6148, 4.9202, 0.42]
+    },
+    {
+     "who": "joven",
+     "old": [112, 184],
+     "new": [120, 186],
+     "world": [3.9411, 3.9411, 0.42]
+    }
+   ],
+   "why": "acts.alcarro: the three queue at the cart 6, 4 and 2 rows nearer, the young man 8 px right, behind the old dog (moved) as before it: the man reading on the first bench sits up to 6 rows lower than the old (SY), and their heads stood in front of his face (round 2)"
+  },
+  {
+   "line": 238,
+   "act": "*",
+   "src": "JUGEN=[[182,188],[195,196],[183,209],[196,211]]",
+   "to": "JUGEN=[[182,188],[195,196],[190,208],[196,211]]",
+   "places": [
+    {
+     "who": "cosa",
+     "old": [183, 209],
+     "new": [190, 208],
+     "world": [7.5855, 3.778, 0.42]
+    }
+   ],
+   "why": "where the third toy lands (despierta): 7 px right, in the gate's opening: the old point is on its left post"
+  },
+  {
+   "line": 323,
+   "act": "pasa",
+   "src": "await mueve(o.a,PORTON[0]+8,PORTON[1]);",
+   "to": "await mueve(o.a,PORTON[0]+6,PORTON[1]+4);",
+   "places": [
+    {
+     "who": "porton",
+     "old": [196, 197],
+     "new": [205, 207],
+     "world": [7.4246, 2.8012, 0]
+    }
+   ],
+   "why": "acts.pasa: who walks through the gate stops just beyond it on the path, clear of the right post and the hedge (round 2)"
+  },
+  {
+   "line": 325,
+   "act": "sevade",
+   "src": "p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;},",
+   "to": "p.dir=1;await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,246,PORTON[1]+12);p.vis=0;},",
+   "why": "acts.sevade: who says goodbye walks out through the gate's opening (PORTON) and along the path: from the benches straight to the old exit point the way crossed the hedge (round 2)"
+  },
+  {
+   "line": 333,
+   "act": "alza",
+   "src": "p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;W.cq.dy=0;",
+   "to": "p.dir=1;await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,246,PORTON[1]+12);p.vis=0;W.cq.dy=0;",
+   "why": "acts.alza: as sevade"
+  },
+  {
+   "line": 344,
+   "act": "abuelallega",
+   "src": "W.gente.abuela={x:250,y:204,dir:-1,paso:1}",
+   "to": "W.gente.abuela={x:250,y:212,dir:-1,paso:1}",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [250, 204],
+     "new": [250, 212],
+     "world": [8.8909, 1.8198, 0.42]
+    }
+   ],
+   "why": "acts.abuelallega: abuela comes in along the path and through the gate's opening (from 8 rows lower, off the picture)"
+  },
+  {
+   "line": 334,
+   "act": "final22",
+   "src": "mueve(\"carmen\",190,204)",
+   "to": "mueve(\"carmen\",192,200)",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [190, 204],
+     "new": [192, 200],
+     "world": [6.6608, 2.7445, 0.42]
+    }
+   ],
+   "why": "acts.final22: Carmen waits at the gate in front of its opening, clear of the left post (round 2)"
+  },
+  {
+   "line": 334,
+   "act": "final22",
+   "src": "h.pose=\"idle\";await mueve(\"hombre\",246,PORTON[1]);h.vis=0;}else",
+   "to": "h.pose=\"idle\";await mueve(\"hombre\",PORTON[0],PORTON[1]);await mueve(\"hombre\",246,PORTON[1]+12);h.vis=0;}else",
+   "why": "acts.final22: the man who came for his paper leaves through the gate's opening (PORTON) and along the path: from beside Luis straight to the exit the way crossed the line of the gate at its right post (round 2)"
+  },
+  {
+   "line": 322,
+   "lines": [322, 325, 332, 333, 334],
+   "act": "*",
+   "src": "246,PORTON[1])",
+   "to": "246,PORTON[1]+12)",
+   "why": "whoever leaves walks to (246, PORTON[1] + 12): through the middle of the gate's opening and out along the path (round 2; the old went to PORTON[1], past the right post)"
+  },
+  {
+   "line": 315,
+   "act": "*",
+   "src": "244,PORTON[1])",
+   "to": "244,PORTON[1]+12)",
+   "why": "as 246, PORTON[1] (turno22)"
+  },
+  {
+   "line": 296,
+   "act": "final21",
+   "src": "cx()+46,pies()+2",
+   "to": "cx()+36,pies()+2",
+   "places": [
+    {
+     "who": "carmen",
+     "old": [170, 208],
+     "new": [160, 208],
+     "world": [6.2256, 4.0499, 0.42]
+    }
+   ],
+   "why": "acts.final21: Carmen comes to the frog's right 10 px nearer: at the old offset from his home she stood on the gate's left post (round 2)"
+  },
+  {
+   "line": 391,
+   "act": "sevan23",
+   "src": "mueve(\"abuela\",250,200),mueve(\"carmen\",250,206),mueve(\"luis\",250,196),perroA(\"canelo\",250,210",
+   "to": "mueve(\"abuela\",250,210),mueve(\"carmen\",250,206),mueve(\"luis\",250,206),perroA(\"canelo\",250,214",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [250, 200],
+     "new": [250, 210],
+     "world": [8.7821, 1.711, 0.42]
+    },
+    {
+     "who": "luis",
+     "old": [250, 196],
+     "new": [250, 206],
+     "world": [8.5645, 1.4935, 0.42]
+    },
+    {
+     "who": "perro",
+     "old": [250, 210],
+     "new": [250, 214],
+     "world": [8.9997, 1.9286, 0.42]
+    }
+   ],
+   "why": "acts.sevan23: everyone leaves through the gate's opening and out along the path (the old walked out over the hedge's line)"
   },
   {
    "line": 196,
@@ -4469,8 +4771,12 @@
     "state": ["1"],
     "time": ["300"]
    },
-   "to": "unchanged",
-   "note": "no place: count, offset, state, time"
+   "to": {
+    "moves": [
+     "cx()+46,pies()+2"
+    ]
+   },
+   "note": "moved (moves): acts.final21"
   },
   {
    "line": 297,
@@ -4521,10 +4827,12 @@
    },
    "to": {
     "moves": [
-     "senor:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},joven:{x:B[2][0]-9,y:161,dir:1,sent:1,sin:{mochila:1}},hombre:{x:B[0][0]+11,y:161,dir:1,sent:1,lee:1}"
+     "senor:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},joven:{x:B[2][0]-9,y:161,dir:1,sent:1,sin:{mochila:1}},hombre:{x:B[0][0]+11,y:161,dir:1,sent:1,lee:1}",
+     "carmen:{x:176,y:208,dir:-1}",
+     "luis:{x:148,y:186,dir:1}"
     ]
    },
-   "note": "moved (moves): acts.inicio22; every other place here keeps its screen place (the floor rule)"
+   "note": "moved (moves): acts.inicio22; acts.inicio22; acts.inicio22; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 303,
@@ -4534,10 +4842,11 @@
    },
    "to": {
     "moves": [
-     "{id:\"cartera\",k:\"cartera\",x:157,y:ASIENTO},{id:\"mochila\",k:\"mochila\",x:204,y:ASIENTO+1}"
+     "{id:\"cartera\",k:\"cartera\",x:157,y:ASIENTO},{id:\"mochila\",k:\"mochila\",x:204,y:ASIENTO+1}",
+     "{id:\"caja\",k:\"caja\",x:167,y:187}"
     ]
    },
-   "note": "moved (moves): acts.inicio22; every other place here keeps its screen place (the floor rule)"
+   "note": "moved (moves): acts.inicio22; acts.inicio22; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 304,
@@ -4576,9 +4885,11 @@
     "time": ["400"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "const en={senor:[80,184],mujer:[96,188],joven:[112,184]}"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): acts.alcarro; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 307,
@@ -4616,9 +4927,11 @@
     "time": ["300"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "mueve(\"carmen\",158,210)"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): bolsa, hueso; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 310,
@@ -4638,9 +4951,11 @@
     "time": ["300"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "mueve(\"carmen\",158,210)"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): bolsa, hueso; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 312,
@@ -4682,10 +4997,11 @@
    },
    "to": {
     "moves": [
-     "{id:\"periodico\",k:\"periodico\",x:108,y:ASIENTO}"
+     "{id:\"periodico\",k:\"periodico\",x:108,y:ASIENTO}",
+     "244,PORTON[1])"
     ]
    },
-   "note": "moved (moves): acts.turno22; every other place here keeps its screen place (the floor rule)"
+   "note": "moved (moves): acts.turno22; as 246, PORTON[1] (turno22); every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 316,
@@ -4710,9 +5026,11 @@
     "state": ["1"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "mueve(\"luis\",148,186)"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): luiscaja, luisguarda; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 318,
@@ -4722,10 +5040,11 @@
    },
    "to": {
     "moves": [
+     "W.casa=[100,205];",
      "perroA(\"viejo\",36,193,\"walk\"),perroA(\"joven\",64,194,\"run\")"
     ]
    },
-   "note": "moved (moves): acts.sale22; every other place here keeps its screen place (the floor rule)"
+   "note": "moved (moves): acts.sale22; acts.sale22; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 319,
@@ -4773,9 +5092,11 @@
     "place": ["0", "1", "246", "1"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "246,PORTON[1])"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 323,
@@ -4786,9 +5107,11 @@
     "time": ["300"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "await mueve(o.a,PORTON[0]+8,PORTON[1]);"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): acts.pasa; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 324,
@@ -4809,9 +5132,12 @@
     "place": ["246", "1"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;},",
+     "246,PORTON[1])"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): acts.sevade; whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 326,
@@ -4822,9 +5148,11 @@
     "time": ["300"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "mueve(\"luis\",148,186)"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): luiscaja, luisguarda; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 327,
@@ -4892,9 +5220,11 @@
     "state": ["0"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "246,PORTON[1])"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 333,
@@ -4904,9 +5234,12 @@
     "place": ["246", "1"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;W.cq.dy=0;",
+     "246,PORTON[1])"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): acts.alza; whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 334,
@@ -4919,9 +5252,13 @@
     "count": ["3"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "mueve(\"carmen\",190,204)",
+     "h.pose=\"idle\";await mueve(\"hombre\",246,PORTON[1]);h.vis=0;}else",
+     "246,PORTON[1])"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): acts.final22; acts.final22; whoever leaves walks to (246, PORTON[1] + 12); every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 335,
@@ -4934,9 +5271,11 @@
     "count": ["1", "1"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "v.y=196;j.y=204;"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): acts.carrova; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 336,
@@ -5034,10 +5373,11 @@
    },
    "to": {
     "moves": [
-     "a.x=B[0][0]+5;a.y=161;"
+     "a.x=B[0][0]+5;a.y=161;",
+     "W.gente.abuela={x:250,y:204,dir:-1,paso:1}"
     ]
    },
-   "note": "moved (moves): acts.abuelallega; every other place here keeps its screen place (the floor rule)"
+   "note": "moved (moves): acts.abuelallega; acts.abuelallega; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 345,
@@ -5476,9 +5816,11 @@
     "time": ["500"]
    },
    "to": {
-    "floor": true
+    "moves": [
+     "mueve(\"abuela\",250,200),mueve(\"carmen\",250,206),mueve(\"luis\",250,196),perroA(\"canelo\",250,210"
+    ]
    },
-   "note": "places on the picture: each keeps its screen place, its world point the ground under it (rules.floor)"
+   "note": "moved (moves): acts.sevan23; every other place here keeps its screen place (the floor rule)"
   },
   {
    "line": 395,
@@ -5746,21 +6088,40 @@
    "code: banco.js read here: 331 lines hold numbers, every one with its entry; 486 numbers are places on the picture, each named in its line's entry with what becomes of it (moved, the floor rule, a set thing, dropped); 2847 are not places (other 89, scale 37, offset 179, dropped 215, drawing 1701, count 101, state 260, order 10, time 192, sound 63: each line's entry lists them by kind)",
    "inventory: 20 things (old 20), 2 frog places of LUGAR (old 2), 1 view (old 1), 62 positions (old 62), 12 review pairs of cual-banco (24 pictures here; none is another scene's), 16 level pictures (old 16), 7 baked states reached (the old 49)",
    "hops: the frog's 86 walks between steps in the 18 runs, recorded and the port's, each the old number of hops (26 distinct walks; 0 changed)",
-   "boxes, two touch things side by side (as the old, whose lamp post's box also reached over the second bench's end): banco1 -> farol 564 px, banco2 -> farol 168 px",
-   "boxes: every pixel of each set thing inside its touch box in every baked state (nothing sways): carro [25,105,43,79], farol [166,32,12,123], banco0 [80,125,41,43], banco1 [128,124,41,44], banco2 [176,125,41,43]; every pixel answers its own thing in the hit order (the wire answers the lamp only where it hangs from it, 8 px); no two boxes overlap; the trees, the hedge, the gate, the pole and the wire are the park's",
-   "shadows of the set: 1676 castShadow calls over the 12 states, each with strength 1 and a radius, none at night; each casting part darkens pixels, its shadow joined to it; the thin pole, lamp post and gate posts only a contact shadow at their foot: arbol0 960 px, arbol1 960 px, arbol2 690 px, poste 96 px, farol 138 px, carro 1426 px, banco0 1554 px, banco1 1554 px, banco2 1398 px, seto 456 px, porton 60 px",
-   "the lamp's pool (evening and night): 447 and 447 px round its foot, joined to it, none by day; the trees' crown shades (day and evening), lighter and solid, on the lawn only",
-   "sides: 20319 ticks inside the acts of the port's play of the 18 runs, every step's end and every pair picture: 115743 rests (300 ms or more in one place) on the ground, each clearly on one side with 6 px of that ground round its foot: on the paving (abuela, carmen, coche, cosa billetera, cosa bola, cosa caida, cosa caja, cosa cojin, cosa hielo, cosa jug0, cosa jug1, cosa jug2, cosa jug3, cosa sombrilla, hombre, joven, luis, mujer, paloma 1, paloma 2, paloma 3, perro canelo, perro joven, perro viejo, piraguero, senor, senora, the frog), on the lawn (none); 4684 moments of someone beyond the hedge's line (on the pavement outside), 202 crossings of it, each in the gate's opening",
-   "sitting: 49789 moments of someone on a bench: the seat under the lap, the feet over the paving, nothing of the bench nearer than them (its back behind them); 10547 moments of a thing or a pigeon on a seat, on it",
-   "pigeons: 86416 wire, 1434 air, 1091 ground, 50 coche, 602 seat, 249 frog, 4722 back (moments): on the wire with the wire under their feet, on a back with its top under them; 1434 moments in the air, each with its shadow on the ground (helps)",
-   "behind a front part, drawn over them by front: piraguero behind carro, senor behind banco0, senor behind porton, senor behind seto, mujer behind banco1, carmen behind porton, cosa bola behind porton, perro canelo behind porton, the frog behind porton, luis behind banco0, senora behind banco1, mujer behind banco0, joven behind banco1, joven behind banco2, hombre behind banco0; nobody has another part of the set nearer than them",
-   "bubbles: 7392 bubbles at 21640 moments (each person's recorded one and \"amor\" when touched, the frog's): wholly inside the view (0 px from its edge at the least), clear of the rounds card, on no face; but where no place is free the \"amor\" of a touch keeps the old place, as the old (abuela \"amor\" (el-bebe-duerme wrong), luis \"amor\" (el-bebe-duerme wrong), hombre \"amor\" (senor-senora right))",
-   "asks: 46 distinct asks (for bebe, canta, come, di_bebe, di_cansado, di_come, di_contento, di_joven, di_senor, di_senora, di_triste, hombre, joven, luis, mujer, perro_joven, perro_viejo, quieto, senor): every hint frame (box +- 12) inside the view with 2 px to spare (3 at the least; the park by its hintBox), no frame's rings across a face where the old frame's were not (as the old: el-bebe-duerme beats.57 (luis) abuela's face; senor-senora beats.20 (mujer) hombre's face; senor-senora beats.20 (mujer) luis's face; senor-senora beats.25 (perro_viejo) the frog's face; senor-senora beats.52 (senor) joven's face), the hint hand on no face (but as the old: el-bebe-duerme beats.57 (luis): on luis's face; h-banco beats.4 (joven): on the frog's face; h-banco beats.7 (joven): on the frog's face; la-piragua beats.11 (mujer): on the frog's face; la-piragua beats.44 (mujer): on the frog's face; senor-senora beats.20 (mujer): on carmen's face; senor-senora beats.20 (mujer): on luis's face; senor-senora beats.20 (mujer): on the frog's face); 52 answer cards, each with its lit frame and glow 4 px and more inside the view (6 at the least), 2 px clear of the rounds card and of everyone's head and body, over no dog, the pushchair or a thing, nor what the ask names (over the wire's pigeons at no ask that names them: el-bebe-duerme, la-piragua, senor-senora; over farol of the set, named by no ask with cards), the sun and the moon under none; (new) at each of the 52 cards the hint drawn round it: its frame 2 px inside the view, across no head, its hand on no face; 69 times someone a learner must find or tell apart: whole in the view, on plain paving, lawn, sky or their own bench, apart where the old had them apart, 42 at the least from their backdrop in the evening and at night (CIE76, their fill or their dark outline against the 2 px round them; 15 kept, or no less than the old picture: none lower)",
+   "boxes, two touch things side by side (as the old, whose lamp post's box also reached over the second bench's end): banco1 -> farol 24 px, banco2 -> farol 24 px",
+   "boxes: every pixel of each set thing inside its touch box in every baked state (nothing sways): carro [27,93,43,91], farol [168,31,12,111], banco0 [80,125,41,43], banco1 [128,124,41,44], banco2 [176,124,30,39]; every pixel answers its own thing in the hit order (the wire answers the lamp only where it hangs from it, 8 px); no two boxes overlap; the trees, the hedge, the gate, the pole and the wire are the park's",
+   "shadows of the set: 1580 castShadow calls over the 12 states, each with strength 1 and a radius, none at night; each casting part darkens pixels, its shadow joined to it; the thin pole, lamp post and gate posts only a contact shadow at their foot: arbol0 960 px, arbol1 960 px, arbol2 690 px, poste 78 px, farol 84 px, carro 1100 px, banco0 1554 px, banco1 1554 px, banco2 834 px, seto 888 px, porton 126 px",
+   "the lamp's pool (evening and night): 2162 and 2162 px round its foot, joined to it, none by day; the trees' crown shades (day and evening), lighter and solid, on the lawn only",
+   "sides: 20527 ticks inside the acts of the port's play of the 18 runs, every step's end and every pair picture: 117067 rests (300 ms or more in one place) on the ground, each clearly on one side with 6 px of that ground round its foot: on the paving (abuela, carmen, coche, cosa billetera, cosa bola, cosa caida, cosa caja, cosa cojin, cosa hielo, cosa jug0, cosa jug1, cosa jug2, cosa jug3, cosa sombrilla, hombre, joven, luis, mujer, paloma 1, paloma 2, paloma 3, perro canelo, perro joven, perro viejo, piraguero, senor, senora, the frog), on the lawn (none); 3907 moments of someone beyond the hedge's line (on the pavement outside), 205 crossings of it, each in the gate's opening",
+   "sitting: 50197 moments of someone on a bench: the seat under the lap, the feet over the paving, nothing of the bench nearer than them (its back behind them); 10583 moments of a thing or a pigeon on a seat, on it",
+   "pigeons: 87288 wire, 1434 air, 1085 ground, 50 coche, 602 seat, 243 frog, 4698 back (moments): on the wire with the wire under their feet, on a back with its top under them; 1434 moments in the air, each with its shadow on the ground (helps)",
+   "behind a front part, drawn over them by front: piraguero behind carro, paloma 2 behind porton, senor behind banco0, senor behind porton, senor behind seto, mujer behind banco1, mujer behind porton, luis behind porton, luis behind seto, carmen behind porton, carmen behind seto, cosa bola behind seto, cosa bola behind porton, perro canelo behind seto, perro canelo behind porton, abuela behind porton, abuela behind seto, the frog behind porton, the frog behind seto, coche behind porton, cosa caida behind porton, luis behind banco0, cosa jug0 behind porton, paloma 0 behind porton, senora behind banco1, senora behind porton, cosa sombrilla behind carro, cosa caja behind porton, mujer behind banco0, joven behind banco1, joven behind porton, joven behind banco2, hombre behind banco0, hombre behind porton, hombre behind seto, mujer behind seto, joven behind seto; nobody has another part of the set nearer than them",
+   "bubbles: 7461 bubbles at 21848 moments (each person's recorded one and \"amor\" when touched, the frog's): wholly inside the view (0 px from its edge at the least), clear of the rounds card, on no face; but where no place is free the \"amor\" of a touch keeps the old place, as the old (abuela \"amor\" (el-bebe-duerme right), abuela \"amor\" (el-bebe-duerme wrong), luis \"amor\" (el-bebe-duerme wrong), hombre \"amor\" (senor-senora right), mujer \"amor\" (senor-senora right), mujer \"amor\" (senor-senora wrong))",
+   "drawn (round 2): at 21872 moments the sorted list composed as it is drawn (each item owns what it drew last; a front part drawn again only over an owner behind it): no bench drawn over whoever sits on it or what lies on its seat (50197 sittings), the lamp post drawn over nobody and nothing, no part of the set (a bench, the cart, the lamp post, the pole, the hedge, a gate post) over any face (so every sitter's face and the vendor's are hidden by nothing of the set; by another sprite only as in the old picture: seen)",
+   "seen (round 2): at 9024 person-, dog- and frog-moments (every step's end of the 18 runs) each seen no less than in the old picture of that moment less 10%, and their face too (0 less)",
+   "seen, not fixed (round 2): 3 step ends: senor-senora right final.5 (95): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo; senor-senora wrong final.5 (108): piraguero seen 86% (face 100%), the old 100% (100%), by perro viejo; senor-senora alternate final.5 (98): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo: the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view",
+   "gate (round 2): two stone posts 43 rows high with their balls, whole in the view ([174,154,217,212]), 32 px apart, PORTON 199,203 in the opening, the hedge 16 rows high joined to both (73 and 63 px of it beside the left and the right post; 46 px of it right of the right post), the paving running out through the opening as a path, lawn beyond the hedge; the lamp's foot behind the benches' line (40 px of it seen in the gap), its pool round its foot reaching the paving in front of the benches; the wire against the sky dia 64, tarde 44, noche 34 (CIE76, 20 kept); the pole whole, 3 px wide; the sun and moon 6 px and more from the pole and the wire; every bench whole in the view with 2 px",
+   "umbrella (round 2): at 1288 step ends with the cart open and its man at it, the rim of the umbrella 7 px and more above his hair (3 kept); the cart over no face (drawn)",
+   "asks: 46 distinct asks (for bebe, canta, come, di_bebe, di_cansado, di_come, di_contento, di_joven, di_senor, di_senora, di_triste, hombre, joven, luis, mujer, perro_joven, perro_viejo, quieto, senor): every hint frame (box +- 12) inside the view with 2 px to spare (3 at the least; the park by its hintBox), no frame's rings across a face where the old frame's were not (as the old: el-bebe-duerme beats.57 (luis) abuela's face; senor-senora beats.20 (mujer) hombre's face; senor-senora beats.20 (mujer) luis's face; senor-senora beats.25 (perro_viejo) the frog's face; senor-senora beats.52 (senor) joven's face), the hint hand on no face (but as the old: el-bebe-duerme beats.57 (luis): on luis's face; h-banco beats.4 (joven): on the frog's face; h-banco beats.7 (joven): on the frog's face; la-piragua beats.11 (mujer): on the frog's face; la-piragua beats.44 (mujer): on the frog's face; senor-senora beats.20 (mujer): on carmen's face; senor-senora beats.20 (mujer): on luis's face; senor-senora beats.20 (mujer): on the frog's face); 52 answer cards, each with its lit frame and glow 4 px and more inside the view (4 at the least), 2 px clear of the rounds card and of everyone's head and body, over no dog, the pushchair or a thing, nor what the ask names (over the wire's pigeons at no ask that names them: el-bebe-duerme, la-piragua, senor-senora; over farol of the set, named by no ask with cards), the sun and the moon under none; (new) at each of the 52 cards the hint drawn round it: its frame 2 px inside the view, across no head, its hand on no face; 69 times someone a learner must find or tell apart: whole in the view, on plain paving, lawn, sky or their own bench, apart where the old had them apart, 42 at the least from their backdrop in the evening and at night (CIE76, their fill or their dark outline against the 2 px round them; 15 kept, or no less than the old picture: none lower)",
    "heads: at 65017 face-moments (everyone at rest) no face has a tree, the lamp post, the pole or the wire behind it where the old picture did not",
-   "sky: the sun at 32,39 (radius 6), upper left, whole in the view, under no card and no board at any moment; the moon at 32,39 (at night, W.luna) the same; the old picture's three clouds at 150,12; 196,30; 160,40, clear of both and of the corner card; by night no sun (patch)",
-   "preview: at every step's end of the 18 recorded runs (16127 places of the people, the frog, the dogs, the pigeons, the things and the pushchair) banco-preview.html puts everyone exactly where the sheet's rule does (0 differ); and the rule puts each of the 9944 places at rest where the port's play has them (0 differ)",
+   "sky: the sun at 34,40 (radius 4), upper left, whole in the view, under no card and no board at any moment; the moon at 34,40 (at night, W.luna) the same; the old picture's three clouds at 150,12; 196,30; 160,40, clear of both and of the corner card; by night no sun (patch)",
+   "preview: at every step's end of the 18 recorded runs (16127 places of the people, the frog, the dogs, the pigeons, the things and the pushchair) banco-preview.html puts everyone exactly where the sheet's rule does (0 differ); and the rule puts each of the 9920 places at rest where the port's play has them (0 differ)",
    "pairs: 24 review pictures (and the 16 level pictures, the same pictures), 18 at zoom 2, the others at zoom 1 (a standing person is taller than 52 rows): everything in each whole with 1 px to spare at zoom 2 (2 at zoom 1); no zoom 2 picture shows a shadow without its caster; what differs: hombre: gente; mujer: gente; senor: gente; senora: gente; joven: gente; viejo: perros; come: gente; bebe: palomas, cosas; duerme: perros; cansado: gente; contento: gente; triste: perros",
    "states: 7 baked states reached (dia.0.abierto, dia.0.no, tarde.0.abierto, noche.0.abierto, noche.0.cerrado, noche.0.no, noche.1.abierto; every moment, pair and level picture), of the 12 the set can bake"
+  ],
+  "notFixed": [
+   {
+    "what": "senor-senora right final.5 (95): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo",
+    "why": "the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view"
+   },
+   {
+    "what": "senor-senora wrong final.5 (108): piraguero seen 86% (face 100%), the old 100% (100%), by perro viejo",
+    "why": "the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view"
+   },
+   {
+    "what": "senor-senora alternate final.5 (98): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo",
+    "why": "the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view"
+   }
   ]
  }
 }

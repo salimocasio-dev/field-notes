@@ -43,7 +43,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     for (const [a, b] of S.helps.lines) X(a, b);
     X('const B=BANCOS,', 'const GS=' + S.helps.shadow.gsSource + ',CARRORUEDA=(c,W)=>PREVIEW.cart(c,W),B=BANCOS,');
     const fronts = Object.entries(S.front.parts).map(([p, f]) => `L.push({y:${f.sortY},front:"${p}",d:()=>PREVIEW.front(c,"${p}",L)});`).join('');
-    X('L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());', fronts + 'L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());');
+    X('L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());', fronts + 'PREVIEW.OWN=null;L.sort((m,n)=>m.y-n.y).forEach(o=>PREVIEW.item(c,o));');
     // the bubbles: the first free place (sheet: talk)
     X('Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});',
       'Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0){const t=PREVIEW.talk([R(p.x),R(p.y)-alto(id)-1],6,p.bub,W);bub2(c,p.bub,t[0],t[1],a);}});');
@@ -95,28 +95,34 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
   PV.vAt = (sx, sy, z) => { const g = CUR.set.Gs(sx, sy, z); return (g[0] + g[1]) / Math.SQRT2 + .02; };
   // (sheet: front) the set's own pixels of a part, again, inside each item drawn before its entry in the sorted list, only where that pixel is
   // nearer to the camera than the item: z[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S
+  // (sheet front) every item of the sorted list owns the pixels it drew last; at a front part's entry the set's own pixels of the part are drawn
+  // again where the pixel's owner stands behind them (bakedZ[i] > the owner's plane at that row), never over whoever sits on that bench or
+  // what lies on its seat (the owner's own bench)
+  PV.item = function (c, o) {
+    if (o.front) return o.d();
+    if (!PV.OWN) PV.OWN = new Array(240 * 216).fill(null);
+    const a = c.getImageData(0, 0, 240, 216).data; o.d(); const b = c.getImageData(0, 0, 240, 216).data;
+    for (let i = 0; i < 240 * 216; i++) { const j = i * 4; if (a[j] !== b[j] || a[j + 1] !== b[j + 1] || a[j + 2] !== b[j + 2]) PV.OWN[i] = o; }
+  };
   PV.front = function (c, part, L) {
-    const fw = CUR.win, COS = Math.sqrt(3) / 2, T30 = Math.tan(Math.PI / 6), me = L.findIndex(o => o.front === part);
-    const id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, T = CUR.tags, Z = CUR.z;
-    for (const o of L.slice(0, me)) {
-      const r = PV.frontBox(o, W); if (!r) continue;
-      const [bx, v] = r;
-      for (let y = Math.max(0, bx[1]); y < Math.min(216, bx[1] + bx[3]); y++) for (let x = Math.max(0, bx[0]); x < Math.min(240, bx[0] + bx[2]); x++) {
-        const i = y * 240 + x; if (T[i] !== part || !(Z[i] > v / COS - (y + .5 - fw.OY) * T30 / fw.S)) continue;
-        d[i * 4] = s[i * 4]; d[i * 4 + 1] = s[i * 4 + 1]; d[i * 4 + 2] = s[i * 4 + 2]; d[i * 4 + 3] = 255;
-      }
-    }
+    const fw = CUR.win, COS = Math.sqrt(3) / 2, T30 = Math.tan(Math.PI / 6), O = PV.OWN; if (!O) return;
+    const id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, T = CUR.tags, Z = CUR.z, cache = new Map();
+    for (let i = 0; i < 240 * 216; i++) { if (T[i] !== part || !O[i]) continue; const o = O[i];
+      if (!cache.has(o)) cache.set(o, PV.frontBox(o, W)); const r = cache.get(o); if (!r || r[2] === part) continue;
+      const y = (i / 240) | 0; if (!(Z[i] > r[1] / COS - (y + .5 - fw.OY) * T30 / fw.S)) continue;
+      d[i * 4] = s[i * 4]; d[i * 4 + 1] = s[i * 4 + 1]; d[i * 4 + 2] = s[i * 4 + 2]; d[i * 4 + 3] = 255; }
     c.putImageData(id, 0, 0);
   };
+  const benchAt = x => 'banco' + (x < 120 ? 0 : x < 168 ? 1 : 2);
   // a list item's box and the v of the ground under it (sheet front.boxes); whoever sits: their bench's seat front
   PV.seatV = (x) => { const k = x < 120 ? 0 : x < 168 ? 1 : 2, b = CUR.set.BENCH[k]; return (x + b.y1) / Math.SQRT2 + .03; };
   PV.frontBox = function (o, w) {
     if (o.id === 'coqui') { const q = w.cq, b = frogBox(q); return [[b.x, b.y + R(q.dy || 0), b.w, b.h], vOf(b.x + b.w / 2, q.y + 25)]; }
-    if (o.id) { const p = w.gente[o.id]; const x = R(p.x), y = R(p.y), dy = R(p.dy || 0); if (p.sent) { const k = x < 120 ? 0 : x < 168 ? 1 : 2, b = CUR.set.BENCH[k], g = CUR.set.Gs(x, y - 11, CUR.set.ZS); return [[x - 24, y - 60 - dy, 48, 63 + dy], (g[0] + b.y1) / Math.SQRT2 + .03]; } return [[x - 24, y - 60 - dy, 48, 63 + dy], vOf(x, y - 1)]; }
+    if (o.id) { const p = w.gente[o.id]; const x = R(p.x), y = R(p.y), dy = R(p.dy || 0); if (p.sent) { const k = x < 120 ? 0 : x < 168 ? 1 : 2, b = CUR.set.BENCH[k], g = CUR.set.Gs(x, y - 11, CUR.set.ZS); return [[x - 24, y - 60 - dy, 48, 63 + dy], (g[0] + b.y1) / Math.SQRT2 + .03, 'banco' + k]; } return [[x - 24, y - 60 - dy, 48, 63 + dy], vOf(x, y - 1)]; }
     if (o.perro) { const p = w.perros[o.perro]; return [[R(p.x) - 16, R(p.y) - 24 - R(p.dy || 0), 32, 27 + R(p.dy || 0)], vOf(R(p.x), R(p.y) - 1)]; }
-    if (o.pal) { const p = o.pal, k = PV.perch(p); if (k === 'air' || k === 'wire') return null; return [[R(p.x) - 10, R(p.y) - 14, 20, 16], k === 'back' ? PV.vAt(R(p.x), R(p.y), CUR.set.ZS + CUR.set.BACK_H) : k === 'seat' ? PV.vAt(R(p.x), R(p.y), CUR.set.ZS) : vOf(R(p.x), R(p.y) - 1)]; }
+    if (o.pal) { const p = o.pal, k = PV.perch(p); if (k === 'air' || k === 'wire') return null; return [[R(p.x) - 10, R(p.y) - 14, 20, 16], k === 'back' ? PV.vAt(R(p.x), R(p.y), CUR.set.ZS + CUR.set.BACK_H) : k === 'seat' ? PV.vAt(R(p.x), R(p.y), CUR.set.ZS) : vOf(R(p.x), R(p.y) - 1), k === 'back' || k === 'seat' ? benchAt(R(p.x)) : null]; }
     if (o.coche) { const p = w.coche; return [[R(p.x) - 21, R(p.y) - 42, 42, 45], vOf(R(p.x), R(p.y) - 1)]; }
-    if (o.cosa) { const p = o.cosa; return [[R(p.x) - 15, R(p.y) - 34, 30, 36], PV.onSeat(R(p.x), R(p.y)) ? PV.vAt(R(p.x), R(p.y) + (p.rot ? 5 : 0), CUR.set.ZS) : vOf(R(p.x), R(p.y) - 1)]; }
+    if (o.cosa) { const p = o.cosa; return [[R(p.x) - 15, R(p.y) - 34, 30, 36], PV.onSeat(R(p.x), R(p.y)) ? PV.vAt(R(p.x), R(p.y) + (p.rot ? 5 : 0), CUR.set.ZS) : vOf(R(p.x), R(p.y) - 1), PV.onSeat(R(p.x), R(p.y)) ? benchAt(R(p.x)) : null]; }
     return null;
   };
   // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
@@ -150,13 +156,14 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     for (const p of w.palomas || []) if (p && p.x != null) { const m = find('paloma', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
     for (const p of w.cosas || []) if (p && p.x != null) { const m = find('cosa', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
     for (const p of Object.values(w.perros || {})) if (p && p.x != null) { const m = find('perro', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    if (w.seva) { const v = (w.perros || {}).viejo, j = (w.perros || {}).joven; if (v && v.y === 196) v.y = 206; if (j && j.y === 204) j.y = 212; }   // the cart going home: the dogs walk 10 and 8 rows nearer (carrova)
     const sitters = Object.values(w0.gente || {}).filter(p => p && p.sent && R(p.y) === 161 && p.vis !== 0);
     for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null || p.sent) continue; const m = MV.find(q => (q.who === id || q.who === 'porton') && q.old[0] === R(p.x) && q.old[1] === R(p.y)) || RM.find(e => e.old[0] === R(p.x) && e.old[1] === R(p.y) && e.uses.some(u => / (beats|.*gente)/.test(u))); if (m) { p.x = m.new[0] + (p.x - R(p.x)); p.y = m.new[1] + (p.y - R(p.y)); } }
     if (w.cq) { const mq = MV.find(m2 => m2.who === 'cq' && m2.old[0] === w.cq.x && m2.old[1] === w.cq.y); if (mq) { w.cq.x = mq.new[0]; w.cq.y = mq.new[1]; } }
     if (w.cq) for (const d of Object.values(w0.perros || {})) { if (!d || d.x == null || w.cq.x !== R(d.x) + 14 || w.cq.y !== R(d.y) - 23) continue; const m = MV.find(m2 => m2.who === 'perro' && m2.old[0] === R(d.x) && m2.old[1] === R(d.y)); if (m) { w.cq.x += m.new[0] - m.old[0]; w.cq.y += m.new[1] - m.old[1]; } break; }
     if (w.cq) { const q = w.cq, s = sitters.find(p => [0, -2, -4].includes(q.x + 16 - R(p.x)) && [156, 158].includes(q.y)); if (s) { const m = MV.find(m2 => m2.old[0] === R(s.x) && m2.old[1] === 161 && m2.who !== 'sitting'), nx = m ? m.new[0] : R(s.x); q.x += nx - R(s.x); q.y += SYf(nx) - 161; }
     }
-    if (w.carroX != null) { w.carroX += -13; if (w.gente && w.gente.piraguero && w.seva) { const pi = w.gente.piraguero; pi.x += -13; pi.y = 178 + 2 + (34 - w.carroX) / 2; } }
+    if (w.carroX != null) { w.carroX += -11; if (w.gente && w.gente.piraguero && w.seva) { const pi = w.gente.piraguero; pi.x += -11; pi.y = 178 + 2 + (36 - w.carroX) / 2; } }
     return w; };
 
   /* ---------- 3. the picture ---------- */
