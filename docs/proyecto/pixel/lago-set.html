@@ -54,8 +54,9 @@ const ZD = .28, TH = .15, PW = .25;
 const DECK = SET.dock === 'narrow' ? { x0: BANK - .06, x1: 3.25, y0: 3.1, y1: 5.22 } : { x0: BANK - .06, x1: 3.25, y0: 1.62, y1: 5.22 };
 const LANDING = { x0: -.3, x1: DECK.x0 + .01, y0: 3.82, y1: DECK.y1 };
 const onDeck = (x, y) => (x >= DECK.x0 && x <= DECK.x1 && y >= DECK.y0 && y <= DECK.y1) || (x >= LANDING.x0 && x <= LANDING.x1 && y >= LANDING.y0 && y <= LANDING.y1);
-// the mooring posts (the old PM, where the two birds perch): their tops at the old screen points (40, 141) and (133, 141), PM_H over the deck
-const PM_H = .49, PM_R = .085;
+// the mooring posts (the old PM, where the two birds perch): their tops at the old screen points (40, 141) and (133, 141), PM_H over the deck:
+// their feet 4 rows behind the feet of whoever stands on the dock beside them (the old row 150 to 154), so that everyone is in front of them, as the old
+const PM_H = .26, PM_R = .085;
 const PM = [[40, 141], [133, 141]].map(([sx, sy]) => { const g = Gs(sx, sy + PM_H * COS * S, ZD); return { x: g[0], y: g[1], top: [sx, sy] }; });
 // the post in the water (the old POSTE: its foot at POSTE[1] + 8, its top at POSTE[1] - 24): moved past the dock's end (sheet moves)
 const POSTE = [176, 146], POST_R = .12;

@@ -213,19 +213,20 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     const g = out.getContext('2d'); g.imageSmoothingEnabled = false;
     g.drawImage(sc, cr[0], cr[1], cr[2], cr[3], 0, 0, cr[2] * z, cr[3] * z);
     if (opts.hud && E.hud) E.hud(g, W, F >> 1);
-    if (opts.signs && W.spot) { const rb = respBox(W.spot), p = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : E.handAt[W.spot], k = 3, hx = Math.round(p[0] - cam[0]) - 4 * k, hy = Math.round(p[1] - cam[1]); hand(g, hx, hy, (F >> 2) % 2 === 1, k); }
+    if (opts.signs && W.spot && (respBox(W.spot) || E.handAt[W.spot])) { const rb = respBox(W.spot), p = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : E.handAt[W.spot], k = 3, hx = Math.round(p[0] - cam[0]) - 4 * k, hy = Math.round(p[1] - cam[1]); hand(g, hx, hy, (F >> 2) % 2 === 1, k); }
     return out.toDataURL();
   };
   // the signs of a story step as juego.js sets them (ask, decide), as campo-preview.html
   PV.askW = function (w, st, V, on) {
     const sub = x => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
     const vmapa = m => m ? Object.fromEntries(Object.entries(m).map(e => [sub(e[0]), sub(e[1])])) : null;
-    w.resp = null; w.respVoz = null; w.respOn = null; w.spot = null;
+    const keep = w.resp; w.resp = null; w.respVoz = null; w.respOn = null; w.spot = null;   // a set step's own W.resp (cual beats.27) stays when the step names none
     if (st.ask) { w.spot = sub(st.ask); if (st.resp) { w.resp = st.resp.map(sub); w.respVoz = vmapa(st.voces); } }
     else if (st.decide) { const ops = st.options.map(sub), bur = (st.burbujas || []).map(sub); w.spot = sub(st.pick) || ops[0];
       if (st.decide === 'say') { w.resp = ops; w.respVoz = vmapa(st.voces); } else if (bur.length) { w.resp = bur; w.respVoz = vmapa(st.voces); } }
     else if (st.kind === 'say' && st.options) w.resp = st.options.map(sub);
     else return null;
+    if (!w.resp && keep) w.resp = keep;
     if (on && w.respVoz && w.resp) w.respOn = on === 'spot' ? (w.resp.includes(w.spot) ? w.spot : null) : on;
     return w;
   };
