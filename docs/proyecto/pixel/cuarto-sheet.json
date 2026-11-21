@@ -1,0 +1,1173 @@
+{
+ "scene": "cuarto",
+ "made": "node docs/proyecto/pixel/cuarto-sheet-make.js, from cuarto-set.html (window.CUARTO.E) and the design of El cuarto (the orchestrator's p9-spec, general rules and section cuarto). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": -42
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "beds": [
+  [110, 150, 220],
+  [236, 150, 170]
+ ],
+ "pillows": [
+  {
+   "screen": [69.04, 58.34, 92.96, 66.31],
+   "u": [-1.96, -1.04],
+   "v": [0.45, 0.89],
+   "z": [0.5, 0.6]
+  },
+  {
+   "screen": [139.24, 58.34, 163.16, 66.31],
+   "u": [0.74, 1.66],
+   "v": [0.45, 0.89],
+   "z": [0.5, 0.6]
+  }
+ ],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 66. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the back wall at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 66 + 13 v - 22.5167 z; the picture holds u from -4.62 to 4.62. The beds are at u -1.5 and 1.2 (heads at v 0.25, feet at v 3.2, hw 0.66), the night table at u -0.15, the armchair at (-3.15, 1.3), the cradle at (2.28, 0.75), the chair at (2.9, 4.3)",
+  "spot": "a spot is a world point of the feet (z 0: the floor; z 0.44: a seat's top; z 0.5: a mattress's top; z 0.6: a pillow's top, the head's place; z 0.55: the night table's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): the bell, the plate, the big pillow, the clothes, the baby, the Z's and the nose have their bottom middle on the spot (the box [sx - floor(w / 2), sy - h, w, h]); the blanket on abuelo's knees is 8 px either side of the spot and from 6 px above it to 4 px below. scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), a child 43 rows; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30 (her middle) and her bottom edge; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41; t 7 a child: 33) on (sx, sy); Canelo sitting (KIT.mkPerro, 30 x 22): the middle of his drawn columns and his bottom edge. WHOEVER LIES OR SITS UP IN A BED (cama_luis, cama_carmen): the standing sprite hangs DOWN the bed from the head's place: its highest drawn row (outline included: canvas row 2 for a child) and its middle column 24 on (sx, sy); only the rows from there down to the bed's foot are drawn (40 rows: the mattress's front face's bottom edge is row 100), and over them from his chest (sprite row 24, lying) or his waist (row 30, sitting up) to the foot a blanket of the bed's colour and the bed's width (34 px). Nobody is drawn turned",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character; front.hung is the rule for whoever lies in a bed"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["alba", "manana"],
+    "note": "the window and the room's light (alba: dim, unless the wall light is on)"
+   },
+   "luz": {
+    "values": [0, 1],
+    "note": "the wall light off | on"
+   },
+   "cuna": {
+    "values": [0, 1],
+    "note": "the cradle in the right back corner"
+   },
+   "butaca": {
+    "values": [0, 1],
+    "note": "the armchair at the far left"
+   }
+  },
+  "key": "hora, luz, cuna, butaca, e.g. \"alba|0|0|0\"",
+  "baked": ["?hora=alba&luz=0&cuna=0&butaca=0", "?hora=alba&luz=1&cuna=0&butaca=0", "?hora=manana&luz=0&cuna=1&butaca=1", "?hora=manana&luz=0&cuna=0&butaca=0"]
+ },
+ "things": {
+  "cama": {
+   "set": true,
+   "uv": [-2.12, 0.39, 0.34, -0.88, 3.18, 0.5],
+   "world": [-1.2233, 0.898, 0.34, 1.6263, 3.7477, 0.5],
+   "box": [64, 59, 34, 41],
+   "what": "Luis's bed: its mattress's box on the picture (u -2.12 to -0.88, v 0.39 to 3.18, z .34 to 0.5); a poke"
+  },
+  "luz": {
+   "set": true,
+   "uv": [-2.55, 0, 1.3],
+   "world": [-1.8031, 1.8031, 1.3],
+   "box": [49, 31, 10, 12],
+   "what": "the wall light's switch (LIGHT.sw: u -2.55, z 1.3, on the wall v 0), its box made 10 x 12 px, centred on the switch; a poke"
+  },
+  "silla": {
+   "set": true,
+   "uv": [2.7, 4.092, 0, 3.1, 4.5, 1.08],
+   "world": [4.8027, 0.7014, 0, 5.374, 1.2728, 1.08],
+   "box": [190, 94, 11, 31],
+   "what": "the chair (CHAIR u 2.9, v 4.3): its box, from the floor to the back's top z 1.08; a poke"
+  },
+  "reloj": {
+   "set": true,
+   "uv": [0.4615, 0, 1.9169, 1.0385, 0, 2.5831],
+   "world": [0.3263, -0.7343, 1.9169, 0.7343, -0.3263, 2.5831],
+   "box": [131, 7, 17, 16],
+   "what": "the wall clock (CLOCK u 0.75, z 2.25: radius 7.5 px: its hands are sprites); a poke",
+   "quad": [
+    [0.3263, -0.3263, 1.9169],
+    [0.7343, -0.7343, 1.9169],
+    [0.7343, -0.7343, 2.5831],
+    [0.3263, -0.3263, 2.5831]
+   ]
+  },
+  "cuna": {
+   "set": true,
+   "uv": [1.87, 0.45, 0, 2.69, 1.07, 0.95],
+   "world": [1.6405, -1.5839, 0, 2.6587, -0.5657, 0.95],
+   "box": [168, 50, 22, 30],
+   "what": "the cradle in the right back corner (CRADLE u 2.28, v 0.75): its rockers, bed and sides (z 0 to .95); a poke. Present only with cuna = 1"
+  },
+  "manta_luis": {
+   "set": true,
+   "uv": [-2.16, 1.35, 0.5, -0.84, 3.2, 0.5],
+   "world": [-0.5728, 1.5486, 0.5, 1.6688, 3.7901, 0.5],
+   "box": [63, 72, 36, 25],
+   "what": "the blanket of Luis's bed (a sprite: on, or pulled off): its box on the picture from v BED.v0 + 1.1 = 1.35 to v BED.v1 = 3.2, the bed's width (u -2.16 to -0.84), on the mattress's top z 0.5; a poke"
+  },
+  "manta_carmen": {
+   "set": true,
+   "uv": [0.54, 1.35, 0.5, 1.86, 3.2, 0.5],
+   "world": [1.3364, -0.3606, 0.5, 3.578, 1.8809, 0.5],
+   "box": [134, 72, 35, 25],
+   "what": "the blanket of Carmen's bed (a sprite: on, or pulled off): its box on the picture from v BED.v0 + 1.1 = 1.35 to v BED.v1 = 3.2, the bed's width (u 0.54 to 1.86), on the mattress's top z 0.5; a poke"
+  },
+  "almohada": "sprite",
+  "campana": "sprite",
+  "plato": "sprite",
+  "ropa_a": "sprite",
+  "ropa_b": "sprite",
+  "manta_abuelo": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "abuela": "sprite",
+  "abuelo": "sprite",
+  "bebe": "sprite",
+  "perro": "sprite",
+  "coqui": "sprite"
+ },
+ "spots": {
+  "cama_luis": {
+   "world": [-0.6718, 1.4496, 0.6],
+   "uv": [-1.5, 0.55, 0.6],
+   "screen": [81, 60],
+   "depth": 0.7763,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis lying in his bed (blue), or sitting up: the head's place on the pillow (the bed's u, v0 + .3, the pillow's top z 0.6); the sprite hangs DOWN the bed from it (its highest drawn row, outline included, and its middle column on the point), cut at the bed's foot, with the bed's blanket over it from his chest (lying) or his waist (sitting up)",
+   "sprite": "luisCama",
+   "who": "nino",
+   "anchor": "top",
+   "hang": {
+    "rows": 40,
+    "bed": 0,
+    "foot": 100,
+    "blanketFrom": {
+     "lying": 24,
+     "sitting": 30
+    },
+    "width": 34,
+    "z": 0.5,
+    "plane": "mattress"
+   },
+   "on": "cuarto"
+  },
+  "cama_carmen": {
+   "world": [1.2374, -0.4596, 0.6],
+   "uv": [1.2, 0.55, 0.6],
+   "screen": [151, 60],
+   "depth": 0.7763,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen lying in her bed (pink), or sitting up: the head's place on the pillow (the bed's u, v0 + .3, z 0.6); hung down the bed as cama_luis",
+   "sprite": "carmenCama",
+   "who": "nino",
+   "anchor": "top",
+   "hang": {
+    "rows": 40,
+    "bed": 1,
+    "foot": 100,
+    "blanketFrom": {
+     "lying": 24,
+     "sitting": 30
+    },
+    "width": 34,
+    "z": 0.5,
+    "plane": "mattress"
+   },
+   "on": "cuarto"
+  },
+  "sentado_luis": {
+   "world": [-0.6718, 1.4496, 0.6],
+   "uv": [-1.5, 0.55, 0.6],
+   "screen": [81, 60],
+   "depth": 0.7763,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "NOT IN THE SPEC (an alias, the script's Needs names it): Luis sitting up in his bed is the same place as cama_luis (the spec: \"lying, or sitting up: the head's place\")",
+   "sprite": "luisCama",
+   "who": "nino",
+   "anchor": "top",
+   "hang": {
+    "rows": 40,
+    "bed": 0,
+    "foot": 100,
+    "blanketFrom": {
+     "lying": 24,
+     "sitting": 30
+    },
+    "width": 34,
+    "z": 0.5,
+    "plane": "mattress"
+   },
+   "on": "cuarto",
+   "alias": "cama_luis"
+  },
+  "sentado_carmen": {
+   "world": [1.2374, -0.4596, 0.6],
+   "uv": [1.2, 0.55, 0.6],
+   "screen": [151, 60],
+   "depth": 0.7763,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "NOT IN THE SPEC (an alias, the script's Needs names it): Carmen sitting up in her bed is the same place as cama_carmen",
+   "sprite": "carmenCama",
+   "who": "nino",
+   "anchor": "top",
+   "hang": {
+    "rows": 40,
+    "bed": 1,
+    "foot": 100,
+    "blanketFrom": {
+     "lying": 24,
+     "sitting": 30
+    },
+    "width": 34,
+    "z": 0.5,
+    "plane": "mattress"
+   },
+   "on": "cuarto",
+   "alias": "cama_carmen"
+  },
+  "pie_luis": {
+   "world": [1.8385, 3.9598, 0],
+   "uv": [-1.5, 4.1, 0],
+   "screen": [81, 119],
+   "depth": 3.5507,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis standing at his bed's foot (the bed's foot is v 3.2)",
+   "sprite": "luis",
+   "who": "nino"
+  },
+  "pie_carmen": {
+   "world": [3.7477, 2.0506, 0],
+   "uv": [1.2, 4.1, 0],
+   "screen": [151, 119],
+   "depth": 3.5507,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen standing at her bed's foot",
+   "sprite": "carmen",
+   "who": "nino"
+  },
+  "capitana": {
+   "world": [2.4749, 0.7778, 0.5],
+   "uv": [1.2, 2.3, 0.5],
+   "screen": [151, 85],
+   "depth": 2.2419,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen standing on her bed like a captain: the mattress's top, z 0.5",
+   "sprite": "carmen",
+   "who": "nino",
+   "on": "cuarto"
+  },
+  "butaca_abuelo": {
+   "world": [-1.3081, 3.1466, 0.44],
+   "uv": [-3.15, 1.3, 0.44],
+   "screen": [38, 73],
+   "depth": 1.3458,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuelo asleep in the armchair (ARMCHAIR u -3.15, v 1.3): on its seat's top, z 0.44; hung by the lap; a grown-up man (FAM.abuelo)",
+   "sprite": "abueloS",
+   "who": "adulto",
+   "on": "cuarto",
+   "fixed": 1
+  },
+  "pie_abuelo": {
+   "world": [-0.4596, 3.9952, 0],
+   "uv": [-3.15, 2.5, 0],
+   "screen": [38, 99],
+   "depth": 2.1651,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuelo standing in front of the armchair (v ARMCHAIR.v + 1.2)",
+   "sprite": "abuelo",
+   "who": "adulto"
+  },
+  "puerta": {
+   "world": [2.7931, -1.6617, 0],
+   "uv": [3.15, 0.8, 0],
+   "screen": [202, 76],
+   "depth": 0.6928,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela in the door (the door is u 2.75 to 3.62 on the back wall)",
+   "sprite": "abuela",
+   "who": "adulto"
+  },
+  "foto": {
+   "world": [3.4648, -0.7778, 0],
+   "uv": [3, 1.9, 0],
+   "screen": [198, 91],
+   "depth": 1.6454,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela with her camera, in front of the door (a plain camera drawn on her chest: the spec gives it no size)",
+   "sprite": "abuelaFoto",
+   "who": "adulto"
+  },
+  "alfombra": {
+   "world": [2.2627, 5.0912, 0],
+   "uv": [-2, 5.2, 0],
+   "screen": [68, 134],
+   "depth": 4.5033,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the rug (the rug is u -3.3 to -0.7, v 4.2 to 5.9)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "alfombra2": {
+   "world": [3.3234, 4.5962, 0],
+   "uv": [-0.9, 5.6, 0],
+   "screen": [97, 139],
+   "depth": 4.8497,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the rug, moved (the spec: alfombra moved to (-.9, 5.6, 0)), for story 98",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "mesita_coqui": {
+   "world": [1.096, 1.3081, 0],
+   "uv": [-0.15, 1.7, 0],
+   "screen": [116, 88],
+   "depth": 1.4722,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the floor between the beds, in front of the night table (u TABLE.u -0.15)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "cama_coqui": {
+   "world": [0.9192, 3.0406, 0.5],
+   "uv": [-1.5, 2.8, 0.5],
+   "screen": [81, 91],
+   "depth": 2.6749,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on Luis's bed, near its foot: the mattress's top, z 0.5",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "cuarto"
+  },
+  "busca_cama": {
+   "world": [1.591, 3.7123, 0],
+   "uv": [-1.5, 3.75, 0],
+   "screen": [81, 115],
+   "depth": 3.2476,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog looks at Luis's bed (just beyond its foot, v 3.2)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "busca_almohada": {
+   "world": [6.166, 3.9032, 0],
+   "uv": [1.6, 7.12, 0],
+   "screen": [162, 159],
+   "depth": 6.1661,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog looks near the big pillow on the floor (almohada_suelo is at v 5.4)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "spec": [1.6, 6, 0],
+   "moved": "things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: v 6.0 -> 7.12 (+1.12) is the least v that leaves the pillow clear and the frog whole (his head then touches the pillow's lower edge: in the preview the pillow looks to rest on his head); u 1.6 -> .82 (-.78) would also pass, but v is tried first"
+  },
+  "busca_silla": {
+   "world": [4.7164, 1.7466, 0],
+   "uv": [2.1, 4.57, 0],
+   "screen": [175, 125],
+   "depth": 3.9577,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog looks near the chair (CHAIR u 2.9, v 4.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "spec": [2.1, 5, 0],
+   "moved": "frog-busca: the big pillow (1.6, 5.4, in front of him) covered 52 of his px at (2.1, 5.0) in the game's picture (moment 3): v 5.0 -> 4.57 (-.43) is the least v that leaves him whole (u 2.1 -> 2.45 (+.35) would also pass, but v is tried first)"
+  },
+  "silla_coqui": {
+   "world": [4.9497, 2.1213, 0],
+   "uv": [2, 5, 0],
+   "screen": [172, 131],
+   "depth": 4.3301,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog at the chair (the spec: on the chair; its own place is on the floor in front of it, z 0)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "almohada_suelo": {
+   "world": [4.9497, 2.687, 0],
+   "uv": [1.6, 5.4, 0],
+   "screen": [162, 136],
+   "depth": 4.6765,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the big pillow on the floor (a 20 x 12 px stand-in): its bottom middle on the point",
+   "box": [152, 124, 20, 12],
+   "anchor": "bottom"
+  },
+  "vestir": {
+   "world": [2.1213, 4.9497, 0],
+   "uv": [-2, 5, 0],
+   "screen": [68, 131],
+   "depth": 4.3301,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis on the rug, dressing",
+   "sprite": "luis",
+   "who": "nino"
+  },
+  "bajo_cama": {
+   "world": [0.9899, 3.677, 0],
+   "uv": [-1.9, 3.3, 0],
+   "screen": [71, 109],
+   "depth": 2.8579,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "only Canelo's nose under Luis's bed, at its foot (a 10 x 8 px stand-in): its bottom middle on the point",
+   "box": [66, 101, 10, 8],
+   "anchor": "bottom"
+  },
+  "junto_mesita": {
+   "world": [2.6517, 2.8638, 0],
+   "uv": [-0.15, 3.9, 0],
+   "screen": [116, 117],
+   "depth": 3.3775,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Canelo sitting by the night table, in front of it (his sprite is 28 wide)",
+   "sprite": "perroS",
+   "who": "perro"
+  },
+  "campana": {
+   "world": [0.1556, 0.6223, 0.55],
+   "uv": [-0.33, 0.55, 0.55],
+   "screen": [111, 61],
+   "depth": 0.7513,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the bell on the night table (a 6 x 8 px stand-in): its bottom middle on the table's top, z TABLE.h 0.55",
+   "box": [108, 53, 6, 8],
+   "anchor": "bottom",
+   "on": "cuarto"
+  },
+  "plato": {
+   "world": [0.396, 0.3818, 0.55],
+   "uv": [0.01, 0.55, 0.55],
+   "screen": [120, 61],
+   "depth": 0.7513,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the plate on the night table (a 12 x 6 px stand-in: three pieces of bread): its bottom middle on the table's top, z 0.55",
+   "box": [114, 55, 12, 6],
+   "anchor": "bottom",
+   "on": "cuarto"
+  },
+  "ropa_a": {
+   "world": [5.0912, 0.9899, 0.44],
+   "uv": [2.9, 4.3, 0.44],
+   "screen": [195, 112],
+   "depth": 3.9439,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "a thing on the chair's seat (a 12 x 10 px stand-in): its bottom middle on the seat's top, z 0.44",
+   "box": [189, 102, 12, 10],
+   "anchor": "bottom",
+   "on": "cuarto",
+   "fixed": 1
+  },
+  "ropa_b": {
+   "world": [4.9639, 0.8627, 1.08],
+   "uv": [2.9, 4.12, 1.08],
+   "screen": [195, 95],
+   "depth": 4.108,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "a thing over the chair's back (a 12 x 10 px stand-in): its bottom middle on the back's top, z 1.08 at v CHAIR.v - .18",
+   "box": [189, 85, 12, 10],
+   "anchor": "bottom",
+   "on": "cuarto",
+   "fixed": 1
+  },
+  "bebe": {
+   "world": [2.1425, -1.0819, 0.4],
+   "uv": [2.28, 0.75, 0.4],
+   "screen": [179, 67],
+   "depth": 0.8495,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the baby asleep in the cradle (a 14 x 10 px stand-in): its bottom middle on the cradle's bed, z .4 (CRADLE u 2.28, v 0.75)",
+   "box": [172, 57, 14, 10],
+   "anchor": "bottom",
+   "on": "cuarto",
+   "fixed": 1
+  },
+  "zetas": {
+   "world": [2.1425, -1.0819, 1.3],
+   "uv": [2.28, 0.75, 1.3],
+   "screen": [179, 46],
+   "depth": 1.2995,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the baby's three Z's over the cradle (a 14 x 10 px stand-in): its bottom middle on the point, z 1.3 (in the air: no surface)",
+   "box": [172, 36, 14, 10],
+   "anchor": "bottom",
+   "on": "air",
+   "air": 1
+  },
+  "manta_abuelo": {
+   "world": [-1.3081, 3.1466, 0.44],
+   "uv": [-3.15, 1.3, 0.44],
+   "screen": [38, 73],
+   "depth": 1.3458,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the blanket on abuelo's knees (a 16 x 10 px stand-in): the point is the lap's (his seat's top); the box is 8 px either side of it and from 6 px above it to 4 px below (his knees)",
+   "box": [30, 67, 16, 10],
+   "anchor": "knees",
+   "at": [8, 6],
+   "on": "cuarto",
+   "fixed": 1,
+   "held": "butaca_abuelo"
+  }
+ },
+ "groups": {
+  "camas": ["cama_luis", "cama_carmen"],
+  "pies": ["pie_luis", "pie_carmen", "pie_abuelo"],
+  "busca": ["busca_cama", "busca_almohada", "busca_silla"],
+  "coqui": ["alfombra", "alfombra2", "mesita_coqui", "cama_coqui", "busca_cama", "busca_almohada", "busca_silla", "silla_coqui"],
+  "mesita": ["campana", "plato"],
+  "silla": ["ropa_a", "ropa_b"],
+  "cuna": ["bebe", "zetas"],
+  "perro": ["bajo_cama", "junto_mesita"],
+  "touch": {
+   "almohada": "almohada_suelo",
+   "campana": "campana",
+   "plato": "plato",
+   "ropa_a": "ropa_a",
+   "ropa_b": "ropa_b",
+   "manta_abuelo": "manta_abuelo",
+   "luis": "cama_luis",
+   "carmen": "cama_carmen",
+   "abuela": "puerta",
+   "abuelo": "butaca_abuelo",
+   "bebe": "bebe",
+   "perro": "junto_mesita",
+   "coqui": "mesita_coqui"
+  }
+ },
+ "moves": [
+  {
+   "spot": "busca_almohada",
+   "spec": [1.6, 6, 0],
+   "now": [1.6, 7.12, 0],
+   "why": "things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: v 6.0 -> 7.12 (+1.12) is the least v that leaves the pillow clear and the frog whole (his head then touches the pillow's lower edge: in the preview the pillow looks to rest on his head); u 1.6 -> .82 (-.78) would also pass, but v is tried first"
+  },
+  {
+   "spot": "busca_silla",
+   "spec": [2.1, 5, 0],
+   "now": [2.1, 4.57, 0],
+   "why": "frog-busca: the big pillow (1.6, 5.4, in front of him) covered 52 of his px at (2.1, 5.0) in the game's picture (moment 3): v 5.0 -> 4.57 (-.43) is the least v that leaves him whole (u 2.1 -> 2.45 (+.35) would also pass, but v is tried first)"
+  }
+ ],
+ "notes": [
+  "every number of a spot is the orchestrator's (the p9-spec, \"cuarto\"), given in (u, v, z); the beds, the night table, the armchair, the cradle, the chair, the switch, the clock and the door are read from the set",
+  "things: cama, luz, silla, reloj and cuna are boxes of the set; manta_luis and manta_carmen are boxes on the picture from v BED.v0 + 1.1 to BED.v1 (the blankets are sprites: on, or pulled off); almohada, campana, plato, ropa_a, ropa_b and manta_abuelo are sprites at the spots groups.touch names; the people are sprites. NOT IN THE SPEC, made for the preview and its checks: sentado_luis and sentado_carmen (aliases of the two head places: the script's Needs names them), the spots bebe, zetas, manta_abuelo (the blanket on abuelo's knees: 16 x 10, 8 px either side of the lap, from 6 px above to 4 px below it) and the thing cuna",
+  "whoever lies or sits up in a bed (cama_luis, cama_carmen) is the standing sprite hung by the top of his head and cut at the bed's foot, with a blanket of the bed's colour over it; he lies on his mattress, so his depth plane is the mattress's (front.hung)",
+  "the spec gives no shadow radius: El cruce's and El calendario's are used (frog .45, grown-ups .35, children .28, Canelo .3); whoever lies, sits in the armchair or stands on the bed (z above 0) casts none",
+  "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
+  "moves: busca_almohada [1.6,6,0] -> [1.6,7.12,0] (things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: v 6.0 -> 7.12 (+1.12) is the least v that leaves the pillow clear and the frog whole (his head then touches the pillow's lower edge: in the preview the pillow looks to rest on his head); u 1.6 -> .82 (-.78) would also pass, but v is tried first); busca_silla [2.1,5,0] -> [2.1,4.57,0] (frog-busca: the big pillow (1.6, 5.4, in front of him) covered 52 of his px at (2.1, 5.0) in the game's picture (moment 3): v 5.0 -> 4.57 (-.43) is the least v that leaves him whole (u 2.1 -> 2.45 (+.35) would also pass, but v is tried first))"
+ ],
+ "views": {
+  "wide": {
+   "world": [2.2845, 2.2845, 0],
+   "uv": [0, 3.2308, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [96, 97, 98],
+   "holds": ["cama_luis", "cama_carmen", "sentado_luis", "sentado_carmen", "pie_luis", "pie_carmen", "capitana", "butaca_abuelo", "pie_abuelo", "puerta", "foto", "alfombra", "alfombra2", "mesita_coqui", "cama_coqui", "busca_cama", "busca_almohada", "busca_silla", "silla_coqui", "almohada_suelo", "vestir", "bajo_cama", "junto_mesita", "campana", "plato", "ropa_a", "ropa_b", "bebe", "zetas", "manta_abuelo"],
+   "extent": [26, 213],
+   "x0Range": [18, 26],
+   "what": "the one view of stories 96, 97 and 98: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 18 to 26 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 26 to 213). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the armchair's seat hides the shins of whoever sits in it, the night table's front hides what stands behind it.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El pedido's: the upright plane through the feet",
+  "hung": "whoever lies or sits up in a bed (the spots with a hang): he lies on his mattress, so for his pixel on picture row r: depth(r) = (2 * COS / S) * (r + .5 - OY) + 2 * z0, with z0 = 0.5 (the mattress's top: the plane of a horizontal surface at that height), tested against the baked depth with the same bias. The upright rule would put the rows below his head BEHIND the mattress (they hang down the bed: nearer the camera, with a lower plane), and hide his body",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "abuelo": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "perro": 0.3
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0). The spec gives no radius: these are El cruce's and El calendario's (open point)",
+  "none": ["cama_luis", "cama_carmen", "sentado_luis", "sentado_carmen", "capitana", "butaca_abuelo", "cama_coqui", "campana", "plato", "ropa_a", "ropa_b", "bebe", "zetas", "manta_abuelo"],
+  "onSeat": "whoever lies in a bed, sits in the armchair, stands on the bed or on the chair (z above 0) casts none: none of those is floor (a shadow cast at the floor under them would show in front of them); the beds cast their own (CS.bed)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 30 spots held span columns 26 to 213 (188 of the window's 196); x0 that hold them all: 18 to 26 (the one nearest 22, the window centred on the picture)"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 30 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 26 (butaca_abuelo), the rightmost 213 (puerta)"
+    ]
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 13 spots above the floor (cama_luis, cama_carmen, sentado_luis, sentado_carmen, capitana, butaca_abuelo, cama_coqui, campana, plato, ropa_a, ropa_b, bebe, manta_abuelo) are on a surface the set draws (part cuarto, the set's depth within .1 of the spot's): a seat's top z 0.44, the mattress's z 0.5, the pillow's z 0.6, the night table's z 0.55 (the set's own pixel under the bell and the plate), the chair's back z 1.08, the cradle's bed z .4",
+     "       cama_luis z 0.6: part cuarto, depth 0.8 against the spot's 0.78 (0.02) at (-2, -1) from it",
+     "       cama_carmen z 0.6: part cuarto, depth 0.8 against the spot's 0.78 (0.02) at (-2, -1) from it",
+     "       sentado_luis z 0.6: part cuarto, depth 0.8 against the spot's 0.78 (0.02) at (-2, -1) from it",
+     "       sentado_carmen z 0.6: part cuarto, depth 0.8 against the spot's 0.78 (0.02) at (-2, -1) from it",
+     "       capitana z 0.5: part cuarto, depth 2.26 against the spot's 2.24 (0.02) at (-2, -1) from it",
+     "       butaca_abuelo z 0.44: part cuarto, depth 1.35 against the spot's 1.35 (0) at (-2, -1) from it",
+     "       cama_coqui z 0.5: part cuarto, depth 2.66 against the spot's 2.67 (0.01) at (-2, -1) from it",
+     "       campana z 0.55: part cuarto, depth 0.76 against the spot's 0.75 (0.01) at (-2, -1) from it",
+     "       plato z 0.55: part cuarto, depth 0.76 against the spot's 0.75 (0.01) at (-2, -1) from it",
+     "       ropa_a z 0.44: part cuarto, depth 3.94 against the spot's 3.94 (0.01) at (-2, -1) from it",
+     "       ropa_b z 1.08: part cuarto, depth 4.06 against the spot's 4.11 (0.05) at (-2, 2) from it",
+     "       bebe z 0.4: part cuarto, depth 0.86 against the spot's 0.85 (0.01) at (-1, -1) from it",
+     "       manta_abuelo z 0.44: part cuarto, depth 1.35 against the spot's 1.35 (0) at (-2, -1) from it"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of cama [64,59,34,41], luz [49,31,10,12], silla [190,94,11,31], reloj [131,7,17,16], cuna [168,50,22,30], manta_luis [63,72,36,25], manta_carmen [134,72,35,25] are inside the window [22, 218) and the picture"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 44 pairs in the 6 moments of the preview (m1 (cama_luis, cama_carmen, puerta, alfombra); m2 (cama_luis, cama_carmen, junto_mesita, mesita_coqui); m3 (cama_luis, cama_carmen, junto_mesita, busca_almohada); m4 (butaca_abuelo, cama_luis, cama_carmen, puerta, mesita_coqui); m5 (pie_abuelo, pie_luis, pie_carmen, puerta, mesita_coqui); m6 (capitana, vestir, foto, alfombra2)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 cama_luis ~ alfombra (13 across, 34 down), m2 junto_mesita ~ mesita_coqui (0 across, 29 down), m3 cama_carmen ~ busca_almohada (11 across, 59 down)",
+     "       closest pair in each moment (px across / px down): m1 cama_luis ~ alfombra 13/34 (needs 28 across or 12 down); m2 junto_mesita ~ mesita_coqui 0/29 (needs 30 across or 12 down); m3 cama_carmen ~ busca_almohada 11/59 (needs 28 across or 12 down); m4 cama_luis ~ mesita_coqui 35/12 (needs 28 across or 12 down); m5 pie_luis ~ mesita_coqui 35/31 (needs 28 across or 12 down); m6 vestir ~ alfombra2 29/8 (needs 28 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "cama_luis",
+      "b": "cama_carmen",
+      "across": 70,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "cama_luis",
+      "b": "puerta",
+      "across": 121,
+      "down": 24,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "cama_luis",
+      "b": "alfombra",
+      "across": 13,
+      "down": 34,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "cama_carmen",
+      "b": "puerta",
+      "across": 51,
+      "down": 24,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "cama_carmen",
+      "b": "alfombra",
+      "across": 83,
+      "down": 34,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "puerta",
+      "b": "alfombra",
+      "across": 134,
+      "down": 58,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cama_luis",
+      "b": "cama_carmen",
+      "across": 70,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cama_luis",
+      "b": "junto_mesita",
+      "across": 35,
+      "down": 17,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cama_luis",
+      "b": "mesita_coqui",
+      "across": 35,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cama_carmen",
+      "b": "junto_mesita",
+      "across": 35,
+      "down": 17,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cama_carmen",
+      "b": "mesita_coqui",
+      "across": 35,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "junto_mesita",
+      "b": "mesita_coqui",
+      "across": 0,
+      "down": 29,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "cama_luis",
+      "b": "cama_carmen",
+      "across": 70,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "cama_luis",
+      "b": "junto_mesita",
+      "across": 35,
+      "down": 17,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "cama_luis",
+      "b": "busca_almohada",
+      "across": 81,
+      "down": 59,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "cama_carmen",
+      "b": "junto_mesita",
+      "across": 35,
+      "down": 17,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "cama_carmen",
+      "b": "busca_almohada",
+      "across": 11,
+      "down": 59,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "junto_mesita",
+      "b": "busca_almohada",
+      "across": 46,
+      "down": 42,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "butaca_abuelo",
+      "b": "cama_luis",
+      "across": 43,
+      "down": 27,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "butaca_abuelo",
+      "b": "cama_carmen",
+      "across": 113,
+      "down": 27,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "butaca_abuelo",
+      "b": "puerta",
+      "across": 164,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "butaca_abuelo",
+      "b": "mesita_coqui",
+      "across": 78,
+      "down": 15,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cama_luis",
+      "b": "cama_carmen",
+      "across": 70,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cama_luis",
+      "b": "puerta",
+      "across": 121,
+      "down": 24,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cama_luis",
+      "b": "mesita_coqui",
+      "across": 35,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cama_carmen",
+      "b": "puerta",
+      "across": 51,
+      "down": 24,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "cama_carmen",
+      "b": "mesita_coqui",
+      "across": 35,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "puerta",
+      "b": "mesita_coqui",
+      "across": 86,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_abuelo",
+      "b": "pie_luis",
+      "across": 43,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_abuelo",
+      "b": "pie_carmen",
+      "across": 113,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_abuelo",
+      "b": "puerta",
+      "across": 164,
+      "down": 23,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_abuelo",
+      "b": "mesita_coqui",
+      "across": 78,
+      "down": 11,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_luis",
+      "b": "pie_carmen",
+      "across": 70,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_luis",
+      "b": "puerta",
+      "across": 121,
+      "down": 43,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_luis",
+      "b": "mesita_coqui",
+      "across": 35,
+      "down": 31,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_carmen",
+      "b": "puerta",
+      "across": 51,
+      "down": 43,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pie_carmen",
+      "b": "mesita_coqui",
+      "across": 35,
+      "down": 31,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "puerta",
+      "b": "mesita_coqui",
+      "across": 86,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "capitana",
+      "b": "vestir",
+      "across": 83,
+      "down": 46,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "capitana",
+      "b": "foto",
+      "across": 47,
+      "down": 6,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "capitana",
+      "b": "alfombra2",
+      "across": 54,
+      "down": 54,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vestir",
+      "b": "foto",
+      "across": 130,
+      "down": 40,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vestir",
+      "b": "alfombra2",
+      "across": 29,
+      "down": 8,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "foto",
+      "b": "alfombra2",
+      "across": 101,
+      "down": 48,
+      "needAcross": 28,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 alfombra 68,134: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 busca_almohada 162,159: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 alfombra2 97,139: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "heads-clear",
+    "ok": true,
+    "lines": [
+     "heads-clear: everyone who sits or lies (m1: cama_luis, cama_carmen; m2: cama_luis, cama_carmen; m3: cama_luis, cama_carmen; m4: butaca_abuelo, cama_luis, cama_carmen; m5: none; m6: none) is whole in the window and his head (the top 14 rows) is covered by nobody and by nothing: 9 heads, 0 px covered, 0 hidden by the set",
+     "       info, not a check: m1 cama_luis 81,60: head rows 60 to 73: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 cama_carmen 151,60: head rows 60 to 73: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 cama_luis 81,60: head rows 60 to 73: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 cama_carmen 151,60: head rows 60 to 73: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 cama_luis 81,60: head rows 60 to 73: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 cama_carmen 151,60: head rows 60 to 73: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 butaca_abuelo 38,73: head rows 36 to 49: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 cama_luis 81,60: head rows 60 to 73: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 cama_carmen 151,60: head rows 60 to 73: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
+    ]
+   },
+   {
+    "name": "heads-pillow",
+    "ok": true,
+    "lines": [
+     "heads-pillow: in every moment someone lies or sits up in a bed (m1 to m4) the spot of his head (the sprite's highest drawn row, middle column) is a pixel of the pillow and his head's columns are inside the pillow's; the set's pixel under the spot is the pillow's (spots-on-surface)",
+     "       info, not a check: m1 cama_luis 81,60: the pillow's rectangle x 69.04 to 92.96, y 58.34 to 66.31; the spot is on it; head columns 74 to 87 inside its columns; 78 of the 182 shown head pixels are on the pillow's rectangle, 104 below it (on the mattress); m1 cama_carmen 151,60: the pillow's rectangle x 139.24 to 163.16, y 58.34 to 66.31; the spot is on it; head columns 141 to 160 inside its columns; 84 of the 244 shown head pixels are on the pillow's rectangle, 160 below it (on the mattress); m2 cama_luis 81,60: the pillow's rectangle x 69.04 to 92.96, y 58.34 to 66.31; the spot is on it; head columns 74 to 87 inside its columns; 78 of the 182 shown head pixels are on the pillow's rectangle, 104 below it (on the mattress); m2 cama_carmen 151,60: the pillow's rectangle x 139.24 to 163.16, y 58.34 to 66.31; the spot is on it; head columns 141 to 160 inside its columns; 84 of the 244 shown head pixels are on the pillow's rectangle, 160 below it (on the mattress); m3 cama_luis 81,60: the pillow's rectangle x 69.04 to 92.96, y 58.34 to 66.31; the spot is on it; head columns 74 to 87 inside its columns; 78 of the 182 shown head pixels are on the pillow's rectangle, 104 below it (on the mattress); m3 cama_carmen 151,60: the pillow's rectangle x 139.24 to 163.16, y 58.34 to 66.31; the spot is on it; head columns 141 to 160 inside its columns; 84 of the 244 shown head pixels are on the pillow's rectangle, 160 below it (on the mattress); m4 cama_luis 81,60: the pillow's rectangle x 69.04 to 92.96, y 58.34 to 66.31; the spot is on it; head columns 74 to 87 inside its columns; 78 of the 182 shown head pixels are on the pillow's rectangle, 104 below it (on the mattress); m4 cama_carmen 151,60: the pillow's rectangle x 139.24 to 163.16, y 58.34 to 66.31; the spot is on it; head columns 141 to 160 inside its columns; 84 of the 244 shown head pixels are on the pillow's rectangle, 160 below it (on the mattress)"
+    ]
+   },
+   {
+    "name": "frog-mesita",
+    "ok": true,
+    "lines": [
+     "frog-mesita: the frog at mesita_coqui 116,88 covers neither the bell nor the plate (m2, m4, m5): m2: the frog's top row 64 (the bell's box [108,53,6,8], the plate's [114,55,12,6]): 0 px of his in the campana's box, 0 px of his in the plato's box; covered by him: plato 0; m4: the frog's top row 64 (the bell's box [108,53,6,8], the plate's [114,55,12,6]): 0 px of his in the campana's box, 0 px of his in the plato's box; covered by him: campana 0; m5: the frog's top row 64 (the bell's box [108,53,6,8], the plate's [114,55,12,6]): 0 px of his in the campana's box, 0 px of his in the plato's box; covered by him: neither drawn"
+    ]
+   },
+   {
+    "name": "things-clear",
+    "ok": true,
+    "lines": [
+     "things-clear: the bell (m4), the plate (m1 to m3), the big pillow (m2, m3) and the two things on the chair (m6) are covered by nobody, and nobody has a pixel in the switch's box in the six moments: m4 campana: 44 px, 0 covered, 0 hidden by the set, 0 outside the picture; m1 plato: 66 px, 0 covered, 0 hidden by the set, 0 outside the picture; m2 plato: 66 px, 0 covered, 0 hidden by the set, 0 outside the picture; m3 plato: 66 px, 0 covered, 0 hidden by the set, 0 outside the picture; m2 almohada_suelo: 168 px, 0 covered, 0 hidden by the set, 0 outside the picture; m3 almohada_suelo: 168 px, 0 covered, 0 hidden by the set, 0 outside the picture; m6 ropa_b: 102 px, 0 covered, 0 hidden by the set, 0 outside the picture; m6 ropa_a: 116 px, 0 covered, 0 hidden by the set, 0 outside the picture; m1: the switch's box [49,31,10,12]: 0 px of anyone in it; m2: the switch's box [49,31,10,12]: 0 px of anyone in it; m3: the switch's box [49,31,10,12]: 0 px of anyone in it; m4: the switch's box [49,31,10,12]: 0 px of anyone in it; m5: the switch's box [49,31,10,12]: 0 px of anyone in it; m6: the switch's box [49,31,10,12]: 0 px of anyone in it"
+    ]
+   },
+   {
+    "name": "canelo-frog",
+    "ok": true,
+    "lines": [
+     "canelo-frog: Canelo at junto_mesita 116,117 covers none of the frog (m2, m3): m2: the frog at mesita_coqui 116,88, Canelo at junto_mesita 116,117: 0 of his 536 px under Canelo; m3: the frog at busca_almohada 162,159, Canelo at junto_mesita 116,117: 0 of his 536 px under Canelo"
+    ]
+   },
+   {
+    "name": "frog-busca",
+    "ok": true,
+    "lines": [
+     "frog-busca: the frog at busca_cama, busca_almohada and busca_silla is whole (0 px hidden or covered), in the game's picture: the frog at busca_cama 81,115 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; the frog at busca_almohada 162,159 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; the frog at busca_silla 175,125 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture",
+     "       info, not a check of the spec: the frog at cama_coqui 81,91 in the picture of moment 1: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; the frog at silla_coqui 172,131 in the picture of moment 6: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "info-touch",
+    "ok": true,
+    "lines": [
+     "info-touch: not a check. m1: bajo_cama 0 of 50 px covered, 0 hidden by the set; m2: none of them drawn; m3: none of them drawn; m4: manta_abuelo 0 of 156 px covered, 0 hidden by the set, bebe 0 of 110 px covered, 35 hidden by the set, zetas 0 of 74 px covered, 0 hidden by the set; m5: bebe 0 of 110 px covered, 35 hidden by the set; m6: none of them drawn"
+    ]
+   }
+  ]
+ }
+}
