@@ -19,7 +19,7 @@
 #        A: the cheese, B: the fruit (the script); antes / despues drawn each round on its own (the two may be the same). `vela` {n}: 3 at the start, 2 / 1 after a loss; the candle is lit at step 4 (`vela106`).
 #        `perro106` {n}: n = 1 for the first time his paws go up on the table (step 3), 2 for the second (he comes back). The shoo to his bowl and the going back are `llega` perro plato_perro (the spot of the script's Needs). Reported.
 #        The family's start spots: abuela junto_mesa, abuelo silla4 (the script: "abuelo at silla4"); Luis and Carmen come to the table: silla1, silla2 (the script names no other spot at the table); Canelo plato_perro.
-#   107  `reloj107` {hora}: 8. `acuesta107` / `descansa107` {quien, ok}: quien = luis or carmen; right: ok 1; wrong: ok 0 (he stays where he was led, abuela turns a page down), the sign's touch then runs the right one with ok 1.
+#   107  `reloj107` {hora}: 8. `acuesta107` / `descansa107` {quien, ok}: quien = luis or carmen; `descansa107` for a child also takes `a` = his seat on the sofa (sofa_pies, or sofa_pies2 for round B's child when round A's child rests there too: the script's two free seats; abuelo's own call has none); right: ok 1; wrong: ok 0 (he stays where he was led, abuela turns a page down), the sign's touch then runs the right one with ok 1.
 #        The child of round A is drawn, round B's is the other one (the script: "the other child"); what each does is drawn on its own. `paginas` {n}: 3 at the start, 2 / 1 after a loss; final107 {n} = what is left.
 #        Step 9: the lamps go out = the state `oscuro` 1 (the script's States); the frog hops onto the sill (`ir` ventana_coqui); `canta107` runs with the sung line (`con`).
 #   Every story sets its own states at the start (hora noche, tele, mesa, oscuro): every story starts fresh. The script's Start says nothing about which of the three lamps are lit in 106 and 107 (105's start is `luces105` a=0 b=1 c=0): there they are left as the scene has them. Reported.
@@ -174,7 +174,7 @@ json.dump(s105,open("cuentos/prende-y-apaga.json","w",encoding="utf-8"),ensure_a
 # A miss: the thing goes to the other place and stays there, abuela turns round to look and the candle burns down; the sign is on the right place; he touches it and the frog carries the thing across.
 nm,nc=nombres("abuela","abuelo","luis","carmen","perro","coqui"); c=dict(comunes); c.update(nc)
 c.update({"c106_ab_mira":AB("Coquí, mira: la cena. Está caliente."),"c106_q_cena":N("¿Dónde está la cena?"),
- "c106_ab_manos":AB("¡No, Luis! Antes de la cena te lavas las manos."),"c106_ab_limpias":AB("Las manos limpias, siempre. ¿Y tú, Coquí?"),"c106_cq_limpias":T("¡Sí, limpias!"),
+ "c106_ab_manos":AB("¡No, Luis! Antes de la cena te lavas las manos."),"c106_ab_limpias":AB("Las manos limpias, siempre. ¿Y tú, Coquí?"),"c106_cq_limpias":T("¡Sí, limpias!"),"c106_ab_siempre":AB("¡Siempre limpias!"),
  "c106_ab_perro":AB("¡Canelo! El perro nunca come en la mesa."),"c106_ca_nunca":CA("¡Nunca, Canelo! Tú comes antes de la cena."),
  "c106_ab_jugo":AB("El jugo va antes de la cena."),"c106_ab_flan":AB("El flan va después de la cena."),
  "c106_a_antes":AB("El queso va antes de la cena."),"c106_a_despues":AB("El queso va después de la cena."),"c106_b_antes":AB("Las frutas van antes de la cena."),"c106_b_despues":AB("Las frutas van después de la cena."),
@@ -199,7 +199,7 @@ s106={"id":"antes-y-despues","title":"Antes y después","place":"La casa, un dí
   # 1: abuela lifts a cover: steam; signed ask on the dinner table: the covers shine
   {"dots":1},act("tapa106"),"c106_ab_mira",ask("mesa","c106_q_cena",after=[tw("mesa"),{"wait":700},tw(None)]),
   # 2: Luis reaches for a dish, his hands grey with dirt (no act named); abuela sends him to wash; he comes back with them bright; the frog holds up his hands; a speaking turn (limpio)
-  {"dots":2},"c106_ab_manos",act("manos106"),"c106_ab_limpias",gesto("coqui","manos"),"c106_cq_limpias",
+  {"dots":2},"c106_ab_manos",act("manos106"),"c106_ab_limpias",gesto("coqui","manos"),"c106_cq_limpias","c106_ab_siempre",
   # 3: Canelo's front paws on the table; abuela's line is the signed ask on him: the frog shoos him to his bowl; he comes back and puts his paws up again; Carmen's line; he goes back to his bowl
   {"dots":3},act("perro106",n=1),ask("perro","c106_ab_perro",after=[act("llega",quien="perro",a="plato_perro")]),act("perro106",n=2),"c106_ca_nunca",act("llega",quien="perro",a="plato_perro"),
   # 4: abuela lights the tall candle; the jug before dinner (signed ask on the table), the flan after (signed ask on the sideboard's shelf)
@@ -210,7 +210,7 @@ s106={"id":"antes-y-despues","title":"Antes y después","place":"La casa, un dí
   {"dots":6}]+ronda106("a","queso")+[{"dots":7}]+ronda106("b","frutas"),
  "final":[{"dots":8},baja3(lambda n:act("final106",n=n)),   # 8: they all sit down and eat: a tall candle, half a candle, a stub (abuelo brings a lamp)
   {"dots":9},"c106_abo_cena","c106_cq_rica"]+juntos(act("nariz106"),*[gesto(q,"mira",a="perro") for q in ("abuela","abuelo","luis","carmen")])+["c106_ab_final",act("fin")],   # 9: Canelo's nose comes up at the table's edge; everybody looks at him; it goes down again
- "leer":["c106_ab_mira","c106_q_cena","c106_ab_manos","c106_ab_limpias","c106_cq_limpias","c106_ab_perro","c106_ca_nunca","c106_ab_jugo","c106_ab_flan",
+ "leer":["c106_ab_mira","c106_q_cena","c106_ab_manos","c106_ab_limpias","c106_cq_limpias","c106_ab_siempre","c106_ab_perro","c106_ca_nunca","c106_ab_jugo","c106_ab_flan",
   "c106_a_antes","c106_b_despues","c106_abo_cena","c106_cq_rica","c106_ab_final"]}
 s106=reuse(s106,{"c106_cq_limpias":TG(("limpio",["sí limpias","limpias","están limpias","limpio"])),"c106_cq_rica":TG(("rico",["rica","está rica","muy rica","rico"]))})
 json.dump(s106,open("cuentos/antes-y-despues.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
@@ -232,12 +232,14 @@ for k in ("luis","carmen"):   # abuela says what the child does (four lines) and
 VARS107={"qa":["luis","carmen"],"qb":["luis","carmen"],"wa":["acuesta","descansa"],"wb":["acuesta","descansa"]}
 def ronda107(s):
     # q: the child; w: acuesta or descansa (drawn); p: the right place (cama or sofa). Right: he goes there. Wrong: the other place (x): he stays there, abuela turns a page down; then the sign's touch leads him across.
-    q,w,p="q"+s,"w"+s,"p"+s
+    q,w,p,z="q"+s,"w"+s,"p"+s,"s"+s
     first=[{"draw":"qa","options":["luis","carmen"],"other":"qb"}] if s=="a" else []
-    return first+[{"draw":w,"options":["acuesta","descansa"]},{"calc":p,"cond":w+"=acuesta","then":"cama","else":"sofa"},
+    # z: the seat on the sofa for a child told to rest: sofa_pies, or sofa_pies2 in round B when round A's child rests there too (the script's two free seats)
+    seat=[fija(z,"sofa_pies")] if s=="a" else [{"calc":z,"cond":"wa=descansa","then":"sofa_pies2","else":"sofa_pies"}]
+    return first+[{"draw":w,"options":["acuesta","descansa"]},{"calc":p,"cond":w+"=acuesta","then":"cama","else":"sofa"}]+seat+[
      {"decide":"do","options":["cama","sofa"],"pick":"$"+p,"tests":"$"+w,"lock":True,"lead":[],"line":"c107_$%s_$%s"%(q,w),
-      "right":[{"if":w+"=acuesta","then":[act("acuesta107",quien="$"+q,ok=1)],"else":[act("descansa107",quien="$"+q,ok=1)]},star],
-      "wrong":[{"if":"x=cama","then":[act("acuesta107",quien="$"+q,ok=0)],"else":[act("descansa107",quien="$"+q,ok=0)]},"c107_no_$%s_$%s"%(q,w),gesto("abuela","mira",a="reloj"),resta(lambda n:act("paginas",n=n))]+X}]
+      "right":[{"if":w+"=acuesta","then":[act("acuesta107",quien="$"+q,ok=1)],"else":[act("descansa107",quien="$"+q,a="$"+z,ok=1)]},star],
+      "wrong":[{"if":"x=cama","then":[act("acuesta107",quien="$"+q,ok=0)],"else":[act("descansa107",quien="$"+q,a="$"+z,ok=0)]},"c107_no_$%s_$%s"%(q,w),gesto("abuela","mira",a="reloj"),resta(lambda n:act("paginas",n=n))]+X}]
 s107={"id":"se-acuesta","title":"Se acuesta","place":"La casa, un día entero","scene":"noche","next":None,
  "goal":"Lead each child to the bed or to the sofa as abuela says, so that her storybook keeps its three pages for the bedtime reading: every mix-up takes time, and abuela looks at the clock and turns one page down.",
  "stake":{"thing":"paginas","steps":3},"dots":9,"bien":"si_muy_bien",
