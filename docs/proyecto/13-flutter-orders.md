@@ -738,6 +738,26 @@ Ported by an Opus builder with no stop; the orchestrator ran `test_all.sh` on th
 - What the reader of the real app found is the old stories' own (the dog in front of the frog at the arch; people in front of one another at the ends; the cat as a tail; answer cards that look alike; asks with nothing marked; a heart on a wrong touch; the dog behind the bush). The walk out through the arch at the end of story 14 plays between two captured frames, so the reader saw only "everyone gone".
 - Reported, not changed: the dog's, the cat's and abuela's sprites reach past their old touch boxes (as in the old scene); the sheet's world boxes for the path and the park do not project to their screen boxes (nothing uses them).
 
+### Order 34 (campo), step a. **Result (Nov 21): done, merged.**
+
+Designed by an Opus agent in three rounds (it was cut off in round 2 when Opus reached its weekly limit; Salim reset the usage and it went on from its saved work); the orchestrator looked at every round's pictures and decided the changes; six fresh readers saw them with no words.
+
+- Files in `docs/proyecto/pixel/`: `campo-set.html`, `campo-sheet-make.js` (writes `campo-sheet.json`; it now plays the old page itself and checks every tick inside the acts, 7,020 ticks, not only the ends of steps), `campo-preview.html`; `set-kit.js` gained the park's water (`waterPixel`, and `drawGlints`, a new per-frame step beside the tufts); the five finished sets' 102 pictures are byte-identical.
+- The field: lawn (El frente's grass), one tree of El camino's kind at its old foot, the lake's corner at the lower right behind one straight bank on a world axis, a sparse row of reeds along it, El camino's sky. In the sprite layer: Luis, Carmen, the frog, Canelo, the three balls, the basket, the flower, the frog's puddle, the dark curtain of his shut eyes, the butterfly, splashes, bubbles and signs.
+- One baked state draws all 7 old states (the old set keys are all sprite-layer things). One view.
+- All 10 things, 15 frog places, 66 positions, 22 review pictures and 16 level pictures are there.
+- **The water** (made once, for El lago too): a low earth bank with a dark wet line, water lighter and bluer than any sky tone, baked ripple dashes, glints that come and go each frame. Every reader named it water at once.
+- New rules from this scene, for the next ones:
+  - **Show as much water as the old picture did.** Round 1's bank left a thin triangle at the corner; whatever floated sat against the picture's edge and three readers could not tell grass from water. Round 3 moved the bank up the lawn: the lake shows 132% of the old pond's area.
+  - **Whatever is near the shore is clearly on one side**: on the land with 8 px of lawn round its foot, or in the water with 8 px of water all round and 6 px from the picture's edges. 27 places moved for it (the sheet's `moves` and `remap`); 6 pairs of frog places take one hop fewer (the sheet's `hops`; none is walked in a recorded run).
+  - **What floats or wades gets a ripple ring** round it, drawn by the sprite layer just before it (the sheet's `helps.ring`).
+  - **A ball in the air, and Canelo in the air, has its shadow on the ground under it** at every tick and in every pair picture. A ball a child holds up sits in the raised hand (one line of `campo.js` moved).
+  - **A tree alone on an open field casts a lighter crown shadow**: one even shade, the lawn's next darker tone. The engine's full shadow hid the balls and dark hair and read as a hole in close pictures; a dot pattern (round 2) read as "a mesh or grate". No zoom 2 pair picture shows the tree's shadow without the trunk.
+  - **Two more helps that failed** (round 2, the orchestrator's decisions): a patch of dug earth where Canelo lies read as "a hole or mud patch" (removed: he lies on the lawn); a dark rim round the yellow ball read as "a hole or a plate" (removed). The yellow ball stands out from this lawn by 26 where the old lawn gave 50: accepted.
+- Left as the old game has it: a held ball in front of a face; the ball on the frog; balls heaped beside Canelo; things appearing between steps; answer cards that look alike; the hint hand running off the bottom.
+- Seen by the last readers and not changed: a few reed stems at the bank read as "short brown posts"; the crown's shade lies a little apart from the trunk's shadow.
+- Bake: 45 ms the first time, 22 to 28 ms warm, in headless Chrome.
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
