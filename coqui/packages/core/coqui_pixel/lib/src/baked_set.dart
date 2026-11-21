@@ -7,8 +7,8 @@ import 'package:coqui_pixel/src/pp_engine.dart';
 /// A set's bake (`buildSet`) leaves more than the picture. The frame reads, from the engine: the baked picture and its
 /// depth (`bakedPix`, `bakedZ`), which pixels are ground (`ground`), the ground's own depth (`groundZ`: `applyShadows`
 /// and `drawTufts` test `zb == groundZ`), what kind of surface each pixel is (`kinds`: the tufts grow on grass), what
-/// was in shadow at the bake (`staticShadow`: a tuft in it is drawn dark), and the tufts and leaves that sway
-/// (`tufts`, `leaves`). Two states of a set differ in all of these. A [BakedSet] holds a copy of them, taken from the
+/// was in shadow at the bake (`staticShadow`: a tuft in it is drawn dark), the tufts and leaves that sway
+/// (`tufts`, `leaves`), and the colours the tufts are drawn in (`tuftLit`, `tuftDark`). Two states of a set differ in all of these. A [BakedSet] holds a copy of them, taken from the
 /// engine right after the bake ([capture]), and puts them back ([restoreInto]) before a frame of that state.
 ///
 /// What a frame reads and the bake does not leave behind is not here: the picture (`pix`, `zb`: copied from the baked
@@ -23,6 +23,8 @@ class BakedSet {
     required this.staticShadow,
     this.tufts = const [],
     this.leaves = const [],
+    this.tuftLit,
+    this.tuftDark,
   });
 
   /// A copy of what the engine holds after a bake. Call it when the bake is done and has set `bakedPix` and `bakedZ`
@@ -36,6 +38,8 @@ class BakedSet {
     staticShadow: Uint8List.fromList(e.staticShadow),
     tufts: List.of(e.tufts),
     leaves: List.of(e.leaves),
+    tuftLit: List.of(e.tuftLit),
+    tuftDark: List.of(e.tuftDark),
   );
 
   /// The baked picture and its depth.
@@ -54,6 +58,11 @@ class BakedSet {
   final List<Tuft> tufts;
   final List<Leaf> leaves;
 
+  /// The colours the blades are drawn in (the engine's `tuftLit` and `tuftDark`) when this state was baked: a set whose
+  /// blades take the light of its hour sets them in its bake (El patio, order 32b: patio-set.html sets them when the
+  /// page loads, one hour a page). Null: the engine's are left as they are.
+  final List<int>? tuftLit, tuftDark;
+
   /// Puts every one of these into [e], and the baked picture and depth into its `pix` and `zb`, so that the engine is
   /// as it was when this state was baked. The frame does this first.
   void restoreInto(PpEngine e) {
@@ -69,6 +78,9 @@ class BakedSet {
     e.leaves
       ..clear()
       ..addAll(leaves);
+    final lit = tuftLit, dark = tuftDark;
+    if (lit != null) e.tuftLit.setAll(0, lit);
+    if (dark != null) e.tuftDark.setAll(0, dark);
     e.pix.setAll(0, pix);
     e.zb.setAll(0, zb);
   }
