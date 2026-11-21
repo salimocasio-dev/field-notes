@@ -31,7 +31,7 @@ const E = {
   RAIL: { v: .15, h: .9, posts: [-4.4, -3.3, -2.2, -1.1, 0, 1.1, 2.2, 3.3, 4.4], lights: 1.3 },
   TABLE: { u: .1, v: 4.9, hw: 1.9, hd: .6 },                          // the long table: four chairs along its far side
   STATION: { u: 2.78, v: 2.0, hw: .92, hd: .42, shelf: 1.6, sv: 1.66, things: [2.1, 2.55, 3.0, 3.45] },   // the mesera's station: its low top (z .74), its shelf (z), the shelf's v, the four things' u
-  SERVE: { u: -2.9, v: 2.0, hw: .85, hd: .42, pot: [-3.2, 1.95, .3], plates: [-2.45, 1.85] },            // the serving table; the pot (u, v, radius); the pile of plates
+  SERVE: { u: -2.7, v: 2.0, hw: 1.25, hd: .42, pot: [-3.05, 1.95, .3], plates: [-2.3, 1.85] },            // the serving table; the pot (u, v, radius); the pile of plates
 };
 function groundAt(x, y, ix, iy) {
   const [u, v] = PZ.uv(x, y);
