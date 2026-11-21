@@ -320,17 +320,16 @@
    "on": "mesas"
   },
   "mesa_abuela.luis": {
-   "world": [-0.7778, 2.4042, 0.4],
-   "uv": [-2.25, 1.15, 0.4],
-   "screen": [62, 158],
-   "depth": 1.1959,
+   "world": [-0.4596, 2.086, 0],
+   "uv": [-1.8, 1.15, 0],
+   "screen": [73, 167],
+   "depth": 0.9959,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "Luis on his stool at the first table (the stool's top, z .4)",
-   "sprite": "luisS",
-   "who": "nino",
-   "on": "mesas"
+   "what": "Luis standing beside the first table, at its right (the coordinator's decision: he does not sit; a child on the ground, z 0)",
+   "sprite": "nino",
+   "who": "nino"
   },
   "mesa_abuela.coqui": {
    "world": [-0.7425, 3.1466, 0.72],
@@ -523,7 +522,7 @@
   "the spec's six moments are 1 (63 opening), 2 (63 game), 3 to 5 (64), 6 (65); the preview also draws two dev aids that are not among them: 7 (the frog at balcon2), 8 (the frog at escalera)",
   "the prize table is a long low table (SHELF: hw .95, hd .2, top z .7) with three places side by side, the best at the left: premio1 at SHELF.u - 0.62, premio2 at SHELF.u, premio3 at SHELF.u + 0.62 (the coordinator's decision)",
   "the long hand rests at the 3 (the script says so): mano_lado is (0.75, -1.98, 3.9), his feet on the hand's line; mano_abajo is (0, -1.98, 3.1), his feet at the hand's tip",
-  "the frog on abuela's table stands in front of the two who sit behind it: he is exempt from sprites-apart against mesa_abuela.abuela and mesa_abuela.luis; the check table-heads is that he covers neither one's head (the top 14 rows of each sprite)",
+  "the frog on abuela's table stands in front of abuela, who sits behind it: he is exempt from sprites-apart against mesa_abuela.abuela only; Luis stands beside the table (mesa_abuela.luis is on the ground at T1.u + 0.95, T1.v - 0.55). table-heads: the frog covers no more than 10% of abuela's head (the top 14 rows of her sprite) and none of Luis's",
   "carta_a, carta_b and the card of numerals are signs: they are placed on the screen, not in the world, and drawn over everything"
  ],
  "views": {
@@ -564,7 +563,7 @@
    "carmen": 0.28
   },
   "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El mostrador's (frog .45, grown-ups .35, children .28) (open point)",
-  "none": ["balcon1", "balcon2", "escalera", "mano_arriba", "mano_abajo", "mano_lado", "plato", "mesa_abuela.abuela", "mesa_abuela.luis", "mesa_abuela.coqui", "mesa_senor", "mesa_tito", "jaula", "premio1", "premio2", "premio3"],
+  "none": ["balcon1", "balcon2", "escalera", "mano_arriba", "mano_abajo", "mano_lado", "plato", "mesa_abuela.abuela", "mesa_abuela.coqui", "mesa_senor", "mesa_tito", "jaula", "premio1", "premio2", "premio3"],
   "onSeat": "whoever stands or sits above the ground (the balcony, the ladder, a stool, the table, the hand, the counter, the cage's stand, the prize table) casts none: it is not ground (a shadow cast at the pavement under it would show in front of it)"
  },
  "checks": {
@@ -593,13 +592,12 @@
     "name": "spots-on-surface",
     "ok": true,
     "lines": [
-     "spots-on-surface: 13 spots above the ground (balcon1, balcon2, escalera, plato, mesa_abuela.abuela, mesa_abuela.luis, mesa_abuela.coqui, mesa_senor, mesa_tito, jaula, premio1, premio2, premio3) are on the top of what the set draws there (its depth within .1 of the spot's: the balcony's floor z 2.1, the ladder, the counter's top z 1.0, a stool's top z .4, the table's cloth z .72, the cage's stand z .8, the prize table z .7); mano_arriba, mano_abajo and mano_lado are on a sprite (the hand)",
+     "spots-on-surface: 12 spots above the ground (balcon1, balcon2, escalera, plato, mesa_abuela.abuela, mesa_abuela.coqui, mesa_senor, mesa_tito, jaula, premio1, premio2, premio3) are on the top of what the set draws there (its depth within .1 of the spot's: the balcony's floor z 2.1, the ladder, the counter's top z 1.0, a stool's top z .4, the table's cloth z .72, the cage's stand z .8, the prize table z .7); mano_arriba, mano_abajo and mano_lado are on a sprite (the hand)",
      "       balcon1 z 2.1: part torre, depth -0.4 against the spot's -0.42 (0.03) at 0, -1 px from the spot",
      "       balcon2 z 2.1: part torre, depth -0.4 against the spot's -0.42 (0.03) at 0, -1 px from the spot",
      "       escalera z 1.05: part torre, depth -0.51 against the spot's -0.51 (0.01) at 5, -1 px from the spot",
      "       plato z 1: part quiosco, depth 0.26 against the spot's 0.28 (0.02) at 0, -1 px from the spot",
      "       mesa_abuela.abuela z 0.4: part mesas, depth 1.2 against the spot's 1.2 (0) at -2, -1 px from the spot",
-     "       mesa_abuela.luis z 0.4: part mesas, depth 1.2 against the spot's 1.2 (0) at 0, -1 px from the spot",
      "       mesa_abuela.coqui z 0.72: part mesas, depth 1.84 against the spot's 1.83 (0) at 0, -1 px from the spot",
      "       mesa_senor z 0.4: part mesas, depth 2.4 against the spot's 2.41 (0.01) at -1, -1 px from the spot",
      "       mesa_tito z 0.4: part mesas, depth 2.59 against the spot's 2.58 (0.01) at 0, -1 px from the spot",
@@ -627,12 +625,15 @@
    },
    {
     "name": "sprites-apart",
-    "ok": true,
+    "ok": false,
     "lines": [
-     "sprites-apart: 57 pairs counted (2 more not counted) in the 6 moments of the preview (m1 (balcon1, quiosco, pie1, pie2, pie3); m2 (balcon1, quiosco, pie1, pie2, pie3); m3 (balcon1, pie1, pie3, mano_arriba); m4 (balcon1, pie1, pie3, mano_abajo); m5 (balcon1, pie1, pie3, mano_lado); m6 (quiosco, mesa_abuela.abuela, mesa_abuela.luis, mesa_abuela.coqui, mesa_senor, mesa_tito, senora)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the counted pairs that do overlap sideways: m1 balcon1 ~ pie1 (17 across, 57 down), m2 balcon1 ~ pie1 (17 across, 57 down), m3 balcon1 ~ pie1 (17 across, 57 down), m3 pie1 ~ mano_arriba (18 across, 111 down), m4 balcon1 ~ pie1 (17 across, 57 down), m4 pie1 ~ mano_abajo (18 across, 84 down), m5 balcon1 ~ pie1 (17 across, 57 down), m5 pie3 ~ mano_lado (22 across, 102 down), m6 quiosco ~ mesa_tito (6 across, 38 down), m6 mesa_abuela.luis ~ mesa_senor (11 across, 18 down), m6 mesa_abuela.coqui ~ mesa_senor (24 across, 18 down)",
-     "       closest pair in each moment (px across / px down): m1 balcon1 ~ pie1 17/57 (needs 24 across or 12 down); m2 balcon1 ~ pie1 17/57 (needs 24 across or 12 down); m3 pie1 ~ mano_arriba 18/111 (needs 28 across or 12 down); m4 pie1 ~ mano_abajo 18/84 (needs 28 across or 12 down); m5 balcon1 ~ pie1 17/57 (needs 24 across or 12 down); m6 quiosco ~ mesa_tito 6/38 (needs 24 across or 12 down)",
-     "       info, not counted: moment 6: mesa_abuela.abuela [36,158] ~ mesa_abuela.coqui [49,158]: 13 px sideways (the boxes need 28), 0 px up-down (the frog on the table, in front of the two who sit behind it (see table-heads))",
-     "       info, not counted: moment 6: mesa_abuela.luis [62,158] ~ mesa_abuela.coqui [49,158]: 13 px sideways (the boxes need 28), 0 px up-down (the frog on the table, in front of the two who sit behind it (see table-heads))"
+     "sprites-apart: 2 pair(s) with overlapping boxes and feet closer than 12 px up-down (of 58 counted pairs in 6 moments):",
+     "  moment 6: mesa_abuela.luis [73,167] (24 wide) ~ mesa_abuela.coqui [49,158] (32 wide): 24 px sideways (the boxes need 28), 9 px up-down (needs 12): short by 4 px sideways or 3 px up-down",
+     "  moment 6: mesa_abuela.luis [73,167] (24 wide) ~ mesa_senor [73,176] (24 wide): 0 px sideways (the boxes need 24), 9 px up-down (needs 12): short by 24 px sideways or 3 px up-down",
+     "       nearest passing, moment 6 mesa_abuela.luis ~ mesa_abuela.coqui: mesa_abuela.luis -1.8,1.15,0: u -1.8 -> -1.67 (+0.13) or v 1.15 -> 1.35 (+0.2) or z 0 -> 0.91 (+0.91); or mesa_abuela.coqui -2.75,1.7,0.72: u -2.75 -> -2.87 (-0.12) or v 1.7 -> 1.51 (-0.19) or z 0.72 -> 0.83 (+0.11)",
+     "       nearest passing, moment 6 mesa_abuela.luis ~ mesa_senor: mesa_abuela.luis -1.8,1.15,0: u -1.8 -> -0.9 (+0.9) or v 1.15 -> 0.96 (-0.19) or z 0 -> 0.11 (+0.11); or mesa_senor -1.8,2.55,0.4: u -1.8 -> -0.9 (+0.9) or v 2.55 -> 2.74 (+0.19) or z 0.4 -> 0.29 (-0.11)",
+     "       closest pair in each moment (px across / px down): m1 balcon1 ~ pie1 17/57 (needs 24 across or 12 down); m2 balcon1 ~ pie1 17/57 (needs 24 across or 12 down); m3 pie1 ~ mano_arriba 18/111 (needs 28 across or 12 down); m4 pie1 ~ mano_abajo 18/84 (needs 28 across or 12 down); m5 balcon1 ~ pie1 17/57 (needs 24 across or 12 down); m6 mesa_abuela.luis ~ mesa_senor 0/9 (needs 24 across or 12 down)",
+     "       info, not counted: moment 6: mesa_abuela.abuela [36,158] ~ mesa_abuela.coqui [49,158]: 13 px sideways (the boxes need 28), 0 px up-down (the frog on the table, in front of abuela who sits behind it (see table-heads))"
     ],
     "pairs": [
      {
@@ -1029,8 +1030,8 @@
       "moment": 6,
       "a": "quiosco",
       "b": "mesa_abuela.luis",
-      "across": 137,
-      "down": 17,
+      "across": 126,
+      "down": 26,
       "needAcross": 24,
       "ok": true,
       "notCounted": null
@@ -1079,8 +1080,8 @@
       "moment": 6,
       "a": "mesa_abuela.abuela",
       "b": "mesa_abuela.luis",
-      "across": 26,
-      "down": 0,
+      "across": 37,
+      "down": 9,
       "needAcross": 24,
       "ok": true,
       "notCounted": null
@@ -1093,7 +1094,7 @@
       "down": 0,
       "needAcross": 28,
       "ok": false,
-      "notCounted": "the frog on the table, in front of the two who sit behind it (see table-heads)"
+      "notCounted": "the frog on the table, in front of abuela who sits behind it (see table-heads)"
      },
      {
       "moment": 6,
@@ -1129,28 +1130,28 @@
       "moment": 6,
       "a": "mesa_abuela.luis",
       "b": "mesa_abuela.coqui",
-      "across": 13,
-      "down": 0,
+      "across": 24,
+      "down": 9,
       "needAcross": 28,
       "ok": false,
-      "notCounted": "the frog on the table, in front of the two who sit behind it (see table-heads)"
+      "notCounted": null
      },
      {
       "moment": 6,
       "a": "mesa_abuela.luis",
       "b": "mesa_senor",
-      "across": 11,
-      "down": 18,
+      "across": 0,
+      "down": 9,
       "needAcross": 24,
-      "ok": true,
+      "ok": false,
       "notCounted": null
      },
      {
       "moment": 6,
       "a": "mesa_abuela.luis",
       "b": "mesa_tito",
-      "across": 131,
-      "down": 21,
+      "across": 120,
+      "down": 12,
       "needAcross": 24,
       "ok": true,
       "notCounted": null
@@ -1159,8 +1160,8 @@
       "moment": 6,
       "a": "mesa_abuela.luis",
       "b": "senora",
-      "across": 91,
-      "down": 3,
+      "across": 80,
+      "down": 6,
       "needAcross": 24,
       "ok": true,
       "notCounted": null
@@ -1229,16 +1230,9 @@
    },
    {
     "name": "table-heads",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "table-heads: the frog covers a head at the table:",
-     "  mesa_abuela.abuela: the frog covers 8 of the 206 px of its head (rows 122 to 135)",
-     "  mesa_abuela.luis: the frog covers 26 of the 182 px of its head (rows 127 to 140)",
-     "       nearest passing, move the frog mesa_abuela.coqui -2.75,1.7,0.72 so that he covers neither head: u -2.75 -> -4.14 (-1.39); v 1.7 -> 1.14 (-0.56); z 0.72 -> 2.25 (+1.53) (the cloth's radius is .5 about (-2.75, 1.7))",
-     "       nearest passing, move the frog mesa_abuela.coqui -2.75,1.7,0.72 so that he does not cover mesa_abuela.abuela at all: u -2.75 -> -2.01 (+0.74); v 1.7 -> 1.14 (-0.56); z 0.72 -> 2.25 (+1.53)",
-     "       nearest passing, move the frog mesa_abuela.coqui -2.75,1.7,0.72 so that he does not cover mesa_abuela.luis at all: u -2.75 -> -3.18 (-0.43); v 1.7 -> 1.14 (-0.56); z 0.72 -> 2.03 (+1.31)",
-     "       mesa_abuela.abuela 36,158: head rows 122 to 135: 8 of 206 px under the frog",
-     "       mesa_abuela.luis 62,158: head rows 127 to 140: 26 of 182 px under the frog (and 5 under mesa_senor 5)"
+     "table-heads: in moment 6 the frog on abuela's table covers no more than 10% of the head (the top 14 rows of the sprite) of abuela and none of Luis's: mesa_abuela.abuela 36,158: head rows 122 to 135: 8 of 206 px under the frog (3.9%, the limit 10% = 20 px); mesa_abuela.luis 73,167: head rows 126 to 139: 0 of 182 px under the frog (0.0%, the limit 0% = 0 px) (and 32 under mesa_senor 32)"
     ]
    },
    {

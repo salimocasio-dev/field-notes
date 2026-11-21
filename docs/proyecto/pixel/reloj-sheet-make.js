@@ -71,7 +71,7 @@ const spotsOf = E => {
     ['quiosco', [K.u, r4(K.v - .6), 0], 'person', 'adulto', 'adulto', 'the vendedor behind his counter'],
     ['plato', [r4(K.u + .33), K.v, 1.0], 'thing', null, null, 'the plate of pastelillos on the counter, right of the fryer (the counter\'s top, z 1.0): a plate with three half-moons, 14 x 7 (the spec gives no size: open point)', 'quiosco'],
     ['mesa_abuela.abuela', [r4(T1[0] - .5), r4(T1[1] - .55), .4], 'person', 'abuelaS', 'adulto', 'abuela on her stool at the first table (sitting: the stool\'s top, z .4; the sitting drawing hangs by her lap)', 'mesas'],
-    ['mesa_abuela.luis', [r4(T1[0] + .5), r4(T1[1] - .55), .4], 'person', 'luisS', 'nino', 'Luis on his stool at the first table (the stool\'s top, z .4)', 'mesas'],
+    ['mesa_abuela.luis', [r4(T1[0] + .95), r4(T1[1] - .55), 0], 'person', 'nino', 'nino', 'Luis standing beside the first table, at its right (the coordinator\'s decision: he does not sit; a child on the ground, z 0)'],
     ['mesa_abuela.coqui', [T1[0], T1[1], .72], 'person', 'coqui', 'coqui', 'the frog on the first table (the cloth\'s top, z .72)', 'mesas'],
     ['mesa_senor', [r4(T2[0] - .5), r4(T2[1] - .55), .4], 'person', 'adultoS', 'adulto', 'the señor on his stool at the second table (z .4)', 'mesas'],
     ['mesa_tito', [r4(T3[0] + .5), r4(T3[1] - .55), .4], 'person', 'adultoS', 'adulto', 'don Tito on his stool at the third table (z .4)', 'mesas'],
@@ -87,7 +87,7 @@ const PEOPLE = ['tito', 'vendedor', 'luis', 'carmen', 'abuela', 'senor', 'senora
 
 /* the checks (each is a line of the output and of the sheet's checks.results):
    views-x0 (every spot of every moment is inside the window), spots-in-view (every spot inside the picture and the window, its sprite whole), spots-on-surface (whoever sits or stands above the
-   ground is on the top of what the set draws there), things-in-view (the signs and the stand-ins are inside the window), sprites-apart (the people of a moment; the frog on abuela's table is exempt against the two who sit behind it), frog-seen (the frog whole in every
+   ground is on the top of what the set draws there), things-in-view (the signs and the stand-ins are inside the window), sprites-apart (the people of a moment; the frog on abuela's table is exempt against abuela, who sits behind it), frog-seen (the frog whole in every
    moment: nothing of the set, no grown-up, covers him), frog-on-hand (at mano_arriba, mano_abajo, mano_lado he is whole inside the picture), table-heads (the frog on abuela's table covers neither head at it), tito-face (don Tito at balcon1 covers no more than 8%
    of the face), vendedor-head (nothing covers the top 14 px of the vendedor), cards-clear (the two time cards cover neither the frog, the face nor the vendedor), carton-clear (every square of
    abuela's card is in the window and covered by nobody), bingo-clear (nobody covers the cage and the three prizes). A failing line names its numbers and the nearest value that would pass. */
@@ -296,7 +296,7 @@ async function make(G, proj, SIL) {
       'the spec\'s six moments are 1 (63 opening), 2 (63 game), 3 to 5 (64), 6 (65); the preview also draws two dev aids that are not among them: 7 (the frog at balcon2), 8 (the frog at escalera)',
       'the prize table is a long low table (SHELF: hw .95, hd .2, top z .7) with three places side by side, the best at the left: premio1 at SHELF.u - 0.62, premio2 at SHELF.u, premio3 at SHELF.u + 0.62 (the coordinator\'s decision)',
       'the long hand rests at the 3 (the script says so): mano_lado is (0.75, -1.98, 3.9), his feet on the hand\'s line; mano_abajo is (0, -1.98, 3.1), his feet at the hand\'s tip',
-      'the frog on abuela\'s table stands in front of the two who sit behind it: he is exempt from sprites-apart against mesa_abuela.abuela and mesa_abuela.luis; the check table-heads is that he covers neither one\'s head (the top 14 rows of each sprite)',
+      'the frog on abuela\'s table stands in front of abuela, who sits behind it: he is exempt from sprites-apart against mesa_abuela.abuela only; Luis stands beside the table (mesa_abuela.luis is on the ground at T1.u + 0.95, T1.v - 0.55). table-heads: the frog covers no more than 10% of abuela\'s head (the top 14 rows of her sprite) and none of Luis\'s',
       'carta_a, carta_b and the card of numerals are signs: they are placed on the screen, not in the world, and drawn over everything',
     ],
     views,
@@ -433,8 +433,8 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
   // 5. sprites-apart: the people who stand together in a moment: the sprite boxes (the frog 32, a grown-up 24, a child 24; the feet's spot in the middle) do not overlap sideways unless their feet are 12 px or more apart up-down
   {
     const bad = [], per = [], all = [], hints = [], info = [];
-    // the frog on abuela's table stands in front of the two who sit behind it (the coordinator's decision): exempt against them; table-heads checks that he covers neither one's head
-    const exempt = (a, b) => ((a.at === 'mesa_abuela.coqui' && ['mesa_abuela.abuela', 'mesa_abuela.luis'].includes(b.at)) || (b.at === 'mesa_abuela.coqui' && ['mesa_abuela.abuela', 'mesa_abuela.luis'].includes(a.at))) ? 'the frog on the table, in front of the two who sit behind it (see table-heads)' : null;
+    // the frog on abuela's table stands in front of abuela, who sits behind it (the coordinator's decision): exempt against her only (Luis stands beside the table); table-heads checks his heads
+    const exempt = (a, b) => ((a.at === 'mesa_abuela.coqui' && b.at === 'mesa_abuela.abuela') || (b.at === 'mesa_abuela.coqui' && a.at === 'mesa_abuela.abuela')) ? 'the frog on the table, in front of abuela who sits behind it (see table-heads)' : null;
     for (const m of MOMENTS) {
       const L = layersOf(m).filter(person);
       for (let i = 0; i < L.length; i++) for (let j = i + 1; j < L.length; j++) {
@@ -460,17 +460,17 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
     o.pairs = all.map(q => ({ moment: q.m, a: q.a, b: q.b, across: q.dx, down: q.dy, needAcross: q.half, ok: q.ok, notCounted: q.ex }));
   }
 
-  // 5b. table-heads: the frog on abuela's table (moment 6) covers neither abuela's head nor Luis's (the top 14 rows of each sprite): none of those pixels lies under him
+  // 5b. table-heads: the frog on abuela's table (moment 6) covers no more than 10% of the head (the top 14 rows of the sprite) of abuela, and none of Luis's
   {
+    const LIMIT = { 'mesa_abuela.abuela': .1, 'mesa_abuela.luis': 0 };
     const bad = [], lines = [], L = layersOf(6), fi = L.findIndex(l => l.at === 'mesa_abuela.coqui'), fails = [];
     for (const k of ['mesa_abuela.abuela', 'mesa_abuela.luis']) {
-      const i = L.findIndex(l => l.at === k), a = L[i], top = Math.min(...a.px.map(p => p[1])), c = coverage(L, i, p => p[1] < top + HEAD_ROWS), byFrog = c.by['mesa_abuela.coqui'] || 0;
-      lines.push(k + ' ' + [a.sx, a.sy] + ': head rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ': ' + byFrog + ' of ' + c.total + ' px under the frog' + (c.cov - byFrog ? ' (and ' + (c.cov - byFrog) + ' under ' + byTxt(Object.fromEntries(Object.entries(c.by).filter(([n]) => n !== 'mesa_abuela.coqui'))) + ')' : '') + (c.hid ? ', ' + c.hid + ' hidden by the set' : ''));
-      if (byFrog) { bad.push(k + ': the frog covers ' + byFrog + ' of the ' + c.total + ' px of its head (rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ')'); fails.push([i, k]); }
+      const i = L.findIndex(l => l.at === k), a = L[i], top = Math.min(...a.px.map(p => p[1])), c = coverage(L, i, p => p[1] < top + HEAD_ROWS), byFrog = c.by['mesa_abuela.coqui'] || 0, lim = LIMIT[k] * c.total;
+      lines.push(k + ' ' + [a.sx, a.sy] + ': head rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ': ' + byFrog + ' of ' + c.total + ' px under the frog (' + (100 * byFrog / c.total).toFixed(1) + '%, the limit ' + (LIMIT[k] * 100) + '% = ' + Math.floor(lim) + ' px)' + (c.cov - byFrog ? ' (and ' + (c.cov - byFrog) + ' under ' + byTxt(Object.fromEntries(Object.entries(c.by).filter(([n]) => n !== 'mesa_abuela.coqui'))) + ')' : '') + (c.hid ? ', ' + c.hid + ' hidden by the set' : ''));
+      if (byFrog > lim + 1e-9) { bad.push(k + ': the frog covers ' + byFrog + ' of the ' + c.total + ' px of its head (rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + '), the limit is ' + Math.floor(lim)); fails.push([i, k, LIMIT[k]]); }
     }
-    const o = add('table-heads', bad, 'in moment 6 the frog on abuela\'s table covers neither abuela\'s head nor Luis\'s (the top ' + HEAD_ROWS + ' rows of each sprite): ' + lines.join('; '), ['the frog covers a head at the table:'].concat(bad.map(b => '  ' + b)));
-    if (fails.length > 1) { const rj = await PV.nearestCover(6, fi, fails.map(f => f[0])); o.lines.push('       nearest passing, move the frog mesa_abuela.coqui ' + S['mesa_abuela.coqui'].uv + ' so that he covers neither head: ' + nearestTxt(rj, S['mesa_abuela.coqui'].uv) + ' (the cloth\'s radius is .5 about (-2.75, 1.7))'); }
-    for (const [i, k] of fails) { const rc = await PV.nearestCover(6, fi, i); o.lines.push('       nearest passing, move the frog mesa_abuela.coqui ' + S['mesa_abuela.coqui'].uv + ' so that he does not cover ' + k + ' at all: ' + nearestTxt(rc, S['mesa_abuela.coqui'].uv)); }
+    const o = add('table-heads', bad, 'in moment 6 the frog on abuela\'s table covers no more than 10% of the head (the top ' + HEAD_ROWS + ' rows of the sprite) of abuela and none of Luis\'s: ' + lines.join('; '), ['the frog covers too much of a head at the table:'].concat(bad.map(b => '  ' + b)));
+    for (const [i, k, lim] of fails) { const rc = await PV.nearestCover(6, fi, i); o.lines.push('       nearest passing, move the frog mesa_abuela.coqui ' + S['mesa_abuela.coqui'].uv + ' so that he covers none of ' + k + '\'s head (the search ignores the 10% allowance and clears it entirely): ' + nearestTxt(rc, S['mesa_abuela.coqui'].uv)); }
     if (bad.length) for (const l of lines) o.lines.push('       ' + l);
   }
 
