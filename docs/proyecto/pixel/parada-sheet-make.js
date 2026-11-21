@@ -39,9 +39,10 @@ const WIDTH = { coqui: 32, adulto: 24, nino: 24, perro: 28 }, UPDOWN = 12;     /
 const BIAS = .3;                                         // the depth rule: the feet's depth plus this
 const SEAT_TOP = .46, SEAT_DEPTH = .5;                   // the seat: x E.SEAT[0] to E.SEAT[2], y E.SEAT[1] to + SEAT_DEPTH, top z SEAT_TOP
 const CANELO_MIN = .6;                                   // Canelo: at least 60% of him shows
-const ROW_Y = 7.3, FILA = [-2.3, -.7, .9, 2.5, 4.1];     // the waiting row
+const ROW_Y = 7.0, FILA = [-2.3, -.7, .9, 2.5, 4.1];     // the waiting row
 const SEAT_Y = 8.8;                                      // the sitters' y on the seat (the seat is y E.SEAT[1] to + SEAT_DEPTH)
 const CHILD_MAX = 40;                                    // the frog: a child may cover up to 40 px of him
+const SIGN_MAX = 80;                                     // the stop's sign may hide up to 80 px of a grown-up at puerta_baja (he is stepping off)
 // the guagua at the stop (spec: 4.4 long, 1.3 wide, heading i: its front end is its -x end, its lit side y = lane + 1.3 / 2; doors and buttons measured from the front end)
 const GUAGUA = { length: 4.4, width: 1.3, front: [.35, 1.15], back: [3.2, 4.0], buttons: [1.32, 3.04], buttonZ: .8 };
 // read from calle-base.js (vehicle(), the guagua's side): the doors' leaves stand from z .3 (the body's foot) to 1.95, the arrow beside a door is .24 wide (the door's near side), and the row of windows
@@ -169,11 +170,10 @@ async function make(G, proj, SIL, extents, parts) {
   // the waiting row: y ROW_Y, people wait here (not at the kerb). Who stands at each place in the moments: fila1 Luis or a person, fila2 abuela or a person, fila3 the frog or a person, fila4 Carmen or Luis, fila5 Carmen (a place's sprite box is every one of them)
   FILA.forEach((x, k) => add('fila' + (k + 1), [x, ROW_Y, 0], 'person', k === 2 ? 'coqui' : k >= 3 ? 'nino' : 'adulto', 'the waiting row, place ' + (k + 1) + ' (y ' + ROW_Y + '): people wait here, not at the kerb; somebody who gets off the guagua walks from puerta_baja to a free place of the row, or out of the picture at the left',
     { also: ['adulto', 'nino'] }));
-  add('banco1', [.9, SEAT_Y, SEAT_TOP], 'seat', 'adulto', 'on the seat, the first place: the señora (51), the señor (53); a person sits on the top of the seat (z ' + SEAT_TOP + ')', { sil: 'sentado' });
-  add('banco2', [2.5, SEAT_Y, SEAT_TOP], 'seat', 'adulto', 'on the seat, the second place: abuela (53)', { sil: 'sentado' });
-  add('banco_medio', [1.7, SEAT_Y, SEAT_TOP], 'seat', null, 'on the seat between banco1 and banco2: the ball or abuela\'s boxes; a small thing: its bottom middle on the point');
-  add('banco3', [3.1, SEAT_Y, SEAT_TOP], 'seat', null, 'on the seat, right of banco2: the ball in story 53\'s start; a small thing: its bottom middle on the point');
-  add('bajo_banco', [2.9, 9.15, 0], 'person', 'perro', 'Canelo lying in front of the seat\'s right end');
+  add('banco1', [2.0, SEAT_Y, SEAT_TOP], 'seat', 'adulto', 'on the seat, the first place: the señora (51), the señor (53); a person sits on the top of the seat (z ' + SEAT_TOP + ')', { sil: 'sentado' });
+  add('banco2', [3.6, SEAT_Y, SEAT_TOP], 'seat', 'adulto', 'on the seat, the second place: abuela (53), her two boxes on her lap', { sil: 'sentado' });
+  add('banco_medio', [2.8, SEAT_Y, SEAT_TOP], 'seat', null, 'on the seat between banco1 and banco2: the ball\'s place (53); a small thing: its bottom middle on the point');
+  add('bajo_banco', [3.6, 9.25, 0], 'person', 'perro', 'Canelo lying in front of the seat\'s right end');
   // the guaguas that stand at the stop: P is the middle's x. Names without a suffix are the guagua at P1 (the one of story 52's game), `.2` the guagua at P2
   for (const [suf, P, who] of [['', P1, 'first'], ['.2', P2, 'second']]) {
     const g = who + ' guagua (middle x ' + P + ')';
@@ -189,8 +189,8 @@ async function make(G, proj, SIL, extents, parts) {
   add('ventana1', [P1 - .4, side, 1.5], 'head', 'head', 'the first window of the guagua at P1: abuela\'s head at the glass (with the basket of rolls on the sill, z ' + GUAGUA_SRC.windows.z[0] + '); the point is the middle of the face; a sprite detail');
   add('ventana2', [P1 + .3, side, 1.5], 'head', 'head', 'the second window: Luis and the frog are seen here (heads at the glass); a sprite detail');
   add('chofer', [P1 - 2.0, side, 1.5], 'head', 'chofer', 'the driver leaning out at the front end of the guagua at P1 (head and shoulders); a sprite detail');
-  add('coqui.poste', [3.8, 8.3, 0], 'person', 'coqui', 'the frog at the walking post (E.POST); the post is drawn by the set');
-  add('camino', [(E.PATH[0] + E.PATH[1]) / 2, 10.6, 0], 'exit', 'coqui', 'where the footpath across the grass leaves the picture (the middle of E.PATH, y 10.6): an exit, only its point has to be inside', { street: true });
+  add('coqui.poste', [1.0, 9.35, 0], 'person', 'coqui', 'the frog at the walking post (E.POST); the post is drawn by the set');
+  add('camino', [-.1, 10.0, 0], 'exit', 'coqui', 'where the footpath across the grass leaves (E.PATH, at the bottom left): an exit, only its point has to be inside the picture', { street: true });
   const pr = await proj(D.map(d => d[1]));
   const spriteBox = (whos, key) => {                                                   // the sprite box relative to the spot: the spec's width, and the real drawn pixels, of every sprite that stands there
     const boxes = [], ws = [];
@@ -345,7 +345,7 @@ async function probeSets(page, load, sheet, SIL, autosQ, G) {
   const sample = [];
   for (const suf of ['', '.2']) for (const n of ['boton_sube', 'boton_baja']) sample.push({ name: n + suf, sx: S[n + suf].screen[0], sy: S[n + suf].screen[1], r: 2 });
   for (const n of ['ventana1', 'ventana2', 'chofer']) sample.push({ name: n, sx: S[n].screen[0], sy: S[n].screen[1], r: 0 });
-  for (const n of ['banco1', 'banco2', 'banco_medio', 'banco3']) sample.push({ name: n, sx: S[n].screen[0], sy: S[n].screen[1], r: 1 });
+  for (const n of ['banco1', 'banco2', 'banco_medio']) sample.push({ name: n, sx: S[n].screen[0], sy: S[n].screen[1], r: 1 });
   out.sample = await page.evaluate(arg => {
     const res = {}, Z = DEPTH.z;
     for (const s of arg) {
@@ -426,6 +426,7 @@ function checks(sheet, probes, SIL, G, PVD, extents, parts, COV) {
       [bad.length + ' finding(s) (spots\' sprite boxes: the spec\'s width and the real drawn pixels, rules.spot; an exit: its point only):'].concat(bad.map(b => '  ' + b), hints.map(h => '    ' + h)));
     OUTS[OUTS.length - 1].lines.push('       info, not a check: the footpath (E.PATH, beyond y ' + E.NP1 + ') starts at row ' + pathRow + ' at its middle, the picture has rows 0 to ' + (H_ - 1) + ': the picture\'s bottom edge is the line x + y = ' + r2((H_ - (sheet.picture[1] / 2 + sheet.origin.originY)) * Math.SQRT2 / (.5 * sheet.S)) + ' of the world');
     OUTS[OUTS.length - 1].x0 = x0;
+    { const c = S.camino.screen; OUTS[OUTS.length - 1].lines.push('       info, not a check: camino ' + S.camino.world + ' is at ' + c + ' in the picture (columns 0 to ' + (W_ - 1) + ', rows 0 to ' + (H_ - 1) + '), ' + (c[0] - x0) + ' px right of the window\'s left edge x0 ' + x0 + '; the footpath (E.PATH ' + E.PATH + ') leaves across the grass beyond y ' + E.NP1 + '; its first row at its middle is ' + pathRow); }
     OUTS[OUTS.length - 1].lines.push('       sprite boxes used, [x0, y0, x1, y1] from the spot (the spec\'s width and the real drawn pixels): ' + ['adulto', 'nino', 'coqui', 'perro', 'head', 'chofer'].map(w => { const t = Object.values(S).find(s => s.who === w && s.sprite); return t ? w + ' [' + t.sprite + ']' : ''; }).filter(Boolean).join(', ') + ', seated adulto [' + S.banco1.sprite + ']; real ink columns of the drawn sprites: ' + ['adulto', 'abuela', 'senor', 'nino', 'carmen', 'coqui', 'perro_lie', 'perro_sit'].map(k => k + ' ' + SIL[k].box[0] + ' to ' + SIL[k].box[2]).join(', '));
     OUTS[OUTS.length - 1].lines.push('       info, not a check: the screen box of each set thing\'s pixels (tags=1) against its world box projected [x, y, w, h]: ' + [['sign', T.parada.boxes[0]], ['seat', T.parada.boxes[1]], ['post', T.poste]].map(([n, t]) => n + ' [' + t.box + '] vs [' + t.from_world + ']').join(', '));
     {
@@ -477,6 +478,14 @@ function checks(sheet, probes, SIL, G, PVD, extents, parts, COV) {
         const Zm = COV[m].Z, clear = q => { const [sx, sy] = scr3(sheet, q[0], q[1], q[2]), d = (q[0] + q[1]) / R2 * COS + q[2] * .5; let c = 0; if (hiddenAt(Zm, px, sx, sy, d, G.S)) return false; for (let n = 0; n < px.length; n += 2) { const X = sx + px[n], Y = sy + px[n + 1]; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; const pl = d + (sy - (Y + .5)) * T30 / G.S, a = topA.get(Y * 240 + X), ch = topC.get(Y * 240 + X); if (a !== undefined && a > pl) return false; if (ch !== undefined && ch > pl) c++; } return c <= CHILD_MAX; };
         for (let k = 1; k <= 300 && !hits.length; k++) for (const ax of [0, 1]) for (const sg of [-1, 1]) { const q = w.slice(); q[ax] = r4(q[ax] + sg * k * .01); if (clear(q)) hits.push((ax ? 'y ' : 'x ') + w[ax] + ' -> ' + q[ax] + ' (' + (sg > 0 ? '+' : '-') + r2(k * .01) + ')'); }
         hintLines.push('nearest passing, moment ' + m + ' ' + f.at + ' ' + S[f.at].world + ' (the other sprites where they are): ' + (hits.join(' or ') || 'none within 3'));
+        for (const cn of Object.keys(by).filter(k => others.find(l => l.at === k).who !== 'nino' || child > CHILD_MAX)) {   // or the nearest place of the sprite that covers him (the frog stays)
+          const o = others.find(l => l.at === cn), allowed = o.who === 'nino' ? CHILD_MAX : 0, fpx = f.px.filter(p => !p[2]);
+          const fmap = new Map(fpx.map(p => [p[1] * 240 + p[0], p[3]]));
+          const covers = (sx, sy, d) => { let c = 0; for (const q of o.px) { if (q[2]) continue; const X = q[0] + sx - o.sx, Y = q[1] + sy - o.sy, fp = fmap.get(Y * 240 + X); if (fp !== undefined && q[3] - o.d + d > fp) c++; } return c; };
+          hintLines.push('  or moment ' + m + ' ' + cn + ' ' + S[cn].world + ' (the frog where he is; the set\'s hiding of it is not re-tested): ' + nearestWorld(sheet, cn, (q, sx, sy, d) => covers(sx, sy, d) <= allowed));
+          const alt = Object.entries(S).filter(([k, sp]) => k !== cn && sp.kind === S[cn].kind && sp.who === S[cn].who && sp.world[2] === S[cn].world[2]).map(([k, sp]) => k + ' ' + sp.world + ' covers ' + covers(sp.screen[0], sp.screen[1], sp.depth) + ' px');
+          if (alt.length) hintLines.push('  or moment ' + m + ' ' + cn + ' at another spot of the same kind: ' + alt.join('; '));
+        }
       }
     }
     add('frog-seen', bad, 'in all ' + lines.length + ' moments the frog is whole (nothing hidden by the set, nothing of him under a grown-up, at most ' + CHILD_MAX + ' px under a child): ' + lines.join('; '), ['the frog not whole:'].concat(bad.map(b => '  ' + b), hintLines.map(h => '    ' + h)));
@@ -484,25 +493,25 @@ function checks(sheet, probes, SIL, G, PVD, extents, parts, COV) {
   }
 
   // 4. door-front: a person at a door (puerta_sube, puerta_baja: stepping on or off, both guaguas, the tree at P1 and the awning at P2) stands in front of it, not inside the wall: his spot's y is beyond the guagua's lit side, and 0 px of him are hidden by the guagua.
-  //    Pixels hidden by another part of the set (the stop's sign) are not the wall: listed as info
+  //    The stop's sign may hide up to SIGN_MAX px of him at puerta_baja (he is stepping off); at puerta_sube it may hide none
   {
-    const bad = [], lines = [], other = [], hints = [];
+    const bad = [], lines = [], hints = [];
     for (const suf of ['', '.2']) for (const n of ['puerta_sube', 'puerta_baja']) {
-      const k = n + suf, s = S[k], o = probes.placed[k + '|adulto'], auto = o.hidBy.auto || 0, rest = Object.entries(o.hidBy).filter(([t]) => t !== 'auto');
-      lines.push(k + ' ' + s.screen + ' y ' + s.world[1] + ': ' + auto + ' of ' + o.total + ' px hidden by the guagua');
-      if (rest.length) other.push(k + ': ' + rest.reduce((a, r) => a + r[1], 0) + ' of ' + o.total + ' px hidden by ' + rest.map(([t, v]) => t + ' ' + v).join(', '));
+      const k = n + suf, s = S[k], o = probes.placed[k + '|adulto'], auto = o.hidBy.auto || 0, sign = o.hidBy.parada || 0, rest = Object.entries(o.hidBy).filter(([t]) => t !== 'auto' && t !== 'parada'), maxSign = n === 'puerta_baja' ? SIGN_MAX : 0;
+      lines.push(k + ' ' + s.screen + ' y ' + s.world[1] + ': ' + auto + ' of ' + o.total + ' px hidden by the guagua, ' + sign + ' by the sign (up to ' + maxSign + ' allowed)' + (rest.length ? ', ' + rest.map(([t, v]) => v + ' by ' + t).join(', ') : ''));
       if (!(s.world[1] > side)) bad.push(k + ' y ' + s.world[1] + ' is not in front of the lit side y ' + side);
       if (auto) { bad.push(k + ' ' + s.screen + ' y ' + s.world[1] + ': ' + auto + ' of ' + o.total + ' px (' + r2(100 * auto / o.total) + '%) hidden by the guagua: the right side of his sprite lies inside the wall'); if (probes.scan[k] != null) hints.push('nearest passing ' + k + ' ' + s.world + ': y ' + s.world[1] + ' -> ' + probes.scan[k] + ' (+' + r2(probes.scan[k] - s.world[1]) + ')'); }
+      if (sign > maxSign) { bad.push(k + ' ' + s.screen + ': ' + sign + ' of ' + o.total + ' px hidden by the sign (up to ' + maxSign + ' allowed)'); const sp = SIL.adulto.px; hints.push('nearest passing ' + k + ' ' + s.world + ' (hidden px by anything <= ' + maxSign + '): ' + nearestWorld(sheet, k, (q, sx, sy, d) => hiddenAt(probes.Z, sp, sx, sy, d, G.S) <= maxSign)); }
+      if (rest.length) bad.push(k + ': ' + rest.map(([t, v]) => v + ' px hidden by ' + t).join(', '));
     }
-    add('door-front', bad, 'at both guaguas a grown-up at puerta_sube and puerta_baja (y ' + S.puerta_sube.world[1] + ') is in front of the guagua\'s lit side (y ' + side + ') and 0 px of him are hidden by the guagua: ' + lines.join('; '),
-      ['a person at a door is partly inside the guagua\'s wall:'].concat(bad.map(b => '  ' + b), hints.map(h => '    ' + h)));
-    OUTS[OUTS.length - 1].lines.push('       info, not a check: the pixels these places lose to another part of the set: ' + (other.join('; ') || 'none'));
+    add('door-front', bad, 'at both guaguas a grown-up at puerta_sube and puerta_baja (y ' + S.puerta_sube.world[1] + ') is in front of the guagua\'s lit side (y ' + side + ') and 0 px of him are hidden by the guagua; the sign hides none at puerta_sube and at most ' + SIGN_MAX + ' px at puerta_baja: ' + lines.join('; '),
+      ['a person at a door is partly inside the guagua\'s wall or behind the sign:'].concat(bad.map(b => '  ' + b), hints.map(h => '    ' + h), lines.map(l => '  ' + l)));
   }
 
   // 5. seat-top: a person on the seat sits on its top: the spot's z is the seat's top, its x, y are on the top, and the set draws the seat's top there; Canelo lies in front of the seat's right end
   {
     const bad = [], lines = [], SE = sheet.constants.seat;
-    for (const n of ['banco1', 'banco2', 'banco_medio', 'banco3']) {
+    for (const n of ['banco1', 'banco2', 'banco_medio']) {
       const s = S[n], w = s.world, smp = probes.sample[n];
       const onTop = w[2] === SE.top && w[0] >= SE.x[0] && w[0] <= SE.x[1] && w[1] >= SE.y[0] && w[1] <= SE.y[1], seatPx = smp.tags.asiento || 0, dz = Math.abs(smp.z - s.depth);
       lines.push(n + ' ' + w + ': on the seat\'s top ' + (onTop ? 'yes' : 'NO') + ', ' + seatPx + ' of the 3 x 3 pixels at its point are the seat\'s (part asiento), the set\'s depth there is ' + r2(dz) + ' from the spot\'s');
@@ -514,19 +523,21 @@ function checks(sheet, probes, SIL, G, PVD, extents, parts, COV) {
     lines.push('bajo_banco ' + c + ': ' + (frontOf ? 'in front of the seat (y > ' + SE.y[1] + ')' : 'NOT in front of the seat') + ', ' + (rightEnd ? 'at its right end (x ' + SE.x[1] + ')' : 'NOT at its right end'));
     if (!frontOf) bad.push('bajo_banco y ' + c[1] + ' is not in front of the seat (its front edge y ' + SE.y[1] + ')');
     if (!rightEnd) bad.push('bajo_banco x ' + c[0] + ' is not at the seat\'s right end (x ' + SE.x[1] + ')');
-    add('seat-top', bad, 'banco1, banco2, banco_medio and banco3 are on the seat\'s top (z ' + SE.top + ', x ' + SE.x + ', y ' + SE.y + '), drawn by the set there; Canelo in front of its right end: ' + lines.join('; '), ['the seat:'].concat(bad.map(b => '  ' + b)));
+    add('seat-top', bad, 'banco1, banco2 and banco_medio are on the seat\'s top (z ' + SE.top + ', x ' + SE.x + ', y ' + SE.y + '), drawn by the set there; Canelo in front of its right end: ' + lines.join('; '), ['the seat:'].concat(bad.map(b => '  ' + b)));
   }
 
-  // 6. nobody-on-street: every spot where somebody stands (z 0) is on the near pavement (y E.NP to E.NP1), unless the spec puts it elsewhere (the door spots, y 5.45, in front of the guagua; the exit camino on the path)
+  // 6. nobody-on-street: nobody stands on the street (the roadway and its kerb, y below E.NP) unless the spec puts him there (the door spots, y 5.45, in front of the guagua); the spots beyond the near pavement's edge (y above E.NP1: the grass) are listed
   {
-    const bad = [], exc = [];
+    const bad = [], exc = [], grass = [];
     for (const [k, s] of Object.entries(S)) {
       if (!['person', 'door', 'seat', 'exit'].includes(s.kind) || s.world[2] !== 0 && s.kind !== 'seat') continue;
-      if (s.on_street) { exc.push(k + ' y ' + s.world[1]); continue; }
-      if (!(s.world[1] >= E.NP && s.world[1] <= E.NP1)) bad.push(k + ' y ' + s.world[1] + ' is not on the near pavement (y ' + E.NP + ' to ' + E.NP1 + ')');
+      if (s.on_street && s.kind !== 'exit') { exc.push(k + ' y ' + s.world[1]); continue; }
+      if (s.world[1] < E.NP) bad.push(k + ' y ' + s.world[1] + ' is on the street (y ' + E.S0 + ' to ' + E.S1 + ', its kerb to ' + E.NP + ')');
+      if (s.world[1] > E.NP1) grass.push(k + ' y ' + s.world[1]);
     }
-    const n = Object.values(S).filter(s => ['person', 'seat'].includes(s.kind)).length;
-    add('nobody-on-street', bad, n + ' places where somebody stands or sits are on the near pavement (y ' + E.NP + ' to ' + E.NP1 + '); the street is y ' + E.S0 + ' to ' + E.S1 + '; the spec puts ' + exc.length + ' spots elsewhere: ' + exc.join(', '), ['somebody on the street or beyond the pavement:'].concat(bad.map(b => '  ' + b)));
+    const n = Object.values(S).filter(s => ['person', 'seat', 'exit'].includes(s.kind)).length;
+    add('nobody-on-street', bad, n + ' places where somebody stands, sits or leaves are off the street (y ' + E.S0 + ' to ' + E.S1 + ', its kerb to ' + E.NP + '); the spec puts ' + exc.length + ' spots on it: ' + exc.join(', '), ['somebody on the street:'].concat(bad.map(b => '  ' + b)));
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: spots beyond the near pavement\'s edge (y ' + E.NP1 + '), on the grass: ' + (grass.join(', ') || 'none') + '; all others are on the pavement (y ' + E.NP + ' to ' + E.NP1 + ')');
   }
 
   // 7. spots-on-set: what the set draws at the places the spec gives: the buttons are round and coloured, the windows are glass, the chofer's place is on the guagua
@@ -600,6 +611,19 @@ function checks(sheet, probes, SIL, G, PVD, extents, parts, COV) {
     OUTS[OUTS.length - 1].lines.push('       info, not a check: shown pixels that lie over a set pixel nearer than the sprite\'s own plane (the bias ' + BIAS + ' lets them through): ' + (nr.join('; ') || 'none'));
     const sit = []; for (const n of ['banco1', 'banco2']) for (const k of ['abuela_sent', 'senora_sent', 'senor_sent']) { const o = probes.placed[n + '|' + k]; if (o.hidden) sit.push(n + ' ' + k + ' ' + o.hidden + '/' + o.total + ' (' + Object.entries(o.hidBy).map(([t, v]) => tagName(t) + ' ' + v).join(', ') + ')'); }
     OUTS[OUTS.length - 1].lines.push('       info, not a check: the sitters (banco1, banco2) with pixels hidden by the set: ' + (sit.join('; ') || 'none'));
+  }
+
+  // 9b. row-free: while the frog works the buttons (a moment with the frog at coqui.boton_sube, coqui.boton_baja or coqui.botones) nobody stands at fila1 or fila2
+  {
+    const bad = [], lines = [];
+    for (const m of [1, 2, 3, 4, 5, 6]) {
+      const L = PVD[m].layers, frog = L.filter(l => l.at && /^coqui\.bot(on|ones)/.test(l.at) && l.who === 'coqui');
+      if (!frog.length) continue;
+      const at = L.filter(l => l.who && ['fila1', 'fila2'].includes(l.at)).map(l => l.at);
+      lines.push('moment ' + m + ' (the frog at ' + frog.map(l => l.at).join(', ') + '): ' + (at.length ? at.join(', ') + ' occupied' : 'fila1 and fila2 free') + '; the row holds ' + (L.filter(l => l.who && /^fila/.test(l.at)).map(l => l.at).join(', ') || 'nobody'));
+      if (at.length) bad.push('moment ' + m + ': ' + at.join(', ') + ' occupied while the frog is at ' + frog.map(l => l.at).join(', '));
+    }
+    add('row-free', bad, 'while the frog works the buttons nobody stands at fila1 or fila2: ' + lines.join('; '), ['somebody at fila1 or fila2 while the frog works the buttons:'].concat(bad.map(b => '  ' + b), lines.map(l => '  ' + l)));
   }
 
   // 10. frog-button-door: the frog at a button does not cover the other door (the door with its arrow and button, the face's x and z read back from the screen pixel)
