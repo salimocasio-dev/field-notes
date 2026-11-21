@@ -1,0 +1,1909 @@
+{
+ "scene": "musica",
+ "made": "node docs/proyecto/pixel/musica-sheet-make.js, from musica-set.html (window.MUSICA.E) and the design of La música (the orchestrator's p10-spec, general rules and section musica). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": -34
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 74. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the fort's wall at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 74 + 13 v - 22.5 z; the picture holds u from -4.62 to 4.62",
+  "spot": "a spot is a world point of the feet (z 0: the floor; z 0.28: the stage's top; z 0.74: a músico's stool on the stage; z 0.46: the bench's seat and the floor stool) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): a thing that hangs (the guitar, the drum, the paper notes) has its top middle on the point (the box [sx - floor(w / 2), sy, w, h]); the microphone has its bottom middle on the floor at the point (the box [sx - floor(w / 2), sy - h, w, h]). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30; abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41; t 7 a child: 33) on (sx, sy), the spot being the seat's top (the músicos on their stools: z 0.74); a small thing: see spot. The camera on the frog's chest: things.camara.px from the frog's spot. Nobody is drawn turned: whoever sits faces us",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character"
+ },
+ "setKey": {
+  "params": {},
+  "key": "",
+  "baked": [
+   ""
+  ],
+  "note": "one state: the set draws one frame (nothing sways: window.DEPTH.z is the baked depth). The sheet's numbers are read from the set as it is"
+ },
+ "things": {
+  "escenario": {
+   "set": true,
+   "uv": [-3.72, 0.3, 0, -0.6, 2.5, 0.28],
+   "world": [-2.4183, 0.6364, 0, 1.3435, 4.3982, 0.28],
+   "box": [23, 71, 82, 36],
+   "what": "the stage (STAGE u -3.72 to -0.6, v 0.3 to 2.5, z 0 to 0.28): its box on the picture; a poke"
+  },
+  "pista": {
+   "set": true,
+   "uv": [-1, 2.2, 0, 2.6, 7.6, 0],
+   "world": [0.8485, -0.2828, 0, 7.2125, 6.0811, 0],
+   "box": [94, 102, 94, 71],
+   "what": "the open floor where people dance (FLOOR u -1 to 2.6, v 2.2 to 7.6, z 0): its box on the picture; a poke"
+  },
+  "banco": {
+   "set": true,
+   "uv": [-0.05, 0.18, 0, 3.75, 0.71, 1.17],
+   "world": [0.0919, -2.5244, 0, 3.1537, 0.5374, 1.17],
+   "box": [118, 49, 100, 35],
+   "what": "the bench (BENCH u -0.05 to 3.75, the seat v 0.19 to 0.71, its back to v 0.18, z 0 to 1.17 the back's top): the whole bench's box on the picture; a poke (OPEN POINT: the spec gives no box, the seat alone is z 0 to 0.46)"
+  },
+  "guitarra": {
+   "sprite": true,
+   "spot": "guitarra_atril",
+   "size": [12, 22],
+   "anchor": "top",
+   "box": [77, 48, 12, 22],
+   "what": "the guitar on the rack (a 12 x 22 px stand-in, hangs from the bar): its box is the spot's; a poke (it goes into a músico's hands in the game: the box is where it hangs)"
+  },
+  "tambor": {
+   "sprite": true,
+   "spot": "tambor_atril",
+   "size": [12, 14],
+   "anchor": "top",
+   "box": [89, 48, 12, 14],
+   "what": "the drum on the rack (a 12 x 14 px stand-in, hangs from the bar): its box is the spot's; a poke"
+  },
+  "microfono": {
+   "sprite": true,
+   "spot": "microfono",
+   "size": [6, 28],
+   "anchor": "bottom",
+   "box": [112, 69, 6, 28],
+   "what": "the microphone on its stand (a 6 x 28 px stand-in): its box is the spot's; a poke"
+  },
+  "nota1": {
+   "sprite": true,
+   "spot": "nota1",
+   "size": [14, 14],
+   "anchor": "top",
+   "box": [30, 16, 14, 14],
+   "what": "the paper note 1 over the stage (a 14 x 14 px stand-in, hangs): its box is the spot's"
+  },
+  "nota2": {
+   "sprite": true,
+   "spot": "nota2",
+   "size": [14, 14],
+   "anchor": "top",
+   "box": [56, 16, 14, 14],
+   "what": "the paper note 2 over the stage (a 14 x 14 px stand-in, hangs): its box is the spot's"
+  },
+  "nota3": {
+   "sprite": true,
+   "spot": "nota3",
+   "size": [14, 14],
+   "anchor": "top",
+   "box": [82, 16, 14, 14],
+   "what": "the paper note 3 over the stage (a 14 x 14 px stand-in, hangs): its box is the spot's"
+  },
+  "camara": {
+   "sprite": true,
+   "on": "coqui",
+   "px": [0, -5],
+   "sprite_name": "camara",
+   "anchor": "bottom",
+   "size": [10, 8],
+   "box": [133, 99, 10, 8],
+   "what": "abuela's camera on the frog's chest (a 10 x 8 px box): its bottom middle 5 px above the frog's spot, its middle on his column (px is relative to the frog's spot, wherever he stands; the box here is for centro_coqui, moment 4)"
+  },
+  "guitarra_rodillas": {
+   "sprite": true,
+   "on": "taburete1",
+   "px": [0, 3],
+   "sprite_name": "guitarraH",
+   "anchor": "bottom",
+   "size": [22, 8],
+   "box": [26, 69, 22, 8],
+   "what": "the guitar across the first músico's knees (moment 2; a 22 x 8 px stand-in, not in the spec as a spot): its bottom middle 3 px below taburete1's point, its middle on his column"
+  },
+  "musico1": "sprite",
+  "musico2": "sprite",
+  "abuela": "sprite",
+  "abuelo": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "coqui": "sprite"
+ },
+ "spots": {
+  "taburete1": {
+   "world": [-1.3789, 3.1466, 0.74],
+   "uv": [-3.2, 1.25, 0.74],
+   "screen": [37, 74],
+   "depth": 1.4525,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the músico 1 (the hat) on his stool (STOOLS[0] u -3.2, v 1.25): its top, z STAGE.h + 0.46 = 0.74; hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "patio",
+   "fixed": 1
+  },
+  "taburete2": {
+   "world": [-0.6718, 2.4395, 0.74],
+   "uv": [-2.2, 1.25, 0.74],
+   "screen": [63, 74],
+   "depth": 1.4525,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the músico 2 (the beard) on his stool (STOOLS[1] u -2.2, v 1.25): its top, z STAGE.h + 0.46 = 0.74; hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "patio",
+   "fixed": 1
+  },
+  "guitarra_atril": {
+   "world": [-0.5091, 1.4991, 1.58],
+   "uv": [-1.42, 0.7, 1.58],
+   "screen": [83, 48],
+   "depth": 1.3962,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the guitar on the rack (RACK.u - .22, RACK.v; the bar's underside, z STAGE.h + RACK.h = 1.58): a 12 x 22 px stand-in, its top middle on the point (it hangs)",
+   "box": [77, 48, 12, 22],
+   "anchor": "top",
+   "on": "air",
+   "fixed": 1
+  },
+  "tambor_atril": {
+   "world": [-0.198, 1.1879, 1.58],
+   "uv": [-0.98, 0.7, 1.58],
+   "screen": [95, 48],
+   "depth": 1.3962,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the drum on the rack (RACK.u + .22, RACK.v; z 1.58): a 12 x 14 px stand-in, its top middle on the point (it hangs)",
+   "box": [89, 48, 12, 14],
+   "anchor": "top",
+   "on": "air",
+   "fixed": 1
+  },
+  "borde_coqui": {
+   "world": [0.7778, 2.4749, 0.28],
+   "uv": [-1.2, 2.3, 0.28],
+   "screen": [89, 98],
+   "depth": 2.1319,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the stage's front edge, below the rack (the stage's front edge is v 2.5): the stage's top, z STAGE.h = 0.28",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "patio"
+  },
+  "junto_escenario": {
+   "world": [2.2627, 1.9799, 0],
+   "uv": [0.2, 3, 0],
+   "screen": [125, 113],
+   "depth": 2.5981,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela beside the stage (111)",
+   "sprite": "abuela",
+   "who": "adulto"
+  },
+  "microfono": {
+   "world": [1.1314, 1.4142, 0],
+   "uv": [-0.2, 1.8, 0],
+   "screen": [115, 97],
+   "depth": 1.5588,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the microphone on its stand (MIC u -0.2, v 1.8): a 6 x 28 px stand-in, its bottom middle on the floor at the point",
+   "box": [112, 69, 6, 28],
+   "anchor": "bottom",
+   "fixed": 1
+  },
+  "ante_micro": {
+   "world": [0.9192, 1.2021, 0],
+   "uv": [-0.2, 1.5, 0],
+   "screen": [115, 94],
+   "depth": 1.299,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "whoever sings stands just behind the microphone (MIC.u, MIC.v - .3); abuelo in 112 (m3), the singer ronda2 in 113 (m4)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "centro_coqui": {
+   "world": [2.5456, 1.5556, 0],
+   "uv": [0.7, 2.9, 0],
+   "screen": [138, 112],
+   "depth": 2.5115,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog between the stage and the floor (112, 113)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "nota1": {
+   "world": [-2.0506, 2.4749, 2.75],
+   "uv": [-3.2, 0.3, 2.75],
+   "screen": [37, 16],
+   "depth": 1.6348,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "paper note 1 of 3 over the stage (NOTES.u[0] = -3.2, the stage's back edge v 0.3, NOTES.z 2.75): a 14 x 14 px stand-in, its top middle on the point (it hangs)",
+   "box": [30, 16, 14, 14],
+   "anchor": "top",
+   "on": "air",
+   "fixed": 1
+  },
+  "nota2": {
+   "world": [-1.3435, 1.7678, 2.75],
+   "uv": [-2.2, 0.3, 2.75],
+   "screen": [63, 16],
+   "depth": 1.6348,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "paper note 2 of 3 over the stage (NOTES.u[1] = -2.2, the stage's back edge v 0.3, NOTES.z 2.75): a 14 x 14 px stand-in, its top middle on the point (it hangs)",
+   "box": [56, 16, 14, 14],
+   "anchor": "top",
+   "on": "air",
+   "fixed": 1
+  },
+  "nota3": {
+   "world": [-0.6364, 1.0607, 2.75],
+   "uv": [-1.2, 0.3, 2.75],
+   "screen": [89, 16],
+   "depth": 1.6348,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "paper note 3 of 3 over the stage (NOTES.u[2] = -1.2, the stage's back edge v 0.3, NOTES.z 2.75): a 14 x 14 px stand-in, its top middle on the point (it hangs)",
+   "box": [82, 16, 14, 14],
+   "anchor": "top",
+   "on": "air",
+   "fixed": 1
+  },
+  "pista1": {
+   "world": [2.687, 2.9698, 0],
+   "uv": [-0.2, 4, 0],
+   "screen": [115, 126],
+   "depth": 3.4641,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the open floor, couple 1 of 3, the first (111)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "pista2": {
+   "world": [3.3588, 2.2981, 0],
+   "uv": [0.75, 4, 0],
+   "screen": [140, 126],
+   "depth": 3.4641,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the open floor, couple 1 of 3, the second (111)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "pista3": {
+   "world": [5.0205, 2.8991, 0],
+   "uv": [1.5, 5.6, 0],
+   "screen": [159, 147],
+   "depth": 4.8497,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the open floor, couple 2 of 3, the first (111)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "pista4": {
+   "world": [5.6922, 2.2274, 0],
+   "uv": [2.45, 5.6, 0],
+   "screen": [184, 147],
+   "depth": 4.8497,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the open floor, couple 2 of 3, the second (111)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "pista5": {
+   "world": [4.3841, 5.2326, 0],
+   "uv": [-0.6, 6.8, 0],
+   "screen": [104, 162],
+   "depth": 5.889,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the open floor, couple 3 of 3, the first (111)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "pista6": {
+   "world": [5.0558, 4.5608, 0],
+   "uv": [0.35, 6.8, 0],
+   "screen": [129, 162],
+   "depth": 5.889,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the open floor, couple 3 of 3, the second (111)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "pista_baile": {
+   "world": [4.4123, 2.093, 0],
+   "uv": [1.64, 4.6, 0],
+   "screen": [163, 134],
+   "depth": 3.9837,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "one person dancing on the floor (112: Carmen)",
+   "sprite": "nino",
+   "who": "nino",
+   "spec": [0.9, 4.6, 0],
+   "moved": "frog-seen: in moment 3 Carmen dancing at pista_baile covered 302 of the 536 px of the frog at centro_coqui (her head and shoulders in front of his right side): u .9 -> 1.64 (+.74; the least that passes: v would need +1.44, and the frog's own spot u -.76 or v -1.41)"
+  },
+  "banco1": {
+   "world": [0.6152, 0.0212, 0.46],
+   "uv": [0.42, 0.45, 0.46],
+   "screen": [131, 69],
+   "depth": 0.6197,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the bench's seat 1 of 4 (BENCH u 1.85 - 1.43, v 0.45): on its top, z 0.46; hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "patio",
+   "fixed": 1
+  },
+  "banco2": {
+   "world": [1.2869, -0.6505, 0.46],
+   "uv": [1.37, 0.45, 0.46],
+   "screen": [156, 69],
+   "depth": 0.6197,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the bench's seat 2 of 4 (BENCH u 1.85 - 0.48, v 0.45): on its top, z 0.46; hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "patio",
+   "fixed": 1
+  },
+  "banco3": {
+   "world": [1.9658, -1.3294, 0.46],
+   "uv": [2.33, 0.45, 0.46],
+   "screen": [181, 69],
+   "depth": 0.6197,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the bench's seat 3 of 4 (BENCH u 1.85 + 0.48, v 0.45): on its top, z 0.46; hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "patio",
+   "fixed": 1
+  },
+  "banco4": {
+   "world": [2.6375, -2.0011, 0.46],
+   "uv": [3.28, 0.45, 0.46],
+   "screen": [205, 69],
+   "depth": 0.6197,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the bench's seat 4 of 4 (BENCH u 1.85 + 1.43, v 0.45): on its top, z 0.46; hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "patio",
+   "fixed": 1
+  },
+  "espera1": {
+   "world": [3.3941, 1.1314, 0],
+   "uv": [1.6, 3.2, 0],
+   "screen": [162, 116],
+   "depth": 2.7713,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "waiting at the right 1 of 3",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "espera2": {
+   "world": [4.0659, 0.4596, 0],
+   "uv": [2.55, 3.2, 0],
+   "screen": [186, 116],
+   "depth": 2.7713,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "waiting at the right 2 of 3 (Luis in 112)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "espera3": {
+   "world": [5.4447, 0.7778, 0],
+   "uv": [3.3, 4.4, 0],
+   "screen": [206, 131],
+   "depth": 3.8105,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "waiting at the right 3 of 3",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "banqueta_abuela": {
+   "world": [5.6215, 1.0253, 0.46],
+   "uv": [3.25, 4.7, 0.46],
+   "screen": [205, 125],
+   "depth": 4.3003,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela on the stool beside the floor (STOOL u 3.25, v 4.7): its top, z 0.46; hung by the lap (113)",
+   "sprite": "abuelaS",
+   "who": "adulto",
+   "on": "patio",
+   "fixed": 1
+  },
+  "ronda1": {
+   "world": [3.4224, 4.2144, 0],
+   "uv": [-0.56, 5.4, 0],
+   "screen": [105, 144],
+   "depth": 4.6765,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the five of 113: ronda1 dances",
+   "sprite": "adulto",
+   "who": "adulto",
+   "spec": [0.2, 5.4, 0],
+   "moved": "frog-seen: in moment 4 ronda1 (dances) covered 160 of the 536 px of the frog at centro_coqui: u .2 -> -.56 (-.76; the least that passes every check: u -.42 clears the frog but then ronda1's head covers 28 px of the microphone (mic-clear); v would need +1.57, and the frog's own spot u -1.42 or v +2.68)"
+  },
+  "ronda4": {
+   "world": [5.869, 3.4648, 0],
+   "uv": [1.7, 6.6, 0],
+   "screen": [164, 160],
+   "depth": 5.7158,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the five of 113: ronda4 laughs",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "ronda5": {
+   "world": [2.8991, 5.3033, 0],
+   "uv": [-1.7, 5.8, 0],
+   "screen": [76, 149],
+   "depth": 5.0229,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the five of 113: ronda5 yawns (ronda2 is ante_micro, ronda3 is banco3)",
+   "sprite": "adulto",
+   "who": "adulto"
+  }
+ },
+ "groups": {
+  "taburetes": ["taburete1", "taburete2"],
+  "atril": ["guitarra_atril", "tambor_atril"],
+  "notas": ["nota1", "nota2", "nota3"],
+  "pista": ["pista1", "pista2", "pista3", "pista4", "pista5", "pista6"],
+  "banco": ["banco1", "banco2", "banco3", "banco4"],
+  "espera": ["espera1", "espera2", "espera3"],
+  "ronda": {
+   "ronda1": "ronda1",
+   "ronda2": "ante_micro",
+   "ronda3": "banco3",
+   "ronda4": "ronda4",
+   "ronda5": "ronda5"
+  },
+  "touch": {
+   "escenario": "escenario",
+   "guitarra": "guitarra_atril",
+   "tambor": "tambor_atril",
+   "microfono": "microfono",
+   "pista": "pista",
+   "banco": "banco",
+   "camara": "camara",
+   "nota1": "nota1",
+   "nota2": "nota2",
+   "nota3": "nota3",
+   "musico1": "taburete1",
+   "musico2": "taburete2",
+   "abuela": "junto_escenario",
+   "abuelo": "ante_micro",
+   "luis": "espera2",
+   "carmen": "pista_baile",
+   "coqui": "centro_coqui"
+  }
+ },
+ "moves": [
+  {
+   "spot": "pista_baile",
+   "spec": [0.9, 4.6, 0],
+   "now": [1.64, 4.6, 0],
+   "why": "frog-seen: in moment 3 Carmen dancing at pista_baile covered 302 of the 536 px of the frog at centro_coqui (her head and shoulders in front of his right side): u .9 -> 1.64 (+.74; the least that passes: v would need +1.44, and the frog's own spot u -.76 or v -1.41)"
+  },
+  {
+   "spot": "ronda1",
+   "spec": [0.2, 5.4, 0],
+   "now": [-0.56, 5.4, 0],
+   "why": "frog-seen: in moment 4 ronda1 (dances) covered 160 of the 536 px of the frog at centro_coqui: u .2 -> -.56 (-.76; the least that passes every check: u -.42 clears the frog but then ronda1's head covers 28 px of the microphone (mic-clear); v would need +1.57, and the frog's own spot u -1.42 or v +2.68)"
+  }
+ ],
+ "notes": [
+  "every number of a spot is the orchestrator's (the p10-spec, \"musica\"), given in (u, v, z); the stage, the stools, the rack, the microphone's place, the notes' places, the bench, the floor stool and the dance floor are read from the set (MUSICA.E)",
+  "things: escenario, pista and banco are set things with a box on the picture (the stage; the FLOOR rectangle; the whole bench, seat and back: an open point, the spec gives no box); guitarra, tambor, microfono and nota1 to nota3 are sprites with the box of the spot of their name (guitarra: guitarra_atril, tambor: tambor_atril); camara is a 10 x 8 px box on the frog's chest (things.camara.px from his spot); guitarra_rodillas (the guitar across the knees in moment 2) is NOT in the spec as a spot: made for the preview; the people are sprites",
+  "whoever sits (taburete1, taburete2, banco1 to banco4, banqueta_abuela) is hung by the lap on the seat's top; the músicos are stand-ins (kit's mkPersona with a hat or a beard drawn on, colours of their own), as are the other grown-ups (kit's mkPersona); abuela, abuelo, Luis, Carmen and the frog are today's makers",
+  "story 113's five (moment 4): ronda1, ronda4 and ronda5 are grown-up stand-ins (the tallest, so the checks hold for any child), ronda2 is ante_micro (abuelo at the microphone), ronda3 is banco3 (sitting on the bench); the spec says \"drawn from the family and the people of every place\"",
+  "the spec gives no shadow radii for this scene: El cruce's are used (frog .45, grown-ups .35, children .28); (open point)",
+  "in moments 3 and 4 the spec lists the músicos and no instruments: the rack is empty and their hands are empty (the instruments are in their hands in the game, not drawn here)",
+  "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
+  "moves: pista_baile [0.9,4.6,0] -> [1.64,4.6,0] (frog-seen: in moment 3 Carmen dancing at pista_baile covered 302 of the 536 px of the frog at centro_coqui (her head and shoulders in front of his right side): u .9 -> 1.64 (+.74; the least that passes: v would need +1.44, and the frog's own spot u -.76 or v -1.41)); ronda1 [0.2,5.4,0] -> [-0.56,5.4,0] (frog-seen: in moment 4 ronda1 (dances) covered 160 of the 536 px of the frog at centro_coqui: u .2 -> -.56 (-.76; the least that passes every check: u -.42 clears the frog but then ronda1's head covers 28 px of the microphone (mic-clear); v would need +1.57, and the frog's own spot u -1.42 or v +2.68))"
+ ],
+ "views": {
+  "wide": {
+   "world": [1.8494, 1.8494, 0],
+   "uv": [0, 2.6154, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [111, 112, 113],
+   "holds": ["taburete1", "taburete2", "guitarra_atril", "tambor_atril", "borde_coqui", "junto_escenario", "microfono", "ante_micro", "centro_coqui", "nota1", "nota2", "nota3", "pista1", "pista2", "pista3", "pista4", "pista5", "pista6", "pista_baile", "banco1", "banco2", "banco3", "banco4", "espera1", "espera2", "espera3", "banqueta_abuela", "ronda1", "ronda4", "ronda5"],
+   "extent": [25, 217],
+   "x0Range": [22, 25],
+   "what": "the one view of stories 111, 112 and 113: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 22 to 25 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 25 to 217). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the stage's front, the bench and the stools hide what is behind them by more than the bias. A thing that hangs is the plane through its spot.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The upright plane through the feet; a thing that hangs from its top middle has its plane through the same point (a pixel below the point is nearer the ground by the same slope)",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "abuelo": 0.35,
+   "musico1": 0.35,
+   "musico2": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28) (open point)",
+  "none": ["taburete1", "taburete2", "guitarra_atril", "tambor_atril", "borde_coqui", "nota1", "nota2", "nota3", "banco1", "banco2", "banco3", "banco4", "banqueta_abuela"],
+  "onSeat": "whoever sits on a stool or the bench, or stands on the stage (z above 0) casts none: none of those is floor (a shadow cast at the floor under them would show in front of them); the things that hang cast none; the microphone casts none (a sprite on the floor: open point)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 30 spots held span columns 25 to 217 (193 of the window's 196); x0 that hold them all: 22 to 25 (the one nearest 22, the window centred on the picture)"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 30 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 25 (taburete1), the rightmost 217 (espera3)",
+     "       info, not a check (the real drawn ink of today's makers against the window; the spec's width is the rule): banqueta_abuela (abuelaS ink columns 195 to 230: 13 px right of the window)"
+    ]
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 8 spots above the floor (taburete1, taburete2, borde_coqui, banco1, banco2, banco3, banco4, banqueta_abuela) are on a surface the set draws (the stools' tops on the stage z 0.74, the stage's top z 0.28, the bench's seat and the floor stool z 0.46: part patio, depth within .1 of the spot's)",
+     "       taburete1 z 0.74: part patio, depth 1.48 against the spot's 1.45 (0.03)",
+     "       taburete2 z 0.74: part patio, depth 1.48 against the spot's 1.45 (0.03)",
+     "       borde_coqui z 0.28: part patio, depth 2.15 against the spot's 2.13 (0.02)",
+     "       banco1 z 0.46: part patio, depth 0.65 against the spot's 0.62 (0.03)",
+     "       banco2 z 0.46: part patio, depth 0.65 against the spot's 0.62 (0.03)",
+     "       banco3 z 0.46: part patio, depth 0.65 against the spot's 0.62 (0.03)",
+     "       banco4 z 0.46: part patio, depth 0.65 against the spot's 0.62 (0.03)",
+     "       banqueta_abuela z 0.46: part patio, depth 4.32 against the spot's 4.3 (0.02)"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of escenario, pista, banco, guitarra, tambor, microfono, nota1, nota2, nota3, camara, guitarra_rodillas are inside the window [22, 218) and the picture (escenario [23,71,82,36], pista [94,102,94,71], banco [118,49,100,35], guitarra [77,48,12,22], tambor [89,48,12,14], microfono [112,69,6,28], nota1 [30,16,14,14], nota2 [56,16,14,14], nota3 [82,16,14,14], camara [133,99,10,8], guitarra_rodillas [26,69,22,8])"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 132 pairs in the 4 moments of the preview (m1 (taburete1, taburete2, borde_coqui, junto_escenario, pista1, pista2, pista3, pista4, pista5, pista6); m2 (taburete1, taburete2, borde_coqui, pista1, pista2, banco1, banco2, banco3, banco4); m3 (taburete1, taburete2, ante_micro, pista_baile, espera2, centro_coqui); m4 (taburete1, taburete2, ronda1, ante_micro, banco3, ronda4, ronda5, banqueta_abuela, centro_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 taburete2 ~ borde_coqui (26 across, 24 down), m1 borde_coqui ~ pista1 (26 across, 28 down), m1 borde_coqui ~ pista5 (15 across, 64 down), m1 junto_escenario ~ pista1 (10 across, 13 down), m1 junto_escenario ~ pista2 (15 across, 13 down), m1 junto_escenario ~ pista5 (21 across, 49 down), m1 junto_escenario ~ pista6 (4 across, 49 down), m1 pista1 ~ pista5 (11 across, 36 down), m1 pista1 ~ pista6 (14 across, 36 down), m1 pista2 ~ pista3 (19 across, 21 down), m1 pista2 ~ pista6 (11 across, 36 down), m2 taburete2 ~ borde_coqui (26 across, 24 down), m2 borde_coqui ~ pista1 (26 across, 28 down), m2 pista1 ~ banco1 (16 across, 57 down), m2 pista2 ~ banco1 (9 across, 57 down), m2 pista2 ~ banco2 (16 across, 57 down), m3 ante_micro ~ centro_coqui (23 across, 18 down), m3 pista_baile ~ espera2 (23 across, 18 down), m3 pista_baile ~ centro_coqui (25 across, 22 down), m4 taburete2 ~ ronda5 (13 across, 75 down), m4 ronda1 ~ ante_micro (10 across, 50 down), m4 ante_micro ~ centro_coqui (23 across, 18 down), m4 banco3 ~ ronda4 (17 across, 91 down), m4 ronda4 ~ centro_coqui (26 across, 48 down)",
+     "       closest pair in each moment (px across / px down): m1 junto_escenario ~ pista6 4/49 (needs 24 across or 12 down); m2 pista2 ~ banco1 9/57 (needs 24 across or 12 down); m3 ante_micro ~ centro_coqui 23/18 (needs 28 across or 12 down); m4 ronda1 ~ ante_micro 10/50 (needs 24 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "taburete2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "borde_coqui",
+      "across": 52,
+      "down": 24,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "junto_escenario",
+      "across": 88,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "pista1",
+      "across": 78,
+      "down": 52,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "pista2",
+      "across": 103,
+      "down": 52,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "pista3",
+      "across": 122,
+      "down": 73,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "pista4",
+      "across": 147,
+      "down": 73,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "pista5",
+      "across": 67,
+      "down": 88,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete1",
+      "b": "pista6",
+      "across": 92,
+      "down": 88,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete2",
+      "b": "borde_coqui",
+      "across": 26,
+      "down": 24,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete2",
+      "b": "junto_escenario",
+      "across": 62,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete2",
+      "b": "pista1",
+      "across": 52,
+      "down": 52,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete2",
+      "b": "pista2",
+      "across": 77,
+      "down": 52,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete2",
+      "b": "pista3",
+      "across": 96,
+      "down": 73,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete2",
+      "b": "pista4",
+      "across": 121,
+      "down": 73,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete2",
+      "b": "pista5",
+      "across": 41,
+      "down": 88,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "taburete2",
+      "b": "pista6",
+      "across": 66,
+      "down": 88,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "borde_coqui",
+      "b": "junto_escenario",
+      "across": 36,
+      "down": 15,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "borde_coqui",
+      "b": "pista1",
+      "across": 26,
+      "down": 28,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "borde_coqui",
+      "b": "pista2",
+      "across": 51,
+      "down": 28,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "borde_coqui",
+      "b": "pista3",
+      "across": 70,
+      "down": 49,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "borde_coqui",
+      "b": "pista4",
+      "across": 95,
+      "down": 49,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "borde_coqui",
+      "b": "pista5",
+      "across": 15,
+      "down": 64,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "borde_coqui",
+      "b": "pista6",
+      "across": 40,
+      "down": 64,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "junto_escenario",
+      "b": "pista1",
+      "across": 10,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "junto_escenario",
+      "b": "pista2",
+      "across": 15,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "junto_escenario",
+      "b": "pista3",
+      "across": 34,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "junto_escenario",
+      "b": "pista4",
+      "across": 59,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "junto_escenario",
+      "b": "pista5",
+      "across": 21,
+      "down": 49,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "junto_escenario",
+      "b": "pista6",
+      "across": 4,
+      "down": 49,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista1",
+      "b": "pista2",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista1",
+      "b": "pista3",
+      "across": 44,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista1",
+      "b": "pista4",
+      "across": 69,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista1",
+      "b": "pista5",
+      "across": 11,
+      "down": 36,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista1",
+      "b": "pista6",
+      "across": 14,
+      "down": 36,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista2",
+      "b": "pista3",
+      "across": 19,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista2",
+      "b": "pista4",
+      "across": 44,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista2",
+      "b": "pista5",
+      "across": 36,
+      "down": 36,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista2",
+      "b": "pista6",
+      "across": 11,
+      "down": 36,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista3",
+      "b": "pista4",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista3",
+      "b": "pista5",
+      "across": 55,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista3",
+      "b": "pista6",
+      "across": 30,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista4",
+      "b": "pista5",
+      "across": 80,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista4",
+      "b": "pista6",
+      "across": 55,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pista5",
+      "b": "pista6",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete1",
+      "b": "taburete2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete1",
+      "b": "borde_coqui",
+      "across": 52,
+      "down": 24,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete1",
+      "b": "pista1",
+      "across": 78,
+      "down": 52,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete1",
+      "b": "pista2",
+      "across": 103,
+      "down": 52,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete1",
+      "b": "banco1",
+      "across": 94,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete1",
+      "b": "banco2",
+      "across": 119,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete1",
+      "b": "banco3",
+      "across": 144,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete1",
+      "b": "banco4",
+      "across": 168,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete2",
+      "b": "borde_coqui",
+      "across": 26,
+      "down": 24,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete2",
+      "b": "pista1",
+      "across": 52,
+      "down": 52,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete2",
+      "b": "pista2",
+      "across": 77,
+      "down": 52,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete2",
+      "b": "banco1",
+      "across": 68,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete2",
+      "b": "banco2",
+      "across": 93,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete2",
+      "b": "banco3",
+      "across": 118,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "taburete2",
+      "b": "banco4",
+      "across": 142,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "borde_coqui",
+      "b": "pista1",
+      "across": 26,
+      "down": 28,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "borde_coqui",
+      "b": "pista2",
+      "across": 51,
+      "down": 28,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "borde_coqui",
+      "b": "banco1",
+      "across": 42,
+      "down": 29,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "borde_coqui",
+      "b": "banco2",
+      "across": 67,
+      "down": 29,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "borde_coqui",
+      "b": "banco3",
+      "across": 92,
+      "down": 29,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "borde_coqui",
+      "b": "banco4",
+      "across": 116,
+      "down": 29,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista1",
+      "b": "pista2",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista1",
+      "b": "banco1",
+      "across": 16,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista1",
+      "b": "banco2",
+      "across": 41,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista1",
+      "b": "banco3",
+      "across": 66,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista1",
+      "b": "banco4",
+      "across": 90,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista2",
+      "b": "banco1",
+      "across": 9,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista2",
+      "b": "banco2",
+      "across": 16,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista2",
+      "b": "banco3",
+      "across": 41,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pista2",
+      "b": "banco4",
+      "across": 65,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "banco1",
+      "b": "banco2",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "banco1",
+      "b": "banco3",
+      "across": 50,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "banco1",
+      "b": "banco4",
+      "across": 74,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "banco2",
+      "b": "banco3",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "banco2",
+      "b": "banco4",
+      "across": 49,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "banco3",
+      "b": "banco4",
+      "across": 24,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete1",
+      "b": "taburete2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete1",
+      "b": "ante_micro",
+      "across": 78,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete1",
+      "b": "pista_baile",
+      "across": 126,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete1",
+      "b": "espera2",
+      "across": 149,
+      "down": 42,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete1",
+      "b": "centro_coqui",
+      "across": 101,
+      "down": 38,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete2",
+      "b": "ante_micro",
+      "across": 52,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete2",
+      "b": "pista_baile",
+      "across": 100,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete2",
+      "b": "espera2",
+      "across": 123,
+      "down": 42,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "taburete2",
+      "b": "centro_coqui",
+      "across": 75,
+      "down": 38,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "ante_micro",
+      "b": "pista_baile",
+      "across": 48,
+      "down": 40,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "ante_micro",
+      "b": "espera2",
+      "across": 71,
+      "down": 22,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "ante_micro",
+      "b": "centro_coqui",
+      "across": 23,
+      "down": 18,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "pista_baile",
+      "b": "espera2",
+      "across": 23,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "pista_baile",
+      "b": "centro_coqui",
+      "across": 25,
+      "down": 22,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "espera2",
+      "b": "centro_coqui",
+      "across": 48,
+      "down": 4,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete1",
+      "b": "taburete2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete1",
+      "b": "ronda1",
+      "across": 68,
+      "down": 70,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete1",
+      "b": "ante_micro",
+      "across": 78,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete1",
+      "b": "banco3",
+      "across": 144,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete1",
+      "b": "ronda4",
+      "across": 127,
+      "down": 86,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete1",
+      "b": "ronda5",
+      "across": 39,
+      "down": 75,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete1",
+      "b": "banqueta_abuela",
+      "across": 168,
+      "down": 51,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete1",
+      "b": "centro_coqui",
+      "across": 101,
+      "down": 38,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete2",
+      "b": "ronda1",
+      "across": 42,
+      "down": 70,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete2",
+      "b": "ante_micro",
+      "across": 52,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete2",
+      "b": "banco3",
+      "across": 118,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete2",
+      "b": "ronda4",
+      "across": 101,
+      "down": 86,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete2",
+      "b": "ronda5",
+      "across": 13,
+      "down": 75,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete2",
+      "b": "banqueta_abuela",
+      "across": 142,
+      "down": 51,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "taburete2",
+      "b": "centro_coqui",
+      "across": 75,
+      "down": 38,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda1",
+      "b": "ante_micro",
+      "across": 10,
+      "down": 50,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda1",
+      "b": "banco3",
+      "across": 76,
+      "down": 75,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda1",
+      "b": "ronda4",
+      "across": 59,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda1",
+      "b": "ronda5",
+      "across": 29,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda1",
+      "b": "banqueta_abuela",
+      "across": 100,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda1",
+      "b": "centro_coqui",
+      "across": 33,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ante_micro",
+      "b": "banco3",
+      "across": 66,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ante_micro",
+      "b": "ronda4",
+      "across": 49,
+      "down": 66,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ante_micro",
+      "b": "ronda5",
+      "across": 39,
+      "down": 55,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ante_micro",
+      "b": "banqueta_abuela",
+      "across": 90,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ante_micro",
+      "b": "centro_coqui",
+      "across": 23,
+      "down": 18,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "ronda4",
+      "across": 17,
+      "down": 91,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "ronda5",
+      "across": 105,
+      "down": 80,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "banqueta_abuela",
+      "across": 24,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "centro_coqui",
+      "across": 43,
+      "down": 43,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda4",
+      "b": "ronda5",
+      "across": 88,
+      "down": 11,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda4",
+      "b": "banqueta_abuela",
+      "across": 41,
+      "down": 35,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda4",
+      "b": "centro_coqui",
+      "across": 26,
+      "down": 48,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda5",
+      "b": "banqueta_abuela",
+      "across": 129,
+      "down": 24,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ronda5",
+      "b": "centro_coqui",
+      "across": 62,
+      "down": 37,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banqueta_abuela",
+      "b": "centro_coqui",
+      "across": 67,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 4 moments (0 px covered by anything): m1 borde_coqui 89,98: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 borde_coqui 89,98: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 centro_coqui 138,112: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 centro_coqui 138,112: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "heads-clear",
+    "ok": true,
+    "lines": [
+     "heads-clear: every person who sits (m1: taburete1, taburete2; m2: taburete1, taburete2, banco1, banco2, banco3, banco4; m3: taburete1, taburete2; m4: taburete1, taburete2, banco3, banqueta_abuela) is whole in the window and his head (the top 14 rows) is covered by nobody and by nothing: 14 heads, 0 px covered, 0 hidden by the set",
+     "       info, not a check: m1 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco1 131,69 (gus3): head rows 29 to 42: 214 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco2 156,69 (gus4): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco3 181,69 (gus5): head rows 29 to 42: 214 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco4 205,69 (gus6): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 banco3 181,69 (gus2): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 banqueta_abuela 205,125 (abuelaS): head rows 89 to 102: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
+    ]
+   },
+   {
+    "name": "rack-clear",
+    "ok": true,
+    "lines": [
+     "rack-clear: in moment 1 the guitar (guitarra_atril [77,48,12,22]) and the drum (tambor_atril [89,48,12,14]) hang under the rack's bar (z 1.58) covered by nobody and by nothing (0 px covered, 0 hidden by the set), and the frog at borde_coqui 89,98 covers neither (no pixel of his in their boxes): m1 guitarra_atril [77,48,12,22]: 148 px, 0 covered, 0 hidden by the set, 0 outside the picture; the frog: 0 px of it under him, 0 px of his in its box; m1 tambor_atril [89,48,12,14]: 154 px, 0 covered, 0 hidden by the set, 0 outside the picture; the frog: 0 px of it under him, 0 px of his in its box",
+     "       info, not a check: m2 tambor_atril 154 px, 0 covered, 0 hidden by the set"
+    ]
+   },
+   {
+    "name": "notes-clear",
+    "ok": true,
+    "lines": [
+     "notes-clear: in moment 3 the three paper notes (the top row of each at y 16) are inside the picture and the window and covered by nobody (0 px covered, 0 hidden by the set): nota1 [30,16,14,14]: 192 px, 0 covered, 0 hidden by the set, 0 outside the picture, 0 px cut by the window; nota2 [56,16,14,14]: 192 px, 0 covered, 0 hidden by the set, 0 outside the picture, 0 px cut by the window; nota3 [82,16,14,14]: 192 px, 0 covered, 0 hidden by the set, 0 outside the picture, 0 px cut by the window"
+    ]
+   },
+   {
+    "name": "mic-clear",
+    "ok": true,
+    "lines": [
+     "mic-clear: in moments 3 and 4 the microphone (microfono [112,69,6,28]) is covered by nobody and by nothing, and the singer's head (ante_micro, the top 14 rows) is clear: m3 microfono [112,69,6,28]: 114 px, 0 covered, 0 hidden by the set, 0 outside the picture; the singer (ante_micro 115,94) head rows 43 to 56: 192 px, 0 covered, 0 hidden by the set (the microphone covers 102 px of the singer's body, none of his head); m4 microfono [112,69,6,28]: 114 px, 0 covered, 0 hidden by the set, 0 outside the picture; the singer (ante_micro 115,94) head rows 43 to 56: 192 px, 0 covered, 0 hidden by the set (the microphone covers 102 px of the singer's body, none of his head)"
+    ]
+   },
+   {
+    "name": "ronda-heads",
+    "ok": true,
+    "lines": [
+     "ronda-heads: in moment 4 none of the five (ronda1 ronda1, ronda2 ante_micro, ronda3 banco3, ronda4 ronda4, ronda5 ronda5) covers another's head (the top 14 rows): ronda1 (ronda1 105,144): head rows 90 to 103: 214 px, 0 covered by the other four; by anyone 0; ronda2 (ante_micro 115,94): head rows 43 to 56: 192 px, 0 covered by the other four; by anyone 0; ronda3 (banco3 181,69): head rows 30 to 43: 182 px, 0 covered by the other four; by anyone 0; ronda4 (ronda4 164,160): head rows 107 to 120: 182 px, 0 covered by the other four; by anyone 0; ronda5 (ronda5 76,149): head rows 95 to 108: 214 px, 0 covered by the other four; by anyone 0"
+    ]
+   },
+   {
+    "name": "info-touch",
+    "ok": true,
+    "lines": [
+     "info-touch: not a check. m1: escenario [23,71,82,36] 866 px under people, pista [94,102,94,71] 4072 px under people, banco [118,49,100,35] 475 px under people; m2: escenario [23,71,82,36] 866 px under people, pista [94,102,94,71] 772 px under people, banco [118,49,100,35] 2121 px under people; m3: escenario [23,71,82,36] 319 px under people, pista [94,102,94,71] 961 px under people, banco [118,49,100,35] 322 px under people; m4: escenario [23,71,82,36] 631 px under people, pista [94,102,94,71] 1854 px under people, banco [118,49,100,35] 670 px under people, camara 0 of 68 px covered by anyone but the frog, 0 hidden by the set"
+    ]
+   }
+  ]
+ }
+}

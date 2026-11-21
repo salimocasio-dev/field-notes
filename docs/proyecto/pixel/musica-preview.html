@@ -1,0 +1,253 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La música · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of La música (musica-set.html, drawn in a hidden frame: the fort's courtyard at night, place 10, scene 2: the inner wall with its lamps and string of lights, the low stage at the left with its two stools and the rack for the instruments, the open floor, the bench against the wall at the right and the stool beside the floor) with the characters and the small things drawn over it as sprites, each placed from musica-sheet.json: the lowest drawn row of the sprite (its feet; for a person who sits, the bottom of the hips) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the floor. A thing that hangs (the guitar, the drum, the three paper notes) has its top middle on the spot. Then cropped to the 196 x 216 view (wide). The characters are today's sprite makers (historia/engine.js, escenas/kit.js): abuela (standing: mkAbuela; sitting: mkAbuelaS), abuelo (kit's FAM.abuelo), Luis, Carmen, the frog; the two músicos (one with a hat, one with a beard) and the other people are kit's mkPersona (a grown-up) with colours of their own: stand-ins, not final art. The guitar, the drum, the microphone, the paper notes, the guitar across the knees and the camera are small plain stand-ins drawn here. Nobody is drawn turned.
+The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIEW.inspectLayers(set, layers)</code>, <code>PREVIEW.silhouette(name)</code>, <code>PREVIEW.nearest(...)</code>, <code>PREVIEW.nearestClear(...)</code> and <code>PREVIEW.nearestFree(...)</code> (<code>?nodraw=1</code> skips the first drawing). Address: <code>?m=1</code> story 111 opening, <code>?m=2</code> story 111 after two misses, <code>?m=3</code> story 112 game, <code>?m=4</code> story 113 game (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<p id="cap"></p>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart):
+   1. The sheet gives each spot's world point, its (u, v, z) (u across the picture, v down it), screen point and depth.
+   2. The set is drawn by musica-set.html in a hidden frame, with the shadows of those who stand on the floor cast (frame(t, casts): radius by character, sheet: shadows).
+      None for anybody on a stool, on the bench or on the stage (z above 0).
+   3. Each sprite is drawn 1:1 with its feet (its lowest drawn row) resting on the spot's screen row and its middle column on the spot's column; a person who sits (on a stool,
+      on the bench) is hung by the lap (rules.anchor); a thing that hangs (the guitar, the drum, the paper notes) has its top middle on the spot; the microphone has its bottom middle on the spot;
+      the guitar across the músico's knees and the camera on the frog's chest are held at the pixel offset the sheet gives (things.guitarra_rodillas, things.camara). A sprite pixel is
+      hidden where the set's baked depth (window.DEPTH.z) is nearer than the character's feet plus .3: the upright plane through the feet,
+      depth(r) = d + (sy - (r + .5)) * tan 30 / S (sheet: front). Between two sprites the nearer pixel wins; two planes within .001 of each other are a tie, which the draw order decides (the later layer wins).
+   4. The picture is cropped to the view (196 x 216 at x0, sheet: views.wide). */
+(() => {
+  const A = new URLSearchParams(location.search);
+  const PV = window.PREVIEW = {};
+  let SHEET = null;
+  const ready = fetch('musica-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; });
+  const T30 = Math.tan(Math.PI / 6), EPS = .001, R2 = Math.SQRT2;
+
+  /* ---------- the people: today's sprite makers ---------- */
+  const FAM = KIT.FAM, PIEL = KIT.PIEL, PELO = KIT.PELO;
+  // the grown-ups who are not the family: kit's mkPersona with colours of their own (stand-ins), each different
+  const GU = [
+    FAM.mama,                                                                                                       // 1: mamá's dress (red)
+    FAM.papa,                                                                                                       // 2: papá (blue)
+    { piel: PIEL.c, pelo: PELO.negro, peinado: 'largo', ropa: RP.purp, falda: 1, zapato: '#3A2414' },                // 3: a woman in purple
+    { piel: PIEL.b, pelo: PELO.castano, peinado: 'corto', ropa: RP.grn, abajo: RP.grey },                            // 4: a man in green
+    { piel: PIEL.a, pelo: PELO.negro, peinado: 'largo', ropa: RP.teal, falda: 1, zapato: '#7A1C1C' },                // 5: a woman in teal
+    { piel: PIEL.c, pelo: PELO.blanco, peinado: 'corto', ropa: RP.tan, abajo: RP.wood },                             // 6: an older man in ochre
+  ];
+  const MUS1 = { piel: PIEL.b, pelo: PELO.negro, peinado: 'corto', ropa: RP.tan, abajo: RP.grey };                    // the músico with the hat (a hat drawn on the sprite)
+  const MUS2 = { piel: PIEL.c, pelo: PELO.castano, peinado: 'corto', ropa: RP.red, abajo: RP.wood };                  // the músico with the beard (a beard drawn on the sprite)
+
+  /* ---------- small things: stand-ins, each with a dark outline (the outline is drawn inside the buffer: the shapes leave a margin of one pixel) ---------- */
+  const mk = (w, h, fn) => { const b = new Buf(w, h); fn(b); return b.outline().done(); };
+  const THING = {
+    // 12 x 22: a guitar, hung by its neck: the head at the top
+    guitarra: () => mk(12, 22, b => { b.rect(5, 1, 2, 2, '#4A2A14'); b.rect(5, 3, 2, 8, '#6E4220'); b.ell(6, 13, 3.6, 3, ['#A8682C', '#C8853C', '#E2A85A']); b.ell(6, 17.4, 4.8, 3.6, ['#A8682C', '#C8853C', '#E2A85A']); b.ell(6, 15.4, 1.3, 1.3, ['#2A1810']); b.rect(5, 19, 2, 1, '#4A2A14'); }),
+    // 12 x 14: a barrel drum played with the hands: a pale skin on top, a barrel, two hoops
+    tambor: () => mk(12, 14, b => { b.ell(6, 3, 4.8, 1.9, ['#D8D8E4', '#F4F4FA']); b.rect(1, 3, 10, 9, '#B8601C'); b.rect(1, 3, 3, 9, '#92602E'); b.rect(9, 3, 2, 9, '#7A4A1E'); b.rect(1, 5, 10, 1, '#6E4220'); b.rect(1, 9, 10, 1, '#6E4220'); b.ell(6, 12, 4.8, 1.2, ['#7A4A1E']); }),
+    // 6 x 28: a microphone on a stand: the head, a pole, a round foot
+    microfono: () => mk(6, 28, b => { b.ell(3, 3, 1.9, 2.4, ['#3A3A46', '#6E6E80', '#B8B8C8']); b.rect(2, 5, 2, 19, '#6E6E80'); b.rect(1, 24, 4, 2, '#3A3A46'); }),
+    // 14 x 14: a big paper note, lit (a pale glow, a black note on it)
+    nota: () => mk(14, 14, b => { b.rect(1, 1, 12, 12, '#FFE070'); b.rect(2, 2, 10, 10, '#FFF4B0'); b.ell(5, 9.5, 2, 1.5, ['#20140A']); b.rect(6, 3, 1, 7, '#20140A'); b.rect(7, 3, 3, 1, '#20140A'); b.rect(9, 4, 1, 2, '#20140A'); }),
+    // 22 x 8: a guitar across the knees (lying on its side: the head at the left)
+    guitarraH: () => mk(22, 8, b => { b.rect(1, 3, 6, 2, '#6E4220'); b.rect(0, 3, 2, 2, '#4A2A14'); b.ell(10, 4, 3.4, 2.6, ['#A8682C', '#C8853C', '#E2A85A']); b.ell(16.5, 4, 4.6, 3, ['#A8682C', '#C8853C', '#E2A85A']); b.ell(15, 4, 1.2, 1.2, ['#2A1810']); }),
+    // 10 x 8: abuela's camera on the frog's chest: a dark body, a lens, a little flash
+    camara: () => mk(10, 8, b => { b.rect(1, 2, 8, 5, '#3A3A46'); b.rect(1, 2, 8, 1, '#6E6E80'); b.ell(5, 4.6, 1.8, 1.8, ['#2E6CD0', '#9CCBF5', '#DCEEFF']); b.rect(6, 1, 2, 1, '#FFE070'); }),
+  };
+  const CACHE = {};
+  const thing = k => CACHE[k] || (CACHE[k] = THING[k]());
+  const inkBottom = cv => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let y = cv.height - 1; y >= 0; y--) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) return y + 1; return cv.height; };
+  const anchor = (cv, ax, ay) => ({ cv, ax, ay: ay == null ? inkBottom(cv) : ay });
+  const lap = w => 16 + 2 * (w.nino ? 7 : 11) + 3;                                       // a person who sits is hung by the bottom of the hips (mkPersona: row 16 + 2 t + 3)
+  const top = (cv, ax) => anchor(cv, ax, 0);                                             // a thing that hangs: its top edge on the spot's row, its middle column on the spot's column
+  const bottom = (cv, ax) => anchor(cv, ax, cv.height);                                  // a small thing: its bottom edge on the spot's row, its middle column on the spot's column
+  const standing = w => () => anchor(KIT.mkPersona(w, 'idle', 0, 0), KIT.PX);
+  const sitting = w => () => anchor(KIT.mkPersona(w, 'idle', 0, 1), KIT.PX, lap(w));
+  // the two músicos: the same sprite with a hat, or a beard, drawn on it (a stand-in)
+  const edit = (cv, fn) => { const c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height; const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(cv, 0, 0); fn(g, KIT.PX); return c; };
+  const hat = g => (X => { g.fillStyle = '#2A1810'; g.fillRect(X - 7, 0, 14, 5); g.fillRect(X - 11, 4, 22, 3); g.fillStyle = '#E2A85A'; g.fillRect(X - 6, 1, 12, 3); g.fillRect(X - 10, 5, 20, 1); g.fillStyle = '#A82A26'; g.fillRect(X - 6, 3, 12, 1); })(KIT.PX);
+  const beard = g => (X => { g.fillStyle = '#2A1810'; g.fillRect(X - 6, 13, 12, 7); g.fillStyle = '#3A2414'; g.fillRect(X - 5, 14, 10, 5); g.fillStyle = '#7A2A1A'; g.fillRect(X - 2, 15, 4, 1); })(KIT.PX);
+  const SPR = {
+    abuela: () => anchor(mkAbuela('idle', 0), 30),                                       // abuela standing (mkAbuela draws her middle at column 30)
+    abuelaS: () => anchor(KIT.mkAbuelaS('idle', 0, 0), 17, 36),                          // abuela sitting: hung by the lap
+    abuelo: standing(FAM.abuelo), abueloS: sitting(FAM.abuelo), luis: standing(FAM.hermano), carmen: standing(FAM.hermana),
+    musico1: () => anchor(edit(KIT.mkPersona(MUS1, 'idle', 0, 1), hat), KIT.PX, lap(MUS1)),                      // the músico with the hat, sitting
+    musico2: () => anchor(edit(KIT.mkPersona(MUS2, 'idle', 0, 1), beard), KIT.PX, lap(MUS2)),                    // the músico with the beard, sitting
+    coqui: () => anchor(mkCoqui(1, 0, 0), 16),
+    guitarra: () => top(thing('guitarra'), 6), tambor: () => top(thing('tambor'), 6), nota: () => top(thing('nota'), 7),
+    microfono: () => bottom(thing('microfono'), 3), guitarraH: () => bottom(thing('guitarraH'), 11), camara: () => bottom(thing('camara'), 5),
+  };
+  GU.forEach((w, i) => { SPR['gu' + (i + 1)] = standing(w); SPR['gus' + (i + 1)] = sitting(w); });     // gu1 to gu6 standing, gus1 to gus6 sitting
+  PV.SPR = Object.keys(SPR);
+  const sprOf = (s, ctx) => typeof s === 'function' ? s(ctx) : SPR[s](ctx);
+  PV.sprite = (k, ctx) => { const s = sprOf(k, ctx || { sx: 0, sy: 0 }); return { w: s.cv.width, h: s.cv.height, ax: s.ax, ay: s.ay }; };
+  // the drawn silhouette of a sprite from its anchor: [x0, y0, x1, y1] of the ink
+  PV.silhouette = (k, ctx) => { await_ready(); const s = sprOf(k, ctx || { sx: 0, sy: 0 }), d = s.cv.getContext('2d').getImageData(0, 0, s.cv.width, s.cv.height).data; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (let y = 0; y < s.cv.height; y++) for (let x = 0; x < s.cv.width; x++) if (d[(y * s.cv.width + x) * 4 + 3]) { x0 = Math.min(x0, x - s.ax); x1 = Math.max(x1, x - s.ax); y0 = Math.min(y0, y - s.ay); y1 = Math.max(y1, y - s.ay); }
+    return { w: s.cv.width, h: s.cv.height, ax: s.ax, ay: s.ay, box: [x0, y0, x1, y1] }; };
+  const await_ready = () => { if (!SHEET) throw new Error('the sheet is not read yet'); };
+
+  /* ---------- the four moments ---------- */
+  const P = (at, s, who, group, more) => Object.assign({ at, s, who, group }, more || {});      // a person at a spot
+  const FRANA = (at, more) => Object.assign({ at, s: 'coqui', who: 'coqui' }, more || {});
+  const MUS = () => [P('taburete1', 'musico1', 'adulto', 'head'), P('taburete2', 'musico2', 'adulto', 'head')];     // the two músicos, sitting on their stools
+  const GUITARRA = { at: 'guitarra_atril', s: 'guitarra', group: 'cosa', thing: 'guitarra' }, TAMBOR = { at: 'tambor_atril', s: 'tambor', group: 'cosa', thing: 'tambor' };
+  const MICRO = { at: 'microfono', s: 'microfono', group: 'mic', thing: 'microfono' };
+  const NOTAS = () => [1, 2, 3].map(i => ({ at: 'nota' + i, s: 'nota', group: 'nota', thing: 'nota' + i }));
+  const held = (name, at, group) => { const T = SHEET.things[name]; return { at, px: T.px, s: T.sprite_name, dd: .05 - T.px[1] * T30 / 26, group: group || 'held', thing: name }; };     // held: a sprite at a pixel offset from a person's spot: its plane .05 nearer than the holder's at the same picture row
+  const MOMENTS = {
+    1: { view: 'wide', what: 'story 111, opening: night, the party. The two músicos sit on their stools (taburete1 with the hat, taburete2 with the beard), empty hands; the guitar and the drum hang on the rack (guitarra_atril, tambor_atril); the frog on the stage\'s front edge (borde_coqui); abuela beside the stage (junto_escenario); six people on the floor (pista1 to pista6)',
+      set: {},
+      layers: () => [...MUS(), GUITARRA, TAMBOR, FRANA('borde_coqui'), P('junto_escenario', 'abuela', 'adulto'),
+        P('pista1', 'gu1', 'adulto'), P('pista2', 'gu2', 'adulto'), P('pista3', 'gu3', 'adulto'), P('pista4', 'gu4', 'adulto'), P('pista5', 'gu5', 'adulto'), P('pista6', 'gu6', 'adulto')] },
+    2: { view: 'wide', what: 'story 111, after two misses: the músicos, the first with the guitar across his knees, the drum on the rack; the frog at borde_coqui; a couple on the floor (pista1, pista2); four on the bench (banco1 to banco4)',
+      set: {},
+      layers: () => [...MUS(), held('guitarra_rodillas', 'taburete1'), TAMBOR, FRANA('borde_coqui'), P('pista1', 'gu1', 'adulto'), P('pista2', 'gu2', 'adulto'),
+        P('banco1', 'gus3', 'adulto', 'head'), P('banco2', 'gus4', 'adulto', 'head'), P('banco3', 'gus5', 'adulto', 'head'), P('banco4', 'gus6', 'adulto', 'head')] },
+    3: { view: 'wide', what: 'story 112, the game: the músicos, the microphone, the three paper notes lit, abuelo at the microphone (ante_micro), Carmen dancing (pista_baile), Luis waiting (espera2), the frog between the stage and the floor (centro_coqui)',
+      set: {},
+      layers: () => [...MUS(), MICRO, ...NOTAS(), P('ante_micro', 'abuelo', 'adulto', 'singer'), P('pista_baile', 'carmen', 'nino'), P('espera2', 'luis', 'nino'), FRANA('centro_coqui')] },
+    4: { view: 'wide', what: 'story 113, the game: the músicos, the microphone, five people (ronda1 dances, ronda2 = ante_micro sings, ronda3 = banco3 eats, ronda4 laughs, ronda5 yawns), abuela on the stool (banqueta_abuela), the frog with abuela\'s camera on his chest (centro_coqui)',
+      set: {},
+      layers: () => [...MUS(), MICRO, P('ronda1', 'gu1', 'adulto', 'ronda', { five: 'ronda1' }), P('ante_micro', 'abuelo', 'adulto', 'singer', { five: 'ronda2' }), P('banco3', 'gus2', 'adulto', 'head', { five: 'ronda3' }),
+        P('ronda4', 'gu4', 'adulto', 'ronda', { five: 'ronda4' }), P('ronda5', 'gu5', 'adulto', 'ronda', { five: 'ronda5' }), P('banqueta_abuela', 'abuelaS', 'adulto', 'head'), FRANA('centro_coqui'), held('camara', 'centro_coqui')] },
+  };
+  const RADIUS = () => SHEET.shadows.radius, RKEY = { coqui: 'coqui', adulto: 'adultos', nino: 'ninos' };
+
+  /* ---------- the set: one hidden frame ---------- */
+  const SETS = {};
+  async function setFrame() {
+    let fr = SETS.musica;
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'musica-set.html'; }); SETS.musica = fr; }
+    return fr.contentWindow;
+  }
+
+  /* ---------- the placed sprites: where each stands (and what it draws), shared by the picture and by the make's checks ----------
+     a layer: { at: spot name | uvz: [u, v, z], off: [du, dv, dz] added to it, px: [dx, dy] screen shift, dd: depth added, s: sprite name, who, group, thing } */
+  function placeAll(specs, w) {
+    return specs.map(l => {
+      if (!l.at && !l.uvz) throw new Error('layer without a place');
+      if (l.at && !SHEET.spots[l.at]) throw new Error('no spot ' + l.at);
+      let uvz = l.at ? SHEET.spots[l.at].uv.slice() : l.uvz.slice();
+      if (l.off) uvz = uvz.map((v, i) => v + l.off[i]);
+      const x = (uvz[0] + uvz[1]) / R2, y = (uvz[1] - uvz[0]) / R2, q = w.project(x, y, uvz[2]);                       // the set's PZ.xy(u, v)
+      let sx = Math.round(q.sx), sy = Math.round(q.sy), d = q.d;
+      if (l.at && !l.off) { const sp = SHEET.spots[l.at]; sx = sp.screen[0]; sy = sp.screen[1]; d = sp.depth; }
+      if (l.px) { sx += l.px[0]; sy += l.px[1]; }
+      if (l.dd) d += l.dd;
+      return Object.assign({}, l, { uvz, world: [x, y, uvz[2]], sx, sy, d, OY: w.DEPTH.OY, spr: sprOf(l.s, { sx, sy }) });
+    });
+  }
+  // the depth of the sprite's plane at picture row Y: the upright plane through the feet
+  const planeAt = (l, Y, S) => l.d + (l.sy - (Y + .5)) * T30 / S;
+  // the pixels a placed sprite draws, as [X, Y, hidden by the set (the depth rule), the sprite's own depth plane] on the 240 x 216 picture
+  const inkOf = (l, Z, S, bias) => {
+    const c = l.spr, id = c.cv.getContext('2d').getImageData(0, 0, c.cv.width, c.cv.height).data, px = [];
+    px.out = 0;                                                                   // how many of its pixels lie outside the picture (not in the list)
+    for (let py = 0; py < c.cv.height; py++) for (let qx = 0; qx < c.cv.width; qx++) {
+      if (!id[(py * c.cv.width + qx) * 4 + 3]) continue;
+      const X = l.sx - c.ax + qx, Y = l.sy - c.ay + py; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) { px.out++; continue; }
+      const plane = planeAt(l, Y, S);
+      px.push([X, Y, Z[Y * 240 + X] > plane + bias ? 1 : 0, plane]);
+    }
+    return px;
+  };
+  const build = async (st, specs) => { await ready; const w = await setFrame(st); return { w, Z: w.DEPTH.z, S: w.DEPTH.S, LS: placeAll(specs, w) }; };
+  const pack = (LS, Z, S, bias) => LS.map(l => { const px = inkOf(l, Z, S, bias); return { at: l.at || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, thing: l.thing || null, five: l.five || null, sx: l.sx, sy: l.sy, d: l.d, uvz: l.uvz, ax: l.spr.ax, ay: l.spr.ay, out: px.out, px }; });
+  // for the make: every layer of a moment with its spot, its character kind and its drawn pixels
+  PV.inspect = async m => { const M = MOMENTS[m]; await ready; const { Z, S, LS } = await build(M.set, M.layers()); return { m, set: M.set, view: M.view, layers: pack(LS, Z, S, SHEET.front.bias) }; };
+  PV.inspectLayers = async (st, specs) => { const { Z, S, LS } = await build(st, specs); return pack(LS, Z, S, SHEET.front.bias); };
+  PV.moment = async m => { await ready; return { view: MOMENTS[m].view, set: MOMENTS[m].set, layers: MOMENTS[m].layers().map(l => ({ at: l.at || null, uvz: l.uvz || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, thing: l.thing || null, five: l.five || null, off: l.off || null, px: l.px || null, dd: l.dd || 0 })) }; };
+  // the least shift of one layer of a set of layers, along u, v or z in steps of .01 up to 3 either way, that leaves every pixel of it shown (not hidden by the set, not under a nearer sprite)
+  PV.nearest = async (st, specs, idx, allow = 0) => {
+    const { w, Z, S, LS } = await build(st, specs), zs = new Float32Array(240 * 216).fill(-1e9), bias = SHEET.front.bias;
+    LS.forEach((l, i) => { if (i === idx) return; for (const p of inkOf(l, Z, S, bias)) if (!p[2] && zs[p[1] * 240 + p[0]] < p[3]) zs[p[1] * 240 + p[0]] = p[3]; });
+    const base = specs[idx], covered = uvz => {
+      const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0], px = inkOf(l, Z, S, bias);
+      return { n: px.filter(p => p[2] || zs[p[1] * 240 + p[0]] > p[3] + EPS).length + px.out, total: px.length + px.out, sx: l.sx, sy: l.sy };
+    };
+    const start = LS[idx].uvz, res = { now: covered(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; const c = covered(uvz); if (c.n <= allow * c.total) { hit = { to: uvz[ax], d: sg * k * .01, sx: c.sx, sy: c.sy }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+  // the least shift of one layer that leaves it covering none of the shown pixels of the layers `others` (indices), same steps; `rows` = [from, to) restricts the covered pixels to the target's rows (its head)
+  PV.nearestClear = async (st, specs, idx, others, rows) => {
+    const { w, Z, S, LS } = await build(st, specs), bias = SHEET.front.bias, tgt = new Map();
+    others.forEach(oi => { const o = LS[oi], px = inkOf(o, Z, S, bias), top = Math.min(...px.map(p => p[1])); for (const p of px) if (!p[2] && (!rows || (p[1] >= top + rows[0] && p[1] < top + rows[1]))) { const k = p[1] * 240 + p[0], b = tgt.get(k); if (!b || b < p[3]) tgt.set(k, p[3]); } });
+    const base = specs[idx], covers = uvz => {
+      const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0], px = inkOf(l, Z, S, bias);
+      return px.filter(p => !p[2] && tgt.has(p[1] * 240 + p[0]) && p[3] > tgt.get(p[1] * 240 + p[0]) + EPS).length;
+    };
+    const start = LS[idx].uvz, res = { now: covers(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; if (covers(uvz) === 0) { hit = { to: uvz[ax], d: sg * k * .01 }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+  // the least shift of one layer that leaves none of its shown pixels inside the boxes [x, y, w, h], same steps
+  PV.nearestFree = async (st, specs, idx, boxes) => {
+    const { w, Z, S, LS } = await build(st, specs), bias = SHEET.front.bias;
+    const inB = (X, Y) => boxes.some(b => X >= b[0] && X < b[0] + b[2] && Y >= b[1] && Y < b[1] + b[3]);
+    const base = specs[idx], hits = uvz => { const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0]; return inkOf(l, Z, S, bias).filter(p => !p[2] && inB(p[0], p[1])).length; };
+    const start = LS[idx].uvz, res = { now: hits(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; if (hits(uvz) === 0) { hit = { to: uvz[ax], d: sg * k * .01 }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+
+  /* ---------- a picture ---------- */
+  PV.render = async function (m, opts = {}) {
+    await ready;
+    const M = MOMENTS[m] || MOMENTS[1], scale = opts.scale || 1, flat = opts.depth === 'flat', bias = SHEET.front.bias;
+    const { w, Z, S, LS } = await build(M.set, M.layers());
+    // the shadows: for those who stand on the floor (z 0): at the world x, y of their spot
+    const casts = [];
+    for (const l of LS) if (l.who && l.uvz[2] === 0 && !SHEET.shadows.none.includes(l.at)) casts.push([l.world[0], l.world[1], 0, RADIUS()[RKEY[l.who]]]);
+    const img = w.frame(0, casts), out = new Uint8ClampedArray(img.data), zs = new Float32Array(240 * 216).fill(-1e9);
+    for (const l of LS) {
+      const c = l.spr, g = c.cv.getContext('2d'), id = g.getImageData(0, 0, c.cv.width, c.cv.height).data;
+      for (let py = 0; py < c.cv.height; py++) {
+        const Y = l.sy - c.ay + py; if (Y < 0 || Y >= 216) continue;
+        const plane = planeAt(l, Y, S);
+        for (let px = 0; px < c.cv.width; px++) {
+          const X = l.sx - c.ax + px; if (X < 0 || X >= 240) continue;
+          const o = (py * c.cv.width + px) * 4; if (!id[o + 3]) continue;
+          const i = Y * 240 + X;
+          if (Z[i] > (flat ? l.d : plane) + bias) continue;                          // a set pixel nearer than the feet hides it
+          if (zs[i] > plane + EPS) continue;                                          // a nearer sprite pixel is already there (a tie: the later layer wins)
+          zs[i] = plane; out[i * 4] = id[o]; out[i * 4 + 1] = id[o + 1]; out[i * 4 + 2] = id[o + 2]; out[i * 4 + 3] = 255;
+        }
+      }
+    }
+    if (opts.marks) for (const l of LS) for (const [dx, dy] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) { const X = l.sx + dx, Y = l.sy + dy, i = (Y * 240 + X) * 4; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; out[i] = 255; out[i + 1] = 0; out[i + 2] = 255; out[i + 3] = 255; }
+    const full = document.createElement('canvas'); full.width = 240; full.height = 216; full.getContext('2d').putImageData(new ImageData(out, 240, 216), 0, 0);
+    const V = SHEET.views[M.view], cv = document.getElementById('out');
+    cv.width = V.region[2] * scale; cv.height = V.region[3] * scale;
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(full, V.region[0], V.region[1], V.region[2], V.region[3], 0, 0, cv.width, cv.height);
+    document.getElementById('cap').textContent = 'm=' + m + ' (view ' + M.view + ', x0 ' + V.x0 + '): ' + M.what + '.';
+    return cv.toDataURL();
+  };
+  PV.done = ready.then(() => A.get('nodraw') === '1' ? null : PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth') }));
+})();
+</script></body></html>
