@@ -203,7 +203,7 @@ c.update({"c100_ab_bano":AB("Mira, Coquí: el baño. Aquí está la ducha."),"c1
  "c100_ab_luis":AB("Luis está sucio. Luis se baña en la ducha."),"c100_donde_abres":N("¿Dónde abres el agua?"),
  "c100_ab_carmen":AB("Carmen no se baña. Carmen se lava las manos."),"c100_ca_espejo":CA("Mira en el espejo, Coquí. ¿Quién es?"),"c100_cq_yo":T("¡Yo!"),"c100_ca_si":CA("¡Sí! Coquí está en el espejo."),
  "c100_ab_ocupado":AB("El baño está ocupado, abuelo."),"c100_abo_despues":ABO("Yo me baño después. Agua caliente para mí, por favor."),
- "c100_abo_limpio":ABO("Coquí, ¿estoy limpio?"),"c100_cq_si":T("¡Sí!"),"c100_fin":N("Abuelo se baña en la ducha. Ahora el baño no está ocupado.")})
+ "c100_abo_limpio":ABO("Me miro en el espejo. Coquí, ¿estoy limpio?"),"c100_cq_si":T("¡Sí!"),"c100_fin":N("Abuelo se baña en la ducha. Ahora el baño no está ocupado.")})
 for k,nombre in KID.items():
     for w,t in (("bana","se baña"),("lava","se lava las manos")):
         c["c100_%s_%s"%(k,w)]=AB("%s %s."%(nombre,t)); c["c100_no_%s_%s"%(k,w)]=AB("¡No, Coquí! %s %s."%(nombre,t)); DIN.update(["c100_%s_%s"%(k,w),"c100_no_%s_%s"%(k,w)])
@@ -220,7 +220,7 @@ s100={"id":"se-bana","title":"Se baña","place":"La casa, un día entero","scene
  "stake":{"thing":"barras","steps":3},"dots":9,"bien":"si_muy_bien",
  "focus_words":["baño","ducha","se baña","espejo"],"formas_foco":{"se baña":["me baño"]},
  "back_again":["se lava","sucio","limpio","mano","agua","caliente","ocupado","después","para mí","yo","mira","abre","ahora","por favor","no","sí"],
- "also_heard":["quién"],"names":nm,"palabras":{"bana":"se baña","lava":"se lava"},"clips":c,
+ "also_heard":["quién","me miro"],"names":nm,"palabras":{"bana":"se baña","lava":"se lava"},"clips":c,
  "beats":[START,act("barras",n=3),act("ir",a="repisa_coqui")]+juntos(act("llega",quien="luis",a="puerta1"),act("llega",quien="carmen",a="puerta2"))+[{"wait":500},
   # 1: abuela shows the bathroom; signed ask on the shower: water sprays for a moment (the frog jumps: no act named)
   {"dots":1},"c100_ab_bano",ask("ducha","c100_donde_ducha",after=[act("ducha100",on=1),{"wait":800},act("ducha100",on=0)]),
