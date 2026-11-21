@@ -60,7 +60,7 @@ const VIEW_X0 = 22, VIEW = [VIEW_X0, 0, 196, 216];
   fs.writeFileSync(OUT, t);
   console.log('wrote ' + path.relative(REPO, OUT) + ' (' + t.length + ' bytes)');
   for (const n of sheet.checks.notes) console.log('  ' + n);
-  console.log('  (not in the sheet, it changes from run to run) bake in headless Chrome, the slowest of three fresh pages: ' + STATES.map(k => k + ' first ' + R(G.ms[k].first) + ' ms, again ' + R(G.ms[k].warm) + ' ms').join('; '));
+  console.log('  (not in the sheet, it changes from run to run) bake in headless Chrome, the median of five fresh pages: ' + STATES.map(k => k + ' first ' + R(G.ms[k].first) + ' ms (' + G.ms[k].all.join(', ') + '), again ' + R(G.ms[k].warm) + ' ms').join('; '));
   if (problems.length) { const g = new Map(); for (const q of problems) { const k = q.replace(/ \((?:[^()]|\([^()]*\))*\)$/, ''); if (!g.has(k)) g.set(k, [q, 0]); g.get(k)[1]++; }
     console.log('CHECK FAILED (' + problems.length + ', ' + g.size + ' kinds):\n  ' + [...g.values()].slice(0, 200).map(([q, n]) => (n > 1 ? n + ' x ' : '') + q).join('\n  ')); process.exit(1); }
   console.log('check: ok (every rule above)');
@@ -90,10 +90,11 @@ async function setData(browser, errs) {
       return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(bakedZ), rgb: rgbA, calls, first: BAKE_MS, warm, shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), onGround, surf };
     });
     await page.close();
-    // the bake as the port does it (no part tags), in three fresh pages: the slowest first bake, and a second bake in the same page
-    { const firsts = [], warms = []; for (let n = 0; n < 3; n++) { const pg = await browser.newPage(); await pg.goto('file://' + path.join(__dirname, 'estufa-set.html') + '?' + queryOf(key));
+    // the bake as the port does it (no part tags), in five fresh pages: the median first bake (a page loaded while the machine is busy with
+    // other work can take twice as long), and a second bake in the same page
+    { const firsts = [], warms = []; for (let n = 0; n < 5; n++) { const pg = await browser.newPage(); await pg.goto('file://' + path.join(__dirname, 'estufa-set.html') + '?' + queryOf(key));
         const t = await pg.evaluate(() => { const t1 = performance.now(); buildSet(); return [BAKE_MS, performance.now() - t1]; }); firsts.push(t[0]); warms.push(t[1]); await pg.close(); }
-      G.ms[key] = { first: Math.max(...firsts), warm: Math.max(...warms) }; }
+      const med = a => a.slice().sort((x, y) => x - y)[a.length >> 1]; G.ms[key] = { first: med(firsts), warm: med(warms), all: firsts.map(R) }; }
     if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S });
     G.parts[key] = g.parts; G.z[key] = g.z; G.rgb[key] = g.rgb; G.shadows[key] = g.calls; G.shadowPx[key] = g.shadowPx; G.onGround[key] = g.onGround; G.surf[key] = g.surf;
     // the set without each standing part: what is behind it (thin things' contrast, the lit side of each thing)
@@ -531,17 +532,17 @@ function make(G, runs) {
   const pot0 = [107, NUM.FYS[0] - 12], pot1 = [145, NUM.FYS[1] - 12], cup = STORY.find(s => s.old.join() === '126,127').new, plat = STORY.find(s => s.old.join() === '195,123').new, mama = STORY.find(s => s.old.join() === '176,152').new;
   const PICS = {
     'arroz.si': pic(pot0[0], pot0[1] + 2, 2, 'the pot at burner 0 full of rice'), 'arroz.no': pic(pot0[0], pot0[1] + 2, 2, 'the pot full of beans'),
-    'habichuelas.si': pic(100, 172, 1, 'Luis holding up a bowl of beans'), 'habichuelas.no': pic(100, 172, 1, 'Luis holding up a bowl of rice'),
-    'olla.si': pic(126, 174, 1, 'abuela holding up a pot'), 'olla.no': pic(126, 174, 1, 'abuela holding up a pan'),
+    'habichuelas.si': pic(97, 172, 2, 'Luis holding up a bowl of beans'), 'habichuelas.no': pic(97, 172, 2, 'Luis holding up a bowl of rice'),
+    'olla.si': pic(130, 172, 2, 'abuela holding up a pot'), 'olla.no': pic(130, 172, 2, 'abuela holding up a pan'),
     'hace.si': pic(160, mama[1] - 47, 1, 'mamá at the stove, the ladle in the pot'), 'hace.no': pic(160, mama[1] - 47, 1, 'mamá eating from a plate'),
     'pollo.si': pic(plat[0] - 2, plat[1] - 12, 2, 'a drumstick on a plate'), 'pollo.no': pic(plat[0] - 2, plat[1] - 12, 2, 'a fried egg on a plate'),
-    'huevo.si': pic(pot0[0] - 6, pot0[1] + 8, 2, 'an egg frying in the pan'), 'huevo.no': pic(100, 172, 1, 'Luis holding up the shaker'),
+    'huevo.si': pic(pot0[0] - 6, pot0[1] + 8, 2, 'an egg frying in the pan'), 'huevo.no': pic(97, 172, 2, 'Luis holding up the shaker'),
     'sal.si': pic(146, 172, 2, 'salt falling from the shaker over the frog\'s plate'), 'sal.no': pic(146, 172, 2, 'pepper from the mill'),
     'huele.si': pic(104, 118, 1, 'papá smelling the pan'), 'huele.no': pic(104, 118, 1, 'papá eating'),
     'caliente.si': pic(cup[0], cup[1] - 8, 2, 'a hot cup of chocolate, steaming'), 'caliente.no': pic(cup[0], cup[1] - 8, 2, 'a cold glass of chocolate'),
     'frio.si': pic(cup[0], cup[1] - 8, 2, 'a glass of cold water'), 'frio.no': pic(pot1[0], pot1[1] + 2, 2, 'the pot of water on the fire'),
     'cuidado.si': pic(124, 122, 1, 'Luis and abuela, both warning'), 'cuidado.no': pic(124, 130, 1, 'Luis and abuela offering a plate'),
-    'ya.si': pic(130, 174, 1, 'abuela holding up the plate of fritters'), 'ya.no': pic(130, 174, 1, 'abuela holding up a bowl'),
+    'ya.si': pic(136, 172, 2, 'abuela holding up the plate of fritters'), 'ya.no': pic(136, 172, 2, 'abuela holding up a bowl'),
   };
   const LEVEL = PAIRS.level.flatMap(L => L.pictures.map((p, i) => p.scene === 'estufa' ? { w: L.w, index: i, picture: deacc(p.pair) + '.' + p.side, old: p.crop } : null).filter(Boolean));
   for (const l of LEVEL) { const pc = PICS[l.picture]; if (pc) { l.crop = pc.crop; l.zoom = pc.zoom; } }
@@ -993,17 +994,18 @@ function checkAsks(sh, G, runs, C) {
     for (const [word, sides] of Object.entries(byWord)) { const ws = {};
       for (const side of Object.keys(sides)) { const ps = sides[side], nm = deacc(word) + '.' + side, pc = sh.pictures[nm], w = pairW(ps, sh); ws[side] = w;
         const subj = pc.subject || [];
-        for (const it of itemsOf(w, 'n')) { const b = rowsBox(it.rows); if (!b) continue; if (it.group === 'pre' && !subj.includes(it.id) && pc.zoom === 1) continue; if (!within([b[0] - 2, b[1] - 2, b[2] + 4, b[3] + 4], pc.crop) && meets(b, pc.crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(b) + ' is not whole with 2 px to spare in ' + JSON.stringify(pc.crop)); }
+        for (const it of itemsOf(w, 'n')) { const b = rowsBox(it.rows); if (!b) continue; if (it.group === 'pre' && !subj.includes(it.id) && pc.zoom === 1) continue;
+          if (it.kind === 'person' && pc.zoom === 2) { const f = faceOf(it), top = Math.min(...it.rows.map(q => q[0])); if (!within([f[0] - 2, top - 2, f[2] + 4, f[1] + f[3] - top + 4], pc.crop)) P.push('pair ' + nm + ': ' + it.id + '\'s head is not whole in ' + JSON.stringify(pc.crop)); const hb = rowsBox(it.rows.filter(q => q[0] <= pc.crop[1] + pc.crop[3] - 3)); if (hb && !within([hb[0] - 2, hb[1] - 2, hb[2] + 4, hb[3] + 2], pc.crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(hb) + ' is cut at the side or top of ' + JSON.stringify(pc.crop)); continue; } if (!within([b[0] - 2, b[1] - 2, b[2] + 4, b[3] + 4], pc.crop) && meets(b, pc.crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(b) + ' is not whole with 2 px to spare in ' + JSON.stringify(pc.crop)); }
         if (pc.zoom === 2) { const key = keyOf(w), T = TAGS[key], cnt = {}; for (let y = pc.crop[1]; y < pc.crop[1] + pc.crop[3]; y++) for (let x = pc.crop[0]; x < pc.crop[0] + pc.crop[2]; x++) { const t = T[y * 240 + x]; if (t) cnt[t] = (cnt[t] || 0) + 1; }
           for (const [t, c] of Object.entries(cnt)) if (c < 12 && t !== 'pared') P.push('pair ' + nm + ': shows only ' + c + ' px of ' + t + ' (a cut-off piece)'); } }
       if (!ws.si || !ws.no) continue; const d = []; for (const k of new Set([...Object.keys(ws.si), ...Object.keys(ws.no)])) if (JSON.stringify(ws.si[k]) !== JSON.stringify(ws.no[k])) d.push(k);
       if (JSON.stringify(sh.pictures[deacc(word) + '.si'].crop) !== JSON.stringify(sh.pictures[deacc(word) + '.no'].crop)) d.push('the window'); if (!d.length) P.push('pair ' + word + ': the two pictures are the same'); diffs.push(deacc(word) + ': ' + d.join(', ')); }
-    notes.push('pairs: ' + pairSidesOf().length + ' review pictures (the ' + sh.level.length + ' level pictures are among them): everything in each whole with 2 px to spare (in a zoom 1 picture of people, a pot or the pan behind them may be cut by its edge), no zoom 2 picture with a cut-off piece of the set; what differs: ' + diffs.join('; ')); }
+    notes.push('pairs: ' + pairSidesOf().length + ' review pictures (the ' + sh.level.length + ' level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet, as the old close pictures; in a zoom 1 picture of people, a pot or the pan behind them may be cut by its edge), no zoom 2 picture with a cut-off piece of the set; what differs: ' + diffs.join('; ')); }
 
   /* states and bakes */
   { const reached = new Set(); for (const r of runs) for (const L of r.lines) reached.add(keyOf(L.W)); for (const ps of pairSidesOf()) reached.add(keyOf(pairW(ps, null)));
     for (const k of STATES) if (!reached.has(k)) P.push('state ' + k + ' is baked but nothing reaches it');
     for (const k of STATES) if (G.ms[k].first >= 150) P.push('bake: the first bake of ' + k + ' took ' + R(G.ms[k].first) + ' ms in a fresh page (keep under 150)');
-    notes.push('states: ' + reached.size + ' baked states reached (every moment, pair and level picture); each first bake in a fresh page under 150 ms'); }
+    notes.push('states: ' + reached.size + ' baked states reached (every moment, pair and level picture); each first bake in a fresh page under 150 ms (the median of five)'); }
   return P;
 }

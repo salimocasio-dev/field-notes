@@ -881,8 +881,8 @@
    },
    "crops": {
     "huevo.no": {
-     "crop": [2, 112, 196, 104],
-     "zoom": 1
+     "crop": [48, 146, 98, 52],
+     "zoom": 2
     }
    }
   },
@@ -941,12 +941,12 @@
    },
    "crops": {
     "habichuelas.si": {
-     "crop": [2, 112, 196, 104],
-     "zoom": 1
+     "crop": [48, 146, 98, 52],
+     "zoom": 2
     },
     "habichuelas.no": {
-     "crop": [2, 112, 196, 104],
-     "zoom": 1
+     "crop": [48, 146, 98, 52],
+     "zoom": 2
     }
    }
   },
@@ -981,20 +981,20 @@
    },
    "crops": {
     "olla.si": {
-     "crop": [28, 112, 196, 104],
-     "zoom": 1
+     "crop": [81, 146, 98, 52],
+     "zoom": 2
     },
     "olla.no": {
-     "crop": [28, 112, 196, 104],
-     "zoom": 1
+     "crop": [81, 146, 98, 52],
+     "zoom": 2
     },
     "ya.si": {
-     "crop": [32, 112, 196, 104],
-     "zoom": 1
+     "crop": [87, 146, 98, 52],
+     "zoom": 2
     },
     "ya.no": {
-     "crop": [32, 112, 196, 104],
-     "zoom": 1
+     "crop": [87, 146, 98, 52],
+     "zoom": 2
     }
    }
   },
@@ -1395,31 +1395,31 @@
    "what": "the pot full of beans"
   },
   "habichuelas.si": {
-   "world": [7.8326, 3.3724, 0],
-   "screen": [100, 172],
-   "zoom": 1,
-   "crop": [2, 112, 196, 104],
+   "world": [7.751, 3.4539, 0],
+   "screen": [97, 172],
+   "zoom": 2,
+   "crop": [48, 146, 98, 52],
    "what": "Luis holding up a bowl of beans"
   },
   "habichuelas.no": {
-   "world": [7.8326, 3.3724, 0],
-   "screen": [100, 172],
-   "zoom": 1,
-   "crop": [2, 112, 196, 104],
+   "world": [7.751, 3.4539, 0],
+   "screen": [97, 172],
+   "zoom": 2,
+   "crop": [48, 146, 98, 52],
    "what": "Luis holding up a bowl of rice"
   },
   "olla.si": {
-   "world": [8.6485, 2.774, 0],
-   "screen": [126, 174],
-   "zoom": 1,
-   "crop": [28, 112, 196, 104],
+   "world": [8.6485, 2.5565, 0],
+   "screen": [130, 172],
+   "zoom": 2,
+   "crop": [81, 146, 98, 52],
    "what": "abuela holding up a pot"
   },
   "olla.no": {
-   "world": [8.6485, 2.774, 0],
-   "screen": [126, 174],
-   "zoom": 1,
-   "crop": [28, 112, 196, 104],
+   "world": [8.6485, 2.5565, 0],
+   "screen": [130, 172],
+   "zoom": 2,
+   "crop": [81, 146, 98, 52],
    "what": "abuela holding up a pan"
   },
   "hace.si": {
@@ -1458,10 +1458,10 @@
    "what": "an egg frying in the pan"
   },
   "huevo.no": {
-   "world": [7.8326, 3.3724, 0],
-   "screen": [100, 172],
-   "zoom": 1,
-   "crop": [2, 112, 196, 104],
+   "world": [7.751, 3.4539, 0],
+   "screen": [97, 172],
+   "zoom": 2,
+   "crop": [48, 146, 98, 52],
    "what": "Luis holding up the shaker"
   },
   "sal.si": {
@@ -1535,17 +1535,17 @@
    "what": "Luis and abuela offering a plate"
   },
   "ya.si": {
-   "world": [8.7572, 2.6652, 0],
-   "screen": [130, 174],
-   "zoom": 1,
-   "crop": [32, 112, 196, 104],
+   "world": [8.8116, 2.3933, 0],
+   "screen": [136, 172],
+   "zoom": 2,
+   "crop": [87, 146, 98, 52],
    "what": "abuela holding up the plate of fritters"
   },
   "ya.no": {
-   "world": [8.7572, 2.6652, 0],
-   "screen": [130, 174],
-   "zoom": 1,
-   "crop": [32, 112, 196, 104],
+   "world": [8.8116, 2.3933, 0],
+   "screen": [136, 172],
+   "zoom": 2,
+   "crop": [87, 146, 98, 52],
    "what": "abuela holding up a bowl"
   }
  },
@@ -1579,40 +1579,40 @@
    "index": 3,
    "picture": "olla.no",
    "old": [113.33, 146, 54.34, 60],
-   "crop": [28, 112, 196, 104],
-   "zoom": 1
+   "crop": [81, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "olla",
    "index": 0,
    "picture": "olla.si",
    "old": [113.33, 146, 54.34, 60],
-   "crop": [28, 112, 196, 104],
-   "zoom": 1
+   "crop": [81, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "olla",
    "index": 1,
    "picture": "olla.no",
    "old": [113.33, 146, 54.34, 60],
-   "crop": [28, 112, 196, 104],
-   "zoom": 1
+   "crop": [81, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "olla",
    "index": 2,
    "picture": "habichuelas.si",
    "old": [79.54, 150, 36.23, 40],
-   "crop": [2, 112, 196, 104],
-   "zoom": 1
+   "crop": [48, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "olla",
    "index": 3,
    "picture": "ya.si",
    "old": [113.33, 146, 54.34, 60],
-   "crop": [32, 112, 196, 104],
-   "zoom": 1
+   "crop": [87, 146, 98, 52],
+   "zoom": 2
   },
   {
    "w": "pollo",
@@ -1675,8 +1675,8 @@
    "index": 3,
    "picture": "olla.si",
    "old": [113.33, 146, 54.34, 60],
-   "crop": [28, 112, 196, 104],
-   "zoom": 1
+   "crop": [81, 146, 98, 52],
+   "zoom": 2
   }
  ],
  "clips": {
@@ -4674,8 +4674,8 @@
    "heads: at 4319 face-moments (step ends) nobody's head against the window, the hood or the shelf where the old picture kept it clear",
    "steam and smoke: 447 distinct puffs (every frame of their rise) against what is directly behind them, the contrast ratio of the mean luminances 2.17 at the least (smoke over the pan (el-pollo-y-el-huevo right t 14290))",
    "preview: at every step's end of the 12 recorded runs (4706 places) estufa-preview.html puts everyone exactly where the sheet's rule does (0 differ); the rule puts each of the 4515 places at rest where the port's play has them (0 differ)",
-   "pairs: 24 review pictures (the 16 level pictures are among them): everything in each whole with 2 px to spare (in a zoom 1 picture of people, a pot or the pan behind them may be cut by its edge), no zoom 2 picture with a cut-off piece of the set; what differs: arroz: fuegos; habichuelas: gente; olla: gente; hace: gente, cosas; pollo: plata; huevo: gente, fuegos, the window; sal: vuelos; huele: olor, gente, fuegos; caliente: cosas; frio: fuegos, cosas, the window; cuidado: gente, the window; ya: gente",
-   "states: 2 baked states reached (every moment, pair and level picture); each first bake in a fresh page under 150 ms"
+   "pairs: 24 review pictures (the 16 level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet, as the old close pictures; in a zoom 1 picture of people, a pot or the pan behind them may be cut by its edge), no zoom 2 picture with a cut-off piece of the set; what differs: arroz: fuegos; habichuelas: gente; olla: gente; hace: gente, cosas; pollo: plata; huevo: gente, fuegos, the window; sal: vuelos; huele: olor, gente, fuegos; caliente: cosas; frio: fuegos, cosas, the window; cuidado: gente, the window; ya: gente",
+   "states: 2 baked states reached (every moment, pair and level picture); each first bake in a fresh page under 150 ms (the median of five)"
   ],
   "walked": ["banco-olla1"],
   "asks": [
