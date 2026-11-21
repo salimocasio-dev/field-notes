@@ -369,14 +369,3 @@ function drawGlints(glints, t, refZ, color) {
     for (let dx = -w; dx <= w; dx++) { const j = gl.i + dx; if (gl.ix + dx < 0 || gl.ix + dx >= W || zb[j] !== refZ[j]) continue; pix[j] = color; }
   }
 }
-// a shadow at a reduced strength (order 34a, round 2): castShadow's ellipse, of which only the pixels whose Bayer threshold is under `cover`
-// (0 to 1) take the engine's shadow tint; the shadow reads lighter, dithered as the look's big flat surfaces are
-function castShadowCover(x, y, z, r, cover, dither = .4) {
-  const saved = shadowMask.slice();
-  shadowMask.fill(0);
-  castShadow(x, y, z, r, 1, dither);
-  for (let i = 0; i < W * H; i++) {
-    if (shadowMask[i] && bayerAt(i % W, (i / W) | 0) >= cover) shadowMask[i] = 0;
-    if (saved[i] > shadowMask[i]) shadowMask[i] = saved[i];
-  }
-}

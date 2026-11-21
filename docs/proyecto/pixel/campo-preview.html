@@ -33,7 +33,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     X('{id:"arbol",box:[COPA[0]-COPA[2],COPA[1]-COPA[3],COPA[2]*2,COPA[3]*2+26],hand:[COPA[0],COPA[1]],m:0}', `{id:"arbol",box:${bx('arbol')},hand:${hd('arbol')},m:0}`);
     X('{id:"juncos",box:[160,168,60,48],hand:[188,190],m:0}', `{id:"juncos",box:${bx('juncos')},hand:${hd('juncos')},m:0}`);
     X('{id:"campo",box:[0,100,240,116],m:0}', `{id:"campo",box:${bx('campo')},m:0}`);
-    for (const m of S.moves) X(m.src, m.to);
+    { const done = new Set(); for (const m of S.moves) { if (done.has(m.src)) continue; done.add(m.src); X(m.src, m.to); } }   // a move named on several lines replaces them all at once
     // the sorted list: each item says who or what it is (for the front masks); the reeds' entry (sheet: front)
     for (const [a, b] of S.front.tags) X(a, b);
     for (const [a, b] of S.helps.lines) X(a, b);
@@ -101,10 +101,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     for (let y = Math.floor(cy - ry - 1); y <= Math.ceil(cy + ry + 1); y++) for (let x = Math.floor(cx - rx - 1); x <= Math.ceil(cx + rx + 1); x++) { const d = ((x + .5 - cx) / rx) ** 2 + ((y + .5 - cy) / ry) ** 2; if (d > inner && d <= 1) c.fillRect(x, y, 1, 1); } };
   PV.under = function (c, o, p, r, im) { if (OLD || !o || o.con) return; const H = SHEET.helps, T = SHEET.shadows.bola.tree, wet = o.flota || (p[2] <= 1 && over(p[0], p[1] - 1));
     if (wet) { ell(c, p[0], p[1] + (o.flota ? (F >> 3) % 2 : 0), r + H.ring.ball.rx, H.ring.ball.ry, H.ring.inner, H.ring.colour); return; }
-    if (p[2] <= 3 && H.contact.balls.includes(o.k) && !(p[2] >= T.z && Math.abs(p[0] - T.x) <= T.dx && p[1] <= T.y)) {   // the darker rim round the ball
-      const x0 = p[0] - (im.width >> 1), y0 = p[1] - p[2] - im.height + 1, d = im.getContext('2d').getImageData(0, 0, im.width, im.height).data, n = H.contact.halo, on = (x, y) => x >= 0 && y >= 0 && x < im.width && y < im.height && d[(y * im.width + x) * 4 + 3] > 40;
-      c.fillStyle = 'rgb(' + H.contact.colour + ')';
-      for (let y = -n; y < im.height + n; y++) for (let x = -n; x < im.width + n; x++) { if (on(x, y)) continue; let near = false; for (let dy = -n; dy <= n && !near; dy++) for (let dx = -n; dx <= n; dx++) if (on(x + dx, y + dy)) { near = true; break; } if (near) c.fillRect(x0 + x, y0 + y, 1, 1); } } };
+  };
   PV.wade = function (c, o) { if (OLD || (o.dy || 0) > 3) return; const x = Math.round(o.x), y = Math.round(o.y), D = SHEET.helps.ring.dog; if (over(x, y - 1)) ell(c, x, y + D.dy, D.rx, D.ry, SHEET.helps.ring.inner, SHEET.helps.ring.colour); };
   // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
   const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
@@ -157,7 +154,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     }
     if (w.perro && w.perro.vis !== 0) { const o = w.perro, g = on(Math.round(o.x), Math.round(o.y) - 1); out.push([g[0], g[1], .25, SH.perro.radius]); }
     if (w.cesta) { const g = on(w.cesta[0], w.cesta[1] - 1); out.push([g[0], g[1], .2, SH.cesta.radius]); }
-    for (const [k, o] of Object.entries(w.bolas || {})) { const s = PV.ballShadow(o); if (s) { const g = on(s[0], s[1] - 1); out.push([g[0], g[1], .05, SH.bola.radius[o.k]]); } }
+    for (const [k, o] of Object.entries(w.bolas || {})) { const s = PV.ballShadow(o); if (s) { const g = on(s[0], s[1] - 1), R = SH.bola.radius[o.k]; out.push([g[0], g[1], R, R]); } }
     return out;
   };
   // a ball's shadow point on the screen (sheet shadows.bola.when), or null
@@ -165,7 +162,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     if (!o || o.vis === 0 || o.con || o.flota) return null;
     const p = [Math.round(o.x), Math.round(o.y), Math.round(o.z || 0)], T = SHEET.shadows.bola.tree;
     if (p[2] >= T.z && Math.abs(p[0] - T.x) <= T.dx && p[1] <= T.y) return null;   // in the tree's crown
-    const g = CUR.fw.unproject(p[0], p[1] - 1); if (CUR.fw.CAMPO_SET.shore(g.x, g.y) < 0) return null;   // over the water
+    const g = CUR.fw.unproject(p[0] + .5, p[1] - .5); if (p[2] <= 1 && CUR.fw.CAMPO_SET.shore(g.x, g.y) < 0) return null;   // lying on the water: its ring instead
     return p;
   };
   PV.render = async function (wOld, opts = {}) {
