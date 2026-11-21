@@ -1,0 +1,495 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El banco: the paved corner of the park with three benches, the piragua cart, a lamp post and the gate home (place 2, El parque, its fourth
+   and last scene), as a set on the Pixel Plays engine (order 36a).
+   The same park as El camino, El campo and El lago: the same lawn (El frente's GRASS ramp, calm), the same day sky, hills, sun, light and scale
+   (S 26, the engine's 30 degree camera, shadows to screen right), the same origin; El camino's trees, bench (its planks, legs and wood, here
+   with a back) and stone posts.
+   The layout stands on the world's axes (banco-sheet.json layout):
+     the paving: flags along x and y. Its far edge is stepped, on the axes: behind each bench a stretch along x (parallel to the bench's back,
+       hidden by it), between two benches a step along y; left of the first bench it turns along y and runs down to the picture's left edge.
+       Beyond it the lawn, with the three trees; the pole stands on the lawn;
+     the three benches: each along x (its seat and back facing +y, the lit side, towards the camera), stepped: the middle of each one's seat
+       edge at its old screen point (BANCOS), so that whoever sits keeps the old x and sits on the seat's front edge (y: sheet moves, SY);
+     the cart: along y, its wheels on its +x side, the piragua man behind it (-x); it rolls away along +y (down to the left on the screen);
+     the lamp post: on the paving behind the gap between the second and third bench, with a foot; the wire hangs from the pole to it and on;
+     the hedge: along y across the lower right corner, the gate an opening in it between two stone posts, the paving running out through it.
+   The state comes from the address; these become the builder's setKey:
+     luz    = dia | tarde | noche   W.noche ? noche : W.tarde ? tarde : dia
+     luna   = 0 | 1                 W.noche && W.luna (the moon, in the night sky)
+     carro  = abierto | cerrado | no   W.carroX != null or W.carro === 0 ? no : W.carro === "cerrado" ? cerrado : abierto
+                                    (while it rolls (W.carroX) the set has no cart: the sprite layer draws the cart's own pixels, sheet carro)
+     t      = wind time in seconds (0 for the reference); ox, oy = the origin (defaults: El camino's, El campo's and El lago's)
+     edge   = steps | straight      a look candidate, not a state (see the report): straight, the paving's far edge one line along y
+   It draws one frame: the baked set, then drawLeaves(t) and drawTufts(t). No characters. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = {
+  luz: pick('luz', ['dia', 'tarde', 'noche'], 'dia'),
+  luna: pick('luna', ['0', '1'], '0') === '1',
+  carro: pick('carro', ['abierto', 'cerrado', 'no'], 'abierto'),
+  edge: pick('edge', ['steps', 'straight'], 'steps'),
+  t: +(Q.get('t') || 0),
+};
+SET.luna = SET.luna && SET.luz === 'noche';
+window.PP_SCENE = { w: 240, h: 216, s: 26, originX: +(Q.get('ox') || 0), originY: +(Q.get('oy') || 4), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script>
+'use strict';
+/* ---------- the plan ----------
+   With origin (0, 4) a ground point (x, y, z) is on the screen at (120 + 18.385 (x - y), 112 + 9.192 (x + y) - 22.517 z).
+   +x runs down to the right on the screen, +y down to the left. Gs(sx, sy, z): the world point at height z under a screen point */
+const Gs = (sx, sy, z = 0) => { const u = (sx - OX) / S, v = (sy - OY + z * COS * S) / (S * SIN); return [(u + v) / R2, (v - u) / R2, z]; };
+const SCR = (x, y, z = 0) => { const p = project(x, y, z); return [p.sx, p.sy]; };
+const HZ = 100;                                                        // the horizon (screen row): the park's
+const NIGHT = SET.luz === 'noche', DUSK = SET.luz === 'tarde';
+
+/* ---------- the benches (the old BANCOS: the middle of each seat at (96, 150), (144, 150), (192, 150)) ----------
+   Each along x, its seat ZS high, BD deep (y), 2 BHL long; the seat's front edge (y = its y1) passes through the screen point (B, 151) at seat
+   height, so that its edge at column c is on row 151 + (c - B) / 2 and whoever sits at x c has their lap there: feet at SY(c) = 161 + (c - B) / 2
+   (the old 161 at the bench's middle; sheet moves) */
+const BANCOS = [96, 144, 192];
+const ZS = .42, BD = .5, BHL = .85, BACK_H = .6;
+const SEAT_ROW = 151;                                                 // the seat's front edge at each bench's middle (the old seat's edge)
+const BHL_R = [BHL, BHL, .27];                                         // the third bench ends 5 px right of its middle (round 2): whole in the view, and its box clear of the gate's right post
+const BENCH = BANCOS.map((B, k) => { const f = Gs(B, SEAT_ROW, ZS); return { B, x0: f[0] - BHL, x1: f[0] + BHL_R[k], y0: f[1] - BD, y1: f[1] }; });
+const SY = c => { let k = 0; for (let i = 1; i < 3; i++) if (Math.abs(c - BANCOS[i]) < Math.abs(c - BANCOS[k])) k = i; return SEAT_ROW + 10 + (c - BANCOS[k]) / 2; };
+const WOOD = [150, 98, 56], LEG = [92, 60, 36], TRUNK = [118, 82, 50], IRON = [64, 66, 82], STONEP = [190, 178, 156];
+
+/* ---------- the paving's far edge: a line of segments on the axes (on the screen: along x, slope + 1/2; along y, slope - 1/2) ----------
+   behind each bench a stretch along x EDGE_BACK rows behind its back legs' feet; a step along y between two benches; left of the first one the
+   edge turns along y down to the picture's left edge. EDGEROW(c): the edge's row at column c (the paving is below it) */
+const EDGE_BACK = 6.5;
+const backRow = (k, c) => SEAT_ROW + (c - BANCOS[k]) / 2 - BD * S / R2 + ZS * COS * S;   // the back legs' feet (z 0, y = y0) at column c
+const SEGROW = (k, c) => backRow(k, c) - EDGE_BACK;
+const STEP_AT = [110, 158];            // where each step along y leaves the stretch behind bench k (column), rising to the next one's
+const TURN_AT = 80;                    // where the edge turns along y, left of the first bench
+const EDGEROW = c => {
+  if (SET.edge === 'straight') return SEGROW(0, TURN_AT) + (TURN_AT - c) / 2;
+  if (c <= TURN_AT) return SEGROW(0, TURN_AT) + (TURN_AT - c) / 2;
+  for (let k = 0; k < 3; k++) {
+    if (k === 2 || c <= STEP_AT[k]) return SEGROW(k, c);
+    const r0 = SEGROW(k, STEP_AT[k]), r = r0 - (c - STEP_AT[k]) / 2;   // the step along y
+    if (r >= SEGROW(k + 1, c)) return r;
+  }
+  return SEGROW(2, c);
+};
+
+/* ---------- the hedge and the gate (the old PORTON: (188, 197), where one stands at the gate) ----------
+   the hedge along y: on the screen the line sx + 2 sy = HEDGE_K, its +x face towards the camera; the gate an opening in it between two stone
+   posts at GATE[0] and GATE[1] (screen, their feet), the paving running out through it along +x (between the lines through the posts) */
+const HEDGE_K = 604, HEDGE_T = .32, HEDGE_H = .7, HEDGE_H_FAR = .7;   // round 2: knee to hip high (16 rows)                // a low hedge: it stands in front of the paving (the camera looks over it), so that it hides nobody
+const GATE = [[180, 212], [212, 196]];   // round 2: both posts whole in the view, the opening 32 px between them on the screen                               // the left post's foot 2 rows under the picture's edge: the paving's lower edge is busy                               // the posts' feet (their middles), on the line
+const GATE_W = GATE.map(p => Gs(p[0], p[1]));
+const HEDGE_X = GATE_W[0][0] + HEDGE_T / 2;                          // the hedge's +x face (the line x = HEDGE_X); the posts stand in its middle
+const NEAR_PIECE = .3;                                                // the hedge's piece left of the gate: a short end, so that it is clear of the paving's busy lower edge
+const POST_W = .11, POST_H = 1.55;      // round 2: about a person's height with its cap and ball (44 rows); the left post's top just under the third bench's box
+// beyond the hedge (the line sx + 2 sy = HEDGE_K, its +x side): the town's pavement, the way home
+
+/* ---------- the trees (El camino's small trees), on the lawn beyond the paving; the pole; the lamp post; the wire ---------- */
+const TREES = [[86, 102], [121, 114], [220, 124]];
+const POLE = { at: [24, 138], top: 48, r: .04 };   // round 2: whole inside the view, 3 px wide, with a foot                     // the old pole (21 to 23, rows 48 to 138)
+const FAROL = { at: [174, 140], lamp: [174, 34, 48] };   // round 2: its foot behind the benches' line, on the lawn in the gap between the second and third bench                // its foot (screen, ground) and its lantern (x, top row, bottom row)
+const cableY = x => Math.round(50 + 7 * (1 - Math.pow((x - 120) / 98, 2)));   // the old wire (banco.js cableY)
+const WIRE = (() => {
+  // its plan: the line on the ground from the pole's foot through the lamp post's; at each screen column the world point on that line whose
+  // projection, lifted, falls on the old wire's row (cableY): it hangs from the pole's top to the lamp post and on off the picture
+  const P = Gs(...POLE.at), F = Gs(...FAROL.at), out = [];
+  for (let sx = POLE.at[0]; sx <= 244; sx += .25) {
+    const t = (sx - SCR(...P)[0]) / (SCR(...F)[0] - SCR(...P)[0]), x = lerp(P[0], F[0], t), y = lerp(P[1], F[1], t), g = SCR(x, y, 0);
+    const yy = 50 + 7 * (1 - Math.pow((sx - 120) / 98, 2));
+    out.push([sx, x, y, (g[1] - yy) / (COS * S)]);
+  }
+  return out; })();
+
+/* ---------- the cart (the old CARRO (47, 178): the piragua man stands behind it at (51, 172)) ----------
+   along y (its long side, its wheels and its painted panel facing +x), its back face just in front of the man; on two wheels at its two ends */
+const CARRO = [36, 178];                                             // the old (47, 178) 13 px to the left (sheet moves): the cart is in front of the man, down to the right of him
+const CART = (() => { const m = Gs(CARRO[0] + 4, CARRO[1] - 6 - 1), hl = .72, d = .66; const x0 = m[0] + .16; return { x0, x1: x0 + d, y0: m[1] - hl + .05, y1: m[1] + hl + .05, z0: .34, z1: .9 }; })();
+const CART_C = [(CART.x0 + CART.x1) / 2, (CART.y0 + CART.y1) / 2];
+const WHEEL_R = .3;
+let UMBRELLA = null;                                                  // the open umbrella, for its shade on the cart (umbrellaShade)
+
+/* ---------- the sky: El camino's by day; by the hour (tarde, noche) ---------- */
+const SKIES = {
+  dia: { bands: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]], far: [[116, 180, 162], [156, 208, 188], [94, 158, 144]], near: [[78, 158, 94], [124, 203, 122], [62, 136, 80]], sun: [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]], cloud: [[214, 230, 248], [244, 248, 255]] },
+  tarde: { bands: [[86, 128, 214], [120, 156, 226], [176, 180, 214], [236, 196, 170], [252, 214, 160]], far: [[150, 160, 150], [186, 186, 164], [128, 140, 134]], near: [[104, 140, 84], [150, 176, 104], [86, 120, 72]], sun: [[226, 120, 40], [246, 160, 60], [255, 200, 100], [255, 232, 160]], cloud: [[220, 196, 200], [250, 228, 214]] },
+  noche: { bands: [[10, 14, 42], [16, 22, 62], [24, 32, 82], [34, 48, 106], [46, 62, 128]], far: [[44, 50, 70], [52, 58, 80], [38, 44, 62]], near: [[30, 44, 40], [38, 54, 46], [26, 38, 34]], sun: null, cloud: [[58, 66, 104], [76, 84, 124]] },
+};
+const SKY = SKIES[SET.luz];
+// the light of the hour on the set (set-kit.js lightPass: c * m + a): the evening warm, as El frente's dusk (the blades keep their lit colours);
+// the night El patio's
+const LIGHTS = { dia: null, tarde: { m: [.9, .9, .9], a: [25.5, 15, 6], litTufts: true },   // the evening: the old page's own (rgba(255, 150, 60, .10) laid over its background)
+   noche: { m: [.56, .62, .82], a: [6, 10, 30] } };
+const LIGHT = LIGHTS[SET.luz];
+// the sun upper left (every shadow falls to the right), right of the corner card's place and over the wire; the moon at night (when W.luna) left
+// of it, under the corner card's place. The old picture's three clouds (engine.js sky(): 36, 16; 112, 9; 168, 26), clear of the sun, the moon
+// and the card's place
+const SUN = [34, 40, 4], MOON = [34, 40, 4];   // round 2: 6 px and more from the pole's top and the wire, left of the cards' glow (round 3 asked El camino's radius 9: not done, see the sheet's sky note)
+const CLOUDS = [[150, 12, .7], [196, 30, .8], [160, 40, .6]];
+const cloudAt = (ix, iy) => { if (!SKY.cloud) return 0; for (const [cx, cy, s] of CLOUDS) {
+    const e = (x0, y0, rx, ry) => { const dx = (ix + .5 - x0) / rx, dy = (iy + .5 - y0) / ry; return dx * dx + dy * dy <= 1; };
+    if (e(cx, cy, 13 * s, 5 * s) || e(cx - 9 * s, cy + 2, 8 * s, 4 * s) || e(cx + 10 * s, cy + 2, 9 * s, 4 * s)) return rgb(...SKY.cloud[iy + .5 > cy + 2 * s ? 0 : 1]); }
+  return 0; };
+const moonAt = (ix, iy) => { const dx = ix + .5 - MOON[0], dy = iy + .5 - MOON[1], d = Math.hypot(dx, dy); if (d > MOON[2]) return 0;
+  if (d > MOON[2] - 1) return rgb(196, 192, 160);
+  const q = MOON[2] / 4, spot = Math.hypot(dx + 2 * q, dy + 2 * q) < 1.8 * q || Math.hypot(dx - 2.5 * q, dy - q) < 1.3 * q;
+  return rgb(...(spot ? [226, 218, 172] : [255, 248, 216])); };
+
+/* ---------- the ground: the paving, the lawn, the path through the gate ---------- */
+const LAWN = GRASS, LAWN_T = 3.45, BLADE = [2, 2, 3, 3, 4];
+for (let k = 0; k < 5; k++) { const c = LAWN[BLADE[k]]; tuftLit[k] = rgb(...c); tuftDark[k] = rgb(c[0] * .54, c[1] * .52, c[2] * .72); }
+const lawnAt = (x, y, ix, iy) => { const t = LAWN_T + (noise(x * .3, y * .3) - .5) * .6 + (bayerAt(ix, iy) - .5) * .8 + (hash(ix, iy) - .5) * .25;
+  return rgb(...LAWN[clamp(Math.floor(t), 2, 4)]); };
+// the old flags' colours (#D8D0BA, the lighter #E2DAC6, the specks #CEC6B0, the joints #B8AE98); flags FLAG long along x, FLAGW wide, in rows
+// along x, each row offset by half a flag (a running bond), joints along both axes
+const PAVE = [[150, 140, 120], [184, 174, 152], [206, 198, 178], [216, 208, 186], [226, 218, 198]];
+const FLAG = .62, FLAGW = .46, JOINT = .035;
+function paveAt(x, y, ix, iy) {
+  const r = Math.floor(y / FLAGW), fx = x / FLAG + (r % 2 ? .5 : 0), k = Math.floor(fx);
+  const jy = y - r * FLAGW, jx = (fx - k) * FLAG;
+  if (jy < JOINT || jx < JOINT) return rgb(...PAVE[1]);
+  const h = hash(k * 7 + 3, r * 5 + 1), t = 3 + (h > .78 ? .6 : h < .2 ? -.45 : 0) + (bayerAt(ix, iy) - .5) * .5 + (hash(ix >> 1, iy >> 1) < .06 ? -.7 : 0);
+  return rgb(...PAVE[clamp(Math.floor(t), 2, 4)]);
+}
+const onHedgeLine = (sx, sy) => sx + 2 * sy;                          // < HEDGE_K: the plaza's side
+// what the ground is under a ground point (x, y): 'pave' (the plaza, and the path out through the gate), 'lawn' (beyond the paving's far edge,
+// and beyond the hedge)
+function groundKind(x, y) {
+  const [sx, sy] = SCR(x, y, 0);
+  if (sy + .5 < HZ) return 'sky';
+  if (onHedgeLine(sx, sy) >= HEDGE_K) return y > GATE_W[1][1] - .02 && y < GATE_W[0][1] + .02 ? 'pave' : 'lawn';   // round 2: beyond the hedge, the paving runs out through the gate as a path; lawn on either side of it
+  return sy >= EDGEROW(sx) ? 'pave' : 'lawn';
+}
+function bancoGround(x, y, ix, iy, i) {
+  if (iy + .5 < HZ) return 0;                                          // above the horizon: the hills and the sky
+  const k = groundKind(x, y);
+  if (k === 'pave') { kinds[i] = KIND_ROAD; return paveAt(x, y, ix, iy); }
+  kinds[i] = KIND_GRASS;
+  return lawnAt(x, y, ix, iy);
+}
+
+/* ---------- the benches: El camino's bench (three planks, legs in pairs with a stretcher, its wood), along x, with a back ---------- */
+function bench(k) {
+  const b = BENCH[k];
+  part('banco' + k, () => {
+    const { x0, x1, y0, y1 } = b;
+    // the legs: a pair at each end (front and back) and a stretcher between them; the back legs go on up as the back's uprights
+    for (const a of [x0 + .07, x1 - .07]) {
+      block(a - .035, y1 - .07, 0, a + .035, y1 - .0, ZS - .05, LEG);
+      block(a - .035, y0, 0, a + .035, y0 + .07, ZS + BACK_H, LEG);
+      block(a - .025, y0 + .06, .1, a + .025, y1 - .06, .16, LEG);
+    }
+    // the seat: three planks along x, a dark gap between them, each a step lighter towards the front
+    const pw = BD / 3;
+    for (let n = 0; n < 3; n++) { const s0 = y0 + n * pw + .01, s1 = s0 + pw - .03;
+      block(x0, s0, ZS - .06, x1, s1, ZS, WOOD, WOOD.map(v => Math.min(255, v * (1.08 + n * .05)))); }
+    // the back: two planks along x on the uprights
+    for (const [z0, z1] of [[ZS + .06, ZS + .3], [ZS + .35, ZS + BACK_H - .02]]) block(x0 + .02, y0 + .04, z0, x1 - .02, y0 + .09, z1, WOOD, WOOD.map(v => Math.min(255, v * 1.12)));
+    // its shadow on the paving: under the seat, and the back's, short, at its foot
+    if (!NIGHT) { for (let a = x0 + .1; a <= x1 - .1; a += .2) { castShadow(a, (y0 + y1) / 2, ZS - .1, .2); castShadow(a, y0 + .05, ZS + .2, .12); } }
+  });
+}
+
+/* ---------- the trees: El camino's small trees (a straight trunk, a round crown of leaf clusters) ---------- */
+const LEAF = [[52, 128, 66], [66, 148, 76], [86, 170, 88], [118, 196, 108]];
+function smallTree(i) {
+  const [sx, sy] = TREES[i], [fx, fy] = Gs(sx, sy);
+  const L = LIGHT && { m: LIGHT.m, a: LIGHT.a };
+  part('arbol' + i, () => {
+    const zc = 30 / (COS * S);
+    capsule([fx, fy, 0], [fx, fy, zc - .1], .11, .08, () => TRUNK, 'rough');
+    capsule([fx - .12, fy + .12, 0], [fx + .12, fy - .12, 0], .07, .07, () => TRUNK, 'rough');
+    if (!NIGHT) for (let z = .03; z < zc; z += .08) castShadow(fx, fy, z, .14, 1, 0);
+    const ru = 15.6 / S, rz = 12.6 / (COS * S), rv = .5;
+    for (let k = 0; k < 80; k++) {
+      const h = (a, b) => hash(k * 13 + i * 101 + a, b);
+      const th = h(1, 7) * 6.283, ph = Math.acos(2 * h(2, 8) - 1), d = Math.cbrt(h(3, 9)) * .88;
+      const du = Math.cos(th) * Math.sin(ph) * d, dv = Math.sin(th) * Math.sin(ph) * d, dz = Math.cos(ph) * d;
+      const u = (fx - fy) / R2 + du * ru, v = (fx + fy) / R2 + dv * rv, z = zc + dz * rz;
+      const tone = h(4, 10) * .6 + dz * .5 - du * .25 + .3;
+      sphere(...UVW(u, v, z), .16 + h(5, 11) * .1, LEAF[tone > 1 ? 3 : tone > .62 ? 2 : tone > .25 ? 1 : 0], 'rough');
+    }
+    // the crown's shadow on the lawn: a lone tree's, lighter and solid (El campo's rule), cast after the bake (CROWN_SHADE)
+    CROWN_SHADE.push([fx, fy, zc]);
+  });
+}
+const CROWN_SHADE = [];
+// El campo's lone tree's shade: one even tone, the lawn's next darker, on the lawn only, an ellipse where the engine would cast the crown's
+function crownShades() {
+  if (NIGHT) return;
+  for (const [fx, fy, zc] of CROWN_SHADE) {
+    const p = project(fx + SHADOW_X * zc, fy + SHADOW_Y * zc, 0), rx = .55 * S * 1.05, ry = rx * SIN + 1;
+    for (let iy = Math.floor(p.sy - ry); iy <= Math.ceil(p.sy + ry); iy++) for (let ix = Math.floor(p.sx - rx); ix <= Math.ceil(p.sx + rx); ix++) {
+      if (ix < 0 || iy < 0 || ix >= W || iy >= H) continue;
+      const dx = (ix + .5 - p.sx) / rx, dy = (iy + .5 - p.sy) / ry; if (dx * dx + dy * dy > 1) continue;
+      const i = iy * W + ix; if (kinds[i] !== KIND_GRASS || zb[i] !== groundZ[i]) continue;
+      pix[i] = rgb(...LAWN[2]); CROWN_PX.add(i);
+    }
+  }
+}
+const CROWN_PX = new Set();
+
+/* ---------- the pole, the lamp post, the wire ---------- */
+const PZ = (sy0, sy1) => (sy0 - sy1) / (COS * S);                      // a height in rows, as world z
+function pole() {
+  part('poste', () => {
+    const g = Gs(...POLE.at), h = PZ(POLE.at[1], POLE.top);
+    capsule([g[0], g[1], 0], [g[0], g[1], h], POLE.r, POLE.r * .9, () => IRON, 'solid');
+    block(g[0] - .035, g[1] - .035, 0, g[0] + .035, g[1] + .035, .18, IRON);   // its foot
+    sphere(g[0], g[1], h + .03, .035, IRON, 'solid');
+    if (!NIGHT) for (let z = .02; z <= .1; z += .04) castShadow(g[0], g[1], z, .08, 1, 0);
+  });
+}
+const LAMP_GLASS = { dia: [214, 220, 226], tarde: [255, 226, 120], noche: [255, 244, 180] };   // round 2: unlit by day (pale glass), lit warm at dusk and at night
+function lampPost() {
+  const before = zb.slice(); FAROL_PX.clear();
+  part('farol', () => {
+    const g = Gs(...FAROL.at), top = PZ(FAROL.at[1], FAROL.lamp[1]), bot = PZ(FAROL.at[1], FAROL.lamp[2]);
+    // its foot: a short round plinth; the post; the lantern (four glass faces under a cap) at the old lantern's rows
+    drum(g[0], g[1], 0, .22, .13, IRON, (dx, dy) => rampOf(IRON)[dx + dy < 0 ? 3 : 2]);
+    capsule([g[0], g[1], .2], [g[0], g[1], bot], .06, .05, () => IRON, 'solid');
+    const hw = .12, lit = SET.luz !== 'dia', G = LAMP_GLASS[SET.luz];
+    // the glass: its two faces turned to the camera (+x, +y), lit at dusk and at night (they give light: plotGlow), the frame's bars dark
+    for (const face of ['y', 'x']) for (let a = -hw; a <= hw; a += ST * .4) for (let z = bot + .06; z <= top - .12; z += ST * .4) {
+      const bar = Math.abs(a) > hw - .035 || z < bot + .1 || z > top - .16;
+      const x = face === 'y' ? g[0] + a : g[0] + hw, y = face === 'y' ? g[1] + hw : g[1] + a;
+      if (bar) plot(x, y, z, rampOf(IRON)[face === 'y' ? 2 : 1]);
+      else if (lit) plotGlow(x, y, z, rgb(...G)); else plot(x, y, z, rgb(...G.map((v, k) => v * (face === 'y' ? 1 : .9))));
+    }
+    block(g[0] - hw - .03, g[1] - hw - .03, top - .12, g[0] + hw + .03, g[1] + hw + .03, top - .06, IRON);
+    sphere(g[0], g[1], top - .02, .07, IRON, 'solid');
+    block(g[0] - .05, g[1] - .05, bot - .02, g[0] + .05, g[1] + .05, bot + .06, IRON);
+    if (!NIGHT) for (let z = .02; z <= .14; z += .04) castShadow(g[0], g[1], z, .15, 1, 0);
+  });
+  for (let i = 0; i < W * H; i++) if (zb[i] !== before[i]) FAROL_PX.add(i);
+}
+// the lamp's light (lit at dusk and at night): a pool on the ground round its foot, under the lantern, joined to it; brighter at night
+const POOL = { rx: 2.4, ry: 2.4 };   // round 2: round on the ground, centred on the lamp's foot, reaching the paving in front of the benches
+function lampPool() {
+  if (SET.luz === 'dia' || Q.get('pool') === '0') return;   // round 3: pool=0, the set without its pool (the maker's check)
+  const g = Gs(...FAROL.at), str = NIGHT ? 1 : .6, [fx, fy] = FAROL.at;
+  // only round its foot (the circle's screen ellipse: 2.4 * 18.385 * 1.414 = 62.4 px across, 31.2 rows up and down): the same pixels, a quicker bake
+  for (let iy = Math.max(0, fy - 33); iy < Math.min(H, fy + 34); iy++) for (let ix = Math.max(0, fx - 64); ix < Math.min(W, fx + 65); ix++) {
+    const i = iy * W + ix; if (zb[i] < -1e8 || FAROL_PX.has(i)) continue;   // round 3: everything under the lamp, the ground and what stands on it (the benches, the hedge), not the lamp post: the pool round its foot whole, not cut where a bench hides the ground
+    const w = unproject(ix + .5, iy + .5), d = Math.hypot((w.x - g[0]) / POOL.rx, (w.y - g[1]) / POOL.ry);
+    if (d > 1) continue; if (d < .5) POOL_IN.add(i);
+    const f = (1 - d) * 2.2; if (bayerAt(ix, iy) > f) continue;   // a soft edge: dithered over its outer part
+    const c = pix[i], k = str * (.2 + .45 * (1 - d));
+    pix[i] = rgb(lerp(c & 255, 255, k), lerp(c >> 8 & 255, 236, k), lerp(c >> 16 & 255, 170, k)); POOL_PX.add(i);
+  }
+}
+const POOL_PX = new Set(), POOL_IN = new Set(), FAROL_PX = new Set();
+function wire() {
+  part('cable', () => {
+    const WC = { dia: [58, 58, 70], tarde: [46, 38, 54], noche: [206, 212, 236] }[SET.luz];   // round 3: dark against the bright dusk sky; a pale line at night (it catches the lamp and the moon): luminance contrast 2 and more
+    for (const [sx, x, y, z] of WIRE) { if (sx < POLE.at[0] + 1.5) continue; plotGlow(x, y, z, rgb(...WC)); }
+  });
+}
+
+/* ---------- the cart: a blue box on two wheels, a block of ice and bottles of syrup on it, its umbrella (open: red and white; closed: furled) ---------- */
+const BLUE = [58, 154, 208], UMB_RED = [224, 72, 58], UMB_WHITE = [242, 242, 248];
+function cart() {
+  PART_TAGS_CART.clear(); UMBRELLA = null;
+  if (SET.carro === 'no') return;
+  const before = zb.slice();
+  part('carro', () => {
+    const { x0, x1, y0, y1, z0, z1 } = CART, [cx, cy] = CART_C;
+    // the body: its +x face a white panel with four colour squares (the old), its +y end, its top
+    block(x0, y0, z0, x1, y1, z1, BLUE, [122, 196, 236]);
+    planeQuad([x1 + .005, y0 + .16, z0 + .1], [0, y1 - y0 - .32, 0], [0, 0, z1 - z0 - .22], (a, b) => {
+      const k = Math.floor(a * 4), f = a * 4 - k; if (b > .3 && b < .78 && f > .25 && f < .75) return rgb(...[[224, 72, 58], [240, 192, 32], [62, 154, 82], [122, 86, 176]][k]);
+      return rgb(...(b < .08 || b > .92 ? [208, 214, 224] : [242, 242, 248])); });
+    block(x0 - .02, y0 - .02, z1 - .04, x1 + .02, y1 + .02, z1 + .02, [30, 106, 154]);
+    // the handle at the man's side (-x): two short bars
+    for (const yy of [y0 + .12, y1 - .12]) block(x0 - .18, yy - .02, z1 - .08, x0, yy + .02, z1 - .04, IRON);
+    // the glass case with the block of ice (its back half), and three bottles of syrup (red, yellow, green) in front of it
+    block(x0 + .06, y0 + .14, z1 + .02, x0 + .34, y0 + .66, z1 + .3, [176, 214, 240], [220, 240, 255]);
+    block(x0 + .1, y0 + .2, z1 + .04, x0 + .3, y0 + .58, z1 + .16, [236, 246, 252]);
+    [[224, 72, 58], [240, 192, 32], [62, 154, 82]].forEach((c, k) => { const yy = y1 - .2 - k * .2; capsule([x1 - .18, yy, z1 + .02], [x1 - .18, yy, z1 + .3], .055, .05, () => c, 'solid'); sphere(x1 - .18, yy, z1 + .34, .03, [200, 200, 212], 'solid'); });
+    // the wheels: at the two ends of its +x side, in the plane x = x1 + .04: a dark tyre, a grey hub, spokes
+    for (const wy of [y0 + .3, y1 - .3]) {
+      const wc = [x1 + .04, wy, WHEEL_R];
+      for (let a = 0; a < 6.283; a += .012) for (let r = 0; r <= WHEEL_R; r += .012) {
+        const yy = wc[1] + Math.cos(a) * r, zz = wc[2] + Math.sin(a) * r, spoke = Math.abs(Math.sin(a * 3)) < .12;
+        const col = r > WHEEL_R - .06 ? rgb(52, 52, 64) : r < .07 ? rgb(200, 200, 212) : spoke ? rgb(138, 138, 154) : 0;
+        if (col) plot(wc[0], yy, zz, col);
+      }
+      if (!NIGHT) castShadow(wc[0], wy, .05, .12, 1, 0);
+    }
+    // the umbrella: its pole from the cart's middle; open, a shallow cone of eight panels, red and white; closed, furled round its pole
+    const ux = cx + .05, uy = cy, ztop = 3.6;   // round 2: the canopy far above the man's head, as the old
+    capsule([ux, uy, z1], [ux, uy, ztop], .03, .03, () => [110, 110, 128], 'solid');
+    if (SET.carro === 'abierto') {
+      const R0 = .7, zr = 3.25;
+      for (let r = 0; r <= R0; r += .008) for (let a = 0; a < 6.283; a += .006 / Math.max(r, .05)) {
+        const panel = Math.floor(((a / 6.283) * 8 + 8.5) % 8), z = ztop - (ztop - zr) * (r / R0);
+        const red = panel % 2 === 0, base = red ? UMB_RED : UMB_WHITE;   // round 3: the same two arrays (rampOf caches by array: a fresh one each time cost 30 ms)
+        const lit = Math.cos(a - 3.93) * .5 + (r > R0 - .04 ? -.6 : 0);
+        plot(ux + Math.cos(a) * r, uy + Math.sin(a) * r, z, rampOf(base)[clamp(Math.round(2.6 + lit), 1, 4)]);
+      }
+      for (let a = 0; a < 6.283; a += .01) plot(ux + Math.cos(a) * (R0 + .01), uy + Math.sin(a) * (R0 + .01), zr - .03, rgb(184, 48, 42));   // the rim's valance
+      sphere(ux, uy, ztop + .04, .05, [224, 72, 58], 'solid');
+      // its shade (the sun's: day and evening): on the paving joined to the cart, cast from the height of the cart's top (its true shadow, from
+      // 2.6 high, would lie 2.3 away on the paving, apart from the cart: a shade of nothing); on the cart, where the sun's ray to the canopy meets it
+      if (!NIGHT) UMBRELLA = { ux, uy, zr, R0 };   // round 2: its shade on the cart only (on the paving it darkened the dog that lies by the cart)
+    } else {
+      for (let z = 1.8; z <= ztop - .05; z += .008) { const r = .1 * Math.sin((z - 1.75) / (ztop - 1.75) * Math.PI) + .02;
+        for (let a = 0; a < 6.283; a += .05) { const red = Math.floor(a / 6.283 * 4 + z * 2) % 2 === 0; plot(ux + Math.cos(a) * r, uy + Math.sin(a) * r, z, rampOf(red ? UMB_RED : UMB_WHITE)[Math.cos(a - .78) > 0 ? 3 : 2]); } }
+      sphere(ux, uy, ztop + .02, .045, [224, 72, 58], 'solid');
+    }
+    // the body's shadow on the paving
+    if (!NIGHT) for (let y = y0 + .15; y <= y1 - .15; y += .25) castShadow((x0 + x1) / 2, y, z1 * .6, .28);
+  });
+  for (let i = 0; i < W * H; i++) if (zb[i] !== before[i]) PART_TAGS_CART.add(i);
+}
+
+// the open umbrella's shade on the cart: every pixel of the cart (not the umbrella) whose sun ray (towards -SHADOW_X, -SHADOW_Y, up) meets the
+// canopy's disc takes the shadow's tint. The pixel's world point from its depth: v = ((row + .5 - OY) / S) * SIN + d * COS, z = d * SIN - ((row + .5 - OY) / S) * COS
+function umbrellaShade() {
+  if (!UMBRELLA || !PART_TAGS_CART.size) return;
+  const { ux, uy, zr, R0 } = UMBRELLA;
+  for (const i of PART_TAGS_CART) {
+    const ix = i % W, iy = (i / W) | 0, d = zb[i], k = (iy + .5 - OY) / S, u = (ix + .5 - OX) / S, v = k * SIN + d * COS, z = d * SIN - k * COS;
+    if (z > zr - .3) continue;
+    const x = (u + v) / R2, y = (v - u) / R2, t = zr - z, hx = x - SHADOW_X * t - ux, hy = y - SHADOW_Y * t - uy;
+    if (hx * hx + hy * hy < R0 * R0) tint(i, .62, .6, .78);
+  }
+}
+const PART_TAGS_CART = new Set();
+
+/* ---------- the hedge and the gate ---------- */
+function hedge() {
+  const L = rampOf(LEAF[1]);
+  part('seto', () => {
+    // along y on the line sx + 2 sy = HEDGE_K (x = HEDGE_X), HEDGE_T thick (its +x face on the line), HEDGE_H high, from beyond the picture's
+    // lower edge to beyond its right edge, open between the posts. Leaf clusters on its top and on its +x face
+    const yA = GATE_W[0][1], yB = GATE_W[1][1], xF = HEDGE_X;
+    for (let y = yB - 4; y <= yA + NEAR_PIECE; y += .11) { if (y > yB - .1 && y < yA + .1) continue;
+      if (y > yB - .1 && y < yA + .1) continue;                          // the opening
+      for (let z = .05; z <= HEDGE_H; z += .11) { const h = hash(Math.round(y * 50), Math.round(z * 50));
+        sphere(xF - .05, y, z, .1 + h * .05, LEAF[h > .7 ? 2 : 1], 'rough'); }
+      for (let x = xF - HEDGE_T; x <= xF; x += .11) { const h = hash(Math.round(x * 50) + 7, Math.round(y * 50));
+        sphere(x, y, HEDGE_H - .04 + h * .05, .11 + h * .04, LEAF[h > .6 ? 3 : 2], 'rough'); }
+      // right of the gate, where nobody stands, the hedge is taller (it runs off the picture's right edge)
+      if (y < yB - .5) for (let z = HEDGE_H; z <= HEDGE_H_FAR; z += .11) { const h = hash(Math.round(y * 50) + 11, Math.round(z * 50)); sphere(xF - .05, y, z, .1 + h * .05, LEAF[h > .7 ? 2 : 1], 'rough');
+        if (z > HEDGE_H_FAR - .12) for (let x = xF - HEDGE_T; x <= xF; x += .11) sphere(x, y, HEDGE_H_FAR + hash(Math.round(x * 50), Math.round(y * 50)) * .05, .11, LEAF[3], 'rough'); }
+    }
+    // the hedge's cut ends at the opening (+y face of the far piece and -y face of the near one: only the near piece's end faces the camera)
+    for (let x = xF - HEDGE_T; x <= xF; x += .1) for (let z = .05; z <= HEDGE_H; z += .1) { const h = hash(Math.round(x * 40), Math.round(z * 40)); sphere(x, yB - .08, z, .09 + h * .04, LEAF[1], 'rough'); }
+    // left of the gate the hedge ends at its post (the paving's lower edge is busy: whoever stands there is clear of it)
+    if (!NIGHT) for (let y = yB - 4; y <= yA + NEAR_PIECE; y += .2) { if (y > yB - .1 && y < yA + .1) continue; castShadow(xF - HEDGE_T / 2, y, HEDGE_H * .5, .22); }
+  });
+  if (Q.get('posts') === '0') return;   // round 3: the set without its gate's posts (the maker's check of what is round them)
+  const before = zb.slice(); POST_PX.clear(); NOPOST_Z = before;
+  part('porton', () => {
+    for (const [px, py] of GATE_W) {
+      const x = px;
+      block(x - POST_W, py - POST_W, 0, x + POST_W, py + POST_W, POST_H, STONEP, STONEP.map(v => v * 1.08));
+      block(x - POST_W - .03, py - POST_W - .03, POST_H, x + POST_W + .03, py + POST_W + .03, POST_H + .09, STONEP.map(v => v * .96), STONEP.map(v => Math.min(255, v * 1.12)));
+      sphere(x, py, POST_H + .19, .095, STONEP, 'solid');
+      block(x - POST_W - .015, py - POST_W - .015, 0, x + POST_W + .015, py + POST_W + .015, .18, STONEP.map(v => v * .8));
+      if (!NIGHT) for (let z = .02; z <= .1; z += .04) castShadow(x + .1, py, z, .14, 1, 0);   // round 3: its contact shadow toward the lower right only
+    }
+  });
+  for (let i = 0; i < W * H; i++) if (zb[i] !== before[i]) POST_PX.add(i);
+}
+
+/* ---------- the footprints: where each set thing meets the ground (whoever stands is 6 px clear of every one: sheet helps.margin) ---------- */
+// on the ground plane, every pixel whose ground point is inside a thing's base: the benches' legs, the lamp post's foot, the pole's, the posts', the
+// hedge's, the trees' trunks, the cart's (its body over the paving and its wheels)
+const FOOTS = () => {
+  const out = [], sq = (x, y, r) => out.push(['r', x - r, y - r, x + r, y + r]), rect = (x0, y0, x1, y1) => out.push(['r', x0, y0, x1, y1]), disc = (x, y, r) => out.push(['d', x, y, r]);
+  for (const b of BENCH) { for (const a of [b.x0 + .07, b.x1 - .07]) { sq(a, b.y1 - .035, .04); sq(a, b.y0 + .035, .04); } }
+  { const g = Gs(...FAROL.at); disc(g[0], g[1], .14); } { const g = Gs(...POLE.at); disc(g[0], g[1], .07); }
+  for (const [px, py] of GATE_W) out.push(['r', px - POST_W - .02, py - POST_W - .02, px + POST_W + .02, py + POST_W + .02, 2]);   // a post (2: whoever stands is 3 px clear of it)
+  // the hedge (round 2: it may hide feet, never a face): like a post, whoever stands is 3 px clear of it (2)
+  out.push(['r', HEDGE_X - HEDGE_T, GATE_W[1][1] - 4, HEDGE_X, GATE_W[1][1] - .1, 2]); out.push(['r', HEDGE_X - HEDGE_T, GATE_W[0][1] + .1, HEDGE_X, GATE_W[0][1] + NEAR_PIECE + .1, 2]);
+  for (const t of TREES) { const g = Gs(...t); disc(g[0], g[1], .13); }
+  if (SET.carro !== 'no') for (const wy of [CART.y0 + .3, CART.y1 - .3]) rect(CART.x1 - .02, wy - .12, CART.x1 + .1, wy + .12);   // the cart stands on its wheels
+  return out; };
+const FOOT = new Uint8Array(W * H);
+function footprints() { FOOT.fill(0); const F = FOOTS();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) { const g = unproject(ix + .5, iy + .5);
+    for (const f of F) if (f[0] === 'r' ? g.x >= f[1] && g.x <= f[3] && g.y >= f[2] && g.y <= f[4] : Math.hypot(g.x - f[1], g.y - f[2]) <= f[3]) { FOOT[iy * W + ix] = f[5] || 1; break; } } }
+
+// round 3: the ground's occlusion (bakeOcclusion) darkens, dithered, the ground next to any upright on the screen; beside a gate's post that ground
+// is not near the post (it is the paving beside it, the post standing in front): a ring the readers saw. Where only a post made the ground's pixel
+// occluded, the pixel is put back; where others did too, it is occluded again by them alone (bakeOcclusion's rule)
+const POST_PX = new Set(); let NOPOST_Z = null;   // the depth before the posts were drawn (everything else is)
+function unOccludePosts(preAO) {
+  if (!POST_PX.size) return;
+  const offsets = []; for (const r of [2, 4]) for (let k = 0; k < 8; k++) offsets.push([Math.round(Math.cos(k * Math.PI / 4) * r), Math.round(Math.sin(k * Math.PI / 4) * r * .7)]);
+  for (const p of POST_PX) { const px = p % W, py = (p / W) | 0;
+    for (let dy = -3; dy <= 3; dy++) for (let dx = -4; dx <= 4; dx++) { const ix = px + dx, iy = py + dy, i = iy * W + ix; if (ix < 4 || iy < 4 || ix >= W - 4 || iy >= H - 4 || pix[i] === preAO[i] || !ground[i] || zb[i] !== groundZ[i]) continue;
+      let other = 0; for (const [ox, oy] of offsets) { const j = (iy + oy) * W + ix + ox; if (NOPOST_Z[j] !== groundZ[j]) other++; }
+      pix[i] = preAO[i]; if (other >= 8) tint(i, .56, .54, .72); else if (other && other / 8 > bayerAt(ix, iy)) tint(i, .74, .72, .84); } }   // as bakeOcclusion, with the depth the set has without its posts
+}
+
+/* ---------- bake one state ---------- */
+const GROUND_CACHE = {};
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  CROWN_SHADE.length = 0; CROWN_PX.clear(); POOL_PX.clear(); POOL_IN.clear();
+  const gk = SET.edge;
+  if (!GROUND_CACHE[gk]) {
+    for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+      const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = bancoGround(g.x, g.y, ix, iy, i);
+      if (!c) continue;
+      pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+    }
+    growGrass();
+    GROUND_CACHE[gk] = { pix: pix.slice(), zb: zb.slice(), kinds: kinds.slice(), ground: ground.slice(), tufts: tufts.slice() };
+  } else {
+    const G = GROUND_CACHE[gk]; pix.set(G.pix); zb.set(G.zb); kinds.set(G.kinds); ground.set(G.ground); tufts.push(...G.tufts);
+  }
+  groundZ.set(zb);
+  for (let i = 0; i < 3; i++) smallTree(i);
+  pole(); wire(); lampPost(); cart(); for (let k = 0; k < 3; k++) bench(k); hedge();
+  flushShadows(); pendingShadows.length = 0;
+  const preAO = pix.slice(); bakeOcclusion(); unOccludePosts(preAO); staticShadow.set(shadowMask); applyShadows(groundZ); crownShades(); umbrellaShade(); shadeEdges();
+  if (LIGHT) lightPass(LIGHT.m, LIGHT.a, !LIGHT.litTufts);
+  lampPool();
+  skyFill((ix, iy) => {
+    if (SKY.sun) { const s = skyDisc(SUN[0], SUN[1], SUN[2], SKY.sun, ix, iy); if (s) return s; }
+    if (SET.luna) { const m = moonAt(ix, iy); if (m) return m; }
+    const c = cloudAt(ix, iy); if (c) return c;
+    return skyHills(HZ, SKY.far, SKY.near, ix, iy) || skyBands(SKY.bands, 0, HZ, ix, iy);
+  });
+  bakedPix.set(pix); bakedZ.set(zb);
+  FOOT_DONE = false;   // round 3: the footprints (no pixel) are made when asked for, not in the bake
+}
+let FOOT_DONE = false; const footOnce = () => { if (!FOOT_DONE) { footprints(); FOOT_DONE = true; } };
+// the walkable surface under a screen point (rules.floor): the paving or the lawn (z 0)
+function surfaceAt(sx, sy) { const g = Gs(sx, sy, 0); return { on: sy < HZ ? 'sky' : groundKind(g[0], g[1]), x: g[0], y: g[1], z: 0 }; }
+
+window.BANCO_SET = { SET, HZ, BANCOS, SEAT_ROW, ZS, BD, BHL, BACK_H, BENCH, EDGE_BACK, STEP_AT, TURN_AT, HEDGE_K, HEDGE_T, HEDGE_H, HEDGE_X, NEAR_PIECE, GATE, GATE_W, POST_W, POST_H,
+  TREES, POLE, FAROL, CARRO, CART, CART_C, WHEEL_R, SUN, MOON, CLOUDS, POOL, OXY: [OX, OY], WIRE: WIRE.filter((w, i) => i % 4 === 0),
+  buildSet, surfaceAt, Gs, SY, EDGEROW, groundKind, cableY };
+
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+window.FOOTPX = () => { footOnce(); const o = []; for (let i = 0; i < W * H; i++) if (FOOT[i] === 1) o.push(i); return o; }; window.FOOTPX2 = () => { footOnce(); const o = []; for (let i = 0; i < W * H; i++) if (FOOT[i] === 2) o.push(i); return o; }; window.CROWNPX = () => [...CROWN_PX]; window.POOLPX = () => [...POOL_PX]; window.POOLIN = () => [...POOL_IN];
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
+  drawLeaves(windT); drawTufts(windT);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+if (PART_TAGS) tagLeaves(zb);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S, live: () => zb };
+window.frame = frame;
+</script></body></html>
