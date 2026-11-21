@@ -53,7 +53,7 @@ const SPOTS = [
   ['abajo.abuela', [-.5, 4.6, 0], 'person', 'abuela', 'adulto', 'wide', 'where abuela comes up from the bottom (57 opening)'],
   ['abajo.coqui', [.7, 4.2, 0], 'person', 'coqui', 'coqui', 'wide', 'where the frog comes up (57 opening)'],
   ['abajo.bici', [0, 4.5, 0], 'person', 'nino', 'nino', 'wide', 'Luis on his bicycle, heading up the picture (58); the bicycle is a sprite, in front of him'],
-  ['coqui.bici', [0, 5.0, .5], 'person', 'coqui', 'coqui', 'wide', 'the frog rides behind Luis on the rack of his bicycle (58): on a sprite, z .5', 'bicycle'],
+  ['coqui.bici', [0, 5.0, .8], 'person', 'coqui', 'coqui', 'wide', 'the frog rides behind Luis on the rack of his bicycle (58), high enough to be seen over Luis\'s back: on a sprite, z .8', 'bicycle'],
   ['centro', [0, -.15, 0], 'person', 'adulto', 'adulto', 'wide', 'somebody asked at the crossing, facing us (don Pepe on his bicycle, the señor, the señora)'],
   ['coqui.cruce', [.3, 1.9, 0], 'person', 'coqui', 'coqui', 'wide', 'the frog on the stripes where they come up, in the game of 57 (moment 2)'],
   ['salida_izq', [-3.3, 0, 0], 'exit', 'adulto', 'adulto', 'wide', 'where the street to the left leaves the picture (only the point is held inside the window)'],
@@ -66,7 +66,7 @@ const SPOTS = [
   ['conos.obrero', [3.3, .6, 0], 'person', 'adulto', 'adulto', 'wide', 'the obrero behind the barrier of cones (58)'],
   ['plaza_carrito', [4.3, 5.3, 0], 'person', 'adulto', 'adulto', 'plaza', 'the piragüero with his cart in the square, in the plaza view (58 ending)'],
   ['luis.plaza', [2.5, 5.6, 0], 'person', 'nino', 'nino', 'plaza', 'Luis in the square (58 ending)'],
-  ['coqui.plaza', [3.4, 6.7, 0], 'person', 'coqui', 'coqui', 'plaza', 'the frog in the square (58 ending)'],
+  ['coqui.plaza', [3.7, 6.7, 0], 'person', 'coqui', 'coqui', 'plaza', 'the frog in the square (58 ending)'],
   ['fila_atras1', [1.75, 2.9, 0], 'person', 'adulto', 'adulto', 'plaza', 'abuelo, first of the back row, well behind the seat (59)'],
   ['fila_atras2', [2.75, 2.9, 0], 'person', 'adulto', 'adulto', 'plaza', 'mamá, second of the back row (59)'],
   ['fila_atras3', [3.85, 2.9, 0], 'person', 'nino', 'nino', 'plaza', 'Carmen, third of the back row (59)'],
@@ -78,9 +78,9 @@ const SPOTS = [
   ['papa_camara', [1.9, 7.3, 0], 'person', 'adulto', 'adulto', 'plaza', 'papá with his back to us, taking the photo (59)'],
   ['muro', [2.6, 7.0, .55], 'thing', null, null, 'plaza', 'the camera on the short low wall (59 ending): on its top, z .55'],
   ['papa_rodillas', [1.75, 5.0, 0], 'person', 'papaRod', 'adulto', 'plaza', 'papá kneeling at the seat\'s left end (59 ending)'],
-  ['tras_arbol', [5.0, 1.95, 0], 'person', 'coqui', 'coqui', 'plaza', 'the frog behind the tree\'s trunk, peeping out (59 start)'],
+  ['tras_papa', [1.9, 6.55, 0], 'person', 'coqui', 'coqui', 'plaza', 'the frog behind papá, who stands at papa_camara with his back to us (59 start): nearer the family than papá, so papá\'s legs cover part of him: that is meant'],
   ['delante_canelo', [4.9, 6.1, 0], 'place', 'coqui', 'coqui', 'plaza', 'the frog\'s place in front of Canelo (59)'],
-  ['detras_canelo', [4.9, 4.85, 0], 'place', 'coqui', 'coqui', 'plaza', 'the frog\'s place behind Canelo, between him and the seat (59)'],
+  ['detras_canelo', [4.9, 4.55, 0], 'place', 'coqui', 'coqui', 'plaza', 'the frog\'s place behind Canelo, between him and the seat (59)'],
   ['lado_abuela', [3.3, 4.5, .46], 'place', 'coqui', 'coqui', 'plaza', 'the frog\'s place beside abuela, on the seat in the gap: the same point as hueco (59)'],
   ['delante_abuela', [2.9, 5.15, 0], 'place', 'coqui', 'coqui', 'plaza', 'the frog\'s place on the ground in front of abuela (59)'],
 ];
@@ -95,7 +95,7 @@ for (const hora of ['mediodia', 'tarde', 'ocaso']) for (const cerrada of [0, 1])
 
 /* the checks (each is a line of the output and of the sheet's checks.results):
    views-x0 (the spec's spots are inside their window), spots-in-view (every spot inside the picture and its window, its sprite whole), spots-on-surface (the spots on the seat and the wall
-   are on their top), things-in-view (the frog's six boxes inside the plaza window; the streets' boxes reach the picture's edge), sprites-apart (the people of a moment), frog-seen (the frog whole in
+   are on their top), things-in-view (the frog's four boxes inside the plaza window; the streets' boxes reach the picture's edge), sprites-apart (the people of a moment), frog-seen (the frog whole in
    every moment), frog-places (each of his six places whole with the family in place), family-heads (every head of the family shows), centro-stripes (a person at centro is clear of the stripes'
    lower half), salida-whole (whoever leaves by a street is seen whole until the picture's edge). A failing line names its numbers and the nearest value that would pass. */
 (async () => {
@@ -247,7 +247,7 @@ async function make(G, proj, SIL, page) {
     rules: {
       project: 'pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = ' + G.OX + ', OY = H / 2 + originY = ' + G.OY + '. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels',
       uv: 'the streets are turned 45 degrees: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the crossing\'s middle at (0, 0); the set\'s E.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = ' + G.OX + ' + 26 u, and sy = OY + (v / 2 - z * COS) * S = ' + G.OY + ' + 13 v - 22.5 z. Half a street\'s width is E.HW = ' + HW + '; the picture holds u from ' + r2(uL) + ' to ' + r2(uR) + ' and, on the ground, v from ' + r2(vT) + ' to ' + r2((G.H - G.OY) / (G.S * .5)),
-      spot: 'a spot is a world point of the feet (z 0: the ground; z .46: the seat\'s top; z 1.0: the top of the seat\'s back; z .55: the low wall\'s top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog\'s: 1 everywhere. People walk on the roadway in this scene (there are no cars): no spot is kept off the street',
+      spot: 'a spot is a world point of the feet (z 0: the ground; z .46: the seat\'s top; z .9 and .8: on a sprite; z .55: the low wall\'s top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog\'s: 1 everywhere. People walk on the roadway in this scene (there are no cars): no spot is kept off the street',
       anchor: 'the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), 41 for a child; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a child or a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 7 a child: 33; t 11 a grown-up: 41) on (sx, sy); kneeling (papa_rodillas): the sitting drawing with its feet on the spot (stand-in); Canelo lying mkPerro(\'lie\') (30 x 22): column 15 and its bottom edge; the bebé mkBebe (26 x 28): column 13 and its bottom edge (a stand-in: it is a sitting baby; mamá holds him up, z .9); a small thing: its bottom middle on the point',
       view: 'a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = clamp(round(sx - 98), 0, 44), sx the middle of the columns of the spots the view must hold. Never a fraction',
       depth: 'a spot\'s depth is the engine\'s d of its world point; front.plane turns it into the depth of each row of a character',
@@ -378,7 +378,7 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
       const feet = (probes.spotsPx[k] || []).find(r => r.dy === -1);
       if (feet && feet.z > s.depth + .08) behind.push(k + ' ' + s.screen + ' (' + (feet.tag || 'ground') + ' ' + r2(feet.z - s.depth) + ' nearer)');
     }
-    const o = add('spots-on-surface', bad, seatSpots.length + ' spots above the ground (' + seatSpots.map(([k]) => k).join(', ') + ') are on a surface the set draws: its depth within .1 of the spot\'s, drawn by part plaza (the seat\'s top z ' + SEAT_Z.asiento + ', the wall\'s ' + SEAT_Z.muro + '); coqui.bici (z .5) and bebe_alto (z .9) are on sprites', ['spots off their surface:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    const o = add('spots-on-surface', bad, seatSpots.length + ' spots above the ground (' + seatSpots.map(([k]) => k).join(', ') + ') are on a surface the set draws: its depth within .1 of the spot\'s, drawn by part plaza (the seat\'s top z ' + SEAT_Z.asiento + ', the wall\'s ' + SEAT_Z.muro + '); coqui.bici (z .8) and bebe_alto (z .9) are on sprites', ['spots off their surface:'].concat(bad).map((l, i) => i ? '  ' + l : l));
     for (const l of lines) o.lines.push('       ' + l);
     o.lines.push('       info, not a check: ground spots whose feet pixel the set draws nearer than the feet (the person stands behind it: the depth rule hides what it covers): ' + (behind.join(', ') || 'none'));
   }
@@ -484,6 +484,15 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
       o.lines.push('       nearest passing, ' + k + ' ' + S[k].uv + ': ' + (['u', 'v', 'z'].map((a, i) => r.axis[a] ? a + ' ' + S[k].uv[i] + ' -> ' + r.axis[a].to + ' (' + sgn(r.axis[a].d) + ')' : a + ': none within 3').join('; ')));
     }
     o.lines.push('       info, not a check: each place: ' + lines.join('; '));
+    {                                                                                       // tras_papa: the frog behind papá: papá's legs cover part of him, that is meant: the pixels that show
+      const specs = family.concat([{ at: 'tras_papa', s: 'coqui', who: 'coqui' }]), L = await PV.layers(M5.set, specs), f = L[L.length - 1], best = new Map();
+      L.forEach((l, i) => { if (i === L.length - 1) return; for (const p of l.px) if (!p[2]) { const kk = p[1] * G.W + p[0], b = best.get(kk); if (!b || b.plane < p[3]) best.set(kk, { plane: p[3], at: l.at }); } });
+      let hid = 0, cov = 0; const by = {};
+      for (const p of f.px) { if (p[2]) { hid++; continue; } const b = best.get(p[1] * G.W + p[0]); if (b && b.plane > p[3] + EPS) { cov++; by[b.at] = (by[b.at] || 0) + 1; } }
+      const total = f.px.length + f.out, shown = total - hid - cov - f.out, rows = f.px.filter(p => !p[2] && !(best.get(p[1] * G.W + p[0]) && best.get(p[1] * G.W + p[0]).plane > p[3] + EPS)).map(p => p[1]);
+      o.lines.push('       info, not a check: the frog at tras_papa ' + [f.sx, f.sy] + ' behind papá at papa_camara ' + S['papa_camara'].screen + ' (the family of moment 5 in place): ' + shown + ' of ' + total + ' px show (' + Math.round(100 * shown / total) + '%): ' + hid + ' hidden by the set, ' + cov + ' under ' + (Object.keys(by).join(', ') || 'sprites') + ', ' + f.out + ' outside the picture; the pixels that show lie in rows ' + (rows.length ? Math.min(...rows) + ' to ' + Math.max(...rows) : 'none') + ' (his rows ' + Math.min(...f.px.map(p => p[1])) + ' to ' + Math.max(...f.px.map(p => p[1])) + ')');
+      o.traspapa = { px: total, shown, underSprites: cov, by };
+    }
     o.places = res;
   }
 
