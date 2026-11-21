@@ -779,6 +779,7 @@ class SheetMove {
     this.raw, {
     this.values = const [],
     this.respEn,
+    this.shift,
   });
 
   final int line;
@@ -800,6 +801,11 @@ class SheetMove {
 
   /// El patio's: where the answer cards stand after this act (`respEn`, juego.js `W.respEn`), or null.
   final List<int>? respEn;
+
+  /// El lago's post (order 35b): who moves with the moved thing (`shift`: the duck paddling round the post, `who`
+  /// `pato`, while its field `when` is set, `rema`) and by how much (`by`, screen px), or null. A recorded W's moving
+  /// rule (lago-preview.html remapW), not the scene's: the scene's own acts take the post's new place.
+  final ({String who, String when, List<num> by})? shift;
 }
 
 /// One place where the old code turns smoothing on (`smoothing.places`): where ([at], "sala.js:120"), what it does, and
@@ -1015,8 +1021,8 @@ class SheetRing {
   SheetRing._(
     this.inner,
     this.colour,
-    this.ball,
-    this.dog,
+    this.kinds,
+    this.patches,
     this.when,
     this.how,
     this.raw,
@@ -1026,9 +1032,52 @@ class SheetRing {
 
   /// `0xFFBBGGRR`, made once from the sheet's `[r, g, b]`.
   final int colour;
-  final ({double rx, double ry}) ball;
-  final ({double rx, double ry, double dy}) dog;
+
+  /// The ring of each kind of thing, by the sheet's name (El campo's `ball` and `dog`; El lago's `pato`, `bote` and
+  /// `pan`, order 35b): its radii and how far below the thing's point it lies (`dy`, 0 when the sheet gives none).
+  final Map<String, ({double rx, double ry, double dy})> kinds;
+
+  /// El lago's fish (`helps.ring.pez`, order 35b): not a ring but a patch of paler water, by the sheet's name.
+  final Map<String, SheetPatch> patches;
+
+  /// El campo's ball ring (`ring.ball`).
+  ({double rx, double ry}) get ball {
+    final k = kind('ball');
+    return (rx: k.rx, ry: k.ry);
+  }
+
+  /// El campo's dog ring (`ring.dog`).
+  ({double rx, double ry, double dy}) get dog => kind('dog');
+
+  /// The ring of a kind. Throws [SheetError] when the sheet gives none.
+  ({double rx, double ry, double dy}) kind(String name) =>
+      kinds[name] ?? (throw SheetError('the sheet gives no ring for "$name"'));
+
+  /// The patch of a kind. Throws [SheetError] when the sheet gives none.
+  SheetPatch patch(String name) =>
+      patches[name] ??
+      (throw SheetError('the sheet gives no patch for "$name"'));
   final String? when, how;
+  final Map<String, dynamic> raw;
+}
+
+/// A patch of paler water under a thing at the surface (El lago's fish, `helps.ring.pez`, order 35b): an ellipse of
+/// radii [rx], [ry] centred [centre] from the thing's point, filled with [patch] and, where the lake's ripple dashes
+/// fall, [dash] (both `0xFFBBGGRR`); its outer [soft] px broken into the lake by a Bayer dither. No rim.
+class SheetPatch {
+  SheetPatch._(
+    this.centre,
+    this.rx,
+    this.ry,
+    this.soft,
+    this.patch,
+    this.dash,
+    this.raw,
+  );
+
+  final List<double> centre;
+  final double rx, ry, soft;
+  final int patch, dash;
   final Map<String, dynamic> raw;
 }
 
@@ -1056,25 +1105,49 @@ class SheetHelps {
 SheetHelps _readHelps(Object? v, String at) {
   final m = _obj(v, at);
   final r = _obj(_need(m, 'ring', at), '$at.ring');
-  final ball = _obj(_need(r, 'ball', '$at.ring'), '$at.ring.ball');
-  final dog = _obj(_need(r, 'dog', '$at.ring'), '$at.ring.dog');
   double n(Map<String, dynamic> o, String k, String a) =>
       _num(_need(o, k, a), '$a.$k').toDouble();
+  int rgb(Object? v, String a) {
+    final c = _ints(v, a, length: 3);
+    return 0xFF000000 | (c[2] << 16) | (c[1] << 8) | c[0];
+  }
+
   final c = _ints(_need(r, 'colour', '$at.ring'), '$at.ring.colour', length: 3);
   final lines = m.containsKey('lines')
       ? _list(m['lines'], '$at.lines')
       : const [];
+  // each kind: an object with its radii (El campo's ball and dog, El lago's duck, boat and bread); one with a `patch`
+  // colour is a patch (El lago's fish)
+  final kinds = <String, ({double rx, double ry, double dy})>{};
+  final patches = <String, SheetPatch>{};
+  for (final e in r.entries) {
+    final o = e.value, a = '$at.ring.${e.key}';
+    if (o is! Map<String, dynamic> || !o.containsKey('rx')) continue;
+    if (o.containsKey('patch')) {
+      patches[e.key] = SheetPatch._(
+        _doubles(_need(o, 'centre', a), '$a.centre', length: 2),
+        n(o, 'rx', a),
+        n(o, 'ry', a),
+        n(o, 'soft', a),
+        rgb(o['patch'], '$a.patch'),
+        rgb(_need(o, 'dash', a), '$a.dash'),
+        o,
+      );
+    } else {
+      kinds[e.key] = (
+        rx: n(o, 'rx', a),
+        ry: n(o, 'ry', a),
+        dy: o.containsKey('dy') ? n(o, 'dy', a) : 0,
+      );
+    }
+  }
   return SheetHelps._(
     _opt(m, 'what', (v) => _str(v, '$at.what')),
     SheetRing._(
       n(r, 'inner', '$at.ring'),
       0xFF000000 | (c[2] << 16) | (c[1] << 8) | c[0],
-      (rx: n(ball, 'rx', '$at.ring.ball'), ry: n(ball, 'ry', '$at.ring.ball')),
-      (
-        rx: n(dog, 'rx', '$at.ring.dog'),
-        ry: n(dog, 'ry', '$at.ring.dog'),
-        dy: n(dog, 'dy', '$at.ring.dog'),
-      ),
+      kinds,
+      patches,
       _opt(r, 'when', (v) => _str(v, '$at.ring.when')),
       _opt(r, 'how', (v) => _str(v, '$at.ring.how')),
       r,
@@ -1324,7 +1397,7 @@ class Sheet {
           : const {},
       points: {
         for (final e in pointsRaw.entries)
-          if (_obj(e.value, '$at.points.${e.key}')['world'] is List)
+          if (_isWorldPoint(_obj(e.value, '$at.points.${e.key}')['world']))
             e.key: _readAnchor(
               e.key,
               e.value as Map<String, dynamic>,
@@ -1334,8 +1407,9 @@ class Sheet {
       },
       screenPoints: {
         for (final e in pointsRaw.entries)
-          // El campo's shore (`orilla_linea`, order 34b) is a line, its world a number (x = c): a screen point
-          if ((e.value as Map<String, dynamic>)['world'] is! List)
+          // El campo's shore (`orilla_linea`, order 34b) is a line, its world a number (x = c): a screen point; El lago's
+          // dock (a box, six numbers) and mooring posts (a list of points), order 35b, too
+          if (!_isWorldPoint((e.value as Map<String, dynamic>)['world']))
             e.key: _readScreenPoint(
               e.key,
               e.value as Map<String, dynamic>,
@@ -1963,7 +2037,8 @@ SheetThing _readThing(String id, Map<String, dynamic> m, String at) {
     flag('sprite'),
     flag('hud'),
     flag('sky'),
-    _opt(m, 'world', (v) => _doubles(v, '$at.world', length: 6)),
+    // El lago's water (order 35b) gives its world as null: the ground under the horizon, no box of its own
+    m['world'] == null ? null : _doubles(m['world'], '$at.world', length: 6),
     box,
     hit,
     places,
@@ -2006,6 +2081,11 @@ SheetAnchor _readAnchor(
   );
 }
 
+// A point's `world` that is one world point (x, y, z), so the point is an anchor: not El campo's shore (one number), not
+// El lago's dock (a box of six) or its mooring posts (a list of points)
+bool _isWorldPoint(Object? w) =>
+    w is List && w.length == 3 && w.every((v) => v is num);
+
 SheetScreenPoint _readScreenPoint(
   String name,
   Map<String, dynamic> m,
@@ -2044,7 +2124,7 @@ SheetScreenPoint _readScreenPoint(
     radius: _opt(m, 'radius', (v) => _num(v, '$at.radius').toDouble()),
     radii: _opt(m, 'radii', (v) => _doubles(v, '$at.radii', length: 2)),
     hollow: _opt(m, 'hollow', (v) => _doubles(v, '$at.hollow', length: 4)),
-    line: _opt(m, 'world', (v) => _num(v, '$at.world').toDouble()),
+    line: m['world'] is num ? (m['world'] as num).toDouble() : null,
   );
 }
 
@@ -2118,6 +2198,14 @@ List<SheetMove> _readMoves(Object? v, String at) {
               }(),
           ],
           respEn: _opt(o, 'respEn', (v) => _ints(v, '$p.respEn', length: 2)),
+          shift: _opt(o, 'shift', (v) {
+            final sh = _obj(v, '$p.shift');
+            return (
+              who: _str(_need(sh, 'who', '$p.shift'), '$p.shift.who'),
+              when: _str(_need(sh, 'when', '$p.shift'), '$p.shift.when'),
+              by: _nums(_need(sh, 'by', '$p.shift'), '$p.shift.by', length: 2),
+            );
+          }),
         );
       }(),
   ];

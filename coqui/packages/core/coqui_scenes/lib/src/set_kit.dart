@@ -18,7 +18,8 @@ const int KIND_WATER = 2;
 /// The look of a body of water (set-kit.js `waterPixel`'s `look`): [deep] and [shallow], its colours far from and near
 /// the shore; [bank], the earth of the bank's face; [wet], the dark wet line along its foot; [sky], the colour the
 /// ripples catch; [reflect], the width (world) of the bank's dark reflection on the water; [fade], how far from the shore
-/// the water is deep; [glints], a list to collect the glints in (null: none).
+/// the water is deep; [glints], a list to collect the glints in (null: none); [noShade] (order 35a, El lago): the
+/// surface is not ground, so no cast shadow falls on it (El campo leaves it out: unchanged).
 class WaterLook {
   WaterLook({
     required this.deep,
@@ -29,11 +30,13 @@ class WaterLook {
     required this.reflect,
     required this.fade,
     this.glints,
+    this.noShade = false,
   });
 
   final List<num> deep, shallow, bank, wet, sky;
   final double reflect, fade;
   final List<Glint>? glints;
+  final bool noShade;
 }
 
 /// The light of the hour (frente-set.html: an entry of `LIGHT`): `c' = c * m + a` per channel. [litTufts]: the grass
@@ -854,7 +857,8 @@ class SetKit {
   /// of earth) all along its shore. [shore] (x, y) is a signed distance in world units: > 0 on land, < 0 over the water.
   /// Called by a set's ground pass for a screen pixel ([ix], [iy], index [i]) whose ground point [g] (at z 0) is over the
   /// water: it follows the pixel's sight line down and draws what it meets first, the bank's face or the surface, with
-  /// the depth of that point. The surface is the water's ground: kinds [KIND_WATER], ground 1 (a shadow falls on it).
+  /// the depth of that point. The surface is the water's ground: kinds [KIND_WATER], ground 1 (a shadow falls on it), or
+  /// 0 when [WaterLook.noShade] (no shadow is cast on it).
   void waterPixel(
     int ix,
     int iy,
@@ -928,7 +932,8 @@ class SetKit {
     e.pix[i] = e.rgb(c[0], c[1], c[2]);
     e.zb[i] = p.d;
     e.kinds[i] = KIND_WATER;
-    e.ground[i] = 1;
+    // look.noShade (El lago): no shadow is cast on the surface
+    e.ground[i] = look.noShade ? 0 : 1;
     final gl = look.glints;
     if (gl != null &&
         d > look.reflect + .15 &&

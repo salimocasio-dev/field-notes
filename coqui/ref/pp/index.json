@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 468,
-  "totalBytes": 31007620,
+  "files": 492,
+  "totalBytes": 32452299,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -1412,6 +1412,126 @@
       "path": "island/zb.json",
       "bytes": 322,
       "sha256": "3b9f10df1922f6be7023e3347a27bca6924f382acef882975c4a90fcdcda5d79"
+    },
+    {
+      "path": "lago/lago-t-1.5/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a4e3e376a9fb4cb3625d2159133f7809389ebc93ed15293aa422dbdd49e67cb8"
+    },
+    {
+      "path": "lago/lago-t-1.5/kinds.json",
+      "bytes": 305,
+      "sha256": "333fcea9ba30bd0044975e09989fd78df347a549a8c0947c5301ec8c983ab399"
+    },
+    {
+      "path": "lago/lago-t-1.5/pix.bin",
+      "bytes": 207360,
+      "sha256": "03a68b14a2844c42f342edcfe676c4a433e6bce812d04163dadde50f56b424e2"
+    },
+    {
+      "path": "lago/lago-t-1.5/pix.json",
+      "bytes": 370,
+      "sha256": "fcb264f8932a824c2e458be1bbc366a3c950877105761b1c2aa991a3c77f82d7"
+    },
+    {
+      "path": "lago/lago-t-1.5/pix.png",
+      "bytes": 13094,
+      "sha256": "d4f1c87c842eb0c6dc96b0645456e363f38614942c4ec5d798ee554d643a99ff"
+    },
+    {
+      "path": "lago/lago-t-1.5/state.json",
+      "bytes": 918,
+      "sha256": "f57e57614b547f62719d715d099e88b3a2739ff545cc491345f43021a70b2805"
+    },
+    {
+      "path": "lago/lago-t-1.5/zb.bin",
+      "bytes": 207360,
+      "sha256": "6a7fe2d74a379559e3472258d2a3e2334628d10fc14c52de8773c6b56e077ddc"
+    },
+    {
+      "path": "lago/lago-t-1.5/zb.json",
+      "bytes": 322,
+      "sha256": "37741056b0a0e4f8c65bfcb87655e9bc9c1c99bbb7d5d7e7f7f6fb964327e7ec"
+    },
+    {
+      "path": "lago/lago-t-3.25/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a4e3e376a9fb4cb3625d2159133f7809389ebc93ed15293aa422dbdd49e67cb8"
+    },
+    {
+      "path": "lago/lago-t-3.25/kinds.json",
+      "bytes": 305,
+      "sha256": "333fcea9ba30bd0044975e09989fd78df347a549a8c0947c5301ec8c983ab399"
+    },
+    {
+      "path": "lago/lago-t-3.25/pix.bin",
+      "bytes": 207360,
+      "sha256": "6795a99dff4a22671403a6d8b5a2f802f0897ff9f7e6b060ab9bc69aaed26664"
+    },
+    {
+      "path": "lago/lago-t-3.25/pix.json",
+      "bytes": 370,
+      "sha256": "cb53fa69533be468bca45c8f5e6537a7695626df972a09038e9d728fe4625666"
+    },
+    {
+      "path": "lago/lago-t-3.25/pix.png",
+      "bytes": 13063,
+      "sha256": "c00bdfdfcdd037e1b793efdb01dbb34305f39169197ef798016ba8b04115c42c"
+    },
+    {
+      "path": "lago/lago-t-3.25/state.json",
+      "bytes": 920,
+      "sha256": "5ea91c2e6798ac2290ef7ab9fd94709b734717c63509938b80ce49b40203f90f"
+    },
+    {
+      "path": "lago/lago-t-3.25/zb.bin",
+      "bytes": 207360,
+      "sha256": "6a7fe2d74a379559e3472258d2a3e2334628d10fc14c52de8773c6b56e077ddc"
+    },
+    {
+      "path": "lago/lago-t-3.25/zb.json",
+      "bytes": 322,
+      "sha256": "37741056b0a0e4f8c65bfcb87655e9bc9c1c99bbb7d5d7e7f7f6fb964327e7ec"
+    },
+    {
+      "path": "lago/lago/kinds.bin",
+      "bytes": 51840,
+      "sha256": "a4e3e376a9fb4cb3625d2159133f7809389ebc93ed15293aa422dbdd49e67cb8"
+    },
+    {
+      "path": "lago/lago/kinds.json",
+      "bytes": 305,
+      "sha256": "333fcea9ba30bd0044975e09989fd78df347a549a8c0947c5301ec8c983ab399"
+    },
+    {
+      "path": "lago/lago/pix.bin",
+      "bytes": 207360,
+      "sha256": "c817e2098fd5a430a4cd2b16b515dc05e22859bb918138f0e48f4ed5b453e91e"
+    },
+    {
+      "path": "lago/lago/pix.json",
+      "bytes": 370,
+      "sha256": "65800887d7d147e13f71107cc030b9ed80256db4f95b38a2f898d1accee3d9fb"
+    },
+    {
+      "path": "lago/lago/pix.png",
+      "bytes": 13106,
+      "sha256": "83aa22d3449c01b8ec81700da5cecc2b15ce98322156e994e54f5e2d449b639c"
+    },
+    {
+      "path": "lago/lago/state.json",
+      "bytes": 907,
+      "sha256": "21d4902878b3ed334a419e6cdee563412093de245caa5b192c0e9cee17207622"
+    },
+    {
+      "path": "lago/lago/zb.bin",
+      "bytes": 207360,
+      "sha256": "6a7fe2d74a379559e3472258d2a3e2334628d10fc14c52de8773c6b56e077ddc"
+    },
+    {
+      "path": "lago/lago/zb.json",
+      "bytes": 322,
+      "sha256": "37741056b0a0e4f8c65bfcb87655e9bc9c1c99bbb7d5d7e7f7f6fb964327e7ec"
     },
     {
       "path": "map/hecho-0/kinds.bin",

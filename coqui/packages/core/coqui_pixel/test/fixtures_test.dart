@@ -15,6 +15,7 @@ import 'support/fixtures/balcon_sheet.dart';
 import 'support/fixtures/camino_sheet.dart';
 import 'support/fixtures/campo_sheet.dart';
 import 'support/fixtures/frente_sheet.dart';
+import 'support/fixtures/lago_sheet.dart';
 import 'support/fixtures/patio_sheet.dart';
 import 'support/fixtures/ref_pp.dart';
 import 'support/fixtures/ref_sprites.dart';
@@ -105,5 +106,9 @@ void main() {
 
   test('the sheet fixture is the text of El campo\'s sheet', () {
     expect(campoSheetJson, campoSheetText());
+  });
+
+  test('the sheet fixture is the text of El lago\'s sheet', () {
+    expect(lagoSheetJson, lagoSheetText());
   });
 }
