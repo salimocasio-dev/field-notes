@@ -701,6 +701,26 @@ Ported by an Opus builder with no stop; the orchestrator ran `test_all.sh` on th
 - What the reader of the real app found is the old stories' own (the hint hand running off the bottom under the beds; a thing shown over the frog's head; the two answer cards that look alike; asks with nothing marked; a heart on a wrong touch; fireflies over a face), with these from the new set, left: a flower's clump of leaves read to this reader as "a dark-green rounded shell" (an earlier reader named it stem and leaves); the gate's hint frame crosses papá's face at one ask; the heart bubble of a touched Luis sits over the bird.
 - Reported in the JavaScript set, not fixed: the trunk's and the nest's shadows are never cast (a call with a point spread wrongly; the pictures the readers passed are without them); the nest's branch, the crown's leaves at some wind steps (1 px) and the beds' ragged earth (1 to 2 px) reach outside their touch boxes; the sheet's `behind` names its two source lines one too high; at one moment of las-flores the preview puts Carmen 8 px from where the sheet's remap (and so the app) puts her.
 
+### Order 33 (camino), step a. **Result (Nov 21): done, merged.**
+
+Designed by an Opus agent in four rounds (El patio took six: the brief carried its lessons and the layout stood on the world's axes from round 1); the orchestrator looked at every round's pictures and decided the changes; five fresh readers saw them with no words.
+
+- Files in `docs/proyecto/pixel/`: `camino-set.html`, `camino-sheet-make.js` (writes `camino-sheet.json` and checks it over 1,066 moments of 15 recorded runs), `camino-preview.html`; `set-kit.js` unchanged.
+- The park: the path comes in from the left edge through the arch, turns at the first stone and climbs to the right past the big tree; the seven stones are the old marks; three small trees stand free at their old feet; the bench runs along the path below them; the big tree is at the right, its crown running off the top and right edges as the old one's did. In the set: lawn (El frente's grass), path, stones, arch, trees, bench, sky with the sun and three clouds, hills. In the sprite layer: people, frog, dog, cat, the nine birds, snail, bush, rings, leash, dust, bubbles and signs.
+- One state parameter, `gran` (the big tree there or not): 2 baked states cover the old 9. One view (x0 22).
+- All 22 things, 7 frog places, 35 positions, 25 review pictures and 16 level pictures are there. All 21 hop counts are the old ones.
+- New for this scene:
+  - **A hint box.** The big tree's touch box runs off the picture, so the sheet gives it `things.grande.hintBox`: the hint frame and its twinkle are drawn round that, touches still answer in the box. The one exception to "the hint frame inside the view".
+  - **Leaving in a file.** At the end of story 14 everyone walks out through the arch one after another and fades past its line (the sheet's `sevan`); the old act let them fade in a clump. The act is longer (20 ticks; it was 8 for the people) and the dog fades too.
+  - **The answer cards stand in the sky** in all four stories that use them, clear of bodies, birds, the corner boards and the sun.
+  - **The sun is on the side its shadows need**: upper left (it was baked upper right in round 1 while every shadow fell right), under no board and no card at any moment.
+  - **A thin thing casts only a contact shadow.** The arch's true shadow ran along the path's own edge and read as a kerb with a pond at its end; now each post has a short shadow at its foot.
+  - **What sits on the bench has one backdrop**: only lit lawn (or only shadowed lawn) behind the cat and the bird; no trunk, no shadow's edge. The bench was moved for it twice; keeping a tree's shadow off the lawn instead (round 2, the orchestrator's decision) left that tree with no shadow, and three readers named it.
+  - Checked for every set thing: its pixels inside its touch box at every wind step; each shadow in one piece with its thing; the preview's places equal the sheet's (0 differences in 5,081).
+- Left as the old game has it: the frog on Luis's head; the cat as a tail, then a head in the leaves; the dog behind the bush; the bush on the path's bend; people appearing between steps; the frog and the dog at the arch's right post; answer cards that look alike; the hint hand of the first tree on a face at three asks.
+- Seen by readers and not changed: the bench has no back (each named it a bench); a crown's shadow lies a little apart from its trunk's foot; the frog at the bench sits in front of it.
+- Bake: 57 to 99 ms the first time, 19 to 47 ms warm, in headless Chrome.
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
