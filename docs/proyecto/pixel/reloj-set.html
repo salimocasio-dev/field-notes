@@ -9,7 +9,7 @@
    the left a small iron flap (the works). At the tower's foot, at the right, the quiosco's counter under its awning, with a fryer.
    The state comes from the address; these become the builder's setKey:
      hora = mediodia | tarde | ocaso      the light
-     mesas = 0 | 1                        the bingo: three round tables, the stand of the cage, the prize shelf (story 65)
+     mesas = 0 | 1                        the bingo: three round tables, the stand of the cage, the prize table (story 65)
      t = wind time (0 for the reference); ox, oy = the origin
    It draws one frame: the baked set. No characters, no hands, no cage, no prizes, no cards. */
 const Q = new URLSearchParams(location.search);
@@ -100,9 +100,9 @@ function kiosk() {
   const K = E.KIOSK, TEAL = [70, 150, 150], WH = [250, 246, 236];
   PZ.box(K.u, K.v, 0, 1.0, K.hw, K.hd, WH, (s, t, z, face) => face === 'front' ? ((z > .14 && z < .86 && Math.abs(s) < K.hw - .1) ? shade(TEAL, 2.2, s * 4, z) : 0) : face === 'top' ? shade([226, 214, 196], 3.4, s, t) : 0);
   PZ.box(K.u - .34, K.v - .05, 1.0, 1.26, .2, .17, [70, 70, 80], (s, t, z, face) => face === 'top' && Math.abs(s) < .15 && Math.abs(t) < .12 ? rgb(214, 160, 60) : 0);   // the fryer: a dark pan of oil
-  for (const [du, dv] of [[-K.hw + .05, -K.hd + .05], [K.hw - .05, -K.hd + .05], [-K.hw + .05, K.hd - .05], [K.hw - .05, K.hd - .05]]) PZ.post(K.u + du, K.v + dv, 1.0, 3.04, .03, PZ.IRON);
-  PZ.slope(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 3.0, K.v - K.hd - .1, 3.26, (u, b) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(...(b > .5 ? [90, 170, 168] : TEAL)) : rgb(...(b > .5 ? WH : [232, 228, 218])));
-  PZ.wall(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 2.86, 3.0, (u, z) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(56, 124, 126) : rgb(226, 222, 210));
+  for (const [du, dv] of [[-K.hw + .05, -K.hd + .05], [K.hw - .05, -K.hd + .05], [-K.hw + .05, K.hd - .05], [K.hw - .05, K.hd - .05]]) PZ.post(K.u + du, K.v + dv, 1.0, 3.44, .03, PZ.IRON);
+  PZ.slope(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 3.4, K.v - K.hd - .1, 3.66, (u, b) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(...(b > .5 ? [90, 170, 168] : TEAL)) : rgb(...(b > .5 ? WH : [232, 228, 218])));
+  PZ.wall(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 3.26, 3.4, (u, z) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(56, 124, 126) : rgb(226, 222, 210));
   for (let du = -K.hw; du <= K.hw; du += .3) PZ.shadow(K.u + du, K.v, 1.6, .5);
 }
 function table(u, v) {                                                 // a round table with a cloth, and two stools behind it
@@ -115,9 +115,9 @@ function table(u, v) {                                                 // a roun
 function bingo() {
   for (const [u, v] of E.TABLES) table(u, v);
   const [cu, cv] = E.CAGE; PZ.box(cu, cv, 0, .8, .3, .22, PZ.WOOD, (s, t, z, face) => face === 'front' && z < .66 && Math.abs(s) < .22 ? 0 : 0); PZ.shadow(cu, cv, .6, .35);      // the stand of the cage
-  const [su, sv] = E.SHELF;                                             // the prize shelf: three steps, the best prize's place at the top
-  for (let k = 0; k < 3; k++) PZ.box(su, sv - .14 * k, .34 * k, .34 * k + .34, .46, .16, [214, 170, 110], (s, t, z, face) => face === 'front' && (z - .34 * k) < .05 ? rgb(150, 104, 62) : 0);
-  PZ.shadow(su, sv, .6, .5);
+  const [su, sv] = E.SHELF;                                             // the prize table: a long low table with a cloth, three places side by side (the best prize at the left)
+  PZ.box(su, sv, 0, .7, .95, .2, [250, 246, 236], (s, t, z, face) => face === 'front' ? (z > .6 ? rgb(226, 90, 80) : (Math.floor((s + 4) / .2) % 2) ? rgb(244, 236, 220) : 0) : 0);
+  for (let du = -.9; du <= .9; du += .3) PZ.shadow(su + du, sv, .5, .3);
 }
 function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);

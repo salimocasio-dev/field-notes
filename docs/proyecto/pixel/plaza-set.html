@@ -86,9 +86,9 @@ function cart() {
     return 0;
   });
   for (const du of [-K.hw + .12, K.hw - .12]) { const [x, y] = PZ.xy(K.u + du, K.v + K.hd + .02); for (let a = -.3; a <= .3; a += .02) for (let b = -.3; b <= .3; b += .02) { const r = Math.hypot(a, b); if (r < .3) plot(x + a / R2, y - a / R2, .3 + b, r < .06 ? rgb(60, 60, 66) : r > .24 ? rgb(70, 60, 56) : (Math.abs(a) < .03 || Math.abs(b) < .03) ? rgb(150, 110, 70) : rgb(196, 150, 96)); } }   // two big wheels
-  for (const [du, dv] of [[-K.hw + .05, -K.hd + .05], [K.hw - .05, -K.hd + .05], [-K.hw + .05, K.hd - .05], [K.hw - .05, K.hd - .05]]) PZ.post(K.u + du, K.v + dv, 1.02, 3.0, .03, PZ.IRON);
-  PZ.slope(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 2.96, K.v - K.hd - .1, 3.22, (u, b) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(...(b > .5 ? [236, 84, 74] : RED)) : rgb(...(b > .5 ? WH : [232, 228, 218])));   // a striped awning
-  PZ.wall(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 2.82, 2.96, (u, z) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(190, 50, 46) : rgb(226, 222, 210));
+  for (const [du, dv] of [[-K.hw + .05, -K.hd + .05], [K.hw - .05, -K.hd + .05], [-K.hw + .05, K.hd - .05], [K.hw - .05, K.hd - .05]]) PZ.post(K.u + du, K.v + dv, 1.02, 3.48, .03, PZ.IRON);
+  PZ.slope(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 3.45, K.v - K.hd - .1, 3.7, (u, b) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(...(b > .5 ? [236, 84, 74] : RED)) : rgb(...(b > .5 ? WH : [232, 228, 218])));   // a striped awning
+  PZ.wall(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 3.3, 3.45, (u, z) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(190, 50, 46) : rgb(226, 222, 210));
   for (const [du, c] of [[-.4, [226, 60, 70]], [-.13, [250, 206, 70]], [.14, [80, 130, 220]], [.4, [110, 190, 90]]]) PZ.box(K.u + du, K.v - K.hd + .1, 1.02, 1.36, .07, .07, c);    // bottles of syrup along the back
   for (let du = -K.hw; du <= K.hw; du += .3) PZ.shadow(K.u + du, K.v, .7, .5);
 }
