@@ -296,6 +296,8 @@ function make(G) {
       why: 'round 2: acts.tira17, Canelo fetches the ball from the water: he stood across the lip of the bank (178, 200); ' + (NADA[0] - 178) + ' px, ' + (NADA[1] - 200) + ' rows into the water, wading (his ring)' },
     { line: lineOf('await perroA(160,196,"walk");if(b){await vuela("cq",[170,197],0,4,0);}'), act: 'final17', src: 'await perroA(160,196,"walk");if(b){await vuela("cq",[170,197],0,4,0);}', to: 'await perroA(' + ECHA + ',"walk");if(b){await vuela("cq",[' + BOLA17 + '],0,4,0);}', pts: [['perro', [160, 196], ECHA], ['bola', [170, 197], BOLA17]],
       why: 'round 2: acts.final17, Canelo lies down by the water with the small ball: both lay across the lip of the bank; Canelo ' + (ECHA[0] - 160) + ' px, ' + (ECHA[1] - 196) + ' rows, the ball ' + (BOLA17[0] - 170) + ' px, ' + (BOLA17[1] - 197) + ' rows, on the lawn' },
+    { line: lineOf('p.pose==="arriba"?4:6'), act: '*', src: 'R(p.x)+d*(p.pose==="offer"?11:p.pose==="arriba"?4:6),R(p.y)+1,(p.pose==="arriba"?h+2:', to: 'R(p.x)+d*(p.pose==="offer"?11:p.pose==="arriba"?8:6),R(p.y)+1,(p.pose==="arriba"?h-3:',
+      why: 'round 2 (point 4): manos(), a ball a child holds up over the head (pose arriba): in the raised hand (the sprite\'s raised fist, 6 to 9 px to the side the child faces, its top 39 rows over the feet: the ball 8 px to that side, its lowest row on the fist) instead of 4 px from the middle and 2 rows over the head, where it hung loose in the air (readers: "the blue ball is in the air next to the trunk", otra-vez 09 to 12, Carmen at 58, 198 in front of the trunk). A flight that ends in a child\'s raised hands (pasa, alta, acarmen) ends there too' },
   ];
   for (const m of MOVES) for (const q of m.pts || []) q.push(q[0] === 'cq' ? frogW(q[2]) : W4(personW(q[2])));
   // the old code's own drawing the engine replaces (the background, the shadows it now casts); the preview and the port take each out
@@ -731,7 +733,7 @@ function check(sh, G, runs) {
   // where a ball is: campo.js bolaXY (in somebody's hands, in the dog's mouth, or where it lies): [x, ground row, height]
   const frogHands = q => { const b = frogBox(q); return [b.x + (b.w >> 1), q.y + 28, 3 - Math.round(q.dy || 0)]; };
   const ballXY = (w, o) => { if (o.con === 'cq') return frogHands(w.cq); if (o.con === 'perro') { const p = w.perro; return [Math.round(p.x) + (p.dir < 0 ? -13 : 13), Math.round(p.y) + 1, 5 + (p.dy || 0)]; }
-    if (o.con) { const p = w.gente[o.con]; if (!p) return null; const h = alto(o.con), d = p.dir < 0 ? -1 : 1; return [Math.round(p.x) + d * (p.pose === 'offer' ? 11 : p.pose === 'arriba' ? 4 : 6), Math.round(p.y) + 1, (p.pose === 'arriba' ? h + 2 : p.pose === 'offer' ? h - 27 : h - 24) + (p.dy || 0)]; }
+    if (o.con) { const p = w.gente[o.con]; if (!p) return null; const h = alto(o.con), d = p.dir < 0 ? -1 : 1; return [Math.round(p.x) + d * (p.pose === 'offer' ? 11 : p.pose === 'arriba' ? 8 : 6), Math.round(p.y) + 1, (p.pose === 'arriba' ? h - 3 : p.pose === 'offer' ? h - 27 : h - 24) + (p.dy || 0)]; }
     return [Math.round(o.x), Math.round(o.y), Math.round(o.z || 0)]; };
   const ballRows = (w, o) => { const p = ballXY(w, o); if (!p) return null; if (o.flota) { const r = M.R[o.k], rs = M.balls[o.k], cut = Math.round(r * .7), last = Math.max(...rs.map(q => q[0])); return rowsAt(rs.filter(q => q[0] <= last - cut), p[0], p[1] + cut); } return rowsAt(M.balls[o.k], p[0], p[1] - p[2]); };
   const inTree = (o, p) => { const T = sh.shadows.bola.tree; return p[2] >= T.z && Math.abs(p[0] - T.x) <= T.dx && p[1] <= T.y; };

@@ -2526,6 +2526,13 @@
     }
    ],
    "why": "round 2: acts.final17, Canelo lies down by the water with the small ball: both lay across the lip of the bank; Canelo -2 px, -5 rows, the ball -1 px, -4 rows, on the lawn"
+  },
+  {
+   "line": 59,
+   "act": "*",
+   "src": "R(p.x)+d*(p.pose===\"offer\"?11:p.pose===\"arriba\"?4:6),R(p.y)+1,(p.pose===\"arriba\"?h+2:",
+   "to": "R(p.x)+d*(p.pose===\"offer\"?11:p.pose===\"arriba\"?8:6),R(p.y)+1,(p.pose===\"arriba\"?h-3:",
+   "why": "round 2 (point 4): manos(), a ball a child holds up over the head (pose arriba): in the raised hand (the sprite's raised fist, 6 to 9 px to the side the child faces, its top 39 rows over the feet: the ball 8 px to that side, its lowest row on the fist) instead of 4 px from the middle and 2 rows over the head, where it hung loose in the air (readers: \"the blue ball is in the air next to the trunk\", otra-vez 09 to 12, Carmen at 58, 198 in front of the trunk). A flight that ends in a child's raised hands (pasa, alta, acarmen) ends there too"
   }
  ],
  "helps": {
