@@ -163,6 +163,27 @@ void main() {
       expect(file, copy);
     });
 
+    test('set: where the answer cards stand (respEn, h-camino beats.5) goes through the scene\'s remap too (order 33b)', () async {
+      final seen = <List<num>>[];
+      final scene = _RemapScene(seen);
+      final file = story(
+        beats: [
+          {
+            'set': {
+              'respEn': [96, 30],
+              'marcas': [null, null, null],
+            },
+          },
+        ],
+      );
+      final r = await played(file, scene: scene);
+      expect(seen, [
+        [96, 30],
+      ]);
+      expect(r.runner.W['respEn'], [97, 32]);
+      expect(r.runner.W['marcas'], [null, null, null]);
+    });
+
     test('if: runs then or else by a condition (326, cond 317)', () async {
       final r = await played(
         story(

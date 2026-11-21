@@ -71,8 +71,9 @@ extension _Steps on StoryRunner {
   }
 
   /// Every position read from a story file goes through the scene's `remap`: a map with a number `x` and a number `y`
-  /// (a place on the picture) is given the place the scene says it is today. The story file is not changed: this
-  /// returns a copy.
+  /// (a place on the picture) is given the place the scene says it is today, and so is where the answer cards stand
+  /// (`respEn`: `[x, y]`, juego.js respBox; order 33b, h-camino beats.5). The story file is not changed: this returns a
+  /// copy.
   Object? remapPositions(Object? v) {
     if (v is Map) {
       final out = <String, dynamic>{
@@ -82,6 +83,10 @@ extension _Steps on StoryRunner {
         final r = E.remap([v['x'] as num, v['y'] as num]);
         out['x'] = r[0];
         out['y'] = r[1];
+      }
+      final en = v['respEn'];
+      if (en is List && en.length == 2 && en[0] is num && en[1] is num) {
+        out['respEn'] = E.remap([en[0] as num, en[1] as num]);
       }
       return out;
     }
