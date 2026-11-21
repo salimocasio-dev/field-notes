@@ -81,9 +81,26 @@ const FT = (() => {
       return stone(s + u, z);
     });
     PZ.box(u, v, h, h + .12, hw + .07, hd + .07, STONE_L);                                                     // the cornice
-    PZ.ball(u, v, h + .1, hw - .04, STONE, 'smooth');                                                          // the dome
-    PZ.ball(u, v, h + .1 + hw - .02, .1, STONE_L, 'smooth');                                                   // its knob
+    cap(u, v, h + .12, hw - .08);
     for (let du = -hw; du <= hw; du += .3) PZ.shadow(u + du, v, .6, .55);
+  }
+  // a sentry box's top: a stepped dome (three rings, each smaller) and a knob
+  function cap(u, v, z, r) {
+    const [x, y] = PZ.xy(u, v), T = [236, 214, 176];
+    drum(x, y, z, z + .2, r, STONE_L, () => rgb(...T));
+    drum(x, y, z + .2, z + .38, r * .72, STONE_L, () => rgb(...T));
+    drum(x, y, z + .38, z + .52, r * .42, STONE_L, () => rgb(...T));
+    PZ.ball(u, v, z + .6, .08, [240, 206, 110], 'smooth');
+  }
+  // a party table, long across the picture: a white top with red squares, an apron that hangs nearly to the ground (top z .74)
+  function table(u, v, hw, hd = .5, c = [214, 84, 74]) {
+    for (const [du, dv] of [[-hw + .1, -hd + .1], [hw - .1, -hd + .1], [-hw + .1, hd - .1], [hw - .1, hd - .1]]) PZ.post(u + du, v + dv, 0, .7, .04, [120, 84, 52]);
+    PZ.box(u, v, .16, .74, hw, hd, [250, 246, 236], (s, t, z, face) => {
+      if (face === 'top') return ((Math.floor((s + 20) / .2) + Math.floor((t + 20) / .2)) & 1) ? rgb(...c.map(k => Math.min(255, k + 26))) : rgb(252, 250, 244);
+      if (face === 'front') return z < .22 ? (((s + 20) % .2) < .1 ? 0 : rgb(...c)) : (z > .66 ? rgb(...c.map(k => k - 30)) : (((s + 20) % .4) < .2 ? rgb(...c) : rgb(244, 238, 226)));
+      return rgb(...c.map(k => k - 40));
+    });
+    for (let du = -hw; du <= hw; du += .3) PZ.shadow(u + du, v, .4, hd + .1);
   }
   // a line (a cord) across the picture at v, from (u0, z0) to (u1, z1), sagging a little: for lanterns, a curtain, photos
   function cord(u0, u1, v, z0, z1 = z0, sag = .12, c = [70, 60, 60]) {
@@ -113,5 +130,5 @@ const FT = (() => {
     cord(u0, u1, v, z, z, sag, [60, 56, 60]);
     for (let k = 0; k <= n; k++) { const a = k / n, [x, y] = PZ.xy(u0 + (u1 - u0) * a, v + .02), zz = z - Math.sin(a * Math.PI) * sag - .07; for (const [dx, dz] of [[0, 0], [.03, 0], [0, -.04], [.03, -.04]]) plotGlow(x + dx * .7, y - dx * .7, zz + dz, k % 2 ? rgb(255, 236, 150) : rgb(255, 176, 120)); }
   }
-  return { STONE, STONE_D, STONE_L, IRON, stone, solid, inArch, archRing, flags, grass, onPath, pathStone, night, day, wallLamp, garita, cord, stool, yardWall, lights };
+  return { STONE, STONE_D, STONE_L, IRON, stone, solid, inArch, archRing, flags, grass, onPath, pathStone, night, day, wallLamp, garita, cap, table, cord, stool, yardWall, lights };
 })();

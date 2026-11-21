@@ -8,7 +8,7 @@
    below, a point of land with the road on it (the guagua and whoever walks there are sprites). On the walk, at the left and at the
    right, two sentry boxes of stone with domed tops: the left one has a red door, the right one a blue door; each has a small lit
    window. A cord runs between them over the middle for three lanterns (sprites). Against the parapet, in the middle, a long bench.
-   At the left front a small table with a cloth, and a chair beside it. At the right front, the head of the steps that go down.
+   At the left front a table with a cloth (the chair beside it is a sprite). At the right front, the head of the steps that go down.
    The state comes from the address:  hora = noche | tarde_noche   (tarde_noche: the moon is low over the sea, and yellow)
    It draws one frame: the baked set. No people, no lanterns, no camera, no candle, no things on the table, no guagua. */
 const Q = new URLSearchParams(location.search);
@@ -29,12 +29,11 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 const E = {
   PARAPET: 1.0,                                                        // the parapet's height at v 0 (its gaps come down to .66)
   HOR: 34,                                                             // the horizon's row in the picture
-  LAND: { x0: 128, y0: 47, road: 51 },                                 // the point of land below at the right (screen px): where it begins, its top row at the right edge, the road's row
+  LAND: { x0: 128, y0: 40, road: 46 },                                 // the point of land below at the right (screen px): where it begins, its top row at the right edge, the road's row
   BOXES: [{ u: -3.0, v: 1.0, door: [206, 70, 64] }, { u: 3.0, v: 1.0, door: [70, 110, 206] }],   // the two sentry boxes (hw .62, hd .5, h 1.75)
-  CORD: { u0: -2.36, u1: 2.36, v: 1.0, z: 2.02, sag: .3, at: [-1.2, 0, 1.2] },   // the lanterns' cord, and where the three hang (u)
+  CORD: { u0: -2.5, u1: 2.5, v: 1.0, z: 2.38, sag: .25, at: [-1.2, 0, 1.2] },   // the lanterns' cord, and where the three hang (u)
   BENCH: { u: 0, v: .45, hw: 1.9 },                                    // the bench against the parapet: four can sit on it
-  TABLE: { u: -2.4, v: 5.7, hw: 1.3, hd: .6 },                         // the small table (top z .74)
-  CHAIR: [-.72, 5.7],                                                  // the chair beside it
+  TABLE: { u: -2.1, v: 5.7, hw: 1.5, hd: .6 },                         // the table (top z .74); the chair beside it is a sprite
   STEPS: { u0: 2.2, u1: 3.7, v0: 6.2, v1: 8.4 },                       // the head of the steps: a hole in the walk
   MID: [0, 3.0],                                                       // the middle of the walk, under the lanterns
 };
@@ -58,8 +57,7 @@ function parapet() {
 function walk() {
   PZ.seat(E.BENCH.u, E.BENCH.v, E.BENCH.hw, false);
   const T = E.TABLE;
-  FD.table(T.u, T.v, T.hw, T.hd, [250, 246, 236]);
-  FD.chairEnd(E.CHAIR[0], E.CHAIR[1], 1);
+  FT.table(T.u, T.v, T.hw, T.hd, [206, 150, 70]);
   const S = E.STEPS;                                                                                              // a rail at the steps' far side and right side
   for (const u of [S.u0, S.u1]) PZ.post(u, S.v0 - .06, 0, .8, .04, FT.IRON);
   PZ.box((S.u0 + S.u1) / 2, S.v0 - .06, .76, .82, (S.u1 - S.u0) / 2, .03, FT.IRON);

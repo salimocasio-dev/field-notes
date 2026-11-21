@@ -27,13 +27,13 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 const E = {
   WALL: 2.6,
   ARCH: [-3.78, -2.1, 0, 2.05],                                        // the arch onto the dance floor: a hole
-  FAR: -3.4,                                                           // the dance floor's far wall (v)
+  FAR: -1.7,                                                           // the dance floor's far wall (v)
   CURTAIN: { u0: -3.86, u1: -2.02, z: 2.16, v: .06 },                  // the cord the curtain hangs from (three pegs on it; the curtain is a sprite)
   BENCH: { u: -1.02, v: .45, hw: .82 },                                // the bench: its left end is beside the arch
-  PHOTOS: { u0: .25, u1: 3.3, z: 1.95, v: .05, pegs: [.75, 1.45, 2.15, 2.85] },   // the photos' cord on the wall, and its four pegs (u)
-  LAMPS: [[-1.02, 1.55], [3.62, 1.2]],
+  PHOTOS: { u0: .25, u1: 3.3, z: 1.95, v: .05, pegs: [.6, 1.25, 1.9, 2.55] },   // the photos' cord on the wall, and its four pegs (u)
+  LAMPS: [[-1.02, 1.4], [3.62, 1.4]],
   TABLE: { u: 1.75, v: 2.9, hw: 1.6, hd: .6 },                         // the long table (top z .74)
-  STEP: [.2, 1.0, .3],                                                 // the step stool between the wall and the table (u, v, its height)
+  STEP: [3.2, .9, .3],                                                 // the step stool between the wall and the table, at the right (u, v, its height)
   STOOL: [1.75, 4.7, .34],                                             // the low stool in front of the table (u, v, its height)
 };
 function groundAt(x, y, ix, iy) {
@@ -44,7 +44,8 @@ function groundAt(x, y, ix, iy) {
 }
 function wall() {
   const A = E.ARCH;
-  PZ.wall(A[0] - 1.2, A[1] + 1.2, E.FAR, 0, .6, (u, z) => FT.stone(u + .3, z, [255, 226, 160]));                   // the foot of the dance floor's far wall (the arch shows no more of it)
+  PZ.wall(A[0] - 1.2, A[1] + 1.2, E.FAR, 0, 1.25, (u, z) => FT.stone(u + .3, z, [255, 226, 160]));                  // the dance floor's far wall, as much of it as the arch shows
+  FT.lights(A[0] - .2, A[1] + .2, E.FAR + .04, 1.05, .1);
   FT.yardWall(E.WALL, [A]);
   for (const [u, z] of E.LAMPS) FT.wallLamp(u, 0, z, true);
   const C = E.CURTAIN;
@@ -58,7 +59,7 @@ function wall() {
 function yard() {
   PZ.seat(E.BENCH.u, E.BENCH.v, E.BENCH.hw);
   const T = E.TABLE;
-  FD.table(T.u, T.v, T.hw, T.hd, [250, 246, 236]);
+  FT.table(T.u, T.v, T.hw, T.hd, [96, 150, 206]);
   const [su, sv, sh] = E.STEP;                                                                                    // the step stool: two steps
   PZ.box(su, sv, 0, sh, .26, .2, [176, 122, 76], (s, t, z, face) => face === 'top' ? rgb(206, 158, 106) : 0);
   PZ.box(su, sv + .26, 0, sh / 2, .26, .1, [150, 104, 62], (s, t, z, face) => face === 'top' ? rgb(190, 140, 92) : 0);
