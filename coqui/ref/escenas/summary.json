@@ -93,35 +93,46 @@
   {
    "id": "mesa",
    "things": 19,
-   "states": 141,
-   "distinctW": 391,
-   "views": 1,
-   "pairs": 12,
-   "level": 4,
-   "positions": 26,
-   "frames": 536
-  },
-  {
-   "id": "estufa",
-   "things": 17,
-   "states": 164,
-   "distinctW": 387,
-   "views": 1,
-   "pairs": 12,
-   "level": 4,
-   "positions": 35,
-   "frames": 625
-  },
-  {
-   "id": "nevera",
-   "things": 26,
-   "states": 87,
-   "distinctW": 360,
+   "states": 144,
+   "distinctW": 437,
    "views": 1,
    "pairs": 12,
    "level": 4,
    "positions": 29,
-   "frames": 321
+   "frames": 546
+  },
+  {
+   "id": "estufa",
+   "things": 17,
+   "states": 165,
+   "distinctW": 433,
+   "views": 1,
+   "pairs": 12,
+   "level": 5,
+   "positions": 35,
+   "frames": 629
+  },
+  {
+   "id": "nevera",
+   "things": 26,
+   "states": 90,
+   "distinctW": 412,
+   "views": 1,
+   "pairs": 12,
+   "level": 7,
+   "positions": 38,
+   "frames": 333
+  },
+  {
+   "id": "comer",
+   "things": 23,
+   "states": 158,
+   "distinctW": 346,
+   "views": 1,
+   "pairs": 12,
+   "level": 4,
+   "positions": 60,
+   "frames": 614
   }
  ]
 }

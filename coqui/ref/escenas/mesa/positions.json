@@ -1,7 +1,7 @@
 {
  "scene": "mesa",
  "made": "node coqui/tool/ref/escenas/make.mjs",
- "count": 26,
+ "count": 29,
  "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
  "positions": [
   {
@@ -529,6 +529,38 @@
   },
   {
    "kind": "point",
+   "x": 48,
+   "y": 168,
+   "uses": [
+    {
+     "file": "cuentos/h-mesa.json",
+     "at": "beats.5",
+     "owner": "[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 104,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/h-mesa.json",
+     "at": "beats.2",
+     "owner": "[]",
+     "insideThings": [
+      "abuelo",
+      "mesa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
    "x": 110,
    "y": 206,
    "uses": [
@@ -612,6 +644,16 @@
    "y": 150,
    "uses": [
     {
+     "file": "cuentos/h-mesa.json",
+     "at": "beats.3",
+     "owner": "[]",
+     "insideThings": [
+      "papa",
+      "mesa",
+      "cocina"
+     ]
+    },
+    {
      "file": "cuentos/cual-mesa.json",
      "at": "tengo hambre.si.set.gente.luis",
      "owner": "set.gente.luis",
@@ -683,6 +725,23 @@
      "at": "listo.si.set.cosas.0",
      "owner": "set.cosas[]",
      "insideThings": [
+      "mesa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 176,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/h-mesa.json",
+     "at": "beats.4",
+     "owner": "[]",
+     "insideThings": [
+      "mama",
       "mesa",
       "cocina"
      ]
