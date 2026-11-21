@@ -1,0 +1,112 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El cruce: a crossing of two streets in town (place 5, scene 4), as a set on the Pixel Plays engine. A NEW scene: there is no old picture.
+   The streets are turned 45 degrees to the engine's axes, so that on the picture one runs straight up and down and the other straight across:
+   the frog comes up from the bottom with his back to us, and his left is the picture's left. u runs across the picture (to the right), v runs
+   down it (towards the camera): x = (u + v) / R2, y = (v - u) / R2. The crossing's middle is u = 0, v = 0.
+   Three ways leave: left (u < 0), right (u > 0), straight on (v < 0), all alike: a pavement and a low hedge on each side, nothing that says where
+   they lead. At the far end of the street straight on stands one big tree. In the near right corner is a small square: a second tree, a seat
+   with a back that faces the camera, low bushes at its corners, and a short piece of low wall at its near edge (where a camera can be stood).
+   The state comes from the address; these become the builder's setKey:
+     hora = mediodia | tarde | ocaso      the light
+     cerrada = 0 | 1                      cones across the street to the right (story 58)
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['mediodia', 'tarde', 'ocaso'], 'mediodia'), cerrada: Q.get('cerrada') === '1', t: +(Q.get('t') || 0) };
+const ORIGIN = [-24, 10];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script>
+'use strict';
+const E = {
+  HW: 1.25, PV: .7,                                                  // half a street's width; a pavement's width beside it
+  TREE: [-2.5, -4.4], PLAZA: { u0: 2.2, v0: 2.6, u1: 5.7, v1: 7.6 },      // the big tree at the end of the street straight on; the small square (in u, v)
+  SEAT: { u: 3.3, v: 4.5, hw: 1.1 }, MURITO: [2.6, 7.0],
+  CONES: 2.45,                                                       // the cones that close the right street stand at u = CONES
+  uv: (x, y) => [(x - y) / R2, (x + y) / R2], xy: (u, v) => [(u + v) / R2, (v - u) / R2],
+};
+function groundAt(x, y, ix, iy) {
+  const [u, v] = E.uv(x, y), au = Math.abs(u), av = Math.abs(v), H = E.HW, P = E.PV;
+  const inV = au <= H && v < 9, inU = av <= H;                        // the street up and down (it goes on down past the camera), and the street across
+  if (inV || inU) {
+    if (inV && inU) return CL.asphalt(ix, iy);
+    if (inV && au < .05 && (v < -H - .3 || v > H + .3) && ((v + 40) % 1.3) < .8) return CL.paint(CL.LINE);
+    if (inU && av < .05 && ((u + 40) % 1.3) < .8) return CL.paint(CL.LINE);
+    if (inV && v > H && v < H + .9 && ((u + H) % .42) < .24) return CL.paint(CL.WHITE);            // the stripes where he comes up
+    return CL.asphalt(ix, iy);
+  }
+  const d = Math.min(au - H, av - H);                                 // how far from the nearer street
+  if (d < .14) return CL.kerb();
+  const pz = E.PLAZA;
+  if (u > pz.u0 - 1.2 && v > H && u < pz.u1 && v < pz.v1) return (d < P + .1 || (u > pz.u0 && v > pz.v0)) ? CL.slab(x, y, ix, iy) : CL.grass(x, y, ix, iy);   // the square's paving
+  if (d < P) return CL.slab(x, y, ix, iy);
+  return CL.grass(x, y, ix, iy);
+}
+function hedge(u0, v0, u1, v1) {                                      // a low hedge along a line in u, v: a row of leaf balls
+  const n = Math.max(1, Math.round(Math.hypot(u1 - u0, v1 - v0) / .34));
+  for (let k = 0; k <= n; k++) { const [x, y] = E.xy(u0 + (u1 - u0) * k / n, v0 + (v1 - v0) * k / n); sphere(x, y, .2, .3, k % 3 ? CL.LEAF : CL.LEAF_L, 'rough'); if (k % 2 === 0) castShadow(x, y, .25, .3); }
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  const H0 = E.HW + E.PV + .3;
+  part('setos', () => {                                               // the hedges: behind each pavement, the same on all three ways (none where the square is)
+    hedge(-H0, -H0, -H0, -3.2); hedge(H0, -H0, H0, -8);             // the street straight on
+    hedge(-H0, -H0, -5.6, -H0); hedge(-H0, H0, -5.6, H0);             // the street to the left
+    hedge(H0, -H0, 5.6, -H0);                                         // the street to the right, its far side
+    hedge(-H0, H0, -H0, 4.6);                                         // the street he comes up, its left side
+  });
+  part('arbol', () => { const [x, y] = E.xy(E.TREE[0], E.TREE[1]); CL.tree(x, y, 1.9, 1.35); });
+  part('plaza', () => {
+    for (const [u, v] of [[5.2, 2.2], [5.55, 2.6], [5.3, 7.3]]) { const [x, y] = E.xy(u, v); sphere(x, y, .22, .34, CL.LEAF_L, 'rough'); castShadow(x, y, .25, .3); }   // low bushes at the square's corners: nothing tall stands here (a tree would hide the street to the right, or the family)
+    const s = E.SEAT, [sx, sy] = E.xy(s.u, s.v), c = [150, 104, 62];
+    turnedBox(sx, sy, .36, .46, s.hw, .26, -Math.PI / 4, c);                                           // the seat, long across the picture
+    const [bx, by] = E.xy(s.u, s.v - .24); turnedBox(bx, by, .46, 1.0, s.hw, .05, -Math.PI / 4, c);     // its back, at the far side
+    for (const du of [-s.hw + .15, s.hw - .15]) { const [lx, ly] = E.xy(s.u + du, s.v); turnedBox(lx, ly, 0, .36, .07, .22, -Math.PI / 4, [70, 60, 56]); }
+    for (let du = -s.hw; du <= s.hw; du += .3) { const [qx, qy] = E.xy(s.u + du, s.v); castShadow(qx, qy, .4, .3); }
+    const [mx, my] = E.xy(E.MURITO[0], E.MURITO[1]); turnedBox(mx, my, 0, .55, .45, .12, -Math.PI / 4, [196, 186, 168]);   // a short piece of low wall at the square's near edge: where the camera is stood
+  });
+  if (SET.cerrada) part('conos', () => {                              // the right street is shut: a red and white board on two feet right across it, and cones before it
+    const [bx, by] = E.xy(E.CONES + .5, 0);
+    turnedBox(bx, by, .5, .82, .05, E.HW + .1, -Math.PI / 4, [250, 250, 250], (s, t, z) => (Math.floor((t + 40) / .3) % 2) ? rgb(226, 50, 44) : rgb(252, 252, 250));
+    for (const dv of [-E.HW + .15, E.HW - .15]) { const [fx, fy] = E.xy(E.CONES + .5, dv); turnedBox(fx, fy, 0, .5, .05, .08, -Math.PI / 4, [70, 74, 84]); castShadow(fx, fy, .4, .25); }
+    for (let v = -E.HW + .25; v <= E.HW - .1; v += .75) { const [x, y] = E.xy(E.CONES, v); CL.cone(x, y); }
+  });
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  const L = { tarde: [[1.0, .95, .86], [8, 3, -6]], ocaso: [[1.0, .88, .78], [14, 0, -10]] }[SET.hora];
+  if (L) lightPass(L[0], L[1]);
+  skyFill(CL.sky(SET.hora === 'ocaso' ? 'tarde' : 'manana', null));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.CRUCE = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

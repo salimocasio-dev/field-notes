@@ -1,0 +1,130 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La esquina: the street corner outside don Pepe's colmado (place 5, scene 1), as a set on the Pixel Plays engine. A NEW scene: there is no old picture.
+   The colmado is the block x < 0, y < 0. Its front (the door, the sign, the shop window under its awning) is the wall along x, lit, across the top
+   of the picture; its corner is at the right, and its side wall goes off up to the right along a narrow side street (street B: a T-junction).
+   In front of the colmado: its pavement (1.6 wide), then street A along x (two lanes), then the near pavement, the park's low wall and the park.
+   Whatever drives on street A comes from the right and goes left (towards -x): its lit right side, where a guagua has its door, faces the camera,
+   and the near pavement is its kerb. The striped crossing goes over street A beside the corner; the traffic light's pole stands at its far end.
+   The state comes from the address; these become the builder's setKey:
+     hora = manana | tarde     the light
+     obra = 0 | 1              the dug-up far lane of street A with its cones (no stripes then), and the two squares of cement in the near pavement (story 50)
+     puerta = shut | open      the colmado's door
+     autos = a list for the readers' renders only, "kind@x,y,heading" joined by ";" (kind: carro, azul, guagua; heading: i = to -x, d = to +x). In the game they are sprites
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters, no lit lamp. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['manana', 'tarde'], 'manana'), obra: Q.get('obra') === '1', puerta: pick('puerta', ['shut', 'open'], 'shut'), t: +(Q.get('t') || 0) };
+const ORIGIN = [30, -8];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script>
+'use strict';
+const E = {
+  WH: 3.5, P: 1.6, K: .2, S0: 1.8, S1: 5.8,                          // the walls' height; a pavement's width; the kerb; street A from y = S0 to S1
+  B0: 1.8, B1: 4.4,                                                  // the side street's mouth: from x to x (for y < P)
+  D0: -2.5, D1: -1.2, DH: 2.55,                                      // the colmado's door, in the wall along x
+  WIN: [-6.3, -4.3, .95, 2.2],                                       // the shop window, in the same wall: x0, x1, z0, z1
+  ZEBRA: [.2, 1.5],                                                  // the crossing over street A: from x to x
+  POLE: [1.66, 1.5],                                                  // the traffic light's pole, at the corner's tip, right of the crossing
+  LANE1: 2.8, LANE2: 4.8,                                            // the middles of street A's two lanes (LANE2 is the near one, the kerb lane of the near pavement)
+  STOP: 2.2,                                                         // where a thing that drives stops before the stripes (its front)
+  OBRA: [.4, 2.8],                                                   // the dug-up stretch of the far lane: from x to x
+  WET: [1.2, 6.15, 2.2, 7.05], DRY: [-.1, 6.15, .9, 7.05],           // the two cement squares in the near pavement: x0, y0, x1, y1
+};
+const STONE = [196, 186, 168];
+function groundAt(x, y, ix, iy) {
+  const inA = y >= E.S0 && y <= E.S1, inB = x >= E.B0 && x <= E.B1 && y < E.S0;
+  if (inA || inB) {
+    if (SET.obra && inA && y <= 3.8 && x >= E.OBRA[0] && x <= E.OBRA[1]) {                      // the hole: earth, darker at its edges, stones
+      const n = noise(x * 3, y * 3), rim = y > 3.66 || x > E.OBRA[1] - .14, deep = y < E.S0 + .5 || x < E.OBRA[0] + .5;                 // a hole with depth: its far walls in the dark, its near rim lit
+      return rim ? rgb(196, 170, 130) : deep ? rgb(52, 42, 40) : rgb(...(hash(ix, iy) < .06 ? [150, 140, 128] : n > .62 ? [136, 100, 70] : [104, 76, 56]));
+    }
+    if (!SET.obra && inA && x >= E.ZEBRA[0] && x <= E.ZEBRA[1] && ((y - E.S0) % .5) < .28) return CL.paint(CL.WHITE);     // the stripes
+    if (!SET.obra && inA && x >= E.STOP - .13 && x <= E.STOP) return CL.paint(CL.WHITE);                                  // the stop line
+    if (inA && Math.abs(y - 3.8) < .06 && (x < -.2 || x > 2.2) && ((x + 40) % 1.6) < 1.0) return CL.paint(CL.LINE);
+    return CL.asphalt(ix, iy);
+  }
+  if ((y > E.P && y < E.S0) || (y > E.S1 && y < E.S1 + E.K)) return CL.kerb();
+  if (y < E.P && ((x > E.P && x < E.B0) || (x > E.B1 && x < E.B1 + E.K))) return CL.kerb();
+  if (y > 8.82) return CL.grass(x, y, ix, iy);                                                                         // the park
+  if (SET.obra && y > E.S1) {                                                                                           // the two squares of cement
+    const inq = q => x >= q[0] && x <= q[2] && y >= q[1] && y <= q[3], rim = q => x < q[0] + .06 || x > q[2] - .06 || y < q[1] + .06 || y > q[3] - .06;
+    if (inq(E.WET)) return rim(E.WET) ? rgb(150, 150, 156) : rgb(...(hash(ix, iy) < .03 ? [214, 214, 220] : [200, 200, 208]));
+    if (inq(E.DRY)) {
+      if (rim(E.DRY)) return rgb(150, 144, 136);
+      const u = x - E.DRY[0], v = y - E.DRY[1];
+      const hand = Math.hypot(u - .3, v - .55) < .11 || [[.2, .36], [.27, .33], [.34, .33], [.41, .37], [.16, .5]].some(f => Math.hypot(u - f[0], v - f[1]) < .035);
+      const paw = Math.hypot(u - .68, v - .42) < .08 || [[.6, .28], [.67, .25], [.74, .27], [.8, .32]].some(f => Math.hypot(u - f[0], v - f[1]) < .03);
+      return (hand || paw) ? rgb(132, 126, 120) : rgb(178, 172, 164);
+    }
+  }
+  return CL.slab(x, y, ix, iy);
+}
+const basket = (u, v) => {                                           // the colmado's sign: a basket of fruit, as on its front in place 4
+  const dx = (u - .5) * 3.2, dy = v - .42;
+  if (dy < 0 && dy > -.3 && Math.abs(dx) < .62 + dy) return rgb(176, 124, 70);
+  if (Math.hypot(dx + .3, dy - .12) < .2) return rgb(226, 60, 50);
+  if (Math.hypot(dx - .05, dy - .2) < .2) return rgb(244, 200, 70);
+  if (Math.hypot(dx - .36, dy - .1) < .18) return rgb(110, 170, 70);
+  return 0;
+};
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('colmado', () => {
+    CL.top(-10, -9, 0, 0, E.WH, (a, b) => shade(CL.SALMON, 3.4, a, b));
+    CL.wallAlongX(0, -10, 0, E.WH, CL.SALMON, CL.TEAL, [[E.D0 - .12, E.D1 + .12, 0, E.DH + .12], [-2.95, -.75, 2.75, 3.42], [E.WIN[0] - .1, E.WIN[1] + .1, E.WIN[2] - .1, E.WIN[3] + .1]]);
+    CL.wallAlongY(0, -9, 0, E.WH, CL.SALMON, CL.TEAL);
+    CL.signX(0, -2.95, -.75, 2.75, 3.42, basket);
+  });
+  part('puerta', () => CL.doorX(0, E.D0, E.D1, E.DH, SET.puerta === 'open'));
+  part('vitrina', () => { CL.windowX(0, E.WIN[0], E.WIN[1], E.WIN[2], E.WIN[3]); CL.awningX(0, E.WIN[0] - .3, E.WIN[1] + .3, 2.9, 2.6, .8); });
+  part('semaforo', () => { E.LUZ = CL.trafficLight(E.POLE[0], E.POLE[1]); });
+  part('muro', () => CL.box(-9, 8.6, 0, 9, 8.82, .5, STONE));          // the park's low wall, beyond the near pavement
+  if (SET.obra) part('obra', () => {
+    CL.faceY(4.0, E.OBRA[0] - .1, E.OBRA[1] + .1, .5, .86, (a, z) => (Math.floor((a + 40) / .3) % 2) ? rgb(226, 50, 44) : rgb(252, 252, 250));   // a red and white board along the hole, on two feet
+    for (const x of [E.OBRA[0], E.OBRA[1]]) CL.box(x - .05, 3.94, 0, x + .05, 4.04, .5, [70, 74, 84]);
+    for (let x = E.OBRA[0] + .3; x <= E.OBRA[1]; x += .9) CL.cone(x, 4.25);
+    CL.box(1.55, 2.6, 0, 1.6, 2.65, 1.0, [150, 104, 62]); CL.box(1.48, 2.58, 1.0, 1.67, 2.67, 1.08, [150, 104, 62]); CL.box(1.5, 2.6, .0, 1.65, 2.66, .22, [120, 124, 134]);   // a spade standing in the earth
+    CL.cone(E.OBRA[0] - .3, 2.3); CL.cone(E.OBRA[0] - .3, 3.3); CL.cone(E.OBRA[1] + .3, 2.3); CL.cone(E.OBRA[1] + .3, 3.3);
+    for (const [x, y, r] of [[1.0, 2.5, .26], [2.1, 3.0, .3]]) { sphere(x, y, .05, r, [124, 92, 66], 'rough'); sphere(x + .25, y + .1, .02, r * .7, [150, 140, 128], 'rough'); }   // heaps of earth and stones
+  });
+  for (const a of (Q.get('autos') || '').split(';').filter(Boolean)) { const [k, r] = a.split('@'), [x, y, h] = r.split(','); part('auto', () => CL.vehicle(k, +x, +y, h || 'i')); }
+  for (let a = E.WIN[0]; a <= E.WIN[1]; a += .4) castShadow(a, .4, 2.6, .4, .6);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  if (SET.hora === 'tarde') lightPass([1.0, .93, .84], [10, 2, -8]);
+  skyFill(() => rgb(150, 200, 252));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.ESQUINA = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

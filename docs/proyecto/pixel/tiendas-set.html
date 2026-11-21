@@ -1,0 +1,147 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* Las tiendas: a street of shops in town (place 5, scene 3), as a set on the Pixel Plays engine. A NEW scene: there is no old picture.
+   A row of fronts along x (lit), across the picture from the upper left to the lower right; in front of it a wide pavement, where everybody
+   walks; then the kerb and the street, at the bottom left.
+   fila = tiendas: four fronts, each with a door and a picture sign over it: tienda (a kite; toys in its window, a little horse outside),
+          banco (a coin), farmacia (a green cross), correo (a letter; a post box beside the door). A seat on the pavement, by the kerb.
+   fila = altos:   two buildings with no sign (story 55): a tall old one and a low new one; par = a | b picks the pair, lado = izq | der says
+          which side the tall one stands on. A kerb to sit on.
+   The state comes from the address; these become the builder's setKey:
+     fila, par, lado as above; hora = manana | tarde; nube = 0 | 1 | 2 (a dark cloud at the sky's edge, over the street, raining: the sky and the light)
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters. Every door is drawn shut: nothing shows whether a place is open. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { fila: pick('fila', ['tiendas', 'altos'], 'tiendas'), par: pick('par', ['a', 'b'], 'a'), lado: pick('lado', ['izq', 'der'], 'izq'), hora: pick('hora', ['manana', 'tarde'], 'manana'), nube: +(Q.get('nube') || 0), t: +(Q.get('t') || 0) };
+const ORIGIN = SET.fila === 'altos' ? [6, 48] : [0, 24];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script>
+'use strict';
+const E = {
+  X0: -4.5, FW: 2.25, H: 3.6, PV: 2.6, S0: 2.8,                      // the row starts at X0; a front's width and height; the pavement from y = 0 to PV; the street from S0
+  FRONTS: ['tienda', 'banco', 'farmacia', 'correo'],
+  COLOR: { tienda: [[250, 214, 120], [206, 150, 70]], banco: [[214, 214, 220], [130, 136, 150]], farmacia: [[226, 244, 226], [70, 150, 90]], correo: [[250, 232, 190], [60, 90, 170]] },
+  DOOR: .58, DW: 1.1, DH: 2.4,                                       // a front's door: its left edge from the front's left edge, its width, its height
+  HORSE: [-4.15, 1.3], BUZON: [4.25, .5], SEAT: [.9, 1.95, .8],       // the little horse (left of the tienda's door); the post box (right of the correo's door); the seat
+  ALTO: { h: 4.6, w: 3.9 }, NUEVO: { h: 2.75, w: 3.9 }, AX: [-4.2, .4],   // story 55's buildings: heights, widths, and the two places' left edges
+};
+E.frontX = k => E.X0 + E.FW * E.FRONTS.indexOf(k);
+E.doorX = k => E.frontX(k) + E.DOOR;
+const PIC = {
+  tienda: (u, v) => { const X = (u - .5) * 2.0, Y = v - .5; if (Math.hypot(X + .52, Y) < .3) return (Math.abs(X + .52) < .05 || Math.abs(Y) < .04) ? rgb(250, 250, 250) : (X + .52) * Y > 0 ? rgb(226, 60, 50) : rgb(60, 120, 220); const bx = X - .42; if (Math.hypot(bx, Y + .04) < .27 || Math.hypot(bx - .22, Y - .24) < .11 || Math.hypot(bx + .22, Y - .24) < .11) return (Math.hypot(bx, Y + .1) < .1) ? rgb(240, 214, 170) : (Math.hypot(bx - .1, Y - .02) < .035 || Math.hypot(bx + .1, Y - .02) < .035) ? rgb(40, 30, 30) : rgb(170, 110, 60); return 0; },   // toys: a ball and a teddy bear's head
+  banco: (u, v) => { const X = (u - .5) * 2.0, Y = v - .5; for (const [cx, cy] of [[-.5, -.2], [-.5, -.06], [-.5, .08], [.0, -.2], [.0, -.06], [.5, -.2]]) { const ex = (X - cx) / .3, ey = (Y - cy) / .1; if (ex * ex + ey * ey < 1) return ey > .35 ? rgb(196, 150, 40) : rgb(250, 210, 80); } const r = Math.hypot(X - .5, Y - .16); if (r < .24) return r > .18 ? rgb(196, 150, 40) : rgb(250, 210, 80); return 0; },   // money: stacks of gold coins and one coin standing
+  farmacia: (u, v) => ((Math.abs(u - .5) < .07 && Math.abs(v - .5) < .34) || (Math.abs(u - .5) < .21 && Math.abs(v - .5) < .12)) ? rgb(40, 160, 80) : 0,                                                                                                    // a green cross
+  correo: (u, v) => { if (u < .16 || u > .84 || v < .18 || v > .82) return rgb(250, 214, 90); const t = (u - .16) / .68, flap = .82 - Math.min(t, 1 - t) * .62; if (u > .68 && u < .8 && v > .56 && v < .78) return rgb(226, 60, 50); return (Math.abs(v - flap) < .045 || u < .2 || u > .8 || v < .23 || v > .77) ? rgb(40, 50, 90) : rgb(255, 255, 255); },   // a letter: a white envelope with its flap and a red stamp, on yellow
+};
+function groundAt(x, y, ix, iy) {
+  if (y < -3.2) return 0;                                             // behind the row: sky
+  if (y < 0) return CL.slab(x, y, ix, iy);
+  if (y <= E.PV) return CL.slab(x, y, ix, iy);
+  if (y < E.S0) return CL.kerb();
+  return (Math.abs(y - 5.0) < .06 && ((x + 40) % 1.6) < 1.0) ? CL.paint(CL.LINE) : CL.asphalt(ix, iy);
+}
+function tiendas() {
+  for (const k of E.FRONTS) part(k, () => {
+    const x0 = E.frontX(k), x1 = x0 + E.FW, d0 = x0 + E.DOOR, [c, trim] = E.COLOR[k], h = E.H + (k === 'banco' ? .25 : 0);
+    const s0 = x0 + .22, s1 = x1 - .22, sz0 = E.DH + .18, sz1 = h - .06;                        // the sign: nearly as wide as the front
+    const holes = [[d0 - .12, d0 + E.DW + .12, 0, E.DH + .12], [s0, s1, sz0, sz1]];
+    if (k === 'tienda') holes.push([x0 + .1, x0 + .5, .7, 1.9]);
+    CL.top(x0, -1.0, x1, 0, h, (a, b) => shade(trim, 3.2, a, b));
+    CL.wallAlongX(0, x0, x1, h, c, trim, holes);
+    CL.faceX(x1, -1.0, 0, 0, h, (b, z) => shade(c, 1.7, b, z));
+    CL.doorX(0, d0, d0 + E.DW, E.DH, false, k === 'banco' ? [120, 130, 150] : k === 'farmacia' ? [236, 240, 236] : k === 'correo' ? [60, 90, 170] : CL.WOOD, true);
+    CL.signX(0, s0, s1, sz0, sz1, PIC[k]);
+    if (k === 'tienda') CL.faceY(.02, x0 + .1, x0 + .5, .7, 1.9, (a, z) => { const u = (a - x0 - .1) / .4, v = (z - .7) / 1.2; if (u < .1 || u > .9 || v < .04 || v > .96) return rgb(244, 240, 228); if (Math.hypot(u - .5, (v - .72) * 2.2) < .32) return rgb(226, 60, 50); if (Math.abs(u - .5) < .3 - Math.abs(v - .25) * 1.6 && v < .44) return rgb(60, 150, 200); return rgb(170, 210, 222); }, CL.PP);   // its window: a ball and a top
+  });
+  part('caballito', () => {                                           // the little horse: a red base, a brown horse with a white mane, a coin box
+    const [x, y] = E.HORSE;
+    CL.box(x - .32, y - .22, 0, x + .32, y + .22, .14, [206, 60, 50]);
+    CL.box(x - .26, y - .1, .42, x + .2, y + .1, .72, [176, 120, 70]);                                  // the body
+    CL.box(x + .12, y - .09, .62, x + .28, y + .09, 1.02, [176, 120, 70]);                               // the neck and head
+    CL.box(x + .22, y - .08, .86, x + .44, y + .08, 1.0, [196, 140, 86]);
+    CL.box(x + .08, y - .1, .98, x + .16, y + .1, 1.08, [250, 246, 236]);                                // the mane
+    for (const dx of [-.2, .12]) CL.box(x + dx, y - .08, .14, x + dx + .08, y + .08, .42, [150, 100, 60]);
+    CL.box(x - .5, y - .1, 0, x - .38, y + .1, .8, [70, 74, 84]); CL.box(x - .52, y - .12, .8, x - .36, y + .12, .98, [236, 196, 60]);   // the coin box on its post
+    castShadow(x, y, .5, .45);
+  });
+  part('buzon', () => {                                               // the post box: blue, a dark slot, a white envelope painted on its front
+    const [x, y] = E.BUZON; CL.box(x - .12, y - .1, 0, x + .12, y + .1, .3, [50, 60, 90]); CL.box(x - .24, y - .2, .3, x + .24, y + .2, 1.2, [60, 100, 200]);
+    CL.faceY(y + .21, x - .2, x + .2, .98, 1.08, () => rgb(20, 30, 60), CL.PP);
+    CL.faceY(y + .21, x - .17, x + .17, .48, .84, (a, z) => { const t = (a - x + .17) / .34, fl = .84 - Math.min(t, 1 - t) * .3; return Math.abs(z - fl) < .03 ? rgb(60, 100, 200) : rgb(255, 255, 255); }, CL.PP);
+    castShadow(x, y, .6, .32);
+  });
+  part('asiento', () => CL.seat(E.SEAT[0], E.SEAT[1], E.SEAT[0] + 2.0));
+}
+function altos() {
+  const tallLeft = SET.lado === 'izq', b = SET.par === 'b';
+  const place = (isTall, x0) => part(isTall ? 'alto' : 'nuevo', () => {
+    const B = isTall ? E.ALTO : E.NUEVO, x1 = x0 + B.w, d0 = x0 + B.w / 2 - .55;
+    const c = isTall ? (b ? [176, 96, 74] : [168, 168, 172]) : (b ? [250, 216, 96] : [120, 206, 220]), trim = isTall ? (b ? [120, 66, 52] : [116, 116, 124]) : (b ? [226, 150, 60] : [250, 250, 250]);
+    const holes = [[d0 - .12, d0 + 1.22, 0, 2.5]];
+    if (isTall) for (let f = 0; f < 3; f++) for (const wx of [.45, 2.45]) { if (f === 0 && Math.abs(x0 + wx - d0) < 1.2) continue; holes.push([x0 + wx - .08, x0 + wx + 1.0, .95 + f * 1.45, 2.05 + f * 1.45]); }
+    else holes.push([x0 + .4, x0 + 1.3, 1.0, 2.0]);
+    CL.top(x0, -1.4, x1, 0, B.h, (a, bb) => shade(trim, 3.2, a, bb));
+    CL.faceY(0, x0, x1, 0, B.h, (a, z) => {
+      if (holes.some(k => a > k[0] && a < k[1] && z > k[2] && z < k[3])) return 0;
+      if (isTall && !b && (Math.abs((a - x0) - 1.9 - Math.sin(z * 2.1) * .12) < .025 && z > 2.0 && z < 4.0)) return rgb(96, 96, 104);          // a crack up the old wall
+      if (isTall && b && ((Math.floor(z / .16) + Math.floor((a + (Math.floor(z / .16) % 2) * .2) / .4)) % 7 === 0)) return shade([150, 80, 62], 2.4, a, z);   // old brick
+      return z < .5 ? shade(trim, 2.2, a, z) : z > B.h - .22 ? shade(trim, 2.6, a, z) : shade(c, isTall ? 2.2 : 2.5, a, z);
+    });
+    CL.faceX(x1, -1.4, 0, 0, B.h, (bb, z) => shade(c, 1.6, bb, z));
+    CL.doorX(0, d0, d0 + 1.1, 2.4, false, isTall ? [96, 70, 56] : [250, 250, 250], false);
+    for (const k of holes.slice(1)) {                                                                                                      // the windows: old shutters, or new glass
+      CL.faceY(.02, k[0], k[1], k[2], k[3], (a, z) => isTall ? ((Math.floor((z - k[2]) / .09) % 2) ? rgb(110, 124, 110) : rgb(84, 100, 90)) : (((a * 1.4 + z) % 1.2) < .18 ? rgb(226, 244, 248) : rgb(150, 200, 214)), CL.PP);
+    }
+    if (isTall && b) { const cx = x0 + B.w / 2, cz = 4.05; CL.faceY(.03, cx - .42, cx + .42, cz - .42, cz + .42, (a, z) => { const r = Math.hypot(a - cx, z - cz); return r > .42 ? 0 : r > .36 ? rgb(60, 50, 44) : (Math.abs(a - cx) < .025 && z > cz && z < cz + .28) || (Math.abs(z - cz) < .025 && a > cx && a < cx + .2) ? rgb(40, 40, 50) : rgb(250, 246, 232); }, CL.PP); }   // the clock that has stopped
+    if (!isTall && !b) { CL.box(x1 - .75, .2, 0, x1 - .65, .3, 1.7, [196, 148, 92]); CL.box(x1 - .35, .5, 0, x1 - .25, .6, 1.7, [196, 148, 92]); for (let z = .3; z < 1.6; z += .32) CL.box(x1 - .72, .34, z, x1 - .28, .42, z + .05, [176, 128, 76]); CL.box(x1 - 1.3, .5, 0, x1 - 1.0, .8, .3, [250, 250, 250]); CL.top(x1 - 1.27, .53, x1 - 1.03, .77, .31, () => rgb(120, 206, 220)); }   // the ladder and the paint pot
+    if (!isTall && b) { const tx = x1 - .7, ty = .9; CL.box(tx + .12, ty - .03, 0, tx + .18, ty + .03, 1.2, [196, 148, 92]); for (let z = 0; z <= 1.0; z += CL.PZ) plot(tx, ty, z, rgb(120, 84, 56)); sphere(tx, ty, 1.25, .34, CL.LEAF_L, 'rough'); sphere(tx + .12, ty + .05, 1.5, .24, CL.LEAF, 'rough'); castShadow(tx, ty, 1.2, .35); }   // the young tree tied to a stick
+  });
+  place(tallLeft, E.AX[0]); place(!tallLeft, E.AX[1]);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  if (SET.fila === 'altos') altos(); else tiendas();
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  if (SET.nube >= 1) lightPass(SET.nube === 2 ? [.82, .85, .9] : [.92, .94, .96], SET.nube === 2 ? [-2, 0, 8] : [0, 0, 4]);
+  else if (SET.hora === 'tarde') lightPass([1.0, .93, .84], [10, 2, -8]);
+  const base = CL.sky(SET.nube === 2 ? 'gris' : SET.hora, null);
+  skyFill((ix, iy) => {                                               // the dark cloud: at the left edge, or over everything
+    if (SET.nube === 1 || (SET.nube === 0 && Q.get('nube') === '0' && false)) { const d = Math.hypot((ix - 40) / 60, (iy - 6) / 16) + Math.sin(ix * .21) * .08; if (d < 1) return rgb(...(d < .6 ? [86, 90, 108] : [112, 116, 132])); }
+    if (SET.nube === 2) { let m = 9; for (let k = 0; k < 9; k++) m = Math.min(m, Math.hypot((ix - 14 - k * 28) / 26, (iy - 10 - (k % 2) * 9) / 15)); if (m < 1) return rgb(...(m < .55 ? [70, 74, 94] : m < .85 ? [96, 100, 120] : [150, 154, 170])); }   // a bank of round dark clouds
+    return base(ix, iy);
+  });
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.TIENDAS = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>
