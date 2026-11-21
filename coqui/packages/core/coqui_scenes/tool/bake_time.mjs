@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// The bake time of each of a converted scene's states (El frente's, or --scene balcon, sala, patio, camino, campo, lago or banco) in a release web
+// The bake time of each of a converted scene's states (El frente's, or --scene balcon, sala, patio, camino, campo, lago, banco or mesa) in a release web
 // build of the dev entry, in headless Chrome: each state's first bake, then each again on the same engine ("again").
 //
 //   flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart     (in this package)
-//   node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago|banco] [--shots DIR]
+//   node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago|banco|mesa] [--shots DIR]
 //
 // It serves build/web on 127.0.0.1 (a free port), opens ?page=bake, waits for `window.coquiBakes` and prints each
 // state's ms, then the least, the median and the most (and, for a set with glints on its water, what drawing them costs a frame). --shots DIR: also screenshots of ?page=pairs and of the scene.
