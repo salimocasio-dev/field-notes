@@ -156,7 +156,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     for (const p of w.palomas || []) if (p && p.x != null) { const m = find('paloma', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
     for (const p of w.cosas || []) if (p && p.x != null) { const m = find('cosa', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
     for (const p of Object.values(w.perros || {})) if (p && p.x != null) { const m = find('perro', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
-    if (w.seva) { const v = (w.perros || {}).viejo, j = (w.perros || {}).joven; if (v && v.y === 196) v.y = 206; if (j && j.y === 204) j.y = 212; }   // the cart going home: the dogs walk 10 and 8 rows nearer (carrova)
+    if (w.seva) { const v = (w.perros || {}).viejo, j = (w.perros || {}).joven; if (v && v.y === 196) v.y = 206; if (j && j.y === 204) j.y = 210; }   // the cart going home: the dogs walk 10 and 6 rows nearer (carrova)
     const sitters = Object.values(w0.gente || {}).filter(p => p && p.sent && R(p.y) === 161 && p.vis !== 0);
     for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null || p.sent) continue; const m = MV.find(q => (q.who === id || q.who === 'porton') && q.old[0] === R(p.x) && q.old[1] === R(p.y)) || RM.find(e => e.old[0] === R(p.x) && e.old[1] === R(p.y) && e.uses.some(u => / (beats|.*gente)/.test(u))); if (m) { p.x = m.new[0] + (p.x - R(p.x)); p.y = m.new[1] + (p.y - R(p.y)); } }
     if (w.cq) { const mq = MV.find(m2 => m2.who === 'cq' && m2.old[0] === w.cq.x && m2.old[1] === w.cq.y); if (mq) { w.cq.x = mq.new[0]; w.cq.y = mq.new[1]; } }

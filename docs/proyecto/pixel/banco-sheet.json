@@ -2461,14 +2461,14 @@
      "world": [6.6064, 4.4307, 0.42]
     }
    ],
-   "why": "bolsa, hueso: where Carmen hands the bag and the bone, 2 px right and 5 rows nearer: Luis and the frog's home moved 14 px right (round 2), and 14 px would put her behind the gate's left post; here she is clear of the frog, of the post, and of Luis but his feet"
+   "why": "bolsa, hueso: where Carmen hands the bag and the bone, 2 px right and 5 rows nearer (round 3: 1 px from the picture's lower edge, not 3: no place holds, see checks.notFixed) (round 3: 3 px and more inside the picture's lower edge, as the old): Luis and the frog's home moved 14 px right (round 2), and 14 px would put her behind the gate's left post; here she is clear of the frog, of the post, and of Luis but his feet"
   },
   {
    "line": 335,
    "act": "carrova",
    "src": "v.y=196;j.y=204;",
-   "to": "v.y=206;j.y=212;",
-   "why": "acts.carrova: when the cart goes home the two dogs walk 10 and 8 rows nearer: the cart now rolls toward the viewer (+y) with its man pushing it, and at the old rows he walked over the old dog; here both dogs stay in front of him while they are in the view (the young one still in front of the old)"
+   "to": "v.y=206;j.y=210;",
+   "why": "acts.carrova: when the cart goes home the two dogs walk 10 and 6 rows nearer: the cart now rolls toward the viewer (+y) with its man pushing it, and at the old rows he walked over the old dog; here both dogs stay in front of him while they are in the view (the young one still in front of the old)"
   },
   {
    "line": 327,
@@ -2481,7 +2481,7 @@
    "line": 318,
    "act": "sale22",
    "src": "perroA(\"viejo\",36,193,\"walk\"),perroA(\"joven\",64,194,\"run\")",
-   "to": "perroA(\"viejo\",52,193,\"walk\"),perroA(\"joven\",54,214,\"run\")",
+   "to": "perroA(\"viejo\",52,193,\"walk\"),perroA(\"joven\",54,210,\"run\")",
    "places": [
     {
      "who": "perro",
@@ -2492,11 +2492,11 @@
     {
      "who": "perro",
      "old": [64, 194],
-     "new": [54, 214],
-     "world": [3.6692, 7.2591, 0.42]
+     "new": [54, 210],
+     "world": [3.4516, 7.0415, 0.42]
     }
    ],
-   "why": "acts.sale22: the dogs move aside to the left: the old one 16 px less far (his hint frame inside the view), the young one 10 px farther and 20 rows nearer, in front of the old one (moved) and of the frog when he serves whoever queues first at the cart (cola22: at the old row he stood over the dog)"
+   "why": "acts.sale22: the dogs move aside to the left: the old one 16 px less far (his hint frame inside the view), the young one 10 px farther and 16 rows nearer (round 3: 3 px and more inside the picture's lower edge), in front of the old one (moved) and of the frog when he serves whoever queues first at the cart (cola22: at the old row he stood over the dog)"
   },
   {
    "line": 302,
@@ -2597,16 +2597,16 @@
    "line": 323,
    "act": "pasa",
    "src": "await mueve(o.a,PORTON[0]+8,PORTON[1]);",
-   "to": "await mueve(o.a,PORTON[0]+6,PORTON[1]+4);",
+   "to": "await mueve(o.a,PORTON[0]-2,PORTON[1]+5);",
    "places": [
     {
      "who": "porton",
      "old": [196, 197],
-     "new": [205, 207],
-     "world": [7.4246, 2.8012, 0]
+     "new": [197, 208],
+     "world": [7.2614, 3.0732, 0]
     }
    ],
-   "why": "acts.pasa: who walks through the gate stops just beyond it on the path, clear of the right post and the hedge (round 2)"
+   "why": "acts.pasa: who walks through the gate stops just beyond it on the path, clear of the right post and the hedge (round 2), and 3 px and more inside the picture's right edge with what they carry, as the old (round 3)"
   },
   {
    "line": 325,
@@ -6090,17 +6090,18 @@
    "hops: the frog's 86 walks between steps in the 18 runs, recorded and the port's, each the old number of hops (26 distinct walks; 0 changed)",
    "boxes, two touch things side by side (as the old, whose lamp post's box also reached over the second bench's end): banco1 -> farol 24 px, banco2 -> farol 24 px",
    "boxes: every pixel of each set thing inside its touch box in every baked state (nothing sways): carro [27,93,43,91], farol [168,31,12,111], banco0 [80,125,41,43], banco1 [128,124,41,44], banco2 [176,124,30,39]; every pixel answers its own thing in the hit order (the wire answers the lamp only where it hangs from it, 8 px); no two boxes overlap; the trees, the hedge, the gate, the pole and the wire are the park's",
-   "shadows of the set: 1580 castShadow calls over the 12 states, each with strength 1 and a radius, none at night; each casting part darkens pixels, its shadow joined to it; the thin pole, lamp post and gate posts only a contact shadow at their foot: arbol0 960 px, arbol1 960 px, arbol2 690 px, poste 78 px, farol 84 px, carro 1100 px, banco0 1554 px, banco1 1554 px, banco2 834 px, seto 888 px, porton 126 px",
-   "the lamp's pool (evening and night): 2162 and 2162 px round its foot, joined to it, none by day; the trees' crown shades (day and evening), lighter and solid, on the lawn only",
-   "sides: 20527 ticks inside the acts of the port's play of the 18 runs, every step's end and every pair picture: 117067 rests (300 ms or more in one place) on the ground, each clearly on one side with 6 px of that ground round its foot: on the paving (abuela, carmen, coche, cosa billetera, cosa bola, cosa caida, cosa caja, cosa cojin, cosa hielo, cosa jug0, cosa jug1, cosa jug2, cosa jug3, cosa sombrilla, hombre, joven, luis, mujer, paloma 1, paloma 2, paloma 3, perro canelo, perro joven, perro viejo, piraguero, senor, senora, the frog), on the lawn (none); 3907 moments of someone beyond the hedge's line (on the pavement outside), 205 crossings of it, each in the gate's opening",
+   "shadows of the set: 1580 castShadow calls over the 12 states, each with strength 1 and a radius, none at night; each casting part darkens pixels, its shadow joined to it; the thin pole, lamp post and gate posts only a contact shadow at their foot: arbol0 960 px, arbol1 960 px, arbol2 690 px, poste 78 px, farol 84 px, carro 1100 px, banco0 1554 px, banco1 1554 px, banco2 834 px, seto 888 px, porton 222 px",
+   "the lamp's pool (evening and night): 3628 and 3628 px round its foot, joined to it, none by day; the trees' crown shades (day and evening), lighter and solid, on the lawn only",
+   "sides: 20527 ticks inside the acts of the port's play of the 18 runs, every step's end and every pair picture: 117070 rests (300 ms or more in one place) on the ground, each clearly on one side with 6 px of that ground round its foot: on the paving (abuela, carmen, coche, cosa billetera, cosa bola, cosa caida, cosa caja, cosa cojin, cosa hielo, cosa jug0, cosa jug1, cosa jug2, cosa jug3, cosa sombrilla, hombre, joven, luis, mujer, paloma 1, paloma 2, paloma 3, perro canelo, perro joven, perro viejo, piraguero, senor, senora, the frog), on the lawn (none); 3907 moments of someone beyond the hedge's line (on the pavement outside), 205 crossings of it, each in the gate's opening",
    "sitting: 50197 moments of someone on a bench: the seat under the lap, the feet over the paving, nothing of the bench nearer than them (its back behind them); 10583 moments of a thing or a pigeon on a seat, on it",
    "pigeons: 87288 wire, 1434 air, 1085 ground, 50 coche, 602 seat, 243 frog, 4698 back (moments): on the wire with the wire under their feet, on a back with its top under them; 1434 moments in the air, each with its shadow on the ground (helps)",
    "behind a front part, drawn over them by front: piraguero behind carro, paloma 2 behind porton, senor behind banco0, senor behind porton, senor behind seto, mujer behind banco1, mujer behind porton, luis behind porton, luis behind seto, carmen behind porton, carmen behind seto, cosa bola behind seto, cosa bola behind porton, perro canelo behind seto, perro canelo behind porton, abuela behind porton, abuela behind seto, the frog behind porton, the frog behind seto, coche behind porton, cosa caida behind porton, luis behind banco0, cosa jug0 behind porton, paloma 0 behind porton, senora behind banco1, senora behind porton, cosa sombrilla behind carro, cosa caja behind porton, mujer behind banco0, joven behind banco1, joven behind porton, joven behind banco2, hombre behind banco0, hombre behind porton, hombre behind seto, mujer behind seto, joven behind seto; nobody has another part of the set nearer than them",
    "bubbles: 7461 bubbles at 21848 moments (each person's recorded one and \"amor\" when touched, the frog's): wholly inside the view (0 px from its edge at the least), clear of the rounds card, on no face; but where no place is free the \"amor\" of a touch keeps the old place, as the old (abuela \"amor\" (el-bebe-duerme right), abuela \"amor\" (el-bebe-duerme wrong), luis \"amor\" (el-bebe-duerme wrong), hombre \"amor\" (senor-senora right), mujer \"amor\" (senor-senora right), mujer \"amor\" (senor-senora wrong))",
    "drawn (round 2): at 21872 moments the sorted list composed as it is drawn (each item owns what it drew last; a front part drawn again only over an owner behind it): no bench drawn over whoever sits on it or what lies on its seat (50197 sittings), the lamp post drawn over nobody and nothing, no part of the set (a bench, the cart, the lamp post, the pole, the hedge, a gate post) over any face (so every sitter's face and the vendor's are hidden by nothing of the set; by another sprite only as in the old picture: seen)",
+   "edge (round 3): at 9101 person-, dog-, frog- and pushchair-moments (every step's end of the 18 runs) whoever was wholly inside the view in the old picture is wholly inside now with 3 px to spare (or the old's, when it had less): 0 not; not fixed: Carmen where she hands the bag and the bone (160, 215), 1 px from the lower edge, at 202 step ends",
    "seen (round 2): at 9024 person-, dog- and frog-moments (every step's end of the 18 runs) each seen no less than in the old picture of that moment less 10%, and their face too (0 less)",
    "seen, not fixed (round 2): 3 step ends: senor-senora right final.5 (95): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo; senor-senora wrong final.5 (108): piraguero seen 86% (face 100%), the old 100% (100%), by perro viejo; senor-senora alternate final.5 (98): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo: the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view",
-   "gate (round 2): two stone posts 43 rows high with their balls, whole in the view ([174,154,217,212]), 32 px apart, PORTON 199,203 in the opening, the hedge 16 rows high joined to both (73 and 63 px of it beside the left and the right post; 46 px of it right of the right post), the paving running out through the opening as a path, lawn beyond the hedge; the lamp's foot behind the benches' line (40 px of it seen in the gap), its pool round its foot reaching the paving in front of the benches; the wire against the sky dia 64, tarde 44, noche 34 (CIE76, 20 kept); the pole whole, 3 px wide; the sun and moon 6 px and more from the pole and the wire; every bench whole in the view with 2 px",
+   "gate (round 2): two stone posts 43 rows high with their balls, whole in the view ([174,154,217,212]; round 3 asked 3 px inside the right edge: the right post has 0, not done), no fringe beside them (pixels within 3 px of a post's left side differing from the set without the posts: dia 0 of 209, tarde 0 of 209, noche 0 of 209), 32 px apart, PORTON 199,203 in the opening, the hedge 16 rows high joined to both (73 and 63 px of it beside the left and the right post; 46 px of it right of the right post), the paving running out through the opening as a path, lawn beyond the hedge; the lamp's foot behind the benches' line (40 px of it seen in the gap), its pool round its foot reaching the paving in front of the benches (round 3: tarde: centre 0.57 px from the foot, inner half 67% brighter; noche: centre 0.57 px from the foot, inner half 306% brighter); the wire against the sky dia 5.39 (against the first tree's crown top, not done: 1.35), tarde 6.22 (against the first tree's crown top, not done: 1.8), noche 4.72 (against the first tree's crown top, not done: 1.1) (round 3: the least luminance contrast with the sky just above and below it, WCAG, 2 kept; round 2: CIE76); the pole whole, 3 px wide; the sun and moon (radius 4; round 3 asked El camino's 9 with 10 px from the wire and 14 from the pole: not done, no place holds it) from the wire and the pole by sun-wire 7.42, sun-pole 8.1, moon-wire 7.42, moon-pole 8.1 px (6 kept), in the left half, clear of the rounds board; every bench whole in the view with 2 px",
    "umbrella (round 2): at 1288 step ends with the cart open and its man at it, the rim of the umbrella 7 px and more above his hair (3 kept); the cart over no face (drawn)",
    "asks: 46 distinct asks (for bebe, canta, come, di_bebe, di_cansado, di_come, di_contento, di_joven, di_senor, di_senora, di_triste, hombre, joven, luis, mujer, perro_joven, perro_viejo, quieto, senor): every hint frame (box +- 12) inside the view with 2 px to spare (3 at the least; the park by its hintBox), no frame's rings across a face where the old frame's were not (as the old: el-bebe-duerme beats.57 (luis) abuela's face; senor-senora beats.20 (mujer) hombre's face; senor-senora beats.20 (mujer) luis's face; senor-senora beats.25 (perro_viejo) the frog's face; senor-senora beats.52 (senor) joven's face), the hint hand on no face (but as the old: el-bebe-duerme beats.57 (luis): on luis's face; h-banco beats.4 (joven): on the frog's face; h-banco beats.7 (joven): on the frog's face; la-piragua beats.11 (mujer): on the frog's face; la-piragua beats.44 (mujer): on the frog's face; senor-senora beats.20 (mujer): on carmen's face; senor-senora beats.20 (mujer): on luis's face; senor-senora beats.20 (mujer): on the frog's face); 52 answer cards, each with its lit frame and glow 4 px and more inside the view (4 at the least), 2 px clear of the rounds card and of everyone's head and body, over no dog, the pushchair or a thing, nor what the ask names (over the wire's pigeons at no ask that names them: el-bebe-duerme, la-piragua, senor-senora; over farol of the set, named by no ask with cards), the sun and the moon under none; (new) at each of the 52 cards the hint drawn round it: its frame 2 px inside the view, across no head, its hand on no face; 69 times someone a learner must find or tell apart: whole in the view, on plain paving, lawn, sky or their own bench, apart where the old had them apart, 42 at the least from their backdrop in the evening and at night (CIE76, their fill or their dark outline against the 2 px round them; 15 kept, or no less than the old picture: none lower)",
    "heads: at 65017 face-moments (everyone at rest) no face has a tree, the lamp post, the pole or the wire behind it where the old picture did not",
@@ -6121,6 +6122,10 @@
    {
     "what": "senor-senora alternate final.5 (98): piraguero seen 85% (face 100%), the old 100% (100%), by perro viejo",
     "why": "the cart going home (carrova, W.seva): it rolls along +y, toward the viewer, its man pushing it from behind, and he passes the old dog, who walks slower in front of him; in the old picture the man walked along the back row, behind the dog. Only his legs, never his face, for a moment as both leave the view"
+   },
+   {
+    "what": "senor-senora, every plan: Carmen at (160, 215) (bolsa, hueso) at 202 step ends, 1 px from the picture's lower edge (3 asked; the old had her 6 px from it)",
+    "why": "round 3: no place holds her: right of it the gate's left post goes over her face, the hedge's line is within 6 px of her feet; higher up she stands over Luis (seen); left of it she stands over the frog"
    }
   ]
  }

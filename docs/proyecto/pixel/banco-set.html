@@ -130,7 +130,7 @@ const LIGHT = LIGHTS[SET.luz];
 // the sun upper left (every shadow falls to the right), right of the corner card's place and over the wire; the moon at night (when W.luna) left
 // of it, under the corner card's place. The old picture's three clouds (engine.js sky(): 36, 16; 112, 9; 168, 26), clear of the sun, the moon
 // and the card's place
-const SUN = [34, 40, 4], MOON = [34, 40, 4];   // round 2: 6 px and more from the pole's top and the wire, left of the cards' glow
+const SUN = [34, 40, 4], MOON = [34, 40, 4];   // round 2: 6 px and more from the pole's top and the wire, left of the cards' glow (round 3 asked El camino's radius 9: not done, see the sheet's sky note)
 const CLOUDS = [[150, 12, .7], [196, 30, .8], [160, 40, .6]];
 const cloudAt = (ix, iy) => { if (!SKY.cloud) return 0; for (const [cx, cy, s] of CLOUDS) {
     const e = (x0, y0, rx, ry) => { const dx = (ix + .5 - x0) / rx, dy = (iy + .5 - y0) / ry; return dx * dx + dy * dy <= 1; };
@@ -138,7 +138,7 @@ const cloudAt = (ix, iy) => { if (!SKY.cloud) return 0; for (const [cx, cy, s] o
   return 0; };
 const moonAt = (ix, iy) => { const dx = ix + .5 - MOON[0], dy = iy + .5 - MOON[1], d = Math.hypot(dx, dy); if (d > MOON[2]) return 0;
   if (d > MOON[2] - 1) return rgb(196, 192, 160);
-  const spot = Math.hypot(dx + 2, dy + 2) < 1.8 || Math.hypot(dx - 2.5, dy - 1) < 1.3;
+  const q = MOON[2] / 4, spot = Math.hypot(dx + 2 * q, dy + 2 * q) < 1.8 * q || Math.hypot(dx - 2.5 * q, dy - q) < 1.3 * q;
   return rgb(...(spot ? [226, 218, 172] : [255, 248, 216])); };
 
 /* ---------- the ground: the paving, the lawn, the path through the gate ---------- */
@@ -248,6 +248,7 @@ function pole() {
 }
 const LAMP_GLASS = { dia: [214, 220, 226], tarde: [255, 226, 120], noche: [255, 244, 180] };   // round 2: unlit by day (pale glass), lit warm at dusk and at night
 function lampPost() {
+  const before = zb.slice(); FAROL_PX.clear();
   part('farol', () => {
     const g = Gs(...FAROL.at), top = PZ(FAROL.at[1], FAROL.lamp[1]), bot = PZ(FAROL.at[1], FAROL.lamp[2]);
     // its foot: a short round plinth; the post; the lantern (four glass faces under a cap) at the old lantern's rows
@@ -266,31 +267,33 @@ function lampPost() {
     block(g[0] - .05, g[1] - .05, bot - .02, g[0] + .05, g[1] + .05, bot + .06, IRON);
     if (!NIGHT) for (let z = .02; z <= .14; z += .04) castShadow(g[0], g[1], z, .15, 1, 0);
   });
+  for (let i = 0; i < W * H; i++) if (zb[i] !== before[i]) FAROL_PX.add(i);
 }
 // the lamp's light (lit at dusk and at night): a pool on the ground round its foot, under the lantern, joined to it; brighter at night
 const POOL = { rx: 2.4, ry: 2.4 };   // round 2: round on the ground, centred on the lamp's foot, reaching the paving in front of the benches
 function lampPool() {
-  if (SET.luz === 'dia') return;
-  const g = Gs(...FAROL.at), str = NIGHT ? 1 : .6;
-  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
-    const i = iy * W + ix; if (!ground[i] || zb[i] !== groundZ[i]) continue;
+  if (SET.luz === 'dia' || Q.get('pool') === '0') return;   // round 3: pool=0, the set without its pool (the maker's check)
+  const g = Gs(...FAROL.at), str = NIGHT ? 1 : .6, [fx, fy] = FAROL.at;
+  // only round its foot (the circle's screen ellipse: 2.4 * 18.385 * 1.414 = 62.4 px across, 31.2 rows up and down): the same pixels, a quicker bake
+  for (let iy = Math.max(0, fy - 33); iy < Math.min(H, fy + 34); iy++) for (let ix = Math.max(0, fx - 64); ix < Math.min(W, fx + 65); ix++) {
+    const i = iy * W + ix; if (zb[i] < -1e8 || FAROL_PX.has(i)) continue;   // round 3: everything under the lamp, the ground and what stands on it (the benches, the hedge), not the lamp post: the pool round its foot whole, not cut where a bench hides the ground
     const w = unproject(ix + .5, iy + .5), d = Math.hypot((w.x - g[0]) / POOL.rx, (w.y - g[1]) / POOL.ry);
-    if (d > 1) continue;
+    if (d > 1) continue; if (d < .5) POOL_IN.add(i);
     const f = (1 - d) * 2.2; if (bayerAt(ix, iy) > f) continue;   // a soft edge: dithered over its outer part
     const c = pix[i], k = str * (.2 + .45 * (1 - d));
     pix[i] = rgb(lerp(c & 255, 255, k), lerp(c >> 8 & 255, 236, k), lerp(c >> 16 & 255, 170, k)); POOL_PX.add(i);
   }
 }
-const POOL_PX = new Set();
+const POOL_PX = new Set(), POOL_IN = new Set(), FAROL_PX = new Set();
 function wire() {
   part('cable', () => {
-    const WC = { dia: [58, 58, 70], tarde: [132, 112, 118], noche: [150, 158, 196] }[SET.luz];   // round 2: a lighter line at dusk and at night (it gives no light; it keeps its colour)
+    const WC = { dia: [58, 58, 70], tarde: [46, 38, 54], noche: [206, 212, 236] }[SET.luz];   // round 3: dark against the bright dusk sky; a pale line at night (it catches the lamp and the moon): luminance contrast 2 and more
     for (const [sx, x, y, z] of WIRE) { if (sx < POLE.at[0] + 1.5) continue; plotGlow(x, y, z, rgb(...WC)); }
   });
 }
 
 /* ---------- the cart: a blue box on two wheels, a block of ice and bottles of syrup on it, its umbrella (open: red and white; closed: furled) ---------- */
-const BLUE = [58, 154, 208];
+const BLUE = [58, 154, 208], UMB_RED = [224, 72, 58], UMB_WHITE = [242, 242, 248];
 function cart() {
   PART_TAGS_CART.clear(); UMBRELLA = null;
   if (SET.carro === 'no') return;
@@ -326,7 +329,7 @@ function cart() {
       const R0 = .7, zr = 3.25;
       for (let r = 0; r <= R0; r += .008) for (let a = 0; a < 6.283; a += .006 / Math.max(r, .05)) {
         const panel = Math.floor(((a / 6.283) * 8 + 8.5) % 8), z = ztop - (ztop - zr) * (r / R0);
-        const red = panel % 2 === 0, base = red ? [224, 72, 58] : [242, 242, 248];
+        const red = panel % 2 === 0, base = red ? UMB_RED : UMB_WHITE;   // round 3: the same two arrays (rampOf caches by array: a fresh one each time cost 30 ms)
         const lit = Math.cos(a - 3.93) * .5 + (r > R0 - .04 ? -.6 : 0);
         plot(ux + Math.cos(a) * r, uy + Math.sin(a) * r, z, rampOf(base)[clamp(Math.round(2.6 + lit), 1, 4)]);
       }
@@ -337,7 +340,7 @@ function cart() {
       if (!NIGHT) UMBRELLA = { ux, uy, zr, R0 };   // round 2: its shade on the cart only (on the paving it darkened the dog that lies by the cart)
     } else {
       for (let z = 1.8; z <= ztop - .05; z += .008) { const r = .1 * Math.sin((z - 1.75) / (ztop - 1.75) * Math.PI) + .02;
-        for (let a = 0; a < 6.283; a += .05) { const red = Math.floor(a / 6.283 * 4 + z * 2) % 2 === 0; plot(ux + Math.cos(a) * r, uy + Math.sin(a) * r, z, rampOf(red ? [224, 72, 58] : [242, 242, 248])[Math.cos(a - .78) > 0 ? 3 : 2]); } }
+        for (let a = 0; a < 6.283; a += .05) { const red = Math.floor(a / 6.283 * 4 + z * 2) % 2 === 0; plot(ux + Math.cos(a) * r, uy + Math.sin(a) * r, z, rampOf(red ? UMB_RED : UMB_WHITE)[Math.cos(a - .78) > 0 ? 3 : 2]); } }
       sphere(ux, uy, ztop + .02, .045, [224, 72, 58], 'solid');
     }
     // the body's shadow on the paving
@@ -382,6 +385,8 @@ function hedge() {
     // left of the gate the hedge ends at its post (the paving's lower edge is busy: whoever stands there is clear of it)
     if (!NIGHT) for (let y = yB - 4; y <= yA + NEAR_PIECE; y += .2) { if (y > yB - .1 && y < yA + .1) continue; castShadow(xF - HEDGE_T / 2, y, HEDGE_H * .5, .22); }
   });
+  if (Q.get('posts') === '0') return;   // round 3: the set without its gate's posts (the maker's check of what is round them)
+  const before = zb.slice(); POST_PX.clear(); NOPOST_Z = before;
   part('porton', () => {
     for (const [px, py] of GATE_W) {
       const x = px;
@@ -389,9 +394,10 @@ function hedge() {
       block(x - POST_W - .03, py - POST_W - .03, POST_H, x + POST_W + .03, py + POST_W + .03, POST_H + .09, STONEP.map(v => v * .96), STONEP.map(v => Math.min(255, v * 1.12)));
       sphere(x, py, POST_H + .19, .095, STONEP, 'solid');
       block(x - POST_W - .015, py - POST_W - .015, 0, x + POST_W + .015, py + POST_W + .015, .18, STONEP.map(v => v * .8));
-      if (!NIGHT) for (let z = .02; z <= .1; z += .04) castShadow(x, py, z, .14, 1, 0);
+      if (!NIGHT) for (let z = .02; z <= .1; z += .04) castShadow(x + .1, py, z, .14, 1, 0);   // round 3: its contact shadow toward the lower right only
     }
   });
+  for (let i = 0; i < W * H; i++) if (zb[i] !== before[i]) POST_PX.add(i);
 }
 
 /* ---------- the footprints: where each set thing meets the ground (whoever stands is 6 px clear of every one: sheet helps.margin) ---------- */
@@ -412,12 +418,25 @@ function footprints() { FOOT.fill(0); const F = FOOTS();
   for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) { const g = unproject(ix + .5, iy + .5);
     for (const f of F) if (f[0] === 'r' ? g.x >= f[1] && g.x <= f[3] && g.y >= f[2] && g.y <= f[4] : Math.hypot(g.x - f[1], g.y - f[2]) <= f[3]) { FOOT[iy * W + ix] = f[5] || 1; break; } } }
 
+// round 3: the ground's occlusion (bakeOcclusion) darkens, dithered, the ground next to any upright on the screen; beside a gate's post that ground
+// is not near the post (it is the paving beside it, the post standing in front): a ring the readers saw. Where only a post made the ground's pixel
+// occluded, the pixel is put back; where others did too, it is occluded again by them alone (bakeOcclusion's rule)
+const POST_PX = new Set(); let NOPOST_Z = null;   // the depth before the posts were drawn (everything else is)
+function unOccludePosts(preAO) {
+  if (!POST_PX.size) return;
+  const offsets = []; for (const r of [2, 4]) for (let k = 0; k < 8; k++) offsets.push([Math.round(Math.cos(k * Math.PI / 4) * r), Math.round(Math.sin(k * Math.PI / 4) * r * .7)]);
+  for (const p of POST_PX) { const px = p % W, py = (p / W) | 0;
+    for (let dy = -3; dy <= 3; dy++) for (let dx = -4; dx <= 4; dx++) { const ix = px + dx, iy = py + dy, i = iy * W + ix; if (ix < 4 || iy < 4 || ix >= W - 4 || iy >= H - 4 || pix[i] === preAO[i] || !ground[i] || zb[i] !== groundZ[i]) continue;
+      let other = 0; for (const [ox, oy] of offsets) { const j = (iy + oy) * W + ix + ox; if (NOPOST_Z[j] !== groundZ[j]) other++; }
+      pix[i] = preAO[i]; if (other >= 8) tint(i, .56, .54, .72); else if (other && other / 8 > bayerAt(ix, iy)) tint(i, .74, .72, .84); } }   // as bakeOcclusion, with the depth the set has without its posts
+}
+
 /* ---------- bake one state ---------- */
 const GROUND_CACHE = {};
 function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
   tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
-  CROWN_SHADE.length = 0; CROWN_PX.clear(); POOL_PX.clear();
+  CROWN_SHADE.length = 0; CROWN_PX.clear(); POOL_PX.clear(); POOL_IN.clear();
   const gk = SET.edge;
   if (!GROUND_CACHE[gk]) {
     for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
@@ -434,7 +453,7 @@ function buildSet() {
   for (let i = 0; i < 3; i++) smallTree(i);
   pole(); wire(); lampPost(); cart(); for (let k = 0; k < 3; k++) bench(k); hedge();
   flushShadows(); pendingShadows.length = 0;
-  bakeOcclusion(); staticShadow.set(shadowMask); applyShadows(groundZ); crownShades(); umbrellaShade(); shadeEdges();
+  const preAO = pix.slice(); bakeOcclusion(); unOccludePosts(preAO); staticShadow.set(shadowMask); applyShadows(groundZ); crownShades(); umbrellaShade(); shadeEdges();
   if (LIGHT) lightPass(LIGHT.m, LIGHT.a, !LIGHT.litTufts);
   lampPool();
   skyFill((ix, iy) => {
@@ -444,8 +463,9 @@ function buildSet() {
     return skyHills(HZ, SKY.far, SKY.near, ix, iy) || skyBands(SKY.bands, 0, HZ, ix, iy);
   });
   bakedPix.set(pix); bakedZ.set(zb);
-  footprints();
+  FOOT_DONE = false;   // round 3: the footprints (no pixel) are made when asked for, not in the bake
 }
+let FOOT_DONE = false; const footOnce = () => { if (!FOOT_DONE) { footprints(); FOOT_DONE = true; } };
 // the walkable surface under a screen point (rules.floor): the paving or the lawn (z 0)
 function surfaceAt(sx, sy) { const g = Gs(sx, sy, 0); return { on: sy < HZ ? 'sky' : groundKind(g[0], g[1]), x: g[0], y: g[1], z: 0 }; }
 
@@ -457,7 +477,7 @@ if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
 const t0 = performance.now();
 buildSet();
 window.BAKE_MS = performance.now() - t0;
-window.FOOTPX = () => { const o = []; for (let i = 0; i < W * H; i++) if (FOOT[i] === 1) o.push(i); return o; }; window.FOOTPX2 = () => { const o = []; for (let i = 0; i < W * H; i++) if (FOOT[i] === 2) o.push(i); return o; }; window.CROWNPX = () => [...CROWN_PX]; window.POOLPX = () => [...POOL_PX];
+window.FOOTPX = () => { footOnce(); const o = []; for (let i = 0; i < W * H; i++) if (FOOT[i] === 1) o.push(i); return o; }; window.FOOTPX2 = () => { footOnce(); const o = []; for (let i = 0; i < W * H; i++) if (FOOT[i] === 2) o.push(i); return o; }; window.CROWNPX = () => [...CROWN_PX]; window.POOLPX = () => [...POOL_PX]; window.POOLIN = () => [...POOL_IN];
 function frame(t, casts = []) {
   pix.set(bakedPix); zb.set(bakedZ);
   const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
