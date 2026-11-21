@@ -421,7 +421,7 @@ void main() {
 
   test('H: speakers on the word tiles only when every tile of the item has a clip of its word alone; else none', () async {
     final solo = realRepaso.words.where((w) => w.solo != null).toList();
-    expect(solo, hasLength(156));
+    expect(solo, hasLength(167));
     expect(hearOf(solo.take(3).toList()).speakers, isTrue);
     for (final lacking in [
       {2},

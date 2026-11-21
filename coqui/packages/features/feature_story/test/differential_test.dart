@@ -1,7 +1,7 @@
-// The runner against the old page's recorded runs (coqui/ref/trazas/, 51 files, three plans each).
+// The runner against the old page's recorded runs (coqui/ref/trazas/, 57 files, three plans each).
 //
 // - On a stand-in scene that replays what the old scene did (tool/replay_scene.dart, from test/fixtures/acts/): every one of
-//   the 153 runs, the whole trace equal: decisions, marks, lost, ending, the story result, the order of clips, the steps,
+//   the 171 runs, the whole trace equal: decisions, marks, lost, ending, the story result, the order of clips, the steps,
 //   choices and touches, the number of random draws, the memory, and every time (`t`, virtualMs, the minutes). Only the
 //   touches' places on the old screen (x, y) are left out.
 // - On the real El frente: the traces of every file that plays on it, all three plans, once its scene is in the registry.
@@ -122,11 +122,10 @@ void main() {
   // buttons), so the comparison above never saw them, with the old story file or the new one. Here they are read from the view
   // the run was played on, on the real tree: the real story files and the real course (datos/curso.json).
   //
-  // The one place where the app's end screen differs from the old page's: the old page shows "Next story" for any `next`;
-  // the app, only for a `next` the course names (a staged story is in no list: the shell opens no address for it). So
-  // jugo-de-china, whose file now says `next: que-quieres`, ends on the screen of a story with no `next`. Were these runs to
-  // hold the buttons, this is the one point where the app's trace would differ from the old page's (coqui/AGENTS.md,
-  // "Stories staged by another session").
+  // The one place where the app's end screen can differ from the old page's: the old page shows "Next story" for any
+  // `next`; the app, only for a `next` the course names (a staged story is in no list: the shell opens no address for it).
+  // Until the course named A comer's stories, jugo-de-china (`next: que-quieres`) ended so; now it leads on, as la-lluvia
+  // does (coqui/AGENTS.md, "Stories staged by another session").
   group('the end screen of the recorded runs: Next story where the course names the next story', () {
     const mapMain = StoryFoot(next: false, again: true, home: true, map: false);
     const nextWaits = StoryFoot(
@@ -153,16 +152,11 @@ void main() {
       expect(await footOf('la-lluvia'), nextWaits);
     });
 
-    test('(b) jugo-de-china: its next, que-quieres, is a staged story the course does not name: no Next story, Map is the main button', () async {
+    test('(b) jugo-de-china: its next, que-quieres, is a story of the course since A comer is in it: Next story, as for la-lluvia', () async {
       expect((await course.story('jugo-de-china'))['next'], 'que-quieres');
-      // when the course names que-quieres, this test is the one to change: Next story shows then, as for la-lluvia
-      expect(
-        course.meta('que-quieres'),
-        isNull,
-        reason: 'the course names que-quieres now',
-      );
+      expect(course.meta('que-quieres'), isNotNull);
       for (final plan in ['right', 'wrong', 'alternate']) {
-        expect(await footOf('jugo-de-china', plan), mapMain, reason: plan);
+        expect(await footOf('jugo-de-china', plan), nextWaits, reason: plan);
       }
     });
 
@@ -173,7 +167,7 @@ void main() {
       }
     });
 
-    test('every one of the 51 files: Next story exactly when its next is listed in a place of the course', () async {
+    test('every one of the 57 files: Next story exactly when its next is listed in a place of the course', () async {
       var withNext = 0, withoutNext = 0;
       final listed = {
         for (final p in course.places) ...[
@@ -188,9 +182,10 @@ void main() {
         named ? withNext++ : withoutNext++;
         expect(await footOf(s), named ? nextWaits : mapMain, reason: s);
       }
-      // 31 stories lead on to a story of the course; the other 20 have no next (19) or lead to a staged one (jugo-de-china)
-      expect(withNext, 31);
-      expect(withoutNext, 20);
+      // 34 stories lead on to a story of the course; the other 23 have no next (cafe-con-azucar's is none until El colmado is
+      // out; the picture stories and the routines have none)
+      expect(withNext, 34);
+      expect(withoutNext, 23);
     });
   });
 

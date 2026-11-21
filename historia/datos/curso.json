@@ -94,7 +94,15 @@
         "cuidado",
         "no-hay-leche",
         "para-los-pajaros",
-        "jugo-de-china"
+        "jugo-de-china",
+        "que-quieres",
+        "buen-provecho",
+        "cafe-con-azucar"
+      ],
+      "haz": [
+        "h-mesa",
+        "h-estufa",
+        "h-nevera"
       ],
       "escenas": [
         "La mesa",
@@ -321,6 +329,18 @@
       "t": "Jugo de china",
       "min": 5
     },
+    "que-quieres": {
+      "t": "¿Qué quieres?",
+      "min": 6
+    },
+    "buen-provecho": {
+      "t": "Buen provecho",
+      "min": 6
+    },
+    "cafe-con-azucar": {
+      "t": "Café con azúcar",
+      "min": 7
+    },
     "d-toc-toc": {
       "t": "Toc, toc",
       "min": 2
@@ -363,6 +383,18 @@
     },
     "d-vamos-a-casa": {
       "t": "Vamos a casa",
+      "min": 2
+    },
+    "h-mesa": {
+      "t": "En la mesa",
+      "min": 2
+    },
+    "h-estufa": {
+      "t": "En la estufa",
+      "min": 2
+    },
+    "h-nevera": {
+      "t": "En la nevera",
       "min": 2
     },
     "h-camino": {
@@ -409,6 +441,7 @@
     "cual-banco",
     "cual-mesa",
     "cual-estufa",
-    "cual-nevera"
+    "cual-nevera",
+    "cual-comer"
   ]
 }

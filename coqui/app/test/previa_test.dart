@@ -297,6 +297,13 @@ void main() {
     String allPlayed() {
       final db = obj(seed('todo'));
       db['palabras'] = <String, dynamic>{};
+      // the seed was made before A comer was in the course: its three stories, played twice as the last one was
+      final cuentos = db['cuentos'] as Map<String, dynamic>;
+      for (final id in ['que-quieres', 'buen-provecho', 'cafe-con-azucar']) {
+        cuentos[id] = Map<String, dynamic>.of(
+          cuentos['jugo-de-china'] as Map<String, dynamic>,
+        );
+      }
       return jsonEncode(db);
     }
 

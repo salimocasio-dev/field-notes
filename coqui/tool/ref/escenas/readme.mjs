@@ -1,7 +1,8 @@
 // coqui/ref/escenas/README.md, written by make.mjs with the counts of the run.
-export function readme(sum, PL) {
+export function readme(sum, PL, nFiles) {
+  const count = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"][sum.length] || String(sum.length);
   const rows = sum.map(d => `| ${d.id} | ${d.things} | ${d.states} | ${d.distinctW} | ${d.positions} | ${d.pairs} | ${d.level} | ${d.views} | ${d.frames} |`).join("\n");
-  return `# ref/escenas: the eleven old scenes, what each holds and where, and frames of every state
+  return `# ref/escenas: the ${count} old scenes, what each holds and where, and frames of every state
 
 Order 06 (docs/proyecto/13-flutter-orders.md). For each scene of \`historia/escenas/\` a folder \`<id>/\`, read from the old site as it is
 (nothing under \`historia/\` changes): the next step (each scene's set and sheet, orders 07 and 30 to 39; then the port, orders 14 and 30b to 39b)
@@ -23,7 +24,7 @@ by hand, each with its line), \`png.mjs\`, \`check.mjs\`, \`sheets.mjs\`, \`read
 
 ## How it is read
 
-- **The states.** Every story of the scene (curso.js lists 51 files to play) is played by order 05's player with its three plans; after every step it
+- **The states.** Every story of the scene (curso.js lists ${nFiles} files to play) is played by order 05's player with its three plans; after every step it
   writes W, V and the camera (\`juega.mjs --states\`). Each review picture (\`cuentos/cual-*.json\`) is one more W: \`panelW(spec)\` of cual.js on
   cual.html. A level-check picture uses a review picture's W (nivel.js:75), so it adds no state.
 - **The page.** Each scene is loaded on \`historia/index.html?cuento=<one of its stories>\` with order 05's \`page-init.js\` (virtual clock, seeded

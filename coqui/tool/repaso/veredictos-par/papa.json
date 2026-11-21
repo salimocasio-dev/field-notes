@@ -2,7 +2,7 @@
  "palabra": "papá",
  "frases": {
   "papa:1": "A",
-  "papa:2": "ninguna",
+  "papa:2": "A",
   "papa:3": "ninguna",
   "papa:4": "ninguna",
   "papa:5": "ninguna",
@@ -13,9 +13,14 @@
   "papa:10": "A",
   "papa:11": "ninguna",
   "papa:12": "ninguna",
-  "papa:13": "duda",
-  "papa:14": "duda",
-  "papa:15": "ninguna",
-  "papa:16": "ninguna"
+  "papa:13": "ninguna",
+  "papa:14": "B",
+  "papa:15": "A",
+  "papa:16": "ninguna",
+  "papa:17": "ninguna",
+  "papa:18": "duda",
+  "papa:19": "ninguna",
+  "papa:20": "duda",
+  "papa:21": "ninguna"
  }
 }

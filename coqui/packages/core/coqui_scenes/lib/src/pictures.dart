@@ -264,7 +264,7 @@ class ScenePictures implements PictureSource {
     int? height,
   ) async {
     final id = ref.scene;
-    if (!sceneRegistry.containsKey(id)) {
+    if (!sceneRegistry.containsKey(id) && !oldPictureScenes.contains(id)) {
       throw PictureError('"$id" is not a scene');
     }
     final n = name ?? ref.name;

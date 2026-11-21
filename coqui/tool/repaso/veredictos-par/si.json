@@ -4,16 +4,16 @@
   "si:1": "A",
   "si:2": "ninguna",
   "si:3": "ninguna",
-  "si:4": "duda",
+  "si:4": "ninguna",
   "si:5": "ninguna",
   "si:6": "duda",
   "si:7": "ninguna",
   "si:8": "ninguna",
-  "si:9": "ninguna",
+  "si:9": "A",
   "si:10": "ninguna",
   "si:11": "ninguna",
   "si:12": "ninguna",
-  "si:13": "ninguna",
+  "si:13": "duda",
   "si:14": "ninguna",
   "si:15": "duda",
   "si:16": "ninguna",
@@ -22,6 +22,8 @@
   "si:19": "duda",
   "si:20": "duda",
   "si:21": "ninguna",
-  "si:22": "ninguna"
+  "si:22": "ninguna",
+  "si:23": "ninguna",
+  "si:24": "duda"
  }
 }

@@ -487,7 +487,11 @@ void main() {
     test('every old picture of every scene that is not converted decodes to its hash', () async {
       final source = OldPictures(bundle: testBundle());
       var n = 0;
-      for (final id in sceneRegistry.keys) {
+      // the registry's scenes, and a scene with old pictures that is not in the registry yet (A comer)
+      for (final id in {
+        ...sceneRegistry.keys,
+        for (final k in oldHashes.keys) k.split('/').first,
+      }) {
         if (convertedScenes.contains(id)) continue;
         // on the vm every scene's folder is there; in a browser only the sample scene's
         if (kIsWeb && id != scene) continue;
@@ -505,9 +509,21 @@ void main() {
           n++;
         }
       }
-      // on the vm: 160 old pictures of the 4 scenes not converted (El balcón's 36 went at order 30b, La sala's 50 at 31b,
-      // El patio's 52 at 32b, El camino's 41 at 33b, El campo's 38 at 34b, El lago's 38 at 35b)
-      expect(n, kIsWeb ? greaterThan(30) : 160);
+      // on the vm: 200 old pictures of the 5 scenes not converted (El balcón's 36 went at order 30b, La sala's 50 at 31b,
+      // El patio's 52 at 32b, El camino's 41 at 33b, El campo's 38 at 34b, El lago's 38 at 35b; A comer brought 36 and
+      // 4 level cells of La estufa and La nevera)
+      expect(n, kIsWeb ? greaterThan(30) : 200);
+    });
+
+    test('the scenes with old pictures that are not in the registry are oldPictureScenes, and ScenePictures shows them', () async {
+      expect({
+        for (final k in oldHashes.keys)
+          if (!sceneRegistry.containsKey(k.split('/').first))
+            k.split('/').first,
+      }, oldPictureScenes);
+      // A comer is not in the registry yet; while it is the last scene with old pictures, the browser sample is its folder,
+      // so the tests of this group show its pictures through ScenePictures
+      expect(sceneRegistry.containsKey('comer'), isFalse);
     });
   });
 

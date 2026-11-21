@@ -1,4 +1,4 @@
-# ref/escenas: the eleven old scenes, what each holds and where, and frames of every state
+# ref/escenas: the twelve old scenes, what each holds and where, and frames of every state
 
 Order 06 (docs/proyecto/13-flutter-orders.md). For each scene of `historia/escenas/` a folder `<id>/`, read from the old site as it is
 (nothing under `historia/` changes): the next step (each scene's set and sheet, orders 07 and 30 to 39; then the port, orders 14 and 30b to 39b)
@@ -20,7 +20,7 @@ by hand, each with its line), `png.mjs`, `check.mjs`, `sheets.mjs`, `readme.mjs`
 
 ## How it is read
 
-- **The states.** Every story of the scene (curso.js lists 51 files to play) is played by order 05's player with its three plans; after every step it
+- **The states.** Every story of the scene (curso.js lists 57 files to play) is played by order 05's player with its three plans; after every step it
   writes W, V and the camera (`juega.mjs --states`). Each review picture (`cuentos/cual-*.json`) is one more W: `panelW(spec)` of cual.js on
   cual.html. A level-check picture uses a review picture's W (nivel.js:75), so it adds no state.
 - **The page.** Each scene is loaded on `historia/index.html?cuento=<one of its stories>` with order 05's `page-init.js` (virtual clock, seeded
@@ -97,9 +97,10 @@ with what is drawn inside it; the background calls; notes read from the code.
 | campo | 10 | 7 | 385 | 66 | 11 | 4 | 1 | 26 |
 | lago | 19 | 10 | 597 | 48 | 11 | 4 | 1 | 41 |
 | banco | 20 | 49 | 419 | 62 | 12 | 4 | 1 | 171 |
-| mesa | 19 | 141 | 391 | 26 | 12 | 4 | 1 | 536 |
-| estufa | 17 | 164 | 387 | 35 | 12 | 4 | 1 | 625 |
-| nevera | 26 | 87 | 360 | 29 | 12 | 4 | 1 | 321 |
+| mesa | 19 | 144 | 437 | 29 | 12 | 4 | 1 | 546 |
+| estufa | 17 | 165 | 433 | 35 | 12 | 5 | 1 | 629 |
+| nevera | 26 | 90 | 412 | 38 | 12 | 7 | 1 | 333 |
+| comer | 23 | 158 | 346 | 60 | 12 | 4 | 1 | 614 |
 
 `datos/nivel.json` is the same as nivel.js's NV.
 
