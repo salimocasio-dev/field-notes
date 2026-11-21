@@ -181,18 +181,11 @@ function smallTree(i) {
 
 /* ---------- the bench: on the path's far side, its long side along y (parallel to the path's climb), facing the path (+x); the cat sits on it ----------
    Round 2: a plain bench of three planks on four legs, no back (round 1 had a back and stood where the frog walks over the marks: at mark 4 he
-   stood in it). Round 2: its front left corner on the ground at screen (86, 146) (round 1: 100, 141), 14 px left along the path and 5 rows
-   lower: whatever sits on it (the cat, the bird) is left of the middle tree's trunk; the first tree's shadow is kept off the patch of lawn behind
-   the seat (benchBackdrop), so that whatever sits there has lit lawn behind it; the frog at marks 2 to 4 has 5 rows of lawn and more before it;
-   its seat under the small trees' boxes */
-const BENCH = (() => { const fl = Gs(86, 146), hl = .55, a0 = -.24, a1 = .24; return { cx: fl[0] - a1, cy: fl[1] - hl, hl, a0, a1, zs: .4 }; })();
-// round 2: the lawn right behind the seat, where whatever sits on the bench is seen against it, takes no tree's shadow: from the seat's back edge
-// up 26 rows, between its two ends (3 px wider each side) (the first tree's crown shadow fell there: the cat and the bird sat against a dark oval)
-function benchBackdrop() {
-  const B = BENCH, a = project(B.cx + B.a0, B.cy + B.hl, 0), b = project(B.cx + B.a0, B.cy - B.hl, 0), f = project(B.cx + B.a1, B.cy + B.hl, 0);
-  for (let ix = Math.floor(Math.min(f.sx, a.sx)) - 4; ix <= Math.ceil(b.sx) + 4; ix++) { const t = (ix + .5 - a.sx) / (b.sx - a.sx), edge = a.sy + (b.sy - a.sy) * clamp(t, 0, 1);
-    for (let iy = Math.floor(edge - 27); iy <= Math.ceil(edge + 4); iy++) if (ix >= 0 && iy >= 0 && ix < W && iy < H) shadowMask[iy * W + ix] = 0; }
-}
+   stood in it). Round 4: its front left corner on the ground at screen (86, 140) (round 1: 100, 141; rounds 2 and 3: 86, 146 with the first
+   tree's shadow kept off the lawn behind the seat): every tree casts its whole shadow, and whatever sits on the bench (the cat, the bird) has
+   only lit lawn behind it, above the first tree's shadow and left of the middle tree's trunk; the frog at marks 2 to 4 has 5 rows of lawn and
+   more before it; its seat under the small trees' boxes */
+const BENCH = (() => { const fl = Gs(86, 140), hl = .51, a0 = -.24, a1 = .24; return { cx: fl[0] - a1, cy: fl[1] - hl, hl, a0, a1, zs: .4 }; })();
 function bench() {
   const B = BENCH, LEG = [92, 60, 36];
   part('banco', () => {
@@ -283,7 +276,7 @@ function buildSet() {
     pix.set(GROUND_CACHE.pix); zb.set(GROUND_CACHE.zb); kinds.set(GROUND_CACHE.kinds); ground.set(GROUND_CACHE.ground); tufts.push(...GROUND_CACHE.tufts);
   }
   groundZ.set(zb);
-  stones(); arch(); for (let i = 0; i < 3; i++) smallTree(i); benchBackdrop(); bench(); bigTree();
+  stones(); arch(); for (let i = 0; i < 3; i++) smallTree(i); bench(); bigTree();
   flushShadows(); pendingShadows.length = 0;
   bakeOcclusion(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
   skyFill((ix, iy) => {
@@ -297,9 +290,9 @@ function buildSet() {
 /* ---------- for the sheet ---------- */
 // the cat on the bench: its place (x, y as camino.js animal draws it, its lowest pixels on row y + 1) on the seat; the bench's entry in the sorted
 // list (sheet front.banco) just before it. The bird on the bench (avebanco, drawn 15 x 12 from x, y): its feet on the backrest's top rail
-// round 2: the cat on the seat's middle, a little to its front (the story files' 113, 134 -> remap); the bird on the seat's back plank
+// round 2: the cat on the seat's middle, a little to its front (round 4: 1 px right of it) (the story files' 113, 134 -> remap); the bird on the seat's back plank
 const SEAT_MID = project(BENCH.cx, BENCH.cy, BENCH.zs), SEAT_BACK = project(BENCH.cx + BENCH.a0 + .08, BENCH.cy, BENCH.zs);
-const CAT_BENCH = [Math.round(SEAT_MID.sx), Math.round(SEAT_MID.sy) - 1], BENCH_SORT = 134.5, BENCH_SCREEN = (() => { const p = project(BENCH.cx, BENCH.cy, 0); return [Math.round(p.sx), Math.round(p.sy)]; })();
+const CAT_BENCH = [Math.round(SEAT_MID.sx) + 1, Math.round(SEAT_MID.sy) - 1], BENCH_SORT = 134.5, BENCH_SCREEN = (() => { const p = project(BENCH.cx, BENCH.cy, 0); return [Math.round(p.sx), Math.round(p.sy)]; })();
 const CAT_BENCH_V = (BENCH.cx + BENCH.a1 + BENCH.cy + BENCH.hl) / R2;   // the cat on the bench: the depth of the seat's nearest corner (sheet front: its plane, so nothing of the bench goes over it)
 const AVEB = [Math.round(SEAT_BACK.sx) - 7, Math.round(SEAT_BACK.sy) - 11];
 const ARBOL0_Q = [49, 121];   // the frog's place at the first small tree (LUGAR.arbol0), clear of the arch's far post (every hop count the old one)

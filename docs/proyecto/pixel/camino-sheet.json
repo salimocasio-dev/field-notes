@@ -22,12 +22,12 @@
   "lines": {
    "path": "the path's middle line (world, PATH_PTS): from off the picture's left edge along +x through the arch to mark 0 (66, 182), then over marks 1 to 8 (up to the right, along -y to mark 4, a little flatter after) and on past the big tree off the picture's right edge; 0.6 either side of it (the frog's marks, ranaEn, on its far edge; Carmen's, ninaEn, on the lawn on our side; Canelo's, perroEn, on it)",
    "arch": "the arch over the path's first leg: its opening's middle on the ground at screen (37, 168), its posts at (27, 173) and (47, 162), 2.62 high, the iron arch 0.36 over them; its opening faces +x (into the park down to the right, out of it up to the left)",
-   "bench": "the bench: its long side along y (parallel to the path's climb), facing the path (+x), on the path's far side in front of small tree 1, its middle on the ground at screen [92,139]"
+   "bench": "the bench: its long side along y (parallel to the path's climb), facing the path (+x), on the path's far side in front of small tree 1, its middle on the ground at screen [91,133]"
   },
   "why": "the brief and page 11 decision 9: the set stands on the world's axes and is seen at the engine's angle; nothing is built square to the camera. The old path already climbed on a slant from the bottom left: its marks 0 to 4 lie on one -y line within 1 px, so the path runs along -y there; its first leg, through the arch, runs along +x, so that whoever leaves goes through the arch and on up the path off the picture's edge (sevan). The arch could not stand across the path's climb: the old picture's lower left holds Carmen, Luis, abuela, the frog and the dog at the end of story 14, and a post there would stand in front of one of them. The three small trees keep their old feet (the birds, the cat in them, Carmen's places by them are all relative to them): free-standing round trees, not a row (a row along -y through the middle one, trees=row in the set's address, puts the first tree's trunk behind the arch and the third's crown into the big tree's: see the report). Every place on the ground keeps its old screen point (rules.floor)",
   "moved": [
    "the big tree (round 2): built like the old one, at the picture's right: its foot 4 px right and 25 rows further back than the old (200, 128 to 204,103), its whole trunk inside the view, lawn between its foot and whoever stands before it (the frog with the basket, Canelo at the last marks, capped at x 188: moves); its broad crown runs off the picture's right and top edges (things.grande.hintBox for its hint frame)",
-   "the bench: along y, facing the path; its box [77,122,29,24] (old [97, 126, 32, 18]); the cat on it and the bird on it follow it (remap, moves)",
+   "the bench: along y, facing the path; its box [77,117,28,23] (old [97, 126, 32, 18]); the cat on it and the bird on it follow it (remap, moves)",
    "the arch: over the path's first leg, its opening facing +x; its box [23,94,28,80] (old [22, 116, 36, 60]). The frog's place at the first tree (LUGAR.arbol0) moved left clear of its far post (moves)",
    "unchanged: the small trees' feet, the marks, every bird's place, the frog's other places, every person's and animal's place but the cat on the bench"
   ]
@@ -161,9 +161,9 @@
   },
   "banco": {
    "set": true,
-   "world": [0.2856, 1.8358, 0, 1.0743, 2.6245, 0.4219],
-   "box": [77, 122, 29, 24],
-   "screen": [77, 122, 106, 146],
+   "world": [-0.0272, 1.5502, 0, 0.7343, 2.3117, 0.3997],
+   "box": [77, 117, 28, 23],
+   "screen": [77, 117, 105, 140],
    "what": "the bench: its seat, backrest and legs",
    "old": {
     "box": [97, 126, 32, 18]
@@ -833,13 +833,13 @@
    "what": "the arch: the middle of its opening on the ground (the cat sits there in d-corre, 46, 172), its two posts' feet (A, down to the left; B, up to the right)"
   },
   "gato_banco": {
-   "screen": [92, 129],
+   "screen": [92, 123],
    "old": [113, 134],
-   "v": 2.6154,
+   "v": 2.1538,
    "what": "the cat on the bench (story files d-corre, h-camino beats.1, cual-camino gato.si: x 113, y 134 -> remap): its lowest pixels on the seat's top; drawn after the bench's entry in the sorted list (front.banco), so no shadow on the lawn (shadows.gato)"
   },
   "ave_banco": {
-   "screen": [82, 117],
+   "screen": [81, 112],
    "old": [106, 117],
    "what": "the bird on the bench (W.avebanco): drawn at (x, y) 15 x 12, its feet on the seat's back plank (moves)"
   },
@@ -1266,11 +1266,11 @@
    "old": [88, 134],
    "uses": ["d-corre.json beats.49"],
    "to": {
-    "floor": [-0.0544, 1.9037, 0]
+    "floor": [0.8703, 3.046, 0]
    },
-   "new": [84, 130],
+   "new": [80, 149],
    "moved": true,
-   "why": "round 2: Canelo barking at the cat in the first tree (d-corre beats.49): 4 px left and 4 rows up, behind the bench's left end (the bench moved 12 px left along the path: at the old point he stood in its foot); the bench is drawn over him (front.banco)",
+   "why": "round 4: Canelo barking at the cat in the first tree (d-corre beats.49): 8 px left and 15 rows down, before the bench's left end with lawn between (the bench moved along the path and up: at the old point he stood in its foot)",
    "what": "a person's feet (x, y): the ground under them; the same screen place"
   },
   {
@@ -1348,9 +1348,9 @@
    "old": [113, 134],
    "uses": ["d-corre.json beats.1.set.gato", "h-camino.json beats.1.set.gato", "cual-camino.json gato.si.set.gato"],
    "to": {
-    "floor": [0.1088, 1.6318, 0]
+    "floor": [-0.2176, 1.3054, 0]
    },
-   "new": [92, 129],
+   "new": [92, 123],
    "moved": true,
    "why": "the cat on the bench (d-corre and h-camino beats.1, cual-camino gato.si): on the new bench's seat, its lowest pixels on the seat's top (points.gato_banco), and drawn after the bench's entry in the sorted list (front.banco: sortY 134.5)",
    "what": "an animal's place (x, y): the ground under it"
@@ -1838,8 +1838,8 @@
    "line": 112,
    "act": "*",
    "src": "c.drawImage(im,BANCO[0]+8,BANCO[1]-11,15,12)",
-   "to": "c.drawImage(im,82,117,15,12)",
-   "why": "the bird on the bench (W.avebanco, the pair gato.no): on the seat's back plank, its feet on it (points.ave_banco). The new bench stands along y and has no back: the bird -24 px right, 0 rows (the old at 106, 117)"
+   "to": "c.drawImage(im,81,112,15,12)",
+   "why": "the bird on the bench (W.avebanco, the pair gato.no): on the seat's back plank, its feet on it (points.ave_banco). The new bench stands along y and has no back: the bird -25 px right, -5 rows (the old at 106, 117)"
   },
   {
    "line": 69,
@@ -1852,13 +1852,13 @@
    "line": 194,
    "act": "inicio13",
    "src": "W.gato={x:113,y:134,pose:\"lava\"",
-   "to": "W.gato={x:92,y:129,pose:\"lava\"",
+   "to": "W.gato={x:92,y:123,pose:\"lava\"",
    "places": [
     {
      "who": "gato",
      "old": [113, 134],
-     "new": [92, 129],
-     "world": [0.1088, 1.6318, 0]
+     "new": [92, 123],
+     "world": [-0.2176, 1.3054, 0]
     }
    ],
    "why": "acts.inicio13: the cat on the bench, on the new bench's seat (points.gato_banco), as the story files' cat at 113, 134 (remap)"
@@ -2022,7 +2022,7 @@
    "old": "BANCO [98,128,30,16]",
    "to": {
     "thing": "banco",
-    "box": [77, 122, 29, 24]
+    "box": [77, 117, 28, 23]
    },
    "note": "used by the old background (dropped), the bench's box (things.banco) and the bird on it (moves)"
   },
@@ -2133,7 +2133,7 @@
    "old": "box banco [BANCO[0]-1,BANCO[1]-2,BANCO[2]+2,18] = [97,126,32,18]",
    "to": {
     "thing": "banco",
-    "box": [77, 122, 29, 24]
+    "box": [77, 117, 28, 23]
    }
   },
   {
@@ -2261,7 +2261,7 @@
    "old": "the bird on the bench at BANCO[0] + 8, BANCO[1] - 11",
    "to": {
     "point": "ave_banco",
-    "new": [82, 117],
+    "new": [81, 112],
     "moved": "moves"
    }
   },
@@ -2385,7 +2385,7 @@
    "old": "inicio13: gato {x:113,y:134} (on the bench)",
    "to": {
     "point": "gato_banco",
-    "new": [92, 129],
+    "new": [92, 123],
     "moved": "as the story files' (remap): on the new bench's seat"
    }
   },
@@ -2542,28 +2542,28 @@
   "notes": [
    "inventory: 22 things (old 22), 7 frog places (old 7), 1 view (old 1), 35 positions (old 35), 13 review pairs of cual-camino (25 pictures here; parque.no is El patio's), 16 level pictures (old 16), 127 places of camino.js named in code, 2 baked states (the old 9)",
    "hops: all 21 pairs of LUGAR places (round(d / 30), 1 to 4, kit.js acts.ir) keep the old count (arbol0 moved -5 px left: its distances inicio-arbol0 26 -> 27.46, centro-arbol0 77.79 -> 75.01, banco-arbol0 30.59 -> 25.96, arbol0-arbol1 82 -> 77.01, arbol0-arbol2 122.07 -> 117.04, arbol0-gran 122.07 -> 117.11); the frog walks between places in the recorded runs: inicio - centro (3), centro - arbol0 (8), arbol0 - arbol2 (3), centro - arbol2 (3), centro - arbol1 (1), arbol0 - arbol1 (1)",
-   "boxes: every pixel of each set thing (the big tree's leaves at every wind step: 1 px either way) inside its touch box: porton [23,94,28,80], arbol0 [51,74,37,47], arbol1 [95,68,35,49], arbol2 [135,66,38,47], banco [77,122,29,24], grande [160,0,80,108]; every path pixel inside the camino box [0,115,240,75]; every pixel of each set thing answers that thing in the hit order (boxes that overlap: arbol2/grande, each overlap held by the one drawn there); the set's parts are arbol0, arbol1, arbol2, banco, camino, grande, porton (each a touch key's: nothing decorative)",
-   "shadows: every castShadow call of the bake has strength 1 and a radius (none lost), each casting part darkens: porton 12 calls, 244 px set (0 calls wholly over shadow already); arbol0 36 calls, 1970 px set (0 calls wholly over shadow already); arbol1 36 calls, 1976 px set (0 calls wholly over shadow already); arbol2 36 calls, 1970 px set (0 calls wholly over shadow already); banco 12 calls, 912 px set (0 calls wholly over shadow already); grande 45 calls, 3226 px set (15 calls wholly over shadow already)",
+   "boxes: every pixel of each set thing (the big tree's leaves at every wind step: 1 px either way) inside its touch box: porton [23,94,28,80], arbol0 [51,74,37,47], arbol1 [95,68,35,49], arbol2 [135,66,38,47], banco [77,117,28,23], grande [160,0,80,108]; every path pixel inside the camino box [0,115,240,75]; every pixel of each set thing answers that thing in the hit order (boxes that overlap: arbol0/banco, arbol2/grande, each overlap held by the one drawn there); the set's parts are arbol0, arbol1, arbol2, banco, camino, grande, porton (each a touch key's: nothing decorative)",
+   "shadows: every castShadow call of the bake has strength 1 and a radius (none lost), each casting part darkens: porton 12 calls, 244 px set (0 calls wholly over shadow already); arbol0 36 calls, 1970 px set (0 calls wholly over shadow already); arbol1 36 calls, 1976 px set (0 calls wholly over shadow already); arbol2 36 calls, 1970 px set (0 calls wholly over shadow already); banco 12 calls, 896 px set (0 calls wholly over shadow already); grande 45 calls, 3226 px set (15 calls wholly over shadow already)",
    "ground: the lawn and the path only (4390 px of path); the set paints nothing else on the ground but the shadows its things cast and the seven stones in the path",
    "preview: at every moment of the 15 runs (5081 places of people, the frog, Canelo and the cat) camino-preview.html puts everyone exactly where the sheet does (0 differ)",
-   "find them: Canelo and the cat have the lawn or the path behind them but gato at 46,172 before porton (60 px), perro at 84,130 before arbol0 (78 px), perro at 84,130 before banco (126 px), perro at 46,177 before porton (28 px) (the snail always the path or the lawn)",
-   "ground: 80 distinct stands of people, the frog, Canelo and the cat: nothing of the arch, the trees or the bench nearer than them inside their sprites, but where they are behind the bench or the arch and drawn before its entry (front): perro behind banco (2); at least 5 rows of lawn between anyone's feet and the foot of what stands behind them: the least behind a trunk 10 rows, d-corre right beats.49: perro at 84,130; a post 9 rows, d-corre right null: the frog at 44,148; the bench 8 rows, uno-dos-tres right beats.17.after.0: the frog at 83,128",
+   "find them: Canelo and the cat have the lawn or the path behind them but gato at 46,172 before porton (60 px), perro at 80,149 before banco (73 px), perro at 46,177 before porton (28 px) (the snail always the path or the lawn)",
+   "ground: 80 distinct stands of people, the frog, Canelo and the cat: nothing of the arch, the trees or the bench nearer than them inside their sprites, but where they are behind the bench or the arch and drawn before its entry (front): no one; at least 5 rows of lawn between anyone's feet and the foot of what stands behind them: the least behind a trunk 17 rows, uno-dos-tres right beats.38.right.0: the frog at 148,105; a post 9 rows, d-corre right null: the frog at 44,148; the bench 10 rows, d-corre right beats.49: perro at 80,149",
    "asks: 63 distinct asks (for arbol0, arbol1, arbol2, camina, carmen, con_2, con_3, corre, despacio, di_despacio, di_rapido, espera, gato, grande, luis, perro, rapido): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), no frame's rings across a face where the old frame's were not (as the old: donde-esta-el-gato right beats.39 (arbol0) the frog's face; donde-esta-el-gato wrong beats.39 (arbol0) the frog's face; h-camino right beats.8 (perro) carmen's face; h-camino right beats.13 (arbol2) luis's face; h-camino right beats.21 (carmen) the frog's face; rapido-despacio right beats.8 (perro) the frog's face; uno-dos-tres right beats.11 (perro) carmen's face), the hint hand on no face; 103 answer cards, each with its lit frame and glow (+- 12) inside the view (2 px to spare at the least), over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
    "sun (round 3): at 38,47, radius 9: under no corner board (241 boards shown, 4 px to spare at the least) and under no answer card with its frame and glow (103 cards, 5 px to spare at the least), at every moment and ask of every run",
    "NOT solved, as the old picture: the hint hand at the first small tree (its old point; no point in the tree keeps it off every face and off the cat's tail and the birds) lies on a face at donde-esta-el-gato beats.32 (arbol0): over the cat's tail; donde-esta-el-gato beats.32 (arbol0): on luis's face; donde-esta-el-gato beats.39 (arbol0): over the cat's tail; donde-esta-el-gato beats.39 (arbol0): on luis's face; donde-esta-el-gato beats.39 (arbol0): on the frog's face; donde-esta-el-gato beats.70 (arbol0): on luis's face",
    "bubbles: 111 bubbles at 1066 moments of 15 runs (d-corre, donde-esta-el-gato, h-camino, rapido-despacio, uno-dos-tres), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, at any moment; Carmen's \"q\" at mirarriba; the frog's \"amor\" at lame and acaricia; the cat's at ronronea; Canelo's at final13, final14): wholly inside the view (0 px from its edge at the least), clear of the cards shown in the corner (11 px), on no face",
    "birds: every bird of the nine places perches on its own tree's crown (its leaves under at least 67% of its feet' columns), with nothing but that crown or the sky behind it, none overlapping another of its tree; a bird's blue stands out from the leaves behind it by 53 at the least (mean CIE76)",
-   "perch: the bird on the bench (gato.no) has the seat's back plank under 6 of the 6 columns of its feet; the empty bench shows 201 px of its seat's top",
+   "perch: the bird on the bench (gato.no) has the seat's back plank under 6 of the 6 columns of its feet; the empty bench shows 190 px of its seat's top",
    "stones: the seven stones (marks 1 to 7) in the path, each whole and seen, nothing over them, 1 px apart at the least along the path",
    "sevan (round 2): everyone leaves through the arch in a file, their feet between the posts (x 29.39 to 44.61) as they cross its line (right: abuela at tick 7, carmen at tick 10, luis at tick 13, perro at tick 16, cq at tick 19; wrong: abuela at tick 7, carmen at tick 10, luis at tick 13, perro at tick 16, cq at tick 19; alternate: abuela at tick 7, carmen at tick 10, luis at tick 13, perro at tick 16, cq at tick 19); nobody shows (al > .3) past the line, so nobody is seen beyond the left post; nothing of the set but the arch nearer than them; all gone at the end",
    "arch shadow (round 3): only a contact shadow at each post's foot (57 px, all within 4.51 px of a post's foot; keep 5); the path's first leg, from the view's left edge to mark 0: near edge 251 px, 0% in shadow, lightness 159; far edge 523 px, 0% in shadow, lightness 149 (the lawn 130, the path's middle 180): no dark band along either edge",
    "big tree (round 2): its trunk 18 px wide (a small one 6), its crown 88 px wide (a small one 35, running off the picture's right and top edges), its middle at x 204 over the trunk at 204; no limb seen outside the trunk's columns; its hint box [160,12,46,96] (its touch box [160,0,80,108]), the frame inside the view, its hand 190,51 in it; the foot of its trunk seen at every moment (100% at the least: )",
-   "shadows (round 2): each in one piece with its thing, from its foot (grande 339 px, arbol0 212 px, arbol1 465 px, arbol2 464 px, porton 20 px, banco 237 px); the path's edge is the path's own earth, ragged into the lawn (no edge line)",
+   "shadows (round 2): each in one piece with its thing, from its foot (grande 339 px, arbol0 242 px, arbol1 465 px, arbol2 464 px, porton 20 px, banco 237 px); the path's edge is the path's own earth, ragged into the lawn (no edge line)",
    "sky (round 2): the sun at 38,47 (radius 9), left of the middle, whole in the view, nothing of the set within 2 px; the old picture's three clouds back, at 128,6; 140,24; 120,44 (the old 36,16; 112,9; 168,26: moved clear of the sun and the crowns), each clear of them by 2 px; no story or pair names the sun or a cloud by a position",
-   "bench (round 2): behind the cat (lava), the cat (lava, other frame), the cat (sit), the bird, the bird (other frame) on the bench only the bench or lit lawn (no trunk, no crown, no tree's shadow)",
+   "bench (round 4): behind whatever sits on it, besides the bench, one backdrop only: the cat (lava) lit lawn, the cat (lava, other frame) lit lawn, the cat (sit) lit lawn, the bird lit lawn, the bird (other frame) lit lawn",
    "pairs, what differs: perro: perro, gato; gato: gato, avebanco; arbol: the window; camina: luis corre, polvo; corre: perro pose, polvo; espera: carmen paso/corre, polvo; rapido: perro pose, polvo, caracol; despacio: gato pose, caracol, polvo; hay: gato; uno: pajaros; dos: pajaros; tres: pajaros",
    "pairs: 25 review pictures (and the 16 level pictures, the same pictures): everyone, the frog, Canelo, the cat, the snail and the birds whole in their crop (no zoom 2 crop cuts what the old window did not), on clear ground",
-   "lawn: El frente's grass (GRASS), mean colour 125,145,63 (hue 75); the sprite layer's things on it, by their mean colour against it (CIE76), each with its dark outline: the bush 24, the snail 33, Canelo 34, the cat 51",
+   "lawn: El frente's grass (GRASS), mean colour 125,146,64 (hue 75); the sprite layer's things on it, by their mean colour against it (CIE76), each with its dark outline: the bush 24, the snail 33, Canelo 34, the cat 51",
    "states: 2 baked states reached (gran 0, 1)"
   ]
  }

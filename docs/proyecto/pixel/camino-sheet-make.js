@@ -347,7 +347,7 @@ function make(G) {
   const POS = JSON.parse(fs.readFileSync(path.join(REF, 'positions.json'), 'utf8'));
   // story-file positions that move (the files are not edited: the host passes the point through remap, which gives the new one)
   const STORY_MOVES = [
-    { old: [88, 134], new: [84, 130], who: 'perro', why: 'round 2: Canelo barking at the cat in the first tree (d-corre beats.49): 4 px left and 4 rows up, behind the bench\'s left end (the bench moved 12 px left along the path: at the old point he stood in its foot); the bench is drawn over him (front.banco)' },
+    { old: [88, 134], new: [80, 149], who: 'perro', why: 'round 4: Canelo barking at the cat in the first tree (d-corre beats.49): 8 px left and 15 rows down, before the bench\'s left end with lawn between (the bench moved along the path and up: at the old point he stood in its foot)' },
     { old: [113, 134], new: F.CAT_BENCH, who: 'gato', why: 'the cat on the bench (d-corre and h-camino beats.1, cual-camino gato.si): on the new bench\'s seat, its lowest pixels on the seat\'s top (points.gato_banco), and drawn after the bench\'s entry in the sorted list (front.banco: sortY ' + F.BENCH_SORT + ')' },
   ];
   const remap = POS.positions.map(p => {
@@ -1014,15 +1014,19 @@ function check(sh, G, runs) {
       if (b[2] >= sx - sr && b[0] <= sx + sr && b[3] >= sy - sr && b[1] <= sy + sr) P.push('cloud at ' + cx + ',' + cy + ': on the sun'); }
     notes.push('sky (round 2): the sun at ' + F.SUN.slice(0, 2) + ' (radius ' + sr + '), left of the middle, whole in the view, nothing of the set within 2 px; the old picture\'s three clouds back, at ' + F.CLOUDS.map(c => c.slice(0, 2).join(',')).join('; ') + ' (the old 36,16; 112,9; 168,26: moved clear of the sun and the crowns), each clear of them by 2 px; no story or pair names the sun or a cloud by a position'); }
 
-  /* round 2, the bench: whatever sits on it (the cat at its place on the seat, in the stories and the pair gato.si; the bird in the pair gato.no)
-     has only the bench under it or lit lawn behind its head and body (no trunk, no crown, no tree's shadow) */
-  { const tag = TAGS['1'], lit = G.lit['1'], res = [];
+  /* round 4, the bench: whatever sits on it (the cat at its place on the seat, in the stories and the pair gato.si, both frames of lava and sit;
+     the bird in the pair gato.no, both frames) has a uniform backdrop: behind its head and body, besides the bench, either only lit lawn or only
+     shadowed lawn (no shadow's edge, no trunk, no crown, nothing else) */
+  { const tag = TAGS['1'], lit = G.lit['1'], SH = G.shade['1'], K = G.kinds['1'], Z = G.z['1'], OG = G.onGround['1'], res = [];
     const sitters = [['the cat (lava)', rowsAt(M.animals['gato.lava.0.-1'], F.CAT_BENCH[0], F.CAT_BENCH[1])], ['the cat (lava, other frame)', rowsAt(M.animals['gato.lava.1.-1'], F.CAT_BENCH[0], F.CAT_BENCH[1])],
       ['the cat (sit)', rowsAt(M.animals['gato.sit.0.1'], F.CAT_BENCH[0], F.CAT_BENCH[1])], ['the bird', rowsAt(M.ave[0], sh.points.ave_banco.screen[0], sh.points.ave_banco.screen[1])], ['the bird (other frame)', rowsAt(M.ave[1], sh.points.ave_banco.screen[0], sh.points.ave_banco.screen[1])]];
-    for (const [who, rs] of sitters) { let n = 0, bad = 0; for (const [y, a, b] of rs) for (let x = a; x <= b; x++) { const i = y * 240 + x; n++; if (tag[i] === 'banco') continue; if (!lit[i]) bad++; }
-      if (bad) P.push('bench: ' + bad + ' of the ' + n + ' px behind ' + who + ' on the bench are not lit lawn (' + JSON.stringify([...new Set(rs.flatMap(([y, a, b]) => Array.from({ length: b - a + 1 }, (_, k) => tag[y * 240 + a + k] || (lit[y * 240 + a + k] ? 'lit' : 'shade'))))]) + ')');
-      res.push(who); }
-    notes.push('bench (round 2): behind ' + res.join(', ') + ' on the bench only the bench or lit lawn (no trunk, no crown, no tree\'s shadow)'); }
+    for (const [who, rs] of sitters) { const kinds2 = {};
+      for (const [y, a, b] of rs) for (let x = a; x <= b; x++) { const i = y * 240 + x; if (tag[i] === 'banco') continue;
+        const k = tag[i] ? tag[i] : K[i] === G.K.grass && OG[i] ? (SH[i] ? 'shadowed lawn' : 'lit lawn') : 'something else'; kinds2[k] = (kinds2[k] || 0) + 1; }
+      const ks = Object.keys(kinds2);
+      if (ks.length !== 1 || !/lawn$/.test(ks[0])) P.push('bench: the backdrop behind ' + who + ' on the bench is not uniform: ' + JSON.stringify(kinds2));
+      res.push(who + ' ' + ks.join('/')); }
+    notes.push('bench (round 4): behind whatever sits on it, besides the bench, one backdrop only: ' + res.join(', ')); }
 
   /* the review pictures (and the level pictures, the same pictures): everyone whole in their crop (a zoom 2 crop cuts no one the old one did not),
      every bubble inside, on the ground; what differs between the two sides */
