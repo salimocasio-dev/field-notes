@@ -1,0 +1,254 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La nevera · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px;width:588px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The OLD sprite layer (historia/escenas/nevera.js) drawn over the NEW set (nevera-set.html): nevera.js is loaded with every screen position the sheet moves replaced by the sheet's (as the Flutter port does it, line for line), its background, the window's frame and sill, the fridge's inside, door and drawer, the sink's water and the stool taken out (dropped: the set's), the yard seen through the window drawn only on the set's outside pixels (sheet: clips), the shadows the engine casts, and the set's own pixels drawn again over whoever stands behind them (sheet: front). Then cropped to the view.
+Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&amp;hud=1&amp;story=&lt;id&gt;</code>, or <code>?pair=leche&amp;side=si</code> (a review picture, as the sheet says). <code>old=1</code>: the old picture, as historia/ draws it. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart), as banco-preview.html:
+   1. nevera.js is fetched and every screen position it holds that the sheet changes is replaced by the sheet's (moves: the surfaces' rows CT, SL,
+      MU, PA, CB, VT, the fridge's places, the set things' boxes); what the set draws now is taken out (dropped); the yard seen through the window
+      (patio(): the cart, the birds, what lies on the yard wall, whoever stands outside) is drawn only on the set's pixels that show the outside
+      (sheet: clips); the bubbles go where sheet.talk says; every item of the sorted list owns the pixels it drew, and after the list the set's
+      own pixels are drawn again where they are nearer than that owner (sheet: front).
+   2. A W in old positions is moved by the sheet's rule (remapW): whatever stood on the counter's, the sill's or the yard's old level row, and
+      whoever stood outside, to the new row at its x; the story positions remap moves. A W recorded from the port's own play (nevera.js with the
+      moves, the stories through remap) needs no moving: remap=false.
+   3. The set (the baked state setKey(W)) is drawn by nevera-set.html in a hidden frame, with the characters' shadows cast (sheet shadows).
+   4. The picture is cropped to the view (196 x 216 at x0 22) or the pair's crop (98 x 52 shown at zoom 2, or 196 x 104 at zoom 1). */
+(() => {
+  const PV = window.PREVIEW = {}, A = new URLSearchParams(location.search), OLD = A.get('old') === '1';
+  let SHEET = null;
+  const R = Math.round;
+
+  /* ---------- 1. the old scene file with the sheet's positions ---------- */
+  function edit(src) {
+    if (OLD) return src;
+    const S = SHEET, X = (a, b) => { if (!src.includes(a)) throw new Error('nevera.js changed: ' + a); src = src.split(a).join(b); };
+    for (const d of S.dropped) X(d.src, d.to);
+    { const done = new Set(); for (const m of S.moves) { if (done.has(m.src)) continue; done.add(m.src); X(m.src, m.to); } }   // a move named on several lines replaces them all at once
+    for (const [a, b] of S.helps.lines) X(a, b);
+    // the set things' hands (sheet things.<k>.hand)
+    X('{id:"nevera",box:w=>NEVERA[(w.nev&&w.nev.abierta)||0],m:0}', '{id:"nevera",box:w=>NEVERA[(w.nev&&w.nev.abierta)||0],hand:w=>' + JSON.stringify(S.things.nevera.hands) + '[(w.nev&&w.nev.abierta)||0],m:0}');
+    X('{id:"cocina",box:[22,16,196,198],m:0}', '{id:"cocina",box:[22,16,196,198],hand:[' + S.things.cocina.hand + '],m:0}');
+    // the yard through the window: drawn only on the set's outside pixels (sheet clips.patio)
+    X('c.save();c.beginPath();c.rect(VEN[0],VEN[1],VEN[2],VEN[3]);c.clip();', 'PREVIEW.clipStart(c);');
+    X('if(Gt[id].gorro)tenida(c,"sombrero",R(Gt[id].x),R(Gt[id].y)-alto(id)+6);});\n  c.restore();', 'if(Gt[id].gorro)tenida(c,"sombrero",R(Gt[id].x),R(Gt[id].y)-alto(id)+6);});\n  PREVIEW.clipEnd(c);');
+    // every item of the sorted list owns what it drew; then the set's own pixels again where nearer than the owner (sheet front)
+    X('L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());', 'PREVIEW.OWN=null;L.sort((m,n)=>m.y-n.y).forEach(o=>PREVIEW.item(c,o));PREVIEW.front(c);');
+    X('Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.vis!==0&&!p.fuera)L.push({y:p.y,d:()=>gente(c,id,a)});});', 'Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.vis!==0&&!p.fuera)L.push({y:p.y,id,d:()=>gente(c,id,a)});});');
+    X('(W.cosas||[]).forEach(o=>{if(o.vis!==0)L.push({y:o.z!=null?o.z:o.y+1,d:()=>{', '(W.cosas||[]).forEach(o=>{if(o.vis!==0)L.push({y:o.z!=null?o.z:o.y+1,cosa:o,d:()=>{');
+    X('if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)});', 'if(q.vis)L.push({y:q.y+27,id:"coqui",d:()=>rana(c,q,a)});');
+    // the bubbles: the first free place (sheet: talk)
+    X('Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});',
+      'Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0){const t=PREVIEW.talk([R(p.x),R(p.y)-alto(id)-1],6,p.bub,W);bub2(c,p.bub,t[0],t[1],a);}});');
+    X('if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}',
+      'if(q.vis&&q.bub){const b=frogBox(q),t=PREVIEW.talk([b.x+(b.w>>1),b.y+2],b.w>>1,q.bub,W);bub2(c,q.bub,t[0],t[1],a);}');
+    X('KIT.escena({id:"nevera"', 'window.NEVERA_OLD={QUIEN,alto};KIT.escena({id:"nevera"');
+    return src;
+  }
+  const ready = fetch('nevera-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; })
+    .then(() => fetch('../../../historia/escenas/nevera.js')).then(r => r.text()).then(t => {
+      PV.SRC = edit(t);
+      const s = document.createElement('script'); s.textContent = PV.SRC + '\n//# sourceURL=nevera-new.js'; document.body.appendChild(s);
+    });
+
+  /* ---------- the set: a hidden frame per baked state ---------- */
+  const SETS = {};
+  let CUR = null;
+  PV.keyOf = w => { const n = w.nev || {}, nev = n.abierta === 1 ? 1 : n.abierta === 2 ? 2 : 0; return [nev, nev === 1 ? (n.cajonver ? 2 : n.cajon ? 1 : 0) : 0, w.pila === 'a' || w.pila === 'j' ? w.pila : '0', w.banco ? 1 : 0].join('.'); };
+  const queryOf = k => { const [nev, cajon, pila, banco] = k.split('.'); return 'nev=' + nev + '&cajon=' + cajon + '&pila=' + pila + '&banco=' + banco; };
+  async function frameOf(key) {
+    const q = queryOf(key) + '&tags=1';
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'nevera-set.html?' + q; }); fr.ZONES = fr.contentWindow.NEVERA_SET.zones(); SETS[q] = fr; }
+    return fr;
+  }
+  async function setFrame(key, t, casts) {
+    const fr = await frameOf(key), w = fr.contentWindow, img = w.frame(t, casts);
+    CUR = { img: new ImageData(new Uint8ClampedArray(img.data), 240, 216), tags: w.TAGS, z: Float32Array.from(w.DEPTH.live()), win: w.DEPTH, fw: w, set: w.NEVERA_SET, zone: fr.ZONES.zone, outside: new Set(fr.ZONES.outside), key };
+    return CUR.img;
+  }
+  // (sheet clips.patio) what patio() draws between its clip and restore shows only on the set's outside pixels
+  let CLIP = null;
+  PV.clipStart = c => { CLIP = c.getImageData(0, 0, 240, 216); };
+  PV.clipEnd = c => { if (!CLIP || !CUR) return; const d = c.getImageData(0, 0, 240, 216), o = CUR.outside; for (let i = 0; i < 240 * 216; i++) if (!o.has(i)) for (let k = 0; k < 4; k++) d.data[i * 4 + k] = CLIP.data[i * 4 + k]; c.putImageData(d, 0, 0); CLIP = null; };
+  // (sheet front) the plane of the point an item stands on: the zone under its foot says which surface (the floor under (x, y - 1); the counter, the
+  // sill, the fridge's top, a shelf or the stool under (x, y) at its height; a card on the wall: the wall's face, a little before it)
+  PV.plane = (x, y) => {
+    const S = CUR.set, z0 = CUR.zone[Math.max(0, Math.min(215, y - 1)) * 240 + Math.max(0, Math.min(239, x))], g = z => S.at(x, y, z);
+    if (z0 === 'c' || z0 === 'p') return { face: 'y', at: g(S.CZ)[1], sup: 'cp' }; if (z0 === 'v') return { face: 'y', at: g(S.WIN.z0 - .1)[1], sup: 'vc' };
+    if (z0 === 'q') return { face: 'x', at: g(S.FR.h)[0], sup: 'q' }; if (z0 === 'b') { const q = g(S.STOOL.h); return { v: (q[0] + q[1]) / Math.SQRT2, sup: 'b' }; }
+    if (z0 === 'r') return { face: 'x', at: g(S.FR.bin[0] + .06)[0], sup: 'r' };
+    if (z0 === 'e') { let best = null; for (const z of S.FR.shelves.concat([S.FR.bin[1]])) { const q = g(z); if (q[0] >= 0 && q[0] <= S.FR.d && q[1] >= S.FR.a0 && q[1] <= S.FR.a1 && (best == null || z > best)) best = z; } return { face: 'x', at: g(best == null ? 0 : best)[0], sup: 'e' }; }
+    if (z0 === 't' || z0 === 'w') return x + .5 < S.OXY[0] ? { face: 'x', at: .05 } : { face: 'y', at: .05 };
+    const q = S.at(x, y - 1, 0); return { v: (q[0] + q[1]) / Math.SQRT2 }; };
+  PV.planeDepth = (pl, ix, iy) => { const S = CUR.set, OX = S.OXY[0], OY = S.OXY[1], COS = Math.sqrt(3) / 2, SIN = .5, R2 = Math.SQRT2;
+    if (pl.v != null) return pl.v / COS - (iy + .5 - OY) * Math.tan(Math.PI / 6) / 26;
+    const u = (ix + .5 - OX) / 26, k = (iy + .5 - OY) / 26, x = pl.face === 'y' ? pl.at + u * R2 : pl.at, y = pl.face === 'y' ? pl.at : pl.at - u * R2, v = (x + y) / R2, z = (v * SIN - k) / COS; return v * COS + z * SIN; };
+  PV.item = function (c, o) {
+    if (!PV.OWN) PV.OWN = new Array(240 * 216).fill(null);
+    const a = c.getImageData(0, 0, 240, 216).data; o.d(); const b = c.getImageData(0, 0, 240, 216).data;
+    for (let i = 0; i < 240 * 216; i++) { const j = i * 4; if (a[j] !== b[j] || a[j + 1] !== b[j + 1] || a[j + 2] !== b[j + 2]) PV.OWN[i] = o; }
+  };
+  PV.footOf = (o, w) => { if (o.id === 'coqui') { const q = w.cq, b = frogBox(q); return [b.x + (b.w >> 1), q.y + 26]; } if (o.id) { const p = w.gente[o.id]; return [R(p.x), R(p.y)]; } if (o.cosa) return [R(o.cosa.x), R(o.cosa.y)]; return null; };
+  const y0f = o => o.cosa ? Math.round(o.cosa.y) : null;
+  PV.front = function (c) {
+    const O = PV.OWN; if (!O || !CUR) return; const fw = CUR.win, COS = Math.sqrt(3) / 2, T30 = Math.tan(Math.PI / 6), parts = Object.keys(SHEET.front.parts);
+    const id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, T = CUR.tags, Z = CUR.z, cache = new Map();
+    for (let i = 0; i < 240 * 216; i++) { if (!O[i] || !parts.includes(T[i])) continue; const o = O[i];
+      if (!cache.has(o)) { const f = PV.footOf(o, W); cache.set(o, f ? PV.plane(f[0], f[1]) : null); } const v = cache.get(o); if (v == null) continue; if (v.sup && v.sup.includes(CUR.zone[i])) continue; if (v.sup && v.sup !== 'b' && y0f(o) != null && ((i / 240) | 0) >= y0f(o) - 3) continue;
+      const y = (i / 240) | 0; if (!(Z[i] > PV.planeDepth(v, i % 240, y))) continue;
+      d[i * 4] = s[i * 4]; d[i * 4 + 1] = s[i * 4 + 1]; d[i * 4 + 2] = s[i * 4 + 2]; d[i * 4 + 3] = 255; }
+    c.putImageData(id, 0, 0);
+  };
+  // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
+  const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+  PV.FACES = {};   // the bare sprite's face, by id, pose and dir (measured on first use)
+  PV.faceOf = function (id, p) {
+    const pose = p.pose || 'idle', d = p.dir < 0 ? -1 : 1, k = id + '|' + pose + '|' + d + '|' + (p.cierra ? 1 : 0);
+    if (!(k in PV.FACES)) { const cv = document.createElement('canvas'); cv.width = 120; cv.height = 120; const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+      if (id === 'abuela') { const ps = pose; g.save(); g.translate(60, 100 - 50); if (((ps === 'offer' || ps === 'bless') ? -d : d) < 0) g.scale(-1, 1); g.drawImage(spr('ab' + ps + 0, () => mkAbuela(ps, 0)), -30, 0); g.restore(); }
+      else { const w = NEVERA_OLD.QUIEN[id], w2 = p.cierra ? Object.assign({}, w, { dormido: 1 }) : w, im = KIT.mkPersona(w2, pose, 0, 0); g.save(); g.translate(60, 100 - im.height + 1); if ((pose === 'offer' ? -d : d) < 0) g.scale(-1, 1); g.drawImage(im, -KIT.PX, 0); g.restore(); }
+      const D = g.getImageData(0, 0, 120, 120).data; let top = -1; const rows = []; for (let y = 0; y < 120; y++) { let a = -1, b = -1; for (let x = 0; x < 120; x++) if (D[(y * 120 + x) * 4 + 3] > 40) { if (a < 0) a = x; b = x; } if (a >= 0) { if (top < 0) top = y; if (y < top + 10) rows.push([a, b]); } }
+      PV.FACES[k] = [Math.round((Math.min(...rows.map(r => r[0])) + Math.max(...rows.map(r => r[1])) + 1) / 2) - 60, top - 100]; }
+    const [hx, top] = PV.FACES[k]; return [R(p.x) + hx - 6, R(p.y) + R(p.dy || 0) + top + 6, 12, 10];
+  };
+  PV.faces = function (w) {
+    const faces = [];
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.vis === 0 || p.x == null || (p.al != null && p.al < .5)) continue; faces.push(PV.faceOf(id, p)); }
+    if (w.cq && w.cq.vis && !(w.cq.al < .5)) { const b = frogBox(w.cq); faces.push([b.x + 2, b.y + R(w.cq.dy || 0), b.w - 4, R(b.h * .6)]); }
+    return faces;
+  };
+  PV.talk = function (top, h, k, w) {
+    if (!k || !SHEET.bubbles.rects[k]) return top;
+    const T = SHEET.talk, Rc = SHEET.bubbles.rects[k], x0 = cam[0], faces = PV.faces(w), boards = [];
+    if (w.tarjeta) boards.push(SHEET.talk.board.slice());
+    for (const b of boards) b[0] += x0;
+    for (const [side, dy] of T.places) { const tx = top[0] + side * (h + 16), ty = top[1] + dy, r = [tx + Rc[0], ty + Rc[1], Rc[2], Rc[3]];
+      if (r[0] >= x0 && r[1] >= 0 && r[0] + r[2] <= x0 + 196 && r[1] + r[3] <= 216 && !boards.some(b => meets(r, b)) && !faces.some(f => meets(r, f))) return [tx, ty]; }
+    return top;
+  };
+
+  /* ---------- 2. a W in old positions, moved by the sheet's rule ---------- */
+  PV.story = null;
+  // whoever stands outside (the maker's HXS): [old x, new x, rows on PA + the old offset, the old offset it holds for]; null: any x, the same x
+  const SHEET_HXS = { abuelo: [[207, 207, -9], [null, null, -1]], papa: [[158, 154, 0], [null, null, 0]], luis: [[173, 166, 0], [158, 158, -6, 8]], mama: [[200, 200, -4]] };
+  PV.remapW = w0 => { const w = JSON.parse(JSON.stringify(w0)), sh = SHEET, N = sh.layout.numbers, f = c => x => Math.round(c + x / 2), CT = f(N.CT), SL = f(N.SL), PA = f(N.PA), CB = f(N.CB);
+    const ENC = 112, top = sh.points.nevera.top, st = PV.story, done = new Set();
+    if (st) for (const e of sh.remap) if (e.moved && e.kind === 'point' && e.uses.some(u => u.startsWith(st.id + '.json'))) for (const o of (w.cosas || [])) if (o && !done.has(o) && Math.round(o.x) === e.old[0] && Math.round(o.y) === e.old[1]) { o.x = e.new[0]; o.y = e.new[1]; done.add(o); }
+    for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.fuera) { p.y = PA(Math.round(p.x)) + (p.y - 120) + 0; const HX = (SHEET_HXS[id] || []).find(h => (h[0] == null || Math.round(p.x) === h[0]) && (h[3] == null || Math.round(w0.gente[id].y) - 120 === h[3])); if (HX) { if (HX[1] != null) p.x = HX[1]; p.y = PA(Math.round(p.x)) + (w0.gente[id].y - 120) + HX[2]; } }
+    const named = {}; for (const m of sh.moves) for (const q of m.places || []) if (/^(carta_|v_)/.test(q.who)) named[q.who + '@' + q.old.join(',')] = q.new;
+    for (const m of sh.moves) for (const q of m.places || []) if (q.who === 'abuela') { const p = (w.gente || {}).abuela; if (p && Math.round(p.x) === q.old[0] && Math.round(p.y) === q.old[1]) { p.x = q.new[0]; p.y = q.new[1]; } }
+    for (const o of w.cosas || []) { if (!o || o.x == null || done.has(o)) continue; const x = Math.round(o.x), nm = named[o.id + '@' + Math.round(o.x) + ',' + Math.round(o.y)]; if (nm) { o.x = nm[0]; o.y = nm[1]; continue; }
+      if (o.id === 'c1' && o.y === 40) { o.x = top.c1[0]; o.y = top.c1[1]; continue; }
+      if (o.id === 'c2' && o.y === 40) { o.x = top.c2[0]; o.y = top.c2[1]; continue; }
+      if (o.z === 50 || o.z === 399 || o.z === 400) continue;
+      if (o.z === 1 && o.y === 166) { o.y = CB(x); continue; }
+      if (o.y >= 94 && o.y <= 102 && (o.z === 90 || o.z === 100)) { o.y = SL(x) + (o.y - 98); continue; }
+      if (o.y >= ENC + 2 && o.y <= ENC + 20 && o.z != null && o.z >= 90 && o.z <= 500) { o.y = CT(x) + (o.y - (ENC + 10)); continue; } }
+    if (w.olfato && w.olfato.y === ENC + 13) w.olfato.y = CT(Math.round(w.olfato.x)) + 3;
+    if (w.cq && w.cq.vis && w.cq.y === ENC + 9 - 27) w.cq.y = CT(w.cq.x + 16) - 1 - 27;
+    if (w.respEn && w.respEn[0] === 142 && w.respEn[1] === 10) w.respEn = sh.moves.find(m => m.src.startsWith('fresh:()=>({respEn:')).places[0].new.slice();
+    return w; };
+
+  /* ---------- 3. the picture ---------- */
+  function baseW(over) { return Object.assign({ spot: null, twinkle: null, glow: null, fx: [], heart: 0, lost: 0, resp: null }, ESCENAS.nevera.fresh({}), over || {}); }
+  PV.baseW = baseW;
+  // where the frog's feet are: on the stool, on the counter (CT), or on the floor
+  PV.frogOn = q => { const N = SHEET.layout.numbers, fx = q.x + 16, fy = q.y + 25, ct = Math.round(N.CT + fx / 2); if (q.x === 104 && q.y === 165) return 'stool'; if (Math.abs(fy - (ct - 2)) <= 2) return 'counter'; return 'floor'; };
+  // the shadows the engine casts (sheet: shadows), from the floor point under each one on the screen
+  PV.casts = function (w, fw) {
+    const out = [], q = w.cq, SH = SHEET.shadows, on = (sx, sy) => { const g = fw.unproject(sx, sy); return [g.x, g.y]; };
+    if (q && q.vis && !(q.al <= .5) && PV.frogOn(q) === 'floor' && !((q.dy || 0) < -3)) { const b = frogBox(q), g = on(b.x + b.w / 2, q.y + 25); out.push([g[0], g[1], .3, SH.coqui.radius]); }
+    for (const [id, p] of Object.entries(w.gente || {})) {
+      if (!p || p.vis === 0 || p.fuera || p.x == null || (p.al != null && p.al <= .5)) continue;
+      const g = on(R(p.x), R(p.y) - 1), nino = NEVERA_OLD.QUIEN[id] && NEVERA_OLD.QUIEN[id].nino;
+      for (let z = .3; z <= (nino ? 1.35 : 1.7) + 1e-9; z += .35) out.push([g[0], g[1], z, SH.people.radius]);
+    }
+    const N = SHEET.layout.numbers;
+    for (const o of w.cosas || []) { if (!o || o.vis === 0 || o.x == null || (o.z != null && o.z > 1 && o.z !== 300) || o.z === 400) continue; if (R(o.y) < Math.round(N.CB + R(o.x) / 2) - 3) continue; const g = on(R(o.x), R(o.y) - 1); out.push([g[0], g[1], .1, SH.cosas.radius]); }
+    return out;
+  };
+  // where everyone is (the sheet's check reads it)
+  PV.places = w => { const o = {};
+    for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.vis !== 0) o[id] = [R(p.x), R(p.y)];
+    if (w.cq && w.cq.vis) o.cq = [w.cq.x, w.cq.y];
+    (w.cosas || []).forEach((c, i) => { if (c && c.vis !== 0 && c.x != null) o['cosa.' + (c.id || c.k + i)] = [R(c.x), R(c.y)]; });
+    return o; };
+  PV.render = async function (wOld, opts = {}) {
+    await ready;
+    if (sc.width !== 240 || sc.height !== 216) { sc.width = 240; sc.height = 216; }
+    E = ESCENAS.nevera; F = opts.F == null ? 8 : opts.F; TALK = null;
+    W = OLD || opts.remap === false ? JSON.parse(JSON.stringify(wOld)) : PV.remapW(wOld); if (!W.fx) W.fx = []; if (!W.gente) W.gente = {}; if (!W.vuelos) W.vuelos = []; if (!W.cosas) W.cosas = [];
+    const x0 = opts.crop ? opts.crop[0] : SHEET.views.wide.x0;
+    cam = [x0, 0, 196, 216];
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.imageSmoothingEnabled = false;
+    if (OLD) { c.fillStyle = '#000'; c.fillRect(0, 0, 240, 216); }
+    else { const key = PV.keyOf(W), fr = await frameOf(key); c.putImageData(await setFrame(key, opts.t || 0, PV.casts(W, fr.contentWindow)), 0, 0); }
+    E.draw(c, W, F >> 1);
+    if (W.resp) respDraw(c, F >> 1);
+    if (opts.signs) {
+      const a = F >> 1;
+      const hb = k => { const t = SHEET.things[k]; if (t && t.hintBoxes) { const st = PV.keyOf(W); return t.hintBoxes[k === 'nevera' ? +st[0] : st.startsWith('1.2') ? 1 : 0]; } return (t && t.hintBox) || bx(k); };
+      if (W.twinkle && bx(W.twinkle)) twinkle(c, hb(W.twinkle));
+      if (W.spot) spot(c, respBox(W.spot) || hb(W.spot), a);
+      W.fx.forEach(e => { if (e.t === 'star') e.pts.forEach((p, i) => star(c, p[0], p[1], (i + a) % 2 ? 4 : 2, (i + a) % 2)); });
+      if (W.heart) heart(c, E.heartAt[0], E.heartAt[1] - (a % 2), 3);
+    }
+    const cr = opts.crop || [x0, 0, 196, 216], z = opts.crop ? (opts.zoom || 1) : 1;
+    const out = document.getElementById('out'); out.width = cr[2] * z; out.height = cr[3] * z;
+    const g = out.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(sc, cr[0], cr[1], cr[2], cr[3], 0, 0, cr[2] * z, cr[3] * z);
+    if (opts.hud && E.hud) E.hud(g, W, F >> 1);
+    if (opts.signs && W.spot && (respBox(W.spot) || E.handAt[W.spot])) { const rb = respBox(W.spot), p = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : E.handAt[W.spot], k = 3, hx = Math.round(p[0] - cam[0]) - 4 * k, hy = Math.round(p[1] - cam[1]); hand(g, hx, hy, (F >> 2) % 2 === 1, k); }
+    return out.toDataURL();
+  };
+  // the signs of a story step as juego.js sets them (ask, decide), as banco-preview.html
+  PV.askW = function (w, st, V, on) {
+    const sub = x => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
+    const vmapa = m => m ? Object.fromEntries(Object.entries(m).map(e => [sub(e[0]), sub(e[1])])) : null;
+    const keep = w.resp; w.resp = null; w.respVoz = null; w.respOn = null; w.spot = null;
+    if (st.ask) { w.spot = sub(st.ask); if (st.resp) { w.resp = st.resp.map(sub); w.respVoz = vmapa(st.voces); } }
+    else if (st.decide) { const ops = st.options.map(sub), bur = (st.burbujas || []).map(sub); w.spot = sub(st.pick) || ops[0];
+      if (st.decide === 'say') { w.resp = ops; w.respVoz = vmapa(st.voces); } else if (bur.length) { w.resp = bur; w.respVoz = vmapa(st.voces); } }
+    else if (st.kind === 'say' && st.options) w.resp = st.options.map(sub);
+    else return null;
+    if (!w.resp && keep) w.resp = keep;
+    if (on && w.respVoz && w.resp) w.respOn = on === 'spot' ? (w.resp.includes(w.spot) ? w.spot : null) : on;
+    return w;
+  };
+  // a review picture: panelW() of cual.js, cropped and zoomed as the sheet's pictures say (old=1: the old cam rectangle, stretched as cual.html does); wide: the whole view, not cropped
+  PV.pair = async function (word, side, file = 'cual-nevera', wide = false) {
+    await ready;
+    const it = PV.CUAL.items.find(i => i.w.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_') === word), spec = it[side];
+    const w = baseW({ banco: 0 });
+    w.cq = { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: spec.set && spec.set.resp ? 1 : 0, bub: null };
+    Object.assign(w, JSON.parse(JSON.stringify(spec.set || {})));
+    if (OLD && wide) return PV.render(w, { F: 8, remap: false });
+    if (OLD) { await PV.render(w, { F: 8, remap: false }); const o = document.getElementById('out'), cm = spec.cam, k = document.createElement('canvas'); k.width = 196; k.height = 104; const g = k.getContext('2d'); g.imageSmoothingEnabled = false;
+      g.drawImage(sc, cm[0], cm[1], cm[2], cm[3], 0, 0, 196, 104); o.width = 196; o.height = 104; o.getContext('2d').drawImage(k, 0, 0); return o.toDataURL(); }
+    const pc = SHEET.pictures[word + '.' + side];
+    PV.story = { id: file };
+    const ww = PV.remapW(w);
+    // the pair file's own positions on the counter, through the sheet's remap
+    for (const e of SHEET.remap) if (e.moved && e.kind === 'point' && e.uses.some(u => u.startsWith(file + '.json ' + word.replace(/_/g, ' ') + '.' + side) || u.startsWith(file + '.json ' + it.w + '.' + side))) for (const o of ww.cosas || []) if (Math.round(o.x) === e.old[0] && Math.round(o.y) === e.old[1]) { o.x = e.new[0]; o.y = e.new[1]; }
+    PV.story = null;
+    return PV.render(ww, wide ? { F: 8, remap: false } : { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false });
+  };
+  PV.ready = ready.then(() => fetch('../../../historia/cuentos/cual-nevera.json').then(r => r.json())).then(a => { PV.CUAL = a; });
+
+  PV.done = PV.ready.then(() => {
+    if (A.get('pair')) return PV.pair(A.get('pair'), A.get('side') || 'si');
+    if (A.get('story')) PV.story = { id: A.get('story') };
+    const w = A.get('w') ? baseW(JSON.parse(A.get('w'))) : baseW();
+    return PV.render(w, { F: +(A.get('F') || 8), t: +(A.get('t') || 0), hud: A.get('hud') === '1', signs: A.get('signs') === '1', remap: A.get('remap') !== '0' });
+  });
+})();
+</script></body></html>
