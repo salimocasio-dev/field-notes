@@ -771,6 +771,26 @@ Ported by an Opus builder with no stop; the orchestrator ran `test_all.sh` on th
 - What the reader of the real app found is the old stories' own (a held ball in front of a face; Luis's hand over his eyes when he looks up; balls heaped by Canelo; the frog at the trunk's foot; answer cards that look alike; asks with nothing marked; no clear sign for a wrong touch), with one from the new set, left for El lago to settle: **a person's shadow that falls on the water shows as a dark patch on the blue**, and the reader could not explain it.
 - Reported in the JavaScript set, not fixed: at its moved place the ball "in the reeds" lies in front of the reed bed and no reed covers it (the sheet's text says the reeds stand before it); the reeds' screen box is 1 px narrower than their box.
 
+### Order 35 (lago), step a. **Result (Nov 21): done, merged.**
+
+Designed by an Opus agent in five rounds; the orchestrator looked at every round's pictures and decided the changes; seven fresh readers saw them with no words.
+
+- Files in `docs/proyecto/pixel/`: `lago-set.html`, `lago-sheet-make.js` (writes `lago-sheet.json`; it plays the old page and checks 17,835 ticks inside the acts), `lago-preview.html`; `set-kit.js`: `waterPixel` takes `look.noShade` (El campo does not set it; the six finished sets' 104 pictures are byte-identical).
+- The lake is a bay opening toward the viewer: a left shore and a right shore on the world's two axes, a narrow neck of water between them up to the hills, El campo's water. The dock is a broad deck of planks on pilings, out from the left shore, with a landing on the lawn and two mooring posts; a post stands in the water; the reeds stand in the shallows at the right. In the sprite layer: people, frog, Canelo, the three ducks, the birds, the three boats, the fish, bread, bag, sack, flower, brush, bubbles and signs.
+- No state parameter: one baked state draws all 10 old states. One view; all 22 pair pictures at zoom 2.
+- All 19 things, 8 frog places, 48 positions, 22 review pictures and 16 level pictures are there. All 21 hop counts are the old ones. 23 moves; the dock's own places keep their old screen points (that is why the deck is broad).
+- New rules from this scene, for the next ones:
+  - **Keep the old picture's banks.** Rounds 1 and 2 had one shore; the old right bank became water, Carmen in los-botes had nowhere to stand where the boats arrive, and two readers said the boats "go to nobody". Round 3 gave the lake its right bank on the other axis: Carmen stands there, the row of boats ends at her feet, the flower and the reeds are back on that side.
+  - **No cast shadow on the water** (`look.noShade`); the dock's own shade is baked into the set, joined to it.
+  - **What stands in the water has a waterline** at its foot (the post, the pilings, a few dashes at the reeds); without it the first reader saw them "pasted in".
+  - **A fish needs pale water round it to be read as a fish.** On this water two readers called it "a log" or "a turtle shell"; a ring did not help; a box of pale water (round 4, the orchestrator's wording) looked like a card. What holds: an oval of paler water under each fish at the surface, no outline, its edge dithered into the lake, the lake's ripples going on inside it (the sheet's `helps`). Every fish colour stands out from it by 51 or more.
+  - Everything that floats or swims has El campo's ring; a fish leaping has its splash.
+  - The ask pictures of a design round must be taken at the moment before the ask's first step (round 2's showed the cards one step late, over the sun, although the check was right).
+  - No glint is drawn on a thing that stands in the water (a white speck on the planks was a glint recorded before the dock was drawn).
+- Left as the old game has it: the duck that appears on the shore behind the frog; the ducks bunching and climbing onto the dock at the girl's feet; the bread that never visibly reaches the duck; boats appearing on the dock again; the pile of boats at the far end; blank cards and cards that look alike; the hint frame over the thing it asks for; the hint hand running off the bottom.
+- Seen by readers and not changed: the blue boat's sail stands out least from the water (39); the reeds run off the right edge of the picture; Carmen in los-botes stands 3 px from the right edge.
+- Bake: 71 to 95 ms the first time, 12 to 29 ms warm, in headless Chrome.
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
