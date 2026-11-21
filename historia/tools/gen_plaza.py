@@ -244,7 +244,7 @@ s62={"id":"hablo-espanol","title":"Hablo español","place":"La plaza","scene":"p
   # A: the piragüero asks, the two answer (tests inglés). B: the next visitor steps up; "¿Y ahora?"; the two answer (tests hablo)
   {"dots":4}]+ronda62("a","pa","pb","c62_pi_quien","ingles")
   +[{"dots":5},act("llega",quien="turista",a="turno"),act("pide62",quien="turista",cosa="piragua")]+ronda62("b","pc","pd","c62_pi_ahora_quien","hablo"),
- "final":[{"dots":6},act("llega",quien="ana",a="ayuda1"),gesto("piraguero","mira",a="coqui"),"c62_pi_quieres","c62_cq_si_favor",   # 7: Ana is back and helps the line; the piragüero turns to the frog and asks (the turn: sí); then the three pictures, by the visitors left
+ "final":[{"dots":6},act("llega",quien="ana",a="ayuda1"),{"if":"lost=0","then":[act("atiende62",n=3)],"else":[{"if":"lost=1","then":[act("atiende62",n=2)],"else":[act("atiende62",n=1)]}]},gesto("piraguero","mira",a="coqui"),"c62_pi_quieres","c62_cq_si_favor",   # 7: Ana is back and helps the line; the piragüero turns to the frog and asks (the turn: sí); then the three pictures, by the visitors left
   {"if":"lost=0","then":[act("final62",n=3)],"else":[{"if":"lost=1","then":[act("final62",n=2)],"else":[act("final62",n=1)]}]},
   {"dots":7},"c62_ana_yo_hablo","c62_fin",act("fin")],   # 8: Ana's line and the last line
  "leer":["c62_pi_perdon","c62_q_habla","c62_ana_entiendes","c62_cq_no","c62_ana_entiendo","c62_ana_turista","c62_pi_ahora_no_se","c62_luis_no_se","c62_ana_busca","c62_ca_parada","c62_pi_no_se",
