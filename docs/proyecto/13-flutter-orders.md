@@ -628,7 +628,7 @@ In this order: 30 balcon, 31 sala, 32 patio, 33 camino, 34 campo, 35 lago, 36 ba
 - Places 4 to 10 (orders 50 to 77) are port only: step a is the content lane's and is done; no redrawing, no new reading of the sets. The four scenes of a place are ported at the same time, one builder each. The story files come from the generators in the order given below and are never pushed under `historia/cuentos/`. If a sheet, a set or a Needs list blocks a port, that scene stops, the problem is written here for the content lane, and the others go on; this lane does not fix their files.
 - Unchanged: the Dart set matches the JavaScript set pixel for pixel; every converted story is checked against its recorded runs; the orchestrator runs every check before telling him anything; nothing is spent without the amount told first.
 - One build and one link per place, not per scene. When a place of 4 to 10 plays in a build: "ready for the content lane" with the build number, here. With each link, one line: hours taken per scene in that place.
-- How places 4 to 10 play before their stories are on the old site: order 45 (below).
+- How places 4 to 10 play before their stories are on the old site: order 45 (below, before order 40).
 
 **Step a (orchestrator; design).** As order 07: `pixel/<id>-set.html` with every state, and `<id>-sheet.json`, from `ref/escenas/<id>/`. Same objects, same states, same touch keys (page 11-pixel-engine, step 4). A helper the set needs that `PpBuild` lacks is written in the reference first. Sala turns smoothing on in three places and banco copies a patch of its background: the sheet says how each is kept. **Done when:** as order 07, plus a fresh reader, shown this set beside El frente's, says whether they belong to the same world.
 
@@ -1016,6 +1016,20 @@ The plan names it ("the level check and the fort check") and page 02 puts it aft
 - At the end, no mark out of 40: the map of the ten places, each shown as strong or as coming back, and the words he missed go into Repaso as due now. A place with two or more of its four items missed is "coming back".
 - A1 is done, and the road to A2 shows, when no more than two places are coming back and six or more of the ten spoken items were heard right. He can take it again the next day. (These two numbers are first guesses.)
 - What it needs from the content lane, once the ten places play in the app: the 40 items (word, sentence, four pictures from the scenes' own picture pairs) and the ten questions. Nothing new is recorded.
+
+## Order 45. Preview content (previa): a build plays stories that are not on the old site yet. **Result (Nov 21): done, merged.**
+
+Why: the story files of places 4 to 10 must never be pushed under `historia/cuentos/` (a push there starts the paid recording job), and they are recorded only after they have played in the app. The app read all its content from the site. Built by an Opus builder on `orden/45`; the orchestrator ran `test_all.sh` itself: all checks passed.
+
+- The build carries its own copy: `coqui/app/assets/previa/curso.json` (an overlay: for each place the list of its preview stories, and each story's `t` and `min`) and `coqui/app/assets/previa/cuentos/<id>.json` (the generators' files, byte for byte). On main the overlay is empty until a place's four scenes are ported.
+- The shell wraps the catalog's fetch (`coqui/app/lib/src/previa.dart`): a story the site's `curso.json` does not list is added to its place from the overlay and read from the bundle; **as soon as the site lists a story, the site wins** and the bundled copy is ignored. With an empty, missing or broken overlay the app reads exactly what it read before (tested byte for byte).
+- A preview story has no recorded clips, so it plays silent, on timed lines (the runner's own fallback).
+- The tool: `python3 coqui/tool/make_previa.py --places colmado[,calle,...]`, then `--check`. It runs the generators in this page's order (every earlier one first), copies the named places' stories into the bundle, writes the overlay, then removes everything it caused under `historia/` and fails unless `git status --porcelain historia/` is empty. It refuses to start on a dirty `historia/`, refuses a place whose scenes are not all in the registry, and never calls git add, commit or push. It bundles exactly the places named: name every place to keep.
+- At each place's build the orchestrator: merges the four scenes, runs the tool and `--check`, runs `test_all.sh`, commits `coqui/app/assets/previa/` only, raises `coqui/BUILD`.
+- An unknown scene id now shows the same "This story is not in the new app yet." screen as an unconverted scene (before, an empty frame).
+- What the other tabs do with a preview story: the map opens the place and offers the story; Biblioteca lists it after it is played, with Listen and no Read (no book); Repaso and the level check never ask it; Palabras shows its new words as plain tiles; Hablar says "Coming soon" for the place; Yo counts it. No tab throws (tested).
+- **For the content lane:** `min` in the overlay is a guess (the story's `dots` minus 3, at least 2); the site's own value replaces it when the course lists the story. When a place is published on the site, leave it out at the next run of the tool.
+- Not verified: Android (no SDK on the build machine; the files are plain Flutter assets). `--check` is not part of `test_all.sh`, so a generator that changes on main leaves the bundle stale until the tool is run again.
 
 ## Order 40. Every story against its recorded runs (orchestrator)
 

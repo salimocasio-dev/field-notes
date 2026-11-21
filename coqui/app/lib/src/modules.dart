@@ -7,6 +7,8 @@ library;
 
 import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
+import 'package:coqui_contracts/coqui_contracts.dart' show Rng;
+import 'package:coqui_scenes/coqui_scenes.dart' show sceneRegistry;
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
 import 'package:feature_map/feature_map.dart';
@@ -28,7 +30,7 @@ List<FeatureModule> coquiModules({
   MapModule(showPerf: switches.perf),
   speakingModule(voiceTest: voiceTest),
   const ProfileModule(),
-  StoryModule(showPerf: switches.perf, txt: switches.txt),
+  StoryModule(scenes: storyScenes, showPerf: switches.perf, txt: switches.txt),
   ReviewModule(imageUrl: bookImageUrl),
 ];
 
@@ -61,3 +63,16 @@ VoiceTestContent voiceTestContent(VoiceTestData data) => VoiceTestContent(
     progress: data.labels['progress']!,
   ),
 );
+
+/// The scene a story names, as feature_story makes it from coqui_scenes' registry (its default), except that a scene id the
+/// registry does not have (a preview story whose scene is not ported yet, `previa.dart`) is "not converted yet", as a scene
+/// in the registry that is not converted is: the story screen says "This story is not in the new app yet." instead of
+/// showing an empty frame.
+final storyScenes = _unknownNotConverted(const StoryModule().scenes);
+
+Future<S> Function(String sceneId, Rng rng) _unknownNotConverted<S>(
+  Future<S> Function(String sceneId, Rng rng) make,
+) =>
+    (sceneId, rng) async => sceneRegistry.containsKey(sceneId)
+    ? await make(sceneId, rng)
+    : throw UnimplementedError('not converted yet');

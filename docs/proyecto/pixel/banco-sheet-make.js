@@ -85,6 +85,7 @@ const THING_OF = p => /^(arbol|seto|porton|cable|poste)/.test(p) ? 'parque' : p;
   fs.writeFileSync(OUT, text(sheet));   // the preview reads the sheet: written first, then checked (and written again with the checks' notes)
   if (process.env.BANCO_NOCHECK) { await browser.close(); console.log('wrote ' + path.relative(REPO, OUT) + ' (no checks)'); return; }
   G.TICKS = await tickStates(browser, runs, sheet);
+  G.OLDHOPS = await tickStates(browser, runs, sheet, true);
   G.PV = await previewPlaces(browser, runs);
   if (process.env.BANCO_DUMP) { fs.mkdirSync(process.env.BANCO_DUMP, { recursive: true }); runs.forEach((r, i) => fs.writeFileSync(path.join(process.env.BANCO_DUMP, r.story.id + '.' + r.plan + '.json'), JSON.stringify({ old: r.lines, port: G.TICKS[i].states, ticks: G.TICKS[i].ticks }))); }
   // the sprite layer's shapes for every item seen at any moment (measured in the browser, banco.js draw() itself)
@@ -227,9 +228,9 @@ const TICK_HOOK = `(() => { const H = window.__H, d = H.drain; window.__TICKS = 
       encima: W.encima, encaja: W.encaja, noche: W.noche, tarde: W.tarde, luna: W.luna, carro: W.carro, carroX: W.carroX, seva: W.seva, tarjeta: W.tarjeta, marcas: W.marcas, respEn: W.respEn, resp: W.resp, spot: W.spot, F: typeof F === 'number' ? F : 0 };
     const s = JSON.stringify(o, (k, x) => typeof x === 'function' || (x && x.nodeType) || x instanceof HTMLCanvasElement ? undefined : x); if (s !== last) { last = s; window.__TICKS.push({ t: H.now, W: JSON.parse(s) }); } } catch (e) {} };
   H.drain = () => d().then(() => { keep(); }); })();`;
-async function tickStates(browser, runs, sheet) {
+async function tickStates(browser, runs, sheet, old) {
   const INIT = fs.readFileSync(path.join(TRAZAS, 'page-init.js'), 'utf8').replace('__SEED__', '1'), DRIVE = fs.readFileSync(path.join(TRAZAS, 'page-drive.js'), 'utf8');
-  const SRC = portSource(sheet);
+  const SRC = old ? BANCO_JS : portSource(sheet);   // old: the old page as recorded (banco.js and the story files unchanged), for its frog's hops
   return serve(async base => { const out = [];
     for (const r of runs) {
       const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, timezoneId: 'UTC', locale: 'en-US' });
@@ -239,14 +240,16 @@ async function tickStates(browser, runs, sheet) {
           return fs.existsSync(path.join(REPO, 'historia/audio', name)) ? route.fulfill({ status: 200, contentType: 'audio/mpeg', body: 'ID3' }) : route.fulfill({ status: 404, body: '' }); });
         await ctx.route(/\/historia\/escenas\/banco\.js(\?.*)?$/, route => route.fulfill({ status: 200, contentType: 'text/javascript; charset=utf-8', body: SRC }));
         await ctx.route(/\/historia\/cuentos\/[^/]+\.json(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()).replace(/\.json$/, '');
-          return route.fulfill({ status: 200, contentType: 'application/json', body: portStory(name, sheet) }); });
+          return route.fulfill({ status: 200, contentType: 'application/json', body: old ? fs.readFileSync(path.join(REPO, 'historia/cuentos', name + '.json'), 'utf8') : portStory(name, sheet) }); });
         const page = await ctx.newPage();
         await page.goto(base + '/historia/index.html?cuento=' + r.story.id + '&fast=1&rec=1&mic=stub:none&abiertas=todas');
         for (let i = 0; ; i++) { if (await page.evaluate("!!(window.Story&&Story.ready&&typeof voiceReady!=='undefined'&&voiceReady)")) break; if (i > 600) throw new Error('the page did not load ' + r.story.id); await new Promise(z => setTimeout(z, 50)); }
         await page.evaluate('voiceReady'); await page.evaluate(DRIVE);
+        // every walk of the frog (juego.js hopTo, which ranaA and every act's walk call): where from, where to, how many hops
+        await page.evaluate(() => { window.__HOPS = []; const h0 = window.hopTo; window.hopTo = function (x, y, hops, s1) { window.__HOPS.push({ t: window.__H.now, from: [W.cq.x, W.cq.y], to: [x, y], hops }); return h0.apply(this, arguments); }; });
         const tr = await page.evaluate(cfg => window.__drive(cfg), { plan: r.plan, think: 700, limitMs: 4 * 3600e3, states: true });
         if (tr.end !== 'finished') throw new Error('ticks: ' + r.story.id + ' ' + r.plan + ' ended: ' + tr.end);
-        out.push({ ticks: await page.evaluate(() => window.__TICKS), states: tr.states });
+        out.push(old ? { hops: await page.evaluate(() => window.__HOPS) } : { ticks: await page.evaluate(() => window.__TICKS), states: tr.states, hops: await page.evaluate(() => window.__HOPS) });
       } finally { await ctx.close(); }
     }
     return out; });
@@ -325,8 +328,8 @@ function designMoves(F, POSA) {
       pts: [sit('senor', B[0] - 9), sit('mujer', B[1] - 9), sit('joven', B[2] - 9), sit('hombre', B[0] + 11)], why: 'acts.inicio22: the four on the benches (SY)' },
     { act: 'sientan', src: 'await mueve(k[0],B[k[1]][0]+k[2],161);', to: 'await mueve(k[0],B[k[1]][0]+k[2],SY(B[k[1]][0]+k[2]));', why: 'acts.sientan: they sit down again on the seats\' edges (SY)' },
     { act: 'inicio23', src: 'senora:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[0][0]-13,y:161,dir:1,sent:1,animo:"cansado"},hombre:{x:B[2][0]+2,y:161,dir:1,sent:1,animo:"triste"}',
-      to: 'senora:{x:B[1][0]-9,y:SY(B[1][0]-9),dir:1,sent:1},luis:{x:B[0][0]-13,y:SY(B[0][0]-13),dir:1,sent:1,animo:"cansado"},hombre:{x:B[2][0],y:SY(B[2][0]),dir:1,sent:1,animo:"triste"}',
-      pts: [sit('senora', B[1] - 9), sit('luis', B[0] - 13), ['hombre', [B[2] + 2, 161], [B[2], SYf(B[2])]]], why: 'acts.inicio23: the three on the benches (SY); the man on the third bench 2 px left, so that his hint frame stays 2 px inside the view (it did not in the old)' },
+      to: 'senora:{x:B[1][0]-9,y:SY(B[1][0]-9),dir:1,sent:1},luis:{x:B[0][0]-13,y:SY(B[0][0]-13),dir:1,sent:1,animo:"cansado"},hombre:{x:B[2][0]+1,y:SY(B[2][0]+1),dir:1,sent:1,animo:"triste"}',
+      pts: [sit('senora', B[1] - 9), sit('luis', B[0] - 13), ['hombre', [B[2] + 2, 161], [B[2] + 1, SYf(B[2] + 1)]]], why: 'acts.inicio23: the three on the benches (SY); the man on the third bench 1 px left, so that his hint frame stays inside the view (it did not in the old), and the frog\'s walk to him (alegra) still takes its old 4 hops (round 4: 2 px left made it 3)' },
     { act: 'abuelallega', src: 'a.x=B[0][0]+5;a.y=161;', to: 'a.x=B[0][0]+7;a.y=SY(B[0][0]+7);', pts: [['abuela', [B[0] + 5, 161], [B[0] + 7, SYf(B[0] + 7)]]], why: 'acts.abuelallega: abuela sits down on the first bench (SY), 2 px further right than the old, apart from Luis (on the slanted seat she sits lower than he)' },
     { act: 'mira23', src: 's.x+=4;await wait(700);s.x-=4;', to: 's.x+=4;s.y+=2;await wait(700);s.x-=4;s.y-=2;', why: 'acts.mira23: the señora leans 4 px to the right along the seat: she keeps to its edge (2 rows lower)' },
     { act: 'dejan', src: '{id:"pir",k:"piragua",x:101,y:ASIENTO-4,rot:Math.PI/2},{id:"bot",k:"agua",x:153,y:ASIENTO}', to: '{id:"pir",k:"piragua",x:97,y:AS(97)-4,rot:Math.PI/2},{id:"bot",k:"agua",x:153,y:AS(153)}',
@@ -429,8 +432,8 @@ function make(G, runs) {
     SPOTS[k] = Object.assign({ world: w.world, on: w.on, old: at.slice(0, 2), new: n.slice(0, 2) }, kind === 'cq' ? { scale: 1 } : {}, nw ? { moved: true } : {}, { what }); };
   for (const [k, v] of Object.entries(OLD.LUGAR)) spot('frog.' + k, v, 'LUGAR.' + k + ': the frog\'s place q (his feet at q.x + 16, q.y + 25)', 'cq');
   OLD.BANCOS.forEach((b, i) => spot('sitio.' + i, [b[0], 161], 'BANCOS[' + i + ']: whoever sits at the middle of bench ' + i + ' (their feet; SY gives every other x)', 'sit', [b[0], SYf(b[0])]));
-  spot('carro', OLD.CARRO, 'CARRO: the cart standing (its place in the sorted list; the set\'s cart is built round it, points.carro)');
-  spot('piraguero', [OLD.CARRO[0] + 4, OLD.CARRO[1] - 6], 'CARRO + (4, -6): the piragua man, behind his cart');
+  spot('carro', OLD.CARRO, 'CARRO: the cart standing (its place in the sorted list; the set\'s cart is built round it, points.carro); the rolling cart starts here (W.carroX = CARRO[0])', 'place', F.CARRO);
+  spot('piraguero', [OLD.CARRO[0] + 4, OLD.CARRO[1] - 6], 'CARRO + (4, -6): the piragua man, behind his cart', 'place', [F.CARRO[0] + 4, F.CARRO[1] - 6]);
   spot('porton', OLD.PORTON, 'PORTON: where one stands at the gate, in its opening (moves)', 'place', [199, 203]);
   spot('porton.fuera', [246, OLD.PORTON[1]], 'where whoever leaves goes, out through the gate along the path and off the picture (moves)', 'place', [246, 215]);
   for (let i = 0; i < 5; i++) { const x = 66 + i * 17, y = R(50 + 7 * (1 - Math.pow((x - 120) / 98, 2))); SPOTS['cable.' + i] = { world: W4(cableWorld(F, x, y)), on: 'wire', old: [x, y], new: [x, y], what: 'CABLE(' + i + '): a pigeon on the wire (its feet on it): the wire hangs where the old one was' }; }
@@ -549,7 +552,7 @@ function make(G, runs) {
     behind: { what: 'nothing: the sun, the moon and the clouds are baked into the set\'s sky', items: [] },
     setKey,
     light: {
-      tarde: 'the evening (W.tarde): the set under a warm light (set-kit.js lightPass m .9 .8 .72, a 34 16 4, the blades keep their lit colours, El frente\'s dusk), the evening sky, the sun where it is by day (the old evening kept its sun), the lantern lit with a faint pool of light; the sun still casts the shadows',
+      tarde: 'the evening (W.tarde): the set under a warm light (set-kit.js lightPass m .9 .9 .9, a 25.5 15 6: the old page\'s own evening tint, rgba(255, 150, 60, .10), the blades keep their lit colours, El frente\'s dusk), the evening sky, the sun where it is by day (the old evening kept its sun), the lantern lit with a faint pool of light; the sun still casts the shadows',
       noche: 'the night (W.noche): the set under El patio\'s night light (m .56 .62 .82, a 6 10 30; every blade in its shade colour), El patio\'s night sky, no sun, the moon when W.luna, the lantern lit (its glass keeps its colour) and its pool of light on the ground round the lamp post\'s foot; nothing casts a shadow (the one rule: the sun casts every shadow, and at night there is none; the set bakes none and the engine casts none for anyone)',
       sprites: 'not darkened, as the old page: banco.js draw() laid the night\'s colour (rgba(30, 24, 90, .32)) and the evening\'s (rgba(255, 150, 60, .10)) over its background only, before the sorted list; every person, animal and thing was drawn after it in its own colours. The port draws the sprite layer as by day at every hour (dropped)',
       shadows: 'day and evening: the sun\'s (upper left), cast to screen right, for the set and for everyone (shadows); night: none',
@@ -802,6 +805,13 @@ function check(sh, G, runs) {
         const ho = hopsOf(dO), hn = hopsOf(dN), key = [a.x + ',' + a.y, b.x + ',' + b.y].join(' -> '); all.set(key + ' => ' + [a2.x + ',' + a2.y, b2.x + ',' + b2.y].join(' -> '), { a: [a.x, a.y], b: [b.x, b.y], a2: [a2.x, a2.y], b2: [b2.x, b2.y], by: byIr ? 'kit.js ir (30 px a hop)' : 'banco.js ranaA (34 px a hop)', old: ho[K], new: hn[K], dOld: r2(dO), dNew: r2(dN) });
         if (ho[K] !== hn[K]) { changed.add(key); P.push('hops: ' + r.story.id + ' ' + r.plan + ' ' + o[i].path + ': the frog\'s walk ' + key + ' took ' + ho[K] + ' hops, the port\'s ' + hn[K]); } } });
     sh.hopsAll = [...all.values()]; sh.hops = sh.hopsAll.filter(h => h.old !== h.new);
+    // round 4: every walk the frog makes anywhere (every call of juego.js hopTo, inside the acts too), the old page's run against the port's,
+    // walk by walk: the same number of hops (round 3 compared only where the steps end, and missed a walk inside an act)
+    { let nA = 0; const badA = [];
+      runs.forEach((r, ri) => { const o = G.OLDHOPS[ri].hops, n = NEW[ri].hops; if (o.length !== n.length) badA.push(r.story.id + ' ' + r.plan + ': ' + o.length + ' walks in the old run, ' + n.length + ' in the port\'s');
+        for (let i = 0; i < Math.min(o.length, n.length); i++) { nA++; if (o[i].hops !== n[i].hops) badA.push(r.story.id + ' ' + r.plan + ' walk ' + i + ' (t ' + n[i].t + '): ' + JSON.stringify(o[i].from) + ' -> ' + JSON.stringify(o[i].to) + ' ' + o[i].hops + ' hops in the old run, the port\'s ' + JSON.stringify(n[i].from) + ' -> ' + JSON.stringify(n[i].to) + ' ' + n[i].hops); } });
+      for (const b of badA.slice(0, 30)) P.push('hops (every walk): ' + b);
+      notes.push('hops (round 4): every walk of the frog in the 18 runs, at any moment (' + nA + ' calls of hopTo, the old page\'s run and the port\'s walk by walk): each the old number of hops (' + badA.length + ' differ)'); }
     notes.push('hops: the frog\'s ' + nW + ' walks between steps in the ' + runs.length + ' runs, recorded and the port\'s, each the old number of hops (' + all.size + ' distinct walks; ' + sh.hops.length + ' changed)'); }
 
   /* the set's pixels, every baked state */
@@ -1131,14 +1141,14 @@ function checkAsks(sh, G, runs, P, C) {
   /* the asks: hint frames, the hand, the answer cards and the hint drawn round a card; the things a learner must find or tell apart */
   const cajaBox = (id, p) => [R(p.x) - 11, R(p.y) - alto(id, p), 22, alto(id, p)];
   const boxOf = (w, k, old) => { const t = sh.things[k];
-    if (t && t.set) { if (old) return t.old.box; const b = (t.hintBox || t.box).slice(); if (k === 'carro' && w.carroX != null) { b[0] += R(w.carroX) - OLD.CARRO[0]; b[1] += R((OLD.CARRO[0] - w.carroX) / 2); } return b; }
+    if (t && t.set) { if (old) return t.old.box; const b = (t.hintBox || t.box).slice(); if (k === 'carro' && w.carroX != null) { b[0] += R(w.carroX) - F.CARRO[0]; b[1] += R((F.CARRO[0] - w.carroX) / 2); } return b; }   // round 4: the rolling cart starts where the standing cart stands (CARRO)
     let m;
     if ((m = k.match(/^perro(?:_(.+))?$/))) { const o = (w.perros || {})[m[1] || 'canelo']; return o && o.vis !== 0 ? [R(o.x) - 15, R(o.y) - 22, 30, 24] : null; }
     if (k === 'coche') return w.coche ? [R(w.coche.x) - 19, R(w.coche.y) - 42, 38, 44] : null;
     if (k === 'pajaro') { const o = (w.palomas || []).filter(o => o.vis !== 0); if (!o.length) return null; const xs = o.map(q => q.x), ys = o.map(q => q.y); return [Math.min(...xs) - 9, Math.min(...ys) - 14, Math.max(...xs) - Math.min(...xs) + 18, Math.max(...ys) - Math.min(...ys) + 18]; }
     if (k === 'coqui') { const b = frogBox(w.cq); return [b.x, b.y, b.w, b.h]; }
     const p = w.gente && w.gente[k]; return p && shown(p) ? cajaBox(k, p) : null; };
-  const handOf = (w, k, old) => { const t = sh.things[k]; if (t && t.hand && !old) { const h = t.hand.slice(); if (k === 'carro' && w.carroX != null) { h[0] += R(w.carroX) - OLD.CARRO[0]; h[1] += R((OLD.CARRO[0] - w.carroX) / 2); } return h; } const b = boxOf(w, k, old); return b ? [R(b[0] + b[2] / 2), R(b[1] + b[3] / 2)] : null; };
+  const handOf = (w, k, old) => { const t = sh.things[k]; if (t && t.hand && !old) { const h = t.hand.slice(); if (k === 'carro' && w.carroX != null) { h[0] += R(w.carroX) - F.CARRO[0]; h[1] += R((F.CARRO[0] - w.carroX) / 2); } return h; } const b = boxOf(w, k, old); return b ? [R(b[0] + b[2] / 2), R(b[1] + b[3] / 2)] : null; };
   const respBox = (w, k) => { const q = w.cq, b = frogBox(q), n = w.resp.length, i = w.resp.indexOf(k), m = n > 2 ? 76 : 60, en = w.respEn, cx = en ? en[0] : Math.max(x0 + m, Math.min(x0 + 196 - m, b.x + b.w / 2)), y = en ? en[1] : Math.max(4, b.y - 46);
     return n > 2 ? [R(cx - 70 + i * 50), y, 40, 36] : i === 0 ? [R(cx - 50), y, 40, 36] : [R(cx + 10), y, 40, 36]; };
   const at = (st, p) => p.split('.').reduce((o, k) => o == null ? o : o[/^\d+$/.test(k) ? +k : k], st);
