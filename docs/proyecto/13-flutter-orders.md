@@ -44,6 +44,7 @@ Every "Done when" includes, without saying so each time: `flutter analyze` clean
 | 30b to 39b | Each other scene in Dart | builder, coqui_scenes, one at a time | its "a" |
 | 50 to 53 | El colmado's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 39b, or sooner if the lane is free |
 | 54 to 57 | La calle's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 53b |
+| 58 to 61 | La plaza's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 57b |
 | 40 | Every story against its recorded runs | orchestrator | 39b |
 | 41 | Books' pictures captured again | orchestrator | 40 |
 | 42 | Cutover | orchestrator | 41 |
@@ -775,6 +776,29 @@ New scenes, as El colmado's: no old scene file, no `ref/escenas/` folder. Step a
 **The stories.** Scripts with their reviews and a "Needs" list each: `historia/notas/guiones/esquina.md` (stories 48 to 50), `parada.md` (51 to 53), `tiendas.md` (54 to 56), `cruce.md` (57 to 59). Generators: `historia/tools/gen_esquina.py`, `gen_parada.py`, `gen_tiendas.py`, `gen_cruce.py`, run in that order after El colmado's four (each sees what was recorded before it). The checker passes all 12 with 0 errors. As El colmado's, the story files are not on main and must not be pushed until they have played in the app.
 
 **Step b** and **Done when**: as orders 50 to 53. Two things are new for this place: sprites that drive (they come along a lane, stop at a named spot, drive on; a person in front of one is drawn after it by the sheet's depth rule), and the frog pressing a button on a thing that is itself a sprite (the guagua's doors in story 52).
+
+### Orders 58 to 61. La plaza (place 6): plaza, reloj, quiosco, calendario
+
+New scenes, as La calle's: no old scene file, no `ref/escenas/` folder. Step a (design) is the content lane's; step b is this lane's, after La calle's four.
+
+**What exists, in `docs/proyecto/pixel/`:**
+- `plaza-base.js`: the square's shared kit (`PZ`). Everything in this place is laid out square to the picture, in u, v (u across, v down towards the camera; `PZ.xy(u, v)`, `PZ.uv(x, y)`: the same turn as El cruce's). A wall that faces the camera is drawn pixel by pixel with set-kit's `planeQuad` (`PZ.wall`, `PZ.flat`, `PZ.slope`), so a clock's numerals and a board's pictures keep their shape. Pieces: paving, a box, a post, a seat (and one seen from its end), a flower bed, a hedge, a lamp (lit when `PZ.NIGHT`), paper flags, the far clock tower in the sky, the sky and the light by the hour.
+- `plaza-set.html`: the bench under the tree. States `hora` manana, mediodia, tarde; `tablero` 0 or 1 (the notice board: the island, the city, a row of five hooks under each, a ledge); `carrito` 0 or 1 (the piragüero's cart).
+- `reloj-set.html`: the clock tower's foot. The face has its twelve numerals and no hands: the two hands are sprites that turn about `E.FACE` (the long one 19 px, the short one 12 px). A balcony with a rail, a ladder, the little door of the three figures (three shutters), the works' flap, the quiosco's counter with its fryer. States `hora` mediodia, tarde, ocaso; `mesas` 0 or 1 (three bingo tables, the cage's stand, the prize shelf).
+- `quiosco-set.html`: the stand, close: a roofed booth with a U of counter open to the camera, the four stools outside its wings (whoever sits there is seen from the side), a round table with two chairs, a cup sign on the roof. States `hora` mediodia, tarde; `fiesta` 0 or 1 (paper flags).
+- `calendario-set.html`: the board of the week: seven columns (five green squares, two orange), three hooks in each, an arch of flags with its own hook over the two orange ones, a step for the frog, a seat seen from its end, two lamps, a bandstand behind. States `hora` manana, tarde, noche (the lamps lit, a pool of light under each); `tela` 0 or 1 (a striped cloth over the last three columns).
+- One fresh reader saw each set with no words. Read at once: the clock and all twelve numerals; the board as a week of five days and two, three slots a day; the stand as a U with four stools. Fixed after the reading: the bench was a slab (slats, arm rests, the tree clear behind it); the stand read as a book kiosk (the cup sign); two stools in one line read as one; the tower's flap (a cog on it); the bingo's shelf stood against the stall; the board's cloth was a grey wall (striped, on a rope); lamps that lit nothing; dotted post shadows.
+- Sheets (`<id>-sheet-make.js`, `<id>-sheet.json`) and previews (`<id>-preview.html`, `?m=N`): done for all four; every make exits 0 (plaza 10 checks, reloj 14, quiosco 16, calendario 14; x0 22 in all four). It took two to three passes each: my first positions put people in front of the frog, an awning or a roof's edge over a seller's head, and three people on a seat with their heads behind one another. What the checks now hold, and the port must keep: the frog is whole in every moment; a seller's head and paper hat are clear of his awning; the frog on a table may stand in front of whoever sits behind it, but covers no more than a tenth of a head; a card on a hook never covers a hook's neighbour; nobody covers the notice board's pictures. The orchestrator looked at the preview moments.
+
+**The stories.** Scripts with their reviews and a "Needs" list each: `historia/notas/guiones/plaza.md` (stories 60 to 62), `reloj.md` (63 to 65), `quiosco.md` (66 to 68), `calendario.md` (69 to 71). Generators: `historia/tools/gen_plaza.py`, `gen_reloj.py`, `gen_quiosco.py`, `gen_calendario.py`, run in that order after La calle's four. The checker passes all 12 with 0 errors. With places 4 and 5 that is 59,868 characters still to record (inside the free 500,000 a month). As before, the story files are not on main and must not be pushed until they have played in the app.
+
+**Step b** and **Done when**: as orders 50 to 53. New for this place:
+- Things that are touched but are not in the world: the two answer bubbles over the frog (story 60), the two time cards (63), abuela's bingo card shown big (65: five squares). Their boxes are in the sheets, in screen pixels.
+- Sprites that turn about a point (the clock's hands, with the frog riding the long one: the sheet's `mano_arriba`, `mano_abajo`, `mano_lado`).
+- A decision with more than one right answer: story 70's "el fin de semana" uses the engine's `vale` (the arch, the sábado column or the domingo column).
+- When he waits, the old engine says a round's `line` again, and only that. In rounds where two people speak (62, 67) or one person says two things, the whole round's lines should be said again, in order: with only the last one a learner who waits hears half the clue.
+- New people to draw (looks in the scripts): Ana, her mamá, Beto, her abuela, six visitors with maps and cameras; don Tito; the vendedor; the maestra, the doctor, the cocinero and the policía in work clothes; a young woman. New speaker keys: `ana`, `mama_ana`, `abuela_ana`, `beto`, `tito`, `vendedor`, `maestra`, `doctor`, `cocinero`, `policia`, `la_joven`, `nino`, `nina`.
+- Beats the scripts show for which no act is named are listed in each generator as comments (a walk-on, somebody lifting a thing): the port may fold each into the act beside it.
 
 ## Order 40. Every story against its recorded runs (orchestrator)
 

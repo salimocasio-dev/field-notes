@@ -55,10 +55,10 @@ Meeting people. The call: give your name, where you are from, your age and your 
 ## 7. La playa
 
 A day at the beach. The call: say how the weather is, what you are wearing, what you can and cannot do.
-- **La orilla (the shore).** Into the water. playa, mar, arena, ola, barco, flota, puedo, puedes, hace calor, hondo, mojado, seco
+- **La orilla (the shore).** Into the water. playa, mar, arena, ola, bote, flota, puedo, puedes, hace calor, hondo, mojado, seco
 - **La sombrilla (the umbrella).** Resting in the shade. The body. cabeza, cara, ojo, boca, nariz, oreja, pelo, mano, brazo, pierna, pie, me duele
-- **La ropa (the clothes).** Getting dressed again. camisa, pantalón, vestido, zapatos, chancletas, sombrero, gafas, traje de baño, toalla, se pone, se quita, lleva
-- **El cielo (the sky).** The weather turns. cielo, nube, lluvia, llueve, viento, hace frío, luna, estrella, noche, bonito, feo, ¿qué tiempo hace?
+- **La ropa (the clothes).** Getting dressed again. camisa, pantalón, vestido, zapatos, chancletas, sombrero, gafas, traje de baño, toalla, se pone, se quita, tiene puesto
+- **El cielo (the sky).** The weather turns. cielo, nube, lluvia, está lloviendo, viento, hace frío, luna, estrella, noche, bonito, feo, ¿cómo está el tiempo?
 
 ## 8. La fonda
 
