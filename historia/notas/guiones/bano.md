@@ -90,9 +90,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - Three bars: steam, and he sings. Stars and a heart.
    - Two bars: a little steam; he hums.
    - One bar: no steam; a yelp, and then he laughs.
-9. Abuelo comes out, combed, and stands before the mirror. NARR: "Abuelo dice: Coquí, ¿estoy limpio?" COQUÍ [TURN: sí (sí, si)]: "¡Sí!" NARR: "Abuelo se baña en la ducha. Ahora el baño no está ocupado."
+9. Abuelo comes out, combed, and stands before the mirror. NARR: "Abuelo dice: Me miro en el espejo. Coquí, ¿estoy limpio?" **(me miro: a form of mira)** COQUÍ [TURN: sí (sí, si)]: "¡Sí!" NARR: "Abuelo se baña en la ducha. Ahora el baño no está ocupado."
 
-**Fewest hearings before a word can cost:** se baña 4 with me baño (steps 2, 3, 4). Not deciding: baño 3 (steps 1, 4, 9), ducha 3 (steps 1, 2), espejo 2 before the game (step 3).
+**Fewest hearings before a word can cost:** se baña 4 with me baño (steps 2, 3, 4). Not deciding: baño 3 (steps 1, 4, 9), ducha 3 (steps 1, 2), espejo 2 before the game (step 3) and 1 in the ending.
 **A miss is filed under:** the one that was said (se baña or se lava).
 **Chance without the Spanish:** one in two, each round on its own.
 **Speaking turns:** two (steps 3, 9): yo; sí.

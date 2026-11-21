@@ -69,7 +69,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 1. The telephone rings; its screen lights up. NARR: "Abuela dice: ¡El teléfono! Coquí, por favor." (signed, the telephone.) He touches it: the frog carries it to abuela. On the screen, mamá's photo. NARR: "Abuela dice: Llama mamá. ¡Hola!"
 2. NARR: "Mamá dice: ¡Hola! ¿Cómo estás?" Abuela holds the telephone to her ear, and then before her mouth. NARR: "Abuela dice: Yo escucho... y ahora hablo. Bien, gracias." **(escucho: a form of escucha)**
-3. Abuelo wakes, and cups a hand behind his ear. NARR: "Abuelo dice: ¿Quién llama?" **(quién: heard)** NARR: "Abuela dice: Llama mamá. Abuelo escucha." (signed, abuelo's ear.) He touches it: the frog holds the telephone to abuelo's ear; mamá's voice comes out as small pictures (a guagua, a beach); abuelo smiles. NARR: "Carmen dice: Ahora abuelo habla." (signed, abuelo's mouth.) He touches it: the frog holds it before his mouth. NARR: "Abuelo dice: ¡Hola! Yo estoy bien." NARR: "Abuela dice: Abuelo habla con mamá."
+3. Abuelo wakes, and cups a hand behind his ear. NARR: "Abuelo dice: ¿Quién llama?" **(quién: heard)** NARR: "Abuela dice: Llama mamá por teléfono. Abuelo escucha." (signed, abuelo's ear.) He touches it: the frog holds the telephone to abuelo's ear; mamá's voice comes out as small pictures (a guagua, a beach); abuelo smiles. NARR: "Luis dice: Abuelo escucha a mamá." NARR: "Carmen dice: Ahora abuelo habla." (signed, abuelo's mouth.) He touches it: the frog holds it before his mouth. NARR: "Abuelo dice: ¡Hola! Yo estoy bien." NARR: "Abuela dice: Abuelo habla con mamá."
 4. NARR: "Mamá dice: ¿Y Coquí? ¿Cómo estás, Coquí?" COQUÍ [TURN: bien (bien, muy bien, bien gracias)]: "¡Bien, gracias!" The frog opens his mouth to sing; abuela lays a finger on her lips: afterwards. The battery shows three bars.
 
 **The turn**
@@ -91,7 +91,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - One bar: "¡Co...!" and the screen goes dark; abuelo plugs the telephone in.
 9. NARR: "Mamá llama por teléfono. Abuelo escucha, y habla. Y Coquí también."
 
-**Fewest hearings before a word can cost:** escucha 2 and escucho once (steps 2, 3), habla 3 and hablo once (steps 2, 3). Not deciding: teléfono 1 before the game and 1 in the last line, and it rings and is carried (to weigh: a third); llama 3 (steps 1, 3).
+**Fewest hearings before a word can cost:** escucha 2 and escucho once (steps 2, 3), habla 2 and hablo once (steps 2, 3). Not deciding: teléfono 2 before the game (steps 1, 3) and 1 in the last line; llama 3 (steps 1, 3).
 **Forms:** escucho counts with escucha; hablo is his already (La plaza).
 **A miss is filed under:** the one that was said (escucha or habla).
 **Chance without the Spanish:** one in two, each round on its own.
