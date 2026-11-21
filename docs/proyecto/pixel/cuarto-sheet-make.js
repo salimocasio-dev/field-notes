@@ -49,7 +49,9 @@ const SILKEY = { luisCama: 'luis:lie', carmenCama: 'carmen:lie', luis: 'luis', c
 /* The spec's numbers that failed a check and were moved the least distance (v first, then u; never z; never a spot the set fixes: a seat, a shelf, a table top's height).
    spot: { to: [u, v, z], why }: the spec's own numbers are in defs(); the sheet's notes list each move with the old and the new numbers. */
 const MOVES = {
-  busca_almohada: { to: [1.6, 7.12, 0], why: 'things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: v 6.0 -> 7.12 (+1.12) is the least v that leaves the pillow clear and the frog whole (his head then touches the pillow\'s lower edge: in the preview the pillow looks to rest on his head); u 1.6 -> .82 (-.78) would also pass, but v is tried first' },
+  busca_almohada: { to: [.82, 6.0, 0], why: 'things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: u 1.6 -> .82 puts him beside it' },
+  alfombra: { to: [-2.75, 5.4, 0], why: 'in moment 1 Canelo\'s nose under the bed sat on the frog\'s head: the frog goes to the rug\'s left' },
+  foto: { to: [2.3, 2.3, 0], why: 'in moment 6 the shirt on the chair\'s back covered abuela\'s legs: she stands between the bed and the chair' },
   busca_silla: { to: [2.1, 4.57, 0], why: 'frog-busca: the big pillow (1.6, 5.4, in front of him) covered 52 of his px at (2.1, 5.0) in the game\'s picture (moment 3): v 5.0 -> 4.57 (-.43) is the least v that leaves him whole (u 2.1 -> 2.45 (+.35) would also pass, but v is tried first)' },
 };
 

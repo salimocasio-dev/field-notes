@@ -1,0 +1,127 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El camino al fuerte: the wide lawn in front of the old fort (place 10, scene 1), as a set on the Pixel Plays engine. A NEW scene.
+   Laid out square to the picture, in u, v (plaza-base.js, fuerte-base.js). The fort's wall faces us at v = 0, across most of the picture:
+   stone, across the whole picture, with battlements, an arched gate in its middle (a hole: a dark passage behind it), an iron lamp at each side of the gate, a pole
+   over the gate (the flag is a sprite), and a small sentry box on its top at the right. Beyond the wall, over its top, the sea, and the sky. In front of it a lawn, with a path of pale stone from the picture's foot up to the gate; a tree at the left of
+   the path with a flat stone beside it; at the right, with fiesta = 1, a long party table and the two posts of a hammock (the hammock
+   itself is a sprite), and open grass.
+   The state comes from the address; these become the builder's setKey:
+     hora = tarde | ocaso | noche     the sky, the sea and the light (noche: the moon, the gate's two lamps lit)
+     fiesta = 0 | 1                   the party table and the hammock's posts
+   It draws one frame: the baked set. No people, no flag, no paper lanterns, no paper on the tree, no food, no hammock, no ball. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['tarde', 'ocaso', 'noche'], 'tarde'), fiesta: +(Q.get('fiesta') === '1'), t: +(Q.get('t') || 0) };
+const ORIGIN = [0, -4];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="fonda-base.js"></script>
+<script src="fuerte-base.js"></script>
+<script>
+'use strict';
+const E = {
+  WALL: { u0: -4.7, u1: 4.7, h: 2.5, walk: 2.16 },                  // the fort's wall at v 0: its top, and the walk behind its battlements
+  GATE: [-.72, .72, 0, 1.85],                                        // the gate: an arch, a hole
+  LAMPS: [[-1.12, 1.25], [1.12, 1.25]],                              // the gate's two iron lamps (u, z)
+  POLE: { u: 0, v: -.3, z1: 4.3 },                                   // the flag's pole, on the walk over the gate
+  BOX: { u: 3.0, v: -.28, z0: 2.16, hw: .42, h: 1.05 },             // the sentry box on the wall's right corner
+  EDGE: -.75, HOR: -5.9,                                             // where the lawn ends behind the wall (the sea begins); the horizon (v)
+  PATH: { mid: 0, hw: .62 },
+  TREE: [-2.55, 1.9, 2.5, 1.15], STONE: [-1.62, 3.5],                // the tree (u, v, height, crown); the flat stone beside it
+  TABLE: { u: 2.25, v: 2.3, hw: 1.2, hd: .45 },                      // fiesta: the party table (top z .74)
+  HAMMOCK: { u0: 1.2, u1: 3.3, v: 5.2, h: 1.25 },                    // fiesta: the hammock's two posts
+  GRASS: [1.1, 6.9, 3.5, 8.3],                                       // the open grass where they play
+};
+const NIGHT = SET.hora === 'noche';
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y);
+  if (v < E.HOR) return 0;
+  if (v < E.EDGE) {                                                   // the sea beyond the fort
+    const crest = ((v * 1.1 + Math.sin(u * 1.3 + Math.floor(v * 1.1) * 2.1) * .2 + 80) % 1);
+    if (crest < .1 && hash(ix >> 1, Math.floor(v * 7)) < .7) return [rgb(206, 232, 246), 'mar'];
+    const t = clamp((E.EDGE - v) / (E.EDGE - E.HOR), 0, 1), d = (bayerAt(ix, iy) - .5) * 12;
+    return [rgb(40 + t * 30 + d, 120 + t * 40 + d, 190 + t * 20 + d * .6), 'mar'];
+  }
+  if (v < 0 && Math.abs(u) < E.GATE[1] + .1) return [rgb(150, 130, 110), 'piedra'];                       // the passage's floor
+  if (v >= 0 && FT.onPath(u, v, E.PATH.mid, E.PATH.hw)) return [FT.pathStone(u, v, ix, iy), 'piedra'];
+  return [FT.grass(u, v, ix, iy), 'grama'];
+}
+function fort() {
+  const W = E.WALL, G = E.GATE;
+  PZ.wall(G[0] - .2, G[1] + .2, -.55, 0, G[3] + .05, (u, z) => { const d = Math.hypot(u * .9, (z - .7) * .8); return rgb(64 - d * 14, 52 - d * 12, 56 - d * 8); });   // the dark passage behind the gate
+  PZ.flat(W.u0, -.62, W.u1, 0, W.walk, (u, v) => FT.flags(u, v * 2, 0, 0, [176, 156, 124]));                                                                       // the walk on the wall's top
+  PZ.wall(W.u0, W.u1, 0, 0, W.h, (u, z) => {
+    if (!FT.solid(u, z, W.h) || FT.inArch(u, z, G)) return 0;
+    if (z > W.walk - .1 && z < W.walk - .02) return rgb(...FT.STONE_L);                                                                                            // a pale course under the battlements
+    return FT.archRing(u, z, G) || FT.stone(u, z);
+  });
+  for (const [u, z] of E.LAMPS) FT.wallLamp(u, 0, z, NIGHT);
+  const P = E.POLE;
+  PZ.post(P.u, P.v, W.walk, P.z1, .035, [236, 236, 230]); PZ.ball(P.u, P.v, P.z1 + .04, .07, [240, 206, 110], 'smooth');
+  const B = E.BOX;                                                                                                                                                // the sentry box: a small domed turret
+  PZ.box(B.u, B.v, B.z0, B.z0 + B.h, B.hw, .34, FT.STONE, (s, t, z, face) => face === 'front' ? ((Math.abs(s) < .09 && z > B.z0 + .4 && z < B.z0 + .8) ? rgb(50, 44, 60) : FT.stone(s + B.u, z)) : 0);
+  PZ.box(B.u, B.v, B.z0 + B.h, B.z0 + B.h + .1, B.hw + .06, .4, FT.STONE_L);
+  PZ.ball(B.u, B.v, B.z0 + B.h + .08, B.hw - .05, FT.STONE, 'smooth'); PZ.ball(B.u, B.v, B.z0 + B.h + B.hw + .04, .08, FT.STONE_L, 'smooth');
+}
+function lawn() {
+  const [tu, tv, th, tr] = E.TREE;
+  PZ.tree(tu, tv, th, tr, CL.LEAF, CL.LEAF_L);
+  const [su, sv] = E.STONE;                                                                                                                                       // the flat stone
+  PZ.box(su, sv, 0, .2, .34, .24, [176, 170, 160], (s, t, z, face) => face === 'top' ? shade([200, 194, 184], 3, s * 4, t * 4, .2) : 0);
+  PZ.shadow(su, sv, .2, .4);
+  if (!SET.fiesta) return;
+  const T = E.TABLE;
+  FD.table(T.u, T.v, T.hw, T.hd, [226, 96, 84]);
+  const H = E.HAMMOCK;
+  for (const u of [H.u0, H.u1]) { PZ.post(u, H.v, 0, H.h, .06, [150, 104, 62]); PZ.ball(u, H.v, H.h + .03, .08, [120, 84, 52], 'smooth'); }
+}
+function skyOf(ix, iy) {
+  const hz = OY + E.HOR * 13;
+  return NIGHT ? FT.night(ix, iy, hz, [152, 15, 9]) : FT.day(SET.hora, ix, iy, hz);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c[0]; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = c[1] === 'mar' ? KIND_WATER : c[1] === 'grama' ? KIND_GRASS : KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('fuerte', fort);
+  part('grama', lawn);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  if (SET.hora === 'ocaso') lightPass([1.0, .9, .84], [10, 0, -4], false);
+  if (NIGHT) lightPass([.52, .56, .82], [-6, -4, 18], false);
+  skyFill(skyOf);
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.SUBIDA = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
+  drawLeaves(windT);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+if (PART_TAGS) tagLeaves(zb);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S, live: () => zb };
+window.frame = frame;
+</script></body></html>

@@ -26,7 +26,7 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 'use strict';
 const E = {
   WALL: 3.1,
-  SHOWER: { u0: -3.75, u1: -2.25, v1: 1.6, wall: .8, head: [-3.0, 2.35] },   // the shower: from the back wall to v1; its low front wall's height; its head (u, z)
+  SHOWER: { u0: -3.75, u1: -2.25, v1: 1.6, wall: 1.2, head: [-3.0, 2.35] },   // the shower: from the back wall to v1; its low front wall's height; its head (u, z)
   TAP_SHOWER: [-1.95, 1.35],                                          // the shower's tap, on the wall outside it (u, z)
   SINK: { u: 0, v: .42, hw: .5, hd: .34, h: .8 },                     // the sink; its tap is on its top, at the back
   MIRROR: [-.55, .55, 1.4, 2.35],

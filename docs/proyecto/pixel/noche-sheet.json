@@ -10,7 +10,7 @@
  "view": [196, 216],
  "rules": {
   "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 66. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
-  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the back wall at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 66 + 13 v - 22.5 z; the picture holds u from -4.62 to 4.62. The table's chairs are E.SEATS (FD.setTable's places, with mesa 1): silla1 (0.6, 4.84), silla2 (1.4667, 4.84), silla3 (2.3333, 4.84), silla4 (3.2, 4.84)",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the back wall at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 66 + 13 v - 22.5 z; the picture holds u from -4.62 to 4.62. The table's chairs are E.SEATS (FD.setTable's places, with mesa 1): silla1 (0.51, 4.84), silla2 (1.4367, 4.84), silla3 (2.3633, 4.84), silla4 (3.29, 4.84)",
   "spot": "a spot is a world point of the feet (z 0: the floor; z 0.44: a seat's top; z 0.72: the sofa's right arm's top; z 0.9: the sideboard's top; z 0.74: the table's top; z 1.35: the window's sill) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): the juice, the flan, the cheese, the fruit and the candle have their bottom middle on the spot (the box [sx - floor(w / 2), sy - h, w, h]). scale is the frog's: 1 everywhere",
   "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; abuela standing mkAbuela (48 x 51): column 30; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41; t 7 a child: 33) on (sx, sy); a child sitting on the floor (alfombra1, alfombra2 in 105): the sitting drawing with its feet (its lowest row) on the spot; Canelo mkPerro (30 x 22): column 15 and its bottom edge; a small thing: see spot. Whoever lies in the bed (cama1, cama2): the standing sprite hangs DOWN the bed from the spot (the top of his sprite on row sy, his middle on column sx), clipped at the bed's foot (things.cama.foot), and over it a blanket in the bed's colour (things.cama.colour) and the mattress's width (things.cama.blanket) from his chest (sprite row 24 of a child) to the bed's foot. Nobody is drawn turned: whoever sits faces us",
   "lying": "the depth of whoever lies in the bed (spots with plane \"lying\"): the sprite is not an upright plane through the feet but lies on the bed: its pixel at picture row r has the depth of the horizontal plane at the head's height z (the spot's z, .6): depth(r) = ((r + .5 - OY + z * 22.5) / 13) * COS + z / 2, the same for everybody in the bed (two of them tie: the later layer wins). The wall's rim and the floor in front of the arch hide what is outside the hole by the ordinary rule (hidden where bakedZ > depth(r) + bias)",
@@ -310,9 +310,9 @@
    "on": "pared"
   },
   "silla1": {
-   "world": [3.8467, 2.9981, 0.44],
-   "uv": [0.6, 4.84, 0.44],
-   "screen": [136, 119],
+   "world": [3.783, 3.0618, 0.44],
+   "uv": [0.51, 4.84, 0.44],
+   "screen": [133, 119],
    "depth": 4.4116,
    "scale": 1,
    "kind": "person",
@@ -325,9 +325,9 @@
    "chair": 1
   },
   "silla2": {
-   "world": [4.4595, 2.3853, 0.44],
-   "uv": [1.4667, 4.84, 0.44],
-   "screen": [158, 119],
+   "world": [4.4383, 2.4065, 0.44],
+   "uv": [1.4367, 4.84, 0.44],
+   "screen": [157, 119],
    "depth": 4.4116,
    "scale": 1,
    "kind": "person",
@@ -340,8 +340,8 @@
    "chair": 1
   },
   "silla3": {
-   "world": [5.0723, 1.7725, 0.44],
-   "uv": [2.3333, 4.84, 0.44],
+   "world": [5.0935, 1.7513, 0.44],
+   "uv": [2.3633, 4.84, 0.44],
    "screen": [181, 119],
    "depth": 4.4116,
    "scale": 1,
@@ -355,9 +355,9 @@
    "chair": 1
   },
   "silla4": {
-   "world": [5.6851, 1.1597, 0.44],
-   "uv": [3.2, 4.84, 0.44],
-   "screen": [203, 119],
+   "world": [5.7488, 1.096, 0.44],
+   "uv": [3.29, 4.84, 0.44],
+   "screen": [206, 119],
    "depth": 4.4116,
    "scale": 1,
    "kind": "person",
@@ -501,9 +501,9 @@
    "who": "perro"
   },
   "cama1": {
-   "world": [-3.9669, 0.4313, 0.6],
-   "uv": [-3.11, -2.5, 0.6],
-   "screen": [39, 20],
+   "world": [-4.1154, 0.5798, 0.6],
+   "uv": [-3.32, -2.5, 0.6],
+   "screen": [34, 20],
    "depth": -1.8651,
    "scale": 1,
    "kind": "person",
@@ -513,13 +513,15 @@
    "who": "nino",
    "anchor": "top",
    "plane": "lying",
-   "on": "pared"
+   "on": "pared",
+   "spec": [-3.11, -2.5, 0.6],
+   "moved": "sprites-apart: in moment 7 the two children in the bed were 13 px apart sideways on the same row: both go to the pillow's ends, 24 px apart (u -3.11 -> -3.32)"
   },
   "cama2": {
-   "world": [-2.984, 0.7071, 0.6],
-   "uv": [-2.61, -1.61, 0.6],
-   "screen": [52, 32],
-   "depth": -1.0943,
+   "world": [-3.4648, -0.0707, 0.6],
+   "uv": [-2.4, -2.5, 0.6],
+   "screen": [58, 20],
+   "depth": -1.8651,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -530,7 +532,7 @@
    "plane": "lying",
    "on": "pared",
    "spec": [-2.61, -2.5, 0.6],
-   "moved": "sprites-apart: in moment 7 the two children in the bed were 13 px apart sideways and on the same row (boxes need 24 across or 12 up-down): v -2.5 -> -1.61 (+.89: 12 px lower; the other way, v -3.39, is behind the bed's head; a single u move, +.40 or -.41, takes a head out of the arch's hole)"
+   "moved": "sprites-apart: as cama1 (u -2.61 -> -2.40)"
   }
  },
  "groups": {
@@ -570,10 +572,16 @@
    "why": "sprites-apart: in moment 5 the frog at the table's near edge was 10 px below the family's feet (silla1, silla2: 10 and 12 px across) and needs 12: v 6.15 -> 6.25 (+.10; the table's own near edge is v 6.3)"
   },
   {
+   "spot": "cama1",
+   "spec": [-3.11, -2.5, 0.6],
+   "now": [-3.32, -2.5, 0.6],
+   "why": "sprites-apart: in moment 7 the two children in the bed were 13 px apart sideways on the same row: both go to the pillow's ends, 24 px apart (u -3.11 -> -3.32)"
+  },
+  {
    "spot": "cama2",
    "spec": [-2.61, -2.5, 0.6],
-   "now": [-2.61, -1.61, 0.6],
-   "why": "sprites-apart: in moment 7 the two children in the bed were 13 px apart sideways and on the same row (boxes need 24 across or 12 up-down): v -2.5 -> -1.61 (+.89: 12 px lower; the other way, v -3.39, is behind the bed's head; a single u move, +.40 or -.41, takes a head out of the arch's hole)"
+   "now": [-2.4, -2.5, 0.6],
+   "why": "sprites-apart: as cama1 (u -2.61 -> -2.40)"
   }
  ],
  "notes": [
@@ -584,7 +592,7 @@
   "the spec gives no radius for Canelo's shadow: 0.3 used (open point); the others are El cruce's (frog .45, grown-ups .35, children .28)",
   "abuelo is kit's FAM.abuelo (a grown-up man, as in the other scenes); mamá does not appear; the lana is in no moment of the spec, so no preview moment draws it (its box is in things.lana)",
   "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
-  "moves: ensalada [0.3,1.3,0] -> [0.3,1.03,0] (sprites-apart: in moment 4 abuela at the sideboard's end was 8 px above the children on the sofa's seats (sofa2 and sofa3, 17 and 8 px across) and needs 12: v 1.3 -> 1.03 (-.27; the seats are fixed by the set)); mesa_coqui [1,6.15,0.74] -> [1,6.25,0.74] (sprites-apart: in moment 5 the frog at the table's near edge was 10 px below the family's feet (silla1, silla2: 10 and 12 px across) and needs 12: v 6.15 -> 6.25 (+.10; the table's own near edge is v 6.3)); cama2 [-2.61,-2.5,0.6] -> [-2.61,-1.61,0.6] (sprites-apart: in moment 7 the two children in the bed were 13 px apart sideways and on the same row (boxes need 24 across or 12 up-down): v -2.5 -> -1.61 (+.89: 12 px lower; the other way, v -3.39, is behind the bed's head; a single u move, +.40 or -.41, takes a head out of the arch's hole))"
+  "moves: ensalada [0.3,1.3,0] -> [0.3,1.03,0] (sprites-apart: in moment 4 abuela at the sideboard's end was 8 px above the children on the sofa's seats (sofa2 and sofa3, 17 and 8 px across) and needs 12: v 1.3 -> 1.03 (-.27; the seats are fixed by the set)); mesa_coqui [1,6.15,0.74] -> [1,6.25,0.74] (sprites-apart: in moment 5 the frog at the table's near edge was 10 px below the family's feet (silla1, silla2: 10 and 12 px across) and needs 12: v 6.15 -> 6.25 (+.10; the table's own near edge is v 6.3)); cama1 [-3.11,-2.5,0.6] -> [-3.32,-2.5,0.6] (sprites-apart: in moment 7 the two children in the bed were 13 px apart sideways on the same row: both go to the pillow's ends, 24 px apart (u -3.11 -> -3.32)); cama2 [-2.61,-2.5,0.6] -> [-2.4,-2.5,0.6] (sprites-apart: as cama1 (u -2.61 -> -2.40))"
  ],
  "views": {
   "wide": {
@@ -596,9 +604,9 @@
    "region": [22, 0, 196, 216],
    "stories": [105, 106, 107],
    "holds": ["sofa1", "sofa2", "sofa3", "butaca", "brazo_coqui", "alfombra1", "alfombra2", "ventana_abuelo", "ventana_coqui", "silla1", "silla2", "silla3", "silla4", "junto_mesa", "ensalada", "aparador_coqui", "jugo", "flan", "queso", "frutas", "vela", "mesa_coqui", "perro", "cama1", "cama2"],
-   "extent": [27, 214],
-   "x0Range": [19, 27],
-   "what": "the one view of stories 105, 106 and 107: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 19 to 27 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 27 to 214). The window's point is the ground point under its middle column at the picture's middle row"
+   "extent": [22, 217],
+   "x0Range": [22, 22],
+   "what": "the one view of stories 105, 106 and 107: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 22 to 22 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 22 to 217). The window's point is the ground point under its middle column at the picture's middle row"
   }
  },
  "front": {
@@ -633,7 +641,7 @@
     "name": "views-x0",
     "ok": true,
     "lines": [
-     "views-x0: wide: x0 22 (window columns 22 to 217); the 25 spots held span columns 27 to 214 (188 of the window's 196); x0 that hold them all: 19 to 27 (the one nearest 22, the window centred on the picture)"
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 25 spots held span columns 22 to 217 (196 of the window's 196); x0 that hold them all: 22 to 22 (the one nearest 22, the window centred on the picture)"
     ],
     "x0": {
      "wide": 22
@@ -643,7 +651,7 @@
     "name": "spots-in-view",
     "ok": true,
     "lines": [
-     "spots-in-view: 25 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 27 (cama1), the rightmost 214 (silla4)"
+     "spots-in-view: 25 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 22 (cama1), the rightmost 217 (silla4)"
     ]
    },
    {
@@ -669,7 +677,7 @@
      "       vela z 0.74: part sala, depth 5.21 against the spot's 5.22 (0.01)",
      "       mesa_coqui z 0.74: part sala, depth 5.8 against the spot's 5.78 (0.02)",
      "       cama1 z 0.6: part pared, depth -1.87 against the spot's -1.87 (0)",
-     "       cama2 z 0.6: part pared, depth -1.14 against the spot's -1.09 (0.04)"
+     "       cama2 z 0.6: part pared, depth -1.87 against the spot's -1.87 (0)"
     ]
    },
    {
@@ -683,8 +691,8 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 69 pairs in the 7 moments of the preview (m1 (sofa1, butaca, brazo_coqui); m2 (sofa1, butaca, alfombra1, alfombra2, brazo_coqui); m3 (junto_mesa, silla4, sofa2, sofa3, perro, aparador_coqui); m4 (ensalada, silla4, sofa2, sofa3, perro, aparador_coqui); m5 (silla1, silla2, silla3, silla4, mesa_coqui); m6 (sofa1, butaca, alfombra1, alfombra2, brazo_coqui); m7 (butaca, cama1, cama2, ventana_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down (the pairs of two of the set's own chairs: seats-apart); the pairs that do overlap sideways: m2 sofa1 ~ alfombra1 (2 across, 28 down), m3 junto_mesa ~ sofa2 (0 across, 53 down), m3 silla4 ~ perro (11 across, 26 down), m3 sofa3 ~ aparador_coqui (24 across, 40 down), m4 ensalada ~ sofa2 (17 across, 12 down), m4 ensalada ~ sofa3 (8 across, 12 down), m4 silla4 ~ perro (11 across, 26 down), m4 sofa3 ~ aparador_coqui (24 across, 40 down), m5 silla1 ~ mesa_coqui (10 across, 12 down), m5 silla2 ~ mesa_coqui (12 across, 12 down), m6 sofa1 ~ alfombra1 (2 across, 28 down), m7 butaca ~ cama1 (10 across, 71 down), m7 butaca ~ cama2 (3 across, 59 down), m7 cama1 ~ cama2 (13 across, 12 down)",
-     "       closest pair in each moment (px across / px down): m1 sofa1 ~ butaca 37/0 (needs 24 across or 12 down); m2 sofa1 ~ alfombra1 2/28 (needs 24 across or 12 down); m3 junto_mesa ~ sofa2 0/53 (needs 24 across or 12 down); m4 ensalada ~ sofa3 8/12 (needs 24 across or 12 down); m5 silla1 ~ mesa_coqui 10/12 (needs 28 across or 12 down); m6 sofa1 ~ alfombra1 2/28 (needs 24 across or 12 down); m7 butaca ~ cama2 3/59 (needs 24 across or 12 down)"
+     "sprites-apart: 69 pairs in the 7 moments of the preview (m1 (sofa1, butaca, brazo_coqui); m2 (sofa1, butaca, alfombra1, alfombra2, brazo_coqui); m3 (junto_mesa, silla4, sofa2, sofa3, perro, aparador_coqui); m4 (ensalada, silla4, sofa2, sofa3, perro, aparador_coqui); m5 (silla1, silla2, silla3, silla4, mesa_coqui); m6 (sofa1, butaca, alfombra1, alfombra2, brazo_coqui); m7 (butaca, cama1, cama2, ventana_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down (the pairs of two of the set's own chairs: seats-apart); the pairs that do overlap sideways: m2 sofa1 ~ alfombra1 (2 across, 28 down), m3 junto_mesa ~ sofa2 (0 across, 53 down), m3 silla4 ~ perro (14 across, 26 down), m3 sofa3 ~ aparador_coqui (24 across, 40 down), m4 ensalada ~ sofa2 (17 across, 12 down), m4 ensalada ~ sofa3 (8 across, 12 down), m4 silla4 ~ perro (14 across, 26 down), m4 sofa3 ~ aparador_coqui (24 across, 40 down), m5 silla1 ~ mesa_coqui (13 across, 12 down), m5 silla2 ~ mesa_coqui (11 across, 12 down), m6 sofa1 ~ alfombra1 (2 across, 28 down), m7 butaca ~ cama1 (15 across, 71 down), m7 butaca ~ cama2 (9 across, 71 down)",
+     "       closest pair in each moment (px across / px down): m1 sofa1 ~ butaca 37/0 (needs 24 across or 12 down); m2 sofa1 ~ alfombra1 2/28 (needs 24 across or 12 down); m3 junto_mesa ~ sofa2 0/53 (needs 24 across or 12 down); m4 ensalada ~ sofa3 8/12 (needs 24 across or 12 down); m5 silla2 ~ mesa_coqui 11/12 (needs 28 across or 12 down); m6 sofa1 ~ alfombra1 2/28 (needs 24 across or 12 down); m7 butaca ~ cama2 9/71 (needs 24 across or 12 down)"
     ],
     "pairs": [
      {
@@ -808,7 +816,7 @@
       "moment": 3,
       "a": "junto_mesa",
       "b": "silla4",
-      "across": 92,
+      "across": 95,
       "down": 25,
       "needAcross": 24,
       "ok": true
@@ -853,7 +861,7 @@
       "moment": 3,
       "a": "silla4",
       "b": "sofa2",
-      "across": 92,
+      "across": 95,
       "down": 28,
       "needAcross": 24,
       "ok": true
@@ -862,7 +870,7 @@
       "moment": 3,
       "a": "silla4",
       "b": "sofa3",
-      "across": 67,
+      "across": 70,
       "down": 28,
       "needAcross": 24,
       "ok": true
@@ -871,7 +879,7 @@
       "moment": 3,
       "a": "silla4",
       "b": "perro",
-      "across": 11,
+      "across": 14,
       "down": 26,
       "needAcross": 26,
       "ok": true
@@ -880,7 +888,7 @@
       "moment": 3,
       "a": "silla4",
       "b": "aparador_coqui",
-      "across": 43,
+      "across": 46,
       "down": 68,
       "needAcross": 28,
       "ok": true
@@ -943,7 +951,7 @@
       "moment": 4,
       "a": "ensalada",
       "b": "silla4",
-      "across": 75,
+      "across": 78,
       "down": 40,
       "needAcross": 24,
       "ok": true
@@ -988,7 +996,7 @@
       "moment": 4,
       "a": "silla4",
       "b": "sofa2",
-      "across": 92,
+      "across": 95,
       "down": 28,
       "needAcross": 24,
       "ok": true
@@ -997,7 +1005,7 @@
       "moment": 4,
       "a": "silla4",
       "b": "sofa3",
-      "across": 67,
+      "across": 70,
       "down": 28,
       "needAcross": 24,
       "ok": true
@@ -1006,7 +1014,7 @@
       "moment": 4,
       "a": "silla4",
       "b": "perro",
-      "across": 11,
+      "across": 14,
       "down": 26,
       "needAcross": 26,
       "ok": true
@@ -1015,7 +1023,7 @@
       "moment": 4,
       "a": "silla4",
       "b": "aparador_coqui",
-      "across": 43,
+      "across": 46,
       "down": 68,
       "needAcross": 28,
       "ok": true
@@ -1078,17 +1086,17 @@
       "moment": 5,
       "a": "silla1",
       "b": "silla2",
-      "across": 22,
+      "across": 24,
       "down": 0,
       "needAcross": 24,
-      "ok": false,
+      "ok": true,
       "seats": 1
      },
      {
       "moment": 5,
       "a": "silla1",
       "b": "silla3",
-      "across": 45,
+      "across": 48,
       "down": 0,
       "needAcross": 24,
       "ok": true,
@@ -1098,7 +1106,7 @@
       "moment": 5,
       "a": "silla1",
       "b": "silla4",
-      "across": 67,
+      "across": 73,
       "down": 0,
       "needAcross": 24,
       "ok": true,
@@ -1108,7 +1116,7 @@
       "moment": 5,
       "a": "silla1",
       "b": "mesa_coqui",
-      "across": 10,
+      "across": 13,
       "down": 12,
       "needAcross": 28,
       "ok": true
@@ -1117,17 +1125,17 @@
       "moment": 5,
       "a": "silla2",
       "b": "silla3",
-      "across": 23,
+      "across": 24,
       "down": 0,
       "needAcross": 24,
-      "ok": false,
+      "ok": true,
       "seats": 1
      },
      {
       "moment": 5,
       "a": "silla2",
       "b": "silla4",
-      "across": 45,
+      "across": 49,
       "down": 0,
       "needAcross": 24,
       "ok": true,
@@ -1137,7 +1145,7 @@
       "moment": 5,
       "a": "silla2",
       "b": "mesa_coqui",
-      "across": 12,
+      "across": 11,
       "down": 12,
       "needAcross": 28,
       "ok": true
@@ -1146,10 +1154,10 @@
       "moment": 5,
       "a": "silla3",
       "b": "silla4",
-      "across": 22,
+      "across": 25,
       "down": 0,
       "needAcross": 24,
-      "ok": false,
+      "ok": true,
       "seats": 1
      },
      {
@@ -1165,7 +1173,7 @@
       "moment": 5,
       "a": "silla4",
       "b": "mesa_coqui",
-      "across": 57,
+      "across": 60,
       "down": 12,
       "needAcross": 28,
       "ok": true
@@ -1264,7 +1272,7 @@
       "moment": 7,
       "a": "butaca",
       "b": "cama1",
-      "across": 10,
+      "across": 15,
       "down": 71,
       "needAcross": 24,
       "ok": true
@@ -1273,8 +1281,8 @@
       "moment": 7,
       "a": "butaca",
       "b": "cama2",
-      "across": 3,
-      "down": 59,
+      "across": 9,
+      "down": 71,
       "needAcross": 24,
       "ok": true
      },
@@ -1291,8 +1299,8 @@
       "moment": 7,
       "a": "cama1",
       "b": "cama2",
-      "across": 13,
-      "down": 12,
+      "across": 24,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      },
@@ -1300,7 +1308,7 @@
       "moment": 7,
       "a": "cama1",
       "b": "ventana_coqui",
-      "across": 64,
+      "across": 69,
       "down": 16,
       "needAcross": 28,
       "ok": true
@@ -1309,8 +1317,8 @@
       "moment": 7,
       "a": "cama2",
       "b": "ventana_coqui",
-      "across": 51,
-      "down": 4,
+      "across": 45,
+      "down": 16,
       "needAcross": 28,
       "ok": true
      }
@@ -1318,13 +1326,9 @@
    },
    {
     "name": "seats-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "seats-apart: 3 pair(s) of the set's own chairs closer than their sprite boxes need (the seats are fixed by the set: not moved):",
-     "  moment 5: silla1 [136,119] (24 wide) ~ silla2 [158,119] (24 wide): 22 px sideways (the boxes need 24), 0 px up-down (needs 12): short by 2 px sideways",
-     "  moment 5: silla2 [158,119] (24 wide) ~ silla3 [181,119] (24 wide): 23 px sideways (the boxes need 24), 0 px up-down (needs 12): short by 1 px sideways",
-     "  moment 5: silla3 [181,119] (24 wide) ~ silla4 [203,119] (24 wide): 22 px sideways (the boxes need 24), 0 px up-down (needs 12): short by 2 px sideways",
-     "       OPEN POINT (a set number, not a spot of the spec): the table's four chairs are 22.53 px apart (0.8667 u: FD.setTable span 2.6 in noche-set.html's room()); two people at neighbouring chairs need 24 px (0.924 u each: span 2.772 u or more, about the same middle u 1.9)"
+     "seats-apart: the people at silla1 to silla4 (m5 silla1 ~ silla2 24/0, m5 silla1 ~ silla3 48/0, m5 silla1 ~ silla4 73/0, m5 silla2 ~ silla3 24/0, m5 silla2 ~ silla4 49/0, m5 silla3 ~ silla4 25/0) keep their boxes apart sideways or 12 px apart up-down"
     ]
    },
    {
@@ -1339,7 +1343,7 @@
     "ok": true,
     "lines": [
      "heads-clear: every person who sits or lies (m1: sofa1, butaca; m2: sofa1, butaca, alfombra1, alfombra2; m3: silla4, sofa2, sofa3; m4: silla4, sofa2, sofa3; m5: silla1, silla2, silla3, silla4; m6: sofa1, butaca; m7: butaca, cama1, cama2) is whole in the window and his head (the top 14 rows) is covered by nobody and by nothing: 21 heads, 0 px covered, 0 hidden by the set",
-     "       info, not a check: m1 sofa1 86,91 (abueloS): head rows 54 to 67: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 butaca 49,91 (abuelaS): head rows 55 to 68: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 sofa1 86,91 (abueloS): head rows 54 to 67: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 butaca 49,91 (abuelaS): head rows 55 to 68: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 alfombra1 84,119 (luisPiso): head rows 81 to 94: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 alfombra2 112,119 (carmenPiso): head rows 81 to 94: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla4 203,119 (abueloS): head rows 82 to 95: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 sofa2 111,91 (luisS): head rows 60 to 73: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 sofa3 136,91 (carmenS): head rows 60 to 73: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla4 203,119 (abueloS): head rows 82 to 95: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 sofa2 111,91 (luisS): head rows 60 to 73: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 sofa3 136,91 (carmenS): head rows 60 to 73: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla1 136,119 (abuelaS): head rows 83 to 96: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla2 158,119 (luisS): head rows 88 to 101: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla3 181,119 (carmenS): head rows 88 to 101: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla4 203,119 (abueloS): head rows 82 to 95: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m6 sofa1 86,91 (abueloS): head rows 54 to 67: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m6 butaca 49,91 (abuelaS): head rows 55 to 68: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m7 butaca 49,91 (abuelaS): head rows 55 to 68: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m7 cama1 39,20 (lying:luis): head rows 20 to 33: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m7 cama2 52,32 (lying:carmen): head rows 32 to 45: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
+     "       info, not a check: m1 sofa1 86,91 (abueloS): head rows 54 to 67: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 butaca 49,91 (abuelaS): head rows 55 to 68: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 sofa1 86,91 (abueloS): head rows 54 to 67: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 butaca 49,91 (abuelaS): head rows 55 to 68: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 alfombra1 84,119 (luisPiso): head rows 81 to 94: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 alfombra2 112,119 (carmenPiso): head rows 81 to 94: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla4 206,119 (abueloS): head rows 82 to 95: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 sofa2 111,91 (luisS): head rows 60 to 73: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 sofa3 136,91 (carmenS): head rows 60 to 73: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla4 206,119 (abueloS): head rows 82 to 95: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 sofa2 111,91 (luisS): head rows 60 to 73: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 sofa3 136,91 (carmenS): head rows 60 to 73: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla1 133,119 (abuelaS): head rows 83 to 96: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla2 157,119 (luisS): head rows 88 to 101: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla3 181,119 (carmenS): head rows 88 to 101: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla4 206,119 (abueloS): head rows 82 to 95: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m6 sofa1 86,91 (abueloS): head rows 54 to 67: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m6 butaca 49,91 (abuelaS): head rows 55 to 68: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m7 butaca 49,91 (abuelaS): head rows 55 to 68: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m7 cama1 34,20 (lying:luis): head rows 20 to 33: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m7 cama2 58,20 (lying:carmen): head rows 20 to 33: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
     ]
    },
    {
@@ -1360,7 +1364,7 @@
     "name": "bed-heads",
     "ok": true,
     "lines": [
-     "bed-heads: in moment 7 the heads of the two children in the bed (cama1, cama2: the top 14 rows of their sprites) are inside the arch's hole (x 23.28 to 68, y 14.25 to 66), none hidden by the wall's rim, covered by nobody: cama1 39,20: head rows 20 to 33 (columns 32 to 45): 0 px outside the hole, 0 hidden by the set, 0 covered; cama2 52,32: head rows 32 to 45 (columns 42 to 61): 0 px outside the hole, 0 hidden by the set, 0 covered"
+     "bed-heads: in moment 7 the heads of the two children in the bed (cama1, cama2: the top 14 rows of their sprites) are inside the arch's hole (x 23.28 to 68, y 14.25 to 66), none hidden by the wall's rim, covered by nobody: cama1 34,20: head rows 20 to 33 (columns 27 to 40): 0 px outside the hole, 0 hidden by the set, 0 covered; cama2 58,20: head rows 20 to 33 (columns 48 to 67): 0 px outside the hole, 0 hidden by the set, 0 covered"
     ]
    },
    {
@@ -1388,7 +1392,7 @@
     "name": "info-touch",
     "ok": true,
     "lines": [
-     "info-touch: not a check. m1: bufanda 0 of 82 px covered, 0 hidden by the set, reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m2: bufanda 0 of 82 px covered, 0 hidden by the set, reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m3: reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m4: reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m5: reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m6: libro 0 of 80 px covered, 0 hidden by the set, reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m7: reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 990 px under anyone, television [27,117,30,15] 0 px under anyone"
+     "info-touch: not a check. m1: bufanda 0 of 82 px covered, 0 hidden by the set, reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m2: bufanda 0 of 82 px covered, 0 hidden by the set, reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m3: reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m4: reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m5: reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m6: libro 0 of 80 px covered, 0 hidden by the set, reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 0 px under anyone, television [27,117,30,15] 0 px under anyone; m7: reloj [146,5,16,16] 0 px under anyone, cama [29,20,33,35] 1250 px under anyone, television [27,117,30,15] 0 px under anyone"
     ]
    }
   ]

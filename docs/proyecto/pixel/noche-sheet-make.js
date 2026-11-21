@@ -51,7 +51,8 @@ const BED_COLOUR = [236, 190, 110];                      // the colour noche-set
 const MOVES = {
   ensalada: { to: [.3, 1.03, 0], why: 'sprites-apart: in moment 4 abuela at the sideboard\'s end was 8 px above the children on the sofa\'s seats (sofa2 and sofa3, 17 and 8 px across) and needs 12: v 1.3 -> 1.03 (-.27; the seats are fixed by the set)' },
   mesa_coqui: { to: [1.0, 6.25, TABLE_Z], why: 'sprites-apart: in moment 5 the frog at the table\'s near edge was 10 px below the family\'s feet (silla1, silla2: 10 and 12 px across) and needs 12: v 6.15 -> 6.25 (+.10; the table\'s own near edge is v 6.3)' },
-  cama2: { to: [-2.61, -1.61, BED_Z], why: 'sprites-apart: in moment 7 the two children in the bed were 13 px apart sideways and on the same row (boxes need 24 across or 12 up-down): v -2.5 -> -1.61 (+.89: 12 px lower; the other way, v -3.39, is behind the bed\'s head; a single u move, +.40 or -.41, takes a head out of the arch\'s hole)' },
+  cama1: { to: [-3.32, -2.5, BED_Z], why: 'sprites-apart: in moment 7 the two children in the bed were 13 px apart sideways on the same row: both go to the pillow\'s ends, 24 px apart (u -3.11 -> -3.32)' },
+  cama2: { to: [-2.40, -2.5, BED_Z], why: 'sprites-apart: as cama1 (u -2.61 -> -2.40)' },
 };
 
 /* the spots: { name, uvz, kind, sil, who, what, on, size, anchor, fixed, lying }

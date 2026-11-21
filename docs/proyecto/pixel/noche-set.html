@@ -81,7 +81,7 @@ function room() {
   PZ.box(T.u, T.v, 0, T.z0, T.hw + .1, .26, FD.WOOD, (s, t, z, face) => face === 'top' ? rgb(...FD.WOOD_L) : 0);
   PZ.box(T.u, T.v - .02, T.z0, T.z1, T.hw, .08, [50, 52, 62], (s, t, z, face) => face === 'front' && Math.abs(s) < T.hw - .06 && z > T.z0 + .06 && z < T.z1 - .06 ? (SET.tele ? ((Math.floor(s * 9 + 9) + Math.floor(z * 9)) % 3 === 0 ? rgb(250, 220, 120) : rgb(120, 200, 240)) : rgb(30, 34, 46)) : 0);
   PZ.shadow(T.u, T.v, .4, .6);
-  if (SET.mesa) E.SEATS = FD.setTable(E.TABLE.u, E.TABLE.v, E.TABLE.hw, { seats: 4, span: 2.6, hd: E.TABLE.hd });
+  if (SET.mesa) E.SEATS = FD.setTable(E.TABLE.u, E.TABLE.v, E.TABLE.hw, { seats: 4, span: 2.78, hd: E.TABLE.hd });
 }
 function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);

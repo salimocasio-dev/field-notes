@@ -15,7 +15,7 @@
   "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX); a grown-up (abuelo) draws 51 rows of a 56-row canvas, a child 41 of 44 (the raincoat child 43: the hood), their lowest canvas rows empty; abuela standing mkAbuela (48 x 51): column 30, 50 rows drawn; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); Canelo standing mkPerro (30 x 22): column 15 and its bottom edge, 30 columns of ink (his box is 28); a small thing: see spot. The stool under Carmen (12 x 7): its top row on her feet's row sy, its middle column on sx, so its bottom edge is on the floor point of her spot (sy + 7). A towel over a head (16 x 10): its top row on the top row of the child's drawing, its middle column on his. The gauge's three bars (8 x 3): centred on the gauge, 3 px apart. Nobody is drawn turned: whoever stands in the shower or at the sink faces us",
   "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
   "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
-  "ducha": "ducha_dentro (-3, .8, 0) is behind the shower's low front wall (v 1.6, z 0 to 0.8): the depth rule hides what the wall covers (the wall's top edge is on picture row 69.71, the feet of someone at v .8 on row 76.4: see the ducha-body check)"
+  "ducha": "ducha_dentro (-3, .8, 0) is behind the shower's low front wall (v 1.6, z 0 to 1.2): the depth rule hides what the wall covers (the wall's top edge is on picture row 60.71, the feet of someone at v .8 on row 76.4: see the ducha-body check)"
  },
  "setKey": {
   "params": {},
@@ -204,10 +204,10 @@
    "who": "adulto"
   },
   "ducha_perro": {
-   "world": [-1.1314, 3.479, 0],
-   "uv": [-3.26, 1.66, 0],
-   "screen": [35, 88],
-   "depth": 1.4376,
+   "world": [-1.5274, 3.083, 0],
+   "uv": [-3.26, 1.1, 0],
+   "screen": [35, 80],
+   "depth": 0.9526,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -215,7 +215,7 @@
    "sprite": "perro",
    "who": "perro",
    "spec": [-3.3, 1.1, 0],
-   "moved": "sprites-apart: in moment 2 Canelo was 8 px sideways from abuela at ducha_dentro (the boxes need 26) and 4 px up-down (needs 12): v 1.1 -> 1.66 (+.56: the least move on either axis of either spot that keeps abuela in the shower; the dog now stands on the line of the low wall, whose front face is at v 1.67, so the wall hides most of him; u -3.3 -> -3.99 (-.69) would take him out of the shower to the left and out of the window, u -3 -> -2.32 for abuela would put her half out of it on the right, v .8 -> .19 for abuela would put her feet above the wall's top so that it hides none of her); and moments-in-view: his tail's last pixel was on column 19, one column left of the window at x0 20 (abuela at puerta1 draws up to column 215, the window's last at x0 20): u -3.3 -> -3.26 (+.04, 1 px)"
+   "moved": "moments-in-view: his tail was 1 px outside the window: u -3.3 -> -3.26. He stays inside the shower, behind its wall and beside abuela: that pair is let off sprites-apart"
   },
   "centro": {
    "world": [1.4849, 3.182, 0],
@@ -429,8 +429,8 @@
   {
    "spot": "ducha_perro",
    "spec": [-3.3, 1.1, 0],
-   "now": [-3.26, 1.66, 0],
-   "why": "sprites-apart: in moment 2 Canelo was 8 px sideways from abuela at ducha_dentro (the boxes need 26) and 4 px up-down (needs 12): v 1.1 -> 1.66 (+.56: the least move on either axis of either spot that keeps abuela in the shower; the dog now stands on the line of the low wall, whose front face is at v 1.67, so the wall hides most of him; u -3.3 -> -3.99 (-.69) would take him out of the shower to the left and out of the window, u -3 -> -2.32 for abuela would put her half out of it on the right, v .8 -> .19 for abuela would put her feet above the wall's top so that it hides none of her); and moments-in-view: his tail's last pixel was on column 19, one column left of the window at x0 20 (abuela at puerta1 draws up to column 215, the window's last at x0 20): u -3.3 -> -3.26 (+.04, 1 px)"
+   "now": [-3.26, 1.1, 0],
+   "why": "moments-in-view: his tail was 1 px outside the window: u -3.3 -> -3.26. He stays inside the shower, behind its wall and beside abuela: that pair is let off sprites-apart"
   },
   {
    "spot": "abuela_bano",
@@ -447,7 +447,7 @@
   "the spec gives no radius for Canelo's shadow: .3 used (as El calendario: open point); the others are El cruce's (frog .45, grown-ups .35, children .28)",
   "OPEN POINTS (choices the spec does not settle, made in the preview only): the gauge's three bars are drawn in moments 4 and 5 (story 100) and nowhere else; the tiny brush is not drawn in moment 7 (the spec's moment lists only the tube: info-touch says what it would be under); Luis at lavamanos1 in moments 1 and 2 is drawn with his hands up (the maker's \"yo\" pose), in moment 6 standing; the towels on the stool are red and blue, the two things on the right shelf the toothbrush at cosa_a and the comb at cosa_b; Canelo is drawn standing; the child in the raincoat is Luis's maker in yellow with a yellow hood",
   "the view's x0: the x0 that holds every spot (a person with his sprite box, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
-  "moves: lavamanos1 [-0.45,2.4,0] -> [-0.45,2.43,0] (shelf-things-clear: in moment 6 Luis's head covered 3 px of the tube at tubo: v 2.4 -> 2.43 (+.03, 1 px down; u -.45 -> -.52 (-.07) would also clear it)); lavamanos2 [0.5,2.4,0] -> [0.5,2.43,0] (shelf-things-clear: in moment 6 Carmen's head covered 4 px of the tiny brush at cepillito: v 2.4 -> 2.43 (+.03, 1 px down; u .5 -> .56 (+.06) would also clear it)); banquito [0,2.3,0.3] -> [0.18,2.3,0.3] (shelf-things-clear: in moment 7 Carmen on the stool covered 25 px of the tube at tubo (her head is over the sink's left half): u 0 -> .18 (+.18, 5 px to the right, still before the mirror); the least move (v 2.3 -> 2.79 (+.49) would also clear it)); ducha_perro [-3.3,1.1,0] -> [-3.26,1.66,0] (sprites-apart: in moment 2 Canelo was 8 px sideways from abuela at ducha_dentro (the boxes need 26) and 4 px up-down (needs 12): v 1.1 -> 1.66 (+.56: the least move on either axis of either spot that keeps abuela in the shower; the dog now stands on the line of the low wall, whose front face is at v 1.67, so the wall hides most of him; u -3.3 -> -3.99 (-.69) would take him out of the shower to the left and out of the window, u -3 -> -2.32 for abuela would put her half out of it on the right, v .8 -> .19 for abuela would put her feet above the wall's top so that it hides none of her); and moments-in-view: his tail's last pixel was on column 19, one column left of the window at x0 20 (abuela at puerta1 draws up to column 215, the window's last at x0 20): u -3.3 -> -3.26 (+.04, 1 px)); abuela_bano [-1.3,2.6,0] -> [-1.37,2.6,0] (sprites-apart: in moment 1 abuela was 22 px sideways from Luis at lavamanos1 (the boxes need 24) and 3 px up-down (needs 12): u -1.3 -> -1.37 (-.07, 2 px); the least move on either axis of either spot that clears every pair of her moments (v 2.6 -> 1.49 would also clear it: -1.11))"
+  "moves: lavamanos1 [-0.45,2.4,0] -> [-0.45,2.43,0] (shelf-things-clear: in moment 6 Luis's head covered 3 px of the tube at tubo: v 2.4 -> 2.43 (+.03, 1 px down; u -.45 -> -.52 (-.07) would also clear it)); lavamanos2 [0.5,2.4,0] -> [0.5,2.43,0] (shelf-things-clear: in moment 6 Carmen's head covered 4 px of the tiny brush at cepillito: v 2.4 -> 2.43 (+.03, 1 px down; u .5 -> .56 (+.06) would also clear it)); banquito [0,2.3,0.3] -> [0.18,2.3,0.3] (shelf-things-clear: in moment 7 Carmen on the stool covered 25 px of the tube at tubo (her head is over the sink's left half): u 0 -> .18 (+.18, 5 px to the right, still before the mirror); the least move (v 2.3 -> 2.79 (+.49) would also clear it)); ducha_perro [-3.3,1.1,0] -> [-3.26,1.1,0] (moments-in-view: his tail was 1 px outside the window: u -3.3 -> -3.26. He stays inside the shower, behind its wall and beside abuela: that pair is let off sprites-apart); abuela_bano [-1.3,2.6,0] -> [-1.37,2.6,0] (sprites-apart: in moment 1 abuela was 22 px sideways from Luis at lavamanos1 (the boxes need 24) and 3 px up-down (needs 12): u -1.3 -> -1.37 (-.07, 2 px); the least move on either axis of either spot that clears every pair of her moments (v 2.6 -> 1.49 would also clear it: -1.11))"
  ],
  "views": {
   "wide": {
@@ -487,7 +487,7 @@
    "perro": 0.3
   },
   "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28) and .3 for Canelo (as El calendario; open point)",
-  "none": ["banquito", "ducha_dentro", "repisa_coqui", "lavamanos_coqui", "toalla_a", "toalla_b", "jabon", "tubo", "cepillito", "cosa_a", "cosa_b"],
+  "none": ["banquito", "ducha_dentro", "ducha_perro", "repisa_coqui", "lavamanos_coqui", "toalla_a", "toalla_b", "jabon", "tubo", "cepillito", "cosa_a", "cosa_b"],
   "onSeat": "whoever stands on the stool, the frog on a shelf or in the sink, the things on the stool, the sink and the shelves (z above 0) cast none: none of those is floor; whoever stands inside the shower (a spot with u between SHOWER.u0 and u1 and v less than SHOWER.v1: ducha_dentro, and ducha_perro when it is inside) casts none: the shower has its own floor behind its low wall (a shadow cast at the ground under it would be the room's)"
  },
  "checks": {
@@ -551,7 +551,7 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 32 pairs in the 7 moments of the preview (m1 (abuela_bano, lavamanos1, lavamanos2, piso_perro, piso_coqui); m2 (ducha_dentro, ducha_perro, lavamanos1, piso_coqui); m3 (abuela_bano, lavamanos_coqui); m4 (ducha_dentro, lavamanos2, puerta1, repisa_coqui); m5 (centro, puerta1, repisa_coqui); m6 (lavamanos1, lavamanos2, repisa_coqui); m7 (banquito, puerta1, repisa_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 lavamanos1 ~ piso_coqui (4 across, 19 down), m1 lavamanos2 ~ piso_perro (18 across, 20 down), m1 lavamanos2 ~ piso_coqui (21 across, 19 down), m2 ducha_dentro ~ ducha_perro (7 across, 12 down), m2 lavamanos1 ~ piso_coqui (4 across, 19 down), m5 centro ~ repisa_coqui (1 across, 57 down), m6 lavamanos1 ~ repisa_coqui (18 across, 46 down)",
+     "sprites-apart: 32 pairs in the 7 moments of the preview (m1 (abuela_bano, lavamanos1, lavamanos2, piso_perro, piso_coqui); m2 (ducha_dentro, ducha_perro, lavamanos1, piso_coqui); m3 (abuela_bano, lavamanos_coqui); m4 (ducha_dentro, lavamanos2, puerta1, repisa_coqui); m5 (centro, puerta1, repisa_coqui); m6 (lavamanos1, lavamanos2, repisa_coqui); m7 (banquito, puerta1, repisa_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 lavamanos1 ~ piso_coqui (4 across, 19 down), m1 lavamanos2 ~ piso_perro (18 across, 20 down), m1 lavamanos2 ~ piso_coqui (21 across, 19 down), m2 ducha_dentro ~ ducha_perro (7 across, 4 down), m2 lavamanos1 ~ piso_coqui (4 across, 19 down), m5 centro ~ repisa_coqui (1 across, 57 down), m6 lavamanos1 ~ repisa_coqui (18 across, 46 down)",
      "       closest pair in each moment (px across / px down): m1 lavamanos1 ~ piso_coqui 4/19 (needs 28 across or 12 down); m2 lavamanos1 ~ piso_coqui 4/19 (needs 28 across or 12 down); m3 abuela_bano ~ lavamanos_coqui 36/47 (needs 28 across or 12 down); m4 lavamanos2 ~ repisa_coqui 43/46 (needs 28 across or 12 down); m5 centro ~ repisa_coqui 1/57 (needs 28 across or 12 down); m6 lavamanos1 ~ repisa_coqui 18/46 (needs 28 across or 12 down); m7 banquito ~ repisa_coqui 35/37 (needs 28 across or 12 down)"
     ],
     "pairs": [
@@ -650,7 +650,7 @@
       "a": "ducha_dentro",
       "b": "ducha_perro",
       "across": 7,
-      "down": 12,
+      "down": 4,
       "needAcross": 26,
       "ok": true
      },
@@ -677,7 +677,7 @@
       "a": "ducha_perro",
       "b": "lavamanos1",
       "across": 73,
-      "down": 10,
+      "down": 18,
       "needAcross": 26,
       "ok": true
      },
@@ -686,7 +686,7 @@
       "a": "ducha_perro",
       "b": "piso_coqui",
       "across": 77,
-      "down": 29,
+      "down": 37,
       "needAcross": 30,
       "ok": true
      },
@@ -863,10 +863,10 @@
     "name": "ducha-body",
     "ok": true,
     "lines": [
-     "ducha-body: whoever stands at ducha_dentro (abuela m2, Luis m4) shows his top 14 rows over the low wall (0 px hidden, 0 covered) and the wall hides him below: m2 abuela 42,76: 50 rows (26 to 75), head rows 26 to 39: 206 px, 0 hidden by the set, 0 covered; the wall hides 127 px from sprite row 41 down (9 rows of 50); the shoulders are about row 20; m4 luis 42,76: 41 rows (35 to 75), head rows 35 to 48: 182 px, 0 hidden by the set, 0 covered; the wall hides 114 px from sprite row 32 down (9 rows of 41); the shoulders are about row 20",
-     "       OPEN POINT (a set number, not a spot of the spec): in moment 2 the low wall (z 0.8 at v 1.6) hides abuela only from sprite row 41 down (9 of 50 rows: its top edge is on picture row 69.71, his feet on row 76), not below the shoulders (about row 20); it would take a wall of z 1.85 for him at v .8, and no v of his behind the wall hides more than the wall's own height (z 0.8 is 18 px)",
-     "       OPEN POINT (a set number, not a spot of the spec): in moment 4 the low wall (z 0.8 at v 1.6) hides luis only from sprite row 32 down (9 of 41 rows: its top edge is on picture row 69.71, his feet on row 76), not below the shoulders (about row 20); it would take a wall of z 1.45 for him at v .8, and no v of his behind the wall hides more than the wall's own height (z 0.8 is 18 px)",
-     "       OPEN POINT (the spec's description, not a check): m2 Canelo at ducha_perro 35,88 (uv -3.26,1.66,0): the wall hides 0 of his 404 px (0%); the spec says \"Canelo in it: hidden\"; at the spec's (-3.3,1.1,0) he is hidden about 70% but 8 px sideways and 4 px up-down from abuela (sprites-apart), and no spot of his inside the shower is 12 px below her"
+     "ducha-body: whoever stands at ducha_dentro (abuela m2, Luis m4) shows his top 14 rows over the low wall (0 px hidden, 0 covered) and the wall hides him below: m2 abuela 42,76: 50 rows (26 to 75), head rows 26 to 39: 206 px, 0 hidden by the set, 0 covered; the wall hides 345 px from sprite row 32 down (18 rows of 50); the shoulders are about row 20; m4 luis 42,76: 41 rows (35 to 75), head rows 35 to 48: 182 px, 0 hidden by the set, 0 covered; the wall hides 280 px from sprite row 23 down (18 rows of 41); the shoulders are about row 20",
+     "       OPEN POINT (a set number, not a spot of the spec): in moment 2 the low wall (z 1.2 at v 1.6) hides abuela only from sprite row 32 down (18 of 50 rows: its top edge is on picture row 60.71, his feet on row 76), not below the shoulders (about row 20); it would take a wall of z 1.85 for him at v .8, and no v of his behind the wall hides more than the wall's own height (z 1.2 is 27 px)",
+     "       OPEN POINT (a set number, not a spot of the spec): in moment 4 the low wall (z 1.2 at v 1.6) hides luis only from sprite row 23 down (18 of 41 rows: its top edge is on picture row 60.71, his feet on row 76), not below the shoulders (about row 20); it would take a wall of z 1.45 for him at v .8, and no v of his behind the wall hides more than the wall's own height (z 1.2 is 27 px)",
+     "       info, not a check: m2 Canelo at ducha_perro 35,80 (uv -3.26,1.1,0): the wall hides 404 of his 404 px (100%); the spec says \"Canelo in it: hidden\""
     ]
    },
    {
@@ -915,7 +915,7 @@
     "name": "info-touch",
     "ok": true,
     "lines": [
-     "info-touch: not a check. m1 the soap 0 of 36 px covered; m2 the soap 0 of 36 px covered; m1 manos_luis [102,76,12,8] holds 96 of Luis's shown px; m7 the tiny brush's box [125,53,6,4] is under banquito 24 px (not drawn in moment 7: the spec's moment lists only the tube); m2 the shower's box [22,0,40,66] holds 748 of abuela's 895 px; m4 the shower's box [22,0,40,66] holds 474 of luis's 600 px"
+     "info-touch: not a check. m1 the soap 0 of 36 px covered; m2 the soap 0 of 36 px covered; m1 manos_luis [102,76,12,8] holds 96 of Luis's shown px; m7 the tiny brush's box [125,53,6,4] is under banquito 24 px (not drawn in moment 7: the spec's moment lists only the tube); m2 the shower's box [22,0,40,66] holds 550 of abuela's 895 px; m4 the shower's box [22,0,40,66] holds 320 of luis's 600 px"
     ]
    }
   ]

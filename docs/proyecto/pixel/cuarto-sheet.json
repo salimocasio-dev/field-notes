@@ -309,28 +309,32 @@
    "who": "adulto"
   },
   "foto": {
-   "world": [3.4648, -0.7778, 0],
-   "uv": [3, 1.9, 0],
-   "screen": [198, 91],
-   "depth": 1.6454,
+   "world": [3.2527, 0, 0],
+   "uv": [2.3, 2.3, 0],
+   "screen": [180, 96],
+   "depth": 1.9919,
    "scale": 1,
    "kind": "person",
    "view": "wide",
    "what": "abuela with her camera, in front of the door (a plain camera drawn on her chest: the spec gives it no size)",
    "sprite": "abuelaFoto",
-   "who": "adulto"
+   "who": "adulto",
+   "spec": [3, 1.9, 0],
+   "moved": "in moment 6 the shirt on the chair's back covered abuela's legs: she stands between the bed and the chair"
   },
   "alfombra": {
-   "world": [2.2627, 5.0912, 0],
-   "uv": [-2, 5.2, 0],
-   "screen": [68, 134],
-   "depth": 4.5033,
+   "world": [1.8738, 5.7629, 0],
+   "uv": [-2.75, 5.4, 0],
+   "screen": [49, 136],
+   "depth": 4.6765,
    "scale": 1,
    "kind": "place",
    "view": "wide",
    "what": "the frog on the rug (the rug is u -3.3 to -0.7, v 4.2 to 5.9)",
    "sprite": "coqui",
-   "who": "coqui"
+   "who": "coqui",
+   "spec": [-2, 5.2, 0],
+   "moved": "in moment 1 Canelo's nose under the bed sat on the frog's head: the frog goes to the rug's left"
   },
   "alfombra2": {
    "world": [3.3234, 4.5962, 0],
@@ -382,10 +386,10 @@
    "who": "coqui"
   },
   "busca_almohada": {
-   "world": [6.166, 3.9032, 0],
-   "uv": [1.6, 7.12, 0],
-   "screen": [162, 159],
-   "depth": 6.1661,
+   "world": [4.8225, 3.6628, 0],
+   "uv": [0.82, 6, 0],
+   "screen": [141, 144],
+   "depth": 5.1962,
    "scale": 1,
    "kind": "place",
    "view": "wide",
@@ -393,7 +397,7 @@
    "sprite": "coqui",
    "who": "coqui",
    "spec": [1.6, 6, 0],
-   "moved": "things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: v 6.0 -> 7.12 (+1.12) is the least v that leaves the pillow clear and the frog whole (his head then touches the pillow's lower edge: in the preview the pillow looks to rest on his head); u 1.6 -> .82 (-.78) would also pass, but v is tried first"
+   "moved": "things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: u 1.6 -> .82 puts him beside it"
   },
   "busca_silla": {
    "world": [4.7164, 1.7466, 0],
@@ -595,10 +599,22 @@
  },
  "moves": [
   {
+   "spot": "foto",
+   "spec": [3, 1.9, 0],
+   "now": [2.3, 2.3, 0],
+   "why": "in moment 6 the shirt on the chair's back covered abuela's legs: she stands between the bed and the chair"
+  },
+  {
+   "spot": "alfombra",
+   "spec": [-2, 5.2, 0],
+   "now": [-2.75, 5.4, 0],
+   "why": "in moment 1 Canelo's nose under the bed sat on the frog's head: the frog goes to the rug's left"
+  },
+  {
    "spot": "busca_almohada",
    "spec": [1.6, 6, 0],
-   "now": [1.6, 7.12, 0],
-   "why": "things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: v 6.0 -> 7.12 (+1.12) is the least v that leaves the pillow clear and the frog whole (his head then touches the pillow's lower edge: in the preview the pillow looks to rest on his head); u 1.6 -> .82 (-.78) would also pass, but v is tried first"
+   "now": [0.82, 6, 0],
+   "why": "things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: u 1.6 -> .82 puts him beside it"
   },
   {
    "spot": "busca_silla",
@@ -613,7 +629,7 @@
   "whoever lies or sits up in a bed (cama_luis, cama_carmen) is the standing sprite hung by the top of his head and cut at the bed's foot, with a blanket of the bed's colour over it; he lies on his mattress, so his depth plane is the mattress's (front.hung)",
   "the spec gives no shadow radius: El cruce's and El calendario's are used (frog .45, grown-ups .35, children .28, Canelo .3); whoever lies, sits in the armchair or stands on the bed (z above 0) casts none",
   "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
-  "moves: busca_almohada [1.6,6,0] -> [1.6,7.12,0] (things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: v 6.0 -> 7.12 (+1.12) is the least v that leaves the pillow clear and the frog whole (his head then touches the pillow's lower edge: in the preview the pillow looks to rest on his head); u 1.6 -> .82 (-.78) would also pass, but v is tried first); busca_silla [2.1,5,0] -> [2.1,4.57,0] (frog-busca: the big pillow (1.6, 5.4, in front of him) covered 52 of his px at (2.1, 5.0) in the game's picture (moment 3): v 5.0 -> 4.57 (-.43) is the least v that leaves him whole (u 2.1 -> 2.45 (+.35) would also pass, but v is tried first))"
+  "moves: foto [3,1.9,0] -> [2.3,2.3,0] (in moment 6 the shirt on the chair's back covered abuela's legs: she stands between the bed and the chair); alfombra [-2,5.2,0] -> [-2.75,5.4,0] (in moment 1 Canelo's nose under the bed sat on the frog's head: the frog goes to the rug's left); busca_almohada [1.6,6,0] -> [0.82,6,0] (things-clear: in moment 3 the frog at (1.6, 6.0) stood in front of the big pillow (almohada_suelo, 1.6, 5.4) and covered 168 of its px: u 1.6 -> .82 puts him beside it); busca_silla [2.1,5,0] -> [2.1,4.57,0] (frog-busca: the big pillow (1.6, 5.4, in front of him) covered 52 of his px at (2.1, 5.0) in the game's picture (moment 3): v 5.0 -> 4.57 (-.43) is the least v that leaves him whole (u 2.1 -> 2.45 (+.35) would also pass, but v is tried first))"
  ],
  "views": {
   "wide": {
@@ -707,8 +723,8 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 44 pairs in the 6 moments of the preview (m1 (cama_luis, cama_carmen, puerta, alfombra); m2 (cama_luis, cama_carmen, junto_mesita, mesita_coqui); m3 (cama_luis, cama_carmen, junto_mesita, busca_almohada); m4 (butaca_abuelo, cama_luis, cama_carmen, puerta, mesita_coqui); m5 (pie_abuelo, pie_luis, pie_carmen, puerta, mesita_coqui); m6 (capitana, vestir, foto, alfombra2)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 cama_luis ~ alfombra (13 across, 34 down), m2 junto_mesita ~ mesita_coqui (0 across, 29 down), m3 cama_carmen ~ busca_almohada (11 across, 59 down)",
-     "       closest pair in each moment (px across / px down): m1 cama_luis ~ alfombra 13/34 (needs 28 across or 12 down); m2 junto_mesita ~ mesita_coqui 0/29 (needs 30 across or 12 down); m3 cama_carmen ~ busca_almohada 11/59 (needs 28 across or 12 down); m4 cama_luis ~ mesita_coqui 35/12 (needs 28 across or 12 down); m5 pie_luis ~ mesita_coqui 35/31 (needs 28 across or 12 down); m6 vestir ~ alfombra2 29/8 (needs 28 across or 12 down)"
+     "sprites-apart: 44 pairs in the 6 moments of the preview (m1 (cama_luis, cama_carmen, puerta, alfombra); m2 (cama_luis, cama_carmen, junto_mesita, mesita_coqui); m3 (cama_luis, cama_carmen, junto_mesita, busca_almohada); m4 (butaca_abuelo, cama_luis, cama_carmen, puerta, mesita_coqui); m5 (pie_abuelo, pie_luis, pie_carmen, puerta, mesita_coqui); m6 (capitana, vestir, foto, alfombra2)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m2 junto_mesita ~ mesita_coqui (0 across, 29 down), m3 cama_carmen ~ busca_almohada (10 across, 44 down), m3 junto_mesita ~ busca_almohada (25 across, 27 down)",
+     "       closest pair in each moment (px across / px down): m1 cama_luis ~ alfombra 32/36 (needs 28 across or 12 down); m2 junto_mesita ~ mesita_coqui 0/29 (needs 30 across or 12 down); m3 cama_carmen ~ busca_almohada 10/44 (needs 28 across or 12 down); m4 cama_luis ~ mesita_coqui 35/12 (needs 28 across or 12 down); m5 pie_luis ~ mesita_coqui 35/31 (needs 28 across or 12 down); m6 vestir ~ alfombra2 29/8 (needs 28 across or 12 down)"
     ],
     "pairs": [
      {
@@ -733,8 +749,8 @@
       "moment": 1,
       "a": "cama_luis",
       "b": "alfombra",
-      "across": 13,
-      "down": 34,
+      "across": 32,
+      "down": 36,
       "needAcross": 28,
       "ok": true
      },
@@ -751,8 +767,8 @@
       "moment": 1,
       "a": "cama_carmen",
       "b": "alfombra",
-      "across": 83,
-      "down": 34,
+      "across": 102,
+      "down": 36,
       "needAcross": 28,
       "ok": true
      },
@@ -760,8 +776,8 @@
       "moment": 1,
       "a": "puerta",
       "b": "alfombra",
-      "across": 134,
-      "down": 58,
+      "across": 153,
+      "down": 60,
       "needAcross": 28,
       "ok": true
      },
@@ -841,8 +857,8 @@
       "moment": 3,
       "a": "cama_luis",
       "b": "busca_almohada",
-      "across": 81,
-      "down": 59,
+      "across": 60,
+      "down": 44,
       "needAcross": 28,
       "ok": true
      },
@@ -859,8 +875,8 @@
       "moment": 3,
       "a": "cama_carmen",
       "b": "busca_almohada",
-      "across": 11,
-      "down": 59,
+      "across": 10,
+      "down": 44,
       "needAcross": 28,
       "ok": true
      },
@@ -868,8 +884,8 @@
       "moment": 3,
       "a": "junto_mesita",
       "b": "busca_almohada",
-      "across": 46,
-      "down": 42,
+      "across": 25,
+      "down": 27,
       "needAcross": 30,
       "ok": true
      },
@@ -1066,8 +1082,8 @@
       "moment": 6,
       "a": "capitana",
       "b": "foto",
-      "across": 47,
-      "down": 6,
+      "across": 29,
+      "down": 11,
       "needAcross": 24,
       "ok": true
      },
@@ -1084,8 +1100,8 @@
       "moment": 6,
       "a": "vestir",
       "b": "foto",
-      "across": 130,
-      "down": 40,
+      "across": 112,
+      "down": 35,
       "needAcross": 24,
       "ok": true
      },
@@ -1102,8 +1118,8 @@
       "moment": 6,
       "a": "foto",
       "b": "alfombra2",
-      "across": 101,
-      "down": 48,
+      "across": 83,
+      "down": 43,
       "needAcross": 28,
       "ok": true
      }
@@ -1113,7 +1129,7 @@
     "name": "frog-seen",
     "ok": true,
     "lines": [
-     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 alfombra 68,134: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 busca_almohada 162,159: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 alfombra2 97,139: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 alfombra 49,136: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 busca_almohada 141,144: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 mesita_coqui 116,88: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 alfombra2 97,139: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
     ]
    },
    {
@@ -1150,14 +1166,14 @@
     "name": "canelo-frog",
     "ok": true,
     "lines": [
-     "canelo-frog: Canelo at junto_mesita 116,117 covers none of the frog (m2, m3): m2: the frog at mesita_coqui 116,88, Canelo at junto_mesita 116,117: 0 of his 536 px under Canelo; m3: the frog at busca_almohada 162,159, Canelo at junto_mesita 116,117: 0 of his 536 px under Canelo"
+     "canelo-frog: Canelo at junto_mesita 116,117 covers none of the frog (m2, m3): m2: the frog at mesita_coqui 116,88, Canelo at junto_mesita 116,117: 0 of his 536 px under Canelo; m3: the frog at busca_almohada 141,144, Canelo at junto_mesita 116,117: 0 of his 536 px under Canelo"
     ]
    },
    {
     "name": "frog-busca",
     "ok": true,
     "lines": [
-     "frog-busca: the frog at busca_cama, busca_almohada and busca_silla is whole (0 px hidden or covered), in the game's picture: the frog at busca_cama 81,115 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; the frog at busca_almohada 162,159 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; the frog at busca_silla 175,125 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture",
+     "frog-busca: the frog at busca_cama, busca_almohada and busca_silla is whole (0 px hidden or covered), in the game's picture: the frog at busca_cama 81,115 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; the frog at busca_almohada 141,144 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; the frog at busca_silla 175,125 in the picture of moment 3: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture",
      "       info, not a check of the spec: the frog at cama_coqui 81,91 in the picture of moment 1: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; the frog at silla_coqui 172,131 in the picture of moment 6: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
     ]
    },
