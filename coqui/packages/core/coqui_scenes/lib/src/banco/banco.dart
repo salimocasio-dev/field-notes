@@ -559,6 +559,12 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
 
   final Map<String, Map<String, Int32List>> _frontPixels = {};
 
+  /// The pixels of each front part in the baked state [key], once this scene has baked it (its first bake records them).
+  Map<String, Int32List>? frontPixelsOf(String key) => _frontPixels[key];
+
+  /// The scene's places, read from its sheet (banco_places.dart).
+  BancoPlaces get places => _p;
+
   @override
   bool get frogShadow => !sheet.shadows.containsKey('coqui');
 
@@ -797,8 +803,8 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
             : x < 168
             ? 1
             : 2;
-        final b = _geo.BENCH[k];
-        return (v: (x + b.y1) / math.sqrt2 + .03, bench: 'banco$k');
+        final b = _geo.BENCH[k], g = _geo.Gs(x, y - 11, _ZS);
+        return (v: (g[0] + b.y1) / math.sqrt2 + .03, bench: 'banco$k');
       }
       return (v: vOf(x, y - 1), bench: null);
     }
@@ -4464,6 +4470,11 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
       }
     }
     final perros = (w['perros'] as Map<String, dynamic>?) ?? const {};
+    // the old W's dogs, before any move (the frog beside one moves with it)
+    final perros0 = [
+      for (final d in perros.values)
+        if (d is Map && d['x'] != null) [d['x'] as num, d['y'] as num],
+    ];
     for (final p in perros.values) {
       if (p is Map && p['x'] != null) {
         final m = find('perro', p);
@@ -4516,17 +4527,14 @@ class Banco extends Escena implements SetScene, SetOverSprites, PairPlaces {
           break;
         }
       }
-      for (final d in perros.values) {
-        if (d is! Map ||
-            d['x'] == null ||
-            q['x'] != _round(d['x'] as num) + 14 ||
-            q['y'] != _round(d['y'] as num) - 23) {
+      for (final d in perros0) {
+        if (q['x'] != _round(d[0]) + 14 || q['y'] != _round(d[1]) - 23) {
           continue;
         }
         for (final m2 in MV) {
           if (m2.who == 'perro' &&
-              m2.old[0] == _round(d['x'] as num) &&
-              m2.old[1] == _round(d['y'] as num)) {
+              m2.old[0] == _round(d[0]) &&
+              m2.old[1] == _round(d[1])) {
             q['x'] = (q['x'] as num) + m2.now[0] - m2.old[0];
             q['y'] = (q['y'] as num) + m2.now[1] - m2.old[1];
             break;

@@ -31,12 +31,8 @@ Sprite Function()? replay(String key, String caller) {
   if (line == 158) {
     // spr("pb"+id+pose+habla+(p.sent?1:0), ()=>KIT.mkPersona(w, pose, habla, p.sent))
     final m = _person.firstMatch(key)!;
-    return () => mkPersona(
-      Banco.QUIEN[m[1]!]!.who!,
-      m[2]!,
-      m[3] == '1',
-      m[4] == '1',
-    );
+    return () =>
+        mkPersona(Banco.QUIEN[m[1]!]!.who!, m[2]!, m[3] == '1', m[4] == '1');
   }
   if (line == 156) {
     // spr("abS"+ps+habla, ()=>KIT.mkAbuelaS(ps, habla, 0))
@@ -61,9 +57,8 @@ Sprite Function()? replay(String key, String caller) {
   }
   if (line == 178) {
     // perro: spr("can"+tp+o.pose+f+(o.pena?1:0), ()=>mkCan(tp, o.pose, f, o.pena))
-    final m = RegExp(
-      r'^can(canelo|viejo|joven)([a-z]+)([01])([01])$',
-    ).firstMatch(key)!;
+    final m = RegExp(r'^can(canelo|viejo|joven)([a-z]+)([01])([01])$')
+        .firstMatch(key)!;
     return () => mkCan(m[1]!, m[2]!, int.parse(m[3]!), m[4] == '1');
   }
   if (line == 184) {
