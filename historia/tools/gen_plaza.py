@@ -219,7 +219,7 @@ def ronda62(s,u,v,l_q,tests):
      {"calc":e,"cond":h+"=u","then":"$"+u,"else":"$"+v},{"calc":n,"cond":h+"=u","then":"$"+v,"else":"$"+u},
      l_q,{"if":q+"=h","then":["c62_%sh_$%s"%(s,e),"c62_%sn_$%s"%(s,n)],"else":["c62_%sn_$%s"%(s,n),"c62_%sh_$%s"%(s,e)]},
      {"decide":"do","options":["$"+u,"$"+v],"pick":"$"+e,"tests":tests,"lock":True,"mudo":True,"lead":[],"line":l_q,
-      "right":[act("ayuda62",quien="$"+e,ok=1),act("traduce62",quien="$"+e),act("piragua62"),act("moneda"),{"if":"ok","then":[OK]}],
+      "right":[act("ayuda62",quien="$"+e,ok=1),act("traduce62",quien="$"+e),act("piragua62"),act("moneda"),act("sale",quien="turista"),act("sale",quien="$"+u),act("sale",quien="$"+v),{"if":"ok","then":[OK]}],   # the visitor goes off with her piragua, the two who came up walk away: the spots are free for the next round (after a right move and after the right touch that follows a miss)
       "wrong":[act("ayuda62",quien="$"+n,ok=0),"c62_no_$"+n,act("se_va62"),{"if":"lost=0","then":[act("cola",n=2)],"else":[act("cola",n=1)]}]+X}]
 s62={"id":"hablo-espanol","title":"Hablo español","place":"La plaza","scene":"plaza","next":"que-hora-es",
  "goal":"Help the visitors who line up at the piragüero's cart by pointing out who speaks English, and keep the three visitors at the back of the line: a helper who cannot help makes the last one in the line look at his watch and walk away.",
@@ -244,12 +244,12 @@ s62={"id":"hablo-espanol","title":"Hablo español","place":"La plaza","scene":"p
   # A: the piragüero asks, the two answer (tests inglés). B: the next visitor steps up; "¿Y ahora?"; the two answer (tests hablo)
   {"dots":4}]+ronda62("a","pa","pb","c62_pi_quien","ingles")
   +[{"dots":5},act("llega",quien="turista",a="turno"),act("pide62",quien="turista",cosa="piragua")]+ronda62("b","pc","pd","c62_pi_ahora_quien","hablo"),
- "final":[{"dots":6},act("llega",quien="ana",a="ayuda1"),   # 7: Ana helps the visitors still at the back of the line; the jar and the piragua, by the visitors left
+ "final":[{"dots":6},act("llega",quien="ana",a="ayuda1"),gesto("piraguero","mira",a="coqui"),"c62_pi_quieres","c62_cq_si_favor",   # 7: Ana is back and helps the line; the piragüero turns to the frog and asks (the turn: sí); then the three pictures, by the visitors left
   {"if":"lost=0","then":[act("final62",n=3)],"else":[{"if":"lost=1","then":[act("final62",n=2)],"else":[act("final62",n=1)]}]},
-  {"dots":7},"c62_pi_quieres","c62_cq_si_favor","c62_ana_yo_hablo","c62_fin",act("fin")],
+  {"dots":7},"c62_ana_yo_hablo","c62_fin",act("fin")],   # 8: Ana's line and the last line
  "leer":["c62_pi_perdon","c62_q_habla","c62_ana_entiendes","c62_cq_no","c62_ana_entiendo","c62_ana_turista","c62_pi_ahora_no_se","c62_luis_no_se","c62_ana_busca","c62_ca_parada","c62_pi_no_se",
   "c62_pi_quien","c62_ah_mujer","c62_an_hombre","c62_pi_ahora_quien","c62_bn_joven","c62_bh_senora","c62_pi_quieres","c62_cq_si_favor","c62_ana_yo_hablo","c62_fin"]}
-s62=reuse(s62,{"c62_cq_no":TG(("no",["no"])),"c62_cq_si_favor":TG(("por favor",["por favor"]))})
+s62=reuse(s62,{"c62_cq_no":TG(("no",["no"])),"c62_cq_si_favor":TG(("sí",["sí","si","sí por favor"]))})
 json.dump(s62,open("cuentos/hablo-espanol.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
