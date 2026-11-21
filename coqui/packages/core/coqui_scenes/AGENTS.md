@@ -28,8 +28,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's and La sala's
-  factories make the real scenes (their sheets read first: `loadScene`); the other eight are stubs that throw
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's, La sala's and El
+  patio's factories make the real scenes (their sheets read first: `loadScene`); the other seven are stubs that throw
   `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
@@ -50,7 +50,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
 - `coqui/ref/pp/<id>/`: the set's baked states, made by `node coqui/tool/ref/pp/make.js --states <file>` with one line per
   state of the sheet's `setKey.baked` (`{"id": "<id>/door-shut-win-shut", "kind": "set", "page": "docs/proyecto/pixel/<id>-set.html",
   "query": "?door=shut&win=shut"}`), listed in `coqui/tool/ref/pp/states.json` and made by `make.js --only <ids>`: El balcón's four
-  (order 30b) and La sala's five (`sala/luz-1-fotos-000` ..., order 31b).
+  (order 30b), La sala's five (`sala/luz-1-fotos-000` ..., order 31b) and El patio's fifteen (`patio/hora-dia-door-shut-gate-shut`
+  ..., order 32b).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
@@ -111,6 +112,42 @@ two earlier ones did not, and how the port uses it, as sala-preview.html does:
   `sala_preview_test`, `sala_boxes_test`, `sala_pictures_test`, `sala_acts_test`; the preview's rule for moving a recorded W
   is `test/support/sala_preview_remap.dart` (the moves of the acts its story names: the case's `acts`).
 
+## A yard with its sky, by the hour (order 32b, El patio)
+
+patio.js is on the kit too (`class Patio extends Escena implements SetScene, SetOverSprites`). What El patio's sheet has that
+the earlier ones did not, and how the port uses it, as patio-preview.html does:
+
+- **The hour is the set's.** `setKey` is `hora-door-gate` (`dia`, `tarde`, `tarde2`, `ocaso`, `crepusculo`, `noche`; W.noche,
+  W.sol, W.osc as the sheet's `setKey.params.hora.fromW`): the sky, the hills and the light of the hour are baked; the old
+  overlays of patio.js:147 and :148 are dropped and nobody is dimmed. The blades of the lawn take the light of the hour
+  (patio-set.html sets the engine's `tuftLit` and `tuftDark` when its page loads): `PatioSet.buildSet` sets them first and
+  `BakedSet` keeps them with the state, so one engine serves every hour. The ground (the field and the path beyond the yard
+  take their colours from the hour) is cached per engine and per day, dusk and night (patio-set.html: one per page).
+- **`behind`.** The sun, the moon and the stars are drawn first by `draw` (patio.js:130, :131), then `Patio.behind` draws the
+  set's own pixels again wherever this frame's depth is over -1e8 (the hills included, and the leaves of this frame): the
+  `SetOverSprites` turn the other way round. It reads the set as framed (`setFramed`: `engine.pix` after the shadows and its
+  `zb` after the leaves, patio-preview.html `DEPTH.live()`). A frame with no set draws nothing again.
+- **`flowerLeaves`.** At patio.js:135 (the sheet's `moves`) each flower in a bed's hole is drawn with its clump of leaves
+  first (`Patio.flowerLeaves`: the stage `open` or `bud` by `f.k`, the sheet's rows and palette, 1:1, not dimmed).
+- **The frog's places at the gate** (`moves`, line 86: LUGAR.porton and LUGAR.sale follow the gate): `LUGAR` is the sheet's
+  `lugar`, so the kit's `ir` counts 8 pairs one hop more (the sheet's `hops`; `hopsAll` holds all 91, `patio_acts_test` checks
+  each against the kit). No recorded run walks one of them.
+- **`moves`** at their lines: SOLY (26 for the old 24), the sixth star, abuela in the door (spot `asoma`), the walk to the door
+  (`seva`) and to the gate (`juntos`), the people of inicio9, inicio10 and inicio11 (`PatioPlaces.floor(line, x, y)`: a moved
+  place gives its `new`, a place the code entry of that line names its own numbers), and `W.respEn` after inicio11.
+- **A position an act reads from the story file** (`anda`, `pon`, `alcentro`: `+o.x`, `+o.y`) goes through `remap`, as the
+  runner sends a set step's (h-patio beats.20 is moved). `remap` also gives back a point in the air (`to.screen`) and one that is
+  no place (`to.none`, the eyes' direction).
+- **`talk`** as La sala's, its corner cards read by `SheetTalk.boardsOf` (the sun card, the fireflies card, the two scores).
+  **`shadows`**: the ball's on the lawn (not in the tree), the frog's and the people's (the baby in mamá's arms casts none).
+- **Review pictures** fold `ñ` and write a space as `_` (`hasta mañana.si` is `hasta_manana.si`); cual-camino's `parque.no` is a
+  picture of the yard (its `esc`), drawn by El patio.
+- **Random draws** (`azar`, in `lados`) from the game's `Rng`, as La sala's.
+- Files: `lib/src/patio/patio_set.dart`, `patio_places.dart`, `patio.dart`. Tests: `patio_set_test`, `patio_sprites_test`,
+  `patio_preview_test`, `patio_boxes_test`, `patio_pictures_test`, `patio_acts_test`; the preview's rule for moving a recorded W
+  is `test/support/patio_preview_remap.dart` (the moves of the acts its story names, the story's own positions the sheet
+  moved: the case's `story` and `acts`).
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its
@@ -152,16 +189,16 @@ two earlier ones did not, and how the port uses it, as sala-preview.html does:
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/ and .../sala/ for the browser set tests
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/ and .../sala/
-node tool/preview_shots.mjs [--scene balcon|sala] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/ and .../patio/ for the browser set tests
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/ and .../patio/
+node tool/preview_shots.mjs [--scene balcon|sala|patio] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
                                                   the scene's stories)
-COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala] flutter test tool/compare_all_test.dart   every picture of
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio] flutter test tool/compare_all_test.dart   every picture of
                                                   preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala]   bake times
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio]   bake times
                                                   (each state's first bake, then again on the same engine)
 ```
 
