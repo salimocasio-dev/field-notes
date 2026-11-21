@@ -41,7 +41,7 @@ void main() {
   final rows = <String>[];
 
   test('there are 10, the baked states of the sheet', () {
-    final baked = [for (final s in sheet.setKey!.baked) _folder(s.key!)];
+    final baked = [for (final s in sheet.setKey.baked) _folder(s.key!)];
     expect(baked, hasLength(10));
     expect(refs.map((r) => r['id']).toSet(), baked.toSet());
   });
