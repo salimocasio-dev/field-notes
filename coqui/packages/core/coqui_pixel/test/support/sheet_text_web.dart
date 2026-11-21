@@ -5,6 +5,7 @@ import 'fixtures/campo_sheet.dart';
 import 'fixtures/estufa_sheet.dart';
 import 'fixtures/frente_sheet.dart';
 import 'fixtures/lago_sheet.dart';
+import 'fixtures/nevera_sheet.dart';
 import 'fixtures/patio_sheet.dart';
 import 'fixtures/sala_sheet.dart';
 
@@ -34,3 +35,6 @@ String bancoSheetText() => bancoSheetJson;
 
 /// The text of La estufa's sheet, from the fixture.
 String estufaSheetText() => estufaSheetJson;
+
+/// The text of La nevera's sheet, from the fixture.
+String neveraSheetText() => neveraSheetJson;
