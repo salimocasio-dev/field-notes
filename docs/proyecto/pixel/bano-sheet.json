@@ -1,0 +1,923 @@
+{
+ "scene": "bano",
+ "made": "node docs/proyecto/pixel/bano-sheet-make.js, from bano-set.html (window.BANO.E) and the design of El baño (the orchestrator's p9-spec, general rules and section bano). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": -42
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 66. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the back wall at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 66 + 13 v - 22.5 z; the picture holds u from -4.62 to 4.62",
+  "spot": "a spot is a world point of the feet (z 0: the floor; z 0.3: the small stool Carmen stands on; z 0.8: the shelves' tops and the sink's top; z 0.4: the stool's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): its bottom middle on the spot (the box [sx - floor(w / 2), sy - h, w, h]). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX); a grown-up (abuelo) draws 51 rows of a 56-row canvas, a child 41 of 44 (the raincoat child 43: the hood), their lowest canvas rows empty; abuela standing mkAbuela (48 x 51): column 30, 50 rows drawn; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); Canelo standing mkPerro (30 x 22): column 15 and its bottom edge, 30 columns of ink (his box is 28); a small thing: see spot. The stool under Carmen (12 x 7): its top row on her feet's row sy, its middle column on sx, so its bottom edge is on the floor point of her spot (sy + 7). A towel over a head (16 x 10): its top row on the top row of the child's drawing, its middle column on his. The gauge's three bars (8 x 3): centred on the gauge, 3 px apart. Nobody is drawn turned: whoever stands in the shower or at the sink faces us",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "ducha": "ducha_dentro (-3, .8, 0) is behind the shower's low front wall (v 1.6, z 0 to 0.8): the depth rule hides what the wall covers (the wall's top edge is on picture row 69.71, the feet of someone at v .8 on row 76.4: see the ducha-body check)"
+ },
+ "setKey": {
+  "params": {},
+  "key": "none: one state (hora dia)",
+  "baked": ["bano-set.html"]
+ },
+ "things": {
+  "ducha": {
+   "set": true,
+   "uv": [-3.75, 0, 0, -2.25, 0, 3.1],
+   "world": [-2.6517, 1.591, 0, -1.591, 2.6517, 3.1],
+   "box": [22, 0, 40, 66],
+   "what": "the shower's corner of the back wall: its dark tiles, u -3.75 to -2.25, from the floor (z 0) up (the wall is z 3.1, the picture stops at its top row), on the wall (v 0). The low front wall (v 1.6) and the shower's floor are not in it (open point)",
+   "quad": [
+    [-2.6517, 2.6517, 0],
+    [-1.591, 1.591, 0],
+    [-1.591, 1.591, 3.1],
+    [-2.6517, 2.6517, 3.1]
+   ]
+  },
+  "llave_ducha": {
+   "set": true,
+   "uv": [-1.95, 0, 1.35],
+   "world": [-1.3789, 1.3789, 1.35],
+   "box": [64, 31, 10, 10],
+   "what": "a 10 x 10 px box on the shower's tap (TAP_SHOWER u -1.95, z 1.35: the round plate with the red and the blue knob, on the wall outside the shower)"
+  },
+  "llave_lavamanos": {
+   "set": true,
+   "uv": [0, 0.16, 0.925],
+   "world": [0.1131, 0.1131, 0.925],
+   "box": [115, 42, 10, 10],
+   "what": "a 10 x 10 px box on the sink's tap (the tap is on the sink's top at its back: u 0, v 0.16, from z 0.8 to 1.05; the box is centred on its middle, z 0.925)"
+  },
+  "espejo": {
+   "set": true,
+   "uv": [-0.63, 0, 1.32, 0.63, 0, 2.43],
+   "world": [-0.4455, -0.4455, 1.32, 0.4455, 0.4455, 2.43],
+   "box": [103, 11, 34, 26],
+   "what": "the mirror with its frame: u -0.55 to 0.55, z 1.4 to 2.35 (the frame .08 round it), on the wall (v 0)",
+   "quad": [
+    [-0.4455, 0.4455, 1.32],
+    [0.4455, -0.4455, 1.32],
+    [0.4455, -0.4455, 2.43],
+    [-0.4455, 0.4455, 2.43]
+   ]
+  },
+  "calentador": {
+   "set": true,
+   "uv": [2.22, 0, 1.68, 2.54, 0, 2.12],
+   "world": [1.5698, -1.7961, 1.68, 1.7961, -1.5698, 2.12],
+   "box": [177, 18, 10, 11],
+   "what": "the water heater's gauge: the dark rectangle u 2.22 to 2.54, z 1.68 to 2.12 (HEATER.gauge 2.38,1.9), on the wall (v 0). Its three red bars are sprites, each 8 x 3 px (bars: their boxes, top to bottom, 3 px apart, centred on the gauge: the make's numbers, open point)",
+   "quad": [
+    [1.5698, -1.5698, 1.68],
+    [1.7961, -1.7961, 1.68],
+    [1.7961, -1.7961, 2.12],
+    [1.5698, -1.5698, 2.12]
+   ],
+   "gauge": [2.38, 1.9],
+   "bars": [
+    [178, 19, 8, 3],
+    [178, 22, 8, 3],
+    [178, 25, 8, 3]
+   ]
+  },
+  "canasta": {
+   "set": true,
+   "uv": [2.45, 1.2, 0, 3.05, 1.8, 0.55],
+   "world": [2.5809, -1.3081, 0, 3.4295, -0.4596, 0.55],
+   "box": [183, 69, 17, 21],
+   "what": "the basket (BASKET u 2.75, v 1.5: a drum of radius .3, z 0 to .55)"
+  },
+  "jabon": "sprite",
+  "toalla_a": "sprite",
+  "toalla_b": "sprite",
+  "cosa_a": "sprite",
+  "cosa_b": "sprite",
+  "tubo": "sprite",
+  "cepillito": "sprite",
+  "abuela": "sprite",
+  "abuelo": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "perro": "sprite",
+  "coqui": "sprite",
+  "manos_luis": {
+   "set": true,
+   "uv": [-0.45, 2.43, 0],
+   "world": [1.4001, 2.0365, 0],
+   "box": [102, 76, 12, 8],
+   "hands": [108, 79.5],
+   "what": "a 12 x 8 px box at Luis's hands when he stands at lavamanos1 (108,98) with his hands held up: centred on his middle column and on the row of his hands (row 24.5 of the canvas of the \"yo\" pose, 18.5 px above his feet's row: the sprite is 44 rows tall, its lowest drawn row is 42)"
+  }
+ },
+ "spots": {
+  "puerta1": {
+   "world": [2.7577, -1.7678, 0],
+   "uv": [3.2, 0.7, 0],
+   "screen": [203, 75],
+   "depth": 0.6062,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "in the door: abuelo (100 opening), abuela (100 game, 101 opening)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "puerta2": {
+   "world": [2.9345, -0.6718, 0],
+   "uv": [2.55, 1.6, 0],
+   "screen": [186, 87],
+   "depth": 1.3856,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "just inside the door (no moment of the preview has anyone here)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "lavamanos1": {
+   "world": [1.4001, 2.0365, 0],
+   "uv": [-0.45, 2.43, 0],
+   "screen": [108, 98],
+   "depth": 2.1044,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a child at the sink's left, in front of it (the sink is at u 0): Luis (99 opening and game, 101 game)",
+   "sprite": "nino",
+   "who": "nino",
+   "spec": [-0.45, 2.4, 0],
+   "moved": "shelf-things-clear: in moment 6 Luis's head covered 3 px of the tube at tubo: v 2.4 -> 2.43 (+.03, 1 px down; u -.45 -> -.52 (-.07) would also clear it)"
+  },
+  "lavamanos2": {
+   "world": [2.0718, 1.3647, 0],
+   "uv": [0.5, 2.43, 0],
+   "screen": [133, 98],
+   "depth": 2.1044,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a child at the sink's right, in front of it: Carmen (99 opening, 100 opening, 101 game)",
+   "sprite": "nino",
+   "who": "nino",
+   "spec": [0.5, 2.4, 0],
+   "moved": "shelf-things-clear: in moment 6 Carmen's head covered 4 px of the tiny brush at cepillito: v 2.4 -> 2.43 (+.03, 1 px down; u .5 -> .56 (+.06) would also clear it)"
+  },
+  "banquito": {
+   "world": [1.7536, 1.4991, 0.3],
+   "uv": [0.18, 2.3, 0.3],
+   "screen": [125, 89],
+   "depth": 2.1419,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen standing on a small stool at the sink, before the mirror (101 opening): the stool is a 12 x 7 px stand-in drawn under her, its top row on her feet's row (z 0.3 is 7 px up); the set draws no stool here",
+   "sprite": "nino",
+   "who": "nino",
+   "on": "banquito",
+   "spec": [0, 2.3, 0.3],
+   "moved": "shelf-things-clear: in moment 7 Carmen on the stool covered 25 px of the tube at tubo (her head is over the sink's left half): u 0 -> .18 (+.18, 5 px to the right, still before the mirror); the least move (v 2.3 -> 2.79 (+.49) would also clear it)"
+  },
+  "ante_espejo": {
+   "world": [1.7678, 1.7678, 0],
+   "uv": [0, 2.5, 0],
+   "screen": [120, 99],
+   "depth": 2.1651,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuelo before the mirror (100 ending; no moment of the preview has him)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "ducha_dentro": {
+   "world": [-1.5556, 2.687, 0],
+   "uv": [-3, 0.8, 0],
+   "screen": [42, 76],
+   "depth": 0.6928,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "someone in the shower, in the middle of it (the shower runs u -3.75 to -2.25; the low front wall is at v 1.6): abuela (99 game), Luis (100 opening, a child)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "ducha_perro": {
+   "world": [-1.1314, 3.479, 0],
+   "uv": [-3.26, 1.66, 0],
+   "screen": [35, 88],
+   "depth": 1.4376,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Canelo in the shower, at its left end (the low wall hides what it hides of him)",
+   "sprite": "perro",
+   "who": "perro",
+   "spec": [-3.3, 1.1, 0],
+   "moved": "sprites-apart: in moment 2 Canelo was 8 px sideways from abuela at ducha_dentro (the boxes need 26) and 4 px up-down (needs 12): v 1.1 -> 1.66 (+.56: the least move on either axis of either spot that keeps abuela in the shower; the dog now stands on the line of the low wall, whose front face is at v 1.67, so the wall hides most of him; u -3.3 -> -3.99 (-.69) would take him out of the shower to the left and out of the window, u -3 -> -2.32 for abuela would put her half out of it on the right, v .8 -> .19 for abuela would put her feet above the wall's top so that it hides none of her); and moments-in-view: his tail's last pixel was on column 19, one column left of the window at x0 20 (abuela at puerta1 draws up to column 215, the window's last at x0 20): u -3.3 -> -3.26 (+.04, 1 px)"
+  },
+  "centro": {
+   "world": [1.4849, 3.182, 0],
+   "uv": [-1.2, 3.3, 0],
+   "screen": [89, 109],
+   "depth": 2.8579,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a child in a raincoat with its hood up, in the middle of the room, as far from the shower as from the sink (100 game)",
+   "sprite": "lluvia",
+   "who": "nino"
+  },
+  "abuela_bano": {
+   "world": [0.8697, 2.8072, 0],
+   "uv": [-1.37, 2.6, 0],
+   "screen": [84, 100],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela standing in the room (99 opening and ending)",
+   "sprite": "abuela",
+   "who": "adulto",
+   "spec": [-1.3, 2.6, 0],
+   "moved": "sprites-apart: in moment 1 abuela was 22 px sideways from Luis at lavamanos1 (the boxes need 24) and 3 px up-down (needs 12): u -1.3 -> -1.37 (-.07, 2 px); the least move on either axis of either spot that clears every pair of her moments (v 2.6 -> 1.49 would also clear it: -1.11)"
+  },
+  "piso_perro": {
+   "world": [3.677, 1.9799, 0],
+   "uv": [1.2, 4, 0],
+   "screen": [151, 118],
+   "depth": 3.4641,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Canelo on the floor of the room (99 opening): the spec gives the place, (1.2, 4.0, 0), not a name: the name is the make's",
+   "sprite": "perro",
+   "who": "perro"
+  },
+  "piso_coqui": {
+   "world": [2.5456, 2.9698, 0],
+   "uv": [-0.3, 3.9, 0],
+   "screen": [112, 117],
+   "depth": 3.3775,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the floor, in front of the sink",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "repisa_coqui": {
+   "world": [-0.601, 1.0536, 0.8],
+   "uv": [-1.17, 0.32, 0.8],
+   "screen": [90, 52],
+   "depth": 0.6771,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the left shelf, in the middle of it (SHELF_L u -1.72 to -0.62, v to 0.62): its top, z 0.8",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "bano"
+  },
+  "lavamanos_coqui": {
+   "world": [0.297, 0.297, 0.8],
+   "uv": [0, 0.42, 0.8],
+   "screen": [120, 53],
+   "depth": 0.7637,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog sitting in the sink (SINK u 0, v 0.42): its top, z 0.8",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "bano"
+  },
+  "toalla_a": {
+   "world": [2.9345, 0.8839, 0.4],
+   "uv": [1.45, 2.7, 0.4],
+   "screen": [158, 92],
+   "depth": 2.5383,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the first folded towel on the stool (a 12 x 8 px stand-in): its bottom middle on the stool's top, z 0.4",
+   "box": [152, 84, 12, 8],
+   "anchor": "bottom",
+   "on": "bano"
+  },
+  "toalla_b": {
+   "world": [3.288, 0.5303, 0.4],
+   "uv": [1.95, 2.7, 0.4],
+   "screen": [171, 92],
+   "depth": 2.5383,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the second folded towel on the stool: its bottom middle on the stool's top, z 0.4",
+   "box": [165, 84, 12, 8],
+   "anchor": "bottom",
+   "on": "bano"
+  },
+  "jabon": {
+   "world": [0.693, 0.2687, 0.8],
+   "uv": [0.3, 0.68, 0.8],
+   "screen": [128, 57],
+   "depth": 0.9889,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the bar of soap on the sink's front edge (a 8 x 5 px stand-in): its bottom middle on the sink's top, z 0.8, v 0.68",
+   "box": [124, 52, 8, 5],
+   "anchor": "bottom",
+   "on": "bano"
+  },
+  "tubo": {
+   "world": [0.2687, 0.693, 0.8],
+   "uv": [-0.3, 0.68, 0.8],
+   "screen": [112, 57],
+   "depth": 0.9889,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the tube of toothpaste on the sink's front edge, at its left (a 5 x 9 px stand-in): its bottom middle on the sink's top",
+   "box": [110, 48, 5, 9],
+   "anchor": "bottom",
+   "on": "bano"
+  },
+  "cepillito": {
+   "world": [0.693, 0.2687, 0.8],
+   "uv": [0.3, 0.68, 0.8],
+   "screen": [128, 57],
+   "depth": 0.9889,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the frog's tiny brush on the sink's front edge, at its right (a 6 x 4 px stand-in; the spec gives it the soap's u, they are never in one moment): its bottom middle on the sink's top",
+   "box": [125, 53, 6, 4],
+   "anchor": "bottom",
+   "on": "bano"
+  },
+  "cosa_a": {
+   "world": [0.898, -0.4455, 0.8],
+   "uv": [0.95, 0.32, 0.8],
+   "screen": [145, 52],
+   "depth": 0.6771,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the first of the two things on the right shelf (a 12 x 6 px stand-in: the toothbrush with its squeeze or the comb): its bottom middle on the shelf's top, z 0.8",
+   "box": [139, 46, 12, 6],
+   "anchor": "bottom",
+   "on": "bano"
+  },
+  "cosa_b": {
+   "world": [1.3223, -0.8697, 0.8],
+   "uv": [1.55, 0.32, 0.8],
+   "screen": [160, 52],
+   "depth": 0.6771,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the second of the two things on the right shelf: its bottom middle on the shelf's top, z 0.8",
+   "box": [154, 46, 12, 6],
+   "anchor": "bottom",
+   "on": "bano"
+  }
+ },
+ "groups": {
+  "touch": {
+   "jabon": "jabon",
+   "toalla_a": "toalla_a",
+   "toalla_b": "toalla_b",
+   "cosa_a": "cosa_a",
+   "cosa_b": "cosa_b",
+   "tubo": "tubo",
+   "cepillito": "cepillito"
+  },
+  "persons": {
+   "abuela": ["abuela_bano", "ducha_dentro", "puerta1"],
+   "abuelo": ["puerta1", "ante_espejo"],
+   "luis": ["lavamanos1", "ducha_dentro"],
+   "carmen": ["lavamanos2", "banquito"],
+   "perro": ["ducha_perro", "piso_perro"]
+  },
+  "repisa_izq": ["repisa_coqui"],
+  "repisa_der": ["cosa_a", "cosa_b"],
+  "lavamanos": ["jabon", "tubo", "cepillito"],
+  "toallas": ["toalla_a", "toalla_b"]
+ },
+ "moves": [
+  {
+   "spot": "lavamanos1",
+   "spec": [-0.45, 2.4, 0],
+   "now": [-0.45, 2.43, 0],
+   "why": "shelf-things-clear: in moment 6 Luis's head covered 3 px of the tube at tubo: v 2.4 -> 2.43 (+.03, 1 px down; u -.45 -> -.52 (-.07) would also clear it)"
+  },
+  {
+   "spot": "lavamanos2",
+   "spec": [0.5, 2.4, 0],
+   "now": [0.5, 2.43, 0],
+   "why": "shelf-things-clear: in moment 6 Carmen's head covered 4 px of the tiny brush at cepillito: v 2.4 -> 2.43 (+.03, 1 px down; u .5 -> .56 (+.06) would also clear it)"
+  },
+  {
+   "spot": "banquito",
+   "spec": [0, 2.3, 0.3],
+   "now": [0.18, 2.3, 0.3],
+   "why": "shelf-things-clear: in moment 7 Carmen on the stool covered 25 px of the tube at tubo (her head is over the sink's left half): u 0 -> .18 (+.18, 5 px to the right, still before the mirror); the least move (v 2.3 -> 2.79 (+.49) would also clear it)"
+  },
+  {
+   "spot": "ducha_perro",
+   "spec": [-3.3, 1.1, 0],
+   "now": [-3.26, 1.66, 0],
+   "why": "sprites-apart: in moment 2 Canelo was 8 px sideways from abuela at ducha_dentro (the boxes need 26) and 4 px up-down (needs 12): v 1.1 -> 1.66 (+.56: the least move on either axis of either spot that keeps abuela in the shower; the dog now stands on the line of the low wall, whose front face is at v 1.67, so the wall hides most of him; u -3.3 -> -3.99 (-.69) would take him out of the shower to the left and out of the window, u -3 -> -2.32 for abuela would put her half out of it on the right, v .8 -> .19 for abuela would put her feet above the wall's top so that it hides none of her); and moments-in-view: his tail's last pixel was on column 19, one column left of the window at x0 20 (abuela at puerta1 draws up to column 215, the window's last at x0 20): u -3.3 -> -3.26 (+.04, 1 px)"
+  },
+  {
+   "spot": "abuela_bano",
+   "spec": [-1.3, 2.6, 0],
+   "now": [-1.37, 2.6, 0],
+   "why": "sprites-apart: in moment 1 abuela was 22 px sideways from Luis at lavamanos1 (the boxes need 24) and 3 px up-down (needs 12): u -1.3 -> -1.37 (-.07, 2 px); the least move on either axis of either spot that clears every pair of her moments (v 2.6 -> 1.49 would also clear it: -1.11)"
+  }
+ ],
+ "notes": [
+  "every number of a spot is the orchestrator's (the p9-spec, \"bano\"), given in (u, v, z); the shower, the sink, the shelves, the stool, the heater's gauge and the basket are read from the set",
+  "things: ducha, llave_ducha, llave_lavamanos, espejo, calentador, canasta are boxes on the picture (ducha: the corner of the back wall only); manos_luis is a 12 x 8 box at Luis's hands when he stands at lavamanos1 with his hands held up (the preview draws him with the maker's \"yo\" pose, both hands up at his chest: the box is centred on them); jabon, toalla_a, toalla_b, cosa_a, cosa_b, tubo and cepillito are sprites at the spots groups.touch names; the people are sprites. calentador.bars: the three bars' boxes",
+  "whoever stands (every person here) is hung by the feet on the spot; Carmen at banquito stands on a stand-in stool 12 x 7 (z 0.3 is 7 px); abuelo is KIT.FAM.abuelo (the family's grandfather, a grown-up man); mama is only a voice",
+  "abuela, abuelo and Luis are at ducha_dentro in different moments (abuela 99 game, Luis 100 opening): one spot for a grown-up or a child (the sprite box is 24 wide for both)",
+  "the spec gives no radius for Canelo's shadow: .3 used (as El calendario: open point); the others are El cruce's (frog .45, grown-ups .35, children .28)",
+  "OPEN POINTS (choices the spec does not settle, made in the preview only): the gauge's three bars are drawn in moments 4 and 5 (story 100) and nowhere else; the tiny brush is not drawn in moment 7 (the spec's moment lists only the tube: info-touch says what it would be under); Luis at lavamanos1 in moments 1 and 2 is drawn with his hands up (the maker's \"yo\" pose), in moment 6 standing; the towels on the stool are red and blue, the two things on the right shelf the toothbrush at cosa_a and the comb at cosa_b; Canelo is drawn standing; the child in the raincoat is Luis's maker in yellow with a yellow hood",
+  "the view's x0: the x0 that holds every spot (a person with his sprite box, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
+  "moves: lavamanos1 [-0.45,2.4,0] -> [-0.45,2.43,0] (shelf-things-clear: in moment 6 Luis's head covered 3 px of the tube at tubo: v 2.4 -> 2.43 (+.03, 1 px down; u -.45 -> -.52 (-.07) would also clear it)); lavamanos2 [0.5,2.4,0] -> [0.5,2.43,0] (shelf-things-clear: in moment 6 Carmen's head covered 4 px of the tiny brush at cepillito: v 2.4 -> 2.43 (+.03, 1 px down; u .5 -> .56 (+.06) would also clear it)); banquito [0,2.3,0.3] -> [0.18,2.3,0.3] (shelf-things-clear: in moment 7 Carmen on the stool covered 25 px of the tube at tubo (her head is over the sink's left half): u 0 -> .18 (+.18, 5 px to the right, still before the mirror); the least move (v 2.3 -> 2.79 (+.49) would also clear it)); ducha_perro [-3.3,1.1,0] -> [-3.26,1.66,0] (sprites-apart: in moment 2 Canelo was 8 px sideways from abuela at ducha_dentro (the boxes need 26) and 4 px up-down (needs 12): v 1.1 -> 1.66 (+.56: the least move on either axis of either spot that keeps abuela in the shower; the dog now stands on the line of the low wall, whose front face is at v 1.67, so the wall hides most of him; u -3.3 -> -3.99 (-.69) would take him out of the shower to the left and out of the window, u -3 -> -2.32 for abuela would put her half out of it on the right, v .8 -> .19 for abuela would put her feet above the wall's top so that it hides none of her); and moments-in-view: his tail's last pixel was on column 19, one column left of the window at x0 20 (abuela at puerta1 draws up to column 215, the window's last at x0 20): u -3.3 -> -3.26 (+.04, 1 px)); abuela_bano [-1.3,2.6,0] -> [-1.37,2.6,0] (sprites-apart: in moment 1 abuela was 22 px sideways from Luis at lavamanos1 (the boxes need 24) and 3 px up-down (needs 12): u -1.3 -> -1.37 (-.07, 2 px); the least move on either axis of either spot that clears every pair of her moments (v 2.6 -> 1.49 would also clear it: -1.11))"
+ ],
+ "views": {
+  "wide": {
+   "world": [2.2301, 2.3389, 0],
+   "uv": [-0.0769, 3.2308, 0],
+   "screen": [118, 108],
+   "zoom": 1,
+   "x0": 20,
+   "region": [20, 0, 196, 216],
+   "stories": [99, 100, 101],
+   "holds": ["puerta1", "puerta2", "lavamanos1", "lavamanos2", "banquito", "ante_espejo", "ducha_dentro", "ducha_perro", "centro", "abuela_bano", "piso_perro", "piso_coqui", "repisa_coqui", "lavamanos_coqui", "toalla_a", "toalla_b", "jabon", "tubo", "cepillito", "cosa_a", "cosa_b"],
+   "extent": [21, 214],
+   "x0Range": [20, 20],
+   "what": "the one view of stories 99, 100 and 101: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). At x0 22 ducha_perro (1 px), the drawn pixels of the moments (columns 20 to 215) would be cut. x0 20 to 20 hold them all; x0 20 is the one nearest 22, the window centred on the picture (the spots held span columns 21 to 214; the sprites of the 7 moments draw columns 20 to 215). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the shower's low front wall hides the lower rows of whoever stands in the shower, the sink and the stool hide the legs of whoever stands behind them.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El pedido's sheet: the upright plane through the feet",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "abuelo": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "perro": 0.3
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28) and .3 for Canelo (as El calendario; open point)",
+  "none": ["banquito", "ducha_dentro", "repisa_coqui", "lavamanos_coqui", "toalla_a", "toalla_b", "jabon", "tubo", "cepillito", "cosa_a", "cosa_b"],
+  "onSeat": "whoever stands on the stool, the frog on a shelf or in the sink, the things on the stool, the sink and the shelves (z above 0) cast none: none of those is floor; whoever stands inside the shower (a spot with u between SHOWER.u0 and u1 and v less than SHOWER.v1: ducha_dentro, and ducha_perro when it is inside) casts none: the shower has its own floor behind its low wall (a shadow cast at the ground under it would be the room's)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "spec-projection",
+    "ok": true,
+    "lines": [
+     "spec-projection: the spec's arithmetic (sx = 120 + 26 u, sy = 66 + 13 v - 22.5 z, rounded) is the engine's projection for all 21 spots (worst difference 0 px across, 0 px down: the engine does not round z: the spec's 22.5 is 22.517); PZ.xy is ((u + v) / R2, (v - u) / R2)"
+    ]
+   },
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 20 (window columns 20 to 215); the 21 spots held span columns 21 to 214 (194 of the window's 196); x0 that hold them all: 20 to 20; at the spec's 22 these are cut: ducha_perro 1 px (so x0 20, the nearest to 22 that holds them all)"
+    ],
+    "x0": {
+     "wide": 20
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 21 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 20); the leftmost column any takes is 21 (ducha_perro), the rightmost 214 (puerta1)"
+    ]
+   },
+   {
+    "name": "moments-in-view",
+    "ok": true,
+    "lines": [
+     "moments-in-view: every drawn pixel of every sprite of the 7 moments is inside the picture and the window [20, 216) (m1 6 sprites, m2 7 sprites, m3 2 sprites, m4 7 sprites, m5 6 sprites, m6 9 sprites, m7 7 sprites)"
+    ]
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 10 spots above the floor (banquito, repisa_coqui, lavamanos_coqui, toalla_a, toalla_b, jabon, tubo, cepillito, cosa_a, cosa_b) are on a surface (the shelves' tops z 0.8, the sink's top z 0.8, the stool's top z 0.4: part bano, depth within .1 of the spot's; banquito: its stand-in stool)",
+     "       banquito z 0.3: a stand-in stool 12 x 7 drawn under her: its top row on row 89, its bottom edge on the floor point's row 96 (7 px up from the floor, the stool is 7 rows); the set draws no stool there",
+     "       repisa_coqui z 0.8: part bano, depth 0.66 against the spot's 0.68 (0.02)",
+     "       lavamanos_coqui z 0.8: part bano, depth 0.8 against the spot's 0.76 (0.03)",
+     "       toalla_a z 0.4: part bano, depth 2.53 against the spot's 2.54 (0.01)",
+     "       toalla_b z 0.4: part bano, depth 2.53 against the spot's 2.54 (0.01)",
+     "       jabon z 0.8: part bano, depth 1 against the spot's 0.99 (0.01)",
+     "       tubo z 0.8: part bano, depth 1 against the spot's 0.99 (0.01)",
+     "       cepillito z 0.8: part bano, depth 1 against the spot's 0.99 (0.01)",
+     "       cosa_a z 0.8: part bano, depth 0.66 against the spot's 0.68 (0.02)",
+     "       cosa_b z 0.8: part bano, depth 0.66 against the spot's 0.68 (0.02)"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of ducha, llave_ducha, llave_lavamanos, espejo, calentador, canasta, manos_luis (and the three bars) are inside the window [20, 216) and the picture (ducha [22,0,40,66], llave_ducha [64,31,10,10], llave_lavamanos [115,42,10,10], espejo [103,11,34,26], calentador [177,18,10,11], calentador.bar1 [178,19,8,3], calentador.bar2 [178,22,8,3], calentador.bar3 [178,25,8,3], canasta [183,69,17,21], manos_luis [102,76,12,8])"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 32 pairs in the 7 moments of the preview (m1 (abuela_bano, lavamanos1, lavamanos2, piso_perro, piso_coqui); m2 (ducha_dentro, ducha_perro, lavamanos1, piso_coqui); m3 (abuela_bano, lavamanos_coqui); m4 (ducha_dentro, lavamanos2, puerta1, repisa_coqui); m5 (centro, puerta1, repisa_coqui); m6 (lavamanos1, lavamanos2, repisa_coqui); m7 (banquito, puerta1, repisa_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 lavamanos1 ~ piso_coqui (4 across, 19 down), m1 lavamanos2 ~ piso_perro (18 across, 20 down), m1 lavamanos2 ~ piso_coqui (21 across, 19 down), m2 ducha_dentro ~ ducha_perro (7 across, 12 down), m2 lavamanos1 ~ piso_coqui (4 across, 19 down), m5 centro ~ repisa_coqui (1 across, 57 down), m6 lavamanos1 ~ repisa_coqui (18 across, 46 down)",
+     "       closest pair in each moment (px across / px down): m1 lavamanos1 ~ piso_coqui 4/19 (needs 28 across or 12 down); m2 lavamanos1 ~ piso_coqui 4/19 (needs 28 across or 12 down); m3 abuela_bano ~ lavamanos_coqui 36/47 (needs 28 across or 12 down); m4 lavamanos2 ~ repisa_coqui 43/46 (needs 28 across or 12 down); m5 centro ~ repisa_coqui 1/57 (needs 28 across or 12 down); m6 lavamanos1 ~ repisa_coqui 18/46 (needs 28 across or 12 down); m7 banquito ~ repisa_coqui 35/37 (needs 28 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "abuela_bano",
+      "b": "lavamanos1",
+      "across": 24,
+      "down": 2,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuela_bano",
+      "b": "lavamanos2",
+      "across": 49,
+      "down": 2,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuela_bano",
+      "b": "piso_perro",
+      "across": 67,
+      "down": 18,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuela_bano",
+      "b": "piso_coqui",
+      "across": 28,
+      "down": 17,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "lavamanos1",
+      "b": "lavamanos2",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "lavamanos1",
+      "b": "piso_perro",
+      "across": 43,
+      "down": 20,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "lavamanos1",
+      "b": "piso_coqui",
+      "across": 4,
+      "down": 19,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "lavamanos2",
+      "b": "piso_perro",
+      "across": 18,
+      "down": 20,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "lavamanos2",
+      "b": "piso_coqui",
+      "across": 21,
+      "down": 19,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "piso_perro",
+      "b": "piso_coqui",
+      "across": 39,
+      "down": 1,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "ducha_dentro",
+      "b": "ducha_perro",
+      "across": 7,
+      "down": 12,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "ducha_dentro",
+      "b": "lavamanos1",
+      "across": 66,
+      "down": 22,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "ducha_dentro",
+      "b": "piso_coqui",
+      "across": 70,
+      "down": 41,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "ducha_perro",
+      "b": "lavamanos1",
+      "across": 73,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "ducha_perro",
+      "b": "piso_coqui",
+      "across": 77,
+      "down": 29,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "lavamanos1",
+      "b": "piso_coqui",
+      "across": 4,
+      "down": 19,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela_bano",
+      "b": "lavamanos_coqui",
+      "across": 36,
+      "down": 47,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ducha_dentro",
+      "b": "lavamanos2",
+      "across": 91,
+      "down": 22,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ducha_dentro",
+      "b": "puerta1",
+      "across": 161,
+      "down": 1,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "ducha_dentro",
+      "b": "repisa_coqui",
+      "across": 48,
+      "down": 24,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "lavamanos2",
+      "b": "puerta1",
+      "across": 70,
+      "down": 23,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "lavamanos2",
+      "b": "repisa_coqui",
+      "across": 43,
+      "down": 46,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "puerta1",
+      "b": "repisa_coqui",
+      "across": 113,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "centro",
+      "b": "puerta1",
+      "across": 114,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "centro",
+      "b": "repisa_coqui",
+      "across": 1,
+      "down": 57,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "puerta1",
+      "b": "repisa_coqui",
+      "across": 113,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "lavamanos1",
+      "b": "lavamanos2",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "lavamanos1",
+      "b": "repisa_coqui",
+      "across": 18,
+      "down": 46,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "lavamanos2",
+      "b": "repisa_coqui",
+      "across": 43,
+      "down": 46,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 7,
+      "a": "banquito",
+      "b": "puerta1",
+      "across": 78,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 7,
+      "a": "banquito",
+      "b": "repisa_coqui",
+      "across": 35,
+      "down": 37,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 7,
+      "a": "puerta1",
+      "b": "repisa_coqui",
+      "across": 113,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 7 moments (0 px covered by anything): m1 piso_coqui 112,117: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 piso_coqui 112,117: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 lavamanos_coqui 120,53: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 repisa_coqui 90,52: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 repisa_coqui 90,52: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 repisa_coqui 90,52: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m7 repisa_coqui 90,52: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "heads-clear",
+    "ok": true,
+    "lines": [
+     "heads-clear: nobody sits or lies in El baño; the one raised on a seat, Carmen on the stool at banquito (m7), is whole in the window and her head (the top 14 rows) is covered by nobody and by nothing: 1 head, 0 px covered, 0 hidden by the set (m7 banquito 125,89: head rows 48 to 61: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture)"
+    ]
+   },
+   {
+    "name": "ducha-body",
+    "ok": true,
+    "lines": [
+     "ducha-body: whoever stands at ducha_dentro (abuela m2, Luis m4) shows his top 14 rows over the low wall (0 px hidden, 0 covered) and the wall hides him below: m2 abuela 42,76: 50 rows (26 to 75), head rows 26 to 39: 206 px, 0 hidden by the set, 0 covered; the wall hides 127 px from sprite row 41 down (9 rows of 50); the shoulders are about row 20; m4 luis 42,76: 41 rows (35 to 75), head rows 35 to 48: 182 px, 0 hidden by the set, 0 covered; the wall hides 114 px from sprite row 32 down (9 rows of 41); the shoulders are about row 20",
+     "       OPEN POINT (a set number, not a spot of the spec): in moment 2 the low wall (z 0.8 at v 1.6) hides abuela only from sprite row 41 down (9 of 50 rows: its top edge is on picture row 69.71, his feet on row 76), not below the shoulders (about row 20); it would take a wall of z 1.85 for him at v .8, and no v of his behind the wall hides more than the wall's own height (z 0.8 is 18 px)",
+     "       OPEN POINT (a set number, not a spot of the spec): in moment 4 the low wall (z 0.8 at v 1.6) hides luis only from sprite row 32 down (9 of 41 rows: its top edge is on picture row 69.71, his feet on row 76), not below the shoulders (about row 20); it would take a wall of z 1.45 for him at v .8, and no v of his behind the wall hides more than the wall's own height (z 0.8 is 18 px)",
+     "       OPEN POINT (the spec's description, not a check): m2 Canelo at ducha_perro 35,88 (uv -3.26,1.66,0): the wall hides 0 of his 404 px (0%); the spec says \"Canelo in it: hidden\"; at the spec's (-3.3,1.1,0) he is hidden about 70% but 8 px sideways and 4 px up-down from abuela (sprites-apart), and no spot of his inside the shower is 12 px below her"
+    ]
+   },
+   {
+    "name": "fixtures-clear",
+    "ok": true,
+    "lines": [
+     "fixtures-clear: in moments 4 and 5 the shower's tap [64,31,10,10], the sink's tap [115,42,10,10], the mirror [103,11,34,26] and the gauge [177,18,10,11] are covered by nobody: m4: 0 px of the two taps, the mirror and the gauge covered by anyone; m5: 0 px of the two taps, the mirror and the gauge covered by anyone"
+    ]
+   },
+   {
+    "name": "shelf-things-clear",
+    "ok": true,
+    "lines": [
+     "shelf-things-clear: the two things on the right shelf (cosa_a, cosa_b: m6, m7), the tube (m6, m7) and the tiny brush (m6) are covered by nobody and stand on their tops: m6 cosa_a: 52 px, 0 covered, 0 hidden by the set; on its top yes; m6 cosa_b: 57 px, 0 covered, 0 hidden by the set; on its top yes; m6 tubo: 41 px, 0 covered, 0 hidden by the set; on its top yes; m6 cepillito: 17 px, 0 covered, 0 hidden by the set; on its top yes; m7 cosa_a: 52 px, 0 covered, 0 hidden by the set; on its top yes; m7 cosa_b: 57 px, 0 covered, 0 hidden by the set; on its top yes; m7 tubo: 41 px, 0 covered, 0 hidden by the set; on its top yes"
+    ]
+   },
+   {
+    "name": "towels-clear",
+    "ok": true,
+    "lines": [
+     "towels-clear: in moment 2 the two towels (toalla_a, toalla_b) are covered by nobody, hidden by nothing, and stand on the stool's top: toalla_a 158,92: 92 px, 0 covered, 0 hidden by the set; on the stool's top yes; toalla_b 171,92: 92 px, 0 covered, 0 hidden by the set; on the stool's top yes"
+    ]
+   },
+   {
+    "name": "frog-shelf",
+    "ok": true,
+    "lines": [
+     "frog-shelf: the frog at repisa_coqui 90,52 stands on the left shelf's top (z 0.8) and covers neither tap in moments 4 to 7: m4: the frog's columns 75 to 104 (the shower's tap box [64,31,10,10], the sink's [115,42,10,10]): 0 px on the shower's tap, 0 on the sink's; m5: the frog's columns 75 to 104 (the shower's tap box [64,31,10,10], the sink's [115,42,10,10]): 0 px on the shower's tap, 0 on the sink's; m6: the frog's columns 75 to 104 (the shower's tap box [64,31,10,10], the sink's [115,42,10,10]): 0 px on the shower's tap, 0 on the sink's; m7: the frog's columns 75 to 104 (the shower's tap box [64,31,10,10], the sink's [115,42,10,10]): 0 px on the shower's tap, 0 on the sink's"
+    ]
+   },
+   {
+    "name": "frog-sink",
+    "ok": true,
+    "lines": [
+     "frog-sink: the frog at lavamanos_coqui 120,53 (moment 3) stands on the sink's top (z 0.8) and is whole: 536 px, 0 hidden by the set, 0 covered, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "bars-in-gauge",
+    "ok": true,
+    "lines": [
+     "bars-in-gauge: the gauge's three bars (8 x 3 px each, centred on the gauge, 3 px apart) are drawn at the sheet's boxes [[178,19,8,3],[178,22,8,3],[178,25,8,3]] inside the gauge's box [177,18,10,11], whole (m4: y 19 to 21, y 22 to 24, y 25 to 27; m5: y 19 to 21, y 22 to 24, y 25 to 27)"
+    ]
+   },
+   {
+    "name": "info-touch",
+    "ok": true,
+    "lines": [
+     "info-touch: not a check. m1 the soap 0 of 36 px covered; m2 the soap 0 of 36 px covered; m1 manos_luis [102,76,12,8] holds 96 of Luis's shown px; m7 the tiny brush's box [125,53,6,4] is under banquito 24 px (not drawn in moment 7: the spec's moment lists only the tube); m2 the shower's box [22,0,40,66] holds 748 of abuela's 895 px; m4 the shower's box [22,0,40,66] holds 474 of luis's 600 px"
+    ]
+   }
+  ]
+ }
+}
