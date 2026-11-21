@@ -31,7 +31,7 @@ const E = {
   HEAD: [3.62, 3.95], HOOKS: [3.44, 2.8, 2.16],                       // the coloured squares' z; the three hooks' z (a card hangs below its hook)
   ARCH: { z: 4.05, h: .82 },                                           // the arch of flags over columns 6 and 7, on the board's top edge; its hook at its middle
   STEP: { v0: .12, v1: .62, h: .3 },                                  // the low step along the board's foot
-  SEAT: [3.15, .35, 3.3],                                             // the seat at the right: u, from v to v
+  SEAT: [3.15, .2, 3.7],                                             // the seat at the right: u, from v to v
   LAMPS: [[-3.55, -1.0], [3.8, -.7]],
   STAND: { u: 3.6, v: -2.6 },                                         // the bandstand, behind at the right
   WALL: -3.5, END: -4.9,
@@ -64,7 +64,8 @@ function board() {
   const a0 = colU(6) + .04, a1 = colU(8) - .04, am = (a0 + a1) / 2, A = E.ARCH;                           // the arch over the two orange columns: a hoop of wood, flags along it, a hook at its middle
   PZ.wall(a0, a1, B.v, A.z, A.z + A.h + .06, (u, z) => {
     const t = (u - a0) / (a1 - a0), top = A.z + A.h * Math.sin(Math.PI * clamp(t, 0, 1)) ** .6;
-    if (z > top || z < top - .4) return (Math.abs(u - am) < .03 && z < top && z > A.z + .66) ? rgb(70, 60, 60) : 0;     // the hook's stem, hanging from the hoop's middle
+    if (Math.abs(u - am) < .03 && z < top - .07 && z > A.z + .6) return rgb(70, 60, 60);                             // the hook's stem, hanging from the hoop's middle
+    if (z > top || z < top - .4) return 0;
     if (z > top - .07) return rgb(...FRAME);
     const kk = Math.floor(t * 5), ff = t * 5 - kk, d = (top - .07) - z;
     return (d < .32 && Math.abs(ff - .5) < .46 * (1 - d / .32)) ? rgb(...[[236, 80, 90], [250, 206, 70], [86, 160, 150], [250, 250, 250], [110, 150, 220]][kk % 5]) : 0;
