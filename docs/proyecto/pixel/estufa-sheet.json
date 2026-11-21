@@ -2319,6 +2319,14 @@
   "abuelaHead": 0,
   "board": [2, 2, 68, 26]
  },
+ "faults": [
+  {
+   "line": 122,
+   "and": 125,
+   "what": "a cup held by mamá is drawn as the baby: gente() draws the baby whenever mamá has p.bebe, and p.bebe is also the cup a person drinks from (luisda, ranallena set p.bebe = \"cal\" or \"frio\" when mamá is the one served in cuidado); the line after skips the cup for mamá, so her cup is never drawn and the baby appears in her arms (mkBebe(e) with e the cup's kind)",
+   "kept": "as the old: estufa-preview.html and the sheet's checks draw it so; the port is told, not asked to change it here"
+  }
+ ],
  "code": [
   {
    "line": 3,
