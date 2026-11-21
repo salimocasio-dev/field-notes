@@ -779,6 +779,7 @@ class SheetMove {
     this.raw, {
     this.values = const [],
     this.respEn,
+    this.shift,
   });
 
   final int line;
@@ -800,6 +801,11 @@ class SheetMove {
 
   /// El patio's: where the answer cards stand after this act (`respEn`, juego.js `W.respEn`), or null.
   final List<int>? respEn;
+
+  /// El lago's post (order 35b): who moves with the moved thing (`shift`: the duck paddling round the post, `who`
+  /// `pato`, while its field `when` is set, `rema`) and by how much (`by`, screen px), or null. A recorded W's moving
+  /// rule (lago-preview.html remapW), not the scene's: the scene's own acts take the post's new place.
+  final ({String who, String when, List<num> by})? shift;
 }
 
 /// One place where the old code turns smoothing on (`smoothing.places`): where ([at], "sala.js:120"), what it does, and
@@ -2192,6 +2198,14 @@ List<SheetMove> _readMoves(Object? v, String at) {
               }(),
           ],
           respEn: _opt(o, 'respEn', (v) => _ints(v, '$p.respEn', length: 2)),
+          shift: _opt(o, 'shift', (v) {
+            final sh = _obj(v, '$p.shift');
+            return (
+              who: _str(_need(sh, 'who', '$p.shift'), '$p.shift.who'),
+              when: _str(_need(sh, 'when', '$p.shift'), '$p.shift.when'),
+              by: _nums(_need(sh, 'by', '$p.shift'), '$p.shift.by', length: 2),
+            );
+          }),
         );
       }(),
   ];
