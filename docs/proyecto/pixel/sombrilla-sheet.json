@@ -160,10 +160,10 @@
    "who": "adulto"
   },
   "manta2": {
-   "world": [0.1414, 3.4648, 0],
-   "uv": [-2.35, 2.55, 0],
-   "screen": [59, 97],
-   "depth": 2.2084,
+   "world": [0.601, 3.0759, 0],
+   "uv": [-1.75, 2.6, 0],
+   "screen": [75, 98],
+   "depth": 2.2517,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -186,10 +186,10 @@
    "who": "adulto"
   },
   "luis.cara": {
-   "world": [2.2274, 3.8537, 0],
-   "uv": [-1.15, 4.3, 0],
-   "screen": [90, 120],
-   "depth": 3.7239,
+   "world": [2.7931, 4.4194, 0],
+   "uv": [-1.15, 5.1, 0],
+   "screen": [90, 130],
+   "depth": 4.4167,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -198,10 +198,10 @@
    "who": "nino"
   },
   "carmen.cara": {
-   "world": [5.374, 0.7071, 0],
-   "uv": [3.3, 4.3, 0],
-   "screen": [206, 120],
-   "depth": 3.7239,
+   "world": [5.9397, 1.2728, 0],
+   "uv": [3.3, 5.1, 0],
+   "screen": [206, 130],
+   "depth": 4.4167,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -282,10 +282,10 @@
    "anchor": "centre"
   },
   "luis.figura": {
-   "world": [1.6971, 2.9698, 0],
-   "uv": [-0.9, 3.3, 0],
-   "screen": [97, 107],
-   "depth": 2.8579,
+   "world": [1.9092, 2.3335, 0],
+   "uv": [-0.3, 3, 0],
+   "screen": [112, 103],
+   "depth": 2.5981,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -306,10 +306,10 @@
    "who": "nino"
   },
   "coqui.figura": {
-   "world": [4.3134, 6.1518, 0],
-   "uv": [-1.3, 7.4, 0],
-   "screen": [86, 160],
-   "depth": 6.4086,
+   "world": [4.5962, 6.4347, 0],
+   "uv": [-1.3, 7.8, 0],
+   "screen": [86, 165],
+   "depth": 6.755,
    "scale": 1,
    "kind": "place",
    "view": "wide",
@@ -511,7 +511,7 @@
     "ok": true,
     "lines": [
      "spots-in-view: 24 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22)",
-     "       the people's drawn silhouettes (info, not a check): manta 80,90: abuelaP drawn columns 70 to 114, rows 49 to 89; abuelaL drawn columns 54 to 105, rows 75 to 89; manta2 59,97: abuelaP drawn columns 49 to 93, rows 56 to 96; abuelaL drawn columns 33 to 84, rows 82 to 96; manta3 99,97: abuelaP drawn columns 89 to 133, rows 56 to 96; abuelaL drawn columns 73 to 124, rows 82 to 96; luis.cara 90,120: nino drawn columns 79 to 100, rows 79 to 119; carmen.cara 206,120: nino drawn columns 195 to 216, rows 79 to 119; coqui.cara 147,164: coqui drawn columns 132 to 161, rows 140 to 163; luis.figura 97,107: nino drawn columns 86 to 107, rows 66 to 106; carmen.figura 188,98: nino drawn columns 177 to 198, rows 57 to 97; coqui.figura 86,160: coqui drawn columns 71 to 100, rows 136 to 159; perro 65,146: perro drawn columns 50 to 79, rows 127 to 145; hoyo 42,158: perro drawn columns 27 to 56, rows 139 to 157; sol1 104,189: abuela drawn columns 91 to 116, rows 139 to 188; sol2 147,198: nino drawn columns 136 to 157, rows 157 to 197; sol3 190,189: nino drawn columns 179 to 200, rows 148 to 188; coqui.bolsa 58,168: coqui drawn columns 43 to 72, rows 144 to 167"
+     "       the people's drawn silhouettes (info, not a check): manta 80,90: abuelaP drawn columns 70 to 114, rows 49 to 89; abuelaL drawn columns 54 to 105, rows 75 to 89; manta2 75,98: abuelaP drawn columns 65 to 109, rows 57 to 97; abuelaL drawn columns 49 to 100, rows 83 to 97; manta3 99,97: abuelaP drawn columns 89 to 133, rows 56 to 96; abuelaL drawn columns 73 to 124, rows 82 to 96; luis.cara 90,130: nino drawn columns 79 to 100, rows 89 to 129; carmen.cara 206,130: nino drawn columns 195 to 216, rows 89 to 129; coqui.cara 147,164: coqui drawn columns 132 to 161, rows 140 to 163; luis.figura 112,103: nino drawn columns 101 to 122, rows 62 to 102; carmen.figura 188,98: nino drawn columns 177 to 198, rows 57 to 97; coqui.figura 86,165: coqui drawn columns 71 to 100, rows 141 to 164; perro 65,146: perro drawn columns 50 to 79, rows 127 to 145; hoyo 42,158: perro drawn columns 27 to 56, rows 139 to 157; sol1 104,189: abuela drawn columns 91 to 116, rows 139 to 188; sol2 147,198: nino drawn columns 136 to 157, rows 157 to 197; sol3 190,189: nino drawn columns 179 to 200, rows 148 to 188; coqui.bolsa 58,168: coqui drawn columns 43 to 72, rows 144 to 167"
     ],
     "cut": []
    },
@@ -534,8 +534,8 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 44 pairs in the 6 moments of the preview (m1 (manta, luis.cara, carmen.cara, coqui.cara); m2 (manta, luis.cara, carmen.cara, coqui.cara); m3 (manta, luis.figura, carmen.figura, coqui.figura, perro); m4 (manta, luis.figura, carmen.figura, coqui.figura, hoyo); m5 (coqui.bolsa, sol1, sol2, sol3); m6 (manta2, coqui.bolsa, sol2, sol3)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 manta ~ luis.cara (10 across, 30 down), m2 manta ~ luis.cara (10 across, 30 down), m3 manta ~ luis.figura (17 across, 17 down), m3 manta ~ coqui.figura (6 across, 70 down), m3 manta ~ perro (15 across, 56 down), m3 luis.figura ~ coqui.figura (11 across, 53 down), m3 coqui.figura ~ perro (21 across, 14 down), m4 manta ~ luis.figura (17 across, 17 down), m4 manta ~ coqui.figura (6 across, 70 down), m4 luis.figura ~ coqui.figura (11 across, 53 down), m6 manta2 ~ coqui.bolsa (1 across, 71 down)",
-     "       closest pair in each moment (px across / px down): m1 manta ~ luis.cara 10/30 (needs 24 across or 12 down); m2 manta ~ luis.cara 10/30 (needs 24 across or 12 down); m3 manta ~ coqui.figura 6/70 (needs 28 across or 12 down); m4 manta ~ coqui.figura 6/70 (needs 28 across or 12 down); m5 coqui.bolsa ~ sol1 46/21 (needs 28 across or 12 down); m6 manta2 ~ coqui.bolsa 1/71 (needs 28 across or 12 down)"
+     "sprites-apart: 44 pairs in the 6 moments of the preview (m1 (manta, luis.cara, carmen.cara, coqui.cara); m2 (manta, luis.cara, carmen.cara, coqui.cara); m3 (manta, luis.figura, carmen.figura, coqui.figura, perro); m4 (manta, luis.figura, carmen.figura, coqui.figura, hoyo); m5 (coqui.bolsa, sol1, sol2, sol3); m6 (manta2, coqui.bolsa, sol2, sol3)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 manta ~ luis.cara (10 across, 40 down), m2 manta ~ luis.cara (10 across, 40 down), m3 manta ~ coqui.figura (6 across, 75 down), m3 manta ~ perro (15 across, 56 down), m3 luis.figura ~ coqui.figura (26 across, 62 down), m3 coqui.figura ~ perro (21 across, 19 down), m4 manta ~ coqui.figura (6 across, 75 down), m4 luis.figura ~ coqui.figura (26 across, 62 down), m6 manta2 ~ coqui.bolsa (17 across, 70 down)",
+     "       closest pair in each moment (px across / px down): m1 manta ~ luis.cara 10/40 (needs 24 across or 12 down); m2 manta ~ luis.cara 10/40 (needs 24 across or 12 down); m3 manta ~ coqui.figura 6/75 (needs 28 across or 12 down); m4 manta ~ coqui.figura 6/75 (needs 28 across or 12 down); m5 coqui.bolsa ~ sol1 46/21 (needs 28 across or 12 down); m6 manta2 ~ coqui.bolsa 17/70 (needs 28 across or 12 down)"
     ],
     "pairs": [
      {
@@ -543,7 +543,7 @@
       "a": "manta",
       "b": "luis.cara",
       "across": 10,
-      "down": 30,
+      "down": 40,
       "needAcross": 24,
       "ok": true
      },
@@ -552,7 +552,7 @@
       "a": "manta",
       "b": "carmen.cara",
       "across": 126,
-      "down": 30,
+      "down": 40,
       "needAcross": 24,
       "ok": true
      },
@@ -579,7 +579,7 @@
       "a": "luis.cara",
       "b": "coqui.cara",
       "across": 57,
-      "down": 44,
+      "down": 34,
       "needAcross": 28,
       "ok": true
      },
@@ -588,7 +588,7 @@
       "a": "carmen.cara",
       "b": "coqui.cara",
       "across": 59,
-      "down": 44,
+      "down": 34,
       "needAcross": 28,
       "ok": true
      },
@@ -597,7 +597,7 @@
       "a": "manta",
       "b": "luis.cara",
       "across": 10,
-      "down": 30,
+      "down": 40,
       "needAcross": 24,
       "ok": true
      },
@@ -606,7 +606,7 @@
       "a": "manta",
       "b": "carmen.cara",
       "across": 126,
-      "down": 30,
+      "down": 40,
       "needAcross": 24,
       "ok": true
      },
@@ -633,7 +633,7 @@
       "a": "luis.cara",
       "b": "coqui.cara",
       "across": 57,
-      "down": 44,
+      "down": 34,
       "needAcross": 28,
       "ok": true
      },
@@ -642,7 +642,7 @@
       "a": "carmen.cara",
       "b": "coqui.cara",
       "across": 59,
-      "down": 44,
+      "down": 34,
       "needAcross": 28,
       "ok": true
      },
@@ -650,8 +650,8 @@
       "moment": 3,
       "a": "manta",
       "b": "luis.figura",
-      "across": 17,
-      "down": 17,
+      "across": 32,
+      "down": 13,
       "needAcross": 24,
       "ok": true
      },
@@ -669,7 +669,7 @@
       "a": "manta",
       "b": "coqui.figura",
       "across": 6,
-      "down": 70,
+      "down": 75,
       "needAcross": 28,
       "ok": true
      },
@@ -686,8 +686,8 @@
       "moment": 3,
       "a": "luis.figura",
       "b": "carmen.figura",
-      "across": 91,
-      "down": 9,
+      "across": 76,
+      "down": 5,
       "needAcross": 24,
       "ok": true
      },
@@ -695,8 +695,8 @@
       "moment": 3,
       "a": "luis.figura",
       "b": "coqui.figura",
-      "across": 11,
-      "down": 53,
+      "across": 26,
+      "down": 62,
       "needAcross": 28,
       "ok": true
      },
@@ -704,8 +704,8 @@
       "moment": 3,
       "a": "luis.figura",
       "b": "perro",
-      "across": 32,
-      "down": 39,
+      "across": 47,
+      "down": 43,
       "needAcross": 26,
       "ok": true
      },
@@ -714,7 +714,7 @@
       "a": "carmen.figura",
       "b": "coqui.figura",
       "across": 102,
-      "down": 62,
+      "down": 67,
       "needAcross": 28,
       "ok": true
      },
@@ -732,7 +732,7 @@
       "a": "coqui.figura",
       "b": "perro",
       "across": 21,
-      "down": 14,
+      "down": 19,
       "needAcross": 30,
       "ok": true
      },
@@ -740,8 +740,8 @@
       "moment": 4,
       "a": "manta",
       "b": "luis.figura",
-      "across": 17,
-      "down": 17,
+      "across": 32,
+      "down": 13,
       "needAcross": 24,
       "ok": true
      },
@@ -759,7 +759,7 @@
       "a": "manta",
       "b": "coqui.figura",
       "across": 6,
-      "down": 70,
+      "down": 75,
       "needAcross": 28,
       "ok": true
      },
@@ -776,8 +776,8 @@
       "moment": 4,
       "a": "luis.figura",
       "b": "carmen.figura",
-      "across": 91,
-      "down": 9,
+      "across": 76,
+      "down": 5,
       "needAcross": 24,
       "ok": true
      },
@@ -785,8 +785,8 @@
       "moment": 4,
       "a": "luis.figura",
       "b": "coqui.figura",
-      "across": 11,
-      "down": 53,
+      "across": 26,
+      "down": 62,
       "needAcross": 28,
       "ok": true
      },
@@ -794,8 +794,8 @@
       "moment": 4,
       "a": "luis.figura",
       "b": "hoyo",
-      "across": 55,
-      "down": 51,
+      "across": 70,
+      "down": 55,
       "needAcross": 26,
       "ok": true
      },
@@ -804,7 +804,7 @@
       "a": "carmen.figura",
       "b": "coqui.figura",
       "across": 102,
-      "down": 62,
+      "down": 67,
       "needAcross": 28,
       "ok": true
      },
@@ -822,7 +822,7 @@
       "a": "coqui.figura",
       "b": "hoyo",
       "across": 44,
-      "down": 2,
+      "down": 7,
       "needAcross": 30,
       "ok": true
      },
@@ -884,8 +884,8 @@
       "moment": 6,
       "a": "manta2",
       "b": "coqui.bolsa",
-      "across": 1,
-      "down": 71,
+      "across": 17,
+      "down": 70,
       "needAcross": 28,
       "ok": true
      },
@@ -893,8 +893,8 @@
       "moment": 6,
       "a": "manta2",
       "b": "sol2",
-      "across": 88,
-      "down": 101,
+      "across": 72,
+      "down": 100,
       "needAcross": 24,
       "ok": true
      },
@@ -902,8 +902,8 @@
       "moment": 6,
       "a": "manta2",
       "b": "sol3",
-      "across": 131,
-      "down": 92,
+      "across": 115,
+      "down": 91,
       "needAcross": 24,
       "ok": true
      },
@@ -940,7 +940,7 @@
     "name": "frog-seen",
     "ok": true,
     "lines": [
-     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 coqui.cara 147,164: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 coqui.cara 147,164: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 coqui.figura 86,160: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 coqui.figura 86,160: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 coqui.bolsa 58,168: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 coqui.bolsa 58,168: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them"
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 coqui.cara 147,164: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 coqui.cara 147,164: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 coqui.figura 86,165: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 coqui.figura 86,165: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 coqui.bolsa 58,168: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 coqui.bolsa 58,168: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them"
     ]
    },
    {
@@ -962,8 +962,8 @@
     "name": "figure-clear",
     "ok": true,
     "lines": [
-     "figure-clear: in moments 3 and 4 nobody (abuela, Luis, Carmen, the frog, Canelo) covers the head, an arm or a hand (cabeza [123,91,48,25], brazo_izq [108,120,39,6], brazo_der [147,120,39,6], mano_izq [96,118,12,10], mano_der [186,118,12,10]); the nearest anyone comes: 7 px (carmen.figura, moment 3)",
-     "       per person (info): m3 manta (abuelaP): 0 px; nearest 9 px; m3 luis.figura (luis): 0 px; nearest 12 px; m3 carmen.figura (carmen): 0 px; nearest 7 px; m3 coqui.figura (coqui): 0 px; nearest 9 px; m3 perro (perro): 0 px; nearest 17 px; m4 manta (abuelaP): 0 px; nearest 9 px; m4 luis.figura (luis): 0 px; nearest 12 px; m4 carmen.figura (carmen): 0 px; nearest 7 px; m4 coqui.figura (coqui): 0 px; nearest 9 px; m4 hoyo (perro): 0 px; nearest 40 px"
+     "figure-clear: in moments 3 and 4 nobody (abuela, Luis, Carmen, the frog, Canelo) covers the head, an arm or a hand (cabeza [123,91,48,25], brazo_izq [108,120,39,6], brazo_der [147,120,39,6], mano_izq [96,118,12,10], mano_der [186,118,12,10]); the nearest anyone comes: 2 px (luis.figura, moment 3)",
+     "       per person (info): m3 manta (abuelaP): 0 px; nearest 9 px; m3 luis.figura (luis): 0 px; nearest 2 px; m3 carmen.figura (carmen): 0 px; nearest 7 px; m3 coqui.figura (coqui): 0 px; nearest 14 px; m3 perro (perro): 0 px; nearest 17 px; m4 manta (abuelaP): 0 px; nearest 9 px; m4 luis.figura (luis): 0 px; nearest 2 px; m4 carmen.figura (carmen): 0 px; nearest 7 px; m4 coqui.figura (coqui): 0 px; nearest 14 px; m4 hoyo (perro): 0 px; nearest 40 px"
     ]
    },
    {
@@ -989,9 +989,9 @@
      "       manta 80,90: the 24 px box is columns 68 to 91 against the blanket's 48 to 110 (inside)",
      "       info, not a check:  the stand-in abuelaP at manta drawn columns 70 to 114: 4 px over its right edge",
      "       info, not a check:  the stand-in abuelaL at manta drawn columns 54 to 105: inside",
-     "       info, not a check: manta2 59,97: the 24 px box is columns 47 to 70 against the blanket's 48 to 110 (1 px over its left edge); nearest u that fits: -2.35 -> -2.32 (+0.03) (not a check: the spec asks it of manta)",
-     "       info, not a check:  the stand-in abuelaP at manta2 drawn columns 49 to 93: inside",
-     "       info, not a check:  the stand-in abuelaL at manta2 drawn columns 33 to 84: 15 px over the blanket's left edge",
+     "       info, not a check: manta2 75,98: the 24 px box is columns 63 to 86 against the blanket's 48 to 110 (inside) (not a check: the spec asks it of manta)",
+     "       info, not a check:  the stand-in abuelaP at manta2 drawn columns 65 to 109: inside",
+     "       info, not a check:  the stand-in abuelaL at manta2 drawn columns 49 to 100: inside",
      "       info, not a check: manta3 99,97: the 24 px box is columns 87 to 110 against the blanket's 48 to 110 (inside) (not a check: the spec asks it of manta)",
      "       info, not a check:  the stand-in abuelaP at manta3 drawn columns 89 to 133: 23 px over its right edge",
      "       info, not a check:  the stand-in abuelaL at manta3 drawn columns 73 to 124: 14 px over its right edge",
@@ -999,23 +999,19 @@
      "       info, not a check: m2 manta (abuelaP): 853 px, 0 hidden by the umbrella's canopy, 797 of the 853 shown (93%) in the umbrella's cast shade",
      "       info, not a check: m3 manta (abuelaP): 853 px, 0 hidden by the umbrella's canopy, 797 of the 853 shown (93%) in the umbrella's cast shade",
      "       info, not a check: m4 manta (abuelaP): 853 px, 0 hidden by the umbrella's canopy, 797 of the 853 shown (93%) in the umbrella's cast shade",
-     "       info, not a check: m6 manta2 (abuelaL): 550 px, 0 hidden by the umbrella's canopy, 490 of the 550 shown (89%) in the umbrella's cast shade"
+     "       info, not a check: m6 manta2 (abuelaL): 550 px, 0 hidden by the umbrella's canopy, 550 of the 550 shown (100%) in the umbrella's cast shade"
     ]
    },
    {
     "name": "info-covers",
     "ok": true,
     "lines": [
-     "info-covers: not a check. What is under a nearer sprite, or hidden by the set, in the six moments (everything not listed is seen whole): m1 manta: 113 of its 550 px under luis.cara 113; m2 manta: 128 of its 853 px under luis.cara 128; m3 manta: 152 of its 853 px under luis.figura 152; m3 caracoles (caracoles3): 44 of its 120 px under perro 5, coqui.figura 39; m3 perro: 34 of its 368 px under coqui.figura 34; m4 manta: 152 of its 853 px under luis.figura 152; m4 caracoles (caracoles2): 39 of its 80 px under coqui.figura 39; m5 sol2: 32 of its 600 px under sol2 (bola) 32",
+     "info-covers: not a check. What is under a nearer sprite, or hidden by the set, in the six moments (everything not listed is seen whole): m3 manta: 102 of its 853 px under luis.figura 102; m3 caracoles (caracoles3): 11 of its 120 px under perro 11; m3 perro: 17 of its 368 px under coqui.figura 17; m4 manta: 102 of its 853 px under luis.figura 102; m5 sol2: 32 of its 600 px under sol2 (bola) 32",
      "       abuela's head: m1 manta (abuelaL): 0 of her 166 head px covered; m2 manta (abuelaP): 0 of her 206 head px covered; m3 manta (abuelaP): 0 of her 206 head px covered; m4 manta (abuelaP): 0 of her 206 head px covered; m6 manta2 (abuelaL): 0 of her 166 head px covered",
-     "       nearest that leaves manta whole, moment 1: luis.cara -1.15,4.3,0: u -1.15 -> -0.28 (+0.87); v 4.3 -> 5.04 (+0.74)",
-     "       nearest that leaves manta whole, moment 2: luis.cara -1.15,4.3,0: u -1.15 -> -2.14 (-0.99); v 4.3 -> 5.04 (+0.74)",
-     "       nearest that leaves manta whole, moment 3: luis.figura -0.9,3.3,0: u -0.9 -> 0.18 (+1.08); v 3.3 -> 2 (-1.3)",
+     "       nearest that leaves manta whole, moment 3: luis.figura -0.3,3,0: u -0.3 -> 0.22 (+0.52); v 3 -> 2 (-1)",
      "       nearest that leaves caracoles (caracoles3) whole, moment 3: perro -2.1,6.3,0: u -2.1 -> -2.18 (-0.08); v 6.3 -> 5.9 (-0.4)",
-     "       nearest that leaves caracoles (caracoles3) whole, moment 3: coqui.figura -1.3,7.4,0: u -1.3 -> -2.06 (-0.76); v 7.4 -> 7.74 (+0.34)",
-     "       nearest that leaves perro whole, moment 3: coqui.figura -1.3,7.4,0: u -1.3 -> -1.09 (+0.21); v 7.4 -> 8.04 (+0.64)",
-     "       nearest that leaves manta whole, moment 4: luis.figura -0.9,3.3,0: u -0.9 -> 0.18 (+1.08); v 3.3 -> 2 (-1.3)",
-     "       nearest that leaves caracoles (caracoles2) whole, moment 4: coqui.figura -1.3,7.4,0: u -1.3 -> -0.71 (+0.59); v 7.4 -> 7.74 (+0.34)"
+     "       nearest that leaves perro whole, moment 3: coqui.figura -1.3,7.8,0: u -1.3 -> -1.13 (+0.17); v 7.8 -> 8.04 (+0.24)",
+     "       nearest that leaves manta whole, moment 4: luis.figura -0.3,3,0: u -0.3 -> 0.22 (+0.52); v 3 -> 2 (-1)"
     ]
    }
   ]

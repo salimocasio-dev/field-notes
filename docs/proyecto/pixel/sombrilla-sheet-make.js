@@ -59,18 +59,18 @@ function defs(E, FA) {
   const add = (name, uvz, kind, sil, who, what, more) => D.push(Object.assign({ name, uvz, kind, sil, who, what }, more || {}));
   const ABU = ['abuelaP', 'abuelaL'];
   add('manta', [-1.55, 2.0, 0], 'person', ABU, 'adulto', 'abuela, lying or sitting, on the blanket in the umbrella\'s shade (stories 75 to 77)');
-  add('manta2', [-2.35, 2.55, 0], 'person', ABU, 'adulto', 'a second place for abuela on the blanket in the shade (77 ending: she lies here, out of the game)');
+  add('manta2', [-1.75, 2.6, 0], 'person', ABU, 'adulto', 'a second place for abuela on the blanket in the shade (77 ending: she lies here, out of the game)');
   add('manta3', [-0.8, 2.55, 0], 'person', ABU, 'adulto', 'a third place for abuela on the blanket in the shade');
   // story 75 (dibujo circulo)
-  add('luis.cara', [-1.15, 4.3, 0], 'person', 'nino', 'nino', 'Luis, left of the circle (75)');
-  add('carmen.cara', [3.3, 4.3, 0], 'person', 'nino', 'nino', 'Carmen, right of the circle (75)');
+  add('luis.cara', [-1.15, 5.1, 0], 'person', 'nino', 'nino', 'Luis, left of the circle (75)');
+  add('carmen.cara', [3.3, 5.1, 0], 'person', 'nino', 'nino', 'Carmen, right of the circle (75)');
   add('coqui.cara', [1.05, 7.7, 0], 'place', 'coqui', 'coqui', 'the frog, below the circle (75)');
   add('cubo75', [2.2, 7.6, 0], 'thing', null, null, 'his bucket of shells (a ' + SIZE.cubo75.join(' x ') + ' px stand-in)', { size: SIZE.cubo75, anchor: 'bottom' });
   for (const n of FACE_NAMES) add(n, [FA[n][0], FA[n][1], 0], 'thing', null, null, 'the place of the face\'s ' + { ojo_izq: 'left eye', ojo_der: 'right eye', nariz: 'nose', boca: 'mouth' }[n] + ' (SOMBRILLA.FACE_AT.' + n + '): a ' + SIZE.concha.join(' x ') + ' px shell is pressed in here, centred on the point; the touch box is things.' + n, { size: SIZE.concha, anchor: 'centre' });
   // story 76 (dibujo figura)
-  add('luis.figura', [-0.9, 3.3, 0], 'person', 'nino', 'nino', 'Luis, behind the figure\'s head, left (76)');
+  add('luis.figura', [-0.3, 3.0, 0], 'person', 'nino', 'nino', 'Luis, behind the figure\'s head, left (76)');
   add('carmen.figura', [2.6, 2.6, 0], 'person', 'nino', 'nino', 'Carmen, behind the figure\'s head, right (76)');
-  add('coqui.figura', [-1.3, 7.4, 0], 'place', 'coqui', 'coqui', 'the frog, below the figure at the left (76)');
+  add('coqui.figura', [-1.3, 7.8, 0], 'place', 'coqui', 'coqui', 'the frog, below the figure at the left (76)');
   add('caracoles', [-1.2, 5.9, 0], 'thing', null, null, 'the three spiral shells in a row (8 px each, centres 10 px apart: a ' + SIZE.caracoles.join(' x ') + ' px row, its bottom middle on the point; the spec gives no gap: mine)', { size: SIZE.caracoles, anchor: 'bottom' });
   add('perro', [-2.1, 6.3, 0], 'person', 'perro', 'perro', 'Canelo, sniffing at the row of spiral shells (76)');
   add('hoyo', [-3.0, 7.2, 0], 'person', 'perro', 'perro', 'Canelo digging (76 after a miss)');

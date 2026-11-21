@@ -125,9 +125,9 @@
    "who": "any"
   },
   "orilla1": {
-   "world": [-0.601, 1.2374, 0],
-   "uv": [-1.3, 0.45, 0],
-   "screen": [86, 84],
+   "world": [0.4596, 0.1768, 0],
+   "uv": [0.2, 0.45, 0],
+   "screen": [125, 84],
    "depth": 0.3897,
    "scale": 1,
    "kind": "place",
@@ -136,9 +136,9 @@
    "who": "any"
   },
   "orilla2": {
-   "world": [0.2121, 0.4243, 0],
-   "uv": [-0.15, 0.45, 0],
-   "screen": [116, 84],
+   "world": [1.1667, -0.5303, 0],
+   "uv": [1.2, 0.45, 0],
+   "screen": [151, 84],
    "depth": 0.3897,
    "scale": 1,
    "kind": "place",
@@ -147,9 +147,9 @@
    "who": "any"
   },
   "orilla3": {
-   "world": [1.0253, -0.3889, 0],
-   "uv": [1, 0.45, 0],
-   "screen": [146, 84],
+   "world": [1.8738, -1.2374, 0],
+   "uv": [2.2, 0.45, 0],
+   "screen": [177, 84],
    "depth": 0.3897,
    "scale": 1,
    "kind": "place",
@@ -158,9 +158,9 @@
    "who": "any"
   },
   "orilla4": {
-   "world": [1.8385, -1.2021, 0],
-   "uv": [2.15, 0.45, 0],
-   "screen": [176, 84],
+   "world": [2.5809, -1.9445, 0],
+   "uv": [3.2, 0.45, 0],
+   "screen": [203, 84],
    "depth": 0.3897,
    "scale": 1,
    "kind": "place",
@@ -181,9 +181,9 @@
    "who": "nino"
   },
   "agua2": {
-   "world": [-0.2121, -1.6263, 0],
-   "uv": [1, -1.3, 0],
-   "screen": [146, 61],
+   "world": [-0.0707, -1.7678, 0],
+   "uv": [1.2, -1.3, 0],
+   "screen": [151, 61],
    "depth": -1.1258,
    "scale": 1,
    "kind": "person",
@@ -256,10 +256,10 @@
    "on": "castillo"
   },
   "coqui.castillo": {
-   "world": [5.7276, 4.0305, 0],
-   "uv": [1.2, 6.9, 0],
-   "screen": [151, 168],
-   "depth": 5.9756,
+   "world": [6.2933, 4.5962, 0],
+   "uv": [1.2, 7.7, 0],
+   "screen": [151, 178],
+   "depth": 6.6684,
    "scale": 1,
    "kind": "place",
    "view": "wide",
@@ -333,10 +333,10 @@
    ]
   },
   "luis.botes": {
-   "world": [-0.495, 1.3435, 0],
-   "uv": [-1.3, 0.6, 0],
-   "screen": [86, 86],
-   "depth": 0.5196,
+   "world": [0.6718, 0.2475, 0],
+   "uv": [0.3, 0.65, 0],
+   "screen": [128, 86],
+   "depth": 0.5629,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -345,33 +345,33 @@
    "who": "nino"
   },
   "bote_a": {
-   "world": [0.1768, 0.601, 0],
-   "uv": [-0.3, 0.55, 0],
-   "screen": [112, 85],
+   "world": [1.2021, -0.4243, 0],
+   "uv": [1.15, 0.55, 0],
+   "screen": [150, 85],
    "depth": 0.4763,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "a toy boat on the wet sand (14 x 10)",
-   "box": [105, 75, 14, 10],
+   "box": [143, 75, 14, 10],
    "anchor": "bottom"
   },
   "bote_b": {
-   "world": [0.7071, 0.0707, 0],
-   "uv": [0.45, 0.55, 0],
-   "screen": [132, 85],
+   "world": [1.7324, -0.9546, 0],
+   "uv": [1.9, 0.55, 0],
+   "screen": [169, 85],
    "depth": 0.4763,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "a toy boat on the wet sand (14 x 10)",
-   "box": [125, 75, 14, 10],
+   "box": [162, 75, 14, 10],
    "anchor": "bottom"
   },
   "coqui.orilla": {
-   "world": [2.3688, -0.1061, 0],
-   "uv": [1.75, 1.6, 0],
-   "screen": [166, 99],
+   "world": [3.182, -0.9192, 0],
+   "uv": [2.9, 1.6, 0],
+   "screen": [195, 99],
    "depth": 1.3856,
    "scale": 1,
    "kind": "place",
@@ -381,20 +381,20 @@
    "who": "coqui"
   },
   "conchas73": {
-   "world": [2.8284, -0.9899, 0],
-   "uv": [2.7, 1.3, 0],
-   "screen": [190, 95],
-   "depth": 1.1258,
+   "world": [2.3688, 0.1061, 0],
+   "uv": [1.6, 1.75, 0],
+   "screen": [162, 101],
+   "depth": 1.5155,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "three pink shells in a row, on the sand (6 px each, 8 px apart)",
-   "box": [179, 89, 22, 6],
+   "box": [151, 95, 22, 6],
    "anchor": "bottom",
    "parts": [
-    [179, 89, 6, 6],
-    [187, 89, 6, 6],
-    [195, 89, 6, 6]
+    [151, 95, 6, 6],
+    [159, 95, 6, 6],
+    [167, 95, 6, 6]
    ]
   },
   "abuela.arena": {
@@ -410,10 +410,10 @@
    "who": "adulto"
   },
   "navega": {
-   "world": [0.1061, -0.9546, 0],
-   "uv": [0.75, -0.6, 0],
-   "screen": [140, 70],
-   "depth": -0.5196,
+   "world": [1.2021, -2.192, 0],
+   "uv": [2.4, -0.7, 0],
+   "screen": [182, 69],
+   "depth": -0.6062,
    "scale": 1,
    "kind": "place",
    "view": "wide",
@@ -423,10 +423,10 @@
    "boat": [36, 8]
   },
   "manta_abuela": {
-   "world": [0.5657, 4.9497, 0],
-   "uv": [-3.1, 3.9, 0],
-   "screen": [39, 129],
-   "depth": 3.3775,
+   "world": [0.7425, 5.1265, 0],
+   "uv": [-3.1, 4.15, 0],
+   "screen": [39, 132],
+   "depth": 3.594,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -436,9 +436,9 @@
    "on": "manta"
   },
   "manta_coqui": {
-   "world": [2.1213, 4.2426, 0],
-   "uv": [-1.5, 4.5, 0],
-   "screen": [81, 137],
+   "world": [2.192, 4.1719, 0],
+   "uv": [-1.4, 4.5, 0],
+   "screen": [84, 137],
    "depth": 3.8971,
    "scale": 1,
    "kind": "place",
@@ -449,15 +449,15 @@
    "on": "manta"
   },
   "toallas": {
-   "world": [0.8839, 4.1366, 0],
-   "uv": [-2.3, 3.55, 0],
-   "screen": [60, 124],
-   "depth": 3.0744,
+   "world": [0.8132, 4.1366, 0],
+   "uv": [-2.35, 3.5, 0],
+   "screen": [59, 124],
+   "depth": 3.0311,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the pile of three folded towels (14 x 10) on the blanket",
-   "box": [53, 114, 14, 10],
+   "box": [52, 114, 14, 10],
    "anchor": "bottom",
    "on": "manta"
   },
@@ -499,35 +499,35 @@
    "who": "nino"
   },
   "cuerda1": {
-   "world": [-0.7071, 3.5355, 1.45],
-   "uv": [-3, 2, 1.45],
-   "screen": [42, 71],
+   "world": [-0.7778, 3.6062, 1.45],
+   "uv": [-3.1, 2, 1.45],
+   "screen": [39, 71],
    "depth": 2.4571,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the first towel's place on the rope (z ROPE 1.45): the towel hangs below it (14 x 16), its top middle on the point",
-   "box": [35, 71, 14, 16],
+   "box": [32, 71, 14, 16],
    "anchor": "top",
    "on": "cuerda"
   },
   "cuerda2": {
-   "world": [-0.1414, 2.9698, 1.45],
-   "uv": [-2.2, 2, 1.45],
-   "screen": [63, 71],
+   "world": [-0.3182, 3.1466, 1.45],
+   "uv": [-2.45, 2, 1.45],
+   "screen": [56, 71],
    "depth": 2.4571,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the second towel's place on the rope: the towel hangs below it (14 x 16)",
-   "box": [56, 71, 14, 16],
+   "box": [49, 71, 14, 16],
    "anchor": "top",
    "on": "cuerda"
   },
   "sale": {
-   "world": [0.6364, 0.0707, 0],
-   "uv": [0.4, 0.5, 0],
-   "screen": [130, 85],
+   "world": [1.9092, -1.2021, 0],
+   "uv": [2.2, 0.5, 0],
+   "screen": [177, 85],
    "depth": 0.433,
    "scale": 1,
    "kind": "person",
@@ -586,7 +586,7 @@
    "holds": ["llegada1", "llegada2", "llegada3", "llegada4", "orilla1", "orilla2", "orilla3", "orilla4", "agua1", "agua2", "castillo_l", "castillo_r", "torre1", "torre2", "torre3", "coqui.castillo", "parche", "mar_busca", "abuela.foto", "perro", "conchas", "luis.botes", "bote_a", "bote_b", "coqui.orilla", "conchas73", "abuela.arena", "navega", "manta_abuela", "manta_coqui", "toallas", "canasta", "pie1", "pie2", "cuerda1", "cuerda2", "sale", "bote"],
    "extent": [26, 220],
    "x0Range": [25, 26],
-   "what": "the one view of stories 72, 73 and 74: the 196 x 216 window over the 240 x 216 picture. The spec: every spot is inside it with its sprite whole, x0 22 unless a spot is cut. x0 25 to 26 hold them all (x0 22 cuts perro by 3 px); x0 25 is the one nearest 22, the window centred on the picture (the spots span columns 26 to 220). The window's point is the ground point under its middle column at the picture's middle row"
+   "what": "the one view of stories 72, 73 and 74: the 196 x 216 window over the 240 x 216 picture. The spec: every spot is inside it with its sprite whole, x0 22 unless a spot is cut. x0 25 to 26 hold them all (x0 22 cuts orilla4 by 1 px, perro by 3 px); x0 25 is the one nearest 22, the window centred on the picture (the spots span columns 26 to 220). The window's point is the ground point under its middle column at the picture's middle row"
   }
  },
  "front": {
@@ -620,7 +620,7 @@
     "name": "views-x0",
     "ok": true,
     "lines": [
-     "views-x0: wide: x0 25 (window columns 25 to 220); the 38 spots held span columns 26 to 220 (195 of the window's 196); x0 that hold them all: 25 to 26 (the one nearest 22, the window centred on the picture); x0 22 would cut perro by 3 px"
+     "views-x0: wide: x0 25 (window columns 25 to 220); the 38 spots held span columns 26 to 220 (195 of the window's 196); x0 that hold them all: 25 to 26 (the one nearest 22, the window centred on the picture); x0 22 would cut orilla4 by 1 px, perro by 3 px"
     ],
     "x0": {
      "wide": 25
@@ -630,7 +630,7 @@
     "name": "spots-in-view",
     "ok": true,
     "lines": [
-     "spots-in-view: 38 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 25); the fishing boat bote is box [168,13,34,20], the rope's towels cuerda1 [35,71,14,16] and cuerda2 [56,71,14,16]; the lowest feet row is 168 of 215, the highest sprite top row 13",
+     "spots-in-view: 38 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 25); the fishing boat bote is box [168,13,34,20], the rope's towels cuerda1 [32,71,14,16] and cuerda2 [49,71,14,16]; the lowest feet row is 178 of 215, the highest sprite top row 13",
      "       info, not a check: the check takes the wider of the spec's box (frog 32, grown-up 24, child 24, dog 28) and the stand-in's drawn ink; the ink of each: nino 22 wide (spec 24), columns -11 to 10 from its anchor, rows -41 to -1 from its feet row; ninoS 24 wide (spec 24), columns -12 to 11 from its anchor, rows -36 to -1 from its feet row; abuelaS 35 wide (spec 24), columns -11 to 23 from its anchor, rows -43 to -1 from its feet row; coqui 30 wide (spec 32), columns -15 to 14 from its anchor, rows -24 to -1 from its feet row; perro 30 wide (spec 28), columns -15 to 14 from its anchor, rows -22 to -1 from its feet row"
     ],
     "cut": []
@@ -644,12 +644,12 @@
      "       torre2 z 0.84: part castillo, depth 3.34 against the spot's 3.36 (0.02)",
      "       torre3 z 0.84: part castillo, depth 3.34 against the spot's 3.36 (0.02)",
      "       cuerda1 z 1.45 (ROPE): the set's rope pixel (part palmas, depth within .1 of the spot's) in its column is 1 px under the point (the rope sags, the point is at ROPE)",
-     "       cuerda2 z 1.45 (ROPE): the set's rope pixel (part palmas, depth within .1 of the spot's) in its column is 1 px under the point (the rope sags, the point is at ROPE)",
+     "       cuerda2 z 1.45 (ROPE): the set's rope pixel (part palmas, depth within .1 of the spot's) in its column is 2 px under the point (the rope sags, the point is at ROPE)",
      "       parche (the patch's middle) is on the patch of smooth sand: true",
      "       agua1 in the sea 0.5 out (23% of the way to where it turns dark at v -2.2)",
      "       agua2 in the sea 1.3 out (59% of the way to where it turns dark at v -2.2)",
      "       mar_busca in the sea 0.4 out (18% of the way to where it turns dark at v -2.2)",
-     "       navega in the sea 0.6 out (27% of the way to where it turns dark at v -2.2)",
+     "       navega in the sea 0.7 out (32% of the way to where it turns dark at v -2.2)",
      "       the spec's rule \"a person on a seat sits on its top\": this scene has no seat (everybody stands, kneels or sits on the sand, z 0); the nearest thing is the frog on a tower: z 0.84 = 0.12 + th, the tower's top",
      "       info, not a check: with castillo = 1 the castle's base is under llegada4 (0.81 from its middle, base r 1.15), pie2 (0.93 from its middle, base r 1.15); with manta = 1 the blanket is under abuela.arena (the spots of the stories that have neither are probed on the bare beach)"
     ]
@@ -671,12 +671,10 @@
    },
    {
     "name": "sprites-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "sprites-apart: 1 pair(s) with overlapping boxes and feet closer than 12 px up-down (of 44 pairs in 6 moments):",
-     "  moment 4: agua2 [146,61] (24 wide) ~ navega [140,70] (32 wide): 6 px sideways (the boxes need 28), 9 px up-down (needs 12): short by 22 px sideways or 3 px up-down",
-     "       nearest passing, moment 4 agua2 ~ navega: agua2 1,-1.3,0: u 1 -> 1.83 (+0.83) or v -1.3 -> -1.51 (-0.21) or z 0 -> 0.12 (+0.12); or navega 0.75,-0.6,0: u 0.75 -> -0.06 (-0.81) or v -0.6 -> -0.42 (+0.18) or z 0 -> 0.92 (+0.92)",
-     "       closest pair in each moment (px across / px down): m1 perro ~ castillo_r 14/15 (needs 26 across or 12 down); m2 perro ~ castillo_r 14/15 (needs 26 across or 12 down); m3 agua2 ~ coqui.orilla 20/38 (needs 28 across or 12 down); m4 agua2 ~ navega 6/9 (needs 28 across or 12 down); m5 pie1 ~ pie2 30/0 (needs 24 across or 12 down); m6 agua1 ~ sale 16/13 (needs 24 across or 12 down)"
+     "sprites-apart: 44 pairs in the 6 moments of the preview (m1 (perro, abuela.foto, castillo_l, castillo_r, coqui.castillo); m2 (perro, abuela.foto, castillo_l, castillo_r, torre2); m3 (abuela.arena, luis.botes, agua2, coqui.orilla); m4 (abuela.arena, luis.botes, agua2, navega); m5 (manta_abuela, pie1, pie2, manta_coqui); m6 (manta_abuela, agua1, sale, manta_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 perro ~ castillo_r (14 across, 15 down), m2 perro ~ castillo_r (14 across, 15 down), m3 luis.botes ~ agua2 (23 across, 25 down), m4 luis.botes ~ agua2 (23 across, 25 down)",
+     "       closest pair in each moment (px across / px down): m1 perro ~ castillo_r 14/15 (needs 26 across or 12 down); m2 perro ~ castillo_r 14/15 (needs 26 across or 12 down); m3 luis.botes ~ agua2 23/25 (needs 24 across or 12 down); m4 luis.botes ~ agua2 23/25 (needs 24 across or 12 down); m5 pie1 ~ manta_coqui 31/3 (needs 28 across or 12 down); m6 agua1 ~ sale 31/13 (needs 24 across or 12 down)"
     ],
     "pairs": [
      {
@@ -711,7 +709,7 @@
       "a": "perro",
       "b": "coqui.castillo",
       "across": 55,
-      "down": 30,
+      "down": 40,
       "needAcross": 30,
       "ok": true
      },
@@ -738,7 +736,7 @@
       "a": "abuela.foto",
       "b": "coqui.castillo",
       "across": 80,
-      "down": 30,
+      "down": 40,
       "needAcross": 28,
       "ok": true
      },
@@ -756,7 +754,7 @@
       "a": "castillo_l",
       "b": "coqui.castillo",
       "across": 40,
-      "down": 45,
+      "down": 55,
       "needAcross": 28,
       "ok": true
      },
@@ -765,7 +763,7 @@
       "a": "castillo_r",
       "b": "coqui.castillo",
       "across": 41,
-      "down": 45,
+      "down": 55,
       "needAcross": 28,
       "ok": true
      },
@@ -863,7 +861,7 @@
       "moment": 3,
       "a": "abuela.arena",
       "b": "luis.botes",
-      "across": 41,
+      "across": 83,
       "down": 36,
       "needAcross": 24,
       "ok": true
@@ -872,7 +870,7 @@
       "moment": 3,
       "a": "abuela.arena",
       "b": "agua2",
-      "across": 101,
+      "across": 106,
       "down": 61,
       "needAcross": 24,
       "ok": true
@@ -881,7 +879,7 @@
       "moment": 3,
       "a": "abuela.arena",
       "b": "coqui.orilla",
-      "across": 121,
+      "across": 150,
       "down": 23,
       "needAcross": 28,
       "ok": true
@@ -890,7 +888,7 @@
       "moment": 3,
       "a": "luis.botes",
       "b": "agua2",
-      "across": 60,
+      "across": 23,
       "down": 25,
       "needAcross": 24,
       "ok": true
@@ -899,7 +897,7 @@
       "moment": 3,
       "a": "luis.botes",
       "b": "coqui.orilla",
-      "across": 80,
+      "across": 67,
       "down": 13,
       "needAcross": 28,
       "ok": true
@@ -908,7 +906,7 @@
       "moment": 3,
       "a": "agua2",
       "b": "coqui.orilla",
-      "across": 20,
+      "across": 44,
       "down": 38,
       "needAcross": 28,
       "ok": true
@@ -917,7 +915,7 @@
       "moment": 4,
       "a": "abuela.arena",
       "b": "luis.botes",
-      "across": 41,
+      "across": 83,
       "down": 36,
       "needAcross": 24,
       "ok": true
@@ -926,7 +924,7 @@
       "moment": 4,
       "a": "abuela.arena",
       "b": "agua2",
-      "across": 101,
+      "across": 106,
       "down": 61,
       "needAcross": 24,
       "ok": true
@@ -935,8 +933,8 @@
       "moment": 4,
       "a": "abuela.arena",
       "b": "navega",
-      "across": 95,
-      "down": 52,
+      "across": 137,
+      "down": 53,
       "needAcross": 28,
       "ok": true
      },
@@ -944,7 +942,7 @@
       "moment": 4,
       "a": "luis.botes",
       "b": "agua2",
-      "across": 60,
+      "across": 23,
       "down": 25,
       "needAcross": 24,
       "ok": true
@@ -954,7 +952,7 @@
       "a": "luis.botes",
       "b": "navega",
       "across": 54,
-      "down": 16,
+      "down": 17,
       "needAcross": 28,
       "ok": true
      },
@@ -962,17 +960,17 @@
       "moment": 4,
       "a": "agua2",
       "b": "navega",
-      "across": 6,
-      "down": 9,
+      "across": 31,
+      "down": 8,
       "needAcross": 28,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 5,
       "a": "manta_abuela",
       "b": "pie1",
       "across": 76,
-      "down": 5,
+      "down": 2,
       "needAcross": 24,
       "ok": true
      },
@@ -981,7 +979,7 @@
       "a": "manta_abuela",
       "b": "pie2",
       "across": 106,
-      "down": 5,
+      "down": 2,
       "needAcross": 24,
       "ok": true
      },
@@ -989,8 +987,8 @@
       "moment": 5,
       "a": "manta_abuela",
       "b": "manta_coqui",
-      "across": 42,
-      "down": 8,
+      "across": 45,
+      "down": 5,
       "needAcross": 28,
       "ok": true
      },
@@ -1007,7 +1005,7 @@
       "moment": 5,
       "a": "pie1",
       "b": "manta_coqui",
-      "across": 34,
+      "across": 31,
       "down": 3,
       "needAcross": 28,
       "ok": true
@@ -1016,7 +1014,7 @@
       "moment": 5,
       "a": "pie2",
       "b": "manta_coqui",
-      "across": 64,
+      "across": 61,
       "down": 3,
       "needAcross": 28,
       "ok": true
@@ -1026,7 +1024,7 @@
       "a": "manta_abuela",
       "b": "agua1",
       "across": 107,
-      "down": 57,
+      "down": 60,
       "needAcross": 24,
       "ok": true
      },
@@ -1034,8 +1032,8 @@
       "moment": 6,
       "a": "manta_abuela",
       "b": "sale",
-      "across": 91,
-      "down": 44,
+      "across": 138,
+      "down": 47,
       "needAcross": 24,
       "ok": true
      },
@@ -1043,8 +1041,8 @@
       "moment": 6,
       "a": "manta_abuela",
       "b": "manta_coqui",
-      "across": 42,
-      "down": 8,
+      "across": 45,
+      "down": 5,
       "needAcross": 28,
       "ok": true
      },
@@ -1052,7 +1050,7 @@
       "moment": 6,
       "a": "agua1",
       "b": "sale",
-      "across": 16,
+      "across": 31,
       "down": 13,
       "needAcross": 24,
       "ok": true
@@ -1061,7 +1059,7 @@
       "moment": 6,
       "a": "agua1",
       "b": "manta_coqui",
-      "across": 65,
+      "across": 62,
       "down": 65,
       "needAcross": 28,
       "ok": true
@@ -1070,7 +1068,7 @@
       "moment": 6,
       "a": "sale",
       "b": "manta_coqui",
-      "across": 49,
+      "across": 93,
       "down": 52,
       "needAcross": 28,
       "ok": true
@@ -1081,7 +1079,7 @@
     "name": "frog-seen",
     "ok": true,
     "lines": [
-     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 coqui.castillo 151,168: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m2 torre2 151,103: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m3 coqui.orilla 166,99: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m4 navega 140,70: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m5 manta_coqui 81,137: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m6 manta_coqui 81,137: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture"
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 coqui.castillo 151,178: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m2 torre2 151,103: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m3 coqui.orilla 195,99: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m4 navega 182,69: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m5 manta_coqui 84,137: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; m6 manta_coqui 84,137: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture"
     ]
    },
    {
@@ -1093,28 +1091,18 @@
    },
    {
     "name": "patch-clear",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "patch-clear: 1 covering of the patch:",
-     "  moment 1: 188 of the patch's 379 px are under a sprite: coqui.castillo (coqui) 188",
-     "       nearest passing, moment 1 coqui.castillo 1.2,6.9,0: u 1.2 -> 2.49 (+1.29); v 6.9 -> 7.66 (+0.76); z 0 -> 1.08 (+1.08)",
-     "       info, not a check: the frog at coqui.castillo 151,168 draws rows 144 to 167; the patch is rows 143 to 153"
+     "patch-clear: in moment 1 nobody and nothing covers the patch of smooth sand (379 px, box [129,143,45,12]): no sprite pixel on it, nothing of the set nearer than the sand; the castle's shadow darkens 0 of its px (a shadow is not a cover)",
+     "       info, not a check: the frog at coqui.castillo 151,178 draws rows 154 to 177; the patch is rows 143 to 153"
     ]
    },
    {
     "name": "towels-clear",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "towels-clear: 4 covered towel(s):",
-     "  moment 5: the towel at cuerda1 has 8 px under a sprite, 0 under a frond, 0 behind the baked set",
-     "  moment 5: the towel at cuerda2 has 0 px under a sprite, 3 under a frond, 0 behind the baked set",
-     "  moment 6: the towel at cuerda1 has 8 px under a sprite, 0 under a frond, 0 behind the baked set",
-     "  moment 6: the towel at cuerda2 has 0 px under a sprite, 3 under a frond, 0 behind the baked set",
-     "       nearest passing, moment 5 cuerda1 -3,2,1.45: u -3 -> -2.71 (+0.29); v 2 -> 1.93 (-0.07); z 1.45 -> 1.49 (+0.04)",
-     "       nearest passing, moment 5 cuerda2 -2.2,2,1.45: u -2.2 -> -2.45 (-0.25); v 2 -> 2.02 (+0.02); z 1.45 -> 1.44 (-0.01)",
-     "       nearest passing, moment 6 cuerda1 -3,2,1.45: u -3 -> -2.71 (+0.29); v 2 -> 1.93 (-0.07); z 1.45 -> 1.49 (+0.04)",
-     "       nearest passing, moment 6 cuerda2 -2.2,2,1.45: u -2.2 -> -2.45 (-0.25); v 2 -> 2.02 (+0.02); z 1.45 -> 1.44 (-0.01)",
-     "       info, not a check: m5 cuerda1 (red, box [35,71,14,16]): 224 px, 8 under a nearer sprite (manta_abuela (abuelaS) 8), 0 under a frond, 0 behind the baked set (trunk); m5 cuerda2 (blue, box [56,71,14,16]): 224 px, 0 under a nearer sprite, 3 under a frond, 0 behind the baked set (trunk); m6 cuerda1 (red, box [35,71,14,16]): 224 px, 8 under a nearer sprite (manta_abuela (abuelaS) 8), 0 under a frond, 0 behind the baked set (trunk); m6 cuerda2 (blue, box [56,71,14,16]): 224 px, 0 under a nearer sprite, 3 under a frond, 0 behind the baked set (trunk)"
+     "towels-clear: the two towels on the rope are covered by nobody and by no frond in moments 5 and 6: m5 cuerda1 (red, box [32,71,14,16]): 224 px, 0 under a nearer sprite, 0 under a frond, 0 behind the baked set (trunk); m5 cuerda2 (blue, box [49,71,14,16]): 224 px, 0 under a nearer sprite, 0 under a frond, 0 behind the baked set (trunk); m6 cuerda1 (red, box [32,71,14,16]): 224 px, 0 under a nearer sprite, 0 under a frond, 0 behind the baked set (trunk); m6 cuerda2 (blue, box [49,71,14,16]): 224 px, 0 under a nearer sprite, 0 under a frond, 0 behind the baked set (trunk)",
+     "       info, not a check: m5 cuerda1 (red, box [32,71,14,16]): 224 px, 0 under a nearer sprite, 0 under a frond, 0 behind the baked set (trunk); m5 cuerda2 (blue, box [49,71,14,16]): 224 px, 0 under a nearer sprite, 0 under a frond, 0 behind the baked set (trunk); m6 cuerda1 (red, box [32,71,14,16]): 224 px, 0 under a nearer sprite, 0 under a frond, 0 behind the baked set (trunk); m6 cuerda2 (blue, box [49,71,14,16]): 224 px, 0 under a nearer sprite, 0 under a frond, 0 behind the baked set (trunk)"
     ]
    },
    {
@@ -1135,7 +1123,7 @@
     "name": "blanket",
     "ok": true,
     "lines": [
-     "blanket: abuela at manta_abuela and the frog at manta_coqui stand inside the blanket's box [-3.75,3.2,-0.9,5]: manta_abuela (u -3.1, v 3.9): inside the blanket u -3.75 to -0.9, v 3.2 to 5 (0.65 from its left edge, 2.2 from its right edge, 0.7 from its back edge, 1.1 from its front edge); its box (24 wide) is columns 27 to 50 against the blanket's 23 to 97; manta_coqui (u -1.5, v 4.5): inside the blanket u -3.75 to -0.9, v 3.2 to 5 (2.25 from its left edge, 0.6 from its right edge, 1.3 from its back edge, 0.5 from its front edge); its box (32 wide) is columns 65 to 96 against the blanket's 23 to 97"
+     "blanket: abuela at manta_abuela and the frog at manta_coqui stand inside the blanket's box [-3.75,3.2,-0.9,5]: manta_abuela (u -3.1, v 4.15): inside the blanket u -3.75 to -0.9, v 3.2 to 5 (0.65 from its left edge, 2.2 from its right edge, 0.95 from its back edge, 0.85 from its front edge); its box (24 wide) is columns 27 to 50 against the blanket's 23 to 97; manta_coqui (u -1.4, v 4.5): inside the blanket u -3.75 to -0.9, v 3.2 to 5 (2.35 from its left edge, 0.5 from its right edge, 1.3 from its back edge, 0.5 from its front edge); its box (32 wide) is columns 68 to 99 against the blanket's 23 to 97"
     ]
    },
    {
@@ -1143,15 +1131,13 @@
     "ok": true,
     "lines": [
      "info-stand-ins: not a check. The set's own boat (bote = 1) is 513 px in the box [168,9,34,26], the sprite's box at BOAT [168,13,34,20] (the set's boat is NOT inside it: its mast stands above the hull)",
-     "       people hidden by the set (more than a tenth of their sprite):",
-     "         m3 luis.botes -1.3,0.6,0: 440 of its 622 px hidden by the set (273 behind the baked set: the palm's trunk; 167 under fronds at frame(0)); nearest with at most a tenth hidden: u -1.3 -> 0.14 (+1.44); v 0.6 -> 2.04 (+1.44); z 0 -> 2.28 (+2.28)",
-     "         m4 luis.botes -1.3,0.6,0: 440 of its 622 px hidden by the set (273 behind the baked set: the palm's trunk; 167 under fronds at frame(0)); nearest with at most a tenth hidden: u -1.3 -> 0.14 (+1.44); v 0.6 -> 2.04 (+1.44); z 0 -> 2.28 (+2.28)",
+     "       no person has more than a tenth of his sprite hidden by the set",
      "       m1: conchas (conchas) 96 px; perro (perro) 384 px; abuela.foto (abuelaS) 909 px; castillo_l (carmenS) 722 px; castillo_r (luisS) 622 px, 13 under perro (perro); coqui.castillo (coqui) 536 px",
      "       m2: conchas (conchas) 96 px; perro (perro) 384 px; abuela.foto (abuelaS) 909 px; castillo_l (carmenS) 722 px; castillo_r (luisS) 622 px, 13 under perro (perro); torre1 (concha) 32 px; torre3 (concha) 32 px; torre2 (coqui) 536 px",
-     "       m3: conchas73 (conchas) 96 px, 6 under coqui.orilla (coqui); bote_a (botev) 93 px; bote_b (botew) 93 px; abuela.arena (abuelaS) 909 px; luis.botes (luisS) 622 px, 273 behind the set + 167 under fronds; agua2 (carmen) 724 px; coqui.orilla (coqui) 536 px",
-     "       m4: conchas73 (conchas) 96 px; bote_a (botev) 93 px; bote_b (botew) 93 px; abuela.arena (abuelaS) 909 px; luis.botes (luisS) 622 px, 273 behind the set + 167 under fronds; agua2 (carmen) 724 px, 170 under navega (coqui); navega (botefrog) 280 px, 0 behind the set + 1 under fronds; navega (coqui) 536 px",
-     "       m5: toallas (pila) 140 px, 57 under manta_abuela (abuelaS); canasta (canasta) 114 px; cuerda1 (toallar) 224 px, 8 under manta_abuela (abuelaS); cuerda2 (toallaa) 224 px, 0 behind the set + 3 under fronds; manta_abuela (abuelaS) 909 px, 7 under canasta (canasta); pie1 (luis) 600 px; pie2 (carmen) 724 px; manta_coqui (coqui) 536 px",
-     "       m6: toallas (pila) 140 px, 57 under manta_abuela (abuelaS); cuerda1 (toallar) 224 px, 8 under manta_abuela (abuelaS); cuerda2 (toallaa) 224 px, 0 behind the set + 3 under fronds; manta_abuela (abuelaS) 909 px; agua1 (luis) 600 px, 52 under sale (carmen); sale (carmen) 724 px, 0 behind the set + 31 under fronds; manta_coqui (coqui) 536 px"
+     "       m3: conchas73 (conchas) 96 px; bote_a (botev) 93 px; bote_b (botew) 93 px; abuela.arena (abuelaS) 909 px; luis.botes (luisS) 622 px, 0 behind the set + 26 under fronds; agua2 (carmen) 724 px; coqui.orilla (coqui) 536 px",
+     "       m4: conchas73 (conchas) 96 px; bote_a (botev) 93 px; bote_b (botew) 93 px; abuela.arena (abuelaS) 909 px; luis.botes (luisS) 622 px, 0 behind the set + 26 under fronds; agua2 (carmen) 724 px; navega (botefrog) 280 px; navega (coqui) 536 px",
+     "       m5: toallas (pila) 140 px, 38 under manta_abuela (abuelaS); canasta (canasta) 114 px; cuerda1 (toallar) 224 px; cuerda2 (toallaa) 224 px; manta_abuela (abuelaS) 909 px, 35 under canasta (canasta); pie1 (luis) 600 px; pie2 (carmen) 724 px; manta_coqui (coqui) 536 px",
+     "       m6: toallas (pila) 140 px, 38 under manta_abuela (abuelaS); cuerda1 (toallar) 224 px; cuerda2 (toallaa) 224 px; manta_abuela (abuelaS) 909 px; agua1 (luis) 600 px; sale (carmen) 724 px; manta_coqui (coqui) 536 px"
     ]
    }
   ]

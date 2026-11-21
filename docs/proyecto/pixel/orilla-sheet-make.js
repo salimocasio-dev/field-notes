@@ -58,37 +58,37 @@ function defs(E) {
   const K = E.CASTLE, P = E.PATCH, PV = E.PALMS[0][1], D = [];
   const add = (name, uvz, kind, sil, who, what, more) => D.push(Object.assign({ name, uvz, kind, sil, who, what }, more || {}));
   [[-3.0, 2.9], [-1.85, 3.1], [-.7, 2.9], [.45, 3.1]].forEach(([u, v], i) => add('llegada' + (i + 1), [u, v, 0], 'place', null, 'any', 'where one of them walks in (abuela, Luis, Carmen, the frog: the spec does not say which goes where): checked with the widest box, the frog\'s'));
-  [-1.3, -.15, 1.0, 2.15].forEach((u, i) => add('orilla' + (i + 1), [u, .45, 0], 'place', null, 'any', 'a place of the row on the wet sand (anyone: checked with the widest box, the frog\'s)'));
+  [.2, 1.2, 2.2, 3.2].forEach((u, i) => add('orilla' + (i + 1), [u, .45, 0], 'place', null, 'any', 'a place of the row on the wet sand (anyone: checked with the widest box, the frog\'s)'));
   add('agua1', [1.0, -.5, 0], 'person', 'nino', 'nino', 'a child wading in the shallow water: to the ankles');
-  add('agua2', [1.0, -1.3, 0], 'person', 'nino', 'nino', 'a child wading in the shallow water: to the knees');
+  add('agua2', [1.2, -1.3, 0], 'person', 'nino', 'nino', 'a child wading in the shallow water: to the knees');
   // story 72
   add('castillo_l', [-.35, 3.5, 0], 'person', 'ninoS', 'nino', 'Carmen kneeling at the castle (left); the stand-in is a child sitting (no maker draws a person kneeling)');
   add('castillo_r', [2.75, 3.5, 0], 'person', 'ninoS', 'nino', 'Luis kneeling at the castle (right)');
   K.towers.forEach((tu, i) => add('torre' + (i + 1), [tu, K.v, r4(.12 + K.th)], 'place', 'coqui', 'coqui', 'the top of tower ' + (i + 1) + ' (z 0.12 + th = ' + r4(.12 + K.th) + '): the frog stands there, or a shell', { on: 'castillo' }));
-  add('coqui.castillo', [1.2, 6.9, 0], 'place', 'coqui', 'coqui', 'the frog, below the patch of smooth sand');
+  add('coqui.castillo', [1.2, 7.7, 0], 'place', 'coqui', 'coqui', 'the frog, below the patch of smooth sand');
   add('parche', [P.u, P.v, 0], 'place', 'coqui', 'coqui', 'the middle of the patch of smooth sand: where the frog digs');
   add('mar_busca', [1.2, -.4, 0], 'place', 'coqui', 'coqui', 'in the sea at the water\'s edge: where the frog ducks');
   add('abuela.foto', [-1.9, 4.6, 0], 'person', 'abuelaS', 'adulto', 'abuela sitting on the sand, with her camera');
   add('perro', [3.3, 4.6, 0], 'person', 'perro', 'perro', 'Canelo (sitting up)');
   add('conchas', [2.9, 5.5, 0], 'thing', null, null, 'three pink shells in a row (' + SHELL.w + ' px each, ' + SHELL_PITCH + ' px from middle to middle: the spec gives no spacing), the row\'s bottom middle on the spot', { size: [ROW.w, ROW.h], anchor: 'bottom', parts: 3 });
   // story 73
-  add('luis.botes', [-1.3, .6, 0], 'person', 'ninoS', 'nino', 'Luis sitting on the wet sand with his two boats');
-  add('bote_a', [-.3, .55, 0], 'thing', null, null, 'a toy boat on the wet sand (' + TOY.w + ' x ' + TOY.h + ')', { size: [TOY.w, TOY.h], anchor: 'bottom' });
-  add('bote_b', [.45, .55, 0], 'thing', null, null, 'a toy boat on the wet sand (' + TOY.w + ' x ' + TOY.h + ')', { size: [TOY.w, TOY.h], anchor: 'bottom' });
-  add('coqui.orilla', [1.75, 1.6, 0], 'place', 'coqui', 'coqui', 'the frog on the sand near the water');
-  add('conchas73', [2.7, 1.3, 0], 'thing', null, null, 'three pink shells in a row, on the sand (' + SHELL.w + ' px each, ' + SHELL_PITCH + ' px apart)', { size: [ROW.w, ROW.h], anchor: 'bottom', parts: 3 });
+  add('luis.botes', [.3, .65, 0], 'person', 'ninoS', 'nino', 'Luis sitting on the wet sand with his two boats');
+  add('bote_a', [1.15, .55, 0], 'thing', null, null, 'a toy boat on the wet sand (' + TOY.w + ' x ' + TOY.h + ')', { size: [TOY.w, TOY.h], anchor: 'bottom' });
+  add('bote_b', [1.9, .55, 0], 'thing', null, null, 'a toy boat on the wet sand (' + TOY.w + ' x ' + TOY.h + ')', { size: [TOY.w, TOY.h], anchor: 'bottom' });
+  add('coqui.orilla', [2.9, 1.6, 0], 'place', 'coqui', 'coqui', 'the frog on the sand near the water');
+  add('conchas73', [1.6, 1.75, 0], 'thing', null, null, 'three pink shells in a row, on the sand (' + SHELL.w + ' px each, ' + SHELL_PITCH + ' px apart)', { size: [ROW.w, ROW.h], anchor: 'bottom', parts: 3 });
   add('abuela.arena', [-2.9, 3.4, 0], 'person', 'abuelaS', 'adulto', 'abuela sitting on the sand');
-  add('navega', [.75, -.6, 0], 'place', 'coqui', 'coqui', 'the frog in a boat on the water, half way to Carmen (the boat: a plain hull ' + FROGBOAT.w + ' x ' + FROGBOAT.h + ', the spec gives no size)', { boat: [FROGBOAT.w, FROGBOAT.h] });
+  add('navega', [2.4, -.7, 0], 'place', 'coqui', 'coqui', 'the frog in a boat on the water, half way to Carmen (the boat: a plain hull ' + FROGBOAT.w + ' x ' + FROGBOAT.h + ', the spec gives no size)', { boat: [FROGBOAT.w, FROGBOAT.h] });
   // story 74
-  add('manta_abuela', [-3.1, 3.9, 0], 'person', 'abuelaS', 'adulto', 'abuela on her blanket (sitting)', { on: 'manta' });
-  add('manta_coqui', [-1.5, 4.5, 0], 'place', 'coqui', 'coqui', 'the frog on abuela\'s blanket', { on: 'manta' });
-  add('toallas', [-2.3, 3.55, 0], 'thing', null, null, 'the pile of three folded towels (' + PILE.w + ' x ' + PILE.h + ') on the blanket', { size: [PILE.w, PILE.h], anchor: 'bottom', on: 'manta' });
+  add('manta_abuela', [-3.1, 4.15, 0], 'person', 'abuelaS', 'adulto', 'abuela on her blanket (sitting)', { on: 'manta' });
+  add('manta_coqui', [-1.4, 4.5, 0], 'place', 'coqui', 'coqui', 'the frog on abuela\'s blanket', { on: 'manta' });
+  add('toallas', [-2.35, 3.5, 0], 'thing', null, null, 'the pile of three folded towels (' + PILE.w + ' x ' + PILE.h + ') on the blanket', { size: [PILE.w, PILE.h], anchor: 'bottom', on: 'manta' });
   add('canasta', [-2.35, 4.6, 0], 'thing', null, null, 'the basket (' + CESTA.w + ' x ' + CESTA.h + ') on the blanket', { size: [CESTA.w, CESTA.h], anchor: 'bottom', on: 'manta' });
   add('pie1', [-.2, 4.3, 0], 'person', 'nino', 'nino', 'a child standing in front of the blanket');
   add('pie2', [.95, 4.3, 0], 'person', 'nino', 'nino', 'a child standing in front of the blanket');
-  add('cuerda1', [-3.0, PV, E.ROPE], 'thing', null, null, 'the first towel\'s place on the rope (z ROPE ' + E.ROPE + '): the towel hangs below it (' + TOWEL.w + ' x ' + TOWEL.h + '), its top middle on the point', { size: [TOWEL.w, TOWEL.h], anchor: 'top', on: 'cuerda' });
-  add('cuerda2', [-2.2, PV, E.ROPE], 'thing', null, null, 'the second towel\'s place on the rope: the towel hangs below it (' + TOWEL.w + ' x ' + TOWEL.h + ')', { size: [TOWEL.w, TOWEL.h], anchor: 'top', on: 'cuerda' });
-  add('sale', [.4, .5, 0], 'person', 'nino', 'nino', 'a child coming out of the water');
+  add('cuerda1', [-3.1, PV, E.ROPE], 'thing', null, null, 'the first towel\'s place on the rope (z ROPE ' + E.ROPE + '): the towel hangs below it (' + TOWEL.w + ' x ' + TOWEL.h + '), its top middle on the point', { size: [TOWEL.w, TOWEL.h], anchor: 'top', on: 'cuerda' });
+  add('cuerda2', [-2.45, PV, E.ROPE], 'thing', null, null, 'the second towel\'s place on the rope: the towel hangs below it (' + TOWEL.w + ' x ' + TOWEL.h + ')', { size: [TOWEL.w, TOWEL.h], anchor: 'top', on: 'cuerda' });
+  add('sale', [2.2, .5, 0], 'person', 'nino', 'nino', 'a child coming out of the water');
   add('bote', [E.BOAT[0], E.BOAT[1], 0], 'thing', null, null, 'the fishing boat at anchor (a sprite, ' + BOAT.w + ' x ' + BOAT.h + '): its bottom middle on BOAT; the set draws it only for bote=1', { size: [BOAT.w, BOAT.h], anchor: 'bottom' });
   return D;
 }

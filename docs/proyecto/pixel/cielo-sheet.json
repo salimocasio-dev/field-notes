@@ -148,10 +148,10 @@
    "who": "nino"
   },
   "piso": {
-   "world": [-0.2121, 3.5355, 0.25],
-   "uv": [-2.65, 2.35, 0.25],
-   "screen": [51, 177],
-   "depth": 2.1602,
+   "world": [0.2121, 3.3234, 0.25],
+   "uv": [-2.2, 2.5, 0.25],
+   "screen": [63, 179],
+   "depth": 2.2901,
    "scale": 1,
    "kind": "place",
    "view": "wide",
@@ -172,72 +172,72 @@
    "who": "adulto"
   },
   "radio": {
-   "world": [-0.495, 2.6163, 0.97],
-   "uv": [-2.2, 1.5, 0.97],
-   "screen": [63, 150],
-   "depth": 1.784,
+   "world": [-0.7071, 2.5456, 0.97],
+   "uv": [-2.3, 1.3, 0.97],
+   "screen": [60, 147],
+   "depth": 1.6108,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the radio on the table (z = its top 0.97): a 12 x 9 px stand-in, its bottom middle on the point",
-   "box": [57, 141, 12, 9],
+   "box": [54, 138, 12, 9],
    "anchor": "bottom",
    "on": "porche"
   },
   "velas": {
-   "world": [-0.1768, 2.5809, 0.97],
-   "uv": [-1.95, 1.7, 0.97],
-   "screen": [69, 152],
-   "depth": 1.9572,
+   "world": [-0.0707, 2.6163, 0.97],
+   "uv": [-1.9, 1.8, 0.97],
+   "screen": [71, 154],
+   "depth": 2.0438,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the three candles in jars on the table: the middle one on the point, the others 7 px either side (centre to centre), each 6 x 10 px, bottom edge on the point",
-   "box": [59, 142, 20, 10],
+   "box": [61, 144, 20, 10],
    "anchor": "bottom",
    "parts": [
-    [59, 142, 6, 10],
-    [66, 142, 6, 10],
-    [73, 142, 6, 10]
+    [61, 144, 6, 10],
+    [68, 144, 6, 10],
+    [75, 144, 6, 10]
    ],
    "on": "porche"
   },
   "tapa_puesta": {
-   "world": [-0.1768, 2.5809, 0.97],
-   "uv": [-1.95, 1.7, 0.97],
-   "screen": [69, 152],
-   "depth": 1.9572,
+   "world": [-0.0707, 2.6163, 0.97],
+   "uv": [-1.9, 1.8, 0.97],
+   "screen": [71, 154],
+   "depth": 2.0438,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the glass cover over the candles (same point as velas): 26 x 18 px, bottom middle on the point",
-   "box": [56, 134, 26, 18],
+   "box": [58, 136, 26, 18],
    "anchor": "bottom",
    "on": "porche"
   },
   "tapa": {
-   "world": [0.5303, 2.7931, 0.25],
-   "uv": [-1.6, 2.35, 0.25],
-   "screen": [78, 177],
-   "depth": 2.1602,
+   "world": [0.6718, 2.7224, 0.25],
+   "uv": [-1.45, 2.4, 0.25],
+   "screen": [82, 178],
+   "depth": 2.2035,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the glass cover standing on the deck's floor: 18 x 16 px, bottom middle on the point",
-   "box": [69, 161, 18, 16],
+   "box": [73, 162, 18, 16],
    "anchor": "bottom",
    "on": "porche"
   },
   "chal": {
-   "world": [-0.9051, 3.3093, 1],
-   "uv": [-2.98, 1.7, 1],
-   "screen": [43, 152],
-   "depth": 1.9722,
+   "world": [-0.601, 4.278, 0.25],
+   "uv": [-3.45, 2.6, 0.25],
+   "screen": [30, 180],
+   "depth": 2.3767,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
-   "what": "the shawl on the chair's arm (z DECK.h + .75): 10 x 8 px, bottom middle on the point (open point: the spec gives the size, not the anchor; the set draws no arm there)",
-   "box": [38, 144, 10, 8],
+   "what": "the shawl, folded on the deck's floor by her feet (the chair has no arm): 10 x 8 px, bottom middle on the point (open point: the spec gives the size, not the anchor; the set draws no arm there)",
+   "box": [25, 172, 10, 8],
    "anchor": "bottom",
    "on": "porche"
   },
@@ -499,14 +499,14 @@
      "spots-on-surface: 9 spots above the ground are on a surface the set draws (the seat top z 0.69, the deck floor z 0.25, the table top z 0.97, the cord at z 1.2) or on the telescope's stand; the set's own pixel at each (part porche, depth within .1 of the spot's) agrees, but at mesa1, where the table is in front of him",
      "       mecedora z 0.69: inside the seat's top (u -3.6 to -3, v 1.44 to 1.96, z 0.69); the set's pixel part porche, depth 1.84 against the spot's 1.82 (0.03)",
      "       mesa1 z 0.25: inside the deck's floor (u -4.1 to -1.2, v 0.3 to 2.7, z 0.25); the set's pixel part porche, depth 0.96 against the spot's 0.82: nearer: something of the set is in front of the spot (the table, which he stands behind)",
-     "       piso z 0.25: inside the deck's floor (u -4.1 to -1.2, v 0.3 to 2.7, z 0.25); the set's pixel part porche, depth 2.16 against the spot's 2.16 (0)",
-     "       radio z 0.97: inside the table's top (0.22 from its middle, radius .5, z 0.97); the set's pixel part porche, depth 1.8 against the spot's 1.78 (0.02)",
-     "       velas z 0.97: inside the table's top (0.11 from its middle, radius .5, z 0.97); the set's pixel part porche, depth 1.93 against the spot's 1.96 (0.02)",
-     "       tapa_puesta z 0.97: inside the table's top (0.11 from its middle, radius .5, z 0.97); the set's pixel part porche, depth 1.93 against the spot's 1.96 (0.02)",
-     "       tapa z 0.25: inside the deck's floor (u -4.1 to -1.2, v 0.3 to 2.7, z 0.25); the set's pixel part porche, depth 2.16 against the spot's 2.16 (0)",
+     "       piso z 0.25: inside the deck's floor (u -4.1 to -1.2, v 0.3 to 2.7, z 0.25); the set's pixel part porche, depth 2.3 against the spot's 2.29 (0.01)",
+     "       radio z 0.97: inside the table's top (0.42 from its middle, radius .5, z 0.97); the set's pixel part porche, depth 1.6 against the spot's 1.61 (0.01)",
+     "       velas z 0.97: inside the table's top (0.22 from its middle, radius .5, z 0.97); the set's pixel part porche, depth 2.07 against the spot's 2.04 (0.03)",
+     "       tapa_puesta z 0.97: inside the table's top (0.22 from its middle, radius .5, z 0.97); the set's pixel part porche, depth 2.07 against the spot's 2.04 (0.03)",
+     "       tapa z 0.25: inside the deck's floor (u -4.1 to -1.2, v 0.3 to 2.7, z 0.25); the set's pixel part porche, depth 2.23 against the spot's 2.2 (0.03)",
      "       cuerda z 1.2: inside the cord (the wall the set draws at u -1.33 to -1.3); the set's pixel part porche, depth 0.96 against the spot's 0.96 (0)",
      "       coqui.telescopio z 0.9: on the telescope's stand (a sprite: the stand's top row is 169, the frog's feet row 171)",
-     "       finding, not a check: chal 43,152 z 1: the set draws nothing of the deck there (the nearest pixel is part porche at depth 1.73, the spot's is 1.97) (the chair has no arm)"
+     "       finding, not a check: chal 30,180 z 0.25: part porche at depth 2.36 (the chair has no arm)"
     ]
    },
    {
@@ -520,8 +520,8 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 36 pairs in the 6 moments of the preview (m1 (mecedora, chiringa_pie, bola1, manta); m2 (mecedora, chiringa_pie, bola1, manta); m3 (mecedora, mesa1, mesa2, piso); m4 (mecedora, mesa1, mesa2, piso); m5 (mecedora, luis.tel, carmen.tel, coqui.telescopio); m6 (mecedora, mesa1, mesa2, piso)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m3 mecedora ~ piso (17 across, 18 down), m3 mesa1 ~ piso (9 across, 20 down), m4 mecedora ~ piso (17 across, 18 down), m4 mesa1 ~ piso (9 across, 20 down), m6 mecedora ~ piso (17 across, 18 down), m6 mesa1 ~ piso (9 across, 20 down)",
-     "       closest pair in each moment (px across / px down): m1 bola1 ~ manta 42/17 (needs 28 across or 12 down); m2 bola1 ~ manta 42/17 (needs 28 across or 12 down); m3 mesa1 ~ piso 9/20 (needs 28 across or 12 down); m4 mesa1 ~ piso 9/20 (needs 28 across or 12 down); m5 luis.tel ~ coqui.telescopio 31/24 (needs 28 across or 12 down); m6 mesa1 ~ piso 9/20 (needs 28 across or 12 down)"
+     "sprites-apart: 36 pairs in the 6 moments of the preview (m1 (mecedora, chiringa_pie, bola1, manta); m2 (mecedora, chiringa_pie, bola1, manta); m3 (mecedora, mesa1, mesa2, piso); m4 (mecedora, mesa1, mesa2, piso); m5 (mecedora, luis.tel, carmen.tel, coqui.telescopio); m6 (mecedora, mesa1, mesa2, piso)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m3 mesa1 ~ piso (3 across, 22 down), m4 mesa1 ~ piso (3 across, 22 down), m6 mesa1 ~ piso (3 across, 22 down)",
+     "       closest pair in each moment (px across / px down): m1 bola1 ~ manta 42/17 (needs 28 across or 12 down); m2 bola1 ~ manta 42/17 (needs 28 across or 12 down); m3 mesa1 ~ piso 3/22 (needs 28 across or 12 down); m4 mesa1 ~ piso 3/22 (needs 28 across or 12 down); m5 luis.tel ~ coqui.telescopio 31/24 (needs 28 across or 12 down); m6 mesa1 ~ piso 3/22 (needs 28 across or 12 down)"
     ],
     "pairs": [
      {
@@ -654,8 +654,8 @@
       "moment": 3,
       "a": "mecedora",
       "b": "piso",
-      "across": 17,
-      "down": 18,
+      "across": 29,
+      "down": 20,
       "needAcross": 28,
       "ok": true
      },
@@ -672,8 +672,8 @@
       "moment": 3,
       "a": "mesa1",
       "b": "piso",
-      "across": 9,
-      "down": 20,
+      "across": 3,
+      "down": 22,
       "needAcross": 28,
       "ok": true
      },
@@ -681,8 +681,8 @@
       "moment": 3,
       "a": "mesa2",
       "b": "piso",
-      "across": 53,
-      "down": 0,
+      "across": 41,
+      "down": 2,
       "needAcross": 28,
       "ok": true
      },
@@ -708,8 +708,8 @@
       "moment": 4,
       "a": "mecedora",
       "b": "piso",
-      "across": 17,
-      "down": 18,
+      "across": 29,
+      "down": 20,
       "needAcross": 28,
       "ok": true
      },
@@ -726,8 +726,8 @@
       "moment": 4,
       "a": "mesa1",
       "b": "piso",
-      "across": 9,
-      "down": 20,
+      "across": 3,
+      "down": 22,
       "needAcross": 28,
       "ok": true
      },
@@ -735,8 +735,8 @@
       "moment": 4,
       "a": "mesa2",
       "b": "piso",
-      "across": 53,
-      "down": 0,
+      "across": 41,
+      "down": 2,
       "needAcross": 28,
       "ok": true
      },
@@ -816,8 +816,8 @@
       "moment": 6,
       "a": "mecedora",
       "b": "piso",
-      "across": 17,
-      "down": 18,
+      "across": 29,
+      "down": 20,
       "needAcross": 28,
       "ok": true
      },
@@ -834,8 +834,8 @@
       "moment": 6,
       "a": "mesa1",
       "b": "piso",
-      "across": 9,
-      "down": 20,
+      "across": 3,
+      "down": 22,
       "needAcross": 28,
       "ok": true
      },
@@ -843,8 +843,8 @@
       "moment": 6,
       "a": "mesa2",
       "b": "piso",
-      "across": 53,
-      "down": 0,
+      "across": 41,
+      "down": 2,
       "needAcross": 28,
       "ok": true
      }
@@ -854,7 +854,7 @@
     "name": "frog-seen",
     "ok": true,
     "lines": [
-     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 manta 136,192: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 manta 136,192: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 piso 51,177: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 piso 51,177: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 coqui.telescopio 156,171: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 piso 51,177: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them"
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 manta 136,192: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 manta 136,192: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 piso 63,179: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 piso 63,179: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 coqui.telescopio 156,171: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 piso 63,179: 536 px, 0 hidden by the set, 0 by a frond, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them"
     ]
    },
    {
@@ -868,7 +868,7 @@
     "name": "abuela-head",
     "ok": true,
     "lines": [
-     "abuela-head: abuela's head (the top 14 rows of her sprite) is covered by nobody and by nothing of the set in all 6 moments: m1: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 0 under a nearer sprite, 18 hidden by the set, 0 by a frond; m2: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 0 under a nearer sprite, 18 hidden by the set, 0 by a frond; m3: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 239 under a nearer sprite, 18 hidden by the set, 0 by a frond; m4: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 239 under a nearer sprite, 18 hidden by the set, 0 by a frond; m5: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 0 under a nearer sprite, 18 hidden by the set, 0 by a frond; m6: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 239 under a nearer sprite, 18 hidden by the set, 0 by a frond"
+     "abuela-head: abuela's head (the top 14 rows of her sprite) is covered by nobody and by nothing of the set in all 6 moments: m1: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 0 under a nearer sprite, 18 hidden by the set, 0 by a frond; m2: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 0 under a nearer sprite, 18 hidden by the set, 0 by a frond; m3: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 86 under a nearer sprite, 18 hidden by the set, 0 by a frond; m4: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 86 under a nearer sprite, 18 hidden by the set, 0 by a frond; m5: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 0 under a nearer sprite, 18 hidden by the set, 0 by a frond; m6: rows 123 to 136 (206 px): 0 covered, 0 hidden by the set, 0 by a frond; her whole sprite: 86 under a nearer sprite, 18 hidden by the set, 0 by a frond"
     ]
    },
    {
@@ -889,7 +889,7 @@
     "name": "frog-piso",
     "ok": true,
     "lines": [
-     "frog-piso: the frog at piso 51,177 is whole in moments 3, 4 and 6: the table (TABLE [-2,1.6]) and the chair (CHAIR [-3.3,1.7]) are not in front of him: m3: 536 px, 0 hidden by the set (the table and the chair included), 0 by a frond, 0 under a nearer sprite; alone on the porch: 0 hidden; m4: 536 px, 0 hidden by the set (the table and the chair included), 0 by a frond, 0 under a nearer sprite; alone on the porch: 0 hidden; m6: 536 px, 0 hidden by the set (the table and the chair included), 0 by a frond, 0 under a nearer sprite; alone on the porch: 0 hidden"
+     "frog-piso: the frog at piso 63,179 is whole in moments 3, 4 and 6: the table (TABLE [-2,1.6]) and the chair (CHAIR [-3.3,1.7]) are not in front of him: m3: 536 px, 0 hidden by the set (the table and the chair included), 0 by a frond, 0 under a nearer sprite; alone on the porch: 0 hidden; m4: 536 px, 0 hidden by the set (the table and the chair included), 0 by a frond, 0 under a nearer sprite; alone on the porch: 0 hidden; m6: 536 px, 0 hidden by the set (the table and the chair included), 0 by a frond, 0 under a nearer sprite; alone on the porch: 0 hidden"
     ]
    },
    {
@@ -918,10 +918,10 @@
     "ok": true,
     "lines": [
      "info-stand-ins: not a check, findings of the spec's numbers:",
-     "       the radio and the candles (moments 3, 6; 4 the same): the candles cover 62 of the radio's 108 px (the radio box [57,141,12,9], the candles' [59,142,20,10]: the left candle begins 10 columns inside the radio's right end and stands in front of it: v 1.7 against the radio's 1.5)",
-     "       moment 4: the glass cover's edge covers 8 px of the radio and 1 px of the candles (the glass is drawn as an edge only: you see through it)",
-     "       moment 3 (4 and 6 the same): the frog at piso covers 239 of abuela's 884 px (rows 153 to 171: her lap and knees; her head is rows 123 to 136, clear); the boxes overlap 11 columns (her 24-wide box and his 32), her feet are 18 px above his",
-     "       moment 3: the shawl [38,144,10,8] and abuela share 59 drawn pixels (the shawl covers 0 of her, she covers 0 of its 80); its point hangs 7 px above the chair seat's right edge (the set draws no arm)",
+     "       the radio and the candles (moments 3, 6; 4 the same): the candles cover 11 of the radio's 108 px (the radio box [54,138,12,9], the candles' [61,144,20,10]: the left candle begins 5 columns inside the radio's right end and stands in front of it: v 1.8 against the radio's 1.3)",
+     "       moment 4: the glass cover's edge covers 12 px of the radio and 1 px of the candles (the glass is drawn as an edge only: you see through it)",
+     "       moment 3 (4 and 6 the same): the frog at piso covers 86 of abuela's 884 px (rows 157 to 171: her lap and knees; her head is rows 123 to 136, clear); the boxes overlap -1 columns (her 24-wide box and his 32), her feet are 20 px above his",
+     "       moment 3: the shawl [25,172,10,8] and abuela share 0 drawn pixels (the shawl covers 0 of her, she covers 0 of its 80); its point hangs 7 px above the chair seat's right edge (the set draws no arm)",
      "       moment 3: the table hides 136 of Luis's 600 px (rows 144 to 156; his head, rows 116 to 129, is clear)",
      "       abuela: 18 px of her sprite are hidden by the set in every moment (rows 162 to 172: her shoes behind the chair's rockers); none by a frond",
      "       moment 1: the ball at Carmen's feet (15 px to her right: an open point) covers 0 px of her",

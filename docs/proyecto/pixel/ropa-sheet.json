@@ -91,9 +91,9 @@
  },
  "spots": {
   "banco1": {
-   "world": [4.1012, 1.1314, 0.46],
-   "uv": [2.1, 3.7, 0.46],
-   "screen": [175, 98],
+   "world": [4.0871, 1.1455, 0.46],
+   "uv": [2.08, 3.7, 0.46],
+   "screen": [174, 98],
    "depth": 3.4343,
    "scale": 1,
    "kind": "person",
@@ -154,19 +154,19 @@
    "who": "coqui"
   },
   "zapatos": {
-   "world": [3.0406, 1.4849, 0],
-   "uv": [1.1, 3.2, 0],
-   "screen": [149, 102],
-   "depth": 2.7713,
+   "world": [3.6416, 2.5809, 0],
+   "uv": [0.75, 4.4, 0],
+   "screen": [140, 117],
+   "depth": 3.8105,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "two pairs of shoes side by side on the sand (white at the left, black at the right): 12 x 8 px each, 24 x 8 together, their bottom middle on the point",
-   "box": [137, 94, 24, 8],
+   "box": [128, 109, 24, 8],
    "anchor": "bottom",
    "pairs": [
-    [137, 94, 12, 8],
-    [149, 94, 12, 8]
+    [128, 109, 12, 8],
+    [140, 109, 12, 8]
    ]
   },
   "caseta": {
@@ -276,128 +276,128 @@
    "who": "nino"
   },
   "orilla1": {
-   "world": [-1.4142, 2.1213, 0],
-   "uv": [-2.5, 0.5, 0],
-   "screen": [55, 67],
-   "depth": 0.433,
+   "world": [3.783, 4.1366, 0],
+   "uv": [-0.25, 5.6, 0],
+   "screen": [114, 133],
+   "depth": 4.8497,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "abuela at the water's edge, story 79",
+   "what": "abuela on the sand in front of the line, looking at the sea, story 79",
    "sprite": "abuela",
    "who": "adulto"
   },
   "orilla2": {
-   "world": [2.2627, -1.5556, 0],
-   "uv": [2.7, 0.5, 0],
-   "screen": [190, 67],
-   "depth": 0.433,
+   "world": [1.6263, 4.879, 0],
+   "uv": [-2.3, 4.6, 0],
+   "screen": [60, 120],
+   "depth": 3.9837,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "Luis at the water's edge, story 79",
+   "what": "Luis on the sand in front of the line, story 79",
    "sprite": "nino",
    "who": "nino"
   },
   "orilla3": {
-   "world": [3.4295, -1.2374, 0],
-   "uv": [3.3, 1.55, 0],
-   "screen": [206, 80],
-   "depth": 1.3423,
+   "world": [2.4042, 4.1012, 0],
+   "uv": [-1.2, 4.6, 0],
+   "screen": [89, 120],
+   "depth": 3.9837,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "Carmen at the water's edge, story 79",
+   "what": "Carmen on the sand in front of the line, story 79",
    "sprite": "nino",
    "who": "nino"
   },
   "coqui.orilla": {
-   "world": [1.2021, 1.0607, 0],
-   "uv": [0.1, 1.6, 0],
-   "screen": [123, 81],
-   "depth": 1.3856,
+   "world": [1.9799, 0.7071, 0],
+   "uv": [0.9, 1.9, 0],
+   "screen": [143, 85],
+   "depth": 1.6454,
    "scale": 1,
    "kind": "place",
    "view": "wide",
-   "what": "the frog on the wet sand, story 79",
+   "what": "the frog on the sand by the water, behind the line and under it, story 79",
    "sprite": "coqui",
    "who": "coqui"
   },
   "agua1": {
-   "world": [-1.4849, 0.7778, 0],
-   "uv": [-1.6, -0.5, 0],
-   "screen": [78, 54],
+   "world": [-1.4142, 0.7071, 0],
+   "uv": [-1.5, -0.5, 0],
+   "screen": [81, 54],
    "depth": -0.433,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "thing afloat 1 of 5 in the shallow water (a 14 x 9 px stand-in, its bottom middle on the point)",
-   "box": [71, 45, 14, 9],
+   "box": [74, 45, 14, 9],
    "anchor": "bottom",
    "water": 1
   },
   "agua2": {
-   "world": [-0.8839, 0.1768, 0],
-   "uv": [-0.75, -0.5, 0],
-   "screen": [101, 54],
+   "world": [-0.9192, 0.2121, 0],
+   "uv": [-0.8, -0.5, 0],
+   "screen": [99, 54],
    "depth": -0.433,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "thing afloat 2 of 5 in the shallow water (a 14 x 9 px stand-in, its bottom middle on the point)",
-   "box": [94, 45, 14, 9],
+   "box": [92, 45, 14, 9],
    "anchor": "bottom",
    "water": 1
   },
   "agua3": {
-   "world": [-0.2828, -0.4243, 0],
-   "uv": [0.1, -0.5, 0],
-   "screen": [123, 54],
+   "world": [-0.4243, -0.2828, 0],
+   "uv": [-0.1, -0.5, 0],
+   "screen": [117, 54],
    "depth": -0.433,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "thing afloat 3 of 5 in the shallow water (a 14 x 9 px stand-in, its bottom middle on the point)",
-   "box": [116, 45, 14, 9],
+   "box": [110, 45, 14, 9],
    "anchor": "bottom",
    "water": 1
   },
   "agua4": {
-   "world": [0.3182, -1.0253, 0],
-   "uv": [0.95, -0.5, 0],
-   "screen": [145, 54],
+   "world": [0.0707, -0.7778, 0],
+   "uv": [0.6, -0.5, 0],
+   "screen": [136, 54],
    "depth": -0.433,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "thing afloat 4 of 5 in the shallow water (a 14 x 9 px stand-in, its bottom middle on the point)",
-   "box": [138, 45, 14, 9],
+   "box": [129, 45, 14, 9],
    "anchor": "bottom",
    "water": 1
   },
   "agua5": {
-   "world": [0.9192, -1.6263, 0],
-   "uv": [1.8, -0.5, 0],
-   "screen": [167, 54],
+   "world": [1.3081, -2.0153, 0],
+   "uv": [2.35, -0.5, 0],
+   "screen": [181, 54],
    "depth": -0.433,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "thing afloat 5 of 5 in the shallow water (a 14 x 9 px stand-in, its bottom middle on the point)",
-   "box": [160, 45, 14, 9],
+   "box": [174, 45, 14, 9],
    "anchor": "bottom",
    "water": 1
   },
   "bolsa": {
-   "world": [-0.8485, 2.687, 0],
-   "uv": [-2.5, 1.3, 0],
-   "screen": [55, 77],
-   "depth": 1.1258,
+   "world": [3.3234, 1.9092, 0],
+   "uv": [1, 3.7, 0],
+   "screen": [146, 108],
+   "depth": 3.2043,
    "scale": 1,
    "kind": "thing",
    "view": "wide",
    "what": "the open bag on the sand (a 14 x 10 px stand-in, its bottom middle on the point)",
-   "box": [48, 67, 14, 10],
+   "box": [139, 98, 14, 10],
    "anchor": "bottom"
   },
   "luis.viste": {
@@ -413,10 +413,10 @@
    "who": "nino"
   },
   "ninos1": {
-   "world": [2.6163, 6.7175, 0],
-   "uv": [-2.9, 6.6, 0],
-   "screen": [45, 146],
-   "depth": 5.7158,
+   "world": [1.4849, 5.5861, 0],
+   "uv": [-2.9, 5, 0],
+   "screen": [45, 125],
+   "depth": 4.3301,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -425,10 +425,10 @@
    "who": "nino"
   },
   "ninos2": {
-   "world": [3.3234, 6.0104, 0],
-   "uv": [-1.9, 6.6, 0],
-   "screen": [71, 146],
-   "depth": 5.7158,
+   "world": [2.192, 4.879, 0],
+   "uv": [-1.9, 5, 0],
+   "screen": [71, 125],
+   "depth": 4.3301,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -437,10 +437,10 @@
    "who": "nino"
   },
   "ninos3": {
-   "world": [4.2426, 5.0912, 0],
-   "uv": [-0.6, 6.6, 0],
-   "screen": [104, 146],
-   "depth": 5.7158,
+   "world": [3.1113, 3.9598, 0],
+   "uv": [-0.6, 5, 0],
+   "screen": [104, 125],
+   "depth": 4.3301,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -449,10 +449,10 @@
    "who": "nino"
   },
   "ninos4": {
-   "world": [4.9497, 4.3841, 0],
-   "uv": [0.4, 6.6, 0],
-   "screen": [130, 146],
-   "depth": 5.7158,
+   "world": [3.8184, 3.2527, 0],
+   "uv": [0.4, 5, 0],
+   "screen": [130, 125],
+   "depth": 4.3301,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -461,10 +461,10 @@
    "who": "nino"
   },
   "coqui.busca": {
-   "world": [4.773, 6.5407, 0],
-   "uv": [-1.25, 8, 0],
-   "screen": [88, 164],
-   "depth": 6.9282,
+   "world": [3.783, 5.5508, 0],
+   "uv": [-1.25, 6.6, 0],
+   "screen": [88, 146],
+   "depth": 5.7158,
    "scale": 1,
    "kind": "place",
    "view": "wide",
@@ -576,7 +576,7 @@
     "name": "spots-in-view",
     "ok": true,
     "lines": [
-     "spots-in-view: 32 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost columns: caseta from column 27, ninos1 from column 33; the rightmost: banco2 to column 217, orilla3 to column 217"
+     "spots-in-view: 32 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost columns: caseta from column 27, ninos1 from column 33; the rightmost: banco2 to column 217, agua5 to column 187"
     ],
     "cut": []
    },
@@ -598,12 +598,10 @@
    },
    {
     "name": "sprites-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "sprites-apart: 1 pair(s) with overlapping boxes and feet closer than 12 px up-down (of 40 pairs in 6 moments):",
-     "  moment 5: banco1 [175,98] (24 wide) ~ banco2 [202,98] (32 wide): 27 px sideways (the boxes need 28), 0 px up-down (needs 12): short by 1 px sideways or 12 px up-down",
-     "       nearest passing, moment 5 banco1 ~ banco2: banco1 2.1,3.7,0.46: u 2.1 -> 2.09 (-0.01) or v 3.7 -> 2.83 (-0.87) or z 0.46 -> 0.96 (+0.5); or banco2 3.17,3.7,0.46: u 3.17 -> 3.18 (+0.01) or v 3.7 -> 2.83 (-0.87) or z 0.46 -> 0.96 (+0.5)",
-     "       closest pair in each moment (px across / px down): m1 abuela.cuerda ~ coqui.cuerda 63/2 (needs 28 across or 12 down); m2 coqui.cuerda ~ pie2 30/14 (needs 28 across or 12 down); m3 orilla2 ~ orilla3 16/13 (needs 24 across or 12 down); m4 orilla2 ~ orilla3 16/13 (needs 24 across or 12 down); m5 banco1 ~ banco2 27/0 (needs 28 across or 12 down); m6 ninos3 ~ coqui.busca 16/18 (needs 28 across or 12 down)"
+     "sprites-apart: 40 pairs in the 6 moments of the preview (m1 (abuela.cuerda, coqui.cuerda); m2 (banco1, coqui.cuerda, pie1, pie2); m3 (orilla1, orilla2, orilla3, coqui.orilla); m4 (orilla1, orilla2, orilla3, coqui.orilla); m5 (banco1, banco2, luis.viste, caseta); m6 (banco1, ninos1, ninos2, ninos3, ninos4, coqui.busca)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m6 ninos2 ~ coqui.busca (17 across, 21 down), m6 ninos3 ~ coqui.busca (16 across, 21 down)",
+     "       closest pair in each moment (px across / px down): m1 abuela.cuerda ~ coqui.cuerda 63/2 (needs 28 across or 12 down); m2 coqui.cuerda ~ pie2 30/14 (needs 28 across or 12 down); m3 orilla1 ~ orilla3 25/13 (needs 24 across or 12 down); m4 orilla1 ~ orilla3 25/13 (needs 24 across or 12 down); m5 banco1 ~ banco2 28/0 (needs 28 across or 12 down); m6 ninos3 ~ coqui.busca 16/21 (needs 28 across or 12 down)"
     ],
     "pairs": [
      {
@@ -619,7 +617,7 @@
       "moment": 2,
       "a": "banco1",
       "b": "coqui.cuerda",
-      "across": 56,
+      "across": 55,
       "down": 10,
       "needAcross": 28,
       "ok": true
@@ -628,7 +626,7 @@
       "moment": 2,
       "a": "banco1",
       "b": "pie1",
-      "across": 113,
+      "across": 112,
       "down": 24,
       "needAcross": 24,
       "ok": true
@@ -637,7 +635,7 @@
       "moment": 2,
       "a": "banco1",
       "b": "pie2",
-      "across": 86,
+      "across": 85,
       "down": 24,
       "needAcross": 24,
       "ok": true
@@ -673,8 +671,8 @@
       "moment": 3,
       "a": "orilla1",
       "b": "orilla2",
-      "across": 135,
-      "down": 0,
+      "across": 54,
+      "down": 13,
       "needAcross": 24,
       "ok": true
      },
@@ -682,7 +680,7 @@
       "moment": 3,
       "a": "orilla1",
       "b": "orilla3",
-      "across": 151,
+      "across": 25,
       "down": 13,
       "needAcross": 24,
       "ok": true
@@ -691,8 +689,8 @@
       "moment": 3,
       "a": "orilla1",
       "b": "coqui.orilla",
-      "across": 68,
-      "down": 14,
+      "across": 29,
+      "down": 48,
       "needAcross": 28,
       "ok": true
      },
@@ -700,8 +698,8 @@
       "moment": 3,
       "a": "orilla2",
       "b": "orilla3",
-      "across": 16,
-      "down": 13,
+      "across": 29,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      },
@@ -709,8 +707,8 @@
       "moment": 3,
       "a": "orilla2",
       "b": "coqui.orilla",
-      "across": 67,
-      "down": 14,
+      "across": 83,
+      "down": 35,
       "needAcross": 28,
       "ok": true
      },
@@ -718,8 +716,8 @@
       "moment": 3,
       "a": "orilla3",
       "b": "coqui.orilla",
-      "across": 83,
-      "down": 1,
+      "across": 54,
+      "down": 35,
       "needAcross": 28,
       "ok": true
      },
@@ -727,8 +725,8 @@
       "moment": 4,
       "a": "orilla1",
       "b": "orilla2",
-      "across": 135,
-      "down": 0,
+      "across": 54,
+      "down": 13,
       "needAcross": 24,
       "ok": true
      },
@@ -736,7 +734,7 @@
       "moment": 4,
       "a": "orilla1",
       "b": "orilla3",
-      "across": 151,
+      "across": 25,
       "down": 13,
       "needAcross": 24,
       "ok": true
@@ -745,8 +743,8 @@
       "moment": 4,
       "a": "orilla1",
       "b": "coqui.orilla",
-      "across": 68,
-      "down": 14,
+      "across": 29,
+      "down": 48,
       "needAcross": 28,
       "ok": true
      },
@@ -754,8 +752,8 @@
       "moment": 4,
       "a": "orilla2",
       "b": "orilla3",
-      "across": 16,
-      "down": 13,
+      "across": 29,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      },
@@ -763,8 +761,8 @@
       "moment": 4,
       "a": "orilla2",
       "b": "coqui.orilla",
-      "across": 67,
-      "down": 14,
+      "across": 83,
+      "down": 35,
       "needAcross": 28,
       "ok": true
      },
@@ -772,8 +770,8 @@
       "moment": 4,
       "a": "orilla3",
       "b": "coqui.orilla",
-      "across": 83,
-      "down": 1,
+      "across": 54,
+      "down": 35,
       "needAcross": 28,
       "ok": true
      },
@@ -781,16 +779,16 @@
       "moment": 5,
       "a": "banco1",
       "b": "banco2",
-      "across": 27,
+      "across": 28,
       "down": 0,
       "needAcross": 28,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 5,
       "a": "banco1",
       "b": "luis.viste",
-      "across": 107,
+      "across": 106,
       "down": 10,
       "needAcross": 24,
       "ok": true
@@ -799,7 +797,7 @@
       "moment": 5,
       "a": "banco1",
       "b": "caseta",
-      "across": 136,
+      "across": 135,
       "down": 2,
       "needAcross": 24,
       "ok": true
@@ -835,8 +833,8 @@
       "moment": 6,
       "a": "banco1",
       "b": "ninos1",
-      "across": 130,
-      "down": 48,
+      "across": 129,
+      "down": 27,
       "needAcross": 24,
       "ok": true
      },
@@ -844,8 +842,8 @@
       "moment": 6,
       "a": "banco1",
       "b": "ninos2",
-      "across": 104,
-      "down": 48,
+      "across": 103,
+      "down": 27,
       "needAcross": 24,
       "ok": true
      },
@@ -853,8 +851,8 @@
       "moment": 6,
       "a": "banco1",
       "b": "ninos3",
-      "across": 71,
-      "down": 48,
+      "across": 70,
+      "down": 27,
       "needAcross": 24,
       "ok": true
      },
@@ -862,8 +860,8 @@
       "moment": 6,
       "a": "banco1",
       "b": "ninos4",
-      "across": 45,
-      "down": 48,
+      "across": 44,
+      "down": 27,
       "needAcross": 24,
       "ok": true
      },
@@ -871,8 +869,8 @@
       "moment": 6,
       "a": "banco1",
       "b": "coqui.busca",
-      "across": 87,
-      "down": 66,
+      "across": 86,
+      "down": 48,
       "needAcross": 28,
       "ok": true
      },
@@ -908,7 +906,7 @@
       "a": "ninos1",
       "b": "coqui.busca",
       "across": 43,
-      "down": 18,
+      "down": 21,
       "needAcross": 28,
       "ok": true
      },
@@ -935,7 +933,7 @@
       "a": "ninos2",
       "b": "coqui.busca",
       "across": 17,
-      "down": 18,
+      "down": 21,
       "needAcross": 28,
       "ok": true
      },
@@ -953,7 +951,7 @@
       "a": "ninos3",
       "b": "coqui.busca",
       "across": 16,
-      "down": 18,
+      "down": 21,
       "needAcross": 28,
       "ok": true
      },
@@ -962,7 +960,7 @@
       "a": "ninos4",
       "b": "coqui.busca",
       "across": 42,
-      "down": 18,
+      "down": 21,
       "needAcross": 28,
       "ok": true
      }
@@ -970,14 +968,10 @@
    },
    {
     "name": "frog-seen",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "frog-seen: 2 moment(s) where the frog is not seen whole:",
-     "  moment 3: the frog at coqui.orilla 123,81: 150 of his 536 px are not seen (8 hidden by the set: palmas 8, 142 under cuerda3, 0 outside the picture)",
-     "  moment 4: the frog at coqui.orilla 123,81: 150 of his 536 px are not seen (8 hidden by the set: palmas 8, 142 under cuerda3, 0 outside the picture)",
-     "       nearest passing (shown whole and clear of the others by the sprites-apart rule), moment 3 coqui.orilla 0.1,1.6,0: u: none within 3; v 1.6 -> 2.66 (+1.06); z 0 -> 2.42 (+2.42)",
-     "       nearest passing (shown whole and clear of the others by the sprites-apart rule), moment 4 coqui.orilla 0.1,1.6,0: u: none within 3; v 1.6 -> 2.66 (+1.06); z 0 -> 2.42 (+2.42)",
-     "       info, not a check: m1 coqui.cuerda 119,108: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 coqui.cuerda 119,108: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 coqui.orilla 123,81: 536 px, 8 hidden by the set (palmas 8), 142 under a nearer sprite (cuerda3 142), 0 outside the picture; m4 coqui.orilla 123,81: 536 px, 8 hidden by the set (palmas 8), 142 under a nearer sprite (cuerda3 142), 0 outside the picture; m5 banco2 202,98: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 coqui.busca 88,164: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 coqui.cuerda 119,108: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 coqui.cuerda 119,108: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 coqui.orilla 143,85: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 coqui.orilla 143,85: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 banco2 202,98: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 coqui.busca 88,146: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture",
+     "       info, not a check: m1 coqui.cuerda 119,108: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 coqui.cuerda 119,108: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 coqui.orilla 143,85: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 coqui.orilla 143,85: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 banco2 202,98: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 coqui.busca 88,146: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
     ]
    },
    {
@@ -996,34 +990,24 @@
    },
    {
     "name": "things-afloat",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "things-afloat: 3 thing(s) afloat covered:",
-     "  agua1 [71,45,14,9]: 17 of its 126 px hidden by the set (palmas 9, frond 8), 0 under a nearer sprite (moments 3, 4); over the wind a frond can reach 23 px",
-     "  agua4 [138,45,14,9]: 4 of its 126 px hidden by the set (frond 4), 0 under a nearer sprite (moments 3, 4); over the wind a frond can reach 8 px",
-     "  agua5 [160,45,14,9]: 92 of its 126 px hidden by the set (palmas 70, frond 22), 0 under a nearer sprite (moments 3, 4); over the wind a frond can reach 99 px",
-     "       nearest passing, agua1 -1.6,-0.5,0 (its box clear of the set and the fronds at frame 0): u -1.6 -> -1.51 (+0.09)",
-     "       nearest passing, agua4 0.95,-0.5,0 (its box clear of the set and the fronds at frame 0): u 0.95 -> 0.71 (-0.24); or v -0.5 -> -0.34 (+0.16)",
-     "       nearest passing, agua5 1.8,-0.5,0 (its box clear of the set and the fronds at frame 0): u 1.8 -> 2.33 (+0.53)"
+     "things-afloat: the five things afloat are covered by nobody and by no frond (frame 0): agua1 [74,45,14,9]: 0 of its 126 px hidden by the set (none), 0 under a nearer sprite (moments 3, 4); over the wind a frond can reach 2 px; agua2 [92,45,14,9]: 0 of its 126 px hidden by the set (none), 0 under a nearer sprite (moments 3, 4); over the wind a frond can reach 0 px; agua3 [110,45,14,9]: 0 of its 126 px hidden by the set (none), 0 under a nearer sprite (moments 3); over the wind a frond can reach 0 px; agua4 [129,45,14,9]: 0 of its 126 px hidden by the set (none), 0 under a nearer sprite (moments 3, 4); over the wind a frond can reach 0 px; agua5 [174,45,14,9]: 0 of its 126 px hidden by the set (none), 0 under a nearer sprite (moments 3, 4); over the wind a frond can reach 2 px"
     ]
    },
    {
     "name": "children",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "children: 1 problem(s) with the four children:",
-     "  ninos4 130,146: 222 of its 724 px are hidden by its sign (and the post)",
-     "       nearest passing, ninos4 0.4,6.6,0 (shown whole, under no nearer sprite, clear of the others by the sprites-apart rule): u: none within 3; v 6.6 -> 5.11 (-1.49); z 0 -> 0.86 (+0.86)",
-     "       info, not a check: ninos1 45,146: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 138 to 145) and 0 above them; ninos2 71,146: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 4 px in the feet (rows 138 to 145) and 0 above them; ninos3 104,146: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 8 px in the feet (rows 138 to 145) and 0 above them; ninos4 130,146: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 222, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 138 to 145) and 0 above them"
+     "children: the four children of moment 6 are whole in the window, hidden by neither the guagua, its sign nor a frond, and the frog at coqui.busca covers only their feet: ninos1 45,125: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 117 to 124) and 0 above them; ninos2 71,125: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 117 to 124) and 0 above them; ninos3 104,125: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 117 to 124) and 0 above them; ninos4 130,125: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 117 to 124) and 0 above them",
+     "       info, not a check: ninos1 45,125: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 117 to 124) and 0 above them; ninos2 71,125: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 117 to 124) and 0 above them; ninos3 104,125: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 117 to 124) and 0 above them; ninos4 130,125: window cut 0 px, 0 px outside the picture; hidden by the guagua 0, its sign 0, a frond 0, any other set part 0; under the frog 0 px in the feet (rows 117 to 124) and 0 above them"
     ]
    },
    {
     "name": "bench-pair",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "bench-pair: the pair on the bench is not 28 px apart:",
-     "  banco1 175,98 and banco2 202,98 are 27 px apart across (27.82 unrounded), not 28 (their boxes, 24 + 32 wide, need 28)",
-     "       nearest passing: banco2 u 3.17 -> 3.18 (+0.01, column 203); or banco1 u 2.1 -> 2.09 (-0.01, column 174)"
+     "bench-pair: abuela at banco1 174,98 and the frog at banco2 202,98 are 28 px apart across (u 2.08 and 3.17: 28.34 unrounded); their boxes (24 and 32 wide) just touch"
     ]
    },
    {
@@ -1031,7 +1015,7 @@
     "ok": true,
     "lines": [
      "plate-clear: the plate [147,91,16,10] (16 x 10, its foot 8 px above the sand, on a stand-in box) is covered by nobody in moment 2 and hidden by nothing of the set",
-     "       info, not a check: the plate (nearer) covers 78 of the shoes' 172 drawn px in moment 2 (zapatos box [137,94,24,8], plate box [147,91,16,10]); nearest passing for the shoes to be shown whole: u 1.1 -> 3.99 (+2.89); v 3.2 -> 3.8 (+0.6); z 0 -> 0.45 (+0.45)"
+     "       info, not a check: the plate (nearer) covers 0 of the shoes' 172 drawn px in moment 2 (zapatos box [128,109,24,8], plate box [147,91,16,10]); nearest passing for the shoes to be shown whole: u 0.75 -> 0.76 (+0.01); v 4.4 -> 4.41 (+0.01); z 0 -> 0.01 (+0.01)"
     ]
    },
    {
@@ -1047,17 +1031,11 @@
     "lines": [
      "info-seen: not a check. The palms' fronds at wind time 0 take 4032 px in the box [20,0,209,53]; over the wind (60 s) 4620 px in [19,0,210,53]. What the set and the fronds hide of what is drawn in each moment (px of the sprite's drawing; a sprite is hidden where the live depth is nearer than its plane + 0.3):",
      "       m1: nothing is hidden or covered",
-     "       m2: banco1 (abuelaS) 70 hidden by banco 70 of 884; zapatos (zapatos) 88 under plato 88 of 172",
-     "       m3: agua1 (sombrero) 4 hidden by frond 2, palmas 2 of 90; agua5 (traje) 70 hidden by palmas 56, frond 14 of 78; orilla1 (abuela) 685 hidden by frond 82, palmas 189, caseta 414 of 895; orilla2 (luis) 188 hidden by frond 188, 43 under orilla3 43 of 600; orilla3 (carmen) 26 hidden by frond 9, banco 17 of 724; coqui.orilla (coqui) 8 hidden by palmas 8, 142 under cuerda3 142 of 536; bolsa (bolsa) 72 hidden by caseta 72 of 125",
-     "       m4: agua1 (sombrero) 4 hidden by frond 2, palmas 2 of 90; agua5 (traje) 70 hidden by palmas 56, frond 14 of 78; orilla1 (abuela) 685 hidden by frond 82, palmas 189, caseta 414 of 895; orilla2 (luis) 188 hidden by frond 188, 43 under orilla3 43 of 600; orilla3 (carmen) 26 hidden by frond 9, banco 17 of 724; coqui.orilla (coqui) 8 hidden by palmas 8, 142 under cuerda3 142 of 536; bolsa (bolsa) 72 hidden by caseta 72 of 125",
+     "       m2: banco1 (abuelaS) 70 hidden by banco 70 of 884",
+     "       m3: nothing is hidden or covered",
+     "       m4: nothing is hidden or covered",
      "       m5: banco1 (abuelaS) 70 hidden by banco 70 of 884",
-     "       m6: banco1 (abuelaS) 70 hidden by banco 70 of 884; ninos2 (luis) 4 under coqui.busca 4 of 600; ninos3 (carmen) 8 under coqui.busca 8 of 724; ninos4 (carmen) 222 hidden by guagua 222 of 724",
-     "       nearest passing, agua5 1.8,-0.5,0 (70 of 78 px hidden or covered in moment 3; its box clear of the set and the fronds): u 1.8 -> 2.33 (+0.53)",
-     "       nearest passing, orilla1 -2.5,0.5,0 (685 of 895 px hidden or covered in moment 3; shown whole, clear of the others): u: none within 3; v 0.5 -> 2.72 (+2.22); z: none within 3",
-     "       nearest passing, orilla2 2.7,0.5,0 (231 of 600 px hidden or covered in moment 3; shown whole, clear of the others): u 2.7 -> 4.1 (+1.4); v: none within 3; z: none within 3",
-     "       nearest passing, coqui.orilla 0.1,1.6,0 (150 of 536 px hidden or covered in moment 3; shown whole, clear of the others): u: none within 3; v 1.6 -> 2.66 (+1.06); z 0 -> 2.42 (+2.42)",
-     "       nearest passing, bolsa -2.5,1.3,0 (72 of 125 px hidden or covered in moment 3; its box clear of the set and the fronds): u -2.5 -> -1.51 (+0.99); or v 1.3 -> 2.66 (+1.36)",
-     "       nearest passing, ninos4 0.4,6.6,0 (222 of 724 px hidden or covered in moment 6; shown whole, clear of the others): u: none within 3; v 6.6 -> 5.11 (-1.49); z 0 -> 0.86 (+0.86)"
+     "       m6: banco1 (abuelaS) 70 hidden by banco 70 of 884"
     ]
    }
   ]

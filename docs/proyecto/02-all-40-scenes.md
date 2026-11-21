@@ -82,4 +82,4 @@ A party at the fort. Everyone from every place is there. The call: invite someon
 - **El camino al fuerte (the way up).** The invitation. fuerte, muralla, bandera, fiesta, invita, trae, voy a (comer, tomar, dormir), vamos a (jugar, bailar), ¿quieres venir?, ¿cuándo?, ¿quién?, juntos
 - **La música (the music).** Dancing and singing. música, canción, baila, canta, guitarra, tambor, ríe, feliz, divertido, ¿quieres bailar?, claro, ¡qué bueno!
 - **Los regalos (the presents).** A birthday. regalo, cumpleaños, bizcocho, vela, da, recibe, para ti, sorpresa, ¡felicidades!, mes, año
-- **La muralla, de noche (the wall at night).** Winding down and goodbyes. porque, ¿por qué?, pero, todos, nadie, alguien, nos vemos, hasta pronto, gracias por venir","complete":true},"frame":{"slug":"6280254d-a04b-4d71-9575-7447225a5037","url":"https://claude.ai/artifact/DAUEyjyynrQe5x1uZRFKcJ","artifactUrl":"https://claude.ai/artifact/DAUEyjyynrQe5x1uZRFKcJ\
+- **La muralla, de noche (the wall at night).** Winding down and goodbyes. porque, ¿por qué?, pero, todos, nadie, alguien, nos vemos, hasta pronto, gracias por venir
