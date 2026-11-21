@@ -220,6 +220,21 @@ void main() {
         final ear = (r as Map)['ear'] as Map;
         ear['n'] = (ear['n'] as int) ~/ 2 * 2;
       }
+      // and one word of a scene that is not converted (El banco's hombre: the seed's words reach no further than El
+      // lago, converted at order 35b; pájaro, of cual-lago, was this test's old picture until then), as the seed's casa
+      // but the most overdue, so that the session (up to 10 words, the most overdue first) asks it
+      final palabras = db['palabras'] as Map<String, dynamic>;
+      final hombre =
+          jsonDecode(jsonEncode(palabras['casa'])) as Map<String, dynamic>;
+      hombre['w'] = 'hombre';
+      (hombre['ear'] as Map<String, dynamic>)['due'] =
+          ((palabras['casa'] as Map)['ear'] as Map)['due'] as int;
+      for (final r in palabras.values) {
+        final due = ((r as Map)['ear'] as Map)['due'] as int;
+        final ear = hombre['ear'] as Map<String, dynamic>;
+        if (due > 0 && due <= (ear['due'] as int)) ear['due'] = due - 1;
+      }
+      palabras['hombre'] = hombre;
       await app.open(stored: jsonEncode(db), speechAvailable: false);
       expect(app.services.pictures, isA<ScenePictures>());
       final before = answers(app, 'ear');
