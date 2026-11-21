@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 308,
-  "totalBytes": 21370233,
+  "files": 428,
+  "totalBytes": 28601794,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -1332,6 +1332,606 @@
       "path": "map/hecho-3/zb.json",
       "bytes": 322,
       "sha256": "da1b8a9af598a53e6502ff3ae24004f54bb2f09a080383a7c621f4c37b699211"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-open-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-open-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-open-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "f518ba6dcfe22eeb405ea4295442e1e4e78581dc1462227396b6827ba89a382b"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-open-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "656b2b305073b178f11dee4e8651495730fcdda807d23539c362c39db37af07b"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-open-gate-shut/pix.png",
+      "bytes": 13349,
+      "sha256": "5d7c0ae63fffd96475384b311ad3b36a2817839a4ff2b7b2badcec266016e66c"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-open-gate-shut/state.json",
+      "bytes": 977,
+      "sha256": "2c952b63bc8ec48490c5ef7dfccd8bc7944b7ac56573398742efdca6080b803b"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-open-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "a0ac702f65bdc03fd53d93c8103e28241096ff3832bcc6c8f9de9a6091a7abba"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-open-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "1efbdff9605049a7d22b37a183bd928a810d6b2133ef4e09f1885aa8b4d53220"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-shut-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-shut-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-shut-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "bca4347a89d49d6338042e1e6189db546a5b503b4d1c8d854dc24d6250521708"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-shut-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "75ce087b8482edb620000a4a652ab0df15600cd25548910b096efc002cf2da6b"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-shut-gate-shut/pix.png",
+      "bytes": 13361,
+      "sha256": "aaba40aa5a75034420cc4047392131aca04970da36554fea5d6ae44e917781fb"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-shut-gate-shut/state.json",
+      "bytes": 977,
+      "sha256": "fbbfccbc28386aa11dcf15f626434120a1e024b9960d922c038b84e80a97085a"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-shut-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "788eeb38de0290a4d349e4c65fafafaa4e176c18df6d339af6c324cea51b8547"
+    },
+    {
+      "path": "patio/hora-crepusculo-door-shut-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "878485454123b77649b758e58201ec906e254e47bacc74c8f106dffc8947895b"
+    },
+    {
+      "path": "patio/hora-dia-door-open-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-dia-door-open-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-dia-door-open-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "7e40acedc5f5a398089d18b16534ebef0543792257e03bedbbe762dba0161cc0"
+    },
+    {
+      "path": "patio/hora-dia-door-open-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "358001e735c31591c9abc3623c3b1cfc2b030b12bb716ad3cd56bc285c81dfef"
+    },
+    {
+      "path": "patio/hora-dia-door-open-gate-shut/pix.png",
+      "bytes": 13519,
+      "sha256": "40df67f9fc682209225672b7a46a2fdf74237611a583edb6a9047f0c10e8f826"
+    },
+    {
+      "path": "patio/hora-dia-door-open-gate-shut/state.json",
+      "bytes": 963,
+      "sha256": "87302ed29501fe7b6684401b29752c6ed1554978c8de408d1d62a2a254fc4b5d"
+    },
+    {
+      "path": "patio/hora-dia-door-open-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "a0ac702f65bdc03fd53d93c8103e28241096ff3832bcc6c8f9de9a6091a7abba"
+    },
+    {
+      "path": "patio/hora-dia-door-open-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "1efbdff9605049a7d22b37a183bd928a810d6b2133ef4e09f1885aa8b4d53220"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-open/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "dc8c63b5c3cffde24da5a7c7280bc076d1ad7056380ff374242130629a74dfa9"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-open/pix.json",
+      "bytes": 370,
+      "sha256": "6e6f2cbbba1e7d36a6feb9b0aeb9c4873e6c18b1ca029698277e3206f0a58d4c"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-open/pix.png",
+      "bytes": 14244,
+      "sha256": "121659aa59c2b508d85a485d3b5ef5b916b20bc8daae96b46da67faf18d8b514"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-open/state.json",
+      "bytes": 963,
+      "sha256": "f98caf2b44381a94114d482fa30f6c8c1aab79f20dea36d279eb2133941da3aa"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "bf7e0b4a11095f50fbba3ba667acbc94aad3c39b093b4495df9f8a1346676faa"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-open/zb.json",
+      "bytes": 322,
+      "sha256": "fde97c316c2e9bb0a45a47c156431718342c1336e8e7de205b941e228880e343"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "9d18cc09c755b0778af1647ada0df2fa4105b5464bc8047b5efc3156f0f87b2c"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "553468e176d92b808c2768c7629649d105905ebe1d099362693a6996c62489bc"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-shut/pix.png",
+      "bytes": 13538,
+      "sha256": "59df3493e4ff9795bf2558553af3d808e88600071ba6afa3cdd521a2e1678cc4"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-shut/state.json",
+      "bytes": 963,
+      "sha256": "9b90c9a1c8b80e9a3e4716de5189927eabae5e1d65ab433bce26f81e64a7d0cc"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "788eeb38de0290a4d349e4c65fafafaa4e176c18df6d339af6c324cea51b8547"
+    },
+    {
+      "path": "patio/hora-dia-door-shut-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "878485454123b77649b758e58201ec906e254e47bacc74c8f106dffc8947895b"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-open/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "baa7adc9722e8e8b275e5eac1307d286fb18f2f3de52eb28ecfe64f8433614bd"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-open/pix.json",
+      "bytes": 370,
+      "sha256": "fb251ca05810cbbf54c97b111c811a8cec044fc1b9049cd2d7deaa0308b83b8d"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-open/pix.png",
+      "bytes": 14036,
+      "sha256": "28ce0743210a0bd87e4c6b87a64c21f2e31c728102baeb73ce3df2cf57eb2ef0"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-open/state.json",
+      "bytes": 967,
+      "sha256": "e42aeee652e3053a44b0e2237b6f82b038b1511662468c9cd904f9cbea158677"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "9a0499932f906c444504afc8ce353137c75ccd1403e3fbe800079a0f7ad6d3f5"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-open/zb.json",
+      "bytes": 322,
+      "sha256": "b759e5b25fe2aa7bf34472910c5b2ecfc609241ea32a763bcf209be4332e33ca"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "e1d34717730c55170fb3d5073965ec9001693347273786a07d29ef34c2d674d2"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "cf735285fbf50568bdce1d51706f12c8ea27996a487e24cc18d4a7da5d964ea1"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-shut/pix.png",
+      "bytes": 13363,
+      "sha256": "a826b6277f906fd6b1b34f1303ab7a12f56077f0011912b1d097f605a89e904b"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-shut/state.json",
+      "bytes": 967,
+      "sha256": "911cd589ff89989f074c7a3c13398773b80157ce5c81eb2d998fe2e7fe2fe0dd"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "a0ac702f65bdc03fd53d93c8103e28241096ff3832bcc6c8f9de9a6091a7abba"
+    },
+    {
+      "path": "patio/hora-noche-door-open-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "1efbdff9605049a7d22b37a183bd928a810d6b2133ef4e09f1885aa8b4d53220"
+    },
+    {
+      "path": "patio/hora-noche-door-shut-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-noche-door-shut-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-noche-door-shut-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "6edad50ebcb86825f32ab5091c433d3999bd2a8f2c255dad578b1b47ed1a8dec"
+    },
+    {
+      "path": "patio/hora-noche-door-shut-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "b68f4564636d6f8dc176afa01d69fa9771e40a4218cc14ae581402abe5329143"
+    },
+    {
+      "path": "patio/hora-noche-door-shut-gate-shut/pix.png",
+      "bytes": 13381,
+      "sha256": "8a52af98e8a44dbf6a7c30e6284db78d8d8a3e60978dec3bc597d26bdfcda72f"
+    },
+    {
+      "path": "patio/hora-noche-door-shut-gate-shut/state.json",
+      "bytes": 967,
+      "sha256": "817ef11e7fcd806862f96e59c44250afd63569d1c93dc4503d05538923ebfc41"
+    },
+    {
+      "path": "patio/hora-noche-door-shut-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "788eeb38de0290a4d349e4c65fafafaa4e176c18df6d339af6c324cea51b8547"
+    },
+    {
+      "path": "patio/hora-noche-door-shut-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "878485454123b77649b758e58201ec906e254e47bacc74c8f106dffc8947895b"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-open/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "55b692b4829acaf5ced44582941b00d50d564bd64de689998d676bd432dbcbe4"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-open/pix.json",
+      "bytes": 370,
+      "sha256": "9ad0dedfae64ccdc291130aa2d9b303da0f826ba40f23af2b38a3764238c0ab2"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-open/pix.png",
+      "bytes": 14072,
+      "sha256": "d688a3c3dc683e064c58ec26f222e9716f24d170fc1c14b4009db2e250a2169e"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-open/state.json",
+      "bytes": 967,
+      "sha256": "095c6002d73d2bf7a6f3a457ba0bdd1e445f2d05b7a61d2ea42b3c9949e610bf"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "9a0499932f906c444504afc8ce353137c75ccd1403e3fbe800079a0f7ad6d3f5"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-open/zb.json",
+      "bytes": 322,
+      "sha256": "b759e5b25fe2aa7bf34472910c5b2ecfc609241ea32a763bcf209be4332e33ca"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "e5b3f129f429046e91cf82c0dca50865b9a3db58e95fd04c6147ac2c69d0e5b4"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "d532bab16a8e0586e1cb64f7da024cd26ff3851e40f51cd4671a298c7baaf543"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-shut/pix.png",
+      "bytes": 13353,
+      "sha256": "9d5b1f570100793cc0579deeb1e992f3a10063db0a9d5202a59acf5fc3a2f5dc"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-shut/state.json",
+      "bytes": 967,
+      "sha256": "df2ff319e33777e79c16a1ca9cd9ac4efaf8a4678f117545d3661c060385386e"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "a0ac702f65bdc03fd53d93c8103e28241096ff3832bcc6c8f9de9a6091a7abba"
+    },
+    {
+      "path": "patio/hora-ocaso-door-open-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "1efbdff9605049a7d22b37a183bd928a810d6b2133ef4e09f1885aa8b4d53220"
+    },
+    {
+      "path": "patio/hora-ocaso-door-shut-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-ocaso-door-shut-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-ocaso-door-shut-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "edd8b556932af6c337301f57313f39839e05d1bdf967893551ea9121ffe8b8b9"
+    },
+    {
+      "path": "patio/hora-ocaso-door-shut-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "3763ccf8edc5a6b0c99081b594a5d729d7b9b015cee002f88ac468a4657224e0"
+    },
+    {
+      "path": "patio/hora-ocaso-door-shut-gate-shut/pix.png",
+      "bytes": 13364,
+      "sha256": "8063eb45ce232eb57b582f9d57af83a8fc44617025df686a757b3ab8d77ab25c"
+    },
+    {
+      "path": "patio/hora-ocaso-door-shut-gate-shut/state.json",
+      "bytes": 967,
+      "sha256": "8a12f03d41cbfd5db351128122dd0672a1e1c36067cae9909b71ef4b277f30d6"
+    },
+    {
+      "path": "patio/hora-ocaso-door-shut-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "788eeb38de0290a4d349e4c65fafafaa4e176c18df6d339af6c324cea51b8547"
+    },
+    {
+      "path": "patio/hora-ocaso-door-shut-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "878485454123b77649b758e58201ec906e254e47bacc74c8f106dffc8947895b"
+    },
+    {
+      "path": "patio/hora-tarde-door-open-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-tarde-door-open-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-tarde-door-open-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "bfc64011856ab0ee95563747735d6053d0f1eb5ff986a610f8cd02ff9b9f1514"
+    },
+    {
+      "path": "patio/hora-tarde-door-open-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "64ae66718a6f9ff8d2badb0d1bad96dd2934a1cee2c0116e94ae34b80c6f0433"
+    },
+    {
+      "path": "patio/hora-tarde-door-open-gate-shut/pix.png",
+      "bytes": 13560,
+      "sha256": "3c7453adace99bdea6b574ce9ef9cb312fa9a804757f7bf4e1c78514d30ff137"
+    },
+    {
+      "path": "patio/hora-tarde-door-open-gate-shut/state.json",
+      "bytes": 967,
+      "sha256": "488fef7930561f7ea2f678c91a3961bd3e901e335d389e46775c3583b7b6a6f6"
+    },
+    {
+      "path": "patio/hora-tarde-door-open-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "a0ac702f65bdc03fd53d93c8103e28241096ff3832bcc6c8f9de9a6091a7abba"
+    },
+    {
+      "path": "patio/hora-tarde-door-open-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "1efbdff9605049a7d22b37a183bd928a810d6b2133ef4e09f1885aa8b4d53220"
+    },
+    {
+      "path": "patio/hora-tarde-door-shut-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-tarde-door-shut-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-tarde-door-shut-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "83de6f07bb4c530d618c2bda0f02b66b6863917ad1a59e17ece8b4435a132fe5"
+    },
+    {
+      "path": "patio/hora-tarde-door-shut-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "7d3c382762af6bdf5f27b7c678884a6dc154b8f785783e5cb7ab953b2fb5b320"
+    },
+    {
+      "path": "patio/hora-tarde-door-shut-gate-shut/pix.png",
+      "bytes": 13567,
+      "sha256": "34cf5315cfa4e38228b0d25fd5e87145f4385a3d44da3cacc491ab8df9dc7755"
+    },
+    {
+      "path": "patio/hora-tarde-door-shut-gate-shut/state.json",
+      "bytes": 967,
+      "sha256": "157f4ea188c2543d74911858058b1a73a1164c201ffefb07e61991e805b48c5c"
+    },
+    {
+      "path": "patio/hora-tarde-door-shut-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "788eeb38de0290a4d349e4c65fafafaa4e176c18df6d339af6c324cea51b8547"
+    },
+    {
+      "path": "patio/hora-tarde-door-shut-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "878485454123b77649b758e58201ec906e254e47bacc74c8f106dffc8947895b"
+    },
+    {
+      "path": "patio/hora-tarde2-door-open-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-tarde2-door-open-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-tarde2-door-open-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "36b5c0e0a2ea672555b325f934cd39767a8139e725c6926f6b523c99cca46d78"
+    },
+    {
+      "path": "patio/hora-tarde2-door-open-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "b7299c0ef4754326fd2b6308a0f8bbdfb5b14081c65f5e3c0385f7f67c4b27ec"
+    },
+    {
+      "path": "patio/hora-tarde2-door-open-gate-shut/pix.png",
+      "bytes": 13482,
+      "sha256": "4ca5cb843db206fe5a5f8b4e0b91ac05a4ab1e8c1ab16218a6ea71a6812327c1"
+    },
+    {
+      "path": "patio/hora-tarde2-door-open-gate-shut/state.json",
+      "bytes": 969,
+      "sha256": "41c09fb4f110b98c8fd39839e57cb02e41a3fa9b01a4c09474c58858defa7e81"
+    },
+    {
+      "path": "patio/hora-tarde2-door-open-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "a0ac702f65bdc03fd53d93c8103e28241096ff3832bcc6c8f9de9a6091a7abba"
+    },
+    {
+      "path": "patio/hora-tarde2-door-open-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "1efbdff9605049a7d22b37a183bd928a810d6b2133ef4e09f1885aa8b4d53220"
+    },
+    {
+      "path": "patio/hora-tarde2-door-shut-gate-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
+    },
+    {
+      "path": "patio/hora-tarde2-door-shut-gate-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "1dcd476816ab66b1256d53edd419955efc058f76c961f04d11c4ace7049b7f0d"
+    },
+    {
+      "path": "patio/hora-tarde2-door-shut-gate-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "1adda38bede6816f4a517dda49e0334930476caf78c35acc101323bbd6b7d495"
+    },
+    {
+      "path": "patio/hora-tarde2-door-shut-gate-shut/pix.json",
+      "bytes": 370,
+      "sha256": "600339ffb8efcfff8cdc31f03f48a9ff9e3c1a1f6d8e8c6d5ffc46461bf3d244"
+    },
+    {
+      "path": "patio/hora-tarde2-door-shut-gate-shut/pix.png",
+      "bytes": 13500,
+      "sha256": "ed784e5f308c6b88121aa25333015ce58b7f3140c7aea376aad366e366cea821"
+    },
+    {
+      "path": "patio/hora-tarde2-door-shut-gate-shut/state.json",
+      "bytes": 969,
+      "sha256": "f22fceaf62d9e69d52c54c485eabc7417ed39d2b4db1bf19533681137d33c419"
+    },
+    {
+      "path": "patio/hora-tarde2-door-shut-gate-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "788eeb38de0290a4d349e4c65fafafaa4e176c18df6d339af6c324cea51b8547"
+    },
+    {
+      "path": "patio/hora-tarde2-door-shut-gate-shut/zb.json",
+      "bytes": 322,
+      "sha256": "878485454123b77649b758e58201ec906e254e47bacc74c8f106dffc8947895b"
     },
     {
       "path": "sala/luz-1-fotos-000/kinds.bin",

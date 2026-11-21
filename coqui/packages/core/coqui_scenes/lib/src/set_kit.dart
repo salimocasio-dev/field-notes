@@ -764,6 +764,60 @@ class SetKit {
     }
   }
 
+  /* ---------- screen-aligned ground coordinates, and flat faces of any direction (order 32a, El patio) ---------- */
+
+  // set-kit.js: UVW
+  /// Screen-aligned ground coordinates: u across the picture (to the right), v towards the camera (down the picture);
+  /// world x, y from them (El patio places its tree's crown with them: a lobe's middle at a given screen point).
+  List<double> UVW(num u, num v, [num z = 0]) => [
+    (u + v) / e.R2,
+    (v - u) / e.R2,
+    z.toDouble(),
+  ];
+
+  // set-kit.js: planeQuad
+  /// A flat parallelogram P0 + a e1 + b e2 (a, b from 0 to 1), drawn pixel by pixel on the screen with plot()'s depth
+  /// test: every pixel whose middle's sight line meets it takes fn(a, b) there (0: nothing drawn). One sample a pixel,
+  /// as planeFace, for a face of any direction (a wall turned to the camera, a roof slope, a gate leaf). P0, e1, e2:
+  /// world [x, y, z]. A face seen edge on draws nothing.
+  void planeQuad(
+    List<num> P0,
+    List<num> e1,
+    List<num> e2,
+    int Function(double a, double b) fn,
+  ) {
+    final p0 = e.project(P0[0], P0[1], P0[2]);
+    List<double> d(List<num> v) {
+      final q = e.project(P0[0] + v[0], P0[1] + v[1], P0[2] + v[2]);
+      return [q.sx - p0.sx, q.sy - p0.sy, q.d - p0.d];
+    }
+
+    final A = d(e1), B = d(e2), det = A[0] * B[1] - A[1] * B[0];
+    if (det.abs() < 1e-6) return;
+    final xs = [0, A[0], B[0], A[0] + B[0]].map((s) => s + p0.sx).toList(),
+        ys = [0, A[1], B[1], A[1] + B[1]].map((s) => s + p0.sy).toList();
+    final ix0 = math.max(0, xs.reduce(math.min).floor()),
+        ix1 = math.min(W - 1, xs.reduce(math.max).ceil()),
+        iy0 = math.max(0, ys.reduce(math.min).floor()),
+        iy1 = math.min(H - 1, ys.reduce(math.max).ceil());
+    final zb = e.zb, pix = e.pix;
+    for (var iy = iy0; iy <= iy1; iy++) {
+      for (var ix = ix0; ix <= ix1; ix++) {
+        final dx = ix + .5 - p0.sx,
+            dy = iy + .5 - p0.sy,
+            a = (dx * B[1] - dy * B[0]) / det,
+            bb = (A[0] * dy - A[1] * dx) / det;
+        if (a < 0 || a > 1 || bb < 0 || bb > 1) continue;
+        final dd = _fround(p0.d + a * A[2] + bb * B[2]), i = iy * W + ix;
+        if (dd <= zb[i]) continue;
+        final col = fn(a, bb);
+        if (col == 0) continue;
+        zb[i] = dd;
+        pix[i] = col;
+      }
+    }
+  }
+
   /* ---------- for the checks: which object drew each pixel ---------- */
 
   // set-kit.js: PART_TAGS, PART_LEAVES
