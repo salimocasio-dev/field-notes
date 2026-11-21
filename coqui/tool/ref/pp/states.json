@@ -65,5 +65,7 @@
   { "id": "banco/luz-noche-luna-0-carro-abierto", "kind": "set", "page": "docs/proyecto/pixel/banco-set.html", "query": "?luz=noche&luna=0&carro=abierto" },
   { "id": "banco/luz-noche-luna-0-carro-cerrado", "kind": "set", "page": "docs/proyecto/pixel/banco-set.html", "query": "?luz=noche&luna=0&carro=cerrado" },
   { "id": "banco/luz-noche-luna-0-carro-no", "kind": "set", "page": "docs/proyecto/pixel/banco-set.html", "query": "?luz=noche&luna=0&carro=no" },
-  { "id": "banco/luz-noche-luna-1-carro-abierto", "kind": "set", "page": "docs/proyecto/pixel/banco-set.html", "query": "?luz=noche&luna=1&carro=abierto" }
+  { "id": "banco/luz-noche-luna-1-carro-abierto", "kind": "set", "page": "docs/proyecto/pixel/banco-set.html", "query": "?luz=noche&luna=1&carro=abierto" },
+  { "id": "estufa/banco1", "kind": "set", "page": "docs/proyecto/pixel/estufa-set.html", "query": "?banco=1" },
+  { "id": "estufa/banco0", "kind": "set", "page": "docs/proyecto/pixel/estufa-set.html", "query": "?banco=0" }
 ]

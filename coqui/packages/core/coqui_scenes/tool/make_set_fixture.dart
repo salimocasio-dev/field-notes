@@ -8,8 +8,9 @@
 //                                                test/support/fixtures/patio_set_refs.dart (El patio),
 //                                                test/support/fixtures/camino_set_refs.dart (El camino),
 //                                                test/support/fixtures/campo_set_refs.dart (El campo),
-//                                                test/support/fixtures/lago_set_refs.dart (El lago) and
-//                                                test/support/fixtures/banco_set_refs.dart (El banco)
+//                                                test/support/fixtures/lago_set_refs.dart (El lago),
+//                                                test/support/fixtures/banco_set_refs.dart (El banco) and
+//                                                test/support/fixtures/estufa_set_refs.dart (La estufa)
 //   dart run tool/make_set_fixture.dart --check  fails when a file is not what coqui/ref/pp/<id>/ gives
 import 'dart:convert';
 import 'dart:io';
@@ -57,6 +58,11 @@ void main(List<String> args) {
       file: 'banco_set_refs.dart',
       constant: 'bancoSetRefs',
       what: "El banco's reached baked states",
+    ),
+    'estufa': (
+      file: 'estufa_set_refs.dart',
+      constant: 'estufaSetRefs',
+      what: "La estufa's baked states",
     ),
   };
   var stale = 0;
