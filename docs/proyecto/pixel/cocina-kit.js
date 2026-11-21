@@ -96,15 +96,17 @@ function cocinaFloor(x, y) {
 
 /* ---------- the walls: cream plaster, the skirting, the pale blue tile band at counter height ---------- */
 // fn for planeFace: shade = the face looks +x (the left wall). band(a): is the tile band behind this point (a run of counters)
+// (each colour by light worked out once: the same pixels, without an array a pixel)
+const kWallC = new Map(), kWC = (c, shade) => { let m = kWallC.get(c); if (!m) kWallC.set(c, m = [kRgb(kLit(c, false)), kRgb(kLit(c, true))]); return m[shade ? 1 : 0]; };
 function cocinaWallColour(shade, a, z, band) {
-  if (z < K.SKIRT) return kRgb(kLit(z < .03 ? KC.skirtLine : z > K.SKIRT - .03 ? KC.white : KC.skirt, shade));
+  if (z < K.SKIRT) return kWC(z < .03 ? KC.skirtLine : z > K.SKIRT - .03 ? KC.white : KC.skirt, shade);
   if (band && z >= K.BAND0 && z <= K.BAND1) {
     const ta = a / K.BTILE, tz = (z - K.BAND0) / K.BTILE;
     const g = ta - Math.floor(ta) < .1 || tz - Math.floor(tz) < .1 || z > K.BAND1 - .03;
-    return kRgb(kLit(g ? KC.grout : KC.tile, shade));
+    return kWC(g ? KC.grout : KC.tile, shade);
   }
   const f = hash(Math.floor(a * 11), Math.floor(z * 13)) < .07;      // sparse flecks in the plaster (the old picture's)
-  return kRgb(kLit(f ? KC.fleck : KC.plaster, shade));
+  return kWC(f ? KC.fleck : KC.plaster, shade);
 }
 
 /* ---------- a window (or a doorway) in a standing wall ---------- */
@@ -302,9 +304,11 @@ function cocinaBuild(plan) {
     pix.set(COCINA_FLOOR.pix); zb.set(COCINA_FLOOR.zb); kinds.set(COCINA_FLOOR.kinds); ground.set(COCINA_FLOOR.ground);
   }
   groundZ.set(zb);
-  const holes = f => (plan.windows || []).filter(w => w.face === f);
-  const inBand = (f, a) => ((plan.band || {})[f] || []).some(([b0, b1]) => a >= b0 && a <= b1);
-  const wall = (f, len) => planeFace(f, 0, 0, len, 0, K.WH, (a, z) => holes(f).some(w => a > w.a0 && a < w.a1 && z > w.z0 && z < w.z1) ? 0 : cocinaWallColour(f === 'x', a, z, inBand(f, a)));
+  // (the holes and the band of each wall listed once, not for every pixel: the same pixels, faster)
+  const HOLES = { x: (plan.windows || []).filter(w => w.face === 'x'), y: (plan.windows || []).filter(w => w.face === 'y') }, BANDS = { x: (plan.band || {}).x || [], y: (plan.band || {}).y || [] };
+  const inBand = (f, a) => { const L = BANDS[f]; for (let k = 0; k < L.length; k++) if (a >= L[k][0] && a <= L[k][1]) return true; return false; };
+  const inHole = (f, a, z) => { const L = HOLES[f]; for (let k = 0; k < L.length; k++) { const w = L[k]; if (a > w.a0 && a < w.a1 && z > w.z0 && z < w.z1) return true; } return false; };
+  const wall = (f, len) => planeFace(f, 0, 0, len, 0, K.WH, (a, z) => inHole(f, a, z) ? 0 : cocinaWallColour(f === 'x', a, z, inBand(f, a)));
   const P = typeof part === 'function' ? part : (n, fn) => fn();
   P('pared', () => {
     wall('x', plan.YL); wall('y', plan.XR);
