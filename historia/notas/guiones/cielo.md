@@ -32,7 +32,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 **The turn**
 
-5. The children stop to drink... no: abuela holds up a hand. The umbrella is shut, the kite lies on the sand, the ball is still; the tray stands in the middle of them. The sky is half cloud, half blue: it could turn any way. Abuela pats the radio. NARR: "Abuela dice: ¿Cómo está el tiempo? Coquí, ¿qué dice el radio?" The card shows two places. The signs go.
+5. Abuela holds up a hand. The umbrella is shut, the kite lies on the sand, the ball is still; the tray stands in the middle of them. The sky is half cloud, half blue: it could turn any way. Abuela pats the radio. NARR: "Abuela dice: ¿Cómo está el tiempo? Coquí, ¿qué dice el radio?" The card shows two places. The signs go.
 
 **The game.** The radio says what is coming: wind, sun, or clouds (drawn, each round on its own). The frog gets the right thing ready: the kite, the umbrella, or the ball. Nothing in the sky shows it yet; then it comes. Before round B the three things are back where they were.
 
