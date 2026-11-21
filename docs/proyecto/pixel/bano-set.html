@@ -60,7 +60,7 @@ function backWall() {
 function room() {
   const S = E.SHOWER, mid = (S.u0 + S.u1) / 2, hw = (S.u1 - S.u0) / 2;
   PZ.flat(S.u0, .02, S.u1, S.v1, .02, (u, v) => Math.hypot((u - mid) * 26, (v - S.v1 / 2) * 13) < 2.2 ? rgb(90, 96, 110) : (((u + 60) % .25) < .03 || ((v + 60) % .25) < .04) ? rgb(96, 150, 170) : rgb(140, 196, 212));       // the shower's floor, with its drain
-  PZ.box(mid, S.v1, 0, S.wall, hw + .06, .07, [70, 150, 170], (s, t, z, face) => face === 'front' ? CS.tiles(s, z, [70, 150, 170]) : face === 'top' ? rgb(240, 246, 248) : 0);   // the low front wall
+  PZ.box(mid, S.v1, 0, S.wall, hw + .06, .07, [70, 150, 170], (s, t, z, face) => face === 'front' ? ((((s + 9) % .3) < .03 || (z % .27) < .035) ? rgb(52, 118, 136) : rgb(86, 166, 186)) : face === 'top' ? rgb(240, 246, 248) : 0);   // the low front wall
   const K = E.SINK;
   PZ.box(K.u, K.v, 0, K.h - .2, K.hw - .12, K.hd - .1, [226, 232, 238]);
   PZ.box(K.u, K.v, K.h - .2, K.h, K.hw, K.hd, [250, 252, 252], (s, t, z, face) => face === 'top' && Math.hypot(s / (K.hw - .1), (t + .02) / (K.hd - .12)) < 1 ? rgb(190, 222, 234) : 0);
