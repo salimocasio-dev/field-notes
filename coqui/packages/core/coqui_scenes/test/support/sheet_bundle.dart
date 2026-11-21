@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 import 'fixtures/old_sample.dart';
 import 'fixtures/sheets.dart';
+import 'fixtures/test_scene.dart';
 
 final Map<String, dynamic> _oldSample =
     jsonDecode(oldSampleJson) as Map<String, dynamic>;
@@ -45,3 +46,35 @@ class SheetBundle extends CachingAssetBundle {
 /// The bundle a test reads the assets from: in a browser the [SheetBundle] (the root bundle never answers there), on the
 /// vm the root bundle itself (null), so the vm tests read the package's real assets.
 AssetBundle? testBundle() => kIsWeb ? SheetBundle() : null;
+
+final Map<String, dynamic> _testScene =
+    jsonDecode(testSceneJson) as Map<String, dynamic>;
+
+/// The test scene's old pictures (test/support/fixtures/test_scene.dart): its index (name to file) and files (file to
+/// bytes).
+Map<String, String> get testSceneIndex =>
+    (_testScene['index'] as Map<String, dynamic>).cast<String, String>();
+Map<String, String> get testSceneFiles =>
+    (_testScene['files'] as Map<String, dynamic>).cast<String, String>();
+
+/// The test bundle ([testBundle]: the sheet bundle in a browser, the root bundle on the vm) with the old pictures of the
+/// test scene ([testSceneId], a scene that is never converted) added: the tests of the old pictures' path read it, so
+/// that they do not depend on which real scenes are converted yet (order 36b).
+class TestSceneBundle extends CachingAssetBundle {
+  final AssetBundle _base = testBundle() ?? rootBundle;
+
+  ByteData _bytes(List<int> b) => ByteData.sublistView(Uint8List.fromList(b));
+
+  @override
+  Future<ByteData> load(String key) async {
+    if (key == oldPictureAsset(testSceneId, 'index.json')) {
+      return _bytes(utf8.encode(jsonEncode(testSceneIndex)));
+    }
+    for (final e in testSceneFiles.entries) {
+      if (key == oldPictureAsset(testSceneId, e.key)) {
+        return _bytes(base64Decode(e.value));
+      }
+    }
+    return _base.load(key);
+  }
+}
