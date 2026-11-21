@@ -12,7 +12,6 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart' show Mulberry32;
-import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/mesa/mesa.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -166,10 +165,10 @@ void main() {
     final sh = scene.sheet;
     List<num> spot(String n, bool now) {
       final s = sh.spots[n]!;
-      return now ? s.now! : s.old!;
+      return now ? s.now! : s.old;
     }
 
-    var changed = <String>[];
+    final changed = <String>[];
     for (final h in sh.hopsAll) {
       final o = hopsOf(spot(h.a, false), spot(h.b, false)),
           n = hopsOf(spot(h.a, true), spot(h.b, true));
@@ -272,8 +271,9 @@ void main() {
         if ((x - scene.PUERTA[0]).abs() < 12 &&
             y > scene.PUERTA[1] - 44 &&
             y < scene.PUERTA[1] &&
-            pic[i] == set[i])
+            pic[i] == set[i]) {
           wall++;
+        }
       }
     }
     expect(wall, greaterThan(0));
