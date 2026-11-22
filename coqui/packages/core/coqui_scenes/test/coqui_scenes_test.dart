@@ -23,6 +23,7 @@ void main() {
       'estantes',
       'frutas',
       'caja',
+      'esquina',
     ]);
   });
 

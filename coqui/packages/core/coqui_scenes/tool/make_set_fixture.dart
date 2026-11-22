@@ -78,6 +78,11 @@ void main(List<String> args) {
       constant: 'cajaSetRefs',
       what: "La caja's baked states",
     ),
+    'esquina': (
+      file: 'esquina_set_refs.dart',
+      constant: 'esquinaSetRefs',
+      what: "La esquina's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {

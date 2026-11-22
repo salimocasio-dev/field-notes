@@ -1,0 +1,929 @@
+{
+ "id": "la-esquina",
+ "title": "La esquina",
+ "place": "La calle",
+ "scene": "esquina",
+ "next": "ahora-y-despues",
+ "goal": "Press the button only for the person who is crossing, so the three balloons in his hand reach the bebé on the far pavement: every wrong press stops the traffic for nobody and a balloon gets away.",
+ "stake": {
+  "thing": "globos",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "esquina",
+  "gente",
+  "cruza",
+  "pasa"
+ ],
+ "formas_foco": {
+  "cruza": [
+   "cruzan"
+  ],
+  "pasa": [
+   "pasan"
+  ]
+ },
+ "back_again": [
+  "calle",
+  "carro",
+  "guagua",
+  "bicicleta",
+  "colmado",
+  "espera",
+  "hay",
+  "mucho",
+  "señora",
+  "señor",
+  "abuela",
+  "bebé",
+  "mamá",
+  "tres",
+  "¿cuántos?",
+  "toma",
+  "tiene",
+  "aquí",
+  "no",
+  "ahora",
+  "casa"
+ ],
+ "also_heard": [
+  "globos",
+  "botón"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "bebe": "n_bebe",
+  "mama": "esta_es_mama",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "c49_ab_toma": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma, Coquí. Los globos son para el bebé."
+  },
+  "c49_ab_espera": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Espera aquí, en la esquina."
+  },
+  "c49_cq_esquina": {
+   "who": "narr",
+   "text": "Coquí está en la esquina."
+  },
+  "c49_donde_esquina": {
+   "who": "narr",
+   "text": "¿Dónde está la esquina?"
+  },
+  "c49_hay_gente": {
+   "who": "narr",
+   "text": "Mira. Hay mucha gente en la esquina. La gente espera."
+  },
+  "c49_donde_gente": {
+   "who": "narr",
+   "text": "¿Dónde está la gente?"
+  },
+  "c49_sra_hola": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Hola, Coquí! ¿Dónde está tu abuela?"
+  },
+  "c49_cq_colmado": {
+   "who": "tu",
+   "text": "Está en el colmado.",
+   "tu_turno": [
+    {
+     "palabra": "colmado",
+     "formas": [
+      "colmado"
+     ]
+    }
+   ]
+  },
+  "c49_pasa": {
+   "who": "narr",
+   "text": "Pasa un carro y pasa la guagua."
+  },
+  "c49_pasa_bici": {
+   "who": "narr",
+   "text": "Ahora pasa una bicicleta."
+  },
+  "c48_toca_bici": {
+   "who": "narr",
+   "text": "Toca la bicicleta."
+  },
+  "c49_luis_globos": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Globos! ¿Cuántos tienes?"
+  },
+  "c49_cq_tres": {
+   "who": "tu",
+   "text": "¡Tres!",
+   "tu_turno": [
+    {
+     "palabra": "tres",
+     "formas": [
+      "tres"
+     ]
+    }
+   ]
+  },
+  "c49_toca_boton": {
+   "who": "narr",
+   "text": "Toca el botón, Coquí."
+  },
+  "c49_gente_cruza": {
+   "who": "narr",
+   "text": "Ahora la gente cruza la calle."
+  },
+  "c49_sra_carmen_cruzan": {
+   "who": "narr",
+   "text": "La señora cruza. Carmen cruza."
+  },
+  "c49_senor_luis_pasan": {
+   "who": "narr",
+   "text": "El señor y Luis pasan por la esquina."
+  },
+  "c49_pepe_muy_bien": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Muy bien, Coquí! Ahora viene más gente."
+  },
+  "c49_ab_cruzan": {
+   "who": "narr",
+   "text": "Ahora abuela y Coquí cruzan la calle."
+  },
+  "c49_mama_globos": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Globos! ¿Son para mí?"
+  },
+  "c49_cq_bebe": {
+   "who": "tu",
+   "text": "¡No! Son para el bebé.",
+   "tu_turno": [
+    {
+     "palabra": "bebé",
+     "formas": [
+      "bebé",
+      "bebe"
+     ]
+    }
+   ]
+  },
+  "c49_van_casa": {
+   "who": "narr",
+   "text": "Abuela, mamá, el bebé y Coquí van a casa."
+  },
+  "c49_pepe_c_senora_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: La señora cruza. El señor pasa por la esquina."
+  },
+  "c49_pepe_p_senora_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: El señor pasa por la esquina. La señora cruza."
+  },
+  "c49_no_senora_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. El señor pasa por la esquina. La señora cruza."
+  },
+  "c49_pepe_c_senora_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: La señora cruza. Luis pasa por la esquina."
+  },
+  "c49_pepe_p_senora_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Luis pasa por la esquina. La señora cruza."
+  },
+  "c49_no_senora_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. Luis pasa por la esquina. La señora cruza."
+  },
+  "c49_pepe_c_senora_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: La señora cruza. Carmen pasa por la esquina."
+  },
+  "c49_pepe_p_senora_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Carmen pasa por la esquina. La señora cruza."
+  },
+  "c49_no_senora_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. Carmen pasa por la esquina. La señora cruza."
+  },
+  "c49_pepe_c_senor_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: El señor cruza. La señora pasa por la esquina."
+  },
+  "c49_pepe_p_senor_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: La señora pasa por la esquina. El señor cruza."
+  },
+  "c49_no_senor_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. La señora pasa por la esquina. El señor cruza."
+  },
+  "c49_pepe_c_senor_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: El señor cruza. Luis pasa por la esquina."
+  },
+  "c49_pepe_p_senor_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Luis pasa por la esquina. El señor cruza."
+  },
+  "c49_no_senor_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. Luis pasa por la esquina. El señor cruza."
+  },
+  "c49_pepe_c_senor_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: El señor cruza. Carmen pasa por la esquina."
+  },
+  "c49_pepe_p_senor_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Carmen pasa por la esquina. El señor cruza."
+  },
+  "c49_no_senor_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. Carmen pasa por la esquina. El señor cruza."
+  },
+  "c49_pepe_c_luis_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Luis cruza. La señora pasa por la esquina."
+  },
+  "c49_pepe_p_luis_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: La señora pasa por la esquina. Luis cruza."
+  },
+  "c49_no_luis_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. La señora pasa por la esquina. Luis cruza."
+  },
+  "c49_pepe_c_luis_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Luis cruza. El señor pasa por la esquina."
+  },
+  "c49_pepe_p_luis_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: El señor pasa por la esquina. Luis cruza."
+  },
+  "c49_no_luis_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. El señor pasa por la esquina. Luis cruza."
+  },
+  "c49_pepe_c_luis_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Luis cruza. Carmen pasa por la esquina."
+  },
+  "c49_pepe_p_luis_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Carmen pasa por la esquina. Luis cruza."
+  },
+  "c49_no_luis_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. Carmen pasa por la esquina. Luis cruza."
+  },
+  "c49_pepe_c_carmen_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Carmen cruza. La señora pasa por la esquina."
+  },
+  "c49_pepe_p_carmen_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: La señora pasa por la esquina. Carmen cruza."
+  },
+  "c49_no_carmen_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. La señora pasa por la esquina. Carmen cruza."
+  },
+  "c49_pepe_c_carmen_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Carmen cruza. El señor pasa por la esquina."
+  },
+  "c49_pepe_p_carmen_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: El señor pasa por la esquina. Carmen cruza."
+  },
+  "c49_no_carmen_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. El señor pasa por la esquina. Carmen cruza."
+  },
+  "c49_pepe_c_carmen_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Carmen cruza. Luis pasa por la esquina."
+  },
+  "c49_pepe_p_carmen_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Luis pasa por la esquina. Carmen cruza."
+  },
+  "c49_no_carmen_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No, Coquí. Luis pasa por la esquina. Carmen cruza."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "esquina"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "globos",
+   "n": 3
+  },
+  "c49_ab_toma",
+  "c49_ab_espera",
+  {
+   "set": {
+    "twinkle": "esquina"
+   }
+  },
+  "c49_cq_esquina",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "esquina",
+   "lead": [],
+   "line": "c49_donde_esquina",
+   "then": [],
+   "after": [
+    {
+     "act": "gente",
+     "que": "viene"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "set": {
+    "twinkle": "gente"
+   }
+  },
+  "c49_hay_gente",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "gente",
+   "lead": [],
+   "line": "c49_donde_gente",
+   "then": [
+    "c49_sra_hola",
+    "c49_cq_colmado"
+   ],
+   "after": [
+    {
+     "act": "gente",
+     "que": "saluda"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "llega",
+   "k": "carro",
+   "color": "rojo",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "k": "guagua",
+   "suelto": 1
+  },
+  "c49_pasa",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "llega",
+   "k": "bicicleta",
+   "suelto": 1
+  },
+  "c49_pasa_bici",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "bicicleta",
+   "lead": [],
+   "line": "c48_toca_bici",
+   "then": [
+    {
+     "act": "sigue",
+     "k": "bicicleta"
+    },
+    {
+     "act": "gesto",
+     "quien": "luis",
+     "que": "mira",
+     "a": "coqui"
+    },
+    "c49_luis_globos",
+    "c49_cq_tres"
+   ],
+   "after": [
+    {
+     "act": "bocina",
+     "k": "bicicleta"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "set": {
+    "twinkle": "boton"
+   }
+  },
+  {
+   "ask": "boton",
+   "lead": [],
+   "line": "c49_toca_boton",
+   "then": [
+    "c49_gente_cruza",
+    {
+     "act": "cruza",
+     "quien": "senora",
+     "suelto": 1
+    },
+    {
+     "act": "cruza",
+     "quien": "carmen",
+     "suelto": 1
+    },
+    "c49_sra_carmen_cruzan",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "pasa",
+     "quien": "senor",
+     "suelto": 1
+    },
+    {
+     "act": "pasa",
+     "quien": "luis",
+     "suelto": 1
+    },
+    "c49_senor_luis_pasan",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "luz",
+     "roja": 0
+    }
+   ],
+   "after": [
+    {
+     "set": {
+      "twinkle": null
+     }
+    },
+    {
+     "act": "luz",
+     "roja": 1
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mira",
+   "a": "esquina"
+  },
+  "c49_pepe_muy_bien",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "reparte": [
+    "ca",
+    "pa",
+    "cb",
+    "pb"
+   ],
+   "options": [
+    "senora",
+    "senor",
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "c",
+    "p"
+   ]
+  },
+  {
+   "draw": "da",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$ca",
+    "$pa"
+   ],
+   "pick": "$ca",
+   "tests": "cruza",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "par49",
+     "a": "$ca",
+     "b": "$pa",
+     "lado": "$da"
+    },
+    "c49_pepe_$oa_$ca_$pa"
+   ],
+   "line": "c49_pepe_$oa_$ca_$pa",
+   "right": [
+    {
+     "act": "luz",
+     "roja": 1
+    },
+    {
+     "act": "cruza",
+     "quien": "$ca"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "pasa",
+       "quien": "$pa"
+      }
+     ]
+    },
+    {
+     "act": "luz",
+     "roja": 0
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "luz",
+     "roja": 1
+    },
+    {
+     "act": "pasa",
+     "quien": "$x"
+    },
+    {
+     "act": "bocina",
+     "k": "guagua"
+    },
+    {
+     "act": "globo_va"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "globos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "globos",
+       "n": 1
+      }
+     ]
+    },
+    "c49_no_$ca_$pa"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "c",
+    "p"
+   ]
+  },
+  {
+   "draw": "db",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$cb",
+    "$pb"
+   ],
+   "pick": "$cb",
+   "tests": "cruza",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "par49",
+     "a": "$cb",
+     "b": "$pb",
+     "lado": "$db"
+    },
+    "c49_pepe_$ob_$cb_$pb"
+   ],
+   "line": "c49_pepe_$ob_$cb_$pb",
+   "right": [
+    {
+     "act": "luz",
+     "roja": 1
+    },
+    {
+     "act": "cruza",
+     "quien": "$cb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "pasa",
+       "quien": "$pb"
+      }
+     ]
+    },
+    {
+     "act": "luz",
+     "roja": 0
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "luz",
+     "roja": 1
+    },
+    {
+     "act": "pasa",
+     "quien": "$x"
+    },
+    {
+     "act": "bocina",
+     "k": "guagua"
+    },
+    {
+     "act": "globo_va"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "globos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "globos",
+       "n": 1
+      }
+     ]
+    },
+    "c49_no_$cb_$pb"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "luz",
+   "roja": 1
+  },
+  {
+   "act": "cruza",
+   "quien": "abuela",
+   "suelto": 1
+  },
+  {
+   "act": "ir",
+   "a": "enfrente",
+   "suelto": 1
+  },
+  "c49_ab_cruzan",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "luz",
+   "roja": 0
+  },
+  "c49_mama_globos",
+  "c49_cq_bebe",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "da49",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "da49",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "da49",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c49_van_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c49_ab_toma",
+  "c49_ab_espera",
+  "c49_cq_esquina",
+  "c49_donde_esquina",
+  "c49_hay_gente",
+  "c49_donde_gente",
+  "c49_sra_hola",
+  "c49_cq_colmado",
+  "c49_pasa",
+  "c49_pasa_bici",
+  "c48_toca_bici",
+  "c49_luis_globos",
+  "c49_cq_tres",
+  "c49_toca_boton",
+  "c49_gente_cruza",
+  "c49_sra_carmen_cruzan",
+  "c49_senor_luis_pasan",
+  "c49_pepe_muy_bien",
+  "c49_pepe_c_senora_senor",
+  "c49_ab_cruzan",
+  "c49_mama_globos",
+  "c49_cq_bebe",
+  "c49_van_casa"
+ ]
+}

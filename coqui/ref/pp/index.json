@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 820,
-  "totalBytes": 52120064,
+  "files": 884,
+  "totalBytes": 55944493,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -722,6 +722,326 @@
       "path": "campo/campo/zb.json",
       "bytes": 322,
       "sha256": "ada102cbe1894fc9bca1a783762bad5602493275e7fbe8d78a97aa11faaeda43"
+    },
+    {
+      "path": "esquina/manana-0-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "esquina/manana-0-open/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "esquina/manana-0-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "a53520ce418836400f408101adea3f93a90a3679067209c79d344782b5a6e8bd"
+    },
+    {
+      "path": "esquina/manana-0-open/pix.json",
+      "bytes": 370,
+      "sha256": "9771a30d833db7f1887c1bdb509d1cb470091727970e0dd5d2005a25dcb3ca06"
+    },
+    {
+      "path": "esquina/manana-0-open/pix.png",
+      "bytes": 8895,
+      "sha256": "e6bc5a4d2dfb6bbff59222d5bfe406c78b6206227ed389cb5889fb863165c75a"
+    },
+    {
+      "path": "esquina/manana-0-open/state.json",
+      "bytes": 953,
+      "sha256": "a2870c9f928d17866b3aa4ae2331b2e9fa9830ae636274ba999e2860b1ad9841"
+    },
+    {
+      "path": "esquina/manana-0-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "3d9c11c209bcc51d716e03774828e204a428a5b20cbc788f99467cb857b38a15"
+    },
+    {
+      "path": "esquina/manana-0-open/zb.json",
+      "bytes": 322,
+      "sha256": "a1dba3bfe645846815f532dec0eb85f9b59e2aba2beefa866cdf6b3ef03d1932"
+    },
+    {
+      "path": "esquina/manana-0-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "esquina/manana-0-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "esquina/manana-0-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "88b8c9496e5c3812d5571eea9757db43db6644edd081080a13937f44aaa4fc20"
+    },
+    {
+      "path": "esquina/manana-0-shut/pix.json",
+      "bytes": 370,
+      "sha256": "8aa84f9d56a985d03439d1a3d7a6a15326f9b1a500781d025ea9edad692ca996"
+    },
+    {
+      "path": "esquina/manana-0-shut/pix.png",
+      "bytes": 8021,
+      "sha256": "e151f18a0da491c690e0d5689f0c873ce11d6c5f1c6d930c3093145adae3e162"
+    },
+    {
+      "path": "esquina/manana-0-shut/state.json",
+      "bytes": 953,
+      "sha256": "9e7e08bfc07689f9b30635b27d45d78dd66a51b4dd4cc7466390114d510fea38"
+    },
+    {
+      "path": "esquina/manana-0-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "bf5250504dbbc1c981d3253046ed695604c7ca3f3e6820043be00814b2103056"
+    },
+    {
+      "path": "esquina/manana-0-shut/zb.json",
+      "bytes": 322,
+      "sha256": "8ad764608a52e78c24db4b569d7129da857b47b0d06e3514f66aa7cad74bcfa8"
+    },
+    {
+      "path": "esquina/manana-1-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "esquina/manana-1-open/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "esquina/manana-1-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "93d34552cf185ece13baf4d24ca9c12ee010d44d76d5b6a1090602864f87a2f2"
+    },
+    {
+      "path": "esquina/manana-1-open/pix.json",
+      "bytes": 370,
+      "sha256": "38d7d2a70ec0857fba721264db15ec5a8246288024ab35bd5c6bc2dee8e59d61"
+    },
+    {
+      "path": "esquina/manana-1-open/pix.png",
+      "bytes": 11055,
+      "sha256": "1399660ce7a34832726ad3d3679ce4e4b70d53717bf761c96b48a679c5f70cad"
+    },
+    {
+      "path": "esquina/manana-1-open/state.json",
+      "bytes": 953,
+      "sha256": "e6e1b256357e96d9fa52183c091e0535f32cace5c9a026c16e84acbaa41fc40a"
+    },
+    {
+      "path": "esquina/manana-1-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "a4a70ca5e4fa094c4e2fc3d2a889ab96414a3c3a08d0cecd4d126f6a254b07e3"
+    },
+    {
+      "path": "esquina/manana-1-open/zb.json",
+      "bytes": 322,
+      "sha256": "ae159ae5015851f40bce121d4aff62e79808c1d58362bec83af009512c648889"
+    },
+    {
+      "path": "esquina/manana-1-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "esquina/manana-1-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "esquina/manana-1-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "f04eb57df315c21a8c0bc0127521d49984ad244b60136692ae08c842d69bf9ac"
+    },
+    {
+      "path": "esquina/manana-1-shut/pix.json",
+      "bytes": 370,
+      "sha256": "a6bf4e253c3115098d2de0b424b56e129bcf7555e56604bcc6811b4a889a7721"
+    },
+    {
+      "path": "esquina/manana-1-shut/pix.png",
+      "bytes": 10213,
+      "sha256": "98aebdc65bd9026fb0fecf009cc4f444e84df5c0043c4194dcd1d37163fe5ccd"
+    },
+    {
+      "path": "esquina/manana-1-shut/state.json",
+      "bytes": 953,
+      "sha256": "4b19bdcf1c5c201116b8ba71065a1acda34d509f59548fc47ddd6a0d4be6d252"
+    },
+    {
+      "path": "esquina/manana-1-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "0f06434924154b9c05e994290c6de016636ae235503c198454586f77f874221b"
+    },
+    {
+      "path": "esquina/manana-1-shut/zb.json",
+      "bytes": 322,
+      "sha256": "370eaa29202ae4d8560700916d3d3a4841f86ba970e17d469df5de2cceb2bb6f"
+    },
+    {
+      "path": "esquina/tarde-0-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "esquina/tarde-0-open/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "esquina/tarde-0-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "f284846515744f0eceab8b8b49a70028a532fb305a5258acde8a15a02c4fbfb6"
+    },
+    {
+      "path": "esquina/tarde-0-open/pix.json",
+      "bytes": 370,
+      "sha256": "ff41910bc6b4d7cc394ddee17e0b51a12ccba8a3c437bbceae08dd1f1e8804d5"
+    },
+    {
+      "path": "esquina/tarde-0-open/pix.png",
+      "bytes": 8887,
+      "sha256": "777480f8ae28bca052910dd47e98e339971501496780f1d202031f006eba155f"
+    },
+    {
+      "path": "esquina/tarde-0-open/state.json",
+      "bytes": 951,
+      "sha256": "e665584f725638da252504b0927e9b0c9a3e16f5d3535547c736f745b5809cb8"
+    },
+    {
+      "path": "esquina/tarde-0-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "3d9c11c209bcc51d716e03774828e204a428a5b20cbc788f99467cb857b38a15"
+    },
+    {
+      "path": "esquina/tarde-0-open/zb.json",
+      "bytes": 322,
+      "sha256": "a1dba3bfe645846815f532dec0eb85f9b59e2aba2beefa866cdf6b3ef03d1932"
+    },
+    {
+      "path": "esquina/tarde-0-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "esquina/tarde-0-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "esquina/tarde-0-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "8b9c77c2f392f87e2c3017aa4f2e906165211cb47c142e2aa5e6283129e07975"
+    },
+    {
+      "path": "esquina/tarde-0-shut/pix.json",
+      "bytes": 370,
+      "sha256": "7b29e9cd9c84ebcaf1afbf10cd3ef3d77f8001daeb769872866e0e03f9b7d1a2"
+    },
+    {
+      "path": "esquina/tarde-0-shut/pix.png",
+      "bytes": 8025,
+      "sha256": "7ed66dace220069477bb45c9ea02826bc2f70076457afca4fcca8f3b190cdddd"
+    },
+    {
+      "path": "esquina/tarde-0-shut/state.json",
+      "bytes": 951,
+      "sha256": "fd061efc256bcd09885d234fbd0547e6b2dee0a70534e2e9c859b8570d0c6c99"
+    },
+    {
+      "path": "esquina/tarde-0-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "bf5250504dbbc1c981d3253046ed695604c7ca3f3e6820043be00814b2103056"
+    },
+    {
+      "path": "esquina/tarde-0-shut/zb.json",
+      "bytes": 322,
+      "sha256": "8ad764608a52e78c24db4b569d7129da857b47b0d06e3514f66aa7cad74bcfa8"
+    },
+    {
+      "path": "esquina/tarde-1-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "esquina/tarde-1-open/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "esquina/tarde-1-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "ecfeac8e0963bb84db67a87778d0f3784cd125c62e19400160a06f6bf1ea54ca"
+    },
+    {
+      "path": "esquina/tarde-1-open/pix.json",
+      "bytes": 370,
+      "sha256": "f2e0742a5a25a1d6773132099ffb3241a6c4337796e2f72205d73ac64ca40b6a"
+    },
+    {
+      "path": "esquina/tarde-1-open/pix.png",
+      "bytes": 11045,
+      "sha256": "769e40c0c33663e9b0a24e284dc0a090db0fd322adc55762b737468a408c4b25"
+    },
+    {
+      "path": "esquina/tarde-1-open/state.json",
+      "bytes": 951,
+      "sha256": "6316d24a22b81c05568f4b6a9c037d89cc0a51fa6b311252d17d56912420bf32"
+    },
+    {
+      "path": "esquina/tarde-1-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "a4a70ca5e4fa094c4e2fc3d2a889ab96414a3c3a08d0cecd4d126f6a254b07e3"
+    },
+    {
+      "path": "esquina/tarde-1-open/zb.json",
+      "bytes": 322,
+      "sha256": "ae159ae5015851f40bce121d4aff62e79808c1d58362bec83af009512c648889"
+    },
+    {
+      "path": "esquina/tarde-1-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "esquina/tarde-1-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "esquina/tarde-1-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "b2f0f16e2986f0f558c504298fd7851efd33d136d71bd43cce49f53f5a7037ab"
+    },
+    {
+      "path": "esquina/tarde-1-shut/pix.json",
+      "bytes": 370,
+      "sha256": "6efe0588c4396f8ed97fa4139904dd279fcb81d8a791cc7147a161a71635935a"
+    },
+    {
+      "path": "esquina/tarde-1-shut/pix.png",
+      "bytes": 10216,
+      "sha256": "2ca657af1ebec8bc425c778e79a688a3953f0e56fcc65bbd0c3c0bc4d3c55336"
+    },
+    {
+      "path": "esquina/tarde-1-shut/state.json",
+      "bytes": 951,
+      "sha256": "26648fcef8f9ce1d69c87420aef137fe46aa8dc6b875e44198e13057c28fb38b"
+    },
+    {
+      "path": "esquina/tarde-1-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "0f06434924154b9c05e994290c6de016636ae235503c198454586f77f874221b"
+    },
+    {
+      "path": "esquina/tarde-1-shut/zb.json",
+      "bytes": 322,
+      "sha256": "370eaa29202ae4d8560700916d3d3a4841f86ba970e17d469df5de2cceb2bb6f"
     },
     {
       "path": "estantes/anillos-0-mesa-0/kinds.bin",
