@@ -105,5 +105,9 @@
   { "id": "esquina/tarde-0-shut", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=0&puerta=shut" },
   { "id": "esquina/tarde-0-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=0&puerta=open" },
   { "id": "esquina/tarde-1-shut", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=1&puerta=shut" },
-  { "id": "esquina/tarde-1-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=1&puerta=open" }
+  { "id": "esquina/tarde-1-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=1&puerta=open" },
+  { "id": "parada/temprano", "kind": "set", "page": "docs/proyecto/pixel/parada-set.html", "query": "?hora=temprano" },
+  { "id": "parada/manana", "kind": "set", "page": "docs/proyecto/pixel/parada-set.html", "query": "?hora=manana" },
+  { "id": "parada/tarde", "kind": "set", "page": "docs/proyecto/pixel/parada-set.html", "query": "?hora=tarde" },
+  { "id": "parada/noche", "kind": "set", "page": "docs/proyecto/pixel/parada-set.html", "query": "?hora=noche" }
 ]

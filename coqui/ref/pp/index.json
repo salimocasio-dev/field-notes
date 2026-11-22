@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 868,
-  "totalBytes": 54992236,
+  "files": 900,
+  "totalBytes": 56906174,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -3532,6 +3532,166 @@
       "path": "mostrador/dentro-tarde-shut-1/zb.json",
       "bytes": 322,
       "sha256": "1a4c79ca07335468f248a7a27b753bed62505988227bcad1033661d290c2fcfa"
+    },
+    {
+      "path": "parada/manana/kinds.bin",
+      "bytes": 51840,
+      "sha256": "ee78ead5c85a8441a55c09447d43ecf17b2b626bd73f188f88ad78c63b7a0477"
+    },
+    {
+      "path": "parada/manana/kinds.json",
+      "bytes": 305,
+      "sha256": "ab46f9aaab0283829280faf340ba92573ad377e6a69cdde9dc582931f072f83d"
+    },
+    {
+      "path": "parada/manana/pix.bin",
+      "bytes": 207360,
+      "sha256": "cb351bdbda3b250a754485fd23124f5b815d1a6951c63ec4ebf5e4eda8619936"
+    },
+    {
+      "path": "parada/manana/pix.json",
+      "bytes": 370,
+      "sha256": "019122effb8a5713237ba4081ed599993ef4d99dccc2d6a38b125c737f3a6215"
+    },
+    {
+      "path": "parada/manana/pix.png",
+      "bytes": 8978,
+      "sha256": "c986929e4a048d4050cc904e2da10372425cb30cfbf5eeae132fe5020f04c45f"
+    },
+    {
+      "path": "parada/manana/state.json",
+      "bytes": 926,
+      "sha256": "436604c20c961924f0776ad2ed3059c56beba6669cf46343b52b38ef7db7fc75"
+    },
+    {
+      "path": "parada/manana/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a366cab395497969dd24cdc2d79fae7ec9b3e4d39bc0bd5775a544ff952b4f5"
+    },
+    {
+      "path": "parada/manana/zb.json",
+      "bytes": 322,
+      "sha256": "984ea5ec921915afbfb21dcb6f2e70216301d2de9fd3723bb81ec3286eed6bb4"
+    },
+    {
+      "path": "parada/noche/kinds.bin",
+      "bytes": 51840,
+      "sha256": "ee78ead5c85a8441a55c09447d43ecf17b2b626bd73f188f88ad78c63b7a0477"
+    },
+    {
+      "path": "parada/noche/kinds.json",
+      "bytes": 305,
+      "sha256": "ab46f9aaab0283829280faf340ba92573ad377e6a69cdde9dc582931f072f83d"
+    },
+    {
+      "path": "parada/noche/pix.bin",
+      "bytes": 207360,
+      "sha256": "2ea31e631e0e43f6818b11c49ad549dc1fc0e0356352b4a659db1d2e02c7b87b"
+    },
+    {
+      "path": "parada/noche/pix.json",
+      "bytes": 370,
+      "sha256": "a23214f04e22c99313d1288d90ecdd552d4e16b7b23bb5ebaf0a9fabb0d8bc96"
+    },
+    {
+      "path": "parada/noche/pix.png",
+      "bytes": 13071,
+      "sha256": "d6319fafb3e2feb156988b5784fb2a92391aa90a12ed0ec49facb4af9da55279"
+    },
+    {
+      "path": "parada/noche/state.json",
+      "bytes": 924,
+      "sha256": "071c1e9c1f94b3f6cbab97c0bf8599c4203a74e3af5becd7d46b9fe88a6bb8b6"
+    },
+    {
+      "path": "parada/noche/zb.bin",
+      "bytes": 207360,
+      "sha256": "e6cce5d9a509e6a61025454c7c93709a1a3c257c0b27dcb695966353e953a162"
+    },
+    {
+      "path": "parada/noche/zb.json",
+      "bytes": 322,
+      "sha256": "ebc8ed1a6efe7bc71e957544642023b504855e8f3d7fe52d036de0454f693003"
+    },
+    {
+      "path": "parada/tarde/kinds.bin",
+      "bytes": 51840,
+      "sha256": "ee78ead5c85a8441a55c09447d43ecf17b2b626bd73f188f88ad78c63b7a0477"
+    },
+    {
+      "path": "parada/tarde/kinds.json",
+      "bytes": 305,
+      "sha256": "ab46f9aaab0283829280faf340ba92573ad377e6a69cdde9dc582931f072f83d"
+    },
+    {
+      "path": "parada/tarde/pix.bin",
+      "bytes": 207360,
+      "sha256": "241b810eb90b826f98cb3b34c86337ac1ccb8ab8e95eef7a905a49c1b44a2c23"
+    },
+    {
+      "path": "parada/tarde/pix.json",
+      "bytes": 370,
+      "sha256": "5e3a5c725ec6f36512be11a7f0e1c331c2b864d320be818e72baa638c6255851"
+    },
+    {
+      "path": "parada/tarde/pix.png",
+      "bytes": 8978,
+      "sha256": "525ae18856bfa164180c5d3938b7c2eca1204f2b5737ccf484ba1e6de871a2f3"
+    },
+    {
+      "path": "parada/tarde/state.json",
+      "bytes": 924,
+      "sha256": "ef1ec0b20fba5a012bc1ecac3cb31c4bd915a3081d59638a94a6ec8b6523ea38"
+    },
+    {
+      "path": "parada/tarde/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a366cab395497969dd24cdc2d79fae7ec9b3e4d39bc0bd5775a544ff952b4f5"
+    },
+    {
+      "path": "parada/tarde/zb.json",
+      "bytes": 322,
+      "sha256": "984ea5ec921915afbfb21dcb6f2e70216301d2de9fd3723bb81ec3286eed6bb4"
+    },
+    {
+      "path": "parada/temprano/kinds.bin",
+      "bytes": 51840,
+      "sha256": "ee78ead5c85a8441a55c09447d43ecf17b2b626bd73f188f88ad78c63b7a0477"
+    },
+    {
+      "path": "parada/temprano/kinds.json",
+      "bytes": 305,
+      "sha256": "ab46f9aaab0283829280faf340ba92573ad377e6a69cdde9dc582931f072f83d"
+    },
+    {
+      "path": "parada/temprano/pix.bin",
+      "bytes": 207360,
+      "sha256": "bb2427d85ee43b0a5e468306f9ca1a7cfc030dee9c458f8c496a9529c8f0825a"
+    },
+    {
+      "path": "parada/temprano/pix.json",
+      "bytes": 370,
+      "sha256": "a9a5c74422e37e36d491b5c321fc16b3e63e20d1751868c99320631b1a270e63"
+    },
+    {
+      "path": "parada/temprano/pix.png",
+      "bytes": 8979,
+      "sha256": "47b6782cbf29d7c397745878b24b2d352d26947d15c0efac8a8eadc51c211fa0"
+    },
+    {
+      "path": "parada/temprano/state.json",
+      "bytes": 930,
+      "sha256": "ea68051dd0ad18627d8bb7347c969ac05aa6601ebbac9eb2d5af030e0fd81795"
+    },
+    {
+      "path": "parada/temprano/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a366cab395497969dd24cdc2d79fae7ec9b3e4d39bc0bd5775a544ff952b4f5"
+    },
+    {
+      "path": "parada/temprano/zb.json",
+      "bytes": 322,
+      "sha256": "984ea5ec921915afbfb21dcb6f2e70216301d2de9fd3723bb81ec3286eed6bb4"
     },
     {
       "path": "patio/hora-crepusculo-door-open-gate-shut/kinds.bin",
