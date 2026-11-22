@@ -12,6 +12,7 @@ import 'package:coqui_scenes/src/mesa/mesa.dart';
 import 'package:coqui_scenes/src/estufa/estufa.dart';
 import 'package:coqui_scenes/src/nevera/nevera.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador.dart';
+import 'package:coqui_scenes/src/esquina/esquina.dart';
 
 /// What makes a scene: it is given the game's one random source ([rng]: the story runner's), which a scene that draws
 /// random numbers (El balcón's `azar`) draws from, as the old one drew from `Math.random`. A scene that draws none ignores it.
@@ -37,4 +38,5 @@ final Map<String, SceneMaker> sceneRegistry = Map.unmodifiable({
   'estufa': _plain(createEstufa),
   'nevera': _plain(createNevera),
   'mostrador': _plain(createMostrador),
+  'esquina': _plain(createEsquina),
 });

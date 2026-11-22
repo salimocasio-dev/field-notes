@@ -63,6 +63,11 @@ void main(List<String> args) {
       constant: 'mostradorSetRefs',
       what: "El mostrador's baked states, inside and in the street",
     ),
+    'esquina': (
+      file: 'esquina_set_refs.dart',
+      constant: 'esquinaSetRefs',
+      what: "La esquina's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {
