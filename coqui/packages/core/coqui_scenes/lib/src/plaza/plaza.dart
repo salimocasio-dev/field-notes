@@ -208,7 +208,20 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
           ? <String, dynamic>{'spot': 'bajo', 'pose': 'lie', 'hasta': 0}
           : null,
       'palomas': <dynamic>[],
-      'cosas': <dynamic>[],
+      // story 60: the frog's little bag of bread, held at his side (the script's goal)
+      'cosas': <dynamic>[
+        if (has('palomas'))
+          <String, dynamic>{
+            'id': 'bolsa_pan',
+            'k': 'bolsa_pan',
+            'x': 0.0,
+            'y': 0.0,
+            'z': 0.0,
+            'vis': 1,
+            'v': null,
+            'con': 'coqui',
+          },
+      ],
       'burbujas': null,
       'tarjetas': has('tarjetas') ? 0 : null,
       'piedra': 0,
@@ -1614,6 +1627,18 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
     'final60': (o) async {
       W['burbujas'] = null;
       final n = _n(o['n']);
+      // "¡Sí! Toma.": he gives Ana a crumb from his bag
+      final ana = _gente['ana'] as Map<String, dynamic>?;
+      if (ana != null && ana['vis'] != 0) {
+        final m = _cosa('migaja', 'migaja', _frogWorld());
+        await _vuela(m, [
+          (ana['x'] as num).toDouble(),
+          (ana['y'] as num).toDouble(),
+          (ana['z'] as num) + .6,
+        ], n: 3);
+        m['con'] = 'ana';
+        host.SFX.blip();
+      }
       final pal = [
         for (final x in (W['palomas'] as List).cast<Map<String, dynamic>>())
           if (x['vis'] != 0) x,
