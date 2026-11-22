@@ -5,7 +5,8 @@
 // window to PA at their x, by the preview's own table of their offsets (SHEET_HXS: "the maker's HXS"); the cards and cups
 // the sheet's moves name; abuela at a moved place of hers; the clear glasses on the fridge's top; a thing lying before the
 // counter (CB), on the sill (SL) or on the counter (CT) at its x; the smell over the tray; the frog on the counter; the
-// answer cards.
+// answer cards. The preview's names are kept (CT, SL, PA, CB, ENC).
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
 import 'package:coqui_pixel/coqui_pixel.dart';
 
 Object? _copy(Object? v) => v is Map
