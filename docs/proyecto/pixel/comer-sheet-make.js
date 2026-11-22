@@ -465,8 +465,8 @@ function designMoves(E, F) {
   const GRECA35B = tp('GRECA35B', [158, 178], 7, 'where abuela sets the little coffee pot down for the frog, on the cloth');
   const TABU = tp('TABU', [186, 154], 8, 'abuela\'s cup at the right end of the cloth');
   const CASA35 = tp('CASA35', [110, 166], 10, 'the frog\'s place in story 35, on the cloth');
-  const CAFE35 = place('CAFE35', [199, 118], [190, 87], 'the big coffee pot on the stove\'s left burner');
-  const CAZO35 = place('CAZO35', [218, 118], [212, 97], 'the milk pan on the counter beside the stove (the kit\'s stove is too narrow for both: its burners are 8 px apart)');
+  const CAFE35 = place('CAFE35', [199, 118], [194, 93], 'the big coffee pot on the stove\'s top, at its front left between the burners (round 2: its whole foot on the top face, its lid under the hood)');
+  const CAZO35 = place('CAZO35', [218, 118], [212, 91], 'the milk pan on the stove\'s top beside the coffee pot, at its right corner (round 2: on the stove as the old, its whole foot on the top face)');
   const AFOGON = place('AFOGON', [208, 153], [174, 114], 'where abuela stands to take something off the stove\'s top: on the floor at the stove\'s front left corner (in front of it her face would be under the hint hand of the second answer card on the wall above)');
   place('STOOL', [210, 178], [206, 184], 'abuela\'s stool, 4 px left and 6 rows nearer: she sits on it wholly inside the view with 3 px to spare, clear of the table\'s right end');
   place('SIDE34', [194, 166], [204, 166], 'abuela\'s way from the stove to the front: right of the table\'s right end (straight down from there she passes clear of its corner)');
@@ -726,12 +726,12 @@ function designStoryMoves(E, F, D) {
   // of its right end: everyone whole in the window
   const PAIR_WHY = 'buen provecho: one seat to the right (the seated) or at the table\'s ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window', S = (x, y) => [x, R(SY(x, y))];
   const PAIR_OWN = { '90,132': () => S(114, 132), '114,132': () => S(138, 132), '138,132': () => S(162, 132), '90,127': () => S(114, 127), '114,127': () => S(138, 127), '138,127': () => S(162, 127),
-    '70,186': () => [52, 176], '112,186': () => [74, 178], '160,186': () => [208, 178] };
+    '164,182': () => [170, 199], '70,186': () => [52, 176], '112,186': () => [74, 178], '160,186': () => [208, 178] };
   const hwOf = k => ({ cesta: 18, azucarera: 19, olla: 12, fuente: 14, bizcocho: 11, cuenco: 15, platoma: 13, platoH: 13, muslo: 12 })[k] || 8;
   for (const it of cual.items) for (const side of ['si', 'no']) { const st = (it[side] || {}).set || {};
     const add = (who, p, kind, k) => { const key = p.x + ',' + p.y; if (seen.has(key)) return; seen.add(key);
       let nw, why;
-      if (PAIR_OWN[key]) { nw = PAIR_OWN[key](); why = PAIR_WHY; }
+      if (PAIR_OWN[key]) { nw = PAIR_OWN[key](); why = key === '164,182' ? 'un poco: Carmen off the table\'s foot, 1 px left and 1 down of the least move (171, 198): with abuela\'s head 2 px inside its left edge, her head is then 2 px inside the right edge of the close window (98 px), which no window holds otherwise (round 2)' : PAIR_WHY; }
       else if (kind === 'gente' && p.sent) { nw = [p.x, R(SY(p.x, p.y))]; why = 'a seated one: the rule\'s step (SY)'; }
       else if (kind === 'cosa' && p.y <= 136) { nw = [p.x, R(SY(p.x, p.y))]; why = 'what stands in front of a seat: the rule\'s step (SY)'; }
       else if (kind === 'cosa' && p.z == null) { nw = D.leastTop(p.x, p.y, hwOf(k)); why = 'on the cloth: the least move that stands it wholly on the table\'s top'; }
@@ -825,7 +825,11 @@ const handBox = hp => [R(hp[0]) - 12, R(hp[1]), 36, HAND.length * 3 + 9];
 const frogBox = q => { const w = R(30 * q.s) + 2, h = R(25 * q.s) + 2; return { x: R(q.x + (32 - w) / 2), y: q.y + 27 - h, w, h }; };
 const ringMeets = (b, f) => { const outer = [b[0] - 12, b[1] - 12, b[2] + 24, b[3] + 24], inner = [b[0] - 5, b[1] - 5, b[2] + 10, b[3] + 10]; return meets(f, outer) && !within(f, inner); };
 const lum = c => { const f = u => { u /= 255; return u <= .03928 ? u / 12.92 : ((u + .055) / 1.055) ** 2.4; }; return .2126 * f(c[0]) + .7152 * f(c[1]) + .0722 * f(c[2]); };
+const labOf = c => { const f = u => { u /= 255; return u <= .04045 ? u / 12.92 : ((u + .055) / 1.055) ** 2.4; }, [r, g, b] = c.map(f), X = (.4124 * r + .3576 * g + .1805 * b) / .95047, Y = .2126 * r + .7152 * g + .0722 * b, Z = (.0193 * r + .1192 * g + .9505 * b) / 1.08883, F3 = t => t > .008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116; return [116 * F3(Y) - 16, 500 * (F3(X) - F3(Y)), 200 * (F3(Y) - F3(Z))]; };
+const dE76 = (a, b) => { const A = labOf(a), B = labOf(b); return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]); };
 const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+// (round 2) whoever is in a close picture is there with his arms and what he holds: a sleeve or a held thing in it is that person in it
+const withArms = its => its.filter(it => it.kind !== 'arms').map(it => it.kind === 'person' ? Object.assign({}, it, { all: it.rows.concat(...its.filter(a => a.kind === 'arms' && a.of === it.id).map(a => a.rows)) }) : it);
 const rowsAt = (rows, dx, dy) => rows.map(r => [r[0] + dy, r[1] + dx, r[2] + dx]);
 const rowsBox = rs => { if (!rs.length) return null; const ys = rs.map(r => r[0]); return [Math.min(...rs.map(r => r[1])), Math.min(...ys), Math.max(...rs.map(r => r[2])) - Math.min(...rs.map(r => r[1])) + 1, Math.max(...ys) - Math.min(...ys) + 1]; };
 const rowsMeet = (rs, r) => { let n = 0; for (const [y, a, b] of rs) if (y >= r[1] && y < r[1] + r[3]) n += Math.max(0, Math.min(b + 1, r[0] + r[2]) - Math.max(a, r[0])); return n; };
@@ -837,6 +841,20 @@ function check(sh, G, runs) {
   const TAGS = {}; for (const k of STATES) { const m = new Array(240 * 216).fill(null); for (const [p, list] of Object.entries(G.parts[k])) for (const i of list) m[i] = p; TAGS[k] = m; }
   const rgbAt = (k, i) => [G.rgb[k][i * 3], G.rgb[k][i * 3 + 1], G.rgb[k][i * 3 + 2]];
   const pairSides = pairSidesOf();
+  // (round 2) the cloth's top (pixels of the part mesa over the table's top at its height) and the stove's top face; each thing's outline
+  const TOPCL = new Uint8Array(240 * 216), STTOP = new Uint8Array(240 * 216), TB = F.TBL, ST0 = F.STOVE;
+  for (const i of G.parts[key0].mesa || []) { const g = E.atZ(i % 240 + .5, Math.floor(i / 240) + .5, TB.z); if (g[0] >= TB.x0 - .04 && g[0] <= TB.x1 + .04 && g[1] >= TB.y0 - .04 && g[1] <= TB.y1 + .04) TOPCL[i] = 1; }
+  for (let i = 0; i < 240 * 216; i++) { const s0 = surfaceW(E, F, i % 240 + .5, Math.floor(i / 240) + .5); if (s0.on === 'estufa') STTOP[i] = 1; }
+  const EDGES = new Map(), edgesOf = key => { if (EDGES.has(key)) return EDGES.get(key); const px = MASK[key].px, S = new Map(); for (let q = 0; q < px.length; q += 4) S.set(px[q], [px[q + 1], px[q + 2], px[q + 3]]); const out = [];
+    for (const [i, c] of S) { const x = i % 240, y = Math.floor(i / 240); for (const [ex, ey] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) if (!S.has((y + ey) * 240 + x + ex)) out.push([x, y, ex, ey, c]); } EDGES.set(key, out); return out; };
+  const CLM = new Map(), clothContrast = it => { const mk = it.key + '|' + it.dx + ',' + it.dy; if (CLM.has(mk)) return CLM.get(mk); let s0 = 0, c0 = 0;
+    for (const [x, y, ex, ey, c] of edgesOf(it.key)) { const nx = x + it.dx + ex, ny = y + it.dy + ey; if (nx < 0 || ny < 0 || nx >= 240 || ny >= 216) continue; const j = ny * 240 + nx; if (!TOPCL[j]) continue; s0 += ratio(c, rgbAt(key0, j)); c0++; }
+    const v = c0 >= 4 ? [s0 / c0, c0] : null; CLM.set(mk, v); return v; };
+  const BODY_H = { cafetera: 20, cazo: 11, fuente: 16, bandeja: 18 };   // each one's body (its steam, drawn with it, rises over the hood: not counted)
+  const STM = new Map(), stoveOf = it => { const mk = it.key + '|' + it.dx + ',' + it.dy; if (STM.has(mk)) return STM.get(mk); const T0 = TAGS[key0], last = Math.max(...it.rows.map(q => q[0])), bh = BODY_H[it.o.k] || 99; let n = 0, off = 0, hood = 0, any = false;
+    for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) { if (x < 0 || y < 0 || x >= 240 || y >= 216) continue; if (y > last - bh && T0[y * 240 + x] === 'campana') hood++; if (y === last) { n++; const on = [0, 1, 2].some(d => y + d < 216 && STTOP[(y + d) * 240 + x]); if (on) any = true; else off++; } }
+    const v = any || hood ? { n, off, hood } : null; STM.set(mk, v); return v; };
+  let nCl = 0, nSt = 0, clWorst = [99, '']; const clothBad = new Map(), stoveBad = new Map();
 
   /* the inventory */
   for (const id of inv.thingIds) if (!sh.things[id]) P.push('thing missing: ' + id);
@@ -906,6 +924,44 @@ function check(sh, G, runs) {
     const wv = cnt('ventana'), pt = cnt('puerta'); if (wv.sky < 20 || wv.green < 10) P.push('window: it shows ' + wv.sky + ' px of sky and ' + wv.green + ' of green'); if (pt.sky < 20 || pt.green < 10) P.push('doorway: it shows ' + pt.sky + ' px of sky and ' + pt.green + ' of green');
     notes.push('window and doorway: the kit\'s (La mesa\'s): what shows through them is outside, the window ' + wv.sky + ' px of sky and ' + wv.green + ' of the bush, the doorway ' + pt.sky + ' px of sky and ' + pt.green + ' of the patio\'s hedge, each with its frame standing out of the wall and its reveal (the window a sill)'); }
 
+  /* (round 2) the table reads as a laid table. Round 1 measured only the cloth's thin legs (contrast) and where things stood on it: nothing
+     about the cloth against the floor, so a pale pink-and-white cloth of the floor's own diamond size passed. Now: the mean colour of the
+     cloth's top against the floor's (CIE76 dE 25 and more), its pattern's period against the floor's (at most half), the cloth's drop on the
+     near side and the right end (6 rows and more in every column of the table's seen length), the top's near edge over the floor under it
+     (10 rows and more) */
+  { const k = key0, T = TAGS[k], OG = G.onGround[k], top = [], drop = [], floor = []; const inV = x => x >= x0 && x < x0 + 196, mean = a => [0, 1, 2].map(c => a.reduce((s0, i) => s0 + G.rgb[k][i * 3 + c], 0) / Math.max(1, a.length));
+    for (const i of G.parts[k].mesa || []) { if (!inV(i % 240)) continue; (TOPCL[i] ? top : drop).push(i); }
+    for (let i = 0; i < 240 * 216; i++) { if (!inV(i % 240) || T[i] || !OG[i]) continue; const g = E.atZ(i % 240 + .5, Math.floor(i / 240) + .5, 0); if (g[0] >= 0 && g[1] >= 0) floor.push(i); }
+    const mt = mean(top), mf = mean(floor), d = dE76(mt, mf), perC = 2 * F.CHECK, perF = 2 * F.K.TILE;
+    if (d < 25) P.push('table: the cloth\'s top (mean ' + mt.map(R) + ') against the floor (mean ' + mf.map(R) + '): dE ' + r2(d) + ' (keep 25)');
+    if (perC > perF / 2) P.push('table: the cloth\'s pattern repeats every ' + perC + ', the floor\'s every ' + perF + ' (keep half)');
+    const cols = new Map(); for (const i of top) { const x = i % 240, y = Math.floor(i / 240); cols.set(x, Math.max(cols.get(x) == null ? -1 : cols.get(x), y)); }
+    const dropOf = new Map(); for (const i of drop) { const x = i % 240, y = Math.floor(i / 240); if (cols.has(x) && y > cols.get(x)) dropOf.set(x, (dropOf.get(x) || 0) + 1); }
+    let minDrop = 99, minAt = 0, thin = 0; for (const x of cols.keys()) { const n = dropOf.get(x) || 0; if (n < minDrop) { minDrop = n; minAt = x; } if (n < 6) thin++; }
+    if (thin) P.push('table: in ' + thin + ' of the ' + cols.size + ' columns of the table\'s seen length the cloth\'s drop has fewer than 6 rows (' + minDrop + ' at x ' + minAt + ')');
+    let hMin = 99; for (let t = 0; t <= 1; t += .02) { for (const [wx, wy] of [[F.TBL.x0 + t * (F.TBL.x1 - F.TBL.x0), F.TBL.y1], [F.TBL.x1, F.TBL.y0 + t * (F.TBL.y1 - F.TBL.y0)]]) { const a = E.project(wx, wy, F.TBL.z).sy, b = E.project(wx, wy, 0).sy; if (inV(E.project(wx, wy, 0).sx)) hMin = Math.min(hMin, b - a); } }
+    if (hMin < 10) P.push('table: its top\'s near edge stands ' + r2(hMin) + ' rows over the floor under it (keep 10)');
+    notes.push('table (round 2): the cloth\'s top, blue-and-white gingham (mean ' + mt.map(R) + '), against the floor (mean ' + mf.map(R) + '): dE ' + r2(d) + ' (keep 25); its pattern repeats every ' + perC + ', the floor\'s every ' + perF + ' (keep half); the drop over the near side and the right end ' + minDrop + ' rows at the least over the ' + cols.size + ' columns of its seen length (keep 6); the top\'s near edge ' + r2(hMin) + ' rows over the floor at the least (keep 10)'); }
+
+  /* (round 2) the door: La mesa's final one (main 64aa5f1). Round 1 measured only the sky and green seen through the doorway: a doorway with no
+     leaf, its lower part behind the counter's end, passed. Now as La mesa's: its leaf, the wall's thickness in the opening and the threshold 30
+     px and more each in the view, the brass handle seen, the lowest outside pixel of every column of the opening the patio's ground; and the way
+     in clear: no pixel of the opening (the wall's plane from the threshold to the lintel) is the counter's, its sink's or the cupboard's */
+  { const K0 = key0, T0 = TAGS[K0], RGB = G.rgb[K0], inV = i => { const x = i % 240; return x >= x0 && x < x0 + 196; }, n = p => (G.parts[K0][p] || []).filter(inV).length;
+    const nLeaf = n('puerta.hoja'), nRev = n('puerta.jamba'), nThr = n('puerta.umbral');
+    for (const [nm, v] of [['leaf', nLeaf], ['reveal', nRev], ['threshold', nThr]]) if (v < 30) P.push('door: its ' + nm + ' has ' + v + ' px in the wide view (30 kept)');
+    let knob = 0; for (const i of G.parts[K0]['puerta.hoja'] || []) { const c = [RGB[i * 3], RGB[i * 3 + 1], RGB[i * 3 + 2]]; if (dE76(c, F.KC.knob) < 20 || dE76(c, F.KC.knob.map(v => v * .86)) < 20) knob++; }
+    if (knob < 2) P.push('door: its leaf shows ' + knob + ' px of its brass handle');
+    const isGround = c => dE76(c, F.STONE) < 12 || dE76(c, F.STONE.map(v => v * .84)) < 12 || dE76(c, F.STONE.map(v => v * .7)) < 14 || dE76(c, [124, 146, 62]) < 10;
+    let cols = 0, okc = 0; const badc = [], KC = F.KC, BACK = [...KC.sky, KC.yard, KC.yardTop, KC.yardLine, ...KC.hedge, [255, 255, 255]];
+    const outside = (i, x, y) => { if (!T0[i]) return G.onGround[K0][i] && E.atZ(x + .5, y + .5, 0)[0] < 0 ? 'ground' : null; if (T0[i] !== 'puerta') return null; const c = [RGB[i * 3], RGB[i * 3 + 1], RGB[i * 3 + 2]]; return BACK.some(b => dE76(c, b) < 3) ? 'back' : null; };
+    for (let x = 0; x < 240; x++) { let low = -1, kind = null; for (let y = 215; y >= 0; y--) { const i = y * 240 + x, o = outside(i, x, y); if (o) { low = i; kind = o; break; } }
+      if (low < 0) continue; cols++; const c = [RGB[low * 3], RGB[low * 3 + 1], RGB[low * 3 + 2]]; if (kind === 'ground' && isGround(c)) okc++; else badc.push(x + ',' + Math.floor(low / 240) + ' ' + kind + ' ' + c.join('/')); }
+    if (!cols || badc.length) P.push('door: the lowest outside pixel of ' + badc.length + ' of the opening\'s ' + cols + ' columns is not the patio\'s ground: ' + badc.slice(0, 8).join('; '));
+    let nOp = 0, blocked = 0; const seenPx = new Set(); for (let y = F.DOOR.a0; y <= F.DOOR.a1; y += .02) for (let z = F.DOOR.z0; z <= F.DOOR.z1; z += .02) { const q = E.project(0, y, z), i = Math.floor(q.sy) * 240 + Math.floor(q.sx); if (seenPx.has(i)) continue; seenPx.add(i); nOp++; if (/^(mostrador|fregadero|alacena)/.test(T0[i] || '')) blocked++; }
+    if (blocked) P.push('door: ' + blocked + ' of the opening\'s ' + nOp + ' px are the counter\'s (its end stands in front of the way in)');
+    notes.push('door (round 2, La mesa\'s final one): in the wide view its leaf ' + nLeaf + ' px (open into the room against the wall towards the corner, its brass handle ' + knob + ' px), the wall\'s thickness in the opening ' + nRev + ' px, the threshold ' + nThr + ' px (30 kept each); the lowest outside pixel of each of the opening\'s ' + cols + ' columns is the patio\'s ground (' + okc + ': El patio\'s step, the lawn); of the opening\'s ' + nOp + ' px none is the counter\'s (' + blocked + '): the counter starts 1 past the jamb (La mesa\'s .24), its end no longer in front of the way in; whoever comes in stands in the doorway at its threshold (DOOR) on clear floor (the floor check)'); }
+
   /* thin things are seen: each thin part of the set against what is behind it (the set baked without it), WCAG's contrast ratio */
   { const res = [], k = key0;
     for (const p of ['mesa.patas', 'sillas.patas', 'fregadero']) { if (!G.sin[k][p]) continue; const own = G.parts[k][p] || []; if (!own.length) continue; let ok = 0, sl = 0, sb = 0;
@@ -952,6 +1008,11 @@ function check(sh, G, runs) {
     const bare = w => Object.assign(JSON.parse(JSON.stringify(w)), { cosas: [], vuelos: [], perro: null, cq: Object.assign({}, w.cq, { vis: 0 }) });
     const oldSit = new Map(); runs.forEach((r, ri) => r.lines.forEach(ln => { for (const q of compose(bare(ln.W), 'o')) if (q.it.kind === 'person' && q.it.o.sent) { const k2 = q.it.id + J([R(q.it.o.x), R(q.it.o.y), q.it.o.dy || 0]); oldSit.set(r.story.id + ' ' + r.plan + ' ' + ln.path + ' ' + q.it.id, q.hid['the old table'] || 0); } }));
     for (const [where, w, kind] of allW) { nM++; const C = compose(w, 'n');
+      for (const r of C) { const it = r.it; if (it.kind !== 'thing' || !it.rows.length) continue;
+        // (round 2) a thing on the cloth: its outline against the cloth directly behind it, WCAG, the mean over its outline 2.0 and more
+        if (enMesaOf(it.o, 'n') && it.o.k !== 'sombra') { const v = clothContrast(it); if (v) { nCl++; if (v[0] < clWorst[0]) clWorst = [v[0], it.id + ' (' + where + ')']; if (v[0] < 2) clothBad.set(it.id + ' ' + J(it.at), where + ': ' + r2(v[0]) + ' over ' + v[1] + ' px of its outline'); } }
+        // (round 2) a thing on the stove: its whole foot on the stove's top face, no pixel of it over the hood
+        const sv = stoveOf(it); if (sv) { nSt++; if (sv.off || sv.hood) stoveBad.set(it.id + ' at ' + J(it.at), where + ': ' + sv.off + ' of ' + sv.n + ' px of its foot off the stove\'s top' + (sv.hood ? ', ' + sv.hood + ' px over the hood' : '')); } }
       for (const r of C) { const it = r.it;
         for (const [part, n] of Object.entries(r.by)) { const faceN = Math.floor(n / 1000); if (faceN && it.kind === 'person') bad.set(part + ' over ' + it.id + '\'s face', where + ': ' + faceN + ' px'); }
         if (it.kind === 'person' && it.o.sent && kind === 'step') { nSit++; const rb = compose(bare(w), 'n').find(x => x.it.kind === 'person' && x.it.id === it.id) || r; const setN = Object.entries(rb.by).reduce((s, [p, n]) => s + (n % 1000) + Math.floor(n / 1000), 0), oldN = oldSit.get(where + ' ' + it.id);
@@ -969,6 +1030,10 @@ function check(sh, G, runs) {
     for (const [k, v] of [...sitBad].slice(0, 30)) P.push('seat: ' + k + ' (' + v + ')');
     for (const [k, v] of [...restBad].slice(0, 30)) P.push('on a top: ' + k + ' (' + v + ')');
     for (const [k, v] of [...floorBad].slice(0, 30)) P.push('floor: ' + k + ' (' + v + ')');
+    for (const [k, v] of [...clothBad].slice(0, 40)) P.push('on the cloth: ' + k + ' (' + v + ')');
+    for (const [k, v] of [...stoveBad].slice(0, 40)) P.push('on the stove: ' + k + ' (' + v + ')');
+    notes.push('on the cloth (round 2; round 1 had no such check: a thing\'s colour against the cloth was not measured): at ' + nCl + ' thing-moments (every tick, step\'s end and pair picture) each thing standing on the cloth (not the drawn shadows, sombra, of the review pictures: they are a thing\'s shadow, not a thing) stands out from the cloth directly behind its outline, WCAG mean ' + r2(clWorst[0]) + ' at the least (' + clWorst[1] + '; keep 2.0)');
+    notes.push('on the stove (round 2; round 1 asked only 90% of a foot over any top, the stove\'s or a counter\'s, and nothing of the hood): at ' + nSt + ' thing-moments each thing on the stove has its whole foot (its lowest row, each pixel within 2 rows over the stove\'s top face) on the stove\'s top, no pixel of its body over the hood (the steam of what steams rises over it)');
     notes.push('drawn: at ' + nM + ' moments (every tick inside the acts of the port\'s play of the ' + runs.length + ' runs, every step\'s end, every pair picture) composed as comer.js draws them (each item owns what it drew last; the chairs drawn again over whoever is behind them at sortY 60, the table at the old table\'s place TZ): no part of the set over any face; ' + nSit + ' sittings at step ends, each with no more of the set over the one who sits than the old table had (8 px to spare; both pictures with the people alone, so that what the frog or a thing covers counts for neither); ' + nRest + ' things standing on the cloth or on the stove\'s or a counter\'s top, each with 90% and more of its foot over it and nothing of the set over it; ' + nFloor + ' step ends of someone standing in the view, each on clear floor'); }
 
   /* at every step's end each person's, the dog's and the frog's share seen no less than in the old picture of that moment less 10%, their face no
@@ -995,6 +1060,7 @@ function check(sh, G, runs) {
 // the review and level pictures: a pair's two pictures share one window. Zoom 1: the 196 x 104 window holding every person, thing and the frog
 // of both pictures with 2 px to spare (as near the old window as that allows); when the two pictures differ in less than 1.5% of it (the pair
 // is about a small thing), zoom 2: the 98 x 52 region round what differs, holding whole whatever it meets
+let DBG_PIC = false; const DBG_WHY = [];
 function placePictures(sh, C) {
   const byWord = {}; for (const ps of pairSidesOf()) (byWord[ps.w] = byWord[ps.w] || {})[ps.side] = ps;
   for (const [word, sides] of Object.entries(byWord)) { const ws = {}, boxes = [];
@@ -1007,14 +1073,14 @@ function placePictures(sh, C) {
       if (d && n < m * .015) { zoom = 2; const cx = (d[0] + d[2]) / 2, cy = (d[1] + d[3]) / 2; crop = [clampX(R(cx - 49), 98), clampY(R(cy - 26), 52), 98, 52];
         // the nearest region (to the one centred on what differs) that holds what differs, in which every thing it meets is whole, every person it
         // meets has the whole head, and no set part shows less than 12 px (the check's own tests)
-        const its = [ws.si, ws.no].flatMap(w2 => C.itemsOf(w2, 'n').filter(it => it.kind !== 'arms' && it.rows.length)), T = C.TAGS.comer, c0 = crop.slice();
-        const bad = cr => { let v = 0; if (!within([d[0], d[1], d[2] - d[0] + 1, d[3] - d[1] + 1], cr)) v += 5;
-          for (const it of its) { const bx = rowsBox(it.rows); if (it.kind === 'person') { const top = Math.min(...it.rows.map(q => q[0])), hd = rowsBox(it.rows.filter(q => q[0] < top + 16)), inPic = it.rows.some(q => q[0] >= cr[1] && q[0] < cr[1] + cr[3] && q[2] >= cr[0] && q[1] < cr[0] + cr[2]); if (inPic && !within([hd[0] - 2, hd[1] - 2, hd[2] + 4, hd[3] + 4], cr)) v++; }
-            else if (meets(bx, cr) && !within([bx[0] - 2, bx[1] - 2, bx[2] + 4, bx[3] + 4], cr)) v++; }
+        const its = [ws.si, ws.no].flatMap(w2 => withArms(C.itemsOf(w2, 'n')).filter(it => it.rows.length)), T = C.TAGS.comer, c0 = crop.slice();
+        const why = t => { if (DBG_PIC) DBG_WHY.push(t); }, bad = cr => { let v = 0; if (!within([d[0], d[1], d[2] - d[0] + 1, d[3] - d[1] + 1], cr)) { v += 5; why('what differs ' + J(d)); }
+          for (const it of its) { const bx = rowsBox(it.rows); if (it.kind === 'person') { const top = Math.min(...it.rows.map(q => q[0])), hd = rowsBox(it.rows.filter(q => q[0] < top + 16)), inPic = it.all.some(q => q[0] >= cr[1] && q[0] < cr[1] + cr[3] && q[2] >= cr[0] && q[1] < cr[0] + cr[2]); if (inPic && !within([hd[0] - 2, hd[1] - 2, hd[2] + 4, hd[3] + 4], cr)) { v++; why(it.id + ' head ' + J(hd)); } }
+            else if (meets(bx, cr) && !within([bx[0] - 2, bx[1] - 2, bx[2] + 4, bx[3] + 4], cr)) { v++; why(it.id + ' ' + J(bx)); } }
           const cnt = {}; for (let y = cr[1]; y < cr[1] + cr[3]; y++) for (let x = cr[0]; x < cr[0] + cr[2]; x++) { const t = (T[y * 240 + x] || '').split('.')[0]; if (t) cnt[t] = (cnt[t] || 0) + 1; }
-          for (const [t, c] of Object.entries(cnt)) if (c < 12 && t !== 'pared') v++; return v; };
-        let best = null; for (let dy = -24; dy <= 24; dy++) for (let dx = -30; dx <= 30; dx++) { const cr = [clampX(c0[0] + dx, 98), clampY(c0[1] + dy, 52), 98, 52], sc = bad(cr) * 1e4 + Math.abs(cr[0] - c0[0]) + Math.abs(cr[1] - c0[1]); if (!best || sc < best[0]) best = [sc, cr]; }
-        crop = best[1]; } }
+          for (const [t, c] of Object.entries(cnt)) if (c < 12 && t !== 'pared') { v++; why(t + ' ' + c + ' px'); } return v; };
+        let best = null; for (let dy = -34; dy <= 34; dy++) for (let dx = -44; dx <= 44; dx++) { const cr = [clampX(c0[0] + dx, 98), clampY(c0[1] + dy, 52), 98, 52], sc = bad(cr) * 1e4 + Math.abs(cr[0] - c0[0]) + Math.abs(cr[1] - c0[1]); if (!best || sc < best[0]) best = [sc, cr]; }
+        crop = best[1]; if (best[0] >= 1e4) { DBG_PIC = true; bad(crop); DBG_PIC = false; console.log('pictures: ' + word + ' fits nowhere whole; at ' + J(crop) + ': ' + DBG_WHY.splice(0).join('; ')); } } }
     for (const side of ['si', 'no']) { const nm = deacc(word) + '.' + side; if (!sh.pictures[nm]) continue; Object.assign(sh.pictures[nm], { zoom, crop: crop.slice(), what: (zoom === 1 ? 'the 196 x 104 window over every person and thing of the pair, with 2 px to spare' : 'zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%)') + '; the old: ' + JSON.stringify(old) }); } }
   for (const l of sh.level) { const pc = sh.pictures[l.picture]; if (pc) { l.crop = pc.crop; l.zoom = pc.zoom; } }
   for (const e of sh.remap) if (e.kind === 'cam' && e.crops) for (const n of Object.keys(e.crops)) e.crops[n] = { crop: sh.pictures[n].crop, zoom: sh.pictures[n].zoom };
@@ -1160,8 +1226,8 @@ function checkAsks(sh, G, runs, C) {
   { const byWord = {}; for (const ps of pairSidesOf()) (byWord[ps.w] = byWord[ps.w] || {})[ps.side] = ps; const diffs = [], pairPct = []; let nHead = 0;
     for (const [word, sides] of Object.entries(byWord)) { const ws = {};
       for (const side of Object.keys(sides)) { const ps = sides[side], nm = deacc(word) + '.' + side, pc = sh.pictures[nm], w = pairW(ps, sh); ws[side] = w;
-        for (const it of itemsOf(w, 'n')) { const b = rowsBox(it.rows); if (!b || it.kind === 'arms') continue;
-          if (it.kind === 'person' && pc.zoom === 2) { const top = Math.min(...it.rows.map(q => q[0])); nHead++; const hd = rowsBox(it.rows.filter(q => q[0] < top + 16)), inPic = it.rows.some(q => q[0] >= pc.crop[1] && q[0] < pc.crop[1] + pc.crop[3] && q[2] >= pc.crop[0] && q[1] < pc.crop[0] + pc.crop[2]); if (inPic && !within([hd[0] - 2, hd[1] - 2, hd[2] + 4, hd[3] + 4], pc.crop)) P.push('pair ' + nm + ': ' + it.id + '\'s head ' + JSON.stringify(hd) + ' is not whole with 2 px to spare in ' + JSON.stringify(pc.crop)); continue; }
+        for (const it of withArms(itemsOf(w, 'n'))) { const b = rowsBox(it.rows); if (!b) continue;
+          if (it.kind === 'person' && pc.zoom === 2) { const top = Math.min(...it.rows.map(q => q[0])); nHead++; const hd = rowsBox(it.rows.filter(q => q[0] < top + 16)), inPic = it.all.some(q => q[0] >= pc.crop[1] && q[0] < pc.crop[1] + pc.crop[3] && q[2] >= pc.crop[0] && q[1] < pc.crop[0] + pc.crop[2]); if (inPic && !within([hd[0] - 2, hd[1] - 2, hd[2] + 4, hd[3] + 4], pc.crop)) P.push('pair ' + nm + ': ' + it.id + '\'s head ' + JSON.stringify(hd) + ' is not whole with 2 px to spare in ' + JSON.stringify(pc.crop)); continue; }
           if (!within([b[0] - 2, b[1] - 2, b[2] + 4, b[3] + 4], pc.crop) && meets(b, pc.crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(b) + ' is not whole with 2 px to spare in ' + JSON.stringify(pc.crop)); }
         if (pc.zoom === 2) { const T = TAGS[key0], cnt = {}; for (let y = pc.crop[1]; y < pc.crop[1] + pc.crop[3]; y++) for (let x = pc.crop[0]; x < pc.crop[0] + pc.crop[2]; x++) { const t = (T[y * 240 + x] || '').split('.')[0]; if (t) cnt[t] = (cnt[t] || 0) + 1; }
           for (const [t, c] of Object.entries(cnt)) if (c < 12 && t !== 'pared') P.push('pair ' + nm + ': shows only ' + c + ' px of ' + t + ' (a cut-off piece)'); } }
@@ -1169,7 +1235,7 @@ function checkAsks(sh, G, runs, C) {
       { const pcs = sh.pictures[deacc(word) + '.si'], crop = pcs.crop, A = C.picture(ws.si), B = C.picture(ws.no); let n = 0, m = 0; for (let y = crop[1]; y < crop[1] + crop[3]; y++) for (let x = crop[0]; x < crop[0] + crop[2]; x++) { m++; const i = (y * 240 + x) * 3; if (A[i] !== B[i] || A[i + 1] !== B[i + 1] || A[i + 2] !== B[i + 2]) n++; }
         pairPct.push(deacc(word) + ' ' + r2(n / m * 100) + '%'); if (n < m * .015) P.push('pair ' + word + ': the two pictures differ in ' + n + ' px of ' + m + ' (keep 1.5%)'); } for (const k of new Set([...Object.keys(ws.si), ...Object.keys(ws.no)])) if (JSON.stringify(ws.si[k]) !== JSON.stringify(ws.no[k])) d.push(k);
       if (!d.length) P.push('pair ' + word + ': the two pictures are the same'); diffs.push(deacc(word) + ': ' + d.join(', ')); }
-    notes.push('pairs: ' + pairSidesOf().length + ' review pictures (the ' + sh.level.length + ' level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet), no zoom 2 picture with a cut-off piece of the set; what differs: ' + diffs.join('; ') + '; the pixels that differ between yes and no (keep 1.5%): ' + pairPct.join(', ') + '; ' + nHead + ' people in zoom 2 pictures, each with the whole head inside with 2 px to spare'); }
+    notes.push('pairs: ' + pairSidesOf().length + ' review pictures (the ' + sh.level.length + ' level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet), no zoom 2 picture with a cut-off piece of the set; what differs: ' + diffs.join('; ') + '; the pixels that differ between yes and no (keep 1.5%): ' + pairPct.join(', ') + '; ' + nHead + ' people in zoom 2 pictures, each that has any part in it (the body, a sleeve, a hand, what they hold: round 2; round 1 left out the arms and what they hold, so a cut sleeve passed) with the whole head inside with 2 px to spare'); }
 
   /* states, bakes, reach */
   { if (G.ms.comer.first >= 150) P.push('bake: the first bake took ' + R(G.ms.comer.first) + ' ms in a fresh page (keep under 150)');

@@ -541,20 +541,20 @@
    "why": "the frog's place in story 35, on the cloth"
   },
   "CAFE35": {
-   "world": [4.9101, 0.5587, 1.3],
+   "world": [5.3453, 0.7763, 1.3],
    "on": "estufa",
    "old": [199, 118],
-   "new": [190, 87],
+   "new": [194, 93],
    "moved": true,
-   "why": "the big coffee pot on the stove's left burner"
+   "why": "the big coffee pot on the stove's top, at its front left between the burners (round 2: its whole foot on the top face, its lid under the hood)"
   },
   "CAZO35": {
-   "world": [6.0524, 0.5043, 1.3],
-   "on": "mostrador2",
+   "world": [5.726, 0.178, 1.3],
+   "on": "estufa",
    "old": [218, 118],
-   "new": [212, 97],
+   "new": [212, 91],
    "moved": true,
-   "why": "the milk pan on the counter beside the stove (the kit's stove is too narrow for both: its burners are 8 px apart)"
+   "why": "the milk pan on the stove's top beside the coffee pot, at its right corner (round 2: on the stove as the old, its whole foot on the top face)"
   },
   "AFOGON": {
    "world": [4.3514, 0.8703, 0],
@@ -908,11 +908,11 @@
      "zoom": 1
     },
     "tambien.si": {
-     "crop": [103, 158, 98, 52],
+     "crop": [114, 158, 98, 52],
      "zoom": 2
     },
     "tambien.no": {
-     "crop": [103, 158, 98, 52],
+     "crop": [114, 158, 98, 52],
      "zoom": 2
     },
     "todo.si": {
@@ -968,11 +968,11 @@
      "zoom": 1
     },
     "un_poco.si": {
-     "crop": [106, 145, 98, 52],
+     "crop": [84, 139, 98, 52],
      "zoom": 2
     },
     "un_poco.no": {
-     "crop": [106, 145, 98, 52],
+     "crop": [84, 139, 98, 52],
      "zoom": 2
     }
    }
@@ -1672,11 +1672,11 @@
    "old": [164, 182],
    "uses": ["cual-comer.json un poco.si.set.gente.carmen", "cual-comer.json un poco.no.set.gente.carmen"],
    "to": {
-    "floor": [8.8388, 5.5209, 0]
+    "floor": [8.866, 5.6025, 0]
    },
-   "new": [171, 198],
+   "new": [170, 199],
    "moved": true,
-   "why": "un poco.si: on clear floor: the least move off the table's foot",
+   "why": "un poco.si: un poco: Carmen off the table's foot, 1 px left and 1 down of the least move (171, 198): with abuela's head 2 px inside its left edge, her head is then 2 px inside the right edge of the close window (98 px), which no window holds otherwise (round 2)",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
   },
   {
@@ -1813,14 +1813,14 @@
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 2,
-   "crop": [103, 158, 98, 52],
+   "crop": [114, 158, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [32,80,196,104]"
   },
   "tambien.no": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 2,
-   "crop": [103, 158, 98, 52],
+   "crop": [114, 158, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [32,80,196,104]"
   },
   "todo.si": {
@@ -1869,14 +1869,14 @@
    "world": [6.8, 5.4402, 1],
    "screen": [135, 156],
    "zoom": 2,
-   "crop": [106, 145, 98, 52],
+   "crop": [84, 139, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [86,130,98,52]"
   },
   "un_poco.no": {
    "world": [6.8, 5.4402, 1],
    "screen": [135, 156],
    "zoom": 2,
-   "crop": [106, 145, 98, 52],
+   "crop": [84, 139, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [86,130,98,52]"
   },
   "mucho.si": {
@@ -1964,7 +1964,7 @@
    "index": 2,
    "picture": "un_poco.si",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [106, 145, 98, 52],
+   "crop": [84, 139, 98, 52],
    "zoom": 2
   },
   {
@@ -1972,7 +1972,7 @@
    "index": 0,
    "picture": "un_poco.si",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [106, 145, 98, 52],
+   "crop": [84, 139, 98, 52],
    "zoom": 2
   },
   {
@@ -1980,7 +1980,7 @@
    "index": 1,
    "picture": "un_poco.no",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [106, 145, 98, 52],
+   "crop": [84, 139, 98, 52],
    "zoom": 2
   },
   {
@@ -2265,7 +2265,7 @@
    "line": 629,
    "act": "*",
    "src": "const K1=[76,170],K2=[100,170],AZU=[138,170],TRANA=[172,170],GRECA35=[152,162],GRECA35B=[158,178],TABU=[186,154],CASA35=[110,166],CANELO=[48,208],TAZON=[98,208],STOOL=[210,178],NUBE35=[102,104],AIM35=[110,139],CAFE35=[199,118],CAZO35=[218,118];",
-   "to": "const K1=[84,153],K2=[104,163],AZU=[128,178],TRANA=[171,166],GRECA35=[152,162],GRECA35B=[156,174],TABU=[185,158],CASA35=[110,165],CANELO=[48,208],TAZON=[98,208],STOOL=[206,184],NUBE35=[102,103],AIM35=[110,138],CAFE35=[190,87],CAZO35=[212,97];",
+   "to": "const K1=[84,153],K2=[104,163],AZU=[128,178],TRANA=[171,166],GRECA35=[152,162],GRECA35B=[156,174],TABU=[185,158],CASA35=[110,165],CANELO=[48,208],TAZON=[98,208],STOOL=[206,184],NUBE35=[102,103],AIM35=[110,138],CAFE35=[194,93],CAZO35=[212,91];",
    "places": [
     {
      "who": "cosa",
@@ -2306,14 +2306,14 @@
     {
      "who": "cosa",
      "old": [199, 118],
-     "new": [190, 87],
-     "world": [4.9101, 0.5587, 1.3]
+     "new": [194, 93],
+     "world": [5.3453, 0.7763, 1.3]
     },
     {
      "who": "cosa",
      "old": [218, 118],
-     "new": [212, 97],
-     "world": [6.0524, 0.5043, 1.3]
+     "new": [212, 91],
+     "world": [5.726, 0.178, 1.3]
     },
     {
      "who": "cosa",
@@ -2328,7 +2328,7 @@
      "world": [6.6096, 6.6096, 1]
     }
    ],
-   "why": "story 35's places: K1 Luis's cup of milk on the cloth; K2 Carmen's cup of milk on the cloth; AZU the sugar bowl (with its lid beside it) on the cloth's near edge, 8 rows nearer as the seats' row steps there (SY), 10 px left so that its lid stays on the cloth and abuela can stand in front of it: under the frog where he sugars papá's cup, not over him; TRANA the frog's cup on the cloth; GRECA35 the little coffee pot at the right of the table (its foot GRECA35[1] + 4), on the cloth; GRECA35B where abuela sets the little coffee pot down for the frog, on the cloth; TABU abuela's cup at the right end of the cloth; CASA35 the frog's place in story 35, on the cloth; CAFE35 the big coffee pot on the stove's left burner; CAZO35 the milk pan on the counter beside the stove (the kit's stove is too narrow for both: its burners are 8 px apart); STOOL abuela's stool, 4 px left and 6 rows nearer: she sits on it wholly inside the view with 3 px to spare, clear of the table's right end; NUBE35 and AIM35 (the frog's thought) as the old relative to CASA35"
+   "why": "story 35's places: K1 Luis's cup of milk on the cloth; K2 Carmen's cup of milk on the cloth; AZU the sugar bowl (with its lid beside it) on the cloth's near edge, 8 rows nearer as the seats' row steps there (SY), 10 px left so that its lid stays on the cloth and abuela can stand in front of it: under the frog where he sugars papá's cup, not over him; TRANA the frog's cup on the cloth; GRECA35 the little coffee pot at the right of the table (its foot GRECA35[1] + 4), on the cloth; GRECA35B where abuela sets the little coffee pot down for the frog, on the cloth; TABU abuela's cup at the right end of the cloth; CASA35 the frog's place in story 35, on the cloth; CAFE35 the big coffee pot on the stove's top, at its front left between the burners (round 2: its whole foot on the top face, its lid under the hood); CAZO35 the milk pan on the stove's top beside the coffee pot, at its right corner (round 2: on the stove as the old, its whole foot on the top face); STOOL abuela's stool, 4 px left and 6 rows nearer: she sits on it wholly inside the view with 3 px to spare, clear of the table's right end; NUBE35 and AIM35 (the frog's thought) as the old relative to CASA35"
   },
   {
    "line": 638,
@@ -11439,19 +11439,23 @@
    "inventory: 23 things (old 23), 2 frog places of LUGAR (old 2), 1 view (old 1), 60 positions (old 60), 12 review pairs of cual-comer (24 pictures), 12 level pictures (old 12), 831 lines of comer.js with numbers named in code (306 of them with places, each with its fate), 91 moves, 1 baked state (the old 158 states)",
    "hops: every run of the port's play makes the recorded run's sounds, the blips aside, in the same order: 363 hops in all (0 runs differ)",
    "walks: every walk of the frog (every hopTo call) of the 9 runs, on the old page and with the port, walk by walk: 207 walks, 0 with another hop count or missing",
-   "set things: the table's pixels all inside its touch box [12,94,188,117] (its hint box [46,94,154,108]), papá's chair's inside its box [157,120,18,42]; every other part the room's (cocina, its box the whole picture, its hint box [46,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: the table's pixels in papá's chair's box (they answer the chair: it is before the table in the hit order, as the old): 378; puerta x 60-83 y 21-82; ventana x 154-183 y 23-62; alacena x 11-57 y 27-65; campana x 185-217 y 40-71; fregadero x 42-61 y 62-77; mostrador x 0-73 y 62-133; salpicadero x 197-217 y 66-89; estufa x 181-216 y 80-126; silla0 x 92-101 y 85-108; mostrador2 x 201-239 y 90-143; mesa x 12-199 y 94-192; silla1 x 116-125 y 97-120; silla2 x 140-149 y 109-132; silla3 x 164-173 y 121-144; mesa.patas x 20-191 y 133-206",
+   "set things: the table's pixels all inside its touch box [12,94,188,117] (its hint box [46,94,154,108]), papá's chair's inside its box [157,120,18,42]; every other part the room's (cocina, its box the whole picture, its hint box [46,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: the table's pixels in papá's chair's box (they answer the chair: it is before the table in the hit order, as the old): 378; puerta.hoja x 84-109 y 14-78; puerta x 60-83 y 15-89; puerta.jamba x 77-80 y 19-78; ventana x 154-183 y 23-62; alacena x 11-51 y 30-65; campana x 185-217 y 40-71; fregadero x 36-54 y 65-80; salpicadero x 197-217 y 66-89; mostrador x 0-59 y 69-133; puerta.umbral x 63-81 y 77-89; estufa x 181-216 y 80-126; silla0 x 92-101 y 85-108; mostrador2 x 201-239 y 90-143; mesa x 12-199 y 94-194; silla1 x 116-125 y 97-120; silla2 x 140-149 y 109-132; silla3 x 164-173 y 121-144; mesa.patas x 20-191 y 135-206",
    "light: the kit's one rule; every castShadow call of the set darkens the floor, each shadow within 4 px of its own thing (mesa.patas 4 calls, 36 px: the table's and the chairs' legs, thin, each a short contact shadow at its foot on its shadow side); no floor pixel within 3 px of a leg on its lit side differs from the floor without the leg (the kit's floor dimming on the shadow side only)",
-   "window and doorway: the kit's (La mesa's): what shows through them is outside, the window 59 px of sky and 67 of the bush, the doorway 234 px of sky and 125 of the patio's hedge, each with its frame standing out of the wall and its reveal (the window a sill)",
-   "thin things of the set against what is behind them (WCAG contrast ratio of the mean luminances; each part's pixels): mesa.patas 5.94 (98% of its pixels at 2.0 or more); fregadero 2.09 (73% of its pixels at 2.0 or more) (the sink and its tap: fregadero)",
+   "window and doorway: the kit's (La mesa's): what shows through them is outside, the window 59 px of sky and 67 of the bush, the doorway 59 px of sky and 124 of the patio's hedge, each with its frame standing out of the wall and its reveal (the window a sill)",
+   "table (round 2): the cloth's top, blue-and-white gingham (mean 170,190,225), against the floor (mean 206,157,130): dE 43.71 (keep 25); its pattern repeats every 0.25, the floor's every 1 (keep half); the drop over the near side and the right end 7 rows at the least over the 168 columns of its seen length (keep 6); the top's near edge 22.52 rows over the floor at the least (keep 10)",
+   "door (round 2, La mesa's final one): in the wide view its leaf 1615 px (open into the room against the wall towards the corner, its brass handle 7 px), the wall's thickness in the opening 234 px, the threshold 117 px (30 kept each); the lowest outside pixel of each of the opening's 13 columns is the patio's ground (13: El patio's step, the lawn); of the opening's 1196 px none is the counter's (0): the counter starts 1 past the jamb (La mesa's .24), its end no longer in front of the way in; whoever comes in stands in the doorway at its threshold (DOOR) on clear floor (the floor check)",
+   "thin things of the set against what is behind them (WCAG contrast ratio of the mean luminances; each part's pixels): mesa.patas 5.86 (99% of its pixels at 2.0 or more); fregadero 2.07 (73% of its pixels at 2.0 or more) (the sink and its tap: fregadero)",
+   "on the cloth (round 2; round 1 had no such check: a thing's colour against the cloth was not measured): at 438137 thing-moments (every tick, step's end and pair picture) each thing standing on the cloth (not the drawn shadows, sombra, of the review pictures: they are a thing's shadow, not a thing) stands out from the cloth directly behind its outline, WCAG mean 2.06 at the least (cosa interroga2 (pair que_quieres.si); keep 2.0)",
+   "on the stove (round 2; round 1 asked only 90% of a foot over any top, the stove's or a counter's, and nothing of the hood): at 52262 thing-moments each thing on the stove has its whole foot (its lowest row, each pixel within 2 rows over the stove's top face) on the stove's top, no pixel of its body over the hood (the steam of what steams rises over it)",
    "drawn: at 55674 moments (every tick inside the acts of the port's play of the 9 runs, every step's end, every pair picture) composed as comer.js draws them (each item owns what it drew last; the chairs drawn again over whoever is behind them at sortY 60, the table at the old table's place TZ): no part of the set over any face; 2548 sittings at step ends, each with no more of the set over the one who sits than the old table had (8 px to spare; both pictures with the people alone, so that what the frog or a thing covers counts for neither); 191 things standing on the cloth or on the stove's or a counter's top, each with 90% and more of its foot over it and nothing of the set over it; 1801 step ends of someone standing in the view, each on clear floor",
    "seen: at 6062 person-, dog- and frog-moments (every step's end of the 9 runs) each seen no less than in the old picture less 10%, the face no less (0 less); everyone and everything wholly inside the view in the old picture of a moment wholly inside with 3 px to spare (0 not)",
    "bubbles: 30 thought clouds (a person's, the frog's) at every moment wholly inside the view, clear of the rounds card, on no face but their thinker's; at 324 moments someone speaks: the tail of the speech bubble (juego.js donde) inside the view, and the empty bubble comer.js draws over the speaker with the words hidden (hab, 19 x 13 over the head) wholly inside the view and on no other face",
    "asks: 23 distinct asks (for abuelo, choc, di_buen, di_lleno, di_mucho, di_poco, di_tambien, mama, mant, papa): every hint frame (box +- 12) inside the view with 2 px to spare (35 at the least; the table and the room by their hint boxes), no frame's rings across a face where the old frame's were not (as the old: buen-provecho beats.41 (mama) carmen's face; buen-provecho beats.53 (abuelo) carmen's face; buen-provecho beats.79 (abuelo) carmen's face; que-quieres beats.28 (mant) the frog's face; que-quieres beats.46 (mant) the frog's face; que-quieres beats.63 (mant) the frog's face; que-quieres beats.70 (mant) the frog's face), the hint hand on no face and not cut by the view's edge where the old was not (as the old: buen-provecho beats.53 (abuelo): on the frog's face; buen-provecho beats.79 (abuelo): on the frog's face); 16 answer cards, each with its lit frame and glow (card +- 12) 4 px inside the view (0 px more at the least), 2 px clear of the rounds card and of everyone's head and body, over no thing; the hint round each card 2 px inside the view and across no head, its hand on no face; 11 times a thing asked for or among the choices: whole in the view, covered no more than in the old picture, a plain surface round it",
    "heads: at 5708 face-moments (step ends) nobody's head against the window, the wall cupboard or the hood where the old picture kept it clear",
-   "steam: 16517 distinct puffs (every frame of their rise, as comer.js draws them with the help's darker edge) against what is directly behind them (the picture without what steams): each row of a wisp drawn at alpha .4 and more seen by its edge or its core (WCAG contrast of that colour over what is behind it), the mean over its rows 2.07 at the least (steam over t_carmen (cafe-con-azucar right t 161720))",
+   "steam: 16517 distinct puffs (every frame of their rise, as comer.js draws them with the help's darker edge) against what is directly behind them (the picture without what steams): each row of a wisp drawn at alpha .4 and more seen by its edge or its core (WCAG contrast of that colour over what is behind it), the mean over its rows 2.03 at the least (steam over t_carmen (cafe-con-azucar right t 161720))",
    "preview: at every step's end of the 9 recorded runs (17730 places) comer-preview.html puts everyone exactly where the sheet's rule does (0 differ); of the 17272 places at rest, 9660 are where the port's play has them by the rule alone, the other 7612 are placed by the moved code itself (checks.rule)",
-   "pairs: 24 review pictures (the 12 level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet), no zoom 2 picture with a cut-off piece of the set; what differs: quieres: gente, cosas; que_quieres: gente, cosas; me_gusta: gente, cosas; no_me_gusta: gente; rico: gente, cosas; buen_provecho: gente, cosas; tambien: gente; todo: cosas, perro; cafe: gente, cosas; azucar: gente, cosas; un_poco: gente; mucho: cosas; the pixels that differ between yes and no (keep 1.5%): quieres 13.69%, que_quieres 17.15%, me_gusta 12.31%, no_me_gusta 4.93%, rico 4.37%, buen_provecho 23.02%, tambien 3.41%, todo 15.86%, cafe 5.85%, azucar 4.59%, un_poco 5.14%, mucho 3.89%; 12 people in zoom 2 pictures, each with the whole head inside with 2 px to spare",
-   "states: one baked state, reached by every moment, pair and level picture; its first bake in a fresh page under 150 ms (the median of five); hands beyond their arm in the port's play: 90 kinds (checks.reach)"
+   "pairs: 24 review pictures (the 12 level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet), no zoom 2 picture with a cut-off piece of the set; what differs: quieres: gente, cosas; que_quieres: gente, cosas; me_gusta: gente, cosas; no_me_gusta: gente; rico: gente, cosas; buen_provecho: gente, cosas; tambien: gente; todo: cosas, perro; cafe: gente, cosas; azucar: gente, cosas; un_poco: gente; mucho: cosas; the pixels that differ between yes and no (keep 1.5%): quieres 13.69%, que_quieres 17.15%, me_gusta 12.31%, no_me_gusta 4.93%, rico 4.37%, buen_provecho 22.96%, tambien 3.41%, todo 15.86%, cafe 5.85%, azucar 4.59%, un_poco 5.14%, mucho 3.89%; 12 people in zoom 2 pictures, each that has any part in it (the body, a sleeve, a hand, what they hold: round 2; round 1 left out the arms and what they hold, so a cut sleeve passed) with the whole head inside with 2 px to spare",
+   "states: one baked state, reached by every moment, pair and level picture; its first bake in a fresh page under 150 ms (the median of five); hands beyond their arm in the port's play: 92 kinds (checks.reach)"
   ],
   "walks": {
    "count": 207,
@@ -11911,6 +11915,8 @@
     "abuela:brazo 21>16",
     "abuela:brazo 23>16",
     "abuela:brazo 29>16",
+    "abuela:cafetera 20>16",
+    "abuela:cazo 23>16",
     "abuela:fuente 23>16",
     "abuela:jarrita 19>16",
     "abuela:jarrita 21>16",
