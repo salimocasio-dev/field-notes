@@ -99,13 +99,6 @@ Sprite mkCajaGrande(bool abierta) {
   final C = [_h('#8A5A2A'), _h('#B07A3C'), _h('#C8853C'), _h('#E2A85A')];
   const y0 = CAJA_FRENTE, x0 = 3, w = CAJA_W - 6, h = CAJA_H - CAJA_FRENTE - 1;
   if (abierta) {
-    b.rect(
-      x0 + 1,
-      y0 - 2,
-      w - 2,
-      2,
-      _h('#5A3A1A'),
-    ); // the dark inside, behind the goods
     b.line(x0, y0, x0 - 3, y0 - 5, C[1]);
     b.line(x0 + 1, y0, x0 - 2, y0 - 5, C[1]);
     b.line(x0 + w - 1, y0, x0 + w + 2, y0 - 5, C[0]);
@@ -120,6 +113,15 @@ Sprite mkCajaGrande(bool abierta) {
   b.rect(x0 + w - 3, y0, 3, h, C[1]); // the darker side
   b.rect(x0 + w ~/ 2 - 2, y0, 4, h, _h('#E8D2A0')); // the tape
   return b.outline().done();
+}
+
+/// The dark inside of the open big box, behind its goods (a sprite of its own, the box's size: drawn behind the cans and
+/// bottles in it, which are drawn behind the box's front).
+Sprite mkCajaDentro() {
+  final b = Buf(CAJA_W, CAJA_H);
+  const y0 = CAJA_FRENTE, x0 = 3, w = CAJA_W - 6;
+  b.rect(x0 + 1, y0 - 2, w - 2, 2, _h('#5A3A1A'));
+  return b.done();
 }
 
 /* ---------- crates (estantes-preview.html crate) ---------- */
@@ -470,6 +472,7 @@ List<(String, Sprite)> estantesSpriteSheet(
   ('botella rota', mkBotellaRota()),
   ('caja grande, cerrada', mkCajaGrande(false)),
   ('caja grande, abierta', mkCajaGrande(true)),
+  ('caja grande, lo oscuro de dentro (detras de lo que tiene)', mkCajaDentro()),
   ('cajon de coqui', mkCajon()),
   ('cajon de latas, lleno', mkCajonLatas(true)),
   ('cajon de latas, vacio', mkCajonLatas(false)),

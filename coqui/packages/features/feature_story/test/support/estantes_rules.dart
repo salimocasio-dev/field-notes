@@ -13,6 +13,9 @@
 // - a thing standing on a shelf or on the table stands at one of the sheet's places (shelf-places, mesa-fila-on-cloth);
 // - don Pepe on the ladder is not hidden by the ladder (front.after): every pixel of him the set's depth would hide is a
 //   ladder pixel.
+// - a thing he must touch shows: at least 70% of the pixels of each net, each customer's box, the big box and the cans and
+//   bottles in it are seen in the frame (hidden neither by the set nor by a person; a can or a bottle in the box is
+//   behind its front by design: those pixels are not counted).
 import 'dart:math' as math;
 import 'dart:typed_data';
 
@@ -208,6 +211,64 @@ class EstantesRules {
       final w = (_m.places.world(spot) as List).cast<num>();
       if (o['x'] != w[0] || o['y'] != w[1] || o['z'] != w[2]) {
         _breach(at, 'a thing off its place', '${o['id']} at $spot');
+      }
+    }
+    // a thing he must touch shows (the frame's sprite layer drawn over a blank picture, the set's depth in place)
+    final bk = (_bakes ??= SetBakes(scene));
+    final baked = bk.bakeKey(scene.setKey(W));
+    (scene as SetOverSprites).setFramed(bk.engine, baked, W);
+    final layer = Uint32List(240 * 216);
+    scene.draw(Ctx(layer, 240, 216), W, 0);
+    final cosas = (W['cosas'] as List).cast<Map>();
+    for (final it in items) {
+      final tag = it.tag as String?;
+      if (tag == null || !tag.startsWith('cosa:')) continue;
+      final id = tag.substring(5);
+      final o = cosas.where((c) => c['id'] == id).firstOrNull;
+      if (o == null) continue;
+      final must =
+          const [
+            'red_a',
+            'red_b',
+            'caja_senora',
+            'caja_senor',
+            'caja',
+          ].contains(id) ||
+          o['caja'] != null;
+      if (!must || o['con'] != null || o['vuela'] != null) continue;
+      // a can or a bottle in the big box is behind the box's front by design: where the box draws is not counted
+      final box = o['caja'] != null
+          ? items.where((i) => i.tag == 'cosa:caja').firstOrNull
+          : null;
+      bool underBox(int X, int Y) {
+        if (box == null) return false;
+        final bx = X - (box.left as int), by = Y - (box.top as int);
+        final bs = box.s as Sprite;
+        return bx >= 0 &&
+            by >= 0 &&
+            bx < bs.w &&
+            by < bs.h &&
+            bs.px[by * bs.w + bx] >>> 24 != 0;
+      }
+
+      var n = 0, shown = 0;
+      for (var y = 0; y < it.s.h; y++) {
+        for (var x = 0; x < it.s.w; x++) {
+          final c = it.s.px[y * it.s.w + x];
+          if (c >>> 24 == 0) continue;
+          final X = it.left + x, Y = it.top + y;
+          if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue;
+          if (underBox(X, Y)) continue;
+          n++;
+          if (layer[Y * 240 + X] == c) shown++;
+        }
+      }
+      if (n > 0 && shown < n * .7) {
+        _breach(
+          at,
+          'a thing he must touch hidden',
+          '$id: $shown of $n px show',
+        );
       }
     }
     // don Pepe on the ladder: the ladder does not hide him (front.after), everything else of the set still may

@@ -211,9 +211,12 @@ class Estantes extends Escena implements SetScene, SetOverSprites {
       frog = 'coqui.cajon';
     } else if (has('fila')) {
       // story 40: don Pepe at the low table; Luis and the frog at the crate of cans; the drawing pinned over the table
+      // OPEN: the sheet's place for Luis at the crate, luis.cajas (115,188), stands in front of the second net (red_b,
+      // 111,167): only 92 of its 263 pixels show, and he must touch it. Luis stands at luis.piso (97,197), below the
+      // crate (239 of 263 show)
       mesa = 1;
       gente['pepe'] = _person('pepe.mesa');
-      gente['luis'] = _person('luis.cajas');
+      gente['luis'] = _person('luis.piso');
       gente['perro'] = _person('perro.entra', vis: 0);
       cosas.add(_cosa('cajon_latas', 'cajon_latas', 'cajon_latas'));
       cosas.add(_cosa('papel', 'papel', 'dibujo'));
@@ -593,6 +596,19 @@ class Estantes extends Escena implements SetScene, SetOverSprites {
           tag: tag,
         ),
       );
+      // the open box's dark inside, behind the goods in it
+      if (o['k'] == 'caja' && o['v'] == 'abierta') {
+        out.add(
+          EstantesItem(
+            _spr('cajadentro', mkCajaDentro),
+            sx - s.w ~/ 2,
+            sy - inkBottom(s),
+            sy,
+            at.d - .02,
+            tag: 'cosa:caja.dentro',
+          ),
+        );
+      }
     }
     return out;
   }
@@ -1825,16 +1841,14 @@ class Estantes extends Escena implements SetScene, SetOverSprites {
       _pon(d, 'perro.entra');
       d['pose'] = 'idle';
       d['vis'] = 1;
-      await Future.wait([
-        _anda('luis', 'luis.cajas'),
-        () async {
-          d['pose'] = 'stand';
-          await _anda('perro', 'perro.rana');
-          d['pose'] = 'sit';
-          d['dir'] = -1;
-        }(),
-      ]);
-      l['dir'] = -1;
+      // OPEN: back at the crate Luis would stand on Canelo (luis.piso is 6 px from perro.rana, where Canelo sits beside
+      // the frog) or in front of the second net (luis.cajas): he stays by the door (`entra`), where he brought him in,
+      // and counts and looks round the shop from there
+      d['pose'] = 'stand';
+      await _anda('perro', 'perro.rana');
+      d['pose'] = 'sit';
+      d['dir'] = -1;
+      l['dir'] = 1;
     },
     // `resto` {n}: the crate tipped to show what is left; the top is made of it (40: 8)
     'resto': (o) async {
