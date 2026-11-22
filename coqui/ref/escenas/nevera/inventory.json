@@ -4,12 +4,13 @@
  "made": "node coqui/tool/ref/escenas/make.mjs",
  "sha256": "3d0b1122f232d039374a2ae7157ce41578de6bb16f0f6c2f1df9da21d0667c1b",
  "stories": [
+  "h-nevera",
   "jugo-de-china",
   "no-hay-leche",
   "para-los-pajaros"
  ],
  "reviewFile": "cual-nevera",
- "hostPage": "historia/index.html?cuento=jugo-de-china&fast=1",
+ "hostPage": "historia/index.html?cuento=h-nevera&fast=1",
  "background": {
   "functions": [
    "fondo"
@@ -608,6 +609,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,1-51",
+      "h-nevera/wrong": "start,1-51",
+      "h-nevera/alternate": "start,1-51",
       "jugo-de-china/right": "start,75-89,98-112,114-127",
       "jugo-de-china/wrong": "start,75-89,103-122,124-125,127-133",
       "jugo-de-china/alternate": "start,75-89,98-117,119-132",
@@ -648,6 +652,9 @@
       44
      ],
      "at": {
+      "h-nevera/right": "0",
+      "h-nevera/wrong": "0",
+      "h-nevera/alternate": "0",
       "jugo-de-china/right": "0-26",
       "jugo-de-china/wrong": "0-26",
       "jugo-de-china/alternate": "0-26"
@@ -775,6 +782,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,2-51",
+      "h-nevera/wrong": "start,2-51",
+      "h-nevera/alternate": "start,2-51",
       "jugo-de-china/right": "start,75-89,98-112,114-127",
       "jugo-de-china/wrong": "start,75-89,103-122,124-144",
       "jugo-de-china/alternate": "start,75-89,98-117,119-132",
@@ -815,6 +825,9 @@
       44
      ],
      "at": {
+      "h-nevera/right": "0-1",
+      "h-nevera/wrong": "0-1",
+      "h-nevera/alternate": "0-1",
       "jugo-de-china/right": "0-26",
       "jugo-de-china/wrong": "0-26",
       "jugo-de-china/alternate": "0-26"
@@ -928,6 +941,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,4-51",
+      "h-nevera/wrong": "start,4-51",
+      "h-nevera/alternate": "start,4-51",
       "jugo-de-china/right": "start,",
       "jugo-de-china/wrong": "start,",
       "jugo-de-china/alternate": "start,",
@@ -968,6 +984,9 @@
       56
      ],
      "at": {
+      "h-nevera/right": "0-3",
+      "h-nevera/wrong": "0-3",
+      "h-nevera/alternate": "0-3",
       "jugo-de-china/right": "0-127",
       "jugo-de-china/wrong": "0-144",
       "jugo-de-china/alternate": "0-132"
@@ -1039,6 +1058,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,5-51",
+      "h-nevera/wrong": "start,5-51",
+      "h-nevera/alternate": "start,5-51",
       "jugo-de-china/right": "start,",
       "jugo-de-china/wrong": "start,",
       "jugo-de-china/alternate": "start,",
@@ -1081,6 +1103,9 @@
       56
      ],
      "at": {
+      "h-nevera/right": "0-4",
+      "h-nevera/wrong": "0-4",
+      "h-nevera/alternate": "0-4",
       "jugo-de-china/right": "0-37",
       "jugo-de-china/wrong": "0-37",
       "jugo-de-china/alternate": "0-37"
@@ -1167,6 +1192,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,3-51",
+      "h-nevera/wrong": "start,3-51",
+      "h-nevera/alternate": "start,3-51",
       "jugo-de-china/right": "start,",
       "jugo-de-china/wrong": "start,",
       "jugo-de-china/alternate": "start,",
@@ -1207,6 +1235,9 @@
       56
      ],
      "at": {
+      "h-nevera/right": "0-2",
+      "h-nevera/wrong": "0-2",
+      "h-nevera/alternate": "0-2",
       "jugo-de-china/right": "0-127",
       "jugo-de-china/wrong": "0-144",
       "jugo-de-china/alternate": "0-132"
@@ -1278,6 +1309,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,",
+      "h-nevera/wrong": "start,",
+      "h-nevera/alternate": "start,",
       "jugo-de-china/right": "start,63,66-68,79-114,116-121",
       "jugo-de-china/wrong": "start,63,66-68,79-124,126-138",
       "jugo-de-china/alternate": "start,63,66-68,79-119,121-126",
@@ -1320,6 +1354,9 @@
       51
      ],
      "at": {
+      "h-nevera/right": "0-51",
+      "h-nevera/wrong": "0-51",
+      "h-nevera/alternate": "0-51",
       "jugo-de-china/right": "0-2,14-45,69,122",
       "jugo-de-china/wrong": "0-2,14-45,69,139",
       "jugo-de-china/alternate": "0-2,14-45,69,127",
@@ -1620,28 +1657,28 @@
       "s005",
       "s006",
       "s007",
+      "s008",
       "s009",
       "s010",
-      "s011",
-      "s015",
-      "s016",
-      "s021",
-      "s027",
-      "s028",
-      "s029",
+      "s012",
+      "s013",
+      "s014",
+      "s018",
+      "s019",
+      "s024",
       "s030",
-      "s034",
-      "s035",
-      "s036",
+      "s031",
+      "s032",
+      "s033",
       "s037",
+      "s038",
       "s039",
       "s040",
-      "s041",
       "s042",
+      "s043",
       "s044",
-      "s046",
+      "s045",
       "s047",
-      "s048",
       "s049",
       "s050",
       "s051",
@@ -1678,7 +1715,10 @@
       "s082",
       "s083",
       "s084",
-      "s085"
+      "s085",
+      "s086",
+      "s087",
+      "s088"
      ]
     },
     {
@@ -1690,19 +1730,19 @@
       26
      ],
      "states": [
-      "s008",
-      "s012",
-      "s013",
-      "s014",
-      "s019",
-      "s024",
-      "s025",
-      "s026",
-      "s032",
-      "s033",
-      "s038",
-      "s043",
-      "s086"
+      "s011",
+      "s015",
+      "s016",
+      "s017",
+      "s022",
+      "s027",
+      "s028",
+      "s029",
+      "s035",
+      "s036",
+      "s041",
+      "s046",
+      "s089"
      ]
     },
     {
@@ -1714,13 +1754,13 @@
       26
      ],
      "states": [
-      "s017",
-      "s018",
       "s020",
-      "s022",
+      "s021",
       "s023",
-      "s031",
-      "s045"
+      "s025",
+      "s026",
+      "s034",
+      "s048"
      ]
     }
    ]
@@ -1758,18 +1798,18 @@
       "s005",
       "s006",
       "s007",
-      "s013",
-      "s014",
-      "s018",
-      "s019",
-      "s020",
+      "s008",
+      "s009",
+      "s010",
+      "s016",
+      "s017",
+      "s021",
+      "s022",
       "s023",
-      "s024",
-      "s025",
-      "s032",
-      "s046",
-      "s047",
-      "s048",
+      "s026",
+      "s027",
+      "s028",
+      "s035",
       "s049",
       "s050",
       "s051",
@@ -1806,7 +1846,10 @@
       "s082",
       "s083",
       "s084",
-      "s086"
+      "s085",
+      "s086",
+      "s087",
+      "s089"
      ]
     },
     {
@@ -1818,26 +1861,26 @@
       26
      ],
      "states": [
-      "s008",
-      "s009",
-      "s010",
       "s011",
       "s012",
+      "s013",
+      "s014",
       "s015",
-      "s026",
-      "s027",
-      "s028",
-      "s033",
-      "s034",
-      "s035",
+      "s018",
+      "s029",
+      "s030",
+      "s031",
+      "s036",
       "s037",
       "s038",
-      "s039",
       "s040",
+      "s041",
       "s042",
       "s043",
-      "s044",
-      "s085"
+      "s045",
+      "s046",
+      "s047",
+      "s088"
      ]
     },
     {
@@ -1849,16 +1892,16 @@
       26
      ],
      "states": [
-      "s016",
-      "s017",
-      "s021",
-      "s022",
-      "s029",
-      "s030",
-      "s031",
-      "s036",
-      "s041",
-      "s045"
+      "s019",
+      "s020",
+      "s024",
+      "s025",
+      "s032",
+      "s033",
+      "s034",
+      "s039",
+      "s044",
+      "s048"
      ]
     }
    ]
@@ -1974,7 +2017,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -2000,6 +2046,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,",
+      "h-nevera/wrong": "start,",
+      "h-nevera/alternate": "start,",
       "jugo-de-china/right": "start,",
       "jugo-de-china/wrong": "start,",
       "jugo-de-china/alternate": "start,",
@@ -2044,6 +2093,9 @@
       23
      ],
      "at": {
+      "h-nevera/right": "0-51",
+      "h-nevera/wrong": "0-51",
+      "h-nevera/alternate": "0-51",
       "jugo-de-china/right": "0-127",
       "jugo-de-china/wrong": "0-144",
       "jugo-de-china/alternate": "0-132"
@@ -2072,6 +2124,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,",
+      "h-nevera/wrong": "start,",
+      "h-nevera/alternate": "start,",
       "jugo-de-china/right": "start,",
       "jugo-de-china/wrong": "start,",
       "jugo-de-china/alternate": "start,",
@@ -2116,6 +2171,9 @@
       23
      ],
      "at": {
+      "h-nevera/right": "0-51",
+      "h-nevera/wrong": "0-51",
+      "h-nevera/alternate": "0-51",
       "jugo-de-china/right": "0-127",
       "jugo-de-china/wrong": "0-144",
       "jugo-de-china/alternate": "0-132"
@@ -2144,6 +2202,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,",
+      "h-nevera/wrong": "start,",
+      "h-nevera/alternate": "start,",
       "jugo-de-china/right": "start,",
       "jugo-de-china/wrong": "start,",
       "jugo-de-china/alternate": "start,",
@@ -2188,6 +2249,9 @@
       23
      ],
      "at": {
+      "h-nevera/right": "0-51",
+      "h-nevera/wrong": "0-51",
+      "h-nevera/alternate": "0-51",
       "jugo-de-china/right": "0-127",
       "jugo-de-china/wrong": "0-144",
       "jugo-de-china/alternate": "0-132"
@@ -2216,6 +2280,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,",
+      "h-nevera/wrong": "start,",
+      "h-nevera/alternate": "start,",
       "jugo-de-china/right": "start,27,44,59,74-90,97-113",
       "jugo-de-china/wrong": "start,27,44,59,74-90,102-123,126,128-144",
       "jugo-de-china/alternate": "start,27,44,59,74-90,97-118",
@@ -2260,9 +2327,26 @@
       23
      ],
      "at": {
+      "h-nevera/right": "0-5",
+      "h-nevera/wrong": "0-5",
+      "h-nevera/alternate": "0-5",
       "jugo-de-china/right": "0-26,28-43,45-58,60-73,91-96,114-127",
       "jugo-de-china/wrong": "0-26,28-43,45-58,60-73,91-101,124-125,127",
       "jugo-de-china/alternate": "0-26,28-43,45-58,60-73,91-96,119-132"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      173,
+      103,
+      18,
+      23
+     ],
+     "at": {
+      "h-nevera/right": "6-51",
+      "h-nevera/wrong": "6-51",
+      "h-nevera/alternate": "6-51"
      }
     }
    ]
@@ -2288,6 +2372,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,",
+      "h-nevera/wrong": "start,",
+      "h-nevera/alternate": "start,",
       "jugo-de-china/right": "start,27,44,59,63,65-71,74-90,97-113,116,118-127",
       "jugo-de-china/wrong": "start,27,44,59,63,65-71,74-90,102-123,126,136-144",
       "jugo-de-china/alternate": "start,27,44,59,63,65-71,74-90,97-118,121,123-132",
@@ -2332,9 +2419,26 @@
       23
      ],
      "at": {
+      "h-nevera/right": "0-5",
+      "h-nevera/wrong": "0-5",
+      "h-nevera/alternate": "0-5",
       "jugo-de-china/right": "0-26,28-43,45-58,60-62,64,72-73,91-96,114-115,117",
       "jugo-de-china/wrong": "0-26,28-43,45-58,60-62,64,72-73,91-101,124-125,127-135",
       "jugo-de-china/alternate": "0-26,28-43,45-58,60-62,64,72-73,91-96,119-120,122"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      185,
+      103,
+      18,
+      23
+     ],
+     "at": {
+      "h-nevera/right": "6-51",
+      "h-nevera/wrong": "6-51",
+      "h-nevera/alternate": "6-51"
      }
     }
    ]
@@ -2360,6 +2464,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,",
+      "h-nevera/wrong": "start,",
+      "h-nevera/alternate": "start,",
       "jugo-de-china/right": "start,40,43-52,55,57-71,73-102,104,108-127",
       "jugo-de-china/wrong": "start,40,43-52,55,57-71,73-107,109,118-144",
       "jugo-de-china/alternate": "start,40,43-52,55,57-71,73-102,104,113-132",
@@ -2404,6 +2511,9 @@
       23
      ],
      "at": {
+      "h-nevera/right": "0-51",
+      "h-nevera/wrong": "0-51",
+      "h-nevera/alternate": "0-51",
       "jugo-de-china/right": "0-37,72",
       "jugo-de-china/wrong": "0-37,72",
       "jugo-de-china/alternate": "0-37,72"
@@ -2446,6 +2556,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,",
+      "h-nevera/wrong": "start,",
+      "h-nevera/alternate": "start,",
       "jugo-de-china/right": "start,40,43-52,55,58-71,73-102,104,108-127",
       "jugo-de-china/wrong": "start,40,43-52,55,58-71,73-107,109,118-144",
       "jugo-de-china/alternate": "start,40,43-52,55,58-71,73-102,104,113-132",
@@ -2490,9 +2603,26 @@
       23
      ],
      "at": {
+      "h-nevera/right": "0-5",
+      "h-nevera/wrong": "0-5",
+      "h-nevera/alternate": "0-5",
       "jugo-de-china/right": "0-37,72",
       "jugo-de-china/wrong": "0-37,72",
       "jugo-de-china/alternate": "0-37,72"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      197,
+      103,
+      18,
+      23
+     ],
+     "at": {
+      "h-nevera/right": "6-51",
+      "h-nevera/wrong": "6-51",
+      "h-nevera/alternate": "6-51"
      }
     },
     {
@@ -2532,6 +2662,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,0-51",
+      "h-nevera/wrong": "start,0-51",
+      "h-nevera/alternate": "start,0-51",
       "jugo-de-china/right": "start,0-127",
       "jugo-de-china/wrong": "start,0-144",
       "jugo-de-china/alternate": "start,0-132",
@@ -2618,6 +2751,9 @@
      "si": false,
      "box": null,
      "at": {
+      "h-nevera/right": "start,0-51",
+      "h-nevera/wrong": "start,0-51",
+      "h-nevera/alternate": "start,0-51",
       "jugo-de-china/right": "start,0-127",
       "jugo-de-china/wrong": "start,0-144",
       "jugo-de-china/alternate": "start,0-132",
@@ -2759,9 +2895,12 @@
       "s043",
       "s044",
       "s045",
-      "s084",
-      "s085",
-      "s086"
+      "s046",
+      "s047",
+      "s048",
+      "s087",
+      "s088",
+      "s089"
      ]
     },
     {
@@ -2773,9 +2912,6 @@
       18
      ],
      "states": [
-      "s046",
-      "s047",
-      "s048",
       "s049",
       "s050",
       "s051",
@@ -2810,7 +2946,10 @@
       "s080",
       "s081",
       "s082",
-      "s083"
+      "s083",
+      "s084",
+      "s085",
+      "s086"
      ]
     }
    ]
@@ -2850,29 +2989,31 @@
       "s001",
       "s002",
       "s003",
-      "s004",
       "s005",
       "s006",
       "s007",
-      "s015",
-      "s016",
-      "s017",
+      "s008",
+      "s009",
+      "s010",
       "s018",
       "s019",
       "s020",
       "s021",
       "s022",
       "s023",
-      "s028",
-      "s029",
-      "s030",
+      "s024",
+      "s025",
+      "s026",
       "s031",
-      "s035",
-      "s036",
-      "s040",
-      "s041",
-      "s045",
-      "s084"
+      "s032",
+      "s033",
+      "s034",
+      "s038",
+      "s039",
+      "s043",
+      "s044",
+      "s048",
+      "s087"
      ]
     },
     {
@@ -2884,29 +3025,27 @@
       48
      ],
      "states": [
-      "s008",
-      "s009",
-      "s010",
+      "s004",
       "s011",
       "s012",
       "s013",
       "s014",
-      "s024",
-      "s025",
-      "s026",
+      "s015",
+      "s016",
+      "s017",
       "s027",
-      "s032",
-      "s033",
-      "s034",
+      "s028",
+      "s029",
+      "s030",
+      "s035",
+      "s036",
       "s037",
-      "s038",
-      "s039",
+      "s040",
+      "s041",
       "s042",
-      "s043",
-      "s044",
+      "s045",
       "s046",
       "s047",
-      "s048",
       "s049",
       "s050",
       "s051",
@@ -2942,8 +3081,11 @@
       "s081",
       "s082",
       "s083",
+      "s084",
       "s085",
-      "s086"
+      "s086",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -3065,7 +3207,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -3187,7 +3332,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -3309,7 +3457,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -3431,7 +3582,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -3550,7 +3704,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -3669,7 +3826,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -3703,112 +3863,112 @@
   ],
   "answers": {
    "cocina": {
-    "n": 1049531,
-    "states": 360,
+    "n": 1210192,
+    "states": 412,
     "at": [
      24,
      18
     ]
    },
    "nevera": {
-    "n": 199395,
-    "states": 360,
+    "n": 234195,
+    "states": 412,
     "at": [
      42,
      42
     ]
    },
    "coqui": {
-    "n": 33228,
-    "states": 336,
+    "n": 38376,
+    "states": 388,
     "at": [
      105,
      165
     ]
    },
    "papa": {
-    "n": 24107,
-    "states": 238,
+    "n": 24335,
+    "states": 240,
     "at": [
      147,
      42
     ]
    },
    "abuelo": {
-    "n": 30943,
-    "states": 222,
+    "n": 31291,
+    "states": 225,
     "at": [
      165,
      42
     ]
    },
    "mama": {
-    "n": 33684,
-    "states": 241,
+    "n": 34292,
+    "states": 245,
     "at": [
      189,
      42
     ]
    },
    "mant": {
-    "n": 5124,
-    "states": 122,
+    "n": 7308,
+    "states": 174,
     "at": [
      171,
      81
     ]
    },
    "v_rojo": {
-    "n": 2065,
-    "states": 48,
+    "n": 3663,
+    "states": 100,
     "at": [
      162,
      102
     ]
    },
    "v_azul": {
-    "n": 1138,
-    "states": 49,
+    "n": 2875,
+    "states": 101,
     "at": [
      180,
      102
     ]
    },
    "v_verde": {
-    "n": 4320,
-    "states": 80,
+    "n": 7128,
+    "states": 132,
     "at": [
      183,
      102
     ]
    },
    "v_amarillo": {
-    "n": 2754,
-    "states": 72,
+    "n": 4626,
+    "states": 124,
     "at": [
      201,
      102
     ]
    },
    "red": {
-    "n": 5124,
-    "states": 122,
+    "n": 7308,
+    "states": 174,
     "at": [
      135,
      105
     ]
    },
    "jarra": {
-    "n": 3416,
-    "states": 122,
+    "n": 4872,
+    "states": 174,
     "at": [
      153,
      105
     ]
    },
    "abuela": {
-    "n": 22690,
-    "states": 213,
+    "n": 29242,
+    "states": 265,
     "at": [
      129,
      129
@@ -3823,11 +3983,19 @@
     ]
    },
    "carmen": {
-    "n": 33666,
-    "states": 290,
+    "n": 33794,
+    "states": 291,
     "at": [
      180,
      153
+    ]
+   },
+   "frutas": {
+    "n": 38080,
+    "states": 174,
+    "at": [
+     45,
+     60
     ]
    },
    "leche": {
@@ -3844,14 +4012,6 @@
     "at": [
      69,
      57
-    ]
-   },
-   "frutas": {
-    "n": 37312,
-    "states": 171,
-    "at": [
-     45,
-     84
     ]
    },
    "cesta": {
@@ -3889,6 +4049,13 @@
   "notInList": []
  },
  "namedInFiles": {
+  "$otro": {
+   "$var": true,
+   "where": [
+    "h-nevera:beats.21 decide",
+    "h-nevera:beats.21 pick"
+   ]
+  },
   "$pv": {
    "$var": true,
    "where": [
@@ -3898,6 +4065,7 @@
   "abuela": {
    "$var": false,
    "where": [
+    "h-nevera:names",
     "jugo-de-china:names",
     "no-hay-leche:names",
     "para-los-pajaros:names"
@@ -3986,6 +4154,7 @@
   "cocina": {
    "$var": false,
    "where": [
+    "h-nevera:names",
     "jugo-de-china:names",
     "no-hay-leche:names",
     "para-los-pajaros:names"
@@ -3994,6 +4163,7 @@
   "coqui": {
    "$var": false,
    "where": [
+    "h-nevera:names",
     "jugo-de-china:names",
     "no-hay-leche:names",
     "para-los-pajaros:names"
@@ -4085,6 +4255,19 @@
     "para-los-pajaros:beats.6 set"
    ]
   },
+  "jarra": {
+   "$var": false,
+   "where": [
+    "h-nevera:beats.9 decide",
+    "h-nevera:beats.10 decide",
+    "h-nevera/right choice beats.9 live",
+    "h-nevera/right choice beats.10 live",
+    "h-nevera/wrong choice beats.9 live",
+    "h-nevera/wrong choice beats.10 live",
+    "h-nevera/alternate choice beats.9 live",
+    "h-nevera/alternate choice beats.10 live"
+   ]
+  },
   "leche": {
    "$var": false,
    "where": [
@@ -4120,12 +4303,32 @@
   "mant": {
    "$var": false,
    "where": [
-    "jugo-de-china:beats.8 set"
+    "h-nevera:beats.9 decide",
+    "h-nevera:beats.10 decide",
+    "h-nevera:beats.10 pick",
+    "h-nevera:beats.10.right.0 set",
+    "h-nevera/right choice beats.9 live",
+    "h-nevera/right choice beats.10 live",
+    "h-nevera/right touch (right)",
+    "h-nevera/wrong choice beats.9 live",
+    "h-nevera/wrong choice beats.10 live",
+    "h-nevera/wrong touch (wrong)",
+    "h-nevera/wrong touch (retry)",
+    "h-nevera/alternate choice beats.9 live",
+    "… 3 more"
    ]
   },
   "nevera": {
    "$var": false,
    "where": [
+    "h-nevera:beats.19 decide",
+    "h-nevera:beats.19 pick",
+    "h-nevera/right choice beats.19 live",
+    "h-nevera/right touch (right)",
+    "h-nevera/wrong choice beats.19 live",
+    "h-nevera/wrong touch (right)",
+    "h-nevera/alternate choice beats.19 live",
+    "h-nevera/alternate touch (right)",
     "jugo-de-china:names",
     "no-hay-leche:beats.2 set",
     "no-hay-leche:names",
@@ -4149,7 +4352,19 @@
   "red": {
    "$var": false,
    "where": [
-    "jugo-de-china:beats.6 set"
+    "h-nevera:beats.9 decide",
+    "h-nevera:beats.9 pick",
+    "h-nevera:beats.9.right.0 set",
+    "h-nevera:beats.10 decide",
+    "h-nevera/right choice beats.9 live",
+    "h-nevera/right choice beats.10 live",
+    "h-nevera/right touch (right)",
+    "h-nevera/wrong choice beats.9 live",
+    "h-nevera/wrong choice beats.10 live",
+    "h-nevera/wrong touch (retry)",
+    "h-nevera/wrong touch (wrong)",
+    "h-nevera/alternate choice beats.9 live",
+    "… 4 more"
    ]
   },
   "t_$ka": {
@@ -4213,73 +4428,88 @@
   "v_amarillo": {
    "$var": false,
    "where": [
-    "jugo-de-china:beats.22 ask",
-    "jugo-de-china:beats.29 ask",
-    "jugo-de-china:beats.47 ask",
-    "jugo-de-china:beats.72 decide",
-    "jugo-de-china:beats.88 decide",
-    "jugo-de-china/right choice beats.22 live",
-    "jugo-de-china/right choice beats.29 live",
-    "jugo-de-china/right choice beats.47 live",
-    "jugo-de-china/right choice beats.72 live",
-    "jugo-de-china/right choice beats.88 live",
-    "jugo-de-china/right touch (right)",
-    "jugo-de-china/wrong choice beats.22 live",
-    "… 12 more"
+    "h-nevera:beats.12 decide",
+    "h-nevera:beats.13 decide",
+    "h-nevera:beats.13 pick",
+    "h-nevera:beats.13.right.0 set",
+    "h-nevera:beats.21 decide",
+    "h-nevera/right choice beats.12 live",
+    "h-nevera/right choice beats.13 live",
+    "h-nevera/right choice beats.21 live",
+    "h-nevera/right touch (right)",
+    "h-nevera/wrong choice beats.12 live",
+    "h-nevera/wrong choice beats.13 live",
+    "h-nevera/wrong choice beats.21 live",
+    "… 31 more"
    ]
   },
   "v_azul": {
    "$var": false,
    "where": [
-    "jugo-de-china:beats.33 ask",
-    "jugo-de-china:beats.80 decide",
-    "jugo-de-china/right choice beats.33 live",
-    "jugo-de-china/right choice beats.80 live",
-    "jugo-de-china/right touch (right)",
-    "jugo-de-china/wrong choice beats.33 live",
-    "jugo-de-china/wrong choice beats.80 live",
-    "jugo-de-china/wrong touch (right)",
-    "jugo-de-china/wrong touch (retry)",
-    "jugo-de-china/alternate choice beats.33 live",
-    "jugo-de-china/alternate choice beats.80 live",
-    "jugo-de-china/alternate touch (right)",
-    "… 1 more"
+    "h-nevera:beats.12 decide",
+    "h-nevera:beats.13 decide",
+    "h-nevera:beats.16 decide",
+    "h-nevera:beats.16 pick",
+    "h-nevera:beats.16.right.0 set",
+    "h-nevera:beats.17 decide",
+    "h-nevera:beats.17 pick",
+    "h-nevera/right choice beats.12 live",
+    "h-nevera/right choice beats.13 live",
+    "h-nevera/right choice beats.16 live",
+    "h-nevera/right choice beats.17 live",
+    "h-nevera/right touch (right)",
+    "… 24 more"
    ]
   },
   "v_rojo": {
    "$var": false,
    "where": [
+    "h-nevera:beats.12 decide",
+    "h-nevera:beats.13 decide",
+    "h-nevera:beats.16 alias",
+    "h-nevera:beats.17 alias",
+    "h-nevera/right choice beats.12 live",
+    "h-nevera/right choice beats.13 live",
+    "h-nevera/wrong choice beats.12 live",
+    "h-nevera/wrong choice beats.13 live",
+    "h-nevera/alternate choice beats.12 live",
+    "h-nevera/alternate choice beats.13 live",
     "jugo-de-china:beats.42 ask",
     "jugo-de-china:beats.80 decide",
-    "jugo-de-china/right choice beats.42 live",
-    "jugo-de-china/right choice beats.80 live",
-    "jugo-de-china/right touch (right)",
-    "jugo-de-china/wrong choice beats.42 live",
-    "jugo-de-china/wrong choice beats.80 live",
-    "jugo-de-china/wrong touch (right)",
-    "jugo-de-china/wrong touch (wrong)",
-    "jugo-de-china/alternate choice beats.42 live",
-    "jugo-de-china/alternate choice beats.80 live",
-    "jugo-de-china/alternate touch (right)",
-    "… 1 more"
+    "… 11 more"
+   ]
+  },
+  "v_rojo_l": {
+   "$var": false,
+   "where": [
+    "h-nevera:beats.16 decide",
+    "h-nevera:beats.17 decide",
+    "h-nevera/right choice beats.16 live",
+    "h-nevera/right choice beats.17 live",
+    "h-nevera/wrong choice beats.16 live",
+    "h-nevera/wrong choice beats.17 live",
+    "h-nevera/wrong touch (wrong)",
+    "h-nevera/alternate choice beats.16 live",
+    "h-nevera/alternate choice beats.17 live",
+    "h-nevera/alternate touch (wrong)"
    ]
   },
   "v_verde": {
    "$var": false,
    "where": [
-    "jugo-de-china:beats.38 ask",
-    "jugo-de-china:beats.72 decide",
-    "jugo-de-china:beats.88 decide",
-    "jugo-de-china/right choice beats.38 live",
-    "jugo-de-china/right choice beats.72 live",
-    "jugo-de-china/right choice beats.88 live",
-    "jugo-de-china/right touch (right)",
-    "jugo-de-china/wrong choice beats.38 live",
-    "jugo-de-china/wrong choice beats.72 live",
-    "jugo-de-china/wrong choice beats.88 live",
-    "jugo-de-china/wrong touch (right)",
-    "jugo-de-china/wrong touch (wrong)",
-    "… 4 more"
+    "h-nevera:beats.12 decide",
+    "h-nevera:beats.12 pick",
+    "h-nevera:beats.12.right.0 set",
+    "h-nevera:beats.13 decide",
+    "h-nevera:beats.19 vale",
+    "h-nevera:beats.19.right.0.else.0 set",
+    "h-nevera:beats.21.right.0.else.0 set",
+    "h-nevera/right choice beats.12 live",
+    "h-nevera/right choice beats.13 live",
+    "h-nevera/right choice beats.19 live",
+    "h-nevera/right choice beats.21 live",
+    "h-nevera/right touch (right)",
+    "… 29 more"
    ]
   }
  },
@@ -4293,6 +4523,95 @@
  },
  "storyViews": [],
  "fresh": {
+  "h-nevera": {
+   "scene": {
+    "respEn": [
+     142,
+     10
+    ],
+    "olfato": null,
+    "canasta": null,
+    "pila": null,
+    "vista": null,
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "mos": {},
+    "patio": {},
+    "repisa": [],
+    "cesta": null,
+    "gente": {},
+    "cosas": [],
+    "vuelos": [],
+    "banco": 1,
+    "encima": null,
+    "tarjeta": null,
+    "marcas": null,
+    "cq": {
+     "x": 104,
+     "y": 165,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null,
+     "hace": null,
+     "piensa": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 165,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "respEn": [
+      142,
+      10
+     ],
+     "olfato": null,
+     "canasta": null,
+     "pila": null,
+     "vista": null,
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "gente": {},
+     "cosas": [],
+     "vuelos": [],
+     "banco": 1,
+     "encima": null,
+     "tarjeta": null,
+     "marcas": null
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
   "jugo-de-china": {
    "scene": {
     "respEn": [
@@ -4562,9 +4881,9 @@
   }
  },
  "states": {
-  "count": 87,
-  "distinctW": 360,
-  "snapshots": 1164,
+  "count": 90,
+  "distinctW": 412,
+  "snapshots": 1323,
   "grouping": "same background sprite(s), the same set things shown with the same boxes, the same values of the set keys",
   "setKeys": [
    "banco",
@@ -4647,7 +4966,7 @@
    "values": [
     {
      "v": null,
-     "n": 304
+     "n": 356
     },
     {
      "v": {},
@@ -4701,7 +5020,7 @@
    "values": [
     {
      "v": 1,
-     "n": 336
+     "n": 388
     },
     {
      "v": 0,
@@ -4761,7 +5080,7 @@
    "values": [
     {
      "v": null,
-     "n": 264
+     "n": 316
     },
     {
      "v": {
@@ -4868,7 +5187,7 @@
    "values": [
     {
      "v": null,
-     "n": 264
+     "n": 316
     },
     {
      "v": {
@@ -4912,7 +5231,7 @@
      "act final32": 3,
      "act inicio30": 3,
      "act inicio31": 3,
-     "act inicio32": 3,
+     "act inicio32": 6,
      "act lleva32": 10,
      "act lote": 6,
      "act lotes31": 3,
@@ -4921,9 +5240,10 @@
      "act ninos32": 36,
      "act resto31": 3,
      "act tira31": 4,
-     "act vierte": 21,
+     "act vierte": 24,
      "act ya": 27,
-     "line": 9
+     "line": 9,
+     "set": 3
     },
     "setIn": [
      "cual-nevera:busca.no",
@@ -4949,7 +5269,8 @@
      "cual-nevera:queso.no",
      "cual-nevera:queso.si",
      "cual-nevera:vacío.no",
-     "cual-nevera:vacío.si"
+     "cual-nevera:vacío.si",
+     "h-nevera:beats.6"
     ]
    },
    "readBy": {
@@ -4959,7 +5280,7 @@
     "hud": false
    },
    "role": "moving prop",
-   "distinctValues": 81,
+   "distinctValues": 83,
    "values": [
     {
      "v": [
@@ -4996,8 +5317,16 @@
      "n": 41
     },
     {
+     "v": "[{\"id\":\"red\",\"k\":\"red\",\"v\":4,\"x\":142,\"y\":122,\"z\":100},{\"id\":\"jarra\",\"k\":\"jarra\",\"v\":3,\"x\":156,\"y\":122,\"z\":100},{\"id\":\"v_rojo\",\"k\":\"vaso\",\"v\":\"rojo\",\"x\":170,\"y\":122,\"z\":100,\"n\":1},{\"id\":\"v_verde\",\"k\":\"vaso\",\"v\":\"verde\",\"x\":182,\"y\":122,\"z\":10…",
+     "n": 32
+    },
+    {
      "v": [],
      "n": 19
+    },
+    {
+     "v": "[{\"id\":\"red\",\"k\":\"red\",\"v\":4,\"x\":142,\"y\":122,\"z\":100},{\"id\":\"jarra\",\"k\":\"jarra\",\"v\":2,\"x\":156,\"y\":122,\"z\":100,\"vis\":1},{\"id\":\"v_rojo\",\"k\":\"vaso\",\"v\":\"rojo\",\"x\":170,\"y\":122,\"z\":100,\"n\":1},{\"id\":\"v_verde\",\"k\":\"vaso\",\"v\":\"verde\",\"x\":182,\"y\":12…",
+     "n": 15
     },
     {
      "v": [
@@ -5176,6 +5505,10 @@
      "n": 8
     },
     {
+     "v": "[{\"id\":\"red\",\"k\":\"red\",\"v\":4,\"x\":142,\"y\":122,\"z\":100},{\"id\":\"jarra\",\"k\":\"jarra\",\"v\":3,\"x\":156,\"y\":122,\"z\":100},{\"id\":\"v_rojo\",\"k\":\"vaso\",\"v\":\"rojo\",\"x\":170,\"y\":122,\"z\":100,\"n\":1},{\"id\":\"v_azul\",\"k\":\"vaso\",\"v\":\"azul\",\"x\":180,\"y\":122,\"z\":100,…",
+     "n": 7
+    },
+    {
      "v": "[{\"id\":\"red\",\"k\":\"red\",\"v\":3,\"x\":142,\"y\":122,\"z\":100},{\"id\":\"jarra\",\"k\":\"jarra\",\"v\":4,\"x\":156,\"y\":122,\"z\":100},{\"id\":\"v_rojo\",\"k\":\"vaso\",\"v\":\"rojo\",\"x\":170,\"y\":122,\"z\":100,\"n\":1},{\"id\":\"v_azul\",\"k\":\"vaso\",\"v\":\"azul\",\"x\":180,\"y\":122,\"z\":100,…",
      "n": 7
     },
@@ -5263,33 +5596,6 @@
     {
      "v": "[{\"id\":\"carta_leche\",\"k\":\"carta\",\"v\":\"leche\",\"x\":114,\"y\":86,\"z\":50,\"vis\":1},{\"id\":\"carta_queso\",\"k\":\"carta\",\"v\":\"queso\",\"x\":132,\"y\":86,\"z\":50,\"vis\":1},{\"id\":null,\"k\":\"leche\",\"v\":0,\"x\":176,\"y\":122,\"z\":300},{\"id\":null,\"k\":\"corteza\",\"v\":null,\"…",
      "n": 5
-    },
-    {
-     "v": [
-      {
-       "k": "bandeja",
-       "x": 196,
-       "y": 123,
-       "z": 99
-      },
-      {
-       "id": "t_pan",
-       "k": "panecillo",
-       "x": 205,
-       "y": 121,
-       "z": 300,
-       "viejo": false
-      }
-     ],
-     "n": 5
-    },
-    {
-     "v": "[{\"id\":\"red\",\"k\":\"red\",\"v\":3,\"x\":142,\"y\":122,\"z\":100},{\"id\":\"jarra\",\"k\":\"jarra\",\"v\":0,\"x\":156,\"y\":122,\"z\":100,\"vis\":1},{\"id\":\"v_rojo\",\"k\":\"vaso\",\"v\":\"rojo\",\"x\":190,\"y\":98,\"z\":100,\"n\":0,\"vis\":0},{\"id\":\"v_azul\",\"k\":\"vaso\",\"v\":\"azul\",\"x\":203,\"…",
-     "n": 4
-    },
-    {
-     "v": "[{\"id\":\"red\",\"k\":\"red\",\"v\":0,\"x\":142,\"y\":122,\"z\":100},{\"id\":\"jarra\",\"k\":\"jarra\",\"v\":3,\"x\":156,\"y\":122,\"z\":100,\"vis\":1},{\"id\":\"v_rojo\",\"k\":\"vaso\",\"v\":\"rojo\",\"x\":170,\"y\":122,\"z\":100,\"n\":1,\"vis\":0},{\"id\":\"v_azul\",\"k\":\"vaso\",\"v\":\"azul\",\"x\":180,…",
-     "n": 4
     }
    ]
   },
@@ -5365,7 +5671,7 @@
       "hace": null,
       "piensa": null
      },
-     "n": 273
+     "n": 325
     },
     {
      "v": {
@@ -5574,7 +5880,7 @@
    "values": [
     {
      "v": null,
-     "n": 360
+     "n": 412
     }
    ]
   },
@@ -5588,11 +5894,14 @@
      "act fin": 3,
      "act lleva32": 9,
      "act tira31": 6,
-     "act vierte": 9,
+     "act vierte": 12,
      "act vista": 15,
      "act ya": 9,
      "if": 4,
-     "line": 1
+     "line": 1,
+     "say": 1,
+     "set": 21,
+     "wait": 2
     },
     "setIn": []
    },
@@ -5603,11 +5912,119 @@
     "hud": false
    },
    "role": "sign or stamp",
-   "distinctValues": 31,
+   "distinctValues": 51,
    "values": [
     {
      "v": [],
-     "n": 318
+     "n": 327
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         189,
+         105
+        ],
+        [
+         199,
+         107
+        ],
+        [
+         194,
+         97
+        ],
+        [
+         181,
+         115
+        ],
+        [
+         207,
+         115
+        ],
+        [
+         194,
+         109
+        ]
+       ],
+       "f0": 81
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         189,
+         105
+        ],
+        [
+         199,
+         107
+        ],
+        [
+         194,
+         97
+        ],
+        [
+         181,
+         115
+        ],
+        [
+         207,
+         115
+        ],
+        [
+         194,
+         109
+        ]
+       ],
+       "f0": 155
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         189,
+         105
+        ],
+        [
+         199,
+         107
+        ],
+        [
+         194,
+         97
+        ],
+        [
+         181,
+         115
+        ],
+        [
+         207,
+         115
+        ],
+        [
+         194,
+         109
+        ]
+       ],
+       "f0": 118
+      }
+     ],
+     "n": 3
     },
     {
      "v": [
@@ -5724,6 +6141,618 @@
        "n": 16,
        "pts": [
         [
+         137,
+         105
+        ],
+        [
+         147,
+         107
+        ],
+        [
+         142,
+         97
+        ],
+        [
+         129,
+         115
+        ],
+        [
+         155,
+         115
+        ],
+        [
+         142,
+         109
+        ]
+       ],
+       "f0": 17
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         173,
+         81
+        ],
+        [
+         183,
+         83
+        ],
+        [
+         178,
+         73
+        ],
+        [
+         165,
+         91
+        ],
+        [
+         191,
+         91
+        ],
+        [
+         178,
+         85
+        ]
+       ],
+       "f0": 38
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         177,
+         105
+        ],
+        [
+         187,
+         107
+        ],
+        [
+         182,
+         97
+        ],
+        [
+         169,
+         115
+        ],
+        [
+         195,
+         115
+        ],
+        [
+         182,
+         109
+        ]
+       ],
+       "f0": 60
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         201,
+         105
+        ],
+        [
+         211,
+         107
+        ],
+        [
+         206,
+         97
+        ],
+        [
+         193,
+         115
+        ],
+        [
+         219,
+         115
+        ],
+        [
+         206,
+         109
+        ]
+       ],
+       "f0": 102
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         44,
+         42
+        ],
+        [
+         92,
+         44
+        ],
+        [
+         68,
+         34
+        ],
+        [
+         36,
+         98
+        ],
+        [
+         100,
+         98
+        ],
+        [
+         68,
+         92
+        ]
+       ],
+       "f0": 183
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         177,
+         105
+        ],
+        [
+         187,
+         107
+        ],
+        [
+         182,
+         97
+        ],
+        [
+         169,
+         115
+        ],
+        [
+         195,
+         115
+        ],
+        [
+         182,
+         109
+        ]
+       ],
+       "f0": 206
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         137,
+         105
+        ],
+        [
+         147,
+         107
+        ],
+        [
+         142,
+         97
+        ],
+        [
+         129,
+         115
+        ],
+        [
+         155,
+         115
+        ],
+        [
+         142,
+         109
+        ]
+       ],
+       "f0": 35
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         173,
+         81
+        ],
+        [
+         183,
+         83
+        ],
+        [
+         178,
+         73
+        ],
+        [
+         165,
+         91
+        ],
+        [
+         191,
+         91
+        ],
+        [
+         178,
+         85
+        ]
+       ],
+       "f0": 75
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         177,
+         105
+        ],
+        [
+         187,
+         107
+        ],
+        [
+         182,
+         97
+        ],
+        [
+         169,
+         115
+        ],
+        [
+         195,
+         115
+        ],
+        [
+         182,
+         109
+        ]
+       ],
+       "f0": 115
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         201,
+         105
+        ],
+        [
+         211,
+         107
+        ],
+        [
+         206,
+         97
+        ],
+        [
+         193,
+         115
+        ],
+        [
+         219,
+         115
+        ],
+        [
+         206,
+         109
+        ]
+       ],
+       "f0": 195
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         44,
+         42
+        ],
+        [
+         92,
+         44
+        ],
+        [
+         68,
+         34
+        ],
+        [
+         36,
+         98
+        ],
+        [
+         100,
+         98
+        ],
+        [
+         68,
+         92
+        ]
+       ],
+       "f0": 295
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         177,
+         105
+        ],
+        [
+         187,
+         107
+        ],
+        [
+         182,
+         97
+        ],
+        [
+         169,
+         115
+        ],
+        [
+         195,
+         115
+        ],
+        [
+         182,
+         109
+        ]
+       ],
+       "f0": 336
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         173,
+         81
+        ],
+        [
+         183,
+         83
+        ],
+        [
+         178,
+         73
+        ],
+        [
+         165,
+         91
+        ],
+        [
+         191,
+         91
+        ],
+        [
+         178,
+         85
+        ]
+       ],
+       "f0": 57
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         177,
+         105
+        ],
+        [
+         187,
+         107
+        ],
+        [
+         182,
+         97
+        ],
+        [
+         169,
+         115
+        ],
+        [
+         195,
+         115
+        ],
+        [
+         182,
+         109
+        ]
+       ],
+       "f0": 78
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         201,
+         105
+        ],
+        [
+         211,
+         107
+        ],
+        [
+         206,
+         97
+        ],
+        [
+         193,
+         115
+        ],
+        [
+         219,
+         115
+        ],
+        [
+         206,
+         109
+        ]
+       ],
+       "f0": 140
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         44,
+         42
+        ],
+        [
+         92,
+         44
+        ],
+        [
+         68,
+         34
+        ],
+        [
+         36,
+         98
+        ],
+        [
+         100,
+         98
+        ],
+        [
+         68,
+         92
+        ]
+       ],
+       "f0": 239
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         177,
+         105
+        ],
+        [
+         187,
+         107
+        ],
+        [
+         182,
+         97
+        ],
+        [
+         169,
+         115
+        ],
+        [
+         195,
+         115
+        ],
+        [
+         182,
+         109
+        ]
+       ],
+       "f0": 281
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
          174,
          96
         ],
@@ -5752,718 +6781,6 @@
       }
      ],
      "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         182,
-         104
-        ],
-        [
-         192,
-         106
-        ],
-        [
-         187,
-         96
-        ],
-        [
-         174,
-         114
-        ],
-        [
-         200,
-         114
-        ],
-        [
-         187,
-         108
-        ]
-       ],
-       "f0": 113
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         182,
-         105
-        ],
-        [
-         192,
-         107
-        ],
-        [
-         187,
-         97
-        ],
-        [
-         174,
-         115
-        ],
-        [
-         200,
-         115
-        ],
-        [
-         187,
-         109
-        ]
-       ],
-       "f0": 253
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         182,
-         104
-        ],
-        [
-         192,
-         106
-        ],
-        [
-         187,
-         96
-        ],
-        [
-         174,
-         114
-        ],
-        [
-         200,
-         114
-        ],
-        [
-         187,
-         108
-        ]
-       ],
-       "f0": 127
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         182,
-         105
-        ],
-        [
-         192,
-         107
-        ],
-        [
-         187,
-         97
-        ],
-        [
-         174,
-         115
-        ],
-        [
-         200,
-         115
-        ],
-        [
-         187,
-         109
-        ]
-       ],
-       "f0": 281
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         182,
-         105
-        ],
-        [
-         192,
-         107
-        ],
-        [
-         187,
-         97
-        ],
-        [
-         174,
-         115
-        ],
-        [
-         200,
-         115
-        ],
-        [
-         187,
-         109
-        ]
-       ],
-       "f0": 267
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         196,
-         105
-        ],
-        [
-         206,
-         107
-        ],
-        [
-         201,
-         97
-        ],
-        [
-         188,
-         115
-        ],
-        [
-         214,
-         115
-        ],
-        [
-         201,
-         109
-        ]
-       ],
-       "f0": 221
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         198,
-         81
-        ],
-        [
-         208,
-         83
-        ],
-        [
-         203,
-         73
-        ],
-        [
-         190,
-         91
-        ],
-        [
-         216,
-         91
-        ],
-        [
-         203,
-         85
-        ]
-       ],
-       "f0": 331
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         186,
-         105
-        ],
-        [
-         196,
-         107
-        ],
-        [
-         191,
-         97
-        ],
-        [
-         178,
-         115
-        ],
-        [
-         204,
-         115
-        ],
-        [
-         191,
-         109
-        ]
-       ],
-       "f0": 474
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         185,
-         81
-        ],
-        [
-         195,
-         83
-        ],
-        [
-         190,
-         73
-        ],
-        [
-         177,
-         91
-        ],
-        [
-         203,
-         91
-        ],
-        [
-         190,
-         85
-        ]
-       ],
-       "f0": 572
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         196,
-         105
-        ],
-        [
-         206,
-         107
-        ],
-        [
-         201,
-         97
-        ],
-        [
-         188,
-         115
-        ],
-        [
-         214,
-         115
-        ],
-        [
-         201,
-         109
-        ]
-       ],
-       "f0": 700
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         196,
-         105
-        ],
-        [
-         206,
-         107
-        ],
-        [
-         201,
-         97
-        ],
-        [
-         188,
-         115
-        ],
-        [
-         214,
-         115
-        ],
-        [
-         201,
-         109
-        ]
-       ],
-       "f0": 1209
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 40,
-       "pts": [
-        [
-         30,
-         14
-        ],
-        [
-         210,
-         16
-        ],
-        [
-         100,
-         8
-        ],
-        [
-         142,
-         10
-        ]
-       ],
-       "f0": 1347
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         196,
-         105
-        ],
-        [
-         206,
-         107
-        ],
-        [
-         201,
-         97
-        ],
-        [
-         188,
-         115
-        ],
-        [
-         214,
-         115
-        ],
-        [
-         201,
-         109
-        ]
-       ],
-       "f0": 250
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         198,
-         81
-        ],
-        [
-         208,
-         83
-        ],
-        [
-         203,
-         73
-        ],
-        [
-         190,
-         91
-        ],
-        [
-         216,
-         91
-        ],
-        [
-         203,
-         85
-        ]
-       ],
-       "f0": 374
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         186,
-         105
-        ],
-        [
-         196,
-         107
-        ],
-        [
-         191,
-         97
-        ],
-        [
-         178,
-         115
-        ],
-        [
-         204,
-         115
-        ],
-        [
-         191,
-         109
-        ]
-       ],
-       "f0": 531
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         185,
-         81
-        ],
-        [
-         195,
-         83
-        ],
-        [
-         190,
-         73
-        ],
-        [
-         177,
-         91
-        ],
-        [
-         203,
-         91
-        ],
-        [
-         190,
-         85
-        ]
-       ],
-       "f0": 643
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         196,
-         105
-        ],
-        [
-         206,
-         107
-        ],
-        [
-         201,
-         97
-        ],
-        [
-         188,
-         115
-        ],
-        [
-         214,
-         115
-        ],
-        [
-         201,
-         109
-        ]
-       ],
-       "f0": 785
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         196,
-         105
-        ],
-        [
-         206,
-         107
-        ],
-        [
-         201,
-         97
-        ],
-        [
-         188,
-         115
-        ],
-        [
-         214,
-         115
-        ],
-        [
-         201,
-         109
-        ]
-       ],
-       "f0": 1556
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         196,
-         105
-        ],
-        [
-         206,
-         107
-        ],
-        [
-         201,
-         97
-        ],
-        [
-         188,
-         115
-        ],
-        [
-         214,
-         115
-        ],
-        [
-         201,
-         109
-        ]
-       ],
-       "f0": 236
-      }
-     ],
-     "n": 1
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         198,
-         81
-        ],
-        [
-         208,
-         83
-        ],
-        [
-         203,
-         73
-        ],
-        [
-         190,
-         91
-        ],
-        [
-         216,
-         91
-        ],
-        [
-         203,
-         85
-        ]
-       ],
-       "f0": 346
-      }
-     ],
-     "n": 1
     }
    ]
   },
@@ -6489,11 +6806,12 @@
      "act final30": 2,
      "act final31": 3,
      "act final32": 3,
+     "act g": 15,
      "act huele31": 9,
      "act huelemanos": 9,
      "act inicio30": 3,
      "act inicio31": 3,
-     "act inicio32": 3,
+     "act inicio32": 6,
      "act lote": 6,
      "act lotes31": 3,
      "act mama32": 18,
@@ -6545,8 +6863,12 @@
     "hud": false
    },
    "role": "character",
-   "distinctValues": 118,
+   "distinctValues": 123,
    "values": [
+    {
+     "v": "{\"abuela\":{\"x\":140,\"y\":180,\"dir\":1},\"luis\":{\"x\":166,\"y\":192,\"dir\":-1,\"vis\":0},\"carmen\":{\"x\":184,\"y\":198,\"dir\":-1,\"vis\":0},\"papa\":{\"x\":160,\"y\":120,\"dir\":1,\"fuera\":1,\"vis\":0},\"abuelo\":{\"x\":176,\"y\":120,\"dir\":-1,\"fuera\":1,\"vis\":0},\"mama\":{\"x\":2…",
+     "n": 48
+    },
     {
      "v": "{\"abuela\":{\"x\":244,\"y\":196,\"dir\":1,\"lleva\":null,\"vis\":0,\"pose\":\"idle\",\"sent\":0,\"paso\":0},\"carmen\":{\"x\":178,\"y\":204,\"dir\":1,\"come\":null,\"bebe\":null},\"mama\":{\"x\":205,\"y\":208,\"dir\":-1,\"bebe\":1},\"papa\":{\"x\":158,\"y\":120,\"dir\":1,\"fuera\":1,\"sent\":…",
      "n": 27
@@ -6642,10 +6964,6 @@
     {
      "v": "{\"abuela\":{\"x\":244,\"y\":196,\"dir\":1,\"pose\":\"idle\",\"sent\":0,\"paso\":0,\"lleva\":null,\"vis\":0},\"luis\":{\"x\":186,\"y\":190,\"dir\":-1,\"come\":null,\"alza\":{\"k\":\"vaso\",\"v\":\"verde\",\"e\":1,\"dx\":-10,\"dy\":-4},\"sent\":0,\"paso\":0,\"bebe\":null,\"vis\":1,\"fuera\":0},\"c…",
      "n": 4
-    },
-    {
-     "v": "{\"abuela\":{\"x\":134,\"y\":180,\"dir\":1,\"sent\":0,\"paso\":0,\"pose\":\"idle\",\"lleva\":null,\"alza\":null},\"luis\":{\"x\":146,\"y\":198,\"dir\":1,\"come\":null,\"alza\":null},\"carmen\":{\"x\":190,\"y\":202,\"dir\":-1,\"come\":null,\"alza\":null},\"abuelo\":{\"x\":207,\"y\":120,\"dir…",
-     "n": 4
     }
    ]
   },
@@ -6668,7 +6986,7 @@
    "values": [
     {
      "v": null,
-     "n": 360
+     "n": 412
     }
    ]
   },
@@ -6680,9 +6998,12 @@
     ],
     "otherCode": [],
     "seenAfter": {
-     "act fin": 3
+     "act fin": 3,
+     "set": 3
     },
-    "setIn": []
+    "setIn": [
+     "h-nevera:beats.21.right.3"
+    ]
    },
    "readBy": {
     "background": false,
@@ -6695,11 +7016,11 @@
    "values": [
     {
      "v": 0,
-     "n": 357
+     "n": 408
     },
     {
      "v": 1,
-     "n": 3
+     "n": 4
     }
    ]
   },
@@ -6724,7 +7045,7 @@
    "values": [
     {
      "v": 0,
-     "n": 249
+     "n": 301
     },
     {
      "v": 1,
@@ -6768,7 +7089,7 @@
    "values": [
     {
      "v": null,
-     "n": 173
+     "n": 225
     },
     {
      "v": [
@@ -6890,7 +7211,7 @@
    "values": [
     {
      "v": {},
-     "n": 360
+     "n": 412
     }
    ]
   },
@@ -6919,7 +7240,8 @@
      "act setnev": 21,
      "act sostienen": 6,
      "act ya": 30,
-     "line": 3
+     "line": 3,
+     "set": 6
     },
     "setIn": [
      "cual-nevera:busca.no",
@@ -6945,7 +7267,11 @@
      "cual-nevera:queso.no",
      "cual-nevera:queso.si",
      "cual-nevera:vacío.no",
-     "cual-nevera:vacío.si"
+     "cual-nevera:vacío.si",
+     "h-nevera:beats.19.right.0.then.0",
+     "h-nevera:beats.19.right.0.then.2",
+     "h-nevera:beats.21.right.0.then.0",
+     "h-nevera:beats.21.right.0.then.2"
     ]
    },
    "readBy": {
@@ -6955,14 +7281,14 @@
     "hud": false
    },
    "role": "set (separates states)",
-   "distinctValues": 19,
+   "distinctValues": 20,
    "values": [
     {
      "v": {
       "abierta": 0,
       "h": []
      },
-     "n": 145
+     "n": 194
     },
     {
      "v": {
@@ -7180,6 +7506,13 @@
     {
      "v": {
       "abierta": 1,
+      "h": []
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "abierta": 1,
       "h": [
        {
         "k": "platofruta"
@@ -7303,7 +7636,7 @@
    "values": [
     {
      "v": null,
-     "n": 358
+     "n": 410
     },
     {
      "v": {
@@ -7372,7 +7705,7 @@
    "values": [
     {
      "v": {},
-     "n": 181
+     "n": 233
     },
     {
      "v": {
@@ -7880,7 +8213,7 @@
     ],
     "otherCode": [],
     "seenAfter": {
-     "act inicio32": 3,
+     "act inicio32": 6,
      "act lleva32": 1
     },
     "setIn": []
@@ -7896,7 +8229,7 @@
    "values": [
     {
      "v": null,
-     "n": 351
+     "n": 403
     },
     {
      "v": "v_verde",
@@ -7915,7 +8248,7 @@
     ],
     "otherCode": [],
     "seenAfter": {
-     "act inicio32": 3,
+     "act inicio32": 6,
      "act lleva32": 1
     },
     "setIn": [
@@ -7960,7 +8293,7 @@
     },
     {
      "v": "a",
-     "n": 113
+     "n": 165
     },
     {
      "v": "j",
@@ -7988,7 +8321,8 @@
      "act sacamoneda": 4,
      "act sale30": 27,
      "act turno30": 3,
-     "act ya": 27
+     "act ya": 27,
+     "set": 6
     },
     "setIn": [
      "cual-nevera:busca.no",
@@ -8014,7 +8348,9 @@
      "cual-nevera:queso.no",
      "cual-nevera:queso.si",
      "cual-nevera:vacío.no",
-     "cual-nevera:vacío.si"
+     "cual-nevera:vacío.si",
+     "h-nevera:beats.15",
+     "h-nevera:beats.17.right.1"
     ]
    },
    "readBy": {
@@ -8024,11 +8360,11 @@
     "hud": false
    },
    "role": "set (separates states)",
-   "distinctValues": 18,
+   "distinctValues": 20,
    "values": [
     {
      "v": [],
-     "n": 200
+     "n": 228
     },
     {
      "v": [
@@ -8089,6 +8425,23 @@
     {
      "v": [
       {
+       "k": "vista",
+       "v": "rojo:1",
+       "x": 170,
+       "dy": -12
+      },
+      {
+       "k": "vista",
+       "v": "azul:1",
+       "x": 206,
+       "dy": -12
+      }
+     ],
+     "n": 14
+    },
+    {
+     "v": [
+      {
        "id": "tarro",
        "k": "tarro",
        "v": 3,
@@ -8118,6 +8471,23 @@
       }
      ],
      "n": 12
+    },
+    {
+     "v": [
+      {
+       "k": "vista",
+       "v": "rojo:1",
+       "x": 170,
+       "dy": -12
+      },
+      {
+       "k": "vista",
+       "v": "azul:0",
+       "x": 206,
+       "dy": -12
+      }
+     ],
+     "n": 10
     },
     {
      "v": [
@@ -8313,7 +8683,7 @@
    "values": [
     {
      "v": null,
-     "n": 360
+     "n": 412
     }
    ]
   },
@@ -8339,7 +8709,7 @@
       142,
       10
      ],
-     "n": 360
+     "n": 412
     }
    ]
   },
@@ -8351,7 +8721,8 @@
     "seenAfter": {
      "act sale30": 3,
      "act tira31": 3,
-     "act vierte": 3
+     "act vierte": 3,
+     "set": 3
     },
     "setIn": []
    },
@@ -8366,7 +8737,7 @@
    "values": [
     {
      "v": null,
-     "n": 360
+     "n": 412
     }
    ]
   },
@@ -8392,7 +8763,7 @@
    "values": [
     {
      "v": null,
-     "n": 273
+     "n": 325
     },
     {
      "v": {
@@ -8435,7 +8806,7 @@
    "values": [
     {
      "v": null,
-     "n": 243
+     "n": 295
     },
     {
      "v": 0,
@@ -8474,7 +8845,7 @@
    "values": [
     {
      "v": null,
-     "n": 360
+     "n": 412
     }
    ]
   },
@@ -8528,12 +8899,12 @@
    "distinctValues": 2,
    "values": [
     {
-     "v": "rondas",
-     "n": 187
+     "v": null,
+     "n": 225
     },
     {
-     "v": null,
-     "n": 173
+     "v": "rondas",
+     "n": 187
     }
    ]
   },
@@ -8543,9 +8914,23 @@
     "actsInCode": [],
     "otherCode": [],
     "seenAfter": {
-     "set": 30
+     "set": 66
     },
     "setIn": [
+     "h-nevera:beats.10.right.0",
+     "h-nevera:beats.10.right.2",
+     "h-nevera:beats.12.right.0",
+     "h-nevera:beats.12.right.2",
+     "h-nevera:beats.13.right.0",
+     "h-nevera:beats.13.right.2",
+     "h-nevera:beats.16.right.0",
+     "h-nevera:beats.16.right.2",
+     "h-nevera:beats.19.right.0.else.0",
+     "h-nevera:beats.19.right.0.else.2",
+     "h-nevera:beats.21.right.0.else.0",
+     "h-nevera:beats.21.right.0.else.2",
+     "h-nevera:beats.9.right.0",
+     "h-nevera:beats.9.right.2",
      "jugo-de-china:beats.10",
      "jugo-de-china:beats.6",
      "jugo-de-china:beats.8",
@@ -8565,19 +8950,31 @@
     "hud": false
    },
    "role": "sign or stamp",
-   "distinctValues": 8,
+   "distinctValues": 11,
    "values": [
     {
      "v": null,
-     "n": 353
+     "n": 388
     },
     {
-     "v": "red",
-     "n": 1
+     "v": "v_verde",
+     "n": 6
     },
     {
      "v": "mant",
-     "n": 1
+     "n": 4
+    },
+    {
+     "v": "red",
+     "n": 3
+    },
+    {
+     "v": "v_amarillo",
+     "n": 3
+    },
+    {
+     "v": "v_azul",
+     "n": 3
     },
     {
      "v": "nevera",
@@ -8650,7 +9047,7 @@
    "values": [
     {
      "v": null,
-     "n": 347
+     "n": 399
     },
     {
      "v": {
@@ -8725,7 +9122,7 @@
    "values": [
     {
      "v": [],
-     "n": 358
+     "n": 410
     },
     {
      "v": [
@@ -8864,7 +9261,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -8905,29 +9305,31 @@
       "s001",
       "s002",
       "s003",
-      "s004",
       "s005",
       "s006",
       "s007",
-      "s015",
-      "s016",
-      "s017",
+      "s008",
+      "s009",
+      "s010",
       "s018",
       "s019",
       "s020",
       "s021",
       "s022",
       "s023",
-      "s028",
-      "s029",
-      "s030",
+      "s024",
+      "s025",
+      "s026",
       "s031",
-      "s035",
-      "s036",
-      "s040",
-      "s041",
-      "s045",
-      "s084"
+      "s032",
+      "s033",
+      "s034",
+      "s038",
+      "s039",
+      "s043",
+      "s044",
+      "s048",
+      "s087"
      ]
     },
     {
@@ -8938,29 +9340,27 @@
       101
      ],
      "states": [
-      "s008",
-      "s009",
-      "s010",
+      "s004",
       "s011",
       "s012",
       "s013",
       "s014",
-      "s024",
-      "s025",
-      "s026",
+      "s015",
+      "s016",
+      "s017",
       "s027",
-      "s032",
-      "s033",
-      "s034",
+      "s028",
+      "s029",
+      "s030",
+      "s035",
+      "s036",
       "s037",
-      "s038",
-      "s039",
+      "s040",
+      "s041",
       "s042",
-      "s043",
-      "s044",
+      "s045",
       "s046",
       "s047",
-      "s048",
       "s049",
       "s050",
       "s051",
@@ -8996,8 +9396,11 @@
       "s081",
       "s082",
       "s083",
+      "s084",
       "s085",
-      "s086"
+      "s086",
+      "s088",
+      "s089"
      ]
     },
     {
@@ -9008,10 +9411,7 @@
       38
      ],
      "states": [
-      "s046",
-      "s048",
       "s049",
-      "s050",
       "s051",
       "s052",
       "s053",
@@ -9024,7 +9424,10 @@
       "s060",
       "s061",
       "s062",
-      "s063"
+      "s063",
+      "s064",
+      "s065",
+      "s066"
      ]
     },
     {
@@ -9035,7 +9438,7 @@
       42
      ],
      "states": [
-      "s047"
+      "s050"
      ]
     }
    ]
@@ -9061,29 +9464,26 @@
    ],
    "clipped": null,
    "states": [
-    "s008",
-    "s009",
-    "s010",
     "s011",
     "s012",
     "s013",
     "s014",
-    "s024",
-    "s025",
-    "s026",
+    "s015",
+    "s016",
+    "s017",
     "s027",
-    "s032",
-    "s033",
-    "s034",
+    "s028",
+    "s029",
+    "s030",
+    "s035",
+    "s036",
     "s037",
-    "s038",
-    "s039",
+    "s040",
+    "s041",
     "s042",
-    "s043",
-    "s044",
+    "s045",
     "s046",
     "s047",
-    "s048",
     "s049",
     "s050",
     "s051",
@@ -9119,8 +9519,11 @@
     "s081",
     "s082",
     "s083",
+    "s084",
     "s085",
-    "s086"
+    "s086",
+    "s088",
+    "s089"
    ],
    "boxes": [
     {
@@ -9131,18 +9534,18 @@
       20
      ],
      "states": [
-      "s008",
-      "s012",
-      "s013",
-      "s014",
-      "s024",
-      "s025",
-      "s026",
-      "s032",
-      "s033",
-      "s038",
-      "s043",
-      "s086"
+      "s011",
+      "s015",
+      "s016",
+      "s017",
+      "s027",
+      "s028",
+      "s029",
+      "s035",
+      "s036",
+      "s041",
+      "s046",
+      "s089"
      ]
     },
     {
@@ -9153,16 +9556,16 @@
       14
      ],
      "states": [
-      "s009",
-      "s010",
-      "s011",
-      "s027",
-      "s034",
+      "s012",
+      "s013",
+      "s014",
+      "s030",
       "s037",
-      "s039",
+      "s040",
       "s042",
-      "s044",
-      "s085"
+      "s045",
+      "s047",
+      "s088"
      ]
     },
     {
@@ -9173,9 +9576,6 @@
       15
      ],
      "states": [
-      "s046",
-      "s047",
-      "s048",
       "s049",
       "s050",
       "s051",
@@ -9210,7 +9610,10 @@
       "s080",
       "s081",
       "s082",
-      "s083"
+      "s083",
+      "s084",
+      "s085",
+      "s086"
      ]
     },
     {
@@ -9221,11 +9624,11 @@
       38
      ],
      "states": [
-      "s046",
-      "s047",
-      "s048",
       "s049",
-      "s050"
+      "s050",
+      "s051",
+      "s052",
+      "s053"
      ]
     },
     {
@@ -9236,7 +9639,7 @@
       35
      ],
      "states": [
-      "s047"
+      "s050"
      ]
     },
     {
@@ -9247,9 +9650,6 @@
       12
      ],
      "states": [
-      "s051",
-      "s052",
-      "s053",
       "s054",
       "s055",
       "s056",
@@ -9259,7 +9659,10 @@
       "s060",
       "s061",
       "s062",
-      "s063"
+      "s063",
+      "s064",
+      "s065",
+      "s066"
      ]
     }
    ]
@@ -9379,7 +9782,10 @@
       "s083",
       "s084",
       "s085",
-      "s086"
+      "s086",
+      "s087",
+      "s088",
+      "s089"
      ]
     }
    ]
@@ -9409,9 +9815,6 @@
    ],
    "states": [
     "s001",
-    "s002",
-    "s003",
-    "s004",
     "s005",
     "s006",
     "s007",
@@ -9491,7 +9894,10 @@
     "s081",
     "s082",
     "s083",
-    "s084"
+    "s084",
+    "s085",
+    "s086",
+    "s087"
    ],
    "boxes": [
     {
@@ -9503,8 +9909,30 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s003"
+      "s005",
+      "s006"
+     ]
+    },
+    {
+     "box": [
+      152,
+      65,
+      72,
+      56
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      176,
+      65,
+      48,
+      56
+     ],
+     "states": [
+      "s001"
      ]
     },
     {
@@ -9516,8 +9944,8 @@
      ],
      "states": [
       "s001",
-      "s004",
-      "s005"
+      "s007",
+      "s008"
      ]
     },
     {
@@ -9529,10 +9957,10 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s003",
+      "s005",
       "s006",
-      "s007"
+      "s009",
+      "s010"
      ]
     },
     {
@@ -9543,7 +9971,7 @@
       64
      ],
      "states": [
-      "s006"
+      "s009"
      ]
     },
     {
@@ -9554,9 +9982,6 @@
       56
      ],
      "states": [
-      "s008",
-      "s009",
-      "s010",
       "s011",
       "s012",
       "s013",
@@ -9591,7 +10016,10 @@
       "s042",
       "s043",
       "s044",
-      "s045"
+      "s045",
+      "s046",
+      "s047",
+      "s048"
      ]
     },
     {
@@ -9602,9 +10030,6 @@
       56
      ],
      "states": [
-      "s046",
-      "s047",
-      "s048",
       "s049",
       "s050",
       "s051",
@@ -9639,7 +10064,10 @@
       "s080",
       "s081",
       "s082",
-      "s083"
+      "s083",
+      "s084",
+      "s085",
+      "s086"
      ]
     },
     {
@@ -9650,7 +10078,7 @@
       56
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     }
    ]
@@ -9681,9 +10109,9 @@
     "nevera.js:106"
    ],
    "states": [
-    "s059",
     "s062",
-    "s084"
+    "s065",
+    "s087"
    ],
    "boxes": [
     {
@@ -9694,7 +10122,7 @@
       11
      ],
      "states": [
-      "s059"
+      "s062"
      ]
     },
     {
@@ -9705,7 +10133,7 @@
       10
      ],
      "states": [
-      "s062"
+      "s065"
      ]
     },
     {
@@ -9716,7 +10144,7 @@
       17
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -9727,7 +10155,7 @@
       9
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     }
    ]
@@ -9755,23 +10183,23 @@
    ],
    "clipped": null,
    "states": [
-    "s057",
     "s060",
-    "s064",
-    "s065",
-    "s066",
+    "s063",
     "s067",
     "s068",
     "s069",
+    "s070",
+    "s071",
     "s072",
-    "s073",
-    "s074",
     "s075",
     "s076",
     "s077",
+    "s078",
     "s079",
     "s080",
-    "s081"
+    "s082",
+    "s083",
+    "s084"
    ],
    "boxes": [
     {
@@ -9782,22 +10210,22 @@
       6
      ],
      "states": [
-      "s057",
-      "s064",
-      "s065",
-      "s066",
+      "s060",
       "s067",
       "s068",
       "s069",
+      "s070",
+      "s071",
       "s072",
-      "s073",
-      "s074",
       "s075",
       "s076",
       "s077",
+      "s078",
       "s079",
       "s080",
-      "s081"
+      "s082",
+      "s083",
+      "s084"
      ]
     },
     {
@@ -9808,7 +10236,7 @@
       6
      ],
      "states": [
-      "s060"
+      "s063"
      ]
     }
    ]
@@ -9835,717 +10263,9 @@
    ],
    "clipped": null,
    "states": [
-    "s008",
-    "s009",
-    "s010",
-    "s011",
-    "s012",
-    "s013",
-    "s014",
-    "s015",
-    "s016",
-    "s017",
-    "s018",
-    "s019",
-    "s020",
-    "s021",
-    "s022",
-    "s023",
-    "s024",
-    "s025",
-    "s026",
-    "s027",
-    "s028",
-    "s029",
-    "s030",
-    "s031",
-    "s032",
-    "s033",
-    "s034",
-    "s035",
-    "s036",
-    "s037",
-    "s038",
-    "s039",
-    "s040",
-    "s041",
-    "s042",
-    "s043",
-    "s044",
-    "s045",
-    "s046",
-    "s047",
-    "s048",
-    "s049",
-    "s050",
-    "s051",
-    "s052",
-    "s053",
-    "s054",
-    "s055",
-    "s056",
-    "s057",
-    "s058",
-    "s059",
-    "s060",
-    "s061",
-    "s062",
-    "s063",
-    "s064",
-    "s065",
-    "s066",
-    "s067",
-    "s068",
-    "s069",
-    "s070",
-    "s071",
-    "s072",
-    "s073",
-    "s074",
-    "s075",
-    "s076",
-    "s077",
-    "s078",
-    "s079",
-    "s080",
-    "s081",
-    "s082",
-    "s083"
-   ],
-   "boxes": [
-    {
-     "box": [
-      197,
-      79,
-      16,
-      19
-     ],
-     "states": [
-      "s008",
-      "s009",
-      "s010",
-      "s012",
-      "s013",
-      "s015",
-      "s017",
-      "s018",
-      "s019",
-      "s021",
-      "s022",
-      "s023",
-      "s024",
-      "s026",
-      "s027",
-      "s028",
-      "s030",
-      "s031",
-      "s033",
-      "s034",
-      "s035",
-      "s038",
-      "s039",
-      "s040",
-      "s043",
-      "s045"
-     ]
-    },
-    {
-     "box": [
-      175,
-      79,
-      38,
-      19
-     ],
-     "states": [
-      "s011",
-      "s014",
-      "s016",
-      "s020",
-      "s025",
-      "s029",
-      "s032",
-      "s036",
-      "s037",
-      "s041",
-      "s042",
-      "s044"
-     ]
-    },
-    {
-     "box": [
-      185,
-      52,
-      22,
-      24
-     ],
-     "states": [
-      "s022",
-      "s023",
-      "s024",
-      "s025",
-      "s026",
-      "s027",
-      "s028",
-      "s029",
-      "s030",
-      "s031",
-      "s032",
-      "s033",
-      "s034",
-      "s035",
-      "s036",
-      "s037",
-      "s038",
-      "s039",
-      "s040",
-      "s041",
-      "s042",
-      "s043",
-      "s044",
-      "s045"
-     ]
-    },
-    {
-     "box": [
-      148,
-      62,
-      16,
-      9
-     ],
-     "states": [
-      "s046",
-      "s047",
-      "s048",
-      "s049"
-     ]
-    },
-    {
-     "box": [
-      153,
-      62,
-      28,
-      9
-     ],
-     "states": [
-      "s050",
-      "s051",
-      "s072"
-     ]
-    },
-    {
-     "box": [
-      153,
-      59,
-      28,
-      12
-     ],
-     "states": [
-      "s052",
-      "s053",
-      "s065",
-      "s066"
-     ]
-    },
-    {
-     "box": [
-      153,
-      61,
-      28,
-      10
-     ],
-     "states": [
-      "s054",
-      "s055",
-      "s058",
-      "s059",
-      "s060",
-      "s067",
-      "s068",
-      "s069",
-      "s070",
-      "s071"
-     ]
-    },
-    {
-     "box": [
-      153,
-      60,
-      28,
-      11
-     ],
-     "states": [
-      "s056",
-      "s057",
-      "s061",
-      "s062",
-      "s063",
-      "s064",
-      "s079"
-     ]
-    },
-    {
-     "box": [
-      150,
-      78,
-      32,
-      20
-     ],
-     "states": [
-      "s057",
-      "s061",
-      "s064",
-      "s065",
-      "s066",
-      "s067",
-      "s068",
-      "s069",
-      "s072",
-      "s073",
-      "s074",
-      "s075",
-      "s076",
-      "s077",
-      "s079",
-      "s080",
-      "s081"
-     ]
-    },
-    {
-     "box": [
-      176,
-      76,
-      22,
-      22
-     ],
-     "states": [
-      "s057",
-      "s058",
-      "s064",
-      "s065",
-      "s066",
-      "s067",
-      "s068",
-      "s069",
-      "s070",
-      "s072",
-      "s073",
-      "s074",
-      "s075",
-      "s076",
-      "s079",
-      "s080",
-      "s081",
-      "s082"
-     ]
-    },
-    {
-     "box": [
-      150,
-      76,
-      48,
-      22
-     ],
-     "states": [
-      "s060"
-     ]
-    },
-    {
-     "box": [
-      198,
-      62,
-      18,
-      8
-     ],
-     "states": [
-      "s063",
-      "s064",
-      "s065",
-      "s066",
-      "s067",
-      "s068",
-      "s069",
-      "s070",
-      "s071",
-      "s072",
-      "s073",
-      "s074",
-      "s075",
-      "s076",
-      "s077",
-      "s078",
-      "s079",
-      "s080",
-      "s081",
-      "s082",
-      "s083"
-     ]
-    },
-    {
-     "box": [
-      158,
-      59,
-      32,
-      12
-     ],
-     "states": [
-      "s073"
-     ]
-    },
-    {
-     "box": [
-      158,
-      60,
-      32,
-      11
-     ],
-     "states": [
-      "s074",
-      "s080",
-      "s081",
-      "s082",
-      "s083"
-     ]
-    },
-    {
-     "box": [
-      163,
-      60,
-      36,
-      11
-     ],
-     "states": [
-      "s075",
-      "s076",
-      "s077"
-     ]
-    },
-    {
-     "box": [
-      163,
-      60,
-      41,
-      11
-     ],
-     "states": [
-      "s078"
-     ]
-    }
-   ]
-  },
-  {
-   "key": "@nevera.js:162",
-   "class": "prop or effect",
-   "maker": null,
-   "method": "fillRect",
-   "functions": [],
-   "drawCall": "nevera.js:162",
-   "code": "if(W.pila){fr(c,EN.pila[0]-10,ENC+3,20,6,W.pila===\"j\"?\"#F0A040\":\"#DCEEF8\");fr(c,EN.pila[0]-10,ENC+3,20,1,W.pila===\"j\"?\"#C06008\":\"#9CC0D8\");[[-7,5],[-2,4],[4,5],[7,4]].forEach(q=>fr(c,EN.pila[0]+q[0],ENC+q[1],2,2,\"#FFFFFF …",
-   "sites": [
-    "nevera.js:162"
-   ],
-   "chain": [
-    "Object.draw@nevera.js:162"
-   ],
-   "clipped": null,
-   "states": [
-    "s001",
     "s002",
     "s003",
     "s004",
-    "s005",
-    "s006",
-    "s007"
-   ],
-   "boxes": [
-    {
-     "box": [
-      114,
-      115,
-      20,
-      6
-     ],
-     "states": [
-      "s001",
-      "s002",
-      "s003",
-      "s004",
-      "s005",
-      "s006",
-      "s007"
-     ]
-    }
-   ]
-  },
-  {
-   "key": "tenida @nevera.js:163 · ()=>(COSA[k]||COSA.plato)(c)",
-   "class": "prop or effect",
-   "maker": "()=>(COSA[k]||COSA.plato)(c)",
-   "method": "drawImage",
-   "functions": [
-    "tenida"
-   ],
-   "drawCall": "nevera.js:163",
-   "code": "if(W.canasta){const K=W.canasta,ky=K.y||ENC+11;tenida(c,\"canasta\",K.x,ky);(K.items||[]).forEach((o,i)=>tenida(c,o.k===\"platofruta\"?\"manzana\":o.k,K.x-13+i*13,ky-9,0,0,o.v));}",
-   "sites": [
-    "nevera.js:103"
-   ],
-   "chain": [
-    "tenida@nevera.js:103",
-    "Object.draw@nevera.js:163"
-   ],
-   "clipped": null,
-   "states": [
-    "s046",
-    "s047",
-    "s048",
-    "s049",
-    "s050",
-    "s051",
-    "s052",
-    "s053",
-    "s054",
-    "s055",
-    "s056",
-    "s057",
-    "s058",
-    "s059",
-    "s060",
-    "s061",
-    "s062",
-    "s063",
-    "s064",
-    "s065",
-    "s066",
-    "s067",
-    "s068",
-    "s069",
-    "s070",
-    "s071",
-    "s072",
-    "s073",
-    "s074",
-    "s075",
-    "s076",
-    "s077",
-    "s078",
-    "s079",
-    "s080",
-    "s081",
-    "s082",
-    "s083"
-   ],
-   "boxes": [
-    {
-     "box": [
-      134,
-      105,
-      44,
-      18
-     ],
-     "states": [
-      "s046",
-      "s047",
-      "s048",
-      "s049",
-      "s050",
-      "s051",
-      "s052",
-      "s053",
-      "s054",
-      "s055",
-      "s056",
-      "s057",
-      "s058",
-      "s059",
-      "s060",
-      "s061",
-      "s062",
-      "s063",
-      "s064",
-      "s065",
-      "s066",
-      "s067",
-      "s072",
-      "s073",
-      "s074",
-      "s075",
-      "s076",
-      "s077",
-      "s078",
-      "s079",
-      "s080",
-      "s081",
-      "s082"
-     ]
-    },
-    {
-     "box": [
-      134,
-      103,
-      44,
-      20
-     ],
-     "states": [
-      "s068",
-      "s069",
-      "s070",
-      "s071",
-      "s083"
-     ]
-    }
-   ]
-  },
-  {
-   "key": "gente @nevera.js:169 · KIT.mkBebe",
-   "class": "character",
-   "maker": "KIT.mkBebe",
-   "method": "drawImage",
-   "functions": [
-    "gente"
-   ],
-   "drawCall": "nevera.js:169",
-   "code": "L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
-   "sites": [
-    "nevera.js:146"
-   ],
-   "chain": [
-    "gente@nevera.js:146",
-    "Object.d@nevera.js:166",
-    "?@nevera.js:169",
-    "Object.draw@nevera.js:169"
-   ],
-   "clipped": null,
-   "states": [
-    "s008",
-    "s009",
-    "s010",
-    "s011",
-    "s012",
-    "s013",
-    "s014",
-    "s015",
-    "s016",
-    "s017",
-    "s018",
-    "s019",
-    "s020",
-    "s021",
-    "s022",
-    "s023",
-    "s024",
-    "s025",
-    "s026",
-    "s027",
-    "s028",
-    "s029",
-    "s030",
-    "s031",
-    "s032",
-    "s033",
-    "s034",
-    "s035",
-    "s036",
-    "s037",
-    "s038",
-    "s039",
-    "s040",
-    "s041",
-    "s042",
-    "s043",
-    "s044",
-    "s045",
-    "s084"
-   ],
-   "boxes": [
-    {
-     "box": [
-      182,
-      166,
-      26,
-      28
-     ],
-     "states": [
-      "s008",
-      "s009",
-      "s010",
-      "s011",
-      "s012",
-      "s013",
-      "s014",
-      "s015",
-      "s016",
-      "s017",
-      "s018",
-      "s019",
-      "s020",
-      "s021",
-      "s022",
-      "s023",
-      "s024",
-      "s025",
-      "s026",
-      "s027",
-      "s028",
-      "s029",
-      "s030",
-      "s031",
-      "s032",
-      "s033",
-      "s034",
-      "s035",
-      "s036",
-      "s037",
-      "s038",
-      "s039",
-      "s040",
-      "s041",
-      "s042",
-      "s043",
-      "s044",
-      "s045"
-     ]
-    },
-    {
-     "box": [
-      147,
-      162,
-      26,
-      28
-     ],
-     "states": [
-      "s084"
-     ]
-    }
-   ]
-  },
-  {
-   "key": "gente @nevera.js:169 · KIT.mkPersona",
-   "class": "character",
-   "maker": "KIT.mkPersona",
-   "method": "drawImage",
-   "functions": [
-    "gente"
-   ],
-   "drawCall": "nevera.js:169",
-   "code": "L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
-   "sites": [
-    "nevera.js:145"
-   ],
-   "chain": [
-    "gente@nevera.js:145",
-    "Object.d@nevera.js:166",
-    "?@nevera.js:169",
-    "Object.draw@nevera.js:169"
-   ],
-   "clipped": null,
-   "states": [
-    "s001",
-    "s002",
-    "s003",
-    "s004",
-    "s008",
-    "s009",
-    "s010",
     "s011",
     "s012",
     "s013",
@@ -10619,7 +10339,737 @@
     "s081",
     "s082",
     "s083",
-    "s084"
+    "s084",
+    "s085",
+    "s086"
+   ],
+   "boxes": [
+    {
+     "box": [
+      158,
+      62,
+      60,
+      24
+     ],
+     "states": [
+      "s002",
+      "s003",
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      197,
+      79,
+      16,
+      19
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s015",
+      "s016",
+      "s018",
+      "s020",
+      "s021",
+      "s022",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s029",
+      "s030",
+      "s031",
+      "s033",
+      "s034",
+      "s036",
+      "s037",
+      "s038",
+      "s041",
+      "s042",
+      "s043",
+      "s046",
+      "s048"
+     ]
+    },
+    {
+     "box": [
+      175,
+      79,
+      38,
+      19
+     ],
+     "states": [
+      "s014",
+      "s017",
+      "s019",
+      "s023",
+      "s028",
+      "s032",
+      "s035",
+      "s039",
+      "s040",
+      "s044",
+      "s045",
+      "s047"
+     ]
+    },
+    {
+     "box": [
+      185,
+      52,
+      22,
+      24
+     ],
+     "states": [
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048"
+     ]
+    },
+    {
+     "box": [
+      148,
+      62,
+      16,
+      9
+     ],
+     "states": [
+      "s049",
+      "s050",
+      "s051",
+      "s052"
+     ]
+    },
+    {
+     "box": [
+      153,
+      62,
+      28,
+      9
+     ],
+     "states": [
+      "s053",
+      "s054",
+      "s075"
+     ]
+    },
+    {
+     "box": [
+      153,
+      59,
+      28,
+      12
+     ],
+     "states": [
+      "s055",
+      "s056",
+      "s068",
+      "s069"
+     ]
+    },
+    {
+     "box": [
+      153,
+      61,
+      28,
+      10
+     ],
+     "states": [
+      "s057",
+      "s058",
+      "s061",
+      "s062",
+      "s063",
+      "s070",
+      "s071",
+      "s072",
+      "s073",
+      "s074"
+     ]
+    },
+    {
+     "box": [
+      153,
+      60,
+      28,
+      11
+     ],
+     "states": [
+      "s059",
+      "s060",
+      "s064",
+      "s065",
+      "s066",
+      "s067",
+      "s082"
+     ]
+    },
+    {
+     "box": [
+      150,
+      78,
+      32,
+      20
+     ],
+     "states": [
+      "s060",
+      "s064",
+      "s067",
+      "s068",
+      "s069",
+      "s070",
+      "s071",
+      "s072",
+      "s075",
+      "s076",
+      "s077",
+      "s078",
+      "s079",
+      "s080",
+      "s082",
+      "s083",
+      "s084"
+     ]
+    },
+    {
+     "box": [
+      176,
+      76,
+      22,
+      22
+     ],
+     "states": [
+      "s060",
+      "s061",
+      "s067",
+      "s068",
+      "s069",
+      "s070",
+      "s071",
+      "s072",
+      "s073",
+      "s075",
+      "s076",
+      "s077",
+      "s078",
+      "s079",
+      "s082",
+      "s083",
+      "s084",
+      "s085"
+     ]
+    },
+    {
+     "box": [
+      150,
+      76,
+      48,
+      22
+     ],
+     "states": [
+      "s063"
+     ]
+    },
+    {
+     "box": [
+      198,
+      62,
+      18,
+      8
+     ],
+     "states": [
+      "s066",
+      "s067",
+      "s068",
+      "s069",
+      "s070",
+      "s071",
+      "s072",
+      "s073",
+      "s074",
+      "s075",
+      "s076",
+      "s077",
+      "s078",
+      "s079",
+      "s080",
+      "s081",
+      "s082",
+      "s083",
+      "s084",
+      "s085",
+      "s086"
+     ]
+    },
+    {
+     "box": [
+      158,
+      59,
+      32,
+      12
+     ],
+     "states": [
+      "s076"
+     ]
+    },
+    {
+     "box": [
+      158,
+      60,
+      32,
+      11
+     ],
+     "states": [
+      "s077",
+      "s083",
+      "s084",
+      "s085",
+      "s086"
+     ]
+    },
+    {
+     "box": [
+      163,
+      60,
+      36,
+      11
+     ],
+     "states": [
+      "s078",
+      "s079",
+      "s080"
+     ]
+    },
+    {
+     "box": [
+      163,
+      60,
+      41,
+      11
+     ],
+     "states": [
+      "s081"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@nevera.js:162",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "nevera.js:162",
+   "code": "if(W.pila){fr(c,EN.pila[0]-10,ENC+3,20,6,W.pila===\"j\"?\"#F0A040\":\"#DCEEF8\");fr(c,EN.pila[0]-10,ENC+3,20,1,W.pila===\"j\"?\"#C06008\":\"#9CC0D8\");[[-7,5],[-2,4],[4,5],[7,4]].forEach(q=>fr(c,EN.pila[0]+q[0],ENC+q[1],2,2,\"#FFFFFF …",
+   "sites": [
+    "nevera.js:162"
+   ],
+   "chain": [
+    "Object.draw@nevera.js:162"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010"
+   ],
+   "boxes": [
+    {
+     "box": [
+      114,
+      115,
+      20,
+      6
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "tenida @nevera.js:163 · ()=>(COSA[k]||COSA.plato)(c)",
+   "class": "prop or effect",
+   "maker": "()=>(COSA[k]||COSA.plato)(c)",
+   "method": "drawImage",
+   "functions": [
+    "tenida"
+   ],
+   "drawCall": "nevera.js:163",
+   "code": "if(W.canasta){const K=W.canasta,ky=K.y||ENC+11;tenida(c,\"canasta\",K.x,ky);(K.items||[]).forEach((o,i)=>tenida(c,o.k===\"platofruta\"?\"manzana\":o.k,K.x-13+i*13,ky-9,0,0,o.v));}",
+   "sites": [
+    "nevera.js:103"
+   ],
+   "chain": [
+    "tenida@nevera.js:103",
+    "Object.draw@nevera.js:163"
+   ],
+   "clipped": null,
+   "states": [
+    "s049",
+    "s050",
+    "s051",
+    "s052",
+    "s053",
+    "s054",
+    "s055",
+    "s056",
+    "s057",
+    "s058",
+    "s059",
+    "s060",
+    "s061",
+    "s062",
+    "s063",
+    "s064",
+    "s065",
+    "s066",
+    "s067",
+    "s068",
+    "s069",
+    "s070",
+    "s071",
+    "s072",
+    "s073",
+    "s074",
+    "s075",
+    "s076",
+    "s077",
+    "s078",
+    "s079",
+    "s080",
+    "s081",
+    "s082",
+    "s083",
+    "s084",
+    "s085",
+    "s086"
+   ],
+   "boxes": [
+    {
+     "box": [
+      134,
+      105,
+      44,
+      18
+     ],
+     "states": [
+      "s049",
+      "s050",
+      "s051",
+      "s052",
+      "s053",
+      "s054",
+      "s055",
+      "s056",
+      "s057",
+      "s058",
+      "s059",
+      "s060",
+      "s061",
+      "s062",
+      "s063",
+      "s064",
+      "s065",
+      "s066",
+      "s067",
+      "s068",
+      "s069",
+      "s070",
+      "s075",
+      "s076",
+      "s077",
+      "s078",
+      "s079",
+      "s080",
+      "s081",
+      "s082",
+      "s083",
+      "s084",
+      "s085"
+     ]
+    },
+    {
+     "box": [
+      134,
+      103,
+      44,
+      20
+     ],
+     "states": [
+      "s071",
+      "s072",
+      "s073",
+      "s074",
+      "s086"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente @nevera.js:169 · KIT.mkBebe",
+   "class": "character",
+   "maker": "KIT.mkBebe",
+   "method": "drawImage",
+   "functions": [
+    "gente"
+   ],
+   "drawCall": "nevera.js:169",
+   "code": "L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "nevera.js:146"
+   ],
+   "chain": [
+    "gente@nevera.js:146",
+    "Object.d@nevera.js:166",
+    "?@nevera.js:169",
+    "Object.draw@nevera.js:169"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039",
+    "s040",
+    "s041",
+    "s042",
+    "s043",
+    "s044",
+    "s045",
+    "s046",
+    "s047",
+    "s048",
+    "s087"
+   ],
+   "boxes": [
+    {
+     "box": [
+      182,
+      166,
+      26,
+      28
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048"
+     ]
+    },
+    {
+     "box": [
+      147,
+      162,
+      26,
+      28
+     ],
+     "states": [
+      "s087"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente @nevera.js:169 · KIT.mkPersona",
+   "class": "character",
+   "maker": "KIT.mkPersona",
+   "method": "drawImage",
+   "functions": [
+    "gente"
+   ],
+   "drawCall": "nevera.js:169",
+   "code": "L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "nevera.js:145"
+   ],
+   "chain": [
+    "gente@nevera.js:145",
+    "Object.d@nevera.js:166",
+    "?@nevera.js:169",
+    "Object.draw@nevera.js:169"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s005",
+    "s006",
+    "s007",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039",
+    "s040",
+    "s041",
+    "s042",
+    "s043",
+    "s044",
+    "s045",
+    "s046",
+    "s047",
+    "s048",
+    "s049",
+    "s050",
+    "s051",
+    "s052",
+    "s053",
+    "s054",
+    "s055",
+    "s056",
+    "s057",
+    "s058",
+    "s059",
+    "s060",
+    "s061",
+    "s062",
+    "s063",
+    "s064",
+    "s065",
+    "s066",
+    "s067",
+    "s068",
+    "s069",
+    "s070",
+    "s071",
+    "s072",
+    "s073",
+    "s074",
+    "s075",
+    "s076",
+    "s077",
+    "s078",
+    "s079",
+    "s080",
+    "s081",
+    "s082",
+    "s083",
+    "s084",
+    "s085",
+    "s086",
+    "s087"
    ],
    "boxes": [
     {
@@ -10631,8 +11081,8 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s003"
+      "s005",
+      "s006"
      ]
     },
     {
@@ -10644,8 +11094,8 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s003"
+      "s005",
+      "s006"
      ]
     },
     {
@@ -10679,9 +11129,9 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s003",
-      "s004"
+      "s005",
+      "s006",
+      "s007"
      ]
     },
     {
@@ -10693,9 +11143,9 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s003",
-      "s004"
+      "s005",
+      "s006",
+      "s007"
      ]
     },
     {
@@ -10706,9 +11156,6 @@
       56
      ],
      "states": [
-      "s008",
-      "s009",
-      "s010",
       "s011",
       "s012",
       "s013",
@@ -10743,7 +11190,10 @@
       "s042",
       "s043",
       "s044",
-      "s045"
+      "s045",
+      "s046",
+      "s047",
+      "s048"
      ]
     },
     {
@@ -10754,36 +11204,36 @@
       48
      ],
      "states": [
-      "s046",
-      "s047",
-      "s048",
       "s049",
       "s050",
       "s051",
       "s052",
+      "s053",
       "s054",
-      "s056",
+      "s055",
       "s057",
-      "s058",
       "s059",
       "s060",
       "s061",
       "s062",
       "s063",
-      "s068",
-      "s069",
-      "s070",
+      "s064",
+      "s065",
+      "s066",
       "s071",
+      "s072",
+      "s073",
       "s074",
-      "s075",
-      "s076",
       "s077",
       "s078",
       "s079",
       "s080",
       "s081",
       "s082",
-      "s083"
+      "s083",
+      "s084",
+      "s085",
+      "s086"
      ]
     },
     {
@@ -10794,15 +11244,15 @@
       44
      ],
      "states": [
-      "s053",
-      "s055",
       "s056",
-      "s064",
-      "s065",
-      "s066",
+      "s058",
+      "s059",
       "s067",
-      "s072",
-      "s073"
+      "s068",
+      "s069",
+      "s070",
+      "s075",
+      "s076"
      ]
     },
     {
@@ -10813,17 +11263,17 @@
       44
      ],
      "states": [
-      "s053",
-      "s055",
       "s056",
-      "s064",
-      "s065",
-      "s066",
+      "s058",
+      "s059",
       "s067",
-      "s072",
-      "s073",
-      "s078",
-      "s083"
+      "s068",
+      "s069",
+      "s070",
+      "s075",
+      "s076",
+      "s081",
+      "s086"
      ]
     },
     {
@@ -10834,8 +11284,8 @@
       44
      ],
      "states": [
-      "s078",
-      "s083"
+      "s081",
+      "s086"
      ]
     },
     {
@@ -10846,7 +11296,7 @@
       44
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -10857,7 +11307,7 @@
       56
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -10868,7 +11318,7 @@
       56
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     }
    ]
@@ -10898,35 +11348,35 @@
     "s002",
     "s003",
     "s004",
+    "s005",
     "s006",
-    "s008",
+    "s007",
     "s009",
-    "s010",
+    "s011",
     "s012",
     "s013",
     "s015",
-    "s017",
+    "s016",
     "s018",
-    "s019",
+    "s020",
     "s021",
     "s022",
-    "s023",
     "s024",
+    "s025",
     "s026",
     "s027",
-    "s028",
+    "s029",
     "s030",
     "s031",
     "s033",
     "s034",
-    "s035",
+    "s036",
+    "s037",
     "s038",
-    "s039",
-    "s040",
+    "s041",
+    "s042",
     "s043",
-    "s045",
     "s046",
-    "s047",
     "s048",
     "s049",
     "s050",
@@ -10963,7 +11413,10 @@
     "s081",
     "s082",
     "s083",
-    "s084"
+    "s084",
+    "s085",
+    "s086",
+    "s087"
    ],
    "boxes": [
     {
@@ -10978,27 +11431,30 @@
       "s002",
       "s003",
       "s004",
+      "s005",
       "s006",
-      "s008",
+      "s007",
       "s009",
+      "s011",
       "s012",
-      "s017",
-      "s018",
+      "s015",
+      "s020",
       "s021",
-      "s022",
-      "s023",
+      "s024",
+      "s025",
       "s026",
-      "s027",
+      "s029",
       "s030",
-      "s031",
       "s033",
       "s034",
-      "s038",
-      "s039",
-      "s043",
-      "s045",
-      "s050",
-      "s052"
+      "s036",
+      "s037",
+      "s041",
+      "s042",
+      "s046",
+      "s048",
+      "s053",
+      "s055"
      ]
     },
     {
@@ -11043,9 +11499,9 @@
      ],
      "states": [
       "s001",
-      "s066",
-      "s071",
-      "s083"
+      "s069",
+      "s074",
+      "s086"
      ]
     },
     {
@@ -11057,8 +11513,8 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s004"
+      "s005",
+      "s007"
      ]
     },
     {
@@ -11070,7 +11526,7 @@
      ],
      "states": [
       "s001",
-      "s002"
+      "s005"
      ]
     },
     {
@@ -11082,9 +11538,9 @@
      ],
      "states": [
       "s001",
-      "s006",
-      "s071",
-      "s083"
+      "s009",
+      "s074",
+      "s086"
      ]
     },
     {
@@ -11095,9 +11551,9 @@
       51
      ],
      "states": [
-      "s008",
-      "s009",
-      "s010"
+      "s011",
+      "s012",
+      "s013"
      ]
     },
     {
@@ -11108,17 +11564,17 @@
       51
      ],
      "states": [
-      "s010",
       "s013",
-      "s015",
-      "s019",
-      "s024",
-      "s028",
-      "s035",
-      "s040",
-      "s046",
-      "s047",
-      "s048"
+      "s016",
+      "s018",
+      "s022",
+      "s027",
+      "s031",
+      "s038",
+      "s043",
+      "s049",
+      "s050",
+      "s051"
      ]
     },
     {
@@ -11129,8 +11585,8 @@
       51
      ],
      "states": [
-      "s049",
-      "s051"
+      "s052",
+      "s054"
      ]
     },
     {
@@ -11141,7 +11597,7 @@
       51
      ],
      "states": [
-      "s049"
+      "s052"
      ]
     },
     {
@@ -11152,7 +11608,7 @@
       51
      ],
      "states": [
-      "s049"
+      "s052"
      ]
     },
     {
@@ -11163,9 +11619,6 @@
       51
      ],
      "states": [
-      "s049",
-      "s050",
-      "s051",
       "s052",
       "s053",
       "s054",
@@ -11185,9 +11638,9 @@
       "s068",
       "s069",
       "s070",
+      "s071",
       "s072",
       "s073",
-      "s074",
       "s075",
       "s076",
       "s077",
@@ -11195,7 +11648,10 @@
       "s079",
       "s080",
       "s081",
-      "s082"
+      "s082",
+      "s083",
+      "s084",
+      "s085"
      ]
     },
     {
@@ -11206,8 +11662,8 @@
       51
      ],
      "states": [
-      "s050",
-      "s052"
+      "s053",
+      "s055"
      ]
     },
     {
@@ -11218,7 +11674,7 @@
       51
      ],
      "states": [
-      "s050"
+      "s053"
      ]
     },
     {
@@ -11229,7 +11685,7 @@
       51
      ],
      "states": [
-      "s051"
+      "s054"
      ]
     },
     {
@@ -11240,7 +11696,7 @@
       51
      ],
      "states": [
-      "s051"
+      "s054"
      ]
     },
     {
@@ -11251,7 +11707,7 @@
       51
      ],
      "states": [
-      "s052"
+      "s055"
      ]
     },
     {
@@ -11262,8 +11718,8 @@
       51
      ],
      "states": [
-      "s053",
-      "s055"
+      "s056",
+      "s058"
      ]
     },
     {
@@ -11274,8 +11730,8 @@
       51
      ],
      "states": [
-      "s072",
-      "s073"
+      "s075",
+      "s076"
      ]
     },
     {
@@ -11286,7 +11742,7 @@
       51
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     }
    ]
@@ -11315,29 +11771,29 @@
    "clipped": null,
    "states": [
     "s001",
-    "s002",
-    "s003",
-    "s004",
+    "s005",
     "s006",
-    "s008",
+    "s007",
     "s009",
-    "s010",
-    "s053",
-    "s054",
-    "s055",
+    "s011",
+    "s012",
+    "s013",
     "s056",
-    "s064",
-    "s065",
-    "s066",
+    "s057",
+    "s058",
+    "s059",
     "s067",
     "s068",
-    "s072",
-    "s073",
-    "s074",
+    "s069",
+    "s070",
+    "s071",
     "s075",
-    "s079",
-    "s080",
-    "s084"
+    "s076",
+    "s077",
+    "s078",
+    "s082",
+    "s083",
+    "s087"
    ],
    "boxes": [
     {
@@ -11393,9 +11849,9 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s003",
-      "s004"
+      "s005",
+      "s006",
+      "s007"
      ]
     },
     {
@@ -11407,9 +11863,9 @@
      ],
      "states": [
       "s001",
-      "s002",
-      "s003",
-      "s004"
+      "s005",
+      "s006",
+      "s007"
      ]
     },
     {
@@ -11421,7 +11877,7 @@
      ],
      "states": [
       "s001",
-      "s002"
+      "s005"
      ]
     },
     {
@@ -11433,7 +11889,7 @@
      ],
      "states": [
       "s001",
-      "s006"
+      "s009"
      ]
     },
     {
@@ -11444,9 +11900,9 @@
       10
      ],
      "states": [
-      "s008",
-      "s009",
-      "s010"
+      "s011",
+      "s012",
+      "s013"
      ]
     },
     {
@@ -11457,9 +11913,9 @@
       20
      ],
      "states": [
-      "s053",
-      "s055",
-      "s056"
+      "s056",
+      "s058",
+      "s059"
      ]
     },
     {
@@ -11470,9 +11926,9 @@
       22
      ],
      "states": [
-      "s053",
-      "s054",
-      "s055"
+      "s056",
+      "s057",
+      "s058"
      ]
     },
     {
@@ -11483,7 +11939,7 @@
       11
      ],
      "states": [
-      "s054"
+      "s057"
      ]
     },
     {
@@ -11494,7 +11950,7 @@
       10
      ],
      "states": [
-      "s056"
+      "s059"
      ]
     },
     {
@@ -11505,12 +11961,12 @@
       22
      ],
      "states": [
-      "s064",
-      "s065",
-      "s066",
       "s067",
-      "s072",
-      "s073"
+      "s068",
+      "s069",
+      "s070",
+      "s075",
+      "s076"
      ]
     },
     {
@@ -11521,13 +11977,13 @@
       20
      ],
      "states": [
-      "s064",
-      "s065",
-      "s066",
-      "s072",
-      "s073",
-      "s074",
-      "s079"
+      "s067",
+      "s068",
+      "s069",
+      "s075",
+      "s076",
+      "s077",
+      "s082"
      ]
     },
     {
@@ -11538,17 +11994,17 @@
       7
      ],
      "states": [
-      "s064",
-      "s065",
-      "s066",
       "s067",
       "s068",
-      "s072",
-      "s073",
-      "s074",
+      "s069",
+      "s070",
+      "s071",
       "s075",
-      "s079",
-      "s080"
+      "s076",
+      "s077",
+      "s078",
+      "s082",
+      "s083"
      ]
     },
     {
@@ -11559,8 +12015,8 @@
       7
      ],
      "states": [
-      "s072",
-      "s073"
+      "s075",
+      "s076"
      ]
     },
     {
@@ -11571,7 +12027,7 @@
       13
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11582,7 +12038,7 @@
       24
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11593,7 +12049,7 @@
       10
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11604,7 +12060,7 @@
       11
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11615,7 +12071,7 @@
       22
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11626,7 +12082,7 @@
       22
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11637,7 +12093,7 @@
       20
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11648,7 +12104,7 @@
       28
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11659,7 +12115,7 @@
       14
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11670,7 +12126,7 @@
       38
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     },
     {
@@ -11681,7 +12137,7 @@
       13
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     }
    ]
@@ -11708,7 +12164,7 @@
    ],
    "clipped": null,
    "states": [
-    "s072"
+    "s075"
    ],
    "boxes": [
     {
@@ -11719,7 +12175,7 @@
       6
      ],
      "states": [
-      "s072"
+      "s075"
      ]
     }
    ]
@@ -11828,7 +12284,10 @@
     "s080",
     "s081",
     "s082",
-    "s083"
+    "s083",
+    "s084",
+    "s085",
+    "s086"
    ],
    "boxes": [
     {
@@ -11871,18 +12330,18 @@
       "s029",
       "s030",
       "s031",
+      "s032",
       "s033",
       "s034",
-      "s035",
       "s036",
+      "s037",
       "s038",
       "s039",
-      "s040",
       "s041",
+      "s042",
       "s043",
-      "s045",
+      "s044",
       "s046",
-      "s047",
       "s048",
       "s049",
       "s050",
@@ -11918,7 +12377,10 @@
       "s080",
       "s081",
       "s082",
-      "s083"
+      "s083",
+      "s084",
+      "s085",
+      "s086"
      ]
     },
     {
@@ -11940,13 +12402,13 @@
       27
      ],
      "states": [
-      "s011",
       "s014",
-      "s016",
-      "s020",
-      "s025",
-      "s029",
-      "s036"
+      "s017",
+      "s019",
+      "s023",
+      "s028",
+      "s032",
+      "s039"
      ]
     },
     {
@@ -11957,13 +12419,13 @@
       27
      ],
      "states": [
-      "s011",
       "s014",
-      "s016",
-      "s020",
-      "s025",
-      "s029",
-      "s036"
+      "s017",
+      "s019",
+      "s023",
+      "s028",
+      "s032",
+      "s039"
      ]
     },
     {
@@ -11974,10 +12436,10 @@
       27
      ],
      "states": [
-      "s032",
-      "s037",
-      "s042",
-      "s044"
+      "s035",
+      "s040",
+      "s045",
+      "s047"
      ]
     },
     {
@@ -11988,10 +12450,10 @@
       27
      ],
      "states": [
-      "s032",
-      "s037",
-      "s042",
-      "s044"
+      "s035",
+      "s040",
+      "s045",
+      "s047"
      ]
     },
     {
@@ -12002,10 +12464,10 @@
       27
      ],
      "states": [
-      "s032",
-      "s037",
-      "s042",
-      "s044"
+      "s035",
+      "s040",
+      "s045",
+      "s047"
      ]
     },
     {
@@ -12016,8 +12478,8 @@
       27
      ],
      "states": [
-      "s049",
-      "s051"
+      "s052",
+      "s054"
      ]
     },
     {
@@ -12028,8 +12490,8 @@
       27
      ],
      "states": [
-      "s049",
-      "s051"
+      "s052",
+      "s054"
      ]
     }
    ]
@@ -12139,7 +12601,10 @@
     "s081",
     "s082",
     "s083",
-    "s084"
+    "s084",
+    "s085",
+    "s086",
+    "s087"
    ],
    "boxes": [
     {
@@ -12155,9 +12620,9 @@
       "s002",
       "s003",
       "s004",
-      "s008",
-      "s009",
-      "s010",
+      "s005",
+      "s006",
+      "s007",
       "s011",
       "s012",
       "s013",
@@ -12230,7 +12695,10 @@
       "s080",
       "s081",
       "s082",
-      "s083"
+      "s083",
+      "s084",
+      "s085",
+      "s086"
      ]
     },
     {
@@ -12242,8 +12710,22 @@
      ],
      "states": [
       "s001",
+      "s005",
+      "s006"
+     ]
+    },
+    {
+     "box": [
+      133,
+      87,
+      78,
+      35
+     ],
+     "states": [
+      "s001",
       "s002",
-      "s003"
+      "s003",
+      "s004"
      ]
     },
     {
@@ -12266,7 +12748,7 @@
      ],
      "states": [
       "s001",
-      "s004"
+      "s007"
      ]
     },
     {
@@ -12311,10 +12793,10 @@
      ],
      "states": [
       "s001",
-      "s003",
-      "s005",
       "s006",
-      "s007"
+      "s008",
+      "s009",
+      "s010"
      ]
     },
     {
@@ -12326,7 +12808,7 @@
      ],
      "states": [
       "s001",
-      "s003"
+      "s006"
      ]
     },
     {
@@ -12349,9 +12831,9 @@
      ],
      "states": [
       "s001",
-      "s005",
-      "s006",
-      "s007"
+      "s008",
+      "s009",
+      "s010"
      ]
     },
     {
@@ -12373,7 +12855,7 @@
       79
      ],
      "states": [
-      "s006"
+      "s009"
      ]
     },
     {
@@ -12385,7 +12867,7 @@
      ],
      "states": [
       "s001",
-      "s005"
+      "s008"
      ]
     },
     {
@@ -12397,7 +12879,7 @@
      ],
      "states": [
       "s001",
-      "s005"
+      "s008"
      ]
     },
     {
@@ -12430,9 +12912,6 @@
       17
      ],
      "states": [
-      "s008",
-      "s009",
-      "s010",
       "s011",
       "s012",
       "s013",
@@ -12467,7 +12946,10 @@
       "s042",
       "s043",
       "s044",
-      "s045"
+      "s045",
+      "s046",
+      "s047",
+      "s048"
      ]
     },
     {
@@ -12478,7 +12960,7 @@
       42
      ],
      "states": [
-      "s031"
+      "s034"
      ]
     },
     {
@@ -12489,12 +12971,12 @@
       19
      ],
      "states": [
-      "s024",
-      "s032",
-      "s033",
-      "s034",
+      "s027",
       "s035",
-      "s036"
+      "s036",
+      "s037",
+      "s038",
+      "s039"
      ]
     },
     {
@@ -12505,9 +12987,9 @@
       19
      ],
      "states": [
-      "s034",
       "s037",
-      "s038"
+      "s040",
+      "s041"
      ]
     },
     {
@@ -12518,10 +13000,10 @@
       19
      ],
      "states": [
-      "s038",
-      "s039",
-      "s040",
-      "s041"
+      "s041",
+      "s042",
+      "s043",
+      "s044"
      ]
     },
     {
@@ -12532,9 +13014,9 @@
       19
      ],
      "states": [
-      "s039",
       "s042",
-      "s043"
+      "s045",
+      "s046"
      ]
     },
     {
@@ -12545,7 +13027,7 @@
       19
      ],
      "states": [
-      "s043"
+      "s046"
      ]
     },
     {
@@ -12556,9 +13038,9 @@
       13
      ],
      "states": [
-      "s027",
-      "s033",
-      "s044"
+      "s030",
+      "s036",
+      "s047"
      ]
     },
     {
@@ -12569,11 +13051,11 @@
       8
      ],
      "states": [
-      "s033",
-      "s034",
-      "s035",
       "s036",
-      "s045"
+      "s037",
+      "s038",
+      "s039",
+      "s048"
      ]
     },
     {
@@ -12584,7 +13066,7 @@
       76
      ],
      "states": [
-      "s031"
+      "s034"
      ]
     },
     {
@@ -12595,9 +13077,6 @@
       6
      ],
      "states": [
-      "s046",
-      "s047",
-      "s048",
       "s049",
       "s050",
       "s051",
@@ -12632,7 +13111,10 @@
       "s080",
       "s081",
       "s082",
-      "s083"
+      "s083",
+      "s084",
+      "s085",
+      "s086"
      ]
     },
     {
@@ -12643,22 +13125,11 @@
       12
      ],
      "states": [
-      "s049"
+      "s052"
      ]
     },
     {
-     "box": [
-      194,
-      110,
-      22,
-      12
-     ],
-     "states": [
-      "s050"
-     ]
-    },
-    {
-     "more": 9
+     "more": 10
     }
    ]
   },
@@ -12682,7 +13153,7 @@
    ],
    "clipped": null,
    "states": [
-    "s008"
+    "s011"
    ],
    "boxes": [
     {
@@ -12693,7 +13164,7 @@
       19
      ],
      "states": [
-      "s008"
+      "s011"
      ]
     },
     {
@@ -12704,7 +13175,7 @@
       19
      ],
      "states": [
-      "s008"
+      "s011"
      ]
     }
    ]
@@ -12726,8 +13197,8 @@
    ],
    "clipped": null,
    "states": [
-    "s049",
-    "s051"
+    "s052",
+    "s054"
    ],
    "boxes": [
     {
@@ -12738,8 +13209,8 @@
       12
      ],
      "states": [
-      "s049",
-      "s051"
+      "s052",
+      "s054"
      ]
     }
    ]
@@ -12763,11 +13234,11 @@
    ],
    "clipped": null,
    "states": [
-    "s002",
-    "s003",
-    "s004",
     "s005",
-    "s007"
+    "s006",
+    "s007",
+    "s008",
+    "s010"
    ],
    "boxes": [
     {
@@ -12778,7 +13249,7 @@
       24
      ],
      "states": [
-      "s002"
+      "s005"
      ]
     },
     {
@@ -12789,8 +13260,8 @@
       24
      ],
      "states": [
-      "s003",
-      "s007"
+      "s006",
+      "s010"
      ]
     },
     {
@@ -12801,7 +13272,7 @@
       24
      ],
      "states": [
-      "s004"
+      "s007"
      ]
     },
     {
@@ -12812,7 +13283,7 @@
       24
      ],
      "states": [
-      "s005"
+      "s008"
      ]
     }
    ]
@@ -12838,8 +13309,8 @@
    ],
    "clipped": null,
    "states": [
-    "s074",
-    "s079"
+    "s077",
+    "s082"
    ],
    "boxes": [
     {
@@ -12850,8 +13321,8 @@
       6
      ],
      "states": [
-      "s074",
-      "s079"
+      "s077",
+      "s082"
      ]
     }
    ]
@@ -12876,7 +13347,7 @@
    ],
    "clipped": null,
    "states": [
-    "s084"
+    "s087"
    ],
    "boxes": [
     {
@@ -12887,7 +13358,7 @@
       25
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     }
    ]
@@ -12914,7 +13385,7 @@
    ],
    "clipped": null,
    "states": [
-    "s084"
+    "s087"
    ],
    "boxes": [
     {
@@ -12925,7 +13396,7 @@
       16
      ],
      "states": [
-      "s084"
+      "s087"
      ]
     }
    ]
@@ -12949,7 +13420,7 @@
    ],
    "clipped": null,
    "states": [
-    "s043"
+    "s046"
    ],
    "boxes": [
     {
@@ -12960,7 +13431,7 @@
       25
      ],
      "states": [
-      "s043"
+      "s046"
      ]
     }
    ]
@@ -12986,7 +13457,7 @@
    ],
    "clipped": null,
    "states": [
-    "s043"
+    "s046"
    ],
    "boxes": [
     {
@@ -12997,7 +13468,7 @@
       21
      ],
      "states": [
-      "s043"
+      "s046"
      ]
     }
    ]

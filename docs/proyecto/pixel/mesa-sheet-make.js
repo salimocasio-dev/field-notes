@@ -7,7 +7,7 @@
    juego.js, kit.js and escenas/mesa.js as they are: every person, the dog, the frog and every thing drawn by mesa.js draw() itself, alone, against
    the same world without it); projects every world point with the engine's own formula; checks the sheet against coqui/ref/escenas/mesa/
    (positions.json, inventory.json, pairs.json); against every moment of every recorded run of the scene's stories (coqui/tool/ref/trazas/
-   juega.mjs --states: the steps' ends; h-mesa, which has no recorded run in coqui/ref/trazas/, is played the same way); and against every tick
+   juega.mjs --states: the steps' ends; each play the same as its recorded run in coqui/ref/trazas/, h-mesa's too); and against every tick
    inside the acts: the old page played by the same machine (page-init.js, page-drive.js: the same seed, think time and clock) with mesa.js as
    the port will have it (the sheet's moves applied) and the story files' positions through the sheet's remap. It reads mesa.js itself for every
    number that is a place on the picture (the sheet's code). It loads mesa-preview.html (over a local http server it starts and stops) to check
@@ -94,6 +94,7 @@ const STATES_ARG = process.env.MESA_STATES ? process.env.MESA_STATES.split(',') 
   fs.writeFileSync(OUT, text(sheet));   // the preview reads the sheet: written first, then checked (and written again with the checks' notes)
   if (process.env.MESA_NOCHECK) { await browser.close(); console.log('wrote ' + path.relative(REPO, OUT) + ' (no checks)'); return; }
   G.TICKS = await tickStates(browser, runs, sheet);
+  G.OLDHOPS = (await tickStates(browser, runs, sheet, true)).map(r => r.hops);   // the old page played as it is (old mesa.js, old story files): its frog's walks
   G.PV = await previewPlaces(browser, runs);
   G.PAIRPX = await pairPixels(browser, sheet);
   if (process.env.MESA_DUMP) { fs.mkdirSync(process.env.MESA_DUMP, { recursive: true }); runs.forEach((r, i) => fs.writeFileSync(path.join(process.env.MESA_DUMP, r.story.id + '.' + r.plan + '.json'), JSON.stringify({ old: r.lines, port: G.TICKS[i].states, ticks: G.TICKS[i].ticks }))); }
@@ -268,18 +269,23 @@ const TICK_HOOK = `(() => { const H = window.__H, d = H.drain; window.__TICKS = 
       vierte: W.vierte, muestra: W.muestra, encima: W.encima, perro: W.perro, bandeja: W.bandeja, tiron: W.tiron, reb: W.reb, cq: W.cq, tarjeta: W.tarjeta, marcas: W.marcas, respEn: W.respEn, resp: W.resp, spot: W.spot, F: typeof F === 'number' ? F : 0 };
     const s = JSON.stringify(o, (k, x) => typeof x === 'function' || (x && x.nodeType) || x instanceof HTMLCanvasElement ? undefined : x); if (s !== last) { last = s; window.__TICKS.push({ t: H.now, W: JSON.parse(s) }); } } catch (e) {} };
   H.drain = () => d().then(() => { keep(); }); })();`;
-async function tickStates(browser, runs, sheet) {
+// (fix after the port) every walk of the frog: each call of juego.js hopTo (mesa.js ranaA and every act that hops him), where he is, where to, how
+// many hops; installed at the first drain after juego.js has defined hopTo (mesa.js calls it by its global name)
+const HOP_HOOK = `(() => { const H = window.__H, d = H.drain; window.__HOPS = [];
+  const put = () => { try { if (typeof hopTo !== 'function' || hopTo.__hop) return; const f = hopTo; const g = function (x, y, hops, s1) { const q = W.cq; window.__HOPS.push({ t: H.now, from: [q.x, q.y], to: [x, y], hops }); return f.apply(this, arguments); }; g.__hop = 1; window.hopTo = g; } catch (e) {} };
+  H.drain = () => { put(); return d().then(() => { put(); }); }; })();`;
+async function tickStates(browser, runs, sheet, old = false) {
   const INIT = fs.readFileSync(path.join(TRAZAS, 'page-init.js'), 'utf8').replace('__SEED__', '1'), DRIVE = fs.readFileSync(path.join(TRAZAS, 'page-drive.js'), 'utf8');
   const SRC = portSource(sheet);
   return serve(async base => { const out = [];
     for (const r of runs) {
       const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, timezoneId: 'UTC', locale: 'en-US' });
       try {
-        await ctx.addInitScript(INIT); await ctx.addInitScript(TICK_HOOK);
+        await ctx.addInitScript(INIT); if (!old) await ctx.addInitScript(TICK_HOOK); await ctx.addInitScript(HOP_HOOK);
         await ctx.route(/\/historia\/audio\/[^/]+\.mp3(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop());
           return fs.existsSync(path.join(REPO, 'historia/audio', name)) ? route.fulfill({ status: 200, contentType: 'audio/mpeg', body: 'ID3' }) : route.fulfill({ status: 404, body: '' }); });
-        await ctx.route(/\/historia\/escenas\/mesa\.js(\?.*)?$/, route => route.fulfill({ status: 200, contentType: 'text/javascript; charset=utf-8', body: SRC }));
-        await ctx.route(/\/historia\/cuentos\/[^/]+\.json(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()).replace(/\.json$/, '');
+        if (!old) await ctx.route(/\/historia\/escenas\/mesa\.js(\?.*)?$/, route => route.fulfill({ status: 200, contentType: 'text/javascript; charset=utf-8', body: SRC }));
+        if (!old) await ctx.route(/\/historia\/cuentos\/[^/]+\.json(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()).replace(/\.json$/, '');
           return route.fulfill({ status: 200, contentType: 'application/json', body: portStory(name, sheet) }); });
         const page = await ctx.newPage();
         await page.goto(base + '/historia/index.html?cuento=' + r.story.id + '&fast=1&rec=1&mic=stub:none&abiertas=todas');
@@ -287,7 +293,8 @@ async function tickStates(browser, runs, sheet) {
         await page.evaluate('voiceReady'); await page.evaluate(DRIVE);
         const tr = await page.evaluate(cfg => window.__drive(cfg), { plan: r.plan, think: 700, limitMs: 4 * 3600e3, states: true });
         if (tr.end !== 'finished') throw new Error('ticks: ' + r.story.id + ' ' + r.plan + ' ended: ' + tr.end);
-        out.push({ ticks: await page.evaluate(() => window.__TICKS), states: tr.states });
+        const hops = await page.evaluate(() => window.__HOPS); if (old) { out.push({ hops }); continue; }
+        out.push({ ticks: await page.evaluate(() => window.__TICKS), states: tr.states, hops });
       } finally { await ctx.close(); }
     }
     return out; });
@@ -305,7 +312,10 @@ function storyStates() {
       execFileSync(process.execPath, [path.join(REPO, 'coqui/tool/ref/trazas/juega.mjs'), '--only', st.id, '--out', path.join(tmp, 'trazas', st.id), '--states', path.join(tmp, 'states')], { cwd: REPO, stdio: 'pipe' });
       for (const plan of ['right', 'wrong', 'alternate']) {
         const lines = fs.readFileSync(path.join(tmp, 'states', st.id, plan + '.states.jsonl'), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
-        runs.push({ story: st, plan, lines });
+        // the play is the recorded run: its trace, byte for byte, is coqui/ref/trazas/<story>/<plan>.json (h-mesa's too, recorded on the kitchen's base)
+        const played = path.join(tmp, 'trazas', st.id, st.id, plan + '.json'), rec = path.join(REPO, 'coqui/ref/trazas', st.id, plan + '.json');
+        const recorded = fs.existsSync(rec) ? fs.readFileSync(played).equals(fs.readFileSync(rec)) : null;
+        runs.push({ story: st, plan, lines, recorded });
       }
     }
     return runs;
@@ -360,7 +370,7 @@ const TALK = [[0, 0], [1, 7], [-1, 7], [1, 30], [-1, 30], [1, 44], [-1, 44], [2,
 const BOARD = [2, 2, 68, 26];
 const boardsOf = (w, x0) => w.tarjeta && !(w.resp && w.resp.some(k => ['cuchara', 'tenedor', 'cuchillo'].includes(k))) ? [['the rounds card', [BOARD[0] + x0, BOARD[1], BOARD[2], BOARD[3]]]] : [];
 // the frog's places that the acts and the stories use (q, his top left), and the old ones they are
-const FROG_PLACES = { inicio: [104, 161], ranaa: [20, 146], hm: [36, 173], th: [54, 165] }, FROG_NEW = {};
+const FROG_PLACES = { inicio: [104, 161], ranaa: [24, 146], hm: [36, 173], th: [54, 165] }, FROG_NEW = {};
 
 /* ---------- the design: what moves and why (make() reads it) ----------
    Each move is an exact piece of mesa.js and its replacement (the port does the same edit). Numbers come from the set's plan (MESA_SET) and the
@@ -390,7 +400,7 @@ function design(E, F) {
   const vNear = sx => { const xw = Math.min(T0.x1, Math.max(T0.x0, (sx - E.OX) / (E.S / E.R2) + T0.y1)); return (xw + T0.y1) / E.R2; };
   const clearP = (x, y, hw, mv = .03) => [-hw, 0, hw].every(dx => E.clearFloor(x + dx, y - 1, .1)) && E.clearFloor(x, y - 4, .1) && (y - 1 < E.project(T0.x0, T0.y0, T0.z).sy || vFoot(x, y) >= Math.max(vNear(x - hw), vNear(x + hw)) + mv);
   const down = (x, y, hw, maxY, mv) => { for (let d = 0; y + d <= maxY; d++) if (clearP(x, y + d, hw, mv)) return d; throw new Error('no clear floor in front of ' + x + ',' + y); };
-  const S = OLD.SILLA, FRX = [0, 0, -6, 2], FAX = [24, 24, 24, 26], FR = S.map((x, i) => down(x - 14 + FRX[i], 188, 15, 211, .1)), FT = S.map(x => down(x - 10, 188, 15, 211, .1)), FL = S.map(x => down(x - 15, 202, 11, 213)), FA = S.map((x, i) => down(x + FAX[i], 204, 12, 213)), FP = S.map(x => down(x + 16, 194, 13, 213)), FC = S.map(x => down(x - 2, 202, 6, 213)), FI = S.map(x => down(x - 6, 200, 12, 213));
+  const S = OLD.SILLA, FRX = [0, 0, -4, 2], FAX = [24, 24, 24, 26], FR = S.map((x, i) => down(x - 14 + FRX[i], 188, 15, 211, .1)), FT = S.map(x => down(x - 10, 188, 15, 211, .1)), FL = S.map(x => down(x - 15, 202, 11, 213)), FA = S.map((x, i) => down(x + FAX[i], 204, 12, 213)), FP = S.map(x => down(x + 16, 194, 13, 213)), FC = S.map(x => down(x - 2, 202, 6, 213)), FI = S.map(x => down(x - 6, 200, 12, 213));
   // where abuela stands at the stove (FOGON) and where Canelo lies (CAN): 3 px inside the view's right edge (her sprite reaches 13 px right of her x)
   // (FOGON 24 rows down: in front of the table's right end, beside the stove, so that what she holds out passes under the face of whoever sits at
   // the right end of the table (it steps down to 171), and her walks to the places and the counter keep in front of the table)
@@ -720,6 +730,7 @@ function designStoryMoves(E, F, D) {
 // (the search: the window's top left corner; the two pictures of a pair share their window, but mesa's, whose two are of different things, as the old)
 const PAIR_WIN = {'mesa.si': [91, 115], 'mesa.no': [142, 70], 'plato.si': [108, 72], 'plato.no': [108, 72], 'taza.si': [110, 68], 'taza.no': [110, 68], 'cuchara.si': [108, 55], 'cuchara.no': [108, 55], 'tenedor.si': [108, 55], 'tenedor.no': [108, 55], 'cuchillo.si': [134, 91], 'cuchillo.no': [134, 91], 'comida.si': [79, 113], 'comida.no': [79, 113], 'pone.si': [123, 122], 'pone.no': [123, 122], 'tengo_hambre.si': [93, 75], 'tengo_hambre.no': [93, 75], 'tengo_sed.si': [85, 102], 'tengo_sed.no': [85, 102], 'listo.si': [114, 110], 'listo.no': [114, 110]};
 function designPictures(pic, D) {
+  const PORTCROP = pic(118, 168, 1, '').crop.join(', ');   // (cocina.no: its window, the same pic() as below)
   const P = (nm, what, thing, extra) => { const w = PAIR_WIN[nm]; return pic(w[0] + 49, w[1] + 26, 2, what, Object.assign({ thing, crop: [w[0], w[1], 98, 52] }, extra || {})); };
   return {
     'mesa.si': P('mesa.si', 'the table with its cloth and a vase of flowers on it', ['cosas.0']), 'mesa.no': P('mesa.no', 'the stove with a steaming pot', ['estufa.olla', 'estufa.vapor']),
@@ -731,7 +742,7 @@ function designPictures(pic, D) {
     'comida.si': P('comida.si', 'a plate of hot food at a place on the table', ['puestos.1.plato']), 'comida.no': P('comida.no', 'two empty plates at that place', ['puestos.1.plato']),
     'cocina.si': pic(170, 134, 1, 'abuela in the kitchen by the stove, a pot steaming', { thing: ['estufa.olla'], zoom1: 'zoom 2 cannot hold it: the pot with its steam (25 rows) and abuela\'s whole head by the stove need 55 rows of a 52-row window; and its other picture, cocina.no, is El colmado\'s stall at zoom 1' }),
     'cocina.no': pic(118, 168, 1, 'abuela outside at a fruit stall (El colmado\'s stall: frutas-set.html?surtido=frutas)', { scene: 'frutas', query: '?surtido=frutas', zoom1: 'another scene\'s picture, El colmado\'s stall, drawn whole as its page draws it',
-      port: 'El colmado is ported later: until then the port draws this picture from the web page itself. File docs/proyecto/pixel/frutas-set.html with the query ?surtido=frutas (its canvas, 240 x 216, as the page draws it: no state of mesa-set.html, no mesa sprite but abuela); the window: crop [' + [22, 112, 196, 104].join(', ') + '] at zoom 1 (the 196 x 104 picture; x0 22 is the view of every scene); abuela: the sprite layer of mesa.js (W.afuera 1, gente.abuela with dir -1 as cual-mesa.json gives) at frutas\'s spot abuela.delante, screen (115, 203) (storyMoves: old 176, 176), her feet there; nothing else of mesa.js is drawn (its old stall, mkPuesto, is dropped). When El colmado is in Dart, its set at that state and that spot replace the page' }),
+      port: 'El colmado is ported later: until then the port draws this picture from the web page itself. File docs/proyecto/pixel/frutas-set.html with the query ?surtido=frutas (its canvas, 240 x 216, as the page draws it: no state of mesa-set.html, no mesa sprite but abuela); the window: crop [' + PORTCROP + '] at zoom 1 (the 196 x 104 picture, as the picture\'s crop here and mesa-preview.html draw it); abuela: the sprite layer of mesa.js (W.afuera 1, gente.abuela with dir -1 as cual-mesa.json gives) at frutas\'s spot abuela.delante, screen (115, 203) (storyMoves: old 176, 176), her feet there; nothing else of mesa.js is drawn (its old stall, mkPuesto, is dropped). When El colmado is in Dart, its set at that state and that spot replace the page' }),
     'pone.si': P('pone.si', 'Carmen at the table\'s end, a plate set on it', ['cosas.0']), 'pone.no': P('pone.no', 'Carmen at the table\'s end, a plate and a cloth on it', ['cosas.1']),
     'tengo_hambre.si': P('tengo_hambre.si', 'Luis at the table thinking of food', ['gente.luis.piensa']), 'tengo_hambre.no': P('tengo_hambre.no', 'Luis at the table thinking of water', ['gente.luis.piensa']),
     'tengo_sed.si': P('tengo_sed.si', 'Carmen at the table drinking', ['gente.carmen.hace'], { plainKnown: 'the glass is at her mouth: round it her face and hair, which are hers (left out), and the chair\'s back behind her, as the old' }),
@@ -866,7 +877,7 @@ function check(sh, G, runs) {
   for (const ps of pairSides) if (!sh.pictures[deacc(ps.w) + '.' + ps.side]) P.push('picture missing: ' + ps.w + '.' + ps.side);
   let nLevel = 0; for (const L of PAIRS.level) for (const p of L.pictures) if (p.scene === 'mesa') { nLevel++; if (!sh.pictures[deacc(p.pair) + '.' + p.side]) P.push('level picture missing: ' + p.pair + '.' + p.side); }
   if (sh.level.length !== nLevel) P.push('level: ' + sh.level.length + ' pictures, pairs.json ' + nLevel);
-  notes.push('inventory: ' + Object.keys(sh.things).length + ' things (old ' + inv.thingIds.length + '), ' + Object.keys(sh.lugar).length + ' frog places of LUGAR (old ' + Object.keys(inv.given.lugar).length + '), ' + Object.keys(sh.views).length + ' view (old ' + Object.keys(inv.given.CAM).length + '), ' + sh.remap.length + ' positions (old ' + pos.positions.length + ') and ' + sh.storyPlaces.length + ' of h-mesa (no recorded run in coqui/ref/trazas: played here), ' + CUAL.items.length + ' review pairs of cual-mesa (' + pairSides.length + ' pictures), ' + sh.level.length + ' level pictures (old ' + nLevel + '), ' + sh.setKey.baked.length + ' baked states for the old ' + inv.states.count);
+  notes.push('inventory: ' + Object.keys(sh.things).length + ' things (old ' + inv.thingIds.length + '), ' + Object.keys(sh.lugar).length + ' frog places of LUGAR (old ' + Object.keys(inv.given.lugar).length + '), ' + Object.keys(sh.views).length + ' view (old ' + Object.keys(inv.given.CAM).length + '), ' + sh.remap.length + ' positions (old ' + pos.positions.length + ')' + (sh.storyPlaces.length ? ' and ' + sh.storyPlaces.length + ' story places not in positions.json' : ' (h-mesa\'s among them)') + ', ' + CUAL.items.length + ' review pairs of cual-mesa (' + pairSides.length + ' pictures), ' + sh.level.length + ' level pictures (old ' + nLevel + '), ' + sh.setKey.baked.length + ' baked states for the old ' + inv.states.count);
 
   /* code: mesa.js read here, line by line: every line with a number has an entry; every place of order 06's list is named by its entry */
   { const codeLines = new Set(sh.code.map(e => String(e.line)));
@@ -879,6 +890,19 @@ function check(sh, G, runs) {
     { const PS = portSource(sh); for (const [a] of sh.front.tags) if (!PS.includes(a)) P.push('mesa.js with the moves does not hold ' + a); }
     const counts = {}; for (const e of sh.code) for (const [k, v] of Object.entries(e.numbers || {})) counts[k] = (counts[k] || 0) + v.length;
     notes.push('code: every one of the ' + LINES.length + ' lines of mesa.js read here; ' + sh.code.filter(e => typeof e.line === 'number').length + ' hold numbers, each with an entry (' + Object.entries(counts).map(([k, v]) => v + ' ' + k).join(', ') + '); every one of order 06\'s ' + pos.inSceneFile.length + ' places named by its line\'s entry; ' + sh.moves.length + ' moves, each line holding its source'); }
+
+  /* (fix after the port) every walk of the frog, old against the port's: the old page (old mesa.js, old story files) and the port's play
+     (mesa.js with the sheet's moves, the story files through its remap) each record every call of hopTo, acts included; walk by walk, in every
+     run, the port's walk has the old one's hop count (the sound of each hop is heard: their number is the old one) */
+  { let n = 0, bad = 0; const fails = [];
+    runs.forEach((r, ri) => { const A = G.OLDHOPS[ri] || [], B = G.TICKS[ri].hops || [];
+      if (A.length !== B.length) { P.push('walks: ' + r.story.id + ' ' + r.plan + ': the old page walks the frog ' + A.length + ' times, the port ' + B.length); return; }
+      A.forEach((a, k) => { n++; const b = B[k]; if (a.hops !== b.hops) { bad++; fails.push(r.story.id + ' ' + r.plan + ' walk ' + k + ' (' + a.from + ' -> ' + a.to + ': ' + a.hops + '; port ' + b.from + ' -> ' + b.to + ': ' + b.hops + ')'); } }); });
+    for (const f of fails.slice(0, 30)) P.push('walks: the hop count changed at ' + f);
+    notes.push('walks: every walk of the frog (every call of hopTo, acts included) in the ' + runs.length + ' runs, the old page against the port\'s play, walk by walk: ' + n + ' walks, each with the old hop count (' + bad + ' differ)'); }
+
+  { const off = runs.filter(r => r.recorded !== true); for (const r of off) P.push('runs: ' + r.story.id + ' ' + r.plan + ': ' + (r.recorded === null ? 'no recorded run in coqui/ref/trazas' : 'the play is not its recorded run (coqui/ref/trazas)'));
+    notes.push('runs: the ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + ', three plans each) are played by juega.mjs on the old page, each trace byte for byte its recorded run in coqui/ref/trazas/ (' + runs.filter(r => r.recorded).length + ' of ' + runs.length + ')'); }
 
   /* hops: every pair whose count changed is walked in no run */
   { const at = {}; for (const [k, v] of Object.entries(sh.spots)) if (v.scale != null || /^rana\./.test(k)) at[v.new.join(',')] = k; const walked = new Set();

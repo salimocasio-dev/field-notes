@@ -19,7 +19,7 @@
   "abuela:16": "duda",
   "abuela:17": "ninguna",
   "abuela:18": "ninguna",
-  "abuela:19": "ninguna",
+  "abuela:19": "duda",
   "abuela:20": "ninguna",
   "abuela:21": "ninguna",
   "abuela:22": "ninguna",
@@ -30,11 +30,11 @@
   "abuela:27": "duda",
   "abuela:28": "ninguna",
   "abuela:29": "duda",
-  "abuela:30": "duda",
+  "abuela:30": "ninguna",
   "abuela:31": "ninguna",
   "abuela:32": "ninguna",
   "abuela:33": "A",
-  "abuela:34": "ninguna",
+  "abuela:34": "duda",
   "abuela:35": "duda",
   "abuela:36": "duda",
   "abuela:37": "ninguna",
@@ -65,8 +65,12 @@
   "abuela:62": "ninguna",
   "abuela:63": "ninguna",
   "abuela:64": "ninguna",
-  "abuela:65": "duda",
+  "abuela:65": "ninguna",
   "abuela:66": "A",
-  "abuela:67": "ninguna"
+  "abuela:67": "duda",
+  "abuela:68": "ninguna",
+  "abuela:69": "ninguna",
+  "abuela:70": "duda",
+  "abuela:71": "ninguna"
  }
 }

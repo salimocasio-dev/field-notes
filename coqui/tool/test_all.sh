@@ -46,6 +46,7 @@ repaso_tmp="$(mktemp -d)"
 trap 'rm -rf "$repaso_tmp"' EXIT
 python3 tool/make_repaso.py --out "$repaso_tmp" --hojas-libro
 python3 tool/make_repaso.py --out "$repaso_tmp" --veredictos tool/repaso/veredictos --hojas-par
+python3 tool/repaso/arrastra.py --check --ahora "$repaso_tmp"
 python3 tool/make_repaso.py --out "$repaso_tmp" --veredictos tool/repaso/veredictos \
   --veredictos-par tool/repaso/veredictos-par --app ../historia/datos/repaso.json --check
 python3 tool/test/test_make_palabras_solas.py 2>&1 | tail -n 3

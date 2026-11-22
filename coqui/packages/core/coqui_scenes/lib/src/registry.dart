@@ -11,6 +11,7 @@ import 'package:coqui_scenes/src/banco/banco.dart';
 import 'package:coqui_scenes/src/mesa/mesa.dart';
 import 'package:coqui_scenes/src/estufa/estufa.dart';
 import 'package:coqui_scenes/src/nevera/nevera.dart';
+import 'package:coqui_scenes/src/comer/comer.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador.dart';
 import 'package:coqui_scenes/src/estantes/estantes.dart';
 import 'package:coqui_scenes/src/frutas/frutas.dart';
@@ -37,9 +38,10 @@ final Map<String, SceneMaker> sceneRegistry = Map.unmodifiable({
   'campo': _plain(createCampo),
   'lago': createLago,
   'banco': _plain(createBanco),
-  'mesa': _plain(createMesa),
+  'mesa': createMesa,
   'estufa': _plain(createEstufa),
   'nevera': _plain(createNevera),
+  'comer': _plain(createComer),
   'mostrador': _plain(createMostrador),
   'estantes': _plain(createEstantes),
   'frutas': _plain(createFrutas),

@@ -100,7 +100,10 @@
      "cuidado/alternate": "start",
      "el-pollo-y-el-huevo/right": "start",
      "el-pollo-y-el-huevo/wrong": "start",
-     "el-pollo-y-el-huevo/alternate": "start"
+     "el-pollo-y-el-huevo/alternate": "start",
+     "h-estufa/right": "start",
+     "h-estufa/wrong": "start",
+     "h-estufa/alternate": "start"
     },
     "pairs": []
    }
@@ -235,12 +238,15 @@
     216
    ],
    "F": 2,
-   "distinctW": 9,
+   "distinctW": 19,
    "reachedBy": {
     "steps": {
      "arroz-con-habichuelas/right": "0-12,14-15",
      "arroz-con-habichuelas/wrong": "0-12,14-15",
-     "arroz-con-habichuelas/alternate": "0-12,14-15"
+     "arroz-con-habichuelas/alternate": "0-12,14-15",
+     "h-estufa/right": "0-11",
+     "h-estufa/wrong": "0-11",
+     "h-estufa/alternate": "0-11"
     },
     "pairs": []
    }
@@ -376,12 +382,15 @@
     216
    ],
    "F": 90,
-   "distinctW": 2,
+   "distinctW": 3,
    "reachedBy": {
     "steps": {
      "arroz-con-habichuelas/right": "13,16-18",
      "arroz-con-habichuelas/wrong": "13,16-18",
-     "arroz-con-habichuelas/alternate": "13,16-18"
+     "arroz-con-habichuelas/alternate": "13,16-18",
+     "h-estufa/right": "12-13",
+     "h-estufa/wrong": "12-13",
+     "h-estufa/alternate": "12-13"
     },
     "pairs": []
    }
@@ -518,12 +527,15 @@
     216
    ],
    "F": 145,
-   "distinctW": 9,
+   "distinctW": 10,
    "reachedBy": {
     "steps": {
      "arroz-con-habichuelas/right": "19-24,26-27",
      "arroz-con-habichuelas/wrong": "19-24,26-27",
-     "arroz-con-habichuelas/alternate": "19-24,26-27"
+     "arroz-con-habichuelas/alternate": "19-24,26-27",
+     "h-estufa/right": "14-15",
+     "h-estufa/wrong": "14-15",
+     "h-estufa/alternate": "14-15"
     },
     "pairs": []
    }
@@ -802,12 +814,15 @@
     216
    ],
    "F": 237,
-   "distinctW": 8,
+   "distinctW": 9,
    "reachedBy": {
     "steps": {
      "arroz-con-habichuelas/right": "25,29-30,32-33",
      "arroz-con-habichuelas/wrong": "25,29-30,32-33",
-     "arroz-con-habichuelas/alternate": "25,29-30,32-33"
+     "arroz-con-habichuelas/alternate": "25,29-30,32-33",
+     "h-estufa/right": "16-18",
+     "h-estufa/wrong": "16-18",
+     "h-estufa/alternate": "16-18"
     },
     "pairs": []
    }
@@ -21693,8 +21708,150 @@
    "files": {
     "full": "s152.full.png",
     "full.wide": "s152.full.wide.png",
-    "nochar": "s152.full.png",
-    "nochar.wide": "s152.full.wide.png",
+    "nochar": "s152.nochar.png",
+    "nochar.wide": "s152.nochar.wide.png",
+    "bg": "bg.estufa.png"
+   },
+   "background": [
+    "estufa"
+   ],
+   "keys": {
+    "banco": 1,
+    "basura": [],
+    "cubo": 1,
+    "der": {
+     "platos": [],
+     "pila": 6,
+     "platito": 1
+    },
+    "encima": null,
+    "estante": 1,
+    "fuegos": [
+     {
+      "k": "olla",
+      "con": "hab",
+      "n": 1,
+      "llama": 0,
+      "vapor": 1,
+      "mal": null
+     },
+     {
+      "k": "olla",
+      "con": "arroz",
+      "n": 2,
+      "llama": 1,
+      "vapor": 1,
+      "mal": null
+     }
+    ],
+    "izq": {
+     "saco": 1,
+     "tazon": 2
+    },
+    "mat": null,
+    "olor": null,
+    "plata": null,
+    "repisa": 0,
+    "salero": 0,
+    "ventanacome": 0
+   },
+   "things": {
+    "olla0": [
+     90,
+     97,
+     34,
+     28
+    ],
+    "olla1": [
+     128,
+     97,
+     34,
+     28
+    ],
+    "saco": [
+     33,
+     106,
+     24,
+     18
+    ],
+    "tazon": [
+     55,
+     106,
+     24,
+     18
+    ],
+    "pzpollo": null,
+    "pzhuevo": null,
+    "sarten": null,
+    "bandeja": null,
+    "jarra": null,
+    "estufa": [
+     86,
+     104,
+     80,
+     54
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     110,
+     157,
+     32,
+     27
+    ],
+    "luis": [
+     71,
+     130,
+     22,
+     44
+    ],
+    "carmen": [
+     31,
+     132,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     160,
+     125,
+     22,
+     51
+    ]
+   },
+   "drawnFrom": "h-estufa/right@19",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 200,
+   "distinctW": 33,
+   "reachedBy": {
+    "steps": {
+     "h-estufa/right": "19-44",
+     "h-estufa/wrong": "19-44",
+     "h-estufa/alternate": "19-44"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s153",
+   "files": {
+    "full": "s153.full.png",
+    "full.wide": "s153.full.wide.png",
+    "nochar": "s153.full.png",
+    "nochar.wide": "s153.full.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -21779,12 +21936,12 @@
    }
   },
   {
-   "id": "s153",
+   "id": "s154",
    "files": {
-    "full": "s153.full.png",
-    "full.wide": "s153.full.wide.png",
-    "nochar": "s153.full.png",
-    "nochar.wide": "s153.full.wide.png",
+    "full": "s154.full.png",
+    "full.wide": "s154.full.wide.png",
+    "nochar": "s154.full.png",
+    "nochar.wide": "s154.full.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -21869,12 +22026,12 @@
    }
   },
   {
-   "id": "s154",
+   "id": "s155",
    "files": {
-    "full": "s154.full.png",
-    "full.wide": "s154.full.wide.png",
+    "full": "s155.full.png",
+    "full.wide": "s155.full.wide.png",
     "nochar": "bg.estufa.png",
-    "nochar.wide": "s154.nochar.wide.png",
+    "nochar.wide": "s155.nochar.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -21962,12 +22119,12 @@
    }
   },
   {
-   "id": "s155",
+   "id": "s156",
    "files": {
-    "full": "s155.full.png",
-    "full.wide": "s155.full.wide.png",
-    "nochar": "s155.nochar.png",
-    "nochar.wide": "s155.nochar.wide.png",
+    "full": "s156.full.png",
+    "full.wide": "s156.full.wide.png",
+    "nochar": "s156.nochar.png",
+    "nochar.wide": "s156.nochar.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -22058,12 +22215,12 @@
    }
   },
   {
-   "id": "s156",
+   "id": "s157",
    "files": {
-    "full": "s156.full.png",
-    "full.wide": "s156.full.wide.png",
-    "nochar": "s156.full.png",
-    "nochar.wide": "s156.full.wide.png",
+    "full": "s157.full.png",
+    "full.wide": "s157.full.wide.png",
+    "nochar": "s157.full.png",
+    "nochar.wide": "s157.full.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -22157,12 +22314,12 @@
    }
   },
   {
-   "id": "s157",
+   "id": "s158",
    "files": {
-    "full": "s157.full.png",
-    "full.wide": "s157.full.wide.png",
-    "nochar": "s157.full.png",
-    "nochar.wide": "s157.full.wide.png",
+    "full": "s158.full.png",
+    "full.wide": "s158.full.wide.png",
+    "nochar": "s158.full.png",
+    "nochar.wide": "s158.full.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -22256,12 +22413,12 @@
    }
   },
   {
-   "id": "s158",
+   "id": "s159",
    "files": {
-    "full": "s158.full.png",
-    "full.wide": "s158.full.wide.png",
-    "nochar": "s158.full.png",
-    "nochar.wide": "s158.full.wide.png",
+    "full": "s159.full.png",
+    "full.wide": "s159.full.wide.png",
+    "nochar": "s159.full.png",
+    "nochar.wide": "s159.full.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -22349,12 +22506,12 @@
    }
   },
   {
-   "id": "s159",
+   "id": "s160",
    "files": {
-    "full": "s159.full.png",
-    "full.wide": "s159.full.wide.png",
-    "nochar": "s159.nochar.png",
-    "nochar.wide": "s159.nochar.wide.png",
+    "full": "s160.full.png",
+    "full.wide": "s160.full.wide.png",
+    "nochar": "s160.nochar.png",
+    "nochar.wide": "s160.nochar.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -22441,12 +22598,12 @@
    }
   },
   {
-   "id": "s160",
+   "id": "s161",
    "files": {
-    "full": "s160.full.png",
-    "full.wide": "s160.full.wide.png",
-    "nochar": "s160.nochar.png",
-    "nochar.wide": "s160.nochar.wide.png",
+    "full": "s161.full.png",
+    "full.wide": "s161.full.wide.png",
+    "nochar": "s161.nochar.png",
+    "nochar.wide": "s161.nochar.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -22549,12 +22706,12 @@
    }
   },
   {
-   "id": "s161",
+   "id": "s162",
    "files": {
-    "full": "s161.full.png",
-    "full.wide": "s161.full.wide.png",
-    "nochar": "s161.nochar.png",
-    "nochar.wide": "s161.nochar.wide.png",
+    "full": "s162.full.png",
+    "full.wide": "s162.full.wide.png",
+    "nochar": "s162.nochar.png",
+    "nochar.wide": "s162.nochar.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -22648,12 +22805,12 @@
    }
   },
   {
-   "id": "s162",
+   "id": "s163",
    "files": {
-    "full": "s162.full.png",
-    "full.wide": "s162.full.wide.png",
-    "nochar": "s162.full.png",
-    "nochar.wide": "s162.full.wide.png",
+    "full": "s163.full.png",
+    "full.wide": "s163.full.wide.png",
+    "nochar": "s163.full.png",
+    "nochar.wide": "s163.full.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [
@@ -22738,12 +22895,12 @@
    }
   },
   {
-   "id": "s163",
+   "id": "s164",
    "files": {
-    "full": "s163.full.png",
-    "full.wide": "s163.full.wide.png",
-    "nochar": "s163.nochar.png",
-    "nochar.wide": "s163.nochar.wide.png",
+    "full": "s164.full.png",
+    "full.wide": "s164.full.wide.png",
+    "nochar": "s164.nochar.png",
+    "nochar.wide": "s164.nochar.wide.png",
     "bg": "bg.estufa.png"
    },
    "background": [

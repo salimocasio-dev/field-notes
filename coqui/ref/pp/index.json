@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 884,
-  "totalBytes": 55944493,
+  "files": 1020,
+  "totalBytes": 64027092,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -724,6 +724,46 @@
       "sha256": "ada102cbe1894fc9bca1a783762bad5602493275e7fbe8d78a97aa11faaeda43"
     },
     {
+      "path": "comer/comer/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d20d95fd389ed918aca307a100f305d1d47d51165dd9c0f23588f3e70bb68f9a"
+    },
+    {
+      "path": "comer/comer/kinds.json",
+      "bytes": 305,
+      "sha256": "89b14955e1afc49faed8aa29ea4f60f73431732c3f39117a2ca2ffcf7a4a02b3"
+    },
+    {
+      "path": "comer/comer/pix.bin",
+      "bytes": 207360,
+      "sha256": "65023766cd494f3d9d07a4a79625935e23696bcbbf25413d0e4c91f50eb7852e"
+    },
+    {
+      "path": "comer/comer/pix.json",
+      "bytes": 370,
+      "sha256": "635cf794c23d60236d9f8448cd4ebadeccac66d02e7bc3264b01c2eb4a43b1f6"
+    },
+    {
+      "path": "comer/comer/pix.png",
+      "bytes": 8924,
+      "sha256": "255ae3e4394f13fb831eb1b14bcd0039e010451f023569a7278ee02e703780cb"
+    },
+    {
+      "path": "comer/comer/state.json",
+      "bytes": 914,
+      "sha256": "bbc995c2591bdb53f9600e159db0c63ddf600ff4b2019d7fb8cbaa7efb5691f9"
+    },
+    {
+      "path": "comer/comer/zb.bin",
+      "bytes": 207360,
+      "sha256": "9eb914a23ae04f76458723eb0a6ef3d7a465617cd1edef28387d78cca1b6b37b"
+    },
+    {
+      "path": "comer/comer/zb.json",
+      "bytes": 322,
+      "sha256": "0b2c30c3ea79e35ed9c79169a84d85c93e802fb542dbabe2398c63e1b9ba5046"
+    },
+    {
       "path": "esquina/manana-0-open/kinds.bin",
       "bytes": 51840,
       "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
@@ -1202,6 +1242,86 @@
       "path": "estantes/anillos-1-mesa-1/zb.json",
       "bytes": 322,
       "sha256": "a6469b3f4e4a7aa91f813260b3c16b7d5e292c9051e51ca07632ae32943bd41c"
+    },
+    {
+      "path": "estufa/banco0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "e44352c011e1606d7c9dbb7c4916a14be9771a6be4a349e966e4bac376cd17bd"
+    },
+    {
+      "path": "estufa/banco0/kinds.json",
+      "bytes": 305,
+      "sha256": "916935aca7dd0158948b41bf9f92c92a9a274a76c83d9033f8045e00db8f9c7b"
+    },
+    {
+      "path": "estufa/banco0/pix.bin",
+      "bytes": 207360,
+      "sha256": "123364321355143f65f3df297e62ec6b7b3428d45a8195eabab5c29f0e3b5451"
+    },
+    {
+      "path": "estufa/banco0/pix.json",
+      "bytes": 370,
+      "sha256": "91bdb1a71e4e105f5c2e2fc2eb801b5f1f8e4ee0997772669b34e8deb85e2629"
+    },
+    {
+      "path": "estufa/banco0/pix.png",
+      "bytes": 5658,
+      "sha256": "ce46fe03d84438cbd526631cc5a79442a042da8bb76f66b75ecf7418109ec27f"
+    },
+    {
+      "path": "estufa/banco0/state.json",
+      "bytes": 925,
+      "sha256": "14827deaa671f1946303a08dd8676f61e26d729d4068f01f7fccb82cbdf8bbcd"
+    },
+    {
+      "path": "estufa/banco0/zb.bin",
+      "bytes": 207360,
+      "sha256": "25e8a2ea53309f5e0f3c6d0f2b6a1667ecc63e58dd6c10c76e349d7676509f48"
+    },
+    {
+      "path": "estufa/banco0/zb.json",
+      "bytes": 322,
+      "sha256": "5df4d86af41e7462c53340e56467aeaf1613318e16d70d72a66cb7cdc99f41e6"
+    },
+    {
+      "path": "estufa/banco1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "e44352c011e1606d7c9dbb7c4916a14be9771a6be4a349e966e4bac376cd17bd"
+    },
+    {
+      "path": "estufa/banco1/kinds.json",
+      "bytes": 305,
+      "sha256": "916935aca7dd0158948b41bf9f92c92a9a274a76c83d9033f8045e00db8f9c7b"
+    },
+    {
+      "path": "estufa/banco1/pix.bin",
+      "bytes": 207360,
+      "sha256": "16ab08c2dd1ce587dd27d4e77186e9b096b6b6d7bab8f5ebcfda61bb8ddb3965"
+    },
+    {
+      "path": "estufa/banco1/pix.json",
+      "bytes": 370,
+      "sha256": "3f4029b5bf4699d3f108ebc268220c25ee64118314cccd69e715696c0e6b75cd"
+    },
+    {
+      "path": "estufa/banco1/pix.png",
+      "bytes": 5880,
+      "sha256": "d5727fbae239ec42db7232bfb267d1159a4f8898f8b8ab563d3037241577f32f"
+    },
+    {
+      "path": "estufa/banco1/state.json",
+      "bytes": 925,
+      "sha256": "8a37ab50f31d7dd6d7400771a91ee12c05e8e710e64035e1db17be17df76bfd7"
+    },
+    {
+      "path": "estufa/banco1/zb.bin",
+      "bytes": 207360,
+      "sha256": "033e8cd818058d5f40d7851f3b7953348d19f1ba12104e9c5d6603f73dbcb58d"
+    },
+    {
+      "path": "estufa/banco1/zb.json",
+      "bytes": 322,
+      "sha256": "05481a5eb4038e5f0be0f4f15b5c0cc302af5f6713706a30bcf44449b2bfde6f"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/kinds.bin",
@@ -3134,6 +3254,166 @@
       "sha256": "da1b8a9af598a53e6502ff3ae24004f54bb2f09a080383a7c621f4c37b699211"
     },
     {
+      "path": "mesa/frutas-surtido-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "575eccd920b411777e22f055e8574bc7506aa8a6a591f65b592d13faef08a95e"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "51a4438a714174e93cebf713151f647e2a1bd6c5b3fa1a9939ab8fd1f3299e20"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.png",
+      "bytes": 10597,
+      "sha256": "125824bbea162dc41d29ee3a74b16255b618677d0e31219985e4d90941d1bc50"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/state.json",
+      "bytes": 943,
+      "sha256": "e78741474f19a05c0657edbd2d925384ae62f650643d1d491f344af8301d4c1b"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "39617ac409c5b4b6113b56f2b44d9e44aa5bef5200f864880e57db377784b5a7"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "4e47694321cf15a9460c91a14be4d72fa2b4ee3c45541f286077ada0ebced7a0"
+    },
+    {
+      "path": "mesa/m0h0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m0h0/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m0h0/pix.bin",
+      "bytes": 207360,
+      "sha256": "636e78e051a77ee9d5c531c3de94d78628a46f79de09b215bc11d6106d76edbc"
+    },
+    {
+      "path": "mesa/m0h0/pix.json",
+      "bytes": 370,
+      "sha256": "cbb602d3e57b690bf5c5ebc6d73ffda22c33306f44c357e3e6c700c375d3c8c9"
+    },
+    {
+      "path": "mesa/m0h0/pix.png",
+      "bytes": 7583,
+      "sha256": "2490289c800ddfe7e0efd7f674bc6f9fca6316af2134e5e28fce113246223e9a"
+    },
+    {
+      "path": "mesa/m0h0/state.json",
+      "bytes": 923,
+      "sha256": "c3ad8a296b1a4bdc0bf735d220ffe495e3fb089825ab224ce047e61db67437e7"
+    },
+    {
+      "path": "mesa/m0h0/zb.bin",
+      "bytes": 207360,
+      "sha256": "31543eb70a00f19e29d616c1cb51a3ca593acc710d949eb65ffed97f9dd2346a"
+    },
+    {
+      "path": "mesa/m0h0/zb.json",
+      "bytes": 322,
+      "sha256": "743010725d003452ca994f5ec73ab158cd3f4c68279947160f8e2705dba2929c"
+    },
+    {
+      "path": "mesa/m0h1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m0h1/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m0h1/pix.bin",
+      "bytes": 207360,
+      "sha256": "6da4b9eb0b66913720e5bd306dd2e10b0a9a6460eac0ee54ccd42c9e225447ff"
+    },
+    {
+      "path": "mesa/m0h1/pix.json",
+      "bytes": 370,
+      "sha256": "c215fb431e179d0a12ee9a551d1ced5c435c851cd19139a74ab1f916f0f0679f"
+    },
+    {
+      "path": "mesa/m0h1/pix.png",
+      "bytes": 7583,
+      "sha256": "f13190d531aefedf77c757820758ef46e8416af34f6c8aecf54ea8f1a9a3dd20"
+    },
+    {
+      "path": "mesa/m0h1/state.json",
+      "bytes": 923,
+      "sha256": "aa35c1717951d1665b9d958778caa69686e1d20ac06fbaa466ddd624e5e00b42"
+    },
+    {
+      "path": "mesa/m0h1/zb.bin",
+      "bytes": 207360,
+      "sha256": "31543eb70a00f19e29d616c1cb51a3ca593acc710d949eb65ffed97f9dd2346a"
+    },
+    {
+      "path": "mesa/m0h1/zb.json",
+      "bytes": 322,
+      "sha256": "743010725d003452ca994f5ec73ab158cd3f4c68279947160f8e2705dba2929c"
+    },
+    {
+      "path": "mesa/m1h0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m1h0/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m1h0/pix.bin",
+      "bytes": 207360,
+      "sha256": "571bcc53f77f317304f55342d755b215c65a6c7dc27d593314f7adc520f85216"
+    },
+    {
+      "path": "mesa/m1h0/pix.json",
+      "bytes": 370,
+      "sha256": "015af87118573b0c5fd159fbabedb3ad87edc91b6fcd528561902a68388c932e"
+    },
+    {
+      "path": "mesa/m1h0/pix.png",
+      "bytes": 7470,
+      "sha256": "f55e01b5394b34ade378870decb0037f100a14e197a1860e1c3ad6207d0644bb"
+    },
+    {
+      "path": "mesa/m1h0/state.json",
+      "bytes": 923,
+      "sha256": "43a17c9078ae8419e1156903122bdbc7732fb156c909a85837d44980be95676b"
+    },
+    {
+      "path": "mesa/m1h0/zb.bin",
+      "bytes": 207360,
+      "sha256": "95e210e965ebae7f2f1c2a6bf78aa9bd624064c16306d201b00959cd6ff77316"
+    },
+    {
+      "path": "mesa/m1h0/zb.json",
+      "bytes": 322,
+      "sha256": "02a48bea42941cc96e3c7cb3c4d3850a35f692890d0cf947abcff3dda7536f8a"
+    },
+    {
       "path": "mostrador/calle-manana-open/kinds.bin",
       "bytes": 51840,
       "sha256": "f4acea7f7709564f520196f17389434ac04f4ec5624027f3c4bd667209023785"
@@ -3612,6 +3892,406 @@
       "path": "mostrador/dentro-tarde-shut-1/zb.json",
       "bytes": 322,
       "sha256": "1a4c79ca07335468f248a7a27b753bed62505988227bcad1033661d290c2fcfa"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "5012eecab5e0318509d5d8c3a47fba66690ddaa2768150e814460c900ab2ceb9"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.json",
+      "bytes": 370,
+      "sha256": "c0133edf0404e45a2b015ecde7ee5cf30fefa99f0e9db227189ccca29d69ea88"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.png",
+      "bytes": 5767,
+      "sha256": "5922c11dcbd64efbfa1801cdc594e56fb533169237fd06dfc9c647aa55386428"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/state.json",
+      "bytes": 965,
+      "sha256": "dcd0ff1ec569078104f69876ec428ed6be6a054a8a634e69f56ba1905fff3c5b"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "d8b7caabde0a7f0e3b479921cbcb48e9bd5a49b3180d9b8c969887d241bfdc5d"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/zb.json",
+      "bytes": 322,
+      "sha256": "7cc714fa996e3594a6de13fe65eb387f26568c260b09b1f5da5cd7bbedb8c5e0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "9604933ba0b6c32ee01bfa8707c305ee3f995b2c06d8df426bc9155692cc2c4c"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "6831cf07cd1e6490ddb46e1cb2ec01492ce4599f7c83de27d70a90afa4630ed4"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6088,
+      "sha256": "c4b7428ca6121bb2786194916f849263c6a19981fab62413cf899d0b1ec7f0ed"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "4f69112115ef7dea6529469b7a50815b7d624d42c2b4be556d335f6cbdfb52e0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "7d4f87cc3d3e386df5b060f65443d87af695a6e2bba2d776a3d2412ad004efb0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "f69cc5b56dd720a355f315f3acfae1d72247b8c6083c3392250723e40552b5a7"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.png",
+      "bytes": 6120,
+      "sha256": "c72ac5128a374845bf8b802f26a6921c7b4c697aeaa703d4746bf9ded6cb6c6c"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "c2575aec2d6f534010c92e7ac313cfc653051484a7809eda71e60cac1ceab728"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2544d38a4ce8be199124ee45f43da54dec22483836106f07ef2113b55db90ba9"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "cf8c8709d5cf453149f804bc40cc1d5d129cc9acf78b06ef0db03b6441e901ba"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.png",
+      "bytes": 6089,
+      "sha256": "dce7603cbc1ceee2a4bb2a7191166c8c77e7307b47002399abe2b541f1e53c84"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "ba2b5b11775d9df29315574684ea2fa1ee11c784d2e13b756f1057cabb59d10b"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "28199b42a6f13d8971aba19c741ecff1454c632e731d46a09e00af76bef32890"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.json",
+      "bytes": 370,
+      "sha256": "51b772e07d06a67efdcf18c35861bc7fcdf2c1e2802c7160ec39f670818b9808"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.png",
+      "bytes": 6550,
+      "sha256": "d8580c147f7a06efb63ad292baf82a5edcb239b413d9e16da6dc9348955ea811"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/state.json",
+      "bytes": 965,
+      "sha256": "8fd6a6245265cf39aeda69b3880a770ac64368a3f110b00fb738525674f3ba8c"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "ce8558eae7628122149cbf94c13330f62fd3a4fecd615476cdb6b34cf3270338"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/zb.json",
+      "bytes": 322,
+      "sha256": "cb6539121f3e9a0a96e0a3d3ebc2ad75efe253d8936c54407850ab997ee40dfe"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "100ca69e0a533cc25a6f7a084d4eac2c9386eac9065090b7a809dd27d90fcca6"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "b7db8fdf149506d248f776fcef2d9036b777578f19e5b7de95225766b620370d"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6868,
+      "sha256": "6928e92608d471ca11b6080192e59a0d035073b3f6135ffc90d8b6e9cc4b7535"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "cc6b38f98dca3c63efb5492feae736abd4e12d828af6f9046c9eeb0d768e3e54"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "c583717f2b20147b3e153443c17118c82e3fa210c05f1e681d305b08786b6933"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c0f09bd5ab7d6880f6b193f35097f6b131799aa6edc9a8633b696ff88d93f098"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "c4b2d73dbd96435d2e50b8479da18af1b1cd9395b4473668fc89e017ce7d58f8"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "78ad0f3cdb7a8f2dbf3604c42b1c5db32e03af87293ef2264486083913eb25c7"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.png",
+      "bytes": 6902,
+      "sha256": "ce30646519bec9125513e529c3022b7383b8e49e4744fc751c95bec5add7816a"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "eb8d4b7d2b63dc54bacb9328a45be79f146246e2c36119edf96d0751d823d233"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "c583717f2b20147b3e153443c17118c82e3fa210c05f1e681d305b08786b6933"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c0f09bd5ab7d6880f6b193f35097f6b131799aa6edc9a8633b696ff88d93f098"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2efec18db8be2c1cb888afa54f4a03cd923c9dbfe32dc99332fd8d4fa2dc986c"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "5d207237606da312070a91417dcdadc95d5dbf625ef1d92fd23a8c4e5a969ba4"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.png",
+      "bytes": 6870,
+      "sha256": "d33acce97450e123fc52ed44451e296c796e45bfd71923b260f1d39c6dd6a46e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "a17c8778a4307b3f43a31751c4c9c65dd8dc2e2d7e3f6508652b122cb1ddf05b"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a7262adf25e939041e82dd6fd57f7f43e7b7b61857f6c2b7b8c274e3379313b"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "79f7c0cc131a6ef60db7159dc1a5a8112fddbf65acb0644e018ca5daa74706e3"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "e6e6d14316543dbc333b9589ec338fc0f18b0eedf43c9cad99f73fe0aca484ac"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "70c3d8787fa46edeae7173a6bfc0451ef066855af75f9618c2080f583d928f56"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.png",
+      "bytes": 6969,
+      "sha256": "51f17337659e08422f7e583f1386fd102839a687b2246b36b3762a18074ff319"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "0c49cbacac6ec9bb06e151325b4f947b7bc8893a0a4f8face2d85036a9bc0a63"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "ecd7bec90428e0dd15e72632b59b6d56aea6c7bbc924e3fc35a3ac16ae886936"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "60e9caad84471efcf5a7bc3773ae3a1fd4cdfb495573e43e1d030c84ad148acf"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "e45e37e7169f73047defdb61ed3771e0b3ea10c99e57e88e98a52d3b41c570ea"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "b724a42b4c80c9dc2a6a7e5adf740520ce5ed373757da942edebc1ff3deeb0b2"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6086,
+      "sha256": "678bb87f3b4536a1d3739954f52994c2c4d6c467e75dab710e80caa9a4d854c3"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "bd2e3da5a813c1b4e45a1bbd89b1bc5af73416e0d8fa1175e0f85835f2d4d545"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "91b070e25f665029af3d90b8229ae36eb8409f11c9e181b04b14aa701972f60f"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "161c2e74723cd0c2a2a5eb4d5a8337c0f5e7e32c50330adc6f0335c51bfc5021"
     },
     {
       "path": "patio/hora-crepusculo-door-open-gate-shut/kinds.bin",

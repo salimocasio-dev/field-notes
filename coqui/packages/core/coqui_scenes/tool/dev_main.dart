@@ -7,7 +7,7 @@
 //   ?w=<W as JSON>&view=<name>&F=<n>   the scene in that state (W over the fresh world, in today's places), through a view
 //                                      of the sheet (wide, casa, puerta, ventana, cuadro, wide@donde-esta-el-pajaro)
 //   ?page=pairs                        the 12 review pairs of cual-frente and the level pictures, through ScenePictures
-//   ?page=bake[&scene=balcon|sala|patio|camino|campo|lago|banco|mostrador|estantes|frutas|caja|esquina] every baked state of the sheet (El frente's, or the scene given), each baked on a
+//   ?page=bake[&scene=balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|nevera|comer|mostrador|estantes|frutas|caja|esquina] every baked state of the sheet (El frente's, or the scene given), each baked on a
 //                                      fresh engine's cache, one after the other; the times are on the page and in
 //                                      `window.coquiBakes` (JSON) for a script
 // Every page shows how long each state it baked took, in ms.
@@ -24,6 +24,10 @@ import 'package:coqui_scenes/src/campo/campo_set.dart';
 import 'package:coqui_scenes/src/frente/frente_set.dart';
 import 'package:coqui_scenes/src/lago/lago_set.dart';
 import 'package:coqui_scenes/src/banco/banco_set.dart';
+import 'package:coqui_scenes/src/estufa/estufa_set.dart';
+import 'package:coqui_scenes/src/nevera/nevera_set.dart';
+import 'package:coqui_scenes/src/comer/comer_set.dart';
+import 'package:coqui_scenes/src/mesa/mesa_set.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador_set.dart';
 import 'package:coqui_scenes/src/estantes/estantes_set.dart';
 import 'package:coqui_scenes/src/frutas/frutas_set.dart';
@@ -357,6 +361,10 @@ class _BakePageState extends State<BakePage> {
           'campo' => CampoState.fromQuery(b.query).key,
           'lago' => LagoState.fromQuery(b.query).key,
           'banco' => BancoState.fromQuery(b.query).key,
+          'mesa' => MesaState.fromQuery(b.query).key,
+          'estufa' => EstufaState.fromQuery(b.query).key,
+          'nevera' => NeveraState.fromQuery(b.query).key,
+          'comer' => ComerState.fromQuery(b.query).key,
           'mostrador' => MostradorState.fromQuery(b.query).key,
           'estantes' => EstantesState.fromQuery(b.query).key,
           'frutas' => FrutasState.fromQuery(b.query).key,

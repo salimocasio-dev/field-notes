@@ -1617,6 +1617,192 @@
      "png": "nivel.lleno.3.png"
     }
    ]
+  },
+  {
+   "w": "café",
+   "s": 35,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "café",
+     "side": "si",
+     "x": null,
+     "crop": [
+      82.91,
+      80,
+      94.19,
+      104
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "café",
+     "side": "no",
+     "x": null,
+     "crop": [
+      82.91,
+      80,
+      94.19,
+      104
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "azúcar",
+     "side": "si",
+     "x": null,
+     "crop": [
+      111.45,
+      130,
+      47.09,
+      52
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "leche",
+     "side": "si",
+     "x": null,
+     "crop": [
+      138.67,
+      152,
+      27.17,
+      30
+     ],
+     "scene": "nevera",
+     "png": "nivel.cafe.3.png"
+    }
+   ]
+  },
+  {
+   "w": "mucho",
+   "s": 35,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "mucho",
+     "side": "si",
+     "x": null,
+     "crop": [
+      82.91,
+      80,
+      94.19,
+      104
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "mucho",
+     "side": "no",
+     "x": null,
+     "crop": [
+      82.91,
+      80,
+      94.19,
+      104
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "un poco",
+     "side": "si",
+     "x": null,
+     "crop": [
+      111.45,
+      130,
+      47.09,
+      52
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "vacío",
+     "side": "si",
+     "x": null,
+     "crop": [
+      135.54,
+      142,
+      36.23,
+      40
+     ],
+     "scene": "nevera",
+     "png": "nivel.mucho.3.png"
+    }
+   ]
+  },
+  {
+   "w": "un poco",
+   "s": 35,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "un poco",
+     "side": "si",
+     "x": null,
+     "crop": [
+      111.45,
+      130,
+      47.09,
+      52
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "un poco",
+     "side": "no",
+     "x": null,
+     "crop": [
+      111.45,
+      130,
+      47.09,
+      52
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "mucho",
+     "side": "si",
+     "x": null,
+     "crop": [
+      82.91,
+      80,
+      94.19,
+      104
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "lleno",
+     "side": "si",
+     "x": null,
+     "crop": [
+      142.46,
+      154,
+      45.28,
+      50
+     ],
+     "scene": "nevera",
+     "png": "nivel.un_poco.3.png"
+    }
+   ]
   }
  ]
 }

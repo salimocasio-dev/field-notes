@@ -337,7 +337,9 @@ function storyStates() {
       execFileSync(process.execPath, [path.join(REPO, 'coqui/tool/ref/trazas/juega.mjs'), '--only', st.id, '--out', path.join(tmp, 'trazas', st.id), '--states', path.join(tmp, 'states')], { cwd: REPO, stdio: 'pipe' });
       for (const plan of ['right', 'wrong', 'alternate']) {
         const lines = fs.readFileSync(path.join(tmp, 'states', st.id, plan + '.states.jsonl'), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
-        runs.push({ story: st, plan, lines, recorded: fs.existsSync(path.join(REPO, 'coqui/ref/trazas', st.id, plan + '.json')) });
+        // the play is the recorded run: its trace, byte for byte, is coqui/ref/trazas/<story>/<plan>.json (h-nevera's too, recorded on the kitchen's base)
+        const played = path.join(tmp, 'trazas', st.id, st.id, plan + '.json'), rec = path.join(REPO, 'coqui/ref/trazas', st.id, plan + '.json');
+        runs.push({ story: st, plan, lines, recorded: fs.existsSync(rec) && fs.existsSync(played) ? fs.readFileSync(played).equals(fs.readFileSync(rec)) : null });
       }
     }
     return runs;
@@ -598,21 +600,22 @@ function make(G, runs) {
   const LEVEL = PAIRS.level.flatMap(L => L.pictures.map((p, i) => p.scene === 'nevera' ? { w: L.w, index: i, picture: deacc(p.pair) + '.' + p.side, old: p.crop } : null).filter(Boolean));
   for (const l of LEVEL) { const pc = PICS[l.picture]; if (pc) { l.crop = pc.crop; l.zoom = pc.zoom; } }
 
-  /* remap: every distinct position of positions.json, and of h-nevera (newer than the reference folder: its set steps' positions) */
+  /* remap: every distinct position of positions.json (h-nevera's included since the kitchen's reference folder was made again: one source) */
   const POS = JSON.parse(fs.readFileSync(path.join(REF, 'positions.json'), 'utf8'));
-  const extra = hNeveraPositions();
+  const extra = [];
   const remap = POS.positions.concat(extra).map(p => {
     const e = { kind: p.kind, old: p.kind === 'point' ? [p.x, p.y] : p.kind === 'x' ? [p.x] : [p.x, p.y, p.w, p.h], uses: p.uses.map(u => u.file.replace(/^cuentos\//, '') + ' ' + u.at) };
     if (p.extra) e.from = 'h-nevera (not in positions.json: newer than the reference folder)';
     if (p.kind === 'cam') { const names = [...new Set(p.uses.map(u => { const m = u.at.match(/^(.+)\.(si|no)\.cam$/); return m ? deacc(m[1]) + '.' + m[2] : null; }).filter(Boolean))];
       e.to = { pictures: names }; e.crops = Object.fromEntries(names.map(n => [n, { crop: PICS[n].crop, zoom: PICS[n].zoom }])); }
     else if (p.kind === 'crop') { const names = [...new Set(LEVEL.filter(l => l.old && Math.abs(l.old[0] - p.x) < .01 && Math.abs(l.old[1] - p.y) < .01).map(l => l.picture))]; e.to = { pictures: names, level: true }; }
+    else if (p.kind === 'x' && p.uses.every(u => /\.repisa\.\d+\.x$|\.repisa\.\d+$/.test(u.at))) { e.to = { sill: null }; e.new = [p.x]; e.what = 'x alone on the sill (W.repisa): the scene stands it on the sill\'s row there (SL); the same x'; }
     else if (p.kind === 'x') e.to = { level: true, what: 'a level crop\'s centre x: the level pictures take pictures[...] whole (level[])' };
     else {
       if (p.x === 0 && p.y === 0) { e.to = { none: true }; e.what = 'the frog out of the picture (vis 0) in a review picture: not a place'; return e; }
       const ats = p.uses.map(u => u.at), isCosa = ats.every(a => /cosas\.\d+$/.test(a)), isOut = ats.every(a => /gente\.\w+$/.test(a)) && p.y < 140;
       let at = [p.x, p.y], on = 'floor', z = 0;
-      if (isCosa && p.y >= 110 && p.y <= 130) { const nx = p.extra ? ({ 182: 180, 194: 190, 206: 201 }[p.x] || p.x) : p.x; at = [nx, C.CT(nx) + p.y - (OLD.ENC + 10)]; on = 'counter'; z = F.CZ; }
+      if (isCosa && p.y >= 110 && p.y <= 130) { const nx = p.uses.every(u => u.file === 'cuentos/h-nevera.json') ? ({ 182: 180, 194: 190, 206: 201 }[p.x] || p.x) : p.x;   /* h-nevera's row of cups: the places chosen so that their hint frames do not overlap */ at = [nx, C.CT(nx) + p.y - (OLD.ENC + 10)]; on = 'counter'; z = F.CZ; }
       else if (isCosa && p.y >= 94 && p.y <= 102) { at = [p.x, C.SL(p.x) + p.y - OLD.SILL]; on = 'sill'; z = F.WIN.z0 - .1; }
       else if (isOut) { const id = (p.uses.map(u => (u.at.match(/gente\.(\w+)$/) || [])[1]).find(Boolean)), hx = id ? hxOf(id, p.x, p.y - OLD.PATIO) : null, nx = hx && hx[1] != null ? hx[1] : p.x; at = [nx, C.PA(nx) + p.y - OLD.PATIO + (hx ? hx[2] : 0)]; on = 'outside'; }   // with the moves' own offsets (HXS)
       e.to = { [on]: on === 'outside' ? null : W4(E.atZ(at[0], at[1] - 1, z)) }; e.new = at; if (at[1] !== p.y || at[0] !== p.x) { e.moved = true; e.why = on === 'counter' ? 'on the counter: its row CT(x) + (y - ' + (OLD.ENC + 10) + ')' + (at[0] !== p.x ? '; three of the row of cups 2 to 5 px left (180, 190, 201 for 182, 194, 206; 170 stays), so that the last one\'s hint frame is inside the view and each stands apart' : '') : on === 'sill' ? 'on the sill: SL(x) + (y - ' + OLD.SILL + ')' : 'outside the window: PA(x) + (y - ' + OLD.PATIO + ')'; }
@@ -878,7 +881,7 @@ function check(sh, G, runs) {
     for (const m of sh.moves) { for (const L of m.lines || [m.line]) if (!LINES[L - 1].includes(m.src)) P.push('moves: line ' + L + ' does not hold ' + m.src.slice(0, 60)); }
     for (const d of sh.dropped) if (!LINES[d.line - 1].includes(d.src)) P.push('dropped: line ' + d.line + ' does not hold ' + d.src.slice(0, 60));
     notes.push('code: nevera.js read here: ' + nLines + ' lines hold numbers, every one with its entry; ' + nPlace + ' numbers are places on the picture, each named in its line\'s entry with what becomes of it (moved, the floor rule, a set thing, dropped); ' + nNot + ' are not places (' + Object.entries(notPlaces).map(([k, n]) => k + ' ' + n).join(', ') + ')'); }
-  notes.push('inventory: ' + Object.keys(sh.things).length + ' things (old ' + inv.thingIds.length + '), ' + Object.keys(sh.lugar).length + ' frog places of LUGAR (old ' + Object.keys(inv.given.lugar).length + '), ' + Object.keys(sh.views).length + ' view (old ' + Object.keys(inv.given.CAM).length + '), ' + (sh.remap.length - nExtra) + ' positions (old ' + pos.positions.length + ') and ' + nExtra + ' of h-nevera (newer than the reference folder), ' + cual.items.length + ' review pairs of cual-nevera (' + pairSides.length + ' pictures), ' + sh.level.length + ' level pictures (old ' + nLevel + '), ' + sh.setKey.baked.length + ' baked states reached (the old ' + inv.states.count + ')');
+  notes.push('inventory: ' + Object.keys(sh.things).length + ' things (old ' + inv.thingIds.length + '), ' + Object.keys(sh.lugar).length + ' frog places of LUGAR (old ' + Object.keys(inv.given.lugar).length + '), ' + Object.keys(sh.views).length + ' view (old ' + Object.keys(inv.given.CAM).length + '), ' + (sh.remap.length - nExtra) + ' positions (old ' + pos.positions.length + ', h-nevera\'s among them), ' + cual.items.length + ' review pairs of cual-nevera (' + pairSides.length + ' pictures), ' + sh.level.length + ' level pictures (old ' + nLevel + '), ' + sh.setKey.baked.length + ' baked states reached (the old ' + inv.states.count + ')');
 
   /* hops: the frog's walks, recorded and the port's, step by step: each walk takes the old number of hops (nevera.js ranaA, kit.js ir) */
   { const all = new Map(); let nW = 0;
@@ -937,6 +940,8 @@ function check(sh, G, runs) {
     if (litBad) P.push('shadow: ' + litBad + ' floor pixels on the stool legs\' lit side (up and left, within 3 px) differ from the floor without the stool');
     notes.push('shadows of the set: ' + nCalls + ' castShadow calls over the ' + ALL_STATES.length + ' states, each with strength 1 and a radius; each casting part darkens pixels, its shadow joined to it: ' + Object.entries(pieces).map(([p, n]) => p + ' ' + n + ' px').join(', ') + '; the stool\'s legs: a contact shadow at the foot on the shadow side only (' + litN + ' floor pixels on their lit side within 3 px, every one as the floor without the stool)'); }
 
+  { const off = runs.filter(r => r.recorded !== true); for (const r of off) P.push('runs: ' + r.story.id + ' ' + r.plan + ': ' + (r.recorded === null ? 'no recorded run in coqui/ref/trazas' : 'the play is not its recorded run (coqui/ref/trazas)'));
+    notes.push('runs: the ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + ', three plans each) are played by juega.mjs on the old page, each trace byte for byte its recorded run in coqui/ref/trazas/ (' + runs.filter(r => r.recorded).length + ' of ' + runs.length + ')'); }
   const C0 = { E, F, COS, T30, M, MASK, NEW, x0, VIEW, TAGS, zoneAt, pairSides, notes };
   const out = checkMoments(sh, G, runs, P, C0);
   checkRound2(sh, G, runs, P, C0);
