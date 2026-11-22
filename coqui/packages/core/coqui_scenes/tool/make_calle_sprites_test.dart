@@ -11,6 +11,7 @@ import 'dart:io';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/src/calle/calle_cast.dart';
+import 'package:coqui_scenes/src/esquina/esquina_sprites.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../test/support/png.dart';
@@ -48,6 +49,11 @@ void main() {
       'calle-sprites',
       "La calle's cast and vehicles (lib/src/calle/calle_cast.dart, calle_vehicles.dart)",
       calleCastSheet(),
+    );
+    _write(
+      'esquina-sprites',
+      "What only La esquina has (lib/src/esquina/esquina_sprites.dart)",
+      esquinaSpriteSheet(),
     );
   });
 }

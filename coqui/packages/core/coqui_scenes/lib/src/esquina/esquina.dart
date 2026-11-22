@@ -47,7 +47,11 @@ class EsquinaItem {
     this.d, {
     this.tag,
     this.grown = false,
+    this.flat = false,
   });
+
+  /// A mark lying on the ground (a print, a track in the cement): under every sprite, over the set.
+  final bool flat;
 
   /// A grown-up (whose pixels never hide the frog).
   final bool grown;
@@ -140,6 +144,9 @@ class Esquina extends Escena implements SetScene, SetOverSprites {
     'cerca': 'coqui.cerca',
     'cemento': 'coqui.cemento',
   };
+
+  /// The sheet's spot of the frog's place [key] (`lugar`'s key: `carro` is toca_carro), or null.
+  String? frogSpotOf(String key) => _frogPlaces[key];
 
   // the frog's top left for a spot (rules.anchor: mkCoqui's column 16 on sx, its row 25 on sy)
   List<num> _frogAt(EsquinaAt a) => [_round(a.sx) - 16, _round(a.sy) - 25, 1];
@@ -534,6 +541,7 @@ class Esquina extends Escena implements SetScene, SetOverSprites {
           flat ? sy + s.h ~/ 2 : sy,
           at.d,
           tag: 'cosa:${o['id']}',
+          flat: flat,
         ),
       );
     }
@@ -629,14 +637,14 @@ class Esquina extends Escena implements SetScene, SetOverSprites {
     for (var y = 0; y < s.h; y++) {
       final Y = it.top + y;
       if (Y < 0 || Y >= h0) continue;
-      final plane = it.d + (it.sy - (Y + .5)) * _t30 / S;
+      final plane = it.flat ? -1e8 : it.d + (it.sy - (Y + .5)) * _t30 / S;
       for (var x = 0; x < s.w; x++) {
         final c = s.px[y * s.w + x];
         if (c >>> 24 == 0) continue;
         final X = it.left + x;
         if (X < 0 || X >= w0) continue;
         final i = Y * w0 + X;
-        if (setZ != null && setZ[i] > plane + bias) {
+        if (!it.flat && setZ != null && setZ[i] > plane + bias) {
           hidden?.call(i, 'set');
           continue;
         }
@@ -1925,13 +1933,19 @@ class Esquina extends Escena implements SetScene, SetOverSprites {
         _marca('huella1', 'huella', _parte(smooth[0], dv: .7));
       }
       host.SFX.blip();
-      await _salta('coqui.cerca');
+      // OPEN: "the frog hops onto the smooth part and off again": the sheet names no place for "off" (its moment 8 has
+      // the frog at coqui.cemento with the obrero at obrero.fin and Luis at luis.cemento): he stays on the square
       if (n >= 2) {
         final l = _g('luis');
         await _anda('luis', 'luis.cemento');
         l['pose'] = 'rodillas';
         await wait(TICK * 3);
-        _marca('mano0', 'mano', _parte(smooth.length > 1 ? smooth[1] : 0));
+        // his hand beside the prints, on a smooth part the frog does not stand on (he stands on the middle one)
+        _marca(
+          'mano0',
+          'mano',
+          smooth.last != 1 ? _parte(smooth.last) : _parte(smooth[0], du: .9),
+        );
         host.SFX.blip();
         await wait(TICK * 2);
       }

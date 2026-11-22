@@ -158,7 +158,7 @@ Sprite conBebe(
   var s = withBebe(carrier, x, y, est: est, f: f);
   if (flores > 0) {
     final fl = mkFlores(flores);
-    s = overSprite(s, [(fl, x + 13 - 7, y - 4)], top: 0);
+    s = overSprite(s, [(fl, x + 13 + 2, y - 9)], top: 0);
   }
   if (globos > 0) {
     final g = mkGlobos(globos);
