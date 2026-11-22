@@ -958,6 +958,19 @@ Built by an Opus builder on `orden/39b` with no stop. The orchestrator ran `test
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
 
+### A comer, step b, and La cocina's build. **Result (Nov 22): done, merged to main; La cocina's four scenes play in build 13.**
+
+Ported by an Opus builder on `orden/comer-b` (stopped before its last checks at Salim's word), finished by the orchestrator: main merged in (four small conflicts, the generated files remade by their tools), `test_all.sh`'s steps run to the end on the merged branch, the ten words recorded, the review data remade, the tests that waited for the clips run again.
+
+- The set: 0 of 51,840 pixels differ from the JavaScript; 170 sprites equal; 698 of 698 preview pictures identical; 119 asks (the cards' place, box and hand) equal the preview.
+- The recorded runs: all 9 equal without times. Times, measured before the last fix: que-quieres 18 to 19.4 s longer, buen-provecho 4.2 s shorter, cafe-con-azucar 12.1 to 13.1 s longer.
+- The last fix: `LUGAR` is the sheet's `lugar` q (124, 141) as comer.js has it (the sheet's `lugarOf` gave [108, 145]).
+- No STOP: all 28 hop pairs keep their old count.
+- The ten words said alone were recorded with Salim's yes ("Record anything you need within the free tier"): 10 clips, 78 characters, counted before the push and read from the job's log after it. All 143 words now have a clip; the six tests that waited pass.
+- Two tests were stale after the merge and were fixed: the registry's list (A comer after La nevera), and the test that used A comer as the scene with old pictures that is not converted (no old scene is left unconverted: `assets/old_pictures/` is empty).
+- **Not done:** A comer's bake time (the tool failed twice; to measure on a quiet machine); a fresh reader on A comer's frames from the real app (skipped to save usage: the preview pictures the readers passed are reproduced pixel for pixel); `cocina.no` is still drawn from the stored still (`mesa_frutas_still.dart`), not from the frutas scene (order 52's note says how).
+- Old faults kept as they are: the frog's five speaking boxes are one box, so only `di_buen` answers; the sugar bowl's lid lies outside its box; a person's box leaves 42 to 232 of their drawn pixels out.
+
 ### A comer (place 3, scene 4) is published on the old site, v=40
 
 - On main: `historia/escenas/comer.js`; stories `que-quieres`, `buen-provecho`, `cafe-con-azucar`; pairs `cual-comer`; their books; La cocina's three do-this routines `h-mesa`, `h-estufa`, `h-nevera` (place `cocina` now has a `haz` list); four level-check items (`historia/nivel.js`). All recorded (140 clips, 3,938 characters).
@@ -1298,11 +1311,11 @@ Salim asked for work to stop for now (usage). Every branch below is pushed, sign
 - `orden/55b` La parada (holds `orden/54b`): set 4 states 0 of 51,840 px differ; acts test passes; 352 paths, 0 errors, 13,812 rule checks, 0 broken; six app plays reach the end. **Left:** paths, frames and `parada_stories_test` run again after the last fix (the chofer leans out only while he speaks or acts: he covered the front door); bake times; `test_all.sh`. It added two guagua looks to `calle_vehicles.dart` (`atras`, `puertas`: additions only).
 - `orden/56b` Las tiendas (made from `orden/54b` before main was merged into it; main's caja is not in it): set 14 states equal; acts test passes; stories 54 and 56 pass. **Left:** `tiendas_stories_test` again (55 failed on Luis and the señora both at `luis.puerta_izq`; fixed, not rerun); `tool/tiendas_paths_test.dart` (664 plays, never finished); frames; `tiendas-sprites.png` remade (`flutter test tool/tiendas_sprites_test.dart`); bake times; `test_all.sh`.
 - `orden/58b` La plaza, with place 6's shared pieces (`plaza_base.dart`: 222 cases equal the JavaScript, `set_kit.dart` unchanged; `plaza_cast.dart`; feature_story says a decision's whole round again when he waits, 281 tests pass): set 12 states equal; acts test passes; stories 60 and 61: 64 paths each, no rule broken; six app plays reach the end; `test_all.sh` passed two commits before the head. **Left:** story 62's 7,680 paths again after the last two commits (384 paths had a helper over the frog; fixed for the señor and the joven, not confirmed); `test_all.sh` at the head; bake times. For reloj, quiosco, calendario no further runner change is needed (time cards and the big bingo card as story 60's bubbles; 67 uses the whole-round repeat; 70 uses `vale` as it is). Their briefs are written: `brief_59b.txt`, `brief_60b.txt`, `brief_61b.txt` in the orchestrator's scratchpad (lost with the machine: write again from order 55's pattern if gone).
-- `orden/comer-b` A comer in Dart (on `lane/cocina`): set 0 of 51,840 px differ; 170 sprites equal; 698 of 698 preview pictures identical; all 9 recorded runs equal without times (que-quieres 18 to 19.4 s longer, buen-provecho 4.2 s shorter, cafe-con-azucar 12.1 to 13.1 s longer: measured before the last fix); 119 asks equal the preview; six app plays reach the end. **Left:** the differential again after the `LUGAR` fix (the sheet's `lugarOf` gave [108,145], comer.js has [124,141]); analyze, boundaries, format and the `make_* --check` tools over the whole of `coqui/`; bake time; `test_all.sh` (only the six known reds of `lane/cocina` may fail). Old faults kept: the five speaking boxes are one box (only `di_buen` answers); the sugar bowl's lid lies outside its box; a person's box leaves 42 to 232 of their pixels out.
+- A comer's port was finished after this was written and is on main (build 13): see "A comer, step b, and La cocina's build".
 
 **Not started:** La calle's cruce (57; `brief_57b.txt`), La plaza's reloj, quiosco, calendario (59 to 61), places 7 to 10 (62 to 77).
 
-**La cocina's build still waits on Salim's yes** to record ten single words (78 characters; the push of `historia/cuentos/palabras-solas.json` starts the paid recording job). Then: main merged into `lane/cocina`, `cocina.no` drawn from the frutas scene (order 52's note), the words pushed and recorded, `make_repaso.py --app` again, the full run, the merge to main, the build.
+**La cocina is built:** build 13 plays its four scenes; the ten words are recorded.
 
 **For the content lane: acts left OPEN in scenes not merged yet**
 

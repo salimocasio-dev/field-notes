@@ -2,6 +2,12 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 22, part 28: La cocina plays (build 13); every old scene is in Dart
+
+- La mesa, La estufa, La nevera and A comer are on main and play in build 13, each story against its recorded runs. With them all twelve scenes of the old site are converted; no old picture is bundled any more.
+- A comer's ten words said alone were recorded (10 clips, 78 characters, Azure's free tier) with Salim's yes.
+- Left: A comer's bake time, a reader on its app frames, `cocina.no` from the frutas scene (page 13, "A comer, step b").
+
 ## Nov 22, part 27: El colmado plays (build 12); where the lane stopped
 
 - El colmado (place 4, orders 50 to 53): El mostrador, Los estantes, Las frutas and La caja are in Dart on main, each set equal to the JavaScript pixel for pixel, each story played on every path; build 12 carries their twelve stories as preview content. Builder hours: mostrador 2.0, estantes 1.1, frutas 1.2, caja 2.7. Page 13 lists 40 acts left OPEN for the content lane.
