@@ -11,7 +11,7 @@
  "pairPicture": [196, 104],
  "rules": {
   "project": "pp-engine.js project(x, y, z) with S 26 and this origin; a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]",
-  "layout": "every place AT the table steps down half a row a pixel to the right round column 126: SY(x, y) = y + (x - 126) / 2 (the four seats, the plates and cups in front of them, the lane behind the chairs, the children's corners, the frog beside a seated one's plate); every other place keeps its screen point if what stands there stands on what it stood on, else it moves the least distance that does (moves, remap). The world point of a place is the surface under it (comer-set.html surfaceAt): the table's top (z 1), a counter's or the stove's top (z 1.3), or the floor (z 0). A frog place q: his feet (q.x + 16, q.y + 27); a person's or a thing's place (x, y): under (x, y - 1)",
+  "layout": "every place AT the table steps down half a row a pixel to the right round column 122: SY(x, y) = y + (x - 122) / 2 (the four seats, the plates and cups in front of them, the lane behind the chairs, the children's corners, the frog beside a seated one's plate); every other place keeps its screen point if what stands there stands on what it stood on, else it moves the least distance that does (moves, remap). The world point of a place is the surface under it (comer-set.html surfaceAt): the table's top (z 1), a counter's or the stove's top (z 1.3), or the floor (z 0). A frog place q: his feet (q.x + 16, q.y + 27); a person's or a thing's place (x, y): under (x, y - 1)",
   "relative": "what the old code draws or moves relative to a person, the frog or a thing (what is held, the arms, the steam, the streams, the spoons, the bubbles, the clouds, the speaking box) keeps its offsets",
   "paths": "whoever goes behind the table walks round its right end (XP) and along the lane behind the chairs; whoever comes in to sit or leaves from behind comes and goes by the doorway (DOOR); the passage between the counter and the table's left end (PB) leads to the counter and to the back left corner",
   "view": "one view, zoom 1: the 196 x 216 window from x0 32, the old wide one",
@@ -20,55 +20,55 @@
  "layout": {
   "what": "La mesa's room (cocina-kit.js; mesa-set.html at orden/37a 4033fc0) seen closer: the table in the middle with the four chairs behind it, the counter with the sink and the cupboard at the left, the stove with its hood and the window behind the table at the right, the doorway in the left wall",
   "table": {
-   "world": [1.6, 3.672, 8.5, 6.85, 1],
+   "world": [1.709, 3.781, 8.609, 6.959, 1],
    "screen": [
-    [71.91, 90.95],
-    [198.76, 154.37],
-    [140.33, 183.59],
-    [13.48, 120.16]
+    [71.91, 92.95],
+    [198.76, 156.38],
+    [140.33, 185.59],
+    [13.48, 122.16]
    ],
-   "why": "La mesa's table (its far edge at y 3.672 and its four chairs where La mesa has them) made larger: drawn out to 8.5 at the right and 6.85 towards us, and to 1.6 at the left, leaving the passage to the counter"
+   "why": "La mesa's table (its far edge at y 3.781 and its four chairs where La mesa has them) made larger: drawn out to 8.609 at the right and 6.959 towards us, and to 1.709 at the left, leaving the passage to the counter"
   },
   "seats": [
    {
     "seat": 0,
-    "feet": [90, 114],
+    "feet": [90, 116],
     "old": [90, 132],
-    "lap": [90, 106],
-    "world": [2.421, 3.509, 0.6]
+    "lap": [90, 108],
+    "world": [2.53, 3.618, 0.6]
    },
    {
     "seat": 1,
-    "feet": [114, 126],
+    "feet": [114, 128],
     "old": [114, 132],
-    "lap": [114, 118],
-    "world": [3.726, 3.509, 0.6]
+    "lap": [114, 120],
+    "world": [3.835, 3.618, 0.6]
    },
    {
     "seat": 2,
-    "feet": [138, 138],
+    "feet": [138, 140],
     "old": [138, 132],
-    "lap": [138, 130],
-    "world": [5.032, 3.509, 0.6]
+    "lap": [138, 132],
+    "world": [5.141, 3.618, 0.6]
    },
    {
     "seat": 3,
-    "feet": [162, 150],
+    "feet": [162, 152],
     "old": [162, 132],
-    "lap": [162, 142],
-    "world": [6.337, 3.509, 0.6]
+    "lap": [162, 144],
+    "world": [6.446, 3.618, 0.6]
    }
   ],
   "numbers": {
-   "SYC": 126,
+   "SYC": 122,
    "XP": 202,
    "DOOR": [74, 86],
    "PB": [76, 105],
-   "ENTOP": [51, 117, 123, 257],
+   "ENTOP": [53, 119, 125, 259],
    "DETRAS": {
-    "far": 75,
+    "far": 77,
     "left": 100,
-    "passage": 155,
+    "passage": 157,
     "right": 215
    }
   }
@@ -172,24 +172,24 @@
   },
   "mesa": {
    "set": true,
-   "world": [1.57, 3.642, 0, 8.53, 6.88, 1.012],
-   "box": [12, 90, 188, 117],
+   "world": [1.679, 3.751, 0, 8.639, 6.989, 1.012],
+   "box": [12, 92, 188, 117],
    "what": "the table with its checked cloth (its top, the cloth hanging over its near side and its ends, its four legs)",
    "old": {
     "box": [60, 112, 132, 66]
    },
-   "hintBox": [46, 90, 154, 112],
+   "hintBox": [46, 92, 154, 110],
    "hintWhy": "hintBox: its touch box runs off the view at the left (the table's left end runs off the picture): the hint frame shows this part of it, 2 px inside the view; the touch box answers the touches"
   },
   "silla_papa": {
    "set": true,
-   "world": [6.087, 3.089, 0, 6.587, 3.529, 1.45],
-   "box": [157, 116, 18, 42],
+   "world": [6.196, 3.198, 0, 6.696, 3.638, 1.45],
+   "box": [157, 118, 18, 42],
    "byChair": [
-    [85, 80, 18, 42],
-    [109, 92, 18, 42],
-    [133, 104, 18, 42],
-    [157, 116, 18, 42]
+    [85, 82, 18, 42],
+    [109, 94, 18, 42],
+    [133, 106, 18, 42],
+    [157, 118, 18, 42]
    ],
    "what": "papá's chair: the chair at W.sitio.papa (3 when not set: every story has it at 3); boxes: byChair[W.sitio.papa]",
    "old": {
@@ -278,10 +278,10 @@
    "why": "where abuela slides her plate to: 10 px left as the old, along the near edge"
   },
   "LEP.nino": {
-   "world": [5.2217, 6.9623, 0],
+   "world": [5.3849, 7.1255, 0],
    "on": "floor",
    "old": [58, 170],
-   "new": [78, 178],
+   "new": [78, 181],
    "moved": true,
    "why": "a child who asks: on clear floor in front of the table's near edge, near enough to reach the basket"
   },
@@ -302,26 +302,26 @@
    "why": "Luis at the table's back left corner: in the passage between the counter and the table's left end (the sheared point is inside the counter)"
   },
   "EST33.luis.pl": {
-   "world": [1.9862, 3.9444, 1],
+   "world": [2.095, 4.0532, 1],
    "on": "mesa",
    "old": [74, 124],
-   "new": [74, 98],
+   "new": [74, 100],
    "moved": true,
    "why": "his plate at the cloth's far left corner (the rule)"
   },
   "EST33.carmen": {
-   "world": [7.8607, 4.0532, 1],
+   "world": [8.5134, 4.162, 1],
    "on": "mesa",
    "old": [180, 126],
-   "new": [180, 153],
+   "new": [190, 160],
    "moved": true,
-   "why": "Carmen behind the table by its far right corner (the rule)"
+   "why": "Carmen behind the table by its far right corner (the rule), 10 px right: clear of papá's shoulder, beside him rather than behind him (sorted by her own row, as the old)"
   },
   "EST33.carmen.pl": {
-   "world": [7.7519, 3.9444, 1],
+   "world": [7.8607, 4.0532, 1],
    "on": "mesa",
    "old": [180, 124],
-   "new": [180, 151],
+   "new": [180, 153],
    "moved": true,
    "why": "her plate at the cloth's far right (the rule)"
   },
@@ -334,13 +334,14 @@
    "why": "the tray of rolls on the stove's top (the kit's stove, on the back wall behind the table's right end)"
   },
   "aparte33": {
-   "world": [7.4255, 5.2498, 1],
+   "world": [6.8272, 6.0657, 1],
    "on": "mesa",
    "old": [150, 160],
-   "new": [150, 160],
+   "new": [124, 162],
    "scale": 1,
    "what": "the frog's feet (W.cq.x + 16, W.cq.y + 27)",
-   "why": "the frog steps aside to the right of the basket (turno33)"
+   "moved": true,
+   "why": "the frog steps aside to the right of the basket (turno33), left of the butter and the chocolate: the chocolate dish stands behind his place here (it is drawn before him), so he waits to its left, clear of it"
   },
   "tip33": {
    "world": [4.6234, 7.5606, 0],
@@ -359,18 +360,18 @@
    "why": "where abuela takes the last roll from the basket (final33): on clear floor within her arm of it"
   },
   "final33.plato": {
-   "world": [5.8472, 6.9895, 0],
+   "world": [5.956, 7.0983, 0],
    "on": "floor",
    "old": [90, 183],
-   "new": [89, 184],
+   "new": [89, 186],
    "moved": true,
    "why": "on clear floor: the least move off the table's foot"
   },
   "plato33": {
-   "world": [6.2824, 6.9895, 0],
+   "world": [6.3912, 7.0983, 0],
    "on": "floor",
    "old": [100, 184],
-   "new": [97, 188],
+   "new": [97, 190],
    "moved": true,
    "why": "on clear floor: the least move off the table's foot"
   },
@@ -382,56 +383,56 @@
    "why": "the pot of rice on the cloth"
   },
   "FU34": {
-   "world": [5.7393, 6.2833, 1],
+   "world": [5.7393, 6.3921, 1],
    "on": "mesa",
    "old": [96, 160],
-   "new": [100, 154],
+   "new": [98, 155],
    "moved": true,
    "why": "the platter's place on the cloth"
   },
   "PLUIS": {
-   "world": [6.2289, 6.4465, 1],
+   "world": [7.6975, 6.8272, 1],
    "on": "mesa",
    "old": [100, 172],
-   "new": [106, 160],
+   "new": [126, 177],
    "moved": true,
-   "why": "Luis's plate on the cloth's near edge"
+   "why": "Luis's plate on the cloth's near edge, 11 px to the right of where he stands (the old: 18 px left): there the near edge is low enough that his fork goes to it and to his mouth beside his face, not across it (the cloth's near edge falls to the right)"
   },
   "PRANA": {
-   "world": [7.6975, 6.0657, 1],
+   "world": [8.187, 6.2289, 1],
    "on": "mesa",
    "old": [150, 174],
-   "new": [140, 170],
+   "new": [146, 176],
    "moved": true,
-   "why": "the frog's small plate on the cloth, his fork beside it on the cloth too"
+   "why": "the frog's small plate on the cloth's near edge, right of Luis's, his fork beside it on the cloth too"
   },
   "CASA34": {
-   "world": [8.0238, 4.3251, 1],
+   "world": [8.5134, 5.7937, 1],
    "on": "mesa",
    "old": [172, 168],
-   "new": [178, 157],
+   "new": [160, 175],
    "scale": 1,
    "what": "the frog's feet (W.cq.x + 16, W.cq.y + 27)",
    "moved": true,
-   "why": "the frog's place in story 34, on the cloth at its right, clear of the hint frame round whoever sits behind"
+   "why": "the frog's place in story 34: on the cloth by its near right corner, beside his plate: clear of abuela's serving spoon at the right end and of papá's fork at his plate (the old point is at the right end's edge, under papá's fork)"
   },
   "EAT34": {
-   "world": [8.0238, 5.9569, 1],
+   "world": [8.2958, 5.9025, 1],
    "on": "mesa",
    "old": [162, 176],
-   "new": [148, 172],
+   "new": [154, 174],
    "scale": 1,
    "what": "the frog's feet (W.cq.x + 16, W.cq.y + 27)",
    "moved": true,
-   "why": "where the frog eats at his plate, on the cloth, beside it"
+   "why": "where the frog eats at his plate, on the cloth, beside it (behind its right half)"
   },
   "LUIS34": {
-   "world": [7.2614, 6.9895, 0],
+   "world": [7.0167, 7.1255, 0],
    "on": "floor",
    "old": [118, 190],
-   "new": [115, 197],
+   "new": [108, 196],
    "moved": true,
-   "why": "on clear floor: the least move off the table's foot"
+   "why": "Luis stands on clear floor in front of the cloth's near edge, 18 px left of his plate as the old has him 18 px right of it (his fork goes up to it and to his mouth beside his face; the floor under the near edge falls to the right)"
   },
   "PLAT34": {
    "world": [5.6716, 0.5587, 1.3],
@@ -450,10 +451,10 @@
    "why": "where a plate is set on a counter's top: the counter beside the stove (the counter along the left wall is behind the table's left end: whoever stands at it is hidden from the waist down)"
   },
   "CONT34.pie": {
-   "world": [6.6903, 1.1422, 0],
+   "world": [5.3305, 0.9791, 0],
    "on": "floor",
    "old": [49, 152],
-   "new": [212, 138],
+   "new": [190, 124],
    "moved": true,
    "why": "where Carmen stands to set it there: in front of that counter, behind the table"
   },
@@ -474,33 +475,34 @@
    "why": "where the frog hands the spoon back to Luis: on the cloth"
   },
   "K1": {
-   "world": [5.141, 6.4465, 1],
+   "world": [5.3586, 6.5552, 1],
    "on": "mesa",
    "old": [76, 170],
-   "new": [86, 150],
+   "new": [88, 153],
    "moved": true,
    "why": "Luis's cup of milk on the cloth"
   },
   "K2": {
-   "world": [6.2289, 6.4465, 1],
+   "world": [6.2289, 6.5552, 1],
    "on": "mesa",
    "old": [100, 170],
-   "new": [106, 160],
+   "new": [104, 161],
    "moved": true,
    "why": "Carmen's cup of milk on the cloth"
   },
   "AZU": {
-   "world": [7.6431, 6.1201, 1],
+   "world": [7.9695, 6.664, 1],
    "on": "mesa",
    "old": [138, 170],
-   "new": [138, 170],
-   "why": "the sugar bowl (with its lid beside it) on the cloth"
+   "new": [134, 178],
+   "moved": true,
+   "why": "the sugar bowl (with its lid beside it) on the cloth's near edge, 8 rows nearer as the seats' row steps there (SY), 4 px left so that its lid stays on the cloth: under the frog where he sugars papá's cup, not over him"
   },
   "TRANA": {
-   "world": [8.1054, 4.8963, 1],
+   "world": [8.2142, 5.005, 1],
    "on": "mesa",
    "old": [172, 170],
-   "new": [169, 163],
+   "new": [169, 165],
    "moved": true,
    "why": "the frog's cup on the cloth"
   },
@@ -512,25 +514,26 @@
    "why": "the little coffee pot at the right of the table (its foot GRECA35[1] + 4), on the cloth"
   },
   "GRECA35B": {
-   "world": [8.1326, 5.7393, 1],
+   "world": [8.2414, 5.7393, 1],
    "on": "mesa",
    "old": [158, 178],
-   "new": [154, 171],
+   "new": [156, 172],
    "moved": true,
    "why": "where abuela sets the little coffee pot down for the frog, on the cloth"
   },
   "TABU": {
-   "world": [8.0782, 3.9444, 1],
+   "world": [8.187, 4.0532, 1],
    "on": "mesa",
    "old": [186, 154],
-   "new": [186, 154],
+   "new": [186, 156],
+   "moved": true,
    "why": "abuela's cup at the right end of the cloth"
   },
   "CASA35": {
-   "world": [6.5008, 6.3921, 1],
+   "world": [6.6096, 6.5008, 1],
    "on": "mesa",
    "old": [110, 166],
-   "new": [112, 162],
+   "new": [112, 164],
    "scale": 1,
    "what": "the frog's feet (W.cq.x + 16, W.cq.y + 27)",
    "moved": true,
@@ -553,12 +556,12 @@
    "why": "the milk pan on the counter beside the stove (the kit's stove is too narrow for both: its burners are 8 px apart)"
   },
   "AFOGON": {
-   "world": [5.5481, 1.1966, 0],
+   "world": [4.3514, 0.8703, 0],
    "on": "floor",
    "old": [208, 153],
-   "new": [190, 128],
+   "new": [174, 114],
    "moved": true,
-   "why": "where abuela stands to take something off the stove's top: on the floor just in front of the stove"
+   "why": "where abuela stands to take something off the stove's top: on the floor at the stove's front left corner (in front of it her face would be under the hint hand of the second answer card on the wall above)"
   },
   "STOOL": {
    "world": [9.0292, 3.8075, 0],
@@ -577,7 +580,7 @@
    "why": "abuela's way from the stove to the front: right of the table's right end (straight down from there she passes clear of its corner)"
   },
   "frog.inicio": {
-   "world": [7.0992, 6.3377, 1],
+   "world": [7.208, 6.4465, 1],
    "on": "mesa",
    "old": [124, 168],
    "new": [124, 168],
@@ -631,7 +634,7 @@
    "a": "HOME33",
    "b": "CASA34",
    "old": 4,
-   "new": 3
+   "new": 2
   },
   {
    "a": "HOME33",
@@ -649,7 +652,7 @@
    "a": "HOME33",
    "b": "aparte33",
    "old": 3,
-   "new": 2
+   "new": 1
   },
   {
    "a": "HOME33",
@@ -667,7 +670,7 @@
    "a": "FETCH33",
    "b": "CASA34",
    "old": 3,
-   "new": 3
+   "new": 2
   },
   {
    "a": "FETCH33",
@@ -685,7 +688,7 @@
    "a": "FETCH33",
    "b": "aparte33",
    "old": 2,
-   "new": 2
+   "new": 1
   },
   {
    "a": "FETCH33",
@@ -703,13 +706,13 @@
    "a": "CASA34",
    "b": "EAT34",
    "old": 1,
-   "new": 2
+   "new": 1
   },
   {
    "a": "CASA34",
    "b": "CASA35",
    "old": 3,
-   "new": 3
+   "new": 2
   },
   {
    "a": "CASA34",
@@ -721,13 +724,13 @@
    "a": "CASA34",
    "b": "tipa34.rana",
    "old": 2,
-   "new": 2
+   "new": 1
   },
   {
    "a": "CASA34",
    "b": "inicio",
    "old": 2,
-   "new": 3
+   "new": 2
   },
   {
    "a": "EAT34",
@@ -739,7 +742,7 @@
    "a": "EAT34",
    "b": "aparte33",
    "old": 1,
-   "new": 1
+   "new": 2
   },
   {
    "a": "EAT34",
@@ -751,13 +754,13 @@
    "a": "EAT34",
    "b": "inicio",
    "old": 2,
-   "new": 1
+   "new": 2
   },
   {
    "a": "CASA35",
    "b": "aparte33",
    "old": 2,
-   "new": 2
+   "new": 1
   },
   {
    "a": "CASA35",
@@ -781,7 +784,7 @@
    "a": "aparte33",
    "b": "inicio",
    "old": 2,
-   "new": 2
+   "new": 1
   },
   {
    "a": "tipa34.rana",
@@ -793,7 +796,7 @@
  "hopsWhat": "each pair of the frog's named places: the old count (ranaA: ceil(d / 26) hops, 1 to 6, on the old distance) and the count the new distance would give; the port counts on the old distance (HOPAT, moves): every pair keeps the old count",
  "hopTable": {
   "calls": 253,
-  "places": 19,
+  "places": 21,
   "conflicts": [],
   "what": "every ranaA call of the 9 recorded runs played both ways: each new place of the frog (his feet) and the old place it stands for (moves: HOPAT)"
  },
@@ -872,43 +875,43 @@
    },
    "crops": {
     "quieres.si": {
-     "crop": [29, 109, 196, 104],
+     "crop": [28, 111, 196, 104],
      "zoom": 1
     },
     "quieres.no": {
-     "crop": [29, 109, 196, 104],
+     "crop": [28, 111, 196, 104],
      "zoom": 1
     },
     "que_quieres.si": {
-     "crop": [20, 105, 196, 104],
+     "crop": [20, 107, 196, 104],
      "zoom": 1
     },
     "que_quieres.no": {
-     "crop": [20, 105, 196, 104],
+     "crop": [20, 107, 196, 104],
      "zoom": 1
     },
     "me_gusta.si": {
-     "crop": [41, 111, 196, 104],
+     "crop": [42, 112, 196, 104],
      "zoom": 1
     },
     "me_gusta.no": {
-     "crop": [41, 111, 196, 104],
+     "crop": [42, 112, 196, 104],
      "zoom": 1
     },
     "buen_provecho.si": {
-     "crop": [40, 80, 196, 104],
+     "crop": [33, 78, 196, 104],
      "zoom": 1
     },
     "buen_provecho.no": {
-     "crop": [40, 80, 196, 104],
+     "crop": [33, 78, 196, 104],
      "zoom": 1
     },
     "tambien.si": {
-     "crop": [83, 154, 98, 52],
+     "crop": [105, 156, 98, 52],
      "zoom": 2
     },
     "tambien.no": {
-     "crop": [83, 154, 98, 52],
+     "crop": [105, 156, 98, 52],
      "zoom": 2
     },
     "todo.si": {
@@ -920,11 +923,11 @@
      "zoom": 1
     },
     "cafe.si": {
-     "crop": [81, 125, 98, 52],
+     "crop": [80, 126, 98, 52],
      "zoom": 2
     },
     "cafe.no": {
-     "crop": [81, 125, 98, 52],
+     "crop": [80, 126, 98, 52],
      "zoom": 2
     },
     "mucho.si": {
@@ -956,19 +959,19 @@
    },
    "crops": {
     "azucar.si": {
-     "crop": [33, 112, 196, 104],
+     "crop": [32, 112, 196, 104],
      "zoom": 1
     },
     "azucar.no": {
-     "crop": [33, 112, 196, 104],
+     "crop": [32, 112, 196, 104],
      "zoom": 1
     },
     "un_poco.si": {
-     "crop": [86, 141, 98, 52],
+     "crop": [86, 138, 98, 52],
      "zoom": 2
     },
     "un_poco.no": {
-     "crop": [86, 141, 98, 52],
+     "crop": [86, 138, 98, 52],
      "zoom": 2
     }
    }
@@ -1077,10 +1080,12 @@
    "old": [70, 186],
    "uses": ["cual-comer.json buen provecho.no.set.gente.luis"],
    "to": {
-    "floor": [5.4393, 7.615, 0]
+    "floor": [4.4058, 7.5606, 0]
    },
-   "new": [70, 186],
-   "what": "a place (x, y): the surface under (x, y - 1) (floor); the same screen place"
+   "new": [52, 176],
+   "moved": true,
+   "why": "buen provecho.no: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
+   "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
   },
   {
    "kind": "point",
@@ -1099,9 +1104,9 @@
    "old": [88, 172],
    "uses": ["cual-comer.json quieres.no.set.cosas.0"],
    "to": {
-    "mesa": [5.6306, 6.1745, 1]
+    "mesa": [5.6306, 6.2833, 1]
    },
-   "new": [100, 152],
+   "new": [98, 153],
    "moved": true,
    "why": "quieres.no: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1111,11 +1116,11 @@
    "old": [90, 127],
    "uses": ["cual-comer.json buen provecho.si.set.cosas.0"],
    "to": {
-    "mesa": [3.0197, 4.1076, 1]
+    "mesa": [4.4339, 4.2164, 1]
    },
-   "new": [90, 109],
+   "new": [114, 123],
    "moved": true,
-   "why": "buen provecho.si: what stands in front of a seat: the rule's step (SY)",
+   "why": "buen provecho.si: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
   },
   {
@@ -1123,11 +1128,11 @@
    "old": [90, 132],
    "uses": ["cual-comer.json buen provecho.si.set.gente.mama"],
    "to": {
-    "mesa": [3.2917, 4.3795, 1]
+    "mesa": [4.7059, 4.4883, 1]
    },
-   "new": [90, 114],
+   "new": [114, 128],
    "moved": true,
-   "why": "buen provecho.si: a seated one: the rule's step (SY)",
+   "why": "buen provecho.si: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
   },
   {
@@ -1137,9 +1142,9 @@
     "cual-comer.json ¿qué quieres?.no.set.gente.carmen"
    ],
    "to": {
-    "floor": [6.0648, 6.9895, 0]
+    "floor": [6.1736, 7.0983, 0]
    },
-   "new": [93, 186],
+   "new": [93, 188],
    "moved": true,
    "why": "¿qué quieres?.no: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1149,9 +1154,9 @@
    "old": [96, 184],
    "uses": ["cual-comer.json quieres.si.set.gente.abuela"],
    "to": {
-    "floor": [6.1736, 6.9895, 0]
+    "floor": [6.1736, 7.0983, 0]
    },
-   "new": [95, 187],
+   "new": [93, 188],
    "moved": true,
    "why": "quieres.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1166,9 +1171,9 @@
     "cual-comer.json un poco.no.set.gente.abuela"
    ],
    "to": {
-    "floor": [6.2824, 6.9895, 0]
+    "floor": [6.3912, 7.0983, 0]
    },
-   "new": [97, 188],
+   "new": [97, 190],
    "moved": true,
    "why": "también.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1181,9 +1186,9 @@
     "cual-comer.json azúcar.no.set.gente.abuela"
    ],
    "to": {
-    "floor": [6.4999, 6.9895, 0]
+    "floor": [6.4999, 7.0983, 0]
    },
-   "new": [101, 190],
+   "new": [99, 191],
    "moved": true,
    "why": "azúcar.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1193,9 +1198,9 @@
    "old": [104, 184],
    "uses": ["cual-comer.json me gusta.no.set.gente.luis"],
    "to": {
-    "floor": [6.4999, 6.9895, 0]
+    "floor": [6.6087, 7.0983, 0]
    },
-   "new": [101, 190],
+   "new": [101, 192],
    "moved": true,
    "why": "me gusta.no: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1208,9 +1213,9 @@
     "cual-comer.json café.no.set.gente.mama"
    ],
    "to": {
-    "floor": [6.7175, 6.9895, 0]
+    "floor": [6.7175, 7.0983, 0]
    },
-   "new": [105, 192],
+   "new": [103, 193],
    "moved": true,
    "why": "café.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1220,9 +1225,9 @@
    "old": [112, 184],
    "uses": ["cual-comer.json quieres.no.set.gente.abuela"],
    "to": {
-    "floor": [6.8263, 6.9895, 0]
+    "floor": [6.9351, 7.0983, 0]
    },
-   "new": [107, 193],
+   "new": [107, 195],
    "moved": true,
    "why": "quieres.no: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1232,11 +1237,11 @@
    "old": [112, 186],
    "uses": ["cual-comer.json buen provecho.no.set.gente.carmen"],
    "to": {
-    "floor": [6.9351, 6.9895, 0]
+    "floor": [5.1129, 7.0711, 0]
    },
-   "new": [109, 194],
+   "new": [74, 178],
    "moved": true,
-   "why": "buen provecho.no: on clear floor: the least move off the table's foot",
+   "why": "buen provecho.no: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
   },
   {
@@ -1244,11 +1249,11 @@
    "old": [114, 127],
    "uses": ["cual-comer.json buen provecho.si.set.cosas.1"],
    "to": {
-    "mesa": [4.3251, 4.1076, 1]
+    "mesa": [5.7393, 4.2164, 1]
    },
-   "new": [114, 121],
+   "new": [138, 135],
    "moved": true,
-   "why": "buen provecho.si: what stands in front of a seat: the rule's step (SY)",
+   "why": "buen provecho.si: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
   },
   {
@@ -1256,11 +1261,11 @@
    "old": [114, 132],
    "uses": ["cual-comer.json buen provecho.si.set.gente.abuelo"],
    "to": {
-    "mesa": [4.5971, 4.3795, 1]
+    "mesa": [6.0113, 4.4883, 1]
    },
-   "new": [114, 126],
+   "new": [138, 140],
    "moved": true,
-   "why": "buen provecho.si: a seated one: the rule's step (SY)",
+   "why": "buen provecho.si: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
   },
   {
@@ -1268,9 +1273,9 @@
    "old": [114, 179],
    "uses": ["cual-comer.json todo.si.set.perro"],
    "to": {
-    "floor": [6.8263, 6.9895, 0]
+    "floor": [6.9351, 7.0983, 0]
    },
-   "new": [107, 193],
+   "new": [107, 195],
    "moved": true,
    "why": "todo.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1282,9 +1287,9 @@
     "cual-comer.json ¿qué quieres?.si.set.cosas.0"
    ],
    "to": {
-    "mesa": [6.9904, 6.3377, 1]
+    "mesa": [6.9904, 6.4465, 1]
    },
-   "new": [122, 166],
+   "new": [120, 167],
    "moved": true,
    "why": "¿qué quieres?.si: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1294,9 +1299,9 @@
    "old": [118, 177],
    "uses": ["cual-comer.json todo.no.set.perro"],
    "to": {
-    "floor": [6.9351, 6.9895, 0]
+    "floor": [7.0439, 7.0983, 0]
    },
-   "new": [109, 194],
+   "new": [109, 196],
    "moved": true,
    "why": "todo.no: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1306,9 +1311,9 @@
    "old": [124, 184],
    "uses": ["cual-comer.json me gusta.si.set.gente.luis"],
    "to": {
-    "floor": [7.3702, 6.9895, 0]
+    "floor": [7.479, 7.0983, 0]
    },
-   "new": [117, 198],
+   "new": [117, 200],
    "moved": true,
    "why": "me gusta.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1328,9 +1333,9 @@
    "old": [128, 172],
    "uses": ["cual-comer.json un poco.si.set.cosas.1", "cual-comer.json un poco.no.set.cosas.1"],
    "to": {
-    "mesa": [7.4255, 6.3377, 1]
+    "mesa": [7.4255, 6.4465, 1]
    },
-   "new": [130, 170],
+   "new": [128, 171],
    "moved": true,
    "why": "un poco.si: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1340,9 +1345,9 @@
    "old": [128, 174],
    "uses": ["cual-comer.json un poco.si.set.cosas.0", "cual-comer.json un poco.no.set.cosas.0"],
    "to": {
-    "mesa": [7.5343, 6.4465, 1]
+    "mesa": [7.5343, 6.5552, 1]
    },
-   "new": [130, 172],
+   "new": [128, 173],
    "moved": true,
    "why": "un poco.si: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1414,11 +1419,11 @@
    "old": [138, 127],
    "uses": ["cual-comer.json buen provecho.si.set.cosas.2"],
    "to": {
-    "mesa": [5.6306, 4.1076, 1]
+    "mesa": [7.0448, 4.2164, 1]
    },
-   "new": [138, 133],
+   "new": [162, 147],
    "moved": true,
-   "why": "buen provecho.si: what stands in front of a seat: the rule's step (SY)",
+   "why": "buen provecho.si: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
   },
   {
@@ -1426,11 +1431,11 @@
    "old": [138, 132],
    "uses": ["cual-comer.json buen provecho.si.set.gente.carmen"],
    "to": {
-    "mesa": [5.9025, 4.3795, 1]
+    "mesa": [7.3167, 4.4883, 1]
    },
-   "new": [138, 138],
+   "new": [162, 152],
    "moved": true,
-   "why": "buen provecho.si: a seated one: the rule's step (SY)",
+   "why": "buen provecho.si: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
   },
   {
@@ -1450,9 +1455,9 @@
     "cual-comer.json ¿qué quieres?.si.set.cosas.2"
    ],
    "to": {
-    "mesa": [5.7937, 4.162, 1]
+    "mesa": [5.9025, 4.2707, 1]
    },
-   "new": [140, 135],
+   "new": [140, 137],
    "moved": true,
    "why": "¿qué quieres?.si: what stands in front of a seat: the rule's step (SY)",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1464,9 +1469,9 @@
     "cual-comer.json ¿qué quieres?.si.set.gente.abuela"
    ],
    "to": {
-    "floor": [8.0229, 6.9895, 0]
+    "floor": [8.73, 6.4999, 0]
    },
-   "new": [129, 204],
+   "new": [151, 206],
    "moved": true,
    "why": "¿qué quieres?.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1478,9 +1483,9 @@
     "cual-comer.json ¿qué quieres?.no.set.cosas.0"
    ],
    "to": {
-    "mesa": [5.9025, 4.162, 1]
+    "mesa": [6.0113, 4.2707, 1]
    },
-   "new": [142, 136],
+   "new": [142, 138],
    "moved": true,
    "why": "¿qué quieres?.no: what stands in front of a seat: the rule's step (SY)",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1492,9 +1497,9 @@
     "cual-comer.json ¿qué quieres?.no.set.gente.abuela"
    ],
    "to": {
-    "floor": [8.6213, 6.3912, 0]
+    "floor": [8.73, 6.3912, 0]
    },
-   "new": [151, 204],
+   "new": [153, 205],
    "moved": true,
    "why": "¿qué quieres?.no: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1504,9 +1509,9 @@
    "old": [150, 132],
    "uses": ["cual-comer.json me gusta.si.set.cosas.0"],
    "to": {
-    "mesa": [6.5552, 4.3795, 1]
+    "mesa": [6.664, 4.4883, 1]
    },
-   "new": [150, 144],
+   "new": [150, 146],
    "moved": true,
    "why": "me gusta.si: what stands in front of a seat: the rule's step (SY)",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1516,9 +1521,9 @@
    "old": [150, 184],
    "uses": ["cual-comer.json quieres.si.set.gente.luis"],
    "to": {
-    "floor": [8.6213, 5.956, 0]
+    "floor": [8.73, 6.0648, 0]
    },
-   "new": [159, 200],
+   "new": [159, 202],
    "moved": true,
    "why": "quieres.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1528,9 +1533,9 @@
    "old": [152, 134],
    "uses": ["cual-comer.json quieres.no.set.cosas.1"],
    "to": {
-    "mesa": [6.7728, 4.4883, 1]
+    "mesa": [6.8816, 4.5971, 1]
    },
-   "new": [152, 147],
+   "new": [152, 149],
    "moved": true,
    "why": "quieres.no: what stands in front of a seat: the rule's step (SY)",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1543,9 +1548,9 @@
     "cual-comer.json también.no.set.gente.carmen"
    ],
    "to": {
-    "floor": [8.6213, 5.8472, 0]
+    "floor": [8.73, 5.956, 0]
    },
-   "new": [161, 199],
+   "new": [161, 201],
    "moved": true,
    "why": "también.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1555,9 +1560,9 @@
    "old": [152, 184],
    "uses": ["cual-comer.json quieres.no.set.gente.luis"],
    "to": {
-    "floor": [8.6213, 5.956, 0]
+    "floor": [8.73, 5.956, 0]
    },
-   "new": [159, 200],
+   "new": [161, 201],
    "moved": true,
    "why": "quieres.no: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1567,9 +1572,9 @@
    "old": [156, 174],
    "uses": ["cual-comer.json rico.si.set.cosas.0"],
    "to": {
-    "mesa": [8.0238, 5.6306, 1]
+    "mesa": [8.1326, 5.7393, 1]
    },
-   "new": [154, 169],
+   "new": [154, 171],
    "moved": true,
    "why": "rico.si: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1579,9 +1584,9 @@
    "old": [158, 177],
    "uses": ["cual-comer.json todo.si.set.cosas.0"],
    "to": {
-    "mesa": [7.9151, 5.5218, 1]
+    "mesa": [8.0238, 5.6306, 1]
    },
-   "new": [154, 167],
+   "new": [154, 169],
    "moved": true,
    "why": "todo.si: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1606,9 +1611,9 @@
     "cual-comer.json azúcar.si.set.cosas.3"
    ],
    "to": {
-    "mesa": [7.8063, 5.3042, 1]
+    "mesa": [7.9151, 5.413, 1]
    },
-   "new": [156, 164],
+   "new": [156, 166],
    "moved": true,
    "why": "azúcar.si: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1620,9 +1625,9 @@
     "cual-comer.json azúcar.si.set.cosas.2"
    ],
    "to": {
-    "mesa": [8.1054, 5.549, 1]
+    "mesa": [8.2142, 5.549, 1]
    },
-   "new": [157, 169],
+   "new": [159, 170],
    "moved": true,
    "why": "azúcar.si: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1632,11 +1637,11 @@
    "old": [160, 186],
    "uses": ["cual-comer.json buen provecho.no.set.gente.abuelo"],
    "to": {
-    "floor": [8.6213, 5.6297, 0]
+    "floor": [8.7572, 3.4267, 0]
    },
-   "new": [165, 197],
+   "new": [208, 178],
    "moved": true,
-   "why": "buen provecho.no: on clear floor: the least move off the table's foot",
+   "why": "buen provecho.no: buen provecho: one seat to the right (the seated) or at the table's ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
   },
   {
@@ -1646,9 +1651,9 @@
     "cual-comer.json ¿qué quieres?.si.set.cosas.1"
    ],
    "to": {
-    "mesa": [7.9967, 5.3314, 1]
+    "mesa": [8.1054, 5.4402, 1]
    },
-   "new": [159, 166],
+   "new": [159, 168],
    "moved": true,
    "why": "¿qué quieres?.si: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1658,9 +1663,9 @@
    "old": [164, 177],
    "uses": ["cual-comer.json todo.no.set.cosas.0"],
    "to": {
-    "mesa": [7.9151, 5.3042, 1]
+    "mesa": [8.0238, 5.413, 1]
    },
-   "new": [158, 165],
+   "new": [158, 167],
    "moved": true,
    "why": "todo.no: on the cloth: the least move that stands it wholly on the table's top",
    "what": "a place (x, y): the surface under (x, y - 1) (mesa); moved (why)"
@@ -1670,9 +1675,9 @@
    "old": [164, 182],
    "uses": ["cual-comer.json un poco.si.set.gente.carmen", "cual-comer.json un poco.no.set.gente.carmen"],
    "to": {
-    "floor": [8.6213, 5.3033, 0]
+    "floor": [8.73, 5.4121, 0]
    },
-   "new": [171, 194],
+   "new": [171, 196],
    "moved": true,
    "why": "un poco.si: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1682,9 +1687,9 @@
    "old": [172, 184],
    "uses": ["cual-comer.json me gusta.no.set.gente.carmen"],
    "to": {
-    "floor": [8.6213, 5.0857, 0]
+    "floor": [8.73, 5.0857, 0]
    },
-   "new": [175, 192],
+   "new": [177, 193],
    "moved": true,
    "why": "me gusta.no: on clear floor: the least move off the table's foot",
    "what": "a place (x, y): the surface under (x, y - 1) (floor); moved (why)"
@@ -1725,42 +1730,42 @@
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 1,
-   "crop": [29, 109, 196, 104],
+   "crop": [28, 111, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [32,80,196,104]"
   },
   "quieres.no": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 1,
-   "crop": [29, 109, 196, 104],
+   "crop": [28, 111, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [32,80,196,104]"
   },
   "que_quieres.si": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 1,
-   "crop": [20, 105, 196, 104],
+   "crop": [20, 107, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [32,80,196,104]"
   },
   "que_quieres.no": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 1,
-   "crop": [20, 105, 196, 104],
+   "crop": [20, 107, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [32,80,196,104]"
   },
   "me_gusta.si": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 1,
-   "crop": [41, 111, 196, 104],
+   "crop": [42, 112, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [32,80,196,104]"
   },
   "me_gusta.no": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 1,
-   "crop": [41, 111, 196, 104],
+   "crop": [42, 112, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [32,80,196,104]"
   },
   "no_me_gusta.si": {
@@ -1795,28 +1800,28 @@
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 1,
-   "crop": [40, 80, 196, 104],
+   "crop": [33, 78, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [32,80,196,104]"
   },
   "buen_provecho.no": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 1,
-   "crop": [40, 80, 196, 104],
+   "crop": [33, 78, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [32,80,196,104]"
   },
   "tambien.si": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 2,
-   "crop": [83, 154, 98, 52],
+   "crop": [105, 156, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [32,80,196,104]"
   },
   "tambien.no": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 2,
-   "crop": [83, 154, 98, 52],
+   "crop": [105, 156, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [32,80,196,104]"
   },
   "todo.si": {
@@ -1837,42 +1842,42 @@
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 2,
-   "crop": [81, 125, 98, 52],
+   "crop": [80, 126, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [32,80,196,104]"
   },
   "cafe.no": {
    "world": [5.3586, 4.2707, 1],
    "screen": [130, 132],
    "zoom": 2,
-   "crop": [81, 125, 98, 52],
+   "crop": [80, 126, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [32,80,196,104]"
   },
   "azucar.si": {
    "world": [6.8, 5.4402, 1],
    "screen": [135, 156],
    "zoom": 1,
-   "crop": [33, 112, 196, 104],
+   "crop": [32, 112, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [86,130,98,52]"
   },
   "azucar.no": {
    "world": [6.8, 5.4402, 1],
    "screen": [135, 156],
    "zoom": 1,
-   "crop": [33, 112, 196, 104],
+   "crop": [32, 112, 196, 104],
    "what": "the 196 x 104 window over every person and thing of the pair, with 2 px to spare; the old: [86,130,98,52]"
   },
   "un_poco.si": {
    "world": [6.8, 5.4402, 1],
    "screen": [135, 156],
    "zoom": 2,
-   "crop": [86, 141, 98, 52],
+   "crop": [86, 138, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [86,130,98,52]"
   },
   "un_poco.no": {
    "world": [6.8, 5.4402, 1],
    "screen": [135, 156],
    "zoom": 2,
-   "crop": [86, 141, 98, 52],
+   "crop": [86, 138, 98, 52],
    "what": "zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%); the old: [86,130,98,52]"
   },
   "mucho.si": {
@@ -1896,7 +1901,7 @@
    "index": 0,
    "picture": "cafe.si",
    "old": [82.91, 80, 94.19, 104],
-   "crop": [81, 125, 98, 52],
+   "crop": [80, 126, 98, 52],
    "zoom": 2
   },
   {
@@ -1904,7 +1909,7 @@
    "index": 1,
    "picture": "cafe.no",
    "old": [82.91, 80, 94.19, 104],
-   "crop": [81, 125, 98, 52],
+   "crop": [80, 126, 98, 52],
    "zoom": 2
   },
   {
@@ -1912,7 +1917,7 @@
    "index": 2,
    "picture": "azucar.si",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [33, 112, 196, 104],
+   "crop": [32, 112, 196, 104],
    "zoom": 1
   },
   {
@@ -1920,7 +1925,7 @@
    "index": 0,
    "picture": "azucar.si",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [33, 112, 196, 104],
+   "crop": [32, 112, 196, 104],
    "zoom": 1
   },
   {
@@ -1928,7 +1933,7 @@
    "index": 1,
    "picture": "azucar.no",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [33, 112, 196, 104],
+   "crop": [32, 112, 196, 104],
    "zoom": 1
   },
   {
@@ -1936,7 +1941,7 @@
    "index": 2,
    "picture": "cafe.si",
    "old": [82.91, 80, 94.19, 104],
-   "crop": [81, 125, 98, 52],
+   "crop": [80, 126, 98, 52],
    "zoom": 2
   },
   {
@@ -1960,7 +1965,7 @@
    "index": 2,
    "picture": "un_poco.si",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [86, 141, 98, 52],
+   "crop": [86, 138, 98, 52],
    "zoom": 2
   },
   {
@@ -1968,7 +1973,7 @@
    "index": 0,
    "picture": "un_poco.si",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [86, 141, 98, 52],
+   "crop": [86, 138, 98, 52],
    "zoom": 2
   },
   {
@@ -1976,7 +1981,7 @@
    "index": 1,
    "picture": "un_poco.no",
    "old": [111.45, 130, 47.09, 52],
-   "crop": [86, 141, 98, 52],
+   "crop": [86, 138, 98, 52],
    "zoom": 2
   },
   {
@@ -2064,23 +2069,23 @@
    "line": 21,
    "act": "*",
    "src": "const FILA=124,MED=148,FREN=170,TZ=173,ASIENTO=132,ATRAS=122,FR=212,FLO=154;",
-   "to": "const FILA=124,MED=148,FREN=170,TZ=173,ASIENTO=132,ATRAS=118,FR=212,FLO=154,SY=(x,y)=>y+(x-126)/2,XP=202,DOOR=[74,86],PB=[76,105],DETRAS=(x,y)=>(y<75+x/2||(x<80&&y<155-x/2))&&y>100-x/2&&x<215,ENTOP=(x,y)=>y>=51+x/2&&y<=117+x/2&&y>=123-x/2&&y<=257-x/2,MESAPIE=(x,y)=>y>74+x/2&&y<139+x/2&&y>146-x/2&&y<280-x/2,FRONTROW=(x,y)=>{while(MESAPIE(x,y)&&y<212)y++;return y;},LIBRE=(who,tx,ty,h)=>{const Fc=[];for(const k in W.gente){const p=W.gente[k];if(k!==who&&p&&p.vis!==0)Fc.push([R(p.x)-6,R(p.y)-alto(k)+7,12,10]);}if(who!==\"coqui\"&&W.cq&&W.cq.vis){const b=frogBox(W.cq);Fc.push([b.x+2,b.y+R(W.cq.dy),b.w-4,R(b.h*.6)]);}for(const[s,dy]of [[0,0],[1,7],[-1,7],[1,30],[-1,30],[1,44],[-1,44],[2,7],[-2,7],[2,30],[-2,30],[2,44],[-2,44],[1,58],[-1,58],[2,58],[-2,58]]){const x=tx+s*(h+16),y=ty+dy,r=[x-9,y-16,19,13];if(r[0]>=cam[0]&&r[1]>=0&&r[0]+r[2]<=cam[0]+cam[2]&&!Fc.some(f=>f[0]<r[0]+r[2]&&r[0]<f[0]+f[2]&&f[1]<r[1]+r[3]&&r[1]<f[1]+f[3]))return [x,y];}return [tx,ty];},atras=async(id,x,y)=>{const p=G(id),ln=SY(p.x,ATRAS);if(p.y>ln+3&&p.x>80&&!(x>XP-8&&p.x>XP-8)){if(SILLA.some(s=>Math.abs(s-p.x)<6))await mueve(id,p.x+12,SY(p.x+12,ASIENTO-3));await mueve(id,G(id).x,SY(G(id).x,ATRAS));}const q=G(id),a=q.x<80&&q.y>PB[1]-1,b=x<80&&y>PB[1]-1;if(b&&!a&&q.x>86)await mueve(id,86,SY(86,ATRAS));if(a!==b)await mueve(id,PB[0],PB[1]);await mueve(id,x,y);};",
-   "why": "the new geometry, for the lines below: SY(x, y), a row at the table stepping down half a row a pixel to the right (round x 126); XP, the column of the way round the table's right end; DOOR, the doorway in the left wall (whoever comes in to sit or leaves from behind); PB, the passage between the counter and the table's left end; DETRAS, a place behind the table (or in that passage); ENTOP, a foot on the cloth; MESAPIE, a floor point under the table; atras, a walk behind the table (by the lane behind the chairs and the passage)"
+   "to": "const FILA=124,MED=148,FREN=170,TZ=173,ASIENTO=132,ATRAS=118,FR=212,FLO=154,SY=(x,y)=>y+(x-122)/2,XP=202,DOOR=[74,86],PB=[76,105],DETRAS=(x,y)=>(y<77+x/2||(x<80&&y<157-x/2))&&y>100-x/2&&x<215,ENTOP=(x,y)=>y>=53+x/2&&y<=119+x/2&&y>=125-x/2&&y<=259-x/2,MESAPIE=(x,y)=>y>76+x/2&&y<141+x/2&&y>148-x/2&&y<282-x/2,FRONTROW=(x,y)=>{while(MESAPIE(x,y)&&y<212)y++;return y;},LIBRE=(who,tx,ty,h)=>{const Fc=[];for(const k in W.gente){const p=W.gente[k];if(k!==who&&p&&p.vis!==0)Fc.push([R(p.x)-6,R(p.y)-alto(k)+7-(k===\"abuela\"&&p.sent?1:0)+R(p.dy||0),12,10]);}if(who!==\"coqui\"&&W.cq&&W.cq.vis){const b=frogBox(W.cq);Fc.push([b.x+2,b.y+R(W.cq.dy),b.w-4,R(b.h*.6)]);}for(const[s,dy]of [[0,0],[1,7],[-1,7],[1,30],[-1,30],[1,44],[-1,44],[2,7],[-2,7],[2,30],[-2,30],[2,44],[-2,44],[1,58],[-1,58],[2,58],[-2,58]]){const x=tx+s*(h+16),y=ty+dy,r=[x-9,y-16,19,13];if(r[0]>=cam[0]&&r[1]>=0&&r[0]+r[2]<=cam[0]+cam[2]&&!Fc.some(f=>f[0]<r[0]+r[2]&&r[0]<f[0]+f[2]&&f[1]<r[1]+r[3]&&r[1]<f[1]+f[3]))return [x,y];}return [tx,ty];},CARTAS=W=>{const n=W.resp.length,Fc=[],on=(a,b)=>a[0]<b[0]+b[2]&&b[0]<a[0]+a[2]&&a[1]<b[1]+b[3]&&b[1]<a[1]+a[3];for(const k in W.gente){const p=W.gente[k];if(p&&p.vis!==0)Fc.push([R(p.x)-6,R(p.y)-alto(k)+7-(k===\"abuela\"&&p.sent?1:0)+R(p.dy||0),12,10]);}for(const cx of [154,155,156,157,158,159,160,161,162,163,164]){let ok=1;for(let i=0;i<n&&ok;i++){const c=n>2?[R(cx-70+i*50),14,40,36]:i===0?[R(cx-50),14,40,36]:[R(cx+10),14,40,36],fr=[c[0]-12,c[1]-12,64,60],hx=c[0]+8,hy=c[1]+30;if(W.tarjeta&&on([c[0]-2,c[1]-2,44,40],[cam[0]+3,3,68,26]))ok=0;for(const f of Fc){if(on(fr,[f[0]-2,f[1]-6,16,16]))ok=0;for(const o of [0,9])HAND.forEach((rw,j)=>{for(let x=0;x<12;x++)if(rw[x]!==\".\"&&on([hx+x*3,hy+j*3+o,3,3],f))ok=0;});if(!ok)break;}}if(ok)return [cx,14];}return [154,14];},atras=async(id,x,y)=>{const p=G(id),ln=SY(p.x,ATRAS);if(p.y>ln+3&&p.x>80&&!(x>XP-8&&p.x>XP-8)){if(SILLA.some(s=>Math.abs(s-p.x)<6))await mueve(id,p.x+12,SY(p.x+12,ASIENTO-3));await mueve(id,G(id).x,SY(G(id).x,ATRAS));}const q=G(id),a=q.x<80&&q.y>PB[1]-1,b=x<80&&y>PB[1]-1;if(b&&!a&&q.x>86)await mueve(id,86,SY(86,ATRAS));if(a!==b)await mueve(id,PB[0],PB[1]);await mueve(id,x,y);};",
+   "why": "the new geometry, for the lines below: SY(x, y), a row at the table stepping down half a row a pixel to the right (round x 122); XP, the column of the way round the table's right end; DOOR, the doorway in the left wall (whoever comes in to sit or leaves from behind); PB, the passage between the counter and the table's left end; DETRAS, a place behind the table (or in that passage); ENTOP, a foot on the cloth; MESAPIE, a floor point under the table; atras, a walk behind the table (by the lane behind the chairs and the passage)"
   },
   {
    "line": 23,
    "act": "*",
    "src": "const LE=[66,190],CAR=[46,194],FOGON=[208,168],AFOGON=[208,153],DER=[208,176],PUERTA=[0,190];",
-   "to": "const LE=[66,190],CAR=[46,194],FOGON=[208,168],AFOGON=[190,128],DER=[208,176],PUERTA=[0,190];",
+   "to": "const LE=[66,190],CAR=[46,194],FOGON=[208,168],AFOGON=[174,114],DER=[208,176],PUERTA=[0,190];",
    "places": [
     {
      "who": "abuela",
      "old": [208, 153],
-     "new": [190, 128],
-     "world": [5.5481, 1.1966, 0]
+     "new": [174, 114],
+     "world": [4.3514, 0.8703, 0]
     }
    ],
-   "why": "where abuela stands to take something off the stove's top: on the floor just in front of the stove"
+   "why": "where abuela stands to take something off the stove's top: on the floor at the stove's front left corner (in front of it her face would be under the hint hand of the second answer card on the wall above)"
   },
   {
    "line": 331,
@@ -2100,15 +2105,22 @@
    "line": 546,
    "act": "*",
    "src": "const detrasMesa=p=>!p.sent&&!p.est&&p.z==null&&p.y<TZ&&p.x>62&&p.x<190;",
-   "to": "const detrasMesa=p=>!p.sent&&!p.est&&p.z==null&&DETRAS(p.x,p.y)&&p.x<186&&p.y-(p.x-126)/2<ATRAS+4;",
+   "to": "const detrasMesa=p=>!p.sent&&!p.est&&p.z==null&&DETRAS(p.x,p.y)&&p.x<186&&p.y-(p.x-122)/2<ATRAS+3;",
    "why": "detrasMesa: behind the table is behind the chairs (the lane, the passage at its left end), short of the stove (whoever stands at the stove is drawn after what stands on its top, as the old); whoever stands at a chair, getting up or sitting down, is sorted by his row (capa) and drawn after the chairs"
   },
   {
    "line": 547,
    "act": "*",
    "src": "const capa=p=>p.z!=null?[p.z,p.z+.001]:(p.sent||p.est)?[p.y,TZ+.9]:detrasMesa(p)?[40+p.y/100,40.5+p.y/100]:[p.y,p.y<TZ?TZ+.9:p.y+.001];",
-   "to": "const capa=p=>p.z!=null?[p.z,p.z+.001]:(p.sent||p.est)?[p.y-(p.x-126)/2,TZ+.9]:detrasMesa(p)?[40+(p.y-(p.x-126)/2)/100,40.5+(p.y-(p.x-126)/2)/100]:[p.y,p.y<TZ?TZ+.9:p.y+.001];",
-   "why": "capa: whoever sits, stands at a corner or walks behind the table is sorted by his row at the table without its step (y - (x - 126) / 2): who is behind whom along the table is as the old"
+   "to": "const capa=p=>p.z!=null?[p.z,p.z+.001]:(p.sent||p.est)?[p.x<186?p.y-(p.x-122)/2+p.x/10000:p.y,TZ+.9]:detrasMesa(p)?[40+(p.y-(p.x-122)/2)/100,40.5+(p.y-(p.x-122)/2)/100]:[p.y,p.y<TZ?TZ+.9:p.y+.001];",
+   "why": "capa: whoever sits, stands at a corner or walks behind the table (left of x 186: abuela on her stool keeps her own row, as the old) is sorted by his row at the table without its step, and of two in one row the one to the right (nearer on the world's x) is drawn over the other (y - (x - 122) / 2): who is behind whom along the table is as the old"
+  },
+  {
+   "line": 548,
+   "act": "*",
+   "src": "function draw(c,W,a){const q=W.cq,Gt=W.gente||{};c.imageSmoothingEnabled=false;",
+   "to": "function draw(c,W,a){const q=W.cq,Gt=W.gente||{};c.imageSmoothingEnabled=false;if(W.resp)W.respEn=CARTAS(W);",
+   "why": "the answer cards (W.respEn) are placed at every frame while the frog chooses: on the wall above the heads, right of the rounds card, at the first centre of cards.cx whose hint hands fall on no face (CARTAS); the old place [130, 22] is left of the rounds card's right end and its hands would be on the seated faces here (their row steps up to the left)"
   },
   {
    "line": 565,
@@ -2128,7 +2140,7 @@
    "line": 574,
    "act": "*",
    "src": "const HIJA=[213,204],OLLA=[134,158],PLUIS=[100,172],PRANA=[150,174],CASA34=[172,168],EAT34=[162,176],LUIS34=[118,190],FU34=[96,160],PLAT34=[213,118],CONT34=[58,117],SIDE34=[194,166];",
-   "to": "const HIJA=[213,204],OLLA=[134,158],PLUIS=[106,160],PRANA=[140,170],CASA34=[178,157],EAT34=[148,172],LUIS34=[115,197],FU34=[100,154],PLAT34=[204,94],CONT34=[214,98],SIDE34=[204,166];",
+   "to": "const HIJA=[213,204],OLLA=[134,158],PLUIS=[126,177],PRANA=[146,176],CASA34=[160,175],EAT34=[154,174],LUIS34=[108,196],FU34=[98,155],PLAT34=[204,94],CONT34=[214,98],SIDE34=[204,166];",
    "places": [
     {
      "who": "cosa",
@@ -2139,38 +2151,38 @@
     {
      "who": "cosa",
      "old": [100, 172],
-     "new": [106, 160],
-     "world": [6.2289, 6.4465, 1]
+     "new": [126, 177],
+     "world": [7.6975, 6.8272, 1]
     },
     {
      "who": "cosa",
      "old": [150, 174],
-     "new": [140, 170],
-     "world": [7.6975, 6.0657, 1]
+     "new": [146, 176],
+     "world": [8.187, 6.2289, 1]
     },
     {
      "who": "cq.feet",
      "old": [172, 168],
-     "new": [178, 157],
-     "world": [8.0238, 4.3251, 1]
+     "new": [160, 175],
+     "world": [8.5134, 5.7937, 1]
     },
     {
      "who": "cq.feet",
      "old": [162, 176],
-     "new": [148, 172],
-     "world": [8.0238, 5.9569, 1]
+     "new": [154, 174],
+     "world": [8.2958, 5.9025, 1]
     },
     {
      "who": "luis",
      "old": [118, 190],
-     "new": [115, 197],
-     "world": [7.2614, 6.9895, 0]
+     "new": [108, 196],
+     "world": [7.0167, 7.1255, 0]
     },
     {
      "who": "cosa",
      "old": [96, 160],
-     "new": [100, 154],
-     "world": [5.7393, 6.2833, 1]
+     "new": [98, 155],
+     "world": [5.7393, 6.3921, 1]
     },
     {
      "who": "cosa",
@@ -2191,7 +2203,7 @@
      "world": [7.9957, 2.8828, 0]
     }
    ],
-   "why": "story 34's places: OLLA the pot of rice on the cloth; PLUIS Luis's plate on the cloth's near edge; PRANA the frog's small plate on the cloth, his fork beside it on the cloth too; CASA34 the frog's place in story 34, on the cloth at its right, clear of the hint frame round whoever sits behind; EAT34 where the frog eats at his plate, on the cloth, beside it; LUIS34 on clear floor: the least move off the table's foot; FU34 the platter's place on the cloth; PLAT34 the platter waits on the stove's top (the kit's stove and the counter beside it); CONT34 where a plate is set on a counter's top: the counter beside the stove (the counter along the left wall is behind the table's left end: whoever stands at it is hidden from the waist down); SIDE34 abuela's way from the stove to the front: right of the table's right end (straight down from there she passes clear of its corner)"
+   "why": "story 34's places: OLLA the pot of rice on the cloth; PLUIS Luis's plate on the cloth's near edge, 11 px to the right of where he stands (the old: 18 px left): there the near edge is low enough that his fork goes to it and to his mouth beside his face, not across it (the cloth's near edge falls to the right); PRANA the frog's small plate on the cloth's near edge, right of Luis's, his fork beside it on the cloth too; CASA34 the frog's place in story 34: on the cloth by its near right corner, beside his plate: clear of abuela's serving spoon at the right end and of papá's fork at his plate (the old point is at the right end's edge, under papá's fork); EAT34 where the frog eats at his plate, on the cloth, beside it (behind its right half); LUIS34 Luis stands on clear floor in front of the cloth's near edge, 18 px left of his plate as the old has him 18 px right of it (his fork goes up to it and to his mouth beside his face; the floor under the near edge falls to the right); FU34 the platter's place on the cloth; PLAT34 the platter waits on the stove's top (the kit's stove and the counter beside it); CONT34 where a plate is set on a counter's top: the counter beside the stove (the counter along the left wall is behind the table's left end: whoever stands at it is hidden from the waist down); SIDE34 abuela's way from the stove to the front: right of the table's right end (straight down from there she passes clear of its corner)"
   },
   {
    "line": 575,
@@ -2226,8 +2238,8 @@
    "line": 579,
    "act": "*",
    "src": "const NUBE34={barriga:[146,84],montoncor:[160,100]},AIM34=[172,141];",
-   "to": "const NUBE34={barriga:[165,50],montoncor:[173,62]},AIM34=[178,130];",
-   "why": "the frog's thought (story 34): over the stove's side, right of the seated (over the table it would cover their faces: their row steps up to the left), under the answer cards; its trail to his head (AIM34, as the old relative to his place)"
+   "to": "const NUBE34={barriga:[165,54],montoncor:[173,66]},AIM34=[160,148];",
+   "why": "the frog's thought (story 34): over the stove's side, right of the seated (over the table it would cover their faces: their row steps up to the left), under the answer cards (2 rows clear of them); its trail to his head (AIM34, as the old relative to his place)"
   },
   {
    "line": 605,
@@ -2254,43 +2266,43 @@
    "line": 629,
    "act": "*",
    "src": "const K1=[76,170],K2=[100,170],AZU=[138,170],TRANA=[172,170],GRECA35=[152,162],GRECA35B=[158,178],TABU=[186,154],CASA35=[110,166],CANELO=[48,208],TAZON=[98,208],STOOL=[210,178],NUBE35=[102,104],AIM35=[110,139],CAFE35=[199,118],CAZO35=[218,118];",
-   "to": "const K1=[86,150],K2=[106,160],AZU=[138,170],TRANA=[169,163],GRECA35=[152,162],GRECA35B=[154,171],TABU=[186,154],CASA35=[112,162],CANELO=[48,208],TAZON=[98,208],STOOL=[206,184],NUBE35=[104,100],AIM35=[112,135],CAFE35=[190,87],CAZO35=[212,97];",
+   "to": "const K1=[88,153],K2=[104,161],AZU=[134,178],TRANA=[169,165],GRECA35=[152,162],GRECA35B=[156,172],TABU=[186,156],CASA35=[112,164],CANELO=[48,208],TAZON=[98,208],STOOL=[206,184],NUBE35=[104,102],AIM35=[112,137],CAFE35=[190,87],CAZO35=[212,97];",
    "places": [
     {
      "who": "cosa",
      "old": [76, 170],
-     "new": [86, 150],
-     "world": [5.141, 6.4465, 1]
+     "new": [88, 153],
+     "world": [5.3586, 6.5552, 1]
     },
     {
      "who": "cosa",
      "old": [100, 170],
-     "new": [106, 160],
-     "world": [6.2289, 6.4465, 1]
+     "new": [104, 161],
+     "world": [6.2289, 6.5552, 1]
     },
     {
      "who": "cosa",
      "old": [138, 170],
-     "new": [138, 170],
-     "world": [7.6431, 6.1201, 1]
+     "new": [134, 178],
+     "world": [7.9695, 6.664, 1]
     },
     {
      "who": "cosa",
      "old": [172, 170],
-     "new": [169, 163],
-     "world": [8.1054, 4.8963, 1]
+     "new": [169, 165],
+     "world": [8.2142, 5.005, 1]
     },
     {
      "who": "cosa",
      "old": [158, 178],
-     "new": [154, 171],
-     "world": [8.1326, 5.7393, 1]
+     "new": [156, 172],
+     "world": [8.2414, 5.7393, 1]
     },
     {
      "who": "cosa",
      "old": [186, 154],
-     "new": [186, 154],
-     "world": [8.0782, 3.9444, 1]
+     "new": [186, 156],
+     "world": [8.187, 4.0532, 1]
     },
     {
      "who": "cosa",
@@ -2313,11 +2325,11 @@
     {
      "who": "cq.feet",
      "old": [110, 166],
-     "new": [112, 162],
-     "world": [6.5008, 6.3921, 1]
+     "new": [112, 164],
+     "world": [6.6096, 6.5008, 1]
     }
    ],
-   "why": "story 35's places: K1 Luis's cup of milk on the cloth; K2 Carmen's cup of milk on the cloth; AZU the sugar bowl (with its lid beside it) on the cloth; TRANA the frog's cup on the cloth; GRECA35 the little coffee pot at the right of the table (its foot GRECA35[1] + 4), on the cloth; GRECA35B where abuela sets the little coffee pot down for the frog, on the cloth; TABU abuela's cup at the right end of the cloth; CASA35 the frog's place in story 35, on the cloth; CAFE35 the big coffee pot on the stove's left burner; CAZO35 the milk pan on the counter beside the stove (the kit's stove is too narrow for both: its burners are 8 px apart); STOOL abuela's stool, 4 px left and 6 rows nearer: she sits on it wholly inside the view with 3 px to spare, clear of the table's right end; NUBE35 and AIM35 (the frog's thought) as the old relative to CASA35"
+   "why": "story 35's places: K1 Luis's cup of milk on the cloth; K2 Carmen's cup of milk on the cloth; AZU the sugar bowl (with its lid beside it) on the cloth's near edge, 8 rows nearer as the seats' row steps there (SY), 4 px left so that its lid stays on the cloth: under the frog where he sugars papá's cup, not over him; TRANA the frog's cup on the cloth; GRECA35 the little coffee pot at the right of the table (its foot GRECA35[1] + 4), on the cloth; GRECA35B where abuela sets the little coffee pot down for the frog, on the cloth; TABU abuela's cup at the right end of the cloth; CASA35 the frog's place in story 35, on the cloth; CAFE35 the big coffee pot on the stove's left burner; CAZO35 the milk pan on the counter beside the stove (the kit's stove is too narrow for both: its burners are 8 px apart); STOOL abuela's stool, 4 px left and 6 rows nearer: she sits on it wholly inside the view with 3 px to spare, clear of the table's right end; NUBE35 and AIM35 (the frog's thought) as the old relative to CASA35"
   },
   {
    "line": 638,
@@ -2337,14 +2349,14 @@
    "line": 662,
    "act": "*",
    "src": "const fx=cxw<150?cxw-16:cxw+16,fy=146,iz=fx>cxw;await ranaA(fx,fy);await cucharaAR(sp,cxw+(iz?4:-4),cyw-12,iz,5);if(mal)W.lista35=1;await wait(TICK*3);",
-   "to": "const fx=cxw<150?cxw-16:cxw+16,fy=SY(fx,146),iz=fx>cxw;await ranaA(fx,fy);await cucharaAR(sp,cxw+(iz?4:-4),cyw-12,iz,5);if(mal)W.lista35=1;await wait(TICK*3);",
-   "why": "azucarEn: the frog beside the cup a seated man holds stands at the table's row there (SY)"
+   "to": "const fx=cxw<=150?cxw-22:cxw+16,fy=SY(G(who).x,146)+(G(who).x<122?6:-6),iz=fx>cxw;await ranaA(fx,fy);await cucharaAR(sp,cxw+(iz?4:-4),cyw-12,iz,5);if(mal)W.lista35=1;await wait(TICK*3);",
+   "why": "azucarEn: the frog sugars the cup a seated man holds from its left (22 px, the old 16; at papá's raised cup too, which the old did from its right: there he would stand on papá's lap), on the cloth at the man's row stepped as his seat (SY), 6 rows nearer at abuelo's (clear of his chest) and 6 farther at papá's (clear of the cups and the sugar bowl at the cloth's near right)"
   },
   {
    "line": 692,
    "act": "*",
    "src": "async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);if(d<3)return;await hopTo(R(x-16),R(y-27),h||Math.max(1,Math.min(6,Math.ceil(d/26))));}",
-   "to": "async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);if(d<3)return;const k=a=>HOPAT[R(a[0])+\",\"+R(a[1])]||a,o=k([x,y]),f=k([q.x+16,q.y+27]),dd=Math.hypot(o[0]-f[0],o[1]-f[1]);await hopTo(R(x-16),R(y-27),h||Math.max(1,Math.min(6,Math.ceil(dd/26))));}const HOPAT={\"86,126\":[86,146],\"88,127\":[88,146],\"98,138\":[92,148],\"107,129\":[107,138],\"108,128\":[98,148],\"112,162\":[110,166],\"118,148\":[112,152],\"118,165\":[82,174],\"130,164\":[92,162],\"132,149\":[132,146],\"142,148\":[140,162],\"144,178\":[152,180],\"148,165\":[152,172],\"148,172\":[162,176],\"155,153\":[155,138],\"155,161\":[158,168],\"166,166\":[166,146],\"178,157\":[172,168],\"185,161\":[188,168]};",
+   "to": "async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);if(d<3)return;const k=a=>HOPAT[R(a[0])+\",\"+R(a[1])]||a,o=k([x,y]),f=k([q.x+16,q.y+27]),dd=Math.hypot(o[0]-f[0],o[1]-f[1]);await hopTo(R(x-16),R(y-27),h||Math.max(1,Math.min(6,Math.ceil(dd/26))));}const HOPAT={\"80,136\":[86,146],\"82,136\":[88,146],\"96,139\":[92,148],\"107,131\":[107,138],\"110,131\":[98,148],\"112,164\":[110,166],\"118,148\":[112,152],\"118,165\":[82,174],\"120,176\":[124,168],\"124,162\":[150,160],\"126,160\":[132,146],\"128,160\":[166,146],\"130,164\":[92,162],\"142,148\":[140,162],\"145,183\":[152,180],\"150,166\":[152,172],\"154,174\":[162,176],\"155,155\":[155,138],\"155,163\":[158,168],\"160,175\":[172,168],\"185,163\":[188,168]};",
    "why": "ranaA: the frog takes the old number of hops: they are counted on the old picture (HOPAT: each of his places on the new picture, by its feet, and the old place it stands for, from the recorded runs played both ways), not on the new distance (his places stand where the table's top is, so the distances between them changed)"
   },
   {
@@ -2417,13 +2429,13 @@
    "line": 723,
    "act": "*",
    "src": "const LEP=id=>NINO(id)?[58,170]:[52,184];",
-   "to": "const LEP=id=>NINO(id)?[78,178]:[72,184];",
+   "to": "const LEP=id=>NINO(id)?[78,181]:[72,184];",
    "places": [
     {
      "who": "nino",
      "old": [58, 170],
-     "new": [78, 178],
-     "world": [5.2217, 6.9623, 0]
+     "new": [78, 181],
+     "world": [5.3849, 7.1255, 0]
     },
     {
      "who": "adulto",
@@ -2489,7 +2501,7 @@
    "line": 759,
    "act": "*",
    "src": "const EST33={luis:{x:72,y:126,pl:[74,124],dir:-1},carmen:{x:180,y:126,pl:[180,124],dir:1}};",
-   "to": "const EST33={luis:{x:71,y:108,pl:[74,98],dir:-1},carmen:{x:180,y:153,pl:[180,151],dir:1}};",
+   "to": "const EST33={luis:{x:71,y:108,pl:[74,100],dir:-1},carmen:{x:190,y:160,pl:[180,153],dir:1}};",
    "places": [
     {
      "who": "luis",
@@ -2500,23 +2512,23 @@
     {
      "who": "carmen",
      "old": [180, 126],
-     "new": [180, 153],
-     "world": [7.8607, 4.0532, 1]
+     "new": [190, 160],
+     "world": [8.5134, 4.162, 1]
     },
     {
      "who": "cosa",
      "old": [74, 124],
-     "new": [74, 98],
-     "world": [1.9862, 3.9444, 1]
+     "new": [74, 100],
+     "world": [2.095, 4.0532, 1]
     },
     {
      "who": "cosa",
      "old": [180, 124],
-     "new": [180, 151],
-     "world": [7.7519, 3.9444, 1]
+     "new": [180, 153],
+     "world": [7.8607, 4.0532, 1]
     }
    ],
-   "why": "EST33: Luis at the table's back left corner: in the passage between the counter and the table's left end (the sheared point is inside the counter); Carmen behind the table by its far right corner (the rule)"
+   "why": "EST33: Luis at the table's back left corner: in the passage between the counter and the table's left end (the sheared point is inside the counter); Carmen behind the table by its far right corner (the rule), 10 px right: clear of papá's shoulder, beside him rather than behind him (sorted by her own row, as the old)"
   },
   {
    "line": 762,
@@ -2551,13 +2563,13 @@
    "line": 816,
    "act": "*",
    "src": "await ruta(\"abuela\",[[FOGON[0],FR],[PA33S[0]-2,FR],[PA33S[0]-2,184]]);ab.dir=-1;await wait(TICK*2);",
-   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[PA33S[0]-2,FR],[PA33S[0]-2,188]]);ab.dir=-1;await wait(TICK*2);",
+   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[PA33S[0]-2,FR],[PA33S[0]-2,190]]);ab.dir=-1;await wait(TICK*2);",
    "places": [
     {
      "who": "abuela",
      "old": [144, 184],
-     "new": [100, 188],
-     "world": [6.364, 6.9079, 0]
+     "new": [100, 190],
+     "world": [6.4727, 7.0167, 0]
     }
    ],
    "why": "plato33: abuela stands on clear floor in front of her plate"
@@ -2566,16 +2578,16 @@
    "line": 869,
    "act": "*",
    "src": "ab.tiene=[];ab.pose=\"idle\";ab.vis=1;ab.x=PUERTA[0];ab.y=190;ab.dir=1;const aparte=ranaA(150,160);",
-   "to": "ab.tiene=[];ab.pose=\"idle\";ab.vis=1;ab.x=PUERTA[0];ab.y=190;ab.dir=1;const aparte=ranaA(150,160);",
+   "to": "ab.tiene=[];ab.pose=\"idle\";ab.vis=1;ab.x=PUERTA[0];ab.y=190;ab.dir=1;const aparte=ranaA(124,162);",
    "places": [
     {
      "who": "cq.feet",
      "old": [150, 160],
-     "new": [150, 160],
-     "world": [7.4255, 5.2498, 1]
+     "new": [124, 162],
+     "world": [6.8272, 6.0657, 1]
     }
    ],
-   "why": "the frog steps aside to the right of the basket (turno33)"
+   "why": "the frog steps aside to the right of the basket (turno33), left of the butter and the chocolate: the chocolate dish stands behind his place here (it is drawn before him), so he waits to its left, clear of it"
   },
   {
    "line": 870,
@@ -2618,13 +2630,13 @@
    "line": 902,
    "act": "*",
    "src": "await ruta(\"abuela\",[[54,FR],[PA33[0]-2,FR],[PA33[0]-2,183]]);ab.dir=1;await ponPlato(\"abuela\",it,pa);await wait(TICK*3);",
-   "to": "await ruta(\"abuela\",[[54,FR],[PA33[0]-2,FR],[PA33[0]-2,184]]);ab.dir=1;await ponPlato(\"abuela\",it,pa);await wait(TICK*3);",
+   "to": "await ruta(\"abuela\",[[54,FR],[PA33[0]-2,FR],[PA33[0]-2,186]]);ab.dir=1;await ponPlato(\"abuela\",it,pa);await wait(TICK*3);",
    "places": [
     {
      "who": "abuela",
      "old": [134, 183],
-     "new": [90, 184],
-     "world": [5.8744, 6.9623, 0]
+     "new": [90, 186],
+     "world": [5.9832, 7.0711, 0]
     }
    ],
    "why": "final33: abuela on clear floor in front of her plate"
@@ -2676,13 +2688,13 @@
    "line": 985,
    "act": "*",
    "src": "else if(llevaPlato){const it=await toma(id,pl,null,null,{n:3});await mueveTiene(id,it,12,20,3);await delante(id,CONT34[0]-9,152);p.dir=-1;",
-   "to": "else if(llevaPlato){const it=await toma(id,pl,null,null,{n:3});await mueveTiene(id,it,12,20,3);await atras(id,212,138);p.dir=-1;",
+   "to": "else if(llevaPlato){const it=await toma(id,pl,null,null,{n:3});await mueveTiene(id,it,12,20,3);await atras(id,190,124);p.dir=-1;",
    "places": [
     {
      "who": "carmen",
      "old": [49, 152],
-     "new": [212, 138],
-     "world": [6.6903, 1.1422, 0]
+     "new": [190, 124],
+     "world": [5.3305, 0.9791, 0]
     }
    ],
    "why": "levanta34: whoever takes a plate to the counter walks behind the table to the passage in front of the counter (where Carmen stands to set it there: in front of that counter, behind the table)"
@@ -2691,7 +2703,7 @@
    "line": 993,
    "act": "*",
    "src": "if(+o.plato){await delante(id,CONT34[0]-9,152);p.dir=-1;const cp=ob(\"pl_\"+id);const it=await toma(id,cp,null,null,{n:3});await mueveTiene(id,it,12,20,3);",
-   "to": "if(+o.plato){await atras(id,212,138);p.dir=-1;const cp=ob(\"pl_\"+id);const it=await toma(id,cp,null,null,{n:3});await mueveTiene(id,it,12,20,3);",
+   "to": "if(+o.plato){await atras(id,190,124);p.dir=-1;const cp=ob(\"pl_\"+id);const it=await toma(id,cp,null,null,{n:3});await mueveTiene(id,it,12,20,3);",
    "why": "vuelve34: as levanta34"
   },
   {
@@ -2712,13 +2724,13 @@
    "line": 1007,
    "act": "*",
    "src": "await ruta(\"abuela\",[[SIDE34[0],SIDE34[1]],[192,FR],[FU34[0],FR],[FU34[0],184]]);ab.dir=-1;await pon(\"abuela\",pf,fu,FU34[0],FU34[1],4);fu.tenedor={dx:-4,dy:3};await wait(TICK*3);await lw;",
-   "to": "await ruta(\"abuela\",[[SIDE34[0],SIDE34[1]],[SIDE34[0],FR],[FU34[0],FR],[FU34[0],190]]);ab.dir=-1;await pon(\"abuela\",pf,fu,FU34[0],FU34[1],4);fu.tenedor={dx:-4,dy:3};await wait(TICK*3);await lw;",
+   "to": "await ruta(\"abuela\",[[SIDE34[0],SIDE34[1]],[SIDE34[0],FR],[FU34[0],FR],[FU34[0],191]]);ab.dir=-1;await pon(\"abuela\",pf,fu,FU34[0],FU34[1],4);fu.tenedor={dx:-4,dy:3};await wait(TICK*3);await lw;",
    "places": [
     {
      "who": "abuela",
      "old": [96, 184],
-     "new": [100, 190],
-     "world": [6.4727, 7.0167, 0]
+     "new": [98, 191],
+     "world": [6.4727, 7.1255, 0]
     }
    ],
    "why": "turno34: abuela with the platter, straight down the right of the table and along the front to its place, on clear floor in front of it"
@@ -2727,13 +2739,13 @@
    "line": 1009,
    "act": "*",
    "src": "await mueve(\"abuela\",OLLA[0]+22,182);ab.dir=-1;const pot=await toma(\"abuela\",ol,-9,19,{n:3,m:3,extra:{una:\"h\"}});pot.vapor=0;",
-   "to": "await mueve(\"abuela\",OLLA[0]+22,202);ab.dir=-1;const pot=await toma(\"abuela\",ol,-9,19,{n:3,m:3,extra:{una:\"h\"}});pot.vapor=0;",
+   "to": "await mueve(\"abuela\",OLLA[0]+22,204);ab.dir=-1;const pot=await toma(\"abuela\",ol,-9,19,{n:3,m:3,extra:{una:\"h\"}});pot.vapor=0;",
    "places": [
     {
      "who": "abuela",
      "old": [156, 182],
-     "new": [156, 202],
-     "world": [8.6485, 6.1464, 0]
+     "new": [156, 204],
+     "world": [8.7572, 6.2552, 0]
     }
    ],
    "why": "turno34: abuela at the pot's right, on clear floor"
@@ -2749,13 +2761,13 @@
    "line": 1014,
    "act": "*",
    "src": "ab.est=0;await delante(\"abuela\",OLLA[0]-14,184);ab.dir=1;pot.dx=9;",
-   "to": "ab.est=0;await delante(\"abuela\",OLLA[0]-14,200);ab.dir=1;pot.dx=9;",
+   "to": "ab.est=0;await delante(\"abuela\",OLLA[0]-14,202);ab.dir=1;pot.dx=9;",
    "places": [
     {
      "who": "abuela",
      "old": [120, 184],
-     "new": [120, 200],
-     "world": [7.5606, 7.0167, 0]
+     "new": [120, 202],
+     "world": [7.6694, 7.1255, 0]
     }
    ],
    "why": "turno34: in front of the pot, on clear floor"
@@ -2764,13 +2776,13 @@
    "line": 1017,
    "act": "*",
    "src": "await mueve(\"abuela\",OLLA[0]-16,186);ab.dir=-1;const xs=[-9,-4,-9,-4,4,9,7],ys=[-4,-4,-8,-8,-8,-8,-4];",
-   "to": "await mueve(\"abuela\",OLLA[0]-16,199);ab.dir=-1;const xs=[-9,-4,-9,-4,4,9,7],ys=[-4,-4,-8,-8,-8,-8,-4];",
+   "to": "await mueve(\"abuela\",OLLA[0]-16,201);ab.dir=-1;const xs=[-9,-4,-9,-4,4,9,7],ys=[-4,-4,-8,-8,-8,-8,-4];",
    "places": [
     {
      "who": "abuela",
      "old": [118, 186],
-     "new": [118, 199],
-     "world": [7.4518, 7.0167, 0]
+     "new": [118, 201],
+     "world": [7.5606, 7.1255, 0]
     }
    ],
    "why": "turno34: between the pot and the platter, on clear floor"
@@ -2779,13 +2791,13 @@
    "line": 1026,
    "act": "*",
    "src": "await mueve(\"abuela\",OLLA[0]-22,182);ab.dir=1;const pot2=await toma(\"abuela\",ol,9,19,{n:3,m:3,extra:{una:\"h\"}});pot2.v=\"vacio\";pot2.vapor=0;await mueveTiene(\"abuela\",pot2,5,26,3);pot2.ang=.7;await wait(TICK*10);pot2.ang=0;await mueveTiene(\"abuela\",pot2,9,19,3);",
-   "to": "await mueve(\"abuela\",OLLA[0]-22,196);ab.dir=1;const pot2=await toma(\"abuela\",ol,9,19,{n:3,m:3,extra:{una:\"h\"}});pot2.v=\"vacio\";pot2.vapor=0;await mueveTiene(\"abuela\",pot2,5,26,3);pot2.ang=.7;await wait(TICK*10);pot2.ang=0;await mueveTiene(\"abuela\",pot2,9,19,3);",
+   "to": "await mueve(\"abuela\",OLLA[0]-22,198);ab.dir=1;const pot2=await toma(\"abuela\",ol,9,19,{n:3,m:3,extra:{una:\"h\"}});pot2.v=\"vacio\";pot2.vapor=0;await mueveTiene(\"abuela\",pot2,5,26,3);pot2.ang=.7;await wait(TICK*10);pot2.ang=0;await mueveTiene(\"abuela\",pot2,9,19,3);",
    "places": [
     {
      "who": "abuela",
      "old": [112, 182],
-     "new": [112, 196],
-     "world": [7.1255, 7.0167, 0]
+     "new": [112, 198],
+     "world": [7.2342, 7.1255, 0]
     }
    ],
    "why": "turno34: at the pot's left, on clear floor"
@@ -2806,8 +2818,8 @@
     {
      "who": "abuela",
      "old": [78, 184],
-     "new": [82, 184],
-     "world": [5.6569, 7.1799, 0]
+     "new": [80, 184],
+     "world": [5.6025, 7.2342, 0]
     }
    ],
    "why": "final34: abuela left of the platter, on clear floor"
@@ -2816,13 +2828,13 @@
    "line": 1036,
    "act": "*",
    "src": "await mueve(\"abuela\",FU34[0],184);ab.dir=-1;const pf=await toma(\"abuela\",fu,0,20,{n:3,m:3,extra:{una:1,tenedor:fu.tenedor,montones:fu.montones}});pf.v=\"\";",
-   "to": "await mueve(\"abuela\",FU34[0],190);ab.dir=-1;const pf=await toma(\"abuela\",fu,0,20,{n:3,m:3,extra:{una:1,tenedor:fu.tenedor,montones:fu.montones}});pf.v=\"\";",
+   "to": "await mueve(\"abuela\",FU34[0],191);ab.dir=-1;const pf=await toma(\"abuela\",fu,0,20,{n:3,m:3,extra:{una:1,tenedor:fu.tenedor,montones:fu.montones}});pf.v=\"\";",
    "places": [
     {
      "who": "abuela",
      "old": [96, 184],
-     "new": [100, 190],
-     "world": [6.4727, 7.0167, 0]
+     "new": [98, 191],
+     "world": [6.4727, 7.1255, 0]
     }
    ],
    "why": "final34: in front of the platter, on clear floor"
@@ -2874,13 +2886,13 @@
    "lines": [1096, 1182],
    "act": "*",
    "src": "await ruta(\"abuela\",[[FOGON[0],FR],[GRECA35[0]+4,FR],[GRECA35[0]+4,190]]);ab.dir=-1;const it=await toma(\"abuela\",jt,6,22,{n:3,m:3});it.flip=true;",
-   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[GRECA35[0]+4,FR],[GRECA35[0]+4,202]]);ab.dir=-1;const it=await toma(\"abuela\",jt,6,22,{n:3,m:3});it.flip=true;",
+   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[GRECA35[0]+4,FR],[GRECA35[0]+4,204]]);ab.dir=-1;const it=await toma(\"abuela\",jt,6,22,{n:3,m:3});it.flip=true;",
    "places": [
     {
      "who": "abuela",
      "old": [156, 190],
-     "new": [156, 202],
-     "world": [8.6485, 6.1464, 0]
+     "new": [156, 204],
+     "world": [8.7572, 6.2552, 0]
     }
    ],
    "why": "pote35: abuela in front of the little pot, on clear floor"
@@ -2889,13 +2901,13 @@
    "line": 1097,
    "act": "*",
    "src": "await ruta(\"abuela\",[[GRECA35B[0]-10,190]]);ab.dir=-1;},",
-   "to": "await ruta(\"abuela\",[[GRECA35B[0]-10,208]]);ab.dir=-1;},",
+   "to": "await ruta(\"abuela\",[[GRECA35B[0]-10,209]]);ab.dir=-1;},",
    "places": [
     {
      "who": "abuela",
      "old": [148, 190],
-     "new": [144, 208],
-     "world": [8.6485, 6.7991, 0]
+     "new": [146, 209],
+     "world": [8.7572, 6.7991, 0]
     }
    ],
    "why": "pote35: in front of the frog, on clear floor"
@@ -2947,14 +2959,14 @@
    "line": 1143,
    "act": "*",
    "src": "await ruta(\"abuela\",[[FOGON[0],FR],[AZU[0]+4,FR],[AZU[0]+4,188]]);ab.dir=-1;const bowl=await toma(\"abuela\",az,9,26,{n:3,m:3});",
-   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[AZU[0]+4,FR],[AZU[0]+4,209]]);ab.dir=-1;const bowl=await toma(\"abuela\",az,9,26,{n:3,m:3});",
+   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[AZU[0]+4,FR],[AZU[0]+4,211]]);ab.dir=-1;const bowl=await toma(\"abuela\",az,9,26,{n:3,m:3});",
    "why": "story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan's counter, just in front of it"
   },
   {
    "line": 1155,
    "act": "*",
    "src": "await delante(\"abuela\",AZU[0]+4,188);ab.dir=-1;await pon(\"abuela\",bowl,az,AZU[0],AZU[1],4);az.tomada=0;",
-   "to": "await delante(\"abuela\",AZU[0]+4,209);ab.dir=-1;await pon(\"abuela\",bowl,az,AZU[0],AZU[1],4);az.tomada=0;",
+   "to": "await delante(\"abuela\",AZU[0]+4,211);ab.dir=-1;await pon(\"abuela\",bowl,az,AZU[0],AZU[1],4);az.tomada=0;",
    "why": "story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan's counter, just in front of it"
   },
   {
@@ -2975,14 +2987,14 @@
    "line": 1164,
    "act": "*",
    "src": "await ruta(\"abuela\",[[FOGON[0],FR],[TRANA[0]+26,FR],[TRANA[0]+26,190]]);ab.dir=-1;{const jp=ob(\"jarrita\");if(jp.vis!==0&&jp.x>140&&jp.x<190){const it=await toma(\"abuela\",jp,6,22,{n:3,m:3});it.flip=true;await ruta(\"abuela\",[[GRECA35[0]+4,190]]);await pon(\"abuela\",it,jp,GRECA35[0],GRECA35[1]+4,4);}}",
-   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[TRANA[0]+26,FR],[TRANA[0]+26,190]]);ab.dir=-1;{const jp=ob(\"jarrita\");if(jp.vis!==0&&jp.x>140&&jp.x<190){const it=await toma(\"abuela\",jp,6,22,{n:3,m:3});it.flip=true;await ruta(\"abuela\",[[GRECA35[0]+4,202]]);await pon(\"abuela\",it,jp,GRECA35[0],GRECA35[1]+4,4);}}",
+   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[TRANA[0]+26,FR],[TRANA[0]+26,190]]);ab.dir=-1;{const jp=ob(\"jarrita\");if(jp.vis!==0&&jp.x>140&&jp.x<190){const it=await toma(\"abuela\",jp,6,22,{n:3,m:3});it.flip=true;await ruta(\"abuela\",[[GRECA35[0]+4,204]]);await pon(\"abuela\",it,jp,GRECA35[0],GRECA35[1]+4,4);}}",
    "why": "story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan's counter, just in front of it"
   },
   {
    "line": 1169,
    "act": "*",
    "src": "if(enBanco){await ruta(\"abuela\",[[STOOL[0]-16,STOOL[1]+8]]);ab.dir=1;}else{await ruta(\"abuela\",[[TABU[0]+12,FR-8],[TABU[0]+12,178]]);ab.dir=-1;}",
-   "to": "if(enBanco){await ruta(\"abuela\",[[STOOL[0]-16,STOOL[1]+8]]);ab.dir=1;}else{await ruta(\"abuela\",[[TABU[0]+12,FR-8],[TABU[0]+12,181]]);ab.dir=-1;}",
+   "to": "if(enBanco){await ruta(\"abuela\",[[STOOL[0]-16,STOOL[1]+8]]);ab.dir=1;}else{await ruta(\"abuela\",[[TABU[0]+12,FR-8],[TABU[0]+12,183]]);ab.dir=-1;}",
    "why": "story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan's counter, just in front of it"
   },
   {
@@ -2997,7 +3009,7 @@
    "lines": [1096, 1182],
    "act": "*",
    "src": "await ruta(\"abuela\",[[FOGON[0],FR],[GRECA35[0]+4,FR],[GRECA35[0]+4,190]]);ab.dir=-1;const it=await toma(\"abuela\",jt,6,22,{n:3,m:3});it.flip=true;",
-   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[GRECA35[0]+4,FR],[GRECA35[0]+4,202]]);ab.dir=-1;const it=await toma(\"abuela\",jt,6,22,{n:3,m:3});it.flip=true;",
+   "to": "await ruta(\"abuela\",[[FOGON[0],FR],[GRECA35[0]+4,FR],[GRECA35[0]+4,204]]);ab.dir=-1;const it=await toma(\"abuela\",jt,6,22,{n:3,m:3});it.flip=true;",
    "why": "story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan's counter, just in front of it"
   },
   {
@@ -3018,7 +3030,7 @@
    "line": 1195,
    "act": "*",
    "src": "await ruta(\"abuela\",[[STOOL[0]-18,FR-8],[GRECA35[0]+4,FR-8],[GRECA35[0]+4,190]]);ab.dir=-1;{const jt=ob(\"jarrita\");await pon(\"abuela\",gr,jt,GRECA35[0],GRECA35[1]+4,4);}",
-   "to": "await ruta(\"abuela\",[[STOOL[0]-18,FR-8],[GRECA35[0]+4,FR-8],[GRECA35[0]+4,202]]);ab.dir=-1;{const jt=ob(\"jarrita\");await pon(\"abuela\",gr,jt,GRECA35[0],GRECA35[1]+4,4);}",
+   "to": "await ruta(\"abuela\",[[STOOL[0]-18,FR-8],[GRECA35[0]+4,FR-8],[GRECA35[0]+4,204]]);ab.dir=-1;{const jt=ob(\"jarrita\");await pon(\"abuela\",gr,jt,GRECA35[0],GRECA35[1]+4,4);}",
    "why": "story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan's counter, just in front of it"
   },
   {
@@ -3047,7 +3059,7 @@
    "line": 1216,
    "act": "*",
    "src": "if(k===\"jarrita\"){const jt=ob(\"jarrita\");await mostrar(jt,jt.x+4,190);}",
-   "to": "if(k===\"jarrita\"){const jt=ob(\"jarrita\");await mostrar(jt,jt.x+4,FRONTROW(jt.x+4,190));}",
+   "to": "if(k===\"jarrita\"){const jt=ob(\"jarrita\");await mostrar(jt,jt.x+4,FRONTROW(jt.x,190));}",
    "why": "story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan's counter, just in front of it"
   },
   {
@@ -3078,6 +3090,12 @@
    "quien": [-11, -20, 23, 19],
    "lluvia": [-11, -20, 23, 19]
   }
+ },
+ "cards": {
+  "what": "the answer cards (W.respEn, juego.js respBox: two cards at cx - 50 and cx + 10, three at cx - 70 + 50 i; y the top; 40 x 36): set by comer.js CARTAS at every frame while the frog chooses, the first cx of this list whose cards are 2 px clear of the rounds card (when it is up), whose hint hands (juego.js HAND from the card's foot - 6) are on no face and whose hint frames (card +- 12) cross no head; the frames are 2 px inside the view and the cards 2 px right of the rounds card at every cx",
+  "cx": [154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164],
+  "y": 14,
+  "old": [130, 22]
  },
  "talk": {
   "what": "where a bubble goes: the first of these places whose bubble is wholly inside the view, clear of the corner card and of every face; if none is, the first (the old)",
@@ -8528,7 +8546,7 @@
      "ab.tiene=[];ab.pose=\"idle\";ab.vis=1;ab.x=PUERTA[0];ab.y=190;"
     ]
    },
-   "note": "moved (moves): the frog steps aside to the right of the basket (turno33); every other place here keeps its screen point (the rule)"
+   "note": "moved (moves): the frog steps aside to the right of the basket (turno33), left of the butter and the chocolate; every other place here keeps its screen point (the rule)"
   },
   {
    "line": 870,
@@ -11419,22 +11437,22 @@
  ],
  "checks": {
   "notes": [
-   "inventory: 23 things (old 23), 2 frog places of LUGAR (old 2), 1 view (old 1), 60 positions (old 60), 12 review pairs of cual-comer (24 pictures), 12 level pictures (old 12), 831 lines of comer.js with numbers named in code (306 of them with places, each with its fate), 90 moves, 1 baked state (the old 158 states)",
+   "inventory: 23 things (old 23), 2 frog places of LUGAR (old 2), 1 view (old 1), 60 positions (old 60), 12 review pairs of cual-comer (24 pictures), 12 level pictures (old 12), 831 lines of comer.js with numbers named in code (306 of them with places, each with its fate), 91 moves, 1 baked state (the old 158 states)",
    "hops: every run of the port's play makes the recorded run's sounds, the blips aside, in the same order: 363 hops in all (0 runs differ)",
    "walks: every walk of the frog (every hopTo call) of the 9 runs, on the old page and with the port, walk by walk: 207 walks, 0 with another hop count or missing",
-   "set things: the table's pixels all inside its touch box [12,90,188,117] (its hint box [46,90,154,112]), papá's chair's inside its box [157,116,18,42]; every other part the room's (cocina, its box the whole picture, its hint box [46,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: the table's pixels in papá's chair's box (they answer the chair: it is before the table in the hit order, as the old): 378; puerta x 60-83 y 21-82; ventana x 154-183 y 23-62; alacena x 11-57 y 27-65; campana x 185-217 y 40-71; fregadero x 42-61 y 62-77; mostrador x 0-73 y 62-133; salpicadero x 197-217 y 66-89; estufa x 181-216 y 80-126; silla0 x 92-101 y 81-104; mesa x 12-199 y 90-188; mostrador2 x 201-239 y 90-143; silla1 x 116-125 y 93-116; silla2 x 140-149 y 105-128; silla3 x 164-173 y 117-140; mesa.patas x 20-191 y 129-202",
+   "set things: the table's pixels all inside its touch box [12,92,188,117] (its hint box [46,92,154,110]), papá's chair's inside its box [157,118,18,42]; every other part the room's (cocina, its box the whole picture, its hint box [46,14,168,188]); each part whole inside the view with 3 px to spare or clearly running off it: the table's pixels in papá's chair's box (they answer the chair: it is before the table in the hit order, as the old): 378; puerta x 60-83 y 21-82; ventana x 154-183 y 23-62; alacena x 11-57 y 27-65; campana x 185-217 y 40-71; fregadero x 42-61 y 62-77; mostrador x 0-73 y 62-133; salpicadero x 197-217 y 66-89; estufa x 181-216 y 80-126; silla0 x 92-101 y 83-106; mostrador2 x 201-239 y 90-143; mesa x 12-199 y 92-190; silla1 x 116-125 y 95-118; silla2 x 140-149 y 107-130; silla3 x 164-173 y 119-142; mesa.patas x 20-191 y 131-204",
    "light: the kit's one rule; every castShadow call of the set darkens the floor, each shadow within 4 px of its own thing (mesa.patas 4 calls, 36 px: the table's and the chairs' legs, thin, each a short contact shadow at its foot on its shadow side); no floor pixel within 3 px of a leg on its lit side differs from the floor without the leg (the kit's floor dimming on the shadow side only)",
    "window and doorway: the kit's (La mesa's): what shows through them is outside, the window 59 px of sky and 67 of the bush, the doorway 234 px of sky and 125 of the patio's hedge, each with its frame standing out of the wall and its reveal (the window a sill)",
-   "thin things of the set against what is behind them (WCAG contrast ratio of the mean luminances; each part's pixels): mesa.patas 5.85 (98% of its pixels at 2.0 or more); fregadero 2.09 (73% of its pixels at 2.0 or more) (the sink and its tap: fregadero)",
-   "drawn: at 55045 moments (every tick inside the acts of the port's play of the 9 runs, every step's end, every pair picture) composed as comer.js draws them (each item owns what it drew last; the chairs drawn again over whoever is behind them at sortY 60, the table at the old table's place TZ): no part of the set over any face; 2548 sittings at step ends, each with no more of the set over the one who sits than the old table had (8 px to spare); 191 things standing on the cloth or on the stove's or a counter's top, each with 90% and more of its foot over it and nothing of the set over it; 1801 step ends of someone standing in the view, each on clear floor",
-   "seen: at 6062 person-, dog- and frog-moments (every step's end of the 9 runs) each seen no less than in the old picture less 10%, the face no less (181 less); everyone and everything wholly inside the view in the old picture of a moment wholly inside with 3 px to spare (0 not)",
+   "thin things of the set against what is behind them (WCAG contrast ratio of the mean luminances; each part's pixels): mesa.patas 5.94 (98% of its pixels at 2.0 or more); fregadero 2.09 (73% of its pixels at 2.0 or more) (the sink and its tap: fregadero)",
+   "drawn: at 55660 moments (every tick inside the acts of the port's play of the 9 runs, every step's end, every pair picture) composed as comer.js draws them (each item owns what it drew last; the chairs drawn again over whoever is behind them at sortY 60, the table at the old table's place TZ): no part of the set over any face; 2548 sittings at step ends, each with no more of the set over the one who sits than the old table had (8 px to spare; both pictures with the people alone, so that what the frog or a thing covers counts for neither); 191 things standing on the cloth or on the stove's or a counter's top, each with 90% and more of its foot over it and nothing of the set over it; 1801 step ends of someone standing in the view, each on clear floor",
+   "seen: at 6062 person-, dog- and frog-moments (every step's end of the 9 runs) each seen no less than in the old picture less 10%, the face no less (0 less); everyone and everything wholly inside the view in the old picture of a moment wholly inside with 3 px to spare (0 not)",
    "bubbles: 29 thought clouds (a person's, the frog's) at every moment wholly inside the view, clear of the rounds card, on no face but their thinker's; at 324 moments someone speaks: the tail of the speech bubble (juego.js donde) inside the view, and the empty bubble comer.js draws over the speaker with the words hidden (hab, 19 x 13 over the head) wholly inside the view and on no other face",
-   "asks: 23 distinct asks (for abuelo, choc, di_buen, di_lleno, di_mucho, di_poco, di_tambien, mama, mant, papa): every hint frame (box +- 12) inside the view with 2 px to spare (35 at the least; the table and the room by their hint boxes), no frame's rings across a face where the old frame's were not (as the old: buen-provecho beats.41 (mama) carmen's face; buen-provecho beats.53 (abuelo) carmen's face; buen-provecho beats.79 (abuelo) carmen's face; que-quieres beats.28 (mant) the frog's face; que-quieres beats.46 (mant) the frog's face; que-quieres beats.63 (mant) the frog's face; que-quieres beats.70 (mant) the frog's face), the hint hand on no face and not cut by the view's edge where the old was not (as the old: buen-provecho beats.53 (abuelo): on the frog's face; buen-provecho beats.79 (abuelo): on the frog's face); 16 answer cards, each with its lit frame and glow inside the view (6 at the least), 2 px clear of the rounds card and of everyone's head and body, over no thing; the hint round each card 2 px inside the view and across no head, its hand on no face; 11 times a thing asked for or among the choices: whole in the view, covered no more than in the old picture, a plain surface round it",
+   "asks: 23 distinct asks (for abuelo, choc, di_buen, di_lleno, di_mucho, di_poco, di_tambien, mama, mant, papa): every hint frame (box +- 12) inside the view with 2 px to spare (35 at the least; the table and the room by their hint boxes), no frame's rings across a face where the old frame's were not (as the old: buen-provecho beats.41 (mama) carmen's face; buen-provecho beats.53 (abuelo) carmen's face; buen-provecho beats.79 (abuelo) carmen's face; que-quieres beats.28 (mant) the frog's face; que-quieres beats.46 (mant) the frog's face; que-quieres beats.63 (mant) the frog's face; que-quieres beats.70 (mant) the frog's face), the hint hand on no face and not cut by the view's edge where the old was not (as the old: buen-provecho beats.53 (abuelo): on the frog's face; buen-provecho beats.79 (abuelo): on the frog's face); 16 answer cards, each with its lit frame and glow inside the view (-2 at the least), 2 px clear of the rounds card and of everyone's head and body, over no thing; the hint round each card 2 px inside the view and across no head, its hand on no face; 11 times a thing asked for or among the choices: whole in the view, covered no more than in the old picture, a plain surface round it",
    "heads: at 5708 face-moments (step ends) nobody's head against the window, the wall cupboard or the hood where the old picture kept it clear",
-   "steam: 16085 distinct puffs (every frame of their rise, as comer.js draws them with the help's darker edge) against what is directly behind them (the picture without what steams): each row of a wisp drawn at alpha .4 and more seen by its edge or its core (WCAG contrast of that colour over what is behind it), the mean over its rows 2.14 at the least (steam over t_rana (cafe-con-azucar right t 200720))",
-   "preview: at every step's end of the 9 recorded runs (17730 places) comer-preview.html puts everyone exactly where the sheet's rule does (0 differ); of the 17272 places at rest, 9743 are where the port's play has them by the rule alone, the other 7529 are placed by the moved code itself (checks.rule)",
-   "pairs: 24 review pictures (the 12 level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet), no zoom 2 picture with a cut-off piece of the set; what differs: quieres: gente, cosas; que_quieres: gente, cosas; me_gusta: gente, cosas; no_me_gusta: gente; rico: gente, cosas; buen_provecho: gente, cosas; tambien: gente; todo: cosas, perro; cafe: gente, cosas; azucar: gente, cosas; un_poco: gente; mucho: cosas; the pixels that differ between yes and no (keep 1.5%): quieres 11.6%, que_quieres 19.85%, me_gusta 12.31%, no_me_gusta 4.93%, rico 4.49%, buen_provecho 22.89%, tambien 3.41%, todo 15.45%, cafe 5.85%, azucar 4.53%, un_poco 5.12%, mucho 3.89%; 12 people in zoom 2 pictures, each with the whole head inside with 2 px to spare",
-   "states: one baked state, reached by every moment, pair and level picture; its first bake in a fresh page under 150 ms (the median of five); hands beyond their arm in the port's play: 94 kinds (checks.reach)"
+   "steam: 16544 distinct puffs (every frame of their rise, as comer.js draws them with the help's darker edge) against what is directly behind them (the picture without what steams): each row of a wisp drawn at alpha .4 and more seen by its edge or its core (WCAG contrast of that colour over what is behind it), the mean over its rows 2.1 at the least (steam over t_rana (cafe-con-azucar right t 207580))",
+   "preview: at every step's end of the 9 recorded runs (17730 places) comer-preview.html puts everyone exactly where the sheet's rule does (0 differ); of the 17272 places at rest, 9660 are where the port's play has them by the rule alone, the other 7612 are placed by the moved code itself (checks.rule)",
+   "pairs: 24 review pictures (the 12 level pictures are among them): everything in each whole with 2 px to spare (a person in a zoom 2 picture whole but for the feet), no zoom 2 picture with a cut-off piece of the set; what differs: quieres: gente, cosas; que_quieres: gente, cosas; me_gusta: gente, cosas; no_me_gusta: gente; rico: gente, cosas; buen_provecho: gente, cosas; tambien: gente; todo: cosas, perro; cafe: gente, cosas; azucar: gente, cosas; un_poco: gente; mucho: cosas; the pixels that differ between yes and no (keep 1.5%): quieres 13.86%, que_quieres 16.67%, me_gusta 12.31%, no_me_gusta 4.93%, rico 4.38%, buen_provecho 23.12%, tambien 3.41%, todo 15.45%, cafe 5.85%, azucar 4.56%, un_poco 5.3%, mucho 3.89%; 12 people in zoom 2 pictures, each with the whole head inside with 2 px to spare",
+   "states: one baked state, reached by every moment, pair and level picture; its first bake in a fresh page under 150 ms (the median of five); hands beyond their arm in the port's play: 96 kinds (checks.reach)"
   ],
   "walks": {
    "count": 207,
@@ -11866,46 +11884,49 @@
   ],
   "rule": {
    "places": 17272,
-   "differ": 7529,
+   "differ": 7612,
    "what": "places at rest the rule (moves.places, remap) does not name and the port's play has elsewhere: the code moves them (constants and lines of moves), the port reads them from there",
    "examples": [
-    "mama [90,132] -> [90,114]",
-    "carmen [114,132] -> [114,126]",
-    "abuelo [138,132] -> [138,138]",
-    "cosa.pl_mama [90,124] -> [90,106]",
-    "cosa.pl_carmen [114,124] -> [114,118]",
-    "cosa.pl_papa [162,124] -> [162,142]",
-    "cosa.pl_abuelo [138,124] -> [138,130]",
-    "cosa.tf_rana [162,173] -> [152,169]",
-    "cosa.tf_mama [108,123] -> [108,114]",
-    "cosa.tf_carmen [132,123] -> [132,126]",
-    "cosa.tf_abuelo [156,123] -> [156,138]",
-    "cq [136,153] -> [128,151]"
+    "mama [90,132] -> [90,116]",
+    "carmen [114,132] -> [114,128]",
+    "abuelo [138,132] -> [138,140]",
+    "cosa.pl_mama [90,124] -> [90,108]",
+    "cosa.pl_carmen [114,124] -> [114,120]",
+    "cosa.pl_papa [162,124] -> [162,144]",
+    "cosa.pl_abuelo [138,124] -> [138,132]",
+    "cosa.tf_rana [162,173] -> [158,175]",
+    "cosa.tf_mama [108,123] -> [108,116]",
+    "cosa.tf_carmen [132,123] -> [132,128]",
+    "cosa.tf_abuelo [156,123] -> [156,140]",
+    "cq [136,153] -> [129,156]"
    ]
   },
   "reach": {
    "what": "comer.js's own measure (window.__ALC): a hand drawn farther than its arm reaches, in the port's play (the old page's is empty); the arm is drawn stretched there",
    "hands": [
-    "abuela:azucarera 19>16",
-    "abuela:bandeja 19>16",
-    "abuela:bandeja 22>16",
+    "abuela:bandeja 20>16",
+    "abuela:bandeja 23>16",
+    "abuela:bandeja 29>16",
+    "abuela:brazo 18>16",
     "abuela:brazo 19>16",
     "abuela:brazo 20>16",
     "abuela:brazo 21>16",
-    "abuela:brazo 22>16",
-    "abuela:cafetera 19>16",
+    "abuela:brazo 23>16",
+    "abuela:brazo 29>16",
+    "abuela:fuente 23>16",
+    "abuela:jarrita 19>16",
     "abuela:pano 18>16",
     "abuela:pano 20>16",
     "abuela:plato 18>16",
     "abuela:plato 22>16",
     "abuela:plato 25>16",
     "abuela:tiltcafetera 24>16",
-    "abuela:tiltcafetera 27>16",
+    "abuela:tiltcafetera 25>16",
     "abuela:tiltcafetera 39>16",
-    "abuela:tiltcazo 26>16",
+    "abuela:tiltcazo 22>16",
     "abuela:tiltcazo 39>16",
+    "abuela:tiltjarrita 18>16",
     "abuela:tiltjarrita 21>16",
-    "abuela:tiltjarrita 22>16",
     "abuela:uten 19>16",
     "abuelo:brazo 20>18",
     "abuelo:brazo 21>18",
@@ -11920,35 +11941,34 @@
     "abuelo:tenedor 32>18",
     "abuelo:tenedorH 25>18",
     "abuelo:uten 22>18",
+    "abuelo:uten 23>18",
     "abuelo:uten 27>18",
     "abuelo:uten 29>18",
     "abuelo:uten 35>18",
     "abuelo:uten 41>18",
     "carmen:brazo 16>14",
     "carmen:brazo 17>14",
+    "carmen:brazo 18>14",
     "carmen:brazo 19>14",
     "carmen:brazo 20>14",
     "carmen:brazo 21>14",
+    "carmen:brazo 23>14",
     "carmen:plato 16>14",
-    "carmen:plato 17>14",
-    "carmen:plato 18>14",
     "carmen:plato 19>14",
-    "carmen:plato 21>14",
     "carmen:rollo 16>14",
     "carmen:rollo 17>14",
-    "carmen:rollo 18>14",
-    "carmen:rollo 20>14",
-    "carmen:taza 16>14",
-    "carmen:taza 17>14",
     "carmen:tenedor 18>14",
     "carmen:tenedor 20>14",
     "carmen:tenedor 25>14",
     "carmen:tenedorH 20>14",
     "luis:brazo 16>14",
+    "luis:brazo 17>14",
     "luis:brazo 19>14",
+    "luis:rollo 17>14",
     "luis:taza 16>14",
     "luis:taza 19>14",
     "luis:uten 16>14",
+    "luis:uten 17>14",
     "mama:bebeH 20>18",
     "mama:bebeH 21>18",
     "mama:bebeH 22>18",
@@ -11972,14 +11992,14 @@
     "mama:tenedor 32>18",
     "mama:tenedorH 25>18",
     "papa:brazo 21>18",
-    "papa:brazo 22>18",
+    "papa:brazo 24>18",
     "papa:brazo 25>18",
-    "papa:brazo 39>18",
+    "papa:brazo 41>18",
     "papa:cucharilla 20>18",
     "papa:cucharilla 25>18",
-    "papa:uten 22>18",
-    "papa:uten 31>18",
-    "papa:uten 39>18"
+    "papa:uten 24>18",
+    "papa:uten 32>18",
+    "papa:uten 41>18"
    ]
   }
  }

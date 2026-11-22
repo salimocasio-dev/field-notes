@@ -258,8 +258,8 @@ const altoOf = (id, p) => id === 'abuela' ? (p && p.sent ? 48 : 51) : QUIEN_NINO
 // comer.js capa() and enMesa(): the old ones, and the port's (the sheet's numbers: the table's top and what is behind it, on the new picture)
 let GEO = null;   // set by make(): { detras(x, y), entop(x, y) } as the port's comer.js has them
 const detrasOld = p => !p.sent && !p.est && p.z == null && p.y < TZ && p.x > 62 && p.x < 190;
-const detrasNew = p => !p.sent && !p.est && p.z == null && GEO.detras(p.x, p.y) && p.x < 186;
-const capaOf = (p, side) => { const uy = side === 'o' ? p.y : p.y - (p.x - SYC) / 2; return p.z != null ? [p.z, p.z + .001] : (p.sent || p.est) ? [uy, TZ + .9] : (side === 'o' ? detrasOld(p) : detrasNew(p)) ? [40 + uy / 100, 40.5 + uy / 100] : [p.y, p.y < TZ ? TZ + .9 : p.y + .001]; };
+const detrasNew = p => !p.sent && !p.est && p.z == null && GEO.detras(p.x, p.y) && p.x < 186 && p.y - (p.x - SYC) / 2 < 118 + 3;   // comer.js detrasMesa (the port's): ATRAS 118
+const capaOf = (p, side) => { const uy = side === 'o' || p.x >= 186 ? p.y : p.y - (p.x - SYC) / 2; return p.z != null ? [p.z, p.z + .001] : (p.sent || p.est) ? [side === 'n' && p.x < 186 ? uy + p.x / 10000 : uy, TZ + .9] : (side === 'o' ? detrasOld(p) : detrasNew(p)) ? [40 + uy / 100, 40.5 + uy / 100] : [p.y, p.y < TZ ? TZ + .9 : p.y + .001]; };
 const enMesaOf = (o, side) => side === 'o' ? (o.y >= 124 - 1 && o.y <= 170 + 3 && o.x > 66 - 8 && o.x < 66 + 120 + 8) : GEO.entop(o.x, o.y);
 const pKey = p => { const o = Object.assign({}, p); delete o.x; delete o.y; delete o.ci; return J(o); };
 function rawItems(w, side) {
@@ -383,12 +383,12 @@ function surfaceW(E, F, sx, sy) {
 /* ---------- the design: what moves and why (make() reads it). Every move is an exact piece of comer.js and its replacement ----------
    THE RULE (layout). The table is long along world x: a row level on the old screen cannot lie on it. So every place AT the table (the four
    seats and whoever sits there, the plates and cups in front of them, the lane behind the chairs, the children at the table's back corners,
-   the frog's places beside a seated one's plate) steps down half a row a pixel to the right, round column 126 (SY(x, y) = y + (x - 126) / 2:
-   La mesa's own four chairs land there). Every other place keeps its old screen point if what stands there stands on what it stood on (a
+   the frog's places beside a seated one's plate) steps down half a row a pixel to the right, round column 122 (SY(x, y) = y + (x - 122) / 2:
+   La mesa's own four chairs, set .109 nearer on both world axes, i.e. 2 rows lower: comer-set.html DS, land there). Every other place keeps its old screen point if what stands there stands on what it stood on (a
    thing or the frog on the cloth; a person on clear floor), else it moves the least distance that does (moves, each named with its reason).
    Paths: whoever goes behind the table walks round its right end (the left end runs off the picture at the front); whoever comes in to sit,
    or leaves from behind, comes and goes by the doorway in the left wall (La mesa's) */
-const SYC = 126, SY = (x, y) => y + (x - SYC) / 2;
+const SYC = 122, SY = (x, y) => y + (x - SYC) / 2;
 function geometry(E, F) {
   const P = (x, y, z = 0) => { const p = E.project(x, y, z); return [p.sx, p.sy]; }, T = F.TBL;
   const top = [P(T.x0, T.y0, T.z), P(T.x1, T.y0, T.z), P(T.x1, T.y1, T.z), P(T.x0, T.y1, T.z)];   // far-left, far-right, near-right, near-left
@@ -431,14 +431,14 @@ function designMoves(E, F) {
   const HO33 = place('HO33', [66, 158], [97, 155], 'where a roll passes from the asker\'s hand to the frog\'s: between them, within both arms');
   const PA33S = place('PA33S', [146, 150], [102, 157], 'abuela\'s plate at the start, at the near edge of the cloth: she reaches it from the floor in front of the table');
   const PA33 = place('PA33', [136, 150], [92, 152], 'where abuela slides her plate to: 10 px left as the old, along the near edge');
-  const LEPN = place('LEP.nino', [58, 170], [78, 178], 'a child who asks: on clear floor in front of the table\'s near edge, near enough to reach the basket');
+  const LEPN = place('LEP.nino', [58, 170], [78, 181], 'a child who asks: on clear floor in front of the table\'s near edge, near enough to reach the basket');
   const LEPA = place('LEP.adulto', [52, 184], [72, 184], 'a grown-up who asks: as a child');
   const EST_L = place('EST33.luis', [72, 126], [71, 108], 'Luis at the table\'s back left corner: in the passage between the counter and the table\'s left end (the sheared point is inside the counter)');
   const EST_LP = place('EST33.luis.pl', [74, 124], [74, R(SY(74, 124))], 'his plate at the cloth\'s far left corner (the rule)');
-  const EST_C = place('EST33.carmen', [180, 126], [180, R(SY(180, 126))], 'Carmen behind the table by its far right corner (the rule)');
+  const EST_C = place('EST33.carmen', [180, 126], [190, R(SY(190, 126))], 'Carmen behind the table by its far right corner (the rule), 10 px right: clear of papá\'s shoulder, beside him rather than behind him (sorted by her own row, as the old)');
   const EST_CP = place('EST33.carmen.pl', [180, 124], [180, R(SY(180, 124))], 'her plate at the cloth\'s far right (the rule)');
   const TRAY = place('bandeja', [213, 121], [200, 91], 'the tray of rolls on the stove\'s top (the kit\'s stove, on the back wall behind the table\'s right end)');
-  const ASIDE = tp('aparte33', [150, 160], 10, 'the frog steps aside to the right of the basket (turno33)');
+  const ASIDE = place('aparte33', [150, 160], [124, 162], 'the frog steps aside to the right of the basket (turno33), left of the butter and the chocolate: the chocolate dish stands behind his place here (it is drawn before him), so he waits to its left, clear of it');
   const TIP = place('tip33', [52, 176], [CE33[0] - 34, CE33[1] + 31], 'where abuela tips the tray into the basket: as the old, relative to the basket');
   const ABLP = place('final33.lp', [54, 170], [66, 176], 'where abuela takes the last roll from the basket (final33): on clear floor within her arm of it');
   const ABPL = fl('final33.plato', [PA33[0] - 2, 183]);
@@ -446,20 +446,20 @@ function designMoves(E, F) {
   // story 34
   const OLLA = tp('OLLA', [134, 158], 12, 'the pot of rice on the cloth');
   const FU34 = tp('FU34', [96, 160], 14, 'the platter\'s place on the cloth');
-  const PLUIS = tp('PLUIS', [100, 172], 8, 'Luis\'s plate on the cloth\'s near edge');
-  const PRANA = place('PRANA', [150, 174], [140, 170], 'the frog\'s small plate on the cloth, his fork beside it on the cloth too');
-  const CASA34 = place('CASA34', [172, 168], [178, 157], 'the frog\'s place in story 34, on the cloth at its right, clear of the hint frame round whoever sits behind');
-  const EAT34 = place('EAT34', [162, 176], [148, 172], 'where the frog eats at his plate, on the cloth, beside it');
-  const LUIS34 = fl('LUIS34', [118, 190]);
+  const PLUIS = place('PLUIS', [100, 172], [126, 177], 'Luis\'s plate on the cloth\'s near edge, 11 px to the right of where he stands (the old: 18 px left): there the near edge is low enough that his fork goes to it and to his mouth beside his face, not across it (the cloth\'s near edge falls to the right)');
+  const PRANA = place('PRANA', [150, 174], [146, 176], 'the frog\'s small plate on the cloth\'s near edge, right of Luis\'s, his fork beside it on the cloth too');
+  const CASA34 = place('CASA34', [172, 168], [160, 175], 'the frog\'s place in story 34: on the cloth by its near right corner, beside his plate: clear of abuela\'s serving spoon at the right end and of papá\'s fork at his plate (the old point is at the right end\'s edge, under papá\'s fork)');
+  const EAT34 = place('EAT34', [162, 176], [154, 174], 'where the frog eats at his plate, on the cloth, beside it (behind its right half)');
+  const LUIS34 = place('LUIS34', [118, 190], [108, 196], 'Luis stands on clear floor in front of the cloth\'s near edge, 18 px left of his plate as the old has him 18 px right of it (his fork goes up to it and to his mouth beside his face; the floor under the near edge falls to the right)');
   const PLAT34 = place('PLAT34', [213, 118], [204, 94], 'the platter waits on the stove\'s top (the kit\'s stove and the counter beside it)');
   const CONT34 = place('CONT34', [58, 117], [214, 98], 'where a plate is set on a counter\'s top: the counter beside the stove (the counter along the left wall is behind the table\'s left end: whoever stands at it is hidden from the waist down)');
-  const CONTP = place('CONT34.pie', [49, 152], [212, 138], 'where Carmen stands to set it there: in front of that counter, behind the table');
+  const CONTP = place('CONT34.pie', [49, 152], [190, 124], 'where Carmen stands to set it there: in front of that counter, behind the table');
   const ENC34 = fl('ENC34', [196, 184], 'where Luis meets abuela for the big spoon: at the right of the table\'s right end, on clear floor');
   const TIPR = tp('tipa34.rana', [144, 172], 10, 'where the frog hands the spoon back to Luis: on the cloth');
   // story 35
   const K1 = tp('K1', [76, 170], 8, 'Luis\'s cup of milk on the cloth');
   const K2 = tp('K2', [100, 170], 8, 'Carmen\'s cup of milk on the cloth');
-  const AZU = tp('AZU', [138, 170], 19, 'the sugar bowl (with its lid beside it) on the cloth');
+  const AZU = place('AZU', [138, 170], [134, 178], 'the sugar bowl (with its lid beside it) on the cloth\'s near edge, 8 rows nearer as the seats\' row steps there (SY), 4 px left so that its lid stays on the cloth: under the frog where he sugars papá\'s cup, not over him');
   const TRANA = tp('TRANA', [172, 170], 8, 'the frog\'s cup on the cloth');
   const GRECA35 = place('GRECA35', [152, 162], (() => { const g = leastTop(152, 166, 7); return [g[0], g[1] - 4]; })(), 'the little coffee pot at the right of the table (its foot GRECA35[1] + 4), on the cloth');
   const GRECA35B = tp('GRECA35B', [158, 178], 7, 'where abuela sets the little coffee pot down for the frog, on the cloth');
@@ -467,7 +467,7 @@ function designMoves(E, F) {
   const CASA35 = tp('CASA35', [110, 166], 10, 'the frog\'s place in story 35, on the cloth');
   const CAFE35 = place('CAFE35', [199, 118], [190, 87], 'the big coffee pot on the stove\'s left burner');
   const CAZO35 = place('CAZO35', [218, 118], [212, 97], 'the milk pan on the counter beside the stove (the kit\'s stove is too narrow for both: its burners are 8 px apart)');
-  const AFOGON = place('AFOGON', [208, 153], [190, 128], 'where abuela stands to take something off the stove\'s top: on the floor just in front of the stove');
+  const AFOGON = place('AFOGON', [208, 153], [174, 114], 'where abuela stands to take something off the stove\'s top: on the floor at the stove\'s front left corner (in front of it her face would be under the hint hand of the second answer card on the wall above)');
   place('STOOL', [210, 178], [206, 184], 'abuela\'s stool, 4 px left and 6 rows nearer: she sits on it wholly inside the view with 3 px to spare, clear of the table\'s right end');
   place('SIDE34', [194, 166], [204, 166], 'abuela\'s way from the stove to the front: right of the table\'s right end (straight down from there she passes clear of its corner)');
   return { NP, NUM, XP, DOOR, PB, leastTop, leastFloor, Gm };
@@ -489,23 +489,27 @@ function designEdits(E, F, D) {
     ',ENTOP=(x,y)=>y>=' + EN[0] + '+x/2&&y<=' + EN[1] + '+x/2&&y>=' + EN[2] + '-x/2&&y<=' + EN[3] + '-x/2' +
     ',MESAPIE=(x,y)=>y>' + FF + '+x/2&&y<' + NF + '+x/2&&y>' + LF + '-x/2&&y<' + RF + '-x/2' +
     ',FRONTROW=(x,y)=>{while(MESAPIE(x,y)&&y<212)y++;return y;}' +
-    ',LIBRE=(who,tx,ty,h)=>{const Fc=[];for(const k in W.gente){const p=W.gente[k];if(k!==who&&p&&p.vis!==0)Fc.push([R(p.x)-6,R(p.y)-alto(k)+7,12,10]);}if(who!=="coqui"&&W.cq&&W.cq.vis){const b=frogBox(W.cq);Fc.push([b.x+2,b.y+R(W.cq.dy),b.w-4,R(b.h*.6)]);}for(const[s,dy]of ' + JSON.stringify(TALK) + '){const x=tx+s*(h+16),y=ty+dy,r=[x-9,y-16,19,13];if(r[0]>=cam[0]&&r[1]>=0&&r[0]+r[2]<=cam[0]+cam[2]&&!Fc.some(f=>f[0]<r[0]+r[2]&&r[0]<f[0]+f[2]&&f[1]<r[1]+r[3]&&r[1]<f[1]+f[3]))return [x,y];}return [tx,ty];}' +
+    ',LIBRE=(who,tx,ty,h)=>{const Fc=[];for(const k in W.gente){const p=W.gente[k];if(k!==who&&p&&p.vis!==0)Fc.push([R(p.x)-6,R(p.y)-alto(k)+7-(k==="abuela"&&p.sent?1:0)+R(p.dy||0),12,10]);}if(who!=="coqui"&&W.cq&&W.cq.vis){const b=frogBox(W.cq);Fc.push([b.x+2,b.y+R(W.cq.dy),b.w-4,R(b.h*.6)]);}for(const[s,dy]of ' + JSON.stringify(TALK) + '){const x=tx+s*(h+16),y=ty+dy,r=[x-9,y-16,19,13];if(r[0]>=cam[0]&&r[1]>=0&&r[0]+r[2]<=cam[0]+cam[2]&&!Fc.some(f=>f[0]<r[0]+r[2]&&r[0]<f[0]+f[2]&&f[1]<r[1]+r[3]&&r[1]<f[1]+f[3]))return [x,y];}return [tx,ty];}' +
+    ',CARTAS=W=>{const n=W.resp.length,Fc=[],on=(a,b)=>a[0]<b[0]+b[2]&&b[0]<a[0]+a[2]&&a[1]<b[1]+b[3]&&b[1]<a[1]+a[3];for(const k in W.gente){const p=W.gente[k];if(p&&p.vis!==0)Fc.push([R(p.x)-6,R(p.y)-alto(k)+7-(k==="abuela"&&p.sent?1:0)+R(p.dy||0),12,10]);}' +
+    'for(const cx of ' + JSON.stringify(CARDS.cx) + '){let ok=1;for(let i=0;i<n&&ok;i++){const c=n>2?[R(cx-70+i*50),' + CARDS.y + ',40,36]:i===0?[R(cx-50),' + CARDS.y + ',40,36]:[R(cx+10),' + CARDS.y + ',40,36],fr=[c[0]-12,c[1]-12,64,60],hx=c[0]+8,hy=c[1]+30;if(W.tarjeta&&on([c[0]-2,c[1]-2,44,40],[cam[0]+' + (BOARD[0] + 1) + ',' + (BOARD[1] + 1) + ',' + BOARD[2] + ',' + BOARD[3] + ']))ok=0;' +
+    'for(const f of Fc){if(on(fr,[f[0]-2,f[1]-6,16,16]))ok=0;for(const o of [0,9])HAND.forEach((rw,j)=>{for(let x=0;x<12;x++)if(rw[x]!=="."&&on([hx+x*3,hy+j*3+o,3,3],f))ok=0;});if(!ok)break;}}if(ok)return [cx,' + CARDS.y + '];}return [' + CARDS.cx[0] + ',' + CARDS.y + '];}' +
     ',atras=async(id,x,y)=>{const p=G(id),ln=SY(p.x,ATRAS);if(p.y>ln+3&&p.x>80&&!(x>XP-8&&p.x>XP-8)){if(SILLA.some(s=>Math.abs(s-p.x)<6))await mueve(id,p.x+12,SY(p.x+12,ASIENTO-3));await mueve(id,G(id).x,SY(G(id).x,ATRAS));}const q=G(id),a=q.x<80&&q.y>PB[1]-1,b=x<80&&y>PB[1]-1;if(b&&!a&&q.x>86)await mueve(id,86,SY(86,ATRAS));if(a!==b)await mueve(id,PB[0],PB[1]);await mueve(id,x,y);};']],
     'the new geometry, for the lines below: SY(x, y), a row at the table stepping down half a row a pixel to the right (round x ' + SYC + '); XP, the column of the way round the table\'s right end; DOOR, the doorway in the left wall (whoever comes in to sit or leaves from behind); PB, the passage between the counter and the table\'s left end; DETRAS, a place behind the table (or in that passage); ENTOP, a foot on the cloth; MESAPIE, a floor point under the table; atras, a walk behind the table (by the lane behind the chairs and the passage)');
   ed('const LE=[66,190],CAR=[46,194],FOGON=[208,168],AFOGON=[208,153],DER=[208,176],PUERTA=[0,190];', [['AFOGON=[208,153]', 'AFOGON=' + A('AFOGON')]], D.NP.AFOGON.why, [['abuela', [208, 153], N('AFOGON')]]);
   ed('const caja=id=>{', [['MESA[1]+26-(R(p.y)-h)', 'SY(R(p.x),MESA[1]+14)-(R(p.y)-h)']], 'caja: a seated one\'s box reaches down to 6 rows over his feet, at his column (SY): his chest in its middle as the old (the table\'s far edge is 14 rows over a sitter\'s feet here, 20 in the old), and its hint frame clear of the frog on the cloth in front');
   ed('const enMesa=o=>', [['o.y>=FILA-1&&o.y<=FREN+3&&o.x>MESA[0]-8&&o.x<MESA[0]+MESA[2]+8', 'ENTOP(o.x,o.y)']], 'enMesa: a thing on the table is one whose foot is on the cloth (the new table\'s top)');
-  ed('const detrasMesa=p=>', [['p.y<TZ&&p.x>62&&p.x<190', 'DETRAS(p.x,p.y)&&p.x<186&&p.y-(p.x-' + SYC + ')/2<ATRAS+4']], 'detrasMesa: behind the table is behind the chairs (the lane, the passage at its left end), short of the stove (whoever stands at the stove is drawn after what stands on its top, as the old); whoever stands at a chair, getting up or sitting down, is sorted by his row (capa) and drawn after the chairs');
-  ed('const capa=p=>', [['(p.sent||p.est)?[p.y,TZ+.9]:detrasMesa(p)?[40+p.y/100,40.5+p.y/100]', '(p.sent||p.est)?[p.y-(p.x-' + SYC + ')/2,TZ+.9]:detrasMesa(p)?[40+(p.y-(p.x-' + SYC + ')/2)/100,40.5+(p.y-(p.x-' + SYC + ')/2)/100]']], 'capa: whoever sits, stands at a corner or walks behind the table is sorted by his row at the table without its step (y - (x - ' + SYC + ') / 2): who is behind whom along the table is as the old');
+  ed('const detrasMesa=p=>', [['p.y<TZ&&p.x>62&&p.x<190', 'DETRAS(p.x,p.y)&&p.x<186&&p.y-(p.x-' + SYC + ')/2<ATRAS+3']], 'detrasMesa: behind the table is behind the chairs (the lane, the passage at its left end), short of the stove (whoever stands at the stove is drawn after what stands on its top, as the old); whoever stands at a chair, getting up or sitting down, is sorted by his row (capa) and drawn after the chairs');
+  ed('const capa=p=>', [['(p.sent||p.est)?[p.y,TZ+.9]:detrasMesa(p)?[40+p.y/100,40.5+p.y/100]', '(p.sent||p.est)?[p.x<186?p.y-(p.x-' + SYC + ')/2+p.x/10000:p.y,TZ+.9]:detrasMesa(p)?[40+(p.y-(p.x-' + SYC + ')/2)/100,40.5+(p.y-(p.x-' + SYC + ')/2)/100]']], 'capa: whoever sits, stands at a corner or walks behind the table (left of x 186: abuela on her stool keeps her own row, as the old) is sorted by his row at the table without its step, and of two in one row the one to the right (nearer on the world\'s x) is drawn over the other (y - (x - ' + SYC + ') / 2): who is behind whom along the table is as the old');
   ed('const HIJA=[213,204],OLLA=', [['OLLA=[134,158]', 'OLLA=' + A('OLLA')], ['PLUIS=[100,172]', 'PLUIS=' + A('PLUIS')], ['PRANA=[150,174]', 'PRANA=' + A('PRANA')], ['CASA34=[172,168]', 'CASA34=' + A('CASA34')], ['EAT34=[162,176]', 'EAT34=' + A('EAT34')], ['LUIS34=[118,190]', 'LUIS34=' + A('LUIS34')], ['FU34=[96,160]', 'FU34=' + A('FU34')], ['PLAT34=[213,118]', 'PLAT34=' + A('PLAT34')], ['CONT34=[58,117]', 'CONT34=' + A('CONT34')], ['SIDE34=[194,166]', 'SIDE34=' + A('SIDE34')]],
     'story 34\'s places: ' + ['OLLA', 'PLUIS', 'PRANA', 'CASA34', 'EAT34', 'LUIS34', 'FU34', 'PLAT34', 'CONT34', 'SIDE34'].map(k => k + ' ' + D.NP[k].why).join('; '), ['OLLA', 'PLUIS', 'PRANA', 'CASA34', 'EAT34', 'LUIS34', 'FU34', 'PLAT34', 'CONT34', 'SIDE34'].map(k => [k === 'LUIS34' ? 'luis' : k === 'CASA34' || k === 'EAT34' ? 'cq.feet' : 'cosa', D.NP[k].old, N(k)]));
   ed('async function aEncuentro34(){', [['[[l.x,FR],[184,FR],[ENC34[0],ENC34[1]]]', '[[l.x,FR],[ENC34[0],FR],[ENC34[0],ENC34[1]]]']], 'aEncuentro34: Luis walks along the front to the right of the table\'s right end');
   ed('async function deEncuentro34(){', [['[[184,FR],[LUIS34[0],FR]', '[[ENC34[0],FR],[LUIS34[0],FR]']], 'deEncuentro34: and back');
   ed('const ENC34=[192,182];', [['[192,182]', A('ENC34')]], D.NP.ENC34.why, [['luis', [192, 182], N('ENC34')]]);
   { const c = N('CASA34');
-    ed('const NUBE34={barriga:', [['[146,84]', '[165,50]'], ['[160,100]', '[173,62]'], ['AIM34=[172,141]', 'AIM34=[' + c[0] + ',' + (c[1] - 27) + ']']], 'the frog\'s thought (story 34): over the stove\'s side, right of the seated (over the table it would cover their faces: their row steps up to the left), under the answer cards; its trail to his head (AIM34, as the old relative to his place)'); }
+    ed('const NUBE34={barriga:', [['[146,84]', '[165,54]'], ['[160,100]', '[173,66]'], ['AIM34=[172,141]', 'AIM34=[' + c[0] + ',' + (c[1] - 27) + ']']], 'the frog\'s thought (story 34): over the stove\'s side, right of the seated (over the table it would cover their faces: their row steps up to the left), under the answer cards (2 rows clear of them); its trail to his head (AIM34, as the old relative to his place)'); }
   ed('    if(TALK==="coqui"&&q.vis){const b=frogBox(q),fx=b.x+(b.w>>1),fy=b.y+R(q.dy);hab(fx,fy-3,fx);}', [['hab(fx,fy-3,fx);', '{const u=LIBRE("coqui",fx,fy-3,b.w>>1);hab(u[0],u[1],u[0]);}']], 'with the words hidden, the frog\'s empty bubble goes to the first place of talk.places clear of every other face (LIBRE)');
   ed('    else if(TALK&&Gt[TALK]&&Gt[TALK].vis!==0){const t=talkAt(TALK,W),p=Gt[TALK];', [['else hab(t[0],t[1]-1,t[0]);', 'else{const u=LIBRE(TALK,t[0],t[1]-1,6);hab(u[0],u[1],u[0]);}']], 'with the words hidden, a speaker\'s empty bubble goes to the first place of talk.places clear of every other face (LIBRE)');
+  ed('function draw(c,W,a){const q=W.cq,Gt=W.gente||{};c.imageSmoothingEnabled=false;', [['c.imageSmoothingEnabled=false;', 'c.imageSmoothingEnabled=false;if(W.resp)W.respEn=CARTAS(W);']], 'the answer cards (W.respEn) are placed at every frame while the frog chooses: on the wall above the heads, right of the rounds card, at the first centre of cards.cx whose hint hands fall on no face (CARTAS); the old place [130, 22] is left of the rounds card\'s right end and its hands would be on the seated faces here (their row steps up to the left)');
   ed('const lado34=px=>', [['{fx:px-17,fy:138,izq:0}', '{fx:px-17,fy:SY(px-17,138),izq:0}'], ['{fx:px+17,fy:138,izq:1}', '{fx:px+17,fy:SY(px+17,138),izq:1}']], 'lado34: the frog beside a seated one\'s plate stands at the table\'s row there (SY)');
   ed('const origen=()=>{', [['fu.x<200', 'fu.y>PLAT34[1]+20']], 'origen: the platter is on the table (not on the stove\'s top) when it stands lower than the stove\'s top');
   ed('const K1=[76,170],K2=', ['K1', 'K2', 'AZU', 'TRANA', 'GRECA35', 'GRECA35B', 'TABU', 'CASA35', 'CAFE35', 'CAZO35', 'STOOL'].map(k => [k + '=[' + D.NP[k].old.join(',') + ']', k + '=' + A(k)]).concat([['NUBE35=[102,104]', 'NUBE35=[' + (N('CASA35')[0] - 8) + ',' + (N('CASA35')[1] - 62) + ']'], ['AIM35=[110,139]', 'AIM35=[' + N('CASA35')[0] + ',' + (N('CASA35')[1] - 27) + ']']]),
@@ -571,18 +575,22 @@ function designEdits(E, F, D) {
   { const y = row(GR[0] + 4, 190); ed('    await ruta("abuela",[[FOGON[0],FR],[GRECA35[0]+4,FR],[GRECA35[0]+4,190]]);ab.dir=-1;const it=await toma("abuela",jt,6,22', [['[GRECA35[0]+4,190]', '[GRECA35[0]+4,' + y + ']']], 'pote35: abuela in front of the little pot, on clear floor', [['abuela', [156, 190], [GR[0] + 4, y]]]); }
   { const y = row(GB[0] - 10, 190); ed('    await ruta("abuela",[[GRECA35B[0]-10,190]]);', [['[GRECA35B[0]-10,190]', '[GRECA35B[0]-10,' + y + ']']], 'pote35: in front of the frog, on clear floor', [['abuela', [148, 190], [GB[0] - 10, y]]]); }
   ed('const fx=izq?98:92,fy=148;await ranaA(fx,fy);', [['const fx=izq?98:92,fy=148;', 'const fx=t.x+(izq?22:-8),fy=t.y-22;']], 'vierte35: the frog pours into a child\'s cup from beside it, as the old relative to the cup (K1, K2 moved)');
-  ed('  const fx=cxw<150?cxw-16:cxw+16,fy=146,iz=fx>cxw;', [['fy=146', 'fy=SY(fx,146)']], 'azucarEn: the frog beside the cup a seated man holds stands at the table\'s row there (SY)');
+  ed('  const fx=cxw<150?cxw-16:cxw+16,fy=146,iz=fx>cxw;', [['fx=cxw<150?cxw-16:cxw+16,fy=146', 'fx=cxw<=150?cxw-22:cxw+16,fy=SY(G(who).x,146)+(G(who).x<' + SYC + '?6:-6)']], 'azucarEn: the frog sugars the cup a seated man holds from its left (22 px, the old 16; at papá\'s raised cup too, which the old did from its right: there he would stand on papá\'s lap), on the cloth at the man\'s row stepped as his seat (SY), 6 rows nearer at abuelo\'s (clear of his chest) and 6 farther at papá\'s (clear of the cups and the sugar bowl at the cloth\'s near right)');
   ed('    W.gente={abuelo:{x:SILLA[0],y:ASIENTO,', [['{x:SILLA[0],y:ASIENTO', '{x:SILLA[0],y:SY(SILLA[0],ASIENTO)'], ['{x:SILLA[3],y:ASIENTO', '{x:SILLA[3],y:SY(SILLA[3],ASIENTO)']], 'inicio35: the two men at the table\'s row (SY)');
   ed('    W.cosas=[{id:"taburete",k:"taburete",x:STOOL[0],y:STOOL[1]},{id:"t_abuelo"', [['x:SILLA[0],y:FILA,', 'x:SILLA[0],y:SY(SILLA[0],FILA),'], ['x:SILLA[3],y:FILA,', 'x:SILLA[3],y:SY(SILLA[3],FILA),'], ['x:SILLA[0]-12,y:FILA-1', 'x:SILLA[0]-12,y:SY(SILLA[0]-12,FILA)-1'], ['x:SILLA[3]+12,y:FILA-1', 'x:SILLA[3]+12,y:SY(SILLA[3]+12,FILA)-1']], 'inicio35: the men\'s cups and their teaspoons at the table\'s row (SY)');
   const cz = N('CAZO35'), czRow = (() => { const a = 1.2 + (cz[0] - 4 - E.OX) / (E.S / E.R2); return R(E.project(a, 1.2, 0).sy); })();
   const reps = [['[TRANA[0]+26,190]', '[TRANA[0]+26,' + row(TR[0] + 26, 190) + ']'], ['[GRECA35[0]+4,190]', '[GRECA35[0]+4,' + row(GR[0] + 4, 190) + ']'], ['[AZU[0]+4,188]', '[AZU[0]+4,' + row(AZ[0] + 4, 188) + ']'], ['AZU[0]+4,188)', 'AZU[0]+4,' + row(AZ[0] + 4, 188) + ')'],
-    ['[TABU[0]+12,178]', '[TABU[0]+12,' + row(TB[0] + 12, 178) + ']'], ['[CAZO35[0]-4,150]', '[CAZO35[0]-4,' + czRow + ']'], ['mueve("abuela",CAZO35[0]-4,150)', 'mueve("abuela",CAZO35[0]-4,' + czRow + ')'], ['delante("abuela",198,176)', 'delante("abuela",' + (TB[0] + 18) + ',' + row(TB[0] + 18, 176) + ')'], ['mostrar(jt,jt.x+4,190)', 'mostrar(jt,jt.x+4,FRONTROW(jt.x+4,190))']];
+    ['[TABU[0]+12,178]', '[TABU[0]+12,' + row(TB[0] + 12, 178) + ']'], ['[CAZO35[0]-4,150]', '[CAZO35[0]-4,' + czRow + ']'], ['mueve("abuela",CAZO35[0]-4,150)', 'mueve("abuela",CAZO35[0]-4,' + czRow + ')'], ['delante("abuela",198,176)', 'delante("abuela",' + (TB[0] + 18) + ',' + row(TB[0] + 18, 176) + ')'], ['mostrar(jt,jt.x+4,190)', 'mostrar(jt,jt.x+4,FRONTROW(jt.x,190))']];
   for (let L = lineOf('/* ----- story 35: Café con azúcar ----- */'); L <= lineOf('async prueba(o){'); L++) { if (byLine.has(L)) { const e = byLine.get(L), prs = reps.filter(([a]) => e.to.includes(a)); if (prs.length) ed(L, prs, 'story 35: abuela on clear floor in front of the table (the first clear row at the old x)'); continue; } const prs = reps.filter(([a]) => LINES[L - 1].includes(a)); if (prs.length) ed(L, prs, 'story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan\'s counter, just in front of it'); }
   return { byLine, NF, RF, FF, LF };
 }
 
 /* ---------- the sheet ---------- */
 const OLDBOX = { mesa: [60, 112, 132, 66], cocina: [32, 24, 196, 190], silla_papa: [152, 86, 20, 36] };
+// the answer cards (W.respEn, read by juego.js respBox): on the wall above the heads, right of the rounds card, the first centre of cx whose
+// cards stand 2 px clear of the rounds card (when it is up), whose hint hands (juego.js HAND, 3 px a dot, from the card's foot - 6) are on no
+// face and whose hint frames cross no head (comer.js CARTAS)
+const CARDS = { cx: [154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164], y: 14 };
 const TALK = [[0, 0], [1, 7], [-1, 7], [1, 30], [-1, 30], [1, 44], [-1, 44], [2, 7], [-2, 7], [2, 30], [-2, 30], [2, 44], [-2, 44], [1, 58], [-1, 58], [2, 58], [-2, 58]];
 const BOARD = [2, 2, 68, 26];
 const boardsOf = (w, x0) => w.tarjeta ? [['the rounds card', [BOARD[0] + x0 + 1, BOARD[1] + 1, BOARD[2], BOARD[3]]]] : [];
@@ -697,6 +705,7 @@ function make(G, runs) {
     helps: { what: 'the steam (comer.js vapor) is drawn with a darker blue-grey edge on both sides of each wisp, #6E80A6 for the old one-sided #B8C4D4: white steam over the white cloth, the cream wall and the people at the table stands out by its edge (contrast 2.0 and more), as it did not in the old picture',
       lines: [['fr(c,x+dx+sw-1,y-k,3,1,"#B8C4D4");fr(c,x+dx+sw,y-k,2,1,"#FFFFFF");', 'fr(c,x+dx+sw-1,y-k,4,1,"#5C6C92");fr(c,x+dx+sw,y-k,2,1,"#FFFFFF");']] },
     bubbles: { what: 'each bubble\'s rectangle relative to its tail\'s tip, as juego.js bub draws it, both frames of its bob: [dx, dy, w, h]', rects: G.M.bubbles },
+    cards: { what: 'the answer cards (W.respEn, juego.js respBox: two cards at cx - 50 and cx + 10, three at cx - 70 + 50 i; y the top; 40 x 36): set by comer.js CARTAS at every frame while the frog chooses, the first cx of this list whose cards are 2 px clear of the rounds card (when it is up), whose hint hands (juego.js HAND from the card\'s foot - 6) are on no face and whose hint frames (card +- 12) cross no head; the frames are 2 px inside the view and the cards 2 px right of the rounds card at every cx', cx: CARDS.cx, y: CARDS.y, old: [130, 22] },
     talk: { what: 'where a bubble goes: the first of these places whose bubble is wholly inside the view, clear of the corner card and of every face; if none is, the first (the old)', top: 'a person: talkAt(k) = (x, y - alto - 1); the frog: (b.x + b.w / 2, b.y + dy - 1)', places: TALK, placesWhat: '[side, dy]: the tail\'s tip at (top.x + side * (h + 16), top.y + dy), h the head\'s half width: a person 6, the frog b.w >> 1', faces: 'a person\'s face: [x - 6, top + 6, 12, 10], top = y - height + 1 + dy (abuela: y - 50 standing, y - 48 sitting); the frog\'s: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]', board: BOARD },
     faults: [
       { what: 'the five speaking boxes di_buen, di_tambien, di_lleno, di_poco, di_mucho are one and the same 16 x 10 box over the frog\'s head (comer.js:' + lineOf('["di_buen","di_tambien","di_lleno","di_poco","di_mucho"]') + ': [b.x + (b.w >> 1) - 8, b.y - 27, 16, 10] of frogBox(W.cq)); the kit\'s hit() answers the first thing whose box holds the touch, so only di_buen is ever answered', kept: 'as the old: the box stays where the old one is relative to the frog; the port is told, not asked to change it' },
@@ -711,11 +720,19 @@ function make(G, runs) {
 // step (SY); a thing elsewhere on the table its least move onto the cloth; a person or the dog on the floor the least move onto clear floor
 function designStoryMoves(E, F, D) {
   const cual = JSON.parse(fs.readFileSync(path.join(REPO, 'historia/cuentos/cual-comer.json'), 'utf8')), out = [], seen = new Set();
+  // buen provecho: the seated three (yes) and the standing three (no) share one 196 x 104 window; on the world's axes the seats' row climbs to the
+  // left and the cloth's near edge falls to the right, so by the rule the seated tops and the standing feet are 130 rows apart. Here the three sit
+  // one seat to the right (seats 1 to 3: their plates with them) and the three who stand stand on clear floor at the table's left end and right
+  // of its right end: everyone whole in the window
+  const PAIR_WHY = 'buen provecho: one seat to the right (the seated) or at the table\'s ends on clear floor (the standing), so that both pictures are whole in one 196 x 104 window', S = (x, y) => [x, R(SY(x, y))];
+  const PAIR_OWN = { '90,132': () => S(114, 132), '114,132': () => S(138, 132), '138,132': () => S(162, 132), '90,127': () => S(114, 127), '114,127': () => S(138, 127), '138,127': () => S(162, 127),
+    '70,186': () => [52, 176], '112,186': () => [74, 178], '160,186': () => [208, 178] };
   const hwOf = k => ({ cesta: 18, azucarera: 19, olla: 12, fuente: 14, bizcocho: 11, cuenco: 15, platoma: 13, platoH: 13, muslo: 12 })[k] || 8;
   for (const it of cual.items) for (const side of ['si', 'no']) { const st = (it[side] || {}).set || {};
     const add = (who, p, kind, k) => { const key = p.x + ',' + p.y; if (seen.has(key)) return; seen.add(key);
       let nw, why;
-      if (kind === 'gente' && p.sent) { nw = [p.x, R(SY(p.x, p.y))]; why = 'a seated one: the rule\'s step (SY)'; }
+      if (PAIR_OWN[key]) { nw = PAIR_OWN[key](); why = PAIR_WHY; }
+      else if (kind === 'gente' && p.sent) { nw = [p.x, R(SY(p.x, p.y))]; why = 'a seated one: the rule\'s step (SY)'; }
       else if (kind === 'cosa' && p.y <= 136) { nw = [p.x, R(SY(p.x, p.y))]; why = 'what stands in front of a seat: the rule\'s step (SY)'; }
       else if (kind === 'cosa' && p.z == null) { nw = D.leastTop(p.x, p.y, hwOf(k)); why = 'on the cloth: the least move that stands it wholly on the table\'s top'; }
       else if (kind === 'cosa') { nw = [p.x, p.y]; why = 'a thing shown in the air (z): unchanged'; }
@@ -931,11 +948,13 @@ function check(sh, G, runs) {
   const TOPS = { mesa: ['mesa'], run: ['estufa', 'mostrador2', 'mostrador'] };
   { const bad = new Map(), sitBad = new Map(), restBad = new Map(), floorBad = new Map(); let nM = 0, nSit = 0, nRest = 0, nFloor = 0; const restSeen = new Set(), sitSeen = new Map();
     // the old picture's table over each sitter: the old composition of the same moment (step ends: the recorded run)
-    const oldSit = new Map(); runs.forEach((r, ri) => r.lines.forEach(ln => { for (const q of compose(ln.W, 'o')) if (q.it.kind === 'person' && q.it.o.sent) { const k2 = q.it.id + J([R(q.it.o.x), R(q.it.o.y), q.it.o.dy || 0]); oldSit.set(r.story.id + ' ' + r.plan + ' ' + ln.path + ' ' + q.it.id, q.hid['the old table'] || 0); } }));
+    // (people only: the frog and the things on the cloth are taken away on both sides, so that what they cover is not counted for neither)
+    const bare = w => Object.assign(JSON.parse(JSON.stringify(w)), { cosas: [], vuelos: [], perro: null, cq: Object.assign({}, w.cq, { vis: 0 }) });
+    const oldSit = new Map(); runs.forEach((r, ri) => r.lines.forEach(ln => { for (const q of compose(bare(ln.W), 'o')) if (q.it.kind === 'person' && q.it.o.sent) { const k2 = q.it.id + J([R(q.it.o.x), R(q.it.o.y), q.it.o.dy || 0]); oldSit.set(r.story.id + ' ' + r.plan + ' ' + ln.path + ' ' + q.it.id, q.hid['the old table'] || 0); } }));
     for (const [where, w, kind] of allW) { nM++; const C = compose(w, 'n');
       for (const r of C) { const it = r.it;
         for (const [part, n] of Object.entries(r.by)) { const faceN = Math.floor(n / 1000); if (faceN && it.kind === 'person') bad.set(part + ' over ' + it.id + '\'s face', where + ': ' + faceN + ' px'); }
-        if (it.kind === 'person' && it.o.sent && kind === 'step') { nSit++; const setN = Object.entries(r.by).reduce((s, [p, n]) => s + (n % 1000) + Math.floor(n / 1000), 0), oldN = oldSit.get(where + ' ' + it.id);
+        if (it.kind === 'person' && it.o.sent && kind === 'step') { nSit++; const rb = compose(bare(w), 'n').find(x => x.it.kind === 'person' && x.it.id === it.id) || r; const setN = Object.entries(rb.by).reduce((s, [p, n]) => s + (n % 1000) + Math.floor(n / 1000), 0), oldN = oldSit.get(where + ' ' + it.id);
           if (oldN != null && setN > oldN + 8) sitBad.set(it.id + ' at ' + [R(it.o.x), R(it.o.y)], where + ': ' + setN + ' px of the set over them, the old table ' + oldN); }
         // what stands on the table rests on it: its lowest rows over the cloth, nothing of the set over it; on the stove's or a counter's top likewise
         if (it.kind === 'thing' && it.group === 'list' && it.o && it.o.vis !== 0 && it.o.z == null) { const on = GEO.entop(it.o.x, it.o.y) ? 'mesa' : null, run = !on && it.o.y < 110 ? 'run' : null; if (!on && !run) continue; const k2 = it.key + J(it.at); if (restSeen.has(k2)) continue; restSeen.add(k2); nRest++;
@@ -950,7 +969,7 @@ function check(sh, G, runs) {
     for (const [k, v] of [...sitBad].slice(0, 30)) P.push('seat: ' + k + ' (' + v + ')');
     for (const [k, v] of [...restBad].slice(0, 30)) P.push('on a top: ' + k + ' (' + v + ')');
     for (const [k, v] of [...floorBad].slice(0, 30)) P.push('floor: ' + k + ' (' + v + ')');
-    notes.push('drawn: at ' + nM + ' moments (every tick inside the acts of the port\'s play of the ' + runs.length + ' runs, every step\'s end, every pair picture) composed as comer.js draws them (each item owns what it drew last; the chairs drawn again over whoever is behind them at sortY 60, the table at the old table\'s place TZ): no part of the set over any face; ' + nSit + ' sittings at step ends, each with no more of the set over the one who sits than the old table had (8 px to spare); ' + nRest + ' things standing on the cloth or on the stove\'s or a counter\'s top, each with 90% and more of its foot over it and nothing of the set over it; ' + nFloor + ' step ends of someone standing in the view, each on clear floor'); }
+    notes.push('drawn: at ' + nM + ' moments (every tick inside the acts of the port\'s play of the ' + runs.length + ' runs, every step\'s end, every pair picture) composed as comer.js draws them (each item owns what it drew last; the chairs drawn again over whoever is behind them at sortY 60, the table at the old table\'s place TZ): no part of the set over any face; ' + nSit + ' sittings at step ends, each with no more of the set over the one who sits than the old table had (8 px to spare; both pictures with the people alone, so that what the frog or a thing covers counts for neither); ' + nRest + ' things standing on the cloth or on the stove\'s or a counter\'s top, each with 90% and more of its foot over it and nothing of the set over it; ' + nFloor + ' step ends of someone standing in the view, each on clear floor'); }
 
   /* at every step's end each person's, the dog's and the frog's share seen no less than in the old picture of that moment less 10%, their face no
      less at all; whoever was wholly inside the view in the old picture is wholly inside with 3 px to spare */
@@ -961,8 +980,9 @@ function check(sh, G, runs) {
         if (q.it.kind !== 'arms') { const bo = rowsBox(p.it.rows), bn = rowsBox(q.it.rows); if (bo && bn && within(bo, VIEW) && !within([bn[0] - 3, bn[1] - 3, bn[2] + 6, bn[3] + 6], VIEW)) edges.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + q.it.id + ' ' + JSON.stringify(bn)); }
         if (!['person', 'frog', 'dog'].includes(q.it.kind)) continue; n++;
         const sN = q.vis / q.tot, sO = p.vis / p.tot, fN = q.fTot ? q.fVis / q.fTot : 1, fO = p.fTot ? p.fVis / p.fTot : 1;
+        if (process.env.COMER_DBG && (r.story.id + ' ' + r.plan + ' ' + ln.path) === process.env.COMER_DBG && fN < 1) console.log('DBG', q.it.id, JSON.stringify(q.face), JSON.stringify(q.hid), JSON.stringify(nw.filter(x => x.it.kind === 'person' || x.it.kind === 'frog').map(x => [x.it.id, x.it.j, x.it.y, rowsBox(x.it.rows)])));
         if (fN < fO - 1e-9 || sN < sO - .1) lows.push(r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + q.it.id + ' seen ' + R(sN * 100) + '% (face ' + R(fN * 100) + '%), the old ' + R(sO * 100) + '% (' + R(fO * 100) + '%), by ' + JSON.stringify(q.hid)); } }); });
-    for (const l of lows.slice(0, 40)) P.push('seen: ' + l);
+    for (const l of lows) P.push('seen: ' + l);
     for (const l of [...new Set(edges)].slice(0, 30)) P.push('edge: ' + l + ' (wholly inside the view in the old picture)');
     notes.push('seen: at ' + n + ' person-, dog- and frog-moments (every step\'s end of the ' + runs.length + ' runs) each seen no less than in the old picture less 10%, the face no less (' + lows.length + ' less); everyone and everything wholly inside the view in the old picture of a moment wholly inside with 3 px to spare (' + new Set(edges).size + ' not)'); }
   const picture = (w, skip) => { const C2 = compose(w, 'n'), out = G.rgb[key0].slice(); const cov = LASTCOV;
@@ -985,8 +1005,16 @@ function placePictures(sh, C) {
     let crop = fit(196, 104), zoom = 1; if (crop[0] < 0 || crop[0] > 44) crop[0] = Math.max(0, Math.min(44, crop[0]));
     if (ws.si && ws.no) { const A = C.picture(ws.si), B = C.picture(ws.no); let n = 0, m = 0, d = null; for (let y = crop[1]; y < crop[1] + 104; y++) for (let x = crop[0]; x < crop[0] + 196; x++) { m++; const i = (y * 240 + x) * 3; if (A[i] !== B[i] || A[i + 1] !== B[i + 1] || A[i + 2] !== B[i + 2]) { n++; d = d ? [Math.min(d[0], x), Math.min(d[1], y), Math.max(d[2], x), Math.max(d[3], y)] : [x, y, x, y]; } }
       if (d && n < m * .015) { zoom = 2; const cx = (d[0] + d[2]) / 2, cy = (d[1] + d[3]) / 2; crop = [clampX(R(cx - 49), 98), clampY(R(cy - 26), 52), 98, 52];
-        // whatever the region meets is whole in it: slide it so (or leave it, and the check says)
-        for (const w2 of [ws.si, ws.no]) for (const it of C.itemsOf(w2, 'n')) { if (it.kind === 'arms') continue; const b = rowsBox(it.rows); if (!b || !meets(b, crop) || within([b[0] - 2, b[1] - 2, b[2] + 4, b[3] + 4], crop)) continue; if (b[2] + 4 <= 98) crop[0] = clampX(Math.min(Math.max(crop[0], b[0] + b[2] + 2 - 98), b[0] - 2), 98); if (b[3] + 4 <= 52 && it.kind !== 'person') crop[1] = clampY(Math.min(Math.max(crop[1], b[1] + b[3] + 2 - 52), b[1] - 2), 52); } } }
+        // the nearest region (to the one centred on what differs) that holds what differs, in which every thing it meets is whole, every person it
+        // meets has the whole head, and no set part shows less than 12 px (the check's own tests)
+        const its = [ws.si, ws.no].flatMap(w2 => C.itemsOf(w2, 'n').filter(it => it.kind !== 'arms' && it.rows.length)), T = C.TAGS.comer, c0 = crop.slice();
+        const bad = cr => { let v = 0; if (!within([d[0], d[1], d[2] - d[0] + 1, d[3] - d[1] + 1], cr)) v += 5;
+          for (const it of its) { const bx = rowsBox(it.rows); if (it.kind === 'person') { const top = Math.min(...it.rows.map(q => q[0])), hd = rowsBox(it.rows.filter(q => q[0] < top + 16)), inPic = it.rows.some(q => q[0] >= cr[1] && q[0] < cr[1] + cr[3] && q[2] >= cr[0] && q[1] < cr[0] + cr[2]); if (inPic && !within([hd[0] - 2, hd[1] - 2, hd[2] + 4, hd[3] + 4], cr)) v++; }
+            else if (meets(bx, cr) && !within([bx[0] - 2, bx[1] - 2, bx[2] + 4, bx[3] + 4], cr)) v++; }
+          const cnt = {}; for (let y = cr[1]; y < cr[1] + cr[3]; y++) for (let x = cr[0]; x < cr[0] + cr[2]; x++) { const t = (T[y * 240 + x] || '').split('.')[0]; if (t) cnt[t] = (cnt[t] || 0) + 1; }
+          for (const [t, c] of Object.entries(cnt)) if (c < 12 && t !== 'pared') v++; return v; };
+        let best = null; for (let dy = -24; dy <= 24; dy++) for (let dx = -30; dx <= 30; dx++) { const cr = [clampX(c0[0] + dx, 98), clampY(c0[1] + dy, 52), 98, 52], sc = bad(cr) * 1e4 + Math.abs(cr[0] - c0[0]) + Math.abs(cr[1] - c0[1]); if (!best || sc < best[0]) best = [sc, cr]; }
+        crop = best[1]; } }
     for (const side of ['si', 'no']) { const nm = deacc(word) + '.' + side; if (!sh.pictures[nm]) continue; Object.assign(sh.pictures[nm], { zoom, crop: crop.slice(), what: (zoom === 1 ? 'the 196 x 104 window over every person and thing of the pair, with 2 px to spare' : 'zoom 2: the 98 x 52 region round what differs between the two pictures (in the whole window they differ in less than 1.5%)') + '; the old: ' + JSON.stringify(old) }); } }
   for (const l of sh.level) { const pc = sh.pictures[l.picture]; if (pc) { l.crop = pc.crop; l.zoom = pc.zoom; } }
   for (const e of sh.remap) if (e.kind === 'cam' && e.crops) for (const n of Object.keys(e.crops)) e.crops[n] = { crop: sh.pictures[n].crop, zoom: sh.pictures[n].zoom };
@@ -1009,15 +1037,18 @@ function checkAsks(sh, G, runs, C) {
         const own = it.id === 'the frog\'s cloud' ? 'the frog\'s face' : it.id.replace('\'s cloud', '\'s face');
         for (const [fn, f] of faces) if (fn !== own && rowsMeet(it.rows, f)) P.push('cloud: ' + where + ' ' + it.id + ' is on ' + fn); }
       const talk = w.TALK; if (!talk) continue; nT++;
-      let a = null; if (talk === 'coqui') { const q = w.cq; if (q && q.vis) { const b = frogBox(q); a = [b.x + b.w / 2, b.y + R(q.dy || 0) - 1]; } } else { const p = (w.gente || {})[talk]; if (shownP(p)) a = [R(p.x), R(p.y) - altoOf(talk, p) - 1]; }
+      let a = null, u = null, hh = 6; if (talk === 'coqui') { const q = w.cq; if (q && q.vis) { const b = frogBox(q); a = [b.x + b.w / 2, b.y + R(q.dy || 0) - 1]; u = [b.x + (b.w >> 1), b.y + R(q.dy || 0) - 3]; hh = b.w >> 1; } } else { const p = (w.gente || {})[talk]; if (shownP(p)) { a = [R(p.x), R(p.y) - altoOf(talk, p) - 1]; u = [a[0], a[1] - 1]; } }
       if (!a) continue; if (a[0] < x0 + 3 || a[0] > x0 + 193 || a[1] < 3) P.push('talk: ' + where + ' ' + talk + '\'s bubble\'s tail ' + JSON.stringify(a) + ' is not inside the view');
-      const hab = [a[0] - 9, a[1] - 4 - 11 - 1, 19, 13]; if (!within(hab, VIEWR)) P.push('talk: ' + where + ' the empty bubble over ' + talk + ' ' + JSON.stringify(hab) + ' is not wholly inside the view');
+      // where comer.js puts the empty bubble with the words hidden (LIBRE): the first of talk.places clear of every other face, wholly in the view across
+      { const own = talk === 'coqui' ? 'the frog\'s face' : talk + '\'s face', Fc = faces.filter(f => f[0] !== own).map(f => f[1]);
+        for (const [sd, dy] of TALK) { const x = u[0] + sd * (hh + 16), y = u[1] + dy, r = [x - 9, y - 16, 19, 13]; if (r[0] >= x0 && r[1] >= 0 && r[0] + r[2] <= x0 + 196 && !Fc.some(f => meets(f, r))) { u = [x, y]; break; } } }
+      const hab = talk === 'abuela' && w.gente.abuela.x > 190 && w.gente.abuela.y < 170 ? [a[0] - 28, a[1] - 7, 19, 13] : [u[0] - 9, u[1] - 16, 19, 13]; if (!within(hab, VIEWR)) P.push('talk: ' + where + ' the empty bubble over ' + talk + ' ' + JSON.stringify(hab) + ' is not wholly inside the view');
       for (const [fn, f] of faces) if (fn !== (talk === 'coqui' ? 'the frog\'s face' : talk + '\'s face') && meets(hab, f)) P.push('talk: ' + where + ' the empty bubble over ' + talk + ' is on ' + fn); }
     notes.push('bubbles: ' + nB + ' thought clouds (a person\'s, the frog\'s) at every moment wholly inside the view, clear of the rounds card, on no face but their thinker\'s; at ' + nT + ' moments someone speaks: the tail of the speech bubble (juego.js donde) inside the view, and the empty bubble comer.js draws over the speaker with the words hidden (hab, 19 x 13 over the head) wholly inside the view and on no other face'); }
 
   /* the asks: hint frames, the hand, the answer cards and the hint drawn round each card; the asked thing seen whole, uncovered, on a plain surface */
   const COS2 = { mant: [26, 18], choc: [26, 18], cesta: [48, 24], cafetera: [24, 28], azucarera: [24, 18], olla: [30, 26], fuente: [56, 22], pl_papa: [24, 10], pl_rana: [18, 9] };
-  const cajaBox = (id, p, old) => { const h = altoOf(id, p); if (!p.sent) return [R(p.x) - 11, R(p.y) - h, 22, h]; const lim = old ? 138 : R(SY(R(p.x), 138)); return [R(p.x) - 11, R(p.y) - h, 22, Math.max(40, lim - (R(p.y) - h))]; };
+  const cajaBox = (id, p, old) => { const h = altoOf(id, p); if (!p.sent) return [R(p.x) - 11, R(p.y) - h, 22, h]; const lim = old ? 138 : R(SY(R(p.x), 126)); /* comer.js caja: MESA[1] + 26 in the old, SY(x, MESA[1] + 14) in the port */ return [R(p.x) - 11, R(p.y) - h, 22, Math.max(40, lim - (R(p.y) - h))]; };
   const boxOf = (w, k, old) => { const t = sh.things[k];
     if (t && t.set) { if (k === 'silla_papa') { const i = w.sitio && w.sitio.papa != null ? w.sitio.papa : 3; return old ? [[90, 114, 138, 162][i] - 10, 86, 20, 36] : t.byChair[i]; } return old ? t.old.box : (t.hintBox || t.box); }
     if (/^di_/.test(k)) { const b = frogBox(w.cq); return [b.x + (b.w >> 1) - 8, b.y - 27, 16, 10]; }
@@ -1025,7 +1056,12 @@ function checkAsks(sh, G, runs, C) {
     if (k === 'coqui') { const b = frogBox(w.cq); return [b.x, b.y, b.w, b.h]; }
     const p = w.gente && w.gente[k]; return p && shownP(p) ? cajaBox(k, p, old) : null; };
   const handOf = (w, k, old) => { const t = sh.things[k]; if (t && t.hand && !old) return t.hand; const b = boxOf(w, k, old); return b ? [R(b[0] + b[2] / 2), R(b[1] + b[3] / 2)] : null; };
-  const respBox = (w, k) => { const q = w.cq, b = frogBox(q), n = w.resp.length, i = w.resp.indexOf(k), m = n > 2 ? 76 : 60, en = w.respEn, cx = en ? en[0] : Math.max(x0 + m, Math.min(x0 + 196 - m, b.x + b.w / 2)), y = en ? en[1] : Math.max(4, b.y - 46);
+  // comer.js CARTAS (the port's): where the cards stand at this moment, by the faces round them
+  const cartas = w => { const n = w.resp.length, Fc = []; for (const k in w.gente || {}) { const p = w.gente[k]; if (p && p.vis !== 0) Fc.push([R(p.x) - 6, R(p.y) - altoOf(k, p) + 7 - (k === 'abuela' && p.sent ? 1 : 0) + R(p.dy || 0), 12, 10]); }
+    for (const cx of CARDS.cx) { let ok = 1; for (let i = 0; i < n && ok; i++) { const c = n > 2 ? [R(cx - 70 + i * 50), CARDS.y, 40, 36] : i === 0 ? [R(cx - 50), CARDS.y, 40, 36] : [R(cx + 10), CARDS.y, 40, 36], fr = [c[0] - 12, c[1] - 12, 64, 60];
+      if (boardsOf(w, x0).some(([bn, bb]) => meets([c[0] - 2, c[1] - 2, 44, 40], bb))) { ok = 0; break; }
+      for (const f of Fc) { if (meets(fr, [f[0] - 2, f[1] - 6, 16, 16]) || handOn([c[0] + 20, c[1] + 30], f)) { ok = 0; break; } } } if (ok) return [cx, CARDS.y]; } return [CARDS.cx[0], CARDS.y]; };
+  const respBox = (w, k) => { const q = w.cq, b = frogBox(q), n = w.resp.length, i = w.resp.indexOf(k), m = n > 2 ? 76 : 60, en = w.resp ? cartas(w) : w.respEn, cx = en ? en[0] : Math.max(x0 + m, Math.min(x0 + 196 - m, b.x + b.w / 2)), y = en ? en[1] : Math.max(4, b.y - 46);
     return n > 2 ? [R(cx - 70 + i * 50), y, 40, 36] : i === 0 ? [R(cx - 50), y, 40, 36] : [R(cx + 10), y, 40, 36]; };
   const at = (st, p) => p.split('.').reduce((o, k) => o == null ? o : o[/^\d+$/.test(k) ? +k : k], st);
   const sub = (x, V) => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
