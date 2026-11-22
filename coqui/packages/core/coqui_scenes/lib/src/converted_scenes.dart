@@ -14,5 +14,6 @@ const Set<String> convertedScenes = {
   'banco',
   'mesa',
   'estufa',
+  'nevera',
   'mostrador',
 };

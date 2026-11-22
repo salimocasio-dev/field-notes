@@ -29,8 +29,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
 - `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`). El frente's, El balcón's, La sala's, El
-  patio's, El camino's, El campo's, El lago's, El banco's, La mesa's and La estufa's factories make the real scenes (their sheets
-  read first: `loadScene`), and El mostrador's; the other one is a stub that throw `UnimplementedError('not converted yet')`.
+  patio's, El camino's, El campo's, El lago's, El banco's, La mesa's, La estufa's and La nevera's factories make the real scenes
+  (their sheets read first: `loadScene`), and El mostrador's.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
 
@@ -55,8 +55,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   other wind times (`campo/campo`, `campo/campo-t-1.5`, `campo/campo-t-3.25`: the page's `?t=`, its glints, order 34b), El
   lago's the same way (`lago/lago`, `lago/lago-t-1.5`, `lago/lago-t-3.25`, order 35b), El banco's seven reached states
   (`banco/luz-dia-luna-0-carro-abierto` ..., order 36b), La mesa's three (`mesa/m0h0`, `mesa/m1h0`, `mesa/m0h1`, order 37b)
-  with the still of El colmado's stall under its cocina.no (`mesa/frutas-surtido-frutas`) and La estufa's two (`estufa/banco1`,
-  `estufa/banco0`, order 38b).
+  with the still of El colmado's stall under its cocina.no (`mesa/frutas-surtido-frutas`), La estufa's two (`estufa/banco1`,
+  `estufa/banco0`, order 38b) and La nevera's ten reached states (`nevera/nev-0-cajon-0-pila-0-banco-1` ..., order 39b).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
@@ -433,6 +433,48 @@ set ported call for call from `<id>-set.html`, every place from the content lane
   and `tool/mostrador_paths_test.dart` (every path, the sheet's rules at every act's end: `test/support/mostrador_rules.dart`).
 - Bake: `?page=bake&scene=mostrador`, `node tool/bake_time.mjs --scene mostrador`.
 
+## The kitchen: La nevera (order 39b), on the kitchen's kit
+
+- nevera.js is on the kit (`class Nevera extends Escena implements SetScene, SetOverSprites, PairPlaces`). What its sheet has
+  that the earlier ones did not, or uses differently, as nevera-preview.html uses it (its functions ported pixel for pixel):
+  - **The set** (`nevera_set.dart`): the room built by `cocinaBuild` with this set's own wall height (`K.WH` set to 4.95 round
+    the call and put back: the tall window), the counter with the sink and the tap (dishwater or juice by W.pila), the window
+    with its reveal and sill and the patio outside, the fridge on the left wall (shut, open with its inside, shelves and
+    drawer shut or pulled out, half open), its own floor dimming (`occlusion`: by everything but the counter, whose depth it
+    keeps, `CNTZ`), then the stool with its contact shadows. `setKey` is `nev.cajon.pila.banco` (10 states reached).
+    `neveraAt` (the page's `at`), and `neveraZones` (the page's `zones()`: each pixel's zone, the outside's pixels) for the
+    scene; the zones of each state are recorded at its first bake, with its part tags (`Nevera.zonesOf`, `tagsOf`).
+  - **Whoever is outside the window** (`clips.patio`): what patio() draws between its clip and restore (the cart, what lies
+    on the yard wall, the birds, whoever stands outside, the hat) is drawn only on the set's pixels of the zone `o` (the
+    outside seen through the glass); every other pixel is put back (`Nevera.clipStart`, `clipEnd`). They stand on PA at their
+    x by the moves; a frame with no set (the player with no screen) is not clipped.
+  - **The set in front** (`front.parts`: the fridge, its inside and door, the counter, the sink, the stool, the window; all
+    after the sorted list): each item owns the pixels it drew last (`Nevera.item`); after the list the set's own pixels of
+    those parts are drawn again where nearer than the plane of the surface the owner stands on (`front`, `plane`,
+    `planeDepth`, `footOf`: the floor, the counter, the sill, the fridge's top, a shelf, the drawer, the stool, a card on the
+    wall), never on that surface itself and not within 3 rows over a raised thing's foot.
+  - **`moves`** (75): read from the moved source itself (`NeveraPlaces.to(line, src, [pattern])`): the rows CT, SL, MU, PA, CB,
+    VT and the fridge's boxes NEVERA, FRUTAS (line 15), HUECO, EN, the yard's things, the drawer's fruit, the outside's
+    glass, a named thing's hint hand at its top, whoever stands outside, what stands on the counter, the sill and the
+    fridge's top, abuela at the counter's right end, the cards (`respEn` [154, 4]); every number the floor rule keeps is
+    checked against the sheet's `code` entry of its line (`NeveraPlaces.at`).
+  - **Hint boxes by state** (`things.nevera.hintBoxes` by W.nev.abierta, `things.frutas.hintBoxes` by the drawer pulled out:
+    the preview's `hb`): `NeveraThing`, a `Thing` whose `hintBox` is read from the state the host shows; the fridge's hand by
+    its door (`things.nevera.hands`); the kitchen's hint box and hand.
+  - **`talk`** with each face measured from its bare sprite (`Nevera.faceOf`: the middle of its top 10 rows, its first row);
+    **`shadows`**: the frog on the floor only (not on the stool or the counter, not 3 or more up), the people inside, the
+    things lying on the floor; **`hops`**: none changes.
+  - **Remap**: the stories' moved positions (the counter's, the sill's, the outside's), an x alone on the sill (kind `x`);
+    a pair's own W (`Nevera.placePair`: whoever is outside and the things on the counter at the positions the sheet moved
+    for cual-nevera, as the preview's remapW moves them).
+  - nevera.js's `cosa` is `Nevera.cosaSpr`; its sprites `neveraCosa` (`nevera_sprites.dart`). No random draw: the registry's
+    factory takes no source.
+  - Files: `lib/src/nevera/nevera_set.dart`, `nevera_places.dart`, `nevera_sprites.dart`, `nevera.dart`. Tests:
+    `nevera_set_test`, `nevera_sprites_test`, `nevera_preview_test`, `nevera_boxes_test`, `nevera_pictures_test`,
+    `nevera_acts_test`, `nevera_asks_test` (every ask of the 12 recorded runs and of the app's 8 plays: the preview's box and
+    hand, the thing's pixels inside it as far as the preview's; whoever is outside at every step's end: no pixel outside the
+    opening; the zones equal the page's); the preview's rule for moving a recorded W is `test/support/nevera_preview_remap.dart`.
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its
@@ -482,22 +524,24 @@ set ported call for call from `<id>-set.html`, every place from the content lane
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/, .../banco/, .../mesa/, .../estufa/ and .../mostrador/ for the browser set tests
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/, .../banco/, .../mesa/, .../estufa/, .../nevera/ and .../mostrador/ for the browser set tests
 node tool/make_cocina_kit_ref.mjs [--check]       the kitchen's kit drawn by cocina-kit.js, for test/cocina_kit_test.dart
 node tool/estufa_asks_ref.mjs --states DIR --plays PLAYS [--check]   every ask of La estufa's recorded runs and of the app's plays as estufa-preview.html frames it
                                                   (DIR from juega.mjs --states, its four stories; PLAYS from the app's
                                                   tool/gate_a_frames_test.dart with ASKW=yes, the four stories), for
                                                   test/estufa_asks_test.dart
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/, .../banco/, .../mesa/ and .../estufa/
+node tool/nevera_asks_ref.mjs --states DIR --plays PLAYS [--check]   the same for La nevera (its four stories), and whoever
+                                                  stands outside at every step's end, and the zones, for test/nevera_asks_test.dart
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/, .../banco/, .../mesa/, .../estufa/ and .../nevera/
 dart run tool/make_mesa_still.dart [--check]      lib/src/mesa/mesa_frutas_still.dart: the still of El colmado's stall (La mesa's cocina.no)
-node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo|lago|banco|mesa|estufa] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|nevera] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
                                                   the scene's stories)
-COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo|lago|banco|mesa|estufa] flutter test tool/compare_all_test.dart   every picture of
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|nevera] flutter test tool/compare_all_test.dart   every picture of
                                                   preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|mostrador]   bake times
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|nevera|mostrador]   bake times
                                                   (each state's first bake, then again on the same engine; for a set with glints on its
                                                   water, what drawing them costs a frame)
 ```

@@ -153,6 +153,8 @@ It writes `<dir>/<story>-<plan>/NN-<kind>.png`, `index.json` and `sheet-NN.png` 
 `--dart-define=ASKW=yes` also writes the story's W and frame number at each ask picture into `index.json` (`askW`, `askF`),
 for a scene's test of its asks against its JS preview (coqui_scenes' `tool/estufa_asks_ref.mjs --plays`, order 38b). An
 option no thing is named for is touched on the thing the step's `alias` lets stand for it (h-estufa's olla_fria: olla0).
+`--dart-define=LIMIT_S=<n>` gives each play n seconds of story time to reach its end screen (300 by default): La nevera's
+no-hay-leche played by the wrong learner ends at 302 s (order 39b: play it with LIMIT_S=600).
 `TXT` (default `con`) starts the app as the address `?txt=` does (`AppSwitches.fromQuery({'txt': ...})`): when the story's words
 show, as the line is spoken, right after it, or never. With `no` nothing of the story's words is on the screen (the speech
 bubble's mic and tick, the end title and the buttons still are, as in the old page). The tool still finds its way: it reads the

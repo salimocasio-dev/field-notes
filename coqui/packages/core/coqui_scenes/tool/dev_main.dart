@@ -7,7 +7,7 @@
 //   ?w=<W as JSON>&view=<name>&F=<n>   the scene in that state (W over the fresh world, in today's places), through a view
 //                                      of the sheet (wide, casa, puerta, ventana, cuadro, wide@donde-esta-el-pajaro)
 //   ?page=pairs                        the 12 review pairs of cual-frente and the level pictures, through ScenePictures
-//   ?page=bake[&scene=balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|mostrador] every baked state of the sheet (El frente's, or the scene given), each baked on a
+//   ?page=bake[&scene=balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|nevera|mostrador] every baked state of the sheet (El frente's, or the scene given), each baked on a
 //                                      fresh engine's cache, one after the other; the times are on the page and in
 //                                      `window.coquiBakes` (JSON) for a script
 // Every page shows how long each state it baked took, in ms.
@@ -25,6 +25,7 @@ import 'package:coqui_scenes/src/frente/frente_set.dart';
 import 'package:coqui_scenes/src/lago/lago_set.dart';
 import 'package:coqui_scenes/src/banco/banco_set.dart';
 import 'package:coqui_scenes/src/estufa/estufa_set.dart';
+import 'package:coqui_scenes/src/nevera/nevera_set.dart';
 import 'package:coqui_scenes/src/mesa/mesa_set.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador_set.dart';
 import 'package:coqui_scenes/src/sheet_cache.dart' show sceneSheetOf;
@@ -347,6 +348,7 @@ class _BakePageState extends State<BakePage> {
           'banco' => BancoState.fromQuery(b.query).key,
           'mesa' => MesaState.fromQuery(b.query).key,
           'estufa' => EstufaState.fromQuery(b.query).key,
+          'nevera' => NeveraState.fromQuery(b.query).key,
           'mostrador' => MostradorState.fromQuery(b.query).key,
           _ => FrenteState.fromQuery(b.query).key,
         };

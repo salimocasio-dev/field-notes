@@ -7,6 +7,7 @@
 //   (--dart-define=TXT=con|tras|no starts the app as the address `?txt=con|tras|no` does: when the story's words show; con is
 //   the default)
 //   (--dart-define=ASKW=yes writes the story's W and frame number at each ask picture into index.json)
+//   (--dart-define=LIMIT_S=<n> gives a play n seconds of story time to reach its end; 300 by default)
 //
 // The real app shell on the harness's fakes (silent clips, the scripted recogniser, the fake clock), at the story's address
 // on a 390 x 844 screen at ratio 2 (pictures of 780 x 1688), the real fonts, motion on. The tool only watches and touches:
@@ -67,8 +68,10 @@ const int _lineDelay = 400, _askDelay = 1000, _tapDelay = 300, _endDelay = 2000;
 /// play.dart: the learner thinks 700 ms after a choice is ready.
 const int _think = 700;
 
-/// The story's time after which a play that has not ended is given up.
-const int _limitMs = 5 * 60 * 1000;
+/// The story's time after which a play that has not ended is given up: 5 minutes, or `LIMIT_S` seconds (a long story whose
+/// wrong learner pokes again at every ask, La nevera's no-hay-leche: about 5.5 minutes).
+const int _limitMs =
+    int.fromEnvironment('LIMIT_S', defaultValue: 5 * 60) * 1000;
 
 /// What is written to `summary.json`, play by play (the plays run one after the other in this isolate).
 final Map<String, Map<String, dynamic>> _summary = {};

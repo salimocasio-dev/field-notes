@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 692,
-  "totalBytes": 44450781,
+  "files": 772,
+  "totalBytes": 49200310,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -2652,6 +2652,406 @@
       "path": "mostrador/dentro-tarde-shut-1/zb.json",
       "bytes": 322,
       "sha256": "1a4c79ca07335468f248a7a27b753bed62505988227bcad1033661d290c2fcfa"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "5012eecab5e0318509d5d8c3a47fba66690ddaa2768150e814460c900ab2ceb9"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.json",
+      "bytes": 370,
+      "sha256": "c0133edf0404e45a2b015ecde7ee5cf30fefa99f0e9db227189ccca29d69ea88"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.png",
+      "bytes": 5767,
+      "sha256": "5922c11dcbd64efbfa1801cdc594e56fb533169237fd06dfc9c647aa55386428"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/state.json",
+      "bytes": 965,
+      "sha256": "dcd0ff1ec569078104f69876ec428ed6be6a054a8a634e69f56ba1905fff3c5b"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "d8b7caabde0a7f0e3b479921cbcb48e9bd5a49b3180d9b8c969887d241bfdc5d"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/zb.json",
+      "bytes": 322,
+      "sha256": "7cc714fa996e3594a6de13fe65eb387f26568c260b09b1f5da5cd7bbedb8c5e0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "9604933ba0b6c32ee01bfa8707c305ee3f995b2c06d8df426bc9155692cc2c4c"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "6831cf07cd1e6490ddb46e1cb2ec01492ce4599f7c83de27d70a90afa4630ed4"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6088,
+      "sha256": "c4b7428ca6121bb2786194916f849263c6a19981fab62413cf899d0b1ec7f0ed"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "4f69112115ef7dea6529469b7a50815b7d624d42c2b4be556d335f6cbdfb52e0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "7d4f87cc3d3e386df5b060f65443d87af695a6e2bba2d776a3d2412ad004efb0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "f69cc5b56dd720a355f315f3acfae1d72247b8c6083c3392250723e40552b5a7"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.png",
+      "bytes": 6120,
+      "sha256": "c72ac5128a374845bf8b802f26a6921c7b4c697aeaa703d4746bf9ded6cb6c6c"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "c2575aec2d6f534010c92e7ac313cfc653051484a7809eda71e60cac1ceab728"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2544d38a4ce8be199124ee45f43da54dec22483836106f07ef2113b55db90ba9"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "cf8c8709d5cf453149f804bc40cc1d5d129cc9acf78b06ef0db03b6441e901ba"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.png",
+      "bytes": 6089,
+      "sha256": "dce7603cbc1ceee2a4bb2a7191166c8c77e7307b47002399abe2b541f1e53c84"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "ba2b5b11775d9df29315574684ea2fa1ee11c784d2e13b756f1057cabb59d10b"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "28199b42a6f13d8971aba19c741ecff1454c632e731d46a09e00af76bef32890"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.json",
+      "bytes": 370,
+      "sha256": "51b772e07d06a67efdcf18c35861bc7fcdf2c1e2802c7160ec39f670818b9808"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.png",
+      "bytes": 6550,
+      "sha256": "d8580c147f7a06efb63ad292baf82a5edcb239b413d9e16da6dc9348955ea811"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/state.json",
+      "bytes": 965,
+      "sha256": "8fd6a6245265cf39aeda69b3880a770ac64368a3f110b00fb738525674f3ba8c"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "ce8558eae7628122149cbf94c13330f62fd3a4fecd615476cdb6b34cf3270338"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/zb.json",
+      "bytes": 322,
+      "sha256": "cb6539121f3e9a0a96e0a3d3ebc2ad75efe253d8936c54407850ab997ee40dfe"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "100ca69e0a533cc25a6f7a084d4eac2c9386eac9065090b7a809dd27d90fcca6"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "b7db8fdf149506d248f776fcef2d9036b777578f19e5b7de95225766b620370d"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6868,
+      "sha256": "6928e92608d471ca11b6080192e59a0d035073b3f6135ffc90d8b6e9cc4b7535"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "cc6b38f98dca3c63efb5492feae736abd4e12d828af6f9046c9eeb0d768e3e54"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "c583717f2b20147b3e153443c17118c82e3fa210c05f1e681d305b08786b6933"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c0f09bd5ab7d6880f6b193f35097f6b131799aa6edc9a8633b696ff88d93f098"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "c4b2d73dbd96435d2e50b8479da18af1b1cd9395b4473668fc89e017ce7d58f8"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "78ad0f3cdb7a8f2dbf3604c42b1c5db32e03af87293ef2264486083913eb25c7"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.png",
+      "bytes": 6902,
+      "sha256": "ce30646519bec9125513e529c3022b7383b8e49e4744fc751c95bec5add7816a"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "eb8d4b7d2b63dc54bacb9328a45be79f146246e2c36119edf96d0751d823d233"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "c583717f2b20147b3e153443c17118c82e3fa210c05f1e681d305b08786b6933"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c0f09bd5ab7d6880f6b193f35097f6b131799aa6edc9a8633b696ff88d93f098"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2efec18db8be2c1cb888afa54f4a03cd923c9dbfe32dc99332fd8d4fa2dc986c"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "5d207237606da312070a91417dcdadc95d5dbf625ef1d92fd23a8c4e5a969ba4"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.png",
+      "bytes": 6870,
+      "sha256": "d33acce97450e123fc52ed44451e296c796e45bfd71923b260f1d39c6dd6a46e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "a17c8778a4307b3f43a31751c4c9c65dd8dc2e2d7e3f6508652b122cb1ddf05b"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a7262adf25e939041e82dd6fd57f7f43e7b7b61857f6c2b7b8c274e3379313b"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "79f7c0cc131a6ef60db7159dc1a5a8112fddbf65acb0644e018ca5daa74706e3"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "e6e6d14316543dbc333b9589ec338fc0f18b0eedf43c9cad99f73fe0aca484ac"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "70c3d8787fa46edeae7173a6bfc0451ef066855af75f9618c2080f583d928f56"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.png",
+      "bytes": 6969,
+      "sha256": "51f17337659e08422f7e583f1386fd102839a687b2246b36b3762a18074ff319"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "0c49cbacac6ec9bb06e151325b4f947b7bc8893a0a4f8face2d85036a9bc0a63"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "ecd7bec90428e0dd15e72632b59b6d56aea6c7bbc924e3fc35a3ac16ae886936"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "60e9caad84471efcf5a7bc3773ae3a1fd4cdfb495573e43e1d030c84ad148acf"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "e45e37e7169f73047defdb61ed3771e0b3ea10c99e57e88e98a52d3b41c570ea"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "b724a42b4c80c9dc2a6a7e5adf740520ce5ed373757da942edebc1ff3deeb0b2"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6086,
+      "sha256": "678bb87f3b4536a1d3739954f52994c2c4d6c467e75dab710e80caa9a4d854c3"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "bd2e3da5a813c1b4e45a1bbd89b1bc5af73416e0d8fa1175e0f85835f2d4d545"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "91b070e25f665029af3d90b8229ae36eb8409f11c9e181b04b14aa701972f60f"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "161c2e74723cd0c2a2a5eb4d5a8337c0f5e7e32c50330adc6f0335c51bfc5021"
     },
     {
       "path": "patio/hora-crepusculo-door-open-gate-shut/kinds.bin",

@@ -2,13 +2,13 @@
 // El balcón's from docs/proyecto/pixel/balcon-sheet.json, La sala's from docs/proyecto/pixel/sala-sheet.json, El patio's
 // from docs/proyecto/pixel/patio-sheet.json, El camino's from docs/proyecto/pixel/camino-sheet.json, El campo's from
 // docs/proyecto/pixel/campo-sheet.json, El lago's from docs/proyecto/pixel/lago-sheet.json, El banco's from
-// docs/proyecto/pixel/banco-sheet.json, La mesa's from docs/proyecto/pixel/mesa-sheet.json and La estufa's from
-// docs/proyecto/pixel/estufa-sheet.json.
+// docs/proyecto/pixel/banco-sheet.json, La mesa's from docs/proyecto/pixel/mesa-sheet.json, La estufa's from
+// docs/proyecto/pixel/estufa-sheet.json and La nevera's from docs/proyecto/pixel/nevera-sheet.json.
 //
 //   dart run tool/make_sheet_fixture.dart          (in this package) writes test/support/fixtures/frente_sheet.dart,
 //                                                  test/support/fixtures/balcon_sheet.dart, sala_sheet.dart,
 //                                                  patio_sheet.dart, camino_sheet.dart, campo_sheet.dart, lago_sheet.dart
-//                                                  banco_sheet.dart, mesa_sheet.dart and estufa_sheet.dart
+//                                                  banco_sheet.dart, mesa_sheet.dart, estufa_sheet.dart and nevera_sheet.dart
 //   dart run tool/make_sheet_fixture.dart --check  says whether those files are the ones the sheets give
 //
 // A test in a browser cannot read files, so each sheet goes into a Dart file as a raw string. The vm test reads the sheet
@@ -39,6 +39,10 @@ void main(List<String> args) {
     'estufa': (
       constant: 'estufaSheetJson',
       what: "La estufa's sheet (order 38a)",
+    ),
+    'nevera': (
+      constant: 'neveraSheetJson',
+      what: "La nevera's sheet (order 39a)",
     ),
   };
   var stale = 0;
