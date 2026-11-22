@@ -1125,6 +1125,34 @@ New scenes, as El colmado's: no old scene file, no `ref/escenas/` folder. Step a
 
 **Step b** and **Done when**: as orders 50 to 53. Two things are new for this place: sprites that drive (they come along a lane, stop at a named spot, drive on; a person in front of one is drawn after it by the sheet's depth rule), and the frog pressing a button on a thing that is itself a sprite (the guagua's doors in story 52).
 
+### Order 54 (esquina), step b. **Result (Nov 22): done, merged to main.**
+
+Built by an Opus builder on `orden/54b` in about 2.9 hours, La calle's shared pieces included; the builder ran `test_all.sh` whole (all checks passed), the orchestrator ran the scene's set, kit, vehicles, acts and stories tests again (its own run of the rules over all paths was cut off by a time limit, so that number is the builder's); after main (La caja) was merged in, the builder ran the whole `coqui_scenes` package (2,040 pass) and the stories tests again.
+
+- **What La calle's four scenes share, written here first:** `coqui_scenes/lib/src/calle/calle_base.dart` (`calle-base.js` whole; `calle_kit_test`: 77 cases on the four sets' origins equal the JavaScript), `calle_vehicles.dart` (the red car, the blue car, the guagua with its three roof boards, both headings: each look baked once on its own engine and cropped with each pixel's depth, 24 bakes equal the JavaScript; `drive`, `place`, `putVehicle`), `calle_cast.dart` (the obrero, paddle, flags, bucket, cones, the bicycle ridden or pushed, the baby on an arm, `callePerson`). `SceneSheet` is unchanged; the sheet's `routes` are read as plain data.
+- Files of the scene: `lib/src/esquina/` (`esquina_set.dart`, `esquina_places.dart`, `esquina_sprites.dart`, `esquina.dart`), the sheet asset, `coqui/ref/pp/esquina/` (8 states), tests in `coqui_scenes` and `feature_story`.
+- The set: all 8 states equal the JavaScript: 0 of 51,840 pixels differ.
+- Vehicles: a vehicle's pixel hides a person exactly as a set pixel does; its shadows are cast again every frame where it stands (the darkening of the ground round it is not drawn); `drive` moves it along its lane from the sheet's entry and exit points and eases to a stop at a named spot. New looks (the builder's drawing): a guagua and a car with a door open, a window open with a face in it.
+- The frog is never hidden by a grown-up's or a vehicle's pixels: where the sheet's own places put him behind someone (story 48, abuela) he is drawn over her.
+- Touches: every box holds its thing; all 19 things the Needs list says he can touch answer a touch.
+- Paths: 1,984 (la-calle 64, la-esquina 1,536, ahora-y-despues 384), all to the end, 0 errors; 70,400 rule checks, 0 broken.
+- Frames from the real app: all six plays reach the end, no touch with "nothing happened".
+- Bake on a busy machine (median of 5): tarde states 69 to 100 ms the first time; manana states' medians 182 to 901 ms with lowest runs 57 to 194 ms. Not settled: to be measured again on a quiet machine.
+- New sprites: `docs/proyecto/pixel/port/calle-sprites.png` (52, vehicles included), `esquina-sprites.png` (24). Guesses: the paddle, the flags, the bottle, the bicycle's basket, the open doors, the faces at the windows, the marks in the cement, story 48's card, where flowers and balloons are held, the rider's sitting figure.
+
+**For the content lane: 10 acts left OPEN in La esquina** (marked `// OPEN:` in `esquina.dart`):
+1. 48 steps 6 and 7: the game draws which of the two stands in front (`parada1`, `parada2`) but the sheet names one place per thing; each stops at its own spot, so the car is always in front.
+2. 48 step 3: the guagua should come from the left (`de: izq`) but every lane in `routes` runs right to left; it comes from the right.
+3. 48 step 4 and 49 step 3: a bicycle that stops to be touched has no spot; it stops at `carril_b.bici`.
+4. 49 step 3: the bicycle's rider is not named; papá rides it.
+5. 49 step 4: two people cross together and the sheet names one place (`cruce_fin`); the second stops at `acera3`.
+6. 49 steps 4, 6, 7, 8: the way over the stripes has no named points; they walk a straight line from the kerb to `cruce_fin`.
+7. 49 step 8: abuela comes out at `puerta` while don Pepe stands at `pepe.puerta`, the same place; he goes in.
+8. 50 steps 5 and 6: the game can deal the guagua to `carril_a`, where the sheet says it never waits; it waits at `carril_b` and the other thing takes `carril_a`.
+9. 50 steps 5 and 6, `atras50`: backing out of the lane over the pavement onto the cement has no place; the thing lurches 2 px where it stands, the cone at `cono2` falls, `cemento` draws the track.
+10. 50 step 7: "hops onto the smooth part and off again" has no place for "off"; he stays at `coqui.cemento`.
+Also: `toca_carro` and `acera2` (abuela) are 6 px across and 11 down, `toca_guagua` and `acera3` (mamá) 6 across and 5 down: the frog stands behind them in every la-calle play (the sheet's sprites-apart check never put these pairs together); the Needs name `cerca_cemento`, the sheet has `coqui.cerca`; the sheet's hole-shows check (45%) holds only while the obrero sits: while he stands at `obrero.paleta` (50 steps 2 and 3) the hole shows 43%.
+
 ### Orders 58 to 61. La plaza (place 6): plaza, reloj, quiosco, calendario
 
 New scenes, as La calle's: no old scene file, no `ref/escenas/` folder. Step a (design) is the content lane's; step b is this lane's, after La calle's four.
@@ -1259,6 +1287,59 @@ The plan names it ("the level check and the fort check") and page 02 puts it aft
 - At the end, no mark out of 40: the map of the ten places, each shown as strong or as coming back, and the words he missed go into Repaso as due now. A place with two or more of its four items missed is "coming back".
 - A1 is done, and the road to A2 shows, when no more than two places are coming back and six or more of the ten spoken items were heard right. He can take it again the next day. (These two numbers are first guesses.)
 - What it needs from the content lane, once the ten places play in the app: the 40 items (word, sentence, four pictures from the scenes' own picture pairs) and the ten questions. Nothing new is recorded.
+
+## Where this lane stopped on Nov 22 (pick up here)
+
+Salim asked for work to stop for now (usage). Every branch below is pushed, signed and clean; nothing under `historia/cuentos/` changed on any of them. The machine was the limit all night: four builders plus one test run put the load at 30 to 40, and tests timed out and had to be run again. With three builders it should hold.
+
+**On main, not in a build yet:** La esquina (order 54; its result is below, under La calle).
+
+**Built, stopped before the last checks** (each needs: main merged in with the shared lists in order ..., caja, esquina, parada, tiendas, cruce, plaza, ...; the generated files remade by their tools; `test_all.sh` whole; bake times on a quiet machine; then the orchestrator's own checks):
+- `orden/55b` La parada (holds `orden/54b`): set 4 states 0 of 51,840 px differ; acts test passes; 352 paths, 0 errors, 13,812 rule checks, 0 broken; six app plays reach the end. **Left:** paths, frames and `parada_stories_test` run again after the last fix (the chofer leans out only while he speaks or acts: he covered the front door); bake times; `test_all.sh`. It added two guagua looks to `calle_vehicles.dart` (`atras`, `puertas`: additions only).
+- `orden/56b` Las tiendas (made from `orden/54b` before main was merged into it; main's caja is not in it): set 14 states equal; acts test passes; stories 54 and 56 pass. **Left:** `tiendas_stories_test` again (55 failed on Luis and the señora both at `luis.puerta_izq`; fixed, not rerun); `tool/tiendas_paths_test.dart` (664 plays, never finished); frames; `tiendas-sprites.png` remade (`flutter test tool/tiendas_sprites_test.dart`); bake times; `test_all.sh`.
+- `orden/58b` La plaza, with place 6's shared pieces (`plaza_base.dart`: 222 cases equal the JavaScript, `set_kit.dart` unchanged; `plaza_cast.dart`; feature_story says a decision's whole round again when he waits, 281 tests pass): set 12 states equal; acts test passes; stories 60 and 61: 64 paths each, no rule broken; six app plays reach the end; `test_all.sh` passed two commits before the head. **Left:** story 62's 7,680 paths again after the last two commits (384 paths had a helper over the frog; fixed for the señor and the joven, not confirmed); `test_all.sh` at the head; bake times. For reloj, quiosco, calendario no further runner change is needed (time cards and the big bingo card as story 60's bubbles; 67 uses the whole-round repeat; 70 uses `vale` as it is). Their briefs are written: `brief_59b.txt`, `brief_60b.txt`, `brief_61b.txt` in the orchestrator's scratchpad (lost with the machine: write again from order 55's pattern if gone).
+- `orden/comer-b` A comer in Dart (on `lane/cocina`): set 0 of 51,840 px differ; 170 sprites equal; 698 of 698 preview pictures identical; all 9 recorded runs equal without times (que-quieres 18 to 19.4 s longer, buen-provecho 4.2 s shorter, cafe-con-azucar 12.1 to 13.1 s longer: measured before the last fix); 119 asks equal the preview; six app plays reach the end. **Left:** the differential again after the `LUGAR` fix (the sheet's `lugarOf` gave [108,145], comer.js has [124,141]); analyze, boundaries, format and the `make_* --check` tools over the whole of `coqui/`; bake time; `test_all.sh` (only the six known reds of `lane/cocina` may fail). Old faults kept: the five speaking boxes are one box (only `di_buen` answers); the sugar bowl's lid lies outside its box; a person's box leaves 42 to 232 of their pixels out.
+
+**Not started:** La calle's cruce (57; `brief_57b.txt`), La plaza's reloj, quiosco, calendario (59 to 61), places 7 to 10 (62 to 77).
+
+**La cocina's build still waits on Salim's yes** to record ten single words (78 characters; the push of `historia/cuentos/palabras-solas.json` starts the paid recording job). Then: main merged into `lane/cocina`, `cocina.no` drawn from the frutas scene (order 52's note), the words pushed and recorded, `make_repaso.py --app` again, the full run, the merge to main, the build.
+
+**For the content lane: acts left OPEN in scenes not merged yet**
+
+La parada (`parada.dart`):
+1. 51, 52, 53 start, `ir bordillo`: no such spot; he goes to `fila2`.
+2. 53 step 1, `sol`: no sun in the sheet (`E.SUN` is null in every hora); it is only on the card, has no touch box, and its twinkle falls on the frog.
+3. All three, `guagua llega/sale`: no route; it comes along the stop's lane from the right edge and leaves from `parada2` by the far lane.
+4. 51 steps 3, 6, 7, `boleto` at `parada2`: no chofer spot; the ticket flies to the door.
+5. 51 ending n=1 and 52 ending: no `ventana3`; the frog is at `ventana2` in front of Luis.
+6. 51 step 6 wrong, `gesto abuela no/senala` inside the guagua: her head shakes only, at `ventana1`.
+7. 51 ending n=0: no way off the pavement; abuela walks to `fila1`.
+8. 52 steps 1 and 3, `llama52`: no head place at the back door's glass; knocks only.
+9. 52 steps 5 to 7, `gente52`: people come and go by `camino`; those at the glass are not drawn.
+10. 52 steps 6 and 7, `perro52`: no aisle; Canelo vanishes at the door and comes back.
+11. 53 steps 3, 6, 7, `monta53` "hops to the sign": no frog spot there; `coqui.boton_sube`.
+Also: the Needs name spots the sheet lacks (`bordillo`, `banco3`, `cola`, `ventana3`); the sheet's `banco1` names the señora, but there she sits in front of the frog at `fila2`, so she sits at `banco2` (preview moment 1); in 52 the frog at the back button is drawn over the nearer señora at `fila3`.
+
+Las tiendas (`tiendas.dart`):
+1. 54 step 2: the post box has no place; abuela holds the letter out at `abuela.puerta_correo` and it is gone.
+2. 54 step 8: no place for the frog off the horse; he stays on its back while the bebé rides.
+3. 55 step 2 (and 6): the windows have no place; the waving hand (and the head) is drawn at the top of the building's box.
+4. 55 step 3: the painter has no place; he appears in the new building's doorway.
+5. 55 step 4: no act gives the frog a tin; the señor looks at the basket.
+6. 55 steps 6 and 7: the sign has no place on the wall; the parent shows it in hand at the door. The señora stands at `senor.pasa`; the passer-by there collides with the right door's group, so they step to `luis.puerta_izq`.
+7. 56 step 1: the cloud at nube 0 has no place; it is drawn half outside the view's left edge.
+8. 56 step 4: no act brings the señora out before her line; she comes out after the frog's push on the banco's door (step 3).
+9. 56 step 8: "walk off" has no place; they stay and one drop falls.
+Also: at `coqui.puerta_banco` and `coqui.puerta_farmacia` the seat hides 205 and 51 of the frog's 536 pixels; in 56's game `puerta_farmacia` overlaps abuela sitting at `banco_acera`; `gen_tiendas.py` draws `lb` after `otra55`, so pair b first shows pair a's side; the generator writes `lado` left/right and `hora` mediodia, which the sheet does not have (read as izq/der and manana).
+
+La plaza (`plaza.dart`):
+1. 60 start and 61 steps 4 and 5: the story's spots put people in front of the frog (Carmen at `suelo4` when he is at `asiento2`; the abuela at `frente2` when he is at `asiento1`; in 61 the abuela at `frente1` and the señora at `frente2` when he is at `tablero2`); they stand at the nearest free spot of the same row.
+2. 60 steps 3 to 6: the bubbles over the frog at `asiento1` cover 37 px of the pigeon at `respaldo1` (the sheet checks the bubbles only at `asiento4`).
+3. 61 step 8: on the ledge (`repisa`) the frog covers 176 px of the board's pictures and hooks.
+4. 62: the coin jar has no place; it stands at `carro_borde`, just behind the frog.
+5. 62 step 4: no place "across the square" for Ana's mamá when she calls; she is at `entrada`, outside the window.
+6. 62 rounds A and B: with another helper at `ayuda1`, the señor's hat at `ayuda2` covers 2 px of the frog on the cart.
+Also: `gen_plaza.py`'s spots disagree with the preview's moments (the frog at `asiento2`/`asiento1` instead of `asiento4`, the people at `frente1`/`frente2`); 60 sends Ana's mamá to `entrada` in step 1, so she is not seen until step 4. The looks of Ana's mamá, la joven and the visitors are the builder's guess.
 
 ## Order 45. Preview content (previa): a build plays stories that are not on the old site yet. **Result (Nov 21): done, merged.**
 
