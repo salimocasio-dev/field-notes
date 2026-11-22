@@ -1,0 +1,46 @@
+# Timeline (for "hours per scene" with each place link). Times UTC.
+- banco (36): step a started right after build 10 commit (2026-11-21 13:54:21 +0000). Round 2 commit 2026-11-21 17:18:49 +0000. Round 3 (last fix pass) sent ~2026-11-21 18:07:46.
+- mesa (37), estufa (38), nevera (39): step a designers launched 2026-11-21 18:07:46 (agents ae5128634b8fde2d3, a1d3c2de0158c2297, a624c8cbafe4b0a98).
+# New rules from Salim (Nov 21, after banco round 2): max 2 reader rounds per old scene; up to 4 scenes in flight; one builder per scene, own worktree; I merge shared files; places 4-10 port only (4 scenes of a place at once, generators in page 13's order, never push historia/cuentos/); one build + link per place; "ready for the content lane" + build number on page 13; with each link one line of hours per scene.
+- banco: step a merged 2026-11-21 18:29:12 (fdedf35 on main); port builder a2e9ed46920bbcb2a launched same time on orden/36b. Order 45 (previa) builder a1fb619dff2a9c744 on orden/45 launched ~18:15.
+- order 45 merged 2026-11-21 18:55:50
+- estufa round 1 handed in 2026-11-21 19:25:57; readers launched
+- estufa round 2 (last) sent 2026-11-21 19:33:14
+- banco port handed in 2026-11-21 19:53:32 with one STOP (hop count in el-bebe-duerme); designer fixing
+- mesa round 1 handed in 2026-11-21 20:05:15; readers launched
+- banco hop fix merged to main 2026-11-21 20:08:32; port builder resumed
+- mesa round 2 (last) sent 2026-11-21 20:17:21
+- estufa step a merged 2026-11-21 20:24:21
+- nevera round 1 handed in 2026-11-21 20:26:32
+- estufa port launched 2026-11-21 20:29:10
+- banco port final hand-in 2026-11-21 20:31:33; my test_all started
+- comer design launched 2026-11-21 20:32:21
+- nevera round 2 (last) sent 2026-11-21 20:37:29
+- Build 11 pushed 2026-11-21 20:42:44 23de4dfe4435e6538017053494c716718af1e439
+- mesa round 2 handed in 2026-11-21 20:59:37
+- mesa step a merged 2026-11-21 21:10:26
+- mesa port launched 2026-11-21 21:14:47
+- estufa port handed in ~2026-11-21 21:46:23; my test run started
+- mostrador (50b) launched 2026-11-21 21:48:00
+- estufa port verified by me and merged into lane/cocina 2026-11-21 21:59:34
+- estufa box fix merged into lane/cocina 2026-11-21 22:32:47
+- nevera round 2 handed in 2026-11-21 22:40:50
+- mesa port final hand-in 2026-11-21 23:17:13; my test run started
+- nevera port launched 2026-11-21 23:28:46
+- mostrador done by builder 2026-11-21 23:50:36 (launched ~21:55); estantes and frutas launched now
+- mesa port verified by me and merged into lane/cocina 2026-11-21 23:52:04
+- mostrador verified by me and merged to main 2026-11-22 00:04:56
+- estantes done by builder 2026-11-22 00:54:41; caja launched
+- comer round 1 handed in 2026-11-22 00:55:03
+- frutas done by builder 2026-11-22 01:00:55
+- esquina (54b) launched 2026-11-22 01:00:57
+- nevera port handed in 2026-11-22 01:05:52; my test run started
+- plaza (58b) launched 2026-11-22 01:06:33
+- estantes merged to main; nevera merged into lane/cocina 2026-11-22 01:22:49
+- frutas merged to main 2026-11-22 02:48:48
+- comer round 2 handed in 2026-11-22 03:30:46
+- comer design merged into lane/cocina; port launched 2026-11-22 03:41:39
+- caja done by builder 2026-11-22 03:54:51 (launched 01:11); parada launched
+- caja merge+retest handed in 2026-11-22 04:29:53; esquina done by builder 03:57; tiendas (56b) launched
+- caja merged to main and pushed 04:45; esquina brought up to main and signed 2026-11-22 05:04:54, waits for build 12 before merging; full run on main started 04:13
+- Build 12 pushed 2026-11-22 05:58:47 8a2e881b

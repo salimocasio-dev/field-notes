@@ -134,7 +134,12 @@ void main() {
 
   // each thing alone, where the stories put it (its id, kind and value; no steam: what rises from it is not the thing)
   late final things = <String, Map<String, dynamic>>{
-    'mant': {'k': 'mantequilla', 'v': '5', 'x': scene.BU33[0], 'y': scene.BU33[1]},
+    'mant': {
+      'k': 'mantequilla',
+      'v': '5',
+      'x': scene.BU33[0],
+      'y': scene.BU33[1],
+    },
     'choc': {'k': 'choc', 'v': '5', 'x': scene.CH33[0], 'y': scene.CH33[1]},
     'cesta': {'k': 'cesta', 'v': '5:0', 'x': scene.CE33[0], 'y': scene.CE33[1]},
     'cafetera': {'k': 'cafetera', 'x': scene.CAFE35[0], 'y': scene.CAFE35[1]},
@@ -144,7 +149,12 @@ void main() {
       'y': scene.AZU[1],
       'spoons': 8,
     },
-    'olla': {'k': 'olla', 'v': 'lleno0', 'x': scene.OLLA[0], 'y': scene.OLLA[1]},
+    'olla': {
+      'k': 'olla',
+      'v': 'lleno0',
+      'x': scene.OLLA[0],
+      'y': scene.OLLA[1],
+    },
     'fuente@stove': {
       'k': 'fuente',
       'v': 'c',

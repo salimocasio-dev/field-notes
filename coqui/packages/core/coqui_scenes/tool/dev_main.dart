@@ -7,7 +7,7 @@
 //   ?w=<W as JSON>&view=<name>&F=<n>   the scene in that state (W over the fresh world, in today's places), through a view
 //                                      of the sheet (wide, casa, puerta, ventana, cuadro, wide@donde-esta-el-pajaro)
 //   ?page=pairs                        the 12 review pairs of cual-frente and the level pictures, through ScenePictures
-//   ?page=bake[&scene=balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|nevera|comer|mostrador] every baked state of the sheet (El frente's, or the scene given), each baked on a
+//   ?page=bake[&scene=balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|nevera|comer|mostrador|estantes|frutas|caja|esquina] every baked state of the sheet (El frente's, or the scene given), each baked on a
 //                                      fresh engine's cache, one after the other; the times are on the page and in
 //                                      `window.coquiBakes` (JSON) for a script
 // Every page shows how long each state it baked took, in ms.
@@ -29,6 +29,10 @@ import 'package:coqui_scenes/src/nevera/nevera_set.dart';
 import 'package:coqui_scenes/src/comer/comer_set.dart';
 import 'package:coqui_scenes/src/mesa/mesa_set.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador_set.dart';
+import 'package:coqui_scenes/src/estantes/estantes_set.dart';
+import 'package:coqui_scenes/src/frutas/frutas_set.dart';
+import 'package:coqui_scenes/src/caja/caja_set.dart';
+import 'package:coqui_scenes/src/esquina/esquina_set.dart';
 import 'package:coqui_scenes/src/sheet_cache.dart' show sceneSheetOf;
 import 'package:coqui_scenes/src/patio/patio_set.dart';
 import 'package:coqui_scenes/src/sala/sala_set.dart';
@@ -332,9 +336,19 @@ class _BakePageState extends State<BakePage> {
       final f = await ScenePictures().frameOf(id);
       final bakes = SetBakes(f.scene);
       // a new scene's sheet (SceneSheet, order 50b): its baked states are its own and its parts' (El mostrador's calle)
-      final news = id == 'mostrador' ? sceneSheetOf(id) : null;
+      final news =
+          id == 'mostrador' ||
+              id == 'estantes' ||
+              id == 'frutas' ||
+              id == 'caja' ||
+              id == 'esquina'
+          ? sceneSheetOf(id)
+          : null;
       final queries = news != null
-          ? [...news.setKey.baked, ...news.part('calle').setKey.baked]
+          ? [
+              ...news.setKey.baked,
+              if (id == 'mostrador') ...news.part('calle').setKey.baked,
+            ]
           : [for (final b in f.scene.sheet.setKey.baked) b.query];
       for (final query in queries) {
         final b = (query: query);
@@ -352,6 +366,10 @@ class _BakePageState extends State<BakePage> {
           'nevera' => NeveraState.fromQuery(b.query).key,
           'comer' => ComerState.fromQuery(b.query).key,
           'mostrador' => MostradorState.fromQuery(b.query).key,
+          'estantes' => EstantesState.fromQuery(b.query).key,
+          'frutas' => FrutasState.fromQuery(b.query).key,
+          'caja' => CajaState.fromQuery(b.query).key,
+          'esquina' => EsquinaState.fromQuery(b.query).key,
           _ => FrenteState.fromQuery(b.query).key,
         };
         bakes.bakeKey(key);

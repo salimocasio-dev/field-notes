@@ -1,0 +1,630 @@
+{
+ "id": "esta-bueno",
+ "title": "¿Está bueno?",
+ "place": "El colmado",
+ "scene": "frutas",
+ "next": "una-libra",
+ "goal": "Fill abuela's basket with good fruit only: a bad one spoils the one beside it.",
+ "stake": {
+  "thing": "fruta",
+  "steps": 2
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "aguacate",
+  "piña",
+  "limón",
+  "bueno",
+  "malo"
+ ],
+ "formas_foco": {
+  "aguacate": [
+   "aguacates"
+  ],
+  "piña": [
+   "piñas"
+  ],
+  "limón": [
+   "limones"
+  ],
+  "bueno": [
+   "buena"
+  ],
+  "malo": [
+   "mala"
+  ]
+ },
+ "back_again": [
+  "grande",
+  "pequeño",
+  "fruta",
+  "compra",
+  "necesito",
+  "me gusta",
+  "fo",
+  "mira",
+  "¿tiene…?",
+  "no hay"
+ ],
+ "also_heard": [
+  "te gusta",
+  "¿cuánto es?",
+  "espere",
+  "canasta"
+ ],
+ "names": {
+  "coqui": "yo_coqui",
+  "abuela": "abuela"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "c43_ab_necesito_fruta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Necesito fruta."
+  },
+  "c43_pepe_aqui_aguacates": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí hay aguacates."
+  },
+  "c43_pepe_aguacate_bueno": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Mira! Este aguacate está bueno."
+  },
+  "c43_pepe_te_gusta": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Te gusta el aguacate?"
+  },
+  "c43_cq_me_gusta": {
+   "who": "tu",
+   "text": "¡Sí, me gusta!",
+   "tu_turno": [
+    {
+     "palabra": "me gusta",
+     "formas": [
+      "me gusta"
+     ]
+    }
+   ]
+  },
+  "c43_pepe_aguacate_malo": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Fo! Este aguacate está malo."
+  },
+  "c43_aguacate_malo_cabra": {
+   "who": "narr",
+   "text": "El aguacate malo es para la cabra."
+  },
+  "c43_ab_tiene_limones": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Tiene limones?"
+  },
+  "c43_pepe_si_limones": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Sí. Aquí hay limones."
+  },
+  "c43_ab_limon_gp": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El limón grande está bueno. El limón pequeño está malo."
+  },
+  "c43_donde_limon_bueno": {
+   "who": "narr",
+   "text": "¿Dónde está el limón bueno?"
+  },
+  "c43_limon_malo_cabra": {
+   "who": "narr",
+   "text": "El limón malo es para la cabra."
+  },
+  "c43_ab_mira_pinas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Mira, Coquí! Piñas."
+  },
+  "c43_senora_cuanto": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Don Pepe! ¿Cuánto es?"
+  },
+  "c43_pepe_espere": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Espere, por favor!"
+  },
+  "c43_ab_fo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Fo!"
+  },
+  "c43_no_aguacate": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Este aguacate está malo."
+  },
+  "c43_no_pina": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Esta piña está mala."
+  },
+  "c43_pepe_que_compra": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Qué compra tu abuela?"
+  },
+  "c43_cq_fruta": {
+   "who": "tu",
+   "text": "Abuela compra fruta.",
+   "tu_turno": [
+    {
+     "palabra": "fruta",
+     "formas": [
+      "fruta"
+     ]
+    }
+   ]
+  },
+  "c43_ab_tiene_todo": {
+   "who": "narr",
+   "text": "Abuela tiene un limón, un aguacate y una piña. ¡La fruta está buena!"
+  },
+  "c43_ab_no_limon": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay! No hay limón."
+  },
+  "c43_ab_no_aguacate": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay! No hay aguacate."
+  },
+  "c43_ab_adios": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Adiós, don Pepe!"
+  },
+  "c43_ag_grande_bueno": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El aguacate grande está bueno."
+  },
+  "c43_pi_grande_bueno": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La piña grande está buena."
+  },
+  "c43_ag_grande_malo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El aguacate grande está malo."
+  },
+  "c43_pi_grande_malo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La piña grande está mala."
+  },
+  "c43_ag_pequeno_bueno": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El aguacate pequeño está bueno."
+  },
+  "c43_pi_pequeno_bueno": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La piña pequeña está buena."
+  },
+  "c43_ag_pequeno_malo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El aguacate pequeño está malo."
+  },
+  "c43_pi_pequeno_malo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La piña pequeña está mala."
+  }
+ },
+ "beats": [
+  {
+   "dots": 1
+  },
+  "c43_ab_necesito_fruta",
+  {
+   "act": "mano",
+   "k": "aguacates"
+  },
+  "c43_pepe_aqui_aguacates",
+  {
+   "act": "corta",
+   "k": "aguacates",
+   "bueno": 1
+  },
+  "c43_pepe_aguacate_bueno",
+  {
+   "act": "prueba43"
+  },
+  "c43_pepe_te_gusta",
+  "c43_cq_me_gusta",
+  {
+   "dots": 2
+  },
+  {
+   "act": "corta",
+   "k": "aguacates",
+   "bueno": 0
+  },
+  "c43_pepe_aguacate_malo",
+  {
+   "act": "suelta",
+   "quien": "pepe",
+   "que": "aguacate"
+  },
+  {
+   "act": "cabra",
+   "que": "come"
+  },
+  "c43_aguacate_malo_cabra",
+  {
+   "dots": 3
+  },
+  "c43_ab_tiene_limones",
+  "c43_pepe_si_limones",
+  {
+   "act": "huele",
+   "k": "limones",
+   "grande": "fruta_a"
+  },
+  "c43_ab_limon_gp",
+  {
+   "ask": "fruta_a",
+   "lead": [],
+   "line": "c43_donde_limon_bueno",
+   "then": [
+    {
+     "act": "suelta",
+     "quien": "abuela",
+     "que": "limon"
+    },
+    {
+     "act": "cabra",
+     "que": "come"
+    },
+    "c43_limon_malo_cabra"
+   ],
+   "after": [
+    {
+     "act": "pone43",
+     "cual": "fruta_a",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "set": {
+    "twinkle": "pinas"
+   }
+  },
+  "c43_ab_mira_pinas",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "llama43"
+  },
+  "c43_senora_cuanto",
+  {
+   "act": "sale",
+   "quien": "pepe",
+   "a": "tienda"
+  },
+  "c43_pepe_espere",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ga",
+   "options": [
+    "fruta_a",
+    "fruta_b"
+   ],
+   "other": "ha"
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "bueno",
+    "malo"
+   ]
+  },
+  {
+   "calc": "na",
+   "cond": "wa=bueno",
+   "then": "$ga",
+   "else": "$ha"
+  },
+  {
+   "calc": "ta",
+   "cond": "na=fruta_a",
+   "then": "grande",
+   "else": "pequeno"
+  },
+  {
+   "act": "huele",
+   "k": "aguacates",
+   "grande": "fruta_a"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "fruta_a",
+    "fruta_b"
+   ],
+   "pick": "$ga",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "c43_ag_$ta_$wa",
+   "right": [
+    {
+     "act": "pone43",
+     "cual": "$ga",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "suelta",
+       "quien": "abuela",
+       "que": "otra"
+      },
+      {
+       "act": "cabra",
+       "que": "come"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pone43",
+     "cual": "$x",
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c43_ab_fo",
+    "c43_no_aguacate",
+    {
+     "act": "suelta",
+     "quien": "abuela",
+     "que": "ambas"
+    },
+    {
+     "act": "cabra",
+     "que": "come"
+    }
+   ]
+  },
+  {
+   "calc": "ma",
+   "cond": "ok",
+   "then": "bien",
+   "else": "mal"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "gb",
+   "options": [
+    "fruta_a",
+    "fruta_b"
+   ],
+   "other": "hb"
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "bueno",
+    "malo"
+   ]
+  },
+  {
+   "calc": "nb",
+   "cond": "wb=bueno",
+   "then": "$gb",
+   "else": "$hb"
+  },
+  {
+   "calc": "tb",
+   "cond": "nb=fruta_a",
+   "then": "grande",
+   "else": "pequeno"
+  },
+  {
+   "act": "huele",
+   "k": "pinas",
+   "grande": "fruta_a"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "fruta_a",
+    "fruta_b"
+   ],
+   "pick": "$gb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c43_pi_$tb_$wb",
+   "right": [
+    {
+     "act": "pone43",
+     "cual": "$gb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "suelta",
+       "quien": "abuela",
+       "que": "otra"
+      },
+      {
+       "act": "cabra",
+       "que": "come"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pone43",
+     "cual": "$x",
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c43_ab_fo",
+    "c43_no_pina",
+    {
+     "act": "suelta",
+     "quien": "abuela",
+     "que": "ambas"
+    },
+    {
+     "act": "cabra",
+     "que": "come"
+    }
+   ]
+  },
+  {
+   "calc": "mb",
+   "cond": "ok",
+   "then": "bien",
+   "else": "mal"
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "vuelve",
+   "quien": "pepe",
+   "a": "tienda"
+  },
+  "c43_pepe_que_compra",
+  "c43_cq_fruta",
+  {
+   "act": "canasta43"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    "c43_ab_tiene_todo"
+   ],
+   "else": [
+    {
+     "if": "ma=mal",
+     "then": [
+      "c43_ab_no_limon"
+     ]
+    },
+    {
+     "if": "mb=mal",
+     "then": [
+      "c43_ab_no_aguacate"
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c43_ab_adios",
+  {
+   "act": "cabra",
+   "que": "mastica"
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c43_ab_necesito_fruta",
+  "c43_pepe_aqui_aguacates",
+  "c43_pepe_aguacate_bueno",
+  "c43_pepe_te_gusta",
+  "c43_cq_me_gusta",
+  "c43_pepe_aguacate_malo",
+  "c43_aguacate_malo_cabra",
+  "c43_ab_tiene_limones",
+  "c43_pepe_si_limones",
+  "c43_ab_limon_gp",
+  "c43_donde_limon_bueno",
+  "c43_limon_malo_cabra",
+  "c43_ab_mira_pinas",
+  "c43_senora_cuanto",
+  "c43_pepe_espere",
+  "c43_ag_grande_bueno",
+  "c43_pi_grande_malo",
+  "c43_pepe_que_compra",
+  "c43_cq_fruta",
+  "c43_ab_tiene_todo",
+  "c43_ab_adios"
+ ]
+}

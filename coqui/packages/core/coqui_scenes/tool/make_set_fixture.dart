@@ -87,6 +87,26 @@ void main(List<String> args) {
       constant: 'mostradorSetRefs',
       what: "El mostrador's baked states, inside and in the street",
     ),
+    'estantes': (
+      file: 'estantes_set_refs.dart',
+      constant: 'estantesSetRefs',
+      what: "Los estantes' baked states",
+    ),
+    'frutas': (
+      file: 'frutas_set_refs.dart',
+      constant: 'frutasSetRefs',
+      what: "Las frutas' baked states",
+    ),
+    'caja': (
+      file: 'caja_set_refs.dart',
+      constant: 'cajaSetRefs',
+      what: "La caja's baked states",
+    ),
+    'esquina': (
+      file: 'esquina_set_refs.dart',
+      constant: 'esquinaSetRefs',
+      what: "La esquina's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {

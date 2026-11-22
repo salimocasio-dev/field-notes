@@ -1,0 +1,718 @@
+{
+ "id": "latas-y-botellas",
+ "title": "Latas y botellas",
+ "place": "El colmado",
+ "scene": "estantes",
+ "next": "siete-latas",
+ "goal": "Toss don Pepe the cans and bottles he asks for, so the shelf is full for the two customers.",
+ "stake": {
+  "thing": "cosas",
+  "steps": 2
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "lata",
+  "botella",
+  "caja",
+  "¿cuántos?"
+ ],
+ "formas_foco": {
+  "lata": [
+   "latas"
+  ],
+  "botella": [
+   "botellas"
+  ],
+  "¿cuántos?": [
+   "¿cuántas?"
+  ]
+ },
+ "back_again": [
+  "uno",
+  "dos",
+  "tres",
+  "hay",
+  "dame",
+  "tira",
+  "coge",
+  "aquí",
+  "colmado",
+  "necesito",
+  "aquí tiene",
+  "buenos días"
+ ],
+ "also_heard": [
+  "no veo nada",
+  "ayúdame"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "c39_caja": {
+   "who": "narr",
+   "text": "Don Pepe tiene una caja grande."
+  },
+  "c39_hay_latas": {
+   "who": "narr",
+   "text": "En la caja hay latas. Esta es una lata."
+  },
+  "c39_esta_botella": {
+   "who": "narr",
+   "text": "Y esta es una botella."
+  },
+  "c39_dame_lata": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Coquí, dame una lata."
+  },
+  "c39_dame_botella": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Coquí, dame una botella."
+  },
+  "c39_tira_lata": {
+   "who": "narr",
+   "text": "Coquí tira la lata. ¡Don Pepe coge la lata!"
+  },
+  "c39_ahora_botella": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Ahora, dame una botella."
+  },
+  "c39_l_latas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Cuántas latas hay? Una, dos. Dos latas."
+  },
+  "c39_l_botellas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Y cuántas botellas hay?"
+  },
+  "c39_cq_dos": {
+   "who": "tu",
+   "text": "¡Dos!",
+   "tu_turno": [
+    {
+     "palabra": "dos",
+     "formas": [
+      "dos"
+     ]
+    }
+   ]
+  },
+  "c39_no_veo": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Ay! No veo nada. ¡Ayúdame, Coquí!"
+  },
+  "c39_no_lata": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Esta es una lata."
+  },
+  "c39_no_botella": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Esta es una botella."
+  },
+  "c39_luis_busca": {
+   "who": "narr",
+   "text": "Luis busca en la caja."
+  },
+  "c39_aqui_tiene": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Aquí tiene, don Pepe!"
+  },
+  "c36_sra_dias": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Buenos días!"
+  },
+  "c36_cq_dias_sra": {
+   "who": "tu",
+   "text": "¡Buenos días, señora!",
+   "tu_turno": [
+    {
+     "palabra": "buenos días",
+     "formas": [
+      "buenos días",
+      "buenos dias"
+     ]
+    }
+   ]
+  },
+  "c39_sa_necesito": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Necesito tres botellas."
+  },
+  "c39_so_necesito": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Y yo necesito tres latas."
+  },
+  "c39_p_cuantas": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Cuántas botellas hay?"
+  },
+  "c39_p_tres": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Una, dos, tres. Aquí tiene."
+  },
+  "c39_p_dos": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Una, dos. No hay más botellas."
+  },
+  "c39_p_uno": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Una. No hay más botellas."
+  },
+  "c39_p_no_latas": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: No hay más latas."
+  }
+ },
+ "beats": [
+  {
+   "act": "cliente",
+   "quien": "senora",
+   "lleva": "botella",
+   "n": 3
+  },
+  {
+   "act": "cliente",
+   "quien": "senor",
+   "lleva": "lata",
+   "n": 3
+  },
+  {
+   "dots": 1
+  },
+  "c39_caja",
+  {
+   "act": "abre39"
+  },
+  {
+   "act": "saca",
+   "k": "lata"
+  },
+  "c39_hay_latas",
+  {
+   "act": "saca",
+   "k": "botella"
+  },
+  "c39_esta_botella",
+  {
+   "dots": 2
+  },
+  {
+   "act": "sube"
+  },
+  {
+   "ask": "lata",
+   "lead": [],
+   "line": "c39_dame_lata",
+   "then": [],
+   "after": [
+    {
+     "act": "lanza",
+     "k": "lata",
+     "ok": 1,
+     "suelto": 1
+    },
+    "c39_tira_lata",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "ask": "botella",
+   "lead": [],
+   "line": "c39_ahora_botella",
+   "then": [],
+   "after": [
+    {
+     "act": "lanza",
+     "k": "botella",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "cuenta",
+   "k": "lata",
+   "n": 2,
+   "quien": "luis",
+   "suelto": 1
+  },
+  "c39_l_latas",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "cuenta",
+   "k": "botella",
+   "n": 2,
+   "quien": "luis"
+  },
+  "c39_l_botellas",
+  "c39_cq_dos",
+  {
+   "act": "gafas",
+   "que": "caen"
+  },
+  {
+   "act": "busca39"
+  },
+  "c39_no_veo",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "2"
+   ]
+  },
+  {
+   "draw": "bo",
+   "options": [
+    "2"
+   ]
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "3"
+   ]
+  },
+  {
+   "draw": "pl",
+   "options": [
+    "3"
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "lata",
+    "botella"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "lata",
+    "botella"
+   ],
+   "pick": "$ka",
+   "tests": "$ka",
+   "lock": true,
+   "lead": [],
+   "line": "c39_dame_$ka",
+   "right": [
+    {
+     "if": "ka=lata",
+     "then": [
+      {
+       "calc": "ca",
+       "cond": "ca=2",
+       "then": "1",
+       "else": "0"
+      }
+     ],
+     "else": [
+      {
+       "calc": "bo",
+       "cond": "bo=2",
+       "then": "1",
+       "else": "0"
+      }
+     ]
+    },
+    {
+     "act": "lanza",
+     "k": "$ka",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "x=lata",
+     "then": [
+      {
+       "calc": "ca",
+       "cond": "ca=2",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "pl",
+       "cond": "pl=3",
+       "then": "2",
+       "else": "1"
+      }
+     ],
+     "else": [
+      {
+       "calc": "bo",
+       "cond": "bo=2",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "pb",
+       "cond": "pb=3",
+       "then": "2",
+       "else": "1"
+      }
+     ]
+    },
+    {
+     "act": "lanza",
+     "k": "$x",
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c39_no_$ka"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "lata",
+    "botella"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "lata",
+    "botella"
+   ],
+   "pick": "$kb",
+   "tests": "$kb",
+   "lock": true,
+   "lead": [],
+   "line": "c39_dame_$kb",
+   "right": [
+    {
+     "if": "kb=lata",
+     "then": [
+      {
+       "calc": "ca",
+       "cond": "ca=2",
+       "then": "1",
+       "else": "0"
+      }
+     ],
+     "else": [
+      {
+       "calc": "bo",
+       "cond": "bo=2",
+       "then": "1",
+       "else": "0"
+      }
+     ]
+    },
+    {
+     "act": "lanza",
+     "k": "$kb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "x=lata",
+     "then": [
+      {
+       "calc": "ca",
+       "cond": "ca=2",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "pl",
+       "cond": "pl=3",
+       "then": "2",
+       "else": "1"
+      }
+     ],
+     "else": [
+      {
+       "calc": "bo",
+       "cond": "bo=2",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "pb",
+       "cond": "pb=3",
+       "then": "2",
+       "else": "1"
+      }
+     ]
+    },
+    {
+     "act": "lanza",
+     "k": "$x",
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c39_no_$kb"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  "c39_luis_busca",
+  {
+   "act": "gafas",
+   "que": "halla"
+  },
+  "c39_aqui_tiene",
+  {
+   "set": {
+    "gafas": 1
+   }
+  },
+  {
+   "if": "ca=2",
+   "then": [
+    {
+     "act": "lanza",
+     "k": "lata",
+     "ok": 1
+    },
+    {
+     "act": "lanza",
+     "k": "lata",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "if": "ca=1",
+   "then": [
+    {
+     "act": "lanza",
+     "k": "lata",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "if": "bo=2",
+   "then": [
+    {
+     "act": "lanza",
+     "k": "botella",
+     "ok": 1
+    },
+    {
+     "act": "lanza",
+     "k": "botella",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "if": "bo=1",
+   "then": [
+    {
+     "act": "lanza",
+     "k": "botella",
+     "ok": 1
+    }
+   ]
+  },
+  "c36_sra_dias",
+  "c36_cq_dias_sra",
+  "c39_sa_necesito",
+  "c39_so_necesito",
+  "c39_p_cuantas",
+  {
+   "if": "pb=3",
+   "then": [
+    {
+     "act": "cuenta",
+     "k": "botella",
+     "n": 3,
+     "quien": "pepe",
+     "suelto": 1
+    },
+    "c39_p_tres",
+    {
+     "act": "ya"
+    }
+   ],
+   "else": [
+    {
+     "if": "pb=2",
+     "then": [
+      {
+       "act": "cuenta",
+       "k": "botella",
+       "n": 2,
+       "quien": "pepe",
+       "suelto": 1
+      },
+      "c39_p_dos",
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "act": "cuenta",
+       "k": "botella",
+       "n": 1,
+       "quien": "pepe",
+       "suelto": 1
+      },
+      "c39_p_uno",
+      {
+       "act": "ya"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "act": "cliente",
+   "quien": "senora",
+   "lleva": "botella",
+   "n": "$pb"
+  },
+  {
+   "if": "!pb=3",
+   "then": [
+    {
+     "act": "mira",
+     "quien": "senora",
+     "a": "mano"
+    }
+   ]
+  },
+  {
+   "act": "cliente",
+   "quien": "senor",
+   "lleva": "lata",
+   "n": "$pl"
+  },
+  {
+   "if": "!pl=3",
+   "then": [
+    "c39_p_no_latas"
+   ]
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c39_caja",
+  "c39_hay_latas",
+  "c39_esta_botella",
+  "c39_dame_lata",
+  "c39_tira_lata",
+  "c39_ahora_botella",
+  "c39_l_latas",
+  "c39_l_botellas",
+  "c39_cq_dos",
+  "c39_no_veo",
+  "c39_dame_botella",
+  "c39_luis_busca",
+  "c39_aqui_tiene",
+  "c36_sra_dias",
+  "c36_cq_dias_sra",
+  "c39_sa_necesito",
+  "c39_so_necesito",
+  "c39_p_cuantas",
+  "c39_p_tres"
+ ]
+}
