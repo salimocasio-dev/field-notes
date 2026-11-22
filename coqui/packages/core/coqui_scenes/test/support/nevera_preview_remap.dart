@@ -154,11 +154,7 @@ Map<String, dynamic> neveraPreviewRemapW(
       o['y'] = SL(x) + (y - 98);
       continue;
     }
-    if (y >= ENC + 2 &&
-        y <= ENC + 20 &&
-        z is num &&
-        z >= 90 &&
-        z <= 500) {
+    if (y >= ENC + 2 && y <= ENC + 20 && z is num && z >= 90 && z <= 500) {
       o['y'] = CT(x) + (y - (ENC + 10));
       continue;
     }
