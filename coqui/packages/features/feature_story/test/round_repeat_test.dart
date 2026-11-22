@@ -63,21 +63,24 @@ void main() {
     expect(await waitOnce(round(['q', 'a', 'b'], 'q')), ['q', 'a', 'b']);
   });
 
-  test('a line said under an if counts; a line before the round\'s dots does not', () async {
-    expect(
-      await waitOnce(
-        round([
-          {
-            'if': 'ok',
-            'then': ['b'],
-            'else': ['a'],
-          },
-          'q',
-        ], 'q'),
-      ),
-      ['a', 'q'],
-    );
-  });
+  test(
+    'a line said under an if counts; a line before the round\'s dots does not',
+    () async {
+      expect(
+        await waitOnce(
+          round([
+            {
+              'if': 'ok',
+              'then': ['b'],
+              'else': ['a'],
+            },
+            'q',
+          ], 'q'),
+        ),
+        ['a', 'q'],
+      );
+    },
+  );
 
   test('one line in the round: that line alone, as before', () async {
     expect(await waitOnce(round(['q'], 'q')), ['q']);
