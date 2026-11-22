@@ -1285,7 +1285,23 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
     final tx = _sxOf(a);
     if (tx == null) return;
     final at = _atOf(p);
-    if ((tx - at.sx).abs() > 2) p['dir'] = tx > at.sx ? 1 : -1;
+    if ((tx - at.sx).abs() <= 2) return;
+    final was = p['dir'];
+    p['dir'] = tx > at.sx ? 1 : -1;
+    // a turn that would put his cap's peak or his bag over the frog is not made (the frog is whole: 62, the joven at
+    // ayuda2 turning to the visitor)
+    if (p['dir'] != was) {
+      String? id;
+      for (final e in _gente.entries) {
+        if (identical(e.value, p)) id = e.key;
+      }
+      if (id != null) {
+        p['dir'] = was;
+        final before = _tapa(id);
+        p['dir'] = tx > at.sx ? 1 : -1;
+        if (_tapa(id) > before) p['dir'] = was;
+      }
+    }
   }
 
   // a thing that moves from one world point to another in [n] ticks (a photo up to its hook, a coin into the jar)
