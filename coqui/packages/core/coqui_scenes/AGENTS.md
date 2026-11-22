@@ -28,7 +28,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
   `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
@@ -342,6 +342,31 @@ set ported call for call from `<id>-set.html`, every place from the content lane
   branches; boxes and touches after each), `colmado_kit_test`, `colmado_cast_test`; in feature_story `mostrador_stories_test`
   and `tool/mostrador_paths_test.dart` (every path, the sheet's rules at every act's end: `test/support/mostrador_rules.dart`).
 - Bake: `?page=bake&scene=mostrador`, `node tool/bake_time.mjs --scene mostrador`.
+
+## The second new scene (order 51b, Los estantes)
+
+Written as El mostrador is (`class Estantes extends Escena implements SetScene, SetOverSprites`), on the same kit, cast and
+reader. What Los estantes has that El mostrador does not, and how:
+
+- **One picture, four states** (`estantes_set.dart`): `setKey` "anillos-mesa" (`1-0`: the six rings of dust, story 39;
+  `0-1`: the low table, story 40); `hora` manana, the ladder always there. 4 states in `coqui/ref/pp/estantes/` (0 of
+  51,840 differ). `estantes_places.dart` is El mostrador's places with one picture (and a spot's `ground`, a box's
+  `footprint`, `front.after`).
+- **front.after** (don Pepe on the ladder is drawn after it): each state's bake records the set's part tags (set-kit.js
+  PART_TAGS: within the noise of a bake on the vm) and keeps the ladder's pixels by key (`Estantes.ladderAt`); a sprite marked `ladder: false`
+  (don Pepe off the floor) is not hidden by them, every other set pixel still hides him.
+- **A thing lying flat** (the bottle box seen from above, `mkBotellero`): drawn pixel by pixel on the set's projection
+  (estantes-preview.html `botellero`, the same function), each pixel with its own depth (`EstantesItem.z`).
+- **Things in a thing**: the cans and bottles in the big box are sprites of their own at their places in the box's sprite,
+  behind its front; `lata` and `botella` (any of a kind counts) answer in the box round all of that kind in it (the cans
+  on the box's left, the bottles on its right, so the two never overlap).
+- **Acts started with `suelto: 1`** run while their line is said; `ya` waits for them (the Needs' counting acts).
+- **Things in flight** (`vuela`: a screen point and a depth, between two named places), a counting finger (`W.dedo`, a
+  sign over everything).
+- Tests: `estantes_set_test`, `estantes_acts_test`; in feature_story `estantes_stories_test` and
+  `tool/estantes_paths_test.dart` (96 paths, the sheet's rules at every act's end: `test/support/estantes_rules.dart`).
+  `tool/estantes_bake_parts_test.dart`: what each step of the bake costs.
+- Bake: `?page=bake&scene=estantes`, `node tool/bake_time.mjs --scene estantes`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 
