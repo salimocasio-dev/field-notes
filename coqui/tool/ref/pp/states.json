@@ -97,5 +97,13 @@
   { "id": "frutas/tarde-open-0-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=0&surtido=verduras" },
   { "id": "frutas/tarde-open-0-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=0&surtido=frutas" },
   { "id": "frutas/tarde-open-1-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=1&surtido=verduras" },
-  { "id": "frutas/tarde-open-1-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=1&surtido=frutas" }
+  { "id": "frutas/tarde-open-1-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=1&surtido=frutas" },
+  { "id": "esquina/manana-0-shut", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=manana&obra=0&puerta=shut" },
+  { "id": "esquina/manana-0-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=manana&obra=0&puerta=open" },
+  { "id": "esquina/manana-1-shut", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=manana&obra=1&puerta=shut" },
+  { "id": "esquina/manana-1-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=manana&obra=1&puerta=open" },
+  { "id": "esquina/tarde-0-shut", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=0&puerta=shut" },
+  { "id": "esquina/tarde-0-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=0&puerta=open" },
+  { "id": "esquina/tarde-1-shut", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=1&puerta=shut" },
+  { "id": "esquina/tarde-1-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=1&puerta=open" }
 ]

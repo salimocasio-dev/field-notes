@@ -15,4 +15,5 @@ const Set<String> convertedScenes = {
   'mostrador',
   'estantes',
   'frutas',
+  'esquina',
 };

@@ -1,0 +1,781 @@
+{
+ "id": "la-calle",
+ "title": "La calle",
+ "place": "La calle",
+ "scene": "esquina",
+ "next": "la-esquina",
+ "goal": "Stop the right car or guagua for mamá and for papá, so the bebé still has a flower for each of them and for Luis: every wrong stop gives a flower to a stranger.",
+ "stake": {
+  "thing": "flores",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "calle",
+  "carro",
+  "guagua",
+  "bicicleta"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "abuela",
+  "bebé",
+  "mamá",
+  "papá",
+  "flor",
+  "tres",
+  "grande",
+  "rojo",
+  "señor",
+  "señora",
+  "tiene",
+  "aquí",
+  "bien",
+  "sí",
+  "gracias",
+  "casa",
+  "vamos",
+  "¿cómo estás?"
+ ],
+ "also_heard": [
+  "larga"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "bebe": "n_bebe",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "luis": "p_n_luis",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "c48_en_calle": {
+   "who": "narr",
+   "text": "Abuela, el bebé y Coquí están en la calle."
+  },
+  "c48_mira_calle": {
+   "who": "narr",
+   "text": "Mira la calle. Es larga."
+  },
+  "c48_viene_carro": {
+   "who": "narr",
+   "text": "Por la calle viene un carro. El carro es rojo."
+  },
+  "c48_toca_carro": {
+   "who": "narr",
+   "text": "Toca el carro."
+  },
+  "c48_viene_guagua": {
+   "who": "narr",
+   "text": "Ahora viene una guagua. La guagua es grande."
+  },
+  "c48_donde_guagua": {
+   "who": "narr",
+   "text": "¿Dónde está la guagua?"
+  },
+  "c48_viene_bici": {
+   "who": "narr",
+   "text": "Y ahora viene una bicicleta. El señor viene en bicicleta."
+  },
+  "c48_toca_bici": {
+   "who": "narr",
+   "text": "Toca la bicicleta."
+  },
+  "c48_senor_hola": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Hola, Coquí! ¿Cómo estás?"
+  },
+  "c48_cq_bien": {
+   "who": "tu",
+   "text": "Bien, gracias.",
+   "tu_turno": [
+    {
+     "palabra": "bien",
+     "formas": [
+      "bien"
+     ]
+    }
+   ]
+  },
+  "c48_flores": {
+   "who": "narr",
+   "text": "El bebé tiene tres flores: una para mamá, una para papá y una para Luis."
+  },
+  "c48_ab_ya_vienen": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ya vienen mamá y papá."
+  },
+  "c48_senora_gracias": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¿Para mí? ¡Gracias!"
+  },
+  "c48_pepe_gracias": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Para mí? ¡Gracias!"
+  },
+  "c48_mama_hola": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Hola! ¿Y mi bebé?"
+  },
+  "c40_cq_aqui": {
+   "who": "tu",
+   "text": "¡Aquí está!",
+   "tu_turno": [
+    {
+     "palabra": "aquí",
+     "formas": [
+      "aquí",
+      "aqui"
+     ]
+    }
+   ]
+  },
+  "c48_y_luis": {
+   "who": "narr",
+   "text": "Y Luis viene en bicicleta."
+  },
+  "c48_papa_vamos": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¿Vamos a casa?"
+  },
+  "c48_cq_si_papa": {
+   "who": "tu",
+   "text": "¡Sí, papá!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    }
+   ]
+  },
+  "c48_familia_casa": {
+   "who": "narr",
+   "text": "La familia va a casa."
+  },
+  "c48_ab_mama_guagua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mamá viene en la guagua."
+  },
+  "c48_no_mama_guagua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Mamá viene en la guagua."
+  },
+  "c48_ab_papa_guagua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Papá viene en la guagua."
+  },
+  "c48_no_papa_guagua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Papá viene en la guagua."
+  },
+  "c48_ab_mama_carro": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mamá viene en el carro."
+  },
+  "c48_no_mama_carro": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Mamá viene en el carro."
+  },
+  "c48_ab_papa_carro": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Papá viene en el carro."
+  },
+  "c48_no_papa_carro": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Papá viene en el carro."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "acera"
+  },
+  {
+   "act": "flores",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  "c48_en_calle",
+  {
+   "set": {
+    "twinkle": "calle"
+   }
+  },
+  "c48_mira_calle",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "llega",
+   "k": "carro",
+   "color": "rojo",
+   "suelto": 1
+  },
+  {
+   "dots": 1
+  },
+  {
+   "set": {
+    "twinkle": "carro"
+   }
+  },
+  "c48_viene_carro",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "carro",
+   "lead": [],
+   "line": "c48_toca_carro",
+   "then": [
+    {
+     "act": "sigue",
+     "k": "carro"
+    }
+   ],
+   "after": [
+    {
+     "act": "bocina",
+     "k": "carro"
+    },
+    {
+     "act": "bocina",
+     "k": "carro"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "llega",
+   "k": "carro",
+   "color": "azul",
+   "de": "der",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "k": "guagua",
+   "de": "izq",
+   "suelto": 1
+  },
+  {
+   "set": {
+    "twinkle": "guagua"
+   }
+  },
+  "c48_viene_guagua",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "guagua",
+   "lead": [],
+   "line": "c48_donde_guagua",
+   "then": [
+    {
+     "act": "sigue",
+     "k": "guagua"
+    }
+   ],
+   "after": [
+    {
+     "act": "bocina",
+     "k": "guagua"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "llega",
+   "k": "bicicleta",
+   "quien": "senor",
+   "suelto": 1
+  },
+  {
+   "set": {
+    "twinkle": "bicicleta"
+   }
+  },
+  "c48_viene_bici",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "bicicleta",
+   "lead": [],
+   "line": "c48_toca_bici",
+   "then": [
+    "c48_senor_hola",
+    "c48_cq_bien",
+    {
+     "act": "sigue",
+     "k": "bicicleta"
+    }
+   ],
+   "after": [
+    {
+     "act": "bocina",
+     "k": "bicicleta"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "bebe",
+   "que": "saluda"
+  },
+  "c48_flores",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "calle"
+  },
+  "c48_ab_ya_vienen",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "fa",
+   "options": [
+    "carro",
+    "guagua"
+   ],
+   "other": "ta"
+  },
+  {
+   "draw": "ea",
+   "options": [
+    "carro",
+    "guagua"
+   ],
+   "other": "oa"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "carro",
+    "guagua"
+   ],
+   "pick": "$ea",
+   "tests": "$ea",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "llega",
+     "k": "$fa",
+     "color": "rojo",
+     "a": "parada1",
+     "suelto": 1
+    },
+    {
+     "act": "llega",
+     "k": "$ta",
+     "color": "rojo",
+     "a": "parada2",
+     "suelto": 1
+    },
+    "c48_ab_mama_$ea",
+    {
+     "act": "ya"
+    }
+   ],
+   "line": "c48_ab_mama_$ea",
+   "right": [
+    {
+     "act": "ir",
+     "a": "$ea"
+    },
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "saluda"
+    },
+    {
+     "act": "baja48",
+     "quien": "mama",
+     "de": "$ea"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "sigue",
+       "k": "$oa"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ir",
+     "a": "$x"
+    },
+    {
+     "act": "ventanilla",
+     "k": "$x",
+     "quien": "senora"
+    },
+    {
+     "act": "flor",
+     "a": "senora"
+    },
+    "c48_senora_gracias",
+    {
+     "act": "sigue",
+     "k": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "flores",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "flores",
+       "n": 1
+      }
+     ]
+    },
+    "c48_no_mama_$ea"
+   ]
+  },
+  "c48_mama_hola",
+  "c40_cq_aqui",
+  {
+   "act": "sigue",
+   "k": "$ea"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "fb",
+   "options": [
+    "carro",
+    "guagua"
+   ],
+   "other": "tb"
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "carro",
+    "guagua"
+   ],
+   "other": "ob"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "carro",
+    "guagua"
+   ],
+   "pick": "$eb",
+   "tests": "$eb",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "llega",
+     "k": "$fb",
+     "color": "azul",
+     "a": "parada1",
+     "suelto": 1
+    },
+    {
+     "act": "llega",
+     "k": "$tb",
+     "color": "azul",
+     "a": "parada2",
+     "suelto": 1
+    },
+    "c48_ab_papa_$eb",
+    {
+     "act": "ya"
+    }
+   ],
+   "line": "c48_ab_papa_$eb",
+   "right": [
+    {
+     "act": "ir",
+     "a": "$eb"
+    },
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "saluda"
+    },
+    {
+     "act": "baja48",
+     "quien": "papa",
+     "de": "$eb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "sigue",
+       "k": "$ob"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ir",
+     "a": "$x"
+    },
+    {
+     "act": "ventanilla",
+     "k": "$x",
+     "quien": "pepe"
+    },
+    {
+     "act": "flor",
+     "a": "pepe"
+    },
+    "c48_pepe_gracias",
+    {
+     "act": "sigue",
+     "k": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "flores",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "flores",
+       "n": 1
+      }
+     ]
+    },
+    "c48_no_papa_$eb"
+   ]
+  },
+  {
+   "act": "gesto",
+   "quien": "bebe",
+   "que": "rie"
+  },
+  {
+   "act": "sigue",
+   "k": "$eb"
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "bocina",
+   "k": "bicicleta"
+  },
+  {
+   "act": "llega",
+   "k": "bicicleta",
+   "quien": "luis",
+   "a": "acera",
+   "suelto": 1
+  },
+  "c48_y_luis",
+  {
+   "act": "ya"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "da48",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "da48",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "da48",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c48_papa_vamos",
+  "c48_cq_si_papa",
+  "c48_familia_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c48_en_calle",
+  "c48_mira_calle",
+  "c48_viene_carro",
+  "c48_toca_carro",
+  "c48_viene_guagua",
+  "c48_donde_guagua",
+  "c48_viene_bici",
+  "c48_toca_bici",
+  "c48_senor_hola",
+  "c48_cq_bien",
+  "c48_flores",
+  "c48_ab_ya_vienen",
+  "c48_ab_mama_guagua",
+  "c48_mama_hola",
+  "c40_cq_aqui",
+  "c48_ab_papa_carro",
+  "c48_y_luis",
+  "c48_papa_vamos",
+  "c48_cq_si_papa",
+  "c48_familia_casa"
+ ]
+}

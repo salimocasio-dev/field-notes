@@ -22,6 +22,7 @@ void main() {
       'mostrador',
       'estantes',
       'frutas',
+      'esquina',
     ]);
   });
 
