@@ -343,6 +343,26 @@ set ported call for call from `<id>-set.html`, every place from the content lane
   and `tool/mostrador_paths_test.dart` (every path, the sheet's rules at every act's end: `test/support/mostrador_rules.dart`).
 - Bake: `?page=bake&scene=mostrador`, `node tool/bake_time.mjs --scene mostrador`.
 
+## The shop front from the street (order 52b, Las frutas; El colmado's third)
+
+Written as El mostrador is (`lib/src/frutas/`: `frutas_set.dart`, `frutas_places.dart`, `frutas_sprites.dart`, `frutas.dart`,
+`class Frutas extends Escena implements SetScene, SetOverSprites`). What is its own:
+
+- **One picture, one view** (`wide`, x0 21) on the street kit (`colmado_fuera.dart`, the page's origin -68, -10); `setKey`
+  is `hora-puerta-carro-surtido` (16 states in `coqui/ref/pp/frutas/`, 0 of 51,840 differ). Story 44's file sets
+  `camion` for the cart: the scene reads `carro` or `camion`.
+- **The bins are the set's**: their touch boxes overlap (the stand is slanted), so `hit` takes the bin whose box's middle
+  is nearest, and a bin's big hand (`Thing.hand`) is moved off the frog on the ledge; a person or the goat takes a touch
+  on its own drawn pixels. The scale's needle, what lies on its pan and a finger on its dial are sprites at the sheet's
+  `drawn_depth` (rules.depth).
+- **Held, flying, set down**: a thing is kept by its world point, at a holder's hand (`con`, abuela's `mano`: der, izq,
+  cesta, cara, arriba, alto), or by its screen point while it flies (`_vuela`, through the sheet's `vuelo`).
+- **Tests**: `frutas_set_test`, `frutas_acts_test` (every act both ways, boxes, touches, the big hand's point; the set
+  things' boxes against their parts' pixels); in feature_story `frutas_stories_test` and `tool/frutas_paths_test.dart`
+  (`test/support/frutas_rules.dart`). Tools: `tool/frutas_frames_test.dart` (a frame at every act, `COQUI_OUT=DIR`),
+  `tool/make_frutas_sprites_test.dart` (`docs/proyecto/pixel/port/frutas-sprites.png`).
+- Bake: `?page=bake&scene=frutas`, `node tool/bake_time.mjs --scene frutas`.
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its
