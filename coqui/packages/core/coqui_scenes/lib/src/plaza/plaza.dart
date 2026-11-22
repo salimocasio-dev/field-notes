@@ -1542,7 +1542,9 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
         }
       }
     },
-    // `burbujas` {izq}: the two answer bubbles over the frog, and which picture is at the left (insignia, manos) (60)
+    // `burbujas` {izq}: the two answer bubbles over the frog, and which picture is at the left (insignia, manos) (60).
+    // OPEN: the sheet's bubbles check (they cover no pigeon) holds for the frog at asiento4; story 60 has him at asiento1
+    // from step 1 on, where the left bubble covers 37 px of the pigeon at respaldo1 (and of respaldo2's at asiento2)
     'burbujas': (o) async {
       W['burbujas'] = <String, dynamic>{
         'izq': o['izq'] == 'manos' ? 'manos' : 'insignia',
@@ -1732,7 +1734,9 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
       _items.remove(c);
     },
     // `dibuja61` {n}: the ending: the frog draws on the cards left (abuela's house, abuela, the whole family) and hangs
-    // them on the free hooks, the city's first (61: 8)
+    // them on the free hooks, the city's first (61: 8). OPEN: the story sends the frog to `repisa` (the board's ledge)
+    // first; standing there he covers 176 px of the board's pictures and hooks (the sheet's board-clear reads only its
+    // moments 3 and 4, with the cards at repisa)
     'dibuja61': (o) async {
       final n = _n(o['n']);
       W['tarjetas'] = 0;
