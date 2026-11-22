@@ -956,6 +956,45 @@ New scenes: there is no old scene file and no `ref/escenas/` folder. Step a (des
 
 **Done when:** every state within 0.5% of the reference; every touch box contains its thing; `tool/juega.dart` plays each of the scene's three stories on every path the checker walks, to the end, right and wrong; a fresh reader of the frames with no sound and no words says what happens in each story. Then the content lane measures length and silences, records, and makes the place's pairs, Escuchar set, books and level items.
 
+### Order 50 (mostrador), step b. **Result (Nov 22): done, merged to main. Not in a build yet: El colmado gets its build when its four scenes are in.**
+
+Built by an Opus builder on `orden/50b` in about two hours, no stop; the orchestrator ran `test_all.sh` itself on the branch with main merged in: all checks passed.
+
+- **What the four scenes of El colmado share, written here first:** `coqui_scenes/lib/src/colmado/colmado_dentro.dart` and `colmado_fuera.dart` (the two JavaScript kits, whole; `colmado_kit_test`: 41 cases equal to the JavaScript in pixels, depth, kinds, ground and shadow mask), `colmado_cast.dart` (don Pepe in ten poses, three children, the goat, the coin, bags, nine goods), and in `coqui_pixel` **`SceneSheet`** (`lib/src/scene_sheet.dart`), the reader for the content lane's sheets: it types what all 28 new sheets share (spots, things, views, setKey, front, shadows, groups, checks, rules) and keeps the rest as plain data; `part('calle')` reads a state with its own origin; `legacy()` gives the shared code an old `Sheet`. The old `Sheet` is unchanged. All 28 new sheets parse and every spot's world point projects onto its sheet screen point.
+- The set: all 12 baked states (8 inside, 4 street) equal the JavaScript reference: 0 of 51,840 pixels differ.
+- The scene is written new from the script's Needs list (`mostrador.dart`: `Mostrador extends Escena implements SetScene, SetOverSprites`): people and things by world point; every act does what its Needs line says, with positions from the sheet's spots, boxes and groups only; sprites composed by the sheet's depth rule.
+- Paths: every draw combination of the three stories with every right/wrong combination: el-colmado 2,304, algo-mas 16, esto-y-eso 256: 2,576 plays, all to the end, 0 errors; the sheet's rules checked 121,208 times, 0 broken (the frog never behind a grown-up, everybody inside the view, the door children's heads whole, people 10 px apart, the frog on the counter only at its spot). `feature_story`'s `play` gained `letters:` (a plan per decision), nothing else changed.
+- Every touch box contains its thing; all 21 things the Needs list says he can touch answer a touch.
+- Frames from the real app (three stories, right and wrong, no words): all six plays reach the end, no touch with "nothing happened".
+- **Bake, over the limit and not solved (the content lane's set):** inside states 179 to 377 ms the first time and 175 to 219 ms later (walls 53 to 73 ms, shelves 26 to 29, counter 14 to 17); street states 48 to 100 ms.
+- New sprites for the content lane to look at (the port did not wait): `docs/proyecto/pixel/port/colmado-sprites.png` (47, with a legend) and `mostrador-sprites.png` (40). The three children's looks are the builder's guess (no script gives them).
+
+**For the content lane: 12 acts left OPEN in El mostrador** (each plays as the plainest thing that keeps the story going, and is marked `// OPEN:` in `mostrador.dart`; settle the place or the picture and say so here):
+1. 36 step 7, `ir mostrador_izq`: no such spot; the frog goes to `coqui.mostrador`.
+2. 36 step 7, `bandeja da`: no second place for the tray; it stays at `bandeja` and don Pepe gestures.
+3. 37 steps 2 to 4: only `compra` is named for things set down and three are set down; the 2nd and 3rd go to `cosa_b` and `cosa_a`.
+4. 37 steps 2 and 9: the piragua cart has no place; it stands at `fuera`; the piragua man is not drawn.
+5. 37 step 9, `piraguas`: no place beside the cart; Carmen is shown back at `puerta` holding n piraguas.
+6. 37 step 6, `bolsapapel`: the pile of bags (with its coin) has no place; the bag appears at the free counter spot.
+7. 37 step 6: the sheet says `coqui.frente2` and `cliente` are never taken together, but the señora comes in while the frog is there (4 px apart); she waits at `cola1`.
+8. 38 opening, `limber bandeja`: the small tray has no place and is not drawn.
+9. 38 steps 5 to 7, `limber pon cerca`: no place beside the customer; `limber_a` is always at `limber_pepe` and `limber_b` at `limber_lejos`; `cerca` changes nothing; "the far end of the counter" has no spot either, so she stands at `cliente`.
+10. 38, `paga`: the coin dish lies under the freezer; coins go to don Pepe's hand.
+11. 38 step 8, `ninos`: no counter places for three children; they stay at `ninos_puerta`.
+12. 38: the freezer's límbers are drawn as a row inside the `NEVERA` world box (no named spots).
+Also: the amount plate, the price tag at `etiqueta` and the children through the window panes are rules of La caja's sheet; El mostrador's sheet has none of them. The generator writes `"decide":"do"`; the runner treats it as an ordinary touch decision.
+
+**For the content lane: what a fresh reader of the real app's frames could not follow** (four plays, no words, no sound; the frames are taken at lines, asks and touches, so a hand-over inside an act is not in them):
+- Things are on the shelf in one picture and on the counter, in the bag or in a hand in the next; the reader saw no carrying. Worth watching in the app itself before recording.
+- algo-mas: the two answer bubbles (sí, no) show the same frog with small arrows and cannot be told apart; they cover half of don Pepe's face and the till; they change sides between rounds.
+- algo-mas: the hint frame and hand for the thing at the shelf's far right end are cut by the picture's right edge.
+- The loaf on the shelf is right behind don Pepe's head where he stands at the counter and reads as a hat.
+- The hint frame for the cloth bag lies over Carmen's face; in esto-y-eso the frame for the bottle lies over the boy's face.
+- The street: a small yellow bunch under the awning hangs from nothing. Inside: the freezer chest reads as hanging over the counter's front edge; a lone chair on the floor is explained only when abuela sits on it.
+- A melted límber lying on the counter read as "a can knocked over".
+- Asks with nothing framed (he must push a thing to a customer) show no target until the hint comes.
+- The twinkle from the door stays on screen for a moment after the cut to the inside (the port's; small).
+
 ### Orders 54 to 57. La calle (place 5): esquina, parada, tiendas, cruce
 
 New scenes, as El colmado's: no old scene file, no `ref/escenas/` folder. Step a (design) is the content lane's; step b is this lane's, after El colmado's four.
