@@ -42,6 +42,12 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
   decisions, each value of every draw), `tool/mostrador_paths_test.dart` (`--dart-define=SHARD=i/n`, `OUT=dir`) every path
   (every draw combination times the four ways); both check the sheet's rules at every act's end
   (`test/support/mostrador_rules.dart`, `mostrador_paths.dart`).
+- Los estantes (order 51b) the same way: `test/fixtures/estantes/`, `test/estantes_stories_test.dart`,
+  `tool/estantes_paths_test.dart` (96 paths), `test/support/estantes_rules.dart`, `estantes_paths.dart` (it uses
+  `drawsOf` and `letterPlan` of `mostrador_paths.dart`).
+- Las frutas (order 52b) the same way: `test/fixtures/frutas/`, `test/frutas_stories_test.dart`, `tool/frutas_paths_test.dart`
+  (144 paths), `test/support/frutas_rules.dart`, `frutas_paths.dart` (it uses `drawsOf`, `letterPlan` and `decisionLetters`
+  of `mostrador_paths.dart`).
 - La caja (order 53b): the same for its three stories (`test/fixtures/caja/`, `test/caja_stories_test.dart`,
   `tool/caja_paths_test.dart`, `test/support/caja_rules.dart` and `caja_paths.dart`). No change to the runner.
 - A set step's positions go through the scene's `remap` (`remapPositions`): every map with a number `x` and `y`, and, since order 33b, where the answer cards stand (`respEn: [x, y]`, h-camino beats.5).

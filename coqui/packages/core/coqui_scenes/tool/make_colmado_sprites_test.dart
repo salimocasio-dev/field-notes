@@ -5,13 +5,16 @@
 //
 //   flutter test tool/make_colmado_sprites_test.dart        (in this package)
 //
-// writes docs/proyecto/pixel/port/colmado-sprites.png and .txt, mostrador-sprites.png and .txt, caja-sprites.png and .txt.
+// writes docs/proyecto/pixel/port/colmado-sprites.png and .txt, mostrador-sprites.png and .txt, estantes-sprites.png and .txt
+// (what only Los estantes has: lib/src/estantes/estantes_sprites.dart, order 51b), caja-sprites.png and .txt.
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/src/colmado/colmado_cast.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador_sprites.dart';
+import 'package:coqui_scenes/src/estantes/estantes_set.dart';
+import 'package:coqui_scenes/src/estantes/estantes_sprites.dart';
 import 'package:coqui_scenes/src/caja/caja_sprites.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -149,6 +152,18 @@ void main() {
       'mostrador-sprites',
       "What only El mostrador has (lib/src/mostrador/mostrador_sprites.dart)",
       mostradorSpriteSheet(),
+    );
+    final es = SceneSheet.parse(
+      File(_port('').replaceFirst('/port/', '/estantes-sheet.json'))
+          .readAsStringSync(),
+    );
+    _write(
+      'estantes-sprites',
+      "What only Los estantes has (lib/src/estantes/estantes_sprites.dart)",
+      estantesSpriteSheet(estantesEngine(), es.spot('caja_abuela').world!, [
+        for (final v in es.spot('caja_abuela').raw['footprint'] as List)
+          (v as num).toDouble(),
+      ]),
     );
     _write(
       'caja-sprites',

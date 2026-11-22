@@ -13,5 +13,7 @@ const Set<String> convertedScenes = {
   'lago',
   'banco',
   'mostrador',
+  'estantes',
+  'frutas',
   'caja',
 };

@@ -20,6 +20,8 @@ void main() {
       'estufa',
       'nevera',
       'mostrador',
+      'estantes',
+      'frutas',
       'caja',
     ]);
   });

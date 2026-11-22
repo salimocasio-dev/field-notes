@@ -12,6 +12,8 @@ import 'package:coqui_scenes/src/mesa/mesa.dart';
 import 'package:coqui_scenes/src/estufa/estufa.dart';
 import 'package:coqui_scenes/src/nevera/nevera.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador.dart';
+import 'package:coqui_scenes/src/estantes/estantes.dart';
+import 'package:coqui_scenes/src/frutas/frutas.dart';
 import 'package:coqui_scenes/src/caja/caja.dart';
 
 /// What makes a scene: it is given the game's one random source ([rng]: the story runner's), which a scene that draws
@@ -38,5 +40,7 @@ final Map<String, SceneMaker> sceneRegistry = Map.unmodifiable({
   'estufa': _plain(createEstufa),
   'nevera': _plain(createNevera),
   'mostrador': _plain(createMostrador),
+  'estantes': _plain(createEstantes),
+  'frutas': _plain(createFrutas),
   'caja': _plain(createCaja),
 });
