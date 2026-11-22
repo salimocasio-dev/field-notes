@@ -11,8 +11,9 @@
 //                                                test/support/fixtures/lago_set_refs.dart (El lago),
 //                                                test/support/fixtures/banco_set_refs.dart (El banco),
 //                                                test/support/fixtures/mesa_set_refs.dart (La mesa),
-//                                                test/support/fixtures/estufa_set_refs.dart (La estufa) and
-//                                                test/support/fixtures/nevera_set_refs.dart (La nevera)
+//                                                test/support/fixtures/estufa_set_refs.dart (La estufa),
+//                                                test/support/fixtures/nevera_set_refs.dart (La nevera) and
+//                                                test/support/fixtures/comer_set_refs.dart (A comer)
 //   dart run tool/make_set_fixture.dart --check  fails when a file is not what coqui/ref/pp/<id>/ gives
 import 'dart:convert';
 import 'dart:io';
@@ -75,6 +76,11 @@ void main(List<String> args) {
       file: 'nevera_set_refs.dart',
       constant: 'neveraSetRefs',
       what: "La nevera's reached baked states",
+    ),
+    'comer': (
+      file: 'comer_set_refs.dart',
+      constant: 'comerSetRefs',
+      what: "A comer's baked state",
     ),
     'mostrador': (
       file: 'mostrador_set_refs.dart',
