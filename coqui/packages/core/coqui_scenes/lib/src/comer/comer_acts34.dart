@@ -350,7 +350,11 @@ extension _Acts34 on Comer {
     // mound onto it, where it mixes into his rice (mezcla), or the one eats it with his fork; then he takes the spoon back
     // to Luis (moves line 971: on the cloth beside Luis)
     'tipa34': (o) async {
-      final id = '${o['a']}', p = G(id)!, pl = ob('pl_$id')!, q = _cq, l = G('luis')!;
+      final id = '${o['a']}',
+          p = G(id)!,
+          pl = ob('pl_$id')!,
+          q = _cq,
+          l = G('luis')!;
       final pr = () async {
         q['piensa'] = null;
         final L = lado34(pl['x'] as num),
@@ -450,7 +454,8 @@ extension _Acts34 on Comer {
         p['dir'] = 1;
         // both her hands go to the baby, under his arms (from his left side, so that she does not stand in front of him)
         final bc = [HIJA[0], HIJA[1] - 26];
-        final rL = rel(id, bc[0] - 6, bc[1] + 7), rR = rel(id, bc[0] + 1, bc[1] + 7);
+        final rL = rel(id, bc[0] - 6, bc[1] + 7),
+            rR = rel(id, bc[0] + 1, bc[1] + 7);
         await Future.wait<void>([
           manoA(id, rL[0], rL[1], 3, -1),
           manoA(id, rR[0], rR[1], 3, 1),
@@ -540,13 +545,7 @@ extension _Acts34 on Comer {
         final rr = restHand(id);
         await Future.wait<void>([
           for (final h in hb)
-            manoA(
-              id,
-              rr[0] * (h['sh'] as num),
-              rr[1],
-              3,
-              h['sh'] as num,
-            ),
+            manoA(id, rr[0] * (h['sh'] as num), rr[1], 3, h['sh'] as num),
         ]);
         sinManos(id);
         await wait(TICK * 2);
@@ -590,7 +589,10 @@ extension _Acts34 on Comer {
     // lifts the pot (moves line 1026), tips it towards us: empty; gives the spoon back to Luis at the stove (moves line
     // 1028) and walks out with the pot
     'turno34': (o) async {
-      final ab = G('abuela')!, l = G('luis')!, ol = ob('olla')!, fu = ob('fuente')!;
+      final ab = G('abuela')!,
+          l = G('luis')!,
+          ol = ob('olla')!,
+          fu = ob('fuente')!;
       W['turno'] = 1;
       // his belly goes down again in view (three steps) while the turn starts: the game begins with a frog of his own size
       if (jsTruthy(_cq['lleno'])) _later(desinflar());
@@ -610,7 +612,13 @@ extension _Acts34 on Comer {
       }
       final spA = (await pasaCuchara('luis', 'abuela'))!;
       spA['side'] = -1;
-      await cucharaA('abuela', spA, (ab['x'] as num) - 17, (ab['y'] as num) - 22, 3);
+      await cucharaA(
+        'abuela',
+        spA,
+        (ab['x'] as num) - 17,
+        (ab['y'] as num) - 22,
+        3,
+      );
       await wait(TICK * 2);
       final lw = _later(
         ruta('luis', [
@@ -731,7 +739,9 @@ extension _Acts34 on Comer {
       await wait(TICK * 2);
       // she pushes papá's fork behind his three mounds with the spoon (the fork lies along the back rim of the platter,
       // hiding none of them)
-      final f0 = fu['tenedor'] as M, fx0 = f0['dx'] as num, fy0 = f0['dy'] as num;
+      final f0 = fu['tenedor'] as M,
+          fx0 = f0['dx'] as num,
+          fy0 = f0['dy'] as num;
       await cucharaA(
         'abuela',
         spA,
@@ -776,7 +786,13 @@ extension _Acts34 on Comer {
       ]);
       ab['dir'] = -1;
       pot2['dx'] = -9;
-      await cucharaA('abuela', spA, (ab['x'] as num) - 17, (ab['y'] as num) - 22, 3);
+      await cucharaA(
+        'abuela',
+        spA,
+        (ab['x'] as num) - 17,
+        (ab['y'] as num) - 22,
+        3,
+      );
       await aEncuentro34();
       final spL2 = (await pasaCuchara('abuela', 'luis'))!;
       final lr = luisRest();
@@ -824,7 +840,13 @@ extension _Acts34 on Comer {
       }
       final spA = (await pasaCuchara('luis', 'abuela'))!;
       spA['side'] = 1;
-      await cucharaA('abuela', spA, (ab['x'] as num) + 14, (ab['y'] as num) - 22, 3);
+      await cucharaA(
+        'abuela',
+        spA,
+        (ab['x'] as num) + 14,
+        (ab['y'] as num) - 22,
+        3,
+      );
       l['dir'] = 1;
       await wait(TICK * 2);
       await mueve('abuela', FU34[0], 193);
@@ -846,7 +868,9 @@ extension _Acts34 on Comer {
       ab['dir'] = -1;
       ab['est'] = 1;
       await wait(TICK * 2);
-      final n = (fu['montones'] as List).where((m) => (m as Map)['g'] == 'p').length;
+      final n = (fu['montones'] as List)
+          .where((m) => (m as Map)['g'] == 'p')
+          .length;
       for (var i = 0; i < n; i++) {
         final m = _find(fu['montones'], (m) => m['g'] == 'p');
         if (m == null) break;
@@ -908,7 +932,13 @@ extension _Acts34 on Comer {
         [FOGON[0] - 2, 176],
       ]);
       ab['dir'] = -1;
-      await cucharaA('abuela', spA, (ab['x'] as num) - 17, (ab['y'] as num) - 22, 3);
+      await cucharaA(
+        'abuela',
+        spA,
+        (ab['x'] as num) - 17,
+        (ab['y'] as num) - 22,
+        3,
+      );
       await aEncuentro34();
       final sL = (await pasaCuchara('abuela', 'luis'))!;
       final lr = luisRest();

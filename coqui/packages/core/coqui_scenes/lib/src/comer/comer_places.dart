@@ -49,7 +49,9 @@ class ComerPlaces {
                 to['points'] != null ||
                 to['things'] != null ||
                 to['view'] != null)) ||
-        (c.note ?? '').contains('every other place here keeps its screen point');
+        (c.note ?? '').contains(
+          'every other place here keeps its screen point',
+        );
   }
 
   /// A number of comer.js's line [line] that the sheet keeps (the rule, unchanged): it must be one of the numbers the
@@ -108,9 +110,8 @@ class ComerPlaces {
   /// A place the moved source at [line] names (`NAME=[x,y]`).
   List<int> named(int line, String name) {
     for (final m in _movesAt(line)) {
-      final g = RegExp(
-        '(?<![A-Za-z0-9_])$name=\\[(-?\\d+),(-?\\d+)\\]',
-      ).firstMatch(m.to);
+      final g = RegExp('(?<![A-Za-z0-9_])$name=\\[(-?\\d+),(-?\\d+)\\]')
+          .firstMatch(m.to);
       if (g != null) return [int.parse(g[1]!), int.parse(g[2]!)];
     }
     throw SheetError('the sheet moves no place $name at comer.js:$line');
@@ -119,9 +120,8 @@ class ComerPlaces {
   /// A number the moved source at [line] names (`NAME=v`).
   num namedNum(int line, String name) {
     for (final m in _movesAt(line)) {
-      final g = RegExp(
-        '(?<![A-Za-z0-9_])$name=(-?\\d+(?:\\.\\d+)?)(?![\\d.])',
-      ).firstMatch(m.to);
+      final g = RegExp('(?<![A-Za-z0-9_])$name=(-?\\d+(?:\\.\\d+)?)(?![\\d.])')
+          .firstMatch(m.to);
       if (g != null) return num.parse(g[1]!);
     }
     throw SheetError('the sheet moves no number $name at comer.js:$line');

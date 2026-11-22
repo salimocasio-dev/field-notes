@@ -11,8 +11,10 @@ extension _Moves on Comer {
   List get _vuelos => W['vuelos'] as List;
 
   // JavaScript: `p.tiene = p.tiene.filter(t => t !== x)`
-  void _quita(M p, Object? x) =>
-      p['tiene'] = [for (final t in (p['tiene'] as List)) if (!identical(t, x)) t];
+  void _quita(M p, Object? x) => p['tiene'] = [
+    for (final t in (p['tiene'] as List))
+      if (!identical(t, x)) t,
+  ];
 
   // JavaScript: `list.find(t => t.k === k)` (or one of [ks])
   M? _find(Object? list, bool Function(M t) f) {
@@ -58,7 +60,12 @@ extension _Moves on Comer {
   }
 
   // comer.js: TENE, D1
-  M TENE(String k, num dx, num dy, [M? o]) => {'k': k, 'dx': dx, 'dy': dy, ...?o};
+  M TENE(String k, num dx, num dy, [M? o]) => {
+    'k': k,
+    'dx': dx,
+    'dy': dy,
+    ...?o,
+  };
   int D1(M p) => _d(p);
 
   // comer.js: cucharaPos. A long spoon in somebody's hand: the hand and the bowl move together, the handle is no longer
@@ -86,7 +93,12 @@ extension _Moves on Comer {
   // comer.js: cucharaA
   Future<void> cucharaA(String id, M sp, num wx, num wy, [num? n0]) async {
     final t = cucharaPos(id, wx, wy, sp),
-        a = [sp['ax'] as num, sp['ay'] as num, sp['bx'] as num, sp['by'] as num];
+        a = [
+          sp['ax'] as num,
+          sp['ay'] as num,
+          sp['bx'] as num,
+          sp['by'] as num,
+        ];
     final n = n0 == null || n0 == 0 ? 4 : n0;
     for (var i = 1; i <= n; i++) {
       sp['ax'] = a[0] + (t[0] - a[0]) * i / n;
@@ -142,7 +154,12 @@ extension _Moves on Comer {
   // comer.js: cucharaAR
   Future<void> cucharaAR(M sp, num wx, num wy, bool izq, [num? n0]) async {
     final t = cucharaPosR(wx, wy, izq),
-        a = [sp['ax'] as num, sp['ay'] as num, sp['bx'] as num, sp['by'] as num];
+        a = [
+          sp['ax'] as num,
+          sp['ay'] as num,
+          sp['bx'] as num,
+          sp['by'] as num,
+        ];
     final n = n0 == null || n0 == 0 ? 4 : n0;
     for (var i = 1; i <= n; i++) {
       sp['ax'] = a[0] + (t[0] - a[0]) * i / n;
@@ -349,7 +366,12 @@ extension _Moves on Comer {
     if (had != null) return had;
     final c = ob('tf_$id'), r = FRESTO(id);
     if (c == null) {
-      final it = <String, dynamic>{'k': 'tenedor', 'e': 1, 'dx': r[0], 'dy': r[1]};
+      final it = <String, dynamic>{
+        'k': 'tenedor',
+        'e': 1,
+        'dx': r[0],
+        'dy': r[1],
+      };
       (p['tiene'] as List).add(it);
       return it;
     }
@@ -500,7 +522,8 @@ extension _Moves on Comer {
               _hypot(H[0] - (x + cu.sx), H[1] - sy),
             );
         if (dd < best.d - .5 ||
-            ((dd - best.d).abs() <= .5 && (x - tx).abs() < (best.x - tx).abs())) {
+            ((dd - best.d).abs() <= .5 &&
+                (x - tx).abs() < (best.x - tx).abs())) {
           best = (x: x, y: y, d: dd);
         }
       }
@@ -522,7 +545,8 @@ extension _Moves on Comer {
   ]) async {
     final p = G(id)!,
         pz = puestoVierte(id, k, v, tx, ty, flip, ys ?? FRENTE, p['dir']);
-    if ((pz.x - (p['x'] as num)).abs() > 1 || (pz.y - (p['y'] as num)).abs() > 1) {
+    if ((pz.x - (p['x'] as num)).abs() > 1 ||
+        (pz.y - (p['y'] as num)).abs() > 1) {
       final d0 = p['dir'];
       await mueve(id, pz.x, pz.y);
       p['dir'] = d0;
@@ -720,13 +744,7 @@ extension _Moves on Comer {
     if (tc == null || tc['vis'] == 0 || cup == null) return;
     final it = await toma(id, tc, null, null, {'n': 3, 'm': 3, 'flip': false});
     it['k'] = 'cucharilla';
-    await mueveTiene(
-      id,
-      it,
-      (cup['dx'] as num) - 2,
-      (cup['dy'] as num) + 8,
-      3,
-    );
+    await mueveTiene(id, it, (cup['dx'] as num) - 2, (cup['dy'] as num) + 8, 3);
     // he stirs
     for (var i = 0; i < 4; i++) {
       it['dx'] = (it['dx'] as num) + (i % 2 != 0 ? 3 : -3);
@@ -744,7 +762,13 @@ extension _Moves on Comer {
     final p = G(id)!, t = copa(id)!, tc = ob('tc_$id');
     if (tc == null || tc['vis'] != 0) return;
     final r = rel(id, (t['x'] as num) + 1, (t['y'] as num) - 16),
-        hb = <String, dynamic>{'k': 'brazo', '_m': 1, 'gx': 0, 'gy': 0, 'sh': 1};
+        hb = <String, dynamic>{
+          'k': 'brazo',
+          '_m': 1,
+          'gx': 0,
+          'gy': 0,
+          'sh': 1,
+        };
     (p['tiene'] as List).add(hb);
     final rr = restHand(id);
     hb['gx'] = rr[0];
@@ -775,7 +799,13 @@ extension _Moves on Comer {
   ) async {
     final p = G(id)!;
     for (final nv in niveles) {
-      await mueveTiene(id, it, jsTruthy(p['sent']) ? 10 : 12, bocaY(id, p) - 2, 4);
+      await mueveTiene(
+        id,
+        it,
+        jsTruthy(p['sent']) ? 10 : 12,
+        bocaY(id, p) - 2,
+        4,
+      );
       await wait(TICK * 3);
       it['ang'] = .5;
       p['boca'] = 1;
@@ -993,11 +1023,7 @@ extension _Moves on Comer {
     } else if ((p['x'] as num) > 84 && (p['y'] as num) < FR - 2) {
       await mueve(id, p['x'] as num, FR);
     }
-    await mueve(
-      id,
-      PUERTA[0],
-      math.max(190, math.min(p['y'] as num, FR)),
-    );
+    await mueve(id, PUERTA[0], math.max(190, math.min(p['y'] as num, FR)));
     p['vis'] = 0;
   }
 
@@ -1050,7 +1076,12 @@ extension _Moves on Comer {
     p['y'] = SY(p['x'] as num, ASIENTO);
     p['dy'] = 0;
     await wait(TICK * 4);
-    await mueve(id, (p['x'] as num) + 12, SY((p['x'] as num) + 12, ASIENTO - 3), 1);
+    await mueve(
+      id,
+      (p['x'] as num) + 12,
+      SY((p['x'] as num) + 12, ASIENTO - 3),
+      1,
+    );
     await wait(TICK * 2);
     await mueve(id, p['x'] as num, SY(p['x'] as num, ATRAS), 2);
     await delante(id, x, y);
@@ -1339,7 +1370,8 @@ extension _Moves on Comer {
     SFX.blip();
     final it = <String, dynamic>{
           'k': 'rollo',
-          'v': '${_js(r['st'])}${jsTruthy(r['con']) ? ':${_js(r['con'])}' : ''}',
+          'v':
+              '${_js(r['st'])}${jsTruthy(r['con']) ? ':${_js(r['con'])}' : ''}',
           'e': 1,
         },
         c = centroPara(id, it, w[0], w[1]);

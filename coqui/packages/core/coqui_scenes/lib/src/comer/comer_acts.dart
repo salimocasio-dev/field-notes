@@ -350,7 +350,10 @@ extension _Acts on Comer {
     // he eats the roll in three bites: right, he chews happily and eats it all; wrong, he bites once, makes a face, puts it
     // down on his plate with the bite out of it and pushes the plate a little away: there it stays
     'come33': (o) async {
-      final id = '${o['a']}', p = G(id)!, nino = Comer.NINO(id), pl = ob('pl_$id')!;
+      final id = '${o['a']}',
+          p = G(id)!,
+          nino = Comer.NINO(id),
+          pl = ob('pl_$id')!;
       final pr = () async {
         var it = _find(p['tiene'], (t) => t['k'] == 'rollo');
         if (it == null && nino) it = await tomaPlato(id, pl);
@@ -431,7 +434,8 @@ extension _Acts on Comer {
           (p['y'] as num) - ((pl['y'] as num) - 7),
           5,
         );
-        ROLLOS(pl).add(<String, dynamic>{'st': 'mo', 'con': con, 'dx': 0, 'mal': 1});
+        ROLLOS(pl)
+            .add(<String, dynamic>{'st': 'mo', 'con': con, 'dx': 0, 'mal': 1});
         SFX.blip();
         _quita(p, it);
         final r0 = rel(id, pl['x'] as num, (pl['y'] as num) - 6),

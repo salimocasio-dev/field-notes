@@ -67,7 +67,10 @@ extension _Acts35 on Comer {
             'vdy': 19,
             'vh': 6,
           },
-        for (final (id, s) in [('abuelo', SILLA[0] - 12), ('papa', SILLA[3] + 12)])
+        for (final (id, s) in [
+          ('abuelo', SILLA[0] - 12),
+          ('papa', SILLA[3] + 12),
+        ])
           <String, dynamic>{
             'id': 'tc_$id',
             'k': 'cucharilla',
@@ -346,7 +349,11 @@ extension _Acts35 on Comer {
     // the man looks at his cup (two heaps of sugar) and sets it down at his own place; he is cross and stays so while it
     // stands in front of him
     'empuja35': (o) async {
-      final id = '${o['a']}', p = G(id)!, it = _cup(p), t = copa(id)!, d = _d(p);
+      final id = '${o['a']}',
+          p = G(id)!,
+          it = _cup(p),
+          t = copa(id)!,
+          d = _d(p);
       await wait(TICK * 5);
       p['cara'] = 'mal';
       SFX.bonk();
@@ -438,7 +445,10 @@ extension _Acts35 on Comer {
     // the children set their cups of milk in front of the frog (ponen), walk out (salen), walk in (vuelven), drink
     // (toman), set them down (dejan)
     'ninos35': (o) async {
-      final l = G('luis')!, ca = G('carmen')!, tl = copa('luis')!, tc = copa('carmen')!;
+      final l = G('luis')!,
+          ca = G('carmen')!,
+          tl = copa('luis')!,
+          tc = copa('carmen')!;
       M? cupOf(M p) => _find(p['tiene'], (x) => x['k'] == 'taza');
       // a child with an empty cup walks out and comes back with a fresh cup of milk
       Future<void> fresco(String id, num x, num y) async {
@@ -530,7 +540,10 @@ extension _Acts35 on Comer {
     // the frog pours as told from the greca in his hand (moves line 1112: beside the cup on the cloth): a long pour (mucho)
     // turns the milk brown; a splash (poco) turns it pale
     'vierte35': (o) async {
-      final id = '${o['a']}', t = copa(id)!, q = _cq, mucho = o['cant'] == 'mucho';
+      final id = '${o['a']}',
+          t = copa(id)!,
+          q = _cq,
+          mucho = o['cant'] == 'mucho';
       final izq = (t['x'] as num) < 90;
       final fx = (t['x'] as num) + (izq ? 22 : -8), fy = (t['y'] as num) - 22;
       await ranaA(fx, fy);
@@ -1317,11 +1330,7 @@ extension _Acts35 on Comer {
 
       if (k == 'jarrita') {
         final jt = ob('jarrita')!;
-        await mostrar(
-          jt,
-          (jt['x'] as num) + 4,
-          FRONTROW(jt['x'] as num, 190),
-        );
+        await mostrar(jt, (jt['x'] as num) + 4, FRONTROW(jt['x'] as num, 190));
       } else {
         final cz = ob('cazo')!;
         await ruta('abuela', [

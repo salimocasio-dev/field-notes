@@ -54,8 +54,7 @@ Sprite Function()? replay(String key, String caller) {
   }
   final ab = RegExp(r'^abN([01])([012])$').firstMatch(key);
   if (ab != null) {
-    return () =>
-        recolor(mkAbuelaN(ab[1] == '1', int.parse(ab[2]!)), APRON);
+    return () => recolor(mkAbuelaN(ab[1] == '1', int.parse(ab[2]!)), APRON);
   }
   final abs = RegExp(r'^abSN([01])$').firstMatch(key);
   if (abs != null) return () => recolor(mkAbuelaSN(abs[1] == '1'), APRON);
@@ -75,20 +74,16 @@ Sprite Function()? replay(String key, String caller) {
   final g = RegExp(r'^cmg(.*?)(-?0\.\d+)$').firstMatch(key);
   final gk = g == null ? null : _kind(g[1]!);
   if (g != null && gk != null) {
-    return () => giro(
-      cosaIm(gk.$1, gk.$2.isEmpty ? null : gk.$2),
-      double.parse(g[2]!),
-    );
+    return () =>
+        giro(cosaIm(gk.$1, gk.$2.isEmpty ? null : gk.$2), double.parse(g[2]!));
   }
   if (key.startsWith('cm')) {
     final rest = key.substring(2);
     final tilt = rest.startsWith('tilt');
     final kv = _kind(tilt ? rest.substring(4) : rest);
     if (kv != null) {
-      return () => cosaIm(
-        tilt ? 'tilt${kv.$1}' : kv.$1,
-        kv.$2.isEmpty ? null : kv.$2,
-      );
+      return () =>
+          cosaIm(tilt ? 'tilt${kv.$1}' : kv.$1, kv.$2.isEmpty ? null : kv.$2);
     }
   }
   throw StateError('no call known for $key ($caller)');

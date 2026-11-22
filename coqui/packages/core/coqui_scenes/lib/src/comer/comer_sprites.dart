@@ -294,8 +294,7 @@ Sprite mkLechera(num ang) {
           dy = y + .5 - cy,
           u = dx * cs + dy * sn,
           v = -dx * sn + dy * cs;
-      final bel =
-              math.pow(u / 4.3, 2) + math.pow((v - 1.3) / 3.5, 2) <= 1,
+      final bel = math.pow(u / 4.3, 2) + math.pow((v - 1.3) / 3.5, 2) <= 1,
           neck = u >= -2 && u <= 2 && v >= -4.6 && v <= -1.3,
           rim = u >= -2.7 && u <= 2.7 && v >= -5.2 && v <= -3.9,
           beak = tri(u, v),

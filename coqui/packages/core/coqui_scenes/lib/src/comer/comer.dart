@@ -89,7 +89,8 @@ bool _on(Object? v) {
 double _hypot(num a, num b) => math.sqrt(a * a + b * b);
 
 // JavaScript: `p.dir < 0 ? -1 : 1` (a missing dir is not < 0)
-int _d(Map? p) => p != null && p['dir'] is num && (p['dir'] as num) < 0 ? -1 : 1;
+int _d(Map? p) =>
+    p != null && p['dir'] is num && (p['dir'] as num) < 0 ? -1 : 1;
 
 // JavaScript: how `"" + v` writes a value of W (undefined and null as their names)
 String _js(Object? v) => v == null
@@ -125,8 +126,12 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
     p.movesAre(0xb1ec556c);
     // comer.js:20 MESA (the old table: the set's; MESA[1], its far edge, is still the row caja() reads), SILLA (the seats'
     // x, unchanged; their rows by SY); PISO, MOSTR, ESTUFA, ESTANTE: the old background's (dropped)
-    MESA = [for (final v in const [66, 112, 120, 60]) p.at(20, v).toInt()];
-    SILLA = [for (final x in const [90, 114, 138, 162]) p.at(20, x).toInt()];
+    MESA = [
+      for (final v in const [66, 112, 120, 60]) p.at(20, v).toInt(),
+    ];
+    SILLA = [
+      for (final x in const [90, 114, 138, 162]) p.at(20, x).toInt(),
+    ];
     // moves line 21: the new geometry
     FILA = p.namedNum(21, 'FILA').toInt();
     MED = p.namedNum(21, 'MED').toInt();
@@ -165,7 +170,11 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
       ),
     );
     FRONTROW_ = p
-        .to(21, l21, RegExp(r'FRONTROW=\(x,y\)=>\{while\(MESAPIE\(x,y\)&&y<(\d+)\)'))[0]
+        .to(
+          21,
+          l21,
+          RegExp(r'FRONTROW=\(x,y\)=>\{while\(MESAPIE\(x,y\)&&y<(\d+)\)'),
+        )[0]
         .toInt();
     // moves line 21: CARTAS's places, the sheet's cards (its list of centres and its row)
     final cards = sheet.raw['cards'] as Map<String, dynamic>;
@@ -256,7 +265,9 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
         '${g[1]},${g[2]}': [int.parse(g[3]!), int.parse(g[4]!)],
     };
     // comer.js:696 SUBE (the old way up and down at the table's ends: no longer walked, moves lines 698 to 705)
-    SUBE = [for (final v in const [80, 182]) p.at(696, v).toInt()];
+    SUBE = [
+      for (final v in const [80, 182]) p.at(696, v).toInt(),
+    ];
     // moves line 723: where somebody stands to ask
     final lep = p.to(
       723,
@@ -285,18 +296,8 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
       ),
     );
     EST33 = {
-      'luis': (
-        x: e33[0],
-        y: e33[1],
-        pl: [e33[2], e33[3]],
-        dir: e33[4],
-      ),
-      'carmen': (
-        x: e33[5],
-        y: e33[6],
-        pl: [e33[7], e33[8]],
-        dir: e33[9],
-      ),
+      'luis': (x: e33[0], y: e33[1], pl: [e33[2], e33[3]], dir: e33[4]),
+      'carmen': (x: e33[5], y: e33[6], pl: [e33[7], e33[8]], dir: e33[9]),
     };
     // moves line 812: the tray of rolls on the stove's top
     BANDEJA = p
@@ -311,7 +312,9 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
     // table)
     LUGAR = {for (final k in sheet.lugar.keys) k: sheet.lugarOf(k, p.e)};
     CAM = {for (final k in sheet.views.keys) k: p.view(k)};
-    heartAt = [for (final v in const [130, 22]) p.at(1237, v)];
+    heartAt = [
+      for (final v in const [130, 22]) p.at(1237, v),
+    ];
     cosas = [
       for (final id in QUIEN.keys) persona(id),
       for (final id in const [
@@ -566,7 +569,12 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
       final o = (w2['cosas'] as List).firstWhere(
         (o) => o is Map && o['id'] == id,
       );
-      return [_round(o['x'] as num) - (w >> 1), _round(o['y'] as num) - h, w, h];
+      return [
+        _round(o['x'] as num) - (w >> 1),
+        _round(o['y'] as num) - h,
+        w,
+        h,
+      ];
     },
     m: 1,
     z: (z ?? 1) != 0,
@@ -579,7 +587,9 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
   // comer.js: fresh (code line 1238: respEn and the frog's first place, unchanged)
   @override
   M fresh(M story) => {
-    'respEn': [for (final v in const [130, 22]) _p.at(1238, v)],
+    'respEn': [
+      for (final v in const [130, 22]) _p.at(1238, v),
+    ],
     'gente': <String, dynamic>{},
     'sitio': <String, dynamic>{},
     'cosas': <dynamic>[],
@@ -793,7 +803,10 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
       return [x < 186 ? y - (x - SYC) / SYD + x / 10000 : y, TZ + .9];
     }
     if (detrasMesa(p)) {
-      return [40 + (y - (x - SYC) / SYD) / 100, 40.5 + (y - (x - SYC) / SYD) / 100];
+      return [
+        40 + (y - (x - SYC) / SYD) / 100,
+        40.5 + (y - (x - SYC) / SYD) / 100,
+      ];
     }
     return [y, y < TZ ? TZ + .9 : y + .001];
   }
@@ -924,7 +937,8 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
     }
     if (jsTruthy(q['vis']) && jsTruthy(q['piensa'])) {
       final b = frogBox(q),
-          n = (q['nube'] as List?)?.cast<num>() ??
+          n =
+              (q['nube'] as List?)?.cast<num>() ??
               [b.x + (b.w.toInt() >> 1) - 20, b.y - 44];
       nube(
         c,
@@ -952,8 +966,7 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
 
   // comer.js: respIcon (draws nothing)
   @override
-  dynamic respIcon(Ctx c, String k, num x, num y, num w, num h, int a) =>
-      null;
+  dynamic respIcon(Ctx c, String k, num x, num y, num w, num h, int a) => null;
 
   // comer.js: hud. Two places: every story has two scored rounds
   @override

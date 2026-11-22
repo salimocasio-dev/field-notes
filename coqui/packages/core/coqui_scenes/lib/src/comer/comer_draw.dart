@@ -113,9 +113,7 @@ extension _Draw on Comer {
       g.drawImage(
         im,
         _round(26 + (m['dx'] as num) - im.w / 2),
-        _round(
-          13 + 8.5 + (m['dy'] == null ? -4 : m['dy'] as num) - im.h / 2,
-        ),
+        _round(13 + 8.5 + (m['dy'] == null ? -4 : m['dy'] as num) - im.h / 2),
       );
     }
     if (jsTruthy(it['tenedor'])) {
@@ -199,11 +197,7 @@ extension _Draw on Comer {
         h2 = wd >> 1;
     for (var j = 0; j < n; j++) {
       final t = j / math.max(1, n),
-          off =
-              dd *
-              _round(
-                3 * (1 - math.pow(1 - t, 2)) * math.min(1, n / 6),
-              ),
+          off = dd * _round(3 * (1 - math.pow(1 - t, 2)) * math.min(1, n / 6)),
           xx = x + off;
       fr(c, xx - h2 - 1, y0 + j, 1, 1, OUT);
       fr(c, xx + h2, y0 + j, 1, 1, OUT);
@@ -226,11 +220,13 @@ extension _Draw on Comer {
     final n = math.max(1, math.max((x1 - x0).abs(), (y1 - y0).abs()).ceil()),
         a = ancho == null || ancho == 0 ? 2 : ancho;
     for (var i = 0; i <= n; i++) {
-      final x = _round(x0 + (x1 - x0) * i / n), y = _round(y0 + (y1 - y0) * i / n);
+      final x = _round(x0 + (x1 - x0) * i / n),
+          y = _round(y0 + (y1 - y0) * i / n);
       fr(c, x - 1, y - 1, a + 2, a + 2, OUT);
     }
     for (var i = 0; i <= n; i++) {
-      final x = _round(x0 + (x1 - x0) * i / n), y = _round(y0 + (y1 - y0) * i / n);
+      final x = _round(x0 + (x1 - x0) * i / n),
+          y = _round(y0 + (y1 - y0) * i / n);
       fr(c, x, y, a, a, col);
     }
   }
@@ -260,7 +256,10 @@ extension _Draw on Comer {
         : [hx('#B07A3C'), hx('#8A5A2A'), hx('#D09A54')];
     // the handle: 2 px, a hand long; the bowl: a small oval, smaller than a fist
     trazo(c, x0, y0, x1, y1, mad[0], 2);
-    final rx = _or(o['rx'], 2), ry = _or(o['ry'], 1), cx = _round(x1), cy = _round(y1);
+    final rx = _or(o['rx'], 2),
+        ry = _or(o['ry'], 1),
+        cx = _round(x1),
+        cy = _round(y1);
     ovalo(c, cx, cy, rx + 1, ry + 1, OUT);
     ovalo(c, cx, cy, rx, ry, mad[1]);
     ovalo(c, cx, cy, math.max(1, rx - 1), math.max(0, ry - 1), mad[2]);
@@ -374,10 +373,7 @@ extension _Draw on Comer {
         ? ((e1[0] - sx) * lado > (e2[0] - sx) * lado ? e1 : e2)
         : (e1[1] > e2[1] ? e1 : e2);
     void seg(num x0, num y0, num x1, num y1, void Function(int x, int y) f) {
-      final n = math.max(
-        1,
-        math.max((x1 - x0).abs(), (y1 - y0).abs()).ceil(),
-      );
+      final n = math.max(1, math.max((x1 - x0).abs(), (y1 - y0).abs()).ceil());
       for (var i = 0; i <= n; i++) {
         f(_round(x0 + (x1 - x0) * i / n), _round(y0 + (y1 - y0) * i / n));
       }
@@ -608,13 +604,12 @@ extension _Draw on Comer {
         bob = jsTruthy(p['paso']) && pie == 0 ? -1 : 0;
     final vivos = manosDe(id, p, a);
     if (id == 'abuela') {
-      final hb = habla != 0 || jsTruthy(p['abre']) || jsTruthy(p['boca']) ? 1 : 0;
+      final hb = habla != 0 || jsTruthy(p['abre']) || jsTruthy(p['boca'])
+          ? 1
+          : 0;
       if (jsTruthy(p['sent'])) {
         final top = y - 48;
-        final im = spr(
-          'abSN$hb',
-          () => recolor(mkAbuelaSN(hb != 0), APRON),
-        );
+        final im = spr('abSN$hb', () => recolor(mkAbuelaSN(hb != 0), APRON));
         if (d < 0) {
           c.save();
           c.translate(x.toDouble(), top.toDouble());
@@ -992,7 +987,14 @@ extension _Draw on Comer {
           [-7, 5],
         ]) {
           final x0 = _round(r[0] * f);
-          fr(g, cx + x0 - 1, b.y + dy + 12 + r[1], -2 * x0 + 2, 1, hx('#FBF0D2'));
+          fr(
+            g,
+            cx + x0 - 1,
+            b.y + dy + 12 + r[1],
+            -2 * x0 + 2,
+            1,
+            hx('#FBF0D2'),
+          );
         }
         fr(g, cx - _round(10 * f), b.y + dy + 14, 1, 3, OUT);
         fr(g, cx + _round(9 * f), b.y + dy + 14, 1, 3, OUT);
@@ -1063,7 +1065,18 @@ extension _Draw on Comer {
       it['_H'] = H;
       for (final h in H) {
         final s = h[0] >= cx ? 1 : -1;
-        brazoJ(g, cx + s * 7, fy - 12, h[0], h[1], 7, sl, pi, s, 'rana:${it['k']}');
+        brazoJ(
+          g,
+          cx + s * 7,
+          fy - 12,
+          h[0],
+          h[1],
+          7,
+          sl,
+          pi,
+          s,
+          'rana:${it['k']}',
+        );
       }
     }
     for (final it in its) {
@@ -1079,7 +1092,9 @@ extension _Draw on Comer {
           it['o'],
         );
       } else {
-        final ix = cx + (it['dx'] as num), iy = fy - (it['dy'] as num), fl = flOf(it);
+        final ix = cx + (it['dx'] as num),
+            iy = fy - (it['dy'] as num),
+            fl = flOf(it);
         tenidaC(g, it['k'] as String, ix, iy, it['e'], it['v'], fl);
         if (jsTruthy(it['chorro'])) {
           final im = cosaSpr(it['k'] as String, it['v']), e = _or(it['e'], 1);
@@ -1255,7 +1270,10 @@ extension _Draw on Comer {
         : 0;
     final im = spr('pe${_js(pose)}$f', () => mkPerro(_js(pose), f != 0));
     c.save();
-    c.translate(_round(o['x'] as num).toDouble(), _round(o['y'] as num).toDouble());
+    c.translate(
+      _round(o['x'] as num).toDouble(),
+      _round(o['y'] as num).toDouble(),
+    );
     final e = _or(o['e'], 1);
     c.scale(((_d(o) < 0 ? -1 : 1) * e).toDouble(), e.toDouble());
     c.translate(0, (-im.h + 2).toDouble());
@@ -1333,7 +1351,9 @@ extension _Draw on Comer {
     }
     final cm = cam;
     for (final sd in LIBRE_AT) {
-      final x = tx + sd[0] * (h + 16), y = ty + sd[1], r = [x - 9, y - 16, 19, 13];
+      final x = tx + sd[0] * (h + 16),
+          y = ty + sd[1],
+          r = [x - 9, y - 16, 19, 13];
       if (r[0] >= cm[0] &&
           r[1] >= 0 &&
           r[0] + r[2] <= cm[0] + cm[2] &&
@@ -1363,7 +1383,9 @@ extension _Draw on Comer {
             : i == 0
             ? [_round(cx - 50), y0, 40, 36]
             : [_round(cx + 10), y0, 40, 36];
-        final fr0 = [c[0] - 12, c[1] - 12, 64, 60], hx0 = c[0] + 8, hy0 = c[1] + 30;
+        final fr0 = [c[0] - 12, c[1] - 12, 64, 60],
+            hx0 = c[0] + 8,
+            hy0 = c[1] + 30;
         if (jsTruthy(W['tarjeta']) &&
             _on([c[0] - 2, c[1] - 2, 44, 40], [cm[0] + 3, 3, 68, 26])) {
           ok = false;
@@ -1374,7 +1396,8 @@ extension _Draw on Comer {
             for (var j = 0; j < HAND.length; j++) {
               final rw = HAND[j];
               for (var x = 0; x < 12; x++) {
-                if (rw[x] != '.' && _on([hx0 + x * 3, hy0 + j * 3 + o, 3, 3], f)) {
+                if (rw[x] != '.' &&
+                    _on([hx0 + x * 3, hy0 + j * 3 + o, 3, 3], f)) {
                   ok = false;
                 }
               }
