@@ -47,10 +47,14 @@ class ParadaItem {
     this.d, {
     this.tag,
     this.grown = false,
+    this.held = false,
   });
 
   /// A grown-up (whose pixels never hide the frog).
   final bool grown;
+
+  /// A thing in the frog's hand (in front of him: it hides what of him it covers; marked 3 in the layer).
+  final bool held;
 
   final Sprite s;
   final int left, top;
@@ -229,11 +233,13 @@ class Parada extends Escena implements SetScene, SetOverSprites {
       gente['carmen'] = _person('fila4', lleva: 'cesta');
       boletos = {'n': 4, 'quien': 'abuela'};
     } else if (has('final52')) {
-      // story 52: the frog, Luis and abuela at the stop (Luis at fila3 as in moment 3, abuela with her basket of rolls at
-      // fila4), Canelo lying under the seat (bajo_banco); fila1 and fila2 are free while the frog works the buttons
+      // story 52: the frog, Luis and abuela at the stop (Luis at fila4, abuela with her basket of rolls at fila5: at
+      // fila3, moment 3's place for Luis, a child hides the frog at the back door's button, coqui.boton_baja, by 44 px,
+      // more than the sheet's 40), Canelo lying under the seat (bajo_banco); fila1 and fila2 are free while the frog works
+      // the buttons
       historia = 52;
-      gente['luis'] = _person('fila3');
-      gente['abuela'] = _person('fila4', lleva: 'panes');
+      gente['luis'] = _person('fila4');
+      gente['abuela'] = _person('fila5', lleva: 'panes');
       gente['perro'] = _person('bajo_banco')..['pose'] = 'lie';
     } else if (has('final53')) {
       // story 53: early; abuela with the two boxes at fila3 beside the frog; the ball on the seat (banco_medio)
@@ -524,6 +530,7 @@ class Parada extends Escena implements SetScene, SetOverSprites {
             h.sy,
             h.d,
             tag: 'cosa:mano_coqui',
+            held: true,
           ),
         );
       }
@@ -661,7 +668,8 @@ class Parada extends Escena implements SetScene, SetOverSprites {
   /// Composes [it] into a layer ([layer], depths [lz], vehicles' marks [isV]: 1 a guagua's pixel, 2 a grown-up's) by the
   /// sheet's rule: hidden where [setZ] is nearer than its plane plus [bias], or a guagua's pixel is (the same rule), or
   /// another sprite's pixel is nearer than its plane. The frog is hidden by neither a guagua nor a grown-up. Returns how
-  /// many of its pixels it drew.
+  /// many of its pixels it drew. A pixel hidden is told to [hidden] with why: `set`, `auto` (a guagua), `held` (what
+  /// the frog holds), `sprite` (another sprite).
   static int put(
     ParadaItem it,
     Uint32List layer,
@@ -689,14 +697,25 @@ class Parada extends Escena implements SetScene, SetOverSprites {
           hidden?.call(i, 'set');
           continue;
         }
-        if (!(it.tag == 'coqui' && isV[i] != 0) &&
+        if (!(it.tag == 'coqui' && (isV[i] == 1 || isV[i] == 2)) &&
             !personOver(i, plane, bias, lz, isV)) {
-          hidden?.call(i, isV[i] == 1 ? 'auto' : 'sprite');
+          hidden?.call(
+            i,
+            isV[i] == 1
+                ? 'auto'
+                : isV[i] == 3
+                ? 'held'
+                : 'sprite',
+          );
           continue;
         }
         lz[i] = plane;
         layer[i] = c;
-        isV[i] = it.grown ? 2 : 0;
+        isV[i] = it.grown
+            ? 2
+            : it.held
+            ? 3
+            : 0;
         n++;
       }
     }
@@ -1508,9 +1527,9 @@ class Parada extends Escena implements SetScene, SetOverSprites {
   }
 
   // a free place of the row for one who gets off (fila1 and fila2 stay free: the frog works the buttons from there,
-  // the sheet's check row-free); null: none
+  // the sheet's check row-free; fila3 too: who stands there covers the frog at the back door's button); null: none
   String? _filaLibre() {
-    for (final f in const ['fila5', 'fila4', 'fila3']) {
+    for (final f in const ['fila5', 'fila4']) {
       final taken = _gente.values.any(
         (p) => (p as Map)['vis'] != 0 && p['spot'] == f,
       );
@@ -1565,6 +1584,18 @@ class Parada extends Escena implements SetScene, SetOverSprites {
                 return Future<void>.value();
               },
     };
+  }
+
+  // the frog's place to come back to: fila2 (`bordillo`), or, in story 53 once the señor sits at banco1 (in front of
+  // fila2), the walking post (coqui.poste: moment 5)
+  String _home() {
+    final se = _gente['senor'] as Map<String, dynamic>?;
+    return _n(W['historia']) == 53 &&
+            se != null &&
+            se['vis'] != 0 &&
+            jsTruthy(se['sit'])
+        ? 'coqui.poste'
+        : 'fila2';
   }
 
   // the frog takes the next box from abuela (53's game: "holds the first box out to the frog"; the second for round B)
@@ -1986,7 +2017,7 @@ class Parada extends Escena implements SetScene, SetOverSprites {
       if (ok) W['cajaCoqui'] = 0;
       _cq['vis'] = 1;
       await _salta('coqui.poste');
-      await _salta('fila2');
+      await _salta(_home());
       if (ok) host.SFX.blip();
     },
     // `monta53` {ok}: the frog rides off waving from a window and comes back (53: 3, 6, 7)
@@ -2010,14 +2041,15 @@ class Parada extends Escena implements SetScene, SetOverSprites {
       if (ok) W['cajaCoqui'] = 0;
       // another brings him back
       await _llega(board, 'parada1');
-      await _baja('coqui', board, to: 'fila2');
+      await _baja('coqui', board, to: _home());
       await _sale(board);
       if (ok) host.SFX.blip();
     },
     // `espera53`: he waits at the kerb, no guagua comes, his shadow grows (53: 6, 7)
     'espera53': (o) async {
       await _cajaParaCoqui();
-      await _salta('fila2');
+      // at the kerb, where a guagua would take him (coqui.boton_sube: "on the pavement, at the button's x", the kerb)
+      await _salta('coqui.boton_sube');
       W['signo'] = 'gota';
       for (var i = 0; i <= 10; i++) {
         W['sombra'] = 1 + i * .08;
@@ -2027,6 +2059,7 @@ class Parada extends Escena implements SetScene, SetOverSprites {
       await wait(TICK * 4);
       W['sombra'] = 1.0;
       W['signo'] = null;
+      await _salta(_home());
     },
     // `sol` {n}: the sun's step (53)
     'sol': (o) async {
@@ -2142,8 +2175,12 @@ class Parada extends Escena implements SetScene, SetOverSprites {
         return;
       }
       if (que == 'sienta') {
-        // banco1 the señora (51) and the señor (53), banco2 abuela (53): the sheet's words
-        final spot = quien == 'abuela' ? 'banco2' : 'banco1';
+        // banco1 the señor (53), banco2 abuela (53): the sheet's words. The señora (51): banco2, where
+        // parada-preview.html's moment 1 seats her (the sheet's banco1 says "the señora (51)", but there she sits in
+        // front of the frog at fila2 and he would be drawn over her)
+        final spot = quien == 'abuela' || quien == 'senora'
+            ? 'banco2'
+            : 'banco1';
         final p = _g(quien);
         if (p['vis'] == 0) _aparece(quien, 'camino');
         final w = _p.world(spot);
@@ -2157,6 +2194,9 @@ class Parada extends Escena implements SetScene, SetOverSprites {
           ..['dir'] = 1
           ..['pose'] = 'idle';
         host.SFX.suave();
+        // story 53: the señor on the seat sits in front of fila2: the frog goes to the walking post (coqui.poste), where
+        // parada-preview.html's moment 5 has him beside the señor and abuela on the seat
+        if (quien == 'senor' && _n(W['historia']) == 53) await _salta(_home());
         await wait(TICK * 2);
         return;
       }
