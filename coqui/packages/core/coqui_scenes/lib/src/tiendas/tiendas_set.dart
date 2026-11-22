@@ -322,15 +322,11 @@ class TiendasSet {
       // the body
       _cl.box(x - .26, y - .1, .42, x + .2, y + .1, .72, const [176, 120, 70]);
       // the neck and head
-      _cl.box(
-        x + .12,
-        y - .09,
-        .62,
-        x + .28,
-        y + .09,
-        1.02,
-        const [176, 120, 70],
-      );
+      _cl.box(x + .12, y - .09, .62, x + .28, y + .09, 1.02, const [
+        176,
+        120,
+        70,
+      ]);
       _cl.box(x + .22, y - .08, .86, x + .44, y + .08, 1.0, const [
         196,
         140,
