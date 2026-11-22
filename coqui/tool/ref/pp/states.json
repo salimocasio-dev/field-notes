@@ -82,6 +82,7 @@
   { "id": "nevera/nev-1-cajon-1-pila-0-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=1&cajon=1&pila=0&banco=1" },
   { "id": "nevera/nev-1-cajon-2-pila-0-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=1&cajon=2&pila=0&banco=1" },
   { "id": "nevera/nev-2-cajon-0-pila-0-banco-1", "kind": "set", "page": "docs/proyecto/pixel/nevera-set.html", "query": "?nev=2&cajon=0&pila=0&banco=1" },
+  { "id": "comer/comer", "kind": "set", "page": "docs/proyecto/pixel/comer-set.html", "query": "?" },
   { "id": "mostrador/dentro-manana-shut-0", "kind": "set", "page": "docs/proyecto/pixel/mostrador-set.html", "query": "?donde=dentro&hora=manana&atras=shut&nevera=0" },
   { "id": "mostrador/dentro-manana-shut-1", "kind": "set", "page": "docs/proyecto/pixel/mostrador-set.html", "query": "?donde=dentro&hora=manana&atras=shut&nevera=1" },
   { "id": "mostrador/dentro-manana-open-0", "kind": "set", "page": "docs/proyecto/pixel/mostrador-set.html", "query": "?donde=dentro&hora=manana&atras=open&nevera=0" },
