@@ -1082,6 +1082,30 @@ Built by an Opus builder on `orden/52b` in about 70 minutes on El mostrador's sh
 7. `marca44` (44 step 3): don Pepe at `pepe.pesa` cannot reach the dial; the finger is a small hand sprite on the kit's dial mark.
 Also: `gen_frutas.py` writes `{"set":{"camion":1}}` and `sale`/`vuelve a="camion"` where the Needs and the sheet say `carro`; the bin of piñas has one crown pixel one row above its box in the four morning `frutas` states; story 44's first line names tomatoes and onions while only the tomato crates are on the ledge (the script has four crates, the sheet two crate spots); in story 42's rounds abuela at `abuela.junto_cabra` stands in front of the plantain bin, so the hint frame round `platanos` holds her head and the hint hand lands on her; the preview's comment puts the goat's nose 13 rows above its feet, the sheet 20.
 
+### Order 53 (caja), step b. **Result (Nov 22): done, merged to main.**
+
+Built by an Opus builder on `orden/53b` in about 2.7 hours on El mostrador's shared pieces (none changed: nothing added to the colmado kit, the cast, `coqui_pixel` or `feature_story/lib`), then brought up to main (Los estantes, Las frutas) and tested whole again.
+
+- Files: `coqui_scenes/lib/src/caja/` (`caja_set.dart`, `caja_places.dart`, `caja_sprites.dart`, `caja.dart`), the sheet asset, `coqui/ref/pp/caja/` (2 states), tests in `coqui_scenes` and `feature_story`, `tool/caja_bake_parts_test.dart`.
+- The set: `hora` manana and tarde equal the JavaScript: 0 of 51,840 pixels differ (pix, zb, kinds).
+- Touches: every touch box holds its thing; all 15 things the Needs list says he can touch answer a touch.
+- Paths: 1,408 (cuanto-es 576, caro-y-barato 576, el-cambio 256: every draw value with rr, rw, wr, ww), all to the end, 0 errors; 62,464 rule checks, 0 broken (the frog never behind a grown-up; nothing on the amount plate; price tags at `etiqueta`; the children outside showing 20 rows or more and only over the street; everybody in view; people 12 px apart; the frog clear of the counter's things; 70% or more of each thing he must touch shows).
+- No new people: the colmado cast, the family, El banco's señora and señor. The amount plate is a sprite at `ventana_caja`; the two key cards are drawn over everything at the sheet's boxes.
+- Frames from the real app: all six plays reach the end, no touch with "nothing happened".
+- **Bake, over the limit (the content lane's set, as the other inside states):** first 320 to 617 ms, later 195 to 201 ms on a busy machine (walls 65 to 70 ms, shelves 31 to 36, counter 18).
+- New sprites (60): `docs/proyecto/pixel/port/caja-sprites.png` and `.txt`. Guesses, drawn from the script's words: the dear and cheap makes of cups, pots, plates and glasses, the parcel, the torn sheet, the paper hat, the balloon, the frog's jar, the open drawer.
+- Guesses in the acts: who stands in the line (`cola` brings in the customers the later `cliente` acts name, in story order); the señor faces left and the señora right so that cane and ponytail are not over the frog; in 46 the people in the line hold a balloon in the hand away from the frog; `cambio` with ok raises the jar half a line in the opening and one line in a round.
+
+**For the content lane: 7 acts left OPEN in La caja** (marked `// OPEN:` in `caja.dart`):
+1. 45 step 1, `ir a=repisa`: the sheet has no spot `repisa`; he goes to `coqui.frente`.
+2. 45 step 1 and every ring, `gaveta`: no state and no place for the open drawer; it is a sprite at the kit's `CAJA_GAVETA`, pulled 0.3 toward the customer.
+3. 45 steps 6 and 7, 47 steps 5 and 6, `cliente` in the rounds: the script does not say what the customers buy; each sets down what they set down in the opening (señora rice, señor pot, Luis cans, Carmen frying pan).
+4. 45 step 8 and 46 step 1: the frog's own jar has no place; it is drawn in his hand.
+5. 46 steps 3, 6, 7, `empuja`: no place where don Pepe wraps nor one along the counter; the thing stays at `cosa_a` or `cosa_b` and the frog bounces.
+6. 46 steps 6 and 7, `envuelve ok=0`: the torn sheet has no place; it shows for a moment beside the thing.
+7. 47 step 4, `ninos47 dos`: no two-fingers pose; the child in the doorway lifts a hand twice.
+Also: the Needs name spots `repisa`, `mostrador1` to `3`, `vitrina_fuera` and states `gaveta`, `vitrina` that the sheet lacks; `tecla_a`'s card covers the head of the child at `ninos_fuera.1` while the keys show in 47; `cola1` and `cola2` are 12 px apart, so the second person is mostly hidden, and the three children at `ninos_dentro` overlap heavily; the generator writes `"decide":"do"` (the runner treats it as a plain touch decision, as El mostrador's).
+
 ### Orders 54 to 57. La calle (place 5): esquina, parada, tiendas, cruce
 
 New scenes, as El colmado's: no old scene file, no `ref/escenas/` folder. Step a (design) is the content lane's; step b is this lane's, after El colmado's four.

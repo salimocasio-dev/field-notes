@@ -1,0 +1,813 @@
+{
+ "id": "cuanto-es",
+ "title": "¿Cuánto es?",
+ "place": "El colmado",
+ "scene": "caja",
+ "next": "caro-y-barato",
+ "goal": "Ring each price on the register's keys, so the three dollars under the clip are still there when don Pepe pays his helper.",
+ "stake": {
+  "thing": "peso",
+  "steps": 2
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "¿cuánto es?",
+  "peso",
+  "paga",
+  "once",
+  "doce",
+  "trece"
+ ],
+ "formas_foco": {
+  "peso": [
+   "pesos"
+  ]
+ },
+ "back_again": [
+  "diez",
+  "tres",
+  "colmado",
+  "compra",
+  "buenas tardes",
+  "señor",
+  "señora",
+  "gracias",
+  "aquí tiene",
+  "olla",
+  "arroz"
+ ],
+ "also_heard": [],
+ "names": {
+  "luis": "p_n_luis",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "11": "once",
+  "12": "doce",
+  "13": "trece"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "c45_caja": {
+   "who": "narr",
+   "text": "Esta es la caja de don Pepe."
+  },
+  "c45_pepe_cuenta": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Uno, dos, tres. Tres pesos para ti, Coquí."
+  },
+  "c41_cq_gracias_pepe": {
+   "who": "tu",
+   "text": "¡Gracias, don Pepe!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias"
+     ]
+    }
+   ]
+  },
+  "c45_luis_cuanto": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Cuánto es?"
+  },
+  "c45_donde_11": {
+   "who": "narr",
+   "text": "¿Dónde está el once?"
+  },
+  "c45_luis_paga": {
+   "who": "narr",
+   "text": "Luis paga once pesos."
+  },
+  "c45_senor_hola": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Hola, Coquí!"
+  },
+  "c45_cq_buenas": {
+   "who": "tu",
+   "text": "¡Buenas tardes, señor!",
+   "tu_turno": [
+    {
+     "palabra": "buenas tardes",
+     "formas": [
+      "buenas tardes"
+     ]
+    },
+    {
+     "palabra": "señor",
+     "formas": [
+      "señor",
+      "senor"
+     ]
+    }
+   ]
+  },
+  "c45_senor_cuanto": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¿Cuánto es?"
+  },
+  "c45_toca_12": {
+   "who": "narr",
+   "text": "Toca el doce."
+  },
+  "c45_senora_cuanto": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¿Cuánto es?"
+  },
+  "c45_y_13": {
+   "who": "narr",
+   "text": "¿Y el trece?"
+  },
+  "c45_pepe_aviso": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Ay! Coquí, ¡la caja, por favor!"
+  },
+  "c45_toma3": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Toma, Coquí. Tres pesos."
+  },
+  "c45_toma2": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Toma, Coquí. Dos pesos."
+  },
+  "c45_toma1": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Toma, Coquí. Un peso."
+  },
+  "c45_hasta": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Hasta mañana, Coquí!"
+  },
+  "c45_pepe_11": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Son once pesos."
+  },
+  "c45_senora_paga_11": {
+   "who": "narr",
+   "text": "La señora paga once pesos."
+  },
+  "c45_senor_paga_11": {
+   "who": "narr",
+   "text": "El señor paga once pesos."
+  },
+  "c45_no_11": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Son once pesos."
+  },
+  "c45_pepe_12": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Son doce pesos."
+  },
+  "c45_senora_paga_12": {
+   "who": "narr",
+   "text": "La señora paga doce pesos."
+  },
+  "c45_senor_paga_12": {
+   "who": "narr",
+   "text": "El señor paga doce pesos."
+  },
+  "c45_no_12": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Son doce pesos."
+  },
+  "c45_pepe_13": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Son trece pesos."
+  },
+  "c45_senora_paga_13": {
+   "who": "narr",
+   "text": "La señora paga trece pesos."
+  },
+  "c45_senor_paga_13": {
+   "who": "narr",
+   "text": "El señor paga trece pesos."
+  },
+  "c45_no_13": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Son trece pesos."
+  }
+ },
+ "beats": [
+  {
+   "act": "ir",
+   "a": "repisa"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "act": "gaveta",
+   "abre": 1
+  },
+  "c45_caja",
+  {
+   "act": "clip",
+   "n": 3
+  },
+  "c45_pepe_cuenta",
+  "c41_cq_gracias_pepe",
+  {
+   "dots": 1
+  },
+  {
+   "act": "cliente",
+   "quien": "luis",
+   "cosa": "latas",
+   "precio": "11",
+   "ver": 1
+  },
+  "c45_luis_cuanto",
+  "c45_pepe_11",
+  {
+   "act": "teclas",
+   "a": "10",
+   "b": "11"
+  },
+  {
+   "ask": "tecla_b",
+   "lead": [],
+   "line": "c45_donde_11",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "luis",
+     "n": "11"
+    },
+    "c45_luis_paga",
+    {
+     "act": "sale",
+     "quien": "luis"
+    }
+   ],
+   "after": [
+    {
+     "act": "suena",
+     "n": "11"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "cliente",
+   "quien": "senor",
+   "cosa": "olla",
+   "precio": "12",
+   "ver": 1
+  },
+  "c45_senor_hola",
+  "c45_cq_buenas",
+  "c45_senor_cuanto",
+  "c45_pepe_12",
+  {
+   "act": "teclas",
+   "a": "12",
+   "b": "11"
+  },
+  {
+   "ask": "tecla_a",
+   "lead": [],
+   "line": "c45_toca_12",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "senor",
+     "n": "12"
+    },
+    "c45_senor_paga_12",
+    {
+     "act": "sale",
+     "quien": "senor"
+    }
+   ],
+   "after": [
+    {
+     "act": "suena",
+     "n": "12"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "cliente",
+   "quien": "senora",
+   "cosa": "arroz",
+   "precio": "13",
+   "ver": 1
+  },
+  "c45_senora_cuanto",
+  "c45_pepe_13",
+  {
+   "act": "teclas",
+   "a": "12",
+   "b": "13"
+  },
+  {
+   "ask": "tecla_b",
+   "lead": [],
+   "line": "c45_y_13",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "senora",
+     "n": "13"
+    },
+    "c45_senora_paga_13",
+    {
+     "act": "sale",
+     "quien": "senora"
+    }
+   ],
+   "after": [
+    {
+     "act": "suena",
+     "n": "13"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "cola",
+   "n": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "empaca"
+  },
+  {
+   "act": "aviso"
+  },
+  "c45_pepe_aviso",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "11",
+    "12",
+    "13"
+   ]
+  },
+  {
+   "draw": "ea",
+   "options": [
+    "up",
+    "down"
+   ]
+  },
+  {
+   "if": "pa=11",
+   "then": [
+    {
+     "calc": "da",
+     "cond": "ea=up",
+     "then": "12",
+     "else": "10"
+    }
+   ],
+   "else": [
+    {
+     "if": "pa=12",
+     "then": [
+      {
+       "calc": "da",
+       "cond": "ea=up",
+       "then": "13",
+       "else": "11"
+      }
+     ],
+     "else": [
+      {
+       "calc": "da",
+       "cond": "ea=up",
+       "then": "14",
+       "else": "12"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "tecla_a",
+    "tecla_b"
+   ],
+   "other": "oa"
+  },
+  {
+   "calc": "ua",
+   "cond": "ka=tecla_a",
+   "then": "$pa",
+   "else": "$da"
+  },
+  {
+   "calc": "va",
+   "cond": "ka=tecla_a",
+   "then": "$da",
+   "else": "$pa"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "tecla_a",
+    "tecla_b"
+   ],
+   "pick": "$ka",
+   "tests": "$pa",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "cliente",
+     "quien": "senora",
+     "precio": "$pa",
+     "ver": 0
+    },
+    "c45_senora_cuanto",
+    "c45_pepe_$pa",
+    {
+     "act": "teclas",
+     "a": "$ua",
+     "b": "$va"
+    }
+   ],
+   "line": "c45_pepe_$pa",
+   "right": [
+    {
+     "act": "suena",
+     "n": "$pa"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "etiqueta",
+       "ver": 1
+      },
+      {
+       "act": "paga",
+       "quien": "senora",
+       "n": "$pa"
+      },
+      "c45_senora_paga_$pa",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "paga",
+       "quien": "senora",
+       "n": "$pa"
+      }
+     ]
+    },
+    {
+     "act": "sale",
+     "quien": "senora"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "suena",
+     "n": "$da"
+    },
+    {
+     "act": "etiqueta",
+     "ver": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "senora",
+     "que": "no"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c45_no_$pa",
+    {
+     "if": "ea=up",
+     "then": [
+      {
+       "act": "clip",
+       "quita": 1,
+       "a": "cliente"
+      }
+     ],
+     "else": [
+      {
+       "act": "clip",
+       "quita": 1,
+       "a": "gaveta"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "11",
+    "12",
+    "13"
+   ]
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "up",
+    "down"
+   ]
+  },
+  {
+   "if": "pb=11",
+   "then": [
+    {
+     "calc": "db",
+     "cond": "eb=up",
+     "then": "12",
+     "else": "10"
+    }
+   ],
+   "else": [
+    {
+     "if": "pb=12",
+     "then": [
+      {
+       "calc": "db",
+       "cond": "eb=up",
+       "then": "13",
+       "else": "11"
+      }
+     ],
+     "else": [
+      {
+       "calc": "db",
+       "cond": "eb=up",
+       "then": "14",
+       "else": "12"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "tecla_a",
+    "tecla_b"
+   ],
+   "other": "ob"
+  },
+  {
+   "calc": "ub",
+   "cond": "kb=tecla_a",
+   "then": "$pb",
+   "else": "$db"
+  },
+  {
+   "calc": "vb",
+   "cond": "kb=tecla_a",
+   "then": "$db",
+   "else": "$pb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "tecla_a",
+    "tecla_b"
+   ],
+   "pick": "$kb",
+   "tests": "$pb",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "cliente",
+     "quien": "senor",
+     "precio": "$pb",
+     "ver": 0
+    },
+    "c45_senor_cuanto",
+    "c45_pepe_$pb",
+    {
+     "act": "teclas",
+     "a": "$ub",
+     "b": "$vb"
+    }
+   ],
+   "line": "c45_pepe_$pb",
+   "right": [
+    {
+     "act": "suena",
+     "n": "$pb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "etiqueta",
+       "ver": 1
+      },
+      {
+       "act": "paga",
+       "quien": "senor",
+       "n": "$pb"
+      },
+      "c45_senor_paga_$pb",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "paga",
+       "quien": "senor",
+       "n": "$pb"
+      }
+     ]
+    },
+    {
+     "act": "sale",
+     "quien": "senor"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "suena",
+     "n": "$db"
+    },
+    {
+     "act": "etiqueta",
+     "ver": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "senor",
+     "que": "no"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c45_no_$pb",
+    {
+     "if": "eb=up",
+     "then": [
+      {
+       "act": "clip",
+       "quita": 1,
+       "a": "cliente"
+      }
+     ],
+     "else": [
+      {
+       "act": "clip",
+       "quita": 1,
+       "a": "gaveta"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    "c45_toma3",
+    {
+     "act": "paga45",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      "c45_toma2",
+      {
+       "act": "paga45",
+       "n": 2
+      }
+     ],
+     "else": [
+      "c45_toma1",
+      {
+       "act": "paga45",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c45_hasta",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "saluda"
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c45_caja",
+  "c45_pepe_cuenta",
+  "c41_cq_gracias_pepe",
+  "c45_luis_cuanto",
+  "c45_pepe_11",
+  "c45_donde_11",
+  "c45_luis_paga",
+  "c45_senor_hola",
+  "c45_cq_buenas",
+  "c45_senor_cuanto",
+  "c45_pepe_12",
+  "c45_toca_12",
+  "c45_senor_paga_12",
+  "c45_senora_cuanto",
+  "c45_pepe_13",
+  "c45_y_13",
+  "c45_senora_paga_13",
+  "c45_pepe_aviso",
+  "c45_senora_cuanto",
+  "c45_pepe_11",
+  "c45_senora_paga_11",
+  "c45_senor_cuanto",
+  "c45_pepe_13",
+  "c45_senor_paga_13",
+  "c45_toma3",
+  "c45_hasta"
+ ]
+}
