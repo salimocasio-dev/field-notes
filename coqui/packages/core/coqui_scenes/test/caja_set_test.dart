@@ -26,8 +26,7 @@ int _differ(List<num> a, List<num> b) {
 }
 
 void main() {
-  final refs = (jsonDecode(cajaSetRefs) as List)
-      .cast<Map<String, dynamic>>();
+  final refs = (jsonDecode(cajaSetRefs) as List).cast<Map<String, dynamic>>();
   final e = cajaEngine(), b = PpBuild(e), set = CajaSet(e, b);
   final rows = <String>[];
 

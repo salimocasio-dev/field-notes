@@ -43,9 +43,7 @@ const List<String> needs = [
 const List<String> cajaStories = ['cuanto-es', 'caro-y-barato', 'el-cambio'];
 
 Map<String, dynamic> _story(String id) =>
-    jsonDecode(
-          File('test/support/fixtures/caja/$id.json').readAsStringSync(),
-        )
+    jsonDecode(File('test/support/fixtures/caja/$id.json').readAsStringSync())
         as Map<String, dynamic>;
 
 void main() {
