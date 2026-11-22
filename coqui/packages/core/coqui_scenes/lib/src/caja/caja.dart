@@ -211,6 +211,7 @@ class Caja extends Escena implements SetScene, SetOverSprites {
     // 45: the clip on the register's face (spots.clip), empty until don Pepe counts the bills under it
     if (has('clip')) cosas.add(_cosa('clip', 'clip', 'clip', v: 0));
     // 46: the gift paper on its holder (spots.papel); the frog's own jar, from story 45 (caja.md 46: "Start")
+    // OPEN: the frog's own jar has no place in the sheet (45: 8; 46: 1): it is drawn in his hand, beside him
     if (has('papel')) {
       cosas.add(_cosa('papel', 'papel', 'papel', v: 5));
       cosas.add(_cosa('jarra', 'jarra', 'frasco', v: 3, con: 'coqui'));
@@ -1064,6 +1065,8 @@ class Caja extends Escena implements SetScene, SetOverSprites {
 
   // what a customer sets down when the story names nothing (the rounds of 45 and 47): what each set down in the opening
   // (caja.md: Luis a box of cans, the señor a pot, the señora a bag of rice, Carmen a frying pan)
+  // OPEN: the script does not say what the customers of the game's rounds buy (45: 6, 7; 47: 5, 6): each sets down
+  // what he set down in the opening
   static String _suCompra(String quien) => switch (quien) {
     'senor' => 'olla',
     'senora' => 'arroz',
@@ -1440,6 +1443,7 @@ class Caja extends Escena implements SetScene, SetOverSprites {
           t['v'] = e['v'];
           t.remove('envuelto');
         }
+        // OPEN: the torn sheet has no place: it shows a moment beside the thing on the counter (.25 along x)
         final w = _p.world(cual);
         final r = _cosa('roto', 'roto', cual, v: 2);
         r['x'] = w[0] + .25;
