@@ -20,6 +20,7 @@ void main() {
       'estufa',
       'nevera',
       'mostrador',
+      'caja',
     ]);
   });
 

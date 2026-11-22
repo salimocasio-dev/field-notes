@@ -77,5 +77,7 @@
   { "id": "mostrador/calle-manana-shut", "kind": "set", "page": "docs/proyecto/pixel/mostrador-set.html", "query": "?donde=calle&hora=manana&puerta=shut" },
   { "id": "mostrador/calle-manana-open", "kind": "set", "page": "docs/proyecto/pixel/mostrador-set.html", "query": "?donde=calle&hora=manana&puerta=open" },
   { "id": "mostrador/calle-tarde-shut", "kind": "set", "page": "docs/proyecto/pixel/mostrador-set.html", "query": "?donde=calle&hora=tarde&puerta=shut" },
-  { "id": "mostrador/calle-tarde-open", "kind": "set", "page": "docs/proyecto/pixel/mostrador-set.html", "query": "?donde=calle&hora=tarde&puerta=open" }
+  { "id": "mostrador/calle-tarde-open", "kind": "set", "page": "docs/proyecto/pixel/mostrador-set.html", "query": "?donde=calle&hora=tarde&puerta=open" },
+  { "id": "caja/hora-manana", "kind": "set", "page": "docs/proyecto/pixel/caja-set.html", "query": "?hora=manana" },
+  { "id": "caja/hora-tarde", "kind": "set", "page": "docs/proyecto/pixel/caja-set.html", "query": "?hora=tarde" }
 ]
