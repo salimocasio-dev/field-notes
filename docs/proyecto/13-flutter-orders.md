@@ -973,6 +973,8 @@ Four picture stories are written and generated (`historia/tools/gen_escuchar_coc
 
 ### Orders 50 to 53. El colmado (place 4): mostrador, estantes, frutas, caja
 
+**Ready for the content lane: build 12 (Nov 22).** All four scenes are in Dart on main and their twelve stories play in build 12 from the preview content (silent, timed lines; nothing is under `historia/cuentos/`). Each scene's result below lists its acts left OPEN and what was wrong or missing in the sheets, sets and Needs lists: 12 in El mostrador, 14 in Los estantes, 7 in Las frutas, 7 in La caja.
+
 New scenes: there is no old scene file and no `ref/escenas/` folder. Step a (design) is done by the content lane. Step b is this lane's.
 
 **What exists, in `docs/proyecto/pixel/`** (all on main):
