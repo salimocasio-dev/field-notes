@@ -136,7 +136,7 @@ Sprite mkBotella() {
 /// The poses of the obrero this cast draws: `idle` standing; `paleta_roja`, `paleta_verde` his paddle up, its red or
 /// green side to us; `senala` pointing down (at the wet cement); `silba` a hand at his mouth (whistling); `banderas`
 /// holding out the two small flags; `sentado` sitting (on his bucket); `bebe` sitting, drinking from his bottle;
-/// `saluda0`, `saluda1` a hand lifted.
+/// `saluda0`, `saluda1` a hand lifted; `banderas_sentado` sitting, holding out the two small flags.
 const List<String> OBRERO_POSES = [
   'idle',
   'paleta_roja',
@@ -148,18 +148,20 @@ const List<String> OBRERO_POSES = [
   'bebe',
   'saluda0',
   'saluda1',
+  'banderas_sentado',
 ];
 
 /// The obrero in [pose] (one of [OBRERO_POSES]); [open]: talking. mkPersona's figure (48 wide, its middle column [PX])
 /// with the helmet over its head (the sitting figure is 7 rows shorter: the helmet is at the same place, its head is).
 Sprite mkObrero(String pose, {bool open = false}) {
-  final sent = pose == 'sentado' || pose == 'bebe';
+  final sent =
+      pose == 'sentado' || pose == 'bebe' || pose == 'banderas_sentado';
   final p = switch (pose) {
     'paleta_roja' || 'paleta_verde' || 'saluda0' => 'wave0',
     'saluda1' => 'wave1',
     'senala' => 'tu',
     'silba' => 'yo',
-    'banderas' => 'offer',
+    'banderas' || 'banderas_sentado' => 'offer',
     'bebe' => 'wave0',
     _ => 'idle',
   };
@@ -169,7 +171,7 @@ Sprite mkObrero(String pose, {bool open = false}) {
     // the paddle in the lifted hand (kit.js mkPersona 'wave0': the hand at X + rx + 5, row 10)
     final pl = mkPaleta(pose == 'paleta_verde' ? 'verde' : 'roja');
     parts.add((pl, PX + 8 + 5 - 5, 10 - 14));
-  } else if (pose == 'banderas') {
+  } else if (pose == 'banderas' || pose == 'banderas_sentado') {
     // the two flags in the hand held out (kit.js 'offer': the hand at X - rx - 9.5, row 25)
     parts
       ..add((mkBandera('verde'), PX - 8 - 10 - 1, 25 - 12))

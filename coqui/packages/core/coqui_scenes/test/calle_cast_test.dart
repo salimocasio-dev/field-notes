@@ -19,7 +19,7 @@ void main() {
     for (final p in OBRERO_POSES) {
       final s = mkObrero(p);
       expect(s.w, 48, reason: p);
-      final sits = p == 'sentado' || p == 'bebe';
+      final sits = p == 'sentado' || p == 'bebe' || p == 'banderas_sentado';
       final up = p.startsWith('paleta') ? 4 : 0;
       expect(s.h, (sits ? 49 : 56) + up, reason: p);
       expect(inkBottom(s), (sits ? 48 : 55) + up, reason: p);

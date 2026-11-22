@@ -18,7 +18,8 @@
 //
 // The new looks (not in calle-base.js, drawn here on the engine over the baked vehicle, in its way): a guagua with its
 // front door open (`puerta`), a car with its front side window down (`ventana`, with the window's pixels as a mask: a
-// face is drawn in it, [vehicleWithFace]) and a car with its front door open (`puerta`).
+// face is drawn in it, [vehicleWithFace]), a guagua with its first side window open (`ventana`, the same) and a car
+// with its front door open (`puerta`).
 //
 // Driving: a vehicle in W is a map ({k, kind, heading, board, look, x, y, vis}); [drive] moves it along its lane (x) in
 // whole ticks; [placeVehicle] puts the sprite on the picture by the world point of its floor's middle (the sheets' rule:
@@ -165,6 +166,13 @@ Uint8List _paintLook(CalleBase cl, String kind, String heading, String look) {
       if (z < .42) return e.rgb(150, 146, 140); // the lower step
       if (z < .56) return e.rgb(120, 116, 112); // the upper step
       return e.rgb(48, 46, 56); // the inside
+    }, CalleBase.PP);
+  } else if (bus && look == 'ventana') {
+    // the first side window behind the front door open: the inside where its glass was (a face is drawn in it)
+    cl.faceY(y1 + .004, x0, x1, 1.15, 1.85, (a, z) {
+      final dn = front ? (x1 - a) : a - x0;
+      if (!(z > 1.15 && z < 1.85 && dn > 1.55 && dn < 1.55 + .54)) return 0;
+      return e.rgb(70, 58, 54);
     }, CalleBase.PP);
   } else if (!bus) {
     const H1 = .78, H2 = 1.22;
@@ -373,6 +381,7 @@ List<VehicleSprite> calleVehicleSheet() => [
   for (final b in GUAGUA_BOARDS)
     for (final h in VEHICLE_HEADINGS) vehicleSprite('guagua', h, board: b),
   for (final h in VEHICLE_HEADINGS) vehicleSprite('guagua', h, look: 'puerta'),
+  for (final h in VEHICLE_HEADINGS) vehicleSprite('guagua', h, look: 'ventana'),
   for (final k in const ['carro', 'azul'])
     for (final h in VEHICLE_HEADINGS) ...[
       vehicleSprite(k, h, look: 'ventana'),
