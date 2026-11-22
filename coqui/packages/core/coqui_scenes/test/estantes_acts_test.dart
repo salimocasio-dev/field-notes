@@ -150,7 +150,12 @@ void main() {
             for (final it in scene.items(W, 0)) {
               final tag = it.tag;
               if (tag == null || !tag.startsWith('cosa:')) continue;
-              final k = tag.substring(5);
+              // a can or a bottle in the big box is a thing of its kind (`lata`, `botella`: any of a kind counts)
+              final id = tag.substring(5);
+              final inBox = (W['cosas'] as List).any(
+                (o) => o['id'] == id && o['caja'] != null && o['vis'] != 0,
+              );
+              final k = inBox ? id.split('.').first : id;
               if (!needs.contains(k)) continue;
               final b = scene.box(k, W)!;
               for (var y = 0; y < it.s.h; y++) {
