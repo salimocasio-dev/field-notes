@@ -28,7 +28,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 54b: `esquina`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
   `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
@@ -342,6 +342,30 @@ set ported call for call from `<id>-set.html`, every place from the content lane
   branches; boxes and touches after each), `colmado_kit_test`, `colmado_cast_test`; in feature_story `mostrador_stories_test`
   and `tool/mostrador_paths_test.dart` (every path, the sheet's rules at every act's end: `test/support/mostrador_rules.dart`).
 - Bake: `?page=bake&scene=mostrador`, `node tool/bake_time.mjs --scene mostrador`.
+
+## La calle's shared pieces and La esquina (order 54b, place 5's first scene)
+
+- **The place's kit, vehicles and cast** (`lib/src/calle/`, one first writer, the other three add only): `calle_base.dart`
+  (calle-base.js whole; `test/calle_kit_test.dart`, 77 cases on the four sets' origins equal to the JavaScript,
+  `tool/make_calle_kit_ref.mjs`), `calle_vehicles.dart` (the red car, the blue car and the guagua baked ONCE each from
+  `vehicle(kind, x, y, heading, board)`: an engine at origin (0, 0), a flat ground, the vehicle at (3, 3), shadeEdges, the
+  pixels and their depths cropped; both headings, the guagua with each roof picture; `litVehicle` (a set's lightPass),
+  `vehicleShadows` (the casts vehicle() makes), `placeVehicle` (by the floor's middle), `putVehicle` / `personOver` (per-pixel
+  depth: a person is hidden by a vehicle's pixel as by the set's, with front.bias), `drive` (along a lane, easing to a
+  stop); new looks: a door open, a window down with a face; `test/calle_vehicles_test.dart`, every bake equal to
+  `tool/make_calle_vehicles_ref.mjs`'s), `calle_cast.dart` (the obrero, his paddle, flags, bottle and bucket, the cones, the
+  bicycle alone, ridden and pushed, the bebé on an arm, `callePerson` for everybody of the place). The sheets for the content
+  lane: `tool/make_calle_sprites_test.dart` writes `docs/proyecto/pixel/port/calle-sprites.png` and `esquina-sprites.png`.
+- **La esquina** (`lib/src/esquina/`): `esquina_set.dart` (esquina-set.html; 8 states in `coqui/ref/pp/esquina/`, 0 pixels
+  differ), `esquina_places.dart` (the sheet's places, and its `routes.trafico.lanes` read as plain data),
+  `esquina_sprites.dart`, `esquina.dart` (`class Esquina extends Escena implements SetScene, SetOverSprites`, written new from
+  esquina.md's Needs list as El mostrador is: people and things by world point; the vehicles composed first with their own
+  depths, then every sprite by front.plane; the frog's pixels are never hidden by a grown-up's or a vehicle's, the sheet's
+  rule; acts started with `suelto: 1` waited for by `ya`; `OPEN:` comments where the sheet names no place).
+- **Tests**: `esquina_set_test`, `esquina_acts_test` (every act of the three stories on a StillHost, both branches and the
+  leads; boxes and touches after each); in feature_story `esquina_stories_test` and `tool/esquina_paths_test.dart` (every
+  path; the rules: `test/support/esquina_rules.dart`). Frames for looking: `COQUI_OUT=DIR flutter test
+  tool/esquina_frames_test.dart`. Bake: `?page=bake&scene=esquina`, `node tool/bake_time.mjs --scene esquina`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 
