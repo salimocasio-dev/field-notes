@@ -39,9 +39,10 @@ const P = (name, fn) => (SET.sin && (name === SET.sin || name.startsWith(SET.sin
 
 /* ---------- La mesa's room (mesa-set.html at 4033fc0) ---------- */
 const XR = 9, YL = 9;
-// the table and its chairs stand DS nearer on both world axes than La mesa's (2 rows lower on the picture, straight down): the seated faces
-// clear the hint hand under the answer cards on the wall above them (the cards stand right of the rounds card, the hand reaches 54 rows down)
-const DS = .1088;
+// the table and its chairs stand DS nearer on both world axes than La mesa's (4 rows lower on the picture, straight down): the seated faces
+// clear the hint hand under the answer cards on the wall above them (the cards stand right of the rounds card, their glow 4 px inside the
+// view, the hand reaching 54 rows down from 16 rows over the cards' foot)
+const DS = .2176;
 const LAPS = [[2.421, 3.509], [3.726, 3.509], [5.032, 3.509], [6.337, 3.509]].map(([x, y]) => [r3(x + DS), r3(y + DS)]);   // La mesa's four seats (a sitter's lap), DS nearer
 const ZS = .6, ZT = 1.0;                                                        // the chairs' seat and the table's top
 const CH = { hw: .25, hd: .22, back: .36, ZB: 1.45 };
