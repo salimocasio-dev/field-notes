@@ -124,6 +124,23 @@ class PlazaRules {
           if (h != null) hidden[h] = (hidden[h] ?? 0) + 1;
         }
       }
+      // a person the scene could place nowhere that leaves him whole (`tapa`: no free spot of the row) is counted apart
+      final apart = <String, int>{
+        for (final e in hidden.entries)
+          if (e.key.startsWith('persona:') &&
+              ((W['gente'] as Map)[e.key.substring(8)] as Map?)?['tapa'] == 1)
+            e.key: e.value,
+      };
+      for (final k in apart.keys) {
+        hidden.remove(k);
+      }
+      if (apart.isNotEmpty) {
+        notes.add((
+          at: at,
+          rule: 'the frog not whole (no free spot of the row)',
+          what: '$apart',
+        ));
+      }
       if (hidden.isNotEmpty) {
         breaches.add((at: at, rule: 'the frog not whole', what: '$hidden'));
       }

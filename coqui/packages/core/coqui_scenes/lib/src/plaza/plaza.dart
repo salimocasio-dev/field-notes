@@ -1093,6 +1093,7 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
     );
     final x0 = p['x'] as num, y0 = p['y'] as num, z0 = p['z'] as num;
     p['sent'] = 0;
+    p['tapa'] = 0;
     if (p['pose'] == 'arrodilla') p['pose'] = 'idle';
     if ((b.sx - a.sx).abs() > 3) p['dir'] = b.sx > a.sx ? 1 : -1;
     if (dist >= .5) {
@@ -1512,6 +1513,9 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
           _boxesF = null;
           if (_tapa(quien) > 0) p['dir'] = -_n(p['dir']);
         }
+        // OPEN: no free spot of the row leaves the frog whole (62: the señor's wide hat at ayuda2 over 2 px of the frog
+        // on the cart, with the other helper at ayuda1): he stays at the story's spot, marked (`tapa`) for the rules
+        p['tapa'] = _tapa(quien) > 0 ? 1 : 0;
       }
     },
     // `sale` {quien}: walks out (60 to 62)
