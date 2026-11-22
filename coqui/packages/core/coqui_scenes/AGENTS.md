@@ -343,6 +343,19 @@ set ported call for call from `<id>-set.html`, every place from the content lane
   and `tool/mostrador_paths_test.dart` (every path, the sheet's rules at every act's end: `test/support/mostrador_rules.dart`).
 - Bake: `?page=bake&scene=mostrador`, `node tool/bake_time.mjs --scene mostrador`.
 
+## La caja (order 53b, El colmado's fourth: El mostrador's pattern, one picture)
+
+- `lib/src/caja/`: `caja_set.dart` (caja-set.html: colmado-dentro.js on origin (11, -30); `setKey` is `hora`, 2 states in
+  `coqui/ref/pp/caja/`), `caja_places.dart` (the sheet's spots, boxes, the key cards' boxes `card`, the amount plate
+  `importe`, the price tag's offset `etiqueta`), `caja_sprites.dart` (the numerals F57 and F35 of caja-preview.html, the
+  plate, the keys, tags, bills, the things of story 46, the gift paper, the jar, the ball), `caja.dart` (`Caja`, as
+  `Mostrador`: `items`, `placed`, `draw`; the amount plate is a sprite at its spot's depth hidden only by a nearer sprite,
+  the two keys are drawn over everything; `layerOf` gives the rules' tests the composed layer with each pixel's sprite).
+  Acts started with `suelto: 1` run in the background and `ya` waits for them (as Los estantes').
+- Tests: `caja_set_test`, `caja_acts_test`; in feature_story `caja_stories_test`, `tool/caja_paths_test.dart`
+  (`test/support/caja_rules.dart`, `caja_paths.dart`). Sprites for the content lane: `docs/proyecto/pixel/port/caja-sprites.png`.
+- Bake: `?page=bake&scene=caja`, `node tool/bake_time.mjs --scene caja`.
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its

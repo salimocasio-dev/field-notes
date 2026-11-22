@@ -1,17 +1,18 @@
 // The sprite sheets for the content lane, who looks at every new drawing (page 13, orders 50 to 53, step b point 3):
 // every sprite and pose of El colmado's cast (lib/src/colmado/colmado_cast.dart) and of what only El mostrador has
-// (lib/src/mostrador/mostrador_sprites.dart), each at 3x on a plain ground with its number over it, and a list of the
-// numbers beside each picture.
+// (lib/src/mostrador/mostrador_sprites.dart) and La caja has (lib/src/caja/caja_sprites.dart), each at 3x on a plain
+// ground with its number over it, and a list of the numbers beside each picture.
 //
 //   flutter test tool/make_colmado_sprites_test.dart        (in this package)
 //
-// writes docs/proyecto/pixel/port/colmado-sprites.png and .txt, mostrador-sprites.png and .txt.
+// writes docs/proyecto/pixel/port/colmado-sprites.png and .txt, mostrador-sprites.png and .txt, caja-sprites.png and .txt.
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/src/colmado/colmado_cast.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador_sprites.dart';
+import 'package:coqui_scenes/src/caja/caja_sprites.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../test/support/png.dart';
@@ -148,6 +149,11 @@ void main() {
       'mostrador-sprites',
       "What only El mostrador has (lib/src/mostrador/mostrador_sprites.dart)",
       mostradorSpriteSheet(),
+    );
+    _write(
+      'caja-sprites',
+      "What only La caja has (lib/src/caja/caja_sprites.dart)",
+      cajaSpriteSheet(),
     );
   });
 }
