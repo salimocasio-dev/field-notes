@@ -666,3 +666,10 @@ List<(String, Sprite)> plazaCastSheet() => [
   ('reloj de pulsera', mkRelojMuneca()),
   ('cuadernos y manzana', mkCuadernos()),
 ];
+
+/// The figure of [id] (one of [PLAZA_QUIENES]), or null.
+Who? plazaWho(String id) => id == 'luis'
+    ? FAM['hermano']
+    : id == 'carmen'
+    ? FAM['hermana']
+    : PLAZA_GENTE[id]?.who ?? Banco.QUIEN[id]?.who;
