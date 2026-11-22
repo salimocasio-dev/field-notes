@@ -28,7 +28,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 54b: `esquina`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 54b: `esquina`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
   `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
@@ -342,6 +342,64 @@ set ported call for call from `<id>-set.html`, every place from the content lane
   branches; boxes and touches after each), `colmado_kit_test`, `colmado_cast_test`; in feature_story `mostrador_stories_test`
   and `tool/mostrador_paths_test.dart` (every path, the sheet's rules at every act's end: `test/support/mostrador_rules.dart`).
 - Bake: `?page=bake&scene=mostrador`, `node tool/bake_time.mjs --scene mostrador`.
+
+## The second new scene (order 51b, Los estantes)
+
+Written as El mostrador is (`class Estantes extends Escena implements SetScene, SetOverSprites`), on the same kit, cast and
+reader. What Los estantes has that El mostrador does not, and how:
+
+- **One picture, four states** (`estantes_set.dart`): `setKey` "anillos-mesa" (`1-0`: the six rings of dust, story 39;
+  `0-1`: the low table, story 40); `hora` manana, the ladder always there. 4 states in `coqui/ref/pp/estantes/` (0 of
+  51,840 differ). `estantes_places.dart` is El mostrador's places with one picture (and a spot's `ground`, a box's
+  `footprint`, `front.after`).
+- **front.after** (don Pepe on the ladder is drawn after it): each state's bake records the set's part tags (set-kit.js
+  PART_TAGS: within the noise of a bake on the vm) and keeps the ladder's pixels by key (`Estantes.ladderAt`); a sprite marked `ladder: false`
+  (don Pepe off the floor) is not hidden by them, every other set pixel still hides him.
+- **A thing lying flat** (the bottle box seen from above, `mkBotellero`): drawn pixel by pixel on the set's projection
+  (estantes-preview.html `botellero`, the same function), each pixel with its own depth (`EstantesItem.z`).
+- **Things in a thing**: the cans and bottles in the big box are sprites of their own at their places in the box's sprite,
+  behind its front; `lata` and `botella` (any of a kind counts) answer in the box round all of that kind in it (the cans
+  on the box's left, the bottles on its right, so the two never overlap).
+- **Acts started with `suelto: 1`** run while their line is said; `ya` waits for them (the Needs' counting acts).
+- **Things in flight** (`vuela`: a screen point and a depth, between two named places), a counting finger (`W.dedo`, a
+  sign over everything).
+- Tests: `estantes_set_test`, `estantes_acts_test`; in feature_story `estantes_stories_test` and
+  `tool/estantes_paths_test.dart` (96 paths, the sheet's rules at every act's end: `test/support/estantes_rules.dart`).
+  `tool/estantes_bake_parts_test.dart`: what each step of the bake costs.
+- Bake: `?page=bake&scene=estantes`, `node tool/bake_time.mjs --scene estantes`.
+
+## The shop front from the street (order 52b, Las frutas; El colmado's third)
+
+Written as El mostrador is (`lib/src/frutas/`: `frutas_set.dart`, `frutas_places.dart`, `frutas_sprites.dart`, `frutas.dart`,
+`class Frutas extends Escena implements SetScene, SetOverSprites`). What is its own:
+
+- **One picture, one view** (`wide`, x0 21) on the street kit (`colmado_fuera.dart`, the page's origin -68, -10); `setKey`
+  is `hora-puerta-carro-surtido` (16 states in `coqui/ref/pp/frutas/`, 0 of 51,840 differ). Story 44's file sets
+  `camion` for the cart: the scene reads `carro` or `camion`.
+- **The bins are the set's**: their touch boxes overlap (the stand is slanted), so `hit` takes the bin whose box's middle
+  is nearest, and a bin's big hand (`Thing.hand`) is moved off the frog on the ledge; a person or the goat takes a touch
+  on its own drawn pixels. The scale's needle, what lies on its pan and a finger on its dial are sprites at the sheet's
+  `drawn_depth` (rules.depth).
+- **Held, flying, set down**: a thing is kept by its world point, at a holder's hand (`con`, abuela's `mano`: der, izq,
+  cesta, cara, arriba, alto), or by its screen point while it flies (`_vuela`, through the sheet's `vuelo`).
+- **Tests**: `frutas_set_test`, `frutas_acts_test` (every act both ways, boxes, touches, the big hand's point; the set
+  things' boxes against their parts' pixels); in feature_story `frutas_stories_test` and `tool/frutas_paths_test.dart`
+  (`test/support/frutas_rules.dart`). Tools: `tool/frutas_frames_test.dart` (a frame at every act, `COQUI_OUT=DIR`),
+  `tool/make_frutas_sprites_test.dart` (`docs/proyecto/pixel/port/frutas-sprites.png`).
+- Bake: `?page=bake&scene=frutas`, `node tool/bake_time.mjs --scene frutas`.
+
+## La caja (order 53b, El colmado's fourth: El mostrador's pattern, one picture)
+
+- `lib/src/caja/`: `caja_set.dart` (caja-set.html: colmado-dentro.js on origin (11, -30); `setKey` is `hora`, 2 states in
+  `coqui/ref/pp/caja/`), `caja_places.dart` (the sheet's spots, boxes, the key cards' boxes `card`, the amount plate
+  `importe`, the price tag's offset `etiqueta`), `caja_sprites.dart` (the numerals F57 and F35 of caja-preview.html, the
+  plate, the keys, tags, bills, the things of story 46, the gift paper, the jar, the ball), `caja.dart` (`Caja`, as
+  `Mostrador`: `items`, `placed`, `draw`; the amount plate is a sprite at its spot's depth hidden only by a nearer sprite,
+  the two keys are drawn over everything; `layerOf` gives the rules' tests the composed layer with each pixel's sprite).
+  Acts started with `suelto: 1` run in the background and `ya` waits for them (as Los estantes').
+- Tests: `caja_set_test`, `caja_acts_test`; in feature_story `caja_stories_test`, `tool/caja_paths_test.dart`
+  (`test/support/caja_rules.dart`, `caja_paths.dart`). Sprites for the content lane: `docs/proyecto/pixel/port/caja-sprites.png`.
+- Bake: `?page=bake&scene=caja`, `node tool/bake_time.mjs --scene caja`.
 
 ## La calle's shared pieces and La esquina (order 54b, place 5's first scene)
 

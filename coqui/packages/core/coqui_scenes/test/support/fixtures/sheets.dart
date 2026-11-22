@@ -28501,6 +28501,1794 @@ const Map<String, String> sheetTexts = {
  }
 }
 ''',
+  'estantes': r'''{
+ "scene": "estantes",
+ "made": "node docs/proyecto/pixel/estantes-sheet-make.js, from estantes-set.html (window.ESTANTES.CD) and the design of Los estantes. A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": -222,
+  "originY": -95
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "spot": "a spot is a world point of the feet (z 0: the floor; z .3: the top of the frog's crate; z 1.46: a rung) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty: the lowest drawn row is 54); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy, as juego.js frogBox: his shadow line q.y + 25); Canelo mkPerro (30 x 22): column 13 (the scenes draw it at -13), its lowest drawn row on sy - 1; a small thing standing (can, bottle, box, crate, net): its bottom middle on the point; a thing lying on the floor (a bottle box seen from above) and the drawing on the wall: its middle on the point",
+  "view": "a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = clamp(round(sx - 98), 0, 44), sx the projection of its world point. Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "rungs": "the ladder has seven rungs at z = LTOP * r / 8 (colmado-dentro.js), LTOP = ESCALERA_ALTO z / .75 = 2.92: 0.365, 0.73, 1.095, 1.46, 1.825, 2.19, 2.555. pepe.escalera is on the fourth, the one nearest z 1.3"
+ },
+ "setKey": {
+  "params": {
+   "anillos": {
+    "values": [0, 1],
+    "note": "six rings of dust on the middle shelf (story 39)"
+   },
+   "mesa": {
+    "values": [0, 1],
+    "note": "the low display table (story 40)"
+   },
+   "tags": {
+    "values": [0, 1],
+    "note": "dev only: tags each pixel by the part that drew it (the checks read it); the game does not use it"
+   }
+  },
+  "fixed": "hora manana, atras shut, the ladder always there, no goods drawn (the goods, the cans and the bottles are sprites)",
+  "key": "anillos + mesa, e.g. \"1-0\"",
+  "baked": ["?anillos=0&mesa=0", "?anillos=1&mesa=0", "?anillos=0&mesa=1", "?anillos=1&mesa=1"]
+ },
+ "things": {
+  "estante": {
+   "set": true,
+   "world": [10.95, 0.02, 0, 15.05, 0.4, 3.05],
+   "box": [91, 45, 84, 111],
+   "what": "the second run of shelves, a poke: from the uprights' outer faces, from the wall to the low cupboard's front, up to the uprights' tops (what colmado-dentro.js draws as part estantes2)"
+  },
+  "mesa": {
+   "set": true,
+   "world": [11.45, 3.2, 0, 13.15, 4.2, 0.55],
+   "box": [31, 135, 50, 38],
+   "what": "the low display table, a poke: the cloth's top and its hanging edges, down to the floor",
+   "when": "mesa = 1"
+  },
+  "lata": "sprite",
+  "botella": "sprite",
+  "caja": "sprite",
+  "red_a": "sprite",
+  "red_b": "sprite",
+  "di_siete": "sprite",
+  "di_ocho": "sprite",
+  "di_nueve": "sprite",
+  "di_diez": "sprite",
+  "caja_senora": "sprite",
+  "caja_senor": "sprite",
+  "pepe": "sprite",
+  "luis": "sprite",
+  "senora": "sprite",
+  "senor": "sprite",
+  "coqui": "sprite",
+  "perro": "sprite"
+ },
+ "spots": {
+  "pepe.pie": {
+   "world": [12.3, 1.5, 0],
+   "screen": [97, 140],
+   "depth": 8.4507,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe at the foot of the ladder, left of it"
+  },
+  "pepe.escalera": {
+   "world": [13, 0.8292, 1.46],
+   "screen": [122, 107],
+   "depth": 9.1986,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe on the ladder, his feet on the rung nearest z 1.3 (z 1.46, the fourth of seven); x and y from the ladder's line between ESCALERA_PIE and ESCALERA_ALTO"
+  },
+  "pepe.mesa": {
+   "world": [12.9, 2.9, 0],
+   "screen": [82, 158],
+   "depth": 9.6755,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe behind the display table, at its right end, clear of the pyramid"
+  },
+  "pepe.entra": {
+   "world": [10.6, 3, 0],
+   "screen": [38, 138],
+   "depth": 8.3283,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe coming in from the left with the big box"
+  },
+  "coqui.cajon": {
+   "world": [15, 3.2, 0.3],
+   "screen": [115, 174],
+   "depth": 11.2952,
+   "scale": 1,
+   "kind": "person",
+   "what": "the frog on his crate; the crate is a sprite .3 high under him (its bottom middle on ground)",
+   "ground": {
+    "world": [15, 3.2, 0],
+    "screen": [115, 180],
+    "depth": 11.1452
+   }
+  },
+  "coqui.piso": {
+   "world": [13.5, 4.3, 0],
+   "screen": [67, 177],
+   "depth": 10.9002,
+   "scale": 1,
+   "kind": "person",
+   "what": "the frog on the floor"
+  },
+  "luis.piso": {
+   "world": [15.4, 4.6, 0],
+   "screen": [97, 197],
+   "depth": 12.2474,
+   "scale": 1,
+   "kind": "person",
+   "what": "Luis on the floor"
+  },
+  "luis.cajas": {
+   "world": [15.4, 3.6, 0],
+   "screen": [115, 188],
+   "depth": 11.6351,
+   "scale": 1,
+   "kind": "person",
+   "what": "Luis where he counts and holds a box up"
+  },
+  "caja_grande": {
+   "world": [12.9, 2.4, 0],
+   "screen": [91, 154],
+   "depth": 9.3693,
+   "scale": 1,
+   "kind": "object",
+   "what": "the big cardboard box of the delivery"
+  },
+  "cajon_latas": {
+   "world": [13.9, 3.2, 0],
+   "screen": [95, 170],
+   "depth": 10.4716,
+   "scale": 1,
+   "kind": "object",
+   "what": "the crate of cans (story 40)"
+  },
+  "red_a": {
+   "world": [13.3, 3.4, 0.35],
+   "screen": [80, 159],
+   "depth": 10.4016,
+   "scale": 1,
+   "kind": "object",
+   "what": "the first net of cans, on the crate"
+  },
+  "red_b": {
+   "world": [14.6, 3, 0.35],
+   "screen": [111, 167],
+   "depth": 10.9528,
+   "scale": 1,
+   "kind": "object",
+   "what": "the second net of cans, on the crate"
+  },
+  "estante.medio.0": {
+   "world": [11.42, 0.19, 2.01],
+   "screen": [104, 74],
+   "depth": 8.1146,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "ring place 0 on the middle shelf, at the ring the set draws (x = E2X0 + 0.42); the shelf top"
+  },
+  "estante.medio.1": {
+   "world": [11.98, 0.19, 2.01],
+   "screen": [115, 80],
+   "depth": 8.4576,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "ring place 1 on the middle shelf, at the ring the set draws (x = E2X0 + 0.98); the shelf top"
+  },
+  "estante.medio.2": {
+   "world": [12.58, 0.19, 2.01],
+   "screen": [126, 85],
+   "depth": 8.825,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "ring place 2 on the middle shelf, at the ring the set draws (x = E2X0 + 1.58); the shelf top"
+  },
+  "estante.medio.3": {
+   "world": [13.4, 0.19, 2.01],
+   "screen": [141, 93],
+   "depth": 9.3271,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "ring place 3 on the middle shelf, at the ring the set draws (x = E2X0 + 2.4); the shelf top"
+  },
+  "estante.medio.4": {
+   "world": [14, 0.19, 2.01],
+   "screen": [152, 98],
+   "depth": 9.6946,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "ring place 4 on the middle shelf, at the ring the set draws (x = E2X0 + 3); the shelf top"
+  },
+  "estante.medio.5": {
+   "world": [14.6, 0.19, 2.01],
+   "screen": [163, 104],
+   "depth": 10.062,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "ring place 5 on the middle shelf, at the ring the set draws (x = E2X0 + 3.6); the shelf top"
+  },
+  "estante.alto.0": {
+   "world": [11.5, 0.19, 2.66],
+   "screen": [106, 61],
+   "depth": 8.4886,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "bottle place 0 on the top shelf, evenly from E2X0 + .5 to E2X1 - .5; the shelf top"
+  },
+  "estante.alto.1": {
+   "world": [12, 0.19, 2.66],
+   "screen": [115, 65],
+   "depth": 8.7948,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "bottle place 1 on the top shelf, evenly from E2X0 + .5 to E2X1 - .5; the shelf top"
+  },
+  "estante.alto.2": {
+   "world": [12.5, 0.19, 2.66],
+   "screen": [124, 70],
+   "depth": 9.101,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "bottle place 2 on the top shelf, evenly from E2X0 + .5 to E2X1 - .5; the shelf top"
+  },
+  "estante.alto.3": {
+   "world": [13, 0.19, 2.66],
+   "screen": [134, 74],
+   "depth": 9.4072,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "bottle place 3 on the top shelf, evenly from E2X0 + .5 to E2X1 - .5; the shelf top"
+  },
+  "estante.alto.4": {
+   "world": [13.5, 0.19, 2.66],
+   "screen": [143, 79],
+   "depth": 9.7134,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "bottle place 4 on the top shelf, evenly from E2X0 + .5 to E2X1 - .5; the shelf top"
+  },
+  "estante.alto.5": {
+   "world": [14, 0.19, 2.66],
+   "screen": [152, 84],
+   "depth": 10.0196,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "bottle place 5 on the top shelf, evenly from E2X0 + .5 to E2X1 - .5; the shelf top"
+  },
+  "estante.alto.6": {
+   "world": [14.5, 0.19, 2.66],
+   "screen": [161, 88],
+   "depth": 10.3258,
+   "scale": 1,
+   "kind": "shelf",
+   "what": "bottle place 6 on the top shelf, evenly from E2X0 + .5 to E2X1 - .5; the shelf top"
+  },
+  "mesa.fila.0": {
+   "world": [12.3, 3.7, 0.55],
+   "screen": [56, 148],
+   "depth": 10.073,
+   "scale": 1,
+   "kind": "table",
+   "what": "the middle of row 0 of the pyramid on the table top (row 0 on the cloth, each row .3 higher)"
+  },
+  "mesa.fila.1": {
+   "world": [12.3, 3.7, 0.85],
+   "screen": [56, 141],
+   "depth": 10.223,
+   "scale": 1,
+   "kind": "table",
+   "what": "the middle of row 1 of the pyramid on the table top (row 0 on the cloth, each row .3 higher)"
+  },
+  "mesa.fila.2": {
+   "world": [12.3, 3.7, 1.15],
+   "screen": [56, 134],
+   "depth": 10.373,
+   "scale": 1,
+   "kind": "table",
+   "what": "the middle of row 2 of the pyramid on the table top (row 0 on the cloth, each row .3 higher)"
+  },
+  "mesa.fila.3": {
+   "world": [12.3, 3.7, 1.45],
+   "screen": [56, 127],
+   "depth": 10.523,
+   "scale": 1,
+   "kind": "table",
+   "what": "the middle of row 3 of the pyramid on the table top (row 0 on the cloth, each row .3 higher)"
+  },
+  "dibujo": {
+   "world": [9.6, 0, 1.75],
+   "screen": [74, 62],
+   "depth": 6.7538,
+   "scale": 1,
+   "kind": "wall",
+   "what": "the drawing pinned on the back wall, between the two runs; its middle on the point"
+  },
+  "cola1": {
+   "world": [11, 3.4, 0],
+   "screen": [38, 145],
+   "depth": 8.8182,
+   "scale": 1,
+   "kind": "person",
+   "what": "the señora waiting at the left edge"
+  },
+  "cola2": {
+   "world": [10.5, 4.3, 0],
+   "screen": [12, 149],
+   "depth": 9.0631,
+   "scale": 1,
+   "kind": "person",
+   "what": "the señor waiting at the left edge"
+  },
+  "entra": {
+   "world": [10.4, 3.7, 0],
+   "screen": [21, 143],
+   "depth": 8.6345,
+   "scale": 1,
+   "kind": "person",
+   "what": "where somebody appears coming in"
+  },
+  "caja_abuela": {
+   "world": [14.4, 4, 0],
+   "screen": [89, 182],
+   "depth": 11.2677,
+   "scale": 1,
+   "kind": "box",
+   "what": "the first bottle box of story 41, on the floor, seen from above (its middle; about 1.0 x .5, the long side along x)",
+   "footprint": [1, 0.5]
+  },
+  "caja_senora": {
+   "world": [11.3, 4.8, 0],
+   "screen": [18, 161],
+   "depth": 9.8592,
+   "scale": 1,
+   "kind": "box",
+   "what": "the señora's bottle box (its middle; about 1.0 x .5, the long side along x)",
+   "footprint": [1, 0.5]
+  },
+  "caja_senor": {
+   "world": [13, 5, 0],
+   "screen": [45, 178],
+   "depth": 11.0227,
+   "scale": 1,
+   "kind": "box",
+   "what": "the señor's bottle box (its middle; about 1.0 x .5, the long side along x)",
+   "footprint": [1, 0.5]
+  },
+  "senora.caja": {
+   "world": [11, 4.4, 0],
+   "screen": [19, 155],
+   "depth": 9.4305,
+   "scale": 1,
+   "kind": "person",
+   "what": "the señora standing by her box"
+  },
+  "senor.caja": {
+   "world": [12.8, 4.8, 0],
+   "screen": [45, 175],
+   "depth": 10.7778,
+   "scale": 1,
+   "kind": "person",
+   "what": "the señor standing behind his box, clear of the frog: the frog is never behind a grown-up (the orchestrator's number, Nov 20)"
+  },
+  "perro.entra": {
+   "world": [10.5, 4.2, 0],
+   "screen": [14, 148],
+   "depth": 9.0019,
+   "scale": 1,
+   "kind": "animal",
+   "what": "Canelo coming in"
+  },
+  "perro.mesa": {
+   "world": [11.7, 4.2, 0],
+   "screen": [36, 159],
+   "depth": 9.7367,
+   "scale": 1,
+   "kind": "animal",
+   "what": "Canelo bumping the table"
+  },
+  "perro.rana": {
+   "world": [15.4, 4.3, 0],
+   "screen": [102, 194],
+   "depth": 12.0637,
+   "scale": 1,
+   "kind": "animal",
+   "what": "Canelo sitting beside the frog (v3b: the frog's y, x 15.4: the frog's x stepped up by .05 until his box is 4 px clear of the frog's box on the screen's right)",
+   "stepped": {
+    "from": 13.5,
+    "step": 0.05,
+    "needGap": 4,
+    "gapAt": [
+     {
+      "x": 13.5,
+      "gap": -31
+     },
+     {
+      "x": 13.7,
+      "gap": -27
+     },
+     {
+      "x": 13.9,
+      "gap": -24
+     },
+     {
+      "x": 14.1,
+      "gap": -20
+     },
+     {
+      "x": 14.3,
+      "gap": -16
+     },
+     {
+      "x": 14.5,
+      "gap": -12
+     },
+     {
+      "x": 14.7,
+      "gap": -9
+     },
+     {
+      "x": 14.9,
+      "gap": -5
+     },
+     {
+      "x": 15.1,
+      "gap": -1
+     },
+     {
+      "x": 15.3,
+      "gap": 2
+     },
+     {
+      "x": 15.4,
+      "gap": 4
+     }
+    ],
+    "result": 15.4
+   }
+  },
+  "puerta_lata": {
+   "world": [9.8744, 4, 0],
+   "screen": [6, 141],
+   "depth": 8.4963,
+   "scale": 1,
+   "kind": "edge",
+   "what": "where a can rolls out of the picture: the left edge of the window (the first column, x0) at floor level, y 4.0"
+  }
+ },
+ "groups": {
+  "estante.medio": ["estante.medio.0", "estante.medio.1", "estante.medio.2", "estante.medio.3", "estante.medio.4", "estante.medio.5"],
+  "estante.alto": ["estante.alto.0", "estante.alto.1", "estante.alto.2", "estante.alto.3", "estante.alto.4", "estante.alto.5", "estante.alto.6"],
+  "mesa.fila": ["mesa.fila.0", "mesa.fila.1", "mesa.fila.2", "mesa.fila.3"]
+ },
+ "views": {
+  "wide": {
+   "world": [14.1049, 2.9, 0],
+   "screen": [104, 169.32],
+   "zoom": 1,
+   "x0": 6,
+   "region": [6, 0, 196, 216],
+   "what": "the one view: the 196 x 216 window over the 240 x 216 picture, x0 = clamp(round(sx - 98), 0, 44) for sx the projection of this world point (the floor point on the window's middle column, on y = 2.9). x0 = 6: the middle of the x0 values (0..11) that keep the whole run of shelves (columns 92..174), the ladder (104..138) and the table (31..80) in the window with 20 px of floor left of the table"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3), so the table hides the legs of don Pepe behind it and nothing behind a character hides him.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The upright plane through the feet, as El balcón's front and El mostrador's; the same test for people, the dog, the goods on the shelves and the things on the table",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias",
+  "after": {
+   "pepe.escalera": "don Pepe on the ladder is drawn after the ladder: the pixels of the set's part escalera (the ladder) do not hide him (the depth test is skipped on them); every other set pixel still does"
+  }
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "pepe": 0.35,
+   "senora": 0.35,
+   "senor": 0.35,
+   "luis": 0.28,
+   "perro": 0.3
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0)",
+  "none": ["pepe.escalera", "coqui.cajon"],
+  "off_floor": "a character off the floor (don Pepe on the ladder, the frog on his crate) casts none: the spot's z is not 0 (as the frog on El mostrador's counter)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 42 spot points inside the 240 x 216 picture and the wide window [6, 202) x [0, 216)"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: 2 things with a box (estante 91,45,84,111, mesa 31,135,50,38) inside the wide window"
+    ]
+   },
+   {
+    "name": "people-apart",
+    "ok": true,
+    "lines": [
+     "people-apart: every pair in each group at least 12 px apart: group 1 (pepe.pie, coqui.cajon, luis.piso, cola1, cola2) least 26.31 px; group 2 (pepe.mesa, coqui.piso, luis.cajas, perro.mesa) least 24.21 px; group 3 (senora.caja, senor.caja, luis.cajas, coqui.piso) least 22.09 px",
+     "       info, not a check: senor.caja 45,175 against coqui.piso 67,177: 22 px sideways, 2 rows behind the frog"
+    ]
+   },
+   {
+    "name": "frog-crate-apart-big-box",
+    "ok": true,
+    "lines": [
+     "frog-crate-apart-big-box: coqui.cajon 115,174 is 31.24 px from caja_grande 91,154 (at least 14)"
+    ]
+   },
+   {
+    "name": "frog-floor-apart-crate-of-cans",
+    "ok": true,
+    "lines": [
+     "frog-floor-apart-crate-of-cans: coqui.piso 67,177 is 28.86 px from cajon_latas 95,170 (at least 14)"
+    ]
+   },
+   {
+    "name": "frog-floor-apart-abuela-box",
+    "ok": true,
+    "lines": [
+     "frog-floor-apart-abuela-box: coqui.piso 67,177 is 22.56 px from caja_abuela 89,182 (at least 14)"
+    ]
+   },
+   {
+    "name": "pepe-mesa-column-apart-pyramid",
+    "ok": true,
+    "lines": [
+     "pepe-mesa-column-apart-pyramid: pepe.mesa's column 82 is 26 px from the pyramid's axis (mesa.fila.0, column 56) (at least 22)"
+    ]
+   },
+   {
+    "name": "perro-clear-of-frog",
+    "ok": true,
+    "lines": [
+     "perro-clear-of-frog: perro.rana 102,194 (Canelo's box [86,172,115,193]) is 4 px clear of the frog at coqui.piso 67,177 (box [52,153,81,176]) on the screen's right (needs 4); the boxes share 5 rows; x 15.4 is the first of the frog's x 13.5 + .05 k that gives it"
+    ]
+   },
+   {
+    "name": "shelf-places",
+    "ok": true,
+    "lines": [
+     "shelf-places: 13 places x 4 states of the set (anillos x mesa): each point, exact and rounded, is on a shelf top (part estantes2; with the rings drawn a ring pixel counts, it lies on the top; ladder off); clear of the ladder: 6 of 6 middle, 6 of 7 top; behind the ladder: estante.alto.2"
+    ]
+   },
+   {
+    "name": "pepe-escalera-in-picture",
+    "ok": true,
+    "lines": [
+     "pepe-escalera-in-picture: rows 54..106 of his 53 (feet on row 106, top on row 54) inside rows 0..215; his 48-px canvas spans columns 98,145 of 0..239"
+    ]
+   },
+   {
+    "name": "pepe-on-rung",
+    "ok": true,
+    "lines": [
+     "pepe-on-rung: his feet point (13,0.8292,1.46) is on a ladder pixel (part escalera) or one row above or below it, in all 4 states"
+    ]
+   },
+   {
+    "name": "bottle-boxes-apart",
+    "ok": true,
+    "lines": [
+     "bottle-boxes-apart: the three boxes' footprints (1.0 x .5, long side along x) do not overlap each other or the table's box on screen: caja_abuela / caja_senora apart 34.53 px; caja_abuela / caja_senor apart 8.22 px; caja_abuela / mesa apart 12.33 px; caja_senora / caja_senor apart 11.51 px; caja_senora / mesa apart 5.76 px; caja_senor / mesa apart 9.04 px"
+    ]
+   },
+   {
+    "name": "view-holds-set",
+    "ok": true,
+    "lines": [
+     "view-holds-set: x0 6: the run (columns 92,174), the ladder (104,138) and the table (31,80) are in the window 6,201, with 25 px of floor left of the table"
+    ]
+   },
+   {
+    "name": "dibujo-clear",
+    "ok": true,
+    "lines": [
+     "dibujo-clear: the drawing's point 74,62 is inside the window, on the wall, 15.8 px from the nearest plantain pixel (needs 8)"
+    ]
+   },
+   {
+    "name": "rings-match",
+    "ok": true,
+    "lines": [
+     "rings-match: each of the six ring places is within 1.5 px of the centre of the pixels of one of the set's six rings (distances 0: 0.47, 1: 0.66, 2: 0.66, 3: 0.22, 4: 0.69, 5: 0.95)"
+    ]
+   },
+   {
+    "name": "boxes-cover-set",
+    "ok": true,
+    "lines": [
+     "boxes-cover-set: estante pixels [92,45,174,154] in box [91,45,84,111]; mesa pixels [31,135,80,169] in box [31,135,50,38] (1 px tolerance)"
+    ]
+   },
+   {
+    "name": "mesa-fila-on-cloth",
+    "ok": true,
+    "lines": [
+     "mesa-fila-on-cloth: the pixel at mesa.fila.0 56,148 is drawn by part mesa (the cloth), in both states with the table"
+    ]
+   }
+  ]
+ }
+}
+''',
+  'frutas': r'''{
+ "scene": "frutas",
+ "made": "node docs/proyecto/pixel/frutas-sheet-make.js, from frutas-set.html (window.FRUTAS.CF, colmado-fuera.js) and the design of Las frutas. A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": -68,
+  "originY": -10
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels. The front wall of the shop is y = 0 (it faces +y); the pavement runs from it to y = 4.3",
+  "spot": "a spot is a world point of the feet (z 0: the pavement; z 0.7: the ledge's top; z 0.34: the low crate's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty: the lowest drawn row is 54); abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy); the goat (a new sprite, about 30 x 24 px): its middle column on sx, its bottom edge on sy; in the pose with its neck stretched down its head is at cabra.cajon (the goat's feet stay on cabra.poste); a small thing: its bottom middle on the point; things of a row (monedas4, monedas2): the first one's bottom middle on the point, the next ones on the points .2 on along dir",
+  "view": "a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = clamp(round(sx - 98), 0, 44), sx the projection of its world point. Never a fraction",
+  "person": "for the check \"shows enough above the stand's back board\": don Pepe is 53 rows tall (mkPersona standing), at least 24 of them above the board's top edge at his column",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character. Except plato and aguja, which have drawn_depth too: the set draws the scale (dial, pan, chains) at the dial's depth + .3, nearer than their world points, so a sprite on them (the needle, what lies on the pan) must use drawn_depth in front.plane or the scale's own pixels hide it",
+  "footprints": "what the check \"frog-places\" takes the small things on the ledge to cover (their stand-ins in frutas-preview.html; the final art may differ): a coin 7 x 7 px; a crate 0.7 x 0.3 x 0.34 (world x, y, z: .7 wide as the design says, a ledge's depth less a hair, as high as the low crate); the basket 0.9 x 0.3 x 0.3; each box is the screen box of the thing's projected corners standing on the ledge's top at its point, the frog's is his drawn box (30 x 24)"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["manana", "tarde"]
+   },
+   "puerta": {
+    "values": ["shut", "open"],
+    "note": "the shop door; the set's default is open"
+   },
+   "carro": {
+    "values": [0, 1],
+    "note": "don Pepe's hand cart on the pavement, left of the scale (story 44)"
+   },
+   "surtido": {
+    "values": ["verduras", "frutas"],
+    "note": "what the stand's bins hold: four bins of verduras (tomates, cebollas, papas, platanos) or three of frutas (aguacates, pinas, limones)"
+   },
+   "aguja": {
+    "values": [
+     "",
+     "0",
+     "medio",
+     "libra"
+    ],
+    "note": "a red needle on the scale's dial for the readers' renders only; in the game the needle is a sprite and the baked sets have none"
+   }
+  },
+  "key": "hora + puerta + carro + surtido, e.g. \"manana-open-0-verduras\"",
+  "baked": ["?hora=manana&puerta=shut&carro=0&surtido=verduras", "?hora=manana&puerta=shut&carro=0&surtido=frutas", "?hora=manana&puerta=shut&carro=1&surtido=verduras", "?hora=manana&puerta=shut&carro=1&surtido=frutas", "?hora=manana&puerta=open&carro=0&surtido=verduras", "?hora=manana&puerta=open&carro=0&surtido=frutas", "?hora=manana&puerta=open&carro=1&surtido=verduras", "?hora=manana&puerta=open&carro=1&surtido=frutas", "?hora=tarde&puerta=shut&carro=0&surtido=verduras", "?hora=tarde&puerta=shut&carro=0&surtido=frutas", "?hora=tarde&puerta=shut&carro=1&surtido=verduras", "?hora=tarde&puerta=shut&carro=1&surtido=frutas", "?hora=tarde&puerta=open&carro=0&surtido=verduras", "?hora=tarde&puerta=open&carro=0&surtido=frutas", "?hora=tarde&puerta=open&carro=1&surtido=verduras", "?hora=tarde&puerta=open&carro=1&surtido=frutas"]
+ },
+ "surtidos": {
+  "verduras": ["tomates", "cebollas", "papas", "platanos"],
+  "frutas": ["aguacates", "pinas", "limones"]
+ },
+ "things": {
+  "tomates": {
+   "set": true,
+   "world": [4, 0.95, 0.78, 5.1, 2, 1.45],
+   "box": [88, 110, 41, 36],
+   "what": "the bin of tomatoes (assortment verduras): the bin's space from the table's low edge to .3 above its back (CF.binBox)",
+   "surtido": "verduras"
+  },
+  "cebollas": {
+   "set": true,
+   "world": [5.1, 0.95, 0.78, 6.2, 2, 1.45],
+   "box": [108, 120, 41, 36],
+   "what": "the bin of onions (assortment verduras): the bin's space from the table's low edge to .3 above its back (CF.binBox)",
+   "surtido": "verduras"
+  },
+  "papas": {
+   "set": true,
+   "world": [6.2, 0.95, 0.78, 7.3, 2, 1.45],
+   "box": [129, 131, 40, 35],
+   "what": "the bin of potatoes (assortment verduras): the bin's space from the table's low edge to .3 above its back (CF.binBox)",
+   "surtido": "verduras"
+  },
+  "platanos": {
+   "set": true,
+   "world": [7.3, 0.95, 0.78, 8.4, 2, 1.45],
+   "box": [149, 141, 40, 36],
+   "what": "the bin of plantains (assortment verduras): the bin's space from the table's low edge to .3 above its back (CF.binBox)",
+   "surtido": "verduras"
+  },
+  "aguacates": {
+   "set": true,
+   "world": [4, 0.95, 0.78, 5.4667, 2, 1.45],
+   "box": [88, 110, 48, 40],
+   "what": "the bin of avocados (assortment frutas): the bin's space from the table's low edge to .3 above its back (CF.binBox)",
+   "surtido": "frutas"
+  },
+  "pinas": {
+   "set": true,
+   "world": [5.4667, 0.95, 0.78, 6.9333, 2, 1.45],
+   "box": [115, 124, 48, 39],
+   "what": "the bin of pineapples (assortment frutas): the bin's space from the table's low edge to .3 above its back (CF.binBox)",
+   "surtido": "frutas"
+  },
+  "limones": {
+   "set": true,
+   "world": [6.9333, 0.95, 0.78, 8.4, 2, 1.45],
+   "box": [142, 137, 47, 40],
+   "what": "the bin of limes (assortment frutas): the bin's space from the table's low edge to .3 above its back (CF.binBox)",
+   "surtido": "frutas"
+  },
+  "pesa": {
+   "set": true,
+   "box": [56, 97, 15, 35],
+   "what": "the scale, the dial and the pan together (the pole and the arm left out): the screen box of the pixels the set draws for part pesa (tags=1) from the dial's top row down and no further right than its right edge"
+  },
+  "guineos": {
+   "set": true,
+   "box": [141, 106, 10, 13],
+   "what": "the hand of guineos, a poke: the screen box of the pixels the set draws for part guineos (tags=1)"
+  },
+  "cajon": {
+   "set": true,
+   "world": [8.95, 1.25, 0, 9.7, 1.95, 0.34],
+   "box": [180, 184, 28, 22],
+   "what": "the low crate, a poke"
+  },
+  "puerta": {
+   "set": true,
+   "world": [1, 0, 0, 2.3, 0.02, 2.55],
+   "box": [70, 49, 25, 71],
+   "what": "the shop door, a poke (the doorway, in either state of the door)"
+  },
+  "fruta_a": "sprite",
+  "fruta_b": "sprite",
+  "cajon_a": "sprite",
+  "cajon_b": "sprite",
+  "canasta": "sprite",
+  "cabra": "sprite",
+  "pepe": "sprite",
+  "abuela": "sprite",
+  "senora": "sprite",
+  "coqui": "sprite"
+ },
+ "spots": {
+  "pepe.detras": {
+   "world": [6.3, 0.5, 0],
+   "screen": [159, 161],
+   "depth": 4.1641,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe behind the stand, between it and the wall (the stand hides him up to his waist)"
+  },
+  "pepe.puerta": {
+   "world": [1.65, 0.35, 0],
+   "screen": [76, 116],
+   "depth": 1.2247,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe at the shop door"
+  },
+  "pepe.carro": {
+   "world": [1.9, 3.35, 0],
+   "screen": [25, 146],
+   "depth": 3.215,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe at the hand cart's handles: (2.35, 3.35, 0) so that he is whole inside the window, or (1.9, 3.35, 0) if at 2.35 he covers more than 10 pixels of the cart's handle; `stepped` lists what each covered",
+   "stepped": {
+    "try": 2.35,
+    "keep": 1.9,
+    "maxHandlePx": 10,
+    "handle": "the pixels of part carro whose world x (read back from the baked depth) is left of the bed's left end CF.CART x - .95 by more than .05: the two rails and the cross-grip",
+    "tries": [
+     {
+      "x": 2.35,
+      "coveredPx": 14,
+      "handlePx": 35
+     },
+     {
+      "x": 1.9,
+      "coveredPx": 0,
+      "handlePx": 35
+     }
+    ],
+    "chosen": 1.9
+   }
+  },
+  "pepe.pesa": {
+   "world": [1.9, 2.7, 0],
+   "screen": [37, 140],
+   "depth": 2.8169,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe beside the scale"
+  },
+  "abuela.delante": {
+   "world": [7.4, 4, 0],
+   "screen": [115, 203],
+   "depth": 6.981,
+   "scale": 1,
+   "kind": "person",
+   "what": "abuela in front of the stand"
+  },
+  "abuela.junto_cabra": {
+   "world": [8.7, 3, 0],
+   "screen": [157, 206],
+   "depth": 7.1648,
+   "scale": 1,
+   "kind": "person",
+   "what": "abuela beside the low crate"
+  },
+  "repisa.izq": {
+   "world": [4.6, 2.16, 0.7],
+   "screen": [97, 144],
+   "depth": 4.4896,
+   "scale": 1,
+   "kind": "frog",
+   "what": "the frog on the ledge, left place (x 4.6, in the middle of the ledge's depth, z CF.LZ); the frog of stories 42, 43 and 44 (v3: two places on the ledge, not three)"
+  },
+  "repisa.der": {
+   "world": [7.7, 2.16, 0.7],
+   "screen": [154, 173],
+   "depth": 6.388,
+   "scale": 1,
+   "kind": "frog",
+   "what": "the frog on the ledge, right place (x 7.7, in the middle of the ledge's depth, z CF.LZ)"
+  },
+  "cabra.poste": {
+   "world": [9.9, 2.35, 0],
+   "screen": [191, 211],
+   "depth": 7.5016,
+   "scale": 1,
+   "kind": "goat",
+   "what": "the goat by its post, standing"
+  },
+  "cabra.cajon": {
+   "world": [9.325, 1.6, 0.34],
+   "screen": [194, 191],
+   "depth": 6.8602,
+   "scale": 1,
+   "kind": "head",
+   "what": "where the goat's head is when it eats from the low crate: the crate's top middle (the goat's feet stay on cabra.poste)"
+  },
+  "senora.puerta": {
+   "world": [1.65, 0.25, 0],
+   "screen": [78, 115],
+   "depth": 1.1635,
+   "scale": 1,
+   "kind": "person",
+   "what": "la señora leaning out of the shop door"
+  },
+  "monedas4": {
+   "world": [5.6, 2.16, 0.7],
+   "screen": [115, 154],
+   "depth": 5.102,
+   "scale": 1,
+   "kind": "ledge",
+   "what": "abuela's four coins in a row on the ledge, .2 apart (story 42); the first coin here, the row runs towards +x",
+   "dir": [1, 0, 0],
+   "row": {
+    "n": 4,
+    "step": 0.2
+   }
+  },
+  "monedas2": {
+   "world": [6.7, 2.16, 0.7],
+   "screen": [135, 164],
+   "depth": 5.7756,
+   "scale": 1,
+   "kind": "ledge",
+   "what": "her two other coins, .2 apart, under the guineos (story 42)",
+   "dir": [1, 0, 0],
+   "row": {
+    "n": 2,
+    "step": 0.2
+   }
+  },
+  "canasta": {
+   "world": [7.5, 2.16, 0.7],
+   "screen": [150, 171],
+   "depth": 6.2655,
+   "scale": 1,
+   "kind": "ledge",
+   "what": "abuela's basket on the ledge, lined with a cloth with three hollows (story 43)"
+  },
+  "cajon_a": {
+   "world": [5.9, 2.16, 0.7],
+   "screen": [121, 156],
+   "depth": 5.2857,
+   "scale": 1,
+   "kind": "ledge",
+   "what": "the first crate of story 44, .7 wide",
+   "width": 0.7
+  },
+  "cajon_b": {
+   "world": [6.95, 2.16, 0.7],
+   "screen": [140, 166],
+   "depth": 5.9287,
+   "scale": 1,
+   "kind": "ledge",
+   "what": "the second crate of story 44, .7 wide",
+   "width": 0.7
+  },
+  "bolsa": {
+   "world": [7.9, 2.16, 0.7],
+   "screen": [158, 175],
+   "depth": 6.5105,
+   "scale": 1,
+   "kind": "ledge",
+   "what": "a paper bag on the ledge"
+  },
+  "bajo": {
+   "world": [9.325, 1.6, 0.34],
+   "screen": [194, 191],
+   "depth": 6.8602,
+   "scale": 1,
+   "kind": "point",
+   "what": "where a thing lands on the low crate: its top middle"
+  },
+  "vuelo": {
+   "world": [7.2, 2.7, 1.6],
+   "screen": [135, 153],
+   "depth": 6.8625,
+   "scale": 1,
+   "kind": "point",
+   "what": "the top of the arc of a tossed thing, between the ledge and abuela's basket"
+  },
+  "lista": {
+   "drawn": false,
+   "kind": "card",
+   "what": "abuela's list is a card of the game's own, not in the picture"
+  },
+  "plato": {
+   "world": [2.75, 2.1, 0.72],
+   "screen": [64, 126],
+   "depth": 3.33,
+   "scale": 1,
+   "kind": "part",
+   "what": "the scale's pan: what is weighed lies on it (CF.PESA_PLATO, the centre of the pan's top)",
+   "drawn_depth": 4.12
+  },
+  "aguja": {
+   "world": [2.75, 2.1, 1.7],
+   "screen": [64, 104],
+   "depth": 3.82,
+   "scale": 1,
+   "kind": "part",
+   "what": "the scale's dial: the needle is drawn here, pointing to 12 (rest), 3 (medio) or 6 o'clock (libra) (CF.PESA_DIAL; the dial faces the camera)",
+   "drawn_depth": 4.12
+  },
+  "guineos": {
+   "screen": [146, 112],
+   "box": [141, 106, 10, 13],
+   "kind": "part",
+   "what": "the hand of guineos hanging from the awning: the middle of the screen box of the pixels the set draws for part guineos (tags=1); no world point: the part is drawn pixel by pixel"
+  }
+ },
+ "views": {
+  "wide": {
+   "world": [5.7771, 2.16, 0],
+   "screen": [118.5, 170.96],
+   "zoom": 1,
+   "x0": 21,
+   "region": [21, 0, 196, 216],
+   "extent": [26, 210],
+   "what": "the one view: the 196 x 216 window over the 240 x 216 picture. Its point is the ground point (at the ledge's depth) under the middle column of what the window must hold: the shop door, the scale, the whole stand, the low crate, the post and the goat at it, and the hand cart when carro = 1 (their pixels span columns 26 to 210); x0 = clamp(round(sx - 98), 0, 44), as the sheet's other views"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3), so the stand hides don Pepe behind it up to his waist, the bins and the ledge hide nothing that stands in front of them, and the goat is drawn in front of its post (the post is a hair nearer than the goat's feet, less than the .3).",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El mostrador's sheet: the upright plane through the feet; the same test for people, the goat and the things on the ledge",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias"
+ },
+ "shadows": {
+  "radius": {
+   "adultos": 0.35,
+   "cabra": 0.4
+  },
+  "byCharacter": {
+   "pepe": 0.35,
+   "abuela": 0.35,
+   "senora": 0.35,
+   "cabra": 0.4
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the pavement (z 0)",
+  "none": ["repisa.izq", "repisa.der"],
+  "onLedge": "the frog on the ledge casts none: the ledge is not ground (a shadow cast at the pavement under him would show in front of the stand)"
+ },
+ "checks": {
+  "person": {
+   "rows": 53,
+   "minAbove": 24
+  },
+  "results": [
+   {
+    "name": "in-view",
+    "ok": true,
+    "lines": [
+     "in-view: 22 spot points (every spot but lista) and 11 thing boxes inside the 240 x 216 picture and the wide window [21, 217) x [0, 216); in all 10 states of the set (surtido verduras and frutas, carro 0 and 1, the door shut and open, both hours) the drawn pixels of the door, the scale, the stand, its bins, the low crate and the post, and with carro = 1 the cart, are inside it (hand cart (carro = 1) pixels [26,135,91,168], pepe.carro 25,146); the goat's 30-px box at its post is inside"
+    ]
+   },
+   {
+    "name": "pepe-over-stand",
+    "ok": true,
+    "lines": [
+     "pepe-over-stand: don Pepe at pepe.detras 159,161: of his 53 rows (top row 108) 31 are above the stand's back board at his column (the board's top edge is at row 139.72, the set draws it at row 140) and 26 of those are shown by the depth rule (needs 24; the awning hides 5 rows of his head in verduras carro 0 puerta open manana); his lowest shown row is 139, above the board; none of his shown pixels is over produce (worst of 10 states, both assortments)",
+     "       info, not a check: of his 834 drawn pixels 461 show with the verduras bins (hidden: 63 by toldo, 134 by puesto, 109 by papas, 67 by platanos), 455 with the frutas bins (hidden: 63 by toldo, 29 by pinas, 161 by puesto, 126 by limones)",
+     "       info, not a check: 7 of his shown pixels lie under the board's top edge (his left hand, over 7 of part puesto): the .3 of the depth rule lets a hand at the board's top edge show over it"
+    ],
+    "pepe": {
+     "above": 31,
+     "shown": 26
+    }
+   },
+   {
+    "name": "abuela-clear-of-bins",
+    "ok": true,
+    "lines": [
+     "abuela-clear-of-bins: abuela at abuela.delante 115,203 covers no bin in either assortment",
+     "       verduras: her head's top is at row 153, the ledge's front edge at her column 115 is at row 156.64 (3.64 rows above); her drawn box columns 102 to 127, rows 153 to 202; she covers no bin; she also shows over: puesto 126, ground 769",
+     "       frutas: her head's top is at row 153, the ledge's front edge at her column 115 is at row 156.64 (3.64 rows above); her drawn box columns 102 to 127, rows 153 to 202; she covers no bin; she also shows over: puesto 126, ground 769"
+    ]
+   },
+   {
+    "name": "frog-places",
+    "ok": true,
+    "lines": [
+     "frog-places: the two places are 63.95 px apart (needs 30) and in each story the frog's box clears the small things on the ledge: story 42 repisa.izq: monedas4 clear, monedas2 clear; story 43 repisa.izq: canasta clear; story 44 repisa.izq: cajon_a clear, cajon_b clear",
+     "       info: the frog's boxes repisa.izq [82,120,111,143], repisa.der [139,149,168,172]; the things' boxes monedas4 [112,147,129,158], monedas2 [132,157,142,165], canasta [139,158,161,176], cajon_a [111,144,129,160], cajon_b [130,153,149,170]",
+     "       info: each place against every thing, whatever the story: repisa.izq against every thing: monedas4 clear, monedas2 clear, canasta clear, cajon_a clear, cajon_b clear; repisa.der against every thing: monedas4 clear, monedas2 overlaps 4 x 9, canasta overlaps 23 x 15, cajon_a clear, cajon_b overlaps 11 x 18"
+    ],
+    "frog": {
+     "sep": [
+      ["repisa.izq", "repisa.der", 63.95]
+     ],
+     "story": [
+      [42, "repisa.izq"],
+      [43, "repisa.izq"],
+      [44, "repisa.izq"]
+     ],
+     "hits": [
+      [
+       "repisa.der",
+       "monedas2",
+       42,
+       [4, 9]
+      ],
+      [
+       "repisa.der",
+       "canasta",
+       43,
+       [23, 15]
+      ],
+      [
+       "repisa.der",
+       "cajon_b",
+       44,
+       [11, 18]
+      ]
+     ]
+    }
+   },
+   {
+    "name": "cajones-apart",
+    "ok": true,
+    "lines": [
+     "cajones-apart: story 44's two crates do not overlap each other: cajon_a (x 5.9) box [111,144,129,160] and cajon_b (x 6.95) box [130,153,149,170]"
+    ]
+   },
+   {
+    "name": "goat-reach",
+    "ok": true,
+    "lines": [
+     "goat-reach: abuela.junto_cabra 157,206 and cabra.poste 191,211 are 34.37 px apart (needs 14); the goat's head at cabra.cajon 194,191 is 3 across and 20 rows above its feet, inside its 30 x 24 box, on the low crate's top middle (z 0.34); its neck stretched down must put the head tip there",
+     "       info, not a check: the goat drawn in front of the post: 0 post pixels under its box, 0 of them nearer than its plane + 0.3 (hide it)",
+     "       info, not a check: cabra.poste 9.9,2.35,0 is outside the low crate's footprint (x 8.95 to 9.7, y 1.25 to 1.95)"
+    ]
+   },
+   {
+    "name": "cart-clear",
+    "ok": true,
+    "lines": [
+     "cart-clear: carro = 1: pepe.carro 25,146 is inside the window; the cart (pixels [26,135,91,168]) is 13 px clear of abuela at abuela.delante (her pixels columns 102 to 127, rows 153 to 202; the boxes are 10 px apart; needs 10)",
+     "       info, not a check: pepe.carro: tried x 2.35 (kept only if he covers at most 10 handle pixels, else 1.9): x 2.35 covers 14 of the 35 handle pixels; x 1.9 covers 0 of the 35 handle pixels -> x 1.9 (the fallback: he covers more than 10 at 2.35)",
+     "       info, not a check: his drawn box at pepe.carro is columns 13 to 36, rows 93 to 145 and the window starts at column 21: 8 of his 24 columns are left of the window",
+     "       info, not a check: don Pepe at pepe.carro: 834 of his 834 drawn pixels show ()"
+    ]
+   },
+   {
+    "name": "info-people",
+    "ok": true,
+    "lines": [
+     "info-people: not a check; the share of each person's drawn pixels the set hides, by the depth rule (only the spots where something is hidden)",
+     "       pepe.detras 159,161 in verduras carro 0 puerta open manana: 461 of 834 drawn pixels show (63 hidden by toldo, 134 hidden by puesto, 109 hidden by papas, 67 hidden by platanos)",
+     "       pepe.puerta 76,116 in verduras carro 0 puerta open manana: 716 of 834 drawn pixels show (118 hidden by pesa)",
+     "       senora.puerta 78,115 in verduras carro 0 puerta open manana: 766 of 878 drawn pixels show (112 hidden by pesa)",
+     "       pepe.detras 159,161 in verduras carro 1 puerta open manana: 461 of 834 drawn pixels show (63 hidden by toldo, 134 hidden by puesto, 109 hidden by papas, 67 hidden by platanos)",
+     "       pepe.puerta 76,116 in verduras carro 1 puerta open manana: 716 of 834 drawn pixels show (118 hidden by pesa)",
+     "       senora.puerta 78,115 in verduras carro 1 puerta open manana: 766 of 878 drawn pixels show (112 hidden by pesa)",
+     "       pepe.pesa stands -27 px right of the dial's column and 36 rows below its centre: his box columns 25 to 48, rows 87 to 139 against the dial and pan box 56, 97, 15, 35 (x, y, w, h); his shown pixels lie over 0 of the 329 pixels the set draws in the dial and pan box (carro 0), and with carro = 1 0 (the cart hides 0 of his pixels)"
+    ]
+   }
+  ]
+ }
+}
+''',
+  'caja': r'''{
+ "scene": "caja",
+ "made": "node docs/proyecto/pixel/caja-sheet-make.js, from caja-set.html (window.CAJA.CD) and the design of La caja. A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 11,
+  "originY": -30
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "spot": "a spot is a world point of the feet (z 0: the floor; z 1: the counter top; z .96: the sill) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty: the lowest drawn row is 54), a child 41 rows (a 44-row canvas); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy, as juego.js frogBox: his shadow line q.y + 25); a small thing: its bottom middle on the point",
+  "view": "a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0, kept inside 0 .. 44. Never a fraction",
+  "person": "for the check \"seen from the thighs up\": a person is 53 rows tall (the standing figure's drawn rows), at least 28 of them above the counter's top back edge at his column",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "cards": "tecla_a and tecla_b have a screen box (x, y, w, h) in picture pixels and no world point: the game draws them over the picture"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["manana", "tarde"]
+   }
+  },
+  "key": "hora, e.g. \"tarde\" (the back door is always shut; no props, no freezer)",
+  "baked": ["?hora=manana", "?hora=tarde"]
+ },
+ "things": {
+  "caja": {
+   "set": true,
+   "world": [1.4, 2.05, 1, 2.75, 2.8, 2.18],
+   "box": [105, 60, 39, 47],
+   "what": "the register with its side shelf: the box of the set's part 'caja'"
+  },
+  "tecla_a": "sprite",
+  "tecla_b": "sprite",
+  "cosa_a": "sprite",
+  "cosa_b": "sprite",
+  "frasco": "sprite",
+  "papel": "sprite",
+  "bola": "sprite",
+  "pepe": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "senora": "sprite",
+  "senor": "sprite",
+  "ninos": "sprite",
+  "coqui": "sprite",
+  "importe": {
+   "sprite": true,
+   "at": "ventana_caja",
+   "size": [13, 9],
+   "box": [117, 75, 13, 9],
+   "digits": {
+    "count": 2,
+    "size": [5, 7],
+    "gap": 1
+   },
+   "what": "the amount the register shows: a sprite, a pale plate 13 x 9 with two numerals of 5 x 7 (11 wide with a 1 px gap), its middle on the screen point of spots.ventana_caja; drawn in front of the register (hidden only by a sprite nearer than the window)"
+  }
+ },
+ "spots": {
+  "pepe.caja": {
+   "world": [1.925, 1, 0],
+   "screen": [148, 105],
+   "depth": 1.7912,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe behind the register (v3: (1.925, 1.0, 0); x is the register's middle, CD.CAJA_VENTANA[0])"
+  },
+  "pepe.empaca": {
+   "world": [3.6, 1.2, 0],
+   "screen": [175, 122],
+   "depth": 2.9394,
+   "scale": 1,
+   "kind": "person",
+   "what": "don Pepe packing bags beside the register"
+  },
+  "coqui.frente": {
+   "world": [4.3, 3.6, 0],
+   "screen": [144, 151],
+   "depth": 4.8377,
+   "scale": 1,
+   "kind": "person",
+   "what": "the frog on the floor in front of the counter, as in El mostrador (v3: not on the register's shelf and not on the counter)"
+  },
+  "cliente": {
+   "world": [2.7, 4, 0],
+   "screen": [107, 140],
+   "depth": 4.1029,
+   "scale": 1,
+   "kind": "person",
+   "what": "the customer at the register"
+  },
+  "cola1": {
+   "world": [3.5, 4.5, 0],
+   "screen": [113, 152],
+   "depth": 4.899,
+   "scale": 1,
+   "kind": "person",
+   "what": "the line, first: running away from the door"
+  },
+  "cola2": {
+   "world": [4.3, 5, 0],
+   "screen": [118, 163],
+   "depth": 5.6951,
+   "scale": 1,
+   "kind": "person",
+   "what": "the line, second"
+  },
+  "cola3": {
+   "world": [5.1, 5.5, 0],
+   "screen": [124, 175],
+   "depth": 6.4911,
+   "scale": 1,
+   "kind": "person",
+   "what": "the line, third"
+  },
+  "cosa_cliente": {
+   "world": [2.95, 2.6, 1],
+   "screen": [137, 107],
+   "depth": 3.8987,
+   "scale": 1,
+   "kind": "counter",
+   "what": "what the customer sets down; its price tag stands in front of it",
+   "etiqueta": {
+    "dw": [-0.05, 0.3, 0],
+    "box": [11, 10]
+   }
+  },
+  "cosa_a": {
+   "world": [3.6, 2.55, 1],
+   "screen": [150, 112],
+   "depth": 4.2661,
+   "scale": 1,
+   "kind": "counter",
+   "what": "the first of the two things of story 46; its price tag in front",
+   "etiqueta": {
+    "dw": [-0.05, 0.3, 0],
+    "box": [11, 10]
+   }
+  },
+  "cosa_b": {
+   "world": [4.3, 2.55, 1],
+   "screen": [163, 118],
+   "depth": 4.6948,
+   "scale": 1,
+   "kind": "counter",
+   "what": "the second of the two things of story 46; its price tag in front",
+   "etiqueta": {
+    "dw": [-0.05, 0.3, 0],
+    "box": [11, 10]
+   }
+  },
+  "papel": {
+   "world": [5.2, 2.3, 1],
+   "screen": [184, 124],
+   "depth": 5.0928,
+   "scale": 1,
+   "kind": "counter",
+   "what": "the holder of gift paper"
+  },
+  "taza_abuela": {
+   "world": [4.85, 2.25, 1],
+   "screen": [179, 121],
+   "depth": 4.8478,
+   "scale": 1,
+   "kind": "counter",
+   "what": "the cup set aside"
+  },
+  "frasco": {
+   "world": [3.35, 2.2, 1],
+   "screen": [152, 107],
+   "depth": 3.8987,
+   "scale": 1,
+   "kind": "counter",
+   "what": "the children's jar"
+  },
+  "clip": {
+   "world": [2.275, 2.8, 1.46],
+   "screen": [121, 92],
+   "depth": 3.8378,
+   "scale": 1,
+   "kind": "face",
+   "what": "the frog's bills, clipped on the register's front face at its right top corner (CD.CAJA_GAVETA: .35 to the right, .3 up)"
+  },
+  "ventana_caja": {
+   "world": [1.925, 2.35, 1.72],
+   "screen": [123, 79],
+   "depth": 3.4779,
+   "scale": 1,
+   "kind": "window",
+   "what": "the register's amount window (CD.CAJA_VENTANA): the numerals of the amount are drawn here, two digits, about 5 x 7 px each",
+   "pane": [118, 75, 9, 8],
+   "digits": {
+    "count": 2,
+    "size": [5, 7],
+    "gap": 1
+   }
+  },
+  "bola": {
+   "world": [0.16, 2.3, 0.96],
+   "screen": [92, 79],
+   "depth": 1.9864,
+   "scale": 1,
+   "kind": "sill",
+   "what": "the ball on the sill inside the shop window (x .16, the window's middle y, the sill's top)"
+  },
+  "ninos_fuera.1": {
+   "world": [-0.5, 1.355, 0],
+   "screen": [97, 86],
+   "depth": 0.5236,
+   "scale": 1,
+   "kind": "person",
+   "what": "child 1 of the three outside, at the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: its head in the middle of the pane on the VW0 side; x -0.5, the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and 20 rows or more of the child; no clip"
+  },
+  "ninos_fuera.2": {
+   "world": [-0.3, 4.3, 0],
+   "screen": [46, 115],
+   "depth": 2.4495,
+   "scale": 1,
+   "kind": "person",
+   "what": "child 2 of the three outside, in the open street doorway, looking in (no shadow); group ninos_fuera. v3b: (x, 4.3, 0), the first x of -0.3 to -0.8 (steps of 0.1) that shows 20 rows or more of him in the door opening and no pixel over the wall or the door frame: x -0.3"
+  },
+  "ninos_fuera.3": {
+   "world": [-0.5, 2.245, 0],
+   "screen": [81, 94],
+   "depth": 1.0686,
+   "scale": 1,
+   "kind": "person",
+   "what": "child 3 of the three outside, at the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: its head in the middle of the pane on the VW1 side; x -0.5, the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and 20 rows or more of the child; no clip"
+  },
+  "ninos_dentro.1": {
+   "world": [1.1, 4.4, 0],
+   "screen": [70, 129],
+   "depth": 3.368,
+   "scale": 1,
+   "kind": "person",
+   "what": "child 1 of the three inside; group ninos_dentro"
+  },
+  "ninos_dentro.2": {
+   "world": [1.7, 4.9, 0],
+   "screen": [72, 139],
+   "depth": 4.0417,
+   "scale": 1,
+   "kind": "person",
+   "what": "child 2 of the three inside; group ninos_dentro"
+  },
+  "ninos_dentro.3": {
+   "world": [2.4, 5.4, 0],
+   "screen": [76, 150],
+   "depth": 4.7765,
+   "scale": 1,
+   "kind": "person",
+   "what": "child 3 of the three inside; group ninos_dentro"
+  },
+  "puerta": {
+   "world": [0.5, 4.3, 0],
+   "screen": [61, 122],
+   "depth": 2.9394,
+   "scale": 1,
+   "kind": "person",
+   "what": "just inside the street door"
+  },
+  "tecla_a": {
+   "kind": "card",
+   "box": [87, 34, 30, 26],
+   "what": "the first answer key, a card over the picture (the game draws it): 30 x 26 px, centred above the register with tecla_b, 10 px gap; its bottom edge is 6 px above the register's topmost pixel"
+  },
+  "tecla_b": {
+   "kind": "card",
+   "box": [127, 34, 30, 26],
+   "what": "the second answer key, to the right of tecla_a"
+  }
+ },
+ "groups": {
+  "ninos_fuera": ["ninos_fuera.1", "ninos_fuera.2", "ninos_fuera.3"],
+  "ninos_dentro": ["ninos_dentro.1", "ninos_dentro.2", "ninos_dentro.3"],
+  "cola": ["cola1", "cola2", "cola3"]
+ },
+ "views": {
+  "wide": {
+   "zoom": 1,
+   "x0": 17,
+   "region": [17, 0, 196, 216],
+   "needs": {
+    "from": 19,
+    "to": 211,
+    "parts": {
+     "register": [105, 143],
+     "shop window": [71, 109],
+     "street door (with its open leaf)": [19, 68],
+     "counter": [99, 211]
+    }
+   },
+   "what": "the 196 x 216 window over the 240 x 216 picture. x0 = clamp(round(the middle of what must be inside - 98), 0, 44): what must be inside is the register, the shop window, the street door with its open leaf and the counter (the columns of the pixels the set draws for those parts) and the floor in front of the counter (the spots pepe.empaca, coqui.frente, cliente, cola1 to cola3, ninos_dentro.1 to .3 and puerta, 12 px to each side); `needs` gives that span [from, to)"
+  }
+ },
+ "cards": {
+  "final": true,
+  "centre": 122,
+  "registerTop": 66,
+  "bottomAbove": 6
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3), so the counter hides don Pepe's legs, nothing behind him hides him, and the wall hides the three children outside the shop window below the sill.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The upright plane through the feet, as El balcón's front; the same test for people and for things on the counter",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "pepe": 0.35,
+   "senora": 0.35,
+   "senor": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "ninos": 0.28
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0)",
+  "none": ["ninos_fuera.1", "ninos_fuera.2", "ninos_fuera.3"]
+ },
+ "checks": {
+  "person": {
+   "rows": 53,
+   "minAbove": 28
+  },
+  "results": [
+   {
+    "name": "in-view",
+    "ok": true,
+    "lines": [
+     "in-view: 23 spot points and 4 boxes (caja 105,60,39,47, importe 117,75,13,9, tecla_a 87,34,30,26, tecla_b 127,34,30,26) inside the 240 x 216 picture and the window [17, 213) x [0, 216)",
+     "       the window x0 = 17 holds what must be inside, which spans columns 19 to 211 (register 105..143, shop window 71..109, street door (with its open leaf) 19..68, counter 99..211)"
+    ]
+   },
+   {
+    "name": "people-apart",
+    "ok": true,
+    "lines": [
+     "people-apart: 18 pairs (pepe.caja, coqui.frente, cliente, cola1, cola2, cola3; and ninos_dentro.1 to .3 with cliente) at least 12 px apart on screen (closest: cola1 ~ cola2 12.08 px, cliente ~ cola1 13.42 px, cola2 ~ cola3 13.42 px)",
+     "       info, not a check: pepe.empaca (the same body as pepe.caja) is coqui.frente 42.45 px, cola1 68.88 px, cola2 70.21 px, cliente 70.34 px, cola3 73.55 px from the others"
+    ]
+   },
+   {
+    "name": "frog-sideways-apart",
+    "ok": true,
+    "lines": [
+     "frog-sideways-apart: coqui.frente 144,151 is at least 28 px sideways from cliente and from cola1: cliente 107,140 37 px, cola1 113,152 31 px"
+    ]
+   },
+   {
+    "name": "pepe-thighs-up",
+    "ok": true,
+    "lines": [
+     "pepe-thighs-up: pepe.caja 148,105: 48.75 of 53 rows above the counter's back edge (4.25 rows hidden under it, edge at row 100.75; needs 28); the register hides 2 of his 24 columns (8.33 %, at most 33.3 %; worst single row 8.33 %), 8 of his 834 pixels (0.96 %); by the depth rule 27 rows are clear from the top, 84 pixels hidden in all (counter and register)"
+    ],
+    "pepe": {
+     "above": 48.75,
+     "hiddenRows": 4.25,
+     "edgeRow": 100.75,
+     "columns": 24,
+     "columnsHiddenByRegister": 2,
+     "fraction": 0.0833,
+     "worstRowFraction": 0.0833,
+     "pixels": 834,
+     "pixelsHiddenByRegister": 8,
+     "rowsClearFromTop": 27
+    }
+   },
+   {
+    "name": "ninos-fuera-through-window",
+    "ok": true,
+    "lines": [
+     "ninos-fuera-through-window: the way chosen: PLACEMENT, x -0.5, no clip. Zero pixels of the two children at the window show outside the panes (over the wall, the sill or the frame) in both hours, and each shows at least 20 rows through the glass: ninos_fuera.1 30 rows (30 from the top of the head; 331 of 600 pixels); ninos_fuera.3 30 rows (30 from the top of the head; 354 of 600 pixels) (ninos_fuera.1 -0.5,1.355,0 -> 97,86; ninos_fuera.3 -0.5,2.245,0 -> 81,94)",
+     "       the x's tried, in order (outside the panes / rows through the glass of child 1, 3, in the afternoon): x -0.4 2/29 0/28 no; x -0.5 0/30 0/30 PASSES; x -0.6 0/30 0/30 PASSES; x -0.7 0/30 0/30 PASSES; x -0.8 0/26 0/29 PASSES; x -0.9 0/0 0/1 no; x -1 0/0 0/0 no; x -1.1 0/0 0/0 no; x -1.2 0/0 0/0 no",
+     "       pane middles on the wall (y): 1.86, 2.75 (VW0-side pane y 1.45,2.26, mullion 2.26,2.34, VW1-side pane y 2.34,3.15); a pixel of part vitrina is glass when its world x (from the baked depth) is left of -0.25",
+     "       manana ninos_fuera.1 0 px outside the panes; manana ninos_fuera.3 0 px outside the panes; tarde ninos_fuera.1 0 px outside the panes; tarde ninos_fuera.3 0 px outside the panes"
+    ],
+    "way": "placement",
+    "ninos": {
+     "x": -0.5,
+     "clip": null,
+     "tried": [
+      {
+       "x": -0.4,
+       "ok": false,
+       "kids": [
+        {
+         "outside": 2,
+         "over": {
+          "vitrina": 2
+         },
+         "rows": 29
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 28
+        }
+       ]
+      },
+      {
+       "x": -0.5,
+       "ok": true,
+       "kids": [
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 30
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 30
+        }
+       ]
+      },
+      {
+       "x": -0.6,
+       "ok": true,
+       "kids": [
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 30
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 30
+        }
+       ]
+      },
+      {
+       "x": -0.7,
+       "ok": true,
+       "kids": [
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 30
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 30
+        }
+       ]
+      },
+      {
+       "x": -0.8,
+       "ok": true,
+       "kids": [
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 26
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 29
+        }
+       ]
+      },
+      {
+       "x": -0.9,
+       "ok": false,
+       "kids": [
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 0
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 1
+        }
+       ]
+      },
+      {
+       "x": -1,
+       "ok": false,
+       "kids": [
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 0
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 0
+        }
+       ]
+      },
+      {
+       "x": -1.1,
+       "ok": false,
+       "kids": [
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 0
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 0
+        }
+       ]
+      },
+      {
+       "x": -1.2,
+       "ok": false,
+       "kids": [
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 0
+        },
+        {
+         "outside": 0,
+         "over": {},
+         "rows": 0
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "name": "nino-fuera-in-doorway",
+    "ok": true,
+    "lines": [
+     "nino-fuera-in-doorway: ninos_fuera.2 -0.3,4.3,0 -> 46,115 (x -0.3, the first of -0.3, -0.4, -0.5, -0.6, -0.7, -0.8 that passes): manana: 41 rows in the door opening (603 of 724 pixels), 0 px over the wall or the door frame; tarde: 41 rows in the door opening (603 of 724 pixels), 0 px over the wall or the door frame",
+     "       the x's tried (rows in the opening / px over the wall or the frame, afternoon): x -0.3 41/0 PASSES; x -0.4 41/0 PASSES; x -0.5 41/0 PASSES; x -0.6 41/0 PASSES; x -0.7 41/0 PASSES; x -0.8 38/0 PASSES; a pixel of part puerta is the street when its world x (from the baked depth) is left of -0.04 (the backdrop at x -.5 and the pavement; the frame is at x .03)",
+     "       info, not a check: in moment 4's finished picture what is left of each child outside: ninos_fuera.1 313 px in 27 rows (columns 91..103); ninos_fuera.2 603 px in 41 rows (columns 40..56); ninos_fuera.3 354 px in 30 rows (columns 74..87)"
+    ],
+    "door": {
+     "x": -0.3,
+     "ok": true,
+     "tried": [
+      {
+       "x": -0.3,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 603
+      },
+      {
+       "x": -0.4,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 565
+      },
+      {
+       "x": -0.5,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 484
+      },
+      {
+       "x": -0.6,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 402
+      },
+      {
+       "x": -0.7,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 322
+      },
+      {
+       "x": -0.8,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 38,
+       "visible": 159
+      }
+     ]
+    }
+   },
+   {
+    "name": "key-cards",
+    "ok": true,
+    "lines": [
+     "key-cards: tecla_a [87,34,30,26] and tecla_b [127,34,30,26] (30 x 26, gap 10) inside the window; clear of the frog's head box [128,126,32,25] by 66 px and of the customer's box [95,87,24,53] by 27 px; the register's topmost pixel is row 66, the cards' bottom edge row 60 (6 px above it); their middle column 122 is the middle of the register's body (its side shelf not counted)"
+    ]
+   },
+   {
+    "name": "box-covers-set",
+    "ok": true,
+    "lines": [
+     "box-covers-set: caja pixels [105,66,142,102] in box [105,60,39,47] (1 px tolerance)"
+    ]
+   },
+   {
+    "name": "counter-spots-on-top",
+    "ok": true,
+    "lines": [
+     "counter-spots-on-top: 6 counter-top spots (cosa_cliente, cosa_a, cosa_b, papel, taza_abuela, frasco) inside the counter top x 1.3..6.2, y 2..2.85; the clip is on the register",
+     "       info, not a check: the amount window's pale pane is 9 x 8 px (at 118,75); the numerals of the design (2 digits of 5 x 7, 1 px gap) are 11 x 7 px: they do NOT fit in it (2 px too wide)"
+    ],
+    "window": {
+     "pane": [118, 75, 9, 8],
+     "digits": "11 x 7",
+     "fits": false,
+     "plate": [117, 75, 13, 9]
+    }
+   },
+   {
+    "name": "frog-clear-of-counter",
+    "ok": true,
+    "lines": [
+     "frog-clear-of-counter: the frog's box [128,126,32,25] at coqui.frente 144,151 covers no pixel of cosa_cliente (176 px, 20 px clear), cosa_cliente tag (96 px, 18 px clear), cosa_a (108 px, 15 px clear), cosa_a tag (96 px, 13 px clear), cosa_b (108 px, 9 px clear), cosa_b tag (96 px, 6 px clear), papel (211 px, 16 px clear), taza_abuela (108 px, 15 px clear), frasco (144 px, 20 px clear), importe (117 px, 43 px clear)"
+    ]
+   },
+   {
+    "name": "importe-clear",
+    "ok": true,
+    "lines": [
+     "importe-clear: in the 4 moments no pixel of any sprite that stands there covers importe's plate [117,75,13,9] (13 x 9, middle on ventana_caja 123,79, depth 3.4779): m1 6 sprites, 0 px, m2 6 sprites, 0 px, m3 7 sprites, 0 px, m4 7 sprites, 0 px"
+    ]
+   }
+  ]
+ }
+}
+''',
   'esquina': r'''{
  "scene": "esquina",
  "made": "node docs/proyecto/pixel/esquina-sheet-make.js, from esquina-set.html (window.ESQUINA.E, calle-base.js) and the design of La esquina (the orchestrator's p5-spec). A new scene: no old scene, no remap.",

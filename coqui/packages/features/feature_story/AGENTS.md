@@ -42,6 +42,14 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
   decisions, each value of every draw), `tool/mostrador_paths_test.dart` (`--dart-define=SHARD=i/n`, `OUT=dir`) every path
   (every draw combination times the four ways); both check the sheet's rules at every act's end
   (`test/support/mostrador_rules.dart`, `mostrador_paths.dart`).
+- Los estantes (order 51b) the same way: `test/fixtures/estantes/`, `test/estantes_stories_test.dart`,
+  `tool/estantes_paths_test.dart` (96 paths), `test/support/estantes_rules.dart`, `estantes_paths.dart` (it uses
+  `drawsOf` and `letterPlan` of `mostrador_paths.dart`).
+- Las frutas (order 52b) the same way: `test/fixtures/frutas/`, `test/frutas_stories_test.dart`, `tool/frutas_paths_test.dart`
+  (144 paths), `test/support/frutas_rules.dart`, `frutas_paths.dart` (it uses `drawsOf`, `letterPlan` and `decisionLetters`
+  of `mostrador_paths.dart`).
+- La caja (order 53b): the same for its three stories (`test/fixtures/caja/`, `test/caja_stories_test.dart`,
+  `tool/caja_paths_test.dart`, `test/support/caja_rules.dart` and `caja_paths.dart`). No change to the runner.
 - La esquina (order 54b): its three story files are fixtures here (`test/fixtures/esquina/`, never under
   `historia/cuentos/`); `test/esquina_stories_test.dart` and `tool/esquina_paths_test.dart` as El mostrador's, the draws by
   `test/support/esquina_paths.dart` (a draw whose options name variables takes them as dealt), the rules by
