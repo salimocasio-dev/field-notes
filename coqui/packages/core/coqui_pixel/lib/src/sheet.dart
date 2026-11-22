@@ -1435,7 +1435,10 @@ class Sheet {
       return [OX + u * S0, OY + (v * SIN - w[2] * COS) * S0];
     }
 
-    final pointsRaw = _obj(_need(m, 'points', at), '$at.points');
+    // A comer's sheet (order 40b) names no point: every place it uses is a spot, a move's or the code's
+    final pointsRaw = m.containsKey('points')
+        ? _obj(m['points'], '$at.points')
+        : const <String, dynamic>{};
     // El banco's `smoothing` (order 36b) is words only: the scene never turns smoothing on
     final smoothingRaw = m.containsKey('smoothing') && m['smoothing'] is! String
         ? _obj(m['smoothing'], '$at.smoothing')
@@ -1574,9 +1577,13 @@ class Sheet {
       level: _readLevelList(_need(m, 'level', at), '$at.level', pictures),
       // La estufa's window (order 38b) is a clip the old code made that the sheet no longer makes (`how`, no `world`):
       // kept in [raw] only
+      // A comer's (order 40b) says in words that there is none (`none`): kept in [raw] only
       clips: {
         for (final e in _byName(
-          _need(m, 'clips', at),
+          {
+            for (final e in _obj(_need(m, 'clips', at), '$at.clips').entries)
+              if (e.value is! String) e.key: e.value,
+          },
           '$at.clips',
           (n, v, a) => v,
         ).entries)
@@ -1763,10 +1770,8 @@ class Sheet {
             () {
               final o = _obj(f, '$at.faults[$i]');
               return (
-                line: _int(
-                  _need(o, 'line', '$at.faults[$i]'),
-                  '$at.faults[$i].line',
-                ),
+                // A comer's (order 40b) name their lines in words: no `line`
+                line: _opt(o, 'line', (v) => _int(v, '$at.faults[$i].line')),
                 and: _opt(o, 'and', (v) => _int(v, '$at.faults[$i].and')),
                 what: _str(
                   _need(o, 'what', '$at.faults[$i]'),
@@ -1957,7 +1962,7 @@ class Sheet {
 
   /// La estufa's (order 38b): the old file's faults the port keeps as they are (`faults`: the line, the line it goes
   /// with, what it does, how it is kept, in words); empty for the other sheets.
-  final List<({int line, int? and, String what, String? kept})> faults;
+  final List<({int? line, int? and, String what, String? kept})> faults;
 
   /// La mesa's (order 37b): the places the stories and the pairs write that the sheet moves (`storyMoves`): the old
   /// screen point, the new, who stands there (`sitting`, `standing`, `cosa`, a person's id), the files whose positions
@@ -2694,7 +2699,9 @@ SheetTalk _readTalk(Object? v, String at) {
     // El campo's (order 34b): one corner card, its rectangle `board` and its words `boardWhat`
     m.containsKey('boards') || !m.containsKey('board')
         ? _str(_need(m, 'boards', at), '$at.boards')
-        : m.containsKey('boardWhat') || !m.containsKey('heights')
+        // A comer's (order 40b): the rounds card's rectangle with no words of its own, the faces in words
+        : m.containsKey('boardWhat') ||
+              !(m.containsKey('heights') || m['faces'] is String)
         ? _str(_need(m, 'boardWhat', at), '$at.boardWhat')
         : '',
     m,
