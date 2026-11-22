@@ -1039,6 +1039,28 @@ Built by an Opus builder on `orden/51b` in about 75 minutes on El mostrador's sh
 14. 41 step 9: no place for the frog on the way out; Luis leaves with the box and the frog stays.
 Also: the señor at `cola2` (12,149) is half outside the view and what he holds overlaps the señora; the bottle boxes seen from above (about 30 x 14 px) read as long planks; the Needs' spot names (`cajon`, `piso_izq`, `escalera_pie`) and states (`gafas`, the door) do not match the sheet (no story uses them).
 
+### Order 52 (frutas), step b. **Result (Nov 22): done, merged to main.**
+
+Built by an Opus builder on `orden/52b` in about 70 minutes on El mostrador's shared pieces (nothing added to them), then merged with main (Los estantes) by the same builder. The orchestrator ran `test_all.sh` itself: all checks passed except one review test that timed out on an overloaded machine (load 30) and passed when its package was run again alone.
+
+- Files: `coqui_scenes/lib/src/frutas/` (`frutas_set.dart`, `frutas_places.dart`, `frutas_sprites.dart`, `frutas.dart`), the sheet asset, `coqui/ref/pp/frutas/` (16 states), tests in `coqui_scenes` and `feature_story`.
+- The set: all 16 states equal the JavaScript: 0 of 51,840 pixels differ.
+- Paths: 144 (16, 64 and 64), all to the end, 0 errors, 0 rules broken (the frog never behind a grown-up, everything inside the view, the frog clear of the things on the ledge, the two crates apart, the goat's muzzle on `cabra.cajon`, abuela at `abuela.delante` over no bin and 10 px clear of the cart, don Pepe showing 24 rows or more over the stand).
+- A thing can be held at a hand or kept by its screen point while it flies; whatever lies on the scale's pan is bagged before the next act. The bins' boxes overlap (the stand is slanted): a touch gives the bin whose box middle is nearest. No new people; the goat eating at the crate is the scene's own sprite.
+- Bake: the very first state 218 ms (it builds the ground); the others 40 to 115 ms first, 39 to 72 ms later.
+- **La mesa's picture `cocina.no` can now be drawn from this scene** (to do when La cocina's branch takes main: replace `mesa_frutas_still.dart`): state `manana-open-0-frutas`, only abuela at `abuela.delante` with `dir: -1`, no needle, the frog hidden, `StillFrame(scene).draw(W, F: 0, cam: wide, allSigns: false)`, cut [22,112,196,104] at zoom 1, no shadows. `tool/frutas_frames_test.dart` draws it as `mesa-cocina-no.png`.
+- New sprites: `docs/proyecto/pixel/port/frutas-sprites.png`.
+
+**For the content lane: acts left OPEN in Las frutas** (marked `// OPEN:` in `frutas.dart`):
+1. `mano` (42 steps 2 and 4; 43 step 1): no spot behind each bin; don Pepe reaches from `pepe.detras`.
+2. `cabra roba` (42 step 5): no spot for the goat's head at the plantain bin's end; it stretches its neck at its post with a plátano in its mouth.
+3. `aparta42` (42 step 5): the bins are baked into the set and cannot be pulled back; he lays a hand over the plantain bin and the goat stands back.
+4. `sale a=tienda` (43 step 4): no place inside the shop; he stops in the doorway (`pepe.puerta`) and says his line there.
+5. `sale` and `vuelve a=camion` (44 steps 5 and 8): the cart is a baked state and no spot exists "round the corner"; he stands at its handles (`pepe.carro`) and the cart is gone when he comes back.
+6. `limon44` (44 step 2): the small crate of limones has no spot (it stays in his hand); the frog has no puckered face (he gives two quick bounces).
+7. `marca44` (44 step 3): don Pepe at `pepe.pesa` cannot reach the dial; the finger is a small hand sprite on the kit's dial mark.
+Also: `gen_frutas.py` writes `{"set":{"camion":1}}` and `sale`/`vuelve a="camion"` where the Needs and the sheet say `carro`; the bin of piñas has one crown pixel one row above its box in the four morning `frutas` states; story 44's first line names tomatoes and onions while only the tomato crates are on the ledge (the script has four crates, the sheet two crate spots); in story 42's rounds abuela at `abuela.junto_cabra` stands in front of the plantain bin, so the hint frame round `platanos` holds her head and the hint hand lands on her; the preview's comment puts the goat's nose 13 rows above its feet, the sheet 20.
+
 ### Orders 54 to 57. La calle (place 5): esquina, parada, tiendas, cruce
 
 New scenes, as El colmado's: no old scene file, no `ref/escenas/` folder. Step a (design) is the content lane's; step b is this lane's, after El colmado's four.
