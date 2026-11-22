@@ -1,15 +1,17 @@
 // The sprite sheets for the content lane, who looks at every new drawing (page 13, orders 50 to 53, step b point 3, and
-// orders 58 to 61): every sprite and pose of La plaza's cast (lib/src/plaza/plaza_cast.dart), each at 3x on a plain
+// orders 58 to 61): every sprite and pose of La plaza's cast (lib/src/plaza/plaza_cast.dart), and of what only El banco
+// de la plaza draws (lib/src/plaza/plaza_sprites.dart), each at 3x on a plain
 // ground with its number over it, and a list of the numbers beside the picture. The picture is laid out as El colmado's
 // (tool/make_colmado_sprites_test.dart's sheetPicture).
 //
 //   flutter test tool/make_plaza_sprites_test.dart        (in this package)
 //
-// writes docs/proyecto/pixel/port/plaza-cast-sprites.png and .txt.
+// writes docs/proyecto/pixel/port/plaza-cast-sprites.png and .txt, plaza-sprites.png and .txt.
 import 'dart:io';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/src/plaza/plaza_cast.dart';
+import 'package:coqui_scenes/src/plaza/plaza_sprites.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../test/support/png.dart';
@@ -26,8 +28,13 @@ String _port(String name) {
   throw StateError('docs/proyecto/pixel not found');
 }
 
-void _write(String name, String title, List<(String, Sprite)> sprites) {
-  final p = sheetPicture(sprites, cols: 13);
+void _write(
+  String name,
+  String title,
+  List<(String, Sprite)> sprites, {
+  int cols = 13,
+}) {
+  final p = sheetPicture(sprites, cols: cols);
   writePng(_port('$name.png'), p.px, p.w, p.h, scale: 3);
   File(_port('$name.txt')).writeAsStringSync(
     [
@@ -47,6 +54,14 @@ void main() {
       'plaza-cast-sprites',
       "La plaza's cast (lib/src/plaza/plaza_cast.dart)",
       plazaCastSheet(),
+    );
+  });
+  test('the sprite sheet of what only El banco de la plaza draws', () {
+    _write(
+      'plaza-sprites',
+      "What only El banco de la plaza has (lib/src/plaza/plaza_sprites.dart)",
+      plazaSpriteSheet(),
+      cols: 8,
     );
   });
 }

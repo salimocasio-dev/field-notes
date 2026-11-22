@@ -1240,8 +1240,9 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
   Future<void> _abre() async {
     for (final e in _gente.entries.toList()) {
       final p = e.value as Map<String, dynamic>;
-      if (p['vis'] == 0 || jsTruthy(p['sent']) || p['spot'] is! String)
+      if (p['vis'] == 0 || jsTruthy(p['sent']) || p['spot'] is! String) {
         continue;
+      }
       final spot = p['spot'] as String;
       if (spot == 'entrada' || _tapa(e.key) == 0) continue;
       final to = _sitio(e.key, spot);
