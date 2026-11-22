@@ -860,6 +860,20 @@ Two rounds read by fresh readers (four readers, no words); nothing after the sec
 - **Left, by Salim's rule:** the kit's stove is smaller than La estufa's own; the fourth chair stands at the table's corner and abuelo at the far end reads to one reader as "inside or behind the table end" (no chair seen under him); the open door's leaf is behind the top rows of the first sitter's face; the knife Luis holds up in la-cuchara is partly behind the table's corner; at three asks the rounds board covers the top 8 rows of the first card (the old cards touched it); white plates on the white cloth are hard to see; in `tengo_sed` the glass is at Carmen's mouth as in the old picture; `cocina.si` shows abuela's head only; the things on the stove are cut by the right edge as in the old picture; the hint frame on the counter's stacks stands at the left edge.
 - Left as the old game has it: the big utensils shown beside heads with no hand; the voice cards that look alike; the hint hand over abuela's face at the counter's asks of `h-mesa` and over the boy in la-mesa (the old hand lay there too); the frame round the woman and the child together; people appearing and leaving; the cloth that comes and goes.
 
+### Order 37 (mesa), step b. **Result (Nov 21): done; merged into `lane/cocina`, not yet on main (it goes to main with La cocina's build).**
+
+Built by an Opus builder on `orden/37b`, with one stop. The orchestrator ran `test_all.sh`'s steps to the end itself on the branch with `lane/cocina` merged in: nothing red but the six tests that wait for the ten single-word recordings.
+
+- Files: `coqui_scenes/lib/src/mesa/` (`mesa_set.dart`, `mesa_places.dart`, `mesa_sprites.dart`, `mesa.dart`, `mesa_frutas_still.dart`), seven tests, the sheet as an asset, `coqui/ref/pp/mesa/`. The kitchen's kit is La estufa's, unchanged.
+- The set: the three reached states equal the JavaScript reference: 0 of 51,840 pixels differ. Sprites: 76 exact.
+- The preview: 841 pictures, 838 identical, 0 over 2%, the most 0.02%.
+- Recorded runs: all 12 (three stories and `h-mesa`) equal timeless, hop sounds and draws the old ones. Time: la-mesa about 0.5 s shorter, la-cuchara about 0.5 s longer, tengo-hambre 3.5 s shorter, h-mesa equal.
+- **The stop:** in tengo-hambre the frog took 1 hop where the recorded run has 2 (from abuela's hand at the counter to seat 2): the design had moved `rana.2` by 6 px and its hop check covered only walks between named frog places. The designer's maker now replays every frog walk (181 walks) against the old page; `rana.2` is (118,169). The same check was given to La nevera's and A comer's designers before their ports.
+- `cocina.no` (abuela at El colmado's stall) is drawn from a stored still of `frutas-set.html?surtido=frutas` (`mesa_frutas_still.dart`, made by `tool/make_mesa_still.dart`); it goes when order 52 (frutas) is merged: that port's builder is asked to say how the picture is drawn from the real scene.
+- `mesa_asks_test`: at 179 asks (102 of the recorded runs, 77 of the app's own plays) the asked thing's box and the hint hand equal the JavaScript preview's; no box sits beside its thing.
+- First bake in Dart (release web, median of five, a busy machine): the first state 155 ms (122 to 168; it also lays the floor), the others 80 and 40 ms; later bakes 28 to 44 ms. Left, as El banco's.
+- A fresh reader of the real app's frames (four plays): people, the dishes arriving and the utensils going to people read; "frames are centred on what they mean; none sits beside it". What it flagged is in the old pictures too: the frog's thought bubble over part of abuela's face in tengo-hambre, the hint hand over abuela or the boy at the counter's asks, the cloth and the dishes cleared between rounds, asks with nothing framed (he must say a word), voice cards that look alike. New and left: whoever comes in is drawn in front of the open door's leaf for a step.
+
 ### Order 38 (estufa), step a. **Result (Nov 21): done, merged.**
 
 Two rounds read by fresh readers (four readers, no words), then one fix pass for two hidden faces. The orchestrator looked at each round and ran the maker itself: ok, same bytes (its bake-time line fails when the machine is busy: 154 to 159 ms against 57 to 126 ms measured quietly).
@@ -904,6 +918,21 @@ Built by an Opus builder on `orden/38b` with no stop. The orchestrator ran `test
 - A reader of the real app's frames also saw, and it is left: a pot looks a little raised over its burner once its flames are out; the hint hand cut by the picture's lower edge at asks low in the picture; the rounds board over the shelf's jars.
 - For the content lane and the designers, found by the builder in the JavaScript sheet and not fixed (the port follows the preview): the sheet's words put the frog's surface point under (x+16, y+26) while its frog spots are under y+25; `spots.banco` projects one row above `points.banco`; a picture's `world` is the surface under (x, y-1), so a crop from it is one row higher than the sheet's `crop`.
 
+### Order 39 (nevera), step b. **Result (Nov 22): done; merged into `lane/cocina`, not yet on main (it goes to main with La cocina's build).**
+
+Built by an Opus builder on `orden/39b` with no stop. The orchestrator ran `test_all.sh`'s steps to the end itself: nothing red but the six tests that wait for the ten single-word recordings.
+
+- Files: `coqui_scenes/lib/src/nevera/` (`nevera_set.dart`, `nevera_places.dart`, `nevera_sprites.dart`, `nevera.dart`), seven tests, the sheet as an asset, `coqui/ref/pp/nevera/` (10 states). The kit is untouched.
+- The set: all 10 reached states equal the JavaScript reference: 0 of 51,840 pixels differ. Sprites: 92 exact.
+- The preview: 820 pictures, 820 identical.
+- Recorded runs: all 12 equal timeless, hop sounds and draws the old ones. Time: h-nevera and para-los-pajaros equal; jugo-de-china 70 ms longer; no-hay-leche 1.4 to 1.7 s longer.
+- **The people outside the window:** the yard is put back on every pixel outside the set's opening after they are drawn (the preview's clip): at 65 distinct sets of people, 52,548 pixels drawn, 0 outside the opening.
+- `nevera_asks_test`: at 168 asks (105 of the recorded runs, 63 of the app's plays) every box and hand equal the preview's. The hint box of the fridge follows the state the host shows (`NeveraThing`).
+- All 24 pair pictures and 19 level cells draw (A comer's café, mucho and un poco among them).
+- The frames tool takes `LIMIT_S` (no-hay-leche with a wrong learner lasts 302 s of story time, just past the tool's fixed five minutes).
+- First bake in Dart (release web, median of five, load 11 to 13): the first state 204 ms (144 to 517; it also lays the floor), the others 23 to 82 ms; later bakes 18 to 70 ms. Left, as El banco's; to be measured again on a quiet machine before La cocina's build.
+- Found in the JavaScript and not changed: the preview's own table for abuelo outside the window puts him one row higher than the sheet's place (the port follows the sheet); the children's boxes are 22 wide and they hold fruit up, so about half of their drawn pixels lie outside their box, as in the old file.
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
@@ -941,6 +970,74 @@ New scenes: there is no old scene file and no `ref/escenas/` folder. Step a (des
 4. The sheet's rules hold in the scene: the frog is never behind a grown-up; nothing stands on the amount plate; the two children outside the shop window show only through its panes and the third stands in the doorway; a customer's thing has its price tag at the sheet's `etiqueta` offset.
 
 **Done when:** every state within 0.5% of the reference; every touch box contains its thing; `tool/juega.dart` plays each of the scene's three stories on every path the checker walks, to the end, right and wrong; a fresh reader of the frames with no sound and no words says what happens in each story. Then the content lane measures length and silences, records, and makes the place's pairs, Escuchar set, books and level items.
+
+### Order 50 (mostrador), step b. **Result (Nov 22): done, merged to main. Not in a build yet: El colmado gets its build when its four scenes are in.**
+
+Built by an Opus builder on `orden/50b` in about two hours, no stop; the orchestrator ran `test_all.sh` itself on the branch with main merged in: all checks passed.
+
+- **What the four scenes of El colmado share, written here first:** `coqui_scenes/lib/src/colmado/colmado_dentro.dart` and `colmado_fuera.dart` (the two JavaScript kits, whole; `colmado_kit_test`: 41 cases equal to the JavaScript in pixels, depth, kinds, ground and shadow mask), `colmado_cast.dart` (don Pepe in ten poses, three children, the goat, the coin, bags, nine goods), and in `coqui_pixel` **`SceneSheet`** (`lib/src/scene_sheet.dart`), the reader for the content lane's sheets: it types what all 28 new sheets share (spots, things, views, setKey, front, shadows, groups, checks, rules) and keeps the rest as plain data; `part('calle')` reads a state with its own origin; `legacy()` gives the shared code an old `Sheet`. The old `Sheet` is unchanged. All 28 new sheets parse and every spot's world point projects onto its sheet screen point.
+- The set: all 12 baked states (8 inside, 4 street) equal the JavaScript reference: 0 of 51,840 pixels differ.
+- The scene is written new from the script's Needs list (`mostrador.dart`: `Mostrador extends Escena implements SetScene, SetOverSprites`): people and things by world point; every act does what its Needs line says, with positions from the sheet's spots, boxes and groups only; sprites composed by the sheet's depth rule.
+- Paths: every draw combination of the three stories with every right/wrong combination: el-colmado 2,304, algo-mas 16, esto-y-eso 256: 2,576 plays, all to the end, 0 errors; the sheet's rules checked 121,208 times, 0 broken (the frog never behind a grown-up, everybody inside the view, the door children's heads whole, people 10 px apart, the frog on the counter only at its spot). `feature_story`'s `play` gained `letters:` (a plan per decision), nothing else changed.
+- Every touch box contains its thing; all 21 things the Needs list says he can touch answer a touch.
+- Frames from the real app (three stories, right and wrong, no words): all six plays reach the end, no touch with "nothing happened".
+- **Bake, over the limit and not solved (the content lane's set):** inside states 179 to 377 ms the first time and 175 to 219 ms later (walls 53 to 73 ms, shelves 26 to 29, counter 14 to 17); street states 48 to 100 ms.
+- New sprites for the content lane to look at (the port did not wait): `docs/proyecto/pixel/port/colmado-sprites.png` (47, with a legend) and `mostrador-sprites.png` (40). The three children's looks are the builder's guess (no script gives them).
+
+**For the content lane: 12 acts left OPEN in El mostrador** (each plays as the plainest thing that keeps the story going, and is marked `// OPEN:` in `mostrador.dart`; settle the place or the picture and say so here):
+1. 36 step 7, `ir mostrador_izq`: no such spot; the frog goes to `coqui.mostrador`.
+2. 36 step 7, `bandeja da`: no second place for the tray; it stays at `bandeja` and don Pepe gestures.
+3. 37 steps 2 to 4: only `compra` is named for things set down and three are set down; the 2nd and 3rd go to `cosa_b` and `cosa_a`.
+4. 37 steps 2 and 9: the piragua cart has no place; it stands at `fuera`; the piragua man is not drawn.
+5. 37 step 9, `piraguas`: no place beside the cart; Carmen is shown back at `puerta` holding n piraguas.
+6. 37 step 6, `bolsapapel`: the pile of bags (with its coin) has no place; the bag appears at the free counter spot.
+7. 37 step 6: the sheet says `coqui.frente2` and `cliente` are never taken together, but the señora comes in while the frog is there (4 px apart); she waits at `cola1`.
+8. 38 opening, `limber bandeja`: the small tray has no place and is not drawn.
+9. 38 steps 5 to 7, `limber pon cerca`: no place beside the customer; `limber_a` is always at `limber_pepe` and `limber_b` at `limber_lejos`; `cerca` changes nothing; "the far end of the counter" has no spot either, so she stands at `cliente`.
+10. 38, `paga`: the coin dish lies under the freezer; coins go to don Pepe's hand.
+11. 38 step 8, `ninos`: no counter places for three children; they stay at `ninos_puerta`.
+12. 38: the freezer's límbers are drawn as a row inside the `NEVERA` world box (no named spots).
+Also: the amount plate, the price tag at `etiqueta` and the children through the window panes are rules of La caja's sheet; El mostrador's sheet has none of them. The generator writes `"decide":"do"`; the runner treats it as an ordinary touch decision.
+
+**For the content lane: what a fresh reader of the real app's frames could not follow** (four plays, no words, no sound; the frames are taken at lines, asks and touches, so a hand-over inside an act is not in them):
+- Things are on the shelf in one picture and on the counter, in the bag or in a hand in the next; the reader saw no carrying. Worth watching in the app itself before recording.
+- algo-mas: the two answer bubbles (sí, no) show the same frog with small arrows and cannot be told apart; they cover half of don Pepe's face and the till; they change sides between rounds.
+- algo-mas: the hint frame and hand for the thing at the shelf's far right end are cut by the picture's right edge.
+- The loaf on the shelf is right behind don Pepe's head where he stands at the counter and reads as a hat.
+- The hint frame for the cloth bag lies over Carmen's face; in esto-y-eso the frame for the bottle lies over the boy's face.
+- The street: a small yellow bunch under the awning hangs from nothing. Inside: the freezer chest reads as hanging over the counter's front edge; a lone chair on the floor is explained only when abuela sits on it.
+- A melted límber lying on the counter read as "a can knocked over".
+- Asks with nothing framed (he must push a thing to a customer) show no target until the hint comes.
+- The twinkle from the door stays on screen for a moment after the cut to the inside (the port's; small).
+
+### Order 51 (estantes), step b. **Result (Nov 22): done, merged to main.**
+
+Built by an Opus builder on `orden/51b` in about 75 minutes on El mostrador's shared pieces (none of them changed); the orchestrator ran `test_all.sh` itself with main merged in: all checks passed.
+
+- Files: `coqui_scenes/lib/src/estantes/` (`estantes_set.dart`, `estantes_places.dart`, `estantes_sprites.dart`, `estantes.dart`), the sheet asset, `coqui/ref/pp/estantes/` (4 states), tests in `coqui_scenes` and `feature_story`.
+- The set: all 4 states equal the JavaScript: 0 of 51,840 pixels differ.
+- Paths: 96 (every draw value with every right/wrong combination: 16, 16 and 64), all to the end, 0 errors; 3,067 rule checks, 0 broken (the frog never behind a grown-up, everybody in view, people 12 px apart, Canelo clear of the frog, don Pepe only on his rung, the frog only on his crate, the ladder never hides don Pepe, at least 70% of each thing he must touch shows).
+- `suelto` acts run in the background and `ya` waits for them. A sprite thing's touch box is its drawn pixels. Don Pepe on the ladder: each bake records which pixels are the ladder's, and only those do not hide him.
+- Frames from the real app: all six plays reach the end.
+- **Bake, over the limit (the content lane's set, as El mostrador's inside states):** 218 to 449 ms the first time, 192 to 238 later, on a busy machine (walls 57 to 74 ms, shelves and ladder 25 to 34, the counter 12.6 though it is out of the picture).
+- New sprites: `docs/proyecto/pixel/port/estantes-sprites.png`.
+
+**For the content lane: 14 acts left OPEN in Los estantes** (marked `// OPEN:` in `estantes.dart`):
+1. 39 start: no place for the box while it is dragged in; and `pepe.entra` (38,138) is 7 rows behind `cola1` (38,145), so the señora would hide him. Don Pepe starts at `pepe.pie`, the box at `caja_grande`.
+2. 39 and 41: no place where a falling bottle breaks; it lands at the nearest free floor spot.
+3. 39 step 9, `cliente`: no place at the shelf for a customer; customers stay at `cola1` and `cola2` and the things fly to their hands.
+4. 40 opening and game: `luis.cajas` (115,188) covers the net `red_b` (92 of its 263 pixels show); Luis stands at `luis.piso`.
+5. 40 step 5 after `tumba`: `luis.piso` is 6 px from `perro.rana` (Luis would stand on Canelo); he stays by the door.
+6. 40 steps 3 to 7, `pone`: no places for the frog and Luis to carry the net; it moves by itself.
+7. 41 step 1, `cuenta`: "the frog hops along the box": he bounces in place and a finger marks each bottle.
+8. 41 step 2, `tiembla`: the ladder is part of the baked set and cannot shake; don Pepe and the bottles shake.
+9. 41 step 2, `pasa`: Luis has no place by abuela's box; the bottle goes from don Pepe's hand into the box.
+10. 41 step 4, `lleva abuela`: no place by the door for a box; it stays and Luis bends to it.
+11. 41 step 5, `cajade`: the shelf should hold "what the boxes need plus one", but the need is drawn at step 5; the shelf starts with 7 bottles and is set to that number without movement when the señor's box comes in.
+12. 41 steps 6 and 7, `niega41`: Luis has no place by the customers' boxes; he lifts a hand and shakes his head where he stands.
+13. 41 step 8, `lleva` señora and señor: a box drawn from above would cross the person like a plank; they bend to their boxes.
+14. 41 step 9: no place for the frog on the way out; Luis leaves with the box and the frog stays.
+Also: the señor at `cola2` (12,149) is half outside the view and what he holds overlaps the señora; the bottle boxes seen from above (about 30 x 14 px) read as long planks; the Needs' spot names (`cajon`, `piso_izq`, `escalera_pie`) and states (`gafas`, the door) do not match the sheet (no story uses them).
 
 ### Orders 54 to 57. La calle (place 5): esquina, parada, tiendas, cruce
 
