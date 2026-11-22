@@ -532,14 +532,15 @@ void main() {
       if (!kIsWeb) expect(n, oldHashes.length);
     });
 
-    test('a scene with old pictures that is not in the registry (A comer) is a scene for ScenePictures', () async {
+    test('a scene with old pictures that is not in the registry is a scene for ScenePictures', () async {
       // the bundle holds its old index, the one rule for an id the registry does not hold (the test scene's too)
       final notInRegistry = {
         for (final k in oldHashes.keys)
           if (!sceneRegistry.containsKey(k.split('/').first))
             k.split('/').first,
       };
-      expect(notInRegistry, contains('comer'));
+      // since A comer (order 40b) every old scene is converted: the set is empty until an old picture is bundled again
+      expect(notInRegistry, isNot(contains('comer')));
       final source = ScenePictures(bundle: testBundle());
       for (final id in notInRegistry) {
         // on the vm every scene's folder is there; in a browser only the sample scene's
