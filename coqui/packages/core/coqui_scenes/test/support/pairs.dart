@@ -10,6 +10,7 @@ import 'fixtures/campo_preview_fixture.dart';
 import 'fixtures/estufa_preview_fixture.dart';
 import 'fixtures/lago_preview_fixture.dart';
 import 'fixtures/nevera_preview_fixture.dart';
+import 'fixtures/comer_preview_fixture.dart';
 import 'fixtures/patio_preview_fixture.dart';
 import 'fixtures/preview_fixture.dart';
 import 'fixtures/sala_preview_fixture.dart';
@@ -72,6 +73,10 @@ List<ReviewPair> estufaPairs() => _pairsOf('estufa', estufaPreviewCases);
 /// The 12 review pairs of cual-nevera, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene nevera reads
 /// them from historia/cuentos/cual-nevera.json).
 List<ReviewPair> neveraPairs() => _pairsOf('nevera', neveraPreviewCases);
+
+/// The 12 review pairs of cual-comer, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene comer reads them
+/// from historia/cuentos/cual-comer.json).
+List<ReviewPair> comerPairs() => _pairsOf('comer', comerPreviewCases);
 
 List<ReviewPair> _pairsOf(
   String scene,
