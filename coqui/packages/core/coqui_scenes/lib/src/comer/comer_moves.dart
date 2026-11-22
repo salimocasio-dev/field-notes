@@ -917,14 +917,12 @@ extension _Moves on Comer {
     final q = _cq,
         d = _hypot(x - 16 - (q['x'] as num), y - 27 - (q['y'] as num));
     if (d < 3) return;
-    List<num> k(List<num> a) => HOPAT['${_round(a[0])},${_round(a[1])}'] ?? a;
-    final o = k([x, y]),
-        f = k([(q['x'] as num) + 16, (q['y'] as num) + 27]),
-        dd = _hypot(o[0] - f[0], o[1] - f[1]);
     await hopTo(
       _round(x - 16),
       _round(y - 27),
-      (jsTruthy(h) ? _plus(h) : math.max(1, math.min(6, (dd / 26).ceil())))
+      (jsTruthy(h)
+              ? _plus(h)
+              : hopCount([(q['x'] as num) + 16, (q['y'] as num) + 27], [x, y]))
           .toInt(),
     );
   }

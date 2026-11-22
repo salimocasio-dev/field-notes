@@ -308,9 +308,19 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
         )
         .map((v) => v.toInt())
         .toList();
-    // comer.js:1237 LUGAR (the frog on the cloth), CAM (views.wide), heartAt [130, 22] (unchanged: on the wall over the
-    // table)
-    LUGAR = {for (final k in sheet.lugar.keys) k: sheet.lugarOf(k, p.e)};
+    // comer.js:1237 LUGAR (the frog on the cloth: the sheet's lugar, its q, as the kitchen's other scenes read it; the
+    // kit's frogAt counts the feet otherwise than comer.js does), CAM (views.wide), heartAt [130, 22] (unchanged: on the
+    // wall over the table)
+    LUGAR = {
+      for (final e in sheet.lugar.entries)
+        e.key: <num>[e.value.frog[0], e.value.frog[1], e.value.scale],
+    };
+    for (final e in sheet.lugar.entries) {
+      final o = e.value.old;
+      if (o != null && (o[0] != e.value.frog[0] || o[1] != e.value.frog[1])) {
+        throw SheetError('the sheet moves LUGAR.${e.key}: port the move');
+      }
+    }
     CAM = {for (final k in sheet.views.keys) k: p.view(k)};
     heartAt = [
       for (final v in const [130, 22]) p.at(1237, v),
@@ -484,6 +494,14 @@ class Comer extends Escena implements SetScene, SetOverSprites, PairPlaces {
       yy++;
     }
     return yy;
+  }
+
+  /// moves line 692: how many hops the frog takes from his feet at [from] to [to] (ranaA with no count given): each new
+  /// place mapped to the old one it stands for (HOPAT), the hops counted on the old distance, about 26 px each, 1 to 6.
+  int hopCount(List<num> from, List<num> to) {
+    List<num> k(List<num> a) => HOPAT['${_round(a[0])},${_round(a[1])}'] ?? a;
+    final o = k(to), f = k(from), dd = _hypot(o[0] - f[0], o[1] - f[1]);
+    return math.max(1, math.min(6, (dd / 26).ceil()));
   }
 
   // comer.js:577 SEAT34 (papá's chair, empty until the end, is the one at the right end), :758 SEAT33
