@@ -21,6 +21,7 @@ void main() {
       'nevera',
       'mostrador',
       'esquina',
+      'tiendas',
     ]);
   });
 
