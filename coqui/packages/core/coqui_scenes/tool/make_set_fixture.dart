@@ -63,6 +63,11 @@ void main(List<String> args) {
       constant: 'mostradorSetRefs',
       what: "El mostrador's baked states, inside and in the street",
     ),
+    'plaza': (
+      file: 'plaza_set_refs.dart',
+      constant: 'plazaSetRefs',
+      what: "El banco de la plaza's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {
