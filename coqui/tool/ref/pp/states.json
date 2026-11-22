@@ -81,5 +81,21 @@
   { "id": "estantes/anillos-0-mesa-0", "kind": "set", "page": "docs/proyecto/pixel/estantes-set.html", "query": "?anillos=0&mesa=0" },
   { "id": "estantes/anillos-1-mesa-0", "kind": "set", "page": "docs/proyecto/pixel/estantes-set.html", "query": "?anillos=1&mesa=0" },
   { "id": "estantes/anillos-0-mesa-1", "kind": "set", "page": "docs/proyecto/pixel/estantes-set.html", "query": "?anillos=0&mesa=1" },
-  { "id": "estantes/anillos-1-mesa-1", "kind": "set", "page": "docs/proyecto/pixel/estantes-set.html", "query": "?anillos=1&mesa=1" }
+  { "id": "estantes/anillos-1-mesa-1", "kind": "set", "page": "docs/proyecto/pixel/estantes-set.html", "query": "?anillos=1&mesa=1" },
+  { "id": "frutas/manana-shut-0-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=manana&puerta=shut&carro=0&surtido=verduras" },
+  { "id": "frutas/manana-shut-0-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=manana&puerta=shut&carro=0&surtido=frutas" },
+  { "id": "frutas/manana-shut-1-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=manana&puerta=shut&carro=1&surtido=verduras" },
+  { "id": "frutas/manana-shut-1-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=manana&puerta=shut&carro=1&surtido=frutas" },
+  { "id": "frutas/manana-open-0-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=manana&puerta=open&carro=0&surtido=verduras" },
+  { "id": "frutas/manana-open-0-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=manana&puerta=open&carro=0&surtido=frutas" },
+  { "id": "frutas/manana-open-1-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=manana&puerta=open&carro=1&surtido=verduras" },
+  { "id": "frutas/manana-open-1-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=manana&puerta=open&carro=1&surtido=frutas" },
+  { "id": "frutas/tarde-shut-0-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=shut&carro=0&surtido=verduras" },
+  { "id": "frutas/tarde-shut-0-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=shut&carro=0&surtido=frutas" },
+  { "id": "frutas/tarde-shut-1-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=shut&carro=1&surtido=verduras" },
+  { "id": "frutas/tarde-shut-1-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=shut&carro=1&surtido=frutas" },
+  { "id": "frutas/tarde-open-0-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=0&surtido=verduras" },
+  { "id": "frutas/tarde-open-0-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=0&surtido=frutas" },
+  { "id": "frutas/tarde-open-1-verduras", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=1&surtido=verduras" },
+  { "id": "frutas/tarde-open-1-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?hora=tarde&puerta=open&carro=1&surtido=frutas" }
 ]

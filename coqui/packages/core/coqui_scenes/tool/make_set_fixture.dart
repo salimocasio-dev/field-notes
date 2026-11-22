@@ -68,6 +68,11 @@ void main(List<String> args) {
       constant: 'estantesSetRefs',
       what: "Los estantes' baked states",
     ),
+    'frutas': (
+      file: 'frutas_set_refs.dart',
+      constant: 'frutasSetRefs',
+      what: "Las frutas' baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {

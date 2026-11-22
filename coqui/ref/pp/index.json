@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 676,
-  "totalBytes": 43494462,
+  "files": 804,
+  "totalBytes": 51167807,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -1802,6 +1802,646 @@
       "path": "frente/door-shut-win-shut-lights-1-sky-storm2/zb.json",
       "bytes": 322,
       "sha256": "ab6e7067817681c6d8c9494b781d19fd1afd4c7aea8a66cfd2ff1ec3e5472b0e"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "575eccd920b411777e22f055e8574bc7506aa8a6a591f65b592d13faef08a95e"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "51a4438a714174e93cebf713151f647e2a1bd6c5b3fa1a9939ab8fd1f3299e20"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/pix.png",
+      "bytes": 10597,
+      "sha256": "125824bbea162dc41d29ee3a74b16255b618677d0e31219985e4d90941d1bc50"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/state.json",
+      "bytes": 976,
+      "sha256": "c5a968eddaf4b9a0a9d9f4c91397294f5a505d7896a1dfe6a6ce12c7fcf0e821"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "39617ac409c5b4b6113b56f2b44d9e44aa5bef5200f864880e57db377784b5a7"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "4e47694321cf15a9460c91a14be4d72fa2b4ee3c45541f286077ada0ebced7a0"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "704564656c33ea6358b50d0eaaee8be46da563c0e5bd5186581fc1ffc3a76638"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "16416c92517dbab371b2981168299bcb925fb9aede20dd2c3cb628e1093185c7"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/pix.png",
+      "bytes": 10565,
+      "sha256": "c291c55d911e240f0fa53f23b5c748192cdd24b816f4d86cb272af52f5731345"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/state.json",
+      "bytes": 980,
+      "sha256": "2ca3ae8e546d429ffad1c979057ca38f054be63fcd8bc38373504ae2d8314076"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "fb5e4f2e6daa22f889da81b347ddefaf049706a2369979a28fb11ec3c62764b9"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "9b31f92aa426ff773097f538e45d2cc9134a3ddccf8774ec0197d1051d18b848"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "7835b888b0a26f7d808cb269130ce3b00d7280138e2f73638ebeead66460399f"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "f285ab584241984c5ec08c28f2cd4833dc2394c46af9711a6c2758f54be5915d"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/pix.png",
+      "bytes": 11939,
+      "sha256": "7e3fae37d7daa005f640cd2920d22bc114cdfbbb6bcacf85fc00f76e426369c5"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/state.json",
+      "bytes": 976,
+      "sha256": "6d5658649b8fb709f6e69790989ea6625abd66e7ed35bb857630e4ac9bbcc191"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "f8aa32714d182fe5295dac801a69023d680dc8f8f3b391ec875aa259357fde3d"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "7a6c9235e2dd1ba7f12af34fe99abd916aea1897ced69f24882332a923a0f3f3"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "80e9cfc5335c9e2a04fdc1bb36a7c7de65b140610dc5bb07e655ab056303e199"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "99a50583c90b87eaca6a507a056f3c7d82f51ed74af87a936d186edfa2c531c9"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/pix.png",
+      "bytes": 11907,
+      "sha256": "1c1b7965ec3ec39afdd73dde7cf39c8f0349fde92c41cca6259c2a52eb87717f"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/state.json",
+      "bytes": 980,
+      "sha256": "ba6be2c91b7cbc78c96186d2c9ee963d5af40c5509b2f46242c1ba99c9ba3b1b"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "02c82a0078e7b19385ab97769159ab425546b9750049a434238f13e74f7d7d7d"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "defac8ebf8043e1925e2804e704137abc23959791962166554a13189ac34e035"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "9da2be5656d4c2bafd670a22388c7514780ffb1fbc899500d829a4f5d8f37c98"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "f4c4e1abc6908d006d005e57110e8ab9720f25485e727618edef6350ee6fe4f8"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/pix.png",
+      "bytes": 10107,
+      "sha256": "1670994351b9eb77784e02250cec91b567da254fab8153a55185c23f110c9215"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/state.json",
+      "bytes": 976,
+      "sha256": "d96b8b975e8ef0adbfa6e2a0be5f6969d7b4f6d58ef3974306362cad2d4ba6e5"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "b9ba0d3f4fcf221f77949338f5fbf8685d4f8cb71918cd030c0414b002585acb"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "9de1d09ccb68ab3683d74de7752b564786e7cb7e26caa006950b710740b2e5aa"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "143d31b79f657c435f23f2024578f220f37dac04190436a47cd5bcd931a0efff"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "640ce7a7afc478024fab0be812f0d5878eac865df1280200be9d6de13141aca7"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/pix.png",
+      "bytes": 10082,
+      "sha256": "1c2ab378031da77a6e4b4e00921ab953bbc19c5ddc1d680993a1a55652aef010"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/state.json",
+      "bytes": 980,
+      "sha256": "0dd5aa09392f8f7d641d5a07c0b4a44289345c2de4aaed739feaf546ac73ed8a"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "04ee23907713dd5139dbabb77242f60531f81f45cfc34a9d6e7e0550036d9267"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "d97e1e8cb0d6fa2f1f71c9a5be6072a08f03e36ee3cc8b2cd89c1781666852f9"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "33c8b8a4e912125e5e3dae26d4d0b311b199b0a818e44e819de32bb74e8fa117"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "33b13539c59f91a934bc3d1765143cdbffb1e5dc15ad2e926ab17a0117bf46ec"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/pix.png",
+      "bytes": 11450,
+      "sha256": "d82c2751301a77feddef7b14af25200ecc3c2860ac185b9c46fc8c44bf62d6ee"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/state.json",
+      "bytes": 976,
+      "sha256": "4354500ff9d95c4cbc91372ac8ace0dd979696dd1ca549bf90bf727bdb899e55"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "14d0bc4f44493defb053270bd470bdf002da6acc72e7ffbe502f20d356b2d168"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "f81ee4f7d7100e1944df16444c1de0ae782240fab4dae49b6aad5b4dd40c2f2b"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "c5924cfb71378847d8196ad61800b41885eb67589a2875b5cc5b6b13e6cb00fc"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "a2cc6c38f76afdf7819d0de72a151b49488af37fec6b9eb06da0c51b7a9ddde6"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/pix.png",
+      "bytes": 11427,
+      "sha256": "cd390272e7e23fc9ad720abcf387d036ec6835a6ab0fb7f4f45f967bfb166d9a"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/state.json",
+      "bytes": 980,
+      "sha256": "a547691ab26e94b7cca77de06d456f07b1c68662ce32edd0eff213768142b731"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "9fe4ee71bca5c19fc5d906efe5e9af230dbc6ef12661a43f3c2389cec7ce804e"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "d0e50f2ba9410268327f5f35de9be7ab273a9efcaaeebcc82adf17b75ded82a8"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "da5fff4f891778ad802ee1ddf869d15bcc217b4107c7e798ca858ecb7c138c7e"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "a1bfa237d43471e74e8f7589cc3926a1271a75d37bb41a21c430373a29f6c506"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/pix.png",
+      "bytes": 10679,
+      "sha256": "43a44302436990d821f852d8f165e885c0e842421d9659aab04dc140069d4e34"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/state.json",
+      "bytes": 974,
+      "sha256": "5c6a326997b8cc96eb6712a89339e799cfeedbe137c4df9017403081f6fc5066"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "39617ac409c5b4b6113b56f2b44d9e44aa5bef5200f864880e57db377784b5a7"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "4e47694321cf15a9460c91a14be4d72fa2b4ee3c45541f286077ada0ebced7a0"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "9b1388c4ca7db9c15374ab2c664a23690d9a1cbec60f7dc477346faa1e520770"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "fc095edeec77763c2c0091ecb8ebd1ab359da53492edc1e43c6c62ba56faa02c"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/pix.png",
+      "bytes": 10642,
+      "sha256": "fb0665dd9669513564fd3ab51edf4bce87af7f696319ea52c3f2b88386ac2751"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/state.json",
+      "bytes": 978,
+      "sha256": "ec613add6afee31f66cb9106f97f3f959725dec7632757ac7a8487acd73ee659"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "fb5e4f2e6daa22f889da81b347ddefaf049706a2369979a28fb11ec3c62764b9"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "9b31f92aa426ff773097f538e45d2cc9134a3ddccf8774ec0197d1051d18b848"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "11213736b47eb9e12d25c9362df1347c961e96c17da03fe00b8f25a4bfb381fd"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "7dbddf7a73ed78b5e0c535b056ce047785fba66f8d30a57cad8192b648995143"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/pix.png",
+      "bytes": 12023,
+      "sha256": "3410cf3dbb30bcb0a9ede16956cc1f3bb5440a26bd8ec3b32bdd126f96b34948"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/state.json",
+      "bytes": 974,
+      "sha256": "aa337f800c5a57791ee2c7f0fac93ddf898b0069128a6c39729192ee690c87bc"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "f8aa32714d182fe5295dac801a69023d680dc8f8f3b391ec875aa259357fde3d"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "7a6c9235e2dd1ba7f12af34fe99abd916aea1897ced69f24882332a923a0f3f3"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "10957d2904f81d4974be119a57f5b27cfd5b18c513db70d62fb13a214b2d2d49"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "3545d55cacd7ae1139c8bd1f46db0a2beb068c76b79389e4eb6fa35bf7a35b06"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/pix.png",
+      "bytes": 11994,
+      "sha256": "393db84ddabf6ab20a5c66f53fc932ae39ab2f0a60807dd00488a6e393a2d547"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/state.json",
+      "bytes": 978,
+      "sha256": "753ca6a994aa9a3d7e229fc0e70172528d3a1644cd893d1656cceb791159a426"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "02c82a0078e7b19385ab97769159ab425546b9750049a434238f13e74f7d7d7d"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "defac8ebf8043e1925e2804e704137abc23959791962166554a13189ac34e035"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "842e91cd6336e7bc72d30b72ea3bda129d8614e67bbf83ae4403d9ce7b4ad5ef"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "7d504c81b0c0f4f31e05f389519d155920b519aeb810212a83bf05e9b62c14c1"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/pix.png",
+      "bytes": 10187,
+      "sha256": "8e3db26d6c9a892d0228c123dff31a456a8de80f8fabeb70c88ad8aca72f872d"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/state.json",
+      "bytes": 974,
+      "sha256": "153ab0371a2854ecbbad3c2afb3714c5e4976bf583008805a5c3f48c557ab6c2"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "b9ba0d3f4fcf221f77949338f5fbf8685d4f8cb71918cd030c0414b002585acb"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "9de1d09ccb68ab3683d74de7752b564786e7cb7e26caa006950b710740b2e5aa"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "badfb7430107d78a95e3922d089bfc2de279858bf1decdc0126b8bd08dc77479"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "a341f1b0aa161bdf60d6e9f8fae05fc17abfdfb64f35c536b384850bb7966808"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/pix.png",
+      "bytes": 10163,
+      "sha256": "ebad39aa0bcbf7224aeac65a4693fb17b9567bc80817f0c3641b12302a9168ae"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/state.json",
+      "bytes": 978,
+      "sha256": "1bd4704aedb2cac86edb9074ed70db34f48d7292332cb8b3f9572a7f4e94a37c"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "04ee23907713dd5139dbabb77242f60531f81f45cfc34a9d6e7e0550036d9267"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "d97e1e8cb0d6fa2f1f71c9a5be6072a08f03e36ee3cc8b2cd89c1781666852f9"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "cb0215408281bf3c87acb2f7253e59d2f401a72a48f50b067b1247f24ff65785"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "7feaeb385bcded065fbe4c1bff72baeaca408dec5ffb4324d26ce661f03ae667"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/pix.png",
+      "bytes": 11530,
+      "sha256": "5debbcb256f62314c0788d12787e62269ac4e8e8a82b208bdb1c67bdc0958800"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/state.json",
+      "bytes": 974,
+      "sha256": "83d3b9debce370a84a06df7993d2a2c238fe429893b78df3ae8a40a92ea40958"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "14d0bc4f44493defb053270bd470bdf002da6acc72e7ffbe502f20d356b2d168"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "f81ee4f7d7100e1944df16444c1de0ae782240fab4dae49b6aad5b4dd40c2f2b"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "45ad334af7fca4d2fe682720e84cd8ec6c922eddca968dc0a1c67945ac6e4888"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "2510b47cc1b73e4b54e31261112362a08e39b1fecb2fb331eb718439dcd64d3c"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/pix.png",
+      "bytes": 11509,
+      "sha256": "8d1a0b9eda8169657094d3504caba198179cbcaf5f328ce02ec51442928ffa5d"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/state.json",
+      "bytes": 978,
+      "sha256": "49ccf6a93378974d22c58d8250f3f2e14fba2fa1e762d67eba99ab0fecf8a7fb"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "9fe4ee71bca5c19fc5d906efe5e9af230dbc6ef12661a43f3c2389cec7ce804e"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "d0e50f2ba9410268327f5f35de9be7ab273a9efcaaeebcc82adf17b75ded82a8"
     },
     {
       "path": "island/calls.md",

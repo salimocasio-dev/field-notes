@@ -45,6 +45,9 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
 - Los estantes (order 51b) the same way: `test/fixtures/estantes/`, `test/estantes_stories_test.dart`,
   `tool/estantes_paths_test.dart` (96 paths), `test/support/estantes_rules.dart`, `estantes_paths.dart` (it uses
   `drawsOf` and `letterPlan` of `mostrador_paths.dart`).
+- Las frutas (order 52b) the same way: `test/fixtures/frutas/`, `test/frutas_stories_test.dart`, `tool/frutas_paths_test.dart`
+  (144 paths), `test/support/frutas_rules.dart`, `frutas_paths.dart` (it uses `drawsOf`, `letterPlan` and `decisionLetters`
+  of `mostrador_paths.dart`).
 - A set step's positions go through the scene's `remap` (`remapPositions`): every map with a number `x` and `y`, and, since order 33b, where the answer cards stand (`respEn: [x, y]`, h-camino beats.5).
 - A change to the runner that moves any time, sound, clip, step or draw by one fails the differential test.
 - The end screen's "Next story" is the one place the runner differs from juego.js on purpose: juego.js shows it for any `next` (`!!(S.next&&!OIR)`), the runner only when `next` is a story the course names (`course.meta(next) != null`), because a story the course does not name is no story of the app (a staged one: coqui/AGENTS.md, "Stories staged by another session"); then the end screen is that of a story with no `next`. The recorded runs hold no end buttons (`ending.screen` only), so the comparison does not see this; `test/differential_test.dart` ("the end screen of the recorded runs") reads `view.foot` of the real tree's runs (`play(view:)`, `compareRun(view:)`), and the story, screen and Listen tests name the stories a test course has (`TestCourse(stories:)`, `meta`).
