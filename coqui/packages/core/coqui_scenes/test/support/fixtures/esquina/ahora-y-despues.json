@@ -1,0 +1,726 @@
+{
+ "id": "ahora-y-despues",
+ "title": "Ahora y después",
+ "place": "La calle",
+ "scene": "esquina",
+ "next": "para-donde-vas",
+ "goal": "Send the right one through the one-lane roadwork first with the flags, so the fresh cement stays smooth for the frog's and Luis's prints: a wrong one backs up and leaves a wheel track in it.",
+ "stake": {
+  "thing": "cemento",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "viene",
+  "va",
+  "ahora",
+  "después"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "carro",
+  "guagua",
+  "bicicleta",
+  "calle",
+  "esquina",
+  "cuidado",
+  "listo",
+  "¿qué es esto?",
+  "¿cuál?",
+  "me gusta",
+  "mira",
+  "tú",
+  "tengo sed",
+  "agua",
+  "quiero",
+  "toma",
+  "gracias",
+  "casa"
+ ],
+ "also_heard": [
+  "obrero",
+  "arregla",
+  "banderas"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "c50_obrero_arregla": {
+   "who": "narr",
+   "text": "Coquí y Luis están en la esquina. Un obrero arregla la calle."
+  },
+  "c50_obrero_cuidado": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: ¡Cuidado, Coquí! Mira."
+  },
+  "p_cq_que_es_esto": {
+   "who": "tu",
+   "text": "¿Qué es esto?",
+   "tu_turno": [
+    {
+     "palabra": "¿qué es esto?",
+     "formas": [
+      "¿qué es esto?",
+      "que es esto"
+     ]
+    }
+   ]
+  },
+  "c50_obrero_cemento": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Esto es cemento. No está listo."
+  },
+  "c50_viene_carro_guagua": {
+   "who": "narr",
+   "text": "Viene un carro y viene la guagua."
+  },
+  "c50_cual_ahora": {
+   "who": "narr",
+   "text": "¿Cuál va ahora?"
+  },
+  "c50_y_despues_guagua": {
+   "who": "narr",
+   "text": "Y después va la guagua."
+  },
+  "c50_viene_bici": {
+   "who": "narr",
+   "text": "Ahora viene una bicicleta."
+  },
+  "c50_y_despues_carro": {
+   "who": "narr",
+   "text": "Y después va el carro."
+  },
+  "c50_obrero_banderas": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Tengo sed. Quiero agua. Toma las banderas, Coquí."
+  },
+  "c50_cq_gracias": {
+   "who": "tu",
+   "text": "¡Gracias!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias"
+     ]
+    }
+   ]
+  },
+  "c50_espera": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: ¡Espera, Coquí!"
+  },
+  "c50_obrero_listo": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Ahora está listo. Ahora tú, Coquí."
+  },
+  "c50_y_despues_tu": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Y después tú, Luis."
+  },
+  "c50_obrero_gusta": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Mira. ¿Te gusta?"
+  },
+  "c43_cq_me_gusta": {
+   "who": "tu",
+   "text": "¡Sí, me gusta!",
+   "tu_turno": [
+    {
+     "palabra": "me gusta",
+     "formas": [
+      "me gusta"
+     ]
+    }
+   ]
+  },
+  "c50_viene_carro_casa": {
+   "who": "narr",
+   "text": "Viene un carro. Coquí y Luis van a casa."
+  },
+  "c50_ob_a_carro_guagua": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Ahora va el carro. Después va la guagua."
+  },
+  "c50_ob_l_carro_guagua": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: La guagua va después. Ahora va el carro."
+  },
+  "c50_no_carro_guagua": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: No. Ahora va el carro. Después va la guagua."
+  },
+  "c50_ob_a_carro_bicicleta": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Ahora va el carro. Después va la bicicleta."
+  },
+  "c50_ob_l_carro_bicicleta": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: La bicicleta va después. Ahora va el carro."
+  },
+  "c50_no_carro_bicicleta": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: No. Ahora va el carro. Después va la bicicleta."
+  },
+  "c50_ob_a_guagua_carro": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Ahora va la guagua. Después va el carro."
+  },
+  "c50_ob_l_guagua_carro": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: El carro va después. Ahora va la guagua."
+  },
+  "c50_no_guagua_carro": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: No. Ahora va la guagua. Después va el carro."
+  },
+  "c50_ob_a_guagua_bicicleta": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Ahora va la guagua. Después va la bicicleta."
+  },
+  "c50_ob_l_guagua_bicicleta": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: La bicicleta va después. Ahora va la guagua."
+  },
+  "c50_no_guagua_bicicleta": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: No. Ahora va la guagua. Después va la bicicleta."
+  },
+  "c50_ob_a_bicicleta_carro": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Ahora va la bicicleta. Después va el carro."
+  },
+  "c50_ob_l_bicicleta_carro": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: El carro va después. Ahora va la bicicleta."
+  },
+  "c50_no_bicicleta_carro": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: No. Ahora va la bicicleta. Después va el carro."
+  },
+  "c50_ob_a_bicicleta_guagua": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: Ahora va la bicicleta. Después va la guagua."
+  },
+  "c50_ob_l_bicicleta_guagua": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: La guagua va después. Ahora va la bicicleta."
+  },
+  "c50_no_bicicleta_guagua": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: No. Ahora va la bicicleta. Después va la guagua."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana",
+    "obra": 1
+   }
+  },
+  {
+   "act": "cemento",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c50_obrero_arregla",
+  "c50_obrero_cuidado",
+  {
+   "act": "gesto",
+   "quien": "obrero",
+   "que": "mira",
+   "a": "cemento"
+  },
+  {
+   "set": {
+    "twinkle": "cemento"
+   }
+  },
+  "p_cq_que_es_esto",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "c50_obrero_cemento",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "pie"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "llega",
+   "k": "carro",
+   "color": "rojo",
+   "a": "carril_a",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "k": "guagua",
+   "a": "carril_b",
+   "suelto": 1
+  },
+  "c50_viene_carro_guagua",
+  {
+   "act": "ya"
+  },
+  "c50_ob_a_carro_guagua",
+  {
+   "ask": "carro",
+   "lead": [],
+   "line": "c50_cual_ahora",
+   "then": [
+    "c50_y_despues_guagua",
+    {
+     "act": "sigue",
+     "k": "guagua"
+    }
+   ],
+   "after": [
+    {
+     "act": "paleta",
+     "a": "carril_a"
+    },
+    {
+     "act": "sigue",
+     "k": "carro"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "llega",
+   "k": "bicicleta",
+   "a": "carril_a",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "k": "carro",
+   "color": "azul",
+   "a": "carril_b",
+   "suelto": 1
+  },
+  "c50_viene_bici",
+  {
+   "act": "ya"
+  },
+  "c50_ob_a_bicicleta_carro",
+  {
+   "ask": "bicicleta",
+   "lead": [],
+   "line": "c50_cual_ahora",
+   "then": [
+    "c50_y_despues_carro",
+    {
+     "act": "sigue",
+     "k": "carro"
+    }
+   ],
+   "after": [
+    {
+     "act": "paleta",
+     "a": "carril_a"
+    },
+    {
+     "act": "bocina",
+     "k": "bicicleta"
+    },
+    {
+     "act": "sigue",
+     "k": "bicicleta"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "obrero",
+   "que": "bebe"
+  },
+  "c50_obrero_banderas",
+  "c50_cq_gracias",
+  {
+   "act": "banderas"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "reparte": [
+    "ua",
+    "va",
+    "wa"
+   ],
+   "options": [
+    "carro",
+    "guagua",
+    "bicicleta"
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "na",
+   "options": [
+    "$ua",
+    "$va"
+   ],
+   "other": "la"
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "a",
+    "l"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$ua",
+    "$va"
+   ],
+   "pick": "$na",
+   "tests": "ahora",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "llega",
+     "k": "$ua",
+     "a": "carril_a",
+     "suelto": 1
+    },
+    {
+     "act": "llega",
+     "k": "$va",
+     "a": "carril_b",
+     "suelto": 1
+    },
+    {
+     "act": "ya"
+    },
+    "c50_ob_$oa_$na_$la"
+   ],
+   "line": "c50_ob_$oa_$na_$la",
+   "right": [
+    {
+     "act": "bandera",
+     "a": "$na"
+    },
+    {
+     "act": "sigue",
+     "k": "$na"
+    },
+    {
+     "act": "sigue",
+     "k": "$la"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "bandera",
+     "a": "$x"
+    },
+    {
+     "act": "atras50",
+     "k": "$x",
+     "suelto": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "obrero",
+     "que": "silba"
+    },
+    "c50_espera",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "cemento",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "cemento",
+       "n": 1
+      }
+     ]
+    },
+    "c50_no_$na_$la"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "nb",
+   "options": [
+    "$va",
+    "$wa"
+   ],
+   "other": "lb"
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "a",
+    "l"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$va",
+    "$wa"
+   ],
+   "pick": "$nb",
+   "tests": "ahora",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "llega",
+     "k": "$va",
+     "a": "carril_a",
+     "suelto": 1
+    },
+    {
+     "act": "llega",
+     "k": "$wa",
+     "a": "carril_b",
+     "suelto": 1
+    },
+    {
+     "act": "ya"
+    },
+    "c50_ob_$ob_$nb_$lb"
+   ],
+   "line": "c50_ob_$ob_$nb_$lb",
+   "right": [
+    {
+     "act": "bandera",
+     "a": "$nb"
+    },
+    {
+     "act": "sigue",
+     "k": "$nb"
+    },
+    {
+     "act": "sigue",
+     "k": "$lb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "bandera",
+     "a": "$x"
+    },
+    {
+     "act": "atras50",
+     "k": "$x",
+     "suelto": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "obrero",
+     "que": "silba"
+    },
+    "c50_espera",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "cemento",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "cemento",
+       "n": 1
+      }
+     ]
+    },
+    "c50_no_$nb_$lb"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  "c50_obrero_listo",
+  {
+   "act": "ir",
+   "a": "cemento"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "huellas",
+     "n": 3,
+     "suelto": 1
+    },
+    "c50_y_despues_tu",
+    {
+     "act": "ya"
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "huellas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "huellas",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c50_obrero_gusta",
+  "c43_cq_me_gusta",
+  {
+   "act": "llega",
+   "k": "carro",
+   "a": "carril_a"
+  },
+  "c50_viene_carro_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c50_obrero_arregla",
+  "c50_obrero_cuidado",
+  "p_cq_que_es_esto",
+  "c50_obrero_cemento",
+  "c50_viene_carro_guagua",
+  "c50_ob_a_carro_guagua",
+  "c50_cual_ahora",
+  "c50_y_despues_guagua",
+  "c50_viene_bici",
+  "c50_ob_a_bicicleta_carro",
+  "c50_y_despues_carro",
+  "c50_obrero_banderas",
+  "c50_cq_gracias",
+  "c50_ob_a_guagua_carro",
+  "c50_obrero_listo",
+  "c50_y_despues_tu",
+  "c50_obrero_gusta",
+  "c43_cq_me_gusta",
+  "c50_viene_carro_casa"
+ ]
+}
