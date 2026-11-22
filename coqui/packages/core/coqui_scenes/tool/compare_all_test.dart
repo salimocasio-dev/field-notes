@@ -2,7 +2,7 @@
 // pictures) against the Dart frame, on the vm, as test/preview_test.dart (test/balcon_preview_test.dart) does for the
 // fixture's few:
 //
-//   COQUI_PREVIEW_DIR=<--out of preview_shots.mjs> COQUI_REPORT_DIR=<dir> [COQUI_SCENE=balcon|sala|patio|camino|campo|lago|banco|estufa|nevera] flutter test tool/compare_all_test.dart
+//   COQUI_PREVIEW_DIR=<--out of preview_shots.mjs> COQUI_REPORT_DIR=<dir> [COQUI_SCENE=balcon|sala|patio|camino|campo|lago|banco|mesa|estufa|nevera] flutter test tool/compare_all_test.dart
 //
 // COQUI_SCENE is the scene the pictures are of (frente when not set); the report is preview-all.vm.txt for El frente,
 // preview-all-<scene>.vm.txt for another.
@@ -20,6 +20,7 @@ import 'package:coqui_scenes/src/estufa/estufa.dart';
 import 'package:coqui_scenes/src/frente/frente.dart';
 import 'package:coqui_scenes/src/lago/lago.dart';
 import 'package:coqui_scenes/src/nevera/nevera.dart';
+import 'package:coqui_scenes/src/mesa/mesa.dart';
 import 'package:coqui_scenes/src/patio/patio.dart';
 import 'package:coqui_scenes/src/sala/sala.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -33,6 +34,7 @@ import '../test/support/channels.dart';
 import '../test/support/estufa_preview_remap.dart';
 import '../test/support/lago_preview_remap.dart';
 import '../test/support/nevera_preview_remap.dart';
+import '../test/support/mesa_preview_remap.dart';
 import '../test/support/patio_preview_remap.dart';
 import '../test/support/preview_remap.dart';
 import '../test/support/report.dart';
@@ -99,6 +101,11 @@ void main() {
       ),
       Banco k => bancoPreviewRemapW(
         bancoPreviewBaseW(k.fresh(const {}), w),
+        k,
+        story: story,
+      ),
+      Mesa k => mesaPreviewRemapW(
+        mesaPreviewBaseW(k.fresh(const {}), w),
         k,
         story: story,
       ),

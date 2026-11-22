@@ -36,6 +36,9 @@ String lagoSheetText() => _sheetText('lago');
 /// The text of El banco's sheet, read from the file.
 String bancoSheetText() => _sheetText('banco');
 
+/// The text of La mesa's sheet, read from the file.
+String mesaSheetText() => _sheetText('mesa');
+
 /// The text of La estufa's sheet, read from the file.
 String estufaSheetText() => _sheetText('estufa');
 

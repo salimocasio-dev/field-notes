@@ -10,6 +10,7 @@
 //                                                test/support/fixtures/campo_set_refs.dart (El campo),
 //                                                test/support/fixtures/lago_set_refs.dart (El lago),
 //                                                test/support/fixtures/banco_set_refs.dart (El banco),
+//                                                test/support/fixtures/mesa_set_refs.dart (La mesa),
 //                                                test/support/fixtures/estufa_set_refs.dart (La estufa) and
 //                                                test/support/fixtures/nevera_set_refs.dart (La nevera)
 //   dart run tool/make_set_fixture.dart --check  fails when a file is not what coqui/ref/pp/<id>/ gives
@@ -60,6 +61,11 @@ void main(List<String> args) {
       constant: 'bancoSetRefs',
       what: "El banco's reached baked states",
     ),
+    'mesa': (
+      file: 'mesa_set_refs.dart',
+      constant: 'mesaSetRefs',
+      what: "La mesa's reached baked states, and the still of El colmado's stall under cocina.no",
+    ),
     'estufa': (
       file: 'estufa_set_refs.dart',
       constant: 'estufaSetRefs',
@@ -69,6 +75,11 @@ void main(List<String> args) {
       file: 'nevera_set_refs.dart',
       constant: 'neveraSetRefs',
       what: "La nevera's reached baked states",
+    ),
+    'mostrador': (
+      file: 'mostrador_set_refs.dart',
+      constant: 'mostradorSetRefs',
+      what: "El mostrador's baked states, inside and in the street",
     ),
   };
   var stale = 0;

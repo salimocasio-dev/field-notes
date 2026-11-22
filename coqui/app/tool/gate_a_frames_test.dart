@@ -680,6 +680,12 @@ Future<Map<String, dynamic>> _play(
   }
   final rec = _Recorder(tester, dir);
   final app = TestApp(tester);
+  // the preview content in the worktree (coqui/app/assets/previa/, made by coqui/tool/make_previa.py), as the app bundles
+  // it: a story the site does not list yet plays from there (order 50b: El colmado's stories)
+  app.previa = (path) async {
+    final f = File('$repoRoot/coqui/app/assets/previa/$path');
+    return f.existsSync() ? f.readAsStringSync() : null;
+  };
   await app.open(
     stored: seed('vacio'),
     location: '/cuento/$story',

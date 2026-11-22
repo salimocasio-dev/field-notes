@@ -18,6 +18,7 @@ import 'support/fixtures/campo_sheet.dart';
 import 'support/fixtures/estufa_sheet.dart';
 import 'support/fixtures/frente_sheet.dart';
 import 'support/fixtures/lago_sheet.dart';
+import 'support/fixtures/mesa_sheet.dart';
 import 'support/fixtures/nevera_sheet.dart';
 import 'support/fixtures/patio_sheet.dart';
 import 'support/fixtures/ref_pp.dart';
@@ -117,6 +118,10 @@ void main() {
 
   test('the sheet fixture is the text of El banco\'s sheet', () {
     expect(bancoSheetJson, bancoSheetText());
+  });
+
+  test('the sheet fixture is the text of La mesa\'s sheet', () {
+    expect(mesaSheetJson, mesaSheetText());
   });
 
   test('the sheet fixture is the text of La estufa\'s sheet', () {

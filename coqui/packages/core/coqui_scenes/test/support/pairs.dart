@@ -4,6 +4,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 
 import 'fixtures/balcon_preview_fixture.dart';
 import 'fixtures/banco_preview_fixture.dart';
+import 'fixtures/mesa_preview_fixture.dart';
 import 'fixtures/camino_preview_fixture.dart';
 import 'fixtures/campo_preview_fixture.dart';
 import 'fixtures/estufa_preview_fixture.dart';
@@ -118,3 +119,7 @@ List<LevelItem> frenteLevelItems() => [
   for (final q in jsonDecode(frenteLevelJson) as List)
     LevelItem.fromJson(q as Map<String, dynamic>),
 ];
+
+/// The 12 review pairs of cual-mesa, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene mesa reads them
+/// from historia/cuentos/cual-mesa.json).
+List<ReviewPair> mesaPairs() => _pairsOf('mesa', mesaPreviewCases);

@@ -13,6 +13,7 @@
 // - On the real El campo (order 34b): the same, for its five files.
 // - On the real El lago (order 35b): the same, for its five files.
 // - On the real El banco (order 36b): the same, for its six files.
+// - On the real La mesa (order 37b): the same, for its four files.
 // - On the real La estufa (order 38b): the same, for its four files.
 // - On the real La nevera (order 39b): the same, for its four files.
 import 'dart:convert';
@@ -81,6 +82,9 @@ final Map<String, String?> lagoWhole = {}, lagoTimeless = {};
 
 /// Each banco run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
 final Map<String, String?> bancoWhole = {}, bancoTimeless = {};
+
+/// Each mesa run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> mesaWhole = {}, mesaTimeless = {};
 
 /// Each estufa run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
 final Map<String, String?> estufaWhole = {}, estufaTimeless = {};
@@ -942,6 +946,85 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in estufaWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${estufaTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real La mesa (order 37b): the kitchen is built round the old picture, so its places keep their screen numbers
+  // but the ones the sheet moves (`moves`: the seats stepped down the table, SD, and what stands at each place; the
+  // doorway, PUERTA, and the walkway behind the chairs, PASO; the places in front of each seat for the frog, Luis,
+  // abuela and Canelo; the things on the counter and the stove; the answer cards per story; `remap`: h-mesa's sitters on
+  // their chairs). Every walk of the frog takes its old hops (the sheet's `hops` is empty since its fix after the
+  // STOP of order 37b: rana.2 at 118,169). The scene draws its random numbers (elige25) from the runner's one source: the draws are the old ones. The
+  // state line writes where each person is (`gente=k@x,y`), which `placeless` leaves out.
+  group('the recorded runs, on the real La mesa (order 37b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final mesa = {
+      for (final r in runs)
+        if (r['scene'] == 'mesa') r['story'] as String,
+    };
+    test('the four files of La mesa', () {
+      expect(mesa, {'la-mesa', 'la-cuchara', 'tengo-hambre', 'h-mesa'});
+    });
+    for (final s in mesa) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('mesa'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              placeless(forTimeless(c.committed)),
+              placeless(forTimeless(c.trace)),
+            );
+            mesaTimeless['$s $plan'] = timeless;
+
+            expect(
+              timeless,
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            // every walk of the frog takes its old hops (the sheet's round 4: the man of el-bebe-duerme 1 px left)
+            // every walk of the frog takes its old hops
+            expect(hops(c.committed), hops(c.trace), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            mesaWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/mesa-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in mesaWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${mesaTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
         );
     });
   });

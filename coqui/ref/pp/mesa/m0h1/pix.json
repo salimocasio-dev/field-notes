@@ -1,0 +1,11 @@
+{
+  "file": "pix.bin",
+  "width": 240,
+  "height": 216,
+  "type": "uint32",
+  "endian": "little",
+  "layout": "row-major, index = y * width + x",
+  "note": "pixels 0xAABBGGRR; the four bytes of one pixel are R, G, B, A in memory order; alpha 0 where nothing was drawn",
+  "bytes": 207360,
+  "sha256": "6da4b9eb0b66913720e5bd306dd2e10b0a9a6460eac0ee54ccd42c9e225447ff"
+}
