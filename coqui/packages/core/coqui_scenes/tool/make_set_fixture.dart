@@ -68,6 +68,11 @@ void main(List<String> args) {
       constant: 'esquinaSetRefs',
       what: "La esquina's baked states",
     ),
+    'tiendas': (
+      file: 'tiendas_set_refs.dart',
+      constant: 'tiendasSetRefs',
+      what: "Las tiendas' baked states, the row and story 55's buildings",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {
