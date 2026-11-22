@@ -28,7 +28,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 54b: `esquina`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 54b: `esquina`; order 56b: `tiendas`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
   `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
@@ -366,6 +366,21 @@ set ported call for call from `<id>-set.html`, every place from the content lane
   leads; boxes and touches after each); in feature_story `esquina_stories_test` and `tool/esquina_paths_test.dart` (every
   path; the rules: `test/support/esquina_rules.dart`). Frames for looking: `COQUI_OUT=DIR flutter test
   tool/esquina_frames_test.dart`. Bake: `?page=bake&scene=esquina`, `node tool/bake_time.mjs --scene esquina`.
+
+## Las tiendas (order 56b, place 5's third scene)
+
+- `lib/src/tiendas/`: `tiendas_set.dart` (tiendas-set.html; two pictures with their own origin: `fila` tiendas, the row of
+  four fronts, and `fila` altos, story 55's two buildings, built on a second engine and handed over as El mostrador's
+  street; 14 states in `coqui/ref/pp/tiendas/`, 0 pixels differ), `tiendas_places.dart` (the sheet and its part `altos`;
+  a building's box by `lado`), `tiendas_sprites.dart` (the stroller, the held things, the tins, the nurse's coat, the
+  painter, the cloud; `handOf` / `withHeld`), `tiendas.dart` (`class Tiendas extends Escena implements SetScene,
+  SetOverSprites`, as La esquina: people and things by world point, front.plane, the frog never behind a grown-up; a door
+  that opens is La calle's doorX drawn on a picture of its own and kept where it shows through the doorway, a door that
+  rattles is the set's own door moved a column; `CAM.wide` is the view of the story's picture; `OPEN:` comments).
+- **Tests**: `tiendas_set_test`, `tiendas_acts_test`; in feature_story `tiendas_stories_test` and
+  `tool/tiendas_paths_test.dart` (the rules: `test/support/tiendas_rules.dart`). The sprite sheet for the content lane:
+  `flutter test tool/tiendas_sprites_test.dart` writes `docs/proyecto/pixel/port/tiendas-sprites.png`. Bake:
+  `?page=bake&scene=tiendas`, `node tool/bake_time.mjs --scene tiendas`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 
