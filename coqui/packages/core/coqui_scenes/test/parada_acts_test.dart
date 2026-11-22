@@ -242,6 +242,22 @@ void main() {
           Future<void> walk(Object? steps) async {
             if (steps is! List) return;
             for (final st in steps) {
+              // a line: its speaker talks (the chofer leans out while he does)
+              if (st is String) {
+                final who =
+                    ((story['clips'] as Map)[st] as Map?)?['habla'] as String?;
+                if (who != null) {
+                  host.TALK = who;
+                  await check('$st said');
+                  expect(
+                    scene.talkAt(who, host.W),
+                    isNotNull,
+                    reason: '$id: $st, $who has no place to talk from',
+                  );
+                  host.TALK = null;
+                }
+                continue;
+              }
               if (st is! Map<String, dynamic>) continue;
               if (st['set'] is Map) {
                 host.W.addAll((st['set'] as Map).cast<String, dynamic>());

@@ -608,13 +608,10 @@ class Parada extends Escena implements SetScene, SetOverSprites {
           ),
         );
       }
-      // the chofer: at his window while his guagua stands at parada1 (but in story 51's game and ending: "neither
-      // chofer leans out"), leaning out while he speaks or does something
+      // the chofer leans out while he speaks or does something (the rest of the time he is not seen: leaning out at the
+      // sheet's spot `chofer` he covers the front door, its arrow and its button, which the frog must touch)
       final ch = w['chofer'] as String?;
-      final quiet = _n(w['historia']) == 51 && jsTruthy(w['tarjeta']);
-      if (ch != null ||
-          talk == 'chofer' ||
-          (v['para'] == 1 && v['spot'] == 'parada1' && !quiet)) {
+      if (ch != null || talk == 'chofer') {
         final pose = ch ?? 'idle';
         final open = talk == 'chofer' && a % 2 == 1;
         final s = _spr('chofer$pose$open', () => mkChofer(pose, open: open));
@@ -1001,6 +998,7 @@ class Parada extends Escena implements SetScene, SetOverSprites {
 
   int? _boxesF;
   Map<String, dynamic>? _boxesW;
+  String? _boxesTalk;
   Map<String, List<num>?> _boxes = {};
 
   Map<String, List<num>?> _allBoxes(Map<String, dynamic> w) {
@@ -1024,10 +1022,12 @@ class Parada extends Escena implements SetScene, SetOverSprites {
       f = null;
     }
     if (f == null) return _allBoxes(w)[tag];
-    if (f != _boxesF || !identical(w, _boxesW)) {
+    final talk = _talker();
+    if (f != _boxesF || !identical(w, _boxesW) || talk != _boxesTalk) {
       _boxes = _allBoxes(w);
       _boxesF = f;
       _boxesW = w;
+      _boxesTalk = talk;
     }
     return _boxes[tag];
   }
