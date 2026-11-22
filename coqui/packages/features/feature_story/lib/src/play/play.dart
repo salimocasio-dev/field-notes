@@ -198,6 +198,7 @@ class _Driver {
     required this.stub,
     required this.plan,
     this.thingOrder,
+    this.planLetters,
   });
 
   final StoryRunner runner;
@@ -207,13 +208,18 @@ class _Driver {
   final List<String> stub;
   final String plan;
   final List<String> Function(Map<String, dynamic> W, int now)? thingOrder;
+
+  /// The plan as letters, one a choice point in order (`r` right, `w` wrong; past the end, `r`), as
+  /// historia/tools/juega.py takes it; when given it replaces [plan]'s rule.
+  final String? planLetters;
   final List<Map<String, dynamic>> speechEvents = [];
   int letters = 0;
   final Expando<String> turnLetter = Expando<String>();
   final Expando<Map<String, Object>> keys = Expando<Map<String, Object>>();
 
   String letterFor() {
-    final k = letters++;
+    final k = letters++, l = planLetters;
+    if (l != null) return k < l.length && l[k] == 'w' ? 'w' : 'r';
     return plan == 'right'
         ? 'r'
         : plan == 'wrong'
@@ -438,24 +444,6 @@ Future<void> _drain() {
   return c.future;
 }
 
-/// Plays [story] by [plan] (`right`, `wrong` or `alternate`) with every random draw from `Mulberry32(seed)`, and returns
-/// its trace: the same fields as `coqui/ref/trazas/<story>/<plan>.json`.
-///
-/// - [draws]: draws and decides fixed from outside (the old page's `?a=puerta`: name to value). Usually empty.
-/// - [sceneFor]: makes the scene, given the one random source (counted: `draws.total`). A scene that draws a random
-///   number must draw it from this.
-/// - [view]: the screen's state, if the caller wants to read it when the story is over (the buttons of the end screen:
-///   `view.foot`). The trace does not hold it, as the old page's recorded runs do not.
-/// - [course]: the catalog. A clip exists when `course.clip(id)` has it.
-/// - [progress]: what the story's end is written into. Words are open for speaking, as in the recorded runs
-///   (`?abiertas=todas`); no recogniser is there (`?mic=stub:none`).
-/// - [storySha256], [list], [place], [page]: the trace's own fields, as the recording tool writes them. [list] and
-///   [place] are found in the catalog's places when not given.
-/// - [thingOrder]: the scene's things in the order the wrong-touch rule reads them (given the world and the story's time),
-///   when the scene's `cosas` is not it (El frente has no list: its order is that of its `hit()`).
-/// - [micStub]: the stub's results, if a story with speaking turns is played (the learner writes into it).
-/// - [startFrog], [frogShadow]: where the frog starts and whether he keeps the old shadow, for a converted scene (what its
-///   sheet says); the old numbers and the old shadow when not given.
 /// A trace's speech events as the old page writes them (page-drive.js): each speaking turn and each answer in the order
 /// they happened, by their virtual time `t`; at the same `t`, a turn before an answer, and each list in its own order (a
 /// stable sort).
@@ -472,6 +460,27 @@ List<Map<String, dynamic>> speechInTimeOrder(
   return [for (final i in order) all[i]];
 }
 
+/// Plays [story] by [plan] (`right`, `wrong` or `alternate`) with every random draw from `Mulberry32(seed)`, and returns
+/// its trace: the same fields as `coqui/ref/trazas/<story>/<plan>.json`.
+///
+/// - [draws]: draws and decides fixed from outside (the old page's `?a=puerta`: name to value). Usually empty.
+/// - [sceneFor]: makes the scene, given the one random source (counted: `draws.total`). A scene that draws a random
+///   number must draw it from this.
+/// - [view]: the screen's state, if the caller wants to read it when the story is over (the buttons of the end screen:
+///   `view.foot`). The trace does not hold it, as the old page's recorded runs do not.
+/// - [course]: the catalog. A clip exists when `course.clip(id)` has it.
+/// - [progress]: what the story's end is written into. Words are open for speaking, as in the recorded runs
+///   (`?abiertas=todas`); no recogniser is there (`?mic=stub:none`).
+/// - [storySha256], [list], [place], [page]: the trace's own fields, as the recording tool writes them. [list] and
+///   [place] are found in the catalog's places when not given.
+/// - [thingOrder]: the scene's things in the order the wrong-touch rule reads them (given the world and the story's time),
+///   when the scene's `cosas` is not it (El frente has no list: its order is that of its `hit()`).
+/// - [micStub]: the stub's results, if a story with speaking turns is played (the learner writes into it).
+/// - [letters]: the plan as letters (`rrwr...`: one a choice point, as historia/tools/juega.py takes it; past the end
+///   `r`), in place of [plan]'s rule (order 50b: a story with two decisions has four ways through them, and the three
+///   plans give three). [plan] is still the trace's name.
+/// - [startFrog], [frogShadow]: where the frog starts and whether he keeps the old shadow, for a converted scene (what its
+///   sheet says); the old numbers and the old shadow when not given.
 Future<Map<String, dynamic>> play({
   required Map<String, dynamic> story,
   required String plan,
@@ -493,6 +502,7 @@ Future<Map<String, dynamic>> play({
   StoryView? view,
   ({int x, int y, num scale}) Function(Scene scene)? startFrog,
   bool Function(Scene scene)? frogShadow,
+  String? letters,
 }) async {
   if (!playPlans.contains(plan)) {
     throw ArgumentError.value(plan, 'plan', 'right, wrong or alternate');
@@ -547,6 +557,7 @@ Future<Map<String, dynamic>> play({
         stub: stub,
         plan: plan,
         thingOrder: thingOrder,
+        planLetters: letters,
       );
       unawaited(
         runner.start().then(

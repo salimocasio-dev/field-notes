@@ -134,6 +134,23 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
     its spot not looked for among this sheet's); `storyMoves` (`Sheet.storyMoves`: old, new, who, the files that use them,
     the other scene and its spot, why; a story file's own before the general moves). The earlier sheets read as before.
   - `test/mesa_sheet_test.dart`: the reader against La mesa's real sheet (the file on the vm, the fixture in chrome).
+- Since order 50b (El mostrador, the first new scene of places 4 to 10), a second reader beside `Sheet`:
+  - `scene_sheet.dart`: `SceneSheet`, the content lane's sheets of the 28 new scenes (no old scene file: no `remap`,
+    `code`, `pictures`, `lugar`; a different shape). `Sheet` is unchanged and still reads the eleven old scenes'. It types
+    what every new sheet has: `scene`, `made`, `S`, origin, picture and view sizes, `rules` (words), `setKey`
+    (`SceneSetKey`: params with their values, `only` and note; the key in words; `baked`, the page queries, flattened when
+    given by a word), `things` (`SceneThing`: a sprite, or a set part with its world box and screen box, `when`), `spots`
+    (`SceneSpot`: world point, screen point, depth, scale, kind, `drawn`; `at` the whole pixel), `groups` (those given as
+    lists of names), `views` (`SceneView`: zoom, x0, region, `cam`), `front` (`SceneFront`: the depth rule, `bias`;
+    `depthAt` is `front.plane`), `shadows` (`SceneShadows`: radii by kind and by character, `none`), `checks`, `notes`.
+    Everything else is plain data: `extras` (every other top-level part: `alternatives`, `moved`, `moves`, `cards`,
+    `surtidos`, `routes`, `calle`, ...) and each entry's own `raw`. `part(name)` reads a state given as a part of its own
+    (El mostrador's `calle`: its own origin, setKey, spots, things, views, shadows; what it does not give is the sheet's).
+    `spot`, `thing`, `view`, `group` throw `SheetError` for a name the sheet does not have; `engine()` is an engine with
+    the sheet's origin; `legacy()` the old `Sheet` a new scene hands to the code that reads one (its scene, scale, origin
+    and sizes; no places, no pictures; the start frog `juego.js:16` the runner's own).
+  - `test/scene_sheet_test.dart` (vm): all 28 new sheets parse and every spot's world point projects onto the screen
+    point its sheet writes; El mostrador's parts in detail.
 - Since order 12b it also holds `hexColour` (`colour.dart`): `"#RRGGBB"` as the int `0xFFBBGGRR`, for a colour that is made once. `hexColours` (a list of them) stays under `src/`.
 
 ## Run and test it alone

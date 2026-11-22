@@ -1,0 +1,674 @@
+{
+ "id": "esto-y-eso",
+ "title": "Esto y eso",
+ "place": "El colmado",
+ "scene": "mostrador",
+ "next": "latas-y-botellas",
+ "goal": "Sell limbers on a hot afternoon, and keep enough in the freezer for the three waiting children.",
+ "stake": {
+  "thing": "limbers",
+  "steps": 2
+ },
+ "dots": 6,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "esto",
+  "eso",
+  "vende",
+  "buenas tardes"
+ ],
+ "formas_foco": {
+  "vende": [
+   "vender"
+  ]
+ },
+ "back_again": [
+  "quiero",
+  "por favor",
+  "hace calor",
+  "frío",
+  "colmado",
+  "compra",
+  "aquí tiene",
+  "toma",
+  "mira",
+  "niño",
+  "triste",
+  "contento",
+  "cansado",
+  "gracias"
+ ],
+ "also_heard": [
+  "límber",
+  "vender",
+  "otro",
+  "vengan"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "coqui": "yo_coqui",
+  "senora": "b_n_senora",
+  "senor": "b_n_senor"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "c36_cq_aqui_tiene": {
+   "who": "tu",
+   "text": "¡Aquí tiene!"
+  },
+  "hace_calor": {
+   "who": "narr",
+   "text": "Hace calor."
+  },
+  "c38_lu_tardes": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Buenas tardes, don Pepe!"
+  },
+  "c38_pepe_tardes": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Buenas tardes!"
+  },
+  "c38_pepe_esto_limber": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Esto es un límber."
+  },
+  "c38_pepe_vende": {
+   "who": "narr",
+   "text": "Don Pepe vende límbers."
+  },
+  "c38_pepe_esto_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Esto es para Luis."
+  },
+  "c38_pepe_eso_coqui": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Y eso es para Coquí."
+  },
+  "c38_pepe_toma_eso": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Coquí, toma eso."
+  },
+  "cq_gracias": {
+   "who": "tu",
+   "text": "Gracias.",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias"
+     ]
+    }
+   ]
+  },
+  "c38_lu_compra": {
+   "who": "narr",
+   "text": "Luis compra un límber."
+  },
+  "c38_lu_frio": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mmm! ¡Esto está frío!"
+  },
+  "c38_lu_mira_eso": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mira eso!"
+  },
+  "c38_pepe_cansado": {
+   "who": "narr",
+   "text": "Don Pepe está cansado."
+  },
+  "c38_pepe_quieres": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Coquí, ¿quieres vender?"
+  },
+  "c38_cq_si_quiero": {
+   "who": "tu",
+   "text": "¡Sí, quiero!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    },
+    {
+     "palabra": "quiero",
+     "formas": [
+      "quiero"
+     ]
+    }
+   ]
+  },
+  "c38_ahora_vende": {
+   "who": "narr",
+   "text": "Ahora Coquí vende límbers."
+  },
+  "c38_sra_tardes": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Buenas tardes!"
+  },
+  "c38_cq_tardes_sra": {
+   "who": "tu",
+   "text": "¡Buenas tardes, señora!"
+  },
+  "c38_sro_tardes": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Buenas tardes!"
+  },
+  "c38_vende_un": {
+   "who": "narr",
+   "text": "Coquí vende un límber."
+  },
+  "c38_vende_otro": {
+   "who": "narr",
+   "text": "Coquí vende otro límber."
+  },
+  "c38_pepe_vengan": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Vengan, niños!"
+  },
+  "c38_ni_tardes": {
+   "who": "narr",
+   "habla": "ninos",
+   "text": "Los niños dicen: ¡Buenas tardes!"
+  },
+  "c38_ni_compran": {
+   "who": "narr",
+   "text": "Los niños compran límbers. Están contentos."
+  },
+  "c38_un_nino": {
+   "who": "narr",
+   "text": "Un niño no tiene límber. Está triste."
+  },
+  "c38_dos_ninos": {
+   "who": "narr",
+   "text": "Dos niños no tienen límber. Están tristes."
+  },
+  "c38_pepe_gracias_coqui": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Gracias, Coquí!"
+  },
+  "c38_a_quiero_esto": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Quiero esto, por favor."
+  },
+  "c38_a_quiero_eso": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Quiero eso, por favor."
+  },
+  "c38_a_no_esto": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Eso no. Quiero esto."
+  },
+  "c38_a_no_eso": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Esto no. Quiero eso."
+  },
+  "c38_b_quiero_esto": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Quiero esto, por favor."
+  },
+  "c38_b_quiero_eso": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Quiero eso, por favor."
+  },
+  "c38_b_no_esto": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Eso no. Quiero esto."
+  },
+  "c38_b_no_eso": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Esto no. Quiero eso."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "cam": "dentro",
+   "n": 1
+  },
+  {
+   "act": "limber",
+   "que": "bandeja"
+  },
+  {
+   "act": "entra",
+   "quien": "luis"
+  },
+  {
+   "wait": 500
+  },
+  "hace_calor",
+  "c38_lu_tardes",
+  "c38_pepe_tardes",
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mano",
+   "a": "limber_a"
+  },
+  "c38_pepe_esto_limber",
+  "c38_pepe_vende",
+  {
+   "dots": 1
+  },
+  "c38_pepe_esto_luis",
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mira",
+   "a": "mostrador"
+  },
+  "c38_pepe_eso_coqui",
+  {
+   "ask": "limber_b",
+   "lead": [],
+   "line": "c38_pepe_toma_eso",
+   "then": [],
+   "after": [
+    {
+     "act": "lame",
+     "quien": "coqui"
+    },
+    "cq_gracias"
+   ]
+  },
+  {
+   "act": "paga",
+   "quien": "luis",
+   "n": 1
+  },
+  "c38_lu_compra",
+  {
+   "act": "lame",
+   "quien": "luis"
+  },
+  "c38_lu_frio",
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "nevera"
+  },
+  "c38_lu_mira_eso",
+  {
+   "dots": 2
+  },
+  {
+   "act": "abanico",
+   "quien": "pepe"
+  },
+  "c38_pepe_cansado",
+  "c38_pepe_quieres",
+  "c38_cq_si_quiero",
+  "c38_ahora_vende",
+  {
+   "dots": 3
+  },
+  {
+   "act": "entra",
+   "quien": "senora"
+  },
+  "c38_sra_tardes",
+  "c38_cq_tardes_sra",
+  {
+   "draw": "wa",
+   "options": [
+    "esto",
+    "eso"
+   ]
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "a",
+    "b"
+   ],
+   "other": "da"
+  },
+  {
+   "reparte": [
+    "pa",
+    "qa"
+   ],
+   "options": [
+    "white",
+    "orange"
+   ]
+  },
+  {
+   "calc": "ka",
+   "cond": "wa=esto",
+   "then": "limber_$ca",
+   "else": "limber_$da"
+  },
+  {
+   "act": "limber",
+   "que": "pon",
+   "col_a": "$pa",
+   "col_b": "$qa",
+   "cerca": "$ca"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "options": [
+    "limber_a",
+    "limber_b"
+   ],
+   "pick": "$ka",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "c38_a_quiero_$wa",
+   "right": [
+    {
+     "act": "sirve",
+     "k": "$ka",
+     "a": "senora"
+    },
+    "c36_cq_aqui_tiene",
+    {
+     "act": "paga",
+     "quien": "senora",
+     "n": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "limber",
+       "que": "vuelve"
+      },
+      "c38_vende_un",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "sirve",
+     "k": "$x",
+     "a": "senora"
+    },
+    {
+     "act": "gesto",
+     "quien": "senora",
+     "que": "no"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    "c38_a_no_$wa",
+    {
+     "act": "limber",
+     "que": "derrite"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "act": "sale",
+   "quien": "senora",
+   "por": "puerta"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "entra",
+   "quien": "senor"
+  },
+  "c38_sro_tardes",
+  {
+   "draw": "wb",
+   "options": [
+    "esto",
+    "eso"
+   ]
+  },
+  {
+   "draw": "cb",
+   "options": [
+    "a",
+    "b"
+   ],
+   "other": "db"
+  },
+  {
+   "reparte": [
+    "pb",
+    "qb"
+   ],
+   "options": [
+    "white",
+    "orange"
+   ]
+  },
+  {
+   "calc": "kb",
+   "cond": "wb=esto",
+   "then": "limber_$cb",
+   "else": "limber_$db"
+  },
+  {
+   "act": "limber",
+   "que": "pon",
+   "col_a": "$pb",
+   "col_b": "$qb",
+   "cerca": "$cb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "limber_a",
+    "limber_b"
+   ],
+   "pick": "$kb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c38_b_quiero_$wb",
+   "right": [
+    {
+     "act": "sirve",
+     "k": "$kb",
+     "a": "senor"
+    },
+    "c36_cq_aqui_tiene",
+    {
+     "act": "paga",
+     "quien": "senor",
+     "n": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "limber",
+       "que": "vuelve"
+      },
+      "c38_vende_otro",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "sirve",
+     "k": "$x",
+     "a": "senor"
+    },
+    {
+     "act": "gesto",
+     "quien": "senor",
+     "que": "no"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    "c38_b_no_$wb",
+    {
+     "act": "limber",
+     "que": "derrite"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 6
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "levanta"
+  },
+  {
+   "act": "limber",
+   "que": "cuenta"
+  },
+  "c38_pepe_vengan",
+  "c38_ni_tardes",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "ninos",
+     "n": 3
+    },
+    "c38_ni_compran"
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "ninos",
+       "n": 2
+      },
+      "c38_un_nino"
+     ],
+     "else": [
+      {
+       "act": "ninos",
+       "n": 1
+      },
+      "c38_dos_ninos"
+     ]
+    }
+   ]
+  },
+  "c38_pepe_gracias_coqui",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "saluda"
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "hace_calor",
+  "c38_lu_tardes",
+  "c38_pepe_tardes",
+  "c38_pepe_esto_limber",
+  "c38_pepe_vende",
+  "c38_pepe_esto_luis",
+  "c38_pepe_eso_coqui",
+  "c38_pepe_toma_eso",
+  "cq_gracias",
+  "c38_lu_compra",
+  "c38_lu_frio",
+  "c38_lu_mira_eso",
+  "c38_pepe_cansado",
+  "c38_pepe_quieres",
+  "c38_cq_si_quiero",
+  "c38_ahora_vende",
+  "c38_sra_tardes",
+  "c38_cq_tardes_sra",
+  "c38_a_quiero_esto",
+  "c36_cq_aqui_tiene",
+  "c38_vende_un",
+  "c38_sro_tardes",
+  "c38_b_quiero_eso",
+  "c36_cq_aqui_tiene",
+  "c38_vende_otro",
+  "c38_pepe_vengan",
+  "c38_ni_tardes",
+  "c38_ni_compran",
+  "c38_pepe_gracias_coqui"
+ ]
+}
