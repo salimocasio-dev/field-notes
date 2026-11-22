@@ -1,0 +1,711 @@
+{
+ "id": "diez-botellas",
+ "title": "Diez botellas",
+ "place": "El colmado",
+ "scene": "estantes",
+ "next": "la-sopa-de-abuela",
+ "goal": "Fill abuela's box with ten bottles, then fill the two customers' boxes to ten from the top shelf.",
+ "stake": {
+  "thing": "maltas",
+  "steps": 2
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "ocho",
+  "nueve",
+  "diez",
+  "otro"
+ ],
+ "formas_foco": {
+  "otro": [
+   "otra"
+  ]
+ },
+ "back_again": [
+  "cuatro",
+  "cinco",
+  "seis",
+  "siete",
+  "botella",
+  "caja",
+  "¿cuántas?",
+  "hay",
+  "necesito",
+  "sí",
+  "por favor",
+  "más",
+  "también",
+  "cuidado",
+  "gracias"
+ ],
+ "also_heard": [],
+ "names": {
+  "luis": "p_n_luis",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "c41_necesita": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Abuela necesita diez botellas."
+  },
+  "c41_cuantas_caja": {
+   "who": "narr",
+   "text": "¿Cuántas botellas hay en la caja? Una, dos, tres, cuatro, cinco, seis, siete."
+  },
+  "c41_cuidado": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Ay! ¡Cuidado!"
+  },
+  "c41_otra_botella": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí va otra botella."
+  },
+  "c41_cuantas_ahora": {
+   "who": "narr",
+   "text": "¿Cuántas hay ahora?"
+  },
+  "c41_ocho": {
+   "who": "narr",
+   "text": "¡Ocho! Ocho botellas."
+  },
+  "c41_otra_q": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Otra?"
+  },
+  "c36_cq_si_por_favor": {
+   "who": "tu",
+   "text": "¡Sí, por favor!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    }
+   ]
+  },
+  "c41_y_ahora": {
+   "who": "narr",
+   "text": "¿Y ahora?"
+  },
+  "c41_nueve": {
+   "who": "narr",
+   "text": "¡Nueve! Nueve botellas."
+  },
+  "c41_y_otra": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Y otra."
+  },
+  "c41_diez_abuela": {
+   "who": "narr",
+   "text": "¡Diez! Diez botellas para abuela."
+  },
+  "c41_sa_buenos_nec": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Buenos días! Necesito diez botellas."
+  },
+  "c41_so_tambien": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Y yo también. Diez botellas."
+  },
+  "c41_q_senora": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Coquí, ¿cuántas botellas tiene la señora?"
+  },
+  "c41_q_senor": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Y cuántas botellas tiene el señor?"
+  },
+  "c41_cq_ocho": {
+   "who": "tu",
+   "text": "¡Ocho!"
+  },
+  "c41_cq_nueve": {
+   "who": "tu",
+   "text": "¡Nueve!"
+  },
+  "c41_cq_siete": {
+   "who": "tu",
+   "text": "¡Siete!"
+  },
+  "c41_cq_diez": {
+   "who": "tu",
+   "text": "¡Diez!"
+  },
+  "c41_diez_8": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Otra. Y otra. ¡Diez!"
+  },
+  "c41_diez_9": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Otra. ¡Diez!"
+  },
+  "c41_no_ocho": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Hay ocho."
+  },
+  "c41_no_nueve": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Hay nueve."
+  },
+  "c41_para_ti": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Y esta es para ti, Coquí."
+  },
+  "c41_cq_gracias_pepe": {
+   "who": "tu",
+   "text": "¡Gracias, don Pepe!"
+  },
+  "c41_no_hay": {
+   "who": "narr",
+   "text": "No hay más botellas."
+  },
+  "c41_senor_nueve": {
+   "who": "narr",
+   "text": "El señor tiene nueve botellas. No hay más."
+  },
+  "c41_sa_gracias": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Gracias!"
+  },
+  "qe05": {
+   "who": "tu",
+   "text": "¡Adiós, señora!",
+   "tu_turno": [
+    {
+     "palabra": "adiós",
+     "formas": [
+      "adiós",
+      "adios"
+     ]
+    }
+   ]
+  },
+  "c41_van": {
+   "who": "narr",
+   "text": "Luis y Coquí van para la casa con diez botellas."
+  }
+ },
+ "beats": [
+  {
+   "dots": 1
+  },
+  {
+   "act": "cajade",
+   "quien": "abuela",
+   "n": 7
+  },
+  {
+   "act": "nota41"
+  },
+  "c41_necesita",
+  {
+   "act": "cuenta",
+   "k": "botella",
+   "n": 7,
+   "quien": "coqui",
+   "suelto": 1
+  },
+  "c41_cuantas_caja",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "sube"
+  },
+  {
+   "act": "tiembla"
+  },
+  "c41_cuidado",
+  {
+   "act": "pasa",
+   "a": "abuela",
+   "n": 1,
+   "suelto": 1
+  },
+  "c41_otra_botella",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "di_ocho",
+   "lead": [],
+   "line": "c41_cuantas_ahora",
+   "then": [
+    "c41_ocho"
+   ],
+   "after": [],
+   "resp": [
+    "di_ocho",
+    "di_siete"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_siete": "c41_cq_siete",
+    "di_ocho": "c41_cq_ocho",
+    "di_nueve": "c41_cq_nueve",
+    "di_diez": "c41_cq_diez"
+   }
+  },
+  {
+   "dots": 3
+  },
+  "c41_otra_q",
+  "c36_cq_si_por_favor",
+  {
+   "act": "pasa",
+   "a": "abuela",
+   "n": 1
+  },
+  {
+   "ask": "di_nueve",
+   "lead": [],
+   "line": "c41_y_ahora",
+   "then": [
+    "c41_nueve"
+   ],
+   "after": [],
+   "resp": [
+    "di_nueve",
+    "di_ocho"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_siete": "c41_cq_siete",
+    "di_ocho": "c41_cq_ocho",
+    "di_nueve": "c41_cq_nueve",
+    "di_diez": "c41_cq_diez"
+   }
+  },
+  {
+   "act": "pasa",
+   "a": "abuela",
+   "n": 1,
+   "suelto": 1
+  },
+  "c41_y_otra",
+  {
+   "act": "ya"
+  },
+  "c41_diez_abuela",
+  {
+   "act": "lleva",
+   "quien": "abuela"
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "na",
+   "options": [
+    "8",
+    "9"
+   ]
+  },
+  {
+   "calc": "wa",
+   "cond": "na=8",
+   "then": "ocho",
+   "else": "nueve"
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "ocho",
+    "diez"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "na=8",
+   "then": "nueve",
+   "else": "$oa"
+  },
+  {
+   "calc": "ma",
+   "cond": "na=8",
+   "then": "2",
+   "else": "1"
+  },
+  {
+   "act": "cliente",
+   "quien": "senora",
+   "lleva": "caja",
+   "n": "$na"
+  },
+  {
+   "act": "cajade",
+   "quien": "senora",
+   "n": "$na"
+  },
+  {
+   "draw": "nb",
+   "options": [
+    "8",
+    "9"
+   ]
+  },
+  {
+   "calc": "wb",
+   "cond": "nb=8",
+   "then": "ocho",
+   "else": "nueve"
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "ocho",
+    "diez"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "nb=8",
+   "then": "nueve",
+   "else": "$ob"
+  },
+  {
+   "calc": "mb",
+   "cond": "nb=8",
+   "then": "2",
+   "else": "1"
+  },
+  {
+   "act": "cliente",
+   "quien": "senor",
+   "lleva": "caja",
+   "n": "$nb"
+  },
+  {
+   "act": "cajade",
+   "quien": "senor",
+   "n": "$nb"
+  },
+  "c41_sa_buenos_nec",
+  "c41_so_tambien",
+  {
+   "act": "sube"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "set": {
+    "twinkle": "caja_senora"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_$wa",
+    "di_$pa"
+   ],
+   "baraja": true,
+   "pick": "di_$wa",
+   "tests": "$wa",
+   "voces": {
+    "di_siete": "c41_cq_siete",
+    "di_ocho": "c41_cq_ocho",
+    "di_nueve": "c41_cq_nueve",
+    "di_diez": "c41_cq_diez"
+   },
+   "said": {
+    "di_siete": "c41_cq_siete",
+    "di_ocho": "c41_cq_ocho",
+    "di_nueve": "c41_cq_nueve",
+    "di_diez": "c41_cq_diez"
+   },
+   "lead": [],
+   "line": "c41_q_senora",
+   "right": [
+    {
+     "if": "!ok",
+     "then": [
+      {
+       "act": "sube"
+      }
+     ]
+    },
+    {
+     "act": "pasa",
+     "a": "senora",
+     "n": "$ma",
+     "suelto": 1
+    },
+    "c41_diez_$na",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "niega41"
+    },
+    {
+     "act": "baja",
+     "tiembla": 1
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c41_no_$wa",
+    {
+     "act": "cuenta",
+     "k": "botella",
+     "n": "$na",
+     "quien": "luis"
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "set": {
+    "twinkle": "caja_senor"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_$wb",
+    "di_$pb"
+   ],
+   "baraja": true,
+   "pick": "di_$wb",
+   "tests": "$wb",
+   "voces": {
+    "di_siete": "c41_cq_siete",
+    "di_ocho": "c41_cq_ocho",
+    "di_nueve": "c41_cq_nueve",
+    "di_diez": "c41_cq_diez"
+   },
+   "said": {
+    "di_siete": "c41_cq_siete",
+    "di_ocho": "c41_cq_ocho",
+    "di_nueve": "c41_cq_nueve",
+    "di_diez": "c41_cq_diez"
+   },
+   "lead": [],
+   "line": "c41_q_senor",
+   "right": [
+    {
+     "if": "!ok",
+     "then": [
+      {
+       "act": "sube"
+      }
+     ]
+    },
+    {
+     "act": "pasa",
+     "a": "senor",
+     "n": "$mb",
+     "suelto": 1
+    },
+    "c41_diez_$nb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "niega41"
+    },
+    {
+     "act": "baja",
+     "tiembla": 1
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c41_no_$wb",
+    {
+     "act": "cuenta",
+     "k": "botella",
+     "n": "$nb",
+     "quien": "luis"
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "lleva",
+   "quien": "senora"
+  },
+  {
+   "act": "lleva",
+   "quien": "senor"
+  },
+  {
+   "act": "mira",
+   "quien": "pepe",
+   "a": "estante"
+  },
+  {
+   "if": "!lost",
+   "then": [
+    {
+     "act": "abre41"
+    },
+    "c41_para_ti",
+    "c41_cq_gracias_pepe"
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      "c41_no_hay"
+     ],
+     "else": [
+      "c41_senor_nueve",
+      {
+       "act": "mira",
+       "quien": "senor",
+       "a": "hueco"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "act": "saluda",
+   "quien": "senora"
+  },
+  "c41_sa_gracias",
+  "qe05",
+  {
+   "act": "lleva",
+   "quien": "abuela"
+  },
+  "c41_van",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c41_necesita",
+  "c41_cuantas_caja",
+  "c41_cuidado",
+  "c41_otra_botella",
+  "c41_cuantas_ahora",
+  "c41_ocho",
+  "c41_otra_q",
+  "c36_cq_si_por_favor",
+  "c41_y_ahora",
+  "c41_nueve",
+  "c41_y_otra",
+  "c41_diez_abuela",
+  "c41_sa_buenos_nec",
+  "c41_so_tambien",
+  "c41_q_senora",
+  "c41_cq_ocho",
+  "c41_diez_8",
+  "c41_q_senor",
+  "c41_cq_nueve",
+  "c41_diez_9",
+  "c41_para_ti",
+  "c41_cq_gracias_pepe",
+  "c41_sa_gracias",
+  "qe05",
+  "c41_van"
+ ]
+}
