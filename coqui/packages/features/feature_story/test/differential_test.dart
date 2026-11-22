@@ -14,6 +14,7 @@
 // - On the real El lago (order 35b): the same, for its five files.
 // - On the real El banco (order 36b): the same, for its six files.
 // - On the real La estufa (order 38b): the same, for its four files.
+// - On the real La nevera (order 39b): the same, for its four files.
 import 'dart:convert';
 import 'dart:io';
 
@@ -83,6 +84,9 @@ final Map<String, String?> bancoWhole = {}, bancoTimeless = {};
 
 /// Each estufa run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
 final Map<String, String?> estufaWhole = {}, estufaTimeless = {};
+
+/// Each nevera run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> neveraWhole = {}, neveraTimeless = {};
 
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
@@ -938,6 +942,85 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in estufaWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${estufaTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real La nevera (order 39b): the kitchen is built round the old picture, so its places on the floor keep their
+  // screen numbers but the ones the sheet moves (`moves`: what stands on the counter, the sill, the fridge's shelves and
+  // top, whoever stands outside the window, abuela at the counter's right end, the answer cards). The hop counts are the
+  // old ones (the sheet's `hops` is empty). The scene draws no random number. The state line writes where each person is
+  // (`gente=k@x,y`), which `placeless` leaves out.
+  group('the recorded runs, on the real La nevera (order 39b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final nevera = {
+      for (final r in runs)
+        if (r['scene'] == 'nevera') r['story'] as String,
+    };
+    test('the four files of La nevera', () {
+      expect(nevera, {
+        'no-hay-leche',
+        'para-los-pajaros',
+        'jugo-de-china',
+        'h-nevera',
+      });
+    });
+    for (final s in nevera) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('nevera'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              placeless(forTimeless(c.committed)),
+              placeless(forTimeless(c.trace)),
+            );
+            neveraTimeless['$s $plan'] = timeless;
+            expect(
+              timeless,
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            expect(hops(c.committed), hops(c.trace), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            neveraWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/nevera-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in neveraWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${neveraTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
         );
     });
   });
