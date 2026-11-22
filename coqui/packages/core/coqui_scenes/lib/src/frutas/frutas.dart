@@ -623,19 +623,22 @@ class Frutas extends Escena implements SetScene, SetOverSprites {
       );
     }
     // the scale's needle over its dial, at its middle (colmado-fuera.js dial: floor of the projection), at the dial's
-    // drawn depth (rules.depth)
+    // drawn depth (rules.depth); a world with no `aguja` (a picture of the set alone, as La mesa's cocina.no) has none
     final ag = _p.at('aguja'), cx = ag.sx.floor(), cy = ag.sy.floor();
-    final nd = _p.drawnDepth('aguja') + .01, n = _d(w['aguja']);
-    out.add(
-      FrutasItem(
-        _spr('aguja$n', () => mkAguja(n)),
-        cx - 5,
-        cy - 5,
-        cy,
-        nd,
-        tag: 'aguja',
-      ),
-    );
+    final nd = _p.drawnDepth('aguja') + .01;
+    if (w['aguja'] is num) {
+      final n = _d(w['aguja']);
+      out.add(
+        FrutasItem(
+          _spr('aguja$n', () => mkAguja(n)),
+          cx - 5,
+          cy - 5,
+          cy,
+          nd,
+          tag: 'aguja',
+        ),
+      );
+    }
     // his finger on a mark of the dial (the kit's marks: 3 to 5 px from its middle, at 3 and 6 o'clock)
     final dedo = w['dedo'];
     if (dedo is String) {

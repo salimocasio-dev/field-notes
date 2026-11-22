@@ -1,0 +1,567 @@
+{
+ "id": "la-sopa-de-abuela",
+ "title": "La sopa de abuela",
+ "place": "El colmado",
+ "scene": "frutas",
+ "next": "esta-bueno",
+ "goal": "Buy the four things for abuela's soup, and keep the coins for her guineos.",
+ "stake": {
+  "thing": "monedas",
+  "steps": 2
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "tomate",
+  "cebolla",
+  "papa",
+  "plátano"
+ ],
+ "formas_foco": {
+  "tomate": [
+   "tomates"
+  ],
+  "cebolla": [
+   "cebollas"
+  ],
+  "papa": [
+   "papas"
+  ],
+  "plátano": [
+   "plátanos"
+  ]
+ },
+ "back_again": [
+  "necesito",
+  "compra",
+  "dame",
+  "tira",
+  "coge",
+  "buenos días",
+  "tengo hambre",
+  "guineo",
+  "come",
+  "hay",
+  "aquí",
+  "por favor",
+  "¿algo más?"
+ ],
+ "also_heard": [
+  "sopa",
+  "cabra"
+ ],
+ "names": {
+  "coqui": "yo_coqui",
+  "abuela": "abuela"
+ },
+ "palabras": {
+  "papas": "papa",
+  "platanos": "plátano"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "c36_pepe_dias": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Buenos días!"
+  },
+  "c42_cq_buenos_dias": {
+   "who": "tu",
+   "text": "¡Buenos días, don Pepe!",
+   "tu_turno": [
+    {
+     "palabra": "buenos días",
+     "formas": [
+      "buenos días",
+      "buenos dias"
+     ]
+    }
+   ]
+  },
+  "c42_ab_compra_sopa": {
+   "who": "narr",
+   "text": "Abuela compra las cosas para la sopa."
+  },
+  "c42_pepe_aqui_tc": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí hay tomates. Y aquí hay cebollas."
+  },
+  "c42_ab_necesito_tomate": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Necesito un tomate."
+  },
+  "c42_donde_tomates": {
+   "who": "narr",
+   "text": "¿Dónde están los tomates?"
+  },
+  "c42_ab_compra_tomate": {
+   "who": "narr",
+   "text": "Abuela compra un tomate."
+  },
+  "c37_pepe_algo_mas": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Algo más?"
+  },
+  "c42_ab_si_cebolla": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí. Una cebolla, por favor."
+  },
+  "c42_toca_cebollas": {
+   "who": "narr",
+   "text": "Toca las cebollas."
+  },
+  "c42_ab_compra_cebolla": {
+   "who": "narr",
+   "text": "Abuela compra una cebolla."
+  },
+  "c42_ab_si_pp": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí. Necesito papas y plátanos."
+  },
+  "c42_pepe_aqui_pp": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí hay papas. Y aquí hay plátanos."
+  },
+  "c42_cabra_platano": {
+   "who": "narr",
+   "text": "¡Ay! La cabra se come un plátano."
+  },
+  "c42_pepe_no_para_ti": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡No! Las papas y los plátanos no son para ti."
+  },
+  "c42_ab_dame_papas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, dame una papa."
+  },
+  "c42_ab_dame_platanos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, dame un plátano."
+  },
+  "c42_ab_compra_papas": {
+   "who": "narr",
+   "text": "Abuela compra una papa."
+  },
+  "c42_ab_compra_platanos": {
+   "who": "narr",
+   "text": "Abuela compra un plátano."
+  },
+  "c42_no_papas": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Estas son las papas."
+  },
+  "c42_no_platanos": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Estos son los plátanos."
+  },
+  "c42_ab_tienes_hambre": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ¿tienes hambre?"
+  },
+  "c42_cq_tengo_hambre": {
+   "who": "tu",
+   "text": "¡Sí, tengo hambre!",
+   "tu_turno": [
+    {
+     "palabra": "tengo hambre",
+     "formas": [
+      "tengo hambre"
+     ]
+    }
+   ]
+  },
+  "c42_ab_dos_guineos": {
+   "who": "narr",
+   "text": "Abuela compra dos guineos."
+  },
+  "c42_ab_un_guineo": {
+   "who": "narr",
+   "text": "Abuela compra un guineo."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "c42_ab_adios": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Adiós, don Pepe! Vamos a casa, Coquí."
+  }
+ },
+ "beats": [
+  {
+   "act": "piensa",
+   "quien": "coqui",
+   "k": "guineo"
+  },
+  {
+   "dots": 1
+  },
+  "c36_pepe_dias",
+  "c42_cq_buenos_dias",
+  {
+   "act": "piensa",
+   "quien": "abuela",
+   "k": "sopa"
+  },
+  "c42_ab_compra_sopa",
+  {
+   "act": "monedas",
+   "n": 6
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "mano",
+   "k": "tomates"
+  },
+  {
+   "set": {
+    "twinkle": "tomates"
+   }
+  },
+  {
+   "wait": 450
+  },
+  {
+   "act": "mano",
+   "k": "cebollas"
+  },
+  {
+   "set": {
+    "twinkle": "cebollas"
+   }
+  },
+  "c42_pepe_aqui_tc",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "lista",
+   "k": "tomates",
+   "hecho": 0
+  },
+  "c42_ab_necesito_tomate",
+  {
+   "ask": "tomates",
+   "lead": [],
+   "line": "c42_donde_tomates",
+   "then": [
+    "c42_ab_compra_tomate",
+    {
+     "act": "lista",
+     "k": "tomates",
+     "hecho": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "tira",
+     "k": "tomates",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  "c37_pepe_algo_mas",
+  {
+   "act": "lista",
+   "k": "cebollas",
+   "hecho": 0
+  },
+  "c42_ab_si_cebolla",
+  {
+   "ask": "cebollas",
+   "lead": [],
+   "line": "c42_toca_cebollas",
+   "then": [
+    "c42_ab_compra_cebolla",
+    {
+     "act": "lista",
+     "k": "cebollas",
+     "hecho": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "tira",
+     "k": "cebollas",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  "c37_pepe_algo_mas",
+  "c42_ab_si_pp",
+  {
+   "act": "mano",
+   "k": "papas"
+  },
+  {
+   "set": {
+    "twinkle": "papas"
+   }
+  },
+  {
+   "wait": 450
+  },
+  {
+   "act": "mano",
+   "k": "platanos"
+  },
+  {
+   "set": {
+    "twinkle": "platanos"
+   }
+  },
+  "c42_pepe_aqui_pp",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "cabra",
+   "que": "roba"
+  },
+  {
+   "act": "cabra",
+   "que": "mastica"
+  },
+  "c42_cabra_platano",
+  {
+   "act": "aparta42"
+  },
+  "c42_pepe_no_para_ti",
+  {
+   "act": "abuela",
+   "a": "junto_cabra",
+   "que": "guarda"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "papas",
+    "platanos"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "papas",
+    "platanos"
+   ],
+   "pick": "$ka",
+   "tests": "$ka",
+   "lock": true,
+   "lead": [],
+   "line": "c42_ab_dame_$ka",
+   "right": [
+    {
+     "act": "tira",
+     "k": "$ka",
+     "ok": 1
+    },
+    "c42_ab_compra_$ka",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "tira",
+     "k": "$x",
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c42_no_$ka"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "papas",
+    "platanos"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "papas",
+    "platanos"
+   ],
+   "pick": "$kb",
+   "tests": "$kb",
+   "lock": true,
+   "lead": [],
+   "line": "c42_ab_dame_$kb",
+   "right": [
+    {
+     "act": "tira",
+     "k": "$kb",
+     "ok": 1
+    },
+    "c42_ab_compra_$kb",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "tira",
+     "k": "$x",
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c42_no_$kb"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "abuela",
+   "que": "monedas"
+  },
+  "c42_ab_tienes_hambre",
+  "c42_cq_tengo_hambre",
+  {
+   "if": "lost=0",
+   "then": [
+    "c42_ab_dos_guineos",
+    {
+     "act": "guineos",
+     "n": 2
+    },
+    "cq_gracias_abuela"
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      "c42_ab_un_guineo",
+      {
+       "act": "guineos",
+       "n": 1
+      },
+      "cq_gracias_abuela"
+     ],
+     "else": [
+      {
+       "act": "guineos",
+       "n": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c42_ab_adios",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c36_pepe_dias",
+  "c42_cq_buenos_dias",
+  "c42_ab_compra_sopa",
+  "c42_pepe_aqui_tc",
+  "c42_ab_necesito_tomate",
+  "c42_donde_tomates",
+  "c42_ab_compra_tomate",
+  "c37_pepe_algo_mas",
+  "c42_ab_si_cebolla",
+  "c42_toca_cebollas",
+  "c42_ab_compra_cebolla",
+  "c42_ab_si_pp",
+  "c42_pepe_aqui_pp",
+  "c42_cabra_platano",
+  "c42_pepe_no_para_ti",
+  "c42_ab_dame_papas",
+  "c42_ab_compra_papas",
+  "c42_ab_dame_platanos",
+  "c42_ab_compra_platanos",
+  "c42_ab_tienes_hambre",
+  "c42_cq_tengo_hambre",
+  "c42_ab_dos_guineos",
+  "cq_gracias_abuela",
+  "c42_ab_adios"
+ ]
+}
