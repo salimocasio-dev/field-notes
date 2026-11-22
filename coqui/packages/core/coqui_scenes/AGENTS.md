@@ -28,7 +28,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 52b: `frutas`; order 54b: `esquina`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 52b: `frutas`; order 54b: `esquina`; order 55b: `parada`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
   `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
@@ -410,6 +410,25 @@ Written as El mostrador is (`lib/src/frutas/`: `frutas_set.dart`, `frutas_places
   leads; boxes and touches after each); in feature_story `esquina_stories_test` and `tool/esquina_paths_test.dart` (every
   path; the rules: `test/support/esquina_rules.dart`). Frames for looking: `COQUI_OUT=DIR flutter test
   tool/esquina_frames_test.dart`. Bake: `?page=bake&scene=esquina`, `node tool/bake_time.mjs --scene esquina`.
+
+## La parada (order 55b, place 5's second scene)
+
+Written as La esquina is (`lib/src/parada/`: `parada_set.dart`, `parada_places.dart`, `parada_sprites.dart`, `parada.dart`,
+`class Parada extends Escena implements SetScene, SetOverSprites`), on La calle's kit, vehicles and cast. What is its own:
+
+- **One picture, four states** (`parada_set.dart`, parada-set.html): `setKey` is `hora` (temprano, manana, tarde, noche: at
+  night the lit windows, the lamp and its pool of light); 4 states in `coqui/ref/pp/parada/`, 0 of 51,840 pixels differ.
+- **Guaguas that stop, open their doors and carry people**: a guagua in W (`autos.<board>`) drives in along the stop's lane
+  to parada1 or parada2 and out to the left (one leaving parada2 while parada1 is taken pulls out to the far lane); its
+  doors are looks of calle_vehicles.dart (`puerta`, and `atras`, `puertas` added for this scene). What belongs to it is
+  drawn into its pixels after it (`onBus`): a head at its glass and the basket on the sill only through a pane of its
+  windows (`ParadaPlaces.inPane`, parada-preview.html's inPane), the chofer leaning out at its front end. The doors'
+  touch boxes are the sheet's world boxes moved with the guagua at parada1 (`doorBox`).
+- **Tests**: `parada_set_test`, `parada_acts_test` (every act of the three stories on a StillHost, both branches; boxes and
+  touches after each); in feature_story `parada_stories_test` and `tool/parada_paths_test.dart` (the rules:
+  `test/support/parada_rules.dart`). Frames for looking: `COQUI_OUT=DIR flutter test tool/parada_frames_test.dart`; the
+  sprite sheet: `flutter test tool/parada_sprites_test.dart` (docs/proyecto/pixel/port/parada-sprites.png).
+- Bake: `?page=bake&scene=parada`, `node tool/bake_time.mjs --scene parada`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 

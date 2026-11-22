@@ -52,6 +52,10 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
   `historia/cuentos/`); `test/esquina_stories_test.dart` and `tool/esquina_paths_test.dart` as El mostrador's, the draws by
   `test/support/esquina_paths.dart` (a draw whose options name variables takes them as dealt), the rules by
   `test/support/esquina_rules.dart` (checked at the end of every act waited for; a loose act at its `ya`).
+- La parada (order 55b) the same way: `test/fixtures/parada/`, `test/parada_stories_test.dart`, `tool/parada_paths_test.dart`,
+  `test/support/parada_rules.dart`, `parada_paths.dart` (its draws: `esquinaDrawsOf`, each distinct combination once; a
+  name drawn in both rounds of story 51 takes one value for both, as a fixed draw does; `SEEDS=n` adds n plays with the
+  draws left to the seed, for rounds that differ).
 - A set step's positions go through the scene's `remap` (`remapPositions`): every map with a number `x` and `y`, and, since order 33b, where the answer cards stand (`respEn: [x, y]`, h-camino beats.5).
 - A change to the runner that moves any time, sound, clip, step or draw by one fails the differential test.
 - The end screen's "Next story" is the one place the runner differs from juego.js on purpose: juego.js shows it for any `next` (`!!(S.next&&!OIR)`), the runner only when `next` is a story the course names (`course.meta(next) != null`), because a story the course does not name is no story of the app (a staged one: coqui/AGENTS.md, "Stories staged by another session"); then the end screen is that of a story with no `next`. The recorded runs hold no end buttons (`ending.screen` only), so the comparison does not see this; `test/differential_test.dart` ("the end screen of the recorded runs") reads `view.foot` of the real tree's runs (`play(view:)`, `compareRun(view:)`), and the story, screen and Listen tests name the stories a test course has (`TestCourse(stories:)`, `meta`).
