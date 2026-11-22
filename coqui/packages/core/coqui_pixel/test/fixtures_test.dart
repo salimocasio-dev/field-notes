@@ -15,6 +15,7 @@ import 'support/fixtures/balcon_sheet.dart';
 import 'support/fixtures/banco_sheet.dart';
 import 'support/fixtures/camino_sheet.dart';
 import 'support/fixtures/campo_sheet.dart';
+import 'support/fixtures/comer_sheet.dart';
 import 'support/fixtures/estufa_sheet.dart';
 import 'support/fixtures/frente_sheet.dart';
 import 'support/fixtures/lago_sheet.dart';
@@ -130,5 +131,9 @@ void main() {
 
   test('the sheet fixture is the text of La nevera\'s sheet', () {
     expect(neveraSheetJson, neveraSheetText());
+  });
+
+  test('the sheet fixture is the text of A comer\'s sheet', () {
+    expect(comerSheetJson, comerSheetText());
   });
 }

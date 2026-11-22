@@ -44,3 +44,6 @@ String estufaSheetText() => _sheetText('estufa');
 
 /// The text of La nevera's sheet, read from the file.
 String neveraSheetText() => _sheetText('nevera');
+
+/// The text of A comer's sheet, read from the file.
+String comerSheetText() => _sheetText('comer');
