@@ -396,7 +396,8 @@ void main() {
           'cuentos/previa-dos.json': previewStory(
             'la-lluvia',
             'previa-dos',
-            scene: 'mostrador',
+            // a scene id the registry will never hold (it was 'mostrador' until order 50b converted it)
+            scene: 'no-es-una-escena',
           ),
         });
         await app.open(stored: seed('curso'), location: '/cuento/previa-dos');
