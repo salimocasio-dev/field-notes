@@ -1012,6 +1012,7 @@ class Frutas extends Escena implements SetScene, SetOverSprites {
         for (final it in items(w, 0))
           if (it.tag != null) it.tag!: it,
       };
+      _hands = {};
       _boxesF = f;
       _boxesW = w;
     }
@@ -1066,6 +1067,10 @@ class Frutas extends Escena implements SetScene, SetOverSprites {
       z: z,
       si: (w) => _boxOfTag(w, _spriteTags[id]!) != null,
       box: (Map<String, dynamic> w) => _boxOfTag(w, _spriteTags[id]!),
+      hand: (Map<String, dynamic> w) {
+        final b = _boxOfTag(w, _spriteTags[id]!);
+        return b == null ? null : _handPoint(id, w, b);
+      },
     );
     Thing setThing(String id, {bool Function(Map<String, dynamic>)? si}) {
       final b = _p.box(id);
@@ -1076,7 +1081,7 @@ class Frutas extends Escena implements SetScene, SetOverSprites {
         world: t.world,
         si: si,
         box: [b[0], b[1], b[2], b[3]],
-        hand: (Map<String, dynamic> w) => _handPoint(id, w),
+        hand: (Map<String, dynamic> w) => _handPoint(id, w, b),
       );
     }
 
@@ -1104,11 +1109,21 @@ class Frutas extends Escena implements SetScene, SetOverSprites {
     ];
   }
 
-  // Where the big hand points at a set thing: its box's middle, unless something answers a touch before it there (the
-  // frog on the ledge in front of the bin of tomatoes, a small thing, another bin whose middle is nearer): then the point
-  // of its box nearest its middle where a touch gives this thing.
-  List<num> _handPoint(String id, Map<String, dynamic> w) {
-    final b = _p.box(id);
+  // Where the big hand points at a thing: its box's middle, unless something answers a touch before it there (the frog
+  // on the ledge in front of the bin of tomatoes, a small thing, another bin whose middle is nearer, the basket abuela
+  // holds up in front of her): then the point of its box nearest its middle where a touch gives this thing.
+  List<num> _handPoint(String id, Map<String, dynamic> w, List<num> b) {
+    // once a frame (the signs ask for it often): the items of the frame are cached the same way
+    _itemsByTag(w);
+    final key = '$id ${b.join(',')}';
+    final had = _hands[key];
+    if (had != null) return had;
+    return _hands[key] = _handSearch(id, w, b);
+  }
+
+  Map<String, List<num>> _hands = {};
+
+  List<num> _handSearch(String id, Map<String, dynamic> w, List<num> b) {
     final mx = b[0] + b[2] / 2, my = b[1] + b[3] / 2;
     // the runner's touch is at the hand's point and 3 down (Story.tapOn)
     if (hit(mx, my + 3, w) == id) return [_round(mx), _round(my)];
