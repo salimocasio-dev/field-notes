@@ -26,8 +26,7 @@ int _differ(List<num> a, List<num> b) {
 }
 
 void main() {
-  final refs = (jsonDecode(paradaSetRefs) as List)
-      .cast<Map<String, dynamic>>();
+  final refs = (jsonDecode(paradaSetRefs) as List).cast<Map<String, dynamic>>();
   final e = paradaEngine(), b = PpBuild(e), set = ParadaSet(e, b);
   final rows = <String>[];
 

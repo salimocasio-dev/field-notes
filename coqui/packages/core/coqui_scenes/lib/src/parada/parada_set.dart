@@ -237,28 +237,20 @@ class ParadaSet {
     k.part('arbol', () => cl.tree(6.4, -1.6, 1.3, .9));
     k.part(
       'parada',
-      () => cl.signPole(
-        E.SIGN[0],
-        E.SIGN[1],
-        2.3,
-        .62,
-        .62,
-        const [40, 110, 200],
-        busPic,
-      ),
+      () => cl.signPole(E.SIGN[0], E.SIGN[1], 2.3, .62, .62, const [
+        40,
+        110,
+        200,
+      ], busPic),
     );
     k.part('asiento', () => cl.seat(E.SEAT[0], E.SEAT[1], E.SEAT[2]));
     k.part(
       'poste',
-      () => cl.signPole(
-        E.POST[0],
-        E.POST[1],
-        1.5,
-        .5,
-        .5,
-        const [60, 150, 90],
-        walkPic,
-      ),
+      () => cl.signPole(E.POST[0], E.POST[1], 1.5, .5, .5, const [
+        60,
+        150,
+        90,
+      ], walkPic),
     );
     k.part('farol', () {
       final x = E.LAMP[0], y = E.LAMP[1], lit = SET.hora == 'noche';
@@ -275,15 +267,11 @@ class ParadaSet {
       cl.box(x - .16, y - .1, 3.3, x + .16, y + .5, 3.42, const [60, 64, 74]);
       if (lit) {
         // the lit lamp
-        cl.box(
-          x - .14,
-          y + .08,
-          3.16,
-          x + .14,
-          y + .46,
-          3.3,
-          const [255, 236, 150],
-        );
+        cl.box(x - .14, y + .08, 3.16, x + .14, y + .46, 3.3, const [
+          255,
+          236,
+          150,
+        ]);
       }
       if (lit) GLOW = [x, y + .6];
       for (num z = .15; z <= 3.2; z += .12) {
@@ -319,8 +307,7 @@ class ParadaSet {
       final p = e.project(glow[0], glow[1], 0);
       for (var iy = 0; iy < H; iy++) {
         for (var ix = 0; ix < W; ix++) {
-          final i = iy * W + ix,
-              d = _hyp((ix - p.sx) / 34, (iy - p.sy) / 17);
+          final i = iy * W + ix, d = _hyp((ix - p.sx) / 34, (iy - p.sy) / 17);
           if (d >= 1 || e.ground[i] == 0) continue;
           final kk = (1 - d) * .75 + (e.bayerAt(ix, iy) - .5) * .12,
               c = e.pix[i],
