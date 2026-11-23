@@ -49,6 +49,11 @@ def pick(issue, prefix):
     return next((l for l in labels_of(issue) if l.startswith(prefix)), None)
 
 
+def lanes_of(issue):
+    """A story's lanes. Most have one; a scene port holds two (coqui_scenes and feature_story)."""
+    return [l for l in labels_of(issue) if l.startswith("lane:")]
+
+
 def lane_owner(lane, skip=None):
     """The claimed or in-review story holding this lane, if any."""
     for status in ("status:claimed", "status:in-review"):
@@ -56,6 +61,10 @@ def lane_owner(lane, skip=None):
             if i["number"] != skip:
                 return i
     return None
+
+
+def branch_for(n, lanes):
+    return f"lane/{lanes[0][5:]}/{n}" if len(lanes) == 1 else f"story/{n}"
 
 
 def set_status(n, new):
@@ -78,22 +87,22 @@ def cmd_status():
         items = open_issues(f"type:story,{status}")
         print(f"\n{status[7:].upper()} ({len(items)})")
         for i in sorted(items, key=lambda x: x["number"]):
-            print(f"  #{i['number']:<4} {pick(i, 'lane:') or '-':<24} {pick(i, 'agent:') or '-':<13} {i['title']}")
+            print(f"  #{i['number']:<4} {'+'.join(lanes_of(i)) or '-':<24} {pick(i, 'agent:') or '-':<13} {i['title']}")
 
 
 def cmd_ready(agent):
     need_agent(agent)
-    busy = {pick(i, "lane:") for s in ("status:claimed", "status:in-review") for i in open_issues(s)}
+    busy = {l for s in ("status:claimed", "status:in-review") for i in open_issues(s) for l in lanes_of(i)}
     found = 0
     for i in sorted(open_issues("type:story,status:ready"), key=lambda x: x["number"]):
         who = pick(i, "agent:")
-        lane = pick(i, "lane:")
+        lanes = lanes_of(i)
         if who not in (f"agent:{agent}", "agent:any"):
             continue
-        if lane in busy:
+        if busy.intersection(lanes):
             continue
         found += 1
-        print(f"#{i['number']:<4} {lane:<24} {who:<13} {i['title']}")
+        print(f"#{i['number']:<4} {'+'.join(lanes):<24} {who:<13} {i['title']}")
     if not found:
         print("Nothing for you right now. Check `status`, or review an open PR from another agent.")
 
@@ -107,19 +116,23 @@ def cmd_claim(n, agent):
     who = pick(issue, "agent:")
     if who not in (f"agent:{agent}", "agent:any"):
         sys.exit(f"#{n} is for {who}, not agent:{agent}.")
-    lane = pick(issue, "lane:")
-    if not lane:
+    lanes = lanes_of(issue)
+    if not lanes:
         sys.exit(f"#{n} has no lane label. Ask the scrum master (Claude) to add one.")
-    holder = lane_owner(lane)
-    if holder:
-        sys.exit(f"{lane} is taken by #{holder['number']} ({pick(holder, 'agent:')}). Pick another story.")
-    branch = f"lane/{lane[5:]}/{n}"
+    for lane in lanes:
+        holder = lane_owner(lane)
+        if holder:
+            sys.exit(f"{lane} is taken by #{holder['number']} ({pick(holder, 'agent:')}). Pick another story.")
+    branch = branch_for(n, lanes)
     set_status(n, "status:claimed")
     say(n, f"CLAIM {agent}\nBranch: `{branch}`")
     # Two agents can claim the same lane in the same second. The earlier claim comment wins.
     # Each issue counts by its newest claim, so an old, released claim gives no head start.
-    rivals = []
-    for i in open_issues(f"{lane},status:claimed"):
+    rivals, seen = [], set()
+    for i in [i for lane in lanes for i in open_issues(f"{lane},status:claimed")]:
+        if i["number"] in seen:
+            continue
+        seen.add(i["number"])
         claims = [(c["created_at"], c["id"], i["number"])
                   for c in gh("GET", f"issues/{i['number']}/comments?per_page=100")
                   if c["body"].startswith("CLAIM ")]
@@ -128,8 +141,8 @@ def cmd_claim(n, agent):
     rivals.sort()
     if rivals and rivals[0][2] != n:
         set_status(n, "status:ready")
-        say(n, f"RELEASE {agent}\n{lane} was claimed first by #{rivals[0][2]}.")
-        sys.exit(f"Lost the race for {lane} to #{rivals[0][2]}. #{n} is ready again. Pick another story.")
+        say(n, f"RELEASE {agent}\nIts lane was claimed first by #{rivals[0][2]}.")
+        sys.exit(f"Lost the race to #{rivals[0][2]}. #{n} is ready again. Pick another story.")
     print(f"#{n} is yours. Work on branch {branch}, in your own clone or worktree.")
 
 

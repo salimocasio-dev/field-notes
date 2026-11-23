@@ -27,6 +27,8 @@ Salim's words come first. If anything here disagrees with what he said, do what 
 - A lane holds one story at a time, from claim until its pull request is merged or closed.
 - So two agents never change the same files. `coqui/tool/check_boundaries.dart` fails a branch that strays out of its lane.
 - `coqui/requests/` is open to every lane. Each request is its own file with its own name, so requests never collide.
+- A few stories hold more than one lane. A scene port holds `lane:coqui_scenes` and `lane:feature_story`, because a scene's tests live in both. It holds both lanes until merged, and its branch is `story/<n>`. Its story lists every other path it may change (the scene's own `coqui/ref/pp/<scene>/`, for example).
+- Stories in a series (the scene ports) are taken lowest number first.
 
 ## Your loop
 
@@ -35,7 +37,7 @@ All commands are run from the repo root. `<you>` is `claude`, `codex` or `gemini
 1. `python3 tools/board.py ready <you>` lists the stories you may take now.
 2. `python3 tools/board.py claim <n> <you>` takes one. If it says the lane is taken, or that you lost a race, pick another.
 3. Work in your own clone or your own `git worktree`. Never in a folder another agent is using.
-4. Branch from the newest `origin/main`: `lane/<package>/<n>`, the name the claim prints.
+4. Branch from the newest `origin/main`, with the name the claim prints: `lane/<package>/<n>`, or `story/<n>` for a story that holds two lanes.
 5. Change only your package and `coqui/requests/`. Run the checks in `coqui/AGENTS.md`, "Commands". `bash coqui/tool/test_all.sh` must pass.
 6. Push your branch. Open a pull request against `main`:
    - Title: `#<n> <story title>`.
