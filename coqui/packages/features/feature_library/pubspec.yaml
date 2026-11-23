@@ -25,4 +25,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/story_plots.json
-    - assets/reader_labels.json

@@ -60,7 +60,6 @@ void main() {
     expect(find.text('Add text'), findsOneWidget);
     expect(find.text('Uno'), findsNothing);
     expect(rig.course.bookAsked, isEmpty);
-    expect(rig.images.asked, isEmpty);
   });
 
   testWidgets('the dev shelf generates a story using a chosen practice word', (
@@ -77,7 +76,7 @@ void main() {
     expect(find.byType(CoquiTabBar), findsNothing);
     expect(find.byType(Image), findsNothing);
 
-    await tester.tap(find.byTooltip(CoquiLabels.library));
+    await tester.tap(find.byTooltip(ReaderTexts.close));
     await ready(tester);
     expect(find.text('Generated story'), findsOneWidget);
     expect(find.text('Read story'), findsOneWidget);
@@ -112,10 +111,10 @@ void main() {
     await ready(tester);
     expect(find.text('1 / 2'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Siguiente'));
+    await tester.tap(find.byTooltip(ReaderTexts.nextPage));
     await ready(tester);
     expect(find.text('2 / 2'), findsOneWidget);
-    await tester.tap(find.byTooltip(CoquiLabels.library));
+    await tester.tap(find.byTooltip(ReaderTexts.close));
     await ready(tester);
     expect(find.text('Added text'), findsOneWidget);
     expect(find.textContaining('words met'), findsNothing);
@@ -124,25 +123,41 @@ void main() {
     expect(find.text('2 / 2'), findsOneWidget);
   });
 
-  testWidgets(
-    'an existing book route loads a transcript without fetching a scene image',
-    (tester) async {
+  testWidgets('a text that is not there says so in one line; the X goes back', (
+    tester,
+  ) async {
+    for (final id in ['biblioteca-gone', 'no-such-book']) {
       final rig = Rig();
-      final module = LibraryModule(imageProvider: rig.images.provider);
+      const module = LibraryModule();
       await tester.pumpWidget(
-        MaterialApp(
-          home: module.screenFor(const BookRoute('uno'), rig.services)!,
-        ),
+        MaterialApp(home: module.screenFor(BookRoute(id), rig.services)!),
       );
       await ready(tester);
-      expect(find.text('1 / 4'), findsOneWidget);
-      expect(
-        find.textContaining('Me llamo Carmen', findRichText: true),
-        findsOneWidget,
-      );
-      expect(rig.images.asked, isEmpty);
-    },
-  );
+      expect(find.text(ReaderTexts.textUnavailable), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      await tester.tap(find.byTooltip(ReaderTexts.close));
+      expect(rig.nav.routes, isEmpty);
+      expect(rig.nav.backs, 1, reason: id);
+    }
+  });
+
+  testWidgets('an existing book route opens the book\'s lines as text', (
+    tester,
+  ) async {
+    final rig = Rig();
+    const module = LibraryModule();
+    await tester.pumpWidget(
+      MaterialApp(
+        home: module.screenFor(const BookRoute('uno'), rig.services)!,
+      ),
+    );
+    await ready(tester);
+    expect(find.text('1 / 4'), findsOneWidget);
+    expect(
+      find.textContaining('Me llamo Carmen', findRichText: true),
+      findsOneWidget,
+    );
+  });
 
   testWidgets(
     'a word tap plays only its recorded word and credits one audible ear meeting',

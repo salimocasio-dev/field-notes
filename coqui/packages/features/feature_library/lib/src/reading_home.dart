@@ -27,7 +27,9 @@ class _ReadingHomeState extends State<ReadingHome> {
   @override
   void initState() {
     super.initState();
-    _changes = _s.progress.changes.listen((_) => setState(() {}));
+    _changes = _s.progress.changes.listen((_) {
+      if (mounted) setState(() {});
+    });
   }
 
   @override

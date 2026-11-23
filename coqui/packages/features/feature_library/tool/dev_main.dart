@@ -1,20 +1,16 @@
 // The dev entry: feature_library alone, on the fakes.
 //   flutter run -d chrome -t tool/dev_main.dart        (in this package)
 //
-// It starts on the shelf, like the Biblioteca tab with its tab bar under it; Read opens the reader, whose X and
-// "Biblioteca" button come back. The address says which reference state to start in (coqui/ref/pantallas/):
+// It starts on Biblioteca, like the tab with its tab bar under it; Read opens the text reader, whose X comes back.
 //
-//   ?seed=vacio|curso|casi|todo   the progress to start with (the seeds of ref/pantallas/seeds/; default curso)
-//   &screen=shelf|book            the shelf (default) or a book
+//   ?seed=vacio|curso|casi|todo   the progress to start with (the seeds of ref/pantallas/seeds/; default curso). On
+//                                 curso every word of the story plots is also known, so a story can be made
+//   &screen=shelf|book            Biblioteca (default) or a book's text
 //   &book=la-lluvia               which book (the sample course has this one)
-//   &page=3                       the page to open at, counted from 1
-//   &hold=2                       hang the 2nd line of the page while it plays (it stays lit)
 //   &speed=40                     the clips play this many times faster than their length (default 1)
 //   &big=1                        the large text (24 px)
-//   &card=1                       open with the card of the first picture word of the page
-//   &scroll=end                   the shelf scrolled to its end
-//   &tab=0                        the shelf without the tab bar
-//   &content=real                 the real files of historia/ (served by tool/shots.mjs under assets/content/ and libros/)
+//   &tab=0                        without the tab bar
+//   &content=real                 the real files of historia/ (served under assets/content/)
 import 'dart:async';
 import 'dart:convert';
 
@@ -22,18 +18,13 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
-import 'package:feature_library/src/images.dart';
-import 'package:feature_library/src/reader.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_home.dart';
 import 'package:feature_library/src/story_generator.dart';
-import 'package:feature_library/src/shelf.dart';
-import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'dev_catalog.dart';
 import 'dev_clips.dart';
-import 'dev_pictures.dart';
 import 'dev_seeds.dart';
 
 /// What the address asks for.
@@ -42,12 +33,8 @@ class DevOptions {
     this.seed = 'curso',
     this.screen = 'shelf',
     this.book = 'la-lluvia',
-    this.page = 1,
-    this.hold,
     this.speed = 1,
     this.big = false,
-    this.card = false,
-    this.scrollEnd = false,
     this.tabBar = true,
     this.real = false,
   });
@@ -56,12 +43,8 @@ class DevOptions {
     seed: q['seed'] ?? 'curso',
     screen: q['screen'] ?? 'shelf',
     book: q['book'] ?? 'la-lluvia',
-    page: int.tryParse(q['page'] ?? '') ?? 1,
-    hold: int.tryParse(q['hold'] ?? ''),
     speed: double.tryParse(q['speed'] ?? '') ?? 1,
     big: q['big'] == '1',
-    card: q['card'] == '1',
-    scrollEnd: q['scroll'] == 'end',
     tabBar: q['tab'] != '0',
     real: q['content'] == 'real',
   );
@@ -69,17 +52,13 @@ class DevOptions {
   final String seed;
   final String screen;
   final String book;
-  final int page;
-  final int? hold;
   final double speed;
   final bool big;
-  final bool card;
-  final bool scrollEnd;
   final bool tabBar;
   final bool real;
 }
 
-/// Goes where the feature asks: a book opens the reader, back returns to the shelf; the other routes are only named.
+/// Goes where the feature asks: a book opens the reader, back returns to Biblioteca; the other routes are only named.
 class DevNavigator implements AppNavigator {
   final ValueNotifier<AppRoute?> current = ValueNotifier(null);
   final ValueNotifier<AppRoute?> elsewhere = ValueNotifier(null);
@@ -120,7 +99,6 @@ class _DevApp extends StatefulWidget {
 
 class _DevAppState extends State<_DevApp> {
   late final Future<_Dev> _ready = _setup();
-  final _scroll = ScrollController();
 
   Future<_Dev> _setup() async {
     final o = widget.options;
@@ -159,10 +137,8 @@ class _DevAppState extends State<_DevApp> {
       course: course,
       clock: clock,
       nav: nav,
-      pictures: devPictures(),
       clips: DevClips(
         speed: o.speed,
-        hold: o.hold,
         lengthOf: (id) {
           final c = course.clip(id);
           return c == null ? null : c.endMs - c.startMs;
@@ -172,35 +148,6 @@ class _DevAppState extends State<_DevApp> {
     if (o.big) await services.storage('leer').write('tam', '24');
     if (o.screen == 'book') nav.current.value = BookRoute(o.book);
     return _Dev(services, nav);
-  }
-
-  // the page's height and where it is scrolled to, in the page's title, for the whole-page picture (tool/shots.mjs
-  // cannot take a canvas as tall as the page in one picture: it scrolls and joins strips)
-  bool _measure(Notification n) {
-    if (n is ScrollMetricsNotification || n is ScrollNotification) {
-      final m = n is ScrollMetricsNotification
-          ? n.metrics
-          : (n as ScrollNotification).metrics;
-      if (m.axis != Axis.vertical) return false;
-      unawaited(
-        SystemChrome.setApplicationSwitcherDescription(
-          ApplicationSwitcherDescription(
-            label:
-                'shelf-height=${(m.maxScrollExtent + m.viewportDimension).round()} scroll=${m.pixels.toStringAsFixed(1)}',
-          ),
-        ),
-      );
-      if (n is ScrollMetricsNotification &&
-          widget.options.scrollEnd &&
-          _scroll.hasClients) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_scroll.hasClients) {
-            _scroll.jumpTo(_scroll.position.maxScrollExtent);
-          }
-        });
-      }
-    }
-    return false;
   }
 
   @override
@@ -213,70 +160,28 @@ class _DevAppState extends State<_DevApp> {
       builder: (context, snap) {
         final dev = snap.data;
         if (dev == null) return const ColoredBox(color: CoquiColors.bg);
-        return _Host(
-          dev: dev,
-          options: widget.options,
-          scroll: _scroll,
-          onMetrics: _measure,
-        );
+        return _Host(dev: dev, options: widget.options);
       },
     ),
   );
 }
 
 class _Host extends StatelessWidget {
-  const _Host({
-    required this.dev,
-    required this.options,
-    required this.scroll,
-    required this.onMetrics,
-  });
+  const _Host({required this.dev, required this.options});
 
   final _Dev dev;
   final DevOptions options;
-  final ScrollController scroll;
-  final bool Function(Notification) onMetrics;
-
-  // the first open of a book is at the page the address names; every later one from the shelf starts at page 1
-  Widget _book(BookRoute route, {required bool first}) => BookReader(
-    key: ValueKey('book:${route.id}'),
-    services: dev.services,
-    bookId: route.id,
-    imageUrl: defaultBookImageUrl,
-    startPage: first ? options.page - 1 : 0,
-    startCard: first && options.card,
-  );
 
   @override
   Widget build(BuildContext context) {
-    final module = const LibraryModule();
-    var first = options.screen == 'book';
+    const module = LibraryModule();
     return ValueListenableBuilder<AppRoute?>(
       valueListenable: dev.nav.current,
       builder: (context, route, _) {
-        if (route is BookRoute) {
-          final isFirst = first;
-          first = false;
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: isFirst
-                    ? _book(route, first: true)
-                    : module.screenFor(route, dev.services)!,
-              ),
-            ],
-          );
-        }
+        if (route is BookRoute) return module.screenFor(route, dev.services)!;
         return Stack(
           children: [
-            Positioned.fill(
-              child: NotificationListener<Notification>(
-                onNotification: onMetrics,
-                child: options.real
-                    ? LibraryShelf(services: dev.services, controller: scroll)
-                    : ReadingHome(services: dev.services, controller: scroll),
-              ),
-            ),
+            Positioned.fill(child: ReadingHome(services: dev.services)),
             if (options.tabBar)
               Align(
                 alignment: Alignment.bottomCenter,

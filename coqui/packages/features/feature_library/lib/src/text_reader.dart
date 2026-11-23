@@ -1,15 +1,23 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/reading.dart';
-import 'package:feature_library/src/reading_assets.dart';
 import 'package:feature_library/src/reading_audio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:material_ui/material_ui.dart';
 
 typedef _Line = ({String text, String? clip});
+
+/// The reader's own words (menus may be English).
+abstract final class ReaderTexts {
+  static const close = 'Close';
+  static const audioUnavailable = 'No recording for this yet.';
+  static const textUnavailable = 'This text is not available.';
+  static const previousPage = 'Previous page';
+  static const nextPage = 'Next page';
+  static const textSize = 'Text size';
+}
 
 class TextReader extends StatefulWidget {
   const TextReader({super.key, required this.services, required this.id});
@@ -31,7 +39,6 @@ class _TextReaderState extends State<TextReader> {
   final _scroll = ScrollController();
   final _met = <String>{};
   List<List<_Line>>? _pages;
-  Map<String, String> _labels = const {};
   String _title = '';
   int _index = 0;
   int _playback = 0;
@@ -46,20 +53,14 @@ class _TextReaderState extends State<TextReader> {
   void initState() {
     super.initState();
     _large = _textSize.read('tam') == '24';
-    _changes = _s.progress.changes.listen((_) => setState(() {}));
+    _changes = _s.progress.changes.listen((_) {
+      if (mounted) setState(() {});
+    });
     unawaited(_load());
   }
 
   Future<void> _load() async {
     final id = widget.id;
-    try {
-      final labels = await loadReadingAsset('reader_labels.json');
-      _labels = Map<String, String>.from(jsonDecode(labels) as Map);
-    } on Object {
-      if (mounted) setState(() => _missing = true);
-      return;
-    }
-    if (!mounted) return;
     final List<List<_Line>> pages;
     if (id.startsWith(personalBookPrefix)) {
       final saved = _store.text(id);
@@ -282,7 +283,7 @@ class _TextReaderState extends State<TextReader> {
                   child: Row(
                     children: [
                       IconButton(
-                        tooltip: CoquiLabels.library,
+                        tooltip: ReaderTexts.close,
                         constraints: const BoxConstraints(
                           minWidth: 48,
                           minHeight: 48,
@@ -299,7 +300,7 @@ class _TextReaderState extends State<TextReader> {
                         const SizedBox(width: 12),
                         Text('${_index + 1} / ${pages.length}'),
                         Tooltip(
-                          message: _labels['textSize']!,
+                          message: ReaderTexts.textSize,
                           child: TextButton(
                             style: TextButton.styleFrom(
                               minimumSize: const Size(48, 48),
@@ -317,7 +318,7 @@ class _TextReaderState extends State<TextReader> {
                       ? _page(pages[_index])
                       : Center(
                           child: _missing
-                              ? Text(_labels['textUnavailable'] ?? '')
+                              ? const Text(ReaderTexts.textUnavailable)
                               : const CircularProgressIndicator(),
                         ),
                 ),
@@ -325,7 +326,7 @@ class _TextReaderState extends State<TextReader> {
                   Semantics(
                     liveRegion: true,
                     child: Text(
-                      _labels['audioUnavailable']!,
+                      ReaderTexts.audioUnavailable,
                       style: CoquiText.smallMuted,
                     ),
                   ),
@@ -335,7 +336,7 @@ class _TextReaderState extends State<TextReader> {
                     child: Row(
                       children: [
                         IconButton(
-                          tooltip: _labels['previousPage'],
+                          tooltip: ReaderTexts.previousPage,
                           constraints: const BoxConstraints(
                             minWidth: 48,
                             minHeight: 48,
@@ -354,7 +355,7 @@ class _TextReaderState extends State<TextReader> {
                           )
                         else
                           IconButton(
-                            tooltip: _labels['nextPage'],
+                            tooltip: ReaderTexts.nextPage,
                             constraints: const BoxConstraints(
                               minWidth: 48,
                               minHeight: 48,

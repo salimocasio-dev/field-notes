@@ -3,7 +3,7 @@
 Biblioteca and the book reader (Leer).
 
 - Kind: Flutter package.
-- Replaces: the Biblioteca tab and the book reader in app.html.
+- Replaces: the Biblioteca tab and the book reader in app.html (since Nov 23, 2026: stories made for his level and texts he adds, read as text).
 - One package is one lane. Branch: `lane/feature_library/<order number>`.
 - Work orders: 22.
 - The runbook is `../../../AGENTS.md`. Read it first.
@@ -23,42 +23,17 @@ Biblioteca and the book reader (Leer).
 
 - `lib/feature_library.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- It holds one thing: `LibraryModule` (a `FeatureModule`, boundary rule 4). Id `library`; its tab is the Biblioteca shelf; `screenFor(BookRoute)` is the book reader. A book page's picture is a file served by the old site: `LibraryModule({imageUrl, imageProvider})` takes the address resolver (default `libros/<img>?v=39`, the old page's own). The content base stays a parameter of the module and the shell passes it (decided: `Services` does not grow one).
-- What is in `lib/src/`: `shelf.dart` (app.html `biblioteca`), `shelf_row.dart` (`.bk` and `.btn` of the shelf), `reader.dart` (`leer` to `initLibro`), `book_line.dart` (`lineaEl`, `.lbl`, the underlines), `book_picture.dart` (`ajustaPic`), `word_marks.dart` (`pares`, `occs`), `word_popup.dart` (`tarjetaPal`), `strings.dart` (the English words app.html writes itself), `images.dart`, `press.dart`.
-- The Spanish names of the screens come from `CoquiLabels` (coqui_ui): the shelf's name, "Fin", "Otra vez", the app's name over the coquí's lines, the kinds of a picture story and of a routine. No Spanish literal is in `lib/`. Listen on a picture story or a routine goes to `StoryRoute(id)` with `listen: false` (the old link without `oir=1`); on a played story, `listen: true`.
-- A book or its story that cannot be read: the reader goes back. A shelf row whose story the catalog has no meta for is skipped.
+- It holds one thing: `LibraryModule()` (a `FeatureModule`, boundary rule 4). Id `library`; its tab is Biblioteca (`ReadingHome`); `screenFor(BookRoute)` is the text reader (`TextReader`). Since the Biblioteca rewrite (Nov 23, 2026) the module takes no image address: nothing it shows is a picture.
+- What is in `lib/src/`: `reading_home.dart` (the tab: a story for his level or the next one, "Generate a story", "Add text", his shelf), `text_reader.dart` (the reader and `ReaderTexts`, its own English words), `reading.dart` (words and lines of a text, `ReadingStore`, `ReadingVocabulary`, the coverage rule), `story_generator.dart` (stories put together from the plots), `reading_audio.dart` (the recordings a word or a line may play), `reading_assets.dart`.
+- The course shelf of order 22 (each story with Listen and Read) and the picture book reader are gone: the map replays the stories. `BookRoute(id)` of a course book still opens, as its lines in text, without pictures. A text that is not there says so in one line; its X goes back.
 
-## Stand-ins
+## How Biblioteca works
 
-What this package draws itself where coqui_ui has no widget that fits. Each has one user, this feature, or a reason below (the requests that asked for them are answered):
-
-- The book's frame (`reader.dart`): the top bar (close, the page line at the left, the count, "Aa"), the picture area (8 above, 16 at the sides, `8 + --finx` below), the text area as tall as the tallest page, the foot, the card's scrim layer, and the phone on its side. `LessonFrame` centres its bar and puts one picture over a foot reserve: not the book's body.
-- The book line and its underlines (`book_line.dart`): `BookLine` left coqui_ui (one user).
-- The word card over the page (`word_popup.dart`): the reader's own popup with its light scrim; not `showCoquiSheet` (a sheet over everything).
-- The shelf row and its two buttons (`shelf_row.dart`): `ShelfRow` and `ShelfButton` left coqui_ui (one user); the cover as tall as its picture, the phone rules of `.bk` and the check after Read.
-- The pressed state (`press.dart`): `Pressable` is not exported by coqui_ui.
-- "Fin" at a fixed 32 px (`reader.dart`, `_foot`): `LessonFin` is as tall as the text scale makes it, and the last page's foot must be exactly `--finx` taller than the others at any text scale, or the picture moves when the last page opens.
-- The page's picture (`book_picture.dart`): `ajustaPic`'s whole-number scale of a loaded file, drawn through `PixelView`.
-
-What it takes from coqui_ui: `LessonButtonRow` (`reader`, `readerLast`), `LessonBackButton`, `LessonNextButton`, `LessonButton`, `LessonIconButton`, `LessonProgressLine`, `LessonTextSizeButton`, `PictureFrame`, `PixelView`, `CoquiLabels`, the book and cover tokens, `CoquiIcons`, `CoquiLayout.border`.
-- The reader keeps its text size in its own storage space: `Services.storage('leer')`, key `tam` (the old page's `coqui.leer.tam`). It writes no word record; `progress.markRead` at the last page.
-- The shelf reads `course.places` when it is built and after each progress save: the shell loads the catalog first. It carries its own `#fadeTab` fade (16 px at the tab bar's edge, while there is more to scroll) and expects the shell to lay the tab out full screen with the tab bar over it, as `TabPage`'s foot padding does.
-
-## The dev entry
-
-`tool/dev_main.dart` runs the feature alone on the fakes, on the shelf with a tab bar under it; Read opens the reader. The address starts it in a reference state (`coqui/ref/pantallas/`):
-
-```
-flutter run -d chrome -t tool/dev_main.dart --web-launch-url "/?seed=curso&screen=book&book=la-lluvia&page=5&hold=2"
-```
-
-`seed` (vacio, curso, casi, todo: the progress of the reference states, embedded by `dart run tool/embed_seeds.dart` into `tool/dev_seeds.dart`), `screen` (shelf or book), `book`, `page` (from 1), `hold` (the n-th line of the page hangs, lit), `speed` (clips play this many times faster), `big=1`, `card=1`, `scroll=end`, `tab=0`, `content=real` (the real files of `historia/`, served by the screenshot script). The sample course has one book, La lluvia, whose own verdict is "does not read well"; the dev entry turns it on so the shelf shows Read.
-
-```
-node tool/shots.mjs --out <dir>      # builds it, serves it with the books' files, captures every reference state of order 22 on both phones
-```
-
-It writes `<dir>/<device>/<mode>/<state>.png`, `<dir>/pairs.json` (each picture with its reference picture) and `<dir>/side/` (each pair, the reference at the left). `--mode sample` is the sample course alone, `--mode real` the real files of `historia/` (read from the repository, nothing copied).
+- A story is made on the phone, never over the network: `assets/story_plots.json` holds reviewed plots whose beats each have alternatives; every combination is a draft. A draft is offered only when at least 98% of its word tokens are known (ear stage 4, the threshold Yo uses), with at most 3 new words, each said at least twice. Words due for review come first; practice words he asks for must be in it. A story already on his shelf is not offered again. The plots are few (4 plots, 40 drafts): some learners will have no match, and the tab says so.
+- He can paste a text with a title. Generated and added texts are kept in the feature's own storage space, `Services.storage('biblioteca')` (`texts`, and `place:<id>` for the page he is on and the words met). The text size is `Services.storage('leer')`, key `tam`, as before.
+- The reader shows each word's ear stage by its colour. Tapping a word plays that word's own recording only (never a sentence in its place); a line with a recording has a speaker. A recording heard to its end counts as hearing those words (`progress.heard`); a failed or muted play does not. A text with no recording is read without sound.
+- Reading to the end (`progress.markRead`) and the count of words met are kept only with a verified level of A2 or more in `ProgressStore.levelResult['cefr']`. The level check does not write that field yet, so for now nobody's reading is marked finished; the page he is on is kept for everyone.
+- `assets/story_plots.json` is content kept in this package until it has a place in the course data (boundary rule 8).
 
 ## Run and test it alone
 
@@ -76,11 +51,11 @@ dart format --output=none --set-exit-if-changed .
 flutter analyze
 ```
 
-The dev entry lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_library`. Page 12, section 7 says `lib/dev_main.dart`; the orchestrator changed that on Nov 19, 2026.
+The dev entry lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_library`. Its address parameters (`seed`, `screen`, `book`, `speed`, `big`, `tab`, `content=real`) are listed at its head; on `seed=curso` every word of the plots is known, so a story can be made, and `seed=vacio` is a learner with no ear records. Page 12, section 7 says `lib/dev_main.dart`; the orchestrator changed that on Nov 19, 2026.
 
 ## Lines that apply
 
-Quoted exactly from the pages. Where this file and a page differ, the page wins.
+Quoted exactly from the pages. Where this file and a page differ, the page wins, except for the shelf and the book: the sections on them below describe Biblioteca before its rewrite of Nov 23, 2026, which he chose; "How Biblioteca works" above is what is built.
 
 From 10-leer-y-repaso, "Rules that bind this (his)":
 

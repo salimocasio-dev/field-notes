@@ -1,16 +1,13 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:feature_library/src/images.dart';
 import 'package:feature_library/src/reading_home.dart';
 import 'package:feature_library/src/text_reader.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The Biblioteca tab and the full-screen reader.
+/// feature_library's module: the Biblioteca tab (a story made for the learner's level, the texts he added, his shelf)
+/// and the text reader (`BookRoute`: a text of his shelf, or a course book's lines without its pictures).
 class LibraryModule implements FeatureModule {
-  const LibraryModule({
-    BookImageUrl? imageUrl,
-    BookImageProvider? imageProvider,
-  });
+  const LibraryModule();
 
   @override
   String get id => 'library';
