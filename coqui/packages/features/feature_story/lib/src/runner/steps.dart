@@ -566,25 +566,37 @@ extension _Steps on StoryRunner {
           W['spot'] = o.ayuda;
         }
         // a decision's round with more than one line (two people speak, or one says two things): the whole round
-        // again, in order (page 13, orders 58 to 61); otherwise its line alone, as before
+        // again, in order (page 13, orders 58 to 61); otherwise its line alone, as before. A round that is not mudo
+        // says its `line` inside `espera`, where `ronda` never sees it: it ends the repeated round, unless the round
+        // already says it
         final r = o.ronda;
-        Future<void> first;
+        final List<String> again;
         if (r != null && r.length > 1) {
-          first = playClip(r[0]).then((_) => sleep(300 / FAST));
-          for (final l in r.skip(1)) {
-            first = first
-                .then((_) => playClip(l))
-                .then((_) => sleep(300 / FAST));
-          }
+          again = [
+            ...r,
+            if (!o.mudo && line != null && line.isNotEmpty && !r.contains(line))
+              line,
+          ];
         } else {
-          first = line != null && line.isNotEmpty
-              ? playClip(line).then((_) => sleep(300 / FAST))
-              : Future<void>.value();
+          again = line != null && line.isNotEmpty ? [line] : const [];
         }
-        // during a turn the question is repeated, the bubbles do not speak
-        first.then((_) => me.turnoOn ? null : voces()).then((_) {
-          me.rep = false;
-        });
+        // he may answer, or leave, while a line or the gap after it goes on: the rest of the round then stays unsaid,
+        // as `voces` does
+        bool gone() => me.done || !identical(pending, me) || my != runId;
+        unawaited(() async {
+          try {
+            for (final l in again) {
+              if (gone()) break;
+              await playClip(l);
+              await sleep(300 / FAST);
+              if (gone()) break;
+            }
+            // during a turn the question is repeated, the bubbles do not speak
+            if (!gone() && !me.turnoOn) await voces();
+          } finally {
+            me.rep = false;
+          }
+        }());
       }
     };
     if (OIR) {
