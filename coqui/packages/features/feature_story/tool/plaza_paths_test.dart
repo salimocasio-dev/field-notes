@@ -41,20 +41,14 @@ void main() {
       ) as Map<String, dynamic>;
       final at = await plazaDecisionLetters(course, make, story);
       expect(at, hasLength(2), reason: '$id: the two decisions');
+      final jobs = <({Map<String, String> d, String pat})>[];
       for (final d in drawsOf(story)) {
         for (final pat in const ['rr', 'rw', 'wr', 'ww']) {
           if (n++ % parts[1] != parts[0]) continue;
-          final t = await playPlaza(
-            course,
-            make,
-            story,
-            d,
-            letterPlan(at, pat),
-            watch: true,
-          );
-          results.add(plazaSummary(id, d, pat, t));
+          jobs.add((d: d, pat: pat));
         }
       }
+      results.addAll(await playPlazaSummaries(story, at, jobs));
     }
     if (_out.isNotEmpty) {
       Directory(_out).createSync(recursive: true);

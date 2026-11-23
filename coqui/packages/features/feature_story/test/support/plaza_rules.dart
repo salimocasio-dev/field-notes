@@ -59,69 +59,159 @@ class PlazaRules {
     }
   }
 
-  static List<int>? _ink(dynamic it) {
-    final s = it.s as Sprite;
+  static final Expando<List<int>> _inkCache = Expando<List<int>>();
+
+  static List<int>? _inkOf(Sprite s) {
+    final had = _inkCache[s];
+    if (had != null) return had.isEmpty ? null : had;
     var x0 = s.w, y0 = s.h, x1 = -1, y1 = -1;
     for (var y = 0; y < s.h; y++) {
       for (var x = 0; x < s.w; x++) {
         if (s.px[y * s.w + x] >>> 24 == 0) continue;
-        x0 = math.min(x0, x);
-        x1 = math.max(x1, x);
-        y0 = math.min(y0, y);
-        y1 = math.max(y1, y);
+        if (x < x0) x0 = x;
+        if (x > x1) x1 = x;
+        if (y < y0) y0 = y;
+        if (y > y1) y1 = y;
       }
     }
-    return x1 < 0 ? null : [x0, y0, x1, y1];
+    final res = x1 < 0 ? const <int>[] : [x0, y0, x1, y1];
+    _inkCache[s] = res;
+    return res.isEmpty ? null : res;
   }
+
+  Map<String, List<int>>? _hooks;
+  List<List<int>>? _boardBoxes;
+  double? _cachedS;
+  double? _cachedBias;
 
   /// Checks the frame of the scene's world now.
   void check(String at) {
     final W = scene.host.W;
     checked++;
-    final items = (_m.placed(W, 0) as List).cast<dynamic>();
-    final S = (_m.places.e.S as num).toDouble();
-    final bias = (_m.places.bias as num).toDouble();
+    final rawItems = (_m.placed(W, 0) as List);
+    final items =
+        <
+          ({
+            Sprite s,
+            int left,
+            int top,
+            int right,
+            int bottom,
+            double sy,
+            double d,
+            String? tag,
+            List<int>? ink,
+          })
+        >[
+          for (final dynamic it in rawItems)
+            (
+              s: it.s as Sprite,
+              left: it.left as int,
+              top: it.top as int,
+              right: (it.left as int) + (it.s as Sprite).w,
+              bottom: (it.top as int) + (it.s as Sprite).h,
+              sy: (it.sy as num).toDouble(),
+              d: it.d as double,
+              tag: it.tag as String?,
+              ink: _inkOf(it.s as Sprite),
+            ),
+        ];
+    final S = _cachedS ??= (_m.places.e.S as num).toDouble();
+    final bias = _cachedBias ??= (_m.places.bias as num).toDouble();
     final z = _zbOf(scene.setKey(W));
-    double planeAt(dynamic it, int Y) =>
-        (it.d as double) + ((it.sy as num) - (Y + .5)) * _t30 / S;
-    bool px(dynamic it, int X, int Y) {
-      final x = X - (it.left as int), y = Y - (it.top as int);
-      final s = it.s as Sprite;
-      if (x < 0 || y < 0 || x >= s.w || y >= s.h) return false;
-      return s.px[y * s.w + x] >>> 24 != 0;
+    final kS = _t30 / S;
+    double planeAt(double d, double sy, int Y) => d + (sy - (Y + .5)) * kS;
+    bool px(
+      ({
+        Sprite s,
+        int left,
+        int top,
+        int right,
+        int bottom,
+        double sy,
+        double d,
+        String? tag,
+        List<int>? ink,
+      })
+      it,
+      int X,
+      int Y,
+    ) {
+      if (X < it.left || X >= it.right || Y < it.top || Y >= it.bottom) {
+        return false;
+      }
+      final x = X - it.left, y = Y - it.top;
+      return it.s.px[y * it.s.w + x] >>> 24 != 0;
     }
 
     // what hides a pixel (X, Y) of [it]: 'set', 'outside', a nearer sprite's tag, or null
-    String? hider(dynamic it, int X, int Y, bool Function(String tag) counts) {
+    String? hider(
+      double itD,
+      double itSy,
+      int X,
+      int Y,
+      List<
+        ({
+          Sprite s,
+          int left,
+          int top,
+          int right,
+          int bottom,
+          double sy,
+          double d,
+          String? tag,
+          List<int>? ink,
+        })
+      >
+      cands,
+    ) {
       if (X < 0 || X >= 240 || Y < 0 || Y >= 216) return 'outside';
-      final plane = planeAt(it, Y);
+      final plane = planeAt(itD, itSy, Y);
       if (z[Y * 240 + X] > plane + bias) return 'set';
-      for (final o in items) {
-        if (identical(o, it) || o.tag == null || !counts(o.tag as String)) {
-          continue;
-        }
-        if (!px(o, X, Y)) continue;
-        if (planeAt(o, Y) > plane + .001) return o.tag as String;
+      for (var i = 0; i < cands.length; i++) {
+        final o = cands[i];
+        if (X < o.left || X >= o.right || Y < o.top || Y >= o.bottom) continue;
+        final x = X - o.left, y = Y - o.top;
+        if (o.s.px[y * o.s.w + x] >>> 24 == 0) continue;
+        if (planeAt(o.d, o.sy, Y) > plane + .001) return o.tag;
       }
       return null;
     }
 
     // the frog is whole
-    final frogs = items.where((i) => i.tag == 'coqui').toList();
+    final frogs = [
+      for (final i in items)
+        if (i.tag == 'coqui') i,
+    ];
     for (final f in frogs) {
       final hidden = <String, int>{};
-      for (var y = 0; y < (f.s as Sprite).h; y++) {
-        for (var x = 0; x < (f.s as Sprite).w; x++) {
-          if ((f.s as Sprite).px[y * (f.s as Sprite).w + x] >>> 24 == 0) {
-            continue;
+      final fb = f.ink;
+      if (fb != null) {
+        final fx0 = f.left + fb[0],
+            fy0 = f.top + fb[1],
+            fx1 = f.left + fb[2],
+            fy1 = f.top + fb[3];
+        final cands = [
+          for (final o in items)
+            if (!identical(o, f) &&
+                o.tag != null &&
+                o.tag != 'perro' &&
+                !o.tag!.startsWith('paloma:') &&
+                o.right > fx0 &&
+                o.left <= fx1 &&
+                o.bottom > fy0 &&
+                o.top <= fy1)
+              o,
+        ];
+        final fs = f.s;
+        for (var y = fb[1]; y <= fb[3]; y++) {
+          for (var x = fb[0]; x <= fb[2]; x++) {
+            if (fs.px[y * fs.w + x] >>> 24 == 0) {
+              continue;
+            }
+            final h = hider(f.d, f.sy, f.left + x, f.top + y, cands);
+            if (h != null) hidden[h] = (hidden[h] ?? 0) + 1;
           }
-          final h = hider(
-            f,
-            f.left + x,
-            f.top + y,
-            (t) => t != 'perro' && !t.startsWith('paloma:'),
-          );
-          if (h != null) hidden[h] = (hidden[h] ?? 0) + 1;
         }
       }
       // a person the scene could place nowhere that leaves him whole (`tapa`: no free spot of the row) is counted apart
@@ -146,15 +236,30 @@ class PlazaRules {
       }
     }
     // the piragüero's head
-    for (final it in items.where((i) => i.tag == 'persona:piraguero')) {
-      final b = _ink(it)!;
+    for (final it in items) {
+      if (it.tag != 'persona:piraguero') continue;
+      final b = it.ink!;
+      final px0 = it.left,
+          py0 = it.top + b[1],
+          px1 = it.right,
+          py1 = it.top + b[1] + 14;
+      final cands = [
+        for (final o in items)
+          if (!identical(o, it) &&
+              o.tag != null &&
+              o.right > px0 &&
+              o.left < px1 &&
+              o.bottom > py0 &&
+              o.top < py1)
+            o,
+      ];
       final hidden = <String, int>{};
       for (var y = b[1]; y < b[1] + 14; y++) {
-        for (var x = 0; x < (it.s as Sprite).w; x++) {
-          if ((it.s as Sprite).px[y * (it.s as Sprite).w + x] >>> 24 == 0) {
+        for (var x = 0; x < it.s.w; x++) {
+          if (it.s.px[y * it.s.w + x] >>> 24 == 0) {
             continue;
           }
-          final h = hider(it, it.left + x, it.top + y, (t) => true);
+          final h = hider(it.d, it.sy, it.left + x, it.top + y, cands);
           if (h != null) hidden[h] = (hidden[h] ?? 0) + 1;
         }
       }
@@ -167,21 +272,20 @@ class PlazaRules {
       }
     }
     // a card on a hook never covers a neighbouring hook
-    final hooks = <String, List<int>>{};
-    for (final fila in const ['isla', 'ciudad']) {
-      final g = (_m.places.ganchos(fila) as List).cast<List<double>>();
-      hooks[fila] = [
-        for (final h in g)
-          scene.projection.project(h[0], h[1], h[2]).sx.floor(),
-      ];
-    }
-    for (final it in items.where(
-      (i) => i.tag != null && (i.tag as String).startsWith('foto:'),
-    )) {
-      final t = (it.tag as String).substring(5);
+    final hooks = _hooks ??= {
+      for (final fila in const ['isla', 'ciudad'])
+        fila: [
+          for (final h
+              in (_m.places.ganchos(fila) as List).cast<List<double>>())
+            scene.projection.project(h[0], h[1], h[2]).sx.floor(),
+        ],
+    };
+    for (final it in items) {
+      if (it.tag == null || !it.tag!.startsWith('foto:')) continue;
+      final t = it.tag!.substring(5);
       final fila = t.startsWith('isla') ? 'isla' : 'ciudad';
       final i = int.parse(t.substring(fila.length));
-      final b = _ink(it)!;
+      final b = it.ink!;
       final x0 = it.left + b[0], x1 = it.left + b[2];
       final all = [...hooks['isla']!, ...hooks['ciudad']!];
       final mine = hooks[fila]![i];
@@ -198,34 +302,42 @@ class PlazaRules {
     }
     // nobody covers the board's pictures and its rows of hooks
     if ((W['tablero'] as num? ?? 0) == 1) {
-      final boxes = [
+      final boxes = _boardBoxes ??= [
         for (final k in const ['fila_isla', 'fila_ciudad'])
           (_m.places.box(k) as List).cast<int>(),
       ];
-      for (final it in items.where(
-        (i) =>
-            i.tag != null &&
-            ((i.tag as String).startsWith('persona:') ||
-                i.tag == 'coqui' ||
-                (i.tag as String).startsWith('cola:')),
-      )) {
+      for (final it in items) {
+        final tag = it.tag;
+        if (tag == null ||
+            (!tag.startsWith('persona:') &&
+                tag != 'coqui' &&
+                !tag.startsWith('cola:'))) {
+          continue;
+        }
         var n = 0;
         for (final b in boxes) {
-          for (var Y = b[1]; Y < b[1] + b[3]; Y++) {
-            for (var X = b[0]; X < b[0] + b[2]; X++) {
-              if (!px(it, X, Y)) continue;
-              if (z[Y * 240 + X] > planeAt(it, Y) + bias) continue;
+          final x0 = math.max(b[0], it.left),
+              x1 = math.min(b[0] + b[2], it.right);
+          final y0 = math.max(b[1], it.top),
+              y1 = math.min(b[1] + b[3], it.bottom);
+          if (x0 >= x1 || y0 >= y1) continue;
+          for (var Y = y0; Y < y1; Y++) {
+            final pl = planeAt(it.d, it.sy, Y) + bias;
+            final sy = Y - it.top;
+            for (var X = x0; X < x1; X++) {
+              if (it.s.px[sy * it.s.w + (X - it.left)] >>> 24 == 0) continue;
+              if (z[Y * 240 + X] > pl) continue;
               n++;
             }
           }
         }
         if (n == 0) continue;
         final q = W['cq'] as Map;
-        final onLedge = it.tag == 'coqui' && q['spot'] == 'repisa';
+        final onLedge = tag == 'coqui' && q['spot'] == 'repisa';
         (onLedge ? notes : breaches).add((
           at: at,
           rule: 'the board\'s pictures covered',
-          what: '${it.tag}${onLedge ? ' (on the ledge, repisa)' : ''}: $n px',
+          what: '$tag${onLedge ? ' (on the ledge, repisa)' : ''}: $n px',
         ));
       }
     }
@@ -236,25 +348,32 @@ class PlazaRules {
         (bb.a as List).cast<num>(),
         (bb.b as List).cast<num>(),
       ]) {
-        for (final it in items.where(
-          (i) =>
-              i.tag == 'coqui' ||
-              (i.tag != null && (i.tag as String).startsWith('paloma:')),
-        )) {
+        final bx0 = b[0].toInt(),
+            by0 = b[1].toInt(),
+            bx1 = (b[0] + b[2]).toInt(),
+            by1 = (b[1] + b[3]).toInt();
+        for (final it in items) {
+          final tag = it.tag;
+          if (tag != 'coqui' && (tag == null || !tag.startsWith('paloma:'))) {
+            continue;
+          }
+          final x0 = math.max(bx0, it.left), x1 = math.min(bx1, it.right);
+          final y0 = math.max(by0, it.top), y1 = math.min(by1, it.bottom);
+          if (x0 >= x1 || y0 >= y1) continue;
           var n = 0;
-          for (var Y = b[1].toInt(); Y < b[1] + b[3]; Y++) {
-            for (var X = b[0].toInt(); X < b[0] + b[2]; X++) {
-              if (px(it, X, Y)) n++;
+          for (var Y = y0; Y < y1; Y++) {
+            final sy = Y - it.top;
+            for (var X = x0; X < x1; X++) {
+              if (it.s.px[sy * it.s.w + (X - it.left)] >>> 24 != 0) n++;
             }
           }
           if (n == 0) continue;
           final q = W['cq'] as Map;
-          final pigeonOff4 = it.tag != 'coqui' && q['spot'] != 'asiento4';
+          final pigeonOff4 = tag != 'coqui' && q['spot'] != 'asiento4';
           (pigeonOff4 ? notes : breaches).add((
             at: at,
-            rule:
-                'a bubble over ${it.tag == 'coqui' ? 'the frog' : 'a pigeon'}',
-            what: '${it.tag}: $n px (the frog at ${q['spot']})',
+            rule: 'a bubble over ${tag == 'coqui' ? 'the frog' : 'a pigeon'}',
+            what: '$tag: $n px (the frog at ${q['spot']})',
           ));
         }
       }
@@ -262,8 +381,9 @@ class PlazaRules {
     // the frog on the cart: no more than a quarter of the piragüero's box
     final q = W['cq'] as Map;
     if (q['spot'] == 'carro_borde') {
-      for (final p in items.where((i) => i.tag == 'persona:piraguero')) {
-        final b = _ink(p)!;
+      for (final p in items) {
+        if (p.tag != 'persona:piraguero') continue;
+        final b = p.ink!;
         final box = [
           p.left + b[0],
           p.top + b[1],
@@ -290,9 +410,9 @@ class PlazaRules {
     // inside the picture and the view
     final cam = scene.CAM['wide']!;
     for (final it in items) {
-      final b = _ink(it);
+      final b = it.ink;
       if (b == null) continue;
-      final tag = it.tag as String;
+      final tag = it.tag!;
       if (tag.startsWith('persona:')) {
         final p = (W['gente'] as Map)[tag.substring(8)] as Map?;
         if (p != null && p['spot'] == 'entrada') continue;
@@ -313,13 +433,12 @@ class PlazaRules {
         breaches.add((
           at: at,
           rule: 'outside the view',
-          what: '$tag at column $sx, row ${it.sy}',
+          what: '$tag at column $sx, row ${it.sy.toInt()}',
         ));
       }
     }
     // people apart (feet at least 10 px apart); whoever is at `entrada` or on the way (walking in or out) apart
-    bool standing(dynamic it) {
-      final tag = it.tag as String;
+    bool standing(String tag) {
       if (!tag.startsWith('persona:')) return true;
       final p = (W['gente'] as Map)[tag.substring(8)] as Map?;
       return p != null && p['spot'] != 'entrada' && !_moving(p);
@@ -328,16 +447,16 @@ class PlazaRules {
     final people = [
       for (final it in items)
         if (it.tag != null &&
-            standing(it) &&
-            ((it.tag as String).startsWith('persona:') ||
+            standing(it.tag!) &&
+            (it.tag!.startsWith('persona:') ||
                 it.tag == 'coqui' ||
-                (it.tag as String).startsWith('cola:')))
+                it.tag!.startsWith('cola:')))
           it,
     ];
     for (var i = 0; i < people.length; i++) {
       for (var j = i + 1; j < people.length; j++) {
         final a = people[i], b = people[j];
-        final ba = _ink(a)!, bb2 = _ink(b)!;
+        final ba = a.ink!, bb2 = b.ink!;
         final ax = a.left + (ba[0] + ba[2]) / 2,
             bx = b.left + (bb2[0] + bb2[2]) / 2;
         final d = math.sqrt(

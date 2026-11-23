@@ -63,14 +63,24 @@ const List<String> PLAZA_PERSONAS = [
 ];
 
 class Plaza extends Escena implements SetScene, SetOverSprites {
-  Plaza(this.ss) : sheet = ss.legacy() {
-    _p = PlazaPlaces(ss);
+  Plaza(this.ss)
+    : sheet = identical(ss, _lastSs)
+          ? _lastSheet!
+          : (_lastSheet = ss.legacy()) {
+    _p = identical(ss, _lastSs)
+        ? _lastPlaces!
+        : (_lastPlaces = PlazaPlaces(ss));
+    _lastSs = ss;
     CAM = {'wide': _p.view('wide')};
     // the frog can be sent to any spot the sheet names (`ir` {a}): his top left for it (rules.anchor: mkCoqui's column
     // 16 on sx, its row 25 on sy)
     LUGAR = {for (final s in ss.spots.keys) s: _frogAt(_p.at(s))};
     cosas = _things();
   }
+
+  static SceneSheet? _lastSs;
+  static Sheet? _lastSheet;
+  static PlazaPlaces? _lastPlaces;
 
   /// The new scene's sheet (SceneSheet).
   final SceneSheet ss;
@@ -678,6 +688,8 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
     }
   }
 
+  static final Map<String, Sprite> _frogSprites = {};
+
   /// [items] and the frog (as the game draws him, juego.js frog, at the depth of his feet): every sprite of the frame,
   /// placed. [draw] composes it; the rules' tests read it.
   List<PlazaItem> placed(Map<String, dynamic> W, int a) {
@@ -686,29 +698,26 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
     if (jsTruthy(q['vis'])) {
       final b = host.frogBox(q), at = _frogPoint(q);
       final ox = b.x.toInt() - 16, oy = b.y.toInt() - 24;
-      final px = Uint32List(64 * 64);
-      final g = Ctx(px, 64, 64)..translate(-ox.toDouble(), -oy.toDouble());
-      host.frog(g, q, a);
-      all.add(
-        PlazaItem(
-          Sprite(64, 64, px),
-          ox,
-          oy,
-          _round(at.sy),
-          at.d,
-          tag: 'coqui',
-        ),
-      );
+      final fk =
+          '${q['s']}_${b.x - ox}_${b.y - oy}_${(q['y'] as num) - oy}_${((q['dy'] as num) + 0.5).floor()}_${host.F % 47 < 2 ? 1 : 0}_${((q['bub'] == 'hola' || _talker() == 'coqui') && a % 2 != 0) ? 1 : 0}';
+      final spr = _frogSprites.putIfAbsent(fk, () {
+        final px = Uint32List(64 * 64);
+        final g = Ctx(px, 64, 64)..translate(-ox.toDouble(), -oy.toDouble());
+        host.frog(g, q, a);
+        return Sprite(64, 64, px);
+      });
+      all.add(PlazaItem(spr, ox, oy, _round(at.sy), at.d, tag: 'coqui'));
     }
     return all;
   }
 
   @override
   void draw(Ctx c, Map<String, dynamic> W, int a) {
+    if (!_framed) return;
     const w0 = 240, h0 = 216;
     final layer = _layer ??= Uint32List(w0 * h0);
     final lz = _layerZ ??= Float32List(w0 * h0);
-    final setZ = _framed ? _setZ : null, bias = _p.bias, S = _p.e.S;
+    final setZ = _setZ, bias = _p.bias, S = _p.e.S;
     final all = placed(W, a);
     var x0 = w0, y0 = h0, x1 = 0, y1 = 0;
     for (final it in all) {
@@ -805,7 +814,7 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
 
   @override
   void hud(Ctx c, Map<String, dynamic> W, int a) {
-    if (!jsTruthy(W['tarjeta'])) return;
+    if (!_framed || !jsTruthy(W['tarjeta'])) return;
     final marcas = W['marcas'] is List ? W['marcas'] as List : const [];
     const x0 = 3;
     tarjeta(c, x0, 3, 6 + 20 * marcas.length, 24);
@@ -1156,17 +1165,22 @@ class Plaza extends Escena implements SetScene, SetOverSprites {
       if (it.tag == 'persona:$id') p = it;
     }
     if (f == null || p == null) return 0;
+    final x0 = math.max(0, p.left - f.left),
+        x1 = math.min(f.s.w, p.left + p.s.w - f.left);
+    final y0 = math.max(0, p.top - f.top),
+        y1 = math.min(f.s.h, p.top + p.s.h - f.top);
+    if (x0 >= x1 || y0 >= y1) return 0;
     final S = _p.e.S;
     var n = 0;
-    for (var y = 0; y < f.s.h; y++) {
+    for (var y = y0; y < y1; y++) {
       final Y = f.top + y;
       final pf = f.d + (f.sy - (Y + .5)) * _t30 / S,
           pp = p.d + (p.sy - (Y + .5)) * _t30 / S;
       if (pp <= pf + .001) continue;
-      for (var x = 0; x < f.s.w; x++) {
+      final YY = Y - p.top;
+      for (var x = x0; x < x1; x++) {
         if (f.s.px[y * f.s.w + x] >>> 24 == 0) continue;
-        final X = f.left + x - p.left, YY = Y - p.top;
-        if (X < 0 || YY < 0 || X >= p.s.w || YY >= p.s.h) continue;
+        final X = f.left + x - p.left;
         if (p.s.px[YY * p.s.w + X] >>> 24 != 0) n++;
       }
     }

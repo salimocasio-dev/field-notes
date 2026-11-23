@@ -39,29 +39,20 @@ void main() {
             picks.add(all.firstWhere((d) => d[k] == v));
           }
         }
-        for (final pat in const ['rr', 'rw', 'wr', 'ww']) {
-          for (final d in pat == 'rr' ? picks : [picks.first]) {
-            final s = plazaSummary(
-              id,
-              d,
-              pat,
-              await playPlaza(
-                course,
-                make,
-                story,
-                d,
-                letterPlan(at, pat),
-                watch: true,
-              ),
-            );
-            final what = jsonEncode(s);
-            expect(s['end'], 'finished', reason: what);
-            expect(s['errors'], isEmpty, reason: what);
-            expect(s['decisionsPlayed'], pat, reason: what);
-            expect(s['lost'], 'w'.allMatches(pat).length, reason: what);
-            expect(s['breaches'], isEmpty, reason: what);
-            expect(s['checks'], greaterThan(10), reason: what);
-          }
+        final summaries = await playPlazaSummaries(story, at, [
+          for (final pat in const ['rr', 'rw', 'wr', 'ww'])
+            for (final d in pat == 'rr' ? picks : [picks.first])
+              (d: d, pat: pat),
+        ]);
+        for (final s in summaries) {
+          final pat = s['pattern'] as String;
+          final what = jsonEncode(s);
+          expect(s['end'], 'finished', reason: what);
+          expect(s['errors'], isEmpty, reason: what);
+          expect(s['decisionsPlayed'], pat, reason: what);
+          expect(s['lost'], 'w'.allMatches(pat).length, reason: what);
+          expect(s['breaches'], isEmpty, reason: what);
+          expect(s['checks'], greaterThan(10), reason: what);
         }
       },
       timeout: const Timeout(Duration(minutes: 20)),
