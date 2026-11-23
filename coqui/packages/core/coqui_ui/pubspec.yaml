@@ -61,3 +61,96 @@ flutter:
           weight: 400
         - asset: fonts/PixelifySans-Bold.ttf
           weight: 700
+    - family: Atkinson Hyperlegible Next
+      fonts:
+        - asset: fonts/AtkinsonHyperlegibleNext-400.ttf
+          weight: 400
+        - asset: fonts/AtkinsonHyperlegibleNext-500.ttf
+          weight: 500
+        - asset: fonts/AtkinsonHyperlegibleNext-600.ttf
+          weight: 600
+        - asset: fonts/AtkinsonHyperlegibleNext-700.ttf
+          weight: 700
+        - asset: fonts/AtkinsonHyperlegibleNext-800.ttf
+          weight: 800
+    - family: packages/coqui_ui/Atkinson Hyperlegible Next
+      fonts:
+        - asset: fonts/AtkinsonHyperlegibleNext-400.ttf
+          weight: 400
+        - asset: fonts/AtkinsonHyperlegibleNext-500.ttf
+          weight: 500
+        - asset: fonts/AtkinsonHyperlegibleNext-600.ttf
+          weight: 600
+        - asset: fonts/AtkinsonHyperlegibleNext-700.ttf
+          weight: 700
+        - asset: fonts/AtkinsonHyperlegibleNext-800.ttf
+          weight: 800
+    - family: Bricolage Grotesque
+      fonts:
+        - asset: fonts/BricolageGrotesque-700.ttf
+          weight: 700
+        - asset: fonts/BricolageGrotesque-800.ttf
+          weight: 800
+    - family: packages/coqui_ui/Bricolage Grotesque
+      fonts:
+        - asset: fonts/BricolageGrotesque-700.ttf
+          weight: 700
+        - asset: fonts/BricolageGrotesque-800.ttf
+          weight: 800
+    - family: Bricolage Grotesque Display
+      fonts:
+        - asset: fonts/BricolageGrotesqueDisplay-800.ttf
+          weight: 800
+    - family: packages/coqui_ui/Bricolage Grotesque Display
+      fonts:
+        - asset: fonts/BricolageGrotesqueDisplay-800.ttf
+          weight: 800
+    - family: Literata
+      fonts:
+        - asset: fonts/Literata-400.ttf
+          weight: 400
+        - asset: fonts/Literata-500.ttf
+          weight: 500
+        - asset: fonts/Literata-600.ttf
+          weight: 600
+    - family: packages/coqui_ui/Literata
+      fonts:
+        - asset: fonts/Literata-400.ttf
+          weight: 400
+        - asset: fonts/Literata-500.ttf
+          weight: 500
+        - asset: fonts/Literata-600.ttf
+          weight: 600
+    - family: Literata Italic
+      fonts:
+        - asset: fonts/LiterataItalic-400.ttf
+          weight: 400
+    - family: packages/coqui_ui/Literata Italic
+      fonts:
+        - asset: fonts/LiterataItalic-400.ttf
+          weight: 400
+    - family: Lexend
+      fonts:
+        - asset: fonts/Lexend-400.ttf
+          weight: 400
+        - asset: fonts/Lexend-500.ttf
+          weight: 500
+    - family: packages/coqui_ui/Lexend
+      fonts:
+        - asset: fonts/Lexend-400.ttf
+          weight: 400
+        - asset: fonts/Lexend-500.ttf
+          weight: 500
+    - family: Noto Sans Arabic
+      fonts:
+        - asset: fonts/NotoSansArabic-500.ttf
+          weight: 500
+        - asset: fonts/NotoSansArabic-700.ttf
+          weight: 700
+    - family: packages/coqui_ui/Noto Sans Arabic
+      fonts:
+        - asset: fonts/NotoSansArabic-500.ttf
+          weight: 500
+        - asset: fonts/NotoSansArabic-700.ttf
+          weight: 700
+
