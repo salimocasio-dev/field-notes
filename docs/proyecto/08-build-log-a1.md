@@ -2,6 +2,11 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 23, part 29: cutover
+
+- Order 40: every recorded run replays clean on main. Order 41 (the books' pictures) was dropped by Salim. Order 42: the old addresses open the new app; the old app is under `legacy/`; nothing was moved or deleted (page 13 says why).
+- Still open: places 5 to 10 (page 13, "Where this lane stopped on Nov 22"), the Android build (43), testers (44), the Biblioteca, four Escuchar kitchen picture stories, A comer's three leftovers.
+
 ## Nov 22, part 28: La cocina plays (build 13); every old scene is in Dart
 
 - La mesa, La estufa, La nevera and A comer are on main and play in build 13, each story against its recorded runs. With them all twelve scenes of the old site are converted; no old picture is bundled any more.

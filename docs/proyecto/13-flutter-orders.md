@@ -1368,15 +1368,25 @@ Why: the story files of places 4 to 10 must never be pushed under `historia/cuen
 - **For the content lane:** `min` in the overlay is a guess (the story's `dots` minus 3, at least 2); the site's own value replaces it when the course lists the story. When a place is published on the site, leave it out at the next run of the tool.
 - Not verified: Android (no SDK on the build machine; the files are plain Flutter assets). `--check` is not part of `test_all.sh`, so a generator that changes on main leaves the bundle stale until the tool is run again.
 
-## Order 40. Every story against its recorded runs (orchestrator)
+## Order 40. Every story against its recorded runs (orchestrator). **Result (Nov 23): done.**
+
+On main after La cocina's merge the whole `feature_story` package passes (316 tests): all 171 recorded runs of the 58 stories whole on the scene that replays the old one, and each converted scene's stories on the real scene. No run differs but in the times each scene's result names.
 
 Replay all of `ref/trazas/` with `tool/juega.dart`. Any run that differs is fixed in its lane by an order naming the story and the first step that differs.
 
-## Order 41. Books' pictures (orchestrator)
+## Order 41. Books' pictures (orchestrator). **Dropped by Salim on Nov 23** ("I'm not interested in this"): the books keep their old pictures.
 
 A Dart tool that does for pictures what historia/tools/gen_libros.py does: each book page's picture at the moment gen_libros.py takes it, without bubbles, captions or HUD, the 196 × 216 display picture, same file names. The books' text does not change. **Done when:** 231 pictures; a fresh beginner reader goes through the 22 readable books and flags any page whose picture no longer fits its lines.
 
-## Order 42. Cutover (orchestrator)
+## Order 42. Cutover (orchestrator). **Result (Nov 23): done, at Salim's word the same day ("the others you can complete now").**
+
+- The old addresses `historia/` and `historia/app.html` send a visitor to `/field-notes/app/` (one script at the top of each page).
+- The old app opens under `legacy/` (`legacy/index.html` opens `historia/app.html?legacy=1`; the tab remembers it, so moving about inside the old app does not send him away).
+- **Not as written below: the old code was not moved.** The tools and tests that prove the new scenes drive the old pages where they are (`coqui/tool/ref/`, the sheet makers, `historia/tools/*_check.py`), and the content lane works in those folders; a move would break both. A page driven by a tool (`navigator.webdriver`) is not redirected, so every such tool works as before.
+- His progress: both apps keep it in the browser's storage under the same keys at the same site, so the new app shows what the old one saved in the same browser. Not tested on his phone. A home-screen copy of the old app keeps its own storage, as before.
+- Nothing under `historia/cuentos/` changed, so the audio job does not start. The books' pictures are the old ones (order 41 dropped). The old site's Python checks need Python's Playwright, which this machine lacks: not run; the same cases were tested with Node's (a visitor on the three old addresses lands in the new app; a tool stays on the old page with no page error; `legacy/` opens the old app and stays).
+
+As ordered before:
 
 1. Tell Salim the day before, in one line. Nothing is deleted.
 2. The old code moves to `legacy/`, still served. `historia/app.html` sends visitors to `/field-notes/app/`.
