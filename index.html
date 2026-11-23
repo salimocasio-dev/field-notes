@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en"><head><meta charset="utf-8"><script>/* Nov 23: visitors go to the new app (app/). This first version stays here with ?legacy=1 (kept for the tab) and for tools that drive the page. */(function(){var old=/[?&]legacy=1/.test(location.search);try{if(old)sessionStorage.setItem("coqui.legacy.root","1");else old=sessionStorage.getItem("coqui.legacy.root")==="1"}catch(e){}if(!old&&!navigator.webdriver)location.replace("app/")})();</script><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>field notes</title><meta name="robots" content="noindex,nofollow">
 <style>
 :root{--bg:#0f1730;--pan:#fbf3dc;--ink:#2a1a10;--mut:#7a6a58;--gold:#f2b830;--grn:#2e9a48;--red:#d0403a}
