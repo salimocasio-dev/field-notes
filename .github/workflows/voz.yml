@@ -5,6 +5,7 @@
 name: Voz
 on:
   push:
+    branches: [main]   # never from a lane branch: three AIs push branches, and each recording costs money
     paths: ["historia/cuentos/**"]
   workflow_dispatch:
     inputs:
