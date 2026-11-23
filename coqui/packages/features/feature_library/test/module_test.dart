@@ -1,36 +1,35 @@
-// The module and the dev entry.
+import 'dart:convert';
+
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
-import 'package:feature_library/src/images.dart';
-import 'package:feature_library/src/reader.dart';
-import 'package:feature_library/src/shelf.dart';
+import 'package:feature_library/src/reading.dart';
+import 'package:feature_library/src/reading_home.dart';
+import 'package:feature_library/src/text_reader.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../tool/dev_main.dart';
-import 'support.dart';
+import 'support.dart' show Rig, settle;
+
+Future<void> ready(WidgetTester tester) async {
+  await settle(tester);
+  await tester.pump(const Duration(milliseconds: 300));
+  await settle(tester);
+}
 
 void main() {
-  setUpAll(makeTestPicture);
-
-  test('the module is library: one tab, and the screen of a book', () {
+  test('the module owns Biblioteca and book routes', () {
     final rig = Rig();
-    const m = LibraryModule();
-    expect(m.id, 'library');
-    final tab = m.tab(rig.services)!;
-    expect(tab.id, 'library');
-    expect(tab.label, CoquiLabels.library);
+    const module = LibraryModule();
+    expect(module.id, 'library');
+    expect(module.tab(rig.services).label, CoquiLabels.library);
     expect(
-      m.screenFor(const BookRoute('uno'), rig.services),
-      isA<BookReader>(),
+      module.screenFor(const BookRoute('uno'), rig.services),
+      isA<TextReader>(),
     );
-  });
-
-  test('the module answers the book route and no other', () {
-    final rig = Rig();
-    const m = LibraryModule();
-    for (final r in <AppRoute>[
+    for (final route in <AppRoute>[
       const StoryRoute('uno'),
       const StoryRoute('uno', listen: true),
       const ReviewRoute(),
@@ -39,189 +38,209 @@ void main() {
       const VoiceTestRoute(),
       const TabRoute('library'),
     ]) {
-      expect(m.screenFor(r, rig.services), isNull, reason: '$r');
+      expect(module.screenFor(route, rig.services), isNull, reason: '$route');
     }
   });
 
-  test('the books\' pictures are asked for at the old site\'s relative path with its version tag, or where the shell says', () {
-    expect(defaultBookImageUrl('img/uno-1.png'), 'libros/img/uno-1.png?v=39');
-    final rig = Rig();
-    final asked = <String>[];
-    final m = LibraryModule(
-      imageUrl: (p) => 'https://site.example/books/$p',
-      imageProvider: (url) {
-        asked.add(url);
-        return rig.images.provider(url);
-      },
+  testWidgets('the shelf leaves finished course transcripts out', (
+    tester,
+  ) async {
+    final rig = Rig()..played(['uno']);
+    const module = LibraryModule();
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(builder: module.tab(rig.services).builder),
+        ),
+      ),
     );
-    final reader =
-        m.screenFor(const BookRoute('uno'), rig.services)! as BookReader;
-    expect(
-      reader.imageUrl('img/uno-1.png'),
-      'https://site.example/books/img/uno-1.png',
+    await ready(tester);
+    expect(find.byType(ReadingHome), findsOneWidget);
+    expect(find.text('Generate a story'), findsOneWidget);
+    expect(find.text('Add text'), findsOneWidget);
+    expect(find.text('Uno'), findsNothing);
+    expect(rig.course.bookAsked, isEmpty);
+    expect(rig.images.asked, isEmpty);
+  });
+
+  testWidgets('the dev shelf generates a story using a chosen practice word', (
+    tester,
+  ) async {
+    await tester.pumpWidget(devApp());
+    await ready(tester);
+    await tester.tap(find.text('Generate a story'));
+    await ready(tester);
+    await tester.enterText(find.byType(TextFormField), 'jugo');
+    await tester.tap(find.text('Generate'));
+    await ready(tester);
+    expect(find.byType(TextReader), findsOneWidget);
+    expect(find.byType(CoquiTabBar), findsNothing);
+    expect(find.byType(Image), findsNothing);
+
+    await tester.tap(find.byTooltip(CoquiLabels.library));
+    await ready(tester);
+    expect(find.text('Generated story'), findsOneWidget);
+    expect(find.text('Read story'), findsOneWidget);
+  });
+
+  testWidgets('reports when the generator has no vocabulary match', (
+    tester,
+  ) async {
+    await tester.pumpWidget(devApp(options: const DevOptions(seed: 'vacio')));
+    await ready(tester);
+    await tester.tap(find.text('Generate a story'));
+    await ready(tester);
+    await tester.tap(find.text('Generate'));
+    await ready(tester);
+    expect(find.textContaining('no new story that fits'), findsOneWidget);
+    expect(find.byType(TextReader), findsNothing);
+  });
+
+  testWidgets('imports text and resumes the saved page before A2', (
+    tester,
+  ) async {
+    await tester.pumpWidget(devApp());
+    await ready(tester);
+    await tester.tap(find.text('Add text'));
+    await ready(tester);
+    await tester.enterText(find.byType(TextFormField).first, 'Mi cuaderno');
+    await tester.enterText(
+      find.byType(TextFormField).last,
+      'Tengo un cuaderno. Es azul. Tiene papel. Escribo aquí.',
     );
-    expect(reader.imageProvider('https://x/y.png'), isNotNull);
-    expect(asked, ['https://x/y.png']);
-    final shelf = m.tab(rig.services)!;
-    expect(shelf, isNotNull);
+    await tester.tap(find.text('Add and read'));
+    await ready(tester);
+    expect(find.text('1 / 2'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Siguiente'));
+    await ready(tester);
+    expect(find.text('2 / 2'), findsOneWidget);
+    await tester.tap(find.byTooltip(CoquiLabels.library));
+    await ready(tester);
+    expect(find.text('Added text'), findsOneWidget);
+    expect(find.textContaining('words met'), findsNothing);
+    await tester.tap(find.text('Read'));
+    await ready(tester);
+    expect(find.text('2 / 2'), findsOneWidget);
   });
 
   testWidgets(
-    'the shelf and the reader use the shell\'s address for a picture',
+    'an existing book route loads a transcript without fetching a scene image',
     (tester) async {
-      final rig = Rig()..played(['uno']);
-      final asked = <String>[];
-      final m = LibraryModule(
-        imageUrl: (p) => 'https://site.example/books/$p',
-        imageProvider: (url) {
-          asked.add(url);
-          return rig.images.provider(url);
-        },
-      );
+      final rig = Rig();
+      final module = LibraryModule(imageProvider: rig.images.provider);
       await tester.pumpWidget(
         MaterialApp(
-          home: Builder(builder: (c) => m.tab(rig.services)!.builder(c)),
+          home: module.screenFor(const BookRoute('uno'), rig.services)!,
         ),
       );
-      await settle(tester);
-      expect(asked, contains('https://site.example/books/img/uno-1.png'));
-      asked.clear();
-      await tester.pumpWidget(const SizedBox());
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Builder(
-            builder: (c) => m.screenFor(const BookRoute('uno'), rig.services)!,
-          ),
-        ),
+      await ready(tester);
+      expect(find.text('1 / 4'), findsOneWidget);
+      expect(
+        find.textContaining('Me llamo Carmen', findRichText: true),
+        findsOneWidget,
       );
-      await settle(tester);
-      expect(asked, contains('https://site.example/books/img/uno-1.png'));
-      expect(asked, contains('https://site.example/books/img/uno-2.png'));
+      expect(rig.images.asked, isEmpty);
     },
   );
 
-  group('the dev entry (on the fakes)', () {
-    testWidgets(
-      'opens on the shelf of the sample course with the progress of a reference state',
-      (tester) async {
-        await tester.pumpWidget(devApp());
-        await settle(tester);
-        expect(find.byType(LibraryShelf), findsOneWidget);
-        expect(
-          find.text(CoquiLabels.library),
-          findsWidgets,
-        ); // the title and the tab bar's label
-        // the seed "curso" has played the sample's three stories
-        expect(find.text('La lluvia'), findsOneWidget);
-        expect(find.text('El bizcocho'), findsOneWidget);
-        expect(find.text('¿Dónde está el pájaro?'), findsOneWidget);
-      },
-    );
-
-    testWidgets('the empty state shows the plain line', (tester) async {
-      await tester.pumpWidget(devApp(options: const DevOptions(seed: 'vacio')));
-      await settle(tester);
-      expect(
-        find.text(
-          'Play a story on the map. You can hear it again here and read it.',
-        ),
-        findsOneWidget,
+  testWidgets(
+    'a word tap plays only its recorded word and credits one audible ear meeting',
+    (tester) async {
+      final course = _WordCatalog();
+      final clips = FakeClipPlayer();
+      final progress = FakeProgressStore();
+      final services = fakeServices(
+        course: course,
+        clips: clips,
+        progress: progress,
       );
-    });
-
-    testWidgets('Read opens the reader and Biblioteca comes back', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(412, 915) * 2.625;
-      tester.view.devicePixelRatio = 2.625;
-      addTearDown(tester.view.reset);
-      await tester.pumpWidget(devApp());
-      await settle(tester);
-      await tester.tap(
-        find
-            .byWidgetPredicate(
-              (w) =>
-                  w.runtimeType.toString() == 'ShelfButton' &&
-                  (w as dynamic).label == 'Read',
-            )
-            .first,
+      final store = ReadingStore(services.storage(ReadingStore.space));
+      final text = await store.add(
+        now: 0,
+        title: 'Prueba',
+        body: '¡Casa!',
+        generated: false,
       );
-      await settle(tester);
-      expect(find.byType(BookReader), findsOneWidget);
-      await tester.tap(
-        find.byWidgetPredicate(
-          (w) => w is LessonIconButton && w.semanticLabel == 'Close',
-        ),
-      );
-      await settle(tester);
-      expect(find.byType(LibraryShelf), findsOneWidget);
-    });
-
-    testWidgets('an address can start on a page of a book', (tester) async {
-      tester.view.physicalSize = const Size(412, 915) * 2.625;
-      tester.view.devicePixelRatio = 2.625;
-      addTearDown(tester.view.reset);
       await tester.pumpWidget(
-        devApp(
-          options: DevOptions.fromQuery(const {
-            'screen': 'book',
-            'book': 'la-lluvia',
-            'page': '5',
-            'speed': '40',
-          }),
+        MaterialApp(
+          home: TextReader(services: services, id: text.id),
         ),
       );
-      await settle(tester);
-      expect(find.text('5 / 9'), findsOneWidget);
-    });
+      await ready(tester);
 
-    test('the address says which state', () {
-      final o = DevOptions.fromQuery(const {
-        'seed': 'casi',
-        'screen': 'book',
-        'book': 'd-toc-toc',
-        'page': '6',
-        'hold': '3',
-        'speed': '40',
-        'big': '1',
-        'card': '1',
-        'scroll': 'end',
-        'tab': '0',
-        'content': 'real',
-      });
-      expect(
-        (
-          o.seed,
-          o.screen,
-          o.book,
-          o.page,
-          o.hold,
-          o.speed,
-          o.big,
-          o.card,
-          o.scrollEnd,
-          o.tabBar,
-          o.real,
-        ),
-        (
-          'casi',
-          'book',
-          'd-toc-toc',
-          6,
-          3,
-          40.0,
-          true,
-          true,
-          true,
-          false,
-          true,
-        ),
-      );
-      final d = DevOptions.fromQuery(const {});
-      expect(
-        (d.seed, d.screen, d.page, d.hold, d.tabBar, d.real),
-        ('curso', 'shelf', 1, null, true, false),
-      );
-    });
+      final rich = find.text('¡Casa!', findRichText: true);
+      expect(rich, findsOneWidget);
+      final box = tester.getRect(rich);
+      final point = Offset(box.left + 24, box.top + 18);
+      await tester.tapAt(point);
+      await ready(tester);
+      expect(clips.played, ['one-word']);
+      expect(progress.word('casa')?.oida, 1);
+      expect(progress.hasRead(text.id), isFalse);
+      expect(store.place(text.id).words, isEmpty);
+
+      clips.muted = true;
+      await tester.tapAt(point);
+      await ready(tester);
+      expect(progress.word('casa')?.oida, 1);
+    },
+  );
+
+  testWidgets('verified A2 enables encountered vocabulary and completion', (
+    tester,
+  ) async {
+    final progress = FakeProgressStore();
+    progress.import(
+      jsonEncode({
+        ...progress.raw,
+        'nivel': {'cefr': 'A2'},
+      }),
+    );
+    final services = fakeServices(progress: progress);
+    final store = ReadingStore(services.storage(ReadingStore.space));
+    final text = await store.add(
+      now: 0,
+      title: 'Prueba',
+      body: '¡Hola! ¡Hola, casa!',
+      generated: false,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: TextReader(services: services, id: text.id),
+      ),
+    );
+    await ready(tester);
+    expect(store.place(text.id).words, {'hola', 'casa'});
+    await tester.tap(find.text(CoquiLabels.fin));
+    await ready(tester);
+    expect(progress.hasRead(text.id), isTrue);
   });
+}
+
+class _WordCatalog extends FakeCourseCatalog {
+  @override
+  RepasoData get repaso => RepasoData(
+    sentences: [],
+    words: [
+      RepasoWord(
+        word: 'casa',
+        place: 'casa',
+        scoring: RepasoScoring.cual,
+        solo: 'one-word',
+      ),
+    ],
+  );
+
+  @override
+  ClipInfo? clip(String id) => id == 'one-word'
+      ? ClipInfo(
+          id: id,
+          who: 'narr',
+          text: 'Casa.',
+          startMs: 0,
+          endMs: 500,
+          url: '',
+        )
+      : super.clip(id);
 }

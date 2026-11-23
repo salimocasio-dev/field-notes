@@ -16,6 +16,7 @@
 //   &tab=0                        the shelf without the tab bar
 //   &content=real                 the real files of historia/ (served by tool/shots.mjs under assets/content/ and libros/)
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -23,6 +24,9 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
 import 'package:feature_library/src/images.dart';
 import 'package:feature_library/src/reader.dart';
+import 'package:feature_library/src/reading.dart';
+import 'package:feature_library/src/reading_home.dart';
+import 'package:feature_library/src/story_generator.dart';
 import 'package:feature_library/src/shelf.dart';
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
@@ -124,6 +128,29 @@ class _DevAppState extends State<_DevApp> {
     final progress = FakeProgressStore(clock: clock);
     final seed = devSeeds[o.seed];
     if (seed != null) progress.import(seed);
+    if (!o.real && o.screen == 'shelf' && o.seed == 'curso') {
+      final generator = await StoryGenerator.load();
+      final snapshot = progress.raw;
+      final vocabulary = {
+        for (final plot in generator.plots)
+          for (final beat in plot.beats)
+            for (final option in beat) ...readingWords(option),
+      };
+      progress.import(
+        jsonEncode({
+          ...snapshot,
+          'palabras': {
+            ...?snapshot['palabras'] as Map?,
+            for (final token in vocabulary)
+              token: WordRecord(
+                w: token,
+                primera: clock.nowMs(),
+                ear: SkillRecord(etapa: 4),
+              ).toJson(),
+          },
+        }),
+      );
+    }
     final course = o.real ? RealCatalog() : DevCatalog();
     await course.load();
     final nav = DevNavigator();
@@ -245,7 +272,9 @@ class _Host extends StatelessWidget {
             Positioned.fill(
               child: NotificationListener<Notification>(
                 onNotification: onMetrics,
-                child: LibraryShelf(services: dev.services, controller: scroll),
+                child: options.real
+                    ? LibraryShelf(services: dev.services, controller: scroll)
+                    : ReadingHome(services: dev.services, controller: scroll),
               ),
             ),
             if (options.tabBar)

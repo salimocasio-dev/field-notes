@@ -6,7 +6,6 @@ import 'dart:ui' as ui;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:feature_library/feature_library.dart';
 import 'package:feature_library/src/book_line.dart';
 import 'package:feature_library/src/reader.dart';
 import 'package:feature_library/src/shelf.dart';
@@ -413,7 +412,6 @@ class Rig {
   );
 
   /// The module over this rig's pictures.
-  LibraryModule get module => LibraryModule(imageProvider: images.provider);
 
   /// The progress of a player who has played [ids] (each once) and read [read].
   void played(List<String> ids, {List<String> read = const []}) {
@@ -434,7 +432,7 @@ class Rig {
   }
 }
 
-/// Opens the shelf as the tab of the module.
+/// Opens the reference shelf for comparison with version 39.
 Future<void> pumpShelf(
   WidgetTester tester,
   Rig rig, {
@@ -454,13 +452,13 @@ Future<void> pumpShelf(
     MaterialApp(
       debugShowCheckedModeBanner: false,
       builder: (context, child) => _scaled(context, child, textScale),
-      home: Builder(builder: (context) => rig.module.tab(s)!.builder(context)),
+      home: LibraryShelf(services: s, imageProvider: rig.images.provider),
     ),
   );
   await settle(tester);
 }
 
-/// Opens the reader on [book] through the module's `screenFor`.
+/// Opens the reference reader for comparison with version 39.
 Future<void> pumpReader(
   WidgetTester tester,
   Rig rig, {
@@ -481,8 +479,10 @@ Future<void> pumpReader(
     MaterialApp(
       debugShowCheckedModeBanner: false,
       builder: (context, child) => _scaled(context, child, textScale),
-      home: Builder(
-        builder: (context) => rig.module.screenFor(BookRoute(book), s)!,
+      home: BookReader(
+        services: s,
+        bookId: book,
+        imageProvider: rig.images.provider,
       ),
     ),
   );
