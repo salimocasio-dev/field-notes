@@ -1,6 +1,6 @@
 # Noche: epics and stories for the board
 
-Written Nov 23 2026 from the Noche boards on the canvas "Coquí: new app designs, 3 directions" ([https\://claude.ai/artifact/Ls3fG6ZKNzaLW9TeESvPp1](https://claude.ai/artifact/Ls3fG6ZKNzaLW9TeESvPp1), rows 3 and 4\) and page 21\.
+Written Nov 23 2026 from the Noche boards on the canvas "Coquí: new app designs, 3 directions" ([https://claude.ai/artifact/Ls3fG6ZKNzaLW9TeESvPp1](https://claude.ai/artifact/Ls3fG6ZKNzaLW9TeESvPp1), rows 3 and 4) and page 21.
 
 Salim, Nov 23: "turn noche into epics/stories be detailed enough that any coding agent can pick it up and get me consistent results. youtube is backlog stuff along with the integration. the others i want to implement soon."
 
@@ -12,7 +12,7 @@ So:
 
 ---
 
-## Part 1\. The Noche rules (every Noche story links here)
+## Part 1. The Noche rules (every Noche story links here)
 
 Every Noche story says "Follow the Noche rules". These are those rules. A reviewer fails a pull request that breaks one.
 
@@ -27,7 +27,7 @@ Every Noche story says "Follow the Noche rules". These are those rules. A review
 
 ### 1.2 Sample data is never built in
 
-- Every number, name and line on a board is sample data: "96 words", "6 days", "12 of 30 min", "Tengo hambre", "Un verano en Cabo Rojo", "La cocina", "French", "\[PRICE\]", "\[channel name\]".  
+- Every number, name and line on a board is sample data: "96 words", "6 days", "12 of 30 min", "Tengo hambre", "Un verano en Cabo Rojo", "La cocina", "French", "[PRICE]", "[channel name]".  
 - The real value comes from the progress store, the course or the content catalog. If a story does not say where a value comes from, stop and block the story. Do not invent a source.  
 - English text on a board that is not sample data (button names, section labels, help lines) is copied exactly, letter for letter, including capitals and the middle dot `·`.
 
@@ -35,18 +35,18 @@ Every Noche story says "Follow the Noche rules". These are those rules. A review
 
 - The app's own text (tabs, titles, buttons, section labels, help lines, accessibility labels) is English. Always. This replaces the old rule "English on screen stays exactly as in v=39" for every screen a Noche story changes.  
 - Course content (place names, story titles, lesson lines, words, call titles) is in the language being learned. It comes from content, never from code (boundary rule 9). Mark it with the content language for screen readers (Flutter: the text's `locale`, from `course.language`).  
-- Words the app says in the learned language as part of the lesson (the mic labels "Toca y habla", "Te escucho", "Un momento", "Escucha", "¡Muy bien\!", "Otra vez") come from the course's language data (story N2.1, `Language.micWords`). Never from code.  
+- Words the app says in the learned language as part of the lesson (the mic labels "Toca y habla", "Te escucho", "Un momento", "Escucha", "¡Muy bien!", "Otra vez") come from the course's language data (story N2.1, `Language.micWords`). Never from code.  
 - Accessibility labels are English, even on lesson screens, for now. **Differs from the board:** the lesson and reader boards have Spanish (and Arabic) accessibility labels. This is one switch (Part 1.7), not a rewrite.  
 - **Tab names are in the course's language:** Biblioteca, Palabras, Mapa, Hablar, Yo for Spanish; an Arabic course shows its own five words. Salim, Nov 23: "i like the spanish tab names", and on whether an Arabic course should show its own: "obviously". They come from the course (`Language.tabNames`), never from code, drawn in the course's script font with its `lang`. They are the one exception to "the app's own text is English". Titles inside a tab stay English ("Words", "Speak", "Me" on the boards stay as page titles).  
 - Section labels in capitals on the boards ("UP NEXT ·", "ALL 9 STORIES") are written in normal case in code and shown in capitals by the text style (`CoquiType.label` sets uppercase). When the label holds content ("UP NEXT · LA COCINA"), the content part is uppercased the same way.
 
 ### 1.4 Look
 
-- Colours, fonts and sizes come only from the Noche tokens in coqui\_ui (`NocheColors`, `NocheType`, `NocheSize`, story N1.1). No colour literal (`Color(0x...)`) and no font family name anywhere outside coqui\_ui. A reviewer greps for `Color(0x` and `fontFamily` in the changed files.  
-- Shared pieces (tab bar, buttons, chips, cards, sheets, switches, segmented controls, progress dashes, stage bars, mic) come from coqui\_ui (stories N1.2 and N1.3). A feature never draws its own copy. If it needs a piece coqui\_ui does not have, it files a request (coqui `AGENTS.md`, "Requests") and uses a local copy until the request lands.  
+- Colours, fonts and sizes come only from the Noche tokens in coqui_ui (`NocheColors`, `NocheType`, `NocheSize`, story N1.1). No colour literal (`Color(0x...)`) and no font family name anywhere outside coqui_ui. A reviewer greps for `Color(0x` and `fontFamily` in the changed files.  
+- Shared pieces (tab bar, buttons, chips, cards, sheets, switches, segmented controls, progress dashes, stage bars, mic) come from coqui_ui (stories N1.2 and N1.3). A feature never draws its own copy. If it needs a piece coqui_ui does not have, it files a request (coqui `AGENTS.md`, "Requests") and uses a local copy until the request lands.  
 - One orange thing per screen: the next action. Orange (`NocheColors.next`) is never used for anything else on that screen except the Map disc in the tab bar.  
 - No red, ever. A miss is a white outline and the line plays again.  
-- Every touch target is at least 48 by 48\. Spacing is on the 8-point grid (4 is allowed inside a component, as on the boards).  
+- Every touch target is at least 48 by 48. Spacing is on the 8-point grid (4 is allowed inside a component, as on the boards).  
 - Directional layout only: `EdgeInsetsDirectional`, `AlignmentDirectional`, `PositionedDirectional`, `start` and `end`. Never `left` or `right` in new code. The whole screen must mirror when the course's language runs right to left (Arabic board).  
 - Pixel pictures (map, scenes) are drawn at a whole-number scale with `PixelView` and never mirrored.
 
@@ -58,7 +58,7 @@ Rule: keep the screen's current layout and behaviour. Change only its colours, f
 
 ### 1.6 Each pull request shows its screens
 
-- Screenshots of every screen the story changes at the two phone sizes `tool/check_app.mjs` uses: 390 by 844 and 412 by 915\.  
+- Screenshots of every screen the story changes at the two phone sizes `tool/check_app.mjs` uses: 390 by 844 and 412 by 915.  
 - Next to each, the board's PNG from `docs/proyecto/noche/`.  
 - A story with right-to-left work also shows the screen with the test course in Arabic (story N2.2 adds it to the fakes).  
 - `bash coqui/tool/test_all.sh` passes. `dart run tool/check_boundaries.dart` passes.
@@ -69,11 +69,11 @@ Salim, Nov 23: "make sure these are easily implementable when I want." Each diff
 
 | Difference | Built as | To turn it on later |
 | :---- | :---- | :---- |
-| Words show 4 stages, not 5 | Every stage bar and stage-dot row reads `ProgressStore.stageMax` (4 today). Nothing writes 4 or 5 in a feature. | Change the stage rules in coqui\_progress; every bar follows. |
-| No "1 freeze saved" | `ProgressStore.streakFreezes` is `int?` and returns null today. Me shows "freeze saved" / " freezes saved" under the streak when it is not null. | Build freezes in coqui\_progress; the line appears. |
+| Words show 4 stages, not 5 | Every stage bar and stage-dot row reads `ProgressStore.stageMax` (4 today). Nothing writes 4 or 5 in a feature. | Change the stage rules in coqui_progress; every bar follows. |
+| No "1 freeze saved" | `ProgressStore.streakFreezes` is `int?` and returns null today. Me shows `"1 freeze saved"` / `"<N> freezes saved"` under the streak when it is not null. | Build freezes in coqui_progress; the line appears. |
 | No sample languages in "Add a language" | The list is the catalog's courses minus the ones started. | Add a course to the catalog; it appears. |
-| No "\[PRICE\]", no "\[MINUTES\]" | Plans shows `Entitlements.priceOf(plan)` and `Entitlements.callMinutes(plan)` when they are not null; both are null on `AllowAllEntitlements`. | Store billing (N3.5) returns them. |
-| English accessibility labels on lesson screens | Every lesson and reader accessibility label comes from one table, `NocheA11y` in coqui\_ui, keyed by role (`close`, `hearAgain`, `mic`, `captions`, `back`, `textAndPage`, `chapters`, `sentenceAgain`, `listen`, `speed`, ...), English. `Language.a11yWords` is an optional map with the same keys. One flag, `NocheA11y.lessonLabelsInCourseLanguage` (false), chooses the course's word when it has one, English otherwise. | Set the flag to true and add `a11yWords` to the course file. |
+| No "[PRICE]", no "[MINUTES]" | Plans shows `Entitlements.priceOf(plan)` and `Entitlements.callMinutes(plan)` when they are not null; both are null on `AllowAllEntitlements`. | Store billing (N3.5) returns them. |
+| English accessibility labels on lesson screens | Every lesson and reader accessibility label comes from one table, `NocheA11y` in coqui_ui, keyed by role (`close`, `hearAgain`, `mic`, `captions`, `back`, `textAndPage`, `chapters`, `sentenceAgain`, `listen`, `speed`, ...), English. `Language.a11yWords` is an optional map with the same keys. One flag, `NocheA11y.lessonLabelsInCourseLanguage` (false), chooses the course's word when it has one, English otherwise. | Set the flag to true and add `a11yWords` to the course file. |
 
 ### 1.8 Things that cost money or need Salim
 
@@ -82,39 +82,39 @@ Salim, Nov 23: "make sure these are easily implementable when I want." Each diff
 
 ---
 
-## Part 2\. The order
+## Part 2. The order
 
 Stories in different lanes run at the same time. A lane holds one story at a time (repo-root `AGENTS.md`).
 
-### Who can work at the same time (Nov 23\)
+### Who can work at the same time (Nov 23)
 
-- **coqui\_ui is its own package (lane).** Noche adds new names beside the old ones and changes none of them, so nobody's work breaks while it is built. The only story that can break others is N1.4 (removing the old look), and it goes last.  
-- **One writer at a time in each core package** (coqui\_ui, coqui\_contracts, coqui\_progress, coqui\_content, coqui\_platform, coqui\_testing). Different core packages can be worked on at the same time.  
-- **Gemini is porting scenes.** Those stories hold `lane:coqui_scenes` and `lane:feature_story`. So N2.6 and N4.3 (feature\_story) wait until the port series is done, and go to Gemini then: it knows that code. Nothing else here touches those two lanes.  
-- **Start now, before N0.1:** N1.1 (coqui\_ui) and N2.1 (coqui\_contracts). Everything they need is written on this page; they need no board file. Both to Gemini, as two tasks at once (separate sessions from its scene ports).  
-- **Next, at the same time, once those merge:** N1.2 (coqui\_ui, Gemini again), and N2.2 to N2.5 (four different core lanes, Gemini, as many at once as it can run).  
-- **Then the screens,** one per feature lane, all at the same time except feature\_story: N4.1 and N4.2 (feature\_map), N4.4 (feature\_words), N4.6 (feature\_speaking, after the Danny-call stories), N4.7 (feature\_profile), N4.5 and epic N5 (feature\_library, after \#2).  
+- **coqui_ui is its own package (lane).** Noche adds new names beside the old ones and changes none of them, so nobody's work breaks while it is built. The only story that can break others is N1.4 (removing the old look), and it goes last.  
+- **One writer at a time in each core package** (coqui_ui, coqui_contracts, coqui_progress, coqui_content, coqui_platform, coqui_testing). Different core packages can be worked on at the same time.  
+- **Gemini is porting scenes.** Those stories hold `lane:coqui_scenes` and `lane:feature_story`. So N2.6 and N4.3 (feature_story) wait until the port series is done, and go to Gemini then: it knows that code. Nothing else here touches those two lanes.  
+- **Start now, before N0.1:** N1.1 (coqui_ui) and N2.1 (coqui_contracts). Everything they need is written on this page; they need no board file. Both to Gemini, as two tasks at once (separate sessions from its scene ports).  
+- **Next, at the same time, once those merge:** N1.2 (coqui_ui, Gemini again), and N2.2 to N2.5 (four different core lanes, Gemini, as many at once as it can run).  
+- **Then the screens,** one per feature lane, all at the same time except feature_story: N4.1 and N4.2 (feature_map), N4.4 (feature_words), N4.6 (feature_speaking, after the Danny-call stories), N4.7 (feature_profile), N4.5 and epic N5 (feature_library, after #2).  
 - **Gemini builds, ChatGPT (Codex) reviews** (Salim, Nov 23: "no claude. no usage. gpt and gemini only", then "gemini will work and gpt will review"). Every story is `agent:gemini`. Every pull request is reviewed and merged by ChatGPT. The jobs the repo-root `AGENTS.md` gives to Claude (docs, `lane:app`, the board) go to Gemini, and merging to ChatGPT; his word wins over that page.
 
 | Wave | Stories (lane) | Waits for |
 | :---- | :---- | :---- |
-| 0 | N0.1 (docs, Gemini) | nothing (runs alongside wave 1\) |
-| 1 | N1.1 (#79, coqui\_ui), N2.1 (#84, coqui\_contracts) | nothing |
-| 2 | N1.2 (#80, coqui\_ui), N2.2 (#85, coqui\_testing), N2.3 (#86, coqui\_content), N2.4 (#87, coqui\_progress), N2.5 (#88, coqui\_platform) | wave 1 |
-| 3 | N1.3 (#81, coqui\_ui); the language stories N2.6 (#89, feature\_story), N2.7 (#90, feature\_review), N2.8 (#91, feature\_words), N2.9 (#92, feature\_speaking) | wave 2 |
+| 0 | N0.1 (docs, Gemini) | nothing (runs alongside wave 1) |
+| 1 | N1.1 (#79, coqui_ui), N2.1 (#84, coqui_contracts) | nothing |
+| 2 | N1.2 (#80, coqui_ui), N2.2 (#85, coqui_testing), N2.3 (#86, coqui_content), N2.4 (#87, coqui_progress), N2.5 (#88, coqui_platform) | wave 1 |
+| 3 | N1.3 (#81, coqui_ui); the language stories N2.6 (#89, feature_story), N2.7 (#90, feature_review), N2.8 (#91, feature_words), N2.9 (#92, feature_speaking) | wave 2 |
 | 4 | the Noche screens: N4.1 to N4.8 (#101–#109), N3.2 to N3.4 (#96–#98), N2.10 (#93), N5.1 to N5.4 (#112–#115) | the stories each one names |
-| 5 | N4.9 (#110) and N2.11 (#94) (app, Gemini), then N1.4 (#82, coqui\_ui, removes the old look) | every screen story merged |
+| 5 | N4.9 (#110) and N2.11 (#94) (app, Gemini), then N1.4 (#82, coqui_ui, removes the old look) | every screen story merged |
 
 Stories already on the board that touch the same lanes:
 
-- \#12 (feature\_map, "Opening a place shows one obvious next step") is replaced by N4.2. If \#12 is unclaimed when N4.2 is posted, close \#12 with a link to N4.2. If it is claimed or merged, N4.2 builds on it.  
-- \#2 (feature\_library, Biblioteca) goes first. N4.5 and the epic 5 stories wait for it to merge.  
-- \#4 to \#7 (Danny calls) go first in their lanes. N4.6 and N3.3 wait for the ones in feature\_speaking.  
-- \#9 and \#10 (flashcards) go first in feature\_review. N4.8 waits for them.
+- #12 (feature_map, "Opening a place shows one obvious next step") is replaced by N4.2. If #12 is unclaimed when N4.2 is posted, close #12 with a link to N4.2. If it is claimed or merged, N4.2 builds on it.  
+- #2 (feature_library, Biblioteca) goes first. N4.5 and the epic 5 stories wait for it to merge.  
+- #4 to #7 (Danny calls) go first in their lanes. N4.6 and N3.3 wait for the ones in feature_speaking.  
+- #9 and #10 (flashcards) go first in feature_review. N4.8 waits for them.
 
 ---
 
-## Part 3\. The epics
+## Part 3. The epics
 
 ### Epic N0. Get the boards to every agent
 
@@ -131,11 +131,11 @@ Not a feature. One story, for Gemini.
 **Done when**
 
 - `docs/proyecto/noche/` holds the 18 `Noche-*.dc.html` files from `noche-boards.zip` in the Drive context folder, byte for byte (their sha256 sums are listed in the folder's `noche-boards-sha256.txt`).  
-- Each has a PNG beside it, rendered at 390 by 844 (Mic states at 808 by 568\) with the fonts of story N1.1 installed, and looked at: nothing clipped, nothing missing. If this session cannot render, say so to Salim in one line and post the stories without PNGs.  
+- Each has a PNG beside it, rendered at 390 by 844 (Mic states at 808 by 568) with the fonts of story N1.1 installed, and looked at: nothing clipped, nothing missing. If this session cannot render, say so to Salim in one line and post the stories without PNGs.  
 - This page is in the repo as `docs/proyecto/22-noche-epics.md`, with its links pointing at the repo copies.  
 - One `type:epic` issue per epic N1 to N6, each with its stories as sub-issues, posted with the labels each story lists. Epic N7 is posted as an epic with `status:blocked` and the note "Backlog. Not before Salim says go." Its stories are not posted.  
 - The issue number of each story is written next to it on this page and in the Drive backlog note.  
-- \#12 is handled as Part 2 says.
+- #12 is handled as Part 2 says.
 
 **Lane** lane:docs (and `.github/` is not touched).
 
@@ -143,7 +143,7 @@ Not a feature. One story, for Gemini.
 
 ---
 
-### Epic N1. The Noche look (coqui\_ui) (#78)
+### Epic N1. The Noche look (coqui_ui) (#78)
 
 The tokens, fonts and shared pieces every screen uses. Nothing else can start until N1.1 and N1.2 are merged.
 
@@ -163,47 +163,47 @@ New tokens beside the old ones. The old `CoquiColors`, `CoquiText` and the rest 
 
 | Name | Hex | Job |
 | :---- | :---- | :---- |
-| `ground` | \#0C1926 | page ground of every tab screen |
-| `panel` | \#152A3D | cards, sheets, tab bar, chips |
-| `chip` | \#213D57 | chips on panels, selected tiles in sheets |
-| `line` | \#33506B | borders, empty track of bars, dashes not reached |
-| `bar` | \#4A6C8C | neutral chart bars, sheet handle, input border |
-| `text` | \#EEF3F7 | text, selected pill fill |
-| `label` | \#A7B8C8 | small labels, secondary text |
-| `dimLine` | \#8FA2B5 | lines of a transcript not being spoken |
-| `lessonGround` | \#12171D | full-screen lesson, reader Night page, players |
-| `lessonLine` | \#37424D | not-reached dashes and empty bars on lessonGround |
-| `lessonBorder` | \#4A5663 | outline buttons on lessonGround |
-| `lessonLabel` | \#8C99A6 | small labels on lessonGround |
-| `lessonPanel` | \#1B232C | the playback bar on lessonGround |
-| `litSentence` | \#24313F | the sentence being read, the current transcript line |
-| `onAccent` | \#14110F | text and icons on orange or green |
-| `next` | \#E69F00 | the next action (Okabe-Ito orange) |
-| `listening` | \#56B4E9 | the app is listening; never-heard underline; coverage bar |
-| `listeningSoft` | \#1D3A52 | the soft disc and tag behind sky-blue text |
-| `other` | \#CC79A7 | thinking, and the other voice speaking |
-| `otherSoft` | \#3A2433 | the thinking disc |
-| `right` | \#009E73 | heard right |
-| `micResting` | \#28323C | the mic while the other voice speaks |
-| `scrim` | \#B80C1926 | behind a sheet (`rgba(12,25,38,.72)`) |
-| `sepiaPage` / `sepiaText` / `sepiaLabel` / `sepiaRule` | \#F2E8D5 / \#2E2519 / \#6B5B45 / \#B9A682 | reader, Sepia page |
-| `dayPage` / `dayText` | \#FAF8F3 / \#1B1B1B | reader, Day page |
-| `nightText` | \#D8DEE4 | reader, Night page body text |
+| `ground` | #0C1926 | page ground of every tab screen |
+| `panel` | #152A3D | cards, sheets, tab bar, chips |
+| `chip` | #213D57 | chips on panels, selected tiles in sheets |
+| `line` | #33506B | borders, empty track of bars, dashes not reached |
+| `bar` | #4A6C8C | neutral chart bars, sheet handle, input border |
+| `text` | #EEF3F7 | text, selected pill fill |
+| `label` | #A7B8C8 | small labels, secondary text |
+| `dimLine` | #8FA2B5 | lines of a transcript not being spoken |
+| `lessonGround` | #12171D | full-screen lesson, reader Night page, players |
+| `lessonLine` | #37424D | not-reached dashes and empty bars on lessonGround |
+| `lessonBorder` | #4A5663 | outline buttons on lessonGround |
+| `lessonLabel` | #8C99A6 | small labels on lessonGround |
+| `lessonPanel` | #1B232C | the playback bar on lessonGround |
+| `litSentence` | #24313F | the sentence being read, the current transcript line |
+| `onAccent` | #14110F | text and icons on orange or green |
+| `next` | #E69F00 | the next action (Okabe-Ito orange) |
+| `listening` | #56B4E9 | the app is listening; never-heard underline; coverage bar |
+| `listeningSoft` | #1D3A52 | the soft disc and tag behind sky-blue text |
+| `other` | #CC79A7 | thinking, and the other voice speaking |
+| `otherSoft` | #3A2433 | the thinking disc |
+| `right` | #009E73 | heard right |
+| `micResting` | #28323C | the mic while the other voice speaks |
+| `scrim` | #B80C1926 | behind a sheet (`rgba(12,25,38,.72)`) |
+| `sepiaPage` / `sepiaText` / `sepiaLabel` / `sepiaRule` | #F2E8D5 / #2E2519 / #6B5B45 / #B9A682 | reader, Sepia page |
+| `dayPage` / `dayText` | #FAF8F3 / #1B1B1B | reader, Day page |
+| `nightText` | #D8DEE4 | reader, Night page body text |
 
-The two book-cover pairs (Library and Add your own): `coverPlum` spine \#6B4059, face \#3A2433, mark \#CC79A7; `coverBlue` spine \#4A6C8C, face \#213D57, mark \#E69F00.
+The two book-cover pairs (Library and Add your own): `coverPlum` spine #6B4059, face #3A2433, mark #CC79A7; `coverBlue` spine #4A6C8C, face #213D57, mark #E69F00.
 
-Not on any board, Claude's derivation (checked Nov 23: dayLabel on the Day page 6.3:1; body text on dayLit 13.6:1; Sepia text on sepiaLit 10.5:1): `dayLabel` \#5C5C5C, `dayRule` \#C9C4B8 (a rule, not text), `dayLit` \#E9E4D8, `sepiaLit` \#E4D6BA.
+Not on any board, Claude's derivation (checked Nov 23: dayLabel on the Day page 6.3:1; body text on dayLit 13.6:1; Sepia text on sepiaLit 10.5:1): `dayLabel` #5C5C5C, `dayRule` #C9C4B8 (a rule, not text), `dayLit` #E9E4D8, `sepiaLit` #E4D6BA.
 
 Fonts. Bundle them in `coqui_ui/fonts/` the way Roboto is bundled (see the comment in `pubspec.yaml`): one static TTF per weight, cut from the source with fonttools, nothing synthesised, each declared twice (plain name and `packages/coqui_ui/<name>`), licence file beside them.
 
 | Family name in code | Source in github.com/google/fonts at commit 06bfe0d62a98375cb09c942fa18e68bd32cff057 | Static weights to cut | Axes pinned |
 | :---- | :---- | :---- | :---- |
-| Atkinson Hyperlegible Next | `ofl/atkinsonhyperlegiblenext/AtkinsonHyperlegibleNext[wght].ttf` | 400, 500, 600, 700, 800 | \- |
+| Atkinson Hyperlegible Next | `ofl/atkinsonhyperlegiblenext/AtkinsonHyperlegibleNext[wght].ttf` | 400, 500, 600, 700, 800 | - |
 | Bricolage Grotesque | `ofl/bricolagegrotesque/BricolageGrotesque[opsz,wdth,wght].ttf` | 700, 800 | wdth 100, opsz 24 |
 | Bricolage Grotesque Display | same file | 800 | wdth 100, opsz 72 |
 | Literata | `ofl/literata/Literata[opsz,wght].ttf` | 400, 500, 600 | opsz 19 |
 | Literata Italic | `ofl/literata/Literata-Italic[opsz,wght].ttf` | 400 | opsz 19 |
-| Lexend | `ofl/lexend/Lexend[wght].ttf` | 400, 500 | \- |
+| Lexend | `ofl/lexend/Lexend[wght].ttf` | 400, 500 | - |
 | Noto Sans Arabic | `ofl/notosansarabic/NotoSansArabic[wdth,wght].ttf` | 500, 700 | wdth 100 |
 
 - Cut: `fonttools varLib.instancer <src> wght=<w> [opsz=<o>] [wdth=100] -o <Family>-<w>.ttf`.  
@@ -231,7 +231,7 @@ Fonts. Bundle them in `coqui_ui/fonts/` the way Roboto is bundled (see the comme
 | `row` | Atkinson | 600 | 18 / 24 | word rows, language names |
 | `cardTitle` | Atkinson | 700 | 22 / 24 | next story, play bar |
 | `rowTitle` | Atkinson | 700 | 16 / 20 | call cards, file names |
-| `placeTitle` | Atkinson | 800 | 32 / 40 | place name, call title (32 / 36\) |
+| `placeTitle` | Atkinson | 800 | 32 / 40 | place name, call title (32 / 36) |
 | `lessonLine` | Atkinson | 600 | 28 / 36 | the line spoken in a lesson |
 | `lessonPrompt` | Atkinson | 500 | 18 / 24 | "Dile a Abuela: ..." |
 | `transcript` / `transcriptNow` | Atkinson | 500 / 700 | 17 / 24, 24 / 32 | video text |
@@ -240,18 +240,18 @@ Fonts. Bundle them in `coqui_ui/fonts/` the way Roboto is bundled (see the comme
 | `dropCap` | Literata | 600 | 60 / 52 |  |
 | `cover` | Literata | 600 | 13 / 16 (10 / 12 small) | type-only covers |
 
-A style used on course content takes its family from the course's script: `NocheType.forScript(style, script)` returns the same style with Noto Sans Arabic, size \+2 and line height about 1.7 for `Arab` (the Arabic board: 30 / 52 for the lesson line, 20 / 36 for the prompt, 14 / 24 for labels). Any other script without a bundled font falls back to the platform font and is reported, not guessed.
+A style used on course content takes its family from the course's script: `NocheType.forScript(style, script)` returns the same style with Noto Sans Arabic, size +2 and line height about 1.7 for `Arab` (the Arabic board: 30 / 52 for the lesson line, 20 / 36 for the prompt, 14 / 24 for labels). Any other script without a bundled font falls back to the platform font and is reported, not guessed.
 
-`NocheSize`: `touch` 48, `pill` radius 24, `card` radius 24, `tile` radius 16, `chip` height 32 radius 16, `tab bar` height 64 radius 32 inset 16, `primary` height 56 radius 28, `play bar` height 72 radius 36, `mic` 96, `disc` 64, `aboveTabBar` 104 (the bottom of anything sitting above the tab bar), `grid` 8\.
+`NocheSize`: `touch` 48, `pill` radius 24, `card` radius 24, `tile` radius 16, `chip` height 32 radius 16, `tab bar` height 64 radius 32 inset 16, `primary` height 56 radius 28, `play bar` height 72 radius 36, `mic` 96, `disc` 64, `aboveTabBar` 104 (the bottom of anything sitting above the tab bar), `grid` 8.
 
 **Done when**
 
 - The tables above are in code, names as written. Each colour has a test with its hex.  
 - A contrast test computes WCAG contrast for: text, label and next on panel; onAccent on next; listening, other and right on lessonGround; the four reader pages' text and labels. Every one is at least 4.5.  
 - The fonts load in `flutter test` (a golden of one line in each family and weight) and in the web build.  
-- Nothing outside coqui\_ui changed. No old token changed.
+- Nothing outside coqui_ui changed. No old token changed.
 
-**Lane** lane:coqui\_ui. Files outside it: only coqui/requests/.
+**Lane** lane:coqui_ui. Files outside it: only coqui/requests/.
 
 **Links** Page 21, "Fonts" and "Colours". Every board file.
 
@@ -261,28 +261,28 @@ A style used on course content takes its family from the course's script: `Noche
 
 **What to build**
 
-Each piece is a widget in coqui\_ui, directional, at least 48 high where it can be touched, with its board file named for its exact metrics.
+Each piece is a widget in coqui_ui, directional, at least 48 high where it can be touched, with its board file named for its exact metrics.
 
 | Piece | What it is | Board file to measure |
 | :---- | :---- | :---- |
-| `NocheTabBar` | Floating bar: inset 16 from start, end and bottom, 64 high, radius 32, panel fill, 1 px line border, 5 equal columns. Tabs in this order: library, words, map, speak, me. Labels from `course.language.tabNames` (Spanish: Biblioteca, Palabras, Mapa, Hablar, Yo), in the course's script font (`NocheType.forScript`). The bar's order does not mirror. Icons 22, stroke 2\. The current tab: icon in a 48 by 28 pill (fill `line`), label `tabLabelOn` in `text`. Others: `label` colour. Map is a 56 disc in `next` with an `onAccent` icon (26, stroke 2.2), raised 24 above the bar, with a 4 px ring of `ground`, on every screen, current or not. | Noche-Mapa, Noche-Palabras |
-| `NochePill` | 48 high pill. Kinds: outline (panel fill, line border, `button`), selected (text fill, ground text, `buttonStrong`), dashed-locked (no fill, dashed line border, lock icon 20, 48 wide), plan-tag (no fill, 1 px `next` border, `labelStrong` in next, 24 high, radius 12; a tag, never touchable). | Noche-Biblioteca, Noche-Hablar, Noche-Hablar-Plan |
-| `NocheChip` | 32 high, radius 16, `chip` fill, `button`. Not touchable. | Noche-Hablar |
-| `NocheCard` | Panel fill, 1 px line border, radius 24, padding 16 (24 where the board has it). Variants: `highlight` (2 px next border), `dashed` (no fill, dashed line border, label text). | Noche-Mapa, Noche-Hablar-Plan |
-| `NochePrimaryButton` | Next fill, onAccent text `primary`, 56 high, radius 28, full width. A disabled state: line fill, label text. | Noche-Palabras |
-| `NocheOutlineButton` | Transparent, 1 px text border, text colour, 48 high, radius 24, `buttonStrong`. | Noche-Biblioteca ("Write my story") |
-| `NochePlayBar` | 72 high, radius 36, next fill. Start: 56 disc in onAccent with a next play icon. Middle: `labelStrong` line, then `cardTitle`. End: `button` meta. | Noche-Lugar |
-| `NochePlayDisc` | 64 (or 96\) circle, next fill, onAccent icon. | Noche-Mapa, Noche-Hablar |
-| `NocheSegmented` | Panel fill, line border, radius 28, padding 4; options 48 high radius 24; selected \= text fill and ground text. Used as radio group or tab list. | Noche-Yo (minutes), Noche-Palabras (skills) |
-| `NocheDashes` | A row of equal dashes, 8 high, radius 4, gap 4\. States: done (text), current (next), not yet (line, or lessonLine on lessonGround). | Noche-Cuento, Noche-Yo |
-| `NocheStageBar` | 96 by 8 track (line), fill text, width \= stage / max. | Noche-Palabras |
-| `NocheProgressBar` | 8 high (4 in the reader), radius 4, track line, fill given colour. | Noche-Biblioteca, Noche-Importar |
-| `NocheSheet` | Bottom sheet over `scrim`: panel fill, radius 24 top corners, handle 40 by 4 (bar colour) 12 from the top, title `pageTitle` with a 48 close button at the end. | Noche-Idiomas, Noche-Lector-Aa |
-| `NocheSwitchRow` | Full-width row 52 high: label `rowTitle` weight 600 size 15 at start, switch 52 by 32 at end (on: text track, ground knob 24; off: line track, label knob). | Noche-Lector-Aa |
+| `NocheTabBar` | Floating bar: inset 16 from start, end and bottom, 64 high, radius 32, panel fill, 1 px line border, 5 equal columns. Tabs in this order: library, words, map, speak, me. Labels from `course.language.tabNames` (Spanish: Biblioteca, Palabras, Mapa, Hablar, Yo), in the course's script font (`NocheType.forScript`). The bar's order does not mirror. Icons 22, stroke 2. The current tab: icon in a 48 by 28 pill (fill `line`), label `tabLabelOn` in `text`. Others: `label` colour. Map is a 56 disc in `next` with an `onAccent` icon (26, stroke 2.2), raised 24 above the bar, with a 4 px ring of `ground`, on every screen, current or not. | [`Noche-Mapa.dc.html`](noche/Noche-Mapa.dc.html), [`Noche-Palabras.dc.html`](noche/Noche-Palabras.dc.html) |
+| `NochePill` | 48 high pill. Kinds: outline (panel fill, line border, `button`), selected (text fill, ground text, `buttonStrong`), dashed-locked (no fill, dashed line border, lock icon 20, 48 wide), plan-tag (no fill, 1 px `next` border, `labelStrong` in next, 24 high, radius 12; a tag, never touchable). | [`Noche-Biblioteca.dc.html`](noche/Noche-Biblioteca.dc.html), [`Noche-Hablar.dc.html`](noche/Noche-Hablar.dc.html), [`Noche-Hablar-Plan.dc.html`](noche/Noche-Hablar-Plan.dc.html) |
+| `NocheChip` | 32 high, radius 16, `chip` fill, `button`. Not touchable. | [`Noche-Hablar.dc.html`](noche/Noche-Hablar.dc.html) |
+| `NocheCard` | Panel fill, 1 px line border, radius 24, padding 16 (24 where the board has it). Variants: `highlight` (2 px next border), `dashed` (no fill, dashed line border, label text). | [`Noche-Mapa.dc.html`](noche/Noche-Mapa.dc.html), [`Noche-Hablar-Plan.dc.html`](noche/Noche-Hablar-Plan.dc.html) |
+| `NochePrimaryButton` | Next fill, onAccent text `primary`, 56 high, radius 28, full width. A disabled state: line fill, label text. | [`Noche-Palabras.dc.html`](noche/Noche-Palabras.dc.html) |
+| `NocheOutlineButton` | Transparent, 1 px text border, text colour, 48 high, radius 24, `buttonStrong`. | [`Noche-Biblioteca.dc.html`](noche/Noche-Biblioteca.dc.html) ("Write my story") |
+| `NochePlayBar` | 72 high, radius 36, next fill. Start: 56 disc in onAccent with a next play icon. Middle: `labelStrong` line, then `cardTitle`. End: `button` meta. | [`Noche-Lugar.dc.html`](noche/Noche-Lugar.dc.html) |
+| `NochePlayDisc` | 64 (or 96) circle, next fill, onAccent icon. | [`Noche-Mapa.dc.html`](noche/Noche-Mapa.dc.html), [`Noche-Hablar.dc.html`](noche/Noche-Hablar.dc.html) |
+| `NocheSegmented` | Panel fill, line border, radius 28, padding 4; options 48 high radius 24; selected = text fill and ground text. Used as radio group or tab list. | [`Noche-Yo.dc.html`](noche/Noche-Yo.dc.html) (minutes), [`Noche-Palabras.dc.html`](noche/Noche-Palabras.dc.html) (skills) |
+| `NocheDashes` | A row of equal dashes, 8 high, radius 4, gap 4. States: done (text), current (next), not yet (line, or lessonLine on lessonGround). | [`Noche-Cuento.dc.html`](noche/Noche-Cuento.dc.html), [`Noche-Yo.dc.html`](noche/Noche-Yo.dc.html) |
+| `NocheStageBar` | 96 by 8 track (line), fill text, width = stage / max. | [`Noche-Palabras.dc.html`](noche/Noche-Palabras.dc.html) |
+| `NocheProgressBar` | 8 high (4 in the reader), radius 4, track line, fill given colour. | [`Noche-Biblioteca.dc.html`](noche/Noche-Biblioteca.dc.html), [`Noche-Importar.dc.html`](noche/Noche-Importar.dc.html) |
+| `NocheSheet` | Bottom sheet over `scrim`: panel fill, radius 24 top corners, handle 40 by 4 (bar colour) 12 from the top, title `pageTitle` with a 48 close button at the end. | [`Noche-Idiomas.dc.html`](noche/Noche-Idiomas.dc.html), [`Noche-Lector-Aa.dc.html`](noche/Noche-Lector-Aa.dc.html) |
+| `NocheSwitchRow` | Full-width row 52 high: label `rowTitle` weight 600 size 15 at start, switch 52 by 32 at end (on: text track, ground knob 24; off: line track, label knob). | [`Noche-Lector-Aa.dc.html`](noche/Noche-Lector-Aa.dc.html) |
 | `NocheSectionLabel` | `label` style, label colour, 16 above the thing it names. | every board |
-| `NocheBarChart` | Columns of rounded bars (radius 8), number above (`buttonStrong`), label under (`label` size 12 line 16), one bar highlighted in next, optional dashed goal line (1 px, label colour). Bar heights scale so the tallest is the chart's bar area. | Noche-Palabras, Noche-Yo |
+| `NocheBarChart` | Columns of rounded bars (radius 8), number above (`buttonStrong`), label under (`label` size 12 line 16), one bar highlighted in next, optional dashed goal line (1 px, label colour). Bar heights scale so the tallest is the chart's bar area. | [`Noche-Palabras.dc.html`](noche/Noche-Palabras.dc.html), [`Noche-Yo.dc.html`](noche/Noche-Yo.dc.html) |
 | `NocheIcon` | The icons of the boards as paths, 24 viewBox, stroke width as on the board, round caps and joins. Copy each path's `d` exactly from the board file it is on. Add them the way `icons.dart` draws the existing ones (no SVG package). | every board |
-| `NocheCover` | A book cover made of type: width 90 or 60, height 120 or 84, radius 3 at the spine side and 8 (6) at the other, spine border 5 (4) px, title in `cover`, a 20 by 2 (16 by 2\) mark at the foot. Colours: `coverPlum` or `coverBlue`, chosen by a stable hash of the book id (even: blue, odd: plum). | Noche-Biblioteca, Noche-Importar |
+| `NocheCover` | A book cover made of type: width 90 or 60, height 120 or 84, radius 3 at the spine side and 8 (6) at the other, spine border 5 (4) px, title in `cover`, a 20 by 2 (16 by 2) mark at the foot. Colours: `coverPlum` or `coverBlue`, chosen by a stable hash of the book id (even: blue, odd: plum). | [`Noche-Biblioteca.dc.html`](noche/Noche-Biblioteca.dc.html), [`Noche-Importar.dc.html`](noche/Noche-Importar.dc.html) |
 
 Also in this story:
 
@@ -297,7 +297,7 @@ Also in this story:
 - Every touchable piece is at least 48 by 48 (a test walks the dev page and checks).  
 - `flutter analyze` is clean; no `left`/`right` in the new files (a test greps them).
 
-**Lane** lane:coqui\_ui. Files outside it: only coqui/requests/.
+**Lane** lane:coqui_ui. Files outside it: only coqui/requests/.
 
 **Links** The board files in the table. Part 1 of this page.
 
@@ -319,7 +319,7 @@ Also in this story:
 | listening | listening fill, ground icon | listening, moving with the mic level | `listening` ("Te escucho"), in listening |
 | thinking | otherSoft fill, 2 px other ring, three 12 dots in other | none | `thinking` ("Un momento"), in other |
 | theySpeak | micResting fill, lessonLabel icon | other, moving with the voice's level | `theySpeak` ("Escucha"), in other |
-| right | right fill, onAccent check icon | none | `right` ("¡Muy bien\!"), in right |
+| right | right fill, onAccent check icon | none | `right` ("¡Muy bien!"), in right |
 | notYet | no fill, 2 px text ring, text replay icon | none | `notYet` ("Otra vez"), in text |
 
 - thinking shows the moment the learner stops talking. No wait before it.  
@@ -329,10 +329,10 @@ Also in this story:
 **Done when**
 
 - A golden of the six states matches [`Noche-Mic.png`](noche/Noche-Mic.png) in layout (same order, sizes and colours).  
-- A test drives the level and checks the bar heights stay between 8 and 56\.  
+- A test drives the level and checks the bar heights stay between 8 and 56.  
 - The words come from a `Language` passed in; there is no Spanish in the package (the boundary check passes).
 
-**Lane** lane:coqui\_ui. Files outside it: only coqui/requests/.
+**Lane** lane:coqui_ui. Files outside it: only coqui/requests/.
 
 #### N1.4 Remove the old look (#82)
 
@@ -340,11 +340,11 @@ Also in this story:
 
 **Done when**
 
-- `CoquiColors`, `CoquiText`, `CoquiShadows`, the old tab bar, the old buttons and every other piece no file outside coqui\_ui uses any more are deleted, with their tests.  
+- `CoquiColors`, `CoquiText`, `CoquiShadows`, the old tab bar, the old buttons and every other piece no file outside coqui_ui uses any more are deleted, with their tests.  
 - Roboto and Pixelify Sans are removed if nothing uses them (Pixelify stays if the map still uses it).  
 - `test_all.sh` passes on main after the merge.
 
-**Lane** lane:coqui\_ui.
+**Lane** lane:coqui_ui.
 
 ---
 
@@ -374,7 +374,7 @@ Only Spanish has a course. Nothing in this epic changes what a Spanish learner h
    - `enum Feature { calls, everyPlace, library }`  
    - `abstract interface class Entitlements { Plan get plan; bool has(Feature f); Stream<void> get changes; String? priceOf(Plan p); int? callMinutes(Plan p); Future<void> buy(Plan p); Future<void> restore(); }`  
    - `AllowAllEntitlements`: plan `courseAndCalls`, `has` always true, `priceOf` and `callMinutes` null, `buy` and `restore` do nothing.  
-   - What each plan has (Claude's guess on the board, his to change): free \= the first place in every language and review of its words; course \= every place, every story, the Library; courseAndCalls \= all that and calls.  
+   - What each plan has (Claude's guess on the board, his to change): free = the first place in every language and review of its words; course = every place, every story, the Library; courseAndCalls = all that and calls.  
 4. Routes: `LanguagesRoute`, `PlansRoute`, `ImportRoute`, `PlaceRoute(placeId)`. (The reader's settings sheet belongs to the reader and needs no route.)  
 5. `CallBrief` gains `agentId` (from `course.language.callAgentId`).  
 6. Close `coqui/requests/25-feature-speaking-needs-coqui-contracts-call-titles.md` only if it asks for nothing beyond this; otherwise leave it.
@@ -383,11 +383,11 @@ Only Spanish has a course. Nothing in this epic changes what a Spanish learner h
 
 - Everything above is in the public surface, with tests on vm and chrome.  
 - A test runs Spanish `normalize` and `tokens` over every line of `coqui/ref/` story data and gets exactly what the old global gave.  
-- No caller outside coqui\_contracts is changed.
+- No caller outside coqui_contracts is changed.
 
-**Lane** lane:coqui\_contracts. Files outside it: only coqui/requests/.
+**Lane** lane:coqui_contracts. Files outside it: only coqui/requests/.
 
-**Links** Page 19, sections 1, 4 and 7\.
+**Links** Page 19, sections 1, 4 and 7.
 
 #### N2.2 Fakes: a second language, and plans (#85)
 
@@ -399,7 +399,7 @@ Only Spanish has a course. Nothing in this epic changes what a Spanish learner h
 - A fake `Entitlements` whose plan a test can set, and whose `buy`/`restore` record the call.  
 - Existing tests that use the fakes pass unchanged.
 
-**Lane** lane:coqui\_testing.
+**Lane** lane:coqui_testing.
 
 #### N2.3 The course says its language (#86)
 
@@ -411,7 +411,7 @@ Only Spanish has a course. Nothing in this epic changes what a Spanish learner h
 - The catalog's own `normalize()` call goes through `course.language`.  
 - `real_tree_test.dart` passes with its counts unchanged.
 
-**Lane** lane:coqui\_content.
+**Lane** lane:coqui_content.
 
 #### N2.4 Progress per language, and minutes by day (#87)
 
@@ -430,9 +430,9 @@ Only Spanish has a course. Nothing in this epic changes what a Spanish learner h
 - Minutes by day: a test over three days and a day missed.  
 - Every existing progress test passes unchanged.
 
-**Lane** lane:coqui\_progress.
+**Lane** lane:coqui_progress.
 
-**Links** Page 19, section 1\.
+**Links** Page 19, section 1.
 
 #### N2.5 Calls and listening take their language from the course (#88)
 
@@ -444,7 +444,7 @@ Only Spanish has a course. Nothing in this epic changes what a Spanish learner h
 - The dev page's recogniser takes its locale from a `Language` (Spanish by default).  
 - No call is placed by the tests or by the builder.
 
-**Lane** lane:coqui\_platform.
+**Lane** lane:coqui_platform.
 
 #### N2.6 to N2.9 Each feature uses the course's language (#89–#92)
 
@@ -452,10 +452,10 @@ One story per lane. Each one, labelled `agent:gemini`, waits for N2.1 and N2.2.
 
 | Story | Lane | Change |
 | :---- | :---- | :---- |
-| N2.6 (#89) | feature\_story | `turns.dart`: locale from `course.language.recognitionLocale` (was `'es-US'` at line 380). Every `normalize()` and token split through `course.language`. The lesson screen mirrors for rtl (directional only). |
-| N2.7 (#90) | feature\_review | `repaso_session.dart`: locale from the course (was line 1043). `normalize()` through the course. |
-| N2.8 (#91) | feature\_words | `text_rules.dart` and `word_marks.dart` use `course.language.tokens` and `normalize` instead of their own regex copies. |
-| N2.9 (#92) | feature\_speaking | The three `normalize()` callers, and `voiceTestLocale`, from the course. The partner's name on screen is `course.language.partnerName`. |
+| N2.6 (#89) | feature_story | `turns.dart`: locale from `course.language.recognitionLocale` (was `'es-US'` at line 380). Every `normalize()` and token split through `course.language`. The lesson screen mirrors for rtl (directional only). |
+| N2.7 (#90) | feature_review | `repaso_session.dart`: locale from the course (was line 1043). `normalize()` through the course. |
+| N2.8 (#91) | feature_words | `text_rules.dart` and `word_marks.dart` use `course.language.tokens` and `normalize` instead of their own regex copies. |
+| N2.9 (#92) | feature_speaking | The three `normalize()` callers, and `voiceTestLocale`, from the course. The partner's name on screen is `course.language.partnerName`. |
 
 **Done when** (each)
 
@@ -472,7 +472,7 @@ One story per lane. Each one, labelled `agent:gemini`, waits for N2.1 and N2.2.
 **What to build**
 
 - The sheet opens on `LanguagesRoute`, over the screen it was opened from, dimmed with `scrim`.  
-- "Your languages": one 72-high radio card per language the learner has progress in (from `ProgressStores`), current one first. Line 1: English name (`row`, 18/24). Line 2: "· place of · words" from that language's store and course. Current: 2 px text border and a 32 check disc. Others: 1 px line border and "Switch" at the end.  
+- "Your languages": one 72-high radio card per language the learner has progress in (from `ProgressStores`), current one first. Line 1: English name (`row`, 18/24). Line 2: `"<level> · place <N> of <M> · <K> words"` from that language's store and course. Current: 2 px text border and a 32 check disc. Others: 1 px line border and "Switch" at the end.  
 - Switch: sets the current language (a setting in the shared store) and closes the sheet; the shell reloads that course (N2.11).  
 - "Add a language": a 56-high row per language that has a course in the catalog and no progress yet: English name, then the native name in label colour, in that language's script font, with its `lang` and direction; a plus icon at the end. Tap: same as Switch.  
 - The foot line, exactly: "Each language keeps its own map and its own words. Your streak and your minutes count across all of them."
@@ -487,7 +487,7 @@ One story per lane. Each one, labelled `agent:gemini`, waits for N2.1 and N2.2.
 - Switching changes the setting and returns to the map.  
 - Screenshots as Part 1.6.
 
-**Lane** lane:feature\_profile.
+**Lane** lane:feature_profile.
 
 #### N2.11 The shell loads the chosen course (#94)
 
@@ -497,7 +497,7 @@ One story per lane. Each one, labelled `agent:gemini`, waits for N2.1 and N2.2.
 
 - The shell reads the current language setting, loads that course and that language's progress store, and gives them to every module. Changing it rebuilds the modules on the map.  
 - The app's text direction follows the course's language on lesson screens; the tab screens stay left to right (the chrome is English).  
-- The deprecated global `normalize()` is removed from coqui\_contracts by a small follow-up story in that lane once nothing calls it.
+- The deprecated global `normalize()` is removed from coqui_contracts by a small follow-up story in that lane once nothing calls it.
 
 ---
 
@@ -518,17 +518,17 @@ The `Entitlements` contract is part of N2.1.
 **What to build**
 
 - A page on `PlansRoute`: back button, "Plans" title, "One plan covers every language you learn."  
-- Three cards in order Free, Course, Course \+ Calls, with the lines exactly as on the board. The learner's own plan has the "Your plan" tag (text fill). The plan above the learner's own has the 2 px next border and the orange button "Get ". Only one orange button on the screen.  
-- Price line: `entitlements.priceOf(plan)` \+ " a month". When it is null, no price line (no "\[PRICE\]" on screen). "minutes of calls a month" shows only when \`callMinutes(plan)\` is not null; until then that line is left out.  
+- Three cards in order Free, Course, Course + Calls, with the lines exactly as on the board. The learner's own plan has the "Your plan" tag (text fill). The plan above the learner's own has the 2 px next border and the orange button `"Get <plan>"`. Only one orange button on the screen.  
+- Price line: `entitlements.priceOf(plan)` + " a month". When it is null, no price line (no "[PRICE]" on screen). `"<N> minutes of calls a month"` shows only when `callMinutes(plan)` is not null; until then that line is left out.  
 - "Get ..." calls `entitlements.buy(plan)`. "Restore purchases" calls `restore()`. The foot line, exactly: "You manage or cancel your plan in your app store account."  
-- On `AllowAllEntitlements` the learner is on Course \+ Calls, so no orange button shows.
+- On `AllowAllEntitlements` the learner is on Course + Calls, so no orange button shows.
 
 **Done when**
 
 - Golden tests on the fake at each of the three plans.  
-- The Me row "Your plan · · Manage ›" opens it.
+- The Me row `"Your plan · <plan> · Manage ›"` opens it.
 
-**Lane** lane:feature\_profile.
+**Lane** lane:feature_profile.
 
 #### N3.3 Speak without the calls plan (#97)
 
@@ -539,16 +539,16 @@ The `Entitlements` contract is part of N2.1.
 **What to build**
 
 - `entitlements_hook.dart` is replaced by `Entitlements.has(Feature.calls)`.  
-- Without calls: the call titles, place pills and call cards stay as on the Speak screen. The "Words you can use" chips are not shown. The next-call card's label row has the plan tag "Course \+ Calls" at its end.  
-- The mic and "Call " are replaced by one highlight card above the tab bar: "Live calls are in Course \+ Calls" (\`sheetTitle\`), the help line exactly as on the board with the partner's name from the course, and the orange "See plans" (\`PlansRoute\`).  
+- Without calls: the call titles, place pills and call cards stay as on the Speak screen. The "Words you can use" chips are not shown. The next-call card's label row has the plan tag "Course + Calls" at its end.  
+- The mic and `"Call <partner>"` are replaced by one highlight card above the tab bar: "Live calls are in Course + Calls" (`sheetTitle`), the help line exactly as on the board with the partner's name from the course, and the orange "See plans" (`PlansRoute`).  
 - No pop-up, ever, and nothing changes inside a lesson.
 
 **Done when**
 
 - On the fake with `Plan.course`: this screen. With `courseAndCalls`: the normal Speak screen.  
-- The two locks look different: not reached \= dashed pill with lock; not in plan \= the orange outlined tag.
+- The two locks look different: not reached = dashed pill with lock; not in plan = the orange outlined tag.
 
-**Lane** lane:feature\_speaking.
+**Lane** lane:feature_speaking.
 
 #### N3.4 A place not in the plan (#98)
 
@@ -565,7 +565,7 @@ Not drawn. Built from the two-lock rule and the Speak card, so it looks the same
 - On the fake with `Plan.free`: place 1 plays, place 2 shows the card; with `Plan.course`: both play.  
 - The copy above is written exactly and flagged in the PR as "not drawn, Claude's wording".
 
-**Lane** lane:feature\_map.
+**Lane** lane:feature_map.
 
 #### N3.5 Store billing (#99)
 
@@ -589,14 +589,14 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 
 - Ground `ground`. The map picture (`MapPicture` via `PixelView`) at scale 2, centred across on the learner's current stop, with the stop about half way down (its top at 51% of the screen height); clamped so no edge of the map shows.  
 - "You are here": a 40-high text-fill pill (`buttonStrong` in ground) centred over the current stop, with a 12 by 12 diamond under it pointing at the stop. Crisp UI over the pixel art, not part of the picture.  
-- Top row, 16 from the top and sides: at the start, the language chip (48 high pill: English language name in `buttonStrong`, the level in label colour, a 16 chevron) → `LanguagesRoute`; at the end, the streak chip (flame icon 18, "days" or "1 day", \`button\`). With a streak of 0 the streak chip is not shown.  
-- The "Up next" card above the tab bar (bottom 104, 16 from the sides): a 72 picture of the next story's scene (radius 16), "Up next · " (\`label\`), the story title (\`cardTitle\`, content language), " · min" (\`bodySmall\` 14/16, label colour), and a 64 orange play disc at the end → \`StoryRoute(next)\`. Tapping the picture or the text opens the place (N4.2).  
-- Under them in the card: at the start "Then , then " from today's plan, at the end " of min today" (\`minutesOn(today)\` and the minutes-a-day setting).  
+- Top row, 16 from the top and sides: at the start, the language chip (48 high pill: English language name in `buttonStrong`, the level in label colour, a 16 chevron) → `LanguagesRoute`; at the end, the streak chip (flame icon 18, `"<N> days"` or `"1 day"`, `button`). With a streak of 0 the streak chip is not shown.  
+- The "Up next" card above the tab bar (bottom 104, 16 from the sides): a 72 picture of the next story's scene (radius 16), `"Up next · <place>"` (`label`), the story title (`cardTitle`, content language), `"<kind> · <N> min"` (`bodySmall` 14/16, label colour), and a 64 orange play disc at the end → `StoryRoute(next)`. Tapping the picture or the text opens the place (N4.2).  
+- Under them in the card: at the start `"Then <step1>, then <step2>"` from today's plan, at the end `"<N> of <M> min today"` (`minutesOn(today)` and the minutes-a-day setting).  
 - "Next story" is today's plan's first entry, as the old Today card picks it (`plan()`, kept as it is). The steps are the plan's next two entries named "review", "a call", "a new story" or "listening". With fewer, the line is shortened; with none, it is not shown.
 
 **Differs from the board**
 
-- The streak chip hides at 0\.
+- The streak chip hides at 0.
 
 **Done when**
 
@@ -604,13 +604,13 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 - The current stop is on screen and centred at both sizes (a test reads the camera).  
 - No Spanish string in the package.
 
-**Lane** lane:feature\_map.
+**Lane** lane:feature_map.
 
 #### N4.2 Opening a place (#102)
 
-- Labels: `agent:gemini`, `lane:feature_map`. Waits for N4.1. Replaces \#12 (Part 2).
+- Labels: `agent:gemini`, `lane:feature_map`. Waits for N4.1. Replaces #12 (Part 2).
 
-**Salim's words** (from \#12 and the backlog)
+**Salim's words** (from #12 and the backlog)
 
 > When you open a place it should be clear what to do. Right now it just opens a list. Terrible UX. Opening a place needs an obvious next step, not a list.
 
@@ -619,12 +619,11 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 **What to build**
 
 - A page inside the Map tab (the tab bar stays, Map is current), not a sheet. Also reachable by `PlaceRoute(id)`.  
-- Hero: the place's scene picture, 296 high, with a 48 round back button (ground fill) at the top start → map, and a 40-high ground-fill pill at the top end: "Place of ".  
-- The place name (`placeTitle`, content language) and "of stories heard" (\`body\` 14, label colour).  
-- "All stories" and a row of story tiles that scrolls sideways: 104 wide, the scene picture 80 high radius 16, " ·  
-  " under it. Heard: title in label colour and a 24 round check badge (ground fill) at the picture's top start. The next story: 3 px next border and title in \`buttonStrong\`. Others: normal. Each tile → that story.\</div\>\</body\>\</html\>  
-- Three outline pills: "Listen again" → the last heard story told straight through (`StoryRoute(id, listen: true)`); "Read" → that story's book (`BookRoute`); "Call " → \`CallRoute(placeId)\`. Pills whose target does not exist yet (nothing heard, no call for the place) are not shown.  
-- The orange play bar above the tab bar: "Play next · Story ", the title, " min" → \`StoryRoute(next)\`. When every story is heard, \#12's rule: the bar goes to the place's call, or to review, with the label "Call " or "Review".
+- Hero: the place's scene picture, 296 high, with a 48 round back button (ground fill) at the top start → map, and a 40-high ground-fill pill at the top end: `"Place <N> of <M>"`.  
+- The place name (`placeTitle`, content language) and `"<N> of <M> stories heard"` (`body` 14, label colour).  
+- `"All <N> stories"` and a row of story tiles that scrolls sideways: 104 wide, the scene picture 80 high radius 16, `"<N> · <title>"` under it. Heard: title in label colour and a 24 round check badge (ground fill) at the picture's top start. The next story: 3 px next border and title in `buttonStrong`. Others: normal. Each tile → that story.  
+- Three outline pills: "Listen again" → the last heard story told straight through (`StoryRoute(id, listen: true)`); "Read" → that story's book (`BookRoute`); `"Call <partner>"` → `CallRoute(placeId)`. Pills whose target does not exist yet (nothing heard, no call for the place) are not shown.  
+- The orange play bar above the tab bar: `"Play next · Story <N>"`, the title, `"<M> min"` → `StoryRoute(next)`. When every story is heard, #12's rule: the bar goes to the place's call, or to review, with the label `"Call <partner>"` or `"Review"`.
 
 **Differs from the board**
 
@@ -635,7 +634,7 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 - A new place, a half-done place and a finished place, both sizes.  
 - Every story tile reaches its story; the play bar reaches the first unheard story.
 
-**Lane** lane:feature\_map.
+**Lane** lane:feature_map.
 
 #### N4.3 Story lesson (#103)
 
@@ -646,7 +645,7 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 **What to build**
 
 - Full screen on `lessonGround`, no tab bar.  
-- Header, 64: close (48, X) → the place; the part dashes (`NocheDashes` on lessonGround), one per part of the story; the TXT toggle (56 by 48 pill: on \= text fill and lessonGround text, off \= lessonBorder outline). TXT is the existing captions setting.  
+- Header, 64: close (48, X) → the place; the part dashes (`NocheDashes` on lessonGround), one per part of the story; the TXT toggle (56 by 48 pill: on = text fill and lessonGround text, off = lessonBorder outline). TXT is the existing captions setting.  
 - The scene, 400 high, drawn by the scene as today.  
 - Under it: the speaker (`labelStrong`, label colour), the line (`lessonLine`), and on a speaking turn the prompt (`lessonPrompt` in label colour, the words to say in `text` and bold). All three from the story file, in the content language and its script font. With TXT off, only the speaker shows.  
 - The controls, 32 from the bottom: a 48 "hear it again" outline button at the start, `NocheMic` in the middle, an empty 48 at the end (keeps the mic centred).  
@@ -660,10 +659,10 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 
 **Done when**
 
-- Every recorded run of feature\_story still passes (`differential_test.dart`).  
+- Every recorded run of feature_story still passes (`differential_test.dart`).  
 - Screenshots of a speaking turn in each mic state, a touch turn, and the Arabic fake, both sizes.
 
-**Lane** lane:feature\_story.
+**Lane** lane:feature_story.
 
 #### N4.4 Words (#104)
 
@@ -673,16 +672,16 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 
 **What to build**
 
-- Header: "" label over "Words" (\`pageTitle\`); at the end the outline pill "+ Add a word or goal" → today's add box.  
+- Header: `"<Language>"` label over `"Words"` (`pageTitle`); at the end the outline pill "+ Add a word or goal" → today's add box.  
 - The due card: the number of words due today for the chosen skill (`bigNumber` in next) and "words come / back today" (`row`).  
-- "When your words come back": a \`NocheBarChart\` with five columns: Today (due today or earlier; next colour), Tomorrow, 3 days (due in 2 or 3 days), This week (4 to 7 days), Later (more than 7). Counts for the chosen skill.  
-- The skill switch (`NocheSegmented`, a tab list): "Listening · ", "Speaking · ", "Reading · A2". Good \= words at the top ear (or mouth) stage. Reading shows, in label colour, and on tap the list says "Reading opens for tracking at A2." while the learner is below A2.  
-- The word list for the chosen skill, soonest first: 56-high rows, the word (`row`, content language) over its due line ("back today" in next; "back tomorrow", "back in days", "back in weeks"; "good · back in weeks" at the top stage; label colour), and the \`NocheStageBar\` at the end. Tap → today's word sheet.  
+- `"When your <N> words come back"`: a `NocheBarChart` with five columns: Today (due today or earlier; next colour), Tomorrow, 3 days (due in 2 or 3 days), This week (4 to 7 days), Later (more than 7). Counts for the chosen skill.  
+- The skill switch (`NocheSegmented`, a tab list): `"Listening · <N>"`, `"Speaking · <N>"`, `"Reading · A2"`. Good = words at the top ear (or mouth) stage. Reading shows, in label colour, and on tap the list says "Reading opens for tracking at A2." while the learner is below A2.  
+- The word list for the chosen skill, soonest first: 56-high rows, the word (`row`, content language) over its due line (`"back today"` in next; `"back tomorrow"`, `"back in <N> days"`, `"back in <N> weeks"`; `"good · back in <N> weeks"` at the top stage; label colour), and the `NocheStageBar` at the end. Tap → today's word sheet.  
 - The orange "Start review" button above the tab bar → `ReviewRoute()`. When nothing is due: "Practice" → `ReviewRoute(practice: true)`.
 
 **Differs from the board**
 
-- Stages: the store has 4 stages for a word (etapa 1 to 4), not 5\. The bar fills etapa / `stageMax` (Part 1.7).  
+- Stages: the store has 4 stages for a word (etapa 1 to 4), not 5. The bar fills etapa / `stageMax` (Part 1.7).  
 - The button says "Start review" with no minutes: nothing in the app estimates review time yet.
 
 **Done when**
@@ -690,21 +689,20 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 - Screenshots with no words, a few words, and 96 words, each skill, both sizes.  
 - Bucket test: words due yesterday, today, tomorrow, in 3, 5 and 20 days land in the right columns.
 
-**Lane** lane:feature\_words.
+**Lane** lane:feature_words.
 
 #### N4.5 Library (home) (#105)
 
-- Labels: `agent:gemini`, `lane:feature_library`. Waits for \#2 merged, N1.2.
+- Labels: `agent:gemini`, `lane:feature_library`. Waits for #2 merged, N1.2.
 
 **Board** [`Noche-Biblioteca.dc.html`](noche/Noche-Biblioteca.dc.html).
 
 **What to build**
 
-- Header: "" over "Library"; at the end "+ Add your own" → \`ImportRoute\` (shown once N5.4 is merged; until then hidden).  
-- "A new story at your level · about what?": the topic radio pills and the outline "Write my story", wired to \#2's story generator exactly as \#2 built it. If \#2 did not build topics, show only "Write my story".  
+- Header: `"<Language>"` over `"Library"`; at the end "+ Add your own" → `ImportRoute` (shown once N5.4 is merged; until then hidden).  
+- "A new story at your level · about what?": the topic radio pills and the outline "Write my story", wired to #2's story generator exactly as #2 built it. If #2 did not build topics, show only "Write my story".  
 - "Your shelf · reading counts from A2" (the second half only while below A2): the filter pills All, Stories, Books; then a sideways row: stories (scene picture 104 by 120 radius 16, title, "Story"), books (`NocheCover` 90 by 120, title, "Book"). Most recently opened first.  
-- The "Keep reading" card above the tab bar, for the last book opened and not finished: small cover (60 by 84), "Keep reading · Chapter " (no chapter part for a book with one chapter), title (\`sheetTitle\` in Atkinson 700 20/24), "Page  
-  of · min left in the chapter", a progress bar in next, and the orange "Continue reading" → \`BookRoute\`. With nothing in progress, no card.
+- The "Keep reading" card above the tab bar, for the last book opened and not finished: small cover (60 by 84), `"Keep reading · Chapter <N>"` (no chapter part for a book with one chapter), title (`sheetTitle` in Atkinson 700 20/24), `"Page <P> of <Total> · <M> min left in the chapter"`, a progress bar in next, and the orange "Continue reading" → `BookRoute`. With nothing in progress, no card.
 
 **Differs from the board**
 
@@ -714,28 +712,28 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 
 - An empty shelf, a shelf with stories only, and with stories and books, both sizes.
 
-**Lane** lane:feature\_library.
+**Lane** lane:feature_library.
 
 #### N4.6 Speak (#106)
 
-- Labels: `agent:gemini`, `lane:feature_speaking`. Waits for the Danny-call stories in this lane (\#4 to \#7), N1.2, N2.9.
+- Labels: `agent:gemini`, `lane:feature_speaking`. Waits for the Danny-call stories in this lane (#4 to #7), N1.2, N2.9.
 
 **Board** [`Noche-Hablar.dc.html`](noche/Noche-Hablar.dc.html).
 
 **What to build**
 
-- Header: "" over "Speak"; at the end " words ready to say" (words open for speaking).  
-- The place pills (a tab list): one per place reached, the current one selected; one dashed-locked pill after them for the next place not reached (accessibility label ", not reached yet").  
-- The next-call card: "Next call with · min" (\`label\` in next), the call title (\`placeTitle\` 32/36, content language), its English job line (\`bodyLarge\`, label colour), "Words you can use" and their chips (content language).  
-- The place's other calls, two to a row, 88 high: open ones as cards ("min · open"), not yet open ones dashed with " min · after story ".  
-- "Call " and the 96 orange disc with the phone icon above the tab bar → \`CallRoute\`.  
+- Header: `"<Language>"` over `"Speak"`; at the end `"<N> words ready to say"` (words open for speaking).  
+- The place pills (a tab list): one per place reached, the current one selected; one dashed-locked pill after them for the next place not reached (accessibility label `"<place>, not reached yet"`).  
+- The next-call card: `"Next call with <partner> · <N> min"` (`label` in next), the call title (`placeTitle` 32/36, content language), its English job line (`bodyLarge`, label colour), "Words you can use" and their chips (content language).  
+- The place's other calls, two to a row, 88 high: open ones as cards (`"<N> min · open"`), not yet open ones dashed with `"<N> min · after story <M>"`.  
+- `"Call <partner>"` and the 96 orange disc with the phone icon above the tab bar → `CallRoute`.  
 - Call titles, job lines and lengths come from the call catalog as the Danny-call stories left it.
 
 **Done when**
 
 - A place with one call open, with all open, with none open; both sizes.
 
-**Lane** lane:feature\_speaking.
+**Lane** lane:feature_speaking.
 
 #### N4.7 Me (#107)
 
@@ -746,8 +744,8 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 **What to build**
 
 - Header: "Me"; at the end the outline pill "How Coquí works" → today's How it works.  
-- Stats card: total minutes (`statNumber`) with "minutes listened" and, under it in label colour, "all languages". At the end: flame and "days" (hidden at 0). Then the 7-day chart: one bar per day for the last 7 days from \`minutesOn\`, each labelled with its weekday's English initial, today's bar last, in next, labelled "Today", the dashed goal line at the minutes-a-day setting.  
-- Language card: the language pill (→ `LanguagesRoute`), "· place of " and the place name; one dash per place (done text, current next, rest line); rows Listening and Speaking with a progress bar and " of good"; Reading with "Open now. Counts from A2." below A2.  
+- Stats card: total minutes (`statNumber`) with "minutes listened" and, under it in label colour, "all languages". At the end: flame and `"<N> days"` (hidden at 0). Then the 7-day chart: one bar per day for the last 7 days from `minutesOn`, each labelled with its weekday's English initial, today's bar last, in next, labelled "Today", the dashed goal line at the minutes-a-day setting.  
+- Language card: the language pill (→ `LanguagesRoute`), `"<level> · place <N> of <M>"` and the place name; one dash per place (done text, current next, rest line); rows Listening and Speaking with a progress bar and `"<N> of <M> good"`; Reading with "Open now. Counts from A2." below A2.  
 - "Minutes a day": `NocheSegmented` 15, 30, 60, 120 (the existing setting).  
 - The "Your plan" row (N3.2).  
 - Below, scrolling: the existing rows that are not on the board, restyled: "Open every place" and "Speak in stories" as `NocheSwitchRow` with their help lines, "Level check" with its Start button, "About". Text exactly as today.
@@ -761,11 +759,11 @@ One story per screen. Each follows Part 1, names its board, and changes only its
 
 - A new learner and a learner with a week of minutes, both sizes.
 
-**Lane** lane:feature\_profile.
+**Lane** lane:feature_profile.
 
 #### N4.8 Review, level check and welcome in Noche colours (N4.8a #108, N4.8b #109)
 
-- Labels: `agent:gemini`. Two stories, one per lane: N4.8a (#108) `lane:feature_review` (waits for \#9, \#10, N1.3, N2.7), N4.8b (#109) `lane:feature_profile` for the welcome (waits for N4.7).
+- Labels: `agent:gemini`. Two stories, one per lane: N4.8a (#108) `lane:feature_review` (waits for #9, #10, N1.3, N2.7), N4.8b (#109) `lane:feature_profile` for the welcome (waits for N4.7).
 
 Not drawn (Part 1.5): same layouts, Noche tokens and pieces, lesson screens on `lessonGround`, the speaking items with `NocheMic`, a wrong choice shown with a white outline and never red.
 
@@ -790,7 +788,7 @@ Not drawn (Part 1.5): same layouts, Noche tokens and pieces, lesson screens on `
 
 Salim, Nov 23: "I want the reader to look like a real reader not a simple text thing that makes my eyes want to die." "users can upload pdfs, ebook/etc to put their books in the reader."
 
-All in feature\_library, so these go one at a time, after \#2 and N4.5.
+All in feature_library, so these go one at a time, after #2 and N4.5.
 
 #### N5.1 The reader page (#112)
 
@@ -801,13 +799,13 @@ All in feature\_library, so these go one at a time, after \#2 and N4.5.
 **What to build**
 
 - Full screen, page colour from the settings (Night by default: `lessonGround`, body `nightText`).  
-- Header, 56: back (chevron) → Library; the book title in capitals, centred (`label`, lessonLabel); "Aa" (Literata 500 20\) → the settings sheet (N5.2); the chapters button (list icon) → a sheet listing the chapters (`NocheSheet`, one 56 row per chapter, the current one marked with the check disc; not drawn).  
-- The page: side padding 28\. Chapter label only when the book itself has chapter titles (the book's own words, never made up). Chapter head in `bookTitle`, a 32 by 1 rule (lessonBorder). Body in `bookBody`, left aligned, never justified. Paragraphs: first line indented 1.4 em, except the first of a chapter. Drop capital (`dropCap`, 3 lines) on the first paragraph of a chapter.  
+- Header, 56: back (chevron) → Library; the book title in capitals, centred (`label`, lessonLabel); "Aa" (Literata 500 20) → the settings sheet (N5.2); the chapters button (list icon) → a sheet listing the chapters (`NocheSheet`, one 56 row per chapter, the current one marked with the check disc; not drawn).  
+- The page: side padding 28. Chapter label only when the book itself has chapter titles (the book's own words, never made up). Chapter head in `bookTitle`, a 32 by 1 rule (lessonBorder). Body in `bookBody`, left aligned, never justified. Paragraphs: first line indented 1.4 em, except the first of a chapter. Drop capital (`dropCap`, 3 lines) on the first paragraph of a chapter.  
 - Paged, not scrolled: swipe sideways, or tap the outer fifth of either side, to turn. Page numbers are counted for the current text size.  
-- Word marks, from the ear records of the learner's language, with the course's `tokens` and `normalize`: never heard (no record or stage 0\) \= solid 2 px underline in `listening`; still learning (stage 1 to `stageMax` − 1\) \= dotted 2 px underline in the page's label colour; known (stage `stageMax`) \= no mark.  
+- Word marks, from the ear records of the learner's language, with the course's `tokens` and `normalize`: never heard (no record or stage 0) = solid 2 px underline in `listening`; still learning (stage 1 to `stageMax` − 1) = dotted 2 px underline in the page's label colour; known (stage `stageMax`) = no mark.  
 - Tap a word: it gets a `listening` background with page-ground text (radius 6), and a bubble above it (text fill, page-ground text, 44 high, radius 22): a speaker icon, the word (`primarySmall`), and one 6 px dot per stage (`stageMax`, 4 today), one filled per ear stage reached. The word's clip plays if the course has one; if not, no speaker icon and no sound. No translation. Tap elsewhere closes it.  
 - Course story books have their recorded audio: the foot has "sentence again" (48 outline), Listen / Pause (64 orange), and speed (48 outline, "0.9×", cycling 0.75×, 0.9×, 1×). The sentence being read is lit (`litSentence` background, text colour) when that setting is on.  
-- The foot line: "/ " at the start and a clock with " min" at the end (minutes left in the chapter: words left ÷ 120, rounded up; Claude's guess at reading speed); a 4-high progress bar (lessonLine track, lessonLabel fill).  
+- The foot line: `"<page> / <total>"` at the start and a clock with `"<N> min"` at the end (minutes left in the chapter: words left ÷ 120, rounded up; Claude's guess at reading speed); a 4-high progress bar (lessonLine track, lessonLabel fill).  
 - Books with no recording (the learner's own) have no Listen, sentence-again or speed buttons, and no lit sentence. Read-aloud for them is not decided (page 21, "Money").  
 - The place in each book is remembered.
 
@@ -818,9 +816,9 @@ All in feature\_library, so these go one at a time, after \#2 and N4.5.
 **Done when**
 
 - A course story book in Night, a long imported book (on the fake) across a chapter end, at the smallest and largest text size, both sizes.  
-- A test of the word marks against a fake ear record with words at stages 0 to 4\.
+- A test of the word marks against a fake ear record with words at stages 0 to 4.
 
-**Lane** lane:feature\_library.
+**Lane** lane:feature_library.
 
 #### N5.2 Text and page settings (#113)
 
@@ -831,9 +829,9 @@ All in feature\_library, so these go one at a time, after \#2 and N4.5.
 **What to build**
 
 - `NocheSheet` over the page (the page shows its colour behind the scrim).  
-- Text size: smaller "A", 7 dashes, larger "A"; "Step of 7". Sizes (body / line height at Normal): 15/25, 16/26, 17/28, 19/31, 21/34, 23/38, 26/42. Default step 4\. (Only step 4 is on the board; the rest are Claude's steps.)  
+- Text size: smaller "A", 7 dashes, larger "A"; `"Step <N> of 7"`. Sizes (body / line height at Normal): 15/25, 16/26, 17/28, 19/31, 21/34, 23/38, 26/42. Default step 4. (Only step 4 is on the board; the rest are Claude's steps.)  
 - Font: three 80-high tiles, "Ag" in the font and its name: Literata, Atkinson, Lexend. Help line exactly: "No font is fastest for everyone. Keep the one you read most easily."  
-- Line spacing: Tight, Normal, Loose (icons from the board) \= line height × 0.88, × 1, × 1.15.  
+- Line spacing: Tight, Normal, Loose (icons from the board) = line height × 0.88, × 1, × 1.15.  
 - Page: Night, Sepia, Day, each a 48 pill filled with its page colour and an "A" in its text colour.  
 - Switches: "Underline words I'm still learning" (off hides both underline kinds), "Light up the sentence being read".  
 - Every setting applies at once and is kept in the feature's own storage space.
@@ -842,7 +840,7 @@ All in feature\_library, so these go one at a time, after \#2 and N4.5.
 
 - Each setting changes the page in a widget test; the settings survive a restart on the fake storage.
 
-**Lane** lane:feature\_library.
+**Lane** lane:feature_library.
 
 #### N5.3 How much of a book you know (#114)
 
@@ -850,11 +848,11 @@ All in feature\_library, so these go one at a time, after \#2 and N4.5.
 
 **Done when**
 
-- `coverage(book)` \= running words of the book whose ear record is at stage 1 or more ÷ all running words, using the course's `tokens` and `normalize`. Numbers and words in another script are left out of both counts.  
+- `coverage(book)` = running words of the book whose ear record is at stage 1 or more ÷ all running words, using the course's `tokens` and `normalize`. Numbers and words in another script are left out of both counts.  
 - The phrase under it: below 90%, "A stretch for now. Reading gets easy near 98%."; 90 to 97%, "Close. Reading gets easy near 98%."; 98% and up, "Easy to read now." (Only the first is on the board; the other two are Claude's wording.)  
 - A test on a fake book and record gives the exact percentage.
 
-**Lane** lane:feature\_library.
+**Lane** lane:feature_library.
 
 #### N5.4 Add your own: the screen, paste text and plain text files (#115)
 
@@ -864,12 +862,12 @@ All in feature\_library, so these go one at a time, after \#2 and N4.5.
 
 **What to build**
 
-- A page on `ImportRoute`: close, "Add your own", the line "Books and documents in . Only you can see what you add." where lists only what is built (this story: "TXT").  
-- "Adding now": a card per file being added: name, size, three dashes for the three steps (open it, read the pages, check its words against yours), and "Step of 3." with what is happening.  
-- "Ready": a row per added book: `NocheCover` 60 by 84, title, "· pages\[ · chapters\]", the coverage bar in \`listening\`, "You've heard % of its words." and the phrase from N5.3. Tap → \`BookRoute\`.  
+- A page on `ImportRoute`: close, "Add your own", the line `"Books and documents in <formats>. Only you can see what you add."` where `<formats>` lists only what is built (this story: `"TXT"`).  
+- "Adding now": a card per file being added: name, size, three dashes for the three steps (open it, read the pages, check its words against yours), and `"Step <N> of 3."` with what is happening.  
+- "Ready": a row per added book: `NocheCover` 60 by 84, title, `"<format> · <N> pages[ · <M> chapters]"`, the coverage bar in `listening`, `"You've heard <N>% of its words."` and the phrase from N5.3. Tap → `BookRoute`.  
 - A book that cannot be opened: a card with a 1 px text outline (never red) and the reason in one line.  
 - The foot: a "Paste text" tile (opens a full-screen text box with "Add" as the orange button; not drawn), and the orange "Choose a file".  
-- Added books are stored on the device in the feature's own space, never sent anywhere. If the storage space cannot hold books of a few megabytes on the web, file a request to coqui\_platform for a file store and use the fake meanwhile.  
+- Added books are stored on the device in the feature's own space, never sent anywhere. If the storage space cannot hold books of a few megabytes on the web, file a request to coqui_platform for a file store and use the fake meanwhile.  
 - A pasted text or TXT file becomes a book: a blank line starts a paragraph; a line of its own in capitals or starting "Chapter"/"Capítulo" is not guessed at: no chapters.
 
 **Differs from the board**
@@ -880,7 +878,7 @@ All in feature\_library, so these go one at a time, after \#2 and N4.5.
 
 - Adding a TXT file and a pasted text on the fake, both reaching the reader with the right coverage.
 
-**Lane** lane:feature\_library.
+**Lane** lane:feature_library.
 
 #### N5.5 EPUB and Word files (needs two packages) (#116)
 
@@ -905,7 +903,7 @@ All in feature\_library, so these go one at a time, after \#2 and N4.5.
 
 #### N6.1 Mic states everywhere (#119)
 
-The mic is used in N4.3 (stories), N4.8a (review) and the call screen. The call screen in progress is not drawn: covered by the Danny-call stories, with `NocheMic` once N1.3 is merged. If those stories are merged before N1.3, a follow-up story in feature\_speaking swaps the mic, posted then.
+The mic is used in N4.3 (stories), N4.8a (review) and the call screen. The call screen in progress is not drawn: covered by the Danny-call stories, with `NocheMic` once N1.3 is merged. If those stories are merged before N1.3, a follow-up story in feature_speaking swaps the mic, posted then.
 
 ---
 
@@ -913,7 +911,7 @@ The mic is used in N4.3 (stories), N4.8a (review) and the call screen. The call 
 
 Salim, Nov 23: "youtube is backlog stuff along with the integration." The integration is the Drive backlog item "Videos — YouTube clips at the learner's level".
 
-Boards: [`Noche-Video.dc.html`](noche/Noche-Video.dc.html), [`Noche-Video-Ver.dc.html`](noche/Noche-Video-Ver.dc.html), [`Noche-Video-Texto.dc.html`](noche/Noche-Video-Texto.dc.html), and the YouTube parts of [`Noche-Biblioteca.dc.html`](noche/Noche-Biblioteca.dc.html) and [`Noche-Importar.dc.html`](noche/Noche-Importar.dc.html). Page 21, "YouTube: what is allowed", holds the rules checked on Nov 23\.
+Boards: [`Noche-Video.dc.html`](noche/Noche-Video.dc.html), [`Noche-Video-Ver.dc.html`](noche/Noche-Video-Ver.dc.html), [`Noche-Video-Texto.dc.html`](noche/Noche-Video-Texto.dc.html), and the YouTube parts of [`Noche-Biblioteca.dc.html`](noche/Noche-Biblioteca.dc.html) and [`Noche-Importar.dc.html`](noche/Noche-Importar.dc.html). Page 21, "YouTube: what is allowed", holds the rules checked on Nov 23.
 
 Stories to write when he says go (outline only):
 
@@ -930,9 +928,9 @@ Stories to write when he says go (outline only):
 
 ---
 
-## Part 4\. Decisions in this page that are Claude's, for Salim to change
+## Part 4. Decisions in this page that are Claude's, for Salim to change
 
 - Treated everything drawn as approved, including page 21's open guesses (the tier names and what each holds, Literata and the three reader fonts, one plan for every language, shared streak and minutes).  
 - Tab names: in the course's language (Spanish for Spanish), as you said; English page titles inside them, as on the boards.  
-- Differences from the boards, each a switch (Part 1.7): 4 word stages not 5; no "1 freeze saved" (no freezes exist); no review minutes on the Words button; no sample languages in "Add a language"; no "\[PRICE\]" on screen; English accessibility labels on lesson screens; no made-up chapter labels in the reader.  
+- Differences from the boards, each a switch (Part 1.7): 4 word stages not 5; no "1 freeze saved" (no freezes exist); no review minutes on the Words button; no sample languages in "Add a language"; no "[PRICE]" on screen; English accessibility labels on lesson screens; no made-up chapter labels in the reader.  
 - Not drawn and specified here: the place-not-in-plan card, the chapters sheet, Paste text, the extra text sizes, the two other coverage phrases, reading speed for "min left".
