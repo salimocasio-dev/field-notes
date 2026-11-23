@@ -19,13 +19,13 @@ import 'package:feature_story/feature_story.dart';
 import 'package:feature_words/feature_words.dart';
 
 /// The modules, for the address switches [switches]. [bookImageUrl] turns a book page's picture (`img/<file>`) into its
-/// address (Biblioteca's books, and the moments of Repaso's games); [voiceTest] is the voice test's content (null when its file could not be read).
+/// address (the moments of Repaso's games; Biblioteca shows no pictures since its rewrite of Nov 23, 2026); [voiceTest] is the voice test's content (null when its file could not be read).
 List<FeatureModule> coquiModules({
   required AppSwitches switches,
   required String Function(String path) bookImageUrl,
   VoiceTestData? voiceTest,
 }) => [
-  libraryModule(imageUrl: bookImageUrl),
+  const LibraryModule(),
   const WordsModule(),
   MapModule(showPerf: switches.perf),
   speakingModule(voiceTest: voiceTest),
@@ -33,10 +33,6 @@ List<FeatureModule> coquiModules({
   StoryModule(scenes: storyScenes, showPerf: switches.perf, txt: switches.txt),
   ReviewModule(imageUrl: bookImageUrl),
 ];
-
-/// Biblioteca's module, told where a book page's picture is ([imageUrl]: `historia/libros/<path>?v=39` on the site).
-FeatureModule libraryModule({required String Function(String path) imageUrl}) =>
-    LibraryModule(imageUrl: imageUrl);
 
 /// Hablar's module. There is no entry to the voice test on the tab (v=39 links it from nowhere): it opens by its
 /// address only (`#/prueba-voz`). With no [voiceTest] (its file could not be read) that address opens the map.

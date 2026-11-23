@@ -345,33 +345,20 @@ void main() {
         await app.tap(find.text('Map').last);
         await app.settle(rounds: 5);
         expect(app.selectedTab, 'map');
-        // Biblioteca: its row, with Listen and no Read (it has no book)
+        // Biblioteca opens; the course's stories are not listed there
         await app.openTab('library');
         await app.until(
-          () => find
-              .text('Previa uno', skipOffstage: false)
-              .evaluate()
-              .isNotEmpty,
-          what: 'the preview story on the shelf',
-        );
-        final row = find.ancestor(
-          of: find.text('Previa uno', skipOffstage: false),
-          matching: byTypeName('ShelfEntry'),
+          () => find.text('Generate a story').evaluate().isNotEmpty,
+          what: 'Biblioteca',
         );
         expect(
           find.descendant(
-            of: row,
-            matching: find.text('Listen', skipOffstage: false),
-          ),
-          findsOneWidget,
-        );
-        expect(
-          find.descendant(
-            of: row,
-            matching: find.text('Read', skipOffstage: false),
+            of: byTypeName('ReadingHome'),
+            matching: find.text('Previa uno'),
           ),
           findsNothing,
         );
+        expect(tester.takeException(), isNull);
         // Palabras, Hablar (El colmado is done and has no call: its stop says "Coming soon"), Yo
         await app.openTab('words');
         expect(tester.takeException(), isNull);
