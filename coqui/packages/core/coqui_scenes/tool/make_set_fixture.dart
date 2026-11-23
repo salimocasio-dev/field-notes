@@ -107,6 +107,11 @@ void main(List<String> args) {
       constant: 'esquinaSetRefs',
       what: "La esquina's baked states",
     ),
+    'parada': (
+      file: 'parada_set_refs.dart',
+      constant: 'paradaSetRefs',
+      what: "La parada's baked states",
+    ),
     'tiendas': (
       file: 'tiendas_set_refs.dart',
       constant: 'tiendasSetRefs',

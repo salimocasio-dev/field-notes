@@ -56,6 +56,10 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
   `historia/cuentos/`); `test/esquina_stories_test.dart` and `tool/esquina_paths_test.dart` as El mostrador's, the draws by
   `test/support/esquina_paths.dart` (a draw whose options name variables takes them as dealt), the rules by
   `test/support/esquina_rules.dart` (checked at the end of every act waited for; a loose act at its `ya`).
+- La parada (order 55b) the same way: `test/fixtures/parada/`, `test/parada_stories_test.dart`, `tool/parada_paths_test.dart`,
+  `test/support/parada_rules.dart`, `parada_paths.dart` (its draws: `esquinaDrawsOf`, each distinct combination once; a
+  name drawn in both rounds of story 51 takes one value for both, as a fixed draw does; `SEEDS=n` adds n plays with the
+  draws left to the seed, for rounds that differ).
 - Las tiendas (order 56b): as La esquina's: fixtures in `test/fixtures/tiendas/`, `test/tiendas_stories_test.dart`,
   `tool/tiendas_paths_test.dart`, `test/support/tiendas_paths.dart` and `tiendas_rules.dart` (the sheet's places that break
   a rule by themselves are kept apart as `known`).
