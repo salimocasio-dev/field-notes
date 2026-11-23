@@ -1,5 +1,7 @@
 # Coquí runbook
 
+Three AIs work here at the same time. First read the repo-root `AGENTS.md`: the board, how to claim a story, and how pull requests are reviewed and merged. In this page, "the orchestrator" is Claude, the scrum master there, and "your order" is your story on the board.
+
 Read this whole page before you touch anything. You are a builder working for an orchestrator who makes every decision. Do exactly the task you were given. When something needs a choice that your task does not settle, stop and report it instead of choosing.
 
 ## What you are given
@@ -88,7 +90,7 @@ The check script enforces these too, with the plan's rules 1 to 5.
 - [g] `coqui_testing` is a dev dependency, in the places the table above names. Files under `lib/` never import it. Tests and `tool/` do.
 - A feature's dev entry, the file that starts it on the fakes, is `tool/dev_main.dart` in the feature, not `lib/dev_main.dart`. `lib/` may only import what is under `dependencies`.
 - Web builds always use `--no-web-resources-cdn`: CanvasKit comes from our own site, never from gstatic.
-- Builders do not push (see "Where this page differs from page 12, section 7").
+- Builders push their lane branch and open a pull request, as the repo-root `AGENTS.md` says. Never to `main`.
 
 ## Requests
 
@@ -217,7 +219,7 @@ Other rules:
 - The boundary check: `dart run tool/check_boundaries.dart` at `coqui/`.
 - A feature alone: `flutter run -d chrome -t lib/dev_main.dart` in the feature.
 - A story played with no screen: `dart run tool/juega.dart <story> <plan> <seed>` at `coqui/` (after order 15).
-- Git: branch `lane/<package>/<order number>`, your own worktree. Commit small on your branch. Do not push: the orchestrator checks your branch, then merges and pushes. Never push to main. Never open a pull request. Never touch `historia/`, `docs/` or another package.
+- Git: branch `lane/<package>/<issue number>`, your own clone or worktree. Commit small on your branch. Push the branch and open a pull request as the repo-root `AGENTS.md` says. Never push to main. Never touch `historia/`, `docs/` or another package.
 - Nothing that costs money: no ElevenLabs calls or tests, no push under `historia/cuentos/` (it starts the paid audio job), no accounts, no keys.
 - Report, short: what you did; each check and its number; what failed; requests filed; anything you had to choose (there should be nothing). Never claim a check you did not run.
 
@@ -225,7 +227,7 @@ Other rules:
 
 By the orchestrator's decision of Nov 19, 2026:
 
-- Git: builders do not push. Page 12, section 7 said "push often". It now says: commit small on your branch, and do not push. The orchestrator checks your branch, then merges and pushes.
+- Git (changed Nov 23, 2026, so Claude, Codex and Gemini can work at the same time): builders push their lane branch and open a pull request. A reviewer from a different company checks it and merges. The board and the full loop are in the repo-root `AGENTS.md`.
 - A feature's dev entry is `tool/dev_main.dart`, run with `flutter run -d chrome -t tool/dev_main.dart` in the feature. Where section 7 says `lib/dev_main.dart`, read `tool/dev_main.dart`. Reason: `lib/` may only import packages under `dependencies`, and the dev entry needs `coqui_testing`, which is a dev dependency.
 
 ## Audio (costs money: read carefully)
