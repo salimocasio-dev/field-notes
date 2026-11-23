@@ -1123,6 +1123,8 @@ Also: the Needs name spots `repisa`, `mostrador1` to `3`, `vitrina_fuera` and st
 
 ### Orders 54 to 57. La calle (place 5): esquina, parada, tiendas, cruce
 
+**Ready for the content lane: build 14 (Nov 23).** All four scenes are in Dart on main and their twelve stories play in build 14 from the preview content (silent, timed lines; nothing is under `historia/cuentos/`). Acts left OPEN: 10 in La esquina, 11 in La parada, 9 in Las tiendas, 8 in El cruce (La esquina's and El cruce's in their results below; La parada's and Las tiendas' under "Where this lane stopped on Nov 22").
+
 New scenes, as El colmado's: no old scene file, no `ref/escenas/` folder. Step a (design) is the content lane's; step b is this lane's, after El colmado's four.
 
 **What exists, in `docs/proyecto/pixel/`:**
@@ -1165,6 +1167,25 @@ Built by an Opus builder on `orden/54b` in about 2.9 hours, La calle's shared pi
 9. 50 steps 5 and 6, `atras50`: backing out of the lane over the pavement onto the cement has no place; the thing lurches 2 px where it stands, the cone at `cono2` falls, `cemento` draws the track.
 10. 50 step 7: "hops onto the smooth part and off again" has no place for "off"; he stays at `coqui.cemento`.
 Also: `toca_carro` and `acera2` (abuela) are 6 px across and 11 down, `toca_guagua` and `acera3` (mamá) 6 across and 5 down: the frog stands behind them in every la-calle play (the sheet's sprites-apart check never put these pairs together); the Needs name `cerca_cemento`, the sheet has `coqui.cerca`; the sheet's hole-shows check (45%) holds only while the obrero sits: while he stands at `obrero.paleta` (50 steps 2 and 3) the hole shows 43%.
+
+### Orders 55, 56 and 57 (parada, tiendas, cruce), step b. **Result (Nov 23): done, merged to main; La calle plays in build 14.**
+
+La parada and Las tiendas were built by Opus builders on Nov 22 and stopped before their last checks; the orchestrator finished them on Nov 23: main merged in (the shared lists by one rule: main's lines, then the scene's own; the generated files by their tools), then every check run again. El cruce was built by an Opus builder on Nov 23 in 54 minutes. The orchestrator then ran `test_all.sh`'s 29 steps to the end on main with all four scenes: nothing fails.
+
+- **La parada:** set 4 states, 0 of 51,840 px differ; acts test passes (every Needs thing answers a touch except `sol`, which has no place); 208 paths, 0 errors, 9,070 rule checks, 0 broken (the frog drawn over a nearer grown-up in 7: the señora at `fila3` when he is at the back button); six plays in the real app reach the end. It added two guagua looks to `calle_vehicles.dart` (`atras`, `puertas`). Bake time not measured.
+- **Las tiendas:** set 14 states equal; acts test passes (16 things answer); 664 paths, 0 errors, 14,168 rule checks, 0 broken; six plays in the real app reach the end. Bake time not measured on a quiet machine (the builder's medians under load: 226 to 1,060 ms the first time).
+- **El cruce:** set 6 states equal; acts test passes (21 things answer); 64 paths, 0 errors, 1,824 rule checks, 0 broken (the frog drawn over papá's legs at `tras_papa` in 16); six plays reach the end; bake 29 to 69 ms the first time, 26 to 34 later. No vehicles in this scene. 36 new sprites: `docs/proyecto/pixel/port/cruce-sprites.png`.
+
+**For the content lane: 8 acts left OPEN in El cruce** (marked `// OPEN:` in `cruce.dart`):
+1. Coming up from the bottom (57 and 58, steps 2, 3, 5, 6; `toma`/`vuelve`): the sheet names no point below the picture; the walk starts on the line of the up street, below the edge, and ends at `abajo.*`.
+2. Passing into the crossing (57 and 58, steps 1, 3, 5, 6; `pasa`): no start point is named; they come from `salida_recta`; whoever stood at `centro` walks out along the left street.
+3. 58 steps 6 and 7 (`piraguero58`): the square has no place for the bicycle; it stays at `abajo.bici` and Luis carries the block to `luis.plaza`.
+4. 59 steps 1 to 5 (`pone59`): no place the family walks in from; each one appears at their spot.
+5. 59 step 9 (`final59`): the photos are "laid out on the seat", but the seat is full; they are shown in a row over the picture.
+6. 58 step 2: the twinkle on `arbol` has no thing in the sheet; it is drawn round `calle_recta`'s box.
+7. 57 steps 5 and 6 (`gesto lengua`): the frog's tongue is not drawn; he does a slow, low bounce.
+8. 58's goal: the thought of the piragüero over Luis and the frog has no act; it is not drawn.
+Also: the frog at `tras_papa` is behind papá (0 px across, 10 down; the set hides 57 px of him); the frog at `delante_canelo` and Canelo overlap (0 across, 9 down); on the rack (`coqui.bici`) the frog covers Luis's face; story 59's file sets `hora: tarde` but the sheet says 59 is ocaso (ocaso is used). Guesses: every sprite look outside the preview's stand-ins, the pointing poses, the photo's crop.
 
 ### Orders 58 to 61. La plaza (place 6): plaza, reloj, quiosco, calendario
 
@@ -1308,16 +1329,15 @@ Salim asked for work to stop for now (usage). Every branch below is pushed, sign
 **On main, not in a build yet:** La esquina (order 54; its result is below, under La calle).
 
 **Built, stopped before the last checks** (each needs: main merged in with the shared lists in order ..., caja, esquina, parada, tiendas, cruce, plaza, ...; the generated files remade by their tools; `test_all.sh` whole; bake times on a quiet machine; then the orchestrator's own checks):
-- `orden/55b` La parada (holds `orden/54b`): set 4 states 0 of 51,840 px differ; acts test passes; 352 paths, 0 errors, 13,812 rule checks, 0 broken; six app plays reach the end. **Left:** paths, frames and `parada_stories_test` run again after the last fix (the chofer leans out only while he speaks or acts: he covered the front door); bake times; `test_all.sh`. It added two guagua looks to `calle_vehicles.dart` (`atras`, `puertas`: additions only).
-- `orden/56b` Las tiendas (made from `orden/54b` before main was merged into it; main's caja is not in it): set 14 states equal; acts test passes; stories 54 and 56 pass. **Left:** `tiendas_stories_test` again (55 failed on Luis and the señora both at `luis.puerta_izq`; fixed, not rerun); `tool/tiendas_paths_test.dart` (664 plays, never finished); frames; `tiendas-sprites.png` remade (`flutter test tool/tiendas_sprites_test.dart`); bake times; `test_all.sh`.
+- La parada, Las tiendas and El cruce were finished on Nov 23 and are on main (build 14): see "Orders 55, 56 and 57".
 - `orden/58b` La plaza, with place 6's shared pieces (`plaza_base.dart`: 222 cases equal the JavaScript, `set_kit.dart` unchanged; `plaza_cast.dart`; feature_story says a decision's whole round again when he waits, 281 tests pass): set 12 states equal; acts test passes; stories 60 and 61: 64 paths each, no rule broken; six app plays reach the end; `test_all.sh` passed two commits before the head. **Left:** story 62's 7,680 paths again after the last two commits (384 paths had a helper over the frog; fixed for the señor and the joven, not confirmed); `test_all.sh` at the head; bake times. For reloj, quiosco, calendario no further runner change is needed (time cards and the big bingo card as story 60's bubbles; 67 uses the whole-round repeat; 70 uses `vale` as it is). Their briefs are written: `brief_59b.txt`, `brief_60b.txt`, `brief_61b.txt` in the orchestrator's scratchpad (lost with the machine: write again from order 55's pattern if gone).
 - A comer's port was finished after this was written and is on main (build 13): see "A comer, step b, and La cocina's build".
 
-**Not started:** La calle's cruce (57; `brief_57b.txt`), La plaza's reloj, quiosco, calendario (59 to 61), places 7 to 10 (62 to 77).
+**Not started:** La plaza's reloj, quiosco, calendario (59 to 61), places 7 to 10 (62 to 77).
 
 **La cocina is built:** build 13 plays its four scenes; the ten words are recorded.
 
-**For the content lane: acts left OPEN in scenes not merged yet**
+**For the content lane: acts left OPEN in La parada and Las tiendas (on main, build 14) and in La plaza (not merged yet)**
 
 La parada (`parada.dart`):
 1. 51, 52, 53 start, `ir bordillo`: no such spot; he goes to `fila2`.
