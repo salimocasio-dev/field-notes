@@ -1131,6 +1131,15 @@ class Cruce extends Escena implements SetScene, SetOverSprites {
         Thing(id: id, m: 0, z: true, si: _juego59, box: [..._p.box(id)]),
       // the people, Canelo and the bebé
       for (final id in _people) sprite(id, (w) => _boxOfTag(w, 'persona:$id')),
+      // the big tree at the end of the street straight on, which story 58 makes twinkle (step 2), never touched
+      // OPEN: the sheet has no thing for the big tree: its twinkle is drawn round the street straight on (calle_recta's
+      // box), at whose end it stands
+      Thing(
+        id: 'arbol',
+        m: 0,
+        box: const <num>[0, 0, 0, 0],
+        hintBox: [..._p.box('calle_recta')],
+      ),
       // the three streets (the sheet's boxes)
       setThing('calle_izq'),
       setThing('calle_der'),
