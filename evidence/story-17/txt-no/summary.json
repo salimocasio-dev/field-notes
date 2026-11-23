@@ -1,0 +1,76 @@
+{
+ "txt": "no",
+ "screen": {
+  "logical": [
+   390.0,
+   844.0
+  ],
+  "ratio": 2.0,
+  "pixels": [
+   780.0,
+   1688.0
+  ]
+ },
+ "plays": {
+  "mucho-gusto-right": {
+   "pictures": 13,
+   "sheets": 4,
+   "reachedEnd": true,
+   "storyMs": 113180,
+   "playMs": 113180,
+   "touches": 6,
+   "duplicatesDropped": 1,
+   "stopped": null
+  },
+  "mucho-gusto-wrong": {
+   "pictures": 21,
+   "sheets": 6,
+   "reachedEnd": true,
+   "storyMs": 131420,
+   "playMs": 131420,
+   "touches": 11,
+   "duplicatesDropped": 3,
+   "stopped": null
+  },
+  "de-donde-eres-right": {
+   "pictures": 13,
+   "sheets": 4,
+   "reachedEnd": true,
+   "storyMs": 116000,
+   "playMs": 116000,
+   "touches": 6,
+   "duplicatesDropped": 1,
+   "stopped": null
+  },
+  "de-donde-eres-wrong": {
+   "pictures": 21,
+   "sheets": 6,
+   "reachedEnd": true,
+   "storyMs": 129520,
+   "playMs": 129520,
+   "touches": 11,
+   "duplicatesDropped": 3,
+   "stopped": null
+  },
+  "hablo-espanol-right": {
+   "pictures": 10,
+   "sheets": 3,
+   "reachedEnd": true,
+   "storyMs": 147380,
+   "playMs": 147380,
+   "touches": 4,
+   "duplicatesDropped": 0,
+   "stopped": null
+  },
+  "hablo-espanol-wrong": {
+   "pictures": 13,
+   "sheets": 4,
+   "reachedEnd": true,
+   "storyMs": 152060,
+   "playMs": 152060,
+   "touches": 7,
+   "duplicatesDropped": 3,
+   "stopped": null
+  }
+ }
+}
