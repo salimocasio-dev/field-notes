@@ -1,49 +1,131 @@
-/// What the Hablar tab shows, without a widget (app.html: `hablar`).
+/// What the Hablar tab shows, without a widget.
+///
+/// Replaces the old 10-row "Call Danny" list with:
+/// - one picked [nextCall] hero (from open words + map progress),
+/// - a 10-stop [stops] journey tied to the map places (done / ready / upcoming),
+/// - main + 2–3 smaller titled calls per place, and
+/// - a clean [CallEntitlement] hook for the live-calls subscription tier.
 library;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:feature_speaking/src/call_catalog.dart';
 import 'package:feature_speaking/src/call_text.dart';
+import 'package:feature_speaking/src/entitlements_hook.dart';
 
-/// What one card says.
-enum HablarCardKind {
-  /// The call is open: its disc starts it. `Llamada.tiene(id) && every story played`.
-  open,
+/// Availability state of a single call or place stop.
+enum HablarCallState {
+  /// Ready to start right now (place unlocked, call backed, build can call, entitled).
+  ready,
 
-  /// The call is there but this build cannot place it (`CallSession.available` is false).
+  /// Already completed at least once (can be replayed any time).
+  done,
+
+  /// Place unlocked and call exists, but this build cannot place calls (`call.available == false`).
   later,
 
-  /// All the place's stories are played and it has no call yet: "Coming soon · La casa" (the place's name).
+  /// Place unlocked and call exists, but locked by the subscription tier entitlement.
+  tierLocked,
+
+  /// Place unlocked, waiting for its live call definition in course data.
   soon,
 
-  /// "Opens when you finish" and the place's name.
-  locked,
+  /// Locked until the learner finishes the place's stories on the map.
+  upcoming,
 }
 
-class HablarCard {
-  HablarCard({
+/// One titled call entry displayed in the Hero card or a Place panel.
+class HablarCallItem {
+  const HablarCallItem({
+    required this.spec,
     required this.place,
-    required this.kind,
-    required this.subtitle,
-    this.minutes,
+    required this.placeNumber,
+    required this.state,
+    required this.statusLine,
+  });
+
+  final HablarCallSpec spec;
+  final Place place;
+  final int placeNumber;
+  final HablarCallState state;
+
+  /// Short plain-English status line (e.g. "~5 min", "Opens when you finish La cocina").
+  final String statusLine;
+
+  bool get canStart =>
+      state == HablarCallState.ready || state == HablarCallState.done;
+}
+
+/// One stop on the 10-place horizontal Map Journey strip.
+class PlaceJourneyStop {
+  const PlaceJourneyStop({
+    required this.place,
+    required this.placeNumber,
+    required this.state,
+    required this.calls,
+    required this.statusLine,
   });
 
   final Place place;
-  final HablarCardKind kind;
+  final int placeNumber;
+  final HablarCallState state;
+  final List<HablarCallItem> calls;
+  final String statusLine;
 
-  /// The grey line under "Call Danny". For [HablarCardKind.later] the line the caller gives, or empty.
-  final String subtitle;
-  final int? minutes;
+  HablarCallItem? get mainCall {
+    for (final c in calls) {
+      if (c.spec.isMain) return c;
+    }
+    return calls.isEmpty ? null : calls.first;
+  }
+
+  List<HablarCallItem> get smallerCalls => [
+    for (final c in calls)
+      if (!c.spec.isMain) c,
+  ];
 }
 
-// app.html: hablar. One card for each place, in place order.
-//
-// `on`: the place has a call and all its stories are played (stories the level check skipped count: they are in
-// the store's stories). `callsAvailable` is read only when a card is open (the old page loaded the voice library
-// when Hablar showed an open card: `Llamada.precarga()`); [callsLater] is the line for a build that cannot call.
-List<HablarCard> hablarCards({
+/// Complete, pure-Dart snapshot rendered by [HablarTab].
+class HablarSnapshot {
+  const HablarSnapshot({
+    required this.nextCall,
+    required this.stops,
+    required this.openWords,
+    required this.entitlement,
+    required this.completedCount,
+  });
+
+  /// The single recommended call surfaced in the Up Next hero card.
+  /// Always non-null when the course has at least one place.
+  final HablarCallItem? nextCall;
+
+  /// All 10 places in map order, with their state and titled calls.
+  final List<PlaceJourneyStop> stops;
+
+  /// Words open for speaking (`ear.etapa >= 3`).
+  final List<String> openWords;
+
+  /// Current subscription tier status for live calls.
+  final CallEntitlement entitlement;
+
+  /// Number of calls completed at least once (used to retire first-time hint).
+  final int completedCount;
+
+  /// Show the "Practice · no fail" reassurance line only before the first completed call.
+  bool get showFirstTimeReassurance => completedCount == 0;
+}
+
+/// Builds the [HablarSnapshot] from [course], [progress], lazy [callsAvailable],
+/// optional [entitlement], and optional [completedCallIds].
+///
+/// `callsAvailable` is read lazily and only when at least one unlocked place
+/// has a live call (`course.callFor(place.id) != null`), preserving the lazy
+/// voice-library preload behaviour tested in `hablar_test.dart`.
+HablarSnapshot buildHablarSnapshot({
   required CourseCatalog course,
   required ProgressStore progress,
   required bool Function() callsAvailable,
+  CallEntitlement entitlement = CallEntitlement.included,
+  Set<String> completedCallIds = const {},
   String callsLater = CallTexts.callsLater,
 }) {
   var available = false;
@@ -56,46 +138,157 @@ List<HablarCard> hablarCards({
     return available;
   }
 
-  return [
-    for (final l in course.places)
-      () {
-        final fin = l.stories.isNotEmpty && l.stories.every(progress.played);
-        final brief = course.callFor(l.id);
-        if (brief != null && fin) {
-          return canCall()
-              ? HablarCard(
-                  place: l,
-                  kind: HablarCardKind.open,
-                  subtitle: CallTexts.aboutLine(l.name, brief.minutes),
-                  minutes: brief.minutes,
-                )
-              : HablarCard(
-                  place: l,
-                  kind: HablarCardKind.later,
-                  subtitle: callsLater,
+  final stops = <PlaceJourneyStop>[];
+  for (var i = 0; i < course.places.length; i++) {
+    final place = course.places[i];
+    final placeNumber = i + 1;
+    final storiesDone =
+        place.stories.isNotEmpty && place.stories.every(progress.played);
+    final brief = course.callFor(place.id);
+    final specs = callsForPlace(place.id);
+
+    HablarCallState placeState;
+    String placeStatus;
+    if (brief != null && storiesDone) {
+      if (entitlement == CallEntitlement.upgradeRequired) {
+        placeState = HablarCallState.tierLocked;
+        placeStatus = HablarTexts.tierLockedLine;
+      } else if (!canCall()) {
+        placeState = HablarCallState.later;
+        placeStatus = callsLater;
+      } else {
+        final mainSpec = mainCallForPlace(place.id);
+        final mainDone =
+            mainSpec != null && completedCallIds.contains(mainSpec.id);
+        placeState = mainDone ? HablarCallState.done : HablarCallState.ready;
+        placeStatus = CallTexts.durationLine(brief.minutes);
+      }
+    } else if (storiesDone) {
+      placeState = HablarCallState.soon;
+      placeStatus = 'Coming soon · ${place.name}';
+    } else {
+      placeState = HablarCallState.upcoming;
+      placeStatus = 'Opens when you finish ${place.name}';
+    }
+
+    final items = <HablarCallItem>[
+      for (final spec in specs)
+        () {
+          final minutes = spec.isMain && brief != null
+              ? brief.minutes
+              : spec.minutes;
+          final effectiveSpec = minutes == spec.minutes
+              ? spec
+              : HablarCallSpec(
+                  id: spec.id,
+                  placeId: spec.placeId,
+                  titleEs: spec.titleEs,
+                  jobEn: spec.jobEn,
+                  minutes: minutes,
+                  isMain: spec.isMain,
+                  pixelAsset: spec.pixelAsset,
                 );
-        }
-        return HablarCard(
-          place: l,
-          kind: fin ? HablarCardKind.soon : HablarCardKind.locked,
-          subtitle: fin
-              ? 'Coming soon · ${l.name}'
-              : 'Opens when you finish ${l.name}',
-        );
-      }(),
-  ];
+          HablarCallState itemState = placeState;
+          if ((placeState == HablarCallState.ready ||
+                  placeState == HablarCallState.done) &&
+              completedCallIds.contains(spec.id)) {
+            itemState = HablarCallState.done;
+          } else if (placeState == HablarCallState.done &&
+              !completedCallIds.contains(spec.id)) {
+            itemState = HablarCallState.ready;
+          }
+          final itemStatus =
+              itemState == HablarCallState.ready ||
+                  itemState == HablarCallState.done
+              ? CallTexts.durationLine(effectiveSpec.minutes)
+              : placeStatus;
+          return HablarCallItem(
+            spec: effectiveSpec,
+            place: place,
+            placeNumber: placeNumber,
+            state: itemState,
+            statusLine: itemStatus,
+          );
+        }(),
+    ];
+
+    stops.add(
+      PlaceJourneyStop(
+        place: place,
+        placeNumber: placeNumber,
+        state: placeState,
+        calls: items,
+        statusLine: placeStatus,
+      ),
+    );
+  }
+
+  final next = _pickNextCall(stops);
+  return HablarSnapshot(
+    nextCall: next,
+    stops: stops,
+    openWords: wordsOpenForSpeaking(progress),
+    entitlement: entitlement,
+    completedCount: completedCallIds.length,
+  );
 }
 
-/// The words open for speaking: `Object.values(db().palabras).filter(r=>r.ear.etapa>=3).map(r=>r.w)`.
-/// (The old page asks the ear's stage, not `PAL.abiertaHabla`, which also opens a word he has already said.)
+/// Picks the single best "Up next" call for the Hero card:
+/// 1. First uncompleted ready main call (in map order).
+/// 2. Else first uncompleted ready smaller call.
+/// 3. Else most recent completed ready call (for replay).
+/// 4. Else first tier-locked or later call.
+/// 5. Else the first place's main call (showing what unlocks next).
+HablarCallItem? _pickNextCall(List<PlaceJourneyStop> stops) {
+  for (final stop in stops) {
+    final main = stop.mainCall;
+    if (main != null && main.state == HablarCallState.ready) return main;
+  }
+  for (final stop in stops) {
+    for (final c in stop.smallerCalls) {
+      if (c.state == HablarCallState.ready) return c;
+    }
+  }
+  for (final stop in stops.reversed) {
+    final main = stop.mainCall;
+    if (main != null && main.state == HablarCallState.done) return main;
+  }
+  for (final stop in stops) {
+    final main = stop.mainCall;
+    if (main != null &&
+        (main.state == HablarCallState.tierLocked ||
+            main.state == HablarCallState.later)) {
+      return main;
+    }
+  }
+  for (final stop in stops) {
+    final main = stop.mainCall;
+    if (main != null) return main;
+  }
+  return null;
+}
+
+/// The words open for speaking: ear stage 3 or higher.
 List<String> wordsOpenForSpeaking(ProgressStore progress) => [
   for (final r in progress.words)
     if (r.ear.etapa >= 3) r.w,
 ];
 
-/// app.html: the two lines of the tab's list.
+/// Static English UI labels for the Hablar tab (menus in English).
 abstract final class HablarTexts {
+  static const upNext = 'UP NEXT';
+  static const byPlace = 'By place';
+  static const practiceNoFail = 'Practice with Danny · no fail, help any time';
+  static const upNextAbove = 'Up next above';
+  static const doneBadge = 'Done';
+  static const mainCallLabel = 'Main call';
+  static const shortCallsLabel = 'Shorter practice';
   static const wordsTitle = 'Words open for speaking';
   static const wordsNone =
       'None yet. A word opens once your ear has held it for a few days.';
+  static const tierLockedLine =
+      'Live calls with Danny are included in the top plan.';
+  static const tierLockedAction = 'Live calls plan';
+  static String wordsReadyPill(int count) =>
+      count == 1 ? '1 word ready' : '$count words ready';
 }
