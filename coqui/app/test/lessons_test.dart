@@ -497,7 +497,7 @@ void main() {
       );
       final before = answers(app, 'mouth');
       await app.openTab('speak');
-      await app.tap(find.text('La casa · about 5 min'));
+      await app.tap(find.text('Start call'));
       await app.settle();
       expect(app.lessonShown, isTrue);
       expect(byTypeName('CallScreen'), findsOneWidget);

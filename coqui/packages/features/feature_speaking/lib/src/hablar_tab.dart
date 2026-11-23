@@ -1,4 +1,15 @@
-/// The Hablar tab (app.html: `hablar`): a "Call Danny" card for each place, and the words open for speaking.
+/// The Hablar tab: one clear Next Call hero card + a 10-stop Map Journey.
+///
+/// Design rules enforced:
+/// - Not a list of identical "Call Danny" rows.
+/// - One obvious next call with a thumb-zone primary button.
+/// - 10-stop horizontal place journey distinguishing Done / Ready / Upcoming
+///   by both shape/icon and colour (never colour alone), opening a single
+///   focused place panel when tapped.
+/// - No screenshot pictures (no picture shown until original pixel art exists).
+/// - No "I said it" self-report buttons.
+/// - >= 48 px touch targets on every interactive control.
+/// - Centralized calm Entitlements hook when locked by subscription tier.
 library;
 
 import 'dart:async';
@@ -6,6 +17,7 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_text.dart';
+import 'package:feature_speaking/src/entitlements_hook.dart';
 import 'package:feature_speaking/src/hablar_model.dart';
 import 'package:feature_speaking/src/speech_note.dart';
 import 'package:material_ui/material_ui.dart';
@@ -17,21 +29,26 @@ class HablarTab extends StatefulWidget {
     this.callsLater,
     this.voiceTestLabel,
     this.showSpeechNote = false,
+    this.entitlementCheck = defaultCallEntitlement,
+    this.completedCallIds = const {},
   });
 
   final Services services;
 
-  /// The grey line on the card of a call this build cannot place (`call.available` is false): calls come later on
-  /// this build. With none given it is `CallTexts.callsLater`, "Calls with Danny open later."; a line given here
-  /// (an empty one too) is what the card says.
+  /// Line shown when this build cannot place calls (`call.available == false`).
   final String? callsLater;
 
-  /// The title of an entry to the voice test (`nav.go(VoiceTestRoute())`); null: no entry. v=39 links the test
-  /// page from nowhere, so there is no label to copy. (Order 24, STOP: the label and its place are not settled.)
+  /// Optional entry label for `VoiceTestRoute`.
   final String? voiceTestLabel;
 
-  /// Shows app.html's `notaHabla` here. In v=39 it is Yo's, not Hablar's. (Order 24, STOP: where it goes.)
+  /// Shows `notaHabla` on the Hablar tab when requested.
   final bool showSpeechNote;
+
+  /// Subscription tier check hook for live calls.
+  final CallEntitlementCheck entitlementCheck;
+
+  /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
+  final Set<String> completedCallIds;
 
   @override
   State<HablarTab> createState() => _HablarTabState();
@@ -40,13 +57,11 @@ class HablarTab extends StatefulWidget {
 class _HablarTabState extends State<HablarTab> {
   StreamSubscription<void>? _sub;
   String? _note;
-
-  /// `call.available` said false: the call library did not load (or this build has no calls). Every read of
-  /// `available` while it is false starts another try at loading the library, and the tab is built again at every
-  /// change of the progress or the screen: with the network down that was a request on each build and a card that
-  /// changed with each answer. So the false answer is kept for as long as this tab state lives, and the tab asks
-  /// again only when it is made again (a screen opened afresh).
   bool _callsFailed = false;
+
+  /// Which place stop is expanded in the focused panel below (null = collapsed,
+  /// avoiding duplicate "Up next" cards on initial load).
+  String? _selectedPlaceId;
 
   @override
   void initState() {
@@ -81,81 +96,486 @@ class _HablarTabState extends State<HablarTab> {
     return available;
   }
 
-  void _call(Place place) {
+  void _startCall(HablarCallItem item) {
+    if (!item.canStart) return;
     widget.services.haptics.tick();
-    widget.services.nav.go(CallRoute(place.id));
+    widget.services.nav.go(CallRoute(item.place.id));
   }
 
-  /// `.cc`: a card in a row, at least 80 high; locked ones are grey.
-  Widget _card(HablarCard k) {
-    final open = k.kind == HablarCardKind.open;
-    final title = open
-        ? CoquiText.rowTitle
-        : CoquiText.rowTitle.copyWith(color: CoquiColors.mut);
-    final body = ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 48),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(CallTexts.callDanny, style: title),
-                if (k.subtitle.isNotEmpty)
-                  Text(k.subtitle, style: CoquiText.smallMuted),
-              ],
+  void _togglePlace(String placeId) {
+    widget.services.haptics.tick();
+    setState(() {
+      _selectedPlaceId = _selectedPlaceId == placeId ? null : placeId;
+    });
+  }
+
+  PlaceJourneyStop? _findSelectedStop(List<PlaceJourneyStop> stops) {
+    final id = _selectedPlaceId;
+    if (id == null) return null;
+    for (final stop in stops) {
+      if (stop.place.id == id) return stop;
+    }
+    return null;
+  }
+
+  void _showWordsSheet(BuildContext context, List<String> openWords) {
+    widget.services.haptics.tick();
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: CoquiColors.card,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(HablarTexts.wordsTitle, style: CoquiText.h2),
+                  ),
+                  SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: IconButton(
+                      icon: const Icon(Icons.close, color: CoquiColors.ink),
+                      tooltip: 'Close',
+                      onPressed: () => Navigator.of(ctx).pop(),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (openWords.isEmpty)
+                Text(HablarTexts.wordsNone, style: CoquiText.bodyMuted)
+              else
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 260),
+                  child: SingleChildScrollView(
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final w in openWords)
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: CoquiColors.bg,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: CoquiColors.line,
+                                width: CoquiLayout.border(ctx, 1),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              child: Text(
+                                CallTexts.chip(w),
+                                style: CoquiText.chip,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _header(BuildContext context, List<String> openWords) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(child: ScreenTitle(CoquiLabels.speak)),
+        Semantics(
+          button: true,
+          label:
+              '${HablarTexts.wordsReadyPill(openWords.length)}. ${HablarTexts.wordsTitle}',
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _showWordsSheet(context, openWords),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+              child: Center(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: CoquiColors.card,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: CoquiColors.line,
+                      width: CoquiLayout.border(context, 1),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    child: Text(
+                      HablarTexts.wordsReadyPill(openWords.length),
+                      style: CoquiText.smallMuted,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
-          if (open) ...[
-            const SizedBox(width: 16),
-            PlayButton(
-              icon: CoquiIcons.phone,
-              semanticLabel: '${CallTexts.callDanny}: ${k.place.name}',
-              onPressed: () => _call(k.place),
+        ),
+      ],
+    );
+  }
+
+  /// Compact 10-stop horizontal Map Journey strip.
+  /// Distinguishes Done / Ready / Upcoming by icon + border + fill (not colour alone).
+  Widget _journeyStrip(BuildContext context, List<PlaceJourneyStop> stops) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle(HablarTexts.byPlace),
+        SizedBox(
+          height: 64,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: stops.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
+            itemBuilder: (ctx, idx) {
+              final stop = stops[idx];
+              final selected = _selectedPlaceId == stop.place.id;
+              final isDone = stop.state == HablarCallState.done;
+              final isReady = stop.state == HablarCallState.ready;
+              final isLocked =
+                  stop.state == HablarCallState.upcoming ||
+                  stop.state == HablarCallState.soon;
+
+              final bg = selected
+                  ? CoquiColors.ink
+                  : isDone
+                  ? CoquiColors.ok.withValues(alpha: 0.12)
+                  : isReady
+                  ? CoquiColors.card
+                  : CoquiColors.bg;
+              final border = selected
+                  ? CoquiColors.ink
+                  : isDone
+                  ? CoquiColors.ok
+                  : isReady
+                  ? CoquiColors.info
+                  : CoquiColors.line;
+              final fg = selected
+                  ? CoquiColors.white
+                  : isDone
+                  ? CoquiColors.ok
+                  : isReady
+                  ? CoquiColors.ink
+                  : CoquiColors.mut;
+
+              return Semantics(
+                button: true,
+                selected: selected,
+                label: '${stop.placeNumber}. ${stop.place.name}',
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => _togglePlace(stop.place.id),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minWidth: 56,
+                      minHeight: 48,
+                    ),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: bg,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: border,
+                          width: CoquiLayout.border(ctx, selected ? 2 : 1.5),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (isDone)
+                              Icon(Icons.check, size: 16, color: fg)
+                            else if (isLocked)
+                              Icon(Icons.lock_outline, size: 15, color: fg)
+                            else
+                              Text(
+                                '${stop.placeNumber}',
+                                style: CoquiText.small.copyWith(
+                                  color: fg,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            const SizedBox(width: 6),
+                            Text(
+                              stop.place.name,
+                              style: CoquiText.small.copyWith(
+                                color: fg,
+                                fontWeight: isReady || selected
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Featured "Up next" hero card with thumb-zone Start call button.
+  Widget _heroCard(BuildContext context, HablarSnapshot snap) {
+    final next = snap.nextCall;
+    if (next == null) return const SizedBox.shrink();
+
+    final canStart = next.canStart;
+    final ctaLabel = next.state == HablarCallState.done
+        ? CallTexts.callAgain
+        : CallTexts.startCall;
+
+    return CoquiCard(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: EyebrowLabel(
+                  '${HablarTexts.upNext} · ${next.placeNumber}. ${next.place.name}',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                CallTexts.durationLine(next.spec.minutes),
+                style: CoquiText.smallMuted,
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(next.spec.titleEs, style: CoquiText.h1),
+          const SizedBox(height: 6),
+          Text(next.spec.jobEn, style: CoquiText.bodyMuted),
+          if (snap.showFirstTimeReassurance && canStart) ...[
+            const SizedBox(height: 10),
+            Text(HablarTexts.practiceNoFail, style: CoquiText.smallMuted),
+          ],
+          const SizedBox(height: 20),
+          if (canStart)
+            ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 52),
+              child: CoquiButton(
+                label: ctaLabel,
+                icon: CoquiIcons.phone,
+                kind: CoquiButtonKind.go,
+                full: true,
+                semanticLabel: '$ctaLabel: ${next.spec.titleEs}',
+                onPressed: () => _startCall(next),
+              ),
+            )
+          else
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: CoquiColors.bg,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: CoquiColors.line,
+                  width: CoquiLayout.border(context, 1),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
+                child: Text(
+                  next.statusLine,
+                  style: CoquiText.smallMuted,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
+        ],
+      ),
+    );
+  }
+
+  /// Focused single-place panel shown when the learner taps a stop on the map strip.
+  Widget _placePanel(
+    BuildContext context,
+    PlaceJourneyStop stop,
+    String? heroCallId,
+  ) {
+    final main = stop.mainCall;
+    final smalls = stop.smallerCalls;
+    return CoquiCard(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '${stop.placeNumber}. ${stop.place.name}',
+                  style: CoquiText.h2,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Flexible(
+                child: Text(
+                  stop.statusLine,
+                  style: CoquiText.smallMuted,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ],
+          ),
+          if (main != null) ...[
+            const SizedBox(height: 12),
+            _callRow(
+              context,
+              main,
+              isHeroDuplicate: main.spec.id == heroCallId,
+            ),
+          ],
+          if (smalls.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Text(HablarTexts.shortCallsLabel, style: CoquiText.eyebrow),
+            const SizedBox(height: 6),
+            for (var i = 0; i < smalls.length; i++) ...[
+              if (i > 0) const SizedBox(height: 8),
+              _callRow(
+                context,
+                smalls[i],
+                isHeroDuplicate: smalls[i].spec.id == heroCallId,
+              ),
+            ],
           ],
         ],
       ),
     );
-    return CoquiCard(
-      disabled: !open,
-      child: open
-          ? GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => _call(k.place),
-              child: body,
-            )
-          : Semantics(enabled: false, child: body),
+  }
+
+  Widget _callRow(
+    BuildContext context,
+    HablarCallItem item, {
+    required bool isHeroDuplicate,
+  }) {
+    final enabled = item.canStart && !isHeroDuplicate;
+    final titleStyle = item.canStart
+        ? CoquiText.rowTitle
+        : CoquiText.rowTitle.copyWith(color: CoquiColors.mut);
+
+    final row = ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 48),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: CoquiColors.bg,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(item.spec.titleEs, style: titleStyle),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${item.spec.jobEn} · ${CallTexts.durationLine(item.spec.minutes)}',
+                      style: CoquiText.smallMuted,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              if (isHeroDuplicate && item.canStart)
+                Text(HablarTexts.upNextAbove, style: CoquiText.smallMuted)
+              else if (item.state == HablarCallState.done)
+                PlayButton(
+                  icon: CoquiIcons.phone,
+                  quiet: true,
+                  semanticLabel: '${CallTexts.callAgain}: ${item.spec.titleEs}',
+                  onPressed: () => _startCall(item),
+                )
+              else if (item.canStart)
+                PlayButton(
+                  icon: CoquiIcons.phone,
+                  semanticLabel: '${CallTexts.startCall}: ${item.spec.titleEs}',
+                  onPressed: () => _startCall(item),
+                )
+              else if (item.state == HablarCallState.soon)
+                Text(HablarTexts.smallerCallSoon, style: CoquiText.smallMuted),
+            ],
+          ),
+        ),
+      ),
     );
+
+    return enabled
+        ? GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _startCall(item),
+            child: row,
+          )
+        : Semantics(enabled: item.canStart, child: row);
   }
 
   @override
   Widget build(BuildContext context) {
     final s = widget.services;
-    final cards = hablarCards(
+    final snap = buildHablarSnapshot(
       course: s.course,
       progress: s.progress,
       callsAvailable: _callsAvailable,
+      entitlement: widget.entitlementCheck(),
+      completedCallIds: widget.completedCallIds,
       callsLater: widget.callsLater ?? CallTexts.callsLater,
     );
-    final open = wordsOpenForSpeaking(s.progress);
+    final selectedStop = _findSelectedStop(snap.stops);
     final voiceTest = widget.voiceTestLabel;
+
     return TabPage(
       children: [
-        ScreenTitle(CoquiLabels.speak),
+        _header(context, snap.openWords),
         if (_note != null) KeyLine(_note!),
-        for (final k in cards) _card(k),
-        const SectionTitle(HablarTexts.wordsTitle),
-        Block(
-          child: Text(
-            open.isEmpty ? HablarTexts.wordsNone : open.join(', '),
-            style: CoquiText.bodyMuted,
-          ),
-        ),
+        const SizedBox(height: 8),
+        _journeyStrip(context, snap.stops),
+        const SizedBox(height: 16),
+        if (selectedStop != null) ...[
+          _placePanel(context, selectedStop, snap.nextCall?.spec.id),
+          const SizedBox(height: 8),
+        ],
+        _heroCard(context, snap),
         if (voiceTest != null)
           Block(
-            top: 24,
+            top: 12,
             child: CoquiCard(
               marginBottom: 0,
               child: GestureDetector(

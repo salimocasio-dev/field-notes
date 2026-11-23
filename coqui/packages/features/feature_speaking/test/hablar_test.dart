@@ -1,7 +1,11 @@
-// The Hablar tab (app.html: hablar) and its notes, in the states of the reference pictures.
+// The Hablar tab (order 25: one "Up next" call and a 10-stop journey by place) and its notes, in the states of the
+// reference pictures. Runs on the fakes only: no real call is ever placed.
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_speaking/src/call_catalog.dart';
+import 'package:feature_speaking/src/call_text.dart';
+import 'package:feature_speaking/src/entitlements_hook.dart';
 import 'package:feature_speaking/src/hablar_model.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
 import 'package:feature_speaking/src/speech_note.dart';
@@ -31,51 +35,133 @@ Future<void> settle(WidgetTester tester) async {
   await tester.pump();
 }
 
-Widget tab(World w, {String? callsLater, String? entry, bool note = false}) =>
-    w.app(
-      HablarTab(
-        key: UniqueKey(), // a new tab each time: the note is read when the tab is made
-        services: w.services,
-        callsLater: callsLater,
-        voiceTestLabel: entry,
-        showSpeechNote: note,
-      ),
-    );
+Widget tab(
+  World w, {
+  String? callsLater,
+  String? entry,
+  bool note = false,
+  CallEntitlementCheck entitlementCheck = defaultCallEntitlement,
+  Set<String> completedCallIds = const {},
+}) => w.app(
+  HablarTab(
+    key: UniqueKey(), // a new tab each time: the note is read when the tab is made
+    services: w.services,
+    callsLater: callsLater,
+    voiceTestLabel: entry,
+    showSpeechNote: note,
+    entitlementCheck: entitlementCheck,
+    completedCallIds: completedCallIds,
+  ),
+);
 
 void main() {
   setUp(resetSpeechNoteDay);
 
-  group('hablar: the cards', () {
+  group('call catalog: titles and rules', () {
+    test('every place has a main call plus 2-3 smaller calls, 31 total', () {
+      expect(hablarCallCatalog.length, 10);
+      var total = 0;
+      for (final entry in hablarCallCatalog.entries) {
+        final mains = entry.value.where((c) => c.isMain).toList();
+        final smalls = entry.value.where((c) => !c.isMain).toList();
+        expect(mains.length, 1, reason: entry.key);
+        expect(smalls.length, inInclusiveRange(2, 3), reason: entry.key);
+        for (final c in entry.value) {
+          expect(c.placeId, entry.key, reason: c.id);
+          expect(c.titleEs.trim(), isNotEmpty);
+          expect(c.jobEn.trim(), isNotEmpty);
+          expect(c.titleEs.toLowerCase(), isNot(contains('call danny')));
+          expect(c.titleEs.toLowerCase(), isNot(contains('llamar a danny')));
+          expect(
+            c.pixelAsset,
+            isNull,
+          ); // none until original pixel art is drawn
+          total++;
+        }
+      }
+      expect(total, 31);
+      final ids = [
+        for (final l in hablarCallCatalog.values)
+          for (final c in l) c.id,
+      ];
+      expect(ids.toSet().length, ids.length, reason: 'call ids are unique');
+    });
+
+    test('the catalog names the course\'s places, in its order', () async {
+      final course = FixtureCourse();
+      await course.load();
+      expect(hablarCallCatalog.keys, [for (final l in course.places) l.id]);
+    });
+  });
+
+  group('hablar: the snapshot without a widget', () {
+    test('the old rule on a plain store, by place', () async {
+      final course = FixtureCourse();
+      await course.load();
+      final p = RecordingProgress();
+      HablarSnapshot snap({Set<String> done = const {}}) => buildHablarSnapshot(
+        course: course,
+        progress: p,
+        callsAvailable: () => true,
+        completedCallIds: done,
+      );
+      expect(snap().stops.map((s) => s.state).toSet(), {
+        HablarCallState.upcoming,
+      });
+      for (final l in course.places.take(3)) {
+        for (final id in l.stories) {
+          p.storyFinished(StoryResult(id: id));
+        }
+      }
+      final s = snap();
+      expect(s.stops.map((c) => c.state).take(4), [
+        HablarCallState.ready,
+        HablarCallState.soon,
+        HablarCallState.soon,
+        HablarCallState.upcoming,
+      ]);
+      expect(s.stops[1].statusLine, 'Coming soon · El parque');
+      expect(s.stops[3].statusLine, 'Opens when you finish El colmado');
+      expect(s.nextCall!.spec.id, 'casa_main');
+      expect(s.nextCall!.spec.minutes, course.callFor('casa')!.minutes);
+      expect(s.showFirstTimeReassurance, isTrue);
+      // the smaller calls of an open place are listed, not started: the route names a place, not a call
+      expect(s.stops.first.smallerCalls, isNotEmpty);
+      for (final c in s.stops.first.smallerCalls) {
+        expect(c.state, HablarCallState.soon, reason: c.spec.id);
+        expect(c.canStart, isFalse, reason: c.spec.id);
+        expect(c.statusLine, HablarTexts.smallerCallSoon);
+      }
+      // once the main call is done it is offered again
+      final again = snap(done: const {'casa_main'});
+      expect(again.stops.first.state, HablarCallState.done);
+      expect(again.nextCall!.spec.id, 'casa_main');
+      expect(again.nextCall!.state, HablarCallState.done);
+      expect(again.showFirstTimeReassurance, isFalse);
+    });
+  });
+
+  group('hablar: hero card and map journey (not a list)', () {
     testWidgets(
-      'nothing played: ten Call Danny cards, all locked; La casa says Opens when you finish La casa; no disc',
+      'nothing played: never "Call Danny", no 10-row list; the hero says Opens when you finish La casa; nothing to start',
       (tester) async {
         Phone.android.use(tester);
         final w = await World.create(seed: 'vacio');
         await tester.pumpWidget(tab(w));
-        expect(find.text('Call Danny'), findsNWidgets(10));
-        expect(find.text('Opens when you finish La casa'), findsOneWidget);
-        expect(find.byType(PlayButton), findsNothing);
-        expect(find.textContaining('Coming soon'), findsNothing);
-        // the old page's ten places, in place order, each with its own name
-        for (final l in w.course.places.skip(1)) {
-          expect(find.text('Opens when you finish ${l.name}'), findsOneWidget);
-        }
-        // the title is the tab's name
         expect(find.text('Hablar'), findsOneWidget);
+        expect(find.text('Call Danny'), findsNothing);
+        expect(find.text('De visita en la casa'), findsOneWidget);
+        expect(find.text('Opens when you finish La casa'), findsOneWidget);
+        expect(find.text('Start call'), findsNothing);
+        expect(find.byType(PlayButton), findsNothing);
+        expect(find.text('I said it'), findsNothing);
+        await tester.tap(find.text('Opens when you finish La casa'));
+        await tester.pump();
+        expect(w.nav.routes, isEmpty);
+        expect(w.haptics.ticks, 0);
         w.dispose();
       },
     );
-
-    testWidgets('a touch on a locked card opens nothing', (tester) async {
-      Phone.android.use(tester);
-      final w = await World.create(seed: 'vacio');
-      await tester.pumpWidget(tab(w));
-      await tester.tap(find.text('Call Danny').first);
-      await tester.pump();
-      expect(w.nav.routes, isEmpty);
-      expect(w.haptics.ticks, 0);
-      w.dispose();
-    });
 
     testWidgets('10 of 11 stories of La casa played: still locked', (
       tester,
@@ -87,91 +173,84 @@ void main() {
       }
       await tester.pumpWidget(tab(w));
       expect(find.text('Opens when you finish La casa'), findsOneWidget);
-      expect(find.byType(PlayButton), findsNothing);
+      expect(find.text('Start call'), findsNothing);
       w.dispose();
     });
 
     testWidgets(
-      'open: La casa\'s card is first and open, "Call Danny" / "La casa · about 5 min", a green 48 px disc; the places with all stories played and no call say Coming soon',
+      'open: one clear Next Call hero with a >=48 px Start call button that goes to the call with a tick',
       (tester) async {
         Phone.android.use(tester);
         final w = await World.create(seed: 'todo');
         await tester.pumpWidget(tab(w));
-        expect(find.byType(PlayButton), findsOneWidget);
-        final disc = tester.getSize(find.byType(PlayButton));
-        expect([disc.width, disc.height], [48, 48]);
-        expect(find.text('La casa · about 5 min'), findsOneWidget);
-        // first card
-        final first = tester.getTopLeft(find.text('Call Danny').first).dy;
-        final disc0 = tester.getCenter(find.byType(PlayButton)).dy;
-        expect(disc0, lessThan(first + 80));
-        expect(find.text('Coming soon · El parque'), findsOneWidget);
-        expect(find.text('Coming soon · La cocina'), findsOneWidget);
-        expect(find.text('Opens when you finish El colmado'), findsOneWidget);
-        // the disc is green
-        final decorated = tester.widget<Container>(
-          find
-              .descendant(
-                of: find.byType(PlayButton),
-                matching: find.byType(Container),
-              )
-              .first,
+        expect(find.text('De visita en la casa'), findsOneWidget);
+        expect(
+          find.text('Greet Danny, introduce yourself, and accept a drink.'),
+          findsOneWidget,
         );
-        expect((decorated.decoration! as BoxDecoration).color, CoquiColors.ok);
-        // the phone icon, and the label for a screen reader
-        expect(find.bySemanticsLabel('Call Danny: La casa'), findsOneWidget);
-        w.dispose();
-      },
-    );
+        expect(find.text('About 5 min'), findsOneWidget);
+        expect(find.text('Start call'), findsOneWidget);
+        expect(find.text(HablarTexts.practiceNoFail), findsOneWidget);
+        final startBtn = tester.getSize(find.byType(CoquiButton));
+        expect(startBtn.height, greaterThanOrEqualTo(48));
 
-    testWidgets(
-      'a touch on the open card, or on its disc, goes to the call (once) with a tick',
-      (tester) async {
-        Phone.android.use(tester);
-        final w = await World.create(seed: 'todo');
-        await tester.pumpWidget(tab(w));
-        await tester.tap(find.text('La casa · about 5 min'));
+        await tester.tap(find.text('Start call'));
         await tester.pump();
         expect(w.nav.routes, [const CallRoute('casa')]);
         expect(w.haptics.ticks, 1);
-        await tester.tap(find.byType(PlayButton));
-        await tester.pump();
-        expect(w.nav.routes, [
-          const CallRoute('casa'),
-          const CallRoute('casa'),
-        ]);
-        expect(w.haptics.ticks, 2);
         w.dispose();
       },
     );
 
     testWidgets(
-      'the level check counts: after it, La casa\'s card is open (its 11 stories count as played)',
+      'tapping a place stop shows its main and smaller calls; the main one points up, the smaller ones do not start yet',
+      (tester) async {
+        Phone.android.use(tester);
+        final w = await World.create(seed: 'todo');
+        await tester.pumpWidget(tab(w));
+        await tester.tap(find.text('La casa'));
+        await tester.pump();
+        expect(find.text('1. La casa'), findsOneWidget);
+        expect(find.text(HablarTexts.upNextAbove), findsOneWidget);
+        expect(find.text('Un vaso de agua'), findsOneWidget);
+        expect(find.text('¿Cómo estás?'), findsOneWidget);
+        expect(find.text('Nos vemos'), findsOneWidget);
+        expect(find.text(HablarTexts.smallerCallSoon), findsNWidgets(3));
+        expect(find.byType(PlayButton), findsNothing);
+        // a smaller call would start La casa's main call: until `CallRoute` names a call, it opens nothing
+        await tester.tap(find.text('Un vaso de agua'));
+        await tester.pump();
+        expect(w.nav.routes, isEmpty);
+        // the stop closes again
+        await tester.tap(find.text('La casa'));
+        await tester.pump();
+        expect(find.text('Un vaso de agua'), findsNothing);
+        w.dispose();
+      },
+    );
+
+    testWidgets(
+      'the level check counts: after it, La casa\'s call can start (its 11 stories count as played)',
       (tester) async {
         Phone.android.use(tester);
         final w = await World.create(seed: 'nivel');
         await tester.pumpWidget(tab(w));
-        expect(find.byType(PlayButton), findsOneWidget);
-        expect(find.text('Opens when you finish El parque'), findsOneWidget);
+        expect(find.text('Start call'), findsOneWidget);
         w.dispose();
       },
     );
 
-    testWidgets(
-      'mid-course: La casa open, El parque (begun) and La cocina locked',
-      (tester) async {
-        Phone.android.use(tester);
-        final w = await World.create(seed: 'curso');
-        await tester.pumpWidget(tab(w));
-        expect(find.byType(PlayButton), findsOneWidget);
-        expect(find.text('Opens when you finish El parque'), findsOneWidget);
-        expect(find.text('Opens when you finish La cocina'), findsOneWidget);
-        w.dispose();
-      },
-    );
+    testWidgets('mid-course: La casa\'s call can start', (tester) async {
+      Phone.android.use(tester);
+      final w = await World.create(seed: 'curso');
+      await tester.pumpWidget(tab(w));
+      expect(find.text('Start call'), findsOneWidget);
+      expect(find.text('De visita en la casa'), findsOneWidget);
+      w.dispose();
+    });
 
     testWidgets(
-      'the card opens as soon as the last story is played, with the tab showing',
+      'the call opens as soon as the last story is played, with the tab showing',
       (tester) async {
         Phone.android.use(tester);
         final w = await World.create(seed: null);
@@ -180,45 +259,98 @@ void main() {
           w.progress.storyFinished(StoryResult(id: id));
         }
         await tester.pumpWidget(tab(w));
-        expect(find.byType(PlayButton), findsNothing);
+        expect(find.text('Start call'), findsNothing);
         w.progress.storyFinished(StoryResult(id: stories.last));
         await tester.pump();
         await tester.pump();
-        expect(find.byType(PlayButton), findsOneWidget);
+        expect(find.text('Start call'), findsOneWidget);
         w.dispose();
       },
     );
 
     testWidgets(
-      'no horizontal overflow at the sizes of the old checks (no exception while laying out)',
+      'a done main call is offered again; the first-time line is gone',
       (tester) async {
-        for (final phone in [Phone.android, Phone.iphone, Phone.small]) {
-          phone.use(tester);
-          final w = await World.create(seed: 'todo');
-          await tester.pumpWidget(tab(w));
-          expect(tester.takeException(), isNull, reason: phone.name);
-          final box = tester.getRect(find.byType(TabPage));
-          expect(box.right, lessThanOrEqualTo(phone.width), reason: phone.name);
-          w.dispose();
+        Phone.android.use(tester);
+        final w = await World.create(seed: 'todo');
+        await tester.pumpWidget(tab(w, completedCallIds: const {'casa_main'}));
+        expect(find.text(HablarTexts.practiceNoFail), findsNothing);
+        expect(find.text('Call again'), findsOneWidget);
+        await tester.tap(find.text('Call again'));
+        await tester.pump();
+        expect(w.nav.routes, [const CallRoute('casa')]);
+        w.dispose();
+      },
+    );
+
+    testWidgets(
+      'no horizontal overflow at the sizes of the old checks, with and without La casa open',
+      (tester) async {
+        for (final phone in [
+          Phone.android,
+          Phone.iphone,
+          Phone.small,
+          Phone.side,
+        ]) {
+          for (final seed in ['vacio', 'todo']) {
+            phone.use(tester);
+            final w = await World.create(seed: seed);
+            await tester.pumpWidget(tab(w));
+            expect(
+              tester.takeException(),
+              isNull,
+              reason: '${phone.name} $seed',
+            );
+            final box = tester.getRect(find.byType(TabPage));
+            expect(
+              box.right,
+              lessThanOrEqualTo(phone.width),
+              reason: phone.name,
+            );
+            await tester.tap(find.text('La casa'));
+            await tester.pump();
+            expect(
+              tester.takeException(),
+              isNull,
+              reason: '${phone.name} $seed, La casa open',
+            );
+            w.dispose();
+          }
         }
       },
     );
   });
 
+  group('hablar: entitlements', () {
+    testWidgets('tier locked: a calm plan line instead of Start call', (
+      tester,
+    ) async {
+      Phone.android.use(tester);
+      final w = await World.create(seed: 'todo');
+      await tester.pumpWidget(
+        tab(w, entitlementCheck: () => CallEntitlement.upgradeRequired),
+      );
+      expect(find.text('Start call'), findsNothing);
+      expect(find.text(HablarTexts.tierLockedLine), findsOneWidget);
+      await tester.tap(find.text(HablarTexts.tierLockedLine));
+      await tester.pump();
+      expect(w.nav.routes, isEmpty);
+      w.dispose();
+    });
+  });
+
   group('hablar: calls come later on this build', () {
     testWidgets(
-      'call.available false: the open card is grey, has no disc and does not go to the call; by default it says "Calls with Danny open later."',
+      'call.available false: no Start call, nothing goes to the call; by default it says "Calls with Danny open later."',
       (tester) async {
         Phone.android.use(tester);
         final w = await World.create(seed: 'todo', callAvailable: false);
         await tester.pumpWidget(tab(w));
-        expect(find.byType(PlayButton), findsNothing);
+        expect(find.text('Start call'), findsNothing);
         expect(find.text('Calls with Danny open later.'), findsOneWidget);
-        expect(find.text('La casa · about 5 min'), findsNothing);
         await tester.tap(find.text('Calls with Danny open later.'));
         await tester.pump();
         expect(w.nav.routes, isEmpty);
-        expect(find.text('Call Danny'), findsNWidgets(10));
         w.dispose();
       },
     );
@@ -234,33 +366,30 @@ void main() {
       w.dispose();
     });
 
-    testWidgets(
-      'an empty `callsLater` leaves the card with nothing under its title',
-      (tester) async {
-        Phone.android.use(tester);
-        final w = await World.create(seed: 'todo', callAvailable: false);
-        await tester.pumpWidget(tab(w, callsLater: ''));
-        expect(find.byType(PlayButton), findsNothing);
-        expect(find.text('Calls with Danny open later.'), findsNothing);
-        expect(find.text('Call Danny'), findsNWidgets(10));
-        w.dispose();
-      },
-    );
+    testWidgets('an empty `callsLater` leaves no line and nothing to start', (
+      tester,
+    ) async {
+      Phone.android.use(tester);
+      final w = await World.create(seed: 'todo', callAvailable: false);
+      await tester.pumpWidget(tab(w, callsLater: ''));
+      expect(find.text('Start call'), findsNothing);
+      expect(find.text('Calls with Danny open later.'), findsNothing);
+      w.dispose();
+    });
+
+    testWidgets('the line is only there when this build cannot place a call', (
+      tester,
+    ) async {
+      Phone.android.use(tester);
+      final w = await World.create(seed: 'todo'); // the call can be placed
+      await tester.pumpWidget(tab(w));
+      expect(find.text('Calls with Danny open later.'), findsNothing);
+      expect(find.text('Start call'), findsOneWidget);
+      w.dispose();
+    });
 
     testWidgets(
-      'the line is only on the card of a call this build cannot place',
-      (tester) async {
-        Phone.android.use(tester);
-        final w = await World.create(seed: 'todo'); // the call can be placed
-        await tester.pumpWidget(tab(w));
-        expect(find.text('Calls with Danny open later.'), findsNothing);
-        expect(find.byType(PlayButton), findsWidgets);
-        w.dispose();
-      },
-    );
-
-    testWidgets(
-      'the voice library is asked for only when an open card is shown (the old precarga)',
+      'the voice library is asked for only when an open call is shown (the old precarga)',
       (tester) async {
         Phone.android.use(tester);
         final locked = await World.create(seed: 'vacio', call: CountingCall());
@@ -287,7 +416,7 @@ void main() {
         await tester.pumpWidget(tab(w));
         expect(call.asked, 1);
         expect(find.text('Calls with Danny open later.'), findsOneWidget);
-        expect(find.byType(PlayButton), findsNothing);
+        expect(find.text('Start call'), findsNothing);
         // the tab is built again at every change of the progress
         for (var i = 0; i < 7; i++) {
           w.progress.add('word $i');
@@ -306,40 +435,42 @@ void main() {
     );
 
     testWidgets(
-      'an answer of true is not kept: the card is open and follows the session',
+      'an answer of true is not kept: the call can start and follows the session',
       (tester) async {
         Phone.android.use(tester);
         final call = CountingCall();
         final w = await World.create(seed: 'todo', call: call);
         await tester.pumpWidget(tab(w));
-        expect(find.byType(PlayButton), findsOneWidget);
+        expect(find.text('Start call'), findsOneWidget);
         final first = call.asked;
         w.progress.add('a word');
         await tester.pump();
         expect(call.asked, greaterThan(first));
-        expect(find.byType(PlayButton), findsOneWidget);
+        expect(find.text('Start call'), findsOneWidget);
         w.dispose();
       },
     );
   });
 
   group('hablar: words open for speaking', () {
-    testWidgets('nothing met: the plain sentence', (tester) async {
+    testWidgets('nothing met: the pill says 0, the sheet the plain sentence', (
+      tester,
+    ) async {
       Phone.android.use(tester);
       final w = await World.create(seed: 'vacio');
       await tester.pumpWidget(tab(w));
-      expect(find.text('Words open for speaking'), findsOneWidget);
-      expect(
-        find.text(
-          'None yet. A word opens once your ear has held it for a few days.',
-        ),
-        findsOneWidget,
-      );
+      await tester.tap(find.text('0 words ready'));
+      await tester.pumpAndSettle();
+      expect(find.text(HablarTexts.wordsTitle), findsOneWidget);
+      expect(find.text(HablarTexts.wordsNone), findsOneWidget);
+      await tester.tap(find.byTooltip('Close'));
+      await tester.pumpAndSettle();
+      expect(find.text(HablarTexts.wordsTitle), findsNothing);
       w.dispose();
     });
 
     testWidgets(
-      'the words whose ear stage is 3 or more, in the order the store has them, with commas',
+      'the words whose ear stage is 3 or more, in the order the store has them, one chip each',
       (tester) async {
         Phone.android.use(tester);
         final w = await World.create(seed: 'todo');
@@ -349,8 +480,11 @@ void main() {
             if (r.ear.etapa >= 3) r.w,
         ];
         expect(open.length, greaterThan(50));
-        expect(find.text(open.join(', ')), findsOneWidget);
         expect(wordsOpenForSpeaking(w.progress), open);
+        await tester.tap(find.text('${open.length} words ready'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+        expect(find.text(CallTexts.chip(open.first)), findsOneWidget);
         w.dispose();
       },
     );
@@ -443,30 +577,5 @@ void main() {
         w.dispose();
       },
     );
-  });
-
-  group('hablar: the cards without a widget', () {
-    test('hablarCards: the old rule on a plain store', () async {
-      final course = FixtureCourse();
-      await course.load();
-      final p = RecordingProgress();
-      List<HablarCard> cards() =>
-          hablarCards(course: course, progress: p, callsAvailable: () => true);
-      expect(cards().map((k) => k.kind).toSet(), {HablarCardKind.locked});
-      for (final l in course.places.take(3)) {
-        for (final id in l.stories) {
-          p.storyFinished(StoryResult(id: id));
-        }
-      }
-      final k = cards();
-      expect(k.map((c) => c.kind).take(4), [
-        HablarCardKind.open,
-        HablarCardKind.soon,
-        HablarCardKind.soon,
-        HablarCardKind.locked,
-      ]);
-      expect(k.first.minutes, 5);
-      expect(k[1].subtitle, 'Coming soon · El parque');
-    });
   });
 }
