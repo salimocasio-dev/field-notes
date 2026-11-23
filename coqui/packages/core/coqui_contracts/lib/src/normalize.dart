@@ -1,4 +1,4 @@
-import 'package:coqui_contracts/src/normalize_table.dart';
+import 'package:coqui_contracts/src/language.dart';
 
 /// Today's PAL.norm, copied exactly.
 ///
@@ -9,22 +9,10 @@ import 'package:coqui_contracts/src/normalize_table.dart';
 /// is not a-z or 0-9 is one space; one space each side. Dart has no NFD, so what
 /// the first three steps do to each character is read from [normalizeTable],
 /// made from the old code by coqui/tool/contracts/make_fixtures.mjs.
-String normalize(String? s) {
-  final out = StringBuffer();
-  for (final rune in (s ?? '').runes) {
-    if ((rune >= 0x61 && rune <= 0x7a) || (rune >= 0x30 && rune <= 0x39)) {
-      out.writeCharCode(rune);
-    } else {
-      out.write(_fold[rune] ?? ' ');
-    }
-  }
-  return ' ${out.toString().replaceAll(_notWord, ' ').trim()} ';
-}
-
-final RegExp _notWord = RegExp('[^a-z0-9]+');
-
-/// [normalizeTable], by code point.
-final Map<int, String> _fold = {
-  for (final e in normalizeTable.entries)
-    for (final rune in e.value.runes) rune: e.key,
-};
+///
+/// Deprecated: the word rules now live on [Language.normalize] (use
+/// `course.language.normalize` or `Language.spanish.normalize`). This global
+/// stays, returning the same strings, until N2.11 removes it. (Not annotated
+/// with `@Deprecated` yet because 8 packages outside `coqui_contracts` still
+/// call it and `flutter analyze` fails on `deprecated_member_use` infos.)
+String normalize(String? s) => Language.spanish.normalize(s);

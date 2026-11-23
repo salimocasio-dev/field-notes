@@ -1,4 +1,5 @@
 import 'package:coqui_contracts/src/json.dart';
+import 'package:coqui_contracts/src/language.dart';
 
 /// A place on the map: one entry of CURSO.lugares (curso.js).
 /// JSON keys: id, n, nombre, en, fork, cuentos, dibujos, haz, escenas.
@@ -174,8 +175,9 @@ class LevelItem {
   };
 }
 
-/// What Danny is told for one place's call (llamada.js, LLAMADAS[placeId]):
-/// {minutos, job, opening, foto}.
+/// What the call partner is told for one place's call (llamada.js, LLAMADAS[placeId]):
+/// {minutos, job, opening, foto}. [agentId] comes from the course's language
+/// (`course.language.callAgentId`), defaulting to Spanish's Danny agent.
 class CallBrief {
   CallBrief({
     required this.placeId,
@@ -183,28 +185,39 @@ class CallBrief {
     required this.job,
     required this.opening,
     required this.photo,
+    this.agentId = spanishCallAgentId,
   });
 
-  factory CallBrief.fromJson(String placeId, Map<String, dynamic> j) =>
-      CallBrief(
-        placeId: placeId,
-        minutes: jsonInt(j['minutos']),
-        job: j['job'] as String,
-        opening: j['opening'] as String,
-        photo: j['foto'] as String,
-      );
+  factory CallBrief.fromJson(
+    String placeId,
+    Map<String, dynamic> j, {
+    String? agentId,
+  }) => CallBrief(
+    placeId: placeId,
+    minutes: jsonInt(j['minutos']),
+    job: j['job'] as String,
+    opening: j['opening'] as String,
+    photo: j['foto'] as String,
+    agentId:
+        agentId ??
+        j['agentId'] as String? ??
+        j['agentid'] as String? ??
+        spanishCallAgentId,
+  );
 
   String placeId;
   int minutes;
   String job;
   String opening;
   String photo;
+  String agentId;
 
   Map<String, dynamic> toJson() => {
     'minutos': minutes,
     'job': job,
     'opening': opening,
     'foto': photo,
+    if (agentId != spanishCallAgentId) 'agentId': agentId,
   };
 }
 
