@@ -1,1 +1,18 @@
-{ "palabra": "pone", "frases": { "pone:1": "duda", "pone:2": "ninguna", "pone:3": "ninguna", "pone:4": "ninguna", "pone:5": "ninguna", "pone:6": "ninguna", "pone:7": "ninguna", "pone:8": "ninguna", "pone:9": "ninguna", "pone:10": "ninguna", "pone:11": "ninguna", "pone:12": "ninguna" } }
+{
+ "palabra": "pone",
+ "frases": {
+  "pone:1": "duda",
+  "pone:2": "duda",
+  "pone:3": "ninguna",
+  "pone:4": "ninguna",
+  "pone:5": "ninguna",
+  "pone:6": "ninguna",
+  "pone:7": "ninguna",
+  "pone:8": "ninguna",
+  "pone:9": "ninguna",
+  "pone:10": "ninguna",
+  "pone:11": "ninguna",
+  "pone:12": "ninguna",
+  "pone:13": "ninguna"
+ }
+}

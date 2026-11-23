@@ -1,4 +1,68 @@
 {
-  "lugares": {},
-  "cuentos": {}
+  "lugares": {
+    "colmado": [
+      "el-colmado",
+      "algo-mas",
+      "esto-y-eso",
+      "latas-y-botellas",
+      "siete-latas",
+      "diez-botellas",
+      "la-sopa-de-abuela",
+      "esta-bueno",
+      "una-libra",
+      "cuanto-es",
+      "caro-y-barato",
+      "el-cambio"
+    ]
+  },
+  "cuentos": {
+    "el-colmado": {
+      "t": "El colmado",
+      "min": 4
+    },
+    "algo-mas": {
+      "t": "¿Algo más?",
+      "min": 5
+    },
+    "esto-y-eso": {
+      "t": "Esto y eso",
+      "min": 3
+    },
+    "latas-y-botellas": {
+      "t": "Latas y botellas",
+      "min": 4
+    },
+    "siete-latas": {
+      "t": "Siete latas",
+      "min": 4
+    },
+    "diez-botellas": {
+      "t": "Diez botellas",
+      "min": 4
+    },
+    "la-sopa-de-abuela": {
+      "t": "La sopa de abuela",
+      "min": 6
+    },
+    "esta-bueno": {
+      "t": "¿Está bueno?",
+      "min": 5
+    },
+    "una-libra": {
+      "t": "Una libra",
+      "min": 6
+    },
+    "cuanto-es": {
+      "t": "¿Cuánto es?",
+      "min": 4
+    },
+    "caro-y-barato": {
+      "t": "Caro y barato",
+      "min": 4
+    },
+    "el-cambio": {
+      "t": "El cambio",
+      "min": 3
+    }
+  }
 }

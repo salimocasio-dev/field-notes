@@ -444,6 +444,22 @@ Future<void> _drain() {
   return c.future;
 }
 
+/// A trace's speech events as the old page writes them (page-drive.js): each speaking turn and each answer in the order
+/// they happened, by their virtual time `t`; at the same `t`, a turn before an answer, and each list in its own order (a
+/// stable sort).
+List<Map<String, dynamic>> speechInTimeOrder(
+  List<Map<String, dynamic>> turns,
+  List<Map<String, dynamic>> answers,
+) {
+  final all = [...turns, ...answers];
+  final order = List<int>.generate(all.length, (i) => i)
+    ..sort((a, b) {
+      final c = (all[a]['t'] as num).compareTo(all[b]['t'] as num);
+      return c != 0 ? c : a.compareTo(b);
+    });
+  return [for (final i in order) all[i]];
+}
+
 /// Plays [story] by [plan] (`right`, `wrong` or `alternate`) with every random draw from `Mulberry32(seed)`, and returns
 /// its trace: the same fields as `coqui/ref/trazas/<story>/<plan>.json`.
 ///
@@ -720,7 +736,7 @@ Map<String, dynamic> _finish({
     'minutes': rec.minutesGiven,
     'speech': {
       'turns': [for (final r in runner.HAB.log) Map<String, dynamic>.of(r)],
-      'events': [...driver.speechEvents, ...rec.answers],
+      'events': speechInTimeOrder(driver.speechEvents, rec.answers),
     },
     'memory': Map<String, dynamic>.of(mem),
     'errors': errors,

@@ -1,13 +1,16 @@
 // Makes the Dart fixtures the chrome tests read of the scenes' sheets: El frente's from docs/proyecto/pixel/frente-sheet.json,
 // El balcón's from docs/proyecto/pixel/balcon-sheet.json, La sala's from docs/proyecto/pixel/sala-sheet.json, El patio's
 // from docs/proyecto/pixel/patio-sheet.json, El camino's from docs/proyecto/pixel/camino-sheet.json, El campo's from
-// docs/proyecto/pixel/campo-sheet.json, El lago's from docs/proyecto/pixel/lago-sheet.json and El banco's from
-// docs/proyecto/pixel/banco-sheet.json.
+// docs/proyecto/pixel/campo-sheet.json, El lago's from docs/proyecto/pixel/lago-sheet.json, El banco's from
+// docs/proyecto/pixel/banco-sheet.json, La mesa's from docs/proyecto/pixel/mesa-sheet.json, La estufa's from
+// docs/proyecto/pixel/estufa-sheet.json, La nevera's from docs/proyecto/pixel/nevera-sheet.json and A comer's from
+// docs/proyecto/pixel/comer-sheet.json.
 //
 //   dart run tool/make_sheet_fixture.dart          (in this package) writes test/support/fixtures/frente_sheet.dart,
 //                                                  test/support/fixtures/balcon_sheet.dart, sala_sheet.dart,
 //                                                  patio_sheet.dart, camino_sheet.dart, campo_sheet.dart, lago_sheet.dart
-//                                                  and banco_sheet.dart
+//                                                  banco_sheet.dart, mesa_sheet.dart, estufa_sheet.dart, nevera_sheet.dart
+//                                                  and comer_sheet.dart
 //   dart run tool/make_sheet_fixture.dart --check  says whether those files are the ones the sheets give
 //
 // A test in a browser cannot read files, so each sheet goes into a Dart file as a raw string. The vm test reads the sheet
@@ -34,6 +37,16 @@ void main(List<String> args) {
     'campo': (constant: 'campoSheetJson', what: "El campo's sheet (order 34a)"),
     'lago': (constant: 'lagoSheetJson', what: "El lago's sheet (order 35a)"),
     'banco': (constant: 'bancoSheetJson', what: "El banco's sheet (order 36a)"),
+    'mesa': (constant: 'mesaSheetJson', what: "La mesa's sheet (order 37a)"),
+    'estufa': (
+      constant: 'estufaSheetJson',
+      what: "La estufa's sheet (order 38a)",
+    ),
+    'nevera': (
+      constant: 'neveraSheetJson',
+      what: "La nevera's sheet (order 39a)",
+    ),
+    'comer': (constant: 'comerSheetJson', what: "A comer's sheet (order 40a)"),
   };
   var stale = 0;
   for (final e in sheets.entries) {

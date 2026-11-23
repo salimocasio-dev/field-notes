@@ -4,9 +4,13 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 
 import 'fixtures/balcon_preview_fixture.dart';
 import 'fixtures/banco_preview_fixture.dart';
+import 'fixtures/mesa_preview_fixture.dart';
 import 'fixtures/camino_preview_fixture.dart';
 import 'fixtures/campo_preview_fixture.dart';
+import 'fixtures/estufa_preview_fixture.dart';
 import 'fixtures/lago_preview_fixture.dart';
+import 'fixtures/nevera_preview_fixture.dart';
+import 'fixtures/comer_preview_fixture.dart';
 import 'fixtures/patio_preview_fixture.dart';
 import 'fixtures/preview_fixture.dart';
 import 'fixtures/sala_preview_fixture.dart';
@@ -62,6 +66,18 @@ List<ReviewPair> lagoPairs() => _pairsOf('lago', lagoPreviewCases);
 /// from historia/cuentos/cual-banco.json).
 List<ReviewPair> bancoPairs() => _pairsOf('banco', bancoPreviewCases);
 
+/// The 12 review pairs of cual-estufa, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene estufa reads
+/// them from historia/cuentos/cual-estufa.json).
+List<ReviewPair> estufaPairs() => _pairsOf('estufa', estufaPreviewCases);
+
+/// The 12 review pairs of cual-nevera, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene nevera reads
+/// them from historia/cuentos/cual-nevera.json).
+List<ReviewPair> neveraPairs() => _pairsOf('nevera', neveraPreviewCases);
+
+/// The 12 review pairs of cual-comer, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene comer reads them
+/// from historia/cuentos/cual-comer.json).
+List<ReviewPair> comerPairs() => _pairsOf('comer', comerPreviewCases);
+
 List<ReviewPair> _pairsOf(
   String scene,
   String json, {
@@ -108,3 +124,7 @@ List<LevelItem> frenteLevelItems() => [
   for (final q in jsonDecode(frenteLevelJson) as List)
     LevelItem.fromJson(q as Map<String, dynamic>),
 ];
+
+/// The 12 review pairs of cual-mesa, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene mesa reads them
+/// from historia/cuentos/cual-mesa.json).
+List<ReviewPair> mesaPairs() => _pairsOf('mesa', mesaPreviewCases);

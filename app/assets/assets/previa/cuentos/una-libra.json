@@ -1,0 +1,610 @@
+{
+ "id": "una-libra",
+ "title": "Una libra",
+ "place": "El colmado",
+ "scene": "frutas",
+ "next": "cuanto-es",
+ "goal": "Get a pound of fresh tomatoes and a pound of fresh onions for abuela's soup: a wrong move feeds half a crate to the goat.",
+ "stake": {
+  "thing": "frescos",
+  "steps": 2
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "libra",
+  "medio",
+  "fresco"
+ ],
+ "formas_foco": {
+  "medio": [
+   "media"
+  ],
+  "fresco": [
+   "frescos",
+   "frescas"
+  ]
+ },
+ "back_again": [
+  "tomate",
+  "cebolla",
+  "limón",
+  "malo",
+  "necesito",
+  "para",
+  "buenos días",
+  "compra",
+  "gracias",
+  "tengo hambre"
+ ],
+ "also_heard": [
+  "sopa",
+  "cabra",
+  "ojo con",
+  "voy a hacer"
+ ],
+ "names": {
+  "coqui": "yo_coqui",
+  "abuela": "abuela"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "c44_pepe_frescos": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Buenos días! ¡Mira! ¡Tomates frescos! ¡Cebollas frescas!"
+  },
+  "c44_tomates_malos": {
+   "who": "narr",
+   "text": "Y estos tomates están malos."
+  },
+  "c44_donde_tomates_frescos": {
+   "who": "narr",
+   "text": "¿Dónde están los tomates frescos?"
+  },
+  "c44_ab_tiene_limones_frescos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Tiene limones frescos?"
+  },
+  "c44_pepe_toma": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Sí. Toma, Coquí. Un limón fresco."
+  },
+  "c41_cq_gracias_pepe": {
+   "who": "tu",
+   "text": "¡Gracias, don Pepe!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias"
+     ]
+    }
+   ]
+  },
+  "c44_ab_media_libra": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Media libra, por favor."
+  },
+  "c44_pepe_media_limones": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Media libra de limones."
+  },
+  "c44_pepe_una_libra": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Y esto es una libra."
+  },
+  "c44_ab_compra_media_limones": {
+   "who": "narr",
+   "text": "Abuela compra media libra de limones."
+  },
+  "c44_ab_necesito": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Necesito una libra de tomates y una libra de cebollas. Para la sopa."
+  },
+  "c44_pepe_ojo": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Coquí, ¡ojo con la cabra!"
+  },
+  "c43_ab_fo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Fo!"
+  },
+  "c44_ab_vamos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Vamos, Coquí! Voy a hacer la sopa."
+  },
+  "c26_cq_hambre": {
+   "who": "tu",
+   "text": "¡Tengo hambre!",
+   "tu_turno": [
+    {
+     "palabra": "tengo hambre",
+     "formas": [
+      "tengo hambre"
+     ]
+    }
+   ]
+  },
+  "c44_ab_tomates_fresco": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Los tomates frescos son para la sopa."
+  },
+  "c44_no_tomates_fresco": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Estos tomates están frescos."
+  },
+  "c44_ab_tomates_malo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Los tomates malos son para la cabra."
+  },
+  "c44_no_tomates_malo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Estos tomates están malos."
+  },
+  "c44_libra_tomates_una": {
+   "who": "narr",
+   "text": "Una libra de tomates."
+  },
+  "c44_libra_tomates_media": {
+   "who": "narr",
+   "text": "Media libra de tomates."
+  },
+  "c44_ab_cebollas_fresco": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Las cebollas frescas son para la sopa."
+  },
+  "c44_no_cebollas_fresco": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Estas cebollas están frescas."
+  },
+  "c44_ab_cebollas_malo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Las cebollas malas son para la cabra."
+  },
+  "c44_no_cebollas_malo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Estas cebollas están malas."
+  },
+  "c44_libra_cebollas_una": {
+   "who": "narr",
+   "text": "Una libra de cebollas."
+  },
+  "c44_libra_cebollas_media": {
+   "who": "narr",
+   "text": "Media libra de cebollas."
+  },
+  "c44_fin_una_una": {
+   "who": "narr",
+   "text": "Abuela compra una libra de tomates y una libra de cebollas."
+  },
+  "c44_fin_una_media": {
+   "who": "narr",
+   "text": "Abuela compra una libra de tomates y media libra de cebollas."
+  },
+  "c44_fin_media_una": {
+   "who": "narr",
+   "text": "Abuela compra media libra de tomates y una libra de cebollas."
+  },
+  "c44_fin_media_media": {
+   "who": "narr",
+   "text": "Abuela compra media libra de tomates y media libra de cebollas."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "camion": 1
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "cajones",
+   "k": "tomates",
+   "lado": "a"
+  },
+  {
+   "set": {
+    "twinkle": "cajon_a"
+   }
+  },
+  "c44_pepe_frescos",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "ayer44",
+   "k": "tomates"
+  },
+  "c44_tomates_malos",
+  {
+   "ask": "cajon_a",
+   "lead": [],
+   "line": "c44_donde_tomates_frescos",
+   "then": [],
+   "after": []
+  },
+  {
+   "dots": 2
+  },
+  "c44_ab_tiene_limones_frescos",
+  {
+   "act": "limon44"
+  },
+  "c44_pepe_toma",
+  "c41_cq_gracias_pepe",
+  {
+   "dots": 3
+  },
+  "c44_ab_media_libra",
+  {
+   "act": "pesa",
+   "k": "limones",
+   "n": 0.5
+  },
+  {
+   "act": "marca44",
+   "que": "medio"
+  },
+  "c44_pepe_media_limones",
+  {
+   "act": "marca44",
+   "que": "libra"
+  },
+  "c44_pepe_una_libra",
+  "c44_ab_compra_media_limones",
+  {
+   "dots": 4
+  },
+  {
+   "act": "abuela",
+   "que": "lista"
+  },
+  "c44_ab_necesito",
+  {
+   "dots": 5
+  },
+  {
+   "act": "sale",
+   "quien": "pepe",
+   "a": "camion"
+  },
+  "c44_pepe_ojo",
+  {
+   "act": "abuela",
+   "que": "monedero"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "la",
+   "options": [
+    "a",
+    "b"
+   ],
+   "other": "oa"
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "fresco",
+    "malo"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "wa=fresco",
+   "then": "cajon_$la",
+   "else": "cajon_$oa"
+  },
+  {
+   "act": "cajones",
+   "k": "tomates",
+   "lado": "$la"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cajon_a",
+    "cajon_b"
+   ],
+   "pick": "$pa",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "c44_ab_tomates_$wa",
+   "right": [
+    {
+     "if": "wa=malo",
+     "then": [
+      {
+       "act": "empuja44",
+       "cual": "$pa"
+      },
+      {
+       "act": "cabra",
+       "que": "caja"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "pesa",
+       "k": "tomates",
+       "n": 1
+      },
+      "c44_libra_tomates_una",
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "act": "pesa",
+       "k": "tomates",
+       "n": 0.5
+      },
+      "c44_libra_tomates_media"
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "wa=fresco",
+     "then": [
+      {
+       "act": "vuelca44",
+       "k": "tomates"
+      },
+      {
+       "act": "cabra",
+       "que": "come"
+      },
+      "c43_ab_fo"
+     ],
+     "else": [
+      {
+       "act": "empuja44",
+       "cual": "$x"
+      },
+      {
+       "act": "cabra",
+       "que": "caja"
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c44_no_tomates_$wa"
+   ]
+  },
+  {
+   "calc": "ua",
+   "cond": "ok",
+   "then": "una",
+   "else": "media"
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "lb",
+   "options": [
+    "a",
+    "b"
+   ],
+   "other": "ob"
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "fresco",
+    "malo"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "wb=fresco",
+   "then": "cajon_$lb",
+   "else": "cajon_$ob"
+  },
+  {
+   "act": "cajones",
+   "k": "cebollas",
+   "lado": "$lb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cajon_a",
+    "cajon_b"
+   ],
+   "pick": "$pb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c44_ab_cebollas_$wb",
+   "right": [
+    {
+     "if": "wb=malo",
+     "then": [
+      {
+       "act": "empuja44",
+       "cual": "$pb"
+      },
+      {
+       "act": "cabra",
+       "que": "caja"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "pesa",
+       "k": "cebollas",
+       "n": 1
+      },
+      "c44_libra_cebollas_una",
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "act": "pesa",
+       "k": "cebollas",
+       "n": 0.5
+      },
+      "c44_libra_cebollas_media"
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "wb=fresco",
+     "then": [
+      {
+       "act": "vuelca44",
+       "k": "cebollas"
+      },
+      {
+       "act": "cabra",
+       "que": "come"
+      },
+      "c43_ab_fo"
+     ],
+     "else": [
+      {
+       "act": "empuja44",
+       "cual": "$x"
+      },
+      {
+       "act": "cabra",
+       "que": "caja"
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c44_no_cebollas_$wb"
+   ]
+  },
+  {
+   "calc": "ub",
+   "cond": "ok",
+   "then": "una",
+   "else": "media"
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "vuelve",
+   "quien": "pepe",
+   "a": "camion"
+  },
+  {
+   "act": "bolsas44"
+  },
+  "c44_fin_$ua_$ub",
+  {
+   "dots": 9
+  },
+  "c44_ab_vamos",
+  "c26_cq_hambre",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c44_pepe_frescos",
+  "c44_tomates_malos",
+  "c44_donde_tomates_frescos",
+  "c44_ab_tiene_limones_frescos",
+  "c44_pepe_toma",
+  "c41_cq_gracias_pepe",
+  "c44_ab_media_libra",
+  "c44_pepe_media_limones",
+  "c44_pepe_una_libra",
+  "c44_ab_compra_media_limones",
+  "c44_ab_necesito",
+  "c44_pepe_ojo",
+  "c44_ab_tomates_fresco",
+  "c44_libra_tomates_una",
+  "c44_ab_cebollas_malo",
+  "c44_libra_cebollas_una",
+  "c44_fin_una_una",
+  "c44_ab_vamos",
+  "c26_cq_hambre"
+ ]
+}

@@ -1,0 +1,580 @@
+{
+ "id": "palabras-solas",
+ "title": "Palabras",
+ "tipo": "palabras",
+ "note": "Each tracked word alone, for the word tiles of Repaso (docs/proyecto/15-repaso-juegos.md). Made by coqui/tool/make_palabras_solas.py; not a story.",
+ "clips": {
+  "w_casa": {
+   "who": "narr",
+   "text": "Casa."
+  },
+  "w_puerta": {
+   "who": "narr",
+   "text": "Puerta."
+  },
+  "w_ventana": {
+   "who": "narr",
+   "text": "Ventana."
+  },
+  "w_abuela": {
+   "who": "narr",
+   "text": "Abuela."
+  },
+  "w_toca": {
+   "who": "narr",
+   "text": "Toca."
+  },
+  "w_abre": {
+   "who": "narr",
+   "text": "Abre."
+  },
+  "w_cierra": {
+   "who": "narr",
+   "text": "Cierra."
+  },
+  "w_grande": {
+   "who": "narr",
+   "text": "Grande."
+  },
+  "w_pequena": {
+   "who": "narr",
+   "text": "Pequeña."
+  },
+  "w_adios": {
+   "who": "narr",
+   "text": "Adiós."
+  },
+  "w_silla": {
+   "who": "narr",
+   "text": "Silla."
+  },
+  "w_se_sienta": {
+   "who": "narr",
+   "text": "Se sienta."
+  },
+  "w_vaso": {
+   "who": "narr",
+   "text": "Vaso."
+  },
+  "w_agua": {
+   "who": "narr",
+   "text": "Agua."
+  },
+  "w_toma": {
+   "who": "narr",
+   "text": "Toma."
+  },
+  "w_quiero": {
+   "who": "narr",
+   "text": "Quiero."
+  },
+  "w_mama": {
+   "who": "narr",
+   "text": "Mamá."
+  },
+  "w_papa": {
+   "who": "narr",
+   "text": "Papá."
+  },
+  "w_abuelo": {
+   "who": "narr",
+   "text": "Abuelo."
+  },
+  "w_bebe_a": {
+   "who": "narr",
+   "text": "Bebé."
+  },
+  "w_hermano": {
+   "who": "narr",
+   "text": "Hermano."
+  },
+  "w_hermana": {
+   "who": "narr",
+   "text": "Hermana."
+  },
+  "w_el": {
+   "who": "narr",
+   "text": "Él."
+  },
+  "w_ella": {
+   "who": "narr",
+   "text": "Ella."
+  },
+  "w_yo": {
+   "who": "narr",
+   "text": "Yo."
+  },
+  "w_tu_a": {
+   "who": "narr",
+   "text": "Tú."
+  },
+  "w_soy": {
+   "who": "narr",
+   "text": "Soy."
+  },
+  "w_eres": {
+   "who": "narr",
+   "text": "Eres."
+  },
+  "w_me_llamo": {
+   "who": "narr",
+   "text": "Me llamo."
+  },
+  "w_nino": {
+   "who": "narr",
+   "text": "Niño."
+  },
+  "w_nina": {
+   "who": "narr",
+   "text": "Niña."
+  },
+  "w_juega": {
+   "who": "narr",
+   "text": "Juega."
+  },
+  "w_flor": {
+   "who": "narr",
+   "text": "Flor."
+  },
+  "w_sol": {
+   "who": "narr",
+   "text": "Sol."
+  },
+  "w_aqui": {
+   "who": "narr",
+   "text": "Aquí."
+  },
+  "w_alla": {
+   "who": "narr",
+   "text": "Allá."
+  },
+  "w_tiene": {
+   "who": "narr",
+   "text": "Tiene."
+  },
+  "w_para": {
+   "who": "narr",
+   "text": "Para."
+  },
+  "w_ahora": {
+   "who": "narr",
+   "text": "Ahora."
+  },
+  "w_tambien": {
+   "who": "narr",
+   "text": "También."
+  },
+  "w_amigo": {
+   "who": "narr",
+   "text": "Amigo."
+  },
+  "w_mira": {
+   "who": "narr",
+   "text": "Mira."
+  },
+  "w_ven": {
+   "who": "narr",
+   "text": "Ven."
+  },
+  "w_pajaro": {
+   "who": "narr",
+   "text": "Pájaro."
+  },
+  "w_bizcocho": {
+   "who": "narr",
+   "text": "Bizcocho."
+  },
+  "w_parque": {
+   "who": "narr",
+   "text": "Parque."
+  },
+  "w_perro": {
+   "who": "narr",
+   "text": "Perro."
+  },
+  "w_camina": {
+   "who": "narr",
+   "text": "Camina."
+  },
+  "w_corre": {
+   "who": "narr",
+   "text": "Corre."
+  },
+  "w_espera": {
+   "who": "narr",
+   "text": "Espera."
+  },
+  "w_uno": {
+   "who": "narr",
+   "text": "Uno."
+  },
+  "w_dos": {
+   "who": "narr",
+   "text": "Dos."
+  },
+  "w_tres": {
+   "who": "narr",
+   "text": "Tres."
+  },
+  "w_gato": {
+   "who": "narr",
+   "text": "Gato."
+  },
+  "w_arbol": {
+   "who": "narr",
+   "text": "Árbol."
+  },
+  "w_hay": {
+   "who": "narr",
+   "text": "Hay."
+  },
+  "w_donde_esta": {
+   "who": "narr",
+   "text": "¿Dónde está?"
+  },
+  "w_esta_a": {
+   "who": "narr",
+   "text": "Está."
+  },
+  "w_con": {
+   "who": "narr",
+   "text": "Con."
+  },
+  "w_rapido": {
+   "who": "narr",
+   "text": "Rápido."
+  },
+  "w_despacio": {
+   "who": "narr",
+   "text": "Despacio."
+  },
+  "w_bola": {
+   "who": "narr",
+   "text": "Bola."
+  },
+  "w_tira": {
+   "who": "narr",
+   "text": "Tira."
+  },
+  "w_coge": {
+   "who": "narr",
+   "text": "Coge."
+  },
+  "w_dame": {
+   "who": "narr",
+   "text": "Dame."
+  },
+  "w_quien": {
+   "who": "narr",
+   "text": "¿Quién?"
+  },
+  "w_arriba": {
+   "who": "narr",
+   "text": "Arriba."
+  },
+  "w_abajo": {
+   "who": "narr",
+   "text": "Abajo."
+  },
+  "w_salta": {
+   "who": "narr",
+   "text": "Salta."
+  },
+  "w_mi": {
+   "who": "narr",
+   "text": "Mi."
+  },
+  "w_tu": {
+   "who": "narr",
+   "text": "Tu."
+  },
+  "w_mas": {
+   "who": "narr",
+   "text": "Más."
+  },
+  "w_otra_vez": {
+   "who": "narr",
+   "text": "Otra vez."
+  },
+  "w_quiere": {
+   "who": "narr",
+   "text": "Quiere."
+  },
+  "w_pato": {
+   "who": "narr",
+   "text": "Pato."
+  },
+  "w_pez": {
+   "who": "narr",
+   "text": "Pez."
+  },
+  "w_nada": {
+   "who": "narr",
+   "text": "Nada."
+  },
+  "w_vuela": {
+   "who": "narr",
+   "text": "Vuela."
+  },
+  "w_rojo": {
+   "who": "narr",
+   "text": "Rojo."
+  },
+  "w_azul": {
+   "who": "narr",
+   "text": "Azul."
+  },
+  "w_verde": {
+   "who": "narr",
+   "text": "Verde."
+  },
+  "w_de_que_color": {
+   "who": "narr",
+   "text": "¿De qué color?"
+  },
+  "w_amarillo": {
+   "who": "narr",
+   "text": "Amarillo."
+  },
+  "w_blanco": {
+   "who": "narr",
+   "text": "Blanco."
+  },
+  "w_negro": {
+   "who": "narr",
+   "text": "Negro."
+  },
+  "w_hombre": {
+   "who": "narr",
+   "text": "Hombre."
+  },
+  "w_mujer": {
+   "who": "narr",
+   "text": "Mujer."
+  },
+  "w_come": {
+   "who": "narr",
+   "text": "Come."
+  },
+  "w_bebe": {
+   "who": "narr",
+   "text": "Bebe."
+  },
+  "w_viejo": {
+   "who": "narr",
+   "text": "Viejo."
+  },
+  "w_cansado": {
+   "who": "narr",
+   "text": "Cansado."
+  },
+  "w_contento": {
+   "who": "narr",
+   "text": "Contento."
+  },
+  "w_triste": {
+   "who": "narr",
+   "text": "Triste."
+  },
+  "w_duerme": {
+   "who": "narr",
+   "text": "Duerme."
+  },
+  "w_mesa": {
+   "who": "narr",
+   "text": "Mesa."
+  },
+  "w_plato": {
+   "who": "narr",
+   "text": "Plato."
+  },
+  "w_taza": {
+   "who": "narr",
+   "text": "Taza."
+  },
+  "w_pone": {
+   "who": "narr",
+   "text": "Pone."
+  },
+  "w_cuchara": {
+   "who": "narr",
+   "text": "Cuchara."
+  },
+  "w_tenedor": {
+   "who": "narr",
+   "text": "Tenedor."
+  },
+  "w_cuchillo": {
+   "who": "narr",
+   "text": "Cuchillo."
+  },
+  "w_comida": {
+   "who": "narr",
+   "text": "Comida."
+  },
+  "w_pan": {
+   "who": "narr",
+   "text": "Pan."
+  },
+  "w_listo": {
+   "who": "narr",
+   "text": "Listo."
+  },
+  "w_cocina": {
+   "who": "narr",
+   "text": "Cocina."
+  },
+  "w_y_tu": {
+   "who": "narr",
+   "text": "¿Y tú?"
+  },
+  "w_entra": {
+   "who": "narr",
+   "text": "Entra."
+  },
+  "w_olla": {
+   "who": "narr",
+   "text": "Olla."
+  },
+  "w_hace": {
+   "who": "narr",
+   "text": "Hace."
+  },
+  "w_otra": {
+   "who": "narr",
+   "text": "Otra."
+  },
+  "w_pollo": {
+   "who": "narr",
+   "text": "Pollo."
+  },
+  "w_huevo": {
+   "who": "narr",
+   "text": "Huevo."
+  },
+  "w_sal": {
+   "who": "narr",
+   "text": "Sal."
+  },
+  "w_huele": {
+   "who": "narr",
+   "text": "Huele."
+  },
+  "w_caliente": {
+   "who": "narr",
+   "text": "Caliente."
+  },
+  "w_frio": {
+   "who": "narr",
+   "text": "Frío."
+  },
+  "w_cuidado": {
+   "who": "narr",
+   "text": "Cuidado."
+  },
+  "w_ya": {
+   "who": "narr",
+   "text": "Ya."
+  },
+  "w_chocolate": {
+   "who": "narr",
+   "text": "Chocolate."
+  },
+  "w_leche": {
+   "who": "narr",
+   "text": "Leche."
+  },
+  "w_queso": {
+   "who": "narr",
+   "text": "Queso."
+  },
+  "w_no_hay": {
+   "who": "narr",
+   "text": "No hay."
+  },
+  "w_busca": {
+   "who": "narr",
+   "text": "Busca."
+  },
+  "w_piragua": {
+   "who": "narr",
+   "text": "Piragua."
+  },
+  "w_fruta": {
+   "who": "narr",
+   "text": "Fruta."
+  },
+  "w_guineo": {
+   "who": "narr",
+   "text": "Guineo."
+  },
+  "w_manzana": {
+   "who": "narr",
+   "text": "Manzana."
+  },
+  "w_este": {
+   "who": "narr",
+   "text": "Este."
+  },
+  "w_esta": {
+   "who": "narr",
+   "text": "Esta."
+  },
+  "w_china": {
+   "who": "narr",
+   "text": "China."
+  },
+  "w_mantequilla": {
+   "who": "narr",
+   "text": "Mantequilla."
+  },
+  "w_lleno": {
+   "who": "narr",
+   "text": "Lleno."
+  },
+  "w_vacio": {
+   "who": "narr",
+   "text": "Vacío."
+  },
+  "w_quieres": {
+   "who": "narr",
+   "text": "Quieres."
+  },
+  "w_que_quieres": {
+   "who": "narr",
+   "text": "¿Qué quieres?"
+  },
+  "w_me_gusta": {
+   "who": "narr",
+   "text": "Me gusta."
+  },
+  "w_no_me_gusta": {
+   "who": "narr",
+   "text": "No me gusta."
+  },
+  "w_rico": {
+   "who": "narr",
+   "text": "Rico."
+  },
+  "w_todo": {
+   "who": "narr",
+   "text": "Todo."
+  },
+  "w_cafe": {
+   "who": "narr",
+   "text": "Café."
+  },
+  "w_azucar": {
+   "who": "narr",
+   "text": "Azúcar."
+  },
+  "w_un_poco": {
+   "who": "narr",
+   "text": "Un poco."
+  },
+  "w_mucho": {
+   "who": "narr",
+   "text": "Mucho."
+  }
+ }
+}

@@ -1,13 +1,13 @@
 # ref/trazas: every story played by machine on the old page
 
-Each of the 51 files the story page plays (stories, picture stories, routines), played on the OLD `historia/index.html` by rule, with
+Each of the 57 files the story page plays (stories, picture stories, routines), played on the OLD `historia/index.html` by rule, with
 three plans each, every source of chance and time pinned. The Dart player of order 15 (`tool/juega.dart`) must give the same traces
 (order 40). The same runs also read each scene's sprite cache for `ref/sprites/escenas/` (see `../escenas_sprites/README.md`).
 
 ## Run
 
 ```
-node coqui/tool/ref/trazas/juega.mjs                    # all 51 x 3; replaces coqui/ref/trazas/ and coqui/ref/sprites/escenas/
+node coqui/tool/ref/trazas/juega.mjs                    # all 57 x 3; replaces coqui/ref/trazas/ and coqui/ref/sprites/escenas/
 node coqui/tool/ref/trazas/juega.mjs --only la-lluvia   # one file, three plans, into a temp folder (prints where); the repo is not touched
 node coqui/tool/ref/trazas/juega.mjs --out DIR          # all of it into DIR (DIR/_sprites for the sprites) instead of the repo
 node coqui/tool/ref/trazas/juega.mjs --replace la-lluvia   # after that story's file changed: its three plan files and its entries of runs.json, in place in the repo
@@ -19,14 +19,14 @@ one line at the start (`kind: "start"`, right after `fresh()`) and one after eve
 (functions left out, canvases as `"[canvas WxH]"`, a repeated object as `"[seen]"`). That is for order 06 (the boxes in every state); about 14 MB, never
 written into the repo, and the traces come out byte-identical with it on (checked). `--root DIR`: a site folder holding `historia/` (only to test the tool on a scratch story).
 Needs Node 22 and the pre-installed Node Playwright with its Chromium (`chromium.launch()`, no options). It starts its own static server of
-the worktree on 127.0.0.1 (a free port); nothing goes to the network. About a minute for all 153 runs. A second run gives byte-identical files.
+the worktree on 127.0.0.1 (a free port); nothing goes to the network. About a minute for all 171 runs. A second run gives byte-identical files.
 
 ## Which files
 
-`curso.js` is read as it is (in a node `vm`): its places' `cuentos` (32 stories), `dibujos` (11 picture stories) and `haz` (8 routines) = 51.
-`historia/cuentos/` holds 62 files: those 51 and the 11 review sets of `CURSO.cual` (`cual-frente` ... `cual-nevera`), which the story page does not play.
+`curso.js` is read as it is (in a node `vm`): its places' `cuentos` (35 stories), `dibujos` (11 picture stories) and `haz` (11 routines) = 57.
+`historia/cuentos/` holds 70 files: those 57, the 12 review sets of `CURSO.cual` (`cual-frente` ... `cual-comer`), which the story page does not play, and the word list `palabras-solas`.
 None is missing from the folder and none is in no list (checked on every run; `runs.json` `course`). Note: `cual.json` is a story (El parque), not a review set.
-Since these runs were recorded the folder has one more file, `palabras-solas` (a word list, `tipo` `palabras`, in no list by design: it is not a story and not a review set), so it now holds 63; `runs.json` `course` still says `folderFiles` 62 and `inFolderInNoList` `[]` as they were at the recording, and the next full run will say 63 and `["palabras-solas"]`.
+`palabras-solas` (a word list, `tipo` `palabras`) is in no list by design: it is not a story and not a review set (`runs.json` `course`: `folderFiles` 70, `inFolderInNoList` `["palabras-solas"]`). A comer's three stories and La cocina's three routines were added on Nov 21 (order 06 for comer); the 153 earlier runs came out byte for byte the same.
 
 ## What is injected, and why
 

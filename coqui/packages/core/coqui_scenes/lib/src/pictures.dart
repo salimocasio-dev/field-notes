@@ -53,8 +53,9 @@ Object? _copy(Object? v) => v is Map
 /// The name a review picture has in [sheet]: [n] (`<word>.<side>`) as it is, or, when the sheet has no picture of that
 /// name, with its accents folded (`mamá.si` is `mama.si`): La sala's sheet names its pictures so, as sala-preview.html's
 /// `PV.pair` finds a pair's pictures (order 31b). El patio's sheet folds `ñ` too and writes a space as `_`
-/// (`hasta mañana.si` is `hasta_manana.si`), as patio-preview.html's `PV.pair` does (order 32b). [n] as it is when the
-/// sheet has neither.
+/// (`hasta mañana.si` is `hasta_manana.si`), as patio-preview.html's `PV.pair` does (order 32b). A comer's leaves out the
+/// question marks too (`¿qué quieres?.si` is `que_quieres.si`), as comer-preview.html's `PV.pair` does (order 40b). [n] as
+/// it is when the sheet has neither.
 String sheetPictureName(Sheet sheet, String n) {
   if (sheet.pictures.containsKey(n)) return n;
   const from = 'áéíóúñ', to = 'aeioun';
@@ -66,7 +67,9 @@ String sheetPictureName(Sheet sheet, String n) {
       })
       .join()
       .replaceAll(' ', '_');
-  return sheet.pictures.containsKey(folded) ? folded : n;
+  if (sheet.pictures.containsKey(folded)) return folded;
+  final bare = folded.replaceAll(RegExp('[¿?]'), '');
+  return sheet.pictures.containsKey(bare) ? bare : n;
 }
 
 String _canon(Object? v) {
@@ -264,8 +267,8 @@ class ScenePictures implements PictureSource {
     int? height,
   ) async {
     final id = ref.scene;
-    // an id the registry does not hold is a scene only when the bundle holds its old pictures (a test's own scene, which
-    // is never converted: order 36b)
+    // an id the registry does not hold is a scene only when the bundle holds its old pictures: a test's own scene, which
+    // is never converted (order 36b), or a scene the content names before its port (A comer, order 06)
     if (!sceneRegistry.containsKey(id)) {
       try {
         await _old.indexOf(id);

@@ -107,7 +107,7 @@
     "bebe": null,
     "perro": null
    },
-   "drawnFrom": "la-cuchara/right@start",
+   "drawnFrom": "h-mesa/right@start",
    "cam": [
     22,
     0,
@@ -118,6 +118,9 @@
    "distinctW": 11,
    "reachedBy": {
     "steps": {
+     "h-mesa/right": "start",
+     "h-mesa/wrong": "start",
+     "h-mesa/alternate": "start",
      "la-cuchara/right": "start",
      "la-cuchara/wrong": "start",
      "la-cuchara/alternate": "start",
@@ -149,6 +152,801 @@
     "full.wide": "s001.full.wide.png",
     "nochar": "s001.nochar.png",
     "nochar.wide": "s001.nochar.wide.png",
+    "bg": "bg.cocina.png"
+   },
+   "background": [
+    "cocina"
+   ],
+   "keys": {
+    "afuera": 0,
+    "bandeja": [],
+    "encima": null,
+    "estufa": {
+     "bizcocho": 1,
+     "jarra": 1,
+     "pastel": 1
+    },
+    "mantel": 1,
+    "mostrador": {
+     "platos": 6,
+     "tazas": 6
+    },
+    "puestos": [
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     }
+    ],
+    "reb": 3,
+    "sitio": {},
+    "suelo": [],
+    "vierte": null
+   },
+   "things": {
+    "platos": [
+     24,
+     95,
+     24,
+     22
+    ],
+    "tazas": [
+     42,
+     94,
+     24,
+     22
+    ],
+    "bandeja": null,
+    "comidas": null,
+    "vasos": null,
+    "olla": null,
+    "mesa": [
+     88,
+     130,
+     104,
+     38
+    ],
+    "estufa": [
+     190,
+     100,
+     28,
+     46
+    ],
+    "cocina": [
+     22,
+     24,
+     196,
+     190
+    ]
+   },
+   "characters": {
+    "coqui": [
+     36,
+     173,
+     32,
+     27
+    ],
+    "luis": [
+     64,
+     116,
+     22,
+     44
+    ],
+    "carmen": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     194,
+     119,
+     22,
+     51
+    ],
+    "muestra": null,
+    "ofrece": null,
+    "bebe": null,
+    "perro": null
+   },
+   "drawnFrom": "h-mesa/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "h-mesa/right": "0",
+     "h-mesa/wrong": "0",
+     "h-mesa/alternate": "0",
+     "la-mesa/right": "0-11",
+     "la-mesa/wrong": "0-11",
+     "la-mesa/alternate": "0-11"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "bg.cocina.png"
+   },
+   "background": [
+    "cocina"
+   ],
+   "keys": {
+    "afuera": 0,
+    "bandeja": [],
+    "encima": null,
+    "estufa": {
+     "bizcocho": 1,
+     "jarra": 1,
+     "pastel": 1
+    },
+    "mantel": 1,
+    "mostrador": {
+     "platos": 6,
+     "tazas": 6
+    },
+    "puestos": [
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     }
+    ],
+    "reb": 3,
+    "sitio": {
+     "abuelo": 0,
+     "papa": 1,
+     "mama": 3
+    },
+    "suelo": [],
+    "vierte": null
+   },
+   "things": {
+    "platos": [
+     24,
+     95,
+     24,
+     22
+    ],
+    "tazas": [
+     42,
+     94,
+     24,
+     22
+    ],
+    "bandeja": null,
+    "comidas": null,
+    "vasos": null,
+    "olla": null,
+    "mesa": [
+     88,
+     130,
+     104,
+     38
+    ],
+    "estufa": [
+     190,
+     100,
+     28,
+     46
+    ],
+    "cocina": [
+     22,
+     24,
+     196,
+     190
+    ]
+   },
+   "characters": {
+    "coqui": [
+     36,
+     173,
+     32,
+     27
+    ],
+    "luis": [
+     64,
+     116,
+     22,
+     44
+    ],
+    "carmen": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     194,
+     119,
+     22,
+     51
+    ],
+    "muestra": null,
+    "ofrece": null,
+    "bebe": null,
+    "perro": null
+   },
+   "drawnFrom": "h-mesa/right@1",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 22,
+   "reachedBy": {
+    "steps": {
+     "h-mesa/right": "1-16",
+     "h-mesa/wrong": "1-16",
+     "h-mesa/alternate": "1-16",
+     "la-mesa/right": "14-18",
+     "la-mesa/wrong": "14-18",
+     "la-mesa/alternate": "14-18"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "bg": "bg.cocina.png"
+   },
+   "background": [
+    "cocina"
+   ],
+   "keys": {
+    "afuera": 0,
+    "bandeja": [],
+    "encima": null,
+    "estufa": {
+     "bizcocho": 1,
+     "jarra": 1,
+     "pastel": 1
+    },
+    "mantel": 1,
+    "mostrador": {
+     "platos": 5,
+     "tazas": 6
+    },
+    "puestos": [
+     {
+      "plato": {
+       "n": 1,
+       "con": null
+      },
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     }
+    ],
+    "reb": 3,
+    "sitio": {
+     "abuelo": 0,
+     "papa": 1,
+     "mama": 3
+    },
+    "suelo": [],
+    "vierte": null
+   },
+   "things": {
+    "platos": [
+     24,
+     95,
+     24,
+     22
+    ],
+    "tazas": [
+     42,
+     94,
+     24,
+     22
+    ],
+    "bandeja": null,
+    "comidas": null,
+    "vasos": null,
+    "olla": null,
+    "mesa": [
+     88,
+     130,
+     104,
+     38
+    ],
+    "estufa": [
+     190,
+     100,
+     28,
+     46
+    ],
+    "cocina": [
+     22,
+     24,
+     196,
+     190
+    ]
+   },
+   "characters": {
+    "coqui": [
+     74,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     64,
+     116,
+     22,
+     44
+    ],
+    "carmen": null,
+    "abuelo": [
+     93,
+     101,
+     22,
+     50
+    ],
+    "mama": [
+     165,
+     101,
+     22,
+     50
+    ],
+    "papa": [
+     117,
+     101,
+     22,
+     50
+    ],
+    "abuela": [
+     37,
+     117,
+     22,
+     51
+    ],
+    "muestra": null,
+    "ofrece": null,
+    "bebe": [
+     179,
+     112,
+     18,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "h-mesa/right@18",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 81,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "h-mesa/right": "17-19",
+     "h-mesa/wrong": "17-19",
+     "h-mesa/alternate": "17-19"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "bg": "bg.cocina.png"
+   },
+   "background": [
+    "cocina"
+   ],
+   "keys": {
+    "afuera": 0,
+    "bandeja": [],
+    "encima": null,
+    "estufa": {
+     "bizcocho": 1,
+     "jarra": 1,
+     "pastel": 1
+    },
+    "mantel": 1,
+    "mostrador": {
+     "platos": 5,
+     "tazas": 5
+    },
+    "puestos": [
+     {
+      "plato": {
+       "n": 1,
+       "con": null
+      },
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": {
+       "n": 1,
+       "con": null
+      },
+      "uts": [],
+      "frente": []
+     }
+    ],
+    "reb": 3,
+    "sitio": {
+     "abuelo": 0,
+     "papa": 1,
+     "mama": 3
+    },
+    "suelo": [],
+    "vierte": null
+   },
+   "things": {
+    "platos": [
+     24,
+     95,
+     24,
+     22
+    ],
+    "tazas": [
+     42,
+     94,
+     24,
+     22
+    ],
+    "bandeja": null,
+    "comidas": null,
+    "vasos": null,
+    "olla": null,
+    "mesa": [
+     88,
+     130,
+     104,
+     38
+    ],
+    "estufa": [
+     190,
+     100,
+     28,
+     46
+    ],
+    "cocina": [
+     22,
+     24,
+     196,
+     190
+    ]
+   },
+   "characters": {
+    "coqui": [
+     146,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     64,
+     116,
+     22,
+     44
+    ],
+    "carmen": null,
+    "abuelo": [
+     93,
+     101,
+     22,
+     50
+    ],
+    "mama": [
+     165,
+     101,
+     22,
+     50
+    ],
+    "papa": [
+     117,
+     101,
+     22,
+     50
+    ],
+    "abuela": [
+     37,
+     117,
+     22,
+     51
+    ],
+    "muestra": null,
+    "ofrece": null,
+    "bebe": [
+     179,
+     112,
+     18,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "h-mesa/right@21",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 129,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "h-mesa/right": "20-22",
+     "h-mesa/wrong": "20-22",
+     "h-mesa/alternate": "20-22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "bg": "bg.cocina.png"
+   },
+   "background": [
+    "cocina"
+   ],
+   "keys": {
+    "afuera": 0,
+    "bandeja": [],
+    "encima": null,
+    "estufa": {
+     "bizcocho": 1,
+     "jarra": 1,
+     "pastel": 1
+    },
+    "mantel": 1,
+    "mostrador": {
+     "platos": 4,
+     "tazas": 5
+    },
+    "puestos": [
+     {
+      "plato": {
+       "n": 1,
+       "con": null
+      },
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": {
+       "n": 1,
+       "con": null
+      },
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": null,
+      "uts": [],
+      "frente": []
+     },
+     {
+      "plato": null,
+      "taza": {
+       "n": 1,
+       "con": null
+      },
+      "uts": [],
+      "frente": []
+     }
+    ],
+    "reb": 3,
+    "sitio": {
+     "abuelo": 0,
+     "papa": 1,
+     "mama": 3
+    },
+    "suelo": [],
+    "vierte": null
+   },
+   "things": {
+    "platos": [
+     24,
+     95,
+     24,
+     22
+    ],
+    "tazas": [
+     42,
+     94,
+     24,
+     22
+    ],
+    "bandeja": null,
+    "comidas": null,
+    "vasos": null,
+    "olla": null,
+    "mesa": [
+     88,
+     130,
+     104,
+     38
+    ],
+    "estufa": [
+     190,
+     100,
+     28,
+     46
+    ],
+    "cocina": [
+     22,
+     24,
+     196,
+     190
+    ]
+   },
+   "characters": {
+    "coqui": [
+     98,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     64,
+     116,
+     22,
+     44
+    ],
+    "carmen": null,
+    "abuelo": [
+     93,
+     101,
+     22,
+     50
+    ],
+    "mama": [
+     165,
+     101,
+     22,
+     50
+    ],
+    "papa": [
+     117,
+     101,
+     22,
+     50
+    ],
+    "abuela": [
+     37,
+     117,
+     22,
+     51
+    ],
+    "muestra": null,
+    "ofrece": null,
+    "bebe": [
+     179,
+     112,
+     18,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "h-mesa/right@24",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 184,
+   "distinctW": 22,
+   "reachedBy": {
+    "steps": {
+     "h-mesa/right": "23-47",
+     "h-mesa/wrong": "23-47",
+     "h-mesa/alternate": "23-47"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -309,12 +1107,12 @@
    }
   },
   {
-   "id": "s002",
+   "id": "s007",
    "files": {
-    "full": "s002.full.png",
-    "full.wide": "s002.full.wide.png",
-    "nochar": "s002.nochar.png",
-    "nochar.wide": "s002.nochar.wide.png",
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -478,12 +1276,12 @@
    }
   },
   {
-   "id": "s003",
+   "id": "s008",
    "files": {
-    "full": "s003.full.png",
-    "full.wide": "s003.full.wide.png",
-    "nochar": "s003.nochar.png",
-    "nochar.wide": "s003.nochar.wide.png",
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "nochar": "s008.nochar.png",
+    "nochar.wide": "s008.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -650,12 +1448,12 @@
    }
   },
   {
-   "id": "s004",
+   "id": "s009",
    "files": {
-    "full": "s004.full.png",
-    "full.wide": "s004.full.wide.png",
-    "nochar": "s004.nochar.png",
-    "nochar.wide": "s004.nochar.wide.png",
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "nochar": "s009.nochar.png",
+    "nochar.wide": "s009.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -821,12 +1619,12 @@
    }
   },
   {
-   "id": "s005",
+   "id": "s010",
    "files": {
-    "full": "s005.full.png",
-    "full.wide": "s005.full.wide.png",
-    "nochar": "s005.nochar.png",
-    "nochar.wide": "s005.nochar.wide.png",
+    "full": "s010.full.png",
+    "full.wide": "s010.full.wide.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s010.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -991,12 +1789,12 @@
    }
   },
   {
-   "id": "s006",
+   "id": "s011",
    "files": {
-    "full": "s006.full.png",
-    "full.wide": "s006.full.wide.png",
-    "nochar": "s006.nochar.png",
-    "nochar.wide": "s006.nochar.wide.png",
+    "full": "s011.full.png",
+    "full.wide": "s011.full.wide.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s011.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -1159,12 +1957,12 @@
    }
   },
   {
-   "id": "s007",
+   "id": "s012",
    "files": {
-    "full": "s007.full.png",
-    "full.wide": "s007.full.wide.png",
-    "nochar": "s007.nochar.png",
-    "nochar.wide": "s007.nochar.wide.png",
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -1330,12 +2128,12 @@
    }
   },
   {
-   "id": "s008",
+   "id": "s013",
    "files": {
-    "full": "s008.full.png",
-    "full.wide": "s008.full.wide.png",
-    "nochar": "s008.nochar.png",
-    "nochar.wide": "s008.nochar.wide.png",
+    "full": "s013.full.png",
+    "full.wide": "s013.full.wide.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s013.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -1498,12 +2296,12 @@
    }
   },
   {
-   "id": "s009",
+   "id": "s014",
    "files": {
-    "full": "s009.full.png",
-    "full.wide": "s009.full.wide.png",
-    "nochar": "s009.nochar.png",
-    "nochar.wide": "s009.nochar.wide.png",
+    "full": "s014.full.png",
+    "full.wide": "s014.full.wide.png",
+    "nochar": "s014.nochar.png",
+    "nochar.wide": "s014.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -1669,12 +2467,12 @@
    }
   },
   {
-   "id": "s010",
+   "id": "s015",
    "files": {
-    "full": "s010.full.png",
-    "full.wide": "s010.full.wide.png",
-    "nochar": "s010.nochar.png",
-    "nochar.wide": "s010.nochar.wide.png",
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "nochar": "s015.nochar.png",
+    "nochar.wide": "s015.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -1837,12 +2635,12 @@
    }
   },
   {
-   "id": "s011",
+   "id": "s016",
    "files": {
-    "full": "s011.full.png",
-    "full.wide": "s011.full.wide.png",
-    "nochar": "s011.nochar.png",
-    "nochar.wide": "s011.nochar.wide.png",
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "nochar": "s016.nochar.png",
+    "nochar.wide": "s016.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -2008,12 +2806,12 @@
    }
   },
   {
-   "id": "s012",
+   "id": "s017",
    "files": {
-    "full": "s012.full.png",
-    "full.wide": "s012.full.wide.png",
-    "nochar": "s012.nochar.png",
-    "nochar.wide": "s012.nochar.wide.png",
+    "full": "s017.full.png",
+    "full.wide": "s017.full.wide.png",
+    "nochar": "s017.nochar.png",
+    "nochar.wide": "s017.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -2176,12 +2974,12 @@
    }
   },
   {
-   "id": "s013",
+   "id": "s018",
    "files": {
-    "full": "s013.full.png",
-    "full.wide": "s013.full.wide.png",
-    "nochar": "s013.nochar.png",
-    "nochar.wide": "s013.nochar.wide.png",
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "nochar": "s018.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -2347,12 +3145,12 @@
    }
   },
   {
-   "id": "s014",
+   "id": "s019",
    "files": {
-    "full": "s014.full.png",
-    "full.wide": "s014.full.wide.png",
-    "nochar": "s014.nochar.png",
-    "nochar.wide": "s014.nochar.wide.png",
+    "full": "s019.full.png",
+    "full.wide": "s019.full.wide.png",
+    "nochar": "s019.nochar.png",
+    "nochar.wide": "s019.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -2509,12 +3307,12 @@
    }
   },
   {
-   "id": "s015",
+   "id": "s020",
    "files": {
-    "full": "s015.full.png",
-    "full.wide": "s015.full.wide.png",
-    "nochar": "s015.nochar.png",
-    "nochar.wide": "s015.nochar.wide.png",
+    "full": "s020.full.png",
+    "full.wide": "s020.full.wide.png",
+    "nochar": "s020.nochar.png",
+    "nochar.wide": "s020.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -2665,12 +3463,12 @@
    }
   },
   {
-   "id": "s016",
+   "id": "s021",
    "files": {
-    "full": "s016.full.png",
-    "full.wide": "s016.full.wide.png",
-    "nochar": "s016.nochar.png",
-    "nochar.wide": "s016.nochar.wide.png",
+    "full": "s021.full.png",
+    "full.wide": "s021.full.wide.png",
+    "nochar": "s021.nochar.png",
+    "nochar.wide": "s021.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -2828,12 +3626,12 @@
    }
   },
   {
-   "id": "s017",
+   "id": "s022",
    "files": {
-    "full": "s017.full.png",
-    "full.wide": "s017.full.wide.png",
-    "nochar": "s017.nochar.png",
-    "nochar.wide": "s017.nochar.wide.png",
+    "full": "s022.full.png",
+    "full.wide": "s022.full.wide.png",
+    "nochar": "s022.nochar.png",
+    "nochar.wide": "s022.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -2994,12 +3792,12 @@
    }
   },
   {
-   "id": "s018",
+   "id": "s023",
    "files": {
-    "full": "s018.full.png",
-    "full.wide": "s018.full.wide.png",
-    "nochar": "s018.nochar.png",
-    "nochar.wide": "s018.nochar.wide.png",
+    "full": "s023.full.png",
+    "full.wide": "s023.full.wide.png",
+    "nochar": "s023.nochar.png",
+    "nochar.wide": "s023.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -3159,12 +3957,12 @@
    }
   },
   {
-   "id": "s019",
+   "id": "s024",
    "files": {
-    "full": "s019.full.png",
-    "full.wide": "s019.full.wide.png",
-    "nochar": "s019.nochar.png",
-    "nochar.wide": "s019.nochar.wide.png",
+    "full": "s024.full.png",
+    "full.wide": "s024.full.wide.png",
+    "nochar": "s024.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -3323,12 +4121,12 @@
    }
   },
   {
-   "id": "s020",
+   "id": "s025",
    "files": {
-    "full": "s020.full.png",
-    "full.wide": "s020.full.wide.png",
-    "nochar": "s020.nochar.png",
-    "nochar.wide": "s020.nochar.wide.png",
+    "full": "s025.full.png",
+    "full.wide": "s025.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s025.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -3490,12 +4288,12 @@
    }
   },
   {
-   "id": "s021",
+   "id": "s026",
    "files": {
-    "full": "s021.full.png",
-    "full.wide": "s021.full.wide.png",
-    "nochar": "s021.nochar.png",
-    "nochar.wide": "s021.nochar.wide.png",
+    "full": "s026.full.png",
+    "full.wide": "s026.full.wide.png",
+    "nochar": "s026.nochar.png",
+    "nochar.wide": "s026.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -3659,12 +4457,12 @@
    }
   },
   {
-   "id": "s022",
+   "id": "s027",
    "files": {
-    "full": "s022.full.png",
-    "full.wide": "s022.full.wide.png",
-    "nochar": "s022.nochar.png",
-    "nochar.wide": "s022.nochar.wide.png",
+    "full": "s027.full.png",
+    "full.wide": "s027.full.wide.png",
+    "nochar": "s027.nochar.png",
+    "nochar.wide": "s027.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -3825,12 +4623,12 @@
    }
   },
   {
-   "id": "s023",
+   "id": "s028",
    "files": {
-    "full": "s023.full.png",
-    "full.wide": "s023.full.wide.png",
-    "nochar": "s023.nochar.png",
-    "nochar.wide": "s023.nochar.wide.png",
+    "full": "s028.full.png",
+    "full.wide": "s028.full.wide.png",
+    "nochar": "s028.nochar.png",
+    "nochar.wide": "s028.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -3994,12 +4792,12 @@
    }
   },
   {
-   "id": "s024",
+   "id": "s029",
    "files": {
-    "full": "s024.full.png",
-    "full.wide": "s024.full.wide.png",
-    "nochar": "s024.nochar.png",
-    "nochar.wide": "s024.nochar.wide.png",
+    "full": "s029.full.png",
+    "full.wide": "s029.full.wide.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -4168,12 +4966,12 @@
    }
   },
   {
-   "id": "s025",
+   "id": "s030",
    "files": {
-    "full": "s025.full.png",
-    "full.wide": "s025.full.wide.png",
-    "nochar": "s025.nochar.png",
-    "nochar.wide": "s025.nochar.wide.png",
+    "full": "s030.full.png",
+    "full.wide": "s030.full.wide.png",
+    "nochar": "s030.nochar.png",
+    "nochar.wide": "s030.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -4339,12 +5137,12 @@
    }
   },
   {
-   "id": "s026",
+   "id": "s031",
    "files": {
-    "full": "s026.full.png",
-    "full.wide": "s026.full.wide.png",
-    "nochar": "s026.nochar.png",
-    "nochar.wide": "s026.nochar.wide.png",
+    "full": "s031.full.png",
+    "full.wide": "s031.full.wide.png",
+    "nochar": "s031.nochar.png",
+    "nochar.wide": "s031.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -4513,12 +5311,12 @@
    }
   },
   {
-   "id": "s027",
+   "id": "s032",
    "files": {
-    "full": "s027.full.png",
-    "full.wide": "s027.full.wide.png",
-    "nochar": "s027.nochar.png",
-    "nochar.wide": "s027.nochar.wide.png",
+    "full": "s032.full.png",
+    "full.wide": "s032.full.wide.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s032.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -4692,12 +5490,12 @@
    }
   },
   {
-   "id": "s028",
+   "id": "s033",
    "files": {
-    "full": "s028.full.png",
-    "full.wide": "s028.full.wide.png",
-    "nochar": "s028.nochar.png",
-    "nochar.wide": "s028.nochar.wide.png",
+    "full": "s033.full.png",
+    "full.wide": "s033.full.wide.png",
+    "nochar": "s033.nochar.png",
+    "nochar.wide": "s033.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -4874,12 +5672,12 @@
    }
   },
   {
-   "id": "s029",
+   "id": "s034",
    "files": {
-    "full": "s029.full.png",
-    "full.wide": "s029.full.wide.png",
-    "nochar": "s029.nochar.png",
-    "nochar.wide": "s029.nochar.wide.png",
+    "full": "s034.full.png",
+    "full.wide": "s034.full.wide.png",
+    "nochar": "s034.nochar.png",
+    "nochar.wide": "s034.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -5043,12 +5841,12 @@
    }
   },
   {
-   "id": "s030",
+   "id": "s035",
    "files": {
-    "full": "s030.full.png",
-    "full.wide": "s030.full.wide.png",
-    "nochar": "s030.nochar.png",
-    "nochar.wide": "s030.nochar.wide.png",
+    "full": "s035.full.png",
+    "full.wide": "s035.full.wide.png",
+    "nochar": "s035.nochar.png",
+    "nochar.wide": "s035.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -5209,12 +6007,12 @@
    }
   },
   {
-   "id": "s031",
+   "id": "s036",
    "files": {
-    "full": "s031.full.png",
-    "full.wide": "s031.full.wide.png",
-    "nochar": "s031.nochar.png",
-    "nochar.wide": "s031.nochar.wide.png",
+    "full": "s036.full.png",
+    "full.wide": "s036.full.wide.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s036.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -5378,12 +6176,12 @@
    }
   },
   {
-   "id": "s032",
+   "id": "s037",
    "files": {
-    "full": "s032.full.png",
-    "full.wide": "s032.full.wide.png",
-    "nochar": "s032.nochar.png",
-    "nochar.wide": "s032.nochar.wide.png",
+    "full": "s037.full.png",
+    "full.wide": "s037.full.wide.png",
+    "nochar": "s037.nochar.png",
+    "nochar.wide": "s037.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -5550,151 +6348,12 @@
    }
   },
   {
-   "id": "s033",
+   "id": "s038",
    "files": {
-    "full": "s033.full.png",
-    "full.wide": "s033.full.wide.png",
-    "nochar": "s033.nochar.png",
-    "nochar.wide": "s033.nochar.wide.png",
-    "bg": "bg.cocina.png"
-   },
-   "background": [
-    "cocina"
-   ],
-   "keys": {
-    "afuera": 0,
-    "bandeja": [],
-    "encima": null,
-    "estufa": {
-     "bizcocho": 1,
-     "jarra": 1,
-     "pastel": 1
-    },
-    "mantel": 1,
-    "mostrador": {
-     "platos": 6,
-     "tazas": 6
-    },
-    "puestos": [
-     {
-      "plato": null,
-      "taza": null,
-      "uts": [],
-      "frente": []
-     },
-     {
-      "plato": null,
-      "taza": null,
-      "uts": [],
-      "frente": []
-     },
-     {
-      "plato": null,
-      "taza": null,
-      "uts": [],
-      "frente": []
-     },
-     {
-      "plato": null,
-      "taza": null,
-      "uts": [],
-      "frente": []
-     }
-    ],
-    "reb": 3,
-    "sitio": {},
-    "suelo": [],
-    "vierte": null
-   },
-   "things": {
-    "platos": [
-     24,
-     95,
-     24,
-     22
-    ],
-    "tazas": [
-     42,
-     94,
-     24,
-     22
-    ],
-    "bandeja": null,
-    "comidas": null,
-    "vasos": null,
-    "olla": null,
-    "mesa": [
-     88,
-     130,
-     104,
-     38
-    ],
-    "estufa": [
-     190,
-     100,
-     28,
-     46
-    ],
-    "cocina": [
-     22,
-     24,
-     196,
-     190
-    ]
-   },
-   "characters": {
-    "coqui": [
-     36,
-     173,
-     32,
-     27
-    ],
-    "luis": [
-     64,
-     116,
-     22,
-     44
-    ],
-    "carmen": null,
-    "abuelo": null,
-    "mama": null,
-    "papa": null,
-    "abuela": [
-     194,
-     119,
-     22,
-     51
-    ],
-    "muestra": null,
-    "ofrece": null,
-    "bebe": null,
-    "perro": null
-   },
-   "drawnFrom": "la-mesa/right@0",
-   "cam": [
-    22,
-    0,
-    196,
-    216
-   ],
-   "F": 2,
-   "distinctW": 6,
-   "reachedBy": {
-    "steps": {
-     "la-mesa/right": "0-11",
-     "la-mesa/wrong": "0-11",
-     "la-mesa/alternate": "0-11"
-    },
-    "pairs": []
-   }
-  },
-  {
-   "id": "s034",
-   "files": {
-    "full": "s034.full.png",
-    "full.wide": "s033.full.wide.png",
-    "nochar": "s033.nochar.png",
-    "nochar.wide": "s033.nochar.wide.png",
+    "full": "s038.full.png",
+    "full.wide": "s001.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -5835,12 +6494,12 @@
    }
   },
   {
-   "id": "s035",
+   "id": "s039",
    "files": {
-    "full": "s035.full.png",
-    "full.wide": "s035.full.wide.png",
-    "nochar": "s033.nochar.png",
-    "nochar.wide": "s033.nochar.wide.png",
+    "full": "s039.full.png",
+    "full.wide": "s039.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -5987,175 +6646,12 @@
    }
   },
   {
-   "id": "s036",
+   "id": "s040",
    "files": {
-    "full": "s036.full.png",
-    "full.wide": "s036.full.wide.png",
-    "nochar": "s033.nochar.png",
-    "nochar.wide": "s033.nochar.wide.png",
-    "bg": "bg.cocina.png"
-   },
-   "background": [
-    "cocina"
-   ],
-   "keys": {
-    "afuera": 0,
-    "bandeja": [],
-    "encima": null,
-    "estufa": {
-     "bizcocho": 1,
-     "jarra": 1,
-     "pastel": 1
-    },
-    "mantel": 1,
-    "mostrador": {
-     "platos": 6,
-     "tazas": 6
-    },
-    "puestos": [
-     {
-      "plato": null,
-      "taza": null,
-      "uts": [],
-      "frente": []
-     },
-     {
-      "plato": null,
-      "taza": null,
-      "uts": [],
-      "frente": []
-     },
-     {
-      "plato": null,
-      "taza": null,
-      "uts": [],
-      "frente": []
-     },
-     {
-      "plato": null,
-      "taza": null,
-      "uts": [],
-      "frente": []
-     }
-    ],
-    "reb": 3,
-    "sitio": {
-     "abuelo": 0,
-     "papa": 1,
-     "mama": 3
-    },
-    "suelo": [],
-    "vierte": null
-   },
-   "things": {
-    "platos": [
-     24,
-     95,
-     24,
-     22
-    ],
-    "tazas": [
-     42,
-     94,
-     24,
-     22
-    ],
-    "bandeja": null,
-    "comidas": null,
-    "vasos": null,
-    "olla": null,
-    "mesa": [
-     88,
-     130,
-     104,
-     38
-    ],
-    "estufa": [
-     190,
-     100,
-     28,
-     46
-    ],
-    "cocina": [
-     22,
-     24,
-     196,
-     190
-    ]
-   },
-   "characters": {
-    "coqui": [
-     36,
-     173,
-     32,
-     27
-    ],
-    "luis": [
-     64,
-     116,
-     22,
-     44
-    ],
-    "carmen": null,
-    "abuelo": [
-     93,
-     101,
-     22,
-     50
-    ],
-    "mama": [
-     165,
-     101,
-     22,
-     50
-    ],
-    "papa": [
-     117,
-     101,
-     22,
-     50
-    ],
-    "abuela": [
-     194,
-     119,
-     22,
-     51
-    ],
-    "muestra": null,
-    "ofrece": null,
-    "bebe": [
-     179,
-     112,
-     18,
-     18
-    ],
-    "perro": null
-   },
-   "drawnFrom": "la-mesa/right@14",
-   "cam": [
-    22,
-    0,
-    196,
-    216
-   ],
-   "F": 72,
-   "distinctW": 2,
-   "reachedBy": {
-    "steps": {
-     "la-mesa/right": "14-18",
-     "la-mesa/wrong": "14-18",
-     "la-mesa/alternate": "14-18"
-    },
-    "pairs": []
-   }
-  },
-  {
-   "id": "s037",
-   "files": {
-    "full": "s037.full.png",
-    "full.wide": "s037.full.wide.png",
-    "nochar": "s037.nochar.png",
-    "nochar.wide": "s037.nochar.wide.png",
+    "full": "s040.full.png",
+    "full.wide": "s040.full.wide.png",
+    "nochar": "s040.nochar.png",
+    "nochar.wide": "s040.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -6313,12 +6809,12 @@
    }
   },
   {
-   "id": "s038",
+   "id": "s041",
    "files": {
-    "full": "s038.full.png",
-    "full.wide": "s038.full.wide.png",
-    "nochar": "s038.nochar.png",
-    "nochar.wide": "s038.nochar.wide.png",
+    "full": "s041.full.png",
+    "full.wide": "s041.full.wide.png",
+    "nochar": "s041.nochar.png",
+    "nochar.wide": "s041.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -6479,12 +6975,12 @@
    }
   },
   {
-   "id": "s039",
+   "id": "s042",
    "files": {
-    "full": "s039.full.png",
-    "full.wide": "s039.full.wide.png",
-    "nochar": "s039.nochar.png",
-    "nochar.wide": "s039.nochar.wide.png",
+    "full": "s042.full.png",
+    "full.wide": "s042.full.wide.png",
+    "nochar": "s042.nochar.png",
+    "nochar.wide": "s042.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -6645,12 +7141,12 @@
    }
   },
   {
-   "id": "s040",
+   "id": "s043",
    "files": {
-    "full": "s040.full.png",
-    "full.wide": "s040.full.wide.png",
-    "nochar": "s040.nochar.png",
-    "nochar.wide": "s040.nochar.wide.png",
+    "full": "s043.full.png",
+    "full.wide": "s043.full.wide.png",
+    "nochar": "s043.nochar.png",
+    "nochar.wide": "s043.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -6811,12 +7307,12 @@
    }
   },
   {
-   "id": "s041",
+   "id": "s044",
    "files": {
-    "full": "s041.full.png",
-    "full.wide": "s041.full.wide.png",
-    "nochar": "s041.nochar.png",
-    "nochar.wide": "s041.nochar.wide.png",
+    "full": "s044.full.png",
+    "full.wide": "s044.full.wide.png",
+    "nochar": "s044.nochar.png",
+    "nochar.wide": "s044.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -6980,12 +7476,12 @@
    }
   },
   {
-   "id": "s042",
+   "id": "s045",
    "files": {
-    "full": "s042.full.png",
-    "full.wide": "s042.full.wide.png",
-    "nochar": "s042.nochar.png",
-    "nochar.wide": "s042.nochar.wide.png",
+    "full": "s045.full.png",
+    "full.wide": "s045.full.wide.png",
+    "nochar": "s045.nochar.png",
+    "nochar.wide": "s045.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -7152,12 +7648,12 @@
    }
   },
   {
-   "id": "s043",
+   "id": "s046",
    "files": {
-    "full": "s043.full.png",
-    "full.wide": "s043.full.wide.png",
-    "nochar": "s043.nochar.png",
-    "nochar.wide": "s043.nochar.wide.png",
+    "full": "s046.full.png",
+    "full.wide": "s046.full.wide.png",
+    "nochar": "s046.nochar.png",
+    "nochar.wide": "s046.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -7321,12 +7817,12 @@
    }
   },
   {
-   "id": "s044",
+   "id": "s047",
    "files": {
-    "full": "s044.full.png",
-    "full.wide": "s044.full.wide.png",
-    "nochar": "s044.nochar.png",
-    "nochar.wide": "s044.nochar.wide.png",
+    "full": "s047.full.png",
+    "full.wide": "s047.full.wide.png",
+    "nochar": "s047.nochar.png",
+    "nochar.wide": "s047.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -7496,12 +7992,12 @@
    }
   },
   {
-   "id": "s045",
+   "id": "s048",
    "files": {
-    "full": "s045.full.png",
-    "full.wide": "s045.full.wide.png",
-    "nochar": "s045.nochar.png",
-    "nochar.wide": "s045.nochar.wide.png",
+    "full": "s048.full.png",
+    "full.wide": "s048.full.wide.png",
+    "nochar": "s048.nochar.png",
+    "nochar.wide": "s048.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -7674,12 +8170,12 @@
    }
   },
   {
-   "id": "s046",
+   "id": "s049",
    "files": {
-    "full": "s046.full.png",
-    "full.wide": "s046.full.wide.png",
-    "nochar": "s046.nochar.png",
-    "nochar.wide": "s046.nochar.wide.png",
+    "full": "s049.full.png",
+    "full.wide": "s049.full.wide.png",
+    "nochar": "s049.nochar.png",
+    "nochar.wide": "s049.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -7855,12 +8351,12 @@
    }
   },
   {
-   "id": "s047",
+   "id": "s050",
    "files": {
-    "full": "s047.full.png",
-    "full.wide": "s047.full.wide.png",
-    "nochar": "s047.nochar.png",
-    "nochar.wide": "s047.nochar.wide.png",
+    "full": "s050.full.png",
+    "full.wide": "s050.full.wide.png",
+    "nochar": "s050.nochar.png",
+    "nochar.wide": "s050.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -8042,12 +8538,12 @@
    }
   },
   {
-   "id": "s048",
+   "id": "s051",
    "files": {
-    "full": "s048.full.png",
-    "full.wide": "s048.full.wide.png",
-    "nochar": "s048.nochar.png",
-    "nochar.wide": "s048.nochar.wide.png",
+    "full": "s051.full.png",
+    "full.wide": "s051.full.wide.png",
+    "nochar": "s051.nochar.png",
+    "nochar.wide": "s051.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -8232,12 +8728,12 @@
    }
   },
   {
-   "id": "s049",
+   "id": "s052",
    "files": {
-    "full": "s049.full.png",
-    "full.wide": "s049.full.wide.png",
-    "nochar": "s049.nochar.png",
-    "nochar.wide": "s049.nochar.wide.png",
+    "full": "s052.full.png",
+    "full.wide": "s052.full.wide.png",
+    "nochar": "s052.nochar.png",
+    "nochar.wide": "s052.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -8422,12 +8918,12 @@
    }
   },
   {
-   "id": "s050",
+   "id": "s053",
    "files": {
-    "full": "s050.full.png",
-    "full.wide": "s050.full.wide.png",
-    "nochar": "s050.nochar.png",
-    "nochar.wide": "s050.nochar.wide.png",
+    "full": "s053.full.png",
+    "full.wide": "s053.full.wide.png",
+    "nochar": "s053.nochar.png",
+    "nochar.wide": "s053.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -8615,12 +9111,12 @@
    }
   },
   {
-   "id": "s051",
+   "id": "s054",
    "files": {
-    "full": "s051.full.png",
-    "full.wide": "s051.full.wide.png",
-    "nochar": "s051.nochar.png",
-    "nochar.wide": "s051.nochar.wide.png",
+    "full": "s054.full.png",
+    "full.wide": "s054.full.wide.png",
+    "nochar": "s054.nochar.png",
+    "nochar.wide": "s054.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -8808,12 +9304,12 @@
    }
   },
   {
-   "id": "s052",
+   "id": "s055",
    "files": {
-    "full": "s052.full.png",
-    "full.wide": "s052.full.wide.png",
-    "nochar": "s052.nochar.png",
-    "nochar.wide": "s052.nochar.wide.png",
+    "full": "s055.full.png",
+    "full.wide": "s055.full.wide.png",
+    "nochar": "s055.nochar.png",
+    "nochar.wide": "s055.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -8987,12 +9483,12 @@
    }
   },
   {
-   "id": "s053",
+   "id": "s056",
    "files": {
-    "full": "s053.full.png",
-    "full.wide": "s053.full.wide.png",
-    "nochar": "s053.nochar.png",
-    "nochar.wide": "s053.nochar.wide.png",
+    "full": "s056.full.png",
+    "full.wide": "s056.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s056.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -9166,12 +9662,12 @@
    }
   },
   {
-   "id": "s054",
+   "id": "s057",
    "files": {
-    "full": "s054.full.png",
-    "full.wide": "s054.full.wide.png",
-    "nochar": "s054.nochar.png",
-    "nochar.wide": "s054.nochar.wide.png",
+    "full": "s057.full.png",
+    "full.wide": "s057.full.wide.png",
+    "nochar": "s057.nochar.png",
+    "nochar.wide": "s057.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -9345,12 +9841,12 @@
    }
   },
   {
-   "id": "s055",
+   "id": "s058",
    "files": {
-    "full": "s055.full.png",
-    "full.wide": "s055.full.wide.png",
-    "nochar": "s055.nochar.png",
-    "nochar.wide": "s055.nochar.wide.png",
+    "full": "s058.full.png",
+    "full.wide": "s058.full.wide.png",
+    "nochar": "s058.nochar.png",
+    "nochar.wide": "s058.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -9526,12 +10022,12 @@
    }
   },
   {
-   "id": "s056",
+   "id": "s059",
    "files": {
-    "full": "s056.full.png",
-    "full.wide": "s056.full.wide.png",
-    "nochar": "s056.nochar.png",
-    "nochar.wide": "s056.nochar.wide.png",
+    "full": "s059.full.png",
+    "full.wide": "s059.full.wide.png",
+    "nochar": "s059.nochar.png",
+    "nochar.wide": "s059.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -9707,12 +10203,12 @@
    }
   },
   {
-   "id": "s057",
+   "id": "s060",
    "files": {
-    "full": "s057.full.png",
-    "full.wide": "s057.full.wide.png",
-    "nochar": "s057.nochar.png",
-    "nochar.wide": "s057.nochar.wide.png",
+    "full": "s060.full.png",
+    "full.wide": "s060.full.wide.png",
+    "nochar": "s060.nochar.png",
+    "nochar.wide": "s060.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -9891,12 +10387,12 @@
    }
   },
   {
-   "id": "s058",
+   "id": "s061",
    "files": {
-    "full": "s058.full.png",
-    "full.wide": "s058.full.wide.png",
-    "nochar": "s058.nochar.png",
-    "nochar.wide": "s058.nochar.wide.png",
+    "full": "s061.full.png",
+    "full.wide": "s061.full.wide.png",
+    "nochar": "s061.nochar.png",
+    "nochar.wide": "s061.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -10075,12 +10571,12 @@
    }
   },
   {
-   "id": "s059",
+   "id": "s062",
    "files": {
-    "full": "s059.full.png",
-    "full.wide": "s059.full.wide.png",
-    "nochar": "s059.nochar.png",
-    "nochar.wide": "s059.nochar.wide.png",
+    "full": "s062.full.png",
+    "full.wide": "s062.full.wide.png",
+    "nochar": "s062.nochar.png",
+    "nochar.wide": "s062.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -10265,12 +10761,12 @@
    }
   },
   {
-   "id": "s060",
+   "id": "s063",
    "files": {
-    "full": "s060.full.png",
-    "full.wide": "s060.full.wide.png",
-    "nochar": "s060.nochar.png",
-    "nochar.wide": "s060.nochar.wide.png",
+    "full": "s063.full.png",
+    "full.wide": "s063.full.wide.png",
+    "nochar": "s063.nochar.png",
+    "nochar.wide": "s063.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -10455,12 +10951,12 @@
    }
   },
   {
-   "id": "s061",
+   "id": "s064",
    "files": {
-    "full": "s061.full.png",
-    "full.wide": "s061.full.wide.png",
-    "nochar": "s061.nochar.png",
-    "nochar.wide": "s061.nochar.wide.png",
+    "full": "s064.full.png",
+    "full.wide": "s064.full.wide.png",
+    "nochar": "s064.nochar.png",
+    "nochar.wide": "s064.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -10645,12 +11141,12 @@
    }
   },
   {
-   "id": "s062",
+   "id": "s065",
    "files": {
-    "full": "s062.full.png",
-    "full.wide": "s062.full.wide.png",
-    "nochar": "s062.nochar.png",
-    "nochar.wide": "s062.nochar.wide.png",
+    "full": "s065.full.png",
+    "full.wide": "s065.full.wide.png",
+    "nochar": "s065.nochar.png",
+    "nochar.wide": "s065.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -10837,12 +11333,12 @@
    }
   },
   {
-   "id": "s063",
+   "id": "s066",
    "files": {
-    "full": "s063.full.png",
-    "full.wide": "s063.full.wide.png",
-    "nochar": "s063.nochar.png",
-    "nochar.wide": "s063.nochar.wide.png",
+    "full": "s066.full.png",
+    "full.wide": "s066.full.wide.png",
+    "nochar": "s066.nochar.png",
+    "nochar.wide": "s066.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -11029,12 +11525,12 @@
    }
   },
   {
-   "id": "s064",
+   "id": "s067",
    "files": {
-    "full": "s064.full.png",
-    "full.wide": "s064.full.wide.png",
-    "nochar": "s064.nochar.png",
-    "nochar.wide": "s064.nochar.wide.png",
+    "full": "s067.full.png",
+    "full.wide": "s067.full.wide.png",
+    "nochar": "s067.nochar.png",
+    "nochar.wide": "s067.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -11224,12 +11720,12 @@
    }
   },
   {
-   "id": "s065",
+   "id": "s068",
    "files": {
-    "full": "s065.full.png",
-    "full.wide": "s065.full.wide.png",
-    "nochar": "s065.nochar.png",
-    "nochar.wide": "s065.nochar.wide.png",
+    "full": "s068.full.png",
+    "full.wide": "s068.full.wide.png",
+    "nochar": "s068.nochar.png",
+    "nochar.wide": "s068.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -11419,12 +11915,12 @@
    }
   },
   {
-   "id": "s066",
+   "id": "s069",
    "files": {
-    "full": "s066.full.png",
-    "full.wide": "s066.full.wide.png",
-    "nochar": "s066.nochar.png",
-    "nochar.wide": "s066.nochar.wide.png",
+    "full": "s069.full.png",
+    "full.wide": "s069.full.wide.png",
+    "nochar": "s069.nochar.png",
+    "nochar.wide": "s069.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -11614,12 +12110,12 @@
    }
   },
   {
-   "id": "s067",
+   "id": "s070",
    "files": {
-    "full": "s067.full.png",
-    "full.wide": "s067.full.wide.png",
-    "nochar": "s067.nochar.png",
-    "nochar.wide": "s067.nochar.wide.png",
+    "full": "s070.full.png",
+    "full.wide": "s070.full.wide.png",
+    "nochar": "s070.nochar.png",
+    "nochar.wide": "s070.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -11794,12 +12290,12 @@
    }
   },
   {
-   "id": "s068",
+   "id": "s071",
    "files": {
-    "full": "s068.full.png",
-    "full.wide": "s068.full.wide.png",
-    "nochar": "s068.nochar.png",
-    "nochar.wide": "s068.nochar.wide.png",
+    "full": "s071.full.png",
+    "full.wide": "s071.full.wide.png",
+    "nochar": "s071.nochar.png",
+    "nochar.wide": "s071.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -11978,12 +12474,12 @@
    }
   },
   {
-   "id": "s069",
+   "id": "s072",
    "files": {
-    "full": "s069.full.png",
-    "full.wide": "s069.full.wide.png",
-    "nochar": "s069.nochar.png",
-    "nochar.wide": "s069.nochar.wide.png",
+    "full": "s072.full.png",
+    "full.wide": "s072.full.wide.png",
+    "nochar": "s072.nochar.png",
+    "nochar.wide": "s072.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -12165,12 +12661,12 @@
    }
   },
   {
-   "id": "s070",
+   "id": "s073",
    "files": {
-    "full": "s070.full.png",
-    "full.wide": "s070.full.wide.png",
-    "nochar": "s070.nochar.png",
-    "nochar.wide": "s070.nochar.wide.png",
+    "full": "s073.full.png",
+    "full.wide": "s073.full.wide.png",
+    "nochar": "s073.nochar.png",
+    "nochar.wide": "s073.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -12352,12 +12848,12 @@
    }
   },
   {
-   "id": "s071",
+   "id": "s074",
    "files": {
-    "full": "s071.full.png",
-    "full.wide": "s071.full.wide.png",
-    "nochar": "s071.nochar.png",
-    "nochar.wide": "s071.nochar.wide.png",
+    "full": "s074.full.png",
+    "full.wide": "s074.full.wide.png",
+    "nochar": "s074.nochar.png",
+    "nochar.wide": "s074.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -12545,12 +13041,12 @@
    }
   },
   {
-   "id": "s072",
+   "id": "s075",
    "files": {
-    "full": "s072.full.png",
-    "full.wide": "s072.full.wide.png",
-    "nochar": "s072.nochar.png",
-    "nochar.wide": "s072.nochar.wide.png",
+    "full": "s075.full.png",
+    "full.wide": "s075.full.wide.png",
+    "nochar": "s075.nochar.png",
+    "nochar.wide": "s075.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -12738,12 +13234,12 @@
    }
   },
   {
-   "id": "s073",
+   "id": "s076",
    "files": {
-    "full": "s073.full.png",
-    "full.wide": "s073.full.wide.png",
-    "nochar": "s073.nochar.png",
-    "nochar.wide": "s073.nochar.wide.png",
+    "full": "s076.full.png",
+    "full.wide": "s076.full.wide.png",
+    "nochar": "s076.nochar.png",
+    "nochar.wide": "s076.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -12931,12 +13427,12 @@
    }
   },
   {
-   "id": "s074",
+   "id": "s077",
    "files": {
-    "full": "s074.full.png",
-    "full.wide": "s074.full.wide.png",
-    "nochar": "s074.nochar.png",
-    "nochar.wide": "s074.nochar.wide.png",
+    "full": "s077.full.png",
+    "full.wide": "s077.full.wide.png",
+    "nochar": "s077.nochar.png",
+    "nochar.wide": "s077.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -13128,12 +13624,12 @@
    }
   },
   {
-   "id": "s075",
+   "id": "s078",
    "files": {
-    "full": "s075.full.png",
-    "full.wide": "s075.full.wide.png",
-    "nochar": "s075.nochar.png",
-    "nochar.wide": "s075.nochar.wide.png",
+    "full": "s078.full.png",
+    "full.wide": "s078.full.wide.png",
+    "nochar": "s078.nochar.png",
+    "nochar.wide": "s078.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -13325,12 +13821,12 @@
    }
   },
   {
-   "id": "s076",
+   "id": "s079",
    "files": {
-    "full": "s076.full.png",
-    "full.wide": "s076.full.wide.png",
-    "nochar": "s076.nochar.png",
-    "nochar.wide": "s076.nochar.wide.png",
+    "full": "s079.full.png",
+    "full.wide": "s079.full.wide.png",
+    "nochar": "s079.nochar.png",
+    "nochar.wide": "s079.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -13525,12 +14021,12 @@
    }
   },
   {
-   "id": "s077",
+   "id": "s080",
    "files": {
-    "full": "s077.full.png",
-    "full.wide": "s077.full.wide.png",
-    "nochar": "s077.nochar.png",
-    "nochar.wide": "s077.nochar.wide.png",
+    "full": "s080.full.png",
+    "full.wide": "s080.full.wide.png",
+    "nochar": "s080.nochar.png",
+    "nochar.wide": "s080.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -13724,12 +14220,12 @@
    }
   },
   {
-   "id": "s078",
+   "id": "s081",
    "files": {
-    "full": "s078.full.png",
-    "full.wide": "s078.full.wide.png",
-    "nochar": "s078.nochar.png",
-    "nochar.wide": "s078.nochar.wide.png",
+    "full": "s081.full.png",
+    "full.wide": "s081.full.wide.png",
+    "nochar": "s081.nochar.png",
+    "nochar.wide": "s081.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -13926,12 +14422,12 @@
    }
   },
   {
-   "id": "s079",
+   "id": "s082",
    "files": {
-    "full": "s079.full.png",
-    "full.wide": "s079.full.wide.png",
-    "nochar": "s079.nochar.png",
-    "nochar.wide": "s079.nochar.wide.png",
+    "full": "s082.full.png",
+    "full.wide": "s082.full.wide.png",
+    "nochar": "s082.nochar.png",
+    "nochar.wide": "s082.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -14128,12 +14624,12 @@
    }
   },
   {
-   "id": "s080",
+   "id": "s083",
    "files": {
-    "full": "s080.full.png",
-    "full.wide": "s080.full.wide.png",
-    "nochar": "s080.nochar.png",
-    "nochar.wide": "s080.nochar.wide.png",
+    "full": "s083.full.png",
+    "full.wide": "s083.full.wide.png",
+    "nochar": "s083.nochar.png",
+    "nochar.wide": "s083.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -14330,12 +14826,12 @@
    }
   },
   {
-   "id": "s081",
+   "id": "s084",
    "files": {
-    "full": "s081.full.png",
-    "full.wide": "s081.full.wide.png",
-    "nochar": "s081.nochar.png",
-    "nochar.wide": "s081.nochar.wide.png",
+    "full": "s084.full.png",
+    "full.wide": "s084.full.wide.png",
+    "nochar": "s084.nochar.png",
+    "nochar.wide": "s084.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -14523,12 +15019,12 @@
    }
   },
   {
-   "id": "s082",
+   "id": "s085",
    "files": {
-    "full": "s082.full.png",
-    "full.wide": "s082.full.wide.png",
-    "nochar": "s082.nochar.png",
-    "nochar.wide": "s082.nochar.wide.png",
+    "full": "s085.full.png",
+    "full.wide": "s085.full.wide.png",
+    "nochar": "s085.nochar.png",
+    "nochar.wide": "s085.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -14716,12 +15212,12 @@
    }
   },
   {
-   "id": "s083",
+   "id": "s086",
    "files": {
-    "full": "s083.full.png",
-    "full.wide": "s083.full.wide.png",
-    "nochar": "s083.nochar.png",
-    "nochar.wide": "s083.nochar.wide.png",
+    "full": "s086.full.png",
+    "full.wide": "s086.full.wide.png",
+    "nochar": "s086.nochar.png",
+    "nochar.wide": "s086.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -14912,12 +15408,12 @@
    }
   },
   {
-   "id": "s084",
+   "id": "s087",
    "files": {
-    "full": "s084.full.png",
-    "full.wide": "s084.full.wide.png",
-    "nochar": "s084.nochar.png",
-    "nochar.wide": "s084.nochar.wide.png",
+    "full": "s087.full.png",
+    "full.wide": "s087.full.wide.png",
+    "nochar": "s087.nochar.png",
+    "nochar.wide": "s087.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -15111,12 +15607,12 @@
    }
   },
   {
-   "id": "s085",
+   "id": "s088",
    "files": {
-    "full": "s085.full.png",
-    "full.wide": "s085.full.wide.png",
-    "nochar": "s085.nochar.png",
-    "nochar.wide": "s085.nochar.wide.png",
+    "full": "s088.full.png",
+    "full.wide": "s088.full.wide.png",
+    "nochar": "s088.nochar.png",
+    "nochar.wide": "s088.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -15310,12 +15806,12 @@
    }
   },
   {
-   "id": "s086",
+   "id": "s089",
    "files": {
-    "full": "s086.full.png",
-    "full.wide": "s086.full.wide.png",
-    "nochar": "s086.nochar.png",
-    "nochar.wide": "s086.nochar.wide.png",
+    "full": "s089.full.png",
+    "full.wide": "s089.full.wide.png",
+    "nochar": "s089.nochar.png",
+    "nochar.wide": "s089.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -15509,12 +16005,12 @@
    }
   },
   {
-   "id": "s087",
+   "id": "s090",
    "files": {
-    "full": "s087.full.png",
-    "full.wide": "s087.full.wide.png",
-    "nochar": "s087.nochar.png",
-    "nochar.wide": "s087.nochar.wide.png",
+    "full": "s090.full.png",
+    "full.wide": "s090.full.wide.png",
+    "nochar": "s090.nochar.png",
+    "nochar.wide": "s090.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -15636,12 +16132,12 @@
    }
   },
   {
-   "id": "s088",
+   "id": "s091",
    "files": {
-    "full": "s088.full.png",
-    "full.wide": "s088.full.wide.png",
-    "nochar": "s088.nochar.png",
-    "nochar.wide": "s088.nochar.wide.png",
+    "full": "s091.full.png",
+    "full.wide": "s091.full.wide.png",
+    "nochar": "s091.nochar.png",
+    "nochar.wide": "s091.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -15764,12 +16260,12 @@
    }
   },
   {
-   "id": "s089",
+   "id": "s092",
    "files": {
-    "full": "s089.full.png",
-    "full.wide": "s089.full.wide.png",
-    "nochar": "s089.nochar.png",
-    "nochar.wide": "s089.nochar.wide.png",
+    "full": "s092.full.png",
+    "full.wide": "s092.full.wide.png",
+    "nochar": "s092.nochar.png",
+    "nochar.wide": "s092.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -15904,12 +16400,12 @@
    }
   },
   {
-   "id": "s090",
+   "id": "s093",
    "files": {
-    "full": "s090.full.png",
-    "full.wide": "s090.full.wide.png",
-    "nochar": "s089.nochar.png",
-    "nochar.wide": "s089.nochar.wide.png",
+    "full": "s093.full.png",
+    "full.wide": "s093.full.wide.png",
+    "nochar": "s092.nochar.png",
+    "nochar.wide": "s092.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -16051,12 +16547,12 @@
    }
   },
   {
-   "id": "s091",
+   "id": "s094",
    "files": {
-    "full": "s091.full.png",
-    "full.wide": "s091.full.wide.png",
-    "nochar": "s091.nochar.png",
-    "nochar.wide": "s091.nochar.wide.png",
+    "full": "s094.full.png",
+    "full.wide": "s094.full.wide.png",
+    "nochar": "s094.nochar.png",
+    "nochar.wide": "s094.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -16201,12 +16697,12 @@
    }
   },
   {
-   "id": "s092",
+   "id": "s095",
    "files": {
-    "full": "s092.full.png",
-    "full.wide": "s092.full.wide.png",
-    "nochar": "s092.nochar.png",
-    "nochar.wide": "s092.nochar.wide.png",
+    "full": "s095.full.png",
+    "full.wide": "s095.full.wide.png",
+    "nochar": "s095.nochar.png",
+    "nochar.wide": "s095.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -16357,12 +16853,12 @@
    }
   },
   {
-   "id": "s093",
+   "id": "s096",
    "files": {
-    "full": "s093.full.png",
-    "full.wide": "s093.full.wide.png",
-    "nochar": "s093.nochar.png",
-    "nochar.wide": "s093.nochar.wide.png",
+    "full": "s096.full.png",
+    "full.wide": "s096.full.wide.png",
+    "nochar": "s096.nochar.png",
+    "nochar.wide": "s096.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -16517,12 +17013,12 @@
    }
   },
   {
-   "id": "s094",
+   "id": "s097",
    "files": {
-    "full": "s094.full.png",
-    "full.wide": "s094.full.wide.png",
-    "nochar": "s094.nochar.png",
-    "nochar.wide": "s094.nochar.wide.png",
+    "full": "s097.full.png",
+    "full.wide": "s097.full.wide.png",
+    "nochar": "s097.nochar.png",
+    "nochar.wide": "s097.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -16672,12 +17168,12 @@
    }
   },
   {
-   "id": "s095",
+   "id": "s098",
    "files": {
-    "full": "s095.full.png",
-    "full.wide": "s095.full.wide.png",
-    "nochar": "s095.nochar.png",
-    "nochar.wide": "s095.nochar.wide.png",
+    "full": "s098.full.png",
+    "full.wide": "s098.full.wide.png",
+    "nochar": "s098.nochar.png",
+    "nochar.wide": "s098.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -16832,12 +17328,12 @@
    }
   },
   {
-   "id": "s096",
+   "id": "s099",
    "files": {
-    "full": "s096.full.png",
-    "full.wide": "s096.full.wide.png",
-    "nochar": "s096.nochar.png",
-    "nochar.wide": "s096.nochar.wide.png",
+    "full": "s099.full.png",
+    "full.wide": "s099.full.wide.png",
+    "nochar": "s099.nochar.png",
+    "nochar.wide": "s099.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -16980,12 +17476,12 @@
    }
   },
   {
-   "id": "s097",
+   "id": "s100",
    "files": {
-    "full": "s097.full.png",
-    "full.wide": "s097.full.wide.png",
-    "nochar": "s097.nochar.png",
-    "nochar.wide": "s097.nochar.wide.png",
+    "full": "s100.full.png",
+    "full.wide": "s100.full.wide.png",
+    "nochar": "s100.nochar.png",
+    "nochar.wide": "s100.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -17133,12 +17629,12 @@
    }
   },
   {
-   "id": "s098",
+   "id": "s101",
    "files": {
-    "full": "s098.full.png",
-    "full.wide": "s098.full.wide.png",
-    "nochar": "s098.nochar.png",
-    "nochar.wide": "s098.nochar.wide.png",
+    "full": "s101.full.png",
+    "full.wide": "s101.full.wide.png",
+    "nochar": "s101.nochar.png",
+    "nochar.wide": "s101.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -17284,12 +17780,12 @@
    }
   },
   {
-   "id": "s099",
+   "id": "s102",
    "files": {
-    "full": "s099.full.png",
-    "full.wide": "s099.full.wide.png",
-    "nochar": "s099.nochar.png",
-    "nochar.wide": "s099.nochar.wide.png",
+    "full": "s102.full.png",
+    "full.wide": "s102.full.wide.png",
+    "nochar": "s102.nochar.png",
+    "nochar.wide": "s102.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -17434,12 +17930,12 @@
    }
   },
   {
-   "id": "s100",
+   "id": "s103",
    "files": {
-    "full": "s100.full.png",
-    "full.wide": "s100.full.wide.png",
-    "nochar": "s100.nochar.png",
-    "nochar.wide": "s100.nochar.wide.png",
+    "full": "s103.full.png",
+    "full.wide": "s103.full.wide.png",
+    "nochar": "s103.nochar.png",
+    "nochar.wide": "s103.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -17564,12 +18060,12 @@
    }
   },
   {
-   "id": "s101",
+   "id": "s104",
    "files": {
-    "full": "s101.full.png",
-    "full.wide": "s101.full.wide.png",
-    "nochar": "s101.nochar.png",
-    "nochar.wide": "s101.nochar.wide.png",
+    "full": "s104.full.png",
+    "full.wide": "s104.full.wide.png",
+    "nochar": "s104.nochar.png",
+    "nochar.wide": "s104.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -17704,12 +18200,12 @@
    }
   },
   {
-   "id": "s102",
+   "id": "s105",
    "files": {
-    "full": "s102.full.png",
-    "full.wide": "s102.full.wide.png",
-    "nochar": "s102.nochar.png",
-    "nochar.wide": "s102.nochar.wide.png",
+    "full": "s105.full.png",
+    "full.wide": "s105.full.wide.png",
+    "nochar": "s105.nochar.png",
+    "nochar.wide": "s105.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -17847,12 +18343,12 @@
    }
   },
   {
-   "id": "s103",
+   "id": "s106",
    "files": {
-    "full": "s103.full.png",
-    "full.wide": "s103.full.wide.png",
-    "nochar": "s103.nochar.png",
-    "nochar.wide": "s103.nochar.wide.png",
+    "full": "s106.full.png",
+    "full.wide": "s106.full.wide.png",
+    "nochar": "s106.nochar.png",
+    "nochar.wide": "s106.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -17997,12 +18493,12 @@
    }
   },
   {
-   "id": "s104",
+   "id": "s107",
    "files": {
-    "full": "s104.full.png",
-    "full.wide": "s104.full.wide.png",
-    "nochar": "s104.nochar.png",
-    "nochar.wide": "s104.nochar.wide.png",
+    "full": "s107.full.png",
+    "full.wide": "s107.full.wide.png",
+    "nochar": "s107.nochar.png",
+    "nochar.wide": "s107.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -18151,12 +18647,12 @@
    }
   },
   {
-   "id": "s105",
+   "id": "s108",
    "files": {
-    "full": "s105.full.png",
-    "full.wide": "s105.full.wide.png",
-    "nochar": "s105.nochar.png",
-    "nochar.wide": "s105.nochar.wide.png",
+    "full": "s108.full.png",
+    "full.wide": "s108.full.wide.png",
+    "nochar": "s108.nochar.png",
+    "nochar.wide": "s108.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -18311,12 +18807,12 @@
    }
   },
   {
-   "id": "s106",
+   "id": "s109",
    "files": {
-    "full": "s106.full.png",
-    "full.wide": "s106.full.wide.png",
-    "nochar": "s105.nochar.png",
-    "nochar.wide": "s105.nochar.wide.png",
+    "full": "s109.full.png",
+    "full.wide": "s109.full.wide.png",
+    "nochar": "s108.nochar.png",
+    "nochar.wide": "s108.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -18477,12 +18973,12 @@
    }
   },
   {
-   "id": "s107",
+   "id": "s110",
    "files": {
-    "full": "s107.full.png",
-    "full.wide": "s107.full.wide.png",
-    "nochar": "s107.nochar.png",
-    "nochar.wide": "s107.nochar.wide.png",
+    "full": "s110.full.png",
+    "full.wide": "s110.full.wide.png",
+    "nochar": "s110.nochar.png",
+    "nochar.wide": "s110.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -18648,12 +19144,12 @@
    }
   },
   {
-   "id": "s108",
+   "id": "s111",
    "files": {
-    "full": "s108.full.png",
-    "full.wide": "s108.full.wide.png",
-    "nochar": "s108.nochar.png",
-    "nochar.wide": "s108.nochar.wide.png",
+    "full": "s111.full.png",
+    "full.wide": "s111.full.wide.png",
+    "nochar": "s111.nochar.png",
+    "nochar.wide": "s111.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -18818,12 +19314,12 @@
    }
   },
   {
-   "id": "s109",
+   "id": "s112",
    "files": {
-    "full": "s109.full.png",
-    "full.wide": "s109.full.wide.png",
-    "nochar": "s109.nochar.png",
-    "nochar.wide": "s109.nochar.wide.png",
+    "full": "s112.full.png",
+    "full.wide": "s112.full.wide.png",
+    "nochar": "s112.nochar.png",
+    "nochar.wide": "s112.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -18991,12 +19487,12 @@
    }
   },
   {
-   "id": "s110",
+   "id": "s113",
    "files": {
-    "full": "s110.full.png",
-    "full.wide": "s110.full.wide.png",
-    "nochar": "s110.nochar.png",
-    "nochar.wide": "s110.nochar.wide.png",
+    "full": "s113.full.png",
+    "full.wide": "s113.full.wide.png",
+    "nochar": "s113.nochar.png",
+    "nochar.wide": "s113.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -19164,12 +19660,12 @@
    }
   },
   {
-   "id": "s111",
+   "id": "s114",
    "files": {
-    "full": "s111.full.png",
-    "full.wide": "s111.full.wide.png",
-    "nochar": "s111.nochar.png",
-    "nochar.wide": "s111.nochar.wide.png",
+    "full": "s114.full.png",
+    "full.wide": "s114.full.wide.png",
+    "nochar": "s114.nochar.png",
+    "nochar.wide": "s114.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -19308,12 +19804,12 @@
    }
   },
   {
-   "id": "s112",
+   "id": "s115",
    "files": {
-    "full": "s112.full.png",
-    "full.wide": "s112.full.wide.png",
-    "nochar": "s112.nochar.png",
-    "nochar.wide": "s112.nochar.wide.png",
+    "full": "s115.full.png",
+    "full.wide": "s115.full.wide.png",
+    "nochar": "s115.nochar.png",
+    "nochar.wide": "s115.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -19452,12 +19948,12 @@
    }
   },
   {
-   "id": "s113",
+   "id": "s116",
    "files": {
-    "full": "s113.full.png",
-    "full.wide": "s113.full.wide.png",
-    "nochar": "s113.nochar.png",
-    "nochar.wide": "s113.nochar.wide.png",
+    "full": "s116.full.png",
+    "full.wide": "s116.full.wide.png",
+    "nochar": "s116.nochar.png",
+    "nochar.wide": "s116.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -19603,12 +20099,12 @@
    }
   },
   {
-   "id": "s114",
+   "id": "s117",
    "files": {
-    "full": "s114.full.png",
-    "full.wide": "s114.full.wide.png",
-    "nochar": "s114.nochar.png",
-    "nochar.wide": "s114.nochar.wide.png",
+    "full": "s117.full.png",
+    "full.wide": "s117.full.wide.png",
+    "nochar": "s117.nochar.png",
+    "nochar.wide": "s117.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -19756,12 +20252,12 @@
    }
   },
   {
-   "id": "s115",
+   "id": "s118",
    "files": {
-    "full": "s115.full.png",
-    "full.wide": "s115.full.wide.png",
-    "nochar": "s115.nochar.png",
-    "nochar.wide": "s115.nochar.wide.png",
+    "full": "s118.full.png",
+    "full.wide": "s118.full.wide.png",
+    "nochar": "s118.nochar.png",
+    "nochar.wide": "s118.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -19906,12 +20402,12 @@
    }
   },
   {
-   "id": "s116",
+   "id": "s119",
    "files": {
-    "full": "s116.full.png",
-    "full.wide": "s116.full.wide.png",
-    "nochar": "s116.nochar.png",
-    "nochar.wide": "s116.nochar.wide.png",
+    "full": "s119.full.png",
+    "full.wide": "s119.full.wide.png",
+    "nochar": "s119.nochar.png",
+    "nochar.wide": "s119.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -20060,12 +20556,12 @@
    }
   },
   {
-   "id": "s117",
+   "id": "s120",
    "files": {
-    "full": "s117.full.png",
-    "full.wide": "s117.full.wide.png",
-    "nochar": "s117.nochar.png",
-    "nochar.wide": "s117.nochar.wide.png",
+    "full": "s120.full.png",
+    "full.wide": "s120.full.wide.png",
+    "nochar": "s120.nochar.png",
+    "nochar.wide": "s120.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -20220,12 +20716,12 @@
    }
   },
   {
-   "id": "s118",
+   "id": "s121",
    "files": {
-    "full": "s118.full.png",
-    "full.wide": "s118.full.wide.png",
-    "nochar": "s117.nochar.png",
-    "nochar.wide": "s117.nochar.wide.png",
+    "full": "s121.full.png",
+    "full.wide": "s121.full.wide.png",
+    "nochar": "s120.nochar.png",
+    "nochar.wide": "s120.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -20386,12 +20882,12 @@
    }
   },
   {
-   "id": "s119",
+   "id": "s122",
    "files": {
-    "full": "s119.full.png",
-    "full.wide": "s119.full.wide.png",
-    "nochar": "s119.nochar.png",
-    "nochar.wide": "s119.nochar.wide.png",
+    "full": "s122.full.png",
+    "full.wide": "s122.full.wide.png",
+    "nochar": "s122.nochar.png",
+    "nochar.wide": "s122.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -20557,12 +21053,12 @@
    }
   },
   {
-   "id": "s120",
+   "id": "s123",
    "files": {
-    "full": "s120.full.png",
-    "full.wide": "s120.full.wide.png",
-    "nochar": "s120.nochar.png",
-    "nochar.wide": "s120.nochar.wide.png",
+    "full": "s123.full.png",
+    "full.wide": "s123.full.wide.png",
+    "nochar": "s123.nochar.png",
+    "nochar.wide": "s123.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -20727,12 +21223,12 @@
    }
   },
   {
-   "id": "s121",
+   "id": "s124",
    "files": {
-    "full": "s121.full.png",
-    "full.wide": "s121.full.wide.png",
-    "nochar": "s121.nochar.png",
-    "nochar.wide": "s121.nochar.wide.png",
+    "full": "s124.full.png",
+    "full.wide": "s124.full.wide.png",
+    "nochar": "s124.nochar.png",
+    "nochar.wide": "s124.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -20892,12 +21388,12 @@
    }
   },
   {
-   "id": "s122",
+   "id": "s125",
    "files": {
-    "full": "s122.full.png",
-    "full.wide": "s122.full.wide.png",
-    "nochar": "s122.nochar.png",
-    "nochar.wide": "s122.nochar.wide.png",
+    "full": "s125.full.png",
+    "full.wide": "s125.full.wide.png",
+    "nochar": "s125.nochar.png",
+    "nochar.wide": "s125.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -21060,12 +21556,12 @@
    }
   },
   {
-   "id": "s123",
+   "id": "s126",
    "files": {
-    "full": "s123.full.png",
-    "full.wide": "s123.full.wide.png",
-    "nochar": "s123.nochar.png",
-    "nochar.wide": "s123.nochar.wide.png",
+    "full": "s126.full.png",
+    "full.wide": "s126.full.wide.png",
+    "nochar": "s126.nochar.png",
+    "nochar.wide": "s126.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -21226,12 +21722,12 @@
    }
   },
   {
-   "id": "s124",
+   "id": "s127",
    "files": {
-    "full": "s124.full.png",
-    "full.wide": "s124.full.wide.png",
-    "nochar": "s124.nochar.png",
-    "nochar.wide": "s124.nochar.wide.png",
+    "full": "s127.full.png",
+    "full.wide": "s127.full.wide.png",
+    "nochar": "s127.nochar.png",
+    "nochar.wide": "s127.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -21380,12 +21876,12 @@
    }
   },
   {
-   "id": "s125",
+   "id": "s128",
    "files": {
-    "full": "s125.full.png",
-    "full.wide": "s125.full.wide.png",
-    "nochar": "s125.nochar.png",
-    "nochar.wide": "s125.nochar.wide.png",
+    "full": "s128.full.png",
+    "full.wide": "s128.full.wide.png",
+    "nochar": "s128.nochar.png",
+    "nochar.wide": "s128.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -21540,12 +22036,12 @@
    }
   },
   {
-   "id": "s126",
+   "id": "s129",
    "files": {
-    "full": "s126.full.png",
-    "full.wide": "s126.full.wide.png",
-    "nochar": "s125.nochar.png",
-    "nochar.wide": "s125.nochar.wide.png",
+    "full": "s129.full.png",
+    "full.wide": "s129.full.wide.png",
+    "nochar": "s128.nochar.png",
+    "nochar.wide": "s128.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -21706,12 +22202,12 @@
    }
   },
   {
-   "id": "s127",
+   "id": "s130",
    "files": {
-    "full": "s127.full.png",
-    "full.wide": "s127.full.wide.png",
-    "nochar": "s127.nochar.png",
-    "nochar.wide": "s127.nochar.wide.png",
+    "full": "s130.full.png",
+    "full.wide": "s130.full.wide.png",
+    "nochar": "s130.nochar.png",
+    "nochar.wide": "s130.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -21877,12 +22373,12 @@
    }
   },
   {
-   "id": "s128",
+   "id": "s131",
    "files": {
-    "full": "s128.full.png",
-    "full.wide": "s128.full.wide.png",
-    "nochar": "s128.nochar.png",
-    "nochar.wide": "s128.nochar.wide.png",
+    "full": "s131.full.png",
+    "full.wide": "s131.full.wide.png",
+    "nochar": "s131.nochar.png",
+    "nochar.wide": "s131.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -22047,12 +22543,12 @@
    }
   },
   {
-   "id": "s129",
+   "id": "s132",
    "files": {
-    "full": "s129.full.png",
-    "full.wide": "s129.full.wide.png",
-    "nochar": "s129.nochar.png",
-    "nochar.wide": "s129.nochar.wide.png",
+    "full": "s132.full.png",
+    "full.wide": "s132.full.wide.png",
+    "nochar": "s132.nochar.png",
+    "nochar.wide": "s132.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -22212,12 +22708,12 @@
    }
   },
   {
-   "id": "s130",
+   "id": "s133",
    "files": {
-    "full": "s130.full.png",
-    "full.wide": "s130.full.wide.png",
-    "nochar": "s130.nochar.png",
-    "nochar.wide": "s130.nochar.wide.png",
+    "full": "s133.full.png",
+    "full.wide": "s133.full.wide.png",
+    "nochar": "s133.nochar.png",
+    "nochar.wide": "s133.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -22380,12 +22876,12 @@
    }
   },
   {
-   "id": "s131",
+   "id": "s134",
    "files": {
-    "full": "s131.full.png",
-    "full.wide": "s131.full.wide.png",
-    "nochar": "s131.nochar.png",
-    "nochar.wide": "s131.nochar.wide.png",
+    "full": "s134.full.png",
+    "full.wide": "s134.full.wide.png",
+    "nochar": "s134.nochar.png",
+    "nochar.wide": "s134.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -22549,12 +23045,12 @@
    }
   },
   {
-   "id": "s132",
+   "id": "s135",
    "files": {
-    "full": "s132.full.png",
-    "full.wide": "s132.full.wide.png",
-    "nochar": "s132.full.png",
-    "nochar.wide": "s132.full.wide.png",
+    "full": "s135.full.png",
+    "full.wide": "s135.full.wide.png",
+    "nochar": "s135.full.png",
+    "nochar.wide": "s135.full.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -22657,12 +23153,12 @@
    }
   },
   {
-   "id": "s133",
+   "id": "s136",
    "files": {
-    "full": "s133.full.png",
-    "full.wide": "s133.full.wide.png",
-    "nochar": "s133.full.png",
-    "nochar.wide": "s133.full.wide.png",
+    "full": "s136.full.png",
+    "full.wide": "s136.full.wide.png",
+    "nochar": "s136.full.png",
+    "nochar.wide": "s136.full.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -22771,12 +23267,12 @@
    }
   },
   {
-   "id": "s134",
+   "id": "s137",
    "files": {
-    "full": "s134.full.png",
-    "full.wide": "s134.full.wide.png",
-    "nochar": "s134.full.png",
-    "nochar.wide": "s134.full.wide.png",
+    "full": "s137.full.png",
+    "full.wide": "s137.full.wide.png",
+    "nochar": "s137.full.png",
+    "nochar.wide": "s137.full.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -22880,12 +23376,12 @@
    }
   },
   {
-   "id": "s135",
+   "id": "s138",
    "files": {
-    "full": "s135.full.png",
-    "full.wide": "s135.full.wide.png",
-    "nochar": "s135.full.png",
-    "nochar.wide": "s135.full.wide.png",
+    "full": "s138.full.png",
+    "full.wide": "s138.full.wide.png",
+    "nochar": "s138.full.png",
+    "nochar.wide": "s138.full.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -22988,13 +23484,13 @@
    }
   },
   {
-   "id": "s136",
+   "id": "s139",
    "files": {
-    "full": "s136.full.png",
-    "full.wide": "s136.full.wide.png",
-    "nochar": "s136.nochar.png",
-    "nochar.wide": "s136.nochar.wide.png",
-    "bg": "s136.nochar.png"
+    "full": "s139.full.png",
+    "full.wide": "s139.full.wide.png",
+    "nochar": "s139.nochar.png",
+    "nochar.wide": "s139.nochar.wide.png",
+    "bg": "s139.nochar.png"
    },
    "background": [
     "puesto"
@@ -23098,10 +23594,10 @@
    }
   },
   {
-   "id": "s137",
+   "id": "s140",
    "files": {
-    "full": "s137.full.png",
-    "full.wide": "s137.full.wide.png",
+    "full": "s140.full.png",
+    "full.wide": "s140.full.wide.png",
     "nochar": "s000.nochar.png",
     "nochar.wide": "s000.nochar.wide.png",
     "bg": "bg.cocina.png"
@@ -23211,10 +23707,10 @@
    }
   },
   {
-   "id": "s138",
+   "id": "s141",
    "files": {
-    "full": "s138.full.png",
-    "full.wide": "s138.full.wide.png",
+    "full": "s141.full.png",
+    "full.wide": "s141.full.wide.png",
     "nochar": "s000.nochar.png",
     "nochar.wide": "s000.nochar.wide.png",
     "bg": "bg.cocina.png"
@@ -23323,12 +23819,12 @@
    }
   },
   {
-   "id": "s139",
+   "id": "s142",
    "files": {
-    "full": "s139.full.png",
-    "full.wide": "s139.full.wide.png",
-    "nochar": "s139.nochar.png",
-    "nochar.wide": "s139.nochar.wide.png",
+    "full": "s142.full.png",
+    "full.wide": "s142.full.wide.png",
+    "nochar": "s142.nochar.png",
+    "nochar.wide": "s142.nochar.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
@@ -23438,12 +23934,12 @@
    }
   },
   {
-   "id": "s140",
+   "id": "s143",
    "files": {
-    "full": "s140.full.png",
-    "full.wide": "s140.full.wide.png",
-    "nochar": "s140.full.png",
-    "nochar.wide": "s140.full.wide.png",
+    "full": "s143.full.png",
+    "full.wide": "s143.full.wide.png",
+    "nochar": "s143.full.png",
+    "nochar.wide": "s143.full.wide.png",
     "bg": "bg.cocina.png"
    },
    "background": [
