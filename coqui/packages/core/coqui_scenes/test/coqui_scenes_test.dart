@@ -28,6 +28,7 @@ void main() {
       'parada',
       'tiendas',
       'cruce',
+      'plaza',
     ]);
   });
 

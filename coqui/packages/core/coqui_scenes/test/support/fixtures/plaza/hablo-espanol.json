@@ -1,0 +1,901 @@
+{
+ "id": "hablo-espanol",
+ "title": "Hablo español",
+ "place": "La plaza",
+ "scene": "plaza",
+ "next": "que-hora-es",
+ "goal": "Help the visitors who line up at the piragüero's cart by pointing out who speaks English, and keep the three visitors at the back of the line: a helper who cannot help makes the last one in the line look at his watch and walk away.",
+ "stake": {
+  "thing": "cola",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "hablo",
+  "español",
+  "inglés",
+  "entiendo",
+  "no sé"
+ ],
+ "formas_foco": {
+  "hablo": [
+   "habla",
+   "hablas"
+  ],
+  "entiendo": [
+   "entiendes"
+  ]
+ },
+ "back_again": [
+  "perdón",
+  "quiere",
+  "busca",
+  "guagua",
+  "parada",
+  "cerca",
+  "piragua",
+  "¿quién?",
+  "señor",
+  "señora",
+  "hombre",
+  "mujer",
+  "joven",
+  "yo",
+  "tú",
+  "sí",
+  "no",
+  "por favor",
+  "gracias",
+  "ahora",
+  "come"
+ ],
+ "also_heard": [
+  "solo",
+  "turista"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "hombre": "b_n_hombre",
+  "mujer": "b_n_mujer",
+  "joven": "b_n_joven",
+  "piraguero": "b_n_piraguero",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "ingles": "inglés",
+  "hablo": "hablo"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_hombre": {
+   "who": "narr",
+   "text": "Es un hombre."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "b_n_piraguero": {
+   "who": "narr",
+   "text": "Es el piragüero."
+  },
+  "c62_pi_perdon": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: Perdón. No entiendo. Yo hablo español. No hablo inglés."
+  },
+  "c62_q_habla": {
+   "who": "narr",
+   "text": "¿Quién habla inglés?"
+  },
+  "c62_ana_entiendes": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: ¿Entiendes, Coquí?"
+  },
+  "cq_no": {
+   "who": "tu",
+   "text": "¡No!",
+   "tu_turno": [
+    {
+     "palabra": "no",
+     "formas": [
+      "no"
+     ]
+    }
+   ]
+  },
+  "c62_ana_entiendo": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Yo entiendo. Yo hablo inglés y español."
+  },
+  "c62_ana_turista": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: La turista quiere una piragua."
+  },
+  "c62_pi_ahora_no_se": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: ¿Y ahora? No sé."
+  },
+  "c62_luis_no_se": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Yo no sé. Yo hablo español."
+  },
+  "c62_ana_busca": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Busca la guagua."
+  },
+  "c62_ca_parada": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡La parada está cerca!"
+  },
+  "c62_pi_no_se": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: No entiendo. No sé. ¡Y Ana no está!"
+  },
+  "c62_pi_quien": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: ¿Quién habla inglés?"
+  },
+  "c62_pi_ahora_quien": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: ¿Y ahora? ¿Quién habla inglés?"
+  },
+  "c62_pi_quieres": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: ¿Quieres una piragua, Coquí?"
+  },
+  "c36_cq_si_por_favor": {
+   "who": "tu",
+   "text": "¡Sí, por favor!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si",
+      "sí por favor"
+     ]
+    }
+   ]
+  },
+  "c62_ana_yo_hablo": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Yo hablo inglés y español. ¡Y tú hablas español, Coquí!"
+  },
+  "c62_fin": {
+   "who": "narr",
+   "text": "Coquí habla español. Y come piragua."
+  },
+  "c62_ah_senor": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Yo hablo inglés."
+  },
+  "c62_an_senor": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Yo solo hablo español."
+  },
+  "c62_bh_senor": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Hablo inglés y español."
+  },
+  "c62_bn_senor": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No hablo inglés."
+  },
+  "c62_no_senor": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Perdón. No entiendo."
+  },
+  "c62_ah_senora": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Yo hablo inglés."
+  },
+  "c62_an_senora": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Yo solo hablo español."
+  },
+  "c62_bh_senora": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hablo inglés y español."
+  },
+  "c62_bn_senora": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No hablo inglés."
+  },
+  "c62_no_senora": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Perdón. No entiendo."
+  },
+  "c62_ah_hombre": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: Yo hablo inglés."
+  },
+  "c62_an_hombre": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: Yo solo hablo español."
+  },
+  "c62_bh_hombre": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: Hablo inglés y español."
+  },
+  "c62_bn_hombre": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: No hablo inglés."
+  },
+  "c62_no_hombre": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: Perdón. No entiendo."
+  },
+  "c62_ah_mujer": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Yo hablo inglés."
+  },
+  "c62_an_mujer": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Yo solo hablo español."
+  },
+  "c62_bh_mujer": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Hablo inglés y español."
+  },
+  "c62_bn_mujer": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No hablo inglés."
+  },
+  "c62_no_mujer": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Perdón. No entiendo."
+  },
+  "c62_ah_joven": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Yo hablo inglés."
+  },
+  "c62_an_joven": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Yo solo hablo español."
+  },
+  "c62_bh_joven": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Hablo inglés y español."
+  },
+  "c62_bn_joven": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No hablo inglés."
+  },
+  "c62_no_joven": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: Perdón. No entiendo."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "mediodia",
+    "tablero": 0,
+    "carrito": 1
+   }
+  },
+  {
+   "act": "ir",
+   "a": "carro_borde"
+  },
+  {
+   "act": "gesto",
+   "quien": "piraguero",
+   "que": "senala",
+   "a": "carrito"
+  },
+  {
+   "act": "gesto",
+   "quien": "piraguero",
+   "que": "guino"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "act": "llega",
+   "quien": "turista",
+   "a": "turno"
+  },
+  {
+   "act": "pide62",
+   "quien": "turista",
+   "cosa": "piragua"
+  },
+  {
+   "act": "gesto",
+   "quien": "piraguero",
+   "que": "cabeza"
+  },
+  "c62_pi_perdon",
+  {
+   "ask": "turista",
+   "lead": [],
+   "line": "c62_q_habla",
+   "then": [],
+   "after": [
+    {
+     "act": "gesto",
+     "quien": "turista",
+     "que": "senala",
+     "a": "carrito"
+    }
+   ]
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "llega",
+   "quien": "ana",
+   "a": "ayuda1"
+  },
+  "c62_ana_entiendes",
+  "cq_no",
+  "c62_ana_entiendo",
+  {
+   "act": "traduce62",
+   "quien": "ana"
+  },
+  {
+   "act": "gesto",
+   "quien": "ana",
+   "que": "mira",
+   "a": "turista"
+  },
+  {
+   "act": "gesto",
+   "quien": "ana",
+   "que": "mira",
+   "a": "piraguero"
+  },
+  "c62_ana_turista",
+  {
+   "act": "piragua62",
+   "color": "rojo"
+  },
+  {
+   "act": "moneda"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "pide62",
+   "quien": "turista",
+   "cosa": "guagua"
+  },
+  "c62_pi_ahora_no_se",
+  "c62_luis_no_se",
+  "c62_ana_busca",
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "senala",
+   "a": "entrada"
+  },
+  "c62_ca_parada",
+  {
+   "act": "traduce62",
+   "quien": "ana"
+  },
+  {
+   "act": "gesto",
+   "quien": "turista",
+   "que": "saluda"
+  },
+  {
+   "act": "sale",
+   "quien": "turista"
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "mama_ana",
+   "que": "llama"
+  },
+  {
+   "act": "sale",
+   "quien": "ana"
+  },
+  {
+   "act": "llega",
+   "quien": "turista",
+   "a": "turno"
+  },
+  {
+   "act": "pide62",
+   "quien": "turista",
+   "cosa": "piragua"
+  },
+  {
+   "act": "cola",
+   "n": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "piraguero",
+   "que": "hombros"
+  },
+  "c62_pi_no_se",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "reparte": [
+    "pa",
+    "pb",
+    "pc",
+    "pd"
+   ],
+   "options": [
+    "senor",
+    "senora",
+    "hombre",
+    "mujer",
+    "joven"
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "llega",
+   "quien": "$pa",
+   "a": "ayuda1"
+  },
+  {
+   "act": "llega",
+   "quien": "$pb",
+   "a": "ayuda2"
+  },
+  {
+   "draw": "ha",
+   "options": [
+    "u",
+    "v"
+   ]
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "h",
+    "n"
+   ]
+  },
+  {
+   "calc": "ea",
+   "cond": "ha=u",
+   "then": "$pa",
+   "else": "$pb"
+  },
+  {
+   "calc": "na",
+   "cond": "ha=u",
+   "then": "$pb",
+   "else": "$pa"
+  },
+  "c62_pi_quien",
+  {
+   "if": "qa=h",
+   "then": [
+    "c62_ah_$ea",
+    "c62_an_$na"
+   ],
+   "else": [
+    "c62_an_$na",
+    "c62_ah_$ea"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$pa",
+    "$pb"
+   ],
+   "pick": "$ea",
+   "tests": "ingles",
+   "lock": true,
+   "mudo": true,
+   "lead": [],
+   "line": "c62_pi_quien",
+   "right": [
+    {
+     "act": "ayuda62",
+     "quien": "$ea",
+     "ok": 1
+    },
+    {
+     "act": "traduce62",
+     "quien": "$ea"
+    },
+    {
+     "act": "piragua62"
+    },
+    {
+     "act": "moneda"
+    },
+    {
+     "act": "sale",
+     "quien": "turista"
+    },
+    {
+     "act": "sale",
+     "quien": "$pa"
+    },
+    {
+     "act": "sale",
+     "quien": "$pb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ayuda62",
+     "quien": "$na",
+     "ok": 0
+    },
+    "c62_no_$na",
+    {
+     "act": "se_va62"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "cola",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "cola",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "llega",
+   "quien": "turista",
+   "a": "turno"
+  },
+  {
+   "act": "pide62",
+   "quien": "turista",
+   "cosa": "piragua"
+  },
+  {
+   "act": "llega",
+   "quien": "$pc",
+   "a": "ayuda1"
+  },
+  {
+   "act": "llega",
+   "quien": "$pd",
+   "a": "ayuda2"
+  },
+  {
+   "draw": "hb",
+   "options": [
+    "u",
+    "v"
+   ]
+  },
+  {
+   "draw": "qb",
+   "options": [
+    "h",
+    "n"
+   ]
+  },
+  {
+   "calc": "eb",
+   "cond": "hb=u",
+   "then": "$pc",
+   "else": "$pd"
+  },
+  {
+   "calc": "nb",
+   "cond": "hb=u",
+   "then": "$pd",
+   "else": "$pc"
+  },
+  "c62_pi_ahora_quien",
+  {
+   "if": "qb=h",
+   "then": [
+    "c62_bh_$eb",
+    "c62_bn_$nb"
+   ],
+   "else": [
+    "c62_bn_$nb",
+    "c62_bh_$eb"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$pc",
+    "$pd"
+   ],
+   "pick": "$eb",
+   "tests": "hablo",
+   "lock": true,
+   "mudo": true,
+   "lead": [],
+   "line": "c62_pi_ahora_quien",
+   "right": [
+    {
+     "act": "ayuda62",
+     "quien": "$eb",
+     "ok": 1
+    },
+    {
+     "act": "traduce62",
+     "quien": "$eb"
+    },
+    {
+     "act": "piragua62"
+    },
+    {
+     "act": "moneda"
+    },
+    {
+     "act": "sale",
+     "quien": "turista"
+    },
+    {
+     "act": "sale",
+     "quien": "$pc"
+    },
+    {
+     "act": "sale",
+     "quien": "$pd"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ayuda62",
+     "quien": "$nb",
+     "ok": 0
+    },
+    "c62_no_$nb",
+    {
+     "act": "se_va62"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "cola",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "cola",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 6
+  },
+  {
+   "act": "llega",
+   "quien": "ana",
+   "a": "ayuda1"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "atiende62",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "atiende62",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "atiende62",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "act": "gesto",
+   "quien": "piraguero",
+   "que": "mira",
+   "a": "coqui"
+  },
+  "c62_pi_quieres",
+  "c36_cq_si_por_favor",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final62",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final62",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final62",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  "c62_ana_yo_hablo",
+  "c62_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c62_pi_perdon",
+  "c62_q_habla",
+  "c62_ana_entiendes",
+  "cq_no",
+  "c62_ana_entiendo",
+  "c62_ana_turista",
+  "c62_pi_ahora_no_se",
+  "c62_luis_no_se",
+  "c62_ana_busca",
+  "c62_ca_parada",
+  "c62_pi_no_se",
+  "c62_pi_quien",
+  "c62_ah_mujer",
+  "c62_an_hombre",
+  "c62_pi_ahora_quien",
+  "c62_bn_joven",
+  "c62_bh_senora",
+  "c62_pi_quieres",
+  "c36_cq_si_por_favor",
+  "c62_ana_yo_hablo",
+  "c62_fin"
+ ]
+}

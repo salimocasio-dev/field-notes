@@ -66,6 +66,7 @@ class EsperaOpts {
     this.alias,
     this.mudo = false,
     this.ayuda,
+    this.ronda,
   });
 
   factory EsperaOpts.fromMap(Map<String, dynamic>? o) {
@@ -97,6 +98,10 @@ class EsperaOpts {
   final Turno? turno;
   final String? sign, kind, pick, ayuda;
   final Map<String, dynamic>? alias;
+
+  /// A decision's round: the lines said since its `dots` step, said again in order when he waits (null or one line:
+  /// the `line` alone, as before).
+  final List<String>? ronda;
 }
 
 /// The targets of a marked clip (a `tu_turno` entry): a word and the forms that count.
@@ -273,6 +278,11 @@ class StoryRunner implements SceneHost {
   Map<String, dynamic> W = {'fx': <dynamic>[]};
   @override
   Map<String, dynamic> V = {};
+
+  /// The lines said since the round began (the last `dots` step): when he waits at a decision whose round holds more
+  /// than one line (two people speak, or one says two things), the whole round is said again, in order (page 13,
+  /// orders 58 to 61; before, only the decision's `line`).
+  final List<String> ronda = [];
   @override
   int F = 0;
   @override
@@ -444,6 +454,7 @@ class StoryRunner implements SceneHost {
     _camA = null;
     pending = null;
     V = {};
+    ronda.clear();
     LOG = [];
     for (final k in MEM.keys) {
       V['mem_$k'] = MEM[k];

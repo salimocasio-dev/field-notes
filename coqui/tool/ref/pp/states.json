@@ -148,5 +148,17 @@
   { "id": "cruce/tarde-0", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=tarde&cerrada=0" },
   { "id": "cruce/tarde-1", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=tarde&cerrada=1" },
   { "id": "cruce/ocaso-0", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=ocaso&cerrada=0" },
-  { "id": "cruce/ocaso-1", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=ocaso&cerrada=1" }
+  { "id": "cruce/ocaso-1", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=ocaso&cerrada=1" },
+  { "id": "plaza/manana-0-0", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=manana&tablero=0&carrito=0" },
+  { "id": "plaza/manana-0-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=manana&tablero=0&carrito=1" },
+  { "id": "plaza/manana-1-0", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=manana&tablero=1&carrito=0" },
+  { "id": "plaza/manana-1-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=manana&tablero=1&carrito=1" },
+  { "id": "plaza/mediodia-0-0", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=mediodia&tablero=0&carrito=0" },
+  { "id": "plaza/mediodia-0-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=mediodia&tablero=0&carrito=1" },
+  { "id": "plaza/mediodia-1-0", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=mediodia&tablero=1&carrito=0" },
+  { "id": "plaza/mediodia-1-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=mediodia&tablero=1&carrito=1" },
+  { "id": "plaza/tarde-0-0", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=0&carrito=0" },
+  { "id": "plaza/tarde-0-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=0&carrito=1" },
+  { "id": "plaza/tarde-1-0", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=1&carrito=0" },
+  { "id": "plaza/tarde-1-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=1&carrito=1" }
 ]
