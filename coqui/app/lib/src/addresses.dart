@@ -12,6 +12,10 @@
 /// | a book                         | `#/libro/<id>`              | `BookRoute(id)`                |
 /// | the call for a place           | `#/llamada/<placeId>`       | `CallRoute(placeId)`           |
 /// | the voice test                 | `#/prueba-voz`              | `VoiceTestRoute()`             |
+/// | the language picker            | `#/idiomas`                 | `LanguagesRoute()`             |
+/// | the subscription plans         | `#/planes`                  | `PlansRoute()`                 |
+/// | adding own books/texts         | `#/importar`                | `ImportRoute()`                |
+/// | one place on the map           | `#/lugar/<placeId>`         | `PlaceRoute(placeId)`          |
 ///
 /// Tab ids are `library`, `words`, `map`, `speak`, `me`. Story, book and place ids are the course's (lower-case
 /// letters, digits and hyphens). Anything else is not an address of the app.
@@ -38,6 +42,10 @@ String addressOf(AppRoute route) => switch (route) {
   BookRoute(:final id) => '/libro/$id',
   CallRoute(:final placeId) => '/llamada/$placeId',
   VoiceTestRoute() => '/prueba-voz',
+  LanguagesRoute() => '/idiomas',
+  PlansRoute() => '/planes',
+  ImportRoute() => '/importar',
+  PlaceRoute(:final placeId) => '/lugar/$placeId',
 };
 
 /// The route an address names, or null when it names none.
@@ -57,6 +65,8 @@ AppRoute? routeOf(Uri address) {
         return _id.hasMatch(id) ? BookRoute(id) : null;
       case 'llamada':
         return _id.hasMatch(id) ? CallRoute(id) : null;
+      case 'lugar':
+        return _id.hasMatch(id) ? PlaceRoute(id) : null;
     }
     return null;
   }
@@ -68,6 +78,12 @@ AppRoute? routeOf(Uri address) {
         return const LevelCheckRoute();
       case 'prueba-voz':
         return const VoiceTestRoute();
+      case 'idiomas':
+        return const LanguagesRoute();
+      case 'planes':
+        return const PlansRoute();
+      case 'importar':
+        return const ImportRoute();
     }
   }
   return null;

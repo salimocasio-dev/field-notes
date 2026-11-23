@@ -29,6 +29,10 @@ void main() {
       BookRoute('el-bizcocho'),
       CallRoute('casa'),
       VoiceTestRoute(),
+      LanguagesRoute(),
+      PlansRoute(),
+      ImportRoute(),
+      PlaceRoute('casa'),
     ];
     test(
       'each route has one address, and the address gives the route back',
@@ -45,6 +49,10 @@ void main() {
         );
         expect(addressOf(const CallRoute('casa')), '/llamada/casa');
         expect(addressOf(const VoiceTestRoute()), '/prueba-voz');
+        expect(addressOf(const LanguagesRoute()), '/idiomas');
+        expect(addressOf(const PlansRoute()), '/planes');
+        expect(addressOf(const ImportRoute()), '/importar');
+        expect(addressOf(const PlaceRoute('casa')), '/lugar/casa');
       },
     );
     test('anything else names no route', () {
