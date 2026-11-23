@@ -26,7 +26,8 @@ enum HablarCallState {
   /// Place unlocked and call exists, but locked by the subscription tier entitlement.
   tierLocked,
 
-  /// Place unlocked, waiting for its live call definition in course data.
+  /// Place unlocked, waiting for its live call definition in course data (or a smaller call `CallRoute` cannot
+  /// name yet).
   soon,
 
   /// Locked until the learner finishes the place's stories on the map.
@@ -189,9 +190,14 @@ HablarSnapshot buildHablarSnapshot({
                   pixelAsset: spec.pixelAsset,
                 );
           HablarCallState itemState = placeState;
-          if ((placeState == HablarCallState.ready ||
-                  placeState == HablarCallState.done) &&
-              completedCallIds.contains(spec.id)) {
+          final placeOpen =
+              placeState == HablarCallState.ready ||
+              placeState == HablarCallState.done;
+          if (placeOpen && !spec.isMain) {
+            // `CallRoute` carries only a place (request 25), so a smaller call would start the place's main call:
+            // it is listed, not started, until the route can name it.
+            itemState = HablarCallState.soon;
+          } else if (placeOpen && completedCallIds.contains(spec.id)) {
             itemState = HablarCallState.done;
           } else if (placeState == HablarCallState.done &&
               !completedCallIds.contains(spec.id)) {
@@ -201,6 +207,8 @@ HablarSnapshot buildHablarSnapshot({
               itemState == HablarCallState.ready ||
                   itemState == HablarCallState.done
               ? CallTexts.durationLine(effectiveSpec.minutes)
+              : placeOpen
+              ? HablarTexts.smallerCallSoon
               : placeStatus;
           return HablarCallItem(
             spec: effectiveSpec,
@@ -283,6 +291,9 @@ abstract final class HablarTexts {
   static const doneBadge = 'Done';
   static const mainCallLabel = 'Main call';
   static const shortCallsLabel = 'Shorter practice';
+
+  /// A smaller call of an open place, until `CallRoute` can name it (request 25).
+  static const smallerCallSoon = 'Coming soon';
   static const wordsTitle = 'Words open for speaking';
   static const wordsNone =
       'None yet. A word opens once your ear has held it for a few days.';

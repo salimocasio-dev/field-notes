@@ -25,19 +25,21 @@ String mmss(double seconds) {
   return '${(s ~/ 60).toString().padLeft(2, '0')}:${(s % 60).toString().padLeft(2, '0')}';
 }
 
-/// What the call shows and sends. Menus and prompts are in English; the two
-/// messages to Danny are the page's protocol with the agent, not learner text.
+/// What the call shows and sends. English copied from llamada.js and app.html (v=39); the two
+/// messages to Danny are the page's protocol with the agent (page 05, "How the page and Danny talk"),
+/// not text for the learner.
 abstract final class CallTexts {
   static const startCall = 'Start call';
+
+  /// The Hablar hero's button for a call already done once (order 25).
   static const callAgain = 'Call again';
-  static const calling = 'Calling...';
+  static const calling = 'Calling…';
   static const danny = 'Danny';
   static const yourTurn = 'Your turn';
   static const oneMoment = 'One moment';
   static const help = 'Help';
   static const helpNote = 'Danny will say it again, slowly.';
   static const done = 'Call done';
-  static const comingBackNext = 'Coming back next call';
   static const micOff =
       'The microphone is off. Allow it in your browser to call.';
   static const notStarted =
@@ -45,29 +47,31 @@ abstract final class CallTexts {
   static const libraryFailed =
       'The voice part did not load. Check your connection and try again.';
 
-  /// Shown when this build cannot place a call (`call.available` is false).
+  /// The grey line on a Hablar call whose call this build cannot place (`call.available` is false): the
+  /// words the orchestrator decided. v=39 has no such case (its build always could). The module's `callsLater`
+  /// overrides it.
   static const callsLater = 'Calls with Danny open later.';
 
-  /// Kept only for `CallScreen`'s existing dialog semantics label; never used on Hablar cards.
+  /// "Call Danny", the call screen's dialog label. app.html:458 (since order 25 no Hablar card says it).
   static const callDanny = 'Call Danny';
 
-  /// Protocol message sent to Danny when the learner taps Help.
+  /// What the page sends Danny when the learner taps Help. llamada.js: ayuda
   static const sendHelp = '(ayuda)';
 
-  /// Protocol message sent to Danny to end the call.
+  /// What the page sends Danny to end the call. llamada.js: enviaFin
   static const sendEnd = '(fin)';
 
-  /// `About N min` for pre-call and card duration hints.
+  /// `About N min`, the length on a Hablar call (order 25).
   static String durationLine(int minutes) => 'About $minutes min';
 
-  /// `${place} · about ${minutes} min`, kept for pre-call metadata.
+  /// `${place} · about ${minutes} min`, the line before the call. llamada.js: abre
   static String aboutLine(String place, int minutes) =>
       '$place · about $minutes min';
 
-  /// `N min · M words said`.
+  /// `N min · M words said`. llamada.js: finish
   static String summary(int minutes, int words) =>
       '$minutes min · $words word${words == 1 ? '' : 's'} said';
 
-  /// Strips `<`, `>`, and `&` before rendering a word chip.
-  static String chip(String word) => word.replaceAll(RegExp('[<&>]'), '');
+  /// llamada.js: the word's `<`, `>` and `&` are left out of a chip.
+  static String chip(String word) => word.replaceAll(RegExp('[<>&]'), '');
 }

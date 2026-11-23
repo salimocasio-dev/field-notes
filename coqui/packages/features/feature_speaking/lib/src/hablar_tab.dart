@@ -360,11 +360,14 @@ class _HablarTabState extends State<HablarTab> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              EyebrowLabel(
-                '${HablarTexts.upNext} · ${next.placeNumber}. ${next.place.name}',
+              Expanded(
+                child: EyebrowLabel(
+                  '${HablarTexts.upNext} · ${next.placeNumber}. ${next.place.name}',
+                ),
               ),
-              const Spacer(),
+              const SizedBox(width: 12),
               Text(
                 CallTexts.durationLine(next.spec.minutes),
                 style: CoquiText.smallMuted,
@@ -440,7 +443,14 @@ class _HablarTabState extends State<HablarTab> {
                   style: CoquiText.h2,
                 ),
               ),
-              Text(stop.statusLine, style: CoquiText.smallMuted),
+              const SizedBox(width: 12),
+              Flexible(
+                child: Text(
+                  stop.statusLine,
+                  style: CoquiText.smallMuted,
+                  textAlign: TextAlign.end,
+                ),
+              ),
             ],
           ),
           if (main != null) ...[
@@ -519,7 +529,9 @@ class _HablarTabState extends State<HablarTab> {
                   icon: CoquiIcons.phone,
                   semanticLabel: '${CallTexts.startCall}: ${item.spec.titleEs}',
                   onPressed: () => _startCall(item),
-                ),
+                )
+              else if (item.state == HablarCallState.soon)
+                Text(HablarTexts.smallerCallSoon, style: CoquiText.smallMuted),
             ],
           ),
         ),
