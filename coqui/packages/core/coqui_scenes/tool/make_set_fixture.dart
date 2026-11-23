@@ -8,8 +8,12 @@
 //                                                test/support/fixtures/patio_set_refs.dart (El patio),
 //                                                test/support/fixtures/camino_set_refs.dart (El camino),
 //                                                test/support/fixtures/campo_set_refs.dart (El campo),
-//                                                test/support/fixtures/lago_set_refs.dart (El lago) and
-//                                                test/support/fixtures/banco_set_refs.dart (El banco)
+//                                                test/support/fixtures/lago_set_refs.dart (El lago),
+//                                                test/support/fixtures/banco_set_refs.dart (El banco),
+//                                                test/support/fixtures/mesa_set_refs.dart (La mesa),
+//                                                test/support/fixtures/estufa_set_refs.dart (La estufa),
+//                                                test/support/fixtures/nevera_set_refs.dart (La nevera) and
+//                                                test/support/fixtures/comer_set_refs.dart (A comer)
 //   dart run tool/make_set_fixture.dart --check  fails when a file is not what coqui/ref/pp/<id>/ gives
 import 'dart:convert';
 import 'dart:io';
@@ -58,10 +62,65 @@ void main(List<String> args) {
       constant: 'bancoSetRefs',
       what: "El banco's reached baked states",
     ),
+    'mesa': (
+      file: 'mesa_set_refs.dart',
+      constant: 'mesaSetRefs',
+      what: "La mesa's reached baked states, and the still of El colmado's stall under cocina.no",
+    ),
+    'estufa': (
+      file: 'estufa_set_refs.dart',
+      constant: 'estufaSetRefs',
+      what: "La estufa's baked states",
+    ),
+    'nevera': (
+      file: 'nevera_set_refs.dart',
+      constant: 'neveraSetRefs',
+      what: "La nevera's reached baked states",
+    ),
+    'comer': (
+      file: 'comer_set_refs.dart',
+      constant: 'comerSetRefs',
+      what: "A comer's baked state",
+    ),
     'mostrador': (
       file: 'mostrador_set_refs.dart',
       constant: 'mostradorSetRefs',
       what: "El mostrador's baked states, inside and in the street",
+    ),
+    'estantes': (
+      file: 'estantes_set_refs.dart',
+      constant: 'estantesSetRefs',
+      what: "Los estantes' baked states",
+    ),
+    'frutas': (
+      file: 'frutas_set_refs.dart',
+      constant: 'frutasSetRefs',
+      what: "Las frutas' baked states",
+    ),
+    'caja': (
+      file: 'caja_set_refs.dart',
+      constant: 'cajaSetRefs',
+      what: "La caja's baked states",
+    ),
+    'esquina': (
+      file: 'esquina_set_refs.dart',
+      constant: 'esquinaSetRefs',
+      what: "La esquina's baked states",
+    ),
+    'parada': (
+      file: 'parada_set_refs.dart',
+      constant: 'paradaSetRefs',
+      what: "La parada's baked states",
+    ),
+    'tiendas': (
+      file: 'tiendas_set_refs.dart',
+      constant: 'tiendasSetRefs',
+      what: "Las tiendas' baked states, the row and story 55's buildings",
+    ),
+    'cruce': (
+      file: 'cruce_set_refs.dart',
+      constant: 'cruceSetRefs',
+      what: "El cruce's baked states",
     ),
     'plaza': (
       file: 'plaza_set_refs.dart',

@@ -1,100 +1,11 @@
-// What the tests of the shelf and the reader share: a small course whose pieces the test sets, a clip player that
-// takes the time a clip takes (the fake clock of the test moves it), and a picture the books can show.
+// What the tests of the module share: a small course whose pieces the test sets, and a clip player that takes the
+// time a clip takes (the fake clock of the test moves it).
 import 'dart:async';
-import 'dart:ui' as ui;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:feature_library/feature_library.dart';
-import 'package:feature_library/src/book_line.dart';
-import 'package:feature_library/src/reader.dart';
-import 'package:feature_library/src/shelf.dart';
-import 'package:feature_library/src/shelf_row.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_ui/material_ui.dart';
-
-/// A book's picture, one for all pages (196 x 216, as the books' are).
-late ui.Image testPicture;
-
-/// Makes [testPicture]. Call it in `setUpAll`.
-Future<void> makeTestPicture() async {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  final px = Uint8List(196 * 216 * 4);
-  for (var i = 0; i < 196 * 216; i++) {
-    px[i * 4] = (i % 196) * 255 ~/ 196;
-    px[i * 4 + 1] = 120;
-    px[i * 4 + 2] = 200;
-    px[i * 4 + 3] = 255;
-  }
-  final done = Completer<ui.Image>();
-  ui.decodeImageFromPixels(
-    px,
-    196,
-    216,
-    ui.PixelFormat.rgba8888,
-    done.complete,
-  );
-  testPicture = await done.future;
-}
-
-/// The picture at an address, already decoded; remembers every address asked for.
-class TestImages {
-  final List<String> asked = [];
-
-  /// Pictures at these addresses fail to load.
-  final Set<String> broken = {};
-
-  ImageProvider provider(String url) {
-    asked.add(url);
-    return broken.contains(url) ? _BrokenImage(url) : _TestImage(url);
-  }
-}
-
-class _BrokenImage extends ImageProvider<_BrokenImage> {
-  const _BrokenImage(this.url);
-  final String url;
-
-  @override
-  Future<_BrokenImage> obtainKey(ImageConfiguration configuration) =>
-      SynchronousFuture<_BrokenImage>(this);
-
-  @override
-  ImageStreamCompleter loadImage(
-    _BrokenImage key,
-    ImageDecoderCallback decode,
-  ) => OneFrameImageStreamCompleter(
-    Future<ImageInfo>.error(StateError('no picture at $url')),
-  );
-
-  @override
-  bool operator ==(Object other) => other is _BrokenImage && other.url == url;
-
-  @override
-  int get hashCode => url.hashCode;
-}
-
-class _TestImage extends ImageProvider<_TestImage> {
-  const _TestImage(this.url);
-  final String url;
-
-  @override
-  Future<_TestImage> obtainKey(ImageConfiguration configuration) =>
-      SynchronousFuture<_TestImage>(this);
-
-  @override
-  ImageStreamCompleter loadImage(_TestImage key, ImageDecoderCallback decode) =>
-      OneFrameImageStreamCompleter(
-        SynchronousFuture<ImageInfo>(ImageInfo(image: testPicture.clone())),
-      );
-
-  @override
-  bool operator ==(Object other) => other is _TestImage && other.url == url;
-
-  @override
-  int get hashCode => url.hashCode;
-}
 
 /// A line of a story file.
 Map<String, dynamic> line(String who, String text) => {
@@ -385,8 +296,6 @@ class Rig {
        clips = clips ?? TimedClips(),
        nav = nav ?? FakeNavigator(),
        haptics = haptics ?? FakeHaptics(),
-       images = TestImages(),
-       pictures = FakePictureSource(),
        spaces = spaces ?? {} {
     this.progress = progress ?? FakeProgressStore();
   }
@@ -395,8 +304,6 @@ class Rig {
   final TimedClips clips;
   final FakeNavigator nav;
   final FakeHaptics haptics;
-  final TestImages images;
-  final FakePictureSource pictures;
   final Map<String, FakeKeyValueStore> spaces;
   late final ProgressStore progress;
 
@@ -408,12 +315,8 @@ class Rig {
     clips: clips,
     nav: nav,
     haptics: haptics,
-    pictures: pictures,
     storage: (space) => spaces.putIfAbsent(space, FakeKeyValueStore.new),
   );
-
-  /// The module over this rig's pictures.
-  LibraryModule get module => LibraryModule(imageProvider: images.provider);
 
   /// The progress of a player who has played [ids] (each once) and read [read].
   void played(List<String> ids, {List<String> read = const []}) {
@@ -434,71 +337,6 @@ class Rig {
   }
 }
 
-/// Opens the shelf as the tab of the module.
-Future<void> pumpShelf(
-  WidgetTester tester,
-  Rig rig, {
-  Size size = const Size(412, 915),
-  double ratio = 2.625,
-  Services? services,
-  double textScale = 1,
-}) async {
-  tester.view.physicalSize = size * ratio;
-  tester.view.devicePixelRatio = ratio;
-  addTearDown(tester.view.reset);
-  final s = services ?? rig.services;
-  await tester.pumpWidget(
-    const SizedBox(),
-  ); // a new screen, not the old one given new services
-  await tester.pumpWidget(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      builder: (context, child) => _scaled(context, child, textScale),
-      home: Builder(builder: (context) => rig.module.tab(s)!.builder(context)),
-    ),
-  );
-  await settle(tester);
-}
-
-/// Opens the reader on [book] through the module's `screenFor`.
-Future<void> pumpReader(
-  WidgetTester tester,
-  Rig rig, {
-  String book = 'uno',
-  Size size = const Size(412, 915),
-  double ratio = 2.625,
-  Services? services,
-  double textScale = 0.55,
-}) async {
-  tester.view.physicalSize = size * ratio;
-  tester.view.devicePixelRatio = ratio;
-  addTearDown(tester.view.reset);
-  final s = services ?? rig.services;
-  await tester.pumpWidget(
-    const SizedBox(),
-  ); // a new screen, not the old one given new services
-  await tester.pumpWidget(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      builder: (context, child) => _scaled(context, child, textScale),
-      home: Builder(
-        builder: (context) => rig.module.screenFor(BookRoute(book), s)!,
-      ),
-    ),
-  );
-  await settle(tester);
-}
-
-/// The test font (Ahem) is a full em wide for every letter, about twice a phone's; a text scale of 0.55 gives the
-/// width a phone's font has, for the checks that ask whether things fit side by side.
-Widget _scaled(BuildContext context, Widget? child, double scale) => scale == 1
-    ? child!
-    : MediaQuery(
-        data: MediaQuery.of(context)
-            .copyWith(textScaler: TextScaler.linear(scale)),
-        child: child!,
-      );
-
 /// Lets what loads and decodes finish (the pictures are made by the engine, in real time).
 Future<void> settle(WidgetTester tester) async {
   for (var i = 0; i < 3; i++) {
@@ -513,54 +351,5 @@ Future<void> settle(WidgetTester tester) async {
 /// Moves the test's time on and lets the page see it.
 Future<void> advance(WidgetTester tester, Duration d) async {
   await tester.pump(d);
-  await tester.pump();
-}
-
-/// The views of the lines on the page, in order.
-List<BookLineView> lineViews(WidgetTester tester) =>
-    tester.widgetList<BookLineView>(find.byType(BookLineView)).toList();
-
-/// The ids of the lines that are lit.
-List<String> lit(WidgetTester tester) => [
-  for (final l in lineViews(tester))
-    if (l.lit) l.line.id,
-];
-
-/// The ids of the lines on the page.
-List<String> pageIds(WidgetTester tester) => [
-  for (final l in lineViews(tester)) l.line.id,
-];
-
-/// The reader's state, to read what it is showing.
-BookReader readerWidget(WidgetTester tester) =>
-    tester.widget<BookReader>(find.byType(BookReader));
-
-/// The shelf widget.
-LibraryShelf shelfWidget(WidgetTester tester) =>
-    tester.widget<LibraryShelf>(find.byType(LibraryShelf));
-
-/// The shelf's rows' titles, in order.
-List<String> rowTitles(WidgetTester tester) => [
-  for (final e in tester.widgetList<ShelfEntry>(find.byType(ShelfEntry)))
-    e.title,
-];
-
-/// The Listen or Read button of the row titled [title] (its label is what a screen reader says).
-Finder buttonOf(String label, String title) => find.byWidgetPredicate(
-  (w) => w is ShelfButton && w.semanticLabel == '$label: $title',
-  description: '$label: $title',
-);
-
-/// Where a render box of [finder] is on the screen.
-Rect rectOf(WidgetTester tester, Finder f) => tester.getRect(f);
-
-/// A swipe of [dx] across the middle of the page.
-Future<void> swipe(WidgetTester tester, double dx, {double dy = 0}) async {
-  final size = tester.view.physicalSize / tester.view.devicePixelRatio;
-  final from = Offset(size.width / 2 - dx / 2, size.height * 0.45);
-  final g = await tester.startGesture(from);
-  await g.moveBy(Offset(dx / 2, dy / 2));
-  await g.moveBy(Offset(dx / 2, dy / 2));
-  await g.up();
   await tester.pump();
 }

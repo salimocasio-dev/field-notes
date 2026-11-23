@@ -1,0 +1,634 @@
+{
+ "id": "al-frente-y-detras",
+ "title": "Al frente y detrás",
+ "place": "La calle",
+ "scene": "cruce",
+ "next": "mucho-gusto",
+ "goal": "Pose where papá says (in front of, behind, beside) for the family photo: every wrong place spoils one of the three photos, and the last one is always a good one.",
+ "stake": {
+  "thing": "fotos",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "al lado de",
+  "al frente de",
+  "detrás",
+  "entre"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "familia",
+  "abuela",
+  "abuelo",
+  "mamá",
+  "papá",
+  "bebé",
+  "aquí",
+  "uno",
+  "dos",
+  "tres",
+  "yo",
+  "soy",
+  "mira",
+  "también",
+  "contento",
+  "hay",
+  "ahora"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "abuelo": "n_abuelo",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "bebe": "n_bebe",
+  "perro": "c_n_perro",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "detras": "detrás",
+  "delante": "al frente de",
+  "lado": "al lado de"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c59_familia": {
+   "who": "narr",
+   "text": "La familia está en el cruce. Papá tiene una cámara."
+  },
+  "c59_pa_foto": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Una foto de la familia!"
+  },
+  "c59_pa_luis": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Luis, al frente de Carmen."
+  },
+  "c59_pa_abuela": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Abuela, al frente de mamá."
+  },
+  "c59_quien_delante": {
+   "who": "narr",
+   "text": "¿Quién está al frente de Carmen?"
+  },
+  "c59_detras": {
+   "who": "narr",
+   "text": "Carmen está detrás de Luis. Mamá está detrás de abuela."
+  },
+  "c59_lado_luis": {
+   "who": "narr",
+   "text": "Carmen está al lado de mamá. Y abuela está al lado de Luis."
+  },
+  "c59_quien_lado_luis": {
+   "who": "narr",
+   "text": "¿Quién está al lado de Luis?"
+  },
+  "c59_pa_canelo_aqui": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Canelo, ¡aquí!"
+  },
+  "c59_entre": {
+   "who": "narr",
+   "text": "El bebé está entre abuelo y mamá. Y mamá está entre abuelo y Carmen."
+  },
+  "c59_pa_coqui": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¿Y Coquí? ¿Dónde está Coquí?"
+  },
+  "c59_cq_aqui": {
+   "who": "tu",
+   "text": "¡Aquí!",
+   "tu_turno": [
+    {
+     "palabra": "aquí",
+     "formas": [
+      "aquí",
+      "aqui"
+     ]
+    }
+   ]
+  },
+  "c59_coqui_arbol": {
+   "who": "narr",
+   "text": "Coquí está detrás de papá."
+  },
+  "c59_pa_tres": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Tres fotos. Y Coquí va en las tres."
+  },
+  "c59_uno": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Uno, dos, tres!"
+  },
+  "c59_pa_yo": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Y ahora yo también! Coquí, aquí hay un lugar: ¡entre abuela y Luis!"
+  },
+  "c59_ab_mira": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mira la foto. ¿Quién es?"
+  },
+  "c59_cq_soy": {
+   "who": "tu",
+   "text": "¡Soy yo!",
+   "tu_turno": [
+    {
+     "palabra": "yo",
+     "formas": [
+      "yo"
+     ]
+    }
+   ]
+  },
+  "c59_fin": {
+   "who": "narr",
+   "text": "Coquí está en la foto, entre abuela y Luis. La familia está contenta."
+  },
+  "c59_a_detras_canelo": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Coquí, ¡detrás de Canelo!"
+  },
+  "c59_a_no_detras_canelo": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: No, Coquí. Detrás de Canelo."
+  },
+  "c59_a_delante_canelo": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Coquí, ¡al frente de Canelo!"
+  },
+  "c59_a_no_delante_canelo": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: No, Coquí. Al frente de Canelo."
+  },
+  "c59_b_lado_abuela": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Coquí, ¡al lado de abuela!"
+  },
+  "c59_b_no_lado_abuela": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: No, Coquí. Al lado de abuela."
+  },
+  "c59_b_delante_abuela": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Coquí, ¡al frente de abuela!"
+  },
+  "c59_b_no_delante_abuela": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: No, Coquí. Al frente de abuela."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "hojas",
+   "n": 3
+  },
+  {
+   "act": "ir",
+   "a": "tras_papa"
+  },
+  {
+   "wait": 500
+  },
+  "c59_familia",
+  "c59_pa_foto",
+  {
+   "act": "pone59",
+   "quien": "abuelo",
+   "donde": "fila_atras1"
+  },
+  {
+   "act": "pone59",
+   "quien": "mama",
+   "donde": "fila_atras2"
+  },
+  {
+   "act": "pone59",
+   "quien": "carmen",
+   "donde": "fila_atras3"
+  },
+  {
+   "dots": 1
+  },
+  "c59_pa_luis",
+  {
+   "act": "pone59",
+   "quien": "luis",
+   "donde": "asiento2"
+  },
+  "c59_pa_abuela",
+  {
+   "act": "pone59",
+   "quien": "abuela",
+   "donde": "asiento1"
+  },
+  {
+   "ask": "luis",
+   "lead": [],
+   "line": "c59_quien_delante",
+   "then": [
+    {
+     "act": "gesto",
+     "quien": "luis",
+     "que": "saluda"
+    }
+   ],
+   "after": []
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "hombros"
+  },
+  "c59_detras",
+  {
+   "dots": 3
+  },
+  "c59_lado_luis",
+  {
+   "ask": "abuela",
+   "lead": [],
+   "line": "c59_quien_lado_luis",
+   "then": [],
+   "after": []
+  },
+  "c59_pa_canelo_aqui",
+  {
+   "act": "pone59",
+   "quien": "perro",
+   "donde": "suelo_canelo"
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "pone59",
+   "quien": "bebe",
+   "donde": "bebe_alto"
+  },
+  "c59_entre",
+  {
+   "dots": 5
+  },
+  "c59_pa_coqui",
+  "c59_cq_aqui",
+  "c59_coqui_arbol",
+  "c59_pa_tres",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "da",
+   "options": [
+    "detras",
+    "delante"
+   ]
+  },
+  {
+   "calc": "ca",
+   "cond": "da=delante",
+   "then": "ojos",
+   "else": "espalda"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "detras_canelo",
+    "delante_canelo"
+   ],
+   "pick": "$da_canelo",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c59_a_$da_canelo",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "va59",
+       "donde": "$da_canelo"
+      },
+      "c59_uno",
+      {
+       "act": "foto59",
+       "ok": 1
+      },
+      {
+       "act": "hojas",
+       "n": 2
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "va59",
+       "donde": "$da_canelo"
+      },
+      {
+       "act": "gesto",
+       "quien": "papa",
+       "que": "pulgar"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "va59",
+     "donde": "$x"
+    },
+    "c59_uno",
+    {
+     "act": "foto59",
+     "ok": 0,
+     "como": "$ca"
+    },
+    {
+     "act": "gesto",
+     "quien": "papa",
+     "que": "rie"
+    },
+    {
+     "act": "gesto",
+     "quien": "papa",
+     "que": "no"
+    },
+    {
+     "act": "hojas",
+     "n": 2
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c59_a_no_$da_canelo"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "db",
+   "options": [
+    "lado",
+    "delante"
+   ]
+  },
+  {
+   "calc": "cb",
+   "cond": "db=delante",
+   "then": "ojos",
+   "else": "espalda"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "lado_abuela",
+    "delante_abuela"
+   ],
+   "pick": "$db_abuela",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c59_b_$db_abuela",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "va59",
+       "donde": "$db_abuela"
+      },
+      "c59_uno",
+      {
+       "act": "foto59",
+       "ok": 1
+      },
+      {
+       "act": "hojas",
+       "n": 1
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "va59",
+       "donde": "$db_abuela"
+      },
+      {
+       "act": "gesto",
+       "quien": "papa",
+       "que": "pulgar"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "va59",
+     "donde": "$x"
+    },
+    "c59_uno",
+    {
+     "act": "foto59",
+     "ok": 0,
+     "como": "$cb"
+    },
+    {
+     "act": "gesto",
+     "quien": "papa",
+     "que": "rie"
+    },
+    {
+     "act": "gesto",
+     "quien": "papa",
+     "que": "no"
+    },
+    {
+     "act": "hojas",
+     "n": 1
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c59_b_no_$db_abuela"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  "c59_pa_yo",
+  {
+   "act": "pone59",
+   "quien": "papa",
+   "donde": "papa_rodillas"
+  },
+  {
+   "act": "va59",
+   "donde": "hueco"
+  },
+  {
+   "act": "foto59",
+   "ok": 1
+  },
+  {
+   "act": "hojas",
+   "n": 0
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final59",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final59",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final59",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c59_ab_mira",
+  "c59_cq_soy",
+  "c59_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c59_familia",
+  "c59_pa_foto",
+  "c59_pa_luis",
+  "c59_pa_abuela",
+  "c59_quien_delante",
+  "c59_detras",
+  "c59_lado_luis",
+  "c59_quien_lado_luis",
+  "c59_pa_canelo_aqui",
+  "c59_entre",
+  "c59_pa_coqui",
+  "c59_cq_aqui",
+  "c59_coqui_arbol",
+  "c59_pa_tres",
+  "c59_a_detras_canelo",
+  "c59_uno",
+  "c59_b_lado_abuela",
+  "c59_uno",
+  "c59_pa_yo",
+  "c59_ab_mira",
+  "c59_cq_soy",
+  "c59_fin"
+ ]
+}

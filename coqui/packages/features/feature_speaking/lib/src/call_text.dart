@@ -30,6 +30,9 @@ String mmss(double seconds) {
 /// not text for the learner.
 abstract final class CallTexts {
   static const startCall = 'Start call';
+
+  /// The Hablar hero's button for a call already done once (order 25).
+  static const callAgain = 'Call again';
   static const calling = 'Calling…';
   static const danny = 'Danny';
   static const yourTurn = 'Your turn';
@@ -44,12 +47,12 @@ abstract final class CallTexts {
   static const libraryFailed =
       'The voice part did not load. Check your connection and try again.';
 
-  /// The grey line under "Call Danny" on a card whose call this build cannot place (`call.available` is false): the
+  /// The grey line on a Hablar call whose call this build cannot place (`call.available` is false): the
   /// words the orchestrator decided. v=39 has no such case (its build always could). The module's `callsLater`
   /// overrides it.
   static const callsLater = 'Calls with Danny open later.';
 
-  /// "Call Danny", the Hablar card's title and the call screen's dialog label. app.html:458
+  /// "Call Danny", the call screen's dialog label. app.html:458 (since order 25 no Hablar card says it).
   static const callDanny = 'Call Danny';
 
   /// What the page sends Danny when the learner taps Help. llamada.js: ayuda
@@ -57,6 +60,9 @@ abstract final class CallTexts {
 
   /// What the page sends Danny to end the call. llamada.js: enviaFin
   static const sendEnd = '(fin)';
+
+  /// `About N min`, the length on a Hablar call (order 25).
+  static String durationLine(int minutes) => 'About $minutes min';
 
   /// `${place} · about ${minutes} min`, the line before the call. llamada.js: abre
   static String aboutLine(String place, int minutes) =>

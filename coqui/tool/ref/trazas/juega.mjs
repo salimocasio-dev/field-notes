@@ -1,7 +1,7 @@
 // ref/trazas: every story, picture story and routine played by machine on the OLD page (historia/index.html), three plans each.
 // Also gathers the scene sprites for ref/sprites/escenas (see ../escenas_sprites/). See README.md in this folder.
 //
-//   node coqui/tool/ref/trazas/juega.mjs                       all 51 files x 3 plans; writes coqui/ref/trazas/ and coqui/ref/sprites/escenas/
+//   node coqui/tool/ref/trazas/juega.mjs                       all 57 files x 3 plans; writes coqui/ref/trazas/ and coqui/ref/sprites/escenas/
 //   node coqui/tool/ref/trazas/juega.mjs --only la-lluvia      one story, three plans, into a scratch folder (--out DIR, default: a temp folder); nothing in the repo changes
 //   node coqui/tool/ref/trazas/juega.mjs --out DIR             everything, into DIR instead of the repo
 //   node coqui/tool/ref/trazas/juega.mjs --replace STORY       one story, three plans, put in place in the repo: its three files and its entries of runs.json (nothing else, not the sprites)
@@ -33,7 +33,7 @@ const OUT = SCRATCH ? path.resolve(arg("--out", null) || fs.mkdtempSync(path.joi
 const SPR_OUT = SCRATCH ? path.join(OUT, "_sprites") : path.join(ROOT, "coqui/ref/sprites/escenas");
 const sha = b => crypto.createHash("sha256").update(b).digest("hex");
 
-// The 51 files the story page plays: CURSO's cuentos, dibujos and haz, from curso.js as it is.
+// The files the story page plays (57 today): CURSO's cuentos, dibujos and haz, from curso.js as it is.
 function course() {
   const ctx = {};
   vm.createContext(ctx);

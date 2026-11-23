@@ -1,0 +1,660 @@
+{
+ "id": "izquierda-o-derecha",
+ "title": "¿Izquierda o derecha?",
+ "place": "La calle",
+ "scene": "cruce",
+ "next": "sigue-derecho",
+ "goal": "Fetch a kite from the tienda and a loaf from the colmado by asking the way at the crossing, and keep abuela's bottle of water: every wrong street ends with the frog tripping on her bag and a part of the water running out.",
+ "stake": {
+  "thing": "agua",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "izquierda",
+  "derecha",
+  "dobla",
+  "perdón"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "calle",
+  "correo",
+  "farmacia",
+  "tienda",
+  "colmado",
+  "¿para dónde vas?",
+  "voy",
+  "vas",
+  "yo",
+  "tú",
+  "señor",
+  "señora",
+  "agua",
+  "cansado",
+  "después",
+  "toma",
+  "gracias",
+  "casa",
+  "ahora",
+  "aquí"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "carmen": "p_n_carmen"
+ },
+ "palabras": {
+  "izq": "izquierda",
+  "der": "derecha"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c57_cruce": {
+   "who": "narr",
+   "text": "Abuela y Coquí están en el cruce."
+  },
+  "c57_ab_carta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Tengo una carta."
+  },
+  "c57_pepe_hola": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Hola! Coquí, ¿para dónde vas?"
+  },
+  "c57_cq_correo": {
+   "who": "tu",
+   "text": "¡Para el correo!",
+   "tu_turno": [
+    {
+     "palabra": "correo",
+     "formas": [
+      "correo"
+     ]
+    }
+   ]
+  },
+  "c57_cq_pepe": {
+   "who": "tu",
+   "text": "Perdón, don Pepe. ¿Dónde está el correo?"
+  },
+  "c57_pepe_izq": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Dobla a la izquierda, Coquí. A la izquierda."
+  },
+  "c57_para_donde": {
+   "who": "narr",
+   "text": "¿Para dónde dobla Coquí?"
+  },
+  "c51_despues": {
+   "who": "narr",
+   "text": "Y después..."
+  },
+  "c57_ab_correo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡El correo está a la izquierda!"
+  },
+  "c57_cq_sra": {
+   "who": "tu",
+   "text": "Perdón, señora. ¿Dónde está la farmacia?"
+  },
+  "c57_sra_der": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Dobla a la derecha. Sí, a la derecha."
+  },
+  "c57_ab_farmacia": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡La farmacia está a la derecha!"
+  },
+  "c57_ab_calor": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Qué calor! Estoy cansada. Coquí, ¿vas tú?"
+  },
+  "c57_cq_voy": {
+   "who": "tu",
+   "text": "¡Sí, yo voy!",
+   "tu_turno": [
+    {
+     "palabra": "voy",
+     "formas": [
+      "voy"
+     ]
+    }
+   ]
+  },
+  "c57_ab_gracias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Gracias, Coquí! Toma agua."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias"
+     ]
+    }
+   ]
+  },
+  "c57_ab_casa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ahora, a casa."
+  },
+  "c57_cq_senor_tienda": {
+   "who": "tu",
+   "text": "Perdón, señor. ¿Dónde está la tienda?"
+  },
+  "c57_cq_senor_colmado": {
+   "who": "tu",
+   "text": "Perdón, señor. ¿Dónde está el colmado?"
+  },
+  "c57_senor_der": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Dobla a la derecha."
+  },
+  "c57_senor_no_der": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Dobla a la derecha."
+  },
+  "c57_senor_izq": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Dobla a la izquierda."
+  },
+  "c57_senor_no_izq": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Dobla a la izquierda."
+  },
+  "c57_cq_carmen_tienda": {
+   "who": "tu",
+   "text": "Carmen, ¿dónde está la tienda?"
+  },
+  "c57_cq_carmen_colmado": {
+   "who": "tu",
+   "text": "Carmen, ¿dónde está el colmado?"
+  },
+  "c57_carmen_der": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Dobla a la derecha."
+  },
+  "c57_carmen_no_der": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Dobla a la derecha."
+  },
+  "c57_carmen_izq": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Dobla a la izquierda."
+  },
+  "c57_carmen_no_izq": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No, Coquí. Dobla a la izquierda."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "mediodia"
+   }
+  },
+  {
+   "act": "botella",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  "c57_cruce",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "calle_izq"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "calle_der"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "calle_recta"
+  },
+  "c57_ab_carta",
+  {
+   "act": "pasa",
+   "quien": "pepe"
+  },
+  "c57_pepe_hola",
+  "c57_cq_correo",
+  {
+   "dots": 1
+  },
+  "c57_cq_pepe",
+  {
+   "act": "senala",
+   "quien": "pepe",
+   "a": "izq"
+  },
+  {
+   "set": {
+    "twinkle": "calle_izq"
+   }
+  },
+  "c57_pepe_izq",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "calle_izq",
+   "lead": [],
+   "line": "c57_para_donde",
+   "then": [
+    {
+     "act": "gesto",
+     "quien": "abuela",
+     "que": "manos"
+    },
+    "c57_ab_correo"
+   ],
+   "after": [
+    {
+     "act": "toma",
+     "quien": "abuela",
+     "por": "izq",
+     "suelto": 1
+    },
+    "c51_despues",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "pasa",
+   "quien": "senora"
+  },
+  "c57_cq_sra",
+  {
+   "act": "senala",
+   "quien": "senora",
+   "a": "der"
+  },
+  {
+   "set": {
+    "twinkle": "calle_der"
+   }
+  },
+  "c57_sra_der",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "calle_der",
+   "lead": [],
+   "line": "c57_para_donde",
+   "then": [
+    {
+     "act": "gesto",
+     "quien": "abuela",
+     "que": "manos"
+    },
+    "c57_ab_farmacia"
+   ],
+   "after": [
+    {
+     "act": "toma",
+     "quien": "abuela",
+     "por": "der",
+     "trae": "farmacia",
+     "suelto": 1
+    },
+    "c51_despues",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "sienta"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "abanica"
+  },
+  "c57_ab_calor",
+  "c57_cq_voy",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "la",
+   "options": [
+    "tienda",
+    "colmado"
+   ],
+   "other": "lb"
+  },
+  {
+   "draw": "da",
+   "options": [
+    "der",
+    "izq"
+   ],
+   "other": "oa"
+  },
+  {
+   "act": "pasa",
+   "quien": "senor"
+  },
+  "c57_cq_senor_$la",
+  {
+   "decide": "do",
+   "options": [
+    "calle_izq",
+    "calle_der"
+   ],
+   "pick": "calle_$da",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c57_senor_$da",
+   "right": [
+    {
+     "act": "toma",
+     "quien": "coqui",
+     "por": "$da",
+     "trae": "$la",
+     "suelto": 1
+    },
+    "c51_despues",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "vuelve",
+     "quien": "coqui",
+     "por": "$oa"
+    },
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "lengua"
+    },
+    {
+     "act": "derrama57"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "botella",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "botella",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c57_senor_no_$da"
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "db",
+   "options": [
+    "izq",
+    "der"
+   ],
+   "other": "ob"
+  },
+  {
+   "act": "pasa",
+   "quien": "carmen"
+  },
+  "c57_cq_carmen_$lb",
+  {
+   "decide": "do",
+   "options": [
+    "calle_izq",
+    "calle_der"
+   ],
+   "pick": "calle_$db",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c57_carmen_$db",
+   "right": [
+    {
+     "act": "toma",
+     "quien": "carmen",
+     "por": "$db"
+    },
+    {
+     "act": "toma",
+     "quien": "coqui",
+     "por": "$db",
+     "trae": "$lb",
+     "suelto": 1
+    },
+    "c51_despues",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "vuelve",
+     "quien": "coqui",
+     "por": "$ob"
+    },
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "lengua"
+    },
+    {
+     "act": "derrama57"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "botella",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "botella",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c57_carmen_no_$db"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 6
+  },
+  {
+   "act": "ir",
+   "a": "asiento_plaza"
+  },
+  "c57_ab_gracias",
+  "cq_gracias_abuela",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final57",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final57",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final57",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  "c57_ab_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c57_cruce",
+  "c57_ab_carta",
+  "c57_pepe_hola",
+  "c57_cq_correo",
+  "c57_cq_pepe",
+  "c57_pepe_izq",
+  "c57_para_donde",
+  "c51_despues",
+  "c57_ab_correo",
+  "c57_cq_sra",
+  "c57_sra_der",
+  "c57_para_donde",
+  "c51_despues",
+  "c57_ab_farmacia",
+  "c57_ab_calor",
+  "c57_cq_voy",
+  "c57_cq_senor_tienda",
+  "c57_senor_der",
+  "c51_despues",
+  "c57_cq_carmen_colmado",
+  "c57_carmen_izq",
+  "c51_despues",
+  "c57_ab_gracias",
+  "cq_gracias_abuela",
+  "c57_ab_casa"
+ ]
+}

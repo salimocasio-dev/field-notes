@@ -1,0 +1,76 @@
+{
+  "plots": [
+    {
+      "title": "Tengo sed",
+      "beats": [
+        [
+          "—Tengo sed, mamá.\n—Aquí hay agua. Toma.\n—No, gracias. Quiero jugo.",
+          "—Mamá, tengo sed. Quiero jugo.\n—Aquí hay agua. Toma.\n—No, mamá. Quiero jugo."
+        ],
+        [
+          "—Aquí no hay jugo.\n—Mamá, ¿dónde está papá?\n—Papá está allá.",
+          "—No hay jugo aquí. Hay agua.\n—¿Dónde está papá, mamá?\n—Papá está allá."
+        ],
+        [
+          "—Papá, tengo sed.\n—Aquí hay jugo. Toma.\n—¡Gracias, papá! ¿Y tú?\n—Yo también tengo sed.\n—Toma, papá.",
+          "—Papá, ¿hay jugo? Tengo sed.\n—Sí, aquí hay jugo. Toma.\n—¡Gracias, papá!\n—De nada."
+        ]
+      ]
+    },
+    {
+      "title": "La puerta",
+      "beats": [
+        [
+          "Mamá está en la casa. Yo estoy en la sala con mi perro. El perro oye algo en la puerta. Yo también lo oigo.",
+          "Estoy en la sala con mi perro. Mamá está en la casa. Oigo algo en la puerta. Mi perro va a la puerta."
+        ],
+        [
+          "Voy a la puerta. Miro por la ventana. No veo a nadie. Miro hacia abajo. Hay un gato frente a la puerta.",
+          "El perro mira la puerta. Yo miro por la ventana y no veo nada. Miro hacia abajo. Hay un gato frente a la puerta."
+        ],
+        [
+          "Abro la puerta. El gato entra y el perro se queda quieto. Mamá viene a la sala. El gato va con ella. ¡Es el gato de mamá!",
+          "Abro la puerta y el gato entra. El perro se sienta. Mamá sale de la cocina y llama al gato. El gato va directo hacia mamá."
+        ]
+      ]
+    },
+    {
+      "title": "Un vaso de agua",
+      "beats": [
+        [
+          "Quiero agua. Voy a la cocina y busco un vaso. No hay vasos en la mesa. Tampoco hay vasos al lado del fregadero.",
+          "Estoy en la cocina. Tengo sed y quiero agua. Miro la mesa. Hay un plato, pero no hay un vaso. Busco en el fregadero."
+        ],
+        [
+          "Mi hermano entra a la cocina. Tiene un vaso en la mano. Le pido el vaso. Me enseña el vaso. Está lleno de agua.",
+          "Llega mi hermano con un vaso. Yo le digo que tengo sed. Me enseña su vaso. Está lleno de agua."
+        ],
+        [
+          "Abre el gabinete. Hay otro vaso ahí. Me da el vaso. Lo lleno de agua. Nos sentamos juntos a tomar agua.",
+          "Mi hermano abre el gabinete y saca otro vaso. Yo le doy las gracias. Lleno mi vaso con agua y me siento con él."
+        ]
+      ]
+    },
+    {
+      "title": "El jugo",
+      "beats": [
+        [
+          "Antes de salir, abro la nevera para buscar el jugo de china. No queda nada. Mi hermano tomó el último vaso y dejó la botella vacía.",
+          "Abro la nevera. Quiero jugo de china, pero encuentro la botella vacía. Esta mañana mi hermano se tomó el último vaso."
+        ],
+        [
+          "Salgo para el colmado. En la acera me encuentro con mi hermano. Lleva una bolsa y camina rápido. Le pregunto de dónde viene.",
+          "Voy al colmado a buscar más jugo. En la esquina veo a mi hermano. Trae una bolsa. Me ve y se para al lado mío."
+        ],
+        [
+          "Me dice que viene del colmado. Abre la bolsa. Adentro hay una botella de jugo de china. Lo compró para mí. Volvemos a casa. Cada uno se sirve un vaso.",
+          "Mi hermano levanta la bolsa. Acaba de comprar el jugo de china. Pensó que yo iba a querer un vaso. Doy la vuelta y camino a casa con él. Esta vez nos servimos juntos."
+        ],
+        [
+          "Llega mamá y pregunta por el jugo. Queda un poco en la botella. Mi hermano me pasa la botella. Yo le sirvo el jugo a mamá. El último vaso es para ella.",
+          "Mamá entra a la cocina. Abre la nevera y busca la botella. Le digo que la tenemos en la mesa. Queda justo para otro vaso. Mi hermano se lo sirve a mamá antes de que yo diga nada."
+        ]
+      ]
+    }
+  ]
+}

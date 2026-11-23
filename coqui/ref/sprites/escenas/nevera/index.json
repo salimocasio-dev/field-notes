@@ -12,7 +12,7 @@
    "caller": "escenas/nevera.js:142:170 gente",
    "maker": "escenas/nevera.js:142:192",
    "firstRun": "no-hay-leche/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -24,7 +24,7 @@
    "caller": "escenas/nevera.js:142:170 gente",
    "maker": "escenas/nevera.js:142:192",
    "firstRun": "no-hay-leche/right",
-   "runs": 6,
+   "runs": 7,
    "variants": 1
   },
   {
@@ -108,7 +108,7 @@
    "caller": "escenas/nevera.js:152:34 rana",
    "maker": "escenas/nevera.js:152:61",
    "firstRun": "no-hay-leche/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -132,7 +132,7 @@
    "caller": "escenas/nevera.js:152:34 rana",
    "maker": "escenas/nevera.js:152:61",
    "firstRun": "no-hay-leche/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -156,7 +156,7 @@
    "caller": "escenas/nevera.js:156:15 Object.draw",
    "maker": "escenas/nevera.js:22:26 fondo",
    "firstRun": "no-hay-leche/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -204,7 +204,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "no-hay-leche/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -396,7 +396,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -456,7 +456,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -468,7 +468,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -516,7 +516,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -792,7 +792,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -876,7 +876,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -888,7 +888,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -912,7 +912,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -924,7 +924,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -960,7 +960,19 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/wrong",
-   "runs": 2,
+   "runs": 5,
+   "variants": 1
+  },
+  {
+   "key": "nvvistaazul:1",
+   "file": "nvvistaazul~3a1.rgba",
+   "w": 24,
+   "h": 24,
+   "sha256": "a20d1059ae4c56c3d4d3b4694a767d02ecd5ac22f5dfe3fa96c0d978d4a29634",
+   "caller": "escenas/nevera.js:102:19 cosa",
+   "maker": "escenas/nevera.js:102:70",
+   "firstRun": "h-nevera/right",
+   "runs": 3,
    "variants": 1
   },
   {
@@ -984,7 +996,7 @@
    "caller": "escenas/nevera.js:102:19 cosa",
    "maker": "escenas/nevera.js:102:70",
    "firstRun": "jugo-de-china/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -1204,6 +1216,7 @@
     "nvvistaamarillo:0",
     "nvvistaamarillo:1",
     "nvvistaazul:0",
+    "nvvistaazul:1",
     "nvvistarojo:0",
     "nvvistarojo:1",
     "nvvistaverde:0",

@@ -1,0 +1,689 @@
+{
+ "id": "se-monta-y-se-baja",
+ "title": "Se monta y se baja",
+ "place": "La calle",
+ "scene": "parada",
+ "next": "cerca-y-lejos",
+ "goal": "Open the right door for each group, so the three warm rolls on abuela's window sill are still there for the picnic and Canelo, under the bench, gets none.",
+ "stake": {
+  "thing": "panes",
+  "steps": 2
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "se monta",
+  "se baja",
+  "llega",
+  "se va"
+ ],
+ "formas_foco": {
+  "se monta": [
+   "móntate"
+  ]
+ },
+ "back_again": [
+  "guagua",
+  "parada",
+  "gente",
+  "ahora",
+  "después",
+  "va",
+  "pan",
+  "huele",
+  "rico",
+  "tengo hambre",
+  "¿qué quieres?",
+  "abuela",
+  "señor",
+  "sí",
+  "parque",
+  "gracias"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "senor": "b_n_senor",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "sube": "se monta",
+  "baja": "se baja"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "c52_mira": {
+   "who": "narr",
+   "text": "Mira. Llega una guagua."
+  },
+  "c52_carmen_baja": {
+   "who": "narr",
+   "text": "Carmen se baja de la guagua."
+  },
+  "c52_donde_carmen": {
+   "who": "narr",
+   "text": "¿Por dónde se baja Carmen?"
+  },
+  "c52_se_va": {
+   "who": "narr",
+   "text": "La guagua se va."
+  },
+  "c52_otra": {
+   "who": "narr",
+   "text": "Ahora llega otra guagua. Va al parque."
+  },
+  "c52_ab_monta": {
+   "who": "narr",
+   "text": "Abuela se monta en la guagua."
+  },
+  "c52_donde_abuela": {
+   "who": "narr",
+   "text": "¿Por dónde se monta abuela?"
+  },
+  "c52_pan_huele": {
+   "who": "narr",
+   "text": "El pan huele rico. Canelo tiene hambre."
+  },
+  "c52_senor_baja": {
+   "who": "narr",
+   "text": "El señor se baja de la guagua."
+  },
+  "c52_donde_senor": {
+   "who": "narr",
+   "text": "¿Por dónde se baja el señor?"
+  },
+  "c52_senor_gracias": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Gracias! ¿Vas al parque, Coquí?"
+  },
+  "cq_si": {
+   "who": "tu",
+   "text": "¡Sí!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    }
+   ]
+  },
+  "c52_ahora_monta_luis": {
+   "who": "narr",
+   "text": "Ahora se monta Luis."
+  },
+  "c52_donde_luis": {
+   "who": "narr",
+   "text": "¿Por dónde se monta Luis?"
+  },
+  "c52_ch_muy_bien": {
+   "who": "narr",
+   "habla": "chofer",
+   "text": "El chofer dice: ¡Muy bien, Coquí! Ahora tú."
+  },
+  "c52_llega_otra": {
+   "who": "narr",
+   "text": "Llega otra guagua."
+  },
+  "c52_ahora_baja": {
+   "who": "narr",
+   "habla": "chofer",
+   "text": "El chofer dice: Ahora se baja la gente."
+  },
+  "c52_ahora_sube": {
+   "who": "narr",
+   "habla": "chofer",
+   "text": "El chofer dice: Ahora se monta la gente."
+  },
+  "c52_no_baja": {
+   "who": "narr",
+   "habla": "chofer",
+   "text": "El chofer dice: No, Coquí. Ahora se baja la gente."
+  },
+  "c52_no_sube": {
+   "who": "narr",
+   "habla": "chofer",
+   "text": "El chofer dice: No, Coquí. Ahora se monta la gente."
+  },
+  "c52_ch_coqui_monta": {
+   "who": "narr",
+   "habla": "chofer",
+   "text": "El chofer dice: ¡Coquí! ¡Móntate!"
+  },
+  "c52_ab_quieres": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Qué quieres, Coquí?"
+  },
+  "c52_cq_pan": {
+   "who": "tu",
+   "text": "¡Pan, por favor!",
+   "tu_turno": [
+    {
+     "palabra": "pan",
+     "formas": [
+      "pan"
+     ]
+    }
+   ]
+  },
+  "c52_se_va_parada": {
+   "who": "narr",
+   "text": "La guagua se va de la parada."
+  },
+  "c52_despues": {
+   "who": "narr",
+   "text": "Y después llega al parque."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "bordillo"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "act": "guagua",
+   "k": "toldo",
+   "que": "llega",
+   "a": "parada1"
+  },
+  "c52_mira",
+  {
+   "act": "llama52",
+   "quien": "carmen"
+  },
+  {
+   "set": {
+    "twinkle": "puerta_baja"
+   }
+  },
+  "c52_carmen_baja",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "puerta_baja",
+   "lead": [],
+   "line": "c52_donde_carmen",
+   "then": [
+    {
+     "act": "guagua",
+     "k": "toldo",
+     "que": "sale",
+     "a": "parada1"
+    },
+    "c52_se_va"
+   ],
+   "after": [
+    {
+     "act": "puerta",
+     "cual": "puerta_baja",
+     "abre": 1
+    },
+    {
+     "act": "baja",
+     "quien": "carmen",
+     "k": "toldo"
+    }
+   ]
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "guagua",
+   "k": "arbol",
+   "que": "llega",
+   "a": "parada1"
+  },
+  "c52_otra",
+  {
+   "set": {
+    "twinkle": "puerta_sube"
+   }
+  },
+  "c52_ab_monta",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "puerta_sube",
+   "lead": [],
+   "line": "c52_donde_abuela",
+   "then": [
+    "c52_pan_huele"
+   ],
+   "after": [
+    {
+     "act": "puerta",
+     "cual": "puerta_sube",
+     "abre": 1
+    },
+    {
+     "act": "sube",
+     "quien": "abuela",
+     "k": "arbol"
+    },
+    {
+     "act": "panes",
+     "n": 3
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "llama52",
+   "quien": "senor"
+  },
+  "c52_senor_baja",
+  {
+   "ask": "puerta_baja",
+   "lead": [],
+   "line": "c52_donde_senor",
+   "then": [
+    "c52_senor_gracias",
+    "cq_si"
+   ],
+   "after": [
+    {
+     "act": "puerta",
+     "cual": "puerta_baja",
+     "abre": 1
+    },
+    {
+     "act": "baja",
+     "quien": "senor",
+     "k": "arbol"
+    },
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "salta"
+    },
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "mira",
+     "a": "guagua_a"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  "c52_ahora_monta_luis",
+  {
+   "ask": "puerta_sube",
+   "lead": [],
+   "line": "c52_donde_luis",
+   "then": [],
+   "after": [
+    {
+     "act": "sube",
+     "quien": "luis",
+     "k": "arbol"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "chofer",
+   "que": "pulgar"
+  },
+  "c52_ch_muy_bien",
+  {
+   "act": "guagua",
+   "k": "casa",
+   "que": "llega",
+   "a": "parada2"
+  },
+  "c52_llega_otra",
+  {
+   "act": "gente52",
+   "que": "viene"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "dice",
+   "options": [
+    "sube",
+    "baja"
+   ]
+  },
+  {
+   "calc": "k",
+   "cond": "dice=baja",
+   "then": "puerta_baja",
+   "else": "puerta_sube"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "puerta_sube",
+    "puerta_baja"
+   ],
+   "pick": "$k",
+   "tests": "$dice",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    "c52_ahora_$dice"
+   ],
+   "line": "c52_ahora_$dice",
+   "right": [
+    {
+     "act": "puerta",
+     "cual": "$k",
+     "abre": 1
+    },
+    {
+     "if": "dice=baja",
+     "then": [
+      {
+       "act": "gente52",
+       "que": "baja"
+      }
+     ],
+     "else": [
+      {
+       "act": "gente52",
+       "que": "sube"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "if": "dice=baja",
+     "then": [
+      {
+       "act": "gente52",
+       "que": "sube"
+      }
+     ],
+     "else": [
+      {
+       "act": "gente52",
+       "que": "baja"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "puerta",
+     "cual": "$x",
+     "abre": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "chofer",
+     "que": "silba"
+    },
+    {
+     "act": "perro52"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c52_no_$dice"
+   ]
+  },
+  {
+   "act": "guagua",
+   "k": "casa",
+   "que": "sale",
+   "a": "parada2"
+  },
+  "c52_se_va",
+  {
+   "act": "gente52",
+   "que": "viene"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "dice",
+   "options": [
+    "sube",
+    "baja"
+   ]
+  },
+  {
+   "calc": "k",
+   "cond": "dice=baja",
+   "then": "puerta_baja",
+   "else": "puerta_sube"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "puerta_sube",
+    "puerta_baja"
+   ],
+   "pick": "$k",
+   "tests": "$dice",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    "c52_ahora_$dice"
+   ],
+   "line": "c52_ahora_$dice",
+   "right": [
+    {
+     "act": "puerta",
+     "cual": "$k",
+     "abre": 1
+    },
+    {
+     "if": "dice=baja",
+     "then": [
+      {
+       "act": "gente52",
+       "que": "baja"
+      }
+     ],
+     "else": [
+      {
+       "act": "gente52",
+       "que": "sube"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "if": "dice=baja",
+     "then": [
+      {
+       "act": "gente52",
+       "que": "sube"
+      }
+     ],
+     "else": [
+      {
+       "act": "gente52",
+       "que": "baja"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "puerta",
+     "cual": "$x",
+     "abre": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "chofer",
+     "que": "silba"
+    },
+    {
+     "act": "perro52"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c52_no_$dice"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  "c52_ch_coqui_monta",
+  {
+   "act": "sube",
+   "quien": "coqui",
+   "k": "arbol"
+  },
+  "c52_ab_quieres",
+  "c52_cq_pan",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final52",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final52",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final52",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c52_se_va_parada",
+  {
+   "act": "guagua",
+   "k": "arbol",
+   "que": "sale",
+   "a": "parada1"
+  },
+  "c52_despues",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c52_mira",
+  "c52_carmen_baja",
+  "c52_donde_carmen",
+  "c52_se_va",
+  "c52_otra",
+  "c52_ab_monta",
+  "c52_donde_abuela",
+  "c52_pan_huele",
+  "c52_senor_baja",
+  "c52_donde_senor",
+  "c52_senor_gracias",
+  "cq_si",
+  "c52_ahora_monta_luis",
+  "c52_donde_luis",
+  "c52_ch_muy_bien",
+  "c52_llega_otra",
+  "c52_ahora_baja",
+  "c52_se_va",
+  "c52_ahora_sube",
+  "c52_ch_coqui_monta",
+  "c52_ab_quieres",
+  "c52_cq_pan",
+  "c52_se_va_parada",
+  "c52_despues"
+ ]
+}

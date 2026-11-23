@@ -391,7 +391,9 @@ class SheetPicture {
   );
 
   final String name;
-  final List<double> world;
+
+  /// Its centre in the world; null for La nevera's pictures (order 39b), given by their `screen` and `crop` only.
+  final List<double>? world;
   final List<double> screen;
   final int zoom;
 
@@ -470,7 +472,12 @@ class RemapTo {
     this.screen,
     this.on,
     this.onWorld,
+    this.scene,
   });
+
+  /// La mesa's (order 37b): the scene whose picture the place is in (`to.scene`: `frutas`, El colmado's stall under
+  /// cual-mesa's cocina.no), its [spot] that scene's; null for a place in this scene's own picture.
+  final String? scene;
 
   /// El banco's (order 36b): the surface under the place (`pave`, `seat`, `sky`, `out`: the paving, a bench's seat, the
   /// ground under a point in the air, the path beyond the gate) and its world point there; the place today is
@@ -874,6 +881,7 @@ class SheetTalk {
     this.raw, {
     this.boardRect,
     this.heights = const {},
+    this.abuelaHead,
   });
 
   final String? what, top, faces;
@@ -881,6 +889,10 @@ class SheetTalk {
   /// El banco's (order 36b): each person's sprite's height by `<who>.<sent>` (`luis.0`: standing, `luis.1`: sitting),
   /// from which the sheet's words in [faces] place the face. Empty for the earlier sheets ([heads]).
   final Map<String, int> heights;
+
+  /// La estufa's (order 38b): how far abuela's head is off her x the way she faces (`abuelaHead`; its [heights] are by
+  /// `<who>` alone); null for the other sheets.
+  final int? abuelaHead;
 
   /// El campo's (order 34b): its one corner card's rectangle in the display (`board`: W.tarjeta, the rounds card),
   /// `[x, y, w, h]`, plus the view's x0 on the picture; null for a sheet that gives its cards in words ([boards]).
@@ -1366,11 +1378,13 @@ class Sheet {
     this.flowerLeaves,
     this.sevan,
     this.helps,
+    this.faults = const [],
     this.frontWaterDepth,
     this.frontTags = const [],
     this.light = const {},
     this.patch = const {},
     this.carro,
+    this.storyMoves = const [],
   });
 
   /// Parses the text of a sheet. Throws [SheetError], naming where, when it is not a sheet.
@@ -1421,7 +1435,10 @@ class Sheet {
       return [OX + u * S0, OY + (v * SIN - w[2] * COS) * S0];
     }
 
-    final pointsRaw = _obj(_need(m, 'points', at), '$at.points');
+    // A comer's sheet (order 40b) names no point: every place it uses is a spot, a move's or the code's
+    final pointsRaw = m.containsKey('points')
+        ? _obj(m['points'], '$at.points')
+        : const <String, dynamic>{};
     // El banco's `smoothing` (order 36b) is words only: the scene never turns smoothing on
     final smoothingRaw = m.containsKey('smoothing') && m['smoothing'] is! String
         ? _obj(m['smoothing'], '$at.smoothing')
@@ -1462,6 +1479,8 @@ class Sheet {
       'light',
       'patch',
       'carro',
+      'faults',
+      'storyMoves',
     };
     // El patio's `behind` (a part: what is drawn behind the set) is not El balcón's (a number, old and new)
     final behindPart =
@@ -1556,7 +1575,21 @@ class Sheet {
       remapTable: _readRemapTable(_need(m, 'remap', at), '$at.remap'),
       pictures: pictures,
       level: _readLevelList(_need(m, 'level', at), '$at.level', pictures),
-      clips: _byName(_need(m, 'clips', at), '$at.clips', _readClip),
+      // La estufa's window (order 38b) is a clip the old code made that the sheet no longer makes (`how`, no `world`):
+      // kept in [raw] only
+      // A comer's (order 40b) says in words that there is none (`none`): kept in [raw] only
+      clips: {
+        for (final e in _byName(
+          {
+            for (final e in _obj(_need(m, 'clips', at), '$at.clips').entries)
+              if (e.value is! String) e.key: e.value,
+          },
+          '$at.clips',
+          (n, v, a) => v,
+        ).entries)
+          if (e.value.containsKey('world') || !e.value.containsKey('how'))
+            e.key: _readClip(e.key, e.value, '$at.clips.${e.key}'),
+      },
       front: front.containsKey('things') || !front.containsKey('parts')
           ? _strs(_need(front, 'things', '$at.front'), '$at.front.things')
           : [...partsRaw.keys],
@@ -1566,7 +1599,8 @@ class Sheet {
           e.key: () {
             final p = _obj(e.value, '$at.front.parts.${e.key}');
             // El camino's parts (order 33b) give no line: their `insert` says where they go in the sorted list
-            final line = p.containsKey('insert')
+            // La estufa's window (order 38b) gives none either: it is drawn `after` the window's people, at its world `y`
+            final line = p.containsKey('insert') || p.containsKey('after')
                 ? p['line']
                 : _need(p, 'line', '$at.front.parts.${e.key}');
             if (line != null && line is! int && line is! String) {
@@ -1713,7 +1747,12 @@ class Sheet {
       sevan: m.containsKey('sevan')
           ? _readSevan(m['sevan'], '$at.sevan')
           : null,
-      helps: m.containsKey('helps')
+      // La estufa's (order 38b) `helps` holds no ring, no shadow and no line ("none yet"): none
+      helps:
+          m.containsKey('helps') &&
+              (m['helps'] is! Map<String, dynamic> ||
+                  (m['helps'] as Map<String, dynamic>).containsKey('ring') ||
+                  (m['helps'] as Map<String, dynamic>).containsKey('shadow'))
           ? _readHelps(m['helps'], '$at.helps')
           : null,
       light: m.containsKey('light')
@@ -1725,6 +1764,39 @@ class Sheet {
       carro: m.containsKey('carro')
           ? _readCarro(m['carro'], '$at.carro')
           : null,
+      faults: [
+        if (m.containsKey('faults'))
+          for (final (i, f) in _list(m['faults'], '$at.faults').indexed)
+            () {
+              final o = _obj(f, '$at.faults[$i]');
+              return (
+                // A comer's (order 40b) name their lines in words: no `line`
+                line: _opt(o, 'line', (v) => _int(v, '$at.faults[$i].line')),
+                and: _opt(o, 'and', (v) => _int(v, '$at.faults[$i].and')),
+                what: _str(
+                  _need(o, 'what', '$at.faults[$i]'),
+                  '$at.faults[$i].what',
+                ),
+                kept: _opt(o, 'kept', (v) => _str(v, '$at.faults[$i].kept')),
+              );
+            }(),
+      ],
+      storyMoves: [
+        if (m.containsKey('storyMoves'))
+          for (final (i, f) in _list(m['storyMoves'], '$at.storyMoves').indexed)
+            () {
+              final p = '$at.storyMoves[$i]', o = _obj(f, p);
+              return (
+                old: _ints(_need(o, 'old', p), '$p.old', length: 2),
+                now: _ints(_need(o, 'new', p), '$p.new', length: 2),
+                who: _str(_need(o, 'who', p), '$p.who'),
+                uses: _opt(o, 'uses', (v) => _strs(v, '$p.uses')),
+                scene: _opt(o, 'scene', (v) => _str(v, '$p.scene')),
+                spot: _opt(o, 'spot', (v) => _str(v, '$p.spot')),
+                why: _opt(o, 'why', (v) => _str(v, '$p.why')),
+              );
+            }(),
+      ],
       frontWaterDepth: _opt(
         front,
         'waterDepth',
@@ -1888,6 +1960,28 @@ class Sheet {
   /// round whatever floats or wades), or null.
   final SheetHelps? helps;
 
+  /// La estufa's (order 38b): the old file's faults the port keeps as they are (`faults`: the line, the line it goes
+  /// with, what it does, how it is kept, in words); empty for the other sheets.
+  final List<({int? line, int? and, String what, String? kept})> faults;
+
+  /// La mesa's (order 37b): the places the stories and the pairs write that the sheet moves (`storyMoves`): the old
+  /// screen point, the new, who stands there (`sitting`, `standing`, `cosa`, a person's id), the files whose positions
+  /// they are (null: any file), the other scene whose picture the place is in and its spot there (`scene`, `spot`), and
+  /// why. A story file's own entries come before the general moves (mesa-preview.html remapRule). Empty for the other
+  /// sheets.
+  final List<
+    ({
+      List<int> old,
+      List<int> now,
+      String who,
+      List<String>? uses,
+      String? scene,
+      String? spot,
+      String? why,
+    })
+  >
+  storyMoves;
+
   /// El campo's (order 34b): how far the water's surface lies under the lawn, for the front test of whoever stands over
   /// it (`front.waterDepth`); null for a set with no water.
   final double? frontWaterDepth;
@@ -2043,7 +2137,8 @@ class Sheet {
     final v =
         pictures[name] ??
         (throw SheetError('the sheet has no picture "$name"'));
-    final p = e.project(v.world[0], v.world[1], v.world[2]);
+    final w = v.world ?? (throw SheetError('picture "$name" has no world'));
+    final p = e.project(w[0], w[1], w[2]);
     final r = reviewRegion(p.sx, p.sy, v.zoom);
     return [r.x, r.y, r.w, r.h];
   }
@@ -2054,7 +2149,8 @@ class Sheet {
     final v =
         pictures[name] ??
         (throw SheetError('the sheet has no picture "$name"'));
-    final p = e.project(v.world[0], v.world[1], v.world[2]);
+    final w = v.world ?? (throw SheetError('picture "$name" has no world'));
+    final p = e.project(w[0], w[1], w[2]);
     return reviewCrop(picture, pictureW, pictureH, p.sx, p.sy, v.zoom);
   }
 
@@ -2135,7 +2231,10 @@ class Sheet {
       final v = r.to.view;
       if (v != null) need(views.containsKey(v), 'remap ${r.old}: no view "$v"');
       final s = r.to.spot;
-      if (s != null) need(spots.containsKey(s), 'remap ${r.old}: no spot "$s"');
+      // (a spot of another scene's picture, La mesa's `to.scene`, is that scene's)
+      if (s != null && r.to.scene == null) {
+        need(spots.containsKey(s), 'remap ${r.old}: no spot "$s"');
+      }
     }
     for (final c in clips.values) {
       need(
@@ -2225,11 +2324,19 @@ SheetAnchor _readAnchor(
   String at,
   List<double> Function(List<double> world) project,
 ) {
-  final world = _doubles(_need(m, 'world', at), '$at.world', length: 3);
+  // La nevera's people outside the window (order 39b): `world` null (they stand outside the room, placed on the screen
+  // by the sheet's rule PA); their screen place is their `new`
+  final outside =
+      m.containsKey('world') && m['world'] == null && m.containsKey('new');
+  final world = outside
+      ? const <double>[]
+      : _doubles(_need(m, 'world', at), '$at.world', length: 3);
   return SheetAnchor._(
     name,
     world,
-    m.containsKey('screen') || !m.containsKey('new')
+    outside
+        ? _doubles(m['new'], '$at.new', length: 2)
+        : m.containsKey('screen') || !m.containsKey('new')
         ? _doubles(_need(m, 'screen', at), '$at.screen', length: 2)
         : project(world),
     // a point the old scene had no place for (El camino's arch, order 33b) has no `old`: an empty list
@@ -2400,7 +2507,10 @@ List<SheetMove> _readMoves(Object? v, String at) {
                   who: _str(_need(pl, 'who', q), '$q.who'),
                   old: _nums(_need(pl, 'old', q), '$q.old', length: 2),
                   now: _nums(_need(pl, 'new', q), '$q.new', length: 2),
-                  world: _doubles(_need(pl, 'world', q), '$q.world', length: 3),
+                  // La nevera's people outside the window (order 39b): `world` null, an empty list
+                  world: pl.containsKey('world') && pl['world'] == null
+                      ? const <double>[]
+                      : _doubles(_need(pl, 'world', q), '$q.world', length: 3),
                   z: _opt(pl, 'z', (v) => _num(v, '$q.z')),
                 );
               }(),
@@ -2453,8 +2563,13 @@ List<SheetHop> _readHops(Object? v, String at) {
           end('b'),
           _int(_need(o, 'old', p), '$p.old'),
           _int(_need(o, 'new', p), '$p.new'),
-          _num(_need(o, 'dOld', p), '$p.dOld').toDouble(),
-          _num(_need(o, 'dNew', p), '$p.dNew').toDouble(),
+          // La estufa's (order 38b) give the counts only: no distance (NaN)
+          o.containsKey('dOld') || !o.containsKey('old')
+              ? _num(_need(o, 'dOld', p), '$p.dOld').toDouble()
+              : double.nan,
+          o.containsKey('dNew') || !o.containsKey('new')
+              ? _num(_need(o, 'dNew', p), '$p.dNew').toDouble()
+              : double.nan,
           o,
           aAt: pt('a'),
           bAt: pt('b'),
@@ -2545,8 +2660,13 @@ SheetFlowerLeaves _readFlowerLeaves(Object? v, String at) {
 SheetTalk _readTalk(Object? v, String at) {
   final m = _obj(v, at);
   final places = _list(_need(m, 'places', at), '$at.places');
-  // El banco's (order 36b) gives each sprite's height (`heights`) and its faces in words, no `heads`
-  final heads = m.containsKey('heads') || !m.containsKey('heights')
+  // El banco's (order 36b) gives each sprite's height (`heights`) and its faces in words, no `heads`; La estufa's (order
+  // 38b) each one's height (`heights`) and abuela's head off her x (`abuelaHead`); La mesa's (order 37b) neither: each
+  // face is measured from its sprite as it is drawn (`faces`, in words), its corner card a rectangle (`board`)
+  final heads =
+      m.containsKey('heads') ||
+          !(m.containsKey('heights') ||
+              (m.containsKey('board') && m['faces'] is String))
       ? _obj(_need(m, 'heads', at), '$at.heads')
       : const <String, dynamic>{};
   return SheetTalk._(
@@ -2579,7 +2699,11 @@ SheetTalk _readTalk(Object? v, String at) {
     // El campo's (order 34b): one corner card, its rectangle `board` and its words `boardWhat`
     m.containsKey('boards') || !m.containsKey('board')
         ? _str(_need(m, 'boards', at), '$at.boards')
-        : _str(_need(m, 'boardWhat', at), '$at.boardWhat'),
+        // A comer's (order 40b): the rounds card's rectangle with no words of its own, the faces in words
+        : m.containsKey('boardWhat') ||
+              !(m.containsKey('heights') || m['faces'] is String)
+        ? _str(_need(m, 'boardWhat', at), '$at.boardWhat')
+        : '',
     m,
     boardRect: _opt(m, 'board', (v) => _ints(v, '$at.board', length: 4)),
     heights: m.containsKey('heights')
@@ -2588,6 +2712,7 @@ SheetTalk _readTalk(Object? v, String at) {
               e.key: _int(e.value, '$at.heights.${e.key}'),
           }
         : const {},
+    abuelaHead: _opt(m, 'abuelaHead', (v) => _int(v, '$at.abuelaHead')),
   );
 }
 
@@ -2657,7 +2782,10 @@ SheetView _readView(
 SheetPicture _readPicture(String name, Map<String, dynamic> m, String at) =>
     SheetPicture._(
       name,
-      _doubles(_need(m, 'world', at), '$at.world', length: 3),
+      // La nevera's pictures (order 39b) give no world: their screen centre and crop only
+      m.containsKey('world') || !m.containsKey('crop')
+          ? _doubles(_need(m, 'world', at), '$at.world', length: 3)
+          : null,
       _doubles(_need(m, 'screen', at), '$at.screen', length: 2),
       _zoom(_need(m, 'zoom', at), '$at.zoom'),
       _ints(_need(m, 'crop', at), '$at.crop', length: 4),
@@ -2761,11 +2889,19 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
         final m = _obj(l[i], p);
         final kind = _str(_need(m, 'kind', p), '$p.kind');
         // `numbers` (El camino's, order 33b): three counts a pair file writes (W.pajaros), no place
-        const kinds = {'point': 2, 'cam': 4, 'crop': 4, 'x': 1, 'numbers': 3};
+        // `rect` (La estufa's, order 38b): a rectangle a pair file writes as [x0, y0, x1, y1] (W.olor: the smell's curve)
+        const kinds = {
+          'point': 2,
+          'cam': 4,
+          'crop': 4,
+          'x': 1,
+          'numbers': 3,
+          'rect': 4,
+        };
         final n = kinds[kind];
         if (n == null) {
           throw SheetError(
-            '$p.kind: "$kind" is not point, cam, crop, x or numbers',
+            '$p.kind: "$kind" is not point, cam, crop, x, numbers or rect',
           );
         }
         final t = _obj(_need(m, 'to', p), '$p.to');
@@ -2806,6 +2942,7 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
                     '$p.to.${_surfaceOf(t)}',
                     length: 3,
                   ),
+            scene: _opt(t, 'scene', (v) => _str(v, '$p.to.scene')),
           ),
           _opt(m, 'screen', (v) => _doubles(v, '$p.screen', length: 2)),
           _opt(m, 'crop', (v) => _ints(v, '$p.crop', length: 4)),
@@ -2816,7 +2953,20 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
           _opt(m, 'what', (v) => _str(v, '$p.what')),
           m,
           ab: _opt(m, 'ab', (v) => _ints(v, '$p.ab', length: 2)),
-          now: _opt(m, 'new', (v) => _ints(v, '$p.new', length: 2)),
+          now: _opt(
+            m,
+            'new',
+            // La nevera's x alone on the sill (kind `x`, order 39b): its `new` is one number
+            (v) => _ints(
+              v,
+              '$p.new',
+              length: kind == 'rect'
+                  ? 4
+                  : kind == 'x'
+                  ? 1
+                  : 2,
+            ),
+          ),
           moved: m.containsKey('moved') && _bool(m['moved'], '$p.moved'),
           cropsElsewhere: m.containsKey('crops')
               ? {

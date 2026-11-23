@@ -1,0 +1,191 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* A comer: abuela's kitchen table laid for a meal (place 3, La cocina, its fourth scene), as a set on the Pixel Plays engine (order 40a).
+   It is La mesa's room (mesa-set.html, orden/37a at 4033fc0: the room's numbers are taken from there, read-only), built with the kitchen's
+   kit (cocina-kit.js, an unchanged copy of orden/37a b83bcc3): the same corner, the two far walls cut open as La sala's, the checker floor,
+   the counter along the left wall with the wall cupboard over it, the doorway to the yard in the left wall, the small window, the stove with
+   its hood and the counter beside it on the back wall, the light from the upper left, S = 26.
+   CLOSER. At the fixed scale nothing can be drawn bigger, so A comer is "closer" in two ways: the picture is moved (the origin) so that the
+   table is in its middle and the room is round it at the edges (the counter and the cupboard at the left, the stove and the window at the
+   right, the far walls' tops off the picture), and the table itself is the same table's place made larger: La mesa's far edge, its four
+   chairs where La mesa has them, its top drawn out to the left and to the right and towards us, so that the plates in front of the four
+   seats, the dishes and pots in the middle and the frog's places at the front all stand on its cloth, as in the old picture. Its left end
+   leaves the passage between it and the counter (where the children stand at the back corner and whoever goes behind the table walks).
+   THE TABLE stands on the world's axes, long along x; the four chairs on its far side face us. The old picture is flat: a row level on the
+   old screen cannot lie along a world axis, so every place at the table steps down half a row a pixel to the right (comer-sheet.json moves).
+   The red-and-white checked cloth covers the top and hangs over the near side and the ends, its red band near the hem; the checks are
+   pale (white and a light pink) and small, so that the plates, cups and pots stand out on them.
+   The state comes from the address (one baked state: A comer's background never changes; the things on the table are the sprite layer's):
+     ox, oy = the origin (defaults: this scene's)
+   For the checks (not states): ?tags=1 records which part drew each pixel (window.TAGS); ?sin=<part> leaves that part out; ?noshade=1 no
+   shadow and no floor dimming; ?empty=1 the room without the table and the chairs. */
+const Q = new URLSearchParams(location.search);
+const SET = { sin: Q.get('sin') || '' };
+window.PP_SCENE = { w: 240, h: 216, s: 26, originX: +(Q.get('ox') || -10), originY: +(Q.get('oy') || -43), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="cocina-kit.js"></script>
+<script>
+'use strict';
+cocinaCheckScene();
+const r3 = v => Math.round(v * 1000) / 1000;
+const Gs = (sx, sy, z = 0) => { const u = (sx - OX) / S, v = (sy - OY + z * COS * S) / (S * SIN); return [(u + v) / R2, (v - u) / R2, z]; };
+const SCR = (x, y, z = 0) => { const p = project(x, y, z); return [p.sx, p.sy]; };
+const P = (name, fn) => (SET.sin && (name === SET.sin || name.startsWith(SET.sin + '.'))) ? null : part(name, fn);
+
+/* ---------- La mesa's room (mesa-set.html at 4033fc0) ---------- */
+const XR = 9, YL = 9;
+// the table and its chairs stand DS nearer on both world axes than La mesa's (4 rows lower on the picture, straight down): the seated faces
+// clear the hint hand under the answer cards on the wall above them (the cards stand right of the rounds card, their glow 4 px inside the
+// view, the hand reaching 54 rows down from 16 rows over the cards' foot)
+const DS = .2176;
+const LAPS = [[2.421, 3.509], [3.726, 3.509], [5.032, 3.509], [6.337, 3.509]].map(([x, y]) => [r3(x + DS), r3(y + DS)]);   // La mesa's four seats (a sitter's lap), DS nearer
+const ZS = .6, ZT = 1.0;                                                        // the chairs' seat and the table's top
+const CH = { hw: .25, hd: .22, back: .36, ZB: 1.45 };
+const CHAIRS = LAPS.map(([x, y]) => ({ x, y: r3(y - .2) }));
+// the counter along the left wall: La mesa's runs from y 2.858, .24 from the doorway's jamb, and its end (.9 deep, 1.3 high) then stands in
+// front of the doorway's lower part on the picture (it hides every wall point within .9 of it): here it starts .9 + .1 past the jamb, so the
+// opening, its threshold and whoever comes in through it are seen whole (round 2); the wall cupboard over it starts with it
+const A0 = 3.62, A1 = YL;
+const UP = [A0, 5.4];
+const STX = 4.776;                                                              // the stove on the back wall
+const WIN = { face: 'y', a0: 2.7, a1: 3.85, z0: 1.95, z1: 2.85, view: 'arbusto', name: 'ventana', bushA: -1.5, bushR: .5 };
+// (round 2) La mesa's final doorway (main 64aa5f1, mesa-set.html: "a door, not a picture of one"): 2.75 high, its leaf open into the room
+// and back towards the corner with its brass handle, a wooden threshold across the wall's thickness, El patio's stone step and the lawn outside
+const DOOR = { face: 'x', a0: 1.6, a1: 2.62, z0: 0, z1: 2.75, view: 'patio', door: true, name: 'puerta', horizon: 2.5 };
+const LEAF = { hx: .05, hy: r3(DOOR.a0 - .12), len: r3(DOOR.a1 - DOOR.a0), ang: -1.0 };
+const STEP_D = .42;
+const BAND = { x: [[A0 - .2, YL]], y: [[STX - .18, XR]] };
+// A comer's own: the sink set into the counter's top (the old picture's, at the counter's right end) and its tap on the tile band
+const SINK = { a0: r3(A0 + .04), a1: r3(A0 + .64), d0: .2, d1: .68 };   // at the counter's end (round 2: the counter starts further in), whole in the view
+
+/* ---------- the table (La mesa's, larger) ---------- */
+// far edge: La mesa's (y 3.672) + DS; left end: .7 from the counter's front (the passage); right end and near edge: the old places on the cloth
+const TBL = { x0: r3(1.6 + DS), x1: r3(8.5 + DS), y0: r3(3.672 + DS), y1: r3(6.85 + DS), z: ZT, th: .07 };
+const TW = [214, 168, 112], TWD = [104, 68, 36], CHW = [110, 66, 32];          // La mesa's wood: the top, the legs, the chairs
+// (round 2) the cloth: blue-and-white gingham in small checks. The old cloth's red and white on this floor (terracotta and cream tiles) is a
+// red-and-cream pattern of nearly the floor's own colour (dE 18 between their means): blue reads as a cloth at once (dE 40 and more), and a
+// gingham's three tones (white, a light blue where one stripe runs, a blue where two cross) stand behind a white thing and a dark outline alike.
+// The checks .125 (a period of .25: a quarter of the floor's 1.0). It hangs .32 over the near side and the ends (7 rows), its face a tone
+// darker than the top on the near side and two on the right end, with a hem of the blue at its foot
+const CL = { white: [250, 250, 246], light: [176, 198, 232], blue: [78, 116, 192], hem: [52, 80, 150] };
+const CHECK = .125, DROP = .32;                                                // the checks' size; how far the cloth hangs over the near side and the ends
+const LEGS = [[TBL.x0 + .2, TBL.y0 + .15], [TBL.x1 - .28, TBL.y0 + .15], [TBL.x0 + .2, TBL.y1 - .23], [TBL.x1 - .28, TBL.y1 - .23]];
+function tableLegs() { for (const [lx, ly] of LEGS) kSolid('y', lx, lx + .08, ly, ly + .08, 0, TBL.z - DROP, TWD); }
+const GING = k => [CL.white, CL.light, CL.blue][k];
+const clothTone = (c, n) => c.map(v => Math.round(v * [1, .86, .72][n]));
+function table() {
+  const { x0, x1, y0, y1, z } = TBL, m = .03, st = a => ((Math.floor(a / CHECK) % 2) + 2) % 2;
+  const cell = (a, b) => GING(st(a - x0) + st(b - y0));                         // white, light (one stripe), blue (two)
+  kBox('y', x0 - m, x1 + m, y0 - m, y1 + m, z - DROP, z + .012, (f, p, q, sh) => {
+    if (f === 'top') return kRgb(cell(p, q));
+    const n = f === 'front' ? 1 : 2, h = z + .012 - q;                            // the near side a tone darker, the ends two; how far down
+    if (h > DROP - .05) return kRgb(clothTone(CL.hem, n - 1));                       // the hem
+    return kRgb(clothTone(GING(st((f === 'front' ? p - x0 : p - y0)) + st(h)), n));
+  });
+}
+function chairLegs() { for (const c of CHAIRS) { const xa = c.x - CH.hw, xb = c.x + CH.hw, ya = c.y - CH.hd, yb = c.y + CH.hd; for (const lx of [xa, xb - .05]) for (const ly of [ya, yb - .05]) kSolid('y', lx, lx + .05, ly, ly + .05, 0, ZS - .06, CHW); } }
+function chair(c) {
+  const R = rampOf(CHW), { hw, hd, ZB } = CH, xa = c.x - hw, xb = c.x + hw, ya = c.y - hd, yb = c.y + hd;
+  kBox('y', xa, xb, ya, yb, ZS - .06, ZS, (f, p, q, sh) => f === 'top' ? R[3] : R[sh ? 1 : 2]);
+  for (const px of [xa, xb - .06]) kSolid('y', px, px + .06, ya, ya + .06, ZS, ZB, CHW);
+  for (const [r0, r1] of [[ZB - .2, ZB], [ZB - .5, ZB - .38]]) kBox('y', xa, xb, ya, ya + .05, r0, r1, (f, p, q, sh) => f === 'top' ? R[4] : R[sh ? 1 : 3]);
+}
+// the sink: a steel basin set into the counter's top, its tap on the wall behind it
+function sink() {
+  const { a0, a1, d0, d1 } = SINK, z = K.CZ + .004, St = rampOf([200, 204, 216]);
+  kBox('x', a0, a1, d0, d1, z - .002, z, (f, p, q) => { const rim = p < a0 + .05 || p > a1 - .05 || q < d0 + .05 || q > d1 - .05; return rim ? St[3] : (q < d0 + .14 ? St[1] : St[2]); }, 't');
+  const am = (a0 + a1) / 2;
+  kSolid('x', am - .035, am + .035, .02, .09, K.CZ, K.CZ + .32, [138, 142, 160]);
+  kSolid('x', am - .035, am + .035, .02, .3, K.CZ + .26, K.CZ + .32, [138, 142, 160]);
+}
+
+/* ---------- the door (round 2, La mesa's: main 64aa5f1) ---------- */
+const STONE = [216, 206, 184];                                         // El patio's step (mapa.js C.stone)
+const PATIO_PX = [];
+function patioGround(x, y, ix, iy, i) { const c = patioColour(x, y); if (c) PATIO_PX.push(i, c); return c; }
+function patioColour(x, y) {
+  if (x >= -K.T || x < -K.T - K.OUTD) return 0;
+  const a = y - x; if (a < DOOR.a0 - .3 || a > DOOR.a1 + .3) return 0;
+  const Rr = rampOf(STONE);
+  if (x > -K.T - STEP_D + .04) return Rr[3];
+  if (x > -K.T - STEP_D) return Rr[1];
+  return rgb(...GRASS[3]);
+}
+function doorExtras() {
+  const Wd = rampOf(KC.wood), { a0, a1, z1 } = DOOR, w = LEAF.len;
+  P('puerta.umbral', () => kBox('x', a0, a1, -K.T, .1, 0, .05, (f, p, q, sh) => f === 'top' ? kRgb(KC.woodL) : Wd[1], 'tf'));
+  const panel = (t, z) => {
+    const u = t * w, edge = u < .07 || u > w - .07 || z < .07 || z > z1 - .07;
+    const inPanel = u > .2 && u < w - .2 && ((z > .3 && z < 1.15) || (z > 1.35 && z < z1 - .25));
+    const rim = inPanel && (u < .26 || u > w - .26 || Math.abs(z - .3) < .06 || Math.abs(z - 1.15) < .06 || Math.abs(z - 1.35) < .06 || Math.abs(z - (z1 - .25)) < .06);
+    return Wd[edge ? 0 : rim ? 1 : inPanel ? 3 : 2];
+  };
+  P('puerta.hoja', () => {
+    leaf(LEAF.hx, LEAF.hy, w, 0, z1 - .02, LEAF.ang, (t, z) => t > .96 ? Wd[0] : panel(t, z));
+    const hx = LEAF.hx + Math.cos(LEAF.ang) * (w - .14), hy = LEAF.hy + Math.sin(LEAF.ang) * (w - .14), Kn = kRgb(KC.knob), KnD = kRgb(kLit(KC.knob, true));
+    for (let a = 0; a <= .1; a += ST * .4) for (let z = 0; z <= .1; z += ST * .4) plot(hx + .03, hy - a, 1.1 + z, z > .07 ? Kn : KnD);
+  });
+}
+const REVEAL = new Map();
+{ const rx = revealX; revealX = function (...a) { if (!PART_TAGS) return rx(...a); const b = zb.slice(); rx(...a); for (let i = 0; i < W * H; i++) if (zb[i] !== b[i]) REVEAL.set(i, pix[i]); }; }
+function tagReveal() { if (!PART_TAGS) return; for (const [i, c] of REVEAL) if (PART_TAGS[i] === 'puerta' && pix[i] === c) PART_TAGS[i] = 'puerta.jamba'; REVEAL.clear(); }
+function undimPatio() { for (let k = 0; k < PATIO_PX.length; k += 2) { const i = PATIO_PX[k]; if (zb[i] === groundZ[i] && kinds[i] === KIND_ROAD && !shadowMask[i]) pix[i] = PATIO_PX[k + 1]; } bakedPix.set(pix); }
+
+/* ---------- bake ---------- */
+const PLAN = {
+  XR, YL, windows: [WIN, DOOR], band: BAND, occlusion: 'shade', floor: patioGround,
+  furnish() {
+    doorExtras();
+    P('mostrador', () => { cocinaBase('x', A0, A1); });
+    P('fregadero', sink);
+    P('alacena', () => { cocinaWallCupboard('x', UP[0], UP[1]); });
+    P('estufa', () => { cocinaStove('y', STX, { noEnd: true }); });
+    P('salpicadero', () => { cocinaBackguard('y', STX); });
+    P('campana', () => { cocinaHood('y', STX); });
+    P('mostrador2', () => { cocinaBase('y', STX + K.STW, XR); });
+    P('sillas.patas', chairLegs);
+    CHAIRS.forEach((c, i) => P('silla' + i, () => chair(c)));
+    P('mesa.patas', tableLegs);
+    P('mesa', table);
+  },
+  shadows() {
+    P('mesa.patas', () => { for (const [lx, ly] of LEGS) cocinaShadowFoot(lx + .04, ly + .04, .08); });
+  },
+};
+const NOSHADE = Q.get('noshade') === '1', EMPTY = Q.get('empty') === '1';
+function buildSet() { PATIO_PX.length = 0; buildSet0(); undimPatio(); tagReveal(); }
+function buildSet0() {
+  if (NOSHADE) return cocinaBuild(Object.assign({}, PLAN, { occlusion: 'none', shadows: null }));
+  if (EMPTY) return cocinaBuild(Object.assign({}, PLAN, { furnish() { const p0 = P; const f = PLAN.furnish; const keep = part; part = (n, fn) => /^(mesa|silla)/.test(n) ? null : keep(n, fn); try { f(); } finally { part = keep; } }, shadows: null }));
+  cocinaBuild(PLAN);
+}
+
+/* ---------- what is under a screen point (the sheet's places) ---------- */
+const inR = (x, y, r, m = 0) => x >= r[0] - m && x <= r[2] + m && y >= r[1] - m && y <= r[3] + m;
+const FOOT = { mesa: [TBL.x0, TBL.y0, TBL.x1, TBL.y1], mostrador: [0, A0, K.CD, A1], mostrador2: [STX + K.STW, 0, XR, K.CD], estufa: [STX, 0, STX + K.STW, K.SD] };
+function surfaceAt(sx, sy) {
+  for (const [on, r, z] of [['mesa', FOOT.mesa, ZT], ['mostrador', FOOT.mostrador, K.CZ], ['mostrador2', FOOT.mostrador2, K.CZ], ['estufa', FOOT.estufa, K.CZ]]) {
+    const g = Gs(sx, sy, z); if (inR(g[0], g[1], r)) return { on, z, x: g[0], y: g[1], w: g }; }
+  const g = Gs(sx, sy, 0), under = Object.entries(FOOT).find(([k, r]) => inR(g[0], g[1], r)) || CHAIRS.map((c, k) => ['silla' + k, [c.x - CH.hw, c.y - CH.hd, c.x + CH.hw, c.y + CH.hd]]).find(([k, r]) => inR(g[0], g[1], r));
+  return { on: g[0] < 0 || g[1] < 0 ? 'wall' : 'floor', z: 0, x: g[0], y: g[1], w: g, under: under ? under[0] : null };
+}
+const STOVE = { x0: STX, x1: STX + K.STW, y0: 0, y1: K.SD, z: K.CZ };
+window.COMER_SET = { SET, OXY: [OX, OY], XR, YL, LAPS, ZS, ZT, TBL, CH, CHAIRS, LEGS, A0, A1, UP, STX, STOVE, WIN, DOOR, LEAF, STEP_D, STONE, BAND, SINK, FOOT, CHECK, DROP, CL, K, KC, buildSet, Gs, SCR, surfaceAt,
+  burners: [[STX + K.STW * .29, K.SD * .5], [STX + K.STW * .71, K.SD * .5]].map(([a, d]) => [a, d, K.CZ]) };
+
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+// one frame: the baked set, then the shadows of whoever the sheet names (casts: [x, y, z, r] on the floor), as the port's frame step 3
+function frame(t, casts = []) { pix.set(bakedPix); zb.set(bakedZ); shadowMask.fill(0); for (const c of casts) castShadow(c[0], c[1], c[2], c[3]); applyShadows(groundZ); ctx.putImageData(image, 0, 0); return image; }
+frame();
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

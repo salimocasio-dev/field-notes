@@ -1,0 +1,605 @@
+{
+ "id": "sigue-derecho",
+ "title": "Sigue derecho",
+ "place": "La calle",
+ "scene": "cruce",
+ "next": "al-frente-y-detras",
+ "goal": "Ride the block of ice to the piragüero by asking the way at the crossing, with the right street shut: every wrong street melts the block a size.",
+ "stake": {
+  "thing": "hielo",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "derecho",
+  "sigue",
+  "hasta"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "dobla",
+  "izquierda",
+  "perdón",
+  "calle",
+  "bicicleta",
+  "esquina",
+  "árbol",
+  "cerrado",
+  "rápido",
+  "frío",
+  "señor",
+  "señora",
+  "toma",
+  "gracias",
+  "van",
+  "después",
+  "mira",
+  "casa"
+ ],
+ "also_heard": [],
+ "names": {
+  "luis": "p_n_luis",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "carmen": "p_n_carmen",
+  "piraguero": "b_n_piraguero"
+ },
+ "palabras": {
+  "recta": "derecho",
+  "izq": "dobla"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_piraguero": {
+   "who": "narr",
+   "text": "Es el piragüero."
+  },
+  "c58_van": {
+   "who": "narr",
+   "text": "Luis y Coquí van en bicicleta. Tienen hielo para el piragüero."
+  },
+  "c58_luis_donde": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Dónde está el piragüero? Ese señor sabe. ¡Coquí!"
+  },
+  "c58_cq_perdon": {
+   "who": "tu",
+   "text": "¡Perdón, señor!",
+   "tu_turno": [
+    {
+     "palabra": "perdón",
+     "formas": [
+      "perdón",
+      "perdon"
+     ]
+    }
+   ]
+  },
+  "c58_senor_recto": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¿El piragüero? Sigue derecho, hasta el árbol."
+  },
+  "c58_por_donde": {
+   "who": "narr",
+   "text": "¿Por dónde sigue Luis?"
+  },
+  "c58_luis_sigue": {
+   "who": "narr",
+   "text": "Luis sigue derecho."
+  },
+  "c51_despues": {
+   "who": "narr",
+   "text": "Y después..."
+  },
+  "c58_pepe_ruta": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿El piragüero? Dobla a la izquierda. Después sigue derecho, hasta la esquina."
+  },
+  "c58_para_donde": {
+   "who": "narr",
+   "text": "¿Para dónde dobla Luis?"
+  },
+  "c58_obrero": {
+   "who": "narr",
+   "habla": "obrero",
+   "text": "El obrero dice: La calle está cerrada."
+  },
+  "c58_luis_hielo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡El hielo! ¡Mira!"
+  },
+  "c58_cq_rapido": {
+   "who": "tu",
+   "text": "¡Rápido, Luis!",
+   "tu_turno": [
+    {
+     "palabra": "rápido",
+     "formas": [
+      "rápido",
+      "rapido"
+     ]
+    }
+   ]
+  },
+  "c58_luis_sra": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Perdón, señora. ¿Dónde está el piragüero?"
+  },
+  "c58_pira_gracias": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: ¡Mi hielo! ¡Gracias, Luis! ¡Gracias, Coquí!"
+  },
+  "c58_pira_toma": {
+   "who": "narr",
+   "habla": "piraguero",
+   "text": "El piragüero dice: Toma, Coquí. ¿Está fría?"
+  },
+  "c58_cq_fria": {
+   "who": "tu",
+   "text": "¡Sí! ¡Muy fría!",
+   "tu_turno": [
+    {
+     "palabra": "frío",
+     "formas": [
+      "fría",
+      "fria",
+      "frío",
+      "frio"
+     ]
+    }
+   ]
+  },
+  "c58_van_casa": {
+   "who": "narr",
+   "text": "Y después Luis y Coquí van a casa."
+  },
+  "c58_sra_recta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Sigue derecho, hasta la esquina."
+  },
+  "c58_sra_no_recta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No. Sigue derecho, hasta la esquina."
+  },
+  "c58_sra_izq": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Dobla a la izquierda y sigue hasta la esquina."
+  },
+  "c58_sra_no_izq": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No. Dobla a la izquierda y sigue hasta la esquina."
+  },
+  "c58_carmen_recta": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Sigue derecho, hasta la esquina."
+  },
+  "c58_carmen_no_recta": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No. Sigue derecho, hasta la esquina."
+  },
+  "c58_carmen_izq": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Dobla a la izquierda y sigue hasta la esquina."
+  },
+  "c58_carmen_no_izq": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No. Dobla a la izquierda y sigue hasta la esquina."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde",
+    "cerrada": 1
+   }
+  },
+  {
+   "act": "hielo",
+   "n": 3
+  },
+  {
+   "act": "mapa58",
+   "n": 0
+  },
+  {
+   "wait": 500
+  },
+  "c58_van",
+  {
+   "act": "pasa",
+   "quien": "senor"
+  },
+  "c58_luis_donde",
+  "c58_cq_perdon",
+  {
+   "dots": 1
+  },
+  "c58_senor_recto",
+  {
+   "act": "senala",
+   "quien": "senor",
+   "a": "recta"
+  },
+  {
+   "set": {
+    "twinkle": "calle_recta"
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "set": {
+    "twinkle": "arbol"
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "calle_recta",
+   "lead": [],
+   "line": "c58_por_donde",
+   "then": [],
+   "after": [
+    {
+     "act": "toma",
+     "quien": "luis",
+     "por": "recta",
+     "arbol": 1,
+     "suelto": 1
+    },
+    "c58_luis_sigue",
+    "c51_despues",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "pasa",
+   "quien": "pepe"
+  },
+  "c58_pepe_ruta",
+  {
+   "ask": "calle_izq",
+   "lead": [],
+   "line": "c58_para_donde",
+   "then": [],
+   "after": [
+    {
+     "act": "toma",
+     "quien": "luis",
+     "por": "izq",
+     "suelto": 1
+    },
+    "c51_despues",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "hielo"
+  },
+  {
+   "act": "gotea"
+  },
+  "c58_obrero",
+  "c58_luis_hielo",
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "coqui"
+  },
+  "c58_cq_rapido",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "da",
+   "options": [
+    "recta",
+    "izq"
+   ],
+   "other": "oa"
+  },
+  {
+   "act": "pasa",
+   "quien": "senora"
+  },
+  "c58_luis_sra",
+  {
+   "decide": "do",
+   "options": [
+    "calle_recta",
+    "calle_izq"
+   ],
+   "pick": "calle_$da",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c58_sra_$da",
+   "right": [
+    {
+     "act": "toma",
+     "quien": "luis",
+     "por": "$da",
+     "suelto": 1
+    },
+    "c51_despues",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "mapa58",
+     "n": 1
+    }
+   ],
+   "wrong": [
+    {
+     "act": "vuelve",
+     "quien": "luis",
+     "por": "$oa"
+    },
+    {
+     "act": "gotea"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "hielo",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "hielo",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c58_sra_no_$da"
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "db",
+   "options": [
+    "izq",
+    "recta"
+   ],
+   "other": "ob"
+  },
+  {
+   "act": "pasa",
+   "quien": "carmen"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "calle_recta",
+    "calle_izq"
+   ],
+   "pick": "calle_$db",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c58_carmen_$db",
+   "right": [
+    {
+     "act": "toma",
+     "quien": "luis",
+     "por": "$db",
+     "suelto": 1
+    },
+    "c51_despues",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "piraguero58"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "mapa58",
+     "n": 2
+    }
+   ],
+   "wrong": [
+    {
+     "act": "vuelve",
+     "quien": "luis",
+     "por": "$ob"
+    },
+    {
+     "act": "gotea"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "hielo",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "hielo",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c58_carmen_no_$db"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 6
+  },
+  "c58_pira_gracias",
+  {
+   "act": "piraguero58"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final58",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final58",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final58",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  "c58_pira_toma",
+  "c58_cq_fria",
+  "c58_van_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c58_van",
+  "c58_luis_donde",
+  "c58_cq_perdon",
+  "c58_senor_recto",
+  "c58_por_donde",
+  "c58_luis_sigue",
+  "c51_despues",
+  "c58_pepe_ruta",
+  "c58_para_donde",
+  "c51_despues",
+  "c58_obrero",
+  "c58_luis_hielo",
+  "c58_cq_rapido",
+  "c58_luis_sra",
+  "c58_sra_recta",
+  "c51_despues",
+  "c58_carmen_izq",
+  "c51_despues",
+  "c58_pira_gracias",
+  "c58_pira_toma",
+  "c58_cq_fria",
+  "c58_van_casa"
+ ]
+}

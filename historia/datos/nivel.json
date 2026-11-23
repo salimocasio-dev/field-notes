@@ -1129,5 +1129,93 @@
         "si"
       ]
     ]
+  },
+  {
+    "w": "café",
+    "s": 35,
+    "p": [
+      [
+        "café",
+        "si"
+      ],
+      [
+        "café",
+        "no"
+      ],
+      [
+        "azúcar",
+        "si"
+      ],
+      [
+        "leche",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "azúcar",
+    "s": 35,
+    "p": [
+      [
+        "azúcar",
+        "si"
+      ],
+      [
+        "azúcar",
+        "no"
+      ],
+      [
+        "café",
+        "si"
+      ],
+      [
+        "arroz",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "mucho",
+    "s": 35,
+    "p": [
+      [
+        "mucho",
+        "si"
+      ],
+      [
+        "mucho",
+        "no"
+      ],
+      [
+        "un poco",
+        "si"
+      ],
+      [
+        "vacío",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "un poco",
+    "s": 35,
+    "p": [
+      [
+        "un poco",
+        "si"
+      ],
+      [
+        "un poco",
+        "no"
+      ],
+      [
+        "mucho",
+        "si"
+      ],
+      [
+        "lleno",
+        "si"
+      ]
+    ]
   }
 ]

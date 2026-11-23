@@ -160,57 +160,6 @@ Future<void> _touchChoice(TestApp app, String? kind, int k) async {
 
 void main() {
   testWidgets(
-    '(e) Listen on Biblioteca\'s shelf: the story told straight through, '
-    'writes listened; its X returns to Biblioteca',
-    (tester) async {
-      final app = TestApp(tester);
-      await app.open(stored: seed('curso'), speechAvailable: false);
-      await app.openTab('library');
-      await app.until(
-        () => find.text('La lluvia').evaluate().isNotEmpty,
-        what: 'the shelf',
-      );
-      // the Listen button of La lluvia's row
-      await app.tap(
-        find.descendant(
-          of: find.ancestor(
-            of: find.text('La lluvia'),
-            matching: byTypeName('ShelfEntry'),
-          ),
-          matching: find.text('Listen'),
-        ),
-      );
-      await app.settle(rounds: 5);
-      expect(app.lessonShown, isTrue);
-      expect(byTypeName('StoryScreen'), findsOneWidget);
-      await app.until(
-        () => find.byType(LessonStartButton).evaluate().isNotEmpty,
-        what: 'the start disc',
-      );
-      expect(
-        (storedDb(app)['oidos'] as Map? ?? const {}).containsKey('la-lluvia'),
-        isFalse,
-      );
-      await app.tap(find.byType(LessonStartButton));
-      for (var t = 0; find.text('Play again').evaluate().isEmpty; t += 200) {
-        if (t > 5 * 60 * 1000) fail('Listen did not end');
-        await app.advance(200);
-      }
-      // nothing to touch: no decision was logged, and the story's record did not move
-      expect(
-        ((storedDb(app)['cuentos'] as Map)['la-lluvia'] as Map)['n'],
-        jsonDecode(seed('curso'))['cuentos']['la-lluvia']['n'],
-      );
-      // PAL.oido
-      expect((storedDb(app)['oidos'] as Map).containsKey('la-lluvia'), isTrue);
-      await app.tap(find.byType(LessonCloseButton));
-      await app.settle(rounds: 5);
-      expect(app.selectedTab, 'library');
-    },
-    timeout: const Timeout(Duration(minutes: 10)),
-  );
-
-  testWidgets(
     '(f, g) Repaso from the Today card: the games of page 15; answered, they write ear answers; ¿Cuál?\'s pictures '
     'come from ScenePictures (El frente: the new scene; another scene: its old picture); it ends on Palabras',
     (tester) async {
@@ -351,65 +300,61 @@ void main() {
     expect(app.selectedTab, 'words');
   }, timeout: const Timeout(Duration(minutes: 5)));
 
-  testWidgets(
-    '(n) a book: Read on the shelf and the address #/libro/<id> both open the reader; its X returns to where it was opened from',
-    (tester) async {
-      // Read, on Biblioteca's shelf (La familia has a book that reads well)
-      final app = TestApp(tester);
-      await app.open(stored: seed('curso'));
-      await app.openTab('library');
-      await app.until(
-        () => find.text('La familia').evaluate().isNotEmpty,
-        what: 'the shelf',
-      );
-      final read = find.descendant(
-        of: find.ancestor(
-          of: find.text('La familia'),
-          matching: byTypeName('ShelfEntry'),
-        ),
-        matching: find.text('Read'),
-      );
-      await tester.ensureVisible(read);
-      await app.settle(rounds: 3);
-      await app.tap(read);
-      await app.until(
-        () => byTypeName('BookReader').evaluate().isNotEmpty,
-        what: 'the reader',
-      );
-      await app.settle(rounds: 10);
-      expect(app.lessonShown, isTrue);
-      expect(find.byType(CoquiTabBar), findsNothing);
-      // the pictures are asked for where the shell says: the site's historia/libros/, with the old page's ?v=39
-      expect(
-        (tester.widget(byTypeName('BookReader')) as dynamic).imageUrl(
-          'img/la-familia-1.png',
-        ),
-        'http://127.0.0.1/field-notes/historia/libros/img/la-familia-1.png?v=39',
-      );
-      await app.tap(find.byType(LessonIconButton).first); // the reader's X
-      await app.advance(10000);
-      expect(app.tabBarShown, isTrue);
-      expect(app.selectedTab, 'library');
-      expect(byTypeName('BookReader'), findsNothing);
+  testWidgets('(n) Biblioteca: a text added opens in the reader, its X returns to Biblioteca; a book\'s address #/libro/<id> '
+      'opens its lines as text, its X returns to the map', (tester) async {
+    final app = TestApp(tester);
+    await app.open(stored: seed('curso'));
+    await app.openTab('library');
+    await app.until(
+      () => find.text('Add text').evaluate().isNotEmpty,
+      what: 'Biblioteca',
+    );
+    await app.tap(find.text('Add text'));
+    await app.settle(rounds: 5);
+    await tester.enterText(find.byType(TextFormField).first, 'Mi cuaderno');
+    await tester.enterText(
+      find.byType(TextFormField).last,
+      'Tengo un cuaderno. Es azul. Tiene papel. Escribo aquí.',
+    );
+    await app.tap(find.text('Add and read'));
+    await app.until(
+      () => byTypeName('TextReader').evaluate().isNotEmpty,
+      what: 'the reader',
+    );
+    await app.settle(rounds: 10);
+    expect(app.lessonShown, isTrue);
+    expect(find.byType(CoquiTabBar), findsNothing);
+    expect(find.text('Mi cuaderno'), findsOneWidget);
+    expect(find.text('1 / 2'), findsOneWidget);
+    await app.tap(find.byTooltip('Close'));
+    await app.advance(10000);
+    expect(app.tabBarShown, isTrue);
+    expect(app.selectedTab, 'library');
+    expect(byTypeName('TextReader'), findsNothing);
+    // his shelf keeps it
+    expect(find.text('Mi cuaderno'), findsOneWidget);
+    expect(find.text('Added text'), findsOneWidget);
 
-      // the address of a book, opened as it is (a reload): the reader; its X returns to the map
-      await tester.pumpWidget(const SizedBox());
-      final again = TestApp(tester);
-      await again.open(stored: seed('curso'), location: '/libro/la-familia');
-      await again.until(
-        () => byTypeName('BookReader').evaluate().isNotEmpty,
-        what: 'the reader',
-      );
-      await again.settle(rounds: 10);
-      expect(again.lessonShown, isTrue);
-      await again.tap(find.byType(LessonIconButton).first);
-      await again.advance(10000);
-      expect(byTypeName('BookReader'), findsNothing);
-      expect(again.tabBarShown, isTrue);
-      expect(again.selectedTab, 'map');
-    },
-    timeout: const Timeout(Duration(minutes: 5)),
-  );
+    // the address of a book, opened as it is (a reload): its lines as text; its X returns to the map
+    await tester.pumpWidget(const SizedBox());
+    final again = TestApp(tester);
+    await again.open(stored: seed('curso'), location: '/libro/la-familia');
+    await again.until(
+      () => byTypeName('TextReader').evaluate().isNotEmpty,
+      what: 'the reader',
+    );
+    await again.until(
+      () => find.textContaining(' / ').evaluate().isNotEmpty,
+      what: 'the book\'s pages',
+    );
+    expect(again.lessonShown, isTrue);
+    expect(find.byType(Image), findsNothing);
+    await again.tap(find.byTooltip('Close'));
+    await again.advance(10000);
+    expect(byTypeName('TextReader'), findsNothing);
+    expect(again.tabBarShown, isTrue);
+    expect(again.selectedTab, 'map');
+  }, timeout: const Timeout(Duration(minutes: 5)));
 
   testWidgets(
     '(o) the address #/prueba-voz opens the voice test, made from historia/datos/prueba-voz.json: its first line, the '
@@ -497,7 +442,7 @@ void main() {
       );
       final before = answers(app, 'mouth');
       await app.openTab('speak');
-      await app.tap(find.text('La casa · about 5 min'));
+      await app.tap(find.text('Start call'));
       await app.settle();
       expect(app.lessonShown, isTrue);
       expect(byTypeName('CallScreen'), findsOneWidget);

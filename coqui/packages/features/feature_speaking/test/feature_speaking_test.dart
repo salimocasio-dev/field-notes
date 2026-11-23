@@ -91,22 +91,23 @@ void main() {
       await tester.pumpWidget(devApp());
       await tester.pumpAndSettle();
       expect(find.text('Hablar'), findsWidgets);
-      expect(find.text('Call Danny'), findsWidgets);
+      expect(find.text('De visita en la casa'), findsOneWidget);
     });
 
     testWidgets(
-      'a touch on the open card opens the call; the X comes back to Hablar',
+      'Start call on the Up next card opens the call; the X comes back to Hablar',
       (tester) async {
         Phone.android.use(tester);
         await tester.pumpWidget(devApp(const {'reduce': '1'}));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('La casa · about 5 min'));
+        await tester.tap(find.text('Start call'));
         await tester.pump();
         await tester.pump();
         expect(find.text('Start call'), findsOneWidget);
+        expect(find.text('La casa · about 5 min'), findsOneWidget);
         await tester.tap(find.byType(LessonCloseButton));
         await tester.pumpAndSettle();
-        expect(find.text('Words open for speaking'), findsOneWidget);
+        expect(find.text('De visita en la casa'), findsOneWidget);
       },
     );
 

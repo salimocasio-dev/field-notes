@@ -12,7 +12,7 @@
    "caller": "escenas/estufa.js:118:170 gente",
    "maker": "escenas/estufa.js:118:192",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -24,7 +24,7 @@
    "caller": "escenas/estufa.js:118:170 gente",
    "maker": "escenas/estufa.js:118:192",
    "firstRun": "arroz-con-habichuelas/wrong",
-   "runs": 3,
+   "runs": 4,
    "variants": 1
   },
   {
@@ -36,6 +36,30 @@
    "caller": "escenas/estufa.js:118:170 gente",
    "maker": "escenas/estufa.js:118:192",
    "firstRun": "el-pollo-y-el-huevo/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abwave00",
+   "file": "abwave00.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "c990abc59cbf56be8955cbe792df1c9dc85cf6e577f05131d3c9b6d6888573d8",
+   "caller": "escenas/estufa.js:118:170 gente",
+   "maker": "escenas/estufa.js:118:192",
+   "firstRun": "h-estufa/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abwave10",
+   "file": "abwave10.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "1081a1840c85ca356e18ace6439cce58e73e5859439f8b6eae59a4d91cff1e1f",
+   "caller": "escenas/estufa.js:118:170 gente",
+   "maker": "escenas/estufa.js:118:192",
+   "firstRun": "h-estufa/right",
    "runs": 3,
    "variants": 1
   },
@@ -192,7 +216,7 @@
    "caller": "escenas/estufa.js:129:34 rana",
    "maker": "escenas/estufa.js:129:61",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -216,7 +240,7 @@
    "caller": "escenas/estufa.js:129:34 rana",
    "maker": "escenas/estufa.js:129:61",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -240,7 +264,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -264,7 +288,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 6,
+   "runs": 9,
    "variants": 1
   },
   {
@@ -324,7 +348,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -552,7 +576,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -564,7 +588,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -636,7 +660,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -648,7 +672,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -672,7 +696,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -708,7 +732,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 8,
+   "runs": 11,
    "variants": 1
   },
   {
@@ -720,7 +744,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 6,
+   "runs": 9,
    "variants": 1
   },
   {
@@ -768,7 +792,7 @@
    "caller": "escenas/estufa.js:93:19 cosa",
    "maker": "escenas/estufa.js:93:70",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -852,7 +876,7 @@
    "caller": "escenas/estufa.js:133:15 Object.draw",
    "maker": "escenas/estufa.js:26:26 fondo",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -876,7 +900,7 @@
    "caller": "escenas/estufa.js:120:78 gente",
    "maker": "escenas/estufa.js:120:131",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -912,7 +936,7 @@
    "caller": "escenas/estufa.js:120:78 gente",
    "maker": "escenas/estufa.js:120:131",
    "firstRun": "arroz-con-habichuelas/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -948,7 +972,19 @@
    "caller": "escenas/estufa.js:120:78 gente",
    "maker": "escenas/estufa.js:120:131",
    "firstRun": "el-pollo-y-el-huevo/wrong",
-   "runs": 1,
+   "runs": 4,
+   "variants": 1
+  },
+  {
+   "key": "pmluiswave100",
+   "file": "pmluiswave100.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "54b176072474e3b378ba07cea6adf0563c9611babfe2de8d5e1a3c3493037f4e",
+   "caller": "escenas/estufa.js:120:78 gente",
+   "maker": "escenas/estufa.js:120:131",
+   "firstRun": "h-estufa/right",
+   "runs": 3,
    "variants": 1
   },
   {
@@ -1065,7 +1101,9 @@
    "made": [
     "abidle0",
     "abidle1",
-    "aboffer0"
+    "aboffer0",
+    "abwave00",
+    "abwave10"
    ]
   },
   {
@@ -1080,6 +1118,7 @@
     "pmluisidle10",
     "pmluisoffer00",
     "pmluiswave000",
+    "pmluiswave100",
     "pmmamaidle10"
    ]
   },

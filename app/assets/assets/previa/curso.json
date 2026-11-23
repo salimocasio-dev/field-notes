@@ -1,4 +1,130 @@
 {
-  "lugares": {},
-  "cuentos": {}
+  "lugares": {
+    "colmado": [
+      "el-colmado",
+      "algo-mas",
+      "esto-y-eso",
+      "latas-y-botellas",
+      "siete-latas",
+      "diez-botellas",
+      "la-sopa-de-abuela",
+      "esta-bueno",
+      "una-libra",
+      "cuanto-es",
+      "caro-y-barato",
+      "el-cambio"
+    ],
+    "calle": [
+      "la-calle",
+      "la-esquina",
+      "ahora-y-despues",
+      "para-donde-vas",
+      "se-monta-y-se-baja",
+      "cerca-y-lejos",
+      "las-tiendas",
+      "el-edificio-alto",
+      "abierto-y-cerrado",
+      "izquierda-o-derecha",
+      "sigue-derecho",
+      "al-frente-y-detras"
+    ]
+  },
+  "cuentos": {
+    "el-colmado": {
+      "t": "El colmado",
+      "min": 4
+    },
+    "algo-mas": {
+      "t": "¿Algo más?",
+      "min": 5
+    },
+    "esto-y-eso": {
+      "t": "Esto y eso",
+      "min": 3
+    },
+    "latas-y-botellas": {
+      "t": "Latas y botellas",
+      "min": 4
+    },
+    "siete-latas": {
+      "t": "Siete latas",
+      "min": 4
+    },
+    "diez-botellas": {
+      "t": "Diez botellas",
+      "min": 4
+    },
+    "la-sopa-de-abuela": {
+      "t": "La sopa de abuela",
+      "min": 6
+    },
+    "esta-bueno": {
+      "t": "¿Está bueno?",
+      "min": 5
+    },
+    "una-libra": {
+      "t": "Una libra",
+      "min": 6
+    },
+    "cuanto-es": {
+      "t": "¿Cuánto es?",
+      "min": 4
+    },
+    "caro-y-barato": {
+      "t": "Caro y barato",
+      "min": 4
+    },
+    "el-cambio": {
+      "t": "El cambio",
+      "min": 3
+    },
+    "la-calle": {
+      "t": "La calle",
+      "min": 4
+    },
+    "la-esquina": {
+      "t": "La esquina",
+      "min": 5
+    },
+    "ahora-y-despues": {
+      "t": "Ahora y después",
+      "min": 4
+    },
+    "para-donde-vas": {
+      "t": "¿Para dónde vas?",
+      "min": 4
+    },
+    "se-monta-y-se-baja": {
+      "t": "Se monta y se baja",
+      "min": 4
+    },
+    "cerca-y-lejos": {
+      "t": "Cerca y lejos",
+      "min": 4
+    },
+    "las-tiendas": {
+      "t": "Las tiendas",
+      "min": 5
+    },
+    "el-edificio-alto": {
+      "t": "El edificio alto",
+      "min": 5
+    },
+    "abierto-y-cerrado": {
+      "t": "Abierto y cerrado",
+      "min": 5
+    },
+    "izquierda-o-derecha": {
+      "t": "¿Izquierda o derecha?",
+      "min": 4
+    },
+    "sigue-derecho": {
+      "t": "Sigue derecho",
+      "min": 4
+    },
+    "al-frente-y-detras": {
+      "t": "Al frente y detrás",
+      "min": 6
+    }
+  }
 }

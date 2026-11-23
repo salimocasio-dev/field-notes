@@ -56,18 +56,20 @@ for (const id of SCENES) {
   if (page.freshHit) { const fh = page.freshHit.filter(k => !invIds.includes(k) && !extra.includes(k)); if (fh.length) fail(`hit() in the fresh state answered ids not in the list: ${fh}`); }
   const neverHit = invIds.filter(k => !inv.hitTest.idsAnswered.includes(k));
   // named in files: walked again here
-  const named = new Map(), resp = new Set(), templ = new Set(), add = (k, w) => { if (typeof k !== "string" || !k) return; if (k.includes("$")) { templ.add(k); return; } (named.get(k) || named.set(k, new Set()).get(k)).add(w); };   // a name with $ is filled at run time: the runs give what it became
+  const named = new Map(), resp = new Set(), templ = new Set(), alias = new Set(), add = (k, w) => { if (typeof k !== "string" || !k) return; if (k.includes("$")) { templ.add(k); return; } (named.get(k) || named.set(k, new Set()).get(k)).add(w); };   // a name with $ is filled at run time: the runs give what it became
   for (const s of stories) { const j = FILES.find(f => f.id === s).j;
     const walk = (x, p) => { if (!x || typeof x !== "object") return; if (Array.isArray(x)) return x.forEach((v, i) => walk(v, p + "." + i));
       if (typeof x.ask === "string") add(x.ask, `${s}:${p} ask`);
-      if (x.decide && x.decide !== "say") { (x.options || []).forEach(o => add(o, `${s}:${p} decide`)); if (x.pick) add(x.pick, `${s}:${p} pick`); (x.vale || []).forEach(o => add(o, `${s}:${p} vale`)); }
+      if (x.decide && x.decide !== "say") { const av = Object.values(x.alias || {}).filter(o => !invIds.includes(o));   // an option that is a value of the step's alias is a name for the things that are its keys (juego.js:185): those must be in the scene
+        Object.keys(x.alias || {}).forEach(o => add(o, `${s}:${p} alias`)); (x.options || []).forEach(o => av.includes(o) ? alias.add(o) : add(o, `${s}:${p} decide`)); if (x.pick && !av.includes(x.pick)) add(x.pick, `${s}:${p} pick`); (x.vale || []).forEach(o => add(o, `${s}:${p} vale`)); }
       for (const [k, v] of Object.entries(x)) walk(v, p + "." + k); };
     walk(j.beats, "beats"); walk(j.final, "final"); Object.keys(j.names || {}).forEach(k => add(k, `${s}:names`));
     const at = p => p.split(".").reduce((o, k) => o == null ? o : o[k], j);
     for (const p of PLANS) { const tr = JSON.parse(fs.readFileSync(path.join(ROOT, "coqui/ref/trazas", s, p + ".json"), "utf8"));
       for (const c of tr.choices) { const st = at(c.step) || {}; const bubbles = st.decide === "say" || !!st.elige || !!st.resp || !!(st.burbujas && st.burbujas.length);   // answer bubbles, not things
-        if (bubbles) c.live.forEach(k => (resp.add(k))); else { c.live.forEach(k => add(k, `${s}/${p} ${c.kind} ${c.step} (as played)`)); } }
-      for (const t of tr.touches) if (!resp.has(t.what)) add(t.what, `${s}/${p} touch (${t.why})`); }
+        const av = Object.values(st.alias || {}).filter(o => !invIds.includes(o));
+        if (bubbles) c.live.forEach(k => (resp.add(k))); else { c.live.forEach(k => av.includes(k) ? alias.add(k) : add(k, `${s}/${p} ${c.kind} ${c.step} (as played)`)); } }
+      for (const t of tr.touches) if (!resp.has(t.what) && !alias.has(t.what)) add(t.what, `${s}/${p} touch (${t.why})`); }   // a touch is recorded by the name the alias gave it
   }
   const namedNotInScene = [...named.keys()].filter(k => !invIds.includes(k) && !extra.includes(k) && !resp.has(k)).sort();
   const sceneNotNamed = invIds.filter(k => !named.has(k));
@@ -105,7 +107,7 @@ for (const id of SCENES) {
     look("crop", [Math.max(0, Math.min(240 - w, cx - w / 2)), cm[1], w, h].map(v => Math.round(v * 100) / 100), `nivel.js NV ${q.w}.p${j}`); if (p[2] != null) look("x", [p[2]], `nivel.js NV ${q.w}.p${j} x`); });
   console.log(`  ids: ${invIds.length} = the page's list ${same ? "(same, same order)" : "(DIFFERENT)"}; hit() answered ${inv.hitTest.idsAnswered.length} ids, none outside the list${hitNot.length ? " — NO" : ""}; never answered: ${neverHit.join(", ") || "none"}`);
   console.log(`  named by stories (as written, or as played) and not in the scene: ${namedNotInScene.join(", ") || "none"}; in the scene and named by no story: ${sceneNotNamed.join(", ") || "none"}`);
-  console.log(`  left aside: answer-bubble ids ${[...resp].filter(k => !invIds.includes(k)).sort().join(", ") || "none"}; names filled at run time ${[...templ].sort().join(", ") || "none"}`);
+  console.log(`  left aside: answer-bubble ids ${[...resp].filter(k => !invIds.includes(k)).sort().join(", ") || "none"}; names filled at run time ${[...templ].sort().join(", ") || "none"}${alias.size ? "; names given by a step's alias (its keys are checked) " + [...alias].sort().join(", ") : ""}`);
   console.log(`  states: ${idx.states.length}; ${steps} recorded steps (start included) and ${pics} review pictures, each in one state with its frames; positions: ${found}/${looked} uses found`);
   table.push({ id, things: invIds.length, states: idx.states.length, positions: pos.count, pairs: pairs.pairs.length, level: pairs.level.length, views: Object.keys(inv.views).length });
 }
