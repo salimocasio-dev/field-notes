@@ -1,1 +1,19 @@
-{ "palabra": "arroz", "frases": { "arroz:1": "A", "arroz:2": "ninguna", "arroz:3": "ninguna", "arroz:4": "ninguna", "arroz:5": "duda" } }
+{
+ "palabra": "arroz",
+ "frases": {
+  "arroz:1": "A",
+  "arroz:2": "ninguna",
+  "arroz:3": "ninguna",
+  "arroz:4": "ninguna",
+  "arroz:5": "duda",
+  "arroz:6": "ninguna",
+  "arroz:7": "ninguna",
+  "arroz:8": "ninguna",
+  "arroz:9": "ninguna",
+  "arroz:10": "ninguna",
+  "arroz:11": "ninguna",
+  "arroz:12": "ninguna",
+  "arroz:13": "ninguna",
+  "arroz:14": "ninguna"
+ }
+}

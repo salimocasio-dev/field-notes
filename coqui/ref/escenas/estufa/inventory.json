@@ -6,7 +6,8 @@
  "stories": [
   "arroz-con-habichuelas",
   "cuidado",
-  "el-pollo-y-el-huevo"
+  "el-pollo-y-el-huevo",
+  "h-estufa"
  ],
  "reviewFile": "cual-estufa",
  "hostPage": "historia/index.html?cuento=arroz-con-habichuelas&fast=1",
@@ -496,6 +497,9 @@
       "el-pollo-y-el-huevo/right": "start,0-43",
       "el-pollo-y-el-huevo/wrong": "start,0-43",
       "el-pollo-y-el-huevo/alternate": "start,0-43",
+      "h-estufa/right": "start,",
+      "h-estufa/wrong": "start,",
+      "h-estufa/alternate": "start,",
       "cual-estufa:arroz.si": "picture",
       "cual-estufa:arroz.no": "picture",
       "cual-estufa:olla.si": "picture",
@@ -528,7 +532,10 @@
      "at": {
       "arroz-con-habichuelas/right": "0-37,51-85",
       "arroz-con-habichuelas/wrong": "0-37,51-96",
-      "arroz-con-habichuelas/alternate": "0-37,51-90"
+      "arroz-con-habichuelas/alternate": "0-37,51-90",
+      "h-estufa/right": "0-44",
+      "h-estufa/wrong": "0-44",
+      "h-estufa/alternate": "0-44"
      }
     },
     {
@@ -702,6 +709,9 @@
       "el-pollo-y-el-huevo/right": "start,0-43",
       "el-pollo-y-el-huevo/wrong": "start,0-43",
       "el-pollo-y-el-huevo/alternate": "start,0-43",
+      "h-estufa/right": "start,",
+      "h-estufa/wrong": "start,",
+      "h-estufa/alternate": "start,",
       "cual-estufa:arroz.si": "picture",
       "cual-estufa:arroz.no": "picture",
       "cual-estufa:habichuelas.si": "picture",
@@ -739,7 +749,10 @@
      "at": {
       "arroz-con-habichuelas/right": "0-26,29-32,35-37,49-85",
       "arroz-con-habichuelas/wrong": "0-26,29-32,35-37,49-96",
-      "arroz-con-habichuelas/alternate": "0-26,29-32,35-37,49-90"
+      "arroz-con-habichuelas/alternate": "0-26,29-32,35-37,49-90",
+      "h-estufa/right": "0-44",
+      "h-estufa/wrong": "0-44",
+      "h-estufa/alternate": "0-44"
      }
     },
     {
@@ -931,6 +944,9 @@
       "el-pollo-y-el-huevo/right": "start,0-98",
       "el-pollo-y-el-huevo/wrong": "start,0-107",
       "el-pollo-y-el-huevo/alternate": "start,0-103",
+      "h-estufa/right": "start,0-44",
+      "h-estufa/wrong": "start,0-44",
+      "h-estufa/alternate": "start,0-44",
       "cual-estufa:arroz.si": "picture",
       "cual-estufa:arroz.no": "picture",
       "cual-estufa:habichuelas.si": "picture",
@@ -1034,6 +1050,9 @@
       "el-pollo-y-el-huevo/right": "start,0-21",
       "el-pollo-y-el-huevo/wrong": "start,0-21",
       "el-pollo-y-el-huevo/alternate": "start,0-21",
+      "h-estufa/right": "start,0-44",
+      "h-estufa/wrong": "start,0-44",
+      "h-estufa/alternate": "start,0-44",
       "cual-estufa:arroz.si": "picture",
       "cual-estufa:arroz.no": "picture",
       "cual-estufa:habichuelas.si": "picture",
@@ -1176,6 +1195,9 @@
       "el-pollo-y-el-huevo/right": "start,0-98",
       "el-pollo-y-el-huevo/wrong": "start,0-107",
       "el-pollo-y-el-huevo/alternate": "start,0-103",
+      "h-estufa/right": "start,0-44",
+      "h-estufa/wrong": "start,0-44",
+      "h-estufa/alternate": "start,0-44",
       "cual-estufa:arroz.si": "picture",
       "cual-estufa:arroz.no": "picture",
       "cual-estufa:habichuelas.si": "picture",
@@ -1276,6 +1298,9 @@
       "el-pollo-y-el-huevo/right": "start,",
       "el-pollo-y-el-huevo/wrong": "start,",
       "el-pollo-y-el-huevo/alternate": "start,",
+      "h-estufa/right": "start,",
+      "h-estufa/wrong": "start,",
+      "h-estufa/alternate": "start,",
       "cual-estufa:arroz.si": "picture",
       "cual-estufa:arroz.no": "picture",
       "cual-estufa:habichuelas.si": "picture",
@@ -1307,7 +1332,10 @@
      "at": {
       "arroz-con-habichuelas/right": "0-37,51-85",
       "arroz-con-habichuelas/wrong": "0-37,51-96",
-      "arroz-con-habichuelas/alternate": "0-37,51-90"
+      "arroz-con-habichuelas/alternate": "0-37,51-90",
+      "h-estufa/right": "0-44",
+      "h-estufa/wrong": "0-44",
+      "h-estufa/alternate": "0-44"
      }
     },
     {
@@ -1513,7 +1541,6 @@
       "s149",
       "s150",
       "s151",
-      "s154",
       "s155",
       "s156",
       "s157",
@@ -1522,7 +1549,8 @@
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     },
     {
@@ -1586,7 +1614,8 @@
       "s051",
       "s052",
       "s152",
-      "s153"
+      "s153",
+      "s154"
      ]
     }
    ]
@@ -1688,16 +1717,16 @@
       "s149",
       "s150",
       "s151",
-      "s152",
       "s153",
       "s154",
-      "s156",
+      "s155",
       "s157",
       "s158",
       "s159",
       "s160",
       "s161",
-      "s163"
+      "s162",
+      "s164"
      ]
     },
     {
@@ -1794,8 +1823,9 @@
       "s089",
       "s090",
       "s091",
-      "s155",
-      "s162"
+      "s152",
+      "s156",
+      "s163"
      ]
     }
    ]
@@ -1960,7 +1990,6 @@
       "s149",
       "s150",
       "s151",
-      "s152",
       "s153",
       "s154",
       "s155",
@@ -1971,7 +2000,8 @@
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     },
     {
@@ -2005,7 +2035,8 @@
       "s033",
       "s034",
       "s044",
-      "s045"
+      "s045",
+      "s152"
      ]
     }
    ]
@@ -2168,7 +2199,6 @@
       "s149",
       "s150",
       "s151",
-      "s152",
       "s153",
       "s154",
       "s155",
@@ -2179,7 +2209,8 @@
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     },
     {
@@ -2215,7 +2246,8 @@
       "s035",
       "s044",
       "s045",
-      "s046"
+      "s046",
+      "s152"
      ]
     }
    ]
@@ -2389,12 +2421,13 @@
       "s153",
       "s154",
       "s155",
-      "s158",
+      "s156",
       "s159",
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     },
     {
@@ -2429,8 +2462,8 @@
       24
      ],
      "states": [
-      "s156",
-      "s157"
+      "s157",
+      "s158"
      ]
     }
    ]
@@ -2604,12 +2637,13 @@
       "s153",
       "s154",
       "s155",
-      "s158",
+      "s156",
       "s159",
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     },
     {
@@ -2644,8 +2678,8 @@
       24
      ],
      "states": [
-      "s156",
-      "s157"
+      "s157",
+      "s158"
      ]
     }
    ]
@@ -2739,8 +2773,9 @@
       "s155",
       "s156",
       "s157",
-      "s159",
-      "s162"
+      "s158",
+      "s160",
+      "s163"
      ]
     },
     {
@@ -2851,10 +2886,10 @@
       "s149",
       "s150",
       "s151",
-      "s158",
-      "s160",
+      "s159",
       "s161",
-      "s163"
+      "s162",
+      "s164"
      ]
     }
    ]
@@ -2993,7 +3028,8 @@
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     },
     {
@@ -3224,7 +3260,8 @@
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     },
     {
@@ -3470,7 +3507,8 @@
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     }
    ]
@@ -3666,7 +3704,8 @@
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     }
    ]
@@ -3696,80 +3735,80 @@
   ],
   "answers": {
    "cocina": {
-    "n": 1266394,
-    "states": 387,
+    "n": 1413594,
+    "states": 433,
     "at": [
      24,
      18
     ]
    },
    "estufa": {
-    "n": 121090,
-    "states": 387,
+    "n": 132820,
+    "states": 433,
     "at": [
      87,
      105
     ]
    },
    "coqui": {
-    "n": 35571,
-    "states": 365,
+    "n": 40125,
+    "states": 411,
     "at": [
      111,
      159
     ]
    },
    "olla0": {
-    "n": 14400,
-    "states": 120,
+    "n": 19920,
+    "states": 166,
     "at": [
      90,
      96
     ]
    },
    "olla1": {
-    "n": 29160,
-    "states": 243,
+    "n": 34680,
+    "states": 289,
     "at": [
      129,
      96
     ]
    },
    "saco": {
-    "n": 4221,
-    "states": 67,
+    "n": 7119,
+    "states": 113,
     "at": [
      33,
      105
     ]
    },
    "tazon": {
-    "n": 3409,
-    "states": 69,
+    "n": 5663,
+    "states": 115,
     "at": [
      60,
      105
     ]
    },
    "abuela": {
-    "n": 49624,
-    "states": 368,
+    "n": 55880,
+    "states": 414,
     "at": [
      159,
      126
     ]
    },
    "luis": {
-    "n": 41660,
-    "states": 338,
+    "n": 47548,
+    "states": 384,
     "at": [
      72,
      129
     ]
    },
    "carmen": {
-    "n": 23818,
-    "states": 208,
+    "n": 29338,
+    "states": 254,
     "at": [
      30,
      132
@@ -3862,6 +3901,13 @@
     "arroz-con-habichuelas:beats.60 pick"
    ]
   },
+  "$otro": {
+   "$var": true,
+   "where": [
+    "h-estufa:beats.15 decide",
+    "h-estufa:beats.15 pick"
+   ]
+  },
   "$pc": {
    "$var": true,
    "where": [
@@ -3900,7 +3946,15 @@
     "cuidado:names",
     "el-pollo-y-el-huevo:names",
     "el-pollo-y-el-huevo/wrong touch (wrong-poke)",
-    "el-pollo-y-el-huevo/alternate touch (wrong-poke)"
+    "el-pollo-y-el-huevo/alternate touch (wrong-poke)",
+    "h-estufa:beats.13 decide",
+    "h-estufa:beats.13 pick",
+    "h-estufa:names",
+    "h-estufa/right choice beats.13 live",
+    "h-estufa/right touch (right)",
+    "h-estufa/wrong choice beats.13 live",
+    "h-estufa/wrong touch (right)",
+    "… 2 more"
    ]
   },
   "abuelo": {
@@ -3929,7 +3983,14 @@
    "where": [
     "arroz-con-habichuelas:names",
     "cuidado:names",
-    "el-pollo-y-el-huevo:names"
+    "el-pollo-y-el-huevo:names",
+    "h-estufa:beats.15 decide",
+    "h-estufa:names",
+    "h-estufa/right choice beats.15 live",
+    "h-estufa/wrong choice beats.15 live",
+    "h-estufa/wrong touch (wrong)",
+    "h-estufa/alternate choice beats.15 live",
+    "h-estufa/alternate touch (wrong)"
    ]
   },
   "cocina": {
@@ -3937,7 +3998,8 @@
    "where": [
     "arroz-con-habichuelas:names",
     "cuidado:names",
-    "el-pollo-y-el-huevo:names"
+    "el-pollo-y-el-huevo:names",
+    "h-estufa:names"
    ]
   },
   "coqui": {
@@ -3945,7 +4007,8 @@
    "where": [
     "arroz-con-habichuelas:names",
     "cuidado:names",
-    "el-pollo-y-el-huevo:names"
+    "el-pollo-y-el-huevo:names",
+    "h-estufa:names"
    ]
   },
   "di_$kc": {
@@ -4074,7 +4137,13 @@
     "cuidado:names",
     "cuidado/wrong touch (wrong-poke)",
     "cuidado/alternate touch (wrong-poke)",
-    "el-pollo-y-el-huevo:names"
+    "el-pollo-y-el-huevo:names",
+    "h-estufa:beats.13 vale",
+    "h-estufa:names",
+    "h-estufa/right choice beats.13 live",
+    "h-estufa/right choice beats.15 live",
+    "h-estufa/right touch (right)",
+    "… 6 more"
    ]
   },
   "mama": {
@@ -4095,6 +4164,19 @@
     "… 4 more"
    ]
   },
+  "olla": {
+   "$var": false,
+   "where": [
+    "h-estufa:beats.3 decide",
+    "h-estufa:beats.4 decide",
+    "h-estufa/right choice beats.3 live",
+    "h-estufa/right choice beats.4 live",
+    "h-estufa/wrong choice beats.3 live",
+    "h-estufa/wrong choice beats.4 live",
+    "h-estufa/alternate choice beats.3 live",
+    "h-estufa/alternate choice beats.4 live"
+   ]
+  },
   "olla0": {
    "$var": false,
    "where": [
@@ -4110,7 +4192,7 @@
     "arroz-con-habichuelas/wrong touch (retry)",
     "arroz-con-habichuelas/alternate choice beats.23 live",
     "arroz-con-habichuelas/alternate choice beats.60 live",
-    "… 1 more"
+    "… 4 more"
    ]
   },
   "olla1": {
@@ -4128,7 +4210,18 @@
     "arroz-con-habichuelas/wrong touch (wrong)",
     "arroz-con-habichuelas/alternate choice beats.22 live",
     "arroz-con-habichuelas/alternate choice beats.60 live",
-    "… 15 more"
+    "… 25 more"
+   ]
+  },
+  "olla_fria": {
+   "$var": false,
+   "where": [
+    "h-estufa:beats.11 decide",
+    "h-estufa/right choice beats.11 live",
+    "h-estufa/wrong choice beats.11 live",
+    "h-estufa/wrong touch (wrong)",
+    "h-estufa/alternate choice beats.11 live",
+    "h-estufa/alternate touch (wrong)"
    ]
   },
   "papa": {
@@ -4211,7 +4304,7 @@
     "arroz-con-habichuelas/wrong touch (wrong)",
     "arroz-con-habichuelas/alternate choice beats.13 live",
     "arroz-con-habichuelas/alternate choice beats.41 live",
-    "… 1 more"
+    "… 30 more"
    ]
   },
   "salhuevo": {
@@ -4271,7 +4364,7 @@
     "arroz-con-habichuelas/wrong touch (retry)",
     "arroz-con-habichuelas/alternate choice beats.14 live",
     "arroz-con-habichuelas/alternate choice beats.41 live",
-    "… 1 more"
+    "… 28 more"
    ]
   }
  },
@@ -4575,12 +4668,109 @@
      216
     ]
    }
+  },
+  "h-estufa": {
+   "scene": {
+    "respEn": [
+     125,
+     46
+    ],
+    "estante": 0,
+    "repisa": 0,
+    "olor": null,
+    "mat": null,
+    "plata": null,
+    "cubo": 0,
+    "salero": 0,
+    "gente": {},
+    "fuegos": [
+     {},
+     {}
+    ],
+    "izq": {},
+    "der": {},
+    "basura": [],
+    "ventana": [],
+    "ventanacome": 0,
+    "cola": [],
+    "cosas": [],
+    "vuelos": [],
+    "banco": 1,
+    "encima": null,
+    "tarjeta": null,
+    "marcas": null,
+    "cq": {
+     "x": 110,
+     "y": 157,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null,
+     "hace": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 110,
+      "y": 157,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "hace": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "respEn": [
+      125,
+      46
+     ],
+     "estante": 0,
+     "repisa": 0,
+     "olor": null,
+     "mat": null,
+     "plata": null,
+     "cubo": 0,
+     "salero": 0,
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cola": [],
+     "cosas": [],
+     "vuelos": [],
+     "banco": 1,
+     "encima": null,
+     "tarjeta": null,
+     "marcas": null
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
   }
  },
  "states": {
-  "count": 164,
-  "distinctW": 387,
-  "snapshots": 1003,
+  "count": 165,
+  "distinctW": 433,
+  "snapshots": 1141,
   "grouping": "same background sprite(s), the same set things shown with the same boxes, the same values of the set keys",
   "setKeys": [
    "banco",
@@ -4660,7 +4850,7 @@
    "values": [
     {
      "v": null,
-     "n": 326
+     "n": 372
     },
     {
      "v": {},
@@ -4714,7 +4904,7 @@
    "values": [
     {
      "v": 1,
-     "n": 365
+     "n": 411
     },
     {
      "v": 0,
@@ -4774,7 +4964,7 @@
    "values": [
     {
      "v": [],
-     "n": 291
+     "n": 337
     },
     {
      "v": [
@@ -4837,7 +5027,7 @@
    "values": [
     {
      "v": [],
-     "n": 387
+     "n": 433
     }
    ]
   },
@@ -4888,7 +5078,7 @@
    "values": [
     {
      "v": [],
-     "n": 374
+     "n": 420
     },
     {
      "v": [
@@ -4986,6 +5176,7 @@
      "act echa": 3,
      "act final28": 1,
      "act final29": 2,
+     "act g": 12,
      "act llena": 6,
      "act ranallena": 3,
      "act ya": 7,
@@ -5027,7 +5218,7 @@
     "hud": false
    },
    "role": "character",
-   "distinctValues": 8,
+   "distinctValues": 9,
    "values": [
     {
      "v": {
@@ -5040,7 +5231,7 @@
       "bub": null,
       "hace": null
      },
-     "n": 338
+     "n": 378
     },
     {
      "v": {
@@ -5080,6 +5271,19 @@
       "hace": "come"
      },
      "n": 7
+    },
+    {
+     "v": {
+      "x": 110,
+      "y": 157,
+      "s": 1,
+      "dy": -7.608452130361229,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "hace": null
+     },
+     "n": 6
     },
     {
      "v": {
@@ -5145,7 +5349,7 @@
     ],
     "otherCode": [],
     "seenAfter": {
-     "act inicio27": 3,
+     "act inicio27": 6,
      "act inicio29": 3
     },
     "setIn": [
@@ -5186,7 +5390,7 @@
    "values": [
     {
      "v": 1,
-     "n": 255
+     "n": 301
     },
     {
      "v": 0,
@@ -5214,7 +5418,7 @@
      "act final27": 3,
      "act final29": 3,
      "act frie": 7,
-     "act inicio27": 3,
+     "act inicio27": 6,
      "act inicio28": 3,
      "act inicio29": 3,
      "act luiscome": 3,
@@ -5264,6 +5468,14 @@
    "values": [
     {
      "v": {
+      "platos": [],
+      "pila": 6,
+      "platito": 1
+     },
+     "n": 78
+    },
+    {
+     "v": {
       "servidos": [
        {
         "de": "luis",
@@ -5294,14 +5506,6 @@
       ]
      },
      "n": 37
-    },
-    {
-     "v": {
-      "platos": [],
-      "pila": 6,
-      "platito": 1
-     },
-     "n": 32
     },
     {
      "v": {
@@ -5673,7 +5877,7 @@
    "values": [
     {
      "v": null,
-     "n": 373
+     "n": 419
     },
     {
      "v": {
@@ -5698,7 +5902,7 @@
     ],
     "otherCode": [],
     "seenAfter": {
-     "act inicio27": 3,
+     "act inicio27": 6,
      "act otravez27": 3
     },
     "setIn": [
@@ -5742,12 +5946,12 @@
      "n": 267
     },
     {
-     "v": 2,
-     "n": 70
+     "v": 1,
+     "n": 96
     },
     {
-     "v": 1,
-     "n": 50
+     "v": 2,
+     "n": 70
     }
    ]
   },
@@ -5766,14 +5970,14 @@
     ],
     "otherCode": [],
     "seenAfter": {
-     "act apaga": 13,
+     "act apaga": 16,
      "act carmenecha": 11,
      "act derrama": 1,
-     "act echa": 7,
+     "act echa": 16,
      "act enciende": 1,
      "act frie": 7,
      "act humo": 9,
-     "act inicio27": 3,
+     "act inicio27": 6,
      "act inicio28": 3,
      "act inicio29": 3,
      "act otravez27": 3,
@@ -5825,7 +6029,7 @@
     "hud": false
    },
    "role": "set (separates states)",
-   "distinctValues": 54,
+   "distinctValues": 55,
    "values": [
     {
      "v": [
@@ -5855,6 +6059,27 @@
       {}
      ],
      "n": 61
+    },
+    {
+     "v": [
+      {
+       "k": "olla",
+       "con": "hab",
+       "n": 1,
+       "llama": 0,
+       "vapor": 1,
+       "mal": null
+      },
+      {
+       "k": "olla",
+       "con": "arroz",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1,
+       "mal": null
+      }
+     ],
+     "n": 33
     },
     {
      "v": [
@@ -5893,7 +6118,26 @@
        "mal": null
       }
      ],
-     "n": 23
+     "n": 24
+    },
+    {
+     "v": [
+      {
+       "k": "olla",
+       "con": "agua",
+       "n": 0,
+       "llama": 1,
+       "vapor": 1
+      },
+      {
+       "k": "olla",
+       "con": "agua",
+       "n": 0,
+       "llama": 1,
+       "vapor": 1
+      }
+     ],
+     "n": 19
     },
     {
      "v": [
@@ -5942,7 +6186,7 @@
        "mal": null
       }
      ],
-     "n": 10
+     "n": 11
     },
     {
      "v": [
@@ -5965,25 +6209,6 @@
       }
      ],
      "n": 10
-    },
-    {
-     "v": [
-      {
-       "k": "olla",
-       "con": "agua",
-       "n": 0,
-       "llama": 1,
-       "vapor": 1
-      },
-      {
-       "k": "olla",
-       "con": "agua",
-       "n": 0,
-       "llama": 1,
-       "vapor": 1
-      }
-     ],
-     "n": 9
     },
     {
      "v": [
@@ -6236,6 +6461,26 @@
      "v": [
       {
        "k": "olla",
+       "con": "agua",
+       "n": 0,
+       "llama": 1,
+       "vapor": 1
+      },
+      {
+       "k": "olla",
+       "con": "arroz",
+       "n": 1,
+       "llama": 1,
+       "vapor": 1,
+       "mal": null
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "k": "olla",
        "con": "hab",
        "n": 1,
        "llama": 1,
@@ -6266,48 +6511,6 @@
       }
      ],
      "n": 3
-    },
-    {
-     "v": [
-      {
-       "k": "olla",
-       "con": "hab",
-       "n": 1,
-       "llama": 1,
-       "vapor": 1,
-       "mal": null,
-       "espuma": "hab"
-      },
-      {
-       "k": "olla",
-       "con": "arroz",
-       "n": 2,
-       "llama": 0,
-       "vapor": 1,
-       "mal": null
-      }
-     ],
-     "n": 3
-    },
-    {
-     "v": [
-      {
-       "k": "olla",
-       "con": "agua",
-       "n": 0,
-       "llama": 1,
-       "vapor": 1
-      },
-      {
-       "k": "olla",
-       "con": "arroz",
-       "n": 1,
-       "llama": 1,
-       "vapor": 1,
-       "mal": null
-      }
-     ],
-     "n": 2
     }
    ]
   },
@@ -6321,11 +6524,11 @@
      "act asoma": 3,
      "act carmenecha": 3,
      "act dabebe": 3,
-     "act echa": 6,
+     "act echa": 9,
      "act enciende": 1,
      "act familia27": 3,
      "act fin": 3,
-     "act g": 3,
+     "act g": 12,
      "act llena": 9,
      "act luisda": 6,
      "act marca": 2,
@@ -6338,7 +6541,9 @@
      "act ya": 15,
      "ask": 3,
      "if": 4,
-     "line": 9
+     "line": 9,
+     "set": 6,
+     "wait": 3
     },
     "setIn": []
    },
@@ -6349,11 +6554,11 @@
     "hud": false
    },
    "role": "sign or stamp",
-   "distinctValues": 56,
+   "distinctValues": 70,
    "values": [
     {
      "v": [],
-     "n": 299
+     "n": 305
     },
     {
      "v": [
@@ -6459,6 +6664,222 @@
         ]
        ],
        "f0": 347
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         164,
+         127
+        ],
+        [
+         178,
+         129
+        ],
+        [
+         171,
+         119
+        ],
+        [
+         156,
+         151
+        ],
+        [
+         186,
+         151
+        ],
+        [
+         171,
+         145
+        ]
+       ],
+       "f0": 226
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         75,
+         132
+        ],
+        [
+         89,
+         134
+        ],
+        [
+         82,
+         124
+        ],
+        [
+         67,
+         152
+        ],
+        [
+         97,
+         152
+        ],
+        [
+         82,
+         146
+        ]
+       ],
+       "f0": 250
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         164,
+         127
+        ],
+        [
+         178,
+         129
+        ],
+        [
+         171,
+         119
+        ],
+        [
+         156,
+         151
+        ],
+        [
+         186,
+         151
+        ],
+        [
+         171,
+         145
+        ]
+       ],
+       "f0": 337
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         75,
+         132
+        ],
+        [
+         89,
+         134
+        ],
+        [
+         82,
+         124
+        ],
+        [
+         67,
+         152
+        ],
+        [
+         97,
+         152
+        ],
+        [
+         82,
+         146
+        ]
+       ],
+       "f0": 380
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         164,
+         127
+        ],
+        [
+         178,
+         129
+        ],
+        [
+         171,
+         119
+        ],
+        [
+         156,
+         151
+        ],
+        [
+         186,
+         151
+        ],
+        [
+         171,
+         145
+        ]
+       ],
+       "f0": 282
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         75,
+         132
+        ],
+        [
+         89,
+         134
+        ],
+        [
+         82,
+         124
+        ],
+        [
+         67,
+         152
+        ],
+        [
+         97,
+         152
+        ],
+        [
+         82,
+         146
+        ]
+       ],
+       "f0": 325
       }
      ],
      "n": 4
@@ -7002,222 +7423,6 @@
       }
      ],
      "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         200,
-         158
-        ],
-        [
-         214,
-         160
-        ],
-        [
-         207,
-         150
-        ],
-        [
-         192,
-         184
-        ],
-        [
-         222,
-         184
-        ],
-        [
-         207,
-         178
-        ]
-       ],
-       "f0": 367
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         132,
-         99
-        ],
-        [
-         158,
-         101
-        ],
-        [
-         145,
-         91
-        ],
-        [
-         124,
-         111
-        ],
-        [
-         166,
-         111
-        ],
-        [
-         145,
-         105
-        ]
-       ],
-       "f0": 67
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         200,
-         158
-        ],
-        [
-         214,
-         160
-        ],
-        [
-         207,
-         150
-        ],
-        [
-         192,
-         184
-        ],
-        [
-         222,
-         184
-        ],
-        [
-         207,
-         178
-        ]
-       ],
-       "f0": 452
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         200,
-         158
-        ],
-        [
-         214,
-         160
-        ],
-        [
-         207,
-         150
-        ],
-        [
-         192,
-         184
-        ],
-        [
-         222,
-         184
-        ],
-        [
-         207,
-         178
-        ]
-       ],
-       "f0": 409
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         114,
-         159
-        ],
-        [
-         138,
-         161
-        ],
-        [
-         126,
-         151
-        ],
-        [
-         106,
-         171
-        ],
-        [
-         146,
-         171
-        ],
-        [
-         126,
-         162
-        ]
-       ],
-       "f0": 47
-      }
-     ],
-     "n": 2
-    },
-    {
-     "v": [
-      {
-       "t": "star",
-       "n": 16,
-       "pts": [
-        [
-         114,
-         159
-        ],
-        [
-         138,
-         161
-        ],
-        [
-         126,
-         151
-        ],
-        [
-         106,
-         171
-        ],
-        [
-         146,
-         171
-        ],
-        [
-         126,
-         162
-        ]
-       ],
-       "f0": 85
-      }
-     ],
-     "n": 2
     }
    ]
   },
@@ -7246,8 +7451,8 @@
      "act final27": 3,
      "act final28": 3,
      "act final29": 3,
-     "act g": 6,
-     "act inicio27": 3,
+     "act g": 42,
+     "act inicio27": 6,
      "act inicio28": 3,
      "act inicio29": 3,
      "act limpia": 3,
@@ -7308,11 +7513,40 @@
     "hud": false
    },
    "role": "character",
-   "distinctValues": 155,
+   "distinctValues": 161,
    "values": [
     {
      "v": "{\"abuela\":{\"x\":171,\"y\":176,\"dir\":-1,\"lleva\":null,\"alza\":null,\"sent\":0,\"paso\":0},\"luis\":{\"x\":82,\"y\":174,\"dir\":1,\"lleva\":null,\"alza\":null,\"sent\":0,\"paso\":0,\"pose\":\"idle\"},\"carmen\":{\"x\":42,\"y\":176,\"dir\":1,\"sent\":0,\"paso\":0,\"lleva\":null,\"pose\":…",
      "n": 35
+    },
+    {
+     "v": {
+      "abuela": {
+       "x": 171,
+       "y": 176,
+       "dir": -1
+      },
+      "luis": {
+       "x": 82,
+       "y": 174,
+       "dir": 1
+      },
+      "carmen": {
+       "x": 42,
+       "y": 176,
+       "dir": 1
+      },
+      "abuelo": {
+       "vis": 0
+      },
+      "mama": {
+       "vis": 0
+      },
+      "papa": {
+       "vis": 0
+      }
+     },
+     "n": 24
     },
     {
      "v": "{\"abuela\":{\"x\":188,\"y\":180,\"dir\":1,\"lleva\":null,\"alza\":null,\"sent\":0,\"paso\":0},\"luis\":{\"x\":168,\"y\":188,\"dir\":1,\"lleva\":null,\"alza\":null,\"sent\":0,\"paso\":0,\"pose\":\"idle\"},\"carmen\":{\"x\":206,\"y\":188,\"dir\":-1,\"sent\":0,\"paso\":0,\"lleva\":null,\"pose…",
@@ -7357,11 +7591,16 @@
      "n": 12
     },
     {
+     "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"paso\":0},\"luis\":{\"x\":160,\"y\":176,\"dir\":1,\"lleva\":null},\"carmen\":{\"vis\":0,\"bebe\":null,\"piensa\":null,\"pdx\":4,\"x\":238,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},\"abuelo\":{\"vis\":0},\"mama\":{\"vis\":0},\"papa\":{\"vis\":0,\"be…",
+     "n": 9
+    },
+    {
      "v": {
       "abuela": {
        "x": 171,
        "y": 176,
-       "dir": -1
+       "dir": -1,
+       "pose": "wave0"
       },
       "luis": {
        "x": 82,
@@ -7383,10 +7622,6 @@
        "vis": 0
       }
      },
-     "n": 10
-    },
-    {
-     "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"paso\":0},\"luis\":{\"x\":160,\"y\":176,\"dir\":1,\"lleva\":null},\"carmen\":{\"vis\":0,\"bebe\":null,\"piensa\":null,\"pdx\":4,\"x\":238,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},\"abuelo\":{\"vis\":0},\"mama\":{\"vis\":0},\"papa\":{\"vis\":0,\"be…",
      "n": 9
     },
     {
@@ -7403,6 +7638,67 @@
     },
     {
      "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"paso\":0,\"lleva\":null},\"luis\":{\"x\":160,\"y\":176,\"dir\":1,\"lleva\":null,\"sent\":0,\"paso\":0,\"come\":null},\"carmen\":{\"vis\":0,\"bebe\":null,\"piensa\":null,\"pdx\":4,\"x\":238,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},\"abuelo\":{\"v…",
+     "n": 6
+    },
+    {
+     "v": {
+      "abuela": {
+       "x": 171,
+       "y": 176,
+       "dir": -1,
+       "pose": "idle"
+      },
+      "luis": {
+       "x": 82,
+       "y": 174,
+       "dir": 1
+      },
+      "carmen": {
+       "x": 42,
+       "y": 176,
+       "dir": 1
+      },
+      "abuelo": {
+       "vis": 0
+      },
+      "mama": {
+       "vis": 0
+      },
+      "papa": {
+       "vis": 0
+      }
+     },
+     "n": 6
+    },
+    {
+     "v": {
+      "abuela": {
+       "x": 171,
+       "y": 176,
+       "dir": -1,
+       "pose": "idle"
+      },
+      "luis": {
+       "x": 82,
+       "y": 174,
+       "dir": 1,
+       "pose": "wave0"
+      },
+      "carmen": {
+       "x": 42,
+       "y": 176,
+       "dir": 1
+      },
+      "abuelo": {
+       "vis": 0
+      },
+      "mama": {
+       "vis": 0
+      },
+      "papa": {
+       "vis": 0
+      }
+     },
      "n": 6
     },
     {
@@ -7486,6 +7782,37 @@
      "n": 5
     },
     {
+     "v": {
+      "abuela": {
+       "x": 171,
+       "y": 176,
+       "dir": -1,
+       "pose": "idle"
+      },
+      "luis": {
+       "x": 82,
+       "y": 174,
+       "dir": 1,
+       "pose": "idle"
+      },
+      "carmen": {
+       "x": 42,
+       "y": 176,
+       "dir": 1
+      },
+      "abuelo": {
+       "vis": 0
+      },
+      "mama": {
+       "vis": 0
+      },
+      "papa": {
+       "vis": 0
+      }
+     },
+     "n": 5
+    },
+    {
      "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"paso\":0,\"lleva\":null},\"luis\":{\"x\":160,\"y\":176,\"dir\":1,\"lleva\":null,\"sent\":0,\"paso\":0,\"come\":null,\"bebe\":null},\"carmen\":{\"vis\":0,\"bebe\":null,\"piensa\":null,\"pdx\":4,\"x\":238,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},…",
      "n": 4
     },
@@ -7503,22 +7830,6 @@
     },
     {
      "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"lleva\":null,\"pose\":\"idle\"},\"mama\":{\"vis\":1,\"bebe\":1,\"x\":40,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},\"luis\":{\"vis\":1,\"x\":178,\"y\":198,\"sent\":0,\"paso\":0,\"dir\":-1,\"come\":null},\"carmen\":{\"vis\":1,\"x\":199,\"y\":206,\"sent…",
-     "n": 4
-    },
-    {
-     "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"lleva\":null,\"pose\":\"idle\"},\"mama\":{\"vis\":1,\"bebe\":1,\"x\":40,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},\"luis\":{\"vis\":1,\"x\":178,\"y\":198,\"sent\":0,\"paso\":0,\"dir\":-1,\"come\":null},\"carmen\":{\"vis\":1,\"x\":199,\"y\":206,\"sent…",
-     "n": 4
-    },
-    {
-     "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"lleva\":null,\"pose\":\"idle\"},\"mama\":{\"vis\":1,\"bebe\":1,\"x\":40,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},\"luis\":{\"vis\":1,\"x\":178,\"y\":198,\"sent\":0,\"paso\":0,\"dir\":-1,\"pose\":\"idle\",\"dy\":0,\"come\":null},\"carmen\":{\"vis\":1,…",
-     "n": 4
-    },
-    {
-     "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"lleva\":null,\"pose\":\"idle\"},\"mama\":{\"vis\":1,\"bebe\":1,\"x\":40,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},\"luis\":{\"vis\":1,\"x\":178,\"y\":198,\"sent\":0,\"paso\":0,\"dir\":-1,\"pose\":\"idle\",\"dy\":0,\"come\":null},\"carmen\":{\"vis\":1,…",
-     "n": 4
-    },
-    {
-     "v": "{\"abuela\":{\"x\":82,\"y\":174,\"dir\":1,\"lleva\":null,\"pose\":\"idle\"},\"mama\":{\"vis\":1,\"bebe\":1,\"x\":40,\"y\":204,\"sent\":0,\"paso\":0,\"dir\":1},\"luis\":{\"vis\":1,\"x\":178,\"y\":198,\"sent\":0,\"paso\":0,\"dir\":-1,\"pose\":\"idle\",\"dy\":0,\"come\":null},\"carmen\":{\"vis\":1,…",
      "n": 4
     }
    ]
@@ -7542,7 +7853,7 @@
    "values": [
     {
      "v": null,
-     "n": 387
+     "n": 433
     }
    ]
   },
@@ -7554,9 +7865,12 @@
     ],
     "otherCode": [],
     "seenAfter": {
-     "act fin": 3
+     "act fin": 3,
+     "set": 3
     },
-    "setIn": []
+    "setIn": [
+     "h-estufa:beats.15.right.3"
+    ]
    },
    "readBy": {
     "background": false,
@@ -7569,11 +7883,11 @@
    "values": [
     {
      "v": 0,
-     "n": 384
+     "n": 429
     },
     {
      "v": 1,
-     "n": 3
+     "n": 4
     }
    ]
   },
@@ -7599,9 +7913,9 @@
     "seenAfter": {
      "act carmenecha": 11,
      "act copa": 11,
-     "act echa": 7,
+     "act echa": 16,
      "act final29": 2,
-     "act inicio27": 3,
+     "act inicio27": 6,
      "act inicio28": 3,
      "act inicio29": 3,
      "act llena": 13,
@@ -7651,6 +7965,13 @@
    "values": [
     {
      "v": {
+      "saco": 1,
+      "tazon": 2
+     },
+     "n": 43
+    },
+    {
+     "v": {
       "saco": 0,
       "tazon": 0,
       "llenando": 0
@@ -7696,6 +8017,13 @@
       "sucias": 0
      },
      "n": 24
+    },
+    {
+     "v": {
+      "saco": 3,
+      "tazon": 3
+     },
+     "n": 19
     },
     {
      "v": {
@@ -7747,24 +8075,10 @@
     },
     {
      "v": {
-      "saco": 3,
-      "tazon": 3
-     },
-     "n": 9
-    },
-    {
-     "v": {
       "saco": 2,
       "tazon": 2
      },
-     "n": 9
-    },
-    {
-     "v": {
-      "saco": 1,
-      "tazon": 2
-     },
-     "n": 9
+     "n": 10
     },
     {
      "v": {
@@ -7869,7 +8183,7 @@
    "values": [
     {
      "v": 0,
-     "n": 258
+     "n": 304
     },
     {
      "v": 1,
@@ -7913,7 +8227,7 @@
    "values": [
     {
      "v": null,
-     "n": 159
+     "n": 205
     },
     {
      "v": [
@@ -8041,7 +8355,7 @@
    "values": [
     {
      "v": null,
-     "n": 275
+     "n": 321
     },
     {
      "v": {
@@ -8145,7 +8459,7 @@
    "values": [
     {
      "v": null,
-     "n": 386
+     "n": 432
     },
     {
      "v": [
@@ -8216,7 +8530,7 @@
    "values": [
     {
      "v": null,
-     "n": 363
+     "n": 409
     },
     {
      "v": {
@@ -8360,7 +8674,7 @@
    "values": [
     {
      "v": 0,
-     "n": 302
+     "n": 348
     },
     {
      "v": 1,
@@ -8387,7 +8701,7 @@
    "values": [
     {
      "v": null,
-     "n": 387
+     "n": 433
     }
    ]
   },
@@ -8413,7 +8727,7 @@
       125,
       46
      ],
-     "n": 387
+     "n": 433
     }
    ]
   },
@@ -8425,7 +8739,8 @@
     "seenAfter": {
      "act echa": 3,
      "act ranallena": 3,
-     "act sala": 3
+     "act sala": 3,
+     "set": 3
     },
     "setIn": []
    },
@@ -8440,7 +8755,7 @@
    "values": [
     {
      "v": null,
-     "n": 387
+     "n": 433
     }
    ]
   },
@@ -8469,7 +8784,7 @@
    "values": [
     {
      "v": null,
-     "n": 246
+     "n": 292
     },
     {
      "v": {
@@ -8539,7 +8854,7 @@
    "values": [
     {
      "v": 0,
-     "n": 295
+     "n": 341
     },
     {
      "v": 1,
@@ -8566,7 +8881,7 @@
    "values": [
     {
      "v": null,
-     "n": 387
+     "n": 433
     }
    ]
   },
@@ -8625,7 +8940,7 @@
     },
     {
      "v": null,
-     "n": 159
+     "n": 205
     }
    ]
   },
@@ -8635,7 +8950,7 @@
     "actsInCode": [],
     "otherCode": [],
     "seenAfter": {
-     "set": 36
+     "set": 48
     },
     "setIn": [
      "arroz-con-habichuelas:beats.11",
@@ -8649,7 +8964,11 @@
      "el-pollo-y-el-huevo:beats.3",
      "el-pollo-y-el-huevo:beats.32",
      "el-pollo-y-el-huevo:beats.34",
-     "el-pollo-y-el-huevo:beats.6"
+     "el-pollo-y-el-huevo:beats.6",
+     "h-estufa:beats.3.right.0",
+     "h-estufa:beats.3.right.2",
+     "h-estufa:beats.4.right.0",
+     "h-estufa:beats.4.right.2"
     ]
    },
    "readBy": {
@@ -8663,7 +8982,15 @@
    "values": [
     {
      "v": null,
-     "n": 379
+     "n": 420
+    },
+    {
+     "v": "tazon",
+     "n": 4
+    },
+    {
+     "v": "saco",
+     "n": 3
     },
     {
      "v": "olla1",
@@ -8671,14 +8998,6 @@
     },
     {
      "v": "olla0",
-     "n": 1
-    },
-    {
-     "v": "saco",
-     "n": 1
-    },
-    {
-     "v": "tazon",
      "n": 1
     },
     {
@@ -8747,7 +9066,7 @@
    "values": [
     {
      "v": [],
-     "n": 382
+     "n": 428
     },
     {
      "v": [
@@ -8810,7 +9129,7 @@
    "values": [
     {
      "v": 0,
-     "n": 386
+     "n": 432
     },
     {
      "v": 1,
@@ -8868,7 +9187,7 @@
    "values": [
     {
      "v": [],
-     "n": 370
+     "n": 416
     },
     {
      "v": [
@@ -9188,7 +9507,8 @@
       "s160",
       "s161",
       "s162",
-      "s163"
+      "s163",
+      "s164"
      ]
     }
    ]
@@ -9394,7 +9714,8 @@
     "s049",
     "s050",
     "s051",
-    "s052"
+    "s052",
+    "s152"
    ],
    "boxes": [
     {
@@ -9456,7 +9777,8 @@
       "s049",
       "s050",
       "s051",
-      "s052"
+      "s052",
+      "s152"
      ]
     }
    ]
@@ -9622,12 +9944,13 @@
     "s151",
     "s152",
     "s153",
-    "s155",
-    "s158",
-    "s160",
+    "s154",
+    "s156",
+    "s159",
     "s161",
     "s162",
-    "s163"
+    "s163",
+    "s164"
    ],
    "boxes": [
     {
@@ -9736,12 +10059,12 @@
       "s148",
       "s149",
       "s150",
-      "s152",
       "s153",
-      "s158",
-      "s160",
+      "s154",
+      "s159",
       "s161",
-      "s163"
+      "s162",
+      "s164"
      ]
     },
     {
@@ -9809,8 +10132,9 @@
       "s089",
       "s090",
       "s091",
-      "s155",
-      "s162"
+      "s152",
+      "s156",
+      "s163"
      ]
     },
     {
@@ -9822,6 +10146,7 @@
      ],
      "states": [
       "s001",
+      "s002",
       "s003",
       "s004",
       "s005",
@@ -9922,6 +10247,7 @@
      ],
      "states": [
       "s001",
+      "s002",
       "s003",
       "s004",
       "s005",
@@ -9965,7 +10291,8 @@
       "s085",
       "s086",
       "s087",
-      "s088"
+      "s088",
+      "s152"
      ]
     }
    ]
@@ -10024,10 +10351,10 @@
     "s137",
     "s146",
     "s147",
-    "s158",
-    "s160",
+    "s159",
     "s161",
-    "s163"
+    "s162",
+    "s164"
    ],
    "boxes": [
     {
@@ -10041,7 +10368,7 @@
       "s058",
       "s063",
       "s072",
-      "s163"
+      "s164"
      ]
     },
     {
@@ -10078,7 +10405,7 @@
       "s137",
       "s146",
       "s147",
-      "s160"
+      "s161"
      ]
     },
     {
@@ -10111,8 +10438,8 @@
       9
      ],
      "states": [
-      "s158",
-      "s161"
+      "s159",
+      "s162"
      ]
     }
    ]
@@ -10290,12 +10617,13 @@
     "s151",
     "s152",
     "s153",
-    "s155",
-    "s158",
-    "s160",
+    "s154",
+    "s156",
+    "s159",
     "s161",
     "s162",
-    "s163"
+    "s163",
+    "s164"
    ],
    "boxes": [
     {
@@ -10340,8 +10668,8 @@
       "s046",
       "s047",
       "s048",
-      "s152",
-      "s153"
+      "s153",
+      "s154"
      ]
     },
     {
@@ -10421,8 +10749,8 @@
       "s089",
       "s090",
       "s091",
-      "s155",
-      "s162"
+      "s156",
+      "s163"
      ]
     },
     {
@@ -10444,7 +10772,8 @@
       "s049",
       "s050",
       "s051",
-      "s052"
+      "s052",
+      "s152"
      ]
     },
     {
@@ -10579,10 +10908,10 @@
       "s149",
       "s150",
       "s151",
-      "s158",
-      "s160",
+      "s159",
       "s161",
-      "s163"
+      "s162",
+      "s164"
      ]
     }
    ]
@@ -10692,11 +11021,12 @@
     "s124",
     "s152",
     "s153",
-    "s155",
-    "s160",
+    "s154",
+    "s156",
     "s161",
     "s162",
-    "s163"
+    "s163",
+    "s164"
    ],
    "boxes": [
     {
@@ -10764,7 +11094,8 @@
       "s083",
       "s085",
       "s089",
-      "s090"
+      "s090",
+      "s152"
      ]
     },
     {
@@ -10811,7 +11142,8 @@
       "s078",
       "s079",
       "s086",
-      "s087"
+      "s087",
+      "s152"
      ]
     },
     {
@@ -10875,7 +11207,8 @@
       "s088",
       "s089",
       "s090",
-      "s091"
+      "s091",
+      "s152"
      ]
     },
     {
@@ -10887,6 +11220,7 @@
      ],
      "states": [
       "s001",
+      "s002",
       "s004",
       "s009",
       "s010",
@@ -10911,6 +11245,7 @@
      ],
      "states": [
       "s001",
+      "s002",
       "s004",
       "s009",
       "s018",
@@ -10934,7 +11269,8 @@
       "s070",
       "s078",
       "s081",
-      "s087"
+      "s087",
+      "s152"
      ]
     },
     {
@@ -10945,6 +11281,7 @@
       10
      ],
      "states": [
+      "s001",
       "s003",
       "s005",
       "s010",
@@ -10955,8 +11292,8 @@
       "s034",
       "s039",
       "s048",
-      "s152",
-      "s153"
+      "s153",
+      "s154"
      ]
     },
     {
@@ -10967,6 +11304,7 @@
       10
      ],
      "states": [
+      "s001",
       "s003",
       "s005",
       "s017",
@@ -10992,8 +11330,9 @@
       "s082",
       "s084",
       "s087",
-      "s155",
-      "s162"
+      "s152",
+      "s156",
+      "s163"
      ]
     },
     {
@@ -11004,6 +11343,7 @@
       4
      ],
      "states": [
+      "s001",
       "s003",
       "s005",
       "s006",
@@ -11023,6 +11363,7 @@
       4
      ],
      "states": [
+      "s001",
       "s003",
       "s005",
       "s006",
@@ -11041,7 +11382,8 @@
       "s082",
       "s085",
       "s087",
-      "s088"
+      "s088",
+      "s152"
      ]
     },
     {
@@ -11096,9 +11438,9 @@
       10
      ],
      "states": [
-      "s160",
       "s161",
-      "s163"
+      "s162",
+      "s164"
      ]
     }
    ]
@@ -11120,7 +11462,7 @@
    ],
    "clipped": null,
    "states": [
-    "s160"
+    "s161"
    ],
    "boxes": [
     {
@@ -11131,7 +11473,7 @@
       22
      ],
      "states": [
-      "s160"
+      "s161"
      ]
     }
    ]
@@ -11181,7 +11523,8 @@
     "s035",
     "s044",
     "s045",
-    "s046"
+    "s046",
+    "s152"
    ],
    "boxes": [
     {
@@ -11228,7 +11571,8 @@
       "s004",
       "s005",
       "s032",
-      "s044"
+      "s044",
+      "s152"
      ]
     },
     {
@@ -12240,7 +12584,8 @@
     "s049",
     "s050",
     "s051",
-    "s052"
+    "s052",
+    "s152"
    ],
    "boxes": [
     {
@@ -12258,7 +12603,8 @@
       "s005",
       "s006",
       "s007",
-      "s008"
+      "s008",
+      "s152"
      ]
     },
     {
@@ -12806,11 +13152,12 @@
     "s149",
     "s150",
     "s151",
-    "s154",
+    "s152",
     "s155",
-    "s160",
+    "s156",
     "s161",
-    "s163"
+    "s162",
+    "s164"
    ],
    "boxes": [
     {
@@ -12849,7 +13196,8 @@
       "s044",
       "s045",
       "s046",
-      "s047"
+      "s047",
+      "s152"
      ]
     },
     {
@@ -12887,7 +13235,8 @@
       "s044",
       "s045",
       "s046",
-      "s047"
+      "s047",
+      "s152"
      ]
     },
     {
@@ -13585,8 +13934,9 @@
     "s149",
     "s150",
     "s151",
-    "s154",
-    "s163"
+    "s152",
+    "s155",
+    "s164"
    ],
    "boxes": [
     {
@@ -13625,7 +13975,8 @@
       "s044",
       "s045",
       "s046",
-      "s047"
+      "s047",
+      "s152"
      ]
     },
     {
@@ -13805,7 +14156,7 @@
       51
      ],
      "states": [
-      "s154"
+      "s155"
      ]
     },
     {
@@ -13816,7 +14167,7 @@
       51
      ],
      "states": [
-      "s163"
+      "s164"
      ]
     },
     {
@@ -13827,7 +14178,7 @@
       51
      ],
      "states": [
-      "s163"
+      "s164"
      ]
     }
    ]
@@ -13884,10 +14235,10 @@
     "s088",
     "s089",
     "s091",
-    "s154",
     "s155",
-    "s161",
-    "s163"
+    "s156",
+    "s162",
+    "s164"
    ],
    "boxes": [
     {
@@ -14185,7 +14536,7 @@
       14
      ],
      "states": [
-      "s154"
+      "s155"
      ]
     },
     {
@@ -14196,7 +14547,7 @@
       24
      ],
      "states": [
-      "s154"
+      "s155"
      ]
     },
     {
@@ -14207,7 +14558,7 @@
       14
      ],
      "states": [
-      "s154"
+      "s155"
      ]
     },
     {
@@ -14218,7 +14569,7 @@
       20
      ],
      "states": [
-      "s155"
+      "s156"
      ]
     },
     {
@@ -14229,7 +14580,7 @@
       24
      ],
      "states": [
-      "s154"
+      "s155"
      ]
     },
     {
@@ -14240,7 +14591,7 @@
       10
      ],
      "states": [
-      "s161"
+      "s162"
      ]
     },
     {
@@ -14251,7 +14602,7 @@
       9
      ],
      "states": [
-      "s163"
+      "s164"
      ]
     },
     {
@@ -14432,7 +14783,8 @@
     "s149",
     "s150",
     "s151",
-    "s159"
+    "s152",
+    "s160"
    ],
    "boxes": [
     {
@@ -14595,7 +14947,8 @@
       "s149",
       "s150",
       "s151",
-      "s159"
+      "s152",
+      "s160"
      ]
     },
     {
@@ -14654,6 +15007,17 @@
      ],
      "states": [
       "s054"
+     ]
+    },
+    {
+     "box": [
+      110,
+      149,
+      32,
+      27
+     ],
+     "states": [
+      "s152"
      ]
     }
    ]
@@ -14918,9 +15282,10 @@
     "s149",
     "s150",
     "s151",
-    "s154",
+    "s152",
     "s155",
-    "s159"
+    "s156",
+    "s160"
    ],
    "boxes": [
     {
@@ -15049,7 +15414,7 @@
       "s149",
       "s150",
       "s151",
-      "s159"
+      "s160"
      ]
     },
     {
@@ -15103,7 +15468,8 @@
       "s069",
       "s071",
       "s072",
-      "s073"
+      "s073",
+      "s152"
      ]
     },
     {
@@ -15292,7 +15658,7 @@
       17.63
      ],
      "states": [
-      "s155"
+      "s156"
      ]
     },
     {
@@ -15303,7 +15669,7 @@
       12
      ],
      "states": [
-      "s154"
+      "s155"
      ]
     },
     {
@@ -15314,7 +15680,7 @@
       14
      ],
      "states": [
-      "s154"
+      "s155"
      ]
     }
    ]
@@ -15341,7 +15707,7 @@
    ],
    "clipped": null,
    "states": [
-    "s154"
+    "s155"
    ],
    "boxes": [
     {
@@ -15352,7 +15718,7 @@
       10
      ],
      "states": [
-      "s154"
+      "s155"
      ]
     }
    ]
@@ -15387,8 +15753,8 @@
     "s139",
     "s148",
     "s149",
-    "s156",
-    "s157"
+    "s157",
+    "s158"
    ],
    "boxes": [
     {
@@ -15437,7 +15803,7 @@
       20
      ],
      "states": [
-      "s156"
+      "s157"
      ]
     },
     {
@@ -15448,7 +15814,7 @@
       18
      ],
      "states": [
-      "s157"
+      "s158"
      ]
     }
    ]
@@ -15484,8 +15850,8 @@
     "s148",
     "s149",
     "s150",
-    "s156",
-    "s157"
+    "s157",
+    "s158"
    ],
    "boxes": [
     {
@@ -15518,8 +15884,8 @@
       21
      ],
      "states": [
-      "s156",
-      "s157"
+      "s157",
+      "s158"
      ]
     }
    ]
@@ -15549,7 +15915,7 @@
     "s091",
     "s123",
     "s151",
-    "s159"
+    "s160"
    ],
    "boxes": [
     {
@@ -15584,7 +15950,7 @@
       9
      ],
      "states": [
-      "s159"
+      "s160"
      ]
     }
    ]
@@ -15670,7 +16036,7 @@
     "s149",
     "s150",
     "s151",
-    "s159"
+    "s160"
    ],
    "boxes": [
     {
@@ -15774,7 +16140,7 @@
       12
      ],
      "states": [
-      "s159"
+      "s160"
      ]
     }
    ]
@@ -15946,7 +16312,7 @@
     "s096",
     "s122",
     "s150",
-    "s159"
+    "s160"
    ],
    "boxes": [
     {
@@ -16036,7 +16402,7 @@
       21.59
      ],
      "states": [
-      "s159"
+      "s160"
      ]
     },
     {
@@ -16047,7 +16413,7 @@
       22.21
      ],
      "states": [
-      "s159"
+      "s160"
      ]
     }
    ]

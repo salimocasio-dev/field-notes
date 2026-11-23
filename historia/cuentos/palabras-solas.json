@@ -535,6 +535,46 @@
   "w_vacio": {
    "who": "narr",
    "text": "Vacío."
+  },
+  "w_quieres": {
+   "who": "narr",
+   "text": "Quieres."
+  },
+  "w_que_quieres": {
+   "who": "narr",
+   "text": "¿Qué quieres?"
+  },
+  "w_me_gusta": {
+   "who": "narr",
+   "text": "Me gusta."
+  },
+  "w_no_me_gusta": {
+   "who": "narr",
+   "text": "No me gusta."
+  },
+  "w_rico": {
+   "who": "narr",
+   "text": "Rico."
+  },
+  "w_todo": {
+   "who": "narr",
+   "text": "Todo."
+  },
+  "w_cafe": {
+   "who": "narr",
+   "text": "Café."
+  },
+  "w_azucar": {
+   "who": "narr",
+   "text": "Azúcar."
+  },
+  "w_un_poco": {
+   "who": "narr",
+   "text": "Un poco."
+  },
+  "w_mucho": {
+   "who": "narr",
+   "text": "Mucho."
   }
  }
 }

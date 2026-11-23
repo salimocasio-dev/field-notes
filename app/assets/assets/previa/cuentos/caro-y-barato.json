@@ -1,0 +1,790 @@
+{
+ "id": "caro-y-barato",
+ "title": "Caro y barato",
+ "place": "El colmado",
+ "scene": "caja",
+ "next": "el-cambio",
+ "goal": "Buy abuela a cup, then push to don Pepe the one each customer asks for: every wrong one he wraps tears a sheet of the gift paper that abuela's cup needs.",
+ "stake": {
+  "thing": "papel",
+  "steps": 2
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "caro",
+  "barato",
+  "catorce",
+  "quince",
+  "dieciséis"
+ ],
+ "formas_foco": {
+  "caro": [
+   "cara"
+  ],
+  "barato": [
+   "barata"
+  ]
+ },
+ "back_again": [
+  "taza",
+  "olla",
+  "plato",
+  "vaso",
+  "peso",
+  "¿cuánto es?",
+  "paga",
+  "quiero",
+  "compra",
+  "once",
+  "doce",
+  "trece",
+  "grande",
+  "pequeño",
+  "abuela",
+  "por favor",
+  "gracias",
+  "adiós"
+ ],
+ "also_heard": [
+  "papel"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "14": "catorce",
+  "15": "quince",
+  "16": "dieciséis"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "c46_compra": {
+   "who": "narr",
+   "text": "Coquí compra una taza."
+  },
+  "c46_pepe_cara": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Esta taza es cara: dieciséis pesos."
+  },
+  "c46_pepe_barata": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Y esta taza es barata: catorce pesos."
+  },
+  "c46_donde_taza": {
+   "who": "narr",
+   "text": "¿Dónde está la taza barata?"
+  },
+  "c46_cq_paga": {
+   "who": "narr",
+   "text": "Coquí paga catorce pesos."
+  },
+  "c46_pepe_quien": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Para quién es la taza?"
+  },
+  "c46_cq_abuela": {
+   "who": "tu",
+   "text": "Es para abuela.",
+   "tu_turno": [
+    {
+     "palabra": "abuela",
+     "formas": [
+      "abuela"
+     ]
+    }
+   ]
+  },
+  "c46_pepe_ollas": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: La olla grande es cara: dieciséis pesos. La olla pequeña es barata: quince pesos."
+  },
+  "c46_senora_olla": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Quiero la olla cara, por favor."
+  },
+  "c46_toca_olla": {
+   "who": "narr",
+   "text": "Toca la olla cara."
+  },
+  "c46_senora_paga16": {
+   "who": "narr",
+   "text": "La señora paga dieciséis pesos."
+  },
+  "c45_luis_cuanto": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Cuánto es?"
+  },
+  "c46_pepe_platos": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Este, catorce pesos. Y este, quince pesos."
+  },
+  "c46_luis_plato": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Quiero el plato de quince pesos."
+  },
+  "c46_donde_plato": {
+   "who": "narr",
+   "text": "¿Dónde está el plato de quince pesos?"
+  },
+  "c46_luis_paga15": {
+   "who": "narr",
+   "text": "Luis paga quince pesos."
+  },
+  "c46_luis_gracias_adios": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Gracias, Coquí! ¡Adiós!"
+  },
+  "c46_cq_adios_luis": {
+   "who": "tu",
+   "text": "¡Adiós, Luis!",
+   "tu_turno": [
+    {
+     "palabra": "adiós",
+     "formas": [
+      "adiós",
+      "adios"
+     ]
+    }
+   ]
+  },
+  "c46_pepe_rapido": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Rápido, Coquí!"
+  },
+  "c46_pepe_abuela": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Y esto es para tu abuela."
+  },
+  "c46_no_hay_papel": {
+   "who": "narr",
+   "text": "No hay más papel."
+  },
+  "c46_cq_mira": {
+   "who": "tu",
+   "text": "¡Abuela! ¡Mira!"
+  },
+  "c46_vaso_caro": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Quiero el vaso caro, por favor."
+  },
+  "c46_no_vaso_caro": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Este vaso es caro."
+  },
+  "c46_vaso_barato": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Quiero el vaso barato, por favor."
+  },
+  "c46_no_vaso_barato": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Este vaso es barato."
+  },
+  "c46_taza_14": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Quiero la taza de catorce pesos, por favor."
+  },
+  "c46_no_taza_14": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Esta taza es de catorce pesos."
+  },
+  "c46_taza_15": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Quiero la taza de quince pesos, por favor."
+  },
+  "c46_no_taza_15": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Esta taza es de quince pesos."
+  },
+  "c46_taza_16": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Quiero la taza de dieciséis pesos, por favor."
+  },
+  "c46_no_taza_16": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Esta taza es de dieciséis pesos."
+  }
+ },
+ "beats": [
+  {
+   "act": "papel",
+   "n": 5
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "par",
+   "k": "taza",
+   "a": "16",
+   "b": "14"
+  },
+  "c46_compra",
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mano",
+   "a": "cosa_a"
+  },
+  "c46_pepe_cara",
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mano",
+   "a": "cosa_b"
+  },
+  "c46_pepe_barata",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "mira",
+   "a": "frasco"
+  },
+  {
+   "ask": "cosa_b",
+   "lead": [],
+   "line": "c46_donde_taza",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "coqui",
+     "n": "14"
+    },
+    "c46_cq_paga"
+   ],
+   "after": []
+  },
+  "c46_pepe_quien",
+  "c46_cq_abuela",
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "senala",
+   "a": "papel"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "cliente",
+   "quien": "senora"
+  },
+  {
+   "act": "par",
+   "k": "olla",
+   "a": "16",
+   "b": "15"
+  },
+  "c46_pepe_ollas",
+  "c46_senora_olla",
+  {
+   "ask": "cosa_a",
+   "lead": [],
+   "line": "c46_toca_olla",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "senora",
+     "n": "16"
+    },
+    "c46_senora_paga16",
+    {
+     "act": "sale",
+     "quien": "senora"
+    }
+   ],
+   "after": [
+    {
+     "act": "empuja",
+     "cual": "cosa_a"
+    },
+    {
+     "act": "envuelve",
+     "ok": 1
+    },
+    {
+     "act": "papel",
+     "n": 4
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "cliente",
+   "quien": "luis"
+  },
+  {
+   "act": "par",
+   "k": "plato",
+   "a": "14",
+   "b": "15"
+  },
+  "c45_luis_cuanto",
+  "c46_pepe_platos",
+  "c46_luis_plato",
+  {
+   "ask": "cosa_b",
+   "lead": [],
+   "line": "c46_donde_plato",
+   "then": [
+    {
+     "act": "paga",
+     "quien": "luis",
+     "n": "15"
+    },
+    "c46_luis_paga15",
+    {
+     "act": "gesto",
+     "quien": "luis",
+     "que": "bolsa"
+    },
+    "c46_luis_gracias_adios",
+    "c46_cq_adios_luis",
+    {
+     "act": "sale",
+     "quien": "luis"
+    }
+   ],
+   "after": []
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "cola",
+   "n": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "nudillos"
+  },
+  "c46_pepe_rapido",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "14-15",
+    "14-16",
+    "15-16"
+   ]
+  },
+  {
+   "calc": "la",
+   "cond": "qa=15-16",
+   "then": "15",
+   "else": "14"
+  },
+  {
+   "calc": "ha",
+   "cond": "qa=14-15",
+   "then": "15",
+   "else": "16"
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "cosa_a",
+    "cosa_b"
+   ],
+   "other": "ea"
+  },
+  {
+   "calc": "ua",
+   "cond": "ca=cosa_a",
+   "then": "$ha",
+   "else": "$la"
+  },
+  {
+   "calc": "va",
+   "cond": "ca=cosa_a",
+   "then": "$la",
+   "else": "$ha"
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "caro",
+    "barato"
+   ],
+   "other": "oa"
+  },
+  {
+   "calc": "ka",
+   "cond": "wa=caro",
+   "then": "$ca",
+   "else": "$ea"
+  },
+  {
+   "calc": "ra",
+   "cond": "wa=caro",
+   "then": "$ha",
+   "else": "$la"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cosa_a",
+    "cosa_b"
+   ],
+   "pick": "$ka",
+   "tests": "$wa",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "cliente",
+     "quien": "senor"
+    },
+    {
+     "act": "par",
+     "k": "vaso",
+     "a": "$ua",
+     "b": "$va"
+    },
+    "c46_vaso_$wa"
+   ],
+   "line": "c46_vaso_$wa",
+   "right": [
+    {
+     "act": "empuja",
+     "cual": "$ka"
+    },
+    {
+     "act": "envuelve",
+     "ok": 1
+    },
+    {
+     "act": "paga",
+     "quien": "senor",
+     "n": "$ra"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "sale",
+     "quien": "senor"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "empuja",
+     "cual": "$x"
+    },
+    {
+     "act": "envuelve",
+     "ok": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "senor",
+     "que": "no"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c46_no_vaso_$oa",
+    {
+     "act": "envuelve",
+     "ok": 0
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "qb",
+   "options": [
+    "14-15",
+    "14-16",
+    "15-16"
+   ]
+  },
+  {
+   "calc": "lb",
+   "cond": "qb=15-16",
+   "then": "15",
+   "else": "14"
+  },
+  {
+   "calc": "hb",
+   "cond": "qb=14-15",
+   "then": "15",
+   "else": "16"
+  },
+  {
+   "draw": "cb",
+   "options": [
+    "cosa_a",
+    "cosa_b"
+   ],
+   "other": "eb"
+  },
+  {
+   "calc": "ub",
+   "cond": "cb=cosa_a",
+   "then": "$hb",
+   "else": "$lb"
+  },
+  {
+   "calc": "vb",
+   "cond": "cb=cosa_a",
+   "then": "$lb",
+   "else": "$hb"
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "caro",
+    "barato"
+   ]
+  },
+  {
+   "calc": "kb",
+   "cond": "wb=caro",
+   "then": "$cb",
+   "else": "$eb"
+  },
+  {
+   "calc": "nb",
+   "cond": "wb=caro",
+   "then": "$hb",
+   "else": "$lb"
+  },
+  {
+   "calc": "ob",
+   "cond": "wb=caro",
+   "then": "$lb",
+   "else": "$hb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "cosa_a",
+    "cosa_b"
+   ],
+   "pick": "$kb",
+   "tests": "$nb",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "cliente",
+     "quien": "senora"
+    },
+    {
+     "act": "par",
+     "k": "taza",
+     "a": "$ub",
+     "b": "$vb"
+    },
+    "c46_taza_$nb"
+   ],
+   "line": "c46_taza_$nb",
+   "right": [
+    {
+     "act": "empuja",
+     "cual": "$kb"
+    },
+    {
+     "act": "envuelve",
+     "ok": 1
+    },
+    {
+     "act": "paga",
+     "quien": "senora",
+     "n": "$nb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "sale",
+     "quien": "senora"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "empuja",
+     "cual": "$x"
+    },
+    {
+     "act": "envuelve",
+     "ok": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "senora",
+     "que": "no"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c46_no_taza_$ob",
+    {
+     "act": "envuelve",
+     "ok": 0
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mira",
+   "a": "papel"
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mira",
+   "a": "taza"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "regalo46",
+     "n": 2
+    },
+    "c46_pepe_abuela"
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "regalo46",
+       "n": 1
+      },
+      "c46_pepe_abuela"
+     ],
+     "else": [
+      {
+       "act": "regalo46",
+       "n": 0
+      },
+      "c46_no_hay_papel"
+     ]
+    }
+   ]
+  },
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "sale_taza"
+  },
+  "c46_cq_mira",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c46_compra",
+  "c46_pepe_cara",
+  "c46_pepe_barata",
+  "c46_donde_taza",
+  "c46_cq_paga",
+  "c46_pepe_quien",
+  "c46_cq_abuela",
+  "c46_pepe_ollas",
+  "c46_senora_olla",
+  "c46_toca_olla",
+  "c46_senora_paga16",
+  "c45_luis_cuanto",
+  "c46_pepe_platos",
+  "c46_luis_plato",
+  "c46_donde_plato",
+  "c46_luis_paga15",
+  "c46_luis_gracias_adios",
+  "c46_cq_adios_luis",
+  "c46_pepe_rapido",
+  "c46_vaso_barato",
+  "c46_taza_15",
+  "c46_pepe_abuela",
+  "c46_cq_mira"
+ ]
+}

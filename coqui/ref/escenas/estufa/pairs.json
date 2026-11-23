@@ -1766,6 +1766,68 @@
      "png": "nivel.caliente.3.png"
     }
    ]
+  },
+  {
+   "w": "azúcar",
+   "s": 35,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "azúcar",
+     "side": "si",
+     "x": null,
+     "crop": [
+      111.45,
+      130,
+      47.09,
+      52
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "azúcar",
+     "side": "no",
+     "x": null,
+     "crop": [
+      111.45,
+      130,
+      47.09,
+      52
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "café",
+     "side": "si",
+     "x": null,
+     "crop": [
+      82.91,
+      80,
+      94.19,
+      104
+     ],
+     "scene": "comer",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "arroz",
+     "side": "si",
+     "x": null,
+     "crop": [
+      89.54,
+      84,
+      36.23,
+      40
+     ],
+     "scene": "estufa",
+     "png": "nivel.azucar.3.png"
+    }
+   ]
   }
  ]
 }

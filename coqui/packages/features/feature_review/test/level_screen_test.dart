@@ -76,11 +76,11 @@ void main() {
     );
 
     testWidgets(
-      'nivel_check: all right: it stops when the last two items are right (before 16 items), the result is the first 32 stories',
+      'nivel_check: all right: it stops when the last two items are right (before 16 items), the result is the first 35 stories',
       (t) async {
         final lab = await played(t, (s, k) => true);
         expect(lab.lv.answers.length, lessThan(16));
-        expect(lab.lv.result!.frontier, 32);
+        expect(lab.lv.result!.frontier, 35);
       },
     );
 
@@ -244,22 +244,22 @@ void main() {
     );
 
     testWidgets(
-      'nivel_check: todo=1: every item of the list is asked, in order (48), 48 segments',
+      'nivel_check: todo=1: every item of the list is asked, in order (52), 52 segments',
       (t) async {
         final lab = await played(
           t,
           (s, k) => true,
           o: const LevelOptions(all: true),
         );
-        expect(lab.lv.answers.length, 48);
+        expect(lab.lv.answers.length, 52);
         expect([
           for (final a in lab.lv.answers) a.i,
-        ], List<int>.generate(48, (i) => i));
+        ], List<int>.generate(52, (i) => i));
         expect(
           t
               .widget<LessonProgressDashes>(find.byType(LessonProgressDashes))
               .segments,
-          48,
+          52,
         );
       },
     );

@@ -2,8 +2,12 @@ import 'fixtures/balcon_sheet.dart';
 import 'fixtures/banco_sheet.dart';
 import 'fixtures/camino_sheet.dart';
 import 'fixtures/campo_sheet.dart';
+import 'fixtures/comer_sheet.dart';
+import 'fixtures/estufa_sheet.dart';
 import 'fixtures/frente_sheet.dart';
 import 'fixtures/lago_sheet.dart';
+import 'fixtures/mesa_sheet.dart';
+import 'fixtures/nevera_sheet.dart';
 import 'fixtures/patio_sheet.dart';
 import 'fixtures/sala_sheet.dart';
 
@@ -30,3 +34,15 @@ String lagoSheetText() => lagoSheetJson;
 
 /// The text of El banco's sheet, from the fixture.
 String bancoSheetText() => bancoSheetJson;
+
+/// The text of La mesa's sheet, from the fixture.
+String mesaSheetText() => mesaSheetJson;
+
+/// The text of La estufa's sheet, from the fixture.
+String estufaSheetText() => estufaSheetJson;
+
+/// The text of La nevera's sheet, from the fixture.
+String neveraSheetText() => neveraSheetJson;
+
+/// The text of A comer's sheet, from the fixture.
+String comerSheetText() => comerSheetJson;

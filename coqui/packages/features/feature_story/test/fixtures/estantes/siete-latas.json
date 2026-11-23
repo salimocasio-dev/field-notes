@@ -1,0 +1,534 @@
+{
+ "id": "siete-latas",
+ "title": "Siete latas",
+ "place": "El colmado",
+ "scene": "estantes",
+ "next": "diez-botellas",
+ "goal": "Build don Pepe's pyramid of cans by carrying over the net with the number of cans he asks for.",
+ "stake": {
+  "thing": "latas",
+  "steps": 2
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cuatro",
+  "cinco",
+  "seis",
+  "siete"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "uno",
+  "dos",
+  "tres",
+  "lata",
+  "¿cuántas?",
+  "hay",
+  "dame",
+  "más",
+  "mucho",
+  "mira",
+  "otra vez",
+  "aquí"
+ ],
+ "also_heard": [
+  "acá"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "coqui": "yo_coqui",
+  "perro": "c_n_perro"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c40_muchas": {
+   "who": "narr",
+   "text": "Don Pepe tiene muchas latas."
+  },
+  "c40_siete": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Una, dos, tres, cuatro, cinco, seis, siete. ¡Siete latas!"
+  },
+  "c40_seis_latas": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Una, dos, tres, cuatro, cinco, seis. Seis latas."
+  },
+  "c40_l_redes": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Aquí hay cinco latas. Y aquí hay cuatro."
+  },
+  "c40_op_cinco": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Coquí, dame cinco latas."
+  },
+  "c40_cinco": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Cinco!"
+  },
+  "c40_op_cuatro": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Y ahora, cuatro latas."
+  },
+  "c40_ay_canelo": {
+   "who": "narr",
+   "text": "¡Ay, no! ¡Canelo!"
+  },
+  "c40_ven_aca": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Canelo, ven acá!"
+  },
+  "c40_otra_vez": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Otra vez, Coquí?"
+  },
+  "c40_cq_mas": {
+   "who": "tu",
+   "text": "¡Sí, más latas!",
+   "tu_turno": [
+    {
+     "palabra": "más",
+     "formas": [
+      "más",
+      "mas"
+     ]
+    },
+    {
+     "palabra": "lata",
+     "formas": [
+      "latas"
+     ]
+    }
+   ]
+  },
+  "c40_siete_aqui": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Siete latas aquí."
+  },
+  "c40_dame_seis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Dame seis latas."
+  },
+  "c40_seis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Seis!"
+  },
+  "c40_no_seis": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Aquí hay seis latas."
+  },
+  "c40_dame_cinco": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Dame cinco latas."
+  },
+  "c40_no_cinco": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Aquí hay cinco latas."
+  },
+  "c40_cuantas": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Cuántas latas hay?"
+  },
+  "c40_cuatro": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Una, dos, tres, cuatro. ¡Cuatro latas!"
+  },
+  "c40_dos": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Una, dos. Dos latas."
+  },
+  "c40_no_hay": {
+   "who": "narr",
+   "text": "No hay más latas."
+  },
+  "c40_l_donde": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Dónde está Canelo?"
+  },
+  "c40_cq_aqui": {
+   "who": "tu",
+   "text": "¡Aquí está!",
+   "tu_turno": [
+    {
+     "palabra": "aquí",
+     "formas": [
+      "aquí",
+      "aqui"
+     ]
+    }
+   ]
+  }
+ },
+ "beats": [
+  {
+   "dots": 1
+  },
+  {
+   "act": "mira",
+   "quien": "pepe",
+   "a": "dibujo"
+  },
+  "c40_muchas",
+  {
+   "act": "fila",
+   "n": 7,
+   "una": 1,
+   "suelto": 1
+  },
+  "c40_siete",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "fila",
+   "n": 6,
+   "una": 1,
+   "suelto": 1
+  },
+  "c40_seis_latas",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "redes",
+   "a": 5,
+   "b": 4
+  },
+  "c40_l_redes",
+  {
+   "ask": "red_a",
+   "lead": [],
+   "line": "c40_op_cinco",
+   "then": [],
+   "after": [
+    {
+     "act": "pone",
+     "n": 5,
+     "ok": 1
+    },
+    "c40_cinco"
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "ask": "red_b",
+   "lead": [],
+   "line": "c40_op_cuatro",
+   "then": [],
+   "after": [
+    {
+     "act": "pone",
+     "n": 4,
+     "ok": 1
+    },
+    {
+     "act": "bandera"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "tumba",
+   "suelto": 1
+  },
+  "c40_ay_canelo",
+  "c40_ven_aca",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "mira",
+   "quien": "pepe",
+   "a": "coqui"
+  },
+  "c40_otra_vez",
+  "c40_cq_mas",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "act": "fila",
+   "n": 7,
+   "una": 1,
+   "suelto": 1
+  },
+  "c40_siete_aqui",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ra",
+   "options": [
+    "red_a",
+    "red_b"
+   ]
+  },
+  {
+   "calc": "pra",
+   "cond": "ra=red_a",
+   "then": "6",
+   "else": "4"
+  },
+  {
+   "calc": "qra",
+   "cond": "ra=red_a",
+   "then": "4",
+   "else": "6"
+  },
+  {
+   "act": "redes",
+   "a": "$pra",
+   "b": "$qra"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "red_a",
+    "red_b"
+   ],
+   "pick": "$ra",
+   "tests": "seis",
+   "lock": true,
+   "lead": [],
+   "line": "c40_dame_seis",
+   "right": [
+    {
+     "act": "pone",
+     "n": 6,
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      "c40_seis",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pone",
+     "n": 4,
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c40_no_seis",
+    {
+     "act": "cuenta",
+     "k": "lata",
+     "n": 6,
+     "quien": "luis"
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "rb",
+   "options": [
+    "red_a",
+    "red_b"
+   ]
+  },
+  {
+   "calc": "prb",
+   "cond": "rb=red_a",
+   "then": "5",
+   "else": "7"
+  },
+  {
+   "calc": "qrb",
+   "cond": "rb=red_a",
+   "then": "7",
+   "else": "5"
+  },
+  {
+   "act": "redes",
+   "a": "$prb",
+   "b": "$qrb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "red_a",
+    "red_b"
+   ],
+   "pick": "$rb",
+   "tests": "cinco",
+   "lock": true,
+   "lead": [],
+   "line": "c40_dame_cinco",
+   "right": [
+    {
+     "act": "pone",
+     "n": 5,
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      "c40_cinco",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pone",
+     "n": 7,
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c40_no_cinco",
+    {
+     "act": "cuenta",
+     "k": "lata",
+     "n": 5,
+     "quien": "luis"
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "calc": "rn",
+   "cond": "lost=1",
+   "then": "2",
+   "else": "0"
+  },
+  {
+   "calc": "rn",
+   "cond": "!lost",
+   "then": "4",
+   "else": "$rn"
+  },
+  {
+   "act": "resto",
+   "n": "$rn"
+  },
+  "c40_cuantas",
+  {
+   "if": "lost",
+   "then": [
+    {
+     "if": "lost=1",
+     "then": [
+      "c40_dos"
+     ],
+     "else": [
+      "c40_no_hay"
+     ]
+    }
+   ],
+   "else": [
+    "c40_cuatro",
+    {
+     "act": "bandera"
+    }
+   ]
+  },
+  {
+   "act": "mira",
+   "quien": "luis",
+   "a": "tienda"
+  },
+  "c40_l_donde",
+  "c40_cq_aqui",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c40_muchas",
+  "c40_siete",
+  "c40_seis_latas",
+  "c40_l_redes",
+  "c40_op_cinco",
+  "c40_cinco",
+  "c40_op_cuatro",
+  "c40_ay_canelo",
+  "c40_ven_aca",
+  "c40_otra_vez",
+  "c40_cq_mas",
+  "c40_siete_aqui",
+  "c40_dame_seis",
+  "c40_seis",
+  "c40_dame_cinco",
+  "c40_cuantas",
+  "c40_cuatro",
+  "c40_l_donde",
+  "c40_cq_aqui"
+ ]
+}

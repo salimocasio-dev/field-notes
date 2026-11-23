@@ -19,7 +19,11 @@ void main() {
       'mesa',
       'estufa',
       'nevera',
+      'comer',
       'mostrador',
+      'estantes',
+      'frutas',
+      'caja',
       'esquina',
       'tiendas',
     ]);

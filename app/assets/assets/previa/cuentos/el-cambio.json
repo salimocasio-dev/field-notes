@@ -1,0 +1,852 @@
+{
+ "id": "el-cambio",
+ "title": "El cambio",
+ "place": "El colmado",
+ "scene": "caja",
+ "next": "la-calle",
+ "goal": "Ring each price on the register's keys, so the change goes into the jar and the children can buy the ball.",
+ "stake": {
+  "thing": "cambio",
+  "steps": 2
+ },
+ "dots": 6,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cambio",
+  "chavos",
+  "diecisiete",
+  "dieciocho",
+  "diecinueve",
+  "veinte"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "peso",
+  "¿cuánto es?",
+  "paga",
+  "bola",
+  "niño",
+  "quiere",
+  "dieciséis",
+  "compra",
+  "para",
+  "aquí tiene",
+  "mañana"
+ ],
+ "also_heard": [
+  "billete",
+  "faltan",
+  "mañana"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "17": "diecisiete",
+  "18": "dieciocho"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c47_aqui_ninos": {
+   "who": "narr",
+   "text": "Aquí están los niños."
+  },
+  "c47_pepe_quieren": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Qué quieren los niños?"
+  },
+  "c47_cq_bola": {
+   "who": "tu",
+   "text": "¡Una bola!",
+   "tu_turno": [
+    {
+     "palabra": "bola",
+     "formas": [
+      "bola"
+     ]
+    }
+   ]
+  },
+  "c47_aqui_chavos": {
+   "who": "narr",
+   "text": "Aquí están los chavos de los niños. Necesitan más chavos."
+  },
+  "c45_luis_cuanto": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Cuánto es?"
+  },
+  "c47_donde_17": {
+   "who": "narr",
+   "text": "¿Dónde está el diecisiete?"
+  },
+  "c47_luis_paga17": {
+   "who": "narr",
+   "text": "Luis paga diecisiete pesos con un billete de veinte."
+  },
+  "c47_pepe_cambio_luis": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí tienes tu cambio: dieciocho, diecinueve y veinte."
+  },
+  "c47_toca_18": {
+   "who": "narr",
+   "text": "Toca el dieciocho."
+  },
+  "c47_pepe_cambio_carmen": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí tienes tu cambio: diecinueve y veinte."
+  },
+  "c47_carmen_quien": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Para quién es el cambio?"
+  },
+  "c47_cq_ninos": {
+   "who": "tu",
+   "text": "¡Para los niños!",
+   "tu_turno": [
+    {
+     "palabra": "niño",
+     "formas": [
+      "niños",
+      "ninos"
+     ]
+    }
+   ]
+  },
+  "c47_pepe_aviso": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Coquí, ¡la caja, por favor!"
+  },
+  "c47_mas_chavos": {
+   "who": "narr",
+   "text": "Más chavos para la bola."
+  },
+  "c38_pepe_vengan": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Vengan, niños!"
+  },
+  "c47_compran": {
+   "who": "narr",
+   "text": "Los niños compran la bola."
+  },
+  "c47_cq_adios": {
+   "who": "tu",
+   "text": "¡Adiós, niños!"
+  },
+  "c47_faltan": {
+   "who": "narr",
+   "text": "Faltan chavos para la bola. ¡Mañana!"
+  },
+  "c47_pepe_gracias": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Gracias, Coquí! ¡Hasta mañana!"
+  },
+  "c47_pepe_17": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Son diecisiete pesos."
+  },
+  "c47_cambio_17": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí tiene su cambio: dieciocho, diecinueve y veinte."
+  },
+  "c47_no_17": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Son diecisiete pesos."
+  },
+  "c47_pepe_18": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Son dieciocho pesos."
+  },
+  "c47_cambio_18": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí tiene su cambio: diecinueve y veinte."
+  },
+  "c47_no_18": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Son dieciocho pesos."
+  },
+  "c45_senora_cuanto": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¿Cuánto es?"
+  },
+  "c47_senora_paga20": {
+   "who": "narr",
+   "text": "La señora paga con veinte pesos."
+  },
+  "c45_senor_cuanto": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¿Cuánto es?"
+  },
+  "c47_senor_paga20": {
+   "who": "narr",
+   "text": "El señor paga con veinte pesos."
+  }
+ },
+ "beats": [
+  {
+   "wait": 500
+  },
+  {
+   "act": "frasco",
+   "n": 0
+  },
+  {
+   "act": "ninos47",
+   "que": "ventana"
+  },
+  {
+   "set": {
+    "twinkle": "bola"
+   }
+  },
+  "c47_aqui_ninos",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "c47_pepe_quieren",
+  "c47_cq_bola",
+  {
+   "set": {
+    "twinkle": "frasco"
+   }
+  },
+  "c47_aqui_chavos",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "cliente",
+   "quien": "luis",
+   "cosa": "olla",
+   "precio": "17",
+   "ver": 1
+  },
+  {
+   "act": "paga",
+   "quien": "luis",
+   "n": "17",
+   "con": 20
+  },
+  "c45_luis_cuanto",
+  "c47_pepe_17",
+  {
+   "act": "teclas",
+   "a": "17",
+   "b": "18"
+  },
+  {
+   "ask": "tecla_a",
+   "lead": [],
+   "line": "c47_donde_17",
+   "then": [
+    "c47_luis_paga17",
+    {
+     "act": "cambio",
+     "n": 3,
+     "ok": 1,
+     "suelto": 1
+    },
+    "c47_pepe_cambio_luis",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "gesto",
+     "quien": "luis",
+     "que": "senala",
+     "a": "ninos"
+    }
+   ],
+   "after": [
+    {
+     "act": "suena",
+     "n": "17"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "cliente",
+   "quien": "carmen",
+   "cosa": "sarten",
+   "precio": "18",
+   "ver": 1
+  },
+  {
+   "act": "paga",
+   "quien": "carmen",
+   "n": "18",
+   "con": 20
+  },
+  "c47_pepe_18",
+  {
+   "act": "teclas",
+   "a": "19",
+   "b": "18"
+  },
+  {
+   "ask": "tecla_b",
+   "lead": [],
+   "line": "c47_toca_18",
+   "then": [
+    {
+     "act": "cambio",
+     "n": 2,
+     "ok": 1,
+     "suelto": 1
+    },
+    "c47_pepe_cambio_carmen",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "gesto",
+     "quien": "carmen",
+     "que": "mira",
+     "a": "frasco"
+    },
+    "c47_carmen_quien",
+    "c47_cq_ninos",
+    {
+     "act": "frasco",
+     "n": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "suena",
+     "n": "18"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "ninos47",
+   "que": "dos"
+  },
+  {
+   "act": "cola",
+   "n": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "empaca"
+  },
+  "c47_pepe_aviso",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "17",
+    "18"
+   ]
+  },
+  {
+   "draw": "ea",
+   "options": [
+    "17",
+    "19"
+   ]
+  },
+  {
+   "calc": "da",
+   "cond": "pa=17",
+   "then": "18",
+   "else": "$ea"
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "tecla_a",
+    "tecla_b"
+   ],
+   "other": "oa"
+  },
+  {
+   "calc": "ua",
+   "cond": "ka=tecla_a",
+   "then": "$pa",
+   "else": "$da"
+  },
+  {
+   "calc": "va",
+   "cond": "ka=tecla_a",
+   "then": "$da",
+   "else": "$pa"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "tecla_a",
+    "tecla_b"
+   ],
+   "pick": "$ka",
+   "tests": "$pa",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "cliente",
+     "quien": "senora",
+     "precio": "$pa",
+     "ver": 0
+    },
+    "c45_senora_cuanto",
+    "c47_pepe_$pa",
+    {
+     "act": "paga",
+     "quien": "senora",
+     "n": "$pa",
+     "con": 20
+    },
+    {
+     "act": "teclas",
+     "a": "$ua",
+     "b": "$va"
+    }
+   ],
+   "line": "c47_pepe_$pa",
+   "right": [
+    {
+     "act": "suena",
+     "n": "$pa"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "etiqueta",
+       "ver": 1
+      },
+      "c47_senora_paga20",
+      {
+       "if": "pa=17",
+       "then": [
+        {
+         "act": "cambio",
+         "n": 3,
+         "ok": 1,
+         "suelto": 1
+        },
+        "c47_cambio_17",
+        {
+         "act": "ya"
+        }
+       ],
+       "else": [
+        {
+         "act": "cambio",
+         "n": 2,
+         "ok": 1,
+         "suelto": 1
+        },
+        "c47_cambio_18",
+        {
+         "act": "ya"
+        }
+       ]
+      },
+      "c47_mas_chavos",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "if": "pa=17",
+       "then": [
+        {
+         "act": "cambio",
+         "n": 3,
+         "ok": 0
+        }
+       ],
+       "else": [
+        {
+         "act": "cambio",
+         "n": 2,
+         "ok": 0
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "act": "sale",
+     "quien": "senora"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "suena",
+     "n": "$da"
+    },
+    {
+     "act": "etiqueta",
+     "ver": 1
+    },
+    {
+     "act": "cuenta47",
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c47_no_$pa"
+   ]
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "frasco",
+     "n": 2
+    }
+   ],
+   "else": [
+    {
+     "act": "frasco",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "17",
+    "18"
+   ]
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "17",
+    "19"
+   ]
+  },
+  {
+   "calc": "db",
+   "cond": "pb=17",
+   "then": "18",
+   "else": "$eb"
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "tecla_a",
+    "tecla_b"
+   ],
+   "other": "ob"
+  },
+  {
+   "calc": "ub",
+   "cond": "kb=tecla_a",
+   "then": "$pb",
+   "else": "$db"
+  },
+  {
+   "calc": "vb",
+   "cond": "kb=tecla_a",
+   "then": "$db",
+   "else": "$pb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "tecla_a",
+    "tecla_b"
+   ],
+   "pick": "$kb",
+   "tests": "$pb",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "cliente",
+     "quien": "senor",
+     "precio": "$pb",
+     "ver": 0
+    },
+    "c45_senor_cuanto",
+    "c47_pepe_$pb",
+    {
+     "act": "paga",
+     "quien": "senor",
+     "n": "$pb",
+     "con": 20
+    },
+    {
+     "act": "teclas",
+     "a": "$ub",
+     "b": "$vb"
+    }
+   ],
+   "line": "c47_pepe_$pb",
+   "right": [
+    {
+     "act": "suena",
+     "n": "$pb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "etiqueta",
+       "ver": 1
+      },
+      "c47_senor_paga20",
+      {
+       "if": "pb=17",
+       "then": [
+        {
+         "act": "cambio",
+         "n": 3,
+         "ok": 1,
+         "suelto": 1
+        },
+        "c47_cambio_17",
+        {
+         "act": "ya"
+        }
+       ],
+       "else": [
+        {
+         "act": "cambio",
+         "n": 2,
+         "ok": 1,
+         "suelto": 1
+        },
+        "c47_cambio_18",
+        {
+         "act": "ya"
+        }
+       ]
+      },
+      "c47_mas_chavos",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "if": "pb=17",
+       "then": [
+        {
+         "act": "cambio",
+         "n": 3,
+         "ok": 0
+        }
+       ],
+       "else": [
+        {
+         "act": "cambio",
+         "n": 2,
+         "ok": 0
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "act": "sale",
+     "quien": "senor"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "suena",
+     "n": "$db"
+    },
+    {
+     "act": "etiqueta",
+     "ver": 1
+    },
+    {
+     "act": "cuenta47",
+     "ok": 0
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c47_no_$pb"
+   ]
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "frasco",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "frasco",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "frasco",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 6
+  },
+  {
+   "act": "muestra47"
+  },
+  "c38_pepe_vengan",
+  {
+   "act": "ninos47",
+   "que": "entran"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "set": {
+      "vitrina": 0
+     }
+    },
+    "c47_compran",
+    {
+     "act": "ninos47",
+     "que": "salen"
+    },
+    "c47_cq_adios"
+   ],
+   "else": [
+    "c47_faltan"
+   ]
+  },
+  "c47_pepe_gracias",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "saluda"
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c47_aqui_ninos",
+  "c47_pepe_quieren",
+  "c47_cq_bola",
+  "c47_aqui_chavos",
+  "c45_luis_cuanto",
+  "c47_pepe_17",
+  "c47_donde_17",
+  "c47_luis_paga17",
+  "c47_pepe_cambio_luis",
+  "c47_pepe_18",
+  "c47_toca_18",
+  "c47_pepe_cambio_carmen",
+  "c47_carmen_quien",
+  "c47_cq_ninos",
+  "c47_pepe_aviso",
+  "c45_senora_cuanto",
+  "c47_pepe_17",
+  "c47_senora_paga20",
+  "c47_cambio_17",
+  "c47_mas_chavos",
+  "c45_senor_cuanto",
+  "c47_pepe_18",
+  "c47_senor_paga20",
+  "c47_cambio_18",
+  "c47_mas_chavos",
+  "c38_pepe_vengan",
+  "c47_compran",
+  "c47_cq_adios",
+  "c47_pepe_gracias"
+ ]
+}

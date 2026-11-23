@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 820,
-  "totalBytes": 52087744,
+  "files": 1132,
+  "totalBytes": 70695301,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -444,6 +444,86 @@
       "sha256": "779a301e4177572c76159be04e6f52d6ea0602656183be976e787b524953667b"
     },
     {
+      "path": "caja/hora-manana/kinds.bin",
+      "bytes": 51840,
+      "sha256": "8d15dc9ac4b02df9f7504105555903069872973388a189a32de40d0809f06462"
+    },
+    {
+      "path": "caja/hora-manana/kinds.json",
+      "bytes": 305,
+      "sha256": "d0dae332cefdb8c1f5f58e785583c49a517f92a875c1b38aaa7ee9e91be5d4e0"
+    },
+    {
+      "path": "caja/hora-manana/pix.bin",
+      "bytes": 207360,
+      "sha256": "8d831f814ec94e2a1c1bec8393ee8210a0f7b74934cbf551c2c54e53b075e9b5"
+    },
+    {
+      "path": "caja/hora-manana/pix.json",
+      "bytes": 370,
+      "sha256": "b360550072fada17030b05eb70b46b69c104f713c73f06c624085d3c557573be"
+    },
+    {
+      "path": "caja/hora-manana/pix.png",
+      "bytes": 7586,
+      "sha256": "a70f07e0ef19e142e0db7e731f7807afd0b60738368c046940d0f7809491aa01"
+    },
+    {
+      "path": "caja/hora-manana/state.json",
+      "bytes": 927,
+      "sha256": "2521865541633a9b6ebd48c08bb9e544e589ca758a7c37d4fd1d8d14de3c7b25"
+    },
+    {
+      "path": "caja/hora-manana/zb.bin",
+      "bytes": 207360,
+      "sha256": "6dea1fc98a50eb93385c9075ade572052cb3417bc68d2d6156772f329af5c88d"
+    },
+    {
+      "path": "caja/hora-manana/zb.json",
+      "bytes": 322,
+      "sha256": "d1e7e54bac63bede8a588416f31f57a9aa671ddd07c40c32bf700e5da36d9fe8"
+    },
+    {
+      "path": "caja/hora-tarde/kinds.bin",
+      "bytes": 51840,
+      "sha256": "8d15dc9ac4b02df9f7504105555903069872973388a189a32de40d0809f06462"
+    },
+    {
+      "path": "caja/hora-tarde/kinds.json",
+      "bytes": 305,
+      "sha256": "d0dae332cefdb8c1f5f58e785583c49a517f92a875c1b38aaa7ee9e91be5d4e0"
+    },
+    {
+      "path": "caja/hora-tarde/pix.bin",
+      "bytes": 207360,
+      "sha256": "d139cb372efdafe409ea39cbdb86dc36ca3d8f412678cd3d62845e9027579f7b"
+    },
+    {
+      "path": "caja/hora-tarde/pix.json",
+      "bytes": 370,
+      "sha256": "9d3ac0198edc0660fefeba3554fc1d43bf42ad9ed5d974d398214a755893531c"
+    },
+    {
+      "path": "caja/hora-tarde/pix.png",
+      "bytes": 7705,
+      "sha256": "24b24f7c1351c7fab25ea474b9292f074544d985fb204c201cd1718b28cc8188"
+    },
+    {
+      "path": "caja/hora-tarde/state.json",
+      "bytes": 925,
+      "sha256": "db9a4a43193563be1c43c673e8952da43a8ff13521c7461595d9211168532747"
+    },
+    {
+      "path": "caja/hora-tarde/zb.bin",
+      "bytes": 207360,
+      "sha256": "6dea1fc98a50eb93385c9075ade572052cb3417bc68d2d6156772f329af5c88d"
+    },
+    {
+      "path": "caja/hora-tarde/zb.json",
+      "bytes": 322,
+      "sha256": "d1e7e54bac63bede8a588416f31f57a9aa671ddd07c40c32bf700e5da36d9fe8"
+    },
+    {
       "path": "camino/gran-0/kinds.bin",
       "bytes": 51840,
       "sha256": "cfb7c228c585217f72fc3addf0b53c89f20dbd86ca08729d774a18a57c5f73dd"
@@ -642,6 +722,46 @@
       "path": "campo/campo/zb.json",
       "bytes": 322,
       "sha256": "ada102cbe1894fc9bca1a783762bad5602493275e7fbe8d78a97aa11faaeda43"
+    },
+    {
+      "path": "comer/comer/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d20d95fd389ed918aca307a100f305d1d47d51165dd9c0f23588f3e70bb68f9a"
+    },
+    {
+      "path": "comer/comer/kinds.json",
+      "bytes": 305,
+      "sha256": "89b14955e1afc49faed8aa29ea4f60f73431732c3f39117a2ca2ffcf7a4a02b3"
+    },
+    {
+      "path": "comer/comer/pix.bin",
+      "bytes": 207360,
+      "sha256": "65023766cd494f3d9d07a4a79625935e23696bcbbf25413d0e4c91f50eb7852e"
+    },
+    {
+      "path": "comer/comer/pix.json",
+      "bytes": 370,
+      "sha256": "635cf794c23d60236d9f8448cd4ebadeccac66d02e7bc3264b01c2eb4a43b1f6"
+    },
+    {
+      "path": "comer/comer/pix.png",
+      "bytes": 8924,
+      "sha256": "255ae3e4394f13fb831eb1b14bcd0039e010451f023569a7278ee02e703780cb"
+    },
+    {
+      "path": "comer/comer/state.json",
+      "bytes": 914,
+      "sha256": "bbc995c2591bdb53f9600e159db0c63ddf600ff4b2019d7fb8cbaa7efb5691f9"
+    },
+    {
+      "path": "comer/comer/zb.bin",
+      "bytes": 207360,
+      "sha256": "9eb914a23ae04f76458723eb0a6ef3d7a465617cd1edef28387d78cca1b6b37b"
+    },
+    {
+      "path": "comer/comer/zb.json",
+      "bytes": 322,
+      "sha256": "0b2c30c3ea79e35ed9c79169a84d85c93e802fb542dbabe2398c63e1b9ba5046"
     },
     {
       "path": "esquina/manana-0-open/kinds.bin",
@@ -962,6 +1082,246 @@
       "path": "esquina/tarde-1-shut/zb.json",
       "bytes": 322,
       "sha256": "370eaa29202ae4d8560700916d3d3a4841f86ba970e17d469df5de2cceb2bb6f"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "16adfdcdc60ba824da1c92f9e5df50d5742f7b9eecaff47156a5d38f517619f7"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-0/kinds.json",
+      "bytes": 305,
+      "sha256": "cf8af1c38fa5cc16c6550b5a05c0380f0bd9520e614665e9c8e85d8eae3b7375"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "78c5fdefa7a687e0a02434410445d6ce4920248bdef4197e99cc65fea774ad22"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-0/pix.json",
+      "bytes": 370,
+      "sha256": "e2855dd5952b7bf7c917d3dc299235237c473401801c0365e3d3e189804730ab"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-0/pix.png",
+      "bytes": 5934,
+      "sha256": "2653e05444c43f9981fd584d3141fb0c34d6b2acf9e1b47b7537c66908f6ed66"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-0/state.json",
+      "bytes": 950,
+      "sha256": "1be61765ce22e65a7e88fefcd2da9b440d280e10d3e8cfe4d6ec29d906431fcd"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "3bb1e946cc701230952b016c6296f3b17e7ead5d6195523657a9c4fbda86f08c"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-0/zb.json",
+      "bytes": 322,
+      "sha256": "c0f882f6c9fff1b8bfcc265a723ab3daead610a646b905f82b9e93a59c9a3576"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "16adfdcdc60ba824da1c92f9e5df50d5742f7b9eecaff47156a5d38f517619f7"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-1/kinds.json",
+      "bytes": 305,
+      "sha256": "cf8af1c38fa5cc16c6550b5a05c0380f0bd9520e614665e9c8e85d8eae3b7375"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "0d95c929c22a471a98522f70949a991871309abed970d8772f93bca61d9d4ade"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-1/pix.json",
+      "bytes": 370,
+      "sha256": "5ed27e3cda17cb3208e9291bd0a1f85ccea2b333bd82ceac4b36b3b6aab5b336"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-1/pix.png",
+      "bytes": 6629,
+      "sha256": "aafd5e6f8304888adf1958601795e7bafe60f4f57ef387ed61471494b599b3b1"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-1/state.json",
+      "bytes": 950,
+      "sha256": "02342115293bb9141ebd8e9d42e22a0a67fd4f7918a93935144e17ee846c6578"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "2a0206c517c09894a1d6432ea6d4a99de364d7de633b4f6780dd6e9fc0fef536"
+    },
+    {
+      "path": "estantes/anillos-0-mesa-1/zb.json",
+      "bytes": 322,
+      "sha256": "94215debe7d2266ae6814679a59eb2183c0a2beb8f3ead192ee69c54f28899ca"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "16adfdcdc60ba824da1c92f9e5df50d5742f7b9eecaff47156a5d38f517619f7"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-0/kinds.json",
+      "bytes": 305,
+      "sha256": "cf8af1c38fa5cc16c6550b5a05c0380f0bd9520e614665e9c8e85d8eae3b7375"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "a256363826c73cfeaf1f8e7ed07f8d8cf944117e300caebbec185a826a1fe4e9"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-0/pix.json",
+      "bytes": 370,
+      "sha256": "e2d3880d84d4938bc28ef818650d6d8ef8853ce0f1c727b0a4f6d79ad7da9ad2"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-0/pix.png",
+      "bytes": 6034,
+      "sha256": "d17c64dbd2658cf01b7a3ad7120418dfbfee92cafad7533abe49ad21a75a00a7"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-0/state.json",
+      "bytes": 950,
+      "sha256": "9b0b31baa58a77721e1eed58582119958a1eeda979f270f8cf1f7704e563ffb6"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "c378bccddf27a5b8241f06f963a816274c29f782c62ab942cb21f47af487891a"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-0/zb.json",
+      "bytes": 322,
+      "sha256": "61c59eb11ead5fb48e7152e1262a7ce7f18bfe443181f699555de63bf30eb0a1"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "16adfdcdc60ba824da1c92f9e5df50d5742f7b9eecaff47156a5d38f517619f7"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-1/kinds.json",
+      "bytes": 305,
+      "sha256": "cf8af1c38fa5cc16c6550b5a05c0380f0bd9520e614665e9c8e85d8eae3b7375"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2f9e53b12ecae6879ceb8d6c7b678614eb25c4544cc37c2cda919fff120b2777"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-1/pix.json",
+      "bytes": 370,
+      "sha256": "ee34df467e7bbf29d46ba6efe79092f571cb8537d25c8eaaa1320609d8774c7e"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-1/pix.png",
+      "bytes": 6731,
+      "sha256": "90539aa80492582e7693de7c2fe71f3900c139ee03a6cf8e1827fe83da204f29"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-1/state.json",
+      "bytes": 950,
+      "sha256": "18117faf85d0d3aabfdf411cafdd86dedb882e4c97f50289ec4bcfab62288537"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "1a5ea29ed6c35b7e8c9d77186f2551784ef70cd088a9fb32a2305136b6c0d68c"
+    },
+    {
+      "path": "estantes/anillos-1-mesa-1/zb.json",
+      "bytes": 322,
+      "sha256": "a6469b3f4e4a7aa91f813260b3c16b7d5e292c9051e51ca07632ae32943bd41c"
+    },
+    {
+      "path": "estufa/banco0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "e44352c011e1606d7c9dbb7c4916a14be9771a6be4a349e966e4bac376cd17bd"
+    },
+    {
+      "path": "estufa/banco0/kinds.json",
+      "bytes": 305,
+      "sha256": "916935aca7dd0158948b41bf9f92c92a9a274a76c83d9033f8045e00db8f9c7b"
+    },
+    {
+      "path": "estufa/banco0/pix.bin",
+      "bytes": 207360,
+      "sha256": "123364321355143f65f3df297e62ec6b7b3428d45a8195eabab5c29f0e3b5451"
+    },
+    {
+      "path": "estufa/banco0/pix.json",
+      "bytes": 370,
+      "sha256": "91bdb1a71e4e105f5c2e2fc2eb801b5f1f8e4ee0997772669b34e8deb85e2629"
+    },
+    {
+      "path": "estufa/banco0/pix.png",
+      "bytes": 5658,
+      "sha256": "ce46fe03d84438cbd526631cc5a79442a042da8bb76f66b75ecf7418109ec27f"
+    },
+    {
+      "path": "estufa/banco0/state.json",
+      "bytes": 925,
+      "sha256": "14827deaa671f1946303a08dd8676f61e26d729d4068f01f7fccb82cbdf8bbcd"
+    },
+    {
+      "path": "estufa/banco0/zb.bin",
+      "bytes": 207360,
+      "sha256": "25e8a2ea53309f5e0f3c6d0f2b6a1667ecc63e58dd6c10c76e349d7676509f48"
+    },
+    {
+      "path": "estufa/banco0/zb.json",
+      "bytes": 322,
+      "sha256": "5df4d86af41e7462c53340e56467aeaf1613318e16d70d72a66cb7cdc99f41e6"
+    },
+    {
+      "path": "estufa/banco1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "e44352c011e1606d7c9dbb7c4916a14be9771a6be4a349e966e4bac376cd17bd"
+    },
+    {
+      "path": "estufa/banco1/kinds.json",
+      "bytes": 305,
+      "sha256": "916935aca7dd0158948b41bf9f92c92a9a274a76c83d9033f8045e00db8f9c7b"
+    },
+    {
+      "path": "estufa/banco1/pix.bin",
+      "bytes": 207360,
+      "sha256": "16ab08c2dd1ce587dd27d4e77186e9b096b6b6d7bab8f5ebcfda61bb8ddb3965"
+    },
+    {
+      "path": "estufa/banco1/pix.json",
+      "bytes": 370,
+      "sha256": "3f4029b5bf4699d3f108ebc268220c25ee64118314cccd69e715696c0e6b75cd"
+    },
+    {
+      "path": "estufa/banco1/pix.png",
+      "bytes": 5880,
+      "sha256": "d5727fbae239ec42db7232bfb267d1159a4f8898f8b8ab563d3037241577f32f"
+    },
+    {
+      "path": "estufa/banco1/state.json",
+      "bytes": 925,
+      "sha256": "8a37ab50f31d7dd6d7400771a91ee12c05e8e710e64035e1db17be17df76bfd7"
+    },
+    {
+      "path": "estufa/banco1/zb.bin",
+      "bytes": 207360,
+      "sha256": "033e8cd818058d5f40d7851f3b7953348d19f1ba12104e9c5d6603f73dbcb58d"
+    },
+    {
+      "path": "estufa/banco1/zb.json",
+      "bytes": 322,
+      "sha256": "05481a5eb4038e5f0be0f4f15b5c0cc302af5f6713706a30bcf44449b2bfde6f"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/kinds.bin",
@@ -1964,6 +2324,646 @@
       "sha256": "ab6e7067817681c6d8c9494b781d19fd1afd4c7aea8a66cfd2ff1ec3e5472b0e"
     },
     {
+      "path": "frutas/manana-open-0-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "575eccd920b411777e22f055e8574bc7506aa8a6a591f65b592d13faef08a95e"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "51a4438a714174e93cebf713151f647e2a1bd6c5b3fa1a9939ab8fd1f3299e20"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/pix.png",
+      "bytes": 10597,
+      "sha256": "125824bbea162dc41d29ee3a74b16255b618677d0e31219985e4d90941d1bc50"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/state.json",
+      "bytes": 976,
+      "sha256": "c5a968eddaf4b9a0a9d9f4c91397294f5a505d7896a1dfe6a6ce12c7fcf0e821"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "39617ac409c5b4b6113b56f2b44d9e44aa5bef5200f864880e57db377784b5a7"
+    },
+    {
+      "path": "frutas/manana-open-0-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "4e47694321cf15a9460c91a14be4d72fa2b4ee3c45541f286077ada0ebced7a0"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "704564656c33ea6358b50d0eaaee8be46da563c0e5bd5186581fc1ffc3a76638"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "16416c92517dbab371b2981168299bcb925fb9aede20dd2c3cb628e1093185c7"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/pix.png",
+      "bytes": 10565,
+      "sha256": "c291c55d911e240f0fa53f23b5c748192cdd24b816f4d86cb272af52f5731345"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/state.json",
+      "bytes": 980,
+      "sha256": "2ca3ae8e546d429ffad1c979057ca38f054be63fcd8bc38373504ae2d8314076"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "fb5e4f2e6daa22f889da81b347ddefaf049706a2369979a28fb11ec3c62764b9"
+    },
+    {
+      "path": "frutas/manana-open-0-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "9b31f92aa426ff773097f538e45d2cc9134a3ddccf8774ec0197d1051d18b848"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "7835b888b0a26f7d808cb269130ce3b00d7280138e2f73638ebeead66460399f"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "f285ab584241984c5ec08c28f2cd4833dc2394c46af9711a6c2758f54be5915d"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/pix.png",
+      "bytes": 11939,
+      "sha256": "7e3fae37d7daa005f640cd2920d22bc114cdfbbb6bcacf85fc00f76e426369c5"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/state.json",
+      "bytes": 976,
+      "sha256": "6d5658649b8fb709f6e69790989ea6625abd66e7ed35bb857630e4ac9bbcc191"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "f8aa32714d182fe5295dac801a69023d680dc8f8f3b391ec875aa259357fde3d"
+    },
+    {
+      "path": "frutas/manana-open-1-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "7a6c9235e2dd1ba7f12af34fe99abd916aea1897ced69f24882332a923a0f3f3"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "80e9cfc5335c9e2a04fdc1bb36a7c7de65b140610dc5bb07e655ab056303e199"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "99a50583c90b87eaca6a507a056f3c7d82f51ed74af87a936d186edfa2c531c9"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/pix.png",
+      "bytes": 11907,
+      "sha256": "1c1b7965ec3ec39afdd73dde7cf39c8f0349fde92c41cca6259c2a52eb87717f"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/state.json",
+      "bytes": 980,
+      "sha256": "ba6be2c91b7cbc78c96186d2c9ee963d5af40c5509b2f46242c1ba99c9ba3b1b"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "02c82a0078e7b19385ab97769159ab425546b9750049a434238f13e74f7d7d7d"
+    },
+    {
+      "path": "frutas/manana-open-1-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "defac8ebf8043e1925e2804e704137abc23959791962166554a13189ac34e035"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "9da2be5656d4c2bafd670a22388c7514780ffb1fbc899500d829a4f5d8f37c98"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "f4c4e1abc6908d006d005e57110e8ab9720f25485e727618edef6350ee6fe4f8"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/pix.png",
+      "bytes": 10107,
+      "sha256": "1670994351b9eb77784e02250cec91b567da254fab8153a55185c23f110c9215"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/state.json",
+      "bytes": 976,
+      "sha256": "d96b8b975e8ef0adbfa6e2a0be5f6969d7b4f6d58ef3974306362cad2d4ba6e5"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "b9ba0d3f4fcf221f77949338f5fbf8685d4f8cb71918cd030c0414b002585acb"
+    },
+    {
+      "path": "frutas/manana-shut-0-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "9de1d09ccb68ab3683d74de7752b564786e7cb7e26caa006950b710740b2e5aa"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "143d31b79f657c435f23f2024578f220f37dac04190436a47cd5bcd931a0efff"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "640ce7a7afc478024fab0be812f0d5878eac865df1280200be9d6de13141aca7"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/pix.png",
+      "bytes": 10082,
+      "sha256": "1c2ab378031da77a6e4b4e00921ab953bbc19c5ddc1d680993a1a55652aef010"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/state.json",
+      "bytes": 980,
+      "sha256": "0dd5aa09392f8f7d641d5a07c0b4a44289345c2de4aaed739feaf546ac73ed8a"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "04ee23907713dd5139dbabb77242f60531f81f45cfc34a9d6e7e0550036d9267"
+    },
+    {
+      "path": "frutas/manana-shut-0-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "d97e1e8cb0d6fa2f1f71c9a5be6072a08f03e36ee3cc8b2cd89c1781666852f9"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "33c8b8a4e912125e5e3dae26d4d0b311b199b0a818e44e819de32bb74e8fa117"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "33b13539c59f91a934bc3d1765143cdbffb1e5dc15ad2e926ab17a0117bf46ec"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/pix.png",
+      "bytes": 11450,
+      "sha256": "d82c2751301a77feddef7b14af25200ecc3c2860ac185b9c46fc8c44bf62d6ee"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/state.json",
+      "bytes": 976,
+      "sha256": "4354500ff9d95c4cbc91372ac8ace0dd979696dd1ca549bf90bf727bdb899e55"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "14d0bc4f44493defb053270bd470bdf002da6acc72e7ffbe502f20d356b2d168"
+    },
+    {
+      "path": "frutas/manana-shut-1-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "f81ee4f7d7100e1944df16444c1de0ae782240fab4dae49b6aad5b4dd40c2f2b"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "c5924cfb71378847d8196ad61800b41885eb67589a2875b5cc5b6b13e6cb00fc"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "a2cc6c38f76afdf7819d0de72a151b49488af37fec6b9eb06da0c51b7a9ddde6"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/pix.png",
+      "bytes": 11427,
+      "sha256": "cd390272e7e23fc9ad720abcf387d036ec6835a6ab0fb7f4f45f967bfb166d9a"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/state.json",
+      "bytes": 980,
+      "sha256": "a547691ab26e94b7cca77de06d456f07b1c68662ce32edd0eff213768142b731"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "9fe4ee71bca5c19fc5d906efe5e9af230dbc6ef12661a43f3c2389cec7ce804e"
+    },
+    {
+      "path": "frutas/manana-shut-1-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "d0e50f2ba9410268327f5f35de9be7ab273a9efcaaeebcc82adf17b75ded82a8"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "da5fff4f891778ad802ee1ddf869d15bcc217b4107c7e798ca858ecb7c138c7e"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "a1bfa237d43471e74e8f7589cc3926a1271a75d37bb41a21c430373a29f6c506"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/pix.png",
+      "bytes": 10679,
+      "sha256": "43a44302436990d821f852d8f165e885c0e842421d9659aab04dc140069d4e34"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/state.json",
+      "bytes": 974,
+      "sha256": "5c6a326997b8cc96eb6712a89339e799cfeedbe137c4df9017403081f6fc5066"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "39617ac409c5b4b6113b56f2b44d9e44aa5bef5200f864880e57db377784b5a7"
+    },
+    {
+      "path": "frutas/tarde-open-0-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "4e47694321cf15a9460c91a14be4d72fa2b4ee3c45541f286077ada0ebced7a0"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "9b1388c4ca7db9c15374ab2c664a23690d9a1cbec60f7dc477346faa1e520770"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "fc095edeec77763c2c0091ecb8ebd1ab359da53492edc1e43c6c62ba56faa02c"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/pix.png",
+      "bytes": 10642,
+      "sha256": "fb0665dd9669513564fd3ab51edf4bce87af7f696319ea52c3f2b88386ac2751"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/state.json",
+      "bytes": 978,
+      "sha256": "ec613add6afee31f66cb9106f97f3f959725dec7632757ac7a8487acd73ee659"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "fb5e4f2e6daa22f889da81b347ddefaf049706a2369979a28fb11ec3c62764b9"
+    },
+    {
+      "path": "frutas/tarde-open-0-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "9b31f92aa426ff773097f538e45d2cc9134a3ddccf8774ec0197d1051d18b848"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "11213736b47eb9e12d25c9362df1347c961e96c17da03fe00b8f25a4bfb381fd"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "7dbddf7a73ed78b5e0c535b056ce047785fba66f8d30a57cad8192b648995143"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/pix.png",
+      "bytes": 12023,
+      "sha256": "3410cf3dbb30bcb0a9ede16956cc1f3bb5440a26bd8ec3b32bdd126f96b34948"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/state.json",
+      "bytes": 974,
+      "sha256": "aa337f800c5a57791ee2c7f0fac93ddf898b0069128a6c39729192ee690c87bc"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "f8aa32714d182fe5295dac801a69023d680dc8f8f3b391ec875aa259357fde3d"
+    },
+    {
+      "path": "frutas/tarde-open-1-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "7a6c9235e2dd1ba7f12af34fe99abd916aea1897ced69f24882332a923a0f3f3"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "10957d2904f81d4974be119a57f5b27cfd5b18c513db70d62fb13a214b2d2d49"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "3545d55cacd7ae1139c8bd1f46db0a2beb068c76b79389e4eb6fa35bf7a35b06"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/pix.png",
+      "bytes": 11994,
+      "sha256": "393db84ddabf6ab20a5c66f53fc932ae39ab2f0a60807dd00488a6e393a2d547"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/state.json",
+      "bytes": 978,
+      "sha256": "753ca6a994aa9a3d7e229fc0e70172528d3a1644cd893d1656cceb791159a426"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "02c82a0078e7b19385ab97769159ab425546b9750049a434238f13e74f7d7d7d"
+    },
+    {
+      "path": "frutas/tarde-open-1-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "defac8ebf8043e1925e2804e704137abc23959791962166554a13189ac34e035"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "842e91cd6336e7bc72d30b72ea3bda129d8614e67bbf83ae4403d9ce7b4ad5ef"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "7d504c81b0c0f4f31e05f389519d155920b519aeb810212a83bf05e9b62c14c1"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/pix.png",
+      "bytes": 10187,
+      "sha256": "8e3db26d6c9a892d0228c123dff31a456a8de80f8fabeb70c88ad8aca72f872d"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/state.json",
+      "bytes": 974,
+      "sha256": "153ab0371a2854ecbbad3c2afb3714c5e4976bf583008805a5c3f48c557ab6c2"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "b9ba0d3f4fcf221f77949338f5fbf8685d4f8cb71918cd030c0414b002585acb"
+    },
+    {
+      "path": "frutas/tarde-shut-0-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "9de1d09ccb68ab3683d74de7752b564786e7cb7e26caa006950b710740b2e5aa"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "badfb7430107d78a95e3922d089bfc2de279858bf1decdc0126b8bd08dc77479"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "a341f1b0aa161bdf60d6e9f8fae05fc17abfdfb64f35c536b384850bb7966808"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/pix.png",
+      "bytes": 10163,
+      "sha256": "ebad39aa0bcbf7224aeac65a4693fb17b9567bc80817f0c3641b12302a9168ae"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/state.json",
+      "bytes": 978,
+      "sha256": "1bd4704aedb2cac86edb9074ed70db34f48d7292332cb8b3f9572a7f4e94a37c"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "04ee23907713dd5139dbabb77242f60531f81f45cfc34a9d6e7e0550036d9267"
+    },
+    {
+      "path": "frutas/tarde-shut-0-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "d97e1e8cb0d6fa2f1f71c9a5be6072a08f03e36ee3cc8b2cd89c1781666852f9"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "cb0215408281bf3c87acb2f7253e59d2f401a72a48f50b067b1247f24ff65785"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "7feaeb385bcded065fbe4c1bff72baeaca408dec5ffb4324d26ce661f03ae667"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/pix.png",
+      "bytes": 11530,
+      "sha256": "5debbcb256f62314c0788d12787e62269ac4e8e8a82b208bdb1c67bdc0958800"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/state.json",
+      "bytes": 974,
+      "sha256": "83d3b9debce370a84a06df7993d2a2c238fe429893b78df3ae8a40a92ea40958"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "14d0bc4f44493defb053270bd470bdf002da6acc72e7ffbe502f20d356b2d168"
+    },
+    {
+      "path": "frutas/tarde-shut-1-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "f81ee4f7d7100e1944df16444c1de0ae782240fab4dae49b6aad5b4dd40c2f2b"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/pix.bin",
+      "bytes": 207360,
+      "sha256": "45ad334af7fca4d2fe682720e84cd8ec6c922eddca968dc0a1c67945ac6e4888"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/pix.json",
+      "bytes": 370,
+      "sha256": "2510b47cc1b73e4b54e31261112362a08e39b1fecb2fb331eb718439dcd64d3c"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/pix.png",
+      "bytes": 11509,
+      "sha256": "8d1a0b9eda8169657094d3504caba198179cbcaf5f328ce02ec51442928ffa5d"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/state.json",
+      "bytes": 978,
+      "sha256": "49ccf6a93378974d22c58d8250f3f2e14fba2fa1e762d67eba99ab0fecf8a7fb"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/zb.bin",
+      "bytes": 207360,
+      "sha256": "9fe4ee71bca5c19fc5d906efe5e9af230dbc6ef12661a43f3c2389cec7ce804e"
+    },
+    {
+      "path": "frutas/tarde-shut-1-verduras/zb.json",
+      "bytes": 322,
+      "sha256": "d0e50f2ba9410268327f5f35de9be7ab273a9efcaaeebcc82adf17b75ded82a8"
+    },
+    {
       "path": "island/calls.md",
       "bytes": 9068,
       "sha256": "bb0ff982c3257749c0a4bfe743584aa335f493c01d71222ad1f97e309f199e98"
@@ -2252,6 +3252,166 @@
       "path": "map/hecho-3/zb.json",
       "bytes": 322,
       "sha256": "da1b8a9af598a53e6502ff3ae24004f54bb2f09a080383a7c621f4c37b699211"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/kinds.bin",
+      "bytes": 51840,
+      "sha256": "c066f47e59121fc6410d480d564e82950349986e977f59fec1a06d2442304db1"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/kinds.json",
+      "bytes": 305,
+      "sha256": "d095a7a5450fa0111120378e183b6254839dc18ffe62b73577d759de42e69262"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.bin",
+      "bytes": 207360,
+      "sha256": "575eccd920b411777e22f055e8574bc7506aa8a6a591f65b592d13faef08a95e"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.json",
+      "bytes": 370,
+      "sha256": "51a4438a714174e93cebf713151f647e2a1bd6c5b3fa1a9939ab8fd1f3299e20"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/pix.png",
+      "bytes": 10597,
+      "sha256": "125824bbea162dc41d29ee3a74b16255b618677d0e31219985e4d90941d1bc50"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/state.json",
+      "bytes": 943,
+      "sha256": "e78741474f19a05c0657edbd2d925384ae62f650643d1d491f344af8301d4c1b"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/zb.bin",
+      "bytes": 207360,
+      "sha256": "39617ac409c5b4b6113b56f2b44d9e44aa5bef5200f864880e57db377784b5a7"
+    },
+    {
+      "path": "mesa/frutas-surtido-frutas/zb.json",
+      "bytes": 322,
+      "sha256": "4e47694321cf15a9460c91a14be4d72fa2b4ee3c45541f286077ada0ebced7a0"
+    },
+    {
+      "path": "mesa/m0h0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m0h0/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m0h0/pix.bin",
+      "bytes": 207360,
+      "sha256": "636e78e051a77ee9d5c531c3de94d78628a46f79de09b215bc11d6106d76edbc"
+    },
+    {
+      "path": "mesa/m0h0/pix.json",
+      "bytes": 370,
+      "sha256": "cbb602d3e57b690bf5c5ebc6d73ffda22c33306f44c357e3e6c700c375d3c8c9"
+    },
+    {
+      "path": "mesa/m0h0/pix.png",
+      "bytes": 7583,
+      "sha256": "2490289c800ddfe7e0efd7f674bc6f9fca6316af2134e5e28fce113246223e9a"
+    },
+    {
+      "path": "mesa/m0h0/state.json",
+      "bytes": 923,
+      "sha256": "c3ad8a296b1a4bdc0bf735d220ffe495e3fb089825ab224ce047e61db67437e7"
+    },
+    {
+      "path": "mesa/m0h0/zb.bin",
+      "bytes": 207360,
+      "sha256": "31543eb70a00f19e29d616c1cb51a3ca593acc710d949eb65ffed97f9dd2346a"
+    },
+    {
+      "path": "mesa/m0h0/zb.json",
+      "bytes": 322,
+      "sha256": "743010725d003452ca994f5ec73ab158cd3f4c68279947160f8e2705dba2929c"
+    },
+    {
+      "path": "mesa/m0h1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m0h1/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m0h1/pix.bin",
+      "bytes": 207360,
+      "sha256": "6da4b9eb0b66913720e5bd306dd2e10b0a9a6460eac0ee54ccd42c9e225447ff"
+    },
+    {
+      "path": "mesa/m0h1/pix.json",
+      "bytes": 370,
+      "sha256": "c215fb431e179d0a12ee9a551d1ced5c435c851cd19139a74ab1f916f0f0679f"
+    },
+    {
+      "path": "mesa/m0h1/pix.png",
+      "bytes": 7583,
+      "sha256": "f13190d531aefedf77c757820758ef46e8416af34f6c8aecf54ea8f1a9a3dd20"
+    },
+    {
+      "path": "mesa/m0h1/state.json",
+      "bytes": 923,
+      "sha256": "aa35c1717951d1665b9d958778caa69686e1d20ac06fbaa466ddd624e5e00b42"
+    },
+    {
+      "path": "mesa/m0h1/zb.bin",
+      "bytes": 207360,
+      "sha256": "31543eb70a00f19e29d616c1cb51a3ca593acc710d949eb65ffed97f9dd2346a"
+    },
+    {
+      "path": "mesa/m0h1/zb.json",
+      "bytes": 322,
+      "sha256": "743010725d003452ca994f5ec73ab158cd3f4c68279947160f8e2705dba2929c"
+    },
+    {
+      "path": "mesa/m1h0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "72d160e6bb31f662e8ce4d6496e7d8383c5d36974c625359097143c1ec98e97c"
+    },
+    {
+      "path": "mesa/m1h0/kinds.json",
+      "bytes": 305,
+      "sha256": "4b698017cf5ff0a1494c1cf075ee52fe618390e471dce9bceda6e8768667ed19"
+    },
+    {
+      "path": "mesa/m1h0/pix.bin",
+      "bytes": 207360,
+      "sha256": "571bcc53f77f317304f55342d755b215c65a6c7dc27d593314f7adc520f85216"
+    },
+    {
+      "path": "mesa/m1h0/pix.json",
+      "bytes": 370,
+      "sha256": "015af87118573b0c5fd159fbabedb3ad87edc91b6fcd528561902a68388c932e"
+    },
+    {
+      "path": "mesa/m1h0/pix.png",
+      "bytes": 7470,
+      "sha256": "f55e01b5394b34ade378870decb0037f100a14e197a1860e1c3ad6207d0644bb"
+    },
+    {
+      "path": "mesa/m1h0/state.json",
+      "bytes": 923,
+      "sha256": "43a17c9078ae8419e1156903122bdbc7732fb156c909a85837d44980be95676b"
+    },
+    {
+      "path": "mesa/m1h0/zb.bin",
+      "bytes": 207360,
+      "sha256": "95e210e965ebae7f2f1c2a6bf78aa9bd624064c16306d201b00959cd6ff77316"
+    },
+    {
+      "path": "mesa/m1h0/zb.json",
+      "bytes": 322,
+      "sha256": "02a48bea42941cc96e3c7cb3c4d3850a35f692890d0cf947abcff3dda7536f8a"
     },
     {
       "path": "mostrador/calle-manana-open/kinds.bin",
@@ -2732,6 +3892,406 @@
       "path": "mostrador/dentro-tarde-shut-1/zb.json",
       "bytes": 322,
       "sha256": "1a4c79ca07335468f248a7a27b753bed62505988227bcad1033661d290c2fcfa"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "5012eecab5e0318509d5d8c3a47fba66690ddaa2768150e814460c900ab2ceb9"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.json",
+      "bytes": 370,
+      "sha256": "c0133edf0404e45a2b015ecde7ee5cf30fefa99f0e9db227189ccca29d69ea88"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/pix.png",
+      "bytes": 5767,
+      "sha256": "5922c11dcbd64efbfa1801cdc594e56fb533169237fd06dfc9c647aa55386428"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/state.json",
+      "bytes": 965,
+      "sha256": "dcd0ff1ec569078104f69876ec428ed6be6a054a8a634e69f56ba1905fff3c5b"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "d8b7caabde0a7f0e3b479921cbcb48e9bd5a49b3180d9b8c969887d241bfdc5d"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-0/zb.json",
+      "bytes": 322,
+      "sha256": "7cc714fa996e3594a6de13fe65eb387f26568c260b09b1f5da5cd7bbedb8c5e0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "9604933ba0b6c32ee01bfa8707c305ee3f995b2c06d8df426bc9155692cc2c4c"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "6831cf07cd1e6490ddb46e1cb2ec01492ce4599f7c83de27d70a90afa4630ed4"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6088,
+      "sha256": "c4b7428ca6121bb2786194916f849263c6a19981fab62413cf899d0b1ec7f0ed"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "4f69112115ef7dea6529469b7a50815b7d624d42c2b4be556d335f6cbdfb52e0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "7d4f87cc3d3e386df5b060f65443d87af695a6e2bba2d776a3d2412ad004efb0"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "f69cc5b56dd720a355f315f3acfae1d72247b8c6083c3392250723e40552b5a7"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/pix.png",
+      "bytes": 6120,
+      "sha256": "c72ac5128a374845bf8b802f26a6921c7b4c697aeaa703d4746bf9ded6cb6c6c"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "c2575aec2d6f534010c92e7ac313cfc653051484a7809eda71e60cac1ceab728"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-a-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2544d38a4ce8be199124ee45f43da54dec22483836106f07ef2113b55db90ba9"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "cf8c8709d5cf453149f804bc40cc1d5d129cc9acf78b06ef0db03b6441e901ba"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/pix.png",
+      "bytes": 6089,
+      "sha256": "dce7603cbc1ceee2a4bb2a7191166c8c77e7307b47002399abe2b541f1e53c84"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "ba2b5b11775d9df29315574684ea2fa1ee11c784d2e13b756f1057cabb59d10b"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "b0348a00d60b93dfd9b45614294a1d2d3d749a2266e8fb9876b1d5abb91aad6a"
+    },
+    {
+      "path": "nevera/nev-0-cajon-0-pila-j-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c2054017c6093d26ecba58e0586334fa1c877508207bd7251c456cfce9a87733"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "28199b42a6f13d8971aba19c741ecff1454c632e731d46a09e00af76bef32890"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.json",
+      "bytes": 370,
+      "sha256": "51b772e07d06a67efdcf18c35861bc7fcdf2c1e2802c7160ec39f670818b9808"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/pix.png",
+      "bytes": 6550,
+      "sha256": "d8580c147f7a06efb63ad292baf82a5edcb239b413d9e16da6dc9348955ea811"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/state.json",
+      "bytes": 965,
+      "sha256": "8fd6a6245265cf39aeda69b3880a770ac64368a3f110b00fb738525674f3ba8c"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "ce8558eae7628122149cbf94c13330f62fd3a4fecd615476cdb6b34cf3270338"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-0/zb.json",
+      "bytes": 322,
+      "sha256": "cb6539121f3e9a0a96e0a3d3ebc2ad75efe253d8936c54407850ab997ee40dfe"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "100ca69e0a533cc25a6f7a084d4eac2c9386eac9065090b7a809dd27d90fcca6"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "b7db8fdf149506d248f776fcef2d9036b777578f19e5b7de95225766b620370d"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6868,
+      "sha256": "6928e92608d471ca11b6080192e59a0d035073b3f6135ffc90d8b6e9cc4b7535"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "cc6b38f98dca3c63efb5492feae736abd4e12d828af6f9046c9eeb0d768e3e54"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "c583717f2b20147b3e153443c17118c82e3fa210c05f1e681d305b08786b6933"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c0f09bd5ab7d6880f6b193f35097f6b131799aa6edc9a8633b696ff88d93f098"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "c4b2d73dbd96435d2e50b8479da18af1b1cd9395b4473668fc89e017ce7d58f8"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "78ad0f3cdb7a8f2dbf3604c42b1c5db32e03af87293ef2264486083913eb25c7"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/pix.png",
+      "bytes": 6902,
+      "sha256": "ce30646519bec9125513e529c3022b7383b8e49e4744fc751c95bec5add7816a"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "eb8d4b7d2b63dc54bacb9328a45be79f146246e2c36119edf96d0751d823d233"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "c583717f2b20147b3e153443c17118c82e3fa210c05f1e681d305b08786b6933"
+    },
+    {
+      "path": "nevera/nev-1-cajon-0-pila-a-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "c0f09bd5ab7d6880f6b193f35097f6b131799aa6edc9a8633b696ff88d93f098"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2efec18db8be2c1cb888afa54f4a03cd923c9dbfe32dc99332fd8d4fa2dc986c"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "5d207237606da312070a91417dcdadc95d5dbf625ef1d92fd23a8c4e5a969ba4"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/pix.png",
+      "bytes": 6870,
+      "sha256": "d33acce97450e123fc52ed44451e296c796e45bfd71923b260f1d39c6dd6a46e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "a17c8778a4307b3f43a31751c4c9c65dd8dc2e2d7e3f6508652b122cb1ddf05b"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a7262adf25e939041e82dd6fd57f7f43e7b7b61857f6c2b7b8c274e3379313b"
+    },
+    {
+      "path": "nevera/nev-1-cajon-1-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "79f7c0cc131a6ef60db7159dc1a5a8112fddbf65acb0644e018ca5daa74706e3"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "e6e6d14316543dbc333b9589ec338fc0f18b0eedf43c9cad99f73fe0aca484ac"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "70c3d8787fa46edeae7173a6bfc0451ef066855af75f9618c2080f583d928f56"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/pix.png",
+      "bytes": 6969,
+      "sha256": "51f17337659e08422f7e583f1386fd102839a687b2246b36b3762a18074ff319"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "0c49cbacac6ec9bb06e151325b4f947b7bc8893a0a4f8face2d85036a9bc0a63"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "ecd7bec90428e0dd15e72632b59b6d56aea6c7bbc924e3fc35a3ac16ae886936"
+    },
+    {
+      "path": "nevera/nev-1-cajon-2-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "60e9caad84471efcf5a7bc3773ae3a1fd4cdfb495573e43e1d030c84ad148acf"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "0d5972289bc0e88e74e2b42638098900738ce8d7d5768abcc5986700ec9fe88e"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a7854f94dbdaa3a7dc8cd473e091264989dd20f76736430796ca9766fe821fe5"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "e45e37e7169f73047defdb61ed3771e0b3ea10c99e57e88e98a52d3b41c570ea"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.json",
+      "bytes": 370,
+      "sha256": "b724a42b4c80c9dc2a6a7e5adf740520ce5ed373757da942edebc1ff3deeb0b2"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/pix.png",
+      "bytes": 6086,
+      "sha256": "678bb87f3b4536a1d3739954f52994c2c4d6c467e75dab710e80caa9a4d854c3"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/state.json",
+      "bytes": 965,
+      "sha256": "bd2e3da5a813c1b4e45a1bbd89b1bc5af73416e0d8fa1175e0f85835f2d4d545"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "91b070e25f665029af3d90b8229ae36eb8409f11c9e181b04b14aa701972f60f"
+    },
+    {
+      "path": "nevera/nev-2-cajon-0-pila-0-banco-1/zb.json",
+      "bytes": 322,
+      "sha256": "161c2e74723cd0c2a2a5eb4d5a8337c0f5e7e32c50330adc6f0335c51bfc5021"
     },
     {
       "path": "patio/hora-crepusculo-door-open-gate-shut/kinds.bin",

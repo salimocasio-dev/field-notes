@@ -63,8 +63,8 @@ void main() {
     pairs = {for (final p in list) p.word: p};
   });
 
-  test('the real data is there: 48 items of four pictures', () {
-    expect(items.length, 48);
+  test('the real data is there: 52 items of four pictures', () {
+    expect(items.length, 52);
     expect([for (final q in items) q.pictures.length], everyElement(4));
     for (final q in items) {
       for (final pic in q.pictures) {
@@ -99,7 +99,7 @@ void main() {
         }
       }
     }
-    expect(checked, 48 * 4);
+    expect(checked, 52 * 4);
     expect(differing, isEmpty);
   });
 

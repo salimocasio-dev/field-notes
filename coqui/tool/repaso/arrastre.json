@@ -1,0 +1,3309 @@
+{
+ "made": "python3 coqui/tool/repaso/arrastra.py --hace",
+ "palabras": {
+  "abuela": {
+   "palabra": "abuela",
+   "par_png_sha256": "e270675e60fd9f8d3c55d8f07606fadc92aebec1c661bc7d1ae603305ec1b93c",
+   "veredicto_antes_sha256": "a5c18a203854e831f077ed50fbcb75da51c6bfd4711dd6df10cd9fb3b1e5e8b5",
+   "frases": {
+    "abuela:1": {
+     "texto": "Esta es abuela.",
+     "antes": "abuela:1",
+     "valor": "A"
+    },
+    "abuela:2": {
+     "texto": "¡Mira! Es abuela.",
+     "antes": "abuela:2",
+     "valor": "A"
+    },
+    "abuela:3": {
+     "texto": "Abuela pone el bizcocho en el plato.",
+     "antes": "abuela:3",
+     "valor": "ninguna"
+    },
+    "abuela:4": {
+     "texto": "Mira. Abuela tiene un bizcocho.",
+     "antes": "abuela:4",
+     "valor": "ninguna"
+    },
+    "abuela:5": {
+     "texto": "¿Cómo estás, abuela?",
+     "antes": "abuela:5",
+     "valor": "duda"
+    },
+    "abuela:6": {
+     "texto": "¡Abre la ventana, abuela!",
+     "antes": "abuela:6",
+     "valor": "duda"
+    },
+    "abuela:7": {
+     "texto": "Ahora abuela está en la ventana.",
+     "antes": "abuela:7",
+     "valor": "ninguna"
+    },
+    "abuela:8": {
+     "texto": "Esta es la casa de abuela.",
+     "antes": "abuela:8",
+     "valor": "duda"
+    },
+    "abuela:9": {
+     "texto": "Abuela se sienta en la silla.",
+     "antes": "abuela:9",
+     "valor": "ninguna"
+    },
+    "abuela:10": {
+     "texto": "¡Mira! Abuela tiene dos vasos.",
+     "antes": "abuela:19",
+     "valor": "ninguna"
+    },
+    "abuela:11": {
+     "texto": "Abuela busca comida para el parque.",
+     "antes": "abuela:11",
+     "valor": "ninguna"
+    },
+    "abuela:12": {
+     "texto": "¡Abre la puerta, abuela!",
+     "antes": "abuela:12",
+     "valor": "duda"
+    },
+    "abuela:13": {
+     "texto": "Abuela toma café.",
+     "valor": "sin juzgar"
+    },
+    "abuela:14": {
+     "texto": "Abuela come pan con mantequilla.",
+     "antes": "abuela:14",
+     "valor": "ninguna"
+    },
+    "abuela:15": {
+     "texto": "¡Abuela, el huevo!",
+     "antes": "abuela:15",
+     "valor": "ninguna"
+    },
+    "abuela:16": {
+     "texto": "Abuela entra a la casa.",
+     "antes": "abuela:16",
+     "valor": "duda"
+    },
+    "abuela:17": {
+     "texto": "Abuela hace más jugo de china.",
+     "antes": "abuela:17",
+     "valor": "ninguna"
+    },
+    "abuela:18": {
+     "texto": "Y abuela camina despacio.",
+     "antes": "abuela:52",
+     "valor": "ninguna"
+    },
+    "abuela:19": {
+     "texto": "Abuela no abre.",
+     "antes": "abuela:49",
+     "valor": "duda"
+    },
+    "abuela:20": {
+     "texto": "Luis come. Carmen come. Abuela come.",
+     "antes": "abuela:20",
+     "valor": "ninguna"
+    },
+    "abuela:21": {
+     "texto": "Abuela hace pollo y un huevo.",
+     "antes": "abuela:21",
+     "valor": "ninguna"
+    },
+    "abuela:22": {
+     "texto": "Abuela le pone mantequilla al pan.",
+     "antes": "abuela:22",
+     "valor": "ninguna"
+    },
+    "abuela:23": {
+     "texto": "Abuela huele la fruta.",
+     "antes": "abuela:23",
+     "valor": "ninguna"
+    },
+    "abuela:24": {
+     "texto": "Abuela huele el pan.",
+     "antes": "abuela:24",
+     "valor": "ninguna"
+    },
+    "abuela:25": {
+     "texto": "Abuela abre la puerta.",
+     "antes": "abuela:25",
+     "valor": "duda"
+    },
+    "abuela:26": {
+     "texto": "Mira. Abuela tiene dos vasos.",
+     "antes": "abuela:26",
+     "valor": "ninguna"
+    },
+    "abuela:27": {
+     "texto": "¡Huele bien, abuela!",
+     "antes": "abuela:27",
+     "valor": "duda"
+    },
+    "abuela:28": {
+     "texto": "Abuela cierra la ventana.",
+     "antes": "abuela:28",
+     "valor": "ninguna"
+    },
+    "abuela:29": {
+     "texto": "Mira la casa de abuela.",
+     "antes": "abuela:29",
+     "valor": "duda"
+    },
+    "abuela:30": {
+     "texto": "Abuela no abre la ventana.",
+     "antes": "abuela:67",
+     "valor": "ninguna"
+    },
+    "abuela:31": {
+     "texto": "¡Mmm! ¡La comida de abuela!",
+     "antes": "abuela:31",
+     "valor": "ninguna"
+    },
+    "abuela:32": {
+     "texto": "Abuela toma el vaso de la mesa.",
+     "antes": "abuela:32",
+     "valor": "ninguna"
+    },
+    "abuela:33": {
+     "texto": "Abuela está en la puerta.",
+     "antes": "abuela:33",
+     "valor": "A"
+    },
+    "abuela:34": {
+     "texto": "Buenas noches, abuela. Buenas noches, abuelo.",
+     "antes": "abuela:30",
+     "valor": "duda"
+    },
+    "abuela:35": {
+     "texto": "¡Hasta mañana, abuela!",
+     "antes": "abuela:35",
+     "valor": "duda"
+    },
+    "abuela:36": {
+     "texto": "Abuela está en la cocina.",
+     "antes": "abuela:36",
+     "valor": "duda"
+    },
+    "abuela:37": {
+     "texto": "Abuela pone la comida en la mesa.",
+     "antes": "abuela:37",
+     "valor": "ninguna"
+    },
+    "abuela:38": {
+     "texto": "Abuela tiene la comida.",
+     "antes": "abuela:38",
+     "valor": "ninguna"
+    },
+    "abuela:39": {
+     "texto": "Más arroz para abuela.",
+     "antes": "abuela:39",
+     "valor": "ninguna"
+    },
+    "abuela:40": {
+     "texto": "La casa de abuela es grande.",
+     "antes": "abuela:40",
+     "valor": "duda"
+    },
+    "abuela:41": {
+     "texto": "¡Abuela, el pollo!",
+     "antes": "abuela:41",
+     "valor": "ninguna"
+    },
+    "abuela:42": {
+     "texto": "Abuela toma el vaso de la silla.",
+     "antes": "abuela:42",
+     "valor": "ninguna"
+    },
+    "abuela:43": {
+     "texto": "Este es el patio de abuela.",
+     "antes": "abuela:43",
+     "valor": "duda"
+    },
+    "abuela:44": {
+     "texto": "Abuela toma el vaso pequeño.",
+     "antes": "abuela:44",
+     "valor": "ninguna"
+    },
+    "abuela:45": {
+     "texto": "Mira. Tres guineos para abuela.",
+     "antes": "abuela:45",
+     "valor": "ninguna"
+    },
+    "abuela:46": {
+     "texto": "Abuela está en la ventana.",
+     "antes": "abuela:46",
+     "valor": "ninguna"
+    },
+    "abuela:47": {
+     "texto": "Abuela hace café.",
+     "valor": "sin juzgar"
+    },
+    "abuela:48": {
+     "texto": "Abuela hace jugo de china.",
+     "antes": "abuela:48",
+     "valor": "ninguna"
+    },
+    "abuela:49": {
+     "texto": "El plato de abuela no tiene pan.",
+     "valor": "sin juzgar"
+    },
+    "abuela:50": {
+     "texto": "Y este es el perro de abuela.",
+     "antes": "abuela:50",
+     "valor": "ninguna"
+    },
+    "abuela:51": {
+     "texto": "¡Soy yo, abuela! ¡Abre!",
+     "antes": "abuela:51",
+     "valor": "duda"
+    },
+    "abuela:52": {
+     "texto": "Abuela se sienta en la silla grande.",
+     "antes": "abuela:13",
+     "valor": "ninguna"
+    },
+    "abuela:53": {
+     "texto": "Mira: abuela y abuelo.",
+     "antes": "abuela:53",
+     "valor": "ninguna"
+    },
+    "abuela:54": {
+     "texto": "Abuela se sienta.",
+     "antes": "abuela:54",
+     "valor": "ninguna"
+    },
+    "abuela:55": {
+     "texto": "Abuela toma el agua.",
+     "antes": "abuela:55",
+     "valor": "ninguna"
+    },
+    "abuela:56": {
+     "texto": "De nada, abuela.",
+     "antes": "abuela:56",
+     "valor": "duda"
+    },
+    "abuela:57": {
+     "texto": "Mira. Esta es la familia de abuela.",
+     "antes": "abuela:57",
+     "valor": "ninguna"
+    },
+    "abuela:58": {
+     "texto": "Abuela pone los vasos en la mesa.",
+     "antes": "abuela:58",
+     "valor": "ninguna"
+    },
+    "abuela:59": {
+     "texto": "Abuela toma el jugo.",
+     "antes": "abuela:59",
+     "valor": "ninguna"
+    },
+    "abuela:60": {
+     "texto": "Esta es la silla de abuela.",
+     "antes": "abuela:60",
+     "valor": "ninguna"
+    },
+    "abuela:61": {
+     "texto": "Abuela hace la comida.",
+     "antes": "abuela:61",
+     "valor": "ninguna"
+    },
+    "abuela:62": {
+     "texto": "Abuela toma el vaso grande.",
+     "antes": "abuela:62",
+     "valor": "ninguna"
+    },
+    "abuela:63": {
+     "texto": "Esta es la cocina de abuela.",
+     "antes": "abuela:63",
+     "valor": "ninguna"
+    },
+    "abuela:64": {
+     "texto": "Abuela hace arroz.",
+     "antes": "abuela:64",
+     "valor": "ninguna"
+    },
+    "abuela:65": {
+     "texto": "Abuela tiene una bola.",
+     "antes": "abuela:34",
+     "valor": "ninguna"
+    },
+    "abuela:66": {
+     "texto": "Ahora abuela está en la puerta.",
+     "antes": "abuela:66",
+     "valor": "A"
+    },
+    "abuela:67": {
+     "texto": "¡Me gusta el pan de abuela!",
+     "valor": "sin juzgar"
+    },
+    "abuela:68": {
+     "texto": "Abuela abre la ventana.",
+     "antes": "abuela:10",
+     "valor": "ninguna"
+    },
+    "abuela:69": {
+     "texto": "Abuela y Coquí miran la lluvia.",
+     "antes": "abuela:47",
+     "valor": "ninguna"
+    },
+    "abuela:70": {
+     "texto": "Abuela cierra la puerta.",
+     "antes": "abuela:65",
+     "valor": "duda"
+    },
+    "abuela:71": {
+     "texto": "¡Mira! Abuela tiene un bizcocho.",
+     "antes": "abuela:18",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "si": {
+   "palabra": "sí",
+   "par_png_sha256": "1014a8db236d0ec1efb9b2ddab1774b10fbda01f83dc2fe8d24932270e7e13f5",
+   "veredicto_antes_sha256": "990e8fabe84912c765d8c594d960612f3c3d617a2d33d8a6b5ac57bad43ff200",
+   "frases": {
+    "si:1": {
+     "texto": "¡Sí!",
+     "antes": "si:1",
+     "valor": "A"
+    },
+    "si:2": {
+     "texto": "Carmen dice: ¡Sí! El pato amarillo.",
+     "antes": "si:2",
+     "valor": "ninguna"
+    },
+    "si:3": {
+     "texto": "Carmen dice: ¡Sí! El pato negro.",
+     "antes": "si:3",
+     "valor": "ninguna"
+    },
+    "si:4": {
+     "texto": "Abuelo dice: ¿Bizcocho? ¡Sí, por favor!",
+     "antes": "si:13",
+     "valor": "ninguna"
+    },
+    "si:5": {
+     "texto": "Carmen dice: ¡Sí! ¡Huele bien!",
+     "antes": "si:5",
+     "valor": "ninguna"
+    },
+    "si:6": {
+     "texto": "¡Sí! El pez nada.",
+     "antes": "si:6",
+     "valor": "duda"
+    },
+    "si:7": {
+     "texto": "Luis dice: ¡Sí! Es un bizcocho.",
+     "antes": "si:7",
+     "valor": "ninguna"
+    },
+    "si:8": {
+     "texto": "Luis dice: Sí. Es mi bola.",
+     "antes": "si:8",
+     "valor": "ninguna"
+    },
+    "si:9": {
+     "texto": "Sí, mucho, por favor.",
+     "valor": "sin juzgar"
+    },
+    "si:10": {
+     "texto": "Luis dice: Sí. Ahora el pato nada en el agua.",
+     "antes": "si:10",
+     "valor": "ninguna"
+    },
+    "si:11": {
+     "texto": "Luis dice: ¡Sí! ¡El pato vuela!",
+     "antes": "si:11",
+     "valor": "ninguna"
+    },
+    "si:12": {
+     "texto": "Luis dice: Ahora sí. ¡Uno, dos, tres! ¡Espera!",
+     "antes": "si:12",
+     "valor": "ninguna"
+    },
+    "si:13": {
+     "texto": "Sí, un poco, por favor.",
+     "valor": "sin juzgar"
+    },
+    "si:14": {
+     "texto": "Luis dice: ¡Sí! Es una silla.",
+     "antes": "si:14",
+     "valor": "ninguna"
+    },
+    "si:15": {
+     "texto": "¡Sí! El pájaro vuela.",
+     "antes": "si:15",
+     "valor": "duda"
+    },
+    "si:16": {
+     "texto": "Luis dice: Sí, Coquí. Es tu bola.",
+     "antes": "si:16",
+     "valor": "ninguna"
+    },
+    "si:17": {
+     "texto": "Carmen dice: ¡Sí! El pato blanco.",
+     "antes": "si:17",
+     "valor": "ninguna"
+    },
+    "si:18": {
+     "texto": "El hermano dice: ¡Sí! Yo soy Luis.",
+     "antes": "si:18",
+     "valor": "ninguna"
+    },
+    "si:19": {
+     "texto": "¡Sí! ¡Aquí está!",
+     "antes": "si:19",
+     "valor": "duda"
+    },
+    "si:20": {
+     "texto": "¡Sí! Yo soy Coquí. Me llamo Coquí.",
+     "antes": "si:20",
+     "valor": "duda"
+    },
+    "si:21": {
+     "texto": "Carmen dice: ¡Sí! La flor está aquí.",
+     "antes": "si:21",
+     "valor": "ninguna"
+    },
+    "si:22": {
+     "texto": "Luis dice: ¡Sí! Es una flor.",
+     "antes": "si:22",
+     "valor": "ninguna"
+    },
+    "si:23": {
+     "texto": "La hermana dice: ¡Sí! Yo soy Carmen.",
+     "antes": "si:9",
+     "valor": "ninguna"
+    },
+    "si:24": {
+     "texto": "¡Sí! ¡Vamos a jugar!",
+     "antes": "si:4",
+     "valor": "duda"
+    }
+   }
+  },
+  "no": {
+   "palabra": "no",
+   "par_png_sha256": "3ad442c4047d5bb04d5b3a5fb090fd04017f586825236d20ccc4bcd0f79428d6",
+   "veredicto_antes_sha256": "c7f33c902fb0b7f2351b48c0a178e320b170de6c5fce2a9d9bdd5a4155ccc404",
+   "frases": {
+    "no:1": {
+     "texto": "¡No!",
+     "antes": "no:1",
+     "valor": "A"
+    },
+    "no:2": {
+     "texto": "Canelo no quiere. Canelo está cansado.",
+     "antes": "no:24",
+     "valor": "ninguna"
+    },
+    "no:3": {
+     "texto": "¡No, pájaro, no!",
+     "antes": "no:3",
+     "valor": "duda"
+    },
+    "no:4": {
+     "texto": "Abuela dice: Este no es para el bebé.",
+     "antes": "no:4",
+     "valor": "ninguna"
+    },
+    "no:5": {
+     "texto": "Abuela dice: No, Canelo. Esa es la comida de la familia.",
+     "antes": "no:5",
+     "valor": "ninguna"
+    },
+    "no:6": {
+     "texto": "Abuela no abre.",
+     "antes": "no:9",
+     "valor": "duda"
+    },
+    "no:7": {
+     "texto": "El bebé no tiene bizcocho. El bebé llora.",
+     "antes": "no:20",
+     "valor": "ninguna"
+    },
+    "no:8": {
+     "texto": "¡Ay, no! ¡El bebé!",
+     "antes": "no:8",
+     "valor": "ninguna"
+    },
+    "no:9": {
+     "texto": "Abuelo dice: Mi pan no tiene chocolate.",
+     "valor": "sin juzgar"
+    },
+    "no:10": {
+     "texto": "Abuela dice: Este no es para mamá.",
+     "antes": "no:10",
+     "valor": "ninguna"
+    },
+    "no:11": {
+     "texto": "¡Ay, no! ¡El bote rojo!",
+     "antes": "no:11",
+     "valor": "ninguna"
+    },
+    "no:12": {
+     "texto": "Coquí no duerme. Coquí canta.",
+     "antes": "no:6",
+     "valor": "duda"
+    },
+    "no:13": {
+     "texto": "¡Ay, no! La bola está en el agua.",
+     "antes": "no:13",
+     "valor": "ninguna"
+    },
+    "no:14": {
+     "texto": "Canelo no quiere más.",
+     "antes": "no:14",
+     "valor": "ninguna"
+    },
+    "no:15": {
+     "texto": "Luis dice: ¡No, Canelo! ¡Ven aquí!",
+     "antes": "no:21",
+     "valor": "ninguna"
+    },
+    "no:16": {
+     "texto": "Papá no está aquí.",
+     "valor": "sin juzgar"
+    },
+    "no:17": {
+     "texto": "Abuela dice: Ahora no. Está caliente.",
+     "antes": "no:18",
+     "valor": "ninguna"
+    },
+    "no:18": {
+     "texto": "Abuela dice: No. No quiero jugo. Quiero agua, por favor.",
+     "antes": "no:19",
+     "valor": "ninguna"
+    },
+    "no:19": {
+     "texto": "El plato de abuela no tiene pan.",
+     "valor": "sin juzgar"
+    },
+    "no:20": {
+     "texto": "Abuela no abre la ventana.",
+     "antes": "no:31",
+     "valor": "ninguna"
+    },
+    "no:21": {
+     "texto": "Abuela dice: ¡Fo! Este pan no huele bien.",
+     "antes": "no:22",
+     "valor": "ninguna"
+    },
+    "no:22": {
+     "texto": "¿Y Canelo? ¡Canelo no suelta la bola!",
+     "antes": "no:23",
+     "valor": "ninguna"
+    },
+    "no:23": {
+     "texto": "¡Ay, no! La piragua se cae.",
+     "antes": "no:15",
+     "valor": "ninguna"
+    },
+    "no:24": {
+     "texto": "Abuela dice: Este no es para papá.",
+     "antes": "no:25",
+     "valor": "ninguna"
+    },
+    "no:25": {
+     "texto": "¡Mira! Ahora Canelo no está cansado.",
+     "antes": "no:17",
+     "valor": "ninguna"
+    },
+    "no:26": {
+     "texto": "El perro viejo no corre.",
+     "antes": "no:27",
+     "valor": "ninguna"
+    },
+    "no:27": {
+     "texto": "Abuela dice: Este no es para abuelo.",
+     "antes": "no:28",
+     "valor": "ninguna"
+    },
+    "no:28": {
+     "texto": "Luis dice: ¡No, amigo! ¡No!",
+     "antes": "no:29",
+     "valor": "ninguna"
+    },
+    "no:29": {
+     "texto": "Ahora el bebé no llora. El bebé come.",
+     "antes": "no:16",
+     "valor": "ninguna"
+    },
+    "no:30": {
+     "texto": "¡La manzana no huele bien!",
+     "antes": "no:30",
+     "valor": "ninguna"
+    },
+    "no:31": {
+     "texto": "Mamá dice: Mi pan no tiene mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "no:32": {
+     "texto": "Luis dice: ¡No, Canelo! ¡Espera!",
+     "antes": "no:26",
+     "valor": "ninguna"
+    },
+    "no:33": {
+     "texto": "Canelo no quiere.",
+     "antes": "no:7",
+     "valor": "ninguna"
+    },
+    "no:34": {
+     "texto": "¡El guineo no huele bien!",
+     "antes": "no:2",
+     "valor": "ninguna"
+    },
+    "no:35": {
+     "texto": "El pato pequeño no tiene pan. Está triste.",
+     "antes": "no:12",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "toma": {
+   "palabra": "toma",
+   "par_png_sha256": "379ff9eb4e2418e6fdc44418275a26a71dd98abe849ec5da3e54a076ffce97b7",
+   "veredicto_antes_sha256": "917f2ebf4d9150f4a066e441355d3b89867c90fe130a345a3a9cae17c89d5a24",
+   "frases": {
+    "toma:1": {
+     "texto": "El pájaro toma el agua.",
+     "antes": "toma:1",
+     "valor": "A"
+    },
+    "toma:2": {
+     "texto": "Abuela toma el vaso de la mesa.",
+     "antes": "toma:2",
+     "valor": "ninguna"
+    },
+    "toma:3": {
+     "texto": "El bebé toma leche.",
+     "antes": "toma:3",
+     "valor": "ninguna"
+    },
+    "toma:4": {
+     "texto": "Abuela toma el vaso grande.",
+     "antes": "toma:4",
+     "valor": "ninguna"
+    },
+    "toma:5": {
+     "texto": "Luis toma jugo de china.",
+     "antes": "toma:5",
+     "valor": "ninguna"
+    },
+    "toma:6": {
+     "texto": "Carmen dice: Toma, Luis. Toma mi piragua.",
+     "antes": "toma:11",
+     "valor": "ninguna"
+    },
+    "toma:7": {
+     "texto": "La familia toma jugo de china.",
+     "antes": "toma:7",
+     "valor": "ninguna"
+    },
+    "toma:8": {
+     "texto": "Carmen toma jugo de china.",
+     "antes": "toma:8",
+     "valor": "ninguna"
+    },
+    "toma:9": {
+     "texto": "Abuela toma el vaso de la silla.",
+     "antes": "toma:9",
+     "valor": "ninguna"
+    },
+    "toma:10": {
+     "texto": "Abuela dice: Toma la sal, Coquí.",
+     "antes": "toma:10",
+     "valor": "ninguna"
+    },
+    "toma:11": {
+     "texto": "Abuela toma café.",
+     "valor": "sin juzgar"
+    },
+    "toma:12": {
+     "texto": "Luis toma mucho café.",
+     "valor": "sin juzgar"
+    },
+    "toma:13": {
+     "texto": "Abuela toma el jugo.",
+     "antes": "toma:13",
+     "valor": "ninguna"
+    },
+    "toma:14": {
+     "texto": "Abuela dice: Toma. Bizcocho y agua.",
+     "antes": "toma:14",
+     "valor": "ninguna"
+    },
+    "toma:15": {
+     "texto": "El pájaro toma el jugo.",
+     "antes": "toma:15",
+     "valor": "duda"
+    },
+    "toma:16": {
+     "texto": "Abuela dice: Toma agua, Coquí.",
+     "antes": "toma:16",
+     "valor": "ninguna"
+    },
+    "toma:17": {
+     "texto": "Abuela dice: Toma. Bizcocho y jugo.",
+     "antes": "toma:17",
+     "valor": "ninguna"
+    },
+    "toma:18": {
+     "texto": "Abuela toma el vaso pequeño.",
+     "antes": "toma:18",
+     "valor": "ninguna"
+    },
+    "toma:19": {
+     "texto": "Carmen toma un poco de café.",
+     "valor": "sin juzgar"
+    },
+    "toma:20": {
+     "texto": "Coquí toma el jugo.",
+     "antes": "toma:12",
+     "valor": "duda"
+    },
+    "toma:21": {
+     "texto": "Abuela toma el agua.",
+     "antes": "toma:6",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "quiero": {
+   "palabra": "quiero",
+   "par_png_sha256": "ca552ce20d8feb2d6dfb3c0278d536c2d288dc14a84e6ef140648068a483606c",
+   "veredicto_antes_sha256": "da96c53755bbadb87d2db8b4ee77ac118f19d9d925402aafc8e2e1f6e5e68549",
+   "frases": {
+    "quiero:1": {
+     "texto": "Abuela dice: Quiero agua, por favor.",
+     "antes": "quiero:1",
+     "valor": "A"
+    },
+    "quiero:2": {
+     "texto": "Luis dice: Quiero más arroz, por favor.",
+     "valor": "sin juzgar"
+    },
+    "quiero:3": {
+     "texto": "Quiero agua, por favor.",
+     "antes": "quiero:3",
+     "valor": "A"
+    },
+    "quiero:4": {
+     "texto": "Abuela dice: No. No quiero jugo. Quiero agua, por favor.",
+     "antes": "quiero:4",
+     "valor": "A"
+    },
+    "quiero:5": {
+     "texto": "Carmen dice: Quiero pan con mantequilla y jugo de china.",
+     "antes": "quiero:5",
+     "valor": "ninguna"
+    },
+    "quiero:6": {
+     "texto": "Quiero jugo, por favor.",
+     "antes": "quiero:2",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "mama": {
+   "palabra": "mamá",
+   "par_png_sha256": "7e2e6b7f725a5b1ffca898b112d4d91624b14b6205f6463d1e8b364fa47e80b8",
+   "veredicto_antes_sha256": "f732838d5d7448d63c7781a6d60880588036889d901695d8d0027fbe085a8fda",
+   "frases": {
+    "mama:1": {
+     "texto": "Esta es mamá.",
+     "antes": "mama:1",
+     "valor": "A"
+    },
+    "mama:2": {
+     "texto": "Ella es mamá.",
+     "antes": "mama:2",
+     "valor": "A"
+    },
+    "mama:3": {
+     "texto": "El bebé está con mamá.",
+     "antes": "mama:3",
+     "valor": "ninguna"
+    },
+    "mama:4": {
+     "texto": "Mamá come con el tenedor.",
+     "antes": "mama:4",
+     "valor": "ninguna"
+    },
+    "mama:5": {
+     "texto": "Él es mamá.",
+     "antes": "mama:5",
+     "valor": "ninguna"
+    },
+    "mama:6": {
+     "texto": "Mamá se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "mama:7": {
+     "texto": "Abuela dice: Y este es para mamá.",
+     "antes": "mama:7",
+     "valor": "duda"
+    },
+    "mama:8": {
+     "texto": "Abuela dice: Este es para mamá.",
+     "antes": "mama:12",
+     "valor": "duda"
+    },
+    "mama:9": {
+     "texto": "Mamá bebe chocolate frío.",
+     "antes": "mama:9",
+     "valor": "ninguna"
+    },
+    "mama:10": {
+     "texto": "Ahora mamá tiene un plato y una taza.",
+     "antes": "mama:10",
+     "valor": "ninguna"
+    },
+    "mama:11": {
+     "texto": "Abuela dice: Este no es para mamá.",
+     "antes": "mama:11",
+     "valor": "duda"
+    },
+    "mama:12": {
+     "texto": "¿Qué quieres, mamá?",
+     "valor": "sin juzgar"
+    },
+    "mama:13": {
+     "texto": "Mamá come con la cuchara.",
+     "antes": "mama:6",
+     "valor": "ninguna"
+    },
+    "mama:14": {
+     "texto": "Mamá come pan con mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "mama:15": {
+     "texto": "Mamá, papá y el bebé entran.",
+     "antes": "mama:8",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "papa": {
+   "palabra": "papá",
+   "par_png_sha256": "a91e098fc582cc85406c16816e674a106ec37466dddd58ac6157ff901f697488",
+   "veredicto_antes_sha256": "cc577dda46f034a9f2c87bbcba9b5180aff824197d8bc760e14452178fa20291",
+   "frases": {
+    "papa:1": {
+     "texto": "Este es papá.",
+     "antes": "papa:1",
+     "valor": "A"
+    },
+    "papa:2": {
+     "texto": "¡Buen provecho, papá!",
+     "valor": "sin juzgar"
+    },
+    "papa:3": {
+     "texto": "Ella es papá.",
+     "antes": "papa:3",
+     "valor": "ninguna"
+    },
+    "papa:4": {
+     "texto": "Papá bebe chocolate caliente.",
+     "antes": "papa:4",
+     "valor": "ninguna"
+    },
+    "papa:5": {
+     "texto": "Abuela dice: Este no es para papá.",
+     "antes": "papa:5",
+     "valor": "ninguna"
+    },
+    "papa:6": {
+     "texto": "Abuela dice: Y este es para papá.",
+     "antes": "papa:15",
+     "valor": "ninguna"
+    },
+    "papa:7": {
+     "texto": "Él es papá.",
+     "antes": "papa:7",
+     "valor": "A"
+    },
+    "papa:8": {
+     "texto": "Papá come con el tenedor.",
+     "antes": "papa:8",
+     "valor": "ninguna"
+    },
+    "papa:9": {
+     "texto": "La foto de papá.",
+     "antes": "papa:14",
+     "valor": "duda"
+    },
+    "papa:10": {
+     "texto": "Y este es papá.",
+     "antes": "papa:10",
+     "valor": "A"
+    },
+    "papa:11": {
+     "texto": "Este plato es para papá.",
+     "valor": "sin juzgar"
+    },
+    "papa:12": {
+     "texto": "Papá busca la leche.",
+     "antes": "papa:12",
+     "valor": "ninguna"
+    },
+    "papa:13": {
+     "texto": "Mamá, papá y el bebé entran.",
+     "antes": "papa:11",
+     "valor": "ninguna"
+    },
+    "papa:14": {
+     "texto": "Papá no está aquí.",
+     "valor": "sin juzgar"
+    },
+    "papa:15": {
+     "texto": "¿Qué quieres, papá?",
+     "valor": "sin juzgar"
+    },
+    "papa:16": {
+     "texto": "Ahora papá tiene el cuchillo.",
+     "antes": "papa:16",
+     "valor": "ninguna"
+    },
+    "papa:17": {
+     "texto": "Ahora papá tiene una taza y un plato.",
+     "antes": "papa:2",
+     "valor": "ninguna"
+    },
+    "papa:18": {
+     "texto": "¡Papá, no hay queso!",
+     "antes": "papa:13",
+     "valor": "duda"
+    },
+    "papa:19": {
+     "texto": "Papá busca el queso.",
+     "antes": "papa:6",
+     "valor": "ninguna"
+    },
+    "papa:20": {
+     "texto": "¡Papá, no hay leche!",
+     "antes": "papa:9",
+     "valor": "duda"
+    },
+    "papa:21": {
+     "texto": "Papá se come todo el arroz.",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "abuelo": {
+   "palabra": "abuelo",
+   "par_png_sha256": "e8c596711d78e178dcc1239aa8074e8857c00a4091791fe04e33d9353b784e8c",
+   "veredicto_antes_sha256": "f6a58cb0106e8354953f19b8be6d46f36980d949c8bdee3b376dcd2e38646699",
+   "frases": {
+    "abuelo:1": {
+     "texto": "Este es abuelo.",
+     "antes": "abuelo:1",
+     "valor": "A"
+    },
+    "abuelo:2": {
+     "texto": "Abuelo come la manzana.",
+     "antes": "abuelo:2",
+     "valor": "ninguna"
+    },
+    "abuelo:3": {
+     "texto": "Abuela dice: Y este es para abuelo.",
+     "antes": "abuelo:3",
+     "valor": "duda"
+    },
+    "abuelo:4": {
+     "texto": "Carmen dice: ¿Y tú, abuelo?",
+     "antes": "abuelo:8",
+     "valor": "ninguna"
+    },
+    "abuelo:5": {
+     "texto": "Abuelo tiene una cámara.",
+     "antes": "abuelo:11",
+     "valor": "ninguna"
+    },
+    "abuelo:6": {
+     "texto": "Abuelo come pan con chocolate.",
+     "valor": "sin juzgar"
+    },
+    "abuelo:7": {
+     "texto": "Abuela dice: Este no es para abuelo.",
+     "antes": "abuelo:7",
+     "valor": "duda"
+    },
+    "abuelo:8": {
+     "texto": "¿Y abuelo? Abuelo duerme.",
+     "antes": "abuelo:14",
+     "valor": "duda"
+    },
+    "abuelo:9": {
+     "texto": "Coquí toca a abuelo.",
+     "antes": "abuelo:6",
+     "valor": "ninguna"
+    },
+    "abuelo:10": {
+     "texto": "Ahora abuelo tiene el cuchillo.",
+     "antes": "abuelo:10",
+     "valor": "ninguna"
+    },
+    "abuelo:11": {
+     "texto": "Abuelo se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "abuelo:12": {
+     "texto": "Buenas noches, abuela. Buenas noches, abuelo.",
+     "antes": "abuelo:5",
+     "valor": "duda"
+    },
+    "abuelo:13": {
+     "texto": "Abuelo quiere tres fotos de la familia.",
+     "antes": "abuelo:13",
+     "valor": "ninguna"
+    },
+    "abuelo:14": {
+     "texto": "¿Qué quieres, abuelo?",
+     "valor": "sin juzgar"
+    },
+    "abuelo:15": {
+     "texto": "Abuelo bebe chocolate caliente.",
+     "antes": "abuelo:15",
+     "valor": "ninguna"
+    },
+    "abuelo:16": {
+     "texto": "Abuelo come el guineo.",
+     "antes": "abuelo:16",
+     "valor": "ninguna"
+    },
+    "abuelo:17": {
+     "texto": "Mira: abuela y abuelo.",
+     "antes": "abuelo:4",
+     "valor": "ninguna"
+    },
+    "abuelo:18": {
+     "texto": "Abuelo come pan.",
+     "antes": "abuelo:12",
+     "valor": "ninguna"
+    },
+    "abuelo:19": {
+     "texto": "Abuelo pone la cámara en la mesa.",
+     "antes": "abuelo:9",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "familia": {
+   "palabra": "familia",
+   "par_png_sha256": "9fcedb49b2735b701c8f14fe621de1fc1fcb4df6a34fe10383636df03c925b01",
+   "veredicto_antes_sha256": "c19d9b8e74f4d0df12b9def1deee1bdfb0f3fe0014aae8d231b92d8813085424",
+   "frases": {
+    "familia:1": {
+     "texto": "Esta es la familia.",
+     "antes": "familia:1",
+     "valor": "A"
+    },
+    "familia:2": {
+     "texto": "La familia se sienta.",
+     "antes": "familia:2",
+     "valor": "duda"
+    },
+    "familia:3": {
+     "texto": "¡Mira! La foto de la familia.",
+     "antes": "familia:11",
+     "valor": "duda"
+    },
+    "familia:4": {
+     "texto": "Bizcocho para la familia.",
+     "antes": "familia:4",
+     "valor": "ninguna"
+    },
+    "familia:5": {
+     "texto": "Abuela dice: No, Canelo. Esa es la comida de la familia.",
+     "antes": "familia:5",
+     "valor": "ninguna"
+    },
+    "familia:6": {
+     "texto": "Mira. Esta es la familia de abuela.",
+     "antes": "familia:6",
+     "valor": "A"
+    },
+    "familia:7": {
+     "texto": "La familia toma jugo de china.",
+     "antes": "familia:7",
+     "valor": "ninguna"
+    },
+    "familia:8": {
+     "texto": "La familia come bizcocho.",
+     "antes": "familia:8",
+     "valor": "ninguna"
+    },
+    "familia:9": {
+     "texto": "La familia come en la cocina.",
+     "antes": "familia:9",
+     "valor": "ninguna"
+    },
+    "familia:10": {
+     "texto": "La familia come.",
+     "antes": "familia:10",
+     "valor": "ninguna"
+    },
+    "familia:11": {
+     "texto": "Esta es la sala. Aquí está la familia.",
+     "antes": "familia:15",
+     "valor": "A"
+    },
+    "familia:12": {
+     "texto": "La familia tiene hambre.",
+     "antes": "familia:12",
+     "valor": "duda"
+    },
+    "familia:13": {
+     "texto": "Abuelo quiere tres fotos de la familia.",
+     "antes": "familia:13",
+     "valor": "duda"
+    },
+    "familia:14": {
+     "texto": "La familia come arroz con habichuelas.",
+     "antes": "familia:14",
+     "valor": "ninguna"
+    },
+    "familia:15": {
+     "texto": "La familia come pan.",
+     "valor": "sin juzgar"
+    },
+    "familia:16": {
+     "texto": "Abuelo dice: Ahora, una foto de la familia.",
+     "antes": "familia:3",
+     "valor": "duda"
+    }
+   }
+  },
+  "yo": {
+   "palabra": "yo",
+   "par_png_sha256": "985a0609c014d40f07895a6c5ed4f0c4215e8878fccf9ed129babb72e60e4112",
+   "veredicto_antes_sha256": "acf5515a8624ae4264cb7d965dba397c8e921fceacaf1394966951bbd629c3ed",
+   "frases": {
+    "yo:1": {
+     "texto": "La hermana dice: ¡Soy yo!",
+     "antes": "yo:1",
+     "valor": "B"
+    },
+    "yo:2": {
+     "texto": "Carmen dice: Yo me levanto.",
+     "valor": "sin juzgar"
+    },
+    "yo:3": {
+     "texto": "Abuelo dice: Yo estoy lleno.",
+     "valor": "sin juzgar"
+    },
+    "yo:4": {
+     "texto": "Yo soy Luis.",
+     "antes": "yo:4",
+     "valor": "ninguna"
+    },
+    "yo:5": {
+     "texto": "Yo soy Carmen.",
+     "antes": "yo:5",
+     "valor": "B"
+    },
+    "yo:6": {
+     "texto": "Abuelo dice: Y yo también.",
+     "valor": "sin juzgar"
+    },
+    "yo:7": {
+     "texto": "Carmen dice: Y yo también.",
+     "valor": "sin juzgar"
+    },
+    "yo:8": {
+     "texto": "Yo soy Coquí.",
+     "antes": "yo:7",
+     "valor": "ambas"
+    },
+    "yo:9": {
+     "texto": "El hermano dice: ¡Sí! Yo soy Luis.",
+     "antes": "yo:8",
+     "valor": "ninguna"
+    },
+    "yo:10": {
+     "texto": "Yo soy Coquí. Me llamo Coquí.",
+     "antes": "yo:9",
+     "valor": "ambas"
+    },
+    "yo:11": {
+     "texto": "¡Sí! Yo soy Coquí. Me llamo Coquí.",
+     "antes": "yo:10",
+     "valor": "ambas"
+    },
+    "yo:12": {
+     "texto": "Abuelo dice: Yo me levanto.",
+     "valor": "sin juzgar"
+    },
+    "yo:13": {
+     "texto": "¡Y yo también!",
+     "antes": "yo:6",
+     "valor": "duda"
+    },
+    "yo:14": {
+     "texto": "La hermana dice: ¡Sí! Yo soy Carmen.",
+     "antes": "yo:2",
+     "valor": "B"
+    },
+    "yo:15": {
+     "texto": "Mamá dice: Y yo también.",
+     "valor": "sin juzgar"
+    },
+    "yo:16": {
+     "texto": "¡Soy yo, abuela! ¡Abre!",
+     "antes": "yo:3",
+     "valor": "ninguna"
+    },
+    "yo:17": {
+     "texto": "Mamá dice: Yo me levanto.",
+     "valor": "sin juzgar"
+    },
+    "yo:18": {
+     "texto": "Mamá dice: Yo estoy llena.",
+     "valor": "sin juzgar"
+    },
+    "yo:19": {
+     "texto": "Yo estoy lleno.",
+     "valor": "sin juzgar"
+    },
+    "yo:20": {
+     "texto": "Carmen dice: Yo estoy llena.",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "aqui": {
+   "palabra": "aquí",
+   "par_png_sha256": "66eb158617759777bb26c310b1b5c957957ce6d0cecc7b2fa8253be55f1cdbbb",
+   "veredicto_antes_sha256": "c2b7b4c6759f2fb48d0fff01c45345f6d7b8ac5f8f68dae346cca2497dcb2293",
+   "frases": {
+    "aqui:1": {
+     "texto": "Carmen dice: La flor está aquí.",
+     "antes": "aqui:1",
+     "valor": "B"
+    },
+    "aqui:2": {
+     "texto": "Aquí hay chocolate caliente.",
+     "antes": "aqui:2",
+     "valor": "ninguna"
+    },
+    "aqui:3": {
+     "texto": "Y aquí hay un huevo.",
+     "antes": "aqui:3",
+     "valor": "ninguna"
+    },
+    "aqui:4": {
+     "texto": "Abuela dice: Aquí hay más pan.",
+     "valor": "sin juzgar"
+    },
+    "aqui:5": {
+     "texto": "Aquí hay una cuchara.",
+     "antes": "aqui:5",
+     "valor": "ninguna"
+    },
+    "aqui:6": {
+     "texto": "Y aquí hay mantequilla.",
+     "antes": "aqui:6",
+     "valor": "ninguna"
+    },
+    "aqui:7": {
+     "texto": "Aquí hay leche.",
+     "antes": "aqui:7",
+     "valor": "ninguna"
+    },
+    "aqui:8": {
+     "texto": "Y aquí hay chocolate frío.",
+     "antes": "aqui:8",
+     "valor": "ninguna"
+    },
+    "aqui:9": {
+     "texto": "Aquí hay pan.",
+     "antes": "aqui:9",
+     "valor": "ninguna"
+    },
+    "aqui:10": {
+     "texto": "Y aquí hay un cuchillo.",
+     "antes": "aqui:10",
+     "valor": "ninguna"
+    },
+    "aqui:11": {
+     "texto": "Abuela dice: Aquí hay pan y fruta para el parque.",
+     "antes": "aqui:11",
+     "valor": "ninguna"
+    },
+    "aqui:12": {
+     "texto": "¡Aquí están los botes!",
+     "antes": "aqui:12",
+     "valor": "ninguna"
+    },
+    "aqui:13": {
+     "texto": "Y aquí hay queso.",
+     "antes": "aqui:13",
+     "valor": "ninguna"
+    },
+    "aqui:14": {
+     "texto": "¡Sí! ¡Aquí está!",
+     "antes": "aqui:14",
+     "valor": "duda"
+    },
+    "aqui:15": {
+     "texto": "Abuela dice: Aquí hay más.",
+     "antes": "aqui:15",
+     "valor": "ninguna"
+    },
+    "aqui:16": {
+     "texto": "Aquí hay una olla.",
+     "antes": "aqui:16",
+     "valor": "ninguna"
+    },
+    "aqui:17": {
+     "texto": "Papá no está aquí.",
+     "valor": "sin juzgar"
+    },
+    "aqui:18": {
+     "texto": "Aquí hay mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "aqui:19": {
+     "texto": "Aquí hay un plato.",
+     "antes": "aqui:19",
+     "valor": "ninguna"
+    },
+    "aqui:20": {
+     "texto": "Aquí hay arroz.",
+     "antes": "aqui:20",
+     "valor": "ninguna"
+    },
+    "aqui:21": {
+     "texto": "Carmen y Coquí están aquí. Y Canelo también.",
+     "antes": "aqui:4",
+     "valor": "ninguna"
+    },
+    "aqui:22": {
+     "texto": "Y aquí hay fruta.",
+     "antes": "aqui:22",
+     "valor": "ninguna"
+    },
+    "aqui:23": {
+     "texto": "Aquí hay guineos y manzanas.",
+     "antes": "aqui:23",
+     "valor": "ninguna"
+    },
+    "aqui:24": {
+     "texto": "Aquí hay un tenedor.",
+     "antes": "aqui:24",
+     "valor": "ninguna"
+    },
+    "aqui:25": {
+     "texto": "Luis dice: La flor está aquí.",
+     "antes": "aqui:25",
+     "valor": "ninguna"
+    },
+    "aqui:26": {
+     "texto": "Y aquí hay habichuelas.",
+     "antes": "aqui:26",
+     "valor": "ninguna"
+    },
+    "aqui:27": {
+     "texto": "Aquí hay chinas.",
+     "antes": "aqui:27",
+     "valor": "ninguna"
+    },
+    "aqui:28": {
+     "texto": "Aquí hay chocolate.",
+     "valor": "sin juzgar"
+    },
+    "aqui:29": {
+     "texto": "Y aquí hay tres pájaros.",
+     "antes": "aqui:29",
+     "valor": "ninguna"
+    },
+    "aqui:30": {
+     "texto": "Carmen dice: ¡Sí! La flor está aquí.",
+     "antes": "aqui:30",
+     "valor": "B"
+    },
+    "aqui:31": {
+     "texto": "Aquí hay dos pájaros.",
+     "antes": "aqui:31",
+     "valor": "ninguna"
+    },
+    "aqui:32": {
+     "texto": "Aquí hay pollo.",
+     "antes": "aqui:32",
+     "valor": "ninguna"
+    },
+    "aqui:33": {
+     "texto": "Luis dice: ¡No, Canelo! ¡Ven aquí!",
+     "antes": "aqui:17",
+     "valor": "ninguna"
+    },
+    "aqui:34": {
+     "texto": "¡La bola está aquí!",
+     "antes": "aqui:28",
+     "valor": "ninguna"
+    },
+    "aqui:35": {
+     "texto": "Aquí hay azúcar.",
+     "valor": "sin juzgar"
+    },
+    "aqui:36": {
+     "texto": "Y aquí hay una taza.",
+     "antes": "aqui:21",
+     "valor": "ninguna"
+    },
+    "aqui:37": {
+     "texto": "Esta es la sala. Aquí está la familia.",
+     "antes": "aqui:18",
+     "valor": "ninguna"
+    },
+    "aqui:38": {
+     "texto": "Y aquí hay otra olla.",
+     "antes": "aqui:34",
+     "valor": "ninguna"
+    },
+    "aqui:39": {
+     "texto": "Aquí hay café.",
+     "valor": "sin juzgar"
+    },
+    "aqui:40": {
+     "texto": "El gato y el perro están aquí.",
+     "antes": "aqui:33",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "tiene": {
+   "palabra": "tiene",
+   "par_png_sha256": "3ce31ffec77c1c74f0f0f77a7582b460c7286457e5a4c1ac8a9f2f174753390e",
+   "veredicto_antes_sha256": "8cff7b8b6b13cf8c8b21baadb5f50dad6613db35014639e8312337e464284145",
+   "frases": {
+    "tiene:1": {
+     "texto": "Canelo tiene la bola.",
+     "antes": "tiene:1",
+     "valor": "B"
+    },
+    "tiene:2": {
+     "texto": "Abuela tiene la comida.",
+     "antes": "tiene:2",
+     "valor": "ninguna"
+    },
+    "tiene:3": {
+     "texto": "Abuela tiene una bola.",
+     "antes": "tiene:28",
+     "valor": "ninguna"
+    },
+    "tiene:4": {
+     "texto": "¿Quién tiene la bola?",
+     "antes": "tiene:5",
+     "valor": "duda"
+    },
+    "tiene:5": {
+     "texto": "Carmen tiene pan.",
+     "antes": "tiene:6",
+     "valor": "ninguna"
+    },
+    "tiene:6": {
+     "texto": "El bebé no tiene bizcocho. El bebé llora.",
+     "antes": "tiene:11",
+     "valor": "ninguna"
+    },
+    "tiene:7": {
+     "texto": "La familia tiene hambre.",
+     "antes": "tiene:8",
+     "valor": "ninguna"
+    },
+    "tiene:8": {
+     "texto": "Ahora Carmen tiene la bola.",
+     "antes": "tiene:9",
+     "valor": "ninguna"
+    },
+    "tiene:9": {
+     "texto": "Luis tiene hambre. Luis come.",
+     "antes": "tiene:10",
+     "valor": "ninguna"
+    },
+    "tiene:10": {
+     "texto": "Mamá dice: Mi pan no tiene mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "tiene:11": {
+     "texto": "Canelo tiene hambre.",
+     "antes": "tiene:12",
+     "valor": "duda"
+    },
+    "tiene:12": {
+     "texto": "Ahora mamá tiene un plato y una taza.",
+     "antes": "tiene:13",
+     "valor": "ninguna"
+    },
+    "tiene:13": {
+     "texto": "¡Mira! Abuela tiene dos vasos.",
+     "antes": "tiene:25",
+     "valor": "ninguna"
+    },
+    "tiene:14": {
+     "texto": "Mira. Canelo tiene una bola.",
+     "antes": "tiene:15",
+     "valor": "B"
+    },
+    "tiene:15": {
+     "texto": "Ahora papá tiene el cuchillo.",
+     "antes": "tiene:16",
+     "valor": "ninguna"
+    },
+    "tiene:16": {
+     "texto": "Carmen tiene sed. Carmen bebe agua.",
+     "antes": "tiene:17",
+     "valor": "ninguna"
+    },
+    "tiene:17": {
+     "texto": "Mira. Abuela tiene un bizcocho.",
+     "antes": "tiene:18",
+     "valor": "ninguna"
+    },
+    "tiene:18": {
+     "texto": "¡Mira! Abuela tiene un bizcocho.",
+     "antes": "tiene:19",
+     "valor": "ninguna"
+    },
+    "tiene:19": {
+     "texto": "Carmen tiene una bola.",
+     "antes": "tiene:20",
+     "valor": "ninguna"
+    },
+    "tiene:20": {
+     "texto": "Mira. Luis tiene una bola.",
+     "antes": "tiene:21",
+     "valor": "ninguna"
+    },
+    "tiene:21": {
+     "texto": "Ahora el pollo tiene sal.",
+     "antes": "tiene:22",
+     "valor": "ninguna"
+    },
+    "tiene:22": {
+     "texto": "Mira. Abuela tiene dos vasos.",
+     "antes": "tiene:23",
+     "valor": "ninguna"
+    },
+    "tiene:23": {
+     "texto": "Carmen tiene hambre. Carmen come.",
+     "antes": "tiene:24",
+     "valor": "ninguna"
+    },
+    "tiene:24": {
+     "texto": "Abuelo dice: Mi pan no tiene chocolate.",
+     "valor": "sin juzgar"
+    },
+    "tiene:25": {
+     "texto": "Ahora papá tiene una taza y un plato.",
+     "antes": "tiene:26",
+     "valor": "ninguna"
+    },
+    "tiene:26": {
+     "texto": "El pato pequeño no tiene pan. Está triste.",
+     "antes": "tiene:4",
+     "valor": "ninguna"
+    },
+    "tiene:27": {
+     "texto": "Luis tiene una bola.",
+     "antes": "tiene:14",
+     "valor": "ninguna"
+    },
+    "tiene:28": {
+     "texto": "La niña tiene una flor.",
+     "antes": "tiene:30",
+     "valor": "ninguna"
+    },
+    "tiene:29": {
+     "texto": "Ahora abuelo tiene el cuchillo.",
+     "antes": "tiene:31",
+     "valor": "ninguna"
+    },
+    "tiene:30": {
+     "texto": "Luis tiene la bola.",
+     "antes": "tiene:32",
+     "valor": "ninguna"
+    },
+    "tiene:31": {
+     "texto": "Luis tiene su bola. La bola de Luis.",
+     "antes": "tiene:29",
+     "valor": "ninguna"
+    },
+    "tiene:32": {
+     "texto": "El plato de abuela no tiene pan.",
+     "valor": "sin juzgar"
+    },
+    "tiene:33": {
+     "texto": "Y Coquí tiene una bola también.",
+     "antes": "tiene:34",
+     "valor": "ninguna"
+    },
+    "tiene:34": {
+     "texto": "Abuelo tiene una cámara.",
+     "antes": "tiene:33",
+     "valor": "ninguna"
+    },
+    "tiene:35": {
+     "texto": "Carmen tiene la otra bola.",
+     "antes": "tiene:35",
+     "valor": "ninguna"
+    },
+    "tiene:36": {
+     "texto": "Coquí tiene la bola.",
+     "antes": "tiene:27",
+     "valor": "ninguna"
+    },
+    "tiene:37": {
+     "texto": "Ahora el huevo tiene sal.",
+     "antes": "tiene:3",
+     "valor": "ninguna"
+    },
+    "tiene:38": {
+     "texto": "¡Ay! Canelo tiene la bola de Luis.",
+     "antes": "tiene:7",
+     "valor": "B"
+    }
+   }
+  },
+  "tambien": {
+   "palabra": "también",
+   "par_png_sha256": "749470d4a8307cd1b8242eb944275a58da6aca0c6a64513e1ed7a57ba3f90b89",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "tambien:1": {
+     "texto": "Luis come pan. Carmen también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:2": {
+     "texto": "¡Y yo también!",
+     "valor": "sin juzgar"
+    },
+    "tambien:3": {
+     "texto": "Mamá dice: Y yo también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:4": {
+     "texto": "Carmen dice: Y yo también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:5": {
+     "texto": "Carmen y Coquí están aquí. Y Canelo también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:6": {
+     "texto": "Ahora Coquí corre también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:7": {
+     "texto": "Coquí corre. El perro corre también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:8": {
+     "texto": "Y Coquí tiene una bola también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:9": {
+     "texto": "El pájaro también está contento.",
+     "valor": "sin juzgar"
+    },
+    "tambien:10": {
+     "texto": "El bebé también quiere.",
+     "valor": "sin juzgar"
+    },
+    "tambien:11": {
+     "texto": "Abuelo dice: Y yo también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:12": {
+     "texto": "También está cerrada.",
+     "valor": "sin juzgar"
+    },
+    "tambien:13": {
+     "texto": "Carmen juega también.",
+     "valor": "sin juzgar"
+    },
+    "tambien:14": {
+     "texto": "¡Y tú también, amigo!",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "hay": {
+   "palabra": "hay",
+   "par_png_sha256": "aeb35adaa739080c78edd6c19ccca196769c5e94fc6b69a925ecce2328a9e987",
+   "veredicto_antes_sha256": "ccf35e6e2d62f4962f6c74715e6bf65b941fff683b06d15fa16ac676dc862026",
+   "frases": {
+    "hay:1": {
+     "texto": "Hay un gato en el árbol.",
+     "antes": "hay:1",
+     "valor": "B"
+    },
+    "hay:2": {
+     "texto": "Mira. Hay un pato.",
+     "antes": "hay:2",
+     "valor": "ninguna"
+    },
+    "hay:3": {
+     "texto": "Y aquí hay otra olla.",
+     "antes": "hay:3",
+     "valor": "ninguna"
+    },
+    "hay:4": {
+     "texto": "Ahora hay leche y queso.",
+     "antes": "hay:4",
+     "valor": "ninguna"
+    },
+    "hay:5": {
+     "texto": "Y aquí hay tres pájaros.",
+     "antes": "hay:5",
+     "valor": "ninguna"
+    },
+    "hay:6": {
+     "texto": "En este árbol hay un pájaro. Uno.",
+     "antes": "hay:6",
+     "valor": "ninguna"
+    },
+    "hay:7": {
+     "texto": "Y hay un pájaro.",
+     "antes": "hay:7",
+     "valor": "ninguna"
+    },
+    "hay:8": {
+     "texto": "Aquí hay dos pájaros.",
+     "antes": "hay:8",
+     "valor": "ninguna"
+    },
+    "hay:9": {
+     "texto": "Aquí hay un plato.",
+     "antes": "hay:9",
+     "valor": "ninguna"
+    },
+    "hay:10": {
+     "texto": "Aquí hay chinas.",
+     "antes": "hay:10",
+     "valor": "ninguna"
+    },
+    "hay:11": {
+     "texto": "Hay tres patos.",
+     "antes": "hay:35",
+     "valor": "ninguna"
+    },
+    "hay:12": {
+     "texto": "Aquí hay mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "hay:13": {
+     "texto": "Aquí hay una olla.",
+     "antes": "hay:13",
+     "valor": "ninguna"
+    },
+    "hay:14": {
+     "texto": "Carmen dice: Mira. Hay más pan.",
+     "antes": "hay:14",
+     "valor": "ninguna"
+    },
+    "hay:15": {
+     "texto": "Y aquí hay fruta.",
+     "antes": "hay:15",
+     "valor": "ninguna"
+    },
+    "hay:16": {
+     "texto": "Ahora hay queso.",
+     "antes": "hay:16",
+     "valor": "ninguna"
+    },
+    "hay:17": {
+     "texto": "Aquí hay café.",
+     "valor": "sin juzgar"
+    },
+    "hay:18": {
+     "texto": "Aquí hay azúcar.",
+     "valor": "sin juzgar"
+    },
+    "hay:19": {
+     "texto": "Ahora hay leche.",
+     "antes": "hay:19",
+     "valor": "ninguna"
+    },
+    "hay:20": {
+     "texto": "Aquí hay pan.",
+     "antes": "hay:20",
+     "valor": "ninguna"
+    },
+    "hay:21": {
+     "texto": "Aquí hay una cuchara.",
+     "antes": "hay:21",
+     "valor": "ninguna"
+    },
+    "hay:22": {
+     "texto": "Y aquí hay un cuchillo.",
+     "antes": "hay:22",
+     "valor": "ninguna"
+    },
+    "hay:23": {
+     "texto": "Y mira. Hay tres patos.",
+     "antes": "hay:23",
+     "valor": "ninguna"
+    },
+    "hay:24": {
+     "texto": "Aquí hay arroz.",
+     "antes": "hay:24",
+     "valor": "ninguna"
+    },
+    "hay:25": {
+     "texto": "Y aquí hay mantequilla.",
+     "antes": "hay:25",
+     "valor": "ninguna"
+    },
+    "hay:26": {
+     "texto": "Aquí hay pollo.",
+     "antes": "hay:26",
+     "valor": "ninguna"
+    },
+    "hay:27": {
+     "texto": "Abuela dice: Aquí hay más pan.",
+     "valor": "sin juzgar"
+    },
+    "hay:28": {
+     "texto": "Y aquí hay queso.",
+     "antes": "hay:28",
+     "valor": "ninguna"
+    },
+    "hay:29": {
+     "texto": "Hay un pez.",
+     "antes": "hay:29",
+     "valor": "ninguna"
+    },
+    "hay:30": {
+     "texto": "Y aquí hay una taza.",
+     "antes": "hay:30",
+     "valor": "ninguna"
+    },
+    "hay:31": {
+     "texto": "Abuela dice: Aquí hay pan y fruta para el parque.",
+     "antes": "hay:31",
+     "valor": "ninguna"
+    },
+    "hay:32": {
+     "texto": "Mira. Hay tres botes.",
+     "antes": "hay:32",
+     "valor": "ninguna"
+    },
+    "hay:33": {
+     "texto": "Aquí hay chocolate caliente.",
+     "antes": "hay:33",
+     "valor": "ninguna"
+    },
+    "hay:34": {
+     "texto": "Abuela dice: ¡Hay más comida!",
+     "antes": "hay:34",
+     "valor": "ninguna"
+    },
+    "hay:35": {
+     "texto": "Aquí hay chocolate.",
+     "valor": "sin juzgar"
+    },
+    "hay:36": {
+     "texto": "Aquí hay un tenedor.",
+     "antes": "hay:36",
+     "valor": "ninguna"
+    },
+    "hay:37": {
+     "texto": "Aquí hay leche.",
+     "antes": "hay:37",
+     "valor": "ninguna"
+    },
+    "hay:38": {
+     "texto": "Luis dice: Mira. Hay más bolas.",
+     "antes": "hay:38",
+     "valor": "ninguna"
+    },
+    "hay:39": {
+     "texto": "Y aquí hay habichuelas.",
+     "antes": "hay:39",
+     "valor": "ninguna"
+    },
+    "hay:40": {
+     "texto": "Y aquí hay chocolate frío.",
+     "antes": "hay:27",
+     "valor": "ninguna"
+    },
+    "hay:41": {
+     "texto": "Y aquí hay un huevo.",
+     "antes": "hay:17",
+     "valor": "ninguna"
+    },
+    "hay:42": {
+     "texto": "Abuela dice: Aquí hay más.",
+     "antes": "hay:18",
+     "valor": "ninguna"
+    },
+    "hay:43": {
+     "texto": "Aquí hay guineos y manzanas.",
+     "antes": "hay:11",
+     "valor": "ninguna"
+    },
+    "hay:44": {
+     "texto": "Hay otra bola en la canasta.",
+     "antes": "hay:12",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "mi": {
+   "palabra": "mi",
+   "par_png_sha256": "0b0b46d3ee3c55747410b14224c05ada0750b11e011176b1d30cab8479992d55",
+   "veredicto_antes_sha256": "be3a65580a2d3f9bffde30f21715e940eadc2043e8b3b51a2a318d93ca2c05b7",
+   "frases": {
+    "mi:1": {
+     "texto": "Luis dice: Es mi bola.",
+     "antes": "mi:1",
+     "valor": "A"
+    },
+    "mi:2": {
+     "texto": "Luis dice: El pájaro es mi amigo.",
+     "antes": "mi:2",
+     "valor": "ninguna"
+    },
+    "mi:3": {
+     "texto": "Luis dice: Sí. Es mi bola.",
+     "antes": "mi:3",
+     "valor": "A"
+    },
+    "mi:4": {
+     "texto": "¡Hola, Luis! Tú eres mi amigo.",
+     "antes": "mi:4",
+     "valor": "duda"
+    },
+    "mi:5": {
+     "texto": "Luis dice: Es una bola. ¡Es mi bola!",
+     "antes": "mi:5",
+     "valor": "A"
+    },
+    "mi:6": {
+     "texto": "Carmen dice: Esta es mi bola.",
+     "antes": "mi:6",
+     "valor": "ninguna"
+    },
+    "mi:7": {
+     "texto": "Abuelo dice: Mi pan no tiene chocolate.",
+     "valor": "sin juzgar"
+    },
+    "mi:8": {
+     "texto": "Carmen dice: Toma, Luis. Toma mi piragua.",
+     "antes": "mi:7",
+     "valor": "ninguna"
+    },
+    "mi:9": {
+     "texto": "El señor dice: ¡Mi sombrilla! ¡Gracias!",
+     "antes": "mi:9",
+     "valor": "ninguna"
+    },
+    "mi:10": {
+     "texto": "Carmen dice: Coquí es mi amigo.",
+     "antes": "mi:10",
+     "valor": "ninguna"
+    },
+    "mi:11": {
+     "texto": "¡Es mi bola!",
+     "antes": "mi:11",
+     "valor": "duda"
+    },
+    "mi:12": {
+     "texto": "¡Y tú eres mi amigo!",
+     "antes": "mi:12",
+     "valor": "duda"
+    },
+    "mi:13": {
+     "texto": "Mamá dice: Mi pan no tiene mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "mi:14": {
+     "texto": "Luis dice: Coquí es mi amigo.",
+     "antes": "mi:8",
+     "valor": "duda"
+    }
+   }
+  },
+  "mas": {
+   "palabra": "más",
+   "par_png_sha256": "b18829e5932c88e90bfd24c9261a9122eb26828c901b09c8cf04fea43689f3fb",
+   "veredicto_antes_sha256": "d1f11e978f92d7dc17affd8eb03e619f0b7adc7d1079ea85b82645f932b32c7a",
+   "frases": {
+    "mas:1": {
+     "texto": "Canelo quiere más.",
+     "antes": "mas:1",
+     "valor": "duda"
+    },
+    "mas:2": {
+     "texto": "Más habichuelas para Luis.",
+     "antes": "mas:2",
+     "valor": "ninguna"
+    },
+    "mas:3": {
+     "texto": "Abuela dice: Aquí hay más pan.",
+     "valor": "sin juzgar"
+    },
+    "mas:4": {
+     "texto": "Abuela dice: Aquí hay más.",
+     "antes": "mas:4",
+     "valor": "ninguna"
+    },
+    "mas:5": {
+     "texto": "Luis dice: Quiero más arroz, por favor.",
+     "valor": "sin juzgar"
+    },
+    "mas:6": {
+     "texto": "Luis dice: ¡Más pan con mantequilla, por favor!",
+     "antes": "mas:5",
+     "valor": "ninguna"
+    },
+    "mas:7": {
+     "texto": "Abuelo dice: Más café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "mas:8": {
+     "texto": "Más arroz para abuela.",
+     "antes": "mas:7",
+     "valor": "ninguna"
+    },
+    "mas:9": {
+     "texto": "¿Y el pájaro? ¡El pájaro quiere más!",
+     "antes": "mas:8",
+     "valor": "ninguna"
+    },
+    "mas:10": {
+     "texto": "No hay más jugo.",
+     "antes": "mas:9",
+     "valor": "ninguna"
+    },
+    "mas:11": {
+     "texto": "Abuelo dice: Más azúcar, por favor.",
+     "valor": "sin juzgar"
+    },
+    "mas:12": {
+     "texto": "Papá dice: Más azúcar, por favor.",
+     "valor": "sin juzgar"
+    },
+    "mas:13": {
+     "texto": "Carmen dice: Mira. Hay más pan.",
+     "antes": "mas:12",
+     "valor": "ninguna"
+    },
+    "mas:14": {
+     "texto": "Canelo no quiere más.",
+     "antes": "mas:13",
+     "valor": "duda"
+    },
+    "mas:15": {
+     "texto": "Y otro. Y otro más.",
+     "antes": "mas:3",
+     "valor": "duda"
+    },
+    "mas:16": {
+     "texto": "Abuela dice: ¡Hay más comida!",
+     "antes": "mas:14",
+     "valor": "ninguna"
+    },
+    "mas:17": {
+     "texto": "Abuela hace más jugo de china.",
+     "antes": "mas:15",
+     "valor": "ninguna"
+    },
+    "mas:18": {
+     "texto": "Abuela dice: No hay más.",
+     "antes": "mas:10",
+     "valor": "ninguna"
+    },
+    "mas:19": {
+     "texto": "Luis dice: Mira. Hay más bolas.",
+     "antes": "mas:11",
+     "valor": "ninguna"
+    },
+    "mas:20": {
+     "texto": "Canelo quiere más. ¡Otra vez!",
+     "antes": "mas:6",
+     "valor": "duda"
+    },
+    "mas:21": {
+     "texto": "Papá dice: Más café, por favor.",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "come": {
+   "palabra": "come",
+   "par_png_sha256": "d2ea181ebfec7486fbec1baa2c6950b906c74d32ed1f37b3450999ac0db67960",
+   "veredicto_antes_sha256": "9bf2c38a8ffdaf19154f8be1d35ef6db9bd0ac00837adba83106bab65868a0ff",
+   "frases": {
+    "come:1": {
+     "texto": "El hombre come.",
+     "antes": "come:1",
+     "valor": "B"
+    },
+    "come:2": {
+     "texto": "Luis se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "come:3": {
+     "texto": "El bebé come el huevo.",
+     "antes": "come:3",
+     "valor": "ninguna"
+    },
+    "come:4": {
+     "texto": "Papá se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "come:5": {
+     "texto": "El pájaro come pan.",
+     "antes": "come:5",
+     "valor": "ninguna"
+    },
+    "come:6": {
+     "texto": "La familia come pan.",
+     "valor": "sin juzgar"
+    },
+    "come:7": {
+     "texto": "Carmen come la manzana.",
+     "antes": "come:7",
+     "valor": "ninguna"
+    },
+    "come:8": {
+     "texto": "Papá come con el tenedor.",
+     "antes": "come:8",
+     "valor": "ninguna"
+    },
+    "come:9": {
+     "texto": "Carmen come con la cuchara.",
+     "antes": "come:9",
+     "valor": "ninguna"
+    },
+    "come:10": {
+     "texto": "Carmen tiene hambre. Carmen come.",
+     "antes": "come:10",
+     "valor": "ninguna"
+    },
+    "come:11": {
+     "texto": "Luis tiene hambre. Luis come.",
+     "antes": "come:11",
+     "valor": "ninguna"
+    },
+    "come:12": {
+     "texto": "Abuela come pan con mantequilla.",
+     "antes": "come:12",
+     "valor": "ninguna"
+    },
+    "come:13": {
+     "texto": "El bebé come.",
+     "antes": "come:13",
+     "valor": "ninguna"
+    },
+    "come:14": {
+     "texto": "Carmen come fruta.",
+     "antes": "come:14",
+     "valor": "ninguna"
+    },
+    "come:15": {
+     "texto": "Abuelo come la manzana.",
+     "antes": "come:16",
+     "valor": "ninguna"
+    },
+    "come:16": {
+     "texto": "Carmen come pan con mantequilla.",
+     "antes": "come:17",
+     "valor": "ninguna"
+    },
+    "come:17": {
+     "texto": "Luis come pan.",
+     "antes": "come:18",
+     "valor": "ninguna"
+    },
+    "come:18": {
+     "texto": "Mamá se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "come:19": {
+     "texto": "¿Y el pájaro? El pájaro come.",
+     "antes": "come:2",
+     "valor": "ninguna"
+    },
+    "come:20": {
+     "texto": "Coquí come piragua.",
+     "antes": "come:21",
+     "valor": "ninguna"
+    },
+    "come:21": {
+     "texto": "Luis come. Carmen come. Abuela come.",
+     "antes": "come:22",
+     "valor": "ninguna"
+    },
+    "come:22": {
+     "texto": "La familia come bizcocho.",
+     "antes": "come:23",
+     "valor": "ninguna"
+    },
+    "come:23": {
+     "texto": "El bebé come el pollo.",
+     "antes": "come:24",
+     "valor": "ninguna"
+    },
+    "come:24": {
+     "texto": "La familia come arroz con habichuelas.",
+     "antes": "come:25",
+     "valor": "ninguna"
+    },
+    "come:25": {
+     "texto": "Luis come pan con chocolate.",
+     "valor": "sin juzgar"
+    },
+    "come:26": {
+     "texto": "Ahora el bebé no llora. El bebé come.",
+     "antes": "come:34",
+     "valor": "ninguna"
+    },
+    "come:27": {
+     "texto": "La familia come.",
+     "antes": "come:28",
+     "valor": "ninguna"
+    },
+    "come:28": {
+     "texto": "Luis come el guineo.",
+     "antes": "come:29",
+     "valor": "ninguna"
+    },
+    "come:29": {
+     "texto": "¡El pájaro come!",
+     "antes": "come:30",
+     "valor": "ninguna"
+    },
+    "come:30": {
+     "texto": "El pato come pan.",
+     "antes": "come:31",
+     "valor": "ninguna"
+    },
+    "come:31": {
+     "texto": "Mamá come pan con mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "come:32": {
+     "texto": "El pájaro come fruta.",
+     "antes": "come:32",
+     "valor": "ninguna"
+    },
+    "come:33": {
+     "texto": "Coquí se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "come:34": {
+     "texto": "Abuelo come pan con chocolate.",
+     "valor": "sin juzgar"
+    },
+    "come:35": {
+     "texto": "Mamá come con la cuchara.",
+     "antes": "come:35",
+     "valor": "ninguna"
+    },
+    "come:36": {
+     "texto": "La familia come en la cocina.",
+     "antes": "come:33",
+     "valor": "ninguna"
+    },
+    "come:37": {
+     "texto": "Carmen come pan con queso.",
+     "antes": "come:19",
+     "valor": "ninguna"
+    },
+    "come:38": {
+     "texto": "Luis come pan con mantequilla.",
+     "antes": "come:15",
+     "valor": "ninguna"
+    },
+    "come:39": {
+     "texto": "¡El pato pequeño come el pan!",
+     "antes": "come:6",
+     "valor": "ninguna"
+    },
+    "come:40": {
+     "texto": "Coquí come piragua. Carmen bebe agua.",
+     "antes": "come:26",
+     "valor": "ninguna"
+    },
+    "come:41": {
+     "texto": "Abuelo se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "come:42": {
+     "texto": "Abuelo come el guineo.",
+     "antes": "come:27",
+     "valor": "ninguna"
+    },
+    "come:43": {
+     "texto": "Abuelo come pan.",
+     "antes": "come:4",
+     "valor": "ninguna"
+    },
+    "come:44": {
+     "texto": "Mamá come con el tenedor.",
+     "antes": "come:20",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "plato": {
+   "palabra": "plato",
+   "par_png_sha256": "f421cf8aac9f54c9755d2b116a0d911ea2260e88b461d51067e4aa2ad02d9f16",
+   "veredicto_antes_sha256": "8ae9f53c177cc8ebb5ae43550a69662d24a56d9903016133991de95ab12cd069",
+   "frases": {
+    "plato:1": {
+     "texto": "Mira mi plato.",
+     "antes": "plato:1",
+     "valor": "A"
+    },
+    "plato:2": {
+     "texto": "Ahora mamá tiene un plato y una taza.",
+     "antes": "plato:2",
+     "valor": "ninguna"
+    },
+    "plato:3": {
+     "texto": "El plato de abuela no tiene pan.",
+     "valor": "sin juzgar"
+    },
+    "plato:4": {
+     "texto": "Coquí pone el plato en la mesa.",
+     "antes": "plato:4",
+     "valor": "ninguna"
+    },
+    "plato:5": {
+     "texto": "Abuela pone el bizcocho en el plato.",
+     "antes": "plato:5",
+     "valor": "ninguna"
+    },
+    "plato:6": {
+     "texto": "Luis pone el plato en la mesa.",
+     "antes": "plato:6",
+     "valor": "duda"
+    },
+    "plato:7": {
+     "texto": "Aquí hay un plato.",
+     "antes": "plato:7",
+     "valor": "A"
+    },
+    "plato:8": {
+     "texto": "Este plato es para papá.",
+     "valor": "sin juzgar"
+    },
+    "plato:9": {
+     "texto": "Ahora papá tiene una taza y un plato.",
+     "antes": "plato:3",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "pone": {
+   "palabra": "pone",
+   "par_png_sha256": "ea79649e363e0541b59e4470f69804ba27d02284f54610e40d199bff4172a883",
+   "veredicto_antes_sha256": "d3391d03e4ce814c7572de3e5b13036bed1cf48aae9fb01f1b5277b4473eb8a4",
+   "frases": {
+    "pone:1": {
+     "texto": "Carmen pone el plato en la mesa.",
+     "antes": "pone:1",
+     "valor": "duda"
+    },
+    "pone:2": {
+     "texto": "Coquí le pone azúcar al café.",
+     "valor": "sin juzgar"
+    },
+    "pone:3": {
+     "texto": "Coquí pone el arroz en la olla.",
+     "antes": "pone:3",
+     "valor": "ninguna"
+    },
+    "pone:4": {
+     "texto": "Abuelo pone la cámara en la mesa.",
+     "antes": "pone:2",
+     "valor": "ninguna"
+    },
+    "pone:5": {
+     "texto": "Coquí pone la mesa.",
+     "antes": "pone:5",
+     "valor": "ninguna"
+    },
+    "pone:6": {
+     "texto": "Coquí pone la taza en la mesa.",
+     "antes": "pone:6",
+     "valor": "ninguna"
+    },
+    "pone:7": {
+     "texto": "Luis pone el plato en la mesa.",
+     "antes": "pone:7",
+     "valor": "ninguna"
+    },
+    "pone:8": {
+     "texto": "Abuela pone los vasos en la mesa.",
+     "antes": "pone:8",
+     "valor": "ninguna"
+    },
+    "pone:9": {
+     "texto": "Coquí pone el plato en la mesa.",
+     "antes": "pone:9",
+     "valor": "ninguna"
+    },
+    "pone:10": {
+     "texto": "Abuela pone la comida en la mesa.",
+     "antes": "pone:10",
+     "valor": "ninguna"
+    },
+    "pone:11": {
+     "texto": "Luis pone la taza en la mesa.",
+     "antes": "pone:11",
+     "valor": "ninguna"
+    },
+    "pone:12": {
+     "texto": "Abuela pone el bizcocho en el plato.",
+     "antes": "pone:12",
+     "valor": "ninguna"
+    },
+    "pone:13": {
+     "texto": "Abuela le pone mantequilla al pan.",
+     "antes": "pone:4",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "pan": {
+   "palabra": "pan",
+   "par_png_sha256": "03728c0c06f2dce2fd59029c9d576a4c55b8e9146aff265f1cf9e3c0b0197c97",
+   "veredicto_antes_sha256": "36eba78166f94b2f311f941036a36fa2fd1c662e57d4d944af46c435a10d6b1e",
+   "frases": {
+    "pan:1": {
+     "texto": "Aquí hay pan.",
+     "antes": "pan:1",
+     "valor": "B"
+    },
+    "pan:2": {
+     "texto": "Carmen come pan con queso.",
+     "antes": "pan:2",
+     "valor": "ninguna"
+    },
+    "pan:3": {
+     "texto": "Abuela dice: Aquí hay más pan.",
+     "valor": "sin juzgar"
+    },
+    "pan:4": {
+     "texto": "Carmen come pan con mantequilla.",
+     "antes": "pan:4",
+     "valor": "ninguna"
+    },
+    "pan:5": {
+     "texto": "El pato come pan.",
+     "antes": "pan:6",
+     "valor": "ninguna"
+    },
+    "pan:6": {
+     "texto": "Mamá dice: Mi pan no tiene mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "pan:7": {
+     "texto": "El plato de abuela no tiene pan.",
+     "valor": "sin juzgar"
+    },
+    "pan:8": {
+     "texto": "Abuelo dice: Mi pan no tiene chocolate.",
+     "valor": "sin juzgar"
+    },
+    "pan:9": {
+     "texto": "Abuelo come pan con chocolate.",
+     "valor": "sin juzgar"
+    },
+    "pan:10": {
+     "texto": "Luis come pan.",
+     "antes": "pan:10",
+     "valor": "ninguna"
+    },
+    "pan:11": {
+     "texto": "La familia come pan.",
+     "valor": "sin juzgar"
+    },
+    "pan:12": {
+     "texto": "Abuela dice: Aquí hay pan y fruta para el parque.",
+     "antes": "pan:12",
+     "valor": "ninguna"
+    },
+    "pan:13": {
+     "texto": "Abuela dice: ¡Fo! Este pan no huele bien.",
+     "antes": "pan:13",
+     "valor": "ninguna"
+    },
+    "pan:14": {
+     "texto": "Abuela huele el pan.",
+     "antes": "pan:14",
+     "valor": "ninguna"
+    },
+    "pan:15": {
+     "texto": "Carmen tiene pan.",
+     "antes": "pan:15",
+     "valor": "ninguna"
+    },
+    "pan:16": {
+     "texto": "El pato pequeño no tiene pan. Está triste.",
+     "antes": "pan:8",
+     "valor": "ninguna"
+    },
+    "pan:17": {
+     "texto": "¡Me gusta el pan de abuela!",
+     "valor": "sin juzgar"
+    },
+    "pan:18": {
+     "texto": "El pan está caliente.",
+     "valor": "sin juzgar"
+    },
+    "pan:19": {
+     "texto": "Abuela come pan con mantequilla.",
+     "antes": "pan:18",
+     "valor": "ninguna"
+    },
+    "pan:20": {
+     "texto": "Coquí tira el pan.",
+     "antes": "pan:19",
+     "valor": "ninguna"
+    },
+    "pan:21": {
+     "texto": "Luis come pan con chocolate.",
+     "valor": "sin juzgar"
+    },
+    "pan:22": {
+     "texto": "Carmen dice: Pan para el pato pequeño.",
+     "antes": "pan:17",
+     "valor": "ninguna"
+    },
+    "pan:23": {
+     "texto": "Carmen dice: Mira. Hay más pan.",
+     "antes": "pan:20",
+     "valor": "ninguna"
+    },
+    "pan:24": {
+     "texto": "¡El pato pequeño come el pan!",
+     "antes": "pan:3",
+     "valor": "ninguna"
+    },
+    "pan:25": {
+     "texto": "El pájaro come pan.",
+     "antes": "pan:22",
+     "valor": "ninguna"
+    },
+    "pan:26": {
+     "texto": "Luis dice: ¡Más pan con mantequilla, por favor!",
+     "antes": "pan:23",
+     "valor": "ninguna"
+    },
+    "pan:27": {
+     "texto": "Carmen dice: Otra vez. Pan para el pato pequeño.",
+     "antes": "pan:9",
+     "valor": "ninguna"
+    },
+    "pan:28": {
+     "texto": "Pan para el pato pequeño.",
+     "antes": "pan:7",
+     "valor": "duda"
+    },
+    "pan:29": {
+     "texto": "Luis come pan con mantequilla.",
+     "antes": "pan:5",
+     "valor": "ninguna"
+    },
+    "pan:30": {
+     "texto": "Abuelo come pan.",
+     "antes": "pan:11",
+     "valor": "ninguna"
+    },
+    "pan:31": {
+     "texto": "Mamá come pan con mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "pan:32": {
+     "texto": "Abuela dice: Me gusta el pan.",
+     "valor": "sin juzgar"
+    },
+    "pan:33": {
+     "texto": "Abuela le pone mantequilla al pan.",
+     "antes": "pan:16",
+     "valor": "ninguna"
+    },
+    "pan:34": {
+     "texto": "Carmen dice: Quiero pan con mantequilla y jugo de china.",
+     "antes": "pan:21",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "arroz": {
+   "palabra": "arroz",
+   "par_png_sha256": "672a78d12351ce49dcd0d386e71d51b8d2143d3c6b71e64ae79812a447f8dfad",
+   "veredicto_antes_sha256": "25157946e2fb55f842082420c8c1835d24f3ea18355a578d5f738d34b8fb9864",
+   "frases": {
+    "arroz:1": {
+     "texto": "Aquí hay arroz.",
+     "antes": "arroz:1",
+     "valor": "A"
+    },
+    "arroz:2": {
+     "texto": "Coquí pone el arroz en la olla.",
+     "antes": "arroz:2",
+     "valor": "ninguna"
+    },
+    "arroz:3": {
+     "texto": "Abuelo se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "arroz:4": {
+     "texto": "Mamá se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "arroz:5": {
+     "texto": "Más arroz para abuela.",
+     "antes": "arroz:5",
+     "valor": "duda"
+    },
+    "arroz:6": {
+     "texto": "Abuelo dice: ¡El arroz está rico!",
+     "valor": "sin juzgar"
+    },
+    "arroz:7": {
+     "texto": "Abuela hace arroz.",
+     "antes": "arroz:3",
+     "valor": "ninguna"
+    },
+    "arroz:8": {
+     "texto": "Coquí se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "arroz:9": {
+     "texto": "Luis dice: ¡El arroz está rico!",
+     "valor": "sin juzgar"
+    },
+    "arroz:10": {
+     "texto": "Luis dice: Quiero más arroz, por favor.",
+     "valor": "sin juzgar"
+    },
+    "arroz:11": {
+     "texto": "Papá dice: ¡El arroz está rico!",
+     "valor": "sin juzgar"
+    },
+    "arroz:12": {
+     "texto": "Luis se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "arroz:13": {
+     "texto": "Papá se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "arroz:14": {
+     "texto": "La familia come arroz con habichuelas.",
+     "antes": "arroz:4",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "hace": {
+   "palabra": "hace",
+   "par_png_sha256": "d8fc43e3064dacdff2c1fd609b600b50560c842a7cff4e7d474575538a3d4247",
+   "veredicto_antes_sha256": "a4fbff85df6c7c504beb0ad673921cb00c944e9590d11c31a204898f58c0c244",
+   "frases": {
+    "hace:1": {
+     "texto": "Mamá hace la comida.",
+     "antes": "hace:1",
+     "valor": "A"
+    },
+    "hace:2": {
+     "texto": "Abuela hace arroz.",
+     "antes": "hace:2",
+     "valor": "ninguna"
+    },
+    "hace:3": {
+     "texto": "Abuela hace pollo y un huevo.",
+     "antes": "hace:3",
+     "valor": "ninguna"
+    },
+    "hace:4": {
+     "texto": "Abuela hace jugo de china.",
+     "antes": "hace:4",
+     "valor": "ninguna"
+    },
+    "hace:5": {
+     "texto": "Abuela hace la comida.",
+     "antes": "hace:5",
+     "valor": "ninguna"
+    },
+    "hace:6": {
+     "texto": "Abuela hace más jugo de china.",
+     "antes": "hace:6",
+     "valor": "ninguna"
+    },
+    "hace:7": {
+     "texto": "Abuela hace café.",
+     "valor": "sin juzgar"
+    },
+    "hace:8": {
+     "texto": "Luis hace habichuelas.",
+     "antes": "hace:7",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "huele": {
+   "palabra": "huele",
+   "par_png_sha256": "0e39a0d96ba7e295593d0bdf2c9cfdcbd08d6d54888eb2f656accdbcc8263ca3",
+   "veredicto_antes_sha256": "8d39f334907414321366d47035dd4adcef7e8238894e50fac3b1f18e6f5b4d06",
+   "frases": {
+    "huele:1": {
+     "texto": "¡Huele bien!",
+     "antes": "huele:1",
+     "valor": "B"
+    },
+    "huele:2": {
+     "texto": "Huele a café.",
+     "valor": "sin juzgar"
+    },
+    "huele:3": {
+     "texto": "Abuela huele la fruta.",
+     "antes": "huele:3",
+     "valor": "ninguna"
+    },
+    "huele:4": {
+     "texto": "¡Huele bien, abuela!",
+     "antes": "huele:4",
+     "valor": "duda"
+    },
+    "huele:5": {
+     "texto": "Mamá dice: ¡Mmm! ¡Huele bien!",
+     "antes": "huele:5",
+     "valor": "ninguna"
+    },
+    "huele:6": {
+     "texto": "¡Huele a café!",
+     "valor": "sin juzgar"
+    },
+    "huele:7": {
+     "texto": "Abuela dice: ¡Fo! Este pan no huele bien.",
+     "antes": "huele:7",
+     "valor": "ninguna"
+    },
+    "huele:8": {
+     "texto": "¡El guineo no huele bien!",
+     "antes": "huele:8",
+     "valor": "ninguna"
+    },
+    "huele:9": {
+     "texto": "Abuela huele el pan.",
+     "antes": "huele:9",
+     "valor": "ninguna"
+    },
+    "huele:10": {
+     "texto": "Carmen dice: ¡Sí! ¡Huele bien!",
+     "antes": "huele:10",
+     "valor": "ninguna"
+    },
+    "huele:11": {
+     "texto": "Luis dice: ¡Mmm! ¡Huele a pollo!",
+     "antes": "huele:11",
+     "valor": "ninguna"
+    },
+    "huele:12": {
+     "texto": "¡Mmm! ¡Huele bien!",
+     "antes": "huele:2",
+     "valor": "B"
+    },
+    "huele:13": {
+     "texto": "¡La manzana no huele bien!",
+     "antes": "huele:6",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "caliente": {
+   "palabra": "caliente",
+   "par_png_sha256": "d61776c7459d9f4f60bb4f62c7d6be78ed584dba85da3fc7dcd1a45261078bcf",
+   "veredicto_antes_sha256": "7e21661dc69472ef7a009488cc0e155a79b2398f39a6dbda2584e425ff869752",
+   "frases": {
+    "caliente:1": {
+     "texto": "El chocolate está caliente.",
+     "antes": "caliente:1",
+     "valor": "B"
+    },
+    "caliente:2": {
+     "texto": "Papá bebe chocolate caliente.",
+     "antes": "caliente:2",
+     "valor": "ninguna"
+    },
+    "caliente:3": {
+     "texto": "La olla está caliente.",
+     "antes": "caliente:3",
+     "valor": "ninguna"
+    },
+    "caliente:4": {
+     "texto": "El pan está caliente.",
+     "valor": "sin juzgar"
+    },
+    "caliente:5": {
+     "texto": "Abuela dice: Ahora no. Está caliente.",
+     "antes": "caliente:5",
+     "valor": "ninguna"
+    },
+    "caliente:6": {
+     "texto": "Abuela dice: ¡Cuidado! Está caliente.",
+     "antes": "caliente:6",
+     "valor": "ninguna"
+    },
+    "caliente:7": {
+     "texto": "Aquí hay chocolate caliente.",
+     "antes": "caliente:7",
+     "valor": "B"
+    },
+    "caliente:8": {
+     "texto": "Abuelo bebe chocolate caliente.",
+     "antes": "caliente:8",
+     "valor": "ninguna"
+    },
+    "caliente:9": {
+     "texto": "¡Carmen, cuidado! Está caliente.",
+     "antes": "caliente:4",
+     "valor": "duda"
+    }
+   }
+  },
+  "mantequilla": {
+   "palabra": "mantequilla",
+   "par_png_sha256": "8f85d0c10eb3441c5ccfbbf617d7c3684a87bcb4f371e26ef96f4d305f7e0756",
+   "veredicto_antes_sha256": "765a880abf9d295c285c3f4b5858b04bdea7dce55d77a68e299ddb9560c78cbd",
+   "frases": {
+    "mantequilla:1": {
+     "texto": "Abuela le pone mantequilla al pan.",
+     "antes": "mantequilla:1",
+     "valor": "B"
+    },
+    "mantequilla:2": {
+     "texto": "Mamá come pan con mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "mantequilla:3": {
+     "texto": "Abuelo dice: No me gusta la mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "mantequilla:4": {
+     "texto": "Y aquí hay mantequilla.",
+     "antes": "mantequilla:4",
+     "valor": "B"
+    },
+    "mantequilla:5": {
+     "texto": "Mamá dice: Mi pan no tiene mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "mantequilla:6": {
+     "texto": "Aquí hay mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "mantequilla:7": {
+     "texto": "Luis dice: ¡Más pan con mantequilla, por favor!",
+     "antes": "mantequilla:7",
+     "valor": "ninguna"
+    },
+    "mantequilla:8": {
+     "texto": "Mamá dice: Me gusta la mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "mantequilla:9": {
+     "texto": "Abuela come pan con mantequilla.",
+     "antes": "mantequilla:3",
+     "valor": "duda"
+    },
+    "mantequilla:10": {
+     "texto": "Carmen come pan con mantequilla.",
+     "antes": "mantequilla:6",
+     "valor": "ninguna"
+    },
+    "mantequilla:11": {
+     "texto": "Luis dice: No me gusta la mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "mantequilla:12": {
+     "texto": "Carmen dice: Quiero pan con mantequilla y jugo de china.",
+     "antes": "mantequilla:2",
+     "valor": "ninguna"
+    },
+    "mantequilla:13": {
+     "texto": "Luis come pan con mantequilla.",
+     "antes": "mantequilla:5",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "lleno": {
+   "palabra": "lleno",
+   "par_png_sha256": "135a5781cf76f737774d73726e0de2576d20028cdd7c75fa716e6becdd363a6a",
+   "veredicto_antes_sha256": "6f6a4036c9e81dd67c2e99e8872d6b4f9906748f6b67ce535238a2794a1fb7c0",
+   "frases": {
+    "lleno:1": {
+     "texto": "El plato está lleno.",
+     "antes": "lleno:1",
+     "valor": "B"
+    },
+    "lleno:2": {
+     "texto": "Yo estoy lleno.",
+     "valor": "sin juzgar"
+    },
+    "lleno:3": {
+     "texto": "Ahora el vaso amarillo está lleno.",
+     "antes": "lleno:3",
+     "valor": "ninguna"
+    },
+    "lleno:4": {
+     "texto": "Abuelo dice: Yo estoy lleno.",
+     "valor": "sin juzgar"
+    },
+    "lleno:5": {
+     "texto": "El vaso verde está lleno.",
+     "antes": "lleno:2",
+     "valor": "ninguna"
+    }
+   }
+  },
+  "quieres": {
+   "palabra": "quieres",
+   "par_png_sha256": "2adda57d3d94fd680028596a6d198815a3a3b0ba9bbc8b847042cf0e13512a8c",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "quieres:1": {
+     "texto": "¿Quieres pan?",
+     "valor": "sin juzgar"
+    },
+    "quieres:2": {
+     "texto": "Abuela dice: ¿Quieres café, Coquí?",
+     "valor": "sin juzgar"
+    },
+    "quieres:3": {
+     "texto": "Abuela dice: ¡Hola! ¿Quieres bizcocho?",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "que-quieres": {
+   "palabra": "¿qué quieres?",
+   "par_png_sha256": "774f9a97fcb3be201745bea45cfaa5412f49c3be10eef8fe09857ca4888bf392",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "que-quieres:1": {
+     "texto": "Abuela dice: ¿Qué quieres?",
+     "valor": "sin juzgar"
+    },
+    "que-quieres:2": {
+     "texto": "¿Qué quieres, mamá?",
+     "valor": "sin juzgar"
+    },
+    "que-quieres:3": {
+     "texto": "¿Qué quieres, Carmen?",
+     "valor": "sin juzgar"
+    },
+    "que-quieres:4": {
+     "texto": "¿Qué quieres, Luis?",
+     "valor": "sin juzgar"
+    },
+    "que-quieres:5": {
+     "texto": "¿Qué quieres, abuelo?",
+     "valor": "sin juzgar"
+    },
+    "que-quieres:6": {
+     "texto": "¿Qué quieres, papá?",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "me-gusta": {
+   "palabra": "me gusta",
+   "par_png_sha256": "e63f8c85f40340ee848614e6d049d234ece7792ddc54bcb144a7f9dab507e36d",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "me-gusta:1": {
+     "texto": "Luis dice: Me gusta el pollo.",
+     "valor": "sin juzgar"
+    },
+    "me-gusta:2": {
+     "texto": "Abuela dice: Me gusta el pan.",
+     "valor": "sin juzgar"
+    },
+    "me-gusta:3": {
+     "texto": "Abuelo dice: Me gusta el chocolate.",
+     "valor": "sin juzgar"
+    },
+    "me-gusta:4": {
+     "texto": "Mamá dice: Me gusta la mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "me-gusta:5": {
+     "texto": "¡Me gusta el pan de abuela!",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "no-me-gusta": {
+   "palabra": "no me gusta",
+   "par_png_sha256": "5aa1959eb455f25186cab710f617b426de6710e0bf56898f1f2d25a0d2272388",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "no-me-gusta:1": {
+     "texto": "Carmen dice: No me gusta la manzana.",
+     "valor": "sin juzgar"
+    },
+    "no-me-gusta:2": {
+     "texto": "Mamá dice: No me gusta el chocolate.",
+     "valor": "sin juzgar"
+    },
+    "no-me-gusta:3": {
+     "texto": "Luis dice: No me gusta la mantequilla.",
+     "valor": "sin juzgar"
+    },
+    "no-me-gusta:4": {
+     "texto": "Abuelo dice: No me gusta la mantequilla.",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "buen-provecho": {
+   "palabra": "buen provecho",
+   "par_png_sha256": "3ccd4e68cdd5f05eefd54678289730d554a2f6e18e613b3590e69e20d2f20938",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "buen-provecho:1": {
+     "texto": "¡Buen provecho!",
+     "valor": "sin juzgar"
+    },
+    "buen-provecho:2": {
+     "texto": "¡Buen provecho, papá!",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "rico": {
+   "palabra": "rico",
+   "par_png_sha256": "b8a25a9b83c003cd03efa58c6c12e58a7c25143162ba6b25ca008b7c9e6898b4",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "rico:1": {
+     "texto": "¡El bizcocho está rico!",
+     "valor": "sin juzgar"
+    },
+    "rico:2": {
+     "texto": "Abuelo dice: ¡El arroz está rico!",
+     "valor": "sin juzgar"
+    },
+    "rico:3": {
+     "texto": "Papá dice: ¡El arroz está rico!",
+     "valor": "sin juzgar"
+    },
+    "rico:4": {
+     "texto": "¡El café está rico!",
+     "valor": "sin juzgar"
+    },
+    "rico:5": {
+     "texto": "Luis dice: ¡El arroz está rico!",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "todo": {
+   "palabra": "todo",
+   "par_png_sha256": "fe103010617f4e3336e1343977348c949859dbcdad67da3e69a44b8ee2fe2071",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "todo:1": {
+     "texto": "Canelo se lo come todo.",
+     "valor": "sin juzgar"
+    },
+    "todo:2": {
+     "texto": "Luis se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "todo:3": {
+     "texto": "Coquí se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "todo:4": {
+     "texto": "Abuelo se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "todo:5": {
+     "texto": "Mamá se come todo el arroz.",
+     "valor": "sin juzgar"
+    },
+    "todo:6": {
+     "texto": "Papá se come todo el arroz.",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "cafe": {
+   "palabra": "café",
+   "par_png_sha256": "9380ddfd9ad9b9ff5f159133d8462eb145bba5067cb5533a948bf86e0fd28e9f",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "cafe:1": {
+     "texto": "Mamá toma café.",
+     "valor": "sin juzgar"
+    },
+    "cafe:2": {
+     "texto": "Abuelo dice: Más café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "cafe:3": {
+     "texto": "Abuela hace café.",
+     "valor": "sin juzgar"
+    },
+    "cafe:4": {
+     "texto": "Luis toma mucho café.",
+     "valor": "sin juzgar"
+    },
+    "cafe:5": {
+     "texto": "Abuela dice: ¡Y café para mí!",
+     "valor": "sin juzgar"
+    },
+    "cafe:6": {
+     "texto": "Carmen dice: Mucho café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "cafe:7": {
+     "texto": "Papá dice: Más café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "cafe:8": {
+     "texto": "Carmen dice: Un poco de café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "cafe:9": {
+     "texto": "Abuela toma café.",
+     "valor": "sin juzgar"
+    },
+    "cafe:10": {
+     "texto": "Aquí hay café.",
+     "valor": "sin juzgar"
+    },
+    "cafe:11": {
+     "texto": "¡El café está rico!",
+     "valor": "sin juzgar"
+    },
+    "cafe:12": {
+     "texto": "Carmen toma un poco de café.",
+     "valor": "sin juzgar"
+    },
+    "cafe:13": {
+     "texto": "Abuela dice: ¿Quieres café, Coquí?",
+     "valor": "sin juzgar"
+    },
+    "cafe:14": {
+     "texto": "Luis dice: Mucho café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "cafe:15": {
+     "texto": "Huele a café.",
+     "valor": "sin juzgar"
+    },
+    "cafe:16": {
+     "texto": "Coquí le pone azúcar al café.",
+     "valor": "sin juzgar"
+    },
+    "cafe:17": {
+     "texto": "Luis dice: Un poco de café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "cafe:18": {
+     "texto": "¡Huele a café!",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "azucar": {
+   "palabra": "azúcar",
+   "par_png_sha256": "f8e4c9cb5c21ae5989fdb8e63f3cec9db193b5884ff90d85918b361e66e9263c",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "azucar:1": {
+     "texto": "Abuela le pone azúcar al café.",
+     "valor": "sin juzgar"
+    },
+    "azucar:2": {
+     "texto": "Papá dice: Más azúcar, por favor.",
+     "valor": "sin juzgar"
+    },
+    "azucar:3": {
+     "texto": "Aquí hay azúcar.",
+     "valor": "sin juzgar"
+    },
+    "azucar:4": {
+     "texto": "Abuelo dice: Más azúcar, por favor.",
+     "valor": "sin juzgar"
+    },
+    "azucar:5": {
+     "texto": "Coquí le pone azúcar al café.",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "un-poco": {
+   "palabra": "un poco",
+   "par_png_sha256": "2df6da5112d3d6978f455f2bc669e708d9cd0839de2c58750210d6b90624eeec",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "un-poco:1": {
+     "texto": "Un poco de arroz, por favor.",
+     "valor": "sin juzgar"
+    },
+    "un-poco:2": {
+     "texto": "Sí, un poco, por favor.",
+     "valor": "sin juzgar"
+    },
+    "un-poco:3": {
+     "texto": "Luis dice: Un poco de café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "un-poco:4": {
+     "texto": "Carmen dice: Un poco de café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "un-poco:5": {
+     "texto": "Carmen toma un poco de café.",
+     "valor": "sin juzgar"
+    }
+   }
+  },
+  "mucho": {
+   "palabra": "mucho",
+   "par_png_sha256": "5769309958aca2debc97fad3c68390bca6831ab5a2a657a9fe29704448aa39e5",
+   "nota": "a new word: no verdict before",
+   "frases": {
+    "mucho:1": {
+     "texto": "Aquí hay mucho jugo.",
+     "valor": "sin juzgar"
+    },
+    "mucho:2": {
+     "texto": "Carmen dice: Mucho café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "mucho:3": {
+     "texto": "Sí, mucho, por favor.",
+     "valor": "sin juzgar"
+    },
+    "mucho:4": {
+     "texto": "Luis dice: Mucho café, por favor.",
+     "valor": "sin juzgar"
+    },
+    "mucho:5": {
+     "texto": "Luis toma mucho café.",
+     "valor": "sin juzgar"
+    }
+   }
+  }
+ }
+}

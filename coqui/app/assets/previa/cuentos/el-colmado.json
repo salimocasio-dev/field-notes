@@ -1,0 +1,973 @@
+{
+ "id": "el-colmado",
+ "title": "El colmado",
+ "place": "El colmado",
+ "scene": "mostrador",
+ "next": "algo-mas",
+ "goal": "Serve don Pepe's two customers what they need, and keep the warm quesitos for abuela and the frog.",
+ "stake": {
+  "thing": "quesitos",
+  "steps": 2
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "colmado",
+  "buenos días",
+  "necesito",
+  "aquí tiene"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "leche",
+  "pan",
+  "mantequilla",
+  "queso",
+  "café",
+  "arroz",
+  "azúcar",
+  "jugo",
+  "habichuelas",
+  "tengo",
+  "señora",
+  "señor",
+  "por favor",
+  "gracias",
+  "espera",
+  "no hay",
+  "huele",
+  "me llamo",
+  "se sienta"
+ ],
+ "also_heard": [
+  "espere",
+  "quesito"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "coqui": "yo_coqui",
+  "senora": "b_n_senora",
+  "senor": "b_n_senor"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "c36_cq_aqui_tiene": {
+   "who": "tu",
+   "text": "¡Aquí tiene!"
+  },
+  "c36_van": {
+   "who": "narr",
+   "text": "Abuela y Coquí van al colmado."
+  },
+  "c36_mira": {
+   "who": "narr",
+   "text": "Mira. Este es el colmado de don Pepe."
+  },
+  "c36_donde_colmado": {
+   "who": "narr",
+   "text": "¿Dónde está el colmado?"
+  },
+  "c36_pepe_dias": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Buenos días!"
+  },
+  "c36_ab_dias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Buenos días, don Pepe!"
+  },
+  "c36_pepe_quien": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¿Y tú? ¿Quién eres tú?"
+  },
+  "c36_cq_me_llamo": {
+   "who": "tu",
+   "text": "Me llamo Coquí.",
+   "tu_turno": [
+    {
+     "palabra": "me llamo",
+     "formas": [
+      "me llamo"
+     ]
+    }
+   ]
+  },
+  "c36_ab_nec_leche": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Necesito leche, por favor."
+  },
+  "c36_donde_leche": {
+   "who": "narr",
+   "text": "¿Dónde está la leche?"
+  },
+  "c36_pepe_aqui": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Aquí tiene."
+  },
+  "c36_ab_nec_pan": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y necesito pan."
+  },
+  "c36_toca_pan": {
+   "who": "narr",
+   "text": "Toca el pan."
+  },
+  "c36_ab_nec_mant": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y necesito mantequilla."
+  },
+  "c36_pepe_no_hay": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: Ay, aquí no hay. ¡Espere!"
+  },
+  "abuela_se_sienta": {
+   "who": "narr",
+   "text": "Abuela se sienta."
+  },
+  "c36_sra_dias": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Buenos días!"
+  },
+  "c36_cq_dias_sra": {
+   "who": "tu",
+   "text": "¡Buenos días, señora!"
+  },
+  "c36_sro_dias": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Buenos días!"
+  },
+  "c36_pepe_mant": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡La mantequilla! Aquí tiene."
+  },
+  "c36_ab_quesito": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quieres un quesito, Coquí?"
+  },
+  "c36_cq_si_por_favor": {
+   "who": "tu",
+   "text": "¡Sí, por favor!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    }
+   ]
+  },
+  "c36_cq_mmm": {
+   "who": "tu",
+   "text": "¡Mmm! ¡Qué rico!"
+  },
+  "c36_pepe_gracias": {
+   "who": "narr",
+   "habla": "pepe",
+   "text": "Don Pepe dice: ¡Gracias! ¡Hasta mañana!"
+  },
+  "c36_cq_adios_pepe": {
+   "who": "tu",
+   "text": "¡Adiós, don Pepe!",
+   "tu_turno": [
+    {
+     "palabra": "adiós",
+     "formas": [
+      "adiós",
+      "adios"
+     ]
+    }
+   ]
+  },
+  "c36_van_casa": {
+   "who": "narr",
+   "text": "Abuela y Coquí van para la casa."
+  },
+  "c36_a_t_cafe_n_arroz": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Tengo café. Necesito arroz."
+  },
+  "c36_a_n_arroz_t_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Necesito arroz. Tengo café."
+  },
+  "c36_a_no_cafe_arroz": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Tengo café. Necesito arroz."
+  },
+  "c36_a_t_cafe_n_azucar": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Tengo café. Necesito azúcar."
+  },
+  "c36_a_n_azucar_t_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Necesito azúcar. Tengo café."
+  },
+  "c36_a_no_cafe_azucar": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Tengo café. Necesito azúcar."
+  },
+  "c36_a_t_arroz_n_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Tengo arroz. Necesito café."
+  },
+  "c36_a_n_cafe_t_arroz": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Necesito café. Tengo arroz."
+  },
+  "c36_a_no_arroz_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Tengo arroz. Necesito café."
+  },
+  "c36_a_t_arroz_n_azucar": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Tengo arroz. Necesito azúcar."
+  },
+  "c36_a_n_azucar_t_arroz": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Necesito azúcar. Tengo arroz."
+  },
+  "c36_a_no_arroz_azucar": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Tengo arroz. Necesito azúcar."
+  },
+  "c36_a_t_azucar_n_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Tengo azúcar. Necesito café."
+  },
+  "c36_a_n_cafe_t_azucar": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Necesito café. Tengo azúcar."
+  },
+  "c36_a_no_azucar_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Tengo azúcar. Necesito café."
+  },
+  "c36_a_t_azucar_n_arroz": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Tengo azúcar. Necesito arroz."
+  },
+  "c36_a_n_arroz_t_azucar": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Necesito arroz. Tengo azúcar."
+  },
+  "c36_a_no_azucar_arroz": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Tengo azúcar. Necesito arroz."
+  },
+  "c36_b_t_cafe_n_arroz": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Tengo café. Necesito arroz."
+  },
+  "c36_b_n_arroz_t_cafe": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Necesito arroz. Tengo café."
+  },
+  "c36_b_no_cafe_arroz": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Tengo café. Necesito arroz."
+  },
+  "c36_b_t_cafe_n_azucar": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Tengo café. Necesito azúcar."
+  },
+  "c36_b_n_azucar_t_cafe": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Necesito azúcar. Tengo café."
+  },
+  "c36_b_no_cafe_azucar": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Tengo café. Necesito azúcar."
+  },
+  "c36_b_t_arroz_n_cafe": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Tengo arroz. Necesito café."
+  },
+  "c36_b_n_cafe_t_arroz": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Necesito café. Tengo arroz."
+  },
+  "c36_b_no_arroz_cafe": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Tengo arroz. Necesito café."
+  },
+  "c36_b_t_arroz_n_azucar": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Tengo arroz. Necesito azúcar."
+  },
+  "c36_b_n_azucar_t_arroz": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Necesito azúcar. Tengo arroz."
+  },
+  "c36_b_no_arroz_azucar": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Tengo arroz. Necesito azúcar."
+  },
+  "c36_b_t_azucar_n_cafe": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Tengo azúcar. Necesito café."
+  },
+  "c36_b_n_cafe_t_azucar": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Necesito café. Tengo azúcar."
+  },
+  "c36_b_no_azucar_cafe": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Tengo azúcar. Necesito café."
+  },
+  "c36_b_t_azucar_n_arroz": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Tengo azúcar. Necesito arroz."
+  },
+  "c36_b_n_arroz_t_azucar": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Necesito arroz. Tengo azúcar."
+  },
+  "c36_b_no_azucar_arroz": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Tengo azúcar. Necesito arroz."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana",
+    "puerta": "shut",
+    "atras": "shut"
+   }
+  },
+  {
+   "cam": "calle",
+   "n": 1
+  },
+  {
+   "act": "lista"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "act": "gallo"
+  },
+  "c36_van",
+  {
+   "set": {
+    "twinkle": "colmado"
+   }
+  },
+  "c36_mira",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "colmado",
+   "lead": [],
+   "line": "c36_donde_colmado",
+   "then": [
+    {
+     "act": "gesto",
+     "quien": "pepe",
+     "que": "saluda"
+    },
+    {
+     "act": "gesto",
+     "quien": "abuela",
+     "que": "mira",
+     "a": "quesitos"
+    },
+    {
+     "act": "gesto",
+     "quien": "coqui",
+     "que": "mira",
+     "a": "quesitos"
+    },
+    {
+     "act": "piensa",
+     "quien": "coqui",
+     "k": "quesito"
+    },
+    "c36_pepe_dias",
+    "c36_ab_dias",
+    {
+     "act": "gesto",
+     "quien": "pepe",
+     "que": "agacha"
+    },
+    "c36_pepe_quien",
+    "c36_cq_me_llamo"
+   ],
+   "after": [
+    {
+     "set": {
+      "puerta": "open"
+     }
+    },
+    {
+     "cam": "dentro",
+     "n": 1
+    },
+    {
+     "act": "entra",
+     "quien": "abuela"
+    },
+    {
+     "act": "entra",
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "lista"
+  },
+  {
+   "act": "lista",
+   "k": "leche",
+   "hecho": 0
+  },
+  "c36_ab_nec_leche",
+  {
+   "ask": "leche",
+   "lead": [],
+   "line": "c36_donde_leche",
+   "then": [
+    {
+     "act": "guarda",
+     "quien": "abuela",
+     "k": "leche"
+    },
+    {
+     "act": "lista",
+     "k": "leche",
+     "hecho": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "baja",
+     "k": "leche"
+    },
+    "c36_pepe_aqui"
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "lista",
+   "k": "pan",
+   "hecho": 0
+  },
+  "c36_ab_nec_pan",
+  {
+   "ask": "pan",
+   "lead": [],
+   "line": "c36_toca_pan",
+   "then": [
+    {
+     "act": "guarda",
+     "quien": "abuela",
+     "k": "pan"
+    },
+    {
+     "act": "lista",
+     "k": "pan",
+     "hecho": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "baja",
+     "k": "pan"
+    },
+    "c36_pepe_aqui"
+   ]
+  },
+  {
+   "act": "lista",
+   "k": "mantequilla",
+   "hecho": 0
+  },
+  "c36_ab_nec_mant",
+  {
+   "act": "nohay",
+   "k": "mantequilla"
+  },
+  "c36_pepe_no_hay",
+  {
+   "dots": 4
+  },
+  {
+   "act": "bandeja",
+   "que": "da"
+  },
+  {
+   "set": {
+    "atras": "open"
+   }
+  },
+  {
+   "act": "sale",
+   "quien": "pepe",
+   "por": "atras"
+  },
+  {
+   "set": {
+    "atras": "shut"
+   }
+  },
+  {
+   "act": "abanico",
+   "quien": "abuela"
+  },
+  "abuela_se_sienta",
+  {
+   "act": "ir",
+   "a": "mostrador_izq"
+  },
+  {
+   "act": "entra",
+   "quien": "senora"
+  },
+  {
+   "act": "entra",
+   "quien": "senor"
+  },
+  "c36_sra_dias",
+  "c36_cq_dias_sra",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "reparte": [
+    "na",
+    "ha"
+   ],
+   "options": [
+    "cafe",
+    "arroz",
+    "azucar"
+   ]
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "draw": "sa",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "calc": "la",
+   "cond": "oa=1",
+   "then": "c36_a_t_$ha_n_$na",
+   "else": "c36_a_n_$na_t_$ha"
+  },
+  {
+   "if": "sa=1",
+   "then": [
+    {
+     "act": "pon2",
+     "a": "$na",
+     "b": "$ha"
+    }
+   ],
+   "else": [
+    {
+     "act": "pon2",
+     "a": "$ha",
+     "b": "$na"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$na",
+    "$ha"
+   ],
+   "pick": "$na",
+   "tests": "necesito",
+   "lock": true,
+   "lead": [],
+   "line": "$la",
+   "right": [
+    {
+     "act": "sirve",
+     "k": "$na",
+     "a": "senora"
+    },
+    "c36_cq_aqui_tiene",
+    {
+     "act": "paga",
+     "quien": "senora",
+     "n": 1
+    },
+    {
+     "act": "sale",
+     "quien": "senora",
+     "por": "puerta"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "sirve",
+     "k": "$x",
+     "a": "senora"
+    },
+    {
+     "act": "gesto",
+     "quien": "senora",
+     "que": "no"
+    },
+    {
+     "act": "cesta",
+     "quien": "senora",
+     "k": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    "c36_a_no_$ha_$na",
+    {
+     "act": "bandeja",
+     "que": "quita"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  "c36_sro_dias",
+  {
+   "reparte": [
+    "nb",
+    "hb"
+   ],
+   "options": [
+    "cafe",
+    "arroz",
+    "azucar"
+   ]
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "draw": "sb",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "calc": "lb",
+   "cond": "ob=1",
+   "then": "c36_b_t_$hb_n_$nb",
+   "else": "c36_b_n_$nb_t_$hb"
+  },
+  {
+   "if": "sb=1",
+   "then": [
+    {
+     "act": "pon2",
+     "a": "$nb",
+     "b": "$hb"
+    }
+   ],
+   "else": [
+    {
+     "act": "pon2",
+     "a": "$hb",
+     "b": "$nb"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$nb",
+    "$hb"
+   ],
+   "pick": "$nb",
+   "tests": "necesito",
+   "lock": true,
+   "lead": [],
+   "line": "$lb",
+   "right": [
+    {
+     "act": "sirve",
+     "k": "$nb",
+     "a": "senor"
+    },
+    "c36_cq_aqui_tiene",
+    {
+     "act": "paga",
+     "quien": "senor",
+     "n": 1
+    },
+    {
+     "act": "sale",
+     "quien": "senor",
+     "por": "puerta"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "sirve",
+     "k": "$x",
+     "a": "senor"
+    },
+    {
+     "act": "gesto",
+     "quien": "senor",
+     "que": "no"
+    },
+    {
+     "act": "cesta",
+     "quien": "senor",
+     "k": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    "c36_b_no_$hb_$nb",
+    {
+     "act": "bandeja",
+     "que": "quita"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "trae",
+   "k": "mantequilla"
+  },
+  "c36_pepe_mant",
+  {
+   "act": "lista",
+   "k": "mantequilla",
+   "hecho": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mira",
+   "a": "plato"
+  },
+  {
+   "act": "gesto",
+   "quien": "pepe",
+   "que": "mira",
+   "a": "bandeja"
+  },
+  "c36_ab_quesito",
+  "c36_cq_si_por_favor",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "bandeja",
+     "que": "comen",
+     "n": 3
+    },
+    "c36_cq_mmm"
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "bandeja",
+       "que": "comen",
+       "n": 2
+      },
+      "c36_cq_mmm"
+     ],
+     "else": [
+      {
+       "act": "bandeja",
+       "que": "comen",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c36_pepe_gracias",
+  "c36_cq_adios_pepe",
+  {
+   "act": "sale",
+   "quien": "abuela",
+   "por": "puerta"
+  },
+  {
+   "act": "sale",
+   "quien": "coqui",
+   "por": "puerta"
+  },
+  "c36_van_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c36_van",
+  "c36_mira",
+  "c36_donde_colmado",
+  "c36_pepe_dias",
+  "c36_ab_dias",
+  "c36_pepe_quien",
+  "c36_cq_me_llamo",
+  "c36_ab_nec_leche",
+  "c36_donde_leche",
+  "c36_pepe_aqui",
+  "c36_ab_nec_pan",
+  "c36_toca_pan",
+  "c36_pepe_aqui",
+  "c36_ab_nec_mant",
+  "c36_pepe_no_hay",
+  "abuela_se_sienta",
+  "c36_sra_dias",
+  "c36_cq_dias_sra",
+  "c36_a_t_cafe_n_arroz",
+  "c36_cq_aqui_tiene",
+  "c36_sro_dias",
+  "c36_b_n_azucar_t_cafe",
+  "c36_cq_aqui_tiene",
+  "c36_pepe_mant",
+  "c36_ab_quesito",
+  "c36_cq_si_por_favor",
+  "c36_cq_mmm",
+  "c36_pepe_gracias",
+  "c36_cq_adios_pepe",
+  "c36_van_casa"
+ ]
+}

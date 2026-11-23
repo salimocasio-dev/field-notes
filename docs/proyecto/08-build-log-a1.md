@@ -2,6 +2,24 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 23, part 29: cutover
+
+- Order 40: every recorded run replays clean on main. Order 41 (the books' pictures) was dropped by Salim. Order 42: the old addresses open the new app; the old app is under `legacy/`; nothing was moved or deleted (page 13 says why).
+- Still open: places 5 to 10 (page 13, "Where this lane stopped on Nov 22"), the Android build (43), testers (44), the Biblioteca, four Escuchar kitchen picture stories, A comer's three leftovers.
+
+## Nov 22, part 28: La cocina plays (build 13); every old scene is in Dart
+
+- La mesa, La estufa, La nevera and A comer are on main and play in build 13, each story against its recorded runs. With them all twelve scenes of the old site are converted; no old picture is bundled any more.
+- A comer's ten words said alone were recorded (10 clips, 78 characters, Azure's free tier) with Salim's yes.
+- Left: A comer's bake time, a reader on its app frames, `cocina.no` from the frutas scene (page 13, "A comer, step b").
+
+## Nov 22, part 27: El colmado plays (build 12); where the lane stopped
+
+- El colmado (place 4, orders 50 to 53): El mostrador, Los estantes, Las frutas and La caja are in Dart on main, each set equal to the JavaScript pixel for pixel, each story played on every path; build 12 carries their twelve stories as preview content. Builder hours: mostrador 2.0, estantes 1.1, frutas 1.2, caja 2.7. Page 13 lists 40 acts left OPEN for the content lane.
+- La esquina (La calle's first scene, with the street's kit, vehicles and cast) is on main too. La parada, Las tiendas, La plaza (with place 6's kit and cast) and A comer's port are built on their branches and stopped before their last checks, at Salim's word (usage). Page 13, "Where this lane stopped on Nov 22", says what is left on each.
+- The machine was the limit: four builders and one test run put the load at 30 to 40 and tests timed out. The orchestrator's full run before build 12 passed with one package run again alone.
+- A fault of the orchestrator's: rewording the builders' commit messages dropped their signatures. Every unpushed commit was signed again before pushing; some earlier ones on GitHub (El mostrador, Los estantes, Las frutas, the kitchen's designs) show as unverified.
+
 ## Nov 21, part 26: El banco; El parque whole in the new app; the lane no longer works in series
 
 - El banco (order 36): designed in two read rounds and two fix passes, ported with one stop (a hop count inside an act), stories 21 to 23 play (build 11). All twelve stories of El parque now play in the Flutter app, each against its recorded runs.
