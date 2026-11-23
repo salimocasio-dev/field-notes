@@ -18,20 +18,21 @@ void main() {
       expect(find.text('2 · El parque'), findsOneWidget);
       expect(find.text('10 words coming back · 6 min'), findsOneWidget);
 
-      // Biblioteca: the real shelf, with what the seed has played (La casa's stories, each with its Listen) and what it
-      // has heard (El jugo, once)
+      // Biblioteca: a story to make for his level and a text to add; his shelf is empty (the course's stories are
+      // replayed on the map, not listed here)
       await app.openTab('library');
       expect(app.selectedTab, 'library');
       await app.until(
-        () => find.text('La lluvia').evaluate().isNotEmpty,
-        what: 'the shelf',
+        () => find.text('Generate a story').evaluate().isNotEmpty,
+        what: 'Biblioteca',
       );
-      expect(byTypeName('LibraryShelf').hitTestable(), findsOneWidget);
-      expect(find.text('La casa').hitTestable(), findsOneWidget);
-      expect(find.text('La lluvia').hitTestable(), findsOneWidget);
-      expect(find.text('El jugo').hitTestable(), findsOneWidget);
-      expect(find.text('Heard 1× · about 4 min').hitTestable(), findsOneWidget);
-      expect(find.text('Listen').hitTestable(), findsWidgets);
+      expect(byTypeName('ReadingHome').hitTestable(), findsOneWidget);
+      expect(find.text('Add text').hitTestable(), findsOneWidget);
+      expect(
+        find.text('Stories you generate and texts you add appear here.'),
+        findsOneWidget,
+      );
+      expect(find.text('La lluvia'), findsNothing);
 
       // Palabras: the real tab, with the seed's ten words due on its Repaso card and the words he has met, by place
       await app.openTab('words');
