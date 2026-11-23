@@ -124,5 +124,11 @@
   { "id": "esquina/tarde-0-shut", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=0&puerta=shut" },
   { "id": "esquina/tarde-0-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=0&puerta=open" },
   { "id": "esquina/tarde-1-shut", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=1&puerta=shut" },
-  { "id": "esquina/tarde-1-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=1&puerta=open" }
+  { "id": "esquina/tarde-1-open", "kind": "set", "page": "docs/proyecto/pixel/esquina-set.html", "query": "?hora=tarde&obra=1&puerta=open" },
+  { "id": "cruce/mediodia-0", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=mediodia&cerrada=0" },
+  { "id": "cruce/mediodia-1", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=mediodia&cerrada=1" },
+  { "id": "cruce/tarde-0", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=tarde&cerrada=0" },
+  { "id": "cruce/tarde-1", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=tarde&cerrada=1" },
+  { "id": "cruce/ocaso-0", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=ocaso&cerrada=0" },
+  { "id": "cruce/ocaso-1", "kind": "set", "page": "docs/proyecto/pixel/cruce-set.html", "query": "?hora=ocaso&cerrada=1" }
 ]

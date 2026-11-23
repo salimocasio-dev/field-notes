@@ -21,4 +21,5 @@ const Set<String> convertedScenes = {
   'frutas',
   'caja',
   'esquina',
+  'cruce',
 };

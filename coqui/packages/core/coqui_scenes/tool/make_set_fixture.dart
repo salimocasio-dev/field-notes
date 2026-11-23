@@ -107,6 +107,11 @@ void main(List<String> args) {
       constant: 'esquinaSetRefs',
       what: "La esquina's baked states",
     ),
+    'cruce': (
+      file: 'cruce_set_refs.dart',
+      constant: 'cruceSetRefs',
+      what: "El cruce's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {

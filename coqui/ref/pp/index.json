@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1020,
-  "totalBytes": 64027092,
+  "files": 1068,
+  "totalBytes": 66925285,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -762,6 +762,246 @@
       "path": "comer/comer/zb.json",
       "bytes": 322,
       "sha256": "0b2c30c3ea79e35ed9c79169a84d85c93e802fb542dbabe2398c63e1b9ba5046"
+    },
+    {
+      "path": "cruce/mediodia-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cruce/mediodia-0/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cruce/mediodia-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "23291690dcbe4022b14987fe279af0c38514726693b1ff3b690221b0062b586b"
+    },
+    {
+      "path": "cruce/mediodia-0/pix.json",
+      "bytes": 370,
+      "sha256": "4d9962561dcb2435ac79170bc8ed356e466e0695288ade73139fb6325f2f18a1"
+    },
+    {
+      "path": "cruce/mediodia-0/pix.png",
+      "bytes": 14100,
+      "sha256": "f2488a77ee48c9e1357e5ee8b72932825792ce933e6d7a904dc584d04ac2b92a"
+    },
+    {
+      "path": "cruce/mediodia-0/state.json",
+      "bytes": 940,
+      "sha256": "2c8dc5a8979baf155135e54e37fbfd749a864caf07f5f8c9c72a76a5d0d70fbd"
+    },
+    {
+      "path": "cruce/mediodia-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "b85e6c5401ba6d393b5073afb7aae279fc207310522cad6a77814f689da58862"
+    },
+    {
+      "path": "cruce/mediodia-0/zb.json",
+      "bytes": 322,
+      "sha256": "0e0e80d657c1f624a37a4c54a0400c72572982d8ba481df10e36ba9ca89e2b89"
+    },
+    {
+      "path": "cruce/mediodia-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cruce/mediodia-1/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cruce/mediodia-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "f5daad76ee7a3220e6d00441a8d0e36f93ae75e3d016dc54e1d6e89457a04c81"
+    },
+    {
+      "path": "cruce/mediodia-1/pix.json",
+      "bytes": 370,
+      "sha256": "f068c2b830939b5c95619d1719dc77a6c2940a51091db679f25c797f3cd853c7"
+    },
+    {
+      "path": "cruce/mediodia-1/pix.png",
+      "bytes": 14982,
+      "sha256": "4a0d967373405462155f74da940fa9ad58bbd72e11ef4b822fdd16bbdb7b7f37"
+    },
+    {
+      "path": "cruce/mediodia-1/state.json",
+      "bytes": 940,
+      "sha256": "14fee7715f9994acc02172940f1208566e3f4e8fe92c8ad906f6294aef82e4ac"
+    },
+    {
+      "path": "cruce/mediodia-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "f824ca2b6cad1cb71a0b19986ad95435d5937354ec7cd612e22ffd004aa3e6dd"
+    },
+    {
+      "path": "cruce/mediodia-1/zb.json",
+      "bytes": 322,
+      "sha256": "d02cd0184d5c9f78cbfa28723c49d1ef19be794217df36040e188c3651118308"
+    },
+    {
+      "path": "cruce/ocaso-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cruce/ocaso-0/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cruce/ocaso-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "917c1213fb76ebcf5bdbca56d352f5051af0d2b46b29fa82b81973cbca23cf65"
+    },
+    {
+      "path": "cruce/ocaso-0/pix.json",
+      "bytes": 370,
+      "sha256": "5bb875e22e07761a68683d7a8194e08c1f082e54d335279ba1ed62d72922b15c"
+    },
+    {
+      "path": "cruce/ocaso-0/pix.png",
+      "bytes": 14098,
+      "sha256": "2175b93c1eb60440ad21605d65641d4f9012f1c3863cf5ab5fb1edeeee5f661a"
+    },
+    {
+      "path": "cruce/ocaso-0/state.json",
+      "bytes": 934,
+      "sha256": "7f2baeaabec488512739d6e2022b721b1f000c9e2701f30e4d1bd4b6d409ac4d"
+    },
+    {
+      "path": "cruce/ocaso-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "b85e6c5401ba6d393b5073afb7aae279fc207310522cad6a77814f689da58862"
+    },
+    {
+      "path": "cruce/ocaso-0/zb.json",
+      "bytes": 322,
+      "sha256": "0e0e80d657c1f624a37a4c54a0400c72572982d8ba481df10e36ba9ca89e2b89"
+    },
+    {
+      "path": "cruce/ocaso-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cruce/ocaso-1/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cruce/ocaso-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "0b34a92880e60ee3e3d9c504d8c76121a29db0a6c6716509e99c3737cf294a60"
+    },
+    {
+      "path": "cruce/ocaso-1/pix.json",
+      "bytes": 370,
+      "sha256": "2ed74d1b8510357cadeaa241cc498a74b46f0abe829ed00b416d2b752a6e9610"
+    },
+    {
+      "path": "cruce/ocaso-1/pix.png",
+      "bytes": 14980,
+      "sha256": "16333194049b99e63d316203929ebc14cbf74dfc7599a2f5a72cda0197027054"
+    },
+    {
+      "path": "cruce/ocaso-1/state.json",
+      "bytes": 934,
+      "sha256": "82fd5931a28d22f5b8854dd648f59fb403aaede693f3a6b6c028fe7330b9e749"
+    },
+    {
+      "path": "cruce/ocaso-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "f824ca2b6cad1cb71a0b19986ad95435d5937354ec7cd612e22ffd004aa3e6dd"
+    },
+    {
+      "path": "cruce/ocaso-1/zb.json",
+      "bytes": 322,
+      "sha256": "d02cd0184d5c9f78cbfa28723c49d1ef19be794217df36040e188c3651118308"
+    },
+    {
+      "path": "cruce/tarde-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cruce/tarde-0/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cruce/tarde-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "ee66a549dc3bfb78c6e094999bb3dbdaaddb08be4de2072ff1f987d3ecce21a3"
+    },
+    {
+      "path": "cruce/tarde-0/pix.json",
+      "bytes": 370,
+      "sha256": "809caac1936f57fa29e1a722cc09db7e1a876f4195918c5db9ffe16e1b700825"
+    },
+    {
+      "path": "cruce/tarde-0/pix.png",
+      "bytes": 14098,
+      "sha256": "b1cd1cbb63839414603259c26e051c4fb0abd3ce0dd49dff43902a1ac07f7253"
+    },
+    {
+      "path": "cruce/tarde-0/state.json",
+      "bytes": 934,
+      "sha256": "5653803d49a09f469374eeac8052eff671b9adb527b93db6b7f5e1c27750276c"
+    },
+    {
+      "path": "cruce/tarde-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "b85e6c5401ba6d393b5073afb7aae279fc207310522cad6a77814f689da58862"
+    },
+    {
+      "path": "cruce/tarde-0/zb.json",
+      "bytes": 322,
+      "sha256": "0e0e80d657c1f624a37a4c54a0400c72572982d8ba481df10e36ba9ca89e2b89"
+    },
+    {
+      "path": "cruce/tarde-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "77256f27f312d6bc680b3b2efae053feded5dd71c4406d984a6bb1329c68bbb3"
+    },
+    {
+      "path": "cruce/tarde-1/kinds.json",
+      "bytes": 305,
+      "sha256": "2698a72134dff6f6cf8b464b0e2a44fa613a844bc116e19d4e4d7d7fbbe17c3a"
+    },
+    {
+      "path": "cruce/tarde-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "624798d535533a8d256b74372bb967c63eb320a3a7f56d66083ae4fc371c3781"
+    },
+    {
+      "path": "cruce/tarde-1/pix.json",
+      "bytes": 370,
+      "sha256": "679fd1d631eea2057b8bfb9fec6bdf8227d590689af4725eed98ae704123ccc0"
+    },
+    {
+      "path": "cruce/tarde-1/pix.png",
+      "bytes": 14977,
+      "sha256": "4f5c830725e9b825d3449114ac408ebd18b23f479bb0433c36778444de11a9a6"
+    },
+    {
+      "path": "cruce/tarde-1/state.json",
+      "bytes": 934,
+      "sha256": "a832fcb5c084964fdd1db42622b4c846c43a4b83fdbcfe9ac82d25310838fc0c"
+    },
+    {
+      "path": "cruce/tarde-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "f824ca2b6cad1cb71a0b19986ad95435d5937354ec7cd612e22ffd004aa3e6dd"
+    },
+    {
+      "path": "cruce/tarde-1/zb.json",
+      "bytes": 322,
+      "sha256": "d02cd0184d5c9f78cbfa28723c49d1ef19be794217df36040e188c3651118308"
     },
     {
       "path": "esquina/manana-0-open/kinds.bin",

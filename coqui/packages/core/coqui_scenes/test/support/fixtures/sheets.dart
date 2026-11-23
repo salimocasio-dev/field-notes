@@ -59439,4 +59439,2220 @@ const Map<String, String> sheetTexts = {
  }
 }
 ''',
+  'cruce': r'''{
+ "scene": "cruce",
+ "made": "node docs/proyecto/pixel/cruce-sheet-make.js, from cruce-set.html (window.CRUCE.E) and the design of El cruce (the orchestrator's p5-spec, section cruce). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": -24,
+  "originY": 10
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 96, OY = H / 2 + originY = 118. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the streets are turned 45 degrees: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the crossing's middle at (0, 0); the set's E.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 96 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 118 + 13 v - 22.5 z. Half a street's width is E.HW = 1.25; the picture holds u from -3.69 to 5.54 and, on the ground, v from -9.08 to 7.54",
+  "spot": "a spot is a world point of the feet (z 0: the ground; z .46: the seat's top; z .9 and .8: on a sprite; z .55: the low wall's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere. People walk on the roadway in this scene (there are no cars): no spot is kept off the street",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), 41 for a child; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a child or a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 7 a child: 33; t 11 a grown-up: 41) on (sx, sy); kneeling (papa_rodillas): the sitting drawing with its feet on the spot (stand-in); Canelo lying mkPerro('lie') (30 x 22): column 15 and its bottom edge; the bebé mkBebe (26 x 28): column 13 and its bottom edge (a stand-in: it is a sitting baby; mamá holds him up, z .9); a small thing: its bottom middle on the point",
+  "view": "a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = clamp(round(sx - 98), 0, 44), sx the middle of the columns of the spots the view must hold. Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "box": "a place of the frog (the six of story 59) is a poke box 24 x 20: its bottom middle on the spot, so [sx - 12, sy - 20, 24, 20]"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["mediodia", "tarde", "ocaso"],
+    "note": "57 mediodia, 58 tarde, 59 ocaso (the script says: midday, afternoon hot, late afternoon, a soft light: my reading, open point)"
+   },
+   "cerrada": {
+    "values": [0, 1],
+    "note": "the cones across the street to the right (story 58)"
+   }
+  },
+  "key": "hora + cerrada, e.g. \"mediodia-0\"",
+  "baked": ["?hora=mediodia&cerrada=0", "?hora=mediodia&cerrada=1", "?hora=tarde&cerrada=0", "?hora=tarde&cerrada=1", "?hora=ocaso&cerrada=0", "?hora=ocaso&cerrada=1"]
+ },
+ "things": {
+  "calle_izq": {
+   "set": true,
+   "uv": [-3.6923, -1.25, 0, -1.25, 1.25, 0],
+   "world": [-3.4947, 0, 0, 0, 3.4947, 0],
+   "quad": [
+    [-3.4947, 1.727, 0],
+    [-1.7678, 0, 0],
+    [0, 1.7678, 0],
+    [-1.727, 3.4947, 0]
+   ],
+   "box": [0, 101, 64, 34],
+   "what": "the street to the left, from the crossing's edge (u -1.25) to the picture's left edge, the whole road across (v -1.25 .. 1.25): the screen rectangle on the ground. world is the world-axis box round it (the street is turned 45 degrees: use uv or quad for its shape); a poke"
+  },
+  "calle_der": {
+   "set": true,
+   "uv": [1.25, -1.25, 0, 5.5385, 1.25, 0],
+   "world": [0, -4.8002, 0, 4.8002, 0, 0],
+   "quad": [
+    [0, -1.7678, 0],
+    [3.0324, -4.8002, 0],
+    [4.8002, -3.0324, 0],
+    [1.7678, 0, 0]
+   ],
+   "box": [128, 101, 112, 34],
+   "what": "the street to the right, from the crossing's edge (u 1.25) to the picture's right edge (cerrada = 1: the cones close it, touching it does nothing); a poke"
+  },
+  "calle_recta": {
+   "set": true,
+   "uv": [-1.25, -9.0769, 0, 1.25, -1.25, 0],
+   "world": [-7.3022, -7.3022, 0, 0, 0, 0],
+   "quad": [
+    [-7.3022, -5.5345, 0],
+    [-5.5345, -7.3022, 0],
+    [0, -1.7678, 0],
+    [-1.7678, 0, 0]
+   ],
+   "box": [63, 0, 66, 102],
+   "what": "the street straight on, from the crossing's edge (v -1.25) to the picture's top edge; a poke"
+  },
+  "delante_canelo": {
+   "set": false,
+   "at": "delante_canelo",
+   "world": [7.9196, 0.9899, 0],
+   "uv": [4.9, 6.3, 0],
+   "box": [211, 180, 24, 20],
+   "what": "the frog's place delante_canelo: a box 24 wide and 20 high, its bottom middle on the spot (the spec gives the size, not where the box sits: open point); a poke"
+  },
+  "detras_canelo": {
+   "set": false,
+   "at": "detras_canelo",
+   "world": [6.7317, -0.198, 0],
+   "uv": [4.9, 4.62, 0],
+   "box": [211, 158, 24, 20],
+   "what": "the frog's place detras_canelo: a box 24 wide and 20 high, its bottom middle on the spot (the spec gives the size, not where the box sits: open point); a poke"
+  },
+  "lado_abuela": {
+   "set": false,
+   "at": "lado_abuela",
+   "world": [5.5154, 0.8485, 0.46],
+   "uv": [3.3, 4.5, 0.46],
+   "box": [170, 146, 24, 20],
+   "what": "the frog's place lado_abuela: a box 24 wide and 20 high, its bottom middle on the spot (the spec gives the size, not where the box sits: open point); a poke"
+  },
+  "delante_abuela": {
+   "set": false,
+   "at": "delante_abuela",
+   "world": [5.6922, 1.591, 0],
+   "uv": [2.9, 5.15, 0],
+   "box": [159, 165, 24, 20],
+   "what": "the frog's place delante_abuela: a box 24 wide and 20 high, its bottom middle on the spot (the spec gives the size, not where the box sits: open point); a poke"
+  },
+  "pepe": "sprite",
+  "senor": "sprite",
+  "senora": "sprite",
+  "obrero": "sprite",
+  "piraguero": "sprite",
+  "abuela": "sprite",
+  "abuelo": "sprite",
+  "mama": "sprite",
+  "papa": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "bebe": "sprite",
+  "perro": "sprite",
+  "coqui": "sprite"
+ },
+ "spots": {
+  "abajo.abuela": {
+   "world": [2.8991, 3.6062, 0],
+   "uv": [-0.5, 4.6, 0],
+   "screen": [83, 178],
+   "depth": 3.9837,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "where abuela comes up from the bottom (57 opening)",
+   "sprite": "abuela",
+   "who": "adulto"
+  },
+  "abajo.coqui": {
+   "world": [3.4648, 2.4749, 0],
+   "uv": [0.7, 4.2, 0],
+   "screen": [114, 173],
+   "depth": 3.6373,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "where the frog comes up (57 opening)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "abajo.bici": {
+   "world": [3.182, 3.182, 0],
+   "uv": [0, 4.5, 0],
+   "screen": [96, 177],
+   "depth": 3.8971,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis on his bicycle, heading up the picture (58); the bicycle is a sprite, in front of him",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "coqui.bici": {
+   "world": [3.5355, 3.5355, 0.8],
+   "uv": [0, 5, 0.8],
+   "screen": [96, 165],
+   "depth": 4.7301,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog rides behind Luis on the rack of his bicycle (58), high enough to be seen over Luis's back: on a sprite, z .8",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "bicycle"
+  },
+  "centro": {
+   "world": [-0.1061, -0.1061, 0],
+   "uv": [0, -0.15, 0],
+   "screen": [96, 116],
+   "depth": -0.1299,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "somebody asked at the crossing, facing us (don Pepe on his bicycle, the señor, the señora)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "coqui.cruce": {
+   "world": [1.5556, 1.1314, 0],
+   "uv": [0.3, 1.9, 0],
+   "screen": [104, 143],
+   "depth": 1.6454,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog on the stripes where they come up, in the game of 57 (moment 2)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "salida_izq": {
+   "world": [-2.3335, 2.3335, 0],
+   "uv": [-3.3, 0, 0],
+   "screen": [10, 118],
+   "depth": 0,
+   "scale": 1,
+   "kind": "exit",
+   "view": "wide",
+   "what": "where the street to the left leaves the picture (only the point is held inside the window)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "salida_der": {
+   "world": [2.7577, -2.7577, 0],
+   "uv": [3.9, 0, 0],
+   "screen": [197, 118],
+   "depth": 0,
+   "scale": 1,
+   "kind": "exit",
+   "view": "wide",
+   "what": "where the street to the right leaves the picture (only the point is held inside the window)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "salida_recta": {
+   "world": [-3.677, -3.677, 0],
+   "uv": [0, -5.2, 0],
+   "screen": [96, 50],
+   "depth": -4.5033,
+   "scale": 1,
+   "kind": "exit",
+   "view": "wide",
+   "what": "where the street straight on leaves the picture (only the point is held inside the window)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "bajo_arbol": {
+   "world": [-3.0406, -2.0506, 0],
+   "uv": [-0.7, -3.6, 0],
+   "screen": [78, 71],
+   "depth": -3.1177,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "where Luis stops under the big tree (58)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "asiento.abuela": {
+   "world": [5.1265, 1.2374, 0.46],
+   "uv": [2.75, 4.5, 0.46],
+   "screen": [168, 166],
+   "depth": 4.1271,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela sitting on the seat (57): on its top, z .46; the sitting sprite hangs by her lap",
+   "sprite": "abuelaS",
+   "who": "adulto",
+   "on": "plaza"
+  },
+  "asiento.bolsa": {
+   "world": [5.9043, 0.4596, 0.46],
+   "uv": [3.85, 4.5, 0.46],
+   "screen": [196, 166],
+   "depth": 4.1271,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "her bag on the seat, the bottle standing on it (57)",
+   "on": "plaza"
+  },
+  "asiento.coqui": {
+   "world": [6.2225, 1.5556, 0],
+   "uv": [3.3, 5.5, 0],
+   "screen": [182, 190],
+   "depth": 4.7631,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog arriving at the seat (57)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "conos.obrero": {
+   "world": [2.7577, -1.9092, 0],
+   "uv": [3.3, 0.6, 0],
+   "screen": [182, 126],
+   "depth": 0.5196,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the obrero behind the barrier of cones (58)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "plaza_carrito": {
+   "world": [6.7882, 0.7071, 0],
+   "uv": [4.3, 5.3, 0],
+   "screen": [208, 187],
+   "depth": 4.5899,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "the piragüero with his cart in the square, in the plaza view (58 ending)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "luis.plaza": {
+   "world": [5.7276, 2.192, 0],
+   "uv": [2.5, 5.6, 0],
+   "screen": [161, 191],
+   "depth": 4.8497,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "Luis in the square (58 ending)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "coqui.plaza": {
+   "world": [7.3539, 2.1213, 0],
+   "uv": [3.7, 6.7, 0],
+   "screen": [192, 205],
+   "depth": 5.8024,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "the frog in the square (58 ending)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "fila_atras1": {
+   "world": [3.288, 0.8132, 0],
+   "uv": [1.75, 2.9, 0],
+   "screen": [142, 156],
+   "depth": 2.5115,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "abuelo, first of the back row, well behind the seat (59)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "fila_atras2": {
+   "world": [3.9952, 0.1061, 0],
+   "uv": [2.75, 2.9, 0],
+   "screen": [168, 156],
+   "depth": 2.5115,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "mamá, second of the back row (59)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "fila_atras3": {
+   "world": [4.773, -0.6718, 0],
+   "uv": [3.85, 2.9, 0],
+   "screen": [196, 156],
+   "depth": 2.5115,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "Carmen, third of the back row (59)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "bebe_alto": {
+   "world": [3.6416, 0.4596, 0.9],
+   "uv": [2.25, 2.9, 0.9],
+   "screen": [155, 135],
+   "depth": 2.9615,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "the bebé held up between abuelo and mamá (59): on a sprite, z .9; a child's width",
+   "sprite": "bebe",
+   "who": "nino",
+   "on": "mama"
+  },
+  "asiento1": {
+   "world": [5.1265, 1.2374, 0.46],
+   "uv": [2.75, 4.5, 0.46],
+   "screen": [168, 166],
+   "depth": 4.1271,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "abuela sitting on the seat (59)",
+   "sprite": "abuelaS",
+   "who": "adulto",
+   "on": "plaza"
+  },
+  "asiento2": {
+   "world": [5.9043, 0.4596, 0.46],
+   "uv": [3.85, 4.5, 0.46],
+   "screen": [196, 166],
+   "depth": 4.1271,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "Luis sitting on the seat (59)",
+   "sprite": "luisS",
+   "who": "nino",
+   "on": "plaza"
+  },
+  "hueco": {
+   "world": [5.5154, 0.8485, 0.46],
+   "uv": [3.3, 4.5, 0.46],
+   "screen": [182, 166],
+   "depth": 4.1271,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "the gap on the seat between abuela and Luis: also lado_abuela, and the frog's last place (59 ending)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "plaza"
+  },
+  "suelo_canelo": {
+   "world": [7.4388, 0.5091, 0],
+   "uv": [4.9, 5.62, 0],
+   "screen": [223, 191],
+   "depth": 4.8671,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "Canelo lying on the ground in front of the seat, at the right (59)",
+   "sprite": "perro",
+   "who": "perro"
+  },
+  "papa_camara": {
+   "world": [6.5054, 3.8184, 0],
+   "uv": [1.9, 7.3, 0],
+   "screen": [145, 213],
+   "depth": 6.322,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "papá with his back to us, taking the photo (59)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "muro": {
+   "world": [6.7882, 3.1113, 0.55],
+   "uv": [2.6, 7, 0.55],
+   "screen": [164, 197],
+   "depth": 6.3372,
+   "scale": 1,
+   "kind": "thing",
+   "view": "plaza",
+   "what": "the camera on the short low wall (59 ending): on its top, z .55",
+   "on": "plaza"
+  },
+  "papa_rodillas": {
+   "world": [4.773, 2.2981, 0],
+   "uv": [1.75, 5, 0],
+   "screen": [142, 183],
+   "depth": 4.3301,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "papá kneeling at the seat's left end (59 ending)",
+   "sprite": "papaRod",
+   "who": "adulto"
+  },
+  "tras_papa": {
+   "world": [5.9751, 3.288, 0],
+   "uv": [1.9, 6.55, 0],
+   "screen": [145, 203],
+   "depth": 5.6725,
+   "scale": 1,
+   "kind": "person",
+   "view": "plaza",
+   "what": "the frog behind papá, who stands at papa_camara with his back to us (59 start): nearer the family than papá, so papá's legs cover part of him: that is meant",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "delante_canelo": {
+   "world": [7.9196, 0.9899, 0],
+   "uv": [4.9, 6.3, 0],
+   "screen": [223, 200],
+   "depth": 5.456,
+   "scale": 1,
+   "kind": "place",
+   "view": "plaza",
+   "what": "the frog's place in front of Canelo (59)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "detras_canelo": {
+   "world": [6.7317, -0.198, 0],
+   "uv": [4.9, 4.62, 0],
+   "screen": [223, 178],
+   "depth": 4.001,
+   "scale": 1,
+   "kind": "place",
+   "view": "plaza",
+   "what": "the frog's place behind Canelo, between him and the seat (59)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "lado_abuela": {
+   "world": [5.5154, 0.8485, 0.46],
+   "uv": [3.3, 4.5, 0.46],
+   "screen": [182, 166],
+   "depth": 4.1271,
+   "scale": 1,
+   "kind": "place",
+   "view": "plaza",
+   "what": "the frog's place beside abuela, on the seat in the gap: the same point as hueco (59)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "plaza"
+  },
+  "delante_abuela": {
+   "world": [5.6922, 1.591, 0],
+   "uv": [2.9, 5.15, 0],
+   "screen": [171, 185],
+   "depth": 4.46,
+   "scale": 1,
+   "kind": "place",
+   "view": "plaza",
+   "what": "the frog's place on the ground in front of abuela (59)",
+   "sprite": "coqui",
+   "who": "coqui"
+  }
+ },
+ "groups": {
+  "familia": ["fila_atras1", "fila_atras2", "fila_atras3", "bebe_alto", "asiento1", "asiento2", "suelo_canelo", "papa_camara", "papa_rodillas"],
+  "atras": ["fila_atras1", "fila_atras2", "fila_atras3", "bebe_alto"]
+ },
+ "notes": [
+  "every number of a spot is the orchestrator's (pass 2 of the cruce spec), given in (u, v, z); lado_abuela and hueco are the same point (3.3, 4.5, .46)",
+  "the salida_* spots are exits: a person walks out of the picture along the street, so only their point is held inside the window (spots-in-view reports the sprite's cut as information)",
+  "the plaza view also shows the ending of 58: plaza_carrito, luis.plaza and coqui.plaza are plaza spots",
+  "the view's x0: the x0 that cuts the fewest of the spots the spec names, then the fewest of the view's spots, then the one nearest the middle of the spec's spots (views.*.what; check views-x0)"
+ ],
+ "views": {
+  "wide": {
+   "world": [-0.3264, -0.7615, 0],
+   "uv": [0.3077, -0.7692, 0],
+   "screen": [104, 108],
+   "zoom": 1,
+   "x0": 6,
+   "region": [6, 0, 196, 216],
+   "stories": [57, 58],
+   "holds": ["coqui.cruce", "centro", "abajo.abuela", "abajo.coqui", "abajo.bici", "asiento.abuela", "salida_izq", "salida_der", "salida_recta"],
+   "extent": [10, 197],
+   "what": "the wide view of stories 57 and 58: the 196 x 216 window over the 240 x 216 picture. The spec: wide holds coqui.cruce, centro, abajo.* and asiento.abuela with their sprites whole, and the points of the three exits. x0 6 holds them all, and every other spot of the view (the spots held span columns 10 to 197; the x0 nearest their middle among those that hold them). The window's point is the ground point under its middle column at the picture's middle row (wide and plaza are the same picture, two windows)"
+  },
+  "plaza": {
+   "world": [0.7071, -1.795, 0],
+   "uv": [1.7692, -0.7692, 0],
+   "screen": [142, 108],
+   "zoom": 1,
+   "x0": 44,
+   "region": [44, 0, 196, 216],
+   "stories": [58, 59],
+   "holds": ["plaza_carrito", "luis.plaza", "coqui.plaza", "fila_atras1", "fila_atras2", "fila_atras3", "bebe_alto", "asiento1", "asiento2", "hueco", "suelo_canelo", "papa_camara", "muro", "papa_rodillas", "tras_papa", "delante_canelo", "detras_canelo", "lado_abuela", "delante_abuela"],
+   "extent": [129, 238],
+   "what": "the plaza view of stories 58 and 59: the 196 x 216 window over the 240 x 216 picture. The spec: plaza holds every spot of story 59 and of the ending of 58, with sprites whole (58's ending is shown in this view). x0 44 holds them all, and every other spot of the view (the spots held span columns 129 to 238; the x0 nearest their middle among those that hold them). The window's point is the ground point under its middle column at the picture's middle row (wide and plaza are the same picture, two windows)"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the hedges, the trees' crowns and trunks, the seat and the walls hide whoever is behind them.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El mostrador's sheet: the upright plane through the feet",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn (the frog on the handlebar ties with Luis exactly: z .9 lifts him by the same depth as his place on the picture)"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "abuelo": 0.35,
+   "mama": 0.35,
+   "papa": 0.35,
+   "pepe": 0.35,
+   "senor": 0.35,
+   "senora": 0.35,
+   "obrero": 0.35,
+   "piraguero": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "bebe": 0.28,
+   "perro": 0.3
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El mostrador's (frog .45, grown-ups .35, children .28) and .3 for the dog (open point)",
+  "none": ["coqui.bici", "asiento.abuela", "asiento.bolsa", "bebe_alto", "asiento1", "asiento2", "hueco", "muro", "lado_abuela"],
+  "onSeat": "whoever sits on the seat, stands on its back or on the wall (z above 0) casts none: the seat is not ground (a shadow cast at the pavement under it would show in front of it)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 6 (window columns 6 to 201); the spec's spots (9) span columns 10 to 197 (188 of the window's 196); x0 that hold them all: 2 to 10; that hold every spot of the view too: 2 to 10; plaza: x0 44 (window columns 44 to 239); the spec's spots (19) span columns 129 to 238 (110 of the window's 196); x0 that hold them all: 43 to 44; that hold every spot of the view too: 43 to 44"
+    ],
+    "x0": {
+     "wide": 6,
+     "plaza": 44
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 33 spots (points and sprites) inside the 240 x 216 picture and their view's window (wide x0 6, plaza x0 44)",
+     "       info, not a check: salida_izq 10,118 (an exit, the sprite leaves the picture there): its adulto sprite is cut left 8 px in the wide window (the picture's own edge: left 2)",
+     "       info, not a check: salida_der 197,118 (an exit, the sprite leaves the picture there): its adulto sprite is cut right 7 px in the wide window",
+     "       info, not a check: salida_recta 96,50 (an exit, the sprite leaves the picture there): its adulto sprite is cut top 3 px in the wide window"
+    ],
+    "cut": []
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 7 spots above the ground (asiento.abuela, asiento.bolsa, asiento1, asiento2, hueco, muro, lado_abuela) are on a surface the set draws: its depth within .1 of the spot's, drawn by part plaza (the seat's top z 0.46, the wall's 0.55); coqui.bici (z .8) and bebe_alto (z .9) are on sprites",
+     "       asiento.abuela z 0.46: part plaza, depth 4.11 against the spot's 4.13 (0.02)",
+     "       asiento.bolsa z 0.46: part plaza, depth 4.11 against the spot's 4.13 (0.02)",
+     "       asiento1 z 0.46: part plaza, depth 4.11 against the spot's 4.13 (0.02)",
+     "       asiento2 z 0.46: part plaza, depth 4.11 against the spot's 4.13 (0.02)",
+     "       hueco z 0.46: part plaza, depth 4.11 against the spot's 4.13 (0.02)",
+     "       muro z 0.55: part plaza, depth 6.36 against the spot's 6.34 (0.02)",
+     "       lado_abuela z 0.46: part plaza, depth 4.11 against the spot's 4.13 (0.02)",
+     "       info, not a check: ground spots whose feet pixel the set draws nearer than the feet (the person stands behind it: the depth rule hides what it covers): fila_atras2 168,156 (plaza 1.64 nearer), fila_atras3 196,156 (plaza 1.64 nearer)"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the frog's four boxes (delante_canelo [211,180,24,20], detras_canelo [211,158,24,20], lado_abuela [170,146,24,20], delante_abuela [159,165,24,20]) are inside the plaza window [44, 240) and the picture; the three streets' boxes run from the crossing's edge to the picture's edge (calle_izq [0,101,64,34], calle_der [128,101,112,34], calle_recta [63,0,66,102])",
+     "       info, not a check: calle_izq in wide: the window cuts 6 px at the left of its 64 columns",
+     "       info, not a check: calle_der in wide: the window cuts 38 px at the right of its 112 columns",
+     "       info, not a check: calle_recta in wide: whole",
+     "       info, not a check: calle_izq in plaza: the window cuts 44 px at the left of its 64 columns",
+     "       info, not a check: calle_der in plaza: whole",
+     "       info, not a check: calle_recta in plaza: whole"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 59 pairs counted (64 more not counted) in the 7 moments of the preview (m1 (abajo.abuela, abajo.coqui, centro); m2 (asiento.abuela, coqui.cruce, centro); m3 (conos.obrero, centro, abajo.bici, coqui.bici); m4 (plaza_carrito, luis.plaza, coqui.plaza); m5 (fila_atras1, fila_atras2, fila_atras3, bebe_alto, asiento1, asiento2, suelo_canelo, papa_camara, detras_canelo); m6 (fila_atras1, fila_atras2, fila_atras3, bebe_alto, asiento1, asiento2, suelo_canelo, papa_camara, lado_abuela); m7 (fila_atras1, fila_atras2, fila_atras3, bebe_alto, asiento1, asiento2, suelo_canelo, papa_rodillas, hueco)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the counted pairs that do overlap sideways: m1 abajo.abuela ~ centro (13 across, 62 down), m1 abajo.coqui ~ centro (18 across, 57 down), m2 coqui.cruce ~ centro (8 across, 27 down), m3 centro ~ abajo.bici (0 across, 61 down), m3 centro ~ coqui.bici (0 across, 49 down), m3 abajo.bici ~ coqui.bici (0 across, 12 down), m4 plaza_carrito ~ coqui.plaza (16 across, 18 down), m5 fila_atras1 ~ bebe_alto (13 across, 21 down), m5 fila_atras2 ~ bebe_alto (13 across, 21 down), m5 asiento1 ~ papa_camara (23 across, 47 down), m5 asiento2 ~ detras_canelo (27 across, 12 down), m5 suelo_canelo ~ detras_canelo (0 across, 13 down), m6 fila_atras1 ~ bebe_alto (13 across, 21 down), m6 fila_atras2 ~ bebe_alto (13 across, 21 down), m6 asiento1 ~ papa_camara (23 across, 47 down), m7 fila_atras1 ~ bebe_alto (13 across, 21 down), m7 fila_atras2 ~ bebe_alto (13 across, 21 down)",
+     "       closest counted pair in each moment (px across / px down): m1 abajo.abuela ~ centro 13/62 (needs 24 across or 12 down); m2 coqui.cruce ~ centro 8/27 (needs 28 across or 12 down); m3 centro ~ coqui.bici 0/49 (needs 28 across or 12 down); m4 plaza_carrito ~ coqui.plaza 16/18 (needs 28 across or 12 down); m5 suelo_canelo ~ detras_canelo 0/13 (needs 30 across or 12 down); m6 fila_atras1 ~ bebe_alto 13/21 (needs 24 across or 12 down); m7 fila_atras1 ~ bebe_alto 13/21 (needs 24 across or 12 down)",
+     "       info, not counted: moment 5: fila_atras2 [168,156] (24 wide) ~ asiento1 [168,166] (24 wide): 0 px sideways (the boxes need 24), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 5: fila_atras3 [196,156] (24 wide) ~ asiento2 [196,166] (24 wide): 0 px sideways (the boxes need 24), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 6: fila_atras2 [168,156] (24 wide) ~ asiento1 [168,166] (24 wide): 0 px sideways (the boxes need 24), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 6: fila_atras2 [168,156] (24 wide) ~ lado_abuela [182,166] (32 wide): 14 px sideways (the boxes need 28), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 6: fila_atras3 [196,156] (24 wide) ~ asiento2 [196,166] (24 wide): 0 px sideways (the boxes need 24), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 6: fila_atras3 [196,156] (24 wide) ~ lado_abuela [182,166] (32 wide): 14 px sideways (the boxes need 28), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 6: asiento1 [168,166] (24 wide) ~ lado_abuela [182,166] (32 wide): 14 px sideways (the boxes need 28), 0 px up-down (needs 12) (the frog in hueco against abuela or Luis)",
+     "       info, not counted: moment 6: asiento2 [196,166] (24 wide) ~ lado_abuela [182,166] (32 wide): 14 px sideways (the boxes need 28), 0 px up-down (needs 12) (the frog in hueco against abuela or Luis)",
+     "       info, not counted: moment 7: fila_atras2 [168,156] (24 wide) ~ asiento1 [168,166] (24 wide): 0 px sideways (the boxes need 24), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 7: fila_atras2 [168,156] (24 wide) ~ hueco [182,166] (32 wide): 14 px sideways (the boxes need 28), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 7: fila_atras3 [196,156] (24 wide) ~ asiento2 [196,166] (24 wide): 0 px sideways (the boxes need 24), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 7: fila_atras3 [196,156] (24 wide) ~ hueco [182,166] (32 wide): 14 px sideways (the boxes need 28), 10 px up-down (needs 12) (back row against the seat or the ground in front)",
+     "       info, not counted: moment 7: asiento1 [168,166] (24 wide) ~ hueco [182,166] (32 wide): 14 px sideways (the boxes need 28), 0 px up-down (needs 12) (the frog in hueco against abuela or Luis)",
+     "       info, not counted: moment 7: asiento2 [196,166] (24 wide) ~ hueco [182,166] (32 wide): 14 px sideways (the boxes need 28), 0 px up-down (needs 12) (the frog in hueco against abuela or Luis)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "abajo.abuela",
+      "b": "abajo.coqui",
+      "across": 31,
+      "down": 5,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 1,
+      "a": "abajo.abuela",
+      "b": "centro",
+      "across": 13,
+      "down": 62,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 1,
+      "a": "abajo.coqui",
+      "b": "centro",
+      "across": 18,
+      "down": 57,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 2,
+      "a": "asiento.abuela",
+      "b": "coqui.cruce",
+      "across": 64,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 2,
+      "a": "asiento.abuela",
+      "b": "centro",
+      "across": 72,
+      "down": 50,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 2,
+      "a": "coqui.cruce",
+      "b": "centro",
+      "across": 8,
+      "down": 27,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 3,
+      "a": "conos.obrero",
+      "b": "centro",
+      "across": 86,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 3,
+      "a": "conos.obrero",
+      "b": "abajo.bici",
+      "across": 86,
+      "down": 51,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 3,
+      "a": "conos.obrero",
+      "b": "coqui.bici",
+      "across": 86,
+      "down": 39,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 3,
+      "a": "centro",
+      "b": "abajo.bici",
+      "across": 0,
+      "down": 61,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 3,
+      "a": "centro",
+      "b": "coqui.bici",
+      "across": 0,
+      "down": 49,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 3,
+      "a": "abajo.bici",
+      "b": "coqui.bici",
+      "across": 0,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 4,
+      "a": "plaza_carrito",
+      "b": "luis.plaza",
+      "across": 47,
+      "down": 4,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 4,
+      "a": "plaza_carrito",
+      "b": "coqui.plaza",
+      "across": 16,
+      "down": 18,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 4,
+      "a": "luis.plaza",
+      "b": "coqui.plaza",
+      "across": 31,
+      "down": 14,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras1",
+      "b": "fila_atras2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras1",
+      "b": "fila_atras3",
+      "across": 54,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras1",
+      "b": "bebe_alto",
+      "across": 13,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras1",
+      "b": "asiento1",
+      "across": 26,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras1",
+      "b": "asiento2",
+      "across": 54,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras1",
+      "b": "suelo_canelo",
+      "across": 81,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras1",
+      "b": "papa_camara",
+      "across": 3,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras1",
+      "b": "detras_canelo",
+      "across": 81,
+      "down": 22,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras2",
+      "b": "fila_atras3",
+      "across": 28,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras2",
+      "b": "bebe_alto",
+      "across": 13,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras2",
+      "b": "asiento1",
+      "across": 0,
+      "down": 10,
+      "needAcross": 24,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras2",
+      "b": "asiento2",
+      "across": 28,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras2",
+      "b": "suelo_canelo",
+      "across": 55,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras2",
+      "b": "papa_camara",
+      "across": 23,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras2",
+      "b": "detras_canelo",
+      "across": 55,
+      "down": 22,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras3",
+      "b": "bebe_alto",
+      "across": 41,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras3",
+      "b": "asiento1",
+      "across": 28,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras3",
+      "b": "asiento2",
+      "across": 0,
+      "down": 10,
+      "needAcross": 24,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras3",
+      "b": "suelo_canelo",
+      "across": 27,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras3",
+      "b": "papa_camara",
+      "across": 51,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "fila_atras3",
+      "b": "detras_canelo",
+      "across": 27,
+      "down": 22,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "bebe_alto",
+      "b": "asiento1",
+      "across": 13,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "bebe_alto",
+      "b": "asiento2",
+      "across": 41,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "bebe_alto",
+      "b": "suelo_canelo",
+      "across": 68,
+      "down": 56,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "bebe_alto",
+      "b": "papa_camara",
+      "across": 10,
+      "down": 78,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "bebe_alto",
+      "b": "detras_canelo",
+      "across": 68,
+      "down": 43,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 5,
+      "a": "asiento1",
+      "b": "asiento2",
+      "across": 28,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "asiento1",
+      "b": "suelo_canelo",
+      "across": 55,
+      "down": 25,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "asiento1",
+      "b": "papa_camara",
+      "across": 23,
+      "down": 47,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "asiento1",
+      "b": "detras_canelo",
+      "across": 55,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "asiento2",
+      "b": "suelo_canelo",
+      "across": 27,
+      "down": 25,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "asiento2",
+      "b": "papa_camara",
+      "across": 51,
+      "down": 47,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "asiento2",
+      "b": "detras_canelo",
+      "across": 27,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "suelo_canelo",
+      "b": "papa_camara",
+      "across": 78,
+      "down": 22,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "suelo_canelo",
+      "b": "detras_canelo",
+      "across": 0,
+      "down": 13,
+      "needAcross": 30,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 5,
+      "a": "papa_camara",
+      "b": "detras_canelo",
+      "across": 78,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras1",
+      "b": "fila_atras2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras1",
+      "b": "fila_atras3",
+      "across": 54,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras1",
+      "b": "bebe_alto",
+      "across": 13,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras1",
+      "b": "asiento1",
+      "across": 26,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras1",
+      "b": "asiento2",
+      "across": 54,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras1",
+      "b": "suelo_canelo",
+      "across": 81,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras1",
+      "b": "papa_camara",
+      "across": 3,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras1",
+      "b": "lado_abuela",
+      "across": 40,
+      "down": 10,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras2",
+      "b": "fila_atras3",
+      "across": 28,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras2",
+      "b": "bebe_alto",
+      "across": 13,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras2",
+      "b": "asiento1",
+      "across": 0,
+      "down": 10,
+      "needAcross": 24,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras2",
+      "b": "asiento2",
+      "across": 28,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras2",
+      "b": "suelo_canelo",
+      "across": 55,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras2",
+      "b": "papa_camara",
+      "across": 23,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras2",
+      "b": "lado_abuela",
+      "across": 14,
+      "down": 10,
+      "needAcross": 28,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras3",
+      "b": "bebe_alto",
+      "across": 41,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras3",
+      "b": "asiento1",
+      "across": 28,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras3",
+      "b": "asiento2",
+      "across": 0,
+      "down": 10,
+      "needAcross": 24,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras3",
+      "b": "suelo_canelo",
+      "across": 27,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras3",
+      "b": "papa_camara",
+      "across": 51,
+      "down": 57,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "fila_atras3",
+      "b": "lado_abuela",
+      "across": 14,
+      "down": 10,
+      "needAcross": 28,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "bebe_alto",
+      "b": "asiento1",
+      "across": 13,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "bebe_alto",
+      "b": "asiento2",
+      "across": 41,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "bebe_alto",
+      "b": "suelo_canelo",
+      "across": 68,
+      "down": 56,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "bebe_alto",
+      "b": "papa_camara",
+      "across": 10,
+      "down": 78,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "bebe_alto",
+      "b": "lado_abuela",
+      "across": 27,
+      "down": 31,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 6,
+      "a": "asiento1",
+      "b": "asiento2",
+      "across": 28,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "asiento1",
+      "b": "suelo_canelo",
+      "across": 55,
+      "down": 25,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "asiento1",
+      "b": "papa_camara",
+      "across": 23,
+      "down": 47,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "asiento1",
+      "b": "lado_abuela",
+      "across": 14,
+      "down": 0,
+      "needAcross": 28,
+      "ok": false,
+      "notCounted": "the frog in hueco against abuela or Luis"
+     },
+     {
+      "moment": 6,
+      "a": "asiento2",
+      "b": "suelo_canelo",
+      "across": 27,
+      "down": 25,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "asiento2",
+      "b": "papa_camara",
+      "across": 51,
+      "down": 47,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "asiento2",
+      "b": "lado_abuela",
+      "across": 14,
+      "down": 0,
+      "needAcross": 28,
+      "ok": false,
+      "notCounted": "the frog in hueco against abuela or Luis"
+     },
+     {
+      "moment": 6,
+      "a": "suelo_canelo",
+      "b": "papa_camara",
+      "across": 78,
+      "down": 22,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "suelo_canelo",
+      "b": "lado_abuela",
+      "across": 41,
+      "down": 25,
+      "needAcross": 30,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 6,
+      "a": "papa_camara",
+      "b": "lado_abuela",
+      "across": 37,
+      "down": 47,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras1",
+      "b": "fila_atras2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras1",
+      "b": "fila_atras3",
+      "across": 54,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras1",
+      "b": "bebe_alto",
+      "across": 13,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras1",
+      "b": "asiento1",
+      "across": 26,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras1",
+      "b": "asiento2",
+      "across": 54,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras1",
+      "b": "suelo_canelo",
+      "across": 81,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras1",
+      "b": "papa_rodillas",
+      "across": 0,
+      "down": 27,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras1",
+      "b": "hueco",
+      "across": 40,
+      "down": 10,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras2",
+      "b": "fila_atras3",
+      "across": 28,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras2",
+      "b": "bebe_alto",
+      "across": 13,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras2",
+      "b": "asiento1",
+      "across": 0,
+      "down": 10,
+      "needAcross": 24,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras2",
+      "b": "asiento2",
+      "across": 28,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras2",
+      "b": "suelo_canelo",
+      "across": 55,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras2",
+      "b": "papa_rodillas",
+      "across": 26,
+      "down": 27,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras2",
+      "b": "hueco",
+      "across": 14,
+      "down": 10,
+      "needAcross": 28,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras3",
+      "b": "bebe_alto",
+      "across": 41,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras3",
+      "b": "asiento1",
+      "across": 28,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras3",
+      "b": "asiento2",
+      "across": 0,
+      "down": 10,
+      "needAcross": 24,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras3",
+      "b": "suelo_canelo",
+      "across": 27,
+      "down": 35,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras3",
+      "b": "papa_rodillas",
+      "across": 54,
+      "down": 27,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "fila_atras3",
+      "b": "hueco",
+      "across": 14,
+      "down": 10,
+      "needAcross": 28,
+      "ok": false,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "bebe_alto",
+      "b": "asiento1",
+      "across": 13,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "bebe_alto",
+      "b": "asiento2",
+      "across": 41,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "bebe_alto",
+      "b": "suelo_canelo",
+      "across": 68,
+      "down": 56,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "bebe_alto",
+      "b": "papa_rodillas",
+      "across": 13,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "bebe_alto",
+      "b": "hueco",
+      "across": 27,
+      "down": 31,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": "back row against the seat or the ground in front"
+     },
+     {
+      "moment": 7,
+      "a": "asiento1",
+      "b": "asiento2",
+      "across": 28,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "asiento1",
+      "b": "suelo_canelo",
+      "across": 55,
+      "down": 25,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "asiento1",
+      "b": "papa_rodillas",
+      "across": 26,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "asiento1",
+      "b": "hueco",
+      "across": 14,
+      "down": 0,
+      "needAcross": 28,
+      "ok": false,
+      "notCounted": "the frog in hueco against abuela or Luis"
+     },
+     {
+      "moment": 7,
+      "a": "asiento2",
+      "b": "suelo_canelo",
+      "across": 27,
+      "down": 25,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "asiento2",
+      "b": "papa_rodillas",
+      "across": 54,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "asiento2",
+      "b": "hueco",
+      "across": 14,
+      "down": 0,
+      "needAcross": 28,
+      "ok": false,
+      "notCounted": "the frog in hueco against abuela or Luis"
+     },
+     {
+      "moment": 7,
+      "a": "suelo_canelo",
+      "b": "papa_rodillas",
+      "across": 81,
+      "down": 8,
+      "needAcross": 26,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "suelo_canelo",
+      "b": "hueco",
+      "across": 41,
+      "down": 25,
+      "needAcross": 30,
+      "ok": true,
+      "notCounted": null
+     },
+     {
+      "moment": 7,
+      "a": "papa_rodillas",
+      "b": "hueco",
+      "across": 40,
+      "down": 17,
+      "needAcross": 28,
+      "ok": true,
+      "notCounted": null
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 7 moments (a nearer dog aside): m1 abajo.coqui 114,173: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m2 coqui.cruce 104,143: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m3 coqui.bici 96,165: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m4 coqui.plaza 192,205: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m5 detras_canelo 223,178: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 17 under the dog; his 32 x 25 box: 34 px with a nearer sprite on them; m6 lado_abuela 182,166: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m7 hueco 182,166: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them",
+     "       info, not a check: m1 abajo.coqui 114,173: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m2 coqui.cruce 104,143: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m3 coqui.bici 96,165: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m4 coqui.plaza 192,205: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m5 detras_canelo 223,178: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 17 under the dog; his 32 x 25 box: 34 px with a nearer sprite on them; m6 lado_abuela 182,166: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them; m7 hueco 182,166: 536 px, 0 hidden by the set, 0 under a nearer person, 0 outside the picture, 0 under the dog; his 32 x 25 box: 0 px with a nearer sprite on them"
+    ]
+   },
+   {
+    "name": "frog-places",
+    "ok": true,
+    "lines": [
+     "frog-places: the frog is seen whole at delante_canelo, lado_abuela and delante_abuela and 60% or more of him shows at detras_canelo, with the family in place (moment 5's, papá at papa_camara): delante_canelo 223,200: 536 of 536 px show (100%, needs 100%): 0 of 536 px not seen (0 hidden by the set, 0 under sprites, 0 outside the picture); box inside the window; detras_canelo 223,178: 519 of 536 px show (97%, needs 60%): 17 of 536 px not seen (0 hidden by the set, 17 under suelo_canelo, 0 outside the picture); box inside the window; lado_abuela 182,166: 536 of 536 px show (100%, needs 100%): 0 of 536 px not seen (0 hidden by the set, 0 under sprites, 0 outside the picture); box inside the window; delante_abuela 171,185: 536 of 536 px show (100%, needs 100%): 0 of 536 px not seen (0 hidden by the set, 0 under sprites, 0 outside the picture); box inside the window",
+     "       info, not a check: each place: delante_canelo 223,200: 536 of 536 px show (100%, needs 100%): 0 of 536 px not seen (0 hidden by the set, 0 under sprites, 0 outside the picture); box inside the window; detras_canelo 223,178: 519 of 536 px show (97%, needs 60%): 17 of 536 px not seen (0 hidden by the set, 17 under suelo_canelo, 0 outside the picture); box inside the window; lado_abuela 182,166: 536 of 536 px show (100%, needs 100%): 0 of 536 px not seen (0 hidden by the set, 0 under sprites, 0 outside the picture); box inside the window; delante_abuela 171,185: 536 of 536 px show (100%, needs 100%): 0 of 536 px not seen (0 hidden by the set, 0 under sprites, 0 outside the picture); box inside the window",
+     "       info, not a check: the frog at tras_papa 145,203 behind papá at papa_camara 145,213 (the family of moment 5 in place): 136 of 536 px show (25%): 57 hidden by the set, 343 under papa_camara, 0 outside the picture; the pixels that show lie in rows 181 to 202 (his rows 179 to 202)"
+    ],
+    "traspapa": {
+     "px": 536,
+     "shown": 136,
+     "underSprites": 343,
+     "by": {
+      "papa_camara": 343
+     }
+    },
+    "places": [
+     {
+      "place": "delante_canelo",
+      "px": 536,
+      "shown": 536,
+      "hiddenBySet": 0,
+      "underSprites": 0,
+      "outsidePicture": 0,
+      "by": {},
+      "needShown": 1,
+      "boxInsideWindow": true
+     },
+     {
+      "place": "detras_canelo",
+      "px": 536,
+      "shown": 519,
+      "hiddenBySet": 0,
+      "underSprites": 17,
+      "outsidePicture": 0,
+      "by": {
+       "suelo_canelo": 17
+      },
+      "needShown": 0.6,
+      "boxInsideWindow": true
+     },
+     {
+      "place": "lado_abuela",
+      "px": 536,
+      "shown": 536,
+      "hiddenBySet": 0,
+      "underSprites": 0,
+      "outsidePicture": 0,
+      "by": {},
+      "needShown": 1,
+      "boxInsideWindow": true
+     },
+     {
+      "place": "delante_abuela",
+      "px": 536,
+      "shown": 536,
+      "hiddenBySet": 0,
+      "underSprites": 0,
+      "outsidePicture": 0,
+      "by": {},
+      "needShown": 1,
+      "boxInsideWindow": true
+     }
+    ]
+   },
+   {
+    "name": "family-heads",
+    "ok": true,
+    "lines": [
+     "family-heads: the head of each of the back row shows 100 px or more in moments 5, 6 and 7: m5 fila_atras1 142,156 (back row): head rows 105 to 118: 192 of 192 px show (0 hidden by the set, 0 covered); m5 fila_atras2 168,156 (back row): head rows 102 to 115: 214 of 214 px show (0 hidden by the set, 0 covered); m5 fila_atras3 196,156 (back row): head rows 115 to 128: 244 of 244 px show (0 hidden by the set, 0 covered); m6 fila_atras1 142,156 (back row): head rows 105 to 118: 192 of 192 px show (0 hidden by the set, 0 covered); m6 fila_atras2 168,156 (back row): head rows 102 to 115: 214 of 214 px show (0 hidden by the set, 0 covered); m6 fila_atras3 196,156 (back row): head rows 115 to 128: 244 of 244 px show (0 hidden by the set, 0 covered); m7 fila_atras1 142,156 (back row): head rows 105 to 118: 192 of 192 px show (0 hidden by the set, 0 covered); m7 fila_atras2 168,156 (back row): head rows 102 to 115: 214 of 214 px show (0 hidden by the set, 0 covered); m7 fila_atras3 196,156 (back row): head rows 115 to 128: 244 of 244 px show (0 hidden by the set, 0 covered)",
+     "       m5 fila_atras1 142,156 (back row): head rows 105 to 118: 192 of 192 px show (0 hidden by the set, 0 covered)",
+     "       m5 fila_atras2 168,156 (back row): head rows 102 to 115: 214 of 214 px show (0 hidden by the set, 0 covered)",
+     "       m5 fila_atras3 196,156 (back row): head rows 115 to 128: 244 of 244 px show (0 hidden by the set, 0 covered)",
+     "       m5 bebe_alto 155,135: head rows 107 to 120: 123 of 168 px show (0 hidden by the set, 45 covered by fila_atras1 15, fila_atras2 30)",
+     "       m5 asiento1 168,166: head rows 130 to 143: 206 of 206 px show (0 hidden by the set, 0 covered)",
+     "       m5 asiento2 196,166: head rows 135 to 148: 182 of 182 px show (0 hidden by the set, 0 covered)",
+     "       m5 papa_camara 145,213: head rows 160 to 173: 218 of 218 px show (0 hidden by the set, 0 covered)",
+     "       m6 fila_atras1 142,156 (back row): head rows 105 to 118: 192 of 192 px show (0 hidden by the set, 0 covered)",
+     "       m6 fila_atras2 168,156 (back row): head rows 102 to 115: 214 of 214 px show (0 hidden by the set, 0 covered)",
+     "       m6 fila_atras3 196,156 (back row): head rows 115 to 128: 244 of 244 px show (0 hidden by the set, 0 covered)",
+     "       m6 bebe_alto 155,135: head rows 107 to 120: 123 of 168 px show (0 hidden by the set, 45 covered by fila_atras1 15, fila_atras2 30)",
+     "       m6 asiento1 168,166: head rows 130 to 143: 206 of 206 px show (0 hidden by the set, 0 covered)",
+     "       m6 asiento2 196,166: head rows 135 to 148: 182 of 182 px show (0 hidden by the set, 0 covered)",
+     "       m6 papa_camara 145,213: head rows 160 to 173: 218 of 218 px show (0 hidden by the set, 0 covered)",
+     "       m7 fila_atras1 142,156 (back row): head rows 105 to 118: 192 of 192 px show (0 hidden by the set, 0 covered)",
+     "       m7 fila_atras2 168,156 (back row): head rows 102 to 115: 214 of 214 px show (0 hidden by the set, 0 covered)",
+     "       m7 fila_atras3 196,156 (back row): head rows 115 to 128: 244 of 244 px show (0 hidden by the set, 0 covered)",
+     "       m7 bebe_alto 155,135: head rows 107 to 120: 123 of 168 px show (0 hidden by the set, 45 covered by fila_atras1 15, fila_atras2 30)",
+     "       m7 asiento1 168,166: head rows 130 to 143: 206 of 206 px show (0 hidden by the set, 0 covered)",
+     "       m7 asiento2 196,166: head rows 135 to 148: 182 of 182 px show (0 hidden by the set, 0 covered)",
+     "       m7 papa_rodillas 142,183: head rows 137 to 150: 182 of 182 px show (0 hidden by the set, 0 covered)"
+    ],
+    "heads": [
+     {
+      "moment": 5,
+      "at": "fila_atras1",
+      "backRow": true,
+      "headPx": 192,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 192
+     },
+     {
+      "moment": 5,
+      "at": "fila_atras2",
+      "backRow": true,
+      "headPx": 214,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 214
+     },
+     {
+      "moment": 5,
+      "at": "fila_atras3",
+      "backRow": true,
+      "headPx": 244,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 244
+     },
+     {
+      "moment": 5,
+      "at": "bebe_alto",
+      "backRow": false,
+      "headPx": 168,
+      "hiddenBySet": 0,
+      "coveredBySprites": 45,
+      "shows": 123
+     },
+     {
+      "moment": 5,
+      "at": "asiento1",
+      "backRow": false,
+      "headPx": 206,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 206
+     },
+     {
+      "moment": 5,
+      "at": "asiento2",
+      "backRow": false,
+      "headPx": 182,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 182
+     },
+     {
+      "moment": 5,
+      "at": "papa_camara",
+      "backRow": false,
+      "headPx": 218,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 218
+     },
+     {
+      "moment": 6,
+      "at": "fila_atras1",
+      "backRow": true,
+      "headPx": 192,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 192
+     },
+     {
+      "moment": 6,
+      "at": "fila_atras2",
+      "backRow": true,
+      "headPx": 214,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 214
+     },
+     {
+      "moment": 6,
+      "at": "fila_atras3",
+      "backRow": true,
+      "headPx": 244,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 244
+     },
+     {
+      "moment": 6,
+      "at": "bebe_alto",
+      "backRow": false,
+      "headPx": 168,
+      "hiddenBySet": 0,
+      "coveredBySprites": 45,
+      "shows": 123
+     },
+     {
+      "moment": 6,
+      "at": "asiento1",
+      "backRow": false,
+      "headPx": 206,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 206
+     },
+     {
+      "moment": 6,
+      "at": "asiento2",
+      "backRow": false,
+      "headPx": 182,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 182
+     },
+     {
+      "moment": 6,
+      "at": "papa_camara",
+      "backRow": false,
+      "headPx": 218,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 218
+     },
+     {
+      "moment": 7,
+      "at": "fila_atras1",
+      "backRow": true,
+      "headPx": 192,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 192
+     },
+     {
+      "moment": 7,
+      "at": "fila_atras2",
+      "backRow": true,
+      "headPx": 214,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 214
+     },
+     {
+      "moment": 7,
+      "at": "fila_atras3",
+      "backRow": true,
+      "headPx": 244,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 244
+     },
+     {
+      "moment": 7,
+      "at": "bebe_alto",
+      "backRow": false,
+      "headPx": 168,
+      "hiddenBySet": 0,
+      "coveredBySprites": 45,
+      "shows": 123
+     },
+     {
+      "moment": 7,
+      "at": "asiento1",
+      "backRow": false,
+      "headPx": 206,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 206
+     },
+     {
+      "moment": 7,
+      "at": "asiento2",
+      "backRow": false,
+      "headPx": 182,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 182
+     },
+     {
+      "moment": 7,
+      "at": "papa_rodillas",
+      "backRow": false,
+      "headPx": 182,
+      "hiddenBySet": 0,
+      "coveredBySprites": 0,
+      "shows": 182
+     }
+    ]
+   },
+   {
+    "name": "centro-stripes",
+    "ok": true,
+    "lines": [
+     "centro-stripes: a person at centro covers none of the 229 pixels of the stripes' lower half (v 1.7 to 2.15: rows 140 to 145, columns 63 to 123) in moments 1 to 3: m1 centro pepe (sprite feet at row 116, lowest shown row 115): 0 px on the stripes' lower half (the frog at abajo.coqui 114,173 has its top at row 149, 33 rows below him; 0 px of the two overlap); m1 centro bici (sprite feet at row 116, lowest shown row 115): 0 px on the stripes' lower half (the frog at abajo.coqui 114,173 has its top at row 149, 33 rows below him; 0 px of the two overlap); m2 centro senor (sprite feet at row 116, lowest shown row 115): 0 px on the stripes' lower half (the frog at coqui.cruce 104,143 has its top at row 119, 3 rows below him; 0 px of the two overlap); m3 centro senora (sprite feet at row 116, lowest shown row 115): 0 px on the stripes' lower half (the frog at coqui.bici 96,165 has its top at row 141, 25 rows below him; 0 px of the two overlap)"
+    ]
+   },
+   {
+    "name": "salida-whole",
+    "ok": true,
+    "lines": [
+     "salida-whole: somebody leaving by each street is seen whole until the picture's edge: the street to the left (cerrada 0): 89 steps from (0, 0) to where nothing of him is inside the picture, at -4.15,0,0; no pixel hidden at any step; the street to the left (cerrada 1): 89 steps from (0, 0) to where nothing of him is inside the picture, at -4.15,0,0; no pixel hidden at any step; the street to the right (cerrada 0): 125 steps from (0, 0) to where nothing of him is inside the picture, at 6,0,0; no pixel hidden at any step; the street straight on (cerrada 0): 189 steps from (0, 0) to where nothing of him is inside the picture, at 0,-9.05,0; no pixel hidden at any step; the street straight on (cerrada 1): 189 steps from (0, 0) to where nothing of him is inside the picture, at 0,-9.05,0; no pixel hidden at any step (with cerrada = 1 the right street is shut by the cones: nobody leaves by it)"
+    ]
+   },
+   {
+    "name": "info-street",
+    "ok": true,
+    "lines": [
+     "info-street: not a check. \"Nobody stands on the street unless this spec puts him there\": in this scene people walk on the roadway (the spec says so), so no spot is kept off it. \"A person at a door\": there is no door."
+    ]
+   }
+  ]
+ }
+}
+''',
 };
