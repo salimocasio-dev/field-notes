@@ -1,0 +1,664 @@
+{
+ "id": "las-tiendas",
+ "title": "Las tiendas",
+ "place": "La calle",
+ "scene": "tiendas",
+ "next": "el-edificio-alto",
+ "goal": "Take abuela through her three errands and keep her coins, so the frog and the bebé can ride the little horse in front of the tienda.",
+ "stake": {
+  "thing": "monedas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "tienda",
+  "banco",
+  "farmacia",
+  "correo"
+ ],
+ "formas_foco": {
+  "tienda": [
+   "tiendas"
+  ]
+ },
+ "back_again": [
+  "calle",
+  "abuela",
+  "abuelo",
+  "bebé",
+  "mamá",
+  "necesito",
+  "chavos",
+  "me gusta",
+  "tengo",
+  "cosa",
+  "dos",
+  "tres",
+  "ahora",
+  "después",
+  "vamos",
+  "aquí",
+  "gracias",
+  "casa",
+  "listo"
+ ],
+ "also_heard": [
+  "caballito",
+  "carta"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "bebe": "n_bebe",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "c54_calle": {
+   "who": "narr",
+   "text": "Abuela, el bebé y Coquí están en la calle de las tiendas."
+  },
+  "c54_mira": {
+   "who": "narr",
+   "text": "Mira. Aquí, en la tienda, hay un caballito."
+  },
+  "c54_ab_gusta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Te gusta el caballito, Coquí?"
+  },
+  "c43_cq_me_gusta": {
+   "who": "tu",
+   "text": "¡Sí, me gusta!",
+   "tu_turno": [
+    {
+     "palabra": "me gusta",
+     "formas": [
+      "me gusta"
+     ]
+    }
+   ]
+  },
+  "c54_ab_despues": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Después, Coquí. Ahora tengo tres cosas que hacer."
+  },
+  "c54_ab_carta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Tengo una carta. ¿Dónde está el correo?"
+  },
+  "c54_donde_correo": {
+   "who": "narr",
+   "text": "¿Dónde está el correo?"
+  },
+  "c54_ab_aqui_correo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Aquí está el correo!"
+  },
+  "c54_ab_chavos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora necesito chavos. Vamos al banco."
+  },
+  "c54_donde_banco": {
+   "who": "narr",
+   "text": "¿Dónde está el banco?"
+  },
+  "c54_ab_farmacia": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y abuelo necesita algo de la farmacia."
+  },
+  "c54_donde_farmacia": {
+   "who": "narr",
+   "text": "¿Dónde está la farmacia?"
+  },
+  "c54_ab_listo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El correo, el banco, la farmacia... ¡Listo!"
+  },
+  "c54_ab_ay": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay! Mamá necesita dos cosas más."
+  },
+  "c54_ab_ahora_si": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora sí. ¡Vamos al caballito de la tienda, Coquí!"
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias"
+     ]
+    }
+   ]
+  },
+  "c54_ab_casa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Qué día, Coquí! Vamos a casa."
+  },
+  "c54_a_banco": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora vamos al banco."
+  },
+  "c54_b_banco": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ahora, al banco."
+  },
+  "c54_no_banco": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Este no es el banco."
+  },
+  "c54_a_farmacia": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora vamos a la farmacia."
+  },
+  "c54_b_farmacia": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ahora, a la farmacia."
+  },
+  "c54_no_farmacia": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Esta no es la farmacia."
+  },
+  "c54_a_correo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora vamos al correo."
+  },
+  "c54_b_correo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ahora, al correo."
+  },
+  "c54_no_correo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Este no es el correo."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "fila": "tiendas",
+    "hora": "manana"
+   }
+  },
+  {
+   "act": "lista"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c54_calle",
+  {
+   "set": {
+    "twinkle": "tienda"
+   }
+  },
+  {
+   "act": "gesto",
+   "quien": "bebe",
+   "que": "senala",
+   "a": "caballito"
+  },
+  "c54_mira",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "c54_ab_gusta",
+  "c43_cq_me_gusta",
+  {
+   "act": "monedas",
+   "n": 3
+  },
+  "c54_ab_despues",
+  {
+   "dots": 2
+  },
+  {
+   "act": "lista",
+   "k": "letter",
+   "hecho": 0
+  },
+  {
+   "ask": "correo",
+   "lead": [
+    "c54_ab_carta"
+   ],
+   "line": "c54_donde_correo",
+   "then": [
+    "c54_ab_aqui_correo",
+    {
+     "act": "lista",
+     "k": "letter",
+     "hecho": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "va54",
+     "a": "correo",
+     "ok": 1,
+     "trae": "letter"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "lista",
+   "k": "purse",
+   "hecho": 0
+  },
+  {
+   "ask": "banco",
+   "lead": [
+    "c54_ab_chavos"
+   ],
+   "line": "c54_donde_banco",
+   "then": [
+    {
+     "act": "lista",
+     "k": "purse",
+     "hecho": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "va54",
+     "a": "banco",
+     "ok": 1,
+     "trae": "purse"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "lista",
+   "k": "bottle",
+   "hecho": 0
+  },
+  {
+   "ask": "farmacia",
+   "lead": [
+    "c54_ab_farmacia"
+   ],
+   "line": "c54_donde_farmacia",
+   "then": [
+    {
+     "act": "lista",
+     "k": "bottle",
+     "hecho": 1
+    },
+    {
+     "act": "cuenta54"
+    },
+    "c54_ab_listo"
+   ],
+   "after": [
+    {
+     "act": "va54",
+     "a": "farmacia",
+     "ok": 1,
+     "trae": "bag"
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "telefono"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  "c54_ab_ay",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "caballito"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "coqui"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "banco",
+    "farmacia",
+    "correo"
+   ]
+  },
+  {
+   "calc": "ta",
+   "cond": "pa=farmacia",
+   "then": "plasters",
+   "else": "parcel"
+  },
+  {
+   "calc": "ta",
+   "cond": "pa=banco",
+   "then": "envelope",
+   "else": "$ta"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "tienda",
+    "banco",
+    "farmacia",
+    "correo"
+   ],
+   "pick": "$pa",
+   "tests": "$pa",
+   "lock": true,
+   "lead": [],
+   "line": "c54_a_$pa",
+   "right": [
+    {
+     "act": "va54",
+     "a": "$pa",
+     "ok": 1,
+     "trae": "$ta"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "toma",
+     "cond": "x=farmacia",
+     "then": "lollipop",
+     "else": "pencil"
+    },
+    {
+     "calc": "toma",
+     "cond": "x=tienda",
+     "then": "top",
+     "else": "$toma"
+    },
+    {
+     "act": "va54",
+     "a": "$x",
+     "ok": 0,
+     "trae": "$toma"
+    },
+    {
+     "act": "gesto",
+     "quien": "abuela",
+     "que": "no"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c54_no_$pa"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "u",
+    "v"
+   ]
+  },
+  {
+   "if": "pa=banco",
+   "then": [
+    {
+     "calc": "pb",
+     "cond": "eb=u",
+     "then": "farmacia",
+     "else": "correo"
+    }
+   ],
+   "else": [
+    {
+     "if": "pa=farmacia",
+     "then": [
+      {
+       "calc": "pb",
+       "cond": "eb=u",
+       "then": "banco",
+       "else": "correo"
+      }
+     ],
+     "else": [
+      {
+       "calc": "pb",
+       "cond": "eb=u",
+       "then": "banco",
+       "else": "farmacia"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "tb",
+   "cond": "pb=farmacia",
+   "then": "plasters",
+   "else": "parcel"
+  },
+  {
+   "calc": "tb",
+   "cond": "pb=banco",
+   "then": "envelope",
+   "else": "$tb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "tienda",
+    "banco",
+    "farmacia",
+    "correo"
+   ],
+   "pick": "$pb",
+   "tests": "$pb",
+   "lock": true,
+   "lead": [],
+   "line": "c54_b_$pb",
+   "right": [
+    {
+     "act": "va54",
+     "a": "$pb",
+     "ok": 1,
+     "trae": "$tb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "toma",
+     "cond": "x=farmacia",
+     "then": "lollipop",
+     "else": "pencil"
+    },
+    {
+     "calc": "toma",
+     "cond": "x=tienda",
+     "then": "top",
+     "else": "$toma"
+    },
+    {
+     "act": "va54",
+     "a": "$x",
+     "ok": 0,
+     "trae": "$toma"
+    },
+    {
+     "act": "gesto",
+     "quien": "abuela",
+     "que": "no"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c54_no_$pb"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "ir",
+   "a": "caballito"
+  },
+  {
+   "calc": "nn",
+   "cond": "lost=0",
+   "then": "3",
+   "else": "1"
+  },
+  {
+   "calc": "nn",
+   "cond": "lost=1",
+   "then": "2",
+   "else": "$nn"
+  },
+  {
+   "act": "monedas",
+   "n": "$nn"
+  },
+  "c54_ab_ahora_si",
+  "cq_gracias_abuela",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "caballito54",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "caballito54",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "caballito54",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c54_ab_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c54_calle",
+  "c54_mira",
+  "c54_ab_gusta",
+  "c43_cq_me_gusta",
+  "c54_ab_despues",
+  "c54_ab_carta",
+  "c54_donde_correo",
+  "c54_ab_aqui_correo",
+  "c54_ab_chavos",
+  "c54_donde_banco",
+  "c54_ab_farmacia",
+  "c54_donde_farmacia",
+  "c54_ab_listo",
+  "c54_ab_ay",
+  "c54_a_farmacia",
+  "c54_b_correo",
+  "c54_ab_ahora_si",
+  "cq_gracias_abuela",
+  "c54_ab_casa"
+ ]
+}

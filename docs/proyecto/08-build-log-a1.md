@@ -2,6 +2,12 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 23, part 30: La calle plays (build 14)
+
+- La esquina, La parada, Las tiendas and El cruce are on main and their twelve stories play in build 14 as preview content. Hours per scene: esquina 2.9, parada about 2.6, tiendas about 3.1, cruce about 1.5 (builder time plus the orchestrator's finishing). Page 13 lists 38 acts left OPEN for the content lane.
+- The orchestrator finished the two stopped scenes itself with a small rule for merging the shared lists (`docs/proyecto/lane/merge_lists.py`).
+- A fault of the orchestrator's, fixed: the cutover's redirect added a line to `historia/app.html`, which shifted the line numbers one test cites; it now sits on an existing line.
+
 ## Nov 23, part 29: cutover
 
 - Order 40: every recorded run replays clean on main. Order 41 (the books' pictures) was dropped by Salim. Order 42: the old addresses open the new app; the old app is under `legacy/`; nothing was moved or deleted (page 13 says why).

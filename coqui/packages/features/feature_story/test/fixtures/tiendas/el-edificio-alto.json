@@ -1,0 +1,633 @@
+{
+ "id": "el-edificio-alto",
+ "title": "El edificio alto",
+ "place": "La calle",
+ "scene": "tiendas",
+ "next": "abierto-y-cerrado",
+ "goal": "Carry the three hot lunch tins to the right buildings without letting them cool, so Luis and the frog can eat theirs hot.",
+ "stake": {
+  "thing": "vapor",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "edificio",
+  "alto",
+  "nuevo",
+  "escuela",
+  "hospital"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "calle",
+  "bicicleta",
+  "va",
+  "mamá",
+  "papá",
+  "comida",
+  "caliente",
+  "frío",
+  "arroz",
+  "rico",
+  "un poco",
+  "tengo hambre",
+  "gracias",
+  "también",
+  "no",
+  "para",
+  "este",
+  "ahora"
+ ],
+ "also_heard": [
+  "trabaja"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "c55_van": {
+   "who": "narr",
+   "text": "Luis y Coquí van por la calle en bicicleta."
+  },
+  "c55_comida": {
+   "who": "narr",
+   "text": "Esta es la comida de abuela. Es para mamá y papá. Está caliente."
+  },
+  "c55_mira_alto": {
+   "who": "narr",
+   "text": "Mira este edificio. Es un edificio alto."
+  },
+  "c55_donde_alto": {
+   "who": "narr",
+   "text": "¿Dónde está el edificio alto?"
+  },
+  "c55_luis_alto": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Qué alto!"
+  },
+  "c55_es_nuevo": {
+   "who": "narr",
+   "text": "Y este edificio es nuevo."
+  },
+  "c55_donde_nuevo": {
+   "who": "narr",
+   "text": "¿Dónde está el edificio nuevo?"
+  },
+  "c55_luis_nuevo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Este es nuevo!"
+  },
+  "c55_senor_hola": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Hola! ¿La comida es para ti, Coquí?"
+  },
+  "c55_cq_mama": {
+   "who": "tu",
+   "text": "¡No! Para mamá y papá.",
+   "tu_turno": [
+    {
+     "palabra": "mamá",
+     "formas": [
+      "mamá",
+      "mama"
+     ]
+    }
+   ]
+  },
+  "c55_luis_trabaja": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mamá trabaja en el hospital. Papá trabaja en la escuela. Pero ¿dónde está el hospital?"
+  },
+  "c55_mama_gracias": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Mi comida! ¡Gracias!"
+  },
+  "c55_ahora_escuela": {
+   "who": "narr",
+   "text": "Ahora van a la calle de la escuela."
+  },
+  "c55_papa_gracias": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Qué rico! ¡Gracias!"
+  },
+  "c55_luis_hambre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Tienes hambre, Coquí?"
+  },
+  "c55_cq_hambre": {
+   "who": "tu",
+   "text": "¡Sí! Tengo hambre.",
+   "tu_turno": [
+    {
+     "palabra": "tengo hambre",
+     "formas": [
+      "tengo hambre"
+     ]
+    }
+   ]
+  },
+  "c55_come3": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡El arroz está caliente! ¡Qué rico!"
+  },
+  "c55_come2": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Qué rico!"
+  },
+  "c55_come1": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El arroz está un poco frío. Pero está rico."
+  },
+  "c55_casa": {
+   "who": "narr",
+   "text": "Luis y Coquí van a casa en bicicleta."
+  },
+  "c55_hosp_alto": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: El hospital es el edificio alto."
+  },
+  "c55_no_hosp_alto": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No. El hospital es el edificio alto."
+  },
+  "c55_no_esc_alto": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No. La escuela es el edificio alto."
+  },
+  "c55_hosp_nuevo": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: El hospital es el edificio nuevo."
+  },
+  "c55_no_hosp_nuevo": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No. El hospital es el edificio nuevo."
+  },
+  "c55_no_esc_nuevo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No. La escuela es el edificio nuevo."
+  },
+  "c55_esc_nuevo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¿La escuela? La escuela es el edificio nuevo."
+  },
+  "c55_esc_alto": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: La escuela es el edificio alto."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "fila": "altos",
+    "par": "a",
+    "hora": "mediodia"
+   }
+  },
+  {
+   "draw": "la",
+   "options": [
+    "left",
+    "right"
+   ]
+  },
+  {
+   "if": "la=left",
+   "then": [
+    {
+     "set": {
+      "lado": "left"
+     }
+    }
+   ],
+   "else": [
+    {
+     "set": {
+      "lado": "right"
+     }
+    }
+   ]
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c55_van",
+  {
+   "set": {
+    "twinkle": "comida"
+   }
+  },
+  {
+   "act": "vapor",
+   "n": 3
+  },
+  "c55_comida",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 2
+  },
+  {
+   "set": {
+    "twinkle": "alto"
+   }
+  },
+  "c55_mira_alto",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "alto",
+   "lead": [],
+   "line": "c55_donde_alto",
+   "then": [
+    "c55_luis_alto"
+   ],
+   "after": [
+    {
+     "act": "ventana55"
+    },
+    {
+     "act": "cuenta55",
+     "a": "alto"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "set": {
+    "twinkle": "nuevo"
+   }
+  },
+  "c55_es_nuevo",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "nuevo",
+   "lead": [],
+   "line": "c55_donde_nuevo",
+   "then": [
+    "c55_luis_nuevo"
+   ],
+   "after": [
+    {
+     "act": "pintor55"
+    },
+    {
+     "act": "cuenta55",
+     "a": "nuevo"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "senor",
+   "que": "mira",
+   "a": "comida"
+  },
+  "c55_senor_hola",
+  "c55_cq_mama",
+  {
+   "dots": 5
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "papel"
+  },
+  "c55_luis_trabaja",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "da",
+   "options": [
+    "alto",
+    "nuevo"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "alto",
+    "nuevo"
+   ],
+   "pick": "$da",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c55_hosp_$da",
+   "right": [
+    {
+     "act": "entra55",
+     "a": "$da",
+     "ok": 1,
+     "quien": "mama"
+    },
+    "c55_mama_gracias",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "entra55",
+     "a": "$x",
+     "ok": 0
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "vapor",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "vapor",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c55_no_hosp_$da"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "otra55",
+   "suelto": 1
+  },
+  "c55_ahora_escuela",
+  {
+   "act": "ya"
+  },
+  {
+   "draw": "lb",
+   "options": [
+    "left",
+    "right"
+   ]
+  },
+  {
+   "if": "lb=left",
+   "then": [
+    {
+     "set": {
+      "lado": "left"
+     }
+    }
+   ],
+   "else": [
+    {
+     "set": {
+      "lado": "right"
+     }
+    }
+   ]
+  },
+  {
+   "draw": "db",
+   "options": [
+    "alto",
+    "nuevo"
+   ]
+  },
+  {
+   "calc": "lc",
+   "cond": "db=nuevo",
+   "then": "c55_esc_nuevo",
+   "else": "c55_esc_alto"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "alto",
+    "nuevo"
+   ],
+   "pick": "$db",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "$lc",
+   "right": [
+    {
+     "act": "entra55",
+     "a": "$db",
+     "ok": 1,
+     "quien": "papa"
+    },
+    "c55_papa_gracias",
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "entra55",
+     "a": "$x",
+     "ok": 0
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "vapor",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "vapor",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c55_no_esc_$db"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "ir",
+   "a": "bordillo"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "sienta"
+  },
+  "c55_luis_hambre",
+  "c55_cq_hambre",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "come55",
+     "n": 3
+    },
+    "c55_come3"
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "come55",
+       "n": 2
+      },
+      "c55_come2"
+     ],
+     "else": [
+      {
+       "act": "come55",
+       "n": 1
+      },
+      "c55_come1"
+     ]
+    }
+   ]
+  },
+  {
+   "act": "ir",
+   "a": "bici"
+  },
+  "c55_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c55_van",
+  "c55_comida",
+  "c55_mira_alto",
+  "c55_donde_alto",
+  "c55_luis_alto",
+  "c55_es_nuevo",
+  "c55_donde_nuevo",
+  "c55_luis_nuevo",
+  "c55_senor_hola",
+  "c55_cq_mama",
+  "c55_luis_trabaja",
+  "c55_hosp_alto",
+  "c55_mama_gracias",
+  "c55_ahora_escuela",
+  "c55_esc_nuevo",
+  "c55_papa_gracias",
+  "c55_luis_hambre",
+  "c55_cq_hambre",
+  "c55_come3",
+  "c55_casa"
+ ]
+}

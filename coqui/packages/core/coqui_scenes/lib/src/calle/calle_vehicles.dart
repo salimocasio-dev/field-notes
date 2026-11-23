@@ -174,6 +174,24 @@ Uint8List _paintLook(CalleBase cl, String kind, String heading, String look) {
       if (!(z > 1.15 && z < 1.85 && dn > 1.55 && dn < 1.55 + .54)) return 0;
       return e.rgb(70, 58, 54);
     }, CalleBase.PP);
+  } else if (bus && (look == 'atras' || look == 'puertas')) {
+    // added for La parada (order 55b): `atras` the back door open, `puertas` both doors open; each open door as the
+    // front door of `puerta` is (its two leaves folded back to the jambs, the dark inside, two steps up), the back door
+    // at its place in calle-base.js (L - 1.2 from the front end)
+    const H1 = 2.15;
+    final starts = [if (look == 'puertas') .35, L - 1.2];
+    cl.faceY(y1 + .004, x0, x1, .3, H1 - .2, (a, z) {
+      final dn = front ? (x1 - a) : a - x0;
+      for (final s in starts) {
+        final d = dn - s;
+        if (!(d > 0 && d < .8)) continue;
+        if (d < .07 || d > .73) return e.rgb(86, 96, 110); // a folded leaf
+        if (z < .42) return e.rgb(150, 146, 140); // the lower step
+        if (z < .56) return e.rgb(120, 116, 112); // the upper step
+        return e.rgb(48, 46, 56); // the inside
+      }
+      return 0;
+    }, CalleBase.PP);
   } else if (!bus) {
     const H1 = .78, H2 = 1.22;
     final C0 = x0 + (front ? .45 : .6), C1 = x1 - (front ? .6 : .45);

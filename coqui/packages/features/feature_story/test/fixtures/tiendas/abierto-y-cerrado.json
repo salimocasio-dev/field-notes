@@ -1,0 +1,687 @@
+{
+ "id": "abierto-y-cerrado",
+ "title": "Abierto y cerrado",
+ "place": "La calle",
+ "scene": "tiendas",
+ "next": "izquierda-o-derecha",
+ "goal": "Get a bag for the bread and an umbrella from whichever shop is open, before the rain comes.",
+ "stake": {
+  "thing": "nube",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "abierto",
+  "cerrado",
+  "entra"
+ ],
+ "formas_foco": {
+  "abierto": [
+   "abierta"
+  ],
+  "cerrado": [
+   "cerrada"
+  ]
+ },
+ "back_again": [
+  "tienda",
+  "banco",
+  "farmacia",
+  "correo",
+  "calle",
+  "puerta",
+  "lluvia",
+  "necesito",
+  "bolsa",
+  "pan",
+  "busca",
+  "todo",
+  "me gusta",
+  "rápido",
+  "espera",
+  "aquí",
+  "ahora",
+  "gracias",
+  "casa",
+  "viene",
+  "adiós"
+ ],
+ "also_heard": [
+  "sombrilla"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "c56_calle": {
+   "who": "narr",
+   "text": "Abuela y Coquí están en la calle de las tiendas."
+  },
+  "c56_ab_rapido": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Rápido, Coquí! ¡Ahí viene la lluvia!"
+  },
+  "c56_correo_abierto": {
+   "who": "narr",
+   "text": "El correo está abierto."
+  },
+  "c56_por_donde_abuela": {
+   "who": "narr",
+   "text": "¿Por dónde entra abuela?"
+  },
+  "c56_banco_cerrado": {
+   "who": "narr",
+   "text": "El banco está cerrado. Abuela no entra."
+  },
+  "c56_toca_banco": {
+   "who": "narr",
+   "text": "Toca la puerta del banco."
+  },
+  "c56_esta_cerrado": {
+   "who": "narr",
+   "text": "Está cerrado."
+  },
+  "c56_senora_tienda": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Buenas tardes! La tienda está abierta. Pero el banco está cerrado. Mira, Coquí. ¿Te gusta?"
+  },
+  "c43_cq_me_gusta": {
+   "who": "tu",
+   "text": "¡Sí, me gusta!",
+   "tu_turno": [
+    {
+     "palabra": "me gusta",
+     "formas": [
+      "me gusta"
+     ]
+    }
+   ]
+  },
+  "c56_ab_entra": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, entra tú. Busca una puerta abierta. Yo espero aquí con el pan."
+  },
+  "c56_ab_bolsa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Necesito una bolsa para el pan."
+  },
+  "c56_ab_sombrilla": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y necesito una sombrilla."
+  },
+  "c56_por_donde_coqui": {
+   "who": "narr",
+   "text": "¿Por dónde entra Coquí?"
+  },
+  "c56_ab_todo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Gracias, Coquí! ¿Tienes todo?"
+  },
+  "c56_cq_todo": {
+   "who": "tu",
+   "text": "¡Sí, todo!",
+   "tu_turno": [
+    {
+     "palabra": "todo",
+     "formas": [
+      "todo"
+     ]
+    }
+   ]
+  },
+  "c56_casa": {
+   "who": "narr",
+   "text": "Abuela y Coquí van a casa. ¡Adiós, lluvia!"
+  },
+  "c56_s_tienda_banco_ab": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora la tienda está abierta. El banco está cerrado."
+  },
+  "c56_s_tienda_banco_ce": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora el banco está cerrado. La tienda está abierta."
+  },
+  "c56_no_tienda_banco": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. El banco está cerrado. La tienda está abierta."
+  },
+  "c56_s_tienda_farmacia_ab": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora la tienda está abierta. La farmacia está cerrada."
+  },
+  "c56_s_tienda_farmacia_ce": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora la farmacia está cerrada. La tienda está abierta."
+  },
+  "c56_no_tienda_farmacia": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. La farmacia está cerrada. La tienda está abierta."
+  },
+  "c56_s_banco_tienda_ab": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora el banco está abierto. La tienda está cerrada."
+  },
+  "c56_s_banco_tienda_ce": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora la tienda está cerrada. El banco está abierto."
+  },
+  "c56_no_banco_tienda": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. La tienda está cerrada. El banco está abierto."
+  },
+  "c56_s_banco_farmacia_ab": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora el banco está abierto. La farmacia está cerrada."
+  },
+  "c56_s_banco_farmacia_ce": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora la farmacia está cerrada. El banco está abierto."
+  },
+  "c56_no_banco_farmacia": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. La farmacia está cerrada. El banco está abierto."
+  },
+  "c56_s_farmacia_tienda_ab": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora la farmacia está abierta. La tienda está cerrada."
+  },
+  "c56_s_farmacia_tienda_ce": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora la tienda está cerrada. La farmacia está abierta."
+  },
+  "c56_no_farmacia_tienda": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. La tienda está cerrada. La farmacia está abierta."
+  },
+  "c56_s_farmacia_banco_ab": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora la farmacia está abierta. El banco está cerrado."
+  },
+  "c56_s_farmacia_banco_ce": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ahora el banco está cerrado. La farmacia está abierta."
+  },
+  "c56_no_farmacia_banco": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. El banco está cerrado. La farmacia está abierta."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "fila": "tiendas",
+    "hora": "tarde",
+    "nube": 0
+   }
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c56_calle",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "nube"
+  },
+  "c56_ab_rapido",
+  {
+   "dots": 2
+  },
+  "c56_correo_abierto",
+  {
+   "ask": "correo",
+   "lead": [],
+   "line": "c56_por_donde_abuela",
+   "then": [],
+   "after": [
+    {
+     "act": "puerta56",
+     "k": "correo",
+     "ok": 1,
+     "trae": "stamp",
+     "quien": "abuela"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "puerta56",
+   "k": "banco",
+   "ok": 0,
+   "quien": "abuela"
+  },
+  "c56_banco_cerrado",
+  {
+   "ask": "banco",
+   "lead": [],
+   "line": "c56_toca_banco",
+   "then": [
+    "c56_esta_cerrado"
+   ],
+   "after": [
+    {
+     "act": "puerta56",
+     "k": "banco",
+     "ok": 0,
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  "c56_senora_tienda",
+  {
+   "act": "gesto",
+   "quien": "senora",
+   "que": "cometa"
+  },
+  "c43_cq_me_gusta",
+  {
+   "dots": 5
+  },
+  {
+   "act": "cierran56"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "sienta"
+  },
+  "c56_ab_entra",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "tienda",
+    "banco",
+    "farmacia"
+   ]
+  },
+  {
+   "draw": "ea",
+   "options": [
+    "u",
+    "v"
+   ]
+  },
+  {
+   "if": "oa=tienda",
+   "then": [
+    {
+     "calc": "ca",
+     "cond": "ea=u",
+     "then": "banco",
+     "else": "farmacia"
+    }
+   ],
+   "else": [
+    {
+     "if": "oa=banco",
+     "then": [
+      {
+       "calc": "ca",
+       "cond": "ea=u",
+       "then": "tienda",
+       "else": "farmacia"
+      }
+     ],
+     "else": [
+      {
+       "calc": "ca",
+       "cond": "ea=u",
+       "then": "tienda",
+       "else": "banco"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "ab",
+    "ce"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$oa",
+    "$ca"
+   ],
+   "pick": "$oa",
+   "tests": "abierto",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "lista",
+     "k": "bag",
+     "hecho": 0
+    },
+    "c56_ab_bolsa",
+    "c56_s_$oa_$ca_$qa",
+    "c56_por_donde_coqui"
+   ],
+   "line": "c56_s_$oa_$ca_$qa",
+   "right": [
+    {
+     "act": "puerta56",
+     "k": "$oa",
+     "ok": 1,
+     "trae": "bag",
+     "quien": "coqui"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "lista",
+     "k": "bag",
+     "hecho": 1
+    }
+   ],
+   "wrong": [
+    {
+     "act": "puerta56",
+     "k": "$x",
+     "ok": 0,
+     "quien": "coqui"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "nube",
+       "n": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "nube",
+       "n": 2
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c56_no_$oa_$ca"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "tienda",
+    "banco",
+    "farmacia"
+   ]
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "u",
+    "v"
+   ]
+  },
+  {
+   "if": "ob=tienda",
+   "then": [
+    {
+     "calc": "cb",
+     "cond": "eb=u",
+     "then": "banco",
+     "else": "farmacia"
+    }
+   ],
+   "else": [
+    {
+     "if": "ob=banco",
+     "then": [
+      {
+       "calc": "cb",
+       "cond": "eb=u",
+       "then": "tienda",
+       "else": "farmacia"
+      }
+     ],
+     "else": [
+      {
+       "calc": "cb",
+       "cond": "eb=u",
+       "then": "tienda",
+       "else": "banco"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "qb",
+   "options": [
+    "ab",
+    "ce"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$ob",
+    "$cb"
+   ],
+   "pick": "$ob",
+   "tests": "abierto",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    {
+     "act": "lista",
+     "k": "umbrella",
+     "hecho": 0
+    },
+    "c56_ab_sombrilla",
+    "c56_s_$ob_$cb_$qb",
+    "c56_por_donde_coqui"
+   ],
+   "line": "c56_s_$ob_$cb_$qb",
+   "right": [
+    {
+     "act": "puerta56",
+     "k": "$ob",
+     "ok": 1,
+     "trae": "umbrella",
+     "quien": "coqui"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "lista",
+     "k": "umbrella",
+     "hecho": 1
+    }
+   ],
+   "wrong": [
+    {
+     "act": "puerta56",
+     "k": "$x",
+     "ok": 0,
+     "quien": "coqui"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "nube",
+       "n": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "nube",
+       "n": 2
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c56_no_$ob_$cb"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "ir",
+   "a": "banco_acera"
+  },
+  "c56_ab_todo",
+  "c56_cq_todo",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final56",
+     "n": 0
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final56",
+       "n": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "final56",
+       "n": 2
+      },
+      {
+       "act": "gesto",
+       "quien": "coqui",
+       "que": "baila"
+      }
+     ]
+    }
+   ]
+  },
+  "c56_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c56_calle",
+  "c56_ab_rapido",
+  "c56_correo_abierto",
+  "c56_por_donde_abuela",
+  "c56_banco_cerrado",
+  "c56_toca_banco",
+  "c56_esta_cerrado",
+  "c56_senora_tienda",
+  "c43_cq_me_gusta",
+  "c56_ab_entra",
+  "c56_ab_bolsa",
+  "c56_s_farmacia_tienda_ab",
+  "c56_por_donde_coqui",
+  "c56_ab_sombrilla",
+  "c56_s_banco_farmacia_ab",
+  "c56_ab_todo",
+  "c56_cq_todo",
+  "c56_casa"
+ ]
+}

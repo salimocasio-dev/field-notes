@@ -1,0 +1,629 @@
+{
+ "id": "cerca-y-lejos",
+ "title": "Cerca y lejos",
+ "place": "La calle",
+ "scene": "parada",
+ "next": "las-tiendas",
+ "goal": "Walk to the near houses and ride to the far ones, so the day stays early and there is time left to play with Luis and Carmen's ball.",
+ "stake": {
+  "thing": "dia",
+  "steps": 2
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cerca",
+  "lejos",
+  "temprano",
+  "tarde"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "parada",
+  "guagua",
+  "llega",
+  "voy",
+  "vas",
+  "casa",
+  "colmado",
+  "parque",
+  "señor",
+  "caja",
+  "otro",
+  "toma",
+  "juega",
+  "cansado",
+  "bien",
+  "no",
+  "camina",
+  "vamos",
+  "espera",
+  "aquí",
+  "mañana"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "senor": "b_n_senor",
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "c53_temprano": {
+   "who": "narr",
+   "text": "Es temprano. Abuela y Coquí están en la parada."
+  },
+  "c53_vamos_temprano": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Vamos temprano. No quiero llegar tarde."
+  },
+  "c53_cajas": {
+   "who": "narr",
+   "text": "Abuela tiene dos cajas. Una es para don Pepe. La otra es para la señora."
+  },
+  "c53_colmado_cerca": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El colmado está cerca."
+  },
+  "c53_por_donde": {
+   "who": "narr",
+   "text": "¿Por dónde camina Coquí?"
+  },
+  "c53_esta_cerca": {
+   "who": "narr",
+   "text": "Está cerca. Coquí camina."
+  },
+  "c53_parque_lejos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El parque está lejos."
+  },
+  "c51_donde_parada": {
+   "who": "narr",
+   "text": "¿Dónde está la parada?"
+  },
+  "c53_esta_lejos": {
+   "who": "narr",
+   "text": "Está lejos. Coquí va en guagua."
+  },
+  "c53_senor": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Ay! El colmado está cerca. Pero el parque está lejos. Y hoy la guagua llega tarde."
+  },
+  "c53_espero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Yo espero aquí. Coquí, ¿vas tú?"
+  },
+  "c53_cq_voy": {
+   "who": "tu",
+   "text": "Sí. Yo voy.",
+   "tu_turno": [
+    {
+     "palabra": "voy",
+     "formas": [
+      "voy"
+     ]
+    }
+   ]
+  },
+  "c53_a_lejos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Esto es para don Pepe. Su casa está lejos."
+  },
+  "c53_a_cerca": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Esto es para don Pepe. Su casa está cerca."
+  },
+  "c53_b_cerca": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y esto es para la señora. Su casa está cerca."
+  },
+  "c53_b_lejos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y esto es para la señora. Su casa está lejos."
+  },
+  "c53_no_lejos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Su casa está lejos."
+  },
+  "c53_no_cerca": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Su casa está cerca."
+  },
+  "c53_que_bien": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Qué bien! Es temprano. No es tarde."
+  },
+  "c53_ya_tarde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ya es tarde. Juega un poco, Coquí, y a casa."
+  },
+  "c53_muy_tarde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Es muy tarde. Mañana jugamos."
+  },
+  "c53_cansado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Estás cansado, Coquí?"
+  },
+  "c51_cq_no_bien": {
+   "who": "tu",
+   "text": "No. Estoy bien.",
+   "tu_turno": [
+    {
+     "palabra": "no",
+     "formas": [
+      "no"
+     ]
+    }
+   ]
+  },
+  "c53_cq_cansado": {
+   "who": "tu",
+   "text": "Sí. Estoy cansado.",
+   "tu_turno": [
+    {
+     "palabra": "cansado",
+     "formas": [
+      "cansado"
+     ]
+    }
+   ]
+  },
+  "c53_vamos_casa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Vamos a casa. Está cerca."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "temprano"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "bordillo"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "sol"
+   }
+  },
+  "c53_temprano",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "c53_vamos_temprano",
+  "c53_cajas",
+  {
+   "dots": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "poste"
+  },
+  "c53_colmado_cerca",
+  {
+   "ask": "poste",
+   "lead": [],
+   "line": "c53_por_donde",
+   "then": [
+    "c53_esta_cerca"
+   ],
+   "after": [
+    {
+     "act": "camina53",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  "c53_parque_lejos",
+  {
+   "ask": "parada",
+   "lead": [],
+   "line": "c51_donde_parada",
+   "then": [
+    "c53_esta_lejos"
+   ],
+   "after": [
+    {
+     "act": "guagua",
+     "k": "arbol",
+     "que": "llega",
+     "a": "parada1"
+    },
+    {
+     "act": "monta53",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "senor",
+   "que": "sienta"
+  },
+  "c53_senor",
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "sienta"
+  },
+  "c53_espero",
+  "c53_cq_voy",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "dice",
+   "options": [
+    "cerca",
+    "lejos"
+   ]
+  },
+  {
+   "calc": "k",
+   "cond": "dice=lejos",
+   "then": "parada",
+   "else": "poste"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "poste",
+    "parada"
+   ],
+   "pick": "$k",
+   "tests": "$dice",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    "c53_a_$dice"
+   ],
+   "line": "c53_a_$dice",
+   "right": [
+    {
+     "if": "dice=lejos",
+     "then": [
+      {
+       "act": "monta53",
+       "ok": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "camina53",
+       "ok": 1
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "dice=lejos",
+     "then": [
+      {
+       "act": "camina53",
+       "ok": 0
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "sol",
+         "n": 1
+        }
+       ],
+       "else": [
+        {
+         "act": "sol",
+         "n": 2
+        }
+       ]
+      },
+      {
+       "act": "gesto",
+       "quien": "coqui",
+       "que": "lengua"
+      }
+     ],
+     "else": [
+      {
+       "act": "espera53"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "sol",
+         "n": 1
+        }
+       ],
+       "else": [
+        {
+         "act": "sol",
+         "n": 2
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c53_no_$dice"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "dice",
+   "options": [
+    "cerca",
+    "lejos"
+   ]
+  },
+  {
+   "calc": "k",
+   "cond": "dice=lejos",
+   "then": "parada",
+   "else": "poste"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "poste",
+    "parada"
+   ],
+   "pick": "$k",
+   "tests": "$dice",
+   "lock": true,
+   "mudo": true,
+   "lead": [
+    "c53_b_$dice"
+   ],
+   "line": "c53_b_$dice",
+   "right": [
+    {
+     "if": "dice=lejos",
+     "then": [
+      {
+       "act": "monta53",
+       "ok": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "camina53",
+       "ok": 1
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "dice=lejos",
+     "then": [
+      {
+       "act": "camina53",
+       "ok": 0
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "sol",
+         "n": 1
+        }
+       ],
+       "else": [
+        {
+         "act": "sol",
+         "n": 2
+        }
+       ]
+      },
+      {
+       "act": "gesto",
+       "quien": "coqui",
+       "que": "lengua"
+      }
+     ],
+     "else": [
+      {
+       "act": "espera53"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "sol",
+         "n": 1
+        }
+       ],
+       "else": [
+        {
+         "act": "sol",
+         "n": 2
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c53_no_$dice"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    "c53_que_bien",
+    {
+     "act": "final53",
+     "n": 0
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      "c53_ya_tarde",
+      {
+       "act": "final53",
+       "n": 1
+      }
+     ],
+     "else": [
+      "c53_muy_tarde",
+      {
+       "act": "final53",
+       "n": 2
+      },
+      {
+       "act": "gesto",
+       "quien": "coqui",
+       "que": "bosteza"
+      }
+     ]
+    }
+   ]
+  },
+  "c53_cansado",
+  {
+   "if": "lost=2",
+   "then": [
+    "c53_cq_cansado"
+   ],
+   "else": [
+    "c51_cq_no_bien"
+   ]
+  },
+  "c53_vamos_casa",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c53_temprano",
+  "c53_vamos_temprano",
+  "c53_cajas",
+  "c53_colmado_cerca",
+  "c53_por_donde",
+  "c53_esta_cerca",
+  "c53_parque_lejos",
+  "c51_donde_parada",
+  "c53_esta_lejos",
+  "c53_senor",
+  "c53_espero",
+  "c53_cq_voy",
+  "c53_a_lejos",
+  "c53_b_cerca",
+  "c53_que_bien",
+  "c53_cansado",
+  "c51_cq_no_bien",
+  "c53_vamos_casa"
+ ]
+}

@@ -28,10 +28,14 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 54b: `esquina`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 54b: `esquina`; order 57b: `cruce`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's, El banco's, La mesa's, La estufa's, La nevera's and A comer's factories make the
   real scenes
   (their sheets read first: `loadScene`), and the new scenes'.
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 52b: `frutas`; order 54b: `esquina`; order 55b: `parada`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 54b: `esquina`; order 56b: `tiendas`). El frente's, El balcón's, La sala's, El
+  patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
+  `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 40b)
 
@@ -593,6 +597,48 @@ Written as El mostrador is (`lib/src/frutas/`: `frutas_set.dart`, `frutas_places
   leads; boxes and touches after each); in feature_story `esquina_stories_test` and `tool/esquina_paths_test.dart` (every
   path; the rules: `test/support/esquina_rules.dart`). Frames for looking: `COQUI_OUT=DIR flutter test
   tool/esquina_frames_test.dart`. Bake: `?page=bake&scene=esquina`, `node tool/bake_time.mjs --scene esquina`.
+- **El cruce** (order 57b, `lib/src/cruce/`): `cruce_set.dart` (cruce-set.html: the streets turned 45 degrees, `E.xy`,
+  `E.uv`; 6 states in `coqui/ref/pp/cruce/`, 0 pixels differ), `cruce_places.dart` (the sheet's spots, boxes, the views
+  `wide` and `plaza`), `cruce_sprites.dart` (cruce-preview.html's stand-ins: the bicycle end-on, the cart, the bag, the
+  bottle, the camera; and the scene's own things), `cruce.dart` (`class Cruce extends Escena implements SetScene,
+  SetOverSprites`, as La esquina's, no vehicles: a walk out along a street goes on along its line until the sprite has left
+  the picture, the sheet's salida-whole; `OPEN:` comments where the sheet names no place). Tests: `cruce_set_test`,
+  `cruce_acts_test`; in feature_story `cruce_stories_test`, `tool/cruce_paths_test.dart` (`test/support/cruce_rules.dart`,
+  `cruce_paths.dart`). Frames: `COQUI_OUT=DIR flutter test tool/cruce_frames_test.dart`; sprites for the content lane:
+  `flutter test tool/cruce_sprites_test.dart` (docs/proyecto/pixel/port/cruce-sprites.png). Bake: `?page=bake&scene=cruce`,
+  `node tool/bake_time.mjs --scene cruce`.
+
+## La parada (order 55b, place 5's second scene)
+
+Written as La esquina is (`lib/src/parada/`: `parada_set.dart`, `parada_places.dart`, `parada_sprites.dart`, `parada.dart`,
+`class Parada extends Escena implements SetScene, SetOverSprites`), on La calle's kit, vehicles and cast. What is its own:
+
+- **One picture, four states** (`parada_set.dart`, parada-set.html): `setKey` is `hora` (temprano, manana, tarde, noche: at
+  night the lit windows, the lamp and its pool of light); 4 states in `coqui/ref/pp/parada/`, 0 of 51,840 pixels differ.
+- **Guaguas that stop, open their doors and carry people**: a guagua in W (`autos.<board>`) drives in along the stop's lane
+  to parada1 or parada2 and out to the left (one leaving parada2 while parada1 is taken pulls out to the far lane); its
+  doors are looks of calle_vehicles.dart (`puerta`, and `atras`, `puertas` added for this scene). What belongs to it is
+  drawn into its pixels after it (`onBus`): a head at its glass and the basket on the sill only through a pane of its
+  windows (`ParadaPlaces.inPane`, parada-preview.html's inPane), the chofer leaning out at its front end. The doors'
+  touch boxes are the sheet's world boxes moved with the guagua at parada1 (`doorBox`).
+- **Tests**: `parada_set_test`, `parada_acts_test` (every act of the three stories on a StillHost, both branches; boxes and
+  touches after each); in feature_story `parada_stories_test` and `tool/parada_paths_test.dart` (the rules:
+  `test/support/parada_rules.dart`). Frames for looking: `COQUI_OUT=DIR flutter test tool/parada_frames_test.dart`; the
+  sprite sheet: `flutter test tool/parada_sprites_test.dart` (docs/proyecto/pixel/port/parada-sprites.png).
+- Bake: `?page=bake&scene=parada`, `node tool/bake_time.mjs --scene parada`.
+## Las tiendas (order 56b, place 5's third scene)
+- `lib/src/tiendas/`: `tiendas_set.dart` (tiendas-set.html; two pictures with their own origin: `fila` tiendas, the row of
+  four fronts, and `fila` altos, story 55's two buildings, built on a second engine and handed over as El mostrador's
+  street; 14 states in `coqui/ref/pp/tiendas/`, 0 pixels differ), `tiendas_places.dart` (the sheet and its part `altos`;
+  a building's box by `lado`), `tiendas_sprites.dart` (the stroller, the held things, the tins, the nurse's coat, the
+  painter, the cloud; `handOf` / `withHeld`), `tiendas.dart` (`class Tiendas extends Escena implements SetScene,
+  SetOverSprites`, as La esquina: people and things by world point, front.plane, the frog never behind a grown-up; a door
+  that opens is La calle's doorX drawn on a picture of its own and kept where it shows through the doorway, a door that
+  rattles is the set's own door moved a column; `CAM.wide` is the view of the story's picture; `OPEN:` comments).
+- **Tests**: `tiendas_set_test`, `tiendas_acts_test`; in feature_story `tiendas_stories_test` and
+  `tool/tiendas_paths_test.dart` (the rules: `test/support/tiendas_rules.dart`). The sprite sheet for the content lane:
+  `flutter test tool/tiendas_sprites_test.dart` writes `docs/proyecto/pixel/port/tiendas-sprites.png`. Bake:
+  `?page=bake&scene=tiendas`, `node tool/bake_time.mjs --scene tiendas`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 
