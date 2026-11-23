@@ -7,6 +7,7 @@ import 'package:app/src/previa.dart';
 import 'package:coqui_content/coqui_content.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/widgets.dart' show AxisDirection, Scrollable;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'story_test.dart' show playFromToday;
@@ -371,10 +372,25 @@ void main() {
           ),
           findsNothing,
         );
-        // Palabras, Hablar (El colmado is done and has no call: "Coming soon"), Yo
+        // Palabras, Hablar (El colmado is done and has no call: its stop says "Coming soon"), Yo
         await app.openTab('words');
         expect(tester.takeException(), isNull);
         await app.openTab('speak');
+        final colmado = find.descendant(
+          of: byTypeName('HablarTab'),
+          matching: find.text('El colmado'),
+        );
+        // the journey strip scrolls sideways: bring the fourth stop in
+        await tester.scrollUntilVisible(
+          colmado,
+          100,
+          scrollable: find.byWidgetPredicate(
+            (w) => w is Scrollable && w.axisDirection == AxisDirection.right,
+          ),
+        );
+        await tester.ensureVisible(colmado);
+        await tester.pump();
+        await app.tap(colmado);
         expect(
           find.text('Coming soon · El colmado', skipOffstage: false),
           findsOneWidget,

@@ -48,10 +48,12 @@ void main() {
       expect(find.text('Start').hitTestable(), findsOneWidget);
       expect(find.text('casa').hitTestable(), findsOneWidget);
 
-      // Hablar: La casa is done in the seed, so its call card is open; El parque's is not
+      // Hablar: La casa is done in the seed, so its call is Up next and can start; El parque's is not open
       await app.openTab('speak');
       expect(app.selectedTab, 'speak');
-      expect(find.text('La casa · about 5 min').hitTestable(), findsOneWidget);
+      expect(find.text('De visita en la casa').hitTestable(), findsOneWidget);
+      expect(find.text('Start call').hitTestable(), findsOneWidget);
+      await app.tap(find.text('El parque'));
       expect(
         find.text('Opens when you finish El parque').hitTestable(),
         findsOneWidget,
