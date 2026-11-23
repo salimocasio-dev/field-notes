@@ -28,7 +28,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 54b: `esquina`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 54b: `esquina`; order 57b: `cruce`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's, El banco's, La mesa's, La estufa's, La nevera's and A comer's factories make the
   real scenes
   (their sheets read first: `loadScene`), and the new scenes'.
@@ -593,6 +593,16 @@ Written as El mostrador is (`lib/src/frutas/`: `frutas_set.dart`, `frutas_places
   leads; boxes and touches after each); in feature_story `esquina_stories_test` and `tool/esquina_paths_test.dart` (every
   path; the rules: `test/support/esquina_rules.dart`). Frames for looking: `COQUI_OUT=DIR flutter test
   tool/esquina_frames_test.dart`. Bake: `?page=bake&scene=esquina`, `node tool/bake_time.mjs --scene esquina`.
+- **El cruce** (order 57b, `lib/src/cruce/`): `cruce_set.dart` (cruce-set.html: the streets turned 45 degrees, `E.xy`,
+  `E.uv`; 6 states in `coqui/ref/pp/cruce/`, 0 pixels differ), `cruce_places.dart` (the sheet's spots, boxes, the views
+  `wide` and `plaza`), `cruce_sprites.dart` (cruce-preview.html's stand-ins: the bicycle end-on, the cart, the bag, the
+  bottle, the camera; and the scene's own things), `cruce.dart` (`class Cruce extends Escena implements SetScene,
+  SetOverSprites`, as La esquina's, no vehicles: a walk out along a street goes on along its line until the sprite has left
+  the picture, the sheet's salida-whole; `OPEN:` comments where the sheet names no place). Tests: `cruce_set_test`,
+  `cruce_acts_test`; in feature_story `cruce_stories_test`, `tool/cruce_paths_test.dart` (`test/support/cruce_rules.dart`,
+  `cruce_paths.dart`). Frames: `COQUI_OUT=DIR flutter test tool/cruce_frames_test.dart`; sprites for the content lane:
+  `flutter test tool/cruce_sprites_test.dart` (docs/proyecto/pixel/port/cruce-sprites.png). Bake: `?page=bake&scene=cruce`,
+  `node tool/bake_time.mjs --scene cruce`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 
