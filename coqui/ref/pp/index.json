@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1068,
-  "totalBytes": 66925285,
+  "files": 1212,
+  "totalBytes": 75507432,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -4534,6 +4534,166 @@
       "sha256": "161c2e74723cd0c2a2a5eb4d5a8337c0f5e7e32c50330adc6f0335c51bfc5021"
     },
     {
+      "path": "parada/manana/kinds.bin",
+      "bytes": 51840,
+      "sha256": "ee78ead5c85a8441a55c09447d43ecf17b2b626bd73f188f88ad78c63b7a0477"
+    },
+    {
+      "path": "parada/manana/kinds.json",
+      "bytes": 305,
+      "sha256": "ab46f9aaab0283829280faf340ba92573ad377e6a69cdde9dc582931f072f83d"
+    },
+    {
+      "path": "parada/manana/pix.bin",
+      "bytes": 207360,
+      "sha256": "cb351bdbda3b250a754485fd23124f5b815d1a6951c63ec4ebf5e4eda8619936"
+    },
+    {
+      "path": "parada/manana/pix.json",
+      "bytes": 370,
+      "sha256": "019122effb8a5713237ba4081ed599993ef4d99dccc2d6a38b125c737f3a6215"
+    },
+    {
+      "path": "parada/manana/pix.png",
+      "bytes": 8978,
+      "sha256": "c986929e4a048d4050cc904e2da10372425cb30cfbf5eeae132fe5020f04c45f"
+    },
+    {
+      "path": "parada/manana/state.json",
+      "bytes": 926,
+      "sha256": "436604c20c961924f0776ad2ed3059c56beba6669cf46343b52b38ef7db7fc75"
+    },
+    {
+      "path": "parada/manana/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a366cab395497969dd24cdc2d79fae7ec9b3e4d39bc0bd5775a544ff952b4f5"
+    },
+    {
+      "path": "parada/manana/zb.json",
+      "bytes": 322,
+      "sha256": "984ea5ec921915afbfb21dcb6f2e70216301d2de9fd3723bb81ec3286eed6bb4"
+    },
+    {
+      "path": "parada/noche/kinds.bin",
+      "bytes": 51840,
+      "sha256": "ee78ead5c85a8441a55c09447d43ecf17b2b626bd73f188f88ad78c63b7a0477"
+    },
+    {
+      "path": "parada/noche/kinds.json",
+      "bytes": 305,
+      "sha256": "ab46f9aaab0283829280faf340ba92573ad377e6a69cdde9dc582931f072f83d"
+    },
+    {
+      "path": "parada/noche/pix.bin",
+      "bytes": 207360,
+      "sha256": "2ea31e631e0e43f6818b11c49ad549dc1fc0e0356352b4a659db1d2e02c7b87b"
+    },
+    {
+      "path": "parada/noche/pix.json",
+      "bytes": 370,
+      "sha256": "a23214f04e22c99313d1288d90ecdd552d4e16b7b23bb5ebaf0a9fabb0d8bc96"
+    },
+    {
+      "path": "parada/noche/pix.png",
+      "bytes": 13071,
+      "sha256": "d6319fafb3e2feb156988b5784fb2a92391aa90a12ed0ec49facb4af9da55279"
+    },
+    {
+      "path": "parada/noche/state.json",
+      "bytes": 924,
+      "sha256": "071c1e9c1f94b3f6cbab97c0bf8599c4203a74e3af5becd7d46b9fe88a6bb8b6"
+    },
+    {
+      "path": "parada/noche/zb.bin",
+      "bytes": 207360,
+      "sha256": "e6cce5d9a509e6a61025454c7c93709a1a3c257c0b27dcb695966353e953a162"
+    },
+    {
+      "path": "parada/noche/zb.json",
+      "bytes": 322,
+      "sha256": "ebc8ed1a6efe7bc71e957544642023b504855e8f3d7fe52d036de0454f693003"
+    },
+    {
+      "path": "parada/tarde/kinds.bin",
+      "bytes": 51840,
+      "sha256": "ee78ead5c85a8441a55c09447d43ecf17b2b626bd73f188f88ad78c63b7a0477"
+    },
+    {
+      "path": "parada/tarde/kinds.json",
+      "bytes": 305,
+      "sha256": "ab46f9aaab0283829280faf340ba92573ad377e6a69cdde9dc582931f072f83d"
+    },
+    {
+      "path": "parada/tarde/pix.bin",
+      "bytes": 207360,
+      "sha256": "241b810eb90b826f98cb3b34c86337ac1ccb8ab8e95eef7a905a49c1b44a2c23"
+    },
+    {
+      "path": "parada/tarde/pix.json",
+      "bytes": 370,
+      "sha256": "5e3a5c725ec6f36512be11a7f0e1c331c2b864d320be818e72baa638c6255851"
+    },
+    {
+      "path": "parada/tarde/pix.png",
+      "bytes": 8978,
+      "sha256": "525ae18856bfa164180c5d3938b7c2eca1204f2b5737ccf484ba1e6de871a2f3"
+    },
+    {
+      "path": "parada/tarde/state.json",
+      "bytes": 924,
+      "sha256": "ef1ec0b20fba5a012bc1ecac3cb31c4bd915a3081d59638a94a6ec8b6523ea38"
+    },
+    {
+      "path": "parada/tarde/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a366cab395497969dd24cdc2d79fae7ec9b3e4d39bc0bd5775a544ff952b4f5"
+    },
+    {
+      "path": "parada/tarde/zb.json",
+      "bytes": 322,
+      "sha256": "984ea5ec921915afbfb21dcb6f2e70216301d2de9fd3723bb81ec3286eed6bb4"
+    },
+    {
+      "path": "parada/temprano/kinds.bin",
+      "bytes": 51840,
+      "sha256": "ee78ead5c85a8441a55c09447d43ecf17b2b626bd73f188f88ad78c63b7a0477"
+    },
+    {
+      "path": "parada/temprano/kinds.json",
+      "bytes": 305,
+      "sha256": "ab46f9aaab0283829280faf340ba92573ad377e6a69cdde9dc582931f072f83d"
+    },
+    {
+      "path": "parada/temprano/pix.bin",
+      "bytes": 207360,
+      "sha256": "bb2427d85ee43b0a5e468306f9ca1a7cfc030dee9c458f8c496a9529c8f0825a"
+    },
+    {
+      "path": "parada/temprano/pix.json",
+      "bytes": 370,
+      "sha256": "a9a5c74422e37e36d491b5c321fc16b3e63e20d1751868c99320631b1a270e63"
+    },
+    {
+      "path": "parada/temprano/pix.png",
+      "bytes": 8979,
+      "sha256": "47b6782cbf29d7c397745878b24b2d352d26947d15c0efac8a8eadc51c211fa0"
+    },
+    {
+      "path": "parada/temprano/state.json",
+      "bytes": 930,
+      "sha256": "ea68051dd0ad18627d8bb7347c969ac05aa6601ebbac9eb2d5af030e0fd81795"
+    },
+    {
+      "path": "parada/temprano/zb.bin",
+      "bytes": 207360,
+      "sha256": "8a366cab395497969dd24cdc2d79fae7ec9b3e4d39bc0bd5775a544ff952b4f5"
+    },
+    {
+      "path": "parada/temprano/zb.json",
+      "bytes": 322,
+      "sha256": "984ea5ec921915afbfb21dcb6f2e70216301d2de9fd3723bb81ec3286eed6bb4"
+    },
+    {
       "path": "patio/hora-crepusculo-door-open-gate-shut/kinds.bin",
       "bytes": 51840,
       "sha256": "c45547888ab2ec4524b84e628733f83870226dc599c5adaefda35117674e09c7"
@@ -5332,6 +5492,566 @@
       "path": "sala/luz-1-fotos-111/zb.json",
       "bytes": 322,
       "sha256": "e5be005a94c312d3bcc4f2de1e37885fb76a4202c463f6b555b073a8f04d3e2d"
+    },
+    {
+      "path": "tiendas/a-der-manana/kinds.bin",
+      "bytes": 51840,
+      "sha256": "51ad6580be92f993770a686dee549c63fd1ec0f527d25a7faae9cdd9953ccb1c"
+    },
+    {
+      "path": "tiendas/a-der-manana/kinds.json",
+      "bytes": 305,
+      "sha256": "b685641a29dfba201509ae8078e9e0ccef869548d7157046ebec526be3e549dc"
+    },
+    {
+      "path": "tiendas/a-der-manana/pix.bin",
+      "bytes": 207360,
+      "sha256": "a7f0cf3a2e72865eecfd62c2316bfe0a482ae8d9cd8cc5233353ac3bba36cdd0"
+    },
+    {
+      "path": "tiendas/a-der-manana/pix.json",
+      "bytes": 370,
+      "sha256": "37d836cea68c9da1aa4d85d94ed7efb6c110151eaa933688fab2ec4fdc6ff98f"
+    },
+    {
+      "path": "tiendas/a-der-manana/pix.png",
+      "bytes": 6717,
+      "sha256": "2371e31f5ae0bab2f26426a57c8be5521a50fd050894c3d761a3afcfa3248463"
+    },
+    {
+      "path": "tiendas/a-der-manana/state.json",
+      "bytes": 957,
+      "sha256": "ea3e671773b216457dfdf333c3c58ac7ac5c2cbecb1e7bf4328739202e1a8264"
+    },
+    {
+      "path": "tiendas/a-der-manana/zb.bin",
+      "bytes": 207360,
+      "sha256": "ed7034e535c7e8bce9d77485fff2db0f6b2af37c390cf95575e7b9ae8d4e6edd"
+    },
+    {
+      "path": "tiendas/a-der-manana/zb.json",
+      "bytes": 322,
+      "sha256": "aa831299d30264b60771dc2277e8af7bbb835a3d2ac06be57e49eb0a42d305c8"
+    },
+    {
+      "path": "tiendas/a-der-tarde/kinds.bin",
+      "bytes": 51840,
+      "sha256": "51ad6580be92f993770a686dee549c63fd1ec0f527d25a7faae9cdd9953ccb1c"
+    },
+    {
+      "path": "tiendas/a-der-tarde/kinds.json",
+      "bytes": 305,
+      "sha256": "b685641a29dfba201509ae8078e9e0ccef869548d7157046ebec526be3e549dc"
+    },
+    {
+      "path": "tiendas/a-der-tarde/pix.bin",
+      "bytes": 207360,
+      "sha256": "34694ab0669007d3b17509735705fe92ce49e4cbcca80f619f725f1e2c745fac"
+    },
+    {
+      "path": "tiendas/a-der-tarde/pix.json",
+      "bytes": 370,
+      "sha256": "bee7599fa204dbcded39a5942420ab00bfa23d899fc8ec143dcf96fa74c97e12"
+    },
+    {
+      "path": "tiendas/a-der-tarde/pix.png",
+      "bytes": 6714,
+      "sha256": "aea6ad935fde360e725d755f6f05d76f5a4350a5e58c3cb3a391a0dbc5ff0b52"
+    },
+    {
+      "path": "tiendas/a-der-tarde/state.json",
+      "bytes": 955,
+      "sha256": "6a0dc5004f6322a1c22ca571224cccdf6f3ede43f45620e0b1feae60f54cab2b"
+    },
+    {
+      "path": "tiendas/a-der-tarde/zb.bin",
+      "bytes": 207360,
+      "sha256": "ed7034e535c7e8bce9d77485fff2db0f6b2af37c390cf95575e7b9ae8d4e6edd"
+    },
+    {
+      "path": "tiendas/a-der-tarde/zb.json",
+      "bytes": 322,
+      "sha256": "aa831299d30264b60771dc2277e8af7bbb835a3d2ac06be57e49eb0a42d305c8"
+    },
+    {
+      "path": "tiendas/a-izq-manana/kinds.bin",
+      "bytes": 51840,
+      "sha256": "51ad6580be92f993770a686dee549c63fd1ec0f527d25a7faae9cdd9953ccb1c"
+    },
+    {
+      "path": "tiendas/a-izq-manana/kinds.json",
+      "bytes": 305,
+      "sha256": "b685641a29dfba201509ae8078e9e0ccef869548d7157046ebec526be3e549dc"
+    },
+    {
+      "path": "tiendas/a-izq-manana/pix.bin",
+      "bytes": 207360,
+      "sha256": "b0bc339264848479894ef0d27a4e9ee560822f9fb1baa55a8c843f07f9287a65"
+    },
+    {
+      "path": "tiendas/a-izq-manana/pix.json",
+      "bytes": 370,
+      "sha256": "ad9efe99877eba0f6f1d0207f8063db3a912e99b1c9dea509b541820be1a3ea6"
+    },
+    {
+      "path": "tiendas/a-izq-manana/pix.png",
+      "bytes": 6732,
+      "sha256": "85c2d18fd166239be6bd505127260b2f71a4bb3fc9641d54419096fd01c1df7b"
+    },
+    {
+      "path": "tiendas/a-izq-manana/state.json",
+      "bytes": 957,
+      "sha256": "d01dca40dbc83de1233a0a776460afd63f839e9ecf7829ffd66d7a5c93450024"
+    },
+    {
+      "path": "tiendas/a-izq-manana/zb.bin",
+      "bytes": 207360,
+      "sha256": "fe254db56ba9512b57f36c6cea2482027893e2274241077812f003baf69ae6ad"
+    },
+    {
+      "path": "tiendas/a-izq-manana/zb.json",
+      "bytes": 322,
+      "sha256": "c057b31c38050b999947a7d12e0bd279220c8b30a459fe0a2bf4d908cf19e51c"
+    },
+    {
+      "path": "tiendas/a-izq-tarde/kinds.bin",
+      "bytes": 51840,
+      "sha256": "51ad6580be92f993770a686dee549c63fd1ec0f527d25a7faae9cdd9953ccb1c"
+    },
+    {
+      "path": "tiendas/a-izq-tarde/kinds.json",
+      "bytes": 305,
+      "sha256": "b685641a29dfba201509ae8078e9e0ccef869548d7157046ebec526be3e549dc"
+    },
+    {
+      "path": "tiendas/a-izq-tarde/pix.bin",
+      "bytes": 207360,
+      "sha256": "a9314ce817d5b33dcd0e4709a124a98b64fb59306212d3c60c03b4fbb41e88c6"
+    },
+    {
+      "path": "tiendas/a-izq-tarde/pix.json",
+      "bytes": 370,
+      "sha256": "e2c789d72f7c228ac9ca0f7a1c2d86cf02c1c617f1abf2766a3f298df71a3a43"
+    },
+    {
+      "path": "tiendas/a-izq-tarde/pix.png",
+      "bytes": 6736,
+      "sha256": "c38f3e8f255c8f018e0a65271c9cd1c4a291296593dc1ae68a603534a0aee601"
+    },
+    {
+      "path": "tiendas/a-izq-tarde/state.json",
+      "bytes": 955,
+      "sha256": "13c871efbe6353f9201ecede5fb7c674c6f782caac3169b5e6ea8aed7403c14b"
+    },
+    {
+      "path": "tiendas/a-izq-tarde/zb.bin",
+      "bytes": 207360,
+      "sha256": "fe254db56ba9512b57f36c6cea2482027893e2274241077812f003baf69ae6ad"
+    },
+    {
+      "path": "tiendas/a-izq-tarde/zb.json",
+      "bytes": 322,
+      "sha256": "c057b31c38050b999947a7d12e0bd279220c8b30a459fe0a2bf4d908cf19e51c"
+    },
+    {
+      "path": "tiendas/b-der-manana/kinds.bin",
+      "bytes": 51840,
+      "sha256": "51ad6580be92f993770a686dee549c63fd1ec0f527d25a7faae9cdd9953ccb1c"
+    },
+    {
+      "path": "tiendas/b-der-manana/kinds.json",
+      "bytes": 305,
+      "sha256": "b685641a29dfba201509ae8078e9e0ccef869548d7157046ebec526be3e549dc"
+    },
+    {
+      "path": "tiendas/b-der-manana/pix.bin",
+      "bytes": 207360,
+      "sha256": "9cee3bbbbd8c329129fc857f7dab21175fe2856e264ca01dc428916940711a9a"
+    },
+    {
+      "path": "tiendas/b-der-manana/pix.json",
+      "bytes": 370,
+      "sha256": "23407fdbb09eddf4b40e5f6d0e14e65b66aed8691eab51782b80eaf126717a2c"
+    },
+    {
+      "path": "tiendas/b-der-manana/pix.png",
+      "bytes": 7126,
+      "sha256": "c52778a143ade2326a6201d02a6eb10f4b2c745518d2bb9ffcc7c1014ce3e54b"
+    },
+    {
+      "path": "tiendas/b-der-manana/state.json",
+      "bytes": 957,
+      "sha256": "6e7e07ea79723369408399546d17a8be1511fb63af528d125196d5da4727df3f"
+    },
+    {
+      "path": "tiendas/b-der-manana/zb.bin",
+      "bytes": 207360,
+      "sha256": "64acdc7f20c80eb3ff80b10106534e6a405f5ed59002faaa947165d04501c416"
+    },
+    {
+      "path": "tiendas/b-der-manana/zb.json",
+      "bytes": 322,
+      "sha256": "c657ac8a4a7026a15990016f238738f8796fde4bcd2430a5da333a6b6a43eae7"
+    },
+    {
+      "path": "tiendas/b-der-tarde/kinds.bin",
+      "bytes": 51840,
+      "sha256": "51ad6580be92f993770a686dee549c63fd1ec0f527d25a7faae9cdd9953ccb1c"
+    },
+    {
+      "path": "tiendas/b-der-tarde/kinds.json",
+      "bytes": 305,
+      "sha256": "b685641a29dfba201509ae8078e9e0ccef869548d7157046ebec526be3e549dc"
+    },
+    {
+      "path": "tiendas/b-der-tarde/pix.bin",
+      "bytes": 207360,
+      "sha256": "a84fe7f44c6ad9d3c1bf228f78e14d3ecfdd185b2785c3e1ea7839d8291f43d2"
+    },
+    {
+      "path": "tiendas/b-der-tarde/pix.json",
+      "bytes": 370,
+      "sha256": "061998878833b13268b0987e601a845ee9a5e5d191158d0d3b43b4b288113031"
+    },
+    {
+      "path": "tiendas/b-der-tarde/pix.png",
+      "bytes": 7123,
+      "sha256": "b48497286da4b65156195bdc8081eafb7a78d0e0cae3fdc3e23b1880b946badd"
+    },
+    {
+      "path": "tiendas/b-der-tarde/state.json",
+      "bytes": 955,
+      "sha256": "e550fb0df8e6d1c9f29f3df0bf94e61162148eecffaaaef719905fb31b779990"
+    },
+    {
+      "path": "tiendas/b-der-tarde/zb.bin",
+      "bytes": 207360,
+      "sha256": "64acdc7f20c80eb3ff80b10106534e6a405f5ed59002faaa947165d04501c416"
+    },
+    {
+      "path": "tiendas/b-der-tarde/zb.json",
+      "bytes": 322,
+      "sha256": "c657ac8a4a7026a15990016f238738f8796fde4bcd2430a5da333a6b6a43eae7"
+    },
+    {
+      "path": "tiendas/b-izq-manana/kinds.bin",
+      "bytes": 51840,
+      "sha256": "51ad6580be92f993770a686dee549c63fd1ec0f527d25a7faae9cdd9953ccb1c"
+    },
+    {
+      "path": "tiendas/b-izq-manana/kinds.json",
+      "bytes": 305,
+      "sha256": "b685641a29dfba201509ae8078e9e0ccef869548d7157046ebec526be3e549dc"
+    },
+    {
+      "path": "tiendas/b-izq-manana/pix.bin",
+      "bytes": 207360,
+      "sha256": "32ca0d88b69ea9d72157928ad20cf38cc30716f88b3b06b2aed9ae93d0b5cc99"
+    },
+    {
+      "path": "tiendas/b-izq-manana/pix.json",
+      "bytes": 370,
+      "sha256": "13328fc62f8d0c5dd3d361a0679605d170ce5af651886e1e511fae84bbabf28c"
+    },
+    {
+      "path": "tiendas/b-izq-manana/pix.png",
+      "bytes": 7191,
+      "sha256": "baee6d7f34b3743622a070479fbb45d6155bce2164339f6cec48ef8b9f87ecda"
+    },
+    {
+      "path": "tiendas/b-izq-manana/state.json",
+      "bytes": 957,
+      "sha256": "050a0f8a58769a9883bcc0a09370794567011d95decce73824420dc9baa2afa4"
+    },
+    {
+      "path": "tiendas/b-izq-manana/zb.bin",
+      "bytes": 207360,
+      "sha256": "5d7ac62a6a0582dbc1615d3a4dc47ccde26938e282a6f8d7690533f5c7ec0718"
+    },
+    {
+      "path": "tiendas/b-izq-manana/zb.json",
+      "bytes": 322,
+      "sha256": "bf30db4d632a652067ba65fdebba10ef522405d54450eaffdeefb2c4b245b3e7"
+    },
+    {
+      "path": "tiendas/b-izq-tarde/kinds.bin",
+      "bytes": 51840,
+      "sha256": "51ad6580be92f993770a686dee549c63fd1ec0f527d25a7faae9cdd9953ccb1c"
+    },
+    {
+      "path": "tiendas/b-izq-tarde/kinds.json",
+      "bytes": 305,
+      "sha256": "b685641a29dfba201509ae8078e9e0ccef869548d7157046ebec526be3e549dc"
+    },
+    {
+      "path": "tiendas/b-izq-tarde/pix.bin",
+      "bytes": 207360,
+      "sha256": "3353e6f5bca35596174cd60de4cc14685e9e7948c34ccec5c3a001bfce952ff5"
+    },
+    {
+      "path": "tiendas/b-izq-tarde/pix.json",
+      "bytes": 370,
+      "sha256": "349b7d268ea3dc1862f8598c3c3982ad4f9c8ce6af0af98b2bbfdeb6dba66ddd"
+    },
+    {
+      "path": "tiendas/b-izq-tarde/pix.png",
+      "bytes": 7191,
+      "sha256": "55ed22c44d8a2817cce8b1d69ee17296d46b8d1ed174c3f7c451bb403b945f37"
+    },
+    {
+      "path": "tiendas/b-izq-tarde/state.json",
+      "bytes": 955,
+      "sha256": "55ef577a5a11c0ee6f1b7f832fffbd70f3b48ed2ad369c04ae92807ff0e4738a"
+    },
+    {
+      "path": "tiendas/b-izq-tarde/zb.bin",
+      "bytes": 207360,
+      "sha256": "5d7ac62a6a0582dbc1615d3a4dc47ccde26938e282a6f8d7690533f5c7ec0718"
+    },
+    {
+      "path": "tiendas/b-izq-tarde/zb.json",
+      "bytes": 322,
+      "sha256": "bf30db4d632a652067ba65fdebba10ef522405d54450eaffdeefb2c4b245b3e7"
+    },
+    {
+      "path": "tiendas/manana-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "bc94c8a3c9486ea13b30f86a381bdbf4337d8dad1d8aa02307e9dcbefac1dd37"
+    },
+    {
+      "path": "tiendas/manana-0/kinds.json",
+      "bytes": 305,
+      "sha256": "285ae90c3fdff596ec73d6003012761abf17e73d6962e6053ae751067cbe483a"
+    },
+    {
+      "path": "tiendas/manana-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "e031e0ecb9177da566b161efd9b12d2abf0ed3eae2dc7d4f6b30941c05fdea16"
+    },
+    {
+      "path": "tiendas/manana-0/pix.json",
+      "bytes": 370,
+      "sha256": "02d8eb7c30d46caa7a5426795c8a324a637867a884455cee3efca9de93db09fb"
+    },
+    {
+      "path": "tiendas/manana-0/pix.png",
+      "bytes": 8783,
+      "sha256": "2273195a4650e20430ac49da3b0c1c16fa45a0a505015e939821ec6f3f902348"
+    },
+    {
+      "path": "tiendas/manana-0/state.json",
+      "bytes": 947,
+      "sha256": "fa7807bde7ce97a4a191d07936c6a35c8cfe00b6d54162155a7f980f68bf8625"
+    },
+    {
+      "path": "tiendas/manana-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "a73983dc2efdb38c31ef2990cb056f03f5c6229a49131cb1ad4ec1ac57930cb2"
+    },
+    {
+      "path": "tiendas/manana-0/zb.json",
+      "bytes": 322,
+      "sha256": "0268590c65df251700104277f8ef14efa93ab848f426a261e82e5f065437ef48"
+    },
+    {
+      "path": "tiendas/manana-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "bc94c8a3c9486ea13b30f86a381bdbf4337d8dad1d8aa02307e9dcbefac1dd37"
+    },
+    {
+      "path": "tiendas/manana-1/kinds.json",
+      "bytes": 305,
+      "sha256": "285ae90c3fdff596ec73d6003012761abf17e73d6962e6053ae751067cbe483a"
+    },
+    {
+      "path": "tiendas/manana-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "6e7a41d65a28a52626e5441ef3b879cbe1c049dacbb013eaafa44451fe754d5b"
+    },
+    {
+      "path": "tiendas/manana-1/pix.json",
+      "bytes": 370,
+      "sha256": "4a630973d0034624d6657b98b02487f6782057fa9d6cceabf51dfaf38ddd4e81"
+    },
+    {
+      "path": "tiendas/manana-1/pix.png",
+      "bytes": 8878,
+      "sha256": "8c6d9d6864b66c3e394b8ec7e526f1912c23146fb3a4b92b4597d47c40e8c60b"
+    },
+    {
+      "path": "tiendas/manana-1/state.json",
+      "bytes": 947,
+      "sha256": "145a7f4710b5a42967d1a79241746d294844cb5bc8f6580d7978c9d619d2cae2"
+    },
+    {
+      "path": "tiendas/manana-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "a73983dc2efdb38c31ef2990cb056f03f5c6229a49131cb1ad4ec1ac57930cb2"
+    },
+    {
+      "path": "tiendas/manana-1/zb.json",
+      "bytes": 322,
+      "sha256": "0268590c65df251700104277f8ef14efa93ab848f426a261e82e5f065437ef48"
+    },
+    {
+      "path": "tiendas/manana-2/kinds.bin",
+      "bytes": 51840,
+      "sha256": "bc94c8a3c9486ea13b30f86a381bdbf4337d8dad1d8aa02307e9dcbefac1dd37"
+    },
+    {
+      "path": "tiendas/manana-2/kinds.json",
+      "bytes": 305,
+      "sha256": "285ae90c3fdff596ec73d6003012761abf17e73d6962e6053ae751067cbe483a"
+    },
+    {
+      "path": "tiendas/manana-2/pix.bin",
+      "bytes": 207360,
+      "sha256": "fdf84b27734b358395d856638e4e5d3e2f2b2f94c0e56f3bba1fdb9cd3bd6f7d"
+    },
+    {
+      "path": "tiendas/manana-2/pix.json",
+      "bytes": 370,
+      "sha256": "daf1319564c09dedde9ef54e7b2987b1c679a91b7a2dd7b0d81761af9e2b931b"
+    },
+    {
+      "path": "tiendas/manana-2/pix.png",
+      "bytes": 9120,
+      "sha256": "bde4876bfcd3909c973731594acfcfdf936c78e5b1dd8f5409cb358733ed22bf"
+    },
+    {
+      "path": "tiendas/manana-2/state.json",
+      "bytes": 947,
+      "sha256": "f1fb23998b3ffcb89a6603af50b8241fa56b9e4f4f24440872ea1e9e96829c22"
+    },
+    {
+      "path": "tiendas/manana-2/zb.bin",
+      "bytes": 207360,
+      "sha256": "a73983dc2efdb38c31ef2990cb056f03f5c6229a49131cb1ad4ec1ac57930cb2"
+    },
+    {
+      "path": "tiendas/manana-2/zb.json",
+      "bytes": 322,
+      "sha256": "0268590c65df251700104277f8ef14efa93ab848f426a261e82e5f065437ef48"
+    },
+    {
+      "path": "tiendas/tarde-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "bc94c8a3c9486ea13b30f86a381bdbf4337d8dad1d8aa02307e9dcbefac1dd37"
+    },
+    {
+      "path": "tiendas/tarde-0/kinds.json",
+      "bytes": 305,
+      "sha256": "285ae90c3fdff596ec73d6003012761abf17e73d6962e6053ae751067cbe483a"
+    },
+    {
+      "path": "tiendas/tarde-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "f89f81d7035cb06285cc68d015cc64ca0258f5816f5c8ce66bb1c59f12101ac7"
+    },
+    {
+      "path": "tiendas/tarde-0/pix.json",
+      "bytes": 370,
+      "sha256": "058f1042b96a6f7c315e282206a8174ca14df2283df4700ff7ec113158bcf9d5"
+    },
+    {
+      "path": "tiendas/tarde-0/pix.png",
+      "bytes": 8781,
+      "sha256": "60ef87991b04da469ee24df42955dc2457bd78864920935a2bcce3e226ce7091"
+    },
+    {
+      "path": "tiendas/tarde-0/state.json",
+      "bytes": 945,
+      "sha256": "f2d2cda8e93c42b756b024822548d4ee8fccdcf6fd7f0bb10328d8b85550a28e"
+    },
+    {
+      "path": "tiendas/tarde-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "a73983dc2efdb38c31ef2990cb056f03f5c6229a49131cb1ad4ec1ac57930cb2"
+    },
+    {
+      "path": "tiendas/tarde-0/zb.json",
+      "bytes": 322,
+      "sha256": "0268590c65df251700104277f8ef14efa93ab848f426a261e82e5f065437ef48"
+    },
+    {
+      "path": "tiendas/tarde-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "bc94c8a3c9486ea13b30f86a381bdbf4337d8dad1d8aa02307e9dcbefac1dd37"
+    },
+    {
+      "path": "tiendas/tarde-1/kinds.json",
+      "bytes": 305,
+      "sha256": "285ae90c3fdff596ec73d6003012761abf17e73d6962e6053ae751067cbe483a"
+    },
+    {
+      "path": "tiendas/tarde-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "a306b9d6d1c04214c6f819a05b60e766c64de7c25b852effd4147109cafffb2b"
+    },
+    {
+      "path": "tiendas/tarde-1/pix.json",
+      "bytes": 370,
+      "sha256": "06409a704024de5b5bec27a6be7d291fac20fd5c733ef451ad3e426b67f1cd96"
+    },
+    {
+      "path": "tiendas/tarde-1/pix.png",
+      "bytes": 8875,
+      "sha256": "c94f84846946b1f54a4b78c4cceebb20b0f2614558b1a555f80181faf338ba78"
+    },
+    {
+      "path": "tiendas/tarde-1/state.json",
+      "bytes": 945,
+      "sha256": "4496f918b07963adcbc73bbc7c27d6834f431a0435b7630bf345f6446e8dd668"
+    },
+    {
+      "path": "tiendas/tarde-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "a73983dc2efdb38c31ef2990cb056f03f5c6229a49131cb1ad4ec1ac57930cb2"
+    },
+    {
+      "path": "tiendas/tarde-1/zb.json",
+      "bytes": 322,
+      "sha256": "0268590c65df251700104277f8ef14efa93ab848f426a261e82e5f065437ef48"
+    },
+    {
+      "path": "tiendas/tarde-2/kinds.bin",
+      "bytes": 51840,
+      "sha256": "bc94c8a3c9486ea13b30f86a381bdbf4337d8dad1d8aa02307e9dcbefac1dd37"
+    },
+    {
+      "path": "tiendas/tarde-2/kinds.json",
+      "bytes": 305,
+      "sha256": "285ae90c3fdff596ec73d6003012761abf17e73d6962e6053ae751067cbe483a"
+    },
+    {
+      "path": "tiendas/tarde-2/pix.bin",
+      "bytes": 207360,
+      "sha256": "fdf84b27734b358395d856638e4e5d3e2f2b2f94c0e56f3bba1fdb9cd3bd6f7d"
+    },
+    {
+      "path": "tiendas/tarde-2/pix.json",
+      "bytes": 370,
+      "sha256": "daf1319564c09dedde9ef54e7b2987b1c679a91b7a2dd7b0d81761af9e2b931b"
+    },
+    {
+      "path": "tiendas/tarde-2/pix.png",
+      "bytes": 9120,
+      "sha256": "bde4876bfcd3909c973731594acfcfdf936c78e5b1dd8f5409cb358733ed22bf"
+    },
+    {
+      "path": "tiendas/tarde-2/state.json",
+      "bytes": 945,
+      "sha256": "dfc838466f39797d293d2690519ebbafaba53258b8972319c011e799e79b8880"
+    },
+    {
+      "path": "tiendas/tarde-2/zb.bin",
+      "bytes": 207360,
+      "sha256": "a73983dc2efdb38c31ef2990cb056f03f5c6229a49131cb1ad4ec1ac57930cb2"
+    },
+    {
+      "path": "tiendas/tarde-2/zb.json",
+      "bytes": 322,
+      "sha256": "0268590c65df251700104277f8ef14efa93ab848f426a261e82e5f065437ef48"
     },
     {
       "path": "unit/unit-s26.json",

@@ -25,6 +25,8 @@ void main() {
       'frutas',
       'caja',
       'esquina',
+      'parada',
+      'tiendas',
       'cruce',
     ]);
   });
