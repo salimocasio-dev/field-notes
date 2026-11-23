@@ -3,13 +3,14 @@
 // the camera are cruce-preview.html's stand-ins (THING), ported as they are drawn there; the bottle's water by the parts
 // left, the block of ice in three sizes, the drops and the puddles, the letter, the small paper bag, the kite, the loaf,
 // a photo sheet, the skipping rope and the card's road are this file's guesses where the script gives no look. The
-// content lane looks at each one on docs/proyecto/pixel/port/cruce-sprites.png (tool/make_cruce_sprites_test.dart).
+// content lane looks at each one on docs/proyecto/pixel/port/cruce-sprites.png (tool/cruce_sprites_test.dart).
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/src/banco/banco_sprites.dart' as banco;
+import 'package:coqui_scenes/src/calle/calle_cast.dart' show calleWho;
 import 'package:coqui_scenes/src/colmado/colmado_cast.dart';
 import 'package:coqui_scenes/src/mostrador/mostrador_sprites.dart'
     show mkCliente;
@@ -221,10 +222,13 @@ Sprite mkAbuelo(String pose, {bool open = false}) =>
 /// A skipping rope held at both ends round a child: the arc over her head, [w] wide, [h] high.
 Sprite mkCuerda(int w, int h) {
   final b = Buf(w, h);
+  num? px, py;
   for (var x = 0; x < w; x++) {
     final t = (x - (w - 1) / 2) / ((w - 1) / 2);
     final y = ((h - 2) * t * t).round();
-    b.px(x, y, _h('#E03C30'));
+    if (px != null) b.line(px, py!, x, y, _h('#E03C30'));
+    px = x;
+    py = y;
   }
   return b.done();
 }
@@ -242,3 +246,49 @@ class _Off {
   void ell(num cx, num cy, num rx, num ry, List<int> r) =>
       b.ell(cx + 1, cy + 1, rx, ry, r);
 }
+
+/// Every sprite and pose this scene adds, in order, for the sheet picture (cruce-sprites.png).
+List<(String, Sprite)> cruceSpriteSheet() => [
+  ('bicicleta de frente (don Pepe)', mkBiciFrente()),
+  for (final n in const [3, 2, 1, 0])
+    (
+      'bicicleta de frente con cesta, hielo $n',
+      mkBiciFrente(cesta: true, hielo: n),
+    ),
+  ('carrito del piraguero', mkCarrito()),
+  ('carrito, sin hielo', mkCarrito(hielo: false)),
+  ('bolsa de abuela', mkBolsa()),
+  for (final n in const [3, 2, 1, 0]) ('botella, $n partes', mkBotellaAgua(n)),
+  ('botella tumbada', mkBotellaAgua(2, tumbada: true)),
+  ('charco', mkCharco()),
+  ('gota', mkGota()),
+  ('carta', mkCarta()),
+  ('bolsita de la farmacia', mkBolsita()),
+  ('cometa', mkCometa()),
+  ('pan', mkPan()),
+  ('camara', mkCamara()),
+  ('hoja en blanco', mkHoja()),
+  ('foto buena', mkHoja(hecha: true)),
+  ('foto mala', mkHoja(hecha: true, mala: true)),
+  ('piragua', mkPiraguaCruce()),
+  ('piragua con dos cucharas', mkPiraguaCruce(dos: true)),
+  ('el piraguero', mkPiraguero('idle')),
+  ('el piraguero, la mano', mkPiraguero('offer')),
+  ('abuelo', mkAbuelo('idle')),
+  (
+    'Carmen con la cuerda',
+    overSprite(mkPersona(calleWho('carmen'), 'idle', false, false), [
+      (mkCuerda(30, 26), PX - 15, 0),
+    ]),
+  ),
+  ('papa con la camara', mkPersona(calleWho('papa'), 'foto', false, false)),
+  (
+    'papa de rodillas (sentado)',
+    mkPersona(calleWho('papa'), 'idle', false, true),
+  ),
+  ('Luis sentado', mkPersona(calleWho('luis'), 'idle', false, true)),
+  ('abuela sentada', mkAbuelaS('idle', false, false)),
+  ('abuela sentada, abanico', mkAbuelaS('fan0', false, false)),
+  ('Canelo echado', mkPerro('lie', false)),
+  ('el bebe', mkBebe('idle', false)),
+];
