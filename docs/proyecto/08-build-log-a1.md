@@ -2,6 +2,11 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 23, part 31: Hablar's order 25 and the new Biblioteca (build 15)
+
+- Hablar (order 25, delivered by ChatGPT and Gemini, then fixed): each call has a short Spanish title and a one-line English job; one Up next card starts the call; a 10-stop journey by place opens a place's main and smaller calls. The smaller calls say "Coming soon" until `CallRoute` can name a call (request 25). As delivered the tab overflowed on every phone and "Calling…" had become "Calling..."; both fixed, the dropped tests brought back.
+- Biblioteca (delivered by Codex, then fixed; his choice to replace the old one): a story put together on the phone from reviewed plots for his known words, texts he pastes, read as text with each word's ear stage by colour. The course shelf (Listen and Read) and the picture book reader of order 22 are gone; the map replays the stories. Open for him: the reader counts a recording heard as hearing its words, where page 10 says reading writes no word record; reading is marked finished only with a verified A2 in `levelResult['cefr']`, which the level check does not write yet; the plots are 4 (40 stories) and sit in the feature until the course data has a place for them.
+
 ## Nov 23, part 30: La calle plays (build 14)
 
 - La esquina, La parada, Las tiendas and El cruce are on main and their twelve stories play in build 14 as preview content. Hours per scene: esquina 2.9, parada about 2.6, tiendas about 3.1, cruce about 1.5 (builder time plus the orchestrator's finishing). Page 13 lists 38 acts left OPEN for the content lane.
