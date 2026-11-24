@@ -32,5 +32,7 @@ jobs:
         run: flutter pub get
         working-directory: coqui
       - name: Build for iOS, no signing
-        run: flutter build ios --no-codesign
+        env:
+          COQUI_APP_BASE: ${{ vars.COQUI_APP_BASE || 'https://salimocasio-dev.github.io/field-notes/app/' }}
+        run: flutter build ios --no-codesign --dart-define=COQUI_APP_BASE="$COQUI_APP_BASE"
         working-directory: coqui/app
