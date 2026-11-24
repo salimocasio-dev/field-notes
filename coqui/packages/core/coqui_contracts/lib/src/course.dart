@@ -175,29 +175,43 @@ class LevelItem {
   };
 }
 
-/// What the call partner is told for one place's call (llamada.js, LLAMADAS[placeId]):
-/// {minutos, job, opening, foto}. [agentId] comes from the course's language
-/// (`course.language.callAgentId`), defaulting to Spanish's Danny agent.
+/// What the call partner is told for one call of a place (llamada.js,
+/// LLAMADAS[placeId] and request 25): `{id, title, jobEn, minutos, job,
+/// opening, foto, isMain, agentId}`.
+///
+/// [id] defaults to [placeId] for legacy single-call definitions; [title] and
+/// [jobEn] default to empty strings; [isMain] defaults to `true`; [photo] is
+/// nullable so a call with no drawn pixel-art asset yet renders no picture;
+/// [agentId] comes from the course's language (`course.language.callAgentId`),
+/// defaulting to Spanish's Danny agent.
 class CallBrief {
   CallBrief({
+    String? id,
     required this.placeId,
+    this.title = '',
+    this.jobEn = '',
     required this.minutes,
     required this.job,
     required this.opening,
-    required this.photo,
+    this.photo,
+    this.isMain = true,
     this.agentId = spanishCallAgentId,
-  });
+  }) : id = id ?? placeId;
 
   factory CallBrief.fromJson(
     String placeId,
     Map<String, dynamic> j, {
     String? agentId,
   }) => CallBrief(
+    id: j['id'] as String?,
     placeId: placeId,
+    title: j['title'] as String? ?? '',
+    jobEn: j['jobEn'] as String? ?? '',
     minutes: jsonInt(j['minutos']),
     job: j['job'] as String,
     opening: j['opening'] as String,
-    photo: j['foto'] as String,
+    photo: j['foto'] as String?,
+    isMain: j['isMain'] as bool? ?? true,
     agentId:
         agentId ??
         j['agentId'] as String? ??
@@ -205,18 +219,26 @@ class CallBrief {
         spanishCallAgentId,
   );
 
+  String id;
   String placeId;
+  String title;
+  String jobEn;
   int minutes;
   String job;
   String opening;
-  String photo;
+  String? photo;
+  bool isMain;
   String agentId;
 
   Map<String, dynamic> toJson() => {
+    if (id != placeId) 'id': id,
+    if (title.isNotEmpty) 'title': title,
+    if (jobEn.isNotEmpty) 'jobEn': jobEn,
     'minutos': minutes,
     'job': job,
     'opening': opening,
-    'foto': photo,
+    'foto': ?photo,
+    if (!isMain) 'isMain': isMain,
     if (agentId != spanishCallAgentId) 'agentId': agentId,
   };
 }
@@ -300,4 +322,27 @@ abstract interface class CourseCatalog {
     Iterable<String> storyIds, {
     int max = 5,
   });
+}
+
+/// Optional interface for a [CourseCatalog] that supplies multiple calls per
+/// place.
+///
+/// Kept separate from [CourseCatalog] (same pattern as `LanguageCatalog` and
+/// `RepasoCatalog`): adding an abstract member directly to [CourseCatalog]
+/// would break every catalog implemented in other packages. Catalogs that do
+/// not implement this fall back to `[callFor(placeId)]` (or `[]`) via
+/// [CourseCalls.callsFor].
+abstract interface class CallsCatalog {
+  List<CallBrief> callsFor(String placeId);
+}
+
+/// `course.callsFor(placeId)`: returns every call for [placeId] when the
+/// catalog implements [CallsCatalog], or `[if (callFor(placeId) case final c?) c]`
+/// otherwise.
+extension CourseCalls on CourseCatalog {
+  List<CallBrief> callsFor(String placeId) {
+    final c = this;
+    if (c is CallsCatalog) return (c as CallsCatalog).callsFor(placeId);
+    return [?callFor(placeId)];
+  }
 }

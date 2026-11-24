@@ -32,3 +32,13 @@ The Calls (Hablar) build brief (sections 4, 7, 8, and 10, settled Nov 22, 2026) 
 
 - Order: 25 (Hablar redesign & call titles)
 - Branch: `lane/feature_speaking/25`
+
+## Status
+
+- Done in N2.1 (`#84`/`#123`): `Entitlements`, `AllowAllEntitlements`, `CallBrief.agentId`.
+- Done in `#5` (`story/5`): `CallBrief` (`id`, `title`, `jobEn`, `isMain`, nullable `photo`), `CallsCatalog` + `CourseCalls.callsFor(placeId)`, `CallRoute(placeId, {callId})`, `CallProgressStore` + `CallProgress.callDone(callId)`.
+- Remaining in other lanes:
+  - `coqui_ui`: wire `Entitlements entitlements = const AllowAllEntitlements()` into `Services` (see `5-coqui-contracts-needs-coqui-ui-services-entitlements.md`).
+  - `coqui_content` (`#6`): implement `CallsCatalog` and move the 31 reviewed calls into course data.
+  - `coqui_progress` (`#7`): implement `CallProgressStore` (`callDone(callId)`).
+  - `coqui_testing`: implement `CallsCatalog` on `FakeCourseCatalog` (multiple calls per place, optional `photo: null`) and `CallProgressStore` on `FakeProgressStore` (seeding / querying `callDone(callId)`).
