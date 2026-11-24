@@ -1,0 +1,104 @@
+name: Coqui PR Guardrails
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fast-guards:
+    name: Paid Audio, Boundaries & Noche Greps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guard historia/cuentos/ (paid Azure audio trigger)
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+          if echo "$CHANGED" | grep -q '^historia/cuentos/'; then
+            if [[ ",${PR_LABELS}," != *",allow-paid-audio,"* ]]; then
+              echo "::error::PR modifies historia/cuentos/ (triggers paid Azure audio). Add label 'allow-paid-audio' only after Salim approves."
+              exit 1
+            fi
+          fi
+
+      - name: Check single-package-per-branch rule under coqui/packages/
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+          PKGS=$(echo "$CHANGED" | grep '^coqui/packages/' | sed -E 's|^coqui/packages/(core/|features/)?([^/]+)/.*|\1\2|' | sort -u || true)
+          COUNT=$(echo "$PKGS" | sed '/^$/d' | wc -l)
+          if [ "$COUNT" -gt 1 ] && [[ ",${PR_LABELS}," != *",multi-package-ok,"* ]]; then
+            echo "::error::PR touches multiple Flutter packages ($PKGS). One branch must change one package (or add label 'multi-package-ok')."
+            exit 1
+          fi
+
+      - name: Noche token grep (added lines outside coqui_ui)
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          UI_PATH="coqui/packages/core/coqui_ui/"
+          DART_FILES=$(git diff --name-only --diff-filter=AM "origin/${BASE_REF}...HEAD" -- 'coqui/packages/*.dart' 'coqui/packages/**/*.dart' | grep -v "^${UI_PATH}" || true)
+          if [ -z "$DART_FILES" ]; then
+            echo "No non-coqui_ui Dart files changed."
+            exit 0
+          fi
+          BAD=0
+          for f in $DART_FILES; do
+            HITS=$(git diff -U0 "origin/${BASE_REF}...HEAD" -- "$f" | grep -E '^\+[^+]' | grep -nE 'Color\(0x|fontFamily\s*:' || true)
+            if [ -n "$HITS" ]; then
+              echo "::error file=$f::Found raw Color(0x...) or fontFamily outside coqui_ui. Use NocheColors/NocheType."
+              echo "$HITS"
+              BAD=1
+            fi
+          done
+          exit $BAD
+
+  dart-boundaries-and-format:
+    name: Boundaries & Format (Changed Dart Files)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Match exact Flutter setup step & version pin from .github/workflows/coqui.yml
+      - name: Read the pinned Flutter version
+        id: pin
+        run: echo "flutter=$(tr -d '[:space:]' < coqui/.flutter-version)" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.pin.outputs.flutter }}
+          channel: stable
+          cache: true
+
+      - name: Run check_boundaries.dart
+        if: hashFiles('coqui/tool/check_boundaries.dart') != ''
+        working-directory: coqui
+        run: dart run tool/check_boundaries.dart
+
+      - name: Check dart format on changed Dart files
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          CHANGED_DART=$(git diff --name-only --diff-filter=AM "origin/${BASE_REF}...HEAD" -- '*.dart' || true)
+          if [ -n "$CHANGED_DART" ]; then
+            dart format --output=none --set-exit-if-changed $CHANGED_DART
+          else
+            echo "No Dart files changed."
+          fi

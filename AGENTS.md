@@ -10,6 +10,32 @@ Read, in this order:
 
 Salim's words come first. If anything here disagrees with what he said, do what he said and tell him in one line.
 
+## Single Source of Truth & Where Things Live
+
+- **Live build board (only live backlog):** GitHub Issues and the existing GitHub Project board in `salimocasio-dev/field-notes`. Never track live tickets in Google Drive (`01 Backlog` in Drive is archived).
+- **Idea intake:** General product/feature ideas are worked through in Gemini chat first; architecture ideas are worked through in Claude first. Once shaped, tickets go onto the GitHub board (1 issue = 1 Flutter package/lane).
+- **Repo specs (`docs/proyecto/`):** Engineering plans, Noche specs, and contracts stay in GitHub next to the code.
+- **Google Drive (`Coqui — Project Context (any AI)`):** Human-readable hub for `03-requirements`, `00 READ FIRST`, grants/LLC tracking, and Gemini handoff briefs. Whenever a major architecture, process, or milestone change lands, update the affected repo docs and keep Drive synced (never leave duplicate active backlogs).
+
+## Multi-AI Operating Model (Salim's Stack)
+
+- **Planning & ticket scoping:** Gemini 4 Neon (Antigravity) turns approved ideas, `03-requirements`, and `docs/proyecto/22-noche-epics.md` into scoped, single-lane GitHub issues.
+- **Routine & parallel execution:** Antigravity Orchestrator (Carbon/Neon planner + Hydrogen `high` executor) builds feature packages using isolated Git worktrees (`workspace="branch"`). Never crank Hydrogen to `xhigh`; escalate complex work to Neon `high` or Claude.
+- **Architecture & shared packages:** Claude Code (Opus 5.5 / Fable 5.2 when interactive quota is available) owns `coqui_contracts`, `coqui_ui` tokens, `coqui/requests/` merges, and security/platform boundaries. When Claude Code quota is unavailable, Antigravity (Neon/Carbon) handles these under strict cross-model review.
+- **Independent PR review (No Self-Review):** Every PR must pass deterministic CI first, then receive independent cross-model review from **Claude API** (automated read-only GitHub Action using monthly Ultra API credits) and **Codex (ChatGPT Plus)** before merge. No model approves or merges its own work.
+- **Naming & privacy:** `coqui` is the permanent internal codename (package names and folder paths stay `coqui*` even when the public app brand changes). Never introduce new hardcoded public repo/Pages URLs without a build-time override.
+
+## Non-Negotiable Guardrails
+
+1. Salim's words outrank any plan, research, or doc. If they disagree, follow Salim and note the override in one line.
+2. One branch changes **one package** under `coqui/`. Never edit `coqui_contracts` from a feature branch — write a request in `coqui/requests/`.
+3. **NEVER** modify or push under `historia/cuentos/` unless explicitly authorized (triggers paid Azure audio).
+4. **NEVER** modify Danny's ElevenLabs allowlist, origin lock, rate limit, or add pet names (`mi amor`, `nene`).
+5. **NEVER** add honor-system / self-report buttons ("I said it", swipe-to-rate), translation pop-ups, machine-translated lesson pages, or story screenshots reused as UI/book pictures.
+6. **NEVER** spend money (Azure, ElevenLabs, paid APIs/tests) without stating the exact amount and getting Salim's explicit yes.
+7. Keep `historia/` frozen (bug fixes only).
+8. Every package PR must pass `dart run tool/check_boundaries.dart`, `dart format`, `flutter analyze`, and its package tests.
+
 ## The board
 
 - The board is this repo's GitHub issues: https://github.com/salimocasio-dev/field-notes/issues
@@ -19,7 +45,7 @@ Salim's words come first. If anything here disagrees with what he said, do what 
   - Agent: `agent:claude`, `agent:codex`, `agent:gemini`, or `agent:any`.
   - Lane: `lane:<package>` (one package of `coqui/`), or `lane:app`, `lane:content`, `lane:docs`.
 - The repo is public, so the board is public until Salim makes the repo private. Never put keys, money, accounts or anything personal on the board.
-- Salim's notes may still land in the Drive backlog (`01 Backlog — master copy`). Claude turns them into stories here and writes the issue number next to the note.
+- Live backlog and new tickets are tracked exclusively on GitHub Issues / the GitHub Project board (Drive `01 Backlog` is archived).
 
 ## The rule that keeps you apart
 
@@ -47,17 +73,17 @@ All commands are run from the repo root. `<you>` is `claude`, `codex` or `gemini
 
 ## Reviews and merging
 
-- Every pull request is reviewed by an agent from a different company than the one that built it. Claude's work is reviewed by Codex or Gemini; theirs by Claude or each other.
+- Every pull request is reviewed by an agent from a different company than the one that built it. Claude's work is reviewed by Codex or Gemini; theirs by Claude API / Claude Code or each other.
 - A review is a comment on the pull request. It starts with `REVIEW PASS <you>` or `REVIEW CHANGES <you>`, then numbered findings, each with the file and line.
 - Only real problems block: a wrong behaviour, a broken rule of Salim's, a failed check. Small things go in the comment as "later" and become a new story. They do not block.
-- Merge when all three hold: CI (`coqui.yml`) is green, there is a `REVIEW PASS` from another company, and the branch is up to date with `main`. The reviewer squash-merges. `Closes #<n>` closes the story.
-- `REVIEW CHANGES`: the builder fixes it on the same branch. After two rounds, Claude decides.
+- Merge when all three hold: CI (`coqui.yml` + `coqui-guardrails.yml`) is green, there is an independent cross-model `REVIEW PASS` (Claude API / Codex), and the branch is up to date with `main`. The reviewer squash-merges. `Closes #<n>` closes the story.
+- `REVIEW CHANGES`: the builder fixes it on the same branch. After two rounds, Claude (or Neon/Carbon if Claude Code quota is unavailable) decides.
 - Look for review work when `ready` finds nothing for you: open pull requests built by another company.
 
 ## Who may do what
 
 - Any agent: a story labelled for it or `agent:any`, in that story's lane.
-- Claude only (the scrum master):
+- Claude (the scrum master; or Antigravity Neon/Carbon under cross-model review when Claude Code quota is unavailable):
   - `lane:app` (the shell), `coqui/BUILD` (putting a build live), `docs/`, `.github/`, and this page.
   - Grooming: turning epics and Salim's notes into stories with a "Done when", a lane and an agent.
   - Moving a `status:blocked` story to `status:ready` once what it waits on is merged.

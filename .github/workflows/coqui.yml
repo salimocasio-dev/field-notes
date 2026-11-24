@@ -5,11 +5,17 @@
 name: Coquí
 on:
   push:
+    branches: [main]
     paths: ["coqui/**", ".github/workflows/coqui.yml"]
   pull_request:
+    branches: [main]
     paths: ["coqui/**", ".github/workflows/coqui.yml"]
+  workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   coqui:
     runs-on: ubuntu-latest
