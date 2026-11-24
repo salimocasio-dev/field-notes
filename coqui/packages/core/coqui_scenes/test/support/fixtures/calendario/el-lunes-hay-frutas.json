@@ -1,0 +1,893 @@
+{
+ "id": "el-lunes-hay-frutas",
+ "title": "El lunes hay frutas",
+ "place": "La plaza",
+ "scene": "calendario",
+ "next": "el-fin-de-semana",
+ "goal": "Hang the señora's picture cards under the right day of the week (lunes to jueves) so that Beto's three balloons stay tied to the board's post: every card under the wrong day costs a balloon, which bursts.",
+ "stake": {
+  "thing": "globos",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "lunes",
+  "martes",
+  "miércoles",
+  "jueves"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "hay",
+  "fruta",
+  "bola",
+  "bicicleta",
+  "juega",
+  "corre",
+  "niños",
+  "voy",
+  "va",
+  "vienes",
+  "café",
+  "flor",
+  "pan",
+  "jugo",
+  "pone",
+  "buenos días",
+  "trabaja",
+  "¿dónde está?",
+  "sí",
+  "ahora",
+  "más",
+  "tú"
+ ],
+ "also_heard": [],
+ "names": {
+  "senora": "b_n_senora",
+  "luis": "p_n_luis",
+  "abuela": "abuela",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "1": "lunes",
+  "2": "martes",
+  "3": "miércoles",
+  "4": "jueves"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "c69_trabaja": {
+   "who": "narr",
+   "text": "La señora trabaja en la plaza."
+  },
+  "c69_sa_buenos": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Buenos días, Coquí!"
+  },
+  "c69_cq_buenos": {
+   "who": "tu",
+   "text": "¡Buenos días!",
+   "tu_turno": [
+    {
+     "palabra": "buenos días",
+     "formas": [
+      "buenos días",
+      "buenos dias"
+     ]
+    }
+   ]
+  },
+  "c69_sa_cuenta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Lunes, martes, miércoles, jueves."
+  },
+  "c69_donde_lunes": {
+   "who": "narr",
+   "text": "¿Dónde está el lunes?"
+  },
+  "c69_sa_lunes": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El lunes hay frutas en la plaza."
+  },
+  "c69_donde_frutas": {
+   "who": "narr",
+   "text": "¿Dónde ponemos las frutas?"
+  },
+  "c69_sa_martes": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El martes los niños juegan bola. ¿Vienes el martes, Beto?"
+  },
+  "c69_donde_bola": {
+   "who": "narr",
+   "text": "¿Y dónde ponemos la bola?"
+  },
+  "c69_sa_miercoles": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El miércoles hay bingo."
+  },
+  "c69_ab_miercoles": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡El miércoles! Yo voy el miércoles."
+  },
+  "c69_donde_miercoles": {
+   "who": "narr",
+   "text": "¿Dónde está el miércoles?"
+  },
+  "c69_sa_jueves": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el jueves corren bicicleta."
+  },
+  "c69_l_jueves": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡El jueves voy yo!"
+  },
+  "c69_donde_bici": {
+   "who": "narr",
+   "text": "¿Dónde ponemos la bicicleta?"
+  },
+  "c69_sa_muybien": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Lunes, martes, miércoles y jueves. ¡Muy bien!"
+  },
+  "c69_sa_mas": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hay más. Ahora tú, Coquí."
+  },
+  "c69_sa_vienes": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¿Vienes el lunes, Coquí?"
+  },
+  "c69_cq_voy": {
+   "who": "tu",
+   "text": "¡Sí, voy!",
+   "tu_turno": [
+    {
+     "palabra": "voy",
+     "formas": [
+      "voy",
+      "sí voy"
+     ]
+    }
+   ]
+  },
+  "c69_fin": {
+   "who": "narr",
+   "text": "El lunes hay frutas en la plaza. Y Coquí va."
+  },
+  "c69_a_1_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El lunes hay café."
+  },
+  "c69_b_1_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el lunes hay café."
+  },
+  "c69_no_1_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay café el lunes."
+  },
+  "c69_a_1_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El lunes hay flores."
+  },
+  "c69_b_1_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el lunes hay flores."
+  },
+  "c69_no_1_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay flores el lunes."
+  },
+  "c69_a_1_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El lunes hay pan."
+  },
+  "c69_b_1_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el lunes hay pan."
+  },
+  "c69_no_1_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pan el lunes."
+  },
+  "c69_a_1_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El lunes hay jugo."
+  },
+  "c69_b_1_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el lunes hay jugo."
+  },
+  "c69_no_1_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay jugo el lunes."
+  },
+  "c69_a_2_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El martes hay café."
+  },
+  "c69_b_2_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el martes hay café."
+  },
+  "c69_no_2_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay café el martes."
+  },
+  "c69_a_2_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El martes hay flores."
+  },
+  "c69_b_2_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el martes hay flores."
+  },
+  "c69_no_2_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay flores el martes."
+  },
+  "c69_a_2_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El martes hay pan."
+  },
+  "c69_b_2_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el martes hay pan."
+  },
+  "c69_no_2_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pan el martes."
+  },
+  "c69_a_2_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El martes hay jugo."
+  },
+  "c69_b_2_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el martes hay jugo."
+  },
+  "c69_no_2_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay jugo el martes."
+  },
+  "c69_a_3_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El miércoles hay café."
+  },
+  "c69_b_3_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el miércoles hay café."
+  },
+  "c69_no_3_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay café el miércoles."
+  },
+  "c69_a_3_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El miércoles hay flores."
+  },
+  "c69_b_3_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el miércoles hay flores."
+  },
+  "c69_no_3_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay flores el miércoles."
+  },
+  "c69_a_3_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El miércoles hay pan."
+  },
+  "c69_b_3_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el miércoles hay pan."
+  },
+  "c69_no_3_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pan el miércoles."
+  },
+  "c69_a_3_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El miércoles hay jugo."
+  },
+  "c69_b_3_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el miércoles hay jugo."
+  },
+  "c69_no_3_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay jugo el miércoles."
+  },
+  "c69_a_4_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El jueves hay café."
+  },
+  "c69_b_4_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el jueves hay café."
+  },
+  "c69_no_4_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay café el jueves."
+  },
+  "c69_a_4_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El jueves hay flores."
+  },
+  "c69_b_4_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el jueves hay flores."
+  },
+  "c69_no_4_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay flores el jueves."
+  },
+  "c69_a_4_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El jueves hay pan."
+  },
+  "c69_b_4_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el jueves hay pan."
+  },
+  "c69_no_4_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pan el jueves."
+  },
+  "c69_a_4_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El jueves hay jugo."
+  },
+  "c69_b_4_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el jueves hay jugo."
+  },
+  "c69_no_4_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay jugo el jueves."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana",
+    "tela": 1
+   }
+  },
+  {
+   "act": "globos",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c69_trabaja",
+  "c69_sa_buenos",
+  "c69_cq_buenos",
+  {
+   "act": "cuenta",
+   "de": 1,
+   "a": 4,
+   "suelto": 1
+  },
+  "c69_sa_cuenta",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "dia1",
+   "lead": [],
+   "line": "c69_donde_lunes",
+   "then": [],
+   "after": [
+    {
+     "act": "luce",
+     "dia": "1"
+    },
+    {
+     "act": "ir",
+     "a": "escalon1"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "muestra",
+   "carta": "frutas"
+  },
+  "c69_sa_lunes",
+  {
+   "ask": "dia1",
+   "lead": [],
+   "line": "c69_donde_frutas",
+   "then": [],
+   "after": [
+    {
+     "act": "cuelga",
+     "carta": "frutas",
+     "dia": "1",
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "act": "muestra",
+   "carta": "bola"
+  },
+  "c69_sa_martes",
+  {
+   "act": "gesto",
+   "quien": "beto",
+   "que": "si"
+  },
+  {
+   "ask": "dia2",
+   "lead": [],
+   "line": "c69_donde_bola",
+   "then": [],
+   "after": [
+    {
+     "act": "cuelga",
+     "carta": "bola",
+     "dia": "2",
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "muestra",
+   "carta": "bingo"
+  },
+  "c69_sa_miercoles",
+  "c69_ab_miercoles",
+  {
+   "ask": "dia3",
+   "lead": [],
+   "line": "c69_donde_miercoles",
+   "then": [],
+   "after": [
+    {
+     "act": "cuelga",
+     "carta": "bingo",
+     "dia": "3",
+     "quien": "coqui"
+    }
+   ]
+  },
+  "c69_sa_jueves",
+  "c69_l_jueves",
+  {
+   "ask": "dia4",
+   "lead": [],
+   "line": "c69_donde_bici",
+   "then": [],
+   "after": [
+    {
+     "act": "cuelga",
+     "carta": "bicicleta",
+     "dia": "4",
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "senora",
+   "que": "mira",
+   "a": "tabla"
+  },
+  "c69_sa_muybien",
+  {
+   "dots": 5
+  },
+  "c69_sa_mas",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "da",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "cafe",
+    "flores",
+    "pan",
+    "jugo"
+   ]
+  },
+  {
+   "act": "muestra",
+   "carta": "$ca"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "dia1",
+    "dia2",
+    "dia3",
+    "dia4"
+   ],
+   "pick": "dia$da",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c69_a_$da_$ca",
+   "right": [
+    {
+     "act": "cuelga",
+     "carta": "$ca",
+     "dia": "$da",
+     "quien": "coqui"
+    },
+    {
+     "act": "luce",
+     "dia": "$da"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xd",
+     "cond": "x=dia1",
+     "then": "1",
+     "else": "0"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia2",
+     "then": "2",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia3",
+     "then": "3",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia4",
+     "then": "4",
+     "else": "$xd"
+    },
+    {
+     "act": "cuelga",
+     "carta": "$ca",
+     "dia": "$xd",
+     "quien": "coqui"
+    },
+    "c69_no_$da_$ca",
+    {
+     "act": "revienta69"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "globos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "globos",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "db",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  {
+   "draw": "cb",
+   "options": [
+    "cafe",
+    "flores",
+    "pan",
+    "jugo"
+   ]
+  },
+  {
+   "act": "muestra",
+   "carta": "$cb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "dia1",
+    "dia2",
+    "dia3",
+    "dia4"
+   ],
+   "pick": "dia$db",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c69_b_$db_$cb",
+   "right": [
+    {
+     "act": "cuelga",
+     "carta": "$cb",
+     "dia": "$db",
+     "quien": "coqui"
+    },
+    {
+     "act": "luce",
+     "dia": "$db"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xd",
+     "cond": "x=dia1",
+     "then": "1",
+     "else": "0"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia2",
+     "then": "2",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia3",
+     "then": "3",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia4",
+     "then": "4",
+     "else": "$xd"
+    },
+    {
+     "act": "cuelga",
+     "carta": "$cb",
+     "dia": "$xd",
+     "quien": "coqui"
+    },
+    "c69_no_$db_$cb",
+    {
+     "act": "revienta69"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "globos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "globos",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "gesto",
+   "quien": "senora",
+   "que": "mira",
+   "a": "tabla"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final69",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final69",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final69",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c69_sa_vienes",
+  "c69_cq_voy",
+  "c69_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c69_trabaja",
+  "c69_sa_buenos",
+  "c69_cq_buenos",
+  "c69_sa_cuenta",
+  "c69_donde_lunes",
+  "c69_sa_lunes",
+  "c69_donde_frutas",
+  "c69_sa_martes",
+  "c69_donde_bola",
+  "c69_sa_miercoles",
+  "c69_ab_miercoles",
+  "c69_donde_miercoles",
+  "c69_sa_jueves",
+  "c69_l_jueves",
+  "c69_donde_bici",
+  "c69_sa_muybien",
+  "c69_sa_mas",
+  "c69_a_4_cafe",
+  "c69_b_2_flores",
+  "c69_sa_vienes",
+  "c69_cq_voy",
+  "c69_fin"
+ ]
+}

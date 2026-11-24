@@ -73,6 +73,18 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
   `test/plaza_stories_test.dart` and `tool/plaza_paths_test.dart` as El mostrador's, with `test/support/plaza_rules.dart`
   (the frog whole, the piragüero's head, the hooks, the board's pictures, the bubbles, the frog on the cart, the view, people
   apart; what the story's places and the sheet's checks do not settle together is counted apart, `notes`).
+- El reloj (order 59b): its three story files are fixtures here (`test/fixtures/reloj/`); `test/reloj_stories_test.dart`
+  and `tool/reloj_paths_test.dart` with `test/support/reloj_paths.dart` (condition-aware `relojDrawsOf`) and
+  `test/support/reloj_rules.dart` (frog-seen, frog-on-hand, tito-face, vendedor-head, cards-clear, carton-clear,
+  bingo-clear, table-heads, spots-in-view). No change to the runner.
+- El quiosco (order 60): its three story files are fixtures here (`test/fixtures/quiosco/`);
+  `test/quiosco_stories_test.dart` and `tool/quiosco_paths_test.dart` with `test/support/quiosco_paths.dart` and
+  `test/support/quiosco_rules.dart` (frog-seen, vendedor-head, candles-clear, sign-clear, spots-in-view). No change to
+  the runner.
+- El calendario (order 61): its three story files are fixtures here (`test/fixtures/calendario/`);
+  `test/calendario_stories_test.dart` and `tool/calendario_paths_test.dart` with `test/support/calendario_paths.dart`
+  and `test/support/calendario_rules.dart` (frog-seen, senora-col1, arch-card, balloons, seat-heads, spots-in-view). No
+  change to the runner.
 - A set step's positions go through the scene's `remap` (`remapPositions`): every map with a number `x` and `y`, and, since order 33b, where the answer cards stand (`respEn: [x, y]`, h-camino beats.5).
 - A change to the runner that moves any time, sound, clip, step or draw by one fails the differential test.
 - The end screen's "Next story" is the one place the runner differs from juego.js on purpose: juego.js shows it for any `next` (`!!(S.next&&!OIR)`), the runner only when `next` is a story the course names (`course.meta(next) != null`), because a story the course does not name is no story of the app (a staged one: coqui/AGENTS.md, "Stories staged by another session"); then the end screen is that of a story with no `next`. The recorded runs hold no end buttons (`ending.screen` only), so the comparison does not see this; `test/differential_test.dart` ("the end screen of the recorded runs") reads `view.foot` of the real tree's runs (`play(view:)`, `compareRun(view:)`), and the story, screen and Listen tests name the stories a test course has (`TestCourse(stories:)`, `meta`).

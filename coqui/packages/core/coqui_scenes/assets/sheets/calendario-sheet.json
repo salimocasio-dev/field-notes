@@ -1,0 +1,1371 @@
+{
+ "scene": "calendario",
+ "made": "node docs/proyecto/pixel/calendario-sheet-make.js, from calendario-set.html (window.CALENDARIO.E and colU) and the design of El calendario (the orchestrator's p6-spec, section calendario). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": 12
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 120. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the board's face at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 120 + 13 v - 22.5 z. Column k's middle is c(k) = colU(k) + cw / 2 (cw 0.68): c1 -2.1, c2 -1.42, c3 -0.74, c4 -0.06, c5 0.62, c6 1.3, c7 1.98; the picture holds u from -4.62 to 4.62",
+  "spot": "a spot is a world point of the feet (z 0: the paving; z 0.3: the step's top; z 0.46: the seat's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): a card on a hook hangs with its top row on sy and its middle on sx; the sun peg is centred on its spot; the balloons, the kite, the bows and the box of cards have their bottom middle on the spot; the card held up at muestra has the middle of its left edge on the spot (it is held out to her right). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), 41 for a child; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41) on (sx, sy); Canelo lying mkPerro('lie') (30 x 22): column 15 and its bottom edge; a small thing: see spot. Whoever sits on the seat faces left: no sprite is turned (the makers draw them from the front)",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "cards": "a card (14 x 12) on gancho.k.j hangs with its top at the hook: its box is [sx - 7, sy, 14, 12] (the hooks are 14.4 px apart down the column, a column is 17.68 px wide); a card on arco_gancho hangs the same way under the hoop",
+  "sol": "sol1 to sol7: a 9 px square centred on the middle of column k's coloured square (u c(k), z 3.785): the box [sx - 4, sy - 4, 9, 9]",
+  "globos": "the balloons: a 24 x 20 px stand-in whose foot (its bottom middle) is at the top of the board's left post (u -2.48, v -.07, z 4.4): the box [sx - 12, sy - 20, 24, 20]"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["manana", "tarde", "noche"],
+    "note": "69 manana (the opening and the game), 70 tarde, 71 manana for its opening and noche for its ending (the lamps lit); tarde is used by 70 only"
+   },
+   "tela": {
+    "values": [0, 1],
+    "note": "the cloth over the last three columns (story 69)"
+   }
+  },
+  "key": "hora + tela, e.g. \"manana-1\"",
+  "baked": ["?hora=manana&tela=0", "?hora=manana&tela=1", "?hora=tarde&tela=0", "?hora=tarde&tela=1", "?hora=noche&tela=0", "?hora=noche&tela=1"]
+ },
+ "things": {
+  "tabla": {
+   "set": true,
+   "uv": [-2.5, 0, 1.4, 2.38, 0, 4.05],
+   "world": [-1.7678, -1.6829, 1.4, 1.6829, 1.7678, 4.05],
+   "box": [55, 28, 127, 61],
+   "what": "the whole board: its face, from the left edge to the right edge (u -2.5 to 2.38) and from its foot to its top (z 1.4 to 4.05), on the plane v 0; a poke (the posts, the little roof and the arch are not in it: the arch is arco)",
+   "quad": [
+    [-1.7678, 1.7678, 1.4],
+    [1.6829, -1.6829, 1.4],
+    [1.6829, -1.6829, 4.05],
+    [-1.7678, 1.7678, 4.05]
+   ]
+  },
+  "dia1": {
+   "set": true,
+   "uv": [-2.44, 0, 1.4, -1.76, 0, 3.95],
+   "world": [-1.7253, 1.2445, 1.4, -1.2445, 1.7253, 3.95],
+   "box": [56, 31, 19, 58],
+   "what": "column 1 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [-1.7253, 1.7253, 1.4],
+    [-1.2445, 1.2445, 1.4],
+    [-1.2445, 1.2445, 3.95],
+    [-1.7253, 1.7253, 3.95]
+   ]
+  },
+  "dia2": {
+   "set": true,
+   "uv": [-1.76, 0, 1.4, -1.08, 0, 3.95],
+   "world": [-1.2445, 0.7637, 1.4, -0.7637, 1.2445, 3.95],
+   "box": [74, 31, 18, 58],
+   "what": "column 2 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [-1.2445, 1.2445, 1.4],
+    [-0.7637, 0.7637, 1.4],
+    [-0.7637, 0.7637, 3.95],
+    [-1.2445, 1.2445, 3.95]
+   ]
+  },
+  "dia3": {
+   "set": true,
+   "uv": [-1.08, 0, 1.4, -0.4, 0, 3.95],
+   "world": [-0.7637, 0.2828, 1.4, -0.2828, 0.7637, 3.95],
+   "box": [91, 31, 19, 58],
+   "what": "column 3 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [-0.7637, 0.7637, 1.4],
+    [-0.2828, 0.2828, 1.4],
+    [-0.2828, 0.2828, 3.95],
+    [-0.7637, 0.7637, 3.95]
+   ]
+  },
+  "dia4": {
+   "set": true,
+   "uv": [-0.4, 0, 1.4, 0.28, 0, 3.95],
+   "world": [-0.2828, -0.198, 1.4, 0.198, 0.2828, 3.95],
+   "box": [109, 31, 19, 58],
+   "what": "column 4 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [-0.2828, 0.2828, 1.4],
+    [0.198, -0.198, 1.4],
+    [0.198, -0.198, 3.95],
+    [-0.2828, 0.2828, 3.95]
+   ]
+  },
+  "dia5": {
+   "set": true,
+   "uv": [0.28, 0, 1.4, 0.96, 0, 3.95],
+   "world": [0.198, -0.6788, 1.4, 0.6788, -0.198, 3.95],
+   "box": [127, 31, 18, 58],
+   "what": "column 5 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [0.198, -0.198, 1.4],
+    [0.6788, -0.6788, 1.4],
+    [0.6788, -0.6788, 3.95],
+    [0.198, -0.198, 3.95]
+   ]
+  },
+  "dia6": {
+   "set": true,
+   "uv": [0.96, 0, 1.4, 1.64, 0, 3.95],
+   "world": [0.6788, -1.1597, 1.4, 1.1597, -0.6788, 3.95],
+   "box": [144, 31, 19, 58],
+   "what": "column 6 (orange): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [0.6788, -0.6788, 1.4],
+    [1.1597, -1.1597, 1.4],
+    [1.1597, -1.1597, 3.95],
+    [0.6788, -0.6788, 3.95]
+   ]
+  },
+  "dia7": {
+   "set": true,
+   "uv": [1.64, 0, 1.4, 2.32, 0, 3.95],
+   "world": [1.1597, -1.6405, 1.4, 1.6405, -1.1597, 3.95],
+   "box": [162, 31, 19, 58],
+   "what": "column 7 (orange): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [1.1597, -1.1597, 1.4],
+    [1.6405, -1.6405, 1.4],
+    [1.6405, -1.6405, 3.95],
+    [1.1597, -1.1597, 3.95]
+   ]
+  },
+  "arco": {
+   "set": true,
+   "uv": [1, 0, 4.05, 2.28, 0, 4.93],
+   "world": [0.7071, -1.6122, 4.05, 1.6122, -0.7071, 4.93],
+   "box": [146, 8, 34, 21],
+   "what": "the arch of flags over columns 6 and 7: the wall the set draws for it (u 1 to 2.28, z 4.05 to 4.93); a poke",
+   "quad": [
+    [0.7071, -0.7071, 4.05],
+    [1.6122, -1.6122, 4.05],
+    [1.6122, -1.6122, 4.93],
+    [0.7071, -0.7071, 4.93]
+   ]
+  },
+  "escalon": {
+   "set": true,
+   "uv": [-2.6, 0.12, 0, 2.48, 0.62, 0.3],
+   "world": [-1.7536, -1.6688, 0, 2.192, 2.2769, 0.3],
+   "box": [52, 114, 133, 15],
+   "what": "the low step along the board's foot (the set's box: u -2.6 to 2.48, v 0.12 to 0.62, z 0 to 0.3); a poke"
+  },
+  "banco": {
+   "set": true,
+   "uv": [2.89, 0.2, 0, 3.43, 3.7, 1.12],
+   "world": [2.185, -2.284, 0, 5.0417, 0.5728, 1.12],
+   "box": [195, 97, 15, 72],
+   "what": "the seat for three, seen from its end (PZ.seatSide: u 2.89 to 3.43 with its back at the right, v 0.2 to 3.7, up to its back's top z 1.12); a poke"
+  },
+  "senora": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "beto": "sprite",
+  "abuela": "sprite",
+  "tito": "sprite",
+  "senor": "sprite",
+  "coqui": "sprite",
+  "perro": "sprite",
+  "sol": "sprite",
+  "globos": "sprite",
+  "chiringa": "sprite",
+  "caja": "sprite"
+ },
+ "spots": {
+  "escalon1": {
+   "world": [-1.2233, 1.7466, 0.3],
+   "uv": [-2.1, 0.37, 0.3],
+   "screen": [65, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 1: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon2": {
+   "world": [-0.7425, 1.2657, 0.3],
+   "uv": [-1.42, 0.37, 0.3],
+   "screen": [83, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 2: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon3": {
+   "world": [-0.2616, 0.7849, 0.3],
+   "uv": [-0.74, 0.37, 0.3],
+   "screen": [101, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 3: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon4": {
+   "world": [0.2192, 0.3041, 0.3],
+   "uv": [-0.06, 0.37, 0.3],
+   "screen": [118, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 4: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon5": {
+   "world": [0.7, -0.1768, 0.3],
+   "uv": [0.62, 0.37, 0.3],
+   "screen": [136, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 5: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon6": {
+   "world": [1.1809, -0.6576, 0.3],
+   "uv": [1.3, 0.37, 0.3],
+   "screen": [154, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 6: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon7": {
+   "world": [1.6617, -1.1384, 0.3],
+   "uv": [1.98, 0.37, 0.3],
+   "screen": [171, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 7: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "izq": {
+   "world": [-1.9092, 2.6163, 0],
+   "uv": [-3.2, 0.5, 0],
+   "screen": [37, 127],
+   "depth": 0.433,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the señora, left of the board",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "caja": {
+   "world": [-1.4142, 3.2527, 0],
+   "uv": [-3.3, 1.3, 0],
+   "screen": [34, 137],
+   "depth": 1.1258,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "her box of cards on the paving (a 14 x 10 px stand-in: the spec gives no size)",
+   "box": [27, 127, 14, 10],
+   "anchor": "bottom"
+  },
+  "asiento1": {
+   "world": [2.7224, -1.7324, 0.46],
+   "uv": [3.15, 0.7, 0.46],
+   "screen": [202, 119],
+   "depth": 0.8362,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the seat's place 1 (whoever sits faces left): on its top, z 0.46; the sitting sprite hangs by the lap",
+   "sprite": "abuelaS",
+   "who": "adulto",
+   "on": "banco"
+  },
+  "asiento2": {
+   "world": [3.6062, -0.8485, 0.46],
+   "uv": [3.15, 1.95, 0.46],
+   "screen": [202, 135],
+   "depth": 1.9187,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the seat's place 2 (whoever sits faces left): on its top, z 0.46; the sitting sprite hangs by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "banco"
+  },
+  "asiento3": {
+   "world": [4.4901, 0.0354, 0.46],
+   "uv": [3.15, 3.2, 0.46],
+   "screen": [202, 151],
+   "depth": 3.0013,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the seat's place 3 (whoever sits faces left): on its top, z 0.46; the sitting sprite hangs by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "banco"
+  },
+  "suelo1": {
+   "world": [0.2828, 2.9698, 0],
+   "uv": [-1.9, 2.3, 0],
+   "screen": [71, 150],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a place of the row on the paving in front of the board",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "suelo2": {
+   "world": [1.096, 2.1567, 0],
+   "uv": [-0.75, 2.3, 0],
+   "screen": [101, 150],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a place of the row on the paving in front of the board",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "suelo3": {
+   "world": [1.9092, 1.3435, 0],
+   "uv": [0.4, 2.3, 0],
+   "screen": [130, 150],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a place of the row on the paving in front of the board",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "suelo4": {
+   "world": [2.7224, 0.5303, 0],
+   "uv": [1.55, 2.3, 0],
+   "screen": [160, 150],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a place of the row on the paving in front of the board",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "poste": {
+   "world": [-0.9546, 3.2173, 0],
+   "uv": [-2.95, 1.6, 0],
+   "screen": [43, 141],
+   "depth": 1.3856,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Beto under the balloons",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "globos": {
+   "world": [-1.8031, 1.7041, 4.4],
+   "uv": [-2.48, -0.07, 4.4],
+   "screen": [56, 20],
+   "depth": 2.1394,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the balloons, tied to the top of the board's left post (the set's PZ.post at u -2.48, v -.07, top z 4.4): a 24 x 20 px stand-in, its foot on the post's top",
+   "box": [44, 0, 24, 20],
+   "anchor": "bottom",
+   "on": "tablero"
+  },
+  "chiringa": {
+   "world": [1.096, 0.6718, 0],
+   "uv": [0.3, 1.25, 0],
+   "screen": [128, 136],
+   "depth": 1.0825,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the kite lying on the paving (a 28 x 14 px stand-in)",
+   "box": [114, 122, 28, 14],
+   "anchor": "bottom"
+  },
+  "lazo1": {
+   "world": [1.5556, 0.2828, 0],
+   "uv": [0.9, 1.3, 0],
+   "screen": [143, 137],
+   "depth": 1.1258,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the kite's tail: bow 1 of 3 (a 7 x 5 px stand-in: the spec gives no size)",
+   "box": [140, 132, 7, 5],
+   "anchor": "bottom"
+  },
+  "lazo2": {
+   "world": [1.8031, 0.1061, 0],
+   "uv": [1.2, 1.35, 0],
+   "screen": [151, 138],
+   "depth": 1.1691,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the kite's tail: bow 2 of 3 (a 7 x 5 px stand-in: the spec gives no size)",
+   "box": [148, 133, 7, 5],
+   "anchor": "bottom"
+  },
+  "lazo3": {
+   "world": [2.0506, -0.0707, 0],
+   "uv": [1.5, 1.4, 0],
+   "screen": [159, 138],
+   "depth": 1.2124,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the kite's tail: bow 3 of 3 (a 7 x 5 px stand-in: the spec gives no size)",
+   "box": [156, 133, 7, 5],
+   "anchor": "bottom"
+  },
+  "perro": {
+   "world": [2.5456, -0.4243, 0],
+   "uv": [2.1, 1.5, 0],
+   "screen": [175, 140],
+   "depth": 1.299,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Canelo (lying)",
+   "sprite": "perro",
+   "who": "perro"
+  },
+  "ronda": {
+   "world": [3.0406, 2.4749, 0],
+   "uv": [0.4, 3.9, 0],
+   "screen": [130, 171],
+   "depth": 3.3775,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "where the one who is misled walks round",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "entrada": {
+   "world": [-1.4849, 5.1619, 0],
+   "uv": [-4.7, 2.6, 0],
+   "screen": [-2, 154],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "exit",
+   "view": "wide",
+   "what": "where people come in: outside the picture on purpose (only the point)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "gancho.1.1": {
+   "world": [-1.4849, 1.4849, 3.44],
+   "uv": [-2.1, 0, 3.44],
+   "screen": [65, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 1: a card (14 x 12) hangs with its top at the hook",
+   "box": [58, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.1.2": {
+   "world": [-1.4849, 1.4849, 2.8],
+   "uv": [-2.1, 0, 2.8],
+   "screen": [65, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 1: a card (14 x 12) hangs with its top at the hook",
+   "box": [58, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.1.3": {
+   "world": [-1.4849, 1.4849, 2.16],
+   "uv": [-2.1, 0, 2.16],
+   "screen": [65, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 1: a card (14 x 12) hangs with its top at the hook",
+   "box": [58, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.2.1": {
+   "world": [-1.0041, 1.0041, 3.44],
+   "uv": [-1.42, 0, 3.44],
+   "screen": [83, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 2: a card (14 x 12) hangs with its top at the hook",
+   "box": [76, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.2.2": {
+   "world": [-1.0041, 1.0041, 2.8],
+   "uv": [-1.42, 0, 2.8],
+   "screen": [83, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 2: a card (14 x 12) hangs with its top at the hook",
+   "box": [76, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.2.3": {
+   "world": [-1.0041, 1.0041, 2.16],
+   "uv": [-1.42, 0, 2.16],
+   "screen": [83, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 2: a card (14 x 12) hangs with its top at the hook",
+   "box": [76, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.3.1": {
+   "world": [-0.5233, 0.5233, 3.44],
+   "uv": [-0.74, 0, 3.44],
+   "screen": [101, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 3: a card (14 x 12) hangs with its top at the hook",
+   "box": [94, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.3.2": {
+   "world": [-0.5233, 0.5233, 2.8],
+   "uv": [-0.74, 0, 2.8],
+   "screen": [101, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 3: a card (14 x 12) hangs with its top at the hook",
+   "box": [94, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.3.3": {
+   "world": [-0.5233, 0.5233, 2.16],
+   "uv": [-0.74, 0, 2.16],
+   "screen": [101, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 3: a card (14 x 12) hangs with its top at the hook",
+   "box": [94, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.4.1": {
+   "world": [-0.0424, 0.0424, 3.44],
+   "uv": [-0.06, 0, 3.44],
+   "screen": [118, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 4: a card (14 x 12) hangs with its top at the hook",
+   "box": [111, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.4.2": {
+   "world": [-0.0424, 0.0424, 2.8],
+   "uv": [-0.06, 0, 2.8],
+   "screen": [118, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 4: a card (14 x 12) hangs with its top at the hook",
+   "box": [111, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.4.3": {
+   "world": [-0.0424, 0.0424, 2.16],
+   "uv": [-0.06, 0, 2.16],
+   "screen": [118, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 4: a card (14 x 12) hangs with its top at the hook",
+   "box": [111, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.5.1": {
+   "world": [0.4384, -0.4384, 3.44],
+   "uv": [0.62, 0, 3.44],
+   "screen": [136, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 5: a card (14 x 12) hangs with its top at the hook",
+   "box": [129, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.5.2": {
+   "world": [0.4384, -0.4384, 2.8],
+   "uv": [0.62, 0, 2.8],
+   "screen": [136, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 5: a card (14 x 12) hangs with its top at the hook",
+   "box": [129, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.5.3": {
+   "world": [0.4384, -0.4384, 2.16],
+   "uv": [0.62, 0, 2.16],
+   "screen": [136, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 5: a card (14 x 12) hangs with its top at the hook",
+   "box": [129, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.6.1": {
+   "world": [0.9192, -0.9192, 3.44],
+   "uv": [1.3, 0, 3.44],
+   "screen": [154, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 6: a card (14 x 12) hangs with its top at the hook",
+   "box": [147, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.6.2": {
+   "world": [0.9192, -0.9192, 2.8],
+   "uv": [1.3, 0, 2.8],
+   "screen": [154, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 6: a card (14 x 12) hangs with its top at the hook",
+   "box": [147, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.6.3": {
+   "world": [0.9192, -0.9192, 2.16],
+   "uv": [1.3, 0, 2.16],
+   "screen": [154, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 6: a card (14 x 12) hangs with its top at the hook",
+   "box": [147, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.7.1": {
+   "world": [1.4001, -1.4001, 3.44],
+   "uv": [1.98, 0, 3.44],
+   "screen": [171, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 7: a card (14 x 12) hangs with its top at the hook",
+   "box": [164, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.7.2": {
+   "world": [1.4001, -1.4001, 2.8],
+   "uv": [1.98, 0, 2.8],
+   "screen": [171, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 7: a card (14 x 12) hangs with its top at the hook",
+   "box": [164, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.7.3": {
+   "world": [1.4001, -1.4001, 2.16],
+   "uv": [1.98, 0, 2.16],
+   "screen": [171, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 7: a card (14 x 12) hangs with its top at the hook",
+   "box": [164, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "arco_gancho": {
+   "world": [1.1597, -1.1597, 4.72],
+   "uv": [1.64, 0, 4.72],
+   "screen": [163, 14],
+   "depth": 2.36,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the hook at the arch's middle (ARCH.z + 0.67): a card hangs there under the hoop",
+   "box": [156, 14, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "sol1": {
+   "world": [-1.4849, 1.4849, 3.785],
+   "uv": [-2.1, 0, 3.785],
+   "screen": [65, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 1: a 9 px square centred on its coloured square",
+   "box": [61, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol2": {
+   "world": [-1.0041, 1.0041, 3.785],
+   "uv": [-1.42, 0, 3.785],
+   "screen": [83, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 2: a 9 px square centred on its coloured square",
+   "box": [79, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol3": {
+   "world": [-0.5233, 0.5233, 3.785],
+   "uv": [-0.74, 0, 3.785],
+   "screen": [101, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 3: a 9 px square centred on its coloured square",
+   "box": [97, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol4": {
+   "world": [-0.0424, 0.0424, 3.785],
+   "uv": [-0.06, 0, 3.785],
+   "screen": [118, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 4: a 9 px square centred on its coloured square",
+   "box": [114, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol5": {
+   "world": [0.4384, -0.4384, 3.785],
+   "uv": [0.62, 0, 3.785],
+   "screen": [136, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 5: a 9 px square centred on its coloured square",
+   "box": [132, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol6": {
+   "world": [0.9192, -0.9192, 3.785],
+   "uv": [1.3, 0, 3.785],
+   "screen": [154, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 6: a 9 px square centred on its coloured square",
+   "box": [150, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol7": {
+   "world": [1.4001, -1.4001, 3.785],
+   "uv": [1.98, 0, 3.785],
+   "screen": [171, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 7: a 9 px square centred on its coloured square",
+   "box": [167, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "muestra": {
+   "world": [-1.7324, 2.4395, 1.6],
+   "uv": [-2.95, 0.5, 1.6],
+   "screen": [43, 90],
+   "depth": 1.233,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the card the señora holds up (a 14 x 12 card, held out to her right: the middle of its left edge on the point)",
+   "box": [43, 84, 14, 12],
+   "anchor": "left",
+   "on": "ground"
+  }
+ },
+ "groups": {
+  "escalones": ["escalon1", "escalon2", "escalon3", "escalon4", "escalon5", "escalon6", "escalon7"],
+  "asiento": ["asiento1", "asiento2", "asiento3"],
+  "suelo": ["suelo1", "suelo2", "suelo3", "suelo4"],
+  "ganchos": ["gancho.1.1", "gancho.1.2", "gancho.1.3", "gancho.2.1", "gancho.2.2", "gancho.2.3", "gancho.3.1", "gancho.3.2", "gancho.3.3", "gancho.4.1", "gancho.4.2", "gancho.4.3", "gancho.5.1", "gancho.5.2", "gancho.5.3", "gancho.6.1", "gancho.6.2", "gancho.6.3", "gancho.7.1", "gancho.7.2", "gancho.7.3"],
+  "soles": ["sol1", "sol2", "sol3", "sol4", "sol5", "sol6", "sol7"],
+  "lazos": ["lazo1", "lazo2", "lazo3"]
+ },
+ "notes": [
+  "every number of a spot is the orchestrator's (the p6-spec, \"calendario\"), given in (u, v, z); the board's numbers (c(k), HOOKS, ARCH, STEP, SEAT) are read from the set",
+  "gancho.k.j is the spec's hook k, j (j 1 the top one); sol1 to sol7 are the spec's `sol` on column k; lazo1 to lazo3 are the three bows of the kite's tail; entrada is outside the picture on purpose (only its point)",
+  "the spec gives no size for the bows of the kite's tail (7 x 5 used) nor for the señora's box of cards (14 x 10 used): open points; the card held up at muestra hangs by the middle of its left edge (the coordinator's decision)",
+  "tabla is the board's face (the posts, the little roof and the arch are not in it); arco is the arch's wall; the globos' spot is the set's left post: u -2.48, v -.07 (the spec gives only its top, z 4.4)",
+  "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)"
+ ],
+ "views": {
+  "wide": {
+   "world": [-0.6527, -0.6527, 0],
+   "uv": [0, -0.9231, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [69, 70, 71],
+   "holds": ["escalon1", "escalon2", "escalon3", "escalon4", "escalon5", "escalon6", "escalon7", "izq", "caja", "asiento1", "asiento2", "asiento3", "suelo1", "suelo2", "suelo3", "suelo4", "poste", "globos", "chiringa", "lazo1", "lazo2", "lazo3", "perro", "ronda", "gancho.1.1", "gancho.1.2", "gancho.1.3", "gancho.2.1", "gancho.2.2", "gancho.2.3", "gancho.3.1", "gancho.3.2", "gancho.3.3", "gancho.4.1", "gancho.4.2", "gancho.4.3", "gancho.5.1", "gancho.5.2", "gancho.5.3", "gancho.6.1", "gancho.6.2", "gancho.6.3", "gancho.7.1", "gancho.7.2", "gancho.7.3", "arco_gancho", "sol1", "sol2", "sol3", "sol4", "sol5", "sol6", "sol7", "muestra"],
+   "extent": [25, 213],
+   "x0Range": [18, 25],
+   "what": "the one view of stories 69, 70 and 71: the 196 x 216 window over the 240 x 216 picture. The spec: every spot of every moment is inside it (a person with his sprite whole, a small thing with its box whole; entrada is outside on purpose). x0 18 to 25 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 25 to 213). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the board's roof and posts, the seat, the lamps and the trees hide whoever is behind them.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El cruce's sheet: the upright plane through the feet (a card on a hook is the plane through its top, on the board's face)",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "senora": 0.35,
+   "abuela": 0.35,
+   "tito": 0.35,
+   "senor": 0.35,
+   "beto": 0.28,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "perro": 0.3
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28, the dog .3) (open point)",
+  "none": ["escalon1", "escalon2", "escalon3", "escalon4", "escalon5", "escalon6", "escalon7", "asiento1", "asiento2", "asiento3", "globos", "gancho.1.1", "gancho.1.2", "gancho.1.3", "gancho.2.1", "gancho.2.2", "gancho.2.3", "gancho.3.1", "gancho.3.2", "gancho.3.3", "gancho.4.1", "gancho.4.2", "gancho.4.3", "gancho.5.1", "gancho.5.2", "gancho.5.3", "gancho.6.1", "gancho.6.2", "gancho.6.3", "gancho.7.1", "gancho.7.2", "gancho.7.3", "arco_gancho", "sol1", "sol2", "sol3", "sol4", "sol5", "sol6", "sol7", "muestra"],
+  "onSeat": "whoever sits on the seat or stands on the step (z above 0) casts none: neither is ground (a shadow cast at the paving under them would show in front of them)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 54 spots held span columns 25 to 213 (189 of the window's 196); x0 that hold them all: 18 to 25 (the one nearest 22, the window centred on the picture); entrada is outside on purpose (screen -2,154)"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 54 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the card of the arch's hook arco_gancho is box [156,14,14,12], the balloons globos [44,0,24,20]",
+     "       info, not a check: entrada -2,154 (outside on purpose): its point is outside the picture, 24 px left of the window [22, 218)"
+    ],
+    "cut": []
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 10 spots on the seat and the step (escalon1, escalon2, escalon3, escalon4, escalon5, escalon6, escalon7, asiento1, asiento2, asiento3) are on a surface the set draws (the seat's top z 0.46 part banco, the step's top z 0.3 part tablero: depth within .1 of the spot's); the 22 hook spots have a pixel of the set's hook within 1 px; the balloons' foot is the left post's top; the 7 sun spots are on their column's coloured square",
+     "       escalon1 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon2 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon3 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon4 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon5 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon6 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon7 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       asiento1 z 0.46: part banco, depth 0.85 against the spot's 0.84 (0.01)",
+     "       asiento2 z 0.46: part banco, depth 1.91 against the spot's 1.92 (0)",
+     "       asiento3 z 0.46: part banco, depth 2.98 against the spot's 3 (0.02)",
+     "       the sun spots read sol1 96,176,96; sol2 96,176,96; sol3 96,176,96; sol4 96,176,96; sol5 96,176,96; sol6 244,150,60; sol7 244,150,60"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of tabla, dia1 to dia7, arco, escalon and banco are inside the window [22, 218) and the picture (tabla [55,28,127,61], dia1 [56,31,19,58], dia2 [74,31,18,58], dia3 [91,31,19,58], dia4 [109,31,19,58], dia5 [127,31,18,58], dia6 [144,31,19,58], dia7 [162,31,19,58], arco [146,8,34,21], escalon [52,114,133,15], banco [195,97,15,72])"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 31 pairs in the 6 moments of the preview (m1 (izq, poste, escalon1); m2 (izq, poste, escalon4); m3 (escalon6, suelo1, suelo2, perro); m4 (escalon7, suelo1, suelo2, perro); m5 (izq, escalon1, asiento1, asiento2, asiento3); m6 (izq, escalon5, asiento1)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 izq ~ poste (6 across, 14 down), m1 poste ~ escalon1 (22 across, 23 down), m2 izq ~ poste (6 across, 14 down), m3 escalon6 ~ perro (21 across, 22 down), m4 escalon7 ~ perro (4 across, 22 down), m5 asiento1 ~ asiento2 (0 across, 16 down), m5 asiento1 ~ asiento3 (0 across, 32 down), m5 asiento2 ~ asiento3 (0 across, 16 down)",
+     "       closest pair in each moment (px across / px down): m1 izq ~ poste 6/14 (needs 24 across or 12 down); m2 izq ~ poste 6/14 (needs 24 across or 12 down); m3 escalon6 ~ perro 21/22 (needs 30 across or 12 down); m4 escalon7 ~ perro 4/22 (needs 30 across or 12 down); m5 asiento1 ~ asiento2 0/16 (needs 24 across or 12 down); m6 escalon5 ~ asiento1 66/1 (needs 28 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "izq",
+      "b": "poste",
+      "across": 6,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "izq",
+      "b": "escalon1",
+      "across": 28,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "poste",
+      "b": "escalon1",
+      "across": 22,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "izq",
+      "b": "poste",
+      "across": 6,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "izq",
+      "b": "escalon4",
+      "across": 81,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "poste",
+      "b": "escalon4",
+      "across": 75,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "escalon6",
+      "b": "suelo1",
+      "across": 83,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "escalon6",
+      "b": "suelo2",
+      "across": 53,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "escalon6",
+      "b": "perro",
+      "across": 21,
+      "down": 22,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "suelo1",
+      "b": "suelo2",
+      "across": 30,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "suelo1",
+      "b": "perro",
+      "across": 104,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "suelo2",
+      "b": "perro",
+      "across": 74,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "escalon7",
+      "b": "suelo1",
+      "across": 100,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "escalon7",
+      "b": "suelo2",
+      "across": 70,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "escalon7",
+      "b": "perro",
+      "across": 4,
+      "down": 22,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "suelo1",
+      "b": "suelo2",
+      "across": 30,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "suelo1",
+      "b": "perro",
+      "across": 104,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "suelo2",
+      "b": "perro",
+      "across": 74,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "izq",
+      "b": "escalon1",
+      "across": 28,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "izq",
+      "b": "asiento1",
+      "across": 165,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "izq",
+      "b": "asiento2",
+      "across": 165,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "izq",
+      "b": "asiento3",
+      "across": 165,
+      "down": 24,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalon1",
+      "b": "asiento1",
+      "across": 137,
+      "down": 1,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalon1",
+      "b": "asiento2",
+      "across": 137,
+      "down": 17,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalon1",
+      "b": "asiento3",
+      "across": 137,
+      "down": 33,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "asiento1",
+      "b": "asiento2",
+      "across": 0,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "asiento1",
+      "b": "asiento3",
+      "across": 0,
+      "down": 32,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "asiento2",
+      "b": "asiento3",
+      "across": 0,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "izq",
+      "b": "escalon5",
+      "across": 99,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "izq",
+      "b": "asiento1",
+      "across": 165,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "escalon5",
+      "b": "asiento1",
+      "across": 66,
+      "down": 1,
+      "needAcross": 28,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 escalon1 65,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 12 px with a nearer sprite on them; m2 escalon4 118,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 escalon6 154,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 escalon7 171,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 escalon1 65,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 escalon5 136,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them",
+     "       info, not a check: m1 escalon1 65,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 12 px with a nearer sprite on them; m2 escalon4 118,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 escalon6 154,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 escalon7 171,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 escalon1 65,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 escalon5 136,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them"
+    ]
+   },
+   {
+    "name": "frog-hooks",
+    "ok": true,
+    "lines": [
+     "frog-hooks: the frog on each of the 7 steps covers no hook and no card of the lowest row (the tightest: 11 rows clear): escalon1 65,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon2 83,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon3 101,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon4 118,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon5 136,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon6 154,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon7 171,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82)"
+    ]
+   },
+   {
+    "name": "senora-col1",
+    "ok": true,
+    "lines": [
+     "senora-col1: the señora at izq covers no pixel of column 1 in the moments she is in: m1: 0 px in column 1 [56,31,19,58] (her rightmost shown column 48, column 1 starts at 56); m2: 0 px in column 1 [56,31,19,58] (her rightmost shown column 48, column 1 starts at 56); m5: 0 px in column 1 [56,31,19,58] (her rightmost shown column 48, column 1 starts at 56); m6: 0 px in column 1 [56,31,19,58] (her rightmost shown column 48, column 1 starts at 56)"
+    ]
+   },
+   {
+    "name": "arch-card",
+    "ok": true,
+    "lines": [
+     "arch-card: the card on arco_gancho 163,14 is box [156,14,14,12]: inside the picture (14 rows from its top, 190 from its bottom) and the window; drawn in moment 3, 0 of its px outside the picture"
+    ]
+   },
+   {
+    "name": "balloons",
+    "ok": true,
+    "lines": [
+     "balloons: the balloons at globos 56,20 (the post's top, u -2.48 v -0.07 z 4.4) are the box [44,0,24,20]: whole inside the picture (its top row 0) and the window; drawn: m1 0 px outside, m2 0 px outside"
+    ]
+   },
+   {
+    "name": "seat-heads",
+    "ok": true,
+    "lines": [
+     "seat-heads: every person on the seat is whole in the window and his head (the top 14 rows) is covered by nobody: m5 asiento1 202,119 (abuelaS): window cut 0 px, 0 px outside the picture; head rows 83 to 96: 206 px, 0 covered, 0 hidden by the set; the whole sprite: 315 under a nearer sprite, 73 hidden by the set; m5 asiento2 202,135 (titoS): window cut 0 px, 0 px outside the picture; head rows 98 to 111: 192 px, 0 covered, 0 hidden by the set; the whole sprite: 336 under a nearer sprite, 96 hidden by the set; m5 asiento3 202,151 (senorS): window cut 0 px, 0 px outside the picture; head rows 112 to 125: 182 px, 0 covered, 0 hidden by the set; the whole sprite: 0 under a nearer sprite, 144 hidden by the set; m6 asiento1 202,119 (abuelaS): window cut 0 px, 0 px outside the picture; head rows 83 to 96: 206 px, 0 covered, 0 hidden by the set; the whole sprite: 0 under a nearer sprite, 73 hidden by the set",
+     "       the seat's three places are 16 px apart up-down (asiento1 row 119, asiento2 row 135, asiento3 row 151) and a head is 14 rows: whoever sits in front of another at the same column covers the last row(s) of the head behind (the spec's sprites-apart rule needs 12)",
+     "       head px hidden by the set (the seat's back, not a person): none"
+    ]
+   },
+   {
+    "name": "beto-clear",
+    "ok": true,
+    "lines": [
+     "beto-clear: Beto at poste covers neither the frog at escalon1 nor the señora's face: m1: the señora's face (rows 74 to 87) 0 of 182 px covered by Beto (her body 276); m1: the frog at escalon1 65,118: 0 of his 536 px covered by Beto (Beto's box 31,54 across, the frog's 49,80; Beto's top row 100, the frog's bottom row 117); m2: the señora's face (rows 74 to 87) 0 of 182 px covered by Beto (her body 276)",
+     "       info, not a check: m1: the señora's face (rows 74 to 87) 0 of 182 px covered by Beto (her body 276); m1: the frog at escalon1 65,118: 0 of his 536 px covered by Beto (Beto's box 31,54 across, the frog's 49,80; Beto's top row 100, the frog's bottom row 117); m2: the señora's face (rows 74 to 87) 0 of 182 px covered by Beto (her body 276)"
+    ]
+   },
+   {
+    "name": "kite-canelo",
+    "ok": true,
+    "lines": [
+     "kite-canelo: the kite, its three bows and Canelo cover nobody on the step: m3: the frog at escalon6 154,118 (his bottom row 117): 0 of his 536 px covered (chiringa top row 122, lazo1 top row 132, lazo2 top row 133, lazo3 top row 133, perro top row 121); m4: the frog at escalon7 171,118 (his bottom row 117): 0 of his 536 px covered (chiringa top row 122, lazo1 top row 132, lazo2 top row 133, lazo3 top row 133, perro top row 121)"
+    ]
+   },
+   {
+    "name": "info-stand-ins",
+    "ok": true,
+    "lines": [
+     "info-stand-ins: not a check. m1: her box at caja covers 0 px of the señora; m2: her box at caja covers 0 px of the señora; the card at muestra covers 1 px of her face (top 14 rows) and 22 of her sprite in all",
+     "       the card at muestra, by where it hangs from the point (the used anchor first): middle of the left edge on the point (used): 1 px of her face, 22 of her sprite; bottom middle on the point: 76 px of her face, 87 of her sprite; middle of the card on the point: 28 px of her face, 101 of her sprite; bottom left corner on the point: 7 px of her face, 7 of her sprite"
+    ]
+   }
+  ]
+ }
+}

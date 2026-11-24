@@ -1,0 +1,827 @@
+{
+ "id": "bingo",
+ "title": "¡Bingo!",
+ "place": "La plaza",
+ "scene": "reloj",
+ "next": "un-cafe-para-la-maestra",
+ "goal": "Lay abuela's beans on the numbers the señora calls so she can win the bingo and take the biggest prize: every wrong bean lets another player win and take the best prize left.",
+ "stake": {
+  "thing": "premios",
+  "steps": 3
+ },
+ "dots": 10,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cuarenta",
+  "cincuenta",
+  "sesenta",
+  "setenta",
+  "ochenta",
+  "noventa",
+  "cien"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "diez",
+  "veinte",
+  "treinta",
+  "habichuelas",
+  "tengo",
+  "no tengo",
+  "quiero",
+  "también",
+  "abuela",
+  "señor",
+  "señora",
+  "listo",
+  "toma",
+  "gracias",
+  "ahora",
+  "tú",
+  "mira",
+  "otro",
+  "minuto"
+ ],
+ "also_heard": [
+  "bingo",
+  "empezamos"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "60": "sesenta",
+  "80": "ochenta",
+  "100": "cien"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "c65_bingo": {
+   "who": "narr",
+   "text": "En la plaza hay bingo."
+  },
+  "c65_ab_tengo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Tengo el cuarenta, el sesenta, el ochenta, el noventa y el cien."
+  },
+  "c65_luis_tengo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Yo tengo el treinta, el cincuenta y el setenta."
+  },
+  "c65_sra_cuenta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Diez, veinte, treinta, cuarenta, cincuenta, sesenta, setenta, ochenta, noventa... ¡y cien! ¿Empezamos?"
+  },
+  "c65_cq_listos": {
+   "who": "tu",
+   "text": "¡Listos!",
+   "tu_turno": [
+    {
+     "palabra": "listo",
+     "formas": [
+      "listo",
+      "listos"
+     ]
+    }
+   ]
+  },
+  "c65_sra_90": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Noventa! Nueve, cero. ¡El noventa!"
+  },
+  "c65_donde_hab": {
+   "who": "narr",
+   "text": "¿Dónde ponemos la habichuela?"
+  },
+  "c65_sra_50": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Cincuenta! Cinco, cero."
+  },
+  "c65_ab_no_50": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No tengo el cincuenta."
+  },
+  "c65_sra_40": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Cuarenta! Cuatro, cero. ¡El cuarenta!"
+  },
+  "c65_y_ahora": {
+   "who": "narr",
+   "text": "¿Y ahora? ¿Dónde está el cuarenta?"
+  },
+  "c65_sra_70": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Setenta! Siete, cero."
+  },
+  "c65_luis_70": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Tengo el setenta!"
+  },
+  "c65_ab_quiero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora quiero el sesenta, el ochenta y el cien."
+  },
+  "c65_ab_tu": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ahora tú. ¡Yo no miro!"
+  },
+  "c65_sra_30": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Treinta!"
+  },
+  "c65_senor_bingo": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Bingo!"
+  },
+  "c65_sra_20": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Veinte!"
+  },
+  "c65_tito_bingo": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: ¡Bingo!"
+  },
+  "c65_ab_bingo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Bingo!"
+  },
+  "c51_ab_toma": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma, Coquí."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias",
+      "gracias abuela"
+     ]
+    }
+   ]
+  },
+  "c65_sra_otro": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Otro bingo en diez minutos!"
+  },
+  "c65_sra_60": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Sesenta! ¡El sesenta!"
+  },
+  "c65_ab_no_60": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. ¡El sesenta!"
+  },
+  "c65_sra_80": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Ochenta! ¡El ochenta!"
+  },
+  "c65_ab_no_80": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. ¡El ochenta!"
+  },
+  "c65_sra_100": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Cien! ¡El cien!"
+  },
+  "c65_ab_no_100": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. ¡El cien!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "ocaso",
+    "mesas": 1
+   }
+  },
+  {
+   "act": "ir",
+   "a": "mesa_abuela"
+  },
+  {
+   "act": "premios",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  "c65_bingo",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "n40"
+  },
+  "c65_ab_tengo",
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "senala"
+  },
+  "c65_luis_tengo",
+  {
+   "dots": 1
+  },
+  {
+   "act": "bola65",
+   "n": 10,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 20,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 30,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 40,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 50,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 60,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 70,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 80,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 90,
+   "muestra": 1
+  },
+  {
+   "act": "bola65",
+   "n": 100,
+   "muestra": 1
+  },
+  "c65_sra_cuenta",
+  "c65_cq_listos",
+  {
+   "dots": 2
+  },
+  {
+   "act": "bola65",
+   "n": 90,
+   "muestra": 1
+  },
+  "c65_sra_90",
+  {
+   "ask": "n90",
+   "lead": [],
+   "line": "c65_donde_hab",
+   "then": [],
+   "after": [
+    {
+     "act": "frijol",
+     "carton": "abuela",
+     "n": 90
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "bola65",
+   "n": 50,
+   "muestra": 1
+  },
+  "c65_sra_50",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "no"
+  },
+  "c65_ab_no_50",
+  {
+   "act": "frijol",
+   "carton": "luis",
+   "n": 50
+  },
+  {
+   "act": "bola65",
+   "n": 40,
+   "muestra": 1
+  },
+  "c65_sra_40",
+  {
+   "ask": "n40",
+   "lead": [],
+   "line": "c65_y_ahora",
+   "then": [],
+   "after": [
+    {
+     "act": "frijol",
+     "carton": "abuela",
+     "n": 40
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "bola65",
+   "n": 70,
+   "muestra": 1
+  },
+  "c65_sra_70",
+  "c65_luis_70",
+  {
+   "act": "frijol",
+   "carton": "luis",
+   "n": 70
+  },
+  {
+   "act": "frijol",
+   "carton": "senor"
+  },
+  {
+   "act": "frijol",
+   "carton": "tito"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "gesto",
+   "quien": "senor",
+   "que": "uno"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "n60"
+  },
+  "c65_ab_quiero",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "ojos"
+  },
+  "c65_ab_tu",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "draw": "na",
+   "options": [
+    "60",
+    "80",
+    "100"
+   ]
+  },
+  {
+   "if": "na=60",
+   "then": [
+    {
+     "draw": "nb",
+     "options": [
+      "80",
+      "100"
+     ],
+     "other": "nc"
+    }
+   ],
+   "else": [
+    {
+     "if": "na=80",
+     "then": [
+      {
+       "draw": "nb",
+       "options": [
+        "60",
+        "100"
+       ],
+       "other": "nc"
+      }
+     ],
+     "else": [
+      {
+       "draw": "nb",
+       "options": [
+        "60",
+        "80"
+       ],
+       "other": "nc"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "decide": "do",
+   "options": [
+    "n60",
+    "n80",
+    "n100"
+   ],
+   "pick": "n$na",
+   "tests": "$na",
+   "lock": true,
+   "lead": [
+    {
+     "act": "bola65",
+     "n": "$na",
+     "muestra": 0
+    }
+   ],
+   "line": "c65_sra_$na",
+   "right": [
+    {
+     "act": "frijol",
+     "carton": "abuela",
+     "n": "$na"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "abuela",
+       "que": "ojos"
+      },
+      {
+       "act": "gesto",
+       "quien": "abuela",
+       "que": "si"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xn",
+     "cond": "x=n60",
+     "then": "60",
+     "else": "100"
+    },
+    {
+     "calc": "xn",
+     "cond": "x=n80",
+     "then": "80",
+     "else": "$xn"
+    },
+    {
+     "act": "frijol",
+     "carton": "abuela",
+     "n": "$xn"
+    },
+    "c65_ab_no_$na",
+    {
+     "act": "quita65",
+     "suelto": 1
+    },
+    {
+     "act": "bola65",
+     "n": 30,
+     "muestra": 0
+    },
+    "c65_sra_30",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "rival65",
+     "quien": "senor",
+     "suelto": 1
+    },
+    "c65_senor_bingo",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "premios",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "premios",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "decide": "do",
+   "options": [
+    "n$nb",
+    "n$nc"
+   ],
+   "pick": "n$nb",
+   "tests": "$nb",
+   "lock": true,
+   "lead": [
+    {
+     "act": "bola65",
+     "n": "$nb",
+     "muestra": 0
+    }
+   ],
+   "line": "c65_sra_$nb",
+   "right": [
+    {
+     "act": "frijol",
+     "carton": "abuela",
+     "n": "$nb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "abuela",
+       "que": "ojos"
+      },
+      {
+       "act": "gesto",
+       "quien": "abuela",
+       "que": "si"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xn",
+     "cond": "x=n60",
+     "then": "60",
+     "else": "100"
+    },
+    {
+     "calc": "xn",
+     "cond": "x=n80",
+     "then": "80",
+     "else": "$xn"
+    },
+    {
+     "act": "frijol",
+     "carton": "abuela",
+     "n": "$xn"
+    },
+    "c65_ab_no_$nb",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "quita65",
+       "suelto": 1
+      },
+      {
+       "act": "bola65",
+       "n": 30,
+       "muestra": 0
+      },
+      "c65_sra_30",
+      {
+       "act": "ya"
+      },
+      {
+       "act": "rival65",
+       "quien": "senor",
+       "suelto": 1
+      },
+      "c65_senor_bingo",
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "act": "quita65",
+       "suelto": 1
+      },
+      {
+       "act": "bola65",
+       "n": 20,
+       "muestra": 0
+      },
+      "c65_sra_20",
+      {
+       "act": "ya"
+      },
+      {
+       "act": "rival65",
+       "quien": "tito",
+       "suelto": 1
+      },
+      "c65_tito_bingo",
+      {
+       "act": "ya"
+      }
+     ]
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "premios",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "premios",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "bola65",
+   "n": "$nc",
+   "muestra": 0
+  },
+  "c65_sra_$nc",
+  {
+   "act": "frijol",
+   "carton": "abuela",
+   "n": "$nc"
+  },
+  "c65_ab_bingo",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final65",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final65",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final65",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c51_ab_toma",
+  "cq_gracias_abuela",
+  {
+   "dots": 10
+  },
+  "c65_sra_otro",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c65_bingo",
+  "c65_ab_tengo",
+  "c65_luis_tengo",
+  "c65_sra_cuenta",
+  "c65_cq_listos",
+  "c65_sra_90",
+  "c65_donde_hab",
+  "c65_sra_50",
+  "c65_ab_no_50",
+  "c65_sra_40",
+  "c65_y_ahora",
+  "c65_sra_70",
+  "c65_luis_70",
+  "c65_ab_quiero",
+  "c65_ab_tu",
+  "c65_sra_100",
+  "c65_sra_60",
+  "c65_sra_80",
+  "c65_ab_bingo",
+  "c51_ab_toma",
+  "cq_gracias_abuela",
+  "c65_sra_otro"
+ ]
+}
