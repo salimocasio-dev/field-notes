@@ -66,6 +66,13 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
 - El cruce (order 57b): the same for its three stories (`test/fixtures/cruce/`, `test/cruce_stories_test.dart`,
   `tool/cruce_paths_test.dart`, `test/support/cruce_rules.dart` and `cruce_paths.dart`, which uses `esquinaDrawsOf`). No
   change to the runner.
+- When he waits at a decision (order 58b, La plaza): the lines said since the round's `dots` step (`StoryRunner.ronda`) are
+  said again, in order, when they are more than one (two people speak, or one says two things); a round of one line says
+  its `line` again, as before (`test/round_repeat_test.dart`). Asks and eliges are unchanged.
+- El banco de la plaza (order 58b): its three story files are fixtures here (`test/fixtures/plaza/`);
+  `test/plaza_stories_test.dart` and `tool/plaza_paths_test.dart` as El mostrador's, with `test/support/plaza_rules.dart`
+  (the frog whole, the piragüero's head, the hooks, the board's pictures, the bubbles, the frog on the cart, the view, people
+  apart; what the story's places and the sheet's checks do not settle together is counted apart, `notes`).
 - A set step's positions go through the scene's `remap` (`remapPositions`): every map with a number `x` and `y`, and, since order 33b, where the answer cards stand (`respEn: [x, y]`, h-camino beats.5).
 - A change to the runner that moves any time, sound, clip, step or draw by one fails the differential test.
 - The end screen's "Next story" is the one place the runner differs from juego.js on purpose: juego.js shows it for any `next` (`!!(S.next&&!OIR)`), the runner only when `next` is a story the course names (`course.meta(next) != null`), because a story the course does not name is no story of the app (a staged one: coqui/AGENTS.md, "Stories staged by another session"); then the end screen is that of a story with no `next`. The recorded runs hold no end buttons (`ending.screen` only), so the comparison does not see this; `test/differential_test.dart` ("the end screen of the recorded runs") reads `view.foot` of the real tree's runs (`play(view:)`, `compareRun(view:)`), and the story, screen and Listen tests name the stories a test course has (`TestCourse(stories:)`, `meta`).

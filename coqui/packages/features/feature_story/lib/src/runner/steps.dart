@@ -100,6 +100,7 @@ extension _Steps on StoryRunner {
     final kind = stepKind(st);
     switch (kind) {
       case 'line':
+        ronda.add(subS(st));
         return habLinea(subS(st), null);
       case 'bad':
         throw StoryError('a step the game does not know: $st');
@@ -107,12 +108,14 @@ extension _Steps on StoryRunner {
     final m = st as Map<String, dynamic>;
     switch (kind) {
       case 'say':
+        ronda.add(subS(m['say']));
         return habLinea(subS(m['say']), m['gap'] as num?);
       case 'wait':
         return wait(m['wait'] as num);
       case 'cam':
         return camGo(m['cam'] as String, (m['n'] as num?)?.toInt());
       case 'dots':
+        ronda.clear();
         step(m['dots'] as num);
         return;
       case 'set':
@@ -357,7 +360,8 @@ extension _Steps on StoryRunner {
       W['respVoz'] = voz;
     }
     final line = jsTruthy(st['line']) ? subS(st['line']) : null,
-        vale = subList(st['vale']);
+        vale = subList(st['vale']),
+        enRonda = List<String>.of(ronda);
     late Pending me;
     var otra = false;
     for (;;) {
@@ -374,6 +378,7 @@ extension _Steps on StoryRunner {
           mudo: jsTruthy(st['mudo']) || otra,
           ayuda: jsTruthy(st['libre']) ? pick : null,
           alias: st['alias'] as Map<String, dynamic>?,
+          ronda: enRonda,
         ),
       );
       if (gratis != null &&
@@ -469,6 +474,7 @@ extension _Steps on StoryRunner {
           orden: habla && voz != null ? [pick] : null,
           alias: st['alias'] as Map<String, dynamic>?,
           mudo: jsTruthy(st['mudo']),
+          ronda: enRonda,
         ),
       );
       W['resp'] = null;
@@ -559,13 +565,38 @@ extension _Steps on StoryRunner {
         if (o.ayuda != null && o.ayuda!.isNotEmpty && me.nrep >= 2) {
           W['spot'] = o.ayuda;
         }
-        Future<void> first = line != null && line.isNotEmpty
-            ? playClip(line).then((_) => sleep(300 / FAST))
-            : Future<void>.value();
-        // during a turn the question is repeated, the bubbles do not speak
-        first.then((_) => me.turnoOn ? null : voces()).then((_) {
-          me.rep = false;
-        });
+        // a decision's round with more than one line (two people speak, or one says two things): the whole round
+        // again, in order (page 13, orders 58 to 61); otherwise its line alone, as before. A round that is not mudo
+        // says its `line` inside `espera`, where `ronda` never sees it: it ends the repeated round, unless the round
+        // already says it
+        final r = o.ronda;
+        final List<String> again;
+        if (r != null && r.length > 1) {
+          again = [
+            ...r,
+            if (!o.mudo && line != null && line.isNotEmpty && !r.contains(line))
+              line,
+          ];
+        } else {
+          again = line != null && line.isNotEmpty ? [line] : const [];
+        }
+        // he may answer, or leave, while a line or the gap after it goes on: the rest of the round then stays unsaid,
+        // as `voces` does
+        bool gone() => me.done || !identical(pending, me) || my != runId;
+        unawaited(() async {
+          try {
+            for (final l in again) {
+              if (gone()) break;
+              await playClip(l);
+              await sleep(300 / FAST);
+              if (gone()) break;
+            }
+            // during a turn the question is repeated, the bubbles do not speak
+            if (!gone() && !me.turnoOn) await voces();
+          } finally {
+            me.rep = false;
+          }
+        }());
       }
     };
     if (OIR) {

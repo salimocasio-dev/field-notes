@@ -122,6 +122,11 @@ void main(List<String> args) {
       constant: 'cruceSetRefs',
       what: "El cruce's baked states",
     ),
+    'plaza': (
+      file: 'plaza_set_refs.dart',
+      constant: 'plazaSetRefs',
+      what: "El banco de la plaza's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {

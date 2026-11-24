@@ -1,0 +1,797 @@
+{
+ "id": "mucho-gusto",
+ "title": "Mucho gusto",
+ "place": "La plaza",
+ "scene": "plaza",
+ "next": "de-donde-eres",
+ "goal": "Keep three pigeons walking along the seat's back towards the frog's bag of bread by answering each grown-up who greets him or asks his name: an answer that does not fit makes everybody laugh and a pigeon flies off.",
+ "stake": {
+  "thing": "palomas",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "¿cómo te llamas?",
+  "nombre",
+  "mucho gusto"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "me llamo",
+  "me gusta",
+  "hola",
+  "amigo",
+  "mamá",
+  "abuela",
+  "niña",
+  "perro",
+  "tiene",
+  "pan",
+  "sí",
+  "toma",
+  "mira",
+  "ven",
+  "voy",
+  "hay",
+  "nuevo"
+ ],
+ "also_heard": [
+  "palomas",
+  "jugar"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "perro": "c_n_perro",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "llamas": "¿cómo te llamas?",
+  "gusto": "mucho gusto"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c60_nueva": {
+   "who": "narr",
+   "text": "Mira. Hay una niña nueva en la plaza."
+  },
+  "c60_luis_ven": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ven."
+  },
+  "c60_cq_voy": {
+   "who": "tu",
+   "text": "¡Voy!",
+   "tu_turno": [
+    {
+     "palabra": "voy",
+     "formas": [
+      "voy"
+     ]
+    }
+   ]
+  },
+  "c60_luis_nombre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Hola! ¿Cómo te llamas?"
+  },
+  "c60_ana_llamo": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Me llamo Ana."
+  },
+  "c60_luis_gusto": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mucho gusto, Ana. Yo me llamo Luis."
+  },
+  "c60_ana_gusto": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Mucho gusto."
+  },
+  "c60_ca_nombre": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hola, Ana. Mi nombre es Carmen. Mucho gusto."
+  },
+  "c60_ana_perro": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: ¡Hola, perro! ¿Cómo te llamas?"
+  },
+  "c60_ca_canelo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Su nombre es Canelo."
+  },
+  "rb02": {
+   "who": "narr",
+   "text": "¿Dónde está Canelo?"
+  },
+  "c60_ana_y_tu": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: ¿Y tú? ¿Cómo te llamas?"
+  },
+  "c60_que_dice": {
+   "who": "narr",
+   "text": "¿Qué dice Coquí?"
+  },
+  "c60_ana_gusto_cq": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: ¡Mucho gusto, Coquí! Me gusta el nombre."
+  },
+  "c41_y_ahora": {
+   "who": "narr",
+   "text": "¿Y ahora?"
+  },
+  "c36_cq_me_llamo": {
+   "who": "tu",
+   "text": "Me llamo Coquí."
+  },
+  "c60_cq_gusto_ana": {
+   "who": "tu",
+   "text": "¡Mucho gusto, Ana!"
+  },
+  "c60_cq_gusto": {
+   "who": "tu",
+   "text": "¡Mucho gusto!"
+  },
+  "c60_ana_es_coqui_m": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Mamá, es Coquí."
+  },
+  "c60_ana_es_coqui_a": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Abuela, es Coquí."
+  },
+  "c60_ana_pan": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: ¿Tienes pan para las palomas?"
+  },
+  "c60_cq_si_toma": {
+   "who": "tu",
+   "text": "¡Sí! Toma.",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si",
+      "sí toma"
+     ]
+    }
+   ]
+  },
+  "c60_luis_jugar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Quieren jugar?"
+  },
+  "c60_amigos": {
+   "who": "narr",
+   "text": "Coquí tiene amigos nuevos."
+  },
+  "c60_ma_llamas": {
+   "who": "narr",
+   "habla": "mama_ana",
+   "text": "La mamá de Ana dice: ¡Hola! ¿Cómo te llamas?"
+  },
+  "c60_ma_gusto": {
+   "who": "narr",
+   "habla": "mama_ana",
+   "text": "La mamá de Ana dice: ¡Mucho gusto, Coquí!"
+  },
+  "c60_ma_hola": {
+   "who": "narr",
+   "habla": "mama_ana",
+   "text": "La mamá de Ana dice: ¡Hola, Coquí!"
+  },
+  "c60_ma_no_llamas": {
+   "who": "narr",
+   "habla": "mama_ana",
+   "text": "La mamá de Ana dice: No, no. ¿Cómo te llamas?"
+  },
+  "c60_aa_llamas": {
+   "who": "narr",
+   "habla": "abuela_ana",
+   "text": "La abuela de Ana dice: ¡Hola! ¿Cómo te llamas?"
+  },
+  "c60_aa_gusto": {
+   "who": "narr",
+   "habla": "abuela_ana",
+   "text": "La abuela de Ana dice: ¡Mucho gusto, Coquí!"
+  },
+  "c60_aa_hola": {
+   "who": "narr",
+   "habla": "abuela_ana",
+   "text": "La abuela de Ana dice: ¡Hola, Coquí!"
+  },
+  "c60_aa_no_llamas": {
+   "who": "narr",
+   "habla": "abuela_ana",
+   "text": "La abuela de Ana dice: No, no. ¿Cómo te llamas?"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana",
+    "tablero": 0,
+    "carrito": 0
+   }
+  },
+  {
+   "act": "palomas",
+   "n": 3
+  },
+  {
+   "act": "ir",
+   "a": "asiento2"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "act": "llega",
+   "quien": "mama_ana",
+   "a": "entrada"
+  },
+  {
+   "act": "llega",
+   "quien": "abuela_ana",
+   "a": "frente2"
+  },
+  {
+   "act": "llega",
+   "quien": "beto",
+   "a": "frente3"
+  },
+  {
+   "act": "llega",
+   "quien": "ana",
+   "a": "suelo1",
+   "suelto": 1
+  },
+  "c60_nueva",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "saluda"
+  },
+  "c60_luis_ven",
+  "c60_cq_voy",
+  {
+   "act": "ir",
+   "a": "asiento1"
+  },
+  "c60_luis_nombre",
+  "c60_ana_llamo",
+  "c60_luis_gusto",
+  {
+   "act": "mano",
+   "a": "luis",
+   "b": "ana"
+  },
+  "c60_ana_gusto",
+  {
+   "dots": 1
+  },
+  {
+   "act": "llega",
+   "quien": "carmen",
+   "a": "frente1"
+  },
+  "c60_ca_nombre",
+  {
+   "act": "gesto",
+   "quien": "ana",
+   "que": "arrodilla"
+  },
+  "c60_ana_perro",
+  "c60_ca_canelo",
+  {
+   "ask": "perro",
+   "lead": [],
+   "line": "rb02",
+   "then": [],
+   "after": []
+  },
+  {
+   "dots": 2
+  },
+  "c60_ana_y_tu",
+  {
+   "act": "burbujas",
+   "izq": "insignia"
+  },
+  {
+   "ask": "burbuja_a",
+   "lead": [],
+   "line": "c60_que_dice",
+   "then": [
+    "c60_ana_gusto_cq"
+   ],
+   "after": [
+    {
+     "act": "dice60",
+     "cual": "insignia",
+     "suelto": 1
+    },
+    "c36_cq_me_llamo",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "ask": "burbuja_b",
+   "lead": [],
+   "line": "c41_y_ahora",
+   "then": [],
+   "after": [
+    {
+     "act": "dice60",
+     "cual": "manos",
+     "suelto": 1
+    },
+    "c60_cq_gusto_ana",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "mano",
+     "a": "coqui",
+     "b": "ana"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "llega",
+   "quien": "mama_ana",
+   "a": "suelo4"
+  },
+  {
+   "act": "llega",
+   "quien": "abuela_ana",
+   "a": "suelo5"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "la",
+   "options": [
+    "llamas",
+    "gusto"
+   ]
+  },
+  {
+   "draw": "ia",
+   "options": [
+    "insignia",
+    "manos"
+   ]
+  },
+  {
+   "calc": "ra",
+   "cond": "la=llamas",
+   "then": "insignia",
+   "else": "manos"
+  },
+  {
+   "calc": "pa",
+   "cond": "ia=$ra",
+   "then": "burbuja_a",
+   "else": "burbuja_b"
+  },
+  {
+   "act": "burbujas",
+   "izq": "$ia"
+  },
+  {
+   "if": "la=gusto",
+   "then": [
+    "c60_ana_es_coqui_m"
+   ]
+  },
+  "c60_ma_$la",
+  {
+   "decide": "do",
+   "options": [
+    "burbuja_a",
+    "burbuja_b"
+   ],
+   "pick": "$pa",
+   "tests": "$la",
+   "lock": true,
+   "mudo": true,
+   "lead": [],
+   "line": "c60_ma_$la",
+   "right": [
+    {
+     "if": "la=llamas",
+     "then": [
+      {
+       "act": "dice60",
+       "cual": "insignia",
+       "suelto": 1
+      },
+      "c36_cq_me_llamo",
+      {
+       "act": "ya"
+      },
+      "c60_ma_hola"
+     ],
+     "else": [
+      {
+       "act": "dice60",
+       "cual": "manos",
+       "suelto": 1
+      },
+      "c60_cq_gusto",
+      {
+       "act": "ya"
+      },
+      {
+       "act": "mano",
+       "a": "coqui",
+       "b": "mama_ana"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "la=llamas",
+     "then": [
+      {
+       "act": "dice60",
+       "cual": "manos",
+       "suelto": 1
+      },
+      "c60_cq_gusto",
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "act": "dice60",
+       "cual": "insignia",
+       "suelto": 1
+      },
+      "c36_cq_me_llamo",
+      {
+       "act": "ya"
+      }
+     ]
+    },
+    {
+     "act": "rien60"
+    },
+    {
+     "act": "paloma_va"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "la=llamas",
+     "then": [
+      "c60_ma_no_llamas"
+     ],
+     "else": [
+      "c60_ma_gusto"
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "lb",
+   "options": [
+    "llamas",
+    "gusto"
+   ]
+  },
+  {
+   "draw": "ib",
+   "options": [
+    "insignia",
+    "manos"
+   ]
+  },
+  {
+   "calc": "rb",
+   "cond": "lb=llamas",
+   "then": "insignia",
+   "else": "manos"
+  },
+  {
+   "calc": "pb",
+   "cond": "ib=$rb",
+   "then": "burbuja_a",
+   "else": "burbuja_b"
+  },
+  {
+   "act": "burbujas",
+   "izq": "$ib"
+  },
+  "c60_ana_es_coqui_a",
+  "c60_aa_$lb",
+  {
+   "decide": "do",
+   "options": [
+    "burbuja_a",
+    "burbuja_b"
+   ],
+   "pick": "$pb",
+   "tests": "$lb",
+   "lock": true,
+   "mudo": true,
+   "lead": [],
+   "line": "c60_aa_$lb",
+   "right": [
+    {
+     "if": "lb=llamas",
+     "then": [
+      {
+       "act": "dice60",
+       "cual": "insignia",
+       "suelto": 1
+      },
+      "c36_cq_me_llamo",
+      {
+       "act": "ya"
+      },
+      "c60_aa_hola"
+     ],
+     "else": [
+      {
+       "act": "dice60",
+       "cual": "manos",
+       "suelto": 1
+      },
+      "c60_cq_gusto",
+      {
+       "act": "ya"
+      },
+      {
+       "act": "mano",
+       "a": "coqui",
+       "b": "abuela_ana"
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "lb=llamas",
+     "then": [
+      {
+       "act": "dice60",
+       "cual": "manos",
+       "suelto": 1
+      },
+      "c60_cq_gusto",
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "act": "dice60",
+       "cual": "insignia",
+       "suelto": 1
+      },
+      "c36_cq_me_llamo",
+      {
+       "act": "ya"
+      }
+     ]
+    },
+    {
+     "act": "rien60"
+    },
+    {
+     "act": "paloma_va"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "if": "lb=llamas",
+     "then": [
+      "c60_aa_no_llamas"
+     ],
+     "else": [
+      "c60_aa_gusto"
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 6
+  },
+  {
+   "act": "ir",
+   "a": "asiento2"
+  },
+  {
+   "act": "llega",
+   "quien": "ana",
+   "a": "asiento1"
+  },
+  {
+   "act": "gesto",
+   "quien": "ana",
+   "que": "sienta"
+  },
+  {
+   "act": "llega",
+   "quien": "beto",
+   "a": "asiento3"
+  },
+  "c60_ana_pan",
+  "c60_cq_si_toma",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final60",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final60",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final60",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  "c60_luis_jugar",
+  {
+   "act": "sale",
+   "quien": "luis"
+  },
+  {
+   "act": "sale",
+   "quien": "carmen"
+  },
+  {
+   "act": "sale",
+   "quien": "ana"
+  },
+  {
+   "act": "sale",
+   "quien": "beto"
+  },
+  {
+   "act": "sale",
+   "quien": "coqui"
+  },
+  "c60_amigos",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c60_nueva",
+  "c60_luis_ven",
+  "c60_cq_voy",
+  "c60_luis_nombre",
+  "c60_ana_llamo",
+  "c60_luis_gusto",
+  "c60_ana_gusto",
+  "c60_ca_nombre",
+  "c60_ana_perro",
+  "c60_ca_canelo",
+  "rb02",
+  "c60_ana_y_tu",
+  "c60_que_dice",
+  "c36_cq_me_llamo",
+  "c60_ana_gusto_cq",
+  "c41_y_ahora",
+  "c60_cq_gusto_ana",
+  "c60_ma_llamas",
+  "c36_cq_me_llamo",
+  "c60_ma_hola",
+  "c60_ana_es_coqui_a",
+  "c60_aa_gusto",
+  "c60_cq_gusto",
+  "c60_ana_pan",
+  "c60_cq_si_toma",
+  "c60_luis_jugar",
+  "c60_amigos"
+ ]
+}

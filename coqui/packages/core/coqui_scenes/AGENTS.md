@@ -34,6 +34,7 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   (their sheets read first: `loadScene`), and the new scenes'.
 - `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 51b: `estantes`; order 52b: `frutas`; order 54b: `esquina`; order 55b: `parada`). El frente's, El balcón's, La sala's, El
 - `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 54b: `esquina`; order 56b: `tiendas`). El frente's, El balcón's, La sala's, El
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order, then the new scenes as they are converted (order 50b: `mostrador`; order 58b: `plaza`). El frente's, El balcón's, La sala's, El
   patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
   `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
 
@@ -639,6 +640,23 @@ Written as La esquina is (`lib/src/parada/`: `parada_set.dart`, `parada_places.d
   `tool/tiendas_paths_test.dart` (the rules: `test/support/tiendas_rules.dart`). The sprite sheet for the content lane:
   `flutter test tool/tiendas_sprites_test.dart` writes `docs/proyecto/pixel/port/tiendas-sprites.png`. Bake:
   `?page=bake&scene=tiendas`, `node tool/bake_time.mjs --scene tiendas`.
+## La plaza (order 58b, El banco de la plaza; place 6's first)
+- **The square's kit** (`lib/src/plaza/plaza_base.dart`, first writer 58b; reloj, quiosco, calendario and the kits of La
+  playa, La fonda, La casa and El fuerte stand on it and add only): plaza-base.js (`PZ`) whole, with the three pieces of
+  calle-base.js it uses (`PlazaCl`: grass, tree, sky). Walls that face the camera (`wall`, `flat`, `slope`) are
+  `SetKit.planeQuad`. `jsMod`, `jsRoundN`, `jsHypot` (V8's Math.hypot) for the JavaScript's arithmetic.
+  `test/plaza_kit_test.dart` against the JavaScript (`tool/make_plaza_kit_ref.mjs`: 36 pieces on six engines).
+- **The cast** (`plaza_cast.dart`): `mkPlazaPersona(id, pose)` for the new people (PLAZA_GENTE: ana, mama_ana, beto,
+  abuela_ana, tito, vendedor, maestra, doctor, cocinero, policia, la_joven, turista to turista6), El banco's people and the
+  piragüero (Banco.QUIEN with their extras, `plazaExtra`), Luis and Carmen; the pigeon (`mkPalomaPz`), flags. Sprite sheets:
+  `tool/make_plaza_sprites_test.dart` (`docs/proyecto/pixel/port/plaza-cast-sprites.png`, `plaza-sprites.png`).
+- **The scene** (`plaza_set.dart`, `plaza_places.dart`, `plaza_sprites.dart`, `plaza.dart`): as El mostrador's. New: the
+  answer bubbles are touch places that are not in the world (`Thing` with a screen box over the frog, `z`: the sheet's
+  things.burbuja_a/_b give the offsets from his spot); the board's hooks come from the sheet's `ganchos` (plain data);
+  whoever the story's spot would put in front of the frog stands at the nearest free spot of the row (`_sitio`, OPEN).
+  12 states in `coqui/ref/pp/plaza/` (0 of 51,840 differ). Tests: `plaza_set_test`, `plaza_acts_test`, `plaza_kit_test`,
+  `plaza_cast_test`; in feature_story `plaza_stories_test` and `tool/plaza_paths_test.dart` (rules:
+  `test/support/plaza_rules.dart`). Bake: `?page=bake&scene=plaza`, `tool/plaza_bake_parts_test.dart`.
 
 ## Pictures: by name, the size rule, old pictures until converted
 

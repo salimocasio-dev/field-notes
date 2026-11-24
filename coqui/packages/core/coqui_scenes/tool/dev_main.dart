@@ -36,6 +36,7 @@ import 'package:coqui_scenes/src/esquina/esquina_set.dart';
 import 'package:coqui_scenes/src/parada/parada_set.dart';
 import 'package:coqui_scenes/src/tiendas/tiendas_set.dart';
 import 'package:coqui_scenes/src/cruce/cruce_set.dart';
+import 'package:coqui_scenes/src/plaza/plaza_set.dart';
 import 'package:coqui_scenes/src/sheet_cache.dart' show sceneSheetOf;
 import 'package:coqui_scenes/src/patio/patio_set.dart';
 import 'package:coqui_scenes/src/sala/sala_set.dart';
@@ -347,7 +348,8 @@ class _BakePageState extends State<BakePage> {
               id == 'esquina' ||
               id == 'parada' ||
               id == 'tiendas' ||
-              id == 'cruce'
+              id == 'cruce' ||
+              id == 'plaza'
           ? sceneSheetOf(id)
           : null;
       final queries = news != null
@@ -379,6 +381,7 @@ class _BakePageState extends State<BakePage> {
           'parada' => ParadaState.fromQuery(b.query).key,
           'tiendas' => TiendasState.fromQuery(b.query).key,
           'cruce' => CruceState.fromQuery(b.query).key,
+          'plaza' => PlazaState.fromQuery(b.query).key,
           _ => FrenteState.fromQuery(b.query).key,
         };
         bakes.bakeKey(key);

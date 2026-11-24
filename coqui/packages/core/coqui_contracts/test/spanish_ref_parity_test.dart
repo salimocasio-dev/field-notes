@@ -7,6 +7,8 @@ import 'dart:io';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:test/test.dart';
 
+import 'fixtures/legacy_spanish_normalize.dart';
+
 /// Today's token regex copied verbatim from `feature_words/lib/src/text_rules.dart`.
 final RegExp _oldTokenRegex = RegExp(r'[\p{L}\p{N}]+', unicode: true);
 
@@ -40,7 +42,7 @@ void main() {
 
       for (final sub in ['trazas', 'escenas', 'pantallas']) {
         final dir = Directory('${refDir.path}/$sub');
-        if (!dir.existsSync()) continue;
+        expect(dir.existsSync(), isTrue, reason: '${dir.path} must exist');
         for (final entity in dir.listSync(recursive: true)) {
           if (entity is! File || !entity.path.endsWith('.json')) continue;
           fileCount++;
@@ -53,10 +55,16 @@ void main() {
       expect(lines.length, greaterThan(1500));
 
       for (final line in lines) {
+        final expected = legacySpanishNormalize(line);
         expect(
           Language.spanish.normalize(line),
-          normalize(line),
+          expected,
           reason: 'normalize mismatch for ${jsonEncode(line)}',
+        );
+        expect(
+          normalize(line),
+          expected,
+          reason: 'global normalize mismatch for ${jsonEncode(line)}',
         );
         final expectedTokens = [
           for (final m in _oldTokenRegex.allMatches(line))
@@ -86,8 +94,9 @@ void main() {
           final arg = args.isEmpty ? null : args.first;
           if (arg != null && arg is! String) continue;
           final expected = step['returns'] as String;
+          expect(legacySpanishNormalize(arg as String?), expected);
           expect(
-            Language.spanish.normalize(arg as String?),
+            Language.spanish.normalize(arg),
             expected,
             reason: '16-norm step ${step['i']} (${jsonEncode(arg)})',
           );
