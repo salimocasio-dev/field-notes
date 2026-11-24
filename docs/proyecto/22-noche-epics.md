@@ -94,7 +94,7 @@ Stories in different lanes run at the same time. A lane holds one story at a tim
 - **Start now, before N0.1:** N1.1 (coqui_ui) and N2.1 (coqui_contracts). Everything they need is written on this page; they need no board file. Both to Gemini, as two tasks at once (separate sessions from its scene ports).  
 - **Next, at the same time, once those merge:** N1.2 (coqui_ui, Gemini again), and N2.2 to N2.5 (four different core lanes, Gemini, as many at once as it can run).  
 - **Then the screens,** one per feature lane, all at the same time except feature_story: N4.1 and N4.2 (feature_map), N4.4 (feature_words), N4.6 (feature_speaking, after the Danny-call stories), N4.7 (feature_profile), N4.5 and epic N5 (feature_library, after #2).  
-- **Gemini builds, ChatGPT (Codex) reviews** (Salim, Nov 23: "no claude. no usage. gpt and gemini only", then "gemini will work and gpt will review"). Every story is `agent:gemini`. Every pull request is reviewed and merged by ChatGPT. The jobs the repo-root `AGENTS.md` gives to Claude (docs, `lane:app`, the board) go to Gemini, and merging to ChatGPT; his word wins over that page.
+- **Multi-AI workflow (updated Nov 24, governed by root `AGENTS.md`):** Antigravity (Gemini 4 Neon / Carbon planner + Hydrogen `high` executor in isolated worktrees) builds feature packages; Claude Code handles `coqui_contracts`, `coqui_ui` tokens, and `coqui/requests/` merges when quota is available (otherwise Antigravity handles them under strict cross-model review). Every PR is independently reviewed by **Claude API** (automated read-only GitHub Action) and **Codex (ChatGPT Plus)** before merge. *(Historical Nov 23 note: originally posted as `agent:gemini` build / ChatGPT review during temporary Claude quota pause.)*
 
 | Wave | Stories (lane) | Waits for |
 | :---- | :---- | :---- |
@@ -134,7 +134,7 @@ Not a feature. One story, for Gemini.
 - Each has a PNG beside it, rendered at 390 by 844 (Mic states at 808 by 568) with the fonts of story N1.1 installed, and looked at: nothing clipped, nothing missing. If this session cannot render, say so to Salim in one line and post the stories without PNGs.  
 - This page is in the repo as `docs/proyecto/22-noche-epics.md`, with its links pointing at the repo copies.  
 - One `type:epic` issue per epic N1 to N6, each with its stories as sub-issues, posted with the labels each story lists. Epic N7 is posted as an epic with `status:blocked` and the note "Backlog. Not before Salim says go." Its stories are not posted.  
-- The issue number of each story is written next to it on this page and in the Drive backlog note.  
+- The issue number of each story is written next to it on this page (live tracking is on GitHub Issues only; Drive `01 Backlog` is archived).
 - #12 is handled as Part 2 says.
 
 **Lane** lane:docs (and `.github/` is not touched).

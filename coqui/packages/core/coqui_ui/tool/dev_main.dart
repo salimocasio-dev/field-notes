@@ -13,6 +13,7 @@ library;
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'gallery/noche_mic.dart';
 import 'gallery/noche_pieces.dart';
 import 'gallery/screens.dart';
 
@@ -44,6 +45,26 @@ class GalleryApp extends StatelessWidget {
         ),
       );
     }
+    if (name == 'noche-mic') {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Coqui UI · Noche Mic LTR',
+        theme: coquiTheme(),
+        home: const Scaffold(
+          body: NocheMicDevPage(textDirection: TextDirection.ltr),
+        ),
+      );
+    }
+    if (name == 'noche-mic-rtl') {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Coqui UI · Noche Mic RTL',
+        theme: coquiTheme(),
+        home: const Scaffold(
+          body: NocheMicDevPage(textDirection: TextDirection.rtl),
+        ),
+      );
+    }
     GallerySection? one;
     for (final s in gallerySections) {
       if (s.name == name) one = s;
@@ -72,13 +93,32 @@ class _Index extends StatelessWidget {
           Text('coqui_ui gallery', style: CoquiText.h1),
           const SizedBox(height: 8),
           Text(
-            'Noche shared pieces (?section=noche-ltr, ?section=noche-rtl), '
+            'Noche shared pieces (?section=noche-ltr, ?section=noche-rtl) and '
+            'Noche mic (?section=noche-mic, ?section=noche-mic-rtl), '
             'followed by the v=39 reference sections.',
             style: CoquiText.smallMuted,
           ),
-          for (final entry in const [
-            ('noche-ltr', 'Noche shared pieces (LTR)', TextDirection.ltr),
-            ('noche-rtl', 'Noche shared pieces (RTL)', TextDirection.rtl),
+          for (final entry in <(String, String, Widget)>[
+            (
+              'noche-ltr',
+              'Noche shared pieces (LTR)',
+              const NochePiecesDevPage(textDirection: TextDirection.ltr),
+            ),
+            (
+              'noche-rtl',
+              'Noche shared pieces (RTL)',
+              const NochePiecesDevPage(textDirection: TextDirection.rtl),
+            ),
+            (
+              'noche-mic',
+              'Noche mic · six states (LTR)',
+              const NocheMicDevPage(textDirection: TextDirection.ltr),
+            ),
+            (
+              'noche-mic-rtl',
+              'Noche mic · six states (RTL)',
+              const NocheMicDevPage(textDirection: TextDirection.rtl),
+            ),
           ]) ...[
             const SizedBox(height: 32),
             Text(entry.$2, style: CoquiText.h2),
@@ -99,7 +139,7 @@ class _Index extends StatelessWidget {
                     viewPadding: EdgeInsets.zero,
                     viewInsets: EdgeInsets.zero,
                   ),
-                  child: NochePiecesDevPage(textDirection: entry.$3),
+                  child: entry.$3,
                 ),
               ),
             ),
