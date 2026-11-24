@@ -306,9 +306,14 @@ void main() {
   );
 
   testWidgets(
-    'accessibility: multi-word speaking cards render without overflow at 390x844 with 1.3x text scale',
+    'accessibility: long target phrases on narrow widths (320 px, 360 px) at 1.3x text scale wrap cleanly without overflow or layout shift',
     (t) async {
-      for (final wordName in ['¿cómo estás?', 'no hay']) {
+      for (final (width, wordName) in [
+        (320.0, '¿qué es esto?'),
+        (320.0, 'hasta mañana'),
+        (360.0, '¿cómo estás?'),
+        (390.0, 'no hay'),
+      ]) {
         final w = realRepaso.word(wordName)!;
         final line = w.say.first;
         final speech = HeldSpeech();
@@ -317,18 +322,88 @@ void main() {
           json: everythingJson(realRepaso),
           listener: speech,
         );
-        await sc.open(w: 390, h: 844, dpr: 2, text: 1.3);
+        await sc.open(w: width, h: 844, dpr: 2, text: 1.3);
         sc.s.queue = [QueueEntry.play(SayItem(word: w.word, line: line))];
         await t.tap(find.byType(LessonStartButton));
         await sc.settle();
+        final asked = _geometry(t);
         await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
         await sc.settle();
 
-        expect(t.takeException(), isNull, reason: wordName);
-        expect(find.byType(ErrorWidget), findsNothing, reason: wordName);
+        final tag = '$wordName @ ${width.toInt()}px 1.3x';
+        expect(t.takeException(), isNull, reason: tag);
+        expect(find.byType(ErrorWidget), findsNothing, reason: tag);
         expect(find.byKey(const ValueKey('say-prompt')), findsOneWidget);
         expect(find.byType(RepasoMic), findsOneWidget);
-        expect(_highlightedSpans(t), hasLength(1), reason: wordName);
+        expect(_highlightedSpans(t), hasLength(1), reason: tag);
+
+        // Prompt fits cleanly inside the viewport width and above the mic
+        final promptRect = t.getRect(find.byKey(const ValueKey('say-prompt')));
+        final micRect = t.getRect(find.byType(RepasoMic));
+        expect(promptRect.left, greaterThanOrEqualTo(0), reason: tag);
+        expect(promptRect.right, lessThanOrEqualTo(width + 0.01), reason: tag);
+        expect(
+          promptRect.bottom,
+          lessThanOrEqualTo(micRect.top - CoquiMetrics.s24 + 0.01),
+          reason: tag,
+        );
+
+        // On narrow 320 px at 1.3x, the long target phrase wraps onto two lines below the label
+        if (width <= 320) {
+          final callout = find.byKey(const ValueKey('say-target-word'));
+          final labelRect = t.getRect(
+            find.descendant(
+              of: callout,
+              matching: find.text(RepasoStrings.sayTargetWord),
+            ),
+          );
+          final wordRect = t.getRect(
+            find.descendant(of: callout, matching: find.text(wordName)),
+          );
+          expect(
+            wordRect.top,
+            greaterThan(labelRect.top),
+            reason: '$tag: callout wraps cleanly onto a second line',
+          );
+        }
+
+        // Zero layout shift across asked -> ready -> miss -> hit (allowing uniform scroll shift inside SingleChildScrollView
+        // when the wider Ahem test font places the mic below the fold at 320 px / 1.3x; Next's slot stays strictly fixed)
+        void expectUnmoved(String stage) {
+          final now = _geometry(t);
+          expect(now.length, asked.length, reason: '$tag $stage');
+          final dy = now.first.$2.top - asked.first.$2.top;
+          for (var i = 0; i < now.length; i++) {
+            final fixed = now[i].$1.startsWith('next');
+            expect(
+              now[i].$2,
+              fixed ? asked[i].$2 : asked[i].$2.shift(Offset(0, dy)),
+              reason: '$tag $stage: ${now[i].$1} moved',
+            );
+          }
+        }
+
+        expectUnmoved('ready');
+
+        final mic = find.byType(RepasoMic);
+        await t.ensureVisible(mic);
+        await t.pump();
+        await t.tap(mic);
+        await sc.vt.runUntil(() => sc.s.mic == MicState.listening);
+        speech.hear('algo');
+        await sc.vt.runUntil(() => sc.s.notHeard && sc.s.mic == MicState.ready);
+        await sc.settle();
+        expectUnmoved('after miss');
+
+        await t.ensureVisible(mic);
+        await t.pump();
+        await t.tap(mic);
+        await sc.vt.runUntil(() => sc.s.mic == MicState.listening);
+        speech.hear(line.forms.first);
+        await sc.vt.runUntil(() => sc.s.heardRight && sc.s.canNext);
+        await sc.settle();
+        expectUnmoved('after hit');
+        expect(t.takeException(), isNull, reason: '$tag end');
       }
     },
   );

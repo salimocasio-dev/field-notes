@@ -243,16 +243,19 @@ class RepasoScreenState extends State<RepasoScreen> {
     return math.min(CoquiMetrics.lessonColumnMax, c.maxWidth - 2 * side);
   }
 
-  double _textH(BuildContext context, String text, TextStyle style, double w) {
+  Size _textSize(BuildContext context, String text, TextStyle style, double w) {
     final tp = TextPainter(
       text: TextSpan(text: text, style: style),
       textDirection: TextDirection.ltr,
       textScaler: MediaQuery.textScalerOf(context),
     )..layout(maxWidth: w);
-    final h = tp.height;
+    final size = tp.size;
     tp.dispose();
-    return h;
+    return size;
   }
+
+  double _textH(BuildContext context, String text, TextStyle style, double w) =>
+      _textSize(context, text, style, w).height;
 
   /// The line that says what to do, with the chip's place at its right: as high as the tallest of the six lines, so that
   /// what stands under it (the round speaker) is in the same place in every game.
@@ -824,14 +827,35 @@ class RepasoScreenState extends State<RepasoScreen> {
         ),
       ),
     );
+    const pillPadX = CoquiMetrics.s12;
+    const pillPadY = CoquiMetrics.s4;
+    const pillBorder = CoquiMetrics.borderButton;
+    const calloutSpacing = CoquiMetrics.s8;
+    const calloutRunSpacing = CoquiMetrics.s4;
     final innerW = math.max(
       0.0,
       width - 2 * (CoquiMetrics.s16 + CoquiMetrics.borderButton),
     );
-    final calloutH = math.max(
-      _textH(context, RepasoStrings.sayTargetWord, CoquiText.lessonSub, innerW),
-      _textH(context, it.word, CoquiText.lessonBodyStrong, innerW) + 9,
+    final labelSize = _textSize(
+      context,
+      RepasoStrings.sayTargetWord,
+      CoquiText.lessonSub,
+      innerW,
     );
+    final pillTextMaxW = math.max(0.0, innerW - 2 * (pillPadX + pillBorder));
+    final pillTextSize = _textSize(
+      context,
+      it.word,
+      CoquiText.lessonBodyStrong,
+      pillTextMaxW,
+    );
+    final pillW = pillTextSize.width + 2 * (pillPadX + pillBorder);
+    final pillH = pillTextSize.height + 2 * (pillPadY + pillBorder);
+    final fitsOneLine =
+        labelSize.width + calloutSpacing + pillW <= innerW + 0.01;
+    final calloutH = fitsOneLine
+        ? math.max(labelSize.height, pillH)
+        : labelSize.height + calloutRunSpacing + pillH;
     final sentenceH = _textH(
       context,
       it.line.text,
@@ -866,8 +890,8 @@ class RepasoScreenState extends State<RepasoScreen> {
                   key: const ValueKey('say-target-word'),
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: CoquiMetrics.s8,
-                  runSpacing: CoquiMetrics.s4,
+                  spacing: calloutSpacing,
+                  runSpacing: calloutRunSpacing,
                   children: [
                     Text(
                       RepasoStrings.sayTargetWord,
@@ -875,15 +899,17 @@ class RepasoScreenState extends State<RepasoScreen> {
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 3,
+                        horizontal: pillPadX,
+                        vertical: pillPadY,
                       ),
                       decoration: BoxDecoration(
                         color: CoquiColors.bookLineLit,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(
+                          CoquiMetrics.radiusPicture,
+                        ),
                         border: Border.all(
                           color: CoquiColors.bookLineLitBar,
-                          width: 1.5,
+                          width: pillBorder,
                         ),
                       ),
                       child: Text(it.word, style: CoquiText.lessonBodyStrong),
