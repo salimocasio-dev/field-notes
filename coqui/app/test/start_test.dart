@@ -61,7 +61,7 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Try again'), findsOneWidget);
-      expect(find.byType(CoquiTabBar), findsNothing);
+      expect(find.byType(NocheTabBar), findsNothing);
       // the page colour behind it
       final box = tester.widget<ColoredBox>(
         find
@@ -71,7 +71,7 @@ void main() {
             )
             .last,
       );
-      expect(box.color, CoquiColors.bg);
+      expect(box.color, NocheColors.ground);
       // still no network: the same
       await app.tap(find.text('Try again'));
       await app.settle(rounds: 5);

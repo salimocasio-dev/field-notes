@@ -1,8 +1,19 @@
 # Coquí: start here
 
+## Current Snapshot (Nov 24, 2026)
+
+- **Live Flutter app (`coqui/`):** Build 16 is on `main` (`coqui/BUILD`), with Noche shared pieces (`#80`) and the Noche shell (`#110`) merged, plus Biblioteca (`#2`) and Danny calls (`#4`) merged since build 15. `historia/` stays frozen (bug fixes only).
+- **Single live build board:** GitHub Issues and the GitHub Project board in `salimocasio-dev/field-notes` ONLY. Drive `01 Backlog — master copy` is retired/archived.
+- **Multi-AI workflow:** Governed by root `AGENTS.md` (Gemini 4 Neon / Antigravity for ticket scoping & parallel worktree builds; Claude Code for architecture/core when quota is available, otherwise Antigravity under cross-model review; Claude API + Codex for independent PR review).
+- **Historical baseline below:** The Nov 19, Nov 20, and Nov 13 sections below are preserved as historical context—do not treat `historia/` stories 1–3 or Nov 13 notes as current state. "Decisions that stand", "Mistakes already made here", and "How Salim wants to work" at the bottom remain active.
+
+---
+
+## Historical baseline: Nov 19 2026 (the move to Flutter)
+
 **Nov 19 2026: the app is moving to Flutter.** A session doing that work starts from 14-flutter-handoff.md, then 11-flutter-plan, 12-flutter-contracts, 13-flutter-orders and 11-pixel-engine. The JavaScript site described below stays live and frozen (bug fixes only) until the cutover in page 13, order 42.
 
-## The Flutter move: state at the end of the first session (Nov 19)
+### The Flutter move: state at the end of the first session (Nov 19)
 
 Every order's result, with its numbers and what was decided, is under its heading in 13-flutter-orders. The decisions taken while it ran are in 11-flutter-plan, "Decisions made here", the rows marked Nov 19. What follows is the short state.
 

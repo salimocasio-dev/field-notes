@@ -5,8 +5,8 @@
   "scope": "/field-notes/app/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#F6F5F1",
-  "theme_color": "#5C94FC",
+  "background_color": "#0C1926",
+  "theme_color": "#0C1926",
   "prefer_related_applications": false,
   "icons": [
     {

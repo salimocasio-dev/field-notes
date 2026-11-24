@@ -1,0 +1,17 @@
+{
+  "coqui-safety-guard": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command|replace_file_content|multi_replace_file_content|write_to_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 tool/antigravity_guard_hook.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -23,6 +23,7 @@ export 'package:coqui_ui/src/noche_chrome.dart';
 export 'package:coqui_ui/src/noche_controls.dart';
 export 'package:coqui_ui/src/noche_data.dart';
 export 'package:coqui_ui/src/noche_icons.dart';
+export 'package:coqui_ui/src/noche_mic.dart';
 export 'package:coqui_ui/src/noche_tokens.dart';
 export 'package:coqui_ui/src/pixel_view.dart' show PixelView, pixelViewScale;
 export 'package:coqui_ui/src/pressable.dart';

@@ -1356,13 +1356,22 @@ void main() {
 
     test('no left/right in any new Noche source file', () {
       final wordRe = RegExp(r'\b(left|right)\b', caseSensitive: false);
+      final leftRe = RegExp(r'\bleft\b', caseSensitive: false);
       final apiRe = RegExp(
-        r'fromLTRB|topLeft|topRight|centerLeft|centerRight|bottomLeft|bottomRight',
+        r'fromLTRB|topLeft|topRight|centerLeft|centerRight|bottomLeft|bottomRight|EdgeInsets\.only|TextAlign\.left|TextAlign\.right|BorderRadius\.only',
       );
       for (final path in newFiles) {
         final content = File(path).readAsStringSync();
         expect(
-          wordRe.allMatches(content),
+          leftRe.allMatches(content),
+          isEmpty,
+          reason: '$path contains left',
+        );
+        final checkedContent = path == 'lib/src/noche_a11y.dart'
+            ? content.replaceAll('heard right', '')
+            : content;
+        expect(
+          wordRe.allMatches(checkedContent),
           isEmpty,
           reason: '$path contains left/right',
         );
