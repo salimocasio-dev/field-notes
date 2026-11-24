@@ -41,9 +41,9 @@ Every legacy file in `historia/cuentos/*.json` uses keys from this exact 24-key 
 | `tipo` | `game` | No | `"escucha"`, `"haz"`, `"cual"`, or `"palabras"`; omitted on main stories. |
 | `scene` | `game` | No | Scene ID (omitted on `palabras-solas`). |
 | `next` | `game` | No | Next story ID on the map. |
-| `goal` | `game` | No | Internal English goal summary. |
-| `note` | `game` | No | Author/tool note (e.g. `cual-*`, `palabras-solas`). |
-| `stake` | `game` | No | `{"thing": ..., "steps": ...}` stake definition. |
+| `goal` | `game` | No | Internal English goal summary for writers/reviewers (not shown to learners; English stays shared per Page 19 section 8). |
+| `note` | `game` | No | Internal English author/tool note (e.g. `cual-*`, `palabras-solas`; not shown to learners). |
+| `stake` | `game` | No | `{"thing": ..., "steps": ...}` stake definition. `stake.thing` is an internal scene-contract identifier (e.g. `"bola"`, `"cafe"`, `"arroz"`), never rendered as text to learners. |
 | `dots` | `game` | No | Total progress dots. |
 | `bien` | `game` | No | Default praise clip ID. |
 | `callado` | `game` | No | Silent-mode flag (e.g. `el-bebe-duerme`). |

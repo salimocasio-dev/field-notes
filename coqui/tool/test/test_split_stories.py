@@ -32,12 +32,23 @@ sys.path.insert(0, str(TOOL_DIR))
 import split_stories as ss  # noqa: E402
 
 SRC_DIR = REPO_ROOT / "historia" / "cuentos"
+CURSO_PATH = REPO_ROOT / "historia" / "datos" / "curso.json"
 CONTENT_DIR = REPO_ROOT / "content"
 TRAZAS_DIR = REPO_ROOT / "coqui" / "ref" / "trazas"
 
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _course_listed_ids() -> set[str]:
+    curso = _load_json(CURSO_PATH)
+    ids: set[str] = set()
+    for place in curso.get("lugares", []):
+        for key in ("cuentos", "dibujos", "haz"):
+            ids.update(place.get(key, []))
+    ids.update(curso.get("cual", []))
+    return ids
 
 
 def _tree_bytes(root: Path) -> dict[str, bytes]:
@@ -60,16 +71,25 @@ class RealStoriesRoundTripTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.source_paths = sorted(SRC_DIR.glob("*.json"))
         cls.stories = {p.stem: _load_json(p) for p in cls.source_paths}
+        cls.course_ids = _course_listed_ids()
 
-    def test_all_70_real_stories_breakdown_and_round_trip(self) -> None:
-        self.assertEqual(len(self.stories), 70)
+    def test_course_stories_breakdown_and_all_stories_round_trip(self) -> None:
+        # Per coqui/AGENTS.md ("Stories staged by another session"), assert fixed counts ONLY for
+        # course-listed files + palabras-solas, while still round-tripping any staged files.
+        course_and_solas = {
+            sid: story
+            for sid, story in self.stories.items()
+            if sid in self.course_ids or sid == "palabras-solas"
+        }
+        self.assertEqual(len(course_and_solas), 70)
 
-        kinds = Counter(s.get("tipo", "story") for s in self.stories.values())
+        kinds = Counter(s.get("tipo", "story") for s in course_and_solas.values())
         self.assertEqual(
             dict(kinds),
             {"story": 35, "escucha": 11, "haz": 11, "cual": 12, "palabras": 1},
         )
 
+        # Round-trip EVERY file in historia/cuentos/ (course-listed, palabras-solas, and any staged).
         for sid, original in self.stories.items():
             # 1. In-memory split -> join exact equality
             game, lines = ss.split_story(original, lang="es")
@@ -111,7 +131,7 @@ class RealStoriesRoundTripTests(unittest.TestCase):
         code, out, err = _run_cli("check")
         self.assertEqual(code, 0, err)
         self.assertEqual(err, "")
-        self.assertIn("70 stories", out)
+        self.assertIn(f"{len(self.stories)} stories", out)
 
 
 class WordTableAndResolutionTests(unittest.TestCase):
@@ -299,6 +319,51 @@ class SafetyAndValidationTests(unittest.TestCase):
                 ss.split_directory(src, src)
             with self.assertRaises(ValueError):
                 ss.split_directory(src, src / "nested")
+
+    def test_refuses_symlinked_destinations_and_path_traversal(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fake_cuentos = root / "historia" / "cuentos"
+            fake_cuentos.mkdir(parents=True)
+            original_bytes = ss.render_json(self._minimal_story("demo"))
+            (fake_cuentos / "demo.json").write_bytes(original_bytes)
+
+            # 1. Symlinked child dir: safe_out/games -> historia/cuentos
+            out_symlink_games = root / "out_sym_games"
+            out_symlink_games.mkdir()
+            (out_symlink_games / "games").symlink_to(fake_cuentos)
+            with self.assertRaises(ValueError):
+                ss.split_directory(fake_cuentos, out_symlink_games, repo_root=root)
+            self.assertEqual((fake_cuentos / "demo.json").read_bytes(), original_bytes)
+
+            # 2. Symlinked lang subdir: out/lines/es -> historia/cuentos
+            out_symlink_lang = root / "out_sym_lang"
+            (out_symlink_lang / "lines").mkdir(parents=True)
+            (out_symlink_lang / "lines" / "es").symlink_to(fake_cuentos)
+            with self.assertRaises(ValueError):
+                ss.split_directory(fake_cuentos, out_symlink_lang, repo_root=root)
+            self.assertEqual((fake_cuentos / "demo.json").read_bytes(), original_bytes)
+
+            # 3. Symlinked target file: out/games/demo.json -> historia/cuentos/demo.json
+            out_symlink_file = root / "out_sym_file"
+            (out_symlink_file / "games").mkdir(parents=True)
+            (out_symlink_file / "games" / "demo.json").symlink_to(fake_cuentos / "demo.json")
+            with self.assertRaises(ValueError):
+                ss.split_directory(fake_cuentos, out_symlink_file, repo_root=root)
+            self.assertEqual((fake_cuentos / "demo.json").read_bytes(), original_bytes)
+
+            # 4. Path traversal in lang or story id
+            for bad_lang in ("../historia/cuentos", "es/sub", "..", ".", "es\\sub", ""):
+                with self.assertRaises(ValueError, msg=f"allowed unsafe lang {bad_lang!r}"):
+                    ss.split_directory(fake_cuentos, root / "out_bad_lang", lang=bad_lang, repo_root=root)
+                with self.assertRaises(ValueError, msg=f"split_story allowed unsafe lang {bad_lang!r}"):
+                    ss.split_story(self._minimal_story("demo"), lang=bad_lang)
+
+            for bad_id in ("../escape", "a/b", "..", ".", "a\\b", ""):
+                bad_story = self._minimal_story("demo")
+                bad_story["id"] = bad_id
+                with self.assertRaises(ValueError, msg=f"split_story allowed unsafe id {bad_id!r}"):
+                    ss.split_story(bad_story)
 
     def test_unknown_top_level_keys_raise(self) -> None:
         bad_story = self._minimal_story()

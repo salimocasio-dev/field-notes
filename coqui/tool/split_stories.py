@@ -90,6 +90,21 @@ LINES_ALLOWED_KEYS: frozenset[str] = frozenset(
 
 # Matches coqui/packages/features/feature_story/lib/src/runner/steps.dart:35
 VAR_RE = re.compile(r"\$([a-z]+)")
+SAFE_SEGMENT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+
+
+def _assert_safe_segment(value: Any, label: str) -> str:
+    """Validate that an id or lang code is a single safe path segment (no traversal)."""
+    if (
+        not isinstance(value, str)
+        or not value
+        or value in (".", "..")
+        or "/" in value
+        or "\\" in value
+        or not SAFE_SEGMENT_RE.match(value)
+    ):
+        raise ValueError(f"Unsafe {label}: {value!r}")
+    return value
 
 
 def _assert_safe_output_dir(
@@ -98,7 +113,7 @@ def _assert_safe_output_dir(
     *,
     src_dir: Path | None = None,
 ) -> None:
-    """Refuse writing inside historia/cuentos, repo_root/historia, or src_dir."""
+    """Refuse writing inside historia/cuentos, repo_root/historia, or src_dir (following symlinks)."""
     out_path = Path(out_dir)
     out_resolved = out_path.resolve()
     root_resolved = Path(repo_root).resolve()
@@ -130,6 +145,26 @@ def _assert_safe_output_dir(
             )
 
 
+def _assert_safe_target_file(
+    target_file: Path,
+    expected_dir: Path,
+    repo_root: Path = REPO_ROOT,
+    *,
+    src_dir: Path | None = None,
+) -> None:
+    """Validate that a target file (following symlinks) stays inside expected_dir and safe bounds."""
+    if target_file.is_symlink():
+        raise ValueError(f"Refusing to write or delete through symlink: {target_file}")
+    _assert_safe_output_dir(target_file.parent, repo_root, src_dir=src_dir)
+    _assert_safe_output_dir(target_file, repo_root, src_dir=src_dir)
+    expected_resolved = expected_dir.resolve()
+    target_resolved = target_file.resolve()
+    if target_resolved.parent != expected_resolved:
+        raise ValueError(
+            f"Target file {target_file} resolves outside {expected_dir}: {target_resolved}"
+        )
+
+
 def render_json(obj: Any) -> bytes:
     """Deterministic UTF-8 JSON bytes with indent=2, ensure_ascii=False, trailing newline."""
     return (json.dumps(obj, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
@@ -157,6 +192,7 @@ def _load_stories_dir(src_dir: Path) -> list[dict[str, Any]]:
             raise ValueError(
                 f"Story id {sid!r} does not match filename stem {path.stem!r} ({path})"
             )
+        _assert_safe_segment(sid, "story id")
         stories.append(story)
     return stories
 
@@ -165,16 +201,13 @@ def split_story(story: dict[str, Any], *, lang: str = "es") -> tuple[dict[str, A
     """Split a single-file story dict into (game_dict, lines_dict)."""
     if not isinstance(story, dict):
         raise ValueError(f"Story must be a dict, got {type(story).__name__}")
-    if not isinstance(lang, str) or not lang:
-        raise ValueError(f"lang must be a non-empty string, got {lang!r}")
+    _assert_safe_segment(lang, "lang")
 
     unknown = sorted(set(story.keys()) - ALL_SOURCE_KEYS)
     if unknown:
         raise ValueError(f"Unknown top-level key(s) in story {story.get('id')!r}: {unknown}")
 
-    sid = story.get("id")
-    if not isinstance(sid, str) or not sid:
-        raise ValueError(f"Story must have a non-empty string 'id', got {sid!r}")
+    sid = _assert_safe_segment(story.get("id"), "story id")
     if "title" not in story:
         raise ValueError(f"Story {sid!r} is missing required key 'title'")
     if "clips" not in story:
@@ -241,16 +274,12 @@ def join_story(game: dict[str, Any], lines: dict[str, Any]) -> dict[str, Any]:
     if lines.get("format") != LINES_FORMAT:
         raise ValueError(f"Invalid lines format: {lines.get('format')!r} (expected {LINES_FORMAT!r})")
 
-    gid = game.get("id")
+    gid = _assert_safe_segment(game.get("id"), "game id")
     lid = lines.get("id")
-    if not isinstance(gid, str) or not gid:
-        raise ValueError(f"game 'id' must be a non-empty string, got {gid!r}")
     if gid != lid:
         raise ValueError(f"Mismatched story id: game={gid!r} vs lines={lid!r}")
 
-    lang = lines.get("lang")
-    if not isinstance(lang, str) or not lang:
-        raise ValueError(f"lines 'lang' must be a non-empty string, got {lang!r}")
+    _assert_safe_segment(lines.get("lang"), "lang")
     if "title" not in lines:
         raise ValueError(f"lines for {gid!r} is missing required key 'title'")
     if "clips" not in lines:
@@ -420,8 +449,7 @@ def extract_story_tested_ids(story: dict[str, Any]) -> set[str]:
 
 def build_word_table(stories: list[dict[str, Any]], *, lang: str = "es") -> dict[str, Any]:
     """Build the language-wide ID-to-word table (`coqui.words.v1`) across all stories."""
-    if not isinstance(lang, str) or not lang:
-        raise ValueError(f"lang must be a non-empty string, got {lang!r}")
+    _assert_safe_segment(lang, "lang")
 
     names_keys: set[str] = set()
     touched_ids: set[str] = set()
@@ -534,12 +562,46 @@ def resolve_tested_word(
     return tested_id
 
 
-def _remove_stale_json(directory: Path, expected_names: set[str]) -> list[str]:
+def _assert_safe_dir_tree(
+    directory: Path,
+    base_dir: Path,
+    repo_root: Path = REPO_ROOT,
+    *,
+    src_dir: Path | None = None,
+) -> None:
+    """Ensure directory and all intermediate components from base_dir are non-symlink and safe."""
+    _assert_safe_output_dir(base_dir, repo_root, src_dir=src_dir)
+    if base_dir.is_symlink():
+        raise ValueError(f"Refusing to write through symlinked output directory: {base_dir}")
+    rel = directory.relative_to(base_dir)
+    cur = base_dir
+    for part in rel.parts:
+        cur = cur / part
+        if cur.is_symlink():
+            raise ValueError(f"Refusing to write through symlinked subdirectory: {cur}")
+        _assert_safe_output_dir(cur, repo_root, src_dir=src_dir)
+    base_resolved = base_dir.resolve()
+    dir_resolved = directory.resolve()
+    if dir_resolved != base_resolved and base_resolved not in dir_resolved.parents:
+        raise ValueError(f"Destination {directory} resolves outside {base_dir}: {dir_resolved}")
+
+
+def _remove_stale_json(
+    directory: Path,
+    expected_names: set[str],
+    repo_root: Path = REPO_ROOT,
+    *,
+    src_dir: Path | None = None,
+) -> list[str]:
     removed: list[str] = []
     if not directory.is_dir():
         return removed
+    _assert_safe_output_dir(directory, repo_root, src_dir=src_dir)
+    if directory.is_symlink():
+        raise ValueError(f"Refusing to clean stale files in symlinked directory: {directory}")
     for path in sorted(directory.glob("*.json")):
         if path.name not in expected_names:
+            _assert_safe_target_file(path, directory, repo_root, src_dir=src_dir)
             path.unlink()
             removed.append(path.name)
     return removed
@@ -553,18 +615,20 @@ def split_directory(
     repo_root: Path = REPO_ROOT,
 ) -> dict[str, Any]:
     """Split every story JSON in src_dir into out_dir/games and out_dir/lines/<lang>."""
+    _assert_safe_segment(lang, "lang")
     src_path = Path(src_dir)
     out_path = Path(out_dir)
-    _assert_safe_output_dir(out_path, repo_root, src_dir=src_path)
+    games_dir = out_path / "games"
+    lines_dir = out_path / "lines" / lang
+
+    _assert_safe_dir_tree(games_dir, out_path, repo_root, src_dir=src_path)
+    _assert_safe_dir_tree(lines_dir, out_path, repo_root, src_dir=src_path)
 
     stories = _load_stories_dir(src_path)
     word_table = build_word_table(stories, lang=lang)
 
-    games_dir = out_path / "games"
-    lines_dir = out_path / "lines" / lang
-    games_dir.mkdir(parents=True, exist_ok=True)
-    lines_dir.mkdir(parents=True, exist_ok=True)
-
+    # Prepare payloads and pre-validate EVERY destination file before writing or deleting anything.
+    pending_writes: list[tuple[Path, Path, bytes]] = []
     expected_game_names: set[str] = set()
     expected_line_names: set[str] = {"words.json"}
 
@@ -573,13 +637,30 @@ def split_directory(
         fname = f"{story['id']}.json"
         expected_game_names.add(fname)
         expected_line_names.add(fname)
-        (games_dir / fname).write_bytes(render_json(game))
-        (lines_dir / fname).write_bytes(render_json(lines))
+        gtarget = games_dir / fname
+        ltarget = lines_dir / fname
+        _assert_safe_target_file(gtarget, games_dir, repo_root, src_dir=src_path)
+        _assert_safe_target_file(ltarget, lines_dir, repo_root, src_dir=src_path)
+        pending_writes.append((gtarget, games_dir, render_json(game)))
+        pending_writes.append((ltarget, lines_dir, render_json(lines)))
 
-    (lines_dir / "words.json").write_bytes(render_json(word_table))
+    words_target = lines_dir / "words.json"
+    _assert_safe_target_file(words_target, lines_dir, repo_root, src_dir=src_path)
+    pending_writes.append((words_target, lines_dir, render_json(word_table)))
 
-    removed_games = _remove_stale_json(games_dir, expected_game_names)
-    removed_lines = _remove_stale_json(lines_dir, expected_line_names)
+    games_dir.mkdir(parents=True, exist_ok=True)
+    lines_dir.mkdir(parents=True, exist_ok=True)
+
+    for target, expected_parent, payload in pending_writes:
+        _assert_safe_target_file(target, expected_parent, repo_root, src_dir=src_path)
+        target.write_bytes(payload)
+
+    removed_games = _remove_stale_json(
+        games_dir, expected_game_names, repo_root, src_dir=src_path
+    )
+    removed_lines = _remove_stale_json(
+        lines_dir, expected_line_names, repo_root, src_dir=src_path
+    )
 
     return {
         "stories": len(stories),
@@ -603,7 +684,8 @@ def join_directory(
     games_path = Path(games_dir)
     lines_path = Path(lines_dir)
     out_path = Path(out_dir)
-    _assert_safe_output_dir(out_path, repo_root)
+    _assert_safe_dir_tree(out_path, out_path, repo_root, src_dir=games_path)
+    _assert_safe_output_dir(out_path, repo_root, src_dir=lines_path)
 
     if not games_path.is_dir():
         raise ValueError(f"Games directory does not exist: {games_dir}")
@@ -625,15 +707,23 @@ def join_directory(
             f"Game/lines file mismatch: missing_lines={missing_lines}, extra_lines={extra_lines}"
         )
 
-    out_path.mkdir(parents=True, exist_ok=True)
-    count = 0
+    pending: list[tuple[Path, bytes]] = []
     for sid in sorted(game_files):
+        _assert_safe_segment(sid, "story id")
         game = _read_json(game_files[sid])
         lines = _read_json(line_files[sid])
         joined = join_story(game, lines)
-        (out_path / f"{sid}.json").write_bytes(render_json(joined))
-        count += 1
-    return count
+        target = out_path / f"{sid}.json"
+        _assert_safe_target_file(target, out_path, repo_root, src_dir=games_path)
+        _assert_safe_target_file(target, out_path, repo_root, src_dir=lines_path)
+        pending.append((target, render_json(joined)))
+
+    out_path.mkdir(parents=True, exist_ok=True)
+    for target, payload in pending:
+        _assert_safe_target_file(target, out_path, repo_root, src_dir=games_path)
+        _assert_safe_target_file(target, out_path, repo_root, src_dir=lines_path)
+        target.write_bytes(payload)
+    return len(pending)
 
 
 def check_directory(
@@ -644,6 +734,10 @@ def check_directory(
 ) -> list[str]:
     """Verify out_dir matches a fresh split of src_dir, round-trips exactly, and resolves words."""
     problems: list[str] = []
+    try:
+        _assert_safe_segment(lang, "lang")
+    except ValueError as exc:
+        return [str(exc)]
     src_path = Path(src_dir)
     out_path = Path(out_dir)
     games_dir = out_path / "games"
