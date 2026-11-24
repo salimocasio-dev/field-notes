@@ -719,5 +719,60 @@ void main() {
         stores.dispose();
       },
     );
+
+    test('ProgressStores.changes fires for shared updates from standalone stores and sibling ProgressStores', () async {
+      final kv = MemoryKeyValueStore();
+      final clock = SettableClock(_t0);
+      final stores = ProgressStores(kv, clock);
+      final siblingStores = ProgressStores(kv, clock);
+      final standaloneAr = PalabrasStore(kv, clock, language: arabic);
+
+      expect(
+        await _countEvents(stores.changes, () => standaloneAr.addMinutes(3)),
+        1,
+      );
+      expect(
+        await _countEvents(
+          stores.changes,
+          () => standaloneAr.storyFinished(StoryResult(id: 'ar-story')),
+        ),
+        1,
+      );
+      expect(
+        await _countEvents(
+          stores.changes,
+          () => siblingStores.forLanguage(french).addMinutes(2),
+        ),
+        1,
+      );
+      expect(stores.minutes, 5);
+      expect(stores.streak, 1);
+
+      standaloneAr.dispose();
+      siblingStores.dispose();
+      stores.dispose();
+    });
+
+    test('partial migration recovers coqui.shared.v1 from existing coqui.es.palabras.v1 without overwriting Spanish', () {
+      final kv = MemoryKeyValueStore(
+        stored: _legacyFixture,
+        key: PalabrasStore.storageKey,
+      );
+      final editedEs = _legacyFixture.replaceFirst(
+        '"minutos":14.5',
+        '"minutos":22.5',
+      );
+      kv.data['coqui.es.palabras.v1'] = editedEs;
+      expect(kv.data.containsKey(PalabrasStore.sharedStorageKey), isFalse);
+
+      final stores = ProgressStores(kv, SettableClock(_t0));
+      expect(kv.data['coqui.es.palabras.v1'], editedEs);
+      expect(kv.data[PalabrasStore.storageKey], _legacyFixture);
+      expect(kv.data.containsKey(PalabrasStore.sharedStorageKey), isTrue);
+      expect(stores.minutes, 22.5);
+      expect(stores.streak, 2);
+      expect(stores.languagesWithProgress, ['es']);
+      stores.dispose();
+    });
   });
 }

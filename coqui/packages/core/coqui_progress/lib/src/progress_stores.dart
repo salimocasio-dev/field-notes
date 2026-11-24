@@ -35,7 +35,9 @@ class ProgressStores {
   final StreamController<void> _changes = StreamController<void>.broadcast();
 
   void _onSharedChanged(Object? source) {
-    if (source == null && !_changes.isClosed) {
+    final fromOwnStore =
+        source != null && _stores.values.any((s) => identical(s, source));
+    if (!fromOwnStore && !_changes.isClosed) {
       _changes.add(null);
     }
   }

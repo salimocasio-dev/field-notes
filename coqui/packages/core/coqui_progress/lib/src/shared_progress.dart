@@ -366,12 +366,21 @@ class SharedProgress {
 /// Copies legacy `coqui.palabras.v1` to `coqui.es.palabras.v1` byte-for-byte
 /// when `coqui.es.palabras.v1` does not exist yet, leaving `coqui.palabras.v1`
 /// untouched and seeding [shared] if `coqui.shared.v1` is not yet stored.
+///
+/// If an earlier startup copied `coqui.es.palabras.v1` but failed before
+/// writing `coqui.shared.v1`, seeds [shared] from `coqui.es.palabras.v1`
+/// without overwriting `coqui.es.palabras.v1`.
 void migrateLegacySpanish(KeyValueStore kv, SharedProgress shared) {
   final legacy = safeRead(kv, legacyStorageKey);
-  if (legacy == null || legacy.isEmpty) return;
   final esKey = languageStorageKey(Language.spanish.code);
   final existingEs = safeRead(kv, esKey);
-  if (existingEs != null && existingEs.isNotEmpty) return;
+  if (existingEs != null && existingEs.isNotEmpty) {
+    if (legacy != null && legacy.isNotEmpty) {
+      shared.seedFromLegacyIfEmpty(existingEs);
+    }
+    return;
+  }
+  if (legacy == null || legacy.isEmpty) return;
   safeWrite(kv, esKey, legacy);
   shared.seedFromLegacyIfEmpty(legacy);
 }
