@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:collection/collection.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_progress/src/js.dart';
+import 'package:coqui_progress/src/shared_progress.dart' as shared_store;
 
 /// The learner's progress: historia/palabras.js (the global PAL), ported rule for rule, on a
 /// [KeyValueStore] and a [Clock].
@@ -20,10 +21,75 @@ import 'package:coqui_progress/src/js.dart';
 class PalabrasStore implements ProgressStore {
   /// Loads what is under [storageKey] in [kv] (palabras.js lines 17 to 19), as the old file
   /// does when it starts. [clock] is the old `now()`: `Date.now()` and the `__PAL_NOW` hook.
-  PalabrasStore(this._kv, this._clock) {
+  ///
+  /// When [language] is omitted, runs in legacy single-store mode on [storageKey] with no
+  /// migration or shared-key writes (in this mode [minutesOn] tracks only in-memory minutes
+  /// added in the current session and returns 0 after restart). When [language] is provided,
+  /// stores words and stories under `coqui.<lang>.palabras.v1` and coordinates shared streak
+  /// and minutes under [sharedStorageKey] across all stores on the same [kv].
+  PalabrasStore(this._kv, this._clock, {Language? language})
+    : _language = language ?? Language.spanish,
+      _storageKey = language == null
+          ? storageKey
+          : shared_store.languageStorageKey(language.code),
+      _shared = language == null
+          ? null
+          : shared_store.SharedProgress.forStorage(_kv),
+      _onSaved = null {
+    if (language != null) {
+      shared_store.migrateLegacySpanish(_kv, _shared!);
+    }
+    _load();
+    _shared?.addListener(_onSharedChanged);
+  }
+
+  /// Internal constructor used by `ProgressStores` so multiple languages share one
+  /// [shared_store.SharedProgress] instance and change-notification channel.
+  PalabrasStore.withShared(
+    this._kv,
+    this._clock,
+    Language language,
+    shared_store.SharedProgress shared, {
+    this._onSaved,
+  }) : _language = language,
+       _storageKey = shared_store.languageStorageKey(language.code),
+       _shared = shared {
+    _load();
+    shared.addListener(_onSharedChanged);
+  }
+
+  /// The legacy key the JSON is kept under when constructed without a [Language].
+  static const storageKey = shared_store.legacyStorageKey;
+
+  /// The key cross-language shared progress (streak, minutes, active language) is kept under.
+  static const sharedStorageKey = shared_store.sharedStorageKey;
+
+  /// Maximum mastery stage (`etapa` 0..4).
+  static const int maxStage = 4;
+
+  /// Storage key for a language's word/story store: `coqui.<lang>.palabras.v1`.
+  static String storageKeyFor(String languageCode) =>
+      shared_store.languageStorageKey(languageCode);
+
+  static const double _day = 864e5; // DAY
+  static const int _slow = 2000; // SLOW
+
+  final KeyValueStore _kv;
+  final Clock _clock;
+  final Language _language;
+  final String _storageKey;
+  final shared_store.SharedProgress? _shared;
+  final void Function()? _onSaved;
+  final Map<String, dynamic> _legacyMinutesByDay = <String, dynamic>{};
+  final StreamController<void> _changes = StreamController<void>.broadcast();
+  late Map<String, dynamic> _db;
+
+  // ---- palabras.js lines 17 to 23: the store, save, now, nextMorning -------------------------
+
+  void _load() {
     _db = _emptyDb();
     try {
-      final t = _kv.read(storageKey);
+      final t = _kv.read(_storageKey);
       if (t != null && t.isNotEmpty) {
         jsAssign(_db, jsonDecode(t));
       }
@@ -33,18 +99,11 @@ class PalabrasStore implements ProgressStore {
     _fixLoaded();
   }
 
-  /// The key the JSON is kept under.
-  static const storageKey = 'coqui.palabras.v1';
-
-  static const double _day = 864e5; // DAY
-  static const int _slow = 2000; // SLOW
-
-  final KeyValueStore _kv;
-  final Clock _clock;
-  final StreamController<void> _changes = StreamController<void>.broadcast();
-  late Map<String, dynamic> _db;
-
-  // ---- palabras.js lines 17 to 23: the store, save, now, nextMorning -------------------------
+  void _onSharedChanged(Object? source) {
+    if (!identical(source, this) && !_changes.isClosed) {
+      _changes.add(null);
+    }
+  }
 
   Map<String, dynamic> _emptyDb() => <String, dynamic>{
     'palabras': <String, dynamic>{},
@@ -73,18 +132,19 @@ class PalabrasStore implements ProgressStore {
   }
 
   // palabras.js: save. A store that cannot be written is ignored: the data stays in memory.
-  void _save() {
-    try {
-      final done = _kv.write(storageKey, jsonStringify(_db));
-      unawaited(
-        done.catchError((Object _) {
-          // The same: localStorage.setItem threw and palabras.js went on.
-        }),
+  void _save({bool syncSharedProgress = true}) {
+    shared_store.safeWrite(_kv, _storageKey, jsonStringify(_db));
+    if (syncSharedProgress) {
+      _shared?.setLanguageHasProgress(
+        _language.code,
+        hasProgress,
+        source: this,
       );
-    } catch (_) {
-      // palabras.js line 20: the same, for a write that throws at once.
     }
-    _changes.add(null);
+    if (!_changes.isClosed) {
+      _changes.add(null);
+    }
+    _onSaved?.call();
   }
 
   // palabras.js: now
@@ -98,11 +158,7 @@ class PalabrasStore implements ProgressStore {
   }
 
   // `new Date(t).toISOString().slice(0, 10)`: UTC.
-  String _isoDay(int t) {
-    final d = DateTime.fromMillisecondsSinceEpoch(t, isUtc: true);
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${d.year.toString().padLeft(4, '0')}-${two(d.month)}-${two(d.day)}';
-  }
+  String _isoDay(int t) => shared_store.isoDayFromMs(t);
 
   Map<String, dynamic> get _palabras => _db['palabras'] as Map<String, dynamic>;
   // Object.values(db.palabras)
@@ -294,8 +350,6 @@ class PalabrasStore implements ProgressStore {
         _responde(x.word!, 'ear', x.ok, x.ms, !ret.contains(x.word));
       }
     }
-    final d = _isoDay(_now());
-    _dias[d] = jsNumberOut((jsTruthy(_dias[d]) ? jsToNumber(_dias[d]) : 0) + 1);
     _db['cuentos'] = jsTruthy(_db['cuentos'])
         ? _db['cuentos']
         : <String, dynamic>{};
@@ -303,7 +357,22 @@ class PalabrasStore implements ProgressStore {
     _inc(c, 'n');
     c['ultima'] = t;
     c['perdido'] = r.lost; // S._lost||0
-    _save();
+    if (_shared != null) {
+      _shared.recordDayActivity(
+        _now(),
+        increment: true,
+        languageCode: _language.code,
+        hasProgress: hasProgress,
+        source: this,
+      );
+      _save(syncSharedProgress: false);
+    } else {
+      final d = _isoDay(_now());
+      _dias[d] = jsNumberOut(
+        (jsTruthy(_dias[d]) ? jsToNumber(_dias[d]) : 0) + 1,
+      );
+      _save();
+    }
   }
 
   // ---- palabras.js lines 47 to 49: presume ----------------------------------------------------
@@ -338,9 +407,19 @@ class PalabrasStore implements ProgressStore {
       'log': [...log],
       'historias': stories.length,
     };
-    final d = _isoDay(t);
-    _dias[d] = jsTruthy(_dias[d]) ? _dias[d] : 1;
-    _save();
+    if (_shared != null) {
+      _shared.recordDayActivity(
+        t,
+        languageCode: _language.code,
+        hasProgress: hasProgress,
+        source: this,
+      );
+      _save(syncSharedProgress: false);
+    } else {
+      final d = _isoDay(t);
+      _dias[d] = jsTruthy(_dias[d]) ? _dias[d] : 1;
+      _save();
+    }
   }
 
   // ---- palabras.js lines 53 to 57: abiertaHabla, oido, minutos, vence, racha ------------------
@@ -376,11 +455,28 @@ class PalabrasStore implements ProgressStore {
   // palabras.js: minutos
   @override
   void addMinutes(double m) {
+    if (_shared != null) {
+      _shared.addMinutes(
+        m,
+        _now(),
+        languageCode: _language.code,
+        hasProgress: hasProgress,
+        source: this,
+      );
+      _save(syncSharedProgress: false);
+      return;
+    }
     _db['minutos'] = jsNumberOut(
       (jsTruthy(_db['minutos']) ? jsToNumber(_db['minutos']) : 0) + m,
     );
-    final d = _isoDay(_now());
+    final t = _now();
+    final d = _isoDay(t);
     _dias[d] = jsTruthy(_dias[d]) ? _dias[d] : 1;
+    final prev = jsTruthy(_legacyMinutesByDay[d])
+        ? jsToNumber(_legacyMinutesByDay[d])
+        : 0.0;
+    _legacyMinutesByDay[d] = jsNumberOut(prev + m);
+    shared_store.pruneMinutesByDay(_legacyMinutesByDay, t);
     _save();
   }
 
@@ -413,6 +509,8 @@ class PalabrasStore implements ProgressStore {
   // time, then one local day earlier each step.
   @override
   int get streak {
+    final shared = _shared;
+    if (shared != null) return shared.streak(_now());
     var n = 0;
     var d = DateTime.fromMillisecondsSinceEpoch(_now());
     for (;;) {
@@ -441,10 +539,46 @@ class PalabrasStore implements ProgressStore {
   @override
   void reset() {
     _db = _emptyDb();
+    _legacyMinutesByDay.clear();
     _save();
   }
 
   // ---- the rest of ProgressStore ---------------------------------------------------------------
+
+  /// The language this store holds progress for.
+  Language get language => _language;
+
+  /// The highest mastery stage (`etapa`) a word can reach (4).
+  int get stageMax => maxStage;
+
+  /// Streak freeze count (not yet active; reserved for future use).
+  int? get streakFreezes => null;
+
+  /// Minutes logged on the UTC calendar day of [day]'s instant (rolling 35-day
+  /// window, matching the UTC day keys used by [streak] and [addMinutes]).
+  ///
+  /// Callers querying a specific calendar day should pass `DateTime.utc(y, m, d)`
+  /// or a `DateTime` built from `clock.nowMs()` rather than local midnight in
+  /// UTC+ time zones. In legacy single-store mode (`PalabrasStore(kv, clock)`
+  /// without `language:`), this reflects only minutes added during the current
+  /// session and is not persisted across restarts.
+  double minutesOn(DateTime day) {
+    final shared = _shared;
+    if (shared != null) return shared.minutesOn(day);
+    final v = _legacyMinutesByDay[shared_store.isoDayFromDate(day)];
+    return jsTruthy(v) ? jsToNumber(v) : 0;
+  }
+
+  /// Whether this language store currently has at least one saved word or story.
+  bool get hasProgress => shared_store.dbHasProgress(_db);
+
+  /// Unsubscribes from shared-state notifications and closes [changes].
+  void dispose() {
+    _shared?.removeListener(_onSharedChanged);
+    if (!_changes.isClosed) {
+      unawaited(_changes.close());
+    }
+  }
 
   @override
   Stream<void> get changes => _changes.stream;
@@ -473,8 +607,11 @@ class PalabrasStore implements ProgressStore {
 
   // app.html yo: d.minutos||0
   @override
-  double get minutes =>
-      jsTruthy(_db['minutos']) ? jsToNumber(_db['minutos']) : 0;
+  double get minutes {
+    final shared = _shared;
+    if (shared != null) return shared.minutes;
+    return jsTruthy(_db['minutos']) ? jsToNumber(_db['minutos']) : 0;
+  }
 
   // app.html line 185: hecho=id=>!!(db().cuentos[id]&&db().cuentos[id].n). A play is counted by
   // cuento() and by presume(), and both leave `n` at 1 or more.
