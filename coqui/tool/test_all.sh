@@ -22,6 +22,10 @@ echo "Flutter $running"
 step "flutter pub get"
 flutter pub get
 
+step "generate shared scene lists"
+dart run tool/make_scenes.dart
+dart run tool/make_scenes.dart --check
+
 step "boundary check"
 dart run tool/check_boundaries.dart
 
@@ -53,6 +57,7 @@ python3 tool/test/test_make_palabras_solas.py 2>&1 | tail -n 3
 python3 tool/make_palabras_solas.py --check
 python3 tool/test/test_split_stories.py 2>&1 | tail -n 3
 python3 tool/split_stories.py check
+python3 tool/test/test_make_previa.py 2>&1 | tail -n 3
 
 # Pure Dart packages (no Flutter SDK in their pubspec) run on the VM and in Chrome.
 # Flutter packages run with flutter test.

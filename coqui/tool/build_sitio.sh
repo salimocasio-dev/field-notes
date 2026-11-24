@@ -43,6 +43,9 @@ fail() { echo "build_sitio: $*" >&2; exit 1; }
 step "flutter pub get"
 flutter pub get
 
+step "generate shared scene lists"
+dart run tool/make_scenes.dart
+
 step "flutter build web (build $build)"
 # --no-web-resources-cdn: CanvasKit comes from our own site, never from gstatic.
 # --pwa-strategy=none: no service worker (a hidden option of this Flutter; it also leaves the
