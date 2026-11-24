@@ -13,6 +13,7 @@ library;
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'gallery/noche_pieces.dart';
 import 'gallery/screens.dart';
 
 void main() => runApp(const GalleryApp());
@@ -23,6 +24,26 @@ class GalleryApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name = Uri.base.queryParameters['section'];
+    if (name == 'noche-ltr') {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Coqui UI · Noche LTR',
+        theme: coquiTheme(),
+        home: const Scaffold(
+          body: NochePiecesDevPage(textDirection: TextDirection.ltr),
+        ),
+      );
+    }
+    if (name == 'noche-rtl') {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Coqui UI · Noche RTL',
+        theme: coquiTheme(),
+        home: const Scaffold(
+          body: NochePiecesDevPage(textDirection: TextDirection.rtl),
+        ),
+      );
+    }
     GallerySection? one;
     for (final s in gallerySections) {
       if (s.name == name) one = s;
@@ -51,10 +72,38 @@ class _Index extends StatelessWidget {
           Text('coqui_ui gallery', style: CoquiText.h1),
           const SizedBox(height: 8),
           Text(
-            'Each section is built from the shared widgets and arranged like the '
-            'reference picture named under its title (coqui/ref/pantallas/android-412x915/).',
+            'Noche shared pieces (?section=noche-ltr, ?section=noche-rtl), '
+            'followed by the v=39 reference sections.',
             style: CoquiText.smallMuted,
           ),
+          for (final entry in const [
+            ('noche-ltr', 'Noche shared pieces (LTR)', TextDirection.ltr),
+            ('noche-rtl', 'Noche shared pieces (RTL)', TextDirection.rtl),
+          ]) ...[
+            const SizedBox(height: 32),
+            Text(entry.$2, style: CoquiText.h2),
+            Text('section=${entry.$1}', style: CoquiText.smallMuted),
+            const SizedBox(height: 8),
+            Center(
+              child: Container(
+                width: 390,
+                height: 844,
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0x33000000)),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: MediaQuery(
+                  data: base.copyWith(
+                    size: const Size(390, 844),
+                    padding: EdgeInsets.zero,
+                    viewPadding: EdgeInsets.zero,
+                    viewInsets: EdgeInsets.zero,
+                  ),
+                  child: NochePiecesDevPage(textDirection: entry.$3),
+                ),
+              ),
+            ),
+          ],
           for (final s in gallerySections) ...[
             const SizedBox(height: 32),
             Text(s.title, style: CoquiText.h2),
