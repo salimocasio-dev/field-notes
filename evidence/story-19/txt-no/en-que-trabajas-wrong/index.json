@@ -1,0 +1,1071 @@
+{
+ "story": "en-que-trabajas",
+ "plan": "wrong",
+ "txt": "no",
+ "screen": {
+  "logical": [
+   390.0,
+   844.0
+  ],
+  "ratio": 2.0,
+  "pixels": [
+   780.0,
+   1688.0
+  ]
+ },
+ "reachedEnd": true,
+ "stopped": null,
+ "endMs": 143620,
+ "storyMs": 145620,
+ "pictures": [
+  {
+   "n": 1,
+   "file": "01-start.png",
+   "kind": "start",
+   "ms": 0,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  },
+  {
+   "n": 2,
+   "file": "02-tap.png",
+   "kind": "tap",
+   "ms": 300,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "start",
+   "right": null,
+   "why": "start disc"
+  },
+  {
+   "n": 3,
+   "file": "03-ask.png",
+   "kind": "ask",
+   "ms": 13900,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "quiosco",
+   "live": [
+    "caja"
+   ]
+  },
+  {
+   "n": 4,
+   "file": "04-tap.png",
+   "kind": "tap",
+   "ms": 14200,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "quiosco",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "region",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 5,
+   "file": "05-ask.png",
+   "kind": "ask",
+   "ms": 14620,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "caja",
+   "live": [
+    "caja"
+   ]
+  },
+  {
+   "n": 6,
+   "file": "06-tap.png",
+   "kind": "tap",
+   "ms": 14920,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "caja",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 7,
+   "file": "07-ask.png",
+   "kind": "ask",
+   "ms": 31880,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "quiosco",
+   "live": [
+    "joven"
+   ]
+  },
+  {
+   "n": 8,
+   "file": "08-tap.png",
+   "kind": "tap",
+   "ms": 32180,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "quiosco",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "region",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 9,
+   "file": "09-ask.png",
+   "kind": "ask",
+   "ms": 32600,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "joven",
+   "live": [
+    "joven"
+   ]
+  },
+  {
+   "n": 10,
+   "file": "10-tap.png",
+   "kind": "tap",
+   "ms": 32900,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "joven",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 11,
+   "file": "11-ask.png",
+   "kind": "ask",
+   "ms": 52300,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "quiosco",
+   "live": [
+    "senor"
+   ]
+  },
+  {
+   "n": 12,
+   "file": "12-tap.png",
+   "kind": "tap",
+   "ms": 52600,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "quiosco",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "region",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 13,
+   "file": "13-ask.png",
+   "kind": "ask",
+   "ms": 53020,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "senor",
+   "live": [
+    "senor"
+   ]
+  },
+  {
+   "n": 14,
+   "file": "14-tap.png",
+   "kind": "tap",
+   "ms": 53320,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "senor",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 15,
+   "file": "15-ask.png",
+   "kind": "ask",
+   "ms": 84920,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "senora",
+   "live": [
+    "senora",
+    "hombre"
+   ]
+  },
+  {
+   "n": 16,
+   "file": "16-ask.png",
+   "kind": "ask",
+   "ms": 96900,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "hombre",
+   "live": [
+    "hombre"
+   ]
+  },
+  {
+   "n": 17,
+   "file": "17-tap.png",
+   "kind": "tap",
+   "ms": 97200,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "hombre",
+   "right": true,
+   "why": "retry",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 18,
+   "file": "18-ask.png",
+   "kind": "ask",
+   "ms": 115960,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "mujer",
+   "live": [
+    "mujer",
+    "la_joven"
+   ]
+  },
+  {
+   "n": 19,
+   "file": "19-ask.png",
+   "kind": "ask",
+   "ms": 126860,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "la_joven",
+   "live": [
+    "la_joven"
+   ]
+  },
+  {
+   "n": 20,
+   "file": "20-tap.png",
+   "kind": "tap",
+   "ms": 127160,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "la_joven",
+   "right": true,
+   "why": "retry",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 21,
+   "file": "21-end.png",
+   "kind": "end",
+   "ms": 143620,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  },
+  {
+   "n": 22,
+   "file": "22-end.png",
+   "kind": "end",
+   "ms": 145620,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "kind": "tap",
+   "ms": 85220,
+   "sameAs": "15-ask.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "senora",
+   "right": false,
+   "why": "wrong",
+   "point": "hand",
+   "result": "answered wrong"
+  },
+  {
+   "kind": "tap",
+   "ms": 116260,
+   "sameAs": "18-ask.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "mujer",
+   "right": false,
+   "why": "wrong",
+   "point": "hand",
+   "result": "answered wrong"
+  }
+ ],
+ "touches": [
+  {
+   "ms": 0,
+   "key": "start",
+   "why": "start disc",
+   "screen": [
+    195.0,
+    776.0
+   ]
+  },
+  {
+   "ms": 13900,
+   "key": "quiosco",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "quiosco",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "caja"
+    ],
+    "pick": null,
+    "sign": "caja",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 13200
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    195.75,
+    315.25
+   ],
+   "display": [
+    98,
+    55
+   ],
+   "picture": [
+    120.0,
+    55.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 14620,
+   "key": "caja",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "caja",
+   "hitTest": "caja",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "caja"
+    ],
+    "pick": null,
+    "sign": "caja",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 13200
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    128.25,
+    405.25
+   ],
+   "display": [
+    53,
+    115
+   ],
+   "picture": [
+    75.0,
+    115.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 31880,
+   "key": "quiosco",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "quiosco",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "joven"
+    ],
+    "pick": null,
+    "sign": "joven",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 31180
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    200.25,
+    315.25
+   ],
+   "display": [
+    101,
+    55
+   ],
+   "picture": [
+    123.0,
+    55.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 32600,
+   "key": "joven",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "joven",
+   "hitTest": "joven",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "joven"
+    ],
+    "pick": null,
+    "sign": "joven",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 31180
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    77.25,
+    402.25
+   ],
+   "display": [
+    19,
+    113
+   ],
+   "picture": [
+    41.0,
+    113.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 52300,
+   "key": "quiosco",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "quiosco",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "senor"
+    ],
+    "pick": null,
+    "sign": "senor",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 51600
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    201.75,
+    315.25
+   ],
+   "display": [
+    102,
+    55
+   ],
+   "picture": [
+    124.0,
+    55.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 53020,
+   "key": "senor",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "senor",
+   "hitTest": "senor",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "senor"
+    ],
+    "pick": null,
+    "sign": "senor",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 51600
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    93.75,
+    373.75
+   ],
+   "display": [
+    30,
+    94
+   ],
+   "picture": [
+    52.0,
+    94.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 84920,
+   "key": "senora",
+   "why": "wrong",
+   "right": false,
+   "answered": true,
+   "result": "answered wrong",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "senora",
+   "hitTest": "senora",
+   "waiting": {
+    "kind": "decide",
+    "live": [
+     "senora",
+     "hombre"
+    ],
+    "pick": "hombre",
+    "sign": null,
+    "lock": true,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 84220
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": null,
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    165.75,
+    396.25
+   ],
+   "display": [
+    78,
+    109
+   ],
+   "picture": [
+    100.0,
+    109.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 96900,
+   "key": "hombre",
+   "why": "retry",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "hombre",
+   "hitTest": "hombre",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "hombre"
+    ],
+    "pick": null,
+    "sign": "hombre",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 96200
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    221.25,
+    396.25
+   ],
+   "display": [
+    115,
+    109
+   ],
+   "picture": [
+    137.0,
+    109.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 115960,
+   "key": "mujer",
+   "why": "wrong",
+   "right": false,
+   "answered": true,
+   "result": "answered wrong",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "mujer",
+   "hitTest": "mujer",
+   "waiting": {
+    "kind": "decide",
+    "live": [
+     "mujer",
+     "la_joven"
+    ],
+    "pick": "la_joven",
+    "sign": null,
+    "lock": true,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 115260
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": null,
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    165.75,
+    394.75
+   ],
+   "display": [
+    78,
+    108
+   ],
+   "picture": [
+    100.0,
+    108.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 126860,
+   "key": "la_joven",
+   "why": "retry",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "la_joven",
+   "hitTest": "la_joven",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "la_joven"
+    ],
+    "pick": null,
+    "sign": "la_joven",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 126160
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    221.25,
+    394.75
+   ],
+   "display": [
+    115,
+    108
+   ],
+   "picture": [
+    137.0,
+    108.0
+   ],
+   "point": "hand"
+  }
+ ],
+ "speech": [],
+ "letters": 5,
+ "sheets": 6
+}

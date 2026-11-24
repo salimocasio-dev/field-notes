@@ -1,0 +1,1076 @@
+{
+ "story": "un-cafe-para-la-maestra",
+ "plan": "wrong",
+ "txt": "no",
+ "screen": {
+  "logical": [
+   390.0,
+   844.0
+  ],
+  "ratio": 2.0,
+  "pixels": [
+   780.0,
+   1688.0
+  ]
+ },
+ "reachedEnd": true,
+ "stopped": null,
+ "endMs": 125640,
+ "storyMs": 127640,
+ "pictures": [
+  {
+   "n": 1,
+   "file": "01-start.png",
+   "kind": "start",
+   "ms": 0,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  },
+  {
+   "n": 2,
+   "file": "02-tap.png",
+   "kind": "tap",
+   "ms": 300,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "start",
+   "right": null,
+   "why": "start disc"
+  },
+  {
+   "n": 3,
+   "file": "03-ask.png",
+   "kind": "ask",
+   "ms": 16480,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "quiosco",
+   "live": [
+    "maestra"
+   ]
+  },
+  {
+   "n": 4,
+   "file": "04-tap.png",
+   "kind": "tap",
+   "ms": 16780,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "quiosco",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "region",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 5,
+   "file": "05-ask.png",
+   "kind": "ask",
+   "ms": 17200,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "maestra",
+   "live": [
+    "maestra"
+   ]
+  },
+  {
+   "n": 6,
+   "file": "06-tap.png",
+   "kind": "tap",
+   "ms": 17500,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "maestra",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 7,
+   "file": "07-ask.png",
+   "kind": "ask",
+   "ms": 40800,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "quiosco",
+   "live": [
+    "cocinero"
+   ]
+  },
+  {
+   "n": 8,
+   "file": "08-tap.png",
+   "kind": "tap",
+   "ms": 41100,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "quiosco",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "region",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 9,
+   "file": "09-ask.png",
+   "kind": "ask",
+   "ms": 41520,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "cocinero",
+   "live": [
+    "cocinero"
+   ]
+  },
+  {
+   "n": 10,
+   "file": "10-tap.png",
+   "kind": "tap",
+   "ms": 41820,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "cocinero",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 11,
+   "file": "11-ask.png",
+   "kind": "ask",
+   "ms": 54400,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "quiosco",
+   "live": [
+    "policia"
+   ]
+  },
+  {
+   "n": 12,
+   "file": "12-tap.png",
+   "kind": "tap",
+   "ms": 54700,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "quiosco",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "region",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 13,
+   "file": "13-ask.png",
+   "kind": "ask",
+   "ms": 55120,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "policia",
+   "live": [
+    "policia"
+   ]
+  },
+  {
+   "n": 14,
+   "file": "14-tap.png",
+   "kind": "tap",
+   "ms": 55420,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "policia",
+   "right": true,
+   "why": "right",
+   "point": "region",
+   "result": "answered right"
+  },
+  {
+   "n": 15,
+   "file": "15-ask.png",
+   "kind": "ask",
+   "ms": 70040,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "maestra",
+   "live": [
+    "maestra",
+    "doctor",
+    "cocinero",
+    "policia"
+   ]
+  },
+  {
+   "n": 16,
+   "file": "16-ask.png",
+   "kind": "ask",
+   "ms": 84060,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "policia",
+   "live": [
+    "policia"
+   ]
+  },
+  {
+   "n": 17,
+   "file": "17-tap.png",
+   "kind": "tap",
+   "ms": 84360,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "policia",
+   "right": true,
+   "why": "retry",
+   "point": "region",
+   "result": "answered right"
+  },
+  {
+   "n": 18,
+   "file": "18-ask.png",
+   "kind": "ask",
+   "ms": 92700,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "maestra",
+   "live": [
+    "maestra",
+    "doctor",
+    "cocinero",
+    "policia"
+   ]
+  },
+  {
+   "n": 19,
+   "file": "19-ask.png",
+   "kind": "ask",
+   "ms": 105640,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "policia",
+   "live": [
+    "policia"
+   ]
+  },
+  {
+   "n": 20,
+   "file": "20-tap.png",
+   "kind": "tap",
+   "ms": 105940,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "policia",
+   "right": true,
+   "why": "retry",
+   "point": "region",
+   "result": "answered right"
+  },
+  {
+   "n": 21,
+   "file": "21-end.png",
+   "kind": "end",
+   "ms": 125640,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "kind": "tap",
+   "ms": 70340,
+   "sameAs": "15-ask.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "maestra",
+   "right": false,
+   "why": "wrong",
+   "point": "hand",
+   "result": "answered wrong"
+  },
+  {
+   "kind": "tap",
+   "ms": 93000,
+   "sameAs": "18-ask.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "maestra",
+   "right": false,
+   "why": "wrong",
+   "point": "hand",
+   "result": "answered wrong"
+  },
+  {
+   "kind": "end",
+   "ms": 127640,
+   "sameAs": "21-end.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "touches": [
+  {
+   "ms": 0,
+   "key": "start",
+   "why": "start disc",
+   "screen": [
+    195.0,
+    776.0
+   ]
+  },
+  {
+   "ms": 16480,
+   "key": "quiosco",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "quiosco",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "maestra"
+    ],
+    "pick": null,
+    "sign": "maestra",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 15780
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    197.25,
+    315.25
+   ],
+   "display": [
+    99,
+    55
+   ],
+   "picture": [
+    121.0,
+    55.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 17200,
+   "key": "maestra",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "maestra",
+   "hitTest": "maestra",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "maestra"
+    ],
+    "pick": null,
+    "sign": "maestra",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 15780
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    80.25,
+    400.75
+   ],
+   "display": [
+    21,
+    112
+   ],
+   "picture": [
+    43.0,
+    112.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 40800,
+   "key": "quiosco",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "quiosco",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "cocinero"
+    ],
+    "pick": null,
+    "sign": "cocinero",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 40100
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    197.25,
+    315.25
+   ],
+   "display": [
+    99,
+    55
+   ],
+   "picture": [
+    121.0,
+    55.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 41520,
+   "key": "cocinero",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "cocinero",
+   "hitTest": "cocinero",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "cocinero"
+    ],
+    "pick": null,
+    "sign": "cocinero",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 40100
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    299.25,
+    369.25
+   ],
+   "display": [
+    167,
+    91
+   ],
+   "picture": [
+    189.0,
+    91.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 54400,
+   "key": "quiosco",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "quiosco",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "policia"
+    ],
+    "pick": null,
+    "sign": "policia",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 53700
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    192.75,
+    315.25
+   ],
+   "display": [
+    96,
+    55
+   ],
+   "picture": [
+    118.0,
+    55.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 55120,
+   "key": "policia",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "policia",
+   "hitTest": "policia",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "policia"
+    ],
+    "pick": null,
+    "sign": "policia",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 53700
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    317.25,
+    405.25
+   ],
+   "display": [
+    179,
+    115
+   ],
+   "picture": [
+    201.0,
+    115.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 70040,
+   "key": "maestra",
+   "why": "wrong",
+   "right": false,
+   "answered": true,
+   "result": "answered wrong",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "maestra",
+   "hitTest": "maestra",
+   "waiting": {
+    "kind": "decide",
+    "live": [
+     "maestra",
+     "doctor",
+     "cocinero",
+     "policia"
+    ],
+    "pick": "policia",
+    "sign": null,
+    "lock": true,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 69340
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": null,
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    80.25,
+    400.75
+   ],
+   "display": [
+    21,
+    112
+   ],
+   "picture": [
+    43.0,
+    112.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 84060,
+   "key": "policia",
+   "why": "retry",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "policia",
+   "hitTest": "policia",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "policia"
+    ],
+    "pick": null,
+    "sign": "policia",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 83360
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    317.25,
+    405.25
+   ],
+   "display": [
+    179,
+    115
+   ],
+   "picture": [
+    201.0,
+    115.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 92700,
+   "key": "maestra",
+   "why": "wrong",
+   "right": false,
+   "answered": true,
+   "result": "answered wrong",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "maestra",
+   "hitTest": "maestra",
+   "waiting": {
+    "kind": "decide",
+    "live": [
+     "maestra",
+     "doctor",
+     "cocinero",
+     "policia"
+    ],
+    "pick": "policia",
+    "sign": null,
+    "lock": true,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 92000
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": null,
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    80.25,
+    400.75
+   ],
+   "display": [
+    21,
+    112
+   ],
+   "picture": [
+    43.0,
+    112.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 105640,
+   "key": "policia",
+   "why": "retry",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "policia",
+   "hitTest": "policia",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "policia"
+    ],
+    "pick": null,
+    "sign": "policia",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 104940
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    317.25,
+    405.25
+   ],
+   "display": [
+    179,
+    115
+   ],
+   "picture": [
+    201.0,
+    115.0
+   ],
+   "point": "region"
+  }
+ ],
+ "speech": [],
+ "letters": 5,
+ "sheets": 6
+}

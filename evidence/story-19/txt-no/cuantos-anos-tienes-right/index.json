@@ -1,0 +1,502 @@
+{
+ "story": "cuantos-anos-tienes",
+ "plan": "right",
+ "txt": "no",
+ "screen": {
+  "logical": [
+   390.0,
+   844.0
+  ],
+  "ratio": 2.0,
+  "pixels": [
+   780.0,
+   1688.0
+  ]
+ },
+ "reachedEnd": true,
+ "stopped": null,
+ "endMs": 91400,
+ "storyMs": 93400,
+ "pictures": [
+  {
+   "n": 1,
+   "file": "01-start.png",
+   "kind": "start",
+   "ms": 0,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  },
+  {
+   "n": 2,
+   "file": "02-tap.png",
+   "kind": "tap",
+   "ms": 300,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "start",
+   "right": null,
+   "why": "start disc"
+  },
+  {
+   "n": 3,
+   "file": "03-ask.png",
+   "kind": "ask",
+   "ms": 13600,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "vela_a",
+   "live": [
+    "vela_a"
+   ]
+  },
+  {
+   "n": 4,
+   "file": "04-tap.png",
+   "kind": "tap",
+   "ms": 13900,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "vela_a",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 5,
+   "file": "05-ask.png",
+   "kind": "ask",
+   "ms": 28980,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "vela_b",
+   "live": [
+    "vela_b"
+   ]
+  },
+  {
+   "n": 6,
+   "file": "06-tap.png",
+   "kind": "tap",
+   "ms": 29280,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "vela_b",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 7,
+   "file": "07-ask.png",
+   "kind": "ask",
+   "ms": 66360,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "vela_c",
+   "live": [
+    "vela_a",
+    "vela_b",
+    "vela_c"
+   ]
+  },
+  {
+   "n": 8,
+   "file": "08-tap.png",
+   "kind": "tap",
+   "ms": 66660,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "vela_c",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 9,
+   "file": "09-ask.png",
+   "kind": "ask",
+   "ms": 78880,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "vela_b",
+   "live": [
+    "vela_a",
+    "vela_b",
+    "vela_c"
+   ]
+  },
+  {
+   "n": 10,
+   "file": "10-tap.png",
+   "kind": "tap",
+   "ms": 79180,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "vela_b",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 11,
+   "file": "11-end.png",
+   "kind": "end",
+   "ms": 91400,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "kind": "end",
+   "ms": 93400,
+   "sameAs": "11-end.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "touches": [
+  {
+   "ms": 0,
+   "key": "start",
+   "why": "start disc",
+   "screen": [
+    195.0,
+    776.0
+   ]
+  },
+  {
+   "ms": 13600,
+   "key": "vela_a",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "vela_a",
+   "hitTest": "vela_a",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "vela_a"
+    ],
+    "pick": null,
+    "sign": "vela_a",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 12900
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    182.25,
+    372.25
+   ],
+   "display": [
+    89,
+    93
+   ],
+   "picture": [
+    111.0,
+    93.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 28980,
+   "key": "vela_b",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "vela_b",
+   "hitTest": "vela_b",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "vela_b"
+    ],
+    "pick": null,
+    "sign": "vela_b",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 28280
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    194.25,
+    372.25
+   ],
+   "display": [
+    97,
+    93
+   ],
+   "picture": [
+    119.0,
+    93.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 66360,
+   "key": "vela_c",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "vela_c",
+   "hitTest": "vela_c",
+   "waiting": {
+    "kind": "decide",
+    "live": [
+     "vela_a",
+     "vela_b",
+     "vela_c"
+    ],
+    "pick": "vela_c",
+    "sign": null,
+    "lock": true,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 65660
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    204.75,
+    372.25
+   ],
+   "display": [
+    104,
+    93
+   ],
+   "picture": [
+    126.0,
+    93.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 78880,
+   "key": "vela_b",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "vela_b",
+   "hitTest": "vela_b",
+   "waiting": {
+    "kind": "decide",
+    "live": [
+     "vela_a",
+     "vela_b",
+     "vela_c"
+    ],
+    "pick": "vela_b",
+    "sign": null,
+    "lock": true,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 78180
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    194.25,
+    372.25
+   ],
+   "display": [
+    97,
+    93
+   ],
+   "picture": [
+    119.0,
+    93.0
+   ],
+   "point": "hand"
+  }
+ ],
+ "speech": [],
+ "letters": 4,
+ "sheets": 3
+}

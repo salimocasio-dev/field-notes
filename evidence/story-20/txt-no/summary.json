@@ -1,0 +1,76 @@
+{
+ "txt": "no",
+ "screen": {
+  "logical": [
+   390.0,
+   844.0
+  ],
+  "ratio": 2.0,
+  "pixels": [
+   780.0,
+   1688.0
+  ]
+ },
+ "plays": {
+  "el-lunes-hay-frutas-right": {
+   "pictures": 17,
+   "sheets": 5,
+   "reachedEnd": true,
+   "storyMs": 95860,
+   "playMs": 95860,
+   "touches": 8,
+   "duplicatesDropped": 1,
+   "stopped": null
+  },
+  "el-lunes-hay-frutas-wrong": {
+   "pictures": 29,
+   "sheets": 8,
+   "reachedEnd": true,
+   "storyMs": 118660,
+   "playMs": 118660,
+   "touches": 15,
+   "duplicatesDropped": 3,
+   "stopped": null
+  },
+  "el-fin-de-semana-right": {
+   "pictures": 18,
+   "sheets": 5,
+   "reachedEnd": true,
+   "storyMs": 108460,
+   "playMs": 108460,
+   "touches": 8,
+   "duplicatesDropped": 0,
+   "stopped": null
+  },
+  "el-fin-de-semana-wrong": {
+   "pictures": 32,
+   "sheets": 8,
+   "reachedEnd": true,
+   "storyMs": 139500,
+   "playMs": 139500,
+   "touches": 15,
+   "duplicatesDropped": 0,
+   "stopped": null
+  },
+  "hoy-y-manana-right": {
+   "pictures": 18,
+   "sheets": 5,
+   "reachedEnd": true,
+   "storyMs": 107880,
+   "playMs": 107880,
+   "touches": 8,
+   "duplicatesDropped": 0,
+   "stopped": null
+  },
+  "hoy-y-manana-wrong": {
+   "pictures": 29,
+   "sheets": 8,
+   "reachedEnd": true,
+   "storyMs": 134480,
+   "playMs": 134480,
+   "touches": 15,
+   "duplicatesDropped": 3,
+   "stopped": null
+  }
+ }
+}

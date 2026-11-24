@@ -1,0 +1,1472 @@
+{
+ "story": "hoy-y-manana",
+ "plan": "wrong",
+ "txt": "no",
+ "screen": {
+  "logical": [
+   390.0,
+   844.0
+  ],
+  "ratio": 2.0,
+  "pixels": [
+   780.0,
+   1688.0
+  ]
+ },
+ "reachedEnd": true,
+ "stopped": null,
+ "endMs": 134480,
+ "storyMs": 136480,
+ "pictures": [
+  {
+   "n": 1,
+   "file": "01-start.png",
+   "kind": "start",
+   "ms": 0,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  },
+  {
+   "n": 2,
+   "file": "02-tap.png",
+   "kind": "tap",
+   "ms": 300,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "start",
+   "right": null,
+   "why": "start disc"
+  },
+  {
+   "n": 3,
+   "file": "03-ask.png",
+   "kind": "ask",
+   "ms": 12580,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "sol",
+   "live": [
+    "dia1"
+   ]
+  },
+  {
+   "n": 4,
+   "file": "04-tap.png",
+   "kind": "tap",
+   "ms": 12880,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "sol",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "hand",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 5,
+   "file": "05-ask.png",
+   "kind": "ask",
+   "ms": 13300,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "dia1",
+   "live": [
+    "dia1"
+   ]
+  },
+  {
+   "n": 6,
+   "file": "06-tap.png",
+   "kind": "tap",
+   "ms": 13600,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "dia1",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 7,
+   "file": "07-ask.png",
+   "kind": "ask",
+   "ms": 23080,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "sol",
+   "live": [
+    "dia2"
+   ]
+  },
+  {
+   "n": 8,
+   "file": "08-tap.png",
+   "kind": "tap",
+   "ms": 23380,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "sol",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "hand",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 9,
+   "file": "09-ask.png",
+   "kind": "ask",
+   "ms": 23800,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "dia2",
+   "live": [
+    "dia2"
+   ]
+  },
+  {
+   "n": 10,
+   "file": "10-tap.png",
+   "kind": "tap",
+   "ms": 24100,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "dia2",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 11,
+   "file": "11-ask.png",
+   "kind": "ask",
+   "ms": 35760,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "sol",
+   "live": [
+    "tabla"
+   ]
+  },
+  {
+   "n": 12,
+   "file": "12-tap.png",
+   "kind": "tap",
+   "ms": 36060,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "sol",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "hand",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 13,
+   "file": "13-ask.png",
+   "kind": "ask",
+   "ms": 36480,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "tabla",
+   "live": [
+    "tabla"
+   ]
+  },
+  {
+   "n": 14,
+   "file": "14-tap.png",
+   "kind": "tap",
+   "ms": 36780,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "tabla",
+   "right": true,
+   "why": "right",
+   "point": "region",
+   "result": "answered right"
+  },
+  {
+   "n": 15,
+   "file": "15-ask.png",
+   "kind": "ask",
+   "ms": 44300,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "sol",
+   "live": [
+    "dia1"
+   ]
+  },
+  {
+   "n": 16,
+   "file": "16-tap.png",
+   "kind": "tap",
+   "ms": 44600,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "sol",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "hand",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 17,
+   "file": "17-ask.png",
+   "kind": "ask",
+   "ms": 45020,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "dia1",
+   "live": [
+    "dia1"
+   ]
+  },
+  {
+   "n": 18,
+   "file": "18-tap.png",
+   "kind": "tap",
+   "ms": 45320,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "dia1",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 19,
+   "file": "19-ask.png",
+   "kind": "ask",
+   "ms": 54980,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "sol",
+   "live": [
+    "dia2"
+   ]
+  },
+  {
+   "n": 20,
+   "file": "20-tap.png",
+   "kind": "tap",
+   "ms": 55280,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "sol",
+   "right": false,
+   "why": "wrong-poke",
+   "point": "hand",
+   "result": "poke: the story named it and asked again"
+  },
+  {
+   "n": 21,
+   "file": "21-ask.png",
+   "kind": "ask",
+   "ms": 55700,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "dia2",
+   "live": [
+    "dia2"
+   ]
+  },
+  {
+   "n": 22,
+   "file": "22-tap.png",
+   "kind": "tap",
+   "ms": 56000,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "dia2",
+   "right": true,
+   "why": "right",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 23,
+   "file": "23-ask.png",
+   "kind": "ask",
+   "ms": 86200,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "dia1",
+   "live": [
+    "dia1",
+    "dia2",
+    "dia3",
+    "dia4",
+    "dia5",
+    "dia6",
+    "dia7"
+   ]
+  },
+  {
+   "n": 24,
+   "file": "24-ask.png",
+   "kind": "ask",
+   "ms": 97820,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "dia4",
+   "live": [
+    "dia4"
+   ]
+  },
+  {
+   "n": 25,
+   "file": "25-tap.png",
+   "kind": "tap",
+   "ms": 98120,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "dia4",
+   "right": true,
+   "why": "retry",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 26,
+   "file": "26-ask.png",
+   "kind": "ask",
+   "ms": 109500,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "dia1",
+   "live": [
+    "dia1",
+    "dia2",
+    "dia3",
+    "dia4",
+    "dia5",
+    "dia6",
+    "dia7"
+   ]
+  },
+  {
+   "n": 27,
+   "file": "27-ask.png",
+   "kind": "ask",
+   "ms": 121120,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "waitingFor": "dia6",
+   "live": [
+    "dia6"
+   ]
+  },
+  {
+   "n": 28,
+   "file": "28-tap.png",
+   "kind": "tap",
+   "ms": 121420,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "dia6",
+   "right": true,
+   "why": "retry",
+   "point": "hand",
+   "result": "answered right"
+  },
+  {
+   "n": 29,
+   "file": "29-end.png",
+   "kind": "end",
+   "ms": 134480,
+   "width": 780,
+   "height": 1688,
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "kind": "tap",
+   "ms": 86500,
+   "sameAs": "23-ask.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "dia1",
+   "right": false,
+   "why": "wrong",
+   "point": "hand",
+   "result": "answered wrong"
+  },
+  {
+   "kind": "tap",
+   "ms": 109800,
+   "sameAs": "26-ask.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "touched": "dia1",
+   "right": false,
+   "why": "wrong",
+   "point": "hand",
+   "result": "answered wrong"
+  },
+  {
+   "kind": "end",
+   "ms": 136480,
+   "sameAs": "29-end.png",
+   "caption": "",
+   "bubble": "",
+   "captionShown": null,
+   "said": "",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "touches": [
+  {
+   "ms": 0,
+   "key": "start",
+   "why": "start disc",
+   "screen": [
+    195.0,
+    776.0
+   ]
+  },
+  {
+   "ms": 12580,
+   "key": "sol",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "sol",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia1"
+    ],
+    "pick": null,
+    "sign": "dia1",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 11880
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    291.25
+   ],
+   "display": [
+    44,
+    39
+   ],
+   "picture": [
+    66.0,
+    39.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 13300,
+   "key": "dia1",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "dia1",
+   "hitTest": "dia1",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia1"
+    ],
+    "pick": null,
+    "sign": "dia1",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 11880
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    327.25
+   ],
+   "display": [
+    44,
+    63
+   ],
+   "picture": [
+    66.0,
+    63.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 23080,
+   "key": "sol",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "sol",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia2"
+    ],
+    "pick": null,
+    "sign": "dia2",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 22380
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    291.25
+   ],
+   "display": [
+    44,
+    39
+   ],
+   "picture": [
+    66.0,
+    39.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 23800,
+   "key": "dia2",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "dia2",
+   "hitTest": "dia2",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia2"
+    ],
+    "pick": null,
+    "sign": "dia2",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 22380
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    140.25,
+    327.25
+   ],
+   "display": [
+    61,
+    63
+   ],
+   "picture": [
+    83.0,
+    63.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 35760,
+   "key": "sol",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "sol",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "tabla"
+    ],
+    "pick": null,
+    "sign": "tabla",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 35060
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    291.25
+   ],
+   "display": [
+    44,
+    39
+   ],
+   "picture": [
+    66.0,
+    39.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 36480,
+   "key": "tabla",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "tabla",
+   "hitTest": "tabla",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "tabla"
+    ],
+    "pick": null,
+    "sign": "tabla",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 35060
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    191.25,
+    277.75
+   ],
+   "display": [
+    95,
+    30
+   ],
+   "picture": [
+    117.0,
+    30.0
+   ],
+   "point": "region"
+  },
+  {
+   "ms": 44300,
+   "key": "sol",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "sol",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia1"
+    ],
+    "pick": null,
+    "sign": "dia1",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 43600
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    291.25
+   ],
+   "display": [
+    44,
+    39
+   ],
+   "picture": [
+    66.0,
+    39.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 45020,
+   "key": "dia1",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "dia1",
+   "hitTest": "dia1",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia1"
+    ],
+    "pick": null,
+    "sign": "dia1",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 43600
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    327.25
+   ],
+   "display": [
+    44,
+    63
+   ],
+   "picture": [
+    66.0,
+    63.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 54980,
+   "key": "sol",
+   "why": "wrong-poke",
+   "right": false,
+   "answered": false,
+   "result": "poke: the story named it and asked again",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": null,
+   "hitTest": "sol",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia2"
+    ],
+    "pick": null,
+    "sign": "dia2",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 54280
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": true,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    291.25
+   ],
+   "display": [
+    44,
+    39
+   ],
+   "picture": [
+    66.0,
+    39.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 55700,
+   "key": "dia2",
+   "why": "right",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "dia2",
+   "hitTest": "dia2",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia2"
+    ],
+    "pick": null,
+    "sign": "dia2",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 54280
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    140.25,
+    327.25
+   ],
+   "display": [
+    61,
+    63
+   ],
+   "picture": [
+    83.0,
+    63.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 86200,
+   "key": "dia1",
+   "why": "wrong",
+   "right": false,
+   "answered": true,
+   "result": "answered wrong",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "dia1",
+   "hitTest": "dia1",
+   "waiting": {
+    "kind": "decide",
+    "live": [
+     "dia1",
+     "dia2",
+     "dia3",
+     "dia4",
+     "dia5",
+     "dia6",
+     "dia7"
+    ],
+    "pick": "dia4",
+    "sign": null,
+    "lock": true,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 85500
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": null,
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    327.25
+   ],
+   "display": [
+    44,
+    63
+   ],
+   "picture": [
+    66.0,
+    63.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 97820,
+   "key": "dia4",
+   "why": "retry",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "dia4",
+   "hitTest": "dia4",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia4"
+    ],
+    "pick": null,
+    "sign": "dia4",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 97120
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    194.25,
+    327.25
+   ],
+   "display": [
+    97,
+    63
+   ],
+   "picture": [
+    119.0,
+    63.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 109500,
+   "key": "dia1",
+   "why": "wrong",
+   "right": false,
+   "answered": true,
+   "result": "answered wrong",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "dia1",
+   "hitTest": "dia1",
+   "waiting": {
+    "kind": "decide",
+    "live": [
+     "dia1",
+     "dia2",
+     "dia3",
+     "dia4",
+     "dia5",
+     "dia6",
+     "dia7"
+    ],
+    "pick": "dia6",
+    "sign": null,
+    "lock": true,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 108800
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": null,
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    114.75,
+    327.25
+   ],
+   "display": [
+    44,
+    63
+   ],
+   "picture": [
+    66.0,
+    63.0
+   ],
+   "point": "hand"
+  },
+  {
+   "ms": 121120,
+   "key": "dia6",
+   "why": "retry",
+   "right": true,
+   "answered": true,
+   "result": "answered right",
+   "reachesPicture": true,
+   "hitPath": [
+    "RenderPixelView",
+    "RenderPointerListener",
+    "RenderSemanticsGestureHandler",
+    "RenderSemanticsAnnotations"
+   ],
+   "got": "dia6",
+   "hitTest": "dia6",
+   "waiting": {
+    "kind": "ask",
+    "live": [
+     "dia6"
+    ],
+    "pick": null,
+    "sign": "dia6",
+    "lock": false,
+    "voz": false,
+    "asked": true,
+    "busy": false,
+    "done": false,
+    "tEnd": 120420
+   },
+   "after": {
+    "busy": false,
+    "speaking": 0,
+    "lastFx": "star",
+    "pendingIsSame": false,
+    "habEst": ""
+   },
+   "screen": [
+    246.75,
+    327.25
+   ],
+   "display": [
+    132,
+    63
+   ],
+   "picture": [
+    154.0,
+    63.0
+   ],
+   "point": "hand"
+  }
+ ],
+ "speech": [],
+ "letters": 7,
+ "sheets": 8
+}

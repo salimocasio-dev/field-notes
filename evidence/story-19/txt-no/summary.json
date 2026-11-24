@@ -1,0 +1,76 @@
+{
+ "txt": "no",
+ "screen": {
+  "logical": [
+   390.0,
+   844.0
+  ],
+  "ratio": 2.0,
+  "pixels": [
+   780.0,
+   1688.0
+  ]
+ },
+ "plays": {
+  "un-cafe-para-la-maestra-right": {
+   "pictures": 14,
+   "sheets": 4,
+   "reachedEnd": true,
+   "storyMs": 96760,
+   "playMs": 96760,
+   "touches": 6,
+   "duplicatesDropped": 0,
+   "stopped": null
+  },
+  "un-cafe-para-la-maestra-wrong": {
+   "pictures": 21,
+   "sheets": 6,
+   "reachedEnd": true,
+   "storyMs": 125640,
+   "playMs": 125640,
+   "touches": 11,
+   "duplicatesDropped": 3,
+   "stopped": null
+  },
+  "en-que-trabajas-right": {
+   "pictures": 13,
+   "sheets": 4,
+   "reachedEnd": true,
+   "storyMs": 123860,
+   "playMs": 123860,
+   "touches": 6,
+   "duplicatesDropped": 1,
+   "stopped": null
+  },
+  "en-que-trabajas-wrong": {
+   "pictures": 22,
+   "sheets": 6,
+   "reachedEnd": true,
+   "storyMs": 143620,
+   "playMs": 143620,
+   "touches": 11,
+   "duplicatesDropped": 2,
+   "stopped": null
+  },
+  "cuantos-anos-tienes-right": {
+   "pictures": 11,
+   "sheets": 3,
+   "reachedEnd": true,
+   "storyMs": 91400,
+   "playMs": 91400,
+   "touches": 5,
+   "duplicatesDropped": 1,
+   "stopped": null
+  },
+  "cuantos-anos-tienes-wrong": {
+   "pictures": 17,
+   "sheets": 5,
+   "reachedEnd": true,
+   "storyMs": 111840,
+   "playMs": 111840,
+   "touches": 9,
+   "duplicatesDropped": 3,
+   "stopped": null
+  }
+ }
+}
