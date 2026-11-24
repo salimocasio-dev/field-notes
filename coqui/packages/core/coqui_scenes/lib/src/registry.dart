@@ -21,6 +21,9 @@ import 'package:coqui_scenes/src/parada/parada.dart';
 import 'package:coqui_scenes/src/tiendas/tiendas.dart';
 import 'package:coqui_scenes/src/cruce/cruce.dart';
 import 'package:coqui_scenes/src/plaza/plaza.dart';
+import 'package:coqui_scenes/src/reloj/reloj.dart';
+import 'package:coqui_scenes/src/quiosco/quiosco.dart';
+import 'package:coqui_scenes/src/calendario/calendario.dart';
 
 /// What makes a scene: it is given the game's one random source ([rng]: the story runner's), which a scene that draws
 /// random numbers (El balcón's `azar`) draws from, as the old one drew from `Math.random`. A scene that draws none ignores it.
@@ -55,4 +58,7 @@ final Map<String, SceneMaker> sceneRegistry = Map.unmodifiable({
   'tiendas': _plain(createTiendas),
   'cruce': _plain(createCruce),
   'plaza': _plain(createPlaza),
+  'reloj': _plain(createReloj),
+  'quiosco': _plain(createQuiosco),
+  'calendario': _plain(createCalendario),
 });

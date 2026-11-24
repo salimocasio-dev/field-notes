@@ -1,0 +1,809 @@
+{
+ "id": "y-media",
+ "title": "Y media",
+ "place": "La plaza",
+ "scene": "reloj",
+ "next": "bingo",
+ "goal": "Push the clock's long hand to the top or the bottom as don Tito says (on the hour or half past), so the three painted figures can come out of the little door: every wrong push jams one shutter.",
+ "stake": {
+  "thing": "figuras",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "y media",
+  "en punto",
+  "minuto",
+  "treinta"
+ ],
+ "formas_foco": {
+  "minuto": [
+   "minutos"
+  ]
+ },
+ "back_again": [
+  "reloj",
+  "hora",
+  "¿qué hora es?",
+  "son las",
+  "dos",
+  "tres",
+  "cuatro",
+  "cinco",
+  "seis",
+  "siete",
+  "ocho",
+  "nueve",
+  "diez",
+  "once",
+  "doce",
+  "¿cómo estás?",
+  "bien",
+  "espera",
+  "arriba",
+  "abajo",
+  "cuidado",
+  "me gusta",
+  "mira",
+  "ahora",
+  "pequeño",
+  "vamos",
+  "medio"
+ ],
+ "also_heard": [
+  "media hora"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "punto": "en punto",
+  "media": "y media"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c64_tito_hola": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: ¡Hola, Coquí! ¿Cómo estás?"
+  },
+  "bien_gracias": {
+   "who": "tu",
+   "text": "¡Bien, gracias!",
+   "tu_turno": [
+    {
+     "palabra": "bien",
+     "formas": [
+      "bien",
+      "bien gracias"
+     ]
+    }
+   ]
+  },
+  "c64_tito_mira": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Mira. Son las dos en punto."
+  },
+  "c64_arriba_abajo": {
+   "who": "narr",
+   "text": "¿Arriba o abajo?"
+  },
+  "c64_tito_media_dos": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Un minuto, dos minutos... ¡treinta minutos! Ahora son las dos y media."
+  },
+  "c64_y_ahora": {
+   "who": "narr",
+   "text": "¿Y ahora? ¿Arriba o abajo?"
+  },
+  "c64_tito_tres_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Treinta minutos más... Son las tres en punto."
+  },
+  "c64_luis_tres": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Las tres en punto?"
+  },
+  "c64_tito_si_luis": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Sí, Luis. En punto."
+  },
+  "c64_tito_tres_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Y en treinta minutos, las tres y media."
+  },
+  "c64_carmen_tres_media": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Las tres y media! ¡Luis, vamos!"
+  },
+  "c64_tito_espera": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Espera, Coquí. Ahora, con cuidado."
+  },
+  "c64_tito_mira_coqui": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Mira, Coquí: un coquí pequeño."
+  },
+  "c64_cq_me_gusta": {
+   "who": "tu",
+   "text": "¡Me gusta!",
+   "tu_turno": [
+    {
+     "palabra": "me gusta",
+     "formas": [
+      "me gusta"
+     ]
+    }
+   ]
+  },
+  "c64_tito_media_hora": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: En media hora salen otra vez."
+  },
+  "c64_tito_4_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las cuatro en punto."
+  },
+  "c64_no_4_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las cuatro en punto."
+  },
+  "c64_tito_4_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las cuatro y media."
+  },
+  "c64_no_4_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las cuatro y media."
+  },
+  "c64_tito_5_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las cinco en punto."
+  },
+  "c64_no_5_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las cinco en punto."
+  },
+  "c64_tito_5_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las cinco y media."
+  },
+  "c64_no_5_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las cinco y media."
+  },
+  "c64_tito_6_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las seis en punto."
+  },
+  "c64_no_6_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las seis en punto."
+  },
+  "c64_tito_6_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las seis y media."
+  },
+  "c64_no_6_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las seis y media."
+  },
+  "c64_tito_7_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las siete en punto."
+  },
+  "c64_no_7_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las siete en punto."
+  },
+  "c64_tito_7_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las siete y media."
+  },
+  "c64_no_7_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las siete y media."
+  },
+  "c64_tito_8_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las ocho en punto."
+  },
+  "c64_no_8_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las ocho en punto."
+  },
+  "c64_tito_8_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las ocho y media."
+  },
+  "c64_no_8_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las ocho y media."
+  },
+  "c64_tito_9_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las nueve en punto."
+  },
+  "c64_no_9_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las nueve en punto."
+  },
+  "c64_tito_9_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las nueve y media."
+  },
+  "c64_no_9_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las nueve y media."
+  },
+  "c64_tito_10_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las diez en punto."
+  },
+  "c64_no_10_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las diez en punto."
+  },
+  "c64_tito_10_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las diez y media."
+  },
+  "c64_no_10_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las diez y media."
+  },
+  "c64_tito_11_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las once en punto."
+  },
+  "c64_no_11_punto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las once en punto."
+  },
+  "c64_tito_11_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las once y media."
+  },
+  "c64_no_11_media": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las once y media."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "pie1"
+  },
+  {
+   "act": "corta",
+   "h": 1,
+   "media": 1
+  },
+  {
+   "wait": 500
+  },
+  "c64_tito_hola",
+  "bien_gracias",
+  {
+   "act": "ir",
+   "a": "escalera"
+  },
+  {
+   "act": "ir",
+   "a": "manecilla"
+  },
+  "c64_tito_mira",
+  {
+   "set": {
+    "twinkle": "arriba"
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "set": {
+    "twinkle": "abajo"
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "arriba",
+   "lead": [],
+   "line": "c64_arriba_abajo",
+   "then": [],
+   "after": [
+    {
+     "act": "larga",
+     "a": "punto"
+    },
+    {
+     "act": "corta",
+     "h": 2,
+     "media": 0
+    },
+    {
+     "act": "campana",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "dots": 1
+  },
+  "c64_tito_media_dos",
+  {
+   "ask": "abajo",
+   "lead": [],
+   "line": "c64_y_ahora",
+   "then": [],
+   "after": [
+    {
+     "act": "larga",
+     "a": "media"
+    },
+    {
+     "act": "corta",
+     "h": 2,
+     "media": 1
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "larga",
+   "a": "punto"
+  },
+  {
+   "act": "corta",
+   "h": 3,
+   "media": 0
+  },
+  "c64_tito_tres_punto",
+  "c64_luis_tres",
+  "c64_tito_si_luis",
+  {
+   "act": "larga",
+   "a": "media"
+  },
+  {
+   "act": "corta",
+   "h": 3,
+   "media": 1
+  },
+  "c64_tito_tres_media",
+  "c64_carmen_tres_media",
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "tito",
+   "que": "senala",
+   "a": "puertita"
+  },
+  {
+   "act": "larga",
+   "a": "lado"
+  },
+  "c64_tito_espera",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "ha",
+   "options": [
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10"
+   ]
+  },
+  {
+   "draw": "da",
+   "options": [
+    "punto",
+    "media"
+   ],
+   "other": "oa"
+  },
+  {
+   "calc": "pa",
+   "cond": "da=punto",
+   "then": "arriba",
+   "else": "abajo"
+  },
+  {
+   "calc": "ma",
+   "cond": "da=media",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "arriba",
+    "abajo"
+   ],
+   "pick": "$pa",
+   "tests": "$da",
+   "lock": true,
+   "lead": [],
+   "line": "c64_tito_$ha_$da",
+   "right": [
+    {
+     "act": "larga",
+     "a": "$da"
+    },
+    {
+     "act": "corta",
+     "h": "$ha",
+     "media": "$ma"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "larga",
+     "a": "$oa"
+    },
+    {
+     "act": "resorte64"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c64_no_$ha_$da"
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "larga",
+   "a": "lado"
+  },
+  {
+   "if": "ha=4",
+   "then": [
+    {
+     "draw": "hb",
+     "options": [
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+     ]
+    }
+   ],
+   "else": [
+    {
+     "if": "ha=5",
+     "then": [
+      {
+       "draw": "hb",
+       "options": [
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "ha=6",
+       "then": [
+        {
+         "draw": "hb",
+         "options": [
+          "7",
+          "8",
+          "9",
+          "10",
+          "11"
+         ]
+        }
+       ],
+       "else": [
+        {
+         "if": "ha=7",
+         "then": [
+          {
+           "draw": "hb",
+           "options": [
+            "8",
+            "9",
+            "10",
+            "11"
+           ]
+          }
+         ],
+         "else": [
+          {
+           "if": "ha=8",
+           "then": [
+            {
+             "draw": "hb",
+             "options": [
+              "9",
+              "10",
+              "11"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "if": "ha=9",
+             "then": [
+              {
+               "draw": "hb",
+               "options": [
+                "10",
+                "11"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "draw": "hb",
+               "options": [
+                "11"
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "db",
+   "options": [
+    "punto",
+    "media"
+   ],
+   "other": "ob"
+  },
+  {
+   "calc": "pb",
+   "cond": "db=punto",
+   "then": "arriba",
+   "else": "abajo"
+  },
+  {
+   "calc": "mb",
+   "cond": "db=media",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "arriba",
+    "abajo"
+   ],
+   "pick": "$pb",
+   "tests": "$db",
+   "lock": true,
+   "lead": [],
+   "line": "c64_tito_$hb_$db",
+   "right": [
+    {
+     "act": "larga",
+     "a": "$db"
+    },
+    {
+     "act": "corta",
+     "h": "$hb",
+     "media": "$mb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "larga",
+     "a": "$ob"
+    },
+    {
+     "act": "resorte64"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c64_no_$hb_$db"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 6
+  },
+  {
+   "act": "gesto",
+   "quien": "tito",
+   "que": "llave"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "figuras64",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "figuras64",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "figuras64",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  "c64_tito_mira_coqui",
+  "c64_cq_me_gusta",
+  {
+   "dots": 8
+  },
+  "c64_tito_media_hora",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c64_tito_hola",
+  "bien_gracias",
+  "c64_tito_mira",
+  "c64_arriba_abajo",
+  "c64_tito_media_dos",
+  "c64_y_ahora",
+  "c64_tito_tres_punto",
+  "c64_luis_tres",
+  "c64_tito_si_luis",
+  "c64_tito_tres_media",
+  "c64_carmen_tres_media",
+  "c64_tito_espera",
+  "c64_tito_5_media",
+  "c64_tito_7_punto",
+  "c64_tito_mira_coqui",
+  "c64_cq_me_gusta",
+  "c64_tito_media_hora"
+ ]
+}

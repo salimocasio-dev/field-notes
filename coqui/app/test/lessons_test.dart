@@ -194,9 +194,12 @@ void main() {
       await app.open(stored: jsonEncode(db), speechAvailable: false);
       expect(app.services.pictures, isA<ScenePictures>());
       final before = answers(app, 'ear');
-      // the Today card's first entry is the review (¿Cuál?); Palabras' Start goes the same way (test (m))
-      expect(find.text(CoquiLabels.reviewTitle), findsOneWidget);
-      await app.tap(find.byType(TodayCard));
+      // the Today/Up next card's first entry is the review; Palabras' Start goes the same way (test (m))
+      expect(
+        find.text(isNocheMap() ? 'Review' : CoquiLabels.reviewTitle),
+        findsOneWidget,
+      );
+      await app.tap(findMapUpNextAction());
       await app.settle();
       expect(app.lessonShown, isTrue);
       expect(byTypeName('RepasoScreen'), findsOneWidget);
@@ -401,7 +404,12 @@ void main() {
     (tester) async {
       final app = TestApp(tester);
       await app.open(stored: seed('vacio'));
-      expect(find.text('1 · La casa'), findsOneWidget);
+      if (isNocheMap()) {
+        expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+        expect(find.text('New story · 4 min'), findsOneWidget);
+      } else {
+        expect(find.text('1 · La casa'), findsOneWidget);
+      }
       await app.openTab('me');
       final start = find.byKey(const Key('yo-level-check'));
       await tester.ensureVisible(start);
@@ -425,9 +433,15 @@ void main() {
       await app.settle(rounds: 5);
       expect(app.selectedTab, 'map');
       // the map follows: La casa is done, the frog has moved on to El parque
-      expect(find.text('1 · La casa'), findsNothing);
-      expect(find.text('2 · El parque'), findsOneWidget);
-      expect(find.byType(MapChips), findsOneWidget);
+      if (isNocheMap()) {
+        expect(find.text('New story · 4 min'), findsNothing);
+        expect(find.text('Second play · 2 min'), findsOneWidget);
+        expect(find.text('You are here'), findsOneWidget);
+      } else {
+        expect(find.text('1 · La casa'), findsNothing);
+        expect(find.text('2 · El parque'), findsOneWidget);
+      }
+      expect(findMapTopChips(), findsOneWidget);
     },
     timeout: const Timeout(Duration(minutes: 10)),
   );

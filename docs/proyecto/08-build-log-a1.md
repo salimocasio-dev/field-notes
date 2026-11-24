@@ -2,6 +2,11 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 24, part 32: El reloj, El quiosco and El calendario on main
+
+- La plaza's last three scenes (orders 59 to 61) are in Dart on main: PR #126, built by Gemini on one branch at Salim's word, reviewed by Codex (reloj, three rounds) and by Claude. Each set equals the JavaScript pixel for pixel; their nine stories (63 to 71) play to the end on every path the checker walks with no rule broken, and six app plays per scene reach the end with no words on screen. Not yet in a numbered build. Page 13 lists the 19 acts left OPEN for the content lane.
+- The new PR guardrail (one package per branch) needs the `multi-package-ok` label on a scene port, which holds `coqui_scenes` and `feature_story` by AGENTS.md.
+
 ## Nov 23, part 31: Hablar's order 25 and the new Biblioteca (build 15)
 
 - Hablar (order 25, delivered by ChatGPT and Gemini, then fixed): each call has a short Spanish title and a one-line English job; one Up next card starts the call; a 10-stop journey by place opens a place's main and smaller calls. The smaller calls say "Coming soon" until `CallRoute` can name a call (request 25). As delivered the tab overflowed on every phone and "Calling…" had become "Calling..."; both fixed, the dropped tests brought back.

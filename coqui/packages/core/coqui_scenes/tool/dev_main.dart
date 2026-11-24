@@ -37,6 +37,9 @@ import 'package:coqui_scenes/src/parada/parada_set.dart';
 import 'package:coqui_scenes/src/tiendas/tiendas_set.dart';
 import 'package:coqui_scenes/src/cruce/cruce_set.dart';
 import 'package:coqui_scenes/src/plaza/plaza_set.dart';
+import 'package:coqui_scenes/src/reloj/reloj_set.dart';
+import 'package:coqui_scenes/src/quiosco/quiosco_set.dart';
+import 'package:coqui_scenes/src/calendario/calendario_set.dart';
 import 'package:coqui_scenes/src/sheet_cache.dart' show sceneSheetOf;
 import 'package:coqui_scenes/src/patio/patio_set.dart';
 import 'package:coqui_scenes/src/sala/sala_set.dart';
@@ -349,7 +352,10 @@ class _BakePageState extends State<BakePage> {
               id == 'parada' ||
               id == 'tiendas' ||
               id == 'cruce' ||
-              id == 'plaza'
+              id == 'plaza' ||
+              id == 'reloj' ||
+              id == 'quiosco' ||
+              id == 'calendario'
           ? sceneSheetOf(id)
           : null;
       final queries = news != null
@@ -382,6 +388,9 @@ class _BakePageState extends State<BakePage> {
           'tiendas' => TiendasState.fromQuery(b.query).key,
           'cruce' => CruceState.fromQuery(b.query).key,
           'plaza' => PlazaState.fromQuery(b.query).key,
+          'reloj' => RelojState.fromQuery(b.query).key,
+          'quiosco' => QuioscoState.fromQuery(b.query).key,
+          'calendario' => CalendarioState.fromQuery(b.query).key,
           _ => FrenteState.fromQuery(b.query).key,
         };
         bakes.bakeKey(key);

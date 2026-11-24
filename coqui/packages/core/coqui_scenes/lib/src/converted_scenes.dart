@@ -25,4 +25,7 @@ const Set<String> convertedScenes = {
   'tiendas',
   'cruce',
   'plaza',
+  'reloj',
+  'quiosco',
+  'calendario',
 };

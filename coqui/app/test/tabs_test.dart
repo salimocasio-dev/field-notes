@@ -15,7 +15,10 @@ void main() {
       // Mapa, at the start: the streak of 5 and place 2, El parque; ten words due on the Today card
       expect(app.selectedTab, 'map');
       expect(find.text('5 days'), findsOneWidget);
-      expect(find.text('2 · El parque'), findsOneWidget);
+      expect(
+        find.text(isNocheMap() ? 'You are here' : '2 · El parque'),
+        findsOneWidget,
+      );
       expect(find.text('10 words coming back · 6 min'), findsOneWidget);
 
       // Biblioteca: a story to make for his level and a text to add; his shelf is empty (the course's stories are
@@ -72,7 +75,13 @@ void main() {
 
       // back on the map: the same map, not made again (each tab is kept)
       await app.openTab('map');
-      expect(find.text('2 · El parque').hitTestable(), findsOneWidget);
+      expect(
+        (isNocheMap()
+                ? find.text('10 words coming back · 6 min')
+                : find.text('2 · El parque'))
+            .hitTestable(),
+        findsOneWidget,
+      );
       // the tab bar ticks on each tab tap (app.html, ver: tick())
       expect(app.haptics.ticks, greaterThanOrEqualTo(5));
     },
@@ -86,8 +95,8 @@ void main() {
       // the map opens scrolled to the frog: tap across the picture until a place's sheet opens
       final view = find.byType(PixelView).hitTestable();
       final rect = tester.getRect(view.first);
-      final top = tester.getBottomLeft(find.byType(MapChips)).dy;
-      final bottom = tester.getTopLeft(find.byType(TodayCard)).dy;
+      final top = tester.getBottomLeft(findMapTopChips()).dy;
+      final bottom = tester.getTopLeft(findMapUpNextCard()).dy;
       final rows = find.descendant(
         of: find.byType(CoquiSheet),
         matching: find.byType(PlayButton),
@@ -123,7 +132,13 @@ void main() {
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'map');
       expect(find.byType(LessonFrame), findsNothing);
-      expect(find.text('2 · El parque').hitTestable(), findsOneWidget);
+      expect(
+        (isNocheMap()
+                ? find.text('10 words coming back · 6 min')
+                : find.text('2 · El parque'))
+            .hitTestable(),
+        findsOneWidget,
+      );
     },
   );
 

@@ -160,5 +160,21 @@
   { "id": "plaza/tarde-0-0", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=0&carrito=0" },
   { "id": "plaza/tarde-0-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=0&carrito=1" },
   { "id": "plaza/tarde-1-0", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=1&carrito=0" },
-  { "id": "plaza/tarde-1-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=1&carrito=1" }
+  { "id": "plaza/tarde-1-1", "kind": "set", "page": "docs/proyecto/pixel/plaza-set.html", "query": "?hora=tarde&tablero=1&carrito=1" },
+  { "id": "reloj/mediodia-0", "kind": "set", "page": "docs/proyecto/pixel/reloj-set.html", "query": "?hora=mediodia&mesas=0" },
+  { "id": "reloj/mediodia-1", "kind": "set", "page": "docs/proyecto/pixel/reloj-set.html", "query": "?hora=mediodia&mesas=1" },
+  { "id": "reloj/tarde-0", "kind": "set", "page": "docs/proyecto/pixel/reloj-set.html", "query": "?hora=tarde&mesas=0" },
+  { "id": "reloj/tarde-1", "kind": "set", "page": "docs/proyecto/pixel/reloj-set.html", "query": "?hora=tarde&mesas=1" },
+  { "id": "reloj/ocaso-0", "kind": "set", "page": "docs/proyecto/pixel/reloj-set.html", "query": "?hora=ocaso&mesas=0" },
+  { "id": "reloj/ocaso-1", "kind": "set", "page": "docs/proyecto/pixel/reloj-set.html", "query": "?hora=ocaso&mesas=1" },
+  { "id": "quiosco/mediodia-0", "kind": "set", "page": "docs/proyecto/pixel/quiosco-set.html", "query": "?hora=mediodia&fiesta=0" },
+  { "id": "quiosco/mediodia-1", "kind": "set", "page": "docs/proyecto/pixel/quiosco-set.html", "query": "?hora=mediodia&fiesta=1" },
+  { "id": "quiosco/tarde-0", "kind": "set", "page": "docs/proyecto/pixel/quiosco-set.html", "query": "?hora=tarde&fiesta=0" },
+  { "id": "quiosco/tarde-1", "kind": "set", "page": "docs/proyecto/pixel/quiosco-set.html", "query": "?hora=tarde&fiesta=1" },
+  { "id": "calendario/manana-0", "kind": "set", "page": "docs/proyecto/pixel/calendario-set.html", "query": "?hora=manana&tela=0" },
+  { "id": "calendario/manana-1", "kind": "set", "page": "docs/proyecto/pixel/calendario-set.html", "query": "?hora=manana&tela=1" },
+  { "id": "calendario/tarde-0", "kind": "set", "page": "docs/proyecto/pixel/calendario-set.html", "query": "?hora=tarde&tela=0" },
+  { "id": "calendario/tarde-1", "kind": "set", "page": "docs/proyecto/pixel/calendario-set.html", "query": "?hora=tarde&tela=1" },
+  { "id": "calendario/noche-0", "kind": "set", "page": "docs/proyecto/pixel/calendario-set.html", "query": "?hora=noche&tela=0" },
+  { "id": "calendario/noche-1", "kind": "set", "page": "docs/proyecto/pixel/calendario-set.html", "query": "?hora=noche&tela=1" }
 ]

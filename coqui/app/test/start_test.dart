@@ -13,7 +13,7 @@ void main() {
       await app.open();
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'map');
-      expect(find.byType(MapChips), findsOneWidget);
+      expect(findMapTopChips(), findsOneWidget);
       expect(find.text("I'm new to Spanish"), findsNothing); // step 1 first
       expect(find.text('Next'), findsOneWidget);
       await app.tap(find.text('Next'));
@@ -23,7 +23,7 @@ void main() {
       await app.advance(1000);
       expect(find.text("I'm new to Spanish").hitTestable(), findsNothing);
       expect(app.selectedTab, 'map');
-      expect(find.byType(MapChips), findsOneWidget);
+      expect(findMapTopChips(), findsOneWidget);
       // listo(): the setting is written into the stored progress, under the old key
       expect(app.stored, contains('"bienvenida":1'));
       // the course was read from the site's files before the first screen, with the voice test's lines
@@ -46,7 +46,7 @@ void main() {
       await app.open(stored: seed('curso'), location: at);
       expect(app.tabBarShown, isTrue, reason: at);
       expect(app.selectedTab, 'map', reason: at);
-      expect(find.byType(MapChips), findsOneWidget, reason: at);
+      expect(findMapTopChips(), findsOneWidget, reason: at);
       await tester.pumpWidget(const SizedBox());
     }
   });
@@ -81,7 +81,7 @@ void main() {
       await app.settle(rounds: 10);
       expect(find.text('Try again'), findsNothing);
       expect(app.selectedTab, 'map');
-      expect(find.byType(MapChips), findsOneWidget);
+      expect(findMapTopChips(), findsOneWidget);
       expect(find.text('5 days'), findsOneWidget);
     },
   );
