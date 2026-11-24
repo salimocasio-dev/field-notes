@@ -1,5 +1,6 @@
 // The dev entry's root widget (tool/dev_main.dart runs it). It lives here so that the tests can run it in a
 // browser too: `flutter test --platform chrome` loads nothing outside test/.
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/src/map_perf.dart';
 import 'package:feature_map/src/map_screen.dart';
@@ -54,28 +55,38 @@ class _MapDevAppState extends State<MapDevApp> {
   Widget build(BuildContext context) {
     final q = widget.query;
     final place = int.tryParse(q['place'] ?? '');
+    final lang = fixtureState.services.course.language;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coqui map',
       theme: coquiTheme(),
       home: Scaffold(
+        backgroundColor: NocheColors.ground,
         body: Stack(
           fit: StackFit.expand,
           children: [
             MapScreen(
               services: fixtureState.services,
               perf: perf,
-              reviewTitle: q['review'] == '0' ? null : CoquiLabels.reviewTitle,
+              reviewTitle: q['review'] == '0' ? null : 'Review',
               openPlace: place == null ? null : place - 1,
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: CoquiTabBar(selectedId: CoquiTabs.mapId, onTap: (_) {}),
+            PositionedDirectional(
+              start: 0,
+              end: 0,
+              bottom: 0,
+              child: NocheTabBar(
+                selectedId: NocheTabs.map,
+                tabNames: lang.tabNames,
+                script: lang.script,
+                languageCode: lang.code,
+                onTap: (_) {},
+              ),
             ),
             if (q['chip'] != '0')
-              Positioned(
+              PositionedDirectional(
                 top: 4,
-                right: 4,
+                end: 4,
                 child: ListenableBuilder(
                   listenable: perf,
                   builder: (context, _) => _PerfChip(perf),
@@ -97,19 +108,18 @@ class _PerfChip extends StatelessWidget {
   Widget build(BuildContext context) => DecoratedBox(
     key: const Key('perf-chip'),
     decoration: BoxDecoration(
-      color: const Color(0xCC000000),
-      borderRadius: BorderRadius.circular(8),
+      color: NocheColors.panel,
+      border: Border.all(color: NocheColors.line, width: 1),
+      borderRadius: BorderRadius.circular(NocheSize.grid),
     ),
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: NocheSize.grid,
+        vertical: 4,
+      ),
       child: Text(
         'bake ${perf.bakeMs.toStringAsFixed(0)} ms · frame max ${perf.slowestFrameMs.toStringAsFixed(1)} ms · mean ${perf.meanFrameMs.toStringAsFixed(1)} ms',
-        style: const TextStyle(
-          color: Color(0xFFFFFFFF),
-          fontSize: 11,
-          decoration: TextDecoration.none,
-          fontWeight: FontWeight.w500,
-        ),
+        style: NocheType.bodySmall.copyWith(color: NocheColors.text),
       ),
     ),
   );

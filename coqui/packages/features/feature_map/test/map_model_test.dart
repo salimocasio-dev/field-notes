@@ -330,9 +330,84 @@ void main() {
     // l = 200 * .3 + 100 * .55 + 50 * .15 = 122.5
     expect(m.greyOf(m.e.rgb(200, 100, 50)), m.e.rgb(126, 132, 154));
   });
+
+  _nocheHelpersTests();
 }
 
 /// A course in which no place has a story.
 class _NoStories extends MapFixtureCourse {
   _NoStories() : super(builtPlaces: 0);
+}
+
+void _nocheHelpersTests() {
+  group('N4.1 Up next card helpers', () {
+    test('upNextKind turns New story · play it twice into New story', () {
+      const s1 = TodayEntry(
+        title: 'Tengo hambre',
+        line: 'New story · play it twice',
+        minutes: 5,
+        route: StoryRoute('tengo-hambre'),
+      );
+      const s2 = TodayEntry(
+        title: 'La lluvia',
+        line: 'Second play',
+        minutes: 2,
+        route: StoryRoute('la-lluvia'),
+      );
+      const s3 = TodayEntry(
+        title: 'La lluvia',
+        line: 'Listen again',
+        minutes: 2,
+        route: StoryRoute('la-lluvia'),
+      );
+      expect(upNextKind(s1), 'New story');
+      expect(upNextKind(s2), 'Second play');
+      expect(upNextKind(s3), 'Listen again');
+    });
+
+    test('upNextThenLine formats 0, 1, and 2 steps after the first entry', () {
+      const storyNew = TodayEntry(
+        title: 'A',
+        line: 'New story · play it twice',
+        minutes: 4,
+        route: StoryRoute('a'),
+      );
+      const review = TodayEntry(
+        line: '3 words coming back',
+        minutes: 3,
+        route: ReviewRoute(),
+        review: true,
+      );
+      const call = TodayEntry(
+        title: 'Call',
+        line: 'Call Danny',
+        minutes: 5,
+        route: CallRoute('casa'),
+      );
+      const listening = TodayEntry(
+        title: 'B',
+        line: 'Listen again',
+        minutes: 2,
+        route: StoryRoute('b'),
+      );
+      expect(upNextThenLine(const []), isNull);
+      expect(upNextThenLine(const [storyNew]), isNull);
+      expect(upNextThenLine(const [storyNew, review]), 'Then review');
+      expect(
+        upNextThenLine(const [storyNew, review, call, listening]),
+        'Then review, then a call',
+      );
+      expect(
+        upNextThenLine(const [review, storyNew, listening]),
+        'Then a new story, then listening',
+      );
+    });
+
+    test('placeIndexForStory finds the owning place index', () {
+      final course = MapFixtureCourse(builtPlaces: 3);
+      expect(placeIndexForStory(course.places, 'la-lluvia'), 0);
+      expect(placeIndexForStory(course.places, 'tengo-hambre'), 2);
+      expect(placeIndexForStory(course.places, 'missing'), isNull);
+    });
+  });
 }

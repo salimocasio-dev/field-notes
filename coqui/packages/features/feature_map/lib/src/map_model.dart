@@ -168,3 +168,45 @@ List<TodayEntry> todayPlan({
   }
   return out;
 }
+
+/// Short kind label shown in the Noche Up next card (`"<kind> · <N> min"`).
+String upNextKind(TodayEntry entry) {
+  if (entry.line == 'New story · play it twice') return 'New story';
+  return entry.line;
+}
+
+/// Step label used in the `"Then <step1>, then <step2>"` line of the Noche Up next card.
+String? planStepLabel(TodayEntry entry) {
+  if (entry.review) return 'review';
+  if (entry.route is CallRoute) return 'a call';
+  if (entry.line == 'New story · play it twice') return 'a new story';
+  if (entry.line == 'Second play' || entry.line == 'Listen again') {
+    return 'listening';
+  }
+  return null;
+}
+
+/// Formats `"Then <step1>, then <step2>"` from the entries of [plan] after the first.
+/// Returns `null` when there are no steps.
+String? upNextThenLine(List<TodayEntry> plan) {
+  if (plan.length <= 1) return null;
+  final steps = <String>[];
+  for (final entry in plan.skip(1)) {
+    final step = planStepLabel(entry);
+    if (step != null) {
+      steps.add(step);
+      if (steps.length == 2) break;
+    }
+  }
+  if (steps.isEmpty) return null;
+  if (steps.length == 1) return 'Then ${steps[0]}';
+  return 'Then ${steps[0]}, then ${steps[1]}';
+}
+
+/// Index in [places] of the place whose `stories` contains [storyId], or `null`.
+int? placeIndexForStory(List<Place> places, String storyId) {
+  for (var i = 0; i < places.length; i++) {
+    if (places[i].stories.contains(storyId)) return i;
+  }
+  return null;
+}
