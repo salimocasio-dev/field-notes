@@ -59,18 +59,22 @@ final class BookRoute extends AppRoute {
   String toString() => 'BookRoute($id)';
 }
 
-/// The call with Danny for one place.
+/// A call for one place, optionally naming a specific call ([callId]) when the
+/// place has several. Null [callId] opens the place's main call.
 final class CallRoute extends AppRoute {
-  const CallRoute(this.placeId);
+  const CallRoute(this.placeId, {this.callId});
   final String placeId;
+  final String? callId;
 
   @override
   bool operator ==(Object other) =>
-      other is CallRoute && other.placeId == placeId;
+      other is CallRoute && other.placeId == placeId && other.callId == callId;
   @override
-  int get hashCode => Object.hash(CallRoute, placeId);
+  int get hashCode => Object.hash(CallRoute, placeId, callId);
   @override
-  String toString() => 'CallRoute($placeId)';
+  String toString() => callId == null
+      ? 'CallRoute($placeId)'
+      : 'CallRoute($placeId, callId: $callId)';
 }
 
 /// The voice test (habla-prueba.html).

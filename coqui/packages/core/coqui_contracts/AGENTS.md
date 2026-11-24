@@ -36,6 +36,10 @@ Models, interfaces, routes. Pure Dart.
   `Feature`, `Entitlements`, `AllowAllEntitlements`, four new routes (`LanguagesRoute`, `PlansRoute`, `ImportRoute`,
   `PlaceRoute`), and `CallBrief.agentId` (default `spanishCallAgentId`). Global `normalize()` stays, delegating to
   `Language.spanish.normalize`, documented as deprecated until N2.11 removes it.
+- Issue `#5`: `CallBrief` fields `id`, `title`, `jobEn`, `isMain`, and nullable `photo`; `CallsCatalog` + `CourseCalls`
+  extension (`course.callsFor(placeId)`, separate interface falling back to `[callFor(placeId)]`); `CallRoute(placeId,
+  {callId})`; and `CallProgressStore` + `CallProgress` extension (`progress.callDone(callId)`, separate interface
+  defaulting to `false`).
 
 ## Run and test it alone
 

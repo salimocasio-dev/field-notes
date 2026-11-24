@@ -189,8 +189,9 @@ class CallController extends ChangeNotifier {
     final p = place;
     final b = brief;
     if (p == null || b == null) return;
-    pictureWord = b.photo;
-    pictureShown = course.pairFor(b.photo) != null;
+    final photo = b.photo;
+    pictureWord = photo;
+    pictureShown = photo != null && course.pairFor(photo) != null;
     dannyLine = CallTexts.aboutLine(p.name, b.minutes);
     lineMuted = true;
     _est(CallState.idle);

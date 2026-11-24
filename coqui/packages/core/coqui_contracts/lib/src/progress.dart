@@ -229,3 +229,24 @@ abstract interface class ProgressStore {
   void import(String json);
   void reset();
 }
+
+/// Optional interface for a [ProgressStore] that tracks completed calls.
+///
+/// Kept separate from [ProgressStore] (same pattern as `LanguageCatalog` and
+/// `RepasoCatalog`): adding an abstract member directly to [ProgressStore]
+/// would break every store implemented in other packages. Stores that do not
+/// implement this report `false` via [CallProgress.callDone].
+abstract interface class CallProgressStore {
+  bool callDone(String callId);
+}
+
+/// `progress.callDone(callId)`: returns whether [callId] has been completed
+/// when the store implements [CallProgressStore], or `false` otherwise.
+extension CallProgress on ProgressStore {
+  bool callDone(String callId) {
+    final p = this;
+    return p is CallProgressStore
+        ? (p as CallProgressStore).callDone(callId)
+        : false;
+  }
+}
