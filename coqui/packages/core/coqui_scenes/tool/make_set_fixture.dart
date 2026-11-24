@@ -132,6 +132,16 @@ void main(List<String> args) {
       constant: 'relojSetRefs',
       what: "El reloj's baked states",
     ),
+    'quiosco': (
+      file: 'quiosco_set_refs.dart',
+      constant: 'quioscoSetRefs',
+      what: "El quiosco's baked states",
+    ),
+    'calendario': (
+      file: 'calendario_set_refs.dart',
+      constant: 'calendarioSetRefs',
+      what: "El calendario's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {

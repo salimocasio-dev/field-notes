@@ -30,6 +30,8 @@ void main() {
       'cruce',
       'plaza',
       'reloj',
+      'quiosco',
+      'calendario',
     ]);
   });
 

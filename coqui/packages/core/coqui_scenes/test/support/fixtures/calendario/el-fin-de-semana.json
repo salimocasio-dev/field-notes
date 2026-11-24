@@ -1,0 +1,1570 @@
+{
+ "id": "el-fin-de-semana",
+ "title": "El fin de semana",
+ "place": "La plaza",
+ "scene": "calendario",
+ "next": "hoy-y-manana",
+ "goal": "Hang the señora's cards under the right day (viernes, sábado, domingo) or on the arch for the fin de semana, so that the kite Luis and Carmen made keeps its three paper bows: every wrong place lets Canelo tear one off.",
+ "stake": {
+  "thing": "lazos",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "viernes",
+  "sábado",
+  "domingo",
+  "fin de semana"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "lunes",
+  "martes",
+  "miércoles",
+  "jueves",
+  "hay",
+  "no hay",
+  "me gusta",
+  "también",
+  "después",
+  "vamos",
+  "vienes",
+  "flor",
+  "pan",
+  "pollo",
+  "jugo",
+  "piragua",
+  "pone",
+  "vuela",
+  "mira",
+  "sí",
+  "no"
+ ],
+ "also_heard": [
+  "clases",
+  "tampoco",
+  "música",
+  "chiringa"
+ ],
+ "names": {
+  "senora": "b_n_senora",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "perro": "c_n_perro",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "5": "viernes",
+  "6": "sábado",
+  "7": "domingo",
+  "arco": "fin de semana"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c70_vienen": {
+   "who": "narr",
+   "text": "Luis y Carmen vienen de la escuela."
+  },
+  "c70_sa_viernes": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Lunes, martes, miércoles, jueves... y viernes."
+  },
+  "c70_ca_clases": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: El viernes hay clases."
+  },
+  "c70_donde_viernes": {
+   "who": "narr",
+   "text": "¿Dónde está el viernes?"
+  },
+  "c70_sa_despues": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y después, sábado y domingo."
+  },
+  "c70_l_sabado": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡El sábado no hay clases! ¡Y el domingo tampoco!"
+  },
+  "c70_donde_sabado": {
+   "who": "narr",
+   "text": "¿Dónde está el sábado?"
+  },
+  "c70_donde_domingo": {
+   "who": "narr",
+   "text": "¿Y dónde está el domingo?"
+  },
+  "c70_sa_finde": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El sábado y el domingo son el fin de semana."
+  },
+  "c70_ca_gusta": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Me gusta el fin de semana!"
+  },
+  "c70_l_ati": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Y a ti, Coquí?"
+  },
+  "c70_cq_tambien": {
+   "who": "tu",
+   "text": "¡A mí también!",
+   "tu_turno": [
+    {
+     "palabra": "también",
+     "formas": [
+      "también",
+      "tambien",
+      "a mí también"
+     ]
+    }
+   ]
+  },
+  "c70_sa_musica": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El viernes hay música en la plaza."
+  },
+  "c70_l_musica": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Música! Me gusta la música."
+  },
+  "c70_donde_musica": {
+   "who": "narr",
+   "text": "¿Dónde ponemos la música?"
+  },
+  "c70_sa_piraguas": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el fin de semana hay piraguas."
+  },
+  "c70_donde_piraguas": {
+   "who": "narr",
+   "text": "¿Dónde ponemos las piraguas?"
+  },
+  "c70_l_chiringa": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mira la chiringa! El sábado la volamos."
+  },
+  "c70_ca_canelo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Canelo, no!"
+  },
+  "c70_l_vamos": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Es sábado! ¡Vamos!"
+  },
+  "c70_ca_vienes": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, ¿vienes el domingo también?"
+  },
+  "cq_si": {
+   "who": "tu",
+   "text": "¡Sí!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    }
+   ]
+  },
+  "c70_fin": {
+   "who": "narr",
+   "text": "El sábado y el domingo no hay clases. ¡Es el fin de semana!"
+  },
+  "c70_a_5_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El viernes hay flores."
+  },
+  "c70_b_5_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el viernes hay flores."
+  },
+  "c70_no_5_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay flores el viernes."
+  },
+  "c70_a_5_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El viernes hay pan."
+  },
+  "c70_b_5_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el viernes hay pan."
+  },
+  "c70_no_5_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pan el viernes."
+  },
+  "c70_a_5_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El viernes hay pollo."
+  },
+  "c70_b_5_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el viernes hay pollo."
+  },
+  "c70_no_5_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pollo el viernes."
+  },
+  "c70_a_5_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El viernes hay jugo."
+  },
+  "c70_b_5_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el viernes hay jugo."
+  },
+  "c70_no_5_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay jugo el viernes."
+  },
+  "c70_a_6_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El sábado hay flores."
+  },
+  "c70_b_6_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el sábado hay flores."
+  },
+  "c70_no_6_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay flores el sábado."
+  },
+  "c70_a_6_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El sábado hay pan."
+  },
+  "c70_b_6_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el sábado hay pan."
+  },
+  "c70_no_6_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pan el sábado."
+  },
+  "c70_a_6_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El sábado hay pollo."
+  },
+  "c70_b_6_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el sábado hay pollo."
+  },
+  "c70_no_6_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pollo el sábado."
+  },
+  "c70_a_6_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El sábado hay jugo."
+  },
+  "c70_b_6_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el sábado hay jugo."
+  },
+  "c70_no_6_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay jugo el sábado."
+  },
+  "c70_a_7_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El domingo hay flores."
+  },
+  "c70_b_7_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el domingo hay flores."
+  },
+  "c70_no_7_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay flores el domingo."
+  },
+  "c70_a_7_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El domingo hay pan."
+  },
+  "c70_b_7_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el domingo hay pan."
+  },
+  "c70_no_7_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pan el domingo."
+  },
+  "c70_a_7_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El domingo hay pollo."
+  },
+  "c70_b_7_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el domingo hay pollo."
+  },
+  "c70_no_7_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pollo el domingo."
+  },
+  "c70_a_7_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El domingo hay jugo."
+  },
+  "c70_b_7_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el domingo hay jugo."
+  },
+  "c70_no_7_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay jugo el domingo."
+  },
+  "c70_a_arco_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El fin de semana hay flores."
+  },
+  "c70_b_arco_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el fin de semana hay flores."
+  },
+  "c70_no_arco_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay flores el fin de semana."
+  },
+  "c70_a_arco_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El fin de semana hay pan."
+  },
+  "c70_b_arco_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el fin de semana hay pan."
+  },
+  "c70_no_arco_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pan el fin de semana."
+  },
+  "c70_a_arco_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El fin de semana hay pollo."
+  },
+  "c70_b_arco_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el fin de semana hay pollo."
+  },
+  "c70_no_arco_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay pollo el fin de semana."
+  },
+  "c70_a_arco_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: El fin de semana hay jugo."
+  },
+  "c70_b_arco_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y el fin de semana hay jugo."
+  },
+  "c70_no_arco_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hay jugo el fin de semana."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "lazos",
+   "n": 3
+  },
+  {
+   "act": "cuelga",
+   "carta": "frutas",
+   "dia": "1",
+   "quien": "senora"
+  },
+  {
+   "act": "cuelga",
+   "carta": "bola",
+   "dia": "2",
+   "quien": "senora"
+  },
+  {
+   "act": "cuelga",
+   "carta": "bingo",
+   "dia": "3",
+   "quien": "senora"
+  },
+  {
+   "act": "cuelga",
+   "carta": "bicicleta",
+   "dia": "4",
+   "quien": "senora"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c70_vienen",
+  {
+   "act": "gesto",
+   "quien": "senora",
+   "que": "senala",
+   "a": "tabla"
+  },
+  "c70_sa_viernes",
+  {
+   "act": "luce",
+   "dia": "5"
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "bulto"
+  },
+  "c70_ca_clases",
+  {
+   "ask": "dia5",
+   "lead": [],
+   "line": "c70_donde_viernes",
+   "then": [],
+   "after": [
+    {
+     "act": "luce",
+     "dia": "5"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "cuenta",
+   "de": 6,
+   "a": 7,
+   "suelto": 1
+  },
+  "c70_sa_despues",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "bulto"
+  },
+  "c70_l_sabado",
+  {
+   "ask": "dia6",
+   "lead": [],
+   "line": "c70_donde_sabado",
+   "then": [],
+   "after": [
+    {
+     "act": "luce",
+     "dia": "6"
+    }
+   ]
+  },
+  {
+   "ask": "dia7",
+   "lead": [],
+   "line": "c70_donde_domingo",
+   "then": [],
+   "after": [
+    {
+     "act": "luce",
+     "dia": "7"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "senora",
+   "que": "senala",
+   "a": "arco"
+  },
+  "c70_sa_finde",
+  {
+   "set": {
+    "twinkle": "arco"
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "c70_ca_gusta",
+  "c70_l_ati",
+  "c70_cq_tambien",
+  {
+   "dots": 4
+  },
+  {
+   "act": "muestra",
+   "carta": "guitarra"
+  },
+  "c70_sa_musica",
+  "c70_l_musica",
+  {
+   "ask": "dia5",
+   "lead": [],
+   "line": "c70_donde_musica",
+   "then": [],
+   "after": [
+    {
+     "act": "cuelga",
+     "carta": "guitarra",
+     "dia": "5",
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "act": "muestra",
+   "carta": "piragua"
+  },
+  "c70_sa_piraguas",
+  {
+   "ask": "arco",
+   "lead": [],
+   "line": "c70_donde_piraguas",
+   "then": [],
+   "after": [
+    {
+     "act": "cuelga",
+     "carta": "piragua",
+     "dia": "arco",
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  "c70_l_chiringa",
+  "c70_ca_canelo",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "da",
+   "options": [
+    "5",
+    "6",
+    "7",
+    "arco"
+   ]
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "flores",
+    "pan",
+    "pollo",
+    "jugo"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "da=arco",
+   "then": "arco",
+   "else": "dia$da"
+  },
+  {
+   "act": "muestra",
+   "carta": "$ca"
+  },
+  {
+   "if": "da=arco",
+   "then": [
+    {
+     "decide": "do",
+     "options": [
+      "dia1",
+      "dia2",
+      "dia3",
+      "dia4",
+      "dia5",
+      "dia6",
+      "dia7",
+      "arco"
+     ],
+     "pick": "$pa",
+     "tests": "$da",
+     "lock": true,
+     "lead": [],
+     "line": "c70_a_$da_$ca",
+     "right": [
+      {
+       "calc": "xd",
+       "cond": "x=dia1",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia2",
+       "then": "2",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia3",
+       "then": "3",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia4",
+       "then": "4",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia5",
+       "then": "5",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia6",
+       "then": "6",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia7",
+       "then": "7",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=arco",
+       "then": "arco",
+       "else": "$xd"
+      },
+      {
+       "calc": "pl",
+       "cond": "ok",
+       "then": "$xd",
+       "else": "$da"
+      },
+      {
+       "act": "cuelga",
+       "carta": "$ca",
+       "dia": "$pl",
+       "quien": "coqui"
+      },
+      {
+       "if": "da=arco",
+       "then": [
+        {
+         "if": "pl=arco",
+         "then": [],
+         "else": [
+          {
+           "act": "cuelga",
+           "carta": "$ca",
+           "dia": "arco",
+           "quien": "coqui"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "calc": "xd",
+       "cond": "x=dia1",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia2",
+       "then": "2",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia3",
+       "then": "3",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia4",
+       "then": "4",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia5",
+       "then": "5",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia6",
+       "then": "6",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia7",
+       "then": "7",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=arco",
+       "then": "arco",
+       "else": "$xd"
+      },
+      {
+       "act": "cuelga",
+       "carta": "$ca",
+       "dia": "$xd",
+       "quien": "coqui"
+      },
+      "c70_no_$da_$ca",
+      {
+       "act": "canelo70"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "lazos",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "lazos",
+         "n": 1
+        }
+       ]
+      },
+      "c70_ca_canelo",
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ],
+     "vale": [
+      "dia6",
+      "dia7"
+     ]
+    }
+   ],
+   "else": [
+    {
+     "decide": "do",
+     "options": [
+      "dia1",
+      "dia2",
+      "dia3",
+      "dia4",
+      "dia5",
+      "dia6",
+      "dia7",
+      "arco"
+     ],
+     "pick": "$pa",
+     "tests": "$da",
+     "lock": true,
+     "lead": [],
+     "line": "c70_a_$da_$ca",
+     "right": [
+      {
+       "calc": "xd",
+       "cond": "x=dia1",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia2",
+       "then": "2",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia3",
+       "then": "3",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia4",
+       "then": "4",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia5",
+       "then": "5",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia6",
+       "then": "6",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia7",
+       "then": "7",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=arco",
+       "then": "arco",
+       "else": "$xd"
+      },
+      {
+       "calc": "pl",
+       "cond": "ok",
+       "then": "$xd",
+       "else": "$da"
+      },
+      {
+       "act": "cuelga",
+       "carta": "$ca",
+       "dia": "$pl",
+       "quien": "coqui"
+      },
+      {
+       "if": "da=arco",
+       "then": [
+        {
+         "if": "pl=arco",
+         "then": [],
+         "else": [
+          {
+           "act": "cuelga",
+           "carta": "$ca",
+           "dia": "arco",
+           "quien": "coqui"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "calc": "xd",
+       "cond": "x=dia1",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia2",
+       "then": "2",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia3",
+       "then": "3",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia4",
+       "then": "4",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia5",
+       "then": "5",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia6",
+       "then": "6",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia7",
+       "then": "7",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=arco",
+       "then": "arco",
+       "else": "$xd"
+      },
+      {
+       "act": "cuelga",
+       "carta": "$ca",
+       "dia": "$xd",
+       "quien": "coqui"
+      },
+      "c70_no_$da_$ca",
+      {
+       "act": "canelo70"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "lazos",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "lazos",
+         "n": 1
+        }
+       ]
+      },
+      "c70_ca_canelo",
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "db",
+   "options": [
+    "5",
+    "6",
+    "7",
+    "arco"
+   ]
+  },
+  {
+   "draw": "cb",
+   "options": [
+    "flores",
+    "pan",
+    "pollo",
+    "jugo"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "db=arco",
+   "then": "arco",
+   "else": "dia$db"
+  },
+  {
+   "act": "muestra",
+   "carta": "$cb"
+  },
+  {
+   "if": "db=arco",
+   "then": [
+    {
+     "decide": "do",
+     "options": [
+      "dia1",
+      "dia2",
+      "dia3",
+      "dia4",
+      "dia5",
+      "dia6",
+      "dia7",
+      "arco"
+     ],
+     "pick": "$pb",
+     "tests": "$db",
+     "lock": true,
+     "lead": [],
+     "line": "c70_b_$db_$cb",
+     "right": [
+      {
+       "calc": "xd",
+       "cond": "x=dia1",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia2",
+       "then": "2",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia3",
+       "then": "3",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia4",
+       "then": "4",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia5",
+       "then": "5",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia6",
+       "then": "6",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia7",
+       "then": "7",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=arco",
+       "then": "arco",
+       "else": "$xd"
+      },
+      {
+       "calc": "pl",
+       "cond": "ok",
+       "then": "$xd",
+       "else": "$db"
+      },
+      {
+       "act": "cuelga",
+       "carta": "$cb",
+       "dia": "$pl",
+       "quien": "coqui"
+      },
+      {
+       "if": "db=arco",
+       "then": [
+        {
+         "if": "pl=arco",
+         "then": [],
+         "else": [
+          {
+           "act": "cuelga",
+           "carta": "$cb",
+           "dia": "arco",
+           "quien": "coqui"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "calc": "xd",
+       "cond": "x=dia1",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia2",
+       "then": "2",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia3",
+       "then": "3",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia4",
+       "then": "4",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia5",
+       "then": "5",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia6",
+       "then": "6",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia7",
+       "then": "7",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=arco",
+       "then": "arco",
+       "else": "$xd"
+      },
+      {
+       "act": "cuelga",
+       "carta": "$cb",
+       "dia": "$xd",
+       "quien": "coqui"
+      },
+      "c70_no_$db_$cb",
+      {
+       "act": "canelo70"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "lazos",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "lazos",
+         "n": 1
+        }
+       ]
+      },
+      "c70_ca_canelo",
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ],
+     "vale": [
+      "dia6",
+      "dia7"
+     ]
+    }
+   ],
+   "else": [
+    {
+     "decide": "do",
+     "options": [
+      "dia1",
+      "dia2",
+      "dia3",
+      "dia4",
+      "dia5",
+      "dia6",
+      "dia7",
+      "arco"
+     ],
+     "pick": "$pb",
+     "tests": "$db",
+     "lock": true,
+     "lead": [],
+     "line": "c70_b_$db_$cb",
+     "right": [
+      {
+       "calc": "xd",
+       "cond": "x=dia1",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia2",
+       "then": "2",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia3",
+       "then": "3",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia4",
+       "then": "4",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia5",
+       "then": "5",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia6",
+       "then": "6",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia7",
+       "then": "7",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=arco",
+       "then": "arco",
+       "else": "$xd"
+      },
+      {
+       "calc": "pl",
+       "cond": "ok",
+       "then": "$xd",
+       "else": "$db"
+      },
+      {
+       "act": "cuelga",
+       "carta": "$cb",
+       "dia": "$pl",
+       "quien": "coqui"
+      },
+      {
+       "if": "db=arco",
+       "then": [
+        {
+         "if": "pl=arco",
+         "then": [],
+         "else": [
+          {
+           "act": "cuelga",
+           "carta": "$cb",
+           "dia": "arco",
+           "quien": "coqui"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "calc": "xd",
+       "cond": "x=dia1",
+       "then": "1",
+       "else": "0"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia2",
+       "then": "2",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia3",
+       "then": "3",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia4",
+       "then": "4",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia5",
+       "then": "5",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia6",
+       "then": "6",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=dia7",
+       "then": "7",
+       "else": "$xd"
+      },
+      {
+       "calc": "xd",
+       "cond": "x=arco",
+       "then": "arco",
+       "else": "$xd"
+      },
+      {
+       "act": "cuelga",
+       "carta": "$cb",
+       "dia": "$xd",
+       "quien": "coqui"
+      },
+      "c70_no_$db_$cb",
+      {
+       "act": "canelo70"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "lazos",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "lazos",
+         "n": 1
+        }
+       ]
+      },
+      "c70_ca_canelo",
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "set": {
+    "hora": "manana"
+   }
+  },
+  {
+   "act": "luce",
+   "dia": "6"
+  },
+  "c70_l_vamos",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final70",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final70",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final70",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c70_ca_vienes",
+  "cq_si",
+  "c70_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c70_vienen",
+  "c70_sa_viernes",
+  "c70_ca_clases",
+  "c70_donde_viernes",
+  "c70_sa_despues",
+  "c70_l_sabado",
+  "c70_donde_sabado",
+  "c70_donde_domingo",
+  "c70_sa_finde",
+  "c70_ca_gusta",
+  "c70_l_ati",
+  "c70_cq_tambien",
+  "c70_sa_musica",
+  "c70_l_musica",
+  "c70_donde_musica",
+  "c70_sa_piraguas",
+  "c70_donde_piraguas",
+  "c70_l_chiringa",
+  "c70_ca_canelo",
+  "c70_a_7_flores",
+  "c70_b_arco_pollo",
+  "c70_l_vamos",
+  "c70_ca_vienes",
+  "cq_si",
+  "c70_fin"
+ ]
+}

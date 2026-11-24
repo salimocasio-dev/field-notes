@@ -67469,4 +67469,3754 @@ const Map<String, String> sheetTexts = {
  }
 }
 ''',
+  'quiosco': r'''{
+ "scene": "quiosco",
+ "made": "node docs/proyecto/pixel/quiosco-sheet-make.js, from quiosco-set.html (window.QUIOSCO.E) and the design of El quiosco (the orchestrator's p6-spec, section quiosco). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": 14
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 122. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is turned 45 degrees: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera); the set's PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 122 + 13 v - 22.5 z. The front counter runs across the picture at v -0.5 to 0 (the vendedor stands behind it, in the booth); the two wings come towards the camera at u -1.75 and 1.75",
+  "spot": "a spot is a world point of the feet (z 0: the ground; z 0.68: a stool's seat; 0.42: a chair's; 0.72: the table's top; 1.05: the counter's and the wings' top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up, 41 for a child; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a child or a grown-up sitting (mkPersona with sent = 1; the stool, the chair): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 7 a child: 33; t 11 a grown-up: 41) on (sx, sy), the spot being the seat's top. The sitting drawing is the front view: whoever sits on a stool faces right (stools 1 and 2) or left (3 and 4) in the game; the sheet says it (spots.*.face), the stand-in does not turn. A small thing: its bottom middle on the point",
+  "view": "the view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = the window's left column. Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "box": "a person's box is its width (the frog 32, a grown-up 24, a child 24, the dog 28) with the feet's spot in the middle; the rows come from the drawn sprite"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["mediodia", "tarde"],
+    "note": "66 mediodia (the script: \"Es mediodía\"), 67 tarde (\"an afternoon with no work\"), 68 tarde (\"Start: afternoon\")"
+   },
+   "fiesta": {
+    "values": [0, 1],
+    "note": "the paper chains on the roof's edge and from the posts (story 68)"
+   }
+  },
+  "key": "hora + fiesta, e.g. \"tarde-1\"",
+  "baked": ["?hora=mediodia&fiesta=0", "?hora=mediodia&fiesta=1", "?hora=tarde&fiesta=0", "?hora=tarde&fiesta=1"],
+  "used": {
+   "66": "mediodia-0",
+   "67": "tarde-0",
+   "68": "tarde-1"
+  }
+ },
+ "things": {
+  "quiosco": {
+   "set": true,
+   "uv": [-2.1, -1.5, 0, 2.1, 0.22, 4.53],
+   "world": [-2.5456, -2.5456, 0, 1.6405, 1.6405, 4.53],
+   "box": [65, 0, 110, 125],
+   "what": "the booth: its back wall, posts and roof (the roof's edge, its slope, the ball); the counter and the stools are their own things. A poke"
+  },
+  "letrero": {
+   "set": true,
+   "uv": [-0.62, 0.25, 3.31, 0.62, 0.25, 4.27],
+   "world": [-0.2616, -0.2616, 3.31, 0.6152, 0.6152, 4.27],
+   "box": [109, 29, 22, 22],
+   "disc": {
+    "cx": 120,
+    "cy": 39.91,
+    "r": 10.5
+   },
+   "what": "the cup sign on the roof's front: a round board of 10.5 px radius on the wall at v 0.25; box = the disc's square, world = the wall it is drawn on. A poke"
+  },
+  "barra": {
+   "set": true,
+   "uv": [-2, -0.5, 0, 2, 1.65, 1.05],
+   "world": [-1.7678, -1.7678, 0, 2.5809, 2.5809, 1.05],
+   "box": [68, 91, 104, 53],
+   "what": "the counter: the front counter (v -0.5 to 0) and the two wings (to v 1.65), height 1.05. A poke"
+  },
+  "taburetes": {
+   "set": true,
+   "uv": [-3.15, -0.05, 0, 3.15, 1.65, 0.68],
+   "world": [-2.2627, -2.2627, 0, 3.3941, 3.3941, 0.68],
+   "box": [38, 106, 164, 38],
+   "what": "the four stools (seat top z 0.68): the box of all four; each stool's own box is in `each`. A poke",
+   "each": [
+    [38, 122, 11, 22],
+    [47, 106, 11, 21],
+    [182, 106, 11, 21],
+    [191, 122, 11, 22]
+   ]
+  },
+  "mesa": {
+   "set": true,
+   "uv": [-3.47, 3.19, 0, -2.03, 4.42, 0.95],
+   "world": [-0.198, 3.6911, 0, 1.69, 5.5791, 0.95],
+   "box": [29, 142, 39, 38],
+   "what": "the round table (top z 0.72, radius .52) and its two chairs (seats z 0.42, backs to .95). A poke"
+  },
+  "caja": "sprite",
+  "quesitos": "sprite",
+  "torre": "sprite",
+  "limbers": "sprite",
+  "vela_a": "sprite",
+  "vela_b": "sprite",
+  "vela_c": "sprite",
+  "vendedor": "sprite",
+  "maestra": "sprite",
+  "doctor": "sprite",
+  "cocinero": "sprite",
+  "policia": "sprite",
+  "senor": "sprite",
+  "senora": "sprite",
+  "hombre": "sprite",
+  "mujer": "sprite",
+  "joven": "sprite",
+  "la_joven": "sprite",
+  "nino": "sprite",
+  "nina": "sprite",
+  "beto": "sprite",
+  "ana": "sprite",
+  "carmen": "sprite",
+  "luis": "sprite",
+  "abuela": "sprite",
+  "mama_ana": "sprite",
+  "coqui": "sprite"
+ },
+ "standins": {
+  "quesitos": {
+   "at": "barra_izq",
+   "sprite": "cupula",
+   "size": [20, 18],
+   "box": [79, 78, 20, 18],
+   "what": "the glass dome with its three quesitos, a 20 x 18 stand-in: its bottom middle on barra_izq (the spec gives no size)"
+  },
+  "torre": {
+   "at": "barra_izq",
+   "sprite": "torre",
+   "size": [20, 28],
+   "box": [79, 68, 20, 28],
+   "what": "the cake stand with Beto's tower of three bizcochos and the candle of its 5, a stand-in drawn on a 22 x 28 canvas (inked 20 x 28, see size): its bottom middle on barra_izq (the spec gives no size)"
+  },
+  "caja": {
+   "at": "barra_fin",
+   "sprite": "caja",
+   "size": [16, 12],
+   "box": [67, 105, 16, 12],
+   "what": "the box with its lid, a 16 x 12 stand-in: its bottom middle on barra_fin (the spec gives no size)"
+  },
+  "vela_a": {
+   "at": "vela_a",
+   "sprite": "vela_a",
+   "size": [8, 12],
+   "box": [107, 84, 8, 12],
+   "what": "a number candle, an 8 x 12 stand-in (the spec's size): its bottom middle on the spot"
+  },
+  "vela_b": {
+   "at": "vela_b",
+   "sprite": "vela_b",
+   "size": [8, 12],
+   "box": [115, 84, 8, 12],
+   "what": "a number candle, an 8 x 12 stand-in (the spec's size): its bottom middle on the spot"
+  },
+  "vela_c": {
+   "at": "vela_c",
+   "sprite": "vela_c",
+   "size": [8, 12],
+   "box": [123, 84, 8, 12],
+   "what": "a number candle, an 8 x 12 stand-in (the spec's size): its bottom middle on the spot"
+  },
+  "limbers": {
+   "at": "limbers",
+   "sprite": "limber_rojo + limber_amarillo + limber_blanco",
+   "size": [6, 15],
+   "box": [163, 103, 6, 15],
+   "cups": [
+    [163, 111, 6, 7],
+    [163, 107, 6, 7],
+    [163, 103, 6, 7]
+   ],
+   "what": "three 6 x 7 cups (red, yellow, white) in a row along the right wing, .3 apart in v running back from the spot: the first on the spot, its bottom middle on it"
+  },
+  "bandeja_rana": {
+   "sprite": "bandejaRana",
+   "size": [22, 10],
+   "what": "story 66 game: the frog's tray (with a cup), a 22 x 10 stand-in drawn on his head, its bottom edge on the row of his top (the spec says only \"with a tray\")"
+  },
+  "cosa_cabeza": {
+   "sprite": "cosa",
+   "size": [12, 12],
+   "what": "story 67 game: the thing over the frog's head, a 12 px square (the spec's size): its bottom edge on the row of his top"
+  },
+  "bandeja_velas": {
+   "sprite": "bandeja",
+   "size": [28, 4],
+   "what": "story 68 game: the tray the candles stand on, a 28 x 4 plate under vela_a to vela_c (not a thing of the sheet: it only keeps the candles from floating)"
+  }
+ },
+ "spots": {
+  "taburete1": {
+   "world": [-1.0607, 3.1113, 0.68],
+   "uv": [-2.95, 1.45, 0.68],
+   "screen": [43, 126],
+   "depth": 1.5957,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "whoever sits on the first stool (the far left): on its seat, z 0.68; faces right",
+   "sprite": "doctor.S",
+   "who": "adulto",
+   "on": "stool",
+   "face": "right"
+  },
+  "taburete2": {
+   "world": [-1.7324, 1.9445, 0.68],
+   "uv": [-2.6, 0.15, 0.68],
+   "screen": [52, 109],
+   "depth": 0.4699,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the second stool (left, beside the front counter): faces right",
+   "sprite": "doctor.S",
+   "who": "adulto",
+   "on": "stool",
+   "face": "right"
+  },
+  "taburete3": {
+   "world": [1.9445, -1.7324, 0.68],
+   "uv": [2.6, 0.15, 0.68],
+   "screen": [188, 109],
+   "depth": 0.4699,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the third stool (right, beside the front counter): faces left",
+   "sprite": "doctor.S",
+   "who": "adulto",
+   "on": "stool",
+   "face": "left"
+  },
+  "taburete4": {
+   "world": [3.1113, -1.0607, 0.68],
+   "uv": [2.95, 1.45, 0.68],
+   "screen": [197, 126],
+   "depth": 1.5957,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the fourth stool (the far right): faces left",
+   "sprite": "doctor.S",
+   "who": "adulto",
+   "on": "stool",
+   "face": "left"
+  },
+  "barra1": {
+   "world": [-0.2828, 2.192, 1.05],
+   "uv": [-1.75, 1.35, 1.05],
+   "screen": [75, 116],
+   "depth": 1.6941,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog on the left wing's top, near the camera, beside stool 1: on the wing, z 1.05",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "wing"
+  },
+  "barra2": {
+   "world": [-1.0253, 1.1667, 1.05],
+   "uv": [-1.55, 0.1, 1.05],
+   "screen": [80, 100],
+   "depth": 0.6116,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog on the left wing's top, at its far end, beside stool 2 (u -1.55: the orchestrator moved it .2 in from the wing's middle, so his box clears the sitter of stool 2)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "wing"
+  },
+  "barra3": {
+   "world": [1.1667, -1.0253, 1.05],
+   "uv": [1.55, 0.1, 1.05],
+   "screen": [160, 100],
+   "depth": 0.6116,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog on the right wing's top, at its far end, beside stool 3 (u 1.55: .2 in from the wing's middle)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "wing"
+  },
+  "barra4": {
+   "world": [2.192, -0.2828, 1.05],
+   "uv": [1.75, 1.35, 1.05],
+   "screen": [166, 116],
+   "depth": 1.6941,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog on the right wing's top, near the camera, beside stool 4",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "wing"
+  },
+  "barra_c": {
+   "world": [-0.1414, -0.1414, 1.05],
+   "uv": [0, -0.2, 1.05],
+   "screen": [120, 96],
+   "depth": 0.3518,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog in the middle of the front counter's top (z 1.05)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "counter"
+  },
+  "barra_izq": {
+   "world": [-0.9899, 0.7071, 1.05],
+   "uv": [-1.2, -0.2, 1.05],
+   "screen": [89, 96],
+   "depth": 0.3518,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the counter's left end: the glass dome (66) and the cake stand (68): two sprites at one spot",
+   "on": "counter",
+   "standin": ["cupula", "torre"],
+   "standinBox": {
+    "w": 20,
+    "h": 18
+   }
+  },
+  "barra_fin": {
+   "world": [-0.2121, 2.2627, 1.05],
+   "uv": [-1.75, 1.45, 1.05],
+   "screen": [75, 117],
+   "depth": 1.7807,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the box with its lid (67), on the near end of the LEFT wing's top",
+   "on": "wing",
+   "standin": ["caja"],
+   "standinBox": {
+    "w": 16,
+    "h": 12
+   }
+  },
+  "barra_caja": {
+   "world": [-0.8839, 1.591, 1.05],
+   "uv": [-1.75, 0.5, 1.05],
+   "screen": [75, 105],
+   "depth": 0.958,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog beside the box on the left wing's top (67): .7 back along the wing from barra_fin",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "wing"
+  },
+  "barra_e": {
+   "world": [0.5657, -0.8485, 1.05],
+   "uv": [1, -0.2, 1.05],
+   "screen": [146, 96],
+   "depth": 0.3518,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog at the counter's right end in story 68",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "counter"
+  },
+  "vela_a": {
+   "world": [-0.3536, 0.1414, 1.05],
+   "uv": [-0.35, -0.15, 1.05],
+   "screen": [111, 96],
+   "depth": 0.3951,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "a number candle on the tray (68): the first of three, 8 x 12 stand-in",
+   "on": "counter",
+   "standin": ["vela_a"],
+   "standinBox": {
+    "w": 8,
+    "h": 12
+   }
+  },
+  "vela_b": {
+   "world": [-0.1414, -0.0707, 1.05],
+   "uv": [-0.05, -0.15, 1.05],
+   "screen": [119, 96],
+   "depth": 0.3951,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "a number candle on the tray: the second",
+   "on": "counter",
+   "standin": ["vela_b"],
+   "standinBox": {
+    "w": 8,
+    "h": 12
+   }
+  },
+  "vela_c": {
+   "world": [0.0707, -0.2828, 1.05],
+   "uv": [0.25, -0.15, 1.05],
+   "screen": [127, 96],
+   "depth": 0.3951,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "a number candle on the tray: the third",
+   "on": "counter",
+   "standin": ["vela_c"],
+   "standinBox": {
+    "w": 8,
+    "h": 12
+   }
+  },
+  "limbers": {
+   "world": [2.2981, -0.1768, 1.05],
+   "uv": [1.75, 1.5, 1.05],
+   "screen": [166, 118],
+   "depth": 1.824,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the three limbers in their cups (67), a row along the right wing's top: the spot is the row's near end (the front cup); the other two stand .3 and .6 back along the wing",
+   "on": "wing",
+   "standin": ["limber_rojo", "limber_amarillo", "limber_blanco"],
+   "standinBox": {
+    "w": 6,
+    "h": 7
+   }
+  },
+  "detras": {
+   "world": [-0.5515, -0.5515, 0],
+   "uv": [0, -0.78, 0],
+   "screen": [120, 112],
+   "depth": -0.6755,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the vendedor behind his counter, in the booth",
+   "sprite": "vendedor",
+   "who": "adulto",
+   "on": "ground"
+  },
+  "cola1": {
+   "world": [-0.0212, 1.0819, 0],
+   "uv": [-0.78, 0.75, 0],
+   "screen": [100, 132],
+   "depth": 0.6495,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the first of the two at the counter (a round's two), standing between the wings, left",
+   "sprite": "senora",
+   "who": "adulto",
+   "on": "ground"
+  },
+  "cola2": {
+   "world": [0.9899, 0.0707, 0],
+   "uv": [0.65, 0.75, 0],
+   "screen": [137, 132],
+   "depth": 0.6495,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the other of the round's two, between the wings, right",
+   "sprite": "senora",
+   "who": "adulto",
+   "on": "ground"
+  },
+  "cola3": {
+   "world": [1.096, 2.0153, 0],
+   "uv": [-0.65, 2.2, 0],
+   "screen": [103, 151],
+   "depth": 1.9053,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the next one, behind cola1 (nearer the camera)",
+   "sprite": "senora",
+   "who": "adulto",
+   "on": "ground"
+  },
+  "cola4": {
+   "world": [2.0153, 1.096, 0],
+   "uv": [0.65, 2.2, 0],
+   "screen": [137, 151],
+   "depth": 1.9053,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the next one, behind cola2",
+   "sprite": "senora",
+   "who": "adulto",
+   "on": "ground"
+  },
+  "mesa_a": {
+   "world": [0.1061, 4.7023, 0.42],
+   "uv": [-3.25, 3.4, 0.42],
+   "screen": [36, 157],
+   "depth": 3.1545,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the left chair of the round table (abuela's place), on its seat, z 0.42; the sitter faces the camera, the table in front of him",
+   "sprite": "doctor.S",
+   "who": "adulto",
+   "on": "chair",
+   "face": "front"
+  },
+  "mesa_b": {
+   "world": [0.8132, 3.9952, 0.42],
+   "uv": [-2.25, 3.4, 0.42],
+   "screen": [62, 157],
+   "depth": 3.1545,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the right chair of the round table, on its seat, z 0.42",
+   "sprite": "doctor.S",
+   "who": "adulto",
+   "on": "chair",
+   "face": "front"
+  },
+  "mesa": {
+   "world": [0.8132, 4.7023, 0.72],
+   "uv": [-2.75, 3.9, 0.72],
+   "screen": [49, 156],
+   "depth": 3.7375,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the frog on the table's top, z 0.72",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "table"
+  },
+  "pie1": {
+   "world": [1.4849, 3.182, 0],
+   "uv": [-1.2, 3.3, 0],
+   "screen": [89, 165],
+   "depth": 2.8579,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "standing beside the table, right of it (Luis)",
+   "sprite": "luis",
+   "who": "nino",
+   "on": "ground"
+  },
+  "pie2": {
+   "world": [2.2627, 3.9598, 0],
+   "uv": [-1.2, 4.4, 0],
+   "screen": [89, 179],
+   "depth": 3.8105,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "standing beside the table, in front of pie1 (Carmen)",
+   "sprite": "carmen",
+   "who": "nino",
+   "on": "ground"
+  },
+  "entrada": {
+   "world": [5.1619, -1.4849, 0],
+   "uv": [4.7, 2.6, 0],
+   "screen": [242, 156],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "entry",
+   "view": "wide",
+   "what": "where people come in: from the right, just outside the picture on purpose (the picture ends at column 240)",
+   "sprite": "senor",
+   "who": "adulto",
+   "on": "ground"
+  }
+ },
+ "groups": {
+  "taburetes": ["taburete1", "taburete2", "taburete3", "taburete4"],
+  "barras": ["barra1", "barra2", "barra3", "barra4"],
+  "velas": ["vela_a", "vela_b", "vela_c"],
+  "cola": ["cola1", "cola2", "cola3", "cola4"],
+  "mesa": ["mesa_a", "mesa_b", "mesa", "pie1", "pie2"]
+ },
+ "stands_in_for": {
+  "vendedor": "a grown-up (the señor) in an apron and a 4-row paper hat",
+  "maestra": "a grown-up (the señora)",
+  "doctor": "a grown-up (the hombre) in white",
+  "cocinero": "a grown-up (the hombre) in white",
+  "policia": "a grown-up (the hombre) in blue",
+  "joven": "the joven of El parque (the young man)",
+  "la_joven": "a grown-up (the mujer)",
+  "mama_ana": "mamá (a grown-up)",
+  "beto": "a child (Luis's drawing, other colours)",
+  "ana": "a child (Carmen's drawing, other colours)",
+  "nino": "a child (Luis's drawing, other colours)",
+  "nina": "a child (Carmen's drawing, other colours)",
+  "abuela": "abuela sitting (mkAbuelaS)",
+  "luis": "Luis",
+  "carmen": "Carmen",
+  "senor": "the señor",
+  "senora": "the señora",
+  "hombre": "the hombre",
+  "mujer": "the mujer"
+ },
+ "notes": [
+  "every number of a spot is the orchestrator's (the quiosco section of p6-spec), given in (u, v, z); the stools, the wings, the table come from the set's own constants (QUIOSCO.E: STOOLS, WING, TABLE, CH), the rest are the spec's numbers",
+  "the sheet's spots are generic: a stool or a chair holds whoever the story puts there (a grown-up or a child: the same 24 px box); `who` is the default box kind",
+  "the view is one: wide (x0 22); the picture's right edge is at column 240 and entrada (u 4.7) is at column 242, outside on purpose",
+  "the limbers row runs back along the right wing from the spot (the orchestrator: that reading is right)",
+  "second pass of the spec (the orchestrator): barra2 and barra3 at u -1.55 and 1.55; barra_e at u 1.0 and the candles at u -.35, -.05, .25; the box at barra_fin on the left wing's near end with the frog beside it at barra_caja; cola1 to cola4 at u -.65 and .65; the roof is higher (ROOF 3.25)",
+  "the tray the frog carries in the game of 66 is drawn on his head, like the thing of 67 (the orchestrator: as drawn)",
+  "the vendedor stand-in wears a paper hat 4 rows above the plain grown-up's top, so his head check (the top 14 rows) covers the hat"
+ ],
+ "views": {
+  "wide": {
+   "world": [-0.7615, -0.7615, 0],
+   "uv": [0, -1.0769, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [66, 67, 68],
+   "holds": ["taburete1", "taburete2", "taburete3", "taburete4", "barra1", "barra2", "barra3", "barra4", "barra_c", "barra_izq", "barra_fin", "barra_caja", "barra_e", "vela_a", "vela_b", "vela_c", "limbers", "detras", "cola1", "cola2", "cola3", "cola4", "mesa_a", "mesa_b", "mesa", "pie1", "pie2"],
+   "extent": [24, 208],
+   "holdsAll": [13, 24],
+   "what": "the one view of stories 66, 67 and 68: the 196 x 216 window over the 240 x 216 picture. The spec: every spot of every moment inside it with its sprite whole (entrada is outside on purpose). x0 22 is the orchestrator's decision (the picture's own centre); it holds them all (the spots span columns 24 to 208; every x0 from 13 to 24 holds them; the one nearest the middle of the spots' extent would be 18). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the roof, its edge and the chains, the counter and the wings, the posts, the table, the trees hide whoever is behind them.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El mostrador's and El cruce's sheets: the upright plane through the feet",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "vendedor": 0.35,
+   "maestra": 0.35,
+   "doctor": 0.35,
+   "cocinero": 0.35,
+   "policia": 0.35,
+   "senor": 0.35,
+   "senora": 0.35,
+   "hombre": 0.35,
+   "mujer": 0.35,
+   "joven": 0.35,
+   "la_joven": 0.35,
+   "mama_ana": 0.35,
+   "abuela": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "beto": 0.28,
+   "ana": 0.28,
+   "nino": 0.28,
+   "nina": 0.28
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El mostrador's and El cruce's (frog .45, grown-ups .35, children .28) (open point)",
+  "none": ["taburete1", "taburete2", "taburete3", "taburete4", "barra1", "barra2", "barra3", "barra4", "barra_c", "barra_izq", "barra_fin", "barra_caja", "barra_e", "vela_a", "vela_b", "vela_c", "limbers", "mesa_a", "mesa_b", "mesa"],
+  "onSeat": "whoever sits on a stool or a chair, stands on the table, the counter or a wing (z above 0) casts none: the seat is not ground (a shadow cast at the pavement under it would show in front of it)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "spec-projection",
+    "ok": true,
+    "lines": [
+     "spec-projection: OX 120, OY 122 read from the set; every spot's screen point is the spec's sx = OX + 26 u, sy = OY + 13 v - 22.5 z within half a pixel (the engine's cos 30 * 26 is 22.52), and PZ.xy is the make's"
+    ]
+   },
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 27 spots span columns 24 to 208 (185 of the window's 196); x0 that hold them all: 13 to 24; entrada is at column 242 (the picture ends at 240): outside on purpose"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 27 spots (points and sprites; entrada apart) inside the 240 x 216 picture and the window (x0 22), their sprites whole",
+     "       info, not a check: entrada 242,156 is 3 px right of the picture's last column, outside on purpose (where people come in: the sprite walks in from the picture's edge)"
+    ],
+    "cut": []
+   },
+   {
+    "name": "moments-in-view",
+    "ok": true,
+    "lines": [
+     "moments-in-view: every sprite of the six moments (m1 7 sprites, m2 10 sprites, m3 8 sprites, m4 14 sprites, m5 9 sprites, m6 15 sprites) is whole inside the picture and the window [22, 218)"
+    ]
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 20 spots above the ground (taburete1, taburete2, taburete3, taburete4, barra1, barra2, barra3, barra4, barra_c, barra_izq, barra_fin, barra_caja, barra_e, vela_a, vela_b, vela_c, limbers, mesa_a, mesa_b, mesa) are on a surface the set draws: the stools' seat z 0.68, the chairs' 0.42, the table's 0.72, the counter's and the wings' 1.05",
+     "       taburete1 z 0.68 (stool): 24 of 25 grid points on the surface, 1 off it; its own pixel: quiosco +0.03",
+     "       taburete2 z 0.68 (stool): 23 of 25 grid points on the surface, 2 off it; its own pixel: quiosco +0.02",
+     "       taburete3 z 0.68 (stool): 23 of 25 grid points on the surface, 2 off it; its own pixel: quiosco +0.02",
+     "       taburete4 z 0.68 (stool): 24 of 25 grid points on the surface, 1 off it; its own pixel: quiosco +0.03",
+     "       barra1 z 1.05 (wing): 25 of 25 grid points on the surface; its own pixel: quiosco +0",
+     "       barra2 z 1.05 (wing): 19 of 25 grid points on the surface, 6 off it; its own pixel: quiosco +0.02",
+     "       barra3 z 1.05 (wing): 19 of 25 grid points on the surface, 6 off it; its own pixel: quiosco +0.02",
+     "       barra4 z 1.05 (wing): 25 of 25 grid points on the surface; its own pixel: quiosco +0",
+     "       barra_c z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
+     "       barra_izq z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
+     "       barra_fin z 1.05 (wing): 25 of 25 grid points on the surface; its own pixel: quiosco +0.05",
+     "       barra_caja z 1.05 (wing): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
+     "       barra_e z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
+     "       vela_a z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.03",
+     "       vela_b z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.03",
+     "       vela_c z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.03",
+     "       limbers z 1.05 (wing): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
+     "       mesa_a z 0.42 (chair): 10 of 25 grid points on the surface, 15 behind a nearer part; its own pixel: mesa +0.62",
+     "       mesa_b z 0.42 (chair): 10 of 25 grid points on the surface, 15 behind a nearer part; its own pixel: mesa +0.62",
+     "       mesa z 0.72 (table): 25 of 25 grid points on the surface; its own pixel: mesa +0.03",
+     "       info, not a check: ground spots whose feet pixel the set draws nearer than the feet (the person stands behind it: the depth rule hides what it covers): detras 120,112 (quiosco 0.92 nearer)"
+    ]
+   },
+   {
+    "name": "things-in-set",
+    "ok": true,
+    "lines": [
+     "things-in-set: the boxes of the set's things (quiosco [65,0,110,125], letrero [109,29,22,22], barra [68,91,104,53], taburetes [38,106,164,38], mesa [29,142,39,38]) hold every pixel the set drew by part and lie inside the picture and the window",
+     "       part quiosco: 10599 px, columns 38 to 201, rows 11 to 143; 0 outside the box(es) (1 px slack)",
+     "       part mesa: 875 px, columns 30 to 66, rows 142 to 173; 0 outside the box(es) (1 px slack)"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 173 pairs in the 6 moments of the preview (m1 (detras, barra_c, taburete1, taburete2, mesa_a, mesa_b); m2 (detras, taburete1, taburete2, taburete3, taburete4, barra3, mesa_a, mesa_b); m3 (detras, barra_caja, taburete4, taburete3, mesa_a, mesa_b, pie1); m4 (detras, cola1, cola2, cola3, cola4, barra_caja, mesa_a, mesa_b, pie1); m5 (detras, taburete1, taburete2, taburete3, barra_e, pie1, mesa_a, mesa_b); m6 (detras, taburete1, taburete2, taburete3, barra_e, pie1, mesa_a, mesa_b, cola1, cola3)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 vendedor ~ coqui (0 across, 16 down), m1 maestra ~ doctor (9 across, 17 down), m1 maestra ~ luis (7 across, 31 down), m1 maestra ~ carmen (19 across, 31 down), m1 doctor ~ luis (16 across, 48 down), m1 doctor ~ carmen (10 across, 48 down), m2 maestra ~ doctor (9 across, 17 down), m2 maestra ~ luis (7 across, 31 down), m2 maestra ~ carmen (19 across, 31 down), m2 doctor ~ luis (16 across, 48 down), m2 doctor ~ carmen (10 across, 48 down), m2 cocinero ~ policia (9 across, 17 down), m3 coqui ~ carmen (13 across, 52 down), m3 coqui ~ luis (14 across, 60 down), m3 joven ~ senor (9 across, 17 down), m4 vendedor ~ senora (20 across, 20 down), m4 vendedor ~ hombre (17 across, 20 down), m4 vendedor ~ mujer (17 across, 39 down), m4 vendedor ~ laJoven (17 across, 39 down), m4 senora ~ mujer (3 across, 19 down), m4 senora ~ coqui (25 across, 27 down), m4 senora ~ luis (11 across, 33 down), m4 hombre ~ laJoven (0 across, 19 down), m4 mujer ~ luis (14 across, 14 down), m4 coqui ~ carmen (13 across, 52 down), m4 coqui ~ luis (14 across, 60 down), m5 vendedor ~ coqui (26 across, 16 down), m5 ana ~ beto (9 across, 17 down), m5 ana ~ abuela (7 across, 31 down), m5 ana ~ mamaAna (19 across, 31 down), m5 beto ~ abuela (16 across, 48 down), m5 beto ~ mamaAna (10 across, 48 down), m6 vendedor ~ coqui (26 across, 16 down), m6 vendedor ~ nino (20 across, 20 down), m6 vendedor ~ nina (17 across, 39 down), m6 ana ~ beto (9 across, 17 down), m6 ana ~ abuela (7 across, 31 down), m6 ana ~ mamaAna (19 across, 31 down), m6 beto ~ abuela (16 across, 48 down), m6 beto ~ mamaAna (10 across, 48 down), m6 luis ~ nino (11 across, 33 down), m6 luis ~ nina (14 across, 14 down), m6 nino ~ nina (3 across, 19 down)",
+     "       closest pair in each moment (px across / px down): m1 vendedor ~ coqui 0/16 (needs 28 across or 12 down); m2 maestra ~ luis 7/31 (needs 24 across or 12 down); m3 coqui ~ carmen 13/52 (needs 28 across or 12 down); m4 hombre ~ laJoven 0/19 (needs 24 across or 12 down); m5 ana ~ abuela 7/31 (needs 24 across or 12 down); m6 nino ~ nina 3/19 (needs 24 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "vendedor@detras",
+      "b": "coqui@barra_c",
+      "across": 0,
+      "down": 16,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "vendedor@detras",
+      "b": "maestra@taburete1",
+      "across": 77,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "vendedor@detras",
+      "b": "doctor@taburete2",
+      "across": 68,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "vendedor@detras",
+      "b": "luis@mesa_a",
+      "across": 84,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "vendedor@detras",
+      "b": "carmen@mesa_b",
+      "across": 58,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "coqui@barra_c",
+      "b": "maestra@taburete1",
+      "across": 77,
+      "down": 30,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "coqui@barra_c",
+      "b": "doctor@taburete2",
+      "across": 68,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "coqui@barra_c",
+      "b": "luis@mesa_a",
+      "across": 84,
+      "down": 61,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "coqui@barra_c",
+      "b": "carmen@mesa_b",
+      "across": 58,
+      "down": 61,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "maestra@taburete1",
+      "b": "doctor@taburete2",
+      "across": 9,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "maestra@taburete1",
+      "b": "luis@mesa_a",
+      "across": 7,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "maestra@taburete1",
+      "b": "carmen@mesa_b",
+      "across": 19,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "doctor@taburete2",
+      "b": "luis@mesa_a",
+      "across": 16,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "doctor@taburete2",
+      "b": "carmen@mesa_b",
+      "across": 10,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "luis@mesa_a",
+      "b": "carmen@mesa_b",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "vendedor@detras",
+      "b": "maestra@taburete1",
+      "across": 77,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "vendedor@detras",
+      "b": "doctor@taburete2",
+      "across": 68,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "vendedor@detras",
+      "b": "cocinero@taburete3",
+      "across": 68,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "vendedor@detras",
+      "b": "policia@taburete4",
+      "across": 77,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "vendedor@detras",
+      "b": "coqui@barra3",
+      "across": 40,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "vendedor@detras",
+      "b": "luis@mesa_a",
+      "across": 84,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "vendedor@detras",
+      "b": "carmen@mesa_b",
+      "across": 58,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "maestra@taburete1",
+      "b": "doctor@taburete2",
+      "across": 9,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "maestra@taburete1",
+      "b": "cocinero@taburete3",
+      "across": 145,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "maestra@taburete1",
+      "b": "policia@taburete4",
+      "across": 154,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "maestra@taburete1",
+      "b": "coqui@barra3",
+      "across": 117,
+      "down": 26,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "maestra@taburete1",
+      "b": "luis@mesa_a",
+      "across": 7,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "maestra@taburete1",
+      "b": "carmen@mesa_b",
+      "across": 19,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "doctor@taburete2",
+      "b": "cocinero@taburete3",
+      "across": 136,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "doctor@taburete2",
+      "b": "policia@taburete4",
+      "across": 145,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "doctor@taburete2",
+      "b": "coqui@barra3",
+      "across": 108,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "doctor@taburete2",
+      "b": "luis@mesa_a",
+      "across": 16,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "doctor@taburete2",
+      "b": "carmen@mesa_b",
+      "across": 10,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cocinero@taburete3",
+      "b": "policia@taburete4",
+      "across": 9,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cocinero@taburete3",
+      "b": "coqui@barra3",
+      "across": 28,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cocinero@taburete3",
+      "b": "luis@mesa_a",
+      "across": 152,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "cocinero@taburete3",
+      "b": "carmen@mesa_b",
+      "across": 126,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "policia@taburete4",
+      "b": "coqui@barra3",
+      "across": 37,
+      "down": 26,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "policia@taburete4",
+      "b": "luis@mesa_a",
+      "across": 161,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "policia@taburete4",
+      "b": "carmen@mesa_b",
+      "across": 135,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "coqui@barra3",
+      "b": "luis@mesa_a",
+      "across": 124,
+      "down": 57,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "coqui@barra3",
+      "b": "carmen@mesa_b",
+      "across": 98,
+      "down": 57,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "luis@mesa_a",
+      "b": "carmen@mesa_b",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "vendedor@detras",
+      "b": "coqui@barra_caja",
+      "across": 45,
+      "down": 7,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "vendedor@detras",
+      "b": "joven@taburete4",
+      "across": 77,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "vendedor@detras",
+      "b": "senor@taburete3",
+      "across": 68,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "vendedor@detras",
+      "b": "abuela@mesa_a",
+      "across": 84,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "vendedor@detras",
+      "b": "carmen@mesa_b",
+      "across": 58,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "vendedor@detras",
+      "b": "luis@pie1",
+      "across": 31,
+      "down": 53,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui@barra_caja",
+      "b": "joven@taburete4",
+      "across": 122,
+      "down": 21,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui@barra_caja",
+      "b": "senor@taburete3",
+      "across": 113,
+      "down": 4,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui@barra_caja",
+      "b": "abuela@mesa_a",
+      "across": 39,
+      "down": 52,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui@barra_caja",
+      "b": "carmen@mesa_b",
+      "across": 13,
+      "down": 52,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui@barra_caja",
+      "b": "luis@pie1",
+      "across": 14,
+      "down": 60,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "joven@taburete4",
+      "b": "senor@taburete3",
+      "across": 9,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "joven@taburete4",
+      "b": "abuela@mesa_a",
+      "across": 161,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "joven@taburete4",
+      "b": "carmen@mesa_b",
+      "across": 135,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "joven@taburete4",
+      "b": "luis@pie1",
+      "across": 108,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "senor@taburete3",
+      "b": "abuela@mesa_a",
+      "across": 152,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "senor@taburete3",
+      "b": "carmen@mesa_b",
+      "across": 126,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "senor@taburete3",
+      "b": "luis@pie1",
+      "across": 99,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela@mesa_a",
+      "b": "carmen@mesa_b",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela@mesa_a",
+      "b": "luis@pie1",
+      "across": 53,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "carmen@mesa_b",
+      "b": "luis@pie1",
+      "across": 27,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "vendedor@detras",
+      "b": "senora@cola1",
+      "across": 20,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "vendedor@detras",
+      "b": "hombre@cola2",
+      "across": 17,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "vendedor@detras",
+      "b": "mujer@cola3",
+      "across": 17,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "vendedor@detras",
+      "b": "laJoven@cola4",
+      "across": 17,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "vendedor@detras",
+      "b": "coqui@barra_caja",
+      "across": 45,
+      "down": 7,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "vendedor@detras",
+      "b": "abuela@mesa_a",
+      "across": 84,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "vendedor@detras",
+      "b": "carmen@mesa_b",
+      "across": 58,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "vendedor@detras",
+      "b": "luis@pie1",
+      "across": 31,
+      "down": 53,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora@cola1",
+      "b": "hombre@cola2",
+      "across": 37,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora@cola1",
+      "b": "mujer@cola3",
+      "across": 3,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora@cola1",
+      "b": "laJoven@cola4",
+      "across": 37,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora@cola1",
+      "b": "coqui@barra_caja",
+      "across": 25,
+      "down": 27,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora@cola1",
+      "b": "abuela@mesa_a",
+      "across": 64,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora@cola1",
+      "b": "carmen@mesa_b",
+      "across": 38,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "senora@cola1",
+      "b": "luis@pie1",
+      "across": 11,
+      "down": 33,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "hombre@cola2",
+      "b": "mujer@cola3",
+      "across": 34,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "hombre@cola2",
+      "b": "laJoven@cola4",
+      "across": 0,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "hombre@cola2",
+      "b": "coqui@barra_caja",
+      "across": 62,
+      "down": 27,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "hombre@cola2",
+      "b": "abuela@mesa_a",
+      "across": 101,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "hombre@cola2",
+      "b": "carmen@mesa_b",
+      "across": 75,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "hombre@cola2",
+      "b": "luis@pie1",
+      "across": 48,
+      "down": 33,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "mujer@cola3",
+      "b": "laJoven@cola4",
+      "across": 34,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "mujer@cola3",
+      "b": "coqui@barra_caja",
+      "across": 28,
+      "down": 46,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "mujer@cola3",
+      "b": "abuela@mesa_a",
+      "across": 67,
+      "down": 6,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "mujer@cola3",
+      "b": "carmen@mesa_b",
+      "across": 41,
+      "down": 6,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "mujer@cola3",
+      "b": "luis@pie1",
+      "across": 14,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "laJoven@cola4",
+      "b": "coqui@barra_caja",
+      "across": 62,
+      "down": 46,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "laJoven@cola4",
+      "b": "abuela@mesa_a",
+      "across": 101,
+      "down": 6,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "laJoven@cola4",
+      "b": "carmen@mesa_b",
+      "across": 75,
+      "down": 6,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "laJoven@cola4",
+      "b": "luis@pie1",
+      "across": 48,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "coqui@barra_caja",
+      "b": "abuela@mesa_a",
+      "across": 39,
+      "down": 52,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "coqui@barra_caja",
+      "b": "carmen@mesa_b",
+      "across": 13,
+      "down": 52,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "coqui@barra_caja",
+      "b": "luis@pie1",
+      "across": 14,
+      "down": 60,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "abuela@mesa_a",
+      "b": "carmen@mesa_b",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "abuela@mesa_a",
+      "b": "luis@pie1",
+      "across": 53,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "carmen@mesa_b",
+      "b": "luis@pie1",
+      "across": 27,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "vendedor@detras",
+      "b": "ana@taburete1",
+      "across": 77,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "vendedor@detras",
+      "b": "beto@taburete2",
+      "across": 68,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "vendedor@detras",
+      "b": "carmen@taburete3",
+      "across": 68,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "vendedor@detras",
+      "b": "coqui@barra_e",
+      "across": 26,
+      "down": 16,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "vendedor@detras",
+      "b": "luis@pie1",
+      "across": 31,
+      "down": 53,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "vendedor@detras",
+      "b": "abuela@mesa_a",
+      "across": 84,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "vendedor@detras",
+      "b": "mamaAna@mesa_b",
+      "across": 58,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ana@taburete1",
+      "b": "beto@taburete2",
+      "across": 9,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ana@taburete1",
+      "b": "carmen@taburete3",
+      "across": 145,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ana@taburete1",
+      "b": "coqui@barra_e",
+      "across": 103,
+      "down": 30,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ana@taburete1",
+      "b": "luis@pie1",
+      "across": 46,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ana@taburete1",
+      "b": "abuela@mesa_a",
+      "across": 7,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ana@taburete1",
+      "b": "mamaAna@mesa_b",
+      "across": 19,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "beto@taburete2",
+      "b": "carmen@taburete3",
+      "across": 136,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "beto@taburete2",
+      "b": "coqui@barra_e",
+      "across": 94,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "beto@taburete2",
+      "b": "luis@pie1",
+      "across": 37,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "beto@taburete2",
+      "b": "abuela@mesa_a",
+      "across": 16,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "beto@taburete2",
+      "b": "mamaAna@mesa_b",
+      "across": 10,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "carmen@taburete3",
+      "b": "coqui@barra_e",
+      "across": 42,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "carmen@taburete3",
+      "b": "luis@pie1",
+      "across": 99,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "carmen@taburete3",
+      "b": "abuela@mesa_a",
+      "across": 152,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "carmen@taburete3",
+      "b": "mamaAna@mesa_b",
+      "across": 126,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui@barra_e",
+      "b": "luis@pie1",
+      "across": 57,
+      "down": 69,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui@barra_e",
+      "b": "abuela@mesa_a",
+      "across": 110,
+      "down": 61,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui@barra_e",
+      "b": "mamaAna@mesa_b",
+      "across": 84,
+      "down": 61,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "luis@pie1",
+      "b": "abuela@mesa_a",
+      "across": 53,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "luis@pie1",
+      "b": "mamaAna@mesa_b",
+      "across": 27,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "abuela@mesa_a",
+      "b": "mamaAna@mesa_b",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "ana@taburete1",
+      "across": 77,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "beto@taburete2",
+      "across": 68,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "carmen@taburete3",
+      "across": 68,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "coqui@barra_e",
+      "across": 26,
+      "down": 16,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "luis@pie1",
+      "across": 31,
+      "down": 53,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "abuela@mesa_a",
+      "across": 84,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "mamaAna@mesa_b",
+      "across": 58,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "nino@cola1",
+      "across": 20,
+      "down": 20,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "vendedor@detras",
+      "b": "nina@cola3",
+      "across": 17,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "ana@taburete1",
+      "b": "beto@taburete2",
+      "across": 9,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "ana@taburete1",
+      "b": "carmen@taburete3",
+      "across": 145,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "ana@taburete1",
+      "b": "coqui@barra_e",
+      "across": 103,
+      "down": 30,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "ana@taburete1",
+      "b": "luis@pie1",
+      "across": 46,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "ana@taburete1",
+      "b": "abuela@mesa_a",
+      "across": 7,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "ana@taburete1",
+      "b": "mamaAna@mesa_b",
+      "across": 19,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "ana@taburete1",
+      "b": "nino@cola1",
+      "across": 57,
+      "down": 6,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "ana@taburete1",
+      "b": "nina@cola3",
+      "across": 60,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "beto@taburete2",
+      "b": "carmen@taburete3",
+      "across": 136,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "beto@taburete2",
+      "b": "coqui@barra_e",
+      "across": 94,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "beto@taburete2",
+      "b": "luis@pie1",
+      "across": 37,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "beto@taburete2",
+      "b": "abuela@mesa_a",
+      "across": 16,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "beto@taburete2",
+      "b": "mamaAna@mesa_b",
+      "across": 10,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "beto@taburete2",
+      "b": "nino@cola1",
+      "across": 48,
+      "down": 23,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "beto@taburete2",
+      "b": "nina@cola3",
+      "across": 51,
+      "down": 42,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "carmen@taburete3",
+      "b": "coqui@barra_e",
+      "across": 42,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "carmen@taburete3",
+      "b": "luis@pie1",
+      "across": 99,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "carmen@taburete3",
+      "b": "abuela@mesa_a",
+      "across": 152,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "carmen@taburete3",
+      "b": "mamaAna@mesa_b",
+      "across": 126,
+      "down": 48,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "carmen@taburete3",
+      "b": "nino@cola1",
+      "across": 88,
+      "down": 23,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "carmen@taburete3",
+      "b": "nina@cola3",
+      "across": 85,
+      "down": 42,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "coqui@barra_e",
+      "b": "luis@pie1",
+      "across": 57,
+      "down": 69,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "coqui@barra_e",
+      "b": "abuela@mesa_a",
+      "across": 110,
+      "down": 61,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "coqui@barra_e",
+      "b": "mamaAna@mesa_b",
+      "across": 84,
+      "down": 61,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "coqui@barra_e",
+      "b": "nino@cola1",
+      "across": 46,
+      "down": 36,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "coqui@barra_e",
+      "b": "nina@cola3",
+      "across": 43,
+      "down": 55,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "luis@pie1",
+      "b": "abuela@mesa_a",
+      "across": 53,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "luis@pie1",
+      "b": "mamaAna@mesa_b",
+      "across": 27,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "luis@pie1",
+      "b": "nino@cola1",
+      "across": 11,
+      "down": 33,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "luis@pie1",
+      "b": "nina@cola3",
+      "across": 14,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "abuela@mesa_a",
+      "b": "mamaAna@mesa_b",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "abuela@mesa_a",
+      "b": "nino@cola1",
+      "across": 64,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "abuela@mesa_a",
+      "b": "nina@cola3",
+      "across": 67,
+      "down": 6,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "mamaAna@mesa_b",
+      "b": "nino@cola1",
+      "across": 38,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "mamaAna@mesa_b",
+      "b": "nina@cola3",
+      "across": 41,
+      "down": 6,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "nino@cola1",
+      "b": "nina@cola3",
+      "across": 3,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 6 moments: m1 barra_c 120,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 barra3 160,100: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 barra_caja 75,105: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 barra_caja 75,105: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 12 px with a nearer sprite on them; m5 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 8 px with a nearer sprite on them",
+     "       info, not a check: m1 barra_c 120,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 barra3 160,100: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 barra_caja 75,105: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 barra_caja 75,105: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 12 px with a nearer sprite on them; m5 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 8 px with a nearer sprite on them"
+    ]
+   },
+   {
+    "name": "frog-bar",
+    "ok": true,
+    "lines": [
+     "frog-bar: the frog at barra_c, barra_caja and barra_e is covered by nobody: m1 barra_c: 0 of his 536 px covered (0 by the set, 0 by people or things); m3 barra_caja: 0 of his 536 px covered (0 by the set, 0 by people or things); m4 barra_caja: 0 of his 536 px covered (0 by the set, 0 by people or things); m5 barra_e: 0 of his 536 px covered (0 by the set, 0 by people or things); m6 barra_e: 0 of his 536 px covered (0 by the set, 0 by people or things)"
+    ]
+   },
+   {
+    "name": "frog-stool",
+    "ok": true,
+    "lines": [
+     "frog-stool: the frog at barra1 to barra4 is clear of the box of the one on the stool beside him: barra1 [75,116] ~ taburete1 [43,126]: 32 px sideways (the boxes need 28), apart; barra2 [80,100] ~ taburete2 [52,109]: 28 px sideways (the boxes need 28), apart; barra3 [160,100] ~ taburete3 [188,109]: 28 px sideways (the boxes need 28), apart; barra4 [166,116] ~ taburete4 [197,126]: 31 px sideways (the boxes need 28), apart",
+     "       info, not a check: barra1 [75,116] ~ taburete1 [43,126]: 32 px sideways (the boxes need 28), apart; barra2 [80,100] ~ taburete2 [52,109]: 28 px sideways (the boxes need 28), apart; barra3 [160,100] ~ taburete3 [188,109]: 28 px sideways (the boxes need 28), apart; barra4 [166,116] ~ taburete4 [197,126]: 31 px sideways (the boxes need 28), apart"
+    ]
+   },
+   {
+    "name": "stools-whole",
+    "ok": true,
+    "lines": [
+     "stools-whole: 14 people on the stools, all whole in the window [22, 218)",
+     "       info, not a check: m1 maestra at taburete1: columns 31 to 54, rows 87 to 132; m1 doctor at taburete2: columns 40 to 63, rows 70 to 115; m2 maestra at taburete1: columns 31 to 54, rows 87 to 132; m2 doctor at taburete2: columns 40 to 63, rows 70 to 115; m2 cocinero at taburete3: columns 176 to 199, rows 70 to 115; m2 policia at taburete4: columns 185 to 208, rows 87 to 132; m3 joven at taburete4: columns 185 to 208, rows 87 to 132; m3 senor at taburete3: columns 176 to 199, rows 70 to 115; m5 ana at taburete1: columns 32 to 53, rows 95 to 132; m5 beto at taburete2: columns 41 to 62, rows 78 to 115; m5 carmen at taburete3: columns 177 to 198, rows 78 to 115; m6 ana at taburete1: columns 32 to 53, rows 95 to 132; m6 beto at taburete2: columns 41 to 62, rows 78 to 115; m6 carmen at taburete3: columns 177 to 198, rows 78 to 115"
+    ]
+   },
+   {
+    "name": "vendedor-head",
+    "ok": true,
+    "lines": [
+     "vendedor-head: the vendedor's head is covered by nothing in all 6 moments: m1 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m2 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m3 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m4 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m5 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set: 0 the roof, 0 the chains, 0 by people or things); m6 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set: 0 the roof, 0 the chains, 0 by people or things)",
+     "       info, not a check: m1 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m2 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m3 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m4 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m5 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set: 0 the roof, 0 the chains, 0 by people or things); m6 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set: 0 the roof, 0 the chains, 0 by people or things)",
+     "       info, not a check: the stand-in wears a white paper hat 4 rows above the plain 53-row grown-up's top (57 rows in all), and the head is its top 14 rows: the hat and the top of the hair"
+    ]
+   },
+   {
+    "name": "candles-clear",
+    "ok": true,
+    "lines": [
+     "candles-clear: in moment 6 no candle is covered: vela_a at vela_a 111,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_b at vela_b 119,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_c at vela_c 127,96: 0 of 82 px covered (0 by the set, 0 by nobody)",
+     "       info, not a check: vela_a at vela_a 111,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_b at vela_b 119,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_c at vela_c 127,96: 0 of 82 px covered (0 by the set, 0 by nobody)"
+    ]
+   },
+   {
+    "name": "sign-clear",
+    "ok": true,
+    "lines": [
+     "sign-clear: nobody covers the cup sign (its disc: 338 px, centre 120, 39.91, radius 10.5; found in the picture: 115 of 208 px inside it are the board's cream, 7 of 120 just outside): m1: 0 px; m2: 0 px; m3: 0 px; m4: 0 px; m5: 0 px; m6: 0 px"
+    ]
+   },
+   {
+    "name": "things-seen",
+    "ok": true,
+    "lines": [
+     "things-seen: not a check (the spec asks nothing of the small things but the candles): m1 quesitos: 288 of 288 px seen; m2 quesitos: 288 of 288 px seen; m3 caja: 188 of 188 px seen; m4 caja: 188 of 188 px seen; m4 limbers: 114 of 114 px seen; m5 torre: 380 of 380 px seen; m6 torre: 363 of 380 px seen (0 hidden by the set, 17 under nino 17); m6 vela_a: 82 of 82 px seen; m6 vela_b: 82 of 82 px seen; m6 vela_c: 82 of 82 px seen"
+    ]
+   },
+   {
+    "name": "info-standins",
+    "ok": true,
+    "lines": [
+     "info-standins: not a check. Stand-ins for the people with no sprite maker (size only): vendedor = a grown-up (the señor) in an apron and a 4-row paper hat; maestra = a grown-up (the señora); doctor = a grown-up (the hombre) in white; cocinero = a grown-up (the hombre) in white; policia = a grown-up (the hombre) in blue; joven = the joven of El parque (the young man); la_joven = a grown-up (the mujer); mama_ana = mamá (a grown-up); beto = a child (Luis's drawing, other colours); ana = a child (Carmen's drawing, other colours); nino = a child (Luis's drawing, other colours); nina = a child (Carmen's drawing, other colours); abuela = abuela sitting (mkAbuelaS); luis = Luis; carmen = Carmen; senor = the señor; senora = the señora; hombre = the hombre; mujer = the mujer. Sitting people are the front view of the sitting drawing: the sheet gives their facing (taburete1, 2 right; 3, 4 left; the chairs front) but the stand-in does not turn. Things: the dome 20 x 18, the cake stand 20 x 28 inked, the box 16 x 12, the limbers three 6 x 7 cups, the candles 8 x 12, the thing over the frog 12 x 12, the frog's tray 22 x 10 on his head (the spec gives the candles' and the thing's sizes only)"
+    ]
+   }
+  ]
+ }
+}
+''',
+  'calendario': r'''{
+ "scene": "calendario",
+ "made": "node docs/proyecto/pixel/calendario-sheet-make.js, from calendario-set.html (window.CALENDARIO.E and colU) and the design of El calendario (the orchestrator's p6-spec, section calendario). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": 12
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 120. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the board's face at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 120 + 13 v - 22.5 z. Column k's middle is c(k) = colU(k) + cw / 2 (cw 0.68): c1 -2.1, c2 -1.42, c3 -0.74, c4 -0.06, c5 0.62, c6 1.3, c7 1.98; the picture holds u from -4.62 to 4.62",
+  "spot": "a spot is a world point of the feet (z 0: the paving; z 0.3: the step's top; z 0.46: the seat's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): a card on a hook hangs with its top row on sy and its middle on sx; the sun peg is centred on its spot; the balloons, the kite, the bows and the box of cards have their bottom middle on the spot; the card held up at muestra has the middle of its left edge on the spot (it is held out to her right). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), 41 for a child; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41) on (sx, sy); Canelo lying mkPerro('lie') (30 x 22): column 15 and its bottom edge; a small thing: see spot. Whoever sits on the seat faces left: no sprite is turned (the makers draw them from the front)",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character",
+  "cards": "a card (14 x 12) on gancho.k.j hangs with its top at the hook: its box is [sx - 7, sy, 14, 12] (the hooks are 14.4 px apart down the column, a column is 17.68 px wide); a card on arco_gancho hangs the same way under the hoop",
+  "sol": "sol1 to sol7: a 9 px square centred on the middle of column k's coloured square (u c(k), z 3.785): the box [sx - 4, sy - 4, 9, 9]",
+  "globos": "the balloons: a 24 x 20 px stand-in whose foot (its bottom middle) is at the top of the board's left post (u -2.48, v -.07, z 4.4): the box [sx - 12, sy - 20, 24, 20]"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["manana", "tarde", "noche"],
+    "note": "69 manana (the opening and the game), 70 tarde, 71 manana for its opening and noche for its ending (the lamps lit); tarde is used by 70 only"
+   },
+   "tela": {
+    "values": [0, 1],
+    "note": "the cloth over the last three columns (story 69)"
+   }
+  },
+  "key": "hora + tela, e.g. \"manana-1\"",
+  "baked": ["?hora=manana&tela=0", "?hora=manana&tela=1", "?hora=tarde&tela=0", "?hora=tarde&tela=1", "?hora=noche&tela=0", "?hora=noche&tela=1"]
+ },
+ "things": {
+  "tabla": {
+   "set": true,
+   "uv": [-2.5, 0, 1.4, 2.38, 0, 4.05],
+   "world": [-1.7678, -1.6829, 1.4, 1.6829, 1.7678, 4.05],
+   "box": [55, 28, 127, 61],
+   "what": "the whole board: its face, from the left edge to the right edge (u -2.5 to 2.38) and from its foot to its top (z 1.4 to 4.05), on the plane v 0; a poke (the posts, the little roof and the arch are not in it: the arch is arco)",
+   "quad": [
+    [-1.7678, 1.7678, 1.4],
+    [1.6829, -1.6829, 1.4],
+    [1.6829, -1.6829, 4.05],
+    [-1.7678, 1.7678, 4.05]
+   ]
+  },
+  "dia1": {
+   "set": true,
+   "uv": [-2.44, 0, 1.4, -1.76, 0, 3.95],
+   "world": [-1.7253, 1.2445, 1.4, -1.2445, 1.7253, 3.95],
+   "box": [56, 31, 19, 58],
+   "what": "column 1 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [-1.7253, 1.7253, 1.4],
+    [-1.2445, 1.2445, 1.4],
+    [-1.2445, 1.2445, 3.95],
+    [-1.7253, 1.7253, 3.95]
+   ]
+  },
+  "dia2": {
+   "set": true,
+   "uv": [-1.76, 0, 1.4, -1.08, 0, 3.95],
+   "world": [-1.2445, 0.7637, 1.4, -0.7637, 1.2445, 3.95],
+   "box": [74, 31, 18, 58],
+   "what": "column 2 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [-1.2445, 1.2445, 1.4],
+    [-0.7637, 0.7637, 1.4],
+    [-0.7637, 0.7637, 3.95],
+    [-1.2445, 1.2445, 3.95]
+   ]
+  },
+  "dia3": {
+   "set": true,
+   "uv": [-1.08, 0, 1.4, -0.4, 0, 3.95],
+   "world": [-0.7637, 0.2828, 1.4, -0.2828, 0.7637, 3.95],
+   "box": [91, 31, 19, 58],
+   "what": "column 3 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [-0.7637, 0.7637, 1.4],
+    [-0.2828, 0.2828, 1.4],
+    [-0.2828, 0.2828, 3.95],
+    [-0.7637, 0.7637, 3.95]
+   ]
+  },
+  "dia4": {
+   "set": true,
+   "uv": [-0.4, 0, 1.4, 0.28, 0, 3.95],
+   "world": [-0.2828, -0.198, 1.4, 0.198, 0.2828, 3.95],
+   "box": [109, 31, 19, 58],
+   "what": "column 4 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [-0.2828, 0.2828, 1.4],
+    [0.198, -0.198, 1.4],
+    [0.198, -0.198, 3.95],
+    [-0.2828, 0.2828, 3.95]
+   ]
+  },
+  "dia5": {
+   "set": true,
+   "uv": [0.28, 0, 1.4, 0.96, 0, 3.95],
+   "world": [0.198, -0.6788, 1.4, 0.6788, -0.198, 3.95],
+   "box": [127, 31, 18, 58],
+   "what": "column 5 (green): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [0.198, -0.198, 1.4],
+    [0.6788, -0.6788, 1.4],
+    [0.6788, -0.6788, 3.95],
+    [0.198, -0.198, 3.95]
+   ]
+  },
+  "dia6": {
+   "set": true,
+   "uv": [0.96, 0, 1.4, 1.64, 0, 3.95],
+   "world": [0.6788, -1.1597, 1.4, 1.1597, -0.6788, 3.95],
+   "box": [144, 31, 19, 58],
+   "what": "column 6 (orange): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [0.6788, -0.6788, 1.4],
+    [1.1597, -1.1597, 1.4],
+    [1.1597, -1.1597, 3.95],
+    [0.6788, -0.6788, 3.95]
+   ]
+  },
+  "dia7": {
+   "set": true,
+   "uv": [1.64, 0, 1.4, 2.32, 0, 3.95],
+   "world": [1.1597, -1.6405, 1.4, 1.6405, -1.1597, 3.95],
+   "box": [162, 31, 19, 58],
+   "what": "column 7 (orange): from the top of its coloured square (z 3.95) to the board's foot (z 1.4), across its own width (0.68); a poke",
+   "quad": [
+    [1.1597, -1.1597, 1.4],
+    [1.6405, -1.6405, 1.4],
+    [1.6405, -1.6405, 3.95],
+    [1.1597, -1.1597, 3.95]
+   ]
+  },
+  "arco": {
+   "set": true,
+   "uv": [1, 0, 4.05, 2.28, 0, 4.93],
+   "world": [0.7071, -1.6122, 4.05, 1.6122, -0.7071, 4.93],
+   "box": [146, 8, 34, 21],
+   "what": "the arch of flags over columns 6 and 7: the wall the set draws for it (u 1 to 2.28, z 4.05 to 4.93); a poke",
+   "quad": [
+    [0.7071, -0.7071, 4.05],
+    [1.6122, -1.6122, 4.05],
+    [1.6122, -1.6122, 4.93],
+    [0.7071, -0.7071, 4.93]
+   ]
+  },
+  "escalon": {
+   "set": true,
+   "uv": [-2.6, 0.12, 0, 2.48, 0.62, 0.3],
+   "world": [-1.7536, -1.6688, 0, 2.192, 2.2769, 0.3],
+   "box": [52, 114, 133, 15],
+   "what": "the low step along the board's foot (the set's box: u -2.6 to 2.48, v 0.12 to 0.62, z 0 to 0.3); a poke"
+  },
+  "banco": {
+   "set": true,
+   "uv": [2.89, 0.2, 0, 3.43, 3.7, 1.12],
+   "world": [2.185, -2.284, 0, 5.0417, 0.5728, 1.12],
+   "box": [195, 97, 15, 72],
+   "what": "the seat for three, seen from its end (PZ.seatSide: u 2.89 to 3.43 with its back at the right, v 0.2 to 3.7, up to its back's top z 1.12); a poke"
+  },
+  "senora": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "beto": "sprite",
+  "abuela": "sprite",
+  "tito": "sprite",
+  "senor": "sprite",
+  "coqui": "sprite",
+  "perro": "sprite",
+  "sol": "sprite",
+  "globos": "sprite",
+  "chiringa": "sprite",
+  "caja": "sprite"
+ },
+ "spots": {
+  "escalon1": {
+   "world": [-1.2233, 1.7466, 0.3],
+   "uv": [-2.1, 0.37, 0.3],
+   "screen": [65, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 1: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon2": {
+   "world": [-0.7425, 1.2657, 0.3],
+   "uv": [-1.42, 0.37, 0.3],
+   "screen": [83, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 2: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon3": {
+   "world": [-0.2616, 0.7849, 0.3],
+   "uv": [-0.74, 0.37, 0.3],
+   "screen": [101, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 3: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon4": {
+   "world": [0.2192, 0.3041, 0.3],
+   "uv": [-0.06, 0.37, 0.3],
+   "screen": [118, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 4: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon5": {
+   "world": [0.7, -0.1768, 0.3],
+   "uv": [0.62, 0.37, 0.3],
+   "screen": [136, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 5: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon6": {
+   "world": [1.1809, -0.6576, 0.3],
+   "uv": [1.3, 0.37, 0.3],
+   "screen": [154, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 6: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "escalon7": {
+   "world": [1.6617, -1.1384, 0.3],
+   "uv": [1.98, 0.37, 0.3],
+   "screen": [171, 118],
+   "depth": 0.4704,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the step under column 7: the step's top (z 0.3)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "tablero"
+  },
+  "izq": {
+   "world": [-1.9092, 2.6163, 0],
+   "uv": [-3.2, 0.5, 0],
+   "screen": [37, 127],
+   "depth": 0.433,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the señora, left of the board",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "caja": {
+   "world": [-1.4142, 3.2527, 0],
+   "uv": [-3.3, 1.3, 0],
+   "screen": [34, 137],
+   "depth": 1.1258,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "her box of cards on the paving (a 14 x 10 px stand-in: the spec gives no size)",
+   "box": [27, 127, 14, 10],
+   "anchor": "bottom"
+  },
+  "asiento1": {
+   "world": [2.7224, -1.7324, 0.46],
+   "uv": [3.15, 0.7, 0.46],
+   "screen": [202, 119],
+   "depth": 0.8362,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the seat's place 1 (whoever sits faces left): on its top, z 0.46; the sitting sprite hangs by the lap",
+   "sprite": "abuelaS",
+   "who": "adulto",
+   "on": "banco"
+  },
+  "asiento2": {
+   "world": [3.6062, -0.8485, 0.46],
+   "uv": [3.15, 1.95, 0.46],
+   "screen": [202, 135],
+   "depth": 1.9187,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the seat's place 2 (whoever sits faces left): on its top, z 0.46; the sitting sprite hangs by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "banco"
+  },
+  "asiento3": {
+   "world": [4.4901, 0.0354, 0.46],
+   "uv": [3.15, 3.2, 0.46],
+   "screen": [202, 151],
+   "depth": 3.0013,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the seat's place 3 (whoever sits faces left): on its top, z 0.46; the sitting sprite hangs by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "banco"
+  },
+  "suelo1": {
+   "world": [0.2828, 2.9698, 0],
+   "uv": [-1.9, 2.3, 0],
+   "screen": [71, 150],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a place of the row on the paving in front of the board",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "suelo2": {
+   "world": [1.096, 2.1567, 0],
+   "uv": [-0.75, 2.3, 0],
+   "screen": [101, 150],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a place of the row on the paving in front of the board",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "suelo3": {
+   "world": [1.9092, 1.3435, 0],
+   "uv": [0.4, 2.3, 0],
+   "screen": [130, 150],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a place of the row on the paving in front of the board",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "suelo4": {
+   "world": [2.7224, 0.5303, 0],
+   "uv": [1.55, 2.3, 0],
+   "screen": [160, 150],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a place of the row on the paving in front of the board",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "poste": {
+   "world": [-0.9546, 3.2173, 0],
+   "uv": [-2.95, 1.6, 0],
+   "screen": [43, 141],
+   "depth": 1.3856,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Beto under the balloons",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "globos": {
+   "world": [-1.8031, 1.7041, 4.4],
+   "uv": [-2.48, -0.07, 4.4],
+   "screen": [56, 20],
+   "depth": 2.1394,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the balloons, tied to the top of the board's left post (the set's PZ.post at u -2.48, v -.07, top z 4.4): a 24 x 20 px stand-in, its foot on the post's top",
+   "box": [44, 0, 24, 20],
+   "anchor": "bottom",
+   "on": "tablero"
+  },
+  "chiringa": {
+   "world": [1.096, 0.6718, 0],
+   "uv": [0.3, 1.25, 0],
+   "screen": [128, 136],
+   "depth": 1.0825,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the kite lying on the paving (a 28 x 14 px stand-in)",
+   "box": [114, 122, 28, 14],
+   "anchor": "bottom"
+  },
+  "lazo1": {
+   "world": [1.5556, 0.2828, 0],
+   "uv": [0.9, 1.3, 0],
+   "screen": [143, 137],
+   "depth": 1.1258,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the kite's tail: bow 1 of 3 (a 7 x 5 px stand-in: the spec gives no size)",
+   "box": [140, 132, 7, 5],
+   "anchor": "bottom"
+  },
+  "lazo2": {
+   "world": [1.8031, 0.1061, 0],
+   "uv": [1.2, 1.35, 0],
+   "screen": [151, 138],
+   "depth": 1.1691,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the kite's tail: bow 2 of 3 (a 7 x 5 px stand-in: the spec gives no size)",
+   "box": [148, 133, 7, 5],
+   "anchor": "bottom"
+  },
+  "lazo3": {
+   "world": [2.0506, -0.0707, 0],
+   "uv": [1.5, 1.4, 0],
+   "screen": [159, 138],
+   "depth": 1.2124,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the kite's tail: bow 3 of 3 (a 7 x 5 px stand-in: the spec gives no size)",
+   "box": [156, 133, 7, 5],
+   "anchor": "bottom"
+  },
+  "perro": {
+   "world": [2.5456, -0.4243, 0],
+   "uv": [2.1, 1.5, 0],
+   "screen": [175, 140],
+   "depth": 1.299,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Canelo (lying)",
+   "sprite": "perro",
+   "who": "perro"
+  },
+  "ronda": {
+   "world": [3.0406, 2.4749, 0],
+   "uv": [0.4, 3.9, 0],
+   "screen": [130, 171],
+   "depth": 3.3775,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "where the one who is misled walks round",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "entrada": {
+   "world": [-1.4849, 5.1619, 0],
+   "uv": [-4.7, 2.6, 0],
+   "screen": [-2, 154],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "exit",
+   "view": "wide",
+   "what": "where people come in: outside the picture on purpose (only the point)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "gancho.1.1": {
+   "world": [-1.4849, 1.4849, 3.44],
+   "uv": [-2.1, 0, 3.44],
+   "screen": [65, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 1: a card (14 x 12) hangs with its top at the hook",
+   "box": [58, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.1.2": {
+   "world": [-1.4849, 1.4849, 2.8],
+   "uv": [-2.1, 0, 2.8],
+   "screen": [65, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 1: a card (14 x 12) hangs with its top at the hook",
+   "box": [58, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.1.3": {
+   "world": [-1.4849, 1.4849, 2.16],
+   "uv": [-2.1, 0, 2.16],
+   "screen": [65, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 1: a card (14 x 12) hangs with its top at the hook",
+   "box": [58, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.2.1": {
+   "world": [-1.0041, 1.0041, 3.44],
+   "uv": [-1.42, 0, 3.44],
+   "screen": [83, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 2: a card (14 x 12) hangs with its top at the hook",
+   "box": [76, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.2.2": {
+   "world": [-1.0041, 1.0041, 2.8],
+   "uv": [-1.42, 0, 2.8],
+   "screen": [83, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 2: a card (14 x 12) hangs with its top at the hook",
+   "box": [76, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.2.3": {
+   "world": [-1.0041, 1.0041, 2.16],
+   "uv": [-1.42, 0, 2.16],
+   "screen": [83, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 2: a card (14 x 12) hangs with its top at the hook",
+   "box": [76, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.3.1": {
+   "world": [-0.5233, 0.5233, 3.44],
+   "uv": [-0.74, 0, 3.44],
+   "screen": [101, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 3: a card (14 x 12) hangs with its top at the hook",
+   "box": [94, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.3.2": {
+   "world": [-0.5233, 0.5233, 2.8],
+   "uv": [-0.74, 0, 2.8],
+   "screen": [101, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 3: a card (14 x 12) hangs with its top at the hook",
+   "box": [94, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.3.3": {
+   "world": [-0.5233, 0.5233, 2.16],
+   "uv": [-0.74, 0, 2.16],
+   "screen": [101, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 3: a card (14 x 12) hangs with its top at the hook",
+   "box": [94, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.4.1": {
+   "world": [-0.0424, 0.0424, 3.44],
+   "uv": [-0.06, 0, 3.44],
+   "screen": [118, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 4: a card (14 x 12) hangs with its top at the hook",
+   "box": [111, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.4.2": {
+   "world": [-0.0424, 0.0424, 2.8],
+   "uv": [-0.06, 0, 2.8],
+   "screen": [118, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 4: a card (14 x 12) hangs with its top at the hook",
+   "box": [111, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.4.3": {
+   "world": [-0.0424, 0.0424, 2.16],
+   "uv": [-0.06, 0, 2.16],
+   "screen": [118, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 4: a card (14 x 12) hangs with its top at the hook",
+   "box": [111, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.5.1": {
+   "world": [0.4384, -0.4384, 3.44],
+   "uv": [0.62, 0, 3.44],
+   "screen": [136, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 5: a card (14 x 12) hangs with its top at the hook",
+   "box": [129, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.5.2": {
+   "world": [0.4384, -0.4384, 2.8],
+   "uv": [0.62, 0, 2.8],
+   "screen": [136, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 5: a card (14 x 12) hangs with its top at the hook",
+   "box": [129, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.5.3": {
+   "world": [0.4384, -0.4384, 2.16],
+   "uv": [0.62, 0, 2.16],
+   "screen": [136, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 5: a card (14 x 12) hangs with its top at the hook",
+   "box": [129, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.6.1": {
+   "world": [0.9192, -0.9192, 3.44],
+   "uv": [1.3, 0, 3.44],
+   "screen": [154, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 6: a card (14 x 12) hangs with its top at the hook",
+   "box": [147, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.6.2": {
+   "world": [0.9192, -0.9192, 2.8],
+   "uv": [1.3, 0, 2.8],
+   "screen": [154, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 6: a card (14 x 12) hangs with its top at the hook",
+   "box": [147, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.6.3": {
+   "world": [0.9192, -0.9192, 2.16],
+   "uv": [1.3, 0, 2.16],
+   "screen": [154, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 6: a card (14 x 12) hangs with its top at the hook",
+   "box": [147, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.7.1": {
+   "world": [1.4001, -1.4001, 3.44],
+   "uv": [1.98, 0, 3.44],
+   "screen": [171, 43],
+   "depth": 1.72,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 1 (1 the top one) of column 7: a card (14 x 12) hangs with its top at the hook",
+   "box": [164, 43, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.7.2": {
+   "world": [1.4001, -1.4001, 2.8],
+   "uv": [1.98, 0, 2.8],
+   "screen": [171, 57],
+   "depth": 1.4,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 2 (1 the top one) of column 7: a card (14 x 12) hangs with its top at the hook",
+   "box": [164, 57, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "gancho.7.3": {
+   "world": [1.4001, -1.4001, 2.16],
+   "uv": [1.98, 0, 2.16],
+   "screen": [171, 71],
+   "depth": 1.08,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "hook 3 (1 the top one) of column 7: a card (14 x 12) hangs with its top at the hook",
+   "box": [164, 71, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "arco_gancho": {
+   "world": [1.1597, -1.1597, 4.72],
+   "uv": [1.64, 0, 4.72],
+   "screen": [163, 14],
+   "depth": 2.36,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the hook at the arch's middle (ARCH.z + 0.67): a card hangs there under the hoop",
+   "box": [156, 14, 14, 12],
+   "anchor": "top",
+   "on": "tablero",
+   "hook": 1
+  },
+  "sol1": {
+   "world": [-1.4849, 1.4849, 3.785],
+   "uv": [-2.1, 0, 3.785],
+   "screen": [65, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 1: a 9 px square centred on its coloured square",
+   "box": [61, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol2": {
+   "world": [-1.0041, 1.0041, 3.785],
+   "uv": [-1.42, 0, 3.785],
+   "screen": [83, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 2: a 9 px square centred on its coloured square",
+   "box": [79, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol3": {
+   "world": [-0.5233, 0.5233, 3.785],
+   "uv": [-0.74, 0, 3.785],
+   "screen": [101, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 3: a 9 px square centred on its coloured square",
+   "box": [97, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol4": {
+   "world": [-0.0424, 0.0424, 3.785],
+   "uv": [-0.06, 0, 3.785],
+   "screen": [118, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 4: a 9 px square centred on its coloured square",
+   "box": [114, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol5": {
+   "world": [0.4384, -0.4384, 3.785],
+   "uv": [0.62, 0, 3.785],
+   "screen": [136, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 5: a 9 px square centred on its coloured square",
+   "box": [132, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol6": {
+   "world": [0.9192, -0.9192, 3.785],
+   "uv": [1.3, 0, 3.785],
+   "screen": [154, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 6: a 9 px square centred on its coloured square",
+   "box": [150, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "sol7": {
+   "world": [1.4001, -1.4001, 3.785],
+   "uv": [1.98, 0, 3.785],
+   "screen": [171, 35],
+   "depth": 1.8925,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the sun peg on column 7: a 9 px square centred on its coloured square",
+   "box": [167, 31, 9, 9],
+   "anchor": "centre",
+   "on": "tablero"
+  },
+  "muestra": {
+   "world": [-1.7324, 2.4395, 1.6],
+   "uv": [-2.95, 0.5, 1.6],
+   "screen": [43, 90],
+   "depth": 1.233,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the card the señora holds up (a 14 x 12 card, held out to her right: the middle of its left edge on the point)",
+   "box": [43, 84, 14, 12],
+   "anchor": "left",
+   "on": "ground"
+  }
+ },
+ "groups": {
+  "escalones": ["escalon1", "escalon2", "escalon3", "escalon4", "escalon5", "escalon6", "escalon7"],
+  "asiento": ["asiento1", "asiento2", "asiento3"],
+  "suelo": ["suelo1", "suelo2", "suelo3", "suelo4"],
+  "ganchos": ["gancho.1.1", "gancho.1.2", "gancho.1.3", "gancho.2.1", "gancho.2.2", "gancho.2.3", "gancho.3.1", "gancho.3.2", "gancho.3.3", "gancho.4.1", "gancho.4.2", "gancho.4.3", "gancho.5.1", "gancho.5.2", "gancho.5.3", "gancho.6.1", "gancho.6.2", "gancho.6.3", "gancho.7.1", "gancho.7.2", "gancho.7.3"],
+  "soles": ["sol1", "sol2", "sol3", "sol4", "sol5", "sol6", "sol7"],
+  "lazos": ["lazo1", "lazo2", "lazo3"]
+ },
+ "notes": [
+  "every number of a spot is the orchestrator's (the p6-spec, \"calendario\"), given in (u, v, z); the board's numbers (c(k), HOOKS, ARCH, STEP, SEAT) are read from the set",
+  "gancho.k.j is the spec's hook k, j (j 1 the top one); sol1 to sol7 are the spec's `sol` on column k; lazo1 to lazo3 are the three bows of the kite's tail; entrada is outside the picture on purpose (only its point)",
+  "the spec gives no size for the bows of the kite's tail (7 x 5 used) nor for the señora's box of cards (14 x 10 used): open points; the card held up at muestra hangs by the middle of its left edge (the coordinator's decision)",
+  "tabla is the board's face (the posts, the little roof and the arch are not in it); arco is the arch's wall; the globos' spot is the set's left post: u -2.48, v -.07 (the spec gives only its top, z 4.4)",
+  "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)"
+ ],
+ "views": {
+  "wide": {
+   "world": [-0.6527, -0.6527, 0],
+   "uv": [0, -0.9231, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [69, 70, 71],
+   "holds": ["escalon1", "escalon2", "escalon3", "escalon4", "escalon5", "escalon6", "escalon7", "izq", "caja", "asiento1", "asiento2", "asiento3", "suelo1", "suelo2", "suelo3", "suelo4", "poste", "globos", "chiringa", "lazo1", "lazo2", "lazo3", "perro", "ronda", "gancho.1.1", "gancho.1.2", "gancho.1.3", "gancho.2.1", "gancho.2.2", "gancho.2.3", "gancho.3.1", "gancho.3.2", "gancho.3.3", "gancho.4.1", "gancho.4.2", "gancho.4.3", "gancho.5.1", "gancho.5.2", "gancho.5.3", "gancho.6.1", "gancho.6.2", "gancho.6.3", "gancho.7.1", "gancho.7.2", "gancho.7.3", "arco_gancho", "sol1", "sol2", "sol3", "sol4", "sol5", "sol6", "sol7", "muestra"],
+   "extent": [25, 213],
+   "x0Range": [18, 25],
+   "what": "the one view of stories 69, 70 and 71: the 196 x 216 window over the 240 x 216 picture. The spec: every spot of every moment is inside it (a person with his sprite whole, a small thing with its box whole; entrada is outside on purpose). x0 18 to 25 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 25 to 213). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the board's roof and posts, the seat, the lamps and the trees hide whoever is behind them.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The same rule as El cruce's sheet: the upright plane through the feet (a card on a hook is the plane through its top, on the board's face)",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "perro": 0.3
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "senora": 0.35,
+   "abuela": 0.35,
+   "tito": 0.35,
+   "senor": 0.35,
+   "beto": 0.28,
+   "luis": 0.28,
+   "carmen": 0.28,
+   "perro": 0.3
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28, the dog .3) (open point)",
+  "none": ["escalon1", "escalon2", "escalon3", "escalon4", "escalon5", "escalon6", "escalon7", "asiento1", "asiento2", "asiento3", "globos", "gancho.1.1", "gancho.1.2", "gancho.1.3", "gancho.2.1", "gancho.2.2", "gancho.2.3", "gancho.3.1", "gancho.3.2", "gancho.3.3", "gancho.4.1", "gancho.4.2", "gancho.4.3", "gancho.5.1", "gancho.5.2", "gancho.5.3", "gancho.6.1", "gancho.6.2", "gancho.6.3", "gancho.7.1", "gancho.7.2", "gancho.7.3", "arco_gancho", "sol1", "sol2", "sol3", "sol4", "sol5", "sol6", "sol7", "muestra"],
+  "onSeat": "whoever sits on the seat or stands on the step (z above 0) casts none: neither is ground (a shadow cast at the paving under them would show in front of them)"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 54 spots held span columns 25 to 213 (189 of the window's 196); x0 that hold them all: 18 to 25 (the one nearest 22, the window centred on the picture); entrada is outside on purpose (screen -2,154)"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 54 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the card of the arch's hook arco_gancho is box [156,14,14,12], the balloons globos [44,0,24,20]",
+     "       info, not a check: entrada -2,154 (outside on purpose): its point is outside the picture, 24 px left of the window [22, 218)"
+    ],
+    "cut": []
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 10 spots on the seat and the step (escalon1, escalon2, escalon3, escalon4, escalon5, escalon6, escalon7, asiento1, asiento2, asiento3) are on a surface the set draws (the seat's top z 0.46 part banco, the step's top z 0.3 part tablero: depth within .1 of the spot's); the 22 hook spots have a pixel of the set's hook within 1 px; the balloons' foot is the left post's top; the 7 sun spots are on their column's coloured square",
+     "       escalon1 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon2 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon3 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon4 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon5 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon6 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       escalon7 z 0.3: part tablero, depth 0.46 against the spot's 0.47 (0.01)",
+     "       asiento1 z 0.46: part banco, depth 0.85 against the spot's 0.84 (0.01)",
+     "       asiento2 z 0.46: part banco, depth 1.91 against the spot's 1.92 (0)",
+     "       asiento3 z 0.46: part banco, depth 2.98 against the spot's 3 (0.02)",
+     "       the sun spots read sol1 96,176,96; sol2 96,176,96; sol3 96,176,96; sol4 96,176,96; sol5 96,176,96; sol6 244,150,60; sol7 244,150,60"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of tabla, dia1 to dia7, arco, escalon and banco are inside the window [22, 218) and the picture (tabla [55,28,127,61], dia1 [56,31,19,58], dia2 [74,31,18,58], dia3 [91,31,19,58], dia4 [109,31,19,58], dia5 [127,31,18,58], dia6 [144,31,19,58], dia7 [162,31,19,58], arco [146,8,34,21], escalon [52,114,133,15], banco [195,97,15,72])"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 31 pairs in the 6 moments of the preview (m1 (izq, poste, escalon1); m2 (izq, poste, escalon4); m3 (escalon6, suelo1, suelo2, perro); m4 (escalon7, suelo1, suelo2, perro); m5 (izq, escalon1, asiento1, asiento2, asiento3); m6 (izq, escalon5, asiento1)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 izq ~ poste (6 across, 14 down), m1 poste ~ escalon1 (22 across, 23 down), m2 izq ~ poste (6 across, 14 down), m3 escalon6 ~ perro (21 across, 22 down), m4 escalon7 ~ perro (4 across, 22 down), m5 asiento1 ~ asiento2 (0 across, 16 down), m5 asiento1 ~ asiento3 (0 across, 32 down), m5 asiento2 ~ asiento3 (0 across, 16 down)",
+     "       closest pair in each moment (px across / px down): m1 izq ~ poste 6/14 (needs 24 across or 12 down); m2 izq ~ poste 6/14 (needs 24 across or 12 down); m3 escalon6 ~ perro 21/22 (needs 30 across or 12 down); m4 escalon7 ~ perro 4/22 (needs 30 across or 12 down); m5 asiento1 ~ asiento2 0/16 (needs 24 across or 12 down); m6 escalon5 ~ asiento1 66/1 (needs 28 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "izq",
+      "b": "poste",
+      "across": 6,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "izq",
+      "b": "escalon1",
+      "across": 28,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "poste",
+      "b": "escalon1",
+      "across": 22,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "izq",
+      "b": "poste",
+      "across": 6,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "izq",
+      "b": "escalon4",
+      "across": 81,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "poste",
+      "b": "escalon4",
+      "across": 75,
+      "down": 23,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "escalon6",
+      "b": "suelo1",
+      "across": 83,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "escalon6",
+      "b": "suelo2",
+      "across": 53,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "escalon6",
+      "b": "perro",
+      "across": 21,
+      "down": 22,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "suelo1",
+      "b": "suelo2",
+      "across": 30,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "suelo1",
+      "b": "perro",
+      "across": 104,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "suelo2",
+      "b": "perro",
+      "across": 74,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "escalon7",
+      "b": "suelo1",
+      "across": 100,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "escalon7",
+      "b": "suelo2",
+      "across": 70,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "escalon7",
+      "b": "perro",
+      "across": 4,
+      "down": 22,
+      "needAcross": 30,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "suelo1",
+      "b": "suelo2",
+      "across": 30,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "suelo1",
+      "b": "perro",
+      "across": 104,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "suelo2",
+      "b": "perro",
+      "across": 74,
+      "down": 10,
+      "needAcross": 26,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "izq",
+      "b": "escalon1",
+      "across": 28,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "izq",
+      "b": "asiento1",
+      "across": 165,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "izq",
+      "b": "asiento2",
+      "across": 165,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "izq",
+      "b": "asiento3",
+      "across": 165,
+      "down": 24,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalon1",
+      "b": "asiento1",
+      "across": 137,
+      "down": 1,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalon1",
+      "b": "asiento2",
+      "across": 137,
+      "down": 17,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalon1",
+      "b": "asiento3",
+      "across": 137,
+      "down": 33,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "asiento1",
+      "b": "asiento2",
+      "across": 0,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "asiento1",
+      "b": "asiento3",
+      "across": 0,
+      "down": 32,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "asiento2",
+      "b": "asiento3",
+      "across": 0,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "izq",
+      "b": "escalon5",
+      "across": 99,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "izq",
+      "b": "asiento1",
+      "across": 165,
+      "down": 8,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "escalon5",
+      "b": "asiento1",
+      "across": 66,
+      "down": 1,
+      "needAcross": 28,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 escalon1 65,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 12 px with a nearer sprite on them; m2 escalon4 118,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 escalon6 154,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 escalon7 171,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 escalon1 65,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 escalon5 136,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them",
+     "       info, not a check: m1 escalon1 65,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 12 px with a nearer sprite on them; m2 escalon4 118,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 escalon6 154,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 escalon7 171,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m5 escalon1 65,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 escalon5 136,118: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them"
+    ]
+   },
+   {
+    "name": "frog-hooks",
+    "ok": true,
+    "lines": [
+     "frog-hooks: the frog on each of the 7 steps covers no hook and no card of the lowest row (the tightest: 11 rows clear): escalon1 65,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon2 83,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon3 101,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon4 118,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon5 136,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon6 154,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82); escalon7 171,118: his top row 94, 11 rows below the lowest row of cards (bottom row 82)"
+    ]
+   },
+   {
+    "name": "senora-col1",
+    "ok": true,
+    "lines": [
+     "senora-col1: the señora at izq covers no pixel of column 1 in the moments she is in: m1: 0 px in column 1 [56,31,19,58] (her rightmost shown column 48, column 1 starts at 56); m2: 0 px in column 1 [56,31,19,58] (her rightmost shown column 48, column 1 starts at 56); m5: 0 px in column 1 [56,31,19,58] (her rightmost shown column 48, column 1 starts at 56); m6: 0 px in column 1 [56,31,19,58] (her rightmost shown column 48, column 1 starts at 56)"
+    ]
+   },
+   {
+    "name": "arch-card",
+    "ok": true,
+    "lines": [
+     "arch-card: the card on arco_gancho 163,14 is box [156,14,14,12]: inside the picture (14 rows from its top, 190 from its bottom) and the window; drawn in moment 3, 0 of its px outside the picture"
+    ]
+   },
+   {
+    "name": "balloons",
+    "ok": true,
+    "lines": [
+     "balloons: the balloons at globos 56,20 (the post's top, u -2.48 v -0.07 z 4.4) are the box [44,0,24,20]: whole inside the picture (its top row 0) and the window; drawn: m1 0 px outside, m2 0 px outside"
+    ]
+   },
+   {
+    "name": "seat-heads",
+    "ok": true,
+    "lines": [
+     "seat-heads: every person on the seat is whole in the window and his head (the top 14 rows) is covered by nobody: m5 asiento1 202,119 (abuelaS): window cut 0 px, 0 px outside the picture; head rows 83 to 96: 206 px, 0 covered, 0 hidden by the set; the whole sprite: 315 under a nearer sprite, 73 hidden by the set; m5 asiento2 202,135 (titoS): window cut 0 px, 0 px outside the picture; head rows 98 to 111: 192 px, 0 covered, 0 hidden by the set; the whole sprite: 336 under a nearer sprite, 96 hidden by the set; m5 asiento3 202,151 (senorS): window cut 0 px, 0 px outside the picture; head rows 112 to 125: 182 px, 0 covered, 0 hidden by the set; the whole sprite: 0 under a nearer sprite, 144 hidden by the set; m6 asiento1 202,119 (abuelaS): window cut 0 px, 0 px outside the picture; head rows 83 to 96: 206 px, 0 covered, 0 hidden by the set; the whole sprite: 0 under a nearer sprite, 73 hidden by the set",
+     "       the seat's three places are 16 px apart up-down (asiento1 row 119, asiento2 row 135, asiento3 row 151) and a head is 14 rows: whoever sits in front of another at the same column covers the last row(s) of the head behind (the spec's sprites-apart rule needs 12)",
+     "       head px hidden by the set (the seat's back, not a person): none"
+    ]
+   },
+   {
+    "name": "beto-clear",
+    "ok": true,
+    "lines": [
+     "beto-clear: Beto at poste covers neither the frog at escalon1 nor the señora's face: m1: the señora's face (rows 74 to 87) 0 of 182 px covered by Beto (her body 276); m1: the frog at escalon1 65,118: 0 of his 536 px covered by Beto (Beto's box 31,54 across, the frog's 49,80; Beto's top row 100, the frog's bottom row 117); m2: the señora's face (rows 74 to 87) 0 of 182 px covered by Beto (her body 276)",
+     "       info, not a check: m1: the señora's face (rows 74 to 87) 0 of 182 px covered by Beto (her body 276); m1: the frog at escalon1 65,118: 0 of his 536 px covered by Beto (Beto's box 31,54 across, the frog's 49,80; Beto's top row 100, the frog's bottom row 117); m2: the señora's face (rows 74 to 87) 0 of 182 px covered by Beto (her body 276)"
+    ]
+   },
+   {
+    "name": "kite-canelo",
+    "ok": true,
+    "lines": [
+     "kite-canelo: the kite, its three bows and Canelo cover nobody on the step: m3: the frog at escalon6 154,118 (his bottom row 117): 0 of his 536 px covered (chiringa top row 122, lazo1 top row 132, lazo2 top row 133, lazo3 top row 133, perro top row 121); m4: the frog at escalon7 171,118 (his bottom row 117): 0 of his 536 px covered (chiringa top row 122, lazo1 top row 132, lazo2 top row 133, lazo3 top row 133, perro top row 121)"
+    ]
+   },
+   {
+    "name": "info-stand-ins",
+    "ok": true,
+    "lines": [
+     "info-stand-ins: not a check. m1: her box at caja covers 0 px of the señora; m2: her box at caja covers 0 px of the señora; the card at muestra covers 1 px of her face (top 14 rows) and 22 of her sprite in all",
+     "       the card at muestra, by where it hangs from the point (the used anchor first): middle of the left edge on the point (used): 1 px of her face, 22 of her sprite; bottom middle on the point: 76 px of her face, 87 of her sprite; middle of the card on the point: 28 px of her face, 101 of her sprite; bottom left corner on the point: 7 px of her face, 7 of her sprite"
+    ]
+   }
+  ]
+ }
+}
+''',
 };

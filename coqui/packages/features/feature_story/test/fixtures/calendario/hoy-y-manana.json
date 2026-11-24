@@ -1,0 +1,1462 @@
+{
+ "id": "hoy-y-manana",
+ "title": "Hoy y mañana",
+ "place": "La plaza",
+ "scene": "calendario",
+ "next": "la-playa",
+ "goal": "Hang the card the señora holds under the right day, today's or tomorrow's, so that abuela, don Tito and the señor stay on the seat with their baskets and go home with something in them: every card under the wrong day sends one of them home with an empty basket.",
+ "stake": {
+  "thing": "gente",
+  "steps": 3
+ },
+ "dots": 10,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "hoy",
+  "mañana",
+  "día",
+  "semana"
+ ],
+ "formas_foco": {
+  "día": [
+   "días"
+  ]
+ },
+ "back_again": [
+  "lunes",
+  "martes",
+  "miércoles",
+  "jueves",
+  "viernes",
+  "sábado",
+  "domingo",
+  "hay",
+  "no hay",
+  "otro",
+  "nuevo",
+  "todo",
+  "uno",
+  "dos",
+  "tres",
+  "cuatro",
+  "cinco",
+  "seis",
+  "siete",
+  "buenos días",
+  "adiós",
+  "hasta mañana",
+  "fruta",
+  "bola",
+  "juega",
+  "café",
+  "flor",
+  "pan",
+  "pollo",
+  "jugo",
+  "pone",
+  "tarde",
+  "ya",
+  "no"
+ ],
+ "also_heard": [],
+ "names": {
+  "senora": "b_n_senora",
+  "abuela": "abuela",
+  "senor": "b_n_senor",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "hoy": "hoy",
+  "manana": "mañana"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "c71_nuevo": {
+   "who": "narr",
+   "text": "Es un nuevo día en la plaza. Y es una semana nueva."
+  },
+  "c71_sa_hoy_lunes": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Buenos días. Hoy es lunes."
+  },
+  "c71_cual_hoy": {
+   "who": "narr",
+   "text": "¿Cuál es el día de hoy?"
+  },
+  "c71_sa_manana_martes": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y mañana es martes."
+  },
+  "c71_cual_manana": {
+   "who": "narr",
+   "text": "¿Y cuál es el día de mañana?"
+  },
+  "c71_sa_cuenta": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Un día, dos días, tres días, cuatro, cinco, seis, siete. Siete días son una semana."
+  },
+  "c71_toca_semana": {
+   "who": "narr",
+   "text": "Toca toda la semana."
+  },
+  "c71_sa_hoy_frutas": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay frutas."
+  },
+  "c69_donde_frutas": {
+   "who": "narr",
+   "text": "¿Dónde ponemos las frutas?"
+  },
+  "c71_sa_manana_bola": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Y mañana los niños juegan bola."
+  },
+  "c69_donde_bola": {
+   "who": "narr",
+   "text": "¿Y dónde ponemos la bola?"
+  },
+  "c71_ab_que_dia": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Qué día es hoy?"
+  },
+  "c71_sa_martes": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy es martes. Hoy juegan bola. Y mañana hay bingo."
+  },
+  "c71_ab_bingo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ¿hay bingo hoy?"
+  },
+  "cq_no": {
+   "who": "tu",
+   "text": "¡No!",
+   "tu_turno": [
+    {
+     "palabra": "no",
+     "formas": [
+      "no"
+     ]
+    }
+   ]
+  },
+  "c71_sa_hoy_no": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy no. Mañana."
+  },
+  "c71_sa_otra": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Otra semana. Ahora tú, Coquí."
+  },
+  "c71_sa_tarde": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Ya es tarde, Coquí. Adiós."
+  },
+  "p_cq_hm": {
+   "who": "tu",
+   "text": "¡Hasta mañana!",
+   "tu_turno": [
+    {
+     "palabra": "hasta mañana",
+     "formas": [
+      "hasta mañana",
+      "hasta manana"
+     ]
+    }
+   ]
+  },
+  "c71_fin": {
+   "who": "narr",
+   "text": "Mañana es otro día en la plaza."
+  },
+  "c71_a_1": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy es lunes."
+  },
+  "c71_a_2": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy es martes."
+  },
+  "c71_a_3": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy es miércoles."
+  },
+  "c71_a_4": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy es jueves."
+  },
+  "c71_b_2": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Otro día. Hoy es martes."
+  },
+  "c71_b_3": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Otro día. Hoy es miércoles."
+  },
+  "c71_b_4": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Otro día. Hoy es jueves."
+  },
+  "c71_b_5": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Otro día. Hoy es viernes."
+  },
+  "c71_no_hoy_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hoy hay café."
+  },
+  "c71_no_manana_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Mañana hay café."
+  },
+  "c71_hm_cafe_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay café. Mañana hay flores."
+  },
+  "c71_mh_cafe_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay flores. Hoy hay café."
+  },
+  "c71_hm_cafe_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay café. Mañana hay pan."
+  },
+  "c71_mh_cafe_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay pan. Hoy hay café."
+  },
+  "c71_hm_cafe_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay café. Mañana hay pollo."
+  },
+  "c71_mh_cafe_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay pollo. Hoy hay café."
+  },
+  "c71_hm_cafe_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay café. Mañana hay jugo."
+  },
+  "c71_mh_cafe_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay jugo. Hoy hay café."
+  },
+  "c71_no_hoy_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hoy hay flores."
+  },
+  "c71_no_manana_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Mañana hay flores."
+  },
+  "c71_hm_flores_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay flores. Mañana hay café."
+  },
+  "c71_mh_flores_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay café. Hoy hay flores."
+  },
+  "c71_hm_flores_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay flores. Mañana hay pan."
+  },
+  "c71_mh_flores_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay pan. Hoy hay flores."
+  },
+  "c71_hm_flores_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay flores. Mañana hay pollo."
+  },
+  "c71_mh_flores_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay pollo. Hoy hay flores."
+  },
+  "c71_hm_flores_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay flores. Mañana hay jugo."
+  },
+  "c71_mh_flores_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay jugo. Hoy hay flores."
+  },
+  "c71_no_hoy_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hoy hay pan."
+  },
+  "c71_no_manana_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Mañana hay pan."
+  },
+  "c71_hm_pan_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay pan. Mañana hay café."
+  },
+  "c71_mh_pan_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay café. Hoy hay pan."
+  },
+  "c71_hm_pan_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay pan. Mañana hay flores."
+  },
+  "c71_mh_pan_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay flores. Hoy hay pan."
+  },
+  "c71_hm_pan_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay pan. Mañana hay pollo."
+  },
+  "c71_mh_pan_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay pollo. Hoy hay pan."
+  },
+  "c71_hm_pan_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay pan. Mañana hay jugo."
+  },
+  "c71_mh_pan_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay jugo. Hoy hay pan."
+  },
+  "c71_no_hoy_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hoy hay pollo."
+  },
+  "c71_no_manana_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Mañana hay pollo."
+  },
+  "c71_hm_pollo_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay pollo. Mañana hay café."
+  },
+  "c71_mh_pollo_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay café. Hoy hay pollo."
+  },
+  "c71_hm_pollo_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay pollo. Mañana hay flores."
+  },
+  "c71_mh_pollo_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay flores. Hoy hay pollo."
+  },
+  "c71_hm_pollo_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay pollo. Mañana hay pan."
+  },
+  "c71_mh_pollo_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay pan. Hoy hay pollo."
+  },
+  "c71_hm_pollo_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay pollo. Mañana hay jugo."
+  },
+  "c71_mh_pollo_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay jugo. Hoy hay pollo."
+  },
+  "c71_no_hoy_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Hoy hay jugo."
+  },
+  "c71_no_manana_jugo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Mañana hay jugo."
+  },
+  "c71_hm_jugo_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay jugo. Mañana hay café."
+  },
+  "c71_mh_jugo_cafe": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay café. Hoy hay jugo."
+  },
+  "c71_hm_jugo_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay jugo. Mañana hay flores."
+  },
+  "c71_mh_jugo_flores": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay flores. Hoy hay jugo."
+  },
+  "c71_hm_jugo_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay jugo. Mañana hay pan."
+  },
+  "c71_mh_jugo_pan": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay pan. Hoy hay jugo."
+  },
+  "c71_hm_jugo_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Hoy hay jugo. Mañana hay pollo."
+  },
+  "c71_mh_jugo_pollo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Mañana hay pollo. Hoy hay jugo."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana"
+   }
+  },
+  {
+   "act": "gente",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c71_nuevo",
+  {
+   "act": "sol71",
+   "dia": "1"
+  },
+  "c71_sa_hoy_lunes",
+  {
+   "ask": "dia1",
+   "lead": [],
+   "line": "c71_cual_hoy",
+   "then": [],
+   "after": [
+    {
+     "set": {
+      "twinkle": "sol"
+     }
+    },
+    {
+     "wait": 700
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "senora",
+   "que": "senala",
+   "a": "dia2"
+  },
+  "c71_sa_manana_martes",
+  {
+   "ask": "dia2",
+   "lead": [],
+   "line": "c71_cual_manana",
+   "then": [],
+   "after": [
+    {
+     "act": "luce",
+     "dia": "2"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "cuenta",
+   "de": 1,
+   "a": 7,
+   "suelto": 1
+  },
+  "c71_sa_cuenta",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "tabla",
+   "lead": [],
+   "line": "c71_toca_semana",
+   "then": [],
+   "after": [
+    {
+     "act": "luce",
+     "dia": "todos"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "muestra",
+   "carta": "frutas"
+  },
+  "c71_sa_hoy_frutas",
+  {
+   "ask": "dia1",
+   "lead": [],
+   "line": "c69_donde_frutas",
+   "then": [],
+   "after": [
+    {
+     "act": "cuelga",
+     "carta": "frutas",
+     "dia": "1",
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "act": "cesta71",
+   "quien": "abuela"
+  },
+  {
+   "act": "muestra",
+   "carta": "bola"
+  },
+  "c71_sa_manana_bola",
+  {
+   "ask": "dia2",
+   "lead": [],
+   "line": "c69_donde_bola",
+   "then": [],
+   "after": [
+    {
+     "act": "cuelga",
+     "carta": "bola",
+     "dia": "2",
+     "quien": "coqui"
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "noche71"
+  },
+  {
+   "act": "sol71",
+   "dia": "2"
+  },
+  "c71_ab_que_dia",
+  "c71_sa_martes",
+  {
+   "act": "cuelga",
+   "carta": "bingo",
+   "dia": "3",
+   "quien": "senora"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "levanta"
+  },
+  "c71_ab_bingo",
+  "cq_no",
+  "c71_sa_hoy_no",
+  {
+   "dots": 6
+  },
+  {
+   "act": "vacia"
+  },
+  "c71_sa_otra",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "sa",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  {
+   "calc": "na",
+   "cond": "sa=1",
+   "then": "2",
+   "else": "5"
+  },
+  {
+   "calc": "na",
+   "cond": "sa=2",
+   "then": "3",
+   "else": "$na"
+  },
+  {
+   "calc": "na",
+   "cond": "sa=3",
+   "then": "4",
+   "else": "$na"
+  },
+  {
+   "act": "sol71",
+   "dia": "$sa"
+  },
+  "c71_a_$sa",
+  {
+   "draw": "ta",
+   "options": [
+    "cafe",
+    "flores",
+    "pan",
+    "pollo",
+    "jugo"
+   ]
+  },
+  {
+   "draw": "ea",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  {
+   "if": "ta=cafe",
+   "then": [
+    {
+     "calc": "ua",
+     "cond": "ea=1",
+     "then": "flores",
+     "else": "pan"
+    },
+    {
+     "calc": "ua",
+     "cond": "ea=3",
+     "then": "pollo",
+     "else": "$ua"
+    },
+    {
+     "calc": "ua",
+     "cond": "ea=4",
+     "then": "jugo",
+     "else": "$ua"
+    }
+   ],
+   "else": [
+    {
+     "if": "ta=flores",
+     "then": [
+      {
+       "calc": "ua",
+       "cond": "ea=1",
+       "then": "cafe",
+       "else": "pan"
+      },
+      {
+       "calc": "ua",
+       "cond": "ea=3",
+       "then": "pollo",
+       "else": "$ua"
+      },
+      {
+       "calc": "ua",
+       "cond": "ea=4",
+       "then": "jugo",
+       "else": "$ua"
+      }
+     ],
+     "else": [
+      {
+       "if": "ta=pan",
+       "then": [
+        {
+         "calc": "ua",
+         "cond": "ea=1",
+         "then": "cafe",
+         "else": "flores"
+        },
+        {
+         "calc": "ua",
+         "cond": "ea=3",
+         "then": "pollo",
+         "else": "$ua"
+        },
+        {
+         "calc": "ua",
+         "cond": "ea=4",
+         "then": "jugo",
+         "else": "$ua"
+        }
+       ],
+       "else": [
+        {
+         "if": "ta=pollo",
+         "then": [
+          {
+           "calc": "ua",
+           "cond": "ea=1",
+           "then": "cafe",
+           "else": "flores"
+          },
+          {
+           "calc": "ua",
+           "cond": "ea=3",
+           "then": "pan",
+           "else": "$ua"
+          },
+          {
+           "calc": "ua",
+           "cond": "ea=4",
+           "then": "jugo",
+           "else": "$ua"
+          }
+         ],
+         "else": [
+          {
+           "calc": "ua",
+           "cond": "ea=1",
+           "then": "cafe",
+           "else": "flores"
+          },
+          {
+           "calc": "ua",
+           "cond": "ea=3",
+           "then": "pan",
+           "else": "$ua"
+          },
+          {
+           "calc": "ua",
+           "cond": "ea=4",
+           "then": "pollo",
+           "else": "$ua"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "hm",
+    "mh"
+   ]
+  },
+  {
+   "draw": "ha",
+   "options": [
+    "hoy",
+    "manana"
+   ]
+  },
+  {
+   "calc": "za",
+   "cond": "ha=hoy",
+   "then": "$ta",
+   "else": "$ua"
+  },
+  {
+   "calc": "ka",
+   "cond": "ha=hoy",
+   "then": "$ua",
+   "else": "$ta"
+  },
+  {
+   "calc": "ga",
+   "cond": "ha=hoy",
+   "then": "$sa",
+   "else": "$na"
+  },
+  {
+   "calc": "ia",
+   "cond": "ha=hoy",
+   "then": "$na",
+   "else": "$sa"
+  },
+  {
+   "calc": "pa",
+   "cond": "ha=hoy",
+   "then": "dia$sa",
+   "else": "dia$na"
+  },
+  {
+   "act": "muestra",
+   "carta": "$za"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "dia1",
+    "dia2",
+    "dia3",
+    "dia4",
+    "dia5",
+    "dia6",
+    "dia7"
+   ],
+   "pick": "$pa",
+   "tests": "$ha",
+   "lock": true,
+   "lead": [],
+   "line": "c71_$oa_$ta_$ua",
+   "right": [
+    {
+     "act": "cuelga",
+     "carta": "$za",
+     "dia": "$ga",
+     "quien": "coqui"
+    },
+    {
+     "act": "lee71",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "cuelga",
+     "carta": "$ka",
+     "dia": "$ia",
+     "quien": "senora"
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xd",
+     "cond": "x=dia1",
+     "then": "1",
+     "else": "0"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia2",
+     "then": "2",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia3",
+     "then": "3",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia4",
+     "then": "4",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia5",
+     "then": "5",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia6",
+     "then": "6",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia7",
+     "then": "7",
+     "else": "$xd"
+    },
+    {
+     "act": "cuelga",
+     "carta": "$za",
+     "dia": "$xd",
+     "quien": "coqui"
+    },
+    {
+     "act": "lee71",
+     "ok": 0
+    },
+    "c71_no_$ha_$za",
+    {
+     "act": "quita",
+     "dia": "$xd"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "se_va71",
+       "quien": "senor"
+      },
+      {
+       "act": "gente",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "se_va71",
+       "quien": "tito"
+      },
+      {
+       "act": "gente",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  {
+   "act": "noche71"
+  },
+  {
+   "calc": "sb",
+   "cond": "sa=1",
+   "then": "2",
+   "else": "5"
+  },
+  {
+   "calc": "sb",
+   "cond": "sa=2",
+   "then": "3",
+   "else": "$sb"
+  },
+  {
+   "calc": "sb",
+   "cond": "sa=3",
+   "then": "4",
+   "else": "$sb"
+  },
+  {
+   "calc": "nb",
+   "cond": "sb=2",
+   "then": "3",
+   "else": "6"
+  },
+  {
+   "calc": "nb",
+   "cond": "sb=3",
+   "then": "4",
+   "else": "$nb"
+  },
+  {
+   "calc": "nb",
+   "cond": "sb=4",
+   "then": "5",
+   "else": "$nb"
+  },
+  {
+   "act": "sol71",
+   "dia": "$sb"
+  },
+  "c71_b_$sb",
+  {
+   "draw": "tb",
+   "options": [
+    "cafe",
+    "flores",
+    "pan",
+    "pollo",
+    "jugo"
+   ]
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ]
+  },
+  {
+   "if": "tb=cafe",
+   "then": [
+    {
+     "calc": "ub",
+     "cond": "eb=1",
+     "then": "flores",
+     "else": "pan"
+    },
+    {
+     "calc": "ub",
+     "cond": "eb=3",
+     "then": "pollo",
+     "else": "$ub"
+    },
+    {
+     "calc": "ub",
+     "cond": "eb=4",
+     "then": "jugo",
+     "else": "$ub"
+    }
+   ],
+   "else": [
+    {
+     "if": "tb=flores",
+     "then": [
+      {
+       "calc": "ub",
+       "cond": "eb=1",
+       "then": "cafe",
+       "else": "pan"
+      },
+      {
+       "calc": "ub",
+       "cond": "eb=3",
+       "then": "pollo",
+       "else": "$ub"
+      },
+      {
+       "calc": "ub",
+       "cond": "eb=4",
+       "then": "jugo",
+       "else": "$ub"
+      }
+     ],
+     "else": [
+      {
+       "if": "tb=pan",
+       "then": [
+        {
+         "calc": "ub",
+         "cond": "eb=1",
+         "then": "cafe",
+         "else": "flores"
+        },
+        {
+         "calc": "ub",
+         "cond": "eb=3",
+         "then": "pollo",
+         "else": "$ub"
+        },
+        {
+         "calc": "ub",
+         "cond": "eb=4",
+         "then": "jugo",
+         "else": "$ub"
+        }
+       ],
+       "else": [
+        {
+         "if": "tb=pollo",
+         "then": [
+          {
+           "calc": "ub",
+           "cond": "eb=1",
+           "then": "cafe",
+           "else": "flores"
+          },
+          {
+           "calc": "ub",
+           "cond": "eb=3",
+           "then": "pan",
+           "else": "$ub"
+          },
+          {
+           "calc": "ub",
+           "cond": "eb=4",
+           "then": "jugo",
+           "else": "$ub"
+          }
+         ],
+         "else": [
+          {
+           "calc": "ub",
+           "cond": "eb=1",
+           "then": "cafe",
+           "else": "flores"
+          },
+          {
+           "calc": "ub",
+           "cond": "eb=3",
+           "then": "pan",
+           "else": "$ub"
+          },
+          {
+           "calc": "ub",
+           "cond": "eb=4",
+           "then": "pollo",
+           "else": "$ub"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "hm",
+    "mh"
+   ]
+  },
+  {
+   "draw": "hb",
+   "options": [
+    "hoy",
+    "manana"
+   ]
+  },
+  {
+   "calc": "zb",
+   "cond": "hb=hoy",
+   "then": "$tb",
+   "else": "$ub"
+  },
+  {
+   "calc": "kb",
+   "cond": "hb=hoy",
+   "then": "$ub",
+   "else": "$tb"
+  },
+  {
+   "calc": "gb",
+   "cond": "hb=hoy",
+   "then": "$sb",
+   "else": "$nb"
+  },
+  {
+   "calc": "ib",
+   "cond": "hb=hoy",
+   "then": "$nb",
+   "else": "$sb"
+  },
+  {
+   "calc": "pb",
+   "cond": "hb=hoy",
+   "then": "dia$sb",
+   "else": "dia$nb"
+  },
+  {
+   "act": "muestra",
+   "carta": "$zb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "dia1",
+    "dia2",
+    "dia3",
+    "dia4",
+    "dia5",
+    "dia6",
+    "dia7"
+   ],
+   "pick": "$pb",
+   "tests": "$hb",
+   "lock": true,
+   "lead": [],
+   "line": "c71_$ob_$tb_$ub",
+   "right": [
+    {
+     "act": "cuelga",
+     "carta": "$zb",
+     "dia": "$gb",
+     "quien": "coqui"
+    },
+    {
+     "act": "lee71",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "cuelga",
+     "carta": "$kb",
+     "dia": "$ib",
+     "quien": "senora"
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xd",
+     "cond": "x=dia1",
+     "then": "1",
+     "else": "0"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia2",
+     "then": "2",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia3",
+     "then": "3",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia4",
+     "then": "4",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia5",
+     "then": "5",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia6",
+     "then": "6",
+     "else": "$xd"
+    },
+    {
+     "calc": "xd",
+     "cond": "x=dia7",
+     "then": "7",
+     "else": "$xd"
+    },
+    {
+     "act": "cuelga",
+     "carta": "$zb",
+     "dia": "$xd",
+     "quien": "coqui"
+    },
+    {
+     "act": "lee71",
+     "ok": 0
+    },
+    "c71_no_$hb_$zb",
+    {
+     "act": "quita",
+     "dia": "$xd"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "se_va71",
+       "quien": "senor"
+      },
+      {
+       "act": "gente",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "se_va71",
+       "quien": "tito"
+      },
+      {
+       "act": "gente",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 9
+  },
+  {
+   "set": {
+    "hora": "noche"
+   }
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final71",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final71",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final71",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 10
+  },
+  "c71_sa_tarde",
+  "p_cq_hm",
+  "c71_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c71_nuevo",
+  "c71_sa_hoy_lunes",
+  "c71_cual_hoy",
+  "c71_sa_manana_martes",
+  "c71_cual_manana",
+  "c71_sa_cuenta",
+  "c71_toca_semana",
+  "c71_sa_hoy_frutas",
+  "c69_donde_frutas",
+  "c71_sa_manana_bola",
+  "c69_donde_bola",
+  "c71_ab_que_dia",
+  "c71_sa_martes",
+  "c71_ab_bingo",
+  "cq_no",
+  "c71_sa_hoy_no",
+  "c71_sa_otra",
+  "c71_a_3",
+  "c71_hm_flores_pan",
+  "c71_b_4",
+  "c71_mh_cafe_jugo",
+  "c71_sa_tarde",
+  "p_cq_hm",
+  "c71_fin"
+ ]
+}

@@ -664,6 +664,21 @@ Written as La esquina is (`lib/src/parada/`: `parada_set.dart`, `parada_places.d
   `tool/make_reloj_sprites_test.dart` (`docs/proyecto/pixel/port/reloj-sprites.png`, `.txt`). Tests: `reloj_set_test`,
   `reloj_sprites_test`, `reloj_acts_test`; in feature_story `reloj_stories_test` and `tool/reloj_paths_test.dart`
   (rules: `reloj_rules.dart`).
+- **El quiosco** (order 60, `lib/src/quiosco/`: `quiosco_set.dart`, `quiosco_places.dart`, `quiosco_sprites.dart`,
+  `quiosco.dart`): on `plaza_base.dart` and `plaza_cast.dart`. 4 states in `coqui/ref/pp/quiosco/` (0 of 51,840 differ).
+  Glass dome (`quesitos`), box (`caja`), 3 frosty/melted limbers (`limbers`), Beto's cake-stand tower (`torre`), number
+  candles `1..12` (`vela_a..c`), frog-head tray & 7 box items, and all 19 cast members. Sprite sheet:
+  `tool/make_quiosco_sprites_test.dart` (`docs/proyecto/pixel/port/quiosco-sprites.png`, `.txt`). Tests:
+  `quiosco_set_test`, `quiosco_sprites_test`, `quiosco_acts_test`; in feature_story `quiosco_stories_test` and
+  `tool/quiosco_paths_test.dart` (rules: `quiosco_rules.dart`).
+- **El calendario** (order 61, `lib/src/calendario/`: `calendario_set.dart`, `calendario_places.dart`,
+  `calendario_sprites.dart`, `calendario.dart`): on `plaza_base.dart` and `plaza_cast.dart`. 6 states in
+  `coqui/ref/pp/calendario/` (0 of 51,840 differ). 11 picture cards (`gancho.k.j`, `arco_gancho`, `muestra`), sun peg
+  (`sol1..7`), balloons (`globos`), kite & bows (`chiringa`, `lazo1..3`), Canelo (`perro`), card box (`caja`), and
+  baskets (`cestas`). Sprite sheet: `tool/make_calendario_sprites_test.dart`
+  (`docs/proyecto/pixel/port/calendario-sprites.png`, `.txt`). Tests: `calendario_set_test`, `calendario_sprites_test`,
+  `calendario_acts_test`; in feature_story `calendario_stories_test` and `tool/calendario_paths_test.dart` (rules:
+  `calendario_rules.dart`).
 
 ## Pictures: by name, the size rule, old pictures until converted
 

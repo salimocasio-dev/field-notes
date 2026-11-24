@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1356,
-  "totalBytes": 84196691,
+  "files": 1436,
+  "totalBytes": 89012854,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -522,6 +522,246 @@
       "path": "caja/hora-tarde/zb.json",
       "bytes": 322,
       "sha256": "d1e7e54bac63bede8a588416f31f57a9aa671ddd07c40c32bf700e5da36d9fe8"
+    },
+    {
+      "path": "calendario/manana-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d4fd2607ff3bbbd19a11024d8300c0fb8e2e15295339ea4dd8a2fa2c68cfe2d8"
+    },
+    {
+      "path": "calendario/manana-0/kinds.json",
+      "bytes": 305,
+      "sha256": "f1c51d6acdaf445b394313b0885bf8992e809fdb21dabc80290d01d79fd6bd85"
+    },
+    {
+      "path": "calendario/manana-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "3cfca756c1b8b2973570af63a06e12b4b4594cf0fd35b9a60d88c145e5d64294"
+    },
+    {
+      "path": "calendario/manana-0/pix.json",
+      "bytes": 370,
+      "sha256": "addb2ea8edef391264a120b0e30de5e4f36d4152307d35f8c6a28929332e534e"
+    },
+    {
+      "path": "calendario/manana-0/pix.png",
+      "bytes": 11593,
+      "sha256": "17ce8c78677fb5d4287a7a3e6d81ff153523c63ac2de6be3b92a65cc8494e2d4"
+    },
+    {
+      "path": "calendario/manana-0/state.json",
+      "bytes": 939,
+      "sha256": "6e718af1afaeea030cc95c92f5b5c13924b024b182618cb59ec7f0b9bd740ec7"
+    },
+    {
+      "path": "calendario/manana-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "baebabeff2476416923fc0a2a5bcd98daba8216d4e5808decf58e1d8cc08e023"
+    },
+    {
+      "path": "calendario/manana-0/zb.json",
+      "bytes": 322,
+      "sha256": "43892d6d82724de86945752906dd3956466415c30d4810a3cc2e20ee78b52e46"
+    },
+    {
+      "path": "calendario/manana-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d4fd2607ff3bbbd19a11024d8300c0fb8e2e15295339ea4dd8a2fa2c68cfe2d8"
+    },
+    {
+      "path": "calendario/manana-1/kinds.json",
+      "bytes": 305,
+      "sha256": "f1c51d6acdaf445b394313b0885bf8992e809fdb21dabc80290d01d79fd6bd85"
+    },
+    {
+      "path": "calendario/manana-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "c9205b103bf7f5f7628f389829da53cf50b9051f9f060e0b6ad2c176f8cb89d3"
+    },
+    {
+      "path": "calendario/manana-1/pix.json",
+      "bytes": 370,
+      "sha256": "b34d7a2062cc09aa52c75eccf3db035525e898d0a2f210455f1d025310ad82ba"
+    },
+    {
+      "path": "calendario/manana-1/pix.png",
+      "bytes": 11789,
+      "sha256": "dc909204141ec54319e31dc6e651c83a73be6b6b664c0fe20918f6420f53fe90"
+    },
+    {
+      "path": "calendario/manana-1/state.json",
+      "bytes": 939,
+      "sha256": "84d9764a01e13c914ae5d488c3d1429cde7a665cce1c710d99e71fbd09eeb0f7"
+    },
+    {
+      "path": "calendario/manana-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "a3cbfd2d0708fd65d7fc24594abfa95c8c6fff772783576c32f9a4374001519c"
+    },
+    {
+      "path": "calendario/manana-1/zb.json",
+      "bytes": 322,
+      "sha256": "ee85ee8032a47f970170f87a5d783eba2cd4ff39c2eb59f297a84b899ab9680c"
+    },
+    {
+      "path": "calendario/noche-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d4fd2607ff3bbbd19a11024d8300c0fb8e2e15295339ea4dd8a2fa2c68cfe2d8"
+    },
+    {
+      "path": "calendario/noche-0/kinds.json",
+      "bytes": 305,
+      "sha256": "f1c51d6acdaf445b394313b0885bf8992e809fdb21dabc80290d01d79fd6bd85"
+    },
+    {
+      "path": "calendario/noche-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "b281788545b35a4bdf9a814b7490cbb1298279df80b8b7ce5c656a385ca36b31"
+    },
+    {
+      "path": "calendario/noche-0/pix.json",
+      "bytes": 370,
+      "sha256": "2632d3786131fdd03dc02c145274c5da6f86c898acc0bb7ce846d84d3c046801"
+    },
+    {
+      "path": "calendario/noche-0/pix.png",
+      "bytes": 15392,
+      "sha256": "953543fb98a12ab25199af80aad6c928024a46932a797a2e58081b70a45c2953"
+    },
+    {
+      "path": "calendario/noche-0/state.json",
+      "bytes": 937,
+      "sha256": "b43db0aa4118e621df1ce66710d351b0dfa54c28cff9b1746be5ead553910170"
+    },
+    {
+      "path": "calendario/noche-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "baebabeff2476416923fc0a2a5bcd98daba8216d4e5808decf58e1d8cc08e023"
+    },
+    {
+      "path": "calendario/noche-0/zb.json",
+      "bytes": 322,
+      "sha256": "43892d6d82724de86945752906dd3956466415c30d4810a3cc2e20ee78b52e46"
+    },
+    {
+      "path": "calendario/noche-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d4fd2607ff3bbbd19a11024d8300c0fb8e2e15295339ea4dd8a2fa2c68cfe2d8"
+    },
+    {
+      "path": "calendario/noche-1/kinds.json",
+      "bytes": 305,
+      "sha256": "f1c51d6acdaf445b394313b0885bf8992e809fdb21dabc80290d01d79fd6bd85"
+    },
+    {
+      "path": "calendario/noche-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "4fe923d672bec67d3e94a06887e0d0d4858ae872bbd43e7b0b74208a3f531579"
+    },
+    {
+      "path": "calendario/noche-1/pix.json",
+      "bytes": 370,
+      "sha256": "7f60bf2a08b8f9340853f7c78a6c108601e879270980a7519a2ad102ca26fd89"
+    },
+    {
+      "path": "calendario/noche-1/pix.png",
+      "bytes": 15579,
+      "sha256": "d8dffb55263f94d8819c9ee25e247cdb29ea7a026bc6089d892ce907912c801f"
+    },
+    {
+      "path": "calendario/noche-1/state.json",
+      "bytes": 937,
+      "sha256": "1151ef8e41b6c52151d3f13d80dbcb25a07cd0036062f4fd0f27112d96f4bb5a"
+    },
+    {
+      "path": "calendario/noche-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "a3cbfd2d0708fd65d7fc24594abfa95c8c6fff772783576c32f9a4374001519c"
+    },
+    {
+      "path": "calendario/noche-1/zb.json",
+      "bytes": 322,
+      "sha256": "ee85ee8032a47f970170f87a5d783eba2cd4ff39c2eb59f297a84b899ab9680c"
+    },
+    {
+      "path": "calendario/tarde-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d4fd2607ff3bbbd19a11024d8300c0fb8e2e15295339ea4dd8a2fa2c68cfe2d8"
+    },
+    {
+      "path": "calendario/tarde-0/kinds.json",
+      "bytes": 305,
+      "sha256": "f1c51d6acdaf445b394313b0885bf8992e809fdb21dabc80290d01d79fd6bd85"
+    },
+    {
+      "path": "calendario/tarde-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "b0ef1a05e8efa37742b6c7adf8fd7285ad47f95a803a7200a22d36c0e842ad19"
+    },
+    {
+      "path": "calendario/tarde-0/pix.json",
+      "bytes": 370,
+      "sha256": "049def3d6803686561c73722c114bdda51a8a44be974aa4ab48d3b1bca83b785"
+    },
+    {
+      "path": "calendario/tarde-0/pix.png",
+      "bytes": 11593,
+      "sha256": "8a18ba0bc8aa9e948994fa9fc354292cb8c561e50f8d5f41e9bcbf8af65c5057"
+    },
+    {
+      "path": "calendario/tarde-0/state.json",
+      "bytes": 937,
+      "sha256": "adf5bede23b3617e9746e1a7ff44e67e061e6f737961017cf74846c800686123"
+    },
+    {
+      "path": "calendario/tarde-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "baebabeff2476416923fc0a2a5bcd98daba8216d4e5808decf58e1d8cc08e023"
+    },
+    {
+      "path": "calendario/tarde-0/zb.json",
+      "bytes": 322,
+      "sha256": "43892d6d82724de86945752906dd3956466415c30d4810a3cc2e20ee78b52e46"
+    },
+    {
+      "path": "calendario/tarde-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d4fd2607ff3bbbd19a11024d8300c0fb8e2e15295339ea4dd8a2fa2c68cfe2d8"
+    },
+    {
+      "path": "calendario/tarde-1/kinds.json",
+      "bytes": 305,
+      "sha256": "f1c51d6acdaf445b394313b0885bf8992e809fdb21dabc80290d01d79fd6bd85"
+    },
+    {
+      "path": "calendario/tarde-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "b103887d3836e1c44133b32ed86e953d14e41c4b748e8f41fd360f808da8209d"
+    },
+    {
+      "path": "calendario/tarde-1/pix.json",
+      "bytes": 370,
+      "sha256": "edc8f0166f07c69d12d8451266ddb374d2febfffd438eb206f44a6f4c4f76d16"
+    },
+    {
+      "path": "calendario/tarde-1/pix.png",
+      "bytes": 11789,
+      "sha256": "c4c2364cee838a91a7fb99cde79a20ef1919155a5ee814a9f2339522d91fb7e1"
+    },
+    {
+      "path": "calendario/tarde-1/state.json",
+      "bytes": 937,
+      "sha256": "f48482f499b4c50aa3d738b337d5521750522041be5ad7fbd1debf25d3924cb4"
+    },
+    {
+      "path": "calendario/tarde-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "a3cbfd2d0708fd65d7fc24594abfa95c8c6fff772783576c32f9a4374001519c"
+    },
+    {
+      "path": "calendario/tarde-1/zb.json",
+      "bytes": 322,
+      "sha256": "ee85ee8032a47f970170f87a5d783eba2cd4ff39c2eb59f297a84b899ab9680c"
     },
     {
       "path": "camino/gran-0/kinds.bin",
@@ -5772,6 +6012,166 @@
       "path": "plaza/tarde-1-1/zb.json",
       "bytes": 322,
       "sha256": "65b0351ce7fe1e2758f048ce91c48c8cf8350b45ebf9c373d8194c2a4cf3aa34"
+    },
+    {
+      "path": "quiosco/mediodia-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "27d340e77655bc61434504a951efe77184b55771338c547aa80d7d9b36c2986a"
+    },
+    {
+      "path": "quiosco/mediodia-0/kinds.json",
+      "bytes": 305,
+      "sha256": "a6d6c693783d879cab4c0fad18e1dba16287ef70137d4e409100ff2a8ea34c4d"
+    },
+    {
+      "path": "quiosco/mediodia-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "25403321611547a86d7ce5771e0599ede31aa58b060042ccc25435c3ef796279"
+    },
+    {
+      "path": "quiosco/mediodia-0/pix.json",
+      "bytes": 370,
+      "sha256": "78ef059f4eab8b60342e5623c2ff2f7fe029d1a9b4d44fba0e71a56211e4fa41"
+    },
+    {
+      "path": "quiosco/mediodia-0/pix.png",
+      "bytes": 13266,
+      "sha256": "f9e8e5fc0eda41559ce8d6bebb6395339da4671fe1bf24ec67c425479bc949ac"
+    },
+    {
+      "path": "quiosco/mediodia-0/state.json",
+      "bytes": 939,
+      "sha256": "1ead8b65e6d093c759a096a95fb8d925dc87c447aed7d36b93dd3c08a673245f"
+    },
+    {
+      "path": "quiosco/mediodia-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "cb257681792209ca1caa80f3e9018c43619b276d56ac517b19671b0792d1f877"
+    },
+    {
+      "path": "quiosco/mediodia-0/zb.json",
+      "bytes": 322,
+      "sha256": "dbc8d16cbd4f65162693310bed978767861142559827c7433b99dc9b0501d941"
+    },
+    {
+      "path": "quiosco/mediodia-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "27d340e77655bc61434504a951efe77184b55771338c547aa80d7d9b36c2986a"
+    },
+    {
+      "path": "quiosco/mediodia-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a6d6c693783d879cab4c0fad18e1dba16287ef70137d4e409100ff2a8ea34c4d"
+    },
+    {
+      "path": "quiosco/mediodia-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "8635eb6de1ebcf18217f916643b13ab4f719a6eb8393f37e451ca91ea34bc541"
+    },
+    {
+      "path": "quiosco/mediodia-1/pix.json",
+      "bytes": 370,
+      "sha256": "4a25d095cfb2512a9803e7dbfd5526801fd71d5dabcdf1ddbd1e0912e1e5defa"
+    },
+    {
+      "path": "quiosco/mediodia-1/pix.png",
+      "bytes": 13483,
+      "sha256": "474acc84eaab33cfccbc1b15bb220fc593882689407ed624b86c50a28c49c56b"
+    },
+    {
+      "path": "quiosco/mediodia-1/state.json",
+      "bytes": 939,
+      "sha256": "7a295d5ca1ed1b1c61419cef73d1bb331c89fd033ab71155dc357c465c9064d2"
+    },
+    {
+      "path": "quiosco/mediodia-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "d4e5fc6def43195e910471e1fa83c7a30db64635906f9d30cbcfd8fa32b9e1ce"
+    },
+    {
+      "path": "quiosco/mediodia-1/zb.json",
+      "bytes": 322,
+      "sha256": "8015c42ecfd53b2c98f77de4f807cc1d1976205c7977233aac9492d36bfc1598"
+    },
+    {
+      "path": "quiosco/tarde-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "27d340e77655bc61434504a951efe77184b55771338c547aa80d7d9b36c2986a"
+    },
+    {
+      "path": "quiosco/tarde-0/kinds.json",
+      "bytes": 305,
+      "sha256": "a6d6c693783d879cab4c0fad18e1dba16287ef70137d4e409100ff2a8ea34c4d"
+    },
+    {
+      "path": "quiosco/tarde-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "4620219735198af27044be831bf0b761e7f9bef98fc6d31c3b5c50d6a784732a"
+    },
+    {
+      "path": "quiosco/tarde-0/pix.json",
+      "bytes": 370,
+      "sha256": "3383542780b1622ab8c97bda0820006820b69d6bec88e5ff41bee7932ff2f654"
+    },
+    {
+      "path": "quiosco/tarde-0/pix.png",
+      "bytes": 13262,
+      "sha256": "93cdbfe94ed330f61ed94619a2a5fd4baf0e8804d1e62d342c966aa8d5895e38"
+    },
+    {
+      "path": "quiosco/tarde-0/state.json",
+      "bytes": 933,
+      "sha256": "b5d9c17b8e5ff292d9fe20a1ae3839ed3ec01e8817d2e5e6e0d7b4f7ab02ac90"
+    },
+    {
+      "path": "quiosco/tarde-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "cb257681792209ca1caa80f3e9018c43619b276d56ac517b19671b0792d1f877"
+    },
+    {
+      "path": "quiosco/tarde-0/zb.json",
+      "bytes": 322,
+      "sha256": "dbc8d16cbd4f65162693310bed978767861142559827c7433b99dc9b0501d941"
+    },
+    {
+      "path": "quiosco/tarde-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "27d340e77655bc61434504a951efe77184b55771338c547aa80d7d9b36c2986a"
+    },
+    {
+      "path": "quiosco/tarde-1/kinds.json",
+      "bytes": 305,
+      "sha256": "a6d6c693783d879cab4c0fad18e1dba16287ef70137d4e409100ff2a8ea34c4d"
+    },
+    {
+      "path": "quiosco/tarde-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "7191ff24e8b3a09a724a5b1d8dcb023b662dcc7e6e66789302cf6cdd52199501"
+    },
+    {
+      "path": "quiosco/tarde-1/pix.json",
+      "bytes": 370,
+      "sha256": "452628450de13d915918d26f98a7f2321ad2a6a6acf575888b72ba13aa4b77ea"
+    },
+    {
+      "path": "quiosco/tarde-1/pix.png",
+      "bytes": 13477,
+      "sha256": "d49ec204d1f98e483cd52c5cd6a50e3583a42cf13608d94324c99a36f296a133"
+    },
+    {
+      "path": "quiosco/tarde-1/state.json",
+      "bytes": 933,
+      "sha256": "44ab9db13e8266e1fc8bbf1686f48d6bd29c79522bd3a15a757e0b7e6a8c5309"
+    },
+    {
+      "path": "quiosco/tarde-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "d4e5fc6def43195e910471e1fa83c7a30db64635906f9d30cbcfd8fa32b9e1ce"
+    },
+    {
+      "path": "quiosco/tarde-1/zb.json",
+      "bytes": 322,
+      "sha256": "8015c42ecfd53b2c98f77de4f807cc1d1976205c7977233aac9492d36bfc1598"
     },
     {
       "path": "reloj/mediodia-0/kinds.bin",
