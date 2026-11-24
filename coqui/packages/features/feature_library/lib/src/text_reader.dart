@@ -298,11 +298,12 @@ class _TextReaderState extends State<TextReader> {
     _s.nav.back();
   }
 
-  List<({int pageIndex, ReaderSentence sentence})> _recordedSentences() {
+  List<({int firstPage, int lastPage, ReaderSentence sentence})>
+  _recordedSentences() {
     final doc = _doc;
     if (doc == null || _pages.isEmpty) return const [];
-    final out = <({int pageIndex, ReaderSentence sentence})>[];
-    final seen = <String>{};
+    final out = <({int firstPage, int lastPage, ReaderSentence sentence})>[];
+    final byId = <String, int>{};
     for (final page in _pages) {
       final chapter = doc.chapters[page.chapterIndex];
       for (final slice in page.slices) {
@@ -310,8 +311,21 @@ class _TextReaderState extends State<TextReader> {
         for (final r in paragraph.sentenceRanges) {
           if (r.sentence.clipId == null) continue;
           if (r.end <= slice.charStart || r.start >= slice.charEnd) continue;
-          if (seen.add(r.sentence.id)) {
-            out.add((pageIndex: page.pageIndex, sentence: r.sentence));
+          final existingIndex = byId[r.sentence.id];
+          if (existingIndex == null) {
+            byId[r.sentence.id] = out.length;
+            out.add((
+              firstPage: page.pageIndex,
+              lastPage: page.pageIndex,
+              sentence: r.sentence,
+            ));
+          } else {
+            final prev = out[existingIndex];
+            out[existingIndex] = (
+              firstPage: prev.firstPage,
+              lastPage: math.max(prev.lastPage, page.pageIndex),
+              sentence: prev.sentence,
+            );
           }
         }
       }
@@ -348,12 +362,14 @@ class _TextReaderState extends State<TextReader> {
     var startIdx = -1;
     if (_lastSentenceId != null) {
       final idx = list.indexWhere((e) => e.sentence.id == _lastSentenceId);
-      if (idx >= 0 && list[idx].pageIndex == _pageIndex) {
+      if (idx >= 0 &&
+          list[idx].firstPage <= _pageIndex &&
+          _pageIndex <= list[idx].lastPage) {
         startIdx = idx;
       }
     }
     if (startIdx < 0) {
-      startIdx = list.indexWhere((e) => e.pageIndex >= _pageIndex);
+      startIdx = list.indexWhere((e) => e.lastPage >= _pageIndex);
     }
     if (startIdx < 0) startIdx = 0;
 
@@ -373,8 +389,8 @@ class _TextReaderState extends State<TextReader> {
         if (!mounted || request != _playback) return;
         final item = list[i];
         setState(() {
-          if (_pageIndex != item.pageIndex) {
-            _pageIndex = item.pageIndex;
+          if (_pageIndex < item.firstPage || _pageIndex > item.lastPage) {
+            _pageIndex = item.firstPage;
           }
           _activeSentenceId = item.sentence.id;
           _lastSentenceId = item.sentence.id;
@@ -407,16 +423,18 @@ class _TextReaderState extends State<TextReader> {
     var target = list
         .where((e) => e.sentence.id == _lastSentenceId)
         .firstOrNull;
-    target ??= list.where((e) => e.pageIndex == _pageIndex).firstOrNull;
-    target ??= list.where((e) => e.pageIndex >= _pageIndex).firstOrNull;
+    target ??= list
+        .where((e) => e.firstPage <= _pageIndex && _pageIndex <= e.lastPage)
+        .firstOrNull;
+    target ??= list.where((e) => e.lastPage >= _pageIndex).firstOrNull;
     target ??= list.first;
 
     final request = ++_playback;
     setState(() {
       _playing = true;
       _selectedWord = null;
-      if (_pageIndex != target!.pageIndex) {
-        _pageIndex = target.pageIndex;
+      if (_pageIndex < target!.firstPage || _pageIndex > target.lastPage) {
+        _pageIndex = target.firstPage;
       }
       _activeSentenceId = target.sentence.id;
       _lastSentenceId = target.sentence.id;

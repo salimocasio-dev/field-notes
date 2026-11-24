@@ -535,6 +535,84 @@ void main() {
         TextDirection.rtl,
       );
     });
+
+    testWidgets(
+      'Listen on a continuation page plays the overlapping recorded sentence instead of jumping to page 1',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final longSentence = List.filled(
+          45,
+          'Caminamos despacio por la orilla del mar escuchando las olas.',
+        ).join(' ');
+        final course = _CourseWithWords(
+          books: {
+            'span-book': Book(
+              id: 'span-book',
+              title: 'Largo',
+              readable: true,
+              pages: [
+                BookPage(image: 'img/1.png', clips: ['s1', 's2']),
+              ],
+            ),
+          },
+          stories: {
+            'span-book': {
+              'title': 'Largo',
+              'clips': {
+                's1': line('narr', 'Primera línea corta.'),
+                's2': line('narr', longSentence),
+              },
+            },
+          },
+          recorded: {'s1', 's2'},
+        );
+        final clips = TimedClips(length: const Duration(milliseconds: 500));
+        final services = fakeServices(course: course, clips: clips);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              services: services,
+              id: 'span-book',
+              initialSettings: const ReaderSettings(step: 7),
+            ),
+          ),
+        );
+        await settle(tester);
+
+        // Turn to page 2 (continuation of sentence s2).
+        await tester.fling(
+          find.byType(ReaderPageView),
+          const Offset(-300, 0),
+          800,
+        );
+        await settle(tester);
+        expect(find.textContaining('2 / '), findsOneWidget);
+
+        // Pressing Listen on page 2 plays overlapping sentence s2 without jumping back to page 1.
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        expect(clips.played, ['s2']);
+        expect(find.textContaining('2 / '), findsOneWidget);
+
+        await tester.tap(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.pause)),
+        );
+        await settle(tester);
+      },
+    );
+
+    test('firstGraphemeEnd keeps decomposed accented drop cap intact', () {
+      const decomposed = 'E\u0301rase una vez en la isla.';
+      expect(firstGraphemeEnd(decomposed), 2);
+      expect(decomposed.substring(0, firstGraphemeEnd(decomposed)), 'E\u0301');
+    });
   });
 
   group('Reader screenshots', () {

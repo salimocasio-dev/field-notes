@@ -128,9 +128,10 @@ class ReaderPageView extends StatelessWidget {
     final paragraphText = paragraph.text;
 
     if (slice.hasDropCap && slice.dropCapBesideEnd != null) {
-      final besideEnd = slice.dropCapBesideEnd!.clamp(1, slice.charEnd);
-      final firstChar = paragraphText.substring(0, 1);
-      final besideText = paragraphText.substring(1, besideEnd);
+      final firstEnd = firstGraphemeEnd(paragraphText).clamp(1, slice.charEnd);
+      final besideEnd = slice.dropCapBesideEnd!.clamp(firstEnd, slice.charEnd);
+      final firstChar = paragraphText.substring(0, firstEnd);
+      final besideText = paragraphText.substring(firstEnd, besideEnd);
       final restText = besideEnd < slice.charEnd
           ? paragraphText.substring(besideEnd, slice.charEnd)
           : '';
@@ -138,7 +139,6 @@ class ReaderPageView extends StatelessWidget {
       final firstToken = tokens.isNotEmpty && tokens.first.start == 0
           ? tokens.first.text
           : firstChar;
-      final dropKey = GlobalKey();
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -146,27 +146,35 @@ class ReaderPageView extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  final rect = _globalRectInViewport(dropKey, viewportKey);
-                  if (rect != null) {
-                    onWordTap(
-                      slice.chapterIndex,
-                      slice.paragraphIndex,
-                      0,
-                      firstToken,
-                      rect,
+              Builder(
+                builder: (dropContext) => GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    final rect = _contextRectInViewport(
+                      dropContext,
+                      viewportKey,
                     );
-                  }
-                },
-                child: Padding(
-                  key: dropKey,
-                  padding: const EdgeInsetsDirectional.only(top: 4, end: 2),
-                  child: Text(
-                    firstChar,
-                    locale: locale,
-                    style: dropCapStyleFor(settings, language, palette.heading),
+                    if (rect != null) {
+                      onWordTap(
+                        slice.chapterIndex,
+                        slice.paragraphIndex,
+                        0,
+                        firstToken,
+                        rect,
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(top: 4, end: 2),
+                    child: Text(
+                      firstChar,
+                      locale: locale,
+                      style: dropCapStyleFor(
+                        settings,
+                        language,
+                        palette.heading,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -175,7 +183,7 @@ class ReaderPageView extends StatelessWidget {
                   paragraph: paragraph,
                   chapterIndex: slice.chapterIndex,
                   paragraphIndex: slice.paragraphIndex,
-                  charStart: 1,
+                  charStart: firstEnd,
                   charEnd: besideEnd,
                   text: besideText,
                   hasIndent: false,
@@ -233,8 +241,11 @@ class ReaderPageView extends StatelessWidget {
   }
 }
 
-Rect? _globalRectInViewport(GlobalKey targetKey, GlobalKey viewportKey) {
-  final targetBox = targetKey.currentContext?.findRenderObject() as RenderBox?;
+Rect? _contextRectInViewport(
+  BuildContext targetContext,
+  GlobalKey viewportKey,
+) {
+  final targetBox = targetContext.findRenderObject() as RenderBox?;
   final viewportBox =
       viewportKey.currentContext?.findRenderObject() as RenderBox?;
   if (targetBox == null || viewportBox == null) return null;
@@ -292,6 +303,7 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
   final _blockKey = GlobalKey();
   final _recognizers = <TapGestureRecognizer?>[];
   late List<WordToken> _tokens;
+  late List<WordToken> _fullTokens;
 
   @override
   void initState() {
@@ -304,7 +316,9 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.text != widget.text ||
         oldWidget.language != widget.language ||
-        oldWidget.charStart != widget.charStart) {
+        oldWidget.charStart != widget.charStart ||
+        oldWidget.paragraph != widget.paragraph ||
+        oldWidget.earIndex != widget.earIndex) {
       _rebuildRecognizers();
     }
   }
@@ -323,30 +337,37 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
     }
     _recognizers.clear();
     _tokens = widget.language.tokens(widget.text);
-    for (final token in _tokens) {
-      final full = _fullTokenFor(token);
+    final paragraphTokens = widget.language.tokens(widget.paragraph.text);
+    _fullTokens = <WordToken>[];
+    var pIdx = 0;
+    for (var i = 0; i < _tokens.length; i++) {
+      final token = _tokens[i];
+      final globalStart = widget.charStart + token.start;
+      final globalEnd = widget.charStart + token.end;
+      while (pIdx < paragraphTokens.length &&
+          paragraphTokens[pIdx].end <= globalStart) {
+        pIdx++;
+      }
+      final full =
+          (pIdx < paragraphTokens.length &&
+              globalStart >= paragraphTokens[pIdx].start &&
+              globalEnd <= paragraphTokens[pIdx].end)
+          ? paragraphTokens[pIdx]
+          : WordToken(token.text, globalStart, globalEnd);
+      _fullTokens.add(full);
       if (widget.earIndex.markFor(full.text) == WordMarkKind.none) {
         _recognizers.add(null);
       } else {
+        final fullToken = full;
         _recognizers.add(
-          TapGestureRecognizer()..onTap = () => _handleTokenTap(token),
+          TapGestureRecognizer()
+            ..onTap = () => _handleTokenTap(token, fullToken),
         );
       }
     }
   }
 
-  WordToken _fullTokenFor(WordToken localToken) {
-    final globalStart = widget.charStart + localToken.start;
-    final globalEnd = widget.charStart + localToken.end;
-    for (final pToken in widget.language.tokens(widget.paragraph.text)) {
-      if (globalStart >= pToken.start && globalEnd <= pToken.end) {
-        return pToken;
-      }
-    }
-    return WordToken(localToken.text, globalStart, globalEnd);
-  }
-
-  void _handleTokenTap(WordToken token) {
+  void _handleTokenTap(WordToken token, WordToken full) {
     final box = _blockKey.currentContext?.findRenderObject() as RenderBox?;
     final viewportBox =
         widget.viewportKey.currentContext?.findRenderObject() as RenderBox?;
@@ -388,7 +409,6 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
       union = union.expandToInclude(b.toRect());
     }
     final topLeft = box.localToGlobal(union.topLeft, ancestor: viewportBox);
-    final full = _fullTokenFor(token);
     widget.onWordTap(
       widget.chapterIndex,
       widget.paragraphIndex,
@@ -421,10 +441,9 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
     bool isLitAt(int paragraphOffset) =>
         litActive && sentenceIdAt(paragraphOffset) == widget.activeSentenceId;
 
-    bool isSelectedToken(WordToken token) {
+    bool isSelectedToken(WordToken full) {
       final sel = widget.selectedWord;
       if (sel == null) return false;
-      final full = _fullTokenFor(token);
       return sel.chapterIndex == widget.chapterIndex &&
           sel.paragraphIndex == widget.paragraphIndex &&
           sel.charOffset == full.start;
@@ -464,7 +483,7 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
       if (token.start > cursor) {
         addGapText(cursor, token.start);
       }
-      final selected = isSelectedToken(token);
+      final selected = isSelectedToken(_fullTokens[i]);
       final lit = isLitAt(widget.charStart + token.start);
       TextStyle? tokenStyle;
       if (selected) {
@@ -508,6 +527,7 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
         charEnd: widget.charEnd,
         text: widget.text,
         tokens: _tokens,
+        fullTokens: _fullTokens,
         hasIndent: widget.hasIndent,
         indentWidth: widget.settings.bodyFontSize * 1.4,
         hasAudio: widget.hasAudio,
@@ -541,6 +561,7 @@ class _ReaderTextDecorator extends CustomPainter {
     required this.charEnd,
     required this.text,
     required this.tokens,
+    required this.fullTokens,
     required this.hasIndent,
     required this.indentWidth,
     required this.hasAudio,
@@ -562,6 +583,7 @@ class _ReaderTextDecorator extends CustomPainter {
   final int charEnd;
   final String text;
   final List<WordToken> tokens;
+  final List<WordToken> fullTokens;
   final bool hasIndent;
   final double indentWidth;
   final bool hasAudio;
@@ -573,28 +595,6 @@ class _ReaderTextDecorator extends CustomPainter {
   final TextDirection textDirection;
   final Locale locale;
   final TextScaler textScaler;
-
-  int _fullTokenStart(WordToken localToken) {
-    final globalStart = charStart + localToken.start;
-    final globalEnd = charStart + localToken.end;
-    for (final pToken in language.tokens(paragraph.text)) {
-      if (globalStart >= pToken.start && globalEnd <= pToken.end) {
-        return pToken.start;
-      }
-    }
-    return globalStart;
-  }
-
-  String _fullTokenText(WordToken localToken) {
-    final globalStart = charStart + localToken.start;
-    final globalEnd = charStart + localToken.end;
-    for (final pToken in language.tokens(paragraph.text)) {
-      if (globalStart >= pToken.start && globalEnd <= pToken.end) {
-        return pToken.text;
-      }
-    }
-    return localToken.text;
-  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -660,13 +660,14 @@ class _ReaderTextDecorator extends CustomPainter {
 
     final selectedPaint = Paint()..color = NocheColors.listening;
 
-    for (final token in tokens) {
-      final globalOffset = _fullTokenStart(token);
+    for (var i = 0; i < tokens.length; i++) {
+      final token = tokens[i];
+      final full = fullTokens[i];
       final isSelected =
           selectedWord != null &&
           selectedWord!.chapterIndex == chapterIndex &&
           selectedWord!.paragraphIndex == paragraphIndex &&
-          selectedWord!.charOffset == globalOffset;
+          selectedWord!.charOffset == full.start;
 
       final boxes = tp.getBoxesForSelection(
         TextSelection(
@@ -694,7 +695,7 @@ class _ReaderTextDecorator extends CustomPainter {
 
       if (!settings.underlineWords) continue;
 
-      final mark = earIndex.markFor(_fullTokenText(token));
+      final mark = earIndex.markFor(full.text);
       if (mark == WordMarkKind.none || mark == WordMarkKind.known) continue;
 
       for (final box in boxes) {
@@ -724,6 +725,12 @@ class _ReaderTextDecorator extends CustomPainter {
   @override
   bool shouldRepaint(_ReaderTextDecorator old) =>
       old.text != text ||
+      old.charStart != charStart ||
+      old.charEnd != charEnd ||
+      old.hasIndent != hasIndent ||
+      old.hasAudio != hasAudio ||
+      old.paragraph != paragraph ||
+      old.language != language ||
       old.settings != settings ||
       old.activeSentenceId != activeSentenceId ||
       old.selectedWord != selectedWord ||

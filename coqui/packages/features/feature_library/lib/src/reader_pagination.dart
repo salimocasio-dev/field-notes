@@ -60,6 +60,16 @@ bool isDropCapEligible({
   return language.tokens(paragraphText).length >= 2;
 }
 
+final RegExp _firstGraphemePattern = RegExp(r'^.\p{M}*', unicode: true);
+
+/// Returns the UTF-16 end index of the first base character plus any trailing
+/// combining marks so decomposed accented letters (e.g. `E` + `\u0301`) stay intact.
+int firstGraphemeEnd(String text) {
+  if (text.isEmpty) return 0;
+  final match = _firstGraphemePattern.firstMatch(text);
+  return match?.end ?? 1;
+}
+
 TextStyle dropCapStyleFor(
   ReaderSettings settings,
   Language language,
@@ -289,8 +299,9 @@ List<ReaderPage> paginateDocument({
         );
 
         if (dropCap) {
-          final firstChar = paragraphText.substring(0, 1);
-          final dropText = paragraphText.substring(1);
+          final firstEnd = firstGraphemeEnd(paragraphText);
+          final firstChar = paragraphText.substring(0, firstEnd);
+          final dropText = paragraphText.substring(firstEnd);
           final dropCapW = measureDropCapWidth(
             firstChar: firstChar,
             settings: settings,
@@ -315,7 +326,7 @@ List<ReaderPage> paginateDocument({
             besideTargetLines,
             narrowLines.length,
           );
-          var besideEnd = 1;
+          var besideEnd = firstEnd;
           if (besideLinesCount > 0) {
             // Walk line by line at narrowWidth.
             var cursor = 0;
@@ -351,7 +362,7 @@ List<ReaderPage> paginateDocument({
                   ? narrowLines.first.height
                   : bodyLineHeight;
             }
-            besideEnd = 1 + cursor.clamp(0, dropText.length);
+            besideEnd = firstEnd + cursor.clamp(0, dropText.length);
             final besideBlockHeight = math.max(besideHeight, dropCapTotalH);
             final afterBeside = paragraphText.substring(besideEnd);
 
