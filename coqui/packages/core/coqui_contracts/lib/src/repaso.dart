@@ -8,7 +8,7 @@ library;
 
 import 'package:coqui_contracts/src/course.dart';
 import 'package:coqui_contracts/src/json.dart';
-import 'package:coqui_contracts/src/normalize.dart';
+import 'package:coqui_contracts/src/language.dart';
 import 'package:coqui_contracts/src/progress.dart';
 
 /// How a word's Ear is scored (`puntua`): by ¿Cuál? and ¿Qué oyes?, by ¿Qué oyes? only, or by no game.
@@ -239,9 +239,9 @@ bool repasoStoryFinished(ProgressStore p, String id) {
   return false;
 }
 
-/// The words of [s], lower case, accents and signs gone (`normalize`, PAL.norm, split).
+/// The words of [s], lower case, accents and signs gone (`Language.spanish.normalize`, PAL.norm, split).
 List<String> repasoTokens(String s) => [
-  for (final t in normalize(s).trim().split(' '))
+  for (final t in Language.spanish.normalize(s).trim().split(' '))
     if (t.isNotEmpty) t,
 ];
 

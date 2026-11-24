@@ -98,6 +98,56 @@ final class TabRoute extends AppRoute {
   String toString() => 'TabRoute($tab)';
 }
 
+/// The language picker sheet.
+final class LanguagesRoute extends AppRoute {
+  const LanguagesRoute();
+
+  @override
+  bool operator ==(Object other) => other is LanguagesRoute;
+  @override
+  int get hashCode => (LanguagesRoute).hashCode;
+  @override
+  String toString() => 'LanguagesRoute()';
+}
+
+/// The subscription plans screen.
+final class PlansRoute extends AppRoute {
+  const PlansRoute();
+
+  @override
+  bool operator ==(Object other) => other is PlansRoute;
+  @override
+  int get hashCode => (PlansRoute).hashCode;
+  @override
+  String toString() => 'PlansRoute()';
+}
+
+/// Adding the learner's own books and texts to the Library.
+final class ImportRoute extends AppRoute {
+  const ImportRoute();
+
+  @override
+  bool operator ==(Object other) => other is ImportRoute;
+  @override
+  int get hashCode => (ImportRoute).hashCode;
+  @override
+  String toString() => 'ImportRoute()';
+}
+
+/// One place's screen on the map.
+final class PlaceRoute extends AppRoute {
+  const PlaceRoute(this.placeId);
+  final String placeId;
+
+  @override
+  bool operator ==(Object other) =>
+      other is PlaceRoute && other.placeId == placeId;
+  @override
+  int get hashCode => Object.hash(PlaceRoute, placeId);
+  @override
+  String toString() => 'PlaceRoute($placeId)';
+}
+
 /// Moves between screens. Only the shell implements it.
 abstract interface class AppNavigator {
   void go(AppRoute route);

@@ -31,6 +31,11 @@ Models, interfaces, routes. Pure Dart.
   that scores it with two fair wrong tiles among the words he has met). The session's plan, the Palabras tab's Repaso
   card ("N words today") and the map's Today card all ask it; it gives null when the course has not read the games'
   data, and the caller then keeps today's rule (a word with a picture pair). `repasoStoryFinished`, `repasoTokens`.
+- N2.1: `Language`, `LanguageDirection`, `WordToken`, `LanguageCatalog` + `CourseLanguage` extension (`course.language`,
+  default `Language.spanish`, separate interface like `RepasoCatalog` so existing catalogs keep compiling), `Plan`,
+  `Feature`, `Entitlements`, `AllowAllEntitlements`, four new routes (`LanguagesRoute`, `PlansRoute`, `ImportRoute`,
+  `PlaceRoute`), and `CallBrief.agentId` (default `spanishCallAgentId`). Global `normalize()` stays, delegating to
+  `Language.spanish.normalize`, documented as deprecated until N2.11 removes it.
 
 ## Run and test it alone
 

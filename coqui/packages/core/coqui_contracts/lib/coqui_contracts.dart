@@ -13,6 +13,8 @@ library;
 export 'package:coqui_contracts/src/audio.dart';
 export 'package:coqui_contracts/src/call.dart';
 export 'package:coqui_contracts/src/course.dart';
+export 'package:coqui_contracts/src/entitlements.dart';
+export 'package:coqui_contracts/src/language.dart';
 export 'package:coqui_contracts/src/mulberry32.dart';
 export 'package:coqui_contracts/src/normalize.dart';
 export 'package:coqui_contracts/src/platform.dart';
