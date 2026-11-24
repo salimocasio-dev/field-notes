@@ -1212,6 +1212,40 @@ New scenes, as La calle's: no old scene file, no `ref/escenas/` folder. Step a (
 - New people to draw (looks in the scripts): Ana, her mamá, Beto, her abuela, six visitors with maps and cameras; don Tito; the vendedor; the maestra, the doctor, the cocinero and the policía in work clothes; a young woman. New speaker keys: `ana`, `mama_ana`, `abuela_ana`, `beto`, `tito`, `vendedor`, `maestra`, `doctor`, `cocinero`, `policia`, `la_joven`, `nino`, `nina`.
 - Beats the scripts show for which no act is named are listed in each generator as comments (a walk-on, somebody lifting a thing): the port may fold each into the act beside it.
 
+### Orders 59, 60 and 61 (reloj, quiosco, calendario), step b. **Result (Nov 24): done, merged to main (PR #126, issues #18, #19, #20).**
+
+Built by Gemini (Antigravity) on `story/18`. At Salim's word the three scenes went in one PR. Reviewed by Codex (reloj, three rounds: the bell's 12 strokes; the rivals' small bingo cards and their beans; the long hand's sweep kept on the 3-o'clock half, clear of don Tito; free taps in story 64 that let the hand drift past 180°; the frog's bounce cut off above row 0). Reviewed and merged by Claude. The PR's numbers, the builder's unless marked:
+- **El reloj** (stories 63 to 65): set 6 states equal (0 of 51,840 differ); acts test passes (20 things answer); 1,780 paths, 63,400 rule checks, 0 errors, 0 broken (bingo 24 paths, y-media 448, que-hora-es 1,308 by rounds); six app plays reach the end with no words on screen. 50 sprites: `docs/proyecto/pixel/port/reloj-sprites.png`.
+- **El quiosco** (stories 66 to 68): set 4 states equal; acts test passes (27 things answer); 3,168 paths, 91,488 rule checks, 0 errors, 0 broken; six app plays reach the end. 53 sprites: `quiosco-sprites.png`.
+- **El calendario** (stories 69 to 71): set 6 states equal; acts test passes (22 things answer); 3,328 paths, 107,776 rule checks, 0 errors, 0 broken; six app plays reach the end. 28 sprites: `calendario-sprites.png`.
+- No change to the runner. Run again by the reviewer before merge: boundaries ok, format 0 changed, analyze clean, `check.js` ok, the three scenes' set, sprite and act tests (78 pass), their story tests (10 pass); CI (`coqui.yml`, `coqui-guardrails.yml`) green on the merged head. Not yet in a numbered build (`coqui/BUILD` unchanged).
+
+**For the content lane: 19 acts left OPEN** (marked `// OPEN:` in the code):
+- El reloj (9, `reloj.dart`):
+  1. `pie1` is drawn at `pie2`, `manecilla` at `mano_*`, `mesa_abuela` at `mesa_abuela.coqui`.
+  2. The `puertita` shutter's thirds follow the set's `DOOR`.
+  3. Each rival's small card lies flat on his table.
+  4. After a wrong card in 63 the frog comes back to `pie2`.
+  5. 63 step 4 and rounds A/B: no `ir` before `cartas`, so the frog hops back to `pie2`.
+  6. 63's pastelillos are served only at `plato`.
+  7. 65: the rival celebrates at his own table, since no walk to the prizes is named.
+  8. 65: abuela celebrates at her table.
+  9. 63 step 8: don Tito winds the clock from `balcon1`, not at the tower's foot.
+- El quiosco (6, `quiosco.dart`):
+  1. `barra1` is drawn at `barra_c` (66) and `barra_e` (68).
+  2. 67 step 3: the box item waits at `barra2` while the señor sits on `taburete2`.
+  3. 67's ending: Canelo laps by the melted cups (no spot).
+  4. 68's wrong move: Canelo eats the broken bizcocho (no spot).
+  5. 68 step 5: `nina` goes to `cola3`.
+  6. The frog carries the tray from `barra_c` to `barra_e`.
+- El calendario (4, `calendario.dart`):
+  1. 69 step 3: abuela and Luis are seated on `asiento1`/`asiento3` with no arrival act.
+  2. The señor sits bareheaded, so don Tito's head stays clear.
+  3. 70's ending: the kite's height by the number of bows.
+  4. 70: after a wrong card on columns 1 to 4 the frog hops back to `escalon5`.
+
+The three sheets' `notes` still carry the design's open points; settle them with these.
+
 ### Orders 62 to 65. La playa (place 7): orilla, sombrilla, ropa, cielo
 
 New scenes, as La plaza's. Step a (design) is the content lane's; step b is this lane's, after La plaza's four.
