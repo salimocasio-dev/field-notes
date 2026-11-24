@@ -36,7 +36,7 @@ class PalabrasStore implements ProgressStore {
           ? null
           : shared_store.SharedProgress.forStorage(_kv),
       _onSaved = null {
-    if (language != null && language.code == Language.spanish.code) {
+    if (language != null) {
       shared_store.migrateLegacySpanish(_kv, _shared!);
     }
     _load();

@@ -774,5 +774,30 @@ void main() {
       expect(stores.languagesWithProgress, ['es']);
       stores.dispose();
     });
+
+    test('opening a standalone non-Spanish store first migrates legacy Spanish progress and preserves shared totals', () {
+      final kv = MemoryKeyValueStore(
+        stored: _legacyFixture,
+        key: PalabrasStore.storageKey,
+      );
+      final clock = SettableClock(_t0);
+
+      final ar = PalabrasStore(kv, clock, language: arabic);
+      ar.addMinutes(3);
+
+      expect(kv.data['coqui.es.palabras.v1'], _legacyFixture);
+      expect(kv.data[PalabrasStore.storageKey], _legacyFixture);
+      expect(ar.minutes, 17.5);
+      expect(ar.streak, 2);
+
+      final stores = ProgressStores(kv, clock);
+      expect(stores.minutes, 17.5);
+      expect(stores.streak, 2);
+      expect(stores.languagesWithProgress, ['es']);
+      expect(stores.forLanguage(Language.spanish).word('casa'), isNotNull);
+
+      ar.dispose();
+      stores.dispose();
+    });
   });
 }
