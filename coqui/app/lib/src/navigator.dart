@@ -66,7 +66,12 @@ class ShellNavigator implements AppNavigator {
       }
       return;
     }
-    if (!answers(route)) return;
+    if (!answers(route)) {
+      debugPrint(
+        'No screen registered for route ${addressOf(route)} ($route).',
+      );
+      return;
+    }
     if (cur == null || cur is TabRoute) {
       _push(route);
     } else {
@@ -107,6 +112,9 @@ class ShellNavigator implements AppNavigator {
       return;
     }
     if (!answers(route)) {
+      debugPrint(
+        'No screen registered for route ${addressOf(route)} ($route).',
+      );
       // an address no screen answers: the map, in its place
       final tab = TabRoute(prev is TabRoute ? prev.tab : startTab);
       _current = tab;

@@ -230,7 +230,8 @@ async function run(phone, state) {
   for (const [label, id, sure] of [
     ['Biblioteca', 'library', /^Biblioteca$|^feature_library$/],
     ['Palabras', 'words', /^Palabras$|^feature_words$/],
-    ['Hablar', 'speak', /^Opens when you finish /],
+    // The seed has an unlocked hero call; its locked-place message is absent.
+    ['Hablar', 'speak', seed ? /^By place$/ : /^Opens when you finish /],
     ['Yo', 'me', /day streak/],
     ['Mapa', 'map', seed ? /^2 · El parque$/ : /^1 · La casa$/],
   ]) {

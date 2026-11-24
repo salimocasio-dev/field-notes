@@ -323,7 +323,7 @@ void main() {
     );
     await app.settle(rounds: 10);
     expect(app.lessonShown, isTrue);
-    expect(find.byType(CoquiTabBar), findsNothing);
+    expect(find.byType(NocheTabBar), findsNothing);
     expect(find.text('Mi cuaderno'), findsOneWidget);
     expect(find.text('1 / 2'), findsOneWidget);
     await app.tap(find.byTooltip('Close'));
