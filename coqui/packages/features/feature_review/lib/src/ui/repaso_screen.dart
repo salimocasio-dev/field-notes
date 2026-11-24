@@ -243,16 +243,19 @@ class RepasoScreenState extends State<RepasoScreen> {
     return math.min(CoquiMetrics.lessonColumnMax, c.maxWidth - 2 * side);
   }
 
-  double _textH(BuildContext context, String text, TextStyle style, double w) {
+  Size _textSize(BuildContext context, String text, TextStyle style, double w) {
     final tp = TextPainter(
       text: TextSpan(text: text, style: style),
       textDirection: TextDirection.ltr,
       textScaler: MediaQuery.textScalerOf(context),
     )..layout(maxWidth: w);
-    final h = tp.height;
+    final size = tp.size;
     tp.dispose();
-    return h;
+    return size;
   }
+
+  double _textH(BuildContext context, String text, TextStyle style, double w) =>
+      _textSize(context, text, style, w).height;
 
   /// The line that says what to do, with the chip's place at its right: as high as the tallest of the six lines, so that
   /// what stands under it (the round speaker) is in the same place in every game.
@@ -282,7 +285,7 @@ class RepasoScreenState extends State<RepasoScreen> {
     BuildItem() => _Reveal(it.text, null, it.sentence.picture),
     MatchItem() => const _Reveal(null, null, null),
     WhereItem() => _Reveal(it.text, null, null),
-    SayItem() => _Reveal(it.line.text, it.word, it.line.picture),
+    SayItem() => const _Reveal(null, null, null),
   };
 
   /// ¿Dónde?'s pictures on this screen: how many, and how big. The room is what is left under the line and the
@@ -327,7 +330,7 @@ class RepasoScreenState extends State<RepasoScreen> {
         BuildItem() => _build(context, it, width),
         MatchItem() => _match(it),
         WhereItem() => _where(context, it, width, budget, dpr),
-        SayItem() => _say(it),
+        SayItem() => _say(context, it, width),
       };
       // the reveal's picture gets what is left under the game's area
       final left = c.maxHeight - above - area.height - 2 * _gap - _bottomPad;
@@ -411,21 +414,31 @@ class RepasoScreenState extends State<RepasoScreen> {
   }
 
   /// The sentence written out, the word lit (the book's lit line colours).
-  Widget _litText(String text, String? word) {
+  Widget _litText(
+    String text,
+    String? word, {
+    TextStyle? style,
+    bool underline = false,
+  }) {
     final at = word == null ? null : findWord(text, word);
-    final style = CoquiText.bookLine;
+    final base = style ?? CoquiText.bookLine;
     return Text.rich(
       at == null
-          ? TextSpan(text: text, style: style)
+          ? TextSpan(text: text, style: base)
           : TextSpan(
-              style: style,
+              style: base,
               children: [
                 TextSpan(text: text.substring(0, at.start)),
                 TextSpan(
                   text: text.substring(at.start, at.end),
-                  style: style.copyWith(
+                  style: base.copyWith(
                     fontWeight: FontWeight.w700,
                     backgroundColor: CoquiColors.bookLineLit,
+                    decoration: underline ? TextDecoration.underline : null,
+                    decorationColor: underline
+                        ? CoquiColors.bookLineLitBar
+                        : null,
+                    decorationThickness: underline ? 2 : null,
                   ),
                 ),
                 TextSpan(text: text.substring(at.end)),
@@ -780,8 +793,9 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  // Dilo: the mic with its ring while the app listens, the line under it, and what was heard
-  _Area _say(SayItem it) {
+  // Dilo: the speaking prompt card (target word + sentence with target word highlighted), the mic with its ring while
+  // the app listens, the line under it, and what was heard
+  _Area _say(BuildContext context, SayItem it, double width) {
     final s = session;
     final status = switch (s.mic) {
       MicState.listening => RepasoStrings.listening,
@@ -813,11 +827,110 @@ class RepasoScreenState extends State<RepasoScreen> {
         ),
       ),
     );
+    const pillPadX = CoquiMetrics.s12;
+    const pillPadY = CoquiMetrics.s4;
+    const pillBorder = CoquiMetrics.borderButton;
+    const calloutSpacing = CoquiMetrics.s8;
+    const calloutRunSpacing = CoquiMetrics.s4;
+    final innerW = math.max(
+      0.0,
+      width - 2 * (CoquiMetrics.s16 + CoquiMetrics.borderButton),
+    );
+    final labelSize = _textSize(
+      context,
+      RepasoStrings.sayTargetWord,
+      CoquiText.lessonSub,
+      innerW,
+    );
+    final pillTextMaxW = math.max(0.0, innerW - 2 * (pillPadX + pillBorder));
+    final pillTextSize = _textSize(
+      context,
+      it.word,
+      CoquiText.lessonBodyStrong,
+      pillTextMaxW,
+    );
+    final pillW = pillTextSize.width + 2 * (pillPadX + pillBorder);
+    final pillH = pillTextSize.height + 2 * (pillPadY + pillBorder);
+    final fitsOneLine =
+        labelSize.width + calloutSpacing + pillW <= innerW + 0.01;
+    final calloutH = fitsOneLine
+        ? math.max(labelSize.height, pillH)
+        : labelSize.height + calloutRunSpacing + pillH;
+    final sentenceH = _textH(
+      context,
+      it.line.text,
+      CoquiText.lessonLine,
+      innerW,
+    );
+    final cardH =
+        2 * (CoquiMetrics.s16 + CoquiMetrics.borderButton) +
+        calloutH +
+        CoquiMetrics.s12 +
+        sentenceH;
     return _Area(
       Column(
         children: [
-          // room for the mic's ring to pulse without touching the speaker above it
-          const SizedBox(height: CoquiMetrics.s16),
+          Container(
+            key: const ValueKey('say-prompt'),
+            width: double.infinity,
+            padding: const EdgeInsets.all(CoquiMetrics.s16),
+            decoration: BoxDecoration(
+              color: CoquiColors.lessonTile,
+              borderRadius: BorderRadius.circular(CoquiMetrics.radiusCard),
+              border: Border.all(
+                color: CoquiColors.lessonLine,
+                width: CoquiMetrics.borderButton,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Wrap(
+                  key: const ValueKey('say-target-word'),
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: calloutSpacing,
+                  runSpacing: calloutRunSpacing,
+                  children: [
+                    Text(
+                      RepasoStrings.sayTargetWord,
+                      style: CoquiText.lessonSub,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: pillPadX,
+                        vertical: pillPadY,
+                      ),
+                      decoration: BoxDecoration(
+                        color: CoquiColors.bookLineLit,
+                        borderRadius: BorderRadius.circular(
+                          CoquiMetrics.radiusPicture,
+                        ),
+                        border: Border.all(
+                          color: CoquiColors.bookLineLitBar,
+                          width: pillBorder,
+                        ),
+                      ),
+                      child: Text(it.word, style: CoquiText.lessonBodyStrong),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: CoquiMetrics.s12),
+                KeyedSubtree(
+                  key: const ValueKey('say-sentence'),
+                  child: _litText(
+                    it.line.text,
+                    it.word,
+                    style: CoquiText.lessonLine,
+                    underline: true,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // room for the mic's ring to pulse without touching the prompt card above it
+          const SizedBox(height: CoquiMetrics.s24),
           SizedBox(
             height: CoquiMetrics.startDisc,
             child: OverflowBox(
@@ -849,7 +962,7 @@ class RepasoScreenState extends State<RepasoScreen> {
           ),
         ],
       ),
-      CoquiMetrics.s16 + CoquiMetrics.startDisc + CoquiMetrics.s8 + 56,
+      cardH + CoquiMetrics.s24 + CoquiMetrics.startDisc + CoquiMetrics.s8 + 56,
     );
   }
 }

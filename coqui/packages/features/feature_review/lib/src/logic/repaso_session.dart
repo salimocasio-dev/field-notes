@@ -25,6 +25,7 @@ abstract final class RepasoStrings {
   static const nothingHeard = 'Nothing heard';
   static const listening = 'Listening…';
   static const tryAgain = 'Try again';
+  static const sayTargetWord = 'Word to say';
   static const gotItFirst = 'Got it the first time';
   static String heard(String what) => 'Heard: $what';
 
@@ -425,7 +426,6 @@ class RepasoSession extends LessonBase {
 
   Iterable<String> _clipsOf(GameItem it) => switch (it) {
     MatchItem(:final sentences) => [for (final s in sentences) s.clip],
-    SayItem(:final line) => [line.clip],
     HearItem(:final solo, :final speakers) => [if (speakers) ...solo.nonNulls],
     _ => const [],
   };
@@ -1014,12 +1014,12 @@ class RepasoSession extends LessonBase {
       if (!done.isCompleted) done.complete();
     };
     var listening = false;
-    _replayWith(it.line.before, () => !listening && mic != MicState.ok);
+    _replayWith(it.line.clip, () => !listening && mic != MicState.ok);
     Future<void> turn() async {
       mic = MicState.dead;
       changed();
       await waitMs(300);
-      await say(it.line.before, 0);
+      await say(it.line.clip, 0);
       for (var attempt = 1; attempt <= 2 && !done.isCompleted; attempt++) {
         mic = MicState.ready;
         yourTurn = true;

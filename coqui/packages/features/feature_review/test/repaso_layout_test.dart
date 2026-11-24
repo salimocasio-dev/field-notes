@@ -14,7 +14,7 @@ void main() {
             "Listen. Touch the words in the order you hear. Two don't belong.",
         GameKind.match: 'Touch a sound, then its word.',
         GameKind.where: 'Listen. Touch the picture that fits.',
-        GameKind.say: 'Listen. Say what comes next.',
+        GameKind.say: 'Listen. Say the sentence back.',
       },
     );
     expect(gameInstruction(GameKind.where), gameInstruction(GameKind.cual));
