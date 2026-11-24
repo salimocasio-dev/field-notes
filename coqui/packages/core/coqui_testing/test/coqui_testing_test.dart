@@ -791,4 +791,198 @@ void main() {
       expect(find.text('book la-lluvia'), findsOneWidget);
     });
   });
+
+  group('FakeCourseCatalog Spanish language parity', () {
+    test('defaults to Language.spanish and wires spanishCallAgentId', () async {
+      final c = FakeCourseCatalog();
+      expect(c, isA<LanguageCatalog>());
+      expect(c.language, Language.spanish);
+      final CourseCatalog asCourse = c;
+      expect(asCourse.language, Language.spanish);
+      await c.load();
+      expect(c.callFor('casa')!.agentId, spanishCallAgentId);
+      expect(fakeServices().course.language, Language.spanish);
+    });
+  });
+
+  group('FakeCourseCatalog.arabic()', () {
+    final es = FakeCourseCatalog();
+    final ar = FakeCourseCatalog.arabic();
+    setUpAll(() async {
+      await es.load();
+      await ar.load();
+    });
+
+    test('exposes arabicTestLanguage metadata and chrome keys', () {
+      expect(ar, isA<LanguageCatalog>());
+      expect(ar.language, arabicTestLanguage);
+      final CourseCatalog asCourse = ar;
+      expect(asCourse.language, arabicTestLanguage);
+      expect(ar.language.direction, LanguageDirection.rtl);
+      expect(ar.language.script, 'Arab');
+      expect(ar.language.code, 'ar');
+      expect(ar.language.partnerName, 'Tariq');
+      expect(ar.language.callAgentId, 'agent_arabic_test');
+      expect(ar.language.tabNames.keys, unorderedEquals(languageTabKeys));
+      expect(ar.language.micWords.keys, unorderedEquals(languageMicKeys));
+    });
+
+    test('preserves Spanish sample places and stories structure', () async {
+      expect(ar.places.single.id, 'casa');
+      expect(ar.places.single.name, 'البيت');
+      expect(ar.places.single.stories, es.places.single.stories);
+      expect(ar.meta('la-lluvia')!.title, 'المطر');
+      expect(ar.meta('el-bizcocho')!.title, 'الكعكة');
+      expect(ar.meta('donde-esta-el-pajaro')!.title, 'أين الطائر؟');
+      final s = await ar.story('la-lluvia');
+      expect(s['scene'], 'frente');
+      expect(s['next'], 'el-bizcocho');
+      expect((await ar.book('la-lluvia'))!.title, 'المطر');
+    });
+
+    test('overlays Arabic clip texts while keeping audio marks and roles', () {
+      final clip = ar.clip('esta_casa')!;
+      expect(clip.text, 'هذا بيت جدة.');
+      expect([clip.startMs, clip.endMs], [193, 2041]);
+      expect(ar.fixedClip('story_praise'), 'muy_bien');
+      expect(ar.clip('muy_bien')!.text, 'ممتاز!');
+      expect(ar.goodbyeWords, ['وداعاً', 'إلى الغد']);
+    });
+
+    test('uses Arabic call brief with arabicTestLanguage.callAgentId', () {
+      final call = ar.callFor('casa')!;
+      expect(call.agentId, 'agent_arabic_test');
+      expect(call.photo, 'بيت');
+      expect(ar.pairFor(call.photo!), isNotNull);
+    });
+
+    test('uses Arabic normalize, tokens, pairFor and linesWith', () async {
+      expect(ar.pairFor('بيت')!.word, 'بيت');
+      // Alef folding via language.normalize: ا matches أ.
+      expect(ar.pairFor('اغلق')!.word, 'أغلق');
+      // Diacritic stripping via language.normalize: مرحبا matches مرحباً.
+      expect(ar.pairFor('مرحبا')!.word, 'مرحباً');
+
+      final lines = await ar.linesWith('بيت', [
+        'la-lluvia',
+        'el-bizcocho',
+        'donde-esta-el-pajaro',
+      ]);
+      expect(lines, isNotEmpty);
+      expect(
+        lines.every((l) => ar.language.normalize(l.text).contains(' بيت ')),
+        isTrue,
+      );
+
+      expect(ar.language.tokens('هذا بيت جدة.'), const [
+        WordToken('هذا', 0, 3),
+        WordToken('بيت', 4, 7),
+        WordToken('جدة', 8, 11),
+      ]);
+    });
+
+    test('wires cleanly into fakeServices', () async {
+      final s = fakeServices(course: FakeCourseCatalog.arabic());
+      expect(s.course.language.direction, LanguageDirection.rtl);
+      await s.course.load();
+      final t0 = s.clock.nowMs();
+      expect(await s.clips.play('esta_casa'), isTrue);
+      expect(s.clock.nowMs() - t0, 2041 - 193);
+    });
+  });
+
+  group('FakeEntitlements', () {
+    test('defaults to Plan.courseAndCalls with empty prices/minutes/logs', () {
+      final e = FakeEntitlements();
+      expect(e.plan, Plan.courseAndCalls);
+      for (final f in Feature.values) {
+        expect(e.has(f), isTrue, reason: 'feature $f');
+      }
+      for (final p in Plan.values) {
+        expect(e.priceOf(p), isNull, reason: 'priceOf $p');
+        expect(e.callMinutes(p), isNull, reason: 'callMinutes $p');
+      }
+      expect(e.bought, isEmpty);
+      expect(e.restores, 0);
+      e.dispose();
+    });
+
+    test('gates every (Plan, Feature) combination accurately', () {
+      final e = FakeEntitlements(plan: Plan.free);
+      expect(e.has(Feature.everyPlace), isFalse);
+      expect(e.has(Feature.library), isFalse);
+      expect(e.has(Feature.calls), isFalse);
+
+      e.plan = Plan.course;
+      expect(e.has(Feature.everyPlace), isTrue);
+      expect(e.has(Feature.library), isTrue);
+      expect(e.has(Feature.calls), isFalse);
+
+      e.plan = Plan.courseAndCalls;
+      expect(e.has(Feature.everyPlace), isTrue);
+      expect(e.has(Feature.library), isTrue);
+      expect(e.has(Feature.calls), isTrue);
+      e.dispose();
+    });
+
+    test(
+      'emits on changes when plan changes and handles dispose safely',
+      () async {
+        final e = FakeEntitlements(plan: Plan.free);
+        var events = 0;
+        var done = false;
+        final sub = e.changes.listen(
+          (_) => events++,
+          onDone: () => done = true,
+        );
+
+        e.plan = Plan.free;
+        e.plan = Plan.course;
+        e.plan = Plan.course;
+        e.plan = Plan.courseAndCalls;
+        await Future<void>.delayed(Duration.zero);
+        expect(events, 2);
+
+        e.dispose();
+        await Future<void>.delayed(Duration.zero);
+        expect(done, isTrue);
+
+        expect(() => e.plan = Plan.free, returnsNormally);
+        expect(e.plan, Plan.free);
+        unawaited(sub.cancel());
+      },
+    );
+
+    test('returns configured and mutated prices and call minutes', () {
+      final e = FakeEntitlements(
+        prices: {Plan.course: '\$9.99/mo'},
+        minutes: {Plan.courseAndCalls: 60},
+      );
+      expect(e.priceOf(Plan.free), isNull);
+      expect(e.priceOf(Plan.course), '\$9.99/mo');
+      expect(e.priceOf(Plan.courseAndCalls), isNull);
+      expect(e.callMinutes(Plan.free), isNull);
+      expect(e.callMinutes(Plan.course), isNull);
+      expect(e.callMinutes(Plan.courseAndCalls), 60);
+
+      e.prices[Plan.courseAndCalls] = '\$19.99/mo';
+      e.minutes[Plan.course] = 0;
+      expect(e.priceOf(Plan.courseAndCalls), '\$19.99/mo');
+      expect(e.callMinutes(Plan.course), 0);
+      e.dispose();
+    });
+
+    test('records buy and restore without mutating plan', () async {
+      final e = FakeEntitlements(plan: Plan.free);
+      await e.buy(Plan.course);
+      await e.buy(Plan.courseAndCalls);
+      await e.restore();
+      await e.restore();
+
+      expect(e.bought, [Plan.course, Plan.courseAndCalls]);
+      expect(e.restores, 2);
+      expect(e.plan, Plan.free);
+      e.dispose();
+    });
+  });
 }

@@ -27,6 +27,8 @@ A fake for every interface, and a tiny sample course.
 - Order 27: `FakeCourseCatalog` is also a `RepasoCatalog`: `repaso` is what the constructor is given, or `datos/repaso.json`
   read through its fetch when there is one (the sample course has none: null).
 
+- N2.2 (#85): `FakeCourseCatalog` implements `LanguageCatalog` (defaults to `Language.spanish`) and adds `FakeCourseCatalog.arabic()` (`arabicTestLanguage`, `arabicSampleFile`, Arabic lines unchecked by an Arabic speaker). `FakeEntitlements` implements `Entitlements` with mutable `plan`, `changes`, optional `prices`/`minutes`, and recorded `bought`/`restores`.
+
 ## Run and test it alone
 
 ```
