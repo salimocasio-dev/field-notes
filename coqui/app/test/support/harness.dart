@@ -15,6 +15,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The repository's root (the tests run in coqui/app).
 final String repoRoot = Directory.current.parent.parent.path;
@@ -243,6 +244,28 @@ Finder byTypeName(String name) =>
 /// feature reads it, without naming its type.
 dynamic stateNamed(WidgetTester tester, String name) =>
     tester.state(byTypeName(name));
+
+/// Whether the map tab currently renders N4.1's Noche UI (PR #127) rather than v=39's [MapChips]/[TodayCard].
+bool isNocheMap() =>
+    find.byKey(const Key('language-chip')).evaluate().isNotEmpty;
+
+/// The map's top chips bar: N4.1's `language-chip`, or v=39's [MapChips].
+Finder findMapTopChips() => find.byWidgetPredicate(
+  (w) => w.key == const Key('language-chip') || w is MapChips,
+  description: 'map top chips (N4.1 language-chip or v=39 MapChips)',
+);
+
+/// The map's Up next / Today card: N4.1's `up-next-card`, or v=39's [TodayCard].
+Finder findMapUpNextCard() => find.byWidgetPredicate(
+  (w) => w.key == const Key('up-next-card') || w is TodayCard,
+  description: 'map up-next card (N4.1 up-next-card or v=39 TodayCard)',
+);
+
+/// The tap target that starts the map's Up next / Today entry: N4.1's `up-next-play` disc, or v=39's [TodayCard].
+Finder findMapUpNextAction() => find.byWidgetPredicate(
+  (w) => w.key == const Key('up-next-play') || w is TodayCard,
+  description: 'map up-next action (N4.1 up-next-play or v=39 TodayCard)',
+);
 
 /// TEST-ONLY. A scene that is not converted and never will be: no scene of coqui_scenes' registry has its id. Its old
 /// pictures are order 06's pictures of El banco (coqui/ref/escenas/banco/pairs/), as they were before order 36b converted

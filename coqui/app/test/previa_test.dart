@@ -326,9 +326,19 @@ void main() {
         });
         await app.open(stored: allPlayed(), speechAvailable: false);
         // the map: El colmado is where he is, its story the next to play
-        expect(find.text('4 · El colmado'), findsOneWidget);
+        expect(
+          find.text(isNocheMap() ? 'UP NEXT · EL COLMADO' : '4 · El colmado'),
+          findsOneWidget,
+        );
         expect(find.text('Previa uno'), findsOneWidget);
-        expect(find.text('New story · play it twice · 4 min'), findsOneWidget);
+        expect(
+          find.text(
+            isNocheMap()
+                ? 'New story · 4 min'
+                : 'New story · play it twice · 4 min',
+          ),
+          findsOneWidget,
+        );
 
         await playFromToday(app);
         // silent: no line of it was played (one of its lines has no recording)
