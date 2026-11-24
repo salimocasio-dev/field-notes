@@ -38,8 +38,10 @@ jobs:
           PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
           BASE_REF: ${{ github.base_ref }}
         run: |
+          set -o pipefail
           CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD")
-          PKGS=$(echo "$CHANGED" | grep '^coqui/packages/' | sed -E 's|^coqui/packages/(core/|features/)?([^/]+)/.*|\1\2|' | sort -u || true)
+          PKG_LINES=$(echo "$CHANGED" | grep '^coqui/packages/' || true)
+          PKGS=$(echo "$PKG_LINES" | sed -E 's#^coqui/packages/((core|features)/)?([^/]+)/.*#\1\3#' | sort -u)
           COUNT=$(echo "$PKGS" | sed '/^$/d' | wc -l)
           if [ "$COUNT" -gt 1 ] && [[ ",${PR_LABELS}," != *",multi-package-ok,"* ]]; then
             echo "::error::PR touches multiple Flutter packages ($PKGS). One branch must change one package (or add label 'multi-package-ok')."
@@ -98,7 +100,7 @@ jobs:
         run: |
           CHANGED_DART=$(git diff --name-only --diff-filter=AM "origin/${BASE_REF}...HEAD" -- '*.dart' || true)
           if [ -n "$CHANGED_DART" ]; then
-            dart format --output=none --set-exit-if-changed $CHANGED_DART
+            printf '%s\n' "$CHANGED_DART" | xargs -r -d '\n' dart format --output=none --set-exit-if-changed
           else
             echo "No Dart files changed."
           fi

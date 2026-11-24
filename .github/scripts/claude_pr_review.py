@@ -27,12 +27,12 @@ Output format (concise, phone-friendly, one point per line):
 """
 
 
-def get_diff(base_ref: str) -> str:
+def get_diff(base_ref: str, head_ref: str = "HEAD") -> str:
     cmd = [
         "git",
         "diff",
         "--no-color",
-        f"origin/{base_ref}...HEAD",
+        f"origin/{base_ref}...{head_ref}",
         "--",
         ".",
         ":(exclude)*.lock",
@@ -92,14 +92,24 @@ def gh_request(url: str, token: str, method: str = "GET", body: dict | None = No
 
 
 def upsert_comment(repo: str, pr_number: str, token: str, body: str) -> None:
-    comments_url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments?per_page=100"
-    comments = gh_request(comments_url, token)
     existing_id = None
-    for c in comments:
-        if MARKER in (c.get("body") or ""):
-            existing_id = c["id"]
+    page = 1
+    while True:
+        comments_url = (
+            f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
+            f"?per_page=100&page={page}"
+        )
+        comments = gh_request(comments_url, token)
+        if not comments:
             break
-    model_name = os.environ.get("CLAUDE_MODEL", "claude-opus-5-5")
+        for c in comments:
+            if MARKER in (c.get("body") or ""):
+                existing_id = c["id"]
+                break
+        if existing_id or len(comments) < 100:
+            break
+        page += 1
+    model_name = os.environ.get("CLAUDE_MODEL") or "claude-opus-5-5"
     full_body = f"{MARKER}\n### Claude API Independent Review (`{model_name}`)\n\n{body}"
     if existing_id:
         patch_url = f"https://api.github.com/repos/{repo}/issues/comments/{existing_id}"
@@ -117,20 +127,50 @@ def main() -> int:
 
     gh_token = os.environ["GITHUB_TOKEN"]
     repo = os.environ["GITHUB_REPOSITORY"]
-    pr_number = os.environ["PR_NUMBER"]
-    base_ref = os.environ["BASE_REF"]
+    pr_number = os.environ["PR_NUMBER"].strip()
+    base_ref = os.environ.get("BASE_REF", "").strip()
     pr_title = os.environ.get("PR_TITLE", "")
     pr_body = os.environ.get("PR_BODY", "")[:4000]
-    model = os.environ.get("CLAUDE_MODEL", "claude-opus-5-5")
+    model = os.environ.get("CLAUDE_MODEL") or "claude-opus-5-5"
+    head_ref = "HEAD"
+
+    if not base_ref:
+        pr_url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}"
+        pr_data = gh_request(pr_url, gh_token)
+        head_repo = ((pr_data.get("head") or {}).get("repo") or {}).get("full_name")
+        if head_repo != repo:
+            print(
+                f"Skipping fork PR #{pr_number} (head.repo.full_name={head_repo!r} != {repo!r}).",
+                file=sys.stderr,
+            )
+            return 1
+        base_ref = (pr_data.get("base") or {}).get("ref", "")
+        if not base_ref:
+            print(f"Missing base ref for PR #{pr_number}.", file=sys.stderr)
+            return 1
+        if not pr_title:
+            pr_title = pr_data.get("title") or ""
+        if not pr_body:
+            pr_body = (pr_data.get("body") or "")[:4000]
+
+        subprocess.run(
+            ["git", "fetch", "--force", "origin", f"pull/{pr_number}/head:pr_head"],
+            check=True,
+        )
+        subprocess.run(
+            ["git", "fetch", "origin", f"+refs/heads/{base_ref}:refs/remotes/origin/{base_ref}"],
+            check=True,
+        )
+        head_ref = "pr_head"
 
     changed_files = subprocess.check_output(
-        ["git", "diff", "--name-only", f"origin/{base_ref}...HEAD"], text=True
+        ["git", "diff", "--name-only", f"origin/{base_ref}...{head_ref}"], text=True
     ).strip()
     if not changed_files:
         print("No changed files to review.")
         return 0
 
-    diff = get_diff(base_ref)
+    diff = get_diff(base_ref, head_ref=head_ref)
     prompt = (
         f"PR #{pr_number}: {pr_title}\n\n"
         f"Description:\n{pr_body}\n\n"
