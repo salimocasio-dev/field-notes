@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_testing/src/arabic_sample.dart';
 import 'package:coqui_testing/src/sample_files.dart';
 
 /// Reads a file of the sample course by its path under `sample/` (for example `cuentos/la-lluvia.json`).
@@ -22,9 +23,13 @@ Future<String> sampleFile(String path) async {
 /// What it does: [load] reads datos/curso.json, the review sets it names, datos/nivel.json, datos/llamadas.json,
 /// datos/fijos.json and audio/marcas.json (once; later calls wait for the same load). Before [load] has finished
 /// the lists are empty and the lookups give null. [clip] gives a clip with marks: its who, text and habla from the
-/// first sample story that has it, its url `audio/<id>.mp3`. [pairFor] matches on [normalize]. [fixedClip] and
+/// first sample story that has it, its url `audio/<id>.mp3`. [pairFor] matches on [Language.normalize]. [fixedClip] and
 /// [goodbyeWords] are fijos.json's `clips` and `despedidas`, unless the constructor is given others. [linesWith]
 /// is app.html's oidoEn over the given stories, in the order given (without its ready.json filter).
+///
+/// Implements [LanguageCatalog]: defaults to [Language.spanish] over the Spanish sample course;
+/// [FakeCourseCatalog.arabic] serves the same places, stories and marks in a test Arabic course
+/// ([arabicTestLanguage], [arabicSampleFile]).
 ///
 /// Repaso's games ([repaso], a [RepasoCatalog]): the [RepasoData] the constructor is given; with none, `load` reads
 /// `datos/repaso.json` through [fetch] if it is there and reads (the sample course has no such file: then null, and
@@ -32,15 +37,40 @@ Future<String> sampleFile(String path) async {
 ///
 /// What it does not do: a story or book that is not in the sample: [story] throws, [book] gives null. A clip
 /// without marks in the sample: [clip] gives null. [fixedClip] throws on a role it does not know. No audio files.
-class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
+class FakeCourseCatalog
+    implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   FakeCourseCatalog({
     SampleFetch? fetch,
     Map<String, String>? fixedClips,
     List<String>? goodbyeWords,
     this.repaso,
+    Language? language,
   }) : fetch = fetch ?? sampleFile,
        _fixedGiven = fixedClips,
-       _goodbyeGiven = goodbyeWords;
+       _goodbyeGiven = goodbyeWords,
+       _language = language ?? Language.spanish;
+
+  /// The same sample places and stories in a test Arabic course
+  /// ([LanguageDirection.rtl], `script: 'Arab'`, Arabic lines and words
+  /// unchecked by an Arabic speaker).
+  FakeCourseCatalog.arabic({
+    SampleFetch? fetch,
+    Map<String, String>? fixedClips,
+    List<String>? goodbyeWords,
+    RepasoData? repaso,
+    Language? language,
+  }) : this(
+         fetch: fetch ?? arabicSampleFile,
+         fixedClips: fixedClips,
+         goodbyeWords: goodbyeWords,
+         repaso: repaso,
+         language: language ?? arabicTestLanguage,
+       );
+
+  final Language _language;
+
+  @override
+  Language get language => _language;
 
   @override
   RepasoData? repaso;
@@ -105,7 +135,16 @@ class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
     final calls = await _json('datos/llamadas.json') as Map<String, dynamic>;
     _calls = {
       for (final e in calls.entries)
-        e.key: CallBrief.fromJson(e.key, e.value as Map<String, dynamic>),
+        e.key: () {
+          final v = e.value as Map<String, dynamic>;
+          return CallBrief.fromJson(
+            e.key,
+            v,
+            agentId: v['agentId'] == null && v['agentid'] == null
+                ? language.callAgentId
+                : null,
+          );
+        }(),
     };
     final fijos = await _json('datos/fijos.json') as Map<String, dynamic>;
     _fixed = (fijos['clips'] as Map).cast<String, String>();
@@ -186,9 +225,9 @@ class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
 
   @override
   ReviewPair? pairFor(String word) {
-    final n = normalize(word);
+    final n = language.normalize(word);
     for (final p in _pairs) {
-      if (normalize(p.word) == n) return p;
+      if (language.normalize(p.word) == n) return p;
     }
     return null;
   }
@@ -222,7 +261,7 @@ class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
     Iterable<String> storyIds, {
     int max = 5,
   }) async {
-    final nw = normalize(word);
+    final nw = language.normalize(word);
     final per = <List<HeardLine>>[];
     for (final c in storyIds) {
       Map<String, dynamic> t;
@@ -240,7 +279,9 @@ class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
       for (final id in ids) {
         final cl = clips[id] as Map?;
         final text = cl?['text'] as String?;
-        if (text != null && text.isNotEmpty && normalize(text).contains(nw)) {
+        if (text != null &&
+            text.isNotEmpty &&
+            language.normalize(text).contains(nw)) {
           ls.add(
             HeardLine(
               storyId: c,
@@ -261,7 +302,7 @@ class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
         if (r >= ls.length) continue;
         any = true;
         final x = ls[r];
-        if (!seen.add(normalize(x.text))) continue;
+        if (!seen.add(language.normalize(x.text))) continue;
         out.add(x);
         if (out.length >= max) break;
       }

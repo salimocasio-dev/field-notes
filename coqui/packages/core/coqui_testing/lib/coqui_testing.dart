@@ -3,9 +3,11 @@
 /// A dev dependency only: tests and `tool/` use it, nothing under `lib/` does.
 library;
 
+export 'package:coqui_testing/src/arabic_sample.dart';
 export 'package:coqui_testing/src/fake_call.dart';
 export 'package:coqui_testing/src/fake_clips.dart';
 export 'package:coqui_testing/src/fake_course.dart';
+export 'package:coqui_testing/src/fake_entitlements.dart';
 export 'package:coqui_testing/src/fake_pictures.dart';
 export 'package:coqui_testing/src/fake_platform.dart';
 export 'package:coqui_testing/src/fake_progress.dart';
