@@ -1382,9 +1382,12 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
       final cur = q['spot'] as String?;
       final riding =
           cur == 'mano_arriba' || cur == 'mano_abajo' || cur == 'mano_lado';
-      final startDeg = _num(W['manoLarga'], 180);
-      var diff = ((deg - startDeg + 540) % 360) - 180;
-      if (diff == -180) diff = 180;
+      final startDeg = (_num(W['manoLarga'], 180) % 360 + 360) % 360;
+      // Sweep through the open 3-o'clock side (0°..180°), never through the
+      // 9-o'clock side where don Tito stands on balcon1 (`frog-seen`).
+      final double diff = (startDeg >= 0 && startDeg <= 180)
+          ? deg - startDeg
+          : ((deg - startDeg + 540) % 360) - 180;
       const steps = 4;
       for (var i = 1; i <= steps; i++) {
         final curDeg = i == steps

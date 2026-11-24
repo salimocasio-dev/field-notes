@@ -298,144 +298,298 @@ void main() {
     expect(await countPulses(1), 1);
   });
 
-  test(
-    'larga carries the frog on every intermediate frame during hand rotation',
-    () async {
-      final story = _story('y-media');
-      final scene = createReloj() as Reloj;
-      final host = _RecordingHost(scene);
-      host.S = story;
-      host.W = {...host.W, ...scene.fresh(story)};
+  test('larga carries the frog on every intermediate frame during hand rotation', () async {
+    final story = _story('y-media');
+    final scene = createReloj() as Reloj;
+    final host = _RecordingHost(scene);
+    host.S = story;
+    host.W = {...host.W, ...scene.fresh(story)};
 
-      await scene.acts['ir']!({'a': 'manecilla'});
-      final q = host.W['cq'] as Map<String, dynamic>;
-      expect(q['spot'], 'mano_abajo');
-      expect(host.W['manoLarga'], 180.0);
-      final startPos = (q['x'] as num, q['y'] as num);
+    final bakes = SetBakes(scene);
+    final baked = bakes.bakeKey(scene.setKey(host.W));
+    scene.setFramed(bakes.engine, baked, host.W);
+    final tito =
+        (host.W['gente'] as Map<String, dynamic>)['tito']
+            as Map<String, dynamic>;
+    expect(tito['vis'], 1);
 
-      double distToSeg(
-        double px,
-        double py,
-        double x0,
-        double y0,
-        double x1,
-        double y1,
-      ) {
-        final dx = x1 - x0, dy = y1 - y0;
-        final l2 = dx * dx + dy * dy;
-        final t = l2 == 0
-            ? 0.0
-            : (((px - x0) * dx + (py - y0) * dy) / l2).clamp(0.0, 1.0);
-        final cx = x0 + t * dx, cy = y0 + t * dy;
-        return math.sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
+    await scene.acts['ir']!({'a': 'manecilla'});
+    final q = host.W['cq'] as Map<String, dynamic>;
+    expect(q['spot'], 'mano_abajo');
+    expect(host.W['manoLarga'], 180.0);
+    final startPos = (q['x'] as num, q['y'] as num);
+
+    double distToSeg(
+      double px,
+      double py,
+      double x0,
+      double y0,
+      double x1,
+      double y1,
+    ) {
+      final dx = x1 - x0, dy = y1 - y0;
+      final l2 = dx * dx + dy * dy;
+      final t = l2 == 0
+          ? 0.0
+          : (((px - x0) * dx + (py - y0) * dy) / l2).clamp(0.0, 1.0);
+      final cx = x0 + t * dx, cy = y0 + t * dy;
+      return math.sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
+    }
+
+    final t30 = math.tan(math.pi / 6);
+    final s = scene.places.e.S;
+    final bias = scene.places.bias;
+
+    void checkFrogVisible(
+      String label,
+      double deg,
+      List<RelojItem> placed,
+      Uint32List withTito,
+      Uint32List withoutTito,
+    ) {
+      expect(
+        placed.any((it) => it.tag == 'persona:tito'),
+        isTrue,
+        reason: '$label deg=$deg: persona:tito must be placed in frame',
+      );
+      final coquiIdx = placed.indexWhere((it) => it.tag == 'coqui');
+      expect(coquiIdx, greaterThanOrEqualTo(0));
+      final coqui = placed[coquiIdx];
+      var total = 0;
+      var out = 0;
+      var hid = 0;
+      var cov = 0;
+      var obscuredByTito = 0;
+      final covBy = <String, int>{};
+
+      for (var y = 0; y < coqui.s.h; y++) {
+        final Y = coqui.top + y;
+        final coquiPlane = coqui.d + (coqui.sy - (Y + 0.5)) * t30 / s;
+        for (var x = 0; x < coqui.s.w; x++) {
+          if (coqui.s.px[y * coqui.s.w + x] >>> 24 == 0) continue;
+          total++;
+          final X = coqui.left + x;
+          if (X < 0 || X >= 240 || Y < 0 || Y >= 216) {
+            out++;
+            continue;
+          }
+          final idx = Y * 240 + X;
+          if (baked.zb[idx] > coquiPlane + bias) {
+            hid++;
+            continue;
+          }
+          var best = coquiPlane + 0.001;
+          String? winner;
+          for (var j = 0; j < placed.length; j++) {
+            if (j == coquiIdx) continue;
+            final o = placed[j];
+            if (X < o.left ||
+                X >= o.left + o.s.w ||
+                Y < o.top ||
+                Y >= o.top + o.s.h) {
+              continue;
+            }
+            final ox = X - o.left, oy = Y - o.top;
+            if (o.s.px[oy * o.s.w + ox] >>> 24 == 0) continue;
+            final op = o.d + (o.sy - (Y + 0.5)) * t30 / s;
+            if (baked.zb[idx] > op + bias) continue;
+            if (op > best) {
+              best = op;
+              winner = o.tag ?? 'sprite';
+            }
+          }
+          if (winner != null) {
+            cov++;
+            covBy[winner] = (covBy[winner] ?? 0) + 1;
+          }
+          if (withTito[idx] != withoutTito[idx]) {
+            obscuredByTito++;
+          }
+        }
       }
 
-      Future<
-        List<
-          ({
-            double deg,
-            num qx,
-            num qy,
-            String? spot,
-            RelojItem coqui,
-            RelojItem hand,
-          })
-        >
+      expect(total, greaterThan(0), reason: '$label deg=$deg: frog has ink');
+      expect(out, 0, reason: '$label deg=$deg: $out/$total frog pixels out');
+      expect(
+        hid,
+        0,
+        reason: '$label deg=$deg: $hid/$total frog pixels hidden by set',
+      );
+      expect(
+        cov,
+        0,
+        reason: '$label deg=$deg: $cov/$total frog pixels covered by $covBy',
+      );
+      expect(
+        obscuredByTito,
+        0,
+        reason:
+            '$label deg=$deg: $obscuredByTito/$total frog pixels obscured by tito',
+      );
+    }
+
+    Future<
+      List<
+        ({
+          double deg,
+          num qx,
+          num qy,
+          String? spot,
+          RelojItem coqui,
+          RelojItem hand,
+          List<RelojItem> placed,
+          Uint32List withTito,
+          Uint32List withoutTito,
+        })
       >
-      recordLarga(String a) async {
-        final frames =
-            <
-              ({
-                double deg,
-                num qx,
-                num qy,
-                String? spot,
-                RelojItem coqui,
-                RelojItem hand,
-              })
-            >[];
-        host.onWait = (_) {
-          final placed = scene.placed(host.W, 0);
-          final coqui = placed.firstWhere((it) => it.tag == 'coqui');
-          final hand = placed.firstWhere((it) => it.tag == 'mano_larga');
-          frames.add((
-            deg: (host.W['manoLarga'] as num).toDouble(),
-            qx: q['x'] as num,
-            qy: q['y'] as num,
-            spot: q['spot'] as String?,
-            coqui: coqui,
-            hand: hand,
-          ));
-        };
-        await scene.acts['larga']!({'a': a});
-        host.onWait = null;
-        return frames;
-      }
+    >
+    recordLarga(String a, String label) async {
+      final frames =
+          <
+            ({
+              double deg,
+              num qx,
+              num qy,
+              String? spot,
+              RelojItem coqui,
+              RelojItem hand,
+              List<RelojItem> placed,
+              Uint32List withTito,
+              Uint32List withoutTito,
+            })
+          >[];
+      host.onWait = (_) {
+        final placed = scene.placed(host.W, host.F);
+        final withTito = Uint32List.fromList(baked.pix);
+        scene.draw(Ctx(withTito, 240, 216), host.W, host.F);
+        final withoutTito = Uint32List.fromList(baked.pix);
+        tito['vis'] = 0;
+        try {
+          scene.draw(Ctx(withoutTito, 240, 216), host.W, host.F);
+        } finally {
+          tito['vis'] = 1;
+        }
+        final coqui = placed.firstWhere((it) => it.tag == 'coqui');
+        final hand = placed.firstWhere((it) => it.tag == 'mano_larga');
+        final deg = (host.W['manoLarga'] as num).toDouble();
+        checkFrogVisible(label, deg, placed, withTito, withoutTito);
+        frames.add((
+          deg: deg,
+          qx: q['x'] as num,
+          qy: q['y'] as num,
+          spot: q['spot'] as String?,
+          coqui: coqui,
+          hand: hand,
+          placed: placed,
+          withTito: withTito,
+          withoutTito: withoutTito,
+        ));
+      };
+      await scene.acts['larga']!({'a': a});
+      host.onWait = null;
+      return frames;
+    }
 
-      final upFrames = (await recordLarga('punto')).take(4).toList();
-      expect([for (final f in upFrames) f.deg], [225.0, 270.0, 315.0, 0.0]);
-      final positions = <(num, num)>{};
-      for (final f in upFrames) {
-        expect((f.qx, f.qy), isNot(startPos));
-        positions.add((f.qx, f.qy));
-      }
-      expect(positions.length, 4);
+    // Sweep 1: media -> punto (180° -> 0° via 3 o'clock)
+    final upFrames = (await recordLarga(
+      'punto',
+      'media->punto',
+    )).take(4).toList();
+    expect([for (final f in upFrames) f.deg], [135.0, 90.0, 45.0, 0.0]);
+    final positions = <(num, num)>{};
+    for (final f in upFrames) {
+      expect((f.qx, f.qy), isNot(startPos));
+      positions.add((f.qx, f.qy));
+    }
+    expect(positions.length, 4);
 
-      final arribaL = scene.lugar['mano_arriba']!;
-      expect((upFrames[3].qx, upFrames[3].qy), (arribaL[0], arribaL[1]));
-      expect(upFrames[3].spot, 'mano_arriba');
+    final arribaL = scene.lugar['mano_arriba']!;
+    expect((upFrames[3].qx, upFrames[3].qy), (arribaL[0], arribaL[1]));
+    expect(upFrames[3].spot, 'mano_arriba');
 
-      final pv = scene.places.handPivot;
-      final len = scene.places.longHand;
-      final t30 = math.tan(math.pi / 6);
-      final s = scene.places.e.S;
-      for (final f in upFrames) {
-        final rad = f.deg * math.pi / 180;
-        final tipX = pv.sx + len * math.sin(rad);
-        final tipY = pv.sy - len * math.cos(rad);
-        final dist = distToSeg(
-          (f.qx + 16).toDouble(),
-          (f.qy + 25).toDouble(),
-          pv.sx,
-          pv.sy,
-          tipX,
-          tipY,
-        );
-        expect(
-          dist,
-          lessThanOrEqualTo(2.0),
-          reason: 'deg=${f.deg} feet (${f.qx + 16}, ${f.qy + 25}) dist=$dist',
-        );
+    final pv = scene.places.handPivot;
+    final len = scene.places.longHand;
+    for (final f in upFrames) {
+      final rad = f.deg * math.pi / 180;
+      final tipX = pv.sx + len * math.sin(rad);
+      final tipY = pv.sy - len * math.cos(rad);
+      final dist = distToSeg(
+        (f.qx + 16).toDouble(),
+        (f.qy + 25).toDouble(),
+        pv.sx,
+        pv.sy,
+        tipX,
+        tipY,
+      );
+      expect(
+        dist,
+        lessThanOrEqualTo(2.0),
+        reason: 'deg=${f.deg} feet (${f.qx + 16}, ${f.qy + 25}) dist=$dist',
+      );
 
-        final box = Reloj.inkBox(f.coqui)!;
-        expect(box[0], greaterThanOrEqualTo(0));
-        expect(box[1], greaterThanOrEqualTo(0));
-        expect(box[0] + box[2], lessThanOrEqualTo(240));
-        expect(box[1] + box[3], lessThanOrEqualTo(216));
+      final box = Reloj.inkBox(f.coqui)!;
+      expect(box[0], greaterThanOrEqualTo(0));
+      expect(box[1], greaterThanOrEqualTo(0));
+      expect(box[0] + box[2], lessThanOrEqualTo(240));
+      expect(box[1] + box[3], lessThanOrEqualTo(216));
 
-        final yMid = f.coqui.sy - 0.5;
-        final coquiPlane = f.coqui.d + (f.coqui.sy - yMid) * t30 / s;
-        final handPlane = f.hand.d + (f.hand.sy - yMid) * t30 / s;
-        expect(
-          coquiPlane,
-          greaterThan(handPlane + 0.001),
-          reason: 'deg=${f.deg}: coqui must sit in front of mano_larga',
-        );
-      }
+      final yMid = f.coqui.sy - 0.5;
+      final coquiPlane = f.coqui.d + (f.coqui.sy - yMid) * t30 / s;
+      final handPlane = f.hand.d + (f.hand.sy - yMid) * t30 / s;
+      expect(
+        coquiPlane,
+        greaterThan(handPlane + 0.001),
+        reason: 'deg=${f.deg}: coqui must sit in front of mano_larga',
+      );
+    }
 
-      final sideStart = (q['x'] as num, q['y'] as num);
-      final sideFrames = (await recordLarga('lado')).take(4).toList();
-      expect({for (final f in sideFrames) (f.qx, f.qy)}.length, 4);
-      expect((sideFrames[0].qx, sideFrames[0].qy), isNot(sideStart));
-      expect(sideFrames[3].spot, 'mano_lado');
+    // Sweep 2: punto -> media (0° -> 180° via 3 o'clock)
+    final toMediaFrames = (await recordLarga(
+      'media',
+      'punto->media',
+    )).take(4).toList();
+    expect([for (final f in toMediaFrames) f.deg], [45.0, 90.0, 135.0, 180.0]);
+    expect(toMediaFrames[3].spot, 'mano_abajo');
 
-      final downStart = (q['x'] as num, q['y'] as num);
-      final downFrames = (await recordLarga('media')).take(4).toList();
-      expect({for (final f in downFrames) (f.qx, f.qy)}.length, 4);
-      expect((downFrames[0].qx, downFrames[0].qy), isNot(downStart));
-      expect(downFrames[3].spot, 'mano_abajo');
-    },
-  );
+    // Sweep 3: media -> lado (180° -> 90°)
+    final mediaToSideFrames = (await recordLarga(
+      'lado',
+      'media->lado',
+    )).take(4).toList();
+    expect(
+      [for (final f in mediaToSideFrames) f.deg],
+      [157.5, 135.0, 112.5, 90.0],
+    );
+    expect(mediaToSideFrames[3].spot, 'mano_lado');
+
+    // Sweep 4: lado -> punto (90° -> 0°)
+    final sideToPuntoFrames = (await recordLarga(
+      'punto',
+      'lado->punto',
+    )).take(4).toList();
+    expect([for (final f in sideToPuntoFrames) f.deg], [67.5, 45.0, 22.5, 0.0]);
+    expect(sideToPuntoFrames[3].spot, 'mano_arriba');
+
+    // Sweep 5: punto -> lado (0° -> 90°)
+    final sideStart = (q['x'] as num, q['y'] as num);
+    final sideFrames = (await recordLarga(
+      'lado',
+      'punto->lado',
+    )).take(4).toList();
+    expect({for (final f in sideFrames) (f.qx, f.qy)}.length, 4);
+    expect((sideFrames[0].qx, sideFrames[0].qy), isNot(sideStart));
+    expect(sideFrames[3].spot, 'mano_lado');
+
+    // Sweep 6: lado -> media (90° -> 180°)
+    final downStart = (q['x'] as num, q['y'] as num);
+    final downFrames = (await recordLarga(
+      'media',
+      'lado->media',
+    )).take(4).toList();
+    expect({for (final f in downFrames) (f.qx, f.qy)}.length, 4);
+    expect((downFrames[0].qx, downFrames[0].qy), isNot(downStart));
+    expect(downFrames[3].spot, 'mano_abajo');
+  });
 
   test(
     'bingo renders rival small cards and frijol updates their pixels',
