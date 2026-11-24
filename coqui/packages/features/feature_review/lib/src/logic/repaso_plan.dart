@@ -31,7 +31,8 @@ const List<GameKind> playKinds = [
 
 /// The plain English line that says what to do in each game (menus may be English), page 15 "The session". A game that
 /// plays a sentence starts with "Listen."; Parejas, where he starts with a touch, does not. The two picture games
-/// (¿Cuál? and ¿Dónde?) say the same line.
+/// (¿Cuál? and ¿Dónde?) say the same line. For Dilo (#9), the learner hears and sees the sentence with the tested word
+/// highlighted, and says it back.
 String gameInstruction(GameKind k) => switch (k) {
   GameKind.cual => 'Listen. Touch the picture that fits.',
   GameKind.hear => 'Listen. Touch the word you heard.',
@@ -39,7 +40,7 @@ String gameInstruction(GameKind k) => switch (k) {
     "Listen. Touch the words in the order you hear. Two don't belong.",
   GameKind.match => 'Touch a sound, then its word.',
   GameKind.where => 'Listen. Touch the picture that fits.',
-  GameKind.say => 'Listen. Say what comes next.',
+  GameKind.say => 'Listen. Say the sentence back.',
 };
 
 /// How many words a session asks at most (cual.js: CAP).
@@ -64,7 +65,7 @@ sealed class GameItem {
 
   bool get scored => kind == GameKind.cual || kind == GameKind.hear;
 
-  /// The recorded sentence it plays (Dilo: the line before the one he says; Parejas: none).
+  /// The recorded sentence it plays (Parejas: none).
   String? get clip;
 
   /// That sentence's text.
@@ -220,15 +221,15 @@ class WhereItem extends GameItem {
   }
 }
 
-/// Dilo: he hears the clip before the line ([line].before) and says the line.
+/// Dilo: he hears and sees the sentence ([line].clip / [line].text) with the tested word highlighted, and says it back.
 class SayItem extends GameItem {
   SayItem({required String word, required this.line})
     : super(GameKind.say, word);
   final RepasoSay line;
   @override
-  String get clip => line.before;
+  String get clip => line.clip;
   @override
-  String? get text => null;
+  String get text => line.text;
 }
 
 /// A place in the session's queue: a scored item, a play slot (its item is chosen when it is reached), or a missed
@@ -694,16 +695,11 @@ class RepasoPlanner {
       if (!progress.openForSpeaking(w.word)) continue;
       final ls = [
         for (final l in w.say)
-          if (finished(l.story) &&
-              !used.contains(l.clip) &&
-              !used.contains(l.before))
-            l,
+          if (finished(l.story) && !used.contains(l.clip)) l,
       ];
       if (ls.isEmpty) continue;
       final l = ls[(rng.next() * ls.length).floor()];
-      used
-        ..add(l.clip)
-        ..add(l.before);
+      used.add(l.clip);
       return SayItem(word: w.word, line: l);
     }
     return null;

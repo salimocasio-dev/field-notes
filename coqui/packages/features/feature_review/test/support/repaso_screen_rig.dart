@@ -149,6 +149,7 @@ class Screen {
     addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
     await t.pumpWidget(
       MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: coquiTheme(),
         home: Builder(
           builder: (context) => MediaQuery(

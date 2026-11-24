@@ -496,7 +496,7 @@ void main() {
       return b;
     }
 
-    test('heard right: a Mouth answer right, and what was heard shows; it hears the line before, not the line', () async {
+    test('heard right: a Mouth answer right, and what was heard shows; it plays the sentence to say back, not the line before', () async {
       final w = sayWord();
       final b = await dilo([w.say.first.forms.first]);
       await b.play();
@@ -504,8 +504,11 @@ void main() {
       expect(m, hasLength(1));
       expect((m.single['args'] as List).sublist(0, 3), [w.word, 'mouth', true]);
       expect(b.answersOf(Skill.ear), isEmpty);
-      expect(b.clips.plays.first['id'], w.say.first.before);
-      expect(b.clips.plays.where((p) => p['id'] == w.say.first.clip), isEmpty);
+      expect(b.clips.plays.first['id'], w.say.first.clip);
+      expect(
+        b.clips.plays.where((p) => p['id'] == w.say.first.before),
+        isEmpty,
+      );
       expect(b.listener.listens.single.locale, 'es-US');
     });
 

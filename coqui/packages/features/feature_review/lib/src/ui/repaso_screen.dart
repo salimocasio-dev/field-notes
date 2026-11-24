@@ -282,7 +282,7 @@ class RepasoScreenState extends State<RepasoScreen> {
     BuildItem() => _Reveal(it.text, null, it.sentence.picture),
     MatchItem() => const _Reveal(null, null, null),
     WhereItem() => _Reveal(it.text, null, null),
-    SayItem() => _Reveal(it.line.text, it.word, it.line.picture),
+    SayItem() => const _Reveal(null, null, null),
   };
 
   /// ¿Dónde?'s pictures on this screen: how many, and how big. The room is what is left under the line and the
@@ -327,7 +327,7 @@ class RepasoScreenState extends State<RepasoScreen> {
         BuildItem() => _build(context, it, width),
         MatchItem() => _match(it),
         WhereItem() => _where(context, it, width, budget, dpr),
-        SayItem() => _say(it),
+        SayItem() => _say(context, it, width),
       };
       // the reveal's picture gets what is left under the game's area
       final left = c.maxHeight - above - area.height - 2 * _gap - _bottomPad;
@@ -411,21 +411,31 @@ class RepasoScreenState extends State<RepasoScreen> {
   }
 
   /// The sentence written out, the word lit (the book's lit line colours).
-  Widget _litText(String text, String? word) {
+  Widget _litText(
+    String text,
+    String? word, {
+    TextStyle? style,
+    bool underline = false,
+  }) {
     final at = word == null ? null : findWord(text, word);
-    final style = CoquiText.bookLine;
+    final base = style ?? CoquiText.bookLine;
     return Text.rich(
       at == null
-          ? TextSpan(text: text, style: style)
+          ? TextSpan(text: text, style: base)
           : TextSpan(
-              style: style,
+              style: base,
               children: [
                 TextSpan(text: text.substring(0, at.start)),
                 TextSpan(
                   text: text.substring(at.start, at.end),
-                  style: style.copyWith(
+                  style: base.copyWith(
                     fontWeight: FontWeight.w700,
                     backgroundColor: CoquiColors.bookLineLit,
+                    decoration: underline ? TextDecoration.underline : null,
+                    decorationColor: underline
+                        ? CoquiColors.bookLineLitBar
+                        : null,
+                    decorationThickness: underline ? 2 : null,
                   ),
                 ),
                 TextSpan(text: text.substring(at.end)),
@@ -780,8 +790,9 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  // Dilo: the mic with its ring while the app listens, the line under it, and what was heard
-  _Area _say(SayItem it) {
+  // Dilo: the speaking prompt card (target word + sentence with target word highlighted), the mic with its ring while
+  // the app listens, the line under it, and what was heard
+  _Area _say(BuildContext context, SayItem it, double width) {
     final s = session;
     final status = switch (s.mic) {
       MicState.listening => RepasoStrings.listening,
@@ -813,11 +824,87 @@ class RepasoScreenState extends State<RepasoScreen> {
         ),
       ),
     );
+    final innerW = math.max(
+      0.0,
+      width - 2 * (CoquiMetrics.s16 + CoquiMetrics.borderButton),
+    );
+    final calloutH = math.max(
+      _textH(context, RepasoStrings.sayTargetWord, CoquiText.lessonSub, innerW),
+      _textH(context, it.word, CoquiText.lessonBodyStrong, innerW) + 9,
+    );
+    final sentenceH = _textH(
+      context,
+      it.line.text,
+      CoquiText.lessonLine,
+      innerW,
+    );
+    final cardH =
+        2 * (CoquiMetrics.s16 + CoquiMetrics.borderButton) +
+        calloutH +
+        CoquiMetrics.s12 +
+        sentenceH;
     return _Area(
       Column(
         children: [
-          // room for the mic's ring to pulse without touching the speaker above it
-          const SizedBox(height: CoquiMetrics.s16),
+          Container(
+            key: const ValueKey('say-prompt'),
+            width: double.infinity,
+            padding: const EdgeInsets.all(CoquiMetrics.s16),
+            decoration: BoxDecoration(
+              color: CoquiColors.lessonTile,
+              borderRadius: BorderRadius.circular(CoquiMetrics.radiusCard),
+              border: Border.all(
+                color: CoquiColors.lessonLine,
+                width: CoquiMetrics.borderButton,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Wrap(
+                  key: const ValueKey('say-target-word'),
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: CoquiMetrics.s8,
+                  runSpacing: CoquiMetrics.s4,
+                  children: [
+                    Text(
+                      RepasoStrings.sayTargetWord,
+                      style: CoquiText.lessonSub,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: CoquiColors.bookLineLit,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: CoquiColors.bookLineLitBar,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Text(it.word, style: CoquiText.lessonBodyStrong),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: CoquiMetrics.s12),
+                KeyedSubtree(
+                  key: const ValueKey('say-sentence'),
+                  child: _litText(
+                    it.line.text,
+                    it.word,
+                    style: CoquiText.lessonLine,
+                    underline: true,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // room for the mic's ring to pulse without touching the prompt card above it
+          const SizedBox(height: CoquiMetrics.s24),
           SizedBox(
             height: CoquiMetrics.startDisc,
             child: OverflowBox(
@@ -849,7 +936,7 @@ class RepasoScreenState extends State<RepasoScreen> {
           ),
         ],
       ),
-      CoquiMetrics.s16 + CoquiMetrics.startDisc + CoquiMetrics.s8 + 56,
+      cardH + CoquiMetrics.s24 + CoquiMetrics.startDisc + CoquiMetrics.s8 + 56,
     );
   }
 }

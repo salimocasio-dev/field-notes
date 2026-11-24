@@ -1022,7 +1022,7 @@ void main() {
   );
 
   testWidgets(
-    'L: Dilo heard right, on screen: the check on the mic, "Heard: ..." in green, the line in the reveal area with the word lit, Next at once; nothing moves',
+    'L: Dilo heard right, on screen: prompt sentence and target word visible before speaking, the check on the mic, "Heard: ..." in green, Next at once; nothing moves',
     (t) async {
       final w = realRepaso.words.firstWhere(
         (x) => x.say.isNotEmpty && x.say.first.story == 'la-lluvia',
@@ -1036,6 +1036,22 @@ void main() {
       final asked = geometry(t);
       await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
       await sc.settle();
+      // before speaking: the prompt card shows the target word and sentence with the tested word highlighted
+      expect(find.byKey(const ValueKey('say-prompt')), findsOneWidget);
+      expect(find.byKey(const ValueKey('say-target-word')), findsOneWidget);
+      expect(find.byKey(const ValueKey('say-sentence')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('say-target-word')),
+          matching: find.text(w.word),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.textContaining(w.say.first.text, findRichText: true),
+        findsOneWidget,
+      );
+      expect(geometry(t), asked);
       await t.tap(find.byType(RepasoMic));
       await sc.vt.runUntil(() => sc.s.mic == MicState.listening);
       final said = w.say.first.forms.first;
@@ -1059,7 +1075,7 @@ void main() {
       expect(
         find.textContaining(w.say.first.text, findRichText: true),
         findsOneWidget,
-        reason: 'the line in the reveal area',
+        reason: 'the sentence stays visible once without duplicating',
       );
       expect(geometry(t), asked);
       await t.tap(find.text(RepasoStrings.next));
