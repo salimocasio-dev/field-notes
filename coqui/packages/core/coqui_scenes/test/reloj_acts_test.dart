@@ -589,6 +589,63 @@ void main() {
     expect({for (final f in downFrames) (f.qx, f.qy)}.length, 4);
     expect((downFrames[0].qx, downFrames[0].qy), isNot(downStart));
     expect(downFrames[3].spot, 'mano_abajo');
+
+    // Story 63: poke('reloj') still advances manoLarga by +12° (180 -> 192 -> 204)
+    final s63Story = _story('que-hora-es');
+    final s63Scene = createReloj() as Reloj;
+    final s63Host = StillHost(s63Scene);
+    s63Host.S = s63Story;
+    s63Host.W = {...s63Host.W, ...s63Scene.fresh(s63Story)};
+    expect(s63Host.W['manoLarga'], 180.0);
+    s63Scene.poke('reloj');
+    expect(s63Host.W['manoLarga'], 192.0);
+    s63Scene.poke('reloj');
+    expect(s63Host.W['manoLarga'], 204.0);
+
+    // Story 64: free clock taps while riding mano_abajo keep manoLarga at 180°
+    // and sweep through the open 3-o'clock half [135, 90, 45, 0].
+    expect(q['spot'], 'mano_abajo');
+    expect(host.W['manoLarga'], 180.0);
+    for (var i = 0; i < 3; i++) {
+      scene.poke('reloj');
+      expect(host.W['manoLarga'], 180.0);
+    }
+    final afterPokeFrames = (await recordLarga(
+      'punto',
+      'after-poke->punto',
+    )).take(4).toList();
+    expect([for (final f in afterPokeFrames) f.deg], [135.0, 90.0, 45.0, 0.0]);
+    expect(afterPokeFrames[3].spot, 'mano_arriba');
+
+    // Defense-in-depth: even if manoLarga drifted past 180° while riding
+    // mano_abajo, larga('punto') still sweeps [135, 90, 45, 0] clear of Tito.
+    await recordLarga('media', 'reset->media-1');
+    expect(q['spot'], 'mano_abajo');
+    host.W['manoLarga'] = 204.0;
+    final defenseFrames = (await recordLarga(
+      'punto',
+      'defense-204->punto',
+    )).take(4).toList();
+    expect([for (final f in defenseFrames) f.deg], [135.0, 90.0, 45.0, 0.0]);
+    expect(defenseFrames[3].spot, 'mano_arriba');
+
+    // Celebratory bounce (q['dy'] = -8.0) during larga('punto') at 45° and 0° /
+    // mano_arriba stays inside the picture (out == 0) and unobscured.
+    await recordLarga('media', 'reset->media-2');
+    expect(q['spot'], 'mano_abajo');
+    q['dy'] = -8.0;
+    try {
+      final bounceFrames = (await recordLarga(
+        'punto',
+        'bounce->punto',
+      )).take(4).toList();
+      expect([for (final f in bounceFrames) f.deg], [135.0, 90.0, 45.0, 0.0]);
+      expect(bounceFrames[2].deg, 45.0);
+      expect(bounceFrames[3].deg, 0.0);
+      expect(bounceFrames[3].spot, 'mano_arriba');
+    } finally {
+      q['dy'] = 0.0;
+    }
   });
 
   test(

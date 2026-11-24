@@ -820,12 +820,18 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
     if (jsTruthy(q['vis'])) {
       final b = host.frogBox(q), at = _frogPoint(q);
       final ox = b.x.toInt() - 16, oy = b.y.toInt() - 24;
+      final rawDy = ((q['dy'] as num) + 0.5).floor();
+      // Clamp upward bounce (`dy < 0`) so a celebratory hop near the top of the
+      // clock face (`mano_arriba`, `45°`) never clips the frog's head above row 0.
+      final maxUp = -math.max(0, b.y.toInt());
+      final dy = rawDy < maxUp ? maxUp : rawDy;
+      final qDraw = dy == rawDy ? q : <String, dynamic>{...q, 'dy': dy};
       final fk =
-          '${q['s']}_${b.x - ox}_${b.y - oy}_${(q['y'] as num) - oy}_${((q['dy'] as num) + 0.5).floor()}_${host.F % 47 < 2 ? 1 : 0}_${((q['bub'] == 'hola' || _talker() == 'coqui') && a % 2 != 0) ? 1 : 0}';
+          '${q['s']}_${b.x - ox}_${b.y - oy}_${(q['y'] as num) - oy}_${dy}_${host.F % 47 < 2 ? 1 : 0}_${((q['bub'] == 'hola' || _talker() == 'coqui') && a % 2 != 0) ? 1 : 0}';
       final spr = _frogSprites.putIfAbsent(fk, () {
         final px = Uint32List(64 * 64);
         final g = Ctx(px, 64, 64)..translate(-ox.toDouble(), -oy.toDouble());
-        host.frog(g, q, a);
+        host.frog(g, qDraw, a);
         return Sprite(64, 64, px);
       });
       all.add(RelojItem(spr, ox, oy, _round(at.sy), at.d, tag: 'coqui'));
@@ -1143,7 +1149,12 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
   dynamic poke(String what) {
     if (what == 'reloj' && _n(W['manecillas']) == 1) {
       // story 63 step 1: "He touches it: the long hand swings and hangs again."
-      W['manoLarga'] = (_num(W['manoLarga'], 180) + 12) % 360;
+      // In story 64 (`usaArribaAbajo == 1`) the frog rides the long hand on the
+      // 3-o'clock half, so a free tap only ticks without drifting the hand onto
+      // the 9-o'clock side behind don Tito.
+      if (_n(W['usaArribaAbajo']) == 0) {
+        W['manoLarga'] = (_num(W['manoLarga'], 180) + 12) % 360;
+      }
       host.SFX.toc();
     }
     return null;
@@ -1382,7 +1393,14 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
       final cur = q['spot'] as String?;
       final riding =
           cur == 'mano_arriba' || cur == 'mano_abajo' || cur == 'mano_lado';
-      final startDeg = (_num(W['manoLarga'], 180) % 360 + 360) % 360;
+      var startDeg = (_num(W['manoLarga'], 180) % 360 + 360) % 360;
+      if (riding && startDeg > 180) {
+        startDeg = switch (cur) {
+          'mano_arriba' => 0.0,
+          'mano_lado' => 90.0,
+          _ => 180.0,
+        };
+      }
       // Sweep through the open 3-o'clock side (0°..180°), never through the
       // 9-o'clock side where don Tito stands on balcon1 (`frog-seen`).
       final double diff = (startDeg >= 0 && startDeg <= 180)
