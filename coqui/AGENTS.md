@@ -227,7 +227,7 @@ Other rules:
 
 By the orchestrator's decision of Nov 19, 2026:
 
-- Git (changed Nov 23, 2026, so Claude, Codex and Gemini can work at the same time): builders push their lane branch and open a pull request. A reviewer from a different company checks it and merges. The board and the full loop are in the repo-root `AGENTS.md`.
+- Git (updated Nov 24, 2026): builders push their lane branch, open a PR, wait for CI + cross-company automated reviews per the Auto-merge gate in repo-root `AGENTS.md`, fix any flagged blockers/P0/P1 issues, re-check, and squash-merge once the gate passes. The board and the full loop are in the repo-root `AGENTS.md`.
 - A feature's dev entry is `tool/dev_main.dart`, run with `flutter run -d chrome -t tool/dev_main.dart` in the feature. Where section 7 says `lib/dev_main.dart`, read `tool/dev_main.dart`. Reason: `lib/` may only import packages under `dependencies`, and the dev entry needs `coqui_testing`, which is a dev dependency.
 
 ## Audio (costs money: read carefully)
