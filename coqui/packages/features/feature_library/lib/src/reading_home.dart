@@ -6,10 +6,21 @@ import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/story_generator.dart';
 import 'package:material_ui/material_ui.dart';
 
+enum _ShelfFilter { all, stories, books }
+
 class ReadingHome extends StatefulWidget {
-  const ReadingHome({super.key, required this.services, this.controller});
+  const ReadingHome({
+    super.key,
+    required this.services,
+    this.controller,
+    this.showAddYourOwn = false,
+    this.bottomClearance,
+  });
+
   final Services services;
   final ScrollController? controller;
+  final bool showAddYourOwn;
+  final double? bottomClearance;
 
   @override
   State<ReadingHome> createState() => _ReadingHomeState();
@@ -21,6 +32,7 @@ class _ReadingHomeState extends State<ReadingHome> {
   late List<ReadingText> _texts = _store.texts();
   StreamSubscription<void>? _changes;
   StoryGenerator? _generator;
+  _ShelfFilter _filter = _ShelfFilter.all;
   bool _busy = false;
   String? _message;
 
@@ -28,7 +40,7 @@ class _ReadingHomeState extends State<ReadingHome> {
   void initState() {
     super.initState();
     _changes = _s.progress.changes.listen((_) {
-      if (mounted) setState(() {});
+      if (mounted) setState(() => _texts = _store.texts());
     });
   }
 
@@ -45,6 +57,14 @@ class _ReadingHomeState extends State<ReadingHome> {
   }
 
   void _open(ReadingText text) {
+    unawaited(
+      _store
+          .markOpened(text.id, _s.clock.nowMs())
+          .then((_) {
+            if (mounted) setState(() => _texts = _store.texts());
+          })
+          .catchError((Object _) {}),
+    );
     _s.haptics.tick();
     unawaited(_s.clips.unlock());
     _s.nav.go(BookRoute(text.id));
@@ -67,9 +87,13 @@ class _ReadingHomeState extends State<ReadingHome> {
   }
 
   Future<void> _generate() async {
-    final input = await showDialog<({String title, String body})>(
-      context: context,
-      builder: (_) => const _ReadingForm(generate: true),
+    final input = await showNocheSheet<String>(
+      context,
+      title: 'Write my story',
+      builder: (context, close) => _StoryPromptSheet(
+        onCancel: close,
+        onSubmit: (words) => Navigator.pop(context, words),
+      ),
     );
     if (input == null || !mounted || _busy) return;
     setState(() {
@@ -81,7 +105,7 @@ class _ReadingHomeState extends State<ReadingHome> {
       if (!mounted) return;
       final story = generator.generate(
         vocabulary: ReadingVocabulary(_s.progress.words),
-        focus: input.body.split(','),
+        focus: input.split(','),
         due: _s.progress.due(Skill.ear),
         previous: {
           for (final text in _texts.where((t) => t.generated)) text.body,
@@ -90,8 +114,8 @@ class _ReadingHomeState extends State<ReadingHome> {
       );
       if (story == null) {
         setState(
-          () => _message = input.body.isEmpty
-              ? 'There’s no new story that fits your known words yet. You can still add a text to read.'
+          () => _message = input.isEmpty
+              ? 'There’s no new story that fits your known words yet.'
               : 'There’s no new story that fits both your practice words and your current level.',
         );
       } else {
@@ -106,237 +130,547 @@ class _ReadingHomeState extends State<ReadingHome> {
     }
   }
 
-  Future<void> _import() async {
-    final input = await showDialog<({String title, String body})>(
-      context: context,
-      builder: (_) => const _ReadingForm(generate: false),
-    );
-    if (input == null || !mounted || _busy) return;
-    setState(() {
-      _busy = true;
-      _message = null;
-    });
-    try {
-      await _save(input.title, input.body, generated: false);
-    } on Object {
-      if (mounted) {
-        setState(() => _message = 'The text couldn’t be saved. Try again.');
-      }
-    } finally {
-      if (mounted) setState(() => _busy = false);
+  ReviewPair? _storyPair(ReadingText text) {
+    ReviewPair? fallback;
+    for (final word in [
+      ...readingWords(text.title),
+      ...readingWords(text.body),
+    ]) {
+      final pair = _s.course.pairFor(word);
+      if (pair == null) continue;
+      if (word.length >= 3) return pair;
+      fallback ??= pair;
     }
+    return fallback;
   }
 
-  ReadingText? _recommendation() {
-    final vocabulary = ReadingVocabulary(_s.progress.words);
-    for (final text in _texts) {
-      if (!text.generated || _s.progress.hasRead(text.id)) continue;
-      if (meetsReadingCoverage(readingCoverage(text.body, vocabulary))) {
-        return text;
-      }
-    }
-    return null;
+  Widget _filterPill(String label, _ShelfFilter value) {
+    final selected = _filter == value;
+    void select() => setState(() => _filter = value);
+    return selected
+        ? NochePill.selected(label: label, onPressed: select)
+        : NochePill.outline(label: label, onPressed: select);
   }
 
   @override
   Widget build(BuildContext context) {
-    final next = _recommendation();
+    final lang = _s.course.language;
+    final textDirection = lang.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
+    final pad = MediaQuery.paddingOf(context);
     final tracked = tracksReading(_s.progress);
-    final wordsMet = {
-      if (tracked)
-        for (final text in _texts) ..._store.place(text.id).words,
-    }.length;
+    final ordered = sortShelfByRecent(_texts, _store.place);
+    final visible = switch (_filter) {
+      _ShelfFilter.all => ordered,
+      _ShelfFilter.stories => ordered.where((t) => t.generated).toList(),
+      _ShelfFilter.books => ordered.where((t) => !t.generated).toList(),
+    };
+    final emptyMessage = switch (_filter) {
+      _ShelfFilter.all => 'Stories you make and books you add appear here.',
+      _ShelfFilter.stories => 'No stories on your shelf yet.',
+      _ShelfFilter.books => 'No books on your shelf yet.',
+    };
+    final keepBook = keepReadingBook(_texts, _store.place, _s.progress.hasRead);
 
-    return ColoredBox(
-      color: CoquiColors.bg,
-      child: TabPage(
-        controller: widget.controller,
+    final header = SizedBox(
+      height: 64,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    lang.englishName.toUpperCase(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: NocheType.label.copyWith(color: NocheColors.label),
+                  ),
+                  const SizedBox(height: 4),
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      'Library',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: NocheType.pageTitle.copyWith(
+                        color: NocheColors.text,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (widget.showAddYourOwn) ...[
+              const SizedBox(width: 12),
+              NochePill.outline(
+                label: '+ Add your own',
+                onPressed: _busy ? null : () => _s.nav.go(const ImportRoute()),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+
+    final storySection = Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const ScreenTitle(CoquiLabels.library),
-          CoquiCard(
+          const NocheSectionLabel(
+            'A new story at your level · about what?',
+            bottomGap: 16,
+          ),
+          NocheOutlineButton(
+            label: 'Write my story',
+            onPressed: _busy ? null : _generate,
+          ),
+          if (_message case final message?) ...[
+            const SizedBox(height: 12),
+            Semantics(
+              liveRegion: true,
+              child: Text(
+                message,
+                style: NocheType.body.copyWith(color: NocheColors.label),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+
+    final shelfSection = Padding(
+      padding: const EdgeInsetsDirectional.only(top: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+            child: NocheSectionLabel(
+              tracked ? 'Your shelf' : 'Your shelf · reading counts from A2',
+              bottomGap: 12,
+            ),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                _filterPill('All', _ShelfFilter.all),
+                const SizedBox(width: 8),
+                _filterPill('Stories', _ShelfFilter.stories),
+                const SizedBox(width: 8),
+                _filterPill('Books', _ShelfFilter.books),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          if (visible.isEmpty)
+            Padding(
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+              child: NocheCard(
+                variant: NocheCardVariant.dashed,
+                child: Text(
+                  emptyMessage,
+                  style: NocheType.body.copyWith(color: NocheColors.label),
+                ),
+              ),
+            )
+          else
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var i = 0; i < visible.length; i++) ...[
+                    if (i > 0) const SizedBox(width: 12),
+                    _ShelfTile(
+                      text: visible[i],
+                      lang: lang,
+                      pair: visible[i].generated
+                          ? _storyPair(visible[i])
+                          : null,
+                      pictures: _s.pictures,
+                      onPressed: _busy ? null : () => _open(visible[i]),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+
+    return Directionality(
+      textDirection: textDirection,
+      child: ColoredBox(
+        color: NocheColors.ground,
+        child: DefaultTextStyle.merge(
+          style: NocheType.body.copyWith(color: NocheColors.text),
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(
+              top: pad.top,
+              bottom:
+                  (widget.bottomClearance ?? NocheSize.aboveTabBar) +
+                  pad.bottom,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  next == null ? 'A story for your level' : 'Next story',
-                  style: CoquiText.smallMuted,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  next?.title ?? 'What do you want to practice?',
-                  style: CoquiText.h1,
-                ),
-                const SizedBox(height: 20),
-                CoquiButton(
-                  full: true,
-                  kind: CoquiButtonKind.go,
-                  label: next == null ? 'Generate a story' : 'Read story',
-                  onPressed: _busy
-                      ? null
-                      : next == null
-                      ? _generate
-                      : () => _open(next),
-                ),
-              ],
-            ),
-          ),
-          Block(
-            top: 12,
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                if (next != null)
-                  CoquiButton(
-                    kind: CoquiButtonKind.outline,
-                    label: 'Generate a story',
-                    onPressed: _busy ? null : _generate,
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: widget.controller,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [header, storySection, shelfSection],
+                    ),
                   ),
-                CoquiButton(
-                  kind: CoquiButtonKind.outline,
-                  label: 'Add text',
-                  onPressed: _busy ? null : _import,
                 ),
+                if (keepBook != null)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                      16,
+                      12,
+                      16,
+                      0,
+                    ),
+                    child: _KeepReadingCard(
+                      book: keepBook,
+                      place: _store.place(keepBook.id),
+                      lang: lang,
+                      onContinue: _busy ? null : () => _open(keepBook),
+                    ),
+                  ),
               ],
             ),
           ),
-          if (_message case final message?)
-            Block(
-              top: 16,
-              child: Semantics(liveRegion: true, child: Text(message)),
-            ),
-          const SectionTitle('Your shelf'),
-          if (tracked)
-            KeyLine(
-              '$wordsMet ${wordsMet == 1 ? 'word' : 'words'} met in reading',
-            ),
-          if (_texts.isEmpty)
-            const KeyLine('Stories you generate and texts you add appear here.')
-          else
-            for (final text in _texts)
-              Block(
-                bottom: 10,
-                child: CoquiCard(
-                  padding: const EdgeInsets.fromLTRB(16, 6, 6, 6),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(text.title, style: CoquiText.h2),
-                            Text(
-                              _s.progress.hasRead(text.id) && tracked
-                                  ? 'Finished'
-                                  : text.generated
-                                  ? 'Generated story'
-                                  : 'Added text',
-                              style: CoquiText.smallMuted,
-                            ),
-                          ],
-                        ),
-                      ),
-                      CoquiButton(
-                        kind: CoquiButtonKind.outline,
-                        label: 'Read',
-                        semanticLabel: 'Read ${text.title}',
-                        onPressed: _busy ? null : () => _open(text),
-                      ),
-                    ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ShelfTile extends StatelessWidget {
+  const _ShelfTile({
+    required this.text,
+    required this.lang,
+    required this.pair,
+    required this.pictures,
+    required this.onPressed,
+  });
+
+  final ReadingText text;
+  final Language lang;
+  final ReviewPair? pair;
+  final PictureSource pictures;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final isStory = text.generated;
+    final subtitle = isStory ? 'Story' : 'Book';
+    final locale = Locale(lang.code);
+    final titleStyle = NocheType.forScript(
+      NocheType.button.copyWith(height: 18 / 14),
+      lang.script,
+    ).copyWith(color: NocheColors.text);
+    final subtitleStyle = NocheType.bodySmall.copyWith(
+      fontSize: 12,
+      height: 16 / 12,
+      color: NocheColors.label,
+    );
+
+    final Widget visual;
+    if (isStory) {
+      final matchedPair = pair;
+      if (matchedPair != null) {
+        visual = ExcludeSemantics(
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: SizedBox(
+              width: 104,
+              height: 120,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+                child: ColoredBox(
+                  color: NocheColors.panel,
+                  child: OverflowBox(
+                    minWidth: 226,
+                    maxWidth: 226,
+                    minHeight: 120,
+                    maxHeight: 120,
+                    child: pictures.of(
+                      PictureRef.of(matchedPair, matchedPair.yes),
+                    ),
                   ),
                 ),
               ),
+            ),
+          ),
+        );
+      } else {
+        visual = ExcludeSemantics(
+          child: Container(
+            width: 104,
+            height: 120,
+            decoration: BoxDecoration(
+              color: NocheColors.panel,
+              border: Border.all(color: NocheColors.line, width: 1),
+              borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+            ),
+            alignment: AlignmentDirectional.center,
+            child: const NocheIcon(
+              NocheIcons.library,
+              size: 28,
+              color: NocheColors.label,
+            ),
+          ),
+        );
+      }
+    } else {
+      visual = NocheCover(
+        bookId: text.id,
+        title: text.title,
+        size: NocheCoverSize.regular,
+        script: lang.script,
+        locale: locale,
+      );
+    }
+
+    return Pressable(
+      onPressed: onPressed,
+      semanticLabel: '${text.title}, $subtitle',
+      builder: (context, pressed) => Transform.scale(
+        scale: pressed ? 0.98 : 1,
+        child: SizedBox(
+          width: isStory ? 104 : 90,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              visual,
+              const SizedBox(height: 8),
+              Text(
+                text.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                locale: locale,
+                style: titleStyle,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: subtitleStyle,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _KeepReadingCard extends StatelessWidget {
+  const _KeepReadingCard({
+    required this.book,
+    required this.place,
+    required this.lang,
+    required this.onContinue,
+  });
+
+  final ReadingText book;
+  final ReadingPlace place;
+  final Language lang;
+  final VoidCallback? onContinue;
+
+  @override
+  Widget build(BuildContext context) {
+    final prog = readingProgress(book, place);
+    final locale = Locale(lang.code);
+    return NocheCard(
+      padding: const EdgeInsetsDirectional.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              NocheCover(
+                bookId: book.id,
+                title: book.title,
+                size: NocheCoverSize.small,
+                script: lang.script,
+                locale: locale,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      keepReadingEyebrow().toUpperCase(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: NocheType.label.copyWith(color: NocheColors.label),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      book.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      locale: locale,
+                      style: NocheType.forScript(
+                        NocheType.cardTitle.copyWith(
+                          fontSize: 20,
+                          height: 24 / 20,
+                        ),
+                        lang.script,
+                      ).copyWith(color: NocheColors.text),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Page ${prog.page} of ${prog.totalPages} · ${prog.minutesLeft} min left in the chapter',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: NocheType.bodySmall.copyWith(
+                        color: NocheColors.label,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    NocheProgressBar(
+                      value: prog.page / prog.totalPages,
+                      color: NocheColors.next,
+                      semanticLabel: 'Page ${prog.page} of ${prog.totalPages}',
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          NochePrimaryButton(
+            label: 'Continue reading',
+            small: true,
+            onPressed: onContinue,
+          ),
         ],
       ),
     );
   }
 }
 
-class _ReadingForm extends StatefulWidget {
-  const _ReadingForm({required this.generate});
+class _StoryPromptSheet extends StatefulWidget {
+  const _StoryPromptSheet({required this.onCancel, required this.onSubmit});
 
-  final bool generate;
+  final VoidCallback onCancel;
+  final ValueChanged<String> onSubmit;
 
   @override
-  State<_ReadingForm> createState() => _ReadingFormState();
+  State<_StoryPromptSheet> createState() => _StoryPromptSheetState();
 }
 
-class _ReadingFormState extends State<_ReadingForm> {
-  final _title = TextEditingController();
-  final _body = TextEditingController();
-  final _form = GlobalKey<FormState>();
+class _StoryPromptSheetState extends State<_StoryPromptSheet> {
+  final _words = TextEditingController();
 
   @override
   void dispose() {
-    _title.dispose();
-    _body.dispose();
+    _words.dispose();
     super.dispose();
   }
 
-  void _submit() {
-    if (!_form.currentState!.validate()) return;
-    Navigator.pop(context, (
-      title: _title.text.trim(),
-      body: _body.text.trim(),
-    ));
-  }
+  void _submit() => widget.onSubmit(_words.text.trim());
 
   @override
   Widget build(BuildContext context) {
-    final generate = widget.generate;
-    return AlertDialog(
-      title: Text(generate ? 'Generate a story' : 'Add text'),
-      scrollable: true,
-      content: Form(
-        key: _form,
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+      borderSide: const BorderSide(color: NocheColors.line),
+    );
+    final focusedBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+      borderSide: const BorderSide(color: NocheColors.text),
+    );
+
+    TextStyle fieldStyle(TextStyle base, Color color) =>
+        base.copyWith(color: color, textBaseline: TextBaseline.alphabetic);
+
+    return Material(
+      type: MaterialType.transparency,
+      child: Padding(
+        padding: EdgeInsetsDirectional.only(
+          bottom: MediaQuery.viewInsetsOf(context).bottom,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (!generate) ...[
-              TextFormField(
-                controller: _title,
-                maxLength: 120,
-                textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(labelText: 'Title'),
-                validator: (value) =>
-                    value!.trim().isEmpty ? 'Enter a title.' : null,
-              ),
-              const SizedBox(height: 12),
-            ],
             TextFormField(
-              controller: _body,
-              minLines: generate ? 1 : 4,
-              maxLines: generate ? 2 : 7,
-              maxLength: generate ? 180 : 30000,
+              controller: _words,
+              minLines: 1,
+              maxLines: 2,
+              maxLength: 180,
+              cursorColor: NocheColors.next,
+              style: fieldStyle(NocheType.body, NocheColors.text),
+              textInputAction: TextInputAction.done,
+              onFieldSubmitted: (_) => _submit(),
               decoration: InputDecoration(
-                alignLabelWithHint: !generate,
-                labelText: generate
-                    ? 'Practice words (optional)'
-                    : 'Paste Spanish text',
-                helperText: generate
-                    ? 'Separate words or phrases with commas. Leave blank for review.'
-                    : null,
+                filled: true,
+                fillColor: NocheColors.ground,
+                labelText: 'Practice words (optional)',
+                labelStyle: fieldStyle(NocheType.body, NocheColors.label),
+                floatingLabelStyle: fieldStyle(
+                  NocheType.label,
+                  NocheColors.text,
+                ),
+                helperText: 'Separate words or phrases with commas. Leave blank for review.',
+                helperStyle: fieldStyle(NocheType.bodySmall, NocheColors.label),
                 helperMaxLines: 3,
+                counterStyle: fieldStyle(
+                  NocheType.bodySmall,
+                  NocheColors.label,
+                ),
+                contentPadding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+                border: border,
+                enabledBorder: border,
+                focusedBorder: focusedBorder,
               ),
-              validator: (value) => !generate && readingWords(value!).isEmpty
-                  ? 'Paste some text to read.'
-                  : null,
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                NocheOutlineButton(
+                  label: 'Cancel',
+                  expand: false,
+                  onPressed: widget.onCancel,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: NochePrimaryButton(
+                    label: 'Write my story',
+                    small: true,
+                    onPressed: _submit,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
-      actions: [
-        CoquiButton(
-          kind: CoquiButtonKind.outline,
-          label: 'Cancel',
-          onPressed: () => Navigator.pop(context),
-        ),
-        CoquiButton(
-          kind: CoquiButtonKind.go,
-          label: generate ? 'Generate' : 'Add and read',
-          onPressed: _submit,
-        ),
-      ],
     );
   }
 }
