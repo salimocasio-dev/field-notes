@@ -1,0 +1,76 @@
+{
+ "txt": "no",
+ "screen": {
+  "logical": [
+   390.0,
+   844.0
+  ],
+  "ratio": 2.0,
+  "pixels": [
+   780.0,
+   1688.0
+  ]
+ },
+ "plays": {
+  "que-hora-es-right": {
+   "pictures": 16,
+   "sheets": 4,
+   "reachedEnd": true,
+   "storyMs": 125800,
+   "playMs": 125800,
+   "touches": 7,
+   "duplicatesDropped": 0,
+   "stopped": null
+  },
+  "que-hora-es-wrong": {
+   "pictures": 27,
+   "sheets": 7,
+   "reachedEnd": true,
+   "storyMs": 155440,
+   "playMs": 155440,
+   "touches": 13,
+   "duplicatesDropped": 1,
+   "stopped": null
+  },
+  "y-media-right": {
+   "pictures": 12,
+   "sheets": 3,
+   "reachedEnd": true,
+   "storyMs": 81120,
+   "playMs": 81120,
+   "touches": 5,
+   "duplicatesDropped": 0,
+   "stopped": null
+  },
+  "y-media-wrong": {
+   "pictures": 18,
+   "sheets": 5,
+   "reachedEnd": true,
+   "storyMs": 102360,
+   "playMs": 102360,
+   "touches": 9,
+   "duplicatesDropped": 2,
+   "stopped": null
+  },
+  "bingo-right": {
+   "pictures": 11,
+   "sheets": 3,
+   "reachedEnd": true,
+   "storyMs": 92560,
+   "playMs": 92560,
+   "touches": 5,
+   "duplicatesDropped": 1,
+   "stopped": null
+  },
+  "bingo-wrong": {
+   "pictures": 17,
+   "sheets": 5,
+   "reachedEnd": true,
+   "storyMs": 116040,
+   "playMs": 116040,
+   "touches": 9,
+   "duplicatesDropped": 3,
+   "stopped": null
+  }
+ }
+}
