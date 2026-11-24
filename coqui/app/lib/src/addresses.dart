@@ -22,13 +22,13 @@
 library;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
-import 'package:coqui_ui/coqui_ui.dart' show CoquiTabs;
+import 'package:coqui_ui/coqui_ui.dart' show NocheTabs;
 
 /// The five tab ids, in the tab bar's order.
-final List<String> tabIds = [for (final t in CoquiTabs.all) t.id];
+const List<String> tabIds = NocheTabs.order;
 
 /// The tab the app starts on, and where an unknown address goes.
-const String startTab = CoquiTabs.mapId;
+const String startTab = NocheTabs.map;
 
 final RegExp _id = RegExp(r'^[a-z0-9][a-z0-9-]*$');
 

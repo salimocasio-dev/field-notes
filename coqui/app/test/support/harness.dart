@@ -205,20 +205,17 @@ class TestApp {
   }
 
   /// The tab bar is on screen.
-  bool get tabBarShown => find.byType(CoquiTabBar).evaluate().isNotEmpty;
+  bool get tabBarShown => find.byType(NocheTabBar).evaluate().isNotEmpty;
 
   /// The selected tab.
   String get selectedTab =>
-      tester.widget<CoquiTabBar>(find.byType(CoquiTabBar)).selectedId;
+      tester.widget<NocheTabBar>(find.byType(NocheTabBar)).selectedId;
 
   /// Taps the tab [id] in the tab bar.
   Future<void> openTab(String id) async {
-    final item = CoquiTabs.all.firstWhere((t) => t.id == id);
+    final label = services.course.language.tabNames[id]!;
     await tap(
-      find.descendant(
-        of: find.byType(CoquiTabBar),
-        matching: find.text(item.label),
-      ),
+      find.descendant(of: find.byType(NocheTabBar), matching: find.text(label)),
     );
     await settle(rounds: 5);
   }
