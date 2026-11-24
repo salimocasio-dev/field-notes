@@ -10,6 +10,7 @@ import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
 import 'package:feature_review/src/logic/review_session.dart'
     show OptionRing, ReviewOptions;
+import 'package:feature_review/src/logic/word_picture.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../tool/support/scripted_clips.dart';
@@ -28,6 +29,7 @@ class Bench {
     bool speech = false,
     ReviewOptions options = const ReviewOptions(),
     FakeKeyValueStore? space,
+    Map<String, WordPictureAsset> wordAssets = const {},
   }) : vt = VirtualTime(),
        kv = space ?? FakeKeyValueStore() {
     store = RecordingStore(
@@ -52,9 +54,19 @@ class Bench {
       speech: listener,
       storage: kv,
       options: options,
+      wordAssets: wordAssets,
     );
     s.prepare();
   }
+
+  static Map<String, WordPictureAsset> allDedicatedAssets() => {
+    for (final p in course.pairs)
+      p.word: WordPictureAsset(
+        word: p.word,
+        yesAsset: 'word_assets/${p.word}_yes.png',
+        noAsset: 'word_assets/${p.word}_no.png',
+      ),
+  };
 
   final VirtualTime vt;
   late final RecordingStore store;
@@ -168,7 +180,7 @@ void main() {
         for (final k in kinds)
           if (k.index > 1) k,
       ],
-      [GameKind.build, GameKind.match, GameKind.where],
+      [GameKind.build, GameKind.match, GameKind.build],
     );
     expect({...kinds}.length, greaterThanOrEqualTo(3));
     // an Ear answer for each word, right, scored (they are due), with the time from the sentence's end
@@ -231,7 +243,12 @@ void main() {
 
   test('wrong in ¿Cuál? and ¿Qué oyes?: red-orange and an X on his, the sign alone on the right one, green and a check only once he touches it', () async {
     for (final kind in [GameKind.cual, GameKind.hear]) {
-      final b = Bench(seed: 3);
+      final b = Bench(
+        seed: 3,
+        wordAssets: kind == GameKind.cual
+            ? Bench.allDedicatedAssets()
+            : const {},
+      );
       final at = b.s.queue.indexWhere((q) => q.item?.kind == kind);
       await b.reach(at);
       final r = b.s.choices.indexWhere((c) => c.right);
@@ -271,7 +288,12 @@ void main() {
 
   test('silence, scored games only: 6 s after the sentence it plays again, 6 s more and the answer shows: a miss', () async {
     for (final kind in [GameKind.cual, GameKind.hear]) {
-      final b = Bench(seed: 3);
+      final b = Bench(
+        seed: 3,
+        wordAssets: kind == GameKind.cual
+            ? Bench.allDedicatedAssets()
+            : const {},
+      );
       final at = b.s.queue.indexWhere((q) => q.item?.kind == kind);
       await b.reach(at);
       final clip = b.s.item!.clip!;
@@ -606,9 +628,9 @@ void main() {
         for (final q in one.s.played)
           if (!q.item!.scored) q.item!.kind,
       ],
-      [GameKind.build, GameKind.match, GameKind.where],
+      [GameKind.build, GameKind.match, GameKind.say],
     );
-    expect(space.read(LastAsked.kindKey), '3');
+    expect(space.read(LastAsked.kindKey), '0');
     final two = Bench(
       seed: 5,
       speech: true,
@@ -620,8 +642,7 @@ void main() {
       for (final q in two.s.played)
         if (!q.item!.scored) q.item!.kind,
     ];
-    expect(kinds.first, GameKind.say);
-    expect(kinds.skip(1).take(2), [GameKind.build, GameKind.match]);
+    expect(kinds, [GameKind.build, GameKind.match, GameKind.say]);
     // and the second session's sentences are not the first's for the same word
     final last = jsonDecode(space.read(LastAsked.key)!) as Map;
     expect(last, isNotEmpty);
@@ -783,12 +804,10 @@ void main() {
     expect(b.s.barMarks.where((m) => m == DashMark.none), isEmpty);
   });
 
-  test('F: every game marks its dash by its first answer: ¿Qué oyes? and ¿Dónde? by the first touch, Parejas by a wrong pair, Arma la frase by a wrong tile', () async {
+  test('F: every game marks its dash by its first answer: ¿Qué oyes? by the first touch, Parejas by a wrong pair, Arma la frase by a wrong tile', () async {
     for (final (kind, wrongFirst) in [
       (GameKind.hear, true),
       (GameKind.hear, false),
-      (GameKind.where, true),
-      (GameKind.where, false),
       (GameKind.match, true),
       (GameKind.match, false),
       (GameKind.build, true),
@@ -817,16 +836,12 @@ void main() {
       expect(b.s.barMarks[at], DashMark.none, reason: '$kind: asked only');
       b.act(wrongFirst ? 'w' : 'r');
       await b.vt.settle();
-      if (kind == GameKind.where) {
-        expect(b.s.barMarks[at], wrongFirst ? DashMark.wrong : DashMark.right);
-      } else {
-        // the whole item was played: it is marked by whether anything was wrong in it
-        expect(
-          b.s.barMarks[at],
-          wrongFirst ? DashMark.wrong : DashMark.right,
-          reason: '$kind $wrongFirst',
-        );
-      }
+      // the whole item was played: it is marked by whether anything was wrong in it
+      expect(
+        b.s.barMarks[at],
+        wrongFirst ? DashMark.wrong : DashMark.right,
+        reason: '$kind $wrongFirst',
+      );
       await b.leave();
     }
   });
@@ -834,7 +849,12 @@ void main() {
   test('G: a missed item comes back as the same sentence and game, with its pictures or tiles in another order (never the identical arrangement)', () async {
     for (final kind in [GameKind.cual, GameKind.hear]) {
       for (final seed in [1, 2, 3, 4, 5]) {
-        final b = Bench(seed: seed);
+        final b = Bench(
+          seed: seed,
+          wordAssets: kind == GameKind.cual
+              ? Bench.allDedicatedAssets()
+              : const {},
+        );
         final target = b.s.queue.firstWhere((q) => q.item?.kind == kind);
         final seen = <QueueEntry, List<(String, bool)>>{};
         await b.play(
@@ -892,7 +912,7 @@ void main() {
 
   test('E: ¿Cuál? ends with Next like every game: the sentence is not in the screen before the answer; after a right answer Next is there at once; after a wrong one when the right picture has been touched', () async {
     for (final wrong in [false, true]) {
-      final b = Bench(seed: 3);
+      final b = Bench(seed: 3, wordAssets: Bench.allDedicatedAssets());
       final at = b.s.queue.indexWhere((q) => q.item?.kind == GameKind.cual);
       await b.reach(at);
       // before the answer: no sentence, no reveal, no Next

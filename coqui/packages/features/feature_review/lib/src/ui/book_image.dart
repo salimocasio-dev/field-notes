@@ -42,10 +42,18 @@ int bookScale({
 /// A book picture at the whole scale [k] (device pixels to a picture pixel): [k] * 196 / ratio logical pixels wide.
 /// Nothing shows until it has loaded; its room is kept, so nothing moves when it comes.
 class BookImage extends StatefulWidget {
-  const BookImage({super.key, required this.provider, required this.k});
+  const BookImage({
+    super.key,
+    required this.provider,
+    required this.k,
+    this.placeholderWidth = bookPictureWidth,
+    this.placeholderHeight = bookPictureHeight,
+  });
 
   final ImageProvider provider;
   final int k;
+  final int placeholderWidth;
+  final int placeholderHeight;
 
   @override
   State<BookImage> createState() => _BookImageState();
@@ -125,8 +133,8 @@ class _BookImageState extends State<BookImage> {
   Widget build(BuildContext context) {
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final image = _image;
-    final w = (image?.width ?? bookPictureWidth) * widget.k / dpr;
-    final h = (image?.height ?? bookPictureHeight) * widget.k / dpr;
+    final w = (image?.width ?? widget.placeholderWidth) * widget.k / dpr;
+    final h = (image?.height ?? widget.placeholderHeight) * widget.k / dpr;
     final pixels = _pixels;
     return ExcludeSemantics(
       child: SizedBox(

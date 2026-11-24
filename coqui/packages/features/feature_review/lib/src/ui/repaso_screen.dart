@@ -20,6 +20,7 @@ import 'package:feature_review/src/logic/repaso_session.dart';
 import 'package:feature_review/src/logic/repaso_words.dart';
 import 'package:feature_review/src/logic/review_session.dart'
     show ReviewOptions;
+import 'package:feature_review/src/logic/word_picture.dart';
 import 'package:feature_review/src/ui/block_layout.dart'
     show pictureHeight, pictureWidth;
 import 'package:feature_review/src/ui/book_image.dart';
@@ -39,6 +40,7 @@ class RepasoScreen extends StatefulWidget {
     this.imageUrl = defaultBookImageUrl,
     this.imageProvider = networkBookImage,
     this.options = const ReviewOptions(),
+    this.wordAssets = const {},
     this.wait,
     this.endScroll,
   });
@@ -48,6 +50,7 @@ class RepasoScreen extends StatefulWidget {
   final BookImageUrl imageUrl;
   final BookImageProvider imageProvider;
   final ReviewOptions options;
+  final Map<String, WordPictureAsset> wordAssets;
 
   /// The host's wait. Left out, a timer is used; tests give a virtual clock's.
   final Wait? wait;
@@ -57,12 +60,11 @@ class RepasoScreen extends StatefulWidget {
   State<RepasoScreen> createState() => RepasoScreenState();
 }
 
-/// What the reveal shows once an item is answered: its sentence (with [word] lit), and its story picture.
+/// What the reveal shows once an item is answered: its sentence (with [word] lit).
 class _Reveal {
-  const _Reveal(this.text, this.word, this.picture);
+  const _Reveal(this.text, this.word);
   final String? text;
   final String? word;
-  final String? picture;
 }
 
 /// A game's own area and the height it takes.
@@ -75,7 +77,6 @@ class _Area {
 class RepasoScreenState extends State<RepasoScreen> {
   late final RepasoSession session;
   HostWait? _host;
-  final Map<String, Widget> _pairPictures = {};
 
   Services get _s => widget.services;
 
@@ -108,7 +109,7 @@ class RepasoScreenState extends State<RepasoScreen> {
       speech: _s.speech,
       storage: space,
       options: widget.options,
-      warm: (refs) => unawaited(_s.pictures.warm(refs)),
+      wordAssets: widget.wordAssets,
     );
     session.prepare();
     session.addListener(_changed);
@@ -280,12 +281,12 @@ class RepasoScreenState extends State<RepasoScreen> {
       (_hasRound(it) ? RoundSpeaker.size + _gap : 0);
 
   _Reveal _reveal(GameItem it) => switch (it) {
-    CualItem() => _Reveal(it.text, it.word, null),
-    HearItem() => _Reveal(it.text, it.word, it.sentence.picture),
-    BuildItem() => _Reveal(it.text, null, it.sentence.picture),
-    MatchItem() => const _Reveal(null, null, null),
-    WhereItem() => _Reveal(it.text, null, null),
-    SayItem() => const _Reveal(null, null, null),
+    CualItem() => _Reveal(it.text, it.word),
+    HearItem() => _Reveal(it.text, it.word),
+    BuildItem() => _Reveal(it.text, null),
+    MatchItem() => const _Reveal(null, null),
+    WhereItem() => _Reveal(it.text, null),
+    SayItem() => const _Reveal(null, null),
   };
 
   /// ¿Dónde?'s pictures on this screen: how many, and how big. The room is what is left under the line and the
@@ -332,8 +333,6 @@ class RepasoScreenState extends State<RepasoScreen> {
         WhereItem() => _where(context, it, width, budget, dpr),
         SayItem() => _say(context, it, width),
       };
-      // the reveal's picture gets what is left under the game's area
-      final left = c.maxHeight - above - area.height - 2 * _gap - _bottomPad;
       return SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(side, _topPad, side, _bottomPad),
         child: Center(
@@ -377,15 +376,7 @@ class RepasoScreenState extends State<RepasoScreen> {
                 // (4) the reveal
                 KeyedSubtree(
                   key: const ValueKey('reveal'),
-                  child: _revealArea(
-                    context,
-                    it,
-                    reveal,
-                    width,
-                    textH,
-                    left,
-                    dpr,
-                  ),
+                  child: _revealArea(reveal, textH),
                 ),
               ],
             ),
@@ -448,47 +439,19 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  /// (4) The reveal: a place of its own, as high as what it will show (the story picture where there is one, the
-  /// sentence), kept empty until the item is answered. Nothing round it moves when its content comes.
-  Widget _revealArea(
-    BuildContext context,
-    GameItem it,
-    _Reveal r,
-    double width,
-    double textH,
-    double left,
-    double dpr,
-  ) {
+  /// (4) The reveal: a place of its own, as high as the sentence it will show, kept empty until the item is
+  /// answered. Nothing round it moves when its content comes (no story-book screenshots under #10).
+  Widget _revealArea(_Reveal r, double textH) {
     final text = r.text;
     if (text == null) return const SizedBox.shrink();
-    final img = r.picture;
-    var k = 1;
-    var picH = 0.0;
-    if (img != null) {
-      k = bookScale(aw: width, ah: left - textH - _gap, dpr: dpr);
-      picH = bookPictureHeight * k / dpr;
-    }
-    final height = (img == null ? 0.0 : picH + _gap) + textH;
     return SizedBox(
-      height: height,
+      height: textH,
       child: session.showText
           ? OverflowBox(
               alignment: Alignment.topCenter,
               minHeight: 0,
               maxHeight: double.infinity,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (img != null) ...[
-                    PictureFrame(
-                      background: const Color(0x00000000),
-                      child: BookImage(provider: _book(img), k: k),
-                    ),
-                    const SizedBox(height: _gap),
-                  ],
-                  _litText(text, r.word),
-                ],
-              ),
+              child: _litText(text, r.word),
             )
           : null,
     );
@@ -535,7 +498,8 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  // ¿Cuál?: the word's two pictures, one above the other, at the largest whole scale that fits
+  // ¿Cuál?: the word's two dedicated single-word pictures, one above the other, at the largest whole scale that fits.
+  // Never falls back to ScenePictures story crops (#10).
   _Area _cual(
     BuildContext context,
     CualItem it,
@@ -543,6 +507,10 @@ class RepasoScreenState extends State<RepasoScreen> {
     double budget,
     double dpr,
   ) {
+    final asset = it.asset;
+    if (asset == null || !asset.isUsable) {
+      return const _Area(SizedBox.shrink(), 0);
+    }
     final s = session;
     final kw = (width * dpr / pictureWidth).floor();
     final kh = ((budget - _gap) / 2 * dpr / pictureHeight).floor();
@@ -550,12 +518,16 @@ class RepasoScreenState extends State<RepasoScreen> {
     final w = pictureWidth * k / dpr, h = pictureHeight * k / dpr;
     Widget pic(int i) {
       final c = s.choices[i];
-      final side = c.right ? it.pair.yes : it.pair.no;
-      final ref = PictureRef.of(it.pair, side);
-      final picture = _pairPictures['${ref.name}|$k'] ??= SizedBox(
+      final path = (c.right ? asset.yesAsset : asset.noAsset).trim();
+      final picture = SizedBox(
         width: w,
         height: h,
-        child: _s.pictures.of(ref, animated: true),
+        child: BookImage(
+          provider: _book(path),
+          k: k,
+          placeholderWidth: pictureWidth,
+          placeholderHeight: pictureHeight,
+        ),
       );
       // each item's pictures are their own (a new picture is never an old one handed another pair)
       return KeyedSubtree(
@@ -760,7 +732,7 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  // ¿Dónde?: two or three pictures of the story, one above another, the same size
+  // ¿Dónde?: defensive guard against story-book screenshots (#10).
   _Area _where(
     BuildContext context,
     WhereItem it,
@@ -769,6 +741,10 @@ class RepasoScreenState extends State<RepasoScreen> {
     double dpr,
   ) {
     final s = session;
+    if (s.choices.isEmpty ||
+        s.choices.any((c) => !isDedicatedWordAssetPath(c.label))) {
+      return const _Area(SizedBox.shrink(), 0);
+    }
     final n = s.choices.length;
     final k = math.max(
       1,
