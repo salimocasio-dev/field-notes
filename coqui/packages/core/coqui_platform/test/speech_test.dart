@@ -5,6 +5,8 @@ import 'package:coqui_platform/src/speech/plugin_errors.dart';
 import 'package:coqui_platform/src/speech/recognition.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../tool/dev_speech.dart';
+
 /// A recogniser that keeps what it was set to and lets the test fire its events.
 class FakeRecognizer implements Recognizer {
   final Map<String, Object> set = {};
@@ -366,5 +368,64 @@ void main() {
       expect(webSpeechError('error_busy'), 'aborted');
       expect(webSpeechError('something_new'), 'something_new');
     });
+  });
+
+  group('dev page speech recogniser (N2.5)', () {
+    test('defaults to Language.spanish.recognitionLocale (es-US)', () async {
+      final r = _Rig();
+      final future = runDevSpeech(r.listener);
+      while (r.rec == null) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      expect(r.rec!.set['lang'], Language.spanish.recognitionLocale);
+      expect(r.rec!.set['lang'], 'es-US');
+      r.rec!.result!(['hola']);
+      r.rec!.end!();
+      final probe = await future;
+      expect(probe.report['locale'], 'es-US');
+      expect(probe.summary, contains('listen(es-US, 6 s)'));
+    });
+
+    test(
+      'uses custom non-Spanish Language.recognitionLocale (ar-EG)',
+      () async {
+        final arabic = Language(
+          code: 'ar',
+          englishName: 'Arabic',
+          nativeName: 'العربية',
+          recognitionLocale: 'ar-EG',
+          direction: LanguageDirection.rtl,
+          script: 'Arab',
+          partnerName: 'Nadia',
+          callAgentId: 'agent_test_arabic_001',
+          micWords: const {
+            'ready': 'r',
+            'listening': 'l',
+            'thinking': 't',
+            'theySpeak': 's',
+            'right': 'ok',
+            'notYet': 'no',
+          },
+          tabNames: const {
+            'library': '1',
+            'words': '2',
+            'map': '3',
+            'speak': '4',
+            'me': '5',
+          },
+        );
+        final r = _Rig();
+        final future = runDevSpeech(r.listener, language: arabic);
+        while (r.rec == null) {
+          await Future<void>.delayed(Duration.zero);
+        }
+        expect(r.rec!.set['lang'], 'ar-EG');
+        r.rec!.result!(['أهلاً']);
+        r.rec!.end!();
+        final probe = await future;
+        expect(probe.report['locale'], 'ar-EG');
+        expect(probe.summary, contains('listen(ar-EG, 6 s)'));
+      },
+    );
   });
 }

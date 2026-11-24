@@ -108,7 +108,7 @@ Future<List<List<Object?>>> _replay(WidgetTester tester, String name) async {
   stub
       .startSession(
         ConvOptions(
-          agentId: dannyAgentId,
+          agentId: _brief.agentId,
           connectionType: 'websocket',
           dynamicVariables: const {},
           clientTools: {
@@ -598,6 +598,88 @@ void main() {
         'AgentLine ¡Hola! Soy Danny. ¿Cómo estás?',
         'Ended agent',
       ]);
+      stub.dispose();
+    });
+  });
+
+  group('agentId from CallBrief (N2.5)', () {
+    test('Spanish fallback CallBrief passes Language.spanish.callAgentId to ConvOptions.agentId via _Lib and CallStub', () async {
+      final brief = CallBrief(
+        placeId: 'casa',
+        minutes: 5,
+        job: 'job',
+        opening: 'opening',
+        photo: 'casa',
+      );
+      expect(brief.agentId, spanishCallAgentId);
+      expect(brief.agentId, Language.spanish.callAgentId);
+
+      final lib = _Lib();
+      await _session(lib).start(brief, _vars);
+      expect(lib.opts!.agentId, Language.spanish.callAgentId);
+
+      final stub = CallStub(_script, options: {'manual'});
+      final s = ConvCallSession(library: stub, callsAllowed: true);
+      final started = s.start(brief, _vars);
+      while (stub.opts == null) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      expect(stub.opts!.agentId, Language.spanish.callAgentId);
+      stub.go('connect');
+      await started;
+      await s.end();
+      stub.dispose();
+    });
+
+    test('custom non-Spanish Language passes its callAgentId via CallBrief into ConvOptions.agentId via _Lib and CallStub', () async {
+      final arabic = Language(
+        code: 'ar',
+        englishName: 'Arabic',
+        nativeName: 'العربية',
+        recognitionLocale: 'ar-EG',
+        direction: LanguageDirection.rtl,
+        script: 'Arab',
+        partnerName: 'Nadia',
+        callAgentId: 'agent_test_arabic_001',
+        micWords: const {
+          'ready': 'r',
+          'listening': 'l',
+          'thinking': 't',
+          'theySpeak': 's',
+          'right': 'ok',
+          'notYet': 'no',
+        },
+        tabNames: const {
+          'library': '1',
+          'words': '2',
+          'map': '3',
+          'speak': '4',
+          'me': '5',
+        },
+      );
+      final brief = CallBrief(
+        placeId: 'casa',
+        minutes: 5,
+        job: 'job',
+        opening: 'أهلاً',
+        photo: 'casa',
+        agentId: arabic.callAgentId,
+      );
+
+      final lib = _Lib();
+      await _session(lib).start(brief, _vars);
+      expect(lib.opts!.agentId, 'agent_test_arabic_001');
+
+      final stub = CallStub(_script, options: {'manual'});
+      final s = ConvCallSession(library: stub, callsAllowed: true);
+      final started = s.start(brief, _vars);
+      while (stub.opts == null) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      expect(stub.opts!.agentId, 'agent_test_arabic_001');
+      stub.go('connect');
+      await started;
+      await s.end();
       stub.dispose();
     });
   });
