@@ -22,7 +22,7 @@ Salim's words come first. If anything here disagrees with what he said, do what 
 - **Planning & ticket scoping:** Gemini 4 Neon (Antigravity) turns approved ideas, `03-requirements`, and `docs/proyecto/22-noche-epics.md` into scoped, single-lane GitHub issues.
 - **Routine & parallel execution:** Antigravity Orchestrator (Carbon/Neon planner + Hydrogen `high` executor) builds feature packages using isolated Git worktrees (`workspace="branch"`). Never crank Hydrogen to `xhigh`; escalate complex work to Neon `high` or Claude.
 - **Architecture & shared packages:** Claude Code (Opus 5.5 / Fable 5.2 when interactive quota is available) owns `coqui_contracts`, `coqui_ui` tokens, `coqui/requests/` merges, and security/platform boundaries. When Claude Code quota is unavailable, Antigravity (Neon/Carbon) handles these under strict cross-model review.
-- **Independent PR review (No Self-Review):** Every PR must pass deterministic CI first, then receive independent cross-model review from **Claude API** (automated read-only GitHub Action using monthly Ultra API credits) and **Codex (ChatGPT Plus)** before merge. No model approves or merges its own work.
+- **Independent PR review & automated merge loop:** Every PR must pass deterministic CI (`coqui.yml` + `coqui-guardrails.yml`) and automated independent cross-model review (**Claude API** via `claude-pr-review.yml` and **Codex** via ChatGPT Codex Connector). No model self-approves its own work, **and** once CI is green and the automated reviews have no blockers / unresolved P0 or P1 findings, the builder or orchestrator agent must fix any flagged issues, re-check, and squash-merge automatically without waiting for Salim.
 - **Naming & privacy:** `coqui` is the permanent internal codename (package names and folder paths stay `coqui*` even when the public app brand changes). Never introduce new hardcoded public repo/Pages URLs without a build-time override.
 
 ## Non-Negotiable Guardrails
@@ -65,20 +65,21 @@ All commands are run from the repo root. `<you>` is `claude`, `codex` or `gemini
 3. Work in your own clone or your own `git worktree`. Never in a folder another agent is using.
 4. Branch from the newest `origin/main`, with the name the claim prints: `lane/<package>/<n>`, or `story/<n>` for a story that holds two lanes.
 5. Change only your package and `coqui/requests/`. Run the checks in `coqui/AGENTS.md`, "Commands". `bash coqui/tool/test_all.sh` must pass.
-6. Push your branch. Open a pull request against `main`:
+6. Push your branch. Open a ready (non-draft) pull request against `main`:
    - Title: `#<n> <story title>`.
    - Body: `Closes #<n>`, what you did, each check you ran with its numbers, requests you filed. Never claim a check you did not run.
 7. `python3 tools/board.py review <n> <you> <pr number>`.
-8. Take your next story from a different lane. Yours stays held until the pull request is merged.
+8. **Automated review-fix-merge loop:** Wait for CI (`coqui.yml` + `coqui-guardrails.yml`) and the automated reviewers (**Claude API** + **Codex**). If any check fails or either automated reviewer flags blockers or P0/P1 issues, fix them on the same branch, re-run local checks, push, and re-verify. Once CI is green, automated reviews have no blockers/P0/P1 issues, and the branch is up to date with `main`, **squash-merge the PR automatically** (`gh pr merge <pr> --squash --delete-branch`).
+9. Take your next story from a different lane (or newly unblocked stories). Yours stays held until the pull request is merged.
 
 ## Reviews and merging
 
-- Every pull request is reviewed by an agent from a different company than the one that built it. Claude's work is reviewed by Codex or Gemini; theirs by Claude API / Claude Code or each other.
-- A review is a comment on the pull request. It starts with `REVIEW PASS <you>` or `REVIEW CHANGES <you>`, then numbered findings, each with the file and line.
-- Only real problems block: a wrong behaviour, a broken rule of Salim's, a failed check. Small things go in the comment as "later" and become a new story. They do not block.
-- Merge when all three hold: CI (`coqui.yml` + `coqui-guardrails.yml`) is green, there is an independent cross-model `REVIEW PASS` (Claude API / Codex), and the branch is up to date with `main`. The reviewer squash-merges. `Closes #<n>` closes the story.
-- `REVIEW CHANGES`: the builder fixes it on the same branch. After two rounds, Claude (or Neon/Carbon if Claude Code quota is unavailable) decides.
-- Look for review work when `ready` finds nothing for you: open pull requests built by another company.
+- Automated independent reviews run on every PR via **Claude API** (`claude-pr-review.yml`) and **Codex** (`ChatGPT Codex Connector`). No model self-approves its own work.
+- If a human or interactive cross-company reviewer also posts a review, it starts with `REVIEW PASS <you>` or `REVIEW CHANGES <you>`, then numbered findings with file and line.
+- Only real problems block: a wrong behaviour, a broken rule of Salim's, a failed check, a Claude API blocker/`CHANGES REQUESTED`, or a Codex P0/P1 finding. Small non-blocking "Warnings / Notes" go into follow-up stories if needed and do not block merge.
+- **Auto-merge gate:** Once CI (`coqui.yml` + `coqui-guardrails.yml`) is green, **Claude API** has no blockers (`APPROVE`, or `COMMENT` with zero blockers), **Codex** has no unresolved P0/P1 findings (if Codex hasn't posted after ~3 minutes or hit its Plus rate limit, don't stall if CI + Claude API are green), and the branch is up to date with `main`, the builder or orchestrator agent squash-merges immediately (`gh pr merge <pr> --squash --delete-branch`). `Closes #<n>` closes the story.
+- If automated reviews request changes, the builder fixes them on the same branch and re-checks. If still blocked after two fix rounds, escalate to Neon/Carbon (or Claude Code when available), or block for Salim if it needs a product decision.
+- Look for review/fix work on open red PRs when `ready` finds nothing for you.
 
 ## Who may do what
 
