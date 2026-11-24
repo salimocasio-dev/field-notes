@@ -45,7 +45,7 @@ void main() {
   });
 
   test(
-    'no Color(0x...) or fontFamily literals in feature_map lib/ or dev app',
+    'no raw hex Color or fontFamily literals in feature_map lib/ or dev app',
     () {
       final colorRe = RegExp(r'Color\s*\(\s*0x');
       final fontRe = RegExp(r'\bfontFamily\b');
@@ -54,7 +54,7 @@ void main() {
         expect(
           colorRe.allMatches(content),
           isEmpty,
-          reason: '$path contains Color(0x...)',
+          reason: '$path contains a raw hex Color literal',
         );
         expect(
           fontRe.allMatches(content),

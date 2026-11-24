@@ -36,7 +36,7 @@ void main() {
     expect(find.byType(PixelView), findsOneWidget);
     expect(find.byKey(const Key('language-chip')), findsOneWidget);
     expect(find.text('Spanish'), findsOneWidget);
-    expect(find.text('A1'), findsOneWidget);
+    expect(find.text('A1'), findsNothing);
     expect(find.text('You are here'), findsOneWidget);
   });
 

@@ -341,29 +341,43 @@ class _NoStories extends MapFixtureCourse {
 
 void _nocheHelpersTests() {
   group('N4.1 Up next card helpers', () {
-    test('upNextKind turns New story · play it twice into New story', () {
-      const s1 = TodayEntry(
-        title: 'Tengo hambre',
-        line: 'New story · play it twice',
-        minutes: 5,
-        route: StoryRoute('tengo-hambre'),
-      );
-      const s2 = TodayEntry(
-        title: 'La lluvia',
-        line: 'Second play',
-        minutes: 2,
-        route: StoryRoute('la-lluvia'),
-      );
-      const s3 = TodayEntry(
-        title: 'La lluvia',
-        line: 'Listen again',
-        minutes: 2,
-        route: StoryRoute('la-lluvia'),
-      );
-      expect(upNextKind(s1), 'New story');
-      expect(upNextKind(s2), 'Second play');
-      expect(upNextKind(s3), 'Listen again');
-    });
+    test(
+      'upNextKind maps each TodayEntryKind without matching English copy',
+      () {
+        const s1 = TodayEntry(
+          title: 'Tengo hambre',
+          line: 'arbitrary copy',
+          minutes: 5,
+          route: StoryRoute('tengo-hambre'),
+          kind: TodayEntryKind.newStory,
+        );
+        const s2 = TodayEntry(
+          title: 'La lluvia',
+          line: 'arbitrary copy',
+          minutes: 2,
+          route: StoryRoute('la-lluvia'),
+          kind: TodayEntryKind.secondPlay,
+        );
+        const s3 = TodayEntry(
+          title: 'La lluvia',
+          line: 'arbitrary copy',
+          minutes: 2,
+          route: StoryRoute('la-lluvia'),
+          kind: TodayEntryKind.listenAgain,
+        );
+        const rev = TodayEntry(
+          line: '3 words coming back',
+          minutes: 3,
+          route: ReviewRoute(),
+          review: true,
+          kind: TodayEntryKind.review,
+        );
+        expect(upNextKind(s1), 'New story');
+        expect(upNextKind(s2), 'Second play');
+        expect(upNextKind(s3), 'Listen again');
+        expect(upNextKind(rev), '3 words coming back');
+      },
+    );
 
     test('upNextThenLine formats 0, 1, and 2 steps after the first entry', () {
       const storyNew = TodayEntry(
@@ -371,24 +385,28 @@ void _nocheHelpersTests() {
         line: 'New story · play it twice',
         minutes: 4,
         route: StoryRoute('a'),
+        kind: TodayEntryKind.newStory,
       );
       const review = TodayEntry(
         line: '3 words coming back',
         minutes: 3,
         route: ReviewRoute(),
         review: true,
+        kind: TodayEntryKind.review,
       );
       const call = TodayEntry(
         title: 'Call',
         line: 'Call Danny',
         minutes: 5,
         route: CallRoute('casa'),
+        kind: TodayEntryKind.call,
       );
       const listening = TodayEntry(
         title: 'B',
         line: 'Listen again',
         minutes: 2,
         route: StoryRoute('b'),
+        kind: TodayEntryKind.listenAgain,
       );
       expect(upNextThenLine(const []), isNull);
       expect(upNextThenLine(const [storyNew]), isNull);
@@ -402,6 +420,51 @@ void _nocheHelpersTests() {
         'Then a new story, then listening',
       );
     });
+
+    test(
+      'todayPlan entries produce expected kinds, upNextKind, and planStepLabel',
+      () {
+        List<TodayEntry> planFor(MapFixture f) => todayPlan(
+          progress: f.progress,
+          course: f.services.course,
+          clock: f.clock,
+        );
+
+        final vacio = planFor(fixture(seed: 'vacio'));
+        expect(vacio.first.kind, TodayEntryKind.newStory);
+        expect(upNextKind(vacio.first), 'New story');
+        expect(planStepLabel(vacio.first), 'a new story');
+        expect(upNextThenLine(vacio), 'Then a new story, then a new story');
+
+        final segunda = planFor(fixture(seed: 'segunda'));
+        expect(segunda.first.kind, TodayEntryKind.secondPlay);
+        expect(upNextKind(segunda.first), 'Second play');
+        expect(planStepLabel(segunda.first), 'listening');
+        expect(upNextThenLine(segunda), 'Then a new story, then a new story');
+
+        final uno = planFor(fixture(seed: 'uno'));
+        expect(uno.first.kind, TodayEntryKind.review);
+        expect(upNextKind(uno.first), uno.first.line);
+        expect(planStepLabel(uno.first), 'review');
+        expect(upNextThenLine(uno), 'Then a new story, then a new story');
+
+        final todo = planFor(fixture(seed: 'todo'));
+        expect(todo.first.kind, TodayEntryKind.listenAgain);
+        expect(upNextKind(todo.first), 'Listen again');
+        expect(planStepLabel(todo.first), 'listening');
+        expect(upNextThenLine(todo), 'Then listening, then listening');
+
+        final empty = todayPlan(
+          progress: fixture().progress,
+          course: _NoStories(),
+          clock: fixture().clock,
+        );
+        expect(empty.single.kind, TodayEntryKind.review);
+        expect(upNextKind(empty.single), 'All your words');
+        expect(planStepLabel(empty.single), 'review');
+        expect(upNextThenLine(empty), isNull);
+      },
+    );
 
     test('placeIndexForStory finds the owning place index', () {
       final course = MapFixtureCourse(builtPlaces: 3);

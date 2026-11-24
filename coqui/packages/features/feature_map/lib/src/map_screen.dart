@@ -129,11 +129,10 @@ class _FrameSignal extends ChangeNotifier {
 
 class _MapScreenState extends State<MapScreen>
     with SingleTickerProviderStateMixin {
-  static const String _defaultLevel = 'A1';
   static const double _pillLift = 88;
   static const double _pillAnchorHalfWidth = 100;
 
-  late final MapPicture _map;
+  late MapPicture _map;
   late final MapPerf? _perf =
       widget.perf ?? (widget.showPerf ? MapPerf() : null);
   final _frames = _FrameSignal();
@@ -144,6 +143,8 @@ class _MapScreenState extends State<MapScreen>
   StreamSubscription<void>? _changes;
 
   bool _baked = false;
+  bool _openedInitialPlace = false;
+  int _serviceGen = 0;
   Size _viewport = Size.zero;
   double _dpr = 1;
   double _bottomPad = 0;
@@ -158,29 +159,33 @@ class _MapScreenState extends State<MapScreen>
     _map = MapPicture(still: _s.reduceMotion, onHop: _hopSound);
     widget.onPicture?.call(_map);
     _changes = _s.progress.changes.listen((_) => _progressChanged());
-    WidgetsBinding.instance.addPostFrameCallback((_) => _bake());
+    final gen = _serviceGen;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _bake(gen));
   }
 
   @override
   void didUpdateWidget(MapScreen old) {
     super.didUpdateWidget(old);
     if (old.services != widget.services) {
+      final gen = ++_serviceGen;
       _changes?.cancel();
       _changes = _s.progress.changes.listen((_) => _progressChanged());
       _storyScenes.clear();
       _loadingScenes.clear();
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        if (!mounted) return;
-        await _s.course.load();
-        if (!mounted) return;
-        _progressChanged();
-        _centerOnCurrentStop();
-      });
+      if (_ticker?.isActive ?? false) {
+        _ticker!.stop();
+      }
+      _last = Duration.zero;
+      _baked = false;
+      _map = MapPicture(still: _s.reduceMotion, onHop: _hopSound);
+      widget.onPicture?.call(_map);
+      WidgetsBinding.instance.addPostFrameCallback((_) => _bake(gen));
     }
   }
 
   @override
   void dispose() {
+    _serviceGen++;
     _changes?.cancel();
     _ticker?.dispose();
     _scrollV.dispose();
@@ -190,14 +195,14 @@ class _MapScreenState extends State<MapScreen>
     super.dispose();
   }
 
-  Future<void> _bake() async {
-    if (!mounted) return;
+  Future<void> _bake(int gen) async {
+    if (!mounted || gen != _serviceGen) return;
     final sw = Stopwatch()..start();
     _map.bake();
     sw.stop();
     _perf?.recordBake(sw.elapsedMicroseconds / 1000);
     await _s.course.load();
-    if (!mounted) return;
+    if (!mounted || gen != _serviceGen) return;
     final st = mapStateOf(_s.progress, _s.course);
     _map.setState(st);
     _map.placeFrog(st.aqui);
@@ -205,13 +210,23 @@ class _MapScreenState extends State<MapScreen>
     _map.draw();
     _frames.fire();
     if (!_s.reduceMotion) {
-      _ticker = createTicker(_onTick)..start();
+      _last = Duration.zero;
+      _ticker ??= createTicker(_onTick);
+      if (!_ticker!.isActive) _ticker!.start();
+    } else if (_ticker?.isActive ?? false) {
+      _ticker!.stop();
     }
     _primeNextStoryScene();
     setState(() {});
-    WidgetsBinding.instance.addPostFrameCallback((_) => _centerOnCurrentStop());
-    final go = widget.openPlace;
-    if (go != null) _visit(go);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || gen != _serviceGen) return;
+      _centerOnCurrentStop();
+    });
+    if (!_openedInitialPlace) {
+      _openedInitialPlace = true;
+      final go = widget.openPlace;
+      if (go != null) _visit(go);
+    }
   }
 
   void _onTick(Duration elapsed) {
@@ -253,6 +268,7 @@ class _MapScreenState extends State<MapScreen>
     final id = route.id;
     if (_storyScenes.containsKey(id) || _loadingScenes.contains(id)) return;
     _loadingScenes.add(id);
+    final gen = _serviceGen;
     unawaited(() async {
       String? scene;
       try {
@@ -264,7 +280,7 @@ class _MapScreenState extends State<MapScreen>
       } finally {
         _loadingScenes.remove(id);
       }
-      if (!mounted) return;
+      if (!mounted || gen != _serviceGen) return;
       if (_storyScenes[id] != scene) {
         setState(() => _storyScenes[id] = scene);
       } else {
@@ -363,39 +379,14 @@ class _MapScreenState extends State<MapScreen>
   ];
 
   PictureRef? _pictureRefFor(TodayEntry entry, Place? place) {
-    final pairs = _s.course.pairs;
-    if (pairs.isEmpty) return null;
-    if (entry.review) {
-      for (final word in _s.progress.due(Skill.ear)) {
-        final pair = _s.course.pairFor(word);
-        if (pair != null) return PictureRef.of(pair, pair.yes);
-      }
-      return PictureRef.of(pairs.first, pairs.first.yes);
-    }
     final route = entry.route;
-    if (route is StoryRoute) {
-      final scene = _storyScenes[route.id];
-      if (scene != null) {
-        for (final pair in pairs) {
-          if ((pair.yes.scene ?? pair.scene) == scene) {
-            return PictureRef.of(pair, pair.yes);
-          }
-        }
-        return null;
-      }
-    }
-    if (place != null) {
-      final normalizedScenes = [
-        for (final s in place.scenes) _s.course.language.normalize(s).trim(),
-      ];
-      for (final pair in pairs) {
-        final scene = pair.yes.scene ?? pair.scene;
-        if (normalizedScenes.any((s) => s.contains(scene))) {
-          return PictureRef.of(pair, pair.yes);
-        }
-      }
-    }
-    return null;
+    return pickUpNextPictureRef(
+      entry: entry,
+      course: _s.course,
+      progress: _s.progress,
+      place: place,
+      storyScene: route is StoryRoute ? _storyScenes[route.id] : null,
+    );
   }
 
   @override
@@ -420,7 +411,7 @@ class _MapScreenState extends State<MapScreen>
               end: 16,
               child: _TopChips(
                 languageName: lang.englishName,
-                level: _defaultLevel,
+                // Level badge omitted until coqui/requests/101-feature-map-needs-coqui-contracts-story-scene-and-level.md lands.
                 streak: _s.progress.streak,
                 onLanguageTap: () {
                   _s.haptics.tick();
@@ -534,16 +525,77 @@ class _MapScreenState extends State<MapScreen>
   }
 }
 
+String _normalizeSceneName(Language language, String raw) =>
+    language.normalize(raw).trim();
+
+bool _sceneMatchesPlace(Language language, String pairScene, Place place) {
+  final normPair = _normalizeSceneName(language, pairScene);
+  if (normPair.isEmpty) return false;
+  final pairTokens = normPair.split(' ');
+  for (final rawPlaceScene in place.scenes) {
+    final normPlace = _normalizeSceneName(language, rawPlaceScene);
+    if (normPlace.isEmpty) continue;
+    if (normPlace == normPair) return true;
+    if (pairTokens.length == 1) {
+      final placeTokens = normPlace.split(' ');
+      if (placeTokens.length == 2 && placeTokens.last == normPair) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/// Chooses a matching [PictureRef] for the Up next card thumbnail, or `null`
+/// to show the placeholder icon when no review pair matches cleanly.
+@visibleForTesting
+PictureRef? pickUpNextPictureRef({
+  required TodayEntry entry,
+  required CourseCatalog course,
+  required ProgressStore progress,
+  Place? place,
+  String? storyScene,
+}) {
+  final pairs = course.pairs;
+  if (pairs.isEmpty) return null;
+  final language = course.language;
+  if (entry.review) {
+    for (final word in progress.due(Skill.ear)) {
+      final pair = course.pairFor(word);
+      if (pair != null) return PictureRef.of(pair, pair.yes);
+    }
+    return null;
+  }
+  if (entry.route is StoryRoute && storyScene != null) {
+    final target = _normalizeSceneName(language, storyScene);
+    if (target.isEmpty) return null;
+    for (final pair in pairs) {
+      if (_normalizeSceneName(language, pair.yes.scene ?? pair.scene) ==
+          target) {
+        return PictureRef.of(pair, pair.yes);
+      }
+    }
+    return null;
+  }
+  if (place != null) {
+    for (final pair in pairs) {
+      final scene = pair.yes.scene ?? pair.scene;
+      if (_sceneMatchesPlace(language, scene, place)) {
+        return PictureRef.of(pair, pair.yes);
+      }
+    }
+  }
+  return null;
+}
+
 class _TopChips extends StatelessWidget {
   const _TopChips({
     required this.languageName,
-    required this.level,
     required this.streak,
     required this.onLanguageTap,
   });
 
   final String languageName;
-  final String level;
   final int streak;
   final VoidCallback onLanguageTap;
 
@@ -555,7 +607,7 @@ class _TopChips extends StatelessWidget {
         Pressable(
           key: const Key('language-chip'),
           onPressed: onLanguageTap,
-          semanticLabel: '$languageName, level $level. Change language.',
+          semanticLabel: '$languageName. Change language.',
           builder: (context, pressed) => Transform.scale(
             scale: pressed ? 0.98 : 1,
             child: Container(
@@ -575,16 +627,6 @@ class _TopChips extends StatelessWidget {
                     softWrap: false,
                     style: NocheType.buttonStrong.copyWith(
                       color: NocheColors.text,
-                    ),
-                  ),
-                  const SizedBox(width: NocheSize.grid),
-                  Text(
-                    level,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: NocheType.body.copyWith(
-                      height: 1,
-                      color: NocheColors.label,
                     ),
                   ),
                   const SizedBox(width: NocheSize.grid),
@@ -615,6 +657,8 @@ class _TopChips extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // Noche-Mapa.dc.html:23 and Noche-Yo.dc.html:31 stroke the
+                    // 18 px outline flame with #E69F00 (NocheColors.next).
                     const NocheIcon(
                       NocheIcons.flame,
                       size: 18,

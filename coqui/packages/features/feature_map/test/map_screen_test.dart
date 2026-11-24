@@ -4,6 +4,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/src/map_layout.dart';
+import 'package:feature_map/src/map_model.dart';
 import 'package:feature_map/src/map_perf.dart';
 import 'package:feature_map/src/map_picture.dart';
 import 'package:feature_map/src/map_screen.dart';
@@ -397,7 +398,7 @@ void main() {
     await showMap(tester, vacio);
     expect(find.byKey(const Key('language-chip')), findsOneWidget);
     expect(find.text('Spanish'), findsOneWidget);
-    expect(find.text('A1'), findsOneWidget);
+    expect(find.text('A1'), findsNothing);
     expect(find.byKey(const Key('streak-chip')), findsNothing);
     expect(
       tester.getSize(find.byKey(const Key('language-chip'))).height,
@@ -639,4 +640,217 @@ void main() {
     expect(f.haptics.ticks, 0);
     expect(RendererBinding.instance.renderViews, isNotEmpty);
   });
+
+  mapTest(
+    'didUpdateWidget re-bakes with updated reduceMotion and uses new clips for hop sound',
+    (tester) async {
+      phone(tester);
+      final first = fixture(seed: 'vacio', reduceMotion: false);
+      final pictures = <MapPicture>[];
+      Widget wrap(Services s) => MaterialApp(
+        theme: coquiTheme(),
+        home: Scaffold(
+          backgroundColor: NocheColors.ground,
+          body: MapScreen(services: s, onPicture: pictures.add),
+        ),
+      );
+      await tester.pumpWidget(wrap(first.services));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      expect(pictures, hasLength(1));
+      expect(pictures.last.e.STILL, isFalse);
+      expect(tester.binding.hasScheduledFrame, isTrue);
+
+      // Switch to reduceMotion: true — MapPicture is re-baked with STILL and stops animating
+      final still = fixture(seed: 'vacio', reduceMotion: true);
+      await tester.pumpWidget(wrap(still.services));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      expect(pictures, hasLength(2));
+      expect(pictures.last.baked, isTrue);
+      expect(pictures.last.e.STILL, isTrue);
+      expect(tester.binding.hasScheduledFrame, isFalse);
+      final frozen = [...pictures.last.pix];
+      await tester.pump(const Duration(seconds: 1));
+      expect(pictures.last.pix, frozen);
+
+      // Switch back to reduceMotion: false with a fresh FakeClipPlayer — resumes motion and uses new clips
+      final moved = fixture(seed: 'vacio', reduceMotion: false);
+      await tester.pumpWidget(wrap(moved.services));
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      expect(pictures, hasLength(3));
+      expect(pictures.last.baked, isTrue);
+      expect(pictures.last.e.STILL, isFalse);
+      expect(tester.binding.hasScheduledFrame, isTrue);
+
+      await tapStop(tester, 2);
+      await run(tester, 3000);
+      expect(first.clips.tones, isEmpty);
+      expect(still.clips.tones, isEmpty);
+      expect(moved.clips.tones, isNotEmpty);
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
+
+  group('pickUpNextPictureRef', () {
+    ReviewPair pair(String word, String scene) => ReviewPair(
+      word: word,
+      say: '',
+      scene: scene,
+      yes: PictureSpec(cam: const [0, 0]),
+      no: PictureSpec(cam: const [0, 0]),
+    );
+
+    test('review returns matching due word pair, or null when no due word has a pair', () {
+      final f = fixture(seed: 'vacio');
+      final course = _PairsCourse([pair('casa', 'frente')]);
+      const review = TodayEntry(
+        line: '1 word coming back',
+        minutes: 3,
+        route: ReviewRoute(),
+        review: true,
+        kind: TodayEntryKind.review,
+      );
+
+      // No due words: never fall back to pairs.first
+      expect(
+        pickUpNextPictureRef(
+          entry: review,
+          course: course,
+          progress: f.progress,
+        ),
+        isNull,
+      );
+
+      // Due word without a matching pair: still returns null
+      f.progress.put(
+        WordRecord(w: 'perro', primera: 1, ear: SkillRecord(etapa: 1, due: 1)),
+      );
+      expect(
+        pickUpNextPictureRef(
+          entry: review,
+          course: course,
+          progress: f.progress,
+        ),
+        isNull,
+      );
+
+      // Due word with a matching pair: returns its yes PictureRef
+      f.progress.put(
+        WordRecord(w: 'casa', primera: 1, ear: SkillRecord(etapa: 1, due: 1)),
+      );
+      final ref = pickUpNextPictureRef(
+        entry: review,
+        course: course,
+        progress: f.progress,
+      );
+      expect(ref, isNotNull);
+      expect(ref!.scene, 'frente');
+    });
+
+    test('story scene and place fallback normalize cleanly without loose substring contains', () {
+      final f = fixture(seed: 'vacio');
+      final casa = Place(
+        id: 'casa',
+        n: 1,
+        name: 'La casa',
+        en: "Grandma's house",
+        scenes: const ['El frente', 'El balcón'],
+      );
+      final plaza = Place(
+        id: 'plaza',
+        n: 6,
+        name: 'La plaza',
+        en: 'The town square',
+        scenes: const ['El banco de la plaza'],
+      );
+      const entry = TodayEntry(
+        title: 'La lluvia',
+        line: 'New story · play it twice',
+        minutes: 4,
+        route: StoryRoute('la-lluvia'),
+        kind: TodayEntryKind.newStory,
+      );
+
+      // Exact normalized match on storyScene (accented vs plain)
+      final balconCourse = _PairsCourse([pair('balcon', 'Balcón')]);
+      expect(
+        pickUpNextPictureRef(
+          entry: entry,
+          course: balconCourse,
+          progress: f.progress,
+          place: casa,
+          storyScene: 'balcon',
+        )?.scene,
+        'Balcón',
+      );
+
+      // Place fallback normalizes pair scene ("Balcón" matches "El balcón")
+      expect(
+        pickUpNextPictureRef(
+          entry: entry,
+          course: balconCourse,
+          progress: f.progress,
+          place: casa,
+        )?.scene,
+        'Balcón',
+      );
+
+      // Loose substring does not match storyScene or place fallback
+      final substringCourse = _PairsCourse([pair('x', 'frent')]);
+      expect(
+        pickUpNextPictureRef(
+          entry: entry,
+          course: substringCourse,
+          progress: f.progress,
+          place: casa,
+          storyScene: 'frente',
+        ),
+        isNull,
+      );
+      expect(
+        pickUpNextPictureRef(
+          entry: entry,
+          course: substringCourse,
+          progress: f.progress,
+          place: casa,
+        ),
+        isNull,
+      );
+
+      // Multi-word scene from another place does not loosely match "banco"
+      final bancoCourse = _PairsCourse([pair('banco', 'banco')]);
+      expect(
+        pickUpNextPictureRef(
+          entry: entry,
+          course: bancoCourse,
+          progress: f.progress,
+          place: plaza,
+        ),
+        isNull,
+      );
+    });
+  });
+}
+
+class _PairsCourse extends MapFixtureCourse {
+  _PairsCourse(this._customPairs);
+
+  final List<ReviewPair> _customPairs;
+
+  @override
+  List<ReviewPair> get pairs => _customPairs;
+
+  @override
+  ReviewPair? pairFor(String word) {
+    final n = language.normalize(word);
+    for (final p in _customPairs) {
+      if (language.normalize(p.word) == n) return p;
+    }
+    return null;
+  }
 }

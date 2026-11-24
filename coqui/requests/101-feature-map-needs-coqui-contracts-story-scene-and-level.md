@@ -15,8 +15,8 @@ Story N4.1 ("Map (home)", issue #101) shows:
 
 ## What I am using meanwhile
 
-- Picking a `ReviewPair` from `course.pairs` via `PictureRef.of(pair, pair.yes)` (matching the story's `scene` when available via `course.story(id)` or the place's scene, falling back to a `NocheColors.chip` container with a `NocheIcon` when no `ReviewPair` matches or can render at `72 x 72`).
-- Displaying `'A1'` in the language chip (matching `feature_profile`'s `yo_screen.dart`).
+- Picking a `ReviewPair` from `course.pairs` via `PictureRef.of(pair, pair.yes)` (matching the story's normalized `scene` when available via `course.story(id)` or normalized place scene, and returning `null` to render the `NocheColors.chip` placeholder icon when no `ReviewPair` matches cleanly).
+- Omitting the level badge from the language chip until `coqui_contracts` exposes the learner's real level (no hardcoded `'A1'`).
 
 ## Order and branch
 
