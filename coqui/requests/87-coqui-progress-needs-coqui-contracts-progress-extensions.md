@@ -5,7 +5,7 @@
 1. In `coqui_contracts` (`lib/src/progress.dart`, exported from `coqui_contracts.dart`), following the same optional-interface + extension pattern as `LanguageCatalog` / `CourseLanguage` in `lib/src/language.dart`:
    - Add an optional `abstract interface class LanguageProgressStore` exposing:
      - `Language get language;`
-     - `double minutesOn(DateTime day);`
+     - `double minutesOn(DateTime day);` (keyed by the UTC calendar day of `day`'s instant, matching `streak` and `addMinutes`; callers should pass `DateTime.utc(y, m, d)` or a `DateTime` built from `clock.nowMs()`)
      - `int get stageMax;`
      - `int? get streakFreezes;`
    - Add an `extension LanguageProgress on ProgressStore` that delegates to `LanguageProgressStore` when implemented and provides backward-compatible defaults otherwise:

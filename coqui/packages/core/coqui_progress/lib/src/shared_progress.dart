@@ -113,11 +113,43 @@ void pruneMinutesByDay(Map<String, dynamic> minutesByDay, int nowMs) {
 /// Holds the learner's shared day streak (`dias`), total minutes (`minutos`),
 /// rolling 35-day minutes map (`minutosDia`), recorded languages with progress
 /// (`idiomas`), and active language code (`idioma`).
+///
+/// Instances are coordinated per [KeyValueStore] via [SharedProgress.forStorage]
+/// so standalone `PalabrasStore(..., language: ...)` stores and `ProgressStores`
+/// sharing one [KeyValueStore] never overwrite each other's shared snapshot.
 class SharedProgress {
-  SharedProgress(this._kv, this._clock) {
+  SharedProgress._(this._kv) {
+    _loadFromRaw(safeRead(_kv, sharedStorageKey));
+  }
+
+  /// Returns the coordinated [SharedProgress] instance for [kv], creating it on
+  /// first use and refreshing if [sharedStorageKey] changed externally.
+  factory SharedProgress.forStorage(KeyValueStore kv) {
+    final existing = _byStorage[kv];
+    if (existing != null) {
+      existing._reloadIfExternallyChanged();
+      return existing;
+    }
+    final created = SharedProgress._(kv);
+    _byStorage[kv] = created;
+    return created;
+  }
+
+  static final Expando<SharedProgress> _byStorage = Expando<SharedProgress>(
+    'coqui_progress.SharedProgress',
+  );
+
+  final KeyValueStore _kv;
+  final List<void Function(Object? source)> _listeners = [];
+  late Map<String, dynamic> _db;
+  String? _lastStoredRaw;
+  bool _syncReadVerified = false;
+
+  void _loadFromRaw(String? raw) {
     _db = _emptyDb();
-    final raw = safeRead(_kv, sharedStorageKey);
+    _lastStoredRaw = raw;
     if (raw != null && raw.isNotEmpty) {
+      _syncReadVerified = true;
       try {
         jsAssign(_db, jsonDecode(raw));
       } catch (_) {
@@ -127,10 +159,12 @@ class SharedProgress {
     _normalizeLoaded();
   }
 
-  final KeyValueStore _kv;
-  final Clock _clock;
-  final List<void Function(Object? source)> _listeners = [];
-  late Map<String, dynamic> _db;
+  void _reloadIfExternallyChanged() {
+    final raw = safeRead(_kv, sharedStorageKey);
+    if (raw == _lastStoredRaw) return;
+    if (raw == null && !_syncReadVerified) return;
+    _loadFromRaw(raw);
+  }
 
   Map<String, dynamic> _emptyDb() => <String, dynamic>{
     'dias': <String, dynamic>{},
@@ -158,7 +192,7 @@ class SharedProgress {
         : <Object?>[];
 
     final idioma = _db['idioma'];
-    if (idioma is! String || idioma.isEmpty) {
+    if (idioma is! String || !isValidLanguageCode(idioma)) {
       _db['idioma'] = Language.spanish.code;
     }
   }
@@ -179,9 +213,9 @@ class SharedProgress {
   double get minutes =>
       jsTruthy(_db['minutos']) ? jsToNumber(_db['minutos']) : 0;
 
-  int streak([int? nowMs]) {
+  int streak(int nowMs) {
     var n = 0;
-    var d = DateTime.fromMillisecondsSinceEpoch(nowMs ?? _clock.nowMs());
+    var d = DateTime.fromMillisecondsSinceEpoch(nowMs);
     for (;;) {
       final k = isoDayFromMs(d.millisecondsSinceEpoch);
       if (jsTruthy(_dias[k])) {
@@ -207,17 +241,32 @@ class SharedProgress {
     return jsTruthy(v) ? jsToNumber(v) : 0;
   }
 
-  void addMinutes(double m, int nowMs, {Object? source}) {
+  void addMinutes(
+    double m,
+    int nowMs, {
+    String? languageCode,
+    bool? hasProgress,
+    Object? source,
+  }) {
     _db['minutos'] = jsNumberOut(minutes + m);
     final d = isoDayFromMs(nowMs);
     _dias[d] = jsTruthy(_dias[d]) ? _dias[d] : 1;
     final prev = jsTruthy(_minutosDia[d]) ? jsToNumber(_minutosDia[d]) : 0.0;
     _minutosDia[d] = jsNumberOut(prev + m);
     pruneMinutesByDay(_minutosDia, nowMs);
+    if (languageCode != null && hasProgress != null) {
+      _updateRecordedLanguage(languageCode, hasProgress);
+    }
     save(source: source);
   }
 
-  void recordDayActivity(int nowMs, {bool increment = false, Object? source}) {
+  void recordDayActivity(
+    int nowMs, {
+    bool increment = false,
+    String? languageCode,
+    bool? hasProgress,
+    Object? source,
+  }) {
     final d = isoDayFromMs(nowMs);
     if (increment) {
       _dias[d] = jsNumberOut(
@@ -225,6 +274,9 @@ class SharedProgress {
       );
     } else {
       _dias[d] = jsTruthy(_dias[d]) ? _dias[d] : 1;
+    }
+    if (languageCode != null && hasProgress != null) {
+      _updateRecordedLanguage(languageCode, hasProgress);
     }
     save(source: source);
   }
@@ -240,7 +292,7 @@ class SharedProgress {
     return out;
   }
 
-  bool setLanguageHasProgress(String code, bool hasProgress, {Object? source}) {
+  bool _updateRecordedLanguage(String code, bool hasProgress) {
     final current = recordedLanguages;
     final present = current.contains(code);
     if (hasProgress == present) return false;
@@ -250,13 +302,18 @@ class SharedProgress {
       current.remove(code);
     }
     _db['idiomas'] = <Object?>[...current];
+    return true;
+  }
+
+  bool setLanguageHasProgress(String code, bool hasProgress, {Object? source}) {
+    if (!_updateRecordedLanguage(code, hasProgress)) return false;
     save(source: source);
     return true;
   }
 
   String get currentLanguageCode {
     final v = _db['idioma'];
-    return v is String && v.isNotEmpty ? v : Language.spanish.code;
+    return v is String && isValidLanguageCode(v) ? v : Language.spanish.code;
   }
 
   set currentLanguageCode(String code) {
@@ -284,11 +341,7 @@ class SharedProgress {
             ? parsed
             : Map<String, dynamic>.from(parsed);
         if (dbHasProgress(map)) {
-          final langs = recordedLanguages;
-          if (!langs.contains(Language.spanish.code)) {
-            langs.add(Language.spanish.code);
-            _db['idiomas'] = <Object?>[...langs];
-          }
+          _updateRecordedLanguage(Language.spanish.code, true);
         }
       }
     } catch (_) {
@@ -298,7 +351,12 @@ class SharedProgress {
   }
 
   void save({Object? source}) {
-    safeWrite(_kv, sharedStorageKey, jsonStringify(_db));
+    final encoded = jsonStringify(_db);
+    safeWrite(_kv, sharedStorageKey, encoded);
+    _lastStoredRaw = encoded;
+    if (safeRead(_kv, sharedStorageKey) == encoded) {
+      _syncReadVerified = true;
+    }
     for (final listener in List<void Function(Object?)>.of(_listeners)) {
       listener(source);
     }

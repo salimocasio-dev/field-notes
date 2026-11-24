@@ -624,5 +624,100 @@ void main() {
       store.reset();
       expect(store.minutesOn(_day1Utc), 0);
     });
+
+    test('standalone language stores on the same KeyValueStore coordinate shared minutes, streak, idiomas, and changes', () async {
+      final kv = MemoryKeyValueStore();
+      final clock = SettableClock(_t0);
+      final es = PalabrasStore(kv, clock, language: Language.spanish);
+      final ar = PalabrasStore(kv, clock, language: arabic);
+
+      var esEvents = 0;
+      var arEvents = 0;
+      final subEs = es.changes.listen((_) => esEvents++);
+      final subAr = ar.changes.listen((_) => arEvents++);
+
+      es.addMinutes(4);
+      ar.addMinutes(3);
+      await pumpEventQueue();
+
+      expect(es.minutes, 7);
+      expect(ar.minutes, 7);
+      expect(es.minutesOn(_day1Utc), 7);
+      expect(ar.minutesOn(_day1Utc), 7);
+      expect(es.streak, 1);
+      expect(ar.streak, 1);
+      expect(esEvents, 2); // 1 own save + 1 sibling shared update
+      expect(arEvents, 2); // 1 sibling shared update + 1 own save
+
+      es.answer('casa', Skill.ear, ok: true, ms: 400);
+      ar.answer('مرحبا', Skill.ear, ok: true, ms: 400);
+      final shared = jsonDecode(
+        kv.data[PalabrasStore.sharedStorageKey]!,
+      ) as Map<String, dynamic>;
+      expect(shared['minutos'], 7);
+      expect(shared['idiomas'], ['es', 'ar']);
+
+      // ProgressStores on the same kv also coordinates live with standalone stores.
+      final stores = ProgressStores(kv, clock);
+      stores.forLanguage(french).addMinutes(2.5);
+      expect(es.minutes, 9.5);
+      expect(ar.minutes, 9.5);
+      expect(stores.minutes, 9.5);
+
+      await subEs.cancel();
+      await subAr.cancel();
+      es.dispose();
+      ar.dispose();
+      stores.dispose();
+      await expectLater(es.changes, emitsDone);
+      await expectLater(stores.changes, emitsDone);
+    });
+
+    test('storyFinished, presume, and heard+addMinutes emit one sibling changes event each', () async {
+      final kv = MemoryKeyValueStore();
+      final clock = SettableClock(_t0);
+      final stores = ProgressStores(kv, clock);
+      final es = stores.forLanguage(Language.spanish);
+      final ar = stores.forLanguage(arabic);
+
+      expect(
+        await _countEvents(
+          ar.changes,
+          () => es.storyFinished(StoryResult(id: 'la-lluvia')),
+        ),
+        1,
+      );
+      expect(
+        await _countEvents(
+          es.changes,
+          () => ar.presume(['مرحبا'], ['ar-1'], const []),
+        ),
+        1,
+      );
+
+      final fr = stores.forLanguage(french);
+      fr.heard('bonjour');
+      expect(await _countEvents(es.changes, () => fr.addMinutes(1.5)), 1);
+      expect(stores.languagesWithProgress, ['es', 'ar', 'fr']);
+      stores.dispose();
+    });
+
+    test(
+      'invalid persisted idioma in coqui.shared.v1 falls back to es on load',
+      () {
+        final kv = MemoryKeyValueStore();
+        kv.data[PalabrasStore.sharedStorageKey] = jsonEncode({
+          'dias': <String, dynamic>{},
+          'minutos': 0,
+          'minutosDia': <String, dynamic>{},
+          'idiomas': <Object?>[],
+          'idioma': 'bad.code',
+          'v': 1,
+        });
+        final stores = ProgressStores(kv, SettableClock(_t0));
+        expect(stores.currentLanguageCode, 'es');
+        stores.dispose();
+      },
+    );
   });
 }

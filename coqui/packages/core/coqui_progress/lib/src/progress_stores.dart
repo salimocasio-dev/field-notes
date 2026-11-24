@@ -17,18 +17,14 @@ class ProgressStores {
     this._kv,
     this._clock, {
     Iterable<Language> languages = const [],
-  }) : _shared = SharedProgress(_kv, _clock) {
+  }) : _shared = SharedProgress.forStorage(_kv) {
     migrateLegacySpanish(_kv, _shared);
     _knownCodes.add(Language.spanish.code);
     for (final language in languages) {
       languageStorageKey(language.code);
       _knownCodes.add(language.code);
     }
-    _shared.addListener((source) {
-      if (source == null) {
-        _changes.add(null);
-      }
-    });
+    _shared.addListener(_onSharedChanged);
   }
 
   final KeyValueStore _kv;
@@ -37,6 +33,18 @@ class ProgressStores {
   final Map<String, PalabrasStore> _stores = <String, PalabrasStore>{};
   final Set<String> _knownCodes = <String>{};
   final StreamController<void> _changes = StreamController<void>.broadcast();
+
+  void _onSharedChanged(Object? source) {
+    if (source == null && !_changes.isClosed) {
+      _changes.add(null);
+    }
+  }
+
+  void _onStoreSaved() {
+    if (!_changes.isClosed) {
+      _changes.add(null);
+    }
+  }
 
   /// Returns the cached [PalabrasStore] for [language], creating it on first
   /// access.
@@ -50,7 +58,7 @@ class ProgressStores {
         _clock,
         language,
         _shared,
-        onSaved: () => _changes.add(null),
+        onSaved: _onStoreSaved,
       ),
     );
   }
@@ -85,10 +93,25 @@ class ProgressStores {
   /// Shared total minutes across all languages.
   double get minutes => _shared.minutes;
 
-  /// Shared minutes logged on the UTC calendar day of [day] across all languages.
+  /// Shared minutes logged on the UTC calendar day of [day]'s instant across
+  /// all languages (rolling 35-day window, matching the UTC day keys used by
+  /// [streak]). Pass `DateTime.utc(y, m, d)` or a `DateTime` built from
+  /// `clock.nowMs()` rather than local midnight in UTC+ time zones.
   double minutesOn(DateTime day) => _shared.minutesOn(day);
 
   /// Fires after any store save or shared-state change (such as changing
   /// [currentLanguageCode]).
   Stream<void> get changes => _changes.stream;
+
+  /// Disposes cached stores, unsubscribes from shared updates, and closes [changes].
+  void dispose() {
+    _shared.removeListener(_onSharedChanged);
+    for (final store in _stores.values) {
+      store.dispose();
+    }
+    _stores.clear();
+    if (!_changes.isClosed) {
+      unawaited(_changes.close());
+    }
+  }
 }
