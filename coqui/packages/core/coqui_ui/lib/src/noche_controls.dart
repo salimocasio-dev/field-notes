@@ -382,7 +382,10 @@ class NocheCard extends StatelessWidget {
             border: Border.all(color: NocheColors.line, width: 1),
             borderRadius: BorderRadius.circular(NocheSize.cardRadius),
           ),
-          child: styledChild,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.all(1),
+            child: styledChild,
+          ),
         );
       case NocheCardVariant.highlight:
         box = DecoratedBox(
@@ -391,7 +394,10 @@ class NocheCard extends StatelessWidget {
             border: Border.all(color: NocheColors.next, width: 2),
             borderRadius: BorderRadius.circular(NocheSize.cardRadius),
           ),
-          child: styledChild,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.all(2),
+            child: styledChild,
+          ),
         );
       case NocheCardVariant.dashed:
         box = CustomPaint(
@@ -399,7 +405,10 @@ class NocheCard extends StatelessWidget {
             color: NocheColors.line,
             radius: NocheSize.cardRadius,
           ),
-          child: styledChild,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.all(1),
+            child: styledChild,
+          ),
         );
     }
 
@@ -666,12 +675,7 @@ class NochePlayDisc extends StatelessWidget {
             color: NocheColors.next,
             shape: BoxShape.circle,
             boxShadow: halo
-                ? [
-                    BoxShadow(
-                      color: NocheColors.next.withValues(alpha: 0.22),
-                      spreadRadius: 8,
-                    ),
-                  ]
+                ? [BoxShadow(color: NocheColors.callHalo, spreadRadius: 8)]
                 : null,
           ),
           child: NocheIcon(
@@ -732,6 +736,9 @@ class NocheSegmented<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       container: true,
+      role: role == NocheSegmentedRole.tabList
+          ? ui.SemanticsRole.tabBar
+          : ui.SemanticsRole.radioGroup,
       label: semanticLabel,
       child: Container(
         padding: const EdgeInsetsDirectional.all(4),
@@ -803,7 +810,10 @@ class _SegmentButtonState extends State<_SegmentButton> {
     );
 
     return Semantics(
-      button: true,
+      role: widget.role == NocheSegmentedRole.tabList
+          ? ui.SemanticsRole.tab
+          : ui.SemanticsRole.none,
+      button: widget.role == NocheSegmentedRole.radioGroup,
       inMutuallyExclusiveGroup: widget.role == NocheSegmentedRole.radioGroup,
       checked: widget.role == NocheSegmentedRole.radioGroup
           ? widget.isSelected

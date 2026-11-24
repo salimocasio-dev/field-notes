@@ -1,6 +1,8 @@
 /// Noche chrome: floating tab bar, bottom sheet, and screen frame.
 library;
 
+import 'dart:ui' show SemanticsRole;
+
 import 'package:coqui_ui/src/noche_a11y.dart';
 import 'package:coqui_ui/src/noche_icons.dart';
 import 'package:coqui_ui/src/noche_tokens.dart';
@@ -74,6 +76,7 @@ class NocheTabBar extends StatelessWidget {
 
     return Semantics(
       container: true,
+      role: SemanticsRole.tabBar,
       label: NocheA11y.label(NocheA11y.tabs),
       child: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(
@@ -168,35 +171,39 @@ class _RegularTab extends StatelessWidget {
       script,
     ).copyWith(color: fg);
 
-    return Pressable(
-      onPressed: onTap,
-      semanticLabel: label,
+    return Semantics(
+      role: SemanticsRole.tab,
       selected: selected,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 48,
-              height: 28,
-              alignment: AlignmentDirectional.center,
-              decoration: BoxDecoration(
-                color: selected ? NocheColors.line : Colors.transparent,
-                borderRadius: BorderRadius.circular(14),
+      child: Pressable(
+        onPressed: onTap,
+        semanticLabel: label,
+        semanticsButton: false,
+        builder: (context, pressed) => Transform.scale(
+          scale: pressed ? 0.96 : 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 48,
+                height: 28,
+                alignment: AlignmentDirectional.center,
+                decoration: BoxDecoration(
+                  color: selected ? NocheColors.line : Colors.transparent,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: NocheIcon(icon, size: 22, color: fg),
               ),
-              child: NocheIcon(icon, size: 22, color: fg),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.ellipsis,
-              locale: locale,
-              style: style,
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                label,
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                locale: locale,
+                style: style,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -227,57 +234,61 @@ class _MapTab extends StatelessWidget {
     ).copyWith(color: labelColor);
     final bottomPad = script == 'Arab' ? 2.0 : 8.0;
 
-    return Pressable(
-      onPressed: onTap,
-      semanticLabel: label,
+    return Semantics(
+      role: SemanticsRole.tab,
       selected: selected,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Stack(
-          alignment: AlignmentDirectional.topCenter,
-          clipBehavior: Clip.none,
-          children: [
-            // 56 disc in `next` inside a 4 px ring of `ground` (64 total),
-            // rising 24 above the 64 px bar.
-            Container(
-              width: 64,
-              height: 64,
-              alignment: AlignmentDirectional.center,
-              decoration: const BoxDecoration(
-                color: NocheColors.ground,
-                shape: BoxShape.circle,
-              ),
-              child: Container(
-                width: 56,
-                height: 56,
+      child: Pressable(
+        onPressed: onTap,
+        semanticLabel: label,
+        semanticsButton: false,
+        builder: (context, pressed) => Transform.scale(
+          scale: pressed ? 0.96 : 1,
+          child: Stack(
+            alignment: AlignmentDirectional.topCenter,
+            clipBehavior: Clip.none,
+            children: [
+              // 56 disc in `next` inside a 4 px ring of `ground` (64 total),
+              // rising 24 above the 64 px bar.
+              Container(
+                width: 64,
+                height: 64,
                 alignment: AlignmentDirectional.center,
                 decoration: const BoxDecoration(
-                  color: NocheColors.next,
+                  color: NocheColors.ground,
                   shape: BoxShape.circle,
                 ),
-                child: const NocheIcon(
-                  NocheIcons.map,
-                  size: 26,
-                  strokeWidth: 2.2,
-                  color: NocheColors.onAccent,
+                child: Container(
+                  width: 56,
+                  height: 56,
+                  alignment: AlignmentDirectional.center,
+                  decoration: const BoxDecoration(
+                    color: NocheColors.next,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const NocheIcon(
+                    NocheIcons.map,
+                    size: 26,
+                    strokeWidth: 2.2,
+                    color: NocheColors.onAccent,
+                  ),
                 ),
               ),
-            ),
-            PositionedDirectional(
-              start: 0,
-              end: 0,
-              bottom: bottomPad,
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                locale: locale,
-                style: style,
+              PositionedDirectional(
+                start: 0,
+                end: 0,
+                bottom: bottomPad,
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  locale: locale,
+                  style: style,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

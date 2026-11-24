@@ -159,6 +159,7 @@ void main() {
 
       expect(NocheColors.onAccent, const Color(0xFF14110F));
       expect(NocheColors.next, const Color(0xFFE69F00));
+      expect(NocheColors.callHalo, const Color(0xFF3D2E0F));
       expect(NocheColors.listening, const Color(0xFF56B4E9));
       expect(NocheColors.listeningSoft, const Color(0xFF1D3A52));
       expect(NocheColors.other, const Color(0xFFCC79A7));

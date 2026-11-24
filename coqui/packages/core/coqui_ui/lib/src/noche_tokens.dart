@@ -37,6 +37,8 @@ abstract final class NocheColors {
 
   static const onAccent = Color(0xFF14110F);
   static const next = Color(0xFFE69F00);
+  // Noche-Hablar.dc.html: the opaque 8 px ring around the call disc.
+  static const callHalo = Color(0xFF3D2E0F);
   static const listening = Color(0xFF56B4E9);
   static const listeningSoft = Color(0xFF1D3A52);
   static const other = Color(0xFFCC79A7);

@@ -246,7 +246,8 @@ class NocheBarChart extends StatelessWidget {
   /// Shows each column's numeric value above its bar (`Noche-Palabras.dc.html`).
   final bool showValues;
 
-  /// Optional horizontal dashed goal line (`Noche-Yo.dc.html`).
+  /// Optional horizontal dashed goal line (`Noche-Yo.dc.html`). Goals outside
+  /// the plotted values' range are omitted without changing the bar scale.
   final num? goal;
 
   /// Height of the bar plotting area (defaults to 96 when [showValues] is true
@@ -265,9 +266,6 @@ class NocheBarChart extends StatelessWidget {
     for (final item in items) {
       if (item.value > scaleMax) scaleMax = item.value;
     }
-    if (goal != null && goal! > scaleMax) {
-      scaleMax = goal!;
-    }
 
     double barHeightFor(num v) {
       if (scaleMax <= 0 || v <= 0) return 0;
@@ -277,7 +275,8 @@ class NocheBarChart extends StatelessWidget {
     final totalHeight =
         (showValues ? valueLineH + gap : 0) + maxBarH + gap + labelLineH;
 
-    final goalBottom = goal != null && scaleMax > 0
+    final goalBottom =
+        goal != null && scaleMax > 0 && goal! >= 0 && goal! <= scaleMax
         ? labelLineH + gap + barHeightFor(goal!)
         : null;
 

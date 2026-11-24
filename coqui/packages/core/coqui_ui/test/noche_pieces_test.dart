@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui' show Tristate;
 
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter/rendering.dart';
@@ -60,6 +61,50 @@ void main() {
   });
 
   group('NocheTabBar', () {
+    testWidgets('navigation exposes selected tabs, never switches', (
+      tester,
+    ) async {
+      final handle = tester.ensureSemantics();
+      try {
+        for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
+          for (final selected in [NocheTabs.words, NocheTabs.map]) {
+            await tester.pumpWidget(
+              _wrap(
+                Center(
+                  child: NocheTabBar(
+                    selectedId: selected,
+                    tabNames: _spanishTabs,
+                    onTap: (_) {},
+                  ),
+                ),
+                textDirection: dir,
+              ),
+            );
+            expect(
+              tester
+                  .getSemantics(find.bySemanticsLabel('Tabs'))
+                  .getSemanticsData()
+                  .role,
+              SemanticsRole.tabBar,
+            );
+            for (final id in NocheTabs.order) {
+              final data = tester
+                  .getSemantics(find.bySemanticsLabel(_spanishTabs[id]!))
+                  .getSemanticsData();
+              expect(data.role, SemanticsRole.tab);
+              expect(
+                data.flagsCollection.isSelected,
+                id == selected ? Tristate.isTrue : Tristate.isFalse,
+              );
+              expect(data.flagsCollection.isToggled, Tristate.none);
+            }
+          }
+        }
+      } finally {
+        handle.dispose();
+      }
+    });
+
     testWidgets(
       'fixed 5-tab order never mirrors in LTR or RTL and fires taps',
       (tester) async {
@@ -253,6 +298,42 @@ void main() {
   });
 
   group('NocheCard', () {
+    testWidgets('border widths contribute to every card content inset', (
+      tester,
+    ) async {
+      for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
+        for (final variant in NocheCardVariant.values) {
+          final border = variant == NocheCardVariant.highlight ? 2.0 : 1.0;
+          final padding = variant == NocheCardVariant.highlight ? 24.0 : 16.0;
+          await tester.pumpWidget(
+            _wrap(
+              Center(
+                child: NocheCard(
+                  variant: variant,
+                  padding: EdgeInsetsDirectional.all(padding),
+                  child: const SizedBox(
+                    key: ValueKey('card-content'),
+                    width: 24,
+                    height: 10,
+                  ),
+                ),
+              ),
+              textDirection: dir,
+            ),
+          );
+          final card = tester.getRect(find.byType(NocheCard));
+          final content = tester.getRect(
+            find.byKey(const ValueKey('card-content')),
+          );
+          final inset = padding + border;
+          expect(content.left - card.left, inset);
+          expect(card.right - content.right, inset);
+          expect(content.top - card.top, inset);
+          expect(card.bottom - content.bottom, inset);
+        }
+      }
+    });
+
     testWidgets('standard, highlight, dashed, and tappable', (tester) async {
       var tapped = 0;
       await tester.pumpWidget(
@@ -454,6 +535,16 @@ void main() {
       await tester.tap(find.bySemanticsLabel('Play'));
       await tester.tap(find.bySemanticsLabel('Call'));
       expect(count, 2);
+      final halo = tester.widget<Container>(
+        find.descendant(
+          of: find.byWidgetPredicate((w) => w is NochePlayDisc && w.halo),
+          matching: find.byType(Container),
+        ),
+      );
+      final shadow = (halo.decoration! as BoxDecoration).boxShadow!.single;
+      expect(shadow.color, NocheColors.callHalo);
+      expect(shadow.color.a, 1);
+      expect(shadow.spreadRadius, 8);
     });
   });
 
@@ -463,73 +554,104 @@ void main() {
     ) async {
       int selectedMin = 30;
       String selectedSkill = 'listening';
-
-      await tester.pumpWidget(
-        _wrap(
-          StatefulBuilder(
-            builder: (context, setState) => Column(
-              children: [
-                NocheSegmented<int>(
-                  role: NocheSegmentedRole.radioGroup,
-                  semanticLabel: 'Minutes a day',
-                  selected: selectedMin,
-                  large: true,
-                  onChanged: (v) => setState(() => selectedMin = v),
-                  options: const [
-                    NocheSegmentOption(value: 15, label: '15'),
-                    NocheSegmentOption(value: 30, label: '30'),
-                    NocheSegmentOption(value: 60, label: '60'),
-                    NocheSegmentOption(value: 120, label: '120'),
-                  ],
-                ),
-                NocheSegmented<String>(
-                  role: NocheSegmentedRole.tabList,
-                  semanticLabel: 'Skill',
-                  selected: selectedSkill,
-                  onChanged: (v) => setState(() => selectedSkill = v),
-                  options: const [
-                    NocheSegmentOption(value: 'listening', label: 'Listening'),
-                    NocheSegmentOption(value: 'speaking', label: 'Speaking'),
-                    NocheSegmentOption(
-                      value: 'reading',
-                      label: 'Reading',
-                      muted: true,
-                    ),
-                  ],
-                ),
-              ],
+      final handle = tester.ensureSemantics();
+      try {
+        await tester.pumpWidget(
+          _wrap(
+            StatefulBuilder(
+              builder: (context, setState) => Column(
+                children: [
+                  NocheSegmented<int>(
+                    role: NocheSegmentedRole.radioGroup,
+                    semanticLabel: 'Minutes a day',
+                    selected: selectedMin,
+                    large: true,
+                    onChanged: (v) => setState(() => selectedMin = v),
+                    options: const [
+                      NocheSegmentOption(value: 15, label: '15'),
+                      NocheSegmentOption(value: 30, label: '30'),
+                      NocheSegmentOption(value: 60, label: '60'),
+                      NocheSegmentOption(value: 120, label: '120'),
+                    ],
+                  ),
+                  NocheSegmented<String>(
+                    role: NocheSegmentedRole.tabList,
+                    semanticLabel: 'Skill',
+                    selected: selectedSkill,
+                    onChanged: (v) => setState(() => selectedSkill = v),
+                    options: const [
+                      NocheSegmentOption(
+                        value: 'listening',
+                        label: 'Listening',
+                      ),
+                      NocheSegmentOption(value: 'speaking', label: 'Speaking'),
+                      NocheSegmentOption(
+                        value: 'reading',
+                        label: 'Reading',
+                        muted: true,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      expect(
-        tester.widget<Text>(find.text('30')).style!.color,
-        NocheColors.ground,
-      );
-      expect(
-        tester.widget<Text>(find.text('15')).style!.color,
-        NocheColors.text,
-      );
-      expect(
-        tester.widget<Text>(find.text('Reading')).style!.color,
-        NocheColors.label,
-      );
+        expect(
+          tester.widget<Text>(find.text('30')).style!.color,
+          NocheColors.ground,
+        );
+        expect(
+          tester.widget<Text>(find.text('15')).style!.color,
+          NocheColors.text,
+        );
+        expect(
+          tester.widget<Text>(find.text('Reading')).style!.color,
+          NocheColors.label,
+        );
 
-      await tester.tap(find.text('60'));
-      await tester.tap(find.text('Speaking'));
-      await tester.pump();
+        await tester.tap(find.text('60'));
+        await tester.tap(find.text('Speaking'));
+        await tester.pump();
 
-      expect(selectedMin, 60);
-      expect(selectedSkill, 'speaking');
-      expect(
-        tester.widget<Text>(find.text('60')).style!.color,
-        NocheColors.ground,
-      );
-      expect(
-        tester.widget<Text>(find.text('Speaking')).style!.color,
-        NocheColors.ground,
-      );
+        expect(selectedMin, 60);
+        expect(selectedSkill, 'speaking');
+        expect(
+          tester
+              .getSemantics(find.bySemanticsLabel('Skill'))
+              .getSemanticsData()
+              .role,
+          SemanticsRole.tabBar,
+        );
+        expect(
+          tester
+              .getSemantics(find.bySemanticsLabel('Minutes a day'))
+              .getSemanticsData()
+              .role,
+          SemanticsRole.radioGroup,
+        );
+        for (final label in ['Listening', 'Speaking', 'Reading']) {
+          final data = tester
+              .getSemantics(find.bySemanticsLabel(label))
+              .getSemanticsData();
+          expect(data.role, SemanticsRole.tab);
+          expect(
+            data.flagsCollection.isSelected,
+            label == 'Speaking' ? Tristate.isTrue : Tristate.isFalse,
+          );
+        }
+        expect(
+          tester.widget<Text>(find.text('60')).style!.color,
+          NocheColors.ground,
+        );
+        expect(
+          tester.widget<Text>(find.text('Speaking')).style!.color,
+          NocheColors.ground,
+        );
+      } finally {
+        handle.dispose();
+      }
     });
   });
 
@@ -776,6 +898,50 @@ void main() {
   });
 
   group('NocheBarChart', () {
+    testWidgets(
+      'goal never changes the tallest bar or paints outside the plot',
+      (tester) async {
+        for (final goal in [30, 120]) {
+          await tester.pumpWidget(
+            _wrap(
+              Center(
+                child: NocheBarChart(
+                  showValues: false,
+                  goal: goal,
+                  items: const [
+                    NocheBarItem(label: 'F', value: 41),
+                    NocheBarItem(label: 'Today', value: 12, highlighted: true),
+                  ],
+                ),
+              ),
+            ),
+          );
+          final tallest = find.descendant(
+            of: find.byType(NocheBarChart),
+            matching: find.byWidgetPredicate(
+              (w) =>
+                  w is Container &&
+                  w.decoration is BoxDecoration &&
+                  (w.decoration! as BoxDecoration).color == NocheColors.bar,
+            ),
+          );
+          expect(tester.getSize(tallest).height, 64);
+          final lines = find.descendant(
+            of: find.byType(NocheBarChart),
+            matching: find.byType(CustomPaint),
+          );
+          expect(lines, goal > 41 ? findsNothing : findsOneWidget);
+          if (goal <= 41) {
+            final plot = tester.getRect(find.byType(NocheBarChart));
+            expect(
+              plot.bottom - tester.getRect(lines).bottom,
+              closeTo(24 + 30 / 41 * 64, 0.001),
+            );
+          }
+        }
+      },
+    );
+
     testWidgets('scales tallest bar to bar area and renders dashed goal line', (
       tester,
     ) async {
@@ -1140,6 +1306,42 @@ void main() {
         matchesGoldenFile('goldens/noche_dev_rtl.png'),
       );
     });
+  });
+
+  group('Dev page phone frames', () {
+    for (final size in [const Size(390, 844), const Size(412, 915)]) {
+      for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
+        final direction = dir == TextDirection.ltr ? 'ltr' : 'rtl';
+        final dimensions = '${size.width.toInt()}x${size.height.toInt()}';
+        testWidgets('$dimensions $direction uses the live scrollable screen', (
+          tester,
+        ) async {
+          tester.view.devicePixelRatio = 1;
+          tester.view.physicalSize = size;
+          addTearDown(tester.view.reset);
+          final key = GlobalKey();
+          await tester.pumpWidget(
+            MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: coquiTheme(),
+              home: RepaintBoundary(
+                key: key,
+                child: Scaffold(body: NochePiecesDevPage(textDirection: dir)),
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+          expect(tester.getSize(find.byType(NocheScreen)), size);
+          expect(tester.takeException(), isNull);
+          await expectLater(
+            find.byKey(key),
+            matchesGoldenFile(
+              'goldens/noche_phone_${dimensions}_$direction.png',
+            ),
+          );
+        });
+      }
+    }
   });
 
   group('Noche directional & token static checks', () {
