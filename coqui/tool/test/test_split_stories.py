@@ -359,11 +359,20 @@ class SafetyAndValidationTests(unittest.TestCase):
                 with self.assertRaises(ValueError, msg=f"split_story allowed unsafe lang {bad_lang!r}"):
                     ss.split_story(self._minimal_story("demo"), lang=bad_lang)
 
-            for bad_id in ("../escape", "a/b", "..", ".", "a\\b", ""):
+            for bad_id in ("../escape", "a/b", "..", ".", "a\\b", "", "words"):
                 bad_story = self._minimal_story("demo")
                 bad_story["id"] = bad_id
-                with self.assertRaises(ValueError, msg=f"split_story allowed unsafe id {bad_id!r}"):
+                with self.assertRaises(ValueError, msg=f"split_story allowed unsafe/reserved id {bad_id!r}"):
                     ss.split_story(bad_story)
+
+            # 5. Reserved story filename words.json in source directory is rejected before writing
+            reserved_src = root / "reserved_src"
+            reserved_src.mkdir()
+            (reserved_src / "words.json").write_bytes(ss.render_json(self._minimal_story("words")))
+            reserved_out = root / "reserved_out"
+            with self.assertRaises(ValueError):
+                ss.split_directory(reserved_src, reserved_out, repo_root=root)
+            self.assertFalse(reserved_out.exists())
 
     def test_unknown_top_level_keys_raise(self) -> None:
         bad_story = self._minimal_story()

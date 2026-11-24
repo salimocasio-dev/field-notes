@@ -37,7 +37,7 @@ Every legacy file in `historia/cuentos/*.json` uses keys from this exact 24-key 
 
 | Legacy key | Destination | Required? | Notes |
 | :--- | :--- | :--- | :--- |
-| `id` | Both `game` and `lines` | Yes | Must match `<id>.json` filename stem. |
+| `id` | Both `game` and `lines` | Yes | Must match `<id>.json` filename stem (`"words"` is reserved for `words.json`). |
 | `tipo` | `game` | No | `"escucha"`, `"haz"`, `"cual"`, or `"palabras"`; omitted on main stories. |
 | `scene` | `game` | No | Scene ID (omitted on `palabras-solas`). |
 | `next` | `game` | No | Next story ID on the map. |

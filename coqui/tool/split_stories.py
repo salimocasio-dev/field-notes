@@ -91,6 +91,7 @@ LINES_ALLOWED_KEYS: frozenset[str] = frozenset(
 # Matches coqui/packages/features/feature_story/lib/src/runner/steps.dart:35
 VAR_RE = re.compile(r"\$([a-z]+)")
 SAFE_SEGMENT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+RESERVED_STORY_IDS: frozenset[str] = frozenset({"words"})
 
 
 def _assert_safe_segment(value: Any, label: str) -> str:
@@ -105,6 +106,14 @@ def _assert_safe_segment(value: Any, label: str) -> str:
     ):
         raise ValueError(f"Unsafe {label}: {value!r}")
     return value
+
+
+def _assert_safe_story_id(value: Any, label: str = "story id") -> str:
+    """Validate a story id is a safe path segment and not reserved (e.g. 'words')."""
+    sid = _assert_safe_segment(value, label)
+    if sid in RESERVED_STORY_IDS:
+        raise ValueError(f"Reserved {label} {sid!r}: collides with {sid}.json word table")
+    return sid
 
 
 def _assert_safe_output_dir(
@@ -192,7 +201,7 @@ def _load_stories_dir(src_dir: Path) -> list[dict[str, Any]]:
             raise ValueError(
                 f"Story id {sid!r} does not match filename stem {path.stem!r} ({path})"
             )
-        _assert_safe_segment(sid, "story id")
+        _assert_safe_story_id(sid, "story id")
         stories.append(story)
     return stories
 
@@ -207,7 +216,7 @@ def split_story(story: dict[str, Any], *, lang: str = "es") -> tuple[dict[str, A
     if unknown:
         raise ValueError(f"Unknown top-level key(s) in story {story.get('id')!r}: {unknown}")
 
-    sid = _assert_safe_segment(story.get("id"), "story id")
+    sid = _assert_safe_story_id(story.get("id"), "story id")
     if "title" not in story:
         raise ValueError(f"Story {sid!r} is missing required key 'title'")
     if "clips" not in story:
@@ -274,7 +283,7 @@ def join_story(game: dict[str, Any], lines: dict[str, Any]) -> dict[str, Any]:
     if lines.get("format") != LINES_FORMAT:
         raise ValueError(f"Invalid lines format: {lines.get('format')!r} (expected {LINES_FORMAT!r})")
 
-    gid = _assert_safe_segment(game.get("id"), "game id")
+    gid = _assert_safe_story_id(game.get("id"), "game id")
     lid = lines.get("id")
     if gid != lid:
         raise ValueError(f"Mismatched story id: game={gid!r} vs lines={lid!r}")
@@ -709,7 +718,7 @@ def join_directory(
 
     pending: list[tuple[Path, bytes]] = []
     for sid in sorted(game_files):
-        _assert_safe_segment(sid, "story id")
+        _assert_safe_story_id(sid, "story id")
         game = _read_json(game_files[sid])
         lines = _read_json(line_files[sid])
         joined = join_story(game, lines)
