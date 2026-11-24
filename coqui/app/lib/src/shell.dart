@@ -37,6 +37,15 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   final Map<String, WidgetBuilder> _tabs = {};
 
+  @override
+  void didUpdateWidget(AppShell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.services, widget.services) ||
+        oldWidget.modules != widget.modules) {
+      _tabs.clear();
+    }
+  }
+
   WidgetBuilder? _tab(String id) {
     final had = _tabs[id];
     if (had != null) return had;
@@ -63,11 +72,15 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(BuildContext context) {
     final route = widget.nav.arrive(widget.route);
-    final lesson = route is TabRoute ? null : _lesson(route);
+    final screen = route is TabRoute ? null : _lesson(route);
     final tab = route is TabRoute ? route.tab : widget.nav.origin;
+    final keepsTabBehind = screen != null && route is LanguagesRoute;
+    final showsTabBar = screen == null || route is PlaceRoute;
+    final selectedTab = route is PlaceRoute ? NocheTabs.map : tab;
     _tab(tab);
+    final language = widget.services.course.language;
     return PopScope(
-      canPop: lesson == null,
+      canPop: screen == null,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) widget.nav.back();
       },
@@ -79,25 +92,34 @@ class _AppShellState extends State<AppShell> {
               KeyedSubtree(
                 key: ValueKey('tab:$id'),
                 child: Offstage(
-                  offstage: lesson != null || id != tab,
+                  offstage: (screen != null && !keepsTabBehind) || id != tab,
                   child: TickerMode(
-                    enabled: lesson == null && id == tab,
-                    child: Builder(builder: _tabs[id]!),
+                    enabled: screen == null && id == tab,
+                    child: ColoredBox(
+                      color: coquiTheme().scaffoldBackgroundColor,
+                      child: Builder(builder: _tabs[id]!),
+                    ),
                   ),
                 ),
               ),
-          if (lesson == null)
-            Positioned(
-              key: const ValueKey('tab-bar'),
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: CoquiTabBar(selectedId: tab, onTap: _onTab),
-            )
-          else
+          if (screen != null)
             KeyedSubtree(
               key: ValueKey('lesson:${addressOf(route)}'),
-              child: lesson,
+              child: screen,
+            ),
+          if (showsTabBar)
+            PositionedDirectional(
+              key: const ValueKey('tab-bar'),
+              start: 0,
+              end: 0,
+              bottom: 0,
+              child: NocheTabBar(
+                selectedId: selectedTab,
+                tabNames: language.tabNames,
+                script: language.script,
+                languageCode: language.code,
+                onTap: _onTab,
+              ),
             ),
         ],
       ),

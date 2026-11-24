@@ -21,7 +21,7 @@ Future<int> playFromToday(TestApp app) async {
     what: 'the story\'s start disc',
   );
   expect(app.lessonShown, isTrue);
-  expect(find.byType(CoquiTabBar), findsNothing);
+  expect(find.byType(NocheTabBar), findsNothing);
   await app.tap(find.byType(LessonStartButton));
   final pic = tester.getRect(find.byType(PixelView));
   final points = <Offset>[
