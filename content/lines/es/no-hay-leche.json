@@ -1,0 +1,206 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "no-hay-leche",
+  "lang": "es",
+  "title": "No hay leche",
+  "place": "La cocina",
+  "focus_words": [
+    "leche",
+    "queso",
+    "no hay",
+    "busca"
+  ],
+  "back_again": [
+    "hay",
+    "sí",
+    "aquí",
+    "ahora",
+    "mira",
+    "come",
+    "toma",
+    "bebé",
+    "pan",
+    "con",
+    "piragua",
+    "tira",
+    "coge",
+    "gracias"
+  ],
+  "also_heard": [
+    "nevera"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina",
+    "nevera": "c30_nevera"
+  },
+  "palabras": {
+    "nohay": "no hay"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c30_nevera": {
+      "who": "narr",
+      "text": "Esta es la nevera."
+    },
+    "c30_aqui_leche": {
+      "who": "narr",
+      "text": "Aquí hay leche."
+    },
+    "c30_aqui_queso": {
+      "who": "narr",
+      "text": "Y aquí hay queso."
+    },
+    "c30_bebe_toma": {
+      "who": "narr",
+      "text": "El bebé toma leche."
+    },
+    "c30_carmen_come": {
+      "who": "narr",
+      "text": "Carmen come pan con queso."
+    },
+    "c30_ab_mira_hay": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Coquí, mira en la nevera. ¿Hay leche? ¿Hay queso?"
+    },
+    "c30_ab_mira": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Coquí, mira en la nevera."
+    },
+    "c30_cq_piragua": {
+      "who": "tu",
+      "text": "¡Una piragua!"
+    },
+    "c30_ahora_los2": {
+      "who": "narr",
+      "text": "Ahora hay leche y queso."
+    },
+    "c30_cq_gracias_papa": {
+      "who": "tu",
+      "text": "¡Gracias, papá!"
+    },
+    "c30_no_piragua": {
+      "who": "narr",
+      "text": "No hay piragua para Coquí."
+    },
+    "c30_cq_no_leche": {
+      "who": "tu",
+      "text": "¡Papá, no hay leche!"
+    },
+    "c30_busca_leche": {
+      "who": "narr",
+      "text": "Papá busca la leche."
+    },
+    "c30_ahora_leche": {
+      "who": "narr",
+      "text": "Ahora hay leche."
+    },
+    "c30_si_queso_no_leche": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Sí hay queso. No hay leche."
+    },
+    "c30_no_leche_si_queso": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No hay leche. Sí hay queso."
+    },
+    "c30_ab_si_leche": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Sí hay leche."
+    },
+    "c30_ab_no_leche": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No hay leche."
+    },
+    "c30_no_leche": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. No hay leche."
+    },
+    "c30_cq_no_queso": {
+      "who": "tu",
+      "text": "¡Papá, no hay queso!"
+    },
+    "c30_busca_queso": {
+      "who": "narr",
+      "text": "Papá busca el queso."
+    },
+    "c30_ahora_queso": {
+      "who": "narr",
+      "text": "Ahora hay queso."
+    },
+    "c30_si_leche_no_queso": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Sí hay leche. No hay queso."
+    },
+    "c30_no_queso_si_leche": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No hay queso. Sí hay leche."
+    },
+    "c30_ab_si_queso": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Sí hay queso."
+    },
+    "c30_ab_no_queso": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No hay queso."
+    },
+    "c30_no_queso": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. No hay queso."
+    }
+  }
+}

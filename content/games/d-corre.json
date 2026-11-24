@@ -1,0 +1,262 @@
+{
+  "format": "coqui.game.v1",
+  "id": "d-corre",
+  "tipo": "escucha",
+  "scene": "camino",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 5,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "act": "inicio12"
+    },
+    {
+      "set": {
+        "gato": {
+          "x": 113,
+          "y": 134,
+          "pose": "lava",
+          "dir": -1,
+          "en": null
+        }
+      }
+    },
+    {
+      "act": "pose",
+      "quien": "perro",
+      "que": "sit"
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "idle"
+    },
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    "qa01",
+    {
+      "act": "saluda",
+      "quien": "luis"
+    },
+    "qa02",
+    {
+      "set": {
+        "twinkle": "grande"
+      }
+    },
+    "qa03",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    "qa04",
+    {
+      "dots": 2
+    },
+    {
+      "act": "cuenta",
+      "queda": 1
+    },
+    {
+      "say": "qa05",
+      "gap": 200
+    },
+    {
+      "act": "cuenta",
+      "fin": 1
+    },
+    {
+      "act": "ronda",
+      "modo": "corre"
+    },
+    {
+      "say": "qa06",
+      "gap": 100
+    },
+    {
+      "act": "ronda",
+      "modo": "corre"
+    },
+    {
+      "dots": 3
+    },
+    {
+      "set": {
+        "twinkle": "gato"
+      }
+    },
+    "qa07",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "pose",
+      "quien": "perro",
+      "que": "bark",
+      "dir": -1
+    },
+    "qa08",
+    {
+      "act": "gatoa",
+      "x": 46,
+      "y": 172,
+      "corre": 1,
+      "que": "sit",
+      "dir": 1
+    },
+    {
+      "act": "perroa",
+      "x": 70,
+      "y": 186,
+      "corre": 1,
+      "que": "bark",
+      "dir": -1
+    },
+    "qa09",
+    {
+      "say": "qa10",
+      "gap": 200
+    },
+    {
+      "act": "luisno"
+    },
+    {
+      "dots": 4
+    },
+    {
+      "say": "qa11",
+      "gap": 300
+    },
+    {
+      "act": "va",
+      "quien": "carmen",
+      "modo": "corre",
+      "a": 5
+    },
+    {
+      "say": "qa12",
+      "gap": 100
+    },
+    {
+      "act": "va",
+      "quien": "carmen",
+      "modo": "corre",
+      "a": 8
+    },
+    {
+      "act": "pose",
+      "quien": "carmen",
+      "que": "offer",
+      "dir": 1
+    },
+    "qa13",
+    {
+      "act": "pose",
+      "quien": "carmen",
+      "que": "idle"
+    },
+    {
+      "act": "luisrie"
+    },
+    "qa14",
+    {
+      "say": "qa15",
+      "gap": 200
+    },
+    {
+      "act": "ranaa",
+      "a": 4
+    },
+    {
+      "say": "qa16",
+      "gap": 100
+    },
+    {
+      "act": "ranaa",
+      "a": 6
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "gatoarbol",
+      "en": 0
+    },
+    {
+      "act": "asoma"
+    },
+    {
+      "set": {
+        "twinkle": "arbol0"
+      }
+    },
+    {
+      "act": "perroa",
+      "x": 88,
+      "y": 134,
+      "corre": 1,
+      "que": "bark",
+      "dir": -1
+    },
+    "qa17",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    "qa18",
+    {
+      "act": "pose",
+      "quien": "perro",
+      "que": "lie"
+    },
+    "qa19",
+    "qa20",
+    {
+      "set": {
+        "heart": 1
+      }
+    },
+    {
+      "wait": 1200
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "qa01",
+    "qa02",
+    "qa03",
+    "qa04",
+    "qa05",
+    "qa06",
+    "qa07",
+    "qa08",
+    "qa09",
+    "qa10",
+    "qa11",
+    "qa12",
+    "qa13",
+    "qa14",
+    "qa15",
+    "qa16",
+    "qa17",
+    "qa18",
+    "qa19",
+    "qa20"
+  ]
+}

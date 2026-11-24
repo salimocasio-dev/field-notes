@@ -1,0 +1,362 @@
+{
+  "format": "coqui.game.v1",
+  "id": "h-patio",
+  "tipo": "haz",
+  "scene": "patio",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 4,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "set": {
+        "gente": {
+          "luis": {
+            "x": 150,
+            "y": 150,
+            "pose": "idle"
+          },
+          "carmen": {
+            "x": 84,
+            "y": 150,
+            "pose": "idle",
+            "dir": 1
+          }
+        },
+        "bola": {
+          "x": 162,
+          "y": 150
+        },
+        "flores": {
+          "L": [
+            {
+              "k": 1,
+              "c": 0
+            },
+            {
+              "k": 1,
+              "c": 1
+            }
+          ],
+          "R": [
+            {
+              "k": 1,
+              "c": 2
+            },
+            {
+              "k": 1,
+              "c": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "wait": 500
+    },
+    {
+      "set": {
+        "twinkle": "porton"
+      }
+    },
+    "hd01",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "dots": 1
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "luis",
+        "carmen"
+      ],
+      "pick": "luis",
+      "lead": [],
+      "line": "hd02",
+      "right": [
+        {
+          "act": "saluda",
+          "quien": "luis"
+        }
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "luis",
+        "carmen"
+      ],
+      "pick": "carmen",
+      "lead": [],
+      "line": "hd03",
+      "right": [
+        {
+          "act": "saluda",
+          "quien": "carmen"
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "sol",
+        "bola",
+        "porton"
+      ],
+      "pick": "sol",
+      "lead": [],
+      "line": "hd04",
+      "right": [
+        {
+          "act": "brilla"
+        }
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "sol",
+        "bola",
+        "porton"
+      ],
+      "pick": "bola",
+      "lead": [],
+      "line": "hd05",
+      "right": [
+        {
+          "act": "juega"
+        }
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "pajaro",
+        "sol",
+        "bola"
+      ],
+      "pick": "pajaro",
+      "lead": [],
+      "line": "hd06",
+      "right": [
+        {
+          "act": "aveloop"
+        }
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "porton",
+        "puerta"
+      ],
+      "pick": "porton",
+      "lead": [],
+      "line": "hd07",
+      "right": [
+        {
+          "act": "abreporton"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "set": {
+        "caja": 1
+      }
+    },
+    {
+      "act": "ir",
+      "a": "caja"
+    },
+    {
+      "act": "anda",
+      "quien": "carmen",
+      "a": "detras",
+      "cama": "L"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "camaL",
+        "camaR"
+      ],
+      "pick": "camaL",
+      "lead": [],
+      "line": "hd08",
+      "right": [
+        {
+          "act": "planta",
+          "cama": "L"
+        }
+      ],
+      "vale": [
+        "carmen"
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "camaL",
+        "camaR"
+      ],
+      "pick": "camaR",
+      "lead": [],
+      "line": "hd09",
+      "right": [
+        {
+          "act": "planta",
+          "cama": "R"
+        }
+      ]
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "anda",
+      "quien": "carmen",
+      "x": "84",
+      "y": "150"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "luis"
+      ],
+      "vale": [
+        "carmen"
+      ],
+      "pick": "luis",
+      "lead": [],
+      "line": "hd10",
+      "right": [
+        {
+          "if": "x=luis",
+          "then": [
+            {
+              "act": "saluda",
+              "quien": "luis"
+            }
+          ],
+          "else": [
+            {
+              "act": "saluda",
+              "quien": "carmen"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calc": "otro",
+      "cond": "x=luis",
+      "then": "carmen",
+      "else": "luis"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "mudo": true,
+      "options": [
+        "$otro",
+        "bola"
+      ],
+      "pick": "$otro",
+      "lead": [],
+      "line": "hd10",
+      "right": [
+        {
+          "if": "otro=luis",
+          "then": [
+            {
+              "act": "saluda",
+              "quien": "luis"
+            }
+          ],
+          "else": [
+            {
+              "act": "saluda",
+              "quien": "carmen"
+            }
+          ]
+        },
+        {
+          "act": "pelota"
+        },
+        {
+          "wait": 300
+        },
+        {
+          "say": "muy_bien",
+          "gap": 300
+        },
+        {
+          "set": {
+            "heart": 1
+          }
+        },
+        {
+          "wait": 600
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "hd01",
+    "hd02",
+    "hd03",
+    "hd04",
+    "hd05",
+    "hd06",
+    "hd07",
+    "hd08",
+    "hd09",
+    "hd10"
+  ]
+}

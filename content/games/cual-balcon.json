@@ -1,0 +1,563 @@
+{
+  "format": "coqui.game.v1",
+  "id": "cual-balcon",
+  "tipo": "cual",
+  "scene": "balcon",
+  "note": "The next-day pass for El balcón. Lines are reused from stories 4 and 5; only ab_como_estas and n_un_vaso are recorded for this file.",
+  "stake": {
+    "thing": "none",
+    "steps": 0
+  },
+  "items": [
+    {
+      "say": "n_silla_pequena",
+      "si": {
+        "cam": [
+          126,
+          116,
+          68,
+          36.1
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          86,
+          116,
+          68,
+          36.1
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          }
+        }
+      }
+    },
+    {
+      "say": "n_un_vaso",
+      "si": {
+        "cam": [
+          86,
+          98,
+          68,
+          36.1
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "vasos": [
+            {
+              "id": "v",
+              "k": "agua",
+              "t": "n",
+              "lv": 1,
+              "x": 120
+            }
+          ]
+        }
+      },
+      "no": {
+        "cam": [
+          86,
+          98,
+          68,
+          36.1
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "jarras": [
+            {
+              "id": "agua",
+              "k": "agua",
+              "x": 120
+            }
+          ]
+        }
+      }
+    },
+    {
+      "say": "n_jugo",
+      "si": {
+        "cam": [
+          86,
+          98,
+          68,
+          36.1
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "vasos": [
+            {
+              "id": "jugo",
+              "k": "jugo",
+              "t": "n",
+              "lv": 1,
+              "x": 120
+            }
+          ]
+        }
+      },
+      "no": {
+        "cam": [
+          86,
+          98,
+          68,
+          36.1
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "vasos": [
+            {
+              "id": "agua",
+              "k": "agua",
+              "t": "n",
+              "lv": 1,
+              "x": 120
+            }
+          ]
+        }
+      }
+    },
+    {
+      "say": "n_agua",
+      "si": {
+        "cam": [
+          86,
+          98,
+          68,
+          36.1
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "jarras": [
+            {
+              "id": "agua",
+              "k": "agua",
+              "x": 120
+            }
+          ]
+        }
+      },
+      "no": {
+        "cam": [
+          86,
+          98,
+          68,
+          36.1
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "jarras": [
+            {
+              "id": "jugo",
+              "k": "jugo",
+              "x": 120
+            }
+          ]
+        }
+      }
+    },
+    {
+      "say": "se_sienta_silla",
+      "si": {
+        "cam": [
+          18,
+          84,
+          124,
+          65.8
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 1,
+            "trae": 0
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          18,
+          84,
+          124,
+          65.8
+        ],
+        "set": {
+          "ab": {
+            "en": "camina",
+            "x": 106,
+            "y": 148,
+            "pose": "idle",
+            "bub": null,
+            "al": 1,
+            "trae": 0
+          }
+        }
+      }
+    },
+    {
+      "say": "pajaro_toma_agua",
+      "si": {
+        "cam": [
+          84,
+          92,
+          76,
+          40.3
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "vasos": [
+            {
+              "id": "agua",
+              "k": "agua",
+              "t": "n",
+              "lv": 0.4,
+              "x": 106
+            }
+          ],
+          "ave": {
+            "mode": "sit",
+            "x": 127,
+            "y": 128,
+            "dir": -1,
+            "st": "n",
+            "dip": 3
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          84,
+          92,
+          76,
+          40.3
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "vasos": [
+            {
+              "id": "agua",
+              "k": "agua",
+              "t": "n",
+              "lv": 1,
+              "x": 108
+            }
+          ],
+          "ave": {
+            "mode": "sit",
+            "x": 132,
+            "y": 128,
+            "dir": -1,
+            "st": "round"
+          }
+        }
+      }
+    },
+    {
+      "say": "ab_quiero_agua",
+      "si": {
+        "cam": [
+          14,
+          52,
+          186,
+          98.7
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": "quiere_agua",
+            "al": 1,
+            "trae": 0
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          14,
+          52,
+          186,
+          98.7
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "bebe",
+            "bub": "amor",
+            "al": 1,
+            "trae": 0
+          },
+          "abvaso": {
+            "k": "agua",
+            "lv": 0.5
+          }
+        }
+      }
+    },
+    {
+      "say": "cq_gracias_abuela",
+      "si": {
+        "cam": [
+          14,
+          52,
+          186,
+          98.7
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "vaso",
+            "bub": null,
+            "al": 1,
+            "trae": 0
+          },
+          "abvaso": {
+            "k": "agua",
+            "lv": 1
+          },
+          "cq": {
+            "x": 84,
+            "y": 129,
+            "s": 0.8,
+            "dy": 0,
+            "al": 1,
+            "vis": 1,
+            "bub": "amor"
+          },
+          "ave": {
+            "mode": "sit",
+            "x": 120,
+            "y": 86,
+            "dir": -1,
+            "st": "n"
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          14,
+          52,
+          186,
+          98.7
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 1,
+            "trae": 0
+          },
+          "cq": {
+            "x": 84,
+            "y": 129,
+            "s": 0.8,
+            "dy": 0,
+            "al": 1,
+            "vis": 1,
+            "bub": "mal"
+          },
+          "ave": {
+            "mode": "sit",
+            "x": 120,
+            "y": 86,
+            "dir": -1,
+            "st": "n"
+          }
+        }
+      }
+    },
+    {
+      "say": "ab_como_estas",
+      "si": {
+        "cam": [
+          14,
+          52,
+          186,
+          98.7
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": "como",
+            "al": 1,
+            "trae": 0
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          14,
+          52,
+          186,
+          98.7
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": "agua_q",
+            "al": 1,
+            "trae": 0
+          }
+        }
+      }
+    },
+    {
+      "say": "cq_bien",
+      "si": {
+        "cam": [
+          82,
+          94,
+          124,
+          65.8
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "cq": {
+            "x": 106,
+            "y": 130,
+            "s": 0.8,
+            "dy": 0,
+            "al": 1,
+            "vis": 1,
+            "bub": "bien"
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          82,
+          94,
+          124,
+          65.8
+        ],
+        "set": {
+          "ab": {
+            "en": "silla",
+            "x": 94,
+            "y": 147,
+            "pose": "idle",
+            "bub": null,
+            "al": 0,
+            "trae": 0
+          },
+          "cq": {
+            "x": 106,
+            "y": 130,
+            "s": 0.8,
+            "dy": 0,
+            "al": 1,
+            "vis": 1,
+            "bub": "calor"
+          },
+          "calor": 3
+        }
+      }
+    }
+  ]
+}

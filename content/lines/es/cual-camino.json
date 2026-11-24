@@ -1,0 +1,84 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-camino",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "El parque",
+  "clips": {
+    "c_c_perro": {
+      "who": "narr",
+      "text": "Es un perro."
+    },
+    "c_n_gato": {
+      "who": "narr",
+      "text": "Es un gato."
+    },
+    "c_n_arbol": {
+      "who": "narr",
+      "text": "Es un árbol."
+    },
+    "c_n_parque": {
+      "who": "narr",
+      "text": "Es el parque."
+    },
+    "c_c_luis_camina": {
+      "who": "narr",
+      "text": "Luis camina."
+    },
+    "c_c_perro_corre": {
+      "who": "narr",
+      "text": "El perro corre."
+    },
+    "c_c_carmen_espera": {
+      "who": "narr",
+      "text": "Carmen espera."
+    },
+    "c_c_rapido": {
+      "who": "narr",
+      "text": "El perro camina rápido."
+    },
+    "c_c_despacio": {
+      "who": "narr",
+      "text": "El gato camina despacio."
+    },
+    "c_c_hay_gato": {
+      "who": "narr",
+      "text": "Hay un gato en el árbol."
+    },
+    "c_c_uno": {
+      "who": "narr",
+      "text": "Hay un pájaro. Uno."
+    },
+    "c_c_dos": {
+      "who": "narr",
+      "text": "Hay dos pájaros."
+    },
+    "c_c_tres": {
+      "who": "narr",
+      "text": "Hay tres pájaros."
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "perro",
+    "gato",
+    "árbol",
+    "parque",
+    "camina",
+    "corre",
+    "espera",
+    "rápido",
+    "despacio",
+    "hay",
+    "uno",
+    "dos",
+    "tres"
+  ]
+}

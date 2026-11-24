@@ -1,0 +1,85 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-patio",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "La casa",
+  "clips": {
+    "p_c_nino": {
+      "who": "narr",
+      "text": "Es un niño."
+    },
+    "p_c_nina": {
+      "who": "narr",
+      "text": "Es una niña."
+    },
+    "p_c_juega": {
+      "who": "narr",
+      "text": "El niño juega."
+    },
+    "p_c_flor": {
+      "who": "narr",
+      "text": "Es una flor."
+    },
+    "p_n_sol": {
+      "who": "narr",
+      "text": "Es el sol."
+    },
+    "p_c_aqui": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: La flor está aquí."
+    },
+    "p_luis_esta_alla": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: La flor está allá."
+    },
+    "p_c_amigo": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Es mi amigo."
+    },
+    "p_carmen_ven_coqui": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Ven, Coquí!"
+    },
+    "p_c_mira": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Mira, Coquí!"
+    },
+    "p_carmen_vamos_coqui": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Vamos, Coquí!"
+    },
+    "p_cq_hm": {
+      "who": "tu",
+      "text": "¡Hasta mañana!"
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "niño",
+    "niña",
+    "juega",
+    "flor",
+    "sol",
+    "aquí",
+    "allá",
+    "amigo",
+    "ven",
+    "mira",
+    "vamos",
+    "hasta mañana"
+  ]
+}

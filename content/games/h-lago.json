@@ -1,0 +1,340 @@
+{
+  "format": "coqui.game.v1",
+  "id": "h-lago",
+  "tipo": "haz",
+  "scene": "lago",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 4,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "act": "inicio20"
+    },
+    {
+      "set": {
+        "perro": null,
+        "flor": null,
+        "gente": {
+          "luis": {
+            "x": 96,
+            "y": 118,
+            "pose": "idle",
+            "dir": 1,
+            "sent": 1
+          },
+          "carmen": {
+            "x": 64,
+            "y": 118,
+            "pose": "idle",
+            "dir": 1
+          }
+        },
+        "bolsa": null,
+        "cq": {
+          "x": 108,
+          "y": 125,
+          "s": 1,
+          "dy": 0,
+          "al": 1,
+          "vis": 1,
+          "bub": null
+        }
+      }
+    },
+    {
+      "act": "mueven",
+      "d": -2
+    },
+    {
+      "act": "repone",
+      "o": "var"
+    },
+    {
+      "wait": 500
+    },
+    {
+      "dots": 1
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "pato_blanco",
+        "pato_negro",
+        "pato_amarillo"
+      ],
+      "pick": "pato_blanco",
+      "lead": [],
+      "line": "rc01",
+      "right": [
+        {
+          "act": "cuacp",
+          "k": "blanco"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "pato_blanco",
+        "pato_negro",
+        "pato_amarillo"
+      ],
+      "pick": "pato_amarillo",
+      "lead": [],
+      "line": "rc02",
+      "right": [
+        {
+          "act": "cuacp",
+          "k": "amarillo"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "act": "toma20"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "pato_blanco",
+        "pato_negro",
+        "pato_amarillo"
+      ],
+      "pick": "pato_blanco",
+      "lead": [],
+      "line": "rc03",
+      "right": [
+        {
+          "act": "come",
+          "a": "pato_blanco"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "dots": 2
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "bote_verde",
+        "bote_azul",
+        "bote_rojo"
+      ],
+      "pick": "bote_rojo",
+      "lead": [],
+      "line": "rc04",
+      "right": [
+        {
+          "act": "mecebote",
+          "c": "rojo"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "bote_verde",
+        "bote_azul",
+        "bote_rojo"
+      ],
+      "pick": "bote_verde",
+      "lead": [],
+      "line": "rc05",
+      "right": [
+        {
+          "act": "mecebote",
+          "c": "verde"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "dots": 3
+    },
+    {
+      "set": {
+        "aves": {
+          "a": {
+            "c": "azul",
+            "x": 152,
+            "y": 122,
+            "dir": -1
+          }
+        },
+        "peces": {
+          "a": {
+            "c": "pardo",
+            "x": 192,
+            "y": 192,
+            "dir": -1,
+            "circula": 1
+          }
+        }
+      }
+    },
+    {
+      "act": "sube",
+      "quien": "pajaro"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "pajaro",
+        "pez",
+        "pato_blanco",
+        "pato_negro",
+        "pato_amarillo"
+      ],
+      "pick": "pajaro",
+      "lead": [],
+      "line": "rc06",
+      "right": [
+        {
+          "act": "dip"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "pajaro",
+        "pez",
+        "pato_blanco",
+        "pato_negro",
+        "pato_amarillo"
+      ],
+      "pick": "pez",
+      "lead": [],
+      "line": "rc07",
+      "right": [
+        {
+          "act": "pezsalta1"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "dots": 4
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "bote_azul"
+      ],
+      "vale": [
+        "pato_negro"
+      ],
+      "pick": "bote_azul",
+      "lead": [],
+      "line": "rc08",
+      "right": [
+        {
+          "if": "x=bote_azul",
+          "then": [
+            {
+              "act": "mecebote",
+              "c": "azul"
+            }
+          ],
+          "else": [
+            {
+              "act": "cuacp",
+              "k": "negro"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calc": "otro",
+      "cond": "x=bote_azul",
+      "then": "pato_negro",
+      "else": "bote_azul"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "mudo": true,
+      "options": [
+        "$otro",
+        "bote_rojo"
+      ],
+      "pick": "$otro",
+      "lead": [],
+      "line": "rc08",
+      "right": [
+        {
+          "if": "otro=bote_azul",
+          "then": [
+            {
+              "act": "mecebote",
+              "c": "azul"
+            }
+          ],
+          "else": [
+            {
+              "act": "cuacp",
+              "k": "negro"
+            }
+          ]
+        },
+        {
+          "wait": 300
+        },
+        {
+          "say": "muy_bien",
+          "gap": 300
+        },
+        {
+          "set": {
+            "heart": 1
+          }
+        },
+        {
+          "wait": 600
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "rc01",
+    "rc02",
+    "rc03",
+    "rc04",
+    "rc05",
+    "rc06",
+    "rc07",
+    "rc08"
+  ]
+}

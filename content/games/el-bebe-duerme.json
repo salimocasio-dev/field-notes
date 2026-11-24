@@ -1,0 +1,645 @@
+{
+  "format": "coqui.game.v1",
+  "id": "el-bebe-duerme",
+  "scene": "banco",
+  "next": "la-mesa",
+  "goal": "Look after everybody without waking the baby.",
+  "stake": {
+    "thing": "juguetes",
+    "steps": 3
+  },
+  "dots": 8,
+  "bien": "si_muy_bien",
+  "callado": true,
+  "beats": [
+    {
+      "act": "inicio23"
+    },
+    {
+      "wait": 500
+    },
+    {
+      "set": {
+        "twinkle": "coche"
+      }
+    },
+    "c23_un_bebe",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    "c23_duerme",
+    {
+      "say": "c23_ca_shh",
+      "gap": 250
+    },
+    {
+      "set": {
+        "twinkle": "luis"
+      }
+    },
+    "c23_luis_cansado",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "cojin"
+    },
+    {
+      "set": {
+        "twinkle": "perro"
+      }
+    },
+    "c23_canelo_contento",
+    {
+      "set": {
+        "twinkle": "hombre"
+      }
+    },
+    "c23_senor_triste",
+    {
+      "set": {
+        "twinkle": "carmen"
+      }
+    },
+    "c23_carmen_contenta",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "hombre",
+      "lead": [],
+      "line": "c23_ca_quien_triste",
+      "then": [
+        "c23_ahora_senor"
+      ],
+      "after": [
+        {
+          "act": "alegra",
+          "a": "hombre"
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "abuelallega"
+    },
+    {
+      "ask": "di_contento",
+      "lead": [],
+      "line": "c23_ab_como",
+      "then": [
+        {
+          "act": "pelota",
+          "n": 2
+        },
+        {
+          "act": "cae"
+        }
+      ],
+      "after": [],
+      "resp": [
+        "di_contento",
+        "di_cansado",
+        "di_triste"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_contento": "c23_cq_contento",
+        "di_cansado": "c23_cq_cansado",
+        "di_triste": "c23_cq_triste"
+      },
+      "said": {
+        "di_contento": "c23_cq_contento"
+      }
+    },
+    {
+      "ask": "di_cansado",
+      "lead": [],
+      "line": "c23_ab_y_ahora",
+      "then": [
+        {
+          "act": "chal"
+        }
+      ],
+      "after": [],
+      "resp": [
+        "di_contento",
+        "di_cansado",
+        "di_triste"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_contento": "c23_cq_contento",
+        "di_cansado": "c23_cq_cansado",
+        "di_triste": "c23_cq_triste"
+      },
+      "said": {
+        "di_cansado": "c23_cq_cansado"
+      }
+    },
+    {
+      "act": "canelo23",
+      "como": "triste"
+    },
+    {
+      "ask": "di_triste",
+      "lead": [],
+      "line": "c23_ab_y_ahora",
+      "then": [
+        {
+          "act": "caricia"
+        },
+        "c23_ahora_contento"
+      ],
+      "after": [],
+      "resp": [
+        "di_contento",
+        "di_cansado",
+        "di_triste"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_contento": "c23_cq_contento",
+        "di_cansado": "c23_cq_cansado",
+        "di_triste": "c23_cq_triste"
+      },
+      "said": {
+        "di_triste": "c23_cq_triste"
+      }
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "capota",
+      "v": 1
+    },
+    {
+      "act": "mira23"
+    },
+    {
+      "ask": "quieto",
+      "lead": [],
+      "line": "c23_sa_shh_duerme",
+      "then": [],
+      "after": [
+        {
+          "act": "quieto"
+        }
+      ],
+      "resp": [
+        "canta",
+        "quieto"
+      ],
+      "baraja": true
+    },
+    {
+      "act": "manita",
+      "v": 1
+    },
+    {
+      "act": "mira23"
+    },
+    {
+      "ask": "canta",
+      "lead": [],
+      "line": "c23_sa_ahora_contento",
+      "then": [
+        {
+          "act": "duerme"
+        },
+        {
+          "act": "capota",
+          "v": 0
+        },
+        "c23_ahora_duerme"
+      ],
+      "after": [
+        {
+          "act": "canta"
+        },
+        {
+          "act": "rie"
+        }
+      ],
+      "resp": [
+        "canta",
+        "quieto"
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "turno23a"
+    },
+    {
+      "say": "yo_coqui",
+      "gap": 200
+    },
+    {
+      "act": "turno23b"
+    },
+    {
+      "say": "c23_ca_shh_coqui",
+      "gap": 250
+    },
+    {
+      "set": {
+        "tarjeta": "rondas",
+        "marcas": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "wait": 400
+    },
+    {
+      "dots": 5
+    },
+    {
+      "draw": "va",
+      "options": [
+        "duerme",
+        "contento"
+      ]
+    },
+    {
+      "calc": "ka",
+      "cond": "va=duerme",
+      "then": "quieto",
+      "else": "canta"
+    },
+    {
+      "act": "capota",
+      "v": 1
+    },
+    {
+      "act": "mira23"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "canta",
+        "quieto"
+      ],
+      "baraja": true,
+      "pick": "$ka",
+      "tests": "$va",
+      "lead": [],
+      "line": "c23_sa_$va",
+      "right": [
+        {
+          "if": "va=duerme",
+          "then": [
+            {
+              "act": "quieto"
+            }
+          ],
+          "else": [
+            {
+              "act": "canta"
+            },
+            {
+              "act": "rie"
+            }
+          ]
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        },
+        {
+          "act": "duerme"
+        },
+        {
+          "act": "capota",
+          "v": 0
+        }
+      ],
+      "wrong": [
+        {
+          "if": "va=duerme",
+          "then": [
+            {
+              "act": "canta"
+            },
+            {
+              "act": "despierta"
+            },
+            {
+              "act": "marca",
+              "que": "x"
+            },
+            {
+              "cost": 1
+            },
+            {
+              "act": "capota",
+              "v": 0
+            },
+            {
+              "act": "mece"
+            },
+            "c23_no_shh",
+            {
+              "act": "capota",
+              "v": 1
+            }
+          ],
+          "else": [
+            {
+              "act": "quieto"
+            },
+            {
+              "act": "manita",
+              "v": 1
+            },
+            {
+              "wait": 700
+            },
+            {
+              "act": "manita",
+              "v": 0
+            },
+            {
+              "act": "despierta"
+            },
+            {
+              "act": "marca",
+              "que": "x"
+            },
+            {
+              "cost": 1
+            },
+            {
+              "act": "capota",
+              "v": 0
+            },
+            "c23_no_no_duerme"
+          ]
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "draw": "cb",
+      "options": [
+        "contento",
+        "cansado",
+        "triste"
+      ]
+    },
+    {
+      "act": "canelo23",
+      "como": "$cb"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "di_contento",
+        "di_cansado",
+        "di_triste"
+      ],
+      "baraja": true,
+      "pick": "di_$cb",
+      "tests": "$cb",
+      "voces": {
+        "di_contento": "c23_cq_contento",
+        "di_cansado": "c23_cq_cansado",
+        "di_triste": "c23_cq_triste"
+      },
+      "said": {
+        "di_contento": "c23_cq_contento",
+        "di_cansado": "c23_cq_cansado",
+        "di_triste": "c23_cq_triste"
+      },
+      "lead": [],
+      "line": "c23_ab_como",
+      "right": [
+        {
+          "act": "abuelahace",
+          "que": "$cb"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "abuelamal",
+          "dijo": "$x",
+          "es": "$cb"
+        },
+        {
+          "act": "despierta"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "mece"
+        },
+        "c23_no_mira_$cb"
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "act": "tres23"
+    },
+    {
+      "draw": "qc",
+      "options": [
+        "cansado",
+        "triste",
+        "contento"
+      ]
+    },
+    {
+      "calc": "tc",
+      "cond": "qc=cansado",
+      "then": "perro",
+      "else": "luis"
+    },
+    {
+      "calc": "tc",
+      "cond": "qc=contento",
+      "then": "hombre",
+      "else": "$tc"
+    },
+    {
+      "calc": "nc",
+      "cond": "qc=cansado",
+      "then": "canelo_cansado",
+      "else": "luis_triste"
+    },
+    {
+      "calc": "nc",
+      "cond": "qc=contento",
+      "then": "senor_contento",
+      "else": "$nc"
+    },
+    {
+      "decide": "do",
+      "options": [
+        "perro",
+        "luis",
+        "hombre"
+      ],
+      "pick": "$tc",
+      "tests": "$qc",
+      "lock": true,
+      "lead": [],
+      "line": "c23_ca_quien_$qc",
+      "right": [
+        {
+          "act": "ayuda",
+          "q": "$qc"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "ayudamal",
+          "q": "$qc",
+          "x": "$x"
+        },
+        {
+          "if": "qc=triste",
+          "then": [
+            {
+              "if": "x=hombre",
+              "then": [
+                {
+                  "say": "c23_otra",
+                  "gap": 250
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "despierta"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "mece"
+        },
+        {
+          "set": {
+            "twinkle": "$tc"
+          }
+        },
+        "c23_no_$nc",
+        {
+          "set": {
+            "twinkle": null
+          }
+        }
+      ]
+    },
+    {
+      "act": "resto"
+    }
+  ],
+  "final": [
+    {
+      "dots": 8
+    },
+    {
+      "act": "final23"
+    },
+    "c23_fin_canelo",
+    {
+      "act": "ranacansada"
+    },
+    "c23_fin_coqui",
+    {
+      "say": "c23_ab_vamos",
+      "gap": 250
+    },
+    {
+      "say": "p_cq_hm",
+      "gap": 300
+    },
+    {
+      "act": "sevan23"
+    },
+    {
+      "wait": 600
+    }
+  ],
+  "leer": [
+    "c23_un_bebe",
+    "c23_duerme",
+    "c23_ca_shh",
+    "c23_luis_cansado",
+    "c23_canelo_contento",
+    "c23_senor_triste",
+    "c23_carmen_contenta",
+    "c23_ca_quien_triste",
+    "c23_ahora_senor",
+    "c23_ab_como",
+    "c23_cq_contento",
+    "c23_ab_y_ahora",
+    "c23_cq_cansado",
+    "c23_cq_triste",
+    "c23_ahora_contento",
+    "c23_sa_shh_duerme",
+    "c23_sa_ahora_contento",
+    "c23_ahora_duerme",
+    "c23_ca_shh_coqui",
+    "c23_fin_canelo",
+    "c23_fin_coqui",
+    "c23_ab_vamos",
+    "p_cq_hm"
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "format": "coqui.game.v1",
+  "id": "d-la-bola",
+  "tipo": "escucha",
+  "scene": "patio",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 4,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "set": {
+        "gente": {
+          "luis": {
+            "x": 150,
+            "y": 150,
+            "pose": "idle"
+          },
+          "carmen": {
+            "x": 84,
+            "y": 150,
+            "pose": "idle",
+            "dir": 1
+          }
+        },
+        "bola": {
+          "x": 162,
+          "y": 150
+        },
+        "cq": {
+          "x": 30,
+          "y": 104,
+          "s": 0.8,
+          "dy": 0,
+          "al": 1,
+          "vis": 1,
+          "bub": null
+        }
+      }
+    },
+    {
+      "act": "flores"
+    },
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    "dl01",
+    {
+      "say": "dl02",
+      "gap": 100
+    },
+    {
+      "act": "juega"
+    },
+    {
+      "say": "dl03",
+      "gap": 100
+    },
+    {
+      "act": "pelota"
+    },
+    {
+      "dots": 2
+    },
+    {
+      "say": "dl04",
+      "gap": 100
+    },
+    {
+      "act": "bolaarbol"
+    },
+    "dl05",
+    {
+      "act": "burbuja",
+      "quien": "luis",
+      "que": "q"
+    },
+    {
+      "say": "dl06",
+      "gap": 250
+    },
+    {
+      "act": "calla"
+    },
+    {
+      "act": "apunta",
+      "quien": "carmen"
+    },
+    {
+      "say": "dl07",
+      "gap": 300
+    },
+    {
+      "act": "apunta",
+      "quien": "carmen",
+      "no": "1"
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "ir",
+      "a": "arbol"
+    },
+    "dl08",
+    {
+      "act": "ojos",
+      "x": "1",
+      "y": "-1"
+    },
+    {
+      "say": "dl09",
+      "gap": 300
+    },
+    {
+      "act": "avesale"
+    },
+    "dl10",
+    {
+      "say": "dl11",
+      "gap": 100
+    },
+    {
+      "act": "ojos",
+      "on": "0"
+    },
+    {
+      "act": "avepica2"
+    },
+    "dl12",
+    {
+      "dots": 4
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "wave"
+    },
+    {
+      "say": "dl13",
+      "gap": 200
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "idle"
+    },
+    {
+      "act": "aveloop"
+    },
+    {
+      "act": "ir",
+      "a": "centro"
+    },
+    {
+      "say": "dl14",
+      "gap": 100
+    },
+    {
+      "act": "pelota3"
+    },
+    {
+      "set": {
+        "heart": 1
+      }
+    },
+    {
+      "wait": 700
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "dl01",
+    "dl02",
+    "dl03",
+    "dl04",
+    "dl05",
+    "dl06",
+    "dl07",
+    "dl08",
+    "dl09",
+    "dl10",
+    "dl11",
+    "dl12",
+    "dl13",
+    "dl14"
+  ]
+}

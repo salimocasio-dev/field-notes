@@ -1,0 +1,724 @@
+{
+  "format": "coqui.game.v1",
+  "id": "la-mesa",
+  "scene": "mesa",
+  "next": "la-cuchara",
+  "goal": "Get a plate and a cup to each place, so that abuela can serve.",
+  "stake": {
+    "thing": "merienda",
+    "steps": 3
+  },
+  "dots": 8,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio24"
+    },
+    {
+      "wait": 500
+    },
+    {
+      "set": {
+        "twinkle": "mesa"
+      }
+    },
+    "c24_esta_mesa",
+    {
+      "act": "muestra",
+      "k": "plato"
+    },
+    {
+      "set": {
+        "twinkle": "muestra"
+      }
+    },
+    "c24_aqui_plato",
+    {
+      "act": "muestra",
+      "k": "taza"
+    },
+    {
+      "set": {
+        "twinkle": "muestra"
+      }
+    },
+    "c24_aqui_taza",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "muestra",
+      "k": ""
+    },
+    {
+      "act": "entran24",
+      "suelto": 1
+    },
+    "c24_familia",
+    {
+      "act": "ya"
+    },
+    {
+      "set": {
+        "twinkle": "bebe"
+      }
+    },
+    "c24_bebe_mama",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "dots": 1
+    },
+    {
+      "act": "abuelaa",
+      "a": "abuelo",
+      "sirve": 1
+    },
+    {
+      "set": {
+        "twinkle": "abuelo"
+      }
+    },
+    {
+      "wait": 700
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "ask": "platos",
+      "lead": [],
+      "line": "c24_plato_para_abuelo",
+      "then": [
+        {
+          "act": "sirve",
+          "a": "abuelo",
+          "k": "plato",
+          "suelto": 1
+        },
+        "c24_ab_pone_bizcocho",
+        {
+          "act": "ya"
+        }
+      ],
+      "after": [
+        {
+          "act": "pon",
+          "k": "plato",
+          "a": "abuelo",
+          "suelto": 1
+        },
+        "c24_cq_pone_plato",
+        {
+          "act": "ya"
+        }
+      ]
+    },
+    {
+      "act": "casa"
+    },
+    {
+      "set": {
+        "twinkle": "abuelo"
+      }
+    },
+    {
+      "wait": 700
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "ask": "di_taza",
+      "lead": [],
+      "line": null,
+      "then": [
+        {
+          "act": "sirve",
+          "a": "abuelo",
+          "k": "taza",
+          "suelto": 1
+        },
+        "c24_y_chocolate",
+        {
+          "act": "ya"
+        }
+      ],
+      "after": [
+        {
+          "act": "luispone",
+          "k": "taza",
+          "a": "abuelo",
+          "suelto": 1
+        },
+        "c24_luis_pone_taza",
+        {
+          "act": "ya"
+        }
+      ],
+      "resp": [
+        "di_plato",
+        "di_taza"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_plato": "c24_cq_plato",
+        "di_taza": "c24_cq_taza"
+      },
+      "said": {
+        "di_taza": "c24_cq_taza"
+      }
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "abuelaa",
+      "centro": 1
+    },
+    {
+      "act": "reparte24",
+      "p": "mama",
+      "t": "papa"
+    },
+    {
+      "ask": "mama",
+      "lead": [],
+      "line": "c24_quien_no_taza",
+      "then": [
+        "c24_ahora_mama"
+      ],
+      "after": [
+        {
+          "act": "pon",
+          "k": "taza",
+          "a": "mama"
+        }
+      ]
+    },
+    {
+      "ask": "papa",
+      "lead": [],
+      "line": "c24_quien_no_plato",
+      "then": [
+        "c24_ahora_papa"
+      ],
+      "after": [
+        {
+          "act": "pon",
+          "k": "plato",
+          "a": "papa"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "casa"
+    },
+    {
+      "act": "entra",
+      "quien": "carmen",
+      "silla": 2
+    },
+    {
+      "set": {
+        "twinkle": "carmen"
+      }
+    },
+    {
+      "wait": 700
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "ask": "tazas",
+      "lead": [],
+      "line": "c24_taza_para_carmen",
+      "then": [],
+      "after": [
+        {
+          "act": "pon",
+          "k": "taza",
+          "a": "carmen",
+          "suelto": 1
+        },
+        "c24_cq_pone_taza",
+        {
+          "act": "ya"
+        }
+      ]
+    },
+    {
+      "act": "casa"
+    },
+    {
+      "set": {
+        "twinkle": "carmen"
+      }
+    },
+    {
+      "wait": 700
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "ask": "di_plato",
+      "lead": [],
+      "line": null,
+      "then": [],
+      "after": [
+        {
+          "act": "luispone",
+          "k": "plato",
+          "a": "carmen",
+          "suelto": 1
+        },
+        "c24_luis_pone_plato",
+        {
+          "act": "ya"
+        }
+      ],
+      "resp": [
+        "di_plato",
+        "di_taza"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_plato": "c24_cq_plato",
+        "di_taza": "c24_cq_taza"
+      },
+      "said": {
+        "di_plato": "c24_cq_plato"
+      }
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "abuelaa",
+      "nada": 1
+    },
+    {
+      "act": "tira24"
+    },
+    "c24_ay_bebe",
+    {
+      "act": "recoge24"
+    },
+    {
+      "act": "corta24"
+    },
+    "c24_otra_vez",
+    {
+      "act": "rana",
+      "x": 40,
+      "y": 173,
+      "suelto": 1
+    },
+    "c24_cq_pone_mesa",
+    {
+      "act": "ya"
+    },
+    {
+      "set": {
+        "tarjeta": "rondas",
+        "marcas": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "wait": 400
+    },
+    {
+      "reparte": [
+        "pa",
+        "pb",
+        "pc"
+      ],
+      "options": [
+        "mama",
+        "papa",
+        "carmen"
+      ]
+    },
+    {
+      "dots": 5
+    },
+    {
+      "draw": "ka",
+      "options": [
+        "plato",
+        "taza"
+      ],
+      "other": "oa"
+    },
+    {
+      "calc": "ga",
+      "cond": "ka=plato",
+      "then": "platos",
+      "else": "tazas"
+    },
+    {
+      "act": "abuelaa",
+      "a": "$pa",
+      "sirve": 1
+    },
+    {
+      "set": {
+        "twinkle": "$pa"
+      }
+    },
+    {
+      "wait": 700
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "decide": "do",
+      "options": [
+        "platos",
+        "tazas"
+      ],
+      "pick": "$ga",
+      "tests": "$ka",
+      "lock": true,
+      "lead": [],
+      "line": "c24_$ka_para_$pa",
+      "right": [
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "pon",
+              "k": "$ka",
+              "a": "$pa"
+            },
+            {
+              "act": "sirve",
+              "a": "$pa",
+              "k": "$ka"
+            },
+            {
+              "act": "marca",
+              "que": "ok"
+            },
+            {
+              "act": "luispone",
+              "k": "$oa",
+              "a": "$pa"
+            },
+            {
+              "act": "sirve",
+              "a": "$pa",
+              "k": "$oa"
+            }
+          ],
+          "else": [
+            {
+              "act": "pon",
+              "k": "$ka",
+              "a": "$pa"
+            },
+            {
+              "act": "sirve",
+              "a": "$pa",
+              "k": "$oa"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "pon",
+          "k": "$x",
+          "a": "$pa"
+        },
+        {
+          "act": "sirvemal",
+          "a": "$pa",
+          "k": "$ka"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "calc": "fa",
+          "cond": "ok",
+          "then": "1",
+          "else": "1"
+        },
+        "c24_no_$pa_$ka"
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "casa"
+    },
+    {
+      "act": "reparte24",
+      "p": "$pb",
+      "t": "$pc"
+    },
+    {
+      "act": "sirve",
+      "a": "$pb",
+      "k": "plato"
+    },
+    {
+      "act": "sirve",
+      "a": "$pc",
+      "k": "taza"
+    },
+    {
+      "draw": "kb",
+      "options": [
+        "plato",
+        "taza"
+      ]
+    },
+    {
+      "if": "fa=1",
+      "then": [
+        {
+          "calc": "kb",
+          "cond": "ka=plato",
+          "then": "taza",
+          "else": "plato"
+        }
+      ]
+    },
+    {
+      "calc": "tb",
+      "cond": "kb=plato",
+      "then": "$pc",
+      "else": "$pb"
+    },
+    {
+      "calc": "tc",
+      "cond": "kb=plato",
+      "then": "$pb",
+      "else": "$pc"
+    },
+    {
+      "calc": "kc",
+      "cond": "kb=plato",
+      "then": "taza",
+      "else": "plato"
+    },
+    {
+      "act": "abuelaa",
+      "centro": 1,
+      "sirve": 1
+    },
+    {
+      "decide": "do",
+      "options": [
+        "abuelo",
+        "mama",
+        "papa",
+        "carmen"
+      ],
+      "pick": "$tb",
+      "tests": "$kb",
+      "lock": true,
+      "lead": [],
+      "line": "c24_quien_no_$kb",
+      "right": [
+        {
+          "act": "pon",
+          "k": "$kb",
+          "a": "$tb"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "sirve",
+              "a": "$tb",
+              "k": "$kb"
+            },
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "pon",
+          "k": "$kb",
+          "a": "$x"
+        },
+        {
+          "act": "sirve",
+          "a": "$x",
+          "k": "$kb"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        "c24_no_$tb_$kb"
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "act": "casa"
+    },
+    {
+      "act": "abuelaa",
+      "centro": 1
+    },
+    {
+      "set": {
+        "twinkle": "$tc"
+      }
+    },
+    {
+      "wait": 700
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "decide": "say",
+      "options": [
+        "di_plato",
+        "di_taza"
+      ],
+      "baraja": true,
+      "pick": "di_$kc",
+      "tests": "$kc",
+      "voces": {
+        "di_plato": "c24_cq_plato",
+        "di_taza": "c24_cq_taza"
+      },
+      "said": {
+        "di_plato": "c24_cq_plato",
+        "di_taza": "c24_cq_taza"
+      },
+      "lead": [],
+      "line": null,
+      "right": [
+        {
+          "act": "luispone",
+          "k": "$kc",
+          "a": "$tc"
+        },
+        {
+          "act": "sirve",
+          "a": "$tc",
+          "k": "$kc"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "luispone",
+          "k": "$x",
+          "a": "$tc"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        "c24_no_$tc_$kc"
+      ]
+    }
+  ],
+  "final": [
+    {
+      "dots": 8
+    },
+    {
+      "act": "lista24"
+    },
+    "c24_mesa_lista",
+    "c24_a_comer",
+    {
+      "act": "final24"
+    },
+    {
+      "say": "cq_gracias_abuela",
+      "gap": 300
+    },
+    {
+      "act": "fin"
+    }
+  ],
+  "leer": [
+    "c24_esta_mesa",
+    "c24_aqui_plato",
+    "c24_aqui_taza",
+    "c24_familia",
+    "c24_bebe_mama",
+    "c24_plato_para_abuelo",
+    "c24_cq_pone_plato",
+    "c24_ab_pone_bizcocho",
+    "c24_cq_taza",
+    "c24_luis_pone_taza",
+    "c24_y_chocolate",
+    "c24_quien_no_taza",
+    "c24_ahora_mama",
+    "c24_quien_no_plato",
+    "c24_ahora_papa",
+    "c24_taza_para_carmen",
+    "c24_cq_pone_taza",
+    "c24_cq_plato",
+    "c24_luis_pone_plato",
+    "c24_ay_bebe",
+    "c24_otra_vez",
+    "c24_cq_pone_mesa",
+    "c24_mesa_lista",
+    "c24_a_comer",
+    "cq_gracias_abuela"
+  ]
+}

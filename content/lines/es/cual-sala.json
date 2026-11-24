@@ -1,0 +1,76 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-sala",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "La casa",
+  "clips": {
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "n_bebe": {
+      "who": "narr",
+      "text": "Este es el bebé."
+    },
+    "n_familia": {
+      "who": "narr",
+      "text": "Esta es la familia."
+    },
+    "n_hermano": {
+      "who": "narr",
+      "text": "Este es el hermano."
+    },
+    "n_hermana": {
+      "who": "narr",
+      "text": "Esta es la hermana."
+    },
+    "n_foto_el": {
+      "who": "narr",
+      "text": "Una foto con él."
+    },
+    "n_foto_ella": {
+      "who": "narr",
+      "text": "Una foto con ella."
+    },
+    "h_soy_yo": {
+      "who": "narr",
+      "habla": "hermana",
+      "text": "La hermana dice: ¡Soy yo!"
+    },
+    "h_eres_tu": {
+      "who": "narr",
+      "habla": "hermano",
+      "text": "El hermano dice: ¡Eres tú!"
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "mamá",
+    "papá",
+    "abuelo",
+    "bebé",
+    "familia",
+    "hermano",
+    "hermana",
+    "él",
+    "ella",
+    "yo",
+    "tú"
+  ]
+}

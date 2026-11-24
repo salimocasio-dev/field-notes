@@ -1,0 +1,463 @@
+{
+  "format": "coqui.game.v1",
+  "id": "que-es-esto",
+  "scene": "patio",
+  "next": "hasta-manana",
+  "goal": "Fill his basket with what comes out of Luis's sack, before the bird takes it.",
+  "stake": {
+    "thing": "cosas",
+    "steps": 3
+  },
+  "dots": 8,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio10"
+    },
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "ir",
+      "lead": [],
+      "line": "p_luis_ven_coqui",
+      "then": [
+        "p_luis_hola_amigo",
+        {
+          "say": "p_cq_hola_luis_amigo",
+          "gap": 300
+        }
+      ],
+      "after": [
+        {
+          "act": "ir",
+          "a": "luis"
+        }
+      ],
+      "resp": [
+        "ir",
+        "ver"
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "aveloop"
+    },
+    {
+      "ask": "ver",
+      "lead": [],
+      "line": "p_carmen_mira_pajaro",
+      "then": [
+        {
+          "act": "ojos",
+          "on": "0"
+        },
+        "p_luis_pajaro_amigo",
+        {
+          "say": "p_cq_hola_amigo",
+          "gap": 300
+        },
+        {
+          "act": "avenido"
+        }
+      ],
+      "after": [
+        {
+          "act": "ojos",
+          "x": "1",
+          "y": "-1"
+        },
+        {
+          "act": "avecabeza"
+        }
+      ],
+      "resp": [
+        "ir",
+        "ver"
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 3
+    },
+    {
+      "ask": "ir",
+      "lead": [],
+      "line": "p_carmen_ven_ven",
+      "then": [
+        "p_carmen_coqui_amigo"
+      ],
+      "after": [
+        {
+          "act": "ir",
+          "a": "carmen"
+        },
+        {
+          "act": "acaricia",
+          "quien": "carmen"
+        }
+      ],
+      "resp": [
+        "ir",
+        "ver"
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 4
+    },
+    {
+      "ask": "ver",
+      "lead": [],
+      "line": "p_luis_mira_mira",
+      "then": [
+        {
+          "act": "ojos",
+          "on": "0"
+        },
+        {
+          "act": "ir",
+          "a": "luis"
+        }
+      ],
+      "after": [
+        {
+          "act": "ojos",
+          "x": "1",
+          "y": "0"
+        },
+        {
+          "act": "saca",
+          "que": "flor"
+        }
+      ],
+      "resp": [
+        "ir",
+        "ver"
+      ],
+      "baraja": true
+    },
+    {
+      "ask": "es_flor",
+      "lead": [],
+      "line": "p_luis_que_es_esto",
+      "then": [
+        "p_luis_si_es_flor",
+        {
+          "act": "alpelo"
+        }
+      ],
+      "after": [],
+      "resp": [
+        "es_flor",
+        "es_vaso"
+      ],
+      "baraja": true,
+      "voces": {
+        "es_flor": "p_cq_es_flor",
+        "es_vaso": "p_cq_es_vaso",
+        "es_silla": "p_cq_es_silla",
+        "es_bizcocho": "p_cq_es_bizcocho"
+      },
+      "said": {
+        "es_flor": "p_cq_es_flor"
+      }
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "turno",
+      "que": "vaso"
+    },
+    {
+      "ask": "q_que",
+      "lead": [],
+      "line": null,
+      "then": [
+        "p_luis_es_un_vaso",
+        {
+          "act": "acarmen"
+        }
+      ],
+      "after": [],
+      "resp": [
+        "q_que",
+        "q_como"
+      ],
+      "baraja": true,
+      "voces": {
+        "q_que": "p_cq_que_es_esto",
+        "q_como": "p_cq_como_estas",
+        "q_quien": "p_cq_quien_eres"
+      },
+      "said": {
+        "q_que": "p_cq_que_es_esto"
+      }
+    },
+    {
+      "act": "avepica"
+    },
+    {
+      "say": "p_luis_no_amigo",
+      "gap": 200
+    },
+    {
+      "act": "avenido"
+    },
+    {
+      "act": "marcador"
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "prepA"
+    },
+    {
+      "draw": "wa",
+      "options": [
+        "ven",
+        "mira"
+      ]
+    },
+    {
+      "calc": "pa",
+      "cond": "wa=ven",
+      "then": "ir",
+      "else": "ver"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "ir",
+        "ver"
+      ],
+      "baraja": true,
+      "pick": "$pa",
+      "tests": "$wa",
+      "lock": true,
+      "lead": [],
+      "line": "p_carmen_$wa_coqui",
+      "right": [
+        {
+          "if": "wa=ven",
+          "then": [
+            {
+              "act": "llega"
+            }
+          ],
+          "else": [
+            {
+              "act": "gira"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "if": "wa=ven",
+          "then": [
+            {
+              "act": "mirasolo"
+            }
+          ],
+          "else": [
+            {
+              "act": "choca"
+            }
+          ]
+        },
+        "p_no_$wa_coqui",
+        {
+          "cost": 1
+        }
+      ]
+    },
+    {
+      "act": "ojos",
+      "on": "0"
+    },
+    {
+      "act": "pose",
+      "quien": "carmen",
+      "que": "idle"
+    },
+    {
+      "act": "anda",
+      "quien": "carmen",
+      "x": "50",
+      "y": "160"
+    },
+    {
+      "dots": 7
+    },
+    {
+      "act": "ir",
+      "a": "luis"
+    },
+    {
+      "draw": "tb",
+      "options": [
+        "silla",
+        "bizcocho"
+      ],
+      "other": "otb"
+    },
+    {
+      "draw": "ob",
+      "options": [
+        "flor",
+        "$otb"
+      ]
+    },
+    {
+      "act": "saca",
+      "que": "$tb"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "es_$tb",
+        "es_$ob"
+      ],
+      "baraja": true,
+      "pick": "es_$tb",
+      "tests": "$tb",
+      "voces": {
+        "es_flor": "p_cq_es_flor",
+        "es_vaso": "p_cq_es_vaso",
+        "es_silla": "p_cq_es_silla",
+        "es_bizcocho": "p_cq_es_bizcocho"
+      },
+      "said": {
+        "es_flor": "p_cq_es_flor",
+        "es_vaso": "p_cq_es_vaso",
+        "es_silla": "p_cq_es_silla",
+        "es_bizcocho": "p_cq_es_bizcocho"
+      },
+      "lead": [],
+      "line": "p_luis_que_es_esto",
+      "right": [
+        "p_luis_si_es_$tb",
+        {
+          "act": "alcanasta"
+        }
+      ],
+      "wrong": [
+        "p_luis_no_es_$tb",
+        {
+          "act": "roba",
+          "de": "luis"
+        },
+        {
+          "cost": 1
+        }
+      ]
+    },
+    {
+      "dots": 8
+    },
+    {
+      "act": "turno",
+      "que": "bola"
+    },
+    {
+      "draw": "dc",
+      "options": [
+        "como",
+        "quien"
+      ]
+    },
+    {
+      "decide": "say",
+      "options": [
+        "q_que",
+        "q_$dc"
+      ],
+      "baraja": true,
+      "pick": "q_que",
+      "tests": "que",
+      "voces": {
+        "q_que": "p_cq_que_es_esto",
+        "q_como": "p_cq_como_estas",
+        "q_quien": "p_cq_quien_eres"
+      },
+      "said": {
+        "q_que": "p_cq_que_es_esto",
+        "q_como": "p_cq_como_estas",
+        "q_quien": "p_cq_quien_eres"
+      },
+      "lead": [],
+      "right": [
+        "p_luis_es_bola",
+        {
+          "act": "rie",
+          "quien": "luis"
+        },
+        {
+          "act": "alcanasta",
+          "de": "cq"
+        }
+      ],
+      "wrong": [
+        "p_luis_resp_$dc",
+        {
+          "act": "encoge"
+        },
+        {
+          "act": "roba",
+          "de": "cq"
+        },
+        {
+          "cost": 1
+        },
+        "p_no_que_es_esto"
+      ]
+    }
+  ],
+  "final": [
+    {
+      "act": "final10"
+    },
+    "p_luis_coqui_amigo",
+    {
+      "say": "p_cq_y_tu_amigo",
+      "gap": 300
+    },
+    {
+      "say": "p_cq_y_tu_tambien",
+      "gap": 400
+    },
+    {
+      "wait": 700
+    }
+  ],
+  "leer": [
+    "p_luis_ven_coqui",
+    "p_luis_hola_amigo",
+    "p_cq_hola_luis_amigo",
+    "p_carmen_mira_pajaro",
+    "p_luis_pajaro_amigo",
+    "p_cq_hola_amigo",
+    "p_carmen_ven_ven",
+    "p_carmen_coqui_amigo",
+    "p_luis_mira_mira",
+    "p_luis_que_es_esto",
+    "p_cq_es_flor",
+    "p_luis_si_es_flor",
+    "p_cq_que_es_esto",
+    "p_luis_es_un_vaso",
+    "p_luis_no_amigo",
+    "p_luis_es_bola",
+    "p_luis_coqui_amigo",
+    "p_cq_y_tu_amigo",
+    "p_cq_y_tu_tambien"
+  ]
+}

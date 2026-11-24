@@ -1,0 +1,79 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-frente",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "La casa",
+  "clips": {
+    "ab_cierra_puerta": {
+      "who": "narr",
+      "text": "Abuela cierra la puerta."
+    },
+    "abre_ventana": {
+      "who": "narr",
+      "text": "Abuela abre la ventana."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "adios_abuela": {
+      "who": "tu",
+      "text": "¡Adiós, abuela!"
+    },
+    "cq_no": {
+      "who": "tu",
+      "text": "¡No!"
+    },
+    "cq_si": {
+      "who": "tu",
+      "text": "¡Sí!"
+    },
+    "esta_casa": {
+      "who": "narr",
+      "text": "Esta es la casa de abuela."
+    },
+    "hola_abuela": {
+      "who": "tu",
+      "text": "¡Hola, abuela!"
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "n_casa_grande": {
+      "who": "narr",
+      "text": "Es la casa grande."
+    },
+    "n_casa_pequena": {
+      "who": "narr",
+      "text": "Es la casa pequeña."
+    },
+    "puerta": {
+      "who": "narr",
+      "text": "Es la puerta."
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "ventana": {
+      "who": "narr",
+      "text": "Es la ventana."
+    }
+  },
+  "item_words": [
+    "casa",
+    "puerta",
+    "ventana",
+    "abuela",
+    "abre",
+    "cierra",
+    "hola",
+    "adiós",
+    "sí",
+    "no",
+    "grande",
+    "pequeña"
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-nevera",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "La cocina",
+  "clips": {
+    "m_n_carmen_leche": {
+      "who": "narr",
+      "text": "Carmen toma leche."
+    },
+    "m_n_el_queso": {
+      "who": "narr",
+      "text": "Mira el queso."
+    },
+    "m_n_no_hay_leche": {
+      "who": "narr",
+      "text": "No hay leche."
+    },
+    "m_n_papa_busca": {
+      "who": "narr",
+      "text": "Papá busca el pan."
+    },
+    "m_n_mi_fruta": {
+      "who": "narr",
+      "text": "Mira mi fruta."
+    },
+    "m_n_bebe_guineo": {
+      "who": "narr",
+      "text": "El bebé come guineo."
+    },
+    "m_n_mi_manzana": {
+      "who": "narr",
+      "text": "Mira mi manzana."
+    },
+    "m_n_tu_china": {
+      "who": "narr",
+      "text": "Dame tu china, por favor."
+    },
+    "m_n_plato_lleno": {
+      "who": "narr",
+      "text": "El plato está lleno."
+    },
+    "m_n_mi_vaso_vacio": {
+      "who": "narr",
+      "text": "Mi vaso está vacío."
+    },
+    "c31_aqui_pan": {
+      "who": "narr",
+      "text": "Aquí hay pan."
+    },
+    "c32_le_pone": {
+      "who": "narr",
+      "text": "Abuela le pone mantequilla al pan."
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "leche",
+    "queso",
+    "no hay",
+    "busca",
+    "fruta",
+    "guineo",
+    "manzana",
+    "china",
+    "pan",
+    "mantequilla",
+    "lleno",
+    "vacío"
+  ]
+}

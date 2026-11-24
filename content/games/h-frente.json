@@ -1,0 +1,243 @@
+{
+  "format": "coqui.game.v1",
+  "id": "h-frente",
+  "tipo": "haz",
+  "scene": "frente",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 4,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "puerta",
+        "ventana"
+      ],
+      "pick": "puerta",
+      "lead": [],
+      "line": "ha03",
+      "right": [
+        {
+          "act": "tocar",
+          "en": "puerta"
+        }
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "puerta",
+        "ventana"
+      ],
+      "pick": "ventana",
+      "lead": [],
+      "line": "ha04",
+      "right": [
+        {
+          "act": "tocar",
+          "en": "ventana"
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "puerta",
+        "ventana"
+      ],
+      "pick": "puerta",
+      "lead": [],
+      "line": "ha05",
+      "right": [
+        {
+          "act": "abrir",
+          "que": "puerta"
+        },
+        {
+          "set": {
+            "ab": {
+              "en": "puerta",
+              "pose": "wave",
+              "bub": null,
+              "al": 1
+            }
+          }
+        },
+        {
+          "say": "ha01",
+          "gap": 300
+        },
+        {
+          "act": "vete"
+        }
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "puerta",
+        "ventana"
+      ],
+      "pick": "ventana",
+      "lead": [],
+      "line": "ha06",
+      "right": [
+        {
+          "act": "abrir",
+          "que": "ventana"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "puerta",
+        "ventana"
+      ],
+      "pick": "puerta",
+      "lead": [],
+      "line": "ha07",
+      "right": [
+        {
+          "act": "cerrar",
+          "en": "puerta"
+        }
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "puerta",
+        "ventana"
+      ],
+      "pick": "ventana",
+      "lead": [],
+      "line": "ha08",
+      "right": [
+        {
+          "act": "cerrar",
+          "en": "ventana"
+        }
+      ]
+    },
+    {
+      "dots": 4
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "puerta",
+        "ventana"
+      ],
+      "pick": "ventana",
+      "lead": [],
+      "line": "ha09",
+      "right": [
+        {
+          "act": "abrir",
+          "que": "ventana"
+        },
+        {
+          "set": {
+            "ab": {
+              "en": "ventana",
+              "pose": "idle",
+              "bub": null,
+              "al": 1
+            }
+          }
+        },
+        {
+          "wait": 300
+        }
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "abuela",
+        "puerta"
+      ],
+      "pick": "abuela",
+      "lead": [],
+      "line": "ha09",
+      "right": [
+        {
+          "act": "pose",
+          "que": "wave"
+        },
+        {
+          "say": "ha02",
+          "gap": 400
+        },
+        {
+          "act": "pose",
+          "que": "idle"
+        },
+        {
+          "set": {
+            "heart": 1
+          }
+        },
+        {
+          "wait": 600
+        }
+      ],
+      "mudo": true
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "ha03",
+    "ha04",
+    "ha05",
+    "ha06",
+    "ha07",
+    "ha08",
+    "ha09"
+  ]
+}

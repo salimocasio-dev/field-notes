@@ -1,0 +1,240 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "el-pollo-y-el-huevo",
+  "lang": "es",
+  "title": "El pollo y el huevo",
+  "place": "La cocina",
+  "focus_words": [
+    "pollo",
+    "huevo",
+    "sal",
+    "huele"
+  ],
+  "back_again": [
+    "hace",
+    "comida",
+    "más",
+    "por favor",
+    "para",
+    "quiere",
+    "tiene",
+    "ahora",
+    "mira",
+    "negro",
+    "bebé",
+    "hay",
+    "aquí",
+    "come",
+    "gracias",
+    "toma"
+  ],
+  "also_heard": [
+    "huele a",
+    "no hay más",
+    "ponle"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c28_hace": {
+      "who": "narr",
+      "text": "Abuela hace pollo y un huevo."
+    },
+    "c28_aqui_pollo": {
+      "who": "narr",
+      "text": "Aquí hay pollo."
+    },
+    "c28_aqui_huevo": {
+      "who": "narr",
+      "text": "Y aquí hay un huevo."
+    },
+    "c28_huele_bien": {
+      "who": "narr",
+      "text": "¡Mmm! ¡Huele bien!"
+    },
+    "c28_toma_sal": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Toma la sal, Coquí."
+    },
+    "c28_ponle_pollo": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Ponle sal al pollo."
+    },
+    "c28_ponle_huevo": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Y ponle sal al huevo."
+    },
+    "c28_pollo_tiene_sal": {
+      "who": "narr",
+      "text": "Ahora el pollo tiene sal."
+    },
+    "c28_huevo_tiene_sal": {
+      "who": "narr",
+      "text": "Ahora el huevo tiene sal."
+    },
+    "c28_mama_huele": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: ¡Mmm! ¡Huele bien!"
+    },
+    "c28_ab_mira": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Coquí, mira el pollo y el huevo."
+    },
+    "c28_cq_pollo": {
+      "who": "tu",
+      "text": "¡Abuela, el pollo!"
+    },
+    "c28_cq_huevo": {
+      "who": "tu",
+      "text": "¡Abuela, el huevo!"
+    },
+    "c28_ab_gracias": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Gracias, Coquí!"
+    },
+    "c28_bebe_quiere_pollo": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: El bebé quiere el pollo."
+    },
+    "c28_bebe_quiere_huevo": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: El bebé quiere el huevo."
+    },
+    "c28_ahora_bebe_huevo": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Ahora el bebé quiere el huevo."
+    },
+    "c28_bebe_come_pollo": {
+      "who": "narr",
+      "text": "El bebé come el pollo."
+    },
+    "c28_bebe_come_huevo": {
+      "who": "narr",
+      "text": "El bebé come el huevo."
+    },
+    "c28_luis_huele": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Mmm! ¡Huele a pollo!"
+    },
+    "c28_carmen_huele": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Sí! ¡Huele bien!"
+    },
+    "c28_aqui_mas": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Aquí hay más."
+    },
+    "c28_no_hay": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No hay más."
+    },
+    "c28_para_coqui": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Y esto es para Coquí."
+    },
+    "c28_bebe_come": {
+      "who": "narr",
+      "text": "El bebé come."
+    },
+    "c28_cq_fin": {
+      "who": "tu",
+      "text": "¡Huele bien, abuela!"
+    },
+    "c28_no_negro_pollo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pollo está negro."
+    },
+    "c28_carmen_mas_pollo": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Más sal para el pollo, por favor."
+    },
+    "c28_no_carmen_sal_pollo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Carmen quiere sal para el pollo."
+    },
+    "c28_no_bebe_pollo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El bebé quiere el pollo."
+    },
+    "c28_no_negro_huevo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El huevo está negro."
+    },
+    "c28_carmen_mas_huevo": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Más sal para el huevo, por favor."
+    },
+    "c28_no_carmen_sal_huevo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Carmen quiere sal para el huevo."
+    },
+    "c28_no_bebe_huevo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El bebé quiere el huevo."
+    }
+  }
+}

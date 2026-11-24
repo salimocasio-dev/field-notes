@@ -1,0 +1,71 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-balcon",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "La casa",
+  "clips": {
+    "n_silla_pequena": {
+      "who": "narr",
+      "text": "Es la silla pequeña."
+    },
+    "n_un_vaso": {
+      "who": "narr",
+      "text": "Es un vaso."
+    },
+    "n_jugo": {
+      "who": "narr",
+      "text": "Es el jugo."
+    },
+    "n_agua": {
+      "who": "narr",
+      "text": "Es el agua."
+    },
+    "se_sienta_silla": {
+      "who": "narr",
+      "text": "Abuela se sienta en la silla."
+    },
+    "pajaro_toma_agua": {
+      "who": "narr",
+      "text": "El pájaro toma el agua."
+    },
+    "ab_quiero_agua": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Quiero agua, por favor."
+    },
+    "cq_gracias_abuela": {
+      "who": "tu",
+      "text": "¡Gracias, abuela!"
+    },
+    "ab_como_estas": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿Cómo estás?"
+    },
+    "cq_bien": {
+      "who": "tu",
+      "text": "¡Bien!"
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "silla",
+    "vaso",
+    "jugo",
+    "agua",
+    "se sienta",
+    "toma",
+    "quiero",
+    "gracias",
+    "¿cómo estás?",
+    "bien"
+  ]
+}

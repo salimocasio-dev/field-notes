@@ -1,0 +1,618 @@
+{
+  "format": "coqui.game.v1",
+  "id": "hasta-manana",
+  "scene": "patio",
+  "next": "uno-dos-tres",
+  "goal": "Say goodbye and go home, with the fireflies to light the way.",
+  "stake": {
+    "thing": "luces",
+    "steps": 3
+  },
+  "dots": 6,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio11"
+    },
+    {
+      "wait": 600
+    },
+    "p_mira_el_sol",
+    {
+      "act": "puesta"
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "porton",
+      "lead": [],
+      "line": "p_luis_vamos_vamos",
+      "then": [
+        {
+          "say": "p_cq_vamos",
+          "gap": 300
+        }
+      ],
+      "after": [
+        {
+          "act": "juntos"
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "pose",
+      "quien": "abuela",
+      "que": "wave"
+    },
+    {
+      "ask": "abuela",
+      "lead": [],
+      "line": "p_ab_coqui_ven",
+      "then": [
+        {
+          "act": "vuelveluis"
+        }
+      ],
+      "after": [
+        {
+          "act": "ir",
+          "a": "abuela"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "ask": "hm_abuela",
+      "lead": [],
+      "line": "p_ab_adios_hm",
+      "then": [
+        {
+          "act": "pose",
+          "quien": "abuela",
+          "que": "idle"
+        }
+      ],
+      "after": [],
+      "resp": [
+        "hm_abuela",
+        "hola_abuela"
+      ],
+      "baraja": true,
+      "voces": {
+        "hm": "p_cq_hm",
+        "hola": "p_cq_hola",
+        "denada": "p_cq_de_nada",
+        "gracias_abuelo": "p_cq_gracias_abuelo",
+        "hola_abuelo": "p_cq_hola_abuelo",
+        "hm_abuela": "p_cq_hm_abuela",
+        "hola_abuela": "p_cq_hola_abuela"
+      },
+      "said": {
+        "hm_abuela": "p_cq_hm_abuela"
+      }
+    },
+    {
+      "act": "pose",
+      "quien": "mama",
+      "que": "wave"
+    },
+    {
+      "say": "p_mama_hm_coqui",
+      "gap": 250
+    },
+    {
+      "act": "pose",
+      "quien": "mama",
+      "que": "idle"
+    },
+    {
+      "act": "pose",
+      "quien": "papa",
+      "que": "wave"
+    },
+    {
+      "say": "p_papa_hm",
+      "gap": 250
+    },
+    {
+      "act": "pose",
+      "quien": "papa",
+      "que": "idle"
+    },
+    {
+      "act": "saluda",
+      "quien": "bebe"
+    },
+    {
+      "say": "p_cq_hm",
+      "gap": 300
+    },
+    {
+      "act": "junto",
+      "quien": "carmen"
+    },
+    {
+      "say": "p_carmen_vamos_coqui",
+      "gap": 250
+    },
+    {
+      "act": "alcentro",
+      "quien": "carmen",
+      "x": "186",
+      "y": "170"
+    },
+    {
+      "act": "oscurece"
+    },
+    {
+      "dots": 4
+    },
+    {
+      "draw": "orden",
+      "options": [
+        "ab",
+        "ba"
+      ]
+    },
+    {
+      "if": "orden=ab",
+      "then": [
+        {
+          "act": "viene",
+          "quien": "carmen"
+        },
+        {
+          "draw": "da",
+          "options": [
+            "hola",
+            "denada"
+          ]
+        },
+        {
+          "decide": "say",
+          "options": [
+            "hm",
+            "$da"
+          ],
+          "baraja": true,
+          "pick": "hm",
+          "tests": "hasta",
+          "voces": {
+            "hm": "p_cq_hm",
+            "hola": "p_cq_hola",
+            "denada": "p_cq_de_nada",
+            "gracias_abuelo": "p_cq_gracias_abuelo",
+            "hola_abuelo": "p_cq_hola_abuelo",
+            "hm_abuela": "p_cq_hm_abuela",
+            "hola_abuela": "p_cq_hola_abuela"
+          },
+          "said": {
+            "hm": "p_cq_hm",
+            "hola": "p_cq_hola",
+            "denada": "p_cq_de_nada",
+            "gracias_abuelo": "p_cq_gracias_abuelo",
+            "hola_abuelo": "p_cq_hola_abuelo",
+            "hm_abuela": "p_cq_hm_abuela",
+            "hola_abuela": "p_cq_hola_abuela"
+          },
+          "lead": [],
+          "line": "p_carmen_adios_coqui",
+          "right": [
+            {
+              "act": "luz",
+              "cual": "carmen"
+            },
+            {
+              "act": "saluda",
+              "quien": "carmen"
+            },
+            {
+              "act": "anda",
+              "quien": "carmen",
+              "x": "198",
+              "y": "166",
+              "dir": "-1"
+            }
+          ],
+          "wrong": [
+            {
+              "act": "duda",
+              "quien": "carmen"
+            },
+            {
+              "cost": 1,
+              "en": "carmen"
+            },
+            "p_no_hasta_manana"
+          ]
+        },
+        {
+          "dots": 5
+        },
+        {
+          "act": "viene",
+          "quien": "abuelo"
+        },
+        {
+          "draw": "db",
+          "options": [
+            "denada",
+            "hola_abuelo"
+          ]
+        },
+        {
+          "decide": "say",
+          "options": [
+            "gracias_abuelo",
+            "$db"
+          ],
+          "baraja": true,
+          "pick": "gracias_abuelo",
+          "tests": "gracias",
+          "voces": {
+            "hm": "p_cq_hm",
+            "hola": "p_cq_hola",
+            "denada": "p_cq_de_nada",
+            "gracias_abuelo": "p_cq_gracias_abuelo",
+            "hola_abuelo": "p_cq_hola_abuelo",
+            "hm_abuela": "p_cq_hm_abuela",
+            "hola_abuela": "p_cq_hola_abuela"
+          },
+          "said": {
+            "hm": "p_cq_hm",
+            "hola": "p_cq_hola",
+            "denada": "p_cq_de_nada",
+            "gracias_abuelo": "p_cq_gracias_abuelo",
+            "hola_abuelo": "p_cq_hola_abuelo",
+            "hm_abuela": "p_cq_hm_abuela",
+            "hola_abuela": "p_cq_hola_abuela"
+          },
+          "lead": [],
+          "line": "p_ao_para_ti",
+          "right": [
+            {
+              "act": "toma"
+            },
+            {
+              "act": "luz",
+              "cual": "abuelo"
+            },
+            {
+              "say": "p_ao_de_nada",
+              "gap": 300
+            },
+            {
+              "act": "guarda"
+            },
+            {
+              "act": "anda",
+              "quien": "abuelo",
+              "x": "62",
+              "y": "128",
+              "dir": "1"
+            }
+          ],
+          "wrong": [
+            {
+              "act": "duda",
+              "quien": "abuelo"
+            },
+            {
+              "cost": 1,
+              "en": "abuelo"
+            },
+            "p_no_gracias"
+          ]
+        }
+      ],
+      "else": [
+        {
+          "act": "viene",
+          "quien": "abuelo"
+        },
+        {
+          "draw": "db",
+          "options": [
+            "denada",
+            "hola_abuelo"
+          ]
+        },
+        {
+          "decide": "say",
+          "options": [
+            "gracias_abuelo",
+            "$db"
+          ],
+          "baraja": true,
+          "pick": "gracias_abuelo",
+          "tests": "gracias",
+          "voces": {
+            "hm": "p_cq_hm",
+            "hola": "p_cq_hola",
+            "denada": "p_cq_de_nada",
+            "gracias_abuelo": "p_cq_gracias_abuelo",
+            "hola_abuelo": "p_cq_hola_abuelo",
+            "hm_abuela": "p_cq_hm_abuela",
+            "hola_abuela": "p_cq_hola_abuela"
+          },
+          "said": {
+            "hm": "p_cq_hm",
+            "hola": "p_cq_hola",
+            "denada": "p_cq_de_nada",
+            "gracias_abuelo": "p_cq_gracias_abuelo",
+            "hola_abuelo": "p_cq_hola_abuelo",
+            "hm_abuela": "p_cq_hm_abuela",
+            "hola_abuela": "p_cq_hola_abuela"
+          },
+          "lead": [],
+          "line": "p_ao_para_ti",
+          "right": [
+            {
+              "act": "toma"
+            },
+            {
+              "act": "luz",
+              "cual": "abuelo"
+            },
+            {
+              "say": "p_ao_de_nada",
+              "gap": 300
+            },
+            {
+              "act": "guarda"
+            },
+            {
+              "act": "anda",
+              "quien": "abuelo",
+              "x": "62",
+              "y": "128",
+              "dir": "1"
+            }
+          ],
+          "wrong": [
+            {
+              "act": "duda",
+              "quien": "abuelo"
+            },
+            {
+              "cost": 1,
+              "en": "abuelo"
+            },
+            "p_no_gracias"
+          ]
+        },
+        {
+          "dots": 5
+        },
+        {
+          "act": "viene",
+          "quien": "carmen"
+        },
+        {
+          "draw": "da",
+          "options": [
+            "hola",
+            "denada"
+          ]
+        },
+        {
+          "decide": "say",
+          "options": [
+            "hm",
+            "$da"
+          ],
+          "baraja": true,
+          "pick": "hm",
+          "tests": "hasta",
+          "voces": {
+            "hm": "p_cq_hm",
+            "hola": "p_cq_hola",
+            "denada": "p_cq_de_nada",
+            "gracias_abuelo": "p_cq_gracias_abuelo",
+            "hola_abuelo": "p_cq_hola_abuelo",
+            "hm_abuela": "p_cq_hm_abuela",
+            "hola_abuela": "p_cq_hola_abuela"
+          },
+          "said": {
+            "hm": "p_cq_hm",
+            "hola": "p_cq_hola",
+            "denada": "p_cq_de_nada",
+            "gracias_abuelo": "p_cq_gracias_abuelo",
+            "hola_abuelo": "p_cq_hola_abuelo",
+            "hm_abuela": "p_cq_hm_abuela",
+            "hola_abuela": "p_cq_hola_abuela"
+          },
+          "lead": [],
+          "line": "p_carmen_adios_coqui",
+          "right": [
+            {
+              "act": "luz",
+              "cual": "carmen"
+            },
+            {
+              "act": "saluda",
+              "quien": "carmen"
+            },
+            {
+              "act": "anda",
+              "quien": "carmen",
+              "x": "198",
+              "y": "166",
+              "dir": "-1"
+            }
+          ],
+          "wrong": [
+            {
+              "act": "duda",
+              "quien": "carmen"
+            },
+            {
+              "cost": 1,
+              "en": "carmen"
+            },
+            "p_no_hasta_manana"
+          ]
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "ir",
+      "a": "centro"
+    },
+    {
+      "draw": "wc",
+      "options": [
+        "ven",
+        "vamos"
+      ]
+    },
+    {
+      "calc": "pc",
+      "cond": "wc=ven",
+      "then": "luis",
+      "else": "porton"
+    },
+    {
+      "calc": "lc",
+      "cond": "wc=ven",
+      "then": "p_luis_ven_coqui",
+      "else": "p_luis_vamos_porton"
+    },
+    {
+      "calc": "nc",
+      "cond": "wc=ven",
+      "then": "p_no_ven_coqui",
+      "else": "p_no_vamos_porton"
+    },
+    {
+      "decide": "do",
+      "options": [
+        "luis",
+        "porton"
+      ],
+      "pick": "$pc",
+      "tests": "$wc",
+      "lock": true,
+      "lead": [],
+      "line": "$lc",
+      "right": [
+        {
+          "if": "wc=ven",
+          "then": [
+            {
+              "act": "ir",
+              "a": "luisC"
+            },
+            {
+              "act": "abrazo"
+            },
+            {
+              "act": "luz",
+              "cual": "medio"
+            },
+            {
+              "say": "p_luis_vamos_porton",
+              "gap": 250
+            },
+            {
+              "act": "juntos"
+            }
+          ],
+          "else": [
+            {
+              "act": "juntos"
+            },
+            {
+              "act": "luz",
+              "cual": "medio"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "if": "wc=ven",
+          "then": [
+            {
+              "act": "ir",
+              "a": "porton"
+            },
+            {
+              "act": "duda",
+              "quien": "cq"
+            }
+          ],
+          "else": [
+            {
+              "act": "luiscorre"
+            },
+            {
+              "act": "ir",
+              "a": "luisC"
+            },
+            {
+              "act": "duda",
+              "quien": "cq"
+            }
+          ]
+        },
+        {
+          "cost": 1,
+          "en": "medio"
+        },
+        "$nc"
+      ]
+    },
+    {
+      "act": "abre"
+    }
+  ],
+  "final": [
+    {
+      "act": "adios"
+    },
+    "p_familia_adios_hm",
+    {
+      "say": "p_cq_adios_hm",
+      "gap": 300
+    },
+    {
+      "act": "final11"
+    },
+    {
+      "act": "sevan"
+    },
+    {
+      "wait": 500
+    }
+  ],
+  "leer": [
+    "p_mira_el_sol",
+    "p_luis_vamos_vamos",
+    "p_cq_vamos",
+    "p_ab_coqui_ven",
+    "p_ab_adios_hm",
+    "p_cq_hm_abuela",
+    "p_mama_hm_coqui",
+    "p_papa_hm",
+    "p_cq_hm",
+    "p_carmen_vamos_coqui",
+    "p_carmen_adios_coqui",
+    "p_ao_para_ti",
+    "p_cq_gracias_abuelo",
+    "p_ao_de_nada",
+    "p_luis_ven_coqui",
+    "p_luis_vamos_porton",
+    "p_familia_adios_hm",
+    "p_cq_adios_hm"
+  ]
+}

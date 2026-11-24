@@ -1,0 +1,288 @@
+{
+  "format": "coqui.game.v1",
+  "id": "h-campo",
+  "tipo": "haz",
+  "scene": "campo",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 4,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "act": "inicio15"
+    },
+    {
+      "set": {
+        "respEn": [
+          112,
+          40
+        ]
+      }
+    },
+    {
+      "wait": 500
+    },
+    {
+      "dots": 1
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "bola_luis",
+        "bola_carmen",
+        "bola_cq"
+      ],
+      "pick": "bola_luis",
+      "lead": [],
+      "line": "rb01",
+      "right": [
+        {
+          "act": "saluda",
+          "quien": "luis",
+          "que": "arriba"
+        }
+      ],
+      "lock": true,
+      "alias": {
+        "luis": "bola_luis",
+        "carmen": "bola_carmen"
+      }
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "perro",
+        "luis",
+        "carmen"
+      ],
+      "pick": "perro",
+      "lead": [],
+      "line": "rb02",
+      "right": [
+        {
+          "act": "ladra",
+          "n": 1
+        }
+      ],
+      "lock": true,
+      "alias": {
+        "bola_luis": "luis",
+        "bola_carmen": "carmen"
+      }
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "bola_luis",
+        "bola_carmen",
+        "bola_cq"
+      ],
+      "pick": "bola_cq",
+      "lead": [],
+      "line": "rb03",
+      "right": [
+        {
+          "act": "salta",
+          "quien": "cq",
+          "h": 6
+        }
+      ],
+      "lock": true,
+      "alias": {
+        "luis": "bola_luis",
+        "carmen": "bola_carmen"
+      }
+    },
+    {
+      "dots": 2
+    },
+    {
+      "decide": "say",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "coge",
+        "salta",
+        "corre"
+      ],
+      "pick": "coge",
+      "lead": [],
+      "line": "rb04",
+      "right": [
+        {
+          "act": "pasa",
+          "de": "luis",
+          "a": "cq",
+          "b": "luis"
+        }
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 3
+    },
+    {
+      "decide": "say",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "tira",
+        "salta",
+        "corre"
+      ],
+      "pick": "salta",
+      "lead": [],
+      "line": "rb05",
+      "right": [
+        {
+          "act": "salta",
+          "quien": "cq"
+        },
+        {
+          "act": "salta",
+          "quien": "perro"
+        }
+      ],
+      "baraja": true
+    },
+    {
+      "decide": "say",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "tira",
+        "salta",
+        "corre"
+      ],
+      "pick": "tira",
+      "lead": [],
+      "line": "rb06",
+      "right": [
+        {
+          "act": "pasa",
+          "de": "cq",
+          "a": "luis",
+          "b": "luis"
+        }
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 4
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "bola_cq"
+      ],
+      "vale": [
+        "carmen"
+      ],
+      "pick": "bola_cq",
+      "lead": [],
+      "line": "rb07",
+      "right": [
+        {
+          "if": "x=bola_cq",
+          "then": [
+            {
+              "act": "salta",
+              "quien": "cq",
+              "h": 6
+            }
+          ],
+          "else": [
+            {
+              "act": "saluda",
+              "quien": "carmen"
+            }
+          ]
+        }
+      ],
+      "alias": {
+        "bola_carmen": "carmen"
+      }
+    },
+    {
+      "calc": "otro",
+      "cond": "x=bola_cq",
+      "then": "carmen",
+      "else": "bola_cq"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "mudo": true,
+      "options": [
+        "$otro",
+        "perro"
+      ],
+      "pick": "$otro",
+      "lead": [],
+      "line": "rb07",
+      "right": [
+        {
+          "if": "otro=bola_cq",
+          "then": [
+            {
+              "act": "salta",
+              "quien": "cq",
+              "h": 6
+            }
+          ],
+          "else": [
+            {
+              "act": "saluda",
+              "quien": "carmen"
+            }
+          ]
+        },
+        {
+          "wait": 300
+        },
+        {
+          "say": "muy_bien",
+          "gap": 300
+        },
+        {
+          "set": {
+            "heart": 1
+          }
+        },
+        {
+          "wait": 600
+        }
+      ],
+      "alias": {
+        "bola_carmen": "carmen"
+      }
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "rb01",
+    "rb02",
+    "rb03",
+    "rb04",
+    "rb05",
+    "rb06",
+    "rb07"
+  ]
+}

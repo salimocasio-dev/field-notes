@@ -1,0 +1,384 @@
+{
+  "format": "coqui.game.v1",
+  "id": "la-foto",
+  "scene": "sala",
+  "next": "quien-eres-tu",
+  "goal": "Three good photos for the three empty frames.",
+  "stake": {
+    "thing": "fotos",
+    "steps": 3
+  },
+  "dots": 6,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "wait": 400
+    },
+    {
+      "act": "corren"
+    },
+    {
+      "set": {
+        "twinkle": "hermano"
+      }
+    },
+    "hermano_del_bebe",
+    {
+      "set": {
+        "twinkle": "hermana"
+      }
+    },
+    "hermana_del_bebe",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "hermano",
+      "lead": [],
+      "line": "puedes_hermano",
+      "then": [
+        {
+          "act": "pose",
+          "quien": "hermano",
+          "que": "wave"
+        },
+        {
+          "say": "el_dice_hola",
+          "gap": 250
+        },
+        {
+          "act": "pose",
+          "quien": "hermano",
+          "que": "idle"
+        }
+      ]
+    },
+    {
+      "ask": "hermana",
+      "lead": [],
+      "line": "donde_hermana",
+      "then": [
+        {
+          "act": "pose",
+          "quien": "hermana",
+          "que": "wave"
+        },
+        {
+          "say": "ella_dice_hola",
+          "gap": 250
+        },
+        {
+          "act": "pose",
+          "quien": "hermana",
+          "que": "idle"
+        }
+      ]
+    },
+    {
+      "set": {
+        "twinkle": "papa"
+      }
+    },
+    "el_es_papa",
+    {
+      "set": {
+        "twinkle": "mama"
+      }
+    },
+    "ella_es_mama",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "camara"
+    },
+    {
+      "act": "lados",
+      "a": "hermano",
+      "b": "hermana",
+      "donde": "juntos"
+    },
+    {
+      "ask": "hermana",
+      "lead": [],
+      "line": "foto_con_ella",
+      "after": [
+        {
+          "act": "junto",
+          "en": "hermana"
+        },
+        {
+          "act": "prueba",
+          "con": "hermana"
+        }
+      ]
+    },
+    {
+      "ask": "hermano",
+      "lead": [],
+      "line": "ahora_foto_con_el",
+      "after": [
+        {
+          "act": "junto",
+          "en": "hermano"
+        },
+        {
+          "act": "prueba",
+          "con": "hermano"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "ir",
+      "a": "centro"
+    },
+    {
+      "set": {
+        "twinkle": "fotos"
+      }
+    },
+    "tres_fotos",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "lados",
+      "a": "hermano",
+      "b": "hermana",
+      "donde": "aparte"
+    },
+    {
+      "draw": "h",
+      "options": [
+        "hermano",
+        "hermana"
+      ]
+    },
+    {
+      "decide": "do",
+      "options": [
+        "hermano",
+        "hermana"
+      ],
+      "pick": "$h",
+      "as": "p",
+      "lock": true,
+      "noretry": true,
+      "do": "junto",
+      "tests": "$h",
+      "lead": [],
+      "line": "foto_con_$h",
+      "right": [
+        {
+          "act": "dispara",
+          "con": "$p",
+          "ok": "1"
+        }
+      ],
+      "wrong": [
+        "no_$x",
+        {
+          "act": "dispara",
+          "con": "$p",
+          "ok": "0"
+        },
+        {
+          "cost": 1
+        }
+      ]
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "ir",
+      "a": "centro"
+    },
+    {
+      "act": "lados",
+      "a": "mama",
+      "b": "papa",
+      "donde": "parados"
+    },
+    {
+      "draw": "g",
+      "options": [
+        "el",
+        "ella"
+      ]
+    },
+    {
+      "calc": "pp",
+      "cond": "g=el",
+      "then": "papa",
+      "else": "mama"
+    },
+    {
+      "decide": "do",
+      "options": [
+        "mama",
+        "papa"
+      ],
+      "pick": "$pp",
+      "as": "p",
+      "lock": true,
+      "noretry": true,
+      "do": "junto",
+      "tests": "$g",
+      "lead": [],
+      "line": "ahora_foto_con_$g",
+      "right": [
+        {
+          "act": "dispara",
+          "con": "$p",
+          "ok": "1"
+        }
+      ],
+      "wrong": [
+        "no_$x",
+        {
+          "act": "dispara",
+          "con": "$p",
+          "ok": "0"
+        },
+        {
+          "cost": 1
+        }
+      ]
+    },
+    {
+      "act": "sientan"
+    },
+    {
+      "dots": 6
+    },
+    {
+      "draw": "n",
+      "options": [
+        "hermano",
+        "hermana"
+      ]
+    },
+    {
+      "draw": "q",
+      "options": [
+        "hermano",
+        "hermana"
+      ]
+    },
+    {
+      "calc": "resp",
+      "cond": "n=$q",
+      "then": "si",
+      "else": "no"
+    },
+    {
+      "act": "solo",
+      "quien": "$n"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "si",
+        "no"
+      ],
+      "pick": "$resp",
+      "noretry": true,
+      "tests": "$n",
+      "said": {
+        "si": "cq_si",
+        "no": "cq_no"
+      },
+      "bien": "muy_bien",
+      "lock": true,
+      "lead": [],
+      "line": "es_$q_q",
+      "right": [
+        {
+          "act": "nitido"
+        },
+        {
+          "act": "dispara",
+          "con": "$n",
+          "ok": "1",
+          "solo": "1"
+        },
+        {
+          "act": "quitavisor"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "pies"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "nitido"
+        },
+        "r_$resp_$n",
+        {
+          "act": "quitavisor"
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "act": "final7"
+    },
+    "foto_familia",
+    {
+      "act": "flash"
+    },
+    {
+      "say": "cq_familia",
+      "gap": 400
+    },
+    {
+      "recuerda": "fotos",
+      "valor": "$fotos"
+    },
+    {
+      "wait": 600
+    }
+  ],
+  "leer": [
+    "hermano_del_bebe",
+    "hermana_del_bebe",
+    "puedes_hermano",
+    "el_dice_hola",
+    "donde_hermana",
+    "ella_dice_hola",
+    "el_es_papa",
+    "ella_es_mama",
+    "foto_con_ella",
+    "ahora_foto_con_el",
+    "tres_fotos",
+    "foto_con_hermana",
+    "ahora_foto_con_ella",
+    "es_hermano_q",
+    "cq_si",
+    "foto_familia",
+    "cq_familia"
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "el-bizcocho",
+  "lang": "es",
+  "title": "El bizcocho",
+  "place": "La casa",
+  "focus_words": [
+    "cierra",
+    "sí",
+    "no",
+    "abre"
+  ],
+  "back_again": [
+    "puerta",
+    "ventana",
+    "abuela",
+    "hola",
+    "casa"
+  ],
+  "also_heard": [
+    "bizcocho",
+    "pájaro",
+    "quieres",
+    "tiene",
+    "caliente",
+    "ahora",
+    "está cerrada",
+    "toma",
+    "gracias",
+    "mira",
+    "muy bien"
+  ],
+  "names": {
+    "casa": "casa",
+    "puerta": "puerta",
+    "ventana": "ventana",
+    "abuela": "abuela",
+    "sol": "sol",
+    "palma": "palma",
+    "pajaro": "un_pajaro",
+    "bizcocho": "un_bizcocho",
+    "coqui": "yo_coqui"
+  },
+  "palabras": {
+    "si": "sí"
+  },
+  "clips": {
+    "ventana_cerrada": {
+      "who": "narr",
+      "text": "La ventana está cerrada."
+    },
+    "puedes_abrir": {
+      "who": "narr",
+      "text": "¿Puedes abrir la ventana?"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "tiene_bizcocho": {
+      "who": "narr",
+      "text": "Mira. Abuela tiene un bizcocho."
+    },
+    "quieres_hola": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Hola! ¿Quieres bizcocho?"
+    },
+    "cq_si": {
+      "who": "tu",
+      "text": "¡Sí!"
+    },
+    "cq_no": {
+      "who": "tu",
+      "text": "¡No!"
+    },
+    "ahora_no": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Ahora no. Está caliente."
+    },
+    "ab_cierra_ventana": {
+      "who": "narr",
+      "text": "Abuela cierra la ventana."
+    },
+    "cq_ay": {
+      "who": "tu",
+      "text": "¡Ay!"
+    },
+    "abre_ventana": {
+      "who": "narr",
+      "text": "Abuela abre la ventana."
+    },
+    "abre_puerta": {
+      "who": "narr",
+      "text": "Abuela abre la puerta."
+    },
+    "abre_puerta_q": {
+      "who": "narr",
+      "text": "¿Abuela abre la puerta? ¿Sí o no?"
+    },
+    "abre_ventana_q": {
+      "who": "narr",
+      "text": "¿Abuela abre la ventana? ¿Sí o no?"
+    },
+    "puerta_cerrada_q": {
+      "who": "narr",
+      "text": "¿La puerta está cerrada? ¿Sí o no?"
+    },
+    "mira_pajaro": {
+      "who": "narr",
+      "text": "¡Mira! Un pájaro."
+    },
+    "pajaro_quiere": {
+      "who": "narr",
+      "text": "El pájaro quiere el bizcocho."
+    },
+    "cierra_ventana_ya": {
+      "who": "narr",
+      "text": "¡Cierra la ventana!"
+    },
+    "cierra_puerta_ya": {
+      "who": "narr",
+      "text": "¡Cierra la puerta!"
+    },
+    "no_pajaro": {
+      "who": "tu",
+      "text": "¡No, pájaro, no!"
+    },
+    "ahora_cierra_puerta": {
+      "who": "narr",
+      "text": "¡Ahora la puerta! ¡Cierra la puerta!"
+    },
+    "ahora_cierra_ventana": {
+      "who": "narr",
+      "text": "¡Ahora la ventana! ¡Cierra la ventana!"
+    },
+    "no_esa_puerta": {
+      "who": "narr",
+      "text": "No. Esa es la puerta."
+    },
+    "no_esa_ventana": {
+      "who": "narr",
+      "text": "No. Esa es la ventana."
+    },
+    "abuela_en_puerta": {
+      "who": "narr",
+      "text": "Abuela está en la puerta."
+    },
+    "abuela_en_ventana": {
+      "who": "narr",
+      "text": "Abuela está en la ventana."
+    },
+    "ay_pajaro": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Ay, pájaro!"
+    },
+    "pajaro_en_puerta": {
+      "who": "narr",
+      "text": "El pájaro está en la puerta."
+    },
+    "pajaro_en_ventana": {
+      "who": "narr",
+      "text": "El pájaro está en la ventana."
+    },
+    "quieres_bizcocho": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿Quieres bizcocho?"
+    },
+    "cq_si_gracias": {
+      "who": "tu",
+      "text": "¡Sí, gracias!"
+    },
+    "toma": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Toma."
+    },
+    "cq_mmm": {
+      "who": "tu",
+      "text": "¡Mmm!"
+    },
+    "cq_no_gracias": {
+      "who": "tu",
+      "text": "No, gracias."
+    },
+    "abuela_no": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿No?"
+    },
+    "casa": {
+      "who": "narr",
+      "text": "Es la casa."
+    },
+    "puerta": {
+      "who": "narr",
+      "text": "Es la puerta."
+    },
+    "ventana": {
+      "who": "narr",
+      "text": "Es la ventana."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "sol": {
+      "who": "narr",
+      "text": "Es el sol."
+    },
+    "palma": {
+      "who": "narr",
+      "text": "Es la palma."
+    },
+    "un_pajaro": {
+      "who": "narr",
+      "text": "Es un pájaro."
+    },
+    "un_bizcocho": {
+      "who": "narr",
+      "text": "Es un bizcocho."
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    }
+  }
+}

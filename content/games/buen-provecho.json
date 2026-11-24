@@ -1,0 +1,684 @@
+{
+  "format": "coqui.game.v1",
+  "id": "buen-provecho",
+  "scene": "comer",
+  "next": "cafe-con-azucar",
+  "goal": "Keep papá's lunch for him.",
+  "stake": {
+    "thing": "arroz",
+    "steps": 2
+  },
+  "dots": 9,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio34"
+    },
+    {
+      "wait": 500
+    },
+    {
+      "set": {
+        "twinkle": "silla_papa"
+      }
+    },
+    "c34_papa_no_esta",
+    {
+      "set": {
+        "twinkle": "pl_papa"
+      }
+    },
+    "c34_plato_papa",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "dots": 1
+    },
+    {
+      "act": "tenedores34"
+    },
+    {
+      "ask": "di_buen",
+      "lead": [],
+      "line": null,
+      "then": [
+        "c34_abuelo_rico"
+      ],
+      "after": [
+        {
+          "act": "come34",
+          "suelto": 1
+        },
+        "c34_familia_bp",
+        {
+          "act": "ya"
+        }
+      ],
+      "resp": [
+        "di_buen",
+        "di_gracias"
+      ],
+      "voces": {
+        "di_buen": "c34_cq_buen",
+        "di_gracias": "cq_gracias_abuela"
+      },
+      "said": {
+        "di_buen": "c34_cq_buen"
+      }
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "luisCome34",
+      "suelto": 1
+    },
+    "c34_luis_rico",
+    "c34_luis_todo",
+    {
+      "act": "ya"
+    },
+    "c34_luis_quiero",
+    {
+      "act": "cuchara34"
+    },
+    {
+      "act": "luis34",
+      "que": "sirve"
+    },
+    {
+      "act": "luis34",
+      "que": "come"
+    },
+    {
+      "act": "luis34",
+      "que": "cuchara",
+      "tiende": 1
+    },
+    {
+      "act": "piensa34",
+      "k": "quiere"
+    },
+    "c34_luis_y_tu",
+    {
+      "ask": "di_tambien",
+      "lead": [],
+      "line": null,
+      "then": [],
+      "after": [
+        {
+          "act": "ranaCome34",
+          "lleno": 1,
+          "suelto": 1
+        },
+        "c34_cq_todo",
+        {
+          "act": "ya"
+        }
+      ],
+      "resp": [
+        "di_tambien",
+        "di_lleno"
+      ],
+      "voces": {
+        "di_tambien": "df12",
+        "di_lleno": "c34_cq_lleno"
+      },
+      "said": {
+        "di_tambien": "df12"
+      }
+    },
+    {
+      "dots": 3
+    },
+    "c34_luis_quiero",
+    {
+      "act": "luis34",
+      "que": "sirve"
+    },
+    {
+      "act": "luis34",
+      "que": "come"
+    },
+    {
+      "act": "luis34",
+      "que": "cuchara",
+      "tiende": 1
+    },
+    {
+      "act": "piensa34",
+      "k": "lleno"
+    },
+    {
+      "ask": "di_lleno",
+      "lead": [],
+      "line": "c34_luis_y_tu",
+      "then": [],
+      "after": [
+        {
+          "act": "luisCome2"
+        }
+      ],
+      "resp": [
+        "di_lleno",
+        "di_tambien"
+      ],
+      "voces": {
+        "di_tambien": "df12",
+        "di_lleno": "c34_cq_lleno"
+      },
+      "said": {
+        "di_lleno": "c34_cq_lleno"
+      }
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "limpia34",
+      "a": "carmen"
+    },
+    "c34_luis_quiero",
+    {
+      "act": "luis34",
+      "que": "sirve"
+    },
+    {
+      "act": "luis34",
+      "que": "entrega"
+    },
+    {
+      "act": "luis34",
+      "que": "come",
+      "suelto": 1
+    },
+    "c34_mama_tambien",
+    {
+      "act": "mano34",
+      "a": "abuelo"
+    },
+    "c34_abuelo_lleno",
+    "c34_carmen_levanto",
+    {
+      "act": "ya"
+    },
+    {
+      "ask": "mama",
+      "lead": [],
+      "line": null,
+      "then": [
+        {
+          "act": "mano34",
+          "a": "abuelo",
+          "pose": "idle"
+        },
+        {
+          "act": "levanta34",
+          "a": "carmen",
+          "plato": 1,
+          "suelto": 1
+        },
+        "c34_carmen_bp",
+        {
+          "act": "ya"
+        }
+      ],
+      "after": [
+        {
+          "act": "tipa34",
+          "a": "mama",
+          "suelto": 1
+        },
+        "c34_mama_todo",
+        {
+          "act": "ya"
+        }
+      ]
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "vuelve34",
+      "a": "carmen",
+      "plato": 1
+    },
+    "c34_luis_quiero",
+    {
+      "act": "luis34",
+      "que": "sirve"
+    },
+    {
+      "act": "luis34",
+      "que": "entrega"
+    },
+    {
+      "act": "luis34",
+      "que": "come",
+      "suelto": 1
+    },
+    "c34_abuelo_tambien",
+    {
+      "act": "mano34",
+      "a": "carmen"
+    },
+    "c34_carmen_lleno",
+    "c34_mama_levanto",
+    {
+      "act": "ya"
+    },
+    {
+      "ask": "abuelo",
+      "lead": [],
+      "line": null,
+      "then": [
+        {
+          "act": "mano34",
+          "a": "carmen",
+          "pose": "idle"
+        },
+        {
+          "act": "levanta34",
+          "a": "mama",
+          "suelto": 1
+        },
+        "c34_mama_bp",
+        {
+          "act": "ya"
+        }
+      ],
+      "after": [
+        {
+          "act": "tipa34",
+          "a": "abuelo",
+          "suelto": 1
+        },
+        "c34_abuelo_todo",
+        {
+          "act": "ya"
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "vuelve34",
+      "a": "mama"
+    },
+    {
+      "act": "turno34"
+    },
+    {
+      "set": {
+        "tarjeta": "rondas",
+        "marcas": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "wait": 400
+    },
+    {
+      "dots": 7
+    },
+    {
+      "draw": "wa",
+      "options": [
+        "quiere",
+        "lleno"
+      ]
+    },
+    {
+      "calc": "pa",
+      "cond": "wa=quiere",
+      "then": "di_tambien",
+      "else": "di_lleno"
+    },
+    "c34_luis_quiero",
+    {
+      "act": "luis34",
+      "que": "sirve"
+    },
+    {
+      "act": "luis34",
+      "que": "come"
+    },
+    {
+      "act": "luis34",
+      "que": "cuchara",
+      "tiende": 1
+    },
+    {
+      "act": "piensa34",
+      "k": "$wa"
+    },
+    "c34_luis_y_tu",
+    {
+      "decide": "say",
+      "options": [
+        "di_tambien",
+        "di_lleno"
+      ],
+      "baraja": true,
+      "pick": "$pa",
+      "tests": "$wa",
+      "voces": {
+        "di_tambien": "df12",
+        "di_lleno": "c34_cq_lleno"
+      },
+      "said": {
+        "di_tambien": "df12",
+        "di_lleno": "c34_cq_lleno"
+      },
+      "lead": [],
+      "line": null,
+      "right": [
+        {
+          "if": "ok",
+          "then": [
+            {
+              "if": "wa=quiere",
+              "then": [
+                {
+                  "act": "ranaCome34"
+                }
+              ],
+              "else": [
+                {
+                  "act": "luisCome2"
+                }
+              ]
+            },
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ],
+          "else": [
+            {
+              "if": "wa=quiere",
+              "then": [
+                {
+                  "act": "luisPapa34",
+                  "para": "rana"
+                }
+              ],
+              "else": [
+                {
+                  "act": "luisPapa34",
+                  "para": "luis"
+                },
+                {
+                  "act": "levantaRana34"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "if": "wa=quiere",
+          "then": [
+            {
+              "act": "luisCome2"
+            }
+          ],
+          "else": [
+            {
+              "act": "ranaCome34",
+              "entera": 1
+            }
+          ]
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        "c34_no_$wa"
+      ]
+    },
+    {
+      "dots": 8
+    },
+    {
+      "reparte": [
+        "qt",
+        "qf",
+        "ql"
+      ],
+      "options": [
+        "abuelo",
+        "mama",
+        "carmen"
+      ]
+    },
+    "c34_luis_quiero",
+    {
+      "act": "luis34",
+      "que": "sirve"
+    },
+    {
+      "act": "luis34",
+      "que": "entrega"
+    },
+    {
+      "act": "luis34",
+      "que": "come",
+      "suelto": 1
+    },
+    {
+      "if": "qt=abuelo",
+      "then": [
+        "c34_abuelo_tambien"
+      ],
+      "else": [
+        {
+          "if": "qf=abuelo",
+          "then": [
+            "c34_abuelo_lleno"
+          ],
+          "else": [
+            "c34_abuelo_levanto"
+          ]
+        }
+      ]
+    },
+    {
+      "if": "qt=mama",
+      "then": [
+        "c34_mama_tambien"
+      ],
+      "else": [
+        {
+          "if": "qf=mama",
+          "then": [
+            "c34_mama_lleno"
+          ],
+          "else": [
+            "c34_mama_levanto"
+          ]
+        }
+      ]
+    },
+    {
+      "if": "qt=carmen",
+      "then": [
+        "c34_carmen_tambien"
+      ],
+      "else": [
+        {
+          "if": "qf=carmen",
+          "then": [
+            "c34_carmen_lleno"
+          ],
+          "else": [
+            "c34_carmen_levanto"
+          ]
+        }
+      ]
+    },
+    {
+      "act": "ya"
+    },
+    {
+      "decide": "do",
+      "options": [
+        "abuelo",
+        "mama",
+        "carmen"
+      ],
+      "pick": "$qt",
+      "tests": "tambien",
+      "lock": true,
+      "lead": [],
+      "line": null,
+      "right": [
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "tipa34",
+              "a": "$qt"
+            },
+            {
+              "act": "marca",
+              "que": "ok"
+            },
+            {
+              "act": "levanta34",
+              "a": "$ql",
+              "suelto": 1
+            },
+            "c34_$ql_bp",
+            {
+              "act": "ya"
+            }
+          ],
+          "else": [
+            {
+              "act": "papaB34",
+              "a": "$qt"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "tipa34",
+          "a": "$x",
+          "mezcla": 1
+        },
+        {
+          "if": "x=$qf",
+          "then": [
+            {
+              "act": "llenoAhora34",
+              "a": "$x"
+            }
+          ]
+        },
+        {
+          "act": "levanta34",
+          "a": "$ql",
+          "suelto": 1
+        },
+        "c34_$ql_bp",
+        {
+          "act": "ya"
+        },
+        {
+          "act": "mira34",
+          "a": "$qt"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        "c34_no_$qt"
+      ]
+    }
+  ],
+  "final": [
+    {
+      "dots": 9
+    },
+    {
+      "act": "final34",
+      "suelto": 1
+    },
+    "c34_papa_hola",
+    {
+      "act": "ya"
+    },
+    {
+      "say": "c34_cq_bp_papa",
+      "gap": 300
+    },
+    {
+      "act": "papaCome34",
+      "suelto": 1
+    },
+    "c34_papa_rico",
+    {
+      "act": "ya"
+    },
+    {
+      "act": "papaCome34",
+      "fin": 1,
+      "suelto": 1
+    },
+    "c34_papa_todo",
+    {
+      "act": "ya"
+    },
+    {
+      "if": "pmont=1",
+      "then": [
+        {
+          "act": "papaMira34"
+        }
+      ]
+    },
+    {
+      "act": "fin"
+    }
+  ],
+  "leer": [
+    "c34_papa_no_esta",
+    "c34_plato_papa",
+    "c34_familia_bp",
+    "c34_abuelo_rico",
+    "c34_luis_rico",
+    "c34_luis_todo",
+    "c34_luis_quiero",
+    "c34_luis_y_tu",
+    "c34_cq_todo",
+    "c34_mama_tambien",
+    "c34_abuelo_lleno",
+    "c34_carmen_levanto",
+    "c34_mama_todo",
+    "c34_carmen_bp",
+    "c34_abuelo_tambien",
+    "c34_carmen_lleno",
+    "c34_mama_levanto",
+    "c34_abuelo_todo",
+    "c34_mama_bp",
+    "c34_papa_hola",
+    "c34_cq_bp_papa",
+    "c34_papa_rico",
+    "c34_papa_todo"
+  ]
+}

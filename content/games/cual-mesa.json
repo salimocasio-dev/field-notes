@@ -1,0 +1,1608 @@
+{
+  "format": "coqui.game.v1",
+  "id": "cual-mesa",
+  "tipo": "cual",
+  "scene": "mesa",
+  "note": "The next-day pass for La mesa.",
+  "stake": {
+    "thing": "none",
+    "steps": 0
+  },
+  "items": [
+    {
+      "say": "n_mesa",
+      "si": {
+        "cam": [
+          84,
+          100,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {},
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 1,
+          "cosas": [
+            {
+              "k": "florero",
+              "x": 140,
+              "y": 152,
+              "z": 300
+            }
+          ],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          122,
+          66,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {},
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {
+            "olla": 1,
+            "vapor": 1
+          },
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "m_c_mi_plato",
+      "si": {
+        "cam": [
+          54,
+          150,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "luis": {
+              "x": 110,
+              "y": 206,
+              "dir": 1,
+              "alza": "plato"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          54,
+          150,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "luis": {
+              "x": 110,
+              "y": 206,
+              "dir": 1,
+              "alza": "taza"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "m_c_mi_taza",
+      "si": {
+        "cam": [
+          54,
+          150,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "carmen": {
+              "x": 110,
+              "y": 206,
+              "dir": 1,
+              "alza": "tazall"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          54,
+          150,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "carmen": {
+              "x": 110,
+              "y": 206,
+              "dir": 1,
+              "alza": "olla",
+              "alzax": 26
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "m_c_mi_cuchara",
+      "si": {
+        "cam": [
+          54,
+          150,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "abuelo": {
+              "x": 110,
+              "y": 206,
+              "dir": 1,
+              "alza": "cuchara"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          54,
+          150,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "abuelo": {
+              "x": 110,
+              "y": 206,
+              "dir": 1,
+              "alza": "tenedor"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "m_c_papa_tenedor",
+      "si": {
+        "cam": [
+          54,
+          150,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "papa": {
+              "x": 110,
+              "y": 206,
+              "dir": 1,
+              "alza": "tenedor"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          54,
+          150,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "papa": {
+              "x": 110,
+              "y": 206,
+              "dir": 1,
+              "alza": "cuchillo"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "m_c_ab_cuchillo",
+      "si": {
+        "cam": [
+          127,
+          116,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "abuela": {
+              "x": 205,
+              "y": 170,
+              "dir": -1,
+              "alza": "cuchillo"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          127,
+          116,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "abuela": {
+              "x": 205,
+              "y": 170,
+              "dir": -1,
+              "alza": "cuchara"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "m_c_mira_comida",
+      "si": {
+        "cam": [
+          100,
+          126,
+          56.5,
+          30
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {},
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": {
+                "n": 1,
+                "con": "espa",
+                "vapor": 1
+              },
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 1,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          100,
+          126,
+          56.5,
+          30
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {},
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": {
+                "n": 2,
+                "con": null
+              },
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 1,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "c26_ab_en_cocina",
+      "si": {
+        "cam": [
+          70,
+          86,
+          169.5,
+          90
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "abuela": {
+              "x": 176,
+              "y": 172,
+              "dir": -1
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {
+            "olla": 1,
+            "vapor": 1
+          },
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          70,
+          90,
+          169.5,
+          90
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "abuela": {
+              "x": 176,
+              "y": 176,
+              "dir": -1
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 1,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "m_c_carmen_pone",
+      "si": {
+        "cam": [
+          127,
+          104,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "carmen": {
+              "x": 206,
+              "y": 165,
+              "dir": -1,
+              "pose": "offer"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 1,
+          "cosas": [
+            {
+              "k": "plato",
+              "x": 187,
+              "y": 150,
+              "z": 300
+            }
+          ],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          127,
+          104,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "carmen": {
+              "x": 206,
+              "y": 165,
+              "dir": -1,
+              "pose": "offer"
+            }
+          },
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 1,
+          "cosas": [
+            {
+              "k": "plato",
+              "x": 178,
+              "y": 150,
+              "z": 300
+            },
+            {
+              "k": "pano",
+              "x": 187,
+              "y": 151,
+              "z": 301
+            }
+          ],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "c26_luis_hambre",
+      "si": {
+        "cam": [
+          84,
+          84,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "luis": {
+              "x": 128,
+              "y": 150,
+              "dir": 1,
+              "sent": 1,
+              "piensa": "hambre"
+            }
+          },
+          "sitio": {
+            "luis": 1
+          },
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          84,
+          84,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "luis": {
+              "x": 128,
+              "y": 150,
+              "dir": 1,
+              "sent": 1,
+              "piensa": "sed"
+            }
+          },
+          "sitio": {
+            "luis": 1
+          },
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "c26_carmen_sed",
+      "si": {
+        "cam": [
+          84,
+          100,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "carmen": {
+              "x": 128,
+              "y": 150,
+              "dir": 1,
+              "sent": 1,
+              "hace": "bebe",
+              "que": "vaso"
+            }
+          },
+          "sitio": {
+            "carmen": 1
+          },
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          84,
+          100,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {
+            "carmen": {
+              "x": 128,
+              "y": 150,
+              "dir": 1,
+              "sent": 1,
+              "hace": "come",
+              "que": "tenedor"
+            }
+          },
+          "sitio": {
+            "carmen": 1
+          },
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": {
+                "n": 1,
+                "con": "comida"
+              },
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    },
+    {
+      "say": "m_c_bizcocho_listo",
+      "si": {
+        "cam": [
+          84,
+          100,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {},
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {},
+          "mantel": 1,
+          "cosas": [
+            {
+              "k": "entero",
+              "x": 140,
+              "y": 153,
+              "z": 300
+            }
+          ],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      },
+      "no": {
+        "cam": [
+          127,
+          116,
+          113,
+          60
+        ],
+        "set": {
+          "cq": {
+            "x": 0,
+            "y": 0,
+            "s": 1,
+            "dy": 0,
+            "al": 1,
+            "vis": 0,
+            "bub": null
+          },
+          "gente": {},
+          "sitio": {},
+          "puestos": [
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            },
+            {
+              "plato": null,
+              "taza": null,
+              "uts": [],
+              "frente": []
+            }
+          ],
+          "mostrador": {},
+          "estufa": {
+            "horno": 1
+          },
+          "mantel": 0,
+          "cosas": [],
+          "perro": null,
+          "muestra": null,
+          "encima": null,
+          "tarjeta": null,
+          "afuera": 0,
+          "bandeja": []
+        }
+      }
+    }
+  ]
+}

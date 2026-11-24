@@ -1,0 +1,387 @@
+{
+  "format": "coqui.game.v1",
+  "id": "uno-dos-tres",
+  "scene": "camino",
+  "next": "donde-esta-el-gato",
+  "goal": "Do what Luis calls and get along the path to the big tree.",
+  "stake": {
+    "thing": "puesto",
+    "steps": 3
+  },
+  "dots": 7,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio12"
+    },
+    {
+      "wait": 500
+    },
+    "c12_parque",
+    "c12_luis_carmen",
+    {
+      "set": {
+        "twinkle": "perro"
+      }
+    },
+    "c12_perro_abuela",
+    "c12_se_llama",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "ladra"
+    },
+    {
+      "say": "c12_cq_hola",
+      "gap": 300
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "perro",
+      "lead": [],
+      "line": "c12_puedes",
+      "then": [
+        {
+          "act": "lame"
+        }
+      ],
+      "after": []
+    },
+    {
+      "act": "cuenta"
+    },
+    {
+      "say": "c12_vamos_jugar",
+      "gap": 300
+    },
+    {
+      "dots": 2
+    },
+    {
+      "ask": "camina",
+      "lead": [],
+      "line": "c12_camina",
+      "then": [
+        "c12_coqui_camina"
+      ],
+      "after": [
+        {
+          "act": "ronda",
+          "modo": "camina"
+        }
+      ],
+      "resp": [
+        "camina",
+        "corre"
+      ],
+      "baraja": true
+    },
+    {
+      "ask": "corre",
+      "lead": [],
+      "line": "c12_uno_corre",
+      "then": [
+        "c12_coqui_corre"
+      ],
+      "after": [
+        {
+          "act": "ronda",
+          "modo": "corre"
+        }
+      ],
+      "resp": [
+        "corre",
+        "espera"
+      ],
+      "baraja": true
+    },
+    {
+      "ask": "espera",
+      "lead": [],
+      "line": "c12_uno_espera",
+      "then": [
+        "c12_coqui_espera"
+      ],
+      "after": [
+        {
+          "act": "ronda",
+          "modo": "espera"
+        }
+      ],
+      "resp": [
+        "espera",
+        "camina"
+      ],
+      "baraja": true,
+      "quieto": true
+    },
+    {
+      "dots": 3
+    },
+    {
+      "ask": "espera",
+      "lead": [],
+      "line": "c12_cf_corre_espera",
+      "then": [],
+      "after": [
+        {
+          "act": "ronda2",
+          "f": "espera",
+          "c": "corre"
+        }
+      ],
+      "resp": [
+        "camina",
+        "corre",
+        "espera"
+      ],
+      "baraja": true,
+      "quieto": true
+    },
+    {
+      "ask": "camina",
+      "lead": [],
+      "line": "c12_fc_espera_camina",
+      "then": [],
+      "after": [
+        {
+          "act": "ronda2",
+          "f": "camina",
+          "c": "espera"
+        }
+      ],
+      "resp": [
+        "camina",
+        "corre",
+        "espera"
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 4
+    },
+    {
+      "say": "c12_ahora_si",
+      "gap": 100
+    },
+    {
+      "act": "demo"
+    },
+    {
+      "say": "c12_no_canelo",
+      "gap": 200
+    },
+    {
+      "act": "demo2"
+    },
+    {
+      "dots": 5
+    },
+    {
+      "reparte": [
+        "la",
+        "oa",
+        "xa"
+      ],
+      "options": [
+        "camina",
+        "corre",
+        "espera"
+      ]
+    },
+    {
+      "calc": "qa",
+      "cond": "la=espera",
+      "then": "1",
+      "else": "0"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "$la",
+        "$oa"
+      ],
+      "baraja": true,
+      "pick": "$la",
+      "tests": "$la",
+      "lock": true,
+      "quieto": "$qa",
+      "lead": [],
+      "line": "c12_uno_$la",
+      "right": [
+        {
+          "act": "ronda",
+          "modo": "$la"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "ronda",
+          "modo": "$la",
+          "mal": "$x"
+        },
+        "c12_no_$la",
+        {
+          "cost": 1
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "reparte": [
+        "lb",
+        "cb",
+        "xb"
+      ],
+      "options": [
+        "camina",
+        "corre",
+        "espera"
+      ]
+    },
+    {
+      "draw": "ob",
+      "options": [
+        "cf",
+        "fc"
+      ]
+    },
+    {
+      "calc": "qb",
+      "cond": "lb=espera",
+      "then": "1",
+      "else": "0"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "camina",
+        "corre",
+        "espera"
+      ],
+      "baraja": true,
+      "pick": "$lb",
+      "tests": "$lb",
+      "lock": true,
+      "quieto": "$qb",
+      "lead": [],
+      "line": "c12_$ob_$cb_$lb",
+      "right": [
+        {
+          "act": "ronda2",
+          "f": "$lb",
+          "c": "$cb"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "ronda2",
+          "f": "$lb",
+          "c": "$cb",
+          "mal": "$x"
+        },
+        "c12_no_coqui_$lb",
+        {
+          "cost": 1
+        }
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "draw": "lc",
+      "options": [
+        "$oa",
+        "$xa"
+      ]
+    },
+    {
+      "calc": "qc",
+      "cond": "lc=espera",
+      "then": "1",
+      "else": "0"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "camina",
+        "corre",
+        "espera"
+      ],
+      "baraja": true,
+      "pick": "$lc",
+      "tests": "$lc",
+      "lock": true,
+      "quieto": "$qc",
+      "lead": [],
+      "line": "c12_lento_$lc",
+      "right": [
+        {
+          "act": "ronda",
+          "modo": "$lc"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "ronda",
+          "modo": "$lc",
+          "mal": "$x"
+        },
+        "c12_no_$lc",
+        {
+          "cost": 1
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "say": "c12_ven",
+      "gap": 200
+    },
+    {
+      "act": "final12"
+    },
+    "c12_juega_parque",
+    {
+      "say": "c12_cq_uno",
+      "gap": 300
+    },
+    {
+      "act": "ladra3"
+    },
+    {
+      "wait": 600
+    }
+  ],
+  "leer": [
+    "c12_parque",
+    "c12_luis_carmen",
+    "c12_perro_abuela",
+    "c12_se_llama",
+    "c12_cq_hola",
+    "c12_puedes",
+    "c12_vamos_jugar",
+    "c12_camina",
+    "c12_coqui_camina",
+    "c12_uno_corre",
+    "c12_coqui_corre",
+    "c12_uno_espera",
+    "c12_coqui_espera",
+    "c12_cf_corre_espera",
+    "c12_fc_espera_camina",
+    "c12_ahora_si",
+    "c12_no_canelo",
+    "c12_ven",
+    "c12_juega_parque",
+    "c12_cq_uno"
+  ]
+}

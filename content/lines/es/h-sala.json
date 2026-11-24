@@ -1,0 +1,106 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "h-sala",
+  "lang": "es",
+  "title": "La familia",
+  "place": "La casa",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "hz_no_mama": {
+      "who": "narr",
+      "text": "No. Esa es mamá."
+    },
+    "hz_no_papa": {
+      "who": "narr",
+      "text": "No. Ese es papá."
+    },
+    "hz_no_abuelo": {
+      "who": "narr",
+      "text": "No. Ese es abuelo."
+    },
+    "hz_no_bebe": {
+      "who": "narr",
+      "text": "No. Ese es el bebé."
+    },
+    "hz_no_hermano": {
+      "who": "narr",
+      "text": "No. Ese es Luis."
+    },
+    "hz_no_hermana": {
+      "who": "narr",
+      "text": "No. Esa es Carmen."
+    },
+    "hc01": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: ¡Hola!"
+    },
+    "hc02": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: ¡Hola!"
+    },
+    "hc03": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: Gracias."
+    },
+    "hc04": {
+      "who": "narr",
+      "text": "Toca a mamá."
+    },
+    "hc05": {
+      "who": "narr",
+      "text": "¿Dónde está papá?"
+    },
+    "hc06": {
+      "who": "narr",
+      "text": "¿Dónde está el bebé?"
+    },
+    "hc07": {
+      "who": "narr",
+      "text": "Toca a abuelo."
+    },
+    "hc08": {
+      "who": "narr",
+      "text": "Toca a Luis."
+    },
+    "hc09": {
+      "who": "narr",
+      "text": "¿Dónde está Carmen?"
+    },
+    "hc10": {
+      "who": "narr",
+      "text": "¡Mira! El bizcocho."
+    },
+    "hc11": {
+      "who": "narr",
+      "text": "El bizcocho es para papá."
+    },
+    "hc12": {
+      "who": "narr",
+      "text": "El bizcocho es para el bebé."
+    },
+    "hc13": {
+      "who": "narr",
+      "text": "Toca a mamá y a papá."
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "format": "coqui.game.v1",
+  "id": "d-buenas-noches",
+  "tipo": "escucha",
+  "scene": "patio",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 5,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "act": "inicio11"
+    },
+    {
+      "set": {
+        "luces": []
+      }
+    },
+    {
+      "act": "pose",
+      "quien": "carmen",
+      "que": "idle"
+    },
+    {
+      "act": "deja",
+      "quien": "abuelo"
+    },
+    {
+      "act": "pon",
+      "quien": "luis",
+      "x": "136",
+      "y": "164"
+    },
+    {
+      "act": "pon",
+      "quien": "carmen",
+      "x": "170",
+      "y": "160"
+    },
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    {
+      "say": "dn01",
+      "gap": 100
+    },
+    {
+      "act": "puesta"
+    },
+    "dn02",
+    {
+      "dots": 2
+    },
+    {
+      "act": "llama",
+      "quien": "mama"
+    },
+    {
+      "say": "dn03",
+      "gap": 300
+    },
+    {
+      "act": "pose",
+      "quien": "mama",
+      "que": "idle"
+    },
+    {
+      "act": "pose",
+      "quien": "carmen",
+      "que": "wave"
+    },
+    {
+      "say": "dn04",
+      "gap": 200
+    },
+    {
+      "act": "pose",
+      "quien": "carmen",
+      "que": "idle"
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "wave"
+    },
+    {
+      "say": "dn05",
+      "gap": 200
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "idle"
+    },
+    {
+      "say": "dn06",
+      "gap": 300
+    },
+    {
+      "say": "dn07",
+      "gap": 100
+    },
+    {
+      "act": "seva",
+      "quien": "luis+carmen"
+    },
+    {
+      "say": "dn08",
+      "gap": 100
+    },
+    {
+      "act": "seva",
+      "quien": "papa+mama"
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "pose",
+      "quien": "abuelo",
+      "que": "wave"
+    },
+    {
+      "say": "dn09",
+      "gap": 200
+    },
+    {
+      "act": "pose",
+      "quien": "abuela",
+      "que": "wave"
+    },
+    {
+      "say": "dn10",
+      "gap": 200
+    },
+    {
+      "say": "dn11",
+      "gap": 300
+    },
+    {
+      "act": "seva",
+      "quien": "abuelo+abuela"
+    },
+    {
+      "act": "cierra"
+    },
+    "dn12",
+    {
+      "dots": 4
+    },
+    {
+      "act": "noche"
+    },
+    "dn13",
+    {
+      "act": "aveduerme"
+    },
+    "dn14",
+    {
+      "act": "luzsale"
+    },
+    "dn15",
+    {
+      "act": "luzsale"
+    },
+    {
+      "act": "luzsale"
+    },
+    "dn16",
+    {
+      "dots": 5
+    },
+    {
+      "say": "dn17",
+      "gap": 100
+    },
+    {
+      "act": "canta"
+    },
+    {
+      "set": {
+        "aro": 1,
+        "heart": 1
+      }
+    },
+    {
+      "say": "dn18",
+      "gap": 700
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "dn01",
+    "dn02",
+    "dn03",
+    "dn04",
+    "dn05",
+    "dn06",
+    "dn07",
+    "dn08",
+    "dn09",
+    "dn10",
+    "dn11",
+    "dn12",
+    "dn13",
+    "dn14",
+    "dn15",
+    "dn16",
+    "dn17",
+    "dn18"
+  ]
+}

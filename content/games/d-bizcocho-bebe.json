@@ -1,0 +1,277 @@
+{
+  "format": "coqui.game.v1",
+  "id": "d-bizcocho-bebe",
+  "tipo": "escucha",
+  "scene": "sala",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 5,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "set": {
+        "pastel": "tapado"
+      }
+    },
+    {
+      "act": "duerme"
+    },
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    "db01",
+    {
+      "set": {
+        "twinkle": "abuelo"
+      }
+    },
+    "db02",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "destapa"
+    },
+    "db03",
+    {
+      "act": "pose",
+      "quien": "abuela",
+      "que": "wave"
+    },
+    {
+      "say": "db04",
+      "gap": 250
+    },
+    {
+      "act": "pose",
+      "quien": "abuela",
+      "que": "idle"
+    },
+    {
+      "act": "pose",
+      "quien": "mama",
+      "que": "wave"
+    },
+    {
+      "say": "db05",
+      "gap": 200
+    },
+    {
+      "act": "pose",
+      "quien": "mama",
+      "que": "idle"
+    },
+    {
+      "act": "pose",
+      "quien": "papa",
+      "que": "wave"
+    },
+    {
+      "say": "db06",
+      "gap": 200
+    },
+    {
+      "act": "pose",
+      "quien": "papa",
+      "que": "idle"
+    },
+    {
+      "act": "saluda",
+      "quien": "bebe"
+    },
+    "db07",
+    {
+      "dots": 2
+    },
+    {
+      "say": "db08",
+      "gap": 200
+    },
+    {
+      "act": "dale"
+    },
+    {
+      "act": "da",
+      "en": "mama"
+    },
+    {
+      "act": "come",
+      "quien": "mama"
+    },
+    {
+      "say": "db09",
+      "gap": 250
+    },
+    {
+      "say": "db10",
+      "gap": 200
+    },
+    {
+      "act": "dale"
+    },
+    {
+      "act": "da",
+      "en": "papa"
+    },
+    {
+      "act": "come",
+      "quien": "papa"
+    },
+    {
+      "say": "db11",
+      "gap": 250
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "llora"
+    },
+    "db12",
+    {
+      "say": "db13",
+      "gap": 200
+    },
+    {
+      "act": "dale"
+    },
+    {
+      "act": "da",
+      "en": "bebe"
+    },
+    {
+      "act": "come",
+      "quien": "bebe"
+    },
+    {
+      "act": "llora",
+      "no": "1"
+    },
+    {
+      "act": "saluda",
+      "quien": "bebe"
+    },
+    "db14",
+    {
+      "dots": 4
+    },
+    {
+      "set": {
+        "twinkle": "abuelo"
+      }
+    },
+    "db15",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "ir",
+      "a": "abuelo"
+    },
+    {
+      "say": "db16",
+      "gap": 100
+    },
+    {
+      "act": "despierta"
+    },
+    {
+      "act": "ir",
+      "a": "centro"
+    },
+    {
+      "say": "db17",
+      "gap": 250
+    },
+    {
+      "act": "dale"
+    },
+    {
+      "act": "da",
+      "en": "abuelo"
+    },
+    {
+      "act": "come",
+      "quien": "abuelo"
+    },
+    {
+      "say": "db18",
+      "gap": 250
+    },
+    {
+      "say": "db19",
+      "gap": 300
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "suplato"
+    },
+    {
+      "say": "db20",
+      "gap": 250
+    },
+    {
+      "say": "db21",
+      "gap": 300
+    },
+    {
+      "act": "cqcome"
+    },
+    {
+      "act": "vuelve"
+    },
+    {
+      "act": "comen"
+    },
+    "db22",
+    {
+      "set": {
+        "heart": 1
+      }
+    },
+    {
+      "wait": 700
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "db01",
+    "db02",
+    "db03",
+    "db04",
+    "db05",
+    "db06",
+    "db07",
+    "db08",
+    "db09",
+    "db10",
+    "db11",
+    "db12",
+    "db13",
+    "db14",
+    "db15",
+    "db16",
+    "db17",
+    "db18",
+    "db19",
+    "db20",
+    "db21",
+    "db22"
+  ]
+}

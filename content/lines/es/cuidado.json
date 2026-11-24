@@ -1,0 +1,260 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cuidado",
+  "lang": "es",
+  "title": "¡Cuidado!",
+  "place": "La cocina",
+  "focus_words": [
+    "caliente",
+    "frío",
+    "cuidado",
+    "ya"
+  ],
+  "back_again": [
+    "olla",
+    "chocolate",
+    "quiero",
+    "quiere",
+    "¿quién?",
+    "bebe",
+    "toma",
+    "come",
+    "mira",
+    "espera",
+    "hay",
+    "aquí",
+    "está",
+    "listo"
+  ],
+  "also_heard": [
+    "ya está"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina"
+  },
+  "palabras": {
+    "cal": "caliente",
+    "frio": "frío"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c29_olla_caliente": {
+      "who": "narr",
+      "text": "La olla está caliente."
+    },
+    "c29_aqui_cal": {
+      "who": "narr",
+      "text": "Aquí hay chocolate caliente."
+    },
+    "c29_aqui_frio": {
+      "who": "narr",
+      "text": "Y aquí hay chocolate frío."
+    },
+    "c29_luis_ya": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Ya está!"
+    },
+    "c29_ab_cuidado_caliente": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Cuidado! Está caliente."
+    },
+    "c29_ab_cuidado": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Cuidado, Coquí!"
+    },
+    "c29_cq_espera": {
+      "who": "narr",
+      "text": "Coquí espera."
+    },
+    "c29_ab_ya": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Ya está, Coquí!"
+    },
+    "c29_quien_cal": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¿Quién quiere chocolate caliente?"
+    },
+    "c29_quien_frio": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¿Quién quiere chocolate frío?"
+    },
+    "c29_ay_luis": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Ay, Luis!"
+    },
+    "c29_no_cuidado": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. No está listo."
+    },
+    "c29_no_ya": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Está negro."
+    },
+    "c29_ya_fin": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Ya está!"
+    },
+    "c29_cq_carmen": {
+      "who": "tu",
+      "text": "¡Carmen, cuidado! Está caliente."
+    },
+    "c29_abuelo_quiere_cal": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Quiero chocolate caliente."
+    },
+    "c29_no_abuelo_quiere_cal": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Abuelo quiere chocolate caliente."
+    },
+    "c29_abuelo_bebe_cal": {
+      "who": "narr",
+      "text": "Abuelo bebe chocolate caliente."
+    },
+    "c29_abuelo_quiere_frio": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Quiero chocolate frío."
+    },
+    "c29_no_abuelo_quiere_frio": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Abuelo quiere chocolate frío."
+    },
+    "c29_abuelo_bebe_frio": {
+      "who": "narr",
+      "text": "Abuelo bebe chocolate frío."
+    },
+    "c29_mama_quiere_cal": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Quiero chocolate caliente."
+    },
+    "c29_no_mama_quiere_cal": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Mamá quiere chocolate caliente."
+    },
+    "c29_mama_bebe_cal": {
+      "who": "narr",
+      "text": "Mamá bebe chocolate caliente."
+    },
+    "c29_mama_quiere_frio": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Quiero chocolate frío."
+    },
+    "c29_no_mama_quiere_frio": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Mamá quiere chocolate frío."
+    },
+    "c29_mama_bebe_frio": {
+      "who": "narr",
+      "text": "Mamá bebe chocolate frío."
+    },
+    "c29_papa_quiere_cal": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: Quiero chocolate caliente."
+    },
+    "c29_no_papa_quiere_cal": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Papá quiere chocolate caliente."
+    },
+    "c29_papa_bebe_cal": {
+      "who": "narr",
+      "text": "Papá bebe chocolate caliente."
+    },
+    "c29_papa_quiere_frio": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: Quiero chocolate frío."
+    },
+    "c29_no_papa_quiere_frio": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Papá quiere chocolate frío."
+    },
+    "c29_papa_bebe_frio": {
+      "who": "narr",
+      "text": "Papá bebe chocolate frío."
+    },
+    "c29_carmen_quiere_cal": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Quiero chocolate caliente."
+    },
+    "c29_no_carmen_quiere_cal": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Carmen quiere chocolate caliente."
+    },
+    "c29_carmen_bebe_cal": {
+      "who": "narr",
+      "text": "Carmen bebe chocolate caliente."
+    },
+    "c29_carmen_quiere_frio": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Quiero chocolate frío."
+    },
+    "c29_no_carmen_quiere_frio": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Carmen quiere chocolate frío."
+    },
+    "c29_carmen_bebe_frio": {
+      "who": "narr",
+      "text": "Carmen bebe chocolate frío."
+    }
+  }
+}

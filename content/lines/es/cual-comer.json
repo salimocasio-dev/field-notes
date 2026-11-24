@@ -1,0 +1,82 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-comer",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "La cocina",
+  "clips": {
+    "m_c_quieres": {
+      "who": "narr",
+      "text": "¿Quieres pan?"
+    },
+    "m_c_que_quieres": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿Qué quieres?"
+    },
+    "m_c_me_gusta": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Me gusta el pollo."
+    },
+    "m_c_no_me_gusta": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: No me gusta la manzana."
+    },
+    "m_c_rico": {
+      "who": "narr",
+      "text": "¡El bizcocho está rico!"
+    },
+    "m_c_buen_provecho": {
+      "who": "narr",
+      "text": "¡Buen provecho!"
+    },
+    "m_c_tambien": {
+      "who": "narr",
+      "text": "Luis come pan. Carmen también."
+    },
+    "m_c_todo": {
+      "who": "narr",
+      "text": "Canelo se lo come todo."
+    },
+    "m_c_cafe": {
+      "who": "narr",
+      "text": "Mamá toma café."
+    },
+    "m_c_azucar": {
+      "who": "narr",
+      "text": "Abuela le pone azúcar al café."
+    },
+    "m_c_un_poco": {
+      "who": "narr",
+      "text": "Un poco de arroz, por favor."
+    },
+    "m_c_mucho": {
+      "who": "narr",
+      "text": "Aquí hay mucho jugo."
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "quieres",
+    "¿qué quieres?",
+    "me gusta",
+    "no me gusta",
+    "rico",
+    "buen provecho",
+    "también",
+    "todo",
+    "café",
+    "azúcar",
+    "un poco",
+    "mucho"
+  ]
+}
