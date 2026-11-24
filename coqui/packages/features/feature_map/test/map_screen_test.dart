@@ -1,5 +1,5 @@
 // The map tab on the fakes: Noche layout, camera centering/clamping, chips, You are here pill,
-// Up next card, frog hops, place sheet, reduceMotion, and RTL mirroring.
+// Up next card, frog hops, PlaceRoute navigation, reduceMotion, and RTL mirroring.
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -108,9 +108,6 @@ Future<void> tapStop(WidgetTester tester, int k) async {
   await tester.pump();
 }
 
-bool sheetOpen(WidgetTester tester) =>
-    find.byType(CoquiSheet).evaluate().isNotEmpty;
-
 /// The reddish pixels of the picture inside the rectangle where the flag of stop [k] is drawn.
 int flagPixels(MapPicture m, int k) {
   final xy = XY(PADS[k][0] + .9, PADS[k][1] - .9);
@@ -198,49 +195,43 @@ void main() {
     expect(find.byType(PixelView), findsOneWidget);
   });
 
-  mapTest(
-    'tap an open place: the frog hops there, then the place sheet opens',
-    (tester) async {
-      phone(tester);
-      final f = fixture(seed: 'vacio');
-      final s = await showMap(tester, f);
-      final m = s.picture;
-      expect(m.FROG.at, 0);
-      expect(m.STATE.abierto.take(4), [true, true, true, false]);
-      await tapStop(tester, 2);
-      expect(m.FROG.path, isNotNull);
-      expect(sheetOpen(tester), isFalse);
-      expect(f.haptics.ticks, 1);
-      await run(tester, 100);
-      expect(sheetOpen(tester), isFalse);
-      await run(tester, 3000);
-      expect(m.FROG.path, isNull);
-      expect(m.FROG.at, 2);
-      final stop = XY(PADS[2][0], PADS[2][1]);
-      expect(m.FROG.x, closeTo(stop.x, 1e-9));
-      expect(m.FROG.y, closeTo(stop.y, 1e-9));
-      expect(sheetOpen(tester), isTrue);
-      expect(find.text('La cocina'), findsWidgets);
+  mapTest('tap an open place: the frog hops there, then PlaceRoute opens', (
+    tester,
+  ) async {
+    phone(tester);
+    final f = fixture(seed: 'vacio');
+    final s = await showMap(tester, f);
+    final m = s.picture;
+    expect(m.FROG.at, 0);
+    expect(m.STATE.abierto.take(4), [true, true, true, false]);
+    await tapStop(tester, 2);
+    expect(m.FROG.path, isNotNull);
+    expect(f.nav.routes, isEmpty);
+    expect(f.haptics.ticks, 1);
+    await run(tester, 100);
+    expect(f.nav.routes, isEmpty);
+    await run(tester, 3000);
+    expect(m.FROG.path, isNull);
+    expect(m.FROG.at, 2);
+    final stop = XY(PADS[2][0], PADS[2][1]);
+    expect(m.FROG.x, closeTo(stop.x, 1e-9));
+    expect(m.FROG.y, closeTo(stop.y, 1e-9));
+    expect(f.nav.routes, [const PlaceRoute('cocina')]);
+    final hops = route(0, 2);
+    expect(f.clips.tones, isNotEmpty);
+    expect(f.clips.tones.length, greaterThanOrEqualTo(hops.length - 1));
+    for (final t in f.clips.tones) {
       expect(
-        find.text('Place 3 · The kitchen · a fork: either place first'),
-        findsOneWidget,
+        (t.hz, t.dur, t.wave, t.vol, t.toHz),
+        (320.0, .07, 'square', .025, 520.0),
       );
-      final hops = route(0, 2);
-      expect(f.clips.tones, isNotEmpty);
-      expect(f.clips.tones.length, greaterThanOrEqualTo(hops.length - 1));
-      for (final t in f.clips.tones) {
-        expect(
-          (t.hz, t.dur, t.wave, t.vol, t.toHz),
-          (320.0, .07, 'square', .025, 520.0),
-        );
-      }
-      // the current place did not change: Up next still names La casa
-      expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
-    },
-  );
+    }
+    // the current place did not change: Up next still names La casa
+    expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+  });
 
   mapTest(
-    'a tap on a locked place opens the sheet at once and says it is locked',
+    'a tap on a locked place routes to PlaceRoute at once without hopping',
     (tester) async {
       phone(tester);
       final f = fixture(seed: 'vacio');
@@ -250,25 +241,12 @@ void main() {
       expect(s.picture.FROG.path, isNull);
       expect(s.picture.FROG.at, 0);
       expect(f.clips.tones, isEmpty);
-      expect(sheetOpen(tester), isTrue);
-      expect(find.text('El colmado'), findsWidgets);
-      expect(find.text('Place 4 · The corner shop'), findsOneWidget);
-      expect(
-        find.text('Locked until the places before it are done.'),
-        findsOneWidget,
-      );
-      expect(
-        find.text('Scenes: El mostrador · Los estantes · Las frutas · La caja'),
-        findsOneWidget,
-      );
-      await tester.tap(find.byType(CoquiCloseButton));
-      await run(tester, 300);
-      expect(sheetOpen(tester), isFalse);
+      expect(f.nav.routes, [const PlaceRoute('colmado')]);
     },
   );
 
   mapTest(
-    '"Open every place" opens a place with no stories: the frog hops, the sheet says it is not built',
+    '"Open every place" opens a place with no stories: the frog hops, then PlaceRoute opens',
     (tester) async {
       phone(tester);
       final f = fixture(seed: 'todo', todo: true);
@@ -277,11 +255,7 @@ void main() {
       await tapStop(tester, 3);
       await run(tester, 6000);
       expect(s.picture.FROG.at, 3);
-      expect(find.text('Not built yet.'), findsOneWidget);
-      expect(
-        find.text('Scenes: El mostrador · Los estantes · Las frutas · La caja'),
-        findsOneWidget,
-      );
+      expect(f.nav.routes, [const PlaceRoute('colmado')]);
     },
   );
 
@@ -335,18 +309,17 @@ void main() {
       expect(find.text('La lluvia'), findsOneWidget);
       expect(find.text('New story · 4 min'), findsOneWidget);
       expect(find.text('Then a new story, then a new story'), findsOneWidget);
-      // Tapping the picture/text opens the place sheet until N4.2 replaces it
+      // Tapping the picture/text opens PlaceRoute
       await tester.tap(find.byKey(const Key('up-next-place')));
-      await run(tester, 300);
-      expect(sheetOpen(tester), isTrue);
-      expect(find.text('La casa'), findsOneWidget);
-      await tester.tap(find.byType(CoquiCloseButton));
-      await run(tester, 300);
-      expect(sheetOpen(tester), isFalse);
+      await tester.pump();
+      expect(f.nav.routes, [const PlaceRoute('casa')]);
       // Tapping the orange play disc opens the story route
       await tester.tap(find.byKey(const Key('up-next-play')));
       await tester.pump();
-      expect(f.nav.routes, [const StoryRoute('la-lluvia')]);
+      expect(f.nav.routes, [
+        const PlaceRoute('casa'),
+        const StoryRoute('la-lluvia'),
+      ]);
       expect(f.haptics.ticks, 2);
     },
   );
@@ -482,103 +455,32 @@ void main() {
     },
   );
 
-  mapTest('a story row calls nav.go(StoryRoute(id))', (tester) async {
-    phone(tester);
-    final f = fixture(seed: 'segunda');
-    final s = await showMap(tester, f);
-    await tapStop(tester, 0);
-    await run(tester, 300);
-    expect(sheetOpen(tester), isTrue);
-    expect(s.picture.FROG.at, 0);
-    expect(find.text('La casa'), findsWidgets);
-    expect(find.text("Place 1 · Grandma's house"), findsOneWidget);
-    expect(find.bySemanticsLabel('Play again: La lluvia'), findsOneWidget);
-    expect(find.bySemanticsLabel('Play: El bizcocho'), findsOneWidget);
-    await tester.tap(find.bySemanticsLabel('Play: El bizcocho'));
-    await run(tester, 300);
-    expect(f.nav.routes, [const StoryRoute('el-bizcocho')]);
-    expect(sheetOpen(tester), isFalse);
-  });
-
-  mapTest('the sheet closes on the scrim', (tester) async {
+  mapTest('openPlace routes immediately to PlaceRoute', (tester) async {
     phone(tester);
     final f = fixture(seed: 'vacio');
     await showMap(tester, f, openPlace: 3);
-    await run(tester, 300);
-    expect(sheetOpen(tester), isTrue);
-    await tester.tapAt(const Offset(200, 60));
-    await run(tester, 300);
-    expect(sheetOpen(tester), isFalse);
+    expect(f.nav.routes, [const PlaceRoute('colmado')]);
   });
 
   mapTest(
-    'the sheet is above NocheTabBar: its scrim covers it, and a tap on it only closes the sheet',
+    'reduceMotion: everything stands still and tap opens PlaceRoute immediately',
     (tester) async {
       phone(tester);
-      final f = fixture(seed: 'vacio');
-      final taps = <String>[];
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: coquiTheme(),
-          home: Scaffold(
-            backgroundColor: NocheColors.ground,
-            body: Stack(
-              fit: StackFit.expand,
-              children: [
-                MapScreen(services: f.services, openPlace: 3),
-                PositionedDirectional(
-                  start: 0,
-                  end: 0,
-                  bottom: 0,
-                  child: NocheTabBar(
-                    selectedId: NocheTabs.map,
-                    tabNames: Language.spanish.tabNames,
-                    onTap: taps.add,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-      await tester.pump();
-      await tester.pump();
-      await tester.pump();
-      await run(tester, 300);
-      expect(sheetOpen(tester), isTrue);
-      final bar = tester.getRect(find.byType(NocheTabBar));
-      final sheet = tester.getRect(find.byType(CoquiSheet));
-      expect(sheet.bottom, lessThanOrEqualTo(bar.top + NocheTabBar.mapRise));
-      final scrim = tester.widget<ModalBarrier>(find.byType(ModalBarrier).last);
-      expect(scrim.color, CoquiColors.scrim);
-      await tester.tapAt(bar.center - const Offset(120, 0));
-      await run(tester, 300);
-      expect(taps, isEmpty);
-      expect(sheetOpen(tester), isFalse);
-      await tester.tapAt(bar.center - const Offset(120, 0));
-      await tester.pump();
-      expect(taps, hasLength(1));
+      final f = fixture(seed: 'vacio', reduceMotion: true);
+      final s = await showMap(tester, f);
+      final m = s.picture;
+      expect(tester.binding.hasScheduledFrame, isFalse);
+      final first = [...m.pix];
+      await tester.pump(const Duration(seconds: 2));
+      expect(m.pix, first);
+      expect(m.e.STILL, isTrue);
+      await tapStop(tester, 2);
+      expect(m.FROG.path, isNull);
+      expect(m.FROG.at, 2);
+      expect(f.clips.tones, isEmpty);
+      expect(f.nav.routes, [const PlaceRoute('cocina')]);
     },
   );
-
-  mapTest('reduceMotion: everything stands still', (tester) async {
-    phone(tester);
-    final f = fixture(seed: 'vacio', reduceMotion: true);
-    final s = await showMap(tester, f);
-    final m = s.picture;
-    expect(tester.binding.hasScheduledFrame, isFalse);
-    final first = [...m.pix];
-    await tester.pump(const Duration(seconds: 2));
-    expect(m.pix, first);
-    expect(m.e.STILL, isTrue);
-    await tapStop(tester, 2);
-    expect(m.FROG.path, isNull);
-    expect(m.FROG.at, 2);
-    expect(f.clips.tones, isEmpty);
-    expect(sheetOpen(tester), isTrue);
-    await tester.pumpAndSettle();
-    expect(find.text('La cocina'), findsWidgets);
-  });
 
   mapTest('with motion the picture moves: wind, sea, the arrow', (
     tester,
@@ -636,7 +538,7 @@ void main() {
     await tester.tapAt(rect.topLeft + const Offset(8, 8));
     await run(tester, 300);
     expect(s.picture.FROG.path, isNull);
-    expect(sheetOpen(tester), isFalse);
+    expect(f.nav.routes, isEmpty);
     expect(f.haptics.ticks, 0);
     expect(RendererBinding.instance.renderViews, isNotEmpty);
   });

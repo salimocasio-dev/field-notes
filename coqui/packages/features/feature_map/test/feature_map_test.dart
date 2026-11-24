@@ -10,7 +10,7 @@ import 'support/map_fixture.dart';
 import 'support/map_tester.dart';
 
 void main() {
-  test('the module is map: it owns the tab map and no route', () {
+  test('the module is map: it owns the tab map and answers PlaceRoute', () {
     const m = MapModule();
     expect(m.id, 'map');
     final tab = m.tab(fakeServices())!;
@@ -18,6 +18,13 @@ void main() {
     expect(tab.label, Language.spanish.tabNames['map']);
     expect(m.screenFor(const StoryRoute('la-lluvia'), fakeServices()), isNull);
     expect(m.screenFor(const TabRoute('map'), fakeServices()), isNull);
+
+    final unloaded = fakeServices();
+    expect(m.screenFor(const PlaceRoute('cocina'), unloaded), isNotNull);
+
+    final loaded = fakeServices(course: MapFixtureCourse(builtPlaces: 3));
+    expect(m.screenFor(const PlaceRoute('cocina'), loaded), isNotNull);
+    expect(m.screenFor(const PlaceRoute('no-existe'), loaded), isNull);
   });
 
   mapTest('the tab builds the map on the fakes', (tester) async {

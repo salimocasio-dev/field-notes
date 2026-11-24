@@ -179,10 +179,21 @@ const _storiesOf = <String, List<String>>{
 /// [pairWords] are the words that have a picture pair, as the old review sets have (the Today card offers a
 /// review of due words that have one).
 class MapFixtureCourse extends FakeCourseCatalog {
-  MapFixtureCourse({this.builtPlaces = 3, this.pairWords = const []});
+  MapFixtureCourse({
+    this.builtPlaces = 3,
+    this.pairWords = const [],
+    this.callPlaces = const {'casa', 'parque', 'cocina'},
+    Set<String>? bookIds,
+    this.customPairs,
+    this.storyScenes = const {},
+  }) : bookIds = bookIds ?? _built.keys.toSet();
 
   final int builtPlaces;
   final List<String> pairWords;
+  final Set<String> callPlaces;
+  final Set<String> bookIds;
+  final List<ReviewPair>? customPairs;
+  final Map<String, String> storyScenes;
 
   late final List<Place> _places = [
     for (var k = 0; k < _placeRows.length; k++) _place(k),
@@ -220,16 +231,50 @@ class MapFixtureCourse extends FakeCourseCatalog {
   }
 
   @override
-  List<ReviewPair> get pairs => [
-    for (final w in pairWords)
-      ReviewPair(
-        word: w,
-        say: '',
-        scene: 'frente',
-        yes: PictureSpec(cam: const [0, 0]),
-        no: PictureSpec(cam: const [0, 0]),
-      ),
-  ];
+  Future<Map<String, dynamic>> story(String id) async {
+    final scene = storyScenes[id];
+    if (scene != null) {
+      return {'id': id, 'scene': scene, 'clips': const <String, dynamic>{}};
+    }
+    return super.story(id);
+  }
+
+  @override
+  CallBrief? callFor(String placeId) {
+    if (!callPlaces.contains(placeId)) return null;
+    return CallBrief(
+      placeId: placeId,
+      minutes: 4,
+      job: 'Practice $placeId',
+      opening: 'Hola',
+      agentId: language.callAgentId,
+    );
+  }
+
+  @override
+  Future<Book?> book(String id) async {
+    if (!bookIds.contains(id)) return null;
+    return Book(
+      id: id,
+      title: meta(id)?.title ?? id,
+      readable: true,
+      pages: const [],
+    );
+  }
+
+  @override
+  List<ReviewPair> get pairs =>
+      customPairs ??
+      [
+        for (final w in pairWords)
+          ReviewPair(
+            word: w,
+            say: '',
+            scene: 'frente',
+            yes: PictureSpec(cam: const [0, 0]),
+            no: PictureSpec(cam: const [0, 0]),
+          ),
+      ];
 }
 
 /// The clock of the reference pictures: 19 Nov 2026, 12:00 in Puerto Rico (16:00 UTC).
@@ -255,6 +300,10 @@ MapFixture fixture({
   int builtPlaces = 3,
   bool todo = false,
   bool reduceMotion = false,
+  Set<String> callPlaces = const {'casa', 'parque', 'cocina'},
+  Set<String>? bookIds,
+  List<ReviewPair>? customPairs,
+  Map<String, String> storyScenes = const {},
 }) {
   final clock = FakeClock(fixtureNowMs);
   final json = seed == null ? null : mapSeeds[seed];
@@ -283,7 +332,14 @@ MapFixture fixture({
   final haptics = FakeHaptics();
   final services = fakeServices(
     progress: progress,
-    course: MapFixtureCourse(builtPlaces: builtPlaces, pairWords: pairWords),
+    course: MapFixtureCourse(
+      builtPlaces: builtPlaces,
+      pairWords: pairWords,
+      callPlaces: callPlaces,
+      bookIds: bookIds,
+      customPairs: customPairs,
+      storyScenes: storyScenes,
+    ),
     clock: clock,
     nav: nav,
     clips: clips,
