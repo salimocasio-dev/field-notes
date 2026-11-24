@@ -301,6 +301,11 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
       final L = _frogAt(at);
       if (q['x'] == L[0] && q['y'] == L[1]) return at;
     }
+    if (q['wx'] is num && q['wy'] is num && q['z'] is num) {
+      final at = _p.atWorld(q['wx'] as num, q['wy'] as num, q['z'] as num);
+      final L = _frogAt(at);
+      if (q['x'] == L[0] && q['y'] == L[1]) return at;
+    }
     final b = host.frogBox(q);
     return _p.fromScreen(
       b.x + b.w / 2,
@@ -664,6 +669,38 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
             sy,
             at.d,
             tag: 'cosa:$spot',
+          ),
+        );
+      }
+    }
+    // small bingo cards on the tables (Luis at table 0, el señor at table 1, don Tito at table 2)
+    if (_n(w['mesas']) == 1 && w['cartones'] is Map) {
+      final cartones = w['cartones'] as Map;
+      // OPEN: the sheet names no separate spot for each rival's small card; place each flat on its
+      // table top (RelojE.TABLES, z = 0.72) clear of the frog (`frog-seen`).
+      const placements = [
+        ('luis', 0, 0.20, 0.40),
+        ('senor', 1, 0.0, 0.05),
+        ('tito', 2, 0.0, 0.05),
+      ];
+      for (final (who, idx, du, dv) in placements) {
+        final p = gente[who] as Map<String, dynamic>?;
+        if (p == null || p['vis'] == 0) continue;
+        final beans = _n(cartones[who]).clamp(0, 5);
+        final s = _spr('carton_chico_$beans', () => mkCartonChico(beans));
+        final t = RelojE.TABLES[idx];
+        final xy = _p.xyOf(t[0] + du, t[1] + dv);
+        final at = _p.atWorld(xy[0], xy[1], 0.72);
+        final sx = _round(at.sx), sy = _round(at.sy);
+        final top = sy - s.h ~/ 2;
+        out.add(
+          RelojItem(
+            s,
+            sx - s.w ~/ 2,
+            top,
+            top + s.h,
+            at.d + .05,
+            tag: 'cosa:carton_$who',
           ),
         );
       }
@@ -1136,6 +1173,8 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
       q['z'] = at.z;
       q['vis'] = 1;
       q['spot'] = spot;
+      q.remove('wx');
+      q.remove('wy');
       return;
     }
     final dx = (q['x'] as num) - L[0], dy = (q['y'] as num) - L[1];
@@ -1151,6 +1190,8 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
     }
     q['z'] = at.z;
     q['spot'] = spot;
+    q.remove('wx');
+    q.remove('wy');
   }
 
   num? _sxOf(String a) {
@@ -1264,9 +1305,7 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
     // `campana` {n}: the tower's bell rings n times (stories 63, 64)
     'campana': (o) async {
       final n = _n(o['n']).clamp(1, 12);
-      // cap visual rings so long hours (e.g. 12) stay brisk while pulsing clearly
-      final pulses = math.min(n, 4);
-      for (var i = 0; i < pulses; i++) {
+      for (var i = 0; i < n; i++) {
         W['campanaHasta'] = F + 5;
         host.SFX.blip();
         await wait(TICK * 2);
@@ -1339,24 +1378,44 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
         _ => (180.0, 'mano_abajo'),
       };
       W['manoPos'] = a;
-      final startDeg = _num(W['manoLarga'], 180);
-      var diff = ((deg - startDeg + 540) % 360) - 180;
-      if (diff == -180) diff = 180;
+      final q = W['cq'] as Map<String, dynamic>;
+      final cur = q['spot'] as String?;
+      final riding =
+          cur == 'mano_arriba' || cur == 'mano_abajo' || cur == 'mano_lado';
+      final startDeg = (_num(W['manoLarga'], 180) % 360 + 360) % 360;
+      // Sweep through the open 3-o'clock side (0°..180°), never through the
+      // 9-o'clock side where don Tito stands on balcon1 (`frog-seen`).
+      final double diff = (startDeg >= 0 && startDeg <= 180)
+          ? deg - startDeg
+          : ((deg - startDeg + 540) % 360) - 180;
       const steps = 4;
       for (var i = 1; i <= steps; i++) {
-        W['manoLarga'] = (startDeg + diff * i / steps + 360) % 360;
+        final curDeg = i == steps
+            ? deg
+            : (startDeg + diff * i / steps + 360) % 360;
+        W['manoLarga'] = curDeg;
+        if (riding) {
+          if (i == steps) {
+            final at = _p.at(spot), L = _frogAt(at);
+            q['x'] = L[0];
+            q['y'] = L[1];
+            q['z'] = at.z;
+            q['spot'] = spot;
+            q.remove('wx');
+            q.remove('wy');
+          } else {
+            final at = _p.handFrogAt(curDeg), L = _frogAt(at);
+            q['x'] = L[0];
+            q['y'] = L[1];
+            q['z'] = at.z;
+            q['wx'] = at.x;
+            q['wy'] = at.y;
+            q['spot'] = 'manecilla';
+          }
+        }
         await wait(TICK);
       }
       W['manoLarga'] = deg;
-      final q = W['cq'] as Map<String, dynamic>;
-      final cur = q['spot'] as String?;
-      if (cur == 'mano_arriba' || cur == 'mano_abajo' || cur == 'mano_lado') {
-        final at = _p.at(spot), L = _frogAt(at);
-        q['x'] = L[0];
-        q['y'] = L[1];
-        q['z'] = at.z;
-        q['spot'] = spot;
-      }
       host.SFX.swoop();
       await wait(TICK * 2);
     },
@@ -1433,6 +1492,10 @@ class Reloj extends Escena implements SetScene, SetOverSprites {
       // OPEN: the sheet has no walking spot between `mesa_senor`/`mesa_tito` and the prize table (`premio1..3`);
       // the rival jumps up at his table and the best prize left moves beside him.
       final p = _gente[quien] as Map<String, dynamic>?;
+      final cs = W['cartones'];
+      if (cs is Map) {
+        cs[quien] = math.max(5, _n(cs[quien]) + 1);
+      }
       final rem = _n(W['premios']);
       if (rem > 0) {
         final bestPrize = 4 - rem;
