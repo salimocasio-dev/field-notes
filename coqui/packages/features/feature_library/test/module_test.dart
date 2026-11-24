@@ -56,8 +56,8 @@ void main() {
     );
     await ready(tester);
     expect(find.byType(ReadingHome), findsOneWidget);
-    expect(find.text('Generate a story'), findsOneWidget);
-    expect(find.text('Add text'), findsOneWidget);
+    expect(find.text('Write my story'), findsOneWidget);
+    expect(find.text('+ Add your own'), findsNothing);
     expect(find.text('Uno'), findsNothing);
     expect(rig.course.bookAsked, isEmpty);
   });
@@ -67,19 +67,20 @@ void main() {
   ) async {
     await tester.pumpWidget(devApp());
     await ready(tester);
-    await tester.tap(find.text('Generate a story'));
+    expect(find.byType(NocheTabBar), findsOneWidget);
+    await tester.tap(find.widgetWithText(NocheOutlineButton, 'Write my story'));
     await ready(tester);
     await tester.enterText(find.byType(TextFormField), 'jugo');
-    await tester.tap(find.text('Generate'));
+    await tester.tap(find.widgetWithText(NochePrimaryButton, 'Write my story'));
     await ready(tester);
     expect(find.byType(TextReader), findsOneWidget);
-    expect(find.byType(CoquiTabBar), findsNothing);
+    expect(find.byType(NocheTabBar), findsNothing);
     expect(find.byType(Image), findsNothing);
 
     await tester.tap(find.byTooltip(ReaderTexts.close));
     await ready(tester);
-    expect(find.text('Generated story'), findsOneWidget);
-    expect(find.text('Read story'), findsOneWidget);
+    expect(find.byType(NocheTabBar), findsOneWidget);
+    expect(find.text('Story'), findsOneWidget);
   });
 
   testWidgets('reports when the generator has no vocabulary match', (
@@ -87,41 +88,82 @@ void main() {
   ) async {
     await tester.pumpWidget(devApp(options: const DevOptions(seed: 'vacio')));
     await ready(tester);
-    await tester.tap(find.text('Generate a story'));
+    await tester.tap(find.widgetWithText(NocheOutlineButton, 'Write my story'));
     await ready(tester);
-    await tester.tap(find.text('Generate'));
+    await tester.tap(find.widgetWithText(NochePrimaryButton, 'Write my story'));
     await ready(tester);
     expect(find.textContaining('no new story that fits'), findsOneWidget);
     expect(find.byType(TextReader), findsNothing);
   });
 
-  testWidgets('imports text and resumes the saved page before A2', (
-    tester,
-  ) async {
-    await tester.pumpWidget(devApp());
-    await ready(tester);
-    await tester.tap(find.text('Add text'));
-    await ready(tester);
-    await tester.enterText(find.byType(TextFormField).first, 'Mi cuaderno');
-    await tester.enterText(
-      find.byType(TextFormField).last,
-      'Tengo un cuaderno. Es azul. Tiene papel. Escribo aquí.',
-    );
-    await tester.tap(find.text('Add and read'));
-    await ready(tester);
-    expect(find.text('1 / 2'), findsOneWidget);
+  testWidgets(
+    'a pre-stored book resumes its saved page before A2 via Continue reading and the shelf Book tile',
+    (tester) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(390, 844);
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+      final nav = DevNavigator();
+      final clock = FakeClock();
+      final services = fakeServices(clock: clock, nav: nav);
+      final store = ReadingStore(services.storage(ReadingStore.space));
+      final book = await store.add(
+        now: 100,
+        title: 'Mi cuaderno',
+        body: 'Tengo un cuaderno. Es azul. Tiene papel. Escribo aquí.',
+        generated: false,
+      );
+      await store.savePlace(
+        book.id,
+        const ReadingPlace(page: 0, openedAt: 200),
+      );
 
-    await tester.tap(find.byTooltip(ReaderTexts.nextPage));
-    await ready(tester);
-    expect(find.text('2 / 2'), findsOneWidget);
-    await tester.tap(find.byTooltip(ReaderTexts.close));
-    await ready(tester);
-    expect(find.text('Added text'), findsOneWidget);
-    expect(find.textContaining('words met'), findsNothing);
-    await tester.tap(find.text('Read'));
-    await ready(tester);
-    expect(find.text('2 / 2'), findsOneWidget);
-  });
+      const module = LibraryModule();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ValueListenableBuilder<AppRoute?>(
+            valueListenable: nav.current,
+            builder: (context, route, _) {
+              if (route is BookRoute) {
+                return module.screenFor(route, services)!;
+              }
+              return ReadingHome(services: services);
+            },
+          ),
+        ),
+      );
+      await ready(tester);
+      expect(find.text('Book'), findsOneWidget);
+      expect(find.text('Continue reading'), findsOneWidget);
+
+      await tester.ensureVisible(find.text('Book'));
+      await tester.tap(find.text('Book'));
+      await ready(tester);
+      expect(find.byType(TextReader), findsOneWidget);
+      expect(find.text('1 / 2'), findsOneWidget);
+
+      await tester.tap(find.byTooltip(ReaderTexts.nextPage));
+      await ready(tester);
+      expect(find.text('2 / 2'), findsOneWidget);
+      await tester.tap(find.byTooltip(ReaderTexts.close));
+      await ready(tester);
+
+      expect(find.byType(ReadingHome), findsOneWidget);
+      expect(find.text('Book'), findsOneWidget);
+      expect(
+        find.text('Page 2 of 2 · 1 min left in the chapter'),
+        findsOneWidget,
+      );
+      expect(store.place(book.id).words, isEmpty);
+
+      await tester.tap(find.text('Continue reading'));
+      await ready(tester);
+      expect(find.byType(TextReader), findsOneWidget);
+      expect(find.text('2 / 2'), findsOneWidget);
+    },
+  );
 
   testWidgets('a text that is not there says so in one line; the X goes back', (
     tester,

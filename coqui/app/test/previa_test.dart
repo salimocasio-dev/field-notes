@@ -358,7 +358,7 @@ void main() {
         // Biblioteca opens; the course's stories are not listed there
         await app.openTab('library');
         await app.until(
-          () => find.text('Generate a story').evaluate().isNotEmpty,
+          () => find.text('Write my story').evaluate().isNotEmpty,
           what: 'Biblioteca',
         );
         expect(

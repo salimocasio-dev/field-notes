@@ -15,7 +15,7 @@ class LibraryModule implements FeatureModule {
   @override
   FeatureTab tab(Services s) => FeatureTab(
     id: 'library',
-    label: CoquiTabs.library.label,
+    label: s.course.language.tabNames['library'] ?? CoquiTabs.library.label,
     icon: Icons.menu_book,
     builder: (_) => ReadingHome(services: s),
   );

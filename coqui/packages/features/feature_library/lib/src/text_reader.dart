@@ -30,8 +30,6 @@ class TextReader extends StatefulWidget {
 }
 
 class _TextReaderState extends State<TextReader> {
-  static const _pageSize = 3;
-
   Services get _s => widget.services;
   late final _store = ReadingStore(_s.storage(ReadingStore.space));
   late final _audio = ReadingAudio(_s.course);
@@ -71,9 +69,9 @@ class _TextReaderState extends State<TextReader> {
       _title = saved.title;
       final lines = readingLines(saved.body);
       pages = [
-        for (var i = 0; i < lines.length; i += _pageSize)
+        for (var i = 0; i < lines.length; i += readingPageSize)
           [
-            for (final line in lines.skip(i).take(_pageSize))
+            for (final line in lines.skip(i).take(readingPageSize))
               (text: line, clip: _audio.line(line)),
           ],
       ];
@@ -125,13 +123,18 @@ class _TextReaderState extends State<TextReader> {
     _savePlace();
   }
 
-  void _savePlace() {
+  void _savePlace({bool finished = false}) {
     if (tracksReading(_s.progress)) {
       for (final line in _pages![_index]) {
         _met.addAll(readingWords(line.text));
       }
     }
-    final place = ReadingPlace(page: _index, words: Set.of(_met));
+    final place = ReadingPlace(
+      page: _index,
+      words: Set.of(_met),
+      openedAt: _s.clock.nowMs(),
+      finished: finished,
+    );
     _writes = _writes
         .then<void>((_) => _store.savePlace(widget.id, place))
         .catchError((Object _) {});
@@ -209,7 +212,15 @@ class _TextReaderState extends State<TextReader> {
 
   void _finish() {
     if (tracksReading(_s.progress)) _s.progress.markRead(widget.id);
-    _turn(0);
+    _playback++;
+    unawaited(_s.clips.stop());
+    setState(() {
+      _playingLine = null;
+      _audioUnavailable = false;
+      _index = 0;
+    });
+    if (_scroll.hasClients) _scroll.jumpTo(0);
+    _savePlace(finished: true);
     _s.nav.back();
   }
 

@@ -21,6 +21,8 @@ List<String> readingLines(String body) => [
     if (line.trim().isNotEmpty) line.trim(),
 ];
 
+const int readingPageSize = 3;
+
 const personalBookPrefix = 'biblioteca-';
 
 class ReadingText {
@@ -64,10 +66,17 @@ class ReadingText {
 }
 
 class ReadingPlace {
-  const ReadingPlace({this.page = 0, this.words = const {}});
+  const ReadingPlace({
+    this.page = 0,
+    this.words = const {},
+    this.openedAt = 0,
+    this.finished = false,
+  });
 
   final int page;
   final Set<String> words;
+  final int openedAt;
+  final bool finished;
 }
 
 class ReadingStore {
@@ -115,15 +124,41 @@ class ReadingStore {
   ReadingPlace place(String id) {
     final saved = _read('place:$id');
     if (saved case {'page': final int page, 'words': final List words}) {
-      return ReadingPlace(page: page, words: words.whereType<String>().toSet());
+      final rawOpened = saved['openedAt'];
+      final openedAt = rawOpened is int ? rawOpened : 0;
+      final finished = saved['finished'] == true;
+      return ReadingPlace(
+        page: page,
+        words: words.whereType<String>().toSet(),
+        openedAt: openedAt,
+        finished: finished,
+      );
     }
     return const ReadingPlace();
   }
 
   Future<void> savePlace(String id, ReadingPlace place) => storage.write(
     'place:$id',
-    jsonEncode({'page': place.page, 'words': place.words.toList()}),
+    jsonEncode({
+      'page': place.page,
+      'words': place.words.toList(),
+      if (place.openedAt > 0) 'openedAt': place.openedAt,
+      if (place.finished) 'finished': true,
+    }),
   );
+
+  Future<void> markOpened(String id, int now) {
+    final existing = place(id);
+    return savePlace(
+      id,
+      ReadingPlace(
+        page: existing.page,
+        words: existing.words,
+        openedAt: now,
+        finished: false,
+      ),
+    );
+  }
 }
 
 /// Stage four is the same threshold Yo uses for words the learner knows well.
@@ -208,3 +243,59 @@ bool tracksReading(ProgressStore progress) {
   final band = progress.levelResult?['cefr'];
   return const ['A2', 'B1', 'B2', 'C1', 'C2'].contains(band);
 }
+
+({int page, int totalPages, int minutesLeft}) readingProgress(
+  ReadingText text,
+  ReadingPlace place,
+) {
+  final lines = readingLines(text.body);
+  final totalPages = lines.isEmpty
+      ? 1
+      : (lines.length + readingPageSize - 1) ~/ readingPageSize;
+  final clampedIndex = place.page.clamp(0, totalPages - 1);
+  var remainingWords = 0;
+  for (final line in lines.skip(clampedIndex * readingPageSize)) {
+    remainingWords += readingWords(line).length;
+  }
+  final minutesLeft = remainingWords <= 0 ? 1 : (remainingWords + 119) ~/ 120;
+  return (
+    page: clampedIndex + 1,
+    totalPages: totalPages,
+    minutesLeft: minutesLeft,
+  );
+}
+
+List<ReadingText> sortShelfByRecent(
+  List<ReadingText> texts,
+  ReadingPlace Function(String id) placeOf,
+) {
+  final indexed = [
+    for (var i = 0; i < texts.length; i++)
+      (index: i, text: texts[i], openedAt: placeOf(texts[i].id).openedAt),
+  ];
+  indexed.sort((a, b) {
+    final byTime = b.openedAt.compareTo(a.openedAt);
+    return byTime != 0 ? byTime : a.index.compareTo(b.index);
+  });
+  return [for (final item in indexed) item.text];
+}
+
+ReadingText? keepReadingBook(
+  List<ReadingText> texts,
+  ReadingPlace Function(String id) placeOf,
+  bool Function(String id) hasRead,
+) {
+  for (final text in sortShelfByRecent(texts, placeOf)) {
+    if (text.generated) continue;
+    final place = placeOf(text.id);
+    if (place.openedAt > 0) {
+      if (!place.finished) return text;
+    } else if (place.page > 0 && !place.finished && !hasRead(text.id)) {
+      return text;
+    }
+  }
+  return null;
+}
+
+String keepReadingEyebrow({int chapter = 1, int chapterCount = 1}) =>
+    chapterCount > 1 ? 'Keep reading · Chapter $chapter' : 'Keep reading';
