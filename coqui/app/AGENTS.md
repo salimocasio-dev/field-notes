@@ -27,7 +27,8 @@ The shell: tabs, routes, wiring, web/, android/, ios/.
   answers it.
 - `lib/src/app.dart`: `CoquiApp` on an `AppPlatform` (`lib/src/platform.dart`: fetch, content base, storage, clip
   player, speech, call, haptics, `AppInfo`, clock, the browser's back). `coquiTheme()` with `NocheColors.ground`
-  background and `SystemUiOverlayStyle` status bars; `MaterialApp.router` on go_router; the first tap anywhere calls
+  background and `SystemUiOverlayStyle` status bars; a ground `ColoredBox` around a root `SafeArea` paints behind
+  transparent system bars, including Android 16; `MaterialApp.router` on go_router; the first tap anywhere calls
   `clips.unlock()`. The start: the storage, `PalabrasStore` on its progress space and the clock (the old key
   `coqui.palabras.v1` is simply there: nothing is imported or deleted), the course (`ContentCatalog.load`) before the
   first screen, the voice test's file, the call session. While it loads: `NocheColors.ground`, nothing else. If the

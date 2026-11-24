@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:ui' as ui;
 
+import 'package:app/src/app.dart';
 import 'package:app/src/navigator.dart';
 import 'package:app/src/shell.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
@@ -7,6 +9,7 @@ import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter/foundation.dart' show DebugPrintCallback, debugPrint;
 import 'package:flutter/services.dart' show SystemUiOverlayStyle;
+import 'package:flutter/rendering.dart' show RenderRepaintBoundary;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -71,6 +74,47 @@ List<FeatureModule> _stubModules({
 }) => [for (final id in NocheTabs.order) _StubTabModule(id, onRoute: onRoute)];
 
 void main() {
+  for (final size in const [Size(390, 844), Size(412, 915)]) {
+    testWidgets('system insets paint ground at $size', (tester) async {
+      // Android 16's transparent system bars show the app's actual pixels,
+      // regardless of SystemUiOverlayStyle.statusBarColor.
+      tester.view.padding = const FakeViewPadding(top: 44, bottom: 34);
+      tester.view.viewPadding = const FakeViewPadding(top: 44, bottom: 34);
+      addTearDown(tester.view.reset);
+      final app = TestApp(tester);
+      await app.open(stored: seed('curso'), size: size, ratio: 1);
+      final key = GlobalKey();
+      final widget = tester.widget<CoquiApp>(find.byType(CoquiApp));
+      await tester.pumpWidget(RepaintBoundary(key: key, child: widget));
+      await app.settle();
+      final boundary =
+          key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+      final pixels = await tester.runAsync(() async {
+        final image = await boundary.toImage(pixelRatio: 1);
+        final bytes = await image.toByteData(
+          format: ui.ImageByteFormat.rawRgba,
+        );
+        image.dispose();
+        return bytes!.buffer.asUint8List();
+      });
+      for (final y in [
+        0,
+        43,
+        size.height.toInt() - 34,
+        size.height.toInt() - 1,
+      ]) {
+        final offset = (y * size.width.toInt() + size.width ~/ 2) * 4;
+        expect(pixels!.sublist(offset, offset + 4), [
+          12,
+          25,
+          38,
+          255,
+        ], reason: 'system inset at y=$y must show Noche ground');
+      }
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   testWidgets(
     'NocheTabBar replaces CoquiTabBar, uses course.language.tabNames, and updates when the language changes',
     (tester) async {
@@ -275,8 +319,10 @@ void main() {
       expect(region.value.statusBarColor, NocheColors.ground);
       expect(region.value.statusBarIconBrightness, Brightness.light);
       expect(region.value.statusBarBrightness, Brightness.dark);
+      expect(region.value.systemStatusBarContrastEnforced, isFalse);
       expect(region.value.systemNavigationBarColor, NocheColors.ground);
       expect(region.value.systemNavigationBarIconBrightness, Brightness.light);
+      expect(region.value.systemNavigationBarContrastEnforced, isFalse);
 
       final indexHtml = repoFile('coqui/app/web/index.html');
       expect(

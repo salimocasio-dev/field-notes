@@ -27,8 +27,10 @@ const SystemUiOverlayStyle nocheSystemUiStyle = SystemUiOverlayStyle(
   statusBarColor: NocheColors.ground,
   statusBarIconBrightness: Brightness.light,
   statusBarBrightness: Brightness.dark,
+  systemStatusBarContrastEnforced: false,
   systemNavigationBarColor: NocheColors.ground,
   systemNavigationBarIconBrightness: Brightness.light,
+  systemNavigationBarContrastEnforced: false,
 );
 
 /// The one line the app shows when the course cannot be loaded, over a "Try again" button.
@@ -221,10 +223,17 @@ class _CoquiAppState extends State<CoquiApp> {
     routerConfig: _router,
     builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
       value: nocheSystemUiStyle,
-      child: Listener(
-        behavior: HitTestBehavior.translucent,
-        onPointerDown: _firstTap,
-        child: child,
+      // Android 16 enforces transparent system bars. Paint their background
+      // ourselves and keep legacy screens inside the system insets.
+      child: ColoredBox(
+        color: NocheColors.ground,
+        child: SafeArea(
+          child: Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: _firstTap,
+            child: child,
+          ),
+        ),
       ),
     ),
   );
