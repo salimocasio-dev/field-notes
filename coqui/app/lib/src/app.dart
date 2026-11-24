@@ -18,8 +18,20 @@ import 'package:coqui_progress/coqui_progress.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
+import 'package:flutter/services.dart' show SystemChrome, SystemUiOverlayStyle;
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
+
+/// System bar styling for Noche: `NocheColors.ground` bars with light icons.
+const SystemUiOverlayStyle nocheSystemUiStyle = SystemUiOverlayStyle(
+  statusBarColor: NocheColors.ground,
+  statusBarIconBrightness: Brightness.light,
+  statusBarBrightness: Brightness.dark,
+  systemStatusBarContrastEnforced: false,
+  systemNavigationBarColor: NocheColors.ground,
+  systemNavigationBarIconBrightness: Brightness.light,
+  systemNavigationBarContrastEnforced: false,
+);
 
 /// The one line the app shows when the course cannot be loaded, over a "Try again" button.
 const String loadFailedLine = 'Coquí could not load. Check your connection.';
@@ -83,6 +95,7 @@ class _CoquiAppState extends State<CoquiApp> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(nocheSystemUiStyle);
     _router = GoRouter(
       initialLocation: widget.initialLocation,
       redirect: (context, state) => routeOf(state.uri) == null
@@ -97,6 +110,10 @@ class _CoquiAppState extends State<CoquiApp> {
           '/libro/:id',
           '/llamada/:id',
           '/prueba-voz',
+          '/idiomas',
+          '/planes',
+          '/importar',
+          '/lugar/:id',
         ])
           GoRoute(
             path: path,
@@ -199,12 +216,25 @@ class _CoquiAppState extends State<CoquiApp> {
   Widget build(BuildContext context) => MaterialApp.router(
     title: CoquiLabels.appName,
     debugShowCheckedModeBanner: false,
-    theme: coquiTheme(),
+    theme: coquiTheme().copyWith(
+      scaffoldBackgroundColor: NocheColors.ground,
+      canvasColor: NocheColors.ground,
+    ),
     routerConfig: _router,
-    builder: (context, child) => Listener(
-      behavior: HitTestBehavior.translucent,
-      onPointerDown: _firstTap,
-      child: child,
+    builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+      value: nocheSystemUiStyle,
+      // Android 16 enforces transparent system bars. Paint their background
+      // ourselves and keep legacy screens inside the system insets.
+      child: ColoredBox(
+        color: NocheColors.ground,
+        child: SafeArea(
+          child: Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: _firstTap,
+            child: child,
+          ),
+        ),
+      ),
     ),
   );
 }
@@ -220,7 +250,7 @@ class _Screens extends StatelessWidget {
   Widget build(BuildContext context) => ValueListenableBuilder<_Start>(
     valueListenable: app._start,
     builder: (context, start, _) => switch (start) {
-      _Start.loading => const ColoredBox(color: CoquiColors.bg),
+      _Start.loading => const ColoredBox(color: NocheColors.ground),
       _Start.failed => LoadFailed(onRetry: () => unawaited(app._load())),
       _Start.ready => Builder(
         builder: (context) {
@@ -251,21 +281,21 @@ class LoadFailed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ColoredBox(
-    color: CoquiColors.bg,
+    color: NocheColors.ground,
     child: SafeArea(
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(CoquiMetrics.s24),
+          padding: const EdgeInsetsDirectional.all(NocheSize.grid * 3),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 loadFailedLine,
-                style: CoquiText.body,
+                style: NocheType.bodyLarge.copyWith(color: NocheColors.text),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: CoquiMetrics.s16),
-              CoquiButton(label: tryAgainLabel, onPressed: onRetry),
+              const SizedBox(height: NocheSize.grid * 2),
+              NochePrimaryButton(label: tryAgainLabel, onPressed: onRetry),
             ],
           ),
         ),

@@ -115,7 +115,7 @@ void main() {
       await app.tap(rows.first);
       await app.settle();
       expect(app.lessonShown, isTrue);
-      expect(find.byType(CoquiTabBar), findsNothing);
+      expect(find.byType(NocheTabBar), findsNothing);
       expect(find.byType(LessonFrame), findsOneWidget);
       expect(find.byType(CoquiSheet).hitTestable(), findsNothing);
       await app.tap(find.byType(LessonCloseButton));
