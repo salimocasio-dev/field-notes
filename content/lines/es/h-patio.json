@@ -1,0 +1,105 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "h-patio",
+  "lang": "es",
+  "title": "En el patio",
+  "place": "La casa",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "hz_no_luis": {
+      "who": "narr",
+      "text": "No. Ese es Luis."
+    },
+    "hz_no_carmen": {
+      "who": "narr",
+      "text": "No. Esa es Carmen."
+    },
+    "hz_no_sol": {
+      "who": "narr",
+      "text": "No. Ese es el sol."
+    },
+    "hz_no_bola": {
+      "who": "narr",
+      "text": "No. Esa es la bola."
+    },
+    "hz_no_pajaro": {
+      "who": "narr",
+      "text": "No. Ese es el pájaro."
+    },
+    "hz_no_porton": {
+      "who": "narr",
+      "text": "No. Ese es el portón."
+    },
+    "hz_no_puerta": {
+      "who": "narr",
+      "text": "No. Esa es la puerta."
+    },
+    "hd01": {
+      "who": "narr",
+      "text": "Mira el portón."
+    },
+    "hd02": {
+      "who": "narr",
+      "text": "Toca al niño."
+    },
+    "hd03": {
+      "who": "narr",
+      "text": "¿Dónde está la niña?"
+    },
+    "hd04": {
+      "who": "narr",
+      "text": "¿Dónde está el sol?"
+    },
+    "hd05": {
+      "who": "narr",
+      "text": "Toca la bola."
+    },
+    "hd06": {
+      "who": "narr",
+      "text": "Toca al pájaro."
+    },
+    "hd07": {
+      "who": "narr",
+      "text": "Abre el portón."
+    },
+    "hz_no_camaL": {
+      "who": "narr",
+      "text": "No. Allá."
+    },
+    "hz_no_camaR": {
+      "who": "narr",
+      "text": "No. Aquí."
+    },
+    "hd08": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Una flor aquí."
+    },
+    "hd09": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Una flor allá."
+    },
+    "hd10": {
+      "who": "narr",
+      "text": "Toca al niño y a la niña."
+    }
+  }
+}

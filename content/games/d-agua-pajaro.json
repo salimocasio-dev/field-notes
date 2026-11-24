@@ -1,0 +1,208 @@
+{
+  "format": "coqui.game.v1",
+  "id": "d-agua-pajaro",
+  "tipo": "escucha",
+  "scene": "balcon",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 5,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "set": {
+        "calor": 3,
+        "door": 1
+      }
+    },
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    {
+      "act": "burbuja",
+      "quien": "cq",
+      "que": "calor"
+    },
+    "da01",
+    {
+      "act": "calla"
+    },
+    {
+      "act": "pose",
+      "que": "wave"
+    },
+    {
+      "say": "da02",
+      "gap": 250
+    },
+    {
+      "act": "pose",
+      "que": "idle"
+    },
+    {
+      "act": "sube"
+    },
+    {
+      "act": "absienta"
+    },
+    "da03",
+    {
+      "act": "ir",
+      "a": "silla_pequena"
+    },
+    "da04",
+    {
+      "dots": 2
+    },
+    {
+      "act": "abentra"
+    },
+    "da05",
+    {
+      "act": "absale"
+    },
+    "da06",
+    {
+      "act": "pone2"
+    },
+    "da07",
+    {
+      "set": {
+        "twinkle": "jugo"
+      }
+    },
+    "da08",
+    {
+      "set": {
+        "twinkle": "agua"
+      }
+    },
+    "da09",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "absienta"
+    },
+    {
+      "dots": 3
+    },
+    {
+      "say": "da10",
+      "gap": 250
+    },
+    {
+      "say": "da11",
+      "gap": 100
+    },
+    {
+      "act": "coge",
+      "en": "jugo"
+    },
+    {
+      "act": "bebecq"
+    },
+    {
+      "set": {
+        "calor": 0
+      }
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "aveva",
+      "en": "agua"
+    },
+    "da12",
+    {
+      "say": "da13",
+      "gap": 100
+    },
+    {
+      "act": "avebebe",
+      "en": "agua"
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "avesilla"
+    },
+    "da14",
+    {
+      "act": "burbuja",
+      "quien": "cq",
+      "que": "mal"
+    },
+    {
+      "say": "da15",
+      "gap": 300
+    },
+    {
+      "act": "calla"
+    },
+    {
+      "act": "pose",
+      "que": "wave"
+    },
+    {
+      "say": "da16",
+      "gap": 250
+    },
+    {
+      "act": "pose",
+      "que": "idle"
+    },
+    {
+      "act": "ir",
+      "a": "abuela"
+    },
+    {
+      "act": "burbuja",
+      "quien": "cq",
+      "que": "amor"
+    },
+    {
+      "set": {
+        "heart": 1
+      }
+    },
+    {
+      "wait": 1200
+    },
+    {
+      "act": "calla"
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "da01",
+    "da02",
+    "da03",
+    "da04",
+    "da05",
+    "da06",
+    "da07",
+    "da08",
+    "da09",
+    "da10",
+    "da11",
+    "da12",
+    "da13",
+    "da14",
+    "da15",
+    "da16"
+  ]
+}

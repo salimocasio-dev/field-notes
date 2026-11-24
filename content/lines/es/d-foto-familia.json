@@ -1,0 +1,80 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "d-foto-familia",
+  "lang": "es",
+  "title": "La foto de la familia",
+  "place": "La casa",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "df01": {
+      "who": "narr",
+      "text": "Abuelo tiene una cámara."
+    },
+    "df02": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Carmen, ven. Una foto."
+    },
+    "df03": {
+      "who": "narr",
+      "text": "¡Mira! La foto de Carmen."
+    },
+    "df04": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Ahora Luis."
+    },
+    "df05": {
+      "who": "narr",
+      "text": "La foto de Luis."
+    },
+    "df06": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Ahora papá."
+    },
+    "df07": {
+      "who": "narr",
+      "text": "La foto de papá."
+    },
+    "df08": {
+      "who": "narr",
+      "habla": "hermana",
+      "text": "Carmen dice: ¿Y tú, abuelo?"
+    },
+    "df09": {
+      "who": "narr",
+      "text": "Abuelo pone la cámara en la mesa."
+    },
+    "df10": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: ¡Vengan todos! ¡Ven, Coquí!"
+    },
+    "df11": {
+      "who": "narr",
+      "text": "¡Mira! La foto de la familia."
+    },
+    "df12": {
+      "who": "tu",
+      "text": "¡Y yo también!"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "h-campo",
+  "lang": "es",
+  "title": "En el campo",
+  "place": "El parque",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "hz_no_perro": {
+      "who": "narr",
+      "text": "No, ese es Canelo."
+    },
+    "hz_no_bola_luis": {
+      "who": "narr",
+      "text": "No, esa es la bola de Luis."
+    },
+    "hz_no_bola_carmen": {
+      "who": "narr",
+      "text": "No, esa es la bola de Carmen."
+    },
+    "hz_no_bola_cq": {
+      "who": "narr",
+      "text": "No, esa es tu bola."
+    },
+    "hz_no_carmen": {
+      "who": "narr",
+      "text": "No. Esa es Carmen."
+    },
+    "hz_no_luis": {
+      "who": "narr",
+      "text": "No. Ese es Luis."
+    },
+    "hz_no_tira": {
+      "who": "narr",
+      "text": "No."
+    },
+    "hz_no_coge": {
+      "who": "narr",
+      "text": "No."
+    },
+    "hz_no_salta": {
+      "who": "narr",
+      "text": "No."
+    },
+    "hz_no_corre": {
+      "who": "narr",
+      "text": "No."
+    },
+    "rb01": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Toca mi bola."
+    },
+    "rb02": {
+      "who": "narr",
+      "text": "¿Dónde está Canelo?"
+    },
+    "rb03": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Toca tu bola."
+    },
+    "rb04": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Coge la bola!"
+    },
+    "rb05": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Salta!"
+    },
+    "rb06": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Tira la bola!"
+    },
+    "rb07": {
+      "who": "narr",
+      "text": "Toca tu bola y toca a Carmen."
+    }
+  }
+}

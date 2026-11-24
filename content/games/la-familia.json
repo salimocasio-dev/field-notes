@@ -1,0 +1,529 @@
+{
+  "format": "coqui.game.v1",
+  "id": "la-familia",
+  "scene": "sala",
+  "next": "la-foto",
+  "goal": "A slice of abuela's cake for everyone, and three for him.",
+  "stake": {
+    "thing": "plato",
+    "steps": 3
+  },
+  "dots": 7,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "set": {
+        "pastel": "tapado"
+      }
+    },
+    {
+      "act": "duerme"
+    },
+    {
+      "wait": 400
+    },
+    {
+      "act": "huele"
+    },
+    "es_la_sala",
+    {
+      "say": "ahora_no",
+      "gap": 300
+    },
+    {
+      "act": "atras"
+    },
+    {
+      "say": "cq_hola",
+      "gap": 250
+    },
+    "familia_de_abuela",
+    {
+      "dots": 1
+    },
+    {
+      "set": {
+        "twinkle": "mama"
+      }
+    },
+    "esta_es_mama",
+    {
+      "set": {
+        "twinkle": "papa"
+      }
+    },
+    "y_este_es_papa",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "ask": "mama",
+      "lead": [],
+      "line": "puedes_mama",
+      "then": [
+        {
+          "act": "beso"
+        },
+        "mama_hola"
+      ]
+    },
+    {
+      "ask": "papa",
+      "lead": [],
+      "line": "donde_papa",
+      "then": [
+        {
+          "act": "pose",
+          "quien": "papa",
+          "que": "wave"
+        },
+        {
+          "say": "papa_hola_como",
+          "gap": 250
+        },
+        {
+          "act": "pose",
+          "quien": "papa",
+          "que": "idle"
+        },
+        {
+          "say": "bien_gracias",
+          "gap": 300
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "set": {
+        "twinkle": "abuelo"
+      }
+    },
+    {
+      "act": "pose",
+      "quien": "abuela",
+      "que": "wave"
+    },
+    "abuela_y_abuelo",
+    {
+      "act": "pose",
+      "quien": "abuela",
+      "que": "idle"
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "ask": "abuelo",
+      "lead": [],
+      "line": "puedes_abuelo",
+      "then": [
+        {
+          "act": "despierta"
+        },
+        "abuelo_hola"
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "set": {
+        "twinkle": "bebe"
+      }
+    },
+    "este_es_bebe",
+    "bebe_pequeno",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "ask": "bebe",
+      "lead": [],
+      "line": "donde_bebe",
+      "then": [
+        {
+          "act": "saluda",
+          "quien": "bebe"
+        }
+      ]
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "destapa"
+    },
+    "tiene_un_bizcocho",
+    "bizcocho_familia",
+    {
+      "say": "cq_mmm_bizcocho",
+      "gap": 250
+    },
+    {
+      "act": "tres"
+    },
+    {
+      "reparte": [
+        "na",
+        "nb",
+        "nc",
+        "nd"
+      ],
+      "options": [
+        "mama",
+        "papa",
+        "abuelo",
+        "bebe"
+      ]
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "dale"
+    },
+    {
+      "decide": "do",
+      "options": [
+        "mama",
+        "papa",
+        "abuelo",
+        "bebe"
+      ],
+      "pick": "$na",
+      "as": "p",
+      "lock": true,
+      "noretry": true,
+      "do": "da",
+      "tests": "$na",
+      "lead": [],
+      "line": "para_$na",
+      "right": [
+        {
+          "act": "come",
+          "quien": "$p"
+        },
+        {
+          "if": "p=bebe",
+          "then": [],
+          "else": [
+            {
+              "say": "$p_gracias",
+              "gap": 250
+            },
+            {
+              "say": "cq_de_nada",
+              "gap": 300
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        "no_es_$x",
+        {
+          "act": "muerde",
+          "quien": "$x"
+        },
+        {
+          "act": "abda",
+          "de": "$x",
+          "a": "$p"
+        },
+        {
+          "cost": 1
+        },
+        "toma_$p",
+        {
+          "act": "come",
+          "quien": "$p"
+        },
+        {
+          "act": "vuelve"
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "dale"
+    },
+    {
+      "decide": "do",
+      "options": [
+        "$nb",
+        "$nc",
+        "$nd"
+      ],
+      "pick": "$nb",
+      "as": "p",
+      "lock": true,
+      "noretry": true,
+      "do": "da",
+      "tests": "$nb",
+      "lead": [],
+      "line": "quiere_$nb",
+      "right": [
+        {
+          "act": "come",
+          "quien": "$p"
+        },
+        {
+          "if": "p=bebe",
+          "then": [],
+          "else": [
+            {
+              "say": "$p_gracias",
+              "gap": 250
+            },
+            {
+              "say": "cq_de_nada",
+              "gap": 300
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        "no_es_$x",
+        {
+          "act": "muerde",
+          "quien": "$x"
+        },
+        {
+          "act": "abda",
+          "de": "$x",
+          "a": "$p"
+        },
+        {
+          "cost": 1
+        },
+        "toma_$p",
+        {
+          "act": "come",
+          "quien": "$p"
+        },
+        {
+          "act": "vuelve"
+        }
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "draw": "ord",
+      "options": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "act": "dale"
+    },
+    {
+      "if": "ord=a",
+      "then": [
+        {
+          "decide": "do",
+          "options": [
+            "$nc",
+            "$nd"
+          ],
+          "pick": "$nc",
+          "as": "p",
+          "lock": true,
+          "noretry": true,
+          "do": "da",
+          "tests": "no",
+          "lead": [
+            "no_para_$nd"
+          ],
+          "line": "es_para_$nc",
+          "right": [
+            {
+              "act": "come",
+              "quien": "$p"
+            },
+            {
+              "if": "p=bebe",
+              "then": [],
+              "else": [
+                {
+                  "say": "$p_gracias",
+                  "gap": 250
+                },
+                {
+                  "say": "cq_de_nada",
+                  "gap": 300
+                }
+              ]
+            }
+          ],
+          "wrong": [
+            "no_es_$x",
+            {
+              "act": "muerde",
+              "quien": "$x"
+            },
+            {
+              "act": "abda",
+              "de": "$x",
+              "a": "$p"
+            },
+            {
+              "cost": 1
+            },
+            "toma_$p",
+            {
+              "act": "come",
+              "quien": "$p"
+            },
+            {
+              "act": "vuelve"
+            }
+          ]
+        }
+      ],
+      "else": [
+        {
+          "decide": "do",
+          "options": [
+            "$nc",
+            "$nd"
+          ],
+          "pick": "$nc",
+          "as": "p",
+          "lock": true,
+          "noretry": true,
+          "do": "da",
+          "tests": "no",
+          "lead": [
+            "para_$nc"
+          ],
+          "line": "no_es_para_$nd",
+          "right": [
+            {
+              "act": "come",
+              "quien": "$p"
+            },
+            {
+              "if": "p=bebe",
+              "then": [],
+              "else": [
+                {
+                  "say": "$p_gracias",
+                  "gap": 250
+                },
+                {
+                  "say": "cq_de_nada",
+                  "gap": 300
+                }
+              ]
+            }
+          ],
+          "wrong": [
+            "no_es_$x",
+            {
+              "act": "muerde",
+              "quien": "$x"
+            },
+            {
+              "act": "abda",
+              "de": "$x",
+              "a": "$p"
+            },
+            {
+              "cost": 1
+            },
+            "toma_$p",
+            {
+              "act": "come",
+              "quien": "$p"
+            },
+            {
+              "act": "vuelve"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "act": "ultimo",
+      "a": "$nd"
+    },
+    "y_para_$nd",
+    {
+      "act": "come",
+      "quien": "$nd"
+    },
+    {
+      "act": "vuelve"
+    }
+  ],
+  "final": [
+    {
+      "act": "suplato"
+    },
+    {
+      "if": "mem_bebida=agua",
+      "then": [
+        "toma_biz_agua"
+      ],
+      "else": [
+        "toma_biz_jugo"
+      ]
+    },
+    {
+      "act": "final6"
+    },
+    {
+      "say": "cq_gracias_abuela",
+      "gap": 300
+    },
+    "familia_come",
+    {
+      "act": "comen"
+    }
+  ],
+  "leer": [
+    "es_la_sala",
+    "ahora_no",
+    "cq_hola",
+    "familia_de_abuela",
+    "esta_es_mama",
+    "y_este_es_papa",
+    "puedes_mama",
+    "mama_hola",
+    "donde_papa",
+    "papa_hola_como",
+    "bien_gracias",
+    "abuela_y_abuelo",
+    "puedes_abuelo",
+    "abuelo_hola",
+    "este_es_bebe",
+    "bebe_pequeno",
+    "donde_bebe",
+    "tiene_un_bizcocho",
+    "bizcocho_familia",
+    "cq_mmm_bizcocho",
+    "para_papa",
+    "papa_gracias",
+    "cq_de_nada",
+    "quiere_abuelo",
+    "abuelo_gracias",
+    "no_para_mama",
+    "es_para_bebe",
+    "y_para_mama",
+    "toma_biz_jugo",
+    "cq_gracias_abuela",
+    "familia_come"
+  ]
+}

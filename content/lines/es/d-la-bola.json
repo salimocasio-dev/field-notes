@@ -1,0 +1,87 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "d-la-bola",
+  "lang": "es",
+  "title": "La bola",
+  "place": "La casa",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "dl01": {
+      "who": "narr",
+      "text": "Luis y Carmen están en el patio."
+    },
+    "dl02": {
+      "who": "narr",
+      "text": "Luis juega con la bola."
+    },
+    "dl03": {
+      "who": "narr",
+      "text": "Carmen juega también."
+    },
+    "dl04": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Mira, Carmen! ¡Mira!"
+    },
+    "dl05": {
+      "who": "narr",
+      "text": "La bola está en el árbol."
+    },
+    "dl06": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Mi bola!"
+    },
+    "dl07": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: La bola está allá."
+    },
+    "dl08": {
+      "who": "narr",
+      "text": "Coquí va al árbol."
+    },
+    "dl09": {
+      "who": "tu",
+      "text": "¡Amigo! ¡Mira! ¡La bola!"
+    },
+    "dl10": {
+      "who": "narr",
+      "text": "El pájaro mira la bola."
+    },
+    "dl11": {
+      "who": "narr",
+      "text": "El pájaro toca la bola."
+    },
+    "dl12": {
+      "who": "narr",
+      "text": "¡La bola está aquí!"
+    },
+    "dl13": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Gracias, amigo!"
+    },
+    "dl14": {
+      "who": "narr",
+      "text": "Ahora Luis juega, Carmen juega y Coquí juega."
+    }
+  }
+}

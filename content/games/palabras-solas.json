@@ -1,0 +1,6 @@
+{
+  "format": "coqui.game.v1",
+  "id": "palabras-solas",
+  "tipo": "palabras",
+  "note": "Each tracked word alone, for the word tiles of Repaso (docs/proyecto/15-repaso-juegos.md). Made by coqui/tool/make_palabras_solas.py; not a story."
+}

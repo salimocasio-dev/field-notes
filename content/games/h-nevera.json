@@ -1,0 +1,476 @@
+{
+  "format": "coqui.game.v1",
+  "id": "h-nevera",
+  "tipo": "haz",
+  "scene": "nevera",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 4,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "act": "inicio32"
+    },
+    {
+      "act": "g",
+      "quien": "luis",
+      "vis": 0
+    },
+    {
+      "act": "g",
+      "quien": "carmen",
+      "vis": 0
+    },
+    {
+      "act": "g",
+      "quien": "papa",
+      "vis": 0
+    },
+    {
+      "act": "g",
+      "quien": "abuelo",
+      "vis": 0
+    },
+    {
+      "act": "g",
+      "quien": "mama",
+      "vis": 0
+    },
+    {
+      "set": {
+        "cosas": [
+          {
+            "id": "red",
+            "k": "red",
+            "v": 4,
+            "x": 142,
+            "y": 122,
+            "z": 100
+          },
+          {
+            "id": "jarra",
+            "k": "jarra",
+            "v": 3,
+            "x": 156,
+            "y": 122,
+            "z": 100
+          },
+          {
+            "id": "v_rojo",
+            "k": "vaso",
+            "v": "rojo",
+            "x": 170,
+            "y": 122,
+            "z": 100,
+            "n": 1
+          },
+          {
+            "id": "v_verde",
+            "k": "vaso",
+            "v": "verde",
+            "x": 182,
+            "y": 122,
+            "z": 100,
+            "n": 1
+          },
+          {
+            "id": "v_amarillo",
+            "k": "vaso",
+            "v": "amarillo",
+            "x": 194,
+            "y": 122,
+            "z": 100,
+            "n": 0
+          },
+          {
+            "id": "v_azul",
+            "k": "vaso",
+            "v": "azul",
+            "x": 206,
+            "y": 122,
+            "z": 100,
+            "n": 0
+          },
+          {
+            "id": "mant",
+            "k": "mantequilla",
+            "v": 3,
+            "x": 178,
+            "y": 98,
+            "z": 90
+          }
+        ]
+      }
+    },
+    {
+      "wait": 500
+    },
+    {
+      "dots": 1
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "red",
+        "mant",
+        "jarra"
+      ],
+      "pick": "red",
+      "lead": [],
+      "line": "wc01",
+      "right": [
+        {
+          "set": {
+            "twinkle": "red"
+          }
+        },
+        {
+          "wait": 800
+        },
+        {
+          "set": {
+            "twinkle": null
+          }
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "red",
+        "mant",
+        "jarra"
+      ],
+      "pick": "mant",
+      "lead": [],
+      "line": "wc02",
+      "right": [
+        {
+          "set": {
+            "twinkle": "mant"
+          }
+        },
+        {
+          "wait": 800
+        },
+        {
+          "set": {
+            "twinkle": null
+          }
+        }
+      ],
+      "lock": true
+    },
+    {
+      "dots": 2
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "v_verde",
+        "v_amarillo",
+        "v_rojo",
+        "v_azul"
+      ],
+      "pick": "v_verde",
+      "lead": [],
+      "line": "wc03",
+      "right": [
+        {
+          "set": {
+            "twinkle": "v_verde"
+          }
+        },
+        {
+          "wait": 800
+        },
+        {
+          "set": {
+            "twinkle": null
+          }
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "v_verde",
+        "v_amarillo",
+        "v_rojo",
+        "v_azul"
+      ],
+      "pick": "v_amarillo",
+      "lead": [],
+      "line": "wc04",
+      "right": [
+        {
+          "set": {
+            "twinkle": "v_amarillo"
+          }
+        },
+        {
+          "wait": 800
+        },
+        {
+          "set": {
+            "twinkle": null
+          }
+        }
+      ],
+      "lock": true
+    },
+    {
+      "dots": 3
+    },
+    {
+      "set": {
+        "repisa": [
+          {
+            "k": "vista",
+            "v": "rojo:1",
+            "x": 170,
+            "dy": -12
+          },
+          {
+            "k": "vista",
+            "v": "azul:0",
+            "x": 206,
+            "dy": -12
+          }
+        ]
+      }
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "v_azul",
+        "v_rojo_l"
+      ],
+      "pick": "v_azul",
+      "lead": [],
+      "line": "wc05",
+      "right": [
+        {
+          "set": {
+            "twinkle": "v_azul"
+          }
+        },
+        {
+          "wait": 800
+        },
+        {
+          "set": {
+            "twinkle": null
+          }
+        }
+      ],
+      "lock": true,
+      "alias": {
+        "v_rojo": "v_rojo_l"
+      }
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "v_azul",
+        "v_rojo_l"
+      ],
+      "pick": "v_azul",
+      "lead": [],
+      "line": "wc06",
+      "right": [
+        {
+          "act": "vierte",
+          "a": "v_azul"
+        },
+        {
+          "set": {
+            "repisa": [
+              {
+                "k": "vista",
+                "v": "rojo:1",
+                "x": 170,
+                "dy": -12
+              },
+              {
+                "k": "vista",
+                "v": "azul:1",
+                "x": 206,
+                "dy": -12
+              }
+            ]
+          }
+        }
+      ],
+      "lock": true,
+      "alias": {
+        "v_rojo": "v_rojo_l"
+      }
+    },
+    {
+      "dots": 4
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "nevera"
+      ],
+      "vale": [
+        "v_verde"
+      ],
+      "pick": "nevera",
+      "lead": [],
+      "line": "wc07",
+      "right": [
+        {
+          "if": "x=nevera",
+          "then": [
+            {
+              "set": {
+                "nev": {
+                  "abierta": 1,
+                  "h": []
+                }
+              }
+            },
+            {
+              "wait": 900
+            },
+            {
+              "set": {
+                "nev": {
+                  "abierta": 0,
+                  "h": []
+                }
+              }
+            }
+          ],
+          "else": [
+            {
+              "set": {
+                "twinkle": "v_verde"
+              }
+            },
+            {
+              "wait": 800
+            },
+            {
+              "set": {
+                "twinkle": null
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calc": "otro",
+      "cond": "x=nevera",
+      "then": "v_verde",
+      "else": "nevera"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "mudo": true,
+      "options": [
+        "$otro",
+        "v_amarillo"
+      ],
+      "pick": "$otro",
+      "lead": [],
+      "line": "wc07",
+      "right": [
+        {
+          "if": "otro=nevera",
+          "then": [
+            {
+              "set": {
+                "nev": {
+                  "abierta": 1,
+                  "h": []
+                }
+              }
+            },
+            {
+              "wait": 900
+            },
+            {
+              "set": {
+                "nev": {
+                  "abierta": 0,
+                  "h": []
+                }
+              }
+            }
+          ],
+          "else": [
+            {
+              "set": {
+                "twinkle": "v_verde"
+              }
+            },
+            {
+              "wait": 800
+            },
+            {
+              "set": {
+                "twinkle": null
+              }
+            }
+          ]
+        },
+        {
+          "wait": 300
+        },
+        {
+          "say": "muy_bien",
+          "gap": 300
+        },
+        {
+          "set": {
+            "heart": 1
+          }
+        },
+        {
+          "wait": 600
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "wc01",
+    "wc02",
+    "wc03",
+    "wc04",
+    "wc05",
+    "wc06",
+    "wc07"
+  ]
+}

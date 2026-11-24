@@ -1,0 +1,190 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "donde-esta-el-pajaro",
+  "lang": "es",
+  "title": "¿Dónde está el pájaro?",
+  "place": "La casa",
+  "focus_words": [
+    "grande",
+    "pequeña",
+    "adiós"
+  ],
+  "back_again": [
+    "casa",
+    "puerta",
+    "abuela",
+    "sí",
+    "cierra"
+  ],
+  "also_heard": [
+    "pájaro",
+    "palma",
+    "jugar",
+    "ahora",
+    "tú",
+    "o",
+    "aquí está",
+    "aquí estoy",
+    "vamos a"
+  ],
+  "names": {
+    "casa_grande": "n_casa_grande",
+    "casa_pequena": "n_casa_pequena",
+    "palma_grande": "n_palma_grande",
+    "palma_pequena": "n_palma_pequena",
+    "abuela": "abuela",
+    "sol": "sol",
+    "pajaro": "un_pajaro",
+    "coqui": "yo_coqui"
+  },
+  "palabras": {
+    "pequena": "pequeña"
+  },
+  "clips": {
+    "grande_casa": {
+      "who": "narr",
+      "text": "La casa de abuela es grande."
+    },
+    "puedes_casa_grande": {
+      "who": "narr",
+      "text": "¿Puedes tocar la casa grande?"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "casa_del_pajaro": {
+      "who": "narr",
+      "text": "Mira. Esta es la casa del pájaro."
+    },
+    "es_pequena": {
+      "who": "narr",
+      "text": "Es pequeña."
+    },
+    "donde_pequena": {
+      "who": "narr",
+      "text": "¿Dónde está la casa pequeña?"
+    },
+    "mira_palmas": {
+      "who": "narr",
+      "text": "Mira las palmas."
+    },
+    "una_palma_grande": {
+      "who": "narr",
+      "text": "Esta palma es grande."
+    },
+    "una_palma_pequena": {
+      "who": "narr",
+      "text": "Esta palma es pequeña."
+    },
+    "quiere_jugar": {
+      "who": "narr",
+      "text": "El pájaro quiere jugar."
+    },
+    "vamos_jugar": {
+      "who": "tu",
+      "text": "¡Sí! ¡Vamos a jugar!"
+    },
+    "aqui_esta": {
+      "who": "tu",
+      "text": "¡Sí! ¡Aquí está!"
+    },
+    "ahora_tu": {
+      "who": "narr",
+      "text": "Ahora tú."
+    },
+    "grande_o_pequena": {
+      "who": "narr",
+      "text": "¿La casa grande o la casa pequeña?"
+    },
+    "aqui_estoy": {
+      "who": "tu",
+      "text": "¡Aquí estoy!"
+    },
+    "adios_pajaro": {
+      "who": "tu",
+      "text": "¡Adiós, pájaro!"
+    },
+    "adios_ab": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Adiós!"
+    },
+    "adios_abuela": {
+      "who": "tu",
+      "text": "¡Adiós, abuela!"
+    },
+    "ab_cierra_puerta": {
+      "who": "narr",
+      "text": "Abuela cierra la puerta."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "sol": {
+      "who": "narr",
+      "text": "Es el sol."
+    },
+    "un_pajaro": {
+      "who": "narr",
+      "text": "Es un pájaro."
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "esta_en_palma_grande": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Está en la palma grande."
+    },
+    "no_esta_en_palma_grande": {
+      "who": "narr",
+      "text": "No. No está en la palma grande."
+    },
+    "n_palma_grande": {
+      "who": "narr",
+      "text": "Es la palma grande."
+    },
+    "esta_en_palma_pequena": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Está en la palma pequeña."
+    },
+    "no_esta_en_palma_pequena": {
+      "who": "narr",
+      "text": "No. No está en la palma pequeña."
+    },
+    "n_palma_pequena": {
+      "who": "narr",
+      "text": "Es la palma pequeña."
+    },
+    "esta_en_casa_grande": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Está en la casa grande."
+    },
+    "no_esta_en_casa_grande": {
+      "who": "narr",
+      "text": "No. No está en la casa grande."
+    },
+    "n_casa_grande": {
+      "who": "narr",
+      "text": "Es la casa grande."
+    },
+    "esta_en_casa_pequena": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Está en la casa pequeña."
+    },
+    "no_esta_en_casa_pequena": {
+      "who": "narr",
+      "text": "No. No está en la casa pequeña."
+    },
+    "n_casa_pequena": {
+      "who": "narr",
+      "text": "Es la casa pequeña."
+    }
+  }
+}

@@ -1,0 +1,572 @@
+{
+  "format": "coqui.game.v1",
+  "id": "cafe-con-azucar",
+  "scene": "comer",
+  "next": null,
+  "goal": "Give everybody the cup he asks for.",
+  "stake": {
+    "thing": "café",
+    "steps": 2
+  },
+  "dots": 9,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio35"
+    },
+    {
+      "wait": 500
+    },
+    "c35_hace",
+    {
+      "set": {
+        "twinkle": "cafetera"
+      }
+    },
+    "c35_aqui_cafe",
+    {
+      "set": {
+        "twinkle": "azucarera"
+      }
+    },
+    "c35_aqui_azucar",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    "c35_huele",
+    "papa_hola_como",
+    "bien_gracias",
+    {
+      "dots": 1
+    },
+    {
+      "act": "tienden35",
+      "a": "abuelo,papa"
+    },
+    {
+      "act": "trae35"
+    },
+    {
+      "act": "llena35"
+    },
+    "c35_abuelo_azucar",
+    "c35_papa_cafe",
+    {
+      "ask": "abuelo",
+      "lead": [],
+      "line": null,
+      "then": [
+        {
+          "act": "bajan35",
+          "a": "abuelo,papa"
+        },
+        {
+          "act": "vuelve35"
+        }
+      ],
+      "after": [
+        {
+          "act": "azucar35",
+          "a": "abuelo",
+          "suelto": 1
+        },
+        "c35_coqui_pone",
+        {
+          "act": "ya"
+        },
+        {
+          "act": "cafe35",
+          "a": "papa"
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "tienden35",
+      "a": "abuelo,papa"
+    },
+    {
+      "act": "trae35"
+    },
+    {
+      "act": "llena35"
+    },
+    "c35_abuelo_cafe",
+    "c35_papa_azucar",
+    {
+      "ask": "papa",
+      "lead": [],
+      "line": null,
+      "then": [
+        {
+          "act": "bajan35",
+          "a": "abuelo,papa"
+        },
+        {
+          "act": "vuelve35"
+        }
+      ],
+      "after": [
+        {
+          "act": "azucar35",
+          "a": "papa",
+          "suelto": 1
+        },
+        "c35_coqui_pone",
+        {
+          "act": "ya"
+        },
+        {
+          "act": "cafe35",
+          "a": "abuelo"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "pote35"
+    },
+    "toma",
+    "cq_gracias_abuela",
+    {
+      "act": "pote35b"
+    },
+    {
+      "act": "ninos35",
+      "que": "ponen"
+    },
+    "c35_luis_mucho",
+    "c35_carmen_poco",
+    {
+      "act": "ninos35",
+      "que": "salen"
+    },
+    {
+      "act": "vierte35",
+      "a": "luis",
+      "cant": "mucho"
+    },
+    {
+      "act": "vierte35",
+      "a": "carmen",
+      "cant": "poco"
+    },
+    {
+      "act": "ninos35",
+      "que": "vuelven"
+    },
+    {
+      "act": "ninos35",
+      "que": "toman",
+      "suelto": 1
+    },
+    "c35_luis_toma",
+    "c35_carmen_toma",
+    {
+      "act": "ya"
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "ninos35",
+      "que": "ponen"
+    },
+    "c35_carmen_mucho",
+    "c35_luis_poco",
+    {
+      "act": "ninos35",
+      "que": "salen"
+    },
+    {
+      "act": "vierte35",
+      "a": "carmen",
+      "cant": "mucho"
+    },
+    {
+      "act": "vierte35",
+      "a": "luis",
+      "cant": "poco"
+    },
+    {
+      "act": "ninos35",
+      "que": "vuelven"
+    },
+    {
+      "act": "ninos35",
+      "que": "toman"
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "piensa35",
+      "k": "palido"
+    },
+    "c35_ab_quieres",
+    {
+      "ask": "di_poco",
+      "lead": [],
+      "line": null,
+      "then": [],
+      "after": [
+        {
+          "act": "sirve6",
+          "cant": "poco"
+        },
+        {
+          "act": "rana35bebe"
+        }
+      ],
+      "resp": [
+        "di_poco",
+        "di_mucho"
+      ],
+      "voces": {
+        "di_poco": "c35_cq_poco",
+        "di_mucho": "c35_cq_mucho"
+      },
+      "said": {
+        "di_poco": "c35_cq_poco"
+      }
+    },
+    {
+      "act": "piensa35",
+      "k": "marron"
+    },
+    "c35_ab_quieres",
+    {
+      "ask": "di_mucho",
+      "lead": [],
+      "line": null,
+      "then": [
+        {
+          "say": "c35_cq_rico",
+          "gap": 300
+        }
+      ],
+      "after": [
+        {
+          "act": "sirve6",
+          "cant": "mucho"
+        },
+        {
+          "act": "rana35bebe"
+        }
+      ],
+      "resp": [
+        "di_poco",
+        "di_mucho"
+      ],
+      "voces": {
+        "di_poco": "c35_cq_poco",
+        "di_mucho": "c35_cq_mucho"
+      },
+      "said": {
+        "di_mucho": "c35_cq_mucho"
+      }
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "turno35"
+    },
+    "c35_ab_cafe_mi",
+    {
+      "act": "sientaAb35"
+    },
+    {
+      "set": {
+        "tarjeta": "rondas",
+        "marcas": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "wait": 400
+    },
+    {
+      "dots": 7
+    },
+    {
+      "draw": "sa",
+      "options": [
+        "abuelo",
+        "papa"
+      ],
+      "other": "ca"
+    },
+    {
+      "draw": "oa",
+      "options": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "act": "turnoA35"
+    },
+    {
+      "if": "oa=1",
+      "then": [
+        "c35_$sa_azucar",
+        "c35_$ca_cafe"
+      ],
+      "else": [
+        "c35_$ca_cafe",
+        "c35_$sa_azucar"
+      ]
+    },
+    {
+      "decide": "do",
+      "options": [
+        "abuelo",
+        "papa"
+      ],
+      "pick": "$sa",
+      "tests": "azucar",
+      "lock": true,
+      "lead": [],
+      "line": null,
+      "right": [
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "azucar35",
+              "a": "$sa",
+              "suelto": 1
+            },
+            {
+              "act": "cafe35",
+              "a": "$ca",
+              "dedo": 1
+            },
+            {
+              "act": "ya"
+            },
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ],
+          "else": [
+            {
+              "act": "llena35"
+            },
+            {
+              "act": "azucar35",
+              "a": "$sa"
+            }
+          ]
+        },
+        {
+          "act": "despuesA35"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "azucar35",
+          "a": "$x",
+          "mal": 1,
+          "suelto": 1
+        },
+        {
+          "act": "cafe35",
+          "a": "$x",
+          "dedo": 1,
+          "mal": 1
+        },
+        {
+          "act": "ya"
+        },
+        {
+          "act": "empuja35",
+          "a": "$x"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        "c35_no_$x"
+      ]
+    },
+    {
+      "dots": 8
+    },
+    {
+      "draw": "wb",
+      "options": [
+        "poco",
+        "mucho"
+      ],
+      "other": "vb"
+    },
+    {
+      "act": "piensa35",
+      "k": "$wb"
+    },
+    {
+      "act": "pregunta35"
+    },
+    "c35_ab_quieres",
+    {
+      "decide": "say",
+      "options": [
+        "di_poco",
+        "di_mucho"
+      ],
+      "baraja": true,
+      "pick": "di_$wb",
+      "tests": "$wb",
+      "voces": {
+        "di_poco": "c35_cq_poco",
+        "di_mucho": "c35_cq_mucho"
+      },
+      "said": {
+        "di_poco": "c35_cq_poco",
+        "di_mucho": "c35_cq_mucho"
+      },
+      "lead": [],
+      "line": null,
+      "right": [
+        {
+          "act": "sirveB35",
+          "cant": "$wb"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "rana35bebe"
+            },
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ],
+          "else": [
+            {
+              "act": "bebeAb35"
+            },
+            {
+              "if": "wb=mucho",
+              "then": [
+                {
+                  "act": "muestra35",
+                  "k": "taza"
+                },
+                {
+                  "act": "muestra35",
+                  "k": "jarrita"
+                },
+                {
+                  "act": "muestra35",
+                  "k": "cazo"
+                },
+                "c35_no_hay_cafe"
+              ],
+              "else": [
+                {
+                  "act": "muestra35",
+                  "k": "taza"
+                },
+                {
+                  "act": "muestra35",
+                  "k": "jarrita"
+                },
+                {
+                  "act": "muestra35",
+                  "k": "cazo"
+                },
+                "c35_no_hay_leche"
+              ]
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "sirveB35",
+          "cant": "$x"
+        },
+        {
+          "act": "pruebaB35"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        "c35_no_$wb"
+      ]
+    }
+  ],
+  "final": [
+    {
+      "dots": 9
+    },
+    {
+      "act": "final35",
+      "suelto": 1
+    },
+    {
+      "if": "cafe",
+      "then": [
+        "c35_ab_toma"
+      ]
+    },
+    {
+      "act": "ya"
+    },
+    {
+      "say": "c35_cq_huele",
+      "gap": 300
+    },
+    {
+      "act": "fin"
+    }
+  ],
+  "leer": [
+    "c35_hace",
+    "c35_aqui_cafe",
+    "c35_aqui_azucar",
+    "c35_huele",
+    "papa_hola_como",
+    "bien_gracias",
+    "c35_abuelo_azucar",
+    "c35_papa_cafe",
+    "c35_coqui_pone",
+    "c35_abuelo_cafe",
+    "c35_papa_azucar",
+    "toma",
+    "cq_gracias_abuela",
+    "c35_luis_mucho",
+    "c35_carmen_poco",
+    "c35_luis_toma",
+    "c35_carmen_toma",
+    "c35_carmen_mucho",
+    "c35_luis_poco",
+    "c35_ab_quieres",
+    "c35_cq_poco",
+    "c35_cq_mucho",
+    "c35_cq_rico",
+    "c35_ab_cafe_mi",
+    "c35_ab_toma",
+    "c35_cq_huele"
+  ]
+}

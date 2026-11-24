@@ -1,0 +1,99 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "h-estufa",
+  "lang": "es",
+  "title": "En la estufa",
+  "place": "La cocina",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui",
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "abuela": "abuela",
+    "cocina": "m_n_cocina"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "hz_no_olla": {
+      "who": "narr",
+      "text": "No, esa es una olla."
+    },
+    "hz_no_saco": {
+      "who": "narr",
+      "text": "No, ese es el arroz."
+    },
+    "hz_no_tazon": {
+      "who": "narr",
+      "text": "No, esas son las habichuelas."
+    },
+    "hz_no_olla_fria": {
+      "who": "narr",
+      "text": "No, esa olla está fría."
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "wb01": {
+      "who": "narr",
+      "text": "¿Dónde está el arroz?"
+    },
+    "wb02": {
+      "who": "narr",
+      "text": "Toca las habichuelas."
+    },
+    "c27_abuela_dame_arroz": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Dame arroz, por favor."
+    },
+    "c27_luis_dame_hab": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Dame habichuelas, por favor."
+    },
+    "wb05": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Más arroz, por favor."
+    },
+    "c29_ab_cuidado_caliente": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Cuidado! Está caliente."
+    },
+    "wb07": {
+      "who": "narr",
+      "text": "¿Cuál olla está caliente?"
+    },
+    "wb08": {
+      "who": "narr",
+      "text": "Toca a abuela y a Luis."
+    }
+  }
+}

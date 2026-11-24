@@ -1,0 +1,94 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "d-agua-pajaro",
+  "lang": "es",
+  "title": "Agua para el pájaro",
+  "place": "La casa",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "da01": {
+      "who": "narr",
+      "text": "Hace calor."
+    },
+    "da02": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Ven al balcón, Coquí."
+    },
+    "da03": {
+      "who": "narr",
+      "text": "Abuela se sienta en la silla grande."
+    },
+    "da04": {
+      "who": "narr",
+      "text": "Coquí se sienta en la silla pequeña."
+    },
+    "da05": {
+      "who": "narr",
+      "text": "Abuela entra a la casa."
+    },
+    "da06": {
+      "who": "narr",
+      "text": "¡Mira! Abuela tiene dos vasos."
+    },
+    "da07": {
+      "who": "narr",
+      "text": "Abuela pone los vasos en la mesa."
+    },
+    "da08": {
+      "who": "narr",
+      "text": "Un vaso de jugo."
+    },
+    "da09": {
+      "who": "narr",
+      "text": "Y un vaso de agua."
+    },
+    "da10": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: El jugo es para ti, Coquí."
+    },
+    "da11": {
+      "who": "narr",
+      "text": "Coquí toma el jugo."
+    },
+    "da12": {
+      "who": "narr",
+      "text": "¡Mira! El pájaro."
+    },
+    "da13": {
+      "who": "narr",
+      "text": "El pájaro toma el agua."
+    },
+    "da14": {
+      "who": "narr",
+      "text": "El pájaro se sienta en la silla pequeña."
+    },
+    "da15": {
+      "who": "tu",
+      "text": "¡Mi silla!"
+    },
+    "da16": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Ven acá, Coquí."
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-mesa",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "La cocina",
+  "clips": {
+    "n_mesa": {
+      "who": "narr",
+      "text": "Es la mesa."
+    },
+    "m_c_mi_plato": {
+      "who": "narr",
+      "text": "Mira mi plato."
+    },
+    "m_c_mi_taza": {
+      "who": "narr",
+      "text": "Mira mi taza."
+    },
+    "m_c_mi_cuchara": {
+      "who": "narr",
+      "text": "Mira mi cuchara."
+    },
+    "m_c_papa_tenedor": {
+      "who": "narr",
+      "text": "Papá tiene el tenedor."
+    },
+    "m_c_ab_cuchillo": {
+      "who": "narr",
+      "text": "Abuela tiene mi cuchillo."
+    },
+    "m_c_mira_comida": {
+      "who": "narr",
+      "text": "Mira la comida."
+    },
+    "c26_ab_en_cocina": {
+      "who": "narr",
+      "text": "Abuela está en la cocina."
+    },
+    "m_c_carmen_pone": {
+      "who": "narr",
+      "text": "Carmen pone el plato en la mesa."
+    },
+    "c26_luis_hambre": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Tengo hambre!"
+    },
+    "c26_carmen_sed": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Tengo sed!"
+    },
+    "m_c_bizcocho_listo": {
+      "who": "narr",
+      "text": "El bizcocho está listo."
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "mesa",
+    "plato",
+    "taza",
+    "cuchara",
+    "tenedor",
+    "cuchillo",
+    "comida",
+    "cocina",
+    "pone",
+    "tengo hambre",
+    "tengo sed",
+    "listo"
+  ]
+}

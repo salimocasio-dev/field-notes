@@ -1,0 +1,356 @@
+{
+  "format": "coqui.game.v1",
+  "id": "h-camino",
+  "tipo": "haz",
+  "scene": "camino",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 4,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "act": "inicio12"
+    },
+    {
+      "set": {
+        "gato": {
+          "x": 113,
+          "y": 134,
+          "pose": "lava",
+          "dir": -1,
+          "en": null
+        }
+      }
+    },
+    {
+      "act": "pose",
+      "quien": "perro",
+      "que": "sit"
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "idle"
+    },
+    {
+      "act": "posan",
+      "p": "231"
+    },
+    {
+      "set": {
+        "respEn": [
+          96,
+          30
+        ]
+      }
+    },
+    {
+      "wait": 400
+    },
+    {
+      "dots": 1
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "perro",
+        "gato",
+        "carmen"
+      ],
+      "pick": "perro",
+      "lead": [],
+      "line": "ra01",
+      "right": [
+        {
+          "act": "ladra",
+          "n": 1
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "gato",
+        "perro",
+        "carmen"
+      ],
+      "pick": "gato",
+      "lead": [],
+      "line": "ra02",
+      "right": [
+        {
+          "act": "ronronea"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "dots": 2
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "grande",
+        "arbol0",
+        "arbol1",
+        "arbol2"
+      ],
+      "pick": "grande",
+      "lead": [],
+      "line": "ra03",
+      "right": [
+        {
+          "act": "sacude",
+          "en": "grande"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "arbol0",
+        "arbol1",
+        "arbol2"
+      ],
+      "pick": "arbol1",
+      "lead": [],
+      "line": "ra04",
+      "right": [
+        {
+          "act": "luzn",
+          "n": "3"
+        },
+        {
+          "wait": 700
+        },
+        {
+          "act": "luzn",
+          "n": "0"
+        }
+      ],
+      "lock": true,
+      "vale": [
+        "ave10",
+        "ave11",
+        "ave12"
+      ]
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "arbol0",
+        "arbol1",
+        "arbol2"
+      ],
+      "pick": "arbol2",
+      "lead": [],
+      "line": "ra05",
+      "right": [
+        {
+          "act": "luzn",
+          "n": "1"
+        },
+        {
+          "wait": 700
+        },
+        {
+          "act": "luzn",
+          "n": "0"
+        }
+      ],
+      "lock": true,
+      "vale": [
+        "ave20"
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "decide": "say",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "camina",
+        "corre",
+        "espera"
+      ],
+      "pick": "corre",
+      "lead": [],
+      "line": "ra06",
+      "right": [
+        {
+          "act": "va",
+          "quien": "cq",
+          "modo": "corre",
+          "a": 1
+        }
+      ],
+      "baraja": true
+    },
+    {
+      "decide": "say",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "camina",
+        "corre",
+        "espera"
+      ],
+      "pick": "espera",
+      "lead": [],
+      "line": "ra07",
+      "right": [
+        {
+          "act": "va",
+          "quien": "cq",
+          "modo": "espera",
+          "a": 1
+        },
+        {
+          "act": "luisrie"
+        }
+      ],
+      "baraja": true
+    },
+    {
+      "decide": "say",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "camina",
+        "corre",
+        "espera"
+      ],
+      "pick": "corre",
+      "lead": [],
+      "line": "ra08",
+      "right": [
+        {
+          "act": "va",
+          "quien": "cq",
+          "modo": "corre",
+          "a": 2
+        }
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 4
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "luis"
+      ],
+      "vale": [
+        "carmen"
+      ],
+      "pick": "luis",
+      "lead": [],
+      "line": "ra09",
+      "right": [
+        {
+          "if": "x=luis",
+          "then": [
+            {
+              "act": "saluda",
+              "quien": "luis"
+            }
+          ],
+          "else": [
+            {
+              "act": "saluda",
+              "quien": "carmen"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calc": "otro",
+      "cond": "x=luis",
+      "then": "carmen",
+      "else": "luis"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "mudo": true,
+      "options": [
+        "$otro",
+        "gato"
+      ],
+      "pick": "$otro",
+      "lead": [],
+      "line": "ra09",
+      "right": [
+        {
+          "if": "otro=luis",
+          "then": [
+            {
+              "act": "saluda",
+              "quien": "luis"
+            }
+          ],
+          "else": [
+            {
+              "act": "saluda",
+              "quien": "carmen"
+            }
+          ]
+        },
+        {
+          "wait": 300
+        },
+        {
+          "say": "muy_bien",
+          "gap": 300
+        },
+        {
+          "set": {
+            "heart": 1
+          }
+        },
+        {
+          "wait": 600
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "ra01",
+    "ra02",
+    "ra03",
+    "ra04",
+    "ra05",
+    "ra06",
+    "ra07",
+    "ra08",
+    "ra09"
+  ]
+}

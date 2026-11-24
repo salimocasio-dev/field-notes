@@ -1,0 +1,635 @@
+{
+  "format": "coqui.game.v1",
+  "id": "la-bola",
+  "scene": "campo",
+  "next": "arriba-abajo",
+  "goal": "Play ball with Luis and Carmen. Do not let Canelo get the ball.",
+  "stake": {
+    "thing": "bola",
+    "steps": 3
+  },
+  "dots": 8,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio15"
+    },
+    {
+      "wait": 500
+    },
+    {
+      "set": {
+        "twinkle": "bola_luis"
+      }
+    },
+    "c15_luis_tiene",
+    {
+      "set": {
+        "twinkle": "bola_carmen"
+      }
+    },
+    "c15_carmen_tiene",
+    {
+      "set": {
+        "twinkle": "bola_cq"
+      }
+    },
+    "c15_coqui_tiene",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "say": "c15_cq_mi",
+      "gap": 300
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "coge",
+      "lead": [],
+      "line": "c15_vamos_coge",
+      "then": [
+        "c15_l_tira_c_coge"
+      ],
+      "after": [
+        {
+          "act": "pasa",
+          "de": "luis",
+          "a": "cq",
+          "b": "luis"
+        }
+      ],
+      "resp": [
+        "tira",
+        "coge"
+      ],
+      "baraja": true
+    },
+    {
+      "ask": "tira",
+      "lead": [],
+      "line": "c15_ahora_tira",
+      "then": [
+        "c15_c_tira_l_coge",
+        {
+          "act": "bajan"
+        }
+      ],
+      "after": [
+        {
+          "act": "pasa",
+          "de": "cq",
+          "a": "luis",
+          "b": "luis"
+        }
+      ],
+      "resp": [
+        "tira",
+        "coge"
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "sellevan",
+      "quien": "carmen"
+    },
+    "c15_ahora_carmen",
+    {
+      "ask": "di_dame",
+      "lead": [],
+      "line": null,
+      "then": [],
+      "after": [
+        {
+          "act": "trae",
+          "quien": "carmen",
+          "queda": 1
+        },
+        {
+          "say": "c15_toma",
+          "gap": 250
+        },
+        {
+          "say": "c15_cq_gracias",
+          "gap": 250
+        },
+        {
+          "act": "acasa"
+        }
+      ],
+      "resp": [
+        "di_dame",
+        "di_coge"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_dame": "c15_cq_dame",
+        "di_coge": "c15_cq_coge"
+      },
+      "said": {
+        "di_dame": "c15_cq_dame"
+      }
+    },
+    {
+      "act": "pose",
+      "quien": "carmen",
+      "que": "arriba"
+    },
+    {
+      "ask": "di_coge",
+      "lead": [],
+      "line": null,
+      "then": [
+        "c15_c_tira_ca_coge",
+        {
+          "act": "alpie",
+          "b": "cq",
+          "rueda": 1
+        }
+      ],
+      "after": [
+        {
+          "act": "pasa",
+          "de": "cq",
+          "a": "carmen",
+          "b": "cq"
+        }
+      ],
+      "resp": [
+        "di_dame",
+        "di_coge"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_dame": "c15_cq_dame",
+        "di_coge": "c15_cq_coge"
+      },
+      "said": {
+        "di_coge": "c15_cq_coge"
+      }
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "esconden",
+      "tiene": "carmen"
+    },
+    {
+      "say": "c15_quien",
+      "gap": 250
+    },
+    {
+      "ask": "carmen",
+      "lead": [],
+      "line": "c15_carmen_tiene_la",
+      "then": [],
+      "after": [
+        {
+          "act": "ensena",
+          "quien": "carmen"
+        }
+      ]
+    },
+    {
+      "act": "esconden",
+      "tiene": "luis"
+    },
+    {
+      "say": "c15_quien",
+      "gap": 250
+    },
+    {
+      "ask": "luis",
+      "lead": [],
+      "line": "c15_carmen_no",
+      "then": [
+        "c15_carmen_no_luis_si",
+        {
+          "act": "devuelve"
+        }
+      ],
+      "after": [
+        {
+          "act": "ensena",
+          "quien": "luis"
+        },
+        {
+          "act": "ensena",
+          "quien": "carmen"
+        }
+      ]
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "turno15"
+    },
+    "c15_ay_canelo",
+    {
+      "say": "c15_cq_canelo_dame",
+      "gap": 300
+    },
+    {
+      "act": "mueverabo"
+    },
+    {
+      "say": "c15_l_canelo_dame",
+      "gap": 300
+    },
+    {
+      "act": "mueverabo"
+    },
+    {
+      "set": {
+        "twinkle": "cesta"
+      }
+    },
+    {
+      "say": "c15_hay_mas",
+      "gap": 250
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "nueva"
+    },
+    {
+      "set": {
+        "tarjeta": "rondas",
+        "marcas": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "wait": 500
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "listoA"
+    },
+    {
+      "draw": "la",
+      "options": [
+        "tira",
+        "coge"
+      ]
+    },
+    {
+      "decide": "say",
+      "options": [
+        "tira",
+        "coge"
+      ],
+      "baraja": true,
+      "pick": "$la",
+      "tests": "$la",
+      "lock": true,
+      "lead": [],
+      "line": "c15_l_$la",
+      "right": [
+        {
+          "act": "bienA",
+          "dijo": "$la"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "malA",
+          "dijo": "$la"
+        },
+        "c15_no_$la",
+        {
+          "act": "marca",
+          "que": "pata"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "nueva",
+          "a": "cq"
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "bajan"
+    },
+    {
+      "draw": "tb",
+      "options": [
+        "luis",
+        "carmen"
+      ]
+    },
+    {
+      "draw": "nb",
+      "options": [
+        "si",
+        "no"
+      ]
+    },
+    {
+      "if": "nb=si",
+      "then": [
+        {
+          "calc": "lb",
+          "cond": "tb=luis",
+          "then": "c15_luis_tiene_la",
+          "else": "c15_carmen_tiene_la"
+        },
+        {
+          "calc": "wb",
+          "cond": "nb=si",
+          "then": "-",
+          "else": "-"
+        }
+      ],
+      "else": [
+        {
+          "calc": "lb",
+          "cond": "tb=luis",
+          "then": "c15_carmen_no",
+          "else": "c15_luis_no"
+        },
+        {
+          "calc": "wb",
+          "cond": "nb=si",
+          "then": "no",
+          "else": "no"
+        }
+      ]
+    },
+    {
+      "act": "esconden",
+      "tiene": "$tb"
+    },
+    {
+      "say": "c15_quien",
+      "gap": 250
+    },
+    {
+      "decide": "do",
+      "options": [
+        "luis",
+        "carmen"
+      ],
+      "pick": "$tb",
+      "tests": "$wb",
+      "lock": true,
+      "lead": [],
+      "line": "$lb",
+      "right": [
+        {
+          "act": "ensena",
+          "quien": "$tb"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        },
+        {
+          "act": "devuelve"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "ensena",
+          "quien": "$x"
+        },
+        {
+          "act": "ensena",
+          "quien": "$tb"
+        },
+        "c15_no_$tb_tiene",
+        {
+          "act": "malB"
+        },
+        {
+          "act": "marca",
+          "que": "pata"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "nueva"
+        },
+        {
+          "act": "esconden",
+          "tiene": "$tb"
+        }
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "draw": "qc",
+      "options": [
+        "carmen",
+        "cq"
+      ]
+    },
+    {
+      "calc": "rc",
+      "cond": "qc=carmen",
+      "then": "di_dame",
+      "else": "di_coge"
+    },
+    {
+      "calc": "tc",
+      "cond": "qc=carmen",
+      "then": "dame",
+      "else": "coge"
+    },
+    {
+      "calc": "nc",
+      "cond": "qc=carmen",
+      "then": "c15_no_carmen_tiene",
+      "else": "c15_no_carmen_no"
+    },
+    {
+      "act": "quien15",
+      "que": "$qc"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "di_dame",
+        "di_coge"
+      ],
+      "baraja": true,
+      "pick": "$rc",
+      "tests": "$tc",
+      "voces": {
+        "di_dame": "c15_cq_dame",
+        "di_coge": "c15_cq_coge"
+      },
+      "said": {
+        "di_dame": "c15_cq_dame",
+        "di_coge": "c15_cq_coge"
+      },
+      "lead": [],
+      "right": [
+        {
+          "if": "qc=carmen",
+          "then": [
+            {
+              "act": "trae",
+              "quien": "carmen"
+            }
+          ],
+          "else": [
+            {
+              "act": "pasa",
+              "de": "cq",
+              "a": "carmen",
+              "b": "cq"
+            },
+            {
+              "act": "alpie",
+              "b": "cq",
+              "rueda": 1
+            }
+          ]
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "duda",
+          "que": "$qc"
+        },
+        "$nc",
+        {
+          "act": "roba"
+        },
+        {
+          "act": "pose",
+          "quien": "carmen",
+          "que": "idle"
+        },
+        {
+          "act": "marca",
+          "que": "pata"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "if": "qc=carmen",
+          "then": [
+            {
+              "act": "nueva",
+              "a": "carmen"
+            }
+          ],
+          "else": [
+            {
+              "act": "nueva",
+              "a": "cq"
+            },
+            {
+              "act": "pose",
+              "quien": "carmen",
+              "que": "arriba"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "dots": 8
+    },
+    {
+      "act": "final15"
+    },
+    {
+      "act": "pasa",
+      "de": "luis",
+      "a": "carmen",
+      "b": "luis"
+    },
+    "c15_fin1",
+    "c15_fin2",
+    {
+      "say": "c15_cq_ay",
+      "gap": 300
+    },
+    {
+      "act": "mueverabo"
+    },
+    {
+      "wait": 500
+    }
+  ],
+  "leer": [
+    "c15_luis_tiene",
+    "c15_carmen_tiene",
+    "c15_coqui_tiene",
+    "c15_cq_mi",
+    "c15_vamos_coge",
+    "c15_l_tira_c_coge",
+    "c15_ahora_tira",
+    "c15_c_tira_l_coge",
+    "c15_ahora_carmen",
+    "c15_cq_dame",
+    "c15_toma",
+    "c15_cq_gracias",
+    "c15_cq_coge",
+    "c15_c_tira_ca_coge",
+    "c15_quien",
+    "c15_carmen_tiene_la",
+    "c15_carmen_no",
+    "c15_carmen_no_luis_si",
+    "c15_ay_canelo",
+    "c15_cq_canelo_dame",
+    "c15_hay_mas",
+    "c15_fin1",
+    "c15_fin2",
+    "c15_cq_ay"
+  ]
+}

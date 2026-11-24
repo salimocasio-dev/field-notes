@@ -1,0 +1,94 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "d-vamos-a-casa",
+  "lang": "es",
+  "title": "Vamos a casa",
+  "place": "El parque",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "qe01": {
+      "who": "narr",
+      "text": "Ahora es de noche."
+    },
+    "qe02": {
+      "who": "narr",
+      "text": "¡Mira! La luna."
+    },
+    "qe03": {
+      "who": "narr",
+      "text": "El señor camina despacio."
+    },
+    "qe04": {
+      "who": "tu",
+      "text": "¡Adiós, señor!"
+    },
+    "qe05": {
+      "who": "tu",
+      "text": "¡Adiós, señora!"
+    },
+    "qe06": {
+      "who": "narr",
+      "text": "El pájaro duerme."
+    },
+    "qe07": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Vamos a casa."
+    },
+    "qe08": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Ven, Canelo!"
+    },
+    "qe09": {
+      "who": "narr",
+      "text": "Canelo no quiere. Canelo está cansado."
+    },
+    "qe10": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Vamos, Canelo!"
+    },
+    "qe11": {
+      "who": "narr",
+      "text": "Canelo duerme."
+    },
+    "qe12": {
+      "who": "narr",
+      "text": "Abuela tiene una bola."
+    },
+    "qe13": {
+      "who": "narr",
+      "text": "¡Mira! Ahora Canelo no está cansado."
+    },
+    "qe14": {
+      "who": "narr",
+      "text": "Canelo corre rápido."
+    },
+    "qe15": {
+      "who": "narr",
+      "text": "Y abuela camina despacio."
+    },
+    "qe16": {
+      "who": "tu",
+      "text": "Hasta mañana, parque."
+    }
+  }
+}

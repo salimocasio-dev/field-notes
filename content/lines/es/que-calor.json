@@ -1,0 +1,225 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "que-calor",
+  "lang": "es",
+  "title": "¡Qué calor!",
+  "place": "La casa",
+  "focus_words": [
+    "quiero",
+    "gracias",
+    "¿cómo estás?",
+    "bien"
+  ],
+  "back_again": [
+    "agua",
+    "jugo",
+    "toma",
+    "no"
+  ],
+  "also_heard": [
+    "por favor",
+    "de nada",
+    "qué calor",
+    "y tú",
+    "muy",
+    "o",
+    "quieres",
+    "hola",
+    "abuela"
+  ],
+  "names": {
+    "silla_grande": "n_silla_abuela",
+    "silla_pequena": "n_silla_pequena",
+    "mesa": "n_mesa",
+    "jugo": "n_jugo",
+    "agua": "n_agua",
+    "abuela": "abuela",
+    "puerta": "puerta",
+    "ventana": "ventana",
+    "balcon": "n_balcon",
+    "coqui": "yo_coqui"
+  },
+  "palabras": {
+    "de_nada": "de nada",
+    "por_favor": "por favor"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "puerta": {
+      "who": "narr",
+      "text": "Es la puerta."
+    },
+    "ventana": {
+      "who": "narr",
+      "text": "Es la ventana."
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "n_silla_abuela": {
+      "who": "narr",
+      "text": "Es la silla de abuela."
+    },
+    "n_silla_pequena": {
+      "who": "narr",
+      "text": "Es la silla pequeña."
+    },
+    "n_mesa": {
+      "who": "narr",
+      "text": "Es la mesa."
+    },
+    "n_jugo": {
+      "who": "narr",
+      "text": "Es el jugo."
+    },
+    "n_agua": {
+      "who": "narr",
+      "text": "Es el agua."
+    },
+    "n_balcon": {
+      "who": "narr",
+      "text": "Es el balcón."
+    },
+    "cq_gracias_abuela": {
+      "who": "tu",
+      "text": "¡Gracias, abuela!"
+    },
+    "ab_de_nada": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: De nada."
+    },
+    "no_jugo": {
+      "who": "narr",
+      "text": "No. Eso es jugo."
+    },
+    "no_agua": {
+      "who": "narr",
+      "text": "No. Eso es agua."
+    },
+    "toma": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Toma."
+    },
+    "abuela_dice": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Hola! ¿Cómo estás?"
+    },
+    "cq_bien_y_tu": {
+      "who": "tu",
+      "text": "Bien, gracias. ¿Y tú, cómo estás?"
+    },
+    "ab_que_calor": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Ay, qué calor!"
+    },
+    "ab_quiero_agua": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Quiero agua, por favor."
+    },
+    "cq_jugo_q": {
+      "who": "tu",
+      "text": "¿Jugo?"
+    },
+    "ab_no_quiero_jugo": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No. No quiero jugo. Quiero agua, por favor."
+    },
+    "puedes_agua": {
+      "who": "narr",
+      "text": "¿Puedes tocar el agua?"
+    },
+    "cq_toma_abuela": {
+      "who": "tu",
+      "text": "Toma, abuela."
+    },
+    "ab_gracias": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Gracias."
+    },
+    "cq_de_nada": {
+      "who": "tu",
+      "text": "De nada."
+    },
+    "cq_por_favor": {
+      "who": "tu",
+      "text": "Por favor."
+    },
+    "cq_gracias": {
+      "who": "tu",
+      "text": "Gracias."
+    },
+    "ab_quiero_jugo_a": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Quiero jugo, por favor. No quiero agua."
+    },
+    "ab_quiero_jugo_b": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No quiero agua. Quiero jugo, por favor."
+    },
+    "ab_quiero_agua_a": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Quiero agua, por favor. No quiero jugo."
+    },
+    "ab_quiero_agua_b": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No quiero jugo. Quiero agua, por favor."
+    },
+    "ab_y_tu_quieres": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿Y tú? ¿Quieres agua o jugo?"
+    },
+    "cq_quiero_jugo": {
+      "who": "tu",
+      "text": "Quiero jugo, por favor."
+    },
+    "cq_quiero_agua": {
+      "who": "tu",
+      "text": "Quiero agua, por favor."
+    },
+    "cq_mmm": {
+      "who": "tu",
+      "text": "¡Mmm!"
+    },
+    "cq_que_bien": {
+      "who": "tu",
+      "text": "¡Ah, qué bien!"
+    },
+    "cq_como_estas_abuela": {
+      "who": "tu",
+      "text": "¿Cómo estás, abuela?"
+    },
+    "ab_bien_y_tu": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Bien, muy bien! ¿Y tú?"
+    },
+    "cq_bien": {
+      "who": "tu",
+      "text": "¡Bien!"
+    }
+  }
+}

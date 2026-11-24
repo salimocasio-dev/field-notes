@@ -1,0 +1,390 @@
+{
+  "format": "coqui.game.v1",
+  "id": "h-estufa",
+  "tipo": "haz",
+  "scene": "estufa",
+  "goal": "Escuchar. Nothing is scored.",
+  "stake": {
+    "thing": "none",
+    "steps": 9
+  },
+  "dots": 4,
+  "bien": "muy_bien",
+  "beats": [
+    {
+      "act": "inicio27"
+    },
+    {
+      "wait": 500
+    },
+    {
+      "dots": 1
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "saco",
+        "tazon",
+        "olla"
+      ],
+      "pick": "saco",
+      "lead": [],
+      "line": "wb01",
+      "right": [
+        {
+          "set": {
+            "twinkle": "saco"
+          }
+        },
+        {
+          "wait": 800
+        },
+        {
+          "set": {
+            "twinkle": null
+          }
+        }
+      ],
+      "lock": true,
+      "alias": {
+        "olla0": "olla",
+        "olla1": "olla"
+      }
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "saco",
+        "tazon",
+        "olla"
+      ],
+      "pick": "tazon",
+      "lead": [],
+      "line": "wb02",
+      "right": [
+        {
+          "set": {
+            "twinkle": "tazon"
+          }
+        },
+        {
+          "wait": 800
+        },
+        {
+          "set": {
+            "twinkle": null
+          }
+        }
+      ],
+      "lock": true,
+      "alias": {
+        "olla0": "olla",
+        "olla1": "olla"
+      }
+    },
+    {
+      "dots": 2
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "saco",
+        "tazon"
+      ],
+      "pick": "saco",
+      "lead": [],
+      "line": "c27_abuela_dame_arroz",
+      "right": [
+        {
+          "act": "echa",
+          "k": "arroz",
+          "a": "abuela"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "saco",
+        "tazon"
+      ],
+      "pick": "tazon",
+      "lead": [],
+      "line": "c27_luis_dame_hab",
+      "right": [
+        {
+          "act": "echa",
+          "k": "hab",
+          "a": "luis"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "saco",
+        "tazon"
+      ],
+      "pick": "saco",
+      "lead": [],
+      "line": "wb05",
+      "right": [
+        {
+          "act": "echa",
+          "k": "arroz",
+          "a": "abuela"
+        }
+      ],
+      "lock": true
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "apaga",
+      "a": "luis"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "options": [
+        "olla1",
+        "olla_fria"
+      ],
+      "pick": "olla1",
+      "lead": [],
+      "line": "wb07",
+      "right": [
+        {
+          "act": "g",
+          "quien": "abuela",
+          "pose": "wave0"
+        },
+        "c29_ab_cuidado_caliente",
+        {
+          "act": "g",
+          "quien": "abuela",
+          "pose": "idle"
+        }
+      ],
+      "lock": true,
+      "alias": {
+        "olla0": "olla_fria"
+      }
+    },
+    {
+      "dots": 4
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "lock": true,
+      "options": [
+        "abuela"
+      ],
+      "vale": [
+        "luis"
+      ],
+      "pick": "abuela",
+      "lead": [],
+      "line": "wb08",
+      "right": [
+        {
+          "if": "x=abuela",
+          "then": [
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "wave0",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "wave1",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "wave0",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "wave1",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "idle"
+            }
+          ],
+          "else": [
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "wave0",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "wave1",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "wave0",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "wave1",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "idle"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calc": "otro",
+      "cond": "x=abuela",
+      "then": "luis",
+      "else": "abuela"
+    },
+    {
+      "decide": "do",
+      "libre": true,
+      "bien": false,
+      "mudo": true,
+      "options": [
+        "$otro",
+        "carmen"
+      ],
+      "pick": "$otro",
+      "lead": [],
+      "line": "wb08",
+      "right": [
+        {
+          "if": "otro=abuela",
+          "then": [
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "wave0",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "wave1",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "wave0",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "wave1",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "abuela",
+              "pose": "idle"
+            }
+          ],
+          "else": [
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "wave0",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "wave1",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "wave0",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "wave1",
+              "ms": 250
+            },
+            {
+              "act": "g",
+              "quien": "luis",
+              "pose": "idle"
+            }
+          ]
+        },
+        {
+          "wait": 300
+        },
+        {
+          "say": "muy_bien",
+          "gap": 300
+        },
+        {
+          "set": {
+            "heart": 1
+          }
+        },
+        {
+          "wait": 600
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "wait": 900
+    }
+  ],
+  "leer": [
+    "wb01",
+    "wb02",
+    "c27_abuela_dame_arroz",
+    "c27_luis_dame_hab",
+    "wb05",
+    "wb07",
+    "c29_ab_cuidado_caliente",
+    "wb08"
+  ]
+}

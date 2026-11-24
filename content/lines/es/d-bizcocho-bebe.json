@@ -1,0 +1,126 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "d-bizcocho-bebe",
+  "lang": "es",
+  "title": "El bizcocho del bebé",
+  "place": "La casa",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "db01": {
+      "who": "narr",
+      "text": "Esta es la sala. Aquí está la familia."
+    },
+    "db02": {
+      "who": "narr",
+      "text": "Abuelo duerme."
+    },
+    "db03": {
+      "who": "narr",
+      "text": "¡Mira! Un bizcocho."
+    },
+    "db04": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿Quién quiere bizcocho?"
+    },
+    "db05": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: ¡Yo!"
+    },
+    "db06": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: ¡Yo también!"
+    },
+    "db07": {
+      "who": "narr",
+      "text": "El bebé también quiere."
+    },
+    "db08": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Este es para mamá."
+    },
+    "db09": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Gracias, Coquí."
+    },
+    "db10": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Y este es para papá."
+    },
+    "db11": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: Gracias."
+    },
+    "db12": {
+      "who": "narr",
+      "text": "El bebé no tiene bizcocho. El bebé llora."
+    },
+    "db13": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Este es para el bebé."
+    },
+    "db14": {
+      "who": "narr",
+      "text": "Ahora el bebé no llora. El bebé come."
+    },
+    "db15": {
+      "who": "narr",
+      "text": "¿Y abuelo? Abuelo duerme."
+    },
+    "db16": {
+      "who": "narr",
+      "text": "Coquí toca a abuelo."
+    },
+    "db17": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: ¿Bizcocho? ¡Sí, por favor!"
+    },
+    "db18": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Gracias, Coquí."
+    },
+    "db19": {
+      "who": "tu",
+      "text": "De nada."
+    },
+    "db20": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Y este es para ti, Coquí."
+    },
+    "db21": {
+      "who": "tu",
+      "text": "¡Gracias, abuela!"
+    },
+    "db22": {
+      "who": "narr",
+      "text": "La familia come bizcocho."
+    }
+  }
+}

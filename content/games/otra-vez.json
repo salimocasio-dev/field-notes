@@ -1,0 +1,709 @@
+{
+  "format": "coqui.game.v1",
+  "id": "otra-vez",
+  "scene": "campo",
+  "next": "pan-para-el-pato",
+  "goal": "Throw the ball for Canelo. Stay dry.",
+  "stake": {
+    "thing": "seco",
+    "steps": 3
+  },
+  "dots": 8,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio17"
+    },
+    {
+      "act": "sube17"
+    },
+    "c17_canelo_tiene",
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "offer"
+    },
+    {
+      "say": "c15_l_canelo_dame",
+      "gap": 300
+    },
+    {
+      "act": "mueverabo17"
+    },
+    {
+      "say": "c17_l_es_mi",
+      "gap": 250
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "idle"
+    },
+    {
+      "act": "pose",
+      "quien": "carmen",
+      "que": "arriba"
+    },
+    {
+      "set": {
+        "twinkle": "bola_carmen"
+      }
+    },
+    {
+      "say": "c17_ca_esta_mi",
+      "gap": 250
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "carmenfila"
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "offer"
+    },
+    {
+      "set": {
+        "twinkle": "bola_cq"
+      }
+    },
+    {
+      "say": "c17_l_esta_tu",
+      "gap": 250
+    },
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "pose",
+      "quien": "luis",
+      "que": "idle"
+    },
+    {
+      "say": "c15_cq_mi",
+      "gap": 300
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "di_tu",
+      "lead": [],
+      "line": null,
+      "then": [],
+      "after": [
+        {
+          "act": "pose",
+          "quien": "luis",
+          "que": "yo"
+        },
+        {
+          "say": "c17_l_si_mi",
+          "gap": 250
+        },
+        {
+          "act": "pose",
+          "quien": "luis",
+          "que": "idle"
+        },
+        {
+          "act": "alafila",
+          "b": "luis"
+        }
+      ],
+      "resp": [
+        "di_mi",
+        "di_tu"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_mi": "c17_cq_es_mi",
+        "di_tu": "c17_cq_es_tu"
+      },
+      "said": {
+        "di_tu": "c17_cq_es_tu"
+      }
+    },
+    {
+      "act": "perrocoge",
+      "b": "cq"
+    },
+    {
+      "ask": "di_mi",
+      "lead": [],
+      "line": null,
+      "then": [],
+      "after": [
+        {
+          "act": "pose",
+          "quien": "luis",
+          "que": "tu"
+        },
+        {
+          "say": "c17_l_si_tu",
+          "gap": 250
+        },
+        {
+          "act": "pose",
+          "quien": "luis",
+          "que": "idle"
+        },
+        {
+          "act": "alafila",
+          "b": "cq"
+        }
+      ],
+      "resp": [
+        "di_mi",
+        "di_tu"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_mi": "c17_cq_es_mi",
+        "di_tu": "c17_cq_es_tu"
+      },
+      "said": {
+        "di_mi": "c17_cq_es_mi"
+      }
+    },
+    {
+      "dots": 2
+    },
+    {
+      "ask": "bola_cq",
+      "lead": [],
+      "line": "c17_ca_tira_tu",
+      "then": [
+        "c17_tira_coge"
+      ],
+      "after": [
+        {
+          "act": "tira17",
+          "b": "cq"
+        }
+      ]
+    },
+    {
+      "ask": "bola_carmen",
+      "lead": [],
+      "line": "c17_ca_ahora_mi",
+      "then": [],
+      "after": [
+        {
+          "act": "tira17",
+          "b": "carmen"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "empuja"
+    },
+    "c17_quiere_mas",
+    {
+      "ask": "tira",
+      "lead": [],
+      "line": "c17_l_otra",
+      "then": [
+        "c17_tira_otra",
+        {
+          "act": "ladra",
+          "n": 2
+        },
+        "c17_quiere_mas_otra"
+      ],
+      "after": [
+        {
+          "act": "tira17",
+          "b": "cq",
+          "aire": 1
+        }
+      ],
+      "resp": [
+        "tira",
+        "aguanta",
+        "da"
+      ],
+      "baraja": true
+    },
+    {
+      "ask": "da",
+      "lead": [],
+      "line": "c17_l_dame",
+      "then": [
+        "c17_luis_tira_otra"
+      ],
+      "after": [
+        {
+          "act": "da17"
+        }
+      ],
+      "resp": [
+        "tira",
+        "aguanta",
+        "da"
+      ],
+      "baraja": true
+    },
+    {
+      "act": "jadea"
+    },
+    {
+      "ask": "aguanta",
+      "lead": [],
+      "line": "c17_l_no_mas_agua",
+      "then": [
+        "c17_no_mas"
+      ],
+      "after": [
+        {
+          "act": "aguanta"
+        }
+      ],
+      "resp": [
+        "tira",
+        "aguanta",
+        "da"
+      ],
+      "baraja": true,
+      "quieto": true
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "turno17"
+    },
+    {
+      "say": "c17_l_otra_carmen",
+      "gap": 250
+    },
+    {
+      "wait": 500
+    },
+    {
+      "say": "c17_l_carmen_dame",
+      "gap": 250
+    },
+    {
+      "act": "sacude",
+      "junto": "carmen"
+    },
+    {
+      "say": "c17_ca_no_mas",
+      "gap": 250
+    },
+    {
+      "act": "rien"
+    },
+    {
+      "act": "trasturno17"
+    },
+    {
+      "set": {
+        "tarjeta": "rondas",
+        "marcas": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "wait": 400
+    },
+    {
+      "dots": 5
+    },
+    {
+      "draw": "ba",
+      "options": [
+        "luis",
+        "carmen",
+        "cq"
+      ]
+    },
+    {
+      "draw": "qx",
+      "options": [
+        "l",
+        "ca"
+      ]
+    },
+    {
+      "if": "ba=cq",
+      "then": [
+        {
+          "calc": "qa",
+          "cond": "qx=l",
+          "then": "l",
+          "else": "ca"
+        },
+        {
+          "calc": "pa",
+          "cond": "ba=cq",
+          "then": "tu",
+          "else": "tu"
+        }
+      ],
+      "else": [
+        {
+          "calc": "qa",
+          "cond": "ba=luis",
+          "then": "l",
+          "else": "ca"
+        },
+        {
+          "calc": "pa",
+          "cond": "ba=cq",
+          "then": "mi",
+          "else": "mi"
+        }
+      ]
+    },
+    {
+      "calc": "ra",
+      "cond": "ba=cq",
+      "then": "bola_cq",
+      "else": "bola_$ba"
+    },
+    {
+      "decide": "do",
+      "options": [
+        "bola_luis",
+        "bola_carmen",
+        "bola_cq"
+      ],
+      "pick": "$ra",
+      "tests": "$pa",
+      "lock": true,
+      "lead": [],
+      "line": "c17_$qa_tira_$pa",
+      "right": [
+        {
+          "act": "tira17",
+          "b": "$ra"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "malA17",
+          "b": "$x"
+        },
+        {
+          "if": "qa=l",
+          "then": [
+            {
+              "act": "luisno"
+            }
+          ]
+        },
+        "c17_no_$qa_$pa",
+        {
+          "act": "sacude",
+          "junto": "cq"
+        },
+        {
+          "act": "marca",
+          "que": "gota"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "vuelvefila",
+          "b": "$x"
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "empuja"
+    },
+    {
+      "draw": "lb",
+      "options": [
+        "otra",
+        "dame",
+        "nomas"
+      ]
+    },
+    {
+      "if": "lb=otra",
+      "then": [
+        {
+          "calc": "rb",
+          "cond": "lb=otra",
+          "then": "tira",
+          "else": "tira"
+        }
+      ],
+      "else": [
+        {
+          "calc": "rb",
+          "cond": "lb=dame",
+          "then": "da",
+          "else": "aguanta"
+        }
+      ]
+    },
+    {
+      "calc": "qb",
+      "cond": "lb=nomas",
+      "then": "1",
+      "else": "0"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "tira",
+        "aguanta",
+        "da"
+      ],
+      "baraja": true,
+      "pick": "$rb",
+      "tests": "$lb",
+      "lock": true,
+      "quieto": "$qb",
+      "lead": [],
+      "line": "c17_l_$lb",
+      "right": [
+        {
+          "act": "hazB",
+          "que": "$rb"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "hazB",
+          "que": "$x",
+          "mal": 1
+        },
+        {
+          "act": "luisno"
+        },
+        "c17_no_$lb",
+        {
+          "act": "sacude",
+          "junto": "cq"
+        },
+        {
+          "act": "marca",
+          "que": "gota"
+        },
+        {
+          "cost": 1
+        }
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "draw": "bc",
+      "options": [
+        "luis",
+        "cq"
+      ]
+    },
+    {
+      "calc": "rc",
+      "cond": "bc=cq",
+      "then": "di_mi",
+      "else": "di_tu"
+    },
+    {
+      "calc": "tc",
+      "cond": "bc=cq",
+      "then": "mi",
+      "else": "tu"
+    },
+    {
+      "calc": "nc",
+      "cond": "bc=cq",
+      "then": "c17_no_de_coqui",
+      "else": "c17_no_de_luis"
+    },
+    {
+      "act": "perrocoge",
+      "b": "$bc"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "di_mi",
+        "di_tu"
+      ],
+      "baraja": true,
+      "pick": "$rc",
+      "tests": "$tc",
+      "voces": {
+        "di_mi": "c17_cq_es_mi",
+        "di_tu": "c17_cq_es_tu"
+      },
+      "said": {
+        "di_mi": "c17_cq_es_mi",
+        "di_tu": "c17_cq_es_tu"
+      },
+      "lead": [],
+      "line": "c17_l_mira",
+      "right": [
+        {
+          "if": "bc=cq",
+          "then": [
+            {
+              "act": "pose",
+              "quien": "luis",
+              "que": "tu"
+            },
+            {
+              "say": "c17_l_si_tu",
+              "gap": 250
+            },
+            {
+              "act": "pose",
+              "quien": "luis",
+              "que": "idle"
+            },
+            {
+              "act": "alafila",
+              "b": "cq"
+            },
+            {
+              "act": "tira17",
+              "b": "cq"
+            }
+          ],
+          "else": [
+            {
+              "act": "pose",
+              "quien": "luis",
+              "que": "yo"
+            },
+            {
+              "say": "c17_l_si_mi",
+              "gap": 250
+            },
+            {
+              "act": "pose",
+              "quien": "luis",
+              "que": "idle"
+            },
+            {
+              "act": "alafila",
+              "b": "luis"
+            }
+          ]
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "luisno"
+        },
+        "$nc",
+        {
+          "act": "sacude",
+          "junto": "cq"
+        },
+        {
+          "act": "marca",
+          "que": "gota"
+        },
+        {
+          "cost": 1
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "dots": 8
+    },
+    {
+      "act": "final17"
+    },
+    "c17_no_quiere",
+    {
+      "act": "empuja2"
+    },
+    {
+      "say": "c17_l_otra_q",
+      "gap": 200
+    },
+    {
+      "say": "c17_cq_no_mas",
+      "gap": 300
+    },
+    {
+      "act": "rien"
+    },
+    {
+      "wait": 500
+    }
+  ],
+  "leer": [
+    "c17_canelo_tiene",
+    "c15_l_canelo_dame",
+    "c17_l_es_mi",
+    "c17_ca_esta_mi",
+    "c17_l_esta_tu",
+    "c15_cq_mi",
+    "c17_cq_es_tu",
+    "c17_l_si_mi",
+    "c17_cq_es_mi",
+    "c17_l_si_tu",
+    "c17_ca_tira_tu",
+    "c17_tira_coge",
+    "c17_ca_ahora_mi",
+    "c17_quiere_mas",
+    "c17_l_otra",
+    "c17_tira_otra",
+    "c17_l_dame",
+    "c17_luis_tira_otra",
+    "c17_l_no_mas_agua",
+    "c17_no_mas",
+    "c17_l_otra_carmen",
+    "c17_l_carmen_dame",
+    "c17_ca_no_mas",
+    "c17_no_quiere",
+    "c17_l_otra_q",
+    "c17_cq_no_mas"
+  ]
+}

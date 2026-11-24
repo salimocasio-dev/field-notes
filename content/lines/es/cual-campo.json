@@ -1,0 +1,77 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-campo",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "El parque",
+  "clips": {
+    "k_c_bola": {
+      "who": "narr",
+      "text": "Es una bola."
+    },
+    "k_c_tiene": {
+      "who": "narr",
+      "text": "Canelo tiene la bola."
+    },
+    "k_c_tira": {
+      "who": "narr",
+      "text": "Luis tira la bola."
+    },
+    "k_c_coge": {
+      "who": "narr",
+      "text": "Carmen coge la bola."
+    },
+    "k_c_salta": {
+      "who": "narr",
+      "text": "El perro salta."
+    },
+    "k_c_dame": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Dame la bola!"
+    },
+    "c17_l_es_mi": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Es mi bola."
+    },
+    "k_c_tu": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Luis, es tu bola."
+    },
+    "k_c_arriba": {
+      "who": "narr",
+      "text": "La bola está arriba."
+    },
+    "k_c_abajo": {
+      "who": "narr",
+      "text": "Coquí está abajo."
+    },
+    "c17_quiere_mas": {
+      "who": "narr",
+      "text": "Canelo quiere más."
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "bola",
+    "tiene",
+    "tira",
+    "coge",
+    "salta",
+    "dame",
+    "mi",
+    "tu",
+    "arriba",
+    "abajo",
+    "más"
+  ]
+}

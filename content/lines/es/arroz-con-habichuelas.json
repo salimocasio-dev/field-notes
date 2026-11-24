@@ -1,0 +1,221 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "arroz-con-habichuelas",
+  "lang": "es",
+  "title": "Arroz con habichuelas",
+  "place": "La cocina",
+  "focus_words": [
+    "arroz",
+    "habichuelas",
+    "olla",
+    "hace"
+  ],
+  "back_again": [
+    "pone",
+    "dame",
+    "por favor",
+    "más",
+    "para",
+    "hay",
+    "aquí",
+    "otra",
+    "listo",
+    "mira",
+    "tengo hambre",
+    "familia",
+    "come"
+  ],
+  "also_heard": [
+    "listas"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina"
+  },
+  "palabras": {
+    "hab": "habichuelas"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c27_hace_comida": {
+      "who": "narr",
+      "text": "Abuela hace la comida."
+    },
+    "c27_una_olla": {
+      "who": "narr",
+      "text": "Aquí hay una olla."
+    },
+    "c27_otra_olla": {
+      "who": "narr",
+      "text": "Y aquí hay otra olla."
+    },
+    "c27_aqui_arroz": {
+      "who": "narr",
+      "text": "Aquí hay arroz."
+    },
+    "c27_aqui_hab": {
+      "who": "narr",
+      "text": "Y aquí hay habichuelas."
+    },
+    "c27_cq_pone_arroz": {
+      "who": "narr",
+      "text": "Coquí pone el arroz en la olla."
+    },
+    "c27_ab_hace_arroz": {
+      "who": "narr",
+      "text": "Abuela hace arroz."
+    },
+    "c27_luis_hace_hab": {
+      "who": "narr",
+      "text": "Luis hace habichuelas."
+    },
+    "c27_cq_arroz": {
+      "who": "tu",
+      "text": "¡Arroz!"
+    },
+    "c27_cq_hab": {
+      "who": "tu",
+      "text": "¡Habichuelas!"
+    },
+    "c27_mas_arroz": {
+      "who": "narr",
+      "text": "Más arroz para abuela."
+    },
+    "c27_mas_hab": {
+      "who": "narr",
+      "text": "Más habichuelas para Luis."
+    },
+    "c27_listo_arroz": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: El arroz está listo."
+    },
+    "c27_listo_hab": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Las habichuelas están listas."
+    },
+    "c27_familia_hambre": {
+      "who": "narr",
+      "text": "La familia tiene hambre."
+    },
+    "c27_familia_come": {
+      "who": "narr",
+      "text": "La familia come arroz con habichuelas."
+    },
+    "c27_luis_hambre": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Tengo hambre!"
+    },
+    "c27_no_aqui_arroz": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Aquí hay arroz."
+    },
+    "c27_no_aqui_hab": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Aquí hay habichuelas."
+    },
+    "c27_no_mira_arroz": {
+      "who": "narr",
+      "text": "No, Coquí. Mira el arroz."
+    },
+    "c27_no_mira_hab": {
+      "who": "narr",
+      "text": "No, Coquí. Mira las habichuelas."
+    },
+    "c26_comida_lista": {
+      "who": "narr",
+      "text": "La comida está lista."
+    },
+    "c27_comen": {
+      "who": "narr",
+      "text": "Luis come. Carmen come. Abuela come."
+    },
+    "cq_gracias_abuela": {
+      "who": "tu",
+      "text": "¡Gracias, abuela!"
+    },
+    "c27_abuela_dame_arroz": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Dame arroz, por favor."
+    },
+    "c27_no_abuela_hace_arroz": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Abuela hace arroz."
+    },
+    "c27_abuela_dame_hab": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Dame habichuelas, por favor."
+    },
+    "c27_no_abuela_hace_hab": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Abuela hace habichuelas."
+    },
+    "c27_luis_dame_arroz": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Dame arroz, por favor."
+    },
+    "c27_no_luis_hace_arroz": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Luis hace arroz."
+    },
+    "c27_luis_dame_hab": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Dame habichuelas, por favor."
+    },
+    "c27_no_luis_hace_hab": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Luis hace habichuelas."
+    }
+  }
+}

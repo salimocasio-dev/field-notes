@@ -1,0 +1,258 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "pan-para-el-pato",
+  "lang": "es",
+  "title": "Pan para el pato",
+  "place": "El parque",
+  "focus_words": [
+    "pato",
+    "pez",
+    "pájaro",
+    "nada",
+    "vuela"
+  ],
+  "back_again": [
+    "agua",
+    "hay",
+    "mira",
+    "para",
+    "tiene",
+    "¿quién?",
+    "más",
+    "ahora",
+    "amigo"
+  ],
+  "also_heard": [
+    "lago",
+    "pan",
+    "come"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "perro": "c_n_perro",
+    "agua": "k_n_agua",
+    "lago": "l_n_lago",
+    "juncos": "k_n_agua",
+    "coqui": "yo_coqui",
+    "flor": "l_n_flor",
+    "pato_blanco": "l_n_pato",
+    "pato_negro": "l_n_pato",
+    "pato_amarillo": "l_n_pato",
+    "pez": "l_n_pez",
+    "pajaro": "l_n_pajaro",
+    "ave_blanco": "l_n_pajaro",
+    "ave_negro": "l_n_pajaro",
+    "bote_rojo": "l_n_bote",
+    "bote_azul": "l_n_bote",
+    "bote_verde": "l_n_bote"
+  },
+  "palabras": {
+    "pato_blanco": "pato",
+    "pajaro": "pájaro"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "c_n_perro": {
+      "who": "narr",
+      "text": "Es el perro. Se llama Canelo."
+    },
+    "k_n_agua": {
+      "who": "narr",
+      "text": "Es el agua."
+    },
+    "l_n_pato": {
+      "who": "narr",
+      "text": "Es un pato."
+    },
+    "l_n_pez": {
+      "who": "narr",
+      "text": "Es un pez."
+    },
+    "l_n_pajaro": {
+      "who": "narr",
+      "text": "Es un pájaro."
+    },
+    "l_n_lago": {
+      "who": "narr",
+      "text": "Es el lago."
+    },
+    "l_n_bote": {
+      "who": "narr",
+      "text": "Es un bote."
+    },
+    "l_n_flor": {
+      "who": "narr",
+      "text": "Es una flor."
+    },
+    "c18_lago": {
+      "who": "narr",
+      "text": "Este es el lago."
+    },
+    "c18_hay_pato": {
+      "who": "narr",
+      "text": "Mira. Hay un pato."
+    },
+    "c18_pato_nada": {
+      "who": "narr",
+      "text": "El pato nada en el agua."
+    },
+    "c18_hay_pez": {
+      "who": "narr",
+      "text": "Hay un pez."
+    },
+    "c18_pez_nada": {
+      "who": "narr",
+      "text": "El pez nada en el agua."
+    },
+    "c18_hay_pajaro": {
+      "who": "narr",
+      "text": "Y hay un pájaro."
+    },
+    "c18_pajaro_vuela": {
+      "who": "narr",
+      "text": "El pájaro vuela."
+    },
+    "c18_tiene_pan": {
+      "who": "narr",
+      "text": "Carmen tiene pan."
+    },
+    "c18_ca_pato": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Pan para el pato!"
+    },
+    "c18_ca_pez": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Pan para el pez!"
+    },
+    "c18_ca_pajaro": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Pan para el pájaro!"
+    },
+    "c18_come": {
+      "who": "narr",
+      "text": "El pato come pan."
+    },
+    "c18_ca_quien_vuela": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¿Quién vuela?"
+    },
+    "c18_ca_quien_nada": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¿Quién nada?"
+    },
+    "c18_si_pajaro": {
+      "who": "narr",
+      "text": "¡Sí! El pájaro vuela."
+    },
+    "c18_si_pez": {
+      "who": "narr",
+      "text": "¡Sí! El pez nada."
+    },
+    "c18_l_y_pato": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¿Y el pato?"
+    },
+    "c18_cq_vuela": {
+      "who": "tu",
+      "text": "¡El pato vuela!"
+    },
+    "c18_cq_nada": {
+      "who": "tu",
+      "text": "¡El pato nada!"
+    },
+    "c18_l_si_vuela": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Sí! ¡El pato vuela!"
+    },
+    "c18_l_y_ahora": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¿Y ahora?"
+    },
+    "c18_l_si_nada": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Sí. Ahora el pato nada en el agua."
+    },
+    "c18_ay_pez": {
+      "who": "narr",
+      "text": "¡Ay, no! El pez se come el pan del pato."
+    },
+    "c18_ca_mas": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Mira. Hay más pan."
+    },
+    "c18_no_para_pato": {
+      "who": "narr",
+      "text": "No, Coquí. Este pan es para el pato."
+    },
+    "c18_no_para_pez": {
+      "who": "narr",
+      "text": "No, Coquí. Este pan es para el pez."
+    },
+    "c18_no_para_pajaro": {
+      "who": "narr",
+      "text": "No, Coquí. Este pan es para el pájaro."
+    },
+    "c18_no_mira_vuela": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pájaro vuela."
+    },
+    "c18_no_mira_nada": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pez nada en el agua."
+    },
+    "c18_no_ahora_vuela": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Ahora el pato vuela."
+    },
+    "c18_no_ahora_nada": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Ahora el pato nada en el agua."
+    },
+    "c18_fin_pez": {
+      "who": "narr",
+      "text": "El pez nada."
+    },
+    "c18_fin_pajaro": {
+      "who": "narr",
+      "text": "El pájaro vuela."
+    },
+    "c18_fin_pato": {
+      "who": "narr",
+      "text": "Y el pato nada y vuela."
+    },
+    "c18_cq_adios": {
+      "who": "tu",
+      "text": "¡Adiós, amigos!"
+    }
+  }
+}

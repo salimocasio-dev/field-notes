@@ -11,7 +11,7 @@ Written Nov 20 2026. Salim asked why stories cost so much to make: "Theyre just 
 
 ## What a writer does and does not do
 
-- A story is one JSON file in `historia/cuentos/`, plus one line in `historia/curso.js` (the place's `cuentos` list). That is content. Nothing else changes.
+- A story in the legacy single-file form is one JSON file in `historia/cuentos/`, plus one line in `historia/curso.js` (the place's `cuentos` list). In the new multi-language **split form** (see "Writing a new story in the split form" below and `docs/proyecto/23-split-story-format.md`), a story lives under `content/` as a shared game file (`content/games/<id>.json`) plus a per-language lines file (`content/lines/<lang>/<id>.json`) and entries in `content/lines/<lang>/words.json`. That is content. Nothing else changes.
 - A writer never edits code: not `escenas/`, not `juego.js`, not `coqui/`.
 - When a story needs something the scene can't do yet (a new act, a new thing to touch, a new spot, a new kind of step), the writer doesn't build it. Put it in a short **Needs** list at the end of the script: the name, what it does on screen, which beat uses it. The code lane builds it.
 - A story in a scene that already exists should need nothing new. That is the cheap case.
@@ -140,6 +140,47 @@ After it is built: a fresh reader sees frames only, no sound, no words (`?txt=no
 - "say" shows sí/no answer bubbles instead of things to touch.
 - Wrong: the `wrong` steps, one step of the stake lost (unless `wrong` has its own `cost`), then the big sign shows the right one and he does it.
 - In any id or argument, `$name` is filled from the story's variables. `$x` is the wrong thing he touched.
+
+## Writing a new story in the split form
+
+Every story can live in the multi-language split form under `content/` (full spec in `docs/proyecto/23-split-story-format.md`). The step syntax, rules, and clip format above are identical — only the file boundary changes so every language can play the exact same game.
+
+**Writing a brand-new story (2 files + word table entries):**
+
+1. **Shared game file — `content/games/<id>.json` (`"format": "coqui.game.v1"`):**
+   Holds everything that does not depend on language: `id`, `scene`, `beats`, `final`, and any of `tipo`, `next`, `goal`, `note`, `stake`, `dots`, `bien`, `callado`, `cam`, `leer`.
+   - For a `tipo: "cual"` review set, `items` goes here **without** the `"w"` field (keeping `say`, `si`, `no`).
+   - Never put translated text, titles, or clip strings in `content/games/`.
+
+2. **Per-language lines file — `content/lines/<lang>/<id>.json` (`"format": "coqui.lines.v1"`):**
+   Holds everything written in the target language (`<lang>` is the BCP-47 code, e.g. `"es"`, `"fr"`, `"ar"`): `id`, `lang`, `title`, `clips`, and any of `place`, `nota`, `focus_words`, `back_again`, `also_heard`, `names`, `palabras`.
+   - For a `tipo: "cual"` review set, put the parallel `"item_words"` list of word strings here (same length and order as `game["items"]`).
+   - Put a `palabras` entry here only when a story needs a context-specific override or suppression (`"-"`), e.g. `bebe -> bebé` in `la-familia` vs verb `bebe` in `la-piragua`.
+
+3. **Language ID-to-word table — `content/lines/<lang>/words.json` (`"format": "coqui.words.v1"`):**
+   Add any new touch or tested IDs introduced by the story to `words` (kept in alphabetical key order), mapping each internal game ID to the target-language word it represents. At runtime, word resolution checks `lines.palabras[id]` first, then `words.json[id]`, then `id` itself (`"-"` skips progress logging).
+
+**Adding another language for an existing story:**
+
+- Write **only** `content/lines/<lang>/<id>.json` and `content/lines/<lang>/words.json` (matching the clip IDs and touch IDs already in `content/games/<id>.json`).
+- **Never** edit `content/games/<id>.json` or any Dart code.
+
+**Checking and joining split files:**
+
+```bash
+# Verify content/ matches historia/cuentos/, round-trips cleanly, and resolves words
+python3 coqui/tool/split_stories.py check
+python3 coqui/tool/test/test_split_stories.py
+
+# If you need a legacy single-file JSON to run revisa_cuento.py, join into a temp folder:
+python3 coqui/tool/split_stories.py join \
+  --games content/games \
+  --lines content/lines/es \
+  --out /tmp/joined-stories
+python3 historia/tools/revisa_cuento.py . /tmp/joined-stories/<id>.json
+```
+
+**NEVER** pass `historia/cuentos/` as `--out` or write new files under `historia/cuentos/` unless explicitly authorized — pushing there triggers the paid Azure recording job, and `split_stories.py` refuses it automatically.
 
 ## The checker
 

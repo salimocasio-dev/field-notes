@@ -1,0 +1,97 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "h-balcon",
+  "lang": "es",
+  "title": "En el balcón",
+  "place": "La casa",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "hz_no_silla_grande": {
+      "who": "narr",
+      "text": "No. Esa es la silla grande."
+    },
+    "hz_no_silla_pequena": {
+      "who": "narr",
+      "text": "No. Esa es la silla pequeña."
+    },
+    "hz_no_mesa": {
+      "who": "narr",
+      "text": "No. Esa es la mesa."
+    },
+    "hz_no_jugo": {
+      "who": "narr",
+      "text": "No. Eso es jugo."
+    },
+    "hz_no_agua": {
+      "who": "narr",
+      "text": "No. Eso es agua."
+    },
+    "hb01": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Hola!"
+    },
+    "hb02": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Gracias."
+    },
+    "hb03": {
+      "who": "narr",
+      "text": "Esta es la mesa."
+    },
+    "hb04": {
+      "who": "narr",
+      "text": "Toca la silla grande."
+    },
+    "hb05": {
+      "who": "narr",
+      "text": "¿Dónde está la silla pequeña?"
+    },
+    "hb06": {
+      "who": "narr",
+      "text": "Toca la mesa."
+    },
+    "hb07": {
+      "who": "narr",
+      "text": "¿Dónde está el jugo?"
+    },
+    "hb08": {
+      "who": "narr",
+      "text": "Toca el agua."
+    },
+    "hb09": {
+      "who": "narr",
+      "text": "¡Mira! El jugo y el agua."
+    },
+    "hb10": {
+      "who": "narr",
+      "text": "El agua es para abuela."
+    },
+    "hb11": {
+      "who": "narr",
+      "text": "El jugo es para abuela."
+    },
+    "hb12": {
+      "who": "narr",
+      "text": "Toca la silla pequeña y la silla grande."
+    }
+  }
+}

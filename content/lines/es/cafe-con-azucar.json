@@ -1,0 +1,242 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cafe-con-azucar",
+  "lang": "es",
+  "title": "Café con azúcar",
+  "place": "La cocina",
+  "focus_words": [
+    "café",
+    "azúcar",
+    "un poco",
+    "mucho"
+  ],
+  "back_again": [
+    "leche",
+    "taza",
+    "toma",
+    "más",
+    "por favor",
+    "huele",
+    "pone",
+    "no hay",
+    "rico",
+    "sí",
+    "quieres"
+  ],
+  "also_heard": [],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina"
+  },
+  "palabras": {
+    "azucar": "azúcar",
+    "poco": "un poco",
+    "mucho": "mucho"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c35_hace": {
+      "who": "narr",
+      "text": "Abuela hace café."
+    },
+    "c35_aqui_cafe": {
+      "who": "narr",
+      "text": "Aquí hay café."
+    },
+    "c35_aqui_azucar": {
+      "who": "narr",
+      "text": "Aquí hay azúcar."
+    },
+    "c35_huele": {
+      "who": "narr",
+      "text": "Huele a café."
+    },
+    "c35_coqui_pone": {
+      "who": "narr",
+      "text": "Coquí le pone azúcar al café."
+    },
+    "c35_luis_mucho": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Mucho café, por favor."
+    },
+    "c35_carmen_poco": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Un poco de café, por favor."
+    },
+    "c35_carmen_mucho": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Mucho café, por favor."
+    },
+    "c35_luis_poco": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Un poco de café, por favor."
+    },
+    "c35_luis_toma": {
+      "who": "narr",
+      "text": "Luis toma mucho café."
+    },
+    "c35_carmen_toma": {
+      "who": "narr",
+      "text": "Carmen toma un poco de café."
+    },
+    "c35_ab_quieres": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿Quieres café, Coquí?"
+    },
+    "c35_cq_poco": {
+      "who": "tu",
+      "text": "Sí, un poco, por favor."
+    },
+    "c35_cq_mucho": {
+      "who": "tu",
+      "text": "Sí, mucho, por favor."
+    },
+    "c35_cq_rico": {
+      "who": "tu",
+      "text": "¡El café está rico!"
+    },
+    "papa_hola_como": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: ¡Hola! ¿Cómo estás?"
+    },
+    "toma": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Toma."
+    },
+    "bien_gracias": {
+      "who": "tu",
+      "text": "¡Bien, gracias!",
+      "tu_turno": [
+        {
+          "palabra": "bien",
+          "formas": [
+            "bien"
+          ]
+        }
+      ]
+    },
+    "cq_gracias_abuela": {
+      "who": "tu",
+      "text": "¡Gracias, abuela!",
+      "tu_turno": [
+        {
+          "palabra": "gracias",
+          "formas": [
+            "gracias"
+          ]
+        }
+      ]
+    },
+    "c35_ab_cafe_mi": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Y café para mí!"
+    },
+    "c35_no_mucho": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Tú quieres mucho café."
+    },
+    "c35_no_poco": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Tú quieres un poco de café."
+    },
+    "c35_no_hay_cafe": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No hay más café."
+    },
+    "c35_no_hay_leche": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: No hay más leche."
+    },
+    "c35_ab_toma": {
+      "who": "narr",
+      "text": "Abuela toma café."
+    },
+    "c35_cq_huele": {
+      "who": "tu",
+      "text": "¡Huele a café!"
+    },
+    "c35_abuelo_azucar": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Más azúcar, por favor."
+    },
+    "c35_abuelo_cafe": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Más café, por favor."
+    },
+    "c35_no_abuelo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Abuelo quiere más café."
+    },
+    "c35_papa_azucar": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: Más azúcar, por favor."
+    },
+    "c35_papa_cafe": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: Más café, por favor."
+    },
+    "c35_no_papa": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Papá quiere más café."
+    }
+  }
+}

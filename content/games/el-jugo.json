@@ -1,0 +1,534 @@
+{
+  "format": "coqui.game.v1",
+  "id": "el-jugo",
+  "scene": "balcon",
+  "next": "que-calor",
+  "goal": "A cold drink on a hot day, before the bird gets it.",
+  "stake": {
+    "thing": "rondas",
+    "steps": 3
+  },
+  "dots": 7,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "set": {
+        "calor": 3,
+        "door": 1
+      }
+    },
+    {
+      "wait": 600
+    },
+    {
+      "act": "burbuja",
+      "quien": "cq",
+      "que": "calor"
+    },
+    "hace_calor",
+    {
+      "say": "cq_que_calor",
+      "gap": 300
+    },
+    {
+      "act": "calla"
+    },
+    {
+      "act": "pose",
+      "que": "wave"
+    },
+    {
+      "say": "ven_balcon",
+      "gap": 250
+    },
+    {
+      "act": "pose",
+      "que": "idle"
+    },
+    {
+      "act": "sube"
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "silla_grande",
+      "lead": [
+        "silla_de_abuela"
+      ],
+      "line": "puedes_silla",
+      "then": [
+        {
+          "act": "absienta"
+        },
+        "se_sienta_silla"
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "ask": "silla_pequena",
+      "lead": [
+        "silla_es_pequena"
+      ],
+      "line": "donde_silla_pequena",
+      "after": [
+        {
+          "act": "ir",
+          "a": "silla_pequena"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "abentra"
+    },
+    "abuela_entra",
+    {
+      "act": "absale"
+    },
+    "dos_vasos",
+    {
+      "act": "pone2"
+    },
+    "pone_vasos",
+    {
+      "set": {
+        "twinkle": "jugo"
+      }
+    },
+    "vaso_de_jugo",
+    {
+      "set": {
+        "twinkle": "agua"
+      }
+    },
+    "vaso_de_agua",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "act": "absienta"
+    },
+    "abuela_se_sienta",
+    {
+      "ask": "agua",
+      "lead": [],
+      "line": "puedes_vaso_agua",
+      "then": [
+        "agua_en_mesa"
+      ]
+    },
+    {
+      "ask": "jugo",
+      "lead": [],
+      "line": "donde_jugo",
+      "after": [
+        {
+          "act": "ir",
+          "a": "mesa"
+        }
+      ]
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "aveva",
+      "en": "jugo"
+    },
+    "mira_pajaro",
+    "pajaro_toma_jugo",
+    {
+      "act": "avebebe",
+      "en": "jugo"
+    },
+    {
+      "say": "no_pajaro",
+      "gap": 300
+    },
+    {
+      "act": "avesilla"
+    },
+    "pajaro_se_sienta",
+    {
+      "set": {
+        "rondas": 1
+      }
+    },
+    {
+      "cam": "mesa",
+      "n": 12
+    },
+    {
+      "act": "aveventana"
+    },
+    {
+      "dots": 5
+    },
+    {
+      "draw": "d",
+      "options": [
+        "jugo",
+        "agua"
+      ]
+    },
+    {
+      "act": "sirve",
+      "que": "ja"
+    },
+    {
+      "decide": "find",
+      "options": [
+        "jugo",
+        "agua"
+      ],
+      "pick": "$d",
+      "as": "p",
+      "other": "o",
+      "lock": true,
+      "noretry": true,
+      "do": "coge",
+      "tests": "$d",
+      "lead": [],
+      "line": "toma_$d",
+      "right": [
+        {
+          "act": "bebecq"
+        },
+        {
+          "say": "cq_gracias_abuela",
+          "gap": 300
+        },
+        {
+          "act": "gana"
+        },
+        {
+          "act": "abcoge",
+          "en": "$o"
+        },
+        "abuela_toma_$o",
+        {
+          "act": "abbebe"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "burbuja",
+          "quien": "ab",
+          "que": "no"
+        },
+        "no_$x",
+        {
+          "act": "calla"
+        },
+        {
+          "act": "abcoge",
+          "en": "$x"
+        },
+        {
+          "act": "abbebe"
+        },
+        {
+          "act": "aveva",
+          "en": "$p"
+        },
+        "pajaro_toma_$p",
+        {
+          "act": "avebebe",
+          "en": "$p"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "aveventana"
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "draw": "l",
+      "options": [
+        "silla",
+        "mesa"
+      ]
+    },
+    {
+      "act": "sirve",
+      "que": "sm"
+    },
+    {
+      "set": {
+        "twinkle": "vaso_silla"
+      }
+    },
+    "vaso_en_silla",
+    {
+      "set": {
+        "twinkle": "vaso_mesa"
+      }
+    },
+    "vaso_en_mesa",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "decide": "find",
+      "options": [
+        "vaso_silla",
+        "vaso_mesa"
+      ],
+      "pick": "vaso_$l",
+      "as": "p",
+      "other": "o",
+      "lock": true,
+      "noretry": true,
+      "do": "coge",
+      "tests": "vaso_$l",
+      "lead": [],
+      "line": "toma_vaso_$l",
+      "right": [
+        {
+          "act": "bebecq"
+        },
+        {
+          "say": "cq_gracias_abuela",
+          "gap": 300
+        },
+        {
+          "act": "gana"
+        },
+        {
+          "act": "abcoge",
+          "en": "$o"
+        },
+        "abuela_toma_$o",
+        {
+          "act": "abbebe"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "burbuja",
+          "quien": "ab",
+          "que": "no"
+        },
+        "no_$x",
+        {
+          "act": "calla"
+        },
+        {
+          "act": "abcoge",
+          "en": "$x"
+        },
+        {
+          "act": "abbebe"
+        },
+        {
+          "act": "aveva",
+          "en": "$p"
+        },
+        "pajaro_toma_$p",
+        {
+          "act": "avebebe",
+          "en": "$p"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "aveventana"
+        }
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "draw": "t",
+      "options": [
+        "grande",
+        "pequeno"
+      ]
+    },
+    {
+      "act": "sirve",
+      "que": "gp"
+    },
+    {
+      "set": {
+        "twinkle": "vaso_grande"
+      }
+    },
+    "un_vaso_grande",
+    {
+      "set": {
+        "twinkle": "vaso_pequeno"
+      }
+    },
+    "un_vaso_pequeno",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "decide": "find",
+      "options": [
+        "vaso_grande",
+        "vaso_pequeno"
+      ],
+      "pick": "vaso_$t",
+      "as": "p",
+      "other": "o",
+      "lock": true,
+      "noretry": true,
+      "do": "coge",
+      "tests": "vaso_$t",
+      "lead": [],
+      "line": "toma_vaso_$t",
+      "right": [
+        {
+          "act": "bebecq"
+        },
+        {
+          "say": "cq_gracias_abuela",
+          "gap": 300
+        },
+        {
+          "act": "gana"
+        },
+        {
+          "act": "abcoge",
+          "en": "$o"
+        },
+        "abuela_toma_$o",
+        {
+          "act": "abbebe"
+        }
+      ],
+      "wrong": [
+        {
+          "act": "burbuja",
+          "quien": "ab",
+          "que": "no"
+        },
+        "no_$x",
+        {
+          "act": "calla"
+        },
+        {
+          "act": "abcoge",
+          "en": "$x"
+        },
+        {
+          "act": "abbebe"
+        },
+        {
+          "act": "aveva",
+          "en": "$p"
+        },
+        "pajaro_toma_$p",
+        {
+          "act": "avebebe",
+          "en": "$p"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "aveventana"
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "set": {
+        "rondas": 0
+      }
+    },
+    {
+      "act": "sirve",
+      "que": "fin"
+    },
+    "toma",
+    {
+      "act": "coge",
+      "en": "fin1"
+    },
+    {
+      "act": "bebecq"
+    },
+    {
+      "act": "aveva",
+      "en": "fin2"
+    },
+    "pajaro_toma_agua",
+    {
+      "act": "avebebe",
+      "en": "fin2"
+    },
+    {
+      "act": "marcador"
+    },
+    {
+      "say": "cq_gracias_abuela",
+      "gap": 300
+    },
+    {
+      "say": "ab_de_nada",
+      "gap": 400
+    },
+    {
+      "wait": 500
+    }
+  ],
+  "leer": [
+    "hace_calor",
+    "cq_que_calor",
+    "ven_balcon",
+    "silla_de_abuela",
+    "puedes_silla",
+    "se_sienta_silla",
+    "silla_es_pequena",
+    "donde_silla_pequena",
+    "abuela_entra",
+    "dos_vasos",
+    "pone_vasos",
+    "vaso_de_jugo",
+    "vaso_de_agua",
+    "abuela_se_sienta",
+    "puedes_vaso_agua",
+    "agua_en_mesa",
+    "donde_jugo",
+    "mira_pajaro",
+    "pajaro_toma_jugo",
+    "no_pajaro",
+    "pajaro_se_sienta",
+    "toma_agua",
+    "cq_gracias_abuela",
+    "abuela_toma_jugo",
+    "vaso_en_silla",
+    "vaso_en_mesa",
+    "toma_vaso_silla",
+    "abuela_toma_vaso_mesa",
+    "un_vaso_grande",
+    "un_vaso_pequeno",
+    "toma_vaso_pequeno",
+    "abuela_toma_vaso_grande",
+    "toma",
+    "pajaro_toma_agua",
+    "ab_de_nada"
+  ]
+}

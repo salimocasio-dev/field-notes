@@ -1,0 +1,272 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "los-botes",
+  "lang": "es",
+  "title": "Los botes",
+  "place": "El parque",
+  "focus_words": [
+    "rojo",
+    "azul",
+    "verde",
+    "¿de qué color?"
+  ],
+  "back_again": [
+    "pez",
+    "nada",
+    "dame",
+    "hay",
+    "tres",
+    "dos",
+    "uno",
+    "mira",
+    "allá",
+    "aquí",
+    "ahora"
+  ],
+  "also_heard": [
+    "bote",
+    "pinta",
+    "van"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "perro": "c_n_perro",
+    "agua": "k_n_agua",
+    "lago": "l_n_lago",
+    "juncos": "k_n_agua",
+    "coqui": "yo_coqui",
+    "flor": "l_n_flor",
+    "pato_blanco": "l_n_pato",
+    "pato_negro": "l_n_pato",
+    "pato_amarillo": "l_n_pato",
+    "pez": "l_n_pez",
+    "pajaro": "l_n_pajaro",
+    "ave_blanco": "l_n_pajaro",
+    "ave_negro": "l_n_pajaro",
+    "bote_rojo": "l_n_bote",
+    "bote_azul": "l_n_bote",
+    "bote_verde": "l_n_bote"
+  },
+  "palabras": {
+    "pote_rojo": "rojo",
+    "pote_azul": "azul",
+    "pote_verde": "verde"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "c_n_perro": {
+      "who": "narr",
+      "text": "Es el perro. Se llama Canelo."
+    },
+    "k_n_agua": {
+      "who": "narr",
+      "text": "Es el agua."
+    },
+    "l_n_pato": {
+      "who": "narr",
+      "text": "Es un pato."
+    },
+    "l_n_pez": {
+      "who": "narr",
+      "text": "Es un pez."
+    },
+    "l_n_pajaro": {
+      "who": "narr",
+      "text": "Es un pájaro."
+    },
+    "l_n_lago": {
+      "who": "narr",
+      "text": "Es el lago."
+    },
+    "l_n_bote": {
+      "who": "narr",
+      "text": "Es un bote."
+    },
+    "l_n_flor": {
+      "who": "narr",
+      "text": "Es una flor."
+    },
+    "c19_hay_tres": {
+      "who": "narr",
+      "text": "Mira. Hay tres botes."
+    },
+    "c19_un_rojo": {
+      "who": "narr",
+      "text": "Un bote rojo."
+    },
+    "c19_un_azul": {
+      "who": "narr",
+      "text": "Un bote azul."
+    },
+    "c19_un_verde": {
+      "who": "narr",
+      "text": "Y un bote verde."
+    },
+    "c19_l_dame_rojo": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Coquí, ¡dame el bote rojo!"
+    },
+    "c19_l_dame_azul": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Coquí, ¡dame el bote azul!"
+    },
+    "c19_l_dame_verde": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Coquí, ¡dame el bote verde!"
+    },
+    "c19_luis_azul": {
+      "who": "narr",
+      "text": "Luis coge el bote azul."
+    },
+    "c19_luis_verde": {
+      "who": "narr",
+      "text": "Y el bote verde."
+    },
+    "c19_alla_van3": {
+      "who": "narr",
+      "text": "¡Allá van los botes! Rojo, azul y verde."
+    },
+    "c19_alla_van": {
+      "who": "narr",
+      "text": "¡Allá van los botes!"
+    },
+    "c19_l_un_pez": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¿Un pez? ¿De qué color es?"
+    },
+    "c19_l_y_este": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¿Y este pez? ¿De qué color es?"
+    },
+    "c19_cq_rojo": {
+      "who": "tu",
+      "text": "¡Es rojo!"
+    },
+    "c19_cq_azul": {
+      "who": "tu",
+      "text": "¡Es azul!"
+    },
+    "c19_cq_verde": {
+      "who": "tu",
+      "text": "¡Es verde!"
+    },
+    "c19_l_pez_bote_rojo": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Un pez rojo y un bote rojo!"
+    },
+    "c19_l_pez_bote_verde": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Un pez verde y un bote verde!"
+    },
+    "c19_l_pinta3": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Coquí, ¡pinta tres botes! ¿De qué color? Uno rojo, uno azul y uno verde."
+    },
+    "c19_ay_rojo": {
+      "who": "narr",
+      "text": "¡Ay, no! ¡El bote rojo!"
+    },
+    "c19_no_este_rojo": {
+      "who": "narr",
+      "text": "No, Coquí. Este es el bote rojo."
+    },
+    "c19_no_este_azul": {
+      "who": "narr",
+      "text": "No, Coquí. Este es el bote azul."
+    },
+    "c19_no_este_verde": {
+      "who": "narr",
+      "text": "No, Coquí. Este es el bote verde."
+    },
+    "c19_no_es_rojo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pez es rojo."
+    },
+    "c19_no_es_azul": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pez es azul."
+    },
+    "c19_no_es_verde": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pez es verde."
+    },
+    "c19_no_uno_rojo": {
+      "who": "narr",
+      "text": "No, Coquí. Luis dice: ¡Uno rojo!"
+    },
+    "c19_no_uno_azul": {
+      "who": "narr",
+      "text": "No, Coquí. Luis dice: ¡Uno azul!"
+    },
+    "c19_no_uno_verde": {
+      "who": "narr",
+      "text": "No, Coquí. Luis dice: ¡Uno verde!"
+    },
+    "c19_fin": {
+      "who": "narr",
+      "text": "Un bote rojo. Un bote azul. Un bote verde."
+    },
+    "c19_cq_aqui": {
+      "who": "tu",
+      "text": "¡Aquí están los botes!"
+    },
+    "c19_l_dos_rojo_azul": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Ahora dos botes! Uno rojo y uno azul."
+    },
+    "c19_l_dos_rojo_verde": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Ahora dos botes! Uno rojo y uno verde."
+    },
+    "c19_l_dos_azul_rojo": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Ahora dos botes! Uno azul y uno rojo."
+    },
+    "c19_l_dos_azul_verde": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Ahora dos botes! Uno azul y uno verde."
+    },
+    "c19_l_dos_verde_rojo": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Ahora dos botes! Uno verde y uno rojo."
+    },
+    "c19_l_dos_verde_azul": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Ahora dos botes! Uno verde y uno azul."
+    }
+  }
+}

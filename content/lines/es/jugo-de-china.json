@@ -1,0 +1,281 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "jugo-de-china",
+  "lang": "es",
+  "title": "Jugo de china",
+  "place": "La cocina",
+  "focus_words": [
+    "china",
+    "mantequilla",
+    "lleno",
+    "vacío"
+  ],
+  "back_again": [
+    "vaso",
+    "jugo",
+    "hace calor",
+    "hace",
+    "pone",
+    "pan",
+    "toma",
+    "mi",
+    "quiero",
+    "más",
+    "por favor",
+    "ahora",
+    "familia",
+    "verde",
+    "amarillo",
+    "rojo",
+    "azul",
+    "gracias",
+    "no hay"
+  ],
+  "also_heard": [
+    "ponle",
+    "le pone"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina",
+    "nevera": "c30_nevera"
+  },
+  "palabras": {
+    "vacio": "vacío"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c30_nevera": {
+      "who": "narr",
+      "text": "Esta es la nevera."
+    },
+    "c32_calor": {
+      "who": "narr",
+      "text": "Hace calor."
+    },
+    "c32_hace_jugo": {
+      "who": "narr",
+      "text": "Abuela hace jugo de china."
+    },
+    "c32_aqui_chinas": {
+      "who": "narr",
+      "text": "Aquí hay chinas."
+    },
+    "c32_aqui_mant": {
+      "who": "narr",
+      "text": "Y aquí hay mantequilla."
+    },
+    "c32_le_pone": {
+      "who": "narr",
+      "text": "Abuela le pone mantequilla al pan."
+    },
+    "c32_luis_come": {
+      "who": "narr",
+      "text": "Luis come pan con mantequilla."
+    },
+    "c32_ab_un_vaso": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Coquí, un vaso está vacío. Ponle jugo de china."
+    },
+    "c32_ahora_amarillo": {
+      "who": "narr",
+      "text": "Ahora el vaso amarillo está lleno."
+    },
+    "c32_luis_mi_vacio": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Mi vaso está vacío."
+    },
+    "c32_luis_mi_lleno": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Mi vaso está lleno."
+    },
+    "c32_carmen_mi_vacio": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Mi vaso está vacío."
+    },
+    "c32_carmen_mi_lleno": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Mi vaso está lleno."
+    },
+    "c32_luis_toma": {
+      "who": "narr",
+      "text": "Luis toma jugo de china."
+    },
+    "c32_carmen_toma": {
+      "who": "narr",
+      "text": "Carmen toma jugo de china."
+    },
+    "c32_carmen_quiero": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Quiero pan con mantequilla y jugo de china."
+    },
+    "c32_carmen_come": {
+      "who": "narr",
+      "text": "Carmen come pan con mantequilla."
+    },
+    "c32_luis_mas": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡Más pan con mantequilla, por favor!"
+    },
+    "c32_mas_jugo": {
+      "who": "narr",
+      "text": "Abuela hace más jugo de china."
+    },
+    "c32_familia": {
+      "who": "narr",
+      "text": "La familia toma jugo de china."
+    },
+    "c32_ab_come": {
+      "who": "narr",
+      "text": "Abuela come pan con mantequilla."
+    },
+    "cq_gracias_abuela": {
+      "who": "tu",
+      "text": "¡Gracias, abuela!"
+    },
+    "c32_no_hay_mas": {
+      "who": "narr",
+      "text": "No hay más jugo."
+    },
+    "c32_n_verde_lleno": {
+      "who": "narr",
+      "text": "El vaso verde está lleno."
+    },
+    "c32_n_verde_vacio": {
+      "who": "narr",
+      "text": "El vaso verde está vacío."
+    },
+    "c32_no_verde_vacio": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El vaso verde está vacío."
+    },
+    "c32_n_amarillo_lleno": {
+      "who": "narr",
+      "text": "El vaso amarillo está lleno."
+    },
+    "c32_n_amarillo_vacio": {
+      "who": "narr",
+      "text": "El vaso amarillo está vacío."
+    },
+    "c32_no_amarillo_vacio": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El vaso amarillo está vacío."
+    },
+    "c32_n_rojo_lleno": {
+      "who": "narr",
+      "text": "El vaso rojo está lleno."
+    },
+    "c32_n_rojo_vacio": {
+      "who": "narr",
+      "text": "El vaso rojo está vacío."
+    },
+    "c32_no_rojo_vacio": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El vaso rojo está vacío."
+    },
+    "c32_n_azul_lleno": {
+      "who": "narr",
+      "text": "El vaso azul está lleno."
+    },
+    "c32_n_azul_vacio": {
+      "who": "narr",
+      "text": "El vaso azul está vacío."
+    },
+    "c32_no_azul_vacio": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El vaso azul está vacío."
+    },
+    "c32_mama_rojo_lleno": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: El vaso rojo está lleno."
+    },
+    "c32_mama_rojo_vacio": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: El vaso rojo está vacío."
+    },
+    "c32_mama_azul_lleno": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: El vaso azul está lleno."
+    },
+    "c32_mama_azul_vacio": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: El vaso azul está vacío."
+    },
+    "c32_ab_verde_lleno": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: El vaso verde está lleno."
+    },
+    "c32_ab_verde_vacio": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: El vaso verde está vacío."
+    },
+    "c32_ab_amarillo_lleno": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: El vaso amarillo está lleno."
+    },
+    "c32_ab_amarillo_vacio": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: El vaso amarillo está vacío."
+    }
+  }
+}

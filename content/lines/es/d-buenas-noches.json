@@ -1,0 +1,104 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "d-buenas-noches",
+  "lang": "es",
+  "title": "Buenas noches",
+  "place": "La casa",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "dn01": {
+      "who": "narr",
+      "text": "Mira el sol."
+    },
+    "dn02": {
+      "who": "narr",
+      "text": "¡Mira! Una estrella."
+    },
+    "dn03": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: ¡Niños! ¡Vamos para adentro!"
+    },
+    "dn04": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Hasta mañana, Coquí."
+    },
+    "dn05": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Hasta mañana, amigo."
+    },
+    "dn06": {
+      "who": "tu",
+      "text": "¡Hasta mañana!"
+    },
+    "dn07": {
+      "who": "narr",
+      "text": "Los niños entran a la casa."
+    },
+    "dn08": {
+      "who": "narr",
+      "text": "Mamá, papá y el bebé entran."
+    },
+    "dn09": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Buenas noches, Coquí."
+    },
+    "dn10": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Buenas noches."
+    },
+    "dn11": {
+      "who": "tu",
+      "text": "Buenas noches, abuela. Buenas noches, abuelo."
+    },
+    "dn12": {
+      "who": "narr",
+      "text": "Abuela cierra la puerta."
+    },
+    "dn13": {
+      "who": "narr",
+      "text": "Ahora es de noche."
+    },
+    "dn14": {
+      "who": "narr",
+      "text": "El pájaro duerme."
+    },
+    "dn15": {
+      "who": "narr",
+      "text": "¡Mira! Un cucubano."
+    },
+    "dn16": {
+      "who": "narr",
+      "text": "Y otro. Y otro más."
+    },
+    "dn17": {
+      "who": "narr",
+      "text": "Coquí no duerme. Coquí canta."
+    },
+    "dn18": {
+      "who": "narr",
+      "text": "Buenas noches, Coquí."
+    }
+  }
+}

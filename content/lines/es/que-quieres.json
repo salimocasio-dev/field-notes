@@ -1,0 +1,271 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "que-quieres",
+  "lang": "es",
+  "title": "¿Qué quieres?",
+  "place": "La cocina",
+  "focus_words": [
+    "quieres",
+    "¿qué quieres?",
+    "me gusta",
+    "no me gusta"
+  ],
+  "back_again": [
+    "pan",
+    "mantequilla",
+    "chocolate",
+    "caliente",
+    "tiene",
+    "quiere",
+    "come",
+    "aquí",
+    "más"
+  ],
+  "also_heard": [],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina"
+  },
+  "palabras": {
+    "nmg": "no me gusta",
+    "nt": "tiene"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c33_caliente": {
+      "who": "narr",
+      "text": "El pan está caliente."
+    },
+    "c33_aqui_mant": {
+      "who": "narr",
+      "text": "Aquí hay mantequilla."
+    },
+    "c33_aqui_choc": {
+      "who": "narr",
+      "text": "Aquí hay chocolate."
+    },
+    "c31_aqui_pan": {
+      "who": "narr",
+      "text": "Aquí hay pan."
+    },
+    "c33_ab_mg_pan": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Me gusta el pan."
+    },
+    "c33_q_abuelo": {
+      "who": "tu",
+      "text": "¿Qué quieres, abuelo?"
+    },
+    "c33_q_mama": {
+      "who": "tu",
+      "text": "¿Qué quieres, mamá?"
+    },
+    "c33_q_luis": {
+      "who": "tu",
+      "text": "¿Qué quieres, Luis?"
+    },
+    "c33_q_papa": {
+      "who": "tu",
+      "text": "¿Qué quieres, papá?"
+    },
+    "c33_q_carmen": {
+      "who": "tu",
+      "text": "¿Qué quieres, Carmen?"
+    },
+    "c33_abuelo_mg_choc": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Me gusta el chocolate."
+    },
+    "c33_abuelo_nmg_mant": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: No me gusta la mantequilla."
+    },
+    "c33_abuelo_come_choc": {
+      "who": "narr",
+      "text": "Abuelo come pan con chocolate."
+    },
+    "c33_mama_nmg_choc": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: No me gusta el chocolate."
+    },
+    "c33_mama_mg_mant": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Me gusta la mantequilla."
+    },
+    "c33_mama_come_mant": {
+      "who": "narr",
+      "text": "Mamá come pan con mantequilla."
+    },
+    "c33_abuelo_nt_choc": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Mi pan no tiene chocolate."
+    },
+    "c33_luis_nmg_mant": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: No me gusta la mantequilla."
+    },
+    "c33_luis_come_choc": {
+      "who": "narr",
+      "text": "Luis come pan con chocolate."
+    },
+    "c33_mama_nt_mant": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Mi pan no tiene mantequilla."
+    },
+    "c33_ab_mas_pan": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Aquí hay más pan."
+    },
+    "c33_plato_no_tiene": {
+      "who": "narr",
+      "text": "El plato de abuela no tiene pan."
+    },
+    "c33_familia_come": {
+      "who": "narr",
+      "text": "La familia come pan."
+    },
+    "c33_cq_pan_abuela": {
+      "who": "tu",
+      "text": "¡Me gusta el pan de abuela!"
+    },
+    "abuela_dice": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Hola! ¿Cómo estás?"
+    },
+    "bien_gracias": {
+      "who": "tu",
+      "text": "¡Bien, gracias!",
+      "tu_turno": [
+        {
+          "palabra": "bien",
+          "formas": [
+            "bien"
+          ]
+        }
+      ]
+    },
+    "cq_gracias_abuela": {
+      "who": "tu",
+      "text": "¡Gracias, abuela!",
+      "tu_turno": [
+        {
+          "palabra": "gracias",
+          "formas": [
+            "gracias"
+          ]
+        }
+      ]
+    },
+    "c33_papa_nmg_choc": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: No me gusta el chocolate."
+    },
+    "c33_papa_nmg_mant": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: No me gusta la mantequilla."
+    },
+    "c33_papa_nt_choc": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: Mi pan no tiene chocolate."
+    },
+    "c33_papa_nt_mant": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: Mi pan no tiene mantequilla."
+    },
+    "c33_no_papa_choc": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Papá quiere pan con chocolate."
+    },
+    "c33_no_papa_mant": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Papá quiere pan con mantequilla."
+    },
+    "c33_carmen_nmg_choc": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: No me gusta el chocolate."
+    },
+    "c33_carmen_nmg_mant": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: No me gusta la mantequilla."
+    },
+    "c33_carmen_nt_choc": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Mi pan no tiene chocolate."
+    },
+    "c33_carmen_nt_mant": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Mi pan no tiene mantequilla."
+    },
+    "c33_no_carmen_choc": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Carmen quiere pan con chocolate."
+    },
+    "c33_no_carmen_mant": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Carmen quiere pan con mantequilla."
+    }
+  }
+}

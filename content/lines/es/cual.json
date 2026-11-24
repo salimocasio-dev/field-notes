@@ -1,0 +1,268 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "El parque",
+  "focus_words": [
+    "amarillo",
+    "blanco",
+    "negro",
+    "¿cuál?"
+  ],
+  "back_again": [
+    "pato",
+    "pájaro",
+    "para",
+    "hay",
+    "tres",
+    "mira",
+    "flor",
+    "sí",
+    "amigo"
+  ],
+  "also_heard": [
+    "amarilla",
+    "pan"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "perro": "c_n_perro",
+    "agua": "k_n_agua",
+    "lago": "l_n_lago",
+    "juncos": "k_n_agua",
+    "coqui": "yo_coqui",
+    "flor": "l_n_flor",
+    "pato_blanco": "l_n_pato",
+    "pato_negro": "l_n_pato",
+    "pato_amarillo": "l_n_pato",
+    "pez": "l_n_pez",
+    "pajaro": "l_n_pajaro",
+    "ave_blanco": "l_n_pajaro",
+    "ave_negro": "l_n_pajaro",
+    "bote_rojo": "l_n_bote",
+    "bote_azul": "l_n_bote",
+    "bote_verde": "l_n_bote"
+  },
+  "palabras": {
+    "cual": "¿cuál?"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "c_n_perro": {
+      "who": "narr",
+      "text": "Es el perro. Se llama Canelo."
+    },
+    "k_n_agua": {
+      "who": "narr",
+      "text": "Es el agua."
+    },
+    "l_n_pato": {
+      "who": "narr",
+      "text": "Es un pato."
+    },
+    "l_n_pez": {
+      "who": "narr",
+      "text": "Es un pez."
+    },
+    "l_n_pajaro": {
+      "who": "narr",
+      "text": "Es un pájaro."
+    },
+    "l_n_lago": {
+      "who": "narr",
+      "text": "Es el lago."
+    },
+    "l_n_bote": {
+      "who": "narr",
+      "text": "Es un bote."
+    },
+    "l_n_flor": {
+      "who": "narr",
+      "text": "Es una flor."
+    },
+    "c20_flor": {
+      "who": "narr",
+      "text": "Mira. Una flor amarilla."
+    },
+    "c20_hay_tres": {
+      "who": "narr",
+      "text": "Y mira. Hay tres patos."
+    },
+    "c20_un_blanco": {
+      "who": "narr",
+      "text": "Un pato blanco."
+    },
+    "c20_un_negro": {
+      "who": "narr",
+      "text": "Un pato negro."
+    },
+    "c20_un_amarillo": {
+      "who": "narr",
+      "text": "Y un pato amarillo."
+    },
+    "c20_ca_cual_es_blanco": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¿Cuál es el pato blanco?"
+    },
+    "c20_ca_cual_es_negro": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¿Cuál es el pato negro?"
+    },
+    "c20_ca_cual_es_amarillo": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¿Cuál es el pato amarillo?"
+    },
+    "c20_ca_si_blanco": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Sí! El pato blanco."
+    },
+    "c20_ca_si_negro": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Sí! El pato negro."
+    },
+    "c20_ca_si_amarillo": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Sí! El pato amarillo."
+    },
+    "c20_dos_pajaros": {
+      "who": "narr",
+      "text": "Mira. Un pájaro blanco y un pájaro negro."
+    },
+    "c20_ca_mi_pan": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Mi pan! ¿Cuál pájaro?"
+    },
+    "c20_cq_p_negro": {
+      "who": "tu",
+      "text": "¡El pájaro negro!"
+    },
+    "c20_cq_p_blanco": {
+      "who": "tu",
+      "text": "¡El pájaro blanco!"
+    },
+    "c20_ca_pan_pato": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Pan para el pato!"
+    },
+    "c20_cq_cual": {
+      "who": "tu",
+      "text": "¿Cuál?"
+    },
+    "c20_ca_el_blanco": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: El pato blanco."
+    },
+    "c20_ca_el_negro": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: El pato negro."
+    },
+    "c20_ca_el_amarillo": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: El pato amarillo."
+    },
+    "c20_ca_pan_blanco": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Pan para el pato blanco!"
+    },
+    "c20_ca_pan_negro": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Pan para el pato negro!"
+    },
+    "c20_ca_pan_amarillo": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Pan para el pato amarillo!"
+    },
+    "c20_ca_el_blanco_coqui": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡El pato blanco, Coquí!"
+    },
+    "c20_ca_el_negro_coqui": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡El pato negro, Coquí!"
+    },
+    "c20_ca_el_amarillo_coqui": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡El pato amarillo, Coquí!"
+    },
+    "c20_l_no_canelo": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡No, Canelo!"
+    },
+    "c20_no_este_blanco": {
+      "who": "narr",
+      "text": "No, Coquí. Este es el pato blanco."
+    },
+    "c20_no_este_negro": {
+      "who": "narr",
+      "text": "No, Coquí. Este es el pato negro."
+    },
+    "c20_no_este_amarillo": {
+      "who": "narr",
+      "text": "No, Coquí. Este es el pato amarillo."
+    },
+    "c20_no_tiene_negro": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pájaro negro tiene el pan."
+    },
+    "c20_no_tiene_blanco": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pájaro blanco tiene el pan."
+    },
+    "c20_no_hay_tres": {
+      "who": "narr",
+      "text": "No, Coquí. Hay tres patos. ¿Cuál pato?"
+    },
+    "c20_fin": {
+      "who": "narr",
+      "text": "Un pato blanco. Un pato negro. Y un pato amarillo."
+    },
+    "c20_ca_tu_amigo": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¿Cuál es tu amigo, Coquí?"
+    },
+    "c20_cq_el_amarillo": {
+      "who": "tu",
+      "text": "¡El amarillo!"
+    }
+  }
+}

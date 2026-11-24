@@ -1,0 +1,81 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "d-piragua-luis",
+  "lang": "es",
+  "title": "La piragua de Luis",
+  "place": "El parque",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "qd01": {
+      "who": "narr",
+      "text": "Este es el piragüero."
+    },
+    "qd02": {
+      "who": "narr",
+      "text": "Luis tiene una piragua. Carmen también tiene una piragua."
+    },
+    "qd03": {
+      "who": "narr",
+      "text": "Luis corre."
+    },
+    "qd04": {
+      "who": "narr",
+      "text": "¡Ay, no! La piragua se cae."
+    },
+    "qd05": {
+      "who": "narr",
+      "text": "Luis está triste."
+    },
+    "qd06": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Toma, Luis. Toma mi piragua."
+    },
+    "qd07": {
+      "who": "narr",
+      "text": "Ahora Luis está contento."
+    },
+    "qd08": {
+      "who": "tu",
+      "text": "Dos piraguas, por favor."
+    },
+    "qd09": {
+      "who": "narr",
+      "text": "Una piragua para Carmen."
+    },
+    "qd10": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Gracias, Coquí!"
+    },
+    "qd11": {
+      "who": "narr",
+      "text": "Y una piragua para Coquí. Carmen está contenta."
+    },
+    "qd12": {
+      "who": "narr",
+      "text": "¿Y el pájaro? El pájaro come."
+    },
+    "qd13": {
+      "who": "narr",
+      "text": "El pájaro también está contento."
+    }
+  }
+}

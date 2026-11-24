@@ -1,0 +1,579 @@
+{
+  "format": "coqui.game.v1",
+  "id": "la-piragua",
+  "scene": "banco",
+  "next": "senor-senora",
+  "goal": "Get each thing to the one it is for, and keep it from the pigeons.",
+  "stake": {
+    "thing": "palomas",
+    "steps": 3
+  },
+  "dots": 8,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio21"
+    },
+    {
+      "wait": 500
+    },
+    {
+      "set": {
+        "twinkle": "hombre"
+      }
+    },
+    "c21_un_hombre",
+    {
+      "set": {
+        "twinkle": "mujer"
+      }
+    },
+    "c21_una_mujer",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    {
+      "dots": 1
+    },
+    {
+      "act": "pon",
+      "k": "piragua"
+    },
+    {
+      "ask": "hombre",
+      "lead": [],
+      "line": "c21_para_hombre",
+      "then": [
+        "c21_hombre_come"
+      ],
+      "after": [
+        {
+          "act": "lleva",
+          "a": "hombre"
+        }
+      ]
+    },
+    {
+      "act": "pon",
+      "k": "agua"
+    },
+    {
+      "ask": "mujer",
+      "lead": [],
+      "line": "c21_agua_mujer",
+      "then": [
+        "c21_mujer_bebe"
+      ],
+      "after": [
+        {
+          "act": "lleva",
+          "a": "mujer"
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "casa"
+    },
+    {
+      "act": "dejan"
+    },
+    {
+      "act": "paloma",
+      "k": "come"
+    },
+    {
+      "ask": "di_come",
+      "lead": [],
+      "line": null,
+      "then": [
+        {
+          "say": "c21_h_gracias",
+          "gap": 250
+        },
+        {
+          "act": "acaba",
+          "a": "hombre"
+        }
+      ],
+      "after": [
+        {
+          "act": "salva",
+          "k": "come"
+        }
+      ],
+      "resp": [
+        "di_come",
+        "di_bebe"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_come": "c21_cq_come",
+        "di_bebe": "c21_cq_bebe"
+      },
+      "said": {
+        "di_come": "c21_cq_come"
+      }
+    },
+    {
+      "act": "paloma",
+      "k": "bebe"
+    },
+    {
+      "ask": "di_bebe",
+      "lead": [],
+      "line": null,
+      "then": [
+        {
+          "say": "c21_m_gracias",
+          "gap": 250
+        },
+        {
+          "act": "acaba",
+          "a": "mujer"
+        },
+        {
+          "act": "sinbandeja"
+        }
+      ],
+      "after": [
+        {
+          "act": "salva",
+          "k": "bebe"
+        }
+      ],
+      "resp": [
+        "di_come",
+        "di_bebe"
+      ],
+      "baraja": true,
+      "voces": {
+        "di_come": "c21_cq_come",
+        "di_bebe": "c21_cq_bebe"
+      },
+      "said": {
+        "di_bebe": "c21_cq_bebe"
+      }
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "manos",
+      "i": "piragua",
+      "d": "agua"
+    },
+    {
+      "ask": "come",
+      "lead": [],
+      "line": "c21_ca_come",
+      "then": [
+        "c21_coqui_come",
+        {
+          "act": "termina",
+          "que": "come"
+        }
+      ],
+      "after": [
+        {
+          "act": "empieza",
+          "que": "come"
+        }
+      ],
+      "resp": [
+        "come",
+        "bebe"
+      ],
+      "baraja": true
+    },
+    {
+      "act": "llena"
+    },
+    {
+      "ask": "bebe",
+      "lead": [],
+      "line": "c21_ca_bebe",
+      "then": [
+        "c21_coqui_bebe",
+        {
+          "act": "termina",
+          "que": "bebe"
+        }
+      ],
+      "after": [
+        {
+          "act": "empieza",
+          "que": "bebe"
+        }
+      ],
+      "resp": [
+        "come",
+        "bebe"
+      ],
+      "baraja": true
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "turno21"
+    },
+    "c21_ay",
+    {
+      "wait": 300
+    },
+    {
+      "act": "limpia"
+    },
+    {
+      "set": {
+        "tarjeta": "rondas",
+        "marcas": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "wait": 400
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "nuevas"
+    },
+    {
+      "act": "dejan"
+    },
+    {
+      "draw": "pa",
+      "options": [
+        "come",
+        "bebe"
+      ]
+    },
+    {
+      "calc": "qa",
+      "cond": "pa=come",
+      "then": "h",
+      "else": "m"
+    },
+    {
+      "act": "paloma",
+      "k": "$pa"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "di_come",
+        "di_bebe"
+      ],
+      "baraja": true,
+      "pick": "di_$pa",
+      "tests": "$pa",
+      "voces": {
+        "di_come": "c21_cq_come",
+        "di_bebe": "c21_cq_bebe"
+      },
+      "said": {
+        "di_come": "c21_cq_come",
+        "di_bebe": "c21_cq_bebe"
+      },
+      "lead": [],
+      "line": null,
+      "right": [
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "salva",
+              "k": "$pa"
+            },
+            {
+              "act": "marca",
+              "que": "ok"
+            },
+            {
+              "say": "c21_$qa_gracias",
+              "gap": 250
+            }
+          ],
+          "else": [
+            {
+              "act": "salva",
+              "k": "$pa",
+              "medio": 1
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "miraotra",
+          "k": "$pa"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        "c21_no_mira_$pa"
+      ]
+    },
+    {
+      "act": "acaban"
+    },
+    {
+      "dots": 6
+    },
+    {
+      "draw": "pb",
+      "options": [
+        "hombre",
+        "mujer",
+        "hombre",
+        "mujer",
+        "nino",
+        "nina"
+      ]
+    },
+    {
+      "calc": "tb",
+      "cond": "pb=nino",
+      "then": "luis",
+      "else": "$pb"
+    },
+    {
+      "calc": "tb",
+      "cond": "pb=nina",
+      "then": "carmen",
+      "else": "$tb"
+    },
+    {
+      "act": "pon",
+      "k": "piragua",
+      "de": "piraguero"
+    },
+    {
+      "decide": "do",
+      "options": [
+        "hombre",
+        "mujer",
+        "luis",
+        "carmen"
+      ],
+      "pick": "$tb",
+      "tests": "$pb",
+      "lock": true,
+      "lead": [],
+      "line": "c21_para_$pb",
+      "right": [
+        {
+          "act": "lleva",
+          "a": "$tb"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "llevamal",
+          "a": "$x"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "pon",
+          "k": "piragua",
+          "de": "piraguero"
+        },
+        "c21_no_para_$pb"
+      ]
+    },
+    {
+      "act": "casa"
+    },
+    {
+      "act": "sinbandeja"
+    },
+    {
+      "act": "tragan"
+    },
+    {
+      "dots": 7
+    },
+    {
+      "draw": "mc",
+      "options": [
+        "pa",
+        "ap"
+      ]
+    },
+    {
+      "draw": "vc",
+      "options": [
+        "come",
+        "bebe"
+      ]
+    },
+    {
+      "if": "mc=pa",
+      "then": [
+        {
+          "act": "manos",
+          "i": "piragua",
+          "d": "agua"
+        }
+      ],
+      "else": [
+        {
+          "act": "manos",
+          "i": "agua",
+          "d": "piragua"
+        }
+      ]
+    },
+    {
+      "act": "acecha"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "come",
+        "bebe"
+      ],
+      "baraja": true,
+      "pick": "$vc",
+      "tests": "$vc",
+      "lead": [],
+      "line": "c21_ca_$vc",
+      "right": [
+        {
+          "act": "empieza",
+          "que": "$vc"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "sale",
+              "que": "$vc",
+              "hizo": "$vc"
+            }
+          ]
+        },
+        {
+          "act": "termina",
+          "que": "$vc"
+        },
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "marca",
+              "que": "ok"
+            }
+          ]
+        }
+      ],
+      "wrong": [
+        {
+          "act": "empieza",
+          "que": "$x"
+        },
+        {
+          "act": "sale",
+          "que": "$vc",
+          "hizo": "$x"
+        },
+        {
+          "act": "termina",
+          "que": "$x"
+        },
+        {
+          "act": "marca",
+          "que": "x"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "repone",
+          "que": "$vc"
+        },
+        "c21_no_ca_$vc"
+      ]
+    },
+    {
+      "act": "otro",
+      "que": "$vc"
+    },
+    {
+      "act": "limpia"
+    }
+  ],
+  "final": [
+    {
+      "dots": 8
+    },
+    {
+      "act": "final21"
+    },
+    "c21_fin",
+    {
+      "act": "quiere"
+    },
+    "c21_y_pajaro",
+    {
+      "say": "c17_cq_no_mas",
+      "gap": 300
+    },
+    {
+      "act": "fin21"
+    },
+    {
+      "wait": 600
+    }
+  ],
+  "leer": [
+    "c21_un_hombre",
+    "c21_una_mujer",
+    "c21_para_hombre",
+    "c21_hombre_come",
+    "c21_agua_mujer",
+    "c21_mujer_bebe",
+    "c21_cq_come",
+    "c21_h_gracias",
+    "c21_cq_bebe",
+    "c21_m_gracias",
+    "c21_ca_come",
+    "c21_coqui_come",
+    "c21_ca_bebe",
+    "c21_coqui_bebe",
+    "c21_ay",
+    "c21_para_mujer",
+    "c21_fin",
+    "c21_y_pajaro",
+    "c17_cq_no_mas"
+  ]
+}

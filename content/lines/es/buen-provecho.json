@@ -1,0 +1,262 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "buen-provecho",
+  "lang": "es",
+  "title": "Buen provecho",
+  "place": "La cocina",
+  "focus_words": [
+    "buen provecho",
+    "también",
+    "rico",
+    "todo"
+  ],
+  "back_again": [
+    "arroz",
+    "más",
+    "quiero",
+    "quieres",
+    "quiere",
+    "por favor",
+    "gracias",
+    "come",
+    "aquí",
+    "hola",
+    "familia"
+  ],
+  "also_heard": [],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina"
+  },
+  "palabras": {
+    "quiere": "también",
+    "lleno": "lleno",
+    "tambien": "también"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c34_papa_no_esta": {
+      "who": "narr",
+      "text": "Papá no está aquí."
+    },
+    "c34_plato_papa": {
+      "who": "narr",
+      "text": "Este plato es para papá."
+    },
+    "c34_cq_buen": {
+      "who": "tu",
+      "text": "¡Buen provecho!"
+    },
+    "cq_gracias_abuela": {
+      "who": "tu",
+      "text": "¡Gracias, abuela!"
+    },
+    "c34_familia_bp": {
+      "who": "narr",
+      "text": "La familia dice: ¡Buen provecho!"
+    },
+    "c34_abuelo_rico": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: ¡El arroz está rico!"
+    },
+    "c34_luis_rico": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¡El arroz está rico!"
+    },
+    "c34_luis_todo": {
+      "who": "narr",
+      "text": "Luis se come todo el arroz."
+    },
+    "c34_luis_quiero": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: Quiero más arroz, por favor."
+    },
+    "c34_luis_y_tu": {
+      "who": "narr",
+      "habla": "luis",
+      "text": "Luis dice: ¿Y tú, Coquí?"
+    },
+    "df12": {
+      "who": "tu",
+      "text": "¡Y yo también!"
+    },
+    "c34_cq_lleno": {
+      "who": "tu",
+      "text": "Yo estoy lleno.",
+      "tu_turno": [
+        {
+          "palabra": "lleno",
+          "formas": [
+            "lleno"
+          ]
+        }
+      ]
+    },
+    "c34_cq_todo": {
+      "who": "narr",
+      "text": "Coquí se come todo el arroz."
+    },
+    "c34_mama_todo": {
+      "who": "narr",
+      "text": "Mamá se come todo el arroz."
+    },
+    "c34_abuelo_todo": {
+      "who": "narr",
+      "text": "Abuelo se come todo el arroz."
+    },
+    "c34_papa_hola": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: ¡Hola, familia!"
+    },
+    "c34_cq_bp_papa": {
+      "who": "tu",
+      "text": "¡Buen provecho, papá!",
+      "tu_turno": [
+        {
+          "palabra": "papá",
+          "formas": [
+            "papa"
+          ]
+        }
+      ]
+    },
+    "c34_papa_rico": {
+      "who": "narr",
+      "habla": "papa",
+      "text": "Papá dice: ¡El arroz está rico!"
+    },
+    "c34_papa_todo": {
+      "who": "narr",
+      "text": "Papá se come todo el arroz."
+    },
+    "c34_no_quiere": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Tú quieres más arroz."
+    },
+    "c34_no_lleno": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Tú estás lleno."
+    },
+    "c34_abuelo_tambien": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Y yo también."
+    },
+    "c34_abuelo_lleno": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Yo estoy lleno."
+    },
+    "c34_abuelo_levanto": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Yo me levanto."
+    },
+    "c34_abuelo_bp": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: ¡Buen provecho!"
+    },
+    "c34_no_abuelo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Abuelo quiere más arroz."
+    },
+    "c34_mama_tambien": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Y yo también."
+    },
+    "c34_mama_lleno": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Yo estoy llena."
+    },
+    "c34_mama_levanto": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: Yo me levanto."
+    },
+    "c34_mama_bp": {
+      "who": "narr",
+      "habla": "mama",
+      "text": "Mamá dice: ¡Buen provecho!"
+    },
+    "c34_no_mama": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Mamá quiere más arroz."
+    },
+    "c34_carmen_tambien": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Y yo también."
+    },
+    "c34_carmen_lleno": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Yo estoy llena."
+    },
+    "c34_carmen_levanto": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: Yo me levanto."
+    },
+    "c34_carmen_bp": {
+      "who": "narr",
+      "habla": "carmen",
+      "text": "Carmen dice: ¡Buen provecho!"
+    },
+    "c34_no_carmen": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. Carmen quiere más arroz."
+    }
+  }
+}

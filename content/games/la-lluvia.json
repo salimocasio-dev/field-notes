@@ -1,0 +1,304 @@
+{
+  "format": "coqui.game.v1",
+  "id": "la-lluvia",
+  "scene": "frente",
+  "next": "el-bizcocho",
+  "goal": "Get into abuela's house dry.",
+  "stake": {
+    "thing": "nube",
+    "steps": 2
+  },
+  "beats": [
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "casa",
+      "loose": true,
+      "lead": [
+        "esta_casa",
+        {
+          "cam": "casa",
+          "n": 16
+        },
+        "mira_casa",
+        {
+          "cam": "wide",
+          "n": 12
+        }
+      ],
+      "line": "puedes_casa",
+      "after": [
+        {
+          "cam": "wide",
+          "n": 6
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "ask": "puerta",
+      "lead": [
+        {
+          "cam": "puerta"
+        },
+        "esta_puerta",
+        "cerrada",
+        {
+          "cam": "wide"
+        }
+      ],
+      "line": "donde_puerta",
+      "after": [
+        {
+          "cam": "wide",
+          "n": 6
+        },
+        {
+          "act": "ir",
+          "a": "puerta"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "ask": "ventana",
+      "lead": [
+        {
+          "cam": "ventana"
+        },
+        "mira_ventana",
+        "tambien_cerrada",
+        {
+          "cam": "wide"
+        }
+      ],
+      "line": "toca_ventana",
+      "after": [
+        {
+          "cam": "wide",
+          "n": 6
+        },
+        {
+          "act": "ir",
+          "a": "ventana"
+        }
+      ]
+    },
+    {
+      "wait": 350
+    },
+    {
+      "act": "trueno"
+    },
+    {
+      "act": "atras"
+    },
+    {
+      "act": "burbuja",
+      "quien": "cq",
+      "que": "lluvia"
+    },
+    "viene_lluvia",
+    "ay_lluvia",
+    {
+      "act": "calla"
+    },
+    {
+      "dots": 4
+    },
+    {
+      "decide": "do",
+      "options": [
+        "ventana",
+        "puerta"
+      ],
+      "as": "a",
+      "other": "b",
+      "alterna": true,
+      "do": "tocar",
+      "tests": "$a",
+      "lead": [
+        "abuela_en_$a"
+      ],
+      "line": "toca_$a_ya",
+      "wrong": [
+        "esa_$x"
+      ],
+      "right": [
+        {
+          "act": "luz"
+        },
+        {
+          "act": "dentro",
+          "en": "$a"
+        },
+        {
+          "say": "hola_quien",
+          "gap": 250
+        },
+        {
+          "say": "soy_yo",
+          "gap": 300
+        },
+        {
+          "act": "calla"
+        },
+        {
+          "act": "atras"
+        }
+      ]
+    },
+    {
+      "dots": 5
+    },
+    {
+      "decide": "do",
+      "options": [
+        "ventana",
+        "puerta"
+      ],
+      "pick": "$b",
+      "do": "tocar",
+      "tests": "$b",
+      "lead": [
+        "ahora_en_$b"
+      ],
+      "line": "toca_$b_ya",
+      "wrong": [
+        "esa_$x"
+      ],
+      "right": [
+        {
+          "say": "abre_$b_tu",
+          "gap": 200
+        },
+        {
+          "act": "abre",
+          "que": "$b"
+        },
+        "abre_$b",
+        "es_abuela",
+        {
+          "act": "burbuja",
+          "quien": "cq",
+          "que": "hola"
+        },
+        {
+          "say": "hola_abuela",
+          "gap": 450
+        },
+        {
+          "act": "calla"
+        },
+        {
+          "act": "pose",
+          "que": "wave"
+        },
+        {
+          "act": "burbuja",
+          "quien": "ab",
+          "que": "como"
+        },
+        {
+          "say": "abuela_dice",
+          "gap": 500
+        },
+        {
+          "act": "calla"
+        },
+        {
+          "if": "wet",
+          "then": [
+            {
+              "act": "burbuja",
+              "quien": "cq",
+              "que": "mal"
+            },
+            {
+              "say": "estoy_mojado",
+              "gap": 400
+            }
+          ],
+          "else": [
+            {
+              "act": "burbuja",
+              "quien": "cq",
+              "que": "bien"
+            },
+            {
+              "say": "bien_gracias",
+              "gap": 400
+            }
+          ]
+        },
+        {
+          "wait": 300
+        },
+        {
+          "act": "calla"
+        },
+        {
+          "act": "pose",
+          "que": "idle"
+        },
+        "entra",
+        {
+          "if": "lost=1",
+          "then": [
+            {
+              "act": "gotas"
+            }
+          ]
+        },
+        {
+          "act": "entra",
+          "por": "$b"
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "cam": "wide",
+      "n": 9
+    },
+    {
+      "if": "!rain",
+      "then": [
+        {
+          "act": "llueve"
+        }
+      ]
+    },
+    {
+      "if": "!win",
+      "then": [
+        {
+          "act": "abre",
+          "que": "ventana"
+        },
+        "abre_ventana"
+      ]
+    },
+    {
+      "act": "cuadro"
+    },
+    {
+      "if": "lost=2",
+      "then": [
+        "mojado"
+      ]
+    },
+    {
+      "act": "fin"
+    }
+  ]
+}

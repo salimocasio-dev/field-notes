@@ -1,0 +1,105 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "h-mesa",
+  "lang": "es",
+  "title": "En la mesa",
+  "place": "La cocina",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui",
+    "luis": "p_n_luis",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "bebe": "m_n_bebe",
+    "cocina": "m_n_cocina"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "hz_no_platos": {
+      "who": "narr",
+      "text": "No, esos son los platos."
+    },
+    "hz_no_tazas": {
+      "who": "narr",
+      "text": "No, esas son las tazas."
+    },
+    "hz_no_mesa": {
+      "who": "narr",
+      "text": "No. Esa es la mesa."
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_bebe": {
+      "who": "narr",
+      "text": "Es el bebé."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "wa01": {
+      "who": "narr",
+      "text": "¿Dónde están los platos?"
+    },
+    "wa02": {
+      "who": "narr",
+      "text": "Toca las tazas."
+    },
+    "c24_plato_para_abuelo": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Un plato para abuelo."
+    },
+    "c24_taza_para_mama": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Una taza para mamá."
+    },
+    "c24_plato_para_papa": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Un plato para papá."
+    },
+    "wa06": {
+      "who": "narr",
+      "text": "¿Quién tiene una taza?"
+    },
+    "wa07": {
+      "who": "narr",
+      "text": "Toca al bebé y a papá."
+    }
+  }
+}

@@ -1,0 +1,561 @@
+{
+  "format": "coqui.game.v1",
+  "id": "quien-eres-tu",
+  "scene": "sala",
+  "next": "las-flores",
+  "goal": "Abuelo has lost his glasses. Help him tell who is who.",
+  "stake": {
+    "thing": "cafe",
+    "steps": 3
+  },
+  "dots": 6,
+  "bien": "si_muy_bien",
+  "beats": [
+    {
+      "act": "inicio8"
+    },
+    {
+      "reparte": [
+        "ca",
+        "cb"
+      ],
+      "options": [
+        "hermana",
+        "hermano"
+      ]
+    },
+    {
+      "wait": 500
+    },
+    {
+      "act": "pose",
+      "quien": "$ca",
+      "que": "wave"
+    },
+    "me_llamo_$ca",
+    {
+      "act": "pose",
+      "quien": "$ca",
+      "que": "idle"
+    },
+    {
+      "act": "pose",
+      "quien": "$cb",
+      "que": "wave"
+    },
+    "y_yo_$cb",
+    {
+      "act": "pose",
+      "quien": "$cb",
+      "que": "idle"
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "yo_coqui",
+      "resp": [
+        "yo_coqui",
+        "yo_$ca"
+      ],
+      "baraja": true,
+      "voces": {
+        "yo_coqui": "cq_yo_coqui",
+        "tu_coqui": "cq_tu_coqui",
+        "yo_hermana": "cq_yo_hermana",
+        "tu_hermana": "cq_tu_hermana",
+        "yo_hermano": "cq_yo_hermano",
+        "tu_hermano": "cq_tu_hermano",
+        "ella_mama": "cq_ella_mama",
+        "el_mama": "cq_el_mama",
+        "el_papa": "cq_el_papa",
+        "ella_papa": "cq_ella_papa"
+      },
+      "said": {
+        "yo_coqui": "cq_yo_me_llamo"
+      },
+      "lead": [],
+      "line": "y_tu_$ca",
+      "then": [
+        {
+          "act": "pose",
+          "quien": "$ca",
+          "que": "tu"
+        },
+        "ah_tu_$ca",
+        {
+          "act": "pose",
+          "quien": "$ca",
+          "que": "idle"
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "pose",
+      "quien": "$ca",
+      "que": "yo"
+    },
+    {
+      "ask": "tu_$ca",
+      "resp": [
+        "tu_$ca",
+        "yo_$ca"
+      ],
+      "baraja": true,
+      "voces": {
+        "yo_coqui": "cq_yo_coqui",
+        "tu_coqui": "cq_tu_coqui",
+        "yo_hermana": "cq_yo_hermana",
+        "tu_hermana": "cq_tu_hermana",
+        "yo_hermano": "cq_yo_hermano",
+        "tu_hermano": "cq_tu_hermano",
+        "ella_mama": "cq_ella_mama",
+        "el_mama": "cq_el_mama",
+        "el_papa": "cq_el_papa",
+        "ella_papa": "cq_ella_papa"
+      },
+      "said": {
+        "yo_coqui": "cq_yo_coqui",
+        "tu_coqui": "cq_tu_coqui",
+        "yo_hermana": "cq_yo_hermana",
+        "tu_hermana": "cq_tu_hermana",
+        "yo_hermano": "cq_yo_hermano",
+        "tu_hermano": "cq_tu_hermano",
+        "ella_mama": "cq_ella_mama",
+        "el_mama": "cq_el_mama",
+        "el_papa": "cq_el_papa",
+        "ella_papa": "cq_ella_papa"
+      },
+      "lead": [],
+      "line": "y_yo_q_$ca",
+      "then": [
+        "si_yo_$ca",
+        {
+          "act": "pose",
+          "quien": "$ca",
+          "que": "idle"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "tropieza"
+    },
+    {
+      "act": "burbuja",
+      "quien": "abuelo",
+      "que": "gafas_q"
+    },
+    {
+      "say": "ao_espejuelos_q",
+      "gap": 300
+    },
+    {
+      "act": "calla"
+    },
+    {
+      "set": {
+        "cafe": 1
+      }
+    },
+    {
+      "dots": 4
+    },
+    {
+      "draw": "orden",
+      "options": [
+        "ab",
+        "ba"
+      ]
+    },
+    {
+      "if": "orden=ab",
+      "then": [
+        {
+          "act": "acerca"
+        },
+        {
+          "decide": "say",
+          "options": [
+            "yo_coqui",
+            "tu_coqui"
+          ],
+          "pick": "yo_coqui",
+          "baraja": true,
+          "tests": "yo",
+          "voces": {
+            "yo_coqui": "cq_yo_coqui",
+            "tu_coqui": "cq_tu_coqui",
+            "yo_hermana": "cq_yo_hermana",
+            "tu_hermana": "cq_tu_hermana",
+            "yo_hermano": "cq_yo_hermano",
+            "tu_hermano": "cq_tu_hermano",
+            "ella_mama": "cq_ella_mama",
+            "el_mama": "cq_el_mama",
+            "el_papa": "cq_el_papa",
+            "ella_papa": "cq_ella_papa"
+          },
+          "said": {
+            "yo_coqui": "cq_yo_coqui",
+            "tu_coqui": "cq_tu_coqui",
+            "yo_hermana": "cq_yo_hermana",
+            "tu_hermana": "cq_tu_hermana",
+            "yo_hermano": "cq_yo_hermano",
+            "tu_hermano": "cq_tu_hermano",
+            "ella_mama": "cq_ella_mama",
+            "el_mama": "cq_el_mama",
+            "el_papa": "cq_el_papa",
+            "ella_papa": "cq_ella_papa"
+          },
+          "lead": [],
+          "line": "ao_quien_eres",
+          "wrong": [
+            {
+              "act": "rie"
+            },
+            "ao_yo_no"
+          ],
+          "right": [
+            "ao_ah_tu",
+            {
+              "act": "palmada"
+            },
+            {
+              "if": "ok",
+              "then": [
+                {
+                  "act": "corazon"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "dots": 5
+        },
+        {
+          "act": "tapa",
+          "quien": "$cb"
+        },
+        {
+          "decide": "say",
+          "options": [
+            "tu_$cb",
+            "yo_$cb"
+          ],
+          "pick": "tu_$cb",
+          "baraja": true,
+          "tests": "tu",
+          "voces": {
+            "yo_coqui": "cq_yo_coqui",
+            "tu_coqui": "cq_tu_coqui",
+            "yo_hermana": "cq_yo_hermana",
+            "tu_hermana": "cq_tu_hermana",
+            "yo_hermano": "cq_yo_hermano",
+            "tu_hermano": "cq_tu_hermano",
+            "ella_mama": "cq_ella_mama",
+            "el_mama": "cq_el_mama",
+            "el_papa": "cq_el_papa",
+            "ella_papa": "cq_ella_papa"
+          },
+          "said": {
+            "yo_coqui": "cq_yo_coqui",
+            "tu_coqui": "cq_tu_coqui",
+            "yo_hermana": "cq_yo_hermana",
+            "tu_hermana": "cq_tu_hermana",
+            "yo_hermano": "cq_yo_hermano",
+            "tu_hermano": "cq_tu_hermano",
+            "ella_mama": "cq_ella_mama",
+            "el_mama": "cq_el_mama",
+            "el_papa": "cq_el_papa",
+            "ella_papa": "cq_ella_papa"
+          },
+          "lead": [],
+          "line": "quien_soy_$cb",
+          "wrong": [
+            {
+              "act": "gira"
+            },
+            "ao_hola_$cb"
+          ],
+          "right": [
+            {
+              "act": "suelta",
+              "quien": "$cb"
+            },
+            "si_yo_$cb",
+            {
+              "if": "ok",
+              "then": [
+                {
+                  "act": "corazon"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "else": [
+        {
+          "act": "tapa",
+          "quien": "$cb"
+        },
+        {
+          "decide": "say",
+          "options": [
+            "tu_$cb",
+            "yo_$cb"
+          ],
+          "pick": "tu_$cb",
+          "baraja": true,
+          "tests": "tu",
+          "voces": {
+            "yo_coqui": "cq_yo_coqui",
+            "tu_coqui": "cq_tu_coqui",
+            "yo_hermana": "cq_yo_hermana",
+            "tu_hermana": "cq_tu_hermana",
+            "yo_hermano": "cq_yo_hermano",
+            "tu_hermano": "cq_tu_hermano",
+            "ella_mama": "cq_ella_mama",
+            "el_mama": "cq_el_mama",
+            "el_papa": "cq_el_papa",
+            "ella_papa": "cq_ella_papa"
+          },
+          "said": {
+            "yo_coqui": "cq_yo_coqui",
+            "tu_coqui": "cq_tu_coqui",
+            "yo_hermana": "cq_yo_hermana",
+            "tu_hermana": "cq_tu_hermana",
+            "yo_hermano": "cq_yo_hermano",
+            "tu_hermano": "cq_tu_hermano",
+            "ella_mama": "cq_ella_mama",
+            "el_mama": "cq_el_mama",
+            "el_papa": "cq_el_papa",
+            "ella_papa": "cq_ella_papa"
+          },
+          "lead": [],
+          "line": "quien_soy_$cb",
+          "wrong": [
+            {
+              "act": "gira"
+            },
+            "ao_hola_$cb"
+          ],
+          "right": [
+            {
+              "act": "suelta",
+              "quien": "$cb"
+            },
+            "si_yo_$cb",
+            {
+              "if": "ok",
+              "then": [
+                {
+                  "act": "corazon"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "dots": 5
+        },
+        {
+          "act": "acerca"
+        },
+        {
+          "decide": "say",
+          "options": [
+            "yo_coqui",
+            "tu_coqui"
+          ],
+          "pick": "yo_coqui",
+          "baraja": true,
+          "tests": "yo",
+          "voces": {
+            "yo_coqui": "cq_yo_coqui",
+            "tu_coqui": "cq_tu_coqui",
+            "yo_hermana": "cq_yo_hermana",
+            "tu_hermana": "cq_tu_hermana",
+            "yo_hermano": "cq_yo_hermano",
+            "tu_hermano": "cq_tu_hermano",
+            "ella_mama": "cq_ella_mama",
+            "el_mama": "cq_el_mama",
+            "el_papa": "cq_el_papa",
+            "ella_papa": "cq_ella_papa"
+          },
+          "said": {
+            "yo_coqui": "cq_yo_coqui",
+            "tu_coqui": "cq_tu_coqui",
+            "yo_hermana": "cq_yo_hermana",
+            "tu_hermana": "cq_tu_hermana",
+            "yo_hermano": "cq_yo_hermano",
+            "tu_hermano": "cq_tu_hermano",
+            "ella_mama": "cq_ella_mama",
+            "el_mama": "cq_el_mama",
+            "el_papa": "cq_el_papa",
+            "ella_papa": "cq_ella_papa"
+          },
+          "lead": [],
+          "line": "ao_quien_eres",
+          "wrong": [
+            {
+              "act": "rie"
+            },
+            "ao_yo_no"
+          ],
+          "right": [
+            "ao_ah_tu",
+            {
+              "act": "palmada"
+            },
+            {
+              "if": "ok",
+              "then": [
+                {
+                  "act": "corazon"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "lados",
+      "a": "mama",
+      "b": "papa",
+      "donde": "parados"
+    },
+    {
+      "draw": "m",
+      "options": [
+        "mama",
+        "papa"
+      ],
+      "other": "mo"
+    },
+    {
+      "calc": "bien",
+      "cond": "m=mama",
+      "then": "ella",
+      "else": "el"
+    },
+    {
+      "calc": "mal",
+      "cond": "m=mama",
+      "then": "el",
+      "else": "ella"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "$bien_$m",
+        "$mal_$m"
+      ],
+      "pick": "$bien_$m",
+      "baraja": true,
+      "tests": "$bien",
+      "voces": {
+        "yo_coqui": "cq_yo_coqui",
+        "tu_coqui": "cq_tu_coqui",
+        "yo_hermana": "cq_yo_hermana",
+        "tu_hermana": "cq_tu_hermana",
+        "yo_hermano": "cq_yo_hermano",
+        "tu_hermano": "cq_tu_hermano",
+        "ella_mama": "cq_ella_mama",
+        "el_mama": "cq_el_mama",
+        "el_papa": "cq_el_papa",
+        "ella_papa": "cq_ella_papa"
+      },
+      "said": {
+        "yo_coqui": "cq_yo_coqui",
+        "tu_coqui": "cq_tu_coqui",
+        "yo_hermana": "cq_yo_hermana",
+        "tu_hermana": "cq_tu_hermana",
+        "yo_hermano": "cq_yo_hermano",
+        "tu_hermano": "cq_tu_hermano",
+        "ella_mama": "cq_ella_mama",
+        "el_mama": "cq_el_mama",
+        "el_papa": "cq_el_papa",
+        "ella_papa": "cq_ella_papa"
+      },
+      "lead": [],
+      "line": "ao_quien_es_$m",
+      "wrong": [
+        {
+          "act": "abva",
+          "a": "$mo"
+        },
+        "ao_hola_$m",
+        {
+          "act": "rie",
+          "quien": "$mo"
+        }
+      ],
+      "right": [
+        {
+          "act": "abva",
+          "a": "$m"
+        },
+        "ao_hola_$m",
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "corazon"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "act": "espejuelos"
+    },
+    "ao_mis_espejuelos",
+    {
+      "act": "final8"
+    },
+    "ao_y_tu_eres",
+    {
+      "say": "cq_si_yo_me_llamo",
+      "gap": 400
+    },
+    {
+      "act": "fin8"
+    }
+  ],
+  "leer": [
+    "me_llamo_hermana",
+    "y_yo_hermano",
+    "y_tu_hermana",
+    "cq_yo_me_llamo",
+    "ah_tu_hermana",
+    "y_yo_q_hermana",
+    "cq_tu_hermana",
+    "si_yo_hermana",
+    "ao_espejuelos_q",
+    "ao_quien_eres",
+    "cq_yo_coqui",
+    "ao_ah_tu",
+    "quien_soy_hermano",
+    "cq_tu_hermano",
+    "si_yo_hermano",
+    "ao_quien_es_mama",
+    "cq_ella_mama",
+    "ao_hola_mama",
+    "ao_mis_espejuelos",
+    "ao_y_tu_eres",
+    "cq_si_yo_me_llamo"
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-estufa",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "La cocina",
+  "clips": {
+    "c27_aqui_arroz": {
+      "who": "narr",
+      "text": "Aquí hay arroz."
+    },
+    "m_e_mis_hab": {
+      "who": "narr",
+      "text": "Mira mis habichuelas."
+    },
+    "m_e_mi_olla": {
+      "who": "narr",
+      "text": "Mira mi olla."
+    },
+    "m_e_mama_hace": {
+      "who": "narr",
+      "text": "Mamá hace la comida."
+    },
+    "m_e_el_pollo": {
+      "who": "narr",
+      "text": "Mira el pollo."
+    },
+    "m_e_el_huevo": {
+      "who": "narr",
+      "text": "Mira el huevo."
+    },
+    "m_e_la_sal": {
+      "who": "narr",
+      "text": "Mira la sal."
+    },
+    "m_e_huele_bien": {
+      "who": "narr",
+      "text": "¡Huele bien!"
+    },
+    "m_e_choc_caliente": {
+      "who": "narr",
+      "text": "El chocolate está caliente."
+    },
+    "m_e_agua_fria": {
+      "who": "narr",
+      "text": "El agua está fría."
+    },
+    "m_e_cuidado_luis": {
+      "who": "narr",
+      "text": "¡Cuidado, Luis!"
+    },
+    "m_e_ya_esta": {
+      "who": "narr",
+      "text": "¡Ya está!"
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "arroz",
+    "habichuelas",
+    "olla",
+    "hace",
+    "pollo",
+    "huevo",
+    "sal",
+    "huele",
+    "caliente",
+    "frío",
+    "cuidado",
+    "ya"
+  ]
+}

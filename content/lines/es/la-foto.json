@@ -1,0 +1,257 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "la-foto",
+  "lang": "es",
+  "title": "La foto",
+  "place": "La casa",
+  "focus_words": [
+    "hermano",
+    "hermana",
+    "él",
+    "ella"
+  ],
+  "back_again": [
+    "abuelo",
+    "mamá",
+    "papá",
+    "bebé",
+    "familia",
+    "sí",
+    "no",
+    "hola"
+  ],
+  "also_heard": [
+    "foto",
+    "con",
+    "una",
+    "ahora",
+    "tres",
+    "del",
+    "es",
+    "quiere"
+  ],
+  "names": {
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "bebe": "n_bebe",
+    "hermano": "n_hermano",
+    "hermana": "n_hermana",
+    "abuela": "abuela",
+    "sofa": "n_sofa",
+    "butaca": "n_butaca",
+    "sala": "n_sala",
+    "mesita": "n_mesa",
+    "bizcocho": "un_bizcocho",
+    "fotos": "n_fotos",
+    "lampara": "n_lampara",
+    "puerta": "puerta",
+    "ventana": "ventana",
+    "coqui": "yo_coqui"
+  },
+  "palabras": {
+    "el": "él",
+    "mama": "mamá",
+    "papa": "papá"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "puerta": {
+      "who": "narr",
+      "text": "Es la puerta."
+    },
+    "ventana": {
+      "who": "narr",
+      "text": "Es la ventana."
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "n_bebe": {
+      "who": "narr",
+      "text": "Este es el bebé."
+    },
+    "n_hermano": {
+      "who": "narr",
+      "text": "Este es el hermano."
+    },
+    "n_hermana": {
+      "who": "narr",
+      "text": "Esta es la hermana."
+    },
+    "n_sofa": {
+      "who": "narr",
+      "text": "Es el sofá."
+    },
+    "n_butaca": {
+      "who": "narr",
+      "text": "Es la butaca de abuelo."
+    },
+    "n_sala": {
+      "who": "narr",
+      "text": "Es la sala."
+    },
+    "n_mesa": {
+      "who": "narr",
+      "text": "Es la mesa."
+    },
+    "un_bizcocho": {
+      "who": "narr",
+      "text": "Es un bizcocho."
+    },
+    "n_fotos": {
+      "who": "narr",
+      "text": "Son las fotos de la familia."
+    },
+    "n_lampara": {
+      "who": "narr",
+      "text": "Es la lámpara."
+    },
+    "hermano_del_bebe": {
+      "who": "narr",
+      "text": "Mira. Este es el hermano del bebé."
+    },
+    "hermana_del_bebe": {
+      "who": "narr",
+      "text": "Y esta es la hermana del bebé."
+    },
+    "puedes_hermano": {
+      "who": "narr",
+      "text": "¿Dónde está el hermano? ¿Puedes tocar al hermano?"
+    },
+    "el_dice_hola": {
+      "who": "narr",
+      "habla": "hermano",
+      "text": "Él dice: ¡Hola!"
+    },
+    "donde_hermana": {
+      "who": "narr",
+      "text": "¿Y la hermana? ¿Dónde está la hermana?"
+    },
+    "ella_dice_hola": {
+      "who": "narr",
+      "habla": "hermana",
+      "text": "Ella dice: ¡Hola!"
+    },
+    "el_es_papa": {
+      "who": "narr",
+      "text": "Él es papá."
+    },
+    "ella_es_mama": {
+      "who": "narr",
+      "text": "Ella es mamá."
+    },
+    "foto_con_ella": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Una foto con ella."
+    },
+    "ahora_foto_con_el": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Ahora, una foto con él."
+    },
+    "ahora_foto_con_ella": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Ahora, una foto con ella."
+    },
+    "tres_fotos": {
+      "who": "narr",
+      "text": "Abuelo quiere tres fotos de la familia."
+    },
+    "foto_con_hermana": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Una foto con la hermana."
+    },
+    "foto_con_hermano": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Una foto con el hermano."
+    },
+    "no_hermano": {
+      "who": "narr",
+      "text": "No. Él es el hermano. Ella es la hermana."
+    },
+    "no_hermana": {
+      "who": "narr",
+      "text": "No. Ella es la hermana. Él es el hermano."
+    },
+    "no_mama": {
+      "who": "narr",
+      "text": "No. Ella es mamá. Él es papá."
+    },
+    "no_papa": {
+      "who": "narr",
+      "text": "No. Él es papá. Ella es mamá."
+    },
+    "es_hermano_q": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: ¿Es el hermano? ¿Sí o no?"
+    },
+    "es_hermana_q": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: ¿Es la hermana? ¿Sí o no?"
+    },
+    "cq_si": {
+      "who": "tu",
+      "text": "¡Sí!"
+    },
+    "cq_no": {
+      "who": "tu",
+      "text": "¡No!"
+    },
+    "r_si_hermano": {
+      "who": "narr",
+      "text": "Sí. Es el hermano."
+    },
+    "r_si_hermana": {
+      "who": "narr",
+      "text": "Sí. Es la hermana."
+    },
+    "r_no_hermano": {
+      "who": "narr",
+      "text": "No. Es el hermano."
+    },
+    "r_no_hermana": {
+      "who": "narr",
+      "text": "No. Es la hermana."
+    },
+    "foto_familia": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Ahora, una foto de la familia."
+    },
+    "cq_familia": {
+      "who": "tu",
+      "text": "¡Familia!"
+    }
+  }
+}

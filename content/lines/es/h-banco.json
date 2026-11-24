@@ -1,0 +1,99 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "h-banco",
+  "lang": "es",
+  "title": "En el banco",
+  "place": "El parque",
+  "focus_words": [],
+  "back_again": [],
+  "also_heard": [],
+  "names": {
+    "coqui": "yo_coqui",
+    "perro_viejo": "c_c_perro",
+    "perro_joven": "c_c_perro",
+    "pajaro": "l_n_pajaro",
+    "banco0": "b_n_banco",
+    "banco1": "b_n_banco",
+    "banco2": "b_n_banco",
+    "piraguero": "b_n_piraguero",
+    "carro": "b_n_piraguero"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "hz_no_mujer": {
+      "who": "narr",
+      "text": "No, esa es la señora."
+    },
+    "hz_no_senor": {
+      "who": "narr",
+      "text": "No, ese es el señor."
+    },
+    "hz_no_joven": {
+      "who": "narr",
+      "text": "No, ese es el joven."
+    },
+    "hz_no_perro_viejo": {
+      "who": "narr",
+      "text": "No, ese es el perro viejo."
+    },
+    "hz_no_perro_joven": {
+      "who": "narr",
+      "text": "No, ese es el perro joven."
+    },
+    "rd01": {
+      "who": "narr",
+      "text": "Toca al señor."
+    },
+    "rd02": {
+      "who": "narr",
+      "text": "¿Dónde está el joven?"
+    },
+    "rd03": {
+      "who": "narr",
+      "text": "¿Quién bebe agua?"
+    },
+    "rd04": {
+      "who": "narr",
+      "text": "¿Quién está cansado?"
+    },
+    "rd05": {
+      "who": "narr",
+      "text": "¿Quién duerme?"
+    },
+    "rd06": {
+      "who": "narr",
+      "text": "¿Dónde está la señora?"
+    },
+    "rd07": {
+      "who": "narr",
+      "text": "¿Dónde están el perro viejo y la señora?"
+    },
+    "c_c_perro": {
+      "who": "narr",
+      "text": "Es un perro."
+    },
+    "l_n_pajaro": {
+      "who": "narr",
+      "text": "Es un pájaro."
+    },
+    "b_n_banco": {
+      "who": "narr",
+      "text": "Es un banco."
+    },
+    "b_n_piraguero": {
+      "who": "narr",
+      "text": "Es el piragüero."
+    }
+  }
+}

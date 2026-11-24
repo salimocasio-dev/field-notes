@@ -1,0 +1,376 @@
+{
+  "format": "coqui.game.v1",
+  "id": "cual-frente",
+  "tipo": "cual",
+  "scene": "frente",
+  "note": "The next-day pass: a sentence, two pictures, only one fits. Lines are reused from stories 1 to 3, so nothing new is recorded.",
+  "stake": {
+    "thing": "none",
+    "steps": 0
+  },
+  "items": [
+    {
+      "say": "esta_casa",
+      "si": {
+        "cam": [
+          52,
+          8,
+          180,
+          96
+        ]
+      },
+      "no": {
+        "cam": [
+          44,
+          120,
+          180,
+          96
+        ]
+      }
+    },
+    {
+      "say": "puerta",
+      "si": {
+        "cam": [
+          135,
+          46,
+          94,
+          50
+        ]
+      },
+      "no": {
+        "cam": [
+          55,
+          46,
+          94,
+          50
+        ]
+      }
+    },
+    {
+      "say": "ventana",
+      "si": {
+        "cam": [
+          55,
+          46,
+          94,
+          50
+        ]
+      },
+      "no": {
+        "cam": [
+          135,
+          46,
+          94,
+          50
+        ]
+      }
+    },
+    {
+      "say": "abuela",
+      "si": {
+        "cam": [
+          135,
+          46,
+          94,
+          50
+        ],
+        "set": {
+          "door": 1,
+          "ab": {
+            "en": "puerta",
+            "pose": "idle",
+            "bub": null,
+            "al": 1
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          135,
+          46,
+          94,
+          50
+        ],
+        "set": {
+          "door": 0
+        }
+      }
+    },
+    {
+      "say": "abre_ventana",
+      "si": {
+        "cam": [
+          55,
+          46,
+          94,
+          50
+        ],
+        "set": {
+          "win": 1,
+          "ab": {
+            "en": "ventana",
+            "pose": "idle",
+            "bub": null,
+            "al": 1
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          55,
+          46,
+          94,
+          50
+        ],
+        "set": {
+          "win": 0
+        }
+      }
+    },
+    {
+      "say": "ab_cierra_puerta",
+      "si": {
+        "cam": [
+          135,
+          46,
+          94,
+          50
+        ],
+        "set": {
+          "door": 0.5,
+          "peek": 1
+        }
+      },
+      "no": {
+        "cam": [
+          135,
+          46,
+          94,
+          50
+        ],
+        "set": {
+          "door": 1,
+          "ab": {
+            "en": "puerta",
+            "pose": "idle",
+            "bub": null,
+            "al": 1
+          }
+        }
+      }
+    },
+    {
+      "say": "hola_abuela",
+      "si": {
+        "cam": [
+          44,
+          40,
+          196,
+          104
+        ],
+        "set": {
+          "door": 1,
+          "ab": {
+            "en": "puerta",
+            "pose": "wave",
+            "bub": null,
+            "al": 1
+          },
+          "cq": {
+            "x": 146,
+            "y": 86,
+            "s": 0.62,
+            "dy": 0,
+            "al": 1,
+            "vis": 1,
+            "bub": "hola"
+          }
+        }
+      },
+      "no": {
+        "cam": [
+          44,
+          40,
+          196,
+          104
+        ],
+        "set": {
+          "door": 0.5,
+          "peek": 1,
+          "dusk": 2,
+          "cq": {
+            "x": 176,
+            "y": 116,
+            "s": 0.85,
+            "dy": 0,
+            "al": 1,
+            "vis": 1,
+            "bub": null
+          },
+          "polvo": 1
+        }
+      }
+    },
+    {
+      "say": "adios_abuela",
+      "si": {
+        "cam": [
+          44,
+          40,
+          196,
+          104
+        ],
+        "set": {
+          "door": 0.5,
+          "peek": 1,
+          "dusk": 2,
+          "cq": {
+            "x": 176,
+            "y": 116,
+            "s": 0.85,
+            "dy": 0,
+            "al": 1,
+            "vis": 1,
+            "bub": null
+          },
+          "polvo": 1
+        }
+      },
+      "no": {
+        "cam": [
+          44,
+          40,
+          196,
+          104
+        ],
+        "set": {
+          "door": 1,
+          "ab": {
+            "en": "puerta",
+            "pose": "wave",
+            "bub": null,
+            "al": 1
+          },
+          "cq": {
+            "x": 146,
+            "y": 86,
+            "s": 0.62,
+            "dy": 0,
+            "al": 1,
+            "vis": 1,
+            "bub": "hola"
+          }
+        }
+      }
+    },
+    {
+      "say": "cq_si",
+      "si": {
+        "cam": [
+          55,
+          96,
+          109,
+          58
+        ],
+        "set": {
+          "resp": [
+            "si"
+          ]
+        }
+      },
+      "no": {
+        "cam": [
+          115,
+          96,
+          109,
+          58
+        ],
+        "set": {
+          "resp": [
+            "no"
+          ]
+        }
+      }
+    },
+    {
+      "say": "cq_no",
+      "si": {
+        "cam": [
+          115,
+          96,
+          109,
+          58
+        ],
+        "set": {
+          "resp": [
+            "no"
+          ]
+        }
+      },
+      "no": {
+        "cam": [
+          55,
+          96,
+          109,
+          58
+        ],
+        "set": {
+          "resp": [
+            "si"
+          ]
+        }
+      }
+    },
+    {
+      "say": "n_casa_grande",
+      "si": {
+        "cam": [
+          52,
+          8,
+          180,
+          96
+        ],
+        "set": {
+          "escondite": 1
+        }
+      },
+      "no": {
+        "cam": [
+          0,
+          94,
+          180,
+          96
+        ],
+        "set": {
+          "escondite": 1
+        }
+      }
+    },
+    {
+      "say": "n_casa_pequena",
+      "si": {
+        "cam": [
+          0,
+          94,
+          180,
+          96
+        ],
+        "set": {
+          "escondite": 1
+        }
+      },
+      "no": {
+        "cam": [
+          52,
+          8,
+          180,
+          96
+        ],
+        "set": {
+          "escondite": 1
+        }
+      }
+    }
+  ]
+}

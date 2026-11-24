@@ -1,0 +1,261 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "para-los-pajaros",
+  "lang": "es",
+  "title": "Para los pájaros",
+  "place": "La cocina",
+  "focus_words": [
+    "fruta",
+    "guineo",
+    "manzana",
+    "pan"
+  ],
+  "back_again": [
+    "huele",
+    "bien",
+    "tira",
+    "busca",
+    "pájaro",
+    "come",
+    "hay",
+    "aquí",
+    "vamos",
+    "parque",
+    "para",
+    "comida",
+    "este",
+    "esta",
+    "mira",
+    "adiós"
+  ],
+  "also_heard": [
+    "fo",
+    "van"
+  ],
+  "names": {
+    "luis": "p_n_luis",
+    "carmen": "p_n_carmen",
+    "coqui": "yo_coqui",
+    "abuela": "abuela",
+    "mama": "esta_es_mama",
+    "papa": "n_papa",
+    "abuelo": "n_abuelo",
+    "cocina": "m_n_cocina",
+    "nevera": "c30_nevera"
+  },
+  "clips": {
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    },
+    "p_n_luis": {
+      "who": "narr",
+      "text": "Este es Luis."
+    },
+    "p_n_carmen": {
+      "who": "narr",
+      "text": "Esta es Carmen."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "esta_es_mama": {
+      "who": "narr",
+      "text": "Esta es mamá."
+    },
+    "n_papa": {
+      "who": "narr",
+      "text": "Este es papá."
+    },
+    "n_abuelo": {
+      "who": "narr",
+      "text": "Este es abuelo."
+    },
+    "m_n_cocina": {
+      "who": "narr",
+      "text": "Es la cocina."
+    },
+    "c30_nevera": {
+      "who": "narr",
+      "text": "Esta es la nevera."
+    },
+    "c31_vamos": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Vamos al parque."
+    },
+    "c31_busca": {
+      "who": "narr",
+      "text": "Abuela busca comida para el parque."
+    },
+    "c31_aqui_pan": {
+      "who": "narr",
+      "text": "Aquí hay pan."
+    },
+    "c31_aqui_fruta": {
+      "who": "narr",
+      "text": "Y aquí hay fruta."
+    },
+    "c31_aqui_gm": {
+      "who": "narr",
+      "text": "Aquí hay guineos y manzanas."
+    },
+    "c31_huele_pan": {
+      "who": "narr",
+      "text": "Abuela huele el pan."
+    },
+    "c31_fo_pan": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Fo! Este pan no huele bien."
+    },
+    "c31_para_pajaros": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Este pan es para los pájaros."
+    },
+    "c31_tira_pan": {
+      "who": "narr",
+      "text": "Coquí tira el pan."
+    },
+    "c31_pajaro_pan": {
+      "who": "narr",
+      "text": "El pájaro come pan."
+    },
+    "c31_carmen_fruta": {
+      "who": "narr",
+      "text": "Carmen come fruta."
+    },
+    "c31_huele_fruta": {
+      "who": "narr",
+      "text": "Abuela huele la fruta."
+    },
+    "c31_esta_fruta": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Esta fruta no huele bien."
+    },
+    "c31_tira_fruta": {
+      "who": "narr",
+      "text": "Coquí tira la fruta."
+    },
+    "c31_pajaro_fruta": {
+      "who": "narr",
+      "text": "El pájaro come fruta."
+    },
+    "c31_luis_pan": {
+      "who": "narr",
+      "text": "Luis come pan."
+    },
+    "c31_este_guineo": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Este guineo no huele bien."
+    },
+    "c31_guineo_pajaros": {
+      "who": "narr",
+      "text": "El guineo es para los pájaros."
+    },
+    "c31_carmen_manzana": {
+      "who": "narr",
+      "text": "Carmen come la manzana."
+    },
+    "c31_esta_manzana": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Esta manzana no huele bien."
+    },
+    "c31_manzana_pajaros": {
+      "who": "narr",
+      "text": "La manzana es para los pájaros."
+    },
+    "c31_luis_guineo": {
+      "who": "narr",
+      "text": "Luis come el guineo."
+    },
+    "c31_abuelo_mira": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: Coquí, mira la fruta."
+    },
+    "c31_cq_guineo": {
+      "who": "tu",
+      "text": "¡El guineo no huele bien!"
+    },
+    "c31_cq_manzana": {
+      "who": "tu",
+      "text": "¡La manzana no huele bien!"
+    },
+    "c31_abuelo_manzana": {
+      "who": "narr",
+      "text": "Abuelo come la manzana."
+    },
+    "c31_abuelo_guineo": {
+      "who": "narr",
+      "text": "Abuelo come el guineo."
+    },
+    "c31_abuelo_vamos": {
+      "who": "narr",
+      "habla": "abuelo",
+      "text": "Abuelo dice: ¡Vamos al parque!"
+    },
+    "c31_aqui_pan_fruta": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Aquí hay pan y fruta para el parque."
+    },
+    "c31_van": {
+      "who": "narr",
+      "text": "Luis y Carmen van al parque."
+    },
+    "c31_cq_adios": {
+      "who": "tu",
+      "text": "¡Adiós, abuela!"
+    },
+    "c31_ab_pan_no": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: El pan no huele bien."
+    },
+    "c31_no_pan": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El pan no huele bien."
+    },
+    "c31_ab_fruta_no": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: La fruta no huele bien."
+    },
+    "c31_no_fruta": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. La fruta no huele bien."
+    },
+    "c31_ab_guineo_no": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: El guineo no huele bien."
+    },
+    "c31_no_guineo": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. El guineo no huele bien."
+    },
+    "c31_ab_manzana_no": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: La manzana no huele bien."
+    },
+    "c31_no_manzana": {
+      "who": "narr",
+      "text": "No, Coquí. Mira. La manzana no huele bien."
+    }
+  }
+}

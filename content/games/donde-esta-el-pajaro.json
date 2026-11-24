@@ -1,0 +1,396 @@
+{
+  "format": "coqui.game.v1",
+  "id": "donde-esta-el-pajaro",
+  "scene": "frente",
+  "next": "el-jugo",
+  "goal": "Find the bird. Win more rounds than it does.",
+  "stake": {
+    "thing": "rondas",
+    "steps": 3
+  },
+  "dots": 7,
+  "bien": "si_muy_bien",
+  "cam": {
+    "wide": [
+      30,
+      0,
+      196,
+      216
+    ]
+  },
+  "beats": [
+    {
+      "set": {
+        "escondite": 1,
+        "dusk": 1,
+        "rondas": 1,
+        "ab": {
+          "en": "paso",
+          "pose": "idle",
+          "bub": null,
+          "al": 1
+        }
+      }
+    },
+    {
+      "if": "mem_amigo=1",
+      "then": [
+        {
+          "set": {
+            "ave": {
+              "mode": "head",
+              "x": 0,
+              "y": 0,
+              "dir": 1,
+              "st": "n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "casa_grande",
+      "lead": [
+        "grande_casa"
+      ],
+      "line": "puedes_casa_grande"
+    },
+    {
+      "dots": 2
+    },
+    {
+      "ask": "casa_pequena",
+      "lead": [
+        {
+          "act": "avecasa"
+        },
+        "casa_del_pajaro",
+        "es_pequena"
+      ],
+      "line": "donde_pequena",
+      "after": [
+        {
+          "act": "sale",
+          "en": "casa_pequena"
+        }
+      ],
+      "then": []
+    },
+    {
+      "dots": 3
+    },
+    "mira_palmas",
+    {
+      "set": {
+        "twinkle": "palma_grande"
+      }
+    },
+    "una_palma_grande",
+    {
+      "set": {
+        "twinkle": "palma_pequena"
+      }
+    },
+    "una_palma_pequena",
+    {
+      "set": {
+        "twinkle": null
+      }
+    },
+    "quiere_jugar",
+    {
+      "say": "vamos_jugar",
+      "gap": 300
+    },
+    {
+      "dots": 4
+    },
+    {
+      "act": "tapa"
+    },
+    {
+      "draw": "tipo",
+      "options": [
+        "palma",
+        "casa"
+      ]
+    },
+    {
+      "draw": "tam",
+      "options": [
+        "grande",
+        "pequena"
+      ]
+    },
+    {
+      "act": "mueve",
+      "que": "$tipo"
+    },
+    {
+      "decide": "find",
+      "options": [
+        "$tipo_grande",
+        "$tipo_pequena"
+      ],
+      "pick": "$tipo_$tam",
+      "as": "p",
+      "lock": true,
+      "noretry": true,
+      "do": "mira",
+      "tests": "$tam",
+      "bien": false,
+      "lead": [],
+      "line": "esta_en_$tipo_$tam",
+      "right": [
+        {
+          "say": "aqui_esta",
+          "gap": 300
+        },
+        {
+          "act": "gana"
+        },
+        {
+          "act": "limpia"
+        }
+      ],
+      "wrong": [
+        "no_esta_en_$x",
+        {
+          "act": "sale",
+          "en": "$p"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "limpia"
+        }
+      ]
+    },
+    {
+      "dots": 5
+    },
+    {
+      "act": "tapa"
+    },
+    {
+      "draw": "tipo",
+      "options": [
+        "palma",
+        "casa"
+      ]
+    },
+    {
+      "draw": "tam",
+      "options": [
+        "grande",
+        "pequena"
+      ]
+    },
+    {
+      "act": "mueve",
+      "que": "$tipo"
+    },
+    {
+      "decide": "find",
+      "options": [
+        "$tipo_grande",
+        "$tipo_pequena"
+      ],
+      "pick": "$tipo_$tam",
+      "as": "p",
+      "lock": true,
+      "noretry": true,
+      "do": "mira",
+      "tests": "$tam",
+      "bien": false,
+      "lead": [],
+      "line": "esta_en_$tipo_$tam",
+      "right": [
+        {
+          "say": "aqui_esta",
+          "gap": 300
+        },
+        {
+          "act": "gana"
+        },
+        {
+          "act": "limpia"
+        }
+      ],
+      "wrong": [
+        "no_esta_en_$x",
+        {
+          "act": "sale",
+          "en": "$p"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "limpia"
+        }
+      ]
+    },
+    {
+      "dots": 6
+    },
+    {
+      "act": "tapa"
+    },
+    {
+      "draw": "tipo",
+      "options": [
+        "palma",
+        "casa"
+      ]
+    },
+    {
+      "draw": "tam",
+      "options": [
+        "grande",
+        "pequena"
+      ]
+    },
+    {
+      "act": "mueve",
+      "que": "todo"
+    },
+    {
+      "decide": "find",
+      "options": [
+        "palma_grande",
+        "palma_pequena",
+        "casa_grande",
+        "casa_pequena"
+      ],
+      "pick": "$tipo_$tam",
+      "as": "p",
+      "lock": true,
+      "noretry": true,
+      "do": "mira",
+      "tests": "$tam",
+      "bien": false,
+      "lead": [],
+      "line": "esta_en_$tipo_$tam",
+      "right": [
+        {
+          "say": "aqui_esta",
+          "gap": 300
+        },
+        {
+          "act": "gana"
+        },
+        {
+          "act": "limpia"
+        }
+      ],
+      "wrong": [
+        "no_esta_en_$x",
+        {
+          "act": "sale",
+          "en": "$p"
+        },
+        {
+          "cost": 1
+        },
+        {
+          "act": "limpia"
+        }
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "act": "tapate"
+    },
+    "ahora_tu",
+    {
+      "elige": "find",
+      "options": [
+        "casa_grande",
+        "casa_pequena"
+      ],
+      "lead": [],
+      "line": "grande_o_pequena",
+      "casa_grande": [
+        {
+          "act": "esconde",
+          "en": "casa_grande"
+        },
+        {
+          "act": "busca_ave",
+          "en": "casa_grande"
+        },
+        {
+          "say": "aqui_estoy",
+          "gap": 400
+        }
+      ],
+      "casa_pequena": [
+        {
+          "act": "esconde",
+          "en": "casa_pequena"
+        },
+        {
+          "act": "busca_ave",
+          "en": "casa_pequena"
+        },
+        {
+          "say": "aqui_estoy",
+          "gap": 400
+        }
+      ]
+    }
+  ],
+  "final": [
+    {
+      "act": "atardece"
+    },
+    {
+      "if": "mem_amigo=1",
+      "then": [
+        {
+          "if": "lost=3",
+          "then": [
+            {
+              "act": "devuelve"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "act": "marcador"
+    },
+    {
+      "say": "adios_pajaro",
+      "gap": 200
+    },
+    {
+      "act": "avecasa"
+    },
+    {
+      "say": "adios_ab",
+      "gap": 300
+    },
+    {
+      "say": "adios_abuela",
+      "gap": 300
+    },
+    {
+      "act": "abentra"
+    },
+    "ab_cierra_puerta",
+    {
+      "act": "vetecq"
+    }
+  ]
+}

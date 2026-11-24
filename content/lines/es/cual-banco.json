@@ -1,0 +1,79 @@
+{
+  "format": "coqui.lines.v1",
+  "id": "cual-banco",
+  "lang": "es",
+  "title": "¿Cuál?",
+  "place": "El parque",
+  "clips": {
+    "b_n_hombre": {
+      "who": "narr",
+      "text": "Es un hombre."
+    },
+    "b_n_mujer": {
+      "who": "narr",
+      "text": "Es una mujer."
+    },
+    "b_n_senor": {
+      "who": "narr",
+      "text": "Es un señor."
+    },
+    "c22_cq_dn_senora": {
+      "who": "tu",
+      "text": "De nada, señora."
+    },
+    "b_n_joven": {
+      "who": "narr",
+      "text": "Es un joven."
+    },
+    "b_c_perro_viejo": {
+      "who": "narr",
+      "text": "Es un perro viejo."
+    },
+    "c21_hombre_come": {
+      "who": "narr",
+      "text": "El hombre come."
+    },
+    "b_c_pajaro_bebe": {
+      "who": "narr",
+      "text": "El pájaro bebe."
+    },
+    "b_c_perro_duerme": {
+      "who": "narr",
+      "text": "El perro duerme."
+    },
+    "c23_luis_cansado": {
+      "who": "narr",
+      "text": "Luis está cansado."
+    },
+    "b_c_senor_contento": {
+      "who": "narr",
+      "text": "El señor está contento."
+    },
+    "b_c_canelo_triste": {
+      "who": "narr",
+      "text": "Canelo está triste."
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    }
+  },
+  "item_words": [
+    "hombre",
+    "mujer",
+    "señor",
+    "señora",
+    "joven",
+    "viejo",
+    "come",
+    "bebe",
+    "duerme",
+    "cansado",
+    "contento",
+    "triste"
+  ]
+}
