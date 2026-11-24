@@ -53,8 +53,8 @@ def get_diff(base_ref: str) -> str:
 def call_claude(api_key: str, model: str, user_prompt: str) -> str:
     payload = {
         "model": model,
-        "max_tokens": 1800,
-        "temperature": 0,
+        "max_tokens": 4096,
+        "output_config": {"effort": "low"},
         "system": SYSTEM_PROMPT,
         "messages": [{"role": "user", "content": user_prompt}],
     }
