@@ -17,6 +17,12 @@ abstract final class NocheA11y {
   static const String close = 'close';
   static const String hearAgain = 'hearAgain';
   static const String mic = 'mic';
+  static const String micReady = 'micReady';
+  static const String micListening = 'micListening';
+  static const String micThinking = 'micThinking';
+  static const String micTheySpeak = 'micTheySpeak';
+  static const String micRight = 'micRight';
+  static const String micNotYet = 'micNotYet';
   static const String captions = 'captions';
   static const String back = 'back';
   static const String textAndPage = 'textAndPage';
@@ -45,6 +51,12 @@ abstract final class NocheA11y {
     close: 'Close story',
     hearAgain: 'Hear again',
     mic: 'Microphone',
+    micReady: 'Microphone, ready',
+    micListening: 'Microphone, listening',
+    micThinking: 'Microphone, thinking',
+    micTheySpeak: 'Microphone, they speak',
+    micRight: 'Microphone, heard right',
+    micNotYet: 'Microphone, not yet',
     captions: 'Text on screen',
     back: 'Back to library',
     textAndPage: 'Text and page',
