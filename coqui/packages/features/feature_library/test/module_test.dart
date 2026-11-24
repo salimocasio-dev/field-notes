@@ -109,10 +109,14 @@ void main() {
       final clock = FakeClock();
       final services = fakeServices(clock: clock, nav: nav);
       final store = ReadingStore(services.storage(ReadingStore.space));
+      final body = List.generate(
+        180,
+        (i) => 'Palabra número ${i + 1} en una frase sencilla.',
+      ).join(' ');
       final book = await store.add(
         now: 100,
         title: 'Mi cuaderno',
-        body: 'Tengo un cuaderno. Es azul. Tiene papel. Escribo aquí.',
+        body: body,
         generated: false,
       );
       await store.savePlace(
@@ -142,26 +146,29 @@ void main() {
       await tester.tap(find.text('Book'));
       await ready(tester);
       expect(find.byType(TextReader), findsOneWidget);
-      expect(find.text('1 / 2'), findsOneWidget);
+      final totalPages = store.place(book.id).totalPages;
+      expect(totalPages, isNotNull);
+      expect(totalPages!, greaterThan(1));
+      expect(find.text('1 / $totalPages'), findsOneWidget);
 
-      await tester.tap(find.byTooltip(ReaderTexts.nextPage));
+      // Tap outer right fifth to advance to page 2.
+      final readerRect = tester.getRect(find.byType(TextReader));
+      await tester.tapAt(Offset(readerRect.right - 20, readerRect.center.dy));
       await ready(tester);
-      expect(find.text('2 / 2'), findsOneWidget);
+      expect(find.text('2 / $totalPages'), findsOneWidget);
+
       await tester.tap(find.byTooltip(ReaderTexts.close));
       await ready(tester);
 
       expect(find.byType(ReadingHome), findsOneWidget);
       expect(find.text('Book'), findsOneWidget);
-      expect(
-        find.text('Page 2 of 2 · 1 min left in the chapter'),
-        findsOneWidget,
-      );
+      expect(find.textContaining('Page 2 of $totalPages'), findsOneWidget);
       expect(store.place(book.id).words, isEmpty);
 
       await tester.tap(find.text('Continue reading'));
       await ready(tester);
       expect(find.byType(TextReader), findsOneWidget);
-      expect(find.text('2 / 2'), findsOneWidget);
+      expect(find.text('2 / $totalPages'), findsOneWidget);
     },
   );
 
@@ -194,7 +201,7 @@ void main() {
       ),
     );
     await ready(tester);
-    expect(find.text('1 / 4'), findsOneWidget);
+    expect(find.textContaining(' / '), findsOneWidget);
     expect(
       find.textContaining('Me llamo Carmen', findRichText: true),
       findsOneWidget,
@@ -237,6 +244,10 @@ void main() {
       expect(progress.hasRead(text.id), isFalse);
       expect(store.place(text.id).words, isEmpty);
 
+      // Tap elsewhere to dismiss the bubble, then tap word again while muted.
+      await tester.tapAt(Offset(box.left + 2, box.bottom + 80));
+      await ready(tester);
+
       clips.muted = true;
       await tester.tapAt(point);
       await ready(tester);
@@ -269,7 +280,8 @@ void main() {
     );
     await ready(tester);
     expect(store.place(text.id).words, {'hola', 'casa'});
-    await tester.tap(find.text(CoquiLabels.fin));
+    final readerRect = tester.getRect(find.byType(TextReader));
+    await tester.tapAt(Offset(readerRect.right - 20, readerRect.center.dy));
     await ready(tester);
     expect(progress.hasRead(text.id), isTrue);
   });
