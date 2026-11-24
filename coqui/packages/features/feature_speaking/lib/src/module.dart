@@ -31,7 +31,7 @@ class SpeakingModule implements FeatureModule {
     this.completedCallIds = const {},
   });
 
-  /// The line shown when the build cannot place a call; null uses `CallTexts.callsLater`.
+  /// The line shown when the build cannot place a call; null uses `CallTexts.callsLaterFor(...)`.
   final String? callsLater;
 
   final VoiceTestContent? voiceTest;
@@ -52,7 +52,7 @@ class SpeakingModule implements FeatureModule {
   @override
   FeatureTab? tab(Services s) => FeatureTab(
     id: CoquiTabs.speakId,
-    label: CoquiLabels.speak,
+    label: s.course.language.tabNames[CoquiTabs.speakId] ?? CoquiLabels.speak,
     icon: Icons.mic,
     builder: (_) => HablarTab(
       services: s,

@@ -128,7 +128,7 @@ class _HablarTabState extends State<HablarTab> {
       ),
       builder: (ctx) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+          padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 20, 24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +171,7 @@ class _HablarTabState extends State<HablarTab> {
                               ),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: const EdgeInsetsDirectional.symmetric(
                                 horizontal: 12,
                                 vertical: 6,
                               ),
@@ -196,7 +196,12 @@ class _HablarTabState extends State<HablarTab> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(child: ScreenTitle(CoquiLabels.speak)),
+        Expanded(
+          child: ScreenTitle(
+            widget.services.course.language.tabNames[CoquiTabs.speakId] ??
+                CoquiLabels.speak,
+          ),
+        ),
         Semantics(
           button: true,
           label:
@@ -217,7 +222,7 @@ class _HablarTabState extends State<HablarTab> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding: const EdgeInsetsDirectional.symmetric(
                       horizontal: 12,
                       vertical: 8,
                     ),
@@ -301,7 +306,7 @@ class _HablarTabState extends State<HablarTab> {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: const EdgeInsetsDirectional.symmetric(
                           horizontal: 12,
                           vertical: 8,
                         ),
@@ -355,7 +360,7 @@ class _HablarTabState extends State<HablarTab> {
         : CallTexts.startCall;
 
     return CoquiCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsetsDirectional.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -380,7 +385,12 @@ class _HablarTabState extends State<HablarTab> {
           Text(next.spec.jobEn, style: CoquiText.bodyMuted),
           if (snap.showFirstTimeReassurance && canStart) ...[
             const SizedBox(height: 10),
-            Text(HablarTexts.practiceNoFail, style: CoquiText.smallMuted),
+            Text(
+              HablarTexts.practiceNoFailFor(
+                widget.services.course.language.partnerName,
+              ),
+              style: CoquiText.smallMuted,
+            ),
           ],
           const SizedBox(height: 20),
           if (canStart)
@@ -406,7 +416,7 @@ class _HablarTabState extends State<HablarTab> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: const EdgeInsetsDirectional.symmetric(
                   horizontal: 14,
                   vertical: 12,
                 ),
@@ -431,7 +441,7 @@ class _HablarTabState extends State<HablarTab> {
     final main = stop.mainCall;
     final smalls = stop.smallerCalls;
     return CoquiCard(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsetsDirectional.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -497,7 +507,10 @@ class _HablarTabState extends State<HablarTab> {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 12,
+            vertical: 10,
+          ),
           child: Row(
             children: [
               Expanded(
@@ -556,7 +569,7 @@ class _HablarTabState extends State<HablarTab> {
       callsAvailable: _callsAvailable,
       entitlement: widget.entitlementCheck(),
       completedCallIds: widget.completedCallIds,
-      callsLater: widget.callsLater ?? CallTexts.callsLater,
+      callsLater: widget.callsLater,
     );
     final selectedStop = _findSelectedStop(snap.stops);
     final voiceTest = widget.voiceTestLabel;
@@ -584,7 +597,7 @@ class _HablarTabState extends State<HablarTab> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(minHeight: 48),
                   child: Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: AlignmentDirectional.centerStart,
                     child: Text(voiceTest, style: CoquiText.rowTitle),
                   ),
                 ),

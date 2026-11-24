@@ -86,8 +86,7 @@ class VoiceLineRun {
   };
 }
 
-// habla-prueba.html: LANG, STOP_AT, UNAVAIL
-const String voiceTestLocale = 'es-US';
+// habla-prueba.html: STOP_AT, UNAVAIL
 const Duration voiceTestLimit = Duration(milliseconds: 6000);
 const Set<String> voiceTestUnavailable = {
   'not-allowed',
@@ -103,11 +102,16 @@ const String voiceTestRunKey = 'run';
 
 // habla-prueba.html: heard. The rule for "heard right" (docs/hablar/01-decisiones.md): for EVERY target, at least one
 // accepted form is inside at least one alternative, on word boundaries.
-bool voiceHeard(VoiceLine line, List<String> alternatives) {
+bool voiceHeard(
+  VoiceLine line,
+  List<String> alternatives, {
+  Language? language,
+}) {
+  final lang = language ?? Language.spanish;
   return line.targets.every(
     (g) => g.forms.any((f) {
-      final k = ' ${normalize(f).trim()} ';
-      return alternatives.any((a) => normalize(a).contains(k));
+      final k = ' ${lang.normalize(f).trim()} ';
+      return alternatives.any((a) => lang.normalize(a).contains(k));
     }),
   );
 }
@@ -118,7 +122,8 @@ class VoiceTestController extends ChangeNotifier {
     required this.clock,
     required this.content,
     this.store,
-  });
+    Language? language,
+  }) : language = language ?? Language.spanish;
 
   final SpeechListener speech;
   final Clock clock;
@@ -126,6 +131,8 @@ class VoiceTestController extends ChangeNotifier {
 
   /// The test's own storage space, where the run is kept; null keeps nothing.
   final KeyValueStore? store;
+
+  final Language language;
 
   VoiceTestState _state = VoiceTestState.load;
   VoiceTestState get state => _state;
@@ -191,7 +198,7 @@ class VoiceTestController extends ChangeNotifier {
               jsonEncode({
                 'v': 1,
                 't': _runTime,
-                'lang': voiceTestLocale,
+                'lang': language.recognitionLocale,
                 'src': 'mic',
                 'ua': '',
                 'n': n,
@@ -247,7 +254,7 @@ class VoiceTestController extends ChangeNotifier {
     SpeechResult r;
     try {
       final turn = speech.listen(
-        locale: voiceTestLocale,
+        locale: language.recognitionLocale,
         limit: voiceTestLimit,
         maxAlternatives: 5,
       );
@@ -284,7 +291,9 @@ class VoiceTestController extends ChangeNotifier {
       return;
     }
     // no-speech, aborted, nothing heard or the wrong words: a miss
-    e.ok = e.alts.isNotEmpty && voiceHeard(content.lines[k], e.alts);
+    e.ok =
+        e.alts.isNotEmpty &&
+        voiceHeard(content.lines[k], e.alts, language: language);
     right = _count;
     _save();
     _set(VoiceTestState.done);
