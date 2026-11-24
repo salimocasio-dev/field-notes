@@ -288,9 +288,9 @@ ReadingText? keepReadingBook(
   for (final text in sortShelfByRecent(texts, placeOf)) {
     if (text.generated) continue;
     final place = placeOf(text.id);
-    if ((place.openedAt > 0 || place.page > 0) &&
-        !place.finished &&
-        !hasRead(text.id)) {
+    if (place.openedAt > 0) {
+      if (!place.finished) return text;
+    } else if (place.page > 0 && !place.finished && !hasRead(text.id)) {
       return text;
     }
   }

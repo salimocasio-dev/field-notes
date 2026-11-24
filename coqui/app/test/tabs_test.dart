@@ -18,18 +18,18 @@ void main() {
       expect(find.text('2 · El parque'), findsOneWidget);
       expect(find.text('10 words coming back · 6 min'), findsOneWidget);
 
-      // Biblioteca: a story to make for his level and a text to add; his shelf is empty (the course's stories are
-      // replayed on the map, not listed here)
+      // Biblioteca: a story to make for his level; his shelf is empty (the course's stories are
+      // replayed on the map, not listed here; "+ Add your own" stays hidden until N5.4)
       await app.openTab('library');
       expect(app.selectedTab, 'library');
       await app.until(
-        () => find.text('Generate a story').evaluate().isNotEmpty,
+        () => find.text('Write my story').evaluate().isNotEmpty,
         what: 'Biblioteca',
       );
       expect(byTypeName('ReadingHome').hitTestable(), findsOneWidget);
-      expect(find.text('Add text').hitTestable(), findsOneWidget);
+      expect(find.text('+ Add your own'), findsNothing);
       expect(
-        find.text('Stories you generate and texts you add appear here.'),
+        find.text('Stories you make and books you add appear here.'),
         findsOneWidget,
       );
       expect(find.text('La lluvia'), findsNothing);

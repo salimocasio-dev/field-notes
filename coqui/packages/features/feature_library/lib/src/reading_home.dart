@@ -56,17 +56,14 @@ class _ReadingHomeState extends State<ReadingHome> {
     super.dispose();
   }
 
-  void _open(ReadingText text) {
-    unawaited(
-      _store
-          .markOpened(text.id, _s.clock.nowMs())
-          .then((_) {
-            if (mounted) setState(() => _texts = _store.texts());
-          })
-          .catchError((Object _) {}),
-    );
+  Future<void> _open(ReadingText text) async {
     _s.haptics.tick();
     unawaited(_s.clips.unlock());
+    await _store
+        .markOpened(text.id, _s.clock.nowMs())
+        .catchError((Object _) {});
+    if (!mounted) return;
+    setState(() => _texts = _store.texts());
     _s.nav.go(BookRoute(text.id));
   }
 
@@ -83,7 +80,7 @@ class _ReadingHomeState extends State<ReadingHome> {
     );
     if (!mounted) return;
     setState(() => _texts = _store.texts());
-    _open(text);
+    await _open(text);
   }
 
   Future<void> _generate() async {
@@ -550,7 +547,9 @@ class _KeepReadingCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     NocheProgressBar(
-                      value: prog.page / prog.totalPages,
+                      value: prog.totalPages <= 1
+                          ? 0.0
+                          : (prog.page - 1) / prog.totalPages,
                       color: NocheColors.next,
                       semanticLabel: 'Page ${prog.page} of ${prog.totalPages}',
                     ),

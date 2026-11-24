@@ -201,7 +201,8 @@ void main() {
         story.id: const ReadingPlace(page: 1, openedAt: 900),
         unopened.id: const ReadingPlace(page: 0, openedAt: 0),
         finished.id: const ReadingPlace(page: 0, openedAt: 800, finished: true),
-        readBook.id: const ReadingPlace(page: 1, openedAt: 700),
+        // Legacy record (openedAt == 0) with historical hasRead == true is excluded.
+        readBook.id: const ReadingPlace(page: 1, openedAt: 0),
         activeOlder.id: const ReadingPlace(page: 1, openedAt: 200),
         activeNewer.id: const ReadingPlace(page: 0, openedAt: 500),
       };
@@ -212,7 +213,18 @@ void main() {
       );
       expect(picked?.id, activeNewer.id);
 
-      // Legacy saved place with page > 0 and openedAt == 0 still qualifies.
+      // Re-reading a historically completed A2+ book (hasRead == true, openedAt > 0,
+      // finished == false) still appears in Keep reading.
+      final reread = keepReadingBook(
+        [readBook, activeOlder],
+        (id) => id == readBook.id
+            ? const ReadingPlace(page: 1, openedAt: 700, finished: false)
+            : const ReadingPlace(page: 1, openedAt: 200),
+        (id) => id == readBook.id,
+      );
+      expect(reread?.id, readBook.id);
+
+      // Legacy saved place with page > 0 and openedAt == 0 still qualifies when unread.
       final legacy = keepReadingBook(
         [unopened, activeOlder],
         (id) => id == activeOlder.id
@@ -407,7 +419,10 @@ void main() {
             find.text('Page 2 of 2 · 1 min left in the chapter'),
             findsOneWidget,
           );
-          expect(find.byType(NocheProgressBar), findsOneWidget);
+          final progressBar = tester.widget<NocheProgressBar>(
+            find.byType(NocheProgressBar),
+          );
+          expect(progressBar.value, 0.5);
           expect(find.text('Continue reading'), findsOneWidget);
 
           // Filter pills.
