@@ -29,6 +29,7 @@ void main() {
       'tiendas',
       'cruce',
       'plaza',
+      'reloj',
     ]);
   });
 

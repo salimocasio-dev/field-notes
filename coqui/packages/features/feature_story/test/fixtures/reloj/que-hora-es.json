@@ -1,0 +1,1301 @@
+{
+ "id": "que-hora-es",
+ "title": "¿Qué hora es?",
+ "place": "La plaza",
+ "scene": "reloj",
+ "next": "y-media",
+ "goal": "Set the stopped clock tower's clock to the hour don Tito reads from his watch, so the vendedor can fry the three pastelillos by the bell: every wrong hour leaves one in the oil until it burns black.",
+ "stake": {
+  "thing": "pastelillos",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "reloj",
+  "hora",
+  "¿qué hora es?",
+  "es la una",
+  "son las"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "uno",
+  "dos",
+  "tres",
+  "cuatro",
+  "cinco",
+  "seis",
+  "siete",
+  "ocho",
+  "nueve",
+  "diez",
+  "once",
+  "doce",
+  "me llamo",
+  "mucho gusto",
+  "¿cómo te llamas?",
+  "camina",
+  "grande",
+  "viejo",
+  "come",
+  "sí",
+  "gracias",
+  "mira",
+  "ahora",
+  "ya",
+  "otra vez",
+  "quieres"
+ ],
+ "also_heard": [
+  "pastelillos",
+  "salen"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "4": "cuatro",
+  "5": "cinco",
+  "6": "seis",
+  "7": "siete",
+  "8": "ocho",
+  "9": "nueve",
+  "10": "diez",
+  "11": "once",
+  "12": "doce"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c63_mira": {
+   "who": "narr",
+   "text": "Mira el reloj de la plaza. Es un reloj grande y viejo. Y no camina."
+  },
+  "c63_donde_reloj": {
+   "who": "narr",
+   "text": "¿Dónde está el reloj?"
+  },
+  "c63_tito_hola": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: ¡Hola! ¿Cómo te llamas?"
+  },
+  "c36_cq_me_llamo": {
+   "who": "tu",
+   "text": "Me llamo Coquí.",
+   "tu_turno": [
+    {
+     "palabra": "me llamo",
+     "formas": [
+      "me llamo"
+     ]
+    }
+   ]
+  },
+  "c63_tito_mucho_gusto": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Mucho gusto, Coquí. Yo soy Tito."
+  },
+  "c63_luis_hora": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Don Tito, ¿qué hora es?"
+  },
+  "c63_tito_es_una": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Es la una."
+  },
+  "c63_en_cual_una": {
+   "who": "narr",
+   "text": "¿En cuál reloj es la una?"
+  },
+  "c63_ve_es_una": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: ¡Es la una!"
+  },
+  "c63_carmen_ahora": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Don Tito, ¿y ahora qué hora es?"
+  },
+  "c63_tito_son_dos": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las dos."
+  },
+  "c63_en_cual_dos": {
+   "who": "narr",
+   "text": "¿En cuál reloj son las dos?"
+  },
+  "c63_ve_son_tres": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: ¿Qué hora es? ¿Son las tres?"
+  },
+  "c63_tito_ya_tres": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Sí, ya son las tres."
+  },
+  "c63_en_cual_tres": {
+   "who": "narr",
+   "text": "¿Y en cuál reloj son las tres?"
+  },
+  "c63_ve_pastelillos": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: Con el reloj, los pastelillos salen bien."
+  },
+  "c63_ve_hora": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: Don Tito, ¿qué hora es?"
+  },
+  "c63_tito_ya": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: ¡Ya! El reloj camina."
+  },
+  "c63_ve_quieres": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: ¿Quieres un pastelillo, Coquí?"
+  },
+  "cq_si_gracias": {
+   "who": "tu",
+   "text": "¡Sí, gracias!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si",
+      "sí gracias",
+      "si gracias"
+     ]
+    }
+   ]
+  },
+  "c63_camina": {
+   "who": "narr",
+   "text": "El reloj de la plaza camina otra vez."
+  },
+  "c63_tito_son_4": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las cuatro."
+  },
+  "c63_tito_son_5": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las cinco."
+  },
+  "c63_tito_son_6": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las seis."
+  },
+  "c63_tito_son_7": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las siete."
+  },
+  "c63_tito_son_8": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Son las ocho."
+  },
+  "c63_tito_ahora_5": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Ahora son las cinco."
+  },
+  "c63_tito_ahora_6": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Ahora son las seis."
+  },
+  "c63_tito_ahora_7": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Ahora son las siete."
+  },
+  "c63_tito_ahora_8": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Ahora son las ocho."
+  },
+  "c63_tito_ahora_9": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Ahora son las nueve."
+  },
+  "c63_tito_ahora_10": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Ahora son las diez."
+  },
+  "c63_tito_ahora_11": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Ahora son las once."
+  },
+  "c63_tito_ahora_12": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: Ahora son las doce."
+  },
+  "c63_tito_no_4": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las cuatro."
+  },
+  "c63_tito_no_5": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las cinco."
+  },
+  "c63_tito_no_6": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las seis."
+  },
+  "c63_tito_no_7": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las siete."
+  },
+  "c63_tito_no_8": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las ocho."
+  },
+  "c63_tito_no_9": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las nueve."
+  },
+  "c63_tito_no_10": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las diez."
+  },
+  "c63_tito_no_11": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las once."
+  },
+  "c63_tito_no_12": {
+   "who": "narr",
+   "habla": "tito",
+   "text": "Don Tito dice: No, Coquí. Son las doce."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "mediodia"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "pie1"
+  },
+  {
+   "act": "pastelillos",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  "c63_mira",
+  {
+   "ask": "reloj",
+   "lead": [],
+   "line": "c63_donde_reloj",
+   "then": [
+    {
+     "act": "gesto",
+     "quien": "tito",
+     "que": "mira",
+     "a": "coqui"
+    }
+   ],
+   "after": []
+  },
+  "c63_tito_hola",
+  "c36_cq_me_llamo",
+  "c63_tito_mucho_gusto",
+  {
+   "dots": 1
+  },
+  "c63_luis_hora",
+  "c63_tito_es_una",
+  {
+   "act": "cartas",
+   "a": 1,
+   "b": 4
+  },
+  {
+   "ask": "carta_a",
+   "lead": [],
+   "line": "c63_en_cual_una",
+   "then": [
+    "c63_ve_es_una"
+   ],
+   "after": [
+    {
+     "act": "pone63",
+     "h": 1
+    },
+    {
+     "act": "campana",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "ir",
+   "a": "pie1"
+  },
+  "c63_carmen_ahora",
+  "c63_tito_son_dos",
+  {
+   "act": "cartas",
+   "a": 2,
+   "b": 1
+  },
+  {
+   "ask": "carta_a",
+   "lead": [],
+   "line": "c63_en_cual_dos",
+   "then": [],
+   "after": [
+    {
+     "act": "pone63",
+     "h": 2
+    },
+    {
+     "act": "campana",
+     "n": 2
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  "c63_ve_son_tres",
+  "c63_tito_ya_tres",
+  {
+   "act": "cartas",
+   "a": 3,
+   "b": 9
+  },
+  {
+   "ask": "carta_a",
+   "lead": [],
+   "line": "c63_en_cual_tres",
+   "then": [],
+   "after": [
+    {
+     "act": "pone63",
+     "h": 3
+    },
+    {
+     "act": "campana",
+     "n": 3
+    },
+    {
+     "act": "gesto",
+     "quien": "vendedor",
+     "que": "dedos"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "vendedor",
+   "que": "senala",
+   "a": "pastelillos"
+  },
+  {
+   "act": "gesto",
+   "quien": "vendedor",
+   "que": "senala",
+   "a": "reloj"
+  },
+  "c63_ve_pastelillos",
+  {
+   "act": "gesto",
+   "quien": "tito",
+   "que": "sienta"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ha",
+   "options": [
+    "4",
+    "5",
+    "6",
+    "7",
+    "8"
+   ]
+  },
+  {
+   "draw": "da",
+   "options": [
+    "e",
+    "l"
+   ]
+  },
+  {
+   "if": "ha=4",
+   "then": [
+    {
+     "if": "da=e",
+     "then": [
+      {
+       "draw": "oa",
+       "options": [
+        "1",
+        "2",
+        "3"
+       ]
+      }
+     ],
+     "else": [
+      {
+       "draw": "oa",
+       "options": [
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+       ]
+      }
+     ]
+    }
+   ],
+   "else": [
+    {
+     "if": "ha=5",
+     "then": [
+      {
+       "if": "da=e",
+       "then": [
+        {
+         "draw": "oa",
+         "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+         ]
+        }
+       ],
+       "else": [
+        {
+         "draw": "oa",
+         "options": [
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+         ]
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "ha=6",
+       "then": [
+        {
+         "if": "da=e",
+         "then": [
+          {
+           "draw": "oa",
+           "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+           ]
+          }
+         ],
+         "else": [
+          {
+           "draw": "oa",
+           "options": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"
+           ]
+          }
+         ]
+        }
+       ],
+       "else": [
+        {
+         "if": "ha=7",
+         "then": [
+          {
+           "if": "da=e",
+           "then": [
+            {
+             "draw": "oa",
+             "options": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "draw": "oa",
+             "options": [
+              "8",
+              "9",
+              "10",
+              "11",
+              "12"
+             ]
+            }
+           ]
+          }
+         ],
+         "else": [
+          {
+           "if": "da=e",
+           "then": [
+            {
+             "draw": "oa",
+             "options": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "draw": "oa",
+             "options": [
+              "9",
+              "10",
+              "11",
+              "12"
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "carta_a",
+    "carta_b"
+   ],
+   "other": "ja"
+  },
+  {
+   "calc": "ua",
+   "cond": "ka=carta_a",
+   "then": "$ha",
+   "else": "$oa"
+  },
+  {
+   "calc": "va",
+   "cond": "ka=carta_a",
+   "then": "$oa",
+   "else": "$ha"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "carta_a",
+    "carta_b"
+   ],
+   "pick": "$ka",
+   "tests": "$ha",
+   "lock": true,
+   "lead": [
+    {
+     "act": "echa63"
+    },
+    {
+     "act": "pastelillos",
+     "n": 2
+    },
+    {
+     "act": "cartas",
+     "a": "$ua",
+     "b": "$va"
+    },
+    "c63_ve_hora"
+   ],
+   "line": "c63_tito_son_$ha",
+   "right": [
+    {
+     "act": "pone63",
+     "h": "$ha"
+    },
+    {
+     "act": "campana",
+     "n": "$ha"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "frie63",
+       "ok": 1
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pone63",
+     "h": "$oa"
+    },
+    {
+     "act": "campana",
+     "n": "$oa"
+    },
+    {
+     "act": "frie63",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c63_tito_no_$ha",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "if": "ha=4",
+   "then": [
+    {
+     "draw": "hb",
+     "options": [
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12"
+     ]
+    }
+   ],
+   "else": [
+    {
+     "if": "ha=5",
+     "then": [
+      {
+       "draw": "hb",
+       "options": [
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "ha=6",
+       "then": [
+        {
+         "draw": "hb",
+         "options": [
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+         ]
+        }
+       ],
+       "else": [
+        {
+         "if": "ha=7",
+         "then": [
+          {
+           "draw": "hb",
+           "options": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"
+           ]
+          }
+         ],
+         "else": [
+          {
+           "draw": "hb",
+           "options": [
+            "9",
+            "10",
+            "11",
+            "12"
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "db",
+   "options": [
+    "e",
+    "l"
+   ]
+  },
+  {
+   "if": "hb=5",
+   "then": [
+    {
+     "if": "db=e",
+     "then": [
+      {
+       "draw": "ob",
+       "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+       ]
+      }
+     ],
+     "else": [
+      {
+       "draw": "ob",
+       "options": [
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+       ]
+      }
+     ]
+    }
+   ],
+   "else": [
+    {
+     "if": "hb=6",
+     "then": [
+      {
+       "if": "db=e",
+       "then": [
+        {
+         "draw": "ob",
+         "options": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ]
+        }
+       ],
+       "else": [
+        {
+         "draw": "ob",
+         "options": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+         ]
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "hb=7",
+       "then": [
+        {
+         "if": "db=e",
+         "then": [
+          {
+           "draw": "ob",
+           "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+           ]
+          }
+         ],
+         "else": [
+          {
+           "draw": "ob",
+           "options": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"
+           ]
+          }
+         ]
+        }
+       ],
+       "else": [
+        {
+         "if": "hb=8",
+         "then": [
+          {
+           "if": "db=e",
+           "then": [
+            {
+             "draw": "ob",
+             "options": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "draw": "ob",
+             "options": [
+              "9",
+              "10",
+              "11",
+              "12"
+             ]
+            }
+           ]
+          }
+         ],
+         "else": [
+          {
+           "if": "hb=9",
+           "then": [
+            {
+             "if": "db=e",
+             "then": [
+              {
+               "draw": "ob",
+               "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "draw": "ob",
+               "options": [
+                "10",
+                "11",
+                "12"
+               ]
+              }
+             ]
+            }
+           ],
+           "else": [
+            {
+             "if": "hb=10",
+             "then": [
+              {
+               "if": "db=e",
+               "then": [
+                {
+                 "draw": "ob",
+                 "options": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                 ]
+                }
+               ],
+               "else": [
+                {
+                 "draw": "ob",
+                 "options": [
+                  "11",
+                  "12"
+                 ]
+                }
+               ]
+              }
+             ],
+             "else": [
+              {
+               "if": "hb=11",
+               "then": [
+                {
+                 "if": "db=e",
+                 "then": [
+                  {
+                   "draw": "ob",
+                   "options": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
+                   ]
+                  }
+                 ],
+                 "else": [
+                  {
+                   "draw": "ob",
+                   "options": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
+                   ]
+                  }
+                 ]
+                }
+               ],
+               "else": [
+                {
+                 "if": "db=e",
+                 "then": [
+                  {
+                   "draw": "ob",
+                   "options": [
+                    "1",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
+                   ]
+                  }
+                 ],
+                 "else": [
+                  {
+                   "draw": "ob",
+                   "options": [
+                    "1",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "carta_a",
+    "carta_b"
+   ],
+   "other": "jb"
+  },
+  {
+   "calc": "ub",
+   "cond": "kb=carta_a",
+   "then": "$hb",
+   "else": "$ob"
+  },
+  {
+   "calc": "vb",
+   "cond": "kb=carta_a",
+   "then": "$ob",
+   "else": "$hb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "carta_a",
+    "carta_b"
+   ],
+   "pick": "$kb",
+   "tests": "$hb",
+   "lock": true,
+   "lead": [
+    {
+     "act": "echa63"
+    },
+    {
+     "act": "pastelillos",
+     "n": 1
+    },
+    {
+     "act": "cartas",
+     "a": "$ub",
+     "b": "$vb"
+    }
+   ],
+   "line": "c63_tito_ahora_$hb",
+   "right": [
+    {
+     "act": "pone63",
+     "h": "$hb"
+    },
+    {
+     "act": "campana",
+     "n": "$hb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "frie63",
+       "ok": 1
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pone63",
+     "h": "$ob"
+    },
+    {
+     "act": "campana",
+     "n": "$ob"
+    },
+    {
+     "act": "frie63",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c63_tito_no_$hb",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "gesto",
+   "quien": "tito",
+   "que": "llave"
+  },
+  "c63_tito_ya",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final63",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final63",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final63",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c63_ve_quieres",
+  "cq_si_gracias",
+  {
+   "dots": 9
+  },
+  "c63_camina",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c63_mira",
+  "c63_donde_reloj",
+  "c63_tito_hola",
+  "c36_cq_me_llamo",
+  "c63_tito_mucho_gusto",
+  "c63_luis_hora",
+  "c63_tito_es_una",
+  "c63_en_cual_una",
+  "c63_ve_es_una",
+  "c63_carmen_ahora",
+  "c63_tito_son_dos",
+  "c63_en_cual_dos",
+  "c63_ve_son_tres",
+  "c63_tito_ya_tres",
+  "c63_en_cual_tres",
+  "c63_ve_pastelillos",
+  "c63_ve_hora",
+  "c63_tito_son_5",
+  "c63_tito_ahora_8",
+  "c63_tito_ya",
+  "c63_ve_quieres",
+  "cq_si_gracias",
+  "c63_camina"
+ ]
+}

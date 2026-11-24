@@ -1,6 +1,7 @@
 {
-  "files": 1308,
-  "totalBytes": 81301861,
+  "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
+  "files": 1356,
+  "totalBytes": 84196691,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -5771,6 +5772,246 @@
       "path": "plaza/tarde-1-1/zb.json",
       "bytes": 322,
       "sha256": "65b0351ce7fe1e2758f048ce91c48c8cf8350b45ebf9c373d8194c2a4cf3aa34"
+    },
+    {
+      "path": "reloj/mediodia-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "41fc65e0d89ecb069620a7ac09219f76c073f5e44e05d86e5e408134820fef3c"
+    },
+    {
+      "path": "reloj/mediodia-0/kinds.json",
+      "bytes": 305,
+      "sha256": "489ef7085ca6b4bf781dfbd08c49986208bc2f6a59569ce9330c44dd86230fba"
+    },
+    {
+      "path": "reloj/mediodia-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "86801c7e4e8ac9d98a344da3297ec172cdf6192693262d211597ce638f7f2be1"
+    },
+    {
+      "path": "reloj/mediodia-0/pix.json",
+      "bytes": 370,
+      "sha256": "b725f605a3378aad3b6d0a9e5bff3b8d724a01d52fad75d08b24d77f43a6167d"
+    },
+    {
+      "path": "reloj/mediodia-0/pix.png",
+      "bytes": 13083,
+      "sha256": "a2a77aeecca4222ca55480a7696c98d5c3fe00aeda75b6fbe61aa34678acea7a"
+    },
+    {
+      "path": "reloj/mediodia-0/state.json",
+      "bytes": 934,
+      "sha256": "8d22a8d0fbe53945e6ec963a5746306d68c5c29ff75dd8844cbfaae977009c0e"
+    },
+    {
+      "path": "reloj/mediodia-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "9946367b4fad1568971c3b89d6fbe98c333e8f929e3651a288599b57c9f82e6b"
+    },
+    {
+      "path": "reloj/mediodia-0/zb.json",
+      "bytes": 322,
+      "sha256": "895aebefeb73e18702178f56c06b98767bdd8fbcb9ceada13e3eef4dd171255f"
+    },
+    {
+      "path": "reloj/mediodia-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "41fc65e0d89ecb069620a7ac09219f76c073f5e44e05d86e5e408134820fef3c"
+    },
+    {
+      "path": "reloj/mediodia-1/kinds.json",
+      "bytes": 305,
+      "sha256": "489ef7085ca6b4bf781dfbd08c49986208bc2f6a59569ce9330c44dd86230fba"
+    },
+    {
+      "path": "reloj/mediodia-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "c555fba96c7b088265b403ebc6a8c28ab0bd9fb88392390bc5a052bbe28ac197"
+    },
+    {
+      "path": "reloj/mediodia-1/pix.json",
+      "bytes": 370,
+      "sha256": "6ae9f0ce8201158cac28923d288a48dd7aa47fa67f3be789de3daf4b30df37ef"
+    },
+    {
+      "path": "reloj/mediodia-1/pix.png",
+      "bytes": 14903,
+      "sha256": "f45b5c54352c370fedf6b2f07080908b0e8b08f541ded62cb0a36d0871bfdc2f"
+    },
+    {
+      "path": "reloj/mediodia-1/state.json",
+      "bytes": 934,
+      "sha256": "075afc1cf739276a090bba972c34cdff12c6b277e19d0ac12424e83da614aee3"
+    },
+    {
+      "path": "reloj/mediodia-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "d740b938f3cde43e3a5096961175469067244e789d4f8fae764b50a6c3c359a2"
+    },
+    {
+      "path": "reloj/mediodia-1/zb.json",
+      "bytes": 322,
+      "sha256": "cdf04d3ef941502e0220fc5a4cf16b648cd60e1d1833378d7c5229eddb8a2a64"
+    },
+    {
+      "path": "reloj/ocaso-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "41fc65e0d89ecb069620a7ac09219f76c073f5e44e05d86e5e408134820fef3c"
+    },
+    {
+      "path": "reloj/ocaso-0/kinds.json",
+      "bytes": 305,
+      "sha256": "489ef7085ca6b4bf781dfbd08c49986208bc2f6a59569ce9330c44dd86230fba"
+    },
+    {
+      "path": "reloj/ocaso-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "c07d9c90717f3897246862d20f5e62fa9c69618dfc6574e8568b3be2dc3e0dec"
+    },
+    {
+      "path": "reloj/ocaso-0/pix.json",
+      "bytes": 370,
+      "sha256": "e89182a1b187cc6a00c08b1fe9c86d118a9b683c3c83a9509bf3f5616225a2f5"
+    },
+    {
+      "path": "reloj/ocaso-0/pix.png",
+      "bytes": 13076,
+      "sha256": "d3fb84208ce73811646b155bd5aaae81956a89167f2f97d6e228b25637a50a54"
+    },
+    {
+      "path": "reloj/ocaso-0/state.json",
+      "bytes": 928,
+      "sha256": "6897cc5efb927360fe57626d159c77ddcb258252144c4b480fba5bed0c18261c"
+    },
+    {
+      "path": "reloj/ocaso-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "9946367b4fad1568971c3b89d6fbe98c333e8f929e3651a288599b57c9f82e6b"
+    },
+    {
+      "path": "reloj/ocaso-0/zb.json",
+      "bytes": 322,
+      "sha256": "895aebefeb73e18702178f56c06b98767bdd8fbcb9ceada13e3eef4dd171255f"
+    },
+    {
+      "path": "reloj/ocaso-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "41fc65e0d89ecb069620a7ac09219f76c073f5e44e05d86e5e408134820fef3c"
+    },
+    {
+      "path": "reloj/ocaso-1/kinds.json",
+      "bytes": 305,
+      "sha256": "489ef7085ca6b4bf781dfbd08c49986208bc2f6a59569ce9330c44dd86230fba"
+    },
+    {
+      "path": "reloj/ocaso-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "85aa3b66703ea17e669593df88c3ff64330175ed57b855aeaf7120378c9c9728"
+    },
+    {
+      "path": "reloj/ocaso-1/pix.json",
+      "bytes": 370,
+      "sha256": "254ce6ac92ec5d1b11a70bbb48b588dedf18d494eab2fab2b123167a1d6c14c1"
+    },
+    {
+      "path": "reloj/ocaso-1/pix.png",
+      "bytes": 14885,
+      "sha256": "2e8be135fbc13192fd9a9c8fed6ffb95728daf877eb90e1d837e7716c360123a"
+    },
+    {
+      "path": "reloj/ocaso-1/state.json",
+      "bytes": 928,
+      "sha256": "f64fbac449e160a059752eebb002effeeb7e9397cc7447627145d43af99f7789"
+    },
+    {
+      "path": "reloj/ocaso-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "d740b938f3cde43e3a5096961175469067244e789d4f8fae764b50a6c3c359a2"
+    },
+    {
+      "path": "reloj/ocaso-1/zb.json",
+      "bytes": 322,
+      "sha256": "cdf04d3ef941502e0220fc5a4cf16b648cd60e1d1833378d7c5229eddb8a2a64"
+    },
+    {
+      "path": "reloj/tarde-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "41fc65e0d89ecb069620a7ac09219f76c073f5e44e05d86e5e408134820fef3c"
+    },
+    {
+      "path": "reloj/tarde-0/kinds.json",
+      "bytes": 305,
+      "sha256": "489ef7085ca6b4bf781dfbd08c49986208bc2f6a59569ce9330c44dd86230fba"
+    },
+    {
+      "path": "reloj/tarde-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "8316a62d1c59ff13f7478ffef23a18e57963755bc96e7f220a49356e438ef44c"
+    },
+    {
+      "path": "reloj/tarde-0/pix.json",
+      "bytes": 370,
+      "sha256": "1773a0d8160472681e11929f3b65c72084a0c66f7559f5d4ca5f139b8b48460f"
+    },
+    {
+      "path": "reloj/tarde-0/pix.png",
+      "bytes": 13070,
+      "sha256": "0c513f6bcd1d982c87f41aa1e1b4d261379c8ef5aa3e3b28d17c0f16a2ab8e58"
+    },
+    {
+      "path": "reloj/tarde-0/state.json",
+      "bytes": 928,
+      "sha256": "62f49acea1d6455cc10764d9c17cd46498dc7f599946de8668c9df90207a2660"
+    },
+    {
+      "path": "reloj/tarde-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "9946367b4fad1568971c3b89d6fbe98c333e8f929e3651a288599b57c9f82e6b"
+    },
+    {
+      "path": "reloj/tarde-0/zb.json",
+      "bytes": 322,
+      "sha256": "895aebefeb73e18702178f56c06b98767bdd8fbcb9ceada13e3eef4dd171255f"
+    },
+    {
+      "path": "reloj/tarde-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "41fc65e0d89ecb069620a7ac09219f76c073f5e44e05d86e5e408134820fef3c"
+    },
+    {
+      "path": "reloj/tarde-1/kinds.json",
+      "bytes": 305,
+      "sha256": "489ef7085ca6b4bf781dfbd08c49986208bc2f6a59569ce9330c44dd86230fba"
+    },
+    {
+      "path": "reloj/tarde-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "2d67d72aa8d64df9546c8e67ff2ba11b2163e97556976e2586a15635af1c2c68"
+    },
+    {
+      "path": "reloj/tarde-1/pix.json",
+      "bytes": 370,
+      "sha256": "84f39e0735ac6740963d06a3969e8bd0eb53fa57115f91a3b2c9fbd308a4e0a7"
+    },
+    {
+      "path": "reloj/tarde-1/pix.png",
+      "bytes": 14891,
+      "sha256": "28f65218cefbbe6e2282ca8403994dad8d487aa3b0dc56767bfc247b12bb3d22"
+    },
+    {
+      "path": "reloj/tarde-1/state.json",
+      "bytes": 928,
+      "sha256": "78f95d09074bfbaa63b7511cad85bcf18ed9585517599710335fa777fe90c617"
+    },
+    {
+      "path": "reloj/tarde-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "d740b938f3cde43e3a5096961175469067244e789d4f8fae764b50a6c3c359a2"
+    },
+    {
+      "path": "reloj/tarde-1/zb.json",
+      "bytes": 322,
+      "sha256": "cdf04d3ef941502e0220fc5a4cf16b648cd60e1d1833378d7c5229eddb8a2a64"
     },
     {
       "path": "sala/luz-1-fotos-000/kinds.bin",

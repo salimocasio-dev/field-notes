@@ -657,6 +657,13 @@ Written as La esquina is (`lib/src/parada/`: `parada_set.dart`, `parada_places.d
   12 states in `coqui/ref/pp/plaza/` (0 of 51,840 differ). Tests: `plaza_set_test`, `plaza_acts_test`, `plaza_kit_test`,
   `plaza_cast_test`; in feature_story `plaza_stories_test` and `tool/plaza_paths_test.dart` (rules:
   `test/support/plaza_rules.dart`). Bake: `?page=bake&scene=plaza`, `tool/plaza_bake_parts_test.dart`.
+- **El reloj** (order 59b, `lib/src/reloj/`: `reloj_set.dart`, `reloj_places.dart`, `reloj_sprites.dart`, `reloj.dart`):
+  on `plaza_base.dart` and `plaza_cast.dart`. 6 states in `coqui/ref/pp/reloj/` (0 of 51,840 differ). Two turning clock
+  hands on the tower front (`hands.pivot`), time cards (`carta_a`, `carta_b`) over the frog, abuela's big bingo card
+  (`n40`..`n100`) and beans as overlays, `arriba`/`abajo` face thirds active in story 64 (`z: true`). Sprite sheet:
+  `tool/make_reloj_sprites_test.dart` (`docs/proyecto/pixel/port/reloj-sprites.png`, `.txt`). Tests: `reloj_set_test`,
+  `reloj_sprites_test`, `reloj_acts_test`; in feature_story `reloj_stories_test` and `tool/reloj_paths_test.dart`
+  (rules: `reloj_rules.dart`).
 
 ## Pictures: by name, the size rule, old pictures until converted
 
