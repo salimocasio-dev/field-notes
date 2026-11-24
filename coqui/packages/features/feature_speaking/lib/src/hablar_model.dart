@@ -181,22 +181,13 @@ HablarSnapshot buildHablarSnapshot({
           final minutes = spec.isMain && brief != null
               ? brief.minutes
               : spec.minutes;
-          final titleEs = spec.isMain && brief != null && brief.title.isNotEmpty
-              ? brief.title
-              : spec.titleEs;
-          final rawJob = spec.isMain && brief != null && brief.jobEn.isNotEmpty
-              ? brief.jobEn
-              : spec.jobEn;
-          final jobEn = rawJob.replaceAll('{partner}', partnerName);
-          final effectiveSpec =
-              minutes == spec.minutes &&
-                  titleEs == spec.titleEs &&
-                  jobEn == spec.jobEn
+          final jobEn = spec.jobFor(partnerName);
+          final effectiveSpec = minutes == spec.minutes && jobEn == spec.jobEn
               ? spec
               : HablarCallSpec(
                   id: spec.id,
                   placeId: spec.placeId,
-                  titleEs: titleEs,
+                  titleEs: spec.titleEs,
                   jobEn: jobEn,
                   minutes: minutes,
                   isMain: spec.isMain,
