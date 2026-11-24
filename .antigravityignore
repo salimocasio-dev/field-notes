@@ -1,0 +1,20 @@
+# Heavy media & generated assets (saves Antigravity context quota)
+historia/audio/
+historia/libros/
+*.mp3
+*.wav
+*.ogg
+*.m4a
+*.zip
+*.apk
+*.aab
+*.ipa
+
+# Reference fixtures & build caches
+coqui/ref/
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/node_modules/
+**/.pub-cache/

@@ -1,5 +1,7 @@
 # Handoff: move Coquí to Flutter
 
+> **Status (Nov 24, 2026):** Superseded as an operating playbook by root `AGENTS.md` (which now governs the multi-AI workflow) and the live GitHub Issues board. Kept below for historical context on the initial Flutter move.
+
 Written Nov 19 2026. Paste this whole page as the first message of a new Claude Code session on salimocasio-dev/field-notes.
 
 ---
