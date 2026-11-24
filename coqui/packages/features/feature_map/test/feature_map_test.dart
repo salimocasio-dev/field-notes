@@ -15,7 +15,7 @@ void main() {
     expect(m.id, 'map');
     final tab = m.tab(fakeServices())!;
     expect(tab.id, 'map');
-    expect(tab.label, CoquiTabs.map.label);
+    expect(tab.label, Language.spanish.tabNames['map']);
     expect(m.screenFor(const StoryRoute('la-lluvia'), fakeServices()), isNull);
     expect(m.screenFor(const TabRoute('map'), fakeServices()), isNull);
   });
@@ -34,13 +34,14 @@ void main() {
     await tester.pump();
     await tester.pump();
     expect(find.byType(PixelView), findsOneWidget);
-    expect(find.byType(MapChips), findsOneWidget);
-    // the sample course has one place; the chip names it
-    expect(find.text('1 · La casa'), findsOneWidget);
+    expect(find.byKey(const Key('language-chip')), findsOneWidget);
+    expect(find.text('Spanish'), findsOneWidget);
+    expect(find.text('A1'), findsNothing);
+    expect(find.text('You are here'), findsOneWidget);
   });
 
   mapTest(
-    'the tab gives the Today card the review entry\'s title, `CoquiLabels.reviewTitle`',
+    'the tab gives the Up next card the English review title when words are due',
     (tester) async {
       tester.view.devicePixelRatio = 2.625;
       tester.view.physicalSize = const Size(412, 915) * 2.625;
@@ -50,16 +51,15 @@ void main() {
       final tab = const MapModule().tab(f.services)!;
       await tester.pumpWidget(
         MaterialApp(
-          theme: coquiTheme(),
           home: Scaffold(body: Builder(builder: tab.builder)),
         ),
       );
       await tester.pump();
       await tester.pump();
       await tester.pump();
-      expect(find.text(CoquiLabels.reviewTitle), findsOneWidget);
+      expect(find.text('Review'), findsOneWidget);
       expect(find.text('1 word coming back · 3 min'), findsOneWidget);
-      await tester.tap(find.byType(TodayCard));
+      await tester.tap(find.byKey(const Key('up-next-play')));
       await tester.pump();
       expect(f.nav.routes, [const ReviewRoute()]);
     },
@@ -78,7 +78,8 @@ void main() {
     expect(find.byKey(const Key('perf-chip')), findsOneWidget);
     expect(find.textContaining('bake '), findsOneWidget);
     expect(find.textContaining('frame max '), findsOneWidget);
-    expect(find.text('4 · El colmado'), findsOneWidget);
+    expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+    expect(find.text('Second play · 2 min'), findsOneWidget);
   });
 
   mapTest('the dev entry: no corner chip with chip=0', (tester) async {
@@ -108,7 +109,7 @@ void main() {
   });
 
   mapTest(
-    'showPerf: the tab shows the bake and the frame times in a corner chip, under the chips bar',
+    'showPerf: the tab shows the bake and the frame times in a corner chip, under the top chips',
     (tester) async {
       tester.view.devicePixelRatio = 2.625;
       tester.view.physicalSize = const Size(412, 915) * 2.625;
@@ -140,9 +141,11 @@ void main() {
       expect(text.data, isNot(startsWith('bake 0 ms · frame max 0.0')));
       expect(
         tester.getTopLeft(chip).dy,
-        greaterThanOrEqualTo(tester.getBottomLeft(find.byType(MapChips)).dy),
+        greaterThanOrEqualTo(
+          tester.getBottomLeft(find.byKey(const Key('language-chip'))).dy,
+        ),
       );
-      expect(tester.getTopRight(chip).dx, 412 - 4);
+      expect(tester.getTopRight(chip).dx, 412 - 16);
       // the ticker would run for ever: take the screen away
       await tester.pumpWidget(const SizedBox());
     },

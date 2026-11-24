@@ -1,3 +1,4 @@
+import 'package:coqui_ui/coqui_ui.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// What the map measured of itself, for a dev entry or the app's `?perf=1` to show (the real limits, 500 ms for the
@@ -46,19 +47,18 @@ class MapPerfChip extends StatelessWidget {
     builder: (context, _) => DecoratedBox(
       key: const Key('map-perf-chip'),
       decoration: BoxDecoration(
-        color: const Color(0xCC000000),
-        borderRadius: BorderRadius.circular(8),
+        color: NocheColors.panel,
+        border: Border.all(color: NocheColors.line, width: 1),
+        borderRadius: BorderRadius.circular(NocheSize.grid),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: NocheSize.grid,
+          vertical: 4,
+        ),
         child: Text(
           'bake ${perf.bakeMs.toStringAsFixed(0)} ms · frame max ${perf.slowestFrameMs.toStringAsFixed(1)} ms · mean ${perf.meanFrameMs.toStringAsFixed(1)} ms',
-          style: const TextStyle(
-            color: Color(0xFFFFFFFF),
-            fontSize: 11,
-            decoration: TextDecoration.none,
-            fontWeight: FontWeight.w500,
-          ),
+          style: NocheType.bodySmall.copyWith(color: NocheColors.text),
         ),
       ),
     ),

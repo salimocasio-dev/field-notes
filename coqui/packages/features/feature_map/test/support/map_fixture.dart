@@ -306,15 +306,19 @@ void finishStory(FakeProgressStore progress, String id) =>
       StoryResult(id: id, focusWords: [], backAgain: [], lost: 0, log: []),
     );
 
-/// The three demo states of the map, as mapa.html's `?hecho=0`, `?hecho=3` and `?hecho=10`:
-/// `none` (nothing done; places 1 to 3 have stories, so they are open), `three` (places 1 to 3 done, place 4
-/// has stories and is open), `all` (all ten places have stories and are done).
+/// The three demo states of the map, as mapa.html's `?hecho=0`, `?hecho=3` and `?hecho=10`,
+/// plus N4.1's `?demo=place3` (at place 3, La cocina, 6-day streak, Tengo hambre up next)
+/// and `?demo=last` (at place 10, El fuerte).
 MapFixture fixtureDemoWith(String demo, {bool reduceMotion = false}) {
   switch (demo) {
     case 'three':
       return _demo(4, 3, reduceMotion);
     case 'all':
       return _demo(10, 10, reduceMotion);
+    case 'place3':
+      return _demoAtPlace3(reduceMotion);
+    case 'last':
+      return _demoAtLastPlace(reduceMotion);
     default:
       return _demo(3, 0, reduceMotion);
   }
@@ -329,4 +333,56 @@ MapFixture _demo(int built, int played, bool reduceMotion) {
     }
   }
   return f;
+}
+
+MapFixture _demoAtPlace3(bool reduceMotion) {
+  final f = fixture(builtPlaces: 3, reduceMotion: reduceMotion);
+  final course = MapFixtureCourse(builtPlaces: 3);
+  f.clock.now = fixtureNowMs - const Duration(days: 2).inMilliseconds;
+  for (final l in course.places.take(2)) {
+    for (final id in l.stories) {
+      finishStory(f.progress, id);
+      finishStory(f.progress, id);
+    }
+  }
+  // Finish la-mesa and la-cuchara twice so Tengo hambre is up next at La cocina.
+  for (final id in course.places[2].stories.take(2)) {
+    finishStory(f.progress, id);
+    finishStory(f.progress, id);
+  }
+  f.clock.now = fixtureNowMs;
+  _seedStreakDays(f.progress, f.clock, 6);
+  return f;
+}
+
+MapFixture _demoAtLastPlace(bool reduceMotion) {
+  final f = fixture(builtPlaces: 10, reduceMotion: reduceMotion);
+  final course = MapFixtureCourse(builtPlaces: 10);
+  f.clock.now = fixtureNowMs - const Duration(days: 2).inMilliseconds;
+  for (final l in course.places.take(9)) {
+    for (final id in l.stories) {
+      finishStory(f.progress, id);
+      finishStory(f.progress, id);
+    }
+  }
+  // Leave the last story of El fuerte unplayed so currentPlace is 9 (place 10).
+  finishStory(f.progress, course.places[9].stories.first);
+  finishStory(f.progress, course.places[9].stories.first);
+  f.clock.now = fixtureNowMs;
+  _seedStreakDays(f.progress, f.clock, 12);
+  return f;
+}
+
+void _seedStreakDays(FakeProgressStore progress, FakeClock clock, int days) {
+  final now = DateTime.fromMillisecondsSinceEpoch(clock.nowMs(), isUtc: true);
+  final dias = <String, dynamic>{};
+  for (var i = 0; i < days; i++) {
+    final d = now.subtract(Duration(days: i));
+    final key =
+        '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+    dias[key] = 5;
+  }
+  final raw = Map<String, dynamic>.from(progress.raw);
+  raw['dias'] = dias;
+  progress.import(jsonEncode(raw));
 }

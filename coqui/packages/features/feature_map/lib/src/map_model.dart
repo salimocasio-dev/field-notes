@@ -41,6 +41,9 @@ MapState mapStateOf(ProgressStore progress, CourseCatalog course) {
   );
 }
 
+/// Typed kind of a [TodayEntry], so Noche labels do not match on English copy.
+enum TodayEntryKind { review, newStory, secondPlay, listenAgain, call }
+
 /// One entry of today's plan (app.html: an entry of `plan()`): what to play, how it is described, how long it
 /// takes, and where it goes. The review entry ([review]) has no title here: its title is Spanish text that comes
 /// from nowhere in the catalog (the screen shows it only when it is given one).
@@ -50,6 +53,7 @@ class TodayEntry {
     required this.line,
     required this.minutes,
     required this.route,
+    required this.kind,
     this.review = false,
   });
 
@@ -67,6 +71,9 @@ class TodayEntry {
 
   /// The ¿Cuál? entry: due words, or all of them when nothing else is left.
   final bool review;
+
+  /// Typed kind of this entry.
+  final TodayEntryKind kind;
 
   /// app.html, `hud`: `p[0].d + " · " + p[0].m + " min"`
   String get subtitle => '$line · $minutes min';
@@ -102,6 +109,7 @@ List<TodayEntry> todayPlan({
         minutes: math.min(6, 2 + (nd / 3).ceil()),
         route: const ReviewRoute(),
         review: true,
+        kind: TodayEntryKind.review,
       ),
     );
   }
@@ -125,13 +133,15 @@ List<TodayEntry> todayPlan({
     if (used >= min && out.isNotEmpty) break;
     final x = course.meta(c);
     if (x == null) continue;
-    final m = x.minutes * (veces(c) != 0 ? 1 : 2);
+    final secondPlay = veces(c) != 0;
+    final m = x.minutes * (secondPlay ? 1 : 2);
     out.add(
       TodayEntry(
         title: x.title,
-        line: veces(c) != 0 ? 'Second play' : 'New story · play it twice',
+        line: secondPlay ? 'Second play' : 'New story · play it twice',
         minutes: m,
         route: StoryRoute(c),
+        kind: secondPlay ? TodayEntryKind.secondPlay : TodayEntryKind.newStory,
       ),
     );
     used += m;
@@ -151,6 +161,7 @@ List<TodayEntry> todayPlan({
         line: 'Listen again',
         minutes: x.minutes,
         route: StoryRoute(c),
+        kind: TodayEntryKind.listenAgain,
       ),
     );
     used += x.minutes;
@@ -163,8 +174,50 @@ List<TodayEntry> todayPlan({
         minutes: 3,
         route: ReviewRoute(),
         review: true,
+        kind: TodayEntryKind.review,
       ),
     );
   }
   return out;
+}
+
+/// Short kind label shown in the Noche Up next card (`"<kind> · <N> min"`).
+String upNextKind(TodayEntry entry) => switch (entry.kind) {
+  TodayEntryKind.newStory => 'New story',
+  TodayEntryKind.secondPlay => 'Second play',
+  TodayEntryKind.listenAgain => 'Listen again',
+  TodayEntryKind.review || TodayEntryKind.call => entry.line,
+};
+
+/// Step label used in the `"Then <step1>, then <step2>"` line of the Noche Up next card.
+String? planStepLabel(TodayEntry entry) => switch (entry.kind) {
+  TodayEntryKind.review => 'review',
+  TodayEntryKind.call => 'a call',
+  TodayEntryKind.newStory => 'a new story',
+  TodayEntryKind.secondPlay || TodayEntryKind.listenAgain => 'listening',
+};
+
+/// Formats `"Then <step1>, then <step2>"` from the entries of [plan] after the first.
+/// Returns `null` when there are no steps.
+String? upNextThenLine(List<TodayEntry> plan) {
+  if (plan.length <= 1) return null;
+  final steps = <String>[];
+  for (final entry in plan.skip(1)) {
+    final step = planStepLabel(entry);
+    if (step != null) {
+      steps.add(step);
+      if (steps.length == 2) break;
+    }
+  }
+  if (steps.isEmpty) return null;
+  if (steps.length == 1) return 'Then ${steps[0]}';
+  return 'Then ${steps[0]}, then ${steps[1]}';
+}
+
+/// Index in [places] of the place whose `stories` contains [storyId], or `null`.
+int? placeIndexForStory(List<Place> places, String storyId) {
+  for (var i = 0; i < places.length; i++) {
+    if (places[i].stories.contains(storyId)) return i;
+  }
+  return null;
 }

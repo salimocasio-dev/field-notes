@@ -17,13 +17,10 @@ class MapModule implements FeatureModule {
   @override
   FeatureTab? tab(Services s) => FeatureTab(
     id: 'map',
-    label: CoquiTabs.map.label,
+    label: s.course.language.tabNames['map'] ?? CoquiTabs.map.label,
     icon: Icons.map,
-    builder: (_) => MapScreen(
-      services: s,
-      reviewTitle: CoquiLabels.reviewTitle,
-      showPerf: showPerf,
-    ),
+    builder: (_) =>
+        MapScreen(services: s, reviewTitle: 'Review', showPerf: showPerf),
   );
 
   @override
