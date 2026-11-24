@@ -11,6 +11,7 @@ library;
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
@@ -47,6 +48,17 @@ const List<String> needs = [
 Map<String, dynamic> _story(String id) =>
     jsonDecode(File('test/support/fixtures/reloj/$id.json').readAsStringSync())
         as Map<String, dynamic>;
+
+class _RecordingHost extends StillHost {
+  _RecordingHost(super.scene);
+
+  void Function(num ms)? onWait;
+
+  @override
+  Future<void> wait(num ms) async {
+    onWait?.call(ms);
+  }
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -258,6 +270,249 @@ void main() {
       );
     }
   }
+
+  test('campana rings all n times for hours above four', () async {
+    final story = _story('que-hora-es');
+    final scene = createReloj() as Reloj;
+    final host = _RecordingHost(scene);
+    host.S = story;
+    host.W = {...host.W, ...scene.fresh(story)};
+
+    Future<int> countPulses(int n) async {
+      var pulses = 0;
+      host.onWait = (_) {
+        expect(
+          host.W['campanaHasta'],
+          greaterThan(host.F),
+          reason: 'bell wave should be active on pulse ${pulses + 1} of $n',
+        );
+        pulses++;
+        host.F += 6;
+      };
+      await scene.acts['campana']!({'n': n});
+      return pulses;
+    }
+
+    expect(await countPulses(12), 12);
+    expect(await countPulses(5), 5);
+    expect(await countPulses(1), 1);
+  });
+
+  test(
+    'larga carries the frog on every intermediate frame during hand rotation',
+    () async {
+      final story = _story('y-media');
+      final scene = createReloj() as Reloj;
+      final host = _RecordingHost(scene);
+      host.S = story;
+      host.W = {...host.W, ...scene.fresh(story)};
+
+      await scene.acts['ir']!({'a': 'manecilla'});
+      final q = host.W['cq'] as Map<String, dynamic>;
+      expect(q['spot'], 'mano_abajo');
+      expect(host.W['manoLarga'], 180.0);
+      final startPos = (q['x'] as num, q['y'] as num);
+
+      double distToSeg(
+        double px,
+        double py,
+        double x0,
+        double y0,
+        double x1,
+        double y1,
+      ) {
+        final dx = x1 - x0, dy = y1 - y0;
+        final l2 = dx * dx + dy * dy;
+        final t = l2 == 0
+            ? 0.0
+            : (((px - x0) * dx + (py - y0) * dy) / l2).clamp(0.0, 1.0);
+        final cx = x0 + t * dx, cy = y0 + t * dy;
+        return math.sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
+      }
+
+      Future<
+        List<
+          ({
+            double deg,
+            num qx,
+            num qy,
+            String? spot,
+            RelojItem coqui,
+            RelojItem hand,
+          })
+        >
+      >
+      recordLarga(String a) async {
+        final frames =
+            <
+              ({
+                double deg,
+                num qx,
+                num qy,
+                String? spot,
+                RelojItem coqui,
+                RelojItem hand,
+              })
+            >[];
+        host.onWait = (_) {
+          final placed = scene.placed(host.W, 0);
+          final coqui = placed.firstWhere((it) => it.tag == 'coqui');
+          final hand = placed.firstWhere((it) => it.tag == 'mano_larga');
+          frames.add((
+            deg: (host.W['manoLarga'] as num).toDouble(),
+            qx: q['x'] as num,
+            qy: q['y'] as num,
+            spot: q['spot'] as String?,
+            coqui: coqui,
+            hand: hand,
+          ));
+        };
+        await scene.acts['larga']!({'a': a});
+        host.onWait = null;
+        return frames;
+      }
+
+      final upFrames = (await recordLarga('punto')).take(4).toList();
+      expect([for (final f in upFrames) f.deg], [225.0, 270.0, 315.0, 0.0]);
+      final positions = <(num, num)>{};
+      for (final f in upFrames) {
+        expect((f.qx, f.qy), isNot(startPos));
+        positions.add((f.qx, f.qy));
+      }
+      expect(positions.length, 4);
+
+      final arribaL = scene.lugar['mano_arriba']!;
+      expect((upFrames[3].qx, upFrames[3].qy), (arribaL[0], arribaL[1]));
+      expect(upFrames[3].spot, 'mano_arriba');
+
+      final pv = scene.places.handPivot;
+      final len = scene.places.longHand;
+      final t30 = math.tan(math.pi / 6);
+      final s = scene.places.e.S;
+      for (final f in upFrames) {
+        final rad = f.deg * math.pi / 180;
+        final tipX = pv.sx + len * math.sin(rad);
+        final tipY = pv.sy - len * math.cos(rad);
+        final dist = distToSeg(
+          (f.qx + 16).toDouble(),
+          (f.qy + 25).toDouble(),
+          pv.sx,
+          pv.sy,
+          tipX,
+          tipY,
+        );
+        expect(
+          dist,
+          lessThanOrEqualTo(2.0),
+          reason: 'deg=${f.deg} feet (${f.qx + 16}, ${f.qy + 25}) dist=$dist',
+        );
+
+        final box = Reloj.inkBox(f.coqui)!;
+        expect(box[0], greaterThanOrEqualTo(0));
+        expect(box[1], greaterThanOrEqualTo(0));
+        expect(box[0] + box[2], lessThanOrEqualTo(240));
+        expect(box[1] + box[3], lessThanOrEqualTo(216));
+
+        final yMid = f.coqui.sy - 0.5;
+        final coquiPlane = f.coqui.d + (f.coqui.sy - yMid) * t30 / s;
+        final handPlane = f.hand.d + (f.hand.sy - yMid) * t30 / s;
+        expect(
+          coquiPlane,
+          greaterThan(handPlane + 0.001),
+          reason: 'deg=${f.deg}: coqui must sit in front of mano_larga',
+        );
+      }
+
+      final sideStart = (q['x'] as num, q['y'] as num);
+      final sideFrames = (await recordLarga('lado')).take(4).toList();
+      expect({for (final f in sideFrames) (f.qx, f.qy)}.length, 4);
+      expect((sideFrames[0].qx, sideFrames[0].qy), isNot(sideStart));
+      expect(sideFrames[3].spot, 'mano_lado');
+
+      final downStart = (q['x'] as num, q['y'] as num);
+      final downFrames = (await recordLarga('media')).take(4).toList();
+      expect({for (final f in downFrames) (f.qx, f.qy)}.length, 4);
+      expect((downFrames[0].qx, downFrames[0].qy), isNot(downStart));
+      expect(downFrames[3].spot, 'mano_abajo');
+    },
+  );
+
+  test(
+    'bingo renders rival small cards and frijol updates their pixels',
+    () async {
+      final story = _story('bingo');
+      final scene = createReloj() as Reloj;
+      final host = _RecordingHost(scene);
+      host.S = story;
+      host.W = {...host.W, ...scene.fresh(story)};
+
+      final bakes = SetBakes(scene);
+      final baked = bakes.bakeKey(scene.setKey(host.W));
+      scene.setFramed(bakes.engine, baked, host.W);
+
+      final initItems = scene.items(host.W, 0);
+      final tags = {for (final it in initItems) it.tag};
+      expect(
+        tags,
+        containsAll([
+          'cosa:carton_luis',
+          'cosa:carton_senor',
+          'cosa:carton_tito',
+        ]),
+      );
+
+      int diffInBox(Uint32List a, Uint32List b, List<num> box) {
+        var changed = 0;
+        final x0 = math.max(0, box[0].toInt());
+        final y0 = math.max(0, box[1].toInt());
+        final x1 = math.min(240, (box[0] + box[2]).toInt());
+        final y1 = math.min(216, (box[1] + box[3]).toInt());
+        for (var y = y0; y < y1; y++) {
+          for (var x = x0; x < x1; x++) {
+            final i = y * 240 + x;
+            if (a[i] != b[i]) changed++;
+          }
+        }
+        return changed;
+      }
+
+      List<num> itemBox(String tag) {
+        final it = scene.items(host.W, 0).firstWhere((e) => e.tag == tag);
+        return Reloj.inkBox(it)!;
+      }
+
+      final before = Uint32List(240 * 216);
+      scene.draw(Ctx(before, 240, 216), host.W, host.F);
+
+      await scene.acts['frijol']!({'carton': 'luis', 'n': 50});
+      expect((host.W['cartones'] as Map)['luis'], 1);
+
+      final after = Uint32List(240 * 216);
+      scene.draw(Ctx(after, 240, 216), host.W, host.F);
+
+      final luisBox = itemBox('cosa:carton_luis');
+      expect(diffInBox(before, after, luisBox), greaterThan(0));
+      var totalChanged = 0;
+      for (var i = 0; i < before.length; i++) {
+        if (before[i] != after[i]) totalChanged++;
+      }
+      expect(totalChanged, greaterThan(0));
+
+      final senorBefore = Uint32List.fromList(after);
+      await scene.acts['frijol']!({'carton': 'senor'});
+      expect((host.W['cartones'] as Map)['senor'], 4);
+      final senorAfter4 = Uint32List(240 * 216);
+      scene.draw(Ctx(senorAfter4, 240, 216), host.W, host.F);
+      final senorBox = itemBox('cosa:carton_senor');
+      expect(diffInBox(senorBefore, senorAfter4, senorBox), greaterThan(0));
+
+      await scene.acts['rival65']!({'quien': 'senor'});
+      expect((host.W['cartones'] as Map)['senor'], 5);
+      final senorAfter5 = Uint32List(240 * 216);
+      scene.draw(Ctx(senorAfter5, 240, 216), host.W, host.F);
+      expect(diffInBox(senorAfter4, senorAfter5, senorBox), greaterThan(0));
+    },
+  );
 
   tearDownAll(() {
     expect(answered, containsAll(needs), reason: 'answered: $answered');

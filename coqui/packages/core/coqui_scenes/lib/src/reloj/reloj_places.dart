@@ -3,6 +3,8 @@
 // SceneSheet as plain data), where the two time cards stand over the frog (things.carta_a, carta_b: their boxes for
 // the frog at pie2, rules.cards: the same offsets from wherever he is), and the five squares of abuela's bingo card
 // (n40, n60, n80, n90, n100). No number of the sheet is typed in Dart: a world point is projected by the set's engine.
+import 'dart:math' as math;
+
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/src/reloj/reloj_set.dart';
 
@@ -34,6 +36,16 @@ class RelojPlaces {
     longHand = (h['long'] as num).toInt();
     shortHand = (h['short'] as num).toInt();
     handWidth = (h['width'] as num).toInt();
+    final frogOn = h['frog_on'] as Map;
+    _alongUp = ((frogOn['mano_arriba'] as Map)['along'] as num).toDouble();
+    _alongSide = ((frogOn['mano_lado'] as Map)['along'] as num).toDouble();
+    _alongDown = ((frogOn['mano_abajo'] as Map)['along'] as num).toDouble();
+    final pivUv = uvOf(handPivot.x, handPivot.y);
+    final arribaW = world('mano_arriba');
+    final arribaUv = uvOf(arribaW[0], arribaW[1]);
+    _handPivotU = pivUv[0];
+    _handFrogV = arribaUv[1];
+    _handPivotZAtFrogV = handPivot.z + (_handFrogV - pivUv[1]) * e.SIN / e.COS;
   }
 
   final SceneSheet sheet;
@@ -49,6 +61,24 @@ class RelojPlaces {
 
   /// The long and short hands' lengths and stroke width in px (sheet: hands).
   late final int longHand, shortHand, handWidth;
+
+  late final double _handFrogV;
+  late final double _handPivotU, _handPivotZAtFrogV;
+  late final double _alongUp, _alongSide, _alongDown;
+
+  /// The frog's place on the long hand at [deg] degrees clockwise from 12,
+  /// derived from the sheet's `hands.pivot`, `hands.frog_on` and hand plane `v`.
+  RelojAt handFrogAt(double deg) {
+    final rad = deg * math.pi / 180;
+    final c = math.cos(rad), s = math.sin(rad);
+    final along = c >= 0
+        ? _alongSide + (_alongUp - _alongSide) * c
+        : _alongSide + (_alongDown - _alongSide) * (-c);
+    final u = _handPivotU + along * s / e.S;
+    final z = _handPivotZAtFrogV + along * c / (e.COS * e.S);
+    final xy = xyOf(u, _handFrogV);
+    return atWorld(xy[0], xy[1], z);
+  }
 
   /// Whether the sheet names spot [name].
   bool has(String name) => sheet.spots.containsKey(name);
