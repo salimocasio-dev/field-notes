@@ -53,15 +53,9 @@ class TodayEntry {
     required this.line,
     required this.minutes,
     required this.route,
+    required this.kind,
     this.review = false,
-    TodayEntryKind? kind,
-  }) : kind =
-           kind ??
-           (review
-               ? TodayEntryKind.review
-               : route is CallRoute
-               ? TodayEntryKind.call
-               : TodayEntryKind.listenAgain);
+  });
 
   /// The story's title, from the catalog; null for the review entry.
   final String? title;
@@ -78,7 +72,7 @@ class TodayEntry {
   /// The ¿Cuál? entry: due words, or all of them when nothing else is left.
   final bool review;
 
-  /// Typed kind of this entry (set by [todayPlan], or inferred from [review]/[route]).
+  /// Typed kind of this entry.
   final TodayEntryKind kind;
 
   /// app.html, `hud`: `p[0].d + " · " + p[0].m + " min"`
