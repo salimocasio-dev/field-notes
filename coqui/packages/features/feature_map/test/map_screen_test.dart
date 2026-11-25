@@ -41,6 +41,7 @@ Future<Shown> showMap(
   String? reviewTitle = 'Review',
   int? openPlace,
   TextDirection textDirection = TextDirection.ltr,
+  Entitlements entitlements = const AllowAllEntitlements(),
 }) async {
   final shown = Shown(f, MapPerf());
   await tester.pumpWidget(
@@ -55,6 +56,7 @@ Future<Shown> showMap(
             perf: shown.perf,
             reviewTitle: reviewTitle,
             openPlace: openPlace,
+            entitlements: entitlements,
             onPicture: (p) => shown.picture = p,
             onCamera: (c) => shown.camera = c,
           ),
@@ -737,6 +739,63 @@ void main() {
       );
     });
   });
+
+  mapTest(
+    'Plan.free: place 2 keeps normal map state and opens PlaceRoute; Up next gates place 2 stories',
+    (tester) async {
+      phone(tester);
+      final entitlements = FakeEntitlements(plan: Plan.free);
+      addTearDown(entitlements.dispose);
+
+      // Place 1 story and Review remain playable on Plan.free
+      final fCasa = fixture(seed: 'vacio');
+      await showMap(tester, fCasa, entitlements: entitlements);
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
+      expect(fCasa.nav.routes, [const StoryRoute('la-lluvia')]);
+
+      final fReview = fixture(seed: 'uno');
+      await showMap(tester, fReview, entitlements: entitlements);
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
+      expect(fReview.nav.routes, [const ReviewRoute()]);
+
+      // Finish place 1 twice so Up next points to place 2 (El parque)
+      final fCurso = fixture(seed: 'curso');
+      fCurso.clock.advance(const Duration(days: 1));
+      for (final id in fCurso.services.course.places[0].stories) {
+        finishStory(fCurso.progress, id);
+      }
+      final shown = await showMap(
+        tester,
+        fCurso,
+        entitlements: entitlements,
+        reviewTitle: null,
+      );
+      expect(shown.picture.STATE.abierto.take(4), [true, true, true, false]);
+      expect(find.text('UP NEXT · EL PARQUE'), findsOneWidget);
+
+      // Up next play disc opens PlaceRoute('parque') instead of gated StoryRoute
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
+      expect(fCurso.nav.routes, [const PlaceRoute('parque')]);
+
+      // Tapping place 2 on map still hops frog normally and opens PlaceRoute
+      await tapStop(tester, 1);
+      await run(tester, 3000);
+      expect(fCurso.nav.routes, [
+        const PlaceRoute('parque'),
+        const PlaceRoute('parque'),
+      ]);
+
+      // Upgrading to Plan.course restores direct StoryRoute playback
+      entitlements.plan = Plan.course;
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
+      expect(fCurso.nav.routes.last, const StoryRoute('la-bola'));
+    },
+  );
 }
 
 class _PairsCourse extends MapFixtureCourse {

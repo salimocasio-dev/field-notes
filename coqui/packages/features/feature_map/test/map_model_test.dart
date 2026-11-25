@@ -472,5 +472,47 @@ void _nocheHelpersTests() {
       expect(placeIndexForStory(course.places, 'tengo-hambre'), 2);
       expect(placeIndexForStory(course.places, 'missing'), isNull);
     });
+
+    test(
+      'placeInPlan and storyInPlan gate places past place 1 by everyPlace',
+      () {
+        final course = MapFixtureCourse(builtPlaces: 3);
+        final casa = course.places[0];
+        final parque = course.places[1];
+        final cocina = course.places[2];
+
+        const allowAll = AllowAllEntitlements();
+        expect(placeInPlan(casa, course.places, allowAll), isTrue);
+        expect(placeInPlan(parque, course.places, allowAll), isTrue);
+        expect(placeInPlan(cocina, course.places, allowAll), isTrue);
+        expect(storyInPlan('la-lluvia', course.places, allowAll), isTrue);
+        expect(storyInPlan('uno-dos-tres', course.places, allowAll), isTrue);
+        expect(storyInPlan('missing', course.places, allowAll), isTrue);
+
+        final free = FakeEntitlements(plan: Plan.free);
+        addTearDown(free.dispose);
+        expect(placeInPlan(casa, course.places, free), isTrue);
+        expect(placeInPlan(parque, course.places, free), isFalse);
+        expect(placeInPlan(cocina, course.places, free), isFalse);
+        expect(placeInPlan(casa, const [], free), isTrue);
+        expect(placeInPlan(parque, const [], free), isFalse);
+        expect(storyInPlan('la-lluvia', course.places, free), isTrue);
+        expect(storyInPlan('uno-dos-tres', course.places, free), isFalse);
+        expect(storyInPlan('tengo-hambre', course.places, free), isFalse);
+        expect(storyInPlan('missing', course.places, free), isFalse);
+
+        final coursePlan = FakeEntitlements(plan: Plan.course);
+        addTearDown(coursePlan.dispose);
+        expect(placeInPlan(casa, course.places, coursePlan), isTrue);
+        expect(placeInPlan(parque, course.places, coursePlan), isTrue);
+        expect(placeInPlan(cocina, course.places, coursePlan), isTrue);
+        expect(storyInPlan('uno-dos-tres', course.places, coursePlan), isTrue);
+
+        final callsPlan = FakeEntitlements(plan: Plan.courseAndCalls);
+        addTearDown(callsPlan.dispose);
+        expect(placeInPlan(parque, course.places, callsPlan), isTrue);
+        expect(storyInPlan('uno-dos-tres', course.places, callsPlan), isTrue);
+      },
+    );
   });
 }

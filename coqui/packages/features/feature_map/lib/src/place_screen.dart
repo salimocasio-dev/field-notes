@@ -83,10 +83,19 @@ PictureRef? pickStoryTilePictureRef({
 /// pills (`Listen again`, `Read`, `Call <partner>`), and the pinned orange
 /// [NochePlayBar] above the floating tab bar.
 class PlaceScreen extends StatefulWidget {
-  const PlaceScreen({super.key, required this.placeId, required this.services});
+  const PlaceScreen({
+    super.key,
+    required this.placeId,
+    required this.services,
+    this.entitlements = const AllowAllEntitlements(),
+  });
 
   final String placeId;
   final Services services;
+
+  /// Injected entitlements until `Services.entitlements` lands in `coqui_ui`
+  /// (see `coqui/requests/5-coqui-contracts-needs-coqui-ui-services-entitlements.md`).
+  final Entitlements entitlements;
 
   @override
   State<PlaceScreen> createState() => _PlaceScreenState();
@@ -94,6 +103,7 @@ class PlaceScreen extends StatefulWidget {
 
 class _PlaceScreenState extends State<PlaceScreen> {
   StreamSubscription<void>? _changes;
+  StreamSubscription<void>? _entitlementChanges;
   int _serviceGen = 0;
   final Map<String, String?> _storyScenes = {};
   final Set<String> _loadingScenes = {};
@@ -106,12 +116,21 @@ class _PlaceScreenState extends State<PlaceScreen> {
   void initState() {
     super.initState();
     _changes = _s.progress.changes.listen((_) => _onProgressChanged());
+    _entitlementChanges = widget.entitlements.changes.listen((_) {
+      if (mounted) setState(() {});
+    });
     _loadData(_serviceGen);
   }
 
   @override
   void didUpdateWidget(PlaceScreen old) {
     super.didUpdateWidget(old);
+    if (old.entitlements != widget.entitlements) {
+      _entitlementChanges?.cancel();
+      _entitlementChanges = widget.entitlements.changes.listen((_) {
+        if (mounted) setState(() {});
+      });
+    }
     if (old.services != widget.services || old.placeId != widget.placeId) {
       final gen = ++_serviceGen;
       if (old.services != widget.services) {
@@ -130,6 +149,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
   void dispose() {
     _serviceGen++;
     _changes?.cancel();
+    _entitlementChanges?.cancel();
     super.dispose();
   }
 
@@ -221,6 +241,12 @@ class _PlaceScreenState extends State<PlaceScreen> {
     _s.nav.go(const TabRoute(NocheTabs.map));
   }
 
+  void _openStory(Place place, String storyId, {bool listen = false}) {
+    if (!placeInPlan(place, _s.course.places, widget.entitlements)) return;
+    _s.haptics.tick();
+    _s.nav.go(StoryRoute(storyId, listen: listen));
+  }
+
   @override
   Widget build(BuildContext context) {
     final pad = MediaQuery.paddingOf(context);
@@ -246,6 +272,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
     final lang = _s.course.language;
     final locale = Locale(lang.code);
     final hasStories = place.stories.isNotEmpty;
+    final inPlan = placeInPlan(place, places, widget.entitlements);
     final heardCount = storiesPlayed(_s.progress, place);
     final nextId = nextUnheardStory(_s.progress, place);
     final nextIndex = nextId == null ? -1 : place.stories.indexOf(nextId);
@@ -269,10 +296,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
           key: const Key('place-pill-listen'),
           label: 'Listen again',
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-          onPressed: () {
-            _s.haptics.tick();
-            _s.nav.go(StoryRoute(lastHeard, listen: true));
-          },
+          onPressed: () => _openStory(place, lastHeard, listen: true),
         ),
       if (showReadPill)
         NochePill.outline(
@@ -297,7 +321,9 @@ class _PlaceScreenState extends State<PlaceScreen> {
     ];
 
     final scrollBottom = hasStories
-        ? NocheSize.aboveTabBar + NocheSize.playBarHeight + 16 + pad.bottom
+        ? NocheSize.aboveTabBar +
+              (inPlan ? NocheSize.playBarHeight + 16 : 220) +
+              pad.bottom
         : NocheSize.aboveTabBar + 16 + pad.bottom;
 
     return ColoredBox(
@@ -413,6 +439,12 @@ class _PlaceScreenState extends State<PlaceScreen> {
                             ),
                             child: NocheSectionLabel(
                               'All ${place.stories.length} stories',
+                              trailing: !inPlan
+                                  ? const NochePill.planTag(
+                                      key: Key('place-plan-tag'),
+                                      label: 'Course',
+                                    )
+                                  : null,
                             ),
                           ),
                           SingleChildScrollView(
@@ -434,7 +466,9 @@ class _PlaceScreenState extends State<PlaceScreen> {
                                     place: place,
                                     index: i,
                                     storyId: place.stories[i],
-                                    isNext: place.stories[i] == nextId,
+                                    inPlan: inPlan,
+                                    isNext:
+                                        inPlan && place.stories[i] == nextId,
                                     lang: lang,
                                     locale: locale,
                                   ),
@@ -445,7 +479,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
                         ],
                       ),
                     ),
-                    if (pills.isNotEmpty)
+                    if (inPlan && pills.isNotEmpty)
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
                           16,
@@ -519,14 +553,16 @@ class _PlaceScreenState extends State<PlaceScreen> {
                 start: 16,
                 end: 16,
                 bottom: NocheSize.aboveTabBar + pad.bottom,
-                child: _buildPlayBar(
-                  place: place,
-                  nextId: nextId,
-                  nextIndex: nextIndex,
-                  calls: calls,
-                  lang: lang,
-                  locale: locale,
-                ),
+                child: inPlan
+                    ? _buildPlayBar(
+                        place: place,
+                        nextId: nextId,
+                        nextIndex: nextIndex,
+                        calls: calls,
+                        lang: lang,
+                        locale: locale,
+                      )
+                    : _buildPlanCard(),
               ),
           ],
         ),
@@ -538,6 +574,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
     required Place place,
     required int index,
     required String storyId,
+    required bool inPlan,
     required bool isNext,
     required Language lang,
     required Locale locale,
@@ -550,7 +587,9 @@ class _PlaceScreenState extends State<PlaceScreen> {
       course: _s.course,
       storyScene: _storyScenes[storyId],
     );
-    final statusSuffix = isHeard
+    final statusSuffix = !inPlan
+        ? ', in Course'
+        : isHeard
         ? ', heard'
         : isNext
         ? ', up next'
@@ -561,10 +600,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
       child: Pressable(
         key: Key('story-tile-$storyId'),
         semanticLabel: 'Story ${index + 1}: $title$statusSuffix',
-        onPressed: () {
-          _s.haptics.tick();
-          _s.nav.go(StoryRoute(storyId));
-        },
+        onPressed: inPlan ? () => _openStory(place, storyId) : null,
         builder: (context, pressed) => Transform.scale(
           scale: pressed ? 0.98 : 1,
           child: Column(
@@ -646,6 +682,36 @@ class _PlaceScreenState extends State<PlaceScreen> {
       ),
     );
   }
+
+  Widget _buildPlanCard() => NocheCard(
+    key: const Key('place-plan-card'),
+    variant: NocheCardVariant.highlight,
+    padding: const EdgeInsetsDirectional.all(16),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'This place is in Course',
+          style: NocheType.sheetTitle.copyWith(color: NocheColors.text),
+        ),
+        const SizedBox(height: NocheSize.grid),
+        Text(
+          'Every place and every story are in Course.',
+          style: NocheType.body.copyWith(color: NocheColors.label),
+        ),
+        const SizedBox(height: 16),
+        NochePrimaryButton(
+          key: const Key('place-see-plans'),
+          label: 'See plans',
+          onPressed: () {
+            _s.haptics.tick();
+            _s.nav.go(const PlansRoute());
+          },
+        ),
+      ],
+    ),
+  );
 
   Widget _buildPlayBar({
     required Place place,

@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/src/map_perf.dart';
 import 'package:feature_map/src/map_screen.dart';
@@ -41,12 +42,30 @@ class _MapDevAppState extends State<MapDevApp> {
   final perf = MapPerf();
   late final MapFixture fixtureState;
   late final Services services;
+  late final Entitlements _entitlements;
+  FakeEntitlements? _ownedFakeEntitlements;
   String? _activePlaceId;
 
   @override
   void initState() {
     super.initState();
     final q = widget.query;
+    switch (q['plan']) {
+      case 'free':
+        _entitlements = _ownedFakeEntitlements = FakeEntitlements(
+          plan: Plan.free,
+        );
+      case 'course':
+        _entitlements = _ownedFakeEntitlements = FakeEntitlements(
+          plan: Plan.course,
+        );
+      case 'calls':
+        _entitlements = _ownedFakeEntitlements = FakeEntitlements(
+          plan: Plan.courseAndCalls,
+        );
+      default:
+        _entitlements = const AllowAllEntitlements();
+    }
     final reduce =
         q['reduce'] == '1' ||
         WidgetsBinding
@@ -118,6 +137,7 @@ class _MapDevAppState extends State<MapDevApp> {
 
   @override
   void dispose() {
+    _ownedFakeEntitlements?.dispose();
     perf.dispose();
     super.dispose();
   }
@@ -141,12 +161,14 @@ class _MapDevAppState extends State<MapDevApp> {
                 services: services,
                 perf: perf,
                 reviewTitle: q['review'] == '0' ? null : 'Review',
+                entitlements: _entitlements,
               )
             else
               PlaceScreen(
                 key: ValueKey(PlaceRoute(placeId)),
                 placeId: placeId,
                 services: services,
+                entitlements: _entitlements,
               ),
             PositionedDirectional(
               start: 0,
