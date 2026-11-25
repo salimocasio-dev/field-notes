@@ -418,6 +418,77 @@ import 'package:feature_words/feature_words.dart';
     });
   });
 
+  group('[a] coqui_story_checks (#65)', () {
+    test('passes: coqui_story_checks lists contracts, pixel, scenes and feature_story', () async {
+      package(
+        'coqui_story_checks',
+        deps: [
+          'coqui_contracts',
+          'coqui_pixel',
+          'coqui_scenes',
+          'feature_story',
+        ],
+      );
+      src('coqui_story_checks', 'test/sample_test.dart', '''
+import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_pixel/coqui_pixel.dart';
+import 'package:coqui_scenes/coqui_scenes.dart';
+import 'package:feature_story/feature_story.dart';
+''');
+      expect(await check(), isEmpty);
+    });
+
+    test('fails: coqui_story_checks lists another feature, coqui_ui or coqui_testing', () async {
+      package(
+        'coqui_story_checks',
+        deps: ['coqui_scenes', 'feature_story', 'feature_map', 'coqui_ui'],
+        devDeps: ['coqui_testing'],
+      );
+      final problems = await check();
+      expect(problems, hasLength(3));
+      expect(
+        problems.join('\n'),
+        contains('coqui_story_checks lists feature_map'),
+      );
+      expect(
+        problems.join('\n'),
+        contains('coqui_story_checks lists coqui_ui'),
+      );
+      expect(
+        problems.join('\n'),
+        contains('coqui_story_checks lists coqui_testing'),
+      );
+    });
+
+    test('fails: coqui_story_checks imports feature_story src/', () async {
+      package('coqui_story_checks', deps: ['feature_story']);
+      src(
+        'coqui_story_checks',
+        'test/a_test.dart',
+        "import 'package:feature_story/src/play/play.dart';\n",
+      );
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[c]'));
+      expect(
+        problems.single,
+        contains('package:feature_story/src/play/play.dart'),
+      );
+    });
+
+    test('fails: app or a feature lists coqui_story_checks', () async {
+      package('app', deps: ['coqui_ui', 'coqui_story_checks']);
+      package('feature_story', deps: ['coqui_ui', 'coqui_story_checks']);
+      final problems = await check();
+      expect(problems, hasLength(2));
+      expect(problems.join('\n'), contains('app lists coqui_story_checks'));
+      expect(
+        problems.join('\n'),
+        contains('feature_story lists coqui_story_checks'),
+      );
+    });
+  });
+
   group('[f] nobody imports package:flutter/material.dart', () {
     test('fails: a file in lib/ imports it', () async {
       package('feature_words', deps: ['coqui_ui']);
@@ -521,6 +592,15 @@ import 'package:material_ui/material_ui.dart';
       git.branch('lane/feature_words/99');
       src('feature_words', 'lib/src/a.dart', '// changed\n');
       write('requests/words-needs-a-thing.md', 'please\n');
+      git.commit('work');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test('passes: lane/coqui_story_checks changes coqui_story_checks and requests/', () async {
+      git.branch('lane/coqui_story_checks/99');
+      package('coqui_story_checks', deps: ['coqui_scenes', 'feature_story']);
+      src('coqui_story_checks', 'test/a_test.dart', '// test\n');
+      write('requests/checks-needs-a-thing.md', 'please\n');
       git.commit('work');
       expect(await check(branch: null), isEmpty);
     });

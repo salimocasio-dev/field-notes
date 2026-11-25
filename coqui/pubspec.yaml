@@ -22,6 +22,7 @@ workspace:
   - packages/features/feature_library
   - packages/features/feature_speaking
   - packages/features/feature_profile
+  - packages/coqui_story_checks
 
 dev_dependencies:
   lints: ^6.0.0

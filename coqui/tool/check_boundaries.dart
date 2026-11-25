@@ -156,6 +156,18 @@ const packageRules = <String, PackageRule>{
     workspace: {'coqui_contracts', 'coqui_ui'},
     devWorkspace: _testingDev,
   ),
+  // Scene play-every-path and sheet-rules checks (#65). Depends on coqui_scenes
+  // and feature_story; never depended on by app or any other package.
+  'coqui_story_checks': PackageRule(
+    'packages/coqui_story_checks',
+    flutter: true,
+    workspace: {
+      'coqui_contracts',
+      'coqui_pixel',
+      'coqui_scenes',
+      'feature_story',
+    },
+  ),
   'app': PackageRule(
     'app',
     flutter: true,

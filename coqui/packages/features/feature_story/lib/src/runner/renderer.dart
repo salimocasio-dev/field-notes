@@ -25,7 +25,7 @@ abstract interface class StoryRenderer {
 /// picture, as they do in the old page, so that whatever they do besides drawing (a scene that draws a random number or
 /// moves something in `draw`) happens as it did. Then the hud on a scratch display picture.
 class HeadlessRenderer implements StoryRenderer {
-  HeadlessRenderer({int w = pictureW, int h = pictureH})
+  HeadlessRenderer({int w = pictureW, int h = pictureH, this.onFrame})
     : pix = Uint32List(w * h),
       display = Uint32List(displayW * displayH) {
     c = Ctx(pix, w, h);
@@ -34,6 +34,7 @@ class HeadlessRenderer implements StoryRenderer {
 
   final Uint32List pix;
   final Uint32List display;
+  final void Function(Scene scene, Map<String, dynamic> W, int F)? onFrame;
   late final Ctx c;
   late final Ctx dc;
 
@@ -50,5 +51,6 @@ class HeadlessRenderer implements StoryRenderer {
     scene.draw(c, W, a);
     signs(c, a);
     scene.hud(dc, W, a);
+    onFrame?.call(scene, W, F);
   }
 }
