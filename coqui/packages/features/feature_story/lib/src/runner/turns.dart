@@ -27,13 +27,14 @@ String _habClase(HabResult r) => r.cancel
 
 // juego.js: habCuadra
 /// Heard right (docs/hablar/01-decisiones.md, "What counts as heard right"): for EVERY target at least one accepted form
-/// is inside one of the alternatives, whole words, accents and case ignored (`normalize` of both), extra words fine, in
-/// any order.
-bool heardRight(List<String>? alts, List<Target> T) {
-  final ns = [for (final a in alts ?? const <String>[]) normalize(a)];
+/// is inside one of the alternatives, whole words, accents and case ignored (`Language.normalize` of both), extra words
+/// fine, in any order.
+bool heardRight(List<String>? alts, List<Target> T, {Language? language}) {
+  final lang = language ?? Language.spanish;
+  final ns = [for (final a in alts ?? const <String>[]) lang.normalize(a)];
   return T.every(
     (x) => x.formas.any((f) {
-      final g = normalize(f).trim();
+      final g = lang.normalize(f).trim();
       return g != '' && ns.any((a) => a.contains(' $g '));
     }),
   );
@@ -82,7 +83,8 @@ extension _Turns on StoryRunner {
 
   // juego.js: habCuadra
   /// Heard right: see [heardRight].
-  bool habCuadra(List<String>? alts, List<Target> T) => heardRight(alts, T);
+  bool habCuadra(List<String>? alts, List<Target> T) =>
+      heardRight(alts, T, language: course.language);
 
   // juego.js: habGraba
   /// The mouth record: one answer per target word. The ear record is never written here.
@@ -377,7 +379,7 @@ extension _Turns on StoryRunner {
       return;
     }
     final turn = speech.listen(
-      locale: 'es-US',
+      locale: course.language.recognitionLocale,
       limit: Duration(milliseconds: (6000 / FAST).floor()),
       maxAlternatives: 5,
     );

@@ -3,6 +3,7 @@ library;
 
 import 'dart:math' as math;
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/bubble_place.dart';
 import 'package:feature_story/src/runner/story_view.dart';
@@ -28,6 +29,7 @@ class StoryBubbleBody extends StatefulWidget {
     required this.text,
     required this.estate,
     this.reduceMotion = false,
+    this.language,
   });
 
   final BubbleKind kind;
@@ -36,6 +38,9 @@ class StoryBubbleBody extends StatefulWidget {
   /// `data-e`: the mic's state while a turn is on.
   final String estate;
   final bool reduceMotion;
+
+  /// Course language for text direction, script font, and locale.
+  final Language? language;
 
   @override
   State<StoryBubbleBody> createState() => _StoryBubbleBodyState();
@@ -75,13 +80,20 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
     super.dispose();
   }
 
+  Language get _lang => widget.language ?? Language.spanish;
+
+  TextStyle get _textStyle =>
+      NocheType.forScript(bubbleTextStyle, _lang.script);
+
   Widget _content() {
     switch (widget.kind) {
       case BubbleKind.words:
         return Text(
           widget.text,
           textAlign: TextAlign.center,
-          style: bubbleTextStyle,
+          textDirection: _lang.textDirection,
+          locale: _lang.locale,
+          style: _textStyle,
         );
       case BubbleKind.mic:
         final listening = widget.estate == 'listening';
@@ -130,21 +142,30 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
           ),
         );
       case BubbleKind.tick:
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CoquiIcon(CoquiIcons.badgeCheck, size: 28, color: _tickGreen),
-            if (widget.text.isNotEmpty) ...[
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  widget.text,
-                  textAlign: TextAlign.center,
-                  style: bubbleTextStyle,
-                ),
+        return Directionality(
+          textDirection: _lang.textDirection,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CoquiIcon(
+                CoquiIcons.badgeCheck,
+                size: 28,
+                color: _tickGreen,
               ),
+              if (widget.text.isNotEmpty) ...[
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    widget.text,
+                    textAlign: TextAlign.center,
+                    textDirection: _lang.textDirection,
+                    locale: _lang.locale,
+                    style: _textStyle,
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         );
     }
   }
@@ -165,8 +186,8 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
       constraints: turn
           ? const BoxConstraints(minWidth: 56, minHeight: 44)
           : null,
-      padding: const EdgeInsets.fromLTRB(11, 5, 11, 6),
-      alignment: turn ? Alignment.center : null,
+      padding: const EdgeInsetsDirectional.fromSTEB(11, 5, 11, 6),
+      alignment: turn ? AlignmentDirectional.center : null,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: _ink, width: 3),
@@ -259,6 +280,7 @@ class StoryBubbleLayer extends StatelessWidget {
     required this.estate,
     required this.placementFor,
     this.reduceMotion = false,
+    this.language,
   });
 
   final bool visible;
@@ -269,6 +291,9 @@ class StoryBubbleLayer extends StatelessWidget {
   /// Where it stands, given its measured size; null hides it (the speaker cannot be seen).
   final BubblePlacement? Function(Size bubble) placementFor;
   final bool reduceMotion;
+
+  /// Course language for the text inside the bubble.
+  final Language? language;
 
   @override
   Widget build(BuildContext context) {
@@ -288,6 +313,7 @@ class StoryBubbleLayer extends StatelessWidget {
                 text: text,
                 estate: estate,
                 reduceMotion: reduceMotion,
+                language: language,
               ),
               Positioned.fill(child: _TailAnchor(placementFor: placementFor)),
             ],
@@ -298,63 +324,67 @@ class StoryBubbleLayer extends StatelessWidget {
   }
 }
 
-/// The tail, placed from the bubble's own size.
+/// The tail, placed from the bubble's own size in physical scene coordinates
+/// (unmirrored pixel scene).
 class _TailAnchor extends StatelessWidget {
   const _TailAnchor({required this.placementFor});
 
   final BubblePlacement? Function(Size bubble) placementFor;
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-    builder: (context, c) {
-      final p = placementFor(Size(c.maxWidth, c.maxHeight));
-      if (p == null) return const SizedBox.shrink();
-      switch (p.mode) {
-        case BubbleSideMode.above:
-          // `--tx` is the tail's middle along the bubble; the dark triangle starts at the border's outer edge
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned(
-                left: (p.tail ?? c.maxWidth / 2) - 8,
-                bottom: -11,
-                child: const CustomPaint(
-                  size: Size(16, 9),
-                  painter: _TailPainter(BubbleSideMode.above),
+  Widget build(BuildContext context) => Directionality(
+    textDirection: TextDirection.ltr,
+    child: LayoutBuilder(
+      builder: (context, c) {
+        final p = placementFor(Size(c.maxWidth, c.maxHeight));
+        if (p == null) return const SizedBox.shrink();
+        switch (p.mode) {
+          case BubbleSideMode.above:
+            // `--tx` is the tail's middle along the bubble; the dark triangle starts at the border's outer edge
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                PositionedDirectional(
+                  start: (p.tail ?? c.maxWidth / 2) - 8,
+                  bottom: -11,
+                  child: const CustomPaint(
+                    size: Size(16, 9),
+                    painter: _TailPainter(BubbleSideMode.above),
+                  ),
                 ),
-              ),
-            ],
-          );
-        case BubbleSideMode.right:
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned(
-                left: -11,
-                top: c.maxHeight / 2 - 8,
-                child: const CustomPaint(
-                  size: Size(9, 16),
-                  painter: _TailPainter(BubbleSideMode.right),
+              ],
+            );
+          case BubbleSideMode.right:
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                PositionedDirectional(
+                  start: -11,
+                  top: c.maxHeight / 2 - 8,
+                  child: const CustomPaint(
+                    size: Size(9, 16),
+                    painter: _TailPainter(BubbleSideMode.right),
+                  ),
                 ),
-              ),
-            ],
-          );
-        case BubbleSideMode.left:
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned(
-                right: -11,
-                top: c.maxHeight / 2 - 8,
-                child: const CustomPaint(
-                  size: Size(9, 16),
-                  painter: _TailPainter(BubbleSideMode.left),
+              ],
+            );
+          case BubbleSideMode.left:
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                PositionedDirectional(
+                  end: -11,
+                  top: c.maxHeight / 2 - 8,
+                  child: const CustomPaint(
+                    size: Size(9, 16),
+                    painter: _TailPainter(BubbleSideMode.left),
+                  ),
                 ),
-              ),
-            ],
-          );
-      }
-    },
+              ],
+            );
+        }
+      },
+    ),
   );
 }
 
