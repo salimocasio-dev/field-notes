@@ -124,6 +124,7 @@ def get_diff_chunks(
             "git",
             "diff",
             "--name-only",
+            "-z",
             f"{base_target}...{head_ref}",
             "--",
             ".",
@@ -131,8 +132,8 @@ def get_diff_chunks(
         ],
         text=True,
         errors="replace",
-    ).strip()
-    reviewable_files = [f for f in rev_files_raw.splitlines() if f.strip()]
+    )
+    reviewable_files = [f for f in rev_files_raw.split("\0") if f]
     if not reviewable_files:
         return [], 0
 
@@ -443,12 +444,16 @@ def main() -> int:
             base_sha if (base_sha and _git_commit_exists(base_sha)) else f"origin/{base_ref}"
         )
 
-    changed_files = subprocess.check_output(
-        ["git", "diff", "--name-only", f"{base_target}...{head_ref}"], text=True
-    ).strip()
-    if not changed_files:
+    changed_files_raw = subprocess.check_output(
+        ["git", "diff", "--name-only", "-z", f"{base_target}...{head_ref}"],
+        text=True,
+        errors="replace",
+    )
+    changed_files_list = [f for f in changed_files_raw.split("\0") if f]
+    if not changed_files_list:
         print("No changed files to review.")
         return 0
+    changed_files = "\n".join(changed_files_list)
 
     chunks, total_chars = get_diff_chunks(base_target, head_ref=head_ref)
     if len(chunks) > MAX_CHUNKS:

@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/tool/antigravity_guard_hook.py\"",
+            "command": "sh -c 'root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0; exec python3 \"$root/tool/antigravity_guard_hook.py\"'",
             "timeout": 5
           }
         ]

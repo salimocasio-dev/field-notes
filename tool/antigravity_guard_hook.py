@@ -225,7 +225,7 @@ def _is_paid_workflow_dispatch(cmd: str) -> bool:
             gh_args.append(tok)
 
         if len(gh_args) >= 2 and gh_args[0] == "workflow" and gh_args[1] == "run":
-            value_flags = {"-r", "--ref", "-f", "--raw-field", "-F", "--field", "-R", "--repo", "--json"}
+            value_flags = {"-r", "--ref", "-f", "--raw-field", "-F", "--field", "-R", "--repo"}
             skip = False
             for tok in gh_args[2:]:
                 if skip:
