@@ -208,7 +208,7 @@ class CallController extends ChangeNotifier {
       case CallState.connecting:
         _label = CallTexts.calling;
       case CallState.danny:
-        _label = CallTexts.danny;
+        _label = course.language.partnerName;
       case CallState.you:
         _label = CallTexts.yourTurn;
       case CallState.proc:
@@ -393,7 +393,8 @@ class CallController extends ChangeNotifier {
     if (!user) {
       dannyLine = text;
       lineMuted = false;
-      if (_fin == null && isGoodbye(text, course.goodbyeWords)) {
+      if (_fin == null &&
+          isGoodbye(text, course.goodbyeWords, language: course.language)) {
         _terminaDanny(); // he said goodbye on his own: the call ends after this line
       }
       _changed();
@@ -405,7 +406,8 @@ class CallController extends ChangeNotifier {
     // his line is in: Danny is about to answer
     if (_state == CallState.you) _est(CallState.proc);
     _oye(text);
-    if (_fin == null && isGoodbye(text, course.goodbyeWords)) {
+    if (_fin == null &&
+        isGoodbye(text, course.goodbyeWords, language: course.language)) {
       _enviaFin(); // any goodbye from him, at any time, ends the call
     }
     _changed();
@@ -414,12 +416,14 @@ class CallController extends ChangeNotifier {
   // llamada.js: oye. Every word of the place he said (once per call each) becomes a mouth record;
   // ms = how long he took to start speaking.
   void _oye(String text) {
-    final n = normalize(text);
+    final n = course.language.normalize(text);
     final turn = _turn;
     final onset = turn?.onset;
     final ms = onset == null ? null : math.max(0, onset - turn!.t);
     for (final w in _words ?? const <String>[]) {
-      if (_said.containsKey(w) || !dice(n, w)) continue;
+      if (_said.containsKey(w) || !dice(n, w, language: course.language)) {
+        continue;
+      }
       _said[w] = ms;
       try {
         progress.answer(w, Skill.mouth, ok: true, ms: ms);
@@ -438,10 +442,10 @@ class CallController extends ChangeNotifier {
         break;
       }
     }
-    final n = normalize('${k ?? ''}');
+    final n = course.language.normalize('${k ?? ''}');
     String? w;
     for (final x in _words ?? const <String>[]) {
-      if (normalize(x) == n) {
+      if (course.language.normalize(x) == n) {
         w = x;
         break;
       }
@@ -462,7 +466,7 @@ class CallController extends ChangeNotifier {
     final now = _now();
     helpPressed = true;
     _helpUntil = now + _helpPressedMs;
-    note = CallTexts.helpNote;
+    note = CallTexts.helpNoteFor(course.language.partnerName);
     _noteUntil = now + _helpNoteMs;
     _changed();
   }
