@@ -361,25 +361,44 @@ class _TextReaderState extends State<TextReader> {
     return out;
   }
 
-  String _canonicalProgressWord(String rawToken) {
+  ({Map<String, String> exact, Map<String, String> normalized})
+  _progressWordIndex() {
     final lang = _s.course.language;
-    final norm = lang.normalize(rawToken).trim();
-    if (norm.isNotEmpty) {
-      for (final existing in _s.progress.words) {
-        if (lang.normalize(existing.w).trim() == norm) {
-          return existing.w;
-        }
+    final exact = <String, String>{};
+    final normalized = <String, String>{};
+    for (final existing in _s.progress.words) {
+      exact.putIfAbsent(existing.w.toLowerCase(), () => existing.w);
+      final norm = lang.normalize(existing.w).trim();
+      if (norm.isNotEmpty) {
+        normalized.putIfAbsent(norm, () => existing.w);
       }
     }
-    return rawToken.toLowerCase();
+    return (exact: exact, normalized: normalized);
+  }
+
+  String _resolveProgressWord(
+    String rawToken,
+    ({Map<String, String> exact, Map<String, String> normalized}) index,
+  ) {
+    final lower = rawToken.toLowerCase();
+    final exactHit = index.exact[lower];
+    if (exactHit != null) return exactHit;
+    final norm = _s.course.language.normalize(rawToken).trim();
+    if (norm.isNotEmpty) {
+      final normHit = index.normalized[norm];
+      if (normHit != null) return normHit;
+    }
+    return lower;
   }
 
   void _creditSentenceWords(ReaderSentence sentence) {
     final lang = _s.course.language;
+    final index = _progressWordIndex();
     final keys = <String>{};
     for (final token in lang.tokens(sentence.text)) {
       final resolved =
-          _audio.word(token.text)?.word ?? _canonicalProgressWord(token.text);
+          _audio.word(token.text)?.word ??
+          _resolveProgressWord(token.text, index);
       if (resolved.isNotEmpty) keys.add(resolved);
     }
     for (final key in keys) {
@@ -544,7 +563,9 @@ class _TextReaderState extends State<TextReader> {
     setState(() => _playing = false);
     await _playWordClip((
       clip: clipId,
-      word: selected.audioWord ?? _canonicalProgressWord(selected.token),
+      word:
+          selected.audioWord ??
+          _resolveProgressWord(selected.token, _progressWordIndex()),
     ));
   }
 

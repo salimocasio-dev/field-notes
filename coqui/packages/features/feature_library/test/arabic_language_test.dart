@@ -535,7 +535,7 @@ void main() {
     );
 
     testWidgets(
-      'crediting an unrecorded Arabic word reuses existing diacritic record without duplicating it',
+      'crediting an unrecorded Arabic word prefers exact vocalized records and reuses existing diacritic records without duplicating',
       (tester) async {
         tester.view.devicePixelRatio = 1;
         tester.view.physicalSize = const Size(390, 844);
@@ -547,11 +547,13 @@ void main() {
         final course = _SingleClipArabicCatalog(
           bookId: 'ar-dedup',
           clipId: 'c1',
-          clipText: 'مرحبا يا جدة.',
+          clipText: 'مرحبا أُكِلَ يا جدة.',
         );
         final clips = TimedClips(length: const Duration(milliseconds: 50));
         final progress = FakeProgressStore();
         progress.put(_known('مرحباً', stage: 2));
+        progress.put(_known('أَكَلَ', stage: 2));
+        progress.put(_known('أُكِلَ', stage: 2));
         final services = fakeServices(
           course: course,
           clips: clips,
@@ -576,6 +578,10 @@ void main() {
         expect(marhabaRecords, hasLength(1));
         expect(marhabaRecords.single.w, 'مرحباً');
         expect(marhabaRecords.single.oida, 1);
+
+        // Exact vocalized spelling 'أُكِلَ' is credited instead of earlier 'أَكَلَ'.
+        expect(progress.word('أُكِلَ')?.oida, 1);
+        expect(progress.word('أَكَلَ')?.oida, 0);
       },
     );
 
