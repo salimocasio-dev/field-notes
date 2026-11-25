@@ -278,11 +278,11 @@ void main() {
           if (after[w] != before[w]) w,
       ];
       expect(moved.length, greaterThanOrEqualTo(5));
-      // the session's minutes went to the day
-      expect(
-        (storedDb(app)['minutos'] as num),
-        greaterThan(jsonDecode(seed('curso'))['minutos'] as num),
-      );
+      // the session's minutes went to the shared cross-language progress store
+      final seedMinutes = jsonDecode(seed('curso'))['minutos'] as num;
+      final sharedDb = jsonDecode(app.sharedStored!) as Map<String, dynamic>;
+      expect(sharedDb['minutos'] as num, greaterThan(seedMinutes));
+      expect(app.services.progress.minutes, greaterThan(seedMinutes));
       // "Back to Palabras": Repaso always ends on Palabras (cual.js: SALIDA)
       await app.tap(find.text('Back to Palabras'));
       await app.settle(rounds: 5);

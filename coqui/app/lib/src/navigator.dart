@@ -48,6 +48,9 @@ class ShellNavigator implements AppNavigator {
   AppRoute? get current => _current;
   AppRoute? _current;
 
+  /// Whether a browser-history back out of a lesson is currently in flight.
+  bool get isLeavingLesson => _backGuard?.isActive ?? false;
+
   // the lesson's step in the browser's history sits over a tab's: back is the browser's back
   bool _lessonOverTab = false;
   // after the browser's back from a lesson: the tab to go to once the origin's address is back
