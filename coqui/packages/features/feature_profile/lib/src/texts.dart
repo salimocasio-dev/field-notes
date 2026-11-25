@@ -60,3 +60,62 @@ const String aboutRow = 'About';
 
 /// The one-time hint on an iPhone in the browser (the order's words).
 const String installHint = 'To install: Share, then Add to Home Screen';
+
+// ---- N4.7 Noche Me (docs/proyecto/noche/Noche-Yo.dc.html) ----
+
+const String meTitle = 'Me';
+const String meHowCoquiWorks = 'How Coquí works';
+const String meMinutesListened = 'minutes listened';
+const String meAllLanguages = 'all languages';
+const String meTodayLabel = 'Today';
+const List<String> meWeekdayInitials = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+const String meListening = 'Listening';
+const String meSpeaking = 'Speaking';
+const String meReading = 'Reading';
+const String meReadingNote = 'Open now. Counts from A2.';
+const String meReadingOpenNote = 'Open now.';
+const String meYourPlan = 'Your plan';
+const String meManage = 'Manage ›';
+const String mePlanFree = 'Free';
+const String mePlanCourse = 'Course';
+const String mePlanCourseAndCalls = 'Course + Calls';
+
+String meStreakLabel(int streak, String dayWord) => '$streak $dayWord';
+
+String meStreakFreezesLabel(int freezes, String freezeWord) =>
+    '$freezes $freezeWord saved';
+
+String meWeekChartLabel({
+  required List<int> priorSix,
+  required int today,
+  required int goal,
+}) =>
+    'Minutes listened in the last 7 days: ${priorSix.join(', ')}, and $today so far today. Your goal is $goal a day.';
+
+String mePlaceProgressLabel({
+  required String level,
+  required int placeNumber,
+  required int placeTotal,
+}) => '$level · place $placeNumber of $placeTotal';
+
+String mePlaceDashesActiveLabel({
+  required int done,
+  required int currentNumber,
+  required int toGo,
+}) => 'Places: $done done, on place $currentNumber, $toGo to go';
+
+String mePlaceDashesSummaryLabel({required int done, required int toGo}) =>
+    'Places: $done done, $toGo to go';
+
+String meSkillGoodLabel(int good, int total) => '$good of $total good';
+
+String meSkillGoodSemanticLabel(int good, int total) =>
+    '$good of $total words good';
+
+String mePlanSemanticLabel(String planName) =>
+    '$meYourPlan, $planName. $meManage';
+
+String meLevelCheckDoneSuffix(String skippedText, String storyWord) =>
+    'Done: $skippedText $storyWord skipped.';
+
+String meBuildLabel(String build) => 'build $build';

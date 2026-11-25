@@ -189,11 +189,12 @@ class _YoDevAppState extends State<YoDevApp> {
     final q = widget.query;
     final step = int.tryParse(q['step'] ?? '') ?? 0;
     final how = int.tryParse(q['how'] ?? '');
+    final lang = f.services.course.language;
     final yo = Stack(
       fit: StackFit.expand,
       children: [
         if (q['screen'] == 'welcome')
-          const ColoredBox(color: CoquiColors.mapWater)
+          const ColoredBox(color: NocheColors.ground)
         else
           YoScreen(
             services: f.services,
@@ -201,16 +202,23 @@ class _YoDevAppState extends State<YoDevApp> {
             aboutOpen: q['about'] == '1',
           ),
         Align(
-          alignment: Alignment.bottomCenter,
-          child: CoquiTabBar(selectedId: CoquiTabs.meId, onTap: (_) {}),
+          alignment: AlignmentDirectional.bottomCenter,
+          child: NocheTabBar(
+            selectedId: NocheTabs.me,
+            tabNames: lang.tabNames,
+            script: lang.script,
+            languageCode: lang.code,
+            onTap: (_) {},
+          ),
         ),
       ],
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Coqui Yo',
+      title: 'Coqui Me',
       theme: coquiTheme(),
       home: Scaffold(
+        backgroundColor: NocheColors.ground,
         body: WelcomeGate(services: f.services, initialStep: step, child: yo),
       ),
     );
