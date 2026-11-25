@@ -333,10 +333,12 @@ class RepasoPlanner {
     required this.progress,
     required this.pairs,
     required this.rng,
+    Language? language,
     Map<String, String>? lastAsked,
     this.nextKind = 0,
     this.wordAssets = const {},
-  }) : lastAsked = lastAsked ?? const {};
+  }) : language = language ?? Language.spanish,
+       lastAsked = lastAsked ?? const {};
 
   final RepasoData data;
   final ProgressStore progress;
@@ -346,6 +348,9 @@ class RepasoPlanner {
 
   /// The session's random source (seeded once for the session).
   final Rng rng;
+
+  /// The course's language for word folding and tokenisation.
+  final Language language;
 
   /// The clip each word was last asked in (see [LastAsked]).
   final Map<String, String> lastAsked;
@@ -363,6 +368,16 @@ class RepasoPlanner {
     progress: progress,
     pairs: pairs,
   );
+
+  final Map<String, List<String>> _foldedCache = {};
+  List<String> _tokensOf(String s) =>
+      _foldedCache[s] ??= foldedTokens(s, language: language);
+
+  final Map<RepasoSentence, Set<String>> _inSentenceCache = {};
+  Set<String> _wordsIn(RepasoSentence s) => _inSentenceCache[s] ??= {
+    ..._tokensOf(s.text),
+    ...s.tokens.expand(_tokensOf),
+  };
 
   bool finished(String? story) => serving.finished(story);
 
@@ -394,7 +409,14 @@ class RepasoPlanner {
   /// sentences (no pictures). This keeps [servable] 100% aligned with `RepasoServing.canServe` used by Map and
   /// Palabras so due words like `cual`-only entries are always cleared and never stuck as perpetually due.
   List<RepasoSentence> hearSentences(RepasoWord w) {
-    final native = serving.hearSentences(w);
+    final native = [
+      for (final k in w.sentences)
+        if (data.sentences[k] case final s
+            when s.forHearing &&
+                finished(s.story) &&
+                wrongTileChoices(w, s).length >= 2)
+          s,
+    ];
     if (native.isNotEmpty) return native;
     if (cualLines(w).isNotEmpty) return const [];
     final pairFallback = serving.cualLines(w);
@@ -408,11 +430,11 @@ class RepasoPlanner {
   }
 
   RepasoSentence _pairLineAsHearingSentence(RepasoPairLine l) {
-    final tokens = foldedTokens(l.text);
+    final tokens = _tokensOf(l.text);
     final tokenSet = tokens.toSet();
     final forbidden = [
       for (final m in data.words)
-        if (foldedTokens(m.word).any(tokenSet.contains)) m.word,
+        if (_tokensOf(m.word).any(tokenSet.contains)) m.word,
     ];
     return RepasoSentence(
       clip: l.clip,
@@ -434,11 +456,30 @@ class RepasoPlanner {
   /// The words other than [target] that may stand as a wrong written tile beside [s], in the data's order: words he
   /// has met, not in the sentence (none of their words is a word of it), not in its forbidden list, not in the
   /// `no_juntas` of the target or of any tracked word in the sentence. The two picked are also apart from each other.
+  ///
+  /// Uses [language] directly rather than `serving.wrongTileChoices` until `coqui_contracts`'s `RepasoServing`
+  /// accepts a [Language] (see `coqui/requests/90-feature-review-needs-coqui-contracts-repaso-serving-language.md`).
   List<RepasoWord> wrongTileChoices(
     RepasoWord target,
     RepasoSentence s, {
     bool singleWords = false,
-  }) => serving.wrongTileChoices(target, s, singleWords: singleWords);
+  }) {
+    final inSentence = _wordsIn(s);
+    final banned = <String>{
+      target.word,
+      ...target.apart,
+      ...s.forbidden,
+      for (final x in s.forbidden) ...?data.word(x)?.apart,
+    };
+    return [
+      for (final m in met)
+        if (!banned.contains(m.word) &&
+            !m.apart.contains(target.word) &&
+            !_tokensOf(m.word).any(inSentence.contains) &&
+            (!singleWords || _tokensOf(m.word).length == 1))
+          m,
+    ];
+  }
 
   /// Two wrong tiles for [s]: [wrongTileChoices] mixed by the session's random source, the words of the target's place
   /// first; the second is not one the first must not meet. Null when there are not two.
@@ -477,10 +518,7 @@ class RepasoPlanner {
   }
 
   List<RepasoWord> _fallbackPool(RepasoWord target, RepasoSentence s) {
-    final inSentence = {
-      ...foldedTokens(s.text),
-      ...s.tokens.expand(foldedTokens),
-    };
+    final inSentence = _wordsIn(s);
     final banned = <String>{
       target.word,
       ...target.apart,
@@ -491,7 +529,7 @@ class RepasoPlanner {
       for (final m in data.words)
         if (!banned.contains(m.word) &&
             !m.apart.contains(target.word) &&
-            !foldedTokens(m.word).any(inSentence.contains))
+            !_tokensOf(m.word).any(inSentence.contains))
           m,
     ];
   }
@@ -694,8 +732,10 @@ class RepasoPlanner {
   ];
 
   /// The lower-case form of a word as a tile of Arma la frase: no signs.
-  static String tileForm(String w) =>
-      w.toLowerCase().replaceAll(RegExp(r'[^0-9a-záéíóúüñ ]'), '').trim();
+  static String tileForm(String w, {Language? language}) {
+    final lang = language ?? Language.spanish;
+    return [for (final t in lang.tokens(w)) t.text.toLowerCase()].join(' ');
+  }
 
   BuildItem? _build(List<RepasoWord> words) {
     for (final w in words) {
@@ -703,7 +743,9 @@ class RepasoPlanner {
       for (final s in ss) {
         final extra = wrongTiles(w, s, singleWords: true);
         if (extra == null) continue;
-        final forms = [for (final e in extra) tileForm(e.word)];
+        final forms = [
+          for (final e in extra) tileForm(e.word, language: language),
+        ];
         if (forms.any(s.tokens.contains) || forms[0] == forms[1]) continue;
         var pool = shuffled([...s.tokens, ...forms], rng);
         if (_sameStart(pool, s.tokens)) pool = [...pool.skip(1), pool.first];
@@ -729,16 +771,13 @@ class RepasoPlanner {
   /// Whether [b] may sit in a matching round beside the sentence [s] of [a]: [b] is not in it, not forbidden beside
   /// it, and must not meet [a] or a tracked word of it.
   bool _apartFrom(RepasoWord a, RepasoSentence s, RepasoWord b) {
-    final inSentence = {
-      ...foldedTokens(s.text),
-      ...s.tokens.expand(foldedTokens),
-    };
+    final inSentence = _wordsIn(s);
     if (s.forbidden.contains(b.word)) return false;
     if (a.apart.contains(b.word) || b.apart.contains(a.word)) return false;
     for (final x in s.forbidden) {
       if (data.word(x)?.apart.contains(b.word) ?? false) return false;
     }
-    return !foldedTokens(b.word).any(inSentence.contains);
+    return !_tokensOf(b.word).any(inSentence.contains);
   }
 
   MatchItem? _match(List<RepasoWord> words) {

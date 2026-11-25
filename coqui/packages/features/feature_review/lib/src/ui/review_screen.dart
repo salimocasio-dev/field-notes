@@ -149,6 +149,7 @@ class ReviewScreenState extends State<ReviewScreen> {
         ),
         picture: showPictures ? _choices(box) : null,
         caption: showPictures && s.caption.isNotEmpty ? s.caption : null,
+        language: _s.course.language,
         overlay: start
             ? LessonTextScreen(
                 box: box,
@@ -160,6 +161,7 @@ class ReviewScreenState extends State<ReviewScreen> {
                 box: box,
                 end: s.end!,
                 pictures: _s.pictures,
+                language: _s.course.language,
                 controller: widget.endScroll,
               )
             : null,
@@ -167,7 +169,8 @@ class ReviewScreenState extends State<ReviewScreen> {
           if (start) LessonStartButton(onPressed: _start),
           if (end)
             LessonButton(
-              label: 'Back to ${CoquiLabels.words}',
+              label:
+                  'Back to ${_s.course.language.tabNames['words'] ?? CoquiLabels.words}',
               onPressed: _back,
             ),
         ],
@@ -186,6 +189,7 @@ class ReviewEndScreen extends StatelessWidget {
     required this.box,
     required this.end,
     required this.pictures,
+    this.language,
     this.controller,
   });
 
@@ -194,29 +198,43 @@ class ReviewEndScreen extends StatelessWidget {
   final LessonBox box;
   final ReviewEnd end;
   final PictureSource pictures;
+  final Language? language;
+
+  Language get _lang => language ?? Language.spanish;
 
   Widget _cell(ReviewPair pair, EndGrid grid) => SizedBox(
     width: grid.cellWidth,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DecoratedBox(
-          decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(color: CoquiColors.lessonLine, spreadRadius: 1.5),
-            ],
-          ),
-          child: SizedBox(
-            width: grid.cellWidth,
-            height: grid.pictureHeightCss,
-            child: ExcludeSemantics(
-              child: pictures.of(PictureRef.of(pair, pair.yes)),
+    child: Directionality(
+      textDirection: _lang.textDirection,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DecoratedBox(
+            decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(color: CoquiColors.lessonLine, spreadRadius: 1.5),
+              ],
+            ),
+            child: SizedBox(
+              width: grid.cellWidth,
+              height: grid.pictureHeightCss,
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: ExcludeSemantics(
+                  child: pictures.of(PictureRef.of(pair, pair.yes)),
+                ),
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(pair.word, style: CoquiText.lessonWord),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            pair.word,
+            textDirection: _lang.textDirection,
+            locale: _lang.locale,
+            style: NocheType.forScript(CoquiText.lessonWord, _lang.script),
+          ),
+        ],
+      ),
     ),
   );
 
@@ -235,26 +253,34 @@ class ReviewEndScreen extends StatelessWidget {
           Text(g.sub, style: CoquiText.lessonSub),
         ],
         const SizedBox(height: 12),
-        for (var r = 0; r < rows.length; r++) ...[
-          if (r > 0) const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        Directionality(
+          textDirection: _lang.textDirection,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              for (var c = 0; c < rows[r].length; c++) ...[
-                if (c > 0) const SizedBox(width: 16),
-                _cell(rows[r][c], grid),
+              for (var r = 0; r < rows.length; r++) ...[
+                if (r > 0) const SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var c = 0; c < rows[r].length; c++) ...[
+                      if (c > 0) const SizedBox(width: 16),
+                      _cell(rows[r][c], grid),
+                    ],
+                  ],
+                ),
               ],
             ],
           ),
-        ],
+        ),
       ],
     );
   }
 
   @override
-  Widget build(BuildContext context) => Positioned(
-    left: 0,
-    right: 0,
+  Widget build(BuildContext context) => PositionedDirectional(
+    start: 0,
+    end: 0,
     top: 0,
     bottom: 96,
     child: FadingEdges(
@@ -270,7 +296,7 @@ class ReviewEndScreen extends StatelessWidget {
           );
           return SingleChildScrollView(
             controller: controller,
-            padding: EdgeInsets.fromLTRB(
+            padding: EdgeInsetsDirectional.fromSTEB(
               horizontal,
               box.landscape ? 8 : 16,
               horizontal,
