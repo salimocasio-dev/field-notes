@@ -301,10 +301,15 @@ void main() {
     await app.open(stored: seed('curso'));
     await app.openTab('words');
     await app.until(
-      () => find.text('Start').evaluate().isNotEmpty,
-      what: 'the Repaso card',
+      () =>
+          find.text('Start review').evaluate().isNotEmpty ||
+          find.text('Start').evaluate().isNotEmpty,
+      what: 'the Repaso action',
     );
-    await app.tap(find.text('Start'));
+    final start = find.text('Start review').evaluate().isNotEmpty
+        ? find.text('Start review')
+        : find.text('Start');
+    await app.tap(start);
     await app.settle();
     expect(app.lessonShown, isTrue);
     expect(byTypeName('RepasoScreen'), findsOneWidget);
