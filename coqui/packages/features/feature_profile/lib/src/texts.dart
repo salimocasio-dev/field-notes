@@ -60,3 +60,20 @@ const String aboutRow = 'About';
 
 /// The one-time hint on an iPhone in the browser (the order's words).
 const String installHint = 'To install: Share, then Add to Home Screen';
+
+// ---- N4.7 Noche Me (docs/proyecto/noche/Noche-Yo.dc.html) ----
+
+const String meTitle = 'Me';
+const String meHowCoquiWorks = 'How Coquí works';
+const String meMinutesListened = 'minutes listened';
+const String meAllLanguages = 'all languages';
+const String meTodayLabel = 'Today';
+const String meListening = 'Listening';
+const String meSpeaking = 'Speaking';
+const String meReading = 'Reading';
+const String meReadingNote = 'Open now. Counts from A2.';
+const String meYourPlan = 'Your plan';
+const String meManage = 'Manage ›';
+const String mePlanFree = 'Free';
+const String mePlanCourse = 'Course';
+const String mePlanCourseAndCalls = 'Course + Calls';

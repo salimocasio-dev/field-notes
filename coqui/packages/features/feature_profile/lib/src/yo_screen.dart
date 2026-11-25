@@ -1,39 +1,67 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/src/about_sheet.dart';
 import 'package:feature_profile/src/install_hint.dart';
 import 'package:feature_profile/src/js.dart';
+import 'package:feature_profile/src/language_chip.dart';
+import 'package:feature_profile/src/me_data.dart';
 import 'package:feature_profile/src/texts.dart';
 import 'package:feature_profile/src/welcome.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The day the "speaking is not available" note was first shown on this page (app.html: `NOTAPAG`). It lives
-/// as long as the app does, and the app has one [Services].
+/// The day the "speaking is not available" note was first shown on this page
+/// (`app.html: NOTAPAG`). Lives as long as [Services] does.
 final Expando<String> _notePage = Expando<String>('NOTAPAG');
 
-/// The Yo tab (app.html: `yo`): the four numbers, where he is, minutes a day, the switches, the level
-/// check, "How it works". It draws again whenever the progress store saves (`progress.changes`).
-///
-/// It draws the whole screen, as the tab bar is drawn over it by the shell. Its sheets (How it works, About)
-/// open with `showCoquiSheet`, above everything: the scrim dims the tab bar too, as v=39's does.
+/// The Noche Me tab (`docs/proyecto/noche/Noche-Yo.dc.html`, story N4.7 /
+/// issue #107): header ("Me" + "How Coquí works"), stats card with 7-day
+/// minutes bar chart, language card with place dashes and skill bars,
+/// "Minutes a day" segmented control, "Your plan" row, and the existing
+/// scrolling settings rows ("Open every place", "Speak in stories",
+/// "Level check", "About", and build number).
 class YoScreen extends StatefulWidget {
   const YoScreen({
     super.key,
     required this.services,
     this.howItWorksStep,
     this.aboutOpen = false,
+    this.minutesOn,
+    this.streakFreezes,
+    this.stageMax,
+    this.entitlements = const AllowAllEntitlements(),
+    this.level,
   });
 
   final Services services;
 
-  /// For a dev entry and its screenshots: open "How it works" at this step (0 to 2) as soon as the screen is up.
+  /// For a dev entry and its screenshots: open "How it works" at this step
+  /// (0 to 2) as soon as the screen is up.
   final int? howItWorksStep;
 
-  /// For a dev entry and its screenshots: open the About sheet as soon as the screen is up.
+  /// For a dev entry and its screenshots: open the About sheet as soon as the
+  /// screen is up.
   final bool aboutOpen;
+
+  /// Optional daily-minutes reader until request 87
+  /// (`LanguageProgressStore.minutesOn`) lands in `coqui_contracts`.
+  final double Function(DateTime day)? minutesOn;
+
+  /// Optional saved streak freezes count (`int?`, null today per Part 1.7)
+  /// until request 87 (`LanguageProgressStore.streakFreezes`) lands.
+  final int? streakFreezes;
+
+  /// Optional maximum mastery stage until request 87
+  /// (`LanguageProgressStore.stageMax`) lands; defaults to [defaultStageMax].
+  final int? stageMax;
+
+  /// Injected entitlements until request 85 (`Services.entitlements`) lands in
+  /// `coqui_ui`; defaults to [AllowAllEntitlements].
+  final Entitlements entitlements;
+
+  /// Optional CEFR level override; defaults to `levelResult['cefr']` or `A1`.
+  final String? level;
 
   @override
   State<YoScreen> createState() => _YoScreenState();
@@ -41,14 +69,15 @@ class YoScreen extends StatefulWidget {
 
 class _YoScreenState extends State<YoScreen> {
   StreamSubscription<void>? _changes;
+  StreamSubscription<void>? _entitlementChanges;
 
-  /// notaHabla(): whether the note is on this draw.
+  /// notaHabla(): whether the speech-unavailable note is on this draw.
   bool _note = false;
 
-  /// The recogniser is being asked (a store that saves twice in a row asks once).
+  /// Guards concurrent `speech.available()` calls across rapid store saves.
   bool _asking = false;
 
-  /// New: the install hint is on screen.
+  /// One-time iOS browser install hint.
   bool _hint = false;
 
   Services get _s => widget.services;
@@ -59,7 +88,6 @@ class _YoScreenState extends State<YoScreen> {
     super.initState();
     final step = widget.howItWorksStep;
     if (step != null || widget.aboutOpen) {
-      // a route cannot be pushed while the page is being built: once the first frame is drawn
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         if (step != null) {
@@ -70,6 +98,7 @@ class _YoScreenState extends State<YoScreen> {
       });
     }
     _listen();
+    _listenEntitlements();
     _initHint();
     _checkNote();
   }
@@ -78,8 +107,16 @@ class _YoScreenState extends State<YoScreen> {
     _changes?.cancel();
     _changes = _progress.changes.listen((_) {
       if (!mounted) return;
-      setState(() {}); // yo()
+      setState(() {});
       _checkNote();
+    });
+  }
+
+  void _listenEntitlements() {
+    _entitlementChanges?.cancel();
+    _entitlementChanges = widget.entitlements.changes.listen((_) {
+      if (!mounted) return;
+      setState(() {});
     });
   }
 
@@ -90,18 +127,22 @@ class _YoScreenState extends State<YoScreen> {
       _listen();
       _checkNote();
     }
+    if (old.entitlements != widget.entitlements) {
+      _listenEntitlements();
+    }
   }
 
   @override
   void dispose() {
     _changes?.cancel();
+    _entitlementChanges?.cancel();
     super.dispose();
   }
 
-  // ---- the install hint (new in order 25) ----
+  // ---- the install hint ----
 
-  /// On an iPhone in the browser, not installed, and not shown before: show it, and remember that it was
-  /// shown (in this feature's own storage space), so it is shown once.
+  /// On an iPhone in the browser, not installed, and not shown before: show it,
+  /// and remember in this feature's own storage space so it is shown once.
   void _initHint() {
     final i = _s.info;
     if (!(i.isWeb && i.isIos && !i.installed)) return;
@@ -113,7 +154,6 @@ class _YoScreenState extends State<YoScreen> {
 
   // ---- notaHabla (app.html:466) ----
 
-  // app.html: notaHabla. `habDisp()` is the recogniser's `available()`; the day is the clock's, UTC.
   Future<void> _checkNote() async {
     if (_asking) return;
     _asking = true;
@@ -145,12 +185,10 @@ class _YoScreenState extends State<YoScreen> {
 
   // ---- the sheets ----
 
-  // app.html: bienvenida(0). The page gives the sheet [step] as its first (the dev entry opens the others).
+  // app.html: bienvenida(0). Keeps today's How it works sheet until N4.8b (#109).
   void _openHow([int step = 0]) {
     final seen = jsTruthy(_progress.setting('bienvenida'));
     final steps = ValueNotifier<int>(step);
-    // `modal:!AJ().bienvenida`: the welcome that has not been finished ignores a tap outside; from Yo it is the
-    // ordinary sheet (the X, the drag, the scrim close it, `cierra()` and `fuera()`)
     unawaited(
       showCoquiSheet(
         context,
@@ -159,7 +197,6 @@ class _YoScreenState extends State<YoScreen> {
           services: _s,
           step: steps,
           onNew: () {
-            // app.html: listo
             _progress.setSetting('bienvenida', 1);
             close();
           },
@@ -170,175 +207,399 @@ class _YoScreenState extends State<YoScreen> {
   }
 
   void _openAbout() => unawaited(
-    showCoquiSheet(
+    showNocheSheet<void>(
       context,
-      builder: (context, close) => aboutSheet(onClose: close),
+      title: aboutRow,
+      builder: (context, close) => aboutSheetBody(),
     ),
   );
 
   // ---- the page ----
 
-  // app.html: aqui
-  int _here(List<Place> places) {
-    final i = places.indexWhere(
-      (l) => l.stories.isNotEmpty && !l.stories.every(_progress.played),
-    );
-    return math.max(0, i);
-  }
-
   @override
   Widget build(BuildContext context) {
     final progress = _progress;
-    final words = progress.words.toList(); // Object.values(d.palabras)
-    final minutes = jsRound(progress.minutes); // Math.round(d.minutos||0)
-    final good = words.where((w) => w.ear.etapa >= 4).length;
-    final places = _s.course.places;
-    final here = places.isEmpty ? null : places[_here(places)];
-    final level = progress.levelResult; // db().nivel
     final setting = progress.setting;
+    final levelResult = progress.levelResult;
+    final data = buildMeViewData(
+      services: _s,
+      minutesOn: widget.minutesOn,
+      streakFreezes: widget.streakFreezes,
+      stageMax: widget.stageMax,
+      entitlements: widget.entitlements,
+      level: widget.level,
+    );
+    final courseLocale = Locale(data.language.code);
+    final pad = MediaQuery.paddingOf(context);
+    final levelHelp =
+        '$yoLevelCheckHelp ${levelResult != null ? 'Done: ${jsString(levelResult['historias'])} ${plural(levelResult['historias'] is num ? levelResult['historias'] as num : double.nan, 'story', 'stories')} skipped.' : yoLevelCheckNotDone}';
 
     return ColoredBox(
-      color: CoquiColors.bg,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          TabPage(
-            children: [
-              const ScreenTitle(CoquiLabels.me),
-              if (_hint)
-                Block(
-                  bottom: CoquiMetrics.s16,
-                  child: KeyedSubtree(
-                    key: const Key('install-hint'),
-                    child: CoquiCard(
-                      padding: installHintPadding,
-                      child: InstallHint(
-                        onDismiss: () => setState(() => _hint = false),
+      color: NocheColors.ground,
+      child: DefaultTextStyle.merge(
+        style: NocheType.body.copyWith(color: NocheColors.text),
+        child: IconTheme.merge(
+          data: const IconThemeData(color: NocheColors.text),
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(
+              top: pad.top,
+              bottom: NocheSize.aboveTabBar + pad.bottom,
+            ),
+            child: ClipRect(
+              child: SingleChildScrollView(
+                key: const Key('me-scroll'),
+                padding: const EdgeInsetsDirectional.only(bottom: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _MeHeader(onHowItWorks: _openHow),
+                    if (_hint)
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                          16,
+                          0,
+                          16,
+                          16,
+                        ),
+                        child: KeyedSubtree(
+                          key: const Key('install-hint'),
+                          child: NocheCard(
+                            padding: installHintPadding,
+                            child: InstallHint(
+                              onDismiss: () => setState(() => _hint = false),
+                            ),
+                          ),
+                        ),
                       ),
-                    ).content,
-                  ),
-                ),
-              Block(
-                bottom: CoquiMetrics.s16,
-                child: _StatsGrid(
-                  stats: [
-                    // the flame before the number is drawn (`StatCard.flame`), not the emoji of app.html:473
-                    ('${progress.streak}', yoStreakLabel, true),
-                    (
-                      '$minutes',
-                      '${plural(minutes, 'minute')} listened',
-                      false,
+                    Padding(
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 16,
+                      ),
+                      child: _StatsCard(data: data),
                     ),
-                    (
-                      '${words.length}',
-                      '${plural(words.length, 'word')} heard',
-                      false,
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        16,
+                        16,
+                        0,
+                      ),
+                      child: _LanguageCard(
+                        data: data,
+                        courseLocale: courseLocale,
+                        onOpenLanguages: () {
+                          _s.haptics.tick();
+                          _s.nav.go(const LanguagesRoute());
+                        },
+                      ),
                     ),
-                    ('$good', '${plural(good, 'word')} good', false),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        16,
+                        16,
+                        0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const NocheSectionLabel(
+                            yoMinutesADay,
+                            bottomGap: NocheSize.grid,
+                          ),
+                          NocheSegmented<int>(
+                            key: const Key('yo-minutes-segmented'),
+                            semanticLabel: yoMinutesADay,
+                            role: NocheSegmentedRole.radioGroup,
+                            large: true,
+                            selected: data.selectedMinutePill ?? -1,
+                            options: [
+                              for (final m in minutePills)
+                                NocheSegmentOption<int>(value: m, label: '$m'),
+                            ],
+                            onChanged: (m) {
+                              progress.setSetting('min', m);
+                              _s.haptics.tick();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        16,
+                        16,
+                        0,
+                      ),
+                      child: _PlanRow(
+                        planName: data.planName,
+                        onPressed: () {
+                          _s.haptics.tick();
+                          _s.nav.go(const PlansRoute());
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        16,
+                        16,
+                        0,
+                      ),
+                      child: NocheCard(
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            NocheSwitchRow(
+                              key: const Key('yo-todo'),
+                              label: yoOpenEveryPlace,
+                              subtitle: yoOpenEveryPlaceHelp,
+                              showTopBorder: false,
+                              value: jsTruthy(setting('todo')),
+                              onChanged: (_) {
+                                progress.setSetting(
+                                  'todo',
+                                  jsTruthy(setting('todo')) ? 0 : 1,
+                                );
+                                _s.haptics.tick();
+                              },
+                            ),
+                            NocheSwitchRow(
+                              key: const Key('yo-habla'),
+                              label: yoSpeakInStories,
+                              subtitle: yoSpeakInStoriesHelp,
+                              showTopBorder: true,
+                              value: setting('habla') != 0,
+                              onChanged: (_) {
+                                progress.setSetting(
+                                  'habla',
+                                  setting('habla') == 0 ? 1 : 0,
+                                );
+                                _s.haptics.tick();
+                              },
+                            ),
+                            if (_note)
+                              Padding(
+                                padding: const EdgeInsetsDirectional.only(
+                                  top: 4,
+                                  bottom: 12,
+                                ),
+                                child: Text(
+                                  yoSpeechNote,
+                                  key: const Key('yo-speech-note'),
+                                  style: NocheType.bodySmall.copyWith(
+                                    color: NocheColors.label,
+                                  ),
+                                ),
+                              ),
+                            _LevelCheckRow(
+                              help: levelHelp,
+                              onStart: () {
+                                _s.haptics.tick();
+                                _s.nav.go(const LevelCheckRoute());
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        16,
+                        16,
+                        0,
+                      ),
+                      child: _AboutRow(onTap: _openAbout),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        16,
+                        16,
+                        0,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'build ${_s.info.build}',
+                          key: const Key('build-number'),
+                          style: NocheType.bodySmall.copyWith(
+                            fontSize: 12,
+                            height: 16 / 12,
+                            color: NocheColors.label,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              if (here != null)
-                CoquiCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Top 64-high header: `"Me"` at start, outline pill `"How Coquí works"` at end
+/// (`Noche-Yo.dc.html:19-22`).
+class _MeHeader extends StatelessWidget {
+  const _MeHeader({required this.onHowItWorks});
+
+  final VoidCallback onHowItWorks;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 64,
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Semantics(
+            header: true,
+            child: Text(
+              meTitle,
+              style: NocheType.pageTitle.copyWith(color: NocheColors.text),
+            ),
+          ),
+          NochePill.outline(
+            key: const Key('yo-how-it-works'),
+            label: meHowCoquiWorks,
+            onPressed: onHowItWorks,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Stats card (`Noche-Yo.dc.html:24-45`): total minutes listened across all
+/// languages, streak flame + days (hidden at 0) with optional saved freezes
+/// (shown only when non-null), and the 7-day minutes bar chart with goal line.
+class _StatsCard extends StatelessWidget {
+  const _StatsCard({required this.data});
+
+  final MeViewData data;
+
+  @override
+  Widget build(BuildContext context) {
+    return NocheCard(
+      key: const Key('me-stats-card'),
+      padding: const EdgeInsetsDirectional.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: AlignmentDirectional.bottomStart,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const EyebrowLabel(yoWhereYouAre),
-                      const SizedBox(height: 4),
                       Text(
-                        'A1 · place ${here.n} of 10 · ${here.name}',
-                        style: CoquiText.h2,
+                        '${data.totalMinutes}',
+                        key: const Key('me-total-minutes'),
+                        style: NocheType.statNumber.copyWith(
+                          color: NocheColors.text,
+                        ),
+                      ),
+                      const SizedBox(width: NocheSize.grid),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            meMinutesListened,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: NocheType.button.copyWith(
+                              height: 16 / 14,
+                              color: NocheColors.text,
+                            ),
+                          ),
+                          Text(
+                            meAllLanguages,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: NocheType.body.copyWith(
+                              height: 16 / 14,
+                              color: NocheColors.label,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              const SectionTitle(yoMinutesADay),
-              SegmentedPills(
-                labels: [for (final m in minutePills) '$m'],
-                selected: minutePillIndex(setting('min')),
-                // AJ().min=m; PAL.save(); tick(); yo()
-                onSelected: (i) {
-                  progress.setSetting('min', minutePills[i]);
-                  _s.haptics.tick();
-                },
               ),
-              Block(
-                top: CoquiMetrics.s16,
-                bottom: CoquiMetrics.s16,
-                child: Text(yoPlanSized, style: CoquiText.smallMuted),
-              ),
-              _RowCard(
-                topLine: false,
-                title: yoOpenEveryPlace,
-                help: yoOpenEveryPlaceHelp,
-                trailing: CoquiSwitch(
-                  key: const Key('yo-todo'),
-                  value: jsTruthy(setting('todo')),
-                  // AJ().todo=AJ().todo?0:1; PAL.save(); tick(); yo()
-                  onChanged: (_) {
-                    progress.setSetting(
-                      'todo',
-                      jsTruthy(setting('todo')) ? 0 : 1,
-                    );
-                    _s.haptics.tick();
-                  },
+              if (data.streak > 0) ...[
+                const SizedBox(width: NocheSize.grid),
+                Column(
+                  key: const Key('me-streak'),
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const NocheIcon(
+                          NocheIcons.flame,
+                          size: 18,
+                          color: NocheColors.next,
+                        ),
+                        const SizedBox(width: NocheSize.grid),
+                        Text(
+                          data.streakLabel,
+                          style: NocheType.rowTitle.copyWith(
+                            height: 16 / 16,
+                            color: NocheColors.text,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (data.streakFreezesLabel != null) ...[
+                      const SizedBox(height: NocheSize.grid),
+                      Text(
+                        data.streakFreezesLabel!,
+                        key: const Key('me-streak-freezes'),
+                        style: NocheType.bodySmall.copyWith(
+                          fontSize: 12,
+                          height: 16 / 12,
+                          color: NocheColors.label,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
-              ),
-              _RowCard(
-                topLine: true,
-                title: yoSpeakInStories,
-                help: yoSpeakInStoriesHelp,
-                trailing: CoquiSwitch(
-                  key: const Key('yo-habla'),
-                  semanticLabel: yoSpeakInStories,
-                  value: setting('habla') != 0, // AJ().habla!==0
-                  // AJ().habla=AJ().habla===0?1:0; PAL.save(); tick(); yo()
-                  onChanged: (_) {
-                    progress.setSetting('habla', setting('habla') == 0 ? 1 : 0);
-                    _s.haptics.tick();
-                  },
+              ],
+            ],
+          ),
+          const SizedBox(height: 16),
+          NocheBarChart(
+            key: const Key('me-week-chart'),
+            showValues: false,
+            goal: data.goalMinutes,
+            barAreaHeight: 64,
+            semanticLabel: data.weekChartSemanticLabel,
+            items: [
+              for (final day in data.weekBars)
+                NocheBarItem(
+                  label: day.label,
+                  value: day.minutes,
+                  highlighted: day.isToday,
                 ),
-              ),
-              if (_note) const KeyLine(yoSpeechNote),
-              _RowCard(
-                // `.row+.row`: the border-top only when the card before it is a row, not the note
-                topLine: !_note,
-                title: yoLevelCheck,
-                help:
-                    '$yoLevelCheckHelp ${level != null ? 'Done: ${jsString(level['historias'])} ${plural(level['historias'] is num ? level['historias'] as num : double.nan, 'story', 'stories')} skipped.' : yoLevelCheckNotDone}',
-                trailing: CoquiButton(
-                  key: const Key('yo-level-check'),
-                  label: yoStart,
-                  kind: CoquiButtonKind.outline,
-                  // tick(); location.href='nivel.html'
-                  onPressed: () {
-                    _s.haptics.tick();
-                    _s.nav.go(const LevelCheckRoute());
-                  },
-                ),
-              ),
-              CoquiButton(
-                key: const Key('yo-how-it-works'),
-                label: yoHowItWorks,
-                kind: CoquiButtonKind.outline,
-                full: true,
-                onPressed: _openHow,
-              ),
-              Block(
-                top: CoquiMetrics.s16,
-                bottom: CoquiMetrics.s16,
-                child: _AboutRow(onTap: _openAbout),
-              ),
-              Block(
-                bottom: 0,
-                child: Center(
-                  child: Text(
-                    'build ${_s.info.build}',
-                    key: const Key('build-number'),
-                    style: CoquiText.meterLabel,
-                  ),
-                ),
-              ),
             ],
           ),
         ],
@@ -347,169 +608,376 @@ class _YoScreenState extends State<YoScreen> {
   }
 }
 
-/// `display:grid;grid-template-columns:repeat(2,1fr);gap:16px`: the four numbers, two by two; a row is as
-/// high as its taller card.
-class _StatsGrid extends StatelessWidget {
-  const _StatsGrid({required this.stats});
+/// Language card (`Noche-Yo.dc.html:47-80`): language pill, level + place
+/// progress, place dashes, Listening and Speaking progress bars, and Reading.
+class _LanguageCard extends StatelessWidget {
+  const _LanguageCard({
+    required this.data,
+    required this.courseLocale,
+    required this.onOpenLanguages,
+  });
 
-  /// The value, the label under it, and whether the streak's flame stands before the value.
-  final List<(String, String, bool)> stats;
+  final MeViewData data;
+  final Locale courseLocale;
+  final VoidCallback onOpenLanguages;
 
   @override
   Widget build(BuildContext context) {
-    Widget row(int i) => IntrinsicHeight(
-      child: Row(
+    final place = data.currentPlace;
+    return NocheCard(
+      key: const Key('me-language-card'),
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 8),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: StatCard(
-              value: stats[i].$1,
-              label: stats[i].$2,
-              flame: stats[i].$3,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              LanguageChip(
+                key: const Key('me-language-chip'),
+                language: data.language,
+                onPanel: true,
+                onPressed: onOpenLanguages,
+              ),
+              if (place != null) ...[
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${data.level} · place ${place.n} of ${data.placeTotal}',
+                        key: const Key('me-place-progress'),
+                        textAlign: TextAlign.end,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: NocheType.rowTitle.copyWith(
+                          color: NocheColors.text,
+                        ),
+                      ),
+                      Text(
+                        place.name,
+                        key: const Key('me-place-name'),
+                        locale: courseLocale,
+                        textAlign: TextAlign.end,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: NocheType.forScript(
+                          NocheType.body.copyWith(
+                            height: 16 / 14,
+                            color: NocheColors.label,
+                          ),
+                          data.language.script,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ],
+          ),
+          if (data.placeDashes.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            NocheDashes(
+              key: const Key('me-place-dashes'),
+              states: data.placeDashes,
+              gap: NocheSize.grid,
+              semanticLabel: data.placeDashesSemanticLabel,
+            ),
+          ],
+          const SizedBox(height: NocheSize.grid),
+          _SkillProgressRow(
+            key: const Key('me-skill-listening'),
+            label: meListening,
+            good: data.listeningGood,
+            total: data.totalWords,
+            fraction: data.listeningFraction,
+          ),
+          _SkillProgressRow(
+            key: const Key('me-skill-speaking'),
+            label: meSpeaking,
+            good: data.speakingGood,
+            total: data.totalWords,
+            fraction: data.speakingFraction,
+          ),
+          _ReadingRow(
+            key: const Key('me-skill-reading'),
+            tracksReading: data.tracksReading,
+            total: data.totalWords,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SkillProgressRow extends StatelessWidget {
+  const _SkillProgressRow({
+    super.key,
+    required this.label,
+    required this.good,
+    required this.total,
+    required this.fraction,
+  });
+
+  final String label;
+  final int good;
+  final int total;
+  final double fraction;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 40,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 80,
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: NocheType.button.copyWith(color: NocheColors.text),
             ),
           ),
-          const SizedBox(width: CoquiMetrics.s16),
+          const SizedBox(width: NocheSize.grid),
           Expanded(
-            child: StatCard(
-              value: stats[i + 1].$1,
-              label: stats[i + 1].$2,
-              flame: stats[i + 1].$3,
+            child: NocheProgressBar(
+              value: fraction,
+              color: NocheColors.text,
+              trackColor: NocheColors.line,
+              height: 8,
+              semanticLabel: '$good of $total words good',
+            ),
+          ),
+          const SizedBox(width: NocheSize.grid),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 96),
+            child: Text(
+              '$good of $total good',
+              textAlign: TextAlign.end,
+              maxLines: 1,
+              softWrap: false,
+              style: NocheType.button.copyWith(color: NocheColors.text),
             ),
           ),
         ],
       ),
     );
-    return Column(
-      children: [
-        row(0),
-        const SizedBox(height: CoquiMetrics.s16),
-        row(2),
-      ],
+  }
+}
+
+class _ReadingRow extends StatelessWidget {
+  const _ReadingRow({
+    super.key,
+    required this.tracksReading,
+    required this.total,
+  });
+
+  final bool tracksReading;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    if (tracksReading) {
+      return _SkillProgressRow(
+        label: meReading,
+        good: 0,
+        total: total,
+        fraction: 0,
+      );
+    }
+    return SizedBox(
+      height: 40,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 80,
+            child: Text(
+              meReading,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: NocheType.button.copyWith(color: NocheColors.text),
+            ),
+          ),
+          const SizedBox(width: NocheSize.grid),
+          Expanded(
+            child: Text(
+              meReadingNote,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: NocheType.body.copyWith(
+                height: 14 / 14,
+                color: NocheColors.label,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
-/// `.card.row`: a bold title and a grey line, and a control at the right. [topLine] is `.row+.row`: a 1 px
-/// `--line` on top of a row that follows another row (the card's own ring is the `box-shadow`, so the line
-/// is a border inside it: a crescent that thins out where the corner curves away).
-class _RowCard extends BlockWidget {
-  const _RowCard({
-    required this.title,
-    required this.help,
-    required this.trailing,
-    required this.topLine,
-  });
+/// `"Your plan  <plan>   Manage ›"` pill row (`Noche-Yo.dc.html:92`).
+/// Routes to [PlansRoute] (N3.2).
+class _PlanRow extends StatelessWidget {
+  const _PlanRow({required this.planName, required this.onPressed});
 
-  final String title;
-  final String help;
-  final Widget trailing;
-  final bool topLine;
+  final String planName;
+  final VoidCallback onPressed;
 
   @override
-  double get marginTop => 0;
-  @override
-  double get marginBottom => CoquiMetrics.s16;
-
-  @override
-  Widget get content => _RowCardBody(
-    topLine: topLine,
-    child: CoquiRow(
-      minHeight: 24, // `.row{min-height:56px}` is border-box: 24 inside the card's padding
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+  Widget build(BuildContext context) {
+    return Pressable(
+      key: const Key('me-plan-row'),
+      onPressed: onPressed,
+      semanticLabel: '$meYourPlan, $planName. $meManage',
+      builder: (context, pressed) => Transform.scale(
+        scale: pressed ? 0.99 : 1,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: NocheSize.primaryHeight),
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: NocheColors.line, width: 1),
+            borderRadius: BorderRadius.circular(NocheSize.primaryRadius),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: CoquiText.rowBold),
-              Text(help, style: CoquiText.smallMuted),
+              Expanded(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      meYourPlan,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: NocheType.button.copyWith(
+                        color: NocheColors.label,
+                      ),
+                    ),
+                    const SizedBox(width: NocheSize.grid),
+                    Flexible(
+                      child: Text(
+                        planName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: NocheType.button.copyWith(
+                          color: NocheColors.text,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: NocheSize.grid),
+              Text(
+                meManage,
+                maxLines: 1,
+                softWrap: false,
+                style: NocheType.button.copyWith(color: NocheColors.label),
+              ),
             ],
           ),
         ),
-        trailing,
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }
 
-class _RowCardBody extends StatelessWidget {
-  const _RowCardBody({required this.topLine, required this.child});
+class _LevelCheckRow extends StatelessWidget {
+  const _LevelCheckRow({required this.help, required this.onStart});
 
-  final bool topLine;
-  final Widget child;
+  final String help;
+  final VoidCallback onStart;
 
   @override
   Widget build(BuildContext context) {
-    final card = CoquiCard(
-      padding: EdgeInsets.fromLTRB(
-        CoquiMetrics.s16,
-        CoquiMetrics.s16 + (topLine ? 1 : 0),
-        CoquiMetrics.s16,
-        CoquiMetrics.s16,
+    return Container(
+      padding: const EdgeInsetsDirectional.symmetric(vertical: 12),
+      decoration: const BoxDecoration(
+        border: Border(top: BorderSide(color: NocheColors.line, width: 1)),
       ),
-      child: child,
-    ).content;
-    if (!topLine) return card;
-    final dpr = MediaQuery.devicePixelRatioOf(context);
-    // Chrome draws a 1 px border as the whole device pixels it floors to, at least one
-    final width = math.max(1, dpr.floor()) / dpr;
-    return CustomPaint(foregroundPainter: _TopLinePainter(width), child: card);
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  yoLevelCheck,
+                  style: NocheType.rowTitle.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    height: 20 / 15,
+                    color: NocheColors.text,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  help,
+                  style: NocheType.bodySmall.copyWith(
+                    fontSize: 12,
+                    height: 16 / 12,
+                    color: NocheColors.label,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          NocheOutlineButton(
+            key: const Key('yo-level-check'),
+            label: yoStart,
+            expand: false,
+            onPressed: onStart,
+          ),
+        ],
+      ),
+    );
   }
 }
 
-class _TopLinePainter extends CustomPainter {
-  _TopLinePainter(this.width);
-
-  final double width;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    const r = CoquiMetrics.radiusCard;
-    final outer = RRect.fromRectAndRadius(
-      Offset.zero & size,
-      const Radius.circular(r),
-    );
-    // the padding box: the top edge moves down by the border, so the top corners are r wide and r - width
-    // high; the other corners are untouched
-    final inner = RRect.fromLTRBAndCorners(
-      0,
-      width,
-      size.width,
-      size.height,
-      topLeft: Radius.elliptical(r, r - width),
-      topRight: Radius.elliptical(r, r - width),
-      bottomLeft: const Radius.circular(r),
-      bottomRight: const Radius.circular(r),
-    );
-    final path = Path.combine(
-      PathOperation.difference,
-      Path()..addRRect(outer),
-      Path()..addRRect(inner),
-    );
-    canvas.drawPath(path, Paint()..color = CoquiColors.line);
-  }
-
-  @override
-  bool shouldRepaint(_TopLinePainter old) => old.width != width;
-}
-
-/// New in order 25: the row at the foot of Yo that opens the About sheet. A card holding one list row
-/// (`.card` with `padding:0 16px` around a `.li`, as the word sheet's "Heard in"): the word in bold, an arrow.
 class _AboutRow extends StatelessWidget {
   const _AboutRow({required this.onTap});
 
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => KeyedSubtree(
-    key: const Key('about-row'),
-    child: CoquiCard(
-      marginBottom: 0,
-      padding: const EdgeInsets.symmetric(horizontal: CoquiMetrics.s16),
-      child: ListRow(
-        title: const ListRowTitle(aboutRow),
-        trailing: const CoquiIcon(CoquiIcons.right, color: CoquiColors.mut),
-        onTap: onTap,
+  Widget build(BuildContext context) {
+    return NocheCard(
+      key: const Key('about-row'),
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 16,
       ),
-    ).content,
-  );
+      onPressed: onTap,
+      semanticLabel: aboutRow,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            aboutRow,
+            style: NocheType.rowTitle.copyWith(
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+              height: 20 / 15,
+              color: NocheColors.text,
+            ),
+          ),
+          ExcludeSemantics(
+            child: Text(
+              '›',
+              style: NocheType.rowTitle.copyWith(color: NocheColors.label),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

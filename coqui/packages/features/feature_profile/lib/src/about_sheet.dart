@@ -10,16 +10,21 @@ List<String> licenceParagraphs([String text = pixelPlaysLicence]) => [
     p.split('\n').map((l) => l.trim()).join(' '),
 ];
 
-/// The About sheet (new in order 25): exactly one line, "Map and scene engine: Pixel Plays by Amir Mushich
-/// (MIT)", and the licence text under it. An ordinary sheet: the handle, the X, no title.
-CoquiSheet aboutSheet({required VoidCallback onClose}) => CoquiSheet(
+/// The About sheet body in Noche tokens: the credit line and the MIT licence
+/// paragraphs under it, opened inside [showNocheSheet].
+Widget aboutSheetBody() => Column(
   key: const ValueKey('about'),
-  onClose: onClose,
-  child: CollapsingColumn(
-    children: [
-      Block(bottom: 16, child: Text(aboutCredit, style: CoquiText.rowBold)),
-      for (final p in licenceParagraphs())
-        Block(bottom: 12, child: Text(p, style: CoquiText.smallMuted)),
+  mainAxisSize: MainAxisSize.min,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      aboutCredit,
+      style: NocheType.rowTitle.copyWith(color: NocheColors.text),
+    ),
+    const SizedBox(height: 16),
+    for (final p in licenceParagraphs()) ...[
+      Text(p, style: NocheType.bodySmall.copyWith(color: NocheColors.label)),
+      const SizedBox(height: 12),
     ],
-  ),
+  ],
 );

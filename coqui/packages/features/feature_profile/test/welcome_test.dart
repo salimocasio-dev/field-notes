@@ -419,7 +419,7 @@ void main() {
       );
       expect(layers.map((l) => l.open).toList(), [true]);
       expect(find.byType(CoquiSheet), findsOneWidget);
-      expect(find.text('Yo'), findsOneWidget);
+      expect(find.text('Me'), findsOneWidget);
     });
   });
 }
