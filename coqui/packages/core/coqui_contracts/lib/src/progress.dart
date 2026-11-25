@@ -1,4 +1,5 @@
 import 'package:coqui_contracts/src/json.dart';
+import 'package:coqui_contracts/src/language.dart';
 
 /// The two skills a word has a record for: listening (ear) and speaking (mouth).
 enum Skill { ear, mouth }
@@ -235,18 +236,124 @@ abstract interface class ProgressStore {
 /// Kept separate from [ProgressStore] (same pattern as `LanguageCatalog` and
 /// `RepasoCatalog`): adding an abstract member directly to [ProgressStore]
 /// would break every store implemented in other packages. Stores that do not
-/// implement this report `false` via [CallProgress.callDone].
+/// implement this report `false` via [CallProgress.callDone] and treat
+/// [CallProgress.markCallDone] as a no-op.
 abstract interface class CallProgressStore {
   bool callDone(String callId);
+  void markCallDone(String callId);
 }
 
-/// `progress.callDone(callId)`: returns whether [callId] has been completed
-/// when the store implements [CallProgressStore], or `false` otherwise.
+/// Completed-call helpers on [ProgressStore], delegating to [CallProgressStore]
+/// when implemented.
 extension CallProgress on ProgressStore {
+  /// Returns whether [callId] has been completed when the store implements
+  /// [CallProgressStore], or `false` otherwise.
   bool callDone(String callId) {
     final p = this;
     return p is CallProgressStore
         ? (p as CallProgressStore).callDone(callId)
         : false;
   }
+
+  /// Marks [callId] as completed when the store implements [CallProgressStore],
+  /// or acts as a no-op otherwise.
+  void markCallDone(String callId) {
+    final p = this;
+    if (p is CallProgressStore) {
+      (p as CallProgressStore).markCallDone(callId);
+    }
+  }
+}
+
+/// Optional interface for a [ProgressStore] that exposes language identity,
+/// per-day study minutes, maximum mastery stage, and streak freezes.
+///
+/// Kept separate from [ProgressStore] (same pattern as `LanguageCatalog` and
+/// `RepasoCatalog`): adding abstract members directly to [ProgressStore] would
+/// break stores implemented in other packages. Stores that do not implement
+/// this fall back to backward-compatible defaults via [LanguageProgress].
+abstract interface class LanguageProgressStore {
+  /// The language this progress store tracks.
+  Language get language;
+
+  /// Minutes logged on the UTC calendar day of [day]'s instant (matching
+  /// [ProgressStore.streak] and [ProgressStore.addMinutes]). Callers should
+  /// pass `DateTime.utc(y, m, d)` or a [DateTime] built from `clock.nowMs()`.
+  double minutesOn(DateTime day);
+
+  /// Maximum mastery stage (`etapa`) for words in this store (e.g. `4`).
+  int get stageMax;
+
+  /// Available streak freezes, or `null` when streak freezes are not tracked.
+  int? get streakFreezes;
+}
+
+/// Language-aware progress helpers on [ProgressStore], delegating to
+/// [LanguageProgressStore] when implemented and returning backward-compatible
+/// defaults otherwise.
+extension LanguageProgress on ProgressStore {
+  /// The language this store tracks, defaulting to [Language.spanish].
+  Language get language {
+    final p = this;
+    return p is LanguageProgressStore
+        ? (p as LanguageProgressStore).language
+        : Language.spanish;
+  }
+
+  /// Minutes logged on the UTC calendar day of [day]'s instant, defaulting to
+  /// `0`.
+  double minutesOn(DateTime day) {
+    final p = this;
+    return p is LanguageProgressStore
+        ? (p as LanguageProgressStore).minutesOn(day)
+        : 0;
+  }
+
+  /// Maximum mastery stage (`etapa`), defaulting to `4`.
+  int get stageMax {
+    final p = this;
+    return p is LanguageProgressStore
+        ? (p as LanguageProgressStore).stageMax
+        : 4;
+  }
+
+  /// Available streak freezes, defaulting to `null`.
+  int? get streakFreezes {
+    final p = this;
+    return p is LanguageProgressStore
+        ? (p as LanguageProgressStore).streakFreezes
+        : null;
+  }
+}
+
+/// Multi-language collection of [ProgressStore] instances sharing streak,
+/// study minutes, and the active language code across languages.
+abstract interface class ProgressStoreCollection {
+  /// Returns the [ProgressStore] for [language].
+  ProgressStore forLanguage(Language language);
+
+  /// Language codes that currently have saved progress.
+  List<String> get languagesWithProgress;
+
+  /// Whether [languageCode] currently has saved progress.
+  bool hasProgress(String languageCode);
+
+  /// The active language code (defaulting to `'es'`).
+  String get currentLanguageCode;
+
+  /// Sets the active language code.
+  set currentLanguageCode(String code);
+
+  /// Shared day streak across all languages.
+  int get streak;
+
+  /// Shared total minutes across all languages.
+  double get minutes;
+
+  /// Shared minutes logged on the UTC calendar day of [day]'s instant across
+  /// all languages.
+  double minutesOn(DateTime day);
+
+  /// Fires after any store save or shared-state change.
+  Stream<void> get changes;
 }

@@ -4,6 +4,30 @@ abstract interface class KeyValueStore {
   Future<void> write(String key, String value);
 }
 
+/// Optional interface for a [KeyValueStore] that supports removing local keys.
+///
+/// Kept separate from [KeyValueStore] (same pattern as `LanguageCatalog` and
+/// `CallProgressStore`): adding an abstract member directly to [KeyValueStore]
+/// would break stores implemented in other packages. Stores that do not
+/// implement this treat [KeyValueStoreDelete.delete] as a no-op.
+abstract interface class DeletableKeyValueStore {
+  /// Removes [key] from this store if present.
+  void delete(String key);
+}
+
+/// Key-removal helper on [KeyValueStore], delegating to
+/// [DeletableKeyValueStore] when implemented and acting as a no-op otherwise.
+extension KeyValueStoreDelete on KeyValueStore {
+  /// Removes [key] when this store implements [DeletableKeyValueStore], or acts
+  /// as a no-op otherwise.
+  void delete(String key) {
+    final s = this;
+    if (s is DeletableKeyValueStore) {
+      (s as DeletableKeyValueStore).delete(key);
+    }
+  }
+}
+
 /// The time now (Date.now()).
 abstract interface class Clock {
   int nowMs();
