@@ -16,35 +16,73 @@ jobs:
     name: Paid Audio, Boundaries & Noche Greps
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
 
-      - name: Guard historia/cuentos/ (paid Azure audio trigger)
+      - name: Guard sensitive paths (paid audio, published app/, Danny call lock)
         env:
-          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
           BASE_REF: ${{ github.base_ref }}
         run: |
           CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+          BAD=0
           if echo "$CHANGED" | grep -q '^historia/cuentos/'; then
-            if [[ ",${PR_LABELS}," != *",allow-paid-audio,"* ]]; then
-              echo "::error::PR modifies historia/cuentos/ (triggers paid Azure audio). Add label 'allow-paid-audio' only after Salim approves."
-              exit 1
-            fi
+            echo "::error::PR modifies historia/cuentos/ (triggers paid Azure audio). Direct PR edits are blocked."
+            BAD=1
           fi
+          if echo "$CHANGED" | grep -q '^app/'; then
+            echo "::error::PR modifies root app/ directly. Only coqui-sitio.yml may publish to app/ on main."
+            BAD=1
+          fi
+          if echo "$CHANGED" | grep -q '^historia/llamada\.js$'; then
+            echo "::error::PR modifies historia/llamada.js (ElevenLabs/Danny call client lock)."
+            BAD=1
+          fi
+          if echo "$CHANGED" | grep -q '^historia/datos/llamadas\.json$'; then
+            echo "::error::PR modifies historia/datos/llamadas.json (ElevenLabs/Danny call config lock)."
+            BAD=1
+          fi
+          exit $BAD
 
-      - name: Check single-package-per-branch rule under coqui/packages/
+      - name: Check branch prefix & package boundaries under coqui/packages/
         env:
-          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
           BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           set -o pipefail
           CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD")
           PKG_LINES=$(echo "$CHANGED" | grep '^coqui/packages/' || true)
-          PKGS=$(echo "$PKG_LINES" | sed -E 's#^coqui/packages/((core|features)/)?([^/]+)/.*#\1\3#' | sort -u)
-          COUNT=$(echo "$PKGS" | sed '/^$/d' | wc -l)
-          if [ "$COUNT" -gt 1 ] && [[ ",${PR_LABELS}," != *",multi-package-ok,"* ]]; then
-            echo "::error::PR touches multiple Flutter packages ($PKGS). One branch must change one package (or add label 'multi-package-ok')."
+
+          if [[ "$HEAD_REF" =~ ^story/[0-9]+$ ]]; then
+            BAD=0
+            while IFS= read -r f; do
+              [ -z "$f" ] && continue
+              case "$f" in
+                coqui/packages/core/coqui_scenes/*|coqui/packages/features/feature_story/*|coqui/packages/coqui_story_checks/*|coqui/ref/pp/*|coqui/requests/*)
+                  ;;
+                *)
+                  echo "::error file=$f::story/<n> branch '$HEAD_REF' modifies disallowed path '$f' (allowed: coqui_scenes, feature_story, coqui_story_checks, coqui/ref/pp/, coqui/requests/)."
+                  BAD=1
+                  ;;
+              esac
+            done <<< "$CHANGED"
+            exit $BAD
+          fi
+
+          if [[ "$HEAD_REF" =~ ^lane/[^/]+/ ]]; then
+            if [ -n "$PKG_LINES" ]; then
+              PKGS=$(echo "$PKG_LINES" | sed -E 's#^coqui/packages/((core|features)/)?([^/]+)(/.*)?$#\1\3#' | sort -u)
+              COUNT=$(echo "$PKGS" | sed '/^$/d' | wc -l)
+              if [ "$COUNT" -gt 1 ]; then
+                echo "::error::PR touches multiple Flutter packages ($PKGS). One lane branch must change only one package."
+                exit 1
+              fi
+            fi
+            exit 0
+          fi
+
+          if [ -n "$PKG_LINES" ]; then
+            echo "::error::Branch '$HEAD_REF' modifies coqui/packages/ with an unauthorized prefix. Use lane/<package>/<n> or story/<n>."
             exit 1
           fi
 
@@ -59,21 +97,22 @@ jobs:
             exit 0
           fi
           BAD=0
-          for f in $DART_FILES; do
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
             HITS=$(git diff -U0 "origin/${BASE_REF}...HEAD" -- "$f" | grep -E '^\+[^+]' | grep -nE 'Color\(0x|fontFamily\s*:' || true)
             if [ -n "$HITS" ]; then
               echo "::error file=$f::Found raw Color(0x...) or fontFamily outside coqui_ui. Use NocheColors/NocheType."
               echo "$HITS"
               BAD=1
             fi
-          done
+          done <<< "$DART_FILES"
           exit $BAD
 
   dart-boundaries-and-format:
     name: Boundaries & Format (Changed Dart Files)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
 
@@ -83,7 +122,7 @@ jobs:
         run: echo "flutter=$(tr -d '[:space:]' < coqui/.flutter-version)" >> "$GITHUB_OUTPUT"
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ steps.pin.outputs.flutter }}
           channel: stable

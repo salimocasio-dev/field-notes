@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Read the pinned Flutter version and the build number
         id: pin
         run: |
@@ -32,7 +32,7 @@ jobs:
           n="$(tr -d '[:space:]' < coqui/BUILD)"
           [[ "$n" =~ ^[0-9]+$ ]] || { echo "coqui/BUILD must hold one number, not '$n'" >&2; exit 1; }
           echo "build=$n" >> "$GITHUB_OUTPUT"
-      - uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
           flutter-version: ${{ steps.pin.outputs.flutter }}
           channel: stable
@@ -42,7 +42,7 @@ jobs:
           COQUI_BUILD: ${{ steps.pin.outputs.build }}
         run: bash coqui/tool/build_sitio.sh "$RUNNER_TEMP/sitio"
       - name: Keep the build as an artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: coqui-sitio
           path: ${{ runner.temp }}/sitio

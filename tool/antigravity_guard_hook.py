@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Antigravity PreToolUse safety hook for Coqui.
-Blocks accidental writes to historia/cuentos/ (paid Azure audio trigger)
-and direct pushes to main. Fail-open on unknown stdin formats.
+Blocks accidental writes/staging of historia/cuentos/ (paid Azure audio trigger),
+manual dispatches of voz.yml, and direct pushes to main.
+Fail-open on unknown stdin formats.
 """
 from __future__ import annotations
+
 import json
 import os
 import re
@@ -32,6 +34,38 @@ def _current_branch(cwd: str | None = None) -> str | None:
     return None
 
 
+def _repo_toplevel(cwd: str | None = None) -> str | None:
+    try:
+        res = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=cwd or None,
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        if res.returncode == 0:
+            return res.stdout.strip() or None
+    except Exception:
+        pass
+    return None
+
+
+def _historia_cuentos_has_changes(cwd: str | None = None) -> bool:
+    try:
+        res = subprocess.run(
+            ["git", "status", "--porcelain", "--", ":(top)historia/cuentos"],
+            cwd=cwd or None,
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        if res.returncode == 0:
+            return bool(res.stdout.strip())
+    except Exception:
+        pass
+    return False
+
+
 def _split_shell_segments(cmd: str) -> list[str]:
     return [s.strip() for s in re.split(r"(?:&&|\|\||[;\n|])", cmd) if s.strip()]
 
@@ -41,6 +75,52 @@ def _tokenize(segment: str) -> list[str]:
         return shlex.split(segment)
     except ValueError:
         return segment.split()
+
+
+def _skip_wrappers(tokens: list[str]) -> int:
+    i = 0
+    while i < len(tokens) and (
+        re.match(r"^[A-Za-z_][A-Za-z0-9_]*=.*", tokens[i])
+        or tokens[i] in ("env", "sudo", "command")
+    ):
+        i += 1
+    return i
+
+
+def _parse_git_segment(
+    tokens: list[str], current_cwd: str | None
+) -> tuple[str | None, list[str], str | None]:
+    """If tokens invoke git, return (subcmd, rest_tokens, git_cwd); else (None, [], current_cwd)."""
+    i = _skip_wrappers(tokens)
+    if i >= len(tokens) or os.path.basename(tokens[i]) != "git":
+        return None, [], current_cwd
+    i += 1
+
+    git_cwd = current_cwd
+    while i < len(tokens):
+        tok = tokens[i]
+        if tok in ("-C", "-c", "--git-dir", "--work-tree", "--namespace"):
+            if tok == "-C" and i + 1 < len(tokens):
+                target = tokens[i + 1]
+                git_cwd = (
+                    os.path.join(git_cwd, target)
+                    if (git_cwd and not os.path.isabs(target))
+                    else target
+                )
+            i += 2
+            continue
+        if tok.startswith("-"):
+            if tok.startswith("-C") and len(tok) > 2:
+                target = tok[2:]
+                git_cwd = (
+                    os.path.join(git_cwd, target)
+                    if (git_cwd and not os.path.isabs(target))
+                    else target
+                )
+            i += 1
+            continue
+        return tok, tokens[i + 1 :], git_cwd
+    return None, [], git_cwd
 
 
 def _refspec_targets_main(refspec: str, current_branch: str | None) -> bool:
@@ -65,50 +145,28 @@ def _is_push_to_main(cmd: str, default_cwd: str | None = None) -> bool:
 
         if tokens[0] == "cd" and len(tokens) >= 2 and not tokens[1].startswith("-"):
             target = tokens[1]
-            current_cwd = os.path.join(current_cwd, target) if (current_cwd and not os.path.isabs(target)) else target
+            current_cwd = (
+                os.path.join(current_cwd, target)
+                if (current_cwd and not os.path.isabs(target))
+                else target
+            )
             continue
 
-        i = 0
-        while i < len(tokens) and (
-            re.match(r"^[A-Za-z_][A-Za-z0-9_]*=.*", tokens[i])
-            or tokens[i] in ("env", "sudo", "command")
-        ):
-            i += 1
-        if i >= len(tokens):
-            continue
-
-        if os.path.basename(tokens[i]) != "git":
-            continue
-        i += 1
-
-        git_cwd = current_cwd
-        subcmd = None
-        while i < len(tokens):
-            tok = tokens[i]
-            if tok in ("-C", "-c", "--git-dir", "--work-tree", "--namespace"):
-                if tok == "-C" and i + 1 < len(tokens):
-                    target = tokens[i + 1]
-                    git_cwd = os.path.join(git_cwd, target) if (git_cwd and not os.path.isabs(target)) else target
-                i += 2
-                continue
-            if tok.startswith("-"):
-                if tok.startswith("-C") and len(tok) > 2:
-                    target = tok[2:]
-                    git_cwd = os.path.join(git_cwd, target) if (git_cwd and not os.path.isabs(target)) else target
-                i += 1
-                continue
-            subcmd = tok
-            i += 1
-            break
-
+        subcmd, push_tokens, git_cwd = _parse_git_segment(tokens, current_cwd)
         if subcmd != "push":
             continue
 
-        push_tokens = tokens[i:]
         positional: list[str] = []
         has_tags_only = False
         skip_next = False
-        value_flags = {"-o", "--push-option", "--repo", "--receive-pack", "--exec", "--recurse-submodules"}
+        value_flags = {
+            "-o",
+            "--push-option",
+            "--repo",
+            "--receive-pack",
+            "--exec",
+            "--recurse-submodules",
+        }
         for tok in push_tokens:
             if skip_next:
                 skip_next = False
@@ -136,6 +194,156 @@ def _is_push_to_main(cmd: str, default_cwd: str | None = None) -> bool:
         )
         if needs_branch_check and _current_branch(git_cwd) == "main":
             return True
+
+    return False
+
+
+def _is_paid_workflow_dispatch(cmd: str) -> bool:
+    """Detect `gh workflow run voz.yml` (and ID/name/API dispatch equivalents)."""
+    voz_targets = {"voz.yml", "voz.yaml", "voz", "417069462"}
+    for seg in _split_shell_segments(cmd):
+        tokens = _tokenize(seg)
+        if not tokens:
+            continue
+        i = _skip_wrappers(tokens)
+        if i >= len(tokens) or os.path.basename(tokens[i]) != "gh":
+            continue
+        i += 1
+
+        # Parse gh global flags before subcommand.
+        gh_args: list[str] = []
+        skip_next = False
+        for tok in tokens[i:]:
+            if skip_next:
+                skip_next = False
+                continue
+            if not gh_args and tok in ("-R", "--repo", "--hostname"):
+                skip_next = True
+                continue
+            if not gh_args and tok.startswith("-"):
+                continue
+            gh_args.append(tok)
+
+        if len(gh_args) >= 2 and gh_args[0] == "workflow" and gh_args[1] == "run":
+            value_flags = {"-r", "--ref", "-f", "--raw-field", "-F", "--field", "-R", "--repo", "--json"}
+            skip = False
+            for tok in gh_args[2:]:
+                if skip:
+                    skip = False
+                    continue
+                if tok == "--":
+                    continue
+                if tok in value_flags:
+                    skip = True
+                    continue
+                if tok.startswith("-"):
+                    continue
+                if os.path.basename(tok.strip()).lower() in voz_targets:
+                    return True
+        elif gh_args and gh_args[0] == "api":
+            for tok in gh_args[1:]:
+                if re.search(
+                    r"/actions/workflows/(?:voz\.ya?ml|417069462)/dispatches",
+                    tok,
+                    re.IGNORECASE,
+                ):
+                    return True
+    return False
+
+
+def _path_covers_cuentos(pathspec: str, git_cwd: str | None, repo_root: str | None) -> bool:
+    if pathspec in ("*", ".", "./", "..", "../", "historia", "historia/", ":/", ":(top)"):
+        if repo_root is None:
+            return True
+    if pathspec.startswith(":"):
+        # Pathspec magic such as `:/` or `:(top)` unless explicitly scoped away from historia/cuentos.
+        if re.search(r"exclude|!", pathspec) and re.search(r"historia[/\\]cuentos", pathspec):
+            return False
+        return True
+    if re.search(r"(^|[/\\])historia[/\\]cuentos([/\\]|$)", pathspec):
+        return True
+    if repo_root:
+        effective_cwd = os.path.realpath(git_cwd or os.getcwd())
+        target_abs = os.path.realpath(os.path.join(effective_cwd, pathspec))
+        cuentos_abs = os.path.realpath(os.path.join(repo_root, "historia", "cuentos"))
+        if (
+            target_abs == cuentos_abs
+            or cuentos_abs.startswith(target_abs + os.sep)
+            or target_abs.startswith(cuentos_abs + os.sep)
+        ):
+            return True
+    return False
+
+
+def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = None) -> bool:
+    """Block `git add .` / `git add -A` (and similar broad staging) when historia/cuentos/ has changes."""
+    current_cwd = default_cwd
+    for seg in _split_shell_segments(cmd):
+        tokens = _tokenize(seg)
+        if not tokens:
+            continue
+
+        if tokens[0] == "cd" and len(tokens) >= 2 and not tokens[1].startswith("-"):
+            target = tokens[1]
+            current_cwd = (
+                os.path.join(current_cwd, target)
+                if (current_cwd and not os.path.isabs(target))
+                else target
+            )
+            continue
+
+        subcmd, rest, git_cwd = _parse_git_segment(tokens, current_cwd)
+        if subcmd == "add":
+            has_all_flag = False
+            paths: list[str] = []
+            after_double_dash = False
+            skip_next = False
+            value_flags = {"--pathspec-from-file", "--chmod"}
+            for tok in rest:
+                if skip_next:
+                    skip_next = False
+                    continue
+                if after_double_dash:
+                    paths.append(tok)
+                    continue
+                if tok == "--":
+                    after_double_dash = True
+                    continue
+                if tok in value_flags:
+                    skip_next = True
+                    continue
+                if tok in ("-A", "--all", "-u", "--update"):
+                    has_all_flag = True
+                    continue
+                if tok.startswith("-") and not tok.startswith("--"):
+                    flags = tok[1:]
+                    if "A" in flags or "u" in flags:
+                        has_all_flag = True
+                    continue
+                if tok.startswith("--"):
+                    continue
+                paths.append(tok)
+
+            repo_root = _repo_toplevel(git_cwd)
+            covers_cuentos = (has_all_flag and not paths) or any(
+                _path_covers_cuentos(p, git_cwd, repo_root) for p in paths
+            )
+            if covers_cuentos and _historia_cuentos_has_changes(git_cwd):
+                return True
+
+        elif subcmd == "commit":
+            stages_all = False
+            for tok in rest:
+                if tok == "--":
+                    break
+                if tok in ("-a", "--all"):
+                    stages_all = True
+                    break
+                if tok.startswith("-") and not tok.startswith("--") and "a" in tok[1:]:
+                    stages_all = True
+                    break
+            if stages_all and _historia_cuentos_has_changes(git_cwd):
+                return True
 
     return False
 
@@ -194,6 +402,16 @@ def main() -> int:
         if _is_push_to_main(cmd, default_cwd=default_cwd):
             return _emit_block(
                 "BLOCKED by Coqui hook: Never push directly to main. Use a branch and PR.",
+                antigravity_protocol,
+            )
+        if _is_paid_workflow_dispatch(cmd):
+            return _emit_block(
+                "BLOCKED by Coqui hook: Running voz.yml triggers paid Azure audio jobs.",
+                antigravity_protocol,
+            )
+        if _is_broad_stage_with_cuentos_changes(cmd, default_cwd=default_cwd):
+            return _emit_block(
+                "BLOCKED by Coqui hook: Broad git staging blocked while historia/cuentos/ has uncommitted changes (paid Azure audio).",
                 antigravity_protocol,
             )
         if re.search(r"historia[/\\]cuentos", cmd) and (

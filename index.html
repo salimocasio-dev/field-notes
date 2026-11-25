@@ -576,7 +576,7 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,last:"",t0:0,over:tru
     this.panel(`<h3>${this.m.name} with Danny · ${CALL_MIN} minutes</h3><div class="mut">Danny talks and the picture follows him.</div><div class="mut"><b>«Toca…»</b> means touch it in the picture.</div><div class="mut">He may ask <b>sí o no</b>, or <b>«¿… o …?»</b> Answer out loud.</div><div class="mut">Say any word you like, any time. Lost? Tap <b>I'm stuck</b>.</div><div class="row"><button class="btn go" id="dial">Start the call</button><button class="btn sm" id="bk2">Back</button></div>`);
     on("dial",()=>this.dial());on("bk2",()=>{this.over=true;showMap();});},
   async dial(){this.label("Calling Danny…");this.panel(`<div class="mut">Calling Danny…</div>`);this.pic(OPEN[this.id][0]);
-    const back=t=>{this.over=true;this.panel(`<h3>Couldn't reach Danny</h3><div class="mut">${t}</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);};
+    const back=t=>{this.over=true;const p=$("#pan");if(p){p.textContent="";const h=document.createElement("h3");h.textContent="Couldn't reach Danny";const d=document.createElement("div");d.className="mut";d.textContent=t;const r=document.createElement("div");r.className="row";const b=document.createElement("button");b.className="btn go";b.id="mp";b.textContent="Back to the map";r.append(b);p.append(h,d,r);}on("mp",showMap);};
     if(!window.ELConv)return back("The voice part of the page didn't load. Check your connection and reload.");
     try{this.conv=await window.ELConv.startSession({agentId:AGENT,connectionType:"websocket",dynamicVariables:this.vars(this.id),
         clientTools:{show_picture:p=>{this.pic(p&&p.picture);return "shown";}},
@@ -586,7 +586,7 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,last:"",t0:0,over:tru
   live(){this.t0=now();this.label("Live with Danny");
     this.panel(`<div class="row" style="margin-top:0"><span class="mic" id="dot"></span><div style="flex:1"><div class="say" style="font-size:17px" id="who">Danny is talking</div><div class="mut" id="hint">&nbsp;</div></div></div><div class="mut" id="heard">&nbsp;</div><div id="tx" style="min-height:22px"></div><div class="row"><button class="btn" id="stk">I'm stuck</button><button class="btn sm no" id="endb">End</button></div>`);
     on("endb",()=>this.end());
-    on("stk",()=>{const t=$("#tx");if(t)t.innerHTML=this.last?`<div class="mut">Danny said: <b>${this.last}</b></div>`:"";this.send("(ayuda)");});
+    on("stk",()=>{const t=$("#tx");if(t){t.textContent="";if(this.last){const d=document.createElement("div");d.className="mut";d.append("Danny said: ");const b=document.createElement("b");b.textContent=this.last;d.append(b);t.append(d);}}this.send("(ayuda)");});
     this.tm1=setTimeout(()=>{this.closing=1;this.send("(fin)");},CALL_MIN*6e4);this.tm2=setTimeout(()=>this.end(),CALL_MIN*6e4+25000);},
   send(t){try{if(this.conv)this.conv.sendUserMessage(t);}catch(e){}},
   mode(m){const you=m==="listening";this.listening=you;const w=$("#who"),d=$("#dot");if(w)w.textContent=you?"Your turn":"Danny is talking";if(d)d.style.background=you?"var(--red)":"#8698BC";
@@ -595,7 +595,7 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,last:"",t0:0,over:tru
   arm(){this.set(this.m.scene,this.wide(),null);this.put("hint","Touch it in the picture");},
   msg(m){const who=m&&(m.source||m.role),text=m&&(m.message||m.text);if(!text)return;
     if(who==="user"){if(/^\s*[(.]/.test(text))return;this.put("heard","heard: "+text);this.P.all.forEach(k=>{if(saidIt(text,[ITEMS[k].es].concat(ITEMS[k].alt||[])))this.said[k]=1;});return;}
-    this.last=text;this.tapWait=false;const t=$("#tx");if(t)t.innerHTML="";if(this.closing===1)this.closing=2;
+    this.last=text;this.tapWait=false;const t=$("#tx");if(t)t.textContent="";if(this.closing===1)this.closing=2;
     const n=" "+nrm(text)+" ",ups=[],dk=dayKey();
     this.P.all.forEach(k=>{if(n.indexOf(" "+coreOf(k)+" ")<0)return;const w=Wd(k),s0=stepOf(k);w.x++;if(w.ld!==dk){w.d++;w.ld=dk;}this.exp[k]=(this.exp[k]||0)+1;const s1=stepOf(k);if(s1!==s0)ups.push("PASO: «"+wordOf(k)+"» is now step "+s1+".");});
     if(ups.length)try{this.conv.sendContextualUpdate(ups.join(" "));}catch(e){}
@@ -614,7 +614,7 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,last:"",t0:0,over:tru
     this.tapWait=true;setTimeout(()=>{this.tapWait=false;},6000);this.set(this.m.scene,Object.assign({},this.wide(),{glow:hit}),null);this.put("hint","\u00a0");this.put("heard","touched: "+wordOf(hit));this.send("(toca: "+wordOf(hit)+(verdict?"."+verdict:"")+")");},
   end(){if(this.over){showMap();return;}try{if(this.conv)this.conv.endSession();}catch(e){}setTimeout(()=>this.finish(),1500);},
   finish(){if(this.over)return;this.over=true;clearTimeout(this.tm1);clearTimeout(this.tm2);const secs=this.t0?Math.round((now()-this.t0)/1000):0,m=this.m;
-    if(secs<6){this.label("No answer");this.panel(`<h3>Danny didn't pick up</h3><div class="mut">The call was dropped before it started. That is not your phone or your mic.${this.err?" What came back: "+this.err+".":""} Send Claude a screenshot of this.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
+    if(secs<6){this.label("No answer");const p=$("#pan");if(p){p.textContent="";const h=document.createElement("h3");h.textContent="Danny didn't pick up";const d=document.createElement("div");d.className="mut";d.textContent="The call was dropped before it started. That is not your phone or your mic."+(this.err?" What came back: "+this.err+".":"")+" Send Claude a screenshot of this.";const r=document.createElement("div");r.className="row";const b=document.createElement("button");b.className="btn go";b.id="mp";b.textContent="Back to the map";r.append(b);p.append(h,d,r);}on("mp",showMap);return;}
     const dk=dayKey(),next=d=>dayStart()+d*DAY+3*36e5,got=[],heard=[],again=[];
     Object.keys(this.exp).forEach(k=>{const w=Wd(k),ok=(this.hit[k]!=null&&this.hit[k]<=FAST)||this.said[k];
       if(ok){if(w.adv!==dk&&(w.lvl===0||w.due<=now())){w.lvl=Math.min(w.lvl+1,INT.length-1);w.adv=dk;w.due=next(INT[w.lvl]);}got.push(wordOf(k));}
