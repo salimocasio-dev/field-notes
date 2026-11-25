@@ -23,7 +23,7 @@ class PageParagraphSlice {
   final int charEnd;
   final bool hasDropCap;
 
-  /// End offset relative to slice start (`charStart`) for lines beside the drop cap.
+  /// End offset within the paragraph text for lines beside the drop cap.
   final int? dropCapBesideEnd;
   final bool hasIndent;
 }

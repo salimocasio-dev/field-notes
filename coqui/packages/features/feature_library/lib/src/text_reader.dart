@@ -8,6 +8,7 @@ import 'package:feature_library/src/reader_page.dart';
 import 'package:feature_library/src/reader_pagination.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_audio.dart';
+import 'package:flutter/semantics.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The reader's own words (menus may be English).
@@ -17,6 +18,7 @@ abstract final class ReaderTexts {
   static const textUnavailable = 'This text is not available.';
   static const previousPage = 'Previous page';
   static const nextPage = 'Next page';
+  static const finishBook = 'Finish book';
   static const textSize = 'Text and page';
 }
 
@@ -858,48 +860,66 @@ class _TextReaderState extends State<TextReader> {
                       constraints.maxWidth,
                       constraints.maxHeight,
                     );
-                    return GestureDetector(
-                      key: _viewportKey,
-                      behavior: HitTestBehavior.opaque,
-                      onTapUp: (details) => _handleBodyTapUp(
-                        details,
-                        constraints.maxWidth,
-                        textDirection,
-                      ),
-                      onHorizontalDragEnd: (details) =>
-                          _handleHorizontalDragEnd(details, textDirection),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Positioned.fill(
-                            child: ReaderPageView(
-                              document: doc,
-                              page: currentPage,
-                              settings: _settings,
-                              language: lang,
-                              earIndex: earIndex,
-                              activeSentenceId: _activeSentenceId,
-                              selectedWord: _selectedWord,
-                              viewportKey: _viewportKey,
-                              onWordTap: (c, p, offset, tok, rect) => unawaited(
-                                _handleWordTap(c, p, offset, tok, rect),
+                    final isLastPage = _pageIndex >= _pages.length - 1;
+                    return Semantics(
+                      container: true,
+                      onIncrease: _turnForward,
+                      onDecrease: _pageIndex > 0 ? _turnBackward : null,
+                      customSemanticsActions: {
+                        if (_pageIndex > 0)
+                          const CustomSemanticsAction(
+                            label: ReaderTexts.previousPage,
+                          ): _turnBackward,
+                        CustomSemanticsAction(
+                          label: isLastPage
+                              ? ReaderTexts.finishBook
+                              : ReaderTexts.nextPage,
+                        ): _turnForward,
+                      },
+                      child: GestureDetector(
+                        key: _viewportKey,
+                        behavior: HitTestBehavior.opaque,
+                        onTapUp: (details) => _handleBodyTapUp(
+                          details,
+                          constraints.maxWidth,
+                          textDirection,
+                        ),
+                        onHorizontalDragEnd: (details) =>
+                            _handleHorizontalDragEnd(details, textDirection),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Positioned.fill(
+                              child: ReaderPageView(
+                                document: doc,
+                                page: currentPage,
+                                settings: _settings,
+                                language: lang,
+                                earIndex: earIndex,
+                                activeSentenceId: _activeSentenceId,
+                                selectedWord: _selectedWord,
+                                viewportKey: _viewportKey,
+                                onWordTap: (c, p, offset, tok, rect) =>
+                                    unawaited(
+                                      _handleWordTap(c, p, offset, tok, rect),
+                                    ),
                               ),
                             ),
-                          ),
-                          if (_selectedWord case final selected?)
-                            ReaderWordBubble(
-                              selected: selected,
-                              viewportSize: viewportSize,
-                              settings: _settings,
-                              language: lang,
-                              stageMax: widget.stageMax,
-                              onTap: selected.clipId == null
-                                  ? null
-                                  : () => unawaited(
-                                      _replaySelectedWord(selected),
-                                    ),
-                            ),
-                        ],
+                            if (_selectedWord case final selected?)
+                              ReaderWordBubble(
+                                selected: selected,
+                                viewportSize: viewportSize,
+                                settings: _settings,
+                                language: lang,
+                                stageMax: widget.stageMax,
+                                onTap: selected.clipId == null
+                                    ? null
+                                    : () => unawaited(
+                                        _replaySelectedWord(selected),
+                                      ),
+                              ),
+                          ],
+                        ),
                       ),
                     );
                   },

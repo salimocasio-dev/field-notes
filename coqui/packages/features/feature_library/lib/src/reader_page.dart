@@ -424,22 +424,26 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
     final indentWidth = widget.settings.bodyFontSize * 1.4;
     final ranges = widget.paragraph.sentenceRanges;
 
-    String? sentenceIdAt(int paragraphOffset) {
+    ({int start, int end})? activeRange;
+    if (widget.hasAudio &&
+        widget.settings.lightUpSentence &&
+        widget.activeSentenceId != null) {
       for (final r in ranges) {
-        if (paragraphOffset >= r.start && paragraphOffset < r.end) {
-          return r.sentence.id;
+        if (r.sentence.id == widget.activeSentenceId) {
+          final s = math.max(r.start, widget.charStart) - widget.charStart;
+          final e = math.min(r.end, widget.charEnd) - widget.charStart;
+          if (s < e) {
+            activeRange = (start: s, end: e);
+          }
+          break;
         }
       }
-      return null;
     }
 
-    final litActive =
-        widget.hasAudio &&
-        widget.settings.lightUpSentence &&
-        widget.activeSentenceId != null;
-
-    bool isLitAt(int paragraphOffset) =>
-        litActive && sentenceIdAt(paragraphOffset) == widget.activeSentenceId;
+    bool isLitLocal(int localOffset) =>
+        activeRange != null &&
+        localOffset >= activeRange.start &&
+        localOffset < activeRange.end;
 
     bool isSelectedToken(WordToken full) {
       final sel = widget.selectedWord;
@@ -456,24 +460,28 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
 
     void addGapText(int start, int end) {
       if (start >= end) return;
-      if (!litActive) {
+      final active = activeRange;
+      if (active == null || end <= active.start || start >= active.end) {
         children.add(TextSpan(text: widget.text.substring(start, end)));
         return;
       }
-      var cursor = start;
-      while (cursor < end) {
-        final lit = isLitAt(widget.charStart + cursor);
-        var runEnd = cursor + 1;
-        while (runEnd < end && isLitAt(widget.charStart + runEnd) == lit) {
-          runEnd++;
-        }
+      if (start < active.start) {
+        children.add(
+          TextSpan(text: widget.text.substring(start, active.start)),
+        );
+      }
+      final litS = math.max(start, active.start);
+      final litE = math.min(end, active.end);
+      if (litS < litE) {
         children.add(
           TextSpan(
-            text: widget.text.substring(cursor, runEnd),
-            style: lit ? TextStyle(color: palette.litText) : null,
+            text: widget.text.substring(litS, litE),
+            style: TextStyle(color: palette.litText),
           ),
         );
-        cursor = runEnd;
+      }
+      if (end > active.end) {
+        children.add(TextSpan(text: widget.text.substring(active.end, end)));
       }
     }
 
@@ -484,7 +492,7 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
         addGapText(cursor, token.start);
       }
       final selected = isSelectedToken(_fullTokens[i]);
-      final lit = isLitAt(widget.charStart + token.start);
+      final lit = isLitLocal(token.start);
       TextStyle? tokenStyle;
       if (selected) {
         tokenStyle = TextStyle(color: palette.ground);

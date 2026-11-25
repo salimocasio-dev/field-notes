@@ -704,6 +704,88 @@ void main() {
         expect(find.text('El paseo por el faro'), findsOneWidget);
       },
     );
+
+    testWidgets(
+      'viewport exposes accessible semantic actions to turn pages and finish the last page',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final nav = FakeNavigator();
+        final services = fakeServices(nav: nav);
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final book = await _addLongMultiChapterBook(store);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              services: services,
+              id: book.id,
+              initialSettings: const ReaderSettings(step: 1),
+            ),
+          ),
+        );
+        await settle(tester);
+        expect(find.text('1 / 2'), findsOneWidget);
+
+        Semantics viewportSemantics() => tester
+            .widgetList<Semantics>(find.byType(Semantics))
+            .firstWhere(
+              (s) =>
+                  s.properties.customSemanticsActions?.keys.any(
+                    (a) =>
+                        a.label == ReaderTexts.nextPage ||
+                        a.label == ReaderTexts.finishBook,
+                  ) ??
+                  false,
+            );
+
+        // Page 1 exposes Next page (not Previous page).
+        var actions = viewportSemantics().properties.customSemanticsActions!;
+        expect(
+          actions.keys.map((a) => a.label),
+          contains(ReaderTexts.nextPage),
+        );
+        expect(
+          actions.keys.map((a) => a.label),
+          isNot(contains(ReaderTexts.previousPage)),
+        );
+
+        // Invoking Next page turns to page 2 (last page).
+        actions.entries
+            .firstWhere((e) => e.key.label == ReaderTexts.nextPage)
+            .value();
+        await settle(tester);
+        expect(find.text('2 / 2'), findsOneWidget);
+
+        // Last page exposes Previous page and Finish book.
+        actions = viewportSemantics().properties.customSemanticsActions!;
+        expect(
+          actions.keys.map((a) => a.label),
+          containsAll([ReaderTexts.previousPage, ReaderTexts.finishBook]),
+        );
+
+        // Invoking Previous page returns to page 1.
+        actions.entries
+            .firstWhere((e) => e.key.label == ReaderTexts.previousPage)
+            .value();
+        await settle(tester);
+        expect(find.text('1 / 2'), findsOneWidget);
+
+        // Advance to last page and invoke Finish book -> navigates back.
+        viewportSemantics().properties.onIncrease!();
+        await settle(tester);
+        viewportSemantics().properties.customSemanticsActions!.entries
+            .firstWhere((e) => e.key.label == ReaderTexts.finishBook)
+            .value();
+        await settle(tester);
+        expect(nav.backs, 1);
+      },
+    );
   });
 
   group('Reader screenshots', () {
