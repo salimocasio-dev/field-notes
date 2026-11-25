@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 1436,
-  "totalBytes": 89012854,
+  "files": 1476,
+  "totalBytes": 91437965,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -4772,6 +4772,206 @@
       "path": "nevera/nev-2-cajon-0-pila-0-banco-1/zb.json",
       "bytes": 322,
       "sha256": "161c2e74723cd0c2a2a5eb4d5a8337c0f5e7e32c50330adc6f0335c51bfc5021"
+    },
+    {
+      "path": "orilla/manana-0-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "38aab9fba212df36e9f09b42b027302f91f32598a82eaf0bc5325b285db9e4ff"
+    },
+    {
+      "path": "orilla/manana-0-0/kinds.json",
+      "bytes": 305,
+      "sha256": "5254f6ac6724fb62ccf89862388686b5cddab6c2c3bf32c4672e15c8fdd93ad8"
+    },
+    {
+      "path": "orilla/manana-0-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "6d3e22138f9b203b526f01438f2a3221f2efe5963c1713e077c0f7341410b8e3"
+    },
+    {
+      "path": "orilla/manana-0-0/pix.json",
+      "bytes": 370,
+      "sha256": "c00eec233b511a5efea7d584adabb27bad794faa2050aaca69e7fa98a181f18f"
+    },
+    {
+      "path": "orilla/manana-0-0/pix.png",
+      "bytes": 16641,
+      "sha256": "b6c0257b1ccd3409b9849beb757008815b4deb70b4a7c3c0e922b5c2e76246c2"
+    },
+    {
+      "path": "orilla/manana-0-0/state.json",
+      "bytes": 948,
+      "sha256": "c68558adb5cb617ba2e9dec89e29279f5cdc5b035ad437716816bc08424ef08c"
+    },
+    {
+      "path": "orilla/manana-0-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "fc1e5fa12c1abb0d67223418346330a3ff72a6e5ef2ff14825c1d7cac8277d4b"
+    },
+    {
+      "path": "orilla/manana-0-0/zb.json",
+      "bytes": 322,
+      "sha256": "3005a58a6dba22df06dd26e0b3c4be0623f07c95ce36e5d2bba8339c781c858d"
+    },
+    {
+      "path": "orilla/manana-1-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "38aab9fba212df36e9f09b42b027302f91f32598a82eaf0bc5325b285db9e4ff"
+    },
+    {
+      "path": "orilla/manana-1-0/kinds.json",
+      "bytes": 305,
+      "sha256": "5254f6ac6724fb62ccf89862388686b5cddab6c2c3bf32c4672e15c8fdd93ad8"
+    },
+    {
+      "path": "orilla/manana-1-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "e1c7988c60f6b8b611eb31dff0f2b3288fd8eff501658598fc5950b378978400"
+    },
+    {
+      "path": "orilla/manana-1-0/pix.json",
+      "bytes": 370,
+      "sha256": "72223f467963fba74ef0db3642a46380f1826187a296a8960fbd30a9ffe4268d"
+    },
+    {
+      "path": "orilla/manana-1-0/pix.png",
+      "bytes": 17274,
+      "sha256": "b2ea95834bf1042411800f84557afd5f065baf45291eb8d31da3335bc1c64bc4"
+    },
+    {
+      "path": "orilla/manana-1-0/state.json",
+      "bytes": 948,
+      "sha256": "620ebd24a7a0415e29faa4700897c930a0b9c6594f45c0af6885f5f8a7b6175b"
+    },
+    {
+      "path": "orilla/manana-1-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "dc0b6028fceec4cb6f99284c6cc18ae15fffb738535f614cc225de2bbc1e6aaa"
+    },
+    {
+      "path": "orilla/manana-1-0/zb.json",
+      "bytes": 322,
+      "sha256": "2cbc3105b0efbd7d473e759194ffe9940a89ad2ad3a1f7230d698e9021572b40"
+    },
+    {
+      "path": "orilla/mediodia-0-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "38aab9fba212df36e9f09b42b027302f91f32598a82eaf0bc5325b285db9e4ff"
+    },
+    {
+      "path": "orilla/mediodia-0-0/kinds.json",
+      "bytes": 305,
+      "sha256": "5254f6ac6724fb62ccf89862388686b5cddab6c2c3bf32c4672e15c8fdd93ad8"
+    },
+    {
+      "path": "orilla/mediodia-0-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "99855813fc71bfb486626fdecaf44f1b16b41bbf460fd69d58f7af705c01761d"
+    },
+    {
+      "path": "orilla/mediodia-0-0/pix.json",
+      "bytes": 370,
+      "sha256": "cbc21304189ea3560b5da51631becaf3436f432cbc5155aedbbf236c0d90c2e5"
+    },
+    {
+      "path": "orilla/mediodia-0-0/pix.png",
+      "bytes": 16561,
+      "sha256": "e326cd8f8a253eac07c5b8419b0f3fb2eb85d87144474a399edd6020b247b1eb"
+    },
+    {
+      "path": "orilla/mediodia-0-0/state.json",
+      "bytes": 952,
+      "sha256": "17e650f4fbf9ce29965e6686d07d7e2d01793250cb34c238ac4570c553c31580"
+    },
+    {
+      "path": "orilla/mediodia-0-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "fc1e5fa12c1abb0d67223418346330a3ff72a6e5ef2ff14825c1d7cac8277d4b"
+    },
+    {
+      "path": "orilla/mediodia-0-0/zb.json",
+      "bytes": 322,
+      "sha256": "3005a58a6dba22df06dd26e0b3c4be0623f07c95ce36e5d2bba8339c781c858d"
+    },
+    {
+      "path": "orilla/ocaso-0-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "38aab9fba212df36e9f09b42b027302f91f32598a82eaf0bc5325b285db9e4ff"
+    },
+    {
+      "path": "orilla/ocaso-0-1/kinds.json",
+      "bytes": 305,
+      "sha256": "5254f6ac6724fb62ccf89862388686b5cddab6c2c3bf32c4672e15c8fdd93ad8"
+    },
+    {
+      "path": "orilla/ocaso-0-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "82b0f8b74dffab7c5821d8ec53c6d09a2f540b371124a978aaf9ad00cdb17131"
+    },
+    {
+      "path": "orilla/ocaso-0-1/pix.json",
+      "bytes": 370,
+      "sha256": "a847e750d33837887768cbc0d0e87fe16a4f9707388db8a46c2e07a5f77c589e"
+    },
+    {
+      "path": "orilla/ocaso-0-1/pix.png",
+      "bytes": 15815,
+      "sha256": "7c924c9f305a41c7dc15926acd12cc0bd9490d9b0033eb053e333197f28cc7fa"
+    },
+    {
+      "path": "orilla/ocaso-0-1/state.json",
+      "bytes": 946,
+      "sha256": "929924a627037c37d8b6477208c2d93bc35968c3fdb44b3f42898ea3cb69b6a4"
+    },
+    {
+      "path": "orilla/ocaso-0-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "0d27a101c89354c06b6cb18dc8a5e2659c78a572bec44378d4db12f46bfedac7"
+    },
+    {
+      "path": "orilla/ocaso-0-1/zb.json",
+      "bytes": 322,
+      "sha256": "15f0c7df48803903deb232f5a5acf9644bfa2bcfc8c0462e2a1245db64a9e9ef"
+    },
+    {
+      "path": "orilla/tarde-0-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "38aab9fba212df36e9f09b42b027302f91f32598a82eaf0bc5325b285db9e4ff"
+    },
+    {
+      "path": "orilla/tarde-0-1/kinds.json",
+      "bytes": 305,
+      "sha256": "5254f6ac6724fb62ccf89862388686b5cddab6c2c3bf32c4672e15c8fdd93ad8"
+    },
+    {
+      "path": "orilla/tarde-0-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "281c9f3ca08dd862c9a7de0d6e0caf0ee8a4caa717d13c9751bb252ee4ff6a89"
+    },
+    {
+      "path": "orilla/tarde-0-1/pix.json",
+      "bytes": 370,
+      "sha256": "ffcc0c1296f656d31a6a8d4445fdddf05437e88aeb623368d35e738442aff2be"
+    },
+    {
+      "path": "orilla/tarde-0-1/pix.png",
+      "bytes": 16295,
+      "sha256": "619afedbd53049fe6bc2fafe1681ec8b35fb5eefdc3bdde87aa9218f7d3f65ed"
+    },
+    {
+      "path": "orilla/tarde-0-1/state.json",
+      "bytes": 946,
+      "sha256": "8713bd591afb1fed6251d21c872454a20427357e87866d1a62a3940727fd2748"
+    },
+    {
+      "path": "orilla/tarde-0-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "0d27a101c89354c06b6cb18dc8a5e2659c78a572bec44378d4db12f46bfedac7"
+    },
+    {
+      "path": "orilla/tarde-0-1/zb.json",
+      "bytes": 322,
+      "sha256": "15f0c7df48803903deb232f5a5acf9644bfa2bcfc8c0462e2a1245db64a9e9ef"
     },
     {
       "path": "parada/manana/kinds.bin",

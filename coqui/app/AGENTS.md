@@ -26,20 +26,27 @@ The shell: tabs, routes, wiring, web/, android/, ios/.
   Mapa, Hablar, Yo), then the story and Repaso / the level check. A route opens the first module whose `screenFor`
   answers it.
 - `lib/src/app.dart`: `CoquiApp` on an `AppPlatform` (`lib/src/platform.dart`: fetch, content base, storage, clip
-  player, speech, call, haptics, `AppInfo`, clock, the browser's back). `coquiTheme()` with `NocheColors.ground`
-  background and `SystemUiOverlayStyle` status bars; a ground `ColoredBox` around a root `SafeArea` paints behind
-  transparent system bars, including Android 16; `MaterialApp.router` on go_router; the first tap anywhere calls
-  `clips.unlock()`. The start: the storage, `PalabrasStore` on its progress space and the clock (the old key
-  `coqui.palabras.v1` is simply there: nothing is imported or deleted), the course (`ContentCatalog.load`) before the
-  first screen, the voice test's file, the call session. While it loads: `NocheColors.ground`, nothing else. If the
-  course cannot be loaded: one line, "Coquí could not load. Check your connection.", and an orange "Try again" that
-  starts again. Then `WelcomeGate` around everything. `Services`: `Mulberry32` seeded once from the clock;
-  `reduceMotion` from `MediaQuery.disableAnimations` when the app first shows (fixed for the session, as
+  player, speech, call, haptics, `AppInfo`, clock, the browser's back, optional `loadCourse` per language).
+  `coquiTheme()` with `NocheColors.ground` background and `SystemUiOverlayStyle` status bars; a ground `ColoredBox`
+  around a root `SafeArea` paints behind transparent system bars, including Android 16; `MaterialApp.router` on
+  go_router; the first tap anywhere calls `clips.unlock()`. The start: the storage, `ProgressStores` on its progress
+  space and the clock (migrating any legacy `coqui.palabras.v1` Spanish record into `coqui.es.palabras.v1` and seeding
+  `coqui.shared.v1` without deleting the old key), the chosen language's course (`loadCourse(code)` or default Spanish
+  `ContentCatalog.load`) before the first screen, the voice test's file, the call session, and the active language's
+  `PalabrasStore` and clip player. Listening to `ProgressStores.changes` reloads the newly selected course and its
+  progress store on language switch (`currentLanguageCode` or `'idioma'` setting), navigates to the map tab, and remounts
+  `WelcomeGate` and `AppShell` with fresh keys so no stale module state survives. While it loads: `NocheColors.ground`,
+  nothing else. If the course cannot be loaded: one line, "Coquí could not load. Check your connection.", and an orange
+  "Try again" that starts again. Then `WelcomeGate` around everything. `Services`: `Mulberry32` seeded once from the
+  clock; `reduceMotion` from `MediaQuery.disableAnimations` when the app first shows (fixed for the session, as
   `ScenePictures(still:)` is); `ScenePictures(pairs: course.pairs)` as the picture source; storage spaces by name.
 - `lib/src/shell.dart`: the tabs, each built the first time it is shown and then kept (offstage, tickers off, when not
-  shown: the map bakes once; Hablar reads `call.available`, which loads the ElevenLabs library, only once it is shown);
-  `NocheTabBar` drawn over the tab body with labels from `course.language.tabNames` (`FeatureTab.icon` and
-  `FeatureTab.label` are not used); a lesson screen over everything, the tab bar hidden; a `PopScope` that turns the
+  shown: the map bakes once; Hablar reads `call.available`, which loads the ElevenLabs library, only once it is shown),
+  epoch-keyed so swapping `Services` or `modules` discards stale tab/lesson state; `NocheTabBar` drawn over the tab body
+  with labels from `course.language.tabNames` (`FeatureTab.icon` and `FeatureTab.label` are not used); a lesson screen
+  over everything, the tab bar hidden; `Directionality` sets `course.language.textDirection` on lesson routes
+  (`isLessonRoute`: story, review, level check, book, call, voice test) while keeping all five tabs, `NocheTabBar`, and
+  non-lesson routes (`PlaceRoute`, `LanguagesRoute`, `PlansRoute`, `ImportRoute`) LTR; a `PopScope` that turns the
   system back on a lesson into `nav.back()`.
 - `lib/src/navigator.dart`: `ShellNavigator`, the `AppNavigator` (see "Addresses" below).
 - `lib/src/content.dart`: the content base and the cache rules. `lib/src/previa.dart`: the preview content (below), the
