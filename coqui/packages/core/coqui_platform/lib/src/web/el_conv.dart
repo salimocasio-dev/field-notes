@@ -2,16 +2,20 @@ import 'dart:async';
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
+import 'package:coqui_platform/src/call/call_session.dart';
 import 'package:coqui_platform/src/call/conv.dart';
 import 'package:web/web.dart' as web;
 
-/// The ElevenLabs client in the page, by interop, loaded as llamada.js loads it (precarga): a module
-/// script that imports [url] and sets `window.ELConv` to its `Conversation` (or `window.ELConvError`),
-/// then fires "elconv". Never imported inside the tap.
+const _packageRootAssetUrl = 'assets/assets/elevenlabs/lib.iife.js';
+
+/// The ElevenLabs client in the page, by interop, loaded as llamada.js loads it (precarga): a
+/// classic script tag for [url] that exposes `window.ElevenLabsClient.Conversation` and sets
+/// `window.ELConv` (or `window.ELConvError`). Never imported inside the tap, and uses no inline
+/// script or `eval`.
 class JsConvLibrary implements ConvLibrary {
   JsConvLibrary(this.url);
 
-  /// The module to import (llamada.js: SDK).
+  /// The classic IIFE script to load (llamada.js: SDK).
   final String url;
 
   Future<bool>? _loading;
@@ -30,26 +34,77 @@ class JsConvLibrary implements ConvLibrary {
     if (going != null) return going;
     final done = Completer<bool>();
     final f = _loading = done.future;
-    web.window.addEventListener(
-      'elconv',
-      ((web.Event _) {
-        if (!_has) _loading = null; // the next precarga tries again
-        _loaded = _has;
-        done.complete(_has);
-      }).toJS,
-      web.AddEventListenerOptions(once: true),
-    );
-    final s = web.document.createElement('script') as web.HTMLScriptElement;
-    s.type = 'module';
-    s.textContent =
-        'try{const m=await import(${_jsString(url)});window.ELConv=m.Conversation;}'
-        'catch(e){window.ELConvError=String(e);}dispatchEvent(new Event("elconv"));';
-    web.document.head!.appendChild(s);
+    _loadUrl(url, done, canFallback: url == elevenLabsClientUrl);
     return f;
   }
 
-  static String _jsString(String s) =>
-      '"${s.replaceAll(r'\', r'\\').replaceAll('"', r'\"')}"';
+  void _loadUrl(
+    String currentUrl,
+    Completer<bool> done, {
+    required bool canFallback,
+  }) {
+    final s = web.document.createElement('script') as web.HTMLScriptElement;
+    s.async = true;
+    s.setAttribute('data-coqui-elconv', '1');
+    final once = web.AddEventListenerOptions(once: true);
+    s.addEventListener(
+      'load',
+      ((web.Event _) {
+        if (done.isCompleted) return;
+        if (!_has && globalContext.has('ElevenLabsClient')) {
+          final client = globalContext.getProperty<JSAny?>(
+            'ElevenLabsClient'.toJS,
+          );
+          if (client != null && client.isA<JSObject>()) {
+            final conv = (client as JSObject).getProperty<JSAny?>(
+              'Conversation'.toJS,
+            );
+            if (conv != null && !conv.isUndefinedOrNull) {
+              globalContext.setProperty('ELConv'.toJS, conv);
+            }
+          }
+        }
+        if (_has) {
+          if (globalContext.has('ELConvError')) {
+            globalContext.delete('ELConvError'.toJS);
+          }
+          _loaded = true;
+          done.complete(true);
+          return;
+        }
+        s.remove();
+        globalContext.setProperty(
+          'ELConvError'.toJS,
+          'ElevenLabs Conversation export not found.'.toJS,
+        );
+        _loading = null; // the next precarga tries again
+        _loaded = false;
+        done.complete(false);
+      }).toJS,
+      once,
+    );
+    s.addEventListener(
+      'error',
+      ((web.Event _) {
+        if (done.isCompleted) return;
+        s.remove();
+        if (canFallback) {
+          _loadUrl(_packageRootAssetUrl, done, canFallback: false);
+          return;
+        }
+        globalContext.setProperty(
+          'ELConvError'.toJS,
+          'Failed to load $currentUrl'.toJS,
+        );
+        _loading = null; // the next precarga tries again
+        _loaded = false;
+        done.complete(false);
+      }).toJS,
+      once,
+    );
+    s.src = currentUrl;
+    web.document.head!.appendChild(s);
+  }
 
   @override
   Future<Conv> startSession(ConvOptions o) {

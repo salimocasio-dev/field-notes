@@ -151,6 +151,30 @@ void main() {
       expect(c.buf.duration, closeTo(1, .01));
     });
 
+    test('playAtRate sets playbackRate on the Web Audio source', () async {
+      final ctx = web.OfflineAudioContext(1.toJS, 44100, 44100);
+      final core = SoundCore(() => WebAudioGraph(ctx));
+      final wavBytes = _wav(44100, 0.2);
+      final p = GraphClipPlayer(
+        core: core,
+        clipInfo: (id) => ClipInfo(
+          id: id,
+          who: 'narr',
+          text: '',
+          startMs: 0,
+          endMs: 100,
+          url: 'audio/$id.wav',
+        ),
+        base: Uri.parse('https://example.test/'),
+        fetch: (_) async => wavBytes,
+      );
+      expect(await p.preload(['a']), isEmpty);
+      unawaited(p.playAtRate('a', rate: 0.75));
+      await Future<void>.delayed(Duration.zero);
+      final rendered = await ctx.startRendering().toDart;
+      expect(rendered.length, 44100);
+    });
+
     test('a clip the browser cannot decode, and a clip with no ClipInfo, are reported; a retry tries again', () async {
       final core = SoundCore(
         () => WebAudioGraph(web.OfflineAudioContext(1.toJS, 44100, 44100)),
@@ -215,6 +239,9 @@ void main() {
         expect(s.progress.read('coqui.palabras.v1'), '{"v":1}');
         await s.space('leer').write('tam', '2');
         expect(web.window.localStorage.getItem('coqui.leer.tam'), '2');
+        expect(web.window.localStorage.getItem('coqui.juego.ult'), '{"x":"b"}');
+        await s.space('leer').delete('tam');
+        expect(web.window.localStorage.getItem('coqui.leer.tam'), isNull);
         expect(web.window.localStorage.getItem('coqui.juego.ult'), '{"x":"b"}');
       },
     );
