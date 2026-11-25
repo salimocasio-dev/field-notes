@@ -37,8 +37,16 @@ typedef FetchText = Future<String> Function(String path);
 /// Implements [CallsCatalog]: `datos/llamadas.json` maps each place id to either a legacy single call object or a JSON
 /// array of call objects (`main` and smaller calls). [callsFor] returns every call for a place in order; [callFor]
 /// returns its main call (or the first call when none sets `isMain`).
+///
+/// Implements [MinAppCatalog]: reads optional top-level `minApp` from `datos/curso.json` into [minApp] (missing or
+/// null means `null`, any app) alongside per-story [StoryMeta.minApp].
 class ContentCatalog
-    implements CourseCatalog, RepasoCatalog, LanguageCatalog, CallsCatalog {
+    implements
+        CourseCatalog,
+        RepasoCatalog,
+        LanguageCatalog,
+        CallsCatalog,
+        MinAppCatalog {
   ContentCatalog(this._fetch);
 
   final FetchText _fetch;
@@ -46,6 +54,7 @@ class ContentCatalog
   Future<void>? _loading;
   bool _loaded = false;
   Language _language = Language.spanish;
+  int? _minApp;
   List<Place> _places = const [];
   Map<String, StoryMeta> _metas = const {};
   List<ReviewPair> _pairs = const [];
@@ -81,6 +90,9 @@ class ContentCatalog
   Language get language => _language;
 
   @override
+  int? get minApp => _minApp;
+
+  @override
   Future<void> load() async {
     final running = _loading;
     if (running != null) return running;
@@ -96,17 +108,24 @@ class ContentCatalog
   Future<void> _load() async {
     final curso = _object(await _json('datos/curso.json'), 'datos/curso.json');
     final language = _parseLanguage(curso['idioma']);
+    final minApp = _parseMinApp(
+      curso['minApp'],
+      context: 'datos/curso.json: minApp',
+    );
     final places = [
       for (final l in curso['lugares'] as List)
         Place.fromJson(Map<String, dynamic>.from(l as Map)),
     ];
-    final metas = {
-      for (final e in (curso['cuentos'] as Map).entries)
-        e.key as String: StoryMeta.fromJson(
-          e.key as String,
-          Map<String, dynamic>.from(e.value as Map),
-        ),
-    };
+    final metas = <String, StoryMeta>{};
+    for (final e in (curso['cuentos'] as Map).entries) {
+      final id = e.key as String;
+      final raw = _object(e.value, 'datos/curso.json: cuentos.$id');
+      _parseMinApp(
+        raw['minApp'],
+        context: 'datos/curso.json: cuentos.$id.minApp',
+      );
+      metas[id] = StoryMeta.fromJson(id, raw);
+    }
     final sets = _strings(curso['cual']);
 
     // everything else at once; the first failure (in this order) is the one thrown
@@ -165,6 +184,7 @@ class ContentCatalog
     }
 
     _language = language;
+    _minApp = minApp;
     _places = places;
     _metas = metas;
     _pairs = pairs;
@@ -471,6 +491,23 @@ class ContentCatalog
     }
     return _heardIndex[c] = out;
   }
+}
+
+int? _parseMinApp(Object? raw, {required String context}) {
+  if (raw == null) return null;
+  if (raw is int) {
+    if (raw < 0) {
+      throw FormatException('$context must be a non-negative integer');
+    }
+    return raw;
+  }
+  if (raw is double &&
+      raw.isFinite &&
+      raw == raw.truncateToDouble() &&
+      raw >= 0) {
+    return raw.toInt();
+  }
+  throw FormatException('$context must be a non-negative integer');
 }
 
 Language _parseLanguage(Object? raw) {
