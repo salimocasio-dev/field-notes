@@ -9,6 +9,7 @@ import 'package:app/src/modules.dart';
 import 'package:app/src/navigator.dart';
 import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
+import 'package:app/src/scoped_clip_player.dart';
 import 'package:app/src/shell.dart';
 import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
@@ -194,7 +195,16 @@ class _CoquiAppState extends State<CoquiApp> {
       _storesChanges ??= stores.changes.listen(_onProgressChanged);
       final requestedCode = stores.currentLanguageCode;
       _requestedLanguageCode = requestedCode;
-      final course = await _loadCourse(requestedCode);
+      CourseCatalog course;
+      try {
+        course = await _loadCourse(requestedCode);
+      } on UnsupportedError {
+        if (requestedCode == Language.spanish.code) rethrow;
+        course = await _loadCourse(Language.spanish.code);
+      } on ArgumentError {
+        if (requestedCode == Language.spanish.code) rethrow;
+        course = await _loadCourse(Language.spanish.code);
+      }
       if (!mounted || ticket != _loadTicket) return;
       VoiceTestData? voiceTest;
       try {
@@ -206,8 +216,18 @@ class _CoquiAppState extends State<CoquiApp> {
             null; // the voice test only: everything else works without it
       }
       if (!mounted || ticket != _loadTicket) return;
+      // CallSession is language-agnostic: each start(CallBrief) takes its agentId from the course.
       final call = _call ??= await widget.platform.call(widget.platform.info);
       if (!mounted || ticket != _loadTicket) return;
+      if (course.language.code != requestedCode) {
+        _requestedLanguageCode = course.language.code;
+        _syncingLanguageSetting = true;
+        try {
+          stores.currentLanguageCode = course.language.code;
+        } finally {
+          _syncingLanguageSetting = false;
+        }
+      }
       final progress = stores.forLanguage(course.language);
       final existingSetting = progress.setting(_languageSettingKey);
       if (existingSetting is String &&
@@ -222,12 +242,17 @@ class _CoquiAppState extends State<CoquiApp> {
       _activeStoreLanguageSetting = progress.setting(_languageSettingKey);
       final prevClips = _loaded?.clips;
       if (prevClips != null) unawaited(prevClips.stop());
-      final clips = widget.platform.clipPlayer(course.clip);
+      final nextGeneration = _generation + 1;
+      final clips = ScopedClipPlayer(
+        scope: '${course.language.code}#$nextGeneration',
+        clipInfo: course.clip,
+        create: widget.platform.clipPlayer,
+      );
       if (_unlocked) unawaited(clips.unlock());
       _loaded = _Loaded(course, progress, clips, storage, call, voiceTest);
       _services = null;
       _modules = null;
-      _generation++;
+      _generation = nextGeneration;
       final shouldGoToMap = _pendingGoToMap;
       _pendingGoToMap = false;
       if (shouldGoToMap &&

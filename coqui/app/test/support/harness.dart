@@ -8,6 +8,7 @@ import 'package:app/src/app.dart';
 import 'package:app/src/content.dart';
 import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
+import 'package:app/src/scoped_clip_player.dart';
 import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_progress/coqui_progress.dart';
@@ -48,6 +49,7 @@ class TimedClips extends FakeClipPlayer {
   Future<bool> play(String clipId, {Duration? limit}) async {
     final len = lengthOf!(clipId);
     final ok = await super.play(clipId, limit: limit);
+    played[played.length - 1] = ScopedClipPlayer.unscope(played.last);
     if (len != null) {
       final cap = limit?.inMilliseconds;
       await Future<void>.delayed(
@@ -110,6 +112,9 @@ class TestApp {
 
   /// Optional per-language course loader passed to [AppPlatform.loadCourse].
   Future<CourseCatalog> Function(String languageCode)? loadCourse;
+
+  /// Optional clip player factory passed to [AppPlatform.clipPlayer].
+  ClipPlayer Function(ClipInfo? Function(String id) lookup)? clipPlayerFactory;
 
   /// The stored progress for the active language, read back (falling back to
   /// the legacy key when no per-language record has been written yet).
@@ -200,7 +205,8 @@ class TestApp {
     bundle: TestSceneBundle(),
     contentBase: contentBaseOf(Uri.parse('http://127.0.0.1/field-notes/app/')),
     storage: () async => spaces.storage,
-    clipPlayer: (lookup) => clips = TimedClips(lookup),
+    clipPlayer: (lookup) =>
+        clipPlayerFactory?.call(lookup) ?? (clips = TimedClips(lookup)),
     speech: speech,
     call: (info) async => call,
     haptics: haptics,

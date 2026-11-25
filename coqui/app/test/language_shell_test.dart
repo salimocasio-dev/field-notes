@@ -1,5 +1,6 @@
 // Multi-language shell wiring (N2.11): startup language loading, switching
 // between languages with fresh module state, and lesson RTL vs chrome LTR.
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/src/navigator.dart';
@@ -731,4 +732,199 @@ void main() {
       },
     );
   });
+
+  group('audio cache isolation and fallback', () {
+    testWidgets(
+      'shared audio cache isolates recordings and in-flight loads when switching courses that reuse clip ids',
+      (tester) async {
+        final core = _SharedAudioCore();
+        final spanishPendingLoad = Completer<void>();
+
+        final app = TestApp(tester)
+          ..loadCourse = (code) async {
+            return code == 'ar'
+                ? FakeCourseCatalog.arabic()
+                : FakeCourseCatalog();
+          }
+          ..clipPlayerFactory = (lookup) => _SharedCacheClipPlayer(
+            core: core,
+            clipInfo: lookup,
+            delayLoad: (scopedId) =>
+                scopedId.startsWith('es#1::') &&
+                    scopedId.endsWith('::mira_casa')
+                ? spanishPendingLoad.future
+                : null,
+          );
+
+        await app.open(
+          initialStorage: {
+            PalabrasStore.sharedStorageKey: _sharedJson(
+              languageCode: 'es',
+              languages: ['es', 'ar'],
+            ),
+            PalabrasStore.storageKeyFor('es'): _storeJson(),
+            PalabrasStore.storageKeyFor('ar'): _storeJson(),
+          },
+        );
+
+        // Preload & play a shared clip id in Spanish, and start an in-flight
+        // load for another shared clip id before switching languages.
+        final spanishClips = app.services.clips;
+        expect(await spanishClips.preload(['esta_casa', 'missing_clip']), [
+          'missing_clip',
+        ]);
+        expect(await spanishClips.play('esta_casa'), isTrue);
+        expect(core.playedRecordings.last, contains('casa'));
+
+        final inFlightSpanish = spanishClips.preload(['mira_casa']);
+
+        // Switch to Arabic while the Spanish load is still in flight.
+        final stores = ProgressStores(app.spaces.kv, app.clock);
+        addTearDown(stores.dispose);
+        stores.currentLanguageCode = 'ar';
+        await app.settle(rounds: 15);
+        expect(app.services.course.language.code, 'ar');
+
+        // Resolve the stale Spanish load after switching; it must not pollute
+        // Arabic's clip cache for the same clip id.
+        spanishPendingLoad.complete();
+        await inFlightSpanish;
+
+        final arabicClips = app.services.clips;
+        expect(
+          await arabicClips.preload(['esta_casa', 'mira_casa', 'missing_clip']),
+          ['missing_clip'],
+        );
+        expect(await arabicClips.play('esta_casa'), isTrue);
+        expect(core.playedRecordings.last, contains('بيت'));
+        expect(await arabicClips.play('mira_casa'), isTrue);
+        expect(core.playedRecordings.last, contains('بيت'));
+      },
+    );
+
+    testWidgets(
+      'unknown language code falls back to Spanish and updates shared idioma without trapping on LoadFailed',
+      (tester) async {
+        final loadedCodes = <String>[];
+        final app = TestApp(tester)
+          ..loadCourse = (code) async {
+            loadedCodes.add(code);
+            if (code == 'es') return FakeCourseCatalog();
+            throw UnsupportedError('No course for "$code"');
+          };
+
+        await app.open(
+          initialStorage: {
+            PalabrasStore.sharedStorageKey: _sharedJson(
+              languageCode: 'xx',
+              languages: ['es'],
+            ),
+            PalabrasStore.storageKeyFor('es'): _storeJson(
+              words: {'casa': _wordRecord('casa')},
+            ),
+          },
+        );
+
+        expect(loadedCodes, ['xx', 'es']);
+        expect(app.services.course.language.code, 'es');
+        expect(find.text('Try again'), findsNothing);
+        expect(app.tabBarShown, isTrue);
+        expect(app.selectedTab, 'map');
+        expect(
+          (jsonDecode(app.sharedStored!) as Map<String, dynamic>)['idioma'],
+          'es',
+        );
+
+        // Subsequent progress writes stay on Spanish without reloading 'xx'.
+        app.services.progress.setSetting('min', 20);
+        await app.settle(rounds: 10);
+        expect(loadedCodes, ['xx', 'es']);
+      },
+    );
+  });
+}
+
+/// Models `webSoundCore` from `coqui_platform`: one shared clip cache keyed by
+/// clip id across every `ClipPlayer` created during the session.
+class _SharedAudioCore {
+  final Map<String, String> clips = {};
+  final List<String> playedRecordings = [];
+}
+
+/// Models `GraphClipPlayer` on a shared [_SharedAudioCore]: checks `core.clips`
+/// before consulting [clipInfo], and deduplicates in-flight loads by id.
+class _SharedCacheClipPlayer implements ClipPlayer {
+  _SharedCacheClipPlayer({
+    required this.core,
+    required this.clipInfo,
+    this.delayLoad,
+  });
+
+  final _SharedAudioCore core;
+  final ClipInfo? Function(String id) clipInfo;
+  final Future<void>? Function(String scopedId)? delayLoad;
+  final Map<String, Future<String?>> _loading = {};
+
+  @override
+  bool muted = false;
+
+  @override
+  Future<void> unlock() async {}
+
+  Future<String?> _load(String id) {
+    final cached = core.clips[id];
+    if (cached != null) return Future.value(cached);
+    final ongoing = _loading[id];
+    if (ongoing != null) return ongoing;
+    final future = _loading[id] = () async {
+      final info = clipInfo(id);
+      if (info == null) return null;
+      final wait = delayLoad?.call(id);
+      if (wait != null) await wait;
+      return core.clips[id] = '${info.url}|${info.text}';
+    }();
+    unawaited(
+      future.whenComplete(() {
+        if (identical(_loading[id], future)) _loading.remove(id);
+      }),
+    );
+    return future;
+  }
+
+  @override
+  Future<List<String>> preload(Iterable<String> clipIds) async {
+    final ids = {...clipIds}.toList();
+    final loaded = await Future.wait([for (final id in ids) _load(id)]);
+    return [
+      for (var i = 0; i < ids.length; i++)
+        if (loaded[i] == null) ids[i],
+    ];
+  }
+
+  @override
+  Future<bool> play(String clipId, {Duration? limit}) async {
+    final recording = core.clips[clipId] ?? await _load(clipId);
+    if (recording == null) return false;
+    core.playedRecordings.add(recording);
+    return true;
+  }
+
+  @override
+  void tone(
+    double hz, {
+    double at = 0,
+    double dur = .1,
+    String wave = 'square',
+    double vol = .05,
+    double? toHz,
+  }) {}
+
+  @override
+  void noiseBurst({double vol = 1}) {}
+
+  @override
+  void loop(String name, bool on) {}
+
+  @override
+  Future<void> stop() async {}
 }
