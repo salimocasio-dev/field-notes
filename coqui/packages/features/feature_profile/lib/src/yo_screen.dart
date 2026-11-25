@@ -231,8 +231,19 @@ class _YoScreenState extends State<YoScreen> {
     );
     final courseLocale = Locale(data.language.code);
     final pad = MediaQuery.paddingOf(context);
-    final levelHelp =
-        '$yoLevelCheckHelp ${levelResult != null ? 'Done: ${jsString(levelResult['historias'])} ${plural(levelResult['historias'] is num ? levelResult['historias'] as num : double.nan, 'story', 'stories')} skipped.' : yoLevelCheckNotDone}';
+    final levelSuffix = levelResult != null
+        ? meLevelCheckDoneSuffix(
+            jsString(levelResult['historias']),
+            plural(
+              levelResult['historias'] is num
+                  ? levelResult['historias'] as num
+                  : double.nan,
+              'story',
+              'stories',
+            ),
+          )
+        : yoLevelCheckNotDone;
+    final levelHelp = '$yoLevelCheckHelp $levelSuffix';
 
     return ColoredBox(
       color: NocheColors.ground,
@@ -426,7 +437,7 @@ class _YoScreenState extends State<YoScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          'build ${_s.info.build}',
+                          meBuildLabel(_s.info.build),
                           key: const Key('build-number'),
                           style: NocheType.bodySmall.copyWith(
                             fontSize: 12,
@@ -647,7 +658,11 @@ class _LanguageCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '${data.level} · place ${place.n} of ${data.placeTotal}',
+                        mePlaceProgressLabel(
+                          level: data.level,
+                          placeNumber: place.n,
+                          placeTotal: data.placeTotal,
+                        ),
                         key: const Key('me-place-progress'),
                         textAlign: TextAlign.end,
                         maxLines: 1,
@@ -704,7 +719,6 @@ class _LanguageCard extends StatelessWidget {
           _ReadingRow(
             key: const Key('me-skill-reading'),
             tracksReading: data.tracksReading,
-            total: data.totalWords,
           ),
         ],
       ),
@@ -748,14 +762,14 @@ class _SkillProgressRow extends StatelessWidget {
               color: NocheColors.text,
               trackColor: NocheColors.line,
               height: 8,
-              semanticLabel: '$good of $total words good',
+              semanticLabel: meSkillGoodSemanticLabel(good, total),
             ),
           ),
           const SizedBox(width: NocheSize.grid),
           ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 96),
             child: Text(
-              '$good of $total good',
+              meSkillGoodLabel(good, total),
               textAlign: TextAlign.end,
               maxLines: 1,
               softWrap: false,
@@ -769,25 +783,15 @@ class _SkillProgressRow extends StatelessWidget {
 }
 
 class _ReadingRow extends StatelessWidget {
-  const _ReadingRow({
-    super.key,
-    required this.tracksReading,
-    required this.total,
-  });
+  const _ReadingRow({super.key, required this.tracksReading});
 
   final bool tracksReading;
-  final int total;
 
   @override
   Widget build(BuildContext context) {
-    if (tracksReading) {
-      return _SkillProgressRow(
-        label: meReading,
-        good: 0,
-        total: total,
-        fraction: 0,
-      );
-    }
+    // Reading word mastery is not tracked in WordRecord yet, so show the honest
+    // status line rather than inventing a 0-of-N progress count.
+    final note = tracksReading ? meReadingOpenNote : meReadingNote;
     return SizedBox(
       height: 40,
       child: Row(
@@ -804,7 +808,7 @@ class _ReadingRow extends StatelessWidget {
           const SizedBox(width: NocheSize.grid),
           Expanded(
             child: Text(
-              meReadingNote,
+              note,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: NocheType.body.copyWith(
@@ -832,7 +836,7 @@ class _PlanRow extends StatelessWidget {
     return Pressable(
       key: const Key('me-plan-row'),
       onPressed: onPressed,
-      semanticLabel: '$meYourPlan, $planName. $meManage',
+      semanticLabel: mePlanSemanticLabel(planName),
       builder: (context, pressed) => Transform.scale(
         scale: pressed ? 0.99 : 1,
         child: Container(

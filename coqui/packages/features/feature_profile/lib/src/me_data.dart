@@ -35,10 +35,13 @@ String utcIsoDay(DateTime day) {
 }
 
 /// Fallback reader for daily minutes until request 87
-/// (`LanguageProgressStore.minutesOn`) lands in `coqui_contracts`.
+/// (`LanguageProgressStore.minutesOn`, tracked in PR #187) lands in
+/// `coqui_contracts`.
 ///
-/// Reads `progress.raw['minutosDia'][YYYY-MM-DD]` (the same UTC day-key map
-/// format used by `coqui_progress`) when present, returning `0` otherwise.
+/// Reads `progress.raw['minutosDia'][YYYY-MM-DD]` when present, returning `0`
+/// otherwise. Production `PalabrasStore` stores daily minutes in shared/legacy
+/// progress storage exposed via `minutesOn(DateTime)` rather than `raw`, so
+/// callers should wire `LanguageProgressStore.minutesOn` once request 87 lands.
 double readMinutesOn(ProgressStore progress, DateTime day) {
   final byDay = progress.raw['minutosDia'];
   if (byDay is! Map) return 0;
@@ -50,16 +53,10 @@ double readMinutesOn(ProgressStore progress, DateTime day) {
 }
 
 /// English single-letter weekday initial for [DateTime.weekday] (`1` = Mon .. `7` = Sun).
-String weekdayInitial(int weekday) => switch (weekday) {
-  DateTime.monday => 'M',
-  DateTime.tuesday => 'T',
-  DateTime.wednesday => 'W',
-  DateTime.thursday => 'T',
-  DateTime.friday => 'F',
-  DateTime.saturday => 'S',
-  DateTime.sunday => 'S',
-  _ => '',
-};
+String weekdayInitial(int weekday) {
+  if (weekday < DateTime.monday || weekday > DateTime.sunday) return '';
+  return meWeekdayInitials[weekday - DateTime.monday];
+}
 
 /// Resolves the learner's CEFR level label (`override`, `levelResult['cefr']`,
 /// or [defaultLanguageLevel]).
@@ -160,17 +157,23 @@ class MeViewData {
   double get speakingFraction =>
       totalWords <= 0 ? 0 : (speakingGood / totalWords).clamp(0.0, 1.0);
 
-  String get streakLabel => '$streak ${plural(streak, 'day')}';
+  String get streakLabel => meStreakLabel(streak, plural(streak, 'day'));
 
   String? get streakFreezesLabel {
     final freezes = streakFreezes;
     if (freezes == null) return null;
-    return '$freezes ${plural(freezes, 'freeze')} saved';
+    return meStreakFreezesLabel(freezes, plural(freezes, 'freeze'));
   }
 }
 
+bool _isPlaceDone(ProgressStore progress, Place place) =>
+    place.stories.isNotEmpty && place.stories.every(progress.played);
+
 /// Computes [MeViewData] from [services] and optional overrides for contract
 /// members still pending in `coqui/requests/`.
+///
+/// The 7-day rolling window uses UTC calendar days from `services.clock.nowMs()`,
+/// matching `coqui_progress`'s UTC day keys for `streak` and `minutesOn`.
 MeViewData buildMeViewData({
   required Services services,
   double Function(DateTime day)? minutesOn,
@@ -219,32 +222,32 @@ MeViewData buildMeViewData({
   }
 
   final priorSix = [
-    for (var i = 0; i < weekBars.length - 1; i++)
-      '${weekBars[i].roundedMinutes}',
-  ].join(', ');
-  final todayRounded = weekBars.last.roundedMinutes;
-  final weekChartSemanticLabel =
-      'Minutes listened in the last 7 days: $priorSix, and $todayRounded so far today. Your goal is $goalMinutes a day.';
-
-  final places = course.places;
-  final firstUnfinished = places.indexWhere(
-    (place) =>
-        place.stories.isNotEmpty && !place.stories.every(progress.played),
+    for (var i = 0; i < weekBars.length - 1; i++) weekBars[i].roundedMinutes,
+  ];
+  final weekChartSemanticLabel = meWeekChartLabel(
+    priorSix: priorSix,
+    today: weekBars.last.roundedMinutes,
+    goal: goalMinutes,
   );
-  final hereIndex = places.isEmpty ? -1 : currentPlaceIndex(progress, places);
-  final currentPlace = hereIndex >= 0 ? places[hereIndex] : null;
+
+  // Single source of truth for both the header place and the place dashes.
+  final places = course.places;
+  final activeIndex = places.isEmpty ? -1 : currentPlaceIndex(progress, places);
+  final currentPlace = activeIndex >= 0 ? places[activeIndex] : null;
+  final hasActivePlace =
+      currentPlace != null &&
+      currentPlace.stories.isNotEmpty &&
+      !_isPlaceDone(progress, currentPlace);
 
   final placeDashes = <NocheDashState>[];
   var doneCount = 0;
   var toGoCount = 0;
   for (var i = 0; i < places.length; i++) {
     final place = places[i];
-    final isDone =
-        place.stories.isNotEmpty && place.stories.every(progress.played);
     final NocheDashState state;
-    if (i == firstUnfinished) {
+    if (hasActivePlace && i == activeIndex) {
       state = NocheDashState.current;
-    } else if (isDone) {
+    } else if (_isPlaceDone(progress, place)) {
       state = NocheDashState.done;
       doneCount++;
     } else {
@@ -254,13 +257,13 @@ MeViewData buildMeViewData({
     placeDashes.add(state);
   }
 
-  final String placeDashesSemanticLabel;
-  if (firstUnfinished >= 0) {
-    placeDashesSemanticLabel =
-        'Places: $doneCount done, on place ${places[firstUnfinished].n}, $toGoCount to go';
-  } else {
-    placeDashesSemanticLabel = 'Places: $doneCount done, $toGoCount to go';
-  }
+  final placeDashesSemanticLabel = hasActivePlace
+      ? mePlaceDashesActiveLabel(
+          done: doneCount,
+          currentNumber: currentPlace.n,
+          toGo: toGoCount,
+        )
+      : mePlaceDashesSummaryLabel(done: doneCount, toGo: toGoCount);
 
   final words = progress.words.toList(growable: false);
   final listeningGood = words

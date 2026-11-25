@@ -37,6 +37,15 @@ class _TenPlaceCourse extends FakeCourseCatalog {
   List<Place> get places => _places;
 }
 
+class _CustomPlacesCourse extends FakeCourseCatalog {
+  _CustomPlacesCourse(this._places);
+
+  final List<Place> _places;
+
+  @override
+  List<Place> get places => _places;
+}
+
 /// Seeds a learner matching the shape of `Noche-Yo.dc.html`:
 /// 212 total minutes, 6-day streak, 7 days of minutes `[28, 35, 30, 41, 36, 30, 12]`,
 /// goal 30, 2 places done (currently on place 3, La cocina), 96 words heard
@@ -254,9 +263,138 @@ void main() {
       expect(data.tracksReading, isTrue);
       expect(data.planName, 'Free');
     });
+
+    test(
+      'all places done marks every built place done with zero current dashes',
+      () {
+        final clock = FakeClock(_boardMondayUtcMs);
+        final course = _CustomPlacesCourse([
+          Place(id: 'p1', n: 1, name: 'Uno', en: 'One', stories: const ['s1']),
+          Place(id: 'p2', n: 2, name: 'Dos', en: 'Two', stories: const ['s2']),
+        ]);
+        final progress = FakeProgressStore(clock: clock);
+        progress.storyFinished(StoryResult(id: 's1'));
+        progress.storyFinished(StoryResult(id: 's2'));
+        final services = fakeServices(
+          progress: progress,
+          course: course,
+          clock: clock,
+        );
+        final data = buildMeViewData(services: services);
+        expect(data.placeDashes, [NocheDashState.done, NocheDashState.done]);
+        expect(data.placeDashesSemanticLabel, 'Places: 2 done, 0 to go');
+      },
+    );
+
+    test('empty-story places are skipped as current and stay notYet; header and orange dash agree', () {
+      final clock = FakeClock(_boardMondayUtcMs);
+      final course = _CustomPlacesCourse([
+        Place(id: 'p1', n: 1, name: 'Uno', en: 'One', stories: const ['s1']),
+        Place(id: 'p2', n: 2, name: 'Empty', en: 'Empty', stories: const []),
+        Place(id: 'p3', n: 3, name: 'Tres', en: 'Three', stories: const ['s3']),
+      ]);
+      final progress = FakeProgressStore(clock: clock);
+      progress.storyFinished(StoryResult(id: 's1'));
+      final services = fakeServices(
+        progress: progress,
+        course: course,
+        clock: clock,
+      );
+      final data = buildMeViewData(services: services);
+      expect(data.currentPlace?.n, 3);
+      expect(data.placeDashes, [
+        NocheDashState.done,
+        NocheDashState.notYet,
+        NocheDashState.current,
+      ]);
+      expect(
+        data.placeDashesSemanticLabel,
+        'Places: 1 done, on place 3, 1 to go',
+      );
+
+      // When all built places are done and trailing places are empty (like seed 'todo'),
+      // completed places remain done and empty places remain notYet with no current dash.
+      final todoFixture = fixture(seed: 'todo', nowMs: _boardMondayUtcMs);
+      final todoData = buildMeViewData(services: todoFixture.services);
+      expect(
+        todoData.placeDashes.where((s) => s == NocheDashState.current),
+        isEmpty,
+      );
+      expect(
+        todoData.placeDashes.where((s) => s == NocheDashState.done),
+        hasLength(3),
+      );
+      expect(todoData.placeDashesSemanticLabel, 'Places: 3 done, 7 to go');
+    });
+
+    test('7-day rolling window advances on UTC midnight boundaries', () {
+      final beforeMidnight = DateTime.utc(
+        2026,
+        11,
+        23,
+        23,
+        30,
+      ).millisecondsSinceEpoch;
+      final afterMidnight = DateTime.utc(
+        2026,
+        11,
+        24,
+        0,
+        30,
+      ).millisecondsSinceEpoch;
+
+      final fBefore = fixture(seed: 'vacio', nowMs: beforeMidnight);
+      final beforeData = buildMeViewData(services: fBefore.services);
+      expect(beforeData.weekBars.map((b) => b.label).toList(), [
+        'T',
+        'W',
+        'T',
+        'F',
+        'S',
+        'S',
+        'Today',
+      ]);
+      expect(utcIsoDay(beforeData.weekBars.last.dayUtc), '2026-11-23');
+
+      final fAfter = fixture(seed: 'vacio', nowMs: afterMidnight);
+      final afterData = buildMeViewData(services: fAfter.services);
+      expect(afterData.weekBars.map((b) => b.label).toList(), [
+        'W',
+        'T',
+        'F',
+        'S',
+        'S',
+        'M',
+        'Today',
+      ]);
+      expect(utcIsoDay(afterData.weekBars.last.dayUtc), '2026-11-24');
+    });
   });
 
   group('N4.7 Me screen widget behaviour', () {
+    testWidgets(
+      'at A2 and above, Reading shows "Open now." without a fake progress count',
+      (tester) async {
+        final f = _weekLearnerFixture();
+        await _pumpMeWithChrome(tester, services: f.services, level: 'A2');
+
+        expect(find.text('A2 · place 3 of 10'), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('me-skill-reading')),
+            matching: find.text('Open now.'),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('me-skill-reading')),
+            matching: find.byType(NocheProgressBar),
+          ),
+          findsNothing,
+        );
+      },
+    );
     testWidgets(
       'new learner hides streak and freeze line, shows 0s and A1 place 1',
       (tester) async {
