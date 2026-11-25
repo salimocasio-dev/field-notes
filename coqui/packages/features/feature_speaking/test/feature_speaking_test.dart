@@ -283,4 +283,4 @@ void main() {
 }
 
 /// The normalised text, as `normalize` gives it.
-String normalizeText(String s) => normalize(s);
+String normalizeText(String s) => Language.spanish.normalize(s);

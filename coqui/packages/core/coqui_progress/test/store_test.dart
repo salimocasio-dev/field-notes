@@ -435,4 +435,171 @@ void main() {
       },
     );
   });
+
+  group('finished calls (CallProgressStore)', () {
+    Future<int> countEvents(PalabrasStore s, void Function() act) async {
+      var n = 0;
+      final sub = s.changes.listen((_) => n++);
+      act();
+      await pumpEventQueue();
+      await sub.cancel();
+      return n;
+    }
+
+    test('new learner starts with no finished calls and no llamadas key', () {
+      final s = _store();
+      expect(s, isA<CallProgressStore>());
+      expect(s.callDone('casa'), isFalse);
+      final ProgressStore p = s;
+      expect(p.callDone('casa'), isFalse);
+      expect(s.raw.containsKey('llamadas'), isFalse);
+      expect(s.export(), isNot(contains('llamadas')));
+    });
+
+    test('markCallDone marks call done, saves once, fires changes once, and writes no word records', () async {
+      final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+      final clock = SettableClock(_t0);
+      final s = _store(kv: kv, clock: clock);
+
+      final events = await countEvents(s, () => s.markCallDone('casa'));
+
+      expect(s.callDone('casa'), isTrue);
+      final ProgressStore p = s;
+      expect(p.callDone('casa'), isTrue);
+      expect(s.callDone('casa_agua'), isFalse);
+      expect(s.callDone('parque'), isFalse);
+      expect(s.raw['llamadas'], {'casa': _t0});
+      expect(kv.writes, 1);
+      expect(events, 1);
+      expect(s.words, isEmpty);
+    });
+
+    test(
+      'markCallDone is idempotent and ignores empty/whitespace IDs',
+      () async {
+        final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+        final clock = SettableClock(_t0);
+        final s = _store(kv: kv, clock: clock);
+
+        expect(await countEvents(s, () => s.markCallDone('')), 0);
+        expect(await countEvents(s, () => s.markCallDone('  \t\n ')), 0);
+        expect(kv.writes, 0);
+        expect(s.raw.containsKey('llamadas'), isFalse);
+        expect(s.callDone(''), isFalse);
+
+        expect(await countEvents(s, () => s.markCallDone('casa')), 1);
+        expect(kv.writes, 1);
+
+        clock.now = _t0 + 5000;
+        expect(await countEvents(s, () => s.markCallDone('casa')), 0);
+        expect(kv.writes, 1);
+        expect(s.raw['llamadas'], {'casa': _t0});
+      },
+    );
+
+    test('markCallDone works when clock is 0 and stays idempotent', () {
+      final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+      final s = _store(kv: kv, clock: SettableClock(0));
+
+      s.markCallDone('casa');
+      expect(s.callDone('casa'), isTrue);
+      expect(kv.writes, 1);
+
+      s.markCallDone('casa');
+      expect(kv.writes, 1);
+    });
+
+    test('handles malformed stored llamadas and recovers cleanly', () {
+      for (final rawLlamadas in [null, 0, '"bad"', '[]']) {
+        final kv = MemoryKeyValueStore(
+          stored: '{"llamadas":$rawLlamadas}',
+          key: PalabrasStore.storageKey,
+        );
+        final s = _store(kv: kv, clock: SettableClock(_t0));
+        expect(s.callDone('casa'), isFalse);
+
+        s.markCallDone('casa');
+        expect(s.callDone('casa'), isTrue);
+        expect(s.raw['llamadas'], {'casa': _t0});
+      }
+    });
+
+    test('reads pre-stored llamadas with mixed truthy and falsy values', () {
+      final s = _store(
+        stored: '{"llamadas":{"casa":1,"casa_agua":true,"casa_llaves":0,"parque":false}}',
+      );
+      expect(s.callDone('casa'), isTrue);
+      expect(s.callDone('casa_agua'), isTrue);
+      expect(s.callDone('casa_llaves'), isFalse);
+      expect(s.callDone('parque'), isFalse);
+      expect(s.callDone('nada'), isFalse);
+    });
+
+    test('finished calls survive restart from KeyValueStore', () {
+      final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+      final clock = SettableClock(_t0);
+      final first = _store(kv: kv, clock: clock);
+      first.markCallDone('casa');
+      clock.now = _t0 + 1000;
+      first.markCallDone('casa_agua');
+
+      final restarted = _store(kv: kv, clock: clock);
+      expect(restarted.callDone('casa'), isTrue);
+      expect(restarted.callDone('casa_agua'), isTrue);
+      expect(restarted.callDone('parque'), isFalse);
+    });
+
+    test('legacy stored JSON without llamadas deserializes cleanly and keeps llamadas absent on unrelated saves', () {
+      final kv = MemoryKeyValueStore(
+        stored: '{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":2,"v":1}',
+        key: PalabrasStore.storageKey,
+      );
+      final s = _store(kv: kv);
+      expect(s.callDone('casa'), isFalse);
+      s.addMinutes(1);
+      expect(s.raw.containsKey('llamadas'), isFalse);
+      expect(kv.data[PalabrasStore.storageKey], isNot(contains('llamadas')));
+    });
+
+    test('export, import, and reset handle finished calls cleanly', () {
+      final kvA = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+      final a = _store(kv: kvA);
+      a.markCallDone('casa');
+      a.markCallDone('casa_agua');
+
+      final kvB = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+      final b = _store(kv: kvB);
+      b.import(a.export());
+      expect(b.callDone('casa'), isTrue);
+      expect(b.callDone('casa_agua'), isTrue);
+      expect(b.callDone('parque'), isFalse);
+
+      final bRestarted = _store(kv: kvB);
+      expect(bRestarted.callDone('casa'), isTrue);
+      expect(bRestarted.callDone('casa_agua'), isTrue);
+
+      // Importing legacy JSON without llamadas clears finished calls.
+      bRestarted.import('{"palabras":{},"v":1}');
+      expect(bRestarted.callDone('casa'), isFalse);
+      expect(bRestarted.raw.containsKey('llamadas'), isFalse);
+
+      // Invalid JSON throws FormatException and preserves finished calls.
+      bRestarted.markCallDone('parque');
+      expect(() => bRestarted.import('{bad json'), throwsFormatException);
+      expect(bRestarted.callDone('parque'), isTrue);
+
+      // Reset clears finished calls immediately and after restart without llamadas key.
+      bRestarted.reset();
+      expect(bRestarted.callDone('parque'), isFalse);
+      expect(bRestarted.raw.containsKey('llamadas'), isFalse);
+      expect(
+        kvB.data[PalabrasStore.storageKey],
+        '{"palabras":{},"dias":{},"cuentos":{},'
+        '"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1}',
+      );
+      final bAfterReset = _store(kv: kvB);
+      expect(bAfterReset.callDone('parque'), isFalse);
+      expect(bAfterReset.raw.containsKey('llamadas'), isFalse);
+    });
+  });
 }

@@ -22,6 +22,7 @@ Word records and the scheduler. Pure Dart.
 - `lib/coqui_progress.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
 - It exports `PalabrasStore`: the `ProgressStore` of page 12, section 2, on a `KeyValueStore` and a `Clock` (order 16, a port of historia/palabras.js). `lib/src/palabras_store.dart` is the port, function by function with the old names in comments; `lib/src/js.dart` holds the JavaScript behaviours it leans on (truthiness, `JSON.stringify` with numbers written as JavaScript writes them, `Object.assign`).
+- `PalabrasStore` also implements `CallProgressStore` (`callDone` / `markCallDone`, persisted under per-language `db.llamadas`).
 - The store is the JSON object of palabras.js kept as a map, so unknown keys and half-empty records stay as they are; `WordRecord` and the other typed records are copies made from it.
 
 ## Run and test it alone

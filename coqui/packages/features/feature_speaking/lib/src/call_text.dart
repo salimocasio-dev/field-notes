@@ -6,16 +6,22 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 // llamada.js: dice
 /// Does the normalised [text] hold [word] (or phrase) on word boundaries? [text] is already `normalize`d
 /// (one space each side); the word is normalised here and an empty one never matches.
-bool dice(String text, String word) {
-  final w = normalize(word);
+bool dice(String text, String word, {Language? language}) {
+  final lang = language ?? Language.spanish;
+  final w = lang.normalize(word);
   return w.trim() != '' && text.contains(w);
 }
 
 // llamada.js: adios
 /// A goodbye, from either side: [text] holds one of [goodbyeWords] (`course.goodbyeWords`).
-bool isGoodbye(String text, Iterable<String> goodbyeWords) {
-  final n = normalize(text);
-  return goodbyeWords.any((g) => dice(n, g));
+bool isGoodbye(
+  String text,
+  Iterable<String> goodbyeWords, {
+  Language? language,
+}) {
+  final lang = language ?? Language.spanish;
+  final n = lang.normalize(text);
+  return goodbyeWords.any((g) => dice(n, g, language: lang));
 }
 
 // llamada.js: mmss
@@ -26,7 +32,7 @@ String mmss(double seconds) {
 }
 
 /// What the call shows and sends. English copied from llamada.js and app.html (v=39); the two
-/// messages to Danny are the page's protocol with the agent (page 05, "How the page and Danny talk"),
+/// messages to the partner are the page's protocol with the agent (page 05, "How the page and Danny talk"),
 /// not text for the learner.
 abstract final class CallTexts {
   static const startCall = 'Start call';
@@ -34,11 +40,9 @@ abstract final class CallTexts {
   /// The Hablar hero's button for a call already done once (order 25).
   static const callAgain = 'Call again';
   static const calling = 'Calling…';
-  static const danny = 'Danny';
   static const yourTurn = 'Your turn';
   static const oneMoment = 'One moment';
   static const help = 'Help';
-  static const helpNote = 'Danny will say it again, slowly.';
   static const done = 'Call done';
   static const micOff =
       'The microphone is off. Allow it in your browser to call.';
@@ -47,18 +51,22 @@ abstract final class CallTexts {
   static const libraryFailed =
       'The voice part did not load. Check your connection and try again.';
 
+  static String helpNoteFor(String partnerName) =>
+      '$partnerName will say it again, slowly.';
+
   /// The grey line on a Hablar call whose call this build cannot place (`call.available` is false): the
   /// words the orchestrator decided. v=39 has no such case (its build always could). The module's `callsLater`
   /// overrides it.
-  static const callsLater = 'Calls with Danny open later.';
+  static String callsLaterFor(String partnerName) =>
+      'Calls with $partnerName open later.';
 
-  /// "Call Danny", the call screen's dialog label. app.html:458 (since order 25 no Hablar card says it).
-  static const callDanny = 'Call Danny';
+  /// `"Call <partner>"`, the call screen's dialog label. app.html:458 (since order 25 no Hablar card says it).
+  static String callPartner(String partnerName) => 'Call $partnerName';
 
-  /// What the page sends Danny when the learner taps Help. llamada.js: ayuda
+  /// What the page sends the partner when the learner taps Help. llamada.js: ayuda
   static const sendHelp = '(ayuda)';
 
-  /// What the page sends Danny to end the call. llamada.js: enviaFin
+  /// What the page sends the partner to end the call. llamada.js: enviaFin
   static const sendEnd = '(fin)';
 
   /// `About N min`, the length on a Hablar call (order 25).
