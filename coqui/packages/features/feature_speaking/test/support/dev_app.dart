@@ -264,6 +264,7 @@ class _SpeakingDevAppState extends State<SpeakingDevApp> {
     title: 'Coqui speaking',
     theme: coquiTheme(),
     home: Scaffold(
+      backgroundColor: NocheColors.ground,
       body: FutureBuilder<void>(
         future: loading,
         builder: (context, snap) {
@@ -273,15 +274,21 @@ class _SpeakingDevAppState extends State<SpeakingDevApp> {
           final r = route;
           final screen = r == null ? null : module.screenFor(r, services);
           if (screen != null) return screen;
+          final lang = services.course.language;
           return Stack(
             fit: StackFit.expand,
             children: [
               module.tab(services)!.builder(context),
               if (q['bar'] != '0')
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: CoquiTabBar(
-                    selectedId: CoquiTabs.speakId,
+                PositionedDirectional(
+                  start: 0,
+                  end: 0,
+                  bottom: 0,
+                  child: NocheTabBar(
+                    selectedId: NocheTabs.speak,
+                    tabNames: lang.tabNames,
+                    script: lang.script,
+                    languageCode: lang.code,
                     onTap: (_) {},
                   ),
                 ),
