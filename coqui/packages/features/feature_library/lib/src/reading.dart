@@ -23,7 +23,45 @@ List<String> readingLines(String body) => [
 
 const int readingPageSize = 3;
 
+/// Fallback ear stage threshold until request 87 (`LanguageProgressStore.stageMax`)
+/// lands in `coqui_contracts`.
+const int defaultStageMax = 4;
+
 const personalBookPrefix = 'biblioteca-';
+
+class ReadingChapter {
+  const ReadingChapter({
+    this.label,
+    required this.title,
+    required this.paragraphs,
+  });
+
+  /// Only when the book itself has a chapter label; never invented.
+  final String? label;
+  final String title;
+  final List<String> paragraphs;
+
+  Map<String, Object> toJson() => {
+    if (label != null && label!.isNotEmpty) 'label': label!,
+    'title': title,
+    'paragraphs': paragraphs,
+  };
+
+  static ReadingChapter? fromJson(Object? value) {
+    if (value case {
+      'title': final String title,
+      'paragraphs': final List rawParagraphs,
+    }) {
+      final rawLabel = value['label'];
+      return ReadingChapter(
+        label: rawLabel is String && rawLabel.isNotEmpty ? rawLabel : null,
+        title: title,
+        paragraphs: rawParagraphs.whereType<String>().toList(),
+      );
+    }
+    return null;
+  }
+}
 
 class ReadingText {
   const ReadingText({
@@ -31,18 +69,22 @@ class ReadingText {
     required this.title,
     required this.body,
     required this.generated,
+    this.chapters,
   });
 
   final String id;
   final String title;
   final String body;
   final bool generated;
+  final List<ReadingChapter>? chapters;
 
   Map<String, Object> toJson() => {
     'id': id,
     'title': title,
     'body': body,
     'generated': generated,
+    if (chapters != null)
+      'chapters': [for (final chapter in chapters!) chapter.toJson()],
   };
 
   static ReadingText? fromJson(Object? value) {
@@ -54,11 +96,16 @@ class ReadingText {
           'generated': final bool generated,
         }
         when id.startsWith(personalBookPrefix)) {
+      final rawChapters = value['chapters'];
+      final parsedChapters = rawChapters is List
+          ? rawChapters.map(ReadingChapter.fromJson).nonNulls.toList()
+          : null;
       return ReadingText(
         id: id,
         title: title,
         body: body,
         generated: generated,
+        chapters: parsedChapters,
       );
     }
     return null;
@@ -71,12 +118,20 @@ class ReadingPlace {
     this.words = const {},
     this.openedAt = 0,
     this.finished = false,
+    this.totalPages,
+    this.chapterIndex,
+    this.paragraphIndex,
+    this.charOffset,
   });
 
   final int page;
   final Set<String> words;
   final int openedAt;
   final bool finished;
+  final int? totalPages;
+  final int? chapterIndex;
+  final int? paragraphIndex;
+  final int? charOffset;
 }
 
 class ReadingStore {
@@ -109,6 +164,7 @@ class ReadingStore {
     required String title,
     required String body,
     required bool generated,
+    List<ReadingChapter>? chapters,
   }) async {
     final previous = texts();
     final text = ReadingText(
@@ -116,6 +172,7 @@ class ReadingStore {
       title: title,
       body: body,
       generated: generated,
+      chapters: chapters,
     );
     await storage.write('texts', jsonEncode([text, ...previous]));
     return text;
@@ -127,11 +184,29 @@ class ReadingStore {
       final rawOpened = saved['openedAt'];
       final openedAt = rawOpened is int ? rawOpened : 0;
       final finished = saved['finished'] == true;
+      final rawTotal = saved['totalPages'];
+      final totalPages = rawTotal is int && rawTotal > 0 ? rawTotal : null;
+      final rawChapter = saved['chapterIndex'];
+      final chapterIndex = rawChapter is int && rawChapter >= 0
+          ? rawChapter
+          : null;
+      final rawParagraph = saved['paragraphIndex'];
+      final paragraphIndex = rawParagraph is int && rawParagraph >= 0
+          ? rawParagraph
+          : null;
+      final rawCharOffset = saved['charOffset'];
+      final charOffset = rawCharOffset is int && rawCharOffset >= 0
+          ? rawCharOffset
+          : null;
       return ReadingPlace(
         page: page,
         words: words.whereType<String>().toSet(),
         openedAt: openedAt,
         finished: finished,
+        totalPages: totalPages,
+        chapterIndex: chapterIndex,
+        paragraphIndex: paragraphIndex,
+        charOffset: charOffset,
       );
     }
     return const ReadingPlace();
@@ -144,6 +219,10 @@ class ReadingStore {
       'words': place.words.toList(),
       if (place.openedAt > 0) 'openedAt': place.openedAt,
       if (place.finished) 'finished': true,
+      if (place.totalPages != null) 'totalPages': place.totalPages,
+      if (place.chapterIndex != null) 'chapterIndex': place.chapterIndex,
+      if (place.paragraphIndex != null) 'paragraphIndex': place.paragraphIndex,
+      if (place.charOffset != null) 'charOffset': place.charOffset,
     }),
   );
 
@@ -156,6 +235,10 @@ class ReadingStore {
         words: existing.words,
         openedAt: now,
         finished: false,
+        totalPages: existing.totalPages,
+        chapterIndex: existing.chapterIndex,
+        paragraphIndex: existing.paragraphIndex,
+        charOffset: existing.charOffset,
       ),
     );
   }
@@ -248,6 +331,20 @@ bool tracksReading(ProgressStore progress) {
   ReadingText text,
   ReadingPlace place,
 ) {
+  final savedTotal = place.totalPages;
+  if (savedTotal != null && savedTotal > 0) {
+    final clampedIndex = place.page.clamp(0, savedTotal - 1);
+    final totalWords = readingWords(text.body).length;
+    final remainingWords = totalWords <= 0
+        ? 0
+        : ((totalWords * (savedTotal - clampedIndex)) / savedTotal).ceil();
+    final minutesLeft = remainingWords <= 0 ? 1 : (remainingWords + 119) ~/ 120;
+    return (
+      page: clampedIndex + 1,
+      totalPages: savedTotal,
+      minutesLeft: minutesLeft,
+    );
+  }
   final lines = readingLines(text.body);
   final totalPages = lines.isEmpty
       ? 1
