@@ -19,6 +19,7 @@ class _FakeSpeechPlugin implements SpeechPlugin {
   bool throwOnDevice = false;
   bool throwAlways = false;
   String? errorOnDeviceMsg;
+  String? errorAlwaysMsg;
   bool emitDoneAfterOnDeviceError = false;
 
   @override
@@ -45,6 +46,12 @@ class _FakeSpeechPlugin implements SpeechPlugin {
     }
     if (throwOnDevice && listenOptions?.onDevice == true) {
       throw ListenFailedException('on device failed');
+    }
+    if (errorAlwaysMsg != null) {
+      scheduleMicrotask(() {
+        onError?.call(SpeechRecognitionError(errorAlwaysMsg!, true));
+      });
+      return;
     }
     if (errorOnDeviceMsg != null && listenOptions?.onDevice == true) {
       scheduleMicrotask(() {
@@ -193,5 +200,21 @@ void main() {
       expect(res.error, isNull);
       expect(plugin.listenCalls.map((o) => o!.onDevice), [true, false]);
     });
+
+    test(
+      'retries only once even when fallback also reports an error',
+      () async {
+        final plugin = _FakeSpeechPlugin()
+          ..errorAlwaysMsg = 'error_language_unavailable';
+        final phone = PhoneSpeech(plugin: plugin);
+        final listener = phone.listener();
+
+        final res = await listener
+            .listen(locale: 'es-AR', limit: const Duration(seconds: 6))
+            .result;
+        expect(res.error, 'language-not-supported');
+        expect(plugin.listenCalls.map((o) => o!.onDevice), [true, false]);
+      },
+    );
   });
 }

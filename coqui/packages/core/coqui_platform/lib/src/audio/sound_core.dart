@@ -200,8 +200,7 @@ class SoundCore {
 
     _ends[s] = end;
     s.onended = () => end(true);
-    final dur = math.max(.05, cl.t1 - cl.t0);
-    s.start(0, cl.t0, rate == 1.0 ? dur : dur / rate);
+    s.start(0, cl.t0, math.max(.05, cl.t1 - cl.t0));
     if (limit != null) {
       lim = _startTimer(limit, () {
         try {

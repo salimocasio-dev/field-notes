@@ -151,29 +151,50 @@ void main() {
       expect(c.buf.duration, closeTo(1, .01));
     });
 
-    test('playAtRate sets playbackRate on the Web Audio source', () async {
-      final ctx = web.OfflineAudioContext(1.toJS, 44100, 44100);
-      final core = SoundCore(() => WebAudioGraph(ctx));
-      final wavBytes = _wav(44100, 0.2);
-      final p = GraphClipPlayer(
-        core: core,
-        clipInfo: (id) => ClipInfo(
-          id: id,
-          who: 'narr',
-          text: '',
-          startMs: 0,
-          endMs: 100,
-          url: 'audio/$id.wav',
-        ),
-        base: Uri.parse('https://example.test/'),
-        fetch: (_) async => wavBytes,
-      );
-      expect(await p.preload(['a']), isEmpty);
-      unawaited(p.playAtRate('a', rate: 0.75));
-      await Future<void>.delayed(Duration.zero);
-      final rendered = await ctx.startRendering().toDart;
-      expect(rendered.length, 44100);
-    });
+    test(
+      'playAtRate slows playback in Web Audio without reading past endMs',
+      () async {
+        const sr = 22050;
+        final ctx = web.OfflineAudioContext(1.toJS, sr, sr);
+        final core = SoundCore(() => WebAudioGraph(ctx));
+        final p = GraphClipPlayer(
+          core: core,
+          clipInfo: (id) => ClipInfo(
+            id: id,
+            who: 'narr',
+            text: '',
+            startMs: 0,
+            endMs: 400,
+            url: 'audio/$id.wav',
+          ),
+          base: Uri.parse('https://example.test/'),
+          fetch: (_) async => _wav(sr, 1.0),
+        );
+        expect(await p.preload(['a']), isEmpty);
+        // Overwrite buffer: first 0.4 s = +0.5, remaining 0.6 s = -0.5.
+        final buf = core.clips['a']!.buf;
+        final samples = Float32List(buf.length);
+        final boundary = (0.4 * sr).round();
+        for (var i = 0; i < samples.length; i++) {
+          samples[i] = i < boundary ? 0.5 : -0.5;
+        }
+        buf.fill(0, samples);
+
+        // At rate 0.5, 0.4 s of buffer plays for ~0.8 s without crossing into -0.5.
+        unawaited(p.playAtRate('a', rate: 0.5));
+        await Future<void>.delayed(Duration.zero);
+        final rendered = await ctx.startRendering().toDart;
+        final out = rendered.getChannelData(0).toDart;
+        var positiveCount = 0;
+        var negativeCount = 0;
+        for (var i = 0; i < out.length; i++) {
+          if (out[i] > 0.1) positiveCount++;
+          if (out[i] < -0.1) negativeCount++;
+        }
+        expect(negativeCount, 0);
+        expect(positiveCount, greaterThan((0.7 * sr).round()));
+      },
+    );
 
     test('a clip the browser cannot decode, and a clip with no ClipInfo, are reported; a retry tries again', () async {
       final core = SoundCore(

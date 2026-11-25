@@ -544,7 +544,7 @@ void main() {
 
   group('playback rate (0.75, 0.9, 1.0)', () {
     test(
-      'GraphClipPlayer sets playbackRate and scales duration on non-1.0 rates',
+      'GraphClipPlayer sets playbackRate and keeps buffer duration unchanged',
       () async {
         final r = _Rig();
         await r.player.preload(['ab_bien_y_tu']);
@@ -568,9 +568,9 @@ void main() {
           r.log,
           containsAllInOrder([
             ['source1.playbackRate', '=', 0.75],
-            ['source1', 'start', 0.0, 0.198, (4.462 - 0.198) / 0.75],
+            ['source1', 'start', 0.0, 0.198, 4.462 - 0.198],
             ['source2.playbackRate', '=', 0.9],
-            ['source2', 'start', 0.0, 0.198, (4.462 - 0.198) / 0.9],
+            ['source2', 'start', 0.0, 0.198, 4.462 - 0.198],
             ['source3', 'start', 0.0, 0.198, 4.462 - 0.198],
           ]),
         );
