@@ -404,19 +404,28 @@ class RepasoPlanner {
   /// The word's ¿Qué oyes? sentences he may get, in the fixed order: from finished stories, with two fair wrong
   /// tiles among the words he has met.
   ///
+  /// For Latin scripts (`Latn`, including Spanish), native sentences delegate directly to `serving.hearSentences` so
+  /// this stays 100% aligned with `RepasoServing.canServe` used by Map and Palabras. For non-Latin scripts (e.g.
+  /// `Arab`), where `coqui_contracts`'s `RepasoServing` still defaults to Spanish tokenisation, this uses
+  /// [wrongTileChoices] with [language] until
+  /// `coqui/requests/90-feature-review-needs-coqui-contracts-repaso-serving-language.md` lands (known non-Latin gap:
+  /// Map/Palabras counts will align once `RepasoServing` accepts [Language]).
+  ///
   /// Under `#10`, when a word has no dedicated single-word picture asset ([cualLines] is empty) and no native
   /// hearing sentences, its existing `serving.cualLines(w)` audio lines are served as text-only `¿Qué oyes?`
   /// sentences (no pictures). This keeps [servable] 100% aligned with `RepasoServing.canServe` used by Map and
   /// Palabras so due words like `cual`-only entries are always cleared and never stuck as perpetually due.
   List<RepasoSentence> hearSentences(RepasoWord w) {
-    final native = [
-      for (final k in w.sentences)
-        if (data.sentences[k] case final s
-            when s.forHearing &&
-                finished(s.story) &&
-                wrongTileChoices(w, s).length >= 2)
-          s,
-    ];
+    final native = language.script == 'Latn'
+        ? serving.hearSentences(w)
+        : [
+            for (final k in w.sentences)
+              if (data.sentences[k] case final s
+                  when s.forHearing &&
+                      finished(s.story) &&
+                      wrongTileChoices(w, s).length >= 2)
+                s,
+          ];
     if (native.isNotEmpty) return native;
     if (cualLines(w).isNotEmpty) return const [];
     final pairFallback = serving.cualLines(w);
@@ -457,9 +466,20 @@ class RepasoPlanner {
   /// has met, not in the sentence (none of their words is a word of it), not in its forbidden list, not in the
   /// `no_juntas` of the target or of any tracked word in the sentence. The two picked are also apart from each other.
   ///
-  /// Uses [language] directly rather than `serving.wrongTileChoices` until `coqui_contracts`'s `RepasoServing`
-  /// accepts a [Language] (see `coqui/requests/90-feature-review-needs-coqui-contracts-repaso-serving-language.md`).
+  /// Delegates directly to `serving.wrongTileChoices` for Latin scripts (`Latn`). For non-Latin scripts, delegates to
+  /// [wrongTileChoicesForLanguage] until `coqui_contracts`'s `RepasoServing` accepts [Language]
+  /// (`coqui/requests/90-feature-review-needs-coqui-contracts-repaso-serving-language.md`).
   List<RepasoWord> wrongTileChoices(
+    RepasoWord target,
+    RepasoSentence s, {
+    bool singleWords = false,
+  }) => language.script == 'Latn'
+      ? serving.wrongTileChoices(target, s, singleWords: singleWords)
+      : wrongTileChoicesForLanguage(target, s, singleWords: singleWords);
+
+  /// Language-aware wrong-tile filter matching `RepasoServing.wrongTileChoices` rule-for-rule, using [language]
+  /// folding for scripts that `RepasoServing` does not yet support.
+  List<RepasoWord> wrongTileChoicesForLanguage(
     RepasoWord target,
     RepasoSentence s, {
     bool singleWords = false,

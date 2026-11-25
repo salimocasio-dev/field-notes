@@ -498,18 +498,21 @@ class RepasoScreenState extends State<RepasoScreen> {
       c.dim ? TileLook.dim : (c.pre ? TileLook.waiting : TileLook.normal);
 
   /// A picture of a picture game with the sign inside its bottom-end corner when it is the one to touch: 12 px from
-  /// both edges, so that it never covers what the picture is about.
+  /// both edges, so that it never covers what the picture is about. Pictures stay unmirrored LTR.
   Widget _signed(Widget child, bool sign) => sign
-      ? Stack(
-          clipBehavior: Clip.none,
-          children: [
-            child,
-            PositionedDirectional(
-              end: TouchSign.pictureInset,
-              bottom: TouchSign.pictureInset,
-              child: TouchSign(still: _still),
-            ),
-          ],
+      ? Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              child,
+              PositionedDirectional(
+                end: TouchSign.pictureInset,
+                bottom: TouchSign.pictureInset,
+                child: TouchSign(still: _still),
+              ),
+            ],
+          ),
         )
       : child;
 
@@ -1121,16 +1124,23 @@ class _RepasoMicState extends State<RepasoMic>
     );
     if (state != MicState.listening) {
       if (!widget.cross) return disc;
-      // the X badge sits on the disc's rim at the upper end; it takes no room
+      // the X badge sits on the disc's rim at the upper-right (LTR); it takes no room
       return SizedBox(
         width: CoquiMetrics.startDisc,
         height: CoquiMetrics.startDisc,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            disc,
-            const PositionedDirectional(end: -4, top: -4, child: WrongBadge()),
-          ],
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              disc,
+              const PositionedDirectional(
+                end: -4,
+                top: -4,
+                child: WrongBadge(),
+              ),
+            ],
+          ),
         ),
       );
     }

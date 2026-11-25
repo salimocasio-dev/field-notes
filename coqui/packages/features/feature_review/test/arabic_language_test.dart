@@ -19,6 +19,7 @@ import 'package:material_ui/material_ui.dart';
 import '../tool/support/scripted_clips.dart';
 import '../tool/support/virtual_time.dart';
 import 'support/recording_store.dart';
+import 'support/repaso_course.dart';
 import 'support/repaso_screen_rig.dart';
 
 const int _now = 1795312800001;
@@ -297,6 +298,134 @@ void main() {
       },
     );
   });
+
+  group(
+    'Spanish parity (course.language vs RepasoServing and legacy rules)',
+    () {
+      test('foldedTokens matches repasoTokens on every realRepaso word, sentence, and punctuation edge case', () {
+        for (final w in realRepaso.words) {
+          expect(
+            foldedTokens(w.word, language: Language.spanish),
+            repasoTokens(w.word),
+            reason: w.word,
+          );
+        }
+        for (final s in realRepaso.sentences) {
+          expect(
+            foldedTokens(s.text, language: Language.spanish),
+            repasoTokens(s.text),
+            reason: s.clip,
+          );
+        }
+        for (final sample in const [
+          '¡Hola, Abuela!',
+          '¿Cómo estás? —Bien, ¡gracias!',
+          "d'agua auto-bus 123 niño pingüino",
+          'el bebé bebe café',
+          '   ',
+        ]) {
+          expect(
+            foldedTokens(sample, language: Language.spanish),
+            repasoTokens(sample),
+            reason: sample,
+          );
+        }
+      });
+
+      test('tileForm matches legacy Spanish lower-case strip rule on every realRepaso word and edge cases', () {
+        const allowed = '0123456789abcdefghijklmnopqrstuvwxyzáéíóúüñ ';
+        String legacyTileForm(String w) {
+          final out = StringBuffer();
+          for (final ch in w.toLowerCase().split('')) {
+            if (allowed.contains(ch)) out.write(ch);
+          }
+          return out.toString().trim();
+        }
+
+        for (final w in realRepaso.words) {
+          expect(
+            RepasoPlanner.tileForm(w.word, language: Language.spanish),
+            legacyTileForm(w.word),
+            reason: w.word,
+          );
+        }
+        for (final (input, expected) in const [
+          ('¡Hola!', 'hola'),
+          ('¿Qué?', 'qué'),
+          ('adiós', 'adiós'),
+          ('no hay', 'no hay'),
+          ('pingüino 2', 'pingüino 2'),
+          ('¡Sí!', 'sí'),
+        ]) {
+          expect(
+            RepasoPlanner.tileForm(input, language: Language.spanish),
+            expected,
+            reason: input,
+          );
+          expect(legacyTileForm(input), expected, reason: input);
+        }
+      });
+
+      test('wrongTileChoices and wrongTileChoicesForLanguage agree 100% with RepasoServing across realRepaso', () {
+        final course = RepasoTestCourse();
+        final progress = FakeProgressStore(
+          clock: FakeClock(curseNow),
+          json: everythingJson(realRepaso),
+        );
+        final serving = repasoServing(course, progress)!;
+        final planner = RepasoPlanner(
+          data: realRepaso,
+          progress: progress,
+          pairs: course.pairs,
+          rng: Mulberry32(7),
+          language: Language.spanish,
+        );
+        var checked = 0;
+        for (final w in realRepaso.words) {
+          for (final k in w.sentences) {
+            final s = realRepaso.sentences[k];
+            if (!s.forHearing && !s.forBuilding) continue;
+            checked++;
+            for (final singleWords in const [false, true]) {
+              final expected = [
+                for (final m in serving.wrongTileChoices(
+                  w,
+                  s,
+                  singleWords: singleWords,
+                ))
+                  m.word,
+              ];
+              expect(
+                [
+                  for (final m in planner.wrongTileChoices(
+                    w,
+                    s,
+                    singleWords: singleWords,
+                  ))
+                    m.word,
+                ],
+                expected,
+                reason: '${w.word}/${s.clip}/single=$singleWords (delegated)',
+              );
+              expect(
+                [
+                  for (final m in planner.wrongTileChoicesForLanguage(
+                    w,
+                    s,
+                    singleWords: singleWords,
+                  ))
+                    m.word,
+                ],
+                expected,
+                reason: '${w.word}/${s.clip}/single=$singleWords (language)',
+              );
+            }
+          }
+        }
+        expect(checked, greaterThan(1400));
+      });
+    },
+  );
 
   group('Arabic RepasoSession (logic)', () {
     test('plans Arabic Hear/Build/Match/Say items and uses ar-SA recognitionLocale in Dilo', () async {
