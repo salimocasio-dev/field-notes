@@ -17,12 +17,12 @@ Future<int> playFromToday(TestApp app) async {
   final tester = app.tester;
   await app.tap(findMapUpNextAction());
   await app.until(
-    () => find.byType(LessonStartButton).evaluate().isNotEmpty,
+    () => findStoryStartButton().evaluate().isNotEmpty,
     what: 'the story\'s start disc',
   );
   expect(app.lessonShown, isTrue);
   expect(find.byType(NocheTabBar), findsNothing);
-  await app.tap(find.byType(LessonStartButton));
+  await app.tap(findStoryStartButton());
   final pic = tester.getRect(find.byType(PixelView));
   final points = <Offset>[
     for (var j = 0; j < 9; j++)
@@ -121,10 +121,10 @@ void main() {
           speechAvailable: false,
         );
         await app.until(
-          () => find.byType(LessonStartButton).evaluate().isNotEmpty,
+          () => findStoryStartButton().evaluate().isNotEmpty,
           what: 'the start disc',
         );
-        await app.tap(find.byType(LessonStartButton));
+        await app.tap(findStoryStartButton());
         int? at;
         for (var t = 0; t < 10000; t += 20) {
           await app.advance(20);
@@ -172,7 +172,7 @@ void main() {
         await app.open(stored: seed('curso'), location: '/cuento/$id');
         if (convertedScenes.contains(scene)) {
           await app.until(
-            () => find.byType(LessonStartButton).evaluate().isNotEmpty,
+            () => findStoryStartButton().evaluate().isNotEmpty,
             what:
                 '$id: the story\'s start disc (its scene $scene is converted)',
           );
