@@ -253,13 +253,24 @@ void main() {
           }
         },
       );
-      expect(frente, greaterThan(0), reason: 'no El frente picture was asked');
-      expect(old, greaterThan(0), reason: 'no picture of another scene');
-      // both scored games and the play games came
-      expect(
-        kinds,
-        containsAll(['CualItem', 'HearItem', 'BuildItem', 'MatchItem']),
-      );
+      if (kinds.contains('CualItem')) {
+        expect(
+          frente,
+          greaterThan(0),
+          reason: 'no El frente picture was asked',
+        );
+        expect(old, greaterThan(0), reason: 'no picture of another scene');
+        // both scored games and the play games came
+        expect(
+          kinds,
+          containsAll(['CualItem', 'HearItem', 'BuildItem', 'MatchItem']),
+        );
+      } else {
+        // Issue #10: flashcards remove story-frame screenshots and story-scene crops until
+        // dedicated single-word assets exist in content.
+        expect(kinds, isNot(contains('WhereItem')));
+        expect(kinds, containsAll(['HearItem', 'BuildItem', 'MatchItem']));
+      }
       // ear answers, for the words asked
       final after = answers(app, 'ear');
       final moved = [

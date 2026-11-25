@@ -800,4 +800,147 @@ void main() {
       stores.dispose();
     });
   });
+
+  group('finished calls per language', () {
+    test(
+      'isolates finished calls per language and persists across restart',
+      () {
+        final kv = MemoryKeyValueStore();
+        final clock = SettableClock(_t0);
+        final stores = ProgressStores(kv, clock);
+
+        final es = stores.forLanguage(Language.spanish);
+        final ar = stores.forLanguage(arabic);
+
+        es.markCallDone('casa');
+        clock.now = _t0 + 1000;
+        es.markCallDone('casa_agua');
+
+        expect(es.callDone('casa'), isTrue);
+        expect(es.callDone('casa_agua'), isTrue);
+        final ProgressStore esInterface = es;
+        expect(esInterface.callDone('casa'), isTrue);
+        expect(ar.callDone('casa'), isFalse);
+        expect(ar.callDone('casa_agua'), isFalse);
+
+        ar.markCallDone('casa');
+        expect(ar.callDone('casa'), isTrue);
+        expect(jsonDecode(kv.data['coqui.ar.palabras.v1']!)['llamadas'], {
+          'casa': _t0 + 1000,
+        });
+        expect(jsonDecode(kv.data['coqui.es.palabras.v1']!)['llamadas'], {
+          'casa': _t0,
+          'casa_agua': _t0 + 1000,
+        });
+
+        final restarted = ProgressStores(kv, clock);
+        final es2 = restarted.forLanguage(Language.spanish);
+        final ar2 = restarted.forLanguage(arabic);
+        expect(es2.callDone('casa'), isTrue);
+        expect(es2.callDone('casa_agua'), isTrue);
+        expect(ar2.callDone('casa'), isTrue);
+        expect(ar2.callDone('casa_agua'), isFalse);
+
+        stores.dispose();
+        restarted.dispose();
+      },
+    );
+
+    test('markCallDone fires changes on acting store and ProgressStores, not sibling, and 0 on repeat', () async {
+      final kv = MemoryKeyValueStore();
+      final clock = SettableClock(_t0);
+      final stores = ProgressStores(kv, clock);
+      final es = stores.forLanguage(Language.spanish);
+      final ar = stores.forLanguage(arabic);
+
+      var esCount = 0;
+      var arCount = 0;
+      var storesCount = 0;
+      final subEs = es.changes.listen((_) => esCount++);
+      final subAr = ar.changes.listen((_) => arCount++);
+      final subStores = stores.changes.listen((_) => storesCount++);
+
+      es.markCallDone('casa');
+      await pumpEventQueue();
+      expect(esCount, 1);
+      expect(storesCount, 1);
+      expect(arCount, 0);
+
+      es.markCallDone('casa');
+      await pumpEventQueue();
+      expect(esCount, 1);
+      expect(storesCount, 1);
+      expect(arCount, 0);
+
+      await subEs.cancel();
+      await subAr.cancel();
+      await subStores.cancel();
+      stores.dispose();
+    });
+
+    test(
+      'per-language reset, export, and import keep other languages isolated',
+      () {
+        final kv = MemoryKeyValueStore();
+        final clock = SettableClock(_t0);
+        final stores = ProgressStores(kv, clock);
+        final es = stores.forLanguage(Language.spanish);
+        final ar = stores.forLanguage(arabic);
+        final fr = stores.forLanguage(french);
+
+        es.markCallDone('casa');
+        ar.markCallDone('casa');
+        ar.markCallDone('mercado');
+
+        es.reset();
+        expect(es.callDone('casa'), isFalse);
+        expect(ar.callDone('casa'), isTrue);
+        expect(ar.callDone('mercado'), isTrue);
+
+        fr.import(ar.export());
+        expect(fr.callDone('casa'), isTrue);
+        expect(fr.callDone('mercado'), isTrue);
+        expect(es.callDone('casa'), isFalse);
+
+        final restarted = ProgressStores(kv, clock);
+        expect(
+          restarted.forLanguage(Language.spanish).callDone('casa'),
+          isFalse,
+        );
+        expect(restarted.forLanguage(arabic).callDone('casa'), isTrue);
+        expect(restarted.forLanguage(arabic).callDone('mercado'), isTrue);
+        expect(restarted.forLanguage(french).callDone('casa'), isTrue);
+        expect(restarted.forLanguage(french).callDone('mercado'), isTrue);
+
+        stores.dispose();
+        restarted.dispose();
+      },
+    );
+
+    test('legacy migration preserves absence and presence of llamadas byte-for-byte into Spanish only', () {
+      final kvWithout = MemoryKeyValueStore(
+        stored: _legacyFixture,
+        key: PalabrasStore.storageKey,
+      );
+      final storesWithout = ProgressStores(kvWithout, SettableClock(_t0));
+      expect(kvWithout.data['coqui.es.palabras.v1'], _legacyFixture);
+      expect(
+        storesWithout.forLanguage(Language.spanish).callDone('casa'),
+        isFalse,
+      );
+      storesWithout.dispose();
+
+      final legacyWithLlamadas =
+          '${_legacyFixture.substring(0, _legacyFixture.length - 1)},"llamadas":{"casa":$_t0}}';
+      final kvWith = MemoryKeyValueStore(
+        stored: legacyWithLlamadas,
+        key: PalabrasStore.storageKey,
+      );
+      final storesWith = ProgressStores(kvWith, SettableClock(_t0));
+      expect(kvWith.data['coqui.es.palabras.v1'], legacyWithLlamadas);
+      expect(storesWith.forLanguage(Language.spanish).callDone('casa'), isTrue);
+      expect(storesWith.forLanguage(arabic).callDone('casa'), isFalse);
+      storesWith.dispose();
+    });
+  });
 }

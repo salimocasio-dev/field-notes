@@ -3,6 +3,7 @@ library;
 
 import 'dart:async';
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_look.dart';
@@ -79,16 +80,23 @@ class _CallScreenState extends State<CallScreen> {
     final done = c.state == CallState.done;
     final err = c.state == CallState.err;
     final live = !done && !err;
-    return Semantics(
-      container: true,
-      label: CallTexts.callDanny,
-      child: ColoredBox(
-        color: CoquiColors.lessonBg,
-        child: Padding(
-          padding: EdgeInsets.only(top: land ? 0 : safe.top),
-          child: land
-              ? _landscape(context, size, safe, reduce, live)
-              : _portrait(context, size, safe, reduce, live),
+    final lang = widget.services.course.language;
+    final dir = lang.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : Directionality.of(context);
+    return Directionality(
+      textDirection: dir,
+      child: Semantics(
+        container: true,
+        label: CallTexts.callPartner(lang.partnerName),
+        child: ColoredBox(
+          color: CoquiColors.lessonBg,
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(top: land ? 0 : safe.top),
+            child: land
+                ? _landscape(context, size, safe, reduce, live)
+                : _portrait(context, size, safe, reduce, live),
+          ),
         ),
       ),
     );
@@ -96,11 +104,11 @@ class _CallScreenState extends State<CallScreen> {
 
   // ---- the pieces ----
 
-  /// `.lb`: the X at the left, the timer at the right; 8 px above, 16 at the right, 8 at the left.
+  /// `.lb`: the X at the start, the timer at the end; 8 px above, 16 at the end, 8 at the start.
   Widget _bar(EdgeInsets safe) => SizedBox(
     height: CallMetrics.bar,
     child: Padding(
-      padding: EdgeInsets.fromLTRB(8, 8, 16, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 16, 0),
       child: Row(
         children: [
           LessonCloseButton(onPressed: c.closeX),
@@ -241,7 +249,7 @@ class _CallScreenState extends State<CallScreen> {
     liveRegion: true,
     child: Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 24),
         child: Text(
           c.errorLine,
           textAlign: TextAlign.center,
@@ -255,16 +263,16 @@ class _CallScreenState extends State<CallScreen> {
   Widget _summary(Size size, EdgeInsets safe, {required bool land}) {
     final top = land ? 8.0 : size.height * .35 - 56;
     return Align(
-      alignment: Alignment.topCenter,
+      alignment: AlignmentDirectional.topCenter,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: CallMetrics.textMax),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 24 + safe.bottom),
+          padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 24 + safe.bottom),
           child: Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(top: top < 0 ? 0 : top),
+                  padding: EdgeInsetsDirectional.only(top: top < 0 ? 0 : top),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -284,7 +292,8 @@ class _CallScreenState extends State<CallScreen> {
               const SizedBox(height: 16),
               LessonButton(
                 kind: LessonButtonKind.blue,
-                label: 'Back to ${CoquiLabels.speak}',
+                label:
+                    'Back to ${widget.services.course.language.tabNames[CoquiTabs.speakId] ?? CoquiLabels.speak}',
                 onPressed: c.close,
               ),
             ],
@@ -306,7 +315,7 @@ class _CallScreenState extends State<CallScreen> {
     child: ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 32),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
         child: Center(
           widthFactor: 1,
           child: Text(CallTexts.chip(word), style: CallText.chip),
@@ -334,7 +343,9 @@ class _CallScreenState extends State<CallScreen> {
               : c.state == CallState.done
               ? _summary(size, safe, land: false)
               : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 16,
+                  ),
                   child: Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -349,7 +360,12 @@ class _CallScreenState extends State<CallScreen> {
         ),
         if (live)
           Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 32 + safe.bottom),
+            padding: EdgeInsetsDirectional.fromSTEB(
+              16,
+              0,
+              16,
+              32 + safe.bottom,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -392,7 +408,7 @@ class _CallScreenState extends State<CallScreen> {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
           child: Center(child: _picture(size, dpr)),
         ),
         Expanded(
@@ -401,15 +417,20 @@ class _CallScreenState extends State<CallScreen> {
               _bar(safe),
               Expanded(
                 child: Align(
-                  alignment: Alignment.topLeft,
+                  alignment: AlignmentDirectional.topStart,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: _texts(align: TextAlign.left),
+                    padding: const EdgeInsetsDirectional.only(end: 16),
+                    child: _texts(align: TextAlign.start),
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 16, 16 + safe.bottom),
+                padding: EdgeInsetsDirectional.fromSTEB(
+                  0,
+                  0,
+                  16,
+                  16 + safe.bottom,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -420,11 +441,11 @@ class _CallScreenState extends State<CallScreen> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _label(align: TextAlign.left),
-                          _note(align: TextAlign.left),
+                          _label(align: TextAlign.start),
+                          _note(align: TextAlign.start),
                           const SizedBox(height: 8),
                           Align(
-                            alignment: Alignment.centerLeft,
+                            alignment: AlignmentDirectional.centerStart,
                             child: _help(),
                           ),
                         ],

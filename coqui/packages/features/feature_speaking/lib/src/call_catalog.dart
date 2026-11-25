@@ -45,6 +45,9 @@ class HablarCallSpec {
 
   /// Original pixel-art asset key, or null until drawn. Never a screenshot.
   final String? pixelAsset;
+
+  String jobFor(String partnerName) =>
+      jobEn.replaceAll('{partner}', partnerName);
 }
 
 /// All 31 reviewed calls across the 10 places (10 main + 21 smaller).
@@ -54,7 +57,7 @@ const Map<String, List<HablarCallSpec>> hablarCallCatalog = {
       id: 'casa_main',
       placeId: 'casa',
       titleEs: 'De visita en la casa',
-      jobEn: 'Greet Danny, introduce yourself, and accept a drink.',
+      jobEn: 'Greet {partner}, introduce yourself, and accept a drink.',
       minutes: 5,
       isMain: true,
     ),
@@ -70,7 +73,7 @@ const Map<String, List<HablarCallSpec>> hablarCallCatalog = {
       id: 'casa_saludo',
       placeId: 'casa',
       titleEs: '¿Cómo estás?',
-      jobEn: 'Greet Danny and say how you are doing.',
+      jobEn: 'Greet {partner} and say how you are doing.',
       minutes: 2,
       isMain: false,
     ),
@@ -182,7 +185,7 @@ const Map<String, List<HablarCallSpec>> hablarCallCatalog = {
       id: 'calle_destino',
       placeId: 'calle',
       titleEs: 'Voy para la plaza',
-      jobEn: 'Tell Danny where you are heading.',
+      jobEn: 'Tell {partner} where you are heading.',
       minutes: 2,
       isMain: false,
     ),
@@ -296,7 +299,7 @@ const Map<String, List<HablarCallSpec>> hablarCallCatalog = {
       id: 'fuerte_main',
       placeId: 'fuerte',
       titleEs: '¿Qué hacemos hoy?',
-      jobEn: 'Invite Danny out, share plans, and say how you feel.',
+      jobEn: 'Invite {partner} out, share plans, and say how you feel.',
       minutes: 6,
       isMain: true,
     ),
