@@ -221,7 +221,7 @@ Other rules:
 - A story played with no screen: `dart run tool/juega.dart <story> <plan> <seed>` at `coqui/` (after order 15).
 - Git: branch `lane/<package>/<issue number>`, your own clone or worktree. Commit small on your branch. Push the branch and open a pull request as the repo-root `AGENTS.md` says. Never push to main. Never touch `historia/`, `docs/` or another package.
 - Nothing that costs money: no ElevenLabs calls or tests, no push under `historia/cuentos/` (it starts the paid audio job), no accounts, no keys.
-- Report, short: what you did; each check and its number; what failed; requests filed; anything you had to choose (there should be nothing). Never claim a check you did not run.
+- Report, short: start with the mandatory **Final Status Report** from repo-root `AGENTS.md` (`Status: MERGED | WAITING ON MERGE | WAITING ON REVIEW | BLOCKED | NEEDS SALIM | STOPPED (NO PR)`, verified `Ticket:` `CLOSED`/`OPEN`, `PR:`, `Checks & Reviews:`, `Next:`), then what you did, each check and its number, requests filed, and anything you had to choose. Never claim a check or merge you did not verify.
 
 ## Where this page differs from page 12, section 7
 

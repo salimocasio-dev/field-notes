@@ -77,18 +77,28 @@ All commands are run from the repo root. `<you>` is `claude`, `codex` or `gemini
 - Automated independent reviews run on every PR via **Claude API** (`claude-pr-review.yml`) and **Codex** (`ChatGPT Codex Connector`). No model self-approves its own work.
 - If a human or interactive cross-company reviewer also posts a review, it starts with `REVIEW PASS <you>` or `REVIEW CHANGES <you>`, then numbered findings with file and line.
 - Only real problems block: a wrong behaviour, a broken rule of Salim's, a failed check, a Claude API blocker/`CHANGES REQUESTED`, or a Codex P0/P1 finding. Small non-blocking "Warnings / Notes" go into follow-up stories if needed and do not block merge.
-- **No auto-merge on locked/sensitive paths:** PRs touching `historia/cuentos/`, ElevenLabs / Danny call config (`historia/notas/danny*` or ElevenLabs allowlist/origin/rate-limit code in `coqui/packages/core/coqui_platform/`), or `coqui/packages/core/coqui_contracts/` must **not** auto-merge: `historia/cuentos/` and ElevenLabs allowlist/origin/rate-limit require Salim's explicit approval, and `coqui_contracts` requires Claude Code sign-off (or Salim's approval if Claude Code quota is unavailable, after both Claude API and Codex pass).
+- **No auto-merge on locked/sensitive paths:** PRs touching `historia/cuentos/`, ElevenLabs / Danny call config (`historia/notas/danny*` or ElevenLabs allowlist/origin/rate-limit code in `coqui/packages/core/coqui_platform/`), or `coqui/packages/core/coqui_contracts/` must **not** auto-merge: `historia/cuentos/` and ElevenLabs allowlist/origin/rate-limit require Salim's explicit approval, and `coqui_contracts` requires Claude Code sign-off (or Salim's approval if Claude Code quota is unavailable) **plus** cross-company review (both Claude API and Codex for non-Claude PRs, or Codex/Gemini for Claude-built PRs).
 - **Auto-merge gate (all must hold on the latest `HEAD` commit):**
   1. `coqui.yml` and `coqui-guardrails.yml` checks on `HEAD` are `SUCCESS` (not stale from an earlier commit).
   2. Cross-company independent review is complete on `HEAD` (if `HEAD` changes after merging `main` or pushing fixes, fresh CI + reviews are required; comment `@codex review` if Codex doesn't start on the new `HEAD`):
-     - **Gemini-built PRs:** Claude API (`claude-review` job `SUCCESS` with `Verdict: APPROVE` or `Verdict: COMMENT` and `Blockers: None`) **and** Codex (`codex-review-state` shows `status` finished—not `running`—and `has_unresolved_findings: false` / zero unresolved P0 or P1 findings).
+     - **Gemini-built PRs:** Claude API (`claude-review` job `SUCCESS` with `Verdict: APPROVE` or `Verdict: COMMENT` and `Blockers: None`) **and** Codex (check `gh pr view <pr> --json comments --jq '[.comments[] | select(.body | contains("codex-review-state:v1"))][0].body'`: `commit_sha` matches `HEAD`, `status` is not `running`, and `has_unresolved_findings` is `false` / zero unresolved P0 or P1 findings).
      - **Claude-built PRs:** must have **Codex** (or Gemini) cross-company review completed on `HEAD` with zero unresolved blockers/P0/P1 findings (never merge a Claude-built PR on Claude API review alone).
      - **Codex-built PRs:** must have **Claude API** (or Gemini) cross-company review completed on `HEAD` with zero blockers.
   3. Do not treat Codex silence as a pass: if Codex does not start or finish within 5 minutes, comment `@codex review` once and wait. Only if Codex explicitly reports a Plus quota/rate-limit failure on a non-Claude, non-`coqui_contracts` PR may you proceed with CI + Claude API + an explicit PR comment documenting the Codex rate-limit skip; otherwise do not merge and escalate.
   4. The PR does not touch the locked paths above and is up to date with `main`.
   5. When all conditions hold, the builder or orchestrator squash-merges (`gh pr merge <pr> --squash --delete-branch`). `Closes #<n>` closes the story.
 - If automated reviews request changes, fix them on the same branch and wait for fresh `HEAD` reviews. If still blocked after two fix rounds, escalate to Neon/Carbon (or Claude Code when available), or block for Salim if it needs a product decision.
-- Look for review/fix work on open red PRs when `ready` finds nothing for you.
+- Look for review work on open red PRs when `ready` finds nothing for you (only push commits to another branch if you explicitly claim/take over that branch first; otherwise leave a review comment).
+
+## Final Status Report (Mandatory When Stopping)
+
+Every agent must end its work with this exact status block at the **very top** of its final reply to Salim, verified directly via `gh pr view` and `gh issue view` (never guess or say "done" without checking):
+
+- **Status:** `MERGED` | `WAITING ON MERGE` | `WAITING ON REVIEW` | `BLOCKED` | `NEEDS SALIM` | `STOPPED (NO PR)`
+- **Ticket:** `#<n>` — `CLOSED` or `OPEN` (verified)
+- **PR:** `#<pr>` `<url>` — `MERGED` | `OPEN` | `NONE`
+- **Checks & Reviews:** `Coquí` / `Guardrails` / `Claude API` / `Codex` (exact result on `HEAD`)
+- **Next:** one line (e.g., `None — merged and lane is free`, or exact blocker / who acts next)
 
 ## Who may do what
 
