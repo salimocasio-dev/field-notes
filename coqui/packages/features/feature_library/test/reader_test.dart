@@ -246,6 +246,26 @@ class _DeferredSaveProgressStore implements ProgressStore {
   }
 }
 
+class _SlowPreloadClips extends TimedClips {
+  _SlowPreloadClips({super.length});
+
+  Completer<List<String>> _preloadGate = Completer<List<String>>();
+
+  void finishPreload([List<String> missing = const []]) {
+    if (!_preloadGate.isCompleted) _preloadGate.complete(missing);
+  }
+
+  void resetPreload() {
+    _preloadGate = Completer<List<String>>();
+  }
+
+  @override
+  Future<List<String>> preload(Iterable<String> clipIds) {
+    preloaded.addAll(clipIds);
+    return _preloadGate.future;
+  }
+}
+
 Language _arabicLanguage() => Language(
   code: 'ar',
   englishName: 'Arabic',
@@ -1242,6 +1262,187 @@ void main() {
         expect(reopened.word('la'), isNull);
         expect(reopened.word('de'), isNull);
         expect(reopened.word('papel'), isNull);
+        expect(reopened.minutes, closeTo(9 / 60, 1e-9));
+      },
+    );
+
+    testWidgets(
+      'clip preload delay is excluded from listening minutes on completion and on early close',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final kv = FakeKeyValueStore();
+        final clock = FakeClock();
+        final progress = _DeferredSaveProgressStore(kv, clock: clock);
+        final course = _CourseWithWords(
+          books: {
+            'slow-load': Book(
+              id: 'slow-load',
+              title: 'Lento',
+              readable: true,
+              pages: [
+                BookPage(image: 'img/1.png', clips: ['s1']),
+              ],
+            ),
+          },
+          stories: {
+            'slow-load': {
+              'title': 'Lento',
+              'clips': {'s1': line('narr', 'La casa.')},
+            },
+          },
+          recorded: {'s1'},
+        );
+        final clips = _SlowPreloadClips(
+          length: const Duration(milliseconds: 200),
+        );
+        final services = fakeServices(
+          course: course,
+          clips: clips,
+          progress: progress,
+          clock: clock,
+        );
+
+        // 1. Closing while clip is still preloading logs 0 listening minutes.
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('close-during-preload'),
+              services: services,
+              id: 'slow-load',
+            ),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        expect(clips.preloaded, ['s1']);
+        expect(clips.played, isEmpty);
+
+        clock.advance(const Duration(seconds: 15));
+        await tester.tap(find.byTooltip(ReaderTexts.close));
+        await settle(tester);
+        clips.finishPreload();
+        await settle(tester);
+        expect(progress.addedMinutes, isEmpty);
+        expect(progress.minutes, 0);
+
+        // 2. Slow preload (10s) followed by 4s playback logs only 4s.
+        clips.resetPreload();
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('slow-preload-then-play'),
+              services: services,
+              id: 'slow-load',
+            ),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        clock.advance(const Duration(seconds: 10));
+        clips.finishPreload();
+        await tester.pump();
+        expect(clips.played, ['s1']);
+
+        clock.advance(const Duration(seconds: 4));
+        await tester.pump(const Duration(milliseconds: 250));
+        await settle(tester);
+
+        expect(progress.word('casa')?.oida, 1);
+        expect(progress.minutes, closeTo(4 / 60, 1e-9));
+      },
+    );
+
+    testWidgets(
+      'backgrounding the app stops narration, flushes partial minutes, and allows timed resume',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final kv = FakeKeyValueStore();
+        final clock = FakeClock();
+        final progress = _DeferredSaveProgressStore(kv, clock: clock);
+        final course = _CourseWithWords(
+          books: {
+            'bg-book': Book(
+              id: 'bg-book',
+              title: 'Fondo',
+              readable: true,
+              pages: [
+                BookPage(image: 'img/1.png', clips: ['b1']),
+              ],
+            ),
+          },
+          stories: {
+            'bg-book': {
+              'title': 'Fondo',
+              'clips': {'b1': line('narr', 'La casa.')},
+            },
+          },
+          recorded: {'b1'},
+        );
+        final clips = TimedClips(length: const Duration(milliseconds: 300));
+        final services = fakeServices(
+          course: course,
+          clips: clips,
+          progress: progress,
+          clock: clock,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(services: services, id: 'bg-book'),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        expect(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.pause)),
+          findsOneWidget,
+        );
+
+        // Listen 3s, then app enters paused lifecycle state.
+        clock.advance(const Duration(seconds: 3));
+        tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+        await settle(tester);
+
+        expect(clips.stops, greaterThanOrEqualTo(1));
+        expect(progress.minutes, closeTo(3 / 60, 1e-9));
+
+        // Time spent backgrounded (60s) is not counted; resuming shows Listen and records fresh 6s play.
+        clock.advance(const Duration(seconds: 60));
+        tester.binding.handleAppLifecycleStateChanged(
+          AppLifecycleState.resumed,
+        );
+        await settle(tester);
+        expect(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.listen)),
+          findsOneWidget,
+        );
+
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        clock.advance(const Duration(seconds: 6));
+        await tester.pump(const Duration(milliseconds: 350));
+        await settle(tester);
+
+        final reopened = _DeferredSaveProgressStore(kv, clock: clock);
+        expect(reopened.word('casa')?.oida, 1);
         expect(reopened.minutes, closeTo(9 / 60, 1e-9));
       },
     );

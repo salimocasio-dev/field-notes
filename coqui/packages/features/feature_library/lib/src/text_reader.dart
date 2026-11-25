@@ -175,7 +175,11 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.hidden ||
         state == AppLifecycleState.detached) {
-      _flushListeningProgress();
+      final wasPlaying = _playing || _activeSentenceId != null;
+      _stopNarration();
+      if (wasPlaying && mounted) {
+        setState(() {});
+      }
     }
   }
 
@@ -573,11 +577,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
         });
         _savePlace();
 
-        final clipId = item.sentence.clipId!;
-        _beginAudioTiming();
-        final played = await _s.clips.play(clipId);
+        final played = await _playPreparedClip(item.sentence.clipId!, request);
         if (!mounted || request != _playback) return;
-        _finishAudioTiming(clipId, played: played);
         if (played && !_s.clips.muted) {
           _creditSentenceWords(item.sentence);
         }
@@ -594,6 +595,17 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
       _playing = false;
       _activeSentenceId = null;
     });
+  }
+
+  Future<bool> _playPreparedClip(String clipId, int request) async {
+    final missing = await _s.clips.preload([clipId]);
+    if (!mounted || request != _playback) return false;
+    if (missing.contains(clipId)) return false;
+    _beginAudioTiming();
+    final played = await _s.clips.play(clipId);
+    if (!mounted || request != _playback) return false;
+    _finishAudioTiming(clipId, played: played);
+    return played;
   }
 
   Future<void> _repeatSentence() async {
@@ -628,11 +640,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
       if (!mounted || request != _playback) return;
       await _s.clips.stop();
       if (!mounted || request != _playback) return;
-      final clipId = target.sentence.clipId!;
-      _beginAudioTiming();
-      final played = await _s.clips.play(clipId);
+      final played = await _playPreparedClip(target.sentence.clipId!, request);
       if (!mounted || request != _playback) return;
-      _finishAudioTiming(clipId, played: played);
       if (played && !_s.clips.muted) {
         _creditSentenceWords(target.sentence);
       }
@@ -709,14 +718,12 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
       if (!mounted || request != _playback) return;
       await _s.clips.stop();
       if (!mounted || request != _playback) return;
-      _beginAudioTiming();
-      played = await _s.clips.play(wordMatch.clip);
+      played = await _playPreparedClip(wordMatch.clip, request);
     } on Object {
       // Ignore playback failures.
       _audioStartedAtMs = null;
     }
     if (!mounted || request != _playback) return;
-    _finishAudioTiming(wordMatch.clip, played: played);
     if (played && !_s.clips.muted) {
       final word = wordMatch.word;
       if (word != null && word.isNotEmpty) {
