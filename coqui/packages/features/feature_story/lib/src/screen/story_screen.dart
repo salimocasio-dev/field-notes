@@ -17,171 +17,17 @@ import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/frame_renderer.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
 import 'package:feature_story/src/screen/story_end.dart';
+import 'package:feature_story/src/screen/story_header.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:feature_story/src/screen/story_not_ready.dart';
 import 'package:feature_story/src/screen/story_picture.dart';
 import 'package:flutter/scheduler.dart' show Ticker;
 import 'package:material_ui/material_ui.dart';
 
+export 'package:feature_story/src/screen/story_header.dart';
+
 class _Repaint extends ChangeNotifier {
   void ping() => notifyListeners();
-}
-
-/// Close X button in the 64-high story header (`Noche-Cuento.dc.html`: 48 × 48,
-/// 24 px X with stroke 2.5 in `NocheColors.text`).
-class StoryCloseButton extends StatelessWidget {
-  const StoryCloseButton({
-    super.key,
-    required this.onPressed,
-    required this.language,
-  });
-
-  final VoidCallback? onPressed;
-  final Language language;
-
-  @override
-  Widget build(BuildContext context) => Pressable(
-    onPressed: onPressed,
-    semanticLabel: NocheA11y.label(
-      NocheA11y.close,
-      courseWords: language.a11yWords,
-    ),
-    builder: (context, pressed) => Transform.scale(
-      scale: pressed ? 0.94 : 1,
-      child: const SizedBox(
-        width: NocheSize.touch,
-        height: NocheSize.touch,
-        child: Center(
-          child: NocheIcon(
-            NocheIcons.close,
-            size: 24,
-            strokeWidth: 2.5,
-            color: NocheColors.text,
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-/// TXT captions toggle pill in the 64-high story header (`Noche-Cuento.dc.html`:
-/// 56 × 48, radius 24; on = `text` fill and `lessonGround` text, off = 1 px
-/// `lessonBorder` outline and `text` colour).
-class StoryTxtToggle extends StatelessWidget {
-  const StoryTxtToggle({
-    super.key,
-    required this.on,
-    required this.onPressed,
-    required this.language,
-  });
-
-  final bool on;
-  final VoidCallback? onPressed;
-  final Language language;
-
-  static const double width = 56;
-  static const double height = NocheSize.touch;
-
-  @override
-  Widget build(BuildContext context) => Pressable(
-    onPressed: onPressed,
-    selected: on,
-    semanticLabel: NocheA11y.label(
-      NocheA11y.captions,
-      courseWords: language.a11yWords,
-    ),
-    builder: (context, pressed) => Transform.scale(
-      scale: pressed ? 0.96 : 1,
-      child: Container(
-        width: width,
-        height: height,
-        alignment: AlignmentDirectional.center,
-        decoration: BoxDecoration(
-          color: on ? NocheColors.text : null,
-          border: on
-              ? null
-              : Border.all(color: NocheColors.lessonBorder, width: 1),
-          borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-        ),
-        child: Text(
-          'TXT',
-          maxLines: 1,
-          softWrap: false,
-          textDirection: TextDirection.ltr,
-          style: NocheType.buttonStrong.copyWith(
-            letterSpacing: 0.84,
-            color: on ? NocheColors.lessonGround : NocheColors.text,
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-/// 64-high Noche story header (`Noche-Cuento.dc.html`, `Noche-Cuento-AR.dc.html`):
-/// close X (48) at start, part dashes (`NocheDashes` on `lessonGround`) in the
-/// middle, and the 56 × 48 TXT toggle pill at the end.
-class StoryHeader extends StatelessWidget {
-  const StoryHeader({
-    super.key,
-    required this.onClose,
-    required this.language,
-    this.dots = 5,
-    this.dotsLit = 0,
-    this.showProgress = true,
-    this.showTxt = true,
-    this.txtOn = true,
-    this.onToggleTxt,
-  });
-
-  static const double height = 64;
-
-  final VoidCallback? onClose;
-  final Language language;
-  final int dots;
-  final int dotsLit;
-  final bool showProgress;
-  final bool showTxt;
-  final bool txtOn;
-  final VoidCallback? onToggleTxt;
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-    height: height,
-    child: Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 16, 0),
-      child: Row(
-        children: [
-          StoryCloseButton(onPressed: onClose, language: language),
-          if (showProgress) ...[
-            const SizedBox(width: 8),
-            Expanded(
-              child: NocheDashes.progress(
-                count: dots,
-                done: dotsLit,
-                onLessonGround: true,
-                gap: dots > 24 ? 1 : 4,
-                semanticLabel: NocheA11y.label(
-                  NocheA11y.partProgress,
-                  courseWords: language.a11yWords,
-                  args: {'current': '$dotsLit', 'total': '$dots'},
-                ),
-              ),
-            ),
-          ] else
-            const Spacer(),
-          if (showTxt) ...[
-            const SizedBox(width: 16),
-            StoryTxtToggle(
-              on: txtOn,
-              onPressed: onToggleTxt,
-              language: language,
-            ),
-          ],
-        ],
-      ),
-    ),
-  );
 }
 
 /// The text section under the 400-high scene (`Noche-Cuento.dc.html`,
@@ -604,68 +450,82 @@ class _StoryScreenState extends State<StoryScreen>
     return ColoredBox(
       color: NocheColors.lessonGround,
       child: SafeArea(
-        child: Column(
-          children: [
-            StoryHeader(
-              onClose: _close,
-              language: lang,
-              dots: v.dots,
-              dotsLit: v.dotsLit,
-              txtOn: v.txtOn,
-              onToggleTxt: r.toggleTxt,
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: StoryScreen.sceneHeight,
-              child: LayoutBuilder(
-                builder: (context, c) => ClipRect(
-                  child: Center(
-                    child: OverflowBox(
-                      minWidth: 0,
-                      maxWidth: c.maxWidth,
-                      minHeight: 0,
-                      maxHeight: double.infinity,
-                      child: KeyedSubtree(
-                        key: _stageKey,
-                        child: StoryPicture(
-                          runner: r,
-                          pixels: frame.display,
-                          repaint: _repaint,
-                          reduceMotion: _s.reduceMotion,
-                          language: lang,
-                          showBubble: showBubble,
-                          availableWidth: c.maxWidth,
-                          onSize: (s) => _stage = s,
-                        ),
-                      ),
+        child: LayoutBuilder(
+          builder: (context, viewport) {
+            final sceneH = viewport.maxHeight.isFinite
+                ? math.min(
+                    StoryScreen.sceneHeight,
+                    math.max(
+                      180.0,
+                      viewport.maxHeight - StoryHeader.height - 200,
                     ),
+                  )
+                : StoryScreen.sceneHeight;
+            return Column(
+              children: [
+                StoryHeader(
+                  onClose: _close,
+                  language: lang,
+                  dots: v.dots,
+                  dotsLit: v.dotsLit,
+                  txtOn: v.txtOn,
+                  onToggleTxt: r.toggleTxt,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: sceneH,
+                  child: LayoutBuilder(
+                    builder: (context, c) {
+                      final maxW = math.min(
+                        c.maxWidth,
+                        sceneH * displayW / displayH,
+                      );
+                      return Center(
+                        child: KeyedSubtree(
+                          key: _stageKey,
+                          child: StoryPicture(
+                            runner: r,
+                            pixels: frame.display,
+                            repaint: _repaint,
+                            reduceMotion: _s.reduceMotion,
+                            language: lang,
+                            showBubble: showBubble,
+                            availableWidth: maxW,
+                            onSize: (s) => _stage = s,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: SingleChildScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      padding: const EdgeInsetsDirectional.only(bottom: 168),
-                      child: _buildTextArea(v, lang, mic),
-                    ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: AlignmentDirectional.topStart,
+                          child: SingleChildScrollView(
+                            physics: const ClampingScrollPhysics(),
+                            padding: const EdgeInsetsDirectional.only(
+                              bottom: 8,
+                            ),
+                            child: _buildTextArea(v, lang, mic),
+                          ),
+                        ),
+                      ),
+                      if (controls != null)
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            bottom: StoryScreen.controlsBottom,
+                          ),
+                          child: Center(child: controls),
+                        ),
+                    ],
                   ),
-                  if (controls != null)
-                    PositionedDirectional(
-                      start: 0,
-                      end: 0,
-                      bottom: StoryScreen.controlsBottom,
-                      child: Center(child: controls),
-                    ),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -731,30 +591,32 @@ class _StoryScreenState extends State<StoryScreen>
                     onToggleTxt: r.toggleTxt,
                   ),
                   Expanded(
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Align(
-                          alignment: AlignmentDirectional.topStart,
-                          child: SingleChildScrollView(
-                            physics: const ClampingScrollPhysics(),
-                            padding: const EdgeInsetsDirectional.only(
-                              bottom: 144,
-                            ),
-                            child: _buildTextArea(v, lang, mic),
-                          ),
-                        ),
-                        if (controls != null)
-                          v.screen == StoryScreenState.start
-                              ? Center(child: controls)
-                              : PositionedDirectional(
-                                  start: 0,
-                                  end: 0,
-                                  bottom: 16,
+                    child:
+                        v.screen == StoryScreenState.start && controls != null
+                        ? Center(child: controls)
+                        : Column(
+                            children: [
+                              Expanded(
+                                child: Align(
+                                  alignment: AlignmentDirectional.topStart,
+                                  child: SingleChildScrollView(
+                                    physics: const ClampingScrollPhysics(),
+                                    padding: const EdgeInsetsDirectional.only(
+                                      bottom: 8,
+                                    ),
+                                    child: _buildTextArea(v, lang, mic),
+                                  ),
+                                ),
+                              ),
+                              if (controls != null)
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.only(
+                                    bottom: 16,
+                                  ),
                                   child: Center(child: controls),
                                 ),
-                      ],
-                    ),
+                            ],
+                          ),
                   ),
                 ],
               ),

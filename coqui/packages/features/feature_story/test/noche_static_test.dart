@@ -9,6 +9,7 @@ void main() {
   const nocheScreenFiles = [
     'lib/src/screen/story_bubble.dart',
     'lib/src/screen/story_end.dart',
+    'lib/src/screen/story_header.dart',
     'lib/src/screen/story_mic.dart',
     'lib/src/screen/story_not_ready.dart',
     'lib/src/screen/story_picture.dart',

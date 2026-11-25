@@ -18,7 +18,9 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/speech_session.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_runner.dart';
+import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
+import 'package:feature_story/src/screen/story_end.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:flutter/rendering.dart' show RenderRepaintBoundary;
@@ -361,6 +363,118 @@ void main() {
         }
       }
     });
+
+    testWidgets(
+      'wide portrait display (768x1024 @ 2.0) fits whole-number PixelView strictly inside 400px stage without clipping',
+      (tester) async {
+        await openScreen(
+          tester,
+          id: 'la-lluvia',
+          size: const Size(768, 1024),
+          ratio: 2.0,
+          reduceMotion: true,
+        );
+        final pixelSize = tester.getSize(find.byType(PixelView));
+        expect(pixelSize.height, lessThanOrEqualTo(StoryScreen.sceneHeight));
+        expect((pixelSize.width * 2.0).round() % 196, 0);
+        expect((pixelSize.height * 2.0).round() % 216, 0);
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    testWidgets(
+      'narrow portrait (320x568) and small landscape (667x375) keep speaking controls overflow-free and centred',
+      (tester) async {
+        for (final viewport in const [
+          (size: Size(320, 568), dpr: 2.0),
+          (size: Size(667, 375), dpr: 2.0),
+        ]) {
+          final s = await openScreen(
+            tester,
+            id: 'el-bizcocho',
+            course: _MarkedCourse(),
+            options: const StoryOptions(micStub: ['si'], allOpen: true),
+            size: viewport.size,
+            ratio: viewport.dpr,
+            reduceMotion: true,
+          );
+          await tester.tap(find.byType(NochePlayDisc));
+          await s.answerUntil(
+            () => _micState(tester) == NocheMicState.ready,
+            what: 'ready (${viewport.size})',
+          );
+          await tester.tap(find.byKey(const ValueKey('noche_mic_disc')));
+          await tester.pump();
+          expect(_micState(tester), NocheMicState.listening);
+          expect(tester.takeException(), isNull);
+          expect(
+            tester.getSize(find.byType(StoryHearAgainButton)),
+            const Size(48, 48),
+          );
+          final controlsRect = tester.getRect(find.byType(StoryMicControls));
+          final discRect = tester.getRect(
+            find.byKey(const ValueKey('noche_mic_disc')),
+          );
+          expect(discRect.center.dx, closeTo(controlsRect.center.dx, 1.0));
+          await tester.pumpWidget(const SizedBox.shrink());
+        }
+      },
+    );
+
+    testWidgets(
+      'storyEndButtons renders at most one orange NochePrimaryButton even when both foot.next and foot.home are true',
+      (tester) async {
+        final widgets = storyEndButtons(
+          foot: const StoryFoot(next: true, again: true, home: true, map: true),
+          onAgain: () {},
+          onNext: () {},
+          onMap: () {},
+        );
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: Column(children: widgets)),
+          ),
+        );
+        expect(find.byType(NochePrimaryButton), findsOneWidget);
+        expect(
+          find.widgetWithText(NochePrimaryButton, 'Next story'),
+          findsOneWidget,
+        );
+        expect(find.widgetWithText(NocheOutlineButton, 'Map'), findsOneWidget);
+        expect(
+          find.widgetWithText(NocheOutlineButton, 'Play again'),
+          findsOneWidget,
+        );
+      },
+    );
+
+    testWidgets(
+      'toggling TXT off and back on mid-narration immediately hides and restores the active caption',
+      (tester) async {
+        final s = await openScreen(
+          tester,
+          id: 'la-lluvia',
+          size: const Size(390, 844),
+          ratio: 3.0,
+          reduceMotion: true,
+        );
+        await tester.tap(find.byType(NochePlayDisc));
+        await s.until(
+          () => s.runner.view.speakingNow && s.runner.cap.isNotEmpty,
+          what: 'active narration caption',
+        );
+        final activeLine = s.runner.cap;
+        expect(find.text(activeLine), findsOneWidget);
+
+        await tester.tap(find.byType(StoryTxtToggle));
+        await tester.pump();
+        expect(find.text(activeLine), findsNothing);
+
+        await tester.tap(find.byType(StoryTxtToggle));
+        await tester.pump();
+        expect(find.text(activeLine), findsOneWidget);
+      },
+    );
   });
 
   if (Platform.environment['COQUI_CAPTURE_SHOTS'] == '1') {

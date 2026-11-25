@@ -5,7 +5,7 @@ library;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:feature_story/src/screen/story_screen.dart';
+import 'package:feature_story/src/screen/story_header.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The line the screen shows when the story's scene is not converted yet.

@@ -142,45 +142,77 @@ class _StoryMicControlsState extends State<StoryMicControls>
     final labelGap = widget.language.script == 'Arab' ? 12.0 : 16.0;
     const flankTop = (NocheMic.discSize - NocheSize.touch) / 2;
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsetsDirectional.only(top: flankTop),
-          child: StoryHearAgainButton(
-            onPressed: widget.onHearAgain,
-            language: widget.language,
-          ),
-        ),
-        const SizedBox(width: 16),
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            minWidth: StoryMicControls.micSlotWidth,
-          ),
-          child: IgnorePointer(
-            ignoring: s == NocheMicState.right,
-            child: AnimatedBuilder(
-              animation: _levelAnim,
-              builder: (context, _) => NocheMic(
-                state: s,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxW = constraints.maxWidth;
+        // Board metrics at >= 328 px: 48 + 16 + (36 + 16 + 96 + 16 + 36) + 16 + 48 = 328.
+        // On narrower portrait/landscape viewports, tighten the gaps symmetrically
+        // while keeping both 48x48 touch targets and the 96px mic disc centred.
+        final double flankGap;
+        final double barGroupGap;
+        final double minSlotWidth;
+        if (!maxW.isFinite || maxW >= 328) {
+          flankGap = 16;
+          barGroupGap = NocheMic.defaultBarGroupGap;
+          minSlotWidth = StoryMicControls.micSlotWidth;
+        } else {
+          final extra = math.max(0.0, maxW - (NocheSize.touch * 2 + 168));
+          // Distribute available margin evenly across the 4 horizontal gaps (2 flank + 2 barGroup).
+          final gap = (extra / 4).clamp(4.0, 16.0);
+          flankGap = gap;
+          barGroupGap = gap;
+          minSlotWidth = math.max(
+            NocheMic.discSize,
+            math.min(
+              StoryMicControls.micSlotWidth,
+              maxW - NocheSize.touch * 2 - flankGap * 2,
+            ),
+          );
+        }
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.only(top: flankTop),
+              child: StoryHearAgainButton(
+                onPressed: widget.onHearAgain,
                 language: widget.language,
-                level: _currentLevel(),
-                compactLabel: true,
-                labelGap: labelGap,
-                onPressed: tappable ? widget.onTapMic : null,
               ),
             ),
-          ),
-        ),
-        const SizedBox(width: 16),
-        const ExcludeSemantics(
-          child: Padding(
-            padding: EdgeInsetsDirectional.only(top: flankTop),
-            child: SizedBox(width: NocheSize.touch, height: NocheSize.touch),
-          ),
-        ),
-      ],
+            SizedBox(width: flankGap),
+            ConstrainedBox(
+              constraints: BoxConstraints(minWidth: minSlotWidth),
+              child: IgnorePointer(
+                ignoring: s == NocheMicState.right,
+                child: AnimatedBuilder(
+                  animation: _levelAnim,
+                  builder: (context, _) => NocheMic(
+                    state: s,
+                    language: widget.language,
+                    level: _currentLevel(),
+                    compactLabel: true,
+                    labelGap: labelGap,
+                    barGroupGap: barGroupGap,
+                    onPressed: tappable ? widget.onTapMic : null,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: flankGap),
+            const ExcludeSemantics(
+              child: Padding(
+                padding: EdgeInsetsDirectional.only(top: flankTop),
+                child: SizedBox(
+                  width: NocheSize.touch,
+                  height: NocheSize.touch,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

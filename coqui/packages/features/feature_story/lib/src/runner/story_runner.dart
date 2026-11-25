@@ -591,6 +591,12 @@ class StoryRunner implements SceneHost {
   void toggleTxt() {
     if (_txt == TxtMode.no) {
       _txt = _lastOnTxt;
+      if (view.speakingNow &&
+          _lastLineClip != null &&
+          !SINLETRAS &&
+          _txt == TxtMode.con) {
+        muestra(_lastLineClip!);
+      }
     } else {
       _lastOnTxt = _txt;
       _txt = TxtMode.no;
@@ -633,9 +639,7 @@ class StoryRunner implements SceneHost {
     if (VOICE && _has(id)) {
       unawaited(playClip(id));
     } else if (LINES[id] != null) {
-      unawaited(
-        say(id, 0).catchError((Object _) {}, test: (e) => e is StopSignal),
-      );
+      unawaited(say(id, 0).catchError((Object _) {}));
     }
   }
 

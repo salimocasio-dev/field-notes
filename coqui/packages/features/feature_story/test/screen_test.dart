@@ -81,10 +81,12 @@ void main() {
         expect(find.byType(NochePlayDisc), findsOneWidget);
         expect(find.byType(NocheMic), findsNothing);
         expect(s.runner.view.screen, StoryScreenState.start);
-        // the picture is whole-number scaled: 412 logical pixels at 2.625 are 1081.5 device pixels: 5 for each of the 196
+        // the picture is whole-number scaled to fit within both width (412) and the 400-high stage:
+        // 400 * 196 / 216 = 362.96 logical px -> floor(362.96 * 2.625 / 196) = 4 device px per scene pixel.
         final size = tester.getSize(find.byType(PixelView));
-        expect((size.width * 2.625).round(), 196 * 5);
-        expect((size.height * 2.625).round(), 216 * 5);
+        expect((size.width * 2.625).round(), 196 * 4);
+        expect((size.height * 2.625).round(), 216 * 4);
+        expect(size.height, lessThanOrEqualTo(StoryScreen.sceneHeight));
       },
     );
 

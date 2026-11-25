@@ -40,27 +40,34 @@ class StoryEndTitle extends StatelessWidget {
 
 /// The Noche buttons of the end screen, from [StoryFoot]: "Play again" (outline)
 /// with the outline "Map" beside it when a next story waits, then the ONE orange
-/// primary action ("Next story" or "Map").
+/// primary action ("Next story" or "Map", mutually exclusive).
 List<Widget> storyEndButtons({
   required StoryFoot foot,
   required VoidCallback onAgain,
   required VoidCallback onNext,
   required VoidCallback onMap,
-}) => [
-  if (foot.again && foot.map)
-    Row(
-      children: [
-        Expanded(
-          child: NocheOutlineButton(label: 'Play again', onPressed: onAgain),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: NocheOutlineButton(label: 'Map', onPressed: onMap),
-        ),
-      ],
-    )
-  else if (foot.again)
-    NocheOutlineButton(label: 'Play again', onPressed: onAgain),
-  if (foot.next) NochePrimaryButton(label: 'Next story', onPressed: onNext),
-  if (foot.home) NochePrimaryButton(label: 'Map', onPressed: onMap),
-];
+}) {
+  final showOutlineMap = foot.map || (foot.next && foot.home);
+  return [
+    if (foot.again && showOutlineMap)
+      Row(
+        children: [
+          Expanded(
+            child: NocheOutlineButton(label: 'Play again', onPressed: onAgain),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: NocheOutlineButton(label: 'Map', onPressed: onMap),
+          ),
+        ],
+      )
+    else if (foot.again)
+      NocheOutlineButton(label: 'Play again', onPressed: onAgain)
+    else if (showOutlineMap)
+      NocheOutlineButton(label: 'Map', onPressed: onMap),
+    if (foot.next)
+      NochePrimaryButton(label: 'Next story', onPressed: onNext)
+    else if (foot.home)
+      NochePrimaryButton(label: 'Map', onPressed: onMap),
+  ];
+}
