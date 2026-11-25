@@ -312,6 +312,27 @@ Finder findMapUpNextAction() => find.byWidgetPredicate(
   description: 'map up-next action (N4.1 up-next-play or v=39 TodayCard)',
 );
 
+/// The story lesson's frame/header: N4.3's `StoryHeader`, or v=39's [LessonFrame].
+Finder findStoryFrame() => find.byWidgetPredicate(
+  (w) => w.runtimeType.toString() == 'StoryHeader' || w is LessonFrame,
+  description: 'story frame (N4.3 StoryHeader or v=39 LessonFrame)',
+);
+
+/// The story lesson's close button: N4.3's `StoryCloseButton`, or v=39's [LessonCloseButton].
+Finder findStoryCloseButton() => find.byWidgetPredicate(
+  (w) =>
+      w.runtimeType.toString() == 'StoryCloseButton' || w is LessonCloseButton,
+  description:
+      'story close button (N4.3 StoryCloseButton or v=39 LessonCloseButton)',
+);
+
+/// The story lesson's start disc: N4.3's `story-start-disc`, or v=39's [LessonStartButton].
+Finder findStoryStartButton() => find.byWidgetPredicate(
+  (w) => w.key == const Key('story-start-disc') || w is LessonStartButton,
+  description:
+      'story start button (N4.3 story-start-disc or v=39 LessonStartButton)',
+);
+
 /// TEST-ONLY. A scene that is not converted and never will be: no scene of coqui_scenes' registry has its id. Its old
 /// pictures are order 06's pictures of El banco (coqui/ref/escenas/banco/pairs/), as they were before order 36b converted
 /// El banco. The test of ¿Cuál?'s old pictures puts a review set at it (TestApp.editContent), so that it does not depend

@@ -493,7 +493,10 @@ void main() {
       );
       final before = answers(app, 'mouth');
       await app.openTab('speak');
-      await app.tap(find.text('Start call'));
+      final startCall = find.byKey(const Key('speak-call-disc'));
+      await app.tap(
+        startCall.evaluate().isNotEmpty ? startCall : find.text('Start call'),
+      );
       await app.settle();
       expect(app.lessonShown, isTrue);
       expect(byTypeName('CallScreen'), findsOneWidget);
