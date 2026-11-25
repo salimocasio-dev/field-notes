@@ -3,7 +3,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/words_tab.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// feature_words's module: the Palabras tab (id `words`).
+/// feature_words's module: the Words tab (id `words`).
 class WordsModule implements FeatureModule {
   const WordsModule();
 
@@ -13,7 +13,7 @@ class WordsModule implements FeatureModule {
   @override
   FeatureTab? tab(Services s) => FeatureTab(
     id: 'words',
-    label: s.course.language.tabNames['words'] ?? CoquiLabels.words,
+    label: s.course.language.tabNames['words']!,
     icon: Icons.style,
     builder: (_) => WordsTab(services: s),
   );

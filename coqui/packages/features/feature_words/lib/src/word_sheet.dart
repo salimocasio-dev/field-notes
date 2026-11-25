@@ -1,5 +1,6 @@
-/// The word sheet (app.html: `palabra`, `oyeLinea`): the big picture, the word, the Ear and Mouth meters, when it
-/// comes back, and "Heard in".
+/// The word sheet (app.html: `palabra`, `oyeLinea`): the big picture, the word,
+/// Ear and Mouth stage bars, when it comes back, and "Heard in", styled with
+/// Noche tokens and [showNocheSheet].
 library;
 
 import 'dart:async';
@@ -7,57 +8,43 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/text_rules.dart';
+import 'package:feature_words/src/words_view.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The word sheet, for `showCoquiSheet`: `showCoquiSheet(context, builder: sheet.build)`, then [closed] when the
-/// future of `showCoquiSheet` completes (the sheet has been popped and is sliding out).
-///
-/// [pair] is the word's review pair (null: no picture); [lines] are the lines it was heard in.
+/// The word sheet, for [showNocheSheet]: call `showNocheSheet(context,
+/// builder: sheet.build)`, then [closed] when the sheet route completes so any
+/// playing clip stops at once.
 class WordSheet {
   WordSheet({
     required this.services,
     required this.record,
     required this.pair,
     required this.lines,
+    this.stageMax = defaultStageMax,
   });
 
   final Services services;
   final WordRecord record;
   final ReviewPair? pair;
   final List<HeardLine> lines;
+  final int stageMax;
 
-  // app.html: LOOP (what is playing now is the run of the player that has this number; a run that another has
-  // overtaken, or that the closing of the sheet has ended, goes no further)
+  // app.html: LOOP (what is playing now is the run of the player that has this
+  // number; a run that another has overtaken, or that the closing of the sheet
+  // has ended, goes no further)
   int _loop = 0;
-
-  // The route calls [build] once, and `CoquiSheet` takes its `titleVisible` when it is made. The title shows
-  // when the big word has scrolled away, so the body tells [_showTitle], which builds the route's builder again.
-  Element? _builder;
-  bool _titleVisible = false;
   bool _built = false;
 
   late final Widget _body = _WordSheetBody(sheet: this);
 
-  /// The builder of `showCoquiSheet`. The X, the scrim, the drag and the back button are the route's.
-  CoquiSheet build(BuildContext context, VoidCallback close) {
-    _builder = context as Element;
+  /// The builder of [showNocheSheet].
+  Widget build(BuildContext context, VoidCallback close) {
     _built = true;
-    return CoquiSheet(
-      title: record.w,
-      titleVisible: _titleVisible,
-      child: _body,
-    );
+    return _body;
   }
 
-  void _showTitle(bool show) {
-    if (show == _titleVisible) return;
-    _titleVisible = show;
-    final at = _builder;
-    if (at != null && at.mounted) at.markNeedsBuild();
-  }
-
-  /// app.html: cierra (`paraLeer()`): what is playing stops, and no run of it goes on. Called at once when the sheet
-  /// is closed, and again when its widgets are gone.
+  /// app.html: cierra (`paraLeer()`): what is playing stops, and no run of it
+  /// goes on. Called at once when the sheet is closed, and again on dispose.
   void closed() {
     if (!_built) return;
     _loop++;
@@ -75,9 +62,6 @@ class _WordSheetBody extends StatefulWidget {
 }
 
 class _WordSheetBodyState extends State<_WordSheetBody> {
-  final _wordKey = GlobalKey();
-  ScrollPosition? _position;
-
   // app.html: LOOP (the clip id of the line that is playing)
   String? _playing;
 
@@ -85,33 +69,9 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
   Services get _s => _sheet.services;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final position = Scrollable.maybeOf(context)?.position;
-    if (position != _position) {
-      _position?.removeListener(_onScroll);
-      _position = position?..addListener(_onScroll);
-    }
-  }
-
-  @override
   void dispose() {
-    _position?.removeListener(_onScroll);
     _sheet.closed();
     super.dispose();
-  }
-
-  // app.html: palabra (`sb.onscroll`): the word shows in the header once its big word has scrolled away
-  void _onScroll() {
-    final position = _position;
-    if (position == null || !position.hasPixels) return;
-    final word = _wordKey.currentContext?.findRenderObject();
-    final body = position.context.storageContext.findRenderObject();
-    if (word is! RenderBox || body is! RenderBox) return;
-    if (!word.attached || !body.attached) return;
-    final bottom = word.localToGlobal(Offset(0, word.size.height)).dy;
-    final top = body.localToGlobal(Offset.zero).dy;
-    _sheet._showTitle(bottom < top + 8);
   }
 
   // app.html: oyeLinea
@@ -119,7 +79,7 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
     final s = _s;
     s.haptics.tick();
     final was = _playing == line.clipId;
-    _sheet._loop++; // paraLeer(): whatever is playing stops, and no run of the old one goes on
+    _sheet._loop++; // paraLeer(): stop whatever is playing
     unawaited(s.clips.stop());
     setState(() => _playing = null);
     if (was) return; // a second touch stops it
@@ -144,98 +104,223 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
     final courseLocale = Locale(lang.code);
     final tokens = wordTokens(r.w, language: lang);
     final back = comesBack(r.ear.due, _s.clock.nowMs());
-    return CollapsingColumn(
-      children: [
-        if (pair != null)
-          Block(
-            bottom: CoquiMetrics.s16,
-            child: Center(
-              child: PictureFrame(
-                radius: CoquiMetrics.radiusWordPicture,
-                child: Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: _s.pictures.of(PictureRef.of(pair, pair.yes)),
+    final wordStyle = NocheType.forScript(
+      NocheType.placeTitle,
+      lang.script,
+    ).copyWith(color: NocheColors.text);
+
+    return Directionality(
+      textDirection: courseDir,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (pair != null)
+            Padding(
+              padding: const EdgeInsetsDirectional.only(bottom: 16),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: _s.pictures.of(PictureRef.of(pair, pair.yes)),
+                  ),
                 ),
               ),
             ),
-          ),
-        Block(
-          bottom: CoquiMetrics.s8,
-          child: Text(
-            r.w,
-            key: _wordKey,
-            textAlign: TextAlign.center,
-            textDirection: courseDir,
-            locale: courseLocale,
-            style: CoquiText.h1,
-          ),
-        ),
-        Center(
-          child: EarMouthMeters(
-            ear: r.ear.etapa,
-            mouth: r.mouth.etapa,
-            centered: true,
-          ),
-        ),
-        Block(
-          top: CoquiMetrics.s16,
-          child: Text(
-            back,
-            textAlign: TextAlign.center,
-            style: CoquiText.smallMuted,
-          ),
-        ),
-        if (_sheet.lines.isNotEmpty) ...[
-          const SectionTitle('Heard in'),
-          CoquiCard(
-            padding: const EdgeInsetsDirectional.symmetric(
-              horizontal: CoquiMetrics.s16,
-            ),
-            child: Directionality(
+          Padding(
+            padding: const EdgeInsetsDirectional.only(bottom: 16),
+            child: Text(
+              r.w,
+              textAlign: TextAlign.center,
               textDirection: courseDir,
-              child: DividedRows(
-                rows: [
-                  for (final l in _sheet.lines)
-                    ListRow(
-                      title: Text.rich(
-                        _lineSpan(l.text, tokens, lang),
-                        textDirection: courseDir,
-                        locale: courseLocale,
-                      ),
-                      subtitle: Text(
-                        l.storyTitle,
-                        textDirection: courseDir,
-                        locale: courseLocale,
-                      ),
-                      trailing: PlayButton(
-                        icon: _playing == l.clipId
-                            ? CoquiIcons.stop
-                            : CoquiIcons.play,
-                        semanticLabel: 'Play: ${l.text}',
-                        onPressed: () => _playLine(l),
-                      ),
+              locale: courseLocale,
+              style: wordStyle,
+            ),
+          ),
+          NocheCard(
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _StageMeterRow(
+                  label: 'Ear',
+                  stage: r.ear.etapa,
+                  max: _sheet.stageMax,
+                ),
+                const SizedBox(height: 12),
+                _StageMeterRow(
+                  label: 'Mouth',
+                  stage: r.mouth.etapa,
+                  max: _sheet.stageMax,
+                ),
+              ],
+            ),
+          ),
+          if (back.isNotEmpty)
+            Padding(
+              padding: const EdgeInsetsDirectional.only(top: 16),
+              child: Text(
+                back,
+                textAlign: TextAlign.center,
+                style: NocheType.bodySmall.copyWith(color: NocheColors.label),
+              ),
+            ),
+          if (_sheet.lines.isNotEmpty) ...[
+            const SizedBox(height: 24),
+            const NocheSectionLabel('Heard in', bottomGap: 12),
+            NocheCard(
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (var i = 0; i < _sheet.lines.length; i++)
+                    _HeardLineRow(
+                      line: _sheet.lines[i],
+                      span: _lineSpan(_sheet.lines[i].text, tokens, lang),
+                      storyStyle: NocheType.forScript(
+                        NocheType.bodySmall,
+                        lang.script,
+                      ).copyWith(color: NocheColors.label),
+                      courseDir: courseDir,
+                      courseLocale: courseLocale,
+                      playing: _playing == _sheet.lines[i].clipId,
+                      showDivider: i < _sheet.lines.length - 1,
+                      onPlay: () => _playLine(_sheet.lines[i]),
                     ),
                 ],
               ),
             ),
-          ),
+          ],
         ],
-      ],
+      ),
     );
   }
 
-  /// The line, with the word bold inside it (`<b>`) and the text unchanged.
+  /// The line, with the word bold inside it and the text unchanged.
   TextSpan _lineSpan(String text, List<String> tokens, Language language) {
+    final baseStyle = NocheType.forScript(
+      NocheType.body,
+      language.script,
+    ).copyWith(color: NocheColors.text);
+    final boldStyle = baseStyle.copyWith(fontWeight: FontWeight.w700);
     final spans = <TextSpan>[];
     var pos = 0;
     for (final o in occurrences(text, [tokens], language: language)) {
       if (o.a > pos) spans.add(TextSpan(text: text.substring(pos, o.a)));
-      spans.add(
-        TextSpan(text: text.substring(o.a, o.z), style: CoquiText.rowBold),
-      );
+      spans.add(TextSpan(text: text.substring(o.a, o.z), style: boldStyle));
       pos = o.z;
     }
     if (pos < text.length) spans.add(TextSpan(text: text.substring(pos)));
-    return TextSpan(style: CoquiText.body, children: spans);
+    return TextSpan(style: baseStyle, children: spans);
+  }
+}
+
+class _StageMeterRow extends StatelessWidget {
+  const _StageMeterRow({
+    required this.label,
+    required this.stage,
+    required this.max,
+  });
+
+  final String label;
+  final int stage;
+  final int max;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: NocheType.bodySmall.copyWith(color: NocheColors.label),
+        ),
+        NocheStageBar(stage: stage, max: max),
+      ],
+    );
+  }
+}
+
+class _HeardLineRow extends StatelessWidget {
+  const _HeardLineRow({
+    required this.line,
+    required this.span,
+    required this.storyStyle,
+    required this.courseDir,
+    required this.courseLocale,
+    required this.playing,
+    required this.showDivider,
+    required this.onPlay,
+  });
+
+  final HeardLine line;
+  final TextSpan span;
+  final TextStyle storyStyle;
+  final TextDirection courseDir;
+  final Locale courseLocale;
+  final bool playing;
+  final bool showDivider;
+  final VoidCallback onPlay;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints(minHeight: 56),
+      padding: const EdgeInsetsDirectional.symmetric(vertical: 12),
+      decoration: showDivider
+          ? const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: NocheColors.line, width: 1),
+              ),
+            )
+          : null,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text.rich(span, textDirection: courseDir, locale: courseLocale),
+                const SizedBox(height: 4),
+                Text(
+                  line.storyTitle,
+                  textDirection: courseDir,
+                  locale: courseLocale,
+                  style: storyStyle,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Pressable(
+            onPressed: onPlay,
+            semanticLabel: 'Play: ${line.text}',
+            builder: (context, pressed) => Transform.scale(
+              scale: pressed ? 0.94 : 1,
+              child: Container(
+                width: NocheSize.touch,
+                height: NocheSize.touch,
+                alignment: AlignmentDirectional.center,
+                decoration: const BoxDecoration(
+                  color: NocheColors.chip,
+                  shape: BoxShape.circle,
+                ),
+                child: NocheIcon(
+                  playing ? NocheIcons.pause : NocheIcons.play,
+                  size: 20,
+                  color: NocheColors.text,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
