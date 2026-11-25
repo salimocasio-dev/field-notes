@@ -52,18 +52,34 @@ class Place {
   };
 }
 
-/// A story's entry in CURSO.cuentos (curso.js): {t, min}, under its id.
+/// A story's entry in CURSO.cuentos (curso.js): {t, min, minApp?}, under its id.
 class StoryMeta {
-  StoryMeta({required this.id, required this.title, required this.minutes});
+  StoryMeta({
+    required this.id,
+    required this.title,
+    required this.minutes,
+    this.minApp,
+  });
 
-  factory StoryMeta.fromJson(String id, Map<String, dynamic> j) =>
-      StoryMeta(id: id, title: j['t'] as String, minutes: jsonInt(j['min']));
+  factory StoryMeta.fromJson(String id, Map<String, dynamic> j) => StoryMeta(
+    id: id,
+    title: j['t'] as String,
+    minutes: jsonInt(j['min']),
+    minApp: jsonIntOrNull(j['minApp']),
+  );
 
   String id;
   String title;
   int minutes;
 
-  Map<String, dynamic> toJson() => {'t': title, 'min': minutes};
+  /// Lowest app number that can play this story. Null means any app.
+  int? minApp;
+
+  Map<String, dynamic> toJson() => {
+    't': title,
+    'min': minutes,
+    'minApp': ?minApp,
+  };
 }
 
 /// One recorded line. who, text and habla are the story file's clip entry
@@ -344,5 +360,40 @@ extension CourseCalls on CourseCatalog {
     final c = this;
     if (c is CallsCatalog) return (c as CallsCatalog).callsFor(placeId);
     return [?callFor(placeId)];
+  }
+}
+
+/// Optional interface for a [CourseCatalog] that names a course-wide minimum
+/// app number (`curso.json`: `minApp`).
+///
+/// Kept separate from [CourseCatalog] (same pattern as [CallsCatalog],
+/// `LanguageCatalog` and `RepasoCatalog`): adding an abstract member directly
+/// to [CourseCatalog] would break every catalog implemented in other packages.
+/// Catalogs that do not implement this default to `null` (any app version) via
+/// [CourseMinApp.minApp].
+abstract interface class MinAppCatalog {
+  /// Lowest app number that can play this course. Null means any app.
+  int? get minApp;
+}
+
+/// Course- and story-level minimum app numbers on [CourseCatalog].
+extension CourseMinApp on CourseCatalog {
+  /// Course-wide lowest app number ([MinAppCatalog.minApp]), or `null` (any
+  /// app) when the catalog does not implement [MinAppCatalog] or leaves it
+  /// unset.
+  int? get minApp {
+    final c = this;
+    return c is MinAppCatalog ? (c as MinAppCatalog).minApp : null;
+  }
+
+  /// Effective lowest app number required to play [storyId]: the higher of the
+  /// course's [minApp] and `meta(storyId)?.minApp`, or `null` when neither
+  /// sets a minimum.
+  int? minAppFor(String storyId) {
+    final courseMin = minApp;
+    final storyMin = meta(storyId)?.minApp;
+    if (courseMin == null) return storyMin;
+    if (storyMin == null) return courseMin;
+    return courseMin >= storyMin ? courseMin : storyMin;
   }
 }

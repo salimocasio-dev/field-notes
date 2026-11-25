@@ -40,6 +40,10 @@ Models, interfaces, routes. Pure Dart.
   extension (`course.callsFor(placeId)`, separate interface falling back to `[callFor(placeId)]`); `CallRoute(placeId,
   {callId})`; and `CallProgressStore` + `CallProgress` extension (`progress.callDone(callId)`, separate interface
   defaulting to `false`).
+- Issue `#61`: `StoryMeta.minApp` (optional `int?`, omitted from JSON when null); `MinAppCatalog` + `CourseMinApp`
+  extension (`course.minApp` defaulting to `null`, `course.minAppFor(storyId)` returning the higher of course/story
+  `minApp` or `null`); and `AppNumberInfo` + `AppInfoNumber` extension (`info.appNumber` parsing the leading numeric
+  prefix of `build` or `0` for unnumbered/`'dev'` builds, and `info.supportsMinApp(minApp)`).
 
 ## Run and test it alone
 
