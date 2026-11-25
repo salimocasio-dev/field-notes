@@ -9,7 +9,10 @@ import 'dart:ui' as ui;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_speaking/feature_speaking.dart';
 import 'package:feature_speaking/src/call_catalog.dart';
+import 'package:feature_speaking/src/call_controller.dart';
+import 'package:feature_speaking/src/call_screen.dart';
 import 'package:feature_speaking/src/hablar_model.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
 import 'package:flutter/rendering.dart' show RenderRepaintBoundary;
@@ -496,6 +499,110 @@ void main() {
       expect(snap.reachedStops.length, 4);
       expect(snap.nextLockedStop, isNull);
       rig.dispose();
+    });
+
+    test('SpeakingModule.screenFor and CallController resolve CallRoute.callId to the exact CallBrief', () {
+      final rig = _SpeakRig.spanish(cocinaPlayed: 6);
+      const module = SpeakingModule();
+
+      // Main call (callId omitted)
+      final mainWidget = module.screenFor(
+        const CallRoute('cocina'),
+        rig.services,
+      );
+      expect(mainWidget, isA<CallScreen>());
+      expect((mainWidget! as CallScreen).callId, isNull);
+      final mainCtrl = CallController(
+        session: rig.call,
+        clock: FakeClock(),
+        course: rig.course,
+        progress: rig.progress,
+        placeId: 'cocina',
+      );
+      expect(mainCtrl.brief?.id, 'cocina_main');
+      expect(mainCtrl.brief?.minutes, 5);
+      mainCtrl.dispose();
+
+      // Specific short call (callId provided)
+      final shortWidget = module.screenFor(
+        const CallRoute('cocina', callId: 'cocina_tomar'),
+        rig.services,
+      );
+      expect(shortWidget, isA<CallScreen>());
+      expect((shortWidget! as CallScreen).callId, 'cocina_tomar');
+      final shortCtrl = CallController(
+        session: rig.call,
+        clock: FakeClock(),
+        course: rig.course,
+        progress: rig.progress,
+        placeId: 'cocina',
+        callId: 'cocina_tomar',
+      );
+      expect(shortCtrl.brief?.id, 'cocina_tomar');
+      expect(shortCtrl.brief?.title, '¿Qué quieres tomar?');
+      expect(shortCtrl.brief?.minutes, 2);
+      shortCtrl.dispose();
+
+      // Unknown callId returns null instead of falling back to the main call
+      expect(
+        module.screenFor(
+          const CallRoute('cocina', callId: 'does_not_exist'),
+          rig.services,
+        ),
+        isNull,
+      );
+      rig.dispose();
+    });
+
+    test('places with zero stories stay locked after a completed place until a later place is played', () {
+      final places = [
+        Place(
+          id: 'casa',
+          n: 1,
+          name: 'La casa',
+          en: 'House',
+          stories: const ['c1'],
+        ),
+        Place(
+          id: 'colmado',
+          n: 2,
+          name: 'El colmado',
+          en: 'Shop',
+          stories: const [],
+        ),
+        Place(
+          id: 'calle',
+          n: 3,
+          name: 'La calle',
+          en: 'Street',
+          stories: const ['s1'],
+        ),
+      ];
+      final course = _StructuredCourse(places: places, callsByPlace: const {});
+      final progress = RecordingProgress();
+      progress.storyFinished(StoryResult(id: 'c1'));
+
+      final beforeLater = buildHablarSnapshot(
+        course: course,
+        progress: progress,
+        callsAvailable: () => true,
+      );
+      expect(beforeLater.reachedStops.map((s) => s.place.id), ['casa']);
+      expect(beforeLater.nextLockedStop?.place.id, 'colmado');
+
+      // Playing a story in a later place still reaches up to it.
+      progress.storyFinished(StoryResult(id: 's1'));
+      final afterLater = buildHablarSnapshot(
+        course: course,
+        progress: progress,
+        callsAvailable: () => true,
+      );
+      expect(afterLater.reachedStops.map((s) => s.place.id), [
+        'casa',
+        'colmado',
+        'calle',
+      ]);
+      expect(afterLater.nextLockedStop, isNull);
     });
   });
 

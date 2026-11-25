@@ -1,5 +1,6 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_screen.dart';
 import 'package:feature_speaking/src/entitlements_hook.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
@@ -68,13 +69,14 @@ class SpeakingModule implements FeatureModule {
   Widget? screenFor(AppRoute route, Services s) {
     if (route is CallRoute) {
       final known =
-          s.course.callFor(route.placeId) != null &&
-          s.course.places.any((p) => p.id == route.placeId);
+          s.course.places.any((p) => p.id == route.placeId) &&
+          resolveCallBrief(s.course, route.placeId, route.callId) != null;
       return known
           ? CallScreen(
-              key: ValueKey('call-${route.placeId}'),
+              key: ValueKey('call-${route.placeId}-${route.callId ?? ''}'),
               services: s,
               placeId: route.placeId,
+              callId: route.callId,
             )
           : null;
     }

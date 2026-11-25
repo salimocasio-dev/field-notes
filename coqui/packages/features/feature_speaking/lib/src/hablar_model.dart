@@ -81,7 +81,7 @@ class HablarCallItem {
       return '${spec.minutes} min · later';
     }
     if (state == HablarCallState.tierLocked) {
-      return '${spec.minutes} min · plan';
+      return '${spec.minutes} min · Course + Calls';
     }
     return '${spec.minutes} min';
   }
