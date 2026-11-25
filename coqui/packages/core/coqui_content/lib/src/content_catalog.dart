@@ -33,7 +33,12 @@ typedef FetchText = Future<String> Function(String path);
 /// [load] also reads the optional `idioma` object from `datos/curso.json` into [language] (implementing
 /// [LanguageCatalog], defaulting to [Language.spanish] when missing) and uses its `callAgentId` as the default for
 /// calls in `datos/llamadas.json`.
-class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
+///
+/// Implements [CallsCatalog]: `datos/llamadas.json` maps each place id to either a legacy single call object or a JSON
+/// array of call objects (`main` and smaller calls). [callsFor] returns every call for a place in order; [callFor]
+/// returns its main call (or the first call when none sets `isMain`).
+class ContentCatalog
+    implements CourseCatalog, RepasoCatalog, LanguageCatalog, CallsCatalog {
   ContentCatalog(this._fetch);
 
   final FetchText _fetch;
@@ -48,6 +53,7 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   List<String> _pairNormalized = const [];
   List<LevelItem> _levelItems = const [];
   Map<String, CallBrief> _calls = const {};
+  Map<String, List<CallBrief>> _callsByPlace = const {};
   Map<String, String> _fixed = const {};
   // fijos.json, lineas: the lines the old code writes in code, by clip id
   Map<String, _Line> _written = const {};
@@ -148,10 +154,15 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
     }
 
     final pairNormalized = [for (final p in pairs) language.normalize(p.word)];
-    final parsedCalls = {
-      for (final e in calls.entries)
-        e.key: _parseCallBrief(e.key, e.value, language),
-    };
+    final parsedCallsByPlace = <String, List<CallBrief>>{};
+    final parsedMainCalls = <String, CallBrief>{};
+    final seenCallIds = <String>{};
+    for (final e in calls.entries) {
+      final list = _parsePlaceCalls(e.key, e.value, language, seenCallIds);
+      parsedCallsByPlace[e.key] = List<CallBrief>.unmodifiable(list);
+      final main = _mainCallOf(list);
+      if (main != null) parsedMainCalls[e.key] = main;
+    }
 
     _language = language;
     _places = places;
@@ -161,7 +172,8 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
     // app.html, pares(): m.set(it.w, it) — the last item with a word is the one the word gives
     _pairByWord = {for (final p in pairs) p.word: p};
     _levelItems = levelItems;
-    _calls = parsedCalls;
+    _calls = parsedMainCalls;
+    _callsByPlace = parsedCallsByPlace;
     _fixed = Map<String, String>.from(fixed['clips'] as Map);
     _written = _writtenLines(fixed['lineas']);
     _goodbye = _strings(fixed['despedidas']);
@@ -337,6 +349,10 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
 
   @override
   CallBrief? callFor(String placeId) => _calls[placeId];
+
+  @override
+  List<CallBrief> callsFor(String placeId) =>
+      _callsByPlace[placeId] ?? const <CallBrief>[];
 
   /// A clip that has a recording (it is in `audio/ready.json`) and marks (`audio/marcas.json`); otherwise null.
   /// Its `who`, `text` and `habla` are those of the first story read that has the line. Until one has been, they are
@@ -545,19 +561,123 @@ Map<String, String> _languageStringMap(
   return out;
 }
 
-CallBrief _parseCallBrief(String placeId, Object? value, Language language) {
-  final raw = ContentCatalog._object(value, 'datos/llamadas.json: $placeId');
+List<CallBrief> _parsePlaceCalls(
+  String placeId,
+  Object? value,
+  Language language,
+  Set<String> seenCallIds,
+) {
+  if (value is Map) {
+    final brief = _parseCallBrief(
+      placeId,
+      value,
+      language,
+      context: 'datos/llamadas.json: $placeId',
+      legacyObject: true,
+    );
+    if (!brief.isMain) {
+      throw FormatException(
+        'datos/llamadas.json: $placeId: legacy object entry cannot set isMain: false',
+      );
+    }
+    if (!seenCallIds.add(brief.id)) {
+      throw FormatException(
+        'datos/llamadas.json: duplicate call id "${brief.id}"',
+      );
+    }
+    return [brief];
+  }
+  if (value is List) {
+    final out = <CallBrief>[];
+    var mainCount = 0;
+    for (var i = 0; i < value.length; i++) {
+      final brief = _parseCallBrief(
+        placeId,
+        value[i],
+        language,
+        context: 'datos/llamadas.json: $placeId[$i]',
+        legacyObject: false,
+      );
+      if (!seenCallIds.add(brief.id)) {
+        throw FormatException(
+          'datos/llamadas.json: duplicate call id "${brief.id}"',
+        );
+      }
+      if (brief.isMain) {
+        mainCount++;
+        if (mainCount > 1) {
+          throw FormatException(
+            'datos/llamadas.json: $placeId has more than one main call',
+          );
+        }
+      }
+      out.add(brief);
+    }
+    return out;
+  }
+  throw FormatException(
+    'datos/llamadas.json: $placeId must be a JSON object or array',
+  );
+}
+
+CallBrief? _mainCallOf(List<CallBrief> calls) {
+  if (calls.isEmpty) return null;
+  for (final c in calls) {
+    if (c.isMain) return c;
+  }
+  return calls.first;
+}
+
+CallBrief _parseCallBrief(
+  String placeId,
+  Object? value,
+  Language language, {
+  required String context,
+  required bool legacyObject,
+}) {
+  final raw = ContentCatalog._object(value, context);
   final primary = raw['agentId'];
   if (primary != null && primary is! String) {
-    throw FormatException(
-      'datos/llamadas.json: $placeId.agentId must be a string',
-    );
+    throw FormatException('$context.agentId must be a string');
   }
   final legacy = raw['agentid'];
   if (legacy != null && legacy is! String) {
-    throw FormatException(
-      'datos/llamadas.json: $placeId.agentid must be a string',
-    );
+    throw FormatException('$context.agentid must be a string');
+  }
+  if (!legacyObject) {
+    final id = raw['id'];
+    if (id != null && (id is! String || id.trim().isEmpty)) {
+      throw FormatException('$context.id must be a non-empty string');
+    }
+    final title = raw['title'];
+    if (title != null && title is! String) {
+      throw FormatException('$context.title must be a string');
+    }
+    final jobEn = raw['jobEn'];
+    if (jobEn != null && jobEn is! String) {
+      throw FormatException('$context.jobEn must be a string');
+    }
+    final minutes = raw['minutos'];
+    if (minutes is! num ||
+        !minutes.isFinite ||
+        minutes != minutes.truncateToDouble() ||
+        minutes <= 0) {
+      throw FormatException('$context.minutos must be a positive integer');
+    }
+    if (raw['job'] is! String) {
+      throw FormatException('$context.job must be a string');
+    }
+    if (raw['opening'] is! String) {
+      throw FormatException('$context.opening must be a string');
+    }
+    final photo = raw['foto'];
+    if (photo != null && photo is! String) {
+      throw FormatException('$context.foto must be a string');
+    }
+    final isMain = raw['isMain'];
+    if (isMain != null && isMain is! bool) {
+      throw FormatException('$context.isMain must be a boolean');
+    }
   }
   final perCall = (primary is String && primary.trim().isNotEmpty)
       ? primary

@@ -142,6 +142,7 @@ class LevelCheckScreenState extends State<LevelCheckScreen> {
         ),
         picture: showPictures ? _choices(box) : null,
         caption: showPictures && s.caption.isNotEmpty ? s.caption : null,
+        language: _s.course.language,
         overlay: (start || end) && s.screenTitle.isNotEmpty
             ? LessonTextScreen(
                 box: box,

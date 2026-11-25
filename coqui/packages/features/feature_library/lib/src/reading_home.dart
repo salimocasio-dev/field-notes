@@ -84,10 +84,12 @@ class _ReadingHomeState extends State<ReadingHome> {
   }
 
   Future<void> _generate() async {
+    final lang = _s.course.language;
     final input = await showNocheSheet<String>(
       context,
       title: 'Write my story',
       builder: (context, close) => _StoryPromptSheet(
+        language: lang,
         onCancel: close,
         onSubmit: (words) => Navigator.pop(context, words),
       ),
@@ -101,8 +103,8 @@ class _ReadingHomeState extends State<ReadingHome> {
       final generator = _generator ??= await StoryGenerator.load();
       if (!mounted) return;
       final story = generator.generate(
-        vocabulary: ReadingVocabulary(_s.progress.words),
-        focus: input.split(','),
+        vocabulary: ReadingVocabulary(_s.progress.words, language: lang),
+        focus: input.split(RegExp(r'[,،]')),
         due: _s.progress.due(Skill.ear),
         previous: {
           for (final text in _texts.where((t) => t.generated)) text.body,
@@ -128,10 +130,11 @@ class _ReadingHomeState extends State<ReadingHome> {
   }
 
   ReviewPair? _storyPair(ReadingText text) {
+    final lang = _s.course.language;
     ReviewPair? fallback;
     for (final word in [
-      ...readingWords(text.title),
-      ...readingWords(text.body),
+      ...readingWords(text.title, language: lang),
+      ...readingWords(text.body, language: lang),
     ]) {
       final pair = _s.course.pairFor(word);
       if (pair == null) continue;
@@ -492,7 +495,7 @@ class _KeepReadingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final prog = readingProgress(book, place);
+    final prog = readingProgress(book, place, language: lang);
     final locale = Locale(lang.code);
     return NocheCard(
       padding: const EdgeInsetsDirectional.all(16),
@@ -571,8 +574,13 @@ class _KeepReadingCard extends StatelessWidget {
 }
 
 class _StoryPromptSheet extends StatefulWidget {
-  const _StoryPromptSheet({required this.onCancel, required this.onSubmit});
+  const _StoryPromptSheet({
+    required this.language,
+    required this.onCancel,
+    required this.onSubmit,
+  });
 
+  final Language language;
   final VoidCallback onCancel;
   final ValueChanged<String> onSubmit;
 
@@ -593,6 +601,9 @@ class _StoryPromptSheetState extends State<_StoryPromptSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final courseDirection = widget.language.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(NocheSize.tileRadius),
       borderSide: const BorderSide(color: NocheColors.line),
@@ -621,7 +632,11 @@ class _StoryPromptSheetState extends State<_StoryPromptSheet> {
               maxLines: 2,
               maxLength: 180,
               cursorColor: NocheColors.next,
-              style: fieldStyle(NocheType.body, NocheColors.text),
+              textDirection: courseDirection,
+              style: fieldStyle(
+                NocheType.forScript(NocheType.body, widget.language.script),
+                NocheColors.text,
+              ),
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => _submit(),
               decoration: InputDecoration(

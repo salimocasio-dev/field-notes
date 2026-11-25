@@ -531,7 +531,10 @@ void main() {
         b.clips.plays.where((p) => p['id'] == w.say.first.before),
         isEmpty,
       );
-      expect(b.listener.listens.single.locale, 'es-US');
+      expect(
+        b.listener.listens.single.locale,
+        Language.spanish.recognitionLocale,
+      );
     });
 
     test('heard right: the check, what was heard, the line in the reveal and Next at once, with no wait between them; the dash is green', () async {

@@ -2,9 +2,14 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 25, part 33: La plaza plays (build 17)
+
+- All four scenes of La plaza — El banco de la plaza (`plaza`, order 58, PR #77 / #17), El reloj (`reloj`, order 59), El quiosco (`quiosco`, order 60), and El calendario (`calendario`, order 61, PR #126 / #18–#20) — are on `main`, and their twelve stories (60 to 71) play silent in build 17 from bundled preview content (`coqui/app/assets/previa/`: 36 preview stories across El colmado, La calle, and La plaza; nothing under `historia/cuentos/`).
+- Page 13 has the four ports' results (orders 58 to 61) and the 27 acts left OPEN for the content lane (8 in `plaza.dart`, 19 across `reloj.dart`, `quiosco.dart`, and `calendario.dart`).
+
 ## Nov 24, part 32: El reloj, El quiosco and El calendario on main
 
-- La plaza's last three scenes (orders 59 to 61) are in Dart on main: PR #126, built by Gemini on one branch at Salim's word, reviewed by Codex (reloj, three rounds) and by Claude. Each set equals the JavaScript pixel for pixel; their nine stories (63 to 71) play to the end on every path the checker walks with no rule broken, and six app plays per scene reach the end with no words on screen. Not yet in a numbered build. Page 13 lists the 19 acts left OPEN for the content lane.
+- La plaza's last three scenes (orders 59 to 61) are in Dart on main: PR #126, built by Gemini on one branch at Salim's word, reviewed by Codex (reloj, three rounds) and by Claude. Each set equals the JavaScript pixel for pixel; their nine stories (63 to 71) play to the end on every path the checker walks with no rule broken, and six app plays per scene reach the end with no words on screen. Bundled and put live in build 17 (part 33 above). Page 13 lists the 19 acts left OPEN for the content lane.
 - The new PR guardrail (one package per branch) needs the `multi-package-ok` label on a scene port, which holds `coqui_scenes` and `feature_story` by AGENTS.md.
 
 ## Nov 23, part 31: Hablar's order 25 and the new Biblioteca (build 15)

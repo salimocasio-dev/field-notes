@@ -163,8 +163,9 @@ abstract class LessonBase extends ChangeNotifier {
   // juego.js: words
   int _words(String id) {
     final t = course.clip(id)?.text;
-    final s = (t == null || t.isEmpty) ? 'x x' : t;
-    return s.split(RegExp(r'\s+')).length;
+    if (t == null || t.isEmpty) return 2;
+    final n = course.language.tokens(t).length;
+    return n > 0 ? n : 1;
   }
 
   /// juego.js: playClip: the clip plays through the clip player; false when it is not ready, or was cut off.

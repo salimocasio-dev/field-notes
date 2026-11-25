@@ -1,0 +1,679 @@
+{
+ "id": "de-donde-eres",
+ "title": "¿De dónde eres?",
+ "place": "La plaza",
+ "scene": "plaza",
+ "next": "hablo-espanol",
+ "goal": "Hang each friend's photo on the notice board under the place the person is from, island or city, and keep the three blank cards under the stone: a photo hung under the wrong picture has to come down again and the wind takes a card.",
+ "stake": {
+  "thing": "tarjetas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "¿de dónde eres?",
+  "soy de",
+  "vivo en"
+ ],
+ "formas_foco": {
+  "soy de": [
+   "es de"
+  ],
+  "vivo en": [
+   "vive en",
+   "vives"
+  ],
+  "¿de dónde eres?": [
+   "¿de dónde es?"
+  ]
+ },
+ "back_again": [
+  "casa",
+  "abuela",
+  "señor",
+  "señora",
+  "aquí",
+  "cerca",
+  "lejos",
+  "ahora",
+  "grande",
+  "mira",
+  "yo",
+  "tú",
+  "tiene",
+  "amigo",
+  "foto",
+  "es"
+ ],
+ "also_heard": [
+  "foto",
+  "es usted",
+  "linda"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "c61_fotos": {
+   "who": "narr",
+   "text": "Ana y Coquí tienen fotos de los amigos."
+  },
+  "c61_pr": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Esto es Puerto Rico."
+  },
+  "c61_ny": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Y esto es Nueva York. Está lejos."
+  },
+  "c61_luis_ana": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ana, ¿de dónde eres?"
+  },
+  "c61_ana_soy": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Soy de Nueva York. Ahora vivo en Puerto Rico."
+  },
+  "c61_q_ana": {
+   "who": "narr",
+   "text": "¿De dónde es Ana?"
+  },
+  "c61_ana_luis": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: ¿Y tú, Luis? ¿De dónde eres?"
+  },
+  "c61_luis_soy": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Soy de Puerto Rico. Vivo aquí, cerca."
+  },
+  "c61_q_luis": {
+   "who": "narr",
+   "text": "¿De dónde es Luis?"
+  },
+  "c61_ana_abuela": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Mi abuela vive en Nueva York. Y es de Puerto Rico."
+  },
+  "c61_abuela_si": {
+   "who": "narr",
+   "habla": "abuela_ana",
+   "text": "La abuela de Ana dice: Sí. Soy de Puerto Rico. Vivo en Nueva York."
+  },
+  "c61_q_abuela": {
+   "who": "narr",
+   "text": "¿De dónde es la abuela de Ana?"
+  },
+  "c61_ana_coqui": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: ¿Y tú, Coquí? ¿De dónde eres?"
+  },
+  "c61_cq_aqui": {
+   "who": "tu",
+   "text": "¡De aquí!",
+   "tu_turno": [
+    {
+     "palabra": "aquí",
+     "formas": [
+      "aquí",
+      "aqui",
+      "de aquí"
+     ]
+    }
+   ]
+  },
+  "c61_ana_mas": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Mira, Coquí. ¡Más amigos!"
+  },
+  "c61_luis_sra": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Señora, ¿de dónde es usted?"
+  },
+  "c61_q_sra": {
+   "who": "narr",
+   "text": "¿De dónde es la señora?"
+  },
+  "c61_ca_sr": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Señor, ¿de dónde es usted?"
+  },
+  "c61_q_sr": {
+   "who": "narr",
+   "text": "¿De dónde es el señor?"
+  },
+  "c61_ana_vives": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: Ahora tú, Coquí. ¿Dónde vives?"
+  },
+  "c61_cq_cerca": {
+   "who": "tu",
+   "text": "¡Cerca!",
+   "tu_turno": [
+    {
+     "palabra": "cerca",
+     "formas": [
+      "cerca"
+     ]
+    }
+   ]
+  },
+  "c61_ana_linda": {
+   "who": "narr",
+   "habla": "ana",
+   "text": "Ana dice: ¡Qué casa más linda!"
+  },
+  "c61_fin": {
+   "who": "narr",
+   "text": "Coquí es de Puerto Rico. Y Ana vive en Puerto Rico."
+  },
+  "c61_sa_isla_soy": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Soy de Puerto Rico. Vivo en Nueva York."
+  },
+  "c61_sa_isla_vivo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Vivo en Nueva York. Soy de Puerto Rico."
+  },
+  "c61_sa_no_isla": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Soy de Puerto Rico."
+  },
+  "c61_sa_ciudad_soy": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Soy de Nueva York. Vivo en Puerto Rico."
+  },
+  "c61_sa_ciudad_vivo": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Vivo en Puerto Rico. Soy de Nueva York."
+  },
+  "c61_sa_no_ciudad": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, Coquí. Soy de Nueva York."
+  },
+  "c61_se_isla_soy": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Soy de Puerto Rico. Vivo en Nueva York."
+  },
+  "c61_se_isla_vivo": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Vivo en Nueva York. Soy de Puerto Rico."
+  },
+  "c61_se_no_isla": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Soy de Puerto Rico."
+  },
+  "c61_se_ciudad_soy": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Soy de Nueva York. Vivo en Puerto Rico."
+  },
+  "c61_se_ciudad_vivo": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Vivo en Puerto Rico. Soy de Nueva York."
+  },
+  "c61_se_no_ciudad": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: No, Coquí. Soy de Nueva York."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde",
+    "tablero": 1,
+    "carrito": 0
+   }
+  },
+  {
+   "act": "tarjetas",
+   "n": 3
+  },
+  {
+   "act": "ir",
+   "a": "tablero2"
+  },
+  {
+   "wait": 500
+  },
+  "c61_fotos",
+  {
+   "act": "gesto",
+   "quien": "ana",
+   "que": "senala",
+   "a": "fila_isla"
+  },
+  "c61_pr",
+  {
+   "act": "gesto",
+   "quien": "ana",
+   "que": "senala",
+   "a": "fila_ciudad"
+  },
+  "c61_ny",
+  {
+   "dots": 1
+  },
+  "c61_luis_ana",
+  "c61_ana_soy",
+  {
+   "ask": "fila_ciudad",
+   "lead": [],
+   "line": "c61_q_ana",
+   "then": [],
+   "after": [
+    {
+     "act": "foto61",
+     "quien": "ana",
+     "fila": "ciudad",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  "c61_ana_luis",
+  "c61_luis_soy",
+  {
+   "ask": "fila_isla",
+   "lead": [],
+   "line": "c61_q_luis",
+   "then": [],
+   "after": [
+    {
+     "act": "foto61",
+     "quien": "luis",
+     "fila": "isla",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "llega",
+   "quien": "abuela_ana",
+   "a": "frente1"
+  },
+  "c61_ana_abuela",
+  "c61_abuela_si",
+  {
+   "ask": "fila_isla",
+   "lead": [],
+   "line": "c61_q_abuela",
+   "then": [],
+   "after": [
+    {
+     "act": "foto61",
+     "quien": "abuela_ana",
+     "fila": "isla",
+     "ok": 1
+    }
+   ]
+  },
+  "c61_ana_coqui",
+  "c61_cq_aqui",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "senala",
+   "a": "fila_isla"
+  },
+  {
+   "act": "foto61",
+   "quien": "coqui",
+   "fila": "isla",
+   "ok": 1
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "llega",
+   "quien": "senora",
+   "a": "frente2"
+  },
+  {
+   "act": "llega",
+   "quien": "senor",
+   "a": "frente3"
+  },
+  "c61_ana_mas",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "da",
+   "options": [
+    "isla",
+    "ciudad"
+   ],
+   "other": "na"
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "soy",
+    "vivo"
+   ]
+  },
+  "c61_luis_sra",
+  "c61_sa_$da_$qa",
+  "c61_q_sra",
+  {
+   "decide": "do",
+   "options": [
+    "fila_isla",
+    "fila_ciudad"
+   ],
+   "pick": "fila_$da",
+   "tests": "soy de",
+   "lock": true,
+   "mudo": true,
+   "lead": [],
+   "line": "c61_sa_$da_$qa",
+   "right": [
+    {
+     "act": "foto61",
+     "quien": "senora",
+     "fila": "$da",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "senora",
+       "que": "si"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "foto61",
+     "quien": "senora",
+     "fila": "$na",
+     "ok": 0,
+     "suelto": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "senora",
+     "que": "no"
+    },
+    "c61_sa_no_$da",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "vuela61"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "tarjetas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "tarjetas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "db",
+   "options": [
+    "isla",
+    "ciudad"
+   ],
+   "other": "nb"
+  },
+  {
+   "draw": "qb",
+   "options": [
+    "soy",
+    "vivo"
+   ]
+  },
+  "c61_ca_sr",
+  "c61_se_$db_$qb",
+  "c61_q_sr",
+  {
+   "decide": "do",
+   "options": [
+    "fila_isla",
+    "fila_ciudad"
+   ],
+   "pick": "fila_$db",
+   "tests": "soy de",
+   "lock": true,
+   "mudo": true,
+   "lead": [],
+   "line": "c61_se_$db_$qb",
+   "right": [
+    {
+     "act": "foto61",
+     "quien": "senor",
+     "fila": "$db",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "gesto",
+       "quien": "senor",
+       "que": "si"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "foto61",
+     "quien": "senor",
+     "fila": "$nb",
+     "ok": 0,
+     "suelto": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "senor",
+     "que": "no"
+    },
+    "c61_se_no_$db",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "vuela61"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "tarjetas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "tarjetas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  "c61_ana_vives",
+  "c61_cq_cerca",
+  {
+   "act": "ir",
+   "a": "repisa"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "dibuja61",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "dibuja61",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "dibuja61",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c61_ana_linda",
+  "c61_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c61_fotos",
+  "c61_pr",
+  "c61_ny",
+  "c61_luis_ana",
+  "c61_ana_soy",
+  "c61_q_ana",
+  "c61_ana_luis",
+  "c61_luis_soy",
+  "c61_q_luis",
+  "c61_ana_abuela",
+  "c61_abuela_si",
+  "c61_q_abuela",
+  "c61_ana_coqui",
+  "c61_cq_aqui",
+  "c61_ana_mas",
+  "c61_luis_sra",
+  "c61_sa_isla_soy",
+  "c61_q_sra",
+  "c61_ca_sr",
+  "c61_se_ciudad_vivo",
+  "c61_q_sr",
+  "c61_ana_vives",
+  "c61_cq_cerca",
+  "c61_ana_linda",
+  "c61_fin"
+ ]
+}
