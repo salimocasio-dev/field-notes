@@ -12,6 +12,9 @@ class _Map implements StringBackend {
 
   @override
   Future<void> write(String key, String value) async => m[key] = value;
+
+  @override
+  Future<void> delete(String key) async => m.remove(key);
 }
 
 const _ua = {
@@ -80,6 +83,28 @@ void main() {
       expect(() => s.space(''), throwsArgumentError);
       expect(() => s.space('a.b'), throwsArgumentError);
     });
+    test(
+      'delete removes only the targeted key in that space or progress',
+      () async {
+        final m = Map.of(old);
+        final s = CoquiStorage(_Map(m));
+        await s.space('leer').write('extra', '1');
+        await s.space('juego').write('extra', '2');
+        await s.space('leer').delete('extra');
+        expect(s.space('leer').read('extra'), isNull);
+        expect(m.containsKey('coqui.leer.extra'), isFalse);
+        expect(s.space('juego').read('extra'), '2');
+        expect(s.space('leer').read('tam'), '2');
+
+        await s.space('leer').delete('missing');
+        expect(s.space('leer').read('tam'), '2');
+
+        await s.progress.delete('coqui.palabras.v1');
+        expect(s.progress.read('coqui.palabras.v1'), isNull);
+        expect(m.containsKey('coqui.palabras.v1'), isFalse);
+        expect(m['coqui.juego.ult'], old['coqui.juego.ult']);
+      },
+    );
   });
 
   group('AppInfo on the web, from the user agent', () {

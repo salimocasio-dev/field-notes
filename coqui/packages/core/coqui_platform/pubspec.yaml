@@ -25,3 +25,5 @@ dev_dependencies:
 flutter:
   assets:
     - assets/call_stub.json
+    - assets/elevenlabs/lib.iife.js
+    - assets/elevenlabs/LICENSE

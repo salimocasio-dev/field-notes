@@ -8,6 +8,64 @@ import 'package:coqui_platform/src/audio/sound_core.dart';
 import 'package:coqui_platform/src/io/just_audio_sink.dart';
 import 'package:just_audio/just_audio.dart';
 
+/// Minimal playback surface of [AudioPlayer] used by [PhoneClipPlayer], allowing
+/// tests to inject a fake without platform audio channels.
+abstract interface class PhoneAudioPlayer {
+  Future<void> setClip(String path, Duration start, Duration end);
+  Future<void> setSpeed(double speed);
+  Future<void> setVolume(double volume);
+  Future<void> play();
+  Future<void> stop();
+  Stream<bool> get completed;
+}
+
+class _JustAudioClipPlayer implements PhoneAudioPlayer {
+  _JustAudioClipPlayer(this._player);
+  final AudioPlayer _player;
+
+  @override
+  Future<void> setClip(String path, Duration start, Duration end) =>
+      _player.setAudioSource(
+        ClippingAudioSource(
+          child: AudioSource.file(path),
+          start: start,
+          end: end,
+        ),
+      );
+
+  @override
+  Future<void> setSpeed(double speed) => _player.setSpeed(speed);
+
+  @override
+  Future<void> setVolume(double volume) => _player.setVolume(volume);
+
+  @override
+  Future<void> play() => _player.play();
+
+  @override
+  Future<void> stop() => _player.stop();
+
+  @override
+  Stream<bool> get completed => _player.processingStateStream
+      .where((s) => s == ProcessingState.completed)
+      .map((_) => true);
+}
+
+class _PhonePlayerPool {
+  _PhonePlayerPool(this._make);
+  final PhoneAudioPlayer Function() _make;
+  final List<PhoneAudioPlayer> _idle = [];
+
+  PhoneAudioPlayer take() => _idle.isNotEmpty ? _idle.removeLast() : _make();
+
+  Future<void> give(PhoneAudioPlayer p) async {
+    try {
+      await p.stop();
+    } catch (_) {}
+    _idle.add(p);
+  }
+}
+
 /// The [ClipPlayer] of a phone build. The made sounds are juego.js's own code ([SoundCore]) on a
 /// [PcmGraph] (each rendered once, then played by the plugin). A clip's file is fetched once into the
 /// phone's temporary storage ([preload], or the first [play]) and played by just_audio from its start
@@ -18,14 +76,18 @@ class PhoneClipPlayer implements ClipPlayer {
     required this.clipInfo,
     required this.base,
     HttpClient? http,
-  }) : _http = http ?? HttpClient();
+    PhoneAudioPlayer Function()? makePlayer,
+  }) : _http = http ?? HttpClient(),
+       _pool = _PhonePlayerPool(
+         makePlayer ?? (() => _JustAudioClipPlayer(AudioPlayer())),
+       );
 
   /// The made sounds (on a PcmGraph).
   final SoundCore effects;
   final ClipLookup clipInfo;
   final Uri base;
   final HttpClient _http;
-  final PlayerPool _pool = PlayerPool();
+  final _PhonePlayerPool _pool;
   final Map<String, File> _files = {};
   final Map<String, Future<File?>> _loading = {};
   final Set<_Playing> _live = {};
@@ -84,7 +146,10 @@ class PhoneClipPlayer implements ClipPlayer {
   }
 
   @override
-  Future<bool> play(String clipId, {Duration? limit}) async {
+  Future<bool> play(String clipId, {Duration? limit, double rate = 1.0}) async {
+    if (!rate.isFinite || rate <= 0) {
+      throw ArgumentError.value(rate, 'rate', 'must be finite and positive');
+    }
     final info = clipInfo(clipId);
     if (info == null) return false;
     final file = await _load(clipId);
@@ -92,21 +157,20 @@ class PhoneClipPlayer implements ClipPlayer {
     final p = _pool.take();
     final playing = _Playing(p);
     _live.add(playing);
-    StreamSubscription<ProcessingState>? sub;
+    StreamSubscription<bool>? sub;
     Timer? lim;
     try {
       final len = math.max(50, info.endMs - info.startMs);
-      await p.setAudioSource(
-        ClippingAudioSource(
-          child: AudioSource.file(file.path),
-          start: Duration(milliseconds: info.startMs),
-          end: Duration(milliseconds: info.startMs + len),
-        ),
+      await p.setClip(
+        file.path,
+        Duration(milliseconds: info.startMs),
+        Duration(milliseconds: info.startMs + len),
       );
+      await p.setSpeed(rate);
       await p.setVolume(muted ? 0 : 1);
       if (!playing.done.isCompleted) {
-        sub = p.processingStateStream.listen((s) {
-          if (s == ProcessingState.completed) playing.end(true);
+        sub = p.completed.listen((done) {
+          if (done) playing.end(true);
         });
         if (limit != null) lim = Timer(limit, () => playing.end(false));
         unawaited(p.play().catchError((Object _) {}));
@@ -122,6 +186,12 @@ class PhoneClipPlayer implements ClipPlayer {
       unawaited(_pool.give(p));
     }
   }
+
+  Future<bool> playAtRate(
+    String clipId, {
+    double rate = 1.0,
+    Duration? limit,
+  }) => play(clipId, limit: limit, rate: rate);
 
   @override
   void tone(
@@ -163,7 +233,7 @@ class PhoneClipPlayer implements ClipPlayer {
 
 class _Playing {
   _Playing(this.player);
-  final AudioPlayer player;
+  final PhoneAudioPlayer player;
   final Completer<bool> done = Completer();
 
   void end(bool v) {

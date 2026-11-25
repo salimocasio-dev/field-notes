@@ -41,6 +41,9 @@ class _Prefs implements StringBackend {
 
   @override
   Future<void> write(String key, String value) => p.setString(key, value);
+
+  @override
+  Future<void> delete(String key) => p.remove(key);
 }
 
 /// shared_preferences, loaded once (reads are then synchronous).

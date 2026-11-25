@@ -1,7 +1,8 @@
 /// Repaso as games: the running session (docs/proyecto/15-repaso-juegos.md, "The session", "The games", "What is
 /// written to his progress"). The plan (repaso_plan.dart) decides what is asked; this plays it and writes what page
-/// 15 says: an Ear answer for ¿Cuál? and ¿Qué oyes? exactly as Repaso writes today, a Mouth answer for Dilo heard
-/// right, nothing for the other play games, and the session's time to the day's minutes.
+/// 15 says: an Ear answer for ¿Cuál? and ¿Qué oyes? exactly as Repaso writes today, a Mouth answer for Dilo (right
+/// when heard right, wrong when two spoken attempts fail), nothing for the other play games, and the session's time
+/// to the day's minutes.
 ///
 /// Plain Dart on the host's wait, like the old session: a test runs it on a virtual clock with no screen.
 library;
@@ -997,7 +998,8 @@ class RepasoSession extends LessonBase {
   }
 
   // ---- Dilo (play): only a word open for speaking, a line with decided forms, the mic working, "Speak in
-  // stories" on. Heard right: a Mouth answer right. Anything else writes nothing.
+  // stories" on. Heard right: a Mouth answer right. Two spoken attempts not heard right: a Mouth miss. Mic
+  // errors, silent/empty captures, and "Can't speak now" write nothing.
 
   /// "Can't speak now": no more Dilo this session; the item on screen ends.
   void cantSpeak() {
@@ -1019,6 +1021,7 @@ class RepasoSession extends LessonBase {
       changed();
       await waitMs(300);
       await say(it.line.clip, 0);
+      var spokenAttempts = 0;
       for (var attempt = 1; attempt <= 2 && !done.isCompleted; attempt++) {
         mic = MicState.ready;
         yourTurn = true;
@@ -1069,6 +1072,9 @@ class RepasoSession extends LessonBase {
           sayOff = true;
           return;
         }
+        final heardSpeech =
+            r.error == null && r.alternatives.any((a) => a.trim().isNotEmpty);
+        if (heardSpeech) spokenAttempts++;
         heard = r.alternatives.isEmpty ? '' : r.alternatives.first;
         if (repasoHeardRight(
           r.alternatives,
@@ -1095,6 +1101,15 @@ class RepasoSession extends LessonBase {
         // before the model plays
         notHeard = true;
         if (attempt == 2) {
+          if (spokenAttempts == 2) {
+            progress.answer(
+              it.word,
+              Skill.mouth,
+              ok: false,
+              ms: r.msToSound ?? 0,
+              intro: false,
+            );
+          }
           mic = MicState.missed;
           _mark(DashMark.wrong);
           changed();
