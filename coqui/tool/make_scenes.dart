@@ -41,7 +41,7 @@ final RegExp _sceneFactoryPattern = RegExp(
   r'^Scene\s+(create[A-Za-z0-9_]+)\s*\(([^)]*)\)',
   multiLine: true,
 );
-final RegExp _rngParamPattern = RegExp(r'\bRng\??\s+rng\b');
+final RegExp _rngParamPattern = RegExp(r'^\s*\{\s*Rng\?\s+rng\s*,?\s*\}\s*$');
 
 List<SceneEntry> discoverScenes(Directory repoRoot) {
   final srcDir = Directory(

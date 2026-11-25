@@ -91,6 +91,7 @@ def ignored():
 
 
 _SCENE_FACTORY_RE = re.compile(r"^Scene\s+(create[A-Za-z0-9_]+)\s*\(([^)]*)\)", re.M)
+_RNG_PARAM_RE = re.compile(r"^\s*\{\s*Rng\?\s+rng\s*,?\s*\}\s*$")
 
 
 def registry_scenes(scenes_src=SCENES_SRC):
@@ -106,8 +107,13 @@ def registry_scenes(scenes_src=SCENES_SRC):
             continue
         with open(main_dart, encoding="utf-8") as f:
             src = f.read()
-        if not _SCENE_FACTORY_RE.search(src):
+        m = _SCENE_FACTORY_RE.search(src)
+        if not m:
             raise Refused("scene file has no Scene create... factory: %s" % os.path.relpath(main_dart, ROOT))
+        params = m.group(2)
+        if params.strip() and not _RNG_PARAM_RE.match(params):
+            raise Refused("scene file has unsupported factory parameters (%s): %s"
+                          % (params, os.path.relpath(main_dart, ROOT)))
         found.add(entry)
     return found
 

@@ -31,6 +31,9 @@ jobs:
       - name: flutter pub get
         run: flutter pub get
         working-directory: coqui
+      - name: Generate shared scene lists
+        run: dart run tool/make_scenes.dart
+        working-directory: coqui
       - name: Build for iOS, no signing
         env:
           COQUI_APP_BASE: ${{ vars.COQUI_APP_BASE || 'https://salimocasio-dev.github.io/field-notes/app/' }}

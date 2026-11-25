@@ -441,6 +441,20 @@ const Map<String, String> oldHashes = {};
       expect(() => discoverScenes(tmp), throwsFormatException);
     });
 
+    test('throws FormatException on positional or extra factory parameters', () {
+      _writeFile(
+        '${tmp.path}/coqui/packages/core/coqui_scenes/lib/src/frente/frente.dart',
+        'Scene createFrente(Rng rng) => throw UnimplementedError();\n',
+      );
+      expect(() => discoverScenes(tmp), throwsFormatException);
+
+      _writeFile(
+        '${tmp.path}/coqui/packages/core/coqui_scenes/lib/src/frente/frente.dart',
+        'Scene createFrente({Rng? rng, int extra = 0}) => throw UnimplementedError();\n',
+      );
+      expect(() => discoverScenes(tmp), throwsFormatException);
+    });
+
     test('throws FormatException when sheet is missing', () {
       _addScene(tmp, 'frente');
       expect(() => buildGeneratedScenes(tmp), throwsFormatException);

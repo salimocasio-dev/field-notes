@@ -60,6 +60,13 @@ class MakePreviaTest(unittest.TestCase):
             with self.assertRaises(make_previa.Refused):
                 make_previa.registry_scenes(str(root))
 
+            # Unsupported factory parameters also raise Refused.
+            (root / "bad" / "bad.dart").write_text(
+                "Scene createBad(Rng rng) => Bad();\n", encoding="utf-8"
+            )
+            with self.assertRaises(make_previa.Refused):
+                make_previa.registry_scenes(str(root))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
