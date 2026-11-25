@@ -10,6 +10,7 @@ import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
 import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_progress/coqui_progress.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
@@ -107,8 +108,43 @@ class TestApp {
   /// The preview content the app is built with (`previa.dart`); null: none, as the tests of the site's own files want.
   PreviaRead? previa;
 
-  /// The stored progress, read back (null when nothing is stored).
-  String? get stored => spaces.kv.read(progressKey);
+  /// Optional per-language course loader passed to [AppPlatform.loadCourse].
+  Future<CourseCatalog> Function(String languageCode)? loadCourse;
+
+  /// The stored progress for the active language, read back (falling back to
+  /// the legacy key when no per-language record has been written yet).
+  String? get stored {
+    final code = find.byType(WelcomeGate).evaluate().isNotEmpty
+        ? services.course.language.code
+        : _sharedLanguageCode();
+    try {
+      return storedFor(code) ?? spaces.kv.read(progressKey);
+    } on ArgumentError {
+      return storedFor(Language.spanish.code) ?? spaces.kv.read(progressKey);
+    }
+  }
+
+  String _sharedLanguageCode() {
+    final raw = sharedStored;
+    if (raw != null && raw.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(raw);
+        if (decoded is Map &&
+            decoded['idioma'] is String &&
+            (decoded['idioma'] as String).isNotEmpty) {
+          return decoded['idioma'] as String;
+        }
+      } catch (_) {}
+    }
+    return Language.spanish.code;
+  }
+
+  /// The cross-language shared progress snapshot (`coqui.shared.v1`).
+  String? get sharedStored => spaces.kv.read(PalabrasStore.sharedStorageKey);
+
+  /// The stored progress for language [code] (`coqui.<code>.palabras.v1`).
+  String? storedFor(String code) =>
+      spaces.kv.read(PalabrasStore.storageKeyFor(code));
 
   /// Lets [ms] of time go by, in steps of 20 ms, the clock and the frames together.
   Future<void> advance(int ms) async {
@@ -171,11 +207,14 @@ class TestApp {
     info: info,
     clock: clock,
     previa: previa,
+    loadCourse: loadCourse,
   );
 
-  /// Opens the app at [location] with the stored progress [stored] (a seed's text, or nothing).
+  /// Opens the app at [location] with the stored progress [stored] (a seed's text, or nothing) and optional extra
+  /// [initialStorage] entries (e.g. `coqui.shared.v1` and per-language stores).
   Future<void> open({
     String? stored,
+    Map<String, String>? initialStorage,
     String? location,
     AppSwitches switches = const AppSwitches(),
     bool welcomeDone = false,
@@ -191,7 +230,7 @@ class TestApp {
     tester.platformDispatcher.accessibilityFeaturesTestValue =
         FakeAccessibilityFeatures(disableAnimations: reduceMotion);
     addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
-    spaces = Spaces({progressKey: ?stored});
+    spaces = Spaces({progressKey: ?stored, ...?initialStorage});
     speech = FakeSpeechListener(results: micStub, isAvailable: speechAvailable);
     call = FakeCallSession(stub: switches.stubOptions);
     addTearDown(call.dispose);
