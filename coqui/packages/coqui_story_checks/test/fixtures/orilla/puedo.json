@@ -1,0 +1,1045 @@
+{
+ "id": "puedo",
+ "title": "¿Puedo?",
+ "place": "La playa",
+ "scene": "orilla",
+ "next": "la-cara",
+ "goal": "Bring each dripping child the dry towel from the rope, as abuela says by colour which is dry and which is wet, so that the three dry towels of the pile stay for the way home: a wet towel handed over costs a dry one from the pile.",
+ "stake": {
+  "thing": "toallas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "puedo",
+  "puedes",
+  "mojado",
+  "seco",
+  "hace calor"
+ ],
+ "formas_foco": {
+  "mojado": [
+   "mojada"
+  ],
+  "seco": [
+   "seca",
+   "secas"
+  ]
+ },
+ "back_again": [
+  "playa",
+  "mar",
+  "agua",
+  "bote",
+  "hondo",
+  "rojo",
+  "azul",
+  "amarillo",
+  "verde",
+  "come",
+  "pan",
+  "abuela",
+  "sí",
+  "no",
+  "cuidado",
+  "ahora",
+  "mañana",
+  "tengo",
+  "toma",
+  "gracias",
+  "también",
+  "allá",
+  "lejos"
+ ],
+ "also_heard": [
+  "toalla",
+  "ir"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c74_calor": {
+   "who": "narr",
+   "text": "Hace calor en la playa. ¡Hace mucho calor!"
+  },
+  "c74_l_puedo_agua": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Abuela, hace calor. ¿Puedo ir al agua?"
+  },
+  "c74_ab_si_puedes": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí, puedes."
+  },
+  "c74_ca_puedo_bote": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Abuela, ¿puedo ir al bote?"
+  },
+  "c74_ab_no_puedes": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, no puedes. Allá está hondo."
+  },
+  "c74_ca_puedo_comer": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Puedo comer?"
+  },
+  "c74_ab_si_toma": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí, puedes. Toma."
+  },
+  "c74_l_mojado": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Estoy mojado!"
+  },
+  "c74_ab_toma_seca": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma. Esta toalla está seca."
+  },
+  "c74_l_ahora": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ahora la toalla está mojada. Y yo estoy seco."
+  },
+  "c74_donde_secas": {
+   "who": "narr",
+   "text": "¿Dónde hay toallas secas?"
+  },
+  "c74_ab_quieres_agua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ¿quieres ir al agua?"
+  },
+  "cq_si": {
+   "who": "tu",
+   "text": "¡Sí!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    }
+   ]
+  },
+  "c74_ca_coqui_mojado": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Coquí está mojado!"
+  },
+  "c74_cual_seca": {
+   "who": "narr",
+   "text": "¿Cuál toalla está seca?"
+  },
+  "c74_ab_tu": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ahora tú. Quiero tres toallas secas."
+  },
+  "c74_ca_mojada": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Estoy mojada!"
+  },
+  "c74_ca_uy": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Uy! ¡Está mojada!"
+  },
+  "c74_l_uy": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uy! ¡Está mojada!"
+  },
+  "c74_l_manana": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Abuela, ¿puedo venir mañana?"
+  },
+  "c74_ab_si_tu": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí, puedes. ¿Y tú, Coquí?"
+  },
+  "p_cq_yo_tambien": {
+   "who": "tu",
+   "text": "¡Yo también!",
+   "tu_turno": [
+    {
+     "palabra": "también",
+     "formas": [
+      "también",
+      "tambien",
+      "yo también",
+      "yo tambien"
+     ]
+    }
+   ]
+  },
+  "c74_fin": {
+   "who": "narr",
+   "text": "Coquí está seco. Y hace calor."
+  },
+  "c74_no_rojo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. La toalla roja está mojada."
+  },
+  "c74_sm_rojo_azul": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla roja está seca. La toalla azul está mojada."
+  },
+  "c74_ms_rojo_azul": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla azul está mojada. La toalla roja está seca."
+  },
+  "c74_sm_rojo_amarillo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla roja está seca. La toalla amarilla está mojada."
+  },
+  "c74_ms_rojo_amarillo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla amarilla está mojada. La toalla roja está seca."
+  },
+  "c74_sm_rojo_verde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla roja está seca. La toalla verde está mojada."
+  },
+  "c74_ms_rojo_verde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla verde está mojada. La toalla roja está seca."
+  },
+  "c74_no_azul": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. La toalla azul está mojada."
+  },
+  "c74_sm_azul_rojo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla azul está seca. La toalla roja está mojada."
+  },
+  "c74_ms_azul_rojo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla roja está mojada. La toalla azul está seca."
+  },
+  "c74_sm_azul_amarillo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla azul está seca. La toalla amarilla está mojada."
+  },
+  "c74_ms_azul_amarillo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla amarilla está mojada. La toalla azul está seca."
+  },
+  "c74_sm_azul_verde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla azul está seca. La toalla verde está mojada."
+  },
+  "c74_ms_azul_verde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla verde está mojada. La toalla azul está seca."
+  },
+  "c74_no_amarillo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. La toalla amarilla está mojada."
+  },
+  "c74_sm_amarillo_rojo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla amarilla está seca. La toalla roja está mojada."
+  },
+  "c74_ms_amarillo_rojo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla roja está mojada. La toalla amarilla está seca."
+  },
+  "c74_sm_amarillo_azul": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla amarilla está seca. La toalla azul está mojada."
+  },
+  "c74_ms_amarillo_azul": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla azul está mojada. La toalla amarilla está seca."
+  },
+  "c74_sm_amarillo_verde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla amarilla está seca. La toalla verde está mojada."
+  },
+  "c74_ms_amarillo_verde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla verde está mojada. La toalla amarilla está seca."
+  },
+  "c74_no_verde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. La toalla verde está mojada."
+  },
+  "c74_sm_verde_rojo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla verde está seca. La toalla roja está mojada."
+  },
+  "c74_ms_verde_rojo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla roja está mojada. La toalla verde está seca."
+  },
+  "c74_sm_verde_azul": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla verde está seca. La toalla azul está mojada."
+  },
+  "c74_ms_verde_azul": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla azul está mojada. La toalla verde está seca."
+  },
+  "c74_sm_verde_amarillo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla verde está seca. La toalla amarilla está mojada."
+  },
+  "c74_ms_verde_amarillo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La toalla amarilla está mojada. La toalla verde está seca."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde",
+    "castillo": 0,
+    "manta": 1
+   }
+  },
+  {
+   "act": "toallas",
+   "n": 3
+  },
+  {
+   "act": "toallas_cuerda",
+   "a": "rojo",
+   "b": "azul"
+  },
+  {
+   "act": "ir",
+   "a": "manta_coqui"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "abanica"
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "abanica"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c74_calor",
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "senala",
+   "a": "mar"
+  },
+  "c74_l_puedo_agua",
+  "c74_ab_si_puedes",
+  {
+   "act": "al_agua",
+   "quien": "luis"
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "senala",
+   "a": "bote"
+  },
+  "c74_ca_puedo_bote",
+  "c74_ab_no_puedes",
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "sienta"
+  },
+  "c74_ca_puedo_comer",
+  "c74_ab_si_toma",
+  {
+   "dots": 2
+  },
+  {
+   "act": "sale74",
+   "quien": "luis"
+  },
+  "c74_l_mojado",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "toca"
+  },
+  "c74_ab_toma_seca",
+  "c74_l_ahora",
+  {
+   "ask": "toallas",
+   "lead": [],
+   "line": "c74_donde_secas",
+   "then": [],
+   "after": [
+    {
+     "set": {
+      "twinkle": "toallas"
+     }
+    },
+    {
+     "wait": 700
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ]
+  },
+  "c74_ab_quieres_agua",
+  "cq_si",
+  {
+   "act": "al_agua",
+   "quien": "coqui"
+  },
+  {
+   "act": "sale74",
+   "quien": "coqui"
+  },
+  "c74_ca_coqui_mojado",
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "toca"
+  },
+  "c74_sm_azul_rojo",
+  {
+   "ask": "toalla_b",
+   "lead": [],
+   "line": "c74_cual_seca",
+   "then": [],
+   "after": [
+    {
+     "act": "seca74",
+     "quien": "coqui",
+     "color": "azul",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "acuesta"
+  },
+  {
+   "draw": "da",
+   "options": [
+    "rojo",
+    "azul",
+    "amarillo",
+    "verde"
+   ]
+  },
+  {
+   "draw": "ea",
+   "options": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  {
+   "if": "da=rojo",
+   "then": [
+    {
+     "calc": "wa",
+     "cond": "ea=1",
+     "then": "azul",
+     "else": "amarillo"
+    },
+    {
+     "calc": "wa",
+     "cond": "ea=3",
+     "then": "verde",
+     "else": "$wa"
+    }
+   ],
+   "else": [
+    {
+     "if": "da=azul",
+     "then": [
+      {
+       "calc": "wa",
+       "cond": "ea=1",
+       "then": "rojo",
+       "else": "amarillo"
+      },
+      {
+       "calc": "wa",
+       "cond": "ea=3",
+       "then": "verde",
+       "else": "$wa"
+      }
+     ],
+     "else": [
+      {
+       "if": "da=amarillo",
+       "then": [
+        {
+         "calc": "wa",
+         "cond": "ea=1",
+         "then": "rojo",
+         "else": "azul"
+        },
+        {
+         "calc": "wa",
+         "cond": "ea=3",
+         "then": "verde",
+         "else": "$wa"
+        }
+       ],
+       "else": [
+        {
+         "calc": "wa",
+         "cond": "ea=1",
+         "then": "rojo",
+         "else": "azul"
+        },
+        {
+         "calc": "wa",
+         "cond": "ea=3",
+         "then": "amarillo",
+         "else": "$wa"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "sm",
+    "ms"
+   ]
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "toalla_a",
+    "toalla_b"
+   ],
+   "other": "ja"
+  },
+  {
+   "calc": "aa",
+   "cond": "ka=toalla_a",
+   "then": "$da",
+   "else": "$wa"
+  },
+  {
+   "calc": "ba",
+   "cond": "ka=toalla_a",
+   "then": "$wa",
+   "else": "$da"
+  },
+  {
+   "act": "toallas_cuerda",
+   "a": "$aa",
+   "b": "$ba"
+  },
+  {
+   "act": "al_agua",
+   "quien": "luis"
+  },
+  {
+   "act": "al_agua",
+   "quien": "carmen"
+  },
+  "c74_ab_tu",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "sale74",
+   "quien": "carmen"
+  },
+  "c74_ca_mojada",
+  {
+   "decide": "do",
+   "options": [
+    "toalla_a",
+    "toalla_b"
+   ],
+   "pick": "$ka",
+   "tests": "seco",
+   "lock": true,
+   "lead": [],
+   "line": "c74_$oa_$da_$wa",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "seca74",
+       "quien": "carmen",
+       "color": "$da",
+       "ok": 1
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "if": "ka=toalla_a",
+       "then": [
+        {
+         "set": {
+          "twinkle": "toalla_a"
+         }
+        },
+        {
+         "wait": 700
+        },
+        {
+         "set": {
+          "twinkle": null
+         }
+        }
+       ],
+       "else": [
+        {
+         "set": {
+          "twinkle": "toalla_b"
+         }
+        },
+        {
+         "wait": 700
+        },
+        {
+         "set": {
+          "twinkle": null
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "seca74",
+     "quien": "carmen",
+     "color": "$wa",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c74_ca_uy",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "toallas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "toallas",
+       "n": 1
+      }
+     ]
+    },
+    "c74_no_$wa",
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "db",
+   "options": [
+    "rojo",
+    "azul",
+    "amarillo",
+    "verde"
+   ]
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "1",
+    "2",
+    "3"
+   ]
+  },
+  {
+   "if": "db=rojo",
+   "then": [
+    {
+     "calc": "wb",
+     "cond": "eb=1",
+     "then": "azul",
+     "else": "amarillo"
+    },
+    {
+     "calc": "wb",
+     "cond": "eb=3",
+     "then": "verde",
+     "else": "$wb"
+    }
+   ],
+   "else": [
+    {
+     "if": "db=azul",
+     "then": [
+      {
+       "calc": "wb",
+       "cond": "eb=1",
+       "then": "rojo",
+       "else": "amarillo"
+      },
+      {
+       "calc": "wb",
+       "cond": "eb=3",
+       "then": "verde",
+       "else": "$wb"
+      }
+     ],
+     "else": [
+      {
+       "if": "db=amarillo",
+       "then": [
+        {
+         "calc": "wb",
+         "cond": "eb=1",
+         "then": "rojo",
+         "else": "azul"
+        },
+        {
+         "calc": "wb",
+         "cond": "eb=3",
+         "then": "verde",
+         "else": "$wb"
+        }
+       ],
+       "else": [
+        {
+         "calc": "wb",
+         "cond": "eb=1",
+         "then": "rojo",
+         "else": "azul"
+        },
+        {
+         "calc": "wb",
+         "cond": "eb=3",
+         "then": "amarillo",
+         "else": "$wb"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "sm",
+    "ms"
+   ]
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "toalla_a",
+    "toalla_b"
+   ],
+   "other": "jb"
+  },
+  {
+   "calc": "ab",
+   "cond": "kb=toalla_a",
+   "then": "$db",
+   "else": "$wb"
+  },
+  {
+   "calc": "bb",
+   "cond": "kb=toalla_a",
+   "then": "$wb",
+   "else": "$db"
+  },
+  {
+   "act": "toallas_cuerda",
+   "a": "$ab",
+   "b": "$bb"
+  },
+  {
+   "act": "sale74",
+   "quien": "luis"
+  },
+  "c74_l_mojado",
+  {
+   "decide": "do",
+   "options": [
+    "toalla_a",
+    "toalla_b"
+   ],
+   "pick": "$kb",
+   "tests": "seco",
+   "lock": true,
+   "lead": [],
+   "line": "c74_$ob_$db_$wb",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "seca74",
+       "quien": "luis",
+       "color": "$db",
+       "ok": 1
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "if": "kb=toalla_a",
+       "then": [
+        {
+         "set": {
+          "twinkle": "toalla_a"
+         }
+        },
+        {
+         "wait": 700
+        },
+        {
+         "set": {
+          "twinkle": null
+         }
+        }
+       ],
+       "else": [
+        {
+         "set": {
+          "twinkle": "toalla_b"
+         }
+        },
+        {
+         "wait": 700
+        },
+        {
+         "set": {
+          "twinkle": null
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "seca74",
+     "quien": "luis",
+     "color": "$wb",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c74_l_uy",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "toallas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "toallas",
+       "n": 1
+      }
+     ]
+    },
+    "c74_no_$wb",
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "set": {
+    "hora": "ocaso"
+   }
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final74",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final74",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final74",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c74_l_manana",
+  "c74_ab_si_tu",
+  "p_cq_yo_tambien",
+  "c74_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c74_calor",
+  "c74_l_puedo_agua",
+  "c74_ab_si_puedes",
+  "c74_ca_puedo_bote",
+  "c74_ab_no_puedes",
+  "c74_ca_puedo_comer",
+  "c74_ab_si_toma",
+  "c74_l_mojado",
+  "c74_ab_toma_seca",
+  "c74_l_ahora",
+  "c74_donde_secas",
+  "c74_ab_quieres_agua",
+  "cq_si",
+  "c74_ca_coqui_mojado",
+  "c74_sm_azul_rojo",
+  "c74_cual_seca",
+  "c74_ab_tu",
+  "c74_sm_amarillo_verde",
+  "c74_ms_azul_rojo",
+  "c74_l_manana",
+  "c74_ab_si_tu",
+  "p_cq_yo_tambien",
+  "c74_fin"
+ ]
+}

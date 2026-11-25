@@ -8,8 +8,10 @@ import 'package:app/src/app.dart';
 import 'package:app/src/content.dart';
 import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
+import 'package:app/src/scoped_clip_player.dart';
 import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_progress/coqui_progress.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
@@ -47,6 +49,7 @@ class TimedClips extends FakeClipPlayer {
   Future<bool> play(String clipId, {Duration? limit}) async {
     final len = lengthOf!(clipId);
     final ok = await super.play(clipId, limit: limit);
+    played[played.length - 1] = ScopedClipPlayer.unscope(played.last);
     if (len != null) {
       final cap = limit?.inMilliseconds;
       await Future<void>.delayed(
@@ -107,8 +110,46 @@ class TestApp {
   /// The preview content the app is built with (`previa.dart`); null: none, as the tests of the site's own files want.
   PreviaRead? previa;
 
-  /// The stored progress, read back (null when nothing is stored).
-  String? get stored => spaces.kv.read(progressKey);
+  /// Optional per-language course loader passed to [AppPlatform.loadCourse].
+  Future<CourseCatalog> Function(String languageCode)? loadCourse;
+
+  /// Optional clip player factory passed to [AppPlatform.clipPlayer].
+  ClipPlayer Function(ClipInfo? Function(String id) lookup)? clipPlayerFactory;
+
+  /// The stored progress for the active language, read back (falling back to
+  /// the legacy key when no per-language record has been written yet).
+  String? get stored {
+    final code = find.byType(WelcomeGate).evaluate().isNotEmpty
+        ? services.course.language.code
+        : _sharedLanguageCode();
+    try {
+      return storedFor(code) ?? spaces.kv.read(progressKey);
+    } on ArgumentError {
+      return storedFor(Language.spanish.code) ?? spaces.kv.read(progressKey);
+    }
+  }
+
+  String _sharedLanguageCode() {
+    final raw = sharedStored;
+    if (raw != null && raw.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(raw);
+        if (decoded is Map &&
+            decoded['idioma'] is String &&
+            (decoded['idioma'] as String).isNotEmpty) {
+          return decoded['idioma'] as String;
+        }
+      } catch (_) {}
+    }
+    return Language.spanish.code;
+  }
+
+  /// The cross-language shared progress snapshot (`coqui.shared.v1`).
+  String? get sharedStored => spaces.kv.read(PalabrasStore.sharedStorageKey);
+
+  /// The stored progress for language [code] (`coqui.<code>.palabras.v1`).
+  String? storedFor(String code) =>
+      spaces.kv.read(PalabrasStore.storageKeyFor(code));
 
   /// Lets [ms] of time go by, in steps of 20 ms, the clock and the frames together.
   Future<void> advance(int ms) async {
@@ -164,18 +205,22 @@ class TestApp {
     bundle: TestSceneBundle(),
     contentBase: contentBaseOf(Uri.parse('http://127.0.0.1/field-notes/app/')),
     storage: () async => spaces.storage,
-    clipPlayer: (lookup) => clips = TimedClips(lookup),
+    clipPlayer: (lookup) =>
+        clipPlayerFactory?.call(lookup) ?? (clips = TimedClips(lookup)),
     speech: speech,
     call: (info) async => call,
     haptics: haptics,
     info: info,
     clock: clock,
     previa: previa,
+    loadCourse: loadCourse,
   );
 
-  /// Opens the app at [location] with the stored progress [stored] (a seed's text, or nothing).
+  /// Opens the app at [location] with the stored progress [stored] (a seed's text, or nothing) and optional extra
+  /// [initialStorage] entries (e.g. `coqui.shared.v1` and per-language stores).
   Future<void> open({
     String? stored,
+    Map<String, String>? initialStorage,
     String? location,
     AppSwitches switches = const AppSwitches(),
     bool welcomeDone = false,
@@ -191,7 +236,7 @@ class TestApp {
     tester.platformDispatcher.accessibilityFeaturesTestValue =
         FakeAccessibilityFeatures(disableAnimations: reduceMotion);
     addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
-    spaces = Spaces({progressKey: ?stored});
+    spaces = Spaces({progressKey: ?stored, ...?initialStorage});
     speech = FakeSpeechListener(results: micStub, isAvailable: speechAvailable);
     call = FakeCallSession(stub: switches.stubOptions);
     addTearDown(call.dispose);
@@ -265,6 +310,27 @@ Finder findMapUpNextCard() => find.byWidgetPredicate(
 Finder findMapUpNextAction() => find.byWidgetPredicate(
   (w) => w.key == const Key('up-next-play') || w is TodayCard,
   description: 'map up-next action (N4.1 up-next-play or v=39 TodayCard)',
+);
+
+/// The story lesson's frame/header: N4.3's `StoryHeader`, or v=39's [LessonFrame].
+Finder findStoryFrame() => find.byWidgetPredicate(
+  (w) => w.runtimeType.toString() == 'StoryHeader' || w is LessonFrame,
+  description: 'story frame (N4.3 StoryHeader or v=39 LessonFrame)',
+);
+
+/// The story lesson's close button: N4.3's `StoryCloseButton`, or v=39's [LessonCloseButton].
+Finder findStoryCloseButton() => find.byWidgetPredicate(
+  (w) =>
+      w.runtimeType.toString() == 'StoryCloseButton' || w is LessonCloseButton,
+  description:
+      'story close button (N4.3 StoryCloseButton or v=39 LessonCloseButton)',
+);
+
+/// The story lesson's start disc: N4.3's `story-start-disc`, or v=39's [LessonStartButton].
+Finder findStoryStartButton() => find.byWidgetPredicate(
+  (w) => w.key == const Key('story-start-disc') || w is LessonStartButton,
+  description:
+      'story start button (N4.3 story-start-disc or v=39 LessonStartButton)',
 );
 
 /// TEST-ONLY. A scene that is not converted and never will be: no scene of coqui_scenes' registry has its id. Its old

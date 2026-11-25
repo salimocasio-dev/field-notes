@@ -9,6 +9,7 @@ import 'package:app/src/modules.dart';
 import 'package:app/src/navigator.dart';
 import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
+import 'package:app/src/scoped_clip_player.dart';
 import 'package:app/src/shell.dart';
 import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
@@ -39,14 +40,31 @@ const String loadFailedLine = 'Coquí could not load. Check your connection.';
 /// The button under [loadFailedLine].
 const String tryAgainLabel = 'Try again';
 
+/// Setting key used by language pickers to store the active language code.
+const String _languageSettingKey = 'idioma';
+
+final RegExp _whitespace = RegExp(r'\s');
+
+bool _isValidLanguageCode(String code) =>
+    code.isNotEmpty && !code.contains('.') && !_whitespace.hasMatch(code);
+
 /// Where the start stands.
 enum _Start { loading, failed, ready }
 
 /// What the start made, once the course is loaded.
 class _Loaded {
-  _Loaded(this.progress, this.storage, this.call, this.voiceTest);
+  _Loaded(
+    this.course,
+    this.progress,
+    this.clips,
+    this.storage,
+    this.call,
+    this.voiceTest,
+  );
 
-  final ProgressStore progress;
+  final CourseCatalog course;
+  final PalabrasStore progress;
+  final ClipPlayer clips;
   final AppStorage storage;
   final CallSession call;
   final VoiceTestData? voiceTest;
@@ -71,24 +89,30 @@ class CoquiApp extends StatefulWidget {
 }
 
 class _CoquiAppState extends State<CoquiApp> {
-  // the site's files, with the preview content merged in (previa.dart)
-  late final ContentCatalog _course = ContentCatalog(
-    previaFetch(widget.platform.fetch, widget.platform.previa ?? noPrevia),
-  );
-  late final ClipPlayer _clips = widget.platform.clipPlayer(_course.clip);
-
   /// Mulberry32, seeded once from the clock at the start.
   late final Rng _rng = Mulberry32(widget.platform.clock.nowMs());
   late final ShellNavigator _nav = ShellNavigator(
     historyBack: widget.platform.historyBack,
   );
   late final GoRouter _router;
-  final ValueNotifier<_Start> _start = ValueNotifier(_Start.loading);
+  final ValueNotifier<({_Start state, int generation})> _start = ValueNotifier((
+    state: _Start.loading,
+    generation: 0,
+  ));
   Future<AppStorage>? _storage;
+  ProgressStores? _stores;
+  StreamSubscription<void>? _storesChanges;
+  CallSession? _call;
   _Loaded? _loaded;
   Services? _services;
   List<FeatureModule>? _modules;
   bool _unlocked = false;
+  int _generation = 0;
+  int _loadTicket = 0;
+  String? _requestedLanguageCode;
+  Object? _activeStoreLanguageSetting;
+  bool _syncingLanguageSetting = false;
+  bool _pendingGoToMap = false;
 
   static const _page = ValueKey('coqui');
 
@@ -130,19 +154,58 @@ class _CoquiAppState extends State<CoquiApp> {
 
   @override
   void dispose() {
+    unawaited(_storesChanges?.cancel());
+    _stores?.dispose();
+    final clips = _loaded?.clips;
+    if (clips != null) unawaited(clips.stop());
     _nav.dispose();
     _router.dispose();
     _start.dispose();
     super.dispose();
   }
 
-  // The start: the storage, the progress store on it, the course (before the first screen, which needs it), the voice
-  // test's lines, the call.
-  Future<void> _load() async {
-    _start.value = _Start.loading;
+  Future<CourseCatalog> _loadCourse(String languageCode) async {
+    final loader = widget.platform.loadCourse;
+    if (loader != null) {
+      final course = await loader(languageCode);
+      await course.load();
+      return course;
+    }
+    // the site's files, with the preview content merged in (previa.dart)
+    final course = ContentCatalog(
+      previaFetch(widget.platform.fetch, widget.platform.previa ?? noPrevia),
+    );
+    await course.load();
+    return course;
+  }
+
+  // The start (and language switch): the storage, ProgressStores on it, the chosen course (before the first screen,
+  // which needs it), the voice test's lines, the call, and the language's own progress store and clip player.
+  Future<void> _load({bool goToMap = false}) async {
+    final ticket = ++_loadTicket;
+    _pendingGoToMap = _pendingGoToMap || goToMap;
+    _start.value = (state: _Start.loading, generation: _generation);
     try {
       final storage = await (_storage ??= widget.platform.storage());
-      await _course.load();
+      if (!mounted || ticket != _loadTicket) return;
+      final stores = _stores ??= ProgressStores(
+        storage.progress,
+        widget.platform.clock,
+      );
+      _storesChanges ??= stores.changes.listen(_onProgressChanged);
+      final requestedCode = stores.currentLanguageCode;
+      _requestedLanguageCode = requestedCode;
+      CourseCatalog course;
+      try {
+        course = await _loadCourse(requestedCode);
+      } on UnsupportedError {
+        if (requestedCode == Language.spanish.code) rethrow;
+        course = await _loadCourse(Language.spanish.code);
+      } on ArgumentError {
+        if (requestedCode == Language.spanish.code) rethrow;
+        course = await _loadCourse(Language.spanish.code);
+      }
+      if (!mounted || ticket != _loadTicket) return;
       VoiceTestData? voiceTest;
       try {
         voiceTest = VoiceTestData.parse(
@@ -152,20 +215,91 @@ class _CoquiAppState extends State<CoquiApp> {
         voiceTest =
             null; // the voice test only: everything else works without it
       }
-      final call = await widget.platform.call(widget.platform.info);
-      _loaded = _Loaded(
-        PalabrasStore(storage.progress, widget.platform.clock),
-        storage,
-        call,
-        voiceTest,
+      if (!mounted || ticket != _loadTicket) return;
+      // CallSession is language-agnostic: each start(CallBrief) takes its agentId from the course.
+      final call = _call ??= await widget.platform.call(widget.platform.info);
+      if (!mounted || ticket != _loadTicket) return;
+      if (course.language.code != requestedCode) {
+        _requestedLanguageCode = course.language.code;
+        _syncingLanguageSetting = true;
+        try {
+          stores.currentLanguageCode = course.language.code;
+        } finally {
+          _syncingLanguageSetting = false;
+        }
+      }
+      final progress = stores.forLanguage(course.language);
+      final existingSetting = progress.setting(_languageSettingKey);
+      if (existingSetting is String &&
+          existingSetting != course.language.code) {
+        _syncingLanguageSetting = true;
+        try {
+          progress.setSetting(_languageSettingKey, course.language.code);
+        } finally {
+          _syncingLanguageSetting = false;
+        }
+      }
+      _activeStoreLanguageSetting = progress.setting(_languageSettingKey);
+      final prevClips = _loaded?.clips;
+      if (prevClips != null) unawaited(prevClips.stop());
+      final clips = ScopedClipPlayer(
+        scope: course.language.code,
+        clipInfo: course.clip,
+        create: widget.platform.clipPlayer,
       );
-      if (mounted) _start.value = _Start.ready;
+      if (_unlocked) unawaited(clips.unlock());
+      _loaded = _Loaded(course, progress, clips, storage, call, voiceTest);
+      _services = null;
+      _modules = null;
+      _generation++;
+      final shouldGoToMap = _pendingGoToMap;
+      _pendingGoToMap = false;
+      if (shouldGoToMap &&
+          !_nav.isLeavingLesson &&
+          routeOf(_router.routeInformationProvider.value.uri) !=
+              const TabRoute(startTab)) {
+        _nav.go(const TabRoute(startTab));
+      }
+      _start.value = (state: _Start.ready, generation: _generation);
     } catch (_) {
-      if (mounted) _start.value = _Start.failed;
+      if (mounted && ticket == _loadTicket) {
+        _start.value = (state: _Start.failed, generation: _generation);
+      }
     }
   }
 
-  // The services, once: `reduceMotion` is the platform's (MediaQuery.disableAnimations) when the app first shows.
+  void _onProgressChanged(void _) {
+    if (!mounted || _syncingLanguageSetting) return;
+    final stores = _stores;
+    if (stores == null) return;
+    final sharedCode = stores.currentLanguageCode;
+    if (_requestedLanguageCode != null &&
+        sharedCode != _requestedLanguageCode) {
+      unawaited(_load(goToMap: true));
+      return;
+    }
+    final loaded = _loaded;
+    if (loaded == null) return;
+    final storeSetting = loaded.progress.setting(_languageSettingKey);
+    if (storeSetting != _activeStoreLanguageSetting) {
+      _activeStoreLanguageSetting = storeSetting;
+      if (storeSetting is String &&
+          _isValidLanguageCode(storeSetting) &&
+          storeSetting != _requestedLanguageCode &&
+          storeSetting != loaded.course.language.code) {
+        _requestedLanguageCode = storeSetting;
+        _syncingLanguageSetting = true;
+        try {
+          stores.currentLanguageCode = storeSetting;
+        } finally {
+          _syncingLanguageSetting = false;
+        }
+        unawaited(_load(goToMap: true));
+      }
+    }
+  }
+
+  // The services, once per loaded course: `reduceMotion` is the platform's (MediaQuery.disableAnimations) when the app shows.
   Services _servicesFor(BuildContext context) {
     final had = _services;
     if (had != null) return had;
@@ -174,8 +308,8 @@ class _CoquiAppState extends State<CoquiApp> {
     final reduce = MediaQuery.disableAnimationsOf(context);
     final s = Services(
       progress: l.progress,
-      course: _course,
-      clips: _clips,
+      course: l.course,
+      clips: l.clips,
       speech: p.speech,
       call: l.call,
       nav: _nav,
@@ -184,7 +318,7 @@ class _CoquiAppState extends State<CoquiApp> {
       haptics: p.haptics,
       info: p.info,
       pictures: ScenePictures(
-        pairs: _course.pairs,
+        pairs: l.course.pairs,
         bundle: p.bundle,
         still: reduce,
       ),
@@ -199,17 +333,19 @@ class _CoquiAppState extends State<CoquiApp> {
     _modules = modules;
     _nav.answers = (route) {
       // a story the course does not have is not an address of the app
-      if (route is StoryRoute && _course.meta(route.id) == null) return false;
+      if (route is StoryRoute && l.course.meta(route.id) == null) return false;
       return modules.any((m) => m.screenFor(route, s) != null);
     };
     return _services = s;
   }
 
-  // The first tap anywhere opens the sound (the browser lets a page play sound only after a touch).
+  // The first tap anywhere once a player exists opens the sound (the browser lets a page play sound only inside a touch).
   void _firstTap(PointerDownEvent _) {
     if (_unlocked) return;
+    final clips = _loaded?.clips;
+    if (clips == null) return;
     _unlocked = true;
-    unawaited(_clips.unlock());
+    unawaited(clips.unlock());
   }
 
   @override
@@ -247,30 +383,33 @@ class _Screens extends StatelessWidget {
   final Uri address;
 
   @override
-  Widget build(BuildContext context) => ValueListenableBuilder<_Start>(
-    valueListenable: app._start,
-    builder: (context, start, _) => switch (start) {
-      _Start.loading => const ColoredBox(color: NocheColors.ground),
-      _Start.failed => LoadFailed(onRetry: () => unawaited(app._load())),
-      _Start.ready => Builder(
-        builder: (context) {
-          final s = app._servicesFor(context);
-          return Material(
-            type: MaterialType.transparency,
-            child: WelcomeGate(
-              services: s,
-              child: AppShell(
-                services: s,
-                modules: app._modules!,
-                nav: app._nav,
-                route: routeOf(address) ?? const TabRoute(startTab),
-              ),
-            ),
-          );
+  Widget build(BuildContext context) =>
+      ValueListenableBuilder<({_Start state, int generation})>(
+        valueListenable: app._start,
+        builder: (context, phase, _) => switch (phase.state) {
+          _Start.loading => const ColoredBox(color: NocheColors.ground),
+          _Start.failed => LoadFailed(onRetry: () => unawaited(app._load())),
+          _Start.ready => Builder(
+            builder: (context) {
+              final s = app._servicesFor(context);
+              return Material(
+                type: MaterialType.transparency,
+                child: WelcomeGate(
+                  key: ValueKey('course:${phase.generation}'),
+                  services: s,
+                  child: AppShell(
+                    key: ValueKey('shell:${phase.generation}'),
+                    services: s,
+                    modules: app._modules!,
+                    nav: app._nav,
+                    route: routeOf(address) ?? const TabRoute(startTab),
+                  ),
+                ),
+              );
+            },
+          ),
         },
-      ),
-    },
-  );
+      );
 }
 
 /// The course could not be loaded (no network): one line and "Try again", on the page colour.
