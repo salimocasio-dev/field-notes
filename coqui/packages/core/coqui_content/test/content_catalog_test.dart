@@ -77,6 +77,7 @@ void main() {
         expect(catalog.meta(_courseStories.first), isNull);
         expect(catalog.pairFor(_expected.words.first), isNull);
         expect(catalog.callFor('casa'), isNull);
+        expect(catalog.callsFor('casa'), isEmpty);
         expect(catalog.clip(_ready['clips'][0] as String), isNull);
         expect(() => catalog.fixedClip('story_praise'), throwsArgumentError);
       },
@@ -1167,6 +1168,266 @@ void main() {
       await cyrlCatalog.load();
       expect(cyrlCatalog.loaded, isTrue);
       expect(cyrlCatalog.language, Language.spanish);
+    });
+  });
+
+  group('calls (CallsCatalog)', () {
+    test('implements CallsCatalog and returns unmodifiable single-call list for legacy datos/llamadas.json', () async {
+      final (catalog, _) = await _loaded();
+      expect(catalog, isA<CallsCatalog>());
+      final CourseCatalog course = catalog;
+
+      final mainCall = catalog.callFor('casa')!;
+      final calls = catalog.callsFor('casa');
+      expect(calls, hasLength(1));
+      expect(calls.single, same(mainCall));
+      expect(course.callsFor('casa'), [mainCall]);
+      expect(catalog.callsFor('no-such-place'), isEmpty);
+      expect(course.callsFor('no-such-place'), isEmpty);
+
+      expect(() => calls.add(mainCall), throwsUnsupportedError);
+    });
+
+    test('parses multi-call array format alongside legacy object format with main selection, nullable photo, and agentId precedence', () async {
+      final callsData = <String, Object?>{
+        'casa': {
+          'minutos': 5,
+          'job': 'Legacy single call.',
+          'opening': 'Hello!',
+          'foto': 'casa',
+        },
+        'market': [
+          {
+            'id': 'market_small_1',
+            'title': 'Fruit stand',
+            'jobEn': 'Ask for fruit prices.',
+            'minutos': 2,
+            'job': 'Ask for fruit prices.',
+            'opening': '',
+            'isMain': false,
+          },
+          {
+            'id': 'market_main',
+            'title': 'Market visit',
+            'jobEn': 'Buy groceries and pay.',
+            'minutos': 5,
+            'job': 'Buy groceries and pay.',
+            'opening': 'Good morning!',
+            'foto': null,
+            'agentId': 'agent_market_main',
+          },
+          {
+            'id': 'market_small_2',
+            'title': 'Checkout line',
+            'jobEn': 'Pay at the register.',
+            'minutos': 2,
+            'job': 'Pay at the register.',
+            'opening': '',
+            'isMain': false,
+            'agentid': 'agent_legacy_small',
+          },
+        ],
+        'harbor': [
+          {
+            'id': 'harbor_boats',
+            'title': 'Boats',
+            'jobEn': 'Talk about the boats.',
+            'minutos': 2,
+            'job': 'Talk about the boats.',
+            'opening': '',
+            'isMain': false,
+          },
+          {
+            'id': 'harbor_tickets',
+            'title': 'Tickets',
+            'jobEn': 'Buy a ferry ticket.',
+            'minutos': 3,
+            'job': 'Buy a ferry ticket.',
+            'opening': '',
+            'isMain': false,
+          },
+        ],
+        'empty_place': <Object?>[],
+      };
+
+      final (catalog, _) = await _loaded({
+        'datos/llamadas.json': jsonEncode(callsData),
+      });
+      final CourseCatalog course = catalog;
+
+      // Legacy single-object place still works.
+      final casaCalls = course.callsFor('casa');
+      expect(casaCalls, hasLength(1));
+      expect(casaCalls.single.id, 'casa');
+      expect(casaCalls.single.photo, 'casa');
+      expect(casaCalls.single.isMain, isTrue);
+      expect(casaCalls.single.agentId, spanishCallAgentId);
+
+      // Multi-call place keeps order; callFor returns the isMain call even when not first.
+      final marketCalls = course.callsFor('market');
+      expect(
+        [for (final c in marketCalls) c.id],
+        ['market_small_1', 'market_main', 'market_small_2'],
+      );
+      expect(catalog.callFor('market')!.id, 'market_main');
+      expect(catalog.callFor('market')!.isMain, isTrue);
+      expect(catalog.callFor('market')!.photo, isNull);
+      expect(catalog.callFor('market')!.agentId, 'agent_market_main');
+      expect(marketCalls[0].isMain, isFalse);
+      expect(marketCalls[0].photo, isNull);
+      expect(marketCalls[0].agentId, spanishCallAgentId);
+      expect(marketCalls[2].agentId, 'agent_legacy_small');
+      expect(() => marketCalls.add(marketCalls.first), throwsUnsupportedError);
+
+      // When all calls have isMain: false, callFor falls back to the first call.
+      expect(course.callsFor('harbor'), hasLength(2));
+      expect(catalog.callFor('harbor')!.id, 'harbor_boats');
+
+      // Empty array yields empty list and null callFor.
+      expect(course.callsFor('empty_place'), isEmpty);
+      expect(catalog.callFor('empty_place'), isNull);
+    });
+
+    test('malformed datos/llamadas.json throws FormatException without mutating state and recovers on retry', () async {
+      final validCall = <String, Object?>{
+        'id': 'casa_main',
+        'title': 'Main visit',
+        'jobEn': 'Say hello.',
+        'minutos': 5,
+        'job': 'Say hello.',
+        'opening': 'Hi!',
+      };
+
+      final invalidCases = <String, Object?>{
+        'place is string': {'casa': 'bad'},
+        'place is int': {'casa': 42},
+        'array element not object': {
+          'casa': ['bad'],
+        },
+        'blank id': {
+          'casa': [
+            {...validCall, 'id': '   '},
+          ],
+        },
+        'non-string id': {
+          'casa': [
+            {...validCall, 'id': 123},
+          ],
+        },
+        'non-string title': {
+          'casa': [
+            {...validCall, 'title': 123},
+          ],
+        },
+        'non-string jobEn': {
+          'casa': [
+            {...validCall, 'jobEn': false},
+          ],
+        },
+        'missing minutos': {
+          'casa': [Map<String, Object?>.from(validCall)..remove('minutos')],
+        },
+        'zero minutos': {
+          'casa': [
+            {...validCall, 'minutos': 0},
+          ],
+        },
+        'negative minutos': {
+          'casa': [
+            {...validCall, 'minutos': -2},
+          ],
+        },
+        'fractional minutos': {
+          'casa': [
+            {...validCall, 'minutos': 2.5},
+          ],
+        },
+        'non-numeric minutos': {
+          'casa': [
+            {...validCall, 'minutos': '5'},
+          ],
+        },
+        'missing job': {
+          'casa': [Map<String, Object?>.from(validCall)..remove('job')],
+        },
+        'missing opening': {
+          'casa': [Map<String, Object?>.from(validCall)..remove('opening')],
+        },
+        'non-string foto': {
+          'casa': [
+            {...validCall, 'foto': 7},
+          ],
+        },
+        'non-bool isMain': {
+          'casa': [
+            {...validCall, 'isMain': 'yes'},
+          ],
+        },
+        'non-string agentId': {
+          'casa': [
+            {...validCall, 'agentId': 12},
+          ],
+        },
+        'non-string agentid': {
+          'casa': [
+            {...validCall, 'agentid': true},
+          ],
+        },
+        'duplicate call id in place': {
+          'casa': [
+            validCall,
+            {...validCall, 'isMain': false},
+          ],
+        },
+        'duplicate call id across places': {
+          'casa': [validCall],
+          'parque': [validCall],
+        },
+        'multiple main calls in place': {
+          'casa': [
+            validCall,
+            {...validCall, 'id': 'casa_other', 'isMain': true},
+          ],
+        },
+      };
+
+      for (final entry in invalidCases.entries) {
+        final files = Files({
+          ...smallTree,
+          'datos/llamadas.json': jsonEncode(entry.value),
+        });
+        final catalog = ContentCatalog(files.call);
+        await expectLater(
+          catalog.load(),
+          throwsA(
+            isA<FormatException>().having(
+              (e) => e.message,
+              'message',
+              startsWith('datos/llamadas.json'),
+            ),
+          ),
+          reason: entry.key,
+        );
+        expect(catalog.loaded, isFalse, reason: entry.key);
+        expect(catalog.callFor('casa'), isNull, reason: entry.key);
+        expect(catalog.callsFor('casa'), isEmpty, reason: entry.key);
+      }
+
+      // Fixing datos/llamadas.json on the same catalog instance allows retry to succeed cleanly.
+      final retryFiles = Files({
+        ...smallTree,
+        'datos/llamadas.json': jsonEncode({'casa': 'bad'}),
+      });
+      final retryCatalog = ContentCatalog(retryFiles.call);
+      await expectLater(retryCatalog.load(), throwsFormatException);
+      expect(retryCatalog.loaded, isFalse);
+
+      retryFiles.files['datos/llamadas.json'] =
+          smallTree['datos/llamadas.json']!;
+      await retryCatalog.load();
+      expect(retryCatalog.loaded, isTrue);
+      expect(retryCatalog.callsFor('casa'), hasLength(1));
+      expect(retryCatalog.callFor('casa')!.id, 'casa');
     });
   });
 }

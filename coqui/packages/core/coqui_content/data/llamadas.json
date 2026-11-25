@@ -1,0 +1,291 @@
+{
+  "casa": [
+    {
+      "id": "casa_main",
+      "title": "De visita en la casa",
+      "jobEn": "Greet {partner}, introduce yourself, and accept a drink.",
+      "minutos": 5,
+      "job": "Say hello, say who you are, accept a drink and say thanks.",
+      "opening": "¡Hola! Soy Danny. ¿Cómo estás?"
+    },
+    {
+      "id": "casa_agua",
+      "title": "Un vaso de agua",
+      "jobEn": "Ask for a drink and say thanks.",
+      "minutos": 2,
+      "job": "Ask for a drink and say thanks.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "casa_saludo",
+      "title": "¿Cómo estás?",
+      "jobEn": "Greet {partner} and say how you are doing.",
+      "minutos": 2,
+      "job": "Greet {partner} and say how you are doing.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "casa_despedida",
+      "title": "Nos vemos",
+      "jobEn": "Wrap up a quick visit and say goodbye.",
+      "minutos": 2,
+      "job": "Wrap up a quick visit and say goodbye.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "parque": [
+    {
+      "id": "parque_main",
+      "title": "El perro en el parque",
+      "jobEn": "Describe the park, its colours, and what the dog does.",
+      "minutos": 5,
+      "job": "Describe the park, its colours, and what the dog does.",
+      "opening": ""
+    },
+    {
+      "id": "parque_colores",
+      "title": "¿De qué color es?",
+      "jobEn": "Name the colours of things around the park.",
+      "minutos": 2,
+      "job": "Name the colours of things around the park.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "parque_perro",
+      "title": "Mira el perro",
+      "jobEn": "Say what the dog is doing right now.",
+      "minutos": 2,
+      "job": "Say what the dog is doing right now.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "cocina": [
+    {
+      "id": "cocina_main",
+      "title": "Tengo hambre",
+      "jobEn": "Say you are hungry, what you want, and what you like.",
+      "minutos": 5,
+      "job": "Say you are hungry, what you want, and what you like.",
+      "opening": ""
+    },
+    {
+      "id": "cocina_tomar",
+      "title": "¿Qué quieres tomar?",
+      "jobEn": "Say what you want to drink.",
+      "minutos": 2,
+      "job": "Say what you want to drink.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "cocina_comer",
+      "title": "¿Qué te gusta comer?",
+      "jobEn": "Say which foods you like and do not like.",
+      "minutos": 2,
+      "job": "Say which foods you like and do not like.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "colmado": [
+    {
+      "id": "colmado_main",
+      "title": "Tres cosas del colmado",
+      "jobEn": "Ask for three things, ask the price, and pay.",
+      "minutos": 5,
+      "job": "Ask for three things, ask the price, and pay.",
+      "opening": ""
+    },
+    {
+      "id": "colmado_precio",
+      "title": "¿Cuánto es?",
+      "jobEn": "Ask how much two items cost together.",
+      "minutos": 2,
+      "job": "Ask how much two items cost together.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "colmado_pagar",
+      "title": "Quiero esto, por favor",
+      "jobEn": "Pick one item and pay at the counter.",
+      "minutos": 2,
+      "job": "Pick one item and pay at the counter.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "calle": [
+    {
+      "id": "calle_main",
+      "title": "¿Dónde queda la plaza?",
+      "jobEn": "Ask for directions and say where you are going.",
+      "minutos": 5,
+      "job": "Ask for directions and say where you are going.",
+      "opening": ""
+    },
+    {
+      "id": "calle_lados",
+      "title": "Izquierda o derecha",
+      "jobEn": "Follow simple left, right, and near directions.",
+      "minutos": 2,
+      "job": "Follow simple left, right, and near directions.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "calle_destino",
+      "title": "Voy para la plaza",
+      "jobEn": "Tell {partner} where you are heading.",
+      "minutos": 2,
+      "job": "Tell {partner} where you are heading.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "plaza": [
+    {
+      "id": "plaza_main",
+      "title": "Mucho gusto",
+      "jobEn": "Share your name, hometown, and work, and ask back.",
+      "minutos": 5,
+      "job": "Share your name, hometown, and work, and ask back.",
+      "opening": ""
+    },
+    {
+      "id": "plaza_hora",
+      "title": "¿Qué hora es?",
+      "jobEn": "Ask for and tell the time.",
+      "minutos": 2,
+      "job": "Ask for and tell the time.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "plaza_origen",
+      "title": "¿De dónde eres?",
+      "jobEn": "Say where you are from and what you do.",
+      "minutos": 2,
+      "job": "Say where you are from and what you do.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "playa": [
+    {
+      "id": "playa_main",
+      "title": "¿Vamos al agua?",
+      "jobEn": "Talk about the weather, clothes, and what you can do.",
+      "minutos": 5,
+      "job": "Talk about the weather, clothes, and what you can do.",
+      "opening": ""
+    },
+    {
+      "id": "playa_clima",
+      "title": "Hace calor hoy",
+      "jobEn": "Talk about today's weather at the beach.",
+      "minutos": 2,
+      "job": "Talk about today's weather at the beach.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "playa_nadar",
+      "title": "¿Puedo nadar?",
+      "jobEn": "Say what you can and cannot do in the water.",
+      "minutos": 2,
+      "job": "Say what you can and cannot do in the water.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "fonda": [
+    {
+      "id": "fonda_main",
+      "title": "Almuerzo en la fonda",
+      "jobEn": "Get a table, order lunch, and ask for the bill.",
+      "minutos": 5,
+      "job": "Get a table, order lunch, and ask for the bill.",
+      "opening": ""
+    },
+    {
+      "id": "fonda_mesa",
+      "title": "Una mesa para dos",
+      "jobEn": "Ask for a table and order a drink.",
+      "minutos": 2,
+      "job": "Ask for a table and order a drink.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "fonda_cuenta",
+      "title": "La cuenta, por favor",
+      "jobEn": "Say how the food was and ask for the bill.",
+      "minutos": 2,
+      "job": "Say how the food was and ask for the bill.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "casa2": [
+    {
+      "id": "casa2_main",
+      "title": "De la mañana a la noche",
+      "jobEn": "Walk through your daily routine and times.",
+      "minutos": 5,
+      "job": "Walk through your daily routine and times.",
+      "opening": ""
+    },
+    {
+      "id": "casa2_manana",
+      "title": "Mi mañana",
+      "jobEn": "Say what you do in the morning and when.",
+      "minutos": 2,
+      "job": "Say what you do in the morning and when.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "casa2_noche",
+      "title": "Antes de dormir",
+      "jobEn": "Say how you spend your evening and go to bed.",
+      "minutos": 2,
+      "job": "Say how you spend your evening and go to bed.",
+      "opening": "",
+      "isMain": false
+    }
+  ],
+  "fuerte": [
+    {
+      "id": "fuerte_main",
+      "title": "¿Qué hacemos hoy?",
+      "jobEn": "Invite {partner} out, share plans, and say how you feel.",
+      "minutos": 6,
+      "job": "Invite {partner} out, share plans, and say how you feel.",
+      "opening": ""
+    },
+    {
+      "id": "fuerte_invitar",
+      "title": "¿Quieres ir conmigo?",
+      "jobEn": "Invite someone along and pick a time.",
+      "minutos": 2,
+      "job": "Invite someone along and pick a time.",
+      "opening": "",
+      "isMain": false
+    },
+    {
+      "id": "fuerte_sentir",
+      "title": "¿Cómo te sientes?",
+      "jobEn": "Say how you are feeling today.",
+      "minutos": 2,
+      "job": "Say how you are feeling today.",
+      "opening": "",
+      "isMain": false
+    }
+  ]
+}
