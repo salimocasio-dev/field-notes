@@ -8,15 +8,26 @@ import 'package:material_ui/material_ui.dart';
 /// The line the screen shows when the story's scene is not converted yet.
 const String storyNotReadyLine = 'This story is not in the new app yet.';
 
-/// The button under [storyNotReadyLine]: it does what the X does.
+/// The line the screen shows when the story needs a newer app (unsupported
+/// `minApp` or an act the scene does not have).
+const String storyNeedsUpdateLine = 'Update the app to play this story';
+
+/// The button under [storyNotReadyLine] / [storyNeedsUpdateLine]: it does what
+/// the X does.
 const String storyNotReadyLabel = 'Back to the map';
 
-/// The lesson frame with its X, [storyNotReadyLine] and a [storyNotReadyLabel] button (blue: the main action, as the end of a
-/// story's "Map") centred in it. No dashes, no sound button, no picture. [onClose] is what the X does, and the button too.
+/// The lesson frame with its X, [line] and a [storyNotReadyLabel] button (blue:
+/// the main action, as the end of a story's "Map") centred in it. No dashes, no
+/// sound button, no picture. [onClose] is what the X does, and the button too.
 class StoryNotReady extends StatelessWidget {
-  const StoryNotReady({super.key, required this.onClose});
+  const StoryNotReady({
+    super.key,
+    required this.onClose,
+    this.line = storyNotReadyLine,
+  });
 
   final VoidCallback onClose;
+  final String line;
 
   @override
   Widget build(BuildContext context) => LessonFrame(
@@ -29,7 +40,7 @@ class StoryNotReady extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              storyNotReadyLine,
+              line,
               textAlign: TextAlign.center,
               style: CoquiText.lessonCaption,
             ),
