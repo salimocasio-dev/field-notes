@@ -34,8 +34,26 @@ class AppShell extends StatefulWidget {
   State<AppShell> createState() => _AppShellState();
 }
 
+/// Whether [route] is a lesson screen that follows the course language's
+/// reading direction (e.g. RTL for Arabic), rather than the English shell
+/// chrome (tabs, tab bar, sheets, and place overview) which stays LTR.
+bool isLessonRoute(AppRoute route) => switch (route) {
+  StoryRoute() ||
+  ReviewRoute() ||
+  LevelCheckRoute() ||
+  BookRoute() ||
+  CallRoute() ||
+  VoiceTestRoute() => true,
+  TabRoute() ||
+  PlaceRoute() ||
+  LanguagesRoute() ||
+  PlansRoute() ||
+  ImportRoute() => false,
+};
+
 class _AppShellState extends State<AppShell> {
   final Map<String, WidgetBuilder> _tabs = {};
+  int _epoch = 0;
 
   @override
   void didUpdateWidget(AppShell oldWidget) {
@@ -43,6 +61,7 @@ class _AppShellState extends State<AppShell> {
     if (!identical(oldWidget.services, widget.services) ||
         oldWidget.modules != widget.modules) {
       _tabs.clear();
+      _epoch++;
     }
   }
 
@@ -90,22 +109,30 @@ class _AppShellState extends State<AppShell> {
           for (final id in tabIds)
             if (_tabs[id] != null)
               KeyedSubtree(
-                key: ValueKey('tab:$id'),
-                child: Offstage(
-                  offstage: (screen != null && !keepsTabBehind) || id != tab,
-                  child: TickerMode(
-                    enabled: screen == null && id == tab,
-                    child: ColoredBox(
-                      color: coquiTheme().scaffoldBackgroundColor,
-                      child: Builder(builder: _tabs[id]!),
+                key: ValueKey('tab:$_epoch:$id'),
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: Offstage(
+                    offstage: (screen != null && !keepsTabBehind) || id != tab,
+                    child: TickerMode(
+                      enabled: screen == null && id == tab,
+                      child: ColoredBox(
+                        color: coquiTheme().scaffoldBackgroundColor,
+                        child: Builder(builder: _tabs[id]!),
+                      ),
                     ),
                   ),
                 ),
               ),
           if (screen != null)
             KeyedSubtree(
-              key: ValueKey('lesson:${addressOf(route)}'),
-              child: screen,
+              key: ValueKey('lesson:$_epoch:${addressOf(route)}'),
+              child: Directionality(
+                textDirection: isLessonRoute(route)
+                    ? language.textDirection
+                    : TextDirection.ltr,
+                child: screen,
+              ),
             ),
           if (showsTabBar)
             PositionedDirectional(
@@ -113,12 +140,15 @@ class _AppShellState extends State<AppShell> {
               start: 0,
               end: 0,
               bottom: 0,
-              child: NocheTabBar(
-                selectedId: selectedTab,
-                tabNames: language.tabNames,
-                script: language.script,
-                languageCode: language.code,
-                onTap: _onTab,
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: NocheTabBar(
+                  selectedId: selectedTab,
+                  tabNames: language.tabNames,
+                  script: language.script,
+                  languageCode: language.code,
+                  onTap: _onTab,
+                ),
               ),
             ),
         ],
