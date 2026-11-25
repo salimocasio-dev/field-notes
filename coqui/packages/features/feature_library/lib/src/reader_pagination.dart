@@ -278,8 +278,9 @@ List<ReaderPage> paginateDocument({
     final chapterPageStart = pages.length;
 
     while (pIdx < chapter.paragraphs.length) {
+      final rawFirstPageRemaining = contentHeight - headerHeight;
       var availableHeight = isFirstPageOfChapter
-          ? (contentHeight - headerHeight).clamp(bodyLineHeight, contentHeight)
+          ? math.max(0.0, rawFirstPageRemaining)
           : contentHeight;
       final slices = <PageParagraphSlice>[];
 
@@ -291,12 +292,21 @@ List<ReaderPage> paginateDocument({
           continue;
         }
         final remainingText = paragraphText.substring(charOffset);
-        final dropCap = isDropCapEligible(
-          paragraphIndex: pIdx,
-          charStart: charOffset,
-          paragraphText: paragraphText,
-          language: language,
-        );
+        final dropCapTotalH =
+            textScaler.scale(settings.dropCapLineHeight) + 4.0;
+        final canFitDropCap =
+            dropCapTotalH <= availableHeight ||
+            (!isFirstPageOfChapter &&
+                slices.isEmpty &&
+                availableHeight >= bodyLineHeight);
+        final dropCap =
+            canFitDropCap &&
+            isDropCapEligible(
+              paragraphIndex: pIdx,
+              charStart: charOffset,
+              paragraphText: paragraphText,
+              language: language,
+            );
 
         if (dropCap) {
           final firstEnd = firstGraphemeEnd(paragraphText);
@@ -309,8 +319,6 @@ List<ReaderPage> paginateDocument({
             textScaler: textScaler,
             color: palette.heading,
           );
-          final dropCapTotalH =
-              textScaler.scale(settings.dropCapLineHeight) + 4.0;
           final narrowWidth = (contentWidth - dropCapW - 2.0).clamp(
             40.0,
             contentWidth,
@@ -328,14 +336,15 @@ List<ReaderPage> paginateDocument({
           );
           var besideEnd = firstEnd;
           if (besideLinesCount > 0) {
-            // Walk line by line at narrowWidth.
+            // Walk line by line at narrowWidth within availableHeight.
             var cursor = 0;
             var takenLines = 0;
             var besideHeight = 0.0;
             while (takenLines < besideLinesCount &&
                 takenLines < narrowLines.length) {
               final nextH = besideHeight + narrowLines[takenLines].height;
-              if (nextH > availableHeight && slices.isNotEmpty) {
+              if (nextH > availableHeight &&
+                  (takenLines > 0 || slices.isNotEmpty)) {
                 break;
               }
               besideHeight = nextH;
@@ -459,10 +468,10 @@ List<ReaderPage> paginateDocument({
         }
 
         if (fitLines == 0) {
-          if (slices.isNotEmpty) {
+          if (slices.isNotEmpty || (isFirstPageOfChapter && headerHeight > 0)) {
             break;
           }
-          // Guarantee progress on empty page.
+          // Guarantee progress on an empty body page.
           fitLines = 1;
           usedH = lines.first.height;
         }
@@ -508,7 +517,9 @@ List<ReaderPage> paginateDocument({
         }
       }
 
-      if (slices.isEmpty && pIdx < chapter.paragraphs.length) {
+      if (slices.isEmpty &&
+          !(isFirstPageOfChapter && headerHeight > 0) &&
+          pIdx < chapter.paragraphs.length) {
         // Safety fallback: force whole paragraph so loop always terminates.
         final len = chapter.paragraphs[pIdx].text.length;
         slices.add(

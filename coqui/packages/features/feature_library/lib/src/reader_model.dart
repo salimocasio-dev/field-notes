@@ -31,6 +31,8 @@ class ReaderPalette {
     required this.chromeIcon,
     required this.bubbleFill,
     required this.bubbleText,
+    required this.bubbleShadowColor,
+    required this.bubbleShadowAlpha,
   });
 
   final Color ground;
@@ -44,6 +46,8 @@ class ReaderPalette {
   final Color chromeIcon;
   final Color bubbleFill;
   final Color bubbleText;
+  final Color bubbleShadowColor;
+  final double bubbleShadowAlpha;
 
   static const night = ReaderPalette(
     ground: NocheColors.lessonGround,
@@ -57,6 +61,8 @@ class ReaderPalette {
     chromeIcon: NocheColors.nightText,
     bubbleFill: NocheColors.text,
     bubbleText: NocheColors.lessonGround,
+    bubbleShadowColor: NocheColors.lessonGround,
+    bubbleShadowAlpha: 0.45,
   );
 
   static const sepia = ReaderPalette(
@@ -71,6 +77,8 @@ class ReaderPalette {
     chromeIcon: NocheColors.sepiaText,
     bubbleFill: NocheColors.sepiaText,
     bubbleText: NocheColors.sepiaPage,
+    bubbleShadowColor: NocheColors.sepiaText,
+    bubbleShadowAlpha: 0.25,
   );
 
   static const day = ReaderPalette(
@@ -85,6 +93,8 @@ class ReaderPalette {
     chromeIcon: NocheColors.dayText,
     bubbleFill: NocheColors.dayText,
     bubbleText: NocheColors.dayPage,
+    bubbleShadowColor: NocheColors.dayText,
+    bubbleShadowAlpha: 0.20,
   );
 
   static ReaderPalette of(ReaderPageTheme theme) => switch (theme) {

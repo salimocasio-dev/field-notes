@@ -613,6 +613,97 @@ void main() {
       expect(firstGraphemeEnd(decomposed), 2);
       expect(decomposed.substring(0, firstGraphemeEnd(decomposed)), 'E\u0301');
     });
+
+    test(
+      'tight first-page height avoids overflowing drop cap below header',
+      () {
+        final doc = ReaderDocument(
+          id: 'tight',
+          title: 'Un título muy largo que ocupa varias líneas en una pantalla pequeña',
+          chapters: [
+            ReaderChapterDoc(
+              label: 'Part I',
+              title: 'Un título muy largo que ocupa varias líneas en una pantalla pequeña',
+              paragraphs: [
+                ReaderParagraph([
+                  const ReaderSentence(
+                    id: 's0',
+                    text: 'Cuando llegamos a la costa ya era de noche y la brisa del mar entraba por cada ventana abierta.',
+                  ),
+                ]),
+              ],
+            ),
+          ],
+          hasAudio: false,
+        );
+        final pages = paginateDocument(
+          doc: doc,
+          contentWidth: 260,
+          contentHeight: 220,
+          settings: const ReaderSettings(step: 7),
+          language: Language.spanish,
+          textScaler: TextScaler.noScaling,
+        );
+        expect(pages.length, greaterThanOrEqualTo(2));
+        // When the first page cannot fit the drop cap below the header, it does not force a drop cap there.
+        final firstSlices = pages.first.slices;
+        expect(firstSlices.any((s) => s.hasDropCap), isFalse);
+      },
+    );
+
+    testWidgets(
+      'reopening a book at a different text size restores the persisted text anchor',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final services = fakeServices();
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final book = await _addLongMultiChapterBook(store);
+
+        // Open at largest text size (step 7), jump to Chapter 2, and close.
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('step7'),
+              services: services,
+              id: book.id,
+              initialSettings: const ReaderSettings(step: 7),
+            ),
+          ),
+        );
+        await settle(tester);
+        await tester.tap(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.chapters)),
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('El paseo por el faro'));
+        await tester.pumpAndSettle();
+
+        final saved = store.place(book.id);
+        expect(saved.chapterIndex, 1);
+        expect(saved.paragraphIndex, 0);
+        expect(saved.charOffset, 0);
+
+        // Reopen at smallest text size (step 1): page index differs, but anchor resolves to Chapter 2!
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('step1'),
+              services: services,
+              id: book.id,
+              initialSettings: const ReaderSettings(step: 1),
+            ),
+          ),
+        );
+        await settle(tester);
+        expect(find.text('El paseo por el faro'), findsOneWidget);
+      },
+    );
   });
 
   group('Reader screenshots', () {

@@ -831,7 +831,9 @@ class ReaderWordBubble extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: NocheColors.lessonGround.withValues(alpha: 0.45),
+            color: palette.bubbleShadowColor.withValues(
+              alpha: palette.bubbleShadowAlpha,
+            ),
             blurRadius: 18,
             offset: const Offset(0, 6),
           ),

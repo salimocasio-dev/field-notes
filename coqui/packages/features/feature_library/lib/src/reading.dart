@@ -120,6 +120,8 @@ class ReadingPlace {
     this.finished = false,
     this.totalPages,
     this.chapterIndex,
+    this.paragraphIndex,
+    this.charOffset,
   });
 
   final int page;
@@ -128,6 +130,8 @@ class ReadingPlace {
   final bool finished;
   final int? totalPages;
   final int? chapterIndex;
+  final int? paragraphIndex;
+  final int? charOffset;
 }
 
 class ReadingStore {
@@ -186,6 +190,14 @@ class ReadingStore {
       final chapterIndex = rawChapter is int && rawChapter >= 0
           ? rawChapter
           : null;
+      final rawParagraph = saved['paragraphIndex'];
+      final paragraphIndex = rawParagraph is int && rawParagraph >= 0
+          ? rawParagraph
+          : null;
+      final rawCharOffset = saved['charOffset'];
+      final charOffset = rawCharOffset is int && rawCharOffset >= 0
+          ? rawCharOffset
+          : null;
       return ReadingPlace(
         page: page,
         words: words.whereType<String>().toSet(),
@@ -193,6 +205,8 @@ class ReadingStore {
         finished: finished,
         totalPages: totalPages,
         chapterIndex: chapterIndex,
+        paragraphIndex: paragraphIndex,
+        charOffset: charOffset,
       );
     }
     return const ReadingPlace();
@@ -207,6 +221,8 @@ class ReadingStore {
       if (place.finished) 'finished': true,
       if (place.totalPages != null) 'totalPages': place.totalPages,
       if (place.chapterIndex != null) 'chapterIndex': place.chapterIndex,
+      if (place.paragraphIndex != null) 'paragraphIndex': place.paragraphIndex,
+      if (place.charOffset != null) 'charOffset': place.charOffset,
     }),
   );
 
@@ -221,6 +237,8 @@ class ReadingStore {
         finished: false,
         totalPages: existing.totalPages,
         chapterIndex: existing.chapterIndex,
+        paragraphIndex: existing.paragraphIndex,
+        charOffset: existing.charOffset,
       ),
     );
   }

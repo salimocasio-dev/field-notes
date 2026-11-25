@@ -57,6 +57,7 @@ class _TextReaderState extends State<TextReader> {
   List<ReaderPage> _pages = const [];
   int _pageIndex = 0;
   int? _pendingSavedPage;
+  ({int chapterIndex, int paragraphIndex, int charOffset})? _pendingSavedAnchor;
   double? _lastWidth;
   double? _lastHeight;
   TextScaler? _lastScaler;
@@ -140,6 +141,16 @@ class _TextReaderState extends State<TextReader> {
     setState(() {
       _doc = doc;
       _pendingSavedPage = place.page;
+      _pendingSavedAnchor =
+          place.chapterIndex != null &&
+              place.paragraphIndex != null &&
+              place.charOffset != null
+          ? (
+              chapterIndex: place.chapterIndex!,
+              paragraphIndex: place.paragraphIndex!,
+              charOffset: place.charOffset!,
+            )
+          : null;
       _met.addAll(place.words);
       _loading = false;
       _lastWidth = null;
@@ -193,6 +204,16 @@ class _TextReaderState extends State<TextReader> {
 
     if (newPages.isEmpty) {
       _pageIndex = 0;
+    } else if (_pendingSavedAnchor != null) {
+      final anchor = _pendingSavedAnchor!;
+      _pageIndex = pageForAnchor(
+        newPages,
+        chapterIndex: anchor.chapterIndex,
+        paragraphIndex: anchor.paragraphIndex,
+        charOffset: anchor.charOffset,
+      );
+      _pendingSavedAnchor = null;
+      _pendingSavedPage = null;
     } else if (_pendingSavedPage != null) {
       _pageIndex = _pendingSavedPage!.clamp(0, newPages.length - 1);
       _pendingSavedPage = null;
@@ -229,6 +250,9 @@ class _TextReaderState extends State<TextReader> {
       }
     }
 
+    final anchorSlice = currentPage.slices.isNotEmpty
+        ? currentPage.slices.first
+        : null;
     final place = ReadingPlace(
       page: clampedPage,
       words: Set.of(_met),
@@ -236,6 +260,8 @@ class _TextReaderState extends State<TextReader> {
       finished: finished,
       totalPages: _pages.length,
       chapterIndex: currentPage.chapterIndex,
+      paragraphIndex: anchorSlice?.paragraphIndex,
+      charOffset: anchorSlice?.charStart,
     );
     _writes = _writes
         .then<void>((_) => _store.savePlace(widget.id, place))
