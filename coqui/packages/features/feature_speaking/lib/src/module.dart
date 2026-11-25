@@ -30,6 +30,7 @@ class SpeakingModule implements FeatureModule {
     this.showSpeechNote = false,
     this.entitlementCheck = defaultCallEntitlement,
     this.completedCallIds = const {},
+    this.shortCallsEnabled = false,
   });
 
   /// The line shown when the build cannot place a call; null uses `CallTexts.callsLaterFor(...)`.
@@ -47,6 +48,10 @@ class SpeakingModule implements FeatureModule {
   /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
   final Set<String> completedCallIds;
 
+  /// Enables starting smaller calls via `CallRoute(placeId, callId:)` once
+  /// the shell's address router preserves `callId` (default `false`).
+  final bool shortCallsEnabled;
+
   @override
   String get id => 'speak';
 
@@ -62,6 +67,7 @@ class SpeakingModule implements FeatureModule {
       showSpeechNote: showSpeechNote,
       entitlementCheck: entitlementCheck,
       completedCallIds: completedCallIds,
+      shortCallsEnabled: shortCallsEnabled,
     ),
   );
 

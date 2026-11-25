@@ -25,6 +25,7 @@ class HablarTab extends StatefulWidget {
     this.showSpeechNote = false,
     this.entitlementCheck = defaultCallEntitlement,
     this.completedCallIds = const {},
+    this.shortCallsEnabled = false,
   });
 
   final Services services;
@@ -43,6 +44,10 @@ class HablarTab extends StatefulWidget {
 
   /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
   final Set<String> completedCallIds;
+
+  /// Enables starting smaller calls via `CallRoute(placeId, callId:)` once
+  /// the shell's address router preserves `callId` (default `false`).
+  final bool shortCallsEnabled;
 
   @override
   State<HablarTab> createState() => _HablarTabState();
@@ -561,6 +566,7 @@ class _HablarTabState extends State<HablarTab> {
       entitlement: widget.entitlementCheck(),
       completedCallIds: widget.completedCallIds,
       callsLater: widget.callsLater,
+      shortCallsEnabled: widget.shortCallsEnabled,
     );
     final selectedStop =
         snap.stopById(_selectedPlaceId) ?? snap.defaultSelectedStop;

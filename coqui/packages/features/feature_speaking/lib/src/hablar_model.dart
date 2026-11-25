@@ -192,9 +192,6 @@ class HablarSnapshot {
   /// Number of calls completed at least once.
   final int completedCount;
 
-  /// Show first-time reassurance only before the first completed call.
-  bool get showFirstTimeReassurance => completedCount == 0;
-
   /// Places the learner has reached.
   List<PlaceJourneyStop> get reachedStops => [
     for (final s in stops)
@@ -238,11 +235,16 @@ class HablarSnapshot {
 }
 
 /// Builds the [HablarSnapshot] from [course], [progress], lazy [callsAvailable],
-/// optional [entitlement], and optional [completedCallIds].
+/// optional [entitlement], optional [completedCallIds], and [shortCallsEnabled].
 ///
-/// `callsAvailable` is read lazily and only when at least one call meets its
-/// story threshold, is backed by course data, and is entitled — preserving the
-/// lazy voice-library preload behaviour.
+/// `callsAvailable` is read lazily and only when at least one startable call
+/// meets its story threshold, is backed by course data, and is entitled —
+/// preserving the lazy voice-library preload behaviour.
+///
+/// [shortCallsEnabled] defaults to `false` until `coqui/app/lib/src/addresses.dart`
+/// preserves `CallRoute.callId` (see `106-feature-speaking-needs-app-call-id-address.md`),
+/// keeping smaller calls in [HablarCallState.soon] so tapping one can never
+/// accidentally start the place's main call.
 HablarSnapshot buildHablarSnapshot({
   required CourseCatalog course,
   required ProgressStore progress,
@@ -250,6 +252,7 @@ HablarSnapshot buildHablarSnapshot({
   CallEntitlement entitlement = CallEntitlement.included,
   Set<String> completedCallIds = const {},
   String? callsLater,
+  bool shortCallsEnabled = false,
 }) {
   final partnerName = course.language.partnerName;
   final laterLine = callsLater ?? CallTexts.callsLaterFor(partnerName);
@@ -285,44 +288,67 @@ HablarSnapshot buildHablarSnapshot({
     final playedCount = place.stories.where(progress.played).length;
 
     final courseCalls = course.callsFor(place.id);
-    final hasStructured =
-        courseCalls.isNotEmpty && courseCalls.every((c) => c.title.isNotEmpty);
+    final localCatalog = callsForPlace(place.id);
+    final localById = {for (final s in localCatalog) s.id: s};
+    final localMain = mainCallForPlace(place.id);
 
     final resolved = <(HablarCallSpec, bool)>[];
-    if (hasStructured) {
+    if (courseCalls.isNotEmpty) {
+      final seenIds = <String>{};
+      var hasCourseSmall = false;
       for (final c in courseCalls) {
-        resolved.add((
-          HablarCallSpec(
-            id: c.id,
-            placeId: c.placeId,
-            titleEs: c.title,
-            jobEn: c.jobEn.replaceAll('{partner}', partnerName),
-            minutes: c.minutes,
-            isMain: c.isMain,
-            pixelAsset: c.photo,
-          ),
-          true,
-        ));
+        final fallback = localById[c.id] ?? (c.isMain ? localMain : null);
+        final title = c.title.isNotEmpty
+            ? c.title
+            : (fallback?.titleEs ?? place.name);
+        final rawJob = c.jobEn.isNotEmpty
+            ? c.jobEn
+            : (fallback?.jobEn ?? c.job);
+        final spec = HablarCallSpec(
+          id: c.id == place.id && fallback != null ? fallback.id : c.id,
+          placeId: c.placeId,
+          titleEs: title,
+          jobEn: rawJob.replaceAll('{partner}', partnerName),
+          minutes: c.minutes,
+          isMain: c.isMain,
+          pixelAsset: c.photo,
+        );
+        if (!spec.isMain) hasCourseSmall = true;
+        seenIds.add(spec.id);
+        resolved.add((spec, true));
+      }
+      // Legacy single-call catalog: list local smaller calls as unbacked (`soon`).
+      if (!hasCourseSmall) {
+        for (final local in localCatalog) {
+          if (local.isMain || seenIds.contains(local.id)) continue;
+          resolved.add((
+            HablarCallSpec(
+              id: local.id,
+              placeId: local.placeId,
+              titleEs: local.titleEs,
+              jobEn: local.jobFor(partnerName),
+              minutes: local.minutes,
+              isMain: false,
+              pixelAsset: local.pixelAsset,
+            ),
+            false,
+          ));
+        }
       }
     } else {
-      final brief = course.callFor(place.id);
-      for (final spec in callsForPlace(place.id)) {
-        final minutes = spec.isMain && brief != null
-            ? brief.minutes
-            : spec.minutes;
-        final jobEn = spec.jobFor(partnerName);
-        final effectiveSpec = minutes == spec.minutes && jobEn == spec.jobEn
-            ? spec
-            : HablarCallSpec(
-                id: spec.id,
-                placeId: spec.placeId,
-                titleEs: spec.titleEs,
-                jobEn: jobEn,
-                minutes: minutes,
-                isMain: spec.isMain,
-                pixelAsset: spec.pixelAsset,
-              );
-        resolved.add((effectiveSpec, spec.isMain && brief != null));
+      for (final spec in localCatalog) {
+        resolved.add((
+          HablarCallSpec(
+            id: spec.id,
+            placeId: spec.placeId,
+            titleEs: spec.titleEs,
+            jobEn: spec.jobFor(partnerName),
+            minutes: spec.minutes,
+            isMain: spec.isMain,
+            pixelAsset: spec.pixelAsset,
+          ),
+          false,
+        ));
       }
     }
 
@@ -353,6 +379,7 @@ HablarSnapshot buildHablarSnapshot({
       }
 
       final thresholdMet = totalStories > 0 && playedCount >= unlockAfter;
+      final canStartKind = spec.isMain || shortCallsEnabled;
 
       final HablarCallState itemState;
       final String itemStatus;
@@ -361,7 +388,7 @@ HablarSnapshot buildHablarSnapshot({
         itemStatus = unlockAfter > 0 && unlockAfter < totalStories
             ? 'Opens after story $unlockAfter'
             : 'Opens when you finish ${place.name}';
-      } else if (!backedByCourse) {
+      } else if (!backedByCourse || !canStartKind) {
         itemState = HablarCallState.soon;
         itemStatus = 'Coming soon · ${place.name}';
       } else if (entitlement == CallEntitlement.upgradeRequired) {
@@ -385,7 +412,7 @@ HablarSnapshot buildHablarSnapshot({
           state: itemState,
           statusLine: itemStatus,
           unlockAfterStory: unlockAfter,
-          backedByCourse: backedByCourse,
+          backedByCourse: backedByCourse && canStartKind,
         ),
       );
     }

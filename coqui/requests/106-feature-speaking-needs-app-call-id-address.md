@@ -16,7 +16,7 @@ Story N4.6 ("Speak", issue #106) and #5 (`CallRoute(placeId, {callId})`) enable 
 
 ## What I am using meanwhile
 
-`SpeakingModule.screenFor`, `CallScreen`, `CallController`, and `HablarTab` preserve and resolve `CallRoute.callId` directly inside `feature_speaking` (verified by unit and widget tests). On live `historia/datos/llamadas.json`, only `La casa`'s legacy main call is currently published (`callId == null`), so live routing is unaffected until structured multi-call course data lands alongside the `addresses.dart` update.
+`SpeakingModule.screenFor`, `CallScreen`, `CallController`, and `HablarTab` preserve and resolve `CallRoute.callId` directly inside `feature_speaking` (verified by unit and widget tests). Smaller calls remain gated behind `SpeakingModule(shortCallsEnabled: false)` by default so tapping a smaller call can never accidentally open the place's main call while `addresses.dart` drops `callId`. Once `addresses.dart` preserves `callId`, pass `shortCallsEnabled: true` on `SpeakingModule` (or flip the default) to enable short calls everywhere with no screen rewrite.
 
 ## Order and branch
 

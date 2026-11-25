@@ -124,7 +124,7 @@ void main() {
       expect(s.stops[3].statusLine, 'Opens when you finish El colmado');
       expect(s.nextCall!.spec.id, 'casa_main');
       expect(s.nextCall!.spec.minutes, course.callFor('casa')!.minutes);
-      expect(s.showFirstTimeReassurance, isTrue);
+      expect(s.completedCount, 0);
       // the smaller calls of an open place are not backed by course data in FixtureCourse yet
       expect(s.stops.first.smallerCalls, isNotEmpty);
       for (final c in s.stops.first.smallerCalls) {
@@ -138,7 +138,7 @@ void main() {
       expect(again.stops.first.state, HablarCallState.done);
       expect(again.nextCall!.spec.id, 'casa_main');
       expect(again.nextCall!.state, HablarCallState.done);
-      expect(again.showFirstTimeReassurance, isFalse);
+      expect(again.completedCount, 1);
     });
   });
 

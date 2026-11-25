@@ -384,7 +384,7 @@ class _SpeakRig {
     );
   }
 
-  Widget screen({bool withTabBar = true}) {
+  Widget screen({bool withTabBar = true, bool shortCallsEnabled = true}) {
     final lang = services.course.language;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -394,7 +394,7 @@ class _SpeakRig {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            HablarTab(services: services),
+            HablarTab(services: services, shortCallsEnabled: shortCallsEnabled),
             if (withTabBar)
               PositionedDirectional(
                 start: 0,
@@ -447,6 +447,7 @@ void main() {
           course: rig.course,
           progress: rig.progress,
           callsAvailable: () => true,
+          shortCallsEnabled: true,
         );
 
         expect(snap.reachedStops.map((s) => s.place.name).toList(), [
@@ -603,6 +604,168 @@ void main() {
         'calle',
       ]);
       expect(afterLater.nextLockedStop, isNull);
+    });
+
+    test('shortCallsEnabled defaults to false: smaller calls stay soon and never start until enabled', () {
+      final rig = _SpeakRig.spanish(cocinaPlayed: 6);
+      final snap = buildHablarSnapshot(
+        course: rig.course,
+        progress: rig.progress,
+        callsAvailable: () => true,
+      );
+      final cocina = snap.stopById('cocina')!;
+      for (final c in cocina.smallerCalls) {
+        expect(c.state, HablarCallState.soon, reason: c.spec.id);
+        expect(c.canStart, isFalse, reason: c.spec.id);
+        expect(c.cardMetaLine, '2 min · coming soon');
+      }
+      // Main call is still gated by story 9.
+      expect(cocina.mainCall!.state, HablarCallState.upcoming);
+      expect(cocina.hasOpenCall, isFalse);
+      // Finished places (casa, parque) still open their main calls.
+      expect(snap.stopById('parque')!.mainCall!.canStart, isTrue);
+      expect(snap.defaultSelectedStop?.place.id, 'parque');
+      rig.dispose();
+    });
+
+    test('per-call fallback preserves backed calls even when one CallBrief has an empty title', () {
+      final places = [
+        Place(
+          id: 'cocina',
+          n: 1,
+          name: 'La cocina',
+          en: 'The kitchen',
+          stories: const ['s1', 's2', 's3'],
+        ),
+      ];
+      final course = _StructuredCourse(
+        places: places,
+        callsByPlace: {
+          'cocina': [
+            CallBrief(
+              id: 'cocina_main',
+              placeId: 'cocina',
+              title: '',
+              jobEn: '',
+              minutes: 5,
+              job: 'Main job',
+              opening: 'Hola',
+              isMain: true,
+            ),
+            CallBrief(
+              id: 'cocina_tomar',
+              placeId: 'cocina',
+              title: '¿Qué quieres tomar?',
+              jobEn: 'Say what you want to drink.',
+              minutes: 2,
+              job: 'Drink',
+              opening: 'Hola',
+              isMain: false,
+            ),
+          ],
+        },
+      );
+      final progress = RecordingProgress();
+      for (final id in places.first.stories) {
+        progress.storyFinished(StoryResult(id: id));
+      }
+      final snap = buildHablarSnapshot(
+        course: course,
+        progress: progress,
+        callsAvailable: () => true,
+        shortCallsEnabled: true,
+      );
+      final cocina = snap.stops.single;
+      expect(cocina.mainCall!.spec.titleEs, 'Tengo hambre');
+      expect(cocina.mainCall!.canStart, isTrue);
+      expect(cocina.smallerCalls.single.spec.id, 'cocina_tomar');
+      expect(cocina.smallerCalls.single.canStart, isTrue);
+    });
+
+    test('threshold math handles 0 stories, 1 story with multiple calls, and out-of-order play', () {
+      final places = [
+        Place(
+          id: 'casa',
+          n: 1,
+          name: 'La casa',
+          en: 'House',
+          stories: const ['a', 'b'],
+        ),
+        Place(
+          id: 'parque',
+          n: 2,
+          name: 'El parque',
+          en: 'Park',
+          stories: const ['p1'],
+        ),
+        Place(
+          id: 'cocina',
+          n: 3,
+          name: 'La cocina',
+          en: 'Kitchen',
+          stories: const [],
+        ),
+      ];
+      final course = _StructuredCourse(
+        places: places,
+        callsByPlace: {
+          'parque': [
+            CallBrief(
+              id: 'p_s1',
+              placeId: 'parque',
+              title: 'Short 1',
+              jobEn: 'Job 1',
+              minutes: 2,
+              job: 'Job 1',
+              opening: 'Hi',
+              isMain: false,
+            ),
+            CallBrief(
+              id: 'p_s2',
+              placeId: 'parque',
+              title: 'Short 2',
+              jobEn: 'Job 2',
+              minutes: 2,
+              job: 'Job 2',
+              opening: 'Hi',
+              isMain: false,
+            ),
+            CallBrief(
+              id: 'p_main',
+              placeId: 'parque',
+              title: 'Main',
+              jobEn: 'Job M',
+              minutes: 5,
+              job: 'Job M',
+              opening: 'Hi',
+              isMain: true,
+            ),
+          ],
+        },
+      );
+      final progress = RecordingProgress();
+      // Play only parque's 1 story while casa is unfinished.
+      progress.storyFinished(StoryResult(id: 'p1'));
+      final snap = buildHablarSnapshot(
+        course: course,
+        progress: progress,
+        callsAvailable: () => true,
+        shortCallsEnabled: true,
+      );
+      // Playing p1 reaches up to parque even though casa is unfinished.
+      expect(snap.reachedStops.map((s) => s.place.id), ['casa', 'parque']);
+      // 1-story place: all calls clamp unlockAfterStory to 1 and open after p1.
+      final parque = snap.stopById('parque')!;
+      for (final c in parque.calls) {
+        expect(c.unlockAfterStory, 1);
+        expect(c.canStart, isTrue);
+      }
+      // 0-story place: unlockAfterStory is 0, calls stay upcoming.
+      final cocina = snap.stops[2];
+      for (final c in cocina.calls) {
+        expect(c.unlockAfterStory, 0);
+        expect(c.state, HablarCallState.upcoming);
+      }
     });
   });
 
