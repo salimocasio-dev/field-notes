@@ -142,6 +142,11 @@ void main(List<String> args) {
       constant: 'calendarioSetRefs',
       what: "El calendario's baked states",
     ),
+    'orilla': (
+      file: 'orilla_set_refs.dart',
+      constant: 'orillaSetRefs',
+      what: "La orilla's baked states",
+    ),
   };
   var stale = 0;
   for (final s in scenes.entries) {
