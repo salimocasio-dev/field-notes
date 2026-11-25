@@ -12,7 +12,9 @@
 //   [b] a Dart file imports a package its pubspec does not list
 //   [c] a Dart file imports another package's src/
 //   [d] the branch is `lane/<package>/...` (or `lane/tool/...`) and changes a
-//       file outside that lane's folder and requests/
+//       file outside that lane's folder and requests/, or `story/<n>` and
+//       changes a file outside coqui_scenes/, feature_story/,
+//       coqui_story_checks/, ref/pp/, and requests/
 //   [e] a feature's pubspec or imports name another feature
 // Added by the orchestrator on Nov 19, 2026 (not in the plan's rules):
 //   [f] a Dart file imports package:flutter/material.dart (deprecated in
@@ -596,18 +598,34 @@ List<_Use> _packageUris(String source) {
 /// pubspec dependencies). Maps lane name -> folder relative to coqui/.
 const _nonPackageLaneDirs = <String, String>{'tool': 'tool'};
 
+/// Folders relative to coqui/ that a `story/<n>` branch may change (#170).
+const _storyBranchDirs = <String>[
+  'packages/core/coqui_scenes',
+  'packages/features/feature_story',
+  'packages/coqui_story_checks',
+  'ref/pp',
+  'requests',
+];
+
 Future<List<String>> _checkLane(
   Directory root, {
   String? branch,
   String? base,
 }) async {
   branch ??= _git(root, ['rev-parse', '--abbrev-ref', 'HEAD']).out;
-  final match = RegExp(r'^lane/([^/]+)/').firstMatch(branch);
-  if (match == null) return const [];
-  final name = match.group(1)!;
-  final laneDir = packageRules[name]?.dir ?? _nonPackageLaneDirs[name];
-  if (laneDir == null) {
-    return ['[d] branch $branch names $name, which is not a package'];
+  final List<String> allowedDirs;
+  final laneMatch = RegExp(r'^lane/([^/]+)/').firstMatch(branch);
+  if (laneMatch != null) {
+    final name = laneMatch.group(1)!;
+    final laneDir = packageRules[name]?.dir ?? _nonPackageLaneDirs[name];
+    if (laneDir == null) {
+      return ['[d] branch $branch names $name, which is not a package'];
+    }
+    allowedDirs = [laneDir, 'requests'];
+  } else if (RegExp(r'^story/.+').hasMatch(branch)) {
+    allowedDirs = _storyBranchDirs;
+  } else {
+    return const [];
   }
 
   final mb = _resolveMergeBase(root, base: base);
@@ -628,15 +646,16 @@ Future<List<String>> _checkLane(
     'rev-parse',
     '--show-prefix',
   ]).out; // "coqui/" or ""
-  final allowed = ['$prefix$laneDir/', '${prefix}requests/'];
+  final allowed = [for (final dir in allowedDirs) '$prefix$dir/'];
+  final allowedSummary = allowed.length == 2
+      ? '${allowed[0]} and ${allowed[1]}'
+      : '${allowed.sublist(0, allowed.length - 1).join(', ')}, and '
+            '${allowed.last}';
   final problems = <String>[];
   for (final file in diff.raw.split('\u0000')) {
     if (file.isEmpty) continue;
     if (allowed.any(file.startsWith)) continue;
-    problems.add(
-      '$file: [d] branch $branch may change only $prefix$laneDir/ and '
-      '${prefix}requests/',
-    );
+    problems.add('$file: [d] branch $branch may change only $allowedSummary');
   }
   return problems;
 }

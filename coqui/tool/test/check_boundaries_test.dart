@@ -726,6 +726,90 @@ import 'package:material_ui/material_ui.dart';
       },
     );
 
+    test('passes: story/<n> changes coqui_scenes, feature_story, '
+        'coqui_story_checks, ref/pp, and requests/', () async {
+      git.branch('story/42');
+      package('coqui_scenes', deps: ['coqui_ui']);
+      package('feature_story', deps: ['coqui_ui', 'coqui_scenes']);
+      package('coqui_story_checks', deps: ['coqui_scenes', 'feature_story']);
+      src('coqui_scenes', 'lib/src/scene.dart', '// scene\n');
+      src('feature_story', 'lib/src/story.dart', '// story\n');
+      src('coqui_story_checks', 'test/scene_test.dart', '// test\n');
+      write('ref/pp/plaza/sheet.json', '{}\n');
+      write('requests/42-story-needs-thing.md', 'please\n');
+      git.commit('scene port');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test('fails: story/<n> changes coqui_contracts or app/', () async {
+      git.branch('story/42');
+      package('coqui_contracts', deps: []);
+      package('app', deps: ['coqui_contracts']);
+      src('coqui_contracts', 'lib/coqui_contracts.dart', '// contracts\n');
+      src('app', 'lib/main.dart', '// app\n');
+      git.commit('disallowed edits');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(4));
+      final joined = problems.join('\n');
+      expect(joined, contains('coqui/packages/core/coqui_contracts/'));
+      expect(joined, contains('coqui/app/'));
+      expect(joined, contains('[d] branch story/42 may change only'));
+      expect(joined, contains('coqui/packages/core/coqui_scenes/'));
+      expect(joined, contains('coqui/packages/features/feature_story/'));
+      expect(joined, contains('coqui/packages/coqui_story_checks/'));
+      expect(joined, contains('coqui/ref/pp/'));
+      expect(joined, contains('coqui/requests/'));
+    });
+
+    test(
+      'fails: story/<n> changes ref/ outside ref/pp/, tool/, or outside coqui/',
+      () async {
+        git.branch('story/42');
+        write('ref/other/data.json', '{}\n');
+        write('ref/pp_extra/data.json', '{}\n');
+        write('tool/check_boundaries.dart', '// nope\n');
+        File('${repo.path}/.github/workflows/coqui.yml')
+          ..createSync(recursive: true)
+          ..writeAsStringSync('name: x\n');
+        git.commit('more disallowed edits');
+        final problems = await check(branch: null);
+        expect(problems, hasLength(4));
+        expect(
+          problems.any((p) => p.startsWith('coqui/ref/other/data.json: [d]')),
+          isTrue,
+        );
+        expect(
+          problems.any(
+            (p) => p.startsWith('coqui/ref/pp_extra/data.json: [d]'),
+          ),
+          isTrue,
+        );
+        expect(
+          problems.any(
+            (p) => p.startsWith('coqui/tool/check_boundaries.dart: [d]'),
+          ),
+          isTrue,
+        );
+        expect(
+          problems.any((p) => p.startsWith('.github/workflows/coqui.yml: [d]')),
+          isTrue,
+        );
+      },
+    );
+
+    test(
+      'fails: story/<n> passed via branch argument rejects disallowed paths',
+      () async {
+        git.branch('work-in-progress');
+        src('feature_map', 'lib/src/m.dart', '// changed\n');
+        git.commit('work');
+        final problems = await check(branch: 'story/99');
+        expect(problems, hasLength(1));
+        expect(problems.single, contains('[d] branch story/99'));
+        expect(problems.single, contains('feature_map'));
+      },
+    );
+
     test('fails clearly when there is nothing to compare with', () async {
       git.branch('lane/feature_words/5');
       git.run(['branch', '-D', 'main']);
