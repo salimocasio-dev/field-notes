@@ -151,6 +151,7 @@ class RepasoSession extends LessonBase {
       progress: progress,
       pairs: course.pairs,
       rng: Mulberry32(seed),
+      language: course.language,
       lastAsked: _last.read(),
       nextKind: _last.readKind(),
       wordAssets: wordAssets,
@@ -1038,7 +1039,7 @@ class RepasoSession extends LessonBase {
         changed();
         SpeechResult r;
         final t = speech!.listen(
-          locale: 'es-US',
+          locale: course.language.recognitionLocale,
           limit: const Duration(seconds: 6),
           maxAlternatives: 5,
         );
@@ -1069,7 +1070,11 @@ class RepasoSession extends LessonBase {
           return;
         }
         heard = r.alternatives.isEmpty ? '' : r.alternatives.first;
-        if (repasoHeardRight(r.alternatives, it.line.forms)) {
+        if (repasoHeardRight(
+          r.alternatives,
+          it.line.forms,
+          language: course.language,
+        )) {
           heardRight = true;
           mic = MicState.ok;
           progress.answer(
@@ -1207,11 +1212,16 @@ const List<String> _nodisp = [
 ];
 
 /// Heard right (docs/hablar/01-decisiones.md, "What counts as heard right"): one of the accepted [forms] is inside
-/// one of the alternatives, whole words, accents and case ignored.
-bool repasoHeardRight(List<String> alts, List<String> forms) {
-  final ns = [for (final a in alts) normalize(a)];
+/// one of the alternatives, whole words, accents/marks and case ignored through [language].
+bool repasoHeardRight(
+  List<String> alts,
+  List<String> forms, {
+  Language? language,
+}) {
+  final lang = language ?? Language.spanish;
+  final ns = [for (final a in alts) lang.normalize(a)];
   return forms.any((f) {
-    final g = normalize(f).trim();
+    final g = lang.normalize(f).trim();
     return g.isNotEmpty && ns.any((a) => a.contains(' $g '));
   });
 }

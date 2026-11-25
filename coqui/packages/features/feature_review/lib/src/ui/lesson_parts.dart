@@ -23,22 +23,25 @@ class PictureBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(bottom: fit.marginBottom),
+    padding: EdgeInsetsDirectional.only(bottom: fit.marginBottom),
     child: SizedBox(
       width: fit.width,
       height: fit.height,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          for (var k = 0; k < fit.cells.length; k++)
-            Positioned(
-              left: fit.cells[k].left,
-              top: fit.cells[k].top,
-              width: fit.cells[k].width,
-              height: fit.cells[k].height,
-              child: cell(context, k, fit.cells[k]),
-            ),
-        ],
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            for (var k = 0; k < fit.cells.length; k++)
+              PositionedDirectional(
+                start: fit.cells[k].left,
+                top: fit.cells[k].top,
+                width: fit.cells[k].width,
+                height: fit.cells[k].height,
+                child: cell(context, k, fit.cells[k]),
+              ),
+          ],
+        ),
       ),
     ),
   );
@@ -160,8 +163,8 @@ class LessonTextScreen extends StatelessWidget {
         color: box.landscape ? const Color(0x00000000) : CoquiColors.lessonBg,
         child: SingleChildScrollView(
           padding: box.landscape
-              ? EdgeInsets.fromLTRB(0, top, 0, 152)
-              : EdgeInsets.fromLTRB(16, top, 16, 160),
+              ? EdgeInsetsDirectional.fromSTEB(0, top, 0, 152)
+              : EdgeInsetsDirectional.fromSTEB(16, top, 16, 160),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(

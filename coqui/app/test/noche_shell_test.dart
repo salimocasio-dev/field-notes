@@ -257,7 +257,7 @@ void main() {
   );
 
   testWidgets(
-    'unanswered LanguagesRoute, PlansRoute, ImportRoute, and unknown PlaceRoute do nothing and log a line without crashing',
+    'unanswered PlansRoute, ImportRoute, and unknown PlaceRoute do nothing and log a line without crashing',
     (tester) async {
       final logs = <String>[];
       final DebugPrintCallback previous = debugPrint;
@@ -271,7 +271,6 @@ void main() {
       expect(app.selectedTab, 'map');
 
       for (final route in const <AppRoute>[
-        LanguagesRoute(),
         PlansRoute(),
         ImportRoute(),
         PlaceRoute('no-existe'),
@@ -284,9 +283,25 @@ void main() {
         expect(tester.takeException(), isNull, reason: '$route');
       }
 
-      // Opening those addresses directly falls back to the map and logs.
+      // LanguagesRoute() opens LanguagesSheet (with tab bar hidden) once N2.10
+      // lands, or stays on map and logs unanswered on pre-N2.10 main.
+      logs.clear();
+      await app.go(const LanguagesRoute());
+      expect(tester.takeException(), isNull, reason: 'LanguagesRoute()');
+      if (byTypeName('LanguagesSheet').evaluate().isNotEmpty) {
+        expect(app.tabBarShown, isFalse, reason: 'LanguagesRoute()');
+      } else {
+        expect(app.tabBarShown, isTrue, reason: 'LanguagesRoute()');
+        expect(app.selectedTab, 'map', reason: 'LanguagesRoute()');
+        expect(
+          logs,
+          isNotEmpty,
+          reason: 'expected log line for LanguagesRoute',
+        );
+      }
+
+      // Opening unanswered addresses directly falls back to the map and logs.
       for (final location in const [
-        '/idiomas',
         '/planes',
         '/importar',
         '/lugar/no-existe',
@@ -299,6 +314,21 @@ void main() {
         expect(direct.selectedTab, 'map', reason: location);
         expect(logs, isNotEmpty, reason: 'expected log line for $location');
         expect(tester.takeException(), isNull, reason: location);
+      }
+
+      // /idiomas opens LanguagesSheet (with tab bar hidden) once N2.10 lands,
+      // or falls back to map and logs unanswered on pre-N2.10 main.
+      logs.clear();
+      await tester.pumpWidget(const SizedBox());
+      final languagesDirect = TestApp(tester);
+      await languagesDirect.open(stored: seed('curso'), location: '/idiomas');
+      expect(tester.takeException(), isNull, reason: '/idiomas');
+      if (byTypeName('LanguagesSheet').evaluate().isNotEmpty) {
+        expect(languagesDirect.tabBarShown, isFalse, reason: '/idiomas');
+      } else {
+        expect(languagesDirect.tabBarShown, isTrue, reason: '/idiomas');
+        expect(languagesDirect.selectedTab, 'map', reason: '/idiomas');
+        expect(logs, isNotEmpty, reason: 'expected log line for /idiomas');
       }
 
       // PlaceRoute('casa') opens PlaceScreen (with Map tab bar) once N4.2 lands,

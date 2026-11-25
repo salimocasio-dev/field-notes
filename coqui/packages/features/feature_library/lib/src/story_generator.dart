@@ -60,11 +60,15 @@ class StoryGenerator {
     required Set<String> previous,
     required Rng rng,
   }) {
+    final language = vocabulary.language;
     final targets = focus
-        .map(readingKey)
+        .map((word) => readingKey(word, language: language))
         .where((word) => word.isNotEmpty)
         .toSet();
-    final review = due.map(readingKey).where((word) => word.isNotEmpty).toSet();
+    final review = due
+        .map((word) => readingKey(word, language: language))
+        .where((word) => word.isNotEmpty)
+        .toSet();
     final best = <StoryDraft>[];
     ({int review, int newWords})? bestScore;
     for (final draft in _drafts()) {
@@ -78,7 +82,7 @@ class StoryGenerator {
       }
 
       final searchable = readingLines(draft.body)
-          .map((line) => ' ${readingKey(line)} ')
+          .map((line) => ' ${readingKey(line, language: language)} ')
           .toList();
       bool includes(String word) =>
           searchable.any((line) => line.contains(' $word '));
