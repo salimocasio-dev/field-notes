@@ -9,16 +9,19 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 /// Where a phrase stands in a text: [a, z) are UTF-16 offsets and [k] is the phrase's index in the list.
 typedef Occurrence = ({int a, int z, int k});
 
-final RegExp _token = RegExp(r'[\p{L}\p{N}]+', unicode: true);
-
 // app.html: occs
 /// Where the words of a list of phrases (each a list of normalised tokens) stand in [text], the first phrase of
 /// the list that fits first (a list sorted longest phrase first gives the longest): accents, case and punctuation
 /// are ignored.
-List<Occurrence> occurrences(String text, List<List<String>> phrases) {
+List<Occurrence> occurrences(
+  String text,
+  List<List<String>> phrases, {
+  Language? language,
+}) {
+  final lang = language ?? Language.spanish;
   final tokens = [
-    for (final m in _token.allMatches(text))
-      (s: m.start, e: m.end, n: normalize(m.group(0)).trim()),
+    for (final tok in lang.tokens(text))
+      (s: tok.start, e: tok.end, n: lang.normalize(tok.text).trim()),
   ];
   final out = <Occurrence>[];
   for (var i = 0; i < tokens.length; i++) {
@@ -43,7 +46,11 @@ List<Occurrence> occurrences(String text, List<List<String>> phrases) {
 
 // app.html: oidoEn (the line: `wt=PAL.norm(w).trim().split(" ")`)
 /// The normalised tokens of a word or phrase.
-List<String> wordTokens(String word) => normalize(word).trim().split(' ');
+List<String> wordTokens(String word, {Language? language}) {
+  final lang = language ?? Language.spanish;
+  final norm = lang.normalize(word).trim();
+  return norm.isEmpty ? const [] : norm.split(' ');
+}
 
 // app.html: vuelve
 /// What the word sheet says about the next return of the ear: [due] is the stored `due` (ms, 0 = none), [now]

@@ -364,7 +364,7 @@ void main() {
           });
           expect(bold, isNotEmpty);
           for (final b in bold) {
-            expect(normalize(b).trim(), 'casa');
+            expect(m.rig.course.language.normalize(b).trim(), 'casa');
           }
           expect(r.text.toPlainText(), lines[rich.indexOf(r)].text);
         }
@@ -483,7 +483,10 @@ void main() {
           'donde-esta-el-pajaro',
         ]);
         for (final l in lines) {
-          expect(normalize(l.text), contains(normalize('casa')));
+          expect(
+            m.rig.course.language.normalize(l.text),
+            contains(m.rig.course.language.normalize('casa')),
+          );
         }
         expect(lines, hasLength(n));
       },

@@ -13,7 +13,7 @@ class WordsModule implements FeatureModule {
   @override
   FeatureTab? tab(Services s) => FeatureTab(
     id: 'words',
-    label: CoquiLabels.words,
+    label: s.course.language.tabNames['words'] ?? CoquiLabels.words,
     icon: Icons.style,
     builder: (_) => WordsTab(services: s),
   );

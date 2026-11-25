@@ -137,7 +137,12 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
   Widget build(BuildContext context) {
     final r = _sheet.record;
     final pair = _sheet.pair;
-    final tokens = wordTokens(r.w);
+    final lang = _s.course.language;
+    final courseDir = lang.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
+    final courseLocale = Locale(lang.code);
+    final tokens = wordTokens(r.w, language: lang);
     final back = comesBack(r.ear.due, _s.clock.nowMs());
     return CollapsingColumn(
       children: [
@@ -147,7 +152,10 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
             child: Center(
               child: PictureFrame(
                 radius: CoquiMetrics.radiusWordPicture,
-                child: _s.pictures.of(PictureRef.of(pair, pair.yes)),
+                child: Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: _s.pictures.of(PictureRef.of(pair, pair.yes)),
+                ),
               ),
             ),
           ),
@@ -157,6 +165,8 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
             r.w,
             key: _wordKey,
             textAlign: TextAlign.center,
+            textDirection: courseDir,
+            locale: courseLocale,
             style: CoquiText.h1,
           ),
         ),
@@ -178,22 +188,35 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
         if (_sheet.lines.isNotEmpty) ...[
           const SectionTitle('Heard in'),
           CoquiCard(
-            padding: const EdgeInsets.symmetric(horizontal: CoquiMetrics.s16),
-            child: DividedRows(
-              rows: [
-                for (final l in _sheet.lines)
-                  ListRow(
-                    title: Text.rich(_lineSpan(l.text, tokens)),
-                    subtitle: Text(l.storyTitle),
-                    trailing: PlayButton(
-                      icon: _playing == l.clipId
-                          ? CoquiIcons.stop
-                          : CoquiIcons.play,
-                      semanticLabel: 'Play: ${l.text}',
-                      onPressed: () => _playLine(l),
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: CoquiMetrics.s16,
+            ),
+            child: Directionality(
+              textDirection: courseDir,
+              child: DividedRows(
+                rows: [
+                  for (final l in _sheet.lines)
+                    ListRow(
+                      title: Text.rich(
+                        _lineSpan(l.text, tokens, lang),
+                        textDirection: courseDir,
+                        locale: courseLocale,
+                      ),
+                      subtitle: Text(
+                        l.storyTitle,
+                        textDirection: courseDir,
+                        locale: courseLocale,
+                      ),
+                      trailing: PlayButton(
+                        icon: _playing == l.clipId
+                            ? CoquiIcons.stop
+                            : CoquiIcons.play,
+                        semanticLabel: 'Play: ${l.text}',
+                        onPressed: () => _playLine(l),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
@@ -202,10 +225,10 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
   }
 
   /// The line, with the word bold inside it (`<b>`) and the text unchanged.
-  TextSpan _lineSpan(String text, List<String> tokens) {
+  TextSpan _lineSpan(String text, List<String> tokens, Language language) {
     final spans = <TextSpan>[];
     var pos = 0;
-    for (final o in occurrences(text, [tokens])) {
+    for (final o in occurrences(text, [tokens], language: language)) {
       if (o.a > pos) spans.add(TextSpan(text: text.substring(pos, o.a)));
       spans.add(
         TextSpan(text: text.substring(o.a, o.z), style: CoquiText.rowBold),

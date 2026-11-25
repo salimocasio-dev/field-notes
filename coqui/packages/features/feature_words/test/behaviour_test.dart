@@ -677,12 +677,19 @@ void main() {
       return rig;
     }
 
-    List<String> rows(WidgetTester tester) => [
-      for (final r in tester.widgetList<RichText>(
-        inSheet(find.byType(RichText)),
-      ))
-        r.text.toPlainText(),
-    ].where((t) => t != 'casa' && normalize(t).contains(' casa ')).toList();
+    List<String> rows(WidgetTester tester) =>
+        [
+              for (final r in tester.widgetList<RichText>(
+                inSheet(find.byType(RichText)),
+              ))
+                r.text.toPlainText(),
+            ]
+            .where(
+              (t) =>
+                  t != 'casa' &&
+                  Language.spanish.normalize(t).contains(' casa '),
+            )
+            .toList();
 
     testWidgets(
       'only the stories he has played; from each one a line before the next of each; at most five',

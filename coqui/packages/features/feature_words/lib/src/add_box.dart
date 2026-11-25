@@ -40,7 +40,7 @@ class AddBox extends StatelessWidget {
         children: [
           // `<p class="small mut" style="margin-top:0">`: 14 px under it, the paragraph's own `1em`
           Padding(
-            padding: const EdgeInsets.only(bottom: 14),
+            padding: const EdgeInsetsDirectional.only(bottom: 14),
             child: Text(
               'For example: "talk to my 1-year-old around the house".',
               style: CoquiText.smallMuted,
@@ -59,7 +59,7 @@ class AddBox extends StatelessWidget {
               // Material greys a hovered or focused field: the old input stays white
               hoverColor: const Color(0x00000000),
               focusColor: const Color(0x00000000),
-              contentPadding: const EdgeInsets.symmetric(
+              contentPadding: const EdgeInsetsDirectional.symmetric(
                 horizontal: CoquiMetrics.s12,
                 vertical: CoquiMetrics.s12,
               ),
@@ -72,7 +72,7 @@ class AddBox extends StatelessWidget {
           CoquiButton(label: 'Add', kind: CoquiButtonKind.go, onPressed: onAdd),
           if (added.isNotEmpty) ...[
             Padding(
-              padding: const EdgeInsets.only(
+              padding: const EdgeInsetsDirectional.only(
                 top: CoquiMetrics.s16,
                 bottom: CoquiMetrics.s8,
               ),
@@ -83,7 +83,9 @@ class AddBox extends StatelessWidget {
             ),
             for (final x in added)
               Padding(
-                padding: const EdgeInsets.only(bottom: CoquiMetrics.s4),
+                padding: const EdgeInsetsDirectional.only(
+                  bottom: CoquiMetrics.s4,
+                ),
                 child: Text('· $x', style: CoquiText.small),
               ),
           ],
