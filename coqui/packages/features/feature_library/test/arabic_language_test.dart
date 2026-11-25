@@ -86,8 +86,74 @@ class _ReadableArabicCatalog extends FakeCourseCatalog {
         url: 'audio/$id.mp3',
       );
     }
+    if (id == 'solo-akala') {
+      return ClipInfo(
+        id: id,
+        who: 'narr',
+        text: 'أَكَلَ',
+        startMs: 0,
+        endMs: 400,
+        url: 'audio/$id.mp3',
+      );
+    }
+    if (id == 'solo-ukila') {
+      return ClipInfo(
+        id: id,
+        who: 'narr',
+        text: 'أُكِلَ',
+        startMs: 0,
+        endMs: 400,
+        url: 'audio/$id.mp3',
+      );
+    }
     return super.clip(id);
   }
+}
+
+class _SingleClipArabicCatalog extends FakeCourseCatalog {
+  _SingleClipArabicCatalog({
+    required this.bookId,
+    required this.clipId,
+    required this.clipText,
+  }) : super.arabic();
+
+  final String bookId;
+  final String clipId;
+  final String clipText;
+
+  @override
+  Future<Book?> book(String id) async => id == bookId
+      ? Book(
+          id: bookId,
+          title: 'تجربة',
+          readable: true,
+          pages: [
+            BookPage(image: 'img/1.png', clips: [clipId]),
+          ],
+        )
+      : super.book(id);
+
+  @override
+  Future<Map<String, dynamic>> story(String id) async => id == bookId
+      ? {
+          'title': 'تجربة',
+          'clips': {
+            clipId: {'who': 'narr', 'text': clipText},
+          },
+        }
+      : super.story(id);
+
+  @override
+  ClipInfo? clip(String id) => id == clipId
+      ? ClipInfo(
+          id: clipId,
+          who: 'narr',
+          text: clipText,
+          startMs: 0,
+          endMs: 400,
+          url: 'audio/$clipId.mp3',
+        )
+      : super.clip(id);
 }
 
 Future<void> _loadNocheFonts() async {
@@ -232,6 +298,18 @@ void main() {
                 scoring: RepasoScoring.cual,
                 solo: 'solo-aghliq',
               ),
+              RepasoWord(
+                word: 'أَكَلَ',
+                place: 'casa',
+                scoring: RepasoScoring.cual,
+                solo: 'solo-akala',
+              ),
+              RepasoWord(
+                word: 'أُكِلَ',
+                place: 'casa',
+                scoring: RepasoScoring.cual,
+                solo: 'solo-ukila',
+              ),
             ],
             sentences: [
               RepasoSentence(
@@ -254,6 +332,14 @@ void main() {
         expect(audio.word('مرحبا')?.clip, 'solo-marhaba');
         expect(audio.word('اغلق')?.clip, 'solo-aghliq');
         expect(audio.line('هذا بيت جدة.'), 'esta_casa');
+
+        // Separate recordings for vocalized minimal pairs stay distinct.
+        expect(audio.word('أَكَلَ')?.clip, 'solo-akala');
+        expect(audio.word('أَكَلَ')?.word, 'أَكَلَ');
+        expect(audio.word('أُكِلَ')?.clip, 'solo-ukila');
+        expect(audio.word('أُكِلَ')?.word, 'أُكِلَ');
+        // Unvocalized spelling still resolves via normalized fallback.
+        expect(audio.word('اكل'), isNotNull);
       },
     );
 
@@ -445,6 +531,51 @@ void main() {
           await settle(tester);
         }
         expect(progress.words, isNotEmpty);
+      },
+    );
+
+    testWidgets(
+      'crediting an unrecorded Arabic word reuses existing diacritic record without duplicating it',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final course = _SingleClipArabicCatalog(
+          bookId: 'ar-dedup',
+          clipId: 'c1',
+          clipText: 'مرحبا يا جدة.',
+        );
+        final clips = TimedClips(length: const Duration(milliseconds: 50));
+        final progress = FakeProgressStore();
+        progress.put(_known('مرحباً', stage: 2));
+        final services = fakeServices(
+          course: course,
+          clips: clips,
+          progress: progress,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(services: services, id: 'ar-dedup'),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
+        await settle(tester);
+
+        final marhabaRecords = progress.words
+            .where((r) => arabicTestLanguage.normalize(r.w).trim() == 'مرحبا')
+            .toList();
+        expect(marhabaRecords, hasLength(1));
+        expect(marhabaRecords.single.w, 'مرحباً');
+        expect(marhabaRecords.single.oida, 1);
       },
     );
 

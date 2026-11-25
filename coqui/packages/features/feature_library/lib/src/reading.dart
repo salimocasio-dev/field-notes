@@ -18,6 +18,14 @@ List<String> readingWords(String text, {Language? language}) {
 String readingKey(String text, {Language? language}) =>
     readingWords(text, language: language).join(' ');
 
+/// Language-tokenized key that preserves diacritics and accents (for exact
+/// audio matching before falling back to [Language.normalize]).
+String readingExactKey(String text, {Language? language}) {
+  final lang = language ?? Language.spanish;
+  return [for (final token in lang.tokens(text)) token.text.toLowerCase()]
+      .join(' ');
+}
+
 final _lineBreak = RegExp(r'\r\n?|\n|(?<=[.!?؟…])[^\S\r\n]+');
 
 List<String> readingLines(String body) => [

@@ -361,15 +361,25 @@ class _TextReaderState extends State<TextReader> {
     return out;
   }
 
+  String _canonicalProgressWord(String rawToken) {
+    final lang = _s.course.language;
+    final norm = lang.normalize(rawToken).trim();
+    if (norm.isNotEmpty) {
+      for (final existing in _s.progress.words) {
+        if (lang.normalize(existing.w).trim() == norm) {
+          return existing.w;
+        }
+      }
+    }
+    return rawToken.toLowerCase();
+  }
+
   void _creditSentenceWords(ReaderSentence sentence) {
     final lang = _s.course.language;
     final keys = <String>{};
     for (final token in lang.tokens(sentence.text)) {
       final resolved =
-          _audio.word(token.text)?.word ??
-          (lang.script == 'Latn'
-              ? token.text.toLowerCase()
-              : lang.normalize(token.text).trim());
+          _audio.word(token.text)?.word ?? _canonicalProgressWord(token.text);
       if (resolved.isNotEmpty) keys.add(resolved);
     }
     for (final key in keys) {
@@ -530,15 +540,11 @@ class _TextReaderState extends State<TextReader> {
   Future<void> _replaySelectedWord(SelectedWord selected) async {
     final clipId = selected.clipId;
     if (clipId == null) return;
-    final lang = _s.course.language;
-    final fallbackWord = lang.script == 'Latn'
-        ? selected.token.toLowerCase()
-        : lang.normalize(selected.token).trim();
     _playback++;
     setState(() => _playing = false);
     await _playWordClip((
       clip: clipId,
-      word: selected.audioWord ?? fallbackWord,
+      word: selected.audioWord ?? _canonicalProgressWord(selected.token),
     ));
   }
 
