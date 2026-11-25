@@ -45,7 +45,9 @@ class LanguagesSheet extends StatefulWidget {
   /// Optional multi-language source (defaults to [ServicesLanguagesSource]).
   final LanguagesSource? source;
 
-  /// Optional close callback (defaults to `services.nav.back`).
+  /// Optional dismiss callback for close/scrim/current-language taps
+  /// (defaults to `services.nav.back`). Switching to another language
+  /// navigates directly to `TabRoute(NocheTabs.map)`.
   final VoidCallback? onClose;
 
   /// Forwarded to [NocheSheet.respectSafeArea].
@@ -105,7 +107,6 @@ class _LanguagesSheetState extends State<LanguagesSheet> {
     }
     _source.selectLanguage(entry.language.code);
     widget.services.nav.go(const TabRoute(NocheTabs.map));
-    widget.onClose?.call();
   }
 
   @override

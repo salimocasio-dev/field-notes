@@ -6,6 +6,7 @@
 2. In `coqui_ui` (`Services` in `lib/src/contracts.dart`):
    - Expose an optional `ProgressStoreCollection? progressStores` (or equivalent multi-language store accessor) and the list of available catalog courses (`List<CourseCatalog>` / course summaries) so `ProfileModule.screenFor(const LanguagesRoute(), Services s)` can list every started language's store/course and every unstarted catalog language without depending on `coqui_progress` or `coqui_content`.
 3. Related: `coqui/requests/101-feature-map-needs-coqui-contracts-story-scene-and-level.md` (exposing the learner's CEFR level on `CourseCatalog` or `ProgressStore` so the sheet's `"<level> · place <N> of <M> · <K> words"` line does not default to `'A1'`).
+4. Optional `coqui_ui` typography polish: expose a `14 / 16` w500 meta text style token on `NocheType` (matching `Noche-Idiomas.dc.html:33` and `Noche-Mapa.dc.html:38`) so feature screens do not override `NocheType.bodySmall` inline.
 
 ## Why
 
