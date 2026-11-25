@@ -178,7 +178,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
         } on Object {
           scene = null;
         } finally {
-          _loadingScenes.remove(id);
+          if (gen == _serviceGen) _loadingScenes.remove(id);
         }
         if (!mounted || gen != _serviceGen) return;
         if (_storyScenes[id] != scene) {
@@ -205,7 +205,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
       } on Object {
         available = false;
       } finally {
-        _loadingBooks.remove(lastId);
+        if (gen == _serviceGen) _loadingBooks.remove(lastId);
       }
       if (!mounted || gen != _serviceGen) return;
       if (_bookAvailable[lastId] != available) {
