@@ -31,8 +31,13 @@ jobs:
       - name: flutter pub get
         run: flutter pub get
         working-directory: coqui
+      - name: Generate shared scene lists
+        run: dart run tool/make_scenes.dart
+        working-directory: coqui
       - name: Build the debug apk
-        run: flutter build apk --debug
+        env:
+          COQUI_APP_BASE: ${{ vars.COQUI_APP_BASE || 'https://salimocasio-dev.github.io/field-notes/app/' }}
+        run: flutter build apk --debug --dart-define=COQUI_APP_BASE="$COQUI_APP_BASE"
         working-directory: coqui/app
       - name: The apk is signed with the key in the repo
         run: bash coqui/tool/check_apk.sh key coqui/app/build/app/outputs/flutter-apk/app-debug.apk

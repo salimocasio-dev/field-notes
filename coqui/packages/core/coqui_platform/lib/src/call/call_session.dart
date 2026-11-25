@@ -3,9 +3,6 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/src/call/conv.dart';
 
-/// Danny, the agent (llamada.js: AGENT). It is locked to the published site's origin.
-const dannyAgentId = 'agent_3301m795q3xtfpx8c99zc0s870vm';
-
 /// The ElevenLabs client, at the version the old page pins (llamada.js: SDK).
 const elevenLabsClientUrl =
     'https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.25.0/+esm';
@@ -26,8 +23,8 @@ CallStartError callStartError(String name, String message) => CallStartError(
   name: name,
 );
 
-/// The call with Danny, ported from llamada.js's connection: the library loaded once ahead (precarga),
-/// `startSession` with the agent, `connectionType: "websocket"`, the six dynamic variables and the
+/// The live call, ported from llamada.js's connection: the library loaded once ahead (precarga),
+/// `startSession` with `brief.agentId`, `connectionType: "websocket"`, the six dynamic variables and the
 /// `show_picture` tool, and the session's callbacks as [CallEvent]s, in the order the client calls them:
 /// onConnect [Connected], onMessage [AgentLine] or [Heard] (role or source "user"), onModeChange [Mode],
 /// show_picture [Tool], onError [CallError], onDisconnect [Ended].
@@ -126,7 +123,7 @@ class ConvCallSession implements CallSession {
     try {
       conv = await l.startSession(
         ConvOptions(
-          agentId: dannyAgentId,
+          agentId: brief.agentId,
           connectionType: 'websocket',
           dynamicVariables: vars,
           clientTools: {

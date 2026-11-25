@@ -87,6 +87,22 @@ void main() {
     );
   });
 
+  test('custom non-Spanish CallBrief.agentId reaches JsConvLibrary.startSession (N2.5)', () async {
+    _install(['manual']);
+    final s = _session();
+    final brief = CallBrief(
+      placeId: 'casa',
+      minutes: 5,
+      job: 'job',
+      opening: 'أهلاً',
+      photo: 'casa',
+      agentId: 'agent_test_arabic_001',
+    );
+    unawaited(s.start(brief, _vars));
+    await _ms(10);
+    expect(_js('CallStub.opts.agentId'), 'agent_test_arabic_001');
+  });
+
   test('stepped call (stub=manual,nofin): connect, Danny, your turn, heard, the picture, Help, (fin), Danny ends it', () async {
     _install(['manual', 'nofin']);
     final s = _session();

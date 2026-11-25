@@ -36,7 +36,7 @@ gives a story's length in minutes. It is the story's `dots` minus 3 (at least 2)
 of `min` for 6, 7, 8 and 9 dots is 3.5, 4, 5 and 6, and A comer's three stories (9 dots) are 6, 6 and 7 in curso.js. When the content
 lane adds the place to curso.js the site's own `min` wins (the app ignores the overlay for a story the site lists).
 
-THE SCENES. A place whose stories name a scene that is not in coqui/packages/core/coqui_scenes/lib/src/registry.dart is refused, unless
+THE SCENES. A place whose stories name a scene that is not in coqui_scenes scene folders (coqui/packages/core/coqui_scenes/lib/src/) is refused, unless
 --allow-missing-scenes is given (only for a builder's own test of the mechanism: such a story opens on "This story is not in the new app
 yet."). A story's `place` must be the place's `nombre` in historia/datos/curso.json.
 """
@@ -53,18 +53,18 @@ HISTORIA = os.path.join(ROOT, "historia")
 OUT = os.path.join(ROOT, "coqui", "app", "assets", "previa")
 OVERLAY = os.path.join(OUT, "curso.json")
 STORIES = os.path.join(OUT, "cuentos")
-REGISTRY = os.path.join(ROOT, "coqui", "packages", "core", "coqui_scenes", "lib", "src", "registry.dart")
+SCENE_PLACES = os.path.join(ROOT, "coqui", "tool", "scene_places.json")
+SCENES_SRC = os.path.join(ROOT, "coqui", "packages", "core", "coqui_scenes", "lib", "src")
+
+
+def load_places(path=SCENE_PLACES):
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    return [(p["id"], list(p["scenes"])) for p in data["places"]]
+
 
 # page 13, "From the content lane": the places 4 to 10 and their generators, in the order they must run
-PLACES = [
-    ("colmado", ["mostrador", "estantes", "frutas", "caja"]),
-    ("calle", ["esquina", "parada", "tiendas", "cruce"]),
-    ("plaza", ["plaza", "reloj", "quiosco", "calendario"]),
-    ("playa", ["orilla", "sombrilla", "ropa", "cielo"]),
-    ("fonda", ["entrada", "pedido", "comida", "cuenta"]),
-    ("casa2", ["cuarto", "bano", "sala_dia", "noche"]),
-    ("fuerte", ["subida", "musica", "regalos", "muralla"]),
-]
+PLACES = load_places()
 PLACE_IDS = [p for p, _ in PLACES]
 
 
@@ -90,12 +90,32 @@ def ignored():
     return {l[3:] for l in out.splitlines() if l.startswith("!! ")}
 
 
-def registry_scenes():
-    src = open(REGISTRY, encoding="utf-8").read()
-    m = re.search(r"sceneRegistry\s*=\s*Map\.unmodifiable\(\{(.*?)\}\);", src, re.S)
-    if not m:
-        raise Refused("no sceneRegistry map in %s" % os.path.relpath(REGISTRY, ROOT))
-    return set(re.findall(r"^\s*'([a-z0-9_]+)'\s*:", m.group(1), re.M))
+_SCENE_FACTORY_RE = re.compile(r"^Scene\s+(create[A-Za-z0-9_]+)\s*\(([^)]*)\)", re.M)
+_RNG_PARAM_RE = re.compile(r"^\s*\{\s*Rng\?\s+rng\s*,?\s*\}\s*$")
+
+
+def registry_scenes(scenes_src=SCENES_SRC):
+    if not os.path.isdir(scenes_src):
+        raise Refused("scene folder root not found: %s" % os.path.relpath(scenes_src, ROOT))
+    found = set()
+    for entry in sorted(os.listdir(scenes_src)):
+        d = os.path.join(scenes_src, entry)
+        if not os.path.isdir(d):
+            continue
+        main_dart = os.path.join(d, "%s.dart" % entry)
+        if not os.path.isfile(main_dart):
+            continue
+        with open(main_dart, encoding="utf-8") as f:
+            src = f.read()
+        m = _SCENE_FACTORY_RE.search(src)
+        if not m:
+            raise Refused("scene file has no Scene create... factory: %s" % os.path.relpath(main_dart, ROOT))
+        params = m.group(2)
+        if params.strip() and not _RNG_PARAM_RE.match(params):
+            raise Refused("scene file has unsupported factory parameters (%s): %s"
+                          % (params, os.path.relpath(main_dart, ROOT)))
+        found.add(entry)
+    return found
 
 
 def course_places():
@@ -211,11 +231,11 @@ def check_stories(places, made, stories, course, allow_missing):
             if not isinstance(st.get("title"), str) or not st["title"]:
                 problems.append("%s: no title" % i)
             if st.get("scene") not in have:
-                missing.append("%s (%s): scene %r is not in registry.dart" % (i, place, st.get("scene")))
+                missing.append("%s (%s): scene %r is not in coqui_scenes scene folders" % (i, place, st.get("scene")))
     if problems:
         raise Refused("the generated stories do not fit the course:\n  " + "\n  ".join(problems))
     if missing and not allow_missing:
-        raise Refused("scenes not ported yet (registry.dart has %s); --allow-missing-scenes for a test only:\n  %s"
+        raise Refused("scenes not ported yet (coqui_scenes scene folders have %s); --allow-missing-scenes for a test only:\n  %s"
                       % (", ".join(sorted(have)), "\n  ".join(missing)))
     return missing
 
@@ -323,7 +343,7 @@ def main():
     g.add_argument("--places", help="comma-separated place ids (%s), or none" % ",".join(PLACE_IDS))
     g.add_argument("--check", action="store_true", help="say whether the bundled files are what the generators make now")
     ap.add_argument("--allow-missing-scenes", action="store_true",
-                    help="bundle a place whose scenes are not in registry.dart (a test of the mechanism only)")
+                    help="bundle a place whose scenes are not in coqui_scenes scene folders (a test of the mechanism only)")
     a = ap.parse_args()
     if a.check:
         j, _ = bundled()

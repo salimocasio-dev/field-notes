@@ -127,8 +127,11 @@ HablarSnapshot buildHablarSnapshot({
   required bool Function() callsAvailable,
   CallEntitlement entitlement = CallEntitlement.included,
   Set<String> completedCallIds = const {},
-  String callsLater = CallTexts.callsLater,
+  String? callsLater,
 }) {
+  final partnerName = course.language.partnerName;
+  final laterLine = callsLater ?? CallTexts.callsLaterFor(partnerName);
+
   var available = false;
   var asked = false;
   bool canCall() {
@@ -153,10 +156,10 @@ HablarSnapshot buildHablarSnapshot({
     if (brief != null && storiesDone) {
       if (entitlement == CallEntitlement.upgradeRequired) {
         placeState = HablarCallState.tierLocked;
-        placeStatus = HablarTexts.tierLockedLine;
+        placeStatus = HablarTexts.tierLockedLineFor(partnerName);
       } else if (!canCall()) {
         placeState = HablarCallState.later;
-        placeStatus = callsLater;
+        placeStatus = laterLine;
       } else {
         final mainSpec = mainCallForPlace(place.id);
         final mainDone =
@@ -178,13 +181,14 @@ HablarSnapshot buildHablarSnapshot({
           final minutes = spec.isMain && brief != null
               ? brief.minutes
               : spec.minutes;
-          final effectiveSpec = minutes == spec.minutes
+          final jobEn = spec.jobFor(partnerName);
+          final effectiveSpec = minutes == spec.minutes && jobEn == spec.jobEn
               ? spec
               : HablarCallSpec(
                   id: spec.id,
                   placeId: spec.placeId,
                   titleEs: spec.titleEs,
-                  jobEn: spec.jobEn,
+                  jobEn: jobEn,
                   minutes: minutes,
                   isMain: spec.isMain,
                   pixelAsset: spec.pixelAsset,
@@ -286,7 +290,10 @@ List<String> wordsOpenForSpeaking(ProgressStore progress) => [
 abstract final class HablarTexts {
   static const upNext = 'UP NEXT';
   static const byPlace = 'By place';
-  static const practiceNoFail = 'Practice with Danny · no fail, help any time';
+  static String practiceNoFailFor(String partnerName) =>
+      'Practice with $partnerName · no fail, help any time';
+  static String get practiceNoFail =>
+      practiceNoFailFor(Language.spanish.partnerName);
   static const upNextAbove = 'Up next above';
   static const doneBadge = 'Done';
   static const mainCallLabel = 'Main call';
@@ -297,8 +304,10 @@ abstract final class HablarTexts {
   static const wordsTitle = 'Words open for speaking';
   static const wordsNone =
       'None yet. A word opens once your ear has held it for a few days.';
-  static const tierLockedLine =
-      'Live calls with Danny are included in the top plan.';
+  static String tierLockedLineFor(String partnerName) =>
+      'Live calls with $partnerName are included in the top plan.';
+  static String get tierLockedLine =>
+      tierLockedLineFor(Language.spanish.partnerName);
   static const tierLockedAction = 'Live calls plan';
   static String wordsReadyPill(int count) =>
       count == 1 ? '1 word ready' : '$count words ready';

@@ -96,8 +96,8 @@ class _CallMicStageState extends State<CallMicStage>
     if (t < 0) return const SizedBox.shrink();
     final p = (t % 1500000) / 1500000;
     final e = Curves.easeOut.transform(p);
-    return Positioned(
-      left: 12,
+    return PositionedDirectional(
+      start: 12,
       top: 12,
       child: IgnorePointer(
         child: Opacity(
@@ -191,7 +191,7 @@ class _CallMicStageState extends State<CallMicStage>
       duration: reduce ? Duration.zero : const Duration(milliseconds: 120),
       width: CallMetrics.disc,
       height: CallMetrics.disc,
-      alignment: Alignment.center,
+      alignment: AlignmentDirectional.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: quiet ? CallColors.discQuiet : CoquiColors.lessonGreen,
@@ -205,14 +205,14 @@ class _CallMicStageState extends State<CallMicStage>
       width: CallMetrics.micBox,
       height: CallMetrics.micBox,
       child: Stack(
-        alignment: Alignment.center,
+        alignment: AlignmentDirectional.center,
         clipBehavior: Clip.none,
         children: [
           if (s == CallState.danny && !reduce)
             for (var k = 0; k < 3; k++) _ringOf(k),
           // `.lg`: a ring of box-shadow, its thickness the level, only on the learner's turn
-          Positioned(
-            left: 12,
+          PositionedDirectional(
+            start: 12,
             top: 12,
             child: IgnorePointer(
               child: AnimatedContainer(

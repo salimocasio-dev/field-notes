@@ -27,6 +27,8 @@ import 'package:coqui_platform/src/web/web_platform.dart' show webSoundCore;
 import 'package:flutter/widgets.dart';
 import 'package:web/web.dart' as web;
 
+import 'dev_speech.dart';
+
 /// Ten lines story 1 (La lluvia) opens with, in its order (order 00's test 1).
 const lines = [
   'esta_casa',
@@ -85,13 +87,18 @@ registerProcessor("coqui-meter", CoquiMeter);
 void main() => runApp(const DevScreen());
 
 class DevScreen extends StatefulWidget {
-  const DevScreen({super.key});
+  const DevScreen({super.key, this.language});
+
+  /// Language for the dev screen's speech recogniser and stub call.
+  /// Defaults to [Language.spanish].
+  final Language? language;
 
   @override
   State<DevScreen> createState() => _DevScreenState();
 }
 
 class _DevScreenState extends State<DevScreen> {
+  Language get _language => widget.language ?? Language.spanish;
   final List<String> out = ['Tap Run.'];
   final Map<String, Object?> report = {};
   bool running = false;
@@ -214,6 +221,7 @@ class _DevScreenState extends State<DevScreen> {
         job: 'job',
         opening: 'opening',
         photo: 'casa',
+        agentId: _language.callAgentId,
       ),
       const {'place': 'place', 'words_open': '', 'words_heard': ''},
     );
@@ -464,31 +472,12 @@ class _DevScreenState extends State<DevScreen> {
   }
 
   Future<void> _speech() async {
-    final l = createSpeechListener();
-    final avail = await l.available();
-    final sw = Stopwatch()..start();
-    final turn = l.listen(locale: 'es-US', limit: const Duration(seconds: 6));
-    var speechEnd = -1;
-    unawaited(turn.speechEnd.then((_) => speechEnd = sw.elapsedMilliseconds));
-    final r = await turn.result.timeout(
-      const Duration(seconds: 12),
-      onTimeout: () => SpeechResult(error: 'HUNG: no result in 12 s'),
+    final probe = await runDevSpeech(
+      createSpeechListener(),
+      language: _language,
     );
-    final ms = sw.elapsedMilliseconds;
-    report['speech'] = {
-      'available': avail,
-      'error': r.error,
-      'alternatives': r.alternatives,
-      'msToSound': r.msToSound,
-      'endedAfterMs': ms,
-      'speechEndAfterMs': speechEnd,
-      'limitMs': 6000 + 2500,
-    };
-    say(
-      'speech: available() $avail; listen(es-US, 6 s) ended after $ms ms with '
-      '${r.error != null ? 'error "${r.error}"' : 'alternatives ${r.alternatives}'} '
-      '(its limit: 6000 + 2500 ms)',
-    );
+    report['speech'] = probe.report;
+    say(probe.summary);
   }
 
   web.AudioWorkletNode? _node;

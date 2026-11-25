@@ -4,6 +4,7 @@ library;
 
 import 'dart:async';
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_look.dart';
 import 'package:feature_speaking/src/voice_test_controller.dart';
@@ -84,6 +85,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
       clock: s.clock,
       content: widget.content,
       store: s.storage(voiceTestSpace),
+      language: s.course.language,
     )..addListener(_changed);
     unawaited(c.start());
   }
@@ -105,7 +107,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
   Widget get _tick => Container(
     width: 24,
     height: 24,
-    alignment: Alignment.center,
+    alignment: AlignmentDirectional.center,
     decoration: const BoxDecoration(
       shape: BoxShape.circle,
       color: CoquiColors.lessonGreen,
@@ -117,7 +119,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
   Widget get _miss => Container(
     width: 24,
     height: 24,
-    alignment: Alignment.center,
+    alignment: AlignmentDirectional.center,
     decoration: BoxDecoration(
       shape: BoxShape.circle,
       border: Border.all(color: _Test.missRing, width: 2),
@@ -131,31 +133,42 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
     final safe = mq.padding;
     final land = CoquiLayout.lessonLandscape(context);
     final ending = c.state == VoiceTestState.end;
-    return ColoredBox(
-      color: CoquiColors.lessonBg,
-      child: ending
-          ? _end(safe)
-          : Padding(
-              padding: EdgeInsets.fromLTRB(
-                safe.left,
-                0,
-                safe.right,
-                safe.bottom,
-              ),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Column(
+    final dir =
+        widget.services.course.language.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : Directionality.of(context);
+    return Directionality(
+      textDirection: dir,
+      child: ColoredBox(
+        color: CoquiColors.lessonBg,
+        child: ending
+            ? _end(safe)
+            : SafeArea(
+                top: false,
+                bottom: false,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.only(bottom: safe.bottom),
+                  child: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      _top(safe, land),
-                      _ins(),
-                      Expanded(child: _main(land)),
+                      Column(
+                        children: [
+                          _top(safe, land),
+                          _ins(),
+                          Expanded(child: _main(land)),
+                        ],
+                      ),
+                      PositionedDirectional(
+                        start: 0,
+                        end: 0,
+                        bottom: 0,
+                        child: _foot(land),
+                      ),
                     ],
                   ),
-                  Positioned(left: 0, right: 0, bottom: 0, child: _foot(land)),
-                ],
+                ),
               ),
-            ),
+      ),
     );
   }
 
@@ -163,7 +176,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
   Widget _top(EdgeInsets safe, bool land) => SizedBox(
     height: (land ? 40 : 56) + safe.top,
     child: Padding(
-      padding: EdgeInsets.fromLTRB(16, safe.top, 16, 0),
+      padding: EdgeInsetsDirectional.fromSTEB(16, safe.top, 16, 0),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(
@@ -202,9 +215,9 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
 
   /// `#ins`: the one English line.
   Widget _ins() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
+    padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
     child: Text(
-      'Tap the mic and say each Spanish line.',
+      'Tap the mic and say each ${widget.services.course.language.englishName} line.',
       textAlign: TextAlign.center,
       style: CoquiText.lessonBody,
     ),
@@ -216,7 +229,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
     final run = c.current;
     final hint = line.hint ?? '';
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 0, 16, land ? 104 : 112),
+      padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, land ? 104 : 112),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -277,7 +290,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
         widget.services.reduceMotion ||
         MediaQuery.of(context).disableAnimations;
     return Padding(
-      padding: EdgeInsets.fromLTRB(
+      padding: EdgeInsetsDirectional.fromSTEB(
         16,
         0,
         16,
@@ -324,7 +337,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
     children: [
       Expanded(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 24, 16, 16),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 480),
@@ -348,7 +361,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
         ),
       ),
       Container(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 24 + safe.bottom),
+        padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 24 + safe.bottom),
         decoration: const BoxDecoration(
           color: CoquiColors.lessonBg,
           border: Border(top: BorderSide(color: _Test.hairline)),
@@ -368,7 +381,7 @@ class _VoiceTestScreenState extends State<VoiceTestScreen> {
     final more = e.alts.skip(1).join(' · ');
     return Container(
       constraints: const BoxConstraints(minHeight: 56),
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsetsDirectional.symmetric(vertical: 12),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: _Test.hairline)),
       ),
@@ -426,7 +439,7 @@ class _Disc extends StatelessWidget {
         child: Container(
           width: CallMetrics.disc,
           height: CallMetrics.disc,
-          alignment: Alignment.center,
+          alignment: AlignmentDirectional.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color,

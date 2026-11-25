@@ -221,3 +221,52 @@ int? placeIndexForStory(List<Place> places, String storyId) {
   }
   return null;
 }
+
+/// Normalizes a scene name using [language]'s normalization rules and trims whitespace.
+String normalizeSceneName(Language language, String raw) =>
+    language.normalize(raw).trim();
+
+/// Whether [pairScene] matches one of [place.scenes] (exact normalized match, or a
+/// single-word pair scene matching the final token of a two-word normalized place scene).
+bool sceneMatchesPlace(Language language, String pairScene, Place place) {
+  final normPair = normalizeSceneName(language, pairScene);
+  if (normPair.isEmpty) return false;
+  final pairTokens = normPair.split(' ');
+  for (final rawPlaceScene in place.scenes) {
+    final normPlace = normalizeSceneName(language, rawPlaceScene);
+    if (normPlace.isEmpty) continue;
+    if (normPlace == normPair) return true;
+    if (pairTokens.length == 1) {
+      final placeTokens = normPlace.split(' ');
+      if (placeTokens.length == 2 && placeTokens.last == normPair) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/// Returns the first story id in [place.stories] that has not been played, or `null`.
+String? nextUnheardStory(ProgressStore progress, Place place) {
+  for (final id in place.stories) {
+    if (!progress.played(id)) return id;
+  }
+  return null;
+}
+
+/// Returns the most recently heard story id among [place.stories], or `null` if none heard.
+/// Uses `ultima ?? primera ?? 0`; on ties (`>=`), picks the later story in [place.stories].
+String? lastHeardStory(ProgressStore progress, Place place) {
+  String? bestId;
+  int? bestTs;
+  for (final id in place.stories) {
+    if (!progress.played(id)) continue;
+    final record = progress.story(id);
+    final ts = record?.ultima ?? record?.primera ?? 0;
+    if (bestTs == null || ts >= bestTs) {
+      bestTs = ts;
+      bestId = id;
+    }
+  }
+  return bestId;
+}

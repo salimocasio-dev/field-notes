@@ -54,8 +54,9 @@ The shell: tabs, routes, wiring, web/, android/, ios/.
 - `android/`: application id `dev.salimocasio.coqui`, display name "Coquí". `RECORD_AUDIO` and `INTERNET`, and the
   `RecognitionService` query, as the speech_to_text README gives them. `android/debug.keystore` is the standard Android
   debug key, not a secret: it is in the repo so every build installs over the last. Not for the store. The gradle files
-  are Kotlin (`build.gradle.kts`). A phone build reads the course from the live site
-  (`https://salimocasio-dev.github.io/field-notes/historia/`): it has no page to take a base from.
+  are Kotlin (`build.gradle.kts`). A phone build has no page to take a base from, so it reads its base URL from
+  `--dart-define=COQUI_APP_BASE` (defaulting to `https://salimocasio-dev.github.io/field-notes/app/`, resolving
+  `../historia/`).
 - `ios/`: bundle id `dev.salimocasio.coqui`, display name "Coquí", the microphone and speech-recognition usage lines in
   `Runner/Info.plist`. Built unsigned, weekly, by CI.
 - Do not run `flutter create` here again. If a platform file must change, change it by hand.

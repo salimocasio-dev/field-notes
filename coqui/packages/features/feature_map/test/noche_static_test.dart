@@ -10,6 +10,7 @@ void main() {
     'lib/src/map_screen.dart',
     'lib/src/map_perf.dart',
     'lib/src/module.dart',
+    'lib/src/place_screen.dart',
   ];
 
   const allLibFiles = [
@@ -21,7 +22,7 @@ void main() {
     'lib/src/map_places.dart',
     'lib/src/map_screen.dart',
     'lib/src/module.dart',
-    'lib/src/place_sheet.dart',
+    'lib/src/place_screen.dart',
   ];
 
   test('no left/right layout APIs in N4.1 files', () {
