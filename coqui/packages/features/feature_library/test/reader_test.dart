@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -99,6 +100,150 @@ class _CourseWithRepaso extends _CourseWithWords implements RepasoCatalog {
 
   @override
   final RepasoData? repaso;
+}
+
+/// Mimics `PalabrasStore` persistence semantics: [heard] mutates memory without
+/// saving to [kv] or firing [changes], while [addMinutes] and other write
+/// methods persist the full store snapshot to [kv].
+class _DeferredSaveProgressStore implements ProgressStore {
+  _DeferredSaveProgressStore(this.kv, {Clock? clock})
+    : _inner = FakeProgressStore(clock: clock, json: kv.read(storageKey));
+
+  static const storageKey = 'progress';
+
+  final FakeKeyValueStore kv;
+  final FakeProgressStore _inner;
+  final StreamController<void> _changes = StreamController<void>.broadcast();
+  final List<double> addedMinutes = [];
+  int persistCount = 0;
+
+  void _persist() {
+    persistCount++;
+    kv.values[storageKey] = _inner.export();
+    if (!_changes.isClosed) _changes.add(null);
+  }
+
+  void put(WordRecord record) {
+    _inner.put(record);
+    _persist();
+  }
+
+  @override
+  Stream<void> get changes => _changes.stream;
+
+  @override
+  Map<String, dynamic> get raw => _inner.raw;
+
+  @override
+  Iterable<WordRecord> get words => _inner.words;
+
+  @override
+  WordRecord? word(String w) => _inner.word(w);
+
+  @override
+  StoryRecord? story(String id) => _inner.story(id);
+
+  @override
+  bool played(String id) => _inner.played(id);
+
+  @override
+  List<String> due(Skill skill, {int? at}) => _inner.due(skill, at: at);
+
+  @override
+  WordRecord heard(String w) => _inner.heard(w);
+
+  @override
+  SkillRecord answer(
+    String w,
+    Skill skill, {
+    required bool ok,
+    int? ms,
+    bool intro = false,
+  }) {
+    final result = _inner.answer(w, skill, ok: ok, ms: ms, intro: intro);
+    _persist();
+    return result;
+  }
+
+  @override
+  void storyFinished(StoryResult r) {
+    _inner.storyFinished(r);
+    _persist();
+  }
+
+  @override
+  void presume(List<String> words, List<String> stories, List<Object?> log) {
+    _inner.presume(words, stories, log);
+    _persist();
+  }
+
+  @override
+  void listened(String id) {
+    _inner.listened(id);
+    _persist();
+  }
+
+  @override
+  bool hasRead(String id) => _inner.hasRead(id);
+
+  @override
+  void markRead(String id) {
+    final before = _inner.saves;
+    _inner.markRead(id);
+    if (_inner.saves != before) _persist();
+  }
+
+  @override
+  void addMinutes(double m) {
+    addedMinutes.add(m);
+    _inner.addMinutes(m);
+    _persist();
+  }
+
+  @override
+  double get minutes => _inner.minutes;
+
+  @override
+  int get streak => _inner.streak;
+
+  @override
+  bool openForSpeaking(String w) => _inner.openForSpeaking(w);
+
+  @override
+  Object? setting(String key) => _inner.setting(key);
+
+  @override
+  void setSetting(String key, Object value) {
+    _inner.setSetting(key, value);
+    _persist();
+  }
+
+  @override
+  List<String> get added => _inner.added;
+
+  @override
+  void add(String wordOrGoal) {
+    _inner.add(wordOrGoal);
+    _persist();
+  }
+
+  @override
+  Map<String, dynamic>? get levelResult => _inner.levelResult;
+
+  @override
+  String export() => _inner.export();
+
+  @override
+  void import(String json) {
+    _inner.import(json);
+    _persist();
+  }
+
+  @override
+  void reset() {
+    _inner.reset();
+    _persist();
+  }
 }
 
 Language _arabicLanguage() => Language(
@@ -784,6 +929,320 @@ void main() {
             .value();
         await settle(tester);
         expect(nav.backs, 1);
+      },
+    );
+
+    testWidgets(
+      'playing a recorded sentence skips untracked function words and persists credited words and listening minutes on reopen',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final kv = FakeKeyValueStore();
+        final clock = FakeClock();
+        final progress = _DeferredSaveProgressStore(kv, clock: clock);
+        // Existing tracked word in ProgressStore (not in course pairs or repaso).
+        progress.put(_earWord('azul', 1));
+
+        final course = _CourseWithRepaso(
+          books: {
+            'filter-book': Book(
+              id: 'filter-book',
+              title: 'Filtro',
+              readable: true,
+              pages: [
+                BookPage(image: 'img/1.png', clips: ['f1']),
+              ],
+            ),
+          },
+          stories: {
+            'filter-book': {
+              'title': 'Filtro',
+              'clips': {
+                // 'parcha': solo audio word; 'azul': existing progress word;
+                // 'casa': course.pairs vocabulary; 'la', 'de', 'y', 'grande': untracked.
+                'f1': line('narr', 'La casa de parcha azul y grande.'),
+              },
+            },
+          },
+          recorded: {'f1'},
+          repaso: RepasoData(
+            sentences: const [],
+            words: [
+              RepasoWord(
+                word: 'parcha',
+                place: 'casa',
+                scoring: RepasoScoring.cual,
+                solo: 'solo-parcha',
+              ),
+            ],
+          ),
+        );
+        final clips = TimedClips(length: const Duration(milliseconds: 200));
+        final nav = FakeNavigator();
+        final services = fakeServices(
+          course: course,
+          clips: clips,
+          progress: progress,
+          clock: clock,
+          nav: nav,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(services: services, id: 'filter-book'),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        expect(clips.played, ['f1']);
+
+        // Simulate 12 seconds of real audio playback on the injected Clock.
+        clock.advance(const Duration(seconds: 12));
+        await tester.pump(const Duration(milliseconds: 250));
+        await settle(tester);
+
+        // Close the reader.
+        await tester.tap(find.byTooltip(ReaderTexts.close));
+        await settle(tester);
+        expect(nav.backs, 1);
+
+        // Known words credited; arbitrary untracked function words never inserted.
+        expect(progress.word('parcha')?.oida, 1);
+        expect(progress.word('parcha')?.ear.etapa, 1);
+        expect(progress.word('azul')?.oida, 1);
+        expect(progress.word('casa')?.oida, 1);
+        for (final untracked in ['la', 'de', 'y', 'grande']) {
+          expect(
+            progress.word(untracked),
+            isNull,
+            reason: 'untracked word "$untracked" must not pollute progress',
+          );
+        }
+
+        // Listening duration logged via addMinutes and persisted to backing KV.
+        expect(progress.addedMinutes, hasLength(1));
+        expect(progress.minutes, closeTo(12 / 60, 1e-9));
+
+        // Reopen with a brand-new progress store from backing storage:
+        // credited words and listening minutes survive.
+        final reopened = _DeferredSaveProgressStore(kv, clock: clock);
+        expect(reopened.word('parcha')?.oida, 1);
+        expect(reopened.word('azul')?.oida, 1);
+        expect(reopened.word('casa')?.oida, 1);
+        expect(reopened.minutes, closeTo(12 / 60, 1e-9));
+        for (final untracked in ['la', 'de', 'y', 'grande']) {
+          expect(reopened.word(untracked), isNull);
+        }
+      },
+    );
+
+    testWidgets(
+      'tapping a recorded word clip persists its ear credit and listening minutes on reopen, while silent reading logs no minutes',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final kv = FakeKeyValueStore();
+        final clock = FakeClock();
+        final progress = _DeferredSaveProgressStore(kv, clock: clock);
+        final course = _CourseWithRepaso(
+          repaso: RepasoData(
+            sentences: const [],
+            words: [
+              RepasoWord(
+                word: 'casa',
+                place: 'casa',
+                scoring: RepasoScoring.cual,
+                solo: 'solo-casa',
+              ),
+            ],
+          ),
+        );
+        final clips = TimedClips(length: const Duration(milliseconds: 100));
+        final nav = FakeNavigator();
+        final services = fakeServices(
+          course: course,
+          clips: clips,
+          progress: progress,
+          clock: clock,
+          nav: nav,
+        );
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final book = await store.add(
+          now: 1,
+          title: 'Silencio',
+          body: 'La casa.',
+          generated: false,
+        );
+
+        // 1. Open and close without playing any audio -> addMinutes is not called.
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('silent'),
+              services: services,
+              id: book.id,
+            ),
+          ),
+        );
+        await settle(tester);
+        await tester.tap(find.byTooltip(ReaderTexts.close));
+        await settle(tester);
+        expect(progress.addedMinutes, isEmpty);
+        expect(progress.minutes, 0);
+
+        // 2. Reopen, tap recorded word "casa", let solo clip finish, close.
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('word-tap'),
+              services: services,
+              id: book.id,
+            ),
+          ),
+        );
+        await settle(tester);
+
+        final para = tester.renderObject(
+          find.textContaining('casa', findRichText: true),
+        ) as RenderParagraph;
+        final plain = para.text.toPlainText();
+        final idx = plain.indexOf('casa');
+        final boxes = para.getBoxesForSelection(
+          TextSelection(baseOffset: idx, extentOffset: idx + 'casa'.length),
+        );
+        await tester.tapAt(para.localToGlobal(boxes.first.toRect().center));
+        await tester.pump();
+        clock.advance(const Duration(seconds: 3));
+        await tester.pump(const Duration(milliseconds: 150));
+        await settle(tester);
+
+        await tester.tap(find.byTooltip(ReaderTexts.close));
+        await settle(tester);
+
+        expect(clips.played, ['solo-casa']);
+        expect(progress.addedMinutes, hasLength(1));
+        expect(progress.minutes, closeTo(3 / 60, 1e-9));
+
+        // Fresh store from storage preserves both the word ear credit and minutes.
+        final reopened = _DeferredSaveProgressStore(kv, clock: clock);
+        expect(reopened.word('casa')?.oida, 1);
+        expect(reopened.word('casa')?.ear.etapa, 1);
+        expect(reopened.word('la'), isNull);
+        expect(reopened.minutes, closeTo(3 / 60, 1e-9));
+      },
+    );
+
+    testWidgets(
+      'closing mid-narration flushes earlier ear credits and partial listening duration, while muted playback logs nothing',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final kv = FakeKeyValueStore();
+        final clock = FakeClock();
+        final progress = _DeferredSaveProgressStore(kv, clock: clock);
+        final course = _CourseWithWords(
+          books: {
+            'two-lines': Book(
+              id: 'two-lines',
+              title: 'Dos',
+              readable: true,
+              pages: [
+                BookPage(image: 'img/1.png', clips: ['l1', 'l2']),
+              ],
+            ),
+          },
+          stories: {
+            'two-lines': {
+              'title': 'Dos',
+              'clips': {
+                'l1': line('narr', 'La casa de papel.'),
+                'l2': line('narr', 'El hermano llega.'),
+              },
+            },
+          },
+          recorded: {'l1', 'l2'},
+        );
+        final clips = TimedClips(length: const Duration(milliseconds: 200));
+        final services = fakeServices(
+          course: course,
+          clips: clips,
+          progress: progress,
+          clock: clock,
+        );
+
+        // 1. Muted playback must not credit words or log minutes.
+        clips.muted = true;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('muted'),
+              services: services,
+              id: 'two-lines',
+            ),
+          ),
+        );
+        await settle(tester);
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        clock.advance(const Duration(seconds: 6));
+        await tester.pump(const Duration(milliseconds: 250));
+        await tester.tap(find.byTooltip(ReaderTexts.close));
+        await settle(tester);
+        expect(progress.words, isEmpty);
+        expect(progress.addedMinutes, isEmpty);
+
+        // 2. Audible playback interrupted by Close during l2 flushes l1 credits + (6 + 3)s.
+        clips.muted = false;
+        clips.played.clear();
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('audible'),
+              services: services,
+              id: 'two-lines',
+            ),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        expect(clips.played, ['l1']);
+
+        // Finish l1 (6s), l2 starts automatically; advance 3s into l2, then close.
+        clock.advance(const Duration(seconds: 6));
+        await tester.pump(const Duration(milliseconds: 250));
+        await tester.pump();
+        expect(clips.played, ['l1', 'l2']);
+
+        clock.advance(const Duration(seconds: 3));
+        await tester.tap(find.byTooltip(ReaderTexts.close));
+        await settle(tester);
+
+        final reopened = _DeferredSaveProgressStore(kv, clock: clock);
+        expect(reopened.word('casa')?.oida, 1);
+        expect(reopened.word('hermano'), isNull);
+        expect(reopened.word('la'), isNull);
+        expect(reopened.word('de'), isNull);
+        expect(reopened.word('papel'), isNull);
+        expect(reopened.minutes, closeTo(9 / 60, 1e-9));
       },
     );
   });

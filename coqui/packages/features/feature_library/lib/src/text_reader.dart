@@ -46,10 +46,16 @@ class TextReader extends StatefulWidget {
   State<TextReader> createState() => _TextReaderState();
 }
 
-class _TextReaderState extends State<TextReader> {
+typedef _WordIndex = ({
+  Map<String, String> exact,
+  Map<String, String> normalized,
+});
+
+class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   Services get _s => widget.services;
   late final _store = ReadingStore(_s.storage(ReadingStore.space));
   late final _audio = ReadingAudio(_s.course);
+  late final _courseWordIndex = _buildCourseWordIndex();
   late final _settingsStore = _s.storage('leer');
   final _viewportKey = GlobalKey();
   final _met = <String>{};
@@ -67,6 +73,9 @@ class _TextReaderState extends State<TextReader> {
 
   int _playback = 0;
   bool _playing = false;
+  int? _audioStartedAtMs;
+  int _pendingListenedMs = 0;
+  bool _hasUnsavedEarCredits = false;
   String? _activeSentenceId;
   String? _lastSentenceId;
   SelectedWord? _selectedWord;
@@ -78,6 +87,7 @@ class _TextReaderState extends State<TextReader> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _settings =
         widget.initialSettings ?? ReaderSettings.loadFrom(_settingsStore);
     _changes = _s.progress.changes.listen((_) {
@@ -161,10 +171,22 @@ class _TextReaderState extends State<TextReader> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.detached) {
+      _flushListeningProgress();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _playback++;
-    unawaited(_s.clips.stop());
     unawaited(_changes?.cancel());
+    _changes = null;
+    _flushListeningProgress();
+    unawaited(_s.clips.stop().catchError((Object _) {}));
     super.dispose();
   }
 
@@ -278,12 +300,55 @@ class _TextReaderState extends State<TextReader> {
     unawaited(_settings.saveTo(_settingsStore).catchError((Object _) {}));
   }
 
+  void _beginAudioTiming() {
+    if (_s.clips.muted) {
+      _audioStartedAtMs = null;
+      return;
+    }
+    _audioStartedAtMs = _s.clock.nowMs();
+  }
+
+  void _stopAudioTiming() {
+    final startedAt = _audioStartedAtMs;
+    _audioStartedAtMs = null;
+    if (startedAt == null || _s.clips.muted) return;
+    final elapsedMs = math.max(0, _s.clock.nowMs() - startedAt);
+    if (elapsedMs > 0) {
+      _pendingListenedMs += elapsedMs;
+    }
+  }
+
+  void _finishAudioTiming(String clipId, {required bool played}) {
+    final startedAt = _audioStartedAtMs;
+    _audioStartedAtMs = null;
+    if (!played || startedAt == null || _s.clips.muted) return;
+    final elapsedMs = math.max(0, _s.clock.nowMs() - startedAt);
+    if (elapsedMs > 0) {
+      _pendingListenedMs += elapsedMs;
+    } else {
+      final clip = _s.course.clip(clipId);
+      if (clip != null && clip.endMs > clip.startMs) {
+        _pendingListenedMs += clip.endMs - clip.startMs;
+      }
+    }
+  }
+
+  void _flushListeningProgress() {
+    _stopAudioTiming();
+    if (_pendingListenedMs <= 0 && !_hasUnsavedEarCredits) return;
+    final minutes = _pendingListenedMs / 6e4;
+    _pendingListenedMs = 0;
+    _hasUnsavedEarCredits = false;
+    _s.progress.addMinutes(minutes);
+  }
+
   void _stopNarration({bool clearActive = true}) {
     _playback++;
     if (_playing || (clearActive && _activeSentenceId != null)) {
       _playing = false;
       if (clearActive) _activeSentenceId = null;
     }
+    _flushListeningProgress();
     unawaited(_s.clips.stop().catchError((Object _) {}));
   }
 
@@ -361,34 +426,84 @@ class _TextReaderState extends State<TextReader> {
     return out;
   }
 
-  ({Map<String, String> exact, Map<String, String> normalized})
-  _progressWordIndex() {
+  static void _addToWordIndex(
+    String word,
+    Language lang,
+    Map<String, String> exact,
+    Map<String, String> normalized,
+  ) {
+    final trimmed = word.trim();
+    if (trimmed.isEmpty) return;
+    exact.putIfAbsent(trimmed.toLowerCase(), () => word);
+    final exactKey = readingExactKey(trimmed, language: lang);
+    if (exactKey.isNotEmpty) {
+      exact.putIfAbsent(exactKey, () => word);
+    }
+    final norm = lang.normalize(trimmed).trim();
+    if (norm.isNotEmpty) {
+      normalized.putIfAbsent(norm, () => word);
+    }
+  }
+
+  _WordIndex _buildCourseWordIndex() {
     final lang = _s.course.language;
     final exact = <String, String>{};
     final normalized = <String, String>{};
-    for (final existing in _s.progress.words) {
-      exact.putIfAbsent(existing.w.toLowerCase(), () => existing.w);
-      final norm = lang.normalize(existing.w).trim();
-      if (norm.isNotEmpty) {
-        normalized.putIfAbsent(norm, () => existing.w);
-      }
+    final catalog = _s.course as Object;
+    final review = catalog is RepasoCatalog ? catalog.repaso : null;
+    for (final word in review?.words ?? const <RepasoWord>[]) {
+      _addToWordIndex(word.word, lang, exact, normalized);
+    }
+    for (final pair in _s.course.pairs) {
+      _addToWordIndex(pair.word, lang, exact, normalized);
+    }
+    for (final item in _s.course.levelItems) {
+      _addToWordIndex(item.word, lang, exact, normalized);
     }
     return (exact: exact, normalized: normalized);
   }
 
-  String _resolveProgressWord(
-    String rawToken,
-    ({Map<String, String> exact, Map<String, String> normalized}) index,
-  ) {
+  _WordIndex _progressWordIndex() {
+    final lang = _s.course.language;
+    final exact = <String, String>{};
+    final normalized = <String, String>{};
+    for (final existing in _s.progress.words) {
+      _addToWordIndex(existing.w, lang, exact, normalized);
+    }
+    return (exact: exact, normalized: normalized);
+  }
+
+  String? _resolveFromIndex(String rawToken, _WordIndex index) {
     final lower = rawToken.toLowerCase();
     final exactHit = index.exact[lower];
     if (exactHit != null) return exactHit;
+    final exactKey = readingExactKey(rawToken, language: _s.course.language);
+    if (exactKey.isNotEmpty) {
+      final keyHit = index.exact[exactKey];
+      if (keyHit != null) return keyHit;
+    }
     final norm = _s.course.language.normalize(rawToken).trim();
     if (norm.isNotEmpty) {
       final normHit = index.normalized[norm];
       if (normHit != null) return normHit;
     }
-    return lower;
+    return null;
+  }
+
+  String? _resolveProgressWord(String rawToken, _WordIndex index) =>
+      _resolveFromIndex(rawToken, index);
+
+  String? _resolveKnownWord(String rawToken, _WordIndex progressIndex) {
+    final audioWord = _audio.word(rawToken)?.word;
+    if (audioWord != null && audioWord.isNotEmpty) return audioWord;
+    final progressWord = _resolveProgressWord(rawToken, progressIndex);
+    if (progressWord != null && progressWord.isNotEmpty) return progressWord;
+    return _resolveFromIndex(rawToken, _courseWordIndex);
+  }
+
+  void _creditWord(String word) {
+    _s.progress.heard(word);
+    _hasUnsavedEarCredits = true;
   }
 
   void _creditSentenceWords(ReaderSentence sentence) {
@@ -396,13 +511,11 @@ class _TextReaderState extends State<TextReader> {
     final index = _progressWordIndex();
     final keys = <String>{};
     for (final token in lang.tokens(sentence.text)) {
-      final resolved =
-          _audio.word(token.text)?.word ??
-          _resolveProgressWord(token.text, index);
-      if (resolved.isNotEmpty) keys.add(resolved);
+      final resolved = _resolveKnownWord(token.text, index);
+      if (resolved != null && resolved.isNotEmpty) keys.add(resolved);
     }
     for (final key in keys) {
-      _s.progress.heard(key);
+      _creditWord(key);
     }
   }
 
@@ -410,6 +523,7 @@ class _TextReaderState extends State<TextReader> {
     if (_doc == null || !_doc!.hasAudio) return;
     if (_playing) {
       _playback++;
+      _flushListeningProgress();
       unawaited(_s.clips.stop().catchError((Object _) {}));
       setState(() {
         _playing = false;
@@ -435,6 +549,7 @@ class _TextReaderState extends State<TextReader> {
     if (startIdx < 0) startIdx = 0;
 
     final request = ++_playback;
+    _flushListeningProgress();
     setState(() {
       _playing = true;
       _selectedWord = null;
@@ -458,18 +573,23 @@ class _TextReaderState extends State<TextReader> {
         });
         _savePlace();
 
-        final played = await _s.clips.play(item.sentence.clipId!);
+        final clipId = item.sentence.clipId!;
+        _beginAudioTiming();
+        final played = await _s.clips.play(clipId);
         if (!mounted || request != _playback) return;
+        _finishAudioTiming(clipId, played: played);
         if (played && !_s.clips.muted) {
           _creditSentenceWords(item.sentence);
         }
         if (!played) break;
       }
     } on Object {
-      // Playback failure must not count as an ear meeting.
+      // Playback failure must not count as an ear meeting or listening time.
+      _audioStartedAtMs = null;
     }
 
     if (!mounted || request != _playback) return;
+    _flushListeningProgress();
     setState(() {
       _playing = false;
       _activeSentenceId = null;
@@ -491,6 +611,7 @@ class _TextReaderState extends State<TextReader> {
     target ??= list.first;
 
     final request = ++_playback;
+    _flushListeningProgress();
     setState(() {
       _playing = true;
       _selectedWord = null;
@@ -507,16 +628,21 @@ class _TextReaderState extends State<TextReader> {
       if (!mounted || request != _playback) return;
       await _s.clips.stop();
       if (!mounted || request != _playback) return;
-      final played = await _s.clips.play(target.sentence.clipId!);
+      final clipId = target.sentence.clipId!;
+      _beginAudioTiming();
+      final played = await _s.clips.play(clipId);
       if (!mounted || request != _playback) return;
+      _finishAudioTiming(clipId, played: played);
       if (played && !_s.clips.muted) {
         _creditSentenceWords(target.sentence);
       }
     } on Object {
       // Ignore playback failures.
+      _audioStartedAtMs = null;
     }
 
     if (!mounted || request != _playback) return;
+    _flushListeningProgress();
     setState(() {
       _playing = false;
       _activeSentenceId = null;
@@ -539,6 +665,7 @@ class _TextReaderState extends State<TextReader> {
     final stage = earIndex.stageOf(token);
 
     _playback++;
+    _flushListeningProgress();
     setState(() {
       _playing = false;
       _selectedWord = SelectedWord(
@@ -560,16 +687,17 @@ class _TextReaderState extends State<TextReader> {
     final clipId = selected.clipId;
     if (clipId == null) return;
     _playback++;
+    _flushListeningProgress();
     setState(() => _playing = false);
     await _playWordClip((
       clip: clipId,
       word:
           selected.audioWord ??
-          _resolveProgressWord(selected.token, _progressWordIndex()),
+          _resolveKnownWord(selected.token, _progressWordIndex()),
     ));
   }
 
-  Future<void> _playWordClip(({String clip, String word})? wordMatch) async {
+  Future<void> _playWordClip(({String clip, String? word})? wordMatch) async {
     final request = _playback;
     if (wordMatch == null) {
       await _s.clips.stop().catchError((Object _) {});
@@ -581,14 +709,21 @@ class _TextReaderState extends State<TextReader> {
       if (!mounted || request != _playback) return;
       await _s.clips.stop();
       if (!mounted || request != _playback) return;
+      _beginAudioTiming();
       played = await _s.clips.play(wordMatch.clip);
     } on Object {
       // Ignore playback failures.
+      _audioStartedAtMs = null;
     }
     if (!mounted || request != _playback) return;
+    _finishAudioTiming(wordMatch.clip, played: played);
     if (played && !_s.clips.muted) {
-      _s.progress.heard(wordMatch.word);
+      final word = wordMatch.word;
+      if (word != null && word.isNotEmpty) {
+        _creditWord(word);
+      }
     }
+    _flushListeningProgress();
   }
 
   void _handleBodyTapUp(
