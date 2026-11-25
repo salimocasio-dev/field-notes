@@ -413,4 +413,72 @@ void main() {
       expect(src, isNot(contains(literal)));
     }
   });
+
+  test('thin course without two fair distractors degrades gracefully (servable=false, no crash) and stored nextKind=3 wraps safely', () {
+    final thinData = RepasoData(
+      sentences: const [],
+      words: [
+        RepasoWord(
+          word: 'uno',
+          place: 'casa',
+          scoring: RepasoScoring.cual,
+          solo: 'clip_uno',
+          apart: const ['dos'],
+          pairLines: [RepasoPairLine(clip: 'clip_uno', text: 'Uno.')],
+        ),
+        RepasoWord(
+          word: 'dos',
+          place: 'casa',
+          scoring: RepasoScoring.cual,
+          solo: 'clip_dos',
+          apart: const ['uno'],
+          pairLines: [RepasoPairLine(clip: 'clip_dos', text: 'Dos.')],
+        ),
+      ],
+    );
+    final thinPairs = [
+      ReviewPair(
+        word: 'uno',
+        say: 'clip_uno',
+        scene: 'frente',
+        yes: PictureSpec(cam: const [0, 0, 10, 10]),
+        no: PictureSpec(cam: const [1, 1, 10, 10]),
+      ),
+      ReviewPair(
+        word: 'dos',
+        say: 'clip_dos',
+        scene: 'frente',
+        yes: PictureSpec(cam: const [0, 0, 10, 10]),
+        no: PictureSpec(cam: const [1, 1, 10, 10]),
+      ),
+    ];
+    final db = jsonDecode(seedJson('vacio')) as Map<String, dynamic>;
+    (db['palabras'] as Map)['uno'] = {
+      'w': 'uno',
+      'ear': {'n': 0, 'bien': 0, 'fallos': 0, 'due': 1, 'ultima': 0},
+      'mouth': {'n': 0, 'bien': 0, 'fallos': 0, 'due': 0, 'ultima': 0},
+    };
+    final p = FakeProgressStore(
+      clock: FakeClock(curseNow),
+      json: jsonEncode(db),
+    );
+    final pl = RepasoPlanner(
+      data: thinData,
+      progress: p,
+      pairs: thinPairs,
+      rng: Mulberry32(1),
+    );
+    expect(pl.hearSentences(thinData.words.first), isEmpty);
+    expect(pl.servable(thinData.words.first), isFalse);
+    final ws = pl.sessionWords();
+    expect(ws.words, isEmpty);
+    expect(pl.queue(ws.words), isEmpty);
+
+    // Pre-#10 storage may hold nextKind='3' (when playKinds had 4 entries including where).
+    final kv = FakeKeyValueStore();
+    kv.write(LastAsked.kindKey, '3');
+    expect(LastAsked(kv).readKind(), 0);
+    kv.write(LastAsked.kindKey, '5');
+    expect(LastAsked(kv).readKind(), 2);
+  });
 }

@@ -399,7 +399,12 @@ class RepasoPlanner {
     if (cualLines(w).isNotEmpty) return const [];
     final pairFallback = serving.cualLines(w);
     if (pairFallback.isEmpty) return const [];
-    return [for (final l in pairFallback) _pairLineAsHearingSentence(l)];
+    return [
+      for (final l in pairFallback)
+        if (_pairLineAsHearingSentence(l) case final s
+            when _hasFairWrongTiles(w, s))
+          s,
+    ];
   }
 
   RepasoSentence _pairLineAsHearingSentence(RepasoPairLine l) {
@@ -421,8 +426,10 @@ class RepasoPlanner {
     );
   }
 
-  /// Whether some game can score the word now (always matches `RepasoServing.canServe` used by Map and Palabras).
-  bool servable(RepasoWord w) => serving.servable(w);
+  /// Whether some game can score the word now. Matches `RepasoServing.canServe` for every word with at least two
+  /// fair distractors, and gracefully rules out words in a thin course where no two fair distractors exist.
+  bool servable(RepasoWord w) =>
+      cualLines(w).isNotEmpty || hearSentences(w).isNotEmpty;
 
   /// The words other than [target] that may stand as a wrong written tile beside [s], in the data's order: words he
   /// has met, not in the sentence (none of their words is a word of it), not in its forbidden list, not in the
@@ -457,19 +464,19 @@ class RepasoPlanner {
         if (m.place != target.place) m,
     ];
     if (cands.length < 2) return null;
-    final a = cands.first;
-    for (final b in cands.skip(1)) {
-      if (!a.apart.contains(b.word) && !b.apart.contains(a.word)) {
-        return [a, b];
+    for (var i = 0; i < cands.length; i++) {
+      final a = cands[i];
+      for (var j = i + 1; j < cands.length; j++) {
+        final b = cands[j];
+        if (!a.apart.contains(b.word) && !b.apart.contains(a.word)) {
+          return [a, b];
+        }
       }
     }
     return null;
   }
 
-  /// Fallback pool from all course words when a learner has met fewer than two fair distractors for a pair-line
-  /// fallback sentence. Strictly enforces `banned`, `apart`, and in-sentence exclusion — never falls back to an
-  /// unfiltered word.
-  List<RepasoWord> _fallbackWrongTiles(RepasoWord target, RepasoSentence s) {
+  List<RepasoWord> _fallbackPool(RepasoWord target, RepasoSentence s) {
     final inSentence = {
       ...foldedTokens(s.text),
       ...s.tokens.expand(foldedTokens),
@@ -480,21 +487,36 @@ class RepasoPlanner {
       ...s.forbidden,
       for (final x in s.forbidden) ...?data.word(x)?.apart,
     };
-    final pool = [
+    return [
       for (final m in data.words)
         if (!banned.contains(m.word) &&
             !m.apart.contains(target.word) &&
             !foldedTokens(m.word).any(inSentence.contains))
           m,
     ];
-    final picked = _pickTwoWrongTiles(target, pool);
-    if (picked == null) {
-      throw StateError(
-        'No two fair wrong tiles available for "${target.word}" in "${s.text}"',
-      );
-    }
-    return picked;
   }
+
+  static bool _hasCompatiblePair(List<RepasoWord> pool) {
+    for (var i = 0; i < pool.length; i++) {
+      for (var j = i + 1; j < pool.length; j++) {
+        if (!pool[i].apart.contains(pool[j].word) &&
+            !pool[j].apart.contains(pool[i].word)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  bool _hasFairWrongTiles(RepasoWord target, RepasoSentence s) =>
+      _hasCompatiblePair(wrongTileChoices(target, s)) ||
+      _hasCompatiblePair(_fallbackPool(target, s));
+
+  /// Fallback pool from all course words when a learner has met fewer than two fair distractors for a pair-line
+  /// fallback sentence. Strictly enforces `banned`, `apart`, and in-sentence exclusion; returns null when no fair
+  /// pair exists.
+  List<RepasoWord>? _fallbackWrongTiles(RepasoWord target, RepasoSentence s) =>
+      _pickTwoWrongTiles(target, _fallbackPool(target, s));
 
   // ---- the words of a session
 
@@ -611,7 +633,7 @@ class RepasoPlanner {
 
   /// The ¿Qué oyes? item of [w] with [s]: the word and two wrong tiles, the word at a random place.
   HearItem hearItem(RepasoWord w, RepasoSentence s) {
-    final wrong = wrongTiles(w, s) ?? _fallbackWrongTiles(w, s);
+    final wrong = (wrongTiles(w, s) ?? _fallbackWrongTiles(w, s))!;
     final at = (rng.next() * 3).floor();
     final tiles = [...wrong]..insert(at, w);
     return HearItem(
