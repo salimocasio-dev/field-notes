@@ -79,6 +79,9 @@ class RepasoScreenState extends State<RepasoScreen> {
   HostWait? _host;
 
   Services get _s => widget.services;
+  Language get _lang => _s.course.language;
+  TextStyle _courseStyle(TextStyle style) =>
+      NocheType.forScript(style, _lang.script);
 
   // the one layout of a game: a gap between its blocks, and what stays under it
   static const double _gap = CoquiMetrics.s12;
@@ -192,6 +195,7 @@ class RepasoScreenState extends State<RepasoScreen> {
         showSound: !end,
         onSound: _toggleSound,
         muted: _s.clips.muted,
+        language: _lang,
         progress: LessonProgressDashes(
           segments: s.barSegments,
           marks: s.barMarks,
@@ -209,12 +213,13 @@ class RepasoScreenState extends State<RepasoScreen> {
                 box: box,
                 end: s.end!,
                 onRow: s.playRow,
+                language: _lang,
                 controller: widget.endScroll,
               )
             : play
-            ? Positioned(
-                left: 0,
-                right: 0,
+            ? PositionedDirectional(
+                start: 0,
+                end: 0,
                 top: 0,
                 bottom: _foot,
                 child: _game(context, box),
@@ -224,7 +229,7 @@ class RepasoScreenState extends State<RepasoScreen> {
           if (start) LessonStartButton(onPressed: _start),
           if (end)
             LessonButton(
-              label: 'Back to ${CoquiLabels.words}',
+              label: 'Back to ${_lang.tabNames['words'] ?? CoquiLabels.words}',
               onPressed: () {
                 s.leave();
                 _s.nav.go(const TabRoute('words'));
@@ -244,10 +249,16 @@ class RepasoScreenState extends State<RepasoScreen> {
     return math.min(CoquiMetrics.lessonColumnMax, c.maxWidth - 2 * side);
   }
 
-  Size _textSize(BuildContext context, String text, TextStyle style, double w) {
+  Size _textSize(
+    BuildContext context,
+    String text,
+    TextStyle style,
+    double w, {
+    TextDirection textDirection = TextDirection.ltr,
+  }) {
     final tp = TextPainter(
       text: TextSpan(text: text, style: style),
-      textDirection: TextDirection.ltr,
+      textDirection: textDirection,
       textScaler: MediaQuery.textScalerOf(context),
     )..layout(maxWidth: w);
     final size = tp.size;
@@ -255,10 +266,15 @@ class RepasoScreenState extends State<RepasoScreen> {
     return size;
   }
 
-  double _textH(BuildContext context, String text, TextStyle style, double w) =>
-      _textSize(context, text, style, w).height;
+  double _textH(
+    BuildContext context,
+    String text,
+    TextStyle style,
+    double w, {
+    TextDirection textDirection = TextDirection.ltr,
+  }) => _textSize(context, text, style, w, textDirection: textDirection).height;
 
-  /// The line that says what to do, with the chip's place at its right: as high as the tallest of the six lines, so that
+  /// The line that says what to do, with the chip's place at its end: as high as the tallest of the six lines, so that
   /// what stands under it (the round speaker) is in the same place in every game.
   double _headerH(BuildContext context, GameKind kind, double width) => [
     StreakChip.height,
@@ -304,7 +320,15 @@ class RepasoScreenState extends State<RepasoScreen> {
         _gap +
         RoundSpeaker.size +
         _gap;
-    final text = 3 * _textH(context, 'x', CoquiText.bookLine, width);
+    final text =
+        3 *
+        _textH(
+          context,
+          'x',
+          _courseStyle(CoquiText.bookLine),
+          width,
+          textDirection: _lang.textDirection,
+        );
     final room = box.mainHeight - _foot - above - _gap - text - _bottomPad;
     return planWhere(available: 3, width: width, height: room, dpr: dpr);
   }
@@ -321,7 +345,13 @@ class RepasoScreenState extends State<RepasoScreen> {
       final reveal = _reveal(it);
       final textH = reveal.text == null
           ? 0.0
-          : _textH(context, reveal.text!, CoquiText.bookLine, width);
+          : _textH(
+              context,
+              reveal.text!,
+              _courseStyle(CoquiText.bookLine),
+              width,
+              textDirection: _lang.textDirection,
+            );
       final above = _above(context, it, width);
       // the game's own area gets what is left when the reveal has its text
       final budget = c.maxHeight - above - _gap - textH - _bottomPad;
@@ -334,7 +364,12 @@ class RepasoScreenState extends State<RepasoScreen> {
         SayItem() => _say(context, it, width),
       };
       return SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(side, _topPad, side, _bottomPad),
+        padding: EdgeInsetsDirectional.fromSTEB(
+          side,
+          _topPad,
+          side,
+          _bottomPad,
+        ),
         child: Center(
           child: SizedBox(
             width: width,
@@ -404,15 +439,15 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  /// The sentence written out, the word lit (the book's lit line colours).
+  /// The sentence written out, the word lit (the book's lit line colours), following the course's language.
   Widget _litText(
     String text,
     String? word, {
     TextStyle? style,
     bool underline = false,
   }) {
-    final at = word == null ? null : findWord(text, word);
-    final base = style ?? CoquiText.bookLine;
+    final at = word == null ? null : findWord(text, word, language: _lang);
+    final base = _courseStyle(style ?? CoquiText.bookLine);
     return Text.rich(
       at == null
           ? TextSpan(text: text, style: base)
@@ -436,6 +471,8 @@ class RepasoScreenState extends State<RepasoScreen> {
               ],
             ),
       textAlign: TextAlign.center,
+      textDirection: _lang.textDirection,
+      locale: _lang.locale,
     );
   }
 
@@ -460,19 +497,22 @@ class RepasoScreenState extends State<RepasoScreen> {
   TileLook _look(Choice c) =>
       c.dim ? TileLook.dim : (c.pre ? TileLook.waiting : TileLook.normal);
 
-  /// A picture of a picture game with the sign inside its bottom-right corner when it is the one to touch: 12 px from
-  /// both edges, so that it never covers what the picture is about.
+  /// A picture of a picture game with the sign inside its bottom-end corner when it is the one to touch: 12 px from
+  /// both edges, so that it never covers what the picture is about. Pictures stay unmirrored LTR.
   Widget _signed(Widget child, bool sign) => sign
-      ? Stack(
-          clipBehavior: Clip.none,
-          children: [
-            child,
-            Positioned(
-              right: TouchSign.pictureInset,
-              bottom: TouchSign.pictureInset,
-              child: TouchSign(still: _still),
-            ),
-          ],
+      ? Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              child,
+              PositionedDirectional(
+                end: TouchSign.pictureInset,
+                bottom: TouchSign.pictureInset,
+                child: TouchSign(still: _still),
+              ),
+            ],
+          ),
         )
       : child;
 
@@ -554,27 +594,31 @@ class RepasoScreenState extends State<RepasoScreen> {
   _Area _hear(HearItem it) {
     final s = session;
     return _Area(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (var k = 0; k < s.choices.length; k++) ...[
-            if (k > 0) const SizedBox(height: _gap),
-            WordTile(
-              word: s.choices[k].label,
-              expand: true,
-              look: _look(s.choices[k]),
-              ring: choiceRing(s.choices[k].ring),
-              check: s.choices[k].check,
-              cross: s.choices[k].cross,
-              sign: s.choices[k].sign,
-              still: _still,
-              onTap: () => s.touch(k),
-              onSpeaker: s.choices[k].clip == null
-                  ? null
-                  : () => s.touchSpeaker(k),
-            ),
+      Directionality(
+        textDirection: _lang.textDirection,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var k = 0; k < s.choices.length; k++) ...[
+              if (k > 0) const SizedBox(height: _gap),
+              WordTile(
+                word: s.choices[k].label,
+                language: _lang,
+                expand: true,
+                look: _look(s.choices[k]),
+                ring: choiceRing(s.choices[k].ring),
+                check: s.choices[k].check,
+                cross: s.choices[k].cross,
+                sign: s.choices[k].sign,
+                still: _still,
+                onTap: () => s.touch(k),
+                onSpeaker: s.choices[k].clip == null
+                    ? null
+                    : () => s.touchSpeaker(k),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
       3 * 56.0 + 2 * _gap,
     );
@@ -585,10 +629,11 @@ class RepasoScreenState extends State<RepasoScreen> {
   /// line never grows and nothing under it moves.
   int _lineRows(BuildContext context, BuildItem it, double width) {
     final scaler = MediaQuery.textScalerOf(context);
+    final tileStyle = _courseStyle(CoquiText.lessonTile);
     double tileWidth(String word) {
       final tp = TextPainter(
-        text: TextSpan(text: word, style: CoquiText.lessonTile),
-        textDirection: TextDirection.ltr,
+        text: TextSpan(text: word, style: tileStyle),
+        textDirection: _lang.textDirection,
         textScaler: scaler,
       )..layout();
       final w = tp.width + 2 * (CoquiMetrics.s16 + CoquiMetrics.borderButton);
@@ -617,8 +662,8 @@ class RepasoScreenState extends State<RepasoScreen> {
   /// The height of a word tile at this text size: 56, or more when the word's line is taller than that.
   double _tileHeight(BuildContext context) {
     final tp = TextPainter(
-      text: TextSpan(text: 'x', style: CoquiText.lessonTile),
-      textDirection: TextDirection.ltr,
+      text: TextSpan(text: 'x', style: _courseStyle(CoquiText.lessonTile)),
+      textDirection: _lang.textDirection,
       textScaler: MediaQuery.textScalerOf(context),
     )..layout();
     final h = tp.height + 24;
@@ -626,9 +671,9 @@ class RepasoScreenState extends State<RepasoScreen> {
     return math.max(56.0, h);
   }
 
-  // Arma la frase: an empty line with a baseline (no places: its tiles go onto it one after another, left to right,
-  // and are green at once), the tiles in their mixed order under it; a tile put on the line leaves an empty place of its
-  // size in the bank
+  // Arma la frase: an empty line with a baseline (no places: its tiles go onto it one after another from start to end
+  // in the course's reading direction, and are green at once), the tiles in their mixed order under it; a tile put on
+  // the line leaves an empty place of its size in the bank
   _Area _build(BuildContext context, BuildItem it, double width) {
     final s = session;
     final done = s.showText;
@@ -647,6 +692,7 @@ class RepasoScreenState extends State<RepasoScreen> {
         for (final k in s.placed)
           WordTile(
             word: s.choices[k].label,
+            language: _lang,
             ring: choiceRing(s.choices[k].ring),
             still: _still,
           ),
@@ -659,28 +705,32 @@ class RepasoScreenState extends State<RepasoScreen> {
       ],
     );
     return _Area(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          line,
-          const SizedBox(height: CoquiMetrics.s24),
-          TileTray(
-            children: [
-              for (var k = 0; k < s.choices.length; k++)
-                WordTile(
-                  word: s.choices[k].label,
-                  look: s.choices[k].done
-                      ? TileLook.empty
-                      : _look(s.choices[k]),
-                  ring: choiceRing(s.choices[k].ring),
-                  cross: s.choices[k].cross,
-                  shake: s.choices[k].shakes,
-                  still: _still,
-                  onTap: s.choices[k].done ? null : () => s.touch(k),
-                ),
-            ],
-          ),
-        ],
+      Directionality(
+        textDirection: _lang.textDirection,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            line,
+            const SizedBox(height: CoquiMetrics.s24),
+            TileTray(
+              children: [
+                for (var k = 0; k < s.choices.length; k++)
+                  WordTile(
+                    word: s.choices[k].label,
+                    language: _lang,
+                    look: s.choices[k].done
+                        ? TileLook.empty
+                        : _look(s.choices[k]),
+                    ring: choiceRing(s.choices[k].ring),
+                    cross: s.choices[k].cross,
+                    shake: s.choices[k].shakes,
+                    still: _still,
+                    onTap: s.choices[k].done ? null : () => s.touch(k),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
       TileTray.lineHeight(rows, tileHeight: tileH) +
           CoquiMetrics.s24 +
@@ -689,44 +739,48 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  // Parejas: four sounds at the left, four words at the right; a found pair is green on both sides, with its number
+  // Parejas: four sounds at the start, four words at the end; a found pair is green on both sides, with its number
   _Area _match(MatchItem it) {
     final s = session;
     return _Area(
-      Column(
-        children: [
-          for (var i = 0; i < s.speakers.length; i++) ...[
-            if (i > 0) const SizedBox(height: _gap),
-            Row(
-              children: [
-                SpeakerTile(
-                  onTap: s.speakers[i].done ? null : () => s.touchSpeaker(i),
-                  label: 'Sound ${i + 1}',
-                  ring: choiceRing(s.speakers[i].ring),
-                  check: s.speakers[i].check,
-                  cross: s.speakers[i].cross,
-                  number: s.speakers[i].number,
-                  playing: s.selectedSpeaker == i,
-                  still: _still,
-                ),
-                const SizedBox(width: CoquiMetrics.s16),
-                Expanded(
-                  child: WordTile(
-                    word: s.choices[i].label,
-                    expand: true,
-                    ring: choiceRing(s.choices[i].ring),
-                    check: s.choices[i].check,
-                    cross: s.choices[i].cross,
-                    number: s.choices[i].number,
-                    shake: s.choices[i].shakes,
+      Directionality(
+        textDirection: _lang.textDirection,
+        child: Column(
+          children: [
+            for (var i = 0; i < s.speakers.length; i++) ...[
+              if (i > 0) const SizedBox(height: _gap),
+              Row(
+                children: [
+                  SpeakerTile(
+                    onTap: s.speakers[i].done ? null : () => s.touchSpeaker(i),
+                    label: 'Sound ${i + 1}',
+                    ring: choiceRing(s.speakers[i].ring),
+                    check: s.speakers[i].check,
+                    cross: s.speakers[i].cross,
+                    number: s.speakers[i].number,
+                    playing: s.selectedSpeaker == i,
                     still: _still,
-                    onTap: s.choices[i].done ? null : () => s.touch(i),
                   ),
-                ),
-              ],
-            ),
+                  const SizedBox(width: CoquiMetrics.s16),
+                  Expanded(
+                    child: WordTile(
+                      word: s.choices[i].label,
+                      language: _lang,
+                      expand: true,
+                      ring: choiceRing(s.choices[i].ring),
+                      check: s.choices[i].check,
+                      cross: s.choices[i].cross,
+                      number: s.choices[i].number,
+                      shake: s.choices[i].shakes,
+                      still: _still,
+                      onTap: s.choices[i].done ? null : () => s.touch(i),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
-        ],
+        ),
       ),
       4 * 56.0 + 3 * _gap,
     );
@@ -819,11 +873,13 @@ class RepasoScreenState extends State<RepasoScreen> {
       innerW,
     );
     final pillTextMaxW = math.max(0.0, innerW - 2 * (pillPadX + pillBorder));
+    final pillStyle = _courseStyle(CoquiText.lessonBodyStrong);
     final pillTextSize = _textSize(
       context,
       it.word,
-      CoquiText.lessonBodyStrong,
+      pillStyle,
       pillTextMaxW,
+      textDirection: _lang.textDirection,
     );
     final pillW = pillTextSize.width + 2 * (pillPadX + pillBorder);
     final pillH = pillTextSize.height + 2 * (pillPadY + pillBorder);
@@ -835,8 +891,9 @@ class RepasoScreenState extends State<RepasoScreen> {
     final sentenceH = _textH(
       context,
       it.line.text,
-      CoquiText.lessonLine,
+      _courseStyle(CoquiText.lessonLine),
       innerW,
+      textDirection: _lang.textDirection,
     );
     final cardH =
         2 * (CoquiMetrics.s16 + CoquiMetrics.borderButton) +
@@ -849,7 +906,7 @@ class RepasoScreenState extends State<RepasoScreen> {
           Container(
             key: const ValueKey('say-prompt'),
             width: double.infinity,
-            padding: const EdgeInsets.all(CoquiMetrics.s16),
+            padding: const EdgeInsetsDirectional.all(CoquiMetrics.s16),
             decoration: BoxDecoration(
               color: CoquiColors.lessonTile,
               borderRadius: BorderRadius.circular(CoquiMetrics.radiusCard),
@@ -874,7 +931,7 @@ class RepasoScreenState extends State<RepasoScreen> {
                       style: CoquiText.lessonSub,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: const EdgeInsetsDirectional.symmetric(
                         horizontal: pillPadX,
                         vertical: pillPadY,
                       ),
@@ -888,7 +945,12 @@ class RepasoScreenState extends State<RepasoScreen> {
                           width: pillBorder,
                         ),
                       ),
-                      child: Text(it.word, style: CoquiText.lessonBodyStrong),
+                      child: Text(
+                        it.word,
+                        textDirection: _lang.textDirection,
+                        locale: _lang.locale,
+                        style: pillStyle,
+                      ),
                     ),
                   ],
                 ),
@@ -1062,16 +1124,23 @@ class _RepasoMicState extends State<RepasoMic>
     );
     if (state != MicState.listening) {
       if (!widget.cross) return disc;
-      // the X badge sits on the disc's rim at the upper right; it takes no room
+      // the X badge sits on the disc's rim at the upper-right (LTR); it takes no room
       return SizedBox(
         width: CoquiMetrics.startDisc,
         height: CoquiMetrics.startDisc,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            disc,
-            const Positioned(right: -4, top: -4, child: WrongBadge()),
-          ],
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              disc,
+              const PositionedDirectional(
+                end: -4,
+                top: -4,
+                child: WrongBadge(),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -1131,12 +1200,14 @@ class RepasoEndView extends StatefulWidget {
     required this.box,
     required this.end,
     required this.onRow,
+    this.language,
     this.controller,
   });
 
   final LessonBox box;
   final RepasoEnd end;
   final void Function(RepasoEndRow r) onRow;
+  final Language? language;
   final ScrollController? controller;
 
   @override
@@ -1146,6 +1217,7 @@ class RepasoEndView extends StatefulWidget {
 class _RepasoEndViewState extends State<RepasoEndView> {
   ScrollController? _own;
   ScrollController get _c => widget.controller ?? (_own ??= ScrollController());
+  Language get _lang => widget.language ?? Language.spanish;
 
   @override
   void dispose() {
@@ -1153,38 +1225,57 @@ class _RepasoEndViewState extends State<RepasoEndView> {
     super.dispose();
   }
 
-  Widget _row(RepasoEndRow r) => Pressable(
-    onPressed: () => widget.onRow(r),
-    semanticLabel: '${r.word}: ${r.text}',
-    builder: (context, pressed) => Container(
-      constraints: const BoxConstraints(minHeight: CoquiMetrics.rowMin),
-      padding: const EdgeInsets.symmetric(
-        horizontal: CoquiMetrics.s12,
-        vertical: CoquiMetrics.s8,
-      ),
-      decoration: BoxDecoration(
-        color: pressed ? CoquiColors.bookLinePressed : null,
-        borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(r.word, style: CoquiText.lessonH2),
-                const SizedBox(height: 2),
-                Text(r.text, style: CoquiText.lessonBody),
-              ],
+  Widget _row(RepasoEndRow r) => Directionality(
+    textDirection: _lang.textDirection,
+    child: Pressable(
+      onPressed: () => widget.onRow(r),
+      semanticLabel: '${r.word}: ${r.text}',
+      builder: (context, pressed) => Container(
+        constraints: const BoxConstraints(minHeight: CoquiMetrics.rowMin),
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: CoquiMetrics.s12,
+          vertical: CoquiMetrics.s8,
+        ),
+        decoration: BoxDecoration(
+          color: pressed ? CoquiColors.bookLinePressed : null,
+          borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    r.word,
+                    textDirection: _lang.textDirection,
+                    locale: _lang.locale,
+                    style: NocheType.forScript(
+                      CoquiText.lessonH2,
+                      _lang.script,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    r.text,
+                    textDirection: _lang.textDirection,
+                    locale: _lang.locale,
+                    style: NocheType.forScript(
+                      CoquiText.lessonBody,
+                      _lang.script,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: CoquiMetrics.s8),
-          const CoquiIcon(
-            CoquiIcons.lessonSound,
-            size: 24,
-            color: CoquiColors.bookSpeaker,
-          ),
-        ],
+            const SizedBox(width: CoquiMetrics.s8),
+            const CoquiIcon(
+              CoquiIcons.lessonSound,
+              size: 24,
+              color: CoquiColors.bookSpeaker,
+            ),
+          ],
+        ),
       ),
     ),
   );
@@ -1193,9 +1284,9 @@ class _RepasoEndViewState extends State<RepasoEndView> {
   Widget build(BuildContext context) {
     final box = widget.box;
     final end = widget.end;
-    return Positioned(
-      left: 0,
-      right: 0,
+    return PositionedDirectional(
+      start: 0,
+      end: 0,
       top: 0,
       bottom: 96,
       child: FadingEdges(
@@ -1206,7 +1297,7 @@ class _RepasoEndViewState extends State<RepasoEndView> {
           thumbVisibility: true,
           child: SingleChildScrollView(
             controller: _c,
-            padding: EdgeInsets.fromLTRB(
+            padding: EdgeInsetsDirectional.fromSTEB(
               box.landscape ? 0 : 16,
               box.landscape ? 8 : 16,
               box.landscape ? 0 : 16,
