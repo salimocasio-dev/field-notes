@@ -1286,6 +1286,15 @@ void main() {
       // Empty array yields empty list and null callFor.
       expect(course.callsFor('empty_place'), isEmpty);
       expect(catalog.callFor('empty_place'), isNull);
+
+      // Legacy single-object entry preserves CallBrief.fromJson leniency for omitted/zero minutos.
+      final (lenientCatalog, _) = await _loaded({
+        'datos/llamadas.json': jsonEncode({
+          'casa': {'job': 'Legacy lenient minutes.', 'opening': 'Hi!'},
+        }),
+      });
+      expect(lenientCatalog.callFor('casa')!.minutes, 0);
+      expect(lenientCatalog.callFor('casa')!.isMain, isTrue);
     });
 
     test('malformed datos/llamadas.json throws FormatException without mutating state and recovers on retry', () async {
@@ -1388,6 +1397,9 @@ void main() {
             validCall,
             {...validCall, 'id': 'casa_other', 'isMain': true},
           ],
+        },
+        'legacy object with isMain false': {
+          'casa': {...validCall, 'isMain': false},
         },
       };
 

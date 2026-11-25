@@ -573,7 +573,13 @@ List<CallBrief> _parsePlaceCalls(
       value,
       language,
       context: 'datos/llamadas.json: $placeId',
+      legacyObject: true,
     );
+    if (!brief.isMain) {
+      throw FormatException(
+        'datos/llamadas.json: $placeId: legacy object entry cannot set isMain: false',
+      );
+    }
     if (!seenCallIds.add(brief.id)) {
       throw FormatException(
         'datos/llamadas.json: duplicate call id "${brief.id}"',
@@ -590,6 +596,7 @@ List<CallBrief> _parsePlaceCalls(
         value[i],
         language,
         context: 'datos/llamadas.json: $placeId[$i]',
+        legacyObject: false,
       );
       if (!seenCallIds.add(brief.id)) {
         throw FormatException(
@@ -626,41 +633,9 @@ CallBrief _parseCallBrief(
   Object? value,
   Language language, {
   required String context,
+  required bool legacyObject,
 }) {
   final raw = ContentCatalog._object(value, context);
-  final id = raw['id'];
-  if (id != null && (id is! String || id.trim().isEmpty)) {
-    throw FormatException('$context.id must be a non-empty string');
-  }
-  final title = raw['title'];
-  if (title != null && title is! String) {
-    throw FormatException('$context.title must be a string');
-  }
-  final jobEn = raw['jobEn'];
-  if (jobEn != null && jobEn is! String) {
-    throw FormatException('$context.jobEn must be a string');
-  }
-  final minutes = raw['minutos'];
-  if (minutes is! num ||
-      !minutes.isFinite ||
-      minutes != minutes.truncateToDouble() ||
-      minutes <= 0) {
-    throw FormatException('$context.minutos must be a positive integer');
-  }
-  if (raw['job'] is! String) {
-    throw FormatException('$context.job must be a string');
-  }
-  if (raw['opening'] is! String) {
-    throw FormatException('$context.opening must be a string');
-  }
-  final photo = raw['foto'];
-  if (photo != null && photo is! String) {
-    throw FormatException('$context.foto must be a string');
-  }
-  final isMain = raw['isMain'];
-  if (isMain != null && isMain is! bool) {
-    throw FormatException('$context.isMain must be a boolean');
-  }
   final primary = raw['agentId'];
   if (primary != null && primary is! String) {
     throw FormatException('$context.agentId must be a string');
@@ -668,6 +643,41 @@ CallBrief _parseCallBrief(
   final legacy = raw['agentid'];
   if (legacy != null && legacy is! String) {
     throw FormatException('$context.agentid must be a string');
+  }
+  if (!legacyObject) {
+    final id = raw['id'];
+    if (id != null && (id is! String || id.trim().isEmpty)) {
+      throw FormatException('$context.id must be a non-empty string');
+    }
+    final title = raw['title'];
+    if (title != null && title is! String) {
+      throw FormatException('$context.title must be a string');
+    }
+    final jobEn = raw['jobEn'];
+    if (jobEn != null && jobEn is! String) {
+      throw FormatException('$context.jobEn must be a string');
+    }
+    final minutes = raw['minutos'];
+    if (minutes is! num ||
+        !minutes.isFinite ||
+        minutes != minutes.truncateToDouble() ||
+        minutes <= 0) {
+      throw FormatException('$context.minutos must be a positive integer');
+    }
+    if (raw['job'] is! String) {
+      throw FormatException('$context.job must be a string');
+    }
+    if (raw['opening'] is! String) {
+      throw FormatException('$context.opening must be a string');
+    }
+    final photo = raw['foto'];
+    if (photo != null && photo is! String) {
+      throw FormatException('$context.foto must be a string');
+    }
+    final isMain = raw['isMain'];
+    if (isMain != null && isMain is! bool) {
+      throw FormatException('$context.isMain must be a boolean');
+    }
   }
   final perCall = (primary is String && primary.trim().isNotEmpty)
       ? primary

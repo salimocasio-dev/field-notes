@@ -298,8 +298,11 @@ void main() {
         final lowerTitle = c.title.toLowerCase();
         expect(lowerTitle, isNot(contains('call danny')), reason: c.id);
         expect(lowerTitle, isNot(contains('llamar a danny')), reason: c.id);
-        expect(lowerTitle, isNot(contains('mi amor')), reason: c.id);
-        expect(lowerTitle, isNot(contains('nene')), reason: c.id);
+        for (final field in [c.title, c.jobEn, c.job, c.opening]) {
+          final lower = field.toLowerCase();
+          expect(lower, isNot(contains('mi amor')), reason: c.id);
+          expect(lower, isNot(contains('nene')), reason: c.id);
+        }
 
         if (c.id == 'casa_main') {
           expect(c.job, legacyCasa['job']);
