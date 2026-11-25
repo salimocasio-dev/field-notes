@@ -4,10 +4,13 @@ library;
 
 import 'dart:math' as math;
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/src/buttons.dart';
 import 'package:coqui_ui/src/icons.dart';
+import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:coqui_ui/src/layout.dart';
+import 'package:coqui_ui/src/speech_bubble.dart';
 import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
@@ -137,7 +140,7 @@ class LessonProgressLine extends StatelessWidget {
           color: CoquiColors.dotOff,
           borderRadius: BorderRadius.circular(3),
         ),
-        alignment: Alignment.centerLeft,
+        alignment: AlignmentDirectional.centerStart,
         child: AnimatedFractionallySizedBox(
           duration: const Duration(milliseconds: 200),
           widthFactor: value.clamp(0.0, 1.0),
@@ -152,8 +155,8 @@ class LessonProgressLine extends StatelessWidget {
 /// The frame of every lesson screen.
 ///
 /// A calm dark grey (`#1B1B1F`) over the whole screen. A top bar 56 px high
-/// (+ the safe area): the close X at the left (48 px), the [progress] in the
-/// middle, and at the right the sound button, or [trailing] (the book's page
+/// (+ the safe area): the close X at the start (48 px), the [progress] in the
+/// middle, and at the end the sound button, or [trailing] (the book's page
 /// count and "Aa", the call's timer). Under it the [picture], centred in the
 /// space above the bottom zone (112 px: the start disc and the 40 px under it),
 /// its [caption] hanging 8 px under it, 18/24 medium white, centred, two lines at
@@ -162,8 +165,8 @@ class LessonProgressLine extends StatelessWidget {
 /// end screen) covers the picture area and stays under the bottom zone.
 ///
 /// On a phone on its side (`@media (orientation:landscape) and (max-height:600px)`)
-/// the picture stands alone at the left, 16 px from the edges, and the top bar,
-/// caption and bottom zone form a column at the right. cual.html:11-35, 51-52, 97-111
+/// the picture stands alone at the start, 16 px from the edges, and the top bar,
+/// caption and bottom zone form a column at the end. cual.html:11-35, 51-52, 97-111
 class LessonFrame extends StatelessWidget {
   const LessonFrame({
     super.key,
@@ -176,6 +179,7 @@ class LessonFrame extends StatelessWidget {
     this.trailing,
     this.picture,
     this.caption,
+    this.language,
     this.underPicture,
     this.bottom = const [],
     this.overlay,
@@ -208,7 +212,10 @@ class LessonFrame extends StatelessWidget {
   /// The line under the picture. Null: none.
   final String? caption;
 
-  /// A story's end: the title (24 px semibold, left) hangs 16 px under the picture, wherever the picture
+  /// Optional lesson language for caption script, direction, and locale.
+  final Language? language;
+
+  /// A story's end: the title (24 px semibold, start) hangs 16 px under the picture, wherever the picture
   /// stands: the frame places it from the picture's own bottom edge, not from a fixed place, so it is the
   /// same 16 px under the picture on a tall phone and on a short one (`finFit()`, juego.js:391-395; the
   /// picture is centred above the bottom zone and stays where it was). It is at most 480 px wide, in the
@@ -227,18 +234,33 @@ class LessonFrame extends StatelessWidget {
   /// not begun (`#app[data-s=start] #foot`). cual.html:109
   final bool startState;
 
+  TextStyle _captionStyle() => language == null
+      ? CoquiText.lessonCaption
+      : NocheType.forScript(CoquiText.lessonCaption, language!.script);
+
+  Widget _captionText() => Text(
+    caption ?? '',
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
+    textAlign: TextAlign.center,
+    textDirection: language?.textDirection,
+    locale: language?.locale,
+    style: _captionStyle(),
+  );
+
   @override
   Widget build(BuildContext context) {
     final landscape = CoquiLayout.lessonLandscape(context);
     final safe = MediaQuery.paddingOf(context);
+    final isRtl = Directionality.maybeOf(context) == TextDirection.rtl;
     return ColoredBox(
       color: CoquiColors.lessonBg,
       child: Padding(
-        padding: EdgeInsets.only(
-          left: safe.left,
-          right: safe.right,
-          bottom: safe.bottom,
-          top: landscape ? safe.top : 0,
+        padding: EdgeInsetsDirectional.fromSTEB(
+          isRtl ? safe.right : safe.left,
+          landscape ? safe.top : 0,
+          isRtl ? safe.left : safe.right,
+          safe.bottom,
         ),
         child: landscape ? _landscape(context) : _portrait(context, safe.top),
       ),
@@ -248,7 +270,7 @@ class LessonFrame extends StatelessWidget {
   Widget _topBar({required double safeTop, required double height}) => SizedBox(
     height: height + safeTop,
     child: Padding(
-      padding: EdgeInsets.fromLTRB(8, safeTop, 8, 0),
+      padding: EdgeInsetsDirectional.fromSTEB(8, safeTop, 8, 0),
       child: Row(
         children: [
           Visibility(
@@ -277,60 +299,65 @@ class LessonFrame extends StatelessWidget {
   /// The picture with its caption (8 px under it) and a story's end title ([underPicture], 16 px under it)
   /// hanging under it: neither has a height of its own, so the picture alone is what gets centred.
   /// cual.html:30-33; juego.js:391-395
-  Widget _stage() => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      ?picture,
-      SizedBox(
-        height: 0,
-        width: double.infinity,
-        child: OverflowBox(
-          alignment: Alignment.topCenter,
-          minHeight: 0,
-          maxHeight: 56,
-          child: Padding(
-            padding: const EdgeInsets.only(top: CoquiMetrics.s8),
-            child: AnimatedOpacity(
-              opacity: caption == null || caption!.isEmpty ? 0 : 1,
-              duration: const Duration(milliseconds: 120),
-              child: Text(
-                caption ?? '',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: CoquiText.lessonCaption,
-              ),
-            ),
-          ),
-        ),
-      ),
-      if (underPicture != null)
+  Widget _stage() {
+    final captionStyle = _captionStyle();
+    final captionLineH =
+        (captionStyle.fontSize ?? 18) * (captionStyle.height ?? 1.4);
+    final captionMaxH = math.max(56.0, captionLineH * 2 + CoquiMetrics.s8);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ?picture,
         SizedBox(
           height: 0,
           width: double.infinity,
           child: OverflowBox(
             alignment: Alignment.topCenter,
             minHeight: 0,
-            maxHeight: double.infinity,
+            maxHeight: captionMaxH,
             child: Padding(
-              padding: const EdgeInsets.only(top: CoquiMetrics.s16),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: CoquiMetrics.lessonColumnMax,
-                  ),
-                  child: SizedBox(width: double.infinity, child: underPicture),
-                ),
+              padding: const EdgeInsetsDirectional.only(top: CoquiMetrics.s8),
+              child: AnimatedOpacity(
+                opacity: caption == null || caption!.isEmpty ? 0 : 1,
+                duration: const Duration(milliseconds: 120),
+                child: _captionText(),
               ),
             ),
           ),
         ),
-    ],
-  );
+        if (underPicture != null)
+          SizedBox(
+            height: 0,
+            width: double.infinity,
+            child: OverflowBox(
+              alignment: Alignment.topCenter,
+              minHeight: 0,
+              maxHeight: double.infinity,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  top: CoquiMetrics.s16,
+                ),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: CoquiMetrics.lessonColumnMax,
+                    ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: underPicture,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
 
-  Widget _foot({required EdgeInsets padding}) => Padding(
+  Widget _foot({required EdgeInsetsGeometry padding}) => Padding(
     padding: padding,
     child: Column(
       mainAxisSize: MainAxisSize.min,
@@ -352,20 +379,20 @@ class LessonFrame extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                left: CoquiMetrics.s16,
-                right: CoquiMetrics.s16,
+              padding: const EdgeInsetsDirectional.only(
+                start: CoquiMetrics.s16,
+                end: CoquiMetrics.s16,
                 bottom: CoquiMetrics.lessonFootReserve,
               ),
               child: Center(child: _stage()),
             ),
             ?overlay,
-            Positioned(
-              left: 0,
-              right: 0,
+            PositionedDirectional(
+              start: 0,
+              end: 0,
               bottom: 0,
               child: _foot(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   CoquiMetrics.s16,
                   0,
                   CoquiMetrics.s16,
@@ -398,29 +425,23 @@ class LessonFrame extends StatelessWidget {
               _topBar(safeTop: 0, height: CoquiMetrics.lessonTopBar),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: CoquiMetrics.s16),
+                  padding: const EdgeInsetsDirectional.only(
+                    end: CoquiMetrics.s16,
+                  ),
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Center(
-                        child: Text(
-                          caption ?? '',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: CoquiText.lessonCaption,
-                        ),
-                      ),
+                      Center(child: _captionText()),
                       ?overlay,
                       if (startState)
                         Center(child: _foot(padding: EdgeInsets.zero))
                       else
-                        Positioned(
-                          left: 0,
-                          right: 0,
+                        PositionedDirectional(
+                          start: 0,
+                          end: 0,
                           bottom: 0,
                           child: _foot(
-                            padding: const EdgeInsets.only(
+                            padding: const EdgeInsetsDirectional.only(
                               bottom: CoquiMetrics.s16,
                             ),
                           ),
@@ -440,14 +461,26 @@ class LessonFrame extends StatelessWidget {
 /// `.lbfin`: "Fin" above the last page's buttons: 24/32 semibold white, centred, 16 px above and below.
 /// app.html:121
 class LessonFin extends StatelessWidget {
-  const LessonFin(this.text, {super.key});
+  const LessonFin(this.text, {super.key, this.language});
   final String text;
+  final Language? language;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: CoquiMetrics.s16),
-    child: Text(text, textAlign: TextAlign.center, style: CoquiText.lessonFin),
-  );
+  Widget build(BuildContext context) {
+    final style = language == null
+        ? CoquiText.lessonFin
+        : NocheType.forScript(CoquiText.lessonFin, language!.script);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: CoquiMetrics.s16),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        textDirection: language?.textDirection,
+        locale: language?.locale,
+        style: style,
+      ),
+    );
+  }
 }
 
 /// How the ring round a [PictureChoice] shows the answer.
@@ -560,14 +593,14 @@ class PictureChoice extends StatelessWidget {
             ),
           ),
         if (check)
-          const Positioned(
-            right: CoquiMetrics.badgeInset,
+          const PositionedDirectional(
+            end: CoquiMetrics.badgeInset,
             top: CoquiMetrics.badgeInset,
             child: CheckBadge(),
           )
         else if (cross)
-          const Positioned(
-            right: CoquiMetrics.badgeInset,
+          const PositionedDirectional(
+            end: CoquiMetrics.badgeInset,
             top: CoquiMetrics.badgeInset,
             child: WrongBadge(),
           ),
@@ -717,41 +750,57 @@ class LessonGridCell {
 /// [LessonGridPlan.gap] apart. The widget is [LessonGridPlan.blockWidth] wide; the picture of a cell
 /// is exactly as wide as its cell, so at the plan's scale it fills it, with no strip. cual.html:46-50
 class LessonPictureGrid extends StatelessWidget {
-  const LessonPictureGrid({super.key, required this.plan, required this.cells});
+  const LessonPictureGrid({
+    super.key,
+    required this.plan,
+    required this.cells,
+    this.language,
+  });
 
   final LessonGridPlan plan;
   final List<LessonGridCell> cells;
+  final Language? language;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    width: plan.blockWidth,
-    child: Wrap(
-      spacing: LessonGridPlan.gap,
-      runSpacing: LessonGridPlan.gap,
-      children: [
-        for (final cell in cells)
-          SizedBox(
-            width: plan.cellWidth,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DecoratedBox(
-                  decoration: const BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: CoquiColors.lessonLine,
-                        spreadRadius: 1.5,
-                      ),
-                    ],
+  Widget build(BuildContext context) {
+    final wordStyle = language == null
+        ? CoquiText.lessonWord
+        : NocheType.forScript(CoquiText.lessonWord, language!.script);
+    return SizedBox(
+      width: plan.blockWidth,
+      child: Wrap(
+        spacing: LessonGridPlan.gap,
+        runSpacing: LessonGridPlan.gap,
+        children: [
+          for (final cell in cells)
+            SizedBox(
+              width: plan.cellWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DecoratedBox(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: CoquiColors.lessonLine,
+                          spreadRadius: 1.5,
+                        ),
+                      ],
+                    ),
+                    child: SizedBox(width: plan.cellWidth, child: cell.picture),
                   ),
-                  child: SizedBox(width: plan.cellWidth, child: cell.picture),
-                ),
-                const SizedBox(height: CoquiMetrics.s8),
-                Text(cell.word, style: CoquiText.lessonWord),
-              ],
+                  const SizedBox(height: CoquiMetrics.s8),
+                  Text(
+                    cell.word,
+                    textDirection: language?.textDirection,
+                    locale: language?.locale,
+                    style: wordStyle,
+                  ),
+                ],
+              ),
             ),
-          ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }

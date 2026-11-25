@@ -1,8 +1,11 @@
 /// The word card of Palabras (app.html:86-95, 426-427).
 library;
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/src/meters.dart';
+import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
+import 'package:coqui_ui/src/speech_bubble.dart';
 import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
@@ -27,6 +30,7 @@ class WordCard extends StatelessWidget {
     required this.mouth,
     this.picture,
     this.onTap,
+    this.language,
   });
 
   final String word;
@@ -45,10 +49,13 @@ class WordCard extends StatelessWidget {
   /// The card's tap (opens the word sheet).
   final VoidCallback? onTap;
 
+  /// Optional language for word script, text direction, and locale.
+  final Language? language;
+
   @override
   Widget build(BuildContext context) {
     final meters = Padding(
-      padding: const EdgeInsets.fromLTRB(
+      padding: const EdgeInsetsDirectional.fromSTEB(
         CoquiMetrics.s12,
         CoquiMetrics.s8,
         CoquiMetrics.s12,
@@ -58,6 +65,9 @@ class WordCard extends StatelessWidget {
     );
     final Widget content;
     if (picture != null) {
+      final wordStyle = language == null
+          ? CoquiText.cardWord
+          : NocheType.forScript(CoquiText.cardWord, language!.script);
       content = Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -70,7 +80,7 @@ class WordCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               CoquiMetrics.s12,
               CoquiMetrics.s8,
               CoquiMetrics.s12,
@@ -81,8 +91,15 @@ class WordCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: CoquiMetrics.s4),
-                  child: Text(word, style: CoquiText.cardWord),
+                  padding: const EdgeInsetsDirectional.only(
+                    bottom: CoquiMetrics.s4,
+                  ),
+                  child: Text(
+                    word,
+                    textDirection: language?.textDirection,
+                    locale: language?.locale,
+                    style: wordStyle,
+                  ),
                 ),
                 EarMouthMeters(ear: ear, mouth: mouth),
               ],
@@ -91,10 +108,13 @@ class WordCard extends StatelessWidget {
         ],
       );
     } else {
+      final largeStyle = language == null
+          ? CoquiText.cardWordLarge
+          : NocheType.forScript(CoquiText.cardWordLarge, language!.script);
       final word_ = ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 72),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: const EdgeInsetsDirectional.fromSTEB(
             CoquiMetrics.s12,
             CoquiMetrics.s16,
             CoquiMetrics.s12,
@@ -104,7 +124,9 @@ class WordCard extends StatelessWidget {
             child: Text(
               word,
               textAlign: TextAlign.center,
-              style: CoquiText.cardWordLarge,
+              textDirection: language?.textDirection,
+              locale: language?.locale,
+              style: largeStyle,
             ),
           ),
         ),

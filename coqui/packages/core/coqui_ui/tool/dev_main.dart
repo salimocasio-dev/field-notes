@@ -10,9 +10,11 @@
 /// (`tool/shots.mjs`). Section names: see [gallerySections].
 library;
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'gallery/lesson_direction.dart';
 import 'gallery/noche_mic.dart';
 import 'gallery/noche_pieces.dart';
 import 'gallery/screens.dart';
@@ -65,6 +67,28 @@ class GalleryApp extends StatelessWidget {
         ),
       );
     }
+    if (name == 'lesson-direction-es') {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Coqui UI · Lesson Direction ES',
+        theme: coquiTheme(),
+        home: Scaffold(
+          body: LessonDirectionGalleryPage(language: Language.spanish),
+        ),
+      );
+    }
+    if (name == 'lesson-direction-ar') {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Coqui UI · Lesson Direction AR',
+        theme: coquiTheme(),
+        home: Scaffold(
+          body: LessonDirectionGalleryPage(
+            language: lessonDirectionArabicLanguage,
+          ),
+        ),
+      );
+    }
     GallerySection? one;
     for (final s in gallerySections) {
       if (s.name == name) one = s;
@@ -93,8 +117,9 @@ class _Index extends StatelessWidget {
           Text('coqui_ui gallery', style: CoquiText.h1),
           const SizedBox(height: 8),
           Text(
-            'Noche shared pieces (?section=noche-ltr, ?section=noche-rtl) and '
-            'Noche mic (?section=noche-mic, ?section=noche-mic-rtl), '
+            'Noche shared pieces (?section=noche-ltr, ?section=noche-rtl), '
+            'Noche mic (?section=noche-mic, ?section=noche-mic-rtl), and '
+            'lesson direction (?section=lesson-direction-es, ?section=lesson-direction-ar), '
             'followed by the v=39 reference sections.',
             style: CoquiText.smallMuted,
           ),
@@ -118,6 +143,18 @@ class _Index extends StatelessWidget {
               'noche-mic-rtl',
               'Noche mic · six states (RTL)',
               const NocheMicDevPage(textDirection: TextDirection.rtl),
+            ),
+            (
+              'lesson-direction-es',
+              'Lesson direction · Spanish (LTR)',
+              LessonDirectionGalleryPage(language: Language.spanish),
+            ),
+            (
+              'lesson-direction-ar',
+              'Lesson direction · Arabic (RTL)',
+              LessonDirectionGalleryPage(
+                language: lessonDirectionArabicLanguage,
+              ),
             ),
           ]) ...[
             const SizedBox(height: 32),

@@ -122,7 +122,7 @@ class _CoquiSheetState extends State<CoquiSheet> {
                   bottom: CoquiMetrics.fadeSheet,
                   child: SingleChildScrollView(
                     controller: _controller,
-                    padding: EdgeInsets.fromLTRB(
+                    padding: EdgeInsetsDirectional.fromSTEB(
                       CoquiMetrics.s16,
                       bodyTop,
                       CoquiMetrics.s16,
@@ -134,7 +134,7 @@ class _CoquiSheetState extends State<CoquiSheet> {
               ),
               if (widget.footer != null)
                 Padding(
-                  padding: EdgeInsets.fromLTRB(
+                  padding: EdgeInsetsDirectional.fromSTEB(
                     CoquiMetrics.s16,
                     CoquiMetrics.s8,
                     CoquiMetrics.s16,
@@ -171,9 +171,9 @@ class _CoquiSheetState extends State<CoquiSheet> {
       ),
       child: Stack(
         children: [
-          Positioned(
-            left: 0,
-            right: 0,
+          PositionedDirectional(
+            start: 0,
+            end: 0,
             top: hasTitle ? 6 : 12,
             child: Center(
               child: Container(
@@ -187,9 +187,9 @@ class _CoquiSheetState extends State<CoquiSheet> {
             ),
           ),
           if (hasTitle)
-            Positioned(
-              left: CoquiMetrics.s16,
-              right: 72,
+            PositionedDirectional(
+              start: CoquiMetrics.s16,
+              end: 72,
               top: 16,
               child: AnimatedOpacity(
                 opacity: widget.titleVisible ? 1 : 0,
@@ -202,8 +202,8 @@ class _CoquiSheetState extends State<CoquiSheet> {
                 ),
               ),
             ),
-          Positioned(
-            right: 8,
+          PositionedDirectional(
+            end: 8,
             top: 8,
             child: CoquiCloseButton(onPressed: widget.onClose),
           ),
@@ -255,9 +255,9 @@ class CoquiSheetLayer extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          left: 0,
-          right: 0,
+        PositionedDirectional(
+          start: 0,
+          end: 0,
           bottom: bottom,
           child: IgnorePointer(
             ignoring: !open,
@@ -376,9 +376,9 @@ class _CoquiSheetRoute extends PopupRoute<void> {
             return Stack(
               fit: StackFit.expand,
               children: [
-                Positioned(
-                  left: 0,
-                  right: 0,
+                PositionedDirectional(
+                  start: 0,
+                  end: 0,
                   bottom: bottom,
                   child: SlideTransition(
                     position: Tween(
