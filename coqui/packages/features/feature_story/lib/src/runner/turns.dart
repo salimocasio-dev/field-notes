@@ -241,6 +241,12 @@ extension _Turns on StoryRunner {
   /// The turn's screen goes away.
   void habFin() {
     HAB.q = '';
+    view.micMissed = false;
+    view.turnSpeaker = '';
+    view.turnLine = '';
+    view.turnPromptPrefix = '';
+    view.turnPromptWords = '';
+    _turnReplayClip = null;
     micEst('');
     MBUB = false;
     view.bubbleOn = false;
@@ -254,6 +260,7 @@ extension _Turns on StoryRunner {
   // juego.js: habTick
   /// The green tick always; his words in the bubble when TXT allows.
   void habTick(String txt) {
+    view.micMissed = false;
     micEst('ok');
     habBub('ok', TXT != TxtMode.no && !SINLETRAS ? txt : '');
   }
@@ -331,6 +338,7 @@ extension _Turns on StoryRunner {
     timers.clear(C.idle);
     hush(); // nothing is playing while he is listened to
     HAB.guard = true;
+    view.micMissed = false;
     micEst('listening');
     final t0 = now();
     int? onset;
@@ -423,6 +431,15 @@ extension _Turns on StoryRunner {
       'intentos': 0,
     };
     HAB.log.add(reg);
+    final sl = _speakerAndLine(id);
+    view.turnSpeaker = _lastSpeaker.isNotEmpty ? _lastSpeaker : sl.speaker;
+    view.turnLine = _lastLine.isNotEmpty ? _lastLine : sl.line;
+    view.turnPromptPrefix = _promptPrefixFor(id);
+    view.turnPromptWords = _clipText(id);
+    view.micMissed = false;
+    _turnReplayClip = (_lastLineClip != null && _has(_lastLineClip!))
+        ? _lastLineClip
+        : id;
     micEst('dead');
     if (T.any((x) => habNueva(x.palabra))) {
       // a word he has not said yet: the coquí's recording first, then "Ahora tú."
@@ -456,6 +473,7 @@ extension _Turns on StoryRunner {
         return; // his voice was the line: the recording does not play again
       }
       if (n == 1) {
+        view.micMissed = true;
         micEst('dead');
         await say(course.fixedClip('story_your_turn'), 200);
         continue; // first miss: "Ahora tú." again, the mic ready again
@@ -486,6 +504,15 @@ extension _Turns on StoryRunner {
     HAB.log.add(reg);
     me.turnoOn = true;
     me.lock = true;
+    final sl = (line != null && line.isNotEmpty)
+        ? _speakerAndLine(line)
+        : (speaker: _lastSpeaker, line: _lastLine);
+    view.turnSpeaker = sl.speaker.isNotEmpty ? sl.speaker : _lastSpeaker;
+    view.turnLine = sl.line.isNotEmpty ? sl.line : _lastLine;
+    view.turnPromptPrefix = _promptPrefixFor(tu.id!);
+    view.turnPromptWords = _clipText(tu.id!);
+    view.micMissed = false;
+    _turnReplayClip = (line != null && line.isNotEmpty) ? line : tu.id;
     micEst('dead');
     if (line != null && line.isNotEmpty) await say(line, 0);
     habBub('mic');
@@ -518,6 +545,8 @@ extension _Turns on StoryRunner {
         habGraba(T, false, r.ms);
         break; // the other option, or nothing that matches, is a miss
       }
+      view.micMissed = true;
+      view.changed();
     }
     habFin();
     me.turnoOn = false;
@@ -529,7 +558,7 @@ extension _Turns on StoryRunner {
 
   // juego.js: turnoEligeInicio
   /// The mic comes beside the bubbles. He may speak or touch, whichever comes first.
-  void turnoEligeInicio(Pending me, EsperaOpts o) {
+  void turnoEligeInicio(Pending me, EsperaOpts o, [String? line]) {
     final tu = o.turno!;
     tu.ids.forEach(HAB.hechos.add);
     HAB.n++;
@@ -541,6 +570,21 @@ extension _Turns on StoryRunner {
     };
     HAB.log.add(me.reg!);
     me.turnoOn = true;
+    final sl = (line != null && line.isNotEmpty)
+        ? _speakerAndLine(line)
+        : (speaker: _lastSpeaker, line: _lastLine);
+    view.turnSpeaker = sl.speaker.isNotEmpty ? sl.speaker : _lastSpeaker;
+    view.turnLine = sl.line.isNotEmpty ? sl.line : _lastLine;
+    view.turnPromptPrefix = tu.ids.isNotEmpty
+        ? _promptPrefixFor(tu.ids.first)
+        : '';
+    view.turnPromptWords = [for (final cid in tu.ids) _clipText(cid)]
+        .where((s) => s.isNotEmpty)
+        .join(' / ');
+    view.micMissed = false;
+    _turnReplayClip = (line != null && line.isNotEmpty)
+        ? line
+        : (tu.ids.isNotEmpty ? tu.ids.first : null);
     micEst('dead');
     habBub('mic');
   }
@@ -588,6 +632,8 @@ extension _Turns on StoryRunner {
           me.turnoOn = false;
           return;
         }
+        view.micMissed = true;
+        view.changed();
       }
     } on StopSignal {
       return;

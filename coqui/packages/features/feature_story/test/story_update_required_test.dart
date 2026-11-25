@@ -9,6 +9,7 @@ import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/story_check.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
+import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -291,16 +292,13 @@ void main() {
         expect(s.opened, isFalse);
         expect(find.text(_updateLine), findsOneWidget);
         expect(find.text(_backLabel), findsOneWidget);
-        expect(find.byType(LessonButton), findsOneWidget);
-        expect(find.byType(LessonFrame), findsOneWidget);
-        expect(find.byType(LessonCloseButton), findsOneWidget);
-        expect(find.byType(LessonStartButton), findsNothing);
-        expect(find.byType(LessonProgressDashes), findsNothing);
+        expect(find.byType(NochePrimaryButton), findsOneWidget);
+        expect(find.byType(StoryHeader), findsOneWidget);
+        expect(find.byType(StoryCloseButton), findsOneWidget);
+        expect(find.byType(NochePlayDisc), findsNothing);
+        expect(find.byType(NocheDashes), findsNothing);
+        expect(find.byType(StoryTxtToggle), findsNothing);
         expect(find.byType(PixelView), findsNothing);
-        final frame = tester.widget<LessonFrame>(find.byType(LessonFrame));
-        expect(frame.showSound, isFalse);
-        expect(frame.picture, isNull);
-        expect(frame.bottom, isEmpty);
 
         await tester.tap(find.text(_backLabel));
         await tester.pump();
@@ -339,9 +337,9 @@ void main() {
         expect(s.opened, isFalse);
         expect(find.text(_updateLine), findsOneWidget);
         expect(find.text(_backLabel), findsOneWidget);
-        expect(find.byType(LessonStartButton), findsNothing);
+        expect(find.byType(NochePlayDisc), findsNothing);
 
-        await tester.tap(find.byType(LessonCloseButton));
+        await tester.tap(find.byType(StoryCloseButton));
         await tester.pump();
         expect(s.nav.backs, 1);
       },
@@ -413,7 +411,7 @@ void main() {
         expect(s.opened, isFalse);
         expect(find.text(_updateLine), findsOneWidget);
         expect(find.text(_backLabel), findsOneWidget);
-        expect(find.byType(LessonStartButton), findsNothing);
+        expect(find.byType(NochePlayDisc), findsNothing);
 
         await tester.tap(find.text(_backLabel));
         await tester.pump();
@@ -474,7 +472,7 @@ void main() {
         expect(tester.takeException(), isNull);
         expect(s.opened, isTrue);
         expect(find.text(_updateLine), findsNothing);
-        expect(find.byType(LessonStartButton), findsOneWidget);
+        expect(find.byType(NochePlayDisc), findsOneWidget);
       },
     );
   });

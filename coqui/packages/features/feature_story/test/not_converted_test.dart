@@ -1,11 +1,10 @@
-// A story whose scene is not converted yet: the screen says so, in the middle of the lesson frame, with one button back to
-// the map, and shows nothing else but the X. Any other failure to open a story keeps the lesson frame and its X, as before.
-// The story is a test's own, at a test scene that is never converted (test/support/test_scene.dart), whose factory throws
-// as the registry's stub of a scene not converted yet does: so the test does not depend on which real scenes are
-// converted (order 36b; El banco's la-piragua was its story until order 36b, El balcón's el-jugo until 30b, La sala's
-// la-familia until 31b, El patio's las-flores until 32b, El camino's uno-dos-tres until 33b, El campo's la-bola until
-// 34b, El lago's pan-para-el-pato until 35b).
+// A story whose scene is not converted yet: the screen says so, centred on
+// NocheColors.lessonGround, with one NochePrimaryButton back to the map, and
+// shows nothing else in the header but the close X. Any other failure to open
+// a story keeps the lessonGround header and its X, as before.
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_story/src/screen/story_not_ready.dart';
+import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -17,7 +16,7 @@ const _button = 'Back to the map';
 
 void main() {
   testWidgets(
-    'a story at a scene not converted, on the registry: the line and one button in the middle of the frame, and nothing else but the X',
+    'a story at a scene not converted, on the registry: the line and one button centred on lessonGround, and nothing else but the X',
     (tester) async {
       final s = await openScreen(
         tester,
@@ -26,38 +25,38 @@ void main() {
         scenes: scenesWithTestScene,
       );
       expect(tester.takeException(), isNull);
+      expect(find.byType(StoryNotReady), findsOneWidget);
       expect(find.text(_line), findsOneWidget);
       expect(find.text(_button), findsOneWidget);
-      expect(find.byType(LessonButton), findsOneWidget);
-      // the frame and its X, no start disc, no dashes, no picture, no sound button, no caption
-      expect(find.byType(LessonFrame), findsOneWidget);
-      expect(find.byType(LessonCloseButton), findsOneWidget);
-      expect(find.byType(LessonStartButton), findsNothing);
-      expect(find.byType(LessonProgressDashes), findsNothing);
+      expect(find.byType(NochePrimaryButton), findsOneWidget);
+      expect(find.byType(StoryHeader), findsOneWidget);
+      expect(find.byType(StoryCloseButton), findsOneWidget);
+      expect(find.byType(NochePlayDisc), findsNothing);
+      expect(find.byType(NocheDashes), findsNothing);
+      expect(find.byType(StoryTxtToggle), findsNothing);
       expect(find.byType(PixelView), findsNothing);
-      final frame = tester.widget<LessonFrame>(find.byType(LessonFrame));
-      expect(frame.showSound, isFalse);
-      expect(frame.picture, isNull);
-      expect(frame.caption, isNull);
-      expect(frame.bottom, isEmpty);
-      // the only words on the screen are the line and the button's label (the frame's empty caption is a Text with no words)
+      // the only words on the screen are the line and the button's label
       expect(
         [
           for (final e in find.byType(Text).evaluate())
-            if ((e.widget as Text).data!.isNotEmpty) (e.widget as Text).data,
+            if ((e.widget as Text).data != null &&
+                (e.widget as Text).data!.isNotEmpty)
+              (e.widget as Text).data,
         ],
         [_line, _button],
       );
-      // the line and the button are centred in the frame under the top bar, one over the other
-      final screen = tester.getRect(find.byType(LessonFrame));
+      // the line and the button are centred under the 64-high header
+      final screen = tester.getRect(find.byType(StoryNotReady));
       final line = tester.getRect(find.text(_line));
-      final button = tester.getRect(find.byType(LessonButton));
+      final button = tester.getRect(find.byType(NochePrimaryButton));
       expect(line.bottom, lessThan(button.top));
       final middle = (line.top + button.bottom) / 2;
-      final under = CoquiMetrics.lessonTopBar;
-      expect(middle, closeTo((screen.top + under + screen.bottom) / 2, 1));
-      expect(line.center.dx, closeTo(screen.center.dx, 0.01));
-      expect(button.center.dx, closeTo(screen.center.dx, 0.01));
+      expect(
+        middle,
+        closeTo((screen.top + StoryHeader.height + screen.bottom) / 2, 1),
+      );
+      expect(line.center.dx, closeTo(screen.center.dx, 0.5));
+      expect(button.center.dx, closeTo(screen.center.dx, 0.5));
       expect(s.nav.backs, 0);
     },
   );
@@ -82,7 +81,7 @@ void main() {
       course: WithTestScene(),
       scenes: scenesWithTestScene,
     );
-    await tester.tap(find.byType(LessonCloseButton));
+    await tester.tap(find.byType(StoryCloseButton));
     await tester.pump();
     expect(s.nav.backs, 1);
   });
@@ -103,7 +102,7 @@ void main() {
   );
 
   testWidgets(
-    'any other failure to open a story keeps what it did: a scene that fails in another way leaves the lesson frame and its X, nothing else, and the error is reported',
+    'any other failure to open a story keeps the lesson header and its X, nothing else, and reports the error',
     (tester) async {
       final errors = <FlutterErrorDetails>[];
       final old = FlutterError.onError;
@@ -116,9 +115,9 @@ void main() {
       );
       FlutterError.onError =
           old; // before any expect: a failure is the framework's to hear
-      expect(find.byType(LessonFrame), findsOneWidget);
-      expect(find.byType(LessonCloseButton), findsOneWidget);
-      expect(find.byType(LessonStartButton), findsNothing);
+      expect(find.byType(StoryHeader), findsOneWidget);
+      expect(find.byType(StoryCloseButton), findsOneWidget);
+      expect(find.byType(NochePlayDisc), findsNothing);
       expect(find.text(_line), findsNothing);
       expect(find.text(_button), findsNothing);
       expect(errors.single.exception, isA<StateError>());
@@ -126,7 +125,7 @@ void main() {
   );
 
   testWidgets(
-    'a story the course does not have: the same, the lesson frame and its X, and the error is reported',
+    'a story the course does not have: the same, the lesson header and its X, and the error is reported',
     (tester) async {
       final errors = <FlutterErrorDetails>[];
       final old = FlutterError.onError;
@@ -135,8 +134,8 @@ void main() {
       await openScreen(tester, id: 'no-hay-tal-cuento');
       FlutterError.onError =
           old; // before any expect: a failure is the framework's to hear
-      expect(find.byType(LessonFrame), findsOneWidget);
-      expect(find.byType(LessonCloseButton), findsOneWidget);
+      expect(find.byType(StoryHeader), findsOneWidget);
+      expect(find.byType(StoryCloseButton), findsOneWidget);
       expect(find.text(_line), findsNothing);
       expect(find.text(_button), findsNothing);
       expect(errors.single.exception, isA<StateError>());

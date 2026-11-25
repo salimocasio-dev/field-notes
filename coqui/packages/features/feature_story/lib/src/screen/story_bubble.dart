@@ -1,4 +1,4 @@
-/// The speech bubble over the picture (index.html `#bub`).
+/// The speech bubble over the picture (index.html `#bub`), styled with Noche tokens.
 library;
 
 import 'dart:math' as math;
@@ -9,19 +9,14 @@ import 'package:feature_story/src/runner/bubble_place.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:material_ui/material_ui.dart';
 
-const Color _ink = Color(0xFF2A1810),
-    _tickGreen = Color(0xFF17803F),
-    _micRed = Color(0xFFD93025);
-
-/// The bubble's text: 800 weight, 18 px on a line of 1.2, centred, brown-black on white. index.html:72
-final TextStyle bubbleTextStyle = CoquiText.lessonCaption.copyWith(
-  fontWeight: FontWeight.w800,
-  fontSize: 18,
-  height: 1.2,
-  color: _ink,
+/// The bubble's text: bold 18 px on a line of 24, centred, dark ink on light surface.
+final TextStyle bubbleTextStyle = NocheType.row.copyWith(
+  fontWeight: FontWeight.w700,
+  color: NocheColors.lessonGround,
 );
 
-/// A bubble's body: white, 3 px brown-black border, 12 px corners, 5/11/6 px padding. The tail is drawn by the caller.
+/// A bubble's body: `NocheColors.text` surface, 3 px `NocheColors.lessonGround`
+/// border, 12 px corners, 5/11/6 px padding. The tail is drawn by the caller.
 class StoryBubbleBody extends StatefulWidget {
   const StoryBubbleBody({
     super.key,
@@ -97,22 +92,22 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
         );
       case BubbleKind.mic:
         final listening = widget.estate == 'listening';
-        // `#bub[data-e=listening] svg`: coral red, pulsing to 1.25
         return AnimatedBuilder(
           animation: _a,
           builder: (context, _) => Transform.scale(
             scale: listening && !widget.reduceMotion
                 ? 1 + .25 * (1 - (2 * _a.value - 1).abs())
                 : 1,
-            child: CoquiIcon(
-              CoquiIcons.lessonMic,
+            child: NocheIcon(
+              NocheIcons.mic,
               size: 28,
-              color: listening ? _micRed : _ink,
+              color: listening
+                  ? NocheColors.listening
+                  : NocheColors.lessonGround,
             ),
           ),
         );
       case BubbleKind.dots:
-        // the same three dots, 28 px so the bubble keeps its size
         return AnimatedBuilder(
           animation: _a,
           builder: (context, _) => SizedBox(
@@ -132,7 +127,7 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
                       height: 6,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: _ink,
+                        color: NocheColors.lessonGround,
                       ),
                     ),
                   ),
@@ -147,10 +142,11 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CoquiIcon(
-                CoquiIcons.badgeCheck,
+              const NocheIcon(
+                NocheIcons.check,
                 size: 28,
-                color: _tickGreen,
+                strokeWidth: 3,
+                color: NocheColors.right,
               ),
               if (widget.text.isNotEmpty) ...[
                 const SizedBox(width: 8),
@@ -189,8 +185,8 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
       padding: const EdgeInsetsDirectional.fromSTEB(11, 5, 11, 6),
       alignment: turn ? AlignmentDirectional.center : null,
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: _ink, width: 3),
+        color: NocheColors.text,
+        border: Border.all(color: NocheColors.lessonGround, width: 3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: _content(),
@@ -198,7 +194,7 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
   }
 }
 
-/// A tail: the white triangle with its dark edge, as the `::before` and `::after` of `#bub` draw it.
+/// A tail: the light triangle with its dark edge, as the `::before` and `::after` of `#bub` draw it.
 class _TailPainter extends CustomPainter {
   const _TailPainter(this.mode);
 
@@ -206,11 +202,10 @@ class _TailPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final dark = Paint()..color = _ink;
-    final white = Paint()..color = Colors.white;
+    final dark = Paint()..color = NocheColors.lessonGround;
+    final surface = Paint()..color = NocheColors.text;
     switch (mode) {
       case BubbleSideMode.above:
-        // 8 px triangle (dark) down from the border, 5 px (white) inside it
         canvas.drawPath(
           Path()
             ..moveTo(0, 0)
@@ -225,7 +220,7 @@ class _TailPainter extends CustomPainter {
             ..lineTo(13, 0)
             ..lineTo(8, 6)
             ..close(),
-          white,
+          surface,
         );
       case BubbleSideMode.right:
         canvas.drawPath(
@@ -242,7 +237,7 @@ class _TailPainter extends CustomPainter {
             ..lineTo(9, 13)
             ..lineTo(3, 8)
             ..close(),
-          white,
+          surface,
         );
       case BubbleSideMode.left:
         canvas.drawPath(
@@ -259,7 +254,7 @@ class _TailPainter extends CustomPainter {
             ..lineTo(0, 13)
             ..lineTo(6, 8)
             ..close(),
-          white,
+          surface,
         );
     }
   }
@@ -268,9 +263,10 @@ class _TailPainter extends CustomPainter {
   bool shouldRepaint(_TailPainter old) => old.mode != mode;
 }
 
-/// Where a bubble stands and the bubble itself, over a stage of [stage] size. [placement] is what [placeBubble] found.
+/// Where a bubble stands and the bubble itself, over a stage of [stage] size.
 ///
-/// The bubble takes no touch: a finger on it goes through to the picture under it, as in the old page (`#bub{pointer-events:none}`).
+/// The bubble takes no touch: a finger on it goes through to the picture under it,
+/// as in the old page (`#bub{pointer-events:none}`).
 class StoryBubbleLayer extends StatelessWidget {
   const StoryBubbleLayer({
     super.key,
@@ -340,7 +336,6 @@ class _TailAnchor extends StatelessWidget {
         if (p == null) return const SizedBox.shrink();
         switch (p.mode) {
           case BubbleSideMode.above:
-            // `--tx` is the tail's middle along the bubble; the dark triangle starts at the border's outer edge
             return Stack(
               clipBehavior: Clip.none,
               children: [
@@ -403,7 +398,6 @@ class _BubbleDelegate extends SingleChildLayoutDelegate {
     final p = placementFor(childSize);
     if (p == null) return Offset(-10000, -10000);
     switch (p.mode) {
-      // `#bub.on`: translate(-50%, calc(-100% - 10px)); `.der`: translate(0, -50%); `.izq`: translate(-100%, -50%)
       case BubbleSideMode.above:
         return Offset(
           p.left - childSize.width / 2,
