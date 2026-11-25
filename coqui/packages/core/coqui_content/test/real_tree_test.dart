@@ -401,6 +401,21 @@ void main() {
       expect(catalog.language, Language.spanish);
       expect((catalog as CourseCatalog).language, Language.spanish);
     });
+
+    test('implements CallsCatalog and exposes callsFor matching legacy llamadas.json', () {
+      expect(catalog, isA<CallsCatalog>());
+      final llamadas = _json('datos/llamadas.json') as Map<String, dynamic>;
+      for (final p in catalog.places) {
+        final calls = (catalog as CourseCatalog).callsFor(p.id);
+        if (llamadas.containsKey(p.id)) {
+          expect(calls, hasLength(1), reason: p.id);
+          expect(calls.single.toJson(), sameJson(llamadas[p.id]), reason: p.id);
+          expect(calls.single, same(catalog.callFor(p.id)), reason: p.id);
+        } else {
+          expect(calls, isEmpty, reason: p.id);
+        }
+      }
+    });
   });
 
   test('datos/repaso.json reads: 167 words; every clip it names is a recorded line with marks, every story a story of '
