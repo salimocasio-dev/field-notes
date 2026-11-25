@@ -77,7 +77,7 @@ class AddBox extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        NochePrimaryButton(label: 'Add', onPressed: onAdd),
+        NocheOutlineButton(label: 'Add', onPressed: onAdd),
         if (added.isNotEmpty) ...[
           Padding(
             padding: const EdgeInsetsDirectional.only(top: 16, bottom: 8),
@@ -101,7 +101,8 @@ class AddBox extends StatelessWidget {
 }
 
 /// Stateful wrapper for [AddBox] inside [showNocheSheet] so newly saved items
-/// appear immediately as the store updates.
+/// appear immediately as the store updates, with bottom padding for the
+/// software keyboard (`viewInsets.bottom`).
 class AddBoxSheetBody extends StatefulWidget {
   const AddBoxSheetBody({
     super.key,
@@ -146,6 +147,11 @@ class _AddBoxSheetBodyState extends State<AddBoxSheetBody> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      AddBox(controller: _field, added: _added, onAdd: _add);
+  Widget build(BuildContext context) {
+    final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
+    return Padding(
+      padding: EdgeInsetsDirectional.only(bottom: keyboardInset),
+      child: AddBox(controller: _field, added: _added, onAdd: _add),
+    );
+  }
 }

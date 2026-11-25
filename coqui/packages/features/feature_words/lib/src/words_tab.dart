@@ -103,7 +103,7 @@ class _WordsTabState extends State<WordsTab> {
         lines: lines,
         stageMax: _view?.stageMax ?? widget.stageMax ?? defaultStageMax,
       );
-      await showNocheSheet<void>(context, builder: sheet.build);
+      await showNocheSheet<void>(context, title: r.w, builder: sheet.build);
       sheet.closed();
     } finally {
       _openingWord = false;

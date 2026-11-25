@@ -312,6 +312,19 @@ void main() {
         findsOneWidget,
       );
     });
+
+    testWidgets(
+      'add sheet lifts TextField and Add button above software keyboard viewInsets',
+      (tester) async {
+        await openAddSheet(tester);
+        final addBefore = tester.getBottomLeft(inSheet(find.text('Add'))).dy;
+        tester.view.viewInsets = const FakeViewPadding(bottom: 300 * 3);
+        await tester.pumpAndSettle();
+        final addAfter = tester.getBottomLeft(inSheet(find.text('Add'))).dy;
+        expect(addAfter, lessThan(addBefore));
+        expect(addAfter, lessThanOrEqualTo(844 - 300));
+      },
+    );
   });
 
   group('WordSheet: Heard in (oidoEn)', () {
@@ -475,12 +488,16 @@ void main() {
       return rig;
     }
 
-    testWidgets('opening sheet stops current clip playback', (tester) async {
-      final rig = await rigged(tester);
-      final before = rig.clips.stops;
-      await tapWordRow(tester, 'casa');
-      expect(rig.clips.stops, greaterThan(before));
-    });
+    testWidgets(
+      'opening sheet stops current clip playback and pins word in fixed header',
+      (tester) async {
+        final rig = await rigged(tester);
+        final before = rig.clips.stops;
+        await tapWordRow(tester, 'casa');
+        expect(rig.clips.stops, greaterThan(before));
+        expect(tester.widget<NocheSheet>(sheet).title, 'casa');
+      },
+    );
 
     testWidgets('pair word shows yes picture; plain word shows no picture', (
       tester,

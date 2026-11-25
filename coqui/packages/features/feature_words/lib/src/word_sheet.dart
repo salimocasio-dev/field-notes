@@ -132,6 +132,7 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
             padding: const EdgeInsetsDirectional.only(bottom: 16),
             child: Text(
               r.w,
+              key: const Key('word-sheet-heading'),
               textAlign: TextAlign.center,
               textDirection: courseDir,
               locale: courseLocale,

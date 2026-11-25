@@ -168,10 +168,14 @@ void main() {
         expect(tester.takeException(), isNull);
         expect(sheet, findsOneWidget);
 
-        // Big word 'بيت' is RTL with Locale('ar') and Arabic font.
-        final bigWordFinder = inSheet(find.text('بيت'));
+        // Fixed header preserves the word while scrolling, and big word is RTL with Locale('ar').
+        expect(tester.widget<NocheSheet>(sheet).title, 'بيت');
+        final bigWordFinder = inSheet(
+          find.byKey(const Key('word-sheet-heading')),
+        );
         expect(bigWordFinder, findsOneWidget);
         final bigWord = tester.widget<Text>(bigWordFinder);
+        expect(bigWord.data, 'بيت');
         expect(bigWord.textDirection, TextDirection.rtl);
         expect(bigWord.locale, const Locale('ar'));
         expect(bigWord.style?.fontFamily, endsWith(nocheFontNotoSansArabic));
