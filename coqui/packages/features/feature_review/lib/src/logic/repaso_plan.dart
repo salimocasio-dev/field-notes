@@ -467,7 +467,8 @@ class RepasoPlanner {
   }
 
   /// Fallback pool from all course words when a learner has met fewer than two fair distractors for a pair-line
-  /// fallback sentence.
+  /// fallback sentence. Strictly enforces `banned`, `apart`, and in-sentence exclusion — never falls back to an
+  /// unfiltered word.
   List<RepasoWord> _fallbackWrongTiles(RepasoWord target, RepasoSentence s) {
     final inSentence = {
       ...foldedTokens(s.text),
@@ -486,11 +487,13 @@ class RepasoPlanner {
             !foldedTokens(m.word).any(inSentence.contains))
           m,
     ];
-    return _pickTwoWrongTiles(target, pool) ??
-        [
-          for (final m in data.words)
-            if (m.word != target.word) m,
-        ].take(2).toList();
+    final picked = _pickTwoWrongTiles(target, pool);
+    if (picked == null) {
+      throw StateError(
+        'No two fair wrong tiles available for "${target.word}" in "${s.text}"',
+      );
+    }
+    return picked;
   }
 
   // ---- the words of a session

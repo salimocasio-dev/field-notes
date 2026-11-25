@@ -602,6 +602,7 @@ class RepasoSession extends LessonBase {
   Future<bool> _cual(CualItem it, bool again) async {
     final asset = it.asset;
     if (asset == null || !asset.isUsable) {
+      // Unrenderable item: do not score or write Ear progress; return true only to suppress miss re-queueing.
       _mark(DashMark.skipped);
       return true;
     }

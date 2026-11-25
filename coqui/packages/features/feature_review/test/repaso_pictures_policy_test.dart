@@ -124,23 +124,58 @@ void main() {
     }
 
     // Pair-only words (tengo hambre, tengo sed, listo, ya) have no native oyes sentences in repaso.json;
-    // under #10 they still clear via text-only HearItem (zero pictures) so Map/Palabras due counts stay aligned.
+    // under #10 they still clear via text-only HearItem (zero pictures) so Map/Palabras due counts stay aligned,
+    // and never pick an `apart` or in-sentence word as a wrong tile (even with minimal met-word fallback).
     for (final word in ['tengo hambre', 'tengo sed', 'listo', 'ya']) {
       final w = realRepaso.word(word)!;
+      for (var seed = 1; seed <= 20; seed++) {
+        final pl = RepasoPlanner(
+          data: realRepaso,
+          progress: p,
+          pairs: RepasoTestCourse().pairs,
+          rng: Mulberry32(seed),
+        );
+        expect(pl.cualLines(w), isEmpty, reason: word);
+        expect(pl.servable(w), isTrue, reason: word);
+        expect(pl.scoredKind(w), GameKind.hear, reason: word);
+        final it = pl.scoredItem(w);
+        expect(it, isA<HearItem>(), reason: word);
+        final hear = it as HearItem;
+        expect(hear.sentence.picture, isNull, reason: word);
+        expect(hear.tiles, contains(word), reason: word);
+        expect(hear.speakers, isTrue, reason: word);
+        for (final apart in w.apart) {
+          expect(
+            hear.tiles,
+            isNot(contains(apart)),
+            reason: '$word seed=$seed',
+          );
+        }
+      }
+    }
+    // Even if a learner has met only `tengo hambre`, the fallback pool respects `apart` (`tengo sed`) and in-sentence tokens.
+    final minimalDb = jsonDecode(seedJson('vacio')) as Map<String, dynamic>;
+    (minimalDb['palabras'] as Map)['tengo hambre'] = {
+      'w': 'tengo hambre',
+      'ear': {'n': 0, 'bien': 0, 'fallos': 0, 'due': 1, 'ultima': 0},
+      'mouth': {'n': 0, 'bien': 0, 'fallos': 0, 'due': 0, 'ultima': 0},
+    };
+    final minimalProgress = FakeProgressStore(
+      clock: FakeClock(curseNow),
+      json: jsonEncode(minimalDb),
+    );
+    final hunger = realRepaso.word('tengo hambre')!;
+    for (var seed = 1; seed <= 20; seed++) {
       final pl = RepasoPlanner(
         data: realRepaso,
-        progress: p,
+        progress: minimalProgress,
         pairs: RepasoTestCourse().pairs,
-        rng: Mulberry32(1),
+        rng: Mulberry32(seed),
       );
-      expect(pl.cualLines(w), isEmpty, reason: word);
-      expect(pl.servable(w), isTrue, reason: word);
-      expect(pl.scoredKind(w), GameKind.hear, reason: word);
-      final it = pl.scoredItem(w);
-      expect(it, isA<HearItem>(), reason: word);
-      expect((it as HearItem).sentence.picture, isNull, reason: word);
-      expect(it.tiles, contains(word), reason: word);
-      expect(it.speakers, isTrue, reason: word);
+      final hear = pl.scoredItem(hunger) as HearItem;
+      expect(hear.tiles, contains('tengo hambre'));
+      expect(hear.tiles, isNot(contains('tengo sed')));
+      expect(hear.tiles.toSet(), hasLength(3));
     }
   });
 
@@ -222,7 +257,7 @@ void main() {
   );
 
   testWidgets(
-    'defensive guards skip invalid/null/unpicturable CualItem and img/... WhereItem without stalling, and strip HearItem/BuildItem reveal screenshots',
+    'defensive guards skip invalid/null/unpicturable CualItem and img/... WhereItem without stalling or mutating Ear progress, and strip HearItem/BuildItem reveal screenshots',
     (t) async {
       final w = realRepaso.word('puerta')!;
       final pair = RepasoTestCourse().pairFor('puerta')!;
@@ -244,6 +279,7 @@ void main() {
       ]) {
         final sc = Screen(t, pictures: _ForbidPictures());
         await sc.open();
+        final earBefore = sc.store.word('puerta')!.ear.n;
         sc.s.queue = [
           QueueEntry.scored(
             CualItem(
@@ -261,6 +297,10 @@ void main() {
         await sc.settle();
         expect(sc.s.screen, LessonScreen.end);
         expect(sc.s.played.where((q) => q.again), isEmpty);
+        expect(sc.s.answers, isEmpty);
+        expect(sc.s.barMarks, [DashMark.skipped]);
+        expect(sc.store.calls.where((c) => c['op'] == 'responde'), isEmpty);
+        expect(sc.store.word('puerta')!.ear.n, earBefore);
         expect(find.byType(PictureChoice), findsNothing);
         expect(find.byType(BookImage), findsNothing);
       }

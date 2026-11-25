@@ -1,7 +1,9 @@
 ## What I need
 
+> **Status:** All 47/47 `coqui/app` tests already pass with this PR because prerequisite PR #144 (`lane/app/10`, commit `b0dd834`) already merged to `main` with dual-mode support. This request is **post-#10 dead-branch cleanup only**.
+
 Clean up `coqui/app/test/lessons_test.dart` test `(f, g)` (`Repaso from the Today card`, lines 162–291) after `#10` merges:
-- PR #144 (`lane/app/10`) added temporary dual-mode compatibility so `(f, g)` passes on both pre-`#10` `main` and `#10`.
+- PR #144 (`lane/app/10`, already merged on `main`) added temporary dual-mode compatibility so `(f, g)` passes on both pre-`#10` `main` and `#10`.
 - Once `#10` (`lane/feature_review/10`) merges, remove the legacy pre-`#10` `if (kinds.contains('CualItem'))` branch, the `ScenePictures` / `oldPicture` pixel comparison loop, and the `hombre` / `testSceneId` setup that existed only to test story-scene crops on flashcards.
 - Keep the post-`#10` assertions verifying `kinds` contains `['HearItem', 'BuildItem', 'MatchItem']`, `kinds` does not contain `'CualItem'` or `'WhereItem'`, zero `PictureChoice` / zero `BookImage` story screenshots render on flashcards, ear answers are written (`moved.length >= 5`), minutes increment, and the session ends on Palabras.
 
