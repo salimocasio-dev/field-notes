@@ -135,7 +135,10 @@ class _WordsTabState extends State<WordsTab> {
       mouth: r.mouth.etapa,
       picture: pair == null
           ? null
-          : _s.pictures.of(PictureRef.of(pair, pair.yes)),
+          : Directionality(
+              textDirection: TextDirection.ltr,
+              child: _s.pictures.of(PictureRef.of(pair, pair.yes)),
+            ),
       onTap: () => unawaited(_openWord(r.w)),
     );
   }
@@ -143,6 +146,11 @@ class _WordsTabState extends State<WordsTab> {
   @override
   Widget build(BuildContext context) {
     final v = _view;
+    final lang = _s.course.language;
+    final courseDir = lang.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
+    final courseLocale = Locale(lang.code);
     return ColoredBox(
       color: CoquiColors.bg,
       child: Stack(
@@ -155,7 +163,9 @@ class _WordsTabState extends State<WordsTab> {
                     child: TabPage(
                       controller: _scroll,
                       children: [
-                        const ScreenTitle(CoquiLabels.words),
+                        ScreenTitle(
+                          lang.tabNames['words'] ?? CoquiLabels.words,
+                        ),
                         CoquiCard(
                           child: CoquiRow(
                             minHeight: 0,
@@ -196,15 +206,32 @@ class _WordsTabState extends State<WordsTab> {
                           )
                         else
                           for (var i = 0; i < v.groups.length; i++) ...[
-                            SectionTitle(v.groups[i].name),
+                            if (v.groups[i].isCourseLanguage)
+                              Block(
+                                top: CoquiMetrics.s24,
+                                bottom: CoquiMetrics.s16,
+                                child: Directionality(
+                                  textDirection: courseDir,
+                                  child: Text(
+                                    v.groups[i].name,
+                                    style: CoquiText.h2,
+                                    locale: courseLocale,
+                                  ),
+                                ),
+                              )
+                            else
+                              SectionTitle(v.groups[i].name),
                             if (i == 0)
                               const BalancedKeyLine(
                                 'Ear: you know it when you hear it. Mouth: you can say it.',
                               ),
-                            WordGrid(
-                              children: [
-                                for (final e in v.groups[i].words) _card(e),
-                              ],
+                            Directionality(
+                              textDirection: courseDir,
+                              child: WordGrid(
+                                children: [
+                                  for (final e in v.groups[i].words) _card(e),
+                                ],
+                              ),
                             ),
                           ],
                         const SectionTitle('Add a word or a goal'),
@@ -213,9 +240,9 @@ class _WordsTabState extends State<WordsTab> {
                     ),
                   ),
           ),
-          Positioned(
-            left: 0,
-            right: 0,
+          PositionedDirectional(
+            start: 0,
+            end: 0,
             bottom: CoquiLayout.tabBarHeight(context),
             child: ListFade(visible: _more),
           ),

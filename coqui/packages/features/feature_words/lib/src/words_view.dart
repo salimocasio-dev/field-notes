@@ -15,9 +15,10 @@ class WordEntry {
 
 /// One place's heading and its words, in story order. `More words`: the words no played story brings.
 class PlaceGroup {
-  const PlaceGroup(this.name, this.words);
+  const PlaceGroup(this.name, this.words, {this.isCourseLanguage = true});
   final String name;
   final List<WordEntry> words;
+  final bool isCourseLanguage;
 }
 
 /// The whole tab.
@@ -108,7 +109,13 @@ Future<WordsView> buildWordsView(Services s) async {
       if (!placeOf.containsKey(r.w)) r,
   ];
   if (sin.isNotEmpty) {
-    groups.add(PlaceGroup('More words', sin.map(entry).toList()));
+    groups.add(
+      PlaceGroup(
+        'More words',
+        sin.map(entry).toList(),
+        isCourseLanguage: false,
+      ),
+    );
   }
   // Repaso asks the words it can serve (page 15: a word with a picture pair, or one a sentence he has heard can score;
   // the one rule lives in coqui_contracts, where the session asks it too); a course that has not read the games' data

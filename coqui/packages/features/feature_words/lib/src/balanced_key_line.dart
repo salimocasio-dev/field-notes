@@ -56,7 +56,7 @@ class BalancedText extends StatelessWidget {
       }
       tp.dispose();
       return Align(
-        alignment: Alignment.topLeft,
+        alignment: AlignmentDirectional.topStart,
         child: SizedBox(width: hi.ceilToDouble() + 1, child: plain),
       );
     },
