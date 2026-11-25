@@ -867,6 +867,308 @@ void main() {
       }
     });
   });
+
+  group('language (idioma)', () {
+    // NOT CHECKED BY AN ARABIC SPEAKER.
+    Map<String, dynamic> arabicIdioma({bool withA11y = true}) => {
+      'code': 'ar',
+      'englishName': 'Arabic',
+      'nativeName': 'العربية',
+      'recognitionLocale': 'ar-SA',
+      'direction': 'rtl',
+      'script': 'Arab',
+      'partnerName': 'Tariq',
+      'callAgentId': 'agent_arabic_test',
+      'micWords': {
+        'ready': 'اضغط وتكلم',
+        'listening': 'أسمعك',
+        'thinking': 'لحظة',
+        'theySpeak': 'استمع',
+        'right': 'ممتاز',
+        'notYet': 'مرة أخرى',
+      },
+      'tabNames': {
+        'library': 'المكتبة',
+        'words': 'الكلمات',
+        'map': 'الخريطة',
+        'speak': 'تحدث',
+        'me': 'أنا',
+      },
+      if (withA11y) 'a11yWords': {'close': 'إغلاق'},
+    };
+
+    test('defaults to Language.spanish before and after load when idioma is missing or null', () async {
+      final before = ContentCatalog(Files(smallTree).call);
+      expect(before, isA<LanguageCatalog>());
+      expect(before.language, Language.spanish);
+      expect((before as CourseCatalog).language, Language.spanish);
+
+      await before.load();
+      expect(before.language, Language.spanish);
+      expect((before as CourseCatalog).language, Language.spanish);
+      final llamadas = _tree('datos/llamadas.json');
+      for (final id in llamadas.keys) {
+        expect(before.callFor(id)!.agentId, spanishCallAgentId, reason: id);
+        expect(before.callFor(id)!.agentId, Language.spanish.callAgentId);
+      }
+
+      final withNull = {
+        ...smallTree,
+        'datos/curso.json': jsonEncode({..._curso, 'idioma': null}),
+      };
+      final (nullCatalog, _) = await _loaded(withNull);
+      expect(nullCatalog.language, Language.spanish);
+      expect((nullCatalog as CourseCatalog).language, Language.spanish);
+    });
+
+    test('parses custom Arabic/RTL idioma, uses language.normalize in pairFor and linesWith, and applies callAgentId precedence', () async {
+      // NOT CHECKED BY AN ARABIC SPEAKER.
+      final arabicLang = Language(
+        code: 'ar',
+        englishName: 'Arabic',
+        nativeName: 'العربية',
+        recognitionLocale: 'ar-SA',
+        direction: LanguageDirection.rtl,
+        script: 'Arab',
+        partnerName: 'Tariq',
+        callAgentId: 'agent_arabic_test',
+        micWords: const {
+          'ready': 'اضغط وتكلم',
+          'listening': 'أسمعك',
+          'thinking': 'لحظة',
+          'theySpeak': 'استمع',
+          'right': 'ممتاز',
+          'notYet': 'مرة أخرى',
+        },
+        tabNames: const {
+          'library': 'المكتبة',
+          'words': 'الكلمات',
+          'map': 'الخريطة',
+          'speak': 'تحدث',
+          'me': 'أنا',
+        },
+        a11yWords: const {'close': 'إغلاق'},
+      );
+
+      final arabicCurso = {
+        'idioma': arabicIdioma(),
+        'lugares': [
+          {
+            'id': 'casa',
+            'n': 1,
+            'nombre': 'البيت',
+            'en': 'The house',
+            'cuentos': ['ar-story'],
+          },
+        ],
+        'cuentos': {
+          'ar-story': {'t': 'القصة', 'min': 2},
+        },
+        'cual': ['cual-ar'],
+      };
+
+      const dummyPicture = {
+        'cam': [0, 0, 100, 100],
+      };
+      final arabicCual = {
+        'id': 'cual-ar',
+        'title': 'أي؟',
+        'place': 'البيت',
+        'scene': 'frente',
+        'tipo': 'cual',
+        'clips': {
+          'ar_1': {'who': 'narr', 'text': 'مَرْحَبًا'},
+          'ar_2': {'who': 'narr', 'text': 'أحمد'},
+          'ar_3': {'who': 'narr', 'text': 'بيت'},
+          'ar_4': {'who': 'narr', 'text': 'باب'},
+        },
+        'items': [
+          {
+            'w': 'مَرْحَبًا',
+            'say': 'ar_1',
+            'si': dummyPicture,
+            'no': dummyPicture,
+          },
+          {'w': 'أحمد', 'say': 'ar_2', 'si': dummyPicture, 'no': dummyPicture},
+          {'w': 'بيت', 'say': 'ar_3', 'si': dummyPicture, 'no': dummyPicture},
+          {'w': 'باب', 'say': 'ar_4', 'si': dummyPicture, 'no': dummyPicture},
+        ],
+      };
+
+      final arabicStory = {
+        'id': 'ar-story',
+        'title': 'القصة',
+        'place': 'البيت',
+        'scene': 'frente',
+        'clips': {
+          'c1': {'who': 'narr', 'text': 'مَرْحَبًا يَا جَدَّةُ!'},
+          'c2': {'who': 'narr', 'text': 'مرحبا يا جدة'},
+          'c3': {'who': 'narr', 'text': 'هذا بيت كبير.'},
+          'c4': {'who': 'narr', 'text': 'هذا باب.'},
+        },
+        'leer': ['c1', 'c2', 'c3', 'c4'],
+      };
+
+      final arabicCalls = {
+        'casa': {'minutos': 5, 'job': 'Greet Tariq.', 'opening': 'مَرْحَبًا!'},
+        'mercado': {
+          'minutos': 5,
+          'job': 'Ask the price.',
+          'opening': 'بكم هذا؟',
+          'agentId': 'agent_per_call',
+        },
+        'plaza': {
+          'minutos': 5,
+          'job': 'Legacy lowercase key.',
+          'opening': 'أهلا!',
+          'agentid': 'agent_legacy_lower',
+        },
+        'puerto': {
+          'minutos': 5,
+          'job': 'Whitespace falls back to idioma.',
+          'opening': 'السلام عليكم!',
+          'agentId': '   ',
+        },
+      };
+
+      final files = {
+        ...smallTree,
+        'datos/curso.json': jsonEncode(arabicCurso),
+        'datos/llamadas.json': jsonEncode(arabicCalls),
+        'cuentos/cual-ar.json': jsonEncode(arabicCual),
+        'cuentos/ar-story.json': jsonEncode(arabicStory),
+        'audio/ready.json': jsonEncode({
+          'v': 1,
+          'clips': ['c1', 'c2', 'c3', 'c4'],
+        }),
+        'audio/marcas.json': jsonEncode({
+          'c1': [0, 1000, 1200],
+          'c2': [0, 1000, 1200],
+          'c3': [0, 1000, 1200],
+          'c4': [0, 1000, 1200],
+        }),
+      };
+
+      final (catalog, _) = await _loaded(files);
+      expect(catalog.language, arabicLang);
+      expect((catalog as CourseCatalog).language, catalog.language);
+
+      // Optional a11yWords omitted still loads with empty map.
+      final (noA11y, _) = await _loaded({
+        ...files,
+        'datos/curso.json': jsonEncode({
+          ...arabicCurso,
+          'idioma': arabicIdioma(withA11y: false),
+        }),
+      });
+      expect(noA11y.language.a11yWords, isEmpty);
+
+      // pairFor uses Arabic word rules.
+      expect(catalog.pairFor('مرحبا')!.word, 'مَرْحَبًا');
+      expect(catalog.pairFor('  مـرحـبا! ')!.word, 'مَرْحَبًا');
+      expect(catalog.pairFor('احمد')!.word, 'أحمد');
+      expect(catalog.pairFor('بيت')!.word, 'بيت');
+      expect(catalog.pairFor('باب')!.word, 'باب');
+      expect(catalog.pairFor('ماء'), isNull);
+      expect(catalog.pairFor(''), isNull);
+
+      // linesWith uses Arabic normalization for matching AND deduplication.
+      final greetings = await catalog.linesWith('مرحبا', ['ar-story']);
+      expect(greetings, hasLength(1));
+      expect(greetings.single.clipId, 'c1');
+      expect(greetings.single.text, 'مَرْحَبًا يَا جَدَّةُ!');
+
+      final houseLines = await catalog.linesWith('بيت', ['ar-story']);
+      expect(houseLines, hasLength(1));
+      expect(houseLines.single.clipId, 'c3');
+      expect(houseLines.single.text, 'هذا بيت كبير.');
+
+      // callFor agentId precedence.
+      expect(catalog.callFor('casa')!.agentId, 'agent_arabic_test');
+      expect(catalog.callFor('mercado')!.agentId, 'agent_per_call');
+      expect(catalog.callFor('plaza')!.agentId, 'agent_legacy_lower');
+      expect(catalog.callFor('puerto')!.agentId, 'agent_arabic_test');
+    });
+
+    test('invalid idioma fails cleanly without mutating state and allows retry once fixed', () async {
+      final invalidCases = <String, Object?>{
+        'string': 'es',
+        'list': [1],
+        'bad direction': {...arabicIdioma(), 'direction': 'up'},
+        'missing code': arabicIdioma()..remove('code'),
+        'empty callAgentId': {...arabicIdioma(), 'callAgentId': '   '},
+        'missing tabNames key': {
+          ...arabicIdioma(),
+          'tabNames': Map<String, String>.from(
+            arabicIdioma()['tabNames'] as Map,
+          )..remove('map'),
+        },
+        'missing micWords key': {
+          ...arabicIdioma(),
+          'micWords': Map<String, String>.from(
+            arabicIdioma()['micWords'] as Map,
+          )..remove('ready'),
+        },
+        'non-map a11yWords': {...arabicIdioma(), 'a11yWords': 'close'},
+        'non-string a11yWords value': {
+          ...arabicIdioma(),
+          'a11yWords': {'close': 42},
+        },
+      };
+
+      for (final entry in invalidCases.entries) {
+        final files = Files({
+          ...smallTree,
+          'datos/curso.json': jsonEncode({..._curso, 'idioma': entry.value}),
+        });
+        final catalog = ContentCatalog(files.call);
+        await expectLater(
+          catalog.load(),
+          throwsA(
+            isA<FormatException>().having(
+              (e) => e.message,
+              'message',
+              startsWith('datos/curso.json: idioma'),
+            ),
+          ),
+          reason: entry.key,
+        );
+        expect(catalog.loaded, isFalse, reason: entry.key);
+        expect(catalog.language, Language.spanish, reason: entry.key);
+      }
+
+      // Unsupported script with non-empty review pairs throws UnsupportedError naming the script.
+      final cyrlFiles = Files({
+        ...smallTree,
+        'datos/curso.json': jsonEncode({
+          ..._curso,
+          'idioma': {...arabicIdioma(), 'script': 'Cyrl'},
+        }),
+      });
+      final cyrlCatalog = ContentCatalog(cyrlFiles.call);
+      await expectLater(
+        cyrlCatalog.load(),
+        throwsA(
+          isA<UnsupportedError>().having(
+            (e) => e.toString(),
+            'toString',
+            contains('Cyrl'),
+          ),
+        ),
+      );
+      expect(cyrlCatalog.loaded, isFalse);
+      expect(cyrlCatalog.language, Language.spanish);
+
+      // Fixing datos/curso.json on the same instance allows load() to succeed cleanly.
+      cyrlFiles.files['datos/curso.json'] = jsonEncode({
+        ..._curso,
+        'idioma': null,
+      });
+      await cyrlCatalog.load();
+      expect(cyrlCatalog.loaded, isTrue);
+      expect(cyrlCatalog.language, Language.spanish);
+    });
+  });
 }
 
 /// The ids ready.json leaves out in the small course: the clips of its stories that have no recording.

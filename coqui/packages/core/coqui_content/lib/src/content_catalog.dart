@@ -30,13 +30,17 @@ typedef FetchText = Future<String> Function(String path);
 /// pair, no place lists it); its clips are known like any other, by [clip], with their who and text from load on. When
 /// it is missing or cannot be read nothing else changes (its clips then have no line, as any clip no story has been read
 /// for).
-class ContentCatalog implements CourseCatalog, RepasoCatalog {
+/// [load] also reads the optional `idioma` object from `datos/curso.json` into [language] (implementing
+/// [LanguageCatalog], defaulting to [Language.spanish] when missing) and uses its `callAgentId` as the default for
+/// calls in `datos/llamadas.json`.
+class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   ContentCatalog(this._fetch);
 
   final FetchText _fetch;
 
   Future<void>? _loading;
   bool _loaded = false;
+  Language _language = Language.spanish;
   List<Place> _places = const [];
   Map<String, StoryMeta> _metas = const {};
   List<ReviewPair> _pairs = const [];
@@ -68,6 +72,9 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog {
   bool get loaded => _loaded;
 
   @override
+  Language get language => _language;
+
+  @override
   Future<void> load() async {
     final running = _loading;
     if (running != null) return running;
@@ -82,6 +89,7 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog {
 
   Future<void> _load() async {
     final curso = _object(await _json('datos/curso.json'), 'datos/curso.json');
+    final language = _parseLanguage(curso['idioma']);
     final places = [
       for (final l in curso['lugares'] as List)
         Place.fromJson(Map<String, dynamic>.from(l as Map)),
@@ -139,20 +147,21 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog {
       }
     }
 
+    final pairNormalized = [for (final p in pairs) language.normalize(p.word)];
+    final parsedCalls = {
+      for (final e in calls.entries)
+        e.key: _parseCallBrief(e.key, e.value, language),
+    };
+
+    _language = language;
     _places = places;
     _metas = metas;
     _pairs = pairs;
-    _pairNormalized = [for (final p in pairs) normalize(p.word)];
+    _pairNormalized = pairNormalized;
     // app.html, pares(): m.set(it.w, it) — the last item with a word is the one the word gives
     _pairByWord = {for (final p in pairs) p.word: p};
     _levelItems = levelItems;
-    _calls = {
-      for (final e in calls.entries)
-        e.key: CallBrief.fromJson(
-          e.key,
-          Map<String, dynamic>.from(e.value as Map),
-        ),
-    };
+    _calls = parsedCalls;
     _fixed = Map<String, String>.from(fixed['clips'] as Map);
     _written = _writtenLines(fixed['lineas']);
     _goodbye = _strings(fixed['despedidas']);
@@ -309,14 +318,14 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog {
   @override
   List<ReviewPair> get pairs => _pairs;
 
-  /// app.html, pares().m.get(word), matched on [normalize]. Two pairs can have one normalised word (a word and the
-  /// same word without its accent): the one whose word is exactly [word] is the one the old page gives; if none is,
-  /// the first of the pairs that match.
+  /// app.html, pares().m.get(word), matched on [Language.normalize]. Two pairs can have one normalised word (a word
+  /// and the same word without its accent): the one whose word is exactly [word] is the one the old page gives; if
+  /// none is, the first of the pairs that match.
   @override
   ReviewPair? pairFor(String word) {
     final exact = _pairByWord[word];
     if (exact != null) return exact;
-    final n = normalize(word);
+    final n = _language.normalize(word);
     for (var i = 0; i < _pairs.length; i++) {
       if (_pairNormalized[i] == n) return _pairs[i];
     }
@@ -371,8 +380,9 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog {
   @override
   List<String> get goodbyeWords => _goodbye;
 
-  /// app.html, oidoEn: up to [max] lines of the played stories whose text holds [word] (matched on [normalize], whole
-  /// words), one line from each story first, then the next of each; a text already given is skipped.
+  /// app.html, oidoEn: up to [max] lines of the played stories whose text holds [word] (matched on
+  /// [Language.normalize], whole words), one line from each story first, then the next of each; a text already given
+  /// is skipped.
   ///
   /// As oidoEn, the stories are the `cuentos` of the places, in the course's order, whatever the order of [storyIds]:
   /// an id that is not one of them (a picture story, a routine) is left out, and so is a story that cannot be read.
@@ -384,7 +394,7 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog {
     int max = 5,
   }) async {
     final played = storyIds.toSet();
-    final nw = normalize(word);
+    final nw = _language.normalize(word);
     final have = _have;
     final per = <List<HeardLine>>[];
     for (final c in [for (final l in _places) ...l.stories]) {
@@ -417,7 +427,7 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog {
         if (r >= ls.length) continue;
         any = true;
         final x = ls[r];
-        if (!seen.add(normalize(x.text))) continue;
+        if (!seen.add(_language.normalize(x.text))) continue;
         out.add(x);
         if (out.length >= max) break;
       }
@@ -440,11 +450,124 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog {
       final cl = clips[id];
       final text = cl is Map ? cl['text'] : null;
       if (text is String && text.isNotEmpty) {
-        out.add(_StoryLine(id, text, normalize(text)));
+        out.add(_StoryLine(id, text, _language.normalize(text)));
       }
     }
     return _heardIndex[c] = out;
   }
+}
+
+Language _parseLanguage(Object? raw) {
+  if (raw == null) return Language.spanish;
+  if (raw is! Map) {
+    throw const FormatException(
+      'datos/curso.json: idioma must be a JSON object',
+    );
+  }
+  final code = _requiredLanguageString(raw, 'code');
+  final englishName = _requiredLanguageString(raw, 'englishName');
+  final nativeName = _requiredLanguageString(raw, 'nativeName');
+  final recognitionLocale = _requiredLanguageString(raw, 'recognitionLocale');
+  final direction = _parseDirection(raw['direction']);
+  final script = _requiredLanguageString(raw, 'script');
+  final partnerName = _requiredLanguageString(raw, 'partnerName');
+  final callAgentId = _requiredLanguageString(raw, 'callAgentId');
+  final micWords = _languageStringMap(raw, 'micWords', required: true);
+  final tabNames = _languageStringMap(raw, 'tabNames', required: true);
+  final a11yWords = _languageStringMap(raw, 'a11yWords', required: false);
+  try {
+    return Language(
+      code: code,
+      englishName: englishName,
+      nativeName: nativeName,
+      recognitionLocale: recognitionLocale,
+      direction: direction,
+      script: script,
+      partnerName: partnerName,
+      callAgentId: callAgentId,
+      micWords: micWords,
+      tabNames: tabNames,
+      a11yWords: a11yWords,
+    );
+  } on ArgumentError catch (e) {
+    throw FormatException(
+      'datos/curso.json: idioma${e.name != null ? '.${e.name}' : ''}: ${e.message}',
+    );
+  }
+}
+
+LanguageDirection _parseDirection(Object? raw) => switch (raw) {
+  'ltr' => LanguageDirection.ltr,
+  'rtl' => LanguageDirection.rtl,
+  _ => throw const FormatException(
+    'datos/curso.json: idioma.direction must be "ltr" or "rtl"',
+  ),
+};
+
+String _requiredLanguageString(Map<dynamic, dynamic> m, String key) {
+  final v = m[key];
+  if (v is! String || v.trim().isEmpty) {
+    throw FormatException(
+      'datos/curso.json: idioma.$key must be a non-empty string',
+    );
+  }
+  return v;
+}
+
+Map<String, String> _languageStringMap(
+  Map<dynamic, dynamic> m,
+  String key, {
+  required bool required,
+}) {
+  final v = m[key];
+  if (v == null) {
+    if (required) {
+      throw FormatException(
+        'datos/curso.json: idioma.$key must be an object of string -> string',
+      );
+    }
+    return const <String, String>{};
+  }
+  if (v is! Map) {
+    throw FormatException(
+      'datos/curso.json: idioma.$key must be an object of string -> string',
+    );
+  }
+  final out = <String, String>{};
+  for (final e in v.entries) {
+    if (e.key is! String || e.value is! String) {
+      throw FormatException(
+        'datos/curso.json: idioma.$key.${e.key} must be a string',
+      );
+    }
+    out[e.key as String] = e.value as String;
+  }
+  return out;
+}
+
+CallBrief _parseCallBrief(String placeId, Object? value, Language language) {
+  final raw = ContentCatalog._object(value, 'datos/llamadas.json: $placeId');
+  final primary = raw['agentId'];
+  if (primary != null && primary is! String) {
+    throw FormatException(
+      'datos/llamadas.json: $placeId.agentId must be a string',
+    );
+  }
+  final legacy = raw['agentid'];
+  if (legacy != null && legacy is! String) {
+    throw FormatException(
+      'datos/llamadas.json: $placeId.agentid must be a string',
+    );
+  }
+  final perCall = (primary is String && primary.trim().isNotEmpty)
+      ? primary
+      : (legacy is String && legacy.trim().isNotEmpty)
+      ? legacy
+      : null;
+  final fallback = language.callAgentId.trim().isNotEmpty
+      ? language.callAgentId
+      : null;
+  return CallBrief.fromJson(placeId, raw, agentId: perCall ?? fallback);
 }
 
 /// The strings of a JSON list; a missing list is empty.

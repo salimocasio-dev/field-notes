@@ -395,6 +395,12 @@ void main() {
       expect(catalog.goodbyeWords, fijos['despedidas']);
       expect(() => catalog.fixedClip('no_such_role'), throwsArgumentError);
     });
+
+    test('implements LanguageCatalog and defaults to Language.spanish for the current course', () {
+      expect(catalog, isA<LanguageCatalog>());
+      expect(catalog.language, Language.spanish);
+      expect((catalog as CourseCatalog).language, Language.spanish);
+    });
   });
 
   test('datos/repaso.json reads: 167 words; every clip it names is a recorded line with marks, every story a story of '
