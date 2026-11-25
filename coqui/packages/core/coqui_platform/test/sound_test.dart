@@ -541,6 +541,126 @@ void main() {
       expect(hits.where((h) => h == 'no2'), hasLength(2));
     });
   });
+
+  group('playback rate (0.75, 0.9, 1.0)', () {
+    test(
+      'GraphClipPlayer sets playbackRate and keeps buffer duration unchanged',
+      () async {
+        final r = _Rig();
+        await r.player.preload(['ab_bien_y_tu']);
+
+        final p75 = r.player.play('ab_bien_y_tu', rate: 0.75);
+        await Future<void>.delayed(Duration.zero);
+        r.endLast();
+        expect(await p75, isTrue);
+
+        final p90 = r.player.playAtRate('ab_bien_y_tu', rate: 0.9);
+        await Future<void>.delayed(Duration.zero);
+        r.endLast();
+        expect(await p90, isTrue);
+
+        final p100 = r.player.playAtRate('ab_bien_y_tu', rate: 1.0);
+        await Future<void>.delayed(Duration.zero);
+        r.endLast();
+        expect(await p100, isTrue);
+
+        expect(
+          r.log,
+          containsAllInOrder([
+            ['source1.playbackRate', '=', 0.75],
+            ['source1', 'start', 0.0, 0.198, 4.462 - 0.198],
+            ['source2.playbackRate', '=', 0.9],
+            ['source2', 'start', 0.0, 0.198, 4.462 - 0.198],
+            ['source3', 'start', 0.0, 0.198, 4.462 - 0.198],
+          ]),
+        );
+        expect(r.log.where((e) => e.first == 'source3.playbackRate'), isEmpty);
+      },
+    );
+
+    test('GraphClipPlayer rejects non-positive or non-finite rate', () async {
+      final r = _Rig();
+      await r.player.preload(['ab_bien_y_tu']);
+      for (final bad in [0.0, -0.5, double.nan, double.infinity]) {
+        expect(
+          () => r.player.play('ab_bien_y_tu', rate: bad),
+          throwsArgumentError,
+        );
+        expect(
+          () => r.player.playAtRate('ab_bien_y_tu', rate: bad),
+          throwsArgumentError,
+        );
+      }
+    });
+
+    test(
+      'PhoneClipPlayer passes speed 0.75, 0.9, 1.0 and resets pooled player',
+      () async {
+        final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+        addTearDown(() => server.close(force: true));
+        server.listen((rq) async {
+          rq.response.add([1, 2, 3, 4]);
+          await rq.response.close();
+        });
+        final created = <_FakePhonePlayer>[];
+        final p = PhoneClipPlayer(
+          effects: SoundCore(() => RecordingGraph([])),
+          clipInfo: (id) => id == 'ok' ? _info(id, 100, 1100) : null,
+          base: Uri.parse('http://127.0.0.1:${server.port}/'),
+          makePlayer: () {
+            final fp = _FakePhonePlayer();
+            created.add(fp);
+            return fp;
+          },
+        );
+
+        expect(await p.play('ok', rate: 0.75), isTrue);
+        expect(await p.playAtRate('ok', rate: 0.9), isTrue);
+        expect(await p.play('ok'), isTrue);
+
+        expect(created, hasLength(1)); // reused from pool
+        expect(created.single.speeds, [0.75, 0.9, 1.0]);
+      },
+    );
+
+    test('PhoneClipPlayer rejects non-positive or non-finite rate', () {
+      final p = PhoneClipPlayer(
+        effects: SoundCore(() => RecordingGraph([])),
+        clipInfo: (_) => null,
+        base: Uri.parse('https://example.test/'),
+        makePlayer: _FakePhonePlayer.new,
+      );
+      for (final bad in [0.0, -1.0, double.nan, double.infinity]) {
+        expect(() => p.play('ok', rate: bad), throwsArgumentError);
+        expect(() => p.playAtRate('ok', rate: bad), throwsArgumentError);
+      }
+    });
+  });
+}
+
+class _FakePhonePlayer implements PhoneAudioPlayer {
+  final List<double> speeds = [];
+  final StreamController<bool> _completed = StreamController<bool>.broadcast();
+
+  @override
+  Stream<bool> get completed => _completed.stream;
+
+  @override
+  Future<void> setClip(String path, Duration start, Duration end) async {}
+
+  @override
+  Future<void> setSpeed(double speed) async => speeds.add(speed);
+
+  @override
+  Future<void> setVolume(double volume) async {}
+
+  @override
+  Future<void> play() async {
+    scheduleMicrotask(() => _completed.add(true));
+  }
+
+  @override
+  Future<void> stop() async {}
 }
 
 class SocketExceptionLike implements Exception {

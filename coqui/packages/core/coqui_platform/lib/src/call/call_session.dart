@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/src/call/conv.dart';
 
-/// The ElevenLabs client, at the version the old page pins (llamada.js: SDK).
+/// The ElevenLabs client, self-hosted as a bundled web asset at the pinned
+/// `@elevenlabs/client@1.25.0` version (llamada.js: SDK).
 const elevenLabsClientUrl =
-    'https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.25.0/+esm';
+    'assets/packages/coqui_platform/assets/elevenlabs/lib.iife.js';
 
 // llamada.js, inicia: the microphone line is shown when the error's name and message match this.
 final _microphone = RegExp(
