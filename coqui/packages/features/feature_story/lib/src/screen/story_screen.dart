@@ -7,6 +7,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/bubble_place.dart';
 import 'package:feature_story/src/runner/speech_session.dart';
+import 'package:feature_story/src/runner/story_check.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_runner.dart';
 import 'package:feature_story/src/runner/story_view.dart';
@@ -75,6 +76,9 @@ class _StoryScreenState extends State<StoryScreen>
   /// The story's scene is not converted yet: the screen says so (`StoryNotReady`) instead of showing the empty frame.
   bool _notConverted = false;
 
+  /// The story needs a newer app (unsupported `minApp` or an act the scene does not have): the screen says so without starting.
+  bool _needsUpdate = false;
+
   Services get _s => widget.services;
 
   @override
@@ -103,6 +107,14 @@ class _StoryScreenState extends State<StoryScreen>
   Future<void> _open() async {
     try {
       await _s.course.load();
+      if (storyNeedsAppUpdate(
+        course: _s.course,
+        storyId: widget.route.id,
+        info: _s.info,
+      )) {
+        if (mounted) setState(() => _needsUpdate = true);
+        return;
+      }
       final story = await _s.course.story(widget.route.id);
       final StoryScene scene;
       try {
@@ -110,6 +122,16 @@ class _StoryScreenState extends State<StoryScreen>
       } on UnimplementedError {
         // the scene is not converted yet (`registryScenes`, coqui_scenes' `loadScene`): not a fault, the screen says so
         if (mounted) setState(() => _notConverted = true);
+        return;
+      }
+      if (storyNeedsAppUpdate(
+        course: _s.course,
+        storyId: widget.route.id,
+        info: _s.info,
+        story: story,
+        scene: scene.scene,
+      )) {
+        if (mounted) setState(() => _needsUpdate = true);
         return;
       }
       final frame = FrameRenderer(
@@ -220,6 +242,9 @@ class _StoryScreenState extends State<StoryScreen>
   @override
   Widget build(BuildContext context) {
     final r = _runner, frame = _frame;
+    if (_needsUpdate) {
+      return StoryNotReady(onClose: _close, line: storyNeedsUpdateLine);
+    }
     if (_notConverted) return StoryNotReady(onClose: _close);
     if (r == null || frame == null) {
       // loading, or no story: the frame alone, with its way out

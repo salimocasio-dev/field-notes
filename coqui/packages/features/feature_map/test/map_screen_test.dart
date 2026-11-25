@@ -796,6 +796,21 @@ void main() {
       expect(fCurso.nav.routes.last, const StoryRoute('la-bola'));
     },
   );
+
+  mapTest(
+    'the Up next card Listen again play disc routes to StoryRoute with listen: true',
+    (tester) async {
+      phone(tester);
+      final f = fixture(seed: 'todo');
+      await showMap(tester, f);
+      expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
+      expect(find.text('La lluvia'), findsOneWidget);
+      expect(find.text('Listen again · 2 min'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
+      expect(f.nav.routes, [const StoryRoute('la-lluvia', listen: true)]);
+    },
+  );
 }
 
 class _PairsCourse extends MapFixtureCourse {

@@ -99,19 +99,21 @@ List<TodayEntry> todayPlan({
       )
       .toList();
   final minSetting = progress.setting('min');
-  final min = minSetting is num ? minSetting : 30;
+  final min = minSetting is num && minSetting.isFinite ? minSetting : 30;
   num used = 0;
   if (due.isNotEmpty) {
     final nd = math.min(due.length, 10);
+    final reviewMinutes = math.min(6, 2 + (nd / 3).ceil());
     out.add(
       TodayEntry(
         line: '$nd word${nd > 1 ? 's' : ''} coming back',
-        minutes: math.min(6, 2 + (nd / 3).ceil()),
+        minutes: reviewMinutes,
         route: const ReviewRoute(),
         review: true,
         kind: TodayEntryKind.review,
       ),
     );
+    used += reviewMinutes;
   }
   final cs = [for (final l in course.places) ...l.stories];
   int veces(String id) => progress.story(id)?.n ?? 0;
@@ -147,8 +149,10 @@ List<TodayEntry> todayPlan({
     used += m;
   }
   final otros = cs.where((c) => veces(c) >= 2).toList();
+  // Keep 6 replays for daily goals up to 30 min; scale proportionally for larger goals (e.g. 12 at 60, 24 at 120).
+  final replayCap = min <= 30 ? 6 : (6 * min / 30).ceil();
   var k = 0;
-  while (used < min && otros.isNotEmpty && k < 6) {
+  while (used < min && otros.isNotEmpty && k < replayCap) {
     final c = otros[k % otros.length];
     final x = course.meta(c);
     if (x == null) {
@@ -160,7 +164,7 @@ List<TodayEntry> todayPlan({
         title: x.title,
         line: 'Listen again',
         minutes: x.minutes,
-        route: StoryRoute(c),
+        route: StoryRoute(c, listen: true),
         kind: TodayEntryKind.listenAgain,
       ),
     );
