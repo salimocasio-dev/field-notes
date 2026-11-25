@@ -61,7 +61,7 @@ python3 tool/test/test_make_previa.py 2>&1 | tail -n 3
 
 # Pure Dart packages (no Flutter SDK in their pubspec) run on the VM and in Chrome.
 # Flutter packages run with flutter test.
-for dir in packages/core/* packages/features/* app; do
+for dir in packages/core/* packages/features/* packages/coqui_story_checks app; do
   [ -d "$dir/test" ] || continue
   if grep -q 'sdk: flutter' "$dir/pubspec.yaml"; then
     step "tests: $dir (flutter test)"
