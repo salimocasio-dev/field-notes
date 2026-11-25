@@ -27,6 +27,20 @@
       "izquierda-o-derecha",
       "sigue-derecho",
       "al-frente-y-detras"
+    ],
+    "plaza": [
+      "mucho-gusto",
+      "de-donde-eres",
+      "hablo-espanol",
+      "que-hora-es",
+      "y-media",
+      "bingo",
+      "un-cafe-para-la-maestra",
+      "en-que-trabajas",
+      "cuantos-anos-tienes",
+      "el-lunes-hay-frutas",
+      "el-fin-de-semana",
+      "hoy-y-manana"
     ]
   },
   "cuentos": {
@@ -125,6 +139,54 @@
     "al-frente-y-detras": {
       "t": "Al frente y detrás",
       "min": 6
+    },
+    "mucho-gusto": {
+      "t": "Mucho gusto",
+      "min": 4
+    },
+    "de-donde-eres": {
+      "t": "¿De dónde eres?",
+      "min": 5
+    },
+    "hablo-espanol": {
+      "t": "Hablo español",
+      "min": 4
+    },
+    "que-hora-es": {
+      "t": "¿Qué hora es?",
+      "min": 6
+    },
+    "y-media": {
+      "t": "Y media",
+      "min": 5
+    },
+    "bingo": {
+      "t": "¡Bingo!",
+      "min": 7
+    },
+    "un-cafe-para-la-maestra": {
+      "t": "Un café para la maestra",
+      "min": 4
+    },
+    "en-que-trabajas": {
+      "t": "¿En qué trabajas?",
+      "min": 4
+    },
+    "cuantos-anos-tienes": {
+      "t": "¿Cuántos años tienes?",
+      "min": 4
+    },
+    "el-lunes-hay-frutas": {
+      "t": "El lunes hay frutas",
+      "min": 6
+    },
+    "el-fin-de-semana": {
+      "t": "El fin de semana",
+      "min": 6
+    },
+    "hoy-y-manana": {
+      "t": "Hoy y mañana",
+      "min": 7
     }
   }
 }
