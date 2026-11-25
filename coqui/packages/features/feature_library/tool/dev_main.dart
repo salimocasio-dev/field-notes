@@ -163,13 +163,16 @@ class _DevAppState extends State<_DevApp> {
     final progress = FakeProgressStore(clock: clock);
     final seed = devSeeds[o.seed];
     if (seed != null) progress.import(seed);
+    final course = o.real ? RealCatalog() : DevCatalog();
+    await course.load();
     if (!o.real && o.screen == 'shelf' && o.seed == 'curso') {
       final generator = await StoryGenerator.load();
       final snapshot = progress.raw;
       final vocabulary = {
         for (final plot in generator.plots)
           for (final beat in plot.beats)
-            for (final option in beat) ...readingWords(option),
+            for (final option in beat)
+              ...readingWords(option, language: course.language),
       };
       progress.import(
         jsonEncode({
@@ -186,8 +189,6 @@ class _DevAppState extends State<_DevApp> {
         }),
       );
     }
-    final course = o.real ? RealCatalog() : DevCatalog();
-    await course.load();
     final nav = DevNavigator();
     final services = fakeServices(
       progress: progress,
