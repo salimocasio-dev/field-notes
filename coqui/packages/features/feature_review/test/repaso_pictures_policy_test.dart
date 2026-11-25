@@ -123,8 +123,9 @@ void main() {
       expect(plExplicitFalse.scoredKind(w), GameKind.hear, reason: word);
     }
 
-    // ya / listo only have cual in current repaso.json; without dedicated assets they are not servable as pictures
-    for (final word in ['ya', 'listo']) {
+    // Pair-only words (tengo hambre, tengo sed, listo, ya) have no native oyes sentences in repaso.json;
+    // under #10 they still clear via text-only HearItem (zero pictures) so Map/Palabras due counts stay aligned.
+    for (final word in ['tengo hambre', 'tengo sed', 'listo', 'ya']) {
       final w = realRepaso.word(word)!;
       final pl = RepasoPlanner(
         data: realRepaso,
@@ -133,6 +134,13 @@ void main() {
         rng: Mulberry32(1),
       );
       expect(pl.cualLines(w), isEmpty, reason: word);
+      expect(pl.servable(w), isTrue, reason: word);
+      expect(pl.scoredKind(w), GameKind.hear, reason: word);
+      final it = pl.scoredItem(w);
+      expect(it, isA<HearItem>(), reason: word);
+      expect((it as HearItem).sentence.picture, isNull, reason: word);
+      expect(it.tiles, contains(word), reason: word);
+      expect(it.speakers, isTrue, reason: word);
     }
   });
 
@@ -159,8 +167,8 @@ void main() {
   testWidgets(
     'dedicated WordPictureAsset activates CualItem for concrete words using word_assets/... URLs and never calls PictureSource',
     (t) async {
-      final yesImg = await wordAssetStandIn(t, color: const Color(0xFF2E7D32));
-      final noImg = await wordAssetStandIn(t, color: const Color(0xFF1565C0));
+      final yesImg = await wordAssetStandIn(t, color: CoquiColors.lessonGreen);
+      final noImg = await wordAssetStandIn(t, color: CoquiColors.lessonBlue);
       final requestedUrls = <String>[];
 
       final db = jsonDecode(seedJson('curso')) as Map<String, dynamic>;
@@ -214,7 +222,7 @@ void main() {
   );
 
   testWidgets(
-    'defensive UI guards block invalid/null/unpicturable CualItem, img/... WhereItem, and HearItem/BuildItem reveal screenshots',
+    'defensive guards skip invalid/null/unpicturable CualItem and img/... WhereItem without stalling, and strip HearItem/BuildItem reveal screenshots',
     (t) async {
       final w = realRepaso.word('puerta')!;
       final pair = RepasoTestCourse().pairFor('puerta')!;
@@ -249,15 +257,15 @@ void main() {
         ];
         await t.tap(find.byType(LessonStartButton));
         await sc.settle();
-        await sc.vt.runUntil(() => sc.s.yourTurn);
+        await sc.vt.runUntil(() => sc.s.screen == LessonScreen.end);
         await sc.settle();
+        expect(sc.s.screen, LessonScreen.end);
+        expect(sc.s.played.where((q) => q.again), isEmpty);
         expect(find.byType(PictureChoice), findsNothing);
         expect(find.byType(BookImage), findsNothing);
-        sc.s.leave();
-        await sc.vt.runUntil(() => false, limit: 5);
       }
 
-      // WhereItem with img/... story screenshots renders zero pictures
+      // WhereItem with img/... story screenshots skips cleanly with zero pictures and never stalls
       final whereSentence = realRepaso.sentences.firstWhere(
         (s) => s.picture != null && s.picture!.startsWith('img/'),
       );
@@ -276,12 +284,11 @@ void main() {
         ];
         await t.tap(find.byType(LessonStartButton));
         await sc.settle();
-        await sc.vt.runUntil(() => sc.s.yourTurn);
+        await sc.vt.runUntil(() => sc.s.screen == LessonScreen.end);
         await sc.settle();
+        expect(sc.s.screen, LessonScreen.end);
         expect(find.byType(PictureChoice), findsNothing);
         expect(find.byType(BookImage), findsNothing);
-        sc.s.leave();
-        await sc.vt.runUntil(() => false, limit: 5);
       }
 
       // HearItem and BuildItem reveals show text with zero BookImage even when sentence.picture is non-null

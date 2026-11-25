@@ -62,17 +62,25 @@ void main() {
     }
   });
 
-  test('N: without dedicated word assets, servable equals hearSentences; with dedicated assets, matches serving.canServe', () {
+  test('N: the words the session takes are exactly the words the shared rule serves (aligned with Map and Palabras with or without dedicated word assets)', () {
     for (final json in [seedJson('curso'), everythingJson(data)]) {
       final p = learner(json);
       final serving = repasoServing(course, p)!;
       final pl = planner(p);
-      // With empty wordAssets (#10), servable is strictly hearSentences.isNotEmpty
+      // Even with empty wordAssets (#10), servable stays 100% aligned with serving.canServe
+      // because pair-only words fall back to text-only ¿Qué oyes? without pictures.
       for (final w in data.words) {
         expect(pl.cualLines(w), isEmpty, reason: w.word);
-        expect(pl.servable(w), pl.hearSentences(w).isNotEmpty, reason: w.word);
+        expect(pl.servable(w), serving.canServe(w.word), reason: w.word);
       }
-      // When every pair word has a dedicated word_assets/... asset, servable matches serving.canServe
+      final counted = [
+        for (final w in p.due(Skill.ear))
+          if (serving.canServe(w)) w,
+      ];
+      expect([
+        for (final w in pl.sessionWords().words) w.word,
+      ], counted.take(repasoCap).toList());
+      // When every pair word has a dedicated word_assets/... asset, servable still matches serving.canServe
       final allDedicated = {
         for (final pair in course.pairs)
           pair.word: WordPictureAsset(
@@ -89,10 +97,6 @@ void main() {
           reason: w.word,
         );
       }
-      final counted = [
-        for (final w in p.due(Skill.ear))
-          if (serving.canServe(w)) w,
-      ];
       expect([
         for (final w in plWithAssets.sessionWords().words) w.word,
       ], counted.take(repasoCap).toList());
@@ -385,13 +389,15 @@ void main() {
       );
     });
 
-    test('a word with no pair is ¿Qué oyes? only; a word with no sentence ¿Cuál? only when given a dedicated asset', () {
+    test('a word with no pair is ¿Qué oyes? only; a word with no native hearing sentence falls back to text-only ¿Qué oyes? without a dedicated asset and uses ¿Cuál? with one', () {
       final p = learner(everything);
       final noPair = data.words.firstWhere(
         (x) => x.pairLines.isEmpty && planner(p).hearSentences(x).isNotEmpty,
       );
       final noSentence = data.words.firstWhere(
-        (x) => x.pairLines.isNotEmpty && planner(p).hearSentences(x).isEmpty,
+        (x) =>
+            x.pairLines.isNotEmpty &&
+            planner(p).serving.hearSentences(x).isEmpty,
       );
       final dedicatedNoSentence = {
         noSentence.word: WordPictureAsset(
@@ -406,7 +412,10 @@ void main() {
         final r = learner(
           withEar(everything, noSentence.word, (e) => e['n'] = n),
         );
-        expect(planner(r).servable(noSentence), isFalse);
+        expect(planner(r).servable(noSentence), isTrue);
+        expect(planner(r).scoredKind(noSentence), GameKind.hear);
+        final fallbackItem = planner(r).scoredItem(noSentence);
+        expect(fallbackItem, isA<HearItem>());
         expect(
           planner(r, wordAssets: dedicatedNoSentence).scoredKind(noSentence),
           GameKind.cual,

@@ -600,6 +600,11 @@ class RepasoSession extends LessonBase {
   // ---- ¿Cuál? (scored): cual.js cualItem, with this item's sentence
 
   Future<bool> _cual(CualItem it, bool again) async {
+    final asset = it.asset;
+    if (asset == null || !asset.isUsable) {
+      _mark(DashMark.skipped);
+      return true;
+    }
     choices = [for (var k = 0; k < 2; k++) Choice(right: k == it.rightPanel)];
     changed();
     await waitMs(500);
@@ -929,6 +934,10 @@ class RepasoSession extends LessonBase {
   Future<bool> _where(WhereItem it) async {
     // as many pictures as the screen has room for (page 15: never three small ones; two big ones instead)
     final pics = it.picturesFor(wherePictures);
+    if (pics.isEmpty || pics.any((p) => !isDedicatedWordAssetPath(p))) {
+      _mark(DashMark.skipped);
+      return true;
+    }
     final answer = pics.indexOf(it.pictures[it.answer]);
     choices = [
       for (var k = 0; k < pics.length; k++)

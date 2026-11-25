@@ -1,15 +1,15 @@
 ## What I need
 
 1. Add optional dedicated word-picture asset metadata (`picturable` flag and dedicated `word_assets/...` pair paths, separate from story-scene `ReviewPair`) to `RepasoWord` / `RepasoData` in `coqui_contracts` (or a dedicated catalog/contract field).
-2. Update `RepasoServing.cualLines` and `RepasoServing.servable` in `coqui/packages/core/coqui_contracts/lib/src/repaso.dart` so Map and Palabras due counts (`"N words today"`) match `RepasoPlanner`'s `#10` rule: do not count story-scene `ReviewPair` crops as servable `¿Cuál?` items when no dedicated single-word `word_assets/...` asset exists.
+2. Confirm the hosting base path for dedicated `word_assets/...` files (whether under `libros/word_assets/...` via `ReviewModule.imageUrl` or a dedicated `wordAssetUrl` resolver on `ReviewModule` / `CourseCatalog`).
 
 ## Why
 
-Issue #10 removes story-scene crops (`ReviewPair` via `ScenePictures`) from `RepasoPlanner.cualLines` and `RepasoPlanner.servable`. Until `RepasoServing` in `coqui_contracts` applies the same rule (and surfaces dedicated `word_assets/...` metadata), `serving.canServe(w)` will still count the 4 `cual`-only words (`tengo hambre`, `tengo sed`, `listo`, `ya`) while `RepasoPlanner` drops them.
+Issue #10 removes story-scene crops (`ReviewPair` via `ScenePictures`) and story-book screenshots from flashcards. `RepasoPlanner` stays 100% aligned with `RepasoServing.canServe` (used by Map and Palabras) by serving pair-only words (`tengo hambre`, `tengo sed`, `listo`, `ya`) via text-only `¿Qué oyes?` fallback sentences until dedicated `word_assets/...` metadata is added to `coqui_contracts`.
 
 ## What I am using meanwhile
 
-Local `WordPictureAsset` and `isDedicatedWordAssetPath` in `feature_review/lib/src/logic/word_picture.dart`, gated in `RepasoPlanner`, `RepasoSession`, and `RepasoScreen` via an optional `wordAssets` map (default `{}`).
+Local `WordPictureAsset` and `isDedicatedWordAssetPath` in `feature_review/lib/src/logic/word_picture.dart`, gated in `RepasoPlanner`, `RepasoSession`, and `RepasoScreen` via an optional `wordAssets` map (default `{}`), plus text-only `HearItem` fallback for `cual`-only words so Map/Palabras due counts match Repaso's served words.
 
 ## Order and branch
 

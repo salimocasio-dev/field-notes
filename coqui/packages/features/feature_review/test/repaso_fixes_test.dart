@@ -206,8 +206,8 @@ void main() {
   testWidgets(
     'A: consecutive ¿Cuál? items with dedicated assets each get their own pictures (and never call ScenePictures)',
     (t) async {
-      final imgA = await wordAssetStandIn(t, color: const Color(0xFF4CAF50));
-      final imgB = await wordAssetStandIn(t, color: const Color(0xFF2196F3));
+      final imgA = await wordAssetStandIn(t, color: CoquiColors.lessonGreen);
+      final imgB = await wordAssetStandIn(t, color: CoquiColors.lessonBlue);
       final sc = Screen(
         t,
         wordAssets: dedicatedWordAssets(),

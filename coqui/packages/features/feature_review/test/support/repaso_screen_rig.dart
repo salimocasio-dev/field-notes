@@ -47,7 +47,7 @@ Future<MemoryImage> bookPageStandIn(WidgetTester t) async {
 /// A dedicated single-word asset stand-in of size 196 x 104 picture pixels.
 Future<MemoryImage> wordAssetStandIn(
   WidgetTester t, {
-  Color color = const Color(0xFF4CAF50),
+  Color color = CoquiColors.lessonGreen,
 }) async {
   final bytes = await t.runAsync(() async {
     final recorder = ui.PictureRecorder();

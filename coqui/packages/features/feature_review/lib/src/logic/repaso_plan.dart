@@ -388,11 +388,41 @@ class RepasoPlanner {
 
   /// The word's ¿Qué oyes? sentences he may get, in the fixed order: from finished stories, with two fair wrong
   /// tiles among the words he has met.
-  List<RepasoSentence> hearSentences(RepasoWord w) => serving.hearSentences(w);
+  ///
+  /// Under `#10`, when a word has no dedicated single-word picture asset ([cualLines] is empty) and no native
+  /// hearing sentences, its existing `serving.cualLines(w)` audio lines are served as text-only `¿Qué oyes?`
+  /// sentences (no pictures). This keeps [servable] 100% aligned with `RepasoServing.canServe` used by Map and
+  /// Palabras so due words like `cual`-only entries are always cleared and never stuck as perpetually due.
+  List<RepasoSentence> hearSentences(RepasoWord w) {
+    final native = serving.hearSentences(w);
+    if (native.isNotEmpty) return native;
+    if (cualLines(w).isNotEmpty) return const [];
+    final pairFallback = serving.cualLines(w);
+    if (pairFallback.isEmpty) return const [];
+    return [for (final l in pairFallback) _pairLineAsHearingSentence(l)];
+  }
 
-  /// Whether some game can score the word now.
-  bool servable(RepasoWord w) =>
-      cualLines(w).isNotEmpty || hearSentences(w).isNotEmpty;
+  RepasoSentence _pairLineAsHearingSentence(RepasoPairLine l) {
+    final tokens = foldedTokens(l.text);
+    final tokenSet = tokens.toSet();
+    final forbidden = [
+      for (final m in data.words)
+        if (foldedTokens(m.word).any(tokenSet.contains)) m.word,
+    ];
+    return RepasoSentence(
+      clip: l.clip,
+      story: l.story ?? '',
+      text: l.text,
+      tokens: tokens,
+      forbidden: forbidden,
+      picture: null,
+      forHearing: true,
+      forBuilding: false,
+    );
+  }
+
+  /// Whether some game can score the word now (always matches `RepasoServing.canServe` used by Map and Palabras).
+  bool servable(RepasoWord w) => serving.servable(w);
 
   /// The words other than [target] that may stand as a wrong written tile beside [s], in the data's order: words he
   /// has met, not in the sentence (none of their words is a word of it), not in its forbidden list, not in the
@@ -409,11 +439,16 @@ class RepasoPlanner {
     RepasoWord target,
     RepasoSentence s, {
     bool singleWords = false,
-  }) {
-    final mixed = shuffled(
-      wrongTileChoices(target, s, singleWords: singleWords),
-      rng,
-    );
+  }) => _pickTwoWrongTiles(
+    target,
+    wrongTileChoices(target, s, singleWords: singleWords),
+  );
+
+  List<RepasoWord>? _pickTwoWrongTiles(
+    RepasoWord target,
+    List<RepasoWord> pool,
+  ) {
+    final mixed = shuffled(pool, rng);
     // the same place first (a stable sort: the mixed order stays inside each group)
     final cands = [
       for (final m in mixed)
@@ -429,6 +464,33 @@ class RepasoPlanner {
       }
     }
     return null;
+  }
+
+  /// Fallback pool from all course words when a learner has met fewer than two fair distractors for a pair-line
+  /// fallback sentence.
+  List<RepasoWord> _fallbackWrongTiles(RepasoWord target, RepasoSentence s) {
+    final inSentence = {
+      ...foldedTokens(s.text),
+      ...s.tokens.expand(foldedTokens),
+    };
+    final banned = <String>{
+      target.word,
+      ...target.apart,
+      ...s.forbidden,
+      for (final x in s.forbidden) ...?data.word(x)?.apart,
+    };
+    final pool = [
+      for (final m in data.words)
+        if (!banned.contains(m.word) &&
+            !m.apart.contains(target.word) &&
+            !foldedTokens(m.word).any(inSentence.contains))
+          m,
+    ];
+    return _pickTwoWrongTiles(target, pool) ??
+        [
+          for (final m in data.words)
+            if (m.word != target.word) m,
+        ].take(2).toList();
   }
 
   // ---- the words of a session
@@ -546,7 +608,7 @@ class RepasoPlanner {
 
   /// The ¿Qué oyes? item of [w] with [s]: the word and two wrong tiles, the word at a random place.
   HearItem hearItem(RepasoWord w, RepasoSentence s) {
-    final wrong = wrongTiles(w, s)!;
+    final wrong = wrongTiles(w, s) ?? _fallbackWrongTiles(w, s);
     final at = (rng.next() * 3).floor();
     final tiles = [...wrong]..insert(at, w);
     return HearItem(

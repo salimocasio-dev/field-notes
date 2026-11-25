@@ -57,54 +57,54 @@ Future<MemoryImage> _drawIconCard(WidgetTester t, {required bool door}) async {
     // Calm dark background
     canvas.drawRect(
       const Rect.fromLTWH(0, 0, 196, 104),
-      Paint()..color = const Color(0xFF1F242D),
+      Paint()..color = CoquiColors.pictureBack,
     );
     if (door) {
-      // Simple wooden door icon
+      // Simple door icon using CoquiColors tokens
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           const Rect.fromLTWH(76, 14, 44, 76),
           const Radius.circular(4),
         ),
-        Paint()..color = const Color(0xFFC58B53),
+        Paint()..color = CoquiColors.lessonBad,
       );
       canvas.drawRect(
         const Rect.fromLTWH(82, 22, 32, 24),
-        Paint()..color = const Color(0xFF9F6A38),
+        Paint()..color = CoquiColors.lessonBg,
       );
       canvas.drawRect(
         const Rect.fromLTWH(82, 54, 32, 28),
-        Paint()..color = const Color(0xFF9F6A38),
+        Paint()..color = CoquiColors.lessonBg,
       );
       canvas.drawCircle(
         const Offset(112, 52),
         3.5,
-        Paint()..color = const Color(0xFFF6D265),
+        Paint()..color = CoquiColors.line,
       );
     } else {
-      // Simple window icon
+      // Simple window icon using CoquiColors tokens
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           const Rect.fromLTWH(64, 18, 68, 68),
           const Radius.circular(4),
         ),
-        Paint()..color = const Color(0xFFE0E5EC),
+        Paint()..color = CoquiColors.lessonInk2,
       );
       canvas.drawRect(
         const Rect.fromLTWH(70, 24, 25, 25),
-        Paint()..color = const Color(0xFF6BB6FF),
+        Paint()..color = CoquiColors.mapWater,
       );
       canvas.drawRect(
         const Rect.fromLTWH(101, 24, 25, 25),
-        Paint()..color = const Color(0xFF6BB6FF),
+        Paint()..color = CoquiColors.mapWater,
       );
       canvas.drawRect(
         const Rect.fromLTWH(70, 55, 25, 25),
-        Paint()..color = const Color(0xFF6BB6FF),
+        Paint()..color = CoquiColors.mapWater,
       );
       canvas.drawRect(
         const Rect.fromLTWH(101, 55, 25, 25),
-        Paint()..color = const Color(0xFF6BB6FF),
+        Paint()..color = CoquiColors.mapWater,
       );
     }
     final image = await recorder.endRecording().toImage(196, 104);
