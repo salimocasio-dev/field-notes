@@ -18,7 +18,7 @@ import 'package:coqui_progress/src/shared_progress.dart' as shared_store;
 /// Page 12, section 2: "Day keys and the 4 am cut are computed exactly as palabras.js computes
 /// them (it mixes local time and UTC; keep the mix)". The day keys (`dias`) and the streak are
 /// the UTC date of a time; "the next morning" is 4:00 in the local time zone, plus 24 hours.
-class PalabrasStore implements ProgressStore {
+class PalabrasStore implements ProgressStore, CallProgressStore {
   /// Loads what is under [storageKey] in [kv] (palabras.js lines 17 to 19), as the old file
   /// does when it starts. [clock] is the old `now()`: `Date.now()` and the `__PAL_NOW` hook.
   ///
@@ -639,6 +639,39 @@ class PalabrasStore implements ProgressStore {
     final leidos = _db['leidos'] as Map<String, dynamic>;
     if (!jsTruthy(leidos[id])) {
       leidos[id] = _now();
+      _save();
+    }
+  }
+
+  /// Whether the learner has completed [callId] in this language (`db.llamadas`).
+  @override
+  bool callDone(String callId) {
+    if (callId.trim().isEmpty) return false;
+    final llamadas = _db['llamadas'];
+    if (llamadas is! Map) return false;
+    return jsTruthy(llamadas[callId]);
+  }
+
+  /// Marks [callId] completed in this language (`db.llamadas`) with the first
+  /// completion timestamp from the clock and saves. Idempotent: a call already
+  /// marked done changes nothing and saves nothing. Empty/whitespace IDs are
+  /// ignored.
+  void markCallDone(String callId) {
+    if (callId.trim().isEmpty) return;
+    final existing = _db['llamadas'];
+    final Map<String, dynamic> llamadas;
+    if (existing is Map<String, dynamic>) {
+      llamadas = existing;
+    } else if (existing is Map) {
+      llamadas = Map<String, dynamic>.from(existing);
+      _db['llamadas'] = llamadas;
+    } else {
+      llamadas = <String, dynamic>{};
+      _db['llamadas'] = llamadas;
+    }
+    if (!jsTruthy(llamadas[callId])) {
+      final t = _now();
+      llamadas[callId] = t == 0 ? 1 : t;
       _save();
     }
   }
