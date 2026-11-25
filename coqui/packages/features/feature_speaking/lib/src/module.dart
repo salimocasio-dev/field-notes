@@ -1,5 +1,6 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_screen.dart';
 import 'package:feature_speaking/src/entitlements_hook.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
@@ -29,6 +30,7 @@ class SpeakingModule implements FeatureModule {
     this.showSpeechNote = false,
     this.entitlementCheck = defaultCallEntitlement,
     this.completedCallIds = const {},
+    this.shortCallsEnabled = false,
   });
 
   /// The line shown when the build cannot place a call; null uses `CallTexts.callsLaterFor(...)`.
@@ -46,6 +48,10 @@ class SpeakingModule implements FeatureModule {
   /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
   final Set<String> completedCallIds;
 
+  /// Enables starting smaller calls via `CallRoute(placeId, callId:)` once
+  /// the shell's address router preserves `callId` (default `false`).
+  final bool shortCallsEnabled;
+
   @override
   String get id => 'speak';
 
@@ -61,6 +67,7 @@ class SpeakingModule implements FeatureModule {
       showSpeechNote: showSpeechNote,
       entitlementCheck: entitlementCheck,
       completedCallIds: completedCallIds,
+      shortCallsEnabled: shortCallsEnabled,
     ),
   );
 
@@ -68,13 +75,14 @@ class SpeakingModule implements FeatureModule {
   Widget? screenFor(AppRoute route, Services s) {
     if (route is CallRoute) {
       final known =
-          s.course.callFor(route.placeId) != null &&
-          s.course.places.any((p) => p.id == route.placeId);
+          s.course.places.any((p) => p.id == route.placeId) &&
+          resolveCallBrief(s.course, route.placeId, route.callId) != null;
       return known
           ? CallScreen(
-              key: ValueKey('call-${route.placeId}'),
+              key: ValueKey('call-${route.placeId}-${route.callId ?? ''}'),
               services: s,
               placeId: route.placeId,
+              callId: route.callId,
             )
           : null;
     }

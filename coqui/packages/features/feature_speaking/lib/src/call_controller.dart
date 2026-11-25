@@ -50,6 +50,24 @@ class _Turn {
   bool spoke = false;
 }
 
+/// Resolves the [CallBrief] for [placeId] and optional [callId].
+///
+/// When [callId] is null, returns `course.callFor(placeId)` (the place's main
+/// call). When [callId] is non-null, returns the matching brief in
+/// `course.callsFor(placeId)`, or `null` if no call with that id exists (never
+/// falling back to a different call).
+CallBrief? resolveCallBrief(
+  CourseCatalog course,
+  String placeId, [
+  String? callId,
+]) {
+  if (callId == null) return course.callFor(placeId);
+  for (final brief in course.callsFor(placeId)) {
+    if (brief.id == callId) return brief;
+  }
+  return null;
+}
+
 /// One call, from the open screen to the summary. [place] and [brief] are the place and its call; with either
 /// missing there is no call ([available] is false) and the screen is not opened.
 class CallController extends ChangeNotifier {
@@ -59,16 +77,18 @@ class CallController extends ChangeNotifier {
     required this.course,
     required this.progress,
     required this.placeId,
+    this.callId,
     this.clips,
     this.onClose,
   }) : place = _placeOf(course, placeId),
-       brief = course.callFor(placeId);
+       brief = resolveCallBrief(course, placeId, callId);
 
   final CallSession session;
   final Clock clock;
   final CourseCatalog course;
   final ProgressStore progress;
   final String placeId;
+  final String? callId;
 
   /// Stopped when a call starts (llamada.js: `hush(); SFX.calla()`).
   final ClipPlayer? clips;

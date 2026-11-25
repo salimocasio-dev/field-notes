@@ -1,18 +1,12 @@
-/// The Hablar tab: one clear Next Call hero card + a 10-stop Map Journey.
-///
-/// Design rules enforced:
-/// - Not a list of identical "Call Danny" rows.
-/// - One obvious next call with a thumb-zone primary button.
-/// - 10-stop horizontal place journey distinguishing Done / Ready / Upcoming
-///   by both shape/icon and colour (never colour alone), opening a single
-///   focused place panel when tapped.
-/// - No screenshot pictures (no picture shown until original pixel art exists).
-/// - No "I said it" self-report buttons.
-/// - >= 48 px touch targets on every interactive control.
-/// - Centralized calm Entitlements hook when locked by subscription tier.
+/// The Noche Speak tab (story N4.6, issue #106, board `Noche-Hablar.dc.html`):
+/// header with language label, "Speak" title and tappable words-ready count,
+/// reached place pills plus one dashed-locked next place pill, featured
+/// next-call card with open-word chips, 2-per-row other calls, and the pinned
+/// 96 px orange mic disc above the floating tab bar.
 library;
 
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -31,6 +25,7 @@ class HablarTab extends StatefulWidget {
     this.showSpeechNote = false,
     this.entitlementCheck = defaultCallEntitlement,
     this.completedCallIds = const {},
+    this.shortCallsEnabled = false,
   });
 
   final Services services;
@@ -41,7 +36,7 @@ class HablarTab extends StatefulWidget {
   /// Optional entry label for `VoiceTestRoute`.
   final String? voiceTestLabel;
 
-  /// Shows `notaHabla` on the Hablar tab when requested.
+  /// Shows `notaHabla` on the Speak tab when requested.
   final bool showSpeechNote;
 
   /// Subscription tier check hook for live calls.
@@ -49,6 +44,10 @@ class HablarTab extends StatefulWidget {
 
   /// Completed call IDs (temporary until `ProgressStore` tracks completed calls).
   final Set<String> completedCallIds;
+
+  /// Enables starting smaller calls via `CallRoute(placeId, callId:)` once
+  /// the shell's address router preserves `callId` (default `false`).
+  final bool shortCallsEnabled;
 
   @override
   State<HablarTab> createState() => _HablarTabState();
@@ -58,9 +57,7 @@ class _HablarTabState extends State<HablarTab> {
   StreamSubscription<void>? _sub;
   String? _note;
   bool _callsFailed = false;
-
-  /// Which place stop is expanded in the focused panel below (null = collapsed,
-  /// avoiding duplicate "Up next" cards on initial load).
+  bool _openingWords = false;
   String? _selectedPlaceId;
 
   @override
@@ -69,7 +66,36 @@ class _HablarTabState extends State<HablarTab> {
     _sub = widget.services.progress.changes.listen((_) {
       if (mounted) setState(() {});
     });
-    _loadNote();
+    unawaited(_loadNote());
+  }
+
+  @override
+  void didUpdateWidget(HablarTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final courseChanged = !identical(
+      oldWidget.services.course,
+      widget.services.course,
+    );
+    final progressChanged = !identical(
+      oldWidget.services.progress,
+      widget.services.progress,
+    );
+    if (courseChanged || progressChanged) {
+      unawaited(_sub?.cancel());
+      _sub = widget.services.progress.changes.listen((_) {
+        if (mounted) setState(() {});
+      });
+      _selectedPlaceId = null;
+      _callsFailed = false;
+      _note = null;
+      unawaited(_loadNote());
+    } else if (oldWidget.showSpeechNote != widget.showSpeechNote) {
+      if (widget.showSpeechNote) {
+        unawaited(_loadNote());
+      } else {
+        _note = null;
+      }
+    }
   }
 
   Future<void> _loadNote() async {
@@ -99,470 +125,440 @@ class _HablarTabState extends State<HablarTab> {
   void _startCall(HablarCallItem item) {
     if (!item.canStart) return;
     widget.services.haptics.tick();
-    widget.services.nav.go(CallRoute(item.place.id));
+    widget.services.nav.go(
+      item.spec.isMain
+          ? CallRoute(item.place.id)
+          : CallRoute(item.place.id, callId: item.spec.id),
+    );
   }
 
-  void _togglePlace(String placeId) {
+  void _selectPlace(String placeId) {
     widget.services.haptics.tick();
     setState(() {
-      _selectedPlaceId = _selectedPlaceId == placeId ? null : placeId;
+      _selectedPlaceId = placeId;
     });
   }
 
-  PlaceJourneyStop? _findSelectedStop(List<PlaceJourneyStop> stops) {
-    final id = _selectedPlaceId;
-    if (id == null) return null;
-    for (final stop in stops) {
-      if (stop.place.id == id) return stop;
+  Future<void> _showWordsSheet(
+    BuildContext context,
+    List<String> openWords,
+    Language lang,
+    Locale courseLocale,
+  ) async {
+    if (_openingWords) return;
+    _openingWords = true;
+    widget.services.haptics.tick();
+    final textDirection = lang.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
+    try {
+      await showNocheSheet<void>(
+        context,
+        title: HablarTexts.wordsTitle,
+        builder: (ctx, close) => Directionality(
+          textDirection: textDirection,
+          child: openWords.isEmpty
+              ? Text(
+                  HablarTexts.wordsNone,
+                  textDirection: TextDirection.ltr,
+                  style: NocheType.body.copyWith(color: NocheColors.label),
+                )
+              : Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final w in openWords)
+                      NocheChip(
+                        label: CallTexts.chip(w),
+                        script: lang.script,
+                        locale: courseLocale,
+                      ),
+                  ],
+                ),
+        ),
+      );
+    } finally {
+      _openingWords = false;
     }
-    return null;
   }
 
-  void _showWordsSheet(BuildContext context, List<String> openWords) {
-    widget.services.haptics.tick();
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: CoquiColors.card,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 20, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+  Widget _header(
+    BuildContext context,
+    Language lang,
+    List<String> openWords,
+    Locale courseLocale,
+  ) {
+    final wordsLabel = HablarTexts.wordsReadyToSay(openWords.length);
+    return SizedBox(
+      height: 64,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(HablarTexts.wordsTitle, style: CoquiText.h2),
+                  Text(
+                    lang.englishName.toUpperCase(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: TextDirection.ltr,
+                    style: NocheType.label.copyWith(color: NocheColors.label),
                   ),
-                  SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: IconButton(
-                      icon: const Icon(Icons.close, color: CoquiColors.ink),
-                      tooltip: 'Close',
-                      onPressed: () => Navigator.of(ctx).pop(),
+                  const SizedBox(height: 4),
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      HablarTexts.screenTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textDirection: TextDirection.ltr,
+                      style: NocheType.pageTitle.copyWith(
+                        color: NocheColors.text,
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              if (openWords.isEmpty)
-                Text(HablarTexts.wordsNone, style: CoquiText.bodyMuted)
-              else
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 260),
-                  child: SingleChildScrollView(
-                    child: Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        for (final w in openWords)
-                          DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: CoquiColors.bg,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: CoquiColors.line,
-                                width: CoquiLayout.border(ctx, 1),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              child: Text(
-                                CallTexts.chip(w),
-                                style: CoquiText.chip,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
+            ),
+            const SizedBox(width: 12),
+            Pressable(
+              key: const Key('speak-words-button'),
+              onPressed: () => unawaited(
+                _showWordsSheet(context, openWords, lang, courseLocale),
+              ),
+              semanticLabel: '$wordsLabel. ${HablarTexts.wordsTitle}',
+              builder: (context, pressed) => ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: NocheSize.touch,
+                  minWidth: NocheSize.touch,
                 ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _header(BuildContext context, List<String> openWords) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: ScreenTitle(
-            widget.services.course.language.tabNames[CoquiTabs.speakId] ??
-                CoquiLabels.speak,
-          ),
-        ),
-        Semantics(
-          button: true,
-          label:
-              '${HablarTexts.wordsReadyPill(openWords.length)}. ${HablarTexts.wordsTitle}',
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => _showWordsSheet(context, openWords),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
-              child: Center(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: CoquiColors.card,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: CoquiColors.line,
-                      width: CoquiLayout.border(context, 1),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
+                child: Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  widthFactor: 1,
+                  child: Opacity(
+                    opacity: pressed ? 0.7 : 1,
                     child: Text(
-                      HablarTexts.wordsReadyPill(openWords.length),
-                      style: CoquiText.smallMuted,
+                      wordsLabel,
+                      maxLines: 1,
+                      softWrap: false,
+                      textDirection: TextDirection.ltr,
+                      style: NocheType.button.copyWith(
+                        color: NocheColors.label,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
-  /// Compact 10-stop horizontal Map Journey strip.
-  /// Distinguishes Done / Ready / Upcoming by icon + border + fill (not colour alone).
-  Widget _journeyStrip(BuildContext context, List<PlaceJourneyStop> stops) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SectionTitle(HablarTexts.byPlace),
-        SizedBox(
-          height: 64,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: stops.length,
-            separatorBuilder: (_, _) => const SizedBox(width: 8),
-            itemBuilder: (ctx, idx) {
-              final stop = stops[idx];
-              final selected = _selectedPlaceId == stop.place.id;
-              final isDone = stop.state == HablarCallState.done;
-              final isReady = stop.state == HablarCallState.ready;
-              final isLocked =
-                  stop.state == HablarCallState.upcoming ||
-                  stop.state == HablarCallState.soon;
-
-              final bg = selected
-                  ? CoquiColors.ink
-                  : isDone
-                  ? CoquiColors.ok.withValues(alpha: 0.12)
-                  : isReady
-                  ? CoquiColors.card
-                  : CoquiColors.bg;
-              final border = selected
-                  ? CoquiColors.ink
-                  : isDone
-                  ? CoquiColors.ok
-                  : isReady
-                  ? CoquiColors.info
-                  : CoquiColors.line;
-              final fg = selected
-                  ? CoquiColors.white
-                  : isDone
-                  ? CoquiColors.ok
-                  : isReady
-                  ? CoquiColors.ink
-                  : CoquiColors.mut;
-
-              return Semantics(
-                button: true,
-                selected: selected,
-                label: '${stop.placeNumber}. ${stop.place.name}',
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => _togglePlace(stop.place.id),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      minWidth: 56,
-                      minHeight: 48,
-                    ),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: bg,
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: border,
-                          width: CoquiLayout.border(ctx, selected ? 2 : 1.5),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (isDone)
-                              Icon(Icons.check, size: 16, color: fg)
-                            else if (isLocked)
-                              Icon(Icons.lock_outline, size: 15, color: fg)
-                            else
-                              Text(
-                                '${stop.placeNumber}',
-                                style: CoquiText.small.copyWith(
-                                  color: fg,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            const SizedBox(width: 6),
-                            Text(
-                              stop.place.name,
-                              style: CoquiText.small.copyWith(
-                                color: fg,
-                                fontWeight: isReady || selected
-                                    ? FontWeight.w600
-                                    : FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+  Widget _placePills(
+    BuildContext context,
+    HablarSnapshot snap,
+    PlaceJourneyStop? selectedStop,
+    Language lang,
+    Locale courseLocale,
+  ) {
+    final reached = snap.reachedStops;
+    final nextLocked = snap.nextLockedStop;
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+      child: Semantics(
+        container: true,
+        role: ui.SemanticsRole.tabBar,
+        label: HablarTexts.placeTabListLabel,
+        child: Row(
+          children: [
+            for (var i = 0; i < reached.length; i++) ...[
+              if (i > 0) const SizedBox(width: 8),
+              _placePill(
+                stop: reached[i],
+                isSelected: selectedStop?.place.id == reached[i].place.id,
+                lang: lang,
+                courseLocale: courseLocale,
+              ),
+            ],
+            if (nextLocked != null) ...[
+              const SizedBox(width: 8),
+              Semantics(
+                container: true,
+                role: ui.SemanticsRole.tab,
+                selected: false,
+                enabled: false,
+                child: NochePill.dashedLocked(
+                  key: const Key('speak-locked-place-pill'),
+                  semanticLabel: HablarTexts.lockedPlaceLabel(
+                    nextLocked.place.name,
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            ],
+          ],
         ),
-      ],
+      ),
     );
   }
 
-  /// Featured "Up next" hero card with thumb-zone Start call button.
-  Widget _heroCard(BuildContext context, HablarSnapshot snap) {
-    final next = snap.nextCall;
-    if (next == null) return const SizedBox.shrink();
+  Widget _placePill({
+    required PlaceJourneyStop stop,
+    required bool isSelected,
+    required Language lang,
+    required Locale courseLocale,
+  }) {
+    return Semantics(
+      container: true,
+      role: ui.SemanticsRole.tab,
+      selected: isSelected,
+      child: isSelected
+          ? NochePill.selected(
+              label: stop.place.name,
+              script: lang.script,
+              locale: courseLocale,
+              onPressed: () => _selectPlace(stop.place.id),
+            )
+          : NochePill.outline(
+              label: stop.place.name,
+              foregroundColor: NocheColors.label,
+              script: lang.script,
+              locale: courseLocale,
+              onPressed: () => _selectPlace(stop.place.id),
+            ),
+    );
+  }
 
-    final canStart = next.canStart;
-    final ctaLabel = next.state == HablarCallState.done
-        ? CallTexts.callAgain
-        : CallTexts.startCall;
+  Widget _nextCallCard(
+    BuildContext context,
+    HablarCallItem featured,
+    List<String> previewWords,
+    Language lang,
+    Locale courseLocale,
+  ) {
+    final eyebrow = HablarTexts.nextCallEyebrow(
+      lang.partnerName,
+      featured.spec.minutes,
+    ).toUpperCase();
+    final titleStyle = NocheType.forScript(
+      NocheType.placeTitle.copyWith(height: 36 / 32),
+      lang.script,
+    ).copyWith(color: NocheColors.text);
 
-    return CoquiCard(
-      padding: const EdgeInsetsDirectional.all(20),
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+      child: NocheCard(
+        key: const Key('speak-next-call-card'),
+        padding: const EdgeInsetsDirectional.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              eyebrow,
+              textDirection: TextDirection.ltr,
+              style: NocheType.label.copyWith(
+                color: featured.canStart ? NocheColors.next : NocheColors.label,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              featured.spec.titleEs,
+              locale: courseLocale,
+              style: titleStyle,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              featured.spec.jobEn,
+              textDirection: TextDirection.ltr,
+              style: NocheType.bodyLarge.copyWith(color: NocheColors.label),
+            ),
+            if (previewWords.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              Text(
+                HablarTexts.wordsYouCanUse.toUpperCase(),
+                textDirection: TextDirection.ltr,
+                style: NocheType.label.copyWith(color: NocheColors.label),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final w in previewWords)
+                    NocheChip(
+                      label: CallTexts.chip(w),
+                      script: lang.script,
+                      locale: courseLocale,
+                    ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _otherCallsGrid(
+    BuildContext context,
+    List<HablarCallItem> others,
+    Language lang,
+    Locale courseLocale,
+  ) {
+    final rows = <Widget>[];
+    for (var i = 0; i < others.length; i += 2) {
+      if (i > 0) rows.add(const SizedBox(height: 16));
+      final first = others[i];
+      final second = i + 1 < others.length ? others[i + 1] : null;
+      rows.add(
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: _otherCallCard(first, lang, courseLocale)),
+              const SizedBox(width: 16),
+              Expanded(
+                child: second != null
+                    ? _otherCallCard(second, lang, courseLocale)
+                    : const SizedBox.shrink(),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: EyebrowLabel(
-                  '${HablarTexts.upNext} · ${next.placeNumber}. ${next.place.name}',
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                CallTexts.durationLine(next.spec.minutes),
-                style: CoquiText.smallMuted,
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(next.spec.titleEs, style: CoquiText.h1),
-          const SizedBox(height: 6),
-          Text(next.spec.jobEn, style: CoquiText.bodyMuted),
-          if (snap.showFirstTimeReassurance && canStart) ...[
-            const SizedBox(height: 10),
-            Text(
-              HablarTexts.practiceNoFailFor(
-                widget.services.course.language.partnerName,
-              ),
-              style: CoquiText.smallMuted,
-            ),
-          ],
-          const SizedBox(height: 20),
-          if (canStart)
-            ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 52),
-              child: CoquiButton(
-                label: ctaLabel,
-                icon: CoquiIcons.phone,
-                kind: CoquiButtonKind.go,
-                full: true,
-                semanticLabel: '$ctaLabel: ${next.spec.titleEs}',
-                onPressed: () => _startCall(next),
-              ),
-            )
-          else
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: CoquiColors.bg,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: CoquiColors.line,
-                  width: CoquiLayout.border(context, 1),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 14,
-                  vertical: 12,
-                ),
-                child: Text(
-                  next.statusLine,
-                  style: CoquiText.smallMuted,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-        ],
+        children: rows,
       ),
     );
   }
 
-  /// Focused single-place panel shown when the learner taps a stop on the map strip.
-  Widget _placePanel(
-    BuildContext context,
-    PlaceJourneyStop stop,
-    String? heroCallId,
+  Widget _otherCallCard(
+    HablarCallItem item,
+    Language lang,
+    Locale courseLocale,
   ) {
-    final main = stop.mainCall;
-    final smalls = stop.smallerCalls;
-    return CoquiCard(
-      padding: const EdgeInsetsDirectional.all(16),
+    final titleColor = item.canStart ? NocheColors.text : NocheColors.label;
+    final titleStyle = NocheType.forScript(
+      NocheType.rowTitle,
+      lang.script,
+    ).copyWith(color: titleColor);
+    final metaStyle = NocheType.body.copyWith(
+      height: 1,
+      color: NocheColors.label,
+    );
+
+    final content = ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 56),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '${stop.placeNumber}. ${stop.place.name}',
-                  style: CoquiText.h2,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  stop.statusLine,
-                  style: CoquiText.smallMuted,
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ],
+          Text(
+            item.spec.titleEs,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            locale: courseLocale,
+            style: titleStyle,
           ),
-          if (main != null) ...[
-            const SizedBox(height: 12),
-            _callRow(
-              context,
-              main,
-              isHeroDuplicate: main.spec.id == heroCallId,
-            ),
-          ],
-          if (smalls.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Text(HablarTexts.shortCallsLabel, style: CoquiText.eyebrow),
-            const SizedBox(height: 6),
-            for (var i = 0; i < smalls.length; i++) ...[
-              if (i > 0) const SizedBox(height: 8),
-              _callRow(
-                context,
-                smalls[i],
-                isHeroDuplicate: smalls[i].spec.id == heroCallId,
-              ),
-            ],
-          ],
+          const SizedBox(height: 2),
+          Text(
+            item.cardMetaLine,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textDirection: TextDirection.ltr,
+            style: metaStyle,
+          ),
         ],
       ),
     );
+
+    if (item.canStart) {
+      return NocheCard(
+        key: Key('speak-other-call-${item.spec.id}'),
+        variant: NocheCardVariant.standard,
+        padding: const EdgeInsetsDirectional.all(15),
+        onPressed: () => _startCall(item),
+        semanticLabel: '${item.spec.titleEs}, ${item.cardMetaLine}',
+        child: content,
+      );
+    }
+    return NocheCard(
+      key: Key('speak-other-call-${item.spec.id}'),
+      variant: NocheCardVariant.dashed,
+      padding: const EdgeInsetsDirectional.all(15),
+      child: content,
+    );
   }
 
-  Widget _callRow(
-    BuildContext context,
-    HablarCallItem item, {
-    required bool isHeroDuplicate,
-  }) {
-    final enabled = item.canStart && !isHeroDuplicate;
-    final titleStyle = item.canStart
-        ? CoquiText.rowTitle
-        : CoquiText.rowTitle.copyWith(color: CoquiColors.mut);
-
-    final row = ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 48),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: CoquiColors.bg,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.symmetric(
-            horizontal: 12,
-            vertical: 10,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(item.spec.titleEs, style: titleStyle),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${item.spec.jobEn} · ${CallTexts.durationLine(item.spec.minutes)}',
-                      style: CoquiText.smallMuted,
-                    ),
-                  ],
-                ),
+  Widget? _footerControl(HablarCallItem? featured, Language lang) {
+    if (featured == null) return null;
+    if (featured.canStart) {
+      final label = CallTexts.callPartner(lang.partnerName);
+      return Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              textDirection: TextDirection.ltr,
+              style: NocheType.rowTitle.copyWith(
+                height: 1,
+                color: NocheColors.text,
               ),
-              const SizedBox(width: 12),
-              if (isHeroDuplicate && item.canStart)
-                Text(HablarTexts.upNextAbove, style: CoquiText.smallMuted)
-              else if (item.state == HablarCallState.done)
-                PlayButton(
-                  icon: CoquiIcons.phone,
-                  quiet: true,
-                  semanticLabel: '${CallTexts.callAgain}: ${item.spec.titleEs}',
-                  onPressed: () => _startCall(item),
-                )
-              else if (item.canStart)
-                PlayButton(
-                  icon: CoquiIcons.phone,
-                  semanticLabel: '${CallTexts.startCall}: ${item.spec.titleEs}',
-                  onPressed: () => _startCall(item),
-                )
-              else if (item.state == HablarCallState.soon)
-                Text(HablarTexts.smallerCallSoon, style: CoquiText.smallMuted),
-            ],
+            ),
+            const SizedBox(height: 16),
+            NochePlayDisc(
+              key: const Key('speak-call-disc'),
+              size: NocheSize.mic,
+              icon: NocheIcons.mic,
+              halo: true,
+              semanticLabel: '$label: ${featured.spec.titleEs}',
+              onPressed: () => _startCall(featured),
+            ),
+          ],
+        ),
+      );
+    }
+    if (featured.statusLine.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+        child: NocheCard(
+          key: const Key('speak-locked-status'),
+          variant: NocheCardVariant.dashed,
+          child: Text(
+            featured.statusLine,
+            textAlign: TextAlign.center,
+            textDirection: TextDirection.ltr,
+            style: NocheType.body.copyWith(color: NocheColors.label),
           ),
         ),
-      ),
-    );
-
-    return enabled
-        ? GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => _startCall(item),
-            child: row,
-          )
-        : Semantics(enabled: item.canStart, child: row);
+      );
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     final s = widget.services;
+    final lang = s.course.language;
+    final textDirection = lang.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
+    final courseLocale = Locale(lang.code);
+    final pad = MediaQuery.paddingOf(context);
+
     final snap = buildHablarSnapshot(
       course: s.course,
       progress: s.progress,
@@ -570,41 +566,103 @@ class _HablarTabState extends State<HablarTab> {
       entitlement: widget.entitlementCheck(),
       completedCallIds: widget.completedCallIds,
       callsLater: widget.callsLater,
+      shortCallsEnabled: widget.shortCallsEnabled,
     );
-    final selectedStop = _findSelectedStop(snap.stops);
+    final selectedStop =
+        snap.stopById(_selectedPlaceId) ?? snap.defaultSelectedStop;
+    final featured = selectedStop?.featuredCall;
+    final others = selectedStop?.otherCalls ?? const <HablarCallItem>[];
     final voiceTest = widget.voiceTestLabel;
+    final footer = _footerControl(featured, lang);
 
-    return TabPage(
-      children: [
-        _header(context, snap.openWords),
-        if (_note != null) KeyLine(_note!),
-        const SizedBox(height: 8),
-        _journeyStrip(context, snap.stops),
-        const SizedBox(height: 16),
-        if (selectedStop != null) ...[
-          _placePanel(context, selectedStop, snap.nextCall?.spec.id),
-          const SizedBox(height: 8),
-        ],
-        _heroCard(context, snap),
-        if (voiceTest != null)
-          Block(
-            top: 12,
-            child: CoquiCard(
-              marginBottom: 0,
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => s.nav.go(const VoiceTestRoute()),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(minHeight: 48),
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(voiceTest, style: CoquiText.rowTitle),
+    return Directionality(
+      textDirection: textDirection,
+      child: ColoredBox(
+        color: NocheColors.ground,
+        child: DefaultTextStyle.merge(
+          style: NocheType.body.copyWith(color: NocheColors.text),
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(
+              top: pad.top,
+              bottom: NocheSize.aboveTabBar + pad.bottom,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _header(context, lang, snap.openWords, courseLocale),
+                        if (snap.reachedStops.isNotEmpty)
+                          _placePills(
+                            context,
+                            snap,
+                            selectedStop,
+                            lang,
+                            courseLocale,
+                          ),
+                        if (featured != null)
+                          _nextCallCard(
+                            context,
+                            featured,
+                            snap.previewWords,
+                            lang,
+                            courseLocale,
+                          ),
+                        if (others.isNotEmpty)
+                          _otherCallsGrid(context, others, lang, courseLocale),
+                        if (_note != null)
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                              16,
+                              16,
+                              16,
+                              0,
+                            ),
+                            child: NocheCard(
+                              child: Text(
+                                _note!,
+                                style: NocheType.body.copyWith(
+                                  color: NocheColors.label,
+                                ),
+                              ),
+                            ),
+                          ),
+                        if (voiceTest != null)
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                              16,
+                              16,
+                              16,
+                              0,
+                            ),
+                            child: NocheCard(
+                              onPressed: () => s.nav.go(const VoiceTestRoute()),
+                              semanticLabel: voiceTest,
+                              child: Align(
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  voiceTest,
+                                  style: NocheType.rowTitle.copyWith(
+                                    color: NocheColors.text,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        const SizedBox(height: 16),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                ?footer,
+              ],
             ),
           ),
-      ],
+        ),
+      ),
     );
   }
 }
