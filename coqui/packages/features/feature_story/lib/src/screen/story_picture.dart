@@ -3,6 +3,7 @@ library;
 
 import 'dart:typed_data';
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/bubble_place.dart';
@@ -20,6 +21,7 @@ class StoryPicture extends StatelessWidget {
     required this.repaint,
     required this.onSize,
     this.reduceMotion = false,
+    this.language,
   });
 
   final StoryRunner runner;
@@ -31,6 +33,9 @@ class StoryPicture extends StatelessWidget {
   /// Told the stage's size in logical pixels each time it is laid out (the runner measures a turn's bubble with it).
   final void Function(Size stage) onSize;
   final bool reduceMotion;
+
+  /// Course language for the text inside speech bubbles over the unmirrored scene.
+  final Language? language;
 
   @override
   Widget build(BuildContext context) {
@@ -47,47 +52,54 @@ class StoryPicture extends StatelessWidget {
         );
         final size = Size(displayW * scale / dpr, displayH * scale / dpr);
         onSize(size);
-        return SizedBox(
-          width: size.width,
-          height: size.height,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned.fill(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    CoquiMetrics.radiusPicture,
+        // Pixel scenes and scene-anchored bubble coordinates never mirror in RTL;
+        // the text inside StoryBubbleLayer still reads in [language]'s direction.
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: SizedBox(
+            width: size.width,
+            height: size.height,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                      CoquiMetrics.radiusPicture,
+                    ),
+                    child: PixelView(
+                      pixels: pixels,
+                      width: displayW,
+                      height: displayH,
+                      repaint: repaint,
+                      onTapPixel: (x, y) {
+                        runner.pump();
+                        final p = displayToPicture(runner.cam, x, y);
+                        runner.tap(p.x, p.y);
+                      },
+                    ),
                   ),
-                  child: PixelView(
-                    pixels: pixels,
-                    width: displayW,
-                    height: displayH,
-                    repaint: repaint,
-                    onTapPixel: (x, y) {
-                      runner.pump();
-                      final p = displayToPicture(runner.cam, x, y);
-                      runner.tap(p.x, p.y);
+                ),
+                Positioned.fill(
+                  child: AnimatedBuilder(
+                    animation: repaint,
+                    builder: (context, _) {
+                      final v = runner.view;
+                      return StoryBubbleLayer(
+                        visible: v.bubbleOn,
+                        kind: v.bubbleKind,
+                        text: v.bubbleText,
+                        estate: v.bubbleEstate,
+                        reduceMotion: reduceMotion,
+                        language: language,
+                        placementFor: (bubble) =>
+                            placeFor(runner, size, bubble),
+                      );
                     },
                   ),
                 ),
-              ),
-              Positioned.fill(
-                child: AnimatedBuilder(
-                  animation: repaint,
-                  builder: (context, _) {
-                    final v = runner.view;
-                    return StoryBubbleLayer(
-                      visible: v.bubbleOn,
-                      kind: v.bubbleKind,
-                      text: v.bubbleText,
-                      estate: v.bubbleEstate,
-                      reduceMotion: reduceMotion,
-                      placementFor: (bubble) => placeFor(runner, size, bubble),
-                    );
-                  },
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

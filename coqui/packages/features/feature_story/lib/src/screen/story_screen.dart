@@ -241,16 +241,24 @@ class _StoryScreenState extends State<StoryScreen>
 
   @override
   Widget build(BuildContext context) {
+    final lang = _s.course.language;
+    Widget directional(Widget child) =>
+        Directionality(textDirection: lang.textDirection, child: child);
     final r = _runner, frame = _frame;
     if (_needsUpdate) {
-      return StoryNotReady(onClose: _close, line: storyNeedsUpdateLine);
+      return directional(
+        StoryNotReady(onClose: _close, line: storyNeedsUpdateLine),
+      );
     }
-    if (_notConverted) return StoryNotReady(onClose: _close);
+    if (_notConverted) return directional(StoryNotReady(onClose: _close));
     if (r == null || frame == null) {
       // loading, or no story: the frame alone, with its way out
-      return LessonFrame(
-        onClose: _close,
-        progress: const LessonProgressDashes(segments: 5, done: 0),
+      return directional(
+        LessonFrame(
+          onClose: _close,
+          language: lang,
+          progress: const LessonProgressDashes(segments: 5, done: 0),
+        ),
       );
     }
     final story = ListenableBuilder(
@@ -267,6 +275,7 @@ class _StoryScreenState extends State<StoryScreen>
           onClose: _close,
           onSound: r.toggleMute,
           muted: v.muted,
+          language: lang,
           progress: LessonProgressDashes(
             segments: v.dots,
             done: v.dotsLit,
@@ -279,12 +288,13 @@ class _StoryScreenState extends State<StoryScreen>
               pixels: frame.display,
               repaint: _repaint,
               reduceMotion: _s.reduceMotion,
+              language: lang,
               onSize: (s) => _stage = s,
             ),
           ),
           caption: v.captionOn ? v.caption : null,
           startState: v.screen == StoryScreenState.start,
-          overlay: ended ? StoryEndTitle(title: v.title) : null,
+          overlay: ended ? StoryEndTitle(title: v.title, language: lang) : null,
           bottom: [
             if (v.screen == StoryScreenState.start && v.startShown)
               LessonStartButton(onPressed: () => unawaited(r.start())),
@@ -311,20 +321,22 @@ class _StoryScreenState extends State<StoryScreen>
         );
       },
     );
-    if (!widget.showPerf) return story;
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        story,
-        Positioned(
-          top: CoquiLayout.safeTop(context) + CoquiMetrics.lessonTopBar + 4,
-          right: 4,
-          child: ValueListenableBuilder<double?>(
-            valueListenable: frame.currentBakeMs,
-            builder: (context, ms, _) => StoryPerfChip(bakeMs: ms),
+    if (!widget.showPerf) return directional(story);
+    return directional(
+      Stack(
+        fit: StackFit.expand,
+        children: [
+          story,
+          PositionedDirectional(
+            top: CoquiLayout.safeTop(context) + CoquiMetrics.lessonTopBar + 4,
+            end: 4,
+            child: ValueListenableBuilder<double?>(
+              valueListenable: frame.currentBakeMs,
+              builder: (context, ms, _) => StoryPerfChip(bakeMs: ms),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -346,9 +358,13 @@ class StoryPerfChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 8,
+          vertical: 4,
+        ),
         child: Text(
           'scene bake ${bakeMs == null ? '-' : bakeMs!.toStringAsFixed(0)} ms',
+          textDirection: TextDirection.ltr,
           style: const TextStyle(
             color: Color(0xFFFFFFFF),
             fontSize: 11,

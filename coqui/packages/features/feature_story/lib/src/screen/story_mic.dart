@@ -85,7 +85,7 @@ class _StoryMicButtonState extends State<StoryMicButton>
     final s = widget.state;
     final ready = s == StoryMicState.ready;
     return Padding(
-      padding: const EdgeInsets.only(bottom: CoquiMetrics.s16),
+      padding: const EdgeInsetsDirectional.only(bottom: CoquiMetrics.s16),
       child: Semantics(
         button: true,
         enabled: ready,

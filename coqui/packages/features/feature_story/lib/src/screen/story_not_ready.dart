@@ -35,13 +35,16 @@ class StoryNotReady extends StatelessWidget {
     showSound: false,
     overlay: Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: CoquiMetrics.s16),
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: CoquiMetrics.s16,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               line,
               textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
               style: CoquiText.lessonCaption,
             ),
             const SizedBox(height: CoquiMetrics.s24),

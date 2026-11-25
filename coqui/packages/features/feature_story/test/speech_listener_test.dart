@@ -90,7 +90,7 @@ void main() {
     expect(sp.listens, isEmpty);
     r.runner.tapMic();
     expect(sp.listens.single, (
-      locale: 'es-US',
+      locale: Language.spanish.recognitionLocale,
       limit: const Duration(seconds: 6),
       maxAlternatives: 5,
     ));
