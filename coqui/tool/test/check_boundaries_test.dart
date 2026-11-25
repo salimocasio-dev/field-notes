@@ -700,6 +700,32 @@ import 'package:material_ui/material_ui.dart';
       expect(await check(branch: null, base: 'lane/feature_words/5'), isEmpty);
     });
 
+    test('passes: lane/tool changes tool/ and requests/', () async {
+      git.branch('lane/tool/55');
+      write('tool/helper.dart', '// tool\n');
+      write('requests/tool-needs-a-thing.md', 'please\n');
+      git.commit('work');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test(
+      'fails: lane/tool changes a package outside tool/ and requests/',
+      () async {
+        git.branch('lane/tool/55');
+        write('tool/helper.dart', '// tool\n');
+        src('feature_words', 'lib/src/a.dart', '// changed\n');
+        git.commit('work');
+        final problems = await check(branch: null);
+        expect(problems, hasLength(1));
+        expect(problems.single, contains('[d]'));
+        expect(
+          problems.single,
+          startsWith('coqui/packages/features/feature_words/lib/src/a.dart:'),
+        );
+        expect(problems.single, contains('coqui/tool/'));
+      },
+    );
+
     test('fails clearly when there is nothing to compare with', () async {
       git.branch('lane/feature_words/5');
       git.run(['branch', '-D', 'main']);
@@ -708,6 +734,222 @@ import 'package:material_ui/material_ui.dart';
             'exists to compare with',
       ]);
     });
+  });
+
+  group('[h] new code uses start/end, not left/right (#55)', () {
+    late Git git;
+
+    setUp(() {
+      package('coqui_ui', deps: ['coqui_contracts']);
+      package(
+        'coqui_scenes',
+        deps: ['coqui_pixel', 'coqui_contracts', 'coqui_ui'],
+      );
+      package('coqui_pixel', deps: ['coqui_contracts']);
+      package('feature_words', deps: ['coqui_ui']);
+      package('app', deps: ['coqui_ui', 'feature_words']);
+      src('feature_words', 'lib/src/legacy.dart', '''
+final oldInsets = EdgeInsets.only(left: 16, top: 8);
+final oldFromLtrb = EdgeInsets.fromLTRB(4, 0, 8, 0);
+final oldAlign = Alignment.centerLeft;
+final oldPositioned = Positioned(
+  left: 12,
+  top: 4,
+  child: child,
+);
+final keepLine = 1;
+''');
+      src('coqui_ui', 'lib/src/widget.dart', '// clean\n');
+      git = Git(repo)..init();
+    });
+
+    test('fails: added EdgeInsets.only(left:/right:) in a feature (single and multi-line)', () async {
+      git.branch('lane/feature_words/55');
+      src('feature_words', 'lib/src/new_screen.dart', '''
+final a = EdgeInsets.only(left: 12);
+final b = EdgeInsets.only(
+  top: 4,
+  right: 8,
+);
+''');
+      git.commit('add non-directional insets');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(2));
+      expect(
+        problems[0],
+        contains(
+          'packages/features/feature_words/lib/src/new_screen.dart:1: [h]',
+        ),
+      );
+      expect(problems[0], contains('EdgeInsets.only(left: ...)'));
+      expect(
+        problems[1],
+        contains(
+          'packages/features/feature_words/lib/src/new_screen.dart:4: [h]',
+        ),
+      );
+      expect(problems[1], contains('EdgeInsets.only(right: ...)'));
+    });
+
+    test('fails: added EdgeInsets.fromLTRB, Alignment.*Left/Right, Positioned(left:), TextAlign, Border, BorderRadius in coqui_ui', () async {
+      git.branch('lane/coqui_ui/55');
+      src('coqui_ui', 'lib/src/widget.dart', '''
+final a = EdgeInsets.fromLTRB(1, 2, 3, 4);
+final b = Alignment.centerLeft;
+final c = Alignment.topRight;
+final d = FractionalOffset.bottomLeft;
+final e = TextAlign.right;
+final f = Positioned(
+  left: 10,
+  child: x,
+);
+final g = AnimatedPositioned(right: 5, child: x);
+final h = Border(left: BorderSide());
+final i = BorderRadius.only(topLeft: Radius.circular(8));
+final j = BorderRadius.horizontal(right: Radius.circular(8));
+final k = RelativeRect.fromLTRB(1, 2, 3, 4);
+''');
+      git.commit('add non-directional ui');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(11));
+      final joined = problems.join('\n');
+      expect(joined, contains('EdgeInsets.fromLTRB'));
+      expect(joined, contains('Alignment.centerLeft'));
+      expect(joined, contains('Alignment.topRight'));
+      expect(joined, contains('FractionalOffset.bottomLeft'));
+      expect(joined, contains('TextAlign.right'));
+      expect(joined, contains('Positioned(left: ...)'));
+      expect(joined, contains('AnimatedPositioned(right: ...)'));
+      expect(joined, contains('Border(left: ...)'));
+      expect(joined, contains('BorderRadius.only(topLeft: ...)'));
+      expect(joined, contains('BorderRadius.horizontal(right: ...)'));
+      expect(joined, contains('RelativeRect.fromLTRB'));
+    });
+
+    test('passes: directional APIs, symmetric/vertical-only calls, nested widgets and ternaries', () async {
+      git.branch('lane/feature_words/55');
+      src('feature_words', 'lib/src/good.dart', '''
+final a = EdgeInsetsDirectional.only(start: 12, end: 8);
+final b = EdgeInsetsDirectional.fromSTEB(1, 2, 3, 4);
+final c = EdgeInsets.only(top: 8, bottom: 16);
+final d = EdgeInsets.symmetric(horizontal: 12, vertical: 4);
+final e = EdgeInsets.all(8);
+final f = AlignmentDirectional.centerStart;
+final g = Alignment.center;
+final h = TextAlign.start;
+final i = TextAlign.end;
+final j = PositionedDirectional(start: 8, top: 4, child: x);
+final k = Positioned.fill(child: x);
+final l = Positioned(
+  top: flag ? left : right,
+  bottom: 0,
+  child: CustomWidget(left: 4, right: 8),
+);
+final m = AnimatedPositionedDirectional(end: 4, child: x);
+final n = BorderDirectional(start: BorderSide());
+final o = Border(top: BorderSide(), bottom: BorderSide());
+final p = BorderRadiusDirectional.only(topStart: Radius.circular(8));
+final q = BorderRadius.circular(8);
+''');
+      git.commit('add directional code');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test('passes: unchanged legacy lines are not flagged when editing nearby lines', () async {
+      git.branch('lane/feature_words/55');
+      src('feature_words', 'lib/src/legacy.dart', '''
+final oldInsets = EdgeInsets.only(left: 16, top: 8);
+final oldFromLtrb = EdgeInsets.fromLTRB(4, 0, 8, 0);
+final oldAlign = Alignment.centerLeft;
+final oldPositioned = Positioned(
+  left: 12,
+  top: 10,
+  child: child,
+);
+final keepLine = 2;
+''');
+      git.commit('edit unrelated lines in legacy file');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test(
+      'fails: adding a new left: argument into an existing Positioned call',
+      () async {
+        git.branch('lane/feature_words/55');
+        src('feature_words', 'lib/src/legacy.dart', '''
+final oldInsets = EdgeInsets.only(left: 16, top: 8);
+final oldFromLtrb = EdgeInsets.fromLTRB(4, 0, 8, 0);
+final oldAlign = Alignment.centerLeft;
+final oldPositioned = Positioned(
+  left: 12,
+  right: 12,
+  top: 4,
+  child: child,
+);
+final keepLine = 1;
+''');
+        git.commit('add right arg to existing Positioned');
+        final problems = await check(branch: null);
+        expect(problems, hasLength(1));
+        expect(problems.single, contains(':6: [h]'));
+        expect(problems.single, contains('Positioned(right: ...)'));
+      },
+    );
+
+    test(
+      'passes: coqui_scenes, coqui_pixel, app, and tool are exempt',
+      () async {
+        git.branch('orden/55');
+        src('coqui_scenes', 'lib/src/scene.dart', '''
+final a = EdgeInsets.fromLTRB(1, 2, 3, 4);
+final b = Alignment.centerLeft;
+final c = Positioned(left: 10, child: x);
+''');
+        src('coqui_pixel', 'lib/src/pixel.dart', '''
+final a = EdgeInsets.only(left: 4);
+final b = Alignment.topLeft;
+''');
+        src('app', 'lib/src/shell.dart', '''
+final a = EdgeInsets.only(left: 4);
+''');
+        write('tool/script.dart', 'final a = Alignment.centerLeft;\n');
+        git.commit('exempt packages');
+        expect(await check(branch: null), isEmpty);
+      },
+    );
+
+    test('passes: ignores comments and string literals (including raw and triple-quoted)', () async {
+      git.branch('lane/feature_words/55');
+      src('feature_words', 'lib/src/strings.dart', r'''
+// EdgeInsets.fromLTRB(1, 2, 3, 4)
+/* Alignment.centerLeft /* nested Positioned(left: 1) */ */
+final re1 = RegExp(r'EdgeInsets\.fromLTRB|Alignment\.centerLeft');
+final s1 = "Positioned(left: 4)";
+final s2 = """
+EdgeInsets.only(left: 8)
+TextAlign.left
+""";
+final s3 = 'escaped \' EdgeInsets.fromLTRB(1,2,3,4)';
+final s4 = 'interp ${foo("Alignment.topLeft")} Alignment.bottomRight';
+''');
+      git.commit('comments and strings only');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test(
+      'fails: detects violation inside string interpolation expression',
+      () async {
+        git.branch('lane/feature_words/55');
+        src('feature_words', 'lib/src/interp.dart', '''
+final s = 'value: \${Alignment.centerLeft}';
+''');
+        git.commit('interp violation');
+        final problems = await check(branch: null);
+        expect(problems, hasLength(1));
+        expect(problems.single, contains('[h]'));
+        expect(problems.single, contains('Alignment.centerLeft'));
+      },
+    );
   });
 
   group('as a command', () {
