@@ -3,6 +3,7 @@
 Blocks accidental writes to historia/cuentos/ (paid Azure audio trigger)
 and direct pushes to main. Fail-open on unknown stdin formats.
 """
+from __future__ import annotations
 import json
 import os
 import re
@@ -139,6 +140,20 @@ def _is_push_to_main(cmd: str, default_cwd: str | None = None) -> bool:
     return False
 
 
+def _emit_allow(antigravity_protocol: bool) -> int:
+    if antigravity_protocol:
+        sys.stdout.write(json.dumps({"decision": "allow"}) + "\n")
+    return 0
+
+
+def _emit_block(reason: str, antigravity_protocol: bool) -> int:
+    if antigravity_protocol:
+        sys.stdout.write(json.dumps({"decision": "deny", "reason": reason}) + "\n")
+        return 0
+    sys.stderr.write(reason + "\n")
+    return 2
+
+
 def main() -> int:
     raw = sys.stdin.read().strip()
     if not raw:
@@ -148,16 +163,27 @@ def main() -> int:
     except Exception:
         return 0
 
-    args = payload.get("arguments") or payload.get("tool_input") or payload
+    if not isinstance(payload, dict):
+        return 0
+
+    antigravity_protocol = (
+        isinstance(payload.get("toolCall"), dict)
+        or payload.get("hookEventName") == "PreToolUse"
+    )
+    if isinstance(payload.get("toolCall"), dict):
+        args = payload["toolCall"].get("args") or {}
+    else:
+        args = payload.get("arguments") or payload.get("tool_input") or payload
+
     target_fields = []
     cmd = ""
-    default_cwd = None
+    default_cwd = payload.get("cwd") if isinstance(payload.get("cwd"), str) else None
     if isinstance(args, dict):
         cmd = str(args.get("CommandLine") or args.get("command") or "")
         cwd_val = args.get("Cwd") or args.get("cwd")
         if isinstance(cwd_val, str) and cwd_val:
             default_cwd = cwd_val
-        for k in ("TargetFile", "target_file", "path", "file_path", "CommandLine", "command"):
+        for k in ("Path", "TargetFile", "target_file", "path", "file_path", "CommandLine", "command"):
             v = args.get(k)
             if isinstance(v, str):
                 target_fields.append(v)
@@ -166,8 +192,10 @@ def main() -> int:
 
     if cmd:
         if _is_push_to_main(cmd, default_cwd=default_cwd):
-            sys.stderr.write("BLOCKED by Coqui hook: Never push directly to main. Use a branch and PR.\n")
-            return 2
+            return _emit_block(
+                "BLOCKED by Coqui hook: Never push directly to main. Use a branch and PR.",
+                antigravity_protocol,
+            )
         if re.search(r"historia[/\\]cuentos", cmd) and (
             re.search(r"(?:>>?)\s*\S*historia[/\\]cuentos", cmd)
             or re.search(
@@ -175,14 +203,18 @@ def main() -> int:
                 cmd,
             )
         ):
-            sys.stderr.write("BLOCKED by Coqui hook: historia/cuentos/ triggers paid Azure audio jobs.\n")
-            return 2
+            return _emit_block(
+                "BLOCKED by Coqui hook: historia/cuentos/ triggers paid Azure audio jobs.",
+                antigravity_protocol,
+            )
     else:
         if re.search(r"historia[/\\]cuentos(?:[/\\]|$)", joined):
-            sys.stderr.write("BLOCKED by Coqui hook: Editing historia/cuentos/ is blocked (paid Azure audio).\n")
-            return 2
+            return _emit_block(
+                "BLOCKED by Coqui hook: Editing historia/cuentos/ is blocked (paid Azure audio).",
+                antigravity_protocol,
+            )
 
-    return 0
+    return _emit_allow(antigravity_protocol)
 
 
 if __name__ == "__main__":
