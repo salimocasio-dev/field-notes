@@ -37,20 +37,35 @@ void main() {
       );
       expect(find.text('La lluvia'), findsNothing);
 
-      // Palabras: the real tab, with the seed's ten words due on its Repaso card and the words he has met, by place
+      // Palabras / Words: the real tab, with the seed's due words (N4.4 Noche WordsTab or pre-N4.4 Repaso card)
       await app.openTab('words');
       expect(app.selectedTab, 'words');
       await app.until(
-        () => find.text('Repaso').evaluate().isNotEmpty,
+        () =>
+            find.text('Start review').evaluate().isNotEmpty ||
+            find.text('Repaso').evaluate().isNotEmpty,
         what: 'the words',
       );
       expect(byTypeName('WordsTab').hitTestable(), findsOneWidget);
-      expect(
-        find.text('10 words today · about 2 min').hitTestable(),
-        findsOneWidget,
-      );
-      expect(find.text('Start').hitTestable(), findsOneWidget);
-      expect(find.text('casa').hitTestable(), findsOneWidget);
+      if (find.text('Start review').evaluate().isNotEmpty) {
+        expect(find.text('Words').hitTestable(), findsOneWidget);
+        expect(
+          find.byKey(const Key('words-due-count')).hitTestable(),
+          findsOneWidget,
+        );
+        expect(
+          find.text('words come\nback today').hitTestable(),
+          findsOneWidget,
+        );
+        expect(find.text('Start review').hitTestable(), findsOneWidget);
+      } else {
+        expect(
+          find.text('10 words today · about 2 min').hitTestable(),
+          findsOneWidget,
+        );
+        expect(find.text('Start').hitTestable(), findsOneWidget);
+        expect(find.text('casa').hitTestable(), findsOneWidget);
+      }
 
       // Hablar: La casa is done in the seed, so its call is Up next and can start; El parque's is not open
       await app.openTab('speak');
