@@ -92,27 +92,49 @@ void main() {
     (tester) async {
       final app = TestApp(tester);
       await app.open(stored: seed('curso'));
-      // the map opens scrolled to the frog: tap across the picture until a place's sheet opens
+      // the map opens scrolled to the frog: tap across the picture until a place opens
+      // (either N4.2 PlaceScreen or legacy CoquiSheet)
       final view = find.byType(PixelView).hitTestable();
       final rect = tester.getRect(view.first);
       final top = tester.getBottomLeft(findMapTopChips()).dy;
       final bottom = tester.getTopLeft(findMapUpNextCard()).dy;
-      final rows = find.descendant(
+      final sheetRows = find.descendant(
         of: find.byType(CoquiSheet),
         matching: find.byType(PlayButton),
       );
+      final placeTiles = find.byWidgetPredicate(
+        (w) =>
+            w.key is ValueKey<String> &&
+            (w.key! as ValueKey<String>).value.startsWith('story-tile-'),
+      );
       var opened = false;
+      var openedAsPlaceScreen = false;
       final seen = <String>[];
       for (var y = bottom - 8; !opened && y > top; y -= 24) {
         for (var x = rect.left + 8; !opened && x < rect.right; x += 24) {
           await tester.tapAt(Offset(x, y));
           await tester.pump();
           await app.advance(400);
-          // the welcome's own sheet is always there, closed: a place's sheet is one that can be touched
+          final placeScreen = byTypeName('PlaceScreen').hitTestable();
+          if (placeScreen.evaluate().isNotEmpty) {
+            expect(app.tabBarShown, isTrue);
+            expect(app.selectedTab, 'map');
+            seen.add('PlaceScreen');
+            opened = placeTiles.hitTestable().evaluate().isNotEmpty;
+            if (opened) {
+              openedAsPlaceScreen = true;
+            } else {
+              // a place with nothing to play (locked): go back to the map and go on
+              await app.tap(find.byKey(const Key('place-back')).hitTestable());
+              await app.advance(600);
+            }
+            continue;
+          }
+          // legacy CoquiSheet fallback (pre-N4.2 main): the welcome's own sheet is always there, closed
           final sheet = find.byType(CoquiSheet).hitTestable();
           if (sheet.evaluate().isEmpty) continue;
           seen.add('${tester.widget<CoquiSheet>(sheet.first).title}');
-          opened = rows.evaluate().isNotEmpty;
+          opened = sheetRows.evaluate().isNotEmpty;
           if (!opened) {
             // a place with nothing to play (locked): close it and go on
             await app.tap(find.byType(CoquiCloseButton).hitTestable().first);
@@ -120,12 +142,15 @@ void main() {
           }
         }
       }
-      expect(opened, isTrue, reason: 'no open place found; sheets: $seen');
-      await app.tap(rows.first);
+      expect(opened, isTrue, reason: 'no open place found; seen: $seen');
+      await app.tap(
+        openedAsPlaceScreen ? placeTiles.hitTestable().first : sheetRows.first,
+      );
       await app.settle();
       expect(app.lessonShown, isTrue);
       expect(find.byType(NocheTabBar), findsNothing);
       expect(find.byType(LessonFrame), findsOneWidget);
+      expect(byTypeName('PlaceScreen').hitTestable(), findsNothing);
       expect(find.byType(CoquiSheet).hitTestable(), findsNothing);
       await app.tap(find.byType(LessonCloseButton));
       await app.settle(rounds: 5);
