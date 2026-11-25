@@ -803,6 +803,11 @@ final f = Positioned(
   left: 10,
   child: x,
 );
+final f2 = Positioned.fill(
+  left: 16,
+  right: 0,
+  child: x,
+);
 final g = AnimatedPositioned(right: 5, child: x);
 final h = Border(left: BorderSide());
 final i = BorderRadius.only(topLeft: Radius.circular(8));
@@ -811,7 +816,7 @@ final k = RelativeRect.fromLTRB(1, 2, 3, 4);
 ''');
       git.commit('add non-directional ui');
       final problems = await check(branch: null);
-      expect(problems, hasLength(11));
+      expect(problems, hasLength(13));
       final joined = problems.join('\n');
       expect(joined, contains('EdgeInsets.fromLTRB'));
       expect(joined, contains('Alignment.centerLeft'));
@@ -819,6 +824,8 @@ final k = RelativeRect.fromLTRB(1, 2, 3, 4);
       expect(joined, contains('FractionalOffset.bottomLeft'));
       expect(joined, contains('TextAlign.right'));
       expect(joined, contains('Positioned(left: ...)'));
+      expect(joined, contains('Positioned.fill(left: ...)'));
+      expect(joined, contains('Positioned.fill(right: ...)'));
       expect(joined, contains('AnimatedPositioned(right: ...)'));
       expect(joined, contains('Border(left: ...)'));
       expect(joined, contains('BorderRadius.only(topLeft: ...)'));
@@ -840,6 +847,7 @@ final h = TextAlign.start;
 final i = TextAlign.end;
 final j = PositionedDirectional(start: 8, top: 4, child: x);
 final k = Positioned.fill(child: x);
+final k2 = Positioned.fill(top: 4, bottom: 8, child: x);
 final l = Positioned(
   top: flag ? left : right,
   bottom: 0,

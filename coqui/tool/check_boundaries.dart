@@ -702,6 +702,10 @@ final _namedArgDirectionalRules = <_NamedArgRule>[
     'left',
     'right',
   }, 'PositionedDirectional'),
+  _NamedArgRule(RegExp(r'\bPositioned\.fill\s*\('), 'Positioned.fill', const {
+    'left',
+    'right',
+  }, 'PositionedDirectional'),
   _NamedArgRule(
     RegExp(r'\bAnimatedPositioned\s*\('),
     'AnimatedPositioned',
