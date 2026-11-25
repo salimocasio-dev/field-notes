@@ -168,9 +168,10 @@ class TestCourse implements CourseCatalog {
 
   @override
   ReviewPair? pairFor(String word) {
-    final n = normalize(word);
+    final lang = language;
+    final n = lang.normalize(word);
     for (final p in pairs) {
-      if (normalize(p.word) == n) return p;
+      if (lang.normalize(p.word) == n) return p;
     }
     return null;
   }

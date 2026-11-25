@@ -13,7 +13,7 @@ class ReadingAudio {
         if (normKey.isNotEmpty) {
           _words[normKey] = (clip: recording, word: word.word);
         }
-        final rawKey = readingKey(word.word);
+        final rawKey = readingExactKey(word.word, language: _language);
         if (rawKey.isNotEmpty) {
           _exactWords[rawKey] = (clip: recording, word: word.word);
         }
@@ -24,8 +24,8 @@ class ReadingAudio {
       if (clip == null) continue;
       final normWord = _norm(pair.word);
       final normClip = _norm(clip.text);
-      final rawWord = readingKey(pair.word);
-      final rawClip = readingKey(clip.text);
+      final rawWord = readingExactKey(pair.word, language: _language);
+      final rawClip = readingExactKey(clip.text, language: _language);
       if ((normWord.isNotEmpty && normClip == normWord) ||
           (rawWord.isNotEmpty && rawClip == rawWord)) {
         if (normWord.isNotEmpty) {
@@ -45,7 +45,7 @@ class ReadingAudio {
         if (normKey.isNotEmpty) {
           _lines.putIfAbsent(normKey, () => sentence.clip);
         }
-        final rawKey = readingKey(sentence.text);
+        final rawKey = readingExactKey(sentence.text, language: _language);
         if (rawKey.isNotEmpty) {
           _exactLines.putIfAbsent(rawKey, () => sentence.clip);
         }
@@ -62,7 +62,7 @@ class ReadingAudio {
   String _norm(String text) => _language.normalize(text).trim();
 
   ({String clip, String word})? word(String token) {
-    final rawKey = readingKey(token);
+    final rawKey = readingExactKey(token, language: _language);
     if (rawKey.isNotEmpty) {
       final exact = _exactWords[rawKey];
       if (exact != null) return exact;
@@ -73,7 +73,7 @@ class ReadingAudio {
   }
 
   String? line(String text) {
-    final rawKey = readingKey(text);
+    final rawKey = readingExactKey(text, language: _language);
     if (rawKey.isNotEmpty) {
       final exact = _exactLines[rawKey] ?? _exactWords[rawKey]?.clip;
       if (exact != null) return exact;
