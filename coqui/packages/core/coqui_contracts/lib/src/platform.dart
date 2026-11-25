@@ -12,19 +12,19 @@ abstract interface class KeyValueStore {
 /// implement this treat [KeyValueStoreDelete.delete] as a no-op.
 abstract interface class DeletableKeyValueStore {
   /// Removes [key] from this store if present.
-  void delete(String key);
+  Future<void> delete(String key);
 }
 
 /// Key-removal helper on [KeyValueStore], delegating to
 /// [DeletableKeyValueStore] when implemented and acting as a no-op otherwise.
 extension KeyValueStoreDelete on KeyValueStore {
-  /// Removes [key] when this store implements [DeletableKeyValueStore], or acts
-  /// as a no-op otherwise.
-  void delete(String key) {
+  /// Removes [key] when this store implements [DeletableKeyValueStore], or
+  /// returns an already-completed future otherwise.
+  Future<void> delete(String key) {
     final s = this;
-    if (s is DeletableKeyValueStore) {
-      (s as DeletableKeyValueStore).delete(key);
-    }
+    return s is DeletableKeyValueStore
+        ? (s as DeletableKeyValueStore).delete(key)
+        : Future<void>.value();
   }
 }
 

@@ -146,14 +146,6 @@ class _LegacyKeyValueStore implements KeyValueStore {
 class _DeletableStore extends _LegacyKeyValueStore
     implements DeletableKeyValueStore {
   @override
-  void delete(String key) {
-    data.remove(key);
-  }
-}
-
-class _AsyncDeletableStore extends _LegacyKeyValueStore
-    implements DeletableKeyValueStore {
-  @override
   Future<void> delete(String key) async {
     data.remove(key);
   }
@@ -245,25 +237,20 @@ void main() {
       await legacy.write('k', 'v');
       final KeyValueStore store = legacy;
 
-      expect(() => store.delete('k'), returnsNormally);
+      await store.delete('k');
       expect(store.read('k'), 'v');
     });
 
-    test('delegates delete on sync and async implementations', () async {
-      final syncStore = _DeletableStore();
-      await syncStore.write('k1', 'v1');
-      await syncStore.write('k2', 'v2');
-      final KeyValueStore s1 = syncStore;
-      s1.delete('k1');
-      s1.delete('missing');
-      expect(s1.read('k1'), isNull);
-      expect(s1.read('k2'), 'v2');
+    test('delegates delete asynchronously when implemented', () async {
+      final deletable = _DeletableStore();
+      await deletable.write('k1', 'v1');
+      await deletable.write('k2', 'v2');
+      final KeyValueStore store = deletable;
 
-      final asyncStore = _AsyncDeletableStore();
-      await asyncStore.write('a', '1');
-      final KeyValueStore s2 = asyncStore;
-      s2.delete('a');
-      expect(s2.read('a'), isNull);
+      await store.delete('k1');
+      await store.delete('missing');
+      expect(store.read('k1'), isNull);
+      expect(store.read('k2'), 'v2');
     });
   });
 }
