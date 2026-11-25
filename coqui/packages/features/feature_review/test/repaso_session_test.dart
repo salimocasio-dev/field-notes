@@ -20,6 +20,46 @@ import 'support/repaso_course.dart';
 
 final course = RepasoTestCourse();
 
+class _ScriptedSpeech implements SpeechListener {
+  _ScriptedSpeech(this.results);
+  final List<SpeechResult> results;
+  int used = 0;
+
+  @override
+  Future<bool> available() async => true;
+
+  @override
+  SpeechTurn listen({
+    required String locale,
+    required Duration limit,
+    int maxAlternatives = 5,
+  }) {
+    final res = used < results.length
+        ? results[used]
+        : SpeechResult(error: 'no-speech');
+    used++;
+    return _ScriptedTurn(res);
+  }
+}
+
+class _ScriptedTurn implements SpeechTurn {
+  _ScriptedTurn(SpeechResult res)
+    : _result = Future<SpeechResult>.microtask(() => res),
+      _speechEnd = Future<void>.microtask(() {});
+
+  final Future<SpeechResult> _result;
+  final Future<void> _speechEnd;
+
+  @override
+  Future<SpeechResult> get result => _result;
+
+  @override
+  Future<void> get speechEnd => _speechEnd;
+
+  @override
+  void cancel() {}
+}
+
 class Bench {
   Bench({
     String? json,
@@ -27,6 +67,7 @@ class Bench {
     int seed = 1,
     List<String> heard = const [],
     bool speech = false,
+    SpeechListener? speechListener,
     ReviewOptions options = const ReviewOptions(),
     FakeKeyValueStore? space,
     Map<String, WordPictureAsset> wordAssets = const {},
@@ -51,7 +92,7 @@ class Bench {
       progress: store,
       clips: clips,
       wait: vt.wait,
-      speech: listener,
+      speech: speechListener ?? listener,
       storage: kv,
       options: options,
       wordAssets: wordAssets,
@@ -508,11 +549,17 @@ void main() {
     Future<Bench> dilo(
       List<String> heard, {
       bool speech = true,
+      SpeechListener? speechListener,
       Object? habla,
     }) async {
       final j = jsonDecode(seedJson('curso')) as Map<String, dynamic>;
       if (habla != null) (j['ajustes'] as Map)['habla'] = habla;
-      final b = Bench(json: jsonEncode(j), heard: heard, speech: speech);
+      final b = Bench(
+        json: jsonEncode(j),
+        heard: heard,
+        speech: speech,
+        speechListener: speechListener,
+      );
       final w = sayWord();
       b.s.queue = [QueueEntry.play(SayItem(word: w.word, line: w.say.first))];
       return b;
@@ -531,7 +578,10 @@ void main() {
         b.clips.plays.where((p) => p['id'] == w.say.first.before),
         isEmpty,
       );
-      expect(b.listener.listens.single.locale, 'es-US');
+      expect(
+        b.listener.listens.single.locale,
+        Language.spanish.recognitionLocale,
+      );
     });
 
     test('heard right: the check, what was heard, the line in the reveal and Next at once, with no wait between them; the dash is green', () async {
@@ -552,19 +602,20 @@ void main() {
       await b.leave();
     });
 
-    test('heard wrong twice: nothing written, the mic shows the X, the line plays as the model, the dash is red-orange', () async {
+    test('heard wrong twice: records a Mouth miss, the mic shows the X, the line plays as the model, the dash is red-orange', () async {
       final w = sayWord();
       final b = await dilo(['algo', 'otra cosa']);
       await b.play(until: () => b.s.mic == MicState.ready);
       b.s.pressMic();
       await b.vt.runUntil(() => b.s.notHeard && b.s.mic == MicState.ready);
-      // a first try not heard right: the mic is ready again, with "Try again"; the item is not marked yet
+      // a first try not heard right: the mic is ready again, with "Try again"; nothing recorded yet
       expect((b.s.heard, b.s.heardRight), ('algo', false));
       expect(b.s.barMarks.single, DashMark.none);
+      expect(b.answersOf(Skill.mouth), isEmpty);
       b.s.pressMic();
       await b.vt.settle(); // the recogniser's answer comes on the next turn of the event loop
       await b.vt.runUntil(() => b.s.mic == MicState.missed);
-      // the second: the mic shows the X, and the dash is red-orange
+      // the second: the mic shows the X, the dash is red-orange, and a Mouth miss is written
       expect(b.s.barMarks.single, DashMark.wrong);
       await b.vt.runUntil(() => b.s.canNext);
       // what the app heard shows, not as right; the line, with the word lit, and Next; the mic keeps its X
@@ -574,9 +625,88 @@ void main() {
       );
       expect(b.clips.plays.last['id'], w.say.first.clip);
       await b.play();
-      expect(b.answersOf(Skill.mouth), isEmpty);
+      final m = b.answersOf(Skill.mouth);
+      expect(m, hasLength(1));
+      expect(m.single['args'], [w.word, 'mouth', false, 120, false]);
+      expect(b.answersOf(Skill.ear), isEmpty);
       expect(b.listener.used, 2);
       expect(b.s.barMarks.single, DashMark.wrong);
+    });
+
+    test(
+      'heard wrong twice with null msToSound: records a Mouth miss with ms 0',
+      () async {
+        final w = sayWord();
+        final b = await dilo(
+          const [],
+          speechListener: _ScriptedSpeech([
+            SpeechResult(alternatives: const ['algo']),
+            SpeechResult(alternatives: const ['otra cosa']),
+          ]),
+        );
+        await b.play();
+        final m = b.answersOf(Skill.mouth);
+        expect(m, hasLength(1));
+        expect(m.single['args'], [w.word, 'mouth', false, 0, false]);
+      },
+    );
+
+    test(
+      'wrong first try then right second try: records only a Mouth hit',
+      () async {
+        final w = sayWord();
+        final b = await dilo(['algo', w.say.first.forms.first]);
+        await b.play();
+        final m = b.answersOf(Skill.mouth);
+        expect(m, hasLength(1));
+        expect((m.single['args'] as List).sublist(0, 3), [
+          w.word,
+          'mouth',
+          true,
+        ]);
+      },
+    );
+
+    test('silent or empty captures write nothing to ProgressStore', () async {
+      for (final results in [
+        // both attempts no-speech error with empty alternatives
+        [
+          SpeechResult(alternatives: const [], error: 'no-speech'),
+          SpeechResult(alternatives: const [], error: 'no-speech'),
+        ],
+        // both attempts pure empty alternatives with no error
+        [
+          SpeechResult(alternatives: const []),
+          SpeechResult(alternatives: const []),
+        ],
+        // speech on try 1, silence on try 2
+        [
+          SpeechResult(alternatives: const ['algo'], msToSound: 120),
+          SpeechResult(alternatives: const []),
+        ],
+        // silence on try 1, speech on try 2
+        [
+          SpeechResult(alternatives: const [], error: 'no-speech'),
+          SpeechResult(alternatives: const ['algo'], msToSound: 120),
+        ],
+        // blank/whitespace transcript does not count as spoken speech
+        [
+          SpeechResult(alternatives: const ['algo'], msToSound: 120),
+          SpeechResult(alternatives: const ['   '], msToSound: 120),
+        ],
+        // non-nodisp error on try 2 (even if alternatives were present)
+        [
+          SpeechResult(alternatives: const ['algo'], msToSound: 120),
+          SpeechResult(alternatives: const ['otra cosa'], error: 'aborted'),
+        ],
+      ]) {
+        final speech = _ScriptedSpeech(results);
+        final b = await dilo(const [], speechListener: speech);
+        await b.play();
+        expect(b.answersOf(Skill.mouth), isEmpty);
+        expect(b.answersOf(Skill.ear), isEmpty);
+        expect(speech.used, 2);
+      }
     });
 
     test('"Can\'t speak now" ends it and turns Dilo off for the session; nothing written', () async {
@@ -593,13 +723,33 @@ void main() {
     });
 
     test(
-      'speaking cannot work here: off for the session, nothing written',
+      '"Can\'t speak now" after a wrong first try writes nothing and skips',
       () async {
-        final b = await dilo(['error:not-allowed']);
+        final b = await dilo(['algo', 'otra cosa']);
+        await b.play(until: () => b.s.mic == MicState.ready);
+        b.s.pressMic();
+        await b.vt.runUntil(() => b.s.notHeard && b.s.mic == MicState.ready);
+        b.s.cantSpeak();
         await b.play();
         expect(b.s.sayOff, isTrue);
         expect(b.answersOf(Skill.mouth), isEmpty);
         expect(b.s.barMarks.single, DashMark.skipped);
+      },
+    );
+
+    test(
+      'speaking cannot work here: off for the session, nothing written',
+      () async {
+        for (final heard in [
+          ['error:not-allowed'],
+          ['algo', 'error:audio-capture'],
+        ]) {
+          final b = await dilo(heard);
+          await b.play();
+          expect(b.s.sayOff, isTrue);
+          expect(b.answersOf(Skill.mouth), isEmpty);
+          expect(b.s.barMarks.single, DashMark.skipped);
+        }
       },
     );
 

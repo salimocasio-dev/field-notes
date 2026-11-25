@@ -96,6 +96,7 @@ class MapScreen extends StatefulWidget {
     this.openPlace,
     this.onPicture,
     this.onCamera,
+    this.entitlements = const AllowAllEntitlements(),
   });
 
   final Services services;
@@ -117,6 +118,10 @@ class MapScreen extends StatefulWidget {
 
   /// For tests: notified whenever the camera centers on the current stop.
   final void Function(MapCamera camera)? onCamera;
+
+  /// Injected entitlements until `Services.entitlements` lands in `coqui_ui`
+  /// (see `coqui/requests/5-coqui-contracts-needs-coqui-ui-services-entitlements.md`).
+  final Entitlements entitlements;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -140,6 +145,7 @@ class _MapScreenState extends State<MapScreen>
   Ticker? _ticker;
   Duration _last = Duration.zero;
   StreamSubscription<void>? _changes;
+  StreamSubscription<void>? _entitlementChanges;
 
   bool _baked = false;
   bool _openedInitialPlace = false;
@@ -158,6 +164,9 @@ class _MapScreenState extends State<MapScreen>
     _map = MapPicture(still: _s.reduceMotion, onHop: _hopSound);
     widget.onPicture?.call(_map);
     _changes = _s.progress.changes.listen((_) => _progressChanged());
+    _entitlementChanges = widget.entitlements.changes.listen((_) {
+      if (mounted) setState(() {});
+    });
     final gen = _serviceGen;
     WidgetsBinding.instance.addPostFrameCallback((_) => _bake(gen));
   }
@@ -165,6 +174,12 @@ class _MapScreenState extends State<MapScreen>
   @override
   void didUpdateWidget(MapScreen old) {
     super.didUpdateWidget(old);
+    if (old.entitlements != widget.entitlements) {
+      _entitlementChanges?.cancel();
+      _entitlementChanges = widget.entitlements.changes.listen((_) {
+        if (mounted) setState(() {});
+      });
+    }
     if (old.services != widget.services) {
       final gen = ++_serviceGen;
       _changes?.cancel();
@@ -186,6 +201,7 @@ class _MapScreenState extends State<MapScreen>
   void dispose() {
     _serviceGen++;
     _changes?.cancel();
+    _entitlementChanges?.cancel();
     _ticker?.dispose();
     _scrollV.dispose();
     _scrollH.dispose();
@@ -348,7 +364,18 @@ class _MapScreenState extends State<MapScreen>
 
   void _start(TodayEntry e) {
     _s.haptics.tick();
-    _s.nav.go(e.route);
+    final route = e.route;
+    if (route is StoryRoute &&
+        !storyInPlan(route.id, _s.course.places, widget.entitlements)) {
+      final idx = placeIndexForStory(_s.course.places, route.id);
+      if (idx != null) {
+        _openPlace(idx);
+      } else {
+        _s.nav.go(const PlansRoute());
+      }
+      return;
+    }
+    _s.nav.go(route);
   }
 
   List<TodayEntry> _plan() => [

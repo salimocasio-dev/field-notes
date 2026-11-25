@@ -481,6 +481,8 @@ List<Map<String, dynamic>> speechInTimeOrder(
 ///   plans give three). [plan] is still the trace's name.
 /// - [startFrog], [frogShadow]: where the frog starts and whether he keeps the old shadow, for a converted scene (what its
 ///   sheet says); the old numbers and the old shadow when not given.
+/// - [onInit]: optional callback run right after `runner.init()`, given the world `W` and a `tap(x, y)` helper.
+/// - [onFrame]: optional callback run after each headless frame `(scene, W, F)` is drawn.
 Future<Map<String, dynamic>> play({
   required Map<String, dynamic> story,
   required String plan,
@@ -503,6 +505,9 @@ Future<Map<String, dynamic>> play({
   ({int x, int y, num scale}) Function(Scene scene)? startFrog,
   bool Function(Scene scene)? frogShadow,
   String? letters,
+  void Function(Map<String, dynamic> W, void Function(num x, num y) tap)?
+  onInit,
+  void Function(Scene scene, Map<String, dynamic> W, int F)? onFrame,
 }) async {
   if (!playPlans.contains(plan)) {
     throw ArgumentError.value(plan, 'plan', 'right, wrong or alternate');
@@ -536,7 +541,7 @@ Future<Map<String, dynamic>> play({
       forced: draws,
     ),
     timers: timers,
-    renderer: HeadlessRenderer(),
+    renderer: HeadlessRenderer(onFrame: onFrame),
     view: view,
     observer: watcher,
     sfx: RecordingSfx(player, sounds),
@@ -548,6 +553,7 @@ Future<Map<String, dynamic>> play({
   runZonedGuarded(
     () async {
       await runner.init();
+      onInit?.call(runner.W, runner.tap);
       final drawsAtGo = rng.draws;
       final driver = _Driver(
         runner: runner,

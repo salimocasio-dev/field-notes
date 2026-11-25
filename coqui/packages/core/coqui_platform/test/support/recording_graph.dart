@@ -136,6 +136,9 @@ class RecSource extends RecNode implements BufferSourceH {
   void Function()? ended;
 
   @override
+  late final ParamH playbackRate = RecParam(g!.log, '$name.playbackRate');
+
+  @override
   set buffer(AudioBufferH b) =>
       g!.log.add([name, 'buffer', (b as RecBuffer).name]);
 

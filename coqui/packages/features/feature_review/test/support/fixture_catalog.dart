@@ -82,9 +82,9 @@ class FixtureCatalog implements CourseCatalog {
 
   @override
   ReviewPair? pairFor(String word) {
-    final n = normalize(word);
+    final n = language.normalize(word);
     for (final p in _pairs) {
-      if (normalize(p.word) == n) return p;
+      if (language.normalize(p.word) == n) return p;
     }
     return null;
   }

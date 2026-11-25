@@ -175,13 +175,17 @@ class SoundCore {
 
   // juego.js: playClip. [limit] is the time limit juego.js gives every clip after a speaking turn
   // (its length + 1 s, HAB.guard); here the caller says it. At the limit the clip is stopped and gives false.
-  Future<bool> playClip(String id, {Duration? limit}) {
+  Future<bool> playClip(String id, {Duration? limit, double rate = 1.0}) {
+    if (!rate.isFinite || rate <= 0) {
+      throw ArgumentError.value(rate, 'rate', 'must be finite and positive');
+    }
     final cl = clips[id];
     if (cl == null) return Future.value(false);
     final res = Completer<bool>();
     final s = ac().createBufferSource();
     Timer? lim;
     s.buffer = cl.buf;
+    if (rate != 1.0) s.playbackRate.value = rate;
     s.connect(out());
     _live.add(s);
     var done = false;

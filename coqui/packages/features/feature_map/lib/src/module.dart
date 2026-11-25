@@ -8,10 +8,16 @@ import 'package:material_ui/material_ui.dart';
 /// It owns the `map` tab and answers [PlaceRoute].
 ///
 /// [showPerf]: the map shows its bake time and frame times in a small corner chip (the app's `?perf=1`). Off by default.
+/// [entitlements]: injected plan entitlements until `Services.entitlements` lands
+/// in `coqui_ui` (see `coqui/requests/5-coqui-contracts-needs-coqui-ui-services-entitlements.md`).
 class MapModule implements FeatureModule {
-  const MapModule({this.showPerf = false});
+  const MapModule({
+    this.showPerf = false,
+    this.entitlements = const AllowAllEntitlements(),
+  });
 
   final bool showPerf;
+  final Entitlements entitlements;
 
   @override
   String get id => 'map';
@@ -21,8 +27,12 @@ class MapModule implements FeatureModule {
     id: 'map',
     label: s.course.language.tabNames['map'] ?? CoquiTabs.map.label,
     icon: Icons.map,
-    builder: (_) =>
-        MapScreen(services: s, reviewTitle: 'Review', showPerf: showPerf),
+    builder: (_) => MapScreen(
+      services: s,
+      reviewTitle: 'Review',
+      showPerf: showPerf,
+      entitlements: entitlements,
+    ),
   );
 
   @override
@@ -32,7 +42,12 @@ class MapModule implements FeatureModule {
           !s.course.places.any((p) => p.id == placeId)) {
         return null;
       }
-      return PlaceScreen(key: ValueKey(route), placeId: placeId, services: s);
+      return PlaceScreen(
+        key: ValueKey(route),
+        placeId: placeId,
+        services: s,
+        entitlements: entitlements,
+      );
     }
     return null;
   }

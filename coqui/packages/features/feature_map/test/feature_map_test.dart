@@ -157,4 +157,66 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     },
   );
+
+  mapTest(
+    'MapModule forwards entitlements to PlaceScreen (Plan.free vs AllowAllEntitlements)',
+    (tester) async {
+      tester.view.devicePixelRatio = 2.625;
+      tester.view.physicalSize = const Size(412, 915) * 2.625;
+      addTearDown(tester.view.reset);
+
+      final free = FakeEntitlements(plan: Plan.free);
+      addTearDown(free.dispose);
+      final modFree = MapModule(entitlements: free);
+
+      final fFree = fixture(builtPlaces: 3, reduceMotion: true);
+      final casaScreen = modFree.screenFor(
+        const PlaceRoute('casa'),
+        fFree.services,
+      )!;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: coquiTheme(),
+          home: Scaffold(body: casaScreen),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      expect(find.byKey(const Key('place-play-bar')), findsOneWidget);
+      expect(find.byKey(const Key('place-plan-card')), findsNothing);
+
+      final parqueScreen = modFree.screenFor(
+        const PlaceRoute('parque'),
+        fFree.services,
+      )!;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: coquiTheme(),
+          home: Scaffold(body: parqueScreen),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      expect(find.text('Course'), findsOneWidget);
+      expect(find.text('This place is in Course'), findsOneWidget);
+      expect(find.byKey(const Key('place-play-bar')), findsNothing);
+
+      // Default MapModule uses AllowAllEntitlements: place 2 plays normally
+      final fAll = fixture(builtPlaces: 3, reduceMotion: true);
+      final defaultParque = const MapModule().screenFor(
+        const PlaceRoute('parque'),
+        fAll.services,
+      )!;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: coquiTheme(),
+          home: Scaffold(body: defaultParque),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      expect(find.byKey(const Key('place-play-bar')), findsOneWidget);
+      expect(find.byKey(const Key('place-plan-card')), findsNothing);
+    },
+  );
 }

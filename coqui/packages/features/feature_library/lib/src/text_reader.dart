@@ -46,10 +46,16 @@ class TextReader extends StatefulWidget {
   State<TextReader> createState() => _TextReaderState();
 }
 
-class _TextReaderState extends State<TextReader> {
+typedef _WordIndex = ({
+  Map<String, String> exact,
+  Map<String, String> normalized,
+});
+
+class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   Services get _s => widget.services;
   late final _store = ReadingStore(_s.storage(ReadingStore.space));
   late final _audio = ReadingAudio(_s.course);
+  late final _courseWordIndex = _buildCourseWordIndex();
   late final _settingsStore = _s.storage('leer');
   final _viewportKey = GlobalKey();
   final _met = <String>{};
@@ -67,6 +73,9 @@ class _TextReaderState extends State<TextReader> {
 
   int _playback = 0;
   bool _playing = false;
+  int? _audioStartedAtMs;
+  int _pendingListenedMs = 0;
+  bool _hasUnsavedEarCredits = false;
   String? _activeSentenceId;
   String? _lastSentenceId;
   SelectedWord? _selectedWord;
@@ -78,6 +87,7 @@ class _TextReaderState extends State<TextReader> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _settings =
         widget.initialSettings ?? ReaderSettings.loadFrom(_settingsStore);
     _changes = _s.progress.changes.listen((_) {
@@ -161,10 +171,26 @@ class _TextReaderState extends State<TextReader> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.detached) {
+      final wasPlaying = _playing || _activeSentenceId != null;
+      _stopNarration();
+      if (wasPlaying && mounted) {
+        setState(() {});
+      }
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _playback++;
-    unawaited(_s.clips.stop());
     unawaited(_changes?.cancel());
+    _changes = null;
+    _flushListeningProgress();
+    unawaited(_s.clips.stop().catchError((Object _) {}));
     super.dispose();
   }
 
@@ -248,7 +274,7 @@ class _TextReaderState extends State<TextReader> {
       for (final slice in currentPage.slices) {
         final sliceText = chapter.paragraphs[slice.paragraphIndex].text
             .substring(slice.charStart, slice.charEnd);
-        _met.addAll(readingWords(sliceText));
+        _met.addAll(readingWords(sliceText, language: _s.course.language));
       }
     }
 
@@ -278,12 +304,55 @@ class _TextReaderState extends State<TextReader> {
     unawaited(_settings.saveTo(_settingsStore).catchError((Object _) {}));
   }
 
+  void _beginAudioTiming() {
+    if (_s.clips.muted) {
+      _audioStartedAtMs = null;
+      return;
+    }
+    _audioStartedAtMs = _s.clock.nowMs();
+  }
+
+  void _stopAudioTiming() {
+    final startedAt = _audioStartedAtMs;
+    _audioStartedAtMs = null;
+    if (startedAt == null || _s.clips.muted) return;
+    final elapsedMs = math.max(0, _s.clock.nowMs() - startedAt);
+    if (elapsedMs > 0) {
+      _pendingListenedMs += elapsedMs;
+    }
+  }
+
+  void _finishAudioTiming(String clipId, {required bool played}) {
+    final startedAt = _audioStartedAtMs;
+    _audioStartedAtMs = null;
+    if (!played || startedAt == null || _s.clips.muted) return;
+    final elapsedMs = math.max(0, _s.clock.nowMs() - startedAt);
+    if (elapsedMs > 0) {
+      _pendingListenedMs += elapsedMs;
+    } else {
+      final clip = _s.course.clip(clipId);
+      if (clip != null && clip.endMs > clip.startMs) {
+        _pendingListenedMs += clip.endMs - clip.startMs;
+      }
+    }
+  }
+
+  void _flushListeningProgress() {
+    _stopAudioTiming();
+    if (_pendingListenedMs <= 0 && !_hasUnsavedEarCredits) return;
+    final minutes = _pendingListenedMs / 6e4;
+    _pendingListenedMs = 0;
+    _hasUnsavedEarCredits = false;
+    _s.progress.addMinutes(minutes);
+  }
+
   void _stopNarration({bool clearActive = true}) {
     _playback++;
     if (_playing || (clearActive && _activeSentenceId != null)) {
       _playing = false;
       if (clearActive) _activeSentenceId = null;
     }
+    _flushListeningProgress();
     unawaited(_s.clips.stop().catchError((Object _) {}));
   }
 
@@ -361,15 +430,96 @@ class _TextReaderState extends State<TextReader> {
     return out;
   }
 
+  static void _addToWordIndex(
+    String word,
+    Language lang,
+    Map<String, String> exact,
+    Map<String, String> normalized,
+  ) {
+    final trimmed = word.trim();
+    if (trimmed.isEmpty) return;
+    exact.putIfAbsent(trimmed.toLowerCase(), () => word);
+    final exactKey = readingExactKey(trimmed, language: lang);
+    if (exactKey.isNotEmpty) {
+      exact.putIfAbsent(exactKey, () => word);
+    }
+    final norm = lang.normalize(trimmed).trim();
+    if (norm.isNotEmpty) {
+      normalized.putIfAbsent(norm, () => word);
+    }
+  }
+
+  _WordIndex _buildCourseWordIndex() {
+    final lang = _s.course.language;
+    final exact = <String, String>{};
+    final normalized = <String, String>{};
+    final catalog = _s.course as Object;
+    final review = catalog is RepasoCatalog ? catalog.repaso : null;
+    for (final word in review?.words ?? const <RepasoWord>[]) {
+      _addToWordIndex(word.word, lang, exact, normalized);
+    }
+    for (final pair in _s.course.pairs) {
+      _addToWordIndex(pair.word, lang, exact, normalized);
+    }
+    for (final item in _s.course.levelItems) {
+      _addToWordIndex(item.word, lang, exact, normalized);
+    }
+    return (exact: exact, normalized: normalized);
+  }
+
+  _WordIndex _progressWordIndex() {
+    final lang = _s.course.language;
+    final exact = <String, String>{};
+    final normalized = <String, String>{};
+    for (final existing in _s.progress.words) {
+      _addToWordIndex(existing.w, lang, exact, normalized);
+    }
+    return (exact: exact, normalized: normalized);
+  }
+
+  String? _resolveFromIndex(String rawToken, _WordIndex index) {
+    final lower = rawToken.toLowerCase();
+    final exactHit = index.exact[lower];
+    if (exactHit != null) return exactHit;
+    final exactKey = readingExactKey(rawToken, language: _s.course.language);
+    if (exactKey.isNotEmpty) {
+      final keyHit = index.exact[exactKey];
+      if (keyHit != null) return keyHit;
+    }
+    final norm = _s.course.language.normalize(rawToken).trim();
+    if (norm.isNotEmpty) {
+      final normHit = index.normalized[norm];
+      if (normHit != null) return normHit;
+    }
+    return null;
+  }
+
+  String? _resolveProgressWord(String rawToken, _WordIndex index) =>
+      _resolveFromIndex(rawToken, index);
+
+  String? _resolveKnownWord(String rawToken, _WordIndex progressIndex) {
+    final audioWord = _audio.word(rawToken)?.word;
+    if (audioWord != null && audioWord.isNotEmpty) return audioWord;
+    final progressWord = _resolveProgressWord(rawToken, progressIndex);
+    if (progressWord != null && progressWord.isNotEmpty) return progressWord;
+    return _resolveFromIndex(rawToken, _courseWordIndex);
+  }
+
+  void _creditWord(String word) {
+    _s.progress.heard(word);
+    _hasUnsavedEarCredits = true;
+  }
+
   void _creditSentenceWords(ReaderSentence sentence) {
+    final lang = _s.course.language;
+    final index = _progressWordIndex();
     final keys = <String>{};
-    for (final token in _s.course.language.tokens(sentence.text)) {
-      final resolved =
-          _audio.word(token.text)?.word ?? token.text.toLowerCase();
-      keys.add(resolved);
+    for (final token in lang.tokens(sentence.text)) {
+      final resolved = _resolveKnownWord(token.text, index);
+      if (resolved != null && resolved.isNotEmpty) keys.add(resolved);
     }
     for (final key in keys) {
-      _s.progress.heard(key);
+      _creditWord(key);
     }
   }
 
@@ -377,6 +527,7 @@ class _TextReaderState extends State<TextReader> {
     if (_doc == null || !_doc!.hasAudio) return;
     if (_playing) {
       _playback++;
+      _flushListeningProgress();
       unawaited(_s.clips.stop().catchError((Object _) {}));
       setState(() {
         _playing = false;
@@ -402,6 +553,7 @@ class _TextReaderState extends State<TextReader> {
     if (startIdx < 0) startIdx = 0;
 
     final request = ++_playback;
+    _flushListeningProgress();
     setState(() {
       _playing = true;
       _selectedWord = null;
@@ -425,7 +577,7 @@ class _TextReaderState extends State<TextReader> {
         });
         _savePlace();
 
-        final played = await _s.clips.play(item.sentence.clipId!);
+        final played = await _playPreparedClip(item.sentence.clipId!, request);
         if (!mounted || request != _playback) return;
         if (played && !_s.clips.muted) {
           _creditSentenceWords(item.sentence);
@@ -433,14 +585,27 @@ class _TextReaderState extends State<TextReader> {
         if (!played) break;
       }
     } on Object {
-      // Playback failure must not count as an ear meeting.
+      // Playback failure must not count as an ear meeting or listening time.
+      _audioStartedAtMs = null;
     }
 
     if (!mounted || request != _playback) return;
+    _flushListeningProgress();
     setState(() {
       _playing = false;
       _activeSentenceId = null;
     });
+  }
+
+  Future<bool> _playPreparedClip(String clipId, int request) async {
+    final missing = await _s.clips.preload([clipId]);
+    if (!mounted || request != _playback) return false;
+    if (missing.contains(clipId)) return false;
+    _beginAudioTiming();
+    final played = await _s.clips.play(clipId);
+    if (!mounted || request != _playback) return false;
+    _finishAudioTiming(clipId, played: played);
+    return played;
   }
 
   Future<void> _repeatSentence() async {
@@ -458,6 +623,7 @@ class _TextReaderState extends State<TextReader> {
     target ??= list.first;
 
     final request = ++_playback;
+    _flushListeningProgress();
     setState(() {
       _playing = true;
       _selectedWord = null;
@@ -474,16 +640,18 @@ class _TextReaderState extends State<TextReader> {
       if (!mounted || request != _playback) return;
       await _s.clips.stop();
       if (!mounted || request != _playback) return;
-      final played = await _s.clips.play(target.sentence.clipId!);
+      final played = await _playPreparedClip(target.sentence.clipId!, request);
       if (!mounted || request != _playback) return;
       if (played && !_s.clips.muted) {
         _creditSentenceWords(target.sentence);
       }
     } on Object {
       // Ignore playback failures.
+      _audioStartedAtMs = null;
     }
 
     if (!mounted || request != _playback) return;
+    _flushListeningProgress();
     setState(() {
       _playing = false;
       _activeSentenceId = null;
@@ -506,6 +674,7 @@ class _TextReaderState extends State<TextReader> {
     final stage = earIndex.stageOf(token);
 
     _playback++;
+    _flushListeningProgress();
     setState(() {
       _playing = false;
       _selectedWord = SelectedWord(
@@ -527,14 +696,17 @@ class _TextReaderState extends State<TextReader> {
     final clipId = selected.clipId;
     if (clipId == null) return;
     _playback++;
+    _flushListeningProgress();
     setState(() => _playing = false);
     await _playWordClip((
       clip: clipId,
-      word: selected.audioWord ?? selected.token.toLowerCase(),
+      word:
+          selected.audioWord ??
+          _resolveKnownWord(selected.token, _progressWordIndex()),
     ));
   }
 
-  Future<void> _playWordClip(({String clip, String word})? wordMatch) async {
+  Future<void> _playWordClip(({String clip, String? word})? wordMatch) async {
     final request = _playback;
     if (wordMatch == null) {
       await _s.clips.stop().catchError((Object _) {});
@@ -546,14 +718,19 @@ class _TextReaderState extends State<TextReader> {
       if (!mounted || request != _playback) return;
       await _s.clips.stop();
       if (!mounted || request != _playback) return;
-      played = await _s.clips.play(wordMatch.clip);
+      played = await _playPreparedClip(wordMatch.clip, request);
     } on Object {
       // Ignore playback failures.
+      _audioStartedAtMs = null;
     }
     if (!mounted || request != _playback) return;
     if (played && !_s.clips.muted) {
-      _s.progress.heard(wordMatch.word);
+      final word = wordMatch.word;
+      if (word != null && word.isNotEmpty) {
+        _creditWord(word);
+      }
     }
+    _flushListeningProgress();
   }
 
   void _handleBodyTapUp(
@@ -637,6 +814,9 @@ class _TextReaderState extends State<TextReader> {
     final doc = _doc;
     if (doc == null || _pages.isEmpty) return;
     final lang = _s.course.language;
+    final courseDir = lang.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
     final currentChapter = _pages[_pageIndex].chapterIndex;
     final locale = Locale(lang.code);
 
@@ -647,28 +827,31 @@ class _TextReaderState extends State<TextReader> {
         NocheA11y.closeSheet,
         courseWords: lang.a11yWords,
       ),
-      builder: (context, close) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (var i = 0; i < doc.chapters.length; i++)
-            _ChapterRow(
-              chapter: doc.chapters[i],
-              selected: i == currentChapter,
-              language: lang,
-              locale: locale,
-              showTopBorder: i > 0,
-              onPressed: () {
-                close();
-                final targetPage = _pages.indexWhere(
-                  (p) => p.chapterIndex == i,
-                );
-                if (targetPage >= 0) {
-                  _turnToPage(targetPage);
-                }
-              },
-            ),
-        ],
+      builder: (context, close) => Directionality(
+        textDirection: courseDir,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < doc.chapters.length; i++)
+              _ChapterRow(
+                chapter: doc.chapters[i],
+                selected: i == currentChapter,
+                language: lang,
+                locale: locale,
+                showTopBorder: i > 0,
+                onPressed: () {
+                  close();
+                  final targetPage = _pages.indexWhere(
+                    (p) => p.chapterIndex == i,
+                  );
+                  if (targetPage >= 0) {
+                    _turnToPage(targetPage);
+                  }
+                },
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -1103,6 +1286,9 @@ class _ChapterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final courseDir = language.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
     final hasLabel = chapter.label != null && chapter.label!.trim().isNotEmpty;
     final labelText = hasLabel
         ? '${chapter.label} · ${chapter.title}'
@@ -1135,6 +1321,7 @@ class _ChapterRow extends StatelessWidget {
                         chapter.label!.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        textDirection: courseDir,
                         locale: locale,
                         style: NocheType.forScript(
                           NocheType.label,
@@ -1147,6 +1334,7 @@ class _ChapterRow extends StatelessWidget {
                       chapter.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                      textDirection: courseDir,
                       locale: locale,
                       style: NocheType.forScript(
                         NocheType.row,

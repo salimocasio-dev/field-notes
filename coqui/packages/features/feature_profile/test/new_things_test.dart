@@ -12,6 +12,7 @@ import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
 import 'package:feature_profile/src/about_sheet.dart';
+import 'package:feature_profile/src/languages_sheet.dart';
 import 'package:feature_profile/src/licence_text.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -24,27 +25,31 @@ const credit = 'Map and scene engine: Pixel Plays by Amir Mushich (MIT)';
 
 void main() {
   group('M1 the module', () {
-    test(
-      'it is `me`, gives the tab `me` labelled Yo, and answers no route',
-      () {
-        const module = ProfileModule();
-        final s = fakeServices();
-        expect(module.id, 'me');
-        expect(module.tab(s)!.id, 'me');
-        expect(module.tab(s)!.label, 'Yo');
-        for (final r in <AppRoute>[
-          const StoryRoute('x'),
-          const ReviewRoute(),
-          const LevelCheckRoute(),
-          const BookRoute('x'),
-          const CallRoute('casa'),
-          const VoiceTestRoute(),
-          const TabRoute('me'),
-        ]) {
-          expect(module.screenFor(r, s), isNull);
-        }
-      },
-    );
+    test('it is `me`, gives the tab `me` labelled Yo, answers LanguagesRoute, and answers no other route', () {
+      const module = ProfileModule();
+      final s = fakeServices();
+      expect(module.id, 'me');
+      expect(module.tab(s)!.id, 'me');
+      expect(module.tab(s)!.label, 'Yo');
+      expect(
+        module.screenFor(const LanguagesRoute(), s),
+        isA<LanguagesSheet>(),
+      );
+      for (final r in <AppRoute>[
+        const StoryRoute('x'),
+        const ReviewRoute(),
+        const LevelCheckRoute(),
+        const BookRoute('x'),
+        const CallRoute('casa'),
+        const VoiceTestRoute(),
+        const TabRoute('me'),
+        const PlansRoute(),
+        const ImportRoute(),
+        const PlaceRoute('casa'),
+      ]) {
+        expect(module.screenFor(r, s), isNull);
+      }
+    });
   });
 
   group('N1 the build number', () {

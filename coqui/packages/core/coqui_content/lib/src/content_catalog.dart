@@ -33,7 +33,20 @@ typedef FetchText = Future<String> Function(String path);
 /// [load] also reads the optional `idioma` object from `datos/curso.json` into [language] (implementing
 /// [LanguageCatalog], defaulting to [Language.spanish] when missing) and uses its `callAgentId` as the default for
 /// calls in `datos/llamadas.json`.
-class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
+///
+/// Implements [CallsCatalog]: `datos/llamadas.json` maps each place id to either a legacy single call object or a JSON
+/// array of call objects (`main` and smaller calls). [callsFor] returns every call for a place in order; [callFor]
+/// returns its main call (or the first call when none sets `isMain`).
+///
+/// Implements [MinAppCatalog]: reads optional top-level `minApp` from `datos/curso.json` into [minApp] (missing or
+/// null means `null`, any app) alongside per-story [StoryMeta.minApp].
+class ContentCatalog
+    implements
+        CourseCatalog,
+        RepasoCatalog,
+        LanguageCatalog,
+        CallsCatalog,
+        MinAppCatalog {
   ContentCatalog(this._fetch);
 
   final FetchText _fetch;
@@ -41,6 +54,7 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   Future<void>? _loading;
   bool _loaded = false;
   Language _language = Language.spanish;
+  int? _minApp;
   List<Place> _places = const [];
   Map<String, StoryMeta> _metas = const {};
   List<ReviewPair> _pairs = const [];
@@ -48,6 +62,7 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   List<String> _pairNormalized = const [];
   List<LevelItem> _levelItems = const [];
   Map<String, CallBrief> _calls = const {};
+  Map<String, List<CallBrief>> _callsByPlace = const {};
   Map<String, String> _fixed = const {};
   // fijos.json, lineas: the lines the old code writes in code, by clip id
   Map<String, _Line> _written = const {};
@@ -75,6 +90,9 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   Language get language => _language;
 
   @override
+  int? get minApp => _minApp;
+
+  @override
   Future<void> load() async {
     final running = _loading;
     if (running != null) return running;
@@ -90,17 +108,24 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   Future<void> _load() async {
     final curso = _object(await _json('datos/curso.json'), 'datos/curso.json');
     final language = _parseLanguage(curso['idioma']);
+    final minApp = _parseMinApp(
+      curso['minApp'],
+      context: 'datos/curso.json: minApp',
+    );
     final places = [
       for (final l in curso['lugares'] as List)
         Place.fromJson(Map<String, dynamic>.from(l as Map)),
     ];
-    final metas = {
-      for (final e in (curso['cuentos'] as Map).entries)
-        e.key as String: StoryMeta.fromJson(
-          e.key as String,
-          Map<String, dynamic>.from(e.value as Map),
-        ),
-    };
+    final metas = <String, StoryMeta>{};
+    for (final e in (curso['cuentos'] as Map).entries) {
+      final id = e.key as String;
+      final raw = _object(e.value, 'datos/curso.json: cuentos.$id');
+      _parseMinApp(
+        raw['minApp'],
+        context: 'datos/curso.json: cuentos.$id.minApp',
+      );
+      metas[id] = StoryMeta.fromJson(id, raw);
+    }
     final sets = _strings(curso['cual']);
 
     // everything else at once; the first failure (in this order) is the one thrown
@@ -148,12 +173,18 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
     }
 
     final pairNormalized = [for (final p in pairs) language.normalize(p.word)];
-    final parsedCalls = {
-      for (final e in calls.entries)
-        e.key: _parseCallBrief(e.key, e.value, language),
-    };
+    final parsedCallsByPlace = <String, List<CallBrief>>{};
+    final parsedMainCalls = <String, CallBrief>{};
+    final seenCallIds = <String>{};
+    for (final e in calls.entries) {
+      final list = _parsePlaceCalls(e.key, e.value, language, seenCallIds);
+      parsedCallsByPlace[e.key] = List<CallBrief>.unmodifiable(list);
+      final main = _mainCallOf(list);
+      if (main != null) parsedMainCalls[e.key] = main;
+    }
 
     _language = language;
+    _minApp = minApp;
     _places = places;
     _metas = metas;
     _pairs = pairs;
@@ -161,7 +192,8 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
     // app.html, pares(): m.set(it.w, it) — the last item with a word is the one the word gives
     _pairByWord = {for (final p in pairs) p.word: p};
     _levelItems = levelItems;
-    _calls = parsedCalls;
+    _calls = parsedMainCalls;
+    _callsByPlace = parsedCallsByPlace;
     _fixed = Map<String, String>.from(fixed['clips'] as Map);
     _written = _writtenLines(fixed['lineas']);
     _goodbye = _strings(fixed['despedidas']);
@@ -338,6 +370,10 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   @override
   CallBrief? callFor(String placeId) => _calls[placeId];
 
+  @override
+  List<CallBrief> callsFor(String placeId) =>
+      _callsByPlace[placeId] ?? const <CallBrief>[];
+
   /// A clip that has a recording (it is in `audio/ready.json`) and marks (`audio/marcas.json`); otherwise null.
   /// Its `who`, `text` and `habla` are those of the first story read that has the line. Until one has been, they are
   /// the line `palabras-solas.json` gives it (a word said alone), else the line `fijos.json` gives it under `lineas`,
@@ -457,6 +493,23 @@ class ContentCatalog implements CourseCatalog, RepasoCatalog, LanguageCatalog {
   }
 }
 
+int? _parseMinApp(Object? raw, {required String context}) {
+  if (raw == null) return null;
+  if (raw is int) {
+    if (raw < 0) {
+      throw FormatException('$context must be a non-negative integer');
+    }
+    return raw;
+  }
+  if (raw is double &&
+      raw.isFinite &&
+      raw == raw.truncateToDouble() &&
+      raw >= 0) {
+    return raw.toInt();
+  }
+  throw FormatException('$context must be a non-negative integer');
+}
+
 Language _parseLanguage(Object? raw) {
   if (raw == null) return Language.spanish;
   if (raw is! Map) {
@@ -545,19 +598,123 @@ Map<String, String> _languageStringMap(
   return out;
 }
 
-CallBrief _parseCallBrief(String placeId, Object? value, Language language) {
-  final raw = ContentCatalog._object(value, 'datos/llamadas.json: $placeId');
+List<CallBrief> _parsePlaceCalls(
+  String placeId,
+  Object? value,
+  Language language,
+  Set<String> seenCallIds,
+) {
+  if (value is Map) {
+    final brief = _parseCallBrief(
+      placeId,
+      value,
+      language,
+      context: 'datos/llamadas.json: $placeId',
+      legacyObject: true,
+    );
+    if (!brief.isMain) {
+      throw FormatException(
+        'datos/llamadas.json: $placeId: legacy object entry cannot set isMain: false',
+      );
+    }
+    if (!seenCallIds.add(brief.id)) {
+      throw FormatException(
+        'datos/llamadas.json: duplicate call id "${brief.id}"',
+      );
+    }
+    return [brief];
+  }
+  if (value is List) {
+    final out = <CallBrief>[];
+    var mainCount = 0;
+    for (var i = 0; i < value.length; i++) {
+      final brief = _parseCallBrief(
+        placeId,
+        value[i],
+        language,
+        context: 'datos/llamadas.json: $placeId[$i]',
+        legacyObject: false,
+      );
+      if (!seenCallIds.add(brief.id)) {
+        throw FormatException(
+          'datos/llamadas.json: duplicate call id "${brief.id}"',
+        );
+      }
+      if (brief.isMain) {
+        mainCount++;
+        if (mainCount > 1) {
+          throw FormatException(
+            'datos/llamadas.json: $placeId has more than one main call',
+          );
+        }
+      }
+      out.add(brief);
+    }
+    return out;
+  }
+  throw FormatException(
+    'datos/llamadas.json: $placeId must be a JSON object or array',
+  );
+}
+
+CallBrief? _mainCallOf(List<CallBrief> calls) {
+  if (calls.isEmpty) return null;
+  for (final c in calls) {
+    if (c.isMain) return c;
+  }
+  return calls.first;
+}
+
+CallBrief _parseCallBrief(
+  String placeId,
+  Object? value,
+  Language language, {
+  required String context,
+  required bool legacyObject,
+}) {
+  final raw = ContentCatalog._object(value, context);
   final primary = raw['agentId'];
   if (primary != null && primary is! String) {
-    throw FormatException(
-      'datos/llamadas.json: $placeId.agentId must be a string',
-    );
+    throw FormatException('$context.agentId must be a string');
   }
   final legacy = raw['agentid'];
   if (legacy != null && legacy is! String) {
-    throw FormatException(
-      'datos/llamadas.json: $placeId.agentid must be a string',
-    );
+    throw FormatException('$context.agentid must be a string');
+  }
+  if (!legacyObject) {
+    final id = raw['id'];
+    if (id != null && (id is! String || id.trim().isEmpty)) {
+      throw FormatException('$context.id must be a non-empty string');
+    }
+    final title = raw['title'];
+    if (title != null && title is! String) {
+      throw FormatException('$context.title must be a string');
+    }
+    final jobEn = raw['jobEn'];
+    if (jobEn != null && jobEn is! String) {
+      throw FormatException('$context.jobEn must be a string');
+    }
+    final minutes = raw['minutos'];
+    if (minutes is! num ||
+        !minutes.isFinite ||
+        minutes != minutes.truncateToDouble() ||
+        minutes <= 0) {
+      throw FormatException('$context.minutos must be a positive integer');
+    }
+    if (raw['job'] is! String) {
+      throw FormatException('$context.job must be a string');
+    }
+    if (raw['opening'] is! String) {
+      throw FormatException('$context.opening must be a string');
+    }
+    final photo = raw['foto'];
+    if (photo != null && photo is! String) {
+      throw FormatException('$context.foto must be a string');
+    }
+    final isMain = raw['isMain'];
+    if (isMain != null && isMain is! bool) {
+      throw FormatException('$context.isMain must be a boolean');
+    }
   }
   final perCall = (primary is String && primary.trim().isNotEmpty)
       ? primary

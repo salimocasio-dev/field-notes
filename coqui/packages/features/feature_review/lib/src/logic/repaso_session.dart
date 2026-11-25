@@ -1,7 +1,8 @@
 /// Repaso as games: the running session (docs/proyecto/15-repaso-juegos.md, "The session", "The games", "What is
 /// written to his progress"). The plan (repaso_plan.dart) decides what is asked; this plays it and writes what page
-/// 15 says: an Ear answer for ¿Cuál? and ¿Qué oyes? exactly as Repaso writes today, a Mouth answer for Dilo heard
-/// right, nothing for the other play games, and the session's time to the day's minutes.
+/// 15 says: an Ear answer for ¿Cuál? and ¿Qué oyes? exactly as Repaso writes today, a Mouth answer for Dilo (right
+/// when heard right, wrong when two spoken attempts fail), nothing for the other play games, and the session's time
+/// to the day's minutes.
 ///
 /// Plain Dart on the host's wait, like the old session: a test runs it on a virtual clock with no screen.
 library;
@@ -151,6 +152,7 @@ class RepasoSession extends LessonBase {
       progress: progress,
       pairs: course.pairs,
       rng: Mulberry32(seed),
+      language: course.language,
       lastAsked: _last.read(),
       nextKind: _last.readKind(),
       wordAssets: wordAssets,
@@ -996,7 +998,8 @@ class RepasoSession extends LessonBase {
   }
 
   // ---- Dilo (play): only a word open for speaking, a line with decided forms, the mic working, "Speak in
-  // stories" on. Heard right: a Mouth answer right. Anything else writes nothing.
+  // stories" on. Heard right: a Mouth answer right. Two spoken attempts not heard right: a Mouth miss. Mic
+  // errors, silent/empty captures, and "Can't speak now" write nothing.
 
   /// "Can't speak now": no more Dilo this session; the item on screen ends.
   void cantSpeak() {
@@ -1018,6 +1021,7 @@ class RepasoSession extends LessonBase {
       changed();
       await waitMs(300);
       await say(it.line.clip, 0);
+      var spokenAttempts = 0;
       for (var attempt = 1; attempt <= 2 && !done.isCompleted; attempt++) {
         mic = MicState.ready;
         yourTurn = true;
@@ -1038,7 +1042,7 @@ class RepasoSession extends LessonBase {
         changed();
         SpeechResult r;
         final t = speech!.listen(
-          locale: 'es-US',
+          locale: course.language.recognitionLocale,
           limit: const Duration(seconds: 6),
           maxAlternatives: 5,
         );
@@ -1068,8 +1072,15 @@ class RepasoSession extends LessonBase {
           sayOff = true;
           return;
         }
+        final heardSpeech =
+            r.error == null && r.alternatives.any((a) => a.trim().isNotEmpty);
+        if (heardSpeech) spokenAttempts++;
         heard = r.alternatives.isEmpty ? '' : r.alternatives.first;
-        if (repasoHeardRight(r.alternatives, it.line.forms)) {
+        if (repasoHeardRight(
+          r.alternatives,
+          it.line.forms,
+          language: course.language,
+        )) {
           heardRight = true;
           mic = MicState.ok;
           progress.answer(
@@ -1090,6 +1101,15 @@ class RepasoSession extends LessonBase {
         // before the model plays
         notHeard = true;
         if (attempt == 2) {
+          if (spokenAttempts == 2) {
+            progress.answer(
+              it.word,
+              Skill.mouth,
+              ok: false,
+              ms: r.msToSound ?? 0,
+              intro: false,
+            );
+          }
           mic = MicState.missed;
           _mark(DashMark.wrong);
           changed();
@@ -1207,11 +1227,16 @@ const List<String> _nodisp = [
 ];
 
 /// Heard right (docs/hablar/01-decisiones.md, "What counts as heard right"): one of the accepted [forms] is inside
-/// one of the alternatives, whole words, accents and case ignored.
-bool repasoHeardRight(List<String> alts, List<String> forms) {
-  final ns = [for (final a in alts) normalize(a)];
+/// one of the alternatives, whole words, accents/marks and case ignored through [language].
+bool repasoHeardRight(
+  List<String> alts,
+  List<String> forms, {
+  Language? language,
+}) {
+  final lang = language ?? Language.spanish;
+  final ns = [for (final a in alts) lang.normalize(a)];
   return forms.any((f) {
-    final g = normalize(f).trim();
+    final g = lang.normalize(f).trim();
     return g.isNotEmpty && ns.any((a) => a.contains(' $g '));
   });
 }

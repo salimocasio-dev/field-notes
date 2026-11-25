@@ -11,14 +11,20 @@
 //       (workspace packages and third-party packages both)
 //   [b] a Dart file imports a package its pubspec does not list
 //   [c] a Dart file imports another package's src/
-//   [d] the branch is `lane/<package>/...` and changes a file outside that
-//       package's folder and requests/
+//   [d] the branch is `lane/<package>/...` (or `lane/tool/...`) and changes a
+//       file outside that lane's folder and requests/, or `story/<n>` and
+//       changes a file outside coqui_scenes/, feature_story/,
+//       coqui_story_checks/, ref/pp/, and requests/
 //   [e] a feature's pubspec or imports name another feature
 // Added by the orchestrator on Nov 19, 2026 (not in the plan's rules):
 //   [f] a Dart file imports package:flutter/material.dart (deprecated in
 //       Flutter 3.50; the code uses package:material_ui/material_ui.dart)
 //   [g] a file under lib/ imports coqui_testing (it is a dev dependency, for
 //       tests and tool/ only)
+// Added in #55:
+//   [h] added lines in feature packages or coqui_ui introduce non-directional
+//       left/right Flutter layout calls (coqui_scenes and coqui_pixel are
+//       exempt; unchanged existing lines are not flagged)
 //
 // The tables below are data. They are copied from the plan, with the
 // orchestrator's changes of Nov 19, 2026 noted where they differ.
@@ -156,6 +162,18 @@ const packageRules = <String, PackageRule>{
     workspace: {'coqui_contracts', 'coqui_ui'},
     devWorkspace: _testingDev,
   ),
+  // Scene play-every-path and sheet-rules checks (#65). Depends on coqui_scenes
+  // and feature_story; never depended on by app or any other package.
+  'coqui_story_checks': PackageRule(
+    'packages/coqui_story_checks',
+    flutter: true,
+    workspace: {
+      'coqui_contracts',
+      'coqui_pixel',
+      'coqui_scenes',
+      'feature_story',
+    },
+  ),
   'app': PackageRule(
     'app',
     flutter: true,
@@ -268,6 +286,7 @@ Future<List<String>> checkBoundaries(
     problems.addAll(_checkImports(root, package));
   }
   problems.addAll(await _checkLane(root, branch: branch, base: base));
+  problems.addAll(await _checkDirectional(root, base: base));
   return problems;
 }
 
@@ -575,20 +594,540 @@ List<_Use> _packageUris(String source) {
 
 // --- [d]: the lane ------------------------------------------------------------
 
+/// Non-package lanes (not in [packageRules], so they cannot be listed as
+/// pubspec dependencies). Maps lane name -> folder relative to coqui/.
+const _nonPackageLaneDirs = <String, String>{'tool': 'tool'};
+
+/// Folders relative to coqui/ that a `story/<n>` branch may change (#170).
+const _storyBranchDirs = <String>[
+  'packages/core/coqui_scenes',
+  'packages/features/feature_story',
+  'packages/coqui_story_checks',
+  'ref/pp',
+  'requests',
+];
+
 Future<List<String>> _checkLane(
   Directory root, {
   String? branch,
   String? base,
 }) async {
   branch ??= _git(root, ['rev-parse', '--abbrev-ref', 'HEAD']).out;
-  final match = RegExp(r'^lane/([^/]+)/').firstMatch(branch);
-  if (match == null) return const [];
-  final name = match.group(1)!;
-  final rule = packageRules[name];
-  if (rule == null) {
-    return ['[d] branch $branch names $name, which is not a package'];
+  final List<String> allowedDirs;
+  final laneMatch = RegExp(r'^lane/([^/]+)/').firstMatch(branch);
+  if (laneMatch != null) {
+    final name = laneMatch.group(1)!;
+    final laneDir = packageRules[name]?.dir ?? _nonPackageLaneDirs[name];
+    if (laneDir == null) {
+      return ['[d] branch $branch names $name, which is not a package'];
+    }
+    allowedDirs = [laneDir, 'requests'];
+  } else if (RegExp(r'^story/.+').hasMatch(branch)) {
+    allowedDirs = _storyBranchDirs;
+  } else {
+    return const [];
   }
 
+  final mb = _resolveMergeBase(root, base: base);
+  if (mb.error != null) {
+    return ['[d] branch $branch: ${mb.error}'];
+  }
+  final diff = _git(root, [
+    'diff',
+    '--name-only',
+    '--no-renames',
+    '-z',
+    '${mb.commit}..HEAD',
+  ]);
+  if (!diff.ok) {
+    return ['[d] branch $branch: git diff failed: ${diff.err}'];
+  }
+  final prefix = _git(root, [
+    'rev-parse',
+    '--show-prefix',
+  ]).out; // "coqui/" or ""
+  final allowed = [for (final dir in allowedDirs) '$prefix$dir/'];
+  final allowedSummary = allowed.length == 2
+      ? '${allowed[0]} and ${allowed[1]}'
+      : '${allowed.sublist(0, allowed.length - 1).join(', ')}, and '
+            '${allowed.last}';
+  final problems = <String>[];
+  for (final file in diff.raw.split('\u0000')) {
+    if (file.isEmpty) continue;
+    if (allowed.any(file.startsWith)) continue;
+    problems.add('$file: [d] branch $branch may change only $allowedSummary');
+  }
+  return problems;
+}
+
+// --- [h]: new code uses start/end, not left/right (#55) ----------------------
+
+class _DirectRule {
+  const _DirectRule(this.pattern, this.suggestion);
+  final RegExp pattern;
+  final String suggestion;
+}
+
+class _NamedArgRule {
+  const _NamedArgRule(
+    this.pattern,
+    this.displayName,
+    this.forbiddenArgs,
+    this.suggestion,
+  );
+  final RegExp pattern;
+  final String displayName;
+  final Set<String> forbiddenArgs;
+  final String suggestion;
+}
+
+class _DirectionalHit {
+  const _DirectionalHit(this.line, this.offset, this.api, this.suggestion);
+  final int line;
+  final int offset;
+  final String api;
+  final String suggestion;
+}
+
+final _directDirectionalRules = <_DirectRule>[
+  _DirectRule(
+    RegExp(r'\bEdgeInsets\.fromLTRB\b'),
+    'EdgeInsetsDirectional.fromSTEB',
+  ),
+  _DirectRule(RegExp(r'\bRelativeRect\.fromLTRB\b'), 'PositionedDirectional'),
+  _DirectRule(
+    RegExp(
+      r'\bAlignment\.(?:topLeft|topRight|centerLeft|centerRight|'
+      r'bottomLeft|bottomRight)\b',
+    ),
+    'AlignmentDirectional',
+  ),
+  _DirectRule(
+    RegExp(
+      r'\bFractionalOffset\.(?:topLeft|topRight|centerLeft|centerRight|'
+      r'bottomLeft|bottomRight)\b',
+    ),
+    'AlignmentDirectional',
+  ),
+  _DirectRule(RegExp(r'\bTextAlign\.(?:left|right)\b'), 'TextAlign.start/end'),
+];
+
+final _namedArgDirectionalRules = <_NamedArgRule>[
+  _NamedArgRule(RegExp(r'\bEdgeInsets\.only\s*\('), 'EdgeInsets.only', const {
+    'left',
+    'right',
+  }, 'EdgeInsetsDirectional.only'),
+  _NamedArgRule(RegExp(r'\bPositioned\s*\('), 'Positioned', const {
+    'left',
+    'right',
+  }, 'PositionedDirectional'),
+  _NamedArgRule(RegExp(r'\bPositioned\.fill\s*\('), 'Positioned.fill', const {
+    'left',
+    'right',
+  }, 'PositionedDirectional'),
+  _NamedArgRule(
+    RegExp(r'\bAnimatedPositioned\s*\('),
+    'AnimatedPositioned',
+    const {'left', 'right'},
+    'AnimatedPositionedDirectional',
+  ),
+  _NamedArgRule(RegExp(r'\bBorder\s*\('), 'Border', const {
+    'left',
+    'right',
+  }, 'BorderDirectional'),
+  _NamedArgRule(
+    RegExp(r'\bBorderRadius\.horizontal\s*\('),
+    'BorderRadius.horizontal',
+    const {'left', 'right'},
+    'BorderRadiusDirectional.horizontal',
+  ),
+  _NamedArgRule(
+    RegExp(r'\bBorderRadius\.only\s*\('),
+    'BorderRadius.only',
+    const {'topLeft', 'topRight', 'bottomLeft', 'bottomRight'},
+    'BorderRadiusDirectional.only',
+  ),
+];
+
+bool _isDirectionalCheckedPath(String relPath) {
+  if (!relPath.endsWith('.dart')) return false;
+  for (final dir in skippedDirs) {
+    if (relPath == dir || relPath.startsWith('$dir/')) return false;
+  }
+  for (final seg in relPath.split('/')) {
+    if (seg.startsWith('.') || skippedNames.contains(seg)) return false;
+  }
+  return relPath.startsWith('packages/core/coqui_ui/') ||
+      relPath.startsWith('packages/features/');
+}
+
+Future<List<String>> _checkDirectional(Directory root, {String? base}) async {
+  if (!_git(root, ['rev-parse', '--is-inside-work-tree']).ok) {
+    return const [];
+  }
+  final mb = _resolveMergeBase(root, base: base);
+  if (mb.commit == null) return const [];
+
+  final diff = _git(root, [
+    'diff',
+    '--name-only',
+    '--diff-filter=AM',
+    '--no-renames',
+    '-z',
+    '${mb.commit}..HEAD',
+  ]);
+  if (!diff.ok) return const [];
+
+  final prefix = _git(root, [
+    'rev-parse',
+    '--show-prefix',
+  ]).out; // "coqui/" or ""
+  final problems = <String>[];
+  for (final gitPath in diff.raw.split('\u0000')) {
+    if (gitPath.isEmpty) continue;
+    if (prefix.isNotEmpty && !gitPath.startsWith(prefix)) continue;
+    final relPath = prefix.isEmpty ? gitPath : gitPath.substring(prefix.length);
+    if (!_isDirectionalCheckedPath(relPath)) continue;
+
+    final patch = _git(root, [
+      'diff',
+      '--no-ext-diff',
+      '-U0',
+      '--no-renames',
+      '${mb.commit}..HEAD',
+      '--',
+      relPath,
+    ]);
+    if (!patch.ok) continue;
+    final addedLines = _addedLineNumbers(patch.raw);
+    if (addedLines.isEmpty) continue;
+
+    final show = _git(root, ['show', 'HEAD:$gitPath']);
+    if (!show.ok) continue;
+
+    for (final hit in _findNonDirectionalCalls(show.raw)) {
+      if (!addedLines.contains(hit.line)) continue;
+      problems.add(
+        '$relPath:${hit.line}: [h] non-directional layout call ${hit.api}: '
+        'use ${hit.suggestion} (start/end) instead of left/right',
+      );
+    }
+  }
+  return problems;
+}
+
+/// Parses unified diff `-U0` hunk headers and returns the 1-based line numbers
+/// added in the new file.
+Set<int> _addedLineNumbers(String unifiedDiff) {
+  final added = <int>{};
+  final hunkRe = RegExp(r'^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@');
+  for (final rawLine in unifiedDiff.split('\n')) {
+    final m = hunkRe.firstMatch(rawLine);
+    if (m == null) continue;
+    final start = int.parse(m.group(1)!);
+    final count = m.group(2) == null ? 1 : int.parse(m.group(2)!);
+    for (var i = 0; i < count; i++) {
+      added.add(start + i);
+    }
+  }
+  return added;
+}
+
+/// Scans [source] (with comments and string literals masked while preserving
+/// newlines) for non-directional Flutter layout calls.
+List<_DirectionalHit> _findNonDirectionalCalls(String source) {
+  final normalized = source.replaceAll('\r\n', '\n');
+  final masked = _stripCommentsAndStrings(normalized);
+  final lineStarts = <int>[0];
+  for (var i = 0; i < masked.length; i++) {
+    if (masked.codeUnitAt(i) == 0x0A) {
+      lineStarts.add(i + 1);
+    }
+  }
+
+  int lineOf(int offset) {
+    var lo = 0;
+    var hi = lineStarts.length - 1;
+    while (lo < hi) {
+      final mid = (lo + hi + 1) >> 1;
+      if (lineStarts[mid] <= offset) {
+        lo = mid;
+      } else {
+        hi = mid - 1;
+      }
+    }
+    return lo + 1;
+  }
+
+  final hits = <_DirectionalHit>[];
+
+  for (final rule in _directDirectionalRules) {
+    for (final m in rule.pattern.allMatches(masked)) {
+      hits.add(
+        _DirectionalHit(lineOf(m.start), m.start, m.group(0)!, rule.suggestion),
+      );
+    }
+  }
+
+  for (final rule in _namedArgDirectionalRules) {
+    for (final m in rule.pattern.allMatches(masked)) {
+      // m.end is immediately after the opening `(`.
+      _scanNamedArgs(masked, m.end, rule, lineOf, hits);
+    }
+  }
+
+  hits.sort((a, b) {
+    final byLine = a.line.compareTo(b.line);
+    return byLine != 0 ? byLine : a.offset.compareTo(b.offset);
+  });
+  return hits;
+}
+
+void _scanNamedArgs(
+  String text,
+  int start,
+  _NamedArgRule rule,
+  int Function(int) lineOf,
+  List<_DirectionalHit> hits,
+) {
+  var depth = 1;
+  var expectArgName = true;
+  var i = start;
+  final n = text.length;
+
+  while (i < n && depth > 0) {
+    final c = text.codeUnitAt(i);
+    if (depth == 1 && expectArgName) {
+      if (_isWhitespace(c)) {
+        i++;
+        continue;
+      }
+      if (_isIdentStart(c)) {
+        final identStart = i;
+        i++;
+        while (i < n && _isIdentPart(text.codeUnitAt(i))) {
+          i++;
+        }
+        final ident = text.substring(identStart, i);
+        var j = i;
+        while (j < n && _isWhitespace(text.codeUnitAt(j))) {
+          j++;
+        }
+        if (j < n && text.codeUnitAt(j) == 0x3A /* : */ ) {
+          if (rule.forbiddenArgs.contains(ident)) {
+            hits.add(
+              _DirectionalHit(
+                lineOf(identStart),
+                identStart,
+                '${rule.displayName}($ident: ...)',
+                rule.suggestion,
+              ),
+            );
+          }
+          i = j + 1;
+        }
+        expectArgName = false;
+        continue;
+      }
+      if (c != 0x2C /* , */ && c != 0x29 /* ) */ ) {
+        expectArgName = false;
+      }
+    }
+
+    if (c == 0x28 /* ( */ || c == 0x5B /* [ */ || c == 0x7B /* { */ ) {
+      depth++;
+    } else if (c == 0x29 /* ) */ || c == 0x5D /* ] */ || c == 0x7D /* } */ ) {
+      depth--;
+    } else if (depth == 1 && c == 0x2C /* , */ ) {
+      expectArgName = true;
+    }
+    i++;
+  }
+}
+
+bool _isWhitespace(int c) => c == 0x20 || c == 0x09 || c == 0x0A || c == 0x0D;
+
+bool _isIdentStart(int c) =>
+    (c >= 0x41 && c <= 0x5A) ||
+    (c >= 0x61 && c <= 0x7A) ||
+    c == 0x5F ||
+    c == 0x24;
+
+bool _isIdentPart(int c) => _isIdentStart(c) || (c >= 0x30 && c <= 0x39);
+
+class _InterpFrame {
+  _InterpFrame(this.quote, this.triple);
+  final int quote;
+  final bool triple;
+  int braceDepth = 0;
+}
+
+/// Replaces comments and string literal bodies with spaces while keeping `\n`
+/// intact so line numbers and offsets remain identical to [source].
+/// Expressions inside `${...}` string interpolations are preserved.
+String _stripCommentsAndStrings(String source) {
+  final n = source.length;
+  final out = StringBuffer();
+  final interpStack = <_InterpFrame>[];
+  var i = 0;
+
+  void emitBlank(int c) => out.writeCharCode(c == 0x0A ? 0x0A : 0x20);
+
+  void scanString(int quote, {required bool triple, required bool raw}) {
+    while (i < n) {
+      final c = source.codeUnitAt(i);
+      if (triple) {
+        if (c == quote &&
+            i + 2 < n &&
+            source.codeUnitAt(i + 1) == quote &&
+            source.codeUnitAt(i + 2) == quote) {
+          out.write('   ');
+          i += 3;
+          return;
+        }
+      } else {
+        if (c == quote) {
+          out.write(' ');
+          i++;
+          return;
+        }
+        if (c == 0x0A) {
+          out.writeCharCode(0x0A);
+          i++;
+          return;
+        }
+      }
+      if (!raw && c == 0x5C /* \ */ ) {
+        out.write(' ');
+        i++;
+        if (i < n) {
+          emitBlank(source.codeUnitAt(i));
+          i++;
+        }
+        continue;
+      }
+      if (!raw &&
+          c == 0x24 /* $ */ &&
+          i + 1 < n &&
+          source.codeUnitAt(i + 1) == 0x7B /* { */ ) {
+        interpStack.add(_InterpFrame(quote, triple));
+        out.write('  ');
+        i += 2;
+        return;
+      }
+      emitBlank(c);
+      i++;
+    }
+  }
+
+  while (i < n) {
+    final c = source.codeUnitAt(i);
+
+    // Comments.
+    if (c == 0x2F /* / */ && i + 1 < n) {
+      final next = source.codeUnitAt(i + 1);
+      if (next == 0x2F /* // */ ) {
+        out.write('  ');
+        i += 2;
+        while (i < n && source.codeUnitAt(i) != 0x0A) {
+          out.write(' ');
+          i++;
+        }
+        continue;
+      }
+      if (next == 0x2A /* * */ ) {
+        var depth = 1;
+        out.write('  ');
+        i += 2;
+        while (i < n && depth > 0) {
+          final ch = source.codeUnitAt(i);
+          if (ch == 0x2F && i + 1 < n && source.codeUnitAt(i + 1) == 0x2A) {
+            depth++;
+            out.write('  ');
+            i += 2;
+          } else if (ch == 0x2A &&
+              i + 1 < n &&
+              source.codeUnitAt(i + 1) == 0x2F) {
+            depth--;
+            out.write('  ');
+            i += 2;
+          } else {
+            emitBlank(ch);
+            i++;
+          }
+        }
+        continue;
+      }
+    }
+
+    // String interpolation braces.
+    if (interpStack.isNotEmpty) {
+      if (c == 0x7B /* { */ ) {
+        interpStack.last.braceDepth++;
+        out.writeCharCode(c);
+        i++;
+        continue;
+      }
+      if (c == 0x7D /* } */ ) {
+        if (interpStack.last.braceDepth > 0) {
+          interpStack.last.braceDepth--;
+          out.writeCharCode(c);
+          i++;
+        } else {
+          final frame = interpStack.removeLast();
+          out.write(' ');
+          i++;
+          scanString(frame.quote, triple: frame.triple, raw: false);
+        }
+        continue;
+      }
+    }
+
+    // Raw string literal: r'...' / r"..." / r'''...''' / r"""...""".
+    if (c == 0x72 /* r */ &&
+        (i == 0 || !_isIdentPart(source.codeUnitAt(i - 1))) &&
+        i + 1 < n &&
+        (source.codeUnitAt(i + 1) == 0x27 ||
+            source.codeUnitAt(i + 1) == 0x22)) {
+      final quote = source.codeUnitAt(i + 1);
+      final triple =
+          i + 3 < n &&
+          source.codeUnitAt(i + 2) == quote &&
+          source.codeUnitAt(i + 3) == quote;
+      out.write(triple ? '    ' : '  ');
+      i += triple ? 4 : 2;
+      scanString(quote, triple: triple, raw: true);
+      continue;
+    }
+
+    // Standard string literal.
+    if (c == 0x27 /* ' */ || c == 0x22 /* " */ ) {
+      final triple =
+          i + 2 < n &&
+          source.codeUnitAt(i + 1) == c &&
+          source.codeUnitAt(i + 2) == c;
+      out.write(triple ? '   ' : ' ');
+      i += triple ? 3 : 1;
+      scanString(c, triple: triple, raw: false);
+      continue;
+    }
+
+    out.writeCharCode(c);
+    i++;
+  }
+
+  return out.toString();
+}
+
+// --- Git helpers -------------------------------------------------------------
+
+class _MergeBase {
+  const _MergeBase({this.commit, this.error});
+  final String? commit;
+  final String? error;
+}
+
+_MergeBase _resolveMergeBase(Directory root, {String? base}) {
   String? baseRef = base;
   if (baseRef == null) {
     for (final ref in ['origin/main', 'main']) {
@@ -604,39 +1143,15 @@ Future<List<String>> _checkLane(
     }
   }
   if (baseRef == null) {
-    return [
-      '[d] branch $branch: neither origin/main nor main exists to compare with',
-    ];
+    return const _MergeBase(
+      error: 'neither origin/main nor main exists to compare with',
+    );
   }
   final mergeBase = _git(root, ['merge-base', 'HEAD', baseRef]);
   if (!mergeBase.ok) {
-    return ['[d] branch $branch: no common ancestor with $baseRef'];
+    return _MergeBase(error: 'no common ancestor with $baseRef');
   }
-  final diff = _git(root, [
-    'diff',
-    '--name-only',
-    '--no-renames',
-    '-z',
-    '${mergeBase.out}..HEAD',
-  ]);
-  if (!diff.ok) {
-    return ['[d] branch $branch: git diff failed: ${diff.err}'];
-  }
-  final prefix = _git(root, [
-    'rev-parse',
-    '--show-prefix',
-  ]).out; // "coqui/" or ""
-  final allowed = ['$prefix${rule.dir}/', '${prefix}requests/'];
-  final problems = <String>[];
-  for (final file in diff.raw.split('\u0000')) {
-    if (file.isEmpty) continue;
-    if (allowed.any(file.startsWith)) continue;
-    problems.add(
-      '$file: [d] branch $branch may change only $prefix${rule.dir}/ and '
-      '${prefix}requests/',
-    );
-  }
-  return problems;
+  return _MergeBase(commit: mergeBase.out);
 }
 
 class _Git {

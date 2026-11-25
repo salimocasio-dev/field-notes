@@ -683,6 +683,39 @@ void main() {
       stub.dispose();
     });
   });
+
+  group('vendored @elevenlabs/client bundle (S8)', () {
+    test(
+      'elevenLabsClientUrl points to the bundled local asset, not jsdelivr',
+      () {
+        expect(
+          elevenLabsClientUrl,
+          'assets/packages/coqui_platform/assets/elevenlabs/lib.iife.js',
+        );
+        expect(elevenLabsClientUrl, isNot(startsWith('http://')));
+        expect(elevenLabsClientUrl, isNot(startsWith('https://')));
+        expect(elevenLabsClientUrl, isNot(contains('jsdelivr')));
+      },
+    );
+
+    test(
+      'bundled @elevenlabs/client@1.25.0 IIFE and MIT LICENSE files exist',
+      () {
+        final jsFile = File('assets/elevenlabs/lib.iife.js');
+        expect(jsFile.existsSync(), isTrue);
+        final js = jsFile.readAsStringSync();
+        expect(js.length, greaterThan(100000));
+        expect(js, contains('var ElevenLabsClient'));
+        expect(js, contains('Conversation'));
+
+        final licenseFile = File('assets/elevenlabs/LICENSE');
+        expect(licenseFile.existsSync(), isTrue);
+        final license = licenseFile.readAsStringSync();
+        expect(license, contains('MIT License'));
+        expect(license, contains('ElevenLabs'));
+      },
+    );
+  });
 }
 
 String _show(CallEvent e) => switch (e) {

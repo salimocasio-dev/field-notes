@@ -2,19 +2,31 @@ import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 
-final readingWordPattern = RegExp(
-  r"[\p{L}\p{M}]+(?:['’][\p{L}\p{M}]+)*",
-  unicode: true,
-);
+List<String> readingWords(String text, {Language? language}) {
+  final lang = language ?? Language.spanish;
+  if (lang.script == 'Latn') {
+    return [for (final token in lang.tokens(text)) token.text.toLowerCase()];
+  }
+  final out = <String>[];
+  for (final token in lang.tokens(text)) {
+    final normalized = lang.normalize(token.text).trim();
+    if (normalized.isNotEmpty) out.add(normalized);
+  }
+  return out;
+}
 
-List<String> readingWords(String text) => [
-  for (final match in readingWordPattern.allMatches(text))
-    match.group(0)!.toLowerCase(),
-];
+String readingKey(String text, {Language? language}) =>
+    readingWords(text, language: language).join(' ');
 
-String readingKey(String text) => readingWords(text).join(' ');
+/// Language-tokenized key that preserves diacritics and accents (for exact
+/// audio matching before falling back to [Language.normalize]).
+String readingExactKey(String text, {Language? language}) {
+  final lang = language ?? Language.spanish;
+  return [for (final token in lang.tokens(text)) token.text.toLowerCase()]
+      .join(' ');
+}
 
-final _lineBreak = RegExp(r'\r\n?|\n|(?<=[.!?…])[^\S\r\n]+');
+final _lineBreak = RegExp(r'\r\n?|\n|(?<=[.!?؟…])[^\S\r\n]+');
 
 List<String> readingLines(String body) => [
   for (final line in body.split(_lineBreak))
@@ -246,9 +258,10 @@ class ReadingStore {
 
 /// Stage four is the same threshold Yo uses for words the learner knows well.
 class ReadingVocabulary {
-  ReadingVocabulary(Iterable<WordRecord> records) {
+  ReadingVocabulary(Iterable<WordRecord> records, {Language? language})
+    : language = language ?? Language.spanish {
     for (final record in records) {
-      final words = readingWords(record.w);
+      final words = readingWords(record.w, language: this.language);
       if (words.isEmpty) continue;
       final key = words.join(' ');
       final stage = record.ear.etapa;
@@ -262,6 +275,7 @@ class ReadingVocabulary {
     }
   }
 
+  final Language language;
   final Map<String, int> _stages = {};
   final Map<String, List<List<String>>> _phrases = {};
 
@@ -305,7 +319,7 @@ class ReadingVocabulary {
   var total = 0;
   final unknown = <String, int>{};
   for (final line in readingLines(body)) {
-    final words = readingWords(line);
+    final words = readingWords(line, language: vocabulary.language);
     total += words.length;
     vocabulary.unknownCounts(words).forEach((word, count) {
       unknown.update(word, (n) => n + count, ifAbsent: () => count);
@@ -329,12 +343,13 @@ bool tracksReading(ProgressStore progress) {
 
 ({int page, int totalPages, int minutesLeft}) readingProgress(
   ReadingText text,
-  ReadingPlace place,
-) {
+  ReadingPlace place, {
+  Language? language,
+}) {
   final savedTotal = place.totalPages;
   if (savedTotal != null && savedTotal > 0) {
     final clampedIndex = place.page.clamp(0, savedTotal - 1);
-    final totalWords = readingWords(text.body).length;
+    final totalWords = readingWords(text.body, language: language).length;
     final remainingWords = totalWords <= 0
         ? 0
         : ((totalWords * (savedTotal - clampedIndex)) / savedTotal).ceil();
@@ -352,7 +367,7 @@ bool tracksReading(ProgressStore progress) {
   final clampedIndex = place.page.clamp(0, totalPages - 1);
   var remainingWords = 0;
   for (final line in lines.skip(clampedIndex * readingPageSize)) {
-    remainingWords += readingWords(line).length;
+    remainingWords += readingWords(line, language: language).length;
   }
   final minutesLeft = remainingWords <= 0 ? 1 : (remainingWords + 119) ~/ 120;
   return (

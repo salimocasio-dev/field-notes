@@ -68,52 +68,60 @@ class ReaderPageView extends StatelessWidget {
     final hasTitle = chapter.title.trim().isNotEmpty;
     final showHeader = page.isChapterStart && (hasLabel || hasTitle);
     final locale = Locale(language.code);
+    final textDirection = language.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
 
-    return Padding(
-      padding: const EdgeInsetsDirectional.symmetric(horizontal: 28),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (showHeader)
-            Padding(
-              padding: const EdgeInsetsDirectional.only(top: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  if (hasLabel)
-                    Text(
-                      chapter.label!.toUpperCase(),
-                      textAlign: TextAlign.center,
-                      locale: locale,
-                      style: chapterLabelStyleFor(language, palette.label),
+    return Directionality(
+      textDirection: textDirection,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 28),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (showHeader)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (hasLabel)
+                      Text(
+                        chapter.label!.toUpperCase(),
+                        textAlign: TextAlign.center,
+                        textDirection: textDirection,
+                        locale: locale,
+                        style: chapterLabelStyleFor(language, palette.label),
+                      ),
+                    if (hasLabel && hasTitle) const SizedBox(height: 8),
+                    if (hasTitle)
+                      Text(
+                        chapter.title,
+                        textAlign: TextAlign.center,
+                        textDirection: textDirection,
+                        locale: locale,
+                        style: chapterTitleStyleFor(language, palette.heading),
+                      ),
+                    Container(
+                      width: 32,
+                      height: 1,
+                      margin: const EdgeInsetsDirectional.only(
+                        top: 20,
+                        bottom: 24,
+                      ),
+                      color: palette.rule,
                     ),
-                  if (hasLabel && hasTitle) const SizedBox(height: 8),
-                  if (hasTitle)
-                    Text(
-                      chapter.title,
-                      textAlign: TextAlign.center,
-                      locale: locale,
-                      style: chapterTitleStyleFor(language, palette.heading),
-                    ),
-                  Container(
-                    width: 32,
-                    height: 1,
-                    margin: const EdgeInsetsDirectional.only(
-                      top: 20,
-                      bottom: 24,
-                    ),
-                    color: palette.rule,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          for (final slice in page.slices)
-            _buildSlice(
-              context,
-              chapter.paragraphs[slice.paragraphIndex],
-              slice,
-            ),
-        ],
+            for (final slice in page.slices)
+              _buildSlice(
+                context,
+                chapter.paragraphs[slice.paragraphIndex],
+                slice,
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -773,12 +781,15 @@ class ReaderWordBubble extends StatelessWidget {
       NocheType.primarySmall,
       language.script,
     ).copyWith(color: palette.bubbleText);
-    final textDirection = Directionality.of(context);
+    final stackDirection = Directionality.of(context);
+    final wordDirection = language.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
     final locale = Locale(language.code);
 
     final tp = TextPainter(
       text: TextSpan(text: selected.token, style: textStyle),
-      textDirection: textDirection,
+      textDirection: wordDirection,
       locale: locale,
       textScaler: MediaQuery.textScalerOf(context),
     )..layout();
@@ -798,7 +809,7 @@ class ReaderWordBubble extends StatelessWidget {
     final maxStart = math.max(16.0, viewportSize.width - 16.0 - bubbleWidth);
 
     final double bubbleLeft;
-    if (textDirection == TextDirection.rtl) {
+    if (stackDirection == TextDirection.rtl) {
       final wordCenterFromEnd = viewportSize.width - wordCenterX;
       final start = (wordCenterFromEnd - bubbleWidth / 2)
           .clamp(16.0, maxStart)
@@ -820,11 +831,11 @@ class ReaderWordBubble extends StatelessWidget {
               )
               .toDouble();
 
-    final bubbleStart = textDirection == TextDirection.rtl
+    final bubbleStart = stackDirection == TextDirection.rtl
         ? viewportSize.width - bubbleLeft - bubbleWidth
         : bubbleLeft;
     final pointerOffsetFromBubbleStart =
-        (textDirection == TextDirection.rtl
+        (stackDirection == TextDirection.rtl
                 ? (viewportSize.width - wordCenterX) - bubbleStart - 6.0
                 : wordCenterX - bubbleStart - 6.0)
             .clamp(12.0, math.max(12.0, bubbleWidth - 24.0))
@@ -864,6 +875,7 @@ class ReaderWordBubble extends StatelessWidget {
               selected.token,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
+              textDirection: wordDirection,
               locale: locale,
               style: textStyle,
             ),

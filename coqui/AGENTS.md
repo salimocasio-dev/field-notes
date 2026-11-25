@@ -30,6 +30,7 @@ coqui/
                       coqui_pixel, coqui_scenes, coqui_ui, coqui_testing
   packages/features/  feature_map, feature_story, feature_review, feature_words,
                       feature_library, feature_speaking, feature_profile
+  packages/coqui_story_checks/  every scene's play-every-path and sheet-rules checks
 ```
 
 ## Lanes
@@ -43,7 +44,7 @@ coqui/
 
 ### The packages and what each may depend on
 
-This is the plan's table "Packages: what each replaces and what it may depend on", without its "Replaces" column, with the changes noted under it. `app` may depend on everything.
+This is the plan's table "Packages: what each replaces and what it may depend on", without its "Replaces" column, with the changes noted under it. `app` may depend on everything except `coqui_story_checks` (and lists `coqui_testing` as dev only).
 
 | Package | Kind | May depend on | Dev only |
 | --- | --- | --- | --- |
@@ -62,11 +63,12 @@ This is the plan's table "Packages: what each replaces and what it may depend on
 | feature_library | Flutter | contracts, ui | coqui_testing |
 | feature_speaking | Flutter | contracts, ui | coqui_testing |
 | feature_profile | Flutter | contracts, ui | coqui_testing |
-| app | Flutter | everything | coqui_testing |
+| coqui_story_checks | Flutter | contracts, pixel, scenes, feature_story | - |
+| app | Flutter | everything (except coqui_story_checks) | coqui_testing |
 
 "Flutter" means the Flutter SDK. "plugins" means the third-party packages below. "Dev only" is a `dev_dependencies` entry: tests and `tool/` use it, nothing under `lib/` does.
 
-The orchestrator changed two things in the plan's table on Nov 19, 2026. coqui_ui's row was "Flutter only" and is now "contracts, Flutter": page 12, section 3 needs the contracts, and contracts depends on nothing. `coqui_testing` is a dev dependency of the seven features, coqui_scenes and app, so a feature can run and test on the fakes. It is not allowed anywhere else, and never under `dependencies`.
+The orchestrator changed two things in the plan's table on Nov 19, 2026. coqui_ui's row was "Flutter only" and is now "contracts, Flutter": page 12, section 3 needs the contracts, and contracts depends on nothing. `coqui_testing` is a dev dependency of the seven features, coqui_scenes and app, so a feature can run and test on the fakes. It is not allowed anywhere else, and never under `dependencies`. `coqui_story_checks` was added in #65 to hold every scene's play-every-path and sheet-rules checks so scene ports do not hold `lane:feature_story`; no other package (including `app`) may depend on it.
 
 ## The boundary rules
 

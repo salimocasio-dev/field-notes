@@ -339,6 +339,10 @@ class PcmSource extends _PcmScheduled implements BufferSourceH {
   PcmBuffer? buf;
   bool looping = false;
   double? offset, playFor;
+  final ParamTimeline playbackRateTimeline = ParamTimeline(1);
+
+  @override
+  late final ParamH playbackRate = PcmParam(playbackRateTimeline);
 
   @override
   set buffer(AudioBufferH b) => buf = b as PcmBuffer;
