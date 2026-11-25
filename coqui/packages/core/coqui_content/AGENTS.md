@@ -34,6 +34,7 @@ Reads the course, stories, review sets, books, clip list. Pure Dart.
   on (a story that has the same id wins once it is read). Missing or unreadable, it is no error: those clips then have
   their marks and url and no line, like any clip no story has been read for.
 - Issue #6 (`CallsCatalog`): `ContentCatalog` implements `CallsCatalog` (`callsFor(placeId)`) and parses both legacy single-object entries and multi-call JSON arrays in `datos/llamadas.json` (`callFor(placeId)` returns the `isMain` call, or the first call when none sets `isMain`). The 31 reviewed calls (10 main + 21 smaller) live as pure course JSON data in `data/llamadas.json` until promoted to `historia/datos/llamadas.json` (see `coqui/requests/6-coqui-content-needs-content-publish-llamadas-data.md`).
+- Issue #175 (`MinAppCatalog`): `ContentCatalog` implements `MinAppCatalog`, reading optional top-level `minApp` from `datos/curso.json` into `minApp` (`null` when missing or null) alongside per-story `StoryMeta.minApp`.
 
 ## Run and test it alone
 

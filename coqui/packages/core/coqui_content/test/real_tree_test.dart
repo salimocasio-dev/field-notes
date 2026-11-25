@@ -416,6 +416,20 @@ void main() {
         }
       }
     });
+
+    test('implements MinAppCatalog and matches minApp in datos/curso.json', () {
+      expect(catalog, isA<MinAppCatalog>());
+      final curso = _json('datos/curso.json') as Map<String, dynamic>;
+      final expectedCourseMinApp = (curso['minApp'] as num?)?.toInt();
+      expect(catalog.minApp, expectedCourseMinApp);
+      expect((catalog as CourseCatalog).minApp, expectedCourseMinApp);
+      final cuentos = curso['cuentos'] as Map<String, dynamic>;
+      for (final e in cuentos.entries) {
+        final expectedStoryMinApp = ((e.value as Map)['minApp'] as num?)
+            ?.toInt();
+        expect(catalog.meta(e.key)!.minApp, expectedStoryMinApp, reason: e.key);
+      }
+    });
   });
 
   test('datos/repaso.json reads: 167 words; every clip it names is a recorded line with marks, every story a story of '

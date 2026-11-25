@@ -55,6 +55,7 @@ abstract interface class BiquadH implements AudioNodeH {
 abstract interface class BufferSourceH implements AudioNodeH {
   set buffer(AudioBufferH b);
   set loop(bool v);
+  ParamH get playbackRate;
 
   /// The source's "ended" event.
   set onended(void Function()? f);

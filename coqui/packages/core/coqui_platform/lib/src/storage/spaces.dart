@@ -5,6 +5,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 abstract interface class StringBackend {
   String? read(String key);
   Future<void> write(String key, String value);
+  Future<void> delete(String key);
 }
 
 /// The app's storage, one [KeyValueStore] per space. A space is a key prefix:
@@ -15,19 +16,19 @@ abstract interface class StringBackend {
 ///   `coqui.juego.ult` is key `ult` in space `juego`, `coqui.juego.mem` is key `mem` in space `juego`,
 ///   `coqui.leer.tam` is key `tam` in space `leer`.
 ///
-/// Nothing is ever deleted: the contract has no delete, and nothing here moves or clears a key.
+/// Keys are only removed when [SpaceStore.delete] is explicitly called.
 class CoquiStorage {
   CoquiStorage(this.backend);
 
   final StringBackend backend;
 
   /// The shared progress store's space (`PalabrasStore` writes `coqui.palabras.v1` into it).
-  late final KeyValueStore progress = SpaceStore(backend, '');
+  late final SpaceStore progress = SpaceStore(backend, '');
 
-  final Map<String, KeyValueStore> _spaces = {};
+  final Map<String, SpaceStore> _spaces = {};
 
   /// A feature's own space: keys under `coqui.<name>.`. [name] is letters, digits, `_` or `-`.
-  KeyValueStore space(String name) {
+  SpaceStore space(String name) {
     if (!RegExp(r'^[A-Za-z0-9_-]+$').hasMatch(name)) {
       throw ArgumentError.value(
         name,
@@ -39,7 +40,7 @@ class CoquiStorage {
   }
 }
 
-/// One space: every key read and written under [prefix].
+/// One space: every key read, written, and deleted under [prefix].
 class SpaceStore implements KeyValueStore {
   SpaceStore(this.backend, this.prefix);
 
@@ -52,4 +53,6 @@ class SpaceStore implements KeyValueStore {
   @override
   Future<void> write(String key, String value) =>
       backend.write('$prefix$key', value);
+
+  Future<void> delete(String key) => backend.delete('$prefix$key');
 }

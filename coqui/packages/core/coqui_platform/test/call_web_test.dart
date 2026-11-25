@@ -36,6 +36,7 @@ void _install(List<String> opts) {
   globalContext.delete('ELConv'.toJS);
   globalContext.delete('CallStub'.toJS);
   globalContext.delete('ELConvError'.toJS);
+  globalContext.delete('ElevenLabsClient'.toJS);
   globalContext.callMethod(
     'eval'.toJS,
     '(function(){const STUBOPT=new Set(${jsonEncode(opts)});const CLK=1;\n$llamadaInstallStub\ninstallStub();})()'
@@ -335,30 +336,45 @@ void main() {
   );
 
   group('loading the library (precarga)', () {
-    test('a module that gives Conversation: loaded, available', () async {
+    setUp(() {
       globalContext.delete('ELConv'.toJS);
       globalContext.delete('ELConvError'.toJS);
+      globalContext.delete('ElevenLabsClient'.toJS);
+      _js(
+        'document.querySelectorAll("script[data-coqui-elconv]").forEach(e=>e.remove()),0',
+      );
+    });
+
+    test('a classic script that gives ElevenLabsClient.Conversation: loaded, available', () async {
       final url =
-          'data:text/javascript,${Uri.encodeComponent('export const Conversation={startSession(){return Promise.reject(new Error("no"))},v:"local"};')}';
+          'data:text/javascript,${Uri.encodeComponent('window.ElevenLabsClient={Conversation:{startSession(){return Promise.reject(new Error("no"))},v:"local"}};')}';
       final lib = JsConvLibrary(url);
       final s = ConvCallSession(library: lib, callsAllowed: true);
       expect(lib.loaded, isNull);
       expect(s.available, isTrue); // reading it starts the load
       expect(await lib.load(), isTrue);
       expect(_js('window.ELConv.v'), 'local');
-      expect(_js('document.querySelectorAll("script[type=module]").length'), 1);
+      expect(
+        _js('document.querySelectorAll("script[data-coqui-elconv]").length'),
+        1,
+      );
       expect(s.available, isTrue);
       expect(await lib.load(), isTrue); // once there, never loaded again
-      expect(_js('document.querySelectorAll("script[type=module]").length'), 1);
+      expect(
+        _js('document.querySelectorAll("script[data-coqui-elconv]").length'),
+        1,
+      );
     });
     test('without the library: available false after trying, start throws, the next read tries again', () async {
-      globalContext.delete('ELConv'.toJS);
-      globalContext.delete('ELConvError'.toJS);
       final lib = JsConvLibrary('http://127.0.0.1:9/nothing-here.js');
       final s = ConvCallSession(library: lib, callsAllowed: true);
       expect(s.available, isTrue);
       expect(await lib.load(), isFalse);
       expect(_js('typeof window.ELConvError'), 'string');
+      expect(
+        _js('document.querySelectorAll("script[data-coqui-elconv]").length'),
+        0,
+      );
       expect(s.available, isFalse);
       await expectLater(
         s.start(_brief, _vars),
@@ -368,7 +384,6 @@ void main() {
       );
     });
     test('callsAllowed false: not available, nothing loaded', () {
-      globalContext.delete('ELConv'.toJS);
       final s = createCallSession(
         appInfo: _NoCalls(),
         libraryUrl: 'http://127.0.0.1:9/x.js',

@@ -149,7 +149,8 @@ Future<Screen> openScreen(
   bool listen = false,
   TxtMode txt = TxtMode.con,
   StoryOptions? options,
-  EditedCourse? course,
+  CourseCatalog? course,
+  AppInfo? info,
   Size size = const Size(412, 915),
   double ratio = 2.625,
   bool reduceMotion = true,
@@ -178,6 +179,7 @@ Future<Screen> openScreen(
     nav: nav,
     progress: progress,
     clips: TimedClips(c),
+    info: info,
     reduceMotion: reduceMotion,
   );
   final screen = Screen(tester, clock, nav, c, services);

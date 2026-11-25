@@ -87,10 +87,19 @@ class GraphClipPlayer implements ClipPlayer {
   }
 
   @override
-  Future<bool> play(String clipId, {Duration? limit}) async {
+  Future<bool> play(String clipId, {Duration? limit, double rate = 1.0}) async {
+    if (!rate.isFinite || rate <= 0) {
+      throw ArgumentError.value(rate, 'rate', 'must be finite and positive');
+    }
     if (core.clips[clipId] == null && await load(clipId) == null) return false;
-    return core.playClip(clipId, limit: limit);
+    return core.playClip(clipId, limit: limit, rate: rate);
   }
+
+  Future<bool> playAtRate(
+    String clipId, {
+    double rate = 1.0,
+    Duration? limit,
+  }) => play(clipId, limit: limit, rate: rate);
 
   @override
   void tone(
