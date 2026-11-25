@@ -1,9 +1,12 @@
 // The dev entry's root widget (tool/dev_main.dart runs it). It lives here so that the tests can run it in a
 // browser too: `flutter test --platform chrome` loads nothing outside test/.
+import 'dart:async';
+
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/src/map_perf.dart';
 import 'package:feature_map/src/map_screen.dart';
+import 'package:feature_map/src/place_screen.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'map_fixture.dart';
@@ -11,6 +14,19 @@ import 'map_fixture.dart';
 /// The dev entry's root widget, for the address [query].
 Widget devApp([Map<String, String> query = const {}]) =>
     MapDevApp(query: query);
+
+class _DevNavigator implements AppNavigator {
+  _DevNavigator(this.onRoute, this.onBack);
+
+  final ValueChanged<AppRoute> onRoute;
+  final VoidCallback onBack;
+
+  @override
+  void go(AppRoute route) => onRoute(route);
+
+  @override
+  void back() => onBack();
+}
 
 class MapDevApp extends StatefulWidget {
   const MapDevApp({super.key, this.query = const {}});
@@ -24,6 +40,8 @@ class MapDevApp extends StatefulWidget {
 class _MapDevAppState extends State<MapDevApp> {
   final perf = MapPerf();
   late final MapFixture fixtureState;
+  late final Services services;
+  String? _activePlaceId;
 
   @override
   void initState() {
@@ -43,6 +61,59 @@ class _MapDevAppState extends State<MapDevApp> {
     if (seed == null && q['todo'] == '1') {
       fixtureState.progress.setSetting('todo', 1);
     }
+    final base = fixtureState.services;
+    services = Services(
+      progress: base.progress,
+      course: base.course,
+      clips: base.clips,
+      speech: base.speech,
+      call: base.call,
+      nav: _DevNavigator(_onRoute, _onBack),
+      clock: base.clock,
+      rng: base.rng,
+      haptics: base.haptics,
+      info: base.info,
+      pictures: base.pictures,
+      storage: base.storage,
+      reduceMotion: base.reduceMotion,
+    );
+    final rawPlace = q['place'];
+    if (rawPlace != null && rawPlace.isNotEmpty) {
+      final placeNum = int.tryParse(rawPlace);
+      if (placeNum == null) {
+        _activePlaceId = rawPlace;
+      } else {
+        unawaited(_resolveInitialPlace(placeNum));
+      }
+    }
+  }
+
+  Future<void> _resolveInitialPlace(int placeNum) async {
+    await services.course.load();
+    if (!mounted) return;
+    final places = services.course.places;
+    final idx = placeNum - 1;
+    if (idx >= 0 && idx < places.length) {
+      setState(() => _activePlaceId = places[idx].id);
+    }
+  }
+
+  void _onRoute(AppRoute route) {
+    fixtureState.nav.go(route);
+    if (!mounted) return;
+    if (route is PlaceRoute) {
+      setState(() => _activePlaceId = route.placeId);
+    } else if (route is TabRoute && route.tab == NocheTabs.map) {
+      setState(() => _activePlaceId = null);
+    }
+  }
+
+  void _onBack() {
+    fixtureState.nav.back();
+    if (!mounted) return;
+    if (_activePlaceId != null) {
+      setState(() => _activePlaceId = null);
+    }
   }
 
   @override
@@ -54,8 +125,8 @@ class _MapDevAppState extends State<MapDevApp> {
   @override
   Widget build(BuildContext context) {
     final q = widget.query;
-    final place = int.tryParse(q['place'] ?? '');
-    final lang = fixtureState.services.course.language;
+    final lang = services.course.language;
+    final placeId = _activePlaceId;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coqui map',
@@ -65,12 +136,18 @@ class _MapDevAppState extends State<MapDevApp> {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            MapScreen(
-              services: fixtureState.services,
-              perf: perf,
-              reviewTitle: q['review'] == '0' ? null : 'Review',
-              openPlace: place == null ? null : place - 1,
-            ),
+            if (placeId == null)
+              MapScreen(
+                services: services,
+                perf: perf,
+                reviewTitle: q['review'] == '0' ? null : 'Review',
+              )
+            else
+              PlaceScreen(
+                key: ValueKey(PlaceRoute(placeId)),
+                placeId: placeId,
+                services: services,
+              ),
             PositionedDirectional(
               start: 0,
               end: 0,
@@ -80,7 +157,11 @@ class _MapDevAppState extends State<MapDevApp> {
                 tabNames: lang.tabNames,
                 script: lang.script,
                 languageCode: lang.code,
-                onTap: (_) {},
+                onTap: (id) {
+                  if (id == NocheTabs.map && _activePlaceId != null) {
+                    setState(() => _activePlaceId = null);
+                  }
+                },
               ),
             ),
             if (q['chip'] != '0')

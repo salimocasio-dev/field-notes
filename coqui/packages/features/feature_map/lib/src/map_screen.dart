@@ -7,7 +7,6 @@ import 'package:feature_map/src/map_layout.dart';
 import 'package:feature_map/src/map_model.dart';
 import 'package:feature_map/src/map_perf.dart';
 import 'package:feature_map/src/map_picture.dart';
-import 'package:feature_map/src/place_sheet.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -331,37 +330,20 @@ class _MapScreenState extends State<MapScreen>
       if (_s.reduceMotion) {
         _map.placeFrog(k);
         _redraw();
-        _openSheet(k);
+        _openPlace(k);
       } else {
-        _map.hopTo(k, () => _openSheet(k));
+        _map.hopTo(k, () => _openPlace(k));
       }
     } else {
-      _openSheet(k);
+      _openPlace(k);
     }
   }
 
-  void _openSheet(int k) {
+  void _openPlace(int k) {
     if (!mounted) return;
     final places = _s.course.places;
     if (k < 0 || k >= places.length) return;
-    final place = places[k];
-    unawaited(
-      showCoquiSheet(
-        context,
-        builder: (context, close) => CoquiSheet(
-          title: place.name,
-          child: PlaceSheetBody(
-            place: place,
-            progress: _s.progress,
-            course: _s.course,
-            onPlay: (id) {
-              close();
-              _s.nav.go(StoryRoute(id));
-            },
-          ),
-        ),
-      ),
-    );
+    _s.nav.go(PlaceRoute(places[k].id));
   }
 
   void _start(TodayEntry e) {
@@ -446,7 +428,7 @@ class _MapScreenState extends State<MapScreen>
                   onPlay: () => _start(plan.first),
                   onOpenPlace: (placeIndex) {
                     _s.haptics.tick();
-                    _openSheet(placeIndex);
+                    _openPlace(placeIndex);
                   },
                 ),
               ),
@@ -525,27 +507,6 @@ class _MapScreenState extends State<MapScreen>
   }
 }
 
-String _normalizeSceneName(Language language, String raw) =>
-    language.normalize(raw).trim();
-
-bool _sceneMatchesPlace(Language language, String pairScene, Place place) {
-  final normPair = _normalizeSceneName(language, pairScene);
-  if (normPair.isEmpty) return false;
-  final pairTokens = normPair.split(' ');
-  for (final rawPlaceScene in place.scenes) {
-    final normPlace = _normalizeSceneName(language, rawPlaceScene);
-    if (normPlace.isEmpty) continue;
-    if (normPlace == normPair) return true;
-    if (pairTokens.length == 1) {
-      final placeTokens = normPlace.split(' ');
-      if (placeTokens.length == 2 && placeTokens.last == normPair) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
 /// Chooses a matching [PictureRef] for the Up next card thumbnail, or `null`
 /// to show the placeholder icon when no review pair matches cleanly.
 @visibleForTesting
@@ -567,10 +528,10 @@ PictureRef? pickUpNextPictureRef({
     return null;
   }
   if (entry.route is StoryRoute && storyScene != null) {
-    final target = _normalizeSceneName(language, storyScene);
+    final target = normalizeSceneName(language, storyScene);
     if (target.isEmpty) return null;
     for (final pair in pairs) {
-      if (_normalizeSceneName(language, pair.yes.scene ?? pair.scene) ==
+      if (normalizeSceneName(language, pair.yes.scene ?? pair.scene) ==
           target) {
         return PictureRef.of(pair, pair.yes);
       }
@@ -580,7 +541,7 @@ PictureRef? pickUpNextPictureRef({
   if (place != null) {
     for (final pair in pairs) {
       final scene = pair.yes.scene ?? pair.scene;
-      if (_sceneMatchesPlace(language, scene, place)) {
+      if (sceneMatchesPlace(language, scene, place)) {
         return PictureRef.of(pair, pair.yes);
       }
     }
