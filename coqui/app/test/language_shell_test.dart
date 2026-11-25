@@ -750,10 +750,7 @@ void main() {
             core: core,
             clipInfo: lookup,
             delayLoad: (scopedId) =>
-                scopedId.startsWith('es#1::') &&
-                    scopedId.endsWith('::mira_casa')
-                ? spanishPendingLoad.future
-                : null,
+                scopedId == 'es::mira_casa' ? spanishPendingLoad.future : null,
           );
 
         await app.open(
@@ -839,6 +836,32 @@ void main() {
         app.services.progress.setSetting('min', 20);
         await app.settle(rounds: 10);
         expect(loadedCodes, ['xx', 'es']);
+      },
+    );
+
+    testWidgets(
+      'tapping initial LoadFailed Try again does not consume first-tap audio unlock before a player exists',
+      (tester) async {
+        final app = TestApp(tester)..offline = true;
+        await app.open(stored: seed('curso'));
+        expect(find.text('Try again'), findsOneWidget);
+        expect(app.clips, isNull);
+
+        // Tap "Try again" while still offline (no ClipPlayer exists yet).
+        await app.tap(find.text('Try again'));
+        await app.settle(rounds: 5);
+        expect(app.clips, isNull);
+
+        // Recover network and tap "Try again" (still no player during the tap).
+        app.offline = false;
+        await app.tap(find.text('Try again'));
+        await app.settle(rounds: 10);
+        expect(app.clips, isNotNull);
+        expect(app.clips!.unlocked, isFalse);
+
+        // The first tap once the player exists unlocks audio inside the gesture.
+        await app.openTab('me');
+        expect(app.clips!.unlocked, isTrue);
       },
     );
   });

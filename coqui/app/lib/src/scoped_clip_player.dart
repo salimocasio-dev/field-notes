@@ -11,9 +11,10 @@ const String _scopeSeparator = '::';
 /// [play], and [ClipLookup] is namespaced by [scope] (`'$scope::$clipId'`).
 ///
 /// On the web, `createClipPlayer` shares a single `webSoundCore` buffer cache
-/// keyed by clip id across player instances. Scoping clip ids per loaded course
-/// generation isolates cached recordings and in-flight loads when two courses
-/// reuse the same clip id (such as `esta_casa`).
+/// keyed by clip id across player instances. Scoping clip ids per language
+/// isolates cached recordings and in-flight loads when two courses reuse the
+/// same clip id (such as `esta_casa`), while reusing decoded clips if the
+/// learner switches back to a previously loaded language.
 class ScopedClipPlayer implements ClipPlayer {
   ScopedClipPlayer({
     required String scope,

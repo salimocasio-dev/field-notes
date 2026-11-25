@@ -242,9 +242,8 @@ class _CoquiAppState extends State<CoquiApp> {
       _activeStoreLanguageSetting = progress.setting(_languageSettingKey);
       final prevClips = _loaded?.clips;
       if (prevClips != null) unawaited(prevClips.stop());
-      final nextGeneration = _generation + 1;
       final clips = ScopedClipPlayer(
-        scope: '${course.language.code}#$nextGeneration',
+        scope: course.language.code,
         clipInfo: course.clip,
         create: widget.platform.clipPlayer,
       );
@@ -252,7 +251,7 @@ class _CoquiAppState extends State<CoquiApp> {
       _loaded = _Loaded(course, progress, clips, storage, call, voiceTest);
       _services = null;
       _modules = null;
-      _generation = nextGeneration;
+      _generation++;
       final shouldGoToMap = _pendingGoToMap;
       _pendingGoToMap = false;
       if (shouldGoToMap &&
@@ -340,12 +339,13 @@ class _CoquiAppState extends State<CoquiApp> {
     return _services = s;
   }
 
-  // The first tap anywhere opens the sound (the browser lets a page play sound only after a touch).
+  // The first tap anywhere once a player exists opens the sound (the browser lets a page play sound only inside a touch).
   void _firstTap(PointerDownEvent _) {
     if (_unlocked) return;
-    _unlocked = true;
     final clips = _loaded?.clips;
-    if (clips != null) unawaited(clips.unlock());
+    if (clips == null) return;
+    _unlocked = true;
+    unawaited(clips.unlock());
   }
 
   @override
