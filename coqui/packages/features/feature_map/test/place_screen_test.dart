@@ -68,6 +68,7 @@ Future<MapFixture> _pumpPlace(
   TextDirection textDirection = TextDirection.ltr,
   FakePictureSource? pictures,
   CourseCatalog? overrideCourse,
+  Entitlements entitlements = const AllowAllEntitlements(),
 }) async {
   final f = fixture(
     builtPlaces: builtPlaces,
@@ -99,7 +100,11 @@ Future<MapFixture> _pumpPlace(
         textDirection: textDirection,
         child: Scaffold(
           backgroundColor: NocheColors.ground,
-          body: PlaceScreen(placeId: placeId, services: services),
+          body: PlaceScreen(
+            placeId: placeId,
+            services: services,
+            entitlements: entitlements,
+          ),
         ),
       ),
     ),
@@ -613,6 +618,191 @@ void main() {
         }
       },
     );
+
+    mapTest(
+      'Plan.free: place 1 plays normally; place 2 & place 3 show Course tag, highlight card, and gate stories',
+      (tester) async {
+        _phone(tester);
+        final entitlements = FakeEntitlements(plan: Plan.free);
+        addTearDown(entitlements.dispose);
+
+        // Place 1 (La casa) is always open
+        final fCasa = await _pumpPlace(
+          tester,
+          placeId: 'casa',
+          entitlements: entitlements,
+        );
+        expect(find.byKey(const Key('place-plan-tag')), findsNothing);
+        expect(find.byKey(const Key('place-plan-card')), findsNothing);
+        expect(find.byKey(const Key('place-play-bar')), findsOneWidget);
+        await tester.tap(find.byKey(const Key('place-play-bar')));
+        await tester.pump();
+        expect(fCasa.nav.routes, [const StoryRoute('la-lluvia')]);
+
+        // Place 2 (El parque) shows stories, Course plan tag, and highlight card
+        final fParque = await _pumpPlace(
+          tester,
+          placeId: 'parque',
+          entitlements: entitlements,
+          seedProgress: (f) => finishStory(f.progress, 'uno-dos-tres'),
+        );
+        expect(find.text('Place 2 of 10'), findsOneWidget);
+        expect(find.text('El parque'), findsOneWidget);
+        expect(find.text('ALL 12 STORIES'), findsOneWidget);
+        expect(find.byKey(const Key('place-plan-tag')), findsOneWidget);
+        expect(find.text('Course'), findsOneWidget);
+        expect(find.byKey(const Key('place-play-bar')), findsNothing);
+        expect(find.byKey(const Key('place-pill-listen')), findsNothing);
+        expect(find.byKey(const Key('place-pill-read')), findsNothing);
+        expect(find.byKey(const Key('place-pill-call')), findsNothing);
+        expect(
+          find.byWidgetPredicate(
+            (w) => w is Container && w.foregroundDecoration is BoxDecoration,
+          ),
+          findsNothing,
+        );
+
+        final card = tester.widget<NocheCard>(
+          find.byKey(const Key('place-plan-card')),
+        );
+        expect(card.variant, NocheCardVariant.highlight);
+        expect(find.text('This place is in Course'), findsOneWidget);
+        expect(
+          find.text('Every place and every story are in Course.'),
+          findsOneWidget,
+        );
+        expect(find.text('See plans'), findsOneWidget);
+
+        // Story tiles do not open gated stories
+        await tester.tap(find.byKey(const Key('story-tile-uno-dos-tres')));
+        await tester.pump();
+        await tester.tap(
+          find.byKey(const Key('story-tile-donde-esta-el-gato')),
+        );
+        await tester.pump();
+        expect(fParque.nav.routes, isEmpty);
+
+        // See plans button is >= 48x48 and routes to PlansRoute
+        final seePlans = find.byKey(const Key('place-see-plans'));
+        expect(tester.getSize(seePlans).height, greaterThanOrEqualTo(48));
+        expect(
+          tester.getSize(find.byKey(const Key('place-back'))).height,
+          greaterThanOrEqualTo(48),
+        );
+        await tester.tap(seePlans);
+        await tester.pump();
+        expect(fParque.nav.routes, [const PlansRoute()]);
+        expect(fParque.haptics.ticks, 1);
+
+        // Place 3 (La cocina) is also gated on Plan.free
+        final fCocina = await _pumpPlace(
+          tester,
+          placeId: 'cocina',
+          entitlements: entitlements,
+        );
+        expect(find.byKey(const Key('place-plan-tag')), findsOneWidget);
+        expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
+        expect(find.byKey(const Key('place-play-bar')), findsNothing);
+        await tester.tap(find.byKey(const Key('story-tile-la-mesa')));
+        await tester.pump();
+        expect(fCocina.nav.routes, isEmpty);
+      },
+    );
+
+    mapTest('Plan.course unlocks place 1 and place 2', (tester) async {
+      _phone(tester);
+      final entitlements = FakeEntitlements(plan: Plan.course);
+      addTearDown(entitlements.dispose);
+
+      for (final entry in [
+        (id: 'casa', story: 'la-lluvia'),
+        (id: 'parque', story: 'uno-dos-tres'),
+      ]) {
+        final f = await _pumpPlace(
+          tester,
+          placeId: entry.id,
+          entitlements: entitlements,
+        );
+        expect(find.byKey(const Key('place-plan-tag')), findsNothing);
+        expect(find.byKey(const Key('place-plan-card')), findsNothing);
+        expect(find.byKey(const Key('place-play-bar')), findsOneWidget);
+        await tester.tap(find.byKey(const Key('place-play-bar')));
+        await tester.pump();
+        expect(f.nav.routes, [StoryRoute(entry.story)]);
+      }
+    });
+
+    mapTest('live entitlement upgrade replaces plan card with play bar', (
+      tester,
+    ) async {
+      _phone(tester);
+      final entitlements = FakeEntitlements(plan: Plan.free);
+      addTearDown(entitlements.dispose);
+
+      final f = await _pumpPlace(
+        tester,
+        placeId: 'parque',
+        entitlements: entitlements,
+      );
+      expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
+      expect(find.byKey(const Key('place-play-bar')), findsNothing);
+
+      entitlements.plan = Plan.course;
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.byKey(const Key('place-plan-card')), findsNothing);
+      expect(find.byKey(const Key('place-plan-tag')), findsNothing);
+      expect(find.byKey(const Key('place-play-bar')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('place-play-bar')));
+      await tester.pump();
+      expect(f.nav.routes, [const StoryRoute('uno-dos-tres')]);
+    });
+
+    mapTest(
+      'RTL Arabic course on denied place mirrors plan tag to end and has zero overflow',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final entitlements = FakeEntitlements(plan: Plan.free);
+        addTearDown(entitlements.dispose);
+        final arabicCourse = _ArabicPlaceCourse(
+          customPairs: _cocinaPairs,
+          storyScenes: _cocinaScenes,
+        );
+        await _pumpPlace(
+          tester,
+          placeId: 'parque',
+          overrideCourse: arabicCourse,
+          textDirection: TextDirection.rtl,
+          entitlements: entitlements,
+        );
+
+        expect(find.text('ALL 12 STORIES'), findsOneWidget);
+        expect(find.byKey(const Key('place-plan-tag')), findsOneWidget);
+        expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
+
+        final tagRect = tester.getRect(find.byKey(const Key('place-plan-tag')));
+        final labelRect = tester.getRect(find.text('ALL 12 STORIES'));
+        expect(tagRect.right, lessThanOrEqualTo(labelRect.left));
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    mapTest('zero overflow on denied place at 390x844 and 412x915', (
+      tester,
+    ) async {
+      final entitlements = FakeEntitlements(plan: Plan.free);
+      addTearDown(entitlements.dispose);
+      for (final screen in [
+        (size: const Size(390, 844), dpr: 3.0),
+        (size: const Size(412, 915), dpr: 2.625),
+      ]) {
+        _phone(tester, size: screen.size, dpr: screen.dpr);
+        await _pumpPlace(tester, placeId: 'parque', entitlements: entitlements);
+        expect(tester.takeException(), isNull);
+        await tester.pumpWidget(const SizedBox.shrink());
+      }
+    });
   });
 
   if (Platform.environment['COQUI_CAPTURE_SHOTS'] == '1') {
@@ -761,6 +951,162 @@ void main() {
               .writeAsBytesSync(bytes!);
           await tester.pumpWidget(const SizedBox.shrink());
         }
+      }
+
+      // N3.4 Place not in the plan screenshots (Plan.free on place 2: El parque)
+      final caminoBytes = File('../../../ref/pp/camino/gran-0/pix.png')
+          .readAsBytesSync();
+      final lagoBytes = File('../../../ref/pp/lago/lago/pix.png')
+          .readAsBytesSync();
+      final bancoBytes = File(
+        '../../../ref/pp/banco/luz-dia-luna-0-carro-abierto/pix.png',
+      ).readAsBytesSync();
+      final parquePairs = <ReviewPair>[
+        _pair('camino', 'camino'),
+        _pair('lago', 'lago'),
+        _pair('banco', 'banco'),
+      ];
+      const parqueScenes = <String, String>{
+        'uno-dos-tres': 'camino',
+        'donde-esta-el-gato': 'lago',
+        'rapido-despacio': 'banco',
+      };
+      final parquePictures = FakePictureSource(
+        frames: (ref, {required width, required height}) {
+          final Uint8List bytes;
+          if (ref.scene.contains('lago')) {
+            bytes = lagoBytes;
+          } else if (ref.scene.contains('banco')) {
+            bytes = bancoBytes;
+          } else {
+            bytes = caminoBytes;
+          }
+          return Image.memory(
+            bytes,
+            width: width.toDouble(),
+            height: height.toDouble(),
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          );
+        },
+      );
+      final freePlan = FakeEntitlements(plan: Plan.free);
+      addTearDown(freePlan.dispose);
+
+      for (final shot in [
+        (
+          name: 'place_plan_390x844.png',
+          size: const Size(390, 844),
+          dpr: 3.0,
+          rtl: false,
+        ),
+        (
+          name: 'place_plan_412x915.png',
+          size: const Size(412, 915),
+          dpr: 2.625,
+          rtl: false,
+        ),
+        (
+          name: 'place_plan_ar_390x844.png',
+          size: const Size(390, 844),
+          dpr: 3.0,
+          rtl: true,
+        ),
+      ]) {
+        _phone(tester, size: shot.size, dpr: shot.dpr);
+        final course = shot.rtl
+            ? _ArabicPlaceCourse(
+                customPairs: parquePairs,
+                storyScenes: parqueScenes,
+              )
+            : MapFixtureCourse(
+                builtPlaces: 3,
+                customPairs: parquePairs,
+                storyScenes: parqueScenes,
+              );
+        final f = fixture(builtPlaces: 3, reduceMotion: true);
+        final services = fakeServices(
+          progress: f.progress,
+          course: course,
+          clock: f.clock,
+          nav: f.nav,
+          clips: f.clips,
+          haptics: f.haptics,
+          pictures: parquePictures,
+          reduceMotion: true,
+        );
+        final lang = services.course.language;
+        final boundaryKey = GlobalKey();
+
+        await tester.pumpWidget(
+          RepaintBoundary(
+            key: boundaryKey,
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: coquiTheme(),
+              home: Directionality(
+                textDirection: shot.rtl ? TextDirection.rtl : TextDirection.ltr,
+                child: Scaffold(
+                  backgroundColor: NocheColors.ground,
+                  body: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      PlaceScreen(
+                        placeId: 'parque',
+                        services: services,
+                        entitlements: freePlan,
+                      ),
+                      PositionedDirectional(
+                        start: 0,
+                        end: 0,
+                        bottom: 0,
+                        child: NocheTabBar(
+                          selectedId: NocheTabs.map,
+                          tabNames: lang.tabNames,
+                          script: lang.script,
+                          languageCode: lang.code,
+                          onTap: (_) {},
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+        await tester.pump();
+        await tester.pump();
+        await tester.runAsync(() async {
+          await precacheImage(
+            MemoryImage(caminoBytes),
+            tester.element(find.byType(PlaceScreen)),
+          );
+          await precacheImage(
+            MemoryImage(lagoBytes),
+            tester.element(find.byType(PlaceScreen)),
+          );
+          await precacheImage(
+            MemoryImage(bancoBytes),
+            tester.element(find.byType(PlaceScreen)),
+          );
+        });
+        await tester.pump();
+
+        final bytes = await tester.runAsync(() async {
+          final boundary =
+              boundaryKey.currentContext!.findRenderObject()!
+                  as RenderRepaintBoundary;
+          final image = await boundary.toImage(pixelRatio: shot.dpr);
+          final byteData = await image.toByteData(
+            format: ui.ImageByteFormat.png,
+          );
+          image.dispose();
+          return byteData!.buffer.asUint8List();
+        });
+        File('${dir.path}/${shot.name}').writeAsBytesSync(bytes!);
+        await tester.pumpWidget(const SizedBox.shrink());
       }
     });
   }

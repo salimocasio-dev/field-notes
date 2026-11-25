@@ -270,3 +270,27 @@ String? lastHeardStory(ProgressStore progress, Place place) {
   }
   return bestId;
 }
+
+/// Whether [place] is included in the learner's active [entitlements].
+///
+/// The first place of each language is always open; places past place 1
+/// require [Feature.everyPlace].
+bool placeInPlan(Place place, List<Place> places, Entitlements entitlements) {
+  if (entitlements.has(Feature.everyPlace)) return true;
+  if (places.isNotEmpty) return places.first.id == place.id;
+  return place.n <= 1;
+}
+
+/// Whether [storyId] belongs to a place allowed by [entitlements].
+///
+/// Fails closed (`false`) if [storyId] cannot be matched to place 1 while
+/// [Feature.everyPlace] is denied.
+bool storyInPlan(
+  String storyId,
+  List<Place> places,
+  Entitlements entitlements,
+) {
+  if (entitlements.has(Feature.everyPlace)) return true;
+  final idx = placeIndexForStory(places, storyId);
+  return idx == 0;
+}
