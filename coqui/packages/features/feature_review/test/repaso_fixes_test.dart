@@ -13,6 +13,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
+import 'package:feature_review/src/logic/word_picture.dart';
 import 'package:feature_review/src/ui/repaso_screen.dart';
 import 'package:flutter/rendering.dart' show OffsetLayer;
 import 'package:flutter/scheduler.dart' show Ticker;
@@ -21,6 +22,15 @@ import 'package:material_ui/material_ui.dart';
 
 import 'support/repaso_course.dart';
 import 'support/repaso_screen_rig.dart';
+
+Map<String, WordPictureAsset> dedicatedWordAssets() => {
+  for (final p in RepasoTestCourse().pairs)
+    p.word: WordPictureAsset(
+      word: p.word,
+      yesAsset: 'word_assets/${p.word}_yes.png',
+      noAsset: 'word_assets/${p.word}_no.png',
+    ),
+};
 
 // ---- A: pictures that behave as coqui_scenes' do
 
@@ -181,6 +191,7 @@ CualItem cualOf(Screen sc, RepasoWord w) => CualItem(
   pair: sc.services.course.pairFor(w.word)!,
   line: sc.s.planner.cualLines(w).first,
   rightPanel: 0,
+  asset: sc.s.planner.pictureAssetFor(w.word),
 );
 
 /// A play item of [kind] for the session's words, made as the plan makes one.
@@ -193,10 +204,18 @@ GameItem playItemOf(Screen sc, GameKind kind) {
 
 void main() {
   testWidgets(
-    'A: consecutive ¿Cuál? items each get their own pictures: a picture handed another pair in place starts a second ticker and fails',
+    'A: consecutive ¿Cuál? items with dedicated assets each get their own pictures (and never call ScenePictures)',
     (t) async {
-      final sc = Screen(t, pictures: TickerPictures());
-      await sc.open();
+      final imgA = await wordAssetStandIn(t, color: CoquiColors.lessonGreen);
+      final imgB = await wordAssetStandIn(t, color: CoquiColors.lessonBlue);
+      final sc = Screen(
+        t,
+        wordAssets: dedicatedWordAssets(),
+        pictures: TickerPictures(),
+      );
+      await sc.open(
+        imageProvider: (url) => url.contains('_yes.png') ? imgA : imgB,
+      );
       final words = [
         for (final w in sc.s.words)
           if (sc.s.planner.cualLines(w).isNotEmpty) w,
@@ -227,15 +246,16 @@ void main() {
   testWidgets(
     'C: a wrong touch has the red-orange ring and a round X at the corner where a right one has its check; the right one then has the hand (inside the bottom-right corner of a picture, 12 px from both edges; at the right end of a word tile with the word clear of it), no ring and no check; touched, it gets the green ring and the check',
     (t) async {
-      for (final kind in [GameKind.cual, GameKind.hear, GameKind.where]) {
-        final sc = Screen(t);
-        await sc.open();
-        final GameItem item;
-        if (kind == GameKind.where) {
-          item = playItemOf(sc, kind);
-        } else {
-          item = sc.s.queue.firstWhere((q) => q.item?.kind == kind).item!;
-        }
+      final standIn = await wordAssetStandIn(t);
+      for (final kind in [GameKind.cual, GameKind.hear]) {
+        final sc = Screen(
+          t,
+          wordAssets: kind == GameKind.cual ? dedicatedWordAssets() : const {},
+        );
+        await sc.open(bookPicture: standIn);
+        final GameItem item = sc.s.queue
+            .firstWhere((q) => q.item?.kind == kind)
+            .item!;
         sc.s.queue = [QueueEntry.scored(item)];
         await t.tap(find.byType(LessonStartButton));
         await sc.settle();
@@ -386,14 +406,19 @@ void main() {
                 );
               }
             }
-            // E: no sentence before the answer, in any game; after it, the sentence and Next
+            // E: no sentence before the answer in non-speaking games (Dilo #9 shows its prompt sentence from the start);
+            // after it, the sentence and Next
             if (sentence != null) {
               final shown = find
                   .textContaining(sentence, findRichText: true)
                   .evaluate()
                   .isNotEmpty;
               final answered = moment.startsWith('next');
-              expect(shown, answered, reason: '$moment: "$sentence"');
+              expect(
+                shown,
+                it is SayItem ? true : answered,
+                reason: '$moment: "$sentence"',
+              );
             }
             expect(
               find.text(RepasoStrings.next).evaluate().isNotEmpty,
@@ -407,15 +432,7 @@ void main() {
           },
         );
         // the round speaker: the same size and place in every game that plays a sentence
-        expect(
-          speakers.keys,
-          containsAll([
-            GameKind.cual,
-            GameKind.hear,
-            GameKind.build,
-            GameKind.where,
-          ]),
-        );
+        expect(speakers.keys, containsAll([GameKind.hear, GameKind.build]));
         expect(speakers.values.toSet(), hasLength(1), reason: '$speakers');
         expect(
           speakers.values.first.size,
@@ -424,14 +441,8 @@ void main() {
             RoundSpeaker.size + 2 * RoundSpeaker.pulse,
           ),
         );
-        // every game ended with Next, ¿Cuál? too
-        for (final k in [
-          GameKind.cual,
-          GameKind.hear,
-          GameKind.build,
-          GameKind.match,
-          GameKind.where,
-        ]) {
+        // every active game ended with Next
+        for (final k in [GameKind.hear, GameKind.build, GameKind.match]) {
           expect(seen, contains('next ${k.name}'));
         }
       },
@@ -896,55 +907,29 @@ void main() {
   );
 
   testWidgets(
-    'M: ¿Dónde? shows two big pictures, one above the other, never three small ones in a row',
+    'M: ¿Dónde? is excluded from playKinds under #10 and blocked defensively even if injected with img/... paths',
     (t) async {
-      for (final (w, h, dpr) in [
-        (390.0, 844.0, 2.0),
-        (390.0, 844.0, 3.0),
-        (412.0, 915.0, 2.625),
-      ]) {
-        final sc = Screen(t);
-        await sc.open(w: w, h: h, dpr: dpr);
-        sc.s.queue = [QueueEntry.play(playItemOf(sc, GameKind.where))];
-        await t.tap(find.byType(LessonStartButton));
-        await sc.settle();
-        await sc.vt.runUntil(() => sc.s.yourTurn);
-        await sc.settle();
-        final pics = find.byType(PictureChoice);
-        final n = pics.evaluate().length;
-        expect(n, anyOf(2, 3));
-        final rects = [for (var i = 0; i < n; i++) t.getRect(pics.at(i))];
-        // stacked: the same left edge and size, each under the one before
-        for (var i = 1; i < n; i++) {
-          expect(rects[i].left, rects[0].left, reason: '$dpr');
-          expect(rects[i].size, rects[0].size);
-          expect(rects[i].top, greaterThan(rects[i - 1].bottom));
-        }
-        // three only when each is at least 150 px wide; always a whole scale ...
-        if (n == 3) expect(rects[0].width, greaterThanOrEqualTo(150));
-        final k = rects[0].width * dpr / 196;
-        expect(
-          (k - k.roundToDouble()).abs(),
-          lessThan(.01),
-          reason: 'a whole scale',
-        );
-        // ... and the largest that fits: a scale more would not fit the width or the room under the line
-        final viewportBottom =
-            t.getRect(find.byKey(const ValueKey('next-slot'))).top - 16;
-        final contentBottom =
-            t.getRect(find.byKey(const ValueKey('reveal'))).bottom + 16;
-        final more =
-            n *
-            216 /
-            dpr; // what one more scale adds, at least (scale 1 of the height)
-        final widthLimit = 196 * (k.round() + 1) / dpr > math.min(480, w - 32);
-        expect(
-          widthLimit || contentBottom + more > viewportBottom,
-          isTrue,
-          reason: '$dpr: a bigger scale would have fitted: $rects',
-        );
-        await sc.vt.runUntil(() => false, limit: 1);
-      }
+      expect(playKinds, isNot(contains(GameKind.where)));
+      final whereSentence = realRepaso.sentences.firstWhere(
+        (s) => s.picture != null && s.picture!.startsWith('img/'),
+      );
+      final sc = Screen(t);
+      await sc.open();
+      sc.s.queue = [
+        QueueEntry.play(
+          WhereItem(
+            word: 'puerta',
+            sentence: whereSentence,
+            pictures: [whereSentence.picture!, 'img/la-lluvia-2.png'],
+            answer: 0,
+          ),
+        ),
+      ];
+      await t.tap(find.byType(LessonStartButton));
+      await sc.settle();
+      await sc.vt.runUntil(() => sc.s.yourTurn);
+      await sc.settle();
+      expect(find.byType(PictureChoice), findsNothing);
     },
   );
 
@@ -1211,69 +1196,67 @@ void main() {
   );
 
   testWidgets(
-    'O: a picture\'s frame has the same outer edge marked or not: the ring is drawn inside the picture\'s box, so the picture does not look bigger when it is marked (¿Cuál? and ¿Dónde?)',
+    'O: a picture\'s frame has the same outer edge marked or not: the ring is drawn inside the picture\'s box, so the picture does not look bigger when it is marked (¿Cuál? with dedicated word asset)',
     (t) async {
-      final page = await bookPageStandIn(t);
-      for (final kind in [GameKind.cual, GameKind.where]) {
-        final sc = Screen(t);
-        await sc.open(bookPicture: page);
-        final item = kind == GameKind.cual
-            ? sc.s.queue.firstWhere((q) => q.item?.kind == kind).item!
-            : playItemOf(sc, kind);
-        sc.s.queue = [QueueEntry.scored(item)];
-        await t.tap(find.byType(LessonStartButton));
-        await sc.settle();
-        await sc.vt.runUntil(() => sc.s.yourTurn);
-        await t.pump(const Duration(milliseconds: 300));
-        final pics = find.byType(PictureChoice);
-        for (var i = 0; i < pics.evaluate().length; i++) {
-          expect(t.widget<PictureChoice>(pics.at(i)).inside, isTrue);
-        }
-        final w = sc.s.choices.indexWhere((c) => !c.right);
-        final box = t.getRect(pics.at(w));
-        // just outside the box (1 px), and in the box's outer 1 px, at the left edge, half way down
-        Color out(Shot s) => s.at(box.left - 1, box.center.dy);
-        Color edge(Shot s) => s.at(box.left + 1, box.center.dy);
-        final before = await shotOf(t);
-        expect(
-          out(before),
-          CoquiColors.lessonBg,
-          reason: '$kind: nothing round it',
-        );
-        expect(
-          edge(before),
-          CoquiColors.lessonLine,
-          reason: '$kind: the plain frame, inside',
-        );
-        // a wrong touch: the red-orange ring, 3 px, and the frame is not bigger
-        await sc.down(pics.at(w));
-        await t.pump(const Duration(milliseconds: 300));
-        final after = await shotOf(t);
-        expect(t.getRect(pics.at(w)), box);
-        expect(
-          edge(after),
-          CoquiColors.lessonBad,
-          reason: '$kind: the ring, inside',
-        );
-        expect(
-          out(after),
-          CoquiColors.lessonBg,
-          reason: '$kind: nothing grew round it',
-        );
-        // the right one touched, too: the green ring, the same edge
-        await sc.vt.runUntil(() => sc.s.choices.any((c) => c.sign));
-        final r = sc.s.choices.indexWhere((c) => c.right);
-        final rbox = t.getRect(pics.at(r));
-        await sc.down(pics.at(r));
-        await sc.vt.runUntil(() => sc.s.canNext);
-        await t.pump(const Duration(milliseconds: 300));
-        final done = await shotOf(t);
-        expect(done.at(rbox.left + 1, rbox.center.dy), CoquiColors.lessonGreen);
-        expect(done.at(rbox.left - 1, rbox.center.dy), CoquiColors.lessonBg);
-        expect(done.at(rbox.right + 1, rbox.center.dy), CoquiColors.lessonBg);
-        expect(done.at(rbox.center.dx, rbox.top - 1), CoquiColors.lessonBg);
-        expect(done.at(rbox.center.dx, rbox.bottom + 1), CoquiColors.lessonBg);
+      final page = await wordAssetStandIn(t);
+      final sc = Screen(t, wordAssets: dedicatedWordAssets());
+      await sc.open(bookPicture: page);
+      final item = sc.s.queue
+          .firstWhere((q) => q.item?.kind == GameKind.cual)
+          .item!;
+      sc.s.queue = [QueueEntry.scored(item)];
+      await t.tap(find.byType(LessonStartButton));
+      await sc.settle();
+      await sc.vt.runUntil(() => sc.s.yourTurn);
+      await t.pump(const Duration(milliseconds: 300));
+      final pics = find.byType(PictureChoice);
+      for (var i = 0; i < pics.evaluate().length; i++) {
+        expect(t.widget<PictureChoice>(pics.at(i)).inside, isTrue);
       }
+      final w = sc.s.choices.indexWhere((c) => !c.right);
+      final box = t.getRect(pics.at(w));
+      // just outside the box (1 px), and in the box's outer 1 px, at the left edge, half way down
+      Color out(Shot s) => s.at(box.left - 1, box.center.dy);
+      Color edge(Shot s) => s.at(box.left + 1, box.center.dy);
+      final before = await shotOf(t);
+      expect(
+        out(before),
+        CoquiColors.lessonBg,
+        reason: '¿Cuál?: nothing round it',
+      );
+      expect(
+        edge(before),
+        CoquiColors.lessonLine,
+        reason: '¿Cuál?: the plain frame, inside',
+      );
+      // a wrong touch: the red-orange ring, 3 px, and the frame is not bigger
+      await sc.down(pics.at(w));
+      await t.pump(const Duration(milliseconds: 300));
+      final after = await shotOf(t);
+      expect(t.getRect(pics.at(w)), box);
+      expect(
+        edge(after),
+        CoquiColors.lessonBad,
+        reason: '¿Cuál?: the ring, inside',
+      );
+      expect(
+        out(after),
+        CoquiColors.lessonBg,
+        reason: '¿Cuál?: nothing grew round it',
+      );
+      // the right one touched, too: the green ring, the same edge
+      await sc.vt.runUntil(() => sc.s.choices.any((c) => c.sign));
+      final r = sc.s.choices.indexWhere((c) => c.right);
+      final rbox = t.getRect(pics.at(r));
+      await sc.down(pics.at(r));
+      await sc.vt.runUntil(() => sc.s.canNext);
+      await t.pump(const Duration(milliseconds: 300));
+      final done = await shotOf(t);
+      expect(done.at(rbox.left + 1, rbox.center.dy), CoquiColors.lessonGreen);
+      expect(done.at(rbox.left - 1, rbox.center.dy), CoquiColors.lessonBg);
+      expect(done.at(rbox.right + 1, rbox.center.dy), CoquiColors.lessonBg);
+      expect(done.at(rbox.center.dx, rbox.top - 1), CoquiColors.lessonBg);
+      expect(done.at(rbox.center.dx, rbox.bottom + 1), CoquiColors.lessonBg);
     },
   );
 }

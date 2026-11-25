@@ -14,6 +14,7 @@ import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/review_session.dart'
     show OptionRing, ReviewOptions, reviewSilence;
+import 'package:feature_review/src/logic/word_picture.dart';
 
 /// The page's own English lines (menus and labels; nothing in a game is English but these).
 abstract final class RepasoStrings {
@@ -140,6 +141,7 @@ class RepasoSession extends LessonBase {
     this.storage,
     this.options = const ReviewOptions(),
     this.warm,
+    this.wordAssets = const {},
   }) : super(captions: CaptionMode.never) {
     // one seed for the session: every choice of the plan follows from it
     seed = (rng.next() * 4294967296).floor();
@@ -151,6 +153,7 @@ class RepasoSession extends LessonBase {
       rng: Mulberry32(seed),
       lastAsked: _last.read(),
       nextKind: _last.readKind(),
+      wordAssets: wordAssets,
     );
   }
 
@@ -162,6 +165,7 @@ class RepasoSession extends LessonBase {
   final KeyValueStore? storage;
   final ReviewOptions options;
   final void Function(List<PictureRef> refs)? warm;
+  final Map<String, WordPictureAsset> wordAssets;
 
   late final int seed;
   late final RepasoPlanner planner;
@@ -596,9 +600,14 @@ class RepasoSession extends LessonBase {
   // ---- ¿Cuál? (scored): cual.js cualItem, with this item's sentence
 
   Future<bool> _cual(CualItem it, bool again) async {
+    final asset = it.asset;
+    if (asset == null || !asset.isUsable) {
+      // Unrenderable item: do not score or write Ear progress; return true only to suppress miss re-queueing.
+      _mark(DashMark.skipped);
+      return true;
+    }
     choices = [for (var k = 0; k < 2; k++) Choice(right: k == it.rightPanel)];
     changed();
-    _warmNext();
     await waitMs(500);
     int? got;
     var ms = 0;
@@ -658,21 +667,6 @@ class RepasoSession extends LessonBase {
       await _revealAndNext(course.fixedClip('review_praise_after_miss'));
     }
     return right;
-  }
-
-  void _warmNext() {
-    final w = warm;
-    if (w == null) return;
-    for (var k = index + 1; k < queue.length; k++) {
-      final it = queue[k].item;
-      if (it is CualItem) {
-        w([
-          PictureRef.of(it.pair, it.pair.yes),
-          PictureRef.of(it.pair, it.pair.no),
-        ]);
-        return;
-      }
-    }
   }
 
   // ---- ¿Qué oyes? (scored)
@@ -941,6 +935,10 @@ class RepasoSession extends LessonBase {
   Future<bool> _where(WhereItem it) async {
     // as many pictures as the screen has room for (page 15: never three small ones; two big ones instead)
     final pics = it.picturesFor(wherePictures);
+    if (pics.isEmpty || pics.any((p) => !isDedicatedWordAssetPath(p))) {
+      _mark(DashMark.skipped);
+      return true;
+    }
     final answer = pics.indexOf(it.pictures[it.answer]);
     choices = [
       for (var k = 0; k < pics.length; k++)

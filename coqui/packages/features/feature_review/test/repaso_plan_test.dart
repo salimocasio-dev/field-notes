@@ -6,6 +6,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_words.dart';
+import 'package:feature_review/src/logic/word_picture.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/repaso_course.dart';
@@ -20,12 +21,14 @@ RepasoPlanner planner(
   ProgressStore p, {
   int seed = 7,
   Map<String, String>? last,
+  Map<String, WordPictureAsset> wordAssets = const {},
 }) => RepasoPlanner(
   data: data,
   progress: p,
   pairs: course.pairs,
   rng: Mulberry32(seed),
   lastAsked: last,
+  wordAssets: wordAssets,
 );
 
 /// The ear record of [w] in [json] changed by [f].
@@ -59,22 +62,43 @@ void main() {
     }
   });
 
-  test('N: the words the session takes are exactly the words the shared rule serves (the counts outside Repaso ask the same rule)', () {
+  test('N: the words the session takes are exactly the words the shared rule serves (aligned with Map and Palabras with or without dedicated word assets)', () {
     for (final json in [seedJson('curso'), everythingJson(data)]) {
       final p = learner(json);
       final serving = repasoServing(course, p)!;
       final pl = planner(p);
-      // every word of the data: the planner says what the rule says
+      // Even with empty wordAssets (#10), servable stays 100% aligned with serving.canServe
+      // because pair-only words fall back to text-only ¿Qué oyes? without pictures.
       for (final w in data.words) {
+        expect(pl.cualLines(w), isEmpty, reason: w.word);
         expect(pl.servable(w), serving.canServe(w.word), reason: w.word);
       }
-      // and the due words the session takes are the due words the rule counts, up to the cap
       final counted = [
         for (final w in p.due(Skill.ear))
           if (serving.canServe(w)) w,
       ];
       expect([
         for (final w in pl.sessionWords().words) w.word,
+      ], counted.take(repasoCap).toList());
+      // When every pair word has a dedicated word_assets/... asset, servable still matches serving.canServe
+      final allDedicated = {
+        for (final pair in course.pairs)
+          pair.word: WordPictureAsset(
+            word: pair.word,
+            yesAsset: 'word_assets/${pair.word}_yes.png',
+            noAsset: 'word_assets/${pair.word}_no.png',
+          ),
+      };
+      final plWithAssets = planner(p, wordAssets: allDedicated);
+      for (final w in data.words) {
+        expect(
+          plWithAssets.servable(w),
+          serving.canServe(w.word),
+          reason: w.word,
+        );
+      }
+      expect([
+        for (final w in plWithAssets.sessionWords().words) w.word,
       ], counted.take(repasoCap).toList());
     }
     // the rule serves words with no picture pair: Repaso's count is not only the pair words
@@ -272,11 +296,8 @@ void main() {
               : (n.isEven ? GameKind.cual : GameKind.hear);
           expect(i.kind, want, reason: '${i.word} n=$n');
         }
-        // the session has both scored games
-        expect(
-          {for (final i in scored) i.kind},
-          {GameKind.cual, GameKind.hear},
-        );
+        // without dedicated word assets (#10), scored items are all ¿Qué oyes?
+        expect({for (final i in scored) i.kind}, {GameKind.hear});
         // no two scored items share a sentence
         expect({for (final i in scored) i.clip}.length, scored.length);
       },
@@ -294,7 +315,7 @@ void main() {
       }
     });
 
-    test('the play slots: kinds in turn, none of a scored item\'s sentences, and at least three kinds in all', () {
+    test('the play slots: kinds in turn ([build, match, say], no where under #10), none of a scored item\'s sentences', () {
       final kinds = <GameKind>[];
       for (var i = 0; i < q.length; i++) {
         if (!q[i].slot) continue;
@@ -302,17 +323,14 @@ void main() {
         expect(it, isNotNull);
         kinds.add(it!.kind);
       }
-      expect(kinds, [GameKind.build, GameKind.match, GameKind.where]);
+      expect(kinds, [GameKind.build, GameKind.match, GameKind.say]);
       final scored = {
         for (final e in q)
           if (!e.slot) e.item!.clip,
       };
       // the play items' sentences (made after the scored ones) are not theirs
       expect(pl.used.length, greaterThan(scored.length));
-      expect(
-        {GameKind.cual, GameKind.hear, ...kinds}.length,
-        greaterThanOrEqualTo(3),
-      );
+      expect({GameKind.hear, ...kinds}.length, greaterThanOrEqualTo(3));
     });
 
     test('a kind with no material is skipped: Dilo off, and no ¿Dónde? material, go on to the next kind', () {
@@ -329,11 +347,19 @@ void main() {
     // a word with a pair and many sentences of both kinds
     final w = data.word('bola')!;
 
-    test('even count ¿Cuál?, odd ¿Qué oyes?; after a miss ¿Cuál?', () {
+    final dedicatedBola = {
+      'bola': const WordPictureAsset(
+        word: 'bola',
+        yesAsset: 'word_assets/bola.png',
+        noAsset: 'word_assets/pato.png',
+      ),
+    };
+
+    test('even count ¿Cuál?, odd ¿Qué oyes?; after a miss ¿Cuál? (when word has dedicated asset)', () {
       for (var n = 0; n < 6; n++) {
         final p = learner(withEar(everything, 'bola', (e) => e['n'] = n));
         expect(
-          planner(p).scoredKind(w),
+          planner(p, wordAssets: dedicatedBola).scoredKind(w),
           n.isEven ? GameKind.cual : GameKind.hear,
           reason: 'n=$n',
         );
@@ -343,7 +369,11 @@ void main() {
             e['fallos'] = 1;
           }),
         );
-        expect(planner(miss).scoredKind(w), GameKind.cual, reason: 'miss n=$n');
+        expect(
+          planner(miss, wordAssets: dedicatedBola).scoredKind(w),
+          GameKind.cual,
+          reason: 'miss n=$n',
+        );
       }
       // the third miss parks it and clears fallos: still a miss
       final parked = learner(
@@ -353,27 +383,46 @@ void main() {
           e['aparcada'] = 1000 + 7 * 86400000;
         }),
       );
-      expect(planner(parked).scoredKind(w), GameKind.cual);
+      expect(
+        planner(parked, wordAssets: dedicatedBola).scoredKind(w),
+        GameKind.cual,
+      );
     });
 
-    test('a word with no pair is ¿Qué oyes? only; a word with no sentence ¿Cuál? only', () {
+    test('a word with no pair is ¿Qué oyes? only; a word with no native hearing sentence falls back to text-only ¿Qué oyes? without a dedicated asset and uses ¿Cuál? with one', () {
       final p = learner(everything);
-      final pl = planner(p);
       final noPair = data.words.firstWhere(
-        (x) => x.pairLines.isEmpty && pl.hearSentences(x).isNotEmpty,
+        (x) => x.pairLines.isEmpty && planner(p).hearSentences(x).isNotEmpty,
       );
       final noSentence = data.words.firstWhere(
-        (x) => x.pairLines.isNotEmpty && pl.hearSentences(x).isEmpty,
+        (x) =>
+            x.pairLines.isNotEmpty &&
+            planner(p).serving.hearSentences(x).isEmpty,
       );
+      final dedicatedNoSentence = {
+        noSentence.word: WordPictureAsset(
+          word: noSentence.word,
+          yesAsset: 'word_assets/${noSentence.place}_yes.png',
+          noAsset: 'word_assets/${noSentence.place}_no.png',
+        ),
+      };
       for (var n = 0; n < 4; n++) {
         final q = learner(withEar(everything, noPair.word, (e) => e['n'] = n));
         expect(planner(q).scoredKind(noPair), GameKind.hear);
         final r = learner(
           withEar(everything, noSentence.word, (e) => e['n'] = n),
         );
-        expect(planner(r).scoredKind(noSentence), GameKind.cual);
+        expect(planner(r).servable(noSentence), isTrue);
+        expect(planner(r).scoredKind(noSentence), GameKind.hear);
+        final fallbackItem = planner(r).scoredItem(noSentence);
+        expect(fallbackItem, isA<HearItem>());
+        expect(
+          planner(r, wordAssets: dedicatedNoSentence).scoredKind(noSentence),
+          GameKind.cual,
+        );
       }
       // the two words no game can serve are never asked
+      final pl = planner(p);
       for (final x in data.words.where(
         (x) => x.scoring == RepasoScoring.none,
       )) {
@@ -432,11 +481,19 @@ void main() {
       printOnFailure('forced repeats: $forcedRepeats');
     });
 
-    test('only the sentences of finished stories: none finished, only the pair\'s own sentence', () {
+    test('only the sentences of finished stories: none finished, only the pair\'s own sentence (when given dedicated asset)', () {
       final j = jsonDecode(everything) as Map<String, dynamic>;
       j['cuentos'] = {};
       final p = learner(jsonEncode(j));
-      final pl = planner(p);
+      final dedicated = {
+        for (final pair in course.pairs)
+          pair.word: WordPictureAsset(
+            word: pair.word,
+            yesAsset: 'word_assets/${pair.word}_yes.png',
+            noAsset: 'word_assets/${pair.word}_no.png',
+          ),
+      };
+      final pl = planner(p, wordAssets: dedicated);
       for (final x in data.words) {
         expect(pl.hearSentences(x), isEmpty, reason: x.word);
         expect([

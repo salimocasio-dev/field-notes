@@ -17,17 +17,15 @@ import 'dart:convert';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:feature_review/src/logic/js_sort.dart';
 import 'package:feature_review/src/logic/repaso_words.dart';
+import 'package:feature_review/src/logic/word_picture.dart';
 
 /// The kinds of item. [cual] and [hear] (¿Qué oyes?) are scored; the others are play and score nothing for Ear.
 enum GameKind { cual, hear, build, match, where, say }
 
 /// The play kinds, in the order they take turns.
-const List<GameKind> playKinds = [
-  GameKind.build,
-  GameKind.match,
-  GameKind.where,
-  GameKind.say,
-];
+///
+/// Issue #10 override: `GameKind.where` (`¿Dónde?`) uses story-book screenshots, so it is excluded from play turns.
+const List<GameKind> playKinds = [GameKind.build, GameKind.match, GameKind.say];
 
 /// The plain English line that says what to do in each game (menus may be English), page 15 "The session". A game that
 /// plays a sentence starts with "Listen."; Parejas, where he starts with a touch, does not. The two picture games
@@ -80,10 +78,12 @@ class CualItem extends GameItem {
     required this.pair,
     required this.line,
     required this.rightPanel,
+    this.asset,
   }) : super(GameKind.cual, word);
   final ReviewPair pair;
   final RepasoPairLine line;
   final int rightPanel;
+  final WordPictureAsset? asset;
   @override
   String get clip => line.clip;
   @override
@@ -91,8 +91,13 @@ class CualItem extends GameItem {
 
   /// The same sentence and pair with the pictures the other way round (a missed item comes back like this: never the
   /// identical picture).
-  CualItem rearranged() =>
-      CualItem(word: word, pair: pair, line: line, rightPanel: 1 - rightPanel);
+  CualItem rearranged() => CualItem(
+    word: word,
+    pair: pair,
+    line: line,
+    rightPanel: 1 - rightPanel,
+    asset: asset,
+  );
 }
 
 /// ¿Qué oyes?: a sentence and three written tiles; [answer] is the tile of the word that was in it.
@@ -330,6 +335,7 @@ class RepasoPlanner {
     required this.rng,
     Map<String, String>? lastAsked,
     this.nextKind = 0,
+    this.wordAssets = const {},
   }) : lastAsked = lastAsked ?? const {};
 
   final RepasoData data;
@@ -343,6 +349,9 @@ class RepasoPlanner {
 
   /// The clip each word was last asked in (see [LastAsked]).
   final Map<String, String> lastAsked;
+
+  /// Dedicated single-word picture assets keyed by word (`#10`).
+  final Map<String, WordPictureAsset> wordAssets;
 
   late final Map<String, ReviewPair> _pairOf = {
     for (final p in pairs) p.word: p,
@@ -365,16 +374,62 @@ class RepasoPlanner {
 
   // ---- ¿Cuál? and ¿Qué oyes? material
 
-  /// The word's ¿Cuál? sentences he may get: its pair's own, and the others whose story he has finished. None
-  /// when the course has no pair for it.
-  List<RepasoPairLine> cualLines(RepasoWord w) => serving.cualLines(w);
+  /// Dedicated single-word picture asset for [word] when present and usable under `#10`.
+  WordPictureAsset? pictureAssetFor(String word) {
+    final asset = wordAssets[word];
+    return asset != null && asset.word == word && asset.isUsable ? asset : null;
+  }
+
+  /// The word's ¿Cuál? sentences he may get: only when a usable dedicated single-word asset exists (`#10`).
+  List<RepasoPairLine> cualLines(RepasoWord w) {
+    if (pictureAssetFor(w.word) == null) return const [];
+    return serving.cualLines(w);
+  }
 
   /// The word's ¿Qué oyes? sentences he may get, in the fixed order: from finished stories, with two fair wrong
   /// tiles among the words he has met.
-  List<RepasoSentence> hearSentences(RepasoWord w) => serving.hearSentences(w);
+  ///
+  /// Under `#10`, when a word has no dedicated single-word picture asset ([cualLines] is empty) and no native
+  /// hearing sentences, its existing `serving.cualLines(w)` audio lines are served as text-only `¿Qué oyes?`
+  /// sentences (no pictures). This keeps [servable] 100% aligned with `RepasoServing.canServe` used by Map and
+  /// Palabras so due words like `cual`-only entries are always cleared and never stuck as perpetually due.
+  List<RepasoSentence> hearSentences(RepasoWord w) {
+    final native = serving.hearSentences(w);
+    if (native.isNotEmpty) return native;
+    if (cualLines(w).isNotEmpty) return const [];
+    final pairFallback = serving.cualLines(w);
+    if (pairFallback.isEmpty) return const [];
+    return [
+      for (final l in pairFallback)
+        if (_pairLineAsHearingSentence(l) case final s
+            when _hasFairWrongTiles(w, s))
+          s,
+    ];
+  }
 
-  /// Whether some game can score the word now.
-  bool servable(RepasoWord w) => serving.servable(w);
+  RepasoSentence _pairLineAsHearingSentence(RepasoPairLine l) {
+    final tokens = foldedTokens(l.text);
+    final tokenSet = tokens.toSet();
+    final forbidden = [
+      for (final m in data.words)
+        if (foldedTokens(m.word).any(tokenSet.contains)) m.word,
+    ];
+    return RepasoSentence(
+      clip: l.clip,
+      story: l.story ?? '',
+      text: l.text,
+      tokens: tokens,
+      forbidden: forbidden,
+      picture: null,
+      forHearing: true,
+      forBuilding: false,
+    );
+  }
+
+  /// Whether some game can score the word now. Matches `RepasoServing.canServe` for every word with at least two
+  /// fair distractors, and gracefully rules out words in a thin course where no two fair distractors exist.
+  bool servable(RepasoWord w) =>
+      cualLines(w).isNotEmpty || hearSentences(w).isNotEmpty;
 
   /// The words other than [target] that may stand as a wrong written tile beside [s], in the data's order: words he
   /// has met, not in the sentence (none of their words is a word of it), not in its forbidden list, not in the
@@ -391,11 +446,16 @@ class RepasoPlanner {
     RepasoWord target,
     RepasoSentence s, {
     bool singleWords = false,
-  }) {
-    final mixed = shuffled(
-      wrongTileChoices(target, s, singleWords: singleWords),
-      rng,
-    );
+  }) => _pickTwoWrongTiles(
+    target,
+    wrongTileChoices(target, s, singleWords: singleWords),
+  );
+
+  List<RepasoWord>? _pickTwoWrongTiles(
+    RepasoWord target,
+    List<RepasoWord> pool,
+  ) {
+    final mixed = shuffled(pool, rng);
     // the same place first (a stable sort: the mixed order stays inside each group)
     final cands = [
       for (final m in mixed)
@@ -404,14 +464,59 @@ class RepasoPlanner {
         if (m.place != target.place) m,
     ];
     if (cands.length < 2) return null;
-    final a = cands.first;
-    for (final b in cands.skip(1)) {
-      if (!a.apart.contains(b.word) && !b.apart.contains(a.word)) {
-        return [a, b];
+    for (var i = 0; i < cands.length; i++) {
+      final a = cands[i];
+      for (var j = i + 1; j < cands.length; j++) {
+        final b = cands[j];
+        if (!a.apart.contains(b.word) && !b.apart.contains(a.word)) {
+          return [a, b];
+        }
       }
     }
     return null;
   }
+
+  List<RepasoWord> _fallbackPool(RepasoWord target, RepasoSentence s) {
+    final inSentence = {
+      ...foldedTokens(s.text),
+      ...s.tokens.expand(foldedTokens),
+    };
+    final banned = <String>{
+      target.word,
+      ...target.apart,
+      ...s.forbidden,
+      for (final x in s.forbidden) ...?data.word(x)?.apart,
+    };
+    return [
+      for (final m in data.words)
+        if (!banned.contains(m.word) &&
+            !m.apart.contains(target.word) &&
+            !foldedTokens(m.word).any(inSentence.contains))
+          m,
+    ];
+  }
+
+  static bool _hasCompatiblePair(List<RepasoWord> pool) {
+    for (var i = 0; i < pool.length; i++) {
+      for (var j = i + 1; j < pool.length; j++) {
+        if (!pool[i].apart.contains(pool[j].word) &&
+            !pool[j].apart.contains(pool[i].word)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  bool _hasFairWrongTiles(RepasoWord target, RepasoSentence s) =>
+      _hasCompatiblePair(wrongTileChoices(target, s)) ||
+      _hasCompatiblePair(_fallbackPool(target, s));
+
+  /// Fallback pool from all course words when a learner has met fewer than two fair distractors for a pair-line
+  /// fallback sentence. Strictly enforces `banned`, `apart`, and in-sentence exclusion; returns null when no fair
+  /// pair exists.
+  List<RepasoWord>? _fallbackWrongTiles(RepasoWord target, RepasoSentence s) =>
+      _pickTwoWrongTiles(target, _fallbackPool(target, s));
 
   // ---- the words of a session
 
@@ -510,6 +615,7 @@ class RepasoPlanner {
         pair: _pairOf[w.word]!,
         line: lines[k],
         rightPanel: rng.next() < .5 ? 0 : 1,
+        asset: pictureAssetFor(w.word),
       );
     }
     final ss = hearSentences(w);
@@ -527,7 +633,7 @@ class RepasoPlanner {
 
   /// The ¿Qué oyes? item of [w] with [s]: the word and two wrong tiles, the word at a random place.
   HearItem hearItem(RepasoWord w, RepasoSentence s) {
-    final wrong = wrongTiles(w, s)!;
+    final wrong = (wrongTiles(w, s) ?? _fallbackWrongTiles(w, s))!;
     final at = (rng.next() * 3).floor();
     final tiles = [...wrong]..insert(at, w);
     return HearItem(
@@ -565,7 +671,6 @@ class RepasoPlanner {
       final item = switch (playKinds[i]) {
         GameKind.build => _build(words),
         GameKind.match => _match(words),
-        GameKind.where => _where(words),
         GameKind.say => canSay ? _say(words) : null,
         _ => null,
       };
@@ -663,31 +768,6 @@ class RepasoPlanner {
       sentences: ss,
       wordOrder: order,
     );
-  }
-
-  WhereItem? _where(List<RepasoWord> words) {
-    for (final w in words) {
-      final ds = [
-        for (final d in w.where)
-          if (finished(data.sentences[d.sentence].story) &&
-              !used.contains(data.sentences[d.sentence].clip) &&
-              data.sentences[d.sentence].picture != null)
-            d,
-      ];
-      if (ds.isEmpty) continue;
-      final d = ds[(rng.next() * ds.length).floor()];
-      final s = data.sentences[d.sentence];
-      final pics = shuffled([s.picture!, ...d.others.take(2)], rng);
-      used.add(s.clip);
-      return WhereItem(
-        word: w.word,
-        sentence: s,
-        pictures: pics,
-        answer: pics.indexOf(s.picture!),
-        farthest: d.others.isEmpty ? null : d.others.first,
-      );
-    }
-    return null;
   }
 
   SayItem? _say(List<RepasoWord> words) {

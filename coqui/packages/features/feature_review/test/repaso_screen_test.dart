@@ -94,15 +94,15 @@ void main() {
         expect(find.text('Done'), findsOneWidget);
         expect(find.text('9 of 10 words right the first time'), findsOneWidget);
         for (final k in [
-          'turn cual',
           'turn hear',
           'turn build',
           'turn match',
-          'turn where',
           'next hear',
         ]) {
           expect(moments, contains(k));
         }
+        expect(moments, isNot(contains('turn cual')));
+        expect(moments, isNot(contains('turn where')));
         // the end lists each word with its sentence; a touch plays it
         final row = sc.s.end!.groups.first.rows.first;
         await t.tap(find.bySemanticsLabel('${row.word}: ${row.text}'));

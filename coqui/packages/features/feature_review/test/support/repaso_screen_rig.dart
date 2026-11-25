@@ -10,6 +10,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
+import 'package:feature_review/src/logic/word_picture.dart';
 import 'package:feature_review/src/ui/repaso_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -36,6 +37,23 @@ Future<MemoryImage> bookPageStandIn(WidgetTester t) async {
       Paint()..color = const Color(0xFF9E9E9E),
     );
     final image = await recorder.endRecording().toImage(196, 216);
+    final data = await image.toByteData(format: ui.ImageByteFormat.png);
+    image.dispose();
+    return data!.buffer.asUint8List();
+  });
+  return MemoryImage(bytes!);
+}
+
+/// A dedicated single-word asset stand-in of size 196 x 104 picture pixels.
+Future<MemoryImage> wordAssetStandIn(
+  WidgetTester t, {
+  Color color = CoquiColors.lessonGreen,
+}) async {
+  final bytes = await t.runAsync(() async {
+    final recorder = ui.PictureRecorder();
+    Canvas(recorder)
+        .drawRect(const Rect.fromLTWH(0, 0, 196, 104), Paint()..color = color);
+    final image = await recorder.endRecording().toImage(196, 104);
     final data = await image.toByteData(format: ui.ImageByteFormat.png);
     image.dispose();
     return data!.buffer.asUint8List();
@@ -96,6 +114,7 @@ class Screen {
     bool speech = true,
     List<String> heard = const [],
     this.pictures,
+    this.wordAssets = const {},
     SpeechListener? listener,
   }) : vt = VirtualTime(settler: t.idle) {
     store = RecordingStore(
@@ -125,6 +144,7 @@ class Screen {
 
   final WidgetTester t;
   final PictureSource? pictures;
+  final Map<String, WordPictureAsset> wordAssets;
   final VirtualTime vt;
   late final RecordingStore store;
   late final ScriptedClips clips;
@@ -140,6 +160,7 @@ class Screen {
     double dpr = 3,
     double text = 1,
     ImageProvider? bookPicture,
+    ImageProvider Function(String url)? imageProvider,
   }) async {
     t.view.devicePixelRatio = dpr;
     t.view.physicalSize = Size(w * dpr, h * dpr);
@@ -160,7 +181,8 @@ class Screen {
               services: services,
               data: realRepaso,
               wait: vt.wait,
-              imageProvider: (_) => bookPicture ?? dotPicture,
+              wordAssets: wordAssets,
+              imageProvider: imageProvider ?? (_) => bookPicture ?? dotPicture,
             ),
           ),
         ),
