@@ -212,12 +212,32 @@ void main() {
       );
     });
 
-    test('everything built played: listen again, six times at most', () {
+    test('everything built played: listen again, six times at most at 30 min, with listen: true', () {
       final p = plan(fixture(seed: 'todo'));
       expect(p, hasLength(6));
       expect(p.every((e) => e.line == 'Listen again'), isTrue);
+      expect(p.every((e) => e.kind == TodayEntryKind.listenAgain), isTrue);
+      expect(
+        p.every((e) => e.route is StoryRoute && (e.route as StoryRoute).listen),
+        isTrue,
+      );
       expect(p.first.title, 'La lluvia');
       expect(p.first.minutes, 2);
+      expect(p.first.route, const StoryRoute('la-lluvia', listen: true));
+    });
+
+    test('new and second plays route with listen: false; replays route with listen: true', () {
+      final vacio = plan(fixture(seed: 'vacio'));
+      expect(vacio.first.kind, TodayEntryKind.newStory);
+      expect(vacio.first.route, const StoryRoute('la-lluvia'));
+
+      final segunda = plan(fixture(seed: 'segunda'));
+      expect(segunda.first.kind, TodayEntryKind.secondPlay);
+      expect(segunda.first.route, const StoryRoute('la-lluvia'));
+
+      final todo = plan(fixture(seed: 'todo'));
+      expect(todo.first.kind, TodayEntryKind.listenAgain);
+      expect(todo.first.route, const StoryRoute('la-lluvia', listen: true));
     });
 
     test('a story played once is the second play, at its own length', () {
@@ -233,6 +253,171 @@ void main() {
       // 4 minutes of the first story are not enough for 5: a second story; then 8 >= 5 and it stops
       final p = plan(f);
       expect(p.map((e) => e.title), ['La lluvia', 'El bizcocho']);
+    });
+
+    test('review minutes count toward the daily minute budget', () {
+      // uno has 1 due word (3 min review); La lluvia new is 4 min -> 3 + 4 = 7 meets min = 7
+      final uno = fixture(seed: 'uno');
+      uno.progress.setSetting('min', 7);
+      final pUno = plan(uno);
+      expect(pUno, hasLength(2));
+      expect(pUno[0].review, isTrue);
+      expect(pUno[0].minutes, 3);
+      expect(pUno[1].title, 'La lluvia');
+      expect(pUno[1].minutes, 4);
+
+      // curso has 10+ due words (6 min review); min = 6 stops after review alone
+      final cursoShort = fixture(seed: 'curso');
+      cursoShort.progress.setSetting('min', 6);
+      final pShort = plan(cursoShort);
+      expect(pShort, hasLength(1));
+      expect(pShort.single.review, isTrue);
+      expect(pShort.single.minutes, 6);
+
+      // curso at min = 11: review (6) + La bola second play (5) = 11 -> stops before next new story
+      final cursoMid = fixture(seed: 'curso');
+      cursoMid.progress.setSetting('min', 11);
+      final pMid = plan(cursoMid);
+      expect(pMid, hasLength(2));
+      expect(pMid[0].review, isTrue);
+      expect(pMid[0].minutes, 6);
+      expect(pMid[1].title, 'La bola');
+      expect(pMid[1].minutes, 5);
+
+      // review also reduces remaining budget for Listen again replays
+      final f = fixture(seed: 'todo');
+      // Add a due word that has a pair in MapFixtureCourse (pairWords = all words not due in todo)
+      final pairWord = f.services.course.pairs.first.word;
+      f.progress.put(
+        WordRecord(
+          w: pairWord,
+          primera: f.clock.nowMs() - 86400000,
+          ear: SkillRecord(etapa: 1, due: f.clock.nowMs() - 1000),
+        ),
+      );
+      // 1 due word -> 3 min review; replays start at 2 + 3 + 3 = 8 min -> 3 + 8 = 11 >= 11
+      f.progress.setSetting('min', 11);
+      final pReplay = plan(f);
+      expect(pReplay, hasLength(4));
+      expect(pReplay.first.review, isTrue);
+      expect(pReplay.first.minutes, 3);
+      expect(pReplay.skip(1).map((e) => e.minutes).toList(), const [2, 3, 3]);
+      expect(
+        pReplay
+            .skip(1)
+            .every(
+              (e) =>
+                  e.kind == TodayEntryKind.listenAgain &&
+                  e.route is StoryRoute &&
+                  (e.route as StoryRoute).listen,
+            ),
+        isTrue,
+      );
+    });
+
+    test('replay cap stays at 6 for min <= 30 and scales proportionally for 60 and 120 minute goals', () {
+      // With todo, min <= 30 caps at 6 replays (15 min stops at 5 replays = 15 min; 30 min caps at 6 = 19 min)
+      for (final (goal, expectedLen) in [(15, 5), (30, 6)]) {
+        final t = fixture(seed: 'todo');
+        t.progress.setSetting('min', goal);
+        final p = plan(t);
+        expect(p, hasLength(expectedLen), reason: 'goal=$goal');
+        expect(
+          p.every(
+            (e) =>
+                e.kind == TodayEntryKind.listenAgain &&
+                e.route is StoryRoute &&
+                (e.route as StoryRoute).listen,
+          ),
+          isTrue,
+        );
+      }
+
+      // Single 2-min story only: 15 min caps at 6 replays (12 min), 30 min caps at 6 replays (12 min)
+      final singleStoryCourse = _SingleStoryCourse('la-lluvia', 'La lluvia', 2);
+      for (final goal in [15, 30]) {
+        final f = fixture(seed: 'vacio');
+        finishStory(f.progress, 'la-lluvia');
+        finishStory(f.progress, 'la-lluvia');
+        f.progress.setSetting('min', goal);
+        final p = todayPlan(
+          progress: f.progress,
+          course: singleStoryCourse,
+          clock: f.clock,
+        );
+        expect(p, hasLength(6), reason: 'goal=$goal');
+        expect(
+          p.every(
+            (e) => e.route == const StoryRoute('la-lluvia', listen: true),
+          ),
+          isTrue,
+        );
+      }
+
+      // 60-min goal scales replay cap to 12 (2x of 6)
+      final todo60 = fixture(seed: 'todo');
+      todo60.progress.setSetting('min', 60);
+      final p60 = plan(todo60);
+      expect(p60, hasLength(12));
+      expect(
+        p60.every(
+          (e) =>
+              e.kind == TodayEntryKind.listenAgain &&
+              e.route is StoryRoute &&
+              (e.route as StoryRoute).listen,
+        ),
+        isTrue,
+      );
+
+      // 120-min goal scales replay cap to 24 (4x of 6)
+      final todo120 = fixture(seed: 'todo');
+      todo120.progress.setSetting('min', 120);
+      final p120 = plan(todo120);
+      expect(p120, hasLength(24));
+      expect(
+        p120.every(
+          (e) =>
+              e.kind == TodayEntryKind.listenAgain &&
+              e.route is StoryRoute &&
+              (e.route as StoryRoute).listen,
+        ),
+        isTrue,
+      );
+
+      // With 5-min stories, 60-min fills to 60 min (12 replays) and 120-min fills to 120 min (24 replays)
+      final fiveMinCourse = _SingleStoryCourse('la-mesa', 'La mesa', 5);
+      for (final (goal, expectedCount) in [(30, 6), (60, 12), (120, 24)]) {
+        final f = fixture(seed: 'vacio');
+        finishStory(f.progress, 'la-mesa');
+        finishStory(f.progress, 'la-mesa');
+        f.progress.setSetting('min', goal);
+        final p = todayPlan(
+          progress: f.progress,
+          course: fiveMinCourse,
+          clock: f.clock,
+        );
+        expect(p, hasLength(expectedCount), reason: 'goal=$goal');
+        final totalMin = p.fold<int>(0, (sum, e) => sum + e.minutes);
+        expect(totalMin, goal, reason: 'goal=$goal');
+      }
+
+      // With 6-min stories, stops once minute budget is reached before hitting the scaled cap
+      final sixMinCourse = _SingleStoryCourse(
+        'no-hay-leche',
+        'No hay leche',
+        6,
+      );
+      final f60 = fixture(seed: 'vacio');
+      finishStory(f60.progress, 'no-hay-leche');
+      finishStory(f60.progress, 'no-hay-leche');
+      f60.progress.setSetting('min', 60);
+      final pSix60 = todayPlan(
+        progress: f60.progress,
+        course: sixMinCourse,
+        clock: f60.clock,
+      );
+      expect(pSix60, hasLength(10));
+      expect(pSix60.fold<int>(0, (sum, e) => sum + e.minutes), 60);
     });
 
     test('with nothing at all to offer the card offers the review of all his words', () {
@@ -337,6 +522,33 @@ void main() {
 /// A course in which no place has a story.
 class _NoStories extends MapFixtureCourse {
   _NoStories() : super(builtPlaces: 0);
+}
+
+/// A course with a single story of fixed length, for testing replay budget & caps.
+class _SingleStoryCourse extends MapFixtureCourse {
+  _SingleStoryCourse(this._storyId, this._title, this._minutes)
+    : super(builtPlaces: 0);
+
+  final String _storyId;
+  final String _title;
+  final int _minutes;
+
+  @override
+  List<Place> get places => [
+    Place(
+      id: 'casa',
+      n: 1,
+      name: 'La casa',
+      en: "Grandma's house",
+      stories: [_storyId],
+      scenes: const ['El frente'],
+    ),
+  ];
+
+  @override
+  StoryMeta? meta(String id) => id == _storyId
+      ? StoryMeta(id: _storyId, title: _title, minutes: _minutes)
+      : null;
 }
 
 void _nocheHelpersTests() {
