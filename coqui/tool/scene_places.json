@@ -1,0 +1,32 @@
+{
+  "places": [
+    {
+      "id": "colmado",
+      "scenes": ["mostrador", "estantes", "frutas", "caja"]
+    },
+    {
+      "id": "calle",
+      "scenes": ["esquina", "parada", "tiendas", "cruce"]
+    },
+    {
+      "id": "plaza",
+      "scenes": ["plaza", "reloj", "quiosco", "calendario"]
+    },
+    {
+      "id": "playa",
+      "scenes": ["orilla", "sombrilla", "ropa", "cielo"]
+    },
+    {
+      "id": "fonda",
+      "scenes": ["entrada", "pedido", "comida", "cuenta"]
+    },
+    {
+      "id": "casa2",
+      "scenes": ["cuarto", "bano", "sala_dia", "noche"]
+    },
+    {
+      "id": "fuerte",
+      "scenes": ["subida", "musica", "regalos", "muralla"]
+    }
+  ]
+}

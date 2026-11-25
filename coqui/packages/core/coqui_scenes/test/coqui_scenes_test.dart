@@ -6,8 +6,8 @@ import 'support/sheet_bundle.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('the registry holds the eleven scene ids, in order, then the new scenes converted so far', () {
-    expect(sceneRegistry.keys.toList(), [
+  test('the registry starts with the 12 published scenes and matches convertedScenes', () {
+    expect(sceneRegistry.keys.take(12).toList(), [
       'frente',
       'balcon',
       'sala',
@@ -20,19 +20,9 @@ void main() {
       'estufa',
       'nevera',
       'comer',
-      'mostrador',
-      'estantes',
-      'frutas',
-      'caja',
-      'esquina',
-      'parada',
-      'tiendas',
-      'cruce',
-      'plaza',
-      'reloj',
-      'quiosco',
-      'calendario',
     ]);
+    expect(sceneRegistry.keys.toSet(), convertedScenes);
+    expect(sceneRegistry.length, sceneRegistry.keys.toSet().length);
   });
 
   for (final entry in sceneRegistry.entries) {

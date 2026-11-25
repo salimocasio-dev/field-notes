@@ -383,9 +383,13 @@ void main(List<String> args) {
       '',
       '/// The hash of the pixels of each old picture (`<scene>/<name>`), from the tool\'s own PNG decoder: R, G, B, A bytes,',
       '/// test/support/hash.dart\'s `hashBytes`.',
-      'const Map<String, String> oldHashes = {',
-      for (final k in keys) "  '$k': '${hashes[k]}',",
-      '};',
+      if (keys.isEmpty)
+        'const Map<String, String> oldHashes = {};'
+      else ...[
+        'const Map<String, String> oldHashes = {',
+        for (final k in keys) "  '$k': '${hashes[k]}',",
+        '};',
+      ],
       '',
     ].join('\n');
     put(File(hashesPath), utf8.encode(text));
