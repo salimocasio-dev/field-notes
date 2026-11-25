@@ -257,7 +257,7 @@ void main() {
   );
 
   testWidgets(
-    'unanswered LanguagesRoute, PlansRoute, ImportRoute, and PlaceRoute do nothing and log a line without crashing',
+    'unanswered LanguagesRoute, PlansRoute, ImportRoute, and unknown PlaceRoute do nothing and log a line without crashing',
     (tester) async {
       final logs = <String>[];
       final DebugPrintCallback previous = debugPrint;
@@ -274,7 +274,7 @@ void main() {
         LanguagesRoute(),
         PlansRoute(),
         ImportRoute(),
-        PlaceRoute('casa'),
+        PlaceRoute('no-existe'),
       ]) {
         logs.clear();
         await app.go(route);
@@ -284,12 +284,12 @@ void main() {
         expect(tester.takeException(), isNull, reason: '$route');
       }
 
-      // Opening those addresses directly before modules have screens falls back to the map and logs.
+      // Opening those addresses directly falls back to the map and logs.
       for (final location in const [
         '/idiomas',
         '/planes',
         '/importar',
-        '/lugar/casa',
+        '/lugar/no-existe',
       ]) {
         logs.clear();
         await tester.pumpWidget(const SizedBox());
@@ -299,6 +299,19 @@ void main() {
         expect(direct.selectedTab, 'map', reason: location);
         expect(logs, isNotEmpty, reason: 'expected log line for $location');
         expect(tester.takeException(), isNull, reason: location);
+      }
+
+      // PlaceRoute('casa') opens PlaceScreen (with Map tab bar) once N4.2 lands,
+      // or logs unanswered on pre-N4.2 main.
+      logs.clear();
+      await tester.pumpWidget(const SizedBox());
+      final placeDirect = TestApp(tester);
+      await placeDirect.open(stored: seed('curso'), location: '/lugar/casa');
+      expect(placeDirect.tabBarShown, isTrue);
+      expect(placeDirect.selectedTab, 'map');
+      expect(tester.takeException(), isNull);
+      if (byTypeName('PlaceScreen').evaluate().isEmpty) {
+        expect(logs, isNotEmpty, reason: 'expected log line for /lugar/casa');
       }
     },
   );
