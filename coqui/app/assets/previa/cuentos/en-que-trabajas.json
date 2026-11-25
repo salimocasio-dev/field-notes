@@ -1,0 +1,978 @@
+{
+ "id": "en-que-trabajas",
+ "title": "¿En qué trabajas?",
+ "place": "La plaza",
+ "scene": "quiosco",
+ "next": "cuantos-anos-tienes",
+ "goal": "Give each forgotten thing back to its owner by what each person says he or she does for work, so the three frosty limbers at the end of the counter are still there when the box is empty: every wrong person melts one.",
+ "stake": {
+  "thing": "limbers",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "trabajo",
+  "trabaja",
+  "¿en qué trabajas?",
+  "vendedor",
+  "estudiante"
+ ],
+ "formas_foco": {
+  "trabaja": [
+   "trabajas"
+  ],
+  "¿en qué trabajas?": [
+   "¿en qué trabaja?"
+  ],
+  "vendedor": [
+   "vendedora"
+  ],
+  "maestra": [
+   "maestro"
+  ],
+  "doctor": [
+   "doctora"
+  ]
+ },
+ "back_again": [
+  "maestra",
+  "doctor",
+  "cocinero",
+  "policía",
+  "escuela",
+  "hospital",
+  "tienda",
+  "plaza",
+  "soy",
+  "es",
+  "caja",
+  "hay",
+  "eso",
+  "aquí",
+  "gracias",
+  "toma",
+  "quieres",
+  "juega",
+  "joven",
+  "señor",
+  "señora",
+  "hombre",
+  "mujer",
+  "abuela",
+  "mucho",
+  "también",
+  "voy"
+ ],
+ "also_heard": [
+  "universidad",
+  "libro",
+  "mío",
+  "limber"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "senor": "b_n_senor",
+  "senora": "b_n_senora",
+  "hombre": "b_n_hombre",
+  "mujer": "b_n_mujer",
+  "joven": "b_n_joven"
+ },
+ "palabras": {
+  "policia": "policía"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_hombre": {
+   "who": "narr",
+   "text": "Es un hombre."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "c67_mira_vendedor": {
+   "who": "narr",
+   "text": "Mira al vendedor. El vendedor trabaja en el quiosco."
+  },
+  "c67_ve_trabajo": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: Yo trabajo aquí. Soy vendedor. ¡Y tengo mucho trabajo!"
+  },
+  "c67_que_hay_caja": {
+   "who": "narr",
+   "text": "¿Qué hay en la caja?"
+  },
+  "c67_ab_y_tu": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y tú, ¿en qué trabajas?"
+  },
+  "c67_jo_estudiante": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: No trabajo. Soy estudiante. Voy a la universidad."
+  },
+  "c67_ab_estudiante": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Un estudiante! Muy bien."
+  },
+  "c67_quien_estudiante": {
+   "who": "narr",
+   "text": "¿Quién es el estudiante?"
+  },
+  "c67_jo_libro": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: ¡Mi libro! ¡Gracias, Coquí!"
+  },
+  "c67_cq_toma": {
+   "who": "tu",
+   "text": "¡Toma!",
+   "tu_turno": [
+    {
+     "palabra": "toma",
+     "formas": [
+      "toma"
+     ]
+    }
+   ]
+  },
+  "c67_ab_usted_trabaja": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y usted? ¿En qué trabaja?"
+  },
+  "c67_se_cocinero": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: Soy cocinero. Trabajo en la escuela."
+  },
+  "c67_quien_escuela": {
+   "who": "narr",
+   "text": "¿Quién trabaja en la escuela?"
+  },
+  "c67_luis_y_tu": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y tú, Coquí, ¿en qué trabajas?"
+  },
+  "c67_ab_no_trabaja": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí no trabaja. ¡Coquí juega!"
+  },
+  "c66_ve_ahora_tu": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: Ahora tú, Coquí."
+  },
+  "c67_ab_y_usted": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y usted?"
+  },
+  "c67_ab_y_tu_corto": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y tú?"
+  },
+  "c67_ve_gracias": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: ¡Gracias, Coquí! ¡Buen trabajo!"
+  },
+  "c67_ve_limber": {
+   "who": "narr",
+   "habla": "vendedor",
+   "text": "El vendedor dice: ¿Quieres un limber, Coquí?"
+  },
+  "cq_si_gracias": {
+   "who": "tu",
+   "text": "¡Sí, gracias!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias",
+      "sí gracias",
+      "si gracias"
+     ]
+    }
+   ]
+  },
+  "c67_ab_fin": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Mira! Ahora Coquí también trabaja."
+  },
+  "c67_senora_doctor": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Soy doctora. Trabajo en el hospital."
+  },
+  "c67_no_senora_doctor": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, eso no es mío. Yo soy doctora."
+  },
+  "c67_senora_maestra": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Soy maestra. Trabajo en la escuela."
+  },
+  "c67_no_senora_maestra": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, eso no es mío. Yo soy maestra."
+  },
+  "c67_senora_policia": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: Soy policía. Trabajo aquí, en la plaza."
+  },
+  "c67_no_senora_policia": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: No, eso no es mío. Yo soy policía."
+  },
+  "c67_senora_gracias": {
+   "who": "narr",
+   "habla": "senora",
+   "text": "La señora dice: ¡Gracias, Coquí!"
+  },
+  "c67_hombre_doctor": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: Soy doctor. Trabajo en el hospital."
+  },
+  "c67_no_hombre_doctor": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: No, eso no es mío. Yo soy doctor."
+  },
+  "c67_hombre_maestra": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: Soy maestro. Trabajo en la escuela."
+  },
+  "c67_no_hombre_maestra": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: No, eso no es mío. Yo soy maestro."
+  },
+  "c67_hombre_policia": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: Soy policía. Trabajo aquí, en la plaza."
+  },
+  "c67_no_hombre_policia": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: No, eso no es mío. Yo soy policía."
+  },
+  "c67_hombre_gracias": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: ¡Gracias, Coquí!"
+  },
+  "c67_mujer_estudiante": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No trabajo. Soy estudiante."
+  },
+  "c67_no_mujer_estudiante": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, eso no es mío. Yo soy estudiante."
+  },
+  "c67_mujer_vendedor": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: Soy vendedora. Trabajo en una tienda."
+  },
+  "c67_no_mujer_vendedor": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: No, eso no es mío. Yo soy vendedora."
+  },
+  "c67_mujer_gracias": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: ¡Gracias, Coquí!"
+  },
+  "c67_la_joven_estudiante": {
+   "who": "narr",
+   "habla": "la_joven",
+   "text": "La joven dice: No trabajo. Soy estudiante."
+  },
+  "c67_no_la_joven_estudiante": {
+   "who": "narr",
+   "habla": "la_joven",
+   "text": "La joven dice: No, eso no es mío. Yo soy estudiante."
+  },
+  "c67_la_joven_vendedor": {
+   "who": "narr",
+   "habla": "la_joven",
+   "text": "La joven dice: Soy vendedora. Trabajo en una tienda."
+  },
+  "c67_no_la_joven_vendedor": {
+   "who": "narr",
+   "habla": "la_joven",
+   "text": "La joven dice: No, eso no es mío. Yo soy vendedora."
+  },
+  "c67_la_joven_gracias": {
+   "who": "narr",
+   "habla": "la_joven",
+   "text": "La joven dice: ¡Gracias, Coquí!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "limbers",
+   "n": 3
+  },
+  {
+   "act": "ir",
+   "a": "mesa"
+  },
+  {
+   "wait": 500
+  },
+  "c67_mira_vendedor",
+  "c67_ve_trabajo",
+  {
+   "act": "tapa67"
+  },
+  {
+   "act": "gesto",
+   "quien": "vendedor",
+   "que": "no"
+  },
+  {
+   "ask": "caja",
+   "lead": [],
+   "line": "c67_que_hay_caja",
+   "then": [],
+   "after": [
+    {
+     "act": "saca67",
+     "cosa": "libro"
+    }
+   ]
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "llega",
+   "quien": "joven",
+   "a": "taburete1"
+  },
+  "c67_ab_y_tu",
+  "c67_jo_estudiante",
+  "c67_ab_estudiante",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "mira",
+   "a": "joven"
+  },
+  {
+   "ask": "joven",
+   "lead": [],
+   "line": "c67_quien_estudiante",
+   "then": [],
+   "after": [
+    {
+     "act": "lleva67",
+     "cosa": "libro",
+     "a": "joven",
+     "ok": 1
+    }
+   ]
+  },
+  "c67_cq_toma",
+  "c67_jo_libro",
+  {
+   "dots": 2
+  },
+  {
+   "act": "llega",
+   "quien": "senor",
+   "a": "taburete2"
+  },
+  "c67_ab_usted_trabaja",
+  "c67_se_cocinero",
+  {
+   "act": "saca67",
+   "cosa": "gorro"
+  },
+  {
+   "ask": "senor",
+   "lead": [],
+   "line": "c67_quien_escuela",
+   "then": [
+    {
+     "act": "gesto",
+     "quien": "abuela",
+     "que": "aplaude",
+     "suelto": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "luis",
+     "que": "aplaude",
+     "suelto": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "carmen",
+     "que": "aplaude",
+     "suelto": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "joven",
+     "que": "aplaude",
+     "suelto": 1
+    },
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "lleva67",
+     "cosa": "gorro",
+     "a": "senor",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  "c67_luis_y_tu",
+  {
+   "act": "gesto",
+   "quien": "coqui",
+   "que": "no"
+  },
+  "c67_ab_no_trabaja",
+  {
+   "dots": 4
+  },
+  {
+   "act": "sale",
+   "quien": "joven",
+   "suelto": 1
+  },
+  {
+   "act": "sale",
+   "quien": "senor",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "llega",
+   "quien": "senora",
+   "a": "cola1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "hombre",
+   "a": "cola2",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "mujer",
+   "a": "cola3",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "la_joven",
+   "a": "cola4",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "gesto",
+   "quien": "vendedor",
+   "que": "mira",
+   "a": "limbers"
+  },
+  {
+   "act": "gesto",
+   "quien": "vendedor",
+   "que": "mira",
+   "a": "caja"
+  },
+  "c66_ve_ahora_tu",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ta",
+   "options": [
+    "estetoscopio",
+    "libretas",
+    "gorra"
+   ]
+  },
+  {
+   "calc": "ja",
+   "cond": "ta=estetoscopio",
+   "then": "doctor",
+   "else": "maestra"
+  },
+  {
+   "calc": "ja",
+   "cond": "ta=gorra",
+   "then": "policia",
+   "else": "$ja"
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "senora",
+    "hombre"
+   ],
+   "other": "na"
+  },
+  {
+   "draw": "ua",
+   "options": [
+    "u",
+    "v"
+   ]
+  },
+  {
+   "if": "ja=doctor",
+   "then": [
+    {
+     "calc": "ea",
+     "cond": "ua=u",
+     "then": "maestra",
+     "else": "policia"
+    }
+   ],
+   "else": [
+    {
+     "if": "ja=maestra",
+     "then": [
+      {
+       "calc": "ea",
+       "cond": "ua=u",
+       "then": "doctor",
+       "else": "policia"
+      }
+     ],
+     "else": [
+      {
+       "calc": "ea",
+       "cond": "ua=u",
+       "then": "doctor",
+       "else": "maestra"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "senora",
+    "hombre"
+   ],
+   "other": "qa"
+  },
+  {
+   "calc": "js",
+   "cond": "oa=senora",
+   "then": "$ja",
+   "else": "$ea"
+  },
+  {
+   "calc": "jh",
+   "cond": "oa=senora",
+   "then": "$ea",
+   "else": "$ja"
+  },
+  {
+   "calc": "jf",
+   "cond": "pa=senora",
+   "then": "$js",
+   "else": "$jh"
+  },
+  {
+   "calc": "jg",
+   "cond": "pa=senora",
+   "then": "$jh",
+   "else": "$js"
+  },
+  {
+   "act": "saca67",
+   "cosa": "$ta"
+  },
+  "c67_ab_usted_trabaja",
+  "c67_$pa_$jf",
+  "c67_ab_y_usted",
+  {
+   "decide": "do",
+   "options": [
+    "senora",
+    "hombre"
+   ],
+   "pick": "$oa",
+   "tests": "$ja",
+   "lock": true,
+   "lead": [],
+   "line": "c67_$qa_$jg",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "lleva67",
+       "cosa": "$ta",
+       "a": "$oa",
+       "ok": 1
+      },
+      "c67_$oa_gracias",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "lleva67",
+       "cosa": "$ta",
+       "a": "$oa",
+       "ok": 1
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "lleva67",
+     "cosa": "$ta",
+     "a": "$x",
+     "ok": 0
+    },
+    "c67_no_$na_$ea",
+    {
+     "act": "derrite67"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "act": "sale",
+   "quien": "senora",
+   "suelto": 1
+  },
+  {
+   "act": "sale",
+   "quien": "hombre",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "llega",
+   "quien": "mujer",
+   "a": "cola1",
+   "suelto": 1
+  },
+  {
+   "act": "llega",
+   "quien": "la_joven",
+   "a": "cola2",
+   "suelto": 1
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "jb",
+   "options": [
+    "estudiante",
+    "vendedor"
+   ]
+  },
+  {
+   "calc": "tb",
+   "cond": "jb=estudiante",
+   "then": "bulto",
+   "else": "delantal"
+  },
+  {
+   "calc": "eb",
+   "cond": "jb=estudiante",
+   "then": "vendedor",
+   "else": "estudiante"
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "mujer",
+    "la_joven"
+   ],
+   "other": "nb"
+  },
+  {
+   "calc": "jm",
+   "cond": "ob=mujer",
+   "then": "$jb",
+   "else": "$eb"
+  },
+  {
+   "calc": "jl",
+   "cond": "ob=mujer",
+   "then": "$eb",
+   "else": "$jb"
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "mujer",
+    "la_joven"
+   ],
+   "other": "qb"
+  },
+  {
+   "calc": "jfb",
+   "cond": "pb=mujer",
+   "then": "$jm",
+   "else": "$jl"
+  },
+  {
+   "calc": "jgb",
+   "cond": "pb=mujer",
+   "then": "$jl",
+   "else": "$jm"
+  },
+  {
+   "act": "saca67",
+   "cosa": "$tb"
+  },
+  {
+   "if": "pb=mujer",
+   "then": [
+    "c67_ab_usted_trabaja"
+   ],
+   "else": [
+    "c67_ab_y_tu"
+   ]
+  },
+  "c67_$pb_$jfb",
+  {
+   "if": "qb=mujer",
+   "then": [
+    "c67_ab_y_usted"
+   ],
+   "else": [
+    "c67_ab_y_tu_corto"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "mujer",
+    "la_joven"
+   ],
+   "pick": "$ob",
+   "tests": "$jb",
+   "lock": true,
+   "lead": [],
+   "line": "c67_$qb_$jgb",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "lleva67",
+       "cosa": "$tb",
+       "a": "$ob",
+       "ok": 1
+      },
+      "c67_$ob_gracias",
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "lleva67",
+       "cosa": "$tb",
+       "a": "$ob",
+       "ok": 1
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "lleva67",
+     "cosa": "$tb",
+     "a": "$x",
+     "ok": 0
+    },
+    "c67_no_$nb_$eb",
+    {
+     "act": "derrite67"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  "c67_ve_gracias",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final67",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final67",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final67",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  "c67_ve_limber",
+  "cq_si_gracias",
+  "c67_ab_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c67_mira_vendedor",
+  "c67_ve_trabajo",
+  "c67_que_hay_caja",
+  "c67_ab_y_tu",
+  "c67_jo_estudiante",
+  "c67_ab_estudiante",
+  "c67_quien_estudiante",
+  "c67_cq_toma",
+  "c67_jo_libro",
+  "c67_ab_usted_trabaja",
+  "c67_se_cocinero",
+  "c67_quien_escuela",
+  "c67_luis_y_tu",
+  "c67_ab_no_trabaja",
+  "c66_ve_ahora_tu",
+  "c67_ab_usted_trabaja",
+  "c67_senora_doctor",
+  "c67_ab_y_usted",
+  "c67_hombre_maestra",
+  "c67_senora_gracias",
+  "c67_ab_y_tu",
+  "c67_la_joven_estudiante",
+  "c67_ab_y_usted",
+  "c67_mujer_vendedor",
+  "c67_mujer_gracias",
+  "c67_ve_gracias",
+  "c67_ve_limber",
+  "cq_si_gracias",
+  "c67_ab_fin"
+ ]
+}

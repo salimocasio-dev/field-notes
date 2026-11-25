@@ -1212,13 +1212,29 @@ New scenes, as La calle's: no old scene file, no `ref/escenas/` folder. Step a (
 - New people to draw (looks in the scripts): Ana, her mamá, Beto, her abuela, six visitors with maps and cameras; don Tito; the vendedor; the maestra, the doctor, the cocinero and the policía in work clothes; a young woman. New speaker keys: `ana`, `mama_ana`, `abuela_ana`, `beto`, `tito`, `vendedor`, `maestra`, `doctor`, `cocinero`, `policia`, `la_joven`, `nino`, `nina`.
 - Beats the scripts show for which no act is named are listed in each generator as comments (a walk-on, somebody lifting a thing): the port may fold each into the act beside it.
 
+### Order 58 (plaza), step b. **Result (Nov 23): done, merged to main (PR #77, issue #17).**
+
+Built on `story/17` with place 6's shared kit (`plaza_base.dart`) and cast (`plaza_cast.dart`), plus whole-round repeat in `feature_story` (`round_repeat_test.dart`, 13 tests: when the learner waits on a multi-line decision round, the whole round replays in order, ending with the decision's own `line` when not `mudo`, and stops if he answers or leaves). Reviewed by Gemini (round 1 fixed `repite` dropping a non-`mudo` decision's `line` and stopping mid-repeat on answer/exit) and merged by Claude:
+- **Kit** (`plaza_kit_test.dart`): 121 tests across all 6 engine origins (`plaza`, `reloj`, `quiosco`, `calendario`, `orilla`, `entrada`), 0 elements differ.
+- **El banco de la plaza** (stories 60 to 62): set 12 states equal (0 of 51,840 differ); acts test passes; 7,808 paths (`mucho-gusto` 64, `de-donde-eres` 64, `hablo-espanol` 7,680), 426,944 rule checks, 0 errors, 0 broken (with 4 counted-apart notes for the content lane); six app plays (`TXT=no`, 91 pictures in 27 contact sheets) reach the end with no words on screen. Sprite sheets: `docs/proyecto/pixel/port/plaza-cast-sprites.{png,txt}`, `plaza-sprites.{png,txt}`.
+- **For the content lane: 8 acts left OPEN** (marked `// OPEN:` in `plaza.dart`):
+  1. Story 60 start (`fresh`): frog starts at `asiento2` behind `suelo4`; Luis and Carmen take the nearest `suelo` spots clear of the frog's column.
+  2. Story 62 (`items`): no spot for the coin jar (`jarra`); placed at `carro_borde`, just behind the frog.
+  3. Stories 60 and 61 (`_sitio`): people sent in front of the frog (`suelo4`, `frente1`/`frente2`) step to the nearest free spot of the same row (or swap) that keeps the frog whole.
+  4. Story 61 (`_cuelga`): fallback to the other hook row if a 5-hook row is full.
+  5. Story 62 (`llega`): with another helper at `ayuda1`, the señor's wide hat at `ayuda2` covers 2 px of the frog on the cart (`tapa = 1`; counted apart: 6,912 checks).
+  6. Story 60 (`burbujas`): answer bubbles over the frog at `asiento1`/`asiento2` cover 37 px of the pigeon on the bench back (counted apart: 2,616 + 256 checks).
+  7. Story 61 (`dibuja61`): on the ledge (`repisa`) the frog covers 176 px of the board's pictures and hooks (counted apart: 256 checks).
+  8. Story 62 (`gesto` `llama`): no spot "across the square" inside the view; Ana's mamá calls from `entrada`, off screen.
+
 ### Orders 59, 60 and 61 (reloj, quiosco, calendario), step b. **Result (Nov 24): done, merged to main (PR #126, issues #18, #19, #20).**
 
 Built by Gemini (Antigravity) on `story/18`. At Salim's word the three scenes went in one PR. Reviewed by Codex (reloj, three rounds: the bell's 12 strokes; the rivals' small bingo cards and their beans; the long hand's sweep kept on the 3-o'clock half, clear of don Tito; free taps in story 64 that let the hand drift past 180°; the frog's bounce cut off above row 0). Reviewed and merged by Claude. The PR's numbers, the builder's unless marked:
 - **El reloj** (stories 63 to 65): set 6 states equal (0 of 51,840 differ); acts test passes (20 things answer); 1,780 paths, 63,400 rule checks, 0 errors, 0 broken (bingo 24 paths, y-media 448, que-hora-es 1,308 by rounds); six app plays reach the end with no words on screen. 50 sprites: `docs/proyecto/pixel/port/reloj-sprites.png`.
 - **El quiosco** (stories 66 to 68): set 4 states equal; acts test passes (27 things answer); 3,168 paths, 91,488 rule checks, 0 errors, 0 broken; six app plays reach the end. 53 sprites: `quiosco-sprites.png`.
 - **El calendario** (stories 69 to 71): set 6 states equal; acts test passes (22 things answer); 3,328 paths, 107,776 rule checks, 0 errors, 0 broken; six app plays reach the end. 28 sprites: `calendario-sprites.png`.
-- No change to the runner. Run again by the reviewer before merge: boundaries ok, format 0 changed, analyze clean, `check.js` ok, the three scenes' set, sprite and act tests (78 pass), their story tests (10 pass); CI (`coqui.yml`, `coqui-guardrails.yml`) green on the merged head. Not yet in a numbered build (`coqui/BUILD` unchanged).
+- No change to the runner. Run again by the reviewer before merge: boundaries ok, format 0 changed, analyze clean, `check.js` ok, the three scenes' set, sprite and act tests (78 pass), their story tests (10 pass); CI (`coqui.yml`, `coqui-guardrails.yml`) green on the merged head.
+- **La plaza build (Nov 25, issue #21):** `make_previa.py --places colmado,calle,plaza` and `--check` pass (36 preview stories: El colmado 12, La calle 12, La plaza 12; nothing under `historia/cuentos/`); bundled in `coqui/app/assets/previa/` and published in **build 17** (`coqui/BUILD` = 17), where La plaza's twelve stories play silent from preview content.
 
 **For the content lane: 19 acts left OPEN** (marked `// OPEN:` in the code):
 - El reloj (9, `reloj.dart`):
@@ -1366,14 +1382,14 @@ Salim asked for work to stop for now (usage). Every branch below is pushed, sign
 
 **Built, stopped before the last checks** (each needs: main merged in with the shared lists in order ..., caja, esquina, parada, tiendas, cruce, plaza, ...; the generated files remade by their tools; `test_all.sh` whole; bake times on a quiet machine; then the orchestrator's own checks):
 - La parada, Las tiendas and El cruce were finished on Nov 23 and are on main (build 14): see "Orders 55, 56 and 57".
-- `orden/58b` La plaza, with place 6's shared pieces (`plaza_base.dart`: 222 cases equal the JavaScript, `set_kit.dart` unchanged; `plaza_cast.dart`; feature_story says a decision's whole round again when he waits, 281 tests pass): set 12 states equal; acts test passes; stories 60 and 61: 64 paths each, no rule broken; six app plays reach the end; `test_all.sh` passed two commits before the head. **Left:** story 62's 7,680 paths again after the last two commits (384 paths had a helper over the frog; fixed for the señor and the joven, not confirmed); `test_all.sh` at the head; bake times. For reloj, quiosco, calendario no further runner change is needed (time cards and the big bingo card as story 60's bubbles; 67 uses the whole-round repeat; 70 uses `vale` as it is). Their briefs are written: `brief_59b.txt`, `brief_60b.txt`, `brief_61b.txt` in the orchestrator's scratchpad (lost with the machine: write again from order 55's pattern if gone).
+- La plaza (orders 58 to 61: plaza, reloj, quiosco, calendario) was finished on Nov 23–25 and plays on main (build 17): see "Order 58 (plaza)" and "Orders 59, 60 and 61".
 - A comer's port was finished after this was written and is on main (build 13): see "A comer, step b, and La cocina's build".
 
-**Not started:** La plaza's reloj, quiosco, calendario (59 to 61), places 7 to 10 (62 to 77).
+**Not started:** places 7 to 10 (62 to 77).
 
 **La cocina is built:** build 13 plays its four scenes; the ten words are recorded.
 
-**For the content lane: acts left OPEN in La parada and Las tiendas (on main, build 14) and in La plaza (not merged yet)**
+**For the content lane: acts left OPEN in La parada and Las tiendas (on main, build 14) and in La plaza (on main, build 17; full list under Order 58 and Orders 59 to 61)**
 
 La parada (`parada.dart`):
 1. 51, 52, 53 start, `ir bordillo`: no such spot; he goes to `fila2`.
