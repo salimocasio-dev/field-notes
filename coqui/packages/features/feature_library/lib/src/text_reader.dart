@@ -248,7 +248,7 @@ class _TextReaderState extends State<TextReader> {
       for (final slice in currentPage.slices) {
         final sliceText = chapter.paragraphs[slice.paragraphIndex].text
             .substring(slice.charStart, slice.charEnd);
-        _met.addAll(readingWords(sliceText));
+        _met.addAll(readingWords(sliceText, language: _s.course.language));
       }
     }
 
@@ -361,12 +361,45 @@ class _TextReaderState extends State<TextReader> {
     return out;
   }
 
+  ({Map<String, String> exact, Map<String, String> normalized})
+  _progressWordIndex() {
+    final lang = _s.course.language;
+    final exact = <String, String>{};
+    final normalized = <String, String>{};
+    for (final existing in _s.progress.words) {
+      exact.putIfAbsent(existing.w.toLowerCase(), () => existing.w);
+      final norm = lang.normalize(existing.w).trim();
+      if (norm.isNotEmpty) {
+        normalized.putIfAbsent(norm, () => existing.w);
+      }
+    }
+    return (exact: exact, normalized: normalized);
+  }
+
+  String _resolveProgressWord(
+    String rawToken,
+    ({Map<String, String> exact, Map<String, String> normalized}) index,
+  ) {
+    final lower = rawToken.toLowerCase();
+    final exactHit = index.exact[lower];
+    if (exactHit != null) return exactHit;
+    final norm = _s.course.language.normalize(rawToken).trim();
+    if (norm.isNotEmpty) {
+      final normHit = index.normalized[norm];
+      if (normHit != null) return normHit;
+    }
+    return lower;
+  }
+
   void _creditSentenceWords(ReaderSentence sentence) {
+    final lang = _s.course.language;
+    final index = _progressWordIndex();
     final keys = <String>{};
-    for (final token in _s.course.language.tokens(sentence.text)) {
+    for (final token in lang.tokens(sentence.text)) {
       final resolved =
-          _audio.word(token.text)?.word ?? token.text.toLowerCase();
-      keys.add(resolved);
+          _audio.word(token.text)?.word ??
+          _resolveProgressWord(token.text, index);
+      if (resolved.isNotEmpty) keys.add(resolved);
     }
     for (final key in keys) {
       _s.progress.heard(key);
@@ -530,7 +563,9 @@ class _TextReaderState extends State<TextReader> {
     setState(() => _playing = false);
     await _playWordClip((
       clip: clipId,
-      word: selected.audioWord ?? selected.token.toLowerCase(),
+      word:
+          selected.audioWord ??
+          _resolveProgressWord(selected.token, _progressWordIndex()),
     ));
   }
 
@@ -637,6 +672,9 @@ class _TextReaderState extends State<TextReader> {
     final doc = _doc;
     if (doc == null || _pages.isEmpty) return;
     final lang = _s.course.language;
+    final courseDir = lang.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
     final currentChapter = _pages[_pageIndex].chapterIndex;
     final locale = Locale(lang.code);
 
@@ -647,28 +685,31 @@ class _TextReaderState extends State<TextReader> {
         NocheA11y.closeSheet,
         courseWords: lang.a11yWords,
       ),
-      builder: (context, close) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (var i = 0; i < doc.chapters.length; i++)
-            _ChapterRow(
-              chapter: doc.chapters[i],
-              selected: i == currentChapter,
-              language: lang,
-              locale: locale,
-              showTopBorder: i > 0,
-              onPressed: () {
-                close();
-                final targetPage = _pages.indexWhere(
-                  (p) => p.chapterIndex == i,
-                );
-                if (targetPage >= 0) {
-                  _turnToPage(targetPage);
-                }
-              },
-            ),
-        ],
+      builder: (context, close) => Directionality(
+        textDirection: courseDir,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < doc.chapters.length; i++)
+              _ChapterRow(
+                chapter: doc.chapters[i],
+                selected: i == currentChapter,
+                language: lang,
+                locale: locale,
+                showTopBorder: i > 0,
+                onPressed: () {
+                  close();
+                  final targetPage = _pages.indexWhere(
+                    (p) => p.chapterIndex == i,
+                  );
+                  if (targetPage >= 0) {
+                    _turnToPage(targetPage);
+                  }
+                },
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -1103,6 +1144,9 @@ class _ChapterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final courseDir = language.direction == LanguageDirection.rtl
+        ? TextDirection.rtl
+        : TextDirection.ltr;
     final hasLabel = chapter.label != null && chapter.label!.trim().isNotEmpty;
     final labelText = hasLabel
         ? '${chapter.label} · ${chapter.title}'
@@ -1135,6 +1179,7 @@ class _ChapterRow extends StatelessWidget {
                         chapter.label!.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        textDirection: courseDir,
                         locale: locale,
                         style: NocheType.forScript(
                           NocheType.label,
@@ -1147,6 +1192,7 @@ class _ChapterRow extends StatelessWidget {
                       chapter.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                      textDirection: courseDir,
                       locale: locale,
                       style: NocheType.forScript(
                         NocheType.row,
