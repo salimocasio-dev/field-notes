@@ -1,18 +1,19 @@
-// The play screen, state by state: the pictures of coqui/ref/pantallas/ that order 15 serves (the story page: start, the
-// narrator's caption, the touch sign, a speech bubble, a wrong touch, the end screens, Listen mode, no text, the answer
-// bubbles, the mic in each state). The screen is built on the fakes, with a scene of our own.
+// The play screen, state by state: start, narrator caption, touch sign, speech
+// bubble, wrong touch, end screens, Listen mode, TXT toggle, answer bubbles,
+// NocheMic states (theySpeak, ready, listening, thinking, right, notYet), and
+// showPerf chip.
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:feature_story/feature_story.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
-import 'package:feature_story/src/screen/story_screen.dart';
-import 'package:feature_story/src/screen/story_bubble.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
+import 'package:feature_story/src/screen/story_not_ready.dart';
+import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'support/screen_harness.dart';
 import 'support/test_scene.dart';
@@ -59,27 +60,33 @@ void main() {
     },
   );
 
-  group('the lesson frame around the picture', () {
+  group('the Noche lesson frame around the picture', () {
     testWidgets(
-      'start (ref 130): the close X, five dashes none lit, the sound button, the picture, the green start disc',
+      'start: the 64-high header (close X, five NocheDashes on lessonGround, TXT pill), the picture, the orange start disc',
       (tester) async {
         final s = await openScreen(tester);
-        expect(find.byType(LessonFrame), findsOneWidget);
-        expect(find.byType(LessonProgressDashes), findsOneWidget);
-        final dashes = tester.widget<LessonProgressDashes>(
-          find.byType(LessonProgressDashes),
+        expect(find.byType(StoryHeader), findsOneWidget);
+        expect(tester.getSize(find.byType(StoryHeader)).height, 64);
+        expect(find.byType(NocheDashes), findsOneWidget);
+        final dashes = tester.widget<NocheDashes>(find.byType(NocheDashes));
+        expect(dashes.onLessonGround, isTrue);
+        expect(dashes.states, List.filled(5, NocheDashState.notYet));
+        expect(find.byType(StoryCloseButton), findsOneWidget);
+        expect(find.byType(StoryTxtToggle), findsOneWidget);
+        expect(
+          tester.widget<StoryTxtToggle>(find.byType(StoryTxtToggle)).on,
+          isTrue,
         );
-        expect((dashes.segments, dashes.done), (5, 0));
-        expect(find.byType(LessonCloseButton), findsOneWidget);
-        expect(find.byType(LessonSoundButton), findsOneWidget);
         expect(find.byType(PixelView), findsOneWidget);
-        expect(find.byType(LessonStartButton), findsOneWidget);
-        expect(find.byType(StoryMicButton), findsNothing);
+        expect(find.byType(NochePlayDisc), findsOneWidget);
+        expect(find.byType(NocheMic), findsNothing);
         expect(s.runner.view.screen, StoryScreenState.start);
-        // the picture is whole-number scaled: 380 logical pixels at 2.625 are 997 device pixels: 5 for each of the 196
+        // the picture is whole-number scaled to fit within both width (412) and the 400-high stage:
+        // 400 * 196 / 216 = 362.96 logical px -> floor(362.96 * 2.625 / 196) = 4 device px per scene pixel.
         final size = tester.getSize(find.byType(PixelView));
-        expect((size.width * 2.625).round(), 196 * 5);
-        expect((size.height * 2.625).round(), 216 * 5);
+        expect((size.width * 2.625).round(), 196 * 4);
+        expect((size.height * 2.625).round(), 216 * 4);
+        expect(size.height, lessThanOrEqualTo(StoryScreen.sceneHeight));
       },
     );
 
@@ -87,10 +94,8 @@ void main() {
       tester,
     ) async {
       final s = await openScreen(tester, id: 'el-bizcocho');
-      final dashes = tester.widget<LessonProgressDashes>(
-        find.byType(LessonProgressDashes),
-      );
-      expect(dashes.segments, 7);
+      final dashes = tester.widget<NocheDashes>(find.byType(NocheDashes));
+      expect(dashes.states.length, 7);
       expect(s.runner.view.dots, 7);
     });
 
@@ -98,24 +103,23 @@ void main() {
       tester,
     ) async {
       final s = await openScreen(tester);
-      await tester.tap(find.byType(LessonStartButton));
+      await tester.tap(find.byType(NochePlayDisc));
       await tester.pump();
-      expect(find.byType(LessonStartButton), findsNothing);
+      expect(find.byType(NochePlayDisc), findsNothing);
       expect(s.runner.view.screen, StoryScreenState.play);
       await s.until(() => s.runner.view.dotsLit >= 1, what: 'the first dash');
-      final dashes = tester.widget<LessonProgressDashes>(
-        find.byType(LessonProgressDashes),
-      );
-      expect(dashes.done, greaterThanOrEqualTo(1));
+      final dashes = tester.widget<NocheDashes>(find.byType(NocheDashes));
+      final done = dashes.states.where((d) => d == NocheDashState.done).length;
+      expect(done, greaterThanOrEqualTo(1));
     });
 
     testWidgets('the X leaves: all sound stops and the app goes back', (
       tester,
     ) async {
       final s = await openScreen(tester);
-      await tester.tap(find.byType(LessonStartButton));
+      await tester.tap(find.byType(NochePlayDisc));
       await s.advance(200);
-      await tester.tap(find.byType(LessonCloseButton));
+      await tester.tap(find.byType(StoryCloseButton));
       await tester.pump();
       expect(s.nav.backs, 1);
       await s.advance(1000);
@@ -126,19 +130,23 @@ void main() {
       expect(s.services.progress.played('la-lluvia'), isFalse);
     });
 
-    testWidgets('the sound button mutes and shows it', (tester) async {
+    testWidgets('the TXT pill toggles captions on and off', (tester) async {
       final s = await openScreen(tester);
+      expect(s.runner.txtOn, isTrue);
       expect(
-        tester.widget<LessonSoundButton>(find.byType(LessonSoundButton)).muted,
-        isFalse,
-      );
-      await tester.tap(find.byType(LessonSoundButton));
-      await tester.pump();
-      expect(s.services.clips.muted, isTrue);
-      expect(
-        tester.widget<LessonSoundButton>(find.byType(LessonSoundButton)).muted,
+        tester.widget<StoryTxtToggle>(find.byType(StoryTxtToggle)).on,
         isTrue,
       );
+      await tester.tap(find.byType(StoryTxtToggle));
+      await tester.pump();
+      expect(s.runner.txtOn, isFalse);
+      expect(
+        tester.widget<StoryTxtToggle>(find.byType(StoryTxtToggle)).on,
+        isFalse,
+      );
+      await tester.tap(find.byType(StoryTxtToggle));
+      await tester.pump();
+      expect(s.runner.txtOn, isTrue);
     });
   });
 
@@ -156,7 +164,7 @@ void main() {
           q['y'],
           q['s'],
         ), isNot((150, 178, 1))); // the sheet's spot, not the old screen number
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await s.until(() => s.runner.W['spot'] != null, what: 'the sign');
         await s.advance(150);
         expect(s.runner.W['spot'], 'casa');
@@ -165,16 +173,16 @@ void main() {
     );
 
     testWidgets(
-      'a scene that is not converted yet: the lesson frame and its X, the line "This story is not in the new app yet." and the button "Back to the map" (it was the empty frame and a reported error: see not_converted_test.dart)',
+      'a scene that is not converted yet: StoryNotReady with close X, the line and Back to the map',
       (tester) async {
         await openScreen(
           tester,
           id: 'la-lluvia',
           scenes: (id, rng) => scenesWithTestScene(testSceneId, rng),
         );
-        expect(find.byType(LessonFrame), findsOneWidget);
-        expect(find.byType(LessonCloseButton), findsOneWidget);
-        expect(find.byType(LessonStartButton), findsNothing);
+        expect(find.byType(StoryNotReady), findsOneWidget);
+        expect(find.byType(StoryCloseButton), findsOneWidget);
+        expect(find.byType(NochePlayDisc), findsNothing);
         expect(
           find.text('This story is not in the new app yet.'),
           findsOneWidget,
@@ -186,21 +194,19 @@ void main() {
   });
 
   group('words on the screen', () {
-    testWidgets('the narrator\'s caption under the picture (ref 131)', (
-      tester,
-    ) async {
+    testWidgets('the narrator\'s caption under the picture', (tester) async {
       final s = await openScreen(tester);
-      await tester.tap(find.byType(LessonStartButton));
+      await tester.tap(find.byType(NochePlayDisc));
       await s.until(() => s.runner.cap.isNotEmpty, what: 'a caption');
       expect(find.text(s.runner.cap), findsOneWidget);
       expect(s.runner.cap, line(s, 'esta_casa'));
     });
 
-    testWidgets('a speech bubble beside the frog for his lines (ref 133)', (
+    testWidgets('a speech bubble beside the frog for his lines', (
       tester,
     ) async {
       final s = await openScreen(tester);
-      await tester.tap(find.byType(LessonStartButton));
+      await tester.tap(find.byType(NochePlayDisc));
       // the frog's first line is his "¡Ay, la lluvia!", after the first questions
       await s.answerUntil(() => s.runner.bubText.isNotEmpty, what: 'a bubble');
       expect(find.text(s.runner.bubText), findsOneWidget);
@@ -208,11 +214,15 @@ void main() {
       expect(s.runner.cap, '');
     });
 
-    testWidgets('no text (ref 138): the caption and the bubble never show', (
+    testWidgets('no text: the caption and the bubble never show', (
       tester,
     ) async {
       final s = await openScreen(tester, txt: TxtMode.no);
-      await tester.tap(find.byType(LessonStartButton));
+      expect(
+        tester.widget<StoryTxtToggle>(find.byType(StoryTxtToggle)).on,
+        isFalse,
+      );
+      await tester.tap(find.byType(NochePlayDisc));
       for (var i = 0; i < 50; i++) {
         await s.advance(500);
         expect(s.runner.cap, '');
@@ -223,10 +233,10 @@ void main() {
 
   group('the touch', () {
     testWidgets(
-      'the big sign shows what to touch: the dimmed picture, the pulsing frame and the hand (ref 132)',
+      'the big sign shows what to touch: the dimmed picture, the pulsing frame and the hand',
       (tester) async {
         final s = await openScreen(tester);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await s.until(() => s.runner.W['spot'] != null, what: 'the sign');
         await s.advance(150);
         expect(s.runner.W['spot'], 'casa');
@@ -237,10 +247,10 @@ void main() {
     );
 
     testWidgets(
-      'a tap on the picture is a touch on the thing there; a wrong one is poked (ref 134, 135)',
+      'a tap on the picture is a touch on the thing there; a wrong one is poked',
       (tester) async {
         final s = await openScreen(tester);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await s.until(
           () => s.runner.pendingNow?.asked == true,
           what: 'the question',
@@ -253,15 +263,12 @@ void main() {
         );
         expect(scene.pokes, ['palma']);
         expect(s.runner.W['lost'], 0);
-        // the question is asked again and the sign is still there
         await s.until(
           () => s.runner.pendingNow?.busy == false,
           what: 'the name',
         );
         expect(s.runner.W['spot'], 'casa');
-        // before the door has a name the door is the house: touching it is the right answer
         expect(s.runner.W['lost'], 0);
-        // the right thing
         await s.tapThing('casa');
         await s.until(() => s.runner.W['spot'] == null, what: 'the answer');
         expect(s.runner.W['spot'], isNull);
@@ -269,30 +276,27 @@ void main() {
     );
 
     testWidgets(
-      'a story played through, answering rightly, ends on the end screen with its title (ref 137)',
+      'a story played through, answering rightly, ends on the end screen with its title',
       (tester) async {
         final s = await openScreen(tester);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await _answer(s, () => true);
         expect(s.runner.view.screen, StoryScreenState.end);
         expect(find.text('La lluvia'), findsOneWidget);
         expect(find.text('Play again'), findsOneWidget);
         expect(find.text('Map'), findsOneWidget);
         expect(find.text('Next story'), findsOneWidget);
-        // the dashes are all lit
-        final dashes = tester.widget<LessonProgressDashes>(
-          find.byType(LessonProgressDashes),
-        );
-        expect(dashes.done, dashes.segments);
+        final dashes = tester.widget<NocheDashes>(find.byType(NocheDashes));
+        expect(dashes.states.every((d) => d == NocheDashState.done), isTrue);
         expect(s.services.progress.played('la-lluvia'), isTrue);
       },
     );
 
     testWidgets(
-      'one error (ref 136): the same end screen, and the step lost is told to the progress store',
+      'one error: the same end screen, and the step lost is told to the progress store',
       (tester) async {
         final s = await openScreen(tester);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         var wrong = true;
         await _answer(s, () {
           final w = wrong;
@@ -309,7 +313,7 @@ void main() {
       'Next story goes to the next story; Map to the map tab; Play again plays again',
       (tester) async {
         final s = await openScreen(tester);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await _answer(s, () => true);
         await tester.tap(find.text('Next story'));
         expect(s.nav.last, const StoryRoute('el-bizcocho'));
@@ -324,10 +328,8 @@ void main() {
   });
 
   group('Next story only where the course names the story', () {
-    // The sample course's la-lluvia leads on to el-bizcocho, which the sample course names (the test above). Here the file
-    // leads on to a story the course does not name, as the real jugo-de-china leads on to the staged que-quieres.
     testWidgets(
-      'a next the course does not name: no Next story, Map is the main button (blue), Play again above it',
+      'a next the course does not name: no Next story, Map is the NochePrimaryButton, Play again is NocheOutlineButton',
       (tester) async {
         final s = await openScreen(
           tester,
@@ -336,59 +338,47 @@ void main() {
           }),
         );
         expect(s.course.meta('que-quieres'), isNull);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await _answer(s, () => true);
         expect(s.runner.view.screen, StoryScreenState.end);
         expect(s.runner.S['next'], 'que-quieres');
         expect(find.text('Next story'), findsNothing);
-        expect(find.byType(LessonButton), findsNWidgets(2));
+        expect(find.byType(NocheOutlineButton), findsOneWidget);
+        expect(find.byType(NochePrimaryButton), findsOneWidget);
         expect(find.text('Play again'), findsOneWidget);
-        expect(
-          tester
-              .widget<LessonButton>(find.widgetWithText(LessonButton, 'Map'))
-              .kind,
-          LessonButtonKind.blue,
-        );
+        expect(find.widgetWithText(NochePrimaryButton, 'Map'), findsOneWidget);
         await tester.tap(find.text('Map'));
         expect(s.nav.routes, [const TabRoute('map')]);
       },
     );
 
     testWidgets(
-      'a next the course names: Next story is the green main button, the outline Map beside Play again, and it opens that story',
+      'a next the course names: Next story is NochePrimaryButton, Play again and Map are NocheOutlineButtons',
       (tester) async {
         final s = await openScreen(tester);
         expect(s.runner.S['next'], 'el-bizcocho');
         expect(s.course.meta('el-bizcocho'), isNotNull);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await _answer(s, () => true);
-        expect(find.byType(LessonButton), findsNWidgets(3));
+        expect(find.byType(NocheOutlineButton), findsNWidgets(2));
+        expect(find.byType(NochePrimaryButton), findsOneWidget);
         expect(
-          tester
-              .widget<LessonButton>(
-                find.widgetWithText(LessonButton, 'Next story'),
-              )
-              .kind,
-          LessonButtonKind.go,
+          find.widgetWithText(NochePrimaryButton, 'Next story'),
+          findsOneWidget,
         );
-        expect(
-          tester
-              .widget<LessonButton>(find.widgetWithText(LessonButton, 'Map'))
-              .kind,
-          LessonButtonKind.outline,
-        );
+        expect(find.widgetWithText(NocheOutlineButton, 'Map'), findsOneWidget);
         await tester.tap(find.text('Next story'));
         expect(s.nav.routes, [const StoryRoute('el-bizcocho')]);
       },
     );
   });
 
-  group('Listen mode (ref 140, 141)', () {
+  group('Listen mode', () {
     testWidgets(
       'the story goes through by itself; at the end Play again and Map, no Next story',
       (tester) async {
         final s = await openScreen(tester, listen: true);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await s.until(
           () => s.runner.view.screen == StoryScreenState.end,
           what: 'the end',
@@ -403,12 +393,12 @@ void main() {
     );
   });
 
-  group('the answer bubbles (ref 142)', () {
+  group('the answer bubbles', () {
     testWidgets(
       'a question with answer bubbles: both are drawn in the picture while he chooses',
       (tester) async {
         final s = await openScreen(tester, id: 'el-bizcocho');
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await s.answerUntil(
           () => s.runner.W['resp'] != null,
           what: 'the bubbles',
@@ -421,13 +411,12 @@ void main() {
           expect(b[2], 40);
           expect(b[3], 36);
         }
-        // a white box, 40 by 36 picture pixels, at each
         expect(count(s, 0xFFFFFFFF), greaterThan(2 * 40 * 36 ~/ 2));
       },
     );
   });
 
-  group('the mic (ref 144 to 150)', () {
+  group('the Noche mic', () {
     EditedCourse marked() => EditedCourse((id, f) {
       if (id != 'el-bizcocho') return;
       final c = Map<String, dynamic>.of(
@@ -454,129 +443,120 @@ void main() {
       reduceMotion: true,
     );
 
-    StoryMicState? micState(WidgetTester tester) {
-      final f = find.byType(StoryMicButton);
-      return f.evaluate().isEmpty
-          ? null
-          : tester.widget<StoryMicButton>(f).state;
+    NocheMicState? micState(WidgetTester tester) {
+      final f = find.byType(NocheMic);
+      return f.evaluate().isEmpty ? null : tester.widget<NocheMic>(f).state;
     }
 
     testWidgets(
-      'grey while a line plays (dead), green when it is his turn (ready), coral while he is listened to, grey dots while the app thinks, a green tick when heard',
+      'follows the turn through theySpeak, ready, listening, thinking, right, and notYet on a miss with English a11y labels',
       (tester) async {
-        final s = await turns(tester, ['si', 'no', 'si gracias']);
-        await tester.tap(find.byType(LessonStartButton));
+        final s = await turns(tester, ['none', 'si', 'no', 'si gracias']);
+        await tester.tap(find.byType(NochePlayDisc));
         await s.answerUntil(
-          () => micState(tester) == StoryMicState.dead,
-          what: 'the dead mic',
+          () => micState(tester) == NocheMicState.theySpeak,
+          what: 'theySpeak mic',
         );
-        expect(find.bySemanticsLabel('Micrófono'), findsOneWidget);
+        expect(
+          find.bySemanticsLabel(NocheA11y.english[NocheA11y.micTheySpeak]!),
+          findsOneWidget,
+        );
         await s.answerUntil(
-          () => micState(tester) == StoryMicState.ready,
-          what: 'the ready mic',
+          () => micState(tester) == NocheMicState.ready,
+          what: 'ready mic',
         );
-        // the bubble beside the frog holds only a mic
-        expect(s.runner.view.bubbleKind, BubbleKind.mic);
-        expect(s.runner.view.bubbleWho, 'coqui');
-        await tester.tap(find.byType(StoryMicButton));
+        expect(
+          find.bySemanticsLabel(NocheA11y.english[NocheA11y.micReady]!),
+          findsOneWidget,
+        );
+        expect(find.byType(StoryHearAgainButton), findsOneWidget);
+
+        // First attempt misses -> notYet ("Otra vez")
+        await tester.tap(find.byKey(const ValueKey('noche_mic_disc')));
         await tester.pump();
-        expect(micState(tester), StoryMicState.listening);
+        expect(micState(tester), NocheMicState.listening);
         await s.until(
-          () => micState(tester) == StoryMicState.processing,
-          what: 'processing',
+          () => micState(tester) == NocheMicState.notYet,
+          what: 'notYet after miss',
         );
-        expect(s.runner.view.bubbleKind, BubbleKind.dots);
+        expect(find.text('Otra vez'), findsOneWidget);
+        expect(
+          find.bySemanticsLabel(NocheA11y.english[NocheA11y.micNotYet]!),
+          findsOneWidget,
+        );
+
+        // Second attempt succeeds -> listening -> thinking -> right
+        await tester.tap(find.byKey(const ValueKey('noche_mic_disc')));
+        await tester.pump();
+        expect(micState(tester), NocheMicState.listening);
         await s.until(
-          () => micState(tester) == StoryMicState.ok,
-          what: 'the tick',
+          () => micState(tester) == NocheMicState.thinking,
+          what: 'thinking',
         );
-        expect(s.runner.view.bubbleKind, BubbleKind.tick);
-        expect(find.text('si'), findsWidgets);
+        expect(find.text('Un momento'), findsOneWidget);
+        await s.until(
+          () => micState(tester) == NocheMicState.right,
+          what: 'right',
+        );
+        expect(find.text('¡Muy bien!'), findsOneWidget);
       },
     );
 
     testWidgets(
-      'the frog is not on screen: the turn\'s bubble stands just above the mic button',
+      'the mic takes a tap only when ready or notYet (disabled during theySpeak)',
       (tester) async {
-        final s = await turns(tester, ['si', 'no', 'si gracias']);
-        await tester.tap(find.byType(LessonStartButton));
+        final s = await turns(tester, ['si']);
+        await tester.tap(find.byType(NochePlayDisc));
         await s.answerUntil(
-          () => micState(tester) == StoryMicState.dead,
-          what: 'the dead mic',
+          () => micState(tester) == NocheMicState.theySpeak,
+          what: 'theySpeak mic',
         );
-        (s.runner.W['cq'] as Map<String, dynamic>)['vis'] =
-            0; // he is off the picture before the bubble is placed
-        await s.answerUntil(
-          () => micState(tester) == StoryMicState.ready,
-          what: 'the ready mic',
+        await tester.tap(
+          find.byKey(const ValueKey('noche_mic_disc')),
+          warnIfMissed: false,
         );
-        await s.advance(200);
-        expect(s.runner.view.bubbleWho, 'mic');
-        final mic = tester.getRect(find.byType(StoryMicButton));
-        final body = tester.getRect(find.byType(StoryBubbleBody));
-        // above the button, centred on it, clear of the listening rings (24 px, and the tail)
-        expect(body.bottom, lessThanOrEqualTo(mic.top));
-        expect(mic.top - body.bottom, closeTo(24 + 10, 3));
-        expect(body.center.dx, closeTo(mic.center.dx, 2));
-      },
-    );
-
-    testWidgets('the mic takes a tap only when it is ready (aria-disabled)', (
-      tester,
-    ) async {
-      final s = await turns(tester, ['si']);
-      await tester.tap(find.byType(LessonStartButton));
-      await s.answerUntil(
-        () => micState(tester) == StoryMicState.dead,
-        what: 'the dead mic',
-      );
-      await tester.tap(find.byType(StoryMicButton), warnIfMissed: false);
-      await tester.pump();
-      expect(s.runner.HAB.est, 'dead');
-      final handle = tester.ensureSemantics();
-      await tester.pump();
-      expect(
-        tester.getSemantics(find.bySemanticsLabel('Micrófono')),
-        matchesSemantics(
-          isButton: true,
-          hasEnabledState: true,
-          isEnabled: false,
-          label: 'Micrófono',
-        ),
-      );
-      handle.dispose();
-    });
-
-    testWidgets(
-      'with motion on, listening and the app thinking move (ref 149, 150)',
-      (tester) async {
-        final s = await openScreen(
-          tester,
-          id: 'el-bizcocho',
-          course: marked(),
-          options: StoryOptions(
-            micStub: ['si', 'no', 'si gracias'],
-            allOpen: true,
+        await tester.pump();
+        expect(s.runner.HAB.est, 'dead');
+        final handle = tester.ensureSemantics();
+        await tester.pump();
+        expect(
+          tester.getSemantics(
+            find.bySemanticsLabel(NocheA11y.english[NocheA11y.micTheySpeak]!),
           ),
-          reduceMotion: false,
+          matchesSemantics(
+            isButton: true,
+            hasEnabledState: true,
+            isEnabled: false,
+            label: NocheA11y.english[NocheA11y.micTheySpeak]!,
+          ),
         );
-        await tester.tap(find.byType(LessonStartButton));
-        await s.answerUntil(
-          () => micState(tester) == StoryMicState.ready,
-          what: 'the ready mic',
-        );
-        await tester.tap(find.byType(StoryMicButton));
-        await s.advance(100);
-        expect(micState(tester), StoryMicState.listening);
-        await s.until(
-          () => micState(tester) == StoryMicState.processing,
-          what: 'processing',
-        );
-        await tester.pump(const Duration(milliseconds: 300));
-        expect(tester.hasRunningAnimations, isTrue);
+        handle.dispose();
       },
     );
+
+    testWidgets('with motion on, listening bars animate', (tester) async {
+      final s = await openScreen(
+        tester,
+        id: 'el-bizcocho',
+        course: marked(),
+        options: StoryOptions(
+          micStub: ['si', 'no', 'si gracias'],
+          allOpen: true,
+        ),
+        reduceMotion: false,
+      );
+      await tester.tap(find.byType(NochePlayDisc));
+      await s.answerUntil(
+        () => micState(tester) == NocheMicState.ready,
+        what: 'ready mic',
+      );
+      await tester.tap(find.byKey(const ValueKey('noche_mic_disc')));
+      await s.advance(100);
+      expect(micState(tester), NocheMicState.listening);
+      expect(tester.hasRunningAnimations, isTrue);
+    });
   });
+
   group('showPerf: the bake time of the state on screen', () {
     testWidgets('off by default: no corner chip', (tester) async {
       await openScreen(tester);
@@ -585,12 +565,11 @@ void main() {
     });
 
     testWidgets(
-      'on: a corner chip under the top bar gives the bake of the state now drawn, as the frame timed it',
+      'on: a corner chip under the 64-high header gives the bake of the state now drawn',
       (tester) async {
         final s = await openScreen(tester, showPerf: true);
         final chip = find.byKey(const Key('story-perf-chip'));
         expect(chip, findsOneWidget);
-        // every state baked so far was timed, and the chip shows the one now on screen
         expect(s.frame.bakeMs, isNotEmpty);
         expect(s.frame.bakeMs.length, s.frame.bakes);
         final now = s.frame.currentBakeMs.value!;
@@ -605,10 +584,9 @@ void main() {
         expect(tester.getTopRight(chip).dx, 412 - 4);
         expect(
           tester.getTopLeft(chip).dy,
-          greaterThanOrEqualTo(CoquiMetrics.lessonTopBar),
+          greaterThanOrEqualTo(StoryHeader.height),
         );
-        // the picture and its frame are as without the chip
-        expect(find.byType(LessonFrame), findsOneWidget);
+        expect(find.byType(StoryHeader), findsOneWidget);
         expect(find.byType(PixelView), findsOneWidget);
       },
     );

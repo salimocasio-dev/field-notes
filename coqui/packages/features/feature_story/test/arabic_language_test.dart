@@ -9,6 +9,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/story_runner.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/story_bubble.dart';
+import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -153,10 +154,10 @@ void main() {
         expect(tester.takeException(), isNull);
         expect(ar.opened, isTrue);
 
-        // Top bar mirrors for RTL: Close X at start (right), Sound at end (left).
-        final arClose = tester.getRect(find.byType(LessonCloseButton));
-        final arSound = tester.getRect(find.byType(LessonSoundButton));
-        expect(arClose.center.dx, greaterThan(arSound.center.dx));
+        // Top bar mirrors for RTL: Close X at start (right), TXT at end (left).
+        final arClose = tester.getRect(find.byType(StoryCloseButton));
+        final arTxt = tester.getRect(find.byType(StoryTxtToggle));
+        expect(arClose.center.dx, greaterThan(arTxt.center.dx));
 
         // Perf chip sits at directional end (left side in RTL).
         final arChip = tester.getRect(find.byKey(const Key('story-perf-chip')));
@@ -167,7 +168,7 @@ void main() {
         expect(Directionality.of(arPixelCtx), TextDirection.ltr);
 
         // Start the story and check an Arabic caption + unmirrored scene tap + speech bubble.
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await ar.until(
           () => ar.runner.view.captionOn && ar.runner.view.caption.isNotEmpty,
           what: 'first Arabic caption',
@@ -215,7 +216,7 @@ void main() {
         await ar.advance(300);
         expect(tester.takeException(), isNull);
 
-        // End title is Arabic ('المطر'), RTL, start-aligned at the right margin.
+        // End title is Arabic ('المطر'), RTL, start-aligned at the right 24 px margin.
         final arTitleFinder = find.text('المطر');
         expect(arTitleFinder, findsOneWidget);
         final arTitleWidget = tester.widget<Text>(arTitleFinder);
@@ -224,14 +225,14 @@ void main() {
         expect(arTitleWidget.textAlign, TextAlign.start);
         expect(arTitleWidget.style?.fontFamily, arabicFont);
         final arTitleRect = tester.getRect(arTitleFinder);
-        expect(arTitleRect.right, closeTo(390 - 16, 0.5));
+        expect(arTitleRect.right, closeTo(390 - 24, 0.5));
 
         // Chrome / menu buttons stay English!
         expect(find.text('Play again'), findsOneWidget);
         expect(find.text('Map'), findsOneWidget);
         expect(find.text('Next story'), findsOneWidget);
 
-        // In RTL, LessonButtonRow mirrors Play again (start=right) and Map (end=left).
+        // In RTL, the button row mirrors Play again (start=right) and Map (end=left).
         final arAgain = tester.getRect(find.text('Play again'));
         final arMap = tester.getRect(find.text('Map'));
         expect(arAgain.center.dx, greaterThan(arMap.center.dx));
@@ -251,9 +252,9 @@ void main() {
         expect(tester.takeException(), isNull);
         expect(es.opened, isTrue);
 
-        final esClose = tester.getRect(find.byType(LessonCloseButton));
-        final esSound = tester.getRect(find.byType(LessonSoundButton));
-        expect(esClose.center.dx, lessThan(esSound.center.dx));
+        final esClose = tester.getRect(find.byType(StoryCloseButton));
+        final esTxt = tester.getRect(find.byType(StoryTxtToggle));
+        expect(esClose.center.dx, lessThan(esTxt.center.dx));
 
         final esChip = tester.getRect(find.byKey(const Key('story-perf-chip')));
         expect(esChip.center.dx, greaterThan(412 / 2));
@@ -261,7 +262,7 @@ void main() {
         final esPixelCtx = tester.element(find.byType(PixelView));
         expect(Directionality.of(esPixelCtx), TextDirection.ltr);
 
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await es.until(
           () => es.runner.view.captionOn && es.runner.view.caption.isNotEmpty,
           what: 'first Spanish caption',
@@ -284,7 +285,7 @@ void main() {
         expect(esTitleWidget.textDirection, TextDirection.ltr);
         expect(esTitleWidget.locale, const Locale('es'));
         final esTitleRect = tester.getRect(esTitleFinder);
-        expect(esTitleRect.left, closeTo(16, 0.5));
+        expect(esTitleRect.left, closeTo(24, 0.5));
 
         final esAgain = tester.getRect(find.text('Play again'));
         final esMap = tester.getRect(find.text('Map'));
@@ -318,7 +319,7 @@ void main() {
         expect(tickText.textDirection, TextDirection.rtl);
         expect(tickText.locale, const Locale('ar'));
         final tickRowDir = Directionality.of(
-          tester.element(find.byType(CoquiIcon)),
+          tester.element(find.byType(NocheIcon)),
         );
         expect(tickRowDir, TextDirection.rtl);
 
@@ -332,7 +333,7 @@ void main() {
         );
         expect(tester.takeException(), isNull);
         expect(landscape.opened, isTrue);
-        await tester.tap(find.byType(LessonStartButton));
+        await tester.tap(find.byType(NochePlayDisc));
         await landscape.answerUntil(
           () => landscape.runner.view.screen == StoryScreenState.end,
           what: 'Arabic landscape end screen',
