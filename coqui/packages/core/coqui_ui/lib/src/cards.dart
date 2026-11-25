@@ -28,7 +28,7 @@ abstract class BlockWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(
+    padding: EdgeInsetsDirectional.only(
       top: marginTop < 0 ? 0 : marginTop,
       bottom: marginBottom < 0 ? 0 : marginBottom,
     ),
@@ -113,7 +113,7 @@ class TabPage extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: CoquiMetrics.columnMax),
       child: SingleChildScrollView(
         controller: controller,
-        padding: EdgeInsets.fromLTRB(
+        padding: EdgeInsetsDirectional.fromSTEB(
           CoquiMetrics.s16,
           CoquiMetrics.s16,
           CoquiMetrics.s16,
@@ -537,8 +537,8 @@ class CoquiSwitch extends StatelessWidget {
       height: CoquiMetrics.targetMin,
       child: Stack(
         children: [
-          Positioned(
-            left: 0,
+          PositionedDirectional(
+            start: 0,
             top: 8,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
@@ -550,10 +550,10 @@ class CoquiSwitch extends StatelessWidget {
               ),
             ),
           ),
-          AnimatedPositioned(
+          AnimatedPositionedDirectional(
             duration: const Duration(milliseconds: 150),
             top: 12,
-            left: value ? 24 : 4,
+            start: value ? 24 : 4,
             child: Container(
               width: 24,
               height: 24,
@@ -580,7 +580,7 @@ class PageDots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(
+    padding: const EdgeInsetsDirectional.only(
       top: CoquiMetrics.s8,
       bottom: CoquiMetrics.s16,
     ),

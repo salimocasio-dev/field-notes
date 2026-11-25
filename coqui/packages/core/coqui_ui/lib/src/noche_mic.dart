@@ -10,6 +10,7 @@ import 'package:coqui_ui/src/noche_a11y.dart';
 import 'package:coqui_ui/src/noche_icons.dart';
 import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
+import 'package:coqui_ui/src/speech_bubble.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The six states of [NocheMic].
@@ -289,6 +290,7 @@ class NocheMic extends StatelessWidget {
       word,
       maxLines: 1,
       softWrap: false,
+      textDirection: language.textDirection,
       locale: Locale(language.code),
       style: wordStyle,
     );

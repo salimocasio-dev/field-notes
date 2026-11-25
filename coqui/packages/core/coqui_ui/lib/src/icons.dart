@@ -32,12 +32,20 @@ class IconShape {
 /// An icon on a 24 x 24 box (28 x 28 for the answer badge's tick, whose SVG has that viewBox), with its
 /// stroke width (2, or 2.4 for the lesson's close and sound, 3 for the tick).
 class CoquiIconData {
-  const CoquiIconData(this.shapes, {this.strokeWidth = 2, this.viewBox = 24});
+  const CoquiIconData(
+    this.shapes, {
+    this.strokeWidth = 2,
+    this.viewBox = 24,
+    this.matchTextDirection = false,
+  });
   final List<IconShape> shapes;
   final double strokeWidth;
 
   /// The side of the SVG's square viewBox.
   final double viewBox;
+
+  /// Whether [CoquiIcon] flips horizontally under [TextDirection.rtl].
+  final bool matchTextDirection;
 }
 
 /// `<rect x y width height rx>` as path data.
@@ -124,10 +132,14 @@ abstract final class CoquiIcons {
   ]);
 
   /// `IC.izq` (back). app.html:191
-  static const left = CoquiIconData([IconShape('M15 5l-7 7 7 7')]);
+  static const left = CoquiIconData([
+    IconShape('M15 5l-7 7 7 7'),
+  ], matchTextDirection: true);
 
   /// `IC.der` (next). app.html:191
-  static const right = CoquiIconData([IconShape('M9 5l7 7-7 7')]);
+  static const right = CoquiIconData([
+    IconShape('M9 5l7 7-7 7'),
+  ], matchTextDirection: true);
 
   /// `IC.ok` (a tick). app.html:191
   static const check = CoquiIconData([IconShape('M5 12.5l4.5 4.5L19 7')]);
@@ -250,10 +262,17 @@ class CoquiIcon extends StatelessWidget {
   final Color color;
 
   @override
-  Widget build(BuildContext context) => SizedBox.square(
-    dimension: size,
-    child: CustomPaint(painter: _IconPainter(data, color)),
-  );
+  Widget build(BuildContext context) {
+    Widget icon = SizedBox.square(
+      dimension: size,
+      child: CustomPaint(painter: _IconPainter(data, color)),
+    );
+    if (data.matchTextDirection &&
+        Directionality.maybeOf(context) == TextDirection.rtl) {
+      icon = Transform.flip(flipX: true, child: icon);
+    }
+    return icon;
+  }
 }
 
 class _IconPainter extends CustomPainter {

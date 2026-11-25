@@ -12,10 +12,13 @@ library;
 
 import 'dart:math' as math;
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/src/icons.dart';
 import 'package:coqui_ui/src/lesson_frame.dart'
     show CheckBadge, ChoiceRing, WrongBadge;
+import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
+import 'package:coqui_ui/src/speech_bubble.dart';
 import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
@@ -148,19 +151,21 @@ class _TileFace extends StatelessWidget {
       fit: StackFit.passthrough,
       children: [
         face,
-        if (check) const Positioned(right: -6, top: -10, child: CheckBadge()),
-        if (cross) const Positioned(right: -6, top: -10, child: WrongBadge()),
+        if (check)
+          const PositionedDirectional(end: -6, top: -10, child: CheckBadge()),
+        if (cross)
+          const PositionedDirectional(end: -6, top: -10, child: WrongBadge()),
         if (number != null)
-          Positioned(
-            right: (check || cross) ? 28 : -4,
+          PositionedDirectional(
+            end: (check || cross) ? 28 : -4,
             top: (check || cross) ? -7 : -8,
             child: NumberBadge(number: number!),
           ),
-        // the sign is at the tile's right end, inside it and vertically centred (the middle is the word's), and takes
+        // the sign is at the tile's end, inside it and vertically centred (the middle is the word's), and takes
         // no touch: a finger on it is a finger on the tile
         if (sign)
-          Positioned(
-            right: _signInset,
+          PositionedDirectional(
+            end: _signInset,
             top: 0,
             bottom: 0,
             child: IgnorePointer(
@@ -321,6 +326,7 @@ class WordTile extends StatelessWidget {
     this.shake = 0,
     this.still = false,
     this.expand = false,
+    this.language,
   });
 
   final String word;
@@ -340,15 +346,23 @@ class WordTile extends StatelessWidget {
   /// As wide as its row gives (a column of answers); otherwise as wide as its word.
   final bool expand;
 
+  /// Optional language for word script, text direction, and locale.
+  final Language? language;
+
   @override
   Widget build(BuildContext context) {
+    final wordStyle = language == null
+        ? CoquiText.lessonTile
+        : NocheType.forScript(CoquiText.lessonTile, language!.script);
     final text = Text(
       word,
       textAlign: TextAlign.center,
-      style: CoquiText.lessonTile,
+      textDirection: language?.textDirection,
+      locale: language?.locale,
+      style: wordStyle,
     );
     final empty = look == TileLook.empty;
-    // the sign takes the speaker's place at the tile's right end while it shows
+    // the sign takes the speaker's place at the tile's end while it shows
     final speaker = empty || sign ? null : onSpeaker;
     final endRoom = !empty && (onSpeaker != null || sign);
     Widget tile = Pressable(
@@ -367,7 +381,7 @@ class WordTile extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 12,
-            // room for the speaker or the sign, which sit over the tile's right end
+            // room for the speaker or the sign, which sit over the tile's end
             horizontal: endRoom ? _endRoom : 0,
           ),
           child: text,
@@ -380,8 +394,8 @@ class WordTile extends StatelessWidget {
     return Stack(
       children: [
         tile,
-        Positioned(
-          right: 6,
+        PositionedDirectional(
+          end: 6,
           top: 0,
           bottom: 0,
           child: Center(child: _SpeakerButton(onPressed: speaker)),
@@ -475,7 +489,7 @@ class SpeakerTile extends StatelessWidget {
 /// check badge and the sign stand out of their tile). What is not a tile (the check that ends a finished sentence)
 /// is a child like the others: 8 px from the one before it on its row, level with the row's middle, and on a row of
 /// its own when the row has no room for it. With [line], the tray is the place a sentence is put together: its tiles
-/// go one after another from the left, [lineRows] rows of them are always room for (the tray is that high from the
+/// go one after another from the start, [lineRows] rows of them are always room for (the tray is that high from the
 /// start, empty or not, so nothing under it moves as tiles come), with a 1.5 px baseline under them.
 class TileTray extends StatelessWidget {
   const TileTray({
@@ -517,8 +531,11 @@ class TileTray extends StatelessWidget {
       constraints: BoxConstraints(
         minHeight: lineHeight(lineRows, tileHeight: lineTileHeight),
       ),
-      padding: const EdgeInsets.only(bottom: CoquiMetrics.s8, top: 8),
-      alignment: Alignment.topLeft,
+      padding: const EdgeInsetsDirectional.only(
+        bottom: CoquiMetrics.s8,
+        top: 8,
+      ),
+      alignment: AlignmentDirectional.topStart,
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -588,7 +605,7 @@ class StreakChip extends StatelessWidget {
       height: height,
       child: FittedBox(
         fit: BoxFit.scaleDown,
-        alignment: Alignment.centerRight,
+        alignment: AlignmentDirectional.centerEnd,
         child: chip,
       ),
     );

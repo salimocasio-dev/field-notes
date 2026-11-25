@@ -107,9 +107,9 @@ class CoquiTabBar extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           // nav: the white bar and its hairline. app.html:60
-          Positioned(
-            left: 0,
-            right: 0,
+          PositionedDirectional(
+            start: 0,
+            end: 0,
             top: rise,
             bottom: 0,
             child: const DecoratedBox(
@@ -128,9 +128,9 @@ class CoquiTabBar extends StatelessWidget {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Positioned(
-                      left: 0,
-                      right: 0,
+                    PositionedDirectional(
+                      start: 0,
+                      end: 0,
                       top: rise,
                       height: navH,
                       child: Row(
@@ -151,12 +151,12 @@ class CoquiTabBar extends StatelessWidget {
                     if (raisedIndex >= 0)
                       // The disc stands outside its tab's box, so it is its own tap
                       // target here, where the whole raised height is inside the bar's box.
-                      Positioned(
-                        left: 0,
-                        right: 0,
+                      PositionedDirectional(
+                        start: 0,
+                        end: 0,
                         top: 0,
                         child: Align(
-                          alignment: Alignment(
+                          alignment: AlignmentDirectional(
                             2 * (raisedIndex + 0.5) / items.length - 1,
                             -1,
                           ),
@@ -210,7 +210,7 @@ class _Tab extends StatelessWidget {
         scale: pressed ? 0.98 : 1,
         // `.tb`: the label 10 px from the foot; an icon 4 px above it. app.html:62
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsetsDirectional.only(bottom: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -302,7 +302,7 @@ class MapChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     height: CoquiMetrics.chipsHeight + CoquiLayout.safeTop(context),
-    padding: EdgeInsets.fromLTRB(
+    padding: EdgeInsetsDirectional.fromSTEB(
       CoquiMetrics.s16,
       CoquiLayout.safeTop(context),
       CoquiMetrics.s16,

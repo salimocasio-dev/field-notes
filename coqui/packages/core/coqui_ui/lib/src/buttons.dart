@@ -454,7 +454,7 @@ class LessonStartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: CoquiMetrics.s16),
+    padding: const EdgeInsetsDirectional.only(bottom: CoquiMetrics.s16),
     child: Pressable(
       onPressed: onPressed,
       semanticLabel: semanticLabel,
