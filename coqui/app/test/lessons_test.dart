@@ -55,6 +55,10 @@ void main() {
         expect(findShellRoute(route), findsOneWidget, reason: '$route');
         expect(app.lessonShown, isTrue, reason: '$route');
         expect(find.byKey(ShellKeys.tabBar), findsNothing, reason: '$route');
+        // Shell-level defense-in-depth for product rule 4 (no story screenshots
+        // as UI/flashcard pictures); full item policy lives in
+        // feature_review/test/repaso_pictures_policy_test.dart:184.
+        expect(find.byType(Image), findsNothing, reason: '$route');
         expect(tester.takeException(), isNull, reason: '$route');
 
         expect(await tester.binding.handlePopRoute(), isTrue, reason: '$route');
@@ -77,6 +81,7 @@ void main() {
       expect(findShellRoute(const ReviewRoute()), findsOneWidget);
       expect(app.lessonShown, isTrue);
       expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(find.byType(Image), findsNothing);
       expect(tester.takeException(), isNull);
 
       expect(await tester.binding.handlePopRoute(), isTrue);
@@ -137,6 +142,10 @@ void main() {
       await app.go(const BookRoute('la-familia'));
       expect(findShellRoute(const BookRoute('la-familia')), findsOneWidget);
       expect(find.byKey(const ValueKey('book:la-familia')), findsOneWidget);
+      // Shell-level defense-in-depth for product rule 4 (no story screenshots
+      // as book pictures); feature guard lives in
+      // feature_library/test/module_test.dart:78.
+      expect(find.byType(Image), findsNothing);
       expect(app.lessonShown, isTrue);
       expect(find.byKey(ShellKeys.tabBar), findsNothing);
       expect(tester.takeException(), isNull);
@@ -153,6 +162,7 @@ void main() {
       await direct.open(stored: seed('curso'), location: '/libro/la-familia');
       expect(findShellRoute(const BookRoute('la-familia')), findsOneWidget);
       expect(find.byKey(const ValueKey('book:la-familia')), findsOneWidget);
+      expect(find.byType(Image), findsNothing);
       expect(direct.lessonShown, isTrue);
       expect(find.byKey(ShellKeys.tabBar), findsNothing);
       expect(tester.takeException(), isNull);
@@ -180,7 +190,6 @@ void main() {
       await app.tap(callDisc);
       await app.settle(rounds: 10);
       expect(findShellRoute(const CallRoute('casa')), findsOneWidget);
-      expect(find.byKey(const ValueKey('call-casa-')), findsOneWidget);
       expect(app.lessonShown, isTrue);
       expect(find.byKey(ShellKeys.tabBar), findsNothing);
       expect(tester.takeException(), isNull);
@@ -200,7 +209,6 @@ void main() {
         switches: AppSwitches.fromQuery(const {'callstub': '1'}),
       );
       expect(findShellRoute(const CallRoute('casa')), findsOneWidget);
-      expect(find.byKey(const ValueKey('call-casa-')), findsOneWidget);
       expect(direct.lessonShown, isTrue);
       expect(find.byKey(ShellKeys.tabBar), findsNothing);
       expect(tester.takeException(), isNull);

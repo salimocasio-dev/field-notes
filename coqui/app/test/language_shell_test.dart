@@ -252,6 +252,13 @@ void main() {
         expect(app.selectedTab, 'me');
         expect(app.services.course.language.code, 'es');
 
+        // Shared minutes added in Spanish persist to coqui.shared.v1 and survive switching to Arabic.
+        app.services.progress.addMinutes(1.0);
+        await app.settle(rounds: 5);
+        final beforeSwitchShared =
+            jsonDecode(app.sharedStored!) as Map<String, dynamic>;
+        expect(beforeSwitchShared['minutos'], 21);
+
         final stores = ProgressStores(app.spaces.kv, app.clock);
         addTearDown(stores.dispose);
         stores.currentLanguageCode = 'ar';
@@ -266,7 +273,10 @@ void main() {
           app.services.progress.words.map((w) => w.w),
           isNot(contains('casa')),
         );
-        expect(app.services.progress.minutes, 20);
+        expect(app.services.progress.minutes, 21);
+        final afterSwitchShared =
+            jsonDecode(app.sharedStored!) as Map<String, dynamic>;
+        expect(afterSwitchShared['minutos'], 21);
         expect(app.services.progress.streak, 2);
 
         final bar = tester.widget<NocheTabBar>(find.byType(NocheTabBar));
@@ -304,6 +314,16 @@ void main() {
           },
         );
 
+        final esTitle = app.services.course.meta('la-lluvia')!.title;
+        final esMapCardEl = tester.element(findMapUpNextCard());
+        expect(
+          find.descendant(
+            of: findShellTab('map'),
+            matching: find.text(esTitle),
+          ),
+          findsWidgets,
+        );
+
         // Open Words tab so Spanish tab state is alive before switching.
         await app.openTab('words');
         expect(app.selectedTab, 'words');
@@ -325,6 +345,24 @@ void main() {
         expect(
           (jsonDecode(app.sharedStored!) as Map<String, dynamic>)['idioma'],
           'ar',
+        );
+        final arTitle = app.services.course.meta('la-lluvia')!.title;
+        expect(arTitle, isNot(esTitle));
+        final arMapCardEl = tester.element(findMapUpNextCard());
+        expect(identical(esMapCardEl, arMapCardEl), isFalse);
+        expect(
+          find.descendant(
+            of: findShellTab('map'),
+            matching: find.text(arTitle),
+          ),
+          findsWidgets,
+        );
+        expect(
+          find.descendant(
+            of: findShellTab('map'),
+            matching: find.text(esTitle),
+          ),
+          findsNothing,
         );
         expect(app.services.progress.words.map((w) => w.w), contains('بيت'));
         expect(
@@ -353,6 +391,24 @@ void main() {
         expect(
           (jsonDecode(app.sharedStored!) as Map<String, dynamic>)['idioma'],
           'es',
+        );
+        final backToEsTitle = app.services.course.meta('la-lluvia')!.title;
+        expect(backToEsTitle, esTitle);
+        final backToEsMapCardEl = tester.element(findMapUpNextCard());
+        expect(identical(arMapCardEl, backToEsMapCardEl), isFalse);
+        expect(
+          find.descendant(
+            of: findShellTab('map'),
+            matching: find.text(backToEsTitle),
+          ),
+          findsWidgets,
+        );
+        expect(
+          find.descendant(
+            of: findShellTab('map'),
+            matching: find.text(arTitle),
+          ),
+          findsNothing,
         );
         expect(app.services.progress.words.map((w) => w.w), contains('casa'));
         expect(

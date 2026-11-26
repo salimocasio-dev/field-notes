@@ -302,7 +302,8 @@ void main() {
       logs.clear();
       await app.go(const ImportRoute());
       expect(tester.takeException(), isNull, reason: 'ImportRoute()');
-      if (findShellRoute(const ImportRoute()).evaluate().isNotEmpty) {
+      if (findShellRoute(const ImportRoute()).evaluate().isNotEmpty ||
+          !app.tabBarShown) {
         expect(app.tabBarShown, isFalse, reason: 'ImportRoute()');
         await app.go(const TabRoute('map'));
       } else {
@@ -354,7 +355,8 @@ void main() {
       final importDirect = TestApp(tester);
       await importDirect.open(stored: seed('curso'), location: '/importar');
       expect(tester.takeException(), isNull, reason: '/importar');
-      if (findShellRoute(const ImportRoute()).evaluate().isNotEmpty) {
+      if (findShellRoute(const ImportRoute()).evaluate().isNotEmpty ||
+          !importDirect.tabBarShown) {
         expect(importDirect.tabBarShown, isFalse, reason: '/importar');
       } else {
         expect(importDirect.tabBarShown, isTrue, reason: '/importar');

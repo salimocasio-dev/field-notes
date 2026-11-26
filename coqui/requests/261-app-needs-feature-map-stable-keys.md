@@ -4,8 +4,27 @@
 
 In `coqui/packages/features/feature_map/`:
 
-1. Expose stable keys for map/place UI elements that shell smoke tests or `feature_map` integration tests interact with, including a root key on the map screen (e.g. `Key('map-screen')`) and place screen (e.g. `Key('place-screen')`), and document the existing keys (`language-chip`, `streak-chip`, `up-next-card`, `up-next-play`, `place-back`, `place-plan-card`, `place-see-plans`, `place-play-bar`, `story-tile-<id>`) as stable test keys.
-2. Keep map progression and Up Next card copy/state assertions (e.g. streak display, "You are here", Up Next card transitions after first/second play and after level check) inside `feature_map/test/` rather than `coqui/app/test/`.
+### Already present on `main` (document as standing rule in `feature_map/AGENTS.md`)
+
+Keep these existing keys stable as shell/integration test contracts:
+
+- `Key('language-chip')` — `coqui/packages/features/feature_map/lib/src/map_screen.dart:596`
+- `Key('streak-chip')` — `coqui/packages/features/feature_map/lib/src/map_screen.dart:637`
+- `Key('up-next-card')` — `coqui/packages/features/feature_map/lib/src/map_screen.dart:834`
+- `Key('up-next-play')` — `coqui/packages/features/feature_map/lib/src/map_screen.dart:846`
+- `Key('story-tile-$storyId')` — `coqui/packages/features/feature_map/lib/src/place_screen.dart:601`
+- `Key('place-plan-card')` — `coqui/packages/features/feature_map/lib/src/place_screen.dart:687`
+- `Key('place-see-plans')` — `coqui/packages/features/feature_map/lib/src/place_screen.dart:705`
+- `Key('place-play-bar')` — `coqui/packages/features/feature_map/lib/src/place_screen.dart:727,746,758`
+- `Key('place-back')` — `coqui/packages/features/feature_map/lib/src/place_screen.dart:779`
+
+### New keys requested
+
+- Root screen keys for `MapScreen` (`Key('map-screen')`) and `PlaceScreen` (`Key('place-screen')`) if needed by future shell diagnostics.
+
+### Already-merged feature test coverage on `main` (zero coverage loss)
+
+Map progression, Up Next card transitions, streak chip copy, "You are here" pill, and locked/unlocked place gating are owned and verified inside `coqui/packages/features/feature_map/test/` rather than `coqui/app/test/`.
 
 ## Why
 
@@ -13,7 +32,7 @@ Issue #261 (`lane:app`, `coqui/app/test: shell checks only`) removes feature-int
 
 ## What I am using meanwhile
 
-`coqui/app/test/` asserts shell routing via `ShellKeys.tab('map')`, `ShellKeys.route(PlaceRoute(...))`, and `feature_map`'s existing stable keys (`language-chip`, `streak-chip`, `up-next-card`, `up-next-play`, `place-back`, `place-plan-card`, `place-see-plans`, `place-play-bar`, `story-tile-la-lluvia`).
+`coqui/app/test/` asserts shell routing via `ShellKeys.tab('map')`, `ShellKeys.route(PlaceRoute(...))`, and `feature_map`'s existing keys listed above (`language-chip`, `streak-chip`, `up-next-card`, `up-next-play`, `place-back`, `place-plan-card`, `place-see-plans`, `place-play-bar`, `story-tile-la-lluvia`).
 
 ## Order and branch
 

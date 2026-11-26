@@ -4,16 +4,27 @@
 
 In `coqui/packages/features/feature_story/`:
 
-1. Expose stable widget keys on `StoryScreen`'s shell-visible controls and states:
-   - Close button (`Key('story-close-button')`)
-   - End-screen primary/secondary actions (e.g. `Key('story-end-primary')`, `Key('story-end-replay')`, `Key('story-end-map')`)
-   - Unconverted-scene fallback view and return button (e.g. `Key('story-unconverted')`, `Key('story-unconverted-back')`)
-   - Keep `Key('story-start-disc')` as a stable contract key.
-2. Own the detailed story playback assertions previously in `coqui/app/test/story_test.dart` and `coqui/app/test/previa_test.dart` inside `feature_story/test/`:
-   - `?txt=con|tras|no` caption timing checks
-   - Unconverted-scene fallback wording and back-to-map behaviour across course stories/routines
-   - Second-play completion and end-screen "Play again" / "Next story" / "Map" flows
-   - Silent playback of stories containing unrecorded clips (preview overlay stories).
+### Already present on `main` (document as standing rule in `feature_story/AGENTS.md`)
+
+Keep this existing key stable as a shell/integration test contract:
+
+- `Key('story-start-disc')` — `coqui/packages/features/feature_story/lib/src/screen/story_screen.dart:392`
+
+### New keys requested
+
+- Close button (`Key('story-close-button')`)
+- End-screen primary/secondary actions (`Key('story-end-primary')`, `Key('story-end-replay')`, `Key('story-end-map')`)
+- Unconverted-scene fallback view and return button (`Key('story-unconverted')`, `Key('story-unconverted-back')`).
+
+### Already-merged feature test coverage on `main` (zero coverage loss)
+
+The story playback behaviors removed from `coqui/app/test/story_test.dart` and `coqui/app/test/previa_test.dart` are already covered inside `feature_story/test/`:
+
+- `coqui/packages/features/feature_story/test/screen_test.dart:54-59,187` — story playback, end-screen actions, and progression
+- `coqui/packages/features/feature_story/test/lines_test.dart:104-185` — `TxtMode.con` / `TxtMode.tras` / `TxtMode.no` caption timing
+- `coqui/packages/features/feature_story/test/not_converted_test.dart:14` — unconverted-scene fallback screen and return-to-map behavior.
+
+Follow-up (optional): add a unit test in `feature_story/test/` explicitly asserting silent playback when a story has an unrecorded clip (matching the preview overlay story behavior).
 
 ## Why
 

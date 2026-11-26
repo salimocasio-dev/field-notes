@@ -4,8 +4,21 @@
 
 In `coqui/packages/features/feature_words/`:
 
-1. Treat the existing keys (`Key('words-due-count')`, `Key('words-review-button')`, `ValueKey('word-row:<word>')`) as stable public test keys, and add a root key on `WordsTab` (e.g. `Key('words-tab')`).
-2. Keep Words tab wording assertions (e.g. due-words caption, "Start review" label, section headings) inside `feature_words/test/` rather than `coqui/app/test/`.
+### Already present on `main` (document as standing rule in `feature_words/AGENTS.md`)
+
+Keep these existing keys stable as shell/integration test contracts:
+
+- `Key('words-due-count')` — `coqui/packages/features/feature_words/lib/src/words_tab.dart:210`
+- `Key('words-review-button')` — `coqui/packages/features/feature_words/lib/src/words_tab.dart:367`
+- `ValueKey('word-row:${entry.record.w}')` — `coqui/packages/features/feature_words/lib/src/words_tab.dart:471`
+
+### New keys requested
+
+- Root key on `WordsTab` (`Key('words-tab')`).
+
+### Already-merged feature test coverage on `main` (zero coverage loss)
+
+Words tab copy assertions (due-words caption, "Start review" label, section headings, word detail sheets) are owned and verified inside `coqui/packages/features/feature_words/test/` rather than `coqui/app/test/`.
 
 ## Why
 

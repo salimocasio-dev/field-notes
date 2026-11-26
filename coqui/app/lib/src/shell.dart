@@ -16,7 +16,9 @@ abstract final class ShellKeys {
 
   /// Mounted non-tab route wrapper for [route] (inside `Directionality` and
   /// the epoch `KeyedSubtree`, so `Directionality.of` reflects the reading
-  /// direction given to the route screen).
+  /// direction given to the route screen). Because the outer `KeyedSubtree`
+  /// already keys on `lesson:$_epoch:${addressOf(route)}`, keying this inner
+  /// wrapper on `addressOf(route)` preserves identical remount behavior.
   static ValueKey<String> route(AppRoute route) =>
       ValueKey('shell-route:${addressOf(route)}');
 
