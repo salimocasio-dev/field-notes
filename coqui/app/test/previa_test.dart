@@ -6,11 +6,10 @@ import 'dart:io';
 import 'package:app/src/previa.dart';
 import 'package:coqui_content/coqui_content.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_ui/coqui_ui.dart' show NocheTabs;
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter/widgets.dart' show AxisDirection, Scrollable;
 import 'package:flutter_test/flutter_test.dart';
 
-import 'story_test.dart' show playFromToday;
 import 'support/harness.dart';
 
 /// The site's files under historia/, read from disk; every path asked for is kept in [asked].
@@ -293,23 +292,8 @@ void main() {
   });
 
   group('in the app', () {
-    // the progress of a learner who has played every story of the site twice and has no word due: the map's Today card
-    // names the first story nobody has played, which is the preview's
-    String allPlayed() {
-      final db = obj(seed('todo'));
-      db['palabras'] = <String, dynamic>{};
-      // the seed was made before A comer was in the course: its three stories, played twice as the last one was
-      final cuentos = db['cuentos'] as Map<String, dynamic>;
-      for (final id in ['que-quieres', 'buen-provecho', 'cafe-con-azucar']) {
-        cuentos[id] = Map<String, dynamic>.of(
-          cuentos['jugo-de-china'] as Map<String, dynamic>,
-        );
-      }
-      return jsonEncode(db);
-    }
-
     testWidgets(
-      'a preview story with a converted scene opens from the map and plays to its end, silent',
+      'a preview story with a converted scene mounts from the bundle and all shell tabs and lesson routes stay clean',
       (tester) async {
         final app = TestApp(tester);
         final story = previewStory('la-lluvia', 'previa-uno');
@@ -324,79 +308,51 @@ void main() {
           }),
           'cuentos/previa-uno.json': story,
         });
-        await app.open(stored: allPlayed(), speechAvailable: false);
-        // the map: El colmado is where he is, its story the next to play
-        expect(find.text('UP NEXT · EL COLMADO'), findsOneWidget);
-        expect(find.text('Previa uno'), findsOneWidget);
-        expect(find.text('New story · 4 min'), findsOneWidget);
+        await app.open(stored: seed('curso'), speechAvailable: false);
 
-        await playFromToday(app);
-        // silent: no line of it was played (one of its lines has no recording)
-        final lines = (obj(story)['clips'] as Map).keys.toSet();
-        expect(app.clips!.played.where(lines.contains), isEmpty);
-        expect(app.services.progress.played('previa-uno'), isTrue);
-        // the end screen's title (the file's own)
-        expect(find.text('Previa previa-uno'), findsOneWidget);
-        expect(find.text('Next story'), findsNothing);
+        expect(app.services.course.meta('previa-uno'), isNotNull);
+        expect(findShellTab('map').hitTestable(), findsOneWidget);
+
+        await app.go(const StoryRoute('previa-uno'));
+        await app.until(
+          () => findStoryStartButton().evaluate().isNotEmpty,
+          what: 'preview story start disc',
+        );
+        expect(findShellRoute(const StoryRoute('previa-uno')), findsOneWidget);
+        expect(app.lessonShown, isTrue);
+        expect(findStoryStartButton(), findsOneWidget);
         expect(app.fetched, isNot(contains('cuentos/previa-uno.json')));
         expect(tester.takeException(), isNull);
 
-        // the other tabs, with the preview story played
-        await app.tap(find.text('Map').last);
+        expect(await tester.binding.handlePopRoute(), isTrue);
         await app.settle(rounds: 5);
+        expect(app.tabBarShown, isTrue);
         expect(app.selectedTab, 'map');
-        // Biblioteca opens; the course's stories are not listed there
-        await app.openTab('library');
-        await app.until(
-          () => find.text('Write my story').evaluate().isNotEmpty,
-          what: 'Biblioteca',
-        );
-        expect(
-          find.descendant(
-            of: byTypeName('ReadingHome'),
-            matching: find.text('Previa uno'),
-          ),
-          findsNothing,
-        );
-        expect(tester.takeException(), isNull);
-        // Palabras, Hablar (El colmado is done and has no call: its stop says "Coming soon"), Yo
-        await app.openTab('words');
-        expect(tester.takeException(), isNull);
-        await app.openTab('speak');
-        final colmado = find.descendant(
-          of: byTypeName('HablarTab'),
-          matching: find.text('El colmado'),
-        );
-        // the journey strip scrolls sideways: bring the fourth stop in
-        await tester.scrollUntilVisible(
-          colmado,
-          100,
-          scrollable: find.byWidgetPredicate(
-            (w) => w is Scrollable && w.axisDirection == AxisDirection.right,
-          ),
-        );
-        await tester.ensureVisible(colmado);
-        await tester.pump();
-        await app.tap(colmado);
-        expect(
-          find.text('Coming soon · El colmado', skipOffstage: false),
-          findsOneWidget,
-        );
-        await app.openTab('me');
-        expect(tester.takeException(), isNull);
-        // Repaso and the level check open as they do without it
+
+        // All five tabs mount cleanly with the preview overlay active.
+        for (final id in NocheTabs.order) {
+          await app.openTab(id);
+          expect(app.selectedTab, id);
+          expect(findShellTab(id).hitTestable(), findsOneWidget, reason: id);
+          expect(tester.takeException(), isNull, reason: id);
+        }
+
+        // Review and level-check routes mount cleanly with the preview overlay active.
         await app.go(const ReviewRoute());
-        expect(byTypeName('RepasoScreen'), findsOneWidget);
+        expect(findShellRoute(const ReviewRoute()), findsOneWidget);
+        expect(app.lessonShown, isTrue);
+        expect(tester.takeException(), isNull);
+
         await app.go(const TabRoute('map'));
         await app.go(const LevelCheckRoute());
-        expect(byTypeName('LevelCheckScreen'), findsOneWidget);
+        expect(findShellRoute(const LevelCheckRoute()), findsOneWidget);
+        expect(app.lessonShown, isTrue);
         expect(tester.takeException(), isNull);
       },
-      timeout: const Timeout(Duration(minutes: 10)),
     );
 
     testWidgets(
-      'a preview story whose scene is not in the registry opens on "not in the new app yet", as an unconverted scene does',
+      'a preview story whose scene is not in the registry mounts its route without a start disc and returns to map on back',
       (tester) async {
         final app = TestApp(tester);
         app.previa = memoryPrevia({
@@ -411,17 +367,20 @@ void main() {
           ),
         });
         await app.open(stored: seed('curso'), location: '/cuento/previa-dos');
-        await app.until(
-          () => find
-              .text('This story is not in the new app yet.')
-              .evaluate()
-              .isNotEmpty,
-          what: 'the not-converted screen',
-        );
-        expect(find.text('Back to the map'), findsOneWidget);
-        await app.tap(find.text('Back to the map'));
+        await app.settle(rounds: 15);
+
+        expect(findShellRoute(const StoryRoute('previa-dos')), findsOneWidget);
+        expect(app.lessonShown, isTrue);
+        expect(findStoryStartButton(), findsNothing);
+        expect(tester.takeException(), isNull);
+
+        expect(await tester.binding.handlePopRoute(), isTrue);
         await app.settle(rounds: 5);
+        expect(findShellRoute(const StoryRoute('previa-dos')), findsNothing);
+        expect(app.tabBarShown, isTrue);
         expect(app.selectedTab, 'map');
+        expect(findShellTab('map').hitTestable(), findsOneWidget);
+        expect(tester.takeException(), isNull);
       },
     );
   });

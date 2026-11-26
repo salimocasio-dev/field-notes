@@ -41,6 +41,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../test/support/harness.dart';
 import 'gate_a_sheets.dart';
+import 'tool_probe.dart';
 
 const String _out = String.fromEnvironment('OUT');
 const String _only = String.fromEnvironment('ONLY');

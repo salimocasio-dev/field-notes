@@ -1,4 +1,10 @@
-// The start: the welcome on an empty store, the stored progress on every tab, an unknown address, a failed load.
+// The start: loading surface, welcome gate on an empty store, unknown
+// addresses, and LoadFailed + retry.
+import 'dart:async';
+
+import 'package:app/src/app.dart';
+import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -7,22 +13,60 @@ import 'support/harness.dart';
 
 void main() {
   testWidgets(
+    'boot loading surface stays on Noche ground with no tab bar until course load completes',
+    (tester) async {
+      final courseCompleter = Completer<CourseCatalog>();
+      final app = TestApp(tester)..loadCourse = (_) => courseCompleter.future;
+
+      await app.open(stored: seed('curso'));
+      expect(find.byKey(shellLoadingKey), findsOneWidget);
+      final loadingBox = tester.widget<ColoredBox>(find.byKey(shellLoadingKey));
+      expect(loadingBox.color, NocheColors.ground);
+      expect(find.byType(NocheTabBar), findsNothing);
+      expect(findShellTab('map'), findsNothing);
+
+      courseCompleter.complete(FakeCourseCatalog());
+      await app.settle(rounds: 10);
+
+      expect(find.byKey(shellLoadingKey), findsNothing);
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'map');
+      expect(findShellTab('map'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
     '(a) an empty store: the map, with the welcome over it; finishing it leaves the map',
     (tester) async {
       final app = TestApp(tester);
       await app.open();
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'map');
+      expect(findShellTab('map'), findsOneWidget);
       expect(findMapTopChips(), findsOneWidget);
-      expect(find.text("I'm new to Spanish"), findsNothing); // step 1 first
-      expect(find.text('Next'), findsOneWidget);
-      await app.tap(find.text('Next'));
-      await app.tap(find.text('Next'));
+      expect(find.byKey(const ValueKey('welcome-step-0')), findsOneWidget);
+      expect(find.byKey(const Key('welcome-new-button')), findsNothing);
+      expect(find.byKey(const Key('welcome-next-button')), findsOneWidget);
+
+      await app.tap(find.byKey(const Key('welcome-next-button')));
+      await app.tap(find.byKey(const Key('welcome-next-button')));
       await app.settle(rounds: 5);
-      await app.tap(find.text("I'm new to Spanish"));
+      expect(find.byKey(const ValueKey('welcome-step-2')), findsOneWidget);
+      expect(find.byKey(const Key('welcome-new-button')), findsOneWidget);
+      await app.tap(find.byKey(const Key('welcome-new-button')));
       await app.advance(1000);
-      expect(find.text("I'm new to Spanish").hitTestable(), findsNothing);
+
+      expect(
+        find.byKey(const ValueKey('welcome-step-2')).hitTestable(),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('welcome-new-button')).hitTestable(),
+        findsNothing,
+      );
       expect(app.selectedTab, 'map');
+      expect(findShellTab('map'), findsOneWidget);
       expect(findMapTopChips(), findsOneWidget);
       // listo(): the setting is written into the active language's progress store
       expect(app.stored, contains('"bienvenida":1'));
@@ -46,43 +90,40 @@ void main() {
       await app.open(stored: seed('curso'), location: at);
       expect(app.tabBarShown, isTrue, reason: at);
       expect(app.selectedTab, 'map', reason: at);
+      expect(findShellTab('map'), findsOneWidget, reason: at);
       expect(findMapTopChips(), findsOneWidget, reason: at);
       await tester.pumpWidget(const SizedBox());
     }
   });
 
   testWidgets(
-    '(l) no network: one line and "Try again"; trying again with the network back starts the app',
+    '(l) no network: LoadFailed surface and retry recover into the app once network returns',
     (tester) async {
       final app = TestApp(tester)..offline = true;
       await app.open(stored: seed('curso'));
-      expect(
-        find.text('Coquí could not load. Check your connection.'),
-        findsOneWidget,
-      );
-      expect(find.text('Try again'), findsOneWidget);
+      expect(find.byKey(LoadFailed.screenKey), findsOneWidget);
+      expect(find.text(loadFailedLine), findsOneWidget);
+      expect(find.byKey(LoadFailed.retryKey), findsOneWidget);
+      expect(find.text(tryAgainLabel), findsOneWidget);
       expect(find.byType(NocheTabBar), findsNothing);
       // the page colour behind it
-      final box = tester.widget<ColoredBox>(
-        find
-            .ancestor(
-              of: find.text('Try again'),
-              matching: find.byType(ColoredBox),
-            )
-            .last,
-      );
+      final box = tester.widget<ColoredBox>(find.byKey(LoadFailed.screenKey));
       expect(box.color, NocheColors.ground);
       // still no network: the same
-      await app.tap(find.text('Try again'));
+      await app.tap(find.byKey(LoadFailed.retryKey));
       await app.settle(rounds: 5);
-      expect(find.text('Try again'), findsOneWidget);
+      expect(find.byKey(LoadFailed.screenKey), findsOneWidget);
+      expect(find.byKey(LoadFailed.retryKey), findsOneWidget);
+
       app.offline = false;
-      await app.tap(find.text('Try again'));
+      await app.tap(find.byKey(LoadFailed.retryKey));
       await app.settle(rounds: 10);
-      expect(find.text('Try again'), findsNothing);
+      expect(find.byKey(LoadFailed.screenKey), findsNothing);
+      expect(find.byKey(LoadFailed.retryKey), findsNothing);
       expect(app.selectedTab, 'map');
+      expect(findShellTab('map'), findsOneWidget);
       expect(findMapTopChips(), findsOneWidget);
-      expect(find.text('5 days'), findsOneWidget);
+      expect(app.services.progress.streak, 5);
     },
   );
 }

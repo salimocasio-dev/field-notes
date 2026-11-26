@@ -2,13 +2,16 @@
 // recogniser, the voice test's file.
 import 'package:app/src/addresses.dart';
 import 'package:app/src/content.dart';
+import 'package:app/src/entitlements.dart';
 import 'package:app/src/modules.dart';
 import 'package:app/src/scripted_speech.dart';
 import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_scenes/coqui_scenes.dart' show sceneRegistry;
+import 'package:feature_map/feature_map.dart';
 import 'package:feature_speaking/feature_speaking.dart';
-import 'package:feature_story/feature_story.dart' show TxtMode;
+import 'package:feature_story/feature_story.dart' show StoryModule, TxtMode;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/harness.dart';
@@ -296,5 +299,35 @@ void main() {
       isNotNull,
     );
     expect((speakingModule() as SpeakingModule).voiceTest, isNull);
+  });
+
+  group('module wiring', () {
+    test('coquiModules forwards switches.perf and switches.txt to MapModule and StoryModule', () {
+      for (final (query, expectedPerf, expectedTxt) in const [
+        (<String, String>{}, false, TxtMode.con),
+        ({'perf': '1', 'txt': 'tras'}, true, TxtMode.tras),
+        ({'txt': 'no'}, false, TxtMode.no),
+      ]) {
+        final modules = coquiModules(
+          switches: AppSwitches.fromQuery(query),
+          bookImageUrl: (path) => 'https://example.com/$path',
+          entitlements: ReleaseEntitlements.preBilling(callsAllowed: true),
+        );
+        final map = modules.whereType<MapModule>().single;
+        final story = modules.whereType<StoryModule>().single;
+        expect(map.showPerf, expectedPerf, reason: '$query');
+        expect(story.showPerf, expectedPerf, reason: '$query');
+        expect(story.txt, expectedTxt, reason: '$query');
+      }
+    });
+
+    test('storyScenes throws UnimplementedError for an unknown scene id not in sceneRegistry', () async {
+      const unknownScene = 'no-es-una-escena';
+      expect(sceneRegistry.containsKey(unknownScene), isFalse);
+      await expectLater(
+        storyScenes(unknownScene, Mulberry32(1)),
+        throwsA(isA<UnimplementedError>()),
+      );
+    });
   });
 }

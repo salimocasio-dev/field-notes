@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app/src/app.dart';
 import 'package:app/src/navigator.dart';
 import 'package:app/src/shell.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
@@ -188,12 +189,13 @@ void main() {
         expect(bar.languageCode, 'ar');
         expect(bar.script, 'Arab');
         expect(bar.tabNames, arabicTestLanguage.tabNames);
-        expect(find.text('المطر'), findsWidgets);
-        expect(find.text('La lluvia'), findsNothing);
+        expect(findShellTab('map'), findsOneWidget);
+        expect(findMapUpNextCard(), findsOneWidget);
 
         await app.openTab('words');
-        expect(find.text('بيت'), findsWidgets);
-        expect(find.text('casa'), findsNothing);
+        expect(findShellTab('words'), findsOneWidget);
+        expect(find.byKey(const ValueKey('word-row:بيت')), findsOneWidget);
+        expect(find.byKey(const ValueKey('word-row:casa')), findsNothing);
       },
     );
 
@@ -210,7 +212,8 @@ void main() {
         expect(shared['idioma'], 'es');
         expect(app.services.progress.words, isNotEmpty);
         expect(app.services.progress.streak, 5);
-        expect(find.text('5 days'), findsOneWidget);
+        expect(findShellTab('map'), findsOneWidget);
+        expect(find.byKey(const Key('streak-chip')), findsOneWidget);
       },
     );
   });
@@ -304,7 +307,8 @@ void main() {
         // Open Words tab so Spanish tab state is alive before switching.
         await app.openTab('words');
         expect(app.selectedTab, 'words');
-        expect(find.text('casa'), findsWidgets);
+        expect(findShellTab('words'), findsOneWidget);
+        expect(find.byKey(const ValueKey('word-row:casa')), findsOneWidget);
 
         // Switch es -> ar through the progress setting (as LanguagesSheet does).
         app.services.progress.setSetting('idioma', 'ar');
@@ -312,17 +316,26 @@ void main() {
 
         expect(loadedCodes, ['es', 'ar']);
         expect(app.selectedTab, 'map');
+        expect(findShellTab('map'), findsOneWidget);
         expect(app.services.course.language.code, 'ar');
+        expect(
+          tester.widget<NocheTabBar>(find.byType(NocheTabBar)).languageCode,
+          'ar',
+        );
         expect(
           (jsonDecode(app.sharedStored!) as Map<String, dynamic>)['idioma'],
           'ar',
         );
-        expect(find.text('المطر'), findsWidgets);
-        expect(find.text('La lluvia'), findsNothing);
+        expect(app.services.progress.words.map((w) => w.w), contains('بيت'));
+        expect(
+          app.services.progress.words.map((w) => w.w),
+          isNot(contains('casa')),
+        );
 
         await app.openTab('words');
-        expect(find.text('بيت'), findsWidgets);
-        expect(find.text('casa'), findsNothing);
+        expect(findShellTab('words'), findsOneWidget);
+        expect(find.byKey(const ValueKey('word-row:بيت')), findsOneWidget);
+        expect(find.byKey(const ValueKey('word-row:casa')), findsNothing);
 
         // Switch ar -> es; Spanish store's stale 'idioma' must be synced so it
         // does not bounce back to Arabic on subsequent saves.
@@ -331,13 +344,21 @@ void main() {
 
         expect(loadedCodes, ['es', 'ar', 'es']);
         expect(app.selectedTab, 'map');
+        expect(findShellTab('map'), findsOneWidget);
         expect(app.services.course.language.code, 'es');
+        expect(
+          tester.widget<NocheTabBar>(find.byType(NocheTabBar)).languageCode,
+          'es',
+        );
         expect(
           (jsonDecode(app.sharedStored!) as Map<String, dynamic>)['idioma'],
           'es',
         );
-        expect(find.text('La lluvia'), findsWidgets);
-        expect(find.text('المطر'), findsNothing);
+        expect(app.services.progress.words.map((w) => w.w), contains('casa'));
+        expect(
+          app.services.progress.words.map((w) => w.w),
+          isNot(contains('بيت')),
+        );
 
         // Trigger another write on Spanish progress and confirm no bounce-back.
         app.services.progress.setSetting('min', 45);
@@ -348,8 +369,9 @@ void main() {
         expect(app.services.progress.streak, 1);
 
         await app.openTab('words');
-        expect(find.text('casa'), findsWidgets);
-        expect(find.text('بيت'), findsNothing);
+        expect(findShellTab('words'), findsOneWidget);
+        expect(find.byKey(const ValueKey('word-row:casa')), findsOneWidget);
+        expect(find.byKey(const ValueKey('word-row:بيت')), findsNothing);
       },
     );
 
@@ -719,11 +741,16 @@ void main() {
 
         await app.go(const StoryRoute('la-lluvia'));
         await app.until(
-          () => byTypeName('StoryScreen').evaluate().isNotEmpty,
-          what: 'StoryScreen',
+          () =>
+              findShellRoute(const StoryRoute('la-lluvia'))
+                  .evaluate()
+                  .isNotEmpty,
+          what: 'StoryRoute(la-lluvia)',
         );
         expect(
-          Directionality.of(tester.element(byTypeName('StoryScreen'))),
+          Directionality.of(
+            tester.element(findShellRoute(const StoryRoute('la-lluvia'))),
+          ),
           TextDirection.rtl,
         );
 
@@ -824,7 +851,7 @@ void main() {
 
         expect(loadedCodes, ['xx', 'es']);
         expect(app.services.course.language.code, 'es');
-        expect(find.text('Try again'), findsNothing);
+        expect(find.byKey(LoadFailed.retryKey), findsNothing);
         expect(app.tabBarShown, isTrue);
         expect(app.selectedTab, 'map');
         expect(
@@ -840,21 +867,21 @@ void main() {
     );
 
     testWidgets(
-      'tapping initial LoadFailed Try again does not consume first-tap audio unlock before a player exists',
+      'tapping initial LoadFailed retry does not consume first-tap audio unlock before a player exists',
       (tester) async {
         final app = TestApp(tester)..offline = true;
         await app.open(stored: seed('curso'));
-        expect(find.text('Try again'), findsOneWidget);
+        expect(find.byKey(LoadFailed.retryKey), findsOneWidget);
         expect(app.clips, isNull);
 
-        // Tap "Try again" while still offline (no ClipPlayer exists yet).
-        await app.tap(find.text('Try again'));
+        // Tap retry while still offline (no ClipPlayer exists yet).
+        await app.tap(find.byKey(LoadFailed.retryKey));
         await app.settle(rounds: 5);
         expect(app.clips, isNull);
 
-        // Recover network and tap "Try again" (still no player during the tap).
+        // Recover network and tap retry (still no player during the tap).
         app.offline = false;
-        await app.tap(find.text('Try again'));
+        await app.tap(find.byKey(LoadFailed.retryKey));
         await app.settle(rounds: 10);
         expect(app.clips, isNotNull);
         expect(app.clips!.unlocked, isFalse);
