@@ -1,6 +1,5 @@
-// The Repaso card's count ("N words today") is the count of the words Repaso can serve (page 15), by the one rule in
-// coqui_contracts that the session asks too: not only the words that have a picture pair. A course that has not read
-// the games' data keeps today's rule.
+// The "Start review" / "Practice" button uses the one serving rule in
+// coqui_contracts (page 15: picture pair OR a heard sentence that scores it).
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,8 +15,6 @@ RepasoSentence _sentence() => RepasoSentence(
   forBuilding: false,
 );
 
-/// puerta has a picture pair and its own sentence; mesa has none, and a sentence of story s1 that scores it; sol and
-/// luna are two more words he has met (the wrong tiles beside that sentence).
 RepasoData _games() => RepasoData(
   sentences: [_sentence()],
   words: [
@@ -38,7 +35,12 @@ RepasoData _games() => RepasoData(
   ],
 );
 
-Rig _rig({RepasoData? games, bool played = true, bool mesaDue = true}) {
+Rig _rig({
+  RepasoData? games,
+  bool played = true,
+  bool puertaDue = true,
+  bool mesaDue = true,
+}) {
   final course = madeCourse(
     places: [
       place('casa', 1, 'La casa', ['s1']),
@@ -50,7 +52,7 @@ Rig _rig({RepasoData? games, bool played = true, bool mesaDue = true}) {
   )..repaso = games;
   final rig = Rig(course: course);
   if (played) rig.played('s1');
-  rig.word('puerta', ear: 1, due: -1);
+  rig.word('puerta', ear: 1, due: puertaDue ? -1 : 30);
   rig.word('mesa', ear: 1, due: mesaDue ? -1 : 30);
   rig.word('sol', ear: 1, due: 30);
   rig.word('luna', ear: 1, due: 30);
@@ -59,51 +61,55 @@ Rig _rig({RepasoData? games, bool played = true, bool mesaDue = true}) {
 
 void main() {
   testWidgets(
-    'with the games\' data: a due word with no picture pair that a heard sentence can score is counted',
+    'with games data: a due word with no picture pair that a heard sentence can score enables Start review',
     (tester) async {
-      await pumpTab(tester, _rig(games: _games()));
-      // puerta (a pair) and mesa (a sentence of a story he has finished)
-      expect(repaso(tester).line, '2 words today · about 1 min');
+      await pumpTab(tester, _rig(games: _games(), puertaDue: false));
+      final btn = reviewButton(tester);
+      expect((btn.label, btn.enabled), ('Start review', true));
+      expect(dueCardCount(tester), '1');
     },
   );
 
   testWidgets(
-    'with no games\' data: today\'s rule, the words that have a picture pair',
+    'with no games data: only picture-pair due words trigger Start review; otherwise Practice',
     (tester) async {
-      await pumpTab(tester, _rig());
-      expect(repaso(tester).line, '1 word today · about 1 min');
+      await pumpTab(tester, _rig(puertaDue: false, mesaDue: true));
+      final btn = reviewButton(tester);
+      expect((btn.label, btn.enabled), ('Practice', true));
+      // The due card still reflects the skill's due word (mesa).
+      expect(dueCardCount(tester), '1');
     },
   );
 
   testWidgets(
-    'a word Repaso cannot serve (its sentence is of a story he has not finished) is not counted',
+    'a word Repaso cannot serve (its sentence is of an unplayed story) does not trigger Start review',
     (tester) async {
-      await pumpTab(tester, _rig(games: _games(), played: false));
-      expect(repaso(tester).line, '1 word today · about 1 min');
-    },
-  );
-
-  testWidgets(
-    'Practice is on when only a word with no pair could be asked; off without the data',
-    (tester) async {
-      final withData = _rig(games: _games(), mesaDue: false);
-      withData.word(
-        'puerta',
-        ear: 0,
-      ); // nothing due, the pair word not heard yet
-      await pumpTab(tester, withData);
-      var r = repaso(tester);
-      expect(
-        (r.line, r.button, r.enabled),
-        ('Nothing due today', 'Practice', true),
+      await pumpTab(
+        tester,
+        _rig(games: _games(), played: false, puertaDue: false, mesaDue: true),
       );
-      final without = _rig(mesaDue: false);
+      final btn = reviewButton(tester);
+      expect((btn.label, btn.enabled), ('Practice', true));
+    },
+  );
+
+  testWidgets(
+    'Practice is enabled when only a word with no pair could be asked with games data; disabled without',
+    (tester) async {
+      final withData = _rig(games: _games(), puertaDue: false, mesaDue: false);
+      withData.word('puerta', ear: 0);
+      await pumpTab(tester, withData);
+      expect(
+        (reviewButton(tester).label, reviewButton(tester).enabled),
+        ('Practice', true),
+      );
+
+      final without = _rig(puertaDue: false, mesaDue: false);
       without.word('puerta', ear: 0);
       await pumpTab(tester, without);
-      r = repaso(tester);
       expect(
-        (r.line, r.button, r.enabled),
-        ('Nothing due today', 'Practice', false),
+        (reviewButton(tester).label, reviewButton(tester).enabled),
+        ('Practice', false),
       );
     },
   );

@@ -5,3 +5,11 @@ library;
 
 export 'package:coqui_content/src/content_catalog.dart'
     show ContentCatalog, FetchText;
+export 'package:coqui_content/src/split_story.dart'
+    show
+        joinSplitStory,
+        parseWordTable,
+        resolveTestedWord,
+        splitGameFormat,
+        splitLinesFormat,
+        splitWordsFormat;

@@ -13,10 +13,16 @@ import 'package:material_ui/material_ui.dart';
 
 /// The call with Danny for one place (`CallRoute`): full screen, calm dark grey, the tab bar is the shell's to hide.
 class CallScreen extends StatefulWidget {
-  const CallScreen({super.key, required this.services, required this.placeId});
+  const CallScreen({
+    super.key,
+    required this.services,
+    required this.placeId,
+    this.callId,
+  });
 
   final Services services;
   final String placeId;
+  final String? callId;
 
   @override
   State<CallScreen> createState() => _CallScreenState();
@@ -36,6 +42,7 @@ class _CallScreenState extends State<CallScreen> {
       course: s.course,
       progress: s.progress,
       placeId: widget.placeId,
+      callId: widget.callId,
       clips: s.clips,
       onClose: s.nav.back,
     );

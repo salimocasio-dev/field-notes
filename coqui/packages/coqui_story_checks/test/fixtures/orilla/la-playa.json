@@ -1,0 +1,622 @@
+{
+ "id": "la-playa",
+ "title": "La playa",
+ "place": "La playa",
+ "scene": "orilla",
+ "next": "flota",
+ "goal": "Find the pink shell Luis hides, in the sand or at the sea's edge as Carmen says (arena or mar), so that all three towers of the sand castle get their shell: a wrong place lets a wave take the shell or Canelo run off with it.",
+ "stake": {
+  "thing": "conchas",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "playa",
+  "mar",
+  "arena",
+  "ola"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "agua",
+  "hay",
+  "mucho",
+  "grande",
+  "mira",
+  "me gusta",
+  "cuidado",
+  "viene",
+  "se va",
+  "vamos",
+  "voy",
+  "ven",
+  "aquí",
+  "busca",
+  "¿dónde está?",
+  "está",
+  "no",
+  "perro"
+ ],
+ "also_heard": [
+  "concha",
+  "torre",
+  "foto",
+  "hace calor",
+  "acá"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "perro": "c_n_perro",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c72_mira": {
+   "who": "narr",
+   "text": "Mira: la playa. Hace calor."
+  },
+  "c72_ca_playa": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡La playa! ¡Me gusta la playa!"
+  },
+  "c72_ab_mar": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mira el mar, Coquí. El mar es grande."
+  },
+  "c72_donde_mar": {
+   "who": "narr",
+   "text": "¿Dónde está el mar?"
+  },
+  "c72_l_ola": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Una ola!"
+  },
+  "c72_l_arena": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Aquí hay arena. ¡Mucha arena!"
+  },
+  "c72_l_torre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Una torre de arena."
+  },
+  "c72_ca_agua": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Al agua!"
+  },
+  "p_cq_vamos": {
+   "who": "tu",
+   "text": "¡Vamos!",
+   "tu_turno": [
+    {
+     "palabra": "vamos",
+     "formas": [
+      "vamos"
+     ]
+    }
+   ]
+  },
+  "c72_ca_viene": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Viene una ola... y se va."
+  },
+  "c72_ca_busca": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, busca. La concha está en la arena."
+  },
+  "c72_donde_arena": {
+   "who": "narr",
+   "text": "¿Dónde hay arena?"
+  },
+  "c72_ca_ahora_mar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Ahora la concha está en el mar."
+  },
+  "c72_ab_cuidado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Cuidado! ¡Una ola grande!"
+  },
+  "c72_ab_torres": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Tres torres. Y después, la foto."
+  },
+  "c72_ab_foto": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ven acá. ¡La foto!"
+  },
+  "c60_cq_voy": {
+   "who": "tu",
+   "text": "¡Voy!",
+   "tu_turno": [
+    {
+     "palabra": "voy",
+     "formas": [
+      "voy"
+     ]
+    }
+   ]
+  },
+  "c72_fin": {
+   "who": "narr",
+   "text": "Hay mucha arena en la playa. Y el mar es grande."
+  },
+  "c72_a_mar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, la concha está en el mar."
+  },
+  "c72_b_mar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Ahora está en el mar."
+  },
+  "c72_no_mar": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Está en el mar."
+  },
+  "c72_a_arena": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, la concha está en la arena."
+  },
+  "c72_b_arena": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Ahora está en la arena."
+  },
+  "c72_no_arena": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Está en la arena."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "manana",
+    "castillo": 0,
+    "manta": 0
+   }
+  },
+  {
+   "act": "conchas",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c72_mira",
+  "c72_ca_playa",
+  "c72_ab_mar",
+  {
+   "ask": "mar",
+   "lead": [],
+   "line": "c72_donde_mar",
+   "then": [],
+   "after": [
+    {
+     "act": "ola",
+     "t": "pequena"
+    }
+   ]
+  },
+  "c72_l_ola",
+  {
+   "dots": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "arrodilla"
+  },
+  "c72_l_arena",
+  {
+   "act": "torres72",
+   "suelto": 1
+  },
+  "c72_l_torre",
+  {
+   "act": "ya"
+  },
+  "c72_ca_agua",
+  "p_cq_vamos",
+  {
+   "act": "ir",
+   "a": "orilla1"
+  },
+  {
+   "act": "ola",
+   "t": "pequena",
+   "suelto": 1
+  },
+  "c72_ca_viene",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "senala",
+   "a": "conchas"
+  },
+  {
+   "act": "esconde72",
+   "en": "arena"
+  },
+  "c72_ca_busca",
+  {
+   "ask": "arena",
+   "lead": [],
+   "line": "c72_donde_arena",
+   "then": [],
+   "after": [
+    {
+     "act": "busca72",
+     "en": "arena",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "act": "corona72",
+   "n": 1
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "esconde72",
+   "en": "mar"
+  },
+  "c72_ca_ahora_mar",
+  {
+   "ask": "mar",
+   "lead": [],
+   "line": "c72_donde_mar",
+   "then": [],
+   "after": [
+    {
+     "act": "busca72",
+     "en": "mar",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "act": "corona72",
+   "n": 2
+  },
+  {
+   "act": "ola",
+   "t": "grande",
+   "suelto": 1
+  },
+  "c72_ab_cuidado",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "conchas",
+   "n": 3
+  },
+  {
+   "act": "corona72",
+   "n": 1
+  },
+  "c72_ab_torres",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "ea",
+   "options": [
+    "mar",
+    "arena"
+   ]
+  },
+  {
+   "act": "esconde72",
+   "en": "$ea"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "arena",
+    "mar"
+   ],
+   "pick": "$ea",
+   "tests": "$ea",
+   "lock": true,
+   "lead": [],
+   "line": "c72_a_$ea",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "busca72",
+       "en": "$ea",
+       "ok": 1
+      },
+      {
+       "act": "corona72",
+       "n": 2
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "busca72",
+       "en": "$ea",
+       "ok": 0
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "busca72",
+     "en": "$x",
+     "ok": 0
+    },
+    "c72_no_$ea",
+    {
+     "act": "pierde72",
+     "en": "$ea"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "conchas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "conchas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "mar",
+    "arena"
+   ]
+  },
+  {
+   "act": "esconde72",
+   "en": "$eb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "arena",
+    "mar"
+   ],
+   "pick": "$eb",
+   "tests": "$eb",
+   "lock": true,
+   "lead": [],
+   "line": "c72_b_$eb",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "busca72",
+       "en": "$eb",
+       "ok": 1
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "corona72",
+         "n": 3
+        }
+       ],
+       "else": [
+        {
+         "act": "corona72",
+         "n": 2
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "busca72",
+       "en": "$eb",
+       "ok": 0
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "busca72",
+     "en": "$x",
+     "ok": 0
+    },
+    "c72_no_$eb",
+    {
+     "act": "pierde72",
+     "en": "$eb"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "conchas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "conchas",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final72",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final72",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final72",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c72_ab_foto",
+  "c60_cq_voy",
+  {
+   "act": "ir",
+   "a": "torre2"
+  },
+  {
+   "act": "foto"
+  },
+  "c72_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c72_mira",
+  "c72_ca_playa",
+  "c72_ab_mar",
+  "c72_donde_mar",
+  "c72_l_ola",
+  "c72_l_arena",
+  "c72_l_torre",
+  "c72_ca_agua",
+  "p_cq_vamos",
+  "c72_ca_viene",
+  "c72_ca_busca",
+  "c72_donde_arena",
+  "c72_ca_ahora_mar",
+  "c72_ab_cuidado",
+  "c72_ab_torres",
+  "c72_a_mar",
+  "c72_b_arena",
+  "c72_ab_foto",
+  "c60_cq_voy",
+  "c72_fin"
+ ]
+}

@@ -1,26 +1,22 @@
-/// The speech bubble over the picture (index.html `#bub`).
+/// The speech bubble over the picture (index.html `#bub`), styled with Noche tokens.
 library;
 
 import 'dart:math' as math;
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/bubble_place.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:material_ui/material_ui.dart';
 
-const Color _ink = Color(0xFF2A1810),
-    _tickGreen = Color(0xFF17803F),
-    _micRed = Color(0xFFD93025);
-
-/// The bubble's text: 800 weight, 18 px on a line of 1.2, centred, brown-black on white. index.html:72
-final TextStyle bubbleTextStyle = CoquiText.lessonCaption.copyWith(
-  fontWeight: FontWeight.w800,
-  fontSize: 18,
-  height: 1.2,
-  color: _ink,
+/// The bubble's text: bold 18 px on a line of 24, centred, dark ink on light surface.
+final TextStyle bubbleTextStyle = NocheType.row.copyWith(
+  fontWeight: FontWeight.w700,
+  color: NocheColors.lessonGround,
 );
 
-/// A bubble's body: white, 3 px brown-black border, 12 px corners, 5/11/6 px padding. The tail is drawn by the caller.
+/// A bubble's body: `NocheColors.text` surface, 3 px `NocheColors.lessonGround`
+/// border, 12 px corners, 5/11/6 px padding. The tail is drawn by the caller.
 class StoryBubbleBody extends StatefulWidget {
   const StoryBubbleBody({
     super.key,
@@ -28,6 +24,7 @@ class StoryBubbleBody extends StatefulWidget {
     required this.text,
     required this.estate,
     this.reduceMotion = false,
+    this.language,
   });
 
   final BubbleKind kind;
@@ -36,6 +33,9 @@ class StoryBubbleBody extends StatefulWidget {
   /// `data-e`: the mic's state while a turn is on.
   final String estate;
   final bool reduceMotion;
+
+  /// Course language for text direction, script font, and locale.
+  final Language? language;
 
   @override
   State<StoryBubbleBody> createState() => _StoryBubbleBodyState();
@@ -75,32 +75,39 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
     super.dispose();
   }
 
+  Language get _lang => widget.language ?? Language.spanish;
+
+  TextStyle get _textStyle =>
+      NocheType.forScript(bubbleTextStyle, _lang.script);
+
   Widget _content() {
     switch (widget.kind) {
       case BubbleKind.words:
         return Text(
           widget.text,
           textAlign: TextAlign.center,
-          style: bubbleTextStyle,
+          textDirection: _lang.textDirection,
+          locale: _lang.locale,
+          style: _textStyle,
         );
       case BubbleKind.mic:
         final listening = widget.estate == 'listening';
-        // `#bub[data-e=listening] svg`: coral red, pulsing to 1.25
         return AnimatedBuilder(
           animation: _a,
           builder: (context, _) => Transform.scale(
             scale: listening && !widget.reduceMotion
                 ? 1 + .25 * (1 - (2 * _a.value - 1).abs())
                 : 1,
-            child: CoquiIcon(
-              CoquiIcons.lessonMic,
+            child: NocheIcon(
+              NocheIcons.mic,
               size: 28,
-              color: listening ? _micRed : _ink,
+              color: listening
+                  ? NocheColors.listening
+                  : NocheColors.lessonGround,
             ),
           ),
         );
       case BubbleKind.dots:
-        // the same three dots, 28 px so the bubble keeps its size
         return AnimatedBuilder(
           animation: _a,
           builder: (context, _) => SizedBox(
@@ -120,7 +127,7 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
                       height: 6,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: _ink,
+                        color: NocheColors.lessonGround,
                       ),
                     ),
                   ),
@@ -130,21 +137,31 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
           ),
         );
       case BubbleKind.tick:
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CoquiIcon(CoquiIcons.badgeCheck, size: 28, color: _tickGreen),
-            if (widget.text.isNotEmpty) ...[
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  widget.text,
-                  textAlign: TextAlign.center,
-                  style: bubbleTextStyle,
-                ),
+        return Directionality(
+          textDirection: _lang.textDirection,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const NocheIcon(
+                NocheIcons.check,
+                size: 28,
+                strokeWidth: 3,
+                color: NocheColors.right,
               ),
+              if (widget.text.isNotEmpty) ...[
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    widget.text,
+                    textAlign: TextAlign.center,
+                    textDirection: _lang.textDirection,
+                    locale: _lang.locale,
+                    style: _textStyle,
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         );
     }
   }
@@ -165,11 +182,11 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
       constraints: turn
           ? const BoxConstraints(minWidth: 56, minHeight: 44)
           : null,
-      padding: const EdgeInsets.fromLTRB(11, 5, 11, 6),
-      alignment: turn ? Alignment.center : null,
+      padding: const EdgeInsetsDirectional.fromSTEB(11, 5, 11, 6),
+      alignment: turn ? AlignmentDirectional.center : null,
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: _ink, width: 3),
+        color: NocheColors.text,
+        border: Border.all(color: NocheColors.lessonGround, width: 3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: _content(),
@@ -177,7 +194,7 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
   }
 }
 
-/// A tail: the white triangle with its dark edge, as the `::before` and `::after` of `#bub` draw it.
+/// A tail: the light triangle with its dark edge, as the `::before` and `::after` of `#bub` draw it.
 class _TailPainter extends CustomPainter {
   const _TailPainter(this.mode);
 
@@ -185,11 +202,10 @@ class _TailPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final dark = Paint()..color = _ink;
-    final white = Paint()..color = Colors.white;
+    final dark = Paint()..color = NocheColors.lessonGround;
+    final surface = Paint()..color = NocheColors.text;
     switch (mode) {
       case BubbleSideMode.above:
-        // 8 px triangle (dark) down from the border, 5 px (white) inside it
         canvas.drawPath(
           Path()
             ..moveTo(0, 0)
@@ -204,7 +220,7 @@ class _TailPainter extends CustomPainter {
             ..lineTo(13, 0)
             ..lineTo(8, 6)
             ..close(),
-          white,
+          surface,
         );
       case BubbleSideMode.right:
         canvas.drawPath(
@@ -221,7 +237,7 @@ class _TailPainter extends CustomPainter {
             ..lineTo(9, 13)
             ..lineTo(3, 8)
             ..close(),
-          white,
+          surface,
         );
       case BubbleSideMode.left:
         canvas.drawPath(
@@ -238,7 +254,7 @@ class _TailPainter extends CustomPainter {
             ..lineTo(0, 13)
             ..lineTo(6, 8)
             ..close(),
-          white,
+          surface,
         );
     }
   }
@@ -247,9 +263,10 @@ class _TailPainter extends CustomPainter {
   bool shouldRepaint(_TailPainter old) => old.mode != mode;
 }
 
-/// Where a bubble stands and the bubble itself, over a stage of [stage] size. [placement] is what [placeBubble] found.
+/// Where a bubble stands and the bubble itself, over a stage of [stage] size.
 ///
-/// The bubble takes no touch: a finger on it goes through to the picture under it, as in the old page (`#bub{pointer-events:none}`).
+/// The bubble takes no touch: a finger on it goes through to the picture under it,
+/// as in the old page (`#bub{pointer-events:none}`).
 class StoryBubbleLayer extends StatelessWidget {
   const StoryBubbleLayer({
     super.key,
@@ -259,6 +276,7 @@ class StoryBubbleLayer extends StatelessWidget {
     required this.estate,
     required this.placementFor,
     this.reduceMotion = false,
+    this.language,
   });
 
   final bool visible;
@@ -269,6 +287,9 @@ class StoryBubbleLayer extends StatelessWidget {
   /// Where it stands, given its measured size; null hides it (the speaker cannot be seen).
   final BubblePlacement? Function(Size bubble) placementFor;
   final bool reduceMotion;
+
+  /// Course language for the text inside the bubble.
+  final Language? language;
 
   @override
   Widget build(BuildContext context) {
@@ -288,6 +309,7 @@ class StoryBubbleLayer extends StatelessWidget {
                 text: text,
                 estate: estate,
                 reduceMotion: reduceMotion,
+                language: language,
               ),
               Positioned.fill(child: _TailAnchor(placementFor: placementFor)),
             ],
@@ -298,63 +320,66 @@ class StoryBubbleLayer extends StatelessWidget {
   }
 }
 
-/// The tail, placed from the bubble's own size.
+/// The tail, placed from the bubble's own size in physical scene coordinates
+/// (unmirrored pixel scene).
 class _TailAnchor extends StatelessWidget {
   const _TailAnchor({required this.placementFor});
 
   final BubblePlacement? Function(Size bubble) placementFor;
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-    builder: (context, c) {
-      final p = placementFor(Size(c.maxWidth, c.maxHeight));
-      if (p == null) return const SizedBox.shrink();
-      switch (p.mode) {
-        case BubbleSideMode.above:
-          // `--tx` is the tail's middle along the bubble; the dark triangle starts at the border's outer edge
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned(
-                left: (p.tail ?? c.maxWidth / 2) - 8,
-                bottom: -11,
-                child: const CustomPaint(
-                  size: Size(16, 9),
-                  painter: _TailPainter(BubbleSideMode.above),
+  Widget build(BuildContext context) => Directionality(
+    textDirection: TextDirection.ltr,
+    child: LayoutBuilder(
+      builder: (context, c) {
+        final p = placementFor(Size(c.maxWidth, c.maxHeight));
+        if (p == null) return const SizedBox.shrink();
+        switch (p.mode) {
+          case BubbleSideMode.above:
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                PositionedDirectional(
+                  start: (p.tail ?? c.maxWidth / 2) - 8,
+                  bottom: -11,
+                  child: const CustomPaint(
+                    size: Size(16, 9),
+                    painter: _TailPainter(BubbleSideMode.above),
+                  ),
                 ),
-              ),
-            ],
-          );
-        case BubbleSideMode.right:
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned(
-                left: -11,
-                top: c.maxHeight / 2 - 8,
-                child: const CustomPaint(
-                  size: Size(9, 16),
-                  painter: _TailPainter(BubbleSideMode.right),
+              ],
+            );
+          case BubbleSideMode.right:
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                PositionedDirectional(
+                  start: -11,
+                  top: c.maxHeight / 2 - 8,
+                  child: const CustomPaint(
+                    size: Size(9, 16),
+                    painter: _TailPainter(BubbleSideMode.right),
+                  ),
                 ),
-              ),
-            ],
-          );
-        case BubbleSideMode.left:
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned(
-                right: -11,
-                top: c.maxHeight / 2 - 8,
-                child: const CustomPaint(
-                  size: Size(9, 16),
-                  painter: _TailPainter(BubbleSideMode.left),
+              ],
+            );
+          case BubbleSideMode.left:
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                PositionedDirectional(
+                  end: -11,
+                  top: c.maxHeight / 2 - 8,
+                  child: const CustomPaint(
+                    size: Size(9, 16),
+                    painter: _TailPainter(BubbleSideMode.left),
+                  ),
                 ),
-              ),
-            ],
-          );
-      }
-    },
+              ],
+            );
+        }
+      },
+    ),
   );
 }
 
@@ -373,7 +398,6 @@ class _BubbleDelegate extends SingleChildLayoutDelegate {
     final p = placementFor(childSize);
     if (p == null) return Offset(-10000, -10000);
     switch (p.mode) {
-      // `#bub.on`: translate(-50%, calc(-100% - 10px)); `.der`: translate(0, -50%); `.izq`: translate(-100%, -50%)
       case BubbleSideMode.above:
         return Offset(
           p.left - childSize.width / 2,

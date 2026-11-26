@@ -1,6 +1,7 @@
 // What is drawn over the picture during a story lets every touch through to what is under it, as the old page does
 // (index.html: `#bub{pointer-events:none}`, `#fin` at the end of a story `pointer-events:none`, `#mic[data-s=ok]`
 // `pointer-events:none`). A thing that stands under a speech bubble can be touched.
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/bubble_place.dart';
 import 'package:feature_story/src/runner/story_view.dart';
@@ -18,7 +19,7 @@ import 'support/screen_harness.dart';
 Widget _over(Widget over, List<int> touches) => MaterialApp(
   home: Center(
     child: SizedBox(
-      width: 300,
+      width: 360,
       height: 400,
       child: Stack(
         children: [
@@ -26,7 +27,7 @@ Widget _over(Widget over, List<int> touches) => MaterialApp(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () => touches.add(1),
-              child: const ColoredBox(color: Color(0xFF123456)),
+              child: const ColoredBox(color: NocheColors.lessonGround),
             ),
           ),
           over,
@@ -74,7 +75,7 @@ void main() {
         id: 'donde-esta-el-pajaro',
         scenes: registryScenes,
       );
-      await tester.tap(find.byType(LessonStartButton));
+      await tester.tap(find.byType(NochePlayDisc));
       await s.answerUntil(
         () => s.runner.bubText == 'Está en la casa grande.',
         what: 'abuela\'s bubble',
@@ -100,8 +101,8 @@ void main() {
       final touches = <int>[];
       await tester.pumpWidget(
         _over(
-          const Positioned(
-            left: 100,
+          const PositionedDirectional(
+            start: 100,
             top: 100,
             child: StoryPerfChip(bakeMs: 3),
           ),
@@ -145,22 +146,41 @@ void main() {
   );
 
   testWidgets(
-    'the mic: the tick (index.html #mic[data-s=ok]: pointer-events:none) takes no touch; a mic that waits for a tap (ready) does',
+    'the mic: the right state (index.html #mic[data-s=ok]: pointer-events:none) takes no touch; a mic waiting for a tap (ready / notYet) does',
     (tester) async {
       final touches = <int>[], taps = <int>[];
-      Widget mic(StoryMicState state) => _over(
+      Widget mic(NocheMicState state) => _over(
         Center(
-          child: StoryMicButton(state: state, onPressed: () => taps.add(1)),
+          child: StoryMicControls(
+            state: state,
+            language: Language.spanish,
+            onTapMic: () => taps.add(1),
+            reduceMotion: true,
+          ),
         ),
         touches,
       );
-      await tester.pumpWidget(mic(StoryMicState.ok));
-      await tester.tapAt(tester.getCenter(find.byType(StoryMicButton)));
+      await tester.pumpWidget(mic(NocheMicState.right));
+      await tester.tapAt(
+        tester.getCenter(find.byKey(const ValueKey('noche_mic_disc'))),
+      );
       expect(touches, [1]);
       expect(taps, isEmpty);
+
       touches.clear();
-      await tester.pumpWidget(mic(StoryMicState.ready));
-      await tester.tapAt(tester.getCenter(find.byType(StoryMicButton)));
+      await tester.pumpWidget(mic(NocheMicState.ready));
+      await tester.tapAt(
+        tester.getCenter(find.byKey(const ValueKey('noche_mic_disc'))),
+      );
+      expect(touches, isEmpty);
+      expect(taps, [1]);
+
+      touches.clear();
+      taps.clear();
+      await tester.pumpWidget(mic(NocheMicState.notYet));
+      await tester.tapAt(
+        tester.getCenter(find.byKey(const ValueKey('noche_mic_disc'))),
+      );
       expect(touches, isEmpty);
       expect(taps, [1]);
     },

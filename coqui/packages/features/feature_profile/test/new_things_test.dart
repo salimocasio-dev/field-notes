@@ -1,10 +1,9 @@
-// The module, and the three new things of order 25 (no old page to compare with: each is tested against the order's
-// words).
+// The module, and the three features added in order 25, restyled in Noche (N4.7):
 //
-//   M1  the module: the tab `me`, labelled Yo, and no route
-//   N1  the build number, from Services.info.build, small and grey, at the foot of Yo
-//   N2  About: a row at the foot of Yo, a sheet with exactly the credit line and the licence text under it
-//   N3  on an iPhone in the browser, not installed: a one-time hint, dismissible, remembered in the feature's own space
+//   M1  the module: the tab `me`, labelled from course.language.tabNames['me'], answers LanguagesRoute
+//   N1  the build number, from Services.info.build, 12 px NocheColors.label, at the very foot of Me
+//   N2  About: a row at the foot of Me, a NocheSheet with the credit line and the licence text under it
+//   N3  on an iPhone in the browser, not installed: a one-time Noche hint, dismissible, remembered in space `yo`
 import 'dart:io';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
@@ -25,12 +24,21 @@ const credit = 'Map and scene engine: Pixel Plays by Amir Mushich (MIT)';
 
 void main() {
   group('M1 the module', () {
-    test('it is `me`, gives the tab `me` labelled Yo, answers LanguagesRoute, and answers no other route', () {
+    test('it is `me`, gives the tab `me` labelled from course language, answers LanguagesRoute, and answers no other route', () {
       const module = ProfileModule();
       final s = fakeServices();
       expect(module.id, 'me');
       expect(module.tab(s)!.id, 'me');
       expect(module.tab(s)!.label, 'Yo');
+
+      final arabicServices = fakeServices(
+        course: FakeCourseCatalog(language: arabicTestLanguage),
+      );
+      expect(
+        module.tab(arabicServices)!.label,
+        arabicTestLanguage.tabNames['me'],
+      );
+
       expect(
         module.screenFor(const LanguagesRoute(), s),
         isA<LanguagesSheet>(),
@@ -69,50 +77,50 @@ void main() {
           tester.widget<Text>(find.byKey(const Key('build-number'))).data,
           'build dev',
         );
-        final all = textsOf(tester, find.byType(TabPage));
+        final all = yoTexts(tester);
         expect(all.last, 'build dev');
-        expect(all[all.length - 2], 'About');
-        expect(all[all.length - 3], 'How it works');
+        expect(all.contains('About'), isTrue);
+        expect(all.indexOf('About'), lessThan(all.indexOf('build dev')));
       },
     );
 
-    testWidgets(
-      'small and grey: 12 px, the secondary colour, as the old meter labels',
-      (tester) async {
-        final f = fixture(seed: 'curso', build: '39');
-        await pumpYo(tester, f);
-        final style = tester
-            .widget<Text>(find.byKey(const Key('build-number')))
-            .style!;
-        expect(style.fontSize, 12);
-        expect(style.color, CoquiColors.mut);
-      },
-    );
+    testWidgets('small and label-coloured: 12 px, NocheColors.label', (
+      tester,
+    ) async {
+      final f = fixture(seed: 'curso', build: '39');
+      await pumpYo(tester, f);
+      final style = tester
+          .widget<Text>(find.byKey(const Key('build-number')))
+          .style!;
+      expect(style.fontSize, 12);
+      expect(style.color, NocheColors.label);
+    });
   });
 
   group('N2 About', () {
-    testWidgets('a row at the foot of Yo opens a sheet; nothing is written', (
-      tester,
-    ) async {
-      final f = fixture(seed: 'curso');
-      await pumpYo(tester, f);
-      expect(find.byKey(const Key('about-row')), findsOneWidget);
-      expect(sheetOpen(tester), isFalse);
-      final saves = f.progress.saves;
-      await tester.tap(find.byKey(const Key('about-row')));
-      await settle(tester);
-      expect(sheetOpen(tester), isTrue);
-      expect(tester.widget<CoquiSheet>(find.byType(CoquiSheet)).modal, isFalse);
-      expect(f.progress.saves, saves);
-      expect(f.nav.routes, isEmpty);
-    });
+    testWidgets(
+      'a row at the foot of Me opens a NocheSheet; nothing is written',
+      (tester) async {
+        final f = fixture(seed: 'curso');
+        await pumpYo(tester, f);
+        expect(find.byKey(const Key('about-row')), findsOneWidget);
+        expect(sheetOpen(tester), isFalse);
+        final saves = f.progress.saves;
+        await tester.tap(find.byKey(const Key('about-row')));
+        await settle(tester);
+        expect(sheetOpen(tester), isTrue);
+        expect(find.byType(NocheSheet), findsOneWidget);
+        expect(f.progress.saves, saves);
+        expect(f.nav.routes, isEmpty);
+      },
+    );
 
     testWidgets(
       'the sheet says exactly the credit line, then the licence text under it',
       (tester) async {
         final f = fixture(seed: 'curso');
         await pumpYo(tester, f, about: true);
-        final texts = textsOf(tester, find.byType(CoquiSheet));
+        final texts = textsOf(tester, find.byKey(const ValueKey('about')));
         expect(texts.first, credit);
         expect(texts.skip(1).toList(), licenceParagraphs());
         expect(texts.length, greaterThan(2));
@@ -133,15 +141,19 @@ void main() {
       expect(licenceParagraphs()[1], contains('Amir Mushich'));
     });
 
-    testWidgets('the X closes the sheet', (tester) async {
+    testWidgets('the close button closes the sheet', (tester) async {
       final f = fixture(seed: 'curso');
       await pumpYo(tester, f, about: true);
-      await tester.tap(find.byType(CoquiCloseButton));
+      final closeBtn = find.descendant(
+        of: find.byType(NocheSheet),
+        matching: find.bySemanticsLabel(NocheA11y.label(NocheA11y.closeSheet)),
+      );
+      await tester.tap(closeBtn);
       await settle(tester);
       expect(sheetOpen(tester), isFalse);
     });
 
-    testWidgets('a tap on the page above the sheet closes it', (tester) async {
+    testWidgets('a tap on the scrim above the sheet closes it', (tester) async {
       final f = fixture(seed: 'curso');
       await pumpYo(tester, f, about: true);
       await tester.tapAt(const Offset(200, 20));
@@ -149,12 +161,12 @@ void main() {
       expect(sheetOpen(tester), isFalse);
     });
 
-    testWidgets('How it works still opens its own sheet after About was open', (
+    testWidgets('How Coquí works still opens its sheet after About was open', (
       tester,
     ) async {
       final f = fixture(seed: 'curso');
       await pumpYo(tester, f, about: true);
-      await tester.tap(find.byType(CoquiCloseButton));
+      await tester.tapAt(const Offset(200, 20));
       await settle(tester);
       await tester.tap(find.byKey(const Key('yo-how-it-works')));
       await settle(tester);
@@ -166,25 +178,21 @@ void main() {
     Finder hintFinder() => find.text(hint);
 
     testWidgets(
-      'on an iPhone in the browser, not installed: the card, at the top, with its words exactly',
+      'on an iPhone in the browser, not installed: the Noche card, at the top, with its words exactly',
       (tester) async {
         final f = fixture(seed: 'curso', ios: true);
         await pumpYo(tester, f);
         expect(hintFinder(), findsOneWidget);
         expect(find.byKey(const Key('install-hint')), findsOneWidget);
-        final all = textsOf(tester, find.byType(TabPage));
-        expect(all.take(3).toList(), ['Yo', hint, '5']);
-        expect(find.byType(CoquiFlame), findsOneWidget);
-        // a card as v=39 draws them: white, 16 px corners
-        final box = tester.widget<Container>(
-          find
-              .descendant(
-                of: find.byKey(const Key('install-hint')),
-                matching: find.byType(Container),
-              )
-              .first,
+        final all = yoTexts(tester);
+        expect(all.take(3).toList(), ['Me', 'How Coquí works', hint]);
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('install-hint')),
+            matching: find.byType(NocheCard),
+          ),
+          findsOneWidget,
         );
-        expect((box.decoration! as BoxDecoration).color, CoquiColors.card);
       },
     );
 
@@ -207,15 +215,10 @@ void main() {
       (tester) async {
         final f = fixture(seed: 'curso', ios: true);
         await pumpYo(tester, f);
-        await tester.tap(
-          find.descendant(
-            of: find.byKey(const Key('install-hint')),
-            matching: find.byType(CoquiCloseButton),
-          ),
-        );
+        await tester.tap(find.byKey(const Key('install-hint-close')));
         await settle(tester);
         expect(hintFinder(), findsNothing);
-        f.progress.addMinutes(1); // the page draws again
+        f.progress.addMinutes(1);
         await settle(tester);
         expect(hintFinder(), findsNothing);
       },
@@ -233,7 +236,6 @@ void main() {
         expect(f.spaces['yo']!.values, hasLength(1));
         expect(f.progress.export(), before);
         expect(f.progress.saves, saves);
-        // the app starts again on what was kept
         final again = f.reload();
         await pumpYo(tester, again);
         expect(hintFinder(), findsNothing);
