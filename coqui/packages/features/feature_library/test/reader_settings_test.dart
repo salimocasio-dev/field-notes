@@ -380,13 +380,16 @@ void main() {
           expect(tester.getSize(tileFinder).height, 80);
         }
 
-        // Switch to Atkinson -> body style changes fontFamily from Literata to Atkinson.
+        // Switch to Atkinson -> body style changes fontFamily from Literata to Atkinson
+        // while preserving NocheType.body's own weight.
         final literataFamily = _firstBodyTextStyle(tester).fontFamily;
+        expect(_firstBodyTextStyle(tester).fontWeight, FontWeight.w400);
         await tester.tap(find.bySemanticsLabel('Atkinson'));
         await settle(tester);
         final atkinsonStyle = _firstBodyTextStyle(tester);
         expect(atkinsonStyle.fontFamily, NocheType.body.fontFamily);
         expect(atkinsonStyle.fontFamily, isNot(literataFamily));
+        expect(atkinsonStyle.fontWeight, NocheType.body.fontWeight);
         expect(
           ReaderSettings.loadFrom(services.storage('leer')).font,
           ReaderFont.atkinson,
@@ -408,6 +411,7 @@ void main() {
             lexendSemantics.flagsCollection.isEnabled,
             ui.Tristate.isFalse,
           );
+          expect(lexendSemantics.hint, isNotEmpty);
           await tester.tap(find.bySemanticsLabel('Lexend'));
           await settle(tester);
           expect(
@@ -896,6 +900,85 @@ void main() {
         // Let final clip finish cleanly.
         await tester.pump(const Duration(milliseconds: 700));
         await settle(tester);
+      },
+    );
+
+    testWidgets(
+      'paused narration does not override current page anchor when changing text size',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final filler = List.filled(
+          18,
+          'Caminamos despacio por la orilla del mar escuchando las olas.',
+        ).join(' ');
+        final course = TestCourse(
+          books: {
+            'narr-pause': Book(
+              id: 'narr-pause',
+              title: 'Pausa',
+              readable: true,
+              pages: [
+                BookPage(image: 'img/1.png', clips: ['p1']),
+                BookPage(image: 'img/2.png', clips: ['p2']),
+              ],
+            ),
+          },
+          stories: {
+            'narr-pause': {
+              'title': 'Pausa',
+              'clips': {
+                'p1': line('narr', 'Primera frase corta.'),
+                'p2': line('narr', filler),
+              },
+            },
+          },
+          recorded: {'p1', 'p2'},
+        );
+        final clips = TimedClips(length: const Duration(seconds: 5));
+        final services = fakeServices(course: course, clips: clips);
+        await const ReaderSettings(step: 6).saveTo(services.storage('leer'));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(services: services, id: 'narr-pause'),
+          ),
+        );
+        await settle(tester);
+        expect(find.textContaining('1 / '), findsOneWidget);
+
+        // Start playback on page 1, pause, turn to page 2, then increase text size:
+        // repagination keeps page 2's reading anchor instead of jumping back to page 1.
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        await tester.tap(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.pause)),
+        );
+        await settle(tester);
+
+        await tester.fling(
+          find.byType(ReaderPageView),
+          const Offset(-300, 0),
+          800,
+        );
+        await settle(tester);
+        expect(find.textContaining('2 / '), findsOneWidget);
+
+        await _openSettingsSheet(tester);
+        await tester.tap(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.largerText)),
+        );
+        await settle(tester);
+        await tester.tap(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.closeTextAndPage)),
+        );
+        await tester.pumpAndSettle();
+        expect(find.textContaining('1 / '), findsNothing);
       },
     );
   });

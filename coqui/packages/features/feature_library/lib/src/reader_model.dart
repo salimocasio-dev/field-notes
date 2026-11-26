@@ -227,9 +227,10 @@ class ReaderSettings {
     final lineHeight = language.script == 'Arab'
         ? ((fontSize * 1.7) / 4).round() * 4.0 * spacing.multiplier
         : bodyLineHeight;
-    final weight = language.script == 'Arab'
-        ? adapted.fontWeight
-        : FontWeight.w400;
+    final weight =
+        activeFont == ReaderFont.literata && language.script != 'Arab'
+        ? FontWeight.w400
+        : adapted.fontWeight;
     return adapted.copyWith(
       fontSize: fontSize,
       height: lineHeight / fontSize,

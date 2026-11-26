@@ -237,7 +237,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     _lastPaginatedSettings = _settings;
     _pages = newPages;
 
-    final activeSentencePage = _activeSentenceId == null || newPages.isEmpty
+    final activeSentencePage =
+        !_playing || _activeSentenceId == null || newPages.isEmpty
         ? null
         : _recordedSentences()
               .where((e) => e.sentence.id == _activeSentenceId)

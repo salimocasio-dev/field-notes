@@ -128,6 +128,9 @@ class ReaderSettingsSheet extends StatelessWidget {
                   font: ReaderFont.lexend,
                   name: 'Lexend',
                   selected: activeFont == ReaderFont.lexend,
+                  semanticHint: ReaderSettings.lexendAvailable
+                      ? null
+                      : 'Unavailable until Lexend font style is added',
                   // Disabled until coqui_ui exposes NocheType.bookBodyLexend
                   // (coqui/requests/113-feature-library-needs-coqui-ui-reader-font-styles.md).
                   onTap: ReaderSettings.lexendAvailable
@@ -255,12 +258,14 @@ class _FontTile extends StatelessWidget {
     required this.name,
     required this.selected,
     required this.onTap,
+    this.semanticHint,
   });
 
   final ReaderFont font;
   final String name;
   final bool selected;
   final VoidCallback? onTap;
+  final String? semanticHint;
 
   @override
   Widget build(BuildContext context) {
@@ -268,6 +273,7 @@ class _FontTile extends StatelessWidget {
     final sampleColor = enabled ? NocheColors.text : NocheColors.label;
     return _RadioOption(
       semanticLabel: name,
+      semanticHint: semanticHint,
       selected: selected,
       onTap: onTap,
       builder: (context, pressed) => Transform.scale(
@@ -528,12 +534,14 @@ class _PageColorPill extends StatelessWidget {
 class _RadioOption extends StatefulWidget {
   const _RadioOption({
     required this.semanticLabel,
+    this.semanticHint,
     required this.selected,
     required this.onTap,
     required this.builder,
   });
 
   final String semanticLabel;
+  final String? semanticHint;
   final bool selected;
   final VoidCallback? onTap;
   final Widget Function(BuildContext context, bool pressed) builder;
@@ -558,6 +566,7 @@ class _RadioOptionState extends State<_RadioOption> {
       inMutuallyExclusiveGroup: true,
       checked: widget.selected,
       label: widget.semanticLabel,
+      hint: widget.semanticHint,
       onTap: widget.onTap,
       child: MouseRegion(
         cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
