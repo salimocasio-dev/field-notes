@@ -27,6 +27,7 @@ import 'package:feature_story/src/runner/observer.dart';
 import 'package:feature_story/src/runner/pending.dart';
 import 'package:feature_story/src/runner/renderer.dart';
 import 'package:feature_story/src/runner/speech_session.dart';
+import 'package:feature_story/src/runner/split_story.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/runner/timers.dart';
@@ -188,6 +189,8 @@ class StoryRunner implements SceneHost {
   StoryRunner({
     required this.storyId,
     required Map<String, dynamic> story,
+    Map<String, dynamic>? lines,
+    this.wordTable = const {},
     required this.E,
     required this.course,
     required this.clips,
@@ -206,7 +209,12 @@ class StoryRunner implements SceneHost {
     this.startFrog,
     this.frogShadow = true,
   }) : // `S._lost` is written on the story (juego.js: `S._lost=W.lost`): on a copy, the catalog's stays as it is
-       S = Map<String, dynamic>.of(story),
+       S = assembleStory(
+         story,
+         lines: lines,
+         wordTable: wordTable,
+         expectedLang: lines != null ? course.language.code : null,
+       ),
        timers = timers ?? StoryTimers(),
        renderer = renderer ?? HeadlessRenderer(),
        obs = observer,
@@ -226,6 +234,9 @@ class StoryRunner implements SceneHost {
   final String storyId;
   @override
   final Map<String, dynamic> S;
+
+  /// Per-language ID-to-word fallback table (`lines/<lang>/words.json`).
+  final Map<String, String> wordTable;
 
   /// The scene (juego.js: `E`).
   final Scene E;

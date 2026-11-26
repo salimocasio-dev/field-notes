@@ -402,10 +402,20 @@ extension _Steps on StoryRunner {
     V['x'] = me.got;
     if (!OIR && !jsTruthy(st['libre'])) {
       final w0 = subS(jsTruthy(st['tests']) ? st['tests'] : pick);
-      final palabras = S['palabras'];
-      final w = palabras is Map && jsTruthy(palabras[w0])
-          ? palabras[w0] as String
-          : w0;
+      final rawPalabras = S['palabras'];
+      final storyPalabras = rawPalabras is Map<String, dynamic>
+          ? rawPalabras
+          : rawPalabras is Map
+          ? <String, dynamic>{
+              for (final e in rawPalabras.entries)
+                if (e.key is String) e.key as String: e.value,
+            }
+          : null;
+      final w = resolveStoryWord(
+        w0,
+        storyPalabras: storyPalabras,
+        wordTable: wordTable,
+      );
       if (w != '-') {
         LOG.add(
           Decision(

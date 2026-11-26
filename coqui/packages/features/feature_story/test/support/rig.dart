@@ -188,6 +188,8 @@ class Rig {
   /// Makes a rig for [story]. [stub] switches the stub recogniser on; [open] are the words open for speaking.
   static Future<Rig> make(
     Map<String, dynamic> story, {
+    Map<String, dynamic>? lines,
+    Map<String, String> wordTable = const {},
     StandInScene? scene,
     TestCourse? course,
     TestProgress? progress,
@@ -217,6 +219,8 @@ class Rig {
     final runner = StoryRunner(
       storyId: story['id'] as String,
       story: story,
+      lines: lines,
+      wordTable: wordTable,
       E: sc,
       course: c,
       clips: player,
