@@ -86,18 +86,51 @@ def _historia_cuentos_has_changes(cwd: str | None = None) -> bool:
     return bool(_changed_cuentos_paths(cwd))
 
 
+def _read_pathspec_file(
+    pathspec_file: str,
+    git_cwd: str | None,
+    nul_delimited: bool = False,
+) -> list[str] | None:
+    """Read pathspecs from a file, returning None if stdin (`-`) or unreadable (caller fails closed)."""
+    if pathspec_file == "-":
+        return None
+    effective_cwd = git_cwd or os.getcwd()
+    full_path = (
+        pathspec_file
+        if os.path.isabs(pathspec_file)
+        else os.path.join(effective_cwd, pathspec_file)
+    )
+    try:
+        with open(full_path, "r", encoding="utf-8", errors="replace") as f:
+            raw = f.read()
+    except Exception:
+        return None
+    if nul_delimited:
+        return [p for p in raw.split("\0") if p]
+    return [line for line in raw.splitlines() if line]
+
+
 def _git_add_dry_run_touches_cuentos(
     paths: list[str],
     git_cwd: str | None,
     has_all_flag: bool = False,
+    pathspec_file: str | None = None,
+    pathspec_file_nul: bool = False,
 ) -> bool:
     """Use Git's own pathspec engine (`git add --dry-run`) to detect cuentos matches."""
-    if not paths:
+    if not paths and not pathspec_file:
         return False
+    if pathspec_file == "-":
+        return True
     cmd = ["git", "add", "--dry-run"]
     if has_all_flag:
         cmd.append("-A")
-    cmd += ["--"] + paths
+    if pathspec_file:
+        cmd.append(f"--pathspec-from-file={pathspec_file}")
+        if pathspec_file_nul:
+            cmd.append("--pathspec-file-nul")
+    if paths:
+        cmd += ["--"] + paths
     try:
         res = subprocess.run(
             cmd,
@@ -111,7 +144,8 @@ def _git_add_dry_run_touches_cuentos(
             if re.search(r"(?:^|['\"/\s])historia[/\\]cuentos(?:[/\\]|['\"\s]|$)", line):
                 return True
     except Exception:
-        pass
+        if pathspec_file:
+            return True
     return False
 
 
@@ -412,10 +446,17 @@ def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = Non
         if subcmd == "add":
             has_all_flag = False
             paths: list[str] = []
+            pathspec_file: str | None = None
+            pathspec_file_nul = False
+            expect_pathspec_file = False
             after_double_dash = False
             skip_next = False
-            value_flags = {"--pathspec-from-file", "--chmod"}
+            value_flags = {"--chmod"}
             for tok in rest:
+                if expect_pathspec_file:
+                    pathspec_file = tok
+                    expect_pathspec_file = False
+                    continue
                 if skip_next:
                     skip_next = False
                     continue
@@ -425,15 +466,24 @@ def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = Non
                 if tok == "--":
                     after_double_dash = True
                     continue
+                if tok == "--pathspec-from-file":
+                    expect_pathspec_file = True
+                    continue
+                if tok.startswith("--pathspec-from-file="):
+                    pathspec_file = tok.split("=", 1)[1]
+                    continue
+                if tok == "--pathspec-file-nul":
+                    pathspec_file_nul = True
+                    continue
                 if tok in value_flags:
                     skip_next = True
                     continue
-                if tok in ("-A", "--all", "-u", "--update"):
+                if tok in ("-A", "--all", "-u", "--update", "-p", "--patch", "-i", "--interactive"):
                     has_all_flag = True
                     continue
                 if tok.startswith("-") and not tok.startswith("--"):
                     flags = tok[1:]
-                    if "A" in flags or "u" in flags:
+                    if any(ch in flags for ch in ("A", "u", "p", "i")):
                         has_all_flag = True
                     continue
                 if tok.startswith("--"):
@@ -443,14 +493,31 @@ def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = Non
             changed_cuentos = _changed_cuentos_paths(git_cwd)
             if not changed_cuentos:
                 continue
+            if expect_pathspec_file:
+                return True
+            effective_paths = list(paths)
+            if pathspec_file is not None:
+                file_paths = _read_pathspec_file(
+                    pathspec_file, git_cwd, nul_delimited=pathspec_file_nul
+                )
+                if file_paths is None:
+                    # Stdin (`-`) or unreadable pathspec file: fail closed while cuentos has changes.
+                    return True
+                effective_paths.extend(file_paths)
             repo_root = _repo_toplevel(git_cwd)
             covers_cuentos = (
-                (has_all_flag and not paths)
+                (has_all_flag and not effective_paths and pathspec_file is None)
                 or any(
                     _path_covers_cuentos(p, git_cwd, repo_root, changed_paths=changed_cuentos)
-                    for p in paths
+                    for p in effective_paths
                 )
-                or _git_add_dry_run_touches_cuentos(paths, git_cwd, has_all_flag=has_all_flag)
+                or _git_add_dry_run_touches_cuentos(
+                    paths,
+                    git_cwd,
+                    has_all_flag=has_all_flag,
+                    pathspec_file=pathspec_file,
+                    pathspec_file_nul=pathspec_file_nul,
+                )
             )
             if covers_cuentos:
                 return True
