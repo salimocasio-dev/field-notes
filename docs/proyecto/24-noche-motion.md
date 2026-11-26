@@ -59,6 +59,18 @@ One class in coqui_ui, `NocheMotion` (story N8.1). No `Duration(` and no `Curves
 | `pressScale` | 0.97 (0.94 for the round discs: mic, play, Map) | the thing touched |
 | `pressDim` | 10% darker | the thing touched |
 
+**Waits.** A wait is the time before a step starts. It is never written as a number where it is used.
+
+| Wait | Value | Used for |
+| :---- | :---- | :---- |
+| `followAfter` | 60 ms | new content starts this long after the old starts to fade (`NocheFollow`, a card changing form) |
+| `swapAfter` | 100 ms | a sheet's new content starts this long after the old starts to fade |
+| `rowsAfter` | 120 ms | a screen's or a sheet's rows start this long after it starts to arrive |
+| `lockHold` | 1400 ms | a locked thing keeps its answer this long |
+
+- These four are in `NocheMotion`, with the tokens.
+- A wait that belongs to one screen (the 300 ms before the loading dots, the 600 ms before the coquí sets off to a new place, and every other wait a story names) is a named constant in that package's own `lib/src/motion.dart`, made with `NocheMotion.ms(<n>)`. That file is the only place the package calls it. So every wait of a feature can be read in one file, and the grep above still finds no literal.
+
 No bounce, no overshoot and no spring anywhere in the app's own interface. The coquí's hop on the map is the pixel world's and keeps its arc.
 
 ### 1.3 The nine rules
@@ -77,7 +89,7 @@ No bounce, no overshoot and no spring anywhere in the app's own interface. The c
 
 When the platform asks for reduced motion (`MediaQuery.disableAnimationsOf`, already read into `Services.reduceMotion`):
 
-- Every move becomes a `quick` fade in place. Nothing travels, nothing staggers, nothing scales.
+- Every move becomes a `quick` fade in place. Nothing travels, nothing staggers (rows arrive together and the orange action with them), nothing scales.
 - Nothing loops. The level bars stand still at a middle height, the dots stand still.
 - The coquí is placed at once (the app already does this).
 - Each board's `<style>` ends with a `prefers-reduced-motion` block that says what that screen does.
@@ -137,7 +149,7 @@ Everything in the app that changes when the learner picks something moves by the
 - `docs/proyecto/noche/` holds the 15 files of the list below, each with a PNG of it at rest beside it (390 by 844; the rules board 808 by 1070).
 - This page is in the repo as `docs/proyecto/24-noche-motion.md`.
 - The 14 videos are in a place every agent can open, and this page says where. They are not in the repo unless Salim says so (together they are about 77 MB).
-- One `type:epic` issue for N8, with stories N8.1 to N8.16 as sub-issues, posted with the labels each story lists. The issue number of each is written next to it on this page.
+- One `type:epic` issue for N8, with stories N8.1 to N8.16 as sub-issues. Each story is posted with `type:story`, the agent and lane labels it lists, and a status: `status:ready` if everything it waits for is merged (N8.1 today), `status:blocked` if not. The issue number of each is written next to it on this page.
 - Page 22 gets one line under "Part 3. The epics" pointing here.
 
 **The files**
@@ -170,8 +182,8 @@ Everything in the app that changes when the learner picks something moves by the
 
 **What to build**
 
-- `NocheMotion` in `lib/src/noche_motion.dart`, exported from the package: the durations, curves and distances of Part 1.2, with exactly those names and values.
-- `NocheMotion.of(context)`: the same values, or their reduced form (Part 1.4) when `MediaQuery.disableAnimationsOf(context)` is true: every duration `quick`, every distance 0, `pressScale` 1.0 (the thing touched still dims, since that is a change in place), `loops` false.
+- `NocheMotion` in `lib/src/noche_motion.dart`, exported from the package: the durations, curves, distances and the four waits of Part 1.2, with exactly those names and values, and `NocheMotion.ms(int)` for a feature's own waits.
+- `NocheMotion.of(context)`: the same values, or their reduced form (Part 1.4) when `MediaQuery.disableAnimationsOf(context)` is true: every move's duration `quick`; `stagger`, `nextDelay` and `hop` zero; every distance 0; `pressScale` 1.0 (the thing touched still dims, since that is a change in place); `loops` false. The waits keep their values, so steps still come in order.
 - `Pressable` (`pressable.dart`) gives its child rule 1: scale to `pressScale` and dim in `press`, back in `pressBack`. A parameter picks the disc scale.
 - Every duration and curve now written in coqui_ui (`fades.dart`, `sheet.dart`, `lesson_frame.dart`, `noche_chrome.dart`, `noche_controls.dart`, `cards.dart`, `game_tiles.dart`) reads from `NocheMotion`. No behaviour changes in this story except the values.
 
@@ -198,9 +210,9 @@ Each piece of N1.2 and N1.3 gets its motion, inside the piece. A feature gets it
 | :---- | :---- |
 | `NocheTabBar` | One pill (48 by 28, `line` fill) behind the icons. It slides to the chosen tab in `move` on `travel`. Going to Map it slides under the disc, shrinks to half and fades in `quick`; leaving Map it comes out the same way. Label colour changes in `quick`; the weight changes at once. Icons and the disc take rule 1. |
 | `NocheSegmented` | One thumb (text fill) slides in `move` on `travel`. Label colours change in `quick`. |
-| `NochePill` in a group (a new `NochePillGroup`) | One text-fill mark slides behind the pills from the old one to the new one, changing its left edge and its width in `move` on `travel`. Text colours change in `quick`. |
+| `NochePill` in a group (a new `NochePillGroup`) | One text-fill mark slides behind the pills from the old one to the new one, changing its start edge and its width in `move` on `travel`. Text colours change in `quick`. |
 | `NocheSwitchRow` | The knob travels in `move` on `travel`; the track's colour changes in `quick`. |
-| `NocheSheet` (and `showNocheSheet`) | Up in `pageIn` on `enter`, down in `pageOut` on `exit`. The scrim fades in `move` and out in `pageOut`. Its rows rise by `row`, `stagger` apart, starting 120 ms after it starts. A sheet can swap its content in place (old fades in `quick`, new fades in `move` after 100 ms) without changing its height: used for a wait. |
+| `NocheSheet` (and `showNocheSheet`) | Up in `pageIn` on `enter`, down in `pageOut` on `exit`. The scrim fades in `move` and out in `pageOut`. Its rows rise by `row`, `stagger` apart, starting `rowsAfter` after it starts. A sheet can swap its content in place (old fades in `quick`, new fades in `move` after `swapAfter`) without changing its height: used while something is being made. |
 | `NocheDashes` | A dash that becomes done fills from its start in `move` on `travel`. |
 | `NocheStageBar`, `NocheProgressBar` | `animateFrom`: grows from that fraction to its value in `settle` on `enter`, once. |
 | `NocheBarChart` | On first build its bars grow from zero in `settle` on `enter`, `stagger` apart, the first five only. |
@@ -212,9 +224,9 @@ New pieces:
 | Piece | What it is |
 | :---- | :---- |
 | `NocheArrive` | Children rise by `row` and fade in over `move` on `enter`, `stagger` apart, the first five only; a `next` child lands `nextDelay` after the last. Takes a start delay. |
-| `NocheFollow` | Shows one child for a key. When the key changes, the old child fades out in `press`, the new one comes in from the side given (start or end) by a distance given (`tab` or `page`), in `move` on `enter`, after 60 ms. |
+| `NocheFollow` | Shows one child for a key. When the key changes, the old child fades out in `press`, the new one comes in from the side given (start or end) by a distance given (`tab` or `page`), in `move` on `enter`, after `followAfter`. |
 | `NocheWindow` | Rule 5. A clipped window on a `PixelView` picture with a rect, a corner radius and the picture's offset, all three animated together in `pageIn` (or `pageOut`) on `enter`. The picture's scale never changes. |
-| `NocheQuietLock` | Rule 7 for locked things: on tap the dashed outline turns solid in `press` and the reason text goes from label to text colour; both return after 1.4 s over `move`. |
+| `NocheQuietLock` | Rule 7 for locked things: on tap the dashed outline turns solid in `press` and the reason text goes from label to text colour; both return after `lockHold` over `move`. |
 | `NocheLtr` | Keeps the app's own English left to right inside a right-to-left screen (Part 1.5). |
 
 **Done when**
@@ -532,7 +544,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 - **A page turn:** the page's text is in a `NocheFollow` with distance `page`. The page number changes in place; the progress bar's fill changes in `move` on `travel`. A swipe turns the page the same way.
 - **Listening:** the sentence being read has the lit fill; when the voice moves on the old one loses it and the new one gets it, both in `quick`. At the end of a page it turns by itself and the first sentence is lit as it arrives. The play disc's icon swaps play and pause by a `quick` fade.
-- **A word** (N5.1): its fill and text colour change in `quick`; its bubble rises by `row` and fades in over `quick`; it leaves in `press`. The bubble stays inside the page: centred on the word, or tied to the word's start or end when it would cross the page's edge.
+- **A word** (N5.1): its fill and text colour change in `quick`; its bubble rises by `row` and fades in over `quick`; it leaves in `press`. The bubble holds what N5.1 gives it and nothing more: a speaker, the word, one dot per stage. No translation, ever (repo-root `AGENTS.md`, guardrail 5). The bubble stays inside the page: centred on the word, or tied to the word's start or end when it would cross the page's edge.
 
 **Done when**
 
