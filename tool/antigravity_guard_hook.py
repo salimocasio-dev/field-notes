@@ -51,11 +51,18 @@ def _repo_toplevel(cwd: str | None = None) -> str | None:
     return None
 
 
-def _changed_cuentos_paths(cwd: str | None = None) -> list[str]:
-    """Return repo-relative paths with uncommitted changes under historia/cuentos/."""
+def _changed_cuentos_paths(
+    cwd: str | None = None,
+    include_ignored: bool = False,
+) -> list[str]:
+    """Return repo-relative paths with uncommitted (and optionally ignored) changes under historia/cuentos/."""
     try:
+        cmd = ["git", "status", "--porcelain", "-z", "-uall"]
+        if include_ignored:
+            cmd.append("--ignored=matching")
+        cmd += ["--", ":(top)historia/cuentos"]
         res = subprocess.run(
-            ["git", "status", "--porcelain", "-z", "-uall", "--", ":(top)historia/cuentos"],
+            cmd,
             cwd=cwd or None,
             capture_output=True,
             text=True,
@@ -114,6 +121,7 @@ def _git_add_dry_run_touches_cuentos(
     paths: list[str],
     git_cwd: str | None,
     has_all_flag: bool = False,
+    has_force_flag: bool = False,
     pathspec_file: str | None = None,
     pathspec_file_nul: bool = False,
 ) -> bool:
@@ -125,6 +133,8 @@ def _git_add_dry_run_touches_cuentos(
     cmd = ["git", "add", "--dry-run"]
     if has_all_flag:
         cmd.append("-A")
+    if has_force_flag:
+        cmd.append("-f")
     if pathspec_file:
         cmd.append(f"--pathspec-from-file={pathspec_file}")
         if pathspec_file_nul:
@@ -445,6 +455,7 @@ def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = Non
         subcmd, rest, git_cwd = _parse_git_segment(tokens, current_cwd)
         if subcmd == "add":
             has_all_flag = False
+            has_force_flag = False
             paths: list[str] = []
             pathspec_file: str | None = None
             pathspec_file_nul = False
@@ -478,11 +489,16 @@ def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = Non
                 if tok in value_flags:
                     skip_next = True
                     continue
+                if tok in ("-f", "--force"):
+                    has_force_flag = True
+                    continue
                 if tok in ("-A", "--all", "-u", "--update", "-p", "--patch", "-i", "--interactive"):
                     has_all_flag = True
                     continue
                 if tok.startswith("-") and not tok.startswith("--"):
                     flags = tok[1:]
+                    if "f" in flags:
+                        has_force_flag = True
                     if any(ch in flags for ch in ("A", "u", "p", "i")):
                         has_all_flag = True
                     continue
@@ -490,7 +506,7 @@ def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = Non
                     continue
                 paths.append(tok)
 
-            changed_cuentos = _changed_cuentos_paths(git_cwd)
+            changed_cuentos = _changed_cuentos_paths(git_cwd, include_ignored=has_force_flag)
             if not changed_cuentos:
                 continue
             if expect_pathspec_file:
@@ -515,6 +531,7 @@ def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = Non
                     paths,
                     git_cwd,
                     has_all_flag=has_all_flag,
+                    has_force_flag=has_force_flag,
                     pathspec_file=pathspec_file,
                     pathspec_file_nul=pathspec_file_nul,
                 )
