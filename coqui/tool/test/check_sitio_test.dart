@@ -570,6 +570,38 @@ const after = "https://evil.example/caught.js";
         expect(extracted, ['https://evil.example/caught.js']);
       },
     );
+
+    test('rejects case-insensitive schemes (HTTPS:// and Http://)', () {
+      _populateCleanBuild(
+        coquiRoot,
+        tmp,
+        extraMainJs: 'import("HTTPS://evil.example/a.js"); const b = "Http://evil.example/b.js";',
+      );
+      final violations =
+          _runNodeCheckBuiltJsHosts(checkSitioFile, tmp)['violations']
+              as List<dynamic>;
+      expect(violations, hasLength(2));
+      final urls = violations.map((v) => (v as Map)['url']).toSet();
+      expect(urls, {'HTTPS://evil.example/a.js', 'Http://evil.example/b.js'});
+    });
+
+    test('regex literals after control-flow parens do not swallow URLs, and obj.if(x) / 2 parses as division', () {
+      const js = r'''
+if (ok) /"/.test(x); const u = "https://evil.example/a.js";
+while (a && (b || c)) /'/.test(x); const v = "https://evil.example/b.js";
+for (;;) /"/.test(x); const w = "https://evil.example/c.js";
+const q = obj.if(x) / 2; const d = "https://evil.example/d.js";
+if (obj.if(x) / 2 > 0) /"/.test(y); const e = "https://evil.example/e.js";
+''';
+      final extracted = _extractUrlsViaArg(checkSitioFile, js);
+      expect(extracted, [
+        'https://evil.example/a.js',
+        'https://evil.example/b.js',
+        'https://evil.example/c.js',
+        'https://evil.example/d.js',
+        'https://evil.example/e.js',
+      ]);
+    });
   });
 
   group('CLI --static-only smoke tests', () {

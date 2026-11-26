@@ -104,6 +104,7 @@ const REGEX_PRECEDING_KEYWORDS = new Set([
   'return', 'case', 'throw', 'typeof', 'void', 'delete',
   'in', 'instanceof', 'new', 'of', 'yield', 'await', 'else', 'do',
 ]);
+const CONTROL_FLOW_PARENS = new Set(['if', 'while', 'for', 'with']);
 const REGEX_PRECEDING_PUNCT = new Set([
   '=', '(', ',', '[', '{', ':', ';', '!', '&', '|', '?', '+', '-', '*', '%', '^', '~', '<', '>',
 ]);
@@ -172,8 +173,10 @@ function isIdentPart(ch) {
 export function extractJsStringLiterals(src) {
   const literals = [];
   const templateStack = [];
+  const parenStack = [];
   let canPrecedeRegex = true;
   let prevWasDot = false;
+  let lastWord = '';
   let i = 0;
 
   const scanTemplateChunk = () => {
@@ -185,6 +188,7 @@ export function extractJsStringLiterals(src) {
         i++;
         canPrecedeRegex = false;
         prevWasDot = false;
+        lastWord = '';
         return;
       }
       if (ch === '$' && src[i + 1] === '{') {
@@ -193,6 +197,7 @@ export function extractJsStringLiterals(src) {
         templateStack.push(0);
         canPrecedeRegex = true;
         prevWasDot = false;
+        lastWord = '';
         return;
       }
       if (ch === '\\') {
@@ -261,6 +266,7 @@ export function extractJsStringLiterals(src) {
       }
       canPrecedeRegex = false;
       prevWasDot = false;
+      lastWord = '';
       continue;
     }
 
@@ -290,6 +296,7 @@ export function extractJsStringLiterals(src) {
       literals.push(buf);
       canPrecedeRegex = false;
       prevWasDot = false;
+      lastWord = '';
       continue;
     }
 
@@ -297,6 +304,24 @@ export function extractJsStringLiterals(src) {
     if (ch === '`') {
       i++;
       scanTemplateChunk();
+      continue;
+    }
+
+    // Parentheses tracking for regex literals after control-flow parens
+    if (ch === '(') {
+      parenStack.push(CONTROL_FLOW_PARENS.has(lastWord) ? 'control' : 'expr');
+      lastWord = '';
+      prevWasDot = false;
+      canPrecedeRegex = true;
+      i++;
+      continue;
+    }
+    if (ch === ')') {
+      const kind = parenStack.pop();
+      canPrecedeRegex = kind === 'control';
+      lastWord = '';
+      prevWasDot = false;
+      i++;
       continue;
     }
 
@@ -308,6 +333,7 @@ export function extractJsStringLiterals(src) {
       i++;
       canPrecedeRegex = true;
       prevWasDot = false;
+      lastWord = '';
       continue;
     }
     if (ch === '}') {
@@ -323,6 +349,7 @@ export function extractJsStringLiterals(src) {
       i++;
       canPrecedeRegex = false;
       prevWasDot = false;
+      lastWord = '';
       continue;
     }
 
@@ -333,6 +360,7 @@ export function extractJsStringLiterals(src) {
       while (i < src.length && isIdentPart(src[i])) i++;
       const word = src.slice(start, i);
       canPrecedeRegex = !prevWasDot && REGEX_PRECEDING_KEYWORDS.has(word);
+      lastWord = prevWasDot ? '' : word;
       prevWasDot = false;
       continue;
     }
@@ -343,6 +371,7 @@ export function extractJsStringLiterals(src) {
       while (i < src.length && (isIdentPart(src[i]) || src[i] === '.')) i++;
       canPrecedeRegex = false;
       prevWasDot = false;
+      lastWord = '';
       continue;
     }
 
@@ -351,18 +380,20 @@ export function extractJsStringLiterals(src) {
       i += 2;
       canPrecedeRegex = false;
       prevWasDot = false;
+      lastWord = '';
       continue;
     }
 
     prevWasDot = ch === '.';
     canPrecedeRegex = REGEX_PRECEDING_PUNCT.has(ch);
+    lastWord = '';
     i++;
   }
 
   return literals;
 }
 
-const HTTP_URL_RE = /https?:\/\/[a-zA-Z0-9._-]+(?::\d+)?(?:\/[^\s"'`<>)}\],;]*)?/g;
+const HTTP_URL_RE = /https?:\/\/[a-zA-Z0-9._-]+(?::\d+)?(?:\/[^\s"'`<>)}\],;]*)?/gi;
 const PROTO_REL_URL_RE = /(?:^|[\s(["'])(\/\/[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+(?::\d+)?(?:\/[^\s"'`<>)}\],;]*)?)/g;
 
 export function extractExternalUrlsFromJs(src) {
