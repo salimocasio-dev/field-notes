@@ -8,7 +8,7 @@ import 'dart:js_interop_unsafe';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/coqui_platform.dart'
-    show CallStub, CallStubScript;
+    show CallStub, CallStubScript, CallToken, CallTokenSource;
 import 'package:coqui_platform/src/call/call_session.dart';
 import 'package:coqui_platform/src/web/el_conv.dart';
 import 'package:coqui_platform/src/web/web_platform.dart';
@@ -32,6 +32,29 @@ const _vars = {
   'words_heard': '',
 };
 
+class _FixedTokenSource implements CallTokenSource {
+  _FixedTokenSource(this.token);
+
+  final CallToken token;
+  int calls = 0;
+  CallBrief? lastBrief;
+  List<String>? lastWordsOpen;
+  List<String>? lastWordsHeard;
+
+  @override
+  Future<CallToken> fetchToken(
+    CallBrief brief, {
+    List<String> wordsOpen = const [],
+    List<String> wordsHeard = const [],
+  }) async {
+    calls++;
+    lastBrief = brief;
+    lastWordsOpen = wordsOpen;
+    lastWordsHeard = wordsHeard;
+    return token;
+  }
+}
+
 void _install(List<String> opts) {
   globalContext.delete('ELConv'.toJS);
   globalContext.delete('CallStub'.toJS);
@@ -47,9 +70,10 @@ void _install(List<String> opts) {
 Object? _js(String expr) =>
     globalContext.callMethod<JSAny?>('eval'.toJS, expr.toJS).dartify();
 
-ConvCallSession _session() => ConvCallSession(
+ConvCallSession _session({CallTokenSource? tokenSource}) => ConvCallSession(
   library: JsConvLibrary(elevenLabsClientUrl),
   callsAllowed: true,
+  tokenSource: tokenSource,
 );
 
 String _show(CallEvent e) => switch (e) {
@@ -67,14 +91,14 @@ Future<void> _ms(int ms) => Future<void>.delayed(Duration(milliseconds: ms));
 void main() {
   tearDown(() => _js('window.CallStub&&(window.CallStub.ended=true),0'));
 
-  test('the call was started once, with the agent, websocket, no overrides, no signed URL, from the tap; the six variables', () async {
+  test('legacy no-token-source path: agentId, websocket, six dynamicVariables, no signedUrl/conversationToken/overrides', () async {
     _install(['manual']);
     final s = _session();
     unawaited(s.start(_brief, _vars));
     await _ms(10);
     expect(
       _js(
-        "(()=>{const o=CallStub.opts;return [o.agentId,o.connectionType,!o.overrides&&!o.signedUrl&&!o.conversationToken,Object.keys(o.dynamicVariables).join(','),o.dynamicVariables.minutes,o.dynamicVariables.opening,typeof o.clientTools.show_picture]})()",
+        "(()=>{const o=CallStub.opts;return [o.agentId,o.connectionType,!('overrides' in o)&&!('signedUrl' in o)&&!('conversationToken' in o),Object.keys(o.dynamicVariables).join(','),o.dynamicVariables.minutes,o.dynamicVariables.opening,typeof o.clientTools.show_picture]})()",
       ),
       [
         'agent_3301m795q3xtfpx8c99zc0s870vm',
@@ -86,6 +110,75 @@ void main() {
         'function',
       ],
     );
+  });
+
+  test('token-source signedUrl path (#249): passes signedUrl and websocket without agentId, dynamicVariables, conversationToken, or overrides', () async {
+    _install(['manual']);
+    const signedUrl = 'wss://call-api.example.com/v1/call/ws?ticket=tok_web_1';
+    final source = _FixedTokenSource(CallToken.signedUrl(signedUrl));
+    final s = _session(tokenSource: source);
+    final ev = <String>[];
+    s.events.listen((e) => ev.add(_show(e)));
+    final started = s.start(_brief, {
+      'place': 'La casa',
+      'words_open': 'hola, casa',
+      'words_heard': 'agua',
+    });
+    await _ms(10);
+    expect(source.calls, 1);
+    expect(source.lastBrief, _brief);
+    expect(source.lastWordsOpen, ['hola', 'casa']);
+    expect(source.lastWordsHeard, ['agua']);
+    expect(
+      _js(
+        "(()=>{const o=CallStub.opts;return [o.signedUrl,o.connectionType,!('agentId' in o),!('dynamicVariables' in o),!('conversationToken' in o),!('overrides' in o),typeof o.clientTools.show_picture]})()",
+      ),
+      [signedUrl, 'websocket', true, true, true, true, 'function'],
+    );
+    _js("CallStub.go('connect')");
+    await started;
+    expect(ev, ['Connected']);
+    await s.end();
+  });
+
+  test('token-source conversationToken path (#249): passes conversationToken and webrtc without agentId, dynamicVariables, signedUrl, or overrides', () async {
+    _install(['manual']);
+    const conversationToken = 'conv_tok_web_2';
+    final source = _FixedTokenSource(
+      CallToken.conversationToken(conversationToken),
+    );
+    final s = _session(tokenSource: source);
+    final started = s.start(_brief, _vars);
+    await _ms(10);
+    expect(source.calls, 1);
+    expect(
+      _js(
+        "(()=>{const o=CallStub.opts;return [o.conversationToken,o.connectionType,!('agentId' in o),!('dynamicVariables' in o),!('signedUrl' in o),!('overrides' in o),typeof o.clientTools.show_picture]})()",
+      ),
+      [conversationToken, 'webrtc', true, true, true, true, 'function'],
+    );
+    _js("CallStub.go('connect')");
+    await started;
+    await s.end();
+  });
+
+  test('createCallSession forwards tokenSource on web (#249)', () async {
+    _install(['manual']);
+    const signedUrl = 'wss://call-api.example.com/v1/call/ws?ticket=tok_web_3';
+    final source = _FixedTokenSource(CallToken.signedUrl(signedUrl));
+    final s = createCallSession(appInfo: createAppInfo(), tokenSource: source);
+    final started = s.start(_brief, _vars);
+    await _ms(10);
+    expect(source.calls, 1);
+    expect(
+      _js(
+        "(()=>{const o=CallStub.opts;return [o.signedUrl,o.connectionType,!('agentId' in o),!('dynamicVariables' in o)]})()",
+      ),
+      [signedUrl, 'websocket', true, true],
+    );
+    _js("CallStub.go('connect')");
+    await started;
+    await s.end();
   });
 
   test('custom non-Spanish CallBrief.agentId reaches JsConvLibrary.startSession (N2.5)', () async {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_platform/src/call/call_token.dart';
 import 'package:coqui_platform/src/call/conv.dart';
 
 /// The ElevenLabs client, self-hosted as a bundled web asset at the pinned
@@ -25,10 +26,12 @@ CallStartError callStartError(String name, String message) => CallStartError(
 );
 
 /// The live call, ported from llamada.js's connection: the library loaded once ahead (precarga),
-/// `startSession` with `brief.agentId`, `connectionType: "websocket"`, the six dynamic variables and the
-/// `show_picture` tool, and the session's callbacks as [CallEvent]s, in the order the client calls them:
-/// onConnect [Connected], onMessage [AgentLine] or [Heard] (role or source "user"), onModeChange [Mode],
-/// show_picture [Tool], onError [CallError], onDisconnect [Ended].
+/// `startSession` with either a server-minted [CallToken] (`signedUrl` or `conversationToken`,
+/// no `agentId` or client `dynamicVariables`, when [tokenSource] is provided) or the legacy
+/// `brief.agentId`, `connectionType: "websocket"`, and six dynamic variables (when [tokenSource]
+/// is null), plus the `show_picture` tool, and the session's callbacks as [CallEvent]s, in the
+/// order the client calls them: onConnect [Connected], onMessage [AgentLine] or [Heard] (role or
+/// source "user"), onModeChange [Mode], show_picture [Tool], onError [CallError], onDisconnect [Ended].
 ///
 /// [available]: false without a library (phone builds) or where calls are off; on the web false once a
 /// try to load the library has failed. Reading it starts the load (the old page loads it when Hablar
@@ -42,6 +45,7 @@ class ConvCallSession implements CallSession {
     required this.callsAllowed,
     this.beforeStart,
     this.afterCall,
+    this.tokenSource,
   });
 
   /// Null in a phone build.
@@ -53,6 +57,10 @@ class ConvCallSession implements CallSession {
 
   /// Runs once when the call that [beforeStart] began is over (order 19b: the sound context resumed).
   final void Function()? afterCall;
+
+  /// Optional call-token source (issue #249). When non-null, [start] fetches a short-lived
+  /// [CallToken] and omits `agentId` and client `dynamicVariables` from `startSession`.
+  final CallTokenSource? tokenSource;
   bool _suspended = false;
 
   void _resume() {
@@ -100,71 +108,107 @@ class ConvCallSession implements CallSession {
     } catch (_) {}
     _suspended = true;
     if (!await l.load()) {
-      _resume();
+      if (my == _run) _resume();
       throw const CallStartError(
         CallStartFailure.library,
         'The voice library did not load.',
       );
     }
     if (my != _run || _cancelled == my) return;
-    // llamada.js, inicia: {place, job, words_open, words_heard, minutes, opening}; job, minutes and opening
-    // are the place's call (CallBrief), the rest the caller's; anything else the caller gives goes too.
-    final vars = <String, String>{
-      'place': variables['place'] ?? '',
-      'job': brief.job,
-      'words_open': variables['words_open'] ?? '',
-      'words_heard': variables['words_heard'] ?? '',
-      'minutes': '${brief.minutes}',
-      'opening': brief.opening,
+
+    final clientTools = <String, Object? Function(Object? parameters)>{
+      'show_picture': (p) {
+        _emit(my, Tool('show_picture', p is Map ? _map(p) : {'picture': p}));
+        return 'shown';
+      },
     };
-    for (final e in variables.entries) {
-      vars.putIfAbsent(e.key, () => e.value);
+    void onConnect(Object? _) => _emit(my, const Connected());
+    void onDisconnect(Object? d) {
+      if (my == _run) _resume();
+      _emit(
+        my,
+        Ended(d is Map && d['reason'] is String ? d['reason'] as String : ''),
+      );
     }
+
+    void onError(Object? e) => _emit(my, CallError(_errorText(e)));
+    void onMessage(Object? m) {
+      if (m is! Map) return;
+      final text = m['message'] ?? m['text'];
+      if (text is! String || text.isEmpty) return;
+      final user = m['role'] == 'user' || m['source'] == 'user';
+      _emit(my, user ? Heard(text) : AgentLine(text));
+    }
+
+    void onModeChange(Object? m) {
+      final mode = m is Map ? m['mode'] : null;
+      if (mode is String) _emit(my, Mode(mode));
+    }
+
+    final ConvOptions options;
+    final source = tokenSource;
+    if (source != null) {
+      CallToken token;
+      try {
+        token = await source.fetchToken(
+          brief,
+          wordsOpen: _wordList(variables['words_open']),
+          wordsHeard: _wordList(variables['words_heard']),
+        );
+      } on CallStartError {
+        if (my == _run) _resume();
+        rethrow;
+      } catch (e) {
+        if (my == _run) _resume();
+        throw CallStartError(CallStartFailure.failed, '$e');
+      }
+      if (my != _run || _cancelled == my) return;
+      options = ConvOptions(
+        signedUrl: token.signedUrl,
+        conversationToken: token.conversationToken,
+        connectionType: token.connectionType,
+        clientTools: clientTools,
+        onConnect: onConnect,
+        onDisconnect: onDisconnect,
+        onError: onError,
+        onMessage: onMessage,
+        onModeChange: onModeChange,
+      );
+    } else {
+      // llamada.js, inicia: {place, job, words_open, words_heard, minutes, opening}; job, minutes and opening
+      // are the place's call (CallBrief), the rest the caller's; anything else the caller gives goes too.
+      final vars = <String, String>{
+        'place': variables['place'] ?? '',
+        'job': brief.job,
+        'words_open': variables['words_open'] ?? '',
+        'words_heard': variables['words_heard'] ?? '',
+        'minutes': '${brief.minutes}',
+        'opening': brief.opening,
+      };
+      for (final e in variables.entries) {
+        vars.putIfAbsent(e.key, () => e.value);
+      }
+      options = ConvOptions(
+        agentId: brief.agentId,
+        connectionType: 'websocket',
+        dynamicVariables: vars,
+        clientTools: clientTools,
+        onConnect: onConnect,
+        onDisconnect: onDisconnect,
+        onError: onError,
+        onMessage: onMessage,
+        onModeChange: onModeChange,
+      );
+    }
+
     Conv conv;
     try {
-      conv = await l.startSession(
-        ConvOptions(
-          agentId: brief.agentId,
-          connectionType: 'websocket',
-          dynamicVariables: vars,
-          clientTools: {
-            'show_picture': (p) {
-              _emit(
-                my,
-                Tool('show_picture', p is Map ? _map(p) : {'picture': p}),
-              );
-              return 'shown';
-            },
-          },
-          onConnect: (_) => _emit(my, const Connected()),
-          onDisconnect: (d) {
-            if (my == _run) _resume();
-            _emit(
-              my,
-              Ended(
-                d is Map && d['reason'] is String ? d['reason'] as String : '',
-              ),
-            );
-          },
-          onError: (e) => _emit(my, CallError(_errorText(e))),
-          onMessage: (m) {
-            if (m is! Map) return;
-            final text = m['message'] ?? m['text'];
-            if (text is! String || text.isEmpty) return;
-            final user = m['role'] == 'user' || m['source'] == 'user';
-            _emit(my, user ? Heard(text) : AgentLine(text));
-          },
-          onModeChange: (m) {
-            final mode = m is Map ? m['mode'] : null;
-            if (mode is String) _emit(my, Mode(mode));
-          },
-        ),
-      );
+      conv = await l.startSession(options);
     } on ConvStartError catch (e) {
-      _resume();
+      if (my == _run) _resume();
       throw callStartError(e.name, e.message);
     } catch (e) {
-      _resume();
+      if (my == _run) _resume();
       throw CallStartError(CallStartFailure.failed, '$e');
     }
     if (my != _run || _cancelled == my) {
@@ -175,6 +219,14 @@ class ConvCallSession implements CallSession {
       return;
     }
     _conv = conv;
+  }
+
+  static List<String> _wordList(String? raw) {
+    if (raw == null || raw.isEmpty) return const [];
+    return [
+      for (final part in raw.split(','))
+        if (part.trim().isNotEmpty) part.trim(),
+    ];
   }
 
   // llamada.js: String((e && e.message) || e || "")

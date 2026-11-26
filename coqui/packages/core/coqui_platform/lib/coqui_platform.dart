@@ -19,6 +19,8 @@ export 'package:coqui_platform/src/call/call_session.dart'
     show elevenLabsClientUrl;
 export 'package:coqui_platform/src/call/call_stub.dart'
     show CallStub, CallStubScript;
+export 'package:coqui_platform/src/call/call_token.dart'
+    show CallToken, CallTokenSource;
 export 'package:coqui_platform/src/info/app_info.dart'
     show coquiBuild, coquiCallsAllowed, iosAudioSessionType;
 export 'package:coqui_platform/src/io/io_platform.dart'

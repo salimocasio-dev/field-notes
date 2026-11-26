@@ -12,24 +12,73 @@ abstract interface class ConvLibrary {
   Future<Conv> startSession(ConvOptions options);
 }
 
-/// What the page passes to `startSession` (llamada.js, inicia). The callbacks get what the client gives,
-/// as Dart values (a Map for an object, a String, or null).
+/// What the page passes to `startSession` (llamada.js, inicia; issue #249 signed link / token).
+/// The callbacks get what the client gives, as Dart values (a Map for an object, a String, or null).
 class ConvOptions {
   ConvOptions({
-    required this.agentId,
+    this.agentId,
+    this.signedUrl,
+    this.conversationToken,
     required this.connectionType,
-    required this.dynamicVariables,
+    this.dynamicVariables,
     required this.clientTools,
     required this.onConnect,
     required this.onDisconnect,
     required this.onError,
     required this.onMessage,
     required this.onModeChange,
-  });
+  }) {
+    if (agentId != null && agentId!.trim().isEmpty) {
+      throw ArgumentError.value(agentId, 'agentId', 'Must not be empty.');
+    }
+    if (signedUrl != null && signedUrl!.trim().isEmpty) {
+      throw ArgumentError.value(signedUrl, 'signedUrl', 'Must not be empty.');
+    }
+    if (conversationToken != null && conversationToken!.trim().isEmpty) {
+      throw ArgumentError.value(
+        conversationToken,
+        'conversationToken',
+        'Must not be empty.',
+      );
+    }
+    final credentialCount =
+        (agentId != null ? 1 : 0) +
+        (signedUrl != null ? 1 : 0) +
+        (conversationToken != null ? 1 : 0);
+    if (credentialCount != 1) {
+      throw ArgumentError(
+        'Provide exactly one of agentId, signedUrl, or conversationToken.',
+      );
+    }
+    if ((signedUrl != null || conversationToken != null) &&
+        dynamicVariables != null) {
+      throw ArgumentError.value(
+        dynamicVariables,
+        'dynamicVariables',
+        'dynamicVariables must be omitted when using signedUrl or conversationToken.',
+      );
+    }
+    if (connectionType.trim().isEmpty) {
+      throw ArgumentError.value(
+        connectionType,
+        'connectionType',
+        'Must not be empty.',
+      );
+    }
+    if (signedUrl != null && connectionType != 'websocket') {
+      throw ArgumentError.value(
+        connectionType,
+        'connectionType',
+        'signedUrl requires connectionType "websocket".',
+      );
+    }
+  }
 
-  final String agentId;
+  final String? agentId;
+  final String? signedUrl;
+  final String? conversationToken;
   final String connectionType;
-  final Map<String, String> dynamicVariables;
+  final Map<String, String>? dynamicVariables;
 
   /// name -> the tool; what it returns is the tool's answer.
   final Map<String, Object? Function(Object? parameters)> clientTools;
