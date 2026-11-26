@@ -3,6 +3,7 @@
 library;
 
 import 'package:app/src/content.dart';
+import 'package:app/src/entitlements.dart';
 import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
 import 'package:app/src/scripted_speech.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/services.dart' show rootBundle;
 /// The platform of the running app, for the address switches [sw].
 AppPlatform realPlatform(AppSwitches sw) {
   final base = contentBaseOf(appBaseUri());
+  final info = createAppInfo();
   return AppPlatform(
     fetch: contentFetch(base, httpText),
     contentBase: base,
@@ -37,7 +39,10 @@ AppPlatform realPlatform(AppSwitches sw) {
           : null,
     ),
     haptics: createHaptics(),
-    info: createAppInfo(),
+    info: info,
+    entitlements: ReleaseEntitlements.preBilling(
+      callsAllowed: info.callsAllowed,
+    ),
     clock: const SystemClock(),
     historyBack: kIsWeb ? historyBack : null,
     previa: bundledPrevia(rootBundle),

@@ -324,10 +324,12 @@ class _CoquiAppState extends State<CoquiApp> {
       ),
       storage: l.storage.space,
       reduceMotion: reduce,
+      entitlements: p.entitlements,
     );
     final modules = coquiModules(
       switches: widget.switches,
       bookImageUrl: (path) => bookImageUrl(p.contentBase, path),
+      entitlements: p.entitlements,
       voiceTest: l.voiceTest,
     );
     _modules = modules;
