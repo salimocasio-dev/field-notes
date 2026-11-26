@@ -245,6 +245,51 @@ void main() {
     }
   }
 
+  test('adjacent body parts and face boxes resolve exact boundary pixels', () {
+    // Story 76: arms and hands share x = 108 and x = 186; exact boxes must win.
+    final s76 = _story('la-cabeza-y-los-brazos');
+    final scene76 = createSombrilla() as Sombrilla;
+    final host76 = StillHost(scene76);
+    host76.S = s76;
+    host76.W = {...host76.W, ...scene76.fresh(s76)};
+    final w76 = host76.W;
+    expect(scene76.hit(106, 123, w76), 'mano_izq');
+    expect(scene76.hit(107, 123, w76), 'mano_izq');
+    expect(scene76.hit(108, 123, w76), 'brazo_izq');
+    expect(scene76.hit(146, 123, w76), 'brazo_izq');
+    expect(scene76.hit(147, 123, w76), 'brazo_der');
+    expect(scene76.hit(185, 123, w76), 'brazo_der');
+    expect(scene76.hit(186, 123, w76), 'mano_der');
+    expect(scene76.hit(187, 123, w76), 'mano_der');
+    expect(scene76.hit(147, 115, w76), 'cabeza');
+
+    // Story 75: nariz and boca share y = 130 inside cara.
+    final s75 = _story('la-cara');
+    final scene75 = createSombrilla() as Sombrilla;
+    final host75 = StillHost(scene75);
+    host75.S = s75;
+    host75.W = {...host75.W, ...scene75.fresh(s75)};
+    final w75 = host75.W;
+    expect(scene75.hit(147, 129, w75), 'nariz');
+    expect(scene75.hit(147, 130, w75), 'boca');
+    expect(scene75.hit(131, 117, w75), 'ojo_izq');
+    expect(scene75.hit(163, 117, w75), 'ojo_der');
+    expect(scene75.hit(110, 110, w75), 'cara');
+
+    // Story 77: pies hits both individual foot boxes and never the gap between them.
+    final s77 = _story('me-duele');
+    final scene77 = createSombrilla() as Sombrilla;
+    final host77 = StillHost(scene77);
+    host77.S = s77;
+    host77.W = {...host77.W, ...scene77.fresh(s77)};
+    final w77 = host77.W;
+    expect(scene77.hit(126, 163, w77), 'pies');
+    expect(scene77.hit(167, 163, w77), 'pies');
+    expect(scene77.hit(147, 163, w77), isNot('pies'));
+    ((w77['gente'] as Map)['luis'] as Map)['vis'] = 0;
+    expect(scene77.hit(147, 163, w77), isNull);
+  });
+
   tearDownAll(() {
     expect(answered, containsAll(needs), reason: 'answered: $answered');
   });

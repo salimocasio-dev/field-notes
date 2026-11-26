@@ -40,6 +40,11 @@ List<Map<String, String>> sombrillaDrawsOf(Map<String, dynamic> story) {
       final name = v['draw'] as String;
       final ops = [for (final o in v['options'] as List) '$o'];
       final other = v['other'] as String?;
+      if (other != null && ops.length < 2) {
+        throw StateError(
+          'draw "$name" sets other "$other" with fewer than 2 options: $ops',
+        );
+      }
       return [
         for (final x in cur)
           for (final o in ops)
@@ -64,6 +69,12 @@ List<Map<String, String>> sombrillaDrawsOf(Map<String, dynamic> story) {
           if (yes.isNotEmpty) ...walk(v['then'], yes),
           if (no.isNotEmpty) ...walk(v['else'], no),
         ];
+      }
+      final draws = {for (final x in cur) ...x.keys};
+      if (draws.any(
+        (k) => RegExp('\\b${RegExp.escape(k)}\\b').hasMatch(cond),
+      )) {
+        throw StateError('unsupported if condition on drawn variable: "$cond"');
       }
       return cur;
     }
@@ -148,7 +159,7 @@ Future<List<Map<String, dynamic>>> playSombrillaSummaries(
   final id = story['id'] as String;
   final root = findRoot();
   final sheetText = File(
-    '${root.path}/docs/proyecto/pixel/sombrilla-sheet.json',
+    '${root.path}/coqui/packages/core/coqui_scenes/assets/sheets/sombrilla-sheet.json',
   ).readAsStringSync();
   final workers = math.min(
     jobs.length,
@@ -214,9 +225,6 @@ Map<String, dynamic> sombrillaSummary(
     'breaches': [
       for (final b in rules.breaches)
         {'at': b.at, 'rule': b.rule, 'what': b.what},
-    ],
-    'notes': [
-      for (final b in rules.notes) {'at': b.at, 'rule': b.rule, 'what': b.what},
     ],
   };
 }

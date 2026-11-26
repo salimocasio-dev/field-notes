@@ -59,17 +59,6 @@ void main() {
           r['pattern'] != r['decisionsPlayed'],
     );
     final breached = results.where((r) => (r['breaches'] as List).isNotEmpty);
-    final noted = <String, int>{};
-    for (final r in results) {
-      for (final n in r['notes'] as List) {
-        final k = '${r['story']}: ${n['rule']}: ${n['what']}';
-        noted[k] = (noted[k] ?? 0) + 1;
-      }
-    }
-    for (final e in noted.entries) {
-      // ignore: avoid_print
-      print('counted apart (${e.value} checks): ${e.key}');
-    }
     var checks = 0;
     for (final r in results) {
       checks += r['checks'] as int;

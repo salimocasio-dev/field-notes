@@ -1244,17 +1244,48 @@ class Sombrilla extends Escena implements SetScene, SetOverSprites {
 
   @override
   String? hit(num x, num y, Map<String, dynamic> w) {
-    final res = super.hit(x, y, w);
-    if (res == 'pies') {
-      // Only the two individual foot boxes answer for `pies` (sombrilla-sheet.json: `things.pies.boxes`).
-      final ok = _p
-          .boxesOf('pies')
-          .any(
-            (b) => x >= b[0] && x < b[0] + b[2] && y >= b[1] && y < b[1] + b[3],
-          );
-      return ok ? 'pies' : null;
+    bool inBox(List<num> b, num m) =>
+        x >= b[0] - m &&
+        x < b[0] + b[2] + m &&
+        y >= b[1] - m &&
+        y < b[1] + b[3] + m;
+
+    if (aveHit(x, y)) return 'pajaro';
+    final q = w['cq'] as Map<String, dynamic>;
+    if (jsTruthy(q['vis'])) {
+      final fb = host.frogBox(q);
+      if (x >= fb.x && x < fb.x + fb.w && y >= fb.y && y < fb.y + fb.h) {
+        return 'coqui';
+      }
     }
-    return res;
+
+    // Two-pass hit resolution: check exact boxes first (margin 0) so adjacent
+    // parts (`brazo_izq`/`mano_izq`, `brazo_der`/`mano_der`, `nariz`/`boca`)
+    // never steal pixels across shared boundaries, then apply margin slack.
+    // For `pies`, only its two individual foot boxes answer (`things.pies.boxes`).
+    final visible = <(Thing, List<List<num>>)>[];
+    for (final t in cosas) {
+      if (t.si != null && !t.si!(w)) continue;
+      final List<List<num>> boxes;
+      if (t.id == 'pies') {
+        boxes = _p.boxesOf('pies');
+      } else {
+        final b = box(t.id, w);
+        if (b == null) continue;
+        boxes = [b];
+      }
+      for (final b in boxes) {
+        if (inBox(b, 0)) return t.id;
+      }
+      visible.add((t, boxes));
+    }
+    for (final (t, boxes) in visible) {
+      final m = t.m ?? 3;
+      for (final b in boxes) {
+        if (inBox(b, m)) return t.id;
+      }
+    }
+    return null;
   }
 
   /* ---------- movement helpers ---------- */

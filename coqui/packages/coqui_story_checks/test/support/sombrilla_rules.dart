@@ -24,13 +24,15 @@ typedef SombrillaBreach = ({String at, String rule, String what});
 
 final double _t30 = math.tan(math.pi / 6);
 
-/// Watches a real La sombrilla while a story plays: [wrap] its acts, then read [breaches], [notes] and [checked].
+/// Watches a real La sombrilla while a story plays: [wrap] its acts, then read [breaches] and [checked].
 class SombrillaRules {
   SombrillaRules(this.scene) : _m = scene;
 
   final SetScene scene;
   final dynamic _m;
 
+  // Deterministic across Sombrilla instances: the baked set depends only on the
+  // pure sombrilla_set renderer and setKey (`hora-dibujo`).
   static final Map<String, Float32List> _zb = {};
   static SetBakes? _bakes;
 
@@ -42,7 +44,6 @@ class SombrillaRules {
   }();
 
   final List<SombrillaBreach> breaches = [];
-  final List<SombrillaBreach> notes = [];
   int checked = 0;
 
   void wrap() {
@@ -84,14 +85,7 @@ class SombrillaRules {
   List<List<int>>? _cachedFigBoxes;
   List<List<int>>? _cachedFeetBoxes;
 
-  static final Map<
-    String,
-    ({
-      List<({String rule, String what})> breaches,
-      List<({String rule, String what})> notes,
-    })
-  >
-  _frameCache = {};
+  static final Map<String, List<({String rule, String what})>> _frameCache = {};
 
   static const Set<String> _inViewTags = {
     'coqui',
@@ -123,16 +117,28 @@ class SombrillaRules {
     final story = (W['story'] is num) ? (W['story'] as num).toInt() : 75;
     final dibujo = (W['dibujo'] as String?) ?? 'circulo';
     final gente = (W['gente'] as Map?) ?? const {};
+    final cq = W['cq'] as Map?;
     final sig = StringBuffer()
       ..write(setKey)
       ..write('|')
       ..write(story)
       ..write('|')
-      ..write(W['perroSpot']);
+      ..write(dibujo)
+      ..write('|')
+      ..write(W['perroVis'])
+      ..write('|')
+      ..write(W['perroSpot'])
+      ..write('|')
+      ..write(cq?['vis'])
+      ..write('|')
+      ..write(cq?['spot']);
     for (final k in const ['abuela', 'luis', 'carmen']) {
+      final p = gente[k] as Map?;
       sig
         ..write('|')
-        ..write((gente[k] as Map?)?['spot']);
+        ..write(p?['vis'])
+        ..write(':')
+        ..write(p?['spot']);
     }
     for (final dynamic it in rawItems) {
       sig
@@ -152,17 +158,13 @@ class SombrillaRules {
     final key = sig.toString();
     final cached = _frameCache[key];
     if (cached != null) {
-      for (final b in cached.breaches) {
+      for (final b in cached) {
         breaches.add((at: at, rule: b.rule, what: b.what));
-      }
-      for (final n in cached.notes) {
-        notes.add((at: at, rule: n.rule, what: n.what));
       }
       return;
     }
 
     final localBreaches = <({String rule, String what})>[];
-    final localNotes = <({String rule, String what})>[];
     void addBreach(String rule, String what) {
       localBreaches.add((rule: rule, what: what));
       breaches.add((at: at, rule: rule, what: what));
@@ -493,6 +495,6 @@ class SombrillaRules {
       }
     }
 
-    _frameCache[key] = (breaches: localBreaches, notes: localNotes);
+    _frameCache[key] = localBreaches;
   }
 }
