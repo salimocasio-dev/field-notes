@@ -3,10 +3,12 @@
 // tool/build_sitio.sh in headless Chrome, served the way GitHub Pages serves it (the build under /field-notes/app/, the
 // repository's own historia/ at /field-notes/historia/), at phone size.
 //
-//   node coqui/tool/check_sitio.mjs <build dir> [--shot=<png file>] [--build=<n>]
+//   node coqui/tool/check_sitio.mjs <build dir> [--shot=<png file>] [--build=<n>] [--static-only]
 //
 // --build is the build number the app was built with (COQUI_BUILD, the workflow reads it from coqui/BUILD); without
 // it, the number in coqui/BUILD. Pass --build=dev for a build made without COQUI_BUILD.
+// --static-only runs the static build checks (filename rules, no service worker, and built-JS/HTML external host
+// allowlist audit) without launching Chromium or requiring Playwright.
 //
 // Serves <build dir> on a free port of 127.0.0.1 at /field-notes/app/, and every other /field-notes/... path from the
 // repository this script is in (so the content the app reads is the real historia/). Playwright is installed globally
@@ -24,6 +26,7 @@
 //     size the manifest says
 //   - no service worker is registered, and none was requested
 //   - no file or folder name in the build starts with "_" or "." (GitHub Pages would drop it)
+//   - no disallowed external URLs or outside script/worklet hosts in built JS/MJS or index.html <script src>
 //   - index.html (the file) has <html lang="en" translate="no">, the notranslate meta, the old app's viewport
 //     and theme-color; in the running page translate="no" and the notranslate meta are still there.
 //     NOTE: the running page's `lang` and viewport are NOT the file's: Flutter's engine rewrites them at
@@ -43,16 +46,610 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
-const { chromium } = createRequire(import.meta.url)('playwright');
+// ---- static built-JS external host allowlist ------------------------------------------------------------
 
+// Explicitly empty: zero permanent outside script/worklet hosts, matching #180's CSP
+// (`script-src 'self' 'wasm-unsafe-eval' blob:`, `worker-src 'self' blob:`).
+export const ALLOWED_SCRIPT_HOSTS = new Set([]);
+
+// Vendored @elevenlabs/client@1.25.0 (coqui/packages/core/coqui_platform/assets/elevenlabs/lib.iife.js)
+// falls back to this URL for non-16 kHz microphones.
+// #180's CSP (`script-src 'self' 'wasm-unsafe-eval' blob:`, `worker-src 'self' blob:`) blocks loading
+// worklets from cdn.jsdelivr.net.
+// Temporary exact-URL exception only until
+// coqui/requests/253-tool-needs-coqui-platform-self-host-libsamplerate-worklet.md lands in
+// coqui_platform; remove this entry then so #180's CSP and check_sitio.mjs agree on zero outside
+// script/worklet hosts.
+export const TEMPORARY_ALLOWED_SCRIPT_URLS = new Set([
+  'https://cdn.jsdelivr.net/npm/@alexanderolsen/libsamplerate-js@2.1.2/dist/libsamplerate.worklet.js',
+]);
+
+// Allowed ONLY in flutter_bootstrap.js and flutter.js, AND ONLY when flutter_bootstrap.js exists in
+// the build directory and its _flutter.buildConfig has useLocalCanvasKit === true.
+export const ALLOWED_FLUTTER_LOADER_URLS = new Set([
+  'https://www.gstatic.com/flutter-canvaskit',
+]);
+
+export const ALLOWED_NON_SCRIPT_EXACT_URLS = new Set([
+  'https://api.elevenlabs.io', // ElevenLabs REST API origin, matches #180 CSP connect-src
+  'https://salimocasio-dev.github.io/field-notes/app/', // Coquí's fallback base URL in browser_io.dart
+  'https://fonts.gstatic.com/s/', // Flutter engine default fontFallbackBaseUrl string
+  'https://aomediacodec.github.io/av1-rtp-spec/#dependency-descriptor-rtp-header-extension', // RTP header extension URI constant in lib.iife.js
+  'https://github.com/rochars/wavefile/blob/master/lib/codecs/mulaw.js', // License/attribution comment embedded inside lib.iife.js's inline AudioWorklet template strings
+  'https://web.dev/articles/coop-coep', // Flutter loader doc link
+  'https://wicg.github.io/cross-origin-storage/', // Flutter loader doc link
+]);
+
+export const ALLOWED_NON_SCRIPT_URL_PREFIXES = [
+  'https://api.flutter.dev/',
+  'https://docs.flutter.dev/',
+  'https://flutter.dev/',
+  'https://pub.dev/',
+  'https://github.com/flutter/flutter/issues/',
+];
+
+function normalizeCandidateUrl(raw) {
+  const withScheme = raw.startsWith('//') ? `https:${raw}` : raw;
+  const parsed = new URL(withScheme);
+  return { parsed, href: parsed.href };
+}
+
+const NORMALIZED_TEMP_SCRIPT_URLS = new Set([...TEMPORARY_ALLOWED_SCRIPT_URLS].map((u) => normalizeCandidateUrl(u).href));
+const NORMALIZED_FLUTTER_LOADER_URLS = new Set([...ALLOWED_FLUTTER_LOADER_URLS].map((u) => normalizeCandidateUrl(u).href));
+const NORMALIZED_NON_SCRIPT_EXACT_URLS = new Set([...ALLOWED_NON_SCRIPT_EXACT_URLS].map((u) => normalizeCandidateUrl(u).href));
+const NORMALIZED_NON_SCRIPT_URL_PREFIXES = ALLOWED_NON_SCRIPT_URL_PREFIXES.map((u) => normalizeCandidateUrl(u).href);
+const NORMALIZED_SCRIPT_HOSTS = new Set([...ALLOWED_SCRIPT_HOSTS].map((h) => h.toLowerCase()));
+
+const REGEX_PRECEDING_KEYWORDS = new Set([
+  'return', 'case', 'throw', 'typeof', 'void', 'delete',
+  'in', 'instanceof', 'new', 'of', 'yield', 'await', 'else', 'do',
+]);
+const CONTROL_FLOW_PARENS = new Set(['if', 'while', 'for', 'with']);
+const REGEX_PRECEDING_PUNCT = new Set([
+  '=', '(', ',', '[', '{', ':', ';', '!', '&', '|', '?', '+', '-', '*', '%', '^', '~', '<', '>',
+]);
+
+function decodeJsEscape(src, idx) {
+  // idx points to '\'
+  if (idx + 1 >= src.length) return { text: '', next: idx + 1 };
+  const c = src[idx + 1];
+  if (c === '\n') return { text: '', next: idx + 2 };
+  if (c === '\r') return { text: '', next: src[idx + 2] === '\n' ? idx + 3 : idx + 2 };
+  if (c === 'n') return { text: '\n', next: idx + 2 };
+  if (c === 'r') return { text: '\r', next: idx + 2 };
+  if (c === 't') return { text: '\t', next: idx + 2 };
+  if (c === 'b') return { text: '\b', next: idx + 2 };
+  if (c === 'f') return { text: '\f', next: idx + 2 };
+  if (c === 'v') return { text: '\v', next: idx + 2 };
+  if (c === 'x') {
+    const hex = src.slice(idx + 2, idx + 4);
+    if (/^[0-9a-fA-F]{2}$/.test(hex)) {
+      return { text: String.fromCharCode(parseInt(hex, 16)), next: idx + 4 };
+    }
+    return { text: 'x', next: idx + 2 };
+  }
+  if (c === 'u') {
+    if (src[idx + 2] === '{') {
+      const end = src.indexOf('}', idx + 3);
+      if (end !== -1) {
+        const hex = src.slice(idx + 3, end);
+        if (/^[0-9a-fA-F]+$/.test(hex)) {
+          const cp = parseInt(hex, 16);
+          if (cp <= 0x10ffff) {
+            return { text: String.fromCodePoint(cp), next: end + 1 };
+          }
+        }
+      }
+    } else {
+      const hex = src.slice(idx + 2, idx + 6);
+      if (/^[0-9a-fA-F]{4}$/.test(hex)) {
+        return { text: String.fromCharCode(parseInt(hex, 16)), next: idx + 6 };
+      }
+    }
+    return { text: 'u', next: idx + 2 };
+  }
+  if (c >= '0' && c <= '7') {
+    let oct = c;
+    let end = idx + 2;
+    while (end < src.length && oct.length < 3 && src[end] >= '0' && src[end] <= '7') {
+      const nextOct = oct + src[end];
+      if (parseInt(nextOct, 8) > 255) break;
+      oct = nextOct;
+      end++;
+    }
+    return { text: String.fromCharCode(parseInt(oct, 8)), next: end };
+  }
+  return { text: c, next: idx + 2 };
+}
+
+function isIdentStart(ch) {
+  return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch === '_' || ch === '$';
+}
+
+function isIdentPart(ch) {
+  return isIdentStart(ch) || (ch >= '0' && ch <= '9');
+}
+
+export function extractJsStringLiterals(src) {
+  const literals = [];
+  const templateStack = [];
+  const parenStack = [];
+  let canPrecedeRegex = true;
+  let prevWasDot = false;
+  let lastWord = '';
+  let i = 0;
+
+  const scanTemplateChunk = () => {
+    let buf = '';
+    while (i < src.length) {
+      const ch = src[i];
+      if (ch === '`') {
+        literals.push(buf);
+        i++;
+        canPrecedeRegex = false;
+        prevWasDot = false;
+        lastWord = '';
+        return;
+      }
+      if (ch === '$' && src[i + 1] === '{') {
+        literals.push(buf);
+        i += 2;
+        templateStack.push(0);
+        canPrecedeRegex = true;
+        prevWasDot = false;
+        lastWord = '';
+        return;
+      }
+      if (ch === '\\') {
+        const esc = decodeJsEscape(src, i);
+        buf += esc.text;
+        i = esc.next;
+        continue;
+      }
+      buf += ch;
+      i++;
+    }
+    literals.push(buf);
+  };
+
+  while (i < src.length) {
+    const ch = src[i];
+
+    // Whitespace
+    if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r' || ch === '\f' || ch === '\v') {
+      i++;
+      continue;
+    }
+
+    // Comments
+    if (ch === '/' && src[i + 1] === '/') {
+      i += 2;
+      while (i < src.length && src[i] !== '\n' && src[i] !== '\r') i++;
+      continue;
+    }
+    if (ch === '/' && src[i + 1] === '*') {
+      i += 2;
+      while (i < src.length && !(src[i] === '*' && src[i + 1] === '/')) i++;
+      if (i < src.length) i += 2;
+      continue;
+    }
+
+    // Regex literal
+    if (ch === '/' && canPrecedeRegex) {
+      i++;
+      let inClass = false;
+      while (i < src.length) {
+        const r = src[i];
+        if (r === '\\') {
+          i += i + 1 < src.length ? 2 : 1;
+          continue;
+        }
+        if (r === '[') {
+          inClass = true;
+          i++;
+          continue;
+        }
+        if (r === ']' && inClass) {
+          inClass = false;
+          i++;
+          continue;
+        }
+        if (r === '/' && !inClass) {
+          i++;
+          while (i < src.length && ((src[i] >= 'a' && src[i] <= 'z') || (src[i] >= 'A' && src[i] <= 'Z'))) i++;
+          break;
+        }
+        if (r === '\n' || r === '\r') {
+          break;
+        }
+        i++;
+      }
+      canPrecedeRegex = false;
+      prevWasDot = false;
+      lastWord = '';
+      continue;
+    }
+
+    // Quoted strings
+    if (ch === "'" || ch === '"') {
+      const quote = ch;
+      i++;
+      let buf = '';
+      while (i < src.length) {
+        const s = src[i];
+        if (s === quote) {
+          i++;
+          break;
+        }
+        if (s === '\\') {
+          const esc = decodeJsEscape(src, i);
+          buf += esc.text;
+          i = esc.next;
+          continue;
+        }
+        if (s === '\n' || s === '\r') {
+          break;
+        }
+        buf += s;
+        i++;
+      }
+      literals.push(buf);
+      canPrecedeRegex = false;
+      prevWasDot = false;
+      lastWord = '';
+      continue;
+    }
+
+    // Template literal
+    if (ch === '`') {
+      i++;
+      scanTemplateChunk();
+      continue;
+    }
+
+    // Parentheses tracking for regex literals after control-flow parens
+    if (ch === '(') {
+      parenStack.push(CONTROL_FLOW_PARENS.has(lastWord) ? 'control' : 'expr');
+      lastWord = '';
+      prevWasDot = false;
+      canPrecedeRegex = true;
+      i++;
+      continue;
+    }
+    if (ch === ')') {
+      const kind = parenStack.pop();
+      canPrecedeRegex = kind === 'control';
+      lastWord = '';
+      prevWasDot = false;
+      i++;
+      continue;
+    }
+
+    // Brace tracking for template literal ${...}
+    if (ch === '{') {
+      if (templateStack.length > 0) {
+        templateStack[templateStack.length - 1]++;
+      }
+      i++;
+      canPrecedeRegex = true;
+      prevWasDot = false;
+      lastWord = '';
+      continue;
+    }
+    if (ch === '}') {
+      if (templateStack.length > 0) {
+        if (templateStack[templateStack.length - 1] === 0) {
+          templateStack.pop();
+          i++;
+          scanTemplateChunk();
+          continue;
+        }
+        templateStack[templateStack.length - 1]--;
+      }
+      i++;
+      canPrecedeRegex = false;
+      prevWasDot = false;
+      lastWord = '';
+      continue;
+    }
+
+    // Identifiers and keywords
+    if (isIdentStart(ch)) {
+      const start = i;
+      i++;
+      while (i < src.length && isIdentPart(src[i])) i++;
+      const word = src.slice(start, i);
+      canPrecedeRegex = !prevWasDot && REGEX_PRECEDING_KEYWORDS.has(word);
+      lastWord = prevWasDot ? '' : word;
+      prevWasDot = false;
+      continue;
+    }
+
+    // Numbers
+    if (ch >= '0' && ch <= '9') {
+      i++;
+      while (i < src.length && (isIdentPart(src[i]) || src[i] === '.')) i++;
+      canPrecedeRegex = false;
+      prevWasDot = false;
+      lastWord = '';
+      continue;
+    }
+
+    // ++ and --
+    if ((ch === '+' && src[i + 1] === '+') || (ch === '-' && src[i + 1] === '-')) {
+      i += 2;
+      canPrecedeRegex = false;
+      prevWasDot = false;
+      lastWord = '';
+      continue;
+    }
+
+    prevWasDot = ch === '.';
+    canPrecedeRegex = REGEX_PRECEDING_PUNCT.has(ch);
+    lastWord = '';
+    i++;
+  }
+
+  return literals;
+}
+
+const HTTP_URL_RE = /https?:\/\/[^\s"'`<>)}\],;]+/gi;
+const PROTO_REL_URL_RE = /(?:^|[\s(["'])(\/\/[^\s"'`<>)}\],;]+)/g;
+
+export function extractExternalUrlsFromJs(src) {
+  const urls = [];
+  for (const literal of extractJsStringLiterals(src)) {
+    for (const match of literal.matchAll(HTTP_URL_RE)) {
+      urls.push(match[0].replace(/[.,;)\]}]+$/, ''));
+    }
+    for (const match of literal.matchAll(PROTO_REL_URL_RE)) {
+      const candidate = match[1].replace(/[.,;)\]}]+$/, '');
+      const rest = candidate.slice(2);
+      const sepIdx = rest.search(/[/?#]/);
+      const authority = sepIdx === -1 ? rest : rest.slice(0, sepIdx);
+      if (/[.%:\[]/.test(authority)) {
+        urls.push(candidate);
+      }
+    }
+  }
+  return urls;
+}
+
+function parseFlutterBuildConfig(src) {
+  const m = /_flutter\.buildConfig\s*=\s*\{/.exec(src);
+  if (!m) return null;
+  const start = m.index + m[0].length - 1;
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < src.length; i++) {
+    const ch = src[i];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (ch === '\\') {
+        escaped = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+    } else if (ch === '{') {
+      depth++;
+    } else if (ch === '}') {
+      depth--;
+      if (depth === 0) {
+        return JSON.parse(src.slice(start, i + 1));
+      }
+    }
+  }
+  return null;
+}
+
+function collectJsFiles(rootDir) {
+  const files = [];
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.isFile() && (entry.name.endsWith('.js') || entry.name.endsWith('.mjs'))) {
+        files.push(path.relative(rootDir, full).split(path.sep).join('/'));
+      }
+    }
+  };
+  walk(rootDir);
+  files.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+  return files;
+}
+
+function validateJsUrl(rawUrl, relPath, localCanvasKitConfirmed) {
+  let parsed;
+  let href;
+  try {
+    ({ parsed, href } = normalizeCandidateUrl(rawUrl));
+  } catch {
+    return 'invalid external URL';
+  }
+
+  if (NORMALIZED_TEMP_SCRIPT_URLS.has(href)) return null;
+  if (NORMALIZED_SCRIPT_HOSTS.has(parsed.host.toLowerCase()) || NORMALIZED_SCRIPT_HOSTS.has(parsed.hostname.toLowerCase())) {
+    return null;
+  }
+  if (
+    (relPath === 'flutter_bootstrap.js' || relPath === 'flutter.js') &&
+    localCanvasKitConfirmed &&
+    NORMALIZED_FLUTTER_LOADER_URLS.has(href)
+  ) {
+    return null;
+  }
+  if (NORMALIZED_NON_SCRIPT_EXACT_URLS.has(href)) return null;
+  if (NORMALIZED_NON_SCRIPT_URL_PREFIXES.some((prefix) => href.startsWith(prefix))) {
+    if (/\.(?:m?js|cjs|wasm)$/i.test(parsed.pathname) || /\+esm\b/i.test(href)) {
+      return 'script-like path on allowed non-script prefix';
+    }
+    return null;
+  }
+  return 'disallowed external URL in built JS';
+}
+
+export function checkBuiltJsHosts(rootDir) {
+  const absRoot = path.resolve(rootDir);
+  const violations = [];
+  let urlsChecked = 0;
+
+  let localCanvasKitConfirmed = false;
+  const bootstrapPath = path.join(absRoot, 'flutter_bootstrap.js');
+  if (fs.existsSync(bootstrapPath)) {
+    const bootstrapSrc = fs.readFileSync(bootstrapPath, 'utf8');
+    let cfg = null;
+    try {
+      cfg = parseFlutterBuildConfig(bootstrapSrc);
+    } catch {
+      cfg = null;
+    }
+    if (!cfg || cfg.useLocalCanvasKit !== true) {
+      violations.push({
+        file: 'flutter_bootstrap.js',
+        url: '_flutter.buildConfig',
+        reason: 'useLocalCanvasKit is not true',
+      });
+    } else {
+      localCanvasKitConfirmed = true;
+    }
+  }
+
+  const jsFiles = collectJsFiles(absRoot);
+  for (const relPath of jsFiles) {
+    const src = fs.readFileSync(path.join(absRoot, relPath), 'utf8');
+    for (const url of extractExternalUrlsFromJs(src)) {
+      urlsChecked++;
+      const reason = validateJsUrl(url, relPath, localCanvasKitConfirmed);
+      if (reason !== null) {
+        violations.push({ file: relPath, url, reason });
+      }
+    }
+  }
+
+const HTML_NAMED_ENTITIES = {
+  amp: '&',
+  colon: ':',
+  sol: '/',
+  quot: '"',
+  apos: "'",
+  lt: '<',
+  gt: '>',
+  tab: '\t',
+  newline: '\n',
+};
+
+function decodeHtmlEntities(s) {
+  return s.replace(/&(?:#(\d+)|#x([0-9a-fA-F]+)|([a-zA-Z]+));/g, (full, dec, hex, name) => {
+    if (dec !== undefined) {
+      const cp = Number.parseInt(dec, 10);
+      return cp >= 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : full;
+    }
+    if (hex !== undefined) {
+      const cp = Number.parseInt(hex, 16);
+      return cp >= 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : full;
+    }
+    const mapped = HTML_NAMED_ENTITIES[name.toLowerCase()];
+    return mapped !== undefined ? mapped : full;
+  });
+}
+
+  const indexPath = path.join(absRoot, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    const html = fs.readFileSync(indexPath, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+    const scriptSrcRe = /<script\b[^>]*\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi;
+    for (const match of html.matchAll(scriptSrcRe)) {
+      const src = decodeHtmlEntities(match[1] ?? match[2] ?? match[3] ?? '')
+        .replace(/[\t\n\r\x00-\x1f]/g, '')
+        .trim();
+      if (!/^(?:https?:)?\/\//i.test(src)) continue;
+      urlsChecked++;
+      let parsed;
+      let href;
+      try {
+        ({ parsed, href } = normalizeCandidateUrl(src));
+      } catch {
+        violations.push({ file: 'index.html', url: src, reason: 'invalid external script src URL' });
+        continue;
+      }
+      const allowed =
+        NORMALIZED_TEMP_SCRIPT_URLS.has(href) ||
+        NORMALIZED_SCRIPT_HOSTS.has(parsed.host.toLowerCase()) ||
+        NORMALIZED_SCRIPT_HOSTS.has(parsed.hostname.toLowerCase());
+      if (!allowed) {
+        violations.push({
+          file: 'index.html',
+          url: src,
+          reason: 'disallowed external script src in index.html',
+        });
+      }
+    }
+  }
+
+  return { filesScanned: jsFiles.length, urlsChecked, violations };
+}
+
+const isMain = (() => {
+  if (!process.argv[1]) return false;
+  try {
+    return fs.realpathSync(path.resolve(process.argv[1])) === fs.realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+})();
+
+if (isMain) {
+// CLI entrypoint kept at column 0 to preserve existing Playwright runner diff/blame
 const args = process.argv.slice(2);
 const flag = (name, dflt) => { const a = args.find((x) => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : dflt; };
+const staticOnly = args.includes('--static-only');
 const dir = args.find((x) => !x.startsWith('--'));
 if (!dir || !fs.existsSync(path.join(dir, 'index.html'))) {
-  console.error('usage: node coqui/tool/check_sitio.mjs <build dir> [--shot=<png file>] [--build=<n>]');
+  console.error('usage: node coqui/tool/check_sitio.mjs <build dir> [--shot=<png file>] [--build=<n>] [--static-only]');
   process.exit(2);
 }
 const ROOT = path.resolve(dir);
+
+// ---- results ------------------------------------------------------------------------------------------
+let failed = 0;
+const check = (ok, what, detail = '') => {
+  console.log(`${ok ? 'PASS' : 'FAIL'}  ${what}${detail ? `  (${detail})` : ''}`);
+  if (!ok) failed++;
+};
+
+// ---- the names in the build -------------------------------------------------------------------------
+const names = [];
+const walk = (d) => {
+  for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+    names.push(path.relative(ROOT, path.join(d, e.name)));
+    if (e.isDirectory()) walk(path.join(d, e.name));
+  }
+};
+walk(ROOT);
+const dropped = names.filter((n) => n.split(path.sep).some((part) => part.startsWith('_') || part.startsWith('.')));
+check(dropped.length === 0, 'no file or folder name starts with "_" or "."', dropped.join(', '));
+check(!names.includes('flutter_service_worker.js'), 'no flutter_service_worker.js in the build');
+// ---- static built-JS external host audit ------------------------------------------------------------
+const hostAudit = checkBuiltJsHosts(ROOT);
+check(
+  hostAudit.violations.length === 0,
+  `no disallowed external URLs in built JS (${hostAudit.filesScanned} JS files, ${hostAudit.urlsChecked} URLs checked)`,
+  hostAudit.violations.map((v) => `${v.file}: ${v.url} [${v.reason}]`).join(' | '),
+);
+
+if (staticOnly) {
+  console.log(failed === 0 ? '\nall checks passed' : `\n${failed} check(s) FAILED`);
+  process.exit(failed === 0 ? 0 : 1);
+}
+
+const { chromium } = createRequire(import.meta.url)('playwright');
+
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const BUILD = flag('build', fs.readFileSync(path.join(REPO, 'coqui/BUILD'), 'utf8').trim());
 const SHOT = flag('shot', '');
@@ -94,26 +691,6 @@ const server = http.createServer((req, res) => {
 });
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const ORIGIN = `http://127.0.0.1:${server.address().port}`;
-
-// ---- results ------------------------------------------------------------------------------------------
-let failed = 0;
-const check = (ok, what, detail = '') => {
-  console.log(`${ok ? 'PASS' : 'FAIL'}  ${what}${detail ? `  (${detail})` : ''}`);
-  if (!ok) failed++;
-};
-
-// ---- the names in the build -------------------------------------------------------------------------
-const names = [];
-const walk = (d) => {
-  for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-    names.push(path.relative(ROOT, path.join(d, e.name)));
-    if (e.isDirectory()) walk(path.join(d, e.name));
-  }
-};
-walk(ROOT);
-const dropped = names.filter((n) => n.split(path.sep).some((part) => part.startsWith('_') || part.startsWith('.')));
-check(dropped.length === 0, 'no file or folder name starts with "_" or "."', dropped.join(', '));
-check(!names.includes('flutter_service_worker.js'), 'no flutter_service_worker.js in the build');
 
 // ---- the page ---------------------------------------------------------------------------------------------
 const browser = await chromium.launch();
@@ -332,3 +909,5 @@ await browser.close();
 server.close();
 console.log(failed === 0 ? '\nall checks passed' : `\n${failed} check(s) FAILED`);
 process.exit(failed === 0 ? 0 : 1);
+
+}
