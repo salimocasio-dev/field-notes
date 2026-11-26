@@ -47,6 +47,14 @@ final Directory _historia = () {
 Future<String> _read(String path) =>
     File('${_historia.path}/$path').readAsString();
 
+final Directory _content = Directory('${_historia.parent.path}/content');
+
+Future<String> _readSplit(String path) =>
+    File('${_content.path}/$path').readAsString();
+
+Object? _contentJson(String path) =>
+    jsonDecode(File('${_content.path}/$path').readAsStringSync());
+
 Object? _json(String path) =>
     jsonDecode(File('${_historia.path}/$path').readAsStringSync());
 
@@ -1115,4 +1123,316 @@ void main() {
       expect(listed, (oldCurso['cuentos'] as Map).keys.toSet());
     });
   });
+
+  group('split content/ tree parity', () {
+    test('joinSplitStory over content/games + content/lines/es matches all 70 historia/cuentos files', () {
+      expect(_content.existsSync(), isTrue);
+      expect(appFiles, hasLength(70));
+      for (final id in appFiles) {
+        final game = Map<String, dynamic>.from(
+          _contentJson('games/$id.json') as Map,
+        );
+        final lines = Map<String, dynamic>.from(
+          _contentJson('lines/es/$id.json') as Map,
+        );
+        final joined = joinSplitStory(
+          game,
+          lines,
+          expectedLang: 'es',
+          gamePath: 'games/$id.json',
+          linesPath: 'lines/es/$id.json',
+        );
+        expect(joined, sameJson(_json('cuentos/$id.json')), reason: id);
+      }
+    });
+
+    test('ContentCatalog with fetchSplit matches legacy catalog on words.json, pairs, clips, linesWith, and homonyms', () async {
+      final splitCatalog = ContentCatalog(_read, fetchSplit: _readSplit);
+      await splitCatalog.load();
+
+      final rawWordsFile = Map<String, dynamic>.from(
+        _contentJson('lines/es/words.json') as Map,
+      );
+      final expectedWords = Map<String, String>.from(
+        rawWordsFile['words'] as Map,
+      );
+      expect(expectedWords, hasLength(284));
+      expect(splitCatalog.wordTable, hasLength(284));
+      expect(splitCatalog.wordTable, expectedWords);
+
+      // pairs and pairFor match legacy identically.
+      expect(splitCatalog.pairs, hasLength(catalog.pairs.length));
+      expect([
+        for (final p in splitCatalog.pairs) p.toJson(),
+      ], sameJson([for (final p in catalog.pairs) p.toJson()]));
+      for (final w in old.words) {
+        expect(
+          splitCatalog.pairFor(w)?.toJson(),
+          sameJson(catalog.pairFor(w)?.toJson()),
+          reason: w,
+        );
+      }
+
+      // words said alone (w_*) are already loaded right after load().
+      for (final id in _clipKeys(_solasId)) {
+        final legacyClip = catalog.clip(id);
+        final splitClip = splitCatalog.clip(id);
+        expect(splitClip?.text, legacyClip?.text, reason: id);
+        expect(splitClip?.who, legacyClip?.who, reason: id);
+      }
+
+      // linesWith matches legacy across sampled words.
+      for (final w in old.wordList.take(25)) {
+        final want = await catalog.linesWith(w, old.allPlayed);
+        final got = await splitCatalog.linesWith(w, old.allPlayed);
+        expect(
+          [
+            for (final l in got) [l.storyId, l.clipId, l.text],
+          ],
+          [
+            for (final l in want) [l.storyId, l.clipId, l.text],
+          ],
+          reason: w,
+        );
+      }
+
+      // Load all appFiles in splitCatalog (matching legacy catalog) and verify
+      // every recorded clip matches legacy identically.
+      for (final id in appFiles) {
+        await splitCatalog.story(id);
+      }
+      final readyIds = ((_json('audio/ready.json') as Map)['clips'] as List)
+          .cast<String>();
+      for (final id in readyIds) {
+        final legacyClip = catalog.clip(id);
+        final splitClip = splitCatalog.clip(id);
+        expect(splitClip != null, legacyClip != null, reason: id);
+        if (legacyClip != null && splitClip != null) {
+          expect(
+            [
+              splitClip.id,
+              splitClip.who,
+              splitClip.text,
+              splitClip.habla,
+              splitClip.startMs,
+              splitClip.endMs,
+              splitClip.url,
+            ],
+            [
+              legacyClip.id,
+              legacyClip.who,
+              legacyClip.text,
+              legacyClip.habla,
+              legacyClip.startMs,
+              legacyClip.endMs,
+              legacyClip.url,
+            ],
+            reason: id,
+          );
+        }
+      }
+
+      // Homonym and suppression stories resolve every tested ID identically to legacy.
+      const keyStories = [
+        'la-piragua',
+        'la-familia',
+        'otra-vez',
+        'quien-eres-tu',
+        'las-flores',
+        'el-jugo',
+      ];
+      for (final id in keyStories) {
+        final legacyStory = await catalog.story(id);
+        final splitStory = await splitCatalog.story(id);
+        final diskLines = Map<String, dynamic>.from(
+          _contentJson('lines/es/$id.json') as Map,
+        );
+        final legacyPalabras = legacyStory['palabras'] as Map?;
+        final storyLinesPalabras =
+            diskLines['palabras'] as Map<String, dynamic>?;
+        final splitPalabras = splitStory['palabras'] as Map<String, dynamic>?;
+
+        final testedIds = {
+          ..._extractTestedIds(legacyStory),
+          if (legacyPalabras != null) ...legacyPalabras.keys.cast<String>(),
+        };
+        expect(testedIds, isNotEmpty, reason: id);
+        for (final tid in testedIds) {
+          final rawLegacy = legacyPalabras?[tid];
+          final expected = (rawLegacy is String && rawLegacy.isNotEmpty)
+              ? rawLegacy
+              : tid;
+          expect(
+            resolveTestedWord(
+              tid,
+              storyPalabras: splitPalabras,
+              wordTable: splitCatalog.wordTable,
+            ),
+            expected,
+            reason: '$id:$tid (joined story palabras)',
+          );
+          expect(
+            splitCatalog.resolveWord(tid, storyPalabras: storyLinesPalabras),
+            expected,
+            reason: '$id:$tid (resolveWord)',
+          );
+        }
+      }
+
+      // Explicit spot-checks from 23-split-story-format.md.
+      final piragua = await splitCatalog.story('la-piragua');
+      final familia = await splitCatalog.story('la-familia');
+      final otraVez = await splitCatalog.story('otra-vez');
+      final quien = await splitCatalog.story('quien-eres-tu');
+      final flores = await splitCatalog.story('las-flores');
+      final jugo = await splitCatalog.story('el-jugo');
+
+      expect((piragua['palabras'] as Map)['bebe'], 'bebe');
+      expect((piragua['palabras'] as Map)['nino'], '-');
+      expect((piragua['palabras'] as Map)['nina'], '-');
+      expect((familia['palabras'] as Map)['bebe'], 'bebé');
+      expect((otraVez['palabras'] as Map)['tu'], 'tu');
+      expect((otraVez['palabras'] as Map)['nomas'], '-');
+      expect((quien['palabras'] as Map)['tu'], 'tú');
+      expect((flores['palabras'] as Map)['nino'], 'niño');
+      expect((flores['palabras'] as Map)['nina'], 'niña');
+      expect((jugo['palabras'] as Map)['vaso_mesa'], 'silla');
+    });
+  });
+}
+
+final RegExp _varRe = RegExp(r'\$([a-z]+)');
+
+Iterable<Map<String, dynamic>> _iterSteps(Object? node) sync* {
+  if (node is List) {
+    for (final item in node) {
+      yield* _iterSteps(item);
+    }
+  } else if (node is Map) {
+    final step = Map<String, dynamic>.from(node);
+    yield step;
+    for (final value in step.values) {
+      if (value is List) {
+        yield* _iterSteps(value);
+      } else if (value is Map) {
+        for (final sub in value.values) {
+          if (sub is List) yield* _iterSteps(sub);
+        }
+      }
+    }
+  }
+}
+
+List<String> _expandExpr(Object? expr, Map<String, Set<String>> domains) {
+  if (expr is! String) return const [];
+  final varsFound = <String>{
+    for (final m in _varRe.allMatches(expr)) m.group(1)!,
+  }.toList()..sort();
+  if (varsFound.isEmpty) return [expr];
+  final choices = <(String, List<String>)>[];
+  for (final v in varsFound) {
+    final vals = (domains[v] ?? const <String>{}).toList()..sort();
+    if (vals.isEmpty) return [expr];
+    choices.add((v, vals));
+  }
+  final out = <String>{};
+  void visit(int idx, Map<String, String> mapping) {
+    if (idx == choices.length) {
+      out.add(expr.replaceAllMapped(_varRe, (m) => mapping[m.group(1)!]!));
+      return;
+    }
+    final (varName, vals) = choices[idx];
+    for (final val in vals) {
+      mapping[varName] = val;
+      visit(idx + 1, mapping);
+    }
+  }
+
+  visit(0, <String, String>{});
+  return out.toList()..sort();
+}
+
+Set<String> _extractTestedIds(Map<String, dynamic> story) {
+  final steps = _iterSteps([
+    story['beats'] ?? const [],
+    story['final'] ?? const [],
+  ]).toList();
+  final domains = <String, Set<String>>{};
+  bool addDomain(Object? varName, String val) {
+    if (varName is! String || varName.isEmpty || val.contains(r'$')) {
+      return false;
+    }
+    return (domains[varName] ??= <String>{}).add(val);
+  }
+
+  for (var pass = 0; pass < 4; pass++) {
+    var changed = false;
+    for (final st in steps) {
+      if (st['draw'] != null && st['draw'] != false && st['draw'] != '') {
+        final v = st['draw'];
+        final other = st['other'];
+        for (final opt in (st['options'] as List?) ?? const []) {
+          for (final val in _expandExpr(opt, domains)) {
+            if (addDomain(v, val)) changed = true;
+            if (other != null && addDomain(other, val)) changed = true;
+          }
+        }
+      }
+      if (st['reparte'] != null) {
+        final rawVars = st['reparte'];
+        final varList = rawVars is List ? rawVars : [rawVars];
+        for (final opt in (st['options'] as List?) ?? const []) {
+          for (final val in _expandExpr(opt, domains)) {
+            for (final v in varList) {
+              if (addDomain(v, val)) changed = true;
+            }
+          }
+        }
+      }
+      if (st['calc'] != null) {
+        final v = st['calc'];
+        for (final branch in const ['then', 'else']) {
+          final raw = st[branch];
+          if (raw is String) {
+            for (final val in _expandExpr(raw, domains)) {
+              if (addDomain(v, val)) changed = true;
+            }
+          }
+        }
+      }
+      if (st['decide'] != null) {
+        final asVar = st['as'];
+        final other = st['other'];
+        if (asVar != null || other != null) {
+          for (final opt in (st['options'] as List?) ?? const []) {
+            for (final val in _expandExpr(opt, domains)) {
+              if (asVar != null && addDomain(asVar, val)) changed = true;
+              if (other != null && addDomain(other, val)) changed = true;
+            }
+          }
+        }
+      }
+    }
+    if (!changed) break;
+  }
+
+  final tested = <String>{};
+  for (final st in steps) {
+    if (st['decide'] != null && st['libre'] != true) {
+      final List<Object?> exprs;
+      if (st['tests'] is String && (st['tests'] as String).isNotEmpty) {
+        exprs = [st['tests']];
+      } else if (st['pick'] is String && (st['pick'] as String).isNotEmpty) {
+        exprs = [st['pick']];
+      } else {
+        exprs = (st['options'] as List?) ?? const [];
+      }
+      for (final expr in exprs) {
+        for (final val in _expandExpr(expr, domains)) {
+          if (!val.contains(r'$') && val != '-') tested.add(val);
+        }
+      }
+    }
+  }
+  return tested;
 }
