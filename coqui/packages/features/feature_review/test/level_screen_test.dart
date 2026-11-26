@@ -7,6 +7,7 @@ import 'package:feature_review/feature_review.dart';
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/level_check.dart';
 import 'package:feature_review/src/ui/level_check_screen.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:feature_review/src/ui/review_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -43,12 +44,10 @@ void main() {
         expect(find.text('Level check'), findsOneWidget);
         expect(find.text('16 pictures · about 3 min'), findsOneWidget);
         expect(
-          t
-              .widget<LessonProgressDashes>(find.byType(LessonProgressDashes))
-              .segments,
+          t.widget<NocheDashes>(find.byType(NocheDashes)).states.length,
           16,
         );
-        expect(find.byType(LessonStartButton), findsOneWidget);
+        expect(find.byType(NochePlayDisc), findsOneWidget);
       },
     );
 
@@ -199,13 +198,10 @@ void main() {
     );
 
     testWidgets(
-      "nivel_check: the button is the app's blue main action, and leads to the map",
+      'nivel_check: the button is NochePrimaryButton, and leads to the map',
       (t) async {
         final lab = await played(t, (s, k) => s <= 11);
-        expect(
-          t.widget<LessonButton>(find.byType(LessonButton)).kind,
-          LessonButtonKind.blue,
-        );
+        expect(find.byType(NochePrimaryButton), findsOneWidget);
         await t.tap(find.text('To the map'));
         await t.pump();
         expect(lab.nav.last, const TabRoute('map'));
@@ -256,9 +252,7 @@ void main() {
           for (final a in lab.lv.answers) a.i,
         ], List<int>.generate(52, (i) => i));
         expect(
-          t
-              .widget<LessonProgressDashes>(find.byType(LessonProgressDashes))
-              .segments,
+          t.widget<NocheDashes>(find.byType(NocheDashes)).states.length,
           52,
         );
       },
@@ -268,7 +262,7 @@ void main() {
       'nivel_check: the close X goes back to where it was opened from',
       (t) async {
         final lab = await open(t);
-        await t.tap(find.byType(LessonCloseButton));
+        await t.tap(find.byType(NocheLessonCloseButton));
         await t.pump();
         expect(lab.nav.backs, 1);
       },
@@ -316,7 +310,7 @@ void main() {
         await l.openReview();
         await l.start();
         await l.until(() => l.s.speaking > 0);
-        await t.tap(find.byType(LessonCloseButton));
+        await t.tap(find.byType(NocheLessonCloseButton));
         await t.pump();
         expect(l.nav.last, const TabRoute('words'));
         expect(l.clips.stops, isNotEmpty);
@@ -330,10 +324,10 @@ void main() {
       final l = Lab(t, db: dbJson([]));
       await l.openReview();
       expect(l.clips.muted, isFalse);
-      await t.tap(find.byType(LessonSoundButton));
+      await t.tap(find.byType(NocheLessonSoundButton));
       await t.pump();
       expect(l.clips.muted, isTrue);
-      await t.tap(find.byType(LessonSoundButton));
+      await t.tap(find.byType(NocheLessonSoundButton));
       await t.pump();
       expect(l.clips.muted, isFalse);
     });

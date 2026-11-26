@@ -31,8 +31,12 @@ Future<void> _loadFonts() async {
     await loader.load();
   }
 
-  await load('packages/coqui_ui/Roboto', coquiFontFiles.values);
-  await load('Roboto', coquiFontFiles.values);
+  await load('packages/coqui_ui/$coquiFontFamily', coquiFontFiles.values);
+  await load(coquiFontFamily, coquiFontFiles.values);
+  for (final entry in nocheFontFiles.entries) {
+    await load('packages/coqui_ui/${entry.key}', entry.value.values);
+    await load(entry.key, entry.value.values);
+  }
 }
 
 void main() {
@@ -61,7 +65,7 @@ void main() {
       final sc = Screen(t, json: everythingJson(realRepaso), listener: speech);
       await sc.open(w: 390, h: 844, dpr: 2, text: 1);
       sc.s.queue = [QueueEntry.play(SayItem(word: w.word, line: line))];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
       await sc.settle();

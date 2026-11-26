@@ -9,6 +9,7 @@ import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/level_check.dart';
 import 'package:feature_review/src/logic/review_session.dart';
 import 'package:feature_review/src/ui/level_check_screen.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:feature_review/src/ui/review_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -168,6 +169,7 @@ class Lab {
   }) async {
     await tester.pumpWidget(
       MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: ReviewScreen(
           key: reviewKey,
           services: services,
@@ -186,6 +188,7 @@ class Lab {
   }) async {
     await tester.pumpWidget(
       MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: LevelCheckScreen(
           key: levelKey,
           services: services,
@@ -203,9 +206,9 @@ class Lab {
     await tester.pump();
   }
 
-  /// The green disc is touched.
+  /// The start disc is touched.
   Future<void> start() async {
-    await tester.tap(find.byType(LessonStartButton));
+    await tester.tap(find.byType(NochePlayDisc));
     await settle();
   }
 
@@ -222,14 +225,15 @@ class Lab {
   /// A finger down on picture [k] (the old page takes `pointerdown`).
   Future<void> touchPicture(int k) async {
     final g = await tester.startGesture(
-      tester.getCenter(find.byType(PictureChoice).at(k)),
+      tester.getCenter(find.byType(NochePictureChoice).at(k)),
     );
     await g.up();
     await settle();
   }
 
-  List<PictureChoice> get choices =>
-      tester.widgetList<PictureChoice>(find.byType(PictureChoice)).toList();
+  List<NochePictureChoice> get choices => tester
+      .widgetList<NochePictureChoice>(find.byType(NochePictureChoice))
+      .toList();
 
   int get right => s.panels!.indexWhere((p) => p.right);
 

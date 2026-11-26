@@ -5,6 +5,7 @@ library;
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/review_session.dart' show OptionRing;
 import 'package:feature_review/src/ui/block_layout.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:material_ui/material_ui.dart';
 
 ChoiceRing choiceRing(OptionRing r) => switch (r) {
@@ -108,8 +109,8 @@ class LessonBox {
       return LessonBox(
         width: w,
         height: h,
-        mainWidth: w - safe.left - safe.right,
-        mainHeight: h - safe.top - safe.bottom,
+        mainWidth: w - safe.horizontal,
+        mainHeight: h - safe.vertical,
         landscape: true,
         dpr: dpr,
         safeTop: safe.top,
@@ -118,8 +119,8 @@ class LessonBox {
     return LessonBox(
       width: w,
       height: h,
-      mainWidth: w - safe.left - safe.right,
-      mainHeight: h - safe.bottom - (CoquiMetrics.lessonTopBar + safe.top),
+      mainWidth: w - safe.horizontal,
+      mainHeight: h - safe.bottom - (nocheLessonTopBar + safe.top),
       landscape: false,
       dpr: dpr,
       safeTop: safe.top,
@@ -154,30 +155,38 @@ class LessonTextScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final top = box.landscape
         ? 8.0
-        : (0.35 * box.height - CoquiMetrics.lessonTopBar - box.safeTop).clamp(
+        : (0.35 * box.height - nocheLessonTopBar - box.safeTop).clamp(
             0.0,
             double.infinity,
           );
     return Positioned.fill(
       child: ColoredBox(
-        color: box.landscape ? const Color(0x00000000) : CoquiColors.lessonBg,
+        color: box.landscape ? Colors.transparent : NocheColors.lessonGround,
         child: SingleChildScrollView(
           padding: box.landscape
               ? EdgeInsetsDirectional.fromSTEB(0, top, 0, 152)
               : EdgeInsetsDirectional.fromSTEB(16, top, 16, 160),
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: CoquiMetrics.lessonColumnMax,
-              ),
+              constraints: const BoxConstraints(maxWidth: nocheLessonColumnMax),
               child: Column(
                 // `#fin>*{width:100%;max-width:480px}`: each line is as wide as the column
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(title, style: CoquiText.lessonH1),
+                  Text(
+                    title,
+                    style: NocheType.pageTitle.copyWith(
+                      color: NocheColors.text,
+                    ),
+                  ),
                   for (final l in lines) ...[
                     const SizedBox(height: 8),
-                    Text(l, style: CoquiText.lessonBody),
+                    Text(
+                      l,
+                      style: NocheType.bodyLarge.copyWith(
+                        color: NocheColors.label,
+                      ),
+                    ),
                   ],
                 ],
               ),
