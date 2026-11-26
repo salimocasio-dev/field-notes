@@ -18,10 +18,10 @@ Written Nov 26 2026 for story `#248` (Epic `#238`, "Danny is safe before outside
 - **ElevenLabs `get-signed-url` limitation:** Verified against `@elevenlabs/client@1.25.0` ([`lib.iife.js`](../../coqui/packages/core/coqui_platform/assets/elevenlabs/lib.iife.js)) and ElevenLabs' `GET /v1/convai/conversation/get-signed-url` API: `get-signed-url` accepts `agent_id`, `branch_id`, `version_id`, `environment`, and `include_conversation_id` — it does **not** accept `dynamic_variables`. ElevenLabs' Conversation Initiation Client Data webhook fires only for inbound telephony/messaging channels, not SDK WebSocket sessions.
 - **Why raw signed URLs are not enough:** Handing a raw `wss://api.elevenlabs.io/...` signed URL directly to the browser would still allow a modified client to send its own `conversation_initiation_client_data` frame (tampering with `dynamic_variables` or `conversation_config_override`).
 - **Ticket + thin WebSocket relay flow:**
-  1. `POST /v1/call-token` validates the caller, checks caps, builds the server-authored `dynamic_variables`, mints a single-use 60-second ticket, and returns `signedUrl` pointing to `wss://<call-api-host>/v1/call/ws?ticket=<opaque-ticket>`.
-  2. When the client opens that WebSocket, the Worker consumes the ticket, fetches the short-lived ElevenLabs signed URL server-side (`include_conversation_id=true`), and opens the upstream WebSocket to ElevenLabs (sending the allowlisted `Origin` header and `Sec-WebSocket-Protocol: convai`).
+  1. `POST /v1/call-token` validates the caller, atomically checks and reserves pending concurrency + daily slots (per-caller and global Durable Objects, 60-second alarm TTL), builds the server-authored `dynamic_variables`, mints a single-use 60-second ticket, and returns `signedUrl` pointing to `wss://<call-api-host>/v1/call/ws?ticket=<opaque-ticket>`.
+  2. When the client opens that WebSocket, the Worker consumes the ticket, fetches the short-lived ElevenLabs signed URL server-side (`include_conversation_id=true`), and opens the upstream WebSocket to ElevenLabs (sending the allowlisted `Origin` header and `Sec-WebSocket-Protocol: convai`). Once upstream connects, the Worker promotes the pending reservation into a confirmed daily count and active call lease; if the ticket expires (60 s) or upstream fails before connect, the pending reservation is atomically released.
   3. The Worker **replaces** the client's initial `conversation_initiation_client_data` frame with the server-authored `dynamic_variables` — stripping any client-supplied `dynamic_variables`, `conversation_config_override`, or `custom_llm_extra_body`.
-  4. The Worker enforces a hard **420-second (+15 s grace = 435 s)** server-side duration ceiling and transparently proxies frames bidirectionally.
+  4. The Worker enforces a hard per-call server-side duration ceiling of `maxDurationSeconds = min(420, (minutos + 2) * 60)` (240 s for 2-minute calls; 420 s for 5–6 minute calls, matching `maxAtSeconds = 420` in `call_controller.dart`) plus a **15-second grace window** (up to 435 s) for Danny's closing line before hard socket close, and transparently proxies frames bidirectionally.
 - **Cost & ecosystem fit vs. Google Cloud Run:** Unlike Cloud Run (where an active 7-minute WebSocket bills container vCPU/RAM for full wall-clock duration), Cloudflare Workers enforces no wall-clock WebSocket timeout and bills CPU/DO activity only when handling events. It also aligns with Cloudflare as the leading candidate host for static hosting (`#76`) and R2 recordings (`#265`), while staying cleanly decoupled from both.
 - **Future-proofing:** If ElevenLabs later adds server-bound `dynamic_variables` to `get-signed-url`, the Worker can return ElevenLabs' direct `wss://api.elevenlabs.io/...` URL with zero changes to `#249`'s client contract.
 
@@ -65,7 +65,8 @@ The API uses one stable HTTP header (`Authorization: Bearer <credential>`) backe
 ### Origin and platform rules
 
 - **Web clients:** Strict CORS + exact `Origin` header match against `ALLOWED_ORIGINS` (no wildcard `*`). Unlisted origins receive `403 origin_not_allowed`.
-- **Native phones (iOS / Android):** Authenticate with `Authorization: Bearer <credential>` (no browser `Origin` header; ready for App Check / Play Integrity / DeviceCheck later). The Worker supplies the allowlisted `Origin` header on its upstream ElevenLabs connection so phones work without weakening ElevenLabs' origin lock.
+- **Native phones (iOS / Android):** Authenticate with `Authorization: Bearer <credential>` (no browser `Origin` header). The Worker supplies the allowlisted `Origin` header on its upstream ElevenLabs connection so phones work without weakening ElevenLabs' origin lock.
+  - **Trade-off & mitigation:** Because native iOS/Android clients omit the browser `Origin` header, a leaked tester code could be replayed from a non-browser script until revoked. This is mitigated now by per-person revocable hashed codes plus atomic 3/day and 1-concurrent caps, with **App Check / Play Integrity / DeviceCheck** tracked as a pre-store-launch follow-up.
 - **No anonymous calls:** Missing or invalid credentials always return `401`.
 
 ---
@@ -107,7 +108,7 @@ The API uses one stable HTTP header (`Authorization: Bearer <credential>`) backe
 ```
 
 - `language` (required string, e.g. `"es"`), `placeId` (required string), `callId` (optional string; omitted or equal to `placeId` resolves to the place's `isMain` call), `wordsOpen` (optional `string[]`, max 80), `wordsHeard` (optional `string[]`, max 80).
-- **Strict validation:** Reject with `400 invalid_request` if any unknown or forbidden field (`agentId`, `place`, `job`, `opening`, `minutes`, `prompt`, `overrides`) is sent.
+- **Forward-compatible validation:** Reject explicitly **forbidden or override fields** (`agentId`, `place`, `job`, `opening`, `minutes`, `prompt`, `overrides`, `dynamicVariables`, `conversation_config_override`, `custom_llm_extra_body`) with `400 invalid_request`; **ignore** other benign unknown top-level fields so future clients can add optional fields without breaking backward compatibility.
 
 **Success response (`200 OK`, `Cache-Control: no-store`):**
 
@@ -125,6 +126,7 @@ The API uses one stable HTTP header (`Authorization: Bearer <credential>`) backe
 
 - `signedUrl` and `conversationToken` are mutually exclusive (exactly one non-null).
 - `connectionType` is `"websocket"` (matches Danny's WebSocket requirement).
+- `maxDurationSeconds` is derived server-side as `min(420, (minutos + 2) * 60)` — so 2-minute calls cap at `240` s (4 min) and 5–6 minute calls like `casa_main` (`minutos = 5`) cap at `420` s (7 min, matching `maxAtSeconds = 420` in `call_controller.dart`), plus a 15-second relay grace window for Danny's closing line.
 
 **Error response (`4xx` / `5xx`, `Cache-Control: no-store`):**
 
@@ -147,13 +149,14 @@ The API uses one stable HTTP header (`Authorization: Bearer <credential>`) backe
 | `400` | `invalid_request` | Unknown `language`/`placeId`/`callId`, malformed JSON, or forbidden override fields | — |
 | `401` | `auth_required` / `auth_invalid` | Missing, expired, revoked, or invalid Bearer credential | — |
 | `403` | `origin_not_allowed` / `plan_required` | Unlisted web `Origin`, or account lacks `Plan.courseAndCalls` | — |
-| `429` | `daily_limit_reached` | Per-caller daily cap or global circuit breaker reached | `Retry-After` header + `resetsAt`, `dailyLimit`, `remainingToday` |
-| `429` | `concurrent_call_active` | Caller already has 1 active call in progress | — |
+| `429` | `daily_limit_reached` | Per-caller daily cap reached | `Retry-After` header + `resetsAt`, `dailyLimit`, `remainingToday` |
+| `429` | `concurrent_call_active` | Caller already has 1 active or pending call in progress | — |
+| `503` | `service_busy` | Global daily circuit breaker reached across all callers | `Retry-After` header + `resetsAt` |
 | `502` / `503` | `upstream_unavailable` | ElevenLabs token API or relay upstream unreachable | — |
 
 ### How `#249` wires this into `CallSession`
 
-- `#249` files a contract request in `coqui/requests/` for `CallToken` and `CallTokenSource` (plus `CallStartFailure.dailyLimit` / `authRequired` as needed alongside [`call.dart`](../../coqui/packages/core/coqui_contracts/lib/src/call.dart#L53-L70)).
+- `#249` files a contract request in `coqui/requests/` for `CallToken` and `CallTokenSource` (plus `CallStartFailure.dailyLimit`, `authRequired`, and `serviceBusy` as needed alongside [`call.dart`](../../coqui/packages/core/coqui_contracts/lib/src/call.dart#L53-L70)).
 - **When `tokenSource != null`:** `ConvCallSession.start` fetches `CallToken` and calls `library.startSession` with `signedUrl` (or `conversationToken`), `connectionType`, and `clientTools` (`show_picture`) — passing **no `agentId` and no `dynamicVariables`**.
 - **When `tokenSource == null`:** `ConvCallSession.start` keeps today's exact public-agent behavior so the live site works uninterrupted until cut-over.
 
@@ -161,25 +164,27 @@ The API uses one stable HTTP header (`Authorization: Bearer <credential>`) backe
 
 ## 4. Per-Person Daily Cap and Calm In-App State
 
-### Cap rules (enforced atomically in SQLite Durable Object per `callerId`)
+### Cap rules (enforced atomically in SQLite Durable Objects)
 
-- **Default per-person cap:** **3 calls per UTC day** (max 7 min each = max 21 min/day). Optional `dailyLimitOverride` lets Salim's own tester code be set higher (e.g., 10/day) for testing.
-- **Per-person concurrency cap:** **1 active call at a time** (`429 concurrent_call_active`).
-- **Global daily circuit breaker:** **50 calls/day** across all callers during the tester phase (configurable; sits below ElevenLabs' own daily agent limit as a hard spend brake).
+- **Default per-person cap:** **3 calls per UTC day** (up to 7 min each = max 21 min/day). Optional `dailyLimitOverride` lets Salim's own tester code be set higher (e.g., 10/day) for testing.
+- **Per-person concurrency cap:** **1 active or pending call at a time** (`429 concurrent_call_active`).
+- **Global daily circuit breaker:** **12 calls/day** across all callers by default (strictly below ElevenLabs' 15/day cap as a hard spend brake; configurable to stay below ElevenLabs' daily cap if Salim later raises it).
 - **Reset:** **00:00 UTC** (`resetsAt` returned in ISO-8601 UTC).
-- **Fair counting:** A call increments the caller's daily count only after the upstream ElevenLabs WebSocket connects — denied microphone, voice-library load failure, or pre-connect network drop never burns a call. Unused tickets auto-expire after 60 s.
+- **Atomic two-phase slot reservation (no cap bypass race, fair counting):**
+  1. **At ticket mint (`POST /v1/call-token`):** Per-caller DO and global-breaker DO atomically verify `active + pending < 1` (concurrency), `usedToday + pendingToday < dailyLimit` (per-caller), and `globalUsedToday + globalPendingToday < globalDailyBreaker` (global, default 12/day), then **immediately reserve** a pending concurrency slot and pending daily slot (per-caller + global) bound to the ticket ID with a **60-second alarm TTL**. Parallel mint requests see the reservation immediately and fail with `429 concurrent_call_active`, `429 daily_limit_reached`, or `503 service_busy`.
+  2. **On upstream ElevenLabs connect (`GET /v1/call/ws`):** Atomically promote the pending reservation into `usedToday` + an active call lease (released on disconnect or hard ceiling).
+  3. **On ticket expiry (60 s), unused ticket, or pre-connect failure (mic denied / library failure / upstream error):** Atomically **release** the pending reservation (both concurrency and daily slot) so failed pre-connects never burn a learner's call, while parallel minting can never bypass any cap.
 - **Post-`#70`/`#72`:** Paid plans can map to `Entitlements.callMinutes(plan)` while keeping a per-person daily ceiling against runaway abuse.
 
 ### Calm in-app state when reached
 
 Matches Coquí's plain tone in [`CallTexts`](../../coqui/packages/features/feature_speaking/lib/src/call_text.dart#L37-L85): no red alarm banners, no guilt countdowns, no upsell modals during the tester phase, and no self-report workaround buttons.
 
-- **On the call screen** (when `429 daily_limit_reached` is returned):
-  - Calm plain line: `"You've done your calls with Danny for today. Come back tomorrow."` (parameterized with `course.language.partnerName` for other languages).
-  - Single calm `"Back to Hablar"` button (plus `X`), with no automatic retry loop.
-- **On the Hablar tab** (when `remainingToday == 0` is already known until `resetsAt`):
-  - Muted line: `"Danny's calls open again tomorrow."` with the Start button disabled.
-  - Completed call records, stories, review, and Library stay completely open so the learner can keep studying.
+- **Per-person daily cap (`429 daily_limit_reached`):**
+  - **Call screen:** Calm plain line: `"You've done your calls with Danny for today. Come back tomorrow."` (parameterized with `course.language.partnerName` for other languages), with a single calm `"Back to Hablar"` button (plus `X`) and no automatic retry loop.
+  - **Hablar tab** (when `remainingToday == 0` is already known until `resetsAt`): Muted line `"Danny's calls open again tomorrow."` with the Start button disabled; completed call records, stories, review, and Library stay completely open so the learner can keep studying.
+- **Global daily circuit breaker (`503 service_busy`):**
+  - **Call screen:** Honest calm line: `"Danny is busy right now. Try again later."` (parameterized with `course.language.partnerName`), so a learner who has not called today is never falsely told they used up their calls — with a single calm `"Back to Hablar"` button (plus `X`) and no automatic retry loop.
 
 ---
 
@@ -201,16 +206,16 @@ Target agent: **`Coquí – Danny v2`** (`agent_3301m795q3xtfpx8c99zc0s870vm`), 
 | Setting | Change | Notes |
 | :--- | :--- | :--- |
 | **Authentication (`enable_auth`)** | **OFF -> ON** | Requires signed URL; blocks direct unauthenticated `agentId` connections. |
-| **Allowlist (`allowlist`) + Require Origin Header (`require_origin_header`)** | **KEEP ON** | Keep `salimocasio-dev.github.io` plus the future production domain from `#255`. **Smoke-test check:** verify on ElevenLabs whether `enable_auth: true` works alongside `allowlist` + `require_origin_header: true` as configured (ElevenLabs docs note these modes can interact depending on dashboard settings). If ElevenLabs forces them mutually exclusive, keep `enable_auth: true` on ElevenLabs and rely on strict `ALLOWED_ORIGINS` enforcement in the Worker, logging that finding at cut-over. |
-| **Daily call limit** | **15 -> raised** (e.g., **60 calls/day** for early testers) | Sits slightly above the Worker's 50/day global breaker so friendly per-person limits trigger before ElevenLabs' hard cutoff; raise again at launch in step with the Worker breaker. |
-| **Concurrent calls** | **2 -> 5** for testers | The Worker enforces 1 concurrent call per caller. |
+| **Allowlist (`allowlist`) + Require Origin Header (`require_origin_header`)** | **KEEP ON** | Keep `salimocasio-dev.github.io` plus the future production domain from `#255` ON. During the pre-cut-over smoke check, verify ElevenLabs accepts `enable_auth: true` together with `allowlist` + `require_origin_header: true`. **If they conflict in ElevenLabs, STOP the cut-over and escalate to Salim** — never weaken or drop ElevenLabs' origin lock. |
+| **Daily call limit** | **Default: keep at `15/day`** | Matches the Worker global breaker at **`12/day`** (strictly below ElevenLabs' 15/day cap). Raising ElevenLabs' daily cap at cut-over is **only** done if/when Salim explicitly chooses a higher number (see Section 7, Open Decision #3), at which point Salim updates ElevenLabs and raises the Worker breaker to stay below it. |
+| **Concurrent calls** | **Keep at `2`** | Default stays `2` (no raise prescribed; any raise is Salim's explicit decision in Section 7, Open Decision #3). The Worker enforces 1 concurrent call per caller. |
 | **Overrides (`conversation_config_override`)** | **Confirm OFF** | Dynamic variables only — never prompt, voice, or LLM overrides. |
 
 ### Step 3 — Post-cut-over verification & rollback
 
 - **Verify direct block:** Confirm a direct unauthenticated WebSocket to `agent_3301m795q3xtfpx8c99zc0s870vm` fails with `401` / `403`.
 - **Verify live app call:** Confirm one real call through the live app succeeds with Salim's tester code.
-- **Rollback (< 2 min):** Flip `enable_auth` back OFF in ElevenLabs, restore the ElevenLabs daily limit to `15`, and deploy a build with `COQUI_CALL_TOKEN_URL` unset.
+- **Rollback (< 2 min):** Flip `enable_auth` back OFF in ElevenLabs, restore the ElevenLabs daily limit to `15` (if raised), and deploy a build with `COQUI_CALL_TOKEN_URL` unset.
 
 ---
 
@@ -229,9 +234,10 @@ Target agent: **`Coquí – Danny v2`** (`agent_3301m795q3xtfpx8c99zc0s870vm`), 
 
 ## 7. Open Decisions for Salim (Zero-Spend Reminder)
 
-Only two choices remain for Salim before the server implementation story is written (neither blocks `#248` or `#249`):
+Only three choices remain for Salim before the server implementation story is written (none block `#248` or `#249`):
 
 | # | Decision | Options | When needed |
 | :--- | :--- | :--- | :--- |
 | 1 | **Cloudflare account ownership** | Personal Cloudflare account now (redeploy to LLC later via `wrangler.toml`) **vs.** wait for Maryland LLC account. | Before deploying the call-token Worker. |
 | 2 | **Paid spend approval** | Explicit yes before enabling **Workers Paid ($5/month)** if 7-minute relayed calls hit the Workers Free 10 ms CPU cap, and before any live ElevenLabs smoke call. | Before paid tier activation or live smoke test. |
+| 3 | **ElevenLabs daily & concurrent limits at cut-over** | Default stays **15 calls/day, 2 concurrent** (Worker global breaker **12/day**); Salim decides if/when to raise them once auth is verified ON and more testers join. | At or after cut-over, when tester volume grows. |
