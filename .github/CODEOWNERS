@@ -1,0 +1,38 @@
+# Owner-approved paths for Coqui (salimocasio-dev/field-notes).
+# Every pattern MUST start with `/` (repo-root anchored) so `/AGENTS.md` does
+# not match package AGENTS.md files and `/app/` does not match `coqui/app/`.
+#
+# `coqui/packages/core/coqui_contracts/` is intentionally omitted: it keeps
+# its Claude sign-off rule rather than requiring Salim owner review.
+
+# Workflows, guard scripts, hooks, and root AI instructions
+/.github/ @salimocasio-dev
+/.agents/ @salimocasio-dev
+/AGENTS.md @salimocasio-dev
+/CLAUDE.md @salimocasio-dev
+/GEMINI.md @salimocasio-dev
+/tool/antigravity_guard_hook.py @salimocasio-dev
+/tools/board.py @salimocasio-dev
+
+# Build publication and published web app
+/coqui/BUILD @salimocasio-dev
+/coqui/tool/build_sitio.sh @salimocasio-dev
+/app/ @salimocasio-dev
+/index.html @salimocasio-dev
+
+# Paid audio and frozen legacy site
+/historia/cuentos/ @salimocasio-dev
+/historia/tools/ @salimocasio-dev
+/historia/llamada.js @salimocasio-dev
+/historia/datos/llamadas.json @salimocasio-dev
+/historia/datos/curso.json @salimocasio-dev
+/historia/notas/danny* @salimocasio-dev
+
+# ElevenLabs / Danny call implementation in coqui_platform
+/coqui/packages/core/coqui_platform/lib/src/call/ @salimocasio-dev
+/coqui/packages/core/coqui_platform/lib/src/web/el_conv.dart @salimocasio-dev
+/coqui/packages/core/coqui_platform/assets/elevenlabs/ @salimocasio-dev
+
+# Android release config and boundary guard
+/coqui/app/android/app/build.gradle.kts @salimocasio-dev
+/coqui/tool/check_boundaries.dart @salimocasio-dev
