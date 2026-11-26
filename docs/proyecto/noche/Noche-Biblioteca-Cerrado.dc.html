@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche: Library as a bookcase; a new story is locked until he knows more words</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&family=Literata:wght@500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+.it{flex:none;margin-right:12px}
+
+/* the tab bar, Biblioteca chosen */
+.tb{color:#A7B8C8;font-weight:600}
+.t-lib{color:#EEF3F7;font-weight:700}
+.pill{pointer-events:none}
+
+/* a new story: an empty place on the shelf. Locked until he knows enough words; when it opens the lock leaves in 140 ms */
+.lk,.op{position:absolute;left:0;top:0;transition:opacity 140ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1),visibility 0s}
+[data-ok="0"] .op,[data-ok="1"] .lk{opacity:0;visibility:hidden;transition:opacity 140ms cubic-bezier(.4,0,1,1),visibility 0s linear 140ms}
+</style>
+</helmet>
+<div data-ok="{{ ok }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0C1926; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<header style="height: 64px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<div><div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">SPANISH</div><h1 style="margin: 4px 0 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Library</h1></div>
+<button type="button" class="pr" style="height: 48px; padding: 0 16px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">+ Add your own</button>
+</header>
+
+<section style="box-sizing: border-box; padding: 8px 0 0 16px">
+<div style="display: flex; align-items: flex-end; gap: 16px; height: 126px; padding-right: 16px">
+<span lang="es" style="width: 90px; height: 126px; box-sizing: border-box; padding: 12px 8px 10px 10px; border-radius: 3px 8px 0 0; border-left: 5px solid #4A6C8C; background: #213D57; display: flex; flex-direction: column; justify-content: space-between; font: 600 13px/16px 'Literata', Georgia, serif; color: #EEF3F7">Un verano en Cabo Rojo<span style="width: 20px; height: 2px; background: #E69F00"></span></span>
+<div style="flex-grow: 1; min-width: 0; padding-bottom: 14px">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">KEEP READING · CHAPTER 2</div>
+<h2 lang="es" style="margin: 8px 0 0; font: 700 20px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Un verano en Cabo Rojo</h2>
+<div style="margin-top: 8px; font: 500 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Page 14 of 86 · 4 min left in the chapter</div>
+<span role="img" aria-label="Page 14 of 86" style="margin-top: 10px; height: 8px; border-radius: 4px; background: #33506B; display: flex"><span style="width: 16%; border-radius: 4px; background: #EEF3F7"></span></span>
+</div>
+</div>
+<div aria-hidden="true" style="height: 4px; background: #33506B; border-radius: 2px 0 0 0"></div><div aria-hidden="true" style="height: 8px; background: #213D57; border-radius: 0 0 0 4px"></div>
+</section>
+
+<section style="box-sizing: border-box; padding: 24px 0 0 16px">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">STORIES</div>
+<div style="position: relative; margin-top: 12px; display: flex; align-items: flex-start; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 120px"><div aria-hidden="true" style="height: 4px; background: #33506B; border-radius: 2px 0 0 0"></div><div aria-hidden="true" style="height: 8px; background: #213D57; border-radius: 0 0 0 4px"></div></div>
+<div class="it"><div style="position: relative; width: 132px; height: 120px">
+<div class="lk" style="width: 132px; height: 120px; box-sizing: border-box; padding: 0 12px; border: 1px dashed #33506B; border-radius: 12px 12px 2px 2px; color: #A7B8C8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span style="font: 600 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #EEF3F7">Come back when you learn more words.</span></div>
+<div class="op" style="width: 132px; height: 120px; box-sizing: border-box; padding: 0 12px; border: 1px dashed #A7B8C8; border-radius: 12px 12px 2px 2px; color: #EEF3F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; font: 700 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>A new story at your level</span></div>
+</div></div>
+
+<div class="it "><div style="width: 104px">
+<span style="position: relative; display: block; height: 120px; overflow: hidden; border-radius: 12px 12px 2px 2px"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -250px; top: -244px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 20px; font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">Un día en el parque</span>
+</div></div>
+<div class="it "><div style="width: 104px">
+<span style="position: relative; display: block; height: 120px; overflow: hidden; border-radius: 12px 12px 2px 2px"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -40px; top: -230px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 20px; font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</span>
+</div></div>
+</div>
+</section>
+
+<section style="box-sizing: border-box; padding: 24px 0 0 16px">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">BOOKS</div>
+<div style="margin-top: 12px; display: flex; align-items: flex-end; gap: 12px; height: 132px">
+<span lang="es" style="width: 90px; height: 120px; box-sizing: border-box; padding: 12px 8px 10px 10px; border-radius: 3px 8px 0 0; border-left: 5px solid #6B4059; background: #3A2433; display: flex; flex-direction: column; justify-content: space-between; font: 600 13px/16px 'Literata', Georgia, serif; color: #EEF3F7">Cuentos de la isla<span style="width: 20px; height: 2px; background: #CC79A7"></span></span>
+<span lang="es" style="width: 96px; height: 132px; box-sizing: border-box; padding: 12px 8px 10px 10px; border-radius: 3px 8px 0 0; border-left: 5px solid #4A6C8C; background: #213D57; display: flex; flex-direction: column; justify-content: space-between; font: 600 13px/16px 'Literata', Georgia, serif; color: #EEF3F7">Un verano en Cabo Rojo<span style="width: 20px; height: 2px; background: #E69F00"></span></span>
+</div>
+<div aria-hidden="true" style="height: 4px; background: #33506B; border-radius: 2px 0 0 0"></div><div aria-hidden="true" style="height: 8px; background: #213D57; border-radius: 0 0 0 4px"></div>
+</section>
+
+<div class="next" style="position: absolute; left: 16px; right: 16px; bottom: 104px"><button type="button" class="pr" style="width: 100%; height: 56px; border: 0; border-radius: 28px; background: #E69F00; color: #14110F; font: 700 17px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Continue reading</button></div>
+
+<nav aria-label="Tabs" lang="es" style="position: absolute; left: 16px; right: 16px; bottom: 16px; height: 64px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #152A3D; border: 1px solid #33506B; border-radius: 32px">
+<span class="pill" aria-hidden="true" style="position: absolute; left: 11.6px; top: 10px; width: 48px; height: 28px; border-radius: 14px; background: #33506B"></span>
+<button type="button" class="tb t-lib" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>Biblioteca</button>
+<button type="button" class="tb t-words" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg></span>Palabras</button>
+<button type="button" class="tb t-map" style="position: relative; padding: 0 0 8px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; font-size: 12px; line-height: 1"><span class="disc" style="width: 56px; height: 56px; margin-top: -24px; border-radius: 50%; background: #E69F00; color: #14110F; box-shadow: 0 0 0 4px #0C1926; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></span>Mapa</button>
+<button type="button" class="tb t-speak" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>Hablar</button>
+<button type="button" class="tb t-me" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Yo</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"enoughWords":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+// locked until the story generator has a story that fits the words he knows
+return { ok: this.props.enoughWords ? '1' : '0' };
+}
+}
+</script>
+</body>
+</html>
