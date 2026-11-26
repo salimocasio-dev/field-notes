@@ -109,7 +109,7 @@ Future<void> playRepaso(
     final choices = (s.choices as List<dynamic>?) ?? const [];
     final kind = s.item?.runtimeType.toString();
     if (s.canNext as bool) {
-      await app.tap(find.widgetWithText(LessonButton, 'Next'));
+      await app.tap(findReviewNextButton());
     } else if (choices.any((c) => c.sign as bool)) {
       final k = choices.indexWhere((c) => c.sign as bool);
       await _touchChoice(app, kind, k);
@@ -128,8 +128,8 @@ Future<void> playRepaso(
             await app.tap(
               find
                   .descendant(
-                    of: find.byType(TileTray).last,
-                    matching: find.byType(WordTile),
+                    of: findReviewTileTray().last,
+                    matching: findReviewWordTile(),
                   )
                   .at(k),
             );
@@ -137,8 +137,8 @@ Future<void> playRepaso(
         case 'MatchItem':
           final order = (s.item.wordOrder as List).cast<int>();
           for (var i = 0; i < 4; i++) {
-            await app.tap(find.byType(SpeakerTile).at(i));
-            await app.tap(find.byType(WordTile).at(order.indexOf(i)));
+            await app.tap(findReviewSpeakerTile().at(i));
+            await app.tap(findReviewWordTile().at(order.indexOf(i)));
           }
       }
     }
@@ -148,11 +148,11 @@ Future<void> playRepaso(
 
 Future<void> _touchChoice(TestApp app, String? kind, int k) async {
   if (kind == 'HearItem') {
-    await app.tap(find.byType(WordTile).at(k));
+    await app.tap(findReviewWordTile().at(k));
     return;
   }
   final g = await app.tester.startGesture(
-    app.tester.getCenter(find.byType(PictureChoice).at(k)),
+    app.tester.getCenter(findReviewPictureChoice().at(k)),
   );
   await g.up();
   await app.tester.pump();
@@ -203,7 +203,7 @@ void main() {
       await app.settle();
       expect(app.lessonShown, isTrue);
       expect(byTypeName('RepasoScreen'), findsOneWidget);
-      await app.tap(find.byType(LessonStartButton));
+      await app.tap(findReviewStartButton());
       var frente = 0, old = 0;
       final kinds = <String>{};
       await playRepaso(
@@ -313,7 +313,7 @@ void main() {
     await app.settle();
     expect(app.lessonShown, isTrue);
     expect(byTypeName('RepasoScreen'), findsOneWidget);
-    await app.tap(find.byType(LessonCloseButton));
+    await app.tap(findReviewCloseButton());
     await app.settle(rounds: 5);
     expect(app.tabBarShown, isTrue);
     expect(app.selectedTab, 'words');
@@ -454,7 +454,7 @@ void main() {
       await app.settle();
       expect(byTypeName('LevelCheckScreen'), findsOneWidget);
       expect(app.lessonShown, isTrue);
-      await app.tap(find.byType(LessonStartButton));
+      await app.tap(findReviewStartButton());
       // right on the first six pictures, then wrong: the check places him a little way in
       await answerRight(app, 'LevelCheckScreen', right: (n) => n < 6);
       // PAL.presume: the level, and the stories it skipped, presumed played

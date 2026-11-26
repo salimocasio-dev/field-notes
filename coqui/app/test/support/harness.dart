@@ -333,6 +333,56 @@ Finder findStoryStartButton() => find.byWidgetPredicate(
       'story start button (N4.3 story-start-disc or v=39 LessonStartButton)',
 );
 
+/// Review / level check close button: N4.8a's `NocheLessonCloseButton`, or v=39's [LessonCloseButton].
+Finder findReviewCloseButton() => find.byWidgetPredicate(
+  (w) =>
+      w.runtimeType.toString() == 'NocheLessonCloseButton' ||
+      w is LessonCloseButton,
+  description: 'review close button (N4.8a NocheLessonCloseButton or v=39 LessonCloseButton)',
+);
+
+/// Review / level check start disc: N4.8a's [NochePlayDisc], or v=39's [LessonStartButton].
+Finder findReviewStartButton() => find.byWidgetPredicate(
+  (w) => w is NochePlayDisc || w is LessonStartButton,
+  description:
+      'review start button (N4.8a NochePlayDisc or v=39 LessonStartButton)',
+);
+
+/// Review Next button: N4.8a's [NochePrimaryButton] labelled 'Next', or v=39's [LessonButton] with text 'Next'.
+Finder findReviewNextButton() => find.byWidgetPredicate(
+  (w) =>
+      (w is NochePrimaryButton && w.label == 'Next') ||
+      (w is LessonButton && w.label == 'Next'),
+  description:
+      'review Next button (N4.8a NochePrimaryButton or v=39 LessonButton)',
+);
+
+/// Review picture choice: N4.8a's `NochePictureChoice`, or v=39's [PictureChoice].
+Finder findReviewPictureChoice() => find.byWidgetPredicate(
+  (w) => w.runtimeType.toString() == 'NochePictureChoice' || w is PictureChoice,
+  description:
+      'review picture choice (N4.8a NochePictureChoice or v=39 PictureChoice)',
+);
+
+/// Review word tile: N4.8a's `NocheWordTile`, or v=39's [WordTile].
+Finder findReviewWordTile() => find.byWidgetPredicate(
+  (w) => w.runtimeType.toString() == 'NocheWordTile' || w is WordTile,
+  description: 'review word tile (N4.8a NocheWordTile or v=39 WordTile)',
+);
+
+/// Review tile tray: N4.8a's `NocheTileTray`, or v=39's [TileTray].
+Finder findReviewTileTray() => find.byWidgetPredicate(
+  (w) => w.runtimeType.toString() == 'NocheTileTray' || w is TileTray,
+  description: 'review tile tray (N4.8a NocheTileTray or v=39 TileTray)',
+);
+
+/// Review speaker tile: N4.8a's `NocheSpeakerTile`, or v=39's [SpeakerTile].
+Finder findReviewSpeakerTile() => find.byWidgetPredicate(
+  (w) => w.runtimeType.toString() == 'NocheSpeakerTile' || w is SpeakerTile,
+  description:
+      'review speaker tile (N4.8a NocheSpeakerTile or v=39 SpeakerTile)',
+);
+
 /// TEST-ONLY. A scene that is not converted and never will be: no scene of coqui_scenes' registry has its id. Its old
 /// pictures are order 06's pictures of El banco (coqui/ref/escenas/banco/pairs/), as they were before order 36b converted
 /// El banco. The test of ¿Cuál?'s old pictures puts a review set at it (TestApp.editContent), so that it does not depend
