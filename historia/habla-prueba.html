@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8"><noscript><meta http-equiv="refresh" content="0; url=../app/"></noscript>
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#1B1B1F">
+<link rel="icon" href="data:,">
+<title>Prueba de voz</title>
+<style>
+:root{--bg:#1B1B1F;--ink:#FFFFFF;--ink2:#C9C9D1;--ink3:#8E8E98;--line:#4A4A52;--grn:#17803F;--heard:#9AD5A8;--blu:#3B5BDB;--sys:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/24px var(--sys);overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;background:none;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:2px solid var(--blu);outline-offset:2px}
+/* the frame, as in a lesson: a thin progress bar on top, the line to say in the middle, the mic disc in the bottom third */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#top{flex:none;height:calc(56px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 16px 0;display:flex;align-items:center;justify-content:center}
+#bar{flex:1;max-width:480px;display:flex;gap:4px;align-items:center}
+.dot{flex:1 1 0;min-width:0;height:6px;border-radius:3px;background:#3A3A42;transition:background .2s}
+.dot.on{background:var(--grn)}
+.dot.cur{background:#7A7A84}
+#ins{flex:none;margin:0;padding:0 16px;color:var(--ink2);font:400 16px/24px var(--sys);text-align:center}
+#main{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 16px 112px;text-align:center}
+#n{color:var(--ink2);font:500 12px/16px var(--sys);letter-spacing:.04em}
+#line{margin:8px 0 0;max-width:480px;color:var(--ink);font:600 24px/32px var(--sys);text-wrap:balance}
+#hint{margin:4px 0 0;color:var(--ink2);font:400 16px/24px var(--sys)}
+#hint:empty{display:none}
+#heard{display:flex;align-items:center;justify-content:center;gap:8px;height:24px;margin-top:24px;max-width:480px;font:400 16px/24px var(--sys);color:var(--ink2)}
+#heard svg{flex:none;display:block}
+#heard.ok #said{color:var(--heard)}
+#heard:not(.on){visibility:hidden}
+#foot{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 16px calc(40px + env(safe-area-inset-bottom));pointer-events:none}
+#foot>*{pointer-events:auto}
+#st{height:16px;color:var(--ink2);font:500 12px/16px var(--sys)}
+.disc{display:none;position:relative;flex:none;width:72px;height:72px;border-radius:50%;background:var(--grn);align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.disc:active{transform:scale(.96)}
+#app[data-s=ready] #mic,#app[data-s=listen] #mic,#app[data-s=proc] #mic,#app[data-s=done] #next{display:flex}
+#app[data-s=listen] #mic,#app[data-s=proc] #mic{pointer-events:none}
+#app[data-s=listen] #mic{animation:ring 1.4s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(23,128,63,.55),0 4px 16px rgba(0,0,0,.35)}100%{box-shadow:0 0 0 28px rgba(23,128,63,0),0 4px 16px rgba(0,0,0,.35)}}
+#mic .dots{display:none;gap:6px}
+#mic .dots i{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1s ease-in-out infinite}
+#mic .dots i:nth-child(2){animation-delay:.15s}
+#mic .dots i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+#app[data-s=proc] #mic{background:var(--blu)}
+#app[data-s=proc] #mic .mi{display:none}
+#app[data-s=proc] #mic .dots{display:flex}
+@media (prefers-reduced-motion:reduce){#app[data-s=listen] #mic{animation:none;box-shadow:0 0 0 6px rgba(23,128,63,.45)}#mic .dots i{animation:none;opacity:.8}}
+/* the end: the result line, what was heard for each line, and a way to go again */
+#fin{display:none;position:absolute;inset:0;z-index:4;flex-direction:column;background:var(--bg)}
+#app[data-s=end] #fin{display:flex}
+#app[data-s=end] #ins,#app[data-s=end] #top,#app[data-s=end] #main,#app[data-s=end] #foot{visibility:hidden}
+#finscroll{flex:1;min-height:0;overflow:auto;padding:24px 16px 16px;-webkit-overflow-scrolling:touch}
+#finscroll>*{width:100%;max-width:480px;margin-left:auto;margin-right:auto}
+#res{margin-top:0;margin-bottom:0;color:var(--ink);font:600 24px/32px var(--sys)}
+#note{margin-top:8px;margin-bottom:0;color:var(--ink2);font:400 16px/24px var(--sys)}
+#note:empty{display:none}
+#rows{list-style:none;margin:16px auto 0;padding:0}
+#rows li{display:flex;gap:16px;align-items:flex-start;min-height:56px;padding:12px 0;border-top:1px solid #2C2C33}
+#rows li>svg{flex:none;margin-top:0}
+#rows .t{min-width:0}
+#rows .l{color:var(--ink);font:600 16px/24px var(--sys)}
+#rows .h{color:var(--ink2);font:400 16px/24px var(--sys);overflow-wrap:anywhere}
+#rows li.ok .h{color:var(--heard)}
+#rows .a{color:var(--ink3);font:400 12px/16px var(--sys);overflow-wrap:anywhere}
+#finfoot{flex:none;display:flex;justify-content:center;padding:16px 16px calc(24px + env(safe-area-inset-bottom));border-top:1px solid #2C2C33;background:var(--bg)}
+.sec{width:100%;max-width:480px;height:48px;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);font:500 16px/24px var(--sys);display:flex;align-items:center;justify-content:center}
+.sec:active{background:rgba(255,255,255,.08)}
+/* a phone on its side: the same screen, less air under the disc */
+@media (orientation:landscape) and (max-height:600px){
+  #top{height:calc(40px + env(safe-area-inset-top))}
+  #main{padding-bottom:104px}
+  #foot{padding-bottom:calc(16px + env(safe-area-inset-bottom));gap:4px}
+  #heard{margin-top:8px}
+}
+</style></head><body>
+<div id="app" data-s="load">
+  <header id="top"><div id="bar" role="progressbar" aria-label="Progreso"></div></header>
+  <p id="ins" lang="en">Tap the mic and say each Spanish line.</p>
+  <main id="main">
+    <div id="n"></div>
+    <h1 id="line"></h1>
+    <p id="hint"></p>
+    <div id="heard" aria-live="polite"><span id="mark"></span><span id="said"></span></div>
+  </main>
+  <div id="foot">
+    <div id="st" aria-live="polite"></div>
+    <button class="disc" id="mic" aria-label="Micrófono"><svg class="mi" width="32" height="32" viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11z" fill="#FFFFFF"/></svg><span class="dots"><i></i><i></i><i></i></span></button>
+    <button class="disc" id="next" aria-label="Siguiente"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+  <section id="fin" aria-live="polite">
+    <div id="finscroll">
+      <h2 id="res"></h2>
+      <p id="note"></p>
+      <ol id="rows"></ol>
+    </div>
+    <div id="finfoot"><button class="sec" id="again">Otra vez</button></div>
+  </section>
+</div>
+<script>
+"use strict";
+(()=>{
+  const _h=location.hostname,_local=_h==="127.0.0.1"||_h==="localhost"||_h==="[::1]";if(!(navigator.webdriver&&_local)){if(window.stop)window.stop();location.replace("../app/");return;}
+  const norm=s=>" "+String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()+" ";   // accents, case and punctuation ignored
+  // The rule for "heard right" (docs/hablar/01-decisiones.md): for EVERY target, at least one accepted form has (" "+norm(f).trim()+" ") inside norm(alternative), for ANY alternative.
+  const heard=(L,alts)=>L.g.every(g=>g[1].some(f=>{const k=" "+norm(f).trim()+" ";return alts.some(a=>norm(a).indexOf(k)>=0);}));
+  // The 12 lines (all from La casa). A target is [word, accepted forms]; names are never targets.
+  const LINES=[
+    {t:"Hola, abuela",g:[["hola",["hola"]],["abuela",["abuela"]]]},
+    {t:"Sí",g:[["sí",["si"]]]},
+    {t:"No",g:[["no",["no"]]]},
+    {t:"Gracias",g:[["gracias",["gracias"]]]},
+    {t:"Adiós",g:[["adiós",["adios"]]]},
+    {t:"La casa",g:[["casa",["casa"]]]},
+    {t:"La puerta",g:[["puerta",["puerta"]]]},
+    {t:"La ventana",g:[["ventana",["ventana"]]]},
+    {t:"Quiero jugo, por favor",g:[["quiero",["quiero"]],["jugo",["jugo"]]]},
+    {t:"Me llamo…",h:"tu nombre",g:[["me llamo",["me llamo"]]]},
+    {t:"¿Cómo estás?",g:[["¿cómo estás?",["como estas"]]]},
+    {t:"Uno, dos, tres",g:[["uno",["uno","1"]],["tres",["tres","3"]]]}
+  ];
+  const N=LINES.length,KEY="coqui.hablaprueba",LANG="es-US",STOP_AT=6000,GRACE=3000;
+  const UNAVAIL=new Set(["not-allowed","service-not-allowed","network","audio-capture","language-not-supported"]);   // the recogniser cannot work: the test stops
+  const Q=new URLSearchParams(location.search),MIC=Q.get("mic")||"";
+  const OFF=MIC==="off";   // ?mic=off: recognition is unavailable
+  // ?mic=stub:<r1>|<r2>|...: the results of the next attempts, in order. Each is alternatives split by "/", or "none" (no-speech), or "error:<code>". Used up: "none".
+  const STUB=MIC.indexOf("stub:")===0?MIC.slice(5).split("|").map(s=>{s=s.trim();if(s===""||s==="none")return{none:1};if(s.indexOf("error:")===0)return{err:s.slice(6).trim()};return{alts:s.split("/").map(x=>x.trim()).filter(Boolean)};}):null;
+  let stubAt=0;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const $=id=>document.getElementById(id),app=$("app");
+  const now=()=>performance.now();
+
+  // ---------- icons
+  const TICK='<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#17803F"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const MISS='<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="none" stroke="#6B6B75" stroke-width="2"/><path d="M8 12h8" stroke="#9A9AA3" stroke-width="2.4" stroke-linecap="round"/></svg>';
+
+  // ---------- the run, kept in localStorage under coqui.hablaprueba (every read and write wrapped)
+  let RUN=null,i=0;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  function newRun(){
+    i=0;
+    RUN={v:1,t:new Date().toISOString(),lang:LANG,src:OFF?"off":STUB?"stub":"mic",ua:String(navigator.userAgent||""),n:N,right:0,done:false,unavailable:"",
+      lines:LINES.map((L,k)=>({i:k+1,line:L.t,tried:false,ok:false,alts:[],conf:[],ms:0,err:""}))};
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(RUN));}catch(e){}}
+  const count=()=>RUN.lines.reduce((a,e)=>a+(e.ok?1:0),0);
+
+  // ---------- the screens
+  function state(s){app.setAttribute("data-s",s);$("st").textContent=s==="listen"?"Escuchando…":s==="proc"?"Un momento…":"";}
+  function bar(){
+    const b=$("bar");if(!b.firstChild){for(let k=0;k<N;k++){const d=document.createElement("span");d.className="dot";b.appendChild(d);}}
+    for(let k=0;k<N;k++)b.children[k].className="dot"+(RUN.lines[k].tried?" on":k===i?" cur":"");
+    b.setAttribute("aria-valuemin","0");b.setAttribute("aria-valuemax",String(N));b.setAttribute("aria-valuenow",String(RUN.lines.filter(e=>e.tried).length));
+  }
+  function showLine(){
+    const L=LINES[i];
+    $("n").textContent=(i+1)+" / "+N;$("line").textContent=L.t;$("hint").textContent=L.h||"";
+    $("heard").className="";$("mark").innerHTML="";$("said").textContent="";
+    bar();state("ready");
+  }
+  function showDone(){
+    const e=RUN.lines[i],best=e.alts[0]||"";
+    $("heard").className="on"+(e.ok?" ok":"");$("mark").innerHTML=e.ok?TICK:MISS;$("said").textContent=best||"—";
+    bar();state("done");
+  }
+  function showEnd(){
+    RUN.right=count();
+    $("res").textContent="Heard right: "+RUN.right+" of "+N;$("res").setAttribute("data-right",String(RUN.right));
+    $("note").textContent=RUN.unavailable?"El micrófono no está disponible.":"";
+    $("rows").innerHTML=RUN.lines.map(e=>{
+      const best=e.alts[0]||"—",more=e.alts.slice(1).join(" · ");
+      return '<li class="'+(e.ok?"ok":"no")+'" data-i="'+e.i+'" data-ok="'+(e.ok?1:0)+'">'+(e.ok?TICK:MISS)+'<div class="t"><div class="l">'+esc(e.line)+'</div><div class="h">'+esc(best)+'</div>'+(more?'<div class="a">'+esc(more)+'</div>':"")+'</div></li>';
+    }).join("");
+    bar();state("end");
+    const sc=$("finscroll");sc.scrollTop=0;
+  }
+
+  // ---------- listening: one attempt per line
+  // The stub is a recogniser with the same events as the real one, driven by a ?mic=stub: result.
+  function StubRec(r){
+    const me=this;let tm=[],over=false;
+    const at=(ms,f)=>tm.push(setTimeout(()=>{if(!over)f();},ms));
+    const end=()=>{if(over)return;over=true;tm.forEach(clearTimeout);if(me.onend)me.onend({});};
+    me.start=()=>{
+      if(r.err){at(400,()=>{if(me.onerror)me.onerror({error:r.err});});at(450,end);return;}
+      if(r.none||!r.alts||!r.alts.length){at(900,()=>{if(me.onerror)me.onerror({error:"no-speech"});});at(950,end);return;}
+      at(300,()=>{if(me.onspeechstart)me.onspeechstart({});});
+      at(700,()=>{if(me.onspeechend)me.onspeechend({});});
+      at(750,()=>{if(me.onaudioend)me.onaudioend({});});
+      at(900,()=>{if(me.onresult){const res=r.alts.slice(0,me.maxAlternatives||5).map((a,k)=>({transcript:a,confidence:k===0?0.9:0.5}));me.onresult({resultIndex:0,results:[res]});}});
+      at(950,end);
+    };
+    me.stop=()=>{over||(tm.forEach(clearTimeout),setTimeout(end,0));};
+    me.abort=me.stop;
+  }
+  function listen(cb){
+    // cb({alts, conf, err, ms}) once, when the attempt is over
+    let settled=false,t0=now(),onset=0,proc=false,alts=[],conf=[],err="",t6=0,tg=0,rec=null;
+    const fin=()=>{if(settled)return;settled=true;clearTimeout(t6);clearTimeout(tg);cb({alts:alts,conf:conf,err:err,ms:onset?Math.max(0,Math.round(onset-t0)):0});};
+    const toProc=()=>{if(settled||proc)return;proc=true;if(app.getAttribute("data-s")==="listen")state("proc");};
+    try{
+      rec=STUB?new StubRec(STUB[stubAt++]||{none:1}):new SR();
+      rec.lang=LANG;rec.interimResults=false;rec.maxAlternatives=5;rec.continuous=false;
+      rec.onspeechstart=()=>{if(!onset)onset=now();};
+      rec.onspeechend=toProc;rec.onaudioend=toProc;
+      rec.onresult=ev=>{
+        const r=ev&&ev.results&&ev.results[0];if(!r)return;
+        alts=[];conf=[];
+        for(let k=0;k<r.length;k++){const a=r[k];if(a&&typeof a.transcript==="string"){alts.push(a.transcript);conf.push(typeof a.confidence==="number"?Math.round(a.confidence*100)/100:0);}}
+      };
+      rec.onerror=ev=>{err=String((ev&&ev.error)||"error");};
+      rec.onend=fin;
+      t6=setTimeout(()=>{toProc();try{rec.stop();}catch(e){}tg=setTimeout(()=>{try{rec.abort();}catch(e){}fin();},GRACE);},STOP_AT);   // the browser's own end-of-speech first; stop() at 6 s at the latest
+      rec.start();
+    }catch(e){err="not-allowed";fin();}   // start() refused: the microphone cannot be used
+  }
+  function onMic(){
+    if(app.getAttribute("data-s")!=="ready")return;
+    state("listen");
+    const k=i;
+    listen(r=>{
+      if(k!==i||app.getAttribute("data-s")==="end")return;
+      const e=RUN.lines[k];
+      e.tried=true;e.alts=r.alts;e.conf=r.conf;e.ms=r.ms;e.err=r.err;
+      if(r.err&&UNAVAIL.has(r.err)){e.ok=false;RUN.unavailable=r.err;RUN.done=true;save();showEnd();return;}   // cannot work: stop here
+      e.ok=r.alts.length>0&&heard(LINES[k],r.alts);   // no-speech, aborted, nothing heard or the wrong words: a miss
+      RUN.right=count();save();showDone();
+    });
+  }
+  function onNext(){
+    if(app.getAttribute("data-s")!=="done")return;
+    if(i<N-1){i++;showLine();}else{RUN.done=true;save();showEnd();}
+  }
+
+  // ---------- can he speak at all? (recognition exists, online, the microphone not denied)
+  function whyNot(){
+    if(OFF)return Promise.resolve("off");
+    if(!STUB&&!SR)return Promise.resolve("no-recognition");
+    if(navigator.onLine===false)return Promise.resolve("offline");
+    if(STUB)return Promise.resolve("");
+    return new Promise(res=>{
+      let done=false;const go=v=>{if(!done){done=true;res(v);}};
+      setTimeout(()=>go(""),600);
+      try{navigator.permissions.query({name:"microphone"}).then(p=>go(p&&p.state==="denied"?"denied":""),()=>go(""));}catch(e){go("");}
+    });
+  }
+  function start(){
+    newRun();stubAt=0;
+    state("load");
+    whyNot().then(why=>{
+      if(why){RUN.unavailable=why;RUN.done=true;showEnd();return;}   // nothing was tried: an earlier saved run stays as it was
+      showLine();
+    });
+  }
+  $("mic").addEventListener("click",onMic);
+  $("next").addEventListener("click",onNext);
+  $("again").addEventListener("click",start);
+  start();
+})();
+</script>
+</body></html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8"><script>/* Tooling-only harness: public visitors always go to ../app/. Stays open only for local headless tools on loopback. */(function(){var h=location.hostname,local=h==="127.0.0.1"||h==="localhost"||h==="[::1]";if(!(navigator.webdriver&&local)){if(window.stop)window.stop();location.replace("../app/");}})();</script><noscript><meta http-equiv="refresh" content="0; url=../app/"></noscript>
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#1B1B1F">
+<link rel="icon" href="data:,">
+<title>Coquí · Level check</title>
+<style>
+:root{--bg:#1B1B1F;--ink:#FFFFFF;--ink2:#C9C9D1;--line:#4A4A52;--bad:#D9480F;--grn:#17803F;--blu:#3B5BDB;--sys:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/24px var(--sys);overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;border:0;padding:0;margin:0;background:none;cursor:pointer}
+button:focus-visible{outline:2px solid var(--blu);outline-offset:2px}
+/* the frame: a top bar (close, progress, sound); the picture centred between it and the bottom zone, its caption under it; the bottom zone holds the start disc, or the end buttons */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#top{flex:none;height:calc(56px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 8px 0;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.ib{flex:none;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink2)}
+.ib:active{background:rgba(255,255,255,.1)}
+#bar{flex:1;max-width:480px;display:flex;gap:4px;align-items:center}
+.dot{flex:1 1 0;min-width:0;height:6px;border-radius:3px;background:#3A3A42;transition:background .2s}
+.dot.on{background:var(--grn)}
+#bar.many{gap:1px}
+#bar.many .dot{border-radius:1px}
+#snd.off svg .w{display:none}
+#snd.off svg .x{display:block}
+#snd svg .x{display:none}
+#main{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 16px 112px}   /* 112 = the start disc (72) and the 40 px under it: the picture is centred above that zone */
+#stage{position:relative;flex:none;line-height:0;z-index:1}
+canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch-action:none;border-radius:8px}
+#side{display:contents}
+#capbox{position:relative;flex:none;width:100%;height:0}   /* no height of its own: the picture alone is what gets centred; the caption hangs 8 px under it */
+#cap{position:absolute;left:0;right:0;top:8px;color:var(--ink);font:500 18px/24px var(--sys);text-align:center;opacity:0;transition:opacity .12s;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;max-height:48px}
+#cap.on{opacity:1}
+#fin{display:none;position:absolute;inset:0;z-index:2;flex-direction:column;align-items:center;padding:calc(35vh - 56px - env(safe-area-inset-top)) 16px 160px;padding-top:calc(35dvh - 56px - env(safe-area-inset-top));background:var(--bg);overflow:auto;line-height:normal}   /* the title of a start or end screen sits at about 35% of the height */
+#fin>*{width:100%;max-width:480px}
+#fin h1{margin:0;color:var(--ink);font:600 24px/32px var(--sys);text-align:left}
+#fin p{margin:8px 0 0;color:var(--ink2);font:400 16px/24px var(--sys);text-align:left}
+#fin b{color:var(--ink);font-weight:600}
+#foot{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:16px;padding:0 16px 24px;pointer-events:none}
+#foot>*{pointer-events:auto}
+#go{display:flex;flex:none;width:72px;height:72px;margin-bottom:16px;border-radius:50%;background:var(--grn);align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.35)}   /* the start disc: 40 px above the bottom edge */
+#go:active{transform:scale(.96)}
+.pri{display:none;width:100%;max-width:480px;height:56px;border-radius:12px;background:var(--grn);color:#fff;font:600 16px/24px var(--sys);align-items:center;justify-content:center}   /* green: continue learning */
+.pri.blu{background:var(--blu)}   /* blue: any other main action */
+.pri:active{filter:brightness(.92)}
+.sec{display:none;width:100%;max-width:480px;height:48px;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);font:500 16px/24px var(--sys);align-items:center;justify-content:center}
+.sec:active{background:rgba(255,255,255,.08)}
+#duo{display:contents}   /* Play again alone is a direct child of the bottom zone; with Map beside it (a story that has a next one) the two share a row, 16 px apart */
+#duo.two{display:flex;gap:16px;width:100%;max-width:480px}
+#duo.two>.sec{flex:1 1 0;width:auto;min-width:0}
+#app.nopic #stage,#app.nopic #capbox{display:none}
+/* the options of Review and the level check: one picture each, in its own 1.5 px frame; a ring shows the answer: green right, red-orange wrong (the level check only shows which one he touched, white) */
+#opts{position:absolute;inset:0}
+.opt{position:absolute;box-shadow:0 0 0 1.5px var(--line)}
+.opt.ok{box-shadow:0 0 0 3px var(--grn)}
+.opt.bad{box-shadow:0 0 0 3px var(--bad)}
+.opt.sel{box-shadow:0 0 0 3px var(--ink)}
+#bub{position:absolute;left:0;top:0;transform:translate(-50%,-100%) scale(.6);opacity:0;pointer-events:none;max-width:72%;width:max-content;box-sizing:border-box;
+  background:#FFFFFF;color:#2A1810;border:3px solid #2A1810;border-radius:12px;padding:5px 11px 6px;font:800 18px/1.22 var(--sys);text-align:center;transition:opacity .12s,transform .12s;line-height:1.2;--tx:50%}
+#bub.on{opacity:1;transform:translate(-50%,calc(-100% - 10px)) scale(1)}
+#bub::after{content:"";position:absolute;left:var(--tx);bottom:-11px;margin-left:-8px;border:8px solid transparent;border-top:9px solid #2A1810;border-bottom:0}
+#bub::before{content:"";position:absolute;left:var(--tx);bottom:-6px;margin-left:-5px;border:5px solid transparent;border-top:6px solid #FFFFFF;border-bottom:0;z-index:1}
+#bub.der,#bub.izq{transform:translate(0,-50%) scale(.6)}
+#bub.izq{transform:translate(-100%,-50%) scale(.6)}
+#bub.on.der{transform:translate(0,-50%) scale(1)}
+#bub.on.izq{transform:translate(-100%,-50%) scale(1)}
+#bub.der::after{left:-11px;top:50%;bottom:auto;margin:-8px 0 0;border:8px solid transparent;border-right:9px solid #2A1810;border-left:0}
+#bub.der::before{left:-6px;top:50%;bottom:auto;margin:-5px 0 0;border:5px solid transparent;border-right:6px solid #FFFFFF;border-left:0}
+#bub.izq::after{left:auto;right:-11px;top:50%;bottom:auto;margin:-8px 0 0;border:8px solid transparent;border-left:9px solid #2A1810;border-right:0}
+#bub.izq::before{left:auto;right:-6px;top:50%;bottom:auto;margin:-5px 0 0;border:5px solid transparent;border-left:6px solid #FFFFFF;border-right:0}
+/* a phone on its side: the picture alone on the left, 16 px from the top, the bottom and the left edge; the close button, the progress bar and the sound button are the top row of the column on the right, and everything else sits under them */
+@media (orientation:landscape) and (max-height:600px){
+  #app{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:56px minmax(0,1fr);padding-top:env(safe-area-inset-top)}
+  #main{display:contents}
+  #stage{grid-column:1;grid-row:1/3;align-self:center;margin:16px}
+  #top{grid-column:2;grid-row:1;height:56px;padding:0 8px}
+  #side{display:block;position:relative;grid-column:2;grid-row:2;min-width:0;margin-right:16px}
+  #capbox{position:absolute;left:0;right:0;top:50%;width:auto;transform:translateY(-50%)}
+  #cap{position:static}
+  #fin{padding:8px 0 152px;background:none}
+  #foot{padding:0 0 16px}
+  #go{margin-bottom:0}
+  #app[data-s=start] #foot{top:50%;bottom:auto;padding:0;transform:translateY(-50%)}
+}
+</style></head><body>
+<div id="app" data-s="start" class="nopic">
+  <header id="top">
+    <button class="ib" id="close" aria-label="Close"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div id="bar" role="progressbar" aria-label="Progress"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <button class="ib" id="snd" aria-label="Sound"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path class="w" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="w" d="M18.5 5.5a9 9 0 0 1 0 13"/><path class="x" d="m16 9 6 6m0-6-6 6"/></svg></button>
+  </header>
+  <main id="main">
+    <div id="stage">
+      <canvas id="cv" width="196" height="216"></canvas>
+      <div id="opts"></div>
+      <div id="bub" aria-live="polite"></div>
+    </div>
+    <div id="side">
+      <div id="capbox"><div id="cap" aria-live="polite"></div></div>
+      <div id="fin"></div>
+      <div id="foot">
+        <button id="go" aria-label="Start"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M8 4.5v15l12-7.5z" fill="#FFFFFF"/></svg></button>
+        <div id="duo"><button class="sec" id="again">Play again</button><button class="sec" id="map">Map</button></div>
+        <button class="pri" id="next">Next story</button>
+        <button class="pri blu" id="home">Map</button>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="engine.js?v=40"></script>
+<script src="palabras.js?v=40"></script>
+<script src="curso.js?v=40"></script>
+<script src="juego.js?v=40"></script>
+<script src="escenas/kit.js?v=40"></script>
+<script src="escenas/frente.js?v=40"></script>
+<script src="cual.js?v=40"></script>
+<script src="nivel.js?v=40"></script>
+<script>nivelArranca();</script>
+</body></html>
