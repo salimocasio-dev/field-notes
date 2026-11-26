@@ -26,7 +26,9 @@ button{font-family:inherit}
 [data-seq="1"] .tb,[data-seq="2"] .tb{box-shadow:0 0 0 3px #009E73}
 [data-seq="1"] .ta,[data-seq="2"] .ta{opacity:.4}
 .badge{position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:opacity 140ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1)}
-[data-seq="1"] .badge,[data-seq="2"] .badge{opacity:1;transform:scale(1)}
+[data-seq="1"] .tb .badge,[data-seq="2"] .tb .badge,[data-miss="1"] .bm{opacity:1;transform:scale(1)}
+/* a miss is a white outline; the picture can still be chosen again */
+[data-miss="1"][data-seq="0"] .ta{box-shadow:0 0 0 3px #EEF3F7}
 .tring{position:absolute;left:0;top:0;width:300px;height:160px;box-sizing:border-box;border:2px solid #009E73;opacity:0;pointer-events:none}
 [data-seq="1"] .tring{animation:tringOut 480ms cubic-bezier(.2,0,0,1) both}
 @keyframes tringOut{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(1.08)}}
@@ -58,7 +60,7 @@ button{font-family:inherit}
 }
 </style>
 </helmet>
-<div data-seq="{{ seq }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #12171D; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<div data-seq="{{ seq }}" data-miss="{{ miss1 }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #12171D; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
 
 <header style="height: 56px; box-sizing: border-box; padding: 0 16px 0 8px; display: flex; align-items: center; gap: 8px">
 <span class="hx" aria-hidden="true" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
@@ -69,8 +71,8 @@ button{font-family:inherit}
 <!-- the last turn of the review -->
 <div class="turn">
 <div style="box-sizing: border-box; height: 104px; padding: 24px 24px 0"><div style="font: 700 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .08em; color: #A7B8C8">ABUELA</div><p lang="es" style="margin: 8px 0 0; font: 600 28px/36px 'Atkinson Hyperlegible Next', Arial, sans-serif">la estufa</p></div>
-<div style="margin: 24px 45px 0"><div class="tile ta"><span style="position: absolute; left: 0; top: 0; width: 300px; height: 160px; overflow: hidden"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -52px; top: -110px; width: 392px; height: 432px; image-rendering: pixelated"></span></div></div>
-<div style="margin: 20px 45px 0"><button type="button" class="tile tb" onClick="{{ pick }}" aria-label="Picture 2, the right one">
+<div style="margin: 24px 45px 0"><button type="button" class="tile ta" onClick="{{ miss }}" aria-label="Picture 1"><span style="position: absolute; left: 0; top: 0; width: 300px; height: 160px; overflow: hidden"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -52px; top: -110px; width: 392px; height: 432px; image-rendering: pixelated"></span><span class="badge bm" aria-hidden="true" style="box-sizing: border-box; background: #12171D; border: 2px solid #EEF3F7; color: #EEF3F7"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span></button></div>
+<div style="margin: 20px 45px 0"><button type="button" class="tile tb" onClick="{{ pick }}" aria-label="Picture 2">
 <span style="position: absolute; left: 0; top: 0; width: 300px; height: 160px; overflow: hidden"><img src="/_blob/40d38295cde0422d18f57b9c9700ea0a" alt="" style="position: absolute; left: -42px; top: -130px; width: 392px; height: 432px; image-rendering: pixelated"></span>
 <span class="tring" aria-hidden="true"></span>
 <span class="badge" aria-hidden="true" style="background: #009E73; color: #14110F"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
@@ -138,9 +140,11 @@ renderVals() {
 var self = this, seq = (this.state || {}).seq || 0;
 return {
 seq: String(seq),
+miss1: (this.state || {}).miss ? '1' : '0',
+miss: function () { if (((self.state || {}).seq || 0) === 0) self.setState({ miss: 1 }); },
 // the right answer, the last dash, and 900 ms later the end
 pick: function () { if (((self.state || {}).seq || 0) !== 0) return; self.setState({ seq: 1 }); self._t = setTimeout(function () { self.setState({ seq: 2 }); }, 900); },
-again: function () { clearTimeout(self._t); self.setState({ seq: 0 }); }
+again: function () { clearTimeout(self._t); self.setState({ seq: 0, miss: 0 }); }
 };
 }
 }

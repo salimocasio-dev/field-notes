@@ -78,20 +78,20 @@ button{font-family:inherit}
 <button type="button" class="scrim" onClick="{{ closeSheet }}" aria-label="Close"></button>
 <section class="sheet" aria-label="Languages" style="box-sizing: border-box; padding: 8px 16px 24px; background: #152A3D; border-top: 1px solid #33506B; border-radius: 24px 24px 0 0">
 <div aria-hidden="true" style="width: 40px; height: 4px; margin: 0 auto 8px; border-radius: 2px; background: #4A6C8C"></div>
-<div style="height: 48px; display: flex; align-items: center; justify-content: space-between"><h1 style="margin: 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Your languages</h1><button type="button" class="pr" onClick="{{ closeSheet }}" aria-label="Close" style="width: 48px; height: 48px; margin-right: -12px; padding: 0; border: 0; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+<div style="height: 48px; display: flex; align-items: center; justify-content: space-between"><h1 style="margin: 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Your languages</h1><button type="button" class="pr" onClick="{{ closeSheet }}" aria-label="Close" style="width: 48px; height: 48px; margin-inline-end: -12px; padding: 0; border: 0; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
 <div role="radiogroup" aria-label="Language you are learning now" style="position: relative; margin-top: 8px; display: flex; flex-direction: column; gap: 8px">
-<button type="button" role="radio" onClick="{{ pick0 }}" style="position: relative; height: 72px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; color: #EEF3F7; text-align: left">
+<button type="button" role="radio" aria-checked="{{ a.p0 }}" onClick="{{ pick0 }}" style="position: relative; height: 72px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; color: #EEF3F7; text-align: start">
 <span><span style="display: block; font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Spanish</span><span style="display: block; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">A1 · place 3 of 10 · 96 words</span></span>
-<span style="position: relative; flex: none; width: 56px; height: 32px"><span class="sw sw0" style="position: absolute; right: 0; top: 9px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Switch</span><span class="ck ck0" style="position: absolute; right: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: #EEF3F7; color: #0C1926; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
+<span style="position: relative; flex: none; width: 56px; height: 32px"><span class="sw sw0" style="position: absolute; inset-inline-end: 0; top: 9px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Switch</span><span class="ck ck0" style="position: absolute; inset-inline-end: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: #EEF3F7; color: #0C1926; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
 </button>
-<button type="button" role="radio" onClick="{{ pick1 }}" style="position: relative; height: 72px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; color: #EEF3F7; text-align: left">
+<button type="button" role="radio" aria-checked="{{ a.p1 }}" onClick="{{ pick1 }}" style="position: relative; height: 72px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; color: #EEF3F7; text-align: start">
 <span><span style="display: block; font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Arabic <span lang="ar" dir="rtl" style="margin: 0 8px; font: 500 16px/1 'Noto Sans Arabic', Arial, sans-serif; color: #A7B8C8">العربية</span></span><span style="display: block; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">A1 · place 1 of 10 · 12 words</span></span>
-<span style="position: relative; flex: none; width: 56px; height: 32px"><span class="sw sw1" style="position: absolute; right: 0; top: 9px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Switch</span><span class="ck ck1" style="position: absolute; right: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: #EEF3F7; color: #0C1926; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
+<span style="position: relative; flex: none; width: 56px; height: 32px"><span class="sw sw1" style="position: absolute; inset-inline-end: 0; top: 9px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Switch</span><span class="ck ck1" style="position: absolute; inset-inline-end: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: #EEF3F7; color: #0C1926; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
 </button>
 <span class="lm" aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 72px; box-sizing: border-box; border: 2px solid #EEF3F7; border-radius: 24px"></span>
 </div>
 <div style="margin-top: 24px; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">ADD A LANGUAGE</div>
-<div style="margin-top: 8px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #33506B; font: 600 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span>French <span lang="fr" style="margin-left: 8px; font-weight: 500; color: #A7B8C8">Français</span></span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+<div style="margin-top: 8px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #33506B; font: 600 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span>French <span lang="fr" style="margin-inline-start: 8px; font-weight: 500; color: #A7B8C8">Français</span></span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
 </section>
 </div>
 </x-dc>
@@ -106,9 +106,10 @@ pick(i) {
 var cur = this.st().pick || 0;
 if (i === cur) return;
 this.clearAll();
+this._switching = true;   // once he has picked, the change goes through; the sheet closes itself
 this.setState({ pick: i });
 this.later(420, function (c) { c.setState({ sheet: 0, turn: 1 }); });
-this.later(620, function (c) { c.setState({ lang: i, turn: 0 }); });
+this.later(620, function (c) { c._switching = false; c.setState({ lang: i, turn: 0 }); });
 }
 renderVals() {
 var self = this, s = this.st();
@@ -119,8 +120,10 @@ var langs = [
 return {
 t: langs[s.lang || 0],
 sheet: s.sheet ? '1' : '0', pick: String(s.pick || 0), turn: s.turn ? '1' : '0',
+// which language is chosen, for screen readers
+a: { p0: String((s.pick || 0) === 0), p1: String(s.pick === 1) },
 openSheet: function () { self.setState({ sheet: 1 }); },
-closeSheet: function () { self.setState({ sheet: 0 }); },
+closeSheet: function () { if (!self._switching) self.setState({ sheet: 0 }); },
 pick0: function () { self.pick(0); },
 pick1: function () { self.pick(1); }
 };

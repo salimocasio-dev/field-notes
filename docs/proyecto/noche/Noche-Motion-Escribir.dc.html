@@ -137,9 +137,9 @@ button{font-family:inherit}
 <div style="margin-top: 20px; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">ABOUT WHAT?</div>
 <div role="radiogroup" aria-label="Story topic" style="position: relative; margin-top: 12px; display: flex; gap: 8px">
 <span class="mk" aria-hidden="true" style="position: absolute; top: 0; height: 48px; border-radius: 24px; background: #EEF3F7; z-index: 1"></span>
-<button type="button" role="radio" class="ch tp0" lang="es" onClick="{{ topic0 }}" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">La cocina</span></button>
-<button type="button" role="radio" class="ch tp1" lang="es" onClick="{{ topic1 }}" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">El parque</span></button>
-<button type="button" role="radio" class="ch tp2" onClick="{{ topic2 }}" style="width: 112px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">Surprise me</span></button>
+<button type="button" role="radio" aria-checked="{{ a.tp0 }}" class="ch tp0" lang="es" onClick="{{ topic0 }}" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">La cocina</span></button>
+<button type="button" role="radio" aria-checked="{{ a.tp1 }}" class="ch tp1" lang="es" onClick="{{ topic1 }}" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">El parque</span></button>
+<button type="button" role="radio" aria-checked="{{ a.tp2 }}" class="ch tp2" onClick="{{ topic2 }}" style="width: 112px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">Surprise me</span></button>
 </div>
 </div>
 <div class="s3" style="margin-top: 24px"><button type="button" class="pr" onClick="{{ write }}" style="width: 100%; height: 56px; border: 0; border-radius: 28px; background: #EEF3F7; color: #0C1926; font: 700 17px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Write my story</button></div>
@@ -172,6 +172,8 @@ return {
 sheet: s.sheet ? '1' : '0',
 wait: s.wait ? '1' : '0',
 topic: String(s.topic || 0),
+// which topic is chosen, for screen readers
+a: { tp0: String((s.topic || 0) === 0), tp1: String(s.topic === 1), tp2: String(s.topic === 2) },
 isNew: s.isNew ? '1' : '0',
 openSheet: function () { self.clearAll(); self.setState({ sheet: 1, wait: 0, isNew: 0 }); },
 closeSheet: function () { if (!(self.state || {}).wait) self.setState({ sheet: 0 }); },
