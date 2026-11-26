@@ -1,5 +1,8 @@
-/// The Palabras tab (app.html: `palabras`): the Repaso card, every word he has met by place, and "Add a word or a
-/// goal".
+/// The Noche Words tab (story N4.4, issue #104, board `Noche-Palabras.dc.html`):
+/// header with language label, "Words" title and "+ Add a word or goal" pill,
+/// due-today summary card, 5-column return bar chart, Listening/Speaking/Reading
+/// segmented switch, soonest-first word list with stage bars, and the orange
+/// "Start review" / "Practice" button above the tab bar.
 library;
 
 import 'dart:async';
@@ -7,17 +10,28 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/add_box.dart';
-import 'package:feature_words/src/balanced_key_line.dart';
 import 'package:feature_words/src/word_sheet.dart';
 import 'package:feature_words/src/words_view.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The tab. It reads the progress store and the course, and reads them again after every save of the store (an
-/// answer given elsewhere): the old page drew itself once each time the tab opened.
+/// The Words tab. Reads [Services.progress], [Services.course], and
+/// [Services.clock], and refreshes after every save of the store.
 class WordsTab extends StatefulWidget {
-  const WordsTab({super.key, required this.services});
+  const WordsTab({
+    super.key,
+    required this.services,
+    this.stageMax,
+    this.initialSkill = WordsSkill.listening,
+  });
 
   final Services services;
+
+  /// Optional override for the maximum stage; defaults to [defaultStageMax]
+  /// until request 87 lands `stageMax` on `ProgressStore`.
+  final int? stageMax;
+
+  /// Initial skill tab (defaults to [WordsSkill.listening]).
+  final WordsSkill initialSkill;
 
   @override
   State<WordsTab> createState() => _WordsTabState();
@@ -25,16 +39,14 @@ class WordsTab extends StatefulWidget {
 
 class _WordsTabState extends State<WordsTab> {
   final _scroll = ScrollController();
-  final _field = TextEditingController();
   StreamSubscription<void>? _changes;
   WordsView? _view;
+  late WordsSkill _skill = widget.initialSkill;
 
   // app.html: PALT (a drawing that a newer one has overtaken is dropped)
   int _gen = 0;
-  bool _opening = false;
-
-  // app.html: fadeTab (more of the page below the tab bar's edge)
-  bool _more = false;
+  bool _openingWord = false;
+  bool _openingAdd = false;
 
   Services get _s => widget.services;
 
@@ -50,7 +62,9 @@ class _WordsTabState extends State<WordsTab> {
     super.didUpdateWidget(old);
     final a = old.services;
     final b = widget.services;
-    if (!identical(a.progress, b.progress) || !identical(a.course, b.course)) {
+    if (!identical(a.progress, b.progress) ||
+        !identical(a.course, b.course) ||
+        old.stageMax != widget.stageMax) {
       unawaited(_changes?.cancel());
       _changes = b.progress.changes.listen((_) => unawaited(_load()));
       unawaited(_load());
@@ -61,14 +75,12 @@ class _WordsTabState extends State<WordsTab> {
   void dispose() {
     unawaited(_changes?.cancel());
     _scroll.dispose();
-    _field.dispose();
     super.dispose();
   }
 
-  // app.html: palabras
   Future<void> _load() async {
     final my = ++_gen;
-    final view = await buildWordsView(_s);
+    final view = await buildWordsView(_s, stageMax: widget.stageMax);
     if (my != _gen || !mounted) return;
     setState(() => _view = view);
   }
@@ -77,8 +89,8 @@ class _WordsTabState extends State<WordsTab> {
   Future<void> _openWord(String w) async {
     _s.haptics.tick();
     final r = _s.progress.word(w);
-    if (r == null || _opening) return;
-    _opening = true;
+    if (r == null || _openingWord) return;
+    _openingWord = true;
     try {
       unawaited(_s.clips.stop()); // paraLeer()
       final pair = pairsByWord(_s.course)[w];
@@ -89,164 +101,405 @@ class _WordsTabState extends State<WordsTab> {
         record: r,
         pair: pair,
         lines: lines,
+        stageMax: _view?.stageMax ?? widget.stageMax ?? defaultStageMax,
       );
-      // above everything, the tab bar included: the scrim of v=39 dims both
-      await showCoquiSheet(context, builder: sheet.build);
-      sheet
-          .closed(); // cierra: the sound stops as the sheet starts to slide out
+      await showNocheSheet<void>(context, title: r.w, builder: sheet.build);
+      sheet.closed();
     } finally {
-      _opening = false;
+      _openingWord = false;
     }
   }
 
-  // app.html: `onclick="tick();location.href='cual.html?desde=app'"`
+  Future<void> _openAddBox() async {
+    _s.haptics.tick();
+    if (_openingAdd) return;
+    _openingAdd = true;
+    try {
+      await showNocheSheet<void>(
+        context,
+        title: 'Add a word or goal',
+        builder: (context, close) =>
+            AddBoxSheetBody(progress: _s.progress, haptics: _s.haptics),
+      );
+    } finally {
+      _openingAdd = false;
+    }
+  }
+
+  void _selectSkill(WordsSkill skill) {
+    if (skill == _skill) return;
+    _s.haptics.tick();
+    setState(() => _skill = skill);
+  }
+
   void _review(WordsView v) {
     _s.haptics.tick();
-    _s.nav.go(ReviewRoute(practice: v.practice));
-  }
-
-  // app.html: extra
-  void _add() {
-    final v = _field.text.trim();
-    if (v.isEmpty) return;
-    _field.clear();
-    _s.progress.add(v);
-  }
-
-  bool _onScroll(Notification n) {
-    final ScrollMetrics? m = n is ScrollMetricsNotification
-        ? n.metrics
-        : n is ScrollNotification
-        ? n.metrics
-        : null;
-    if (m != null) {
-      final more = m.pixels < m.maxScrollExtent - 1;
-      if (more != _more) setState(() => _more = more);
-    }
-    return false;
-  }
-
-  Widget _card(WordEntry e) {
-    final r = e.record;
-    final pair = e.pair;
-    return WordCard(
-      word: r.w,
-      ear: r.ear.etapa,
-      mouth: r.mouth.etapa,
-      picture: pair == null
-          ? null
-          : Directionality(
-              textDirection: TextDirection.ltr,
-              child: _s.pictures.of(PictureRef.of(pair, pair.yes)),
-            ),
-      onTap: () => unawaited(_openWord(r.w)),
-    );
+    _s.nav.go(ReviewRoute(practice: v.reviewPractice));
   }
 
   @override
   Widget build(BuildContext context) {
     final v = _view;
     final lang = _s.course.language;
-    final courseDir = lang.direction == LanguageDirection.rtl
+    final textDirection = lang.direction == LanguageDirection.rtl
         ? TextDirection.rtl
         : TextDirection.ltr;
     final courseLocale = Locale(lang.code);
-    return ColoredBox(
-      color: CoquiColors.bg,
-      child: Stack(
-        children: [
-          Positioned.fill(
+    final pad = MediaQuery.paddingOf(context);
+
+    return Directionality(
+      textDirection: textDirection,
+      child: ColoredBox(
+        color: NocheColors.ground,
+        child: DefaultTextStyle.merge(
+          style: NocheType.body.copyWith(color: NocheColors.text),
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(
+              top: pad.top,
+              bottom: NocheSize.aboveTabBar + pad.bottom,
+            ),
             child: v == null
                 ? const SizedBox.shrink()
-                : NotificationListener<Notification>(
-                    onNotification: _onScroll,
-                    child: TabPage(
-                      controller: _scroll,
-                      children: [
-                        ScreenTitle(
-                          lang.tabNames['words'] ?? CoquiLabels.words,
-                        ),
-                        CoquiCard(
-                          child: CoquiRow(
-                            minHeight: 0,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      CoquiLabels.review,
-                                      style: CoquiText.rowBold,
-                                    ),
-                                    Text(
-                                      v.reviewText,
-                                      style: CoquiText.smallMuted,
-                                    ),
-                                  ],
-                                ),
+                : _buildContent(v, lang, courseLocale),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(WordsView v, Language lang, Locale courseLocale) {
+    final skillView = v.of(_skill);
+    final b = skillView.buckets;
+    final dueLabel = skillView.dueToday == 1
+        ? 'word comes\nback today'
+        : 'words come\nback today';
+    final chartHeading = skillView.totalWords == 1
+        ? 'When your 1 word comes back'
+        : 'When your ${skillView.totalWords} words come back';
+    final chartSemanticLabel =
+        'Words coming back: ${b.today} today, ${b.tomorrow} tomorrow, '
+        '${b.threeDays} in 3 days, ${b.thisWeek} this week, ${b.later} later';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: CustomScrollView(
+            controller: _scroll,
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _WordsHeader(
+                      languageName: lang.englishName,
+                      onAddTap: _openAddBox,
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 16,
+                      ),
+                      child: NocheCard(
+                        padding: const EdgeInsetsDirectional.all(16),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${skillView.dueToday}',
+                              key: const Key('words-due-count'),
+                              style: NocheType.bigNumber.copyWith(
+                                color: NocheColors.next,
                               ),
-                              CoquiButton(
-                                label: v.reviewButton,
-                                kind: CoquiButtonKind.go,
-                                onPressed: v.reviewOff
-                                    ? null
-                                    : () => _review(v),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (v.groups.isEmpty)
-                          Block(
-                            top: CoquiMetrics.s16,
-                            bottom: CoquiMetrics.s16,
-                            child: Text(
-                              'Play the first story on the map. Your words show up here.',
-                              style: CoquiText.bodyMuted,
                             ),
-                          )
-                        else
-                          for (var i = 0; i < v.groups.length; i++) ...[
-                            if (v.groups[i].isCourseLanguage)
-                              Block(
-                                top: CoquiMetrics.s24,
-                                bottom: CoquiMetrics.s16,
-                                child: Directionality(
-                                  textDirection: courseDir,
-                                  child: Text(
-                                    v.groups[i].name,
-                                    style: CoquiText.h2,
-                                    locale: courseLocale,
-                                  ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                dueLabel,
+                                style: NocheType.row.copyWith(
+                                  color: NocheColors.text,
                                 ),
-                              )
-                            else
-                              SectionTitle(v.groups[i].name),
-                            if (i == 0)
-                              const BalancedKeyLine(
-                                'Ear: you know it when you hear it. Mouth: you can say it.',
-                              ),
-                            Directionality(
-                              textDirection: courseDir,
-                              child: WordGrid(
-                                children: [
-                                  for (final e in v.groups[i].words) _card(e),
-                                ],
                               ),
                             ),
                           ],
-                        const SectionTitle('Add a word or a goal'),
-                        AddBox(controller: _field, added: v.added, onAdd: _add),
-                      ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        24,
+                        16,
+                        0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          NocheSectionLabel(chartHeading, bottomGap: 16),
+                          NocheBarChart(
+                            semanticLabel: chartSemanticLabel,
+                            items: [
+                              NocheBarItem(
+                                label: 'Today',
+                                value: b.today,
+                                highlighted: true,
+                              ),
+                              NocheBarItem(
+                                label: 'Tomorrow',
+                                value: b.tomorrow,
+                              ),
+                              NocheBarItem(label: '3 days', value: b.threeDays),
+                              NocheBarItem(
+                                label: 'This week',
+                                value: b.thisWeek,
+                              ),
+                              NocheBarItem(label: 'Later', value: b.later),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        24,
+                        16,
+                        0,
+                      ),
+                      child: NocheSegmented<WordsSkill>(
+                        role: NocheSegmentedRole.tabList,
+                        semanticLabel: 'Skill',
+                        selected: _skill,
+                        onChanged: _selectSkill,
+                        options: [
+                          NocheSegmentOption(
+                            value: WordsSkill.listening,
+                            label: 'Listening · ${v.listening.goodCount}',
+                          ),
+                          NocheSegmentOption(
+                            value: WordsSkill.speaking,
+                            label: 'Speaking · ${v.speaking.goodCount}',
+                          ),
+                          NocheSegmentOption(
+                            value: WordsSkill.reading,
+                            label: v.tracksReading
+                                ? 'Reading · ${v.reading.goodCount}'
+                                : 'Reading · A2',
+                            muted: !v.tracksReading,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+              if (_skill == WordsSkill.reading && !v.tracksReading)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                      16,
+                      16,
+                      16,
+                      16,
+                    ),
+                    child: Text(
+                      'Reading opens for tracking at A2.',
+                      style: NocheType.body.copyWith(color: NocheColors.label),
                     ),
                   ),
+                )
+              else if (skillView.rows.isEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                      16,
+                      16,
+                      16,
+                      16,
+                    ),
+                    child: Text(
+                      switch (_skill) {
+                        WordsSkill.listening => 'Play the first story on the map. Your words show up here.',
+                        WordsSkill.speaking =>
+                          'Words you say in stories and calls show up here.',
+                        WordsSkill.reading => 'Words you read show up here.',
+                      },
+                      style: NocheType.body.copyWith(color: NocheColors.label),
+                    ),
+                  ),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 16,
+                  ),
+                  sliver: SliverList.builder(
+                    itemCount: skillView.rows.length,
+                    itemBuilder: (context, index) {
+                      final entry = skillView.rows[index];
+                      return _WordRow(
+                        entry: entry,
+                        stageMax: v.stageMax,
+                        script: lang.script,
+                        locale: courseLocale,
+                        showDivider: index < skillView.rows.length - 1,
+                        onTap: () => unawaited(_openWord(entry.record.w)),
+                      );
+                    },
+                  ),
+                ),
+            ],
           ),
-          PositionedDirectional(
-            start: 0,
-            end: 0,
-            bottom: CoquiLayout.tabBarHeight(context),
-            child: ListFade(visible: _more),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+          child: NochePrimaryButton(
+            key: const Key('words-review-button'),
+            label: v.reviewButtonLabel,
+            onPressed: v.reviewEnabled ? () => _review(v) : null,
           ),
-        ],
+        ),
+      ],
+    );
+  }
+}
+
+class _WordsHeader extends StatelessWidget {
+  const _WordsHeader({required this.languageName, required this.onAddTap});
+
+  final String languageName;
+  final VoidCallback onAddTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 64,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    languageName.toUpperCase(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: NocheType.label.copyWith(color: NocheColors.label),
+                  ),
+                  const SizedBox(height: 4),
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      'Words',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: NocheType.pageTitle.copyWith(
+                        color: NocheColors.text,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: NochePill.outline(
+                key: const Key('words-add-pill'),
+                label: '+ Add a word or goal',
+                onPressed: onAddTap,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WordRow extends StatelessWidget {
+  const _WordRow({
+    required this.entry,
+    required this.stageMax,
+    required this.script,
+    required this.locale,
+    required this.showDivider,
+    required this.onTap,
+  });
+
+  final WordRowEntry entry;
+  final int stageMax;
+  final String script;
+  final Locale locale;
+  final bool showDivider;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final wordStyle = NocheType.forScript(
+      NocheType.row,
+      script,
+    ).copyWith(color: NocheColors.text);
+    final dueStyle = NocheType.bodySmall.copyWith(
+      fontSize: 12,
+      height: 16 / 12,
+      color: entry.isDueToday ? NocheColors.next : NocheColors.label,
+    );
+    final semanticLabel = entry.dueLine.isEmpty
+        ? '${entry.record.w}, Stage ${entry.stage} of $stageMax'
+        : '${entry.record.w}, ${entry.dueLine}, Stage ${entry.stage} of $stageMax';
+
+    return Pressable(
+      key: ValueKey('word-row:${entry.record.w}'),
+      onPressed: onTap,
+      semanticLabel: semanticLabel,
+      builder: (context, pressed) => Opacity(
+        opacity: pressed ? 0.72 : 1,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 56),
+          padding: const EdgeInsetsDirectional.symmetric(vertical: 8),
+          decoration: showDivider
+              ? const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: NocheColors.line, width: 1),
+                  ),
+                )
+              : null,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      entry.record.w,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      locale: locale,
+                      style: wordStyle,
+                    ),
+                    if (entry.dueLine.isNotEmpty)
+                      Text(
+                        entry.dueLine,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: dueStyle,
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              NocheStageBar(stage: entry.stage, max: stageMax),
+            ],
+          ),
+        ),
       ),
     );
   }

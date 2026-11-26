@@ -13,12 +13,19 @@ import 'package:feature_story/src/runner/timers.dart';
 import '../../tool/stand_in_scene.dart';
 
 /// A course that has the clips a test names. The fixed lines are the ones datos/fijos.json names.
-class TestCourse implements CourseCatalog {
+class TestCourse implements CourseCatalog, LanguageCatalog {
   TestCourse({
     Set<String>? missing,
     this.lengths = const {},
     this.stories = const {},
-  }) : missing = missing ?? {};
+    Language? language,
+  }) : missing = missing ?? {},
+       _language = language ?? Language.spanish;
+
+  final Language _language;
+
+  @override
+  Language get language => _language;
 
   /// Clips that have no recording.
   final Set<String> missing;

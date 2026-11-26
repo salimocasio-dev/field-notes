@@ -656,6 +656,7 @@ class PalabrasStore implements ProgressStore, CallProgressStore {
   /// completion timestamp from the clock and saves. Idempotent: a call already
   /// marked done changes nothing and saves nothing. Empty/whitespace IDs are
   /// ignored.
+  @override
   void markCallDone(String callId) {
     if (callId.trim().isEmpty) return;
     final existing = _db['llamadas'];

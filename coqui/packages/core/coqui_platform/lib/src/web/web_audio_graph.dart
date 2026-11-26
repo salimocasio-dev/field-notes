@@ -127,9 +127,13 @@ class _Biquad extends WebNode implements BiquadH {
 }
 
 class _Source extends WebNode implements BufferSourceH {
-  _Source(web.AudioBufferSourceNode super.node);
+  _Source(web.AudioBufferSourceNode super.node)
+    : playbackRate = _Param(node.playbackRate);
 
   web.AudioBufferSourceNode get _s => node as web.AudioBufferSourceNode;
+
+  @override
+  final ParamH playbackRate;
 
   @override
   set buffer(AudioBufferH b) => _s.buffer = (b as WebBuffer).b;

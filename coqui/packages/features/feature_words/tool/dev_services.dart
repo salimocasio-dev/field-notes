@@ -104,15 +104,14 @@ class DevPictures implements PictureSource {
         width: width * k / dpr,
         height: height * k / dpr,
         child: ColoredBox(
-          color: const Color(0xFF9E9E9E),
+          color: NocheColors.chip,
           child: Center(
             child: Text(
               '${ref.scene} ${ref.cam.join(',')}',
               textDirection: TextDirection.ltr,
-              style: const TextStyle(
-                color: Color(0xFF212121),
+              style: NocheType.bodySmall.copyWith(
                 fontSize: 10,
-                decoration: TextDecoration.none,
+                color: NocheColors.label,
               ),
             ),
           ),

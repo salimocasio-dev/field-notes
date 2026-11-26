@@ -3,6 +3,7 @@ library;
 
 import 'dart:typed_data';
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/bubble_place.dart';
@@ -10,8 +11,10 @@ import 'package:feature_story/src/runner/story_runner.dart';
 import 'package:feature_story/src/screen/story_bubble.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// `#stage`: the 196 × 216 display picture at a whole-number scale (`PixelView`), rounded 8 px, with the speech bubble over
-/// it. A tap on it is mapped back to the scene's picture with `displayToPicture` and the scene finds what is there.
+/// `#stage`: the 196 × 216 display picture at a whole-number scale (`PixelView`),
+/// never mirrored in RTL, with the speech bubble over it on non-speaking steps.
+/// A tap on it is mapped back to the scene's picture with `displayToPicture`
+/// and the scene finds what is there.
 class StoryPicture extends StatelessWidget {
   const StoryPicture({
     super.key,
@@ -20,6 +23,9 @@ class StoryPicture extends StatelessWidget {
     required this.repaint,
     required this.onSize,
     this.reduceMotion = false,
+    this.language,
+    this.showBubble = true,
+    this.availableWidth,
   });
 
   final StoryRunner runner;
@@ -28,9 +34,19 @@ class StoryPicture extends StatelessWidget {
   final Uint32List pixels;
   final Listenable repaint;
 
-  /// Told the stage's size in logical pixels each time it is laid out (the runner measures a turn's bubble with it).
+  /// Told the stage's size in logical pixels each time it is laid out.
   final void Function(Size stage) onSize;
   final bool reduceMotion;
+
+  /// Course language for the text inside speech bubbles over the unmirrored scene.
+  final Language? language;
+
+  /// Whether to render the over-scene speech bubble (false on Noche speaking turns).
+  final bool showBubble;
+
+  /// Optional explicit width constraint for whole-number scaling when wrapped in
+  /// a clipped 400-high stage container.
+  final double? availableWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +55,9 @@ class StoryPicture extends StatelessWidget {
         View.of(context).devicePixelRatio;
     return LayoutBuilder(
       builder: (context, c) {
-        final avail = c.maxWidth.isFinite ? c.maxWidth : displayW.toDouble();
+        final avail =
+            availableWidth ??
+            (c.maxWidth.isFinite ? c.maxWidth : displayW.toDouble());
         final scale = pixelViewScale(
           availableWidth: avail,
           devicePixelRatio: dpr,
@@ -47,17 +65,17 @@ class StoryPicture extends StatelessWidget {
         );
         final size = Size(displayW * scale / dpr, displayH * scale / dpr);
         onSize(size);
-        return SizedBox(
-          width: size.width,
-          height: size.height,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned.fill(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    CoquiMetrics.radiusPicture,
-                  ),
+        // Pixel scenes and scene-anchored bubble coordinates never mirror in RTL;
+        // the text inside StoryBubbleLayer still reads in [language]'s direction.
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: SizedBox(
+            width: size.width,
+            height: size.height,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned.fill(
                   child: PixelView(
                     pixels: pixels,
                     width: displayW,
@@ -70,24 +88,27 @@ class StoryPicture extends StatelessWidget {
                     },
                   ),
                 ),
-              ),
-              Positioned.fill(
-                child: AnimatedBuilder(
-                  animation: repaint,
-                  builder: (context, _) {
-                    final v = runner.view;
-                    return StoryBubbleLayer(
-                      visible: v.bubbleOn,
-                      kind: v.bubbleKind,
-                      text: v.bubbleText,
-                      estate: v.bubbleEstate,
-                      reduceMotion: reduceMotion,
-                      placementFor: (bubble) => placeFor(runner, size, bubble),
-                    );
-                  },
-                ),
-              ),
-            ],
+                if (showBubble)
+                  Positioned.fill(
+                    child: AnimatedBuilder(
+                      animation: repaint,
+                      builder: (context, _) {
+                        final v = runner.view;
+                        return StoryBubbleLayer(
+                          visible: v.bubbleOn,
+                          kind: v.bubbleKind,
+                          text: v.bubbleText,
+                          estate: v.bubbleEstate,
+                          reduceMotion: reduceMotion,
+                          language: language,
+                          placementFor: (bubble) =>
+                              placeFor(runner, size, bubble),
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
           ),
         );
       },

@@ -102,6 +102,13 @@ class _LocalStorage implements StringBackend {
       web.window.localStorage.setItem(key, value);
     } catch (_) {}
   }
+
+  @override
+  Future<void> delete(String key) async {
+    try {
+      web.window.localStorage.removeItem(key);
+    } catch (_) {}
+  }
 }
 
 /// The browser's localStorage, read and written directly (the old app's keys are simply there).

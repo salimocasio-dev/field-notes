@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:coqui_content/src/split_story.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 
 /// Reads one file of the course, by its path under `historia/` (for example `cuentos/la-lluvia.json` or
@@ -37,15 +38,26 @@ typedef FetchText = Future<String> Function(String path);
 /// Implements [CallsCatalog]: `datos/llamadas.json` maps each place id to either a legacy single call object or a JSON
 /// array of call objects (`main` and smaller calls). [callsFor] returns every call for a place in order; [callFor]
 /// returns its main call (or the first call when none sets `isMain`).
+///
+/// Implements [MinAppCatalog]: reads optional top-level `minApp` from `datos/curso.json` into [minApp] (missing or
+/// null means `null`, any app) alongside per-story [StoryMeta.minApp].
 class ContentCatalog
-    implements CourseCatalog, RepasoCatalog, LanguageCatalog, CallsCatalog {
-  ContentCatalog(this._fetch);
+    implements
+        CourseCatalog,
+        RepasoCatalog,
+        LanguageCatalog,
+        CallsCatalog,
+        MinAppCatalog {
+  ContentCatalog(this._fetch, {this._fetchSplit});
 
   final FetchText _fetch;
+  final FetchText? _fetchSplit;
 
   Future<void>? _loading;
   bool _loaded = false;
   Language _language = Language.spanish;
+  Map<String, String> _wordTable = const {};
+  int? _minApp;
   List<Place> _places = const [];
   Map<String, StoryMeta> _metas = const {};
   List<ReviewPair> _pairs = const [];
@@ -80,6 +92,22 @@ class ContentCatalog
   @override
   Language get language => _language;
 
+  /// Language-wide ID-to-word table (`lines/<lang>/words.json`), or empty when
+  /// split loading is disabled or no `words.json` exists for [language].
+  Map<String, String> get wordTable => _wordTable;
+
+  /// Resolves [testedId] to the target-language word using [storyPalabras],
+  /// then [wordTable], falling back to [testedId].
+  String resolveWord(String testedId, {Map<String, dynamic>? storyPalabras}) =>
+      resolveTestedWord(
+        testedId,
+        storyPalabras: storyPalabras,
+        wordTable: _wordTable,
+      );
+
+  @override
+  int? get minApp => _minApp;
+
   @override
   Future<void> load() async {
     final running = _loading;
@@ -96,18 +124,28 @@ class ContentCatalog
   Future<void> _load() async {
     final curso = _object(await _json('datos/curso.json'), 'datos/curso.json');
     final language = _parseLanguage(curso['idioma']);
+    final minApp = _parseMinApp(
+      curso['minApp'],
+      context: 'datos/curso.json: minApp',
+    );
     final places = [
       for (final l in curso['lugares'] as List)
         Place.fromJson(Map<String, dynamic>.from(l as Map)),
     ];
-    final metas = {
-      for (final e in (curso['cuentos'] as Map).entries)
-        e.key as String: StoryMeta.fromJson(
-          e.key as String,
-          Map<String, dynamic>.from(e.value as Map),
-        ),
-    };
+    final metas = <String, StoryMeta>{};
+    for (final e in (curso['cuentos'] as Map).entries) {
+      final id = e.key as String;
+      final raw = _object(e.value, 'datos/curso.json: cuentos.$id');
+      _parseMinApp(
+        raw['minApp'],
+        context: 'datos/curso.json: cuentos.$id.minApp',
+      );
+      metas[id] = StoryMeta.fromJson(id, raw);
+    }
     final sets = _strings(curso['cual']);
+    final wordTable = _fetchSplit != null
+        ? await _readWordTable(language)
+        : const <String, String>{};
 
     // everything else at once; the first failure (in this order) is the one thrown
     final nivel = _json('datos/nivel.json');
@@ -116,8 +154,10 @@ class ContentCatalog
     final ready = _readReady();
     final marcas = _json('audio/marcas.json');
     final repaso = _readRepaso();
-    final alone = _readAlone();
-    final reviews = [for (final f in sets) story(f)];
+    final alone = _readAlone(language);
+    final reviews = [
+      for (final f in sets) _story(f, language: language, wordTable: wordTable),
+    ];
     for (final f in <Future<Object?>>[
       nivel,
       llamadas,
@@ -165,6 +205,8 @@ class ContentCatalog
     }
 
     _language = language;
+    _wordTable = wordTable;
+    _minApp = minApp;
     _places = places;
     _metas = metas;
     _pairs = pairs;
@@ -188,13 +230,39 @@ class ContentCatalog
     _loaded = true;
   }
 
-  Future<Object?> _json(String path) async {
-    final text = await _fetch(path);
+  Future<Object?> _json(String path) async =>
+      _decodeJson(await _fetch(path), path);
+
+  static Object? _decodeJson(String text, String path) {
     try {
       return jsonDecode(text);
     } on FormatException catch (e) {
       throw FormatException('$path: ${e.message}', text, e.offset);
     }
+  }
+
+  Future<Map<String, String>> _readWordTable(Language language) async {
+    final fetchSplit = _fetchSplit;
+    if (fetchSplit == null) return const {};
+    if (!isSafeSegment(language.code)) {
+      throw FormatException(
+        'datos/curso.json: idioma.code is not a safe path segment: ${language.code}',
+      );
+    }
+    final path = 'lines/${language.code}/words.json';
+    final String text;
+    try {
+      text = await fetchSplit(path);
+    } on FormatException {
+      rethrow;
+    } catch (_) {
+      return const {};
+    }
+    return parseWordTable(
+      _decodeJson(text, path),
+      path,
+      expectedLang: language.code,
+    );
   }
 
   static Map<String, dynamic> _object(Object? j, String path) {
@@ -235,21 +303,47 @@ class ContentCatalog
   RepasoData? get repaso => _repaso;
 
   // the address of the file of the words said alone, under historia/ (the course names it nowhere)
+  static const _solasId = 'palabras-solas';
   static const _solasPath = 'cuentos/palabras-solas.json';
 
-  // cuentos/palabras-solas.json: { clips: { <clip id>: { who, text } } }. Missing or broken, it has no line: the load goes on.
-  Future<Map<String, _Line>> _readAlone() async {
+  // cuentos/palabras-solas.json (or split games/palabras-solas.json + lines/<lang>/palabras-solas.json):
+  // { clips: { <clip id>: { who, text } } }. Missing or broken, it has no line: the load goes on.
+  Future<Map<String, _Line>> _readAlone(Language language) async {
+    final fetchSplit = _fetchSplit;
+    if (fetchSplit != null && isSafeSegment(language.code)) {
+      try {
+        final gamePath = 'games/$_solasId.json';
+        final linesPath = 'lines/${language.code}/$_solasId.json';
+        final texts = await Future.wait([
+          fetchSplit(gamePath),
+          fetchSplit(linesPath),
+        ]);
+        final game = _object(_decodeJson(texts[0], gamePath), gamePath);
+        final lines = _object(_decodeJson(texts[1], linesPath), linesPath);
+        final joined = joinSplitStory(
+          game,
+          lines,
+          expectedLang: language.code,
+          gamePath: gamePath,
+          linesPath: linesPath,
+        );
+        return _aloneLines(joined['clips']);
+      } catch (_) {
+        // Fall through to legacy path if absent from split tree or unreadable.
+      }
+    }
     try {
-      final clips = _object(await _json(_solasPath), _solasPath)['clips'];
-      return {
-        if (clips is Map)
-          for (final e in clips.entries)
-            if (e.value is Map) e.key as String: _Line.from(e.value as Map),
-      };
+      return _aloneLines(_object(await _json(_solasPath), _solasPath)['clips']);
     } catch (_) {
       return const {};
     }
   }
+
+  static Map<String, _Line> _aloneLines(Object? clips) => {
+    if (clips is Map)
+      for (final e in clips.entries)
+        if (e.value is Map) e.key as String: _Line.from(e.value as Map),
+  };
 
   // app.html, audioListo: audio/ready.json, read once; a file that cannot be read is null, and then no clip has a
   // recording and oidoEn does not filter. `v` goes into every clip's url (juego.js, loadVoice: `j.v||0`).
@@ -283,13 +377,20 @@ class ContentCatalog
   @override
   StoryMeta? meta(String id) => _metas[id];
 
-  /// The story file `cuentos/<id>.json` as it is (do not change it: it is kept and given again). A review set
-  /// (`cual-*`) is read the same way. Fetched once; a failed read throws and is not kept, so the next ask tries again.
+  /// The story file `cuentos/<id>.json` (or split `games/<id>.json` + `lines/<lang>/<id>.json`)
+  /// as it is (do not change it: it is kept and given again). A review set (`cual-*`) is read the same way.
+  /// Fetched once; a failed read throws and is not kept, so the next ask tries again.
   @override
-  Future<Map<String, dynamic>> story(String id) {
+  Future<Map<String, dynamic>> story(String id) => _story(id);
+
+  Future<Map<String, dynamic>> _story(
+    String id, {
+    Language? language,
+    Map<String, String>? wordTable,
+  }) {
     final kept = _stories[id];
     if (kept != null) return kept;
-    final reading = _readStory(id);
+    final reading = _readStory(id, language: language, wordTable: wordTable);
     _stories[id] = reading;
     reading.then<void>(
       (_) {},
@@ -300,9 +401,46 @@ class ContentCatalog
     return reading;
   }
 
-  Future<Map<String, dynamic>> _readStory(String id) async {
-    final path = 'cuentos/$id.json';
-    final j = _object(await _json(path), path);
+  Future<Map<String, dynamic>> _readStory(
+    String id, {
+    Language? language,
+    Map<String, String>? wordTable,
+  }) async {
+    final lang = language ?? _language;
+    final words = wordTable ?? _wordTable;
+    final fetchSplit = _fetchSplit;
+    final Map<String, dynamic> j;
+    if (fetchSplit != null && isSafeSplitStoryId(id)) {
+      final gamePath = 'games/$id.json';
+      String? gameText;
+      try {
+        gameText = await fetchSplit(gamePath);
+      } on FormatException {
+        rethrow;
+      } catch (_) {
+        gameText = null;
+      }
+      if (gameText != null) {
+        final game = _object(_decodeJson(gameText, gamePath), gamePath);
+        final linesPath = 'lines/${lang.code}/$id.json';
+        final linesText = await fetchSplit(linesPath);
+        final lines = _object(_decodeJson(linesText, linesPath), linesPath);
+        j = joinSplitStory(
+          game,
+          lines,
+          expectedLang: lang.code,
+          wordTable: words,
+          gamePath: gamePath,
+          linesPath: linesPath,
+        );
+      } else {
+        final path = 'cuentos/$id.json';
+        j = _object(await _json(path), path);
+      }
+    } else {
+      final path = 'cuentos/$id.json';
+      j = _object(await _json(path), path);
+    }
     // juego.js: LINES = S.clips — who, text and habla of each line
     final clips = j['clips'];
     if (clips is Map) {
@@ -471,6 +609,23 @@ class ContentCatalog
     }
     return _heardIndex[c] = out;
   }
+}
+
+int? _parseMinApp(Object? raw, {required String context}) {
+  if (raw == null) return null;
+  if (raw is int) {
+    if (raw < 0) {
+      throw FormatException('$context must be a non-negative integer');
+    }
+    return raw;
+  }
+  if (raw is double &&
+      raw.isFinite &&
+      raw == raw.truncateToDouble() &&
+      raw >= 0) {
+    return raw.toInt();
+  }
+  throw FormatException('$context must be a non-negative integer');
 }
 
 Language _parseLanguage(Object? raw) {

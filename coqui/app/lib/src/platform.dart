@@ -30,6 +30,7 @@ class AppPlatform {
     this.bundle,
     this.historyBack,
     this.previa,
+    this.loadCourse,
   });
 
   /// A file under `historia/`, by its path, with the old pages' cache rules (`content.dart`).
@@ -61,6 +62,11 @@ class AppPlatform {
   /// The preview content bundled in the app (`previa.dart`: in the app, [bundledPrevia] of the root bundle). Null: none,
   /// every file is the site's.
   final PreviaRead? previa;
+
+  /// Loads the course catalog for [languageCode] (e.g. `'es'`, `'ar'`). When
+  /// null, the shell loads the default Spanish [ContentCatalog] from [fetch]
+  /// and [previa].
+  final Future<CourseCatalog> Function(String languageCode)? loadCourse;
 }
 
 /// The time now, from the system.

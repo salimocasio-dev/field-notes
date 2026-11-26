@@ -40,6 +40,9 @@ class _CallAwareProgressStore extends _LegacyProgressStore
 
   @override
   bool callDone(String callId) => _completed.contains(callId);
+
+  @override
+  void markCallDone(String callId) => _completed.add(callId);
 }
 
 void main() {
@@ -279,14 +282,19 @@ void main() {
     );
   });
 
-  group('CallProgress.callDone', () {
-    test('returns false when store does not implement CallProgressStore', () {
-      final ProgressStore store = _LegacyProgressStore();
-      expect(store.callDone('casa'), isFalse);
-      expect(store.callDone('casa_agua'), isFalse);
-    });
+  group('CallProgress', () {
+    test(
+      'callDone returns false and markCallDone is a no-op on legacy store',
+      () {
+        final ProgressStore store = _LegacyProgressStore();
+        expect(store.callDone('casa'), isFalse);
+        expect(store.callDone('casa_agua'), isFalse);
+        expect(() => store.markCallDone('casa'), returnsNormally);
+        expect(store.callDone('casa'), isFalse);
+      },
+    );
 
-    test('delegates to CallProgressStore when implemented', () {
+    test('delegates callDone and markCallDone to CallProgressStore', () {
       final ProgressStore store = _CallAwareProgressStore({
         'casa',
         'casa_agua',
@@ -294,6 +302,9 @@ void main() {
       expect(store.callDone('casa'), isTrue);
       expect(store.callDone('casa_agua'), isTrue);
       expect(store.callDone('casa_llaves'), isFalse);
+
+      store.markCallDone('casa_llaves');
+      expect(store.callDone('casa_llaves'), isTrue);
     });
   });
 }

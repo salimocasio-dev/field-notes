@@ -6,16 +6,16 @@ import 'package:material_ui/material_ui.dart';
 const String installHintSpace = 'yo';
 const String installHintKey = 'installHintShown';
 
-/// The card's padding: the usual 16, less 8 where the X (a 48 px target) sits.
-const EdgeInsets installHintPadding = EdgeInsets.fromLTRB(
-  CoquiMetrics.s16,
-  CoquiMetrics.s8,
-  CoquiMetrics.s8,
-  CoquiMetrics.s8,
+/// The card's directional padding: 16 at start, 8 on top/end/bottom where the 48 px close button sits.
+const EdgeInsetsDirectional installHintPadding = EdgeInsetsDirectional.fromSTEB(
+  16,
+  8,
+  8,
+  8,
 );
 
-/// New in order 25: on an iPhone in the browser, not installed, a small card at the top of Yo says how to
-/// install. This is what goes inside the card: the line, and the X to dismiss it.
+/// On an iPhone in the browser, not installed, a one-time Noche card at the top
+/// of Me says how to install, with a 48 by 48 dismiss button.
 class InstallHint extends StatelessWidget {
   const InstallHint({super.key, required this.onDismiss});
 
@@ -24,8 +24,31 @@ class InstallHint extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
     children: [
-      Expanded(child: Text(installHint, style: CoquiText.small)),
-      CoquiCloseButton(onPressed: onDismiss),
+      Expanded(
+        child: Text(
+          installHint,
+          style: NocheType.body.copyWith(color: NocheColors.text),
+        ),
+      ),
+      Pressable(
+        key: const Key('install-hint-close'),
+        onPressed: onDismiss,
+        semanticLabel: NocheA11y.label(NocheA11y.close),
+        builder: (context, pressed) => Transform.scale(
+          scale: pressed ? 0.94 : 1,
+          child: const SizedBox(
+            width: NocheSize.touch,
+            height: NocheSize.touch,
+            child: Center(
+              child: NocheIcon(
+                NocheIcons.close,
+                size: 20,
+                color: NocheColors.text,
+              ),
+            ),
+          ),
+        ),
+      ),
     ],
   );
 }

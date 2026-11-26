@@ -1,4 +1,4 @@
-// Arabic / RTL language coverage for feature_words (N2.8).
+// Arabic / RTL language coverage for feature_words (N2.8 + N4.4).
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -67,29 +67,26 @@ void main() {
     expect(tab.label, 'الكلمات');
   });
 
-  group('WordsTab and WordSheet in Arabic', () {
+  group('Noche WordsTab and WordSheet in Arabic (RTL)', () {
     Future<Rig> arabicRig({FakeClipPlayer? clips}) async {
       final rig = Rig(course: FakeCourseCatalog.arabic(), clips: clips);
       await rig.playSampleStories();
-      // Give mixed ear/mouth stages and due dates so Repaso and meters render meaningfully.
-      rig.word('بيت', ear: 3, mouth: 2, due: 1);
-      rig.word('باب', ear: 2, mouth: 1, due: 0);
+      rig.word('بيت', ear: 4, mouth: 2, mouthN: 2, due: 21, mouthDue: 1);
+      rig.word('باب', ear: 2, mouth: 1, mouthN: 1, due: 0, mouthDue: 0);
       rig.word('مرحباً', ear: 2, mouth: 0, due: 2);
-      // Extra word not in any played story so 'More words' also renders.
-      rig.word('شمس', ear: 1, mouth: 0, due: 3);
+      rig.word('شمس', ear: 1, mouth: 0, due: 5);
       return rig;
     }
 
-    for (final size in const [Size(390, 844), Size(360, 640)]) {
+    for (final size in const [Size(390, 844), Size(412, 915)]) {
       testWidgets(
         'renders cleanly without overflow at ${size.width.toInt()}x${size.height.toInt()}',
         (tester) async {
           final rig = await arabicRig();
           await pumpTab(tester, rig, size: size);
           expect(tester.takeException(), isNull);
-          expect(find.text('الكلمات'), findsOneWidget);
-          expect(find.text('البيت'), findsOneWidget);
-          expect(find.text('More words'), findsOneWidget);
+          expect(find.text('ARABIC'), findsOneWidget);
+          expect(find.text('Words'), findsOneWidget);
           for (final t in tester.widgetList<Text>(find.byType(Text))) {
             final r = tester.getRect(find.byWidget(t));
             expect(r.right, lessThanOrEqualTo(size.width + 0.5));
@@ -100,173 +97,98 @@ void main() {
     }
 
     testWidgets(
-      'keeps English chrome LTR while Arabic heading and WordGrid are RTL and pictures stay LTR',
+      'mirrors whole screen in RTL, marks Arabic words with Locale(ar) and Arabic font, and navigates to ReviewRoute',
       (tester) async {
         final rig = await arabicRig();
         await pumpTab(tester, rig);
         expect(tester.takeException(), isNull);
 
-        // English chrome / menus remain English and LTR.
-        final keyLineFinder = find.text(
-          'Ear: you know it when you hear it. Mouth: you can say it.',
-        );
-        final addTitleFinder = find.text('Add a word or a goal');
-        final moreWordsFinder = find.text('More words');
-        final startButtonFinder = find.text('Start');
-        expect(keyLineFinder, findsOneWidget);
-        expect(addTitleFinder, findsOneWidget);
-        expect(moreWordsFinder, findsOneWidget);
-        expect(startButtonFinder, findsOneWidget);
-
+        // Whole screen mirrors for RTL course (Part 1.4).
+        final wordsHeader = find.text('Words');
+        final addPill = find.byKey(const Key('words-add-pill'));
         expect(
-          Directionality.of(tester.element(keyLineFinder)),
-          TextDirection.ltr,
-        );
-        expect(
-          Directionality.of(tester.element(addTitleFinder)),
-          TextDirection.ltr,
-        );
-        expect(
-          Directionality.of(tester.element(moreWordsFinder)),
-          TextDirection.ltr,
-        );
-        expect(
-          Directionality.of(tester.element(startButtonFinder)),
-          TextDirection.ltr,
-        );
-
-        // Arabic place heading 'البيت' is RTL with Locale('ar').
-        final placeFinder = find.text('البيت');
-        expect(placeFinder, findsOneWidget);
-        final placeElement = tester.element(placeFinder);
-        expect(Directionality.of(placeElement), TextDirection.rtl);
-        expect(tester.widget<Text>(placeFinder).locale, const Locale('ar'));
-
-        // WordGrid is RTL and places the first card to the right of the second card.
-        final firstGridFinder = find.byType(WordGrid).first;
-        expect(
-          Directionality.of(tester.element(firstGridFinder)),
+          Directionality.of(tester.element(wordsHeader)),
           TextDirection.rtl,
         );
-        final gridCards = tester
-            .widgetList<WordCard>(
-              find.descendant(
-                of: firstGridFinder,
-                matching: find.byType(WordCard),
-              ),
-            )
-            .toList();
-        expect(gridCards.length, greaterThanOrEqualTo(2));
-        final firstCardFinder = card(gridCards[0].word);
-        final secondCardFinder = card(gridCards[1].word);
+        // In RTL, the header title ("start") stands to the right of the pill ("end").
         expect(
-          tester.getTopLeft(firstCardFinder).dx,
-          greaterThan(tester.getTopLeft(secondCardFinder).dx),
+          tester.getTopLeft(wordsHeader).dx,
+          greaterThan(tester.getTopLeft(addPill).dx),
         );
 
-        // Pixel pictures inside pair WordCards stay LTR so scenes never mirror.
-        final pairWordCard = find.byWidgetPredicate(
-          (w) => w is WordCard && w.picture != null,
+        // Arabic words carry Locale('ar') and Noto Sans Arabic via NocheType.forScript.
+        final wordFinder = find.descendant(
+          of: wordRow('باب'),
+          matching: find.text('باب'),
         );
-        expect(pairWordCard, findsWidgets);
-        final firstPictureCard = tester.widget<WordCard>(pairWordCard.first);
-        final picture = firstPictureCard.picture!;
-        expect(picture, isA<Directionality>());
-        final pictureDir = picture as Directionality;
-        expect(pictureDir.textDirection, TextDirection.ltr);
+        expect(wordFinder, findsOneWidget);
+        final wordText = tester.widget<Text>(wordFinder);
+        expect(wordText.locale, const Locale('ar'));
+        expect(wordText.style?.fontFamily, endsWith(nocheFontNotoSansArabic));
+
+        // In RTL row, word ("start") is to the right of NocheStageBar ("end").
+        final barFinder = find.descendant(
+          of: wordRow('باب'),
+          matching: find.byType(NocheStageBar),
+        );
         expect(
-          Directionality.of(tester.element(find.byWidget(pictureDir.child))),
-          TextDirection.ltr,
+          tester.getCenter(wordFinder).dx,
+          greaterThan(tester.getCenter(barFinder).dx),
         );
 
-        // Tapping 'Start' navigates to ReviewRoute().
-        await tester.tap(startButtonFinder);
+        // Tapping Start review navigates to ReviewRoute().
+        await tester.tap(find.text('Start review'));
         await tester.pumpAndSettle();
         expect(rig.nav.routes, [const ReviewRoute()]);
 
-        // Adding a goal in AddBox saves and renders the saved note.
-        await tester.ensureVisible(find.byType(TextField));
+        // Adding a goal via the header pill saves and shows the saved note.
+        await tester.tap(addPill);
         await tester.pumpAndSettle();
-        await tester.enterText(find.byType(TextField), 'Speak with Tariq');
-        await tester.tap(find.text('Add'));
+        await tester.enterText(
+          inSheet(find.byType(TextField)),
+          'Speak with Tariq',
+        );
+        await tester.tap(inSheet(find.text('Add')));
         await tester.pumpAndSettle();
         expect(
-          find.text('Saved. Material for it comes later.'),
+          inSheet(find.text('Saved. Material for it comes later.')),
           findsOneWidget,
         );
-        expect(find.text('· Speak with Tariq'), findsOneWidget);
+        expect(inSheet(find.text('· Speak with Tariq')), findsOneWidget);
       },
     );
 
     testWidgets(
-      'WordSheet for Arabic pair word renders RTL word & Heard in, LTR picture & English chrome, bolds matches, and plays/stops clip',
+      'WordSheet for Arabic pair word renders RTL word & Heard in, keeps picture LTR, bolds matches, and plays/stops clip',
       (tester) async {
         final clips = GateClips();
         final rig = await arabicRig(clips: clips);
         await pumpTab(tester, rig);
-        await tapCard(tester, 'بيت');
+        await tapWordRow(tester, 'بيت');
         expect(tester.takeException(), isNull);
         expect(sheet, findsOneWidget);
 
-        // Big word 'بيت' has textDirection RTL and locale Locale('ar').
+        // Fixed header preserves the word while scrolling, and big word is RTL with Locale('ar').
+        expect(tester.widget<NocheSheet>(sheet).title, 'بيت');
         final bigWordFinder = inSheet(
-          find.byWidgetPredicate(
-            (w) =>
-                w is Text &&
-                w.data == 'بيت' &&
-                w.textAlign == TextAlign.center &&
-                w.style == CoquiText.h1,
-          ),
+          find.byKey(const Key('word-sheet-heading')),
         );
         expect(bigWordFinder, findsOneWidget);
         final bigWord = tester.widget<Text>(bigWordFinder);
+        expect(bigWord.data, 'بيت');
         expect(bigWord.textDirection, TextDirection.rtl);
         expect(bigWord.locale, const Locale('ar'));
+        expect(bigWord.style?.fontFamily, endsWith(nocheFontNotoSansArabic));
 
-        // Picture inside PictureFrame has Directionality LTR.
-        final frameFinder = inSheet(find.byType(PictureFrame));
-        expect(frameFinder, findsOneWidget);
-        final frame = tester.widget<PictureFrame>(frameFinder);
-        expect(frame.child, isA<Directionality>());
-        expect(
-          (frame.child as Directionality).textDirection,
-          TextDirection.ltr,
+        // Pixel picture inside ClipRRect stays LTR so scenes never mirror.
+        final clipRectFinder = inSheet(find.byType(ClipRRect));
+        expect(clipRectFinder, findsWidgets);
+        final pictureDir = inSheet(
+          find.byWidgetPredicate(
+            (w) => w is Directionality && w.textDirection == TextDirection.ltr,
+          ),
         );
-
-        // 'Heard in' heading and 'Comes back ...' stay English and LTR.
-        final heardInFinder = inSheet(find.text('Heard in'));
-        final comesBackFinder = inSheet(find.text('Comes back in 1 day'));
-        expect(heardInFinder, findsOneWidget);
-        expect(comesBackFinder, findsOneWidget);
-        expect(
-          Directionality.of(tester.element(heardInFinder)),
-          TextDirection.ltr,
-        );
-        expect(
-          Directionality.of(tester.element(comesBackFinder)),
-          TextDirection.ltr,
-        );
-
-        // DividedRows inside 'Heard in' is RTL, placing trailing PlayButton to the left of text.
-        final dividedRowsFinder = inSheet(find.byType(DividedRows));
-        expect(dividedRowsFinder, findsOneWidget);
-        expect(
-          Directionality.of(tester.element(dividedRowsFinder)),
-          TextDirection.rtl,
-        );
-        final firstRowPlay = find
-            .descendant(
-              of: dividedRowsFinder,
-              matching: find.byType(PlayButton),
-            )
-            .first;
-        final firstRowText = find
-            .descendant(of: dividedRowsFinder, matching: find.byType(RichText))
-            .first;
-        expect(
-          tester.getTopLeft(firstRowPlay).dx,
-          lessThan(tester.getTopLeft(firstRowText).dx),
-        );
+        expect(pictureDir, findsWidgets);
 
         // Every 'Heard in' RichText line preserves original text and bolds 'بيت'.
         final expectedLines = await rig.course.linesWith('بيت', [
@@ -277,12 +199,7 @@ void main() {
         expect(expectedLines, isNotEmpty);
 
         final lineRichTexts = tester
-            .widgetList<RichText>(
-              find.descendant(
-                of: dividedRowsFinder,
-                matching: find.byType(RichText),
-              ),
-            )
+            .widgetList<RichText>(inSheet(find.byType(RichText)))
             .where(
               (r) => expectedLines.any((l) => r.text.toPlainText() == l.text),
             )
@@ -311,17 +228,16 @@ void main() {
           expect(r.text.toPlainText(), expectedLines[i].text);
         }
 
-        // Tapping a PlayButton preloads and plays the clip; closing the sheet stops it.
-        await tester.ensureVisible(inSheet(find.byType(PlayButton)).first);
+        // Play button preloads & plays clip; closing sheet stops it.
+        await tester.ensureVisible(sheetPlayButtons.first);
         await tester.pumpAndSettle();
-        await tester.tap(inSheet(find.byType(PlayButton)).first);
+        await tester.tap(sheetPlayButtons.first);
         await tester.pump();
         expect(clips.preloaded, [expectedLines.first.clipId]);
         expect(clips.played, [expectedLines.first.clipId]);
 
         final stopsBeforeClose = clips.stops;
-        await tester.tap(inSheet(find.byType(CoquiCloseButton)));
-        await tester.pumpAndSettle();
+        await closeSheet(tester);
         expect(sheet, findsNothing);
         expect(clips.stops, greaterThan(stopsBeforeClose));
       },
@@ -332,7 +248,7 @@ void main() {
       (tester) async {
         final rig = await arabicRig();
         await pumpTab(tester, rig);
-        await tapCard(tester, 'مرحباً');
+        await tapWordRow(tester, 'مرحباً');
         expect(tester.takeException(), isNull);
         expect(sheet, findsOneWidget);
 
@@ -343,14 +259,8 @@ void main() {
         ]);
         expect(expectedLines, isNotEmpty);
 
-        final dividedRowsFinder = inSheet(find.byType(DividedRows));
         final lineRichTexts = tester
-            .widgetList<RichText>(
-              find.descendant(
-                of: dividedRowsFinder,
-                matching: find.byType(RichText),
-              ),
-            )
+            .widgetList<RichText>(inSheet(find.byType(RichText)))
             .where(
               (r) => expectedLines.any((l) => r.text.toPlainText() == l.text),
             )

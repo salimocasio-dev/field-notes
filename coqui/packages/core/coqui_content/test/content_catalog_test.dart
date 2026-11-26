@@ -1442,6 +1442,192 @@ void main() {
       expect(retryCatalog.callFor('casa')!.id, 'casa');
     });
   });
+
+  group('minApp (MinAppCatalog)', () {
+    test('implements MinAppCatalog and defaults minApp to null when missing or null', () async {
+      final before = ContentCatalog(Files(smallTree).call);
+      expect(before, isA<MinAppCatalog>());
+      expect(before.minApp, isNull);
+      expect((before as CourseCatalog).minApp, isNull);
+
+      await before.load();
+      final CourseCatalog course = before;
+      expect(before.minApp, isNull);
+      expect(course.minApp, isNull);
+      expect(before.meta('la-lluvia')!.minApp, isNull);
+      expect(course.minAppFor('la-lluvia'), isNull);
+      expect(course.minAppFor('unknown'), isNull);
+
+      final (nullCatalog, _) = await _loaded({
+        'datos/curso.json': jsonEncode({..._curso, 'minApp': null}),
+      });
+      expect(nullCatalog.minApp, isNull);
+      expect((nullCatalog as CourseCatalog).minApp, isNull);
+      expect((nullCatalog as CourseCatalog).minAppFor('la-lluvia'), isNull);
+
+      final (zeroCatalog, _) = await _loaded({
+        'datos/curso.json': jsonEncode({..._curso, 'minApp': 0}),
+      });
+      expect(zeroCatalog.minApp, 0);
+      expect((zeroCatalog as CourseCatalog).minApp, 0);
+      expect((zeroCatalog as CourseCatalog).minAppFor('la-lluvia'), 0);
+    });
+
+    test('parses top-level course minApp and combines with per-story StoryMeta.minApp via minAppFor', () async {
+      final cuentos = Map<String, Object?>.from(_curso['cuentos'] as Map);
+      cuentos['el-bizcocho'] = {
+        ...(cuentos['el-bizcocho'] as Map),
+        'minApp': 12,
+      };
+      cuentos['donde-esta-el-pajaro'] = {
+        ...(cuentos['donde-esta-el-pajaro'] as Map),
+        'minApp': 16,
+      };
+      cuentos['uno-dos-tres'] = {
+        ...(cuentos['uno-dos-tres'] as Map),
+        'minApp': 20.0,
+      };
+      cuentos['la-bola'] = {...(cuentos['la-bola'] as Map), 'minApp': null};
+
+      final (catalog, _) = await _loaded({
+        'datos/curso.json': jsonEncode({
+          ..._curso,
+          'minApp': 16,
+          'cuentos': cuentos,
+        }),
+      });
+      final CourseCatalog course = catalog;
+
+      expect(catalog.minApp, 16);
+      expect(course.minApp, 16);
+
+      expect(catalog.meta('la-lluvia')!.minApp, isNull);
+      expect(catalog.meta('el-bizcocho')!.minApp, 12);
+      expect(catalog.meta('donde-esta-el-pajaro')!.minApp, 16);
+      expect(catalog.meta('uno-dos-tres')!.minApp, 20);
+      expect(catalog.meta('la-bola')!.minApp, isNull);
+
+      expect(course.minAppFor('la-lluvia'), 16);
+      expect(course.minAppFor('el-bizcocho'), 16);
+      expect(course.minAppFor('donde-esta-el-pajaro'), 16);
+      expect(course.minAppFor('uno-dos-tres'), 20);
+      expect(course.minAppFor('la-bola'), 16);
+      expect(course.minAppFor('unknown'), 16);
+
+      // Whole double in JSON (e.g., 18.0) parses as int 18 on both vm and chrome.
+      final (doubleCatalog, _) = await _loaded({
+        'datos/curso.json': jsonEncode({..._curso, 'minApp': 18.0}),
+      });
+      expect(doubleCatalog.minApp, 18);
+      expect((doubleCatalog as CourseCatalog).minApp, 18);
+    });
+
+    test(
+      'exposes per-story StoryMeta.minApp when top-level minApp is absent',
+      () async {
+        final cuentos = Map<String, Object?>.from(_curso['cuentos'] as Map);
+        cuentos['el-bizcocho'] = {
+          ...(cuentos['el-bizcocho'] as Map),
+          'minApp': 17,
+        };
+        cuentos['uno-dos-tres'] = {
+          ...(cuentos['uno-dos-tres'] as Map),
+          'minApp': 0,
+        };
+
+        final (catalog, _) = await _loaded({
+          'datos/curso.json': jsonEncode({..._curso, 'cuentos': cuentos}),
+        });
+        final CourseCatalog course = catalog;
+
+        expect(catalog.minApp, isNull);
+        expect(course.minApp, isNull);
+        expect(catalog.meta('la-lluvia')!.minApp, isNull);
+        expect(catalog.meta('el-bizcocho')!.minApp, 17);
+        expect(catalog.meta('uno-dos-tres')!.minApp, 0);
+
+        expect(course.minAppFor('la-lluvia'), isNull);
+        expect(course.minAppFor('el-bizcocho'), 17);
+        expect(course.minAppFor('uno-dos-tres'), 0);
+        expect(course.minAppFor('unknown'), isNull);
+      },
+    );
+
+    test('malformed top-level or story minApp throws FormatException without mutating state and recovers on retry', () async {
+      final invalidValues = <String, Object?>{
+        'string': '16',
+        'bool': true,
+        'map': <String, Object?>{},
+        'list': <Object?>[16],
+        'fractional': 16.5,
+        'negative': -1,
+      };
+
+      for (final entry in invalidValues.entries) {
+        final files = Files({
+          ...smallTree,
+          'datos/curso.json': jsonEncode({..._curso, 'minApp': entry.value}),
+        });
+        final catalog = ContentCatalog(files.call);
+        await expectLater(
+          catalog.load(),
+          throwsA(
+            isA<FormatException>().having(
+              (e) => e.message,
+              'message',
+              startsWith('datos/curso.json: minApp'),
+            ),
+          ),
+          reason: 'course minApp: ${entry.key}',
+        );
+        expect(catalog.loaded, isFalse, reason: 'course ${entry.key}');
+        expect(catalog.minApp, isNull, reason: 'course ${entry.key}');
+      }
+
+      for (final entry in invalidValues.entries) {
+        final cuentos = Map<String, Object?>.from(_curso['cuentos'] as Map);
+        cuentos['la-lluvia'] = {
+          ...(cuentos['la-lluvia'] as Map),
+          'minApp': entry.value,
+        };
+        final files = Files({
+          ...smallTree,
+          'datos/curso.json': jsonEncode({..._curso, 'cuentos': cuentos}),
+        });
+        final catalog = ContentCatalog(files.call);
+        await expectLater(
+          catalog.load(),
+          throwsA(
+            isA<FormatException>().having(
+              (e) => e.message,
+              'message',
+              startsWith('datos/curso.json: cuentos.la-lluvia.minApp'),
+            ),
+          ),
+          reason: 'story minApp: ${entry.key}',
+        );
+        expect(catalog.loaded, isFalse, reason: 'story ${entry.key}');
+        expect(catalog.minApp, isNull, reason: 'story ${entry.key}');
+      }
+
+      final retryFiles = Files({
+        ...smallTree,
+        'datos/curso.json': jsonEncode({..._curso, 'minApp': -3}),
+      });
+      final retryCatalog = ContentCatalog(retryFiles.call);
+      await expectLater(retryCatalog.load(), throwsFormatException);
+      expect(retryCatalog.loaded, isFalse);
+      expect(retryCatalog.minApp, isNull);
+
+      retryFiles.files['datos/curso.json'] = jsonEncode({
+        ..._curso,
+        'minApp': 19,
+      });
+      await retryCatalog.load();
+      expect(retryCatalog.loaded, isTrue);
+      expect(retryCatalog.minApp, 19);
+    });
+  });
 }
 
 /// The ids ready.json leaves out in the small course: the clips of its stories that have no recording.

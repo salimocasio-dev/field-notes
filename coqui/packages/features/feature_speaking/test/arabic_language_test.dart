@@ -148,55 +148,38 @@ void main() {
       final w = await _ArabicWorld.create(casaUnlocked: false);
       await tester.pumpWidget(w.app(HablarTab(services: w.services)));
       expect(tester.takeException(), isNull);
-      expect(find.text('تكلم'), findsOneWidget);
-      expect(find.text('By place'), findsOneWidget);
-      expect(find.text('0 words ready'), findsOneWidget);
+      expect(find.text('ARABIC'), findsOneWidget);
+      expect(find.text('Speak'), findsOneWidget);
+      expect(find.text('0 words ready to say'), findsOneWidget);
       expect(find.text('Opens when you finish البيت'), findsOneWidget);
       expect(find.textContaining('Danny'), findsNothing);
-      await tester.tap(find.text('0 words ready'));
+      await tester.tap(find.text('0 words ready to say'));
       await tester.pumpAndSettle();
       expect(find.text('Words open for speaking'), findsOneWidget);
       await w.close(tester);
     });
 
     testWidgets(
-      'open state shows Tariq in job text and reassurance line, keeps Start call, and mirrors cleanly under RTL',
+      'open state shows Tariq in eyebrow, job text, and call label, and mirrors cleanly under RTL',
       (tester) async {
         Phone.android.use(tester);
         final w = await _ArabicWorld.create(casaUnlocked: true);
         await tester.pumpWidget(w.app(HablarTab(services: w.services)));
         expect(tester.takeException(), isNull);
-        expect(find.text('Start call'), findsOneWidget);
+        expect(find.text('NEXT CALL WITH TARIQ · 5 MIN'), findsOneWidget);
+        expect(find.text('Call Tariq'), findsOneWidget);
+        expect(find.byKey(const Key('speak-call-disc')), findsOneWidget);
         expect(find.textContaining('Tariq'), findsWidgets);
         expect(find.textContaining('Danny'), findsNothing);
         expect(
           find.text('Greet Tariq, introduce yourself, and accept a drink.'),
           findsOneWidget,
         );
-        expect(
-          find.text('Practice with Tariq · no fail, help any time'),
-          findsOneWidget,
-        );
 
-        final ltrTitle = tester.getRect(find.text('تكلم'));
-        final ltrPill = tester.getRect(find.text('0 words ready'));
-        expect(ltrTitle.right, lessThan(ltrPill.left));
-
-        await tester.pumpWidget(
-          w.app(
-            Directionality(
-              textDirection: TextDirection.rtl,
-              child: HablarTab(services: w.services),
-            ),
-          ),
-        );
-        await tester.pump();
-        expect(tester.takeException(), isNull);
-        expect(find.text('Start call'), findsOneWidget);
-        expect(find.textContaining('Danny'), findsNothing);
-        final rtlTitle = tester.getRect(find.text('تكلم'));
-        final rtlPill = tester.getRect(find.text('0 words ready'));
-        expect(rtlTitle.left, greaterThan(rtlPill.right));
+        // HablarTab sets Directionality from course.language.direction (RTL for Arabic).
+        final rtlTitle = tester.getRect(find.text('Speak'));
+        final rtlWords = tester.getRect(find.text('0 words ready to say'));
+        expect(rtlTitle.left, greaterThan(rtlWords.right));
         await w.close(tester);
       },
     );

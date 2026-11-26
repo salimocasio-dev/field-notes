@@ -4,7 +4,7 @@
 // The app's lifecycle is changed as the platform changes it (`handleAppLifecycleStateChanged`); the clock is the
 // test's own, moved by hand (a story on a real clock would be pumped by the frames, with the time that went by).
 import 'package:coqui_testing/coqui_testing.dart' show FakeClipPlayer;
-import 'package:coqui_ui/coqui_ui.dart' show LessonStartButton;
+import 'package:coqui_ui/coqui_ui.dart' show NochePlayDisc;
 import 'package:feature_story/src/runner/story_runner.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -136,7 +136,7 @@ void main() {
     'a story that is playing: nothing of it happens while the app is away, and it goes on afterwards',
     (tester) async {
       final s = await openScreen(tester);
-      await tester.tap(find.byType(LessonStartButton));
+      await tester.tap(find.byType(NochePlayDisc));
       await s.advance(400);
       final at = s.runner.timers.now;
       final dots = s.runner.view.dotsLit;

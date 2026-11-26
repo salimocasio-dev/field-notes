@@ -680,6 +680,19 @@ Written as La esquina is (`lib/src/parada/`: `parada_set.dart`, `parada_places.d
   `calendario_acts_test`; in feature_story `calendario_stories_test` and `tool/calendario_paths_test.dart` (rules:
   `calendario_rules.dart`).
 
+## La playa (place 7, orders 62 to 65: orilla, sombrilla, ropa, cielo)
+
+- **The beach's kit** (`lib/src/playa/playa_base.dart`, first writer 62b; sombrilla, ropa and cielo build on it):
+  port of `docs/proyecto/pixel/playa-base.js` (`PL`: `ground`, `palm`, `blanket`, `umbrella`, `heap`, `bucket`, `sky`,
+  `light`) on top of `plaza_base.dart`. Tested across all four La playa origins (`playa_kit_test`: 68 cases, 0 pixels
+  differ).
+- **La orilla** (order 62b, `lib/src/orilla/`: `orilla_set.dart`, `orilla_places.dart`, `orilla_sprites.dart`,
+  `orilla.dart`): on `playa_base.dart`. 5 states in `coqui/ref/pp/orilla/` (`manana-0-0`, `manana-1-0`,
+  `mediodia-0-0`, `tarde-0-1`, `ocaso-0-1`; 0 of 51,840 differ). Live depth (`engine.zb` after `drawLeaves`) so swaying
+  palm fronds hide sprites behind them. Sprite sheet: `tool/make_orilla_sprites_test.dart` (53 sprites). Tests:
+  `playa_kit_test`, `orilla_set_test`, `orilla_sprites_test`, `orilla_acts_test`; in `coqui_story_checks`
+  `orilla_stories_test` and `tool/orilla_paths_test.dart` (rules: `orilla_rules.dart`).
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its

@@ -1,0 +1,757 @@
+{
+ "id": "flota",
+ "title": "¿Flota?",
+ "place": "La playa",
+ "scene": "orilla",
+ "next": "puedo",
+ "goal": "Ride the toy boat that floats out to Carmen, as Luis says by colour, so that all three shells end up on her necklace: a boat that does not float goes down just short of her, in the deep water, and the shell it carried is lost.",
+ "stake": {
+  "thing": "conchas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "bote",
+  "flota",
+  "hondo"
+ ],
+ "formas_foco": {
+  "bote": [
+   "botes"
+  ]
+ },
+ "back_again": [
+  "mar",
+  "ola",
+  "playa",
+  "agua",
+  "rojo",
+  "azul",
+  "verde",
+  "amarillo",
+  "blanco",
+  "¿cuál?",
+  "tengo",
+  "dos",
+  "grande",
+  "cuidado",
+  "aquí",
+  "allá",
+  "lejos",
+  "quiero",
+  "quieres",
+  "gracias",
+  "toma",
+  "mira",
+  "sí",
+  "no",
+  "es",
+  "está",
+  "hay"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c73_l_mira": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mira, Coquí: allá hay un bote. Es grande. Está lejos."
+  },
+  "c73_donde_bote": {
+   "who": "narr",
+   "text": "¿Dónde está el bote?"
+  },
+  "c73_ca_no_hondo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Aquí no está hondo."
+  },
+  "c73_ca_hondo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Uy! Aquí está hondo."
+  },
+  "c73_ab_cuidado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Carmen, cuidado! Allá está hondo."
+  },
+  "c73_l_dos": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Yo tengo dos botes. El bote verde flota."
+  },
+  "c73_l_flota": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mira! ¡Flota!"
+  },
+  "c73_l_no_flota": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote blanco no flota. No flota."
+  },
+  "c73_cual_flota": {
+   "who": "narr",
+   "text": "¿Cuál bote flota?"
+  },
+  "c73_l_quieres": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ¿quieres ir en el bote?"
+  },
+  "c38_cq_si_quiero": {
+   "who": "tu",
+   "text": "¡Sí, quiero!",
+   "tu_turno": [
+    {
+     "palabra": "quiero",
+     "formas": [
+      "quiero",
+      "sí quiero",
+      "si quiero"
+     ]
+    }
+   ]
+  },
+  "c73_l_mas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mira: dos botes más."
+  },
+  "c73_ca_ay": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Ay! Aquí está hondo."
+  },
+  "qc13": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Toma, Coquí."
+  },
+  "c50_cq_gracias": {
+   "who": "tu",
+   "text": "¡Gracias!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias"
+     ]
+    }
+   ]
+  },
+  "c73_fin": {
+   "who": "narr",
+   "text": "El bote grande flota. Y se va."
+  },
+  "c73_no_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. El bote rojo no flota."
+  },
+  "c73_fn_rojo_azul": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote rojo flota. El bote azul no flota."
+  },
+  "c73_nf_rojo_azul": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote azul no flota. El bote rojo flota."
+  },
+  "c73_fn_rojo_amarillo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote rojo flota. El bote amarillo no flota."
+  },
+  "c73_nf_rojo_amarillo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote amarillo no flota. El bote rojo flota."
+  },
+  "c73_no_azul": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. El bote azul no flota."
+  },
+  "c73_fn_azul_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote azul flota. El bote rojo no flota."
+  },
+  "c73_nf_azul_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote rojo no flota. El bote azul flota."
+  },
+  "c73_fn_azul_amarillo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote azul flota. El bote amarillo no flota."
+  },
+  "c73_nf_azul_amarillo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote amarillo no flota. El bote azul flota."
+  },
+  "c73_no_amarillo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No, Coquí. El bote amarillo no flota."
+  },
+  "c73_fn_amarillo_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote amarillo flota. El bote rojo no flota."
+  },
+  "c73_nf_amarillo_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote rojo no flota. El bote amarillo flota."
+  },
+  "c73_fn_amarillo_azul": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote amarillo flota. El bote azul no flota."
+  },
+  "c73_nf_amarillo_azul": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El bote azul no flota. El bote amarillo flota."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "mediodia",
+    "castillo": 0,
+    "manta": 0
+   }
+  },
+  {
+   "act": "conchas",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "senala",
+   "a": "bote"
+  },
+  "c73_l_mira",
+  {
+   "ask": "bote",
+   "lead": [],
+   "line": "c73_donde_bote",
+   "then": [],
+   "after": []
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "vadea",
+   "quien": "carmen",
+   "a": "agua1"
+  },
+  "c73_ca_no_hondo",
+  {
+   "act": "vadea",
+   "quien": "carmen",
+   "a": "agua2"
+  },
+  "c73_ca_hondo",
+  "c73_ab_cuidado",
+  {
+   "act": "collar",
+   "n": 0
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "botes",
+   "a": "verde",
+   "b": "blanco"
+  },
+  "c73_l_dos",
+  {
+   "act": "prueba73",
+   "color": "verde",
+   "ok": 1
+  },
+  "c73_l_flota",
+  {
+   "act": "prueba73",
+   "color": "blanco",
+   "ok": 0
+  },
+  "c73_l_no_flota",
+  {
+   "ask": "bote_a",
+   "lead": [],
+   "line": "c73_cual_flota",
+   "then": [],
+   "after": []
+  },
+  "c73_l_quieres",
+  "c38_cq_si_quiero",
+  {
+   "act": "navega73",
+   "color": "verde",
+   "ok": 1,
+   "concha": 1
+  },
+  {
+   "act": "collar",
+   "n": 1
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "fa",
+   "options": [
+    "rojo",
+    "azul",
+    "amarillo"
+   ]
+  },
+  {
+   "draw": "ea",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "if": "fa=rojo",
+   "then": [
+    {
+     "calc": "za",
+     "cond": "ea=1",
+     "then": "azul",
+     "else": "amarillo"
+    }
+   ],
+   "else": [
+    {
+     "if": "fa=azul",
+     "then": [
+      {
+       "calc": "za",
+       "cond": "ea=1",
+       "then": "rojo",
+       "else": "amarillo"
+      }
+     ],
+     "else": [
+      {
+       "calc": "za",
+       "cond": "ea=1",
+       "then": "rojo",
+       "else": "azul"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "fn",
+    "nf"
+   ]
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "bote_a",
+    "bote_b"
+   ],
+   "other": "ja"
+  },
+  {
+   "calc": "ca",
+   "cond": "ka=bote_a",
+   "then": "$fa",
+   "else": "$za"
+  },
+  {
+   "calc": "da",
+   "cond": "ka=bote_a",
+   "then": "$za",
+   "else": "$fa"
+  },
+  {
+   "act": "botes",
+   "a": "$ca",
+   "b": "$da"
+  },
+  "c73_l_mas",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "decide": "do",
+   "options": [
+    "bote_a",
+    "bote_b"
+   ],
+   "pick": "$ka",
+   "tests": "flota",
+   "lock": true,
+   "lead": [],
+   "line": "c73_$oa_$fa_$za",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "navega73",
+       "color": "$fa",
+       "ok": 1,
+       "concha": 1
+      },
+      {
+       "act": "collar",
+       "n": 2
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "navega73",
+       "color": "$fa",
+       "ok": 1,
+       "concha": 0
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "navega73",
+     "color": "$za",
+     "ok": 0,
+     "concha": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "carmen",
+     "que": "no"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "conchas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "conchas",
+       "n": 1
+      }
+     ]
+    },
+    "c73_ca_ay",
+    "c73_no_$za",
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "fb",
+   "options": [
+    "rojo",
+    "azul",
+    "amarillo"
+   ]
+  },
+  {
+   "draw": "eb",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "if": "fb=rojo",
+   "then": [
+    {
+     "calc": "zb",
+     "cond": "eb=1",
+     "then": "azul",
+     "else": "amarillo"
+    }
+   ],
+   "else": [
+    {
+     "if": "fb=azul",
+     "then": [
+      {
+       "calc": "zb",
+       "cond": "eb=1",
+       "then": "rojo",
+       "else": "amarillo"
+      }
+     ],
+     "else": [
+      {
+       "calc": "zb",
+       "cond": "eb=1",
+       "then": "rojo",
+       "else": "azul"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "fn",
+    "nf"
+   ]
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "bote_a",
+    "bote_b"
+   ],
+   "other": "jb"
+  },
+  {
+   "calc": "cb",
+   "cond": "kb=bote_a",
+   "then": "$fb",
+   "else": "$zb"
+  },
+  {
+   "calc": "db",
+   "cond": "kb=bote_a",
+   "then": "$zb",
+   "else": "$fb"
+  },
+  {
+   "act": "botes",
+   "a": "$cb",
+   "b": "$db"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "bote_a",
+    "bote_b"
+   ],
+   "pick": "$kb",
+   "tests": "flota",
+   "lock": true,
+   "lead": [],
+   "line": "c73_$ob_$fb_$zb",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "navega73",
+       "color": "$fb",
+       "ok": 1,
+       "concha": 1
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "collar",
+         "n": 3
+        }
+       ],
+       "else": [
+        {
+         "act": "collar",
+         "n": 2
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "navega73",
+       "color": "$fb",
+       "ok": 1,
+       "concha": 0
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "navega73",
+     "color": "$zb",
+     "ok": 0,
+     "concha": 1
+    },
+    {
+     "act": "gesto",
+     "quien": "carmen",
+     "que": "no"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "conchas",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "conchas",
+       "n": 1
+      }
+     ]
+    },
+    "c73_ca_ay",
+    "c73_no_$zb",
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final73",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final73",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final73",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "qc13",
+  "c50_cq_gracias",
+  {
+   "act": "bote_va",
+   "suelto": 1
+  },
+  "c73_fin",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c73_l_mira",
+  "c73_donde_bote",
+  "c73_ca_no_hondo",
+  "c73_ca_hondo",
+  "c73_ab_cuidado",
+  "c73_l_dos",
+  "c73_l_flota",
+  "c73_l_no_flota",
+  "c73_cual_flota",
+  "c73_l_quieres",
+  "c38_cq_si_quiero",
+  "c73_l_mas",
+  "c73_fn_rojo_azul",
+  "c73_nf_rojo_amarillo",
+  "qc13",
+  "c50_cq_gracias",
+  "c73_fin"
+ ]
+}
