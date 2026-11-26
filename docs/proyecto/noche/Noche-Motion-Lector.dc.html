@@ -120,7 +120,7 @@ button{font-family:inherit}
 </div>
 <div style="margin-top: 8px; display: flex; align-items: center; gap: 12px">
 <button type="button" class="pr" onClick="{{ smaller }}" aria-label="Smaller text" style="flex: none; width: 56px; height: 48px; border: 1px solid #33506B; border-radius: 24px; background: transparent; color: #EEF3F7; font: 500 15px/1 'Literata', Georgia, serif">A</button>
-<div role="img" aria-label="Text size step" style="flex-grow: 1; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+<div role="img" aria-label="Text size, step {{ size }} of 7" style="flex-grow: 1; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
 <span class="z z1"></span><span class="z z2"></span><span class="z z3"></span><span class="z z4"></span><span class="z z5"></span><span class="z z6"></span><span class="z z7"></span>
 </div>
 <button type="button" class="pr" onClick="{{ larger }}" aria-label="Larger text" style="flex: none; width: 56px; height: 48px; border: 1px solid #33506B; border-radius: 24px; background: transparent; color: #EEF3F7; font: 500 24px/1 'Literata', Georgia, serif">A</button>
@@ -156,8 +156,8 @@ button{font-family:inherit}
 </div>
 
 <div style="margin-top: 12px">
-<button type="button" role="switch" aria-checked="{{ a.su }}" onClick="{{ togU }}" style="width: 100%; height: 52px; padding: 0; border: 0; border-top: 1px solid #33506B; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: space-between; text-align: left; font: 600 15px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">Underline words I'm still learning<span class="sw su" style="flex: none; width: 52px; height: 32px; border-radius: 16px; display: flex; align-items: center; padding: 0 4px; box-sizing: border-box"><span class="kn" style="width: 24px; height: 24px; border-radius: 50%"></span></span></button>
-<button type="button" role="switch" aria-checked="{{ a.sl }}" onClick="{{ togL }}" style="width: 100%; height: 52px; padding: 0; border: 0; border-top: 1px solid #33506B; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: space-between; text-align: left; font: 600 15px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">Light up the sentence being read<span class="sw sl" style="flex: none; width: 52px; height: 32px; border-radius: 16px; display: flex; align-items: center; padding: 0 4px; box-sizing: border-box"><span class="kn" style="width: 24px; height: 24px; border-radius: 50%"></span></span></button>
+<button type="button" role="switch" aria-checked="{{ a.su }}" onClick="{{ togU }}" style="width: 100%; height: 52px; padding: 0; border: 0; border-top: 1px solid #33506B; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: space-between; text-align: start; font: 600 15px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">Underline words I'm still learning<span class="sw su" style="flex: none; width: 52px; height: 32px; border-radius: 16px; display: flex; align-items: center; padding: 0 4px; box-sizing: border-box"><span class="kn" style="width: 24px; height: 24px; border-radius: 50%"></span></span></button>
+<button type="button" role="switch" aria-checked="{{ a.sl }}" onClick="{{ togL }}" style="width: 100%; height: 52px; padding: 0; border: 0; border-top: 1px solid #33506B; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: space-between; text-align: start; font: 600 15px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">Light up the sentence being read<span class="sw sl" style="flex: none; width: 52px; height: 32px; border-radius: 16px; display: flex; align-items: center; padding: 0 4px; box-sizing: border-box"><span class="kn" style="width: 24px; height: 24px; border-radius: 50%"></span></span></button>
 </div>
 </section>
 </div>
