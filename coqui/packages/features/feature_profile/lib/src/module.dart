@@ -15,8 +15,8 @@ class ProfileModule implements FeatureModule {
 
   @override
   FeatureTab? tab(Services s) => FeatureTab(
-    id: 'me',
-    label: CoquiLabels.me,
+    id: NocheTabs.me,
+    label: s.course.language.tabNames[NocheTabs.me] ?? CoquiLabels.me,
     icon: Icons.person,
     builder: (_) => YoScreen(services: s),
   );

@@ -24,7 +24,7 @@ void main() {
       expect(find.text("I'm new to Spanish").hitTestable(), findsNothing);
       expect(app.selectedTab, 'map');
       expect(findMapTopChips(), findsOneWidget);
-      // listo(): the setting is written into the stored progress, under the old key
+      // listo(): the setting is written into the active language's progress store
       expect(app.stored, contains('"bienvenida":1'));
       // the course was read from the site's files before the first screen, with the voice test's lines
       expect(app.fetched.take(1), ['datos/curso.json']);

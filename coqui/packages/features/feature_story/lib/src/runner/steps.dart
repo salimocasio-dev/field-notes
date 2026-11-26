@@ -626,7 +626,7 @@ extension _Steps on StoryRunner {
             o.turno!.kind == 'elige' &&
             !me.done &&
             habVivo(o.turno!.ids);
-        if (tuE) turnoEligeInicio(me, o);
+        if (tuE) turnoEligeInicio(me, o, line);
         if (!me.voz) me.asked = true;
         if (line != null && line.isNotEmpty && !o.mudo) {
           await say(line, me.voz ? 300 : 0);

@@ -239,9 +239,9 @@ bool repasoStoryFinished(ProgressStore p, String id) {
   return false;
 }
 
-/// The words of [s], lower case, accents and signs gone (`Language.spanish.normalize`, PAL.norm, split).
-List<String> repasoTokens(String s) => [
-  for (final t in Language.spanish.normalize(s).trim().split(' '))
+/// The words of [s], lower case, accents and signs gone (`(language ?? Language.spanish).normalize`, split).
+List<String> repasoTokens(String s, {Language? language}) => [
+  for (final t in (language ?? Language.spanish).normalize(s).trim().split(' '))
     if (t.isNotEmpty) t,
 ];
 
@@ -256,10 +256,13 @@ class RepasoServing {
     required this.data,
     required this.progress,
     required Iterable<ReviewPair> pairs,
-  }) : _pairWords = {for (final p in pairs) p.word};
+    Language? language,
+  }) : language = language ?? Language.spanish,
+       _pairWords = {for (final p in pairs) p.word};
 
   final RepasoData data;
   final ProgressStore progress;
+  final Language language;
   final Set<String> _pairWords;
 
   final Map<String, bool> _finished = {};
@@ -276,7 +279,8 @@ class RepasoServing {
   ];
 
   final Map<String, List<String>> _folded = {};
-  List<String> _tokensOf(String s) => _folded[s] ??= repasoTokens(s);
+  List<String> _tokensOf(String s) =>
+      _folded[s] ??= repasoTokens(s, language: language);
 
   final Map<RepasoSentence, Set<String>> _inSentence = {};
   Set<String> _wordsIn(RepasoSentence s) =>
@@ -348,5 +352,10 @@ RepasoServing? repasoServing(CourseCatalog course, ProgressStore progress) {
   if (c is! RepasoCatalog) return null;
   final d = (c as RepasoCatalog).repaso;
   if (d == null) return null;
-  return RepasoServing(data: d, progress: progress, pairs: course.pairs);
+  return RepasoServing(
+    data: d,
+    progress: progress,
+    pairs: course.pairs,
+    language: course.language,
+  );
 }

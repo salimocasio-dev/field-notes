@@ -6,19 +6,23 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const n210Files = [
+  const nocheFiles = [
     'lib/src/languages_data.dart',
     'lib/src/languages_sheet.dart',
     'lib/src/language_chip.dart',
+    'lib/src/me_data.dart',
+    'lib/src/yo_screen.dart',
+    'lib/src/about_sheet.dart',
+    'lib/src/install_hint.dart',
     'lib/src/module.dart',
   ];
 
-  test('no left/right layout APIs in N2.10 files', () {
+  test('no left/right layout APIs in Noche files', () {
     final wordRe = RegExp(r'\b(left|right)\b', caseSensitive: false);
     final apiRe = RegExp(
       r'fromLTRB|topLeft|topRight|centerLeft|centerRight|bottomLeft|bottomRight',
     );
-    for (final path in n210Files) {
+    for (final path in nocheFiles) {
       final content = File(path).readAsStringSync();
       expect(
         wordRe.allMatches(content),
@@ -33,10 +37,10 @@ void main() {
     }
   });
 
-  test('no raw hex Color or fontFamily literals in N2.10 files', () {
+  test('no raw hex Color or fontFamily literals in Noche files', () {
     final colorRe = RegExp(r'Color\s*\(\s*0x');
     final fontRe = RegExp(r'\bfontFamily\b');
-    for (final path in n210Files) {
+    for (final path in nocheFiles) {
       final content = File(path).readAsStringSync();
       expect(
         colorRe.allMatches(content),
@@ -52,7 +56,7 @@ void main() {
   });
 
   test(
-    'no hardcoded sample languages or Spanish UI strings in N2.10 files',
+    'no hardcoded sample languages or Spanish UI strings in Noche files',
     () {
       final sampleLangRe = RegExp(
         r'''(['"])([^'"]*(?:French|Arabic|Portuguese|Italian|Spanish|Español|العربية)[^'"]*)\1''',
@@ -60,7 +64,7 @@ void main() {
       final spanishRe = RegExp(
         r'''(['"])([^'"]*(?:¿|¡|á|é|í|ó|ú|ñ|Mapa|Palabras|Biblioteca|Hablar|Cuál|Aquí)[^'"]*)\1''',
       );
-      for (final path in n210Files) {
+      for (final path in nocheFiles) {
         final code = File(path)
             .readAsLinesSync()
             .map((l) => l.replaceFirst(RegExp(r'//.*$'), ''))
@@ -79,8 +83,8 @@ void main() {
     },
   );
 
-  test('no deprecated package:flutter/material.dart import in N2.10 files', () {
-    for (final path in n210Files) {
+  test('no deprecated package:flutter/material.dart import in Noche files', () {
+    for (final path in nocheFiles) {
       final content = File(path).readAsStringSync();
       expect(
         content.contains('package:flutter/material.dart'),

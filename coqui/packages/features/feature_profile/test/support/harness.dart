@@ -1,6 +1,7 @@
 // What the tests share: the old page's expected values, a phone-sized screen, and a way to read the text on it.
 import 'dart:convert';
 
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
@@ -25,7 +26,7 @@ void phone(WidgetTester tester, {double height = 3000}) {
 
 Widget _app(Widget home) => MaterialApp(
   theme: coquiTheme(),
-  home: Scaffold(body: home),
+  home: Scaffold(backgroundColor: NocheColors.ground, body: home),
 );
 
 /// The frames a tap sets going: the page draws, the sheet's slide starts, and the slide ends.
@@ -35,20 +36,33 @@ Future<void> settle(WidgetTester tester) async {
   await tester.pump(const Duration(milliseconds: 300)); // the slide
 }
 
-/// Yo, from the module's own tab, on [f]'s services.
+/// Me, from the module's own tab, on [f]'s services.
 Future<void> pumpYo(
   WidgetTester tester,
   DevFixture f, {
   int? how,
   bool about = false,
+  double Function(DateTime day)? minutesOn,
+  int? streakFreezes,
+  int? stageMax,
+  Entitlements entitlements = const AllowAllEntitlements(),
+  String? level,
 }) async {
   phone(tester);
   await tester.pumpWidget(
     const SizedBox(),
   ); // a page that is new: nothing is kept from the one before
+  final useDefault =
+      how == null &&
+      !about &&
+      minutesOn == null &&
+      streakFreezes == null &&
+      stageMax == null &&
+      entitlements is AllowAllEntitlements &&
+      level == null;
   await tester.pumpWidget(
     _app(
-      how == null && !about
+      useDefault
           ? Builder(
               builder: (context) =>
                   const ProfileModule().tab(f.services)!.builder(context),
@@ -57,6 +71,11 @@ Future<void> pumpYo(
               services: f.services,
               howItWorksStep: how,
               aboutOpen: about,
+              minutesOn: minutesOn,
+              streakFreezes: streakFreezes,
+              stageMax: stageMax,
+              entitlements: entitlements,
+              level: level,
             ),
     ),
   );
@@ -69,7 +88,7 @@ Future<void> pumpGate(
   DevFixture f, {
   Widget child = const ColoredBox(
     key: Key('app'),
-    color: Color(0xFF5C94FC),
+    color: NocheColors.ground,
     child: SizedBox.expand(),
   ),
   int step = 0,
@@ -102,38 +121,14 @@ List<String> textsOf(
   ];
 }
 
-/// The text of Yo's page as the old `yo()` writes it: without the three new things.
-List<String> yoTexts(WidgetTester tester) => textsOf(
-  tester,
-  find.byType(TabPage),
-  skip: [
-    find.byKey(const Key('about-row')),
-    find.byKey(const Key('build-number')),
-    find.byKey(const Key('install-hint')),
-  ],
-);
+/// Every text currently visible in the Me scroll view.
+List<String> yoTexts(WidgetTester tester) =>
+    textsOf(tester, find.byKey(const Key('me-scroll')));
 
-/// The fire emoji and its space, as the old page writes them in front of the streak (app.html:473). The page
-/// under test draws a flame (`CoquiFlame`) there and writes the number alone.
-const String oldFlame = '\u{1F525} ';
-
-/// The page's texts against what the old `yo()` wrote ([want], from `old_expected`), where the old text has the
-/// emoji in front of the streak's number and the page has the drawn flame before it: the number is compared, and
-/// the flame's presence (one flame for the one emoji, none where the old page had none).
-void expectYoPage(WidgetTester tester, List<String> want) {
-  expect(yoTexts(tester), [
-    for (final t in want)
-      if (t.startsWith(oldFlame)) t.substring(oldFlame.length) else t,
-  ]);
-  expect(
-    find.byType(CoquiFlame),
-    findsNWidgets(want.where((t) => t.startsWith(oldFlame)).length),
-  );
-}
-
-/// A sheet is up: the gate's `CoquiSheetLayer` when it is open, or one that `showCoquiSheet` put above everything
-/// (a [CoquiSheet] that is not in a layer: the layers keep theirs in the tree while they are closed).
+/// A sheet is up: a [NocheSheet], the gate's `CoquiSheetLayer` when open, or a
+/// `showCoquiSheet` route above everything.
 bool sheetOpen(WidgetTester tester) {
+  if (find.byType(NocheSheet).evaluate().isNotEmpty) return true;
   if (tester
       .widgetList<CoquiSheetLayer>(find.byType(CoquiSheetLayer))
       .any((l) => l.open)) {
@@ -149,23 +144,32 @@ bool sheetOpen(WidgetTester tester) {
   return find.byType(CoquiSheet).evaluate().length > inLayers;
 }
 
-/// The pills of [SegmentedPills]: the labels and which one is on.
+/// The pills of [SegmentedPills] (welcome sheet) or [NocheSegmented<int>] (Me screen).
 List<({String text, bool on})> pillsOf(WidgetTester tester, [Finder? within]) {
-  final p = tester.widget<SegmentedPills>(
-    within == null
-        ? find.byType(SegmentedPills)
-        : find.descendant(of: within, matching: find.byType(SegmentedPills)),
-  );
+  final legacy = within == null
+      ? find.byType(SegmentedPills)
+      : find.descendant(of: within, matching: find.byType(SegmentedPills));
+  if (legacy.evaluate().isNotEmpty) {
+    final p = tester.widget<SegmentedPills>(legacy);
+    return [
+      for (var i = 0; i < p.labels.length; i++)
+        (text: p.labels[i], on: i == p.selected),
+    ];
+  }
+  final noche = within == null
+      ? find.byType(NocheSegmented<int>)
+      : find.descendant(of: within, matching: find.byType(NocheSegmented<int>));
+  final seg = tester.widget<NocheSegmented<int>>(noche);
   return [
-    for (var i = 0; i < p.labels.length; i++)
-      (text: p.labels[i], on: i == p.selected),
+    for (final option in seg.options)
+      (text: option.label, on: option.value == seg.selected),
   ];
 }
 
-/// The switches of Yo, in the order of the page: Open every place, Speak in stories.
+/// The switches of Me, in the order of the page: Open every place, Speak in stories.
 List<bool> switchesOf(WidgetTester tester) => [
   for (final k in const ['yo-todo', 'yo-habla'])
-    tester.widget<CoquiSwitch>(find.byKey(Key(k))).value,
+    tester.widget<NocheSwitchRow>(find.byKey(Key(k))).value,
 ];
 
 /// The dot of the welcome that is lit.

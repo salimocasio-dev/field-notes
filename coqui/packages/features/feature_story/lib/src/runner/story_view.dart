@@ -104,6 +104,31 @@ class StoryView {
   /// `#snd.off`.
   bool muted = false;
 
+  /// Whether the TXT captions toggle is currently on (`TXT != TxtMode.no`).
+  bool txtOn = true;
+
+  /// Whether a voice clip is currently playing (`speaking > 0` or untimed speech).
+  bool speakingNow = false;
+
+  /// True after a first miss in a speaking turn (`n == 1`) until the learner
+  /// taps the mic again or the turn ends; maps to `NocheMicState.notYet`.
+  bool micMissed = false;
+
+  /// Current speaker label from the story file (shown even when TXT is off).
+  String speaker = '';
+
+  /// Speaker who prompted the active speaking turn (from the story file).
+  String turnSpeaker = '';
+
+  /// Line spoken to prompt the active speaking turn (from the story file).
+  String turnLine = '';
+
+  /// Prompt lead-in on a speaking turn (from clip's `prompt` or `story_your_turn`).
+  String turnPromptPrefix = '';
+
+  /// Bold target words to say on a speaking turn (from the target clip's `text`).
+  String turnPromptWords = '';
+
   /// Whether the Map button beside "Play again" is the outline one (`#duo.two`).
   bool get two => foot.again && foot.map;
 }

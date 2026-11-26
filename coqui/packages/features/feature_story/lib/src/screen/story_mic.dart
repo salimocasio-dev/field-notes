@@ -1,250 +1,218 @@
-/// The mic button of a speaking turn, and its states (index.html `#mic`, docs/proyecto/09-ui-plan.md "Mic states").
+/// Noche speaking-turn controls for a story lesson (`Noche-Cuento.dc.html`,
+/// `Noche-Cuento-AR.dc.html`, `Noche-Mic.dc.html`): a 48 "hear it again"
+/// outline button at the start, [NocheMic] centred in the middle, and an empty
+/// 48 spacer at the end.
 library;
 
+import 'dart:math' as math;
+
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_story/src/runner/story_view.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// `--grn`, the "your turn" green; `#2B2B33`, grey for "the app is speaking or thinking"; `#FF5A5F`, the recording coral;
-/// `#3DDC84`, the tick. index.html:42-60
-const Color _grey = Color(0xFF2B2B33), _greyIcon = Color(0xFFA7A7B0);
-const Color _coral = Color(0xFFFF5A5F), _coralInk = Color(0xFF2B0A0C);
-const Color _tick = Color(0xFF3DDC84);
-
-/// The state of the mic button: what `#mic[data-s]` is. [dead] while a line plays, [ready], [listening], [processing]
-/// and [ok] (the tick).
-enum StoryMicState { dead, ready, listening, processing, ok }
-
-StoryMicState? micStateOf(String s) => switch (s) {
-  'dead' => StoryMicState.dead,
-  'ready' => StoryMicState.ready,
-  'listening' => StoryMicState.listening,
-  'processing' => StoryMicState.processing,
-  'ok' => StoryMicState.ok,
+/// Maps [StoryView]'s speaking-turn state to [NocheMicState] (or null when no
+/// speaking turn is active).
+NocheMicState? nocheMicStateOf(StoryView v) => switch (v.mic) {
+  'ok' => NocheMicState.right,
+  'processing' => NocheMicState.thinking,
+  'listening' => NocheMicState.listening,
+  'dead' => NocheMicState.theySpeak,
+  'ready' =>
+    v.speakingNow
+        ? NocheMicState.theySpeak
+        : (v.micMissed ? NocheMicState.notYet : NocheMicState.ready),
   _ => null,
 };
 
-/// The mic disc: 72 px, the start disc's size and place (index.html `#mic`).
-///
-/// - dead: grey with a dim mic. ready: green with a white mic. listening: coral with a dark mic, a steady coral ring just
-///   outside it and two more that spread (a timer, not the voice level); with reduced motion the rings are still.
-///   processing: grey with three pulsing dots. ok: an outline with a green tick, no fill: a status, not a button.
-/// - Only a ready mic takes a tap (`aria-disabled`). The label is the old page's: "Micrófono".
-// A stand-in: coqui_ui has no mic disc yet (request 15-feature-story-needs-coqui-ui-lesson-mic-disc).
-class StoryMicButton extends StatefulWidget {
-  const StoryMicButton({
+/// 48 × 48 circular "hear it again" outline button on `lessonGround`
+/// (`Noche-Cuento.dc.html`: 1 px `lessonBorder` ring, 22 px `replay` icon).
+class StoryHearAgainButton extends StatelessWidget {
+  const StoryHearAgainButton({
     super.key,
-    required this.state,
     required this.onPressed,
-    this.reduceMotion = false,
+    required this.language,
   });
 
-  final StoryMicState state;
-  final VoidCallback onPressed;
-  final bool reduceMotion;
-
-  @override
-  State<StoryMicButton> createState() => _StoryMicButtonState();
-}
-
-class _StoryMicButtonState extends State<StoryMicButton>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _a = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1200),
-  );
-
-  bool get _moves =>
-      !widget.reduceMotion &&
-      (widget.state == StoryMicState.listening ||
-          widget.state == StoryMicState.processing);
-
-  @override
-  void initState() {
-    super.initState();
-    if (_moves) _a.repeat();
-  }
-
-  @override
-  void didUpdateWidget(StoryMicButton old) {
-    super.didUpdateWidget(old);
-    if (_moves) {
-      if (!_a.isAnimating) _a.repeat();
-    } else {
-      _a.stop();
-    }
-  }
-
-  @override
-  void dispose() {
-    _a.dispose();
-    super.dispose();
-  }
+  final VoidCallback? onPressed;
+  final Language language;
 
   @override
   Widget build(BuildContext context) {
-    final s = widget.state;
-    final ready = s == StoryMicState.ready;
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: CoquiMetrics.s16),
-      child: Semantics(
-        button: true,
-        enabled: ready,
-        label: 'Micrófono',
-        excludeSemantics: true,
-        onTap: ready ? widget.onPressed : null,
-        // the tick is a status, not a button: `#mic[data-s=ok]{pointer-events:none}`
-        child: IgnorePointer(
-          ignoring: s == StoryMicState.ok,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: ready ? widget.onPressed : null,
-            child: SizedBox(
-              width: 72,
-              height: 72,
-              child: AnimatedBuilder(
-                animation: _a,
-                builder: (context, _) => _disc(s),
-              ),
-            ),
+    final enabled = onPressed != null;
+    final fg = enabled ? NocheColors.text : NocheColors.lessonLabel;
+    final border = enabled ? NocheColors.lessonBorder : NocheColors.lessonLine;
+    return Pressable(
+      onPressed: onPressed,
+      semanticLabel: NocheA11y.label(
+        NocheA11y.hearAgain,
+        courseWords: language.a11yWords,
+      ),
+      builder: (context, pressed) => Transform.scale(
+        scale: pressed ? 0.96 : 1,
+        child: Container(
+          width: NocheSize.touch,
+          height: NocheSize.touch,
+          alignment: AlignmentDirectional.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: border, width: 1),
+          ),
+          child: NocheIcon(
+            NocheIcons.replay,
+            size: 22,
+            strokeWidth: 2,
+            color: fg,
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _disc(StoryMicState s) {
-    final t = _a.value;
-    switch (s) {
-      case StoryMicState.ok:
-        return Container(
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.fromBorderSide(BorderSide(color: _tick, width: 3)),
-          ),
-          child: const CoquiIcon(CoquiIcons.badgeCheck, size: 32, color: _tick),
-        );
-      case StoryMicState.listening:
-        // `#mic[data-s=listening]`: coral, a steady ring 5 px off (the frame's colour between), a second one at 8 px, and
-        // two rings that spread from the disc to 1.8 times its size
-        final pulse = widget.reduceMotion
-            ? 1.0
-            : 1 + .06 * (1 - (2 * t - 1).abs());
-        Widget ring(double phase) {
-          final k = widget.reduceMotion
-              ? (phase == 0 ? 1.5 : 0.0)
-              : (t + phase) % 1;
-          final scale = widget.reduceMotion ? 1.5 : 1 + .8 * k;
-          final op = widget.reduceMotion
-              ? (phase == 0 ? .8 : 0.0)
-              : .95 * (1 - k);
-          if (op <= 0) return const SizedBox.shrink();
-          return Opacity(
-            opacity: op,
-            child: Transform.scale(
-              scale: scale,
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.fromBorderSide(
-                    BorderSide(color: _coral, width: 4),
-                  ),
-                ),
-              ),
+/// The bottom speaking-turn control row: 48 "hear it again" at the start,
+/// [NocheMic] centred in the middle (all 6 states), and an empty 48 spacer at
+/// the end so the mic stays centred in both LTR and RTL.
+class StoryMicControls extends StatefulWidget {
+  const StoryMicControls({
+    super.key,
+    required this.state,
+    required this.language,
+    required this.onTapMic,
+    this.onHearAgain,
+    this.reduceMotion = false,
+  });
+
+  final NocheMicState state;
+  final Language language;
+  final VoidCallback onTapMic;
+  final VoidCallback? onHearAgain;
+  final bool reduceMotion;
+
+  /// Width reserved for [NocheMic] with five bars on each side:
+  /// 36 + 16 + 96 + 16 + 36 = 200. Keeping this fixed prevents the flanking
+  /// "hear it again" button from shifting when bars appear or disappear.
+  static const double micSlotWidth = 200;
+
+  @override
+  State<StoryMicControls> createState() => _StoryMicControlsState();
+}
+
+class _StoryMicControlsState extends State<StoryMicControls>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _levelAnim = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 900),
+  );
+
+  bool get _animates => !widget.reduceMotion && widget.state.showsBars;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_animates) _levelAnim.repeat(reverse: true);
+  }
+
+  @override
+  void didUpdateWidget(StoryMicControls old) {
+    super.didUpdateWidget(old);
+    if (_animates) {
+      if (!_levelAnim.isAnimating) _levelAnim.repeat(reverse: true);
+    } else {
+      _levelAnim.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _levelAnim.dispose();
+    super.dispose();
+  }
+
+  double _currentLevel() {
+    if (!widget.state.showsBars) return 0.0;
+    if (widget.reduceMotion) return 1.0;
+    return 0.45 + 0.55 * (0.5 + 0.5 * math.sin(_levelAnim.value * math.pi));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = widget.state;
+    final tappable = s == NocheMicState.ready || s == NocheMicState.notYet;
+    final labelGap = widget.language.script == 'Arab' ? 12.0 : 16.0;
+    const flankTop = (NocheMic.discSize - NocheSize.touch) / 2;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxW = constraints.maxWidth;
+        // Board metrics at >= 328 px: 48 + 16 + (36 + 16 + 96 + 16 + 36) + 16 + 48 = 328.
+        // On narrower portrait/landscape viewports, tighten the gaps symmetrically
+        // while keeping both 48x48 touch targets and the 96px mic disc centred.
+        final double flankGap;
+        final double barGroupGap;
+        final double minSlotWidth;
+        if (!maxW.isFinite || maxW >= 328) {
+          flankGap = 16;
+          barGroupGap = NocheMic.defaultBarGroupGap;
+          minSlotWidth = StoryMicControls.micSlotWidth;
+        } else {
+          final extra = math.max(0.0, maxW - (NocheSize.touch * 2 + 168));
+          // Distribute available margin evenly across the 4 horizontal gaps (2 flank + 2 barGroup).
+          final gap = (extra / 4).clamp(4.0, 16.0);
+          flankGap = gap;
+          barGroupGap = gap;
+          minSlotWidth = math.max(
+            NocheMic.discSize,
+            math.min(
+              StoryMicControls.micSlotWidth,
+              maxW - NocheSize.touch * 2 - flankGap * 2,
             ),
           );
         }
 
-        return Transform.scale(
-          scale: pulse,
-          child: Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: [
-              ring(0),
-              ring(.5),
-              Container(
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _coral,
-                  boxShadow: [
-                    BoxShadow(color: CoquiColors.lessonBg, spreadRadius: 5),
-                    BoxShadow(color: _coral, spreadRadius: 8),
-                    BoxShadow(
-                      color: Color(0x59000000),
-                      blurRadius: 16,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: CoquiIcon(
-                  CoquiIcons.lessonMic,
-                  size: 32,
-                  color: _coralInk,
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.only(top: flankTop),
+              child: StoryHearAgainButton(
+                onPressed: widget.onHearAgain,
+                language: widget.language,
+              ),
+            ),
+            SizedBox(width: flankGap),
+            ConstrainedBox(
+              constraints: BoxConstraints(minWidth: minSlotWidth),
+              child: IgnorePointer(
+                ignoring: s == NocheMicState.right,
+                child: AnimatedBuilder(
+                  animation: _levelAnim,
+                  builder: (context, _) => NocheMic(
+                    state: s,
+                    language: widget.language,
+                    level: _currentLevel(),
+                    compactLabel: true,
+                    labelGap: labelGap,
+                    barGroupGap: barGroupGap,
+                    onPressed: tappable ? widget.onTapMic : null,
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            SizedBox(width: flankGap),
+            const ExcludeSemantics(
+              child: Padding(
+                padding: EdgeInsetsDirectional.only(top: flankTop),
+                child: SizedBox(
+                  width: NocheSize.touch,
+                  height: NocheSize.touch,
+                ),
+              ),
+            ),
+          ],
         );
-      case StoryMicState.processing:
-        return Container(
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: _grey,
-            boxShadow: CoquiShadows.startDisc,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (var i = 0; i < 3; i++) ...[
-                if (i > 0) const SizedBox(width: 6),
-                _dot(widget.reduceMotion ? 1 : _dotPhase(t, i * .15 / .9 * .9)),
-              ],
-            ],
-          ),
-        );
-      case StoryMicState.dead:
-      case StoryMicState.ready:
-        return Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: s == StoryMicState.dead ? _grey : CoquiColors.lessonGreen,
-            boxShadow: CoquiShadows.startDisc,
-          ),
-          child: CoquiIcon(
-            CoquiIcons.lessonMic,
-            size: 32,
-            color: s == StoryMicState.dead ? _greyIcon : CoquiColors.lessonInk,
-          ),
-        );
-    }
+      },
+    );
   }
-
-  // `@keyframes micdot`: 0%, 70%, 100% faint and small; 35% full and a little big (a 0.9 s cycle in a 1.2 s controller)
-  double _dotPhase(double t, double delay) {
-    final c = (t * 1.2 / .9 - delay) % 1;
-    return c < .35
-        ? .3 + .7 * (c / .35)
-        : c < .7
-        ? 1 - .7 * ((c - .35) / .35)
-        : .3;
-  }
-
-  Widget _dot(double v) => Opacity(
-    opacity: v.clamp(.3, 1),
-    child: Transform.scale(
-      scale: .8 + .35 * ((v - .3) / .7).clamp(0.0, 1.0),
-      child: Container(
-        width: 8,
-        height: 8,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: CoquiColors.lessonInk,
-        ),
-      ),
-    ),
-  );
 }

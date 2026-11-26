@@ -218,6 +218,7 @@ class StoryRunner implements SceneHost {
     E.host = this;
     _signs = Signs(host: this, scene: E);
     _origin = clock.nowMs() - this.timers.now;
+    this.view.txtOn = txtOn;
     _loadMemory();
   }
 
@@ -324,7 +325,21 @@ class StoryRunner implements SceneHost {
   String? BUBQ;
   int? _capT, _bubT;
   bool MBUB = false;
-  TxtMode get TXT => options.txt;
+  late TxtMode _txt = options.txt;
+  late TxtMode _lastOnTxt = options.txt == TxtMode.no
+      ? TxtMode.con
+      : options.txt;
+  TxtMode get TXT => _txt;
+
+  /// Whether captions (TXT) are currently enabled.
+  bool get txtOn => _txt != TxtMode.no;
+
+  // Noche speaker, line, and "hear it again" tracking
+  String? _lastLineClip;
+  String _lastSpeaker = '';
+  String _lastLine = '';
+  String? _turnReplayClip;
+  int _untimedSpeaking = 0;
 
   // speaking
   final Hab HAB = Hab();
@@ -455,6 +470,10 @@ class StoryRunner implements SceneHost {
     pending = null;
     V = {};
     ronda.clear();
+    _lastLineClip = null;
+    _lastSpeaker = '';
+    _lastLine = '';
+    _turnReplayClip = null;
     LOG = [];
     for (final k in MEM.keys) {
       V['mem_$k'] = MEM[k];
@@ -568,6 +587,138 @@ class StoryRunner implements SceneHost {
     view.changed();
   }
 
+  /// The Noche TXT captions toggle pill in the story header.
+  void toggleTxt() {
+    if (_txt == TxtMode.no) {
+      _txt = _lastOnTxt;
+      if (view.speakingNow &&
+          _lastLineClip != null &&
+          !SINLETRAS &&
+          _txt == TxtMode.con) {
+        muestra(_lastLineClip!);
+      }
+    } else {
+      _lastOnTxt = _txt;
+      _txt = TxtMode.no;
+      timers.clear(_capT);
+      if (!MBUB) timers.clear(_bubT);
+      view.captionOn = false;
+      if (!MBUB) {
+        view.bubbleOn = false;
+        BUBQ = null;
+        view.bubbleWho = null;
+      }
+    }
+    view.txtOn = txtOn;
+    view.changed();
+  }
+
+  /// Whether the "hear it again" control can replay a clip right now.
+  bool get canHearAgain {
+    if (!running || view.speakingNow || _habOcupado() || HAB.est == 'ok') {
+      return false;
+    }
+    return _replayClipId() != null;
+  }
+
+  String? _replayClipId() {
+    final c = _turnReplayClip;
+    if (c != null && c.isNotEmpty) return c;
+    final pLine = pendingNow?.line;
+    if (pLine != null && pLine.isNotEmpty) return pLine;
+    final last = _lastLineClip;
+    if (last != null && last.isNotEmpty) return last;
+    return null;
+  }
+
+  /// Replays the current prompt/question clip when the learner taps "hear it again".
+  void hearAgain() {
+    if (!canHearAgain) return;
+    final id = _replayClipId();
+    if (id == null) return;
+    if (VOICE && _has(id)) {
+      unawaited(playClip(id));
+    } else if (LINES[id] != null) {
+      unawaited(say(id, 0).catchError((Object _) {}));
+    }
+  }
+
+  void _syncSpeakingNow() {
+    final nowSpeaking = speaking > 0 || _untimedSpeaking > 0;
+    if (view.speakingNow != nowSpeaking) {
+      view.speakingNow = nowSpeaking;
+      view.changed();
+    }
+  }
+
+  String? _yourTurnClipId() {
+    try {
+      return course.fixedClip('story_your_turn');
+    } catch (_) {
+      return null;
+    }
+  }
+
+  String _clipText(String id) {
+    final cl = LINES[id];
+    if (cl is Map && cl['text'] is String) return (cl['text'] as String).trim();
+    return course.clip(id)?.text.trim() ?? '';
+  }
+
+  ({String speaker, String line}) _speakerAndLine(String id) {
+    final cl = LINES[id];
+    if (cl is! Map) return (speaker: '', line: '');
+    final rawText = cl['text'] is String ? (cl['text'] as String).trim() : '';
+    final explicitSpeaker = cl['speaker'] is String
+        ? (cl['speaker'] as String).trim()
+        : '';
+    if (explicitSpeaker.isNotEmpty) {
+      return (speaker: explicitSpeaker, line: rawText);
+    }
+    final habla = cl['habla'];
+    if (jsTruthy(habla)) {
+      final i = rawText.indexOf(': ');
+      if (i > 0) {
+        return (
+          speaker: rawText.substring(0, i).trim(),
+          line: rawText.substring(i + 2).trim(),
+        );
+      }
+    }
+    return (speaker: '', line: rawText);
+  }
+
+  String _promptPrefixFor(String id) {
+    final cl = LINES[id];
+    if (cl is Map && cl['prompt'] is String) {
+      final p = (cl['prompt'] as String).trim();
+      if (p.isNotEmpty) return '$p ';
+    }
+    final ytId = _yourTurnClipId();
+    if (ytId != null) {
+      var yt = _clipText(ytId);
+      while (yt.endsWith('.') || yt.endsWith(':')) {
+        yt = yt.substring(0, yt.length - 1).trimRight();
+      }
+      if (yt.isNotEmpty) return '$yt: ';
+    }
+    return '';
+  }
+
+  void _recordSpokenClip(String id) {
+    if (SINLETRAS) return;
+    final sl = _speakerAndLine(id);
+    final changed = view.speaker != sl.speaker;
+    view.speaker = sl.speaker;
+    final ytId = _yourTurnClipId();
+    if (id != ytId && (sl.line.isNotEmpty || sl.speaker.isNotEmpty)) {
+      _lastLineClip = id;
+      _lastSpeaker = sl.speaker;
+      _lastLine = sl.line;
+    }
+    if (changed) view.changed();
+  }
+
   // juego.js: words
   int _words(String id) {
     final cl = LINES[id];
@@ -607,8 +758,10 @@ class StoryRunner implements SceneHost {
     if (!VOICE || !_has(id)) return Future<bool>.value(false);
     final token = Object(), c = Completer<bool>();
     speaking++;
+    _syncSpeakingNow();
     live.add(token);
     TALK = partes(id).quien;
+    _recordSpokenClip(id);
     letras(id);
     var done = false;
     void end(bool v) {
@@ -618,6 +771,7 @@ class StoryRunner implements SceneHost {
       live.remove(token);
       _ends.remove(token);
       TALK = null;
+      _syncSpeakingNow();
       letrasFin(id, v);
       c.complete(v);
     }
@@ -670,9 +824,17 @@ class StoryRunner implements SceneHost {
       if (ok) await sleep(g);
     } else {
       TALK = partes(id).quien;
+      _untimedSpeaking++;
+      _syncSpeakingNow();
+      _recordSpokenClip(id);
       letras(id);
-      await sleep(dur(id) * 1000 / FAST);
-      TALK = null;
+      try {
+        await sleep(dur(id) * 1000 / FAST);
+      } finally {
+        _untimedSpeaking = math.max(0, _untimedSpeaking - 1);
+        TALK = null;
+        _syncSpeakingNow();
+      }
       letrasFin(id, true);
       await sleep(g);
     }
@@ -793,6 +955,7 @@ class StoryRunner implements SceneHost {
     timers.clear(_capT);
     timers.clear(_bubT);
     view.captionOn = false;
+    view.speaker = '';
     view.bubbleOn = false;
     view.bubbleEstate = '';
     BUBQ = null;
