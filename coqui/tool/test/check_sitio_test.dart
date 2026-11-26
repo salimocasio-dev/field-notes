@@ -555,6 +555,24 @@ void main() {
       expect((violations.first as Map)['url'], 'https://evil.example/x.js');
     });
 
+    test('rejects HTML-entity-encoded external <script src> in index.html', () {
+      final baseHtml = File('${coquiRoot.path}/app/web/index.html')
+          .readAsStringSync();
+      final dirtyHtml = baseHtml.replaceFirst(
+        '</body>',
+        '  <script src="https:&#47;&#47;evil.example/a.js"></script>\n'
+            '  <script src="https&colon;&#x2f;&#x2f;evil.example/b.js"></script>\n'
+            '</body>',
+      );
+      _populateCleanBuild(coquiRoot, tmp, indexHtmlOverride: dirtyHtml);
+      final violations =
+          _runNodeCheckBuiltJsHosts(checkSitioFile, tmp)['violations']
+              as List<dynamic>;
+      expect(violations, hasLength(2));
+      final urls = violations.map((v) => (v as Map)['url']).toSet();
+      expect(urls, {'https://evil.example/a.js', 'https://evil.example/b.js'});
+    });
+
     test(
       'regex literals with quotes and comments do not break JS scanning',
       () {

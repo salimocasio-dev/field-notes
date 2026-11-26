@@ -533,12 +533,41 @@ export function checkBuiltJsHosts(rootDir) {
     }
   }
 
+const HTML_NAMED_ENTITIES = {
+  amp: '&',
+  colon: ':',
+  sol: '/',
+  quot: '"',
+  apos: "'",
+  lt: '<',
+  gt: '>',
+  tab: '\t',
+  newline: '\n',
+};
+
+function decodeHtmlEntities(s) {
+  return s.replace(/&(?:#(\d+)|#x([0-9a-fA-F]+)|([a-zA-Z]+));/g, (full, dec, hex, name) => {
+    if (dec !== undefined) {
+      const cp = Number.parseInt(dec, 10);
+      return cp >= 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : full;
+    }
+    if (hex !== undefined) {
+      const cp = Number.parseInt(hex, 16);
+      return cp >= 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : full;
+    }
+    const mapped = HTML_NAMED_ENTITIES[name.toLowerCase()];
+    return mapped !== undefined ? mapped : full;
+  });
+}
+
   const indexPath = path.join(absRoot, 'index.html');
   if (fs.existsSync(indexPath)) {
     const html = fs.readFileSync(indexPath, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
     const scriptSrcRe = /<script\b[^>]*\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi;
     for (const match of html.matchAll(scriptSrcRe)) {
-      const src = (match[1] ?? match[2] ?? match[3] ?? '').trim();
+      const src = decodeHtmlEntities(match[1] ?? match[2] ?? match[3] ?? '')
+        .replace(/[\t\n\r\x00-\x1f]/g, '')
+        .trim();
       if (!/^(?:https?:)?\/\//i.test(src)) continue;
       urlsChecked++;
       let parsed;
