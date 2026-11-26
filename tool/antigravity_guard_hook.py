@@ -51,17 +51,65 @@ def _repo_toplevel(cwd: str | None = None) -> str | None:
     return None
 
 
-def _historia_cuentos_has_changes(cwd: str | None = None) -> bool:
+def _changed_cuentos_paths(cwd: str | None = None) -> list[str]:
+    """Return repo-relative paths with uncommitted changes under historia/cuentos/."""
     try:
         res = subprocess.run(
-            ["git", "status", "--porcelain", "--", ":(top)historia/cuentos"],
+            ["git", "status", "--porcelain", "-z", "-uall", "--", ":(top)historia/cuentos"],
             cwd=cwd or None,
             capture_output=True,
             text=True,
             timeout=2,
         )
-        if res.returncode == 0:
-            return bool(res.stdout.strip())
+        if res.returncode != 0 or not res.stdout:
+            return []
+        entries = res.stdout.split("\0")
+        paths: list[str] = []
+        i = 0
+        while i < len(entries):
+            entry = entries[i]
+            if len(entry) >= 4:
+                status = entry[:2]
+                path = entry[3:]
+                if path:
+                    paths.append(path)
+                # Porcelain -z emits an extra NUL-terminated source path for renames/copies.
+                if "R" in status or "C" in status:
+                    i += 1
+            i += 1
+        return paths
+    except Exception:
+        return []
+
+
+def _historia_cuentos_has_changes(cwd: str | None = None) -> bool:
+    return bool(_changed_cuentos_paths(cwd))
+
+
+def _git_add_dry_run_touches_cuentos(
+    paths: list[str],
+    git_cwd: str | None,
+    has_all_flag: bool = False,
+) -> bool:
+    """Use Git's own pathspec engine (`git add --dry-run`) to detect cuentos matches."""
+    if not paths:
+        return False
+    cmd = ["git", "add", "--dry-run"]
+    if has_all_flag:
+        cmd.append("-A")
+    cmd += ["--"] + paths
+    try:
+        res = subprocess.run(
+            cmd,
+            cwd=git_cwd or None,
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        combined = (res.stdout or "") + "\n" + (res.stderr or "")
+        for line in combined.splitlines():
+            if re.search(r"(?:^|['\"/\s])historia[/\\]cuentos(?:[/\\]|['\"\s]|$)", line):
+                return True
     except Exception:
         pass
     return False
@@ -256,7 +304,13 @@ def _is_glob_pathspec(pathspec: str) -> bool:
     return any(ch in pathspec for ch in ("*", "?", "["))
 
 
-def _glob_covers_cuentos(pathspec: str, effective_cwd: str, cuentos_abs: str) -> bool:
+def _glob_covers_cuentos(
+    pathspec: str,
+    effective_cwd: str,
+    cuentos_abs: str,
+    repo_root: str,
+    changed_paths: list[str] | None = None,
+) -> bool:
     norm = pathspec.replace("\\", "/")
     is_abs = norm.startswith("/")
     parts = [p for p in norm.split("/") if p not in ("", ".")]
@@ -283,7 +337,13 @@ def _glob_covers_cuentos(pathspec: str, effective_cwd: str, cuentos_abs: str) ->
     rel_parts = rel_cuentos.split("/")
     glob_pat = "/".join(glob_parts)
     candidates = ["/".join(rel_parts[:i]) for i in range(1, len(rel_parts) + 1)]
-    candidates.append(rel_cuentos + "/story.json")
+    if changed_paths:
+        for rel_from_root in changed_paths:
+            abs_p = os.path.realpath(os.path.join(repo_root, rel_from_root))
+            if abs_p.startswith(prefix_abs + os.sep):
+                candidates.append(os.path.relpath(abs_p, prefix_abs).replace("\\", "/"))
+    else:
+        candidates.append(rel_cuentos + "/story.json")
     patterns = [glob_pat]
     if glob_pat.startswith("**/"):
         patterns.append(glob_pat[3:])
@@ -294,7 +354,12 @@ def _glob_covers_cuentos(pathspec: str, effective_cwd: str, cuentos_abs: str) ->
     )
 
 
-def _path_covers_cuentos(pathspec: str, git_cwd: str | None, repo_root: str | None) -> bool:
+def _path_covers_cuentos(
+    pathspec: str,
+    git_cwd: str | None,
+    repo_root: str | None,
+    changed_paths: list[str] | None = None,
+) -> bool:
     if pathspec in ("*", ".", "./", "..", "../", "historia", "historia/", ":/", ":(top)"):
         if repo_root is None:
             return True
@@ -310,7 +375,9 @@ def _path_covers_cuentos(pathspec: str, git_cwd: str | None, repo_root: str | No
             return True
         effective_cwd = os.path.realpath(git_cwd or os.getcwd())
         cuentos_abs = os.path.realpath(os.path.join(repo_root, "historia", "cuentos"))
-        return _glob_covers_cuentos(pathspec, effective_cwd, cuentos_abs)
+        return _glob_covers_cuentos(
+            pathspec, effective_cwd, cuentos_abs, repo_root, changed_paths=changed_paths
+        )
     if repo_root:
         effective_cwd = os.path.realpath(git_cwd or os.getcwd())
         target_abs = os.path.realpath(os.path.join(effective_cwd, pathspec))
@@ -373,11 +440,19 @@ def _is_broad_stage_with_cuentos_changes(cmd: str, default_cwd: str | None = Non
                     continue
                 paths.append(tok)
 
+            changed_cuentos = _changed_cuentos_paths(git_cwd)
+            if not changed_cuentos:
+                continue
             repo_root = _repo_toplevel(git_cwd)
-            covers_cuentos = (has_all_flag and not paths) or any(
-                _path_covers_cuentos(p, git_cwd, repo_root) for p in paths
+            covers_cuentos = (
+                (has_all_flag and not paths)
+                or any(
+                    _path_covers_cuentos(p, git_cwd, repo_root, changed_paths=changed_cuentos)
+                    for p in paths
+                )
+                or _git_add_dry_run_touches_cuentos(paths, git_cwd, has_all_flag=has_all_flag)
             )
-            if covers_cuentos and _historia_cuentos_has_changes(git_cwd):
+            if covers_cuentos:
                 return True
 
         elif subcmd == "commit":
