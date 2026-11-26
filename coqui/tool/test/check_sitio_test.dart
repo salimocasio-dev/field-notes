@@ -602,6 +602,33 @@ if (obj.if(x) / 2 > 0) /"/.test(y); const e = "https://evil.example/e.js";
         'https://evil.example/e.js',
       ]);
     });
+
+    test(
+      'preserves complete URL authority with %, @, and rejects bypass attempts',
+      () {
+        for (final badUrl in [
+          'https://api.elevenlabs.io%2eevil.example/a.js',
+          'https://api.elevenlabs.io@evil.example/a.js',
+          '//api.elevenlabs.io%2eevil.example/a.js',
+        ]) {
+          final dir = Directory.systemTemp.createTempSync('coqui_bad_auth_');
+          try {
+            final stmt =
+                badUrl == 'https://api.elevenlabs.io%2eevil.example/a.js'
+                ? 'import("$badUrl");'
+                : 'const u = "$badUrl";';
+            _populateCleanBuild(coquiRoot, dir, extraMainJs: stmt);
+            final violations =
+                _runNodeCheckBuiltJsHosts(checkSitioFile, dir)['violations']
+                    as List<dynamic>;
+            expect(violations, hasLength(1), reason: 'should reject $badUrl');
+            expect((violations.first as Map)['url'], badUrl);
+          } finally {
+            dir.deleteSync(recursive: true);
+          }
+        }
+      },
+    );
   });
 
   group('CLI --static-only smoke tests', () {
