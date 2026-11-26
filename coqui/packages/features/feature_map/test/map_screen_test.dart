@@ -176,6 +176,7 @@ void main() {
           body: MapScreen(
             services: f.services,
             perf: perf,
+            entitlements: const AllowAllEntitlements(),
             onPicture: (p) {
               picture = p;
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -555,7 +556,11 @@ void main() {
         theme: coquiTheme(),
         home: Scaffold(
           backgroundColor: NocheColors.ground,
-          body: MapScreen(services: s, onPicture: pictures.add),
+          body: MapScreen(
+            services: s,
+            entitlements: const AllowAllEntitlements(),
+            onPicture: pictures.add,
+          ),
         ),
       );
       await tester.pumpWidget(wrap(first.services));

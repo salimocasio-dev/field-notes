@@ -96,7 +96,7 @@ class MapScreen extends StatefulWidget {
     this.openPlace,
     this.onPicture,
     this.onCamera,
-    this.entitlements = const AllowAllEntitlements(),
+    required this.entitlements,
   });
 
   final Services services;
@@ -119,8 +119,7 @@ class MapScreen extends StatefulWidget {
   /// For tests: notified whenever the camera centers on the current stop.
   final void Function(MapCamera camera)? onCamera;
 
-  /// Injected entitlements until `Services.entitlements` lands in `coqui_ui`
-  /// (see `coqui/requests/5-coqui-contracts-needs-coqui-ui-services-entitlements.md`).
+  /// Explicit plan entitlements used to gate places and Up next stories.
   final Entitlements entitlements;
 
   @override

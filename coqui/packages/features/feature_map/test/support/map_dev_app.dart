@@ -94,6 +94,7 @@ class _MapDevAppState extends State<MapDevApp> {
       info: base.info,
       pictures: base.pictures,
       storage: base.storage,
+      entitlements: _entitlements,
       reduceMotion: base.reduceMotion,
     );
     final rawPlace = q['place'];

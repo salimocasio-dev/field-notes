@@ -2,6 +2,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/feature_map.dart';
+import 'package:feature_map/src/map_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -11,7 +12,7 @@ import 'support/map_tester.dart';
 
 void main() {
   test('the module is map: it owns the tab map and answers PlaceRoute', () {
-    const m = MapModule();
+    const m = MapModule(entitlements: AllowAllEntitlements());
     expect(m.id, 'map');
     final tab = m.tab(fakeServices())!;
     expect(tab.id, 'map');
@@ -32,7 +33,8 @@ void main() {
     tester.view.physicalSize = const Size(412, 915) * 2.625;
     addTearDown(tester.view.reset);
     final services = fakeServices(reduceMotion: true);
-    final tab = const MapModule().tab(services)!;
+    final tab = const MapModule(entitlements: AllowAllEntitlements())
+        .tab(services)!;
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(body: Builder(builder: tab.builder)),
@@ -55,7 +57,8 @@ void main() {
       addTearDown(tester.view.reset);
       // a learner with one word coming back: the plan opens with the review
       final f = fixture(seed: 'uno');
-      final tab = const MapModule().tab(f.services)!;
+      final tab = const MapModule(entitlements: AllowAllEntitlements())
+          .tab(f.services)!;
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(body: Builder(builder: tab.builder)),
@@ -102,7 +105,8 @@ void main() {
     tester.view.devicePixelRatio = 2.625;
     tester.view.physicalSize = const Size(412, 915) * 2.625;
     addTearDown(tester.view.reset);
-    final tab = const MapModule().tab(fakeServices(reduceMotion: true))!;
+    final tab = const MapModule(entitlements: AllowAllEntitlements())
+        .tab(fakeServices(reduceMotion: true))!;
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(body: Builder(builder: tab.builder)),
@@ -121,8 +125,10 @@ void main() {
       tester.view.devicePixelRatio = 2.625;
       tester.view.physicalSize = const Size(412, 915) * 2.625;
       addTearDown(tester.view.reset);
-      final tab = const MapModule(showPerf: true)
-          .tab(fakeServices(reduceMotion: false))!;
+      final tab = const MapModule(
+        showPerf: true,
+        entitlements: AllowAllEntitlements(),
+      ).tab(fakeServices(reduceMotion: false))!;
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(body: Builder(builder: tab.builder)),
@@ -159,7 +165,7 @@ void main() {
   );
 
   mapTest(
-    'MapModule forwards entitlements to PlaceScreen (Plan.free vs AllowAllEntitlements)',
+    'MapModule forwards entitlements to PlaceScreen (Plan.free vs Plan.course)',
     (tester) async {
       tester.view.devicePixelRatio = 2.625;
       tester.view.physicalSize = const Size(412, 915) * 2.625;
@@ -201,22 +207,92 @@ void main() {
       expect(find.text('This place is in Course'), findsOneWidget);
       expect(find.byKey(const Key('place-play-bar')), findsNothing);
 
-      // Default MapModule uses AllowAllEntitlements: place 2 plays normally
-      final fAll = fixture(builtPlaces: 3, reduceMotion: true);
-      final defaultParque = const MapModule().screenFor(
+      // Plan.course: place 2 plays normally
+      final course = FakeEntitlements(plan: Plan.course);
+      addTearDown(course.dispose);
+      final modCourse = MapModule(entitlements: course);
+      final fCourse = fixture(builtPlaces: 3, reduceMotion: true);
+      final courseParque = modCourse.screenFor(
         const PlaceRoute('parque'),
-        fAll.services,
+        fCourse.services,
       )!;
       await tester.pumpWidget(
         MaterialApp(
           theme: coquiTheme(),
-          home: Scaffold(body: defaultParque),
+          home: Scaffold(body: courseParque),
         ),
       );
       await tester.pump();
       await tester.pump();
       expect(find.byKey(const Key('place-play-bar')), findsOneWidget);
       expect(find.byKey(const Key('place-plan-card')), findsNothing);
+    },
+  );
+
+  mapTest(
+    'MapModule.tab forwards entitlements to MapScreen (Plan.free vs Plan.course)',
+    (tester) async {
+      tester.view.devicePixelRatio = 2.625;
+      tester.view.physicalSize = const Size(412, 915) * 2.625;
+      addTearDown(tester.view.reset);
+
+      MapFixture readyForPlace2() {
+        final f = fixture(builtPlaces: 3, reduceMotion: true);
+        for (final id in f.services.course.places[0].stories) {
+          finishStory(f.progress, id);
+        }
+        f.clock.advance(const Duration(days: 1));
+        for (final id in f.services.course.places[0].stories) {
+          finishStory(f.progress, id);
+        }
+        return f;
+      }
+
+      final free = FakeEntitlements(plan: Plan.free);
+      addTearDown(free.dispose);
+      final fFree = readyForPlace2();
+      final freeTab = MapModule(entitlements: free).tab(fFree.services)!;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: coquiTheme(),
+          home: Scaffold(body: Builder(builder: freeTab.builder)),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      expect(
+        tester.widget<MapScreen>(find.byType(MapScreen)).entitlements,
+        same(free),
+      );
+      expect(find.text('UP NEXT · EL PARQUE'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
+      expect(fFree.nav.routes, [const PlaceRoute('parque')]);
+
+      final course = FakeEntitlements(plan: Plan.course);
+      addTearDown(course.dispose);
+      final fCourse = readyForPlace2();
+      final courseTab = MapModule(entitlements: course).tab(fCourse.services)!;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: coquiTheme(),
+          home: Scaffold(body: Builder(builder: courseTab.builder)),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      expect(
+        tester.widget<MapScreen>(find.byType(MapScreen)).entitlements,
+        same(course),
+      );
+      expect(find.text('UP NEXT · EL PARQUE'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
+      expect(fCourse.nav.routes, [
+        StoryRoute(fCourse.services.course.places[1].stories.first),
+      ]);
     },
   );
 }
