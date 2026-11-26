@@ -208,6 +208,7 @@ class CallController extends ChangeNotifier {
   double _lvl = 0;
   bool _minutesCounted = false;
   bool _callMarkedDone = false;
+  bool _learnerSpoke = false;
   String _err = '';
   int? _noteUntil;
   int? _helpUntil;
@@ -441,6 +442,7 @@ class CallController extends ChangeNotifier {
     }
     // our own "(ayuda)" and "(fin)" come back: not his words
     if (RegExp(r'^\s*\(').hasMatch(text)) return;
+    _learnerSpoke = true;
     heardLine = text;
     // his line is in: Danny is about to answer
     if (_state == CallState.you) _est(CallState.proc);
@@ -609,6 +611,7 @@ class CallController extends ChangeNotifier {
           turn.loud0 ??= now;
           if (now - turn.loud0! >= _onsetAfterMs) {
             turn.spoke = true;
+            _learnerSpoke = true;
             turn.onset ??= turn.loud0;
           }
         } else {
@@ -645,8 +648,17 @@ class CallController extends ChangeNotifier {
     return place?.id;
   }
 
-  void _markCallDone() {
-    if (_callMarkedDone || _t0 == null) return;
+  bool _shouldMarkCallDone(String reason) {
+    if (_t0 == null) return false;
+    if (reason == 'fin') return true;
+    if (reason == 'x' || reason == 'cap' || reason == 'max') {
+      return _learnerSpoke;
+    }
+    return false;
+  }
+
+  void _markCallDone(String reason) {
+    if (_callMarkedDone || !_shouldMarkCallDone(reason)) return;
     final id = _completedCallId;
     if (id == null || id.isEmpty) return;
     _callMarkedDone = true;
@@ -676,7 +688,7 @@ class CallController extends ChangeNotifier {
     _live = false;
     if (wasLive) _endSession();
     _cuenta(secs);
-    _markCallDone();
+    _markCallDone(reason);
     _locked = false;
     _noteUntil = null;
     if (_closed) return;

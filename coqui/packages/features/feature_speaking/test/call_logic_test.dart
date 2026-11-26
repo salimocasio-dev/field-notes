@@ -852,20 +852,76 @@ void main() {
     );
 
     testWidgets(
-      'ending a live call with X marks the call done, while aborting or failing before connect does not',
+      'ending a live call with X after a learner turn marks the call done; instant X, mid-call drop, abort, and failed start do not',
       (tester) async {
-        final live = await opened(stub: {'manual'});
-        live.controller.start();
+        // X after a learner turn (Heard transcript) marks the call done.
+        final engaged = await opened(stub: {'manual'});
+        engaged.controller.start();
         await tester.pump();
-        live.call
+        engaged.call
+          ..go('connect')
+          ..go('danny1')
+          ..go('you1');
+        await engaged.elapse(tester, 200);
+        engaged.call.emit(const Heard('Hola.'));
+        await tester.pump();
+        engaged.controller.closeX();
+        expect(engaged.controller.state, CallState.done);
+        expect(engaged.controller.why, 'x');
+        expect(engaged.progress.callDone('casa'), isTrue);
+        engaged.dispose();
+
+        // X after mic speech onset (_Turn.spoke) also marks the call done.
+        final spokeMic = await opened(stub: {'manual'});
+        spokeMic.controller.start();
+        await tester.pump();
+        spokeMic.call
+          ..go('connect')
+          ..go('danny1')
+          ..go('you1');
+        await spokeMic.elapse(tester, 100);
+        spokeMic.call.go('talk1');
+        await spokeMic.elapse(tester, 200);
+        spokeMic.controller.closeX();
+        expect(spokeMic.controller.why, 'x');
+        expect(spokeMic.progress.callDone('casa'), isTrue);
+        spokeMic.dispose();
+
+        // Instant X ~200 ms after connect with zero learner turns does NOT mark done.
+        final instantX = await opened(stub: {'manual'});
+        instantX.controller.start();
+        await tester.pump();
+        instantX.call
           ..go('connect')
           ..go('danny1');
-        await live.elapse(tester, 200);
-        live.controller.closeX();
-        expect(live.controller.state, CallState.done);
-        expect(live.progress.callDone('casa'), isTrue);
-        live.dispose();
+        await instantX.elapse(tester, 200);
+        instantX.controller.closeX();
+        expect(instantX.controller.state, CallState.done);
+        expect(instantX.controller.why, 'x');
+        expect(instantX.progress.callDone('casa'), isFalse);
+        instantX.dispose();
 
+        // Mid-call session error + disconnect (why == 'disc') does NOT mark done
+        // even when the learner spoke earlier.
+        final dropped = await opened(stub: {'manual'});
+        dropped.controller.start();
+        await tester.pump();
+        dropped.call
+          ..go('connect')
+          ..go('danny1')
+          ..go('you1');
+        await dropped.elapse(tester, 200);
+        dropped.call.emit(const Heard('Hola.'));
+        await tester.pump();
+        dropped.call.emit(const CallError('socket closed'));
+        dropped.call.emit(const Ended('agent'));
+        await tester.pump();
+        expect(dropped.controller.state, CallState.done);
+        expect(dropped.controller.why, 'disc');
+        expect(dropped.progress.callDone('casa'), isFalse);
+        dropped.dispose();
+
+        // Aborting before connect does NOT mark done.
         final aborted = await opened(stub: {'manual'});
         aborted.controller.start();
         await tester.pump();
@@ -873,6 +929,7 @@ void main() {
         expect(aborted.progress.callDone('casa'), isFalse);
         aborted.dispose();
 
+        // Failed start does NOT mark done.
         final failed = await opened(stub: {'mic'});
         failed.controller.start();
         await failed.until(
@@ -905,10 +962,13 @@ void main() {
       await tester.pump();
       call
         ..go('connect')
-        ..go('danny1');
+        ..go('danny1')
+        ..go('you1');
       clock.advance(const Duration(milliseconds: 200));
       await tester.pump(const Duration(milliseconds: 200));
       controller.tick();
+      call.emit(const Heard('Quiero agua.'));
+      await tester.pump();
       controller.finish('fin');
       expect(progress.callDone('cocina_tomar'), isTrue);
       expect(progress.callDone('cocina_main'), isFalse);

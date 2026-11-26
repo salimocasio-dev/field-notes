@@ -786,7 +786,7 @@ void main() {
         ),
       ];
 
-      // Only parque has an authored opening? First test when NEITHER is authored.
+      // First test when no place has an authored opening.
       final unauthoredCourse = _StructuredCourse(
         places: places,
         callsByPlace: {
