@@ -210,8 +210,7 @@ class NochePill extends StatelessWidget {
           return Pressable(
             onPressed: onPressed,
             semanticLabel: semanticLabel,
-            builder: (context, pressed) =>
-                Transform.scale(scale: pressed ? 0.98 : 1, child: pill),
+            builder: (context, _) => pill,
           );
         }
         return Semantics(
@@ -243,43 +242,40 @@ class NochePill extends StatelessWidget {
           onPressed: onPressed,
           semanticLabel: semanticLabel ?? label,
           selected: isSelected ? true : null,
-          builder: (context, pressed) => Transform.scale(
-            scale: pressed ? 0.98 : 1,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: NocheSize.touch,
-                minHeight: NocheSize.touch,
+          builder: (context, _) => ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: NocheSize.touch,
+              minHeight: NocheSize.touch,
+            ),
+            child: Container(
+              height: NocheSize.touch,
+              padding: innerPadding,
+              decoration: BoxDecoration(
+                color: bg,
+                border: Border.all(color: borderColor, width: 1),
+                borderRadius: BorderRadius.circular(NocheSize.pillRadius),
               ),
-              child: Container(
-                height: NocheSize.touch,
-                padding: innerPadding,
-                decoration: BoxDecoration(
-                  color: bg,
-                  border: Border.all(color: borderColor, width: 1),
-                  borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (leading != null) ...[
-                      leading!,
-                      const SizedBox(width: NocheSize.grid),
-                    ],
-                    if (label != null)
-                      Text(
-                        label!,
-                        maxLines: 1,
-                        softWrap: false,
-                        locale: locale,
-                        style: style,
-                      ),
-                    if (trailing != null) ...[
-                      const SizedBox(width: NocheSize.grid),
-                      trailing!,
-                    ],
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (leading != null) ...[
+                    leading!,
+                    const SizedBox(width: NocheSize.grid),
                   ],
-                ),
+                  if (label != null)
+                    Text(
+                      label!,
+                      maxLines: 1,
+                      softWrap: false,
+                      locale: locale,
+                      style: style,
+                    ),
+                  if (trailing != null) ...[
+                    const SizedBox(width: NocheSize.grid),
+                    trailing!,
+                  ],
+                ],
               ),
             ),
           ),
@@ -418,15 +414,12 @@ class NocheCard extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: semanticLabel,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.99 : 1,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            minWidth: NocheSize.touch,
-            minHeight: NocheSize.touch,
-          ),
-          child: box,
+      builder: (context, _) => ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: NocheSize.touch,
+          minHeight: NocheSize.touch,
         ),
+        child: box,
       ),
     );
   }
@@ -462,23 +455,20 @@ class NochePrimaryButton extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: semanticLabel ?? label,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.98 : 1,
-        child: Container(
-          width: double.infinity,
-          height: NocheSize.primaryHeight,
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-          alignment: AlignmentDirectional.center,
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: BorderRadius.circular(NocheSize.primaryRadius),
-          ),
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: style,
-          ),
+      builder: (context, _) => Container(
+        width: double.infinity,
+        height: NocheSize.primaryHeight,
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+        alignment: AlignmentDirectional.center,
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(NocheSize.primaryRadius),
+        ),
+        child: Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: style,
         ),
       ),
     );
@@ -509,28 +499,25 @@ class NocheOutlineButton extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: semanticLabel ?? label,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.98 : 1,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            minWidth: NocheSize.touch,
-            minHeight: NocheSize.touch,
+      builder: (context, _) => ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: NocheSize.touch,
+          minHeight: NocheSize.touch,
+        ),
+        child: Container(
+          width: expand ? double.infinity : null,
+          height: NocheSize.touch,
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+          alignment: AlignmentDirectional.center,
+          decoration: BoxDecoration(
+            border: Border.all(color: borderColor, width: 1),
+            borderRadius: BorderRadius.circular(NocheSize.pillRadius),
           ),
-          child: Container(
-            width: expand ? double.infinity : null,
-            height: NocheSize.touch,
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-            alignment: AlignmentDirectional.center,
-            decoration: BoxDecoration(
-              border: Border.all(color: borderColor, width: 1),
-              borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-            ),
-            child: Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: NocheType.buttonStrong.copyWith(color: color),
-            ),
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: NocheType.buttonStrong.copyWith(color: color),
           ),
         ),
       ),
@@ -574,64 +561,61 @@ class NochePlayBar extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: effectiveLabel,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.98 : 1,
-        child: Container(
-          width: double.infinity,
-          height: NocheSize.playBarHeight,
-          padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 24, 0),
-          decoration: BoxDecoration(
-            color: NocheColors.next,
-            borderRadius: BorderRadius.circular(NocheSize.playBarRadius),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                alignment: AlignmentDirectional.center,
-                decoration: const BoxDecoration(
-                  color: NocheColors.onAccent,
-                  shape: BoxShape.circle,
-                ),
-                child: NocheIcon(icon, size: 24, color: NocheColors.next),
+      builder: (context, _) => Container(
+        width: double.infinity,
+        height: NocheSize.playBarHeight,
+        padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 24, 0),
+        decoration: BoxDecoration(
+          color: NocheColors.next,
+          borderRadius: BorderRadius.circular(NocheSize.playBarRadius),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              alignment: AlignmentDirectional.center,
+              decoration: const BoxDecoration(
+                color: NocheColors.onAccent,
+                shape: BoxShape.circle,
               ),
+              child: NocheIcon(icon, size: 24, color: NocheColors.next),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    eyebrow.toUpperCase(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: NocheType.labelStrong.copyWith(
+                      color: NocheColors.onAccent,
+                    ),
+                  ),
+                  const SizedBox(height: NocheSize.grid),
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    locale: locale,
+                    style: titleStyle,
+                  ),
+                ],
+              ),
+            ),
+            if (meta != null) ...[
               const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      eyebrow.toUpperCase(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: NocheType.labelStrong.copyWith(
-                        color: NocheColors.onAccent,
-                      ),
-                    ),
-                    const SizedBox(height: NocheSize.grid),
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      locale: locale,
-                      style: titleStyle,
-                    ),
-                  ],
-                ),
+              Text(
+                meta!,
+                maxLines: 1,
+                softWrap: false,
+                style: NocheType.button.copyWith(color: NocheColors.onAccent),
               ),
-              if (meta != null) ...[
-                const SizedBox(width: 16),
-                Text(
-                  meta!,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: NocheType.button.copyWith(color: NocheColors.onAccent),
-                ),
-              ],
             ],
-          ),
+          ],
         ),
       ),
     );
@@ -666,24 +650,22 @@ class NochePlayDisc extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: semanticLabel,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Container(
-          width: size,
-          height: size,
-          alignment: AlignmentDirectional.center,
-          decoration: BoxDecoration(
-            color: NocheColors.next,
-            shape: BoxShape.circle,
-            boxShadow: halo
-                ? [BoxShadow(color: NocheColors.callHalo, spreadRadius: 8)]
-                : null,
-          ),
-          child: NocheIcon(
-            icon,
-            size: resolvedIconSize,
-            color: NocheColors.onAccent,
-          ),
+      disc: true,
+      builder: (context, _) => Container(
+        width: size,
+        height: size,
+        alignment: AlignmentDirectional.center,
+        decoration: BoxDecoration(
+          color: NocheColors.next,
+          shape: BoxShape.circle,
+          boxShadow: halo
+              ? [BoxShadow(color: NocheColors.callHalo, spreadRadius: 8)]
+              : null,
+        ),
+        child: NocheIcon(
+          icon,
+          size: resolvedIconSize,
+          color: NocheColors.onAccent,
         ),
       ),
     );

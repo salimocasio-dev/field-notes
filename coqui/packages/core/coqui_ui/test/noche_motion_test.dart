@@ -1,28 +1,69 @@
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter/gestures.dart' show kPressTimeout;
+import 'package:flutter/rendering.dart'
+    show ColorFilterLayer, ContainerLayer, Layer, RendererBinding;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
-double _pressableScale(WidgetTester tester) {
-  final transform = tester.widget<Transform>(
-    find.descendant(
-      of: find.byType(Pressable),
-      matching: find.byType(Transform),
-    ),
+double _pressableScale(WidgetTester tester, {Finder? root}) {
+  final scope = root ?? find.byType(Pressable);
+  final transforms = find.descendant(
+    of: scope,
+    matching: find.byType(Transform),
   );
-  return transform.transform.storage[0];
+  expect(transforms, findsOneWidget);
+  return tester.widget<Transform>(transforms).transform.storage[0];
 }
 
-Finder _pressableColorFilteredFinder() => find.descendant(
-  of: find.byType(Pressable),
-  matching: find.byType(ColorFiltered),
-);
+List<ColorFilterLayer> _collectColorFilterLayers() {
+  final out = <ColorFilterLayer>[];
+  void visit(Layer? layer) {
+    if (layer == null) return;
+    if (layer is ColorFilterLayer) {
+      out.add(layer);
+    }
+    if (layer is ContainerLayer) {
+      var child = layer.firstChild;
+      while (child != null) {
+        visit(child);
+        child = child.nextSibling;
+      }
+    }
+  }
+
+  visit(RendererBinding.instance.renderViews.first.debugLayer);
+  return out;
+}
+
+const ColorFilter _expectedDimFilter = ColorFilter.matrix(<double>[
+  0.90,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0.90,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0.90,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
+]);
 
 Widget _wrapPressable({
   required VoidCallback? onPressed,
   bool disc = false,
   bool disableAnimations = false,
   ValueChanged<bool>? onPressedStateSeen,
+  Widget? child,
 }) {
   return Directionality(
     textDirection: TextDirection.ltr,
@@ -34,12 +75,50 @@ Widget _wrapPressable({
           disc: disc,
           builder: (context, pressed) {
             onPressedStateSeen?.call(pressed);
-            return const SizedBox(width: 80, height: 48);
+            return child ?? const SizedBox(width: 80, height: 48);
           },
         ),
       ),
     ),
   );
+}
+
+class _LifecycleProbe extends StatefulWidget {
+  const _LifecycleProbe({required this.onInit, required this.onDispose});
+
+  final VoidCallback onInit;
+  final VoidCallback onDispose;
+
+  @override
+  State<_LifecycleProbe> createState() => _LifecycleProbeState();
+}
+
+class _LifecycleProbeState extends State<_LifecycleProbe> {
+  @override
+  void initState() {
+    super.initState();
+    widget.onInit();
+  }
+
+  @override
+  void dispose() {
+    widget.onDispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox(width: 80, height: 48);
+}
+
+class _RouteCaptureObserver extends NavigatorObserver {
+  final List<PopupRoute<dynamic>> pushedPopupRoutes = [];
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    if (route is PopupRoute<dynamic>) {
+      pushedPopupRoutes.add(route);
+    }
+  }
 }
 
 void main() {
@@ -205,7 +284,7 @@ void main() {
       await tester.pumpWidget(_wrapPressable(onPressed: () {}));
 
       expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-      expect(_pressableColorFilteredFinder(), findsNothing);
+      expect(_collectColorFilterLayers(), isEmpty);
 
       final gesture = await tester.startGesture(
         tester.getCenter(find.byType(Pressable)),
@@ -214,40 +293,16 @@ void main() {
       await tester.pump(NocheMotion.press);
 
       expect(_pressableScale(tester), closeTo(0.97, 1e-6));
-      expect(_pressableColorFilteredFinder(), findsOneWidget);
-      final cf = tester.widget<ColorFiltered>(_pressableColorFilteredFinder());
-      expect(
-        cf.colorFilter,
-        const ColorFilter.matrix(<double>[
-          0.90,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0.90,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0.90,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-        ]),
-      );
+      final layers = _collectColorFilterLayers();
+      expect(layers, hasLength(1));
+      expect(layers.single.colorFilter, _expectedDimFilter);
 
       await gesture.up();
       await tester.pump();
       await tester.pump(NocheMotion.pressBack);
 
       expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-      expect(_pressableColorFilteredFinder(), findsNothing);
+      expect(_collectColorFilterLayers(), isEmpty);
     });
 
     testWidgets(
@@ -256,7 +311,7 @@ void main() {
         await tester.pumpWidget(_wrapPressable(onPressed: () {}, disc: true));
 
         expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-        expect(_pressableColorFilteredFinder(), findsNothing);
+        expect(_collectColorFilterLayers(), isEmpty);
 
         final gesture = await tester.startGesture(
           tester.getCenter(find.byType(Pressable)),
@@ -265,14 +320,16 @@ void main() {
         await tester.pump(NocheMotion.press);
 
         expect(_pressableScale(tester), closeTo(0.94, 1e-6));
-        expect(_pressableColorFilteredFinder(), findsOneWidget);
+        final layers = _collectColorFilterLayers();
+        expect(layers, hasLength(1));
+        expect(layers.single.colorFilter, _expectedDimFilter);
 
         await gesture.up();
         await tester.pump();
         await tester.pump(NocheMotion.pressBack);
 
         expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-        expect(_pressableColorFilteredFinder(), findsNothing);
+        expect(_collectColorFilterLayers(), isEmpty);
       },
     );
 
@@ -289,7 +346,7 @@ void main() {
           );
 
           expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-          expect(_pressableColorFilteredFinder(), findsNothing);
+          expect(_collectColorFilterLayers(), isEmpty);
 
           final gesture = await tester.startGesture(
             tester.getCenter(find.byType(Pressable)),
@@ -298,42 +355,16 @@ void main() {
           await tester.pump(NocheMotion.reduced.press);
 
           expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-          expect(_pressableColorFilteredFinder(), findsOneWidget);
-          final cf = tester.widget<ColorFiltered>(
-            _pressableColorFilteredFinder(),
-          );
-          expect(
-            cf.colorFilter,
-            const ColorFilter.matrix(<double>[
-              0.90,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0.90,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0.90,
-              0,
-              0,
-              0,
-              0,
-              0,
-              1,
-              0,
-            ]),
-          );
+          final layers = _collectColorFilterLayers();
+          expect(layers, hasLength(1));
+          expect(layers.single.colorFilter, _expectedDimFilter);
 
           await gesture.up();
           await tester.pump();
           await tester.pump(NocheMotion.reduced.pressBack);
 
           expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-          expect(_pressableColorFilteredFinder(), findsNothing);
+          expect(_collectColorFilterLayers(), isEmpty);
         },
       );
     }
@@ -349,7 +380,7 @@ void main() {
         await tester.pump(kPressTimeout);
         await tester.pump(NocheMotion.press);
         expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-        expect(_pressableColorFilteredFinder(), findsNothing);
+        expect(_collectColorFilterLayers(), isEmpty);
         await gesture1.up();
         await tester.pump();
 
@@ -368,7 +399,7 @@ void main() {
         await tester.pump(NocheMotion.press);
         expect(lastPressed, isTrue);
         expect(_pressableScale(tester), closeTo(0.97, 1e-6));
-        expect(_pressableColorFilteredFinder(), findsOneWidget);
+        expect(_collectColorFilterLayers(), hasLength(1));
 
         await tester.pumpWidget(
           _wrapPressable(
@@ -378,11 +409,178 @@ void main() {
         );
         expect(lastPressed, isFalse);
         expect(_pressableScale(tester), closeTo(1.0, 1e-6));
-        expect(_pressableColorFilteredFinder(), findsNothing);
+        expect(_collectColorFilterLayers(), isEmpty);
 
         await gesture2.up();
         await tester.pump();
       },
     );
+
+    testWidgets(
+      'StatefulWidget child preserves State across press down and release',
+      (tester) async {
+        var initCount = 0;
+        var disposeCount = 0;
+        await tester.pumpWidget(
+          _wrapPressable(
+            onPressed: () {},
+            child: _LifecycleProbe(
+              onInit: () => initCount++,
+              onDispose: () => disposeCount++,
+            ),
+          ),
+        );
+        expect(initCount, 1);
+        expect(disposeCount, 0);
+
+        final gesture = await tester.startGesture(
+          tester.getCenter(find.byType(Pressable)),
+        );
+        await tester.pump(kPressTimeout);
+        await tester.pump(NocheMotion.press);
+        expect(initCount, 1);
+        expect(disposeCount, 0);
+
+        await gesture.up();
+        await tester.pump();
+        await tester.pump(NocheMotion.pressBack);
+        expect(initCount, 1);
+        expect(disposeCount, 0);
+      },
+    );
+  });
+
+  group('No duplicate pressed scaling on Noche controls', () {
+    testWidgets('NochePrimaryButton uses single Pressable scale 0.97', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Center(
+              child: NochePrimaryButton(label: 'Continue', onPressed: () {}),
+            ),
+          ),
+        ),
+      );
+
+      final buttonFinder = find.byType(NochePrimaryButton);
+      expect(_pressableScale(tester, root: buttonFinder), closeTo(1.0, 1e-6));
+
+      final gesture = await tester.startGesture(tester.getCenter(buttonFinder));
+      await tester.pump(kPressTimeout);
+      await tester.pump(NocheMotion.press);
+      expect(_pressableScale(tester, root: buttonFinder), closeTo(0.97, 1e-6));
+
+      await gesture.up();
+      await tester.pump();
+      await tester.pump(NocheMotion.pressBack);
+      expect(_pressableScale(tester, root: buttonFinder), closeTo(1.0, 1e-6));
+    });
+
+    testWidgets('NochePlayDisc uses single Pressable disc scale 0.94', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Center(
+              child: NochePlayDisc(semanticLabel: 'Play', onPressed: () {}),
+            ),
+          ),
+        ),
+      );
+
+      final discFinder = find.byType(NochePlayDisc);
+      expect(_pressableScale(tester, root: discFinder), closeTo(1.0, 1e-6));
+
+      final gesture = await tester.startGesture(tester.getCenter(discFinder));
+      await tester.pump(kPressTimeout);
+      await tester.pump(NocheMotion.press);
+      expect(_pressableScale(tester, root: discFinder), closeTo(0.94, 1e-6));
+
+      await gesture.up();
+      await tester.pump();
+      await tester.pump(NocheMotion.pressBack);
+      expect(_pressableScale(tester, root: discFinder), closeTo(1.0, 1e-6));
+    });
+  });
+
+  group('showNocheSheet route durations', () {
+    testWidgets('normal mode uses pageIn (320ms) and pageOut (200ms)', (
+      tester,
+    ) async {
+      final observer = _RouteCaptureObserver();
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorObservers: [observer],
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(disableAnimations: false),
+            child: child!,
+          ),
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => TextButton(
+                onPressed: () {
+                  showNocheSheet<void>(
+                    context,
+                    builder: (context, close) => const SizedBox(height: 80),
+                  );
+                },
+                child: const Text('Open'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Open'));
+      await tester.pump();
+
+      expect(observer.pushedPopupRoutes, hasLength(1));
+      final route = observer.pushedPopupRoutes.single;
+      expect(route.transitionDuration, NocheMotion.pageIn);
+      expect(route.reverseTransitionDuration, NocheMotion.pageOut);
+
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('reduced mode uses quick (140ms) for both open and close', (
+      tester,
+    ) async {
+      final observer = _RouteCaptureObserver();
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorObservers: [observer],
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(disableAnimations: true),
+            child: child!,
+          ),
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => TextButton(
+                onPressed: () {
+                  showNocheSheet<void>(
+                    context,
+                    builder: (context, close) => const SizedBox(height: 80),
+                  );
+                },
+                child: const Text('Open'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Open'));
+      await tester.pump();
+
+      expect(observer.pushedPopupRoutes, hasLength(1));
+      final route = observer.pushedPopupRoutes.single;
+      expect(route.transitionDuration, NocheMotion.quick);
+      expect(route.reverseTransitionDuration, NocheMotion.quick);
+
+      await tester.pumpAndSettle();
+    });
   });
 }

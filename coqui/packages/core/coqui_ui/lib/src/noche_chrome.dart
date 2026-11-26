@@ -179,32 +179,29 @@ class _RegularTab extends StatelessWidget {
         onPressed: onTap,
         semanticLabel: label,
         semanticsButton: false,
-        builder: (context, pressed) => Transform.scale(
-          scale: pressed ? 0.96 : 1,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 48,
-                height: 28,
-                alignment: AlignmentDirectional.center,
-                decoration: BoxDecoration(
-                  color: selected ? NocheColors.line : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: NocheIcon(icon, size: 22, color: fg),
+        builder: (context, _) => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 48,
+              height: 28,
+              alignment: AlignmentDirectional.center,
+              decoration: BoxDecoration(
+                color: selected ? NocheColors.line : Colors.transparent,
+                borderRadius: BorderRadius.circular(14),
               ),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                locale: locale,
-                style: style,
-              ),
-            ],
-          ),
+              child: NocheIcon(icon, size: 22, color: fg),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              locale: locale,
+              style: style,
+            ),
+          ],
         ),
       ),
     );
@@ -242,54 +239,52 @@ class _MapTab extends StatelessWidget {
         onPressed: onTap,
         semanticLabel: label,
         semanticsButton: false,
-        builder: (context, pressed) => Transform.scale(
-          scale: pressed ? 0.96 : 1,
-          child: Stack(
-            alignment: AlignmentDirectional.topCenter,
-            clipBehavior: Clip.none,
-            children: [
-              // 56 disc in `next` inside a 4 px ring of `ground` (64 total),
-              // rising 24 above the 64 px bar.
-              Container(
-                width: 64,
-                height: 64,
+        disc: true,
+        builder: (context, _) => Stack(
+          alignment: AlignmentDirectional.topCenter,
+          clipBehavior: Clip.none,
+          children: [
+            // 56 disc in `next` inside a 4 px ring of `ground` (64 total),
+            // rising 24 above the 64 px bar.
+            Container(
+              width: 64,
+              height: 64,
+              alignment: AlignmentDirectional.center,
+              decoration: const BoxDecoration(
+                color: NocheColors.ground,
+                shape: BoxShape.circle,
+              ),
+              child: Container(
+                width: 56,
+                height: 56,
                 alignment: AlignmentDirectional.center,
                 decoration: const BoxDecoration(
-                  color: NocheColors.ground,
+                  color: NocheColors.next,
                   shape: BoxShape.circle,
                 ),
-                child: Container(
-                  width: 56,
-                  height: 56,
-                  alignment: AlignmentDirectional.center,
-                  decoration: const BoxDecoration(
-                    color: NocheColors.next,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const NocheIcon(
-                    NocheIcons.map,
-                    size: 26,
-                    strokeWidth: 2.2,
-                    color: NocheColors.onAccent,
-                  ),
+                child: const NocheIcon(
+                  NocheIcons.map,
+                  size: 26,
+                  strokeWidth: 2.2,
+                  color: NocheColors.onAccent,
                 ),
               ),
-              PositionedDirectional(
-                start: 0,
-                end: 0,
-                bottom: bottomPad,
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  locale: locale,
-                  style: style,
-                ),
+            ),
+            PositionedDirectional(
+              start: 0,
+              end: 0,
+              bottom: bottomPad,
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                locale: locale,
+                style: style,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -453,21 +448,18 @@ class _NocheSheetState extends State<NocheSheet> {
                                             NocheA11y.label(
                                               NocheA11y.closeSheet,
                                             ),
-                                        builder: (context, pressed) =>
-                                            Transform.scale(
-                                              scale: pressed ? 0.94 : 1,
-                                              child: const SizedBox(
-                                                width: NocheSize.touch,
-                                                height: NocheSize.touch,
-                                                child: Center(
-                                                  child: NocheIcon(
-                                                    NocheIcons.close,
-                                                    size: 24,
-                                                    color: NocheColors.text,
-                                                  ),
-                                                ),
-                                              ),
+                                        disc: true,
+                                        builder: (context, _) => const SizedBox(
+                                          width: NocheSize.touch,
+                                          height: NocheSize.touch,
+                                          child: Center(
+                                            child: NocheIcon(
+                                              NocheIcons.close,
+                                              size: 24,
+                                              color: NocheColors.text,
                                             ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                 ],
@@ -523,6 +515,7 @@ Future<T?> showNocheSheet<T>(
   String? closeLabel,
   bool dismissible = true,
 }) {
+  final motion = NocheMotion.of(context);
   final navigator = Navigator.of(context, rootNavigator: true);
   return navigator.push<T>(
     _NocheSheetRoute<T>(
@@ -531,6 +524,7 @@ Future<T?> showNocheSheet<T>(
       closeLabel: closeLabel,
       dismissible: dismissible,
       themes: InheritedTheme.capture(from: context, to: navigator.context),
+      motion: motion,
     ),
   );
 }
@@ -542,6 +536,7 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
     required this.closeLabel,
     required this.dismissible,
     required this.themes,
+    required this.motion,
   });
 
   final Widget Function(BuildContext context, VoidCallback close) builder;
@@ -549,6 +544,7 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   final String? closeLabel;
   final bool dismissible;
   final CapturedThemes themes;
+  final NocheMotionData motion;
 
   @override
   Color? get barrierColor => NocheColors.scrim;
@@ -560,10 +556,10 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   String? get barrierLabel => null;
 
   @override
-  Duration get transitionDuration => NocheMotion.pageIn;
+  Duration get transitionDuration => motion.pageIn;
 
   @override
-  Duration get reverseTransitionDuration => NocheMotion.pageOut;
+  Duration get reverseTransitionDuration => motion.pageOut;
 
   void _close() {
     final nav = navigator;

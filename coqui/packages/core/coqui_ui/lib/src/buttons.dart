@@ -111,17 +111,6 @@ class LessonButton extends StatelessWidget {
                       )),
           ),
         );
-        if (!outline && pressed) {
-          box = ColorFiltered(
-            colorFilter: const ColorFilter.matrix(<double>[
-              0.92, 0, 0, 0, 0, //
-              0, 0.92, 0, 0, 0, //
-              0, 0, 0.92, 0, 0, //
-              0, 0, 0, 1, 0,
-            ]),
-            child: box,
-          );
-        }
         return Opacity(opacity: enabled ? 1 : 0.35, child: box);
       },
     );
@@ -160,19 +149,17 @@ class LessonStartButton extends StatelessWidget {
     child: Pressable(
       onPressed: onPressed,
       semanticLabel: semanticLabel,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Container(
-          width: CoquiMetrics.startDisc,
-          height: CoquiMetrics.startDisc,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: CoquiColors.lessonGreen,
-            boxShadow: CoquiShadows.startDisc,
-          ),
-          child: CoquiIcon(icon, size: 32, color: CoquiColors.lessonInk),
+      disc: true,
+      builder: (context, _) => Container(
+        width: CoquiMetrics.startDisc,
+        height: CoquiMetrics.startDisc,
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: CoquiColors.lessonGreen,
+          boxShadow: CoquiShadows.startDisc,
         ),
+        child: CoquiIcon(icon, size: 32, color: CoquiColors.lessonInk),
       ),
     ),
   );

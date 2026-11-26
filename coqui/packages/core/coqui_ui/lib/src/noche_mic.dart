@@ -217,30 +217,28 @@ class NocheMic extends StatelessWidget {
     final disc = Pressable(
       onPressed: onPressed,
       semanticLabel: effectiveSemanticLabel,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Container(
-          key: const ValueKey('noche_mic_disc'),
-          width: discSize,
-          height: discSize,
-          alignment: AlignmentDirectional.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: fillColor,
-            border: borderColor == null
-                ? null
-                : Border.all(color: borderColor, width: borderWidth),
-            boxShadow: hasHalo
-                ? const [
-                    BoxShadow(
-                      color: NocheColors.listeningSoft,
-                      spreadRadius: haloSpread,
-                    ),
-                  ]
-                : null,
-          ),
-          child: discChild,
+      disc: true,
+      builder: (context, _) => Container(
+        key: const ValueKey('noche_mic_disc'),
+        width: discSize,
+        height: discSize,
+        alignment: AlignmentDirectional.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: fillColor,
+          border: borderColor == null
+              ? null
+              : Border.all(color: borderColor, width: borderWidth),
+          boxShadow: hasHalo
+              ? const [
+                  BoxShadow(
+                    color: NocheColors.listeningSoft,
+                    spreadRadius: haloSpread,
+                  ),
+                ]
+              : null,
         ),
+        child: discChild,
       ),
     );
 

@@ -3,6 +3,7 @@
 library;
 
 import 'package:coqui_ui/src/noche_motion.dart';
+import 'package:flutter/rendering.dart' show ColorFilterLayer, RenderProxyBox;
 import 'package:material_ui/material_ui.dart';
 
 /// Wraps [builder] in a tap target. [builder] gets `true` while the finger is
@@ -43,6 +44,7 @@ class _PressableState extends State<Pressable>
   late final AnimationController _controller = AnimationController(vsync: this);
 
   void _set(bool v) {
+    if (v && widget.onPressed == null) return;
     if (_down == v || !mounted) return;
     setState(() => _down = v);
     final motion = NocheMotion.of(context);
@@ -100,40 +102,90 @@ class _PressableState extends State<Pressable>
                 final t = _controller.value;
                 final scale = 1.0 + (targetScale - 1.0) * t;
                 final brightness = 1.0 - motion.pressDim * t;
-                Widget current = child!;
-                if (t > 0) {
-                  current = ColorFiltered(
-                    colorFilter: ColorFilter.matrix(<double>[
-                      brightness,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      brightness,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      brightness,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      1,
-                      0,
-                    ]),
-                    child: current,
-                  );
-                }
-                return Transform.scale(scale: scale, child: current);
+                return Transform.scale(
+                  scale: scale,
+                  child: _DimFilter(brightness: brightness, child: child!),
+                );
               },
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Permanent render wrapper that applies a brightness [ColorFilterLayer] only
+/// when [brightness] < 1.0, keeping the child element subtree intact and
+/// avoiding any saveLayer overhead at rest.
+class _DimFilter extends SingleChildRenderObjectWidget {
+  const _DimFilter({required this.brightness, super.child});
+
+  final double brightness;
+
+  @override
+  RenderObject createRenderObject(BuildContext context) =>
+      _RenderDimFilter(brightness);
+
+  @override
+  void updateRenderObject(BuildContext context, _RenderDimFilter renderObject) {
+    renderObject.brightness = brightness;
+  }
+}
+
+class _RenderDimFilter extends RenderProxyBox {
+  _RenderDimFilter(this._brightness);
+
+  double _brightness;
+  double get brightness => _brightness;
+
+  set brightness(double value) {
+    if (_brightness == value) return;
+    final wasCompositing = _brightness < 1.0;
+    _brightness = value;
+    if (wasCompositing != (_brightness < 1.0)) {
+      markNeedsCompositingBitsUpdate();
+    }
+    markNeedsPaint();
+  }
+
+  @override
+  bool get alwaysNeedsCompositing => _brightness < 1.0;
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (_brightness >= 1.0) {
+      layer = null;
+      super.paint(context, offset);
+      return;
+    }
+    final b = _brightness;
+    layer = context.pushColorFilter(
+      offset,
+      ColorFilter.matrix(<double>[
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+      ]),
+      super.paint,
+      oldLayer: layer as ColorFilterLayer?,
     );
   }
 }
