@@ -46,7 +46,7 @@ Future<void> pumpYo(
   double Function(DateTime day)? minutesOn,
   int? streakFreezes,
   int? stageMax,
-  Entitlements entitlements = const AllowAllEntitlements(),
+  Entitlements? entitlements,
   String? level,
 }) async {
   phone(tester);
@@ -59,7 +59,7 @@ Future<void> pumpYo(
       minutesOn == null &&
       streakFreezes == null &&
       stageMax == null &&
-      entitlements is AllowAllEntitlements &&
+      entitlements == null &&
       level == null;
   await tester.pumpWidget(
     _app(
