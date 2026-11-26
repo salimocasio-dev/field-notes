@@ -5,6 +5,7 @@ library;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:coqui_ui/src/pressable.dart' show PressablePixelScope;
 import 'package:material_ui/material_ui.dart';
 
 /// Device pixels per picture pixel:
@@ -69,12 +70,24 @@ class _PixelViewState extends State<PixelView> {
   ui.Image? _image;
   int _token = 0;
   final _paintKey = GlobalKey();
+  PressablePixelScope? _pixelScope;
 
   @override
   void initState() {
     super.initState();
     widget.repaint?.addListener(_upload);
     _upload();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final next = PressablePixelScope.maybeOf(context);
+    if (next?.owner != _pixelScope?.owner) {
+      _pixelScope?.detach();
+      _pixelScope = next;
+      _pixelScope?.attach();
+    }
   }
 
   @override
@@ -93,6 +106,8 @@ class _PixelViewState extends State<PixelView> {
 
   @override
   void dispose() {
+    _pixelScope?.detach();
+    _pixelScope = null;
     widget.repaint?.removeListener(_upload);
     _token++;
     _image?.dispose();

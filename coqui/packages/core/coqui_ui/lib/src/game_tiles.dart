@@ -16,6 +16,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/src/icons.dart';
 import 'package:coqui_ui/src/lesson_frame.dart'
     show CheckBadge, ChoiceRing, WrongBadge;
+import 'package:coqui_ui/src/noche_motion.dart';
 import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:coqui_ui/src/speech_bubble.dart';
@@ -137,7 +138,7 @@ class _TileFace extends StatelessWidget {
       face = TweenAnimationBuilder<double>(
         key: ValueKey(shake),
         tween: Tween(begin: 0, end: 1),
-        duration: const Duration(milliseconds: 360),
+        duration: NocheMotion.pageIn,
         builder: (context, t, child) => Transform.translate(
           offset: Offset(8 * (1 - t) * math.sin(t * 6 * math.pi), 0),
           child: child,
@@ -235,7 +236,7 @@ class _TouchSignState extends State<TouchSign>
     with SingleTickerProviderStateMixin {
   late final AnimationController _a = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 700),
+    duration: NocheMotion.settle,
   );
 
   bool get _still =>
@@ -277,7 +278,7 @@ class _TouchSignState extends State<TouchSign>
         builder: (context, child) => Transform.translate(
           offset: Offset(
             0,
-            -TouchSign.bounce * Curves.easeInOut.transform(_a.value),
+            -TouchSign.bounce * NocheMotion.travel.transform(_a.value),
           ),
           child: child,
         ),
@@ -645,7 +646,7 @@ class _RoundSpeakerState extends State<RoundSpeaker>
     with SingleTickerProviderStateMixin {
   late final AnimationController _a = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 900),
+    duration: NocheMotion.settle * 2,
   );
 
   bool get _calm =>

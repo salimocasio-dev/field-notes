@@ -2,11 +2,52 @@
 /// web, and a pressed state that lasts while the finger is down (`:active`).
 library;
 
+import 'package:coqui_ui/src/noche_motion.dart';
+import 'package:flutter/rendering.dart' show ColorFilterLayer, RenderProxyBox;
 import 'package:material_ui/material_ui.dart';
+
+/// Package-internal scope allowing `PixelView` descendants to opt enclosing
+/// `Pressable` targets out of fractional press scaling so pixel art always
+/// keeps whole-number device-pixel scaling.
+class PressablePixelScope extends InheritedWidget {
+  const PressablePixelScope({
+    super.key,
+    required this.owner,
+    required this.onAttach,
+    required this.onDetach,
+    required this.parent,
+    required super.child,
+  });
+
+  final Object owner;
+  final VoidCallback onAttach;
+  final VoidCallback onDetach;
+  final PressablePixelScope? parent;
+
+  void attach() {
+    onAttach();
+    parent?.attach();
+  }
+
+  void detach() {
+    onDetach();
+    parent?.detach();
+  }
+
+  static PressablePixelScope? maybeOf(BuildContext context) =>
+      context.getInheritedWidgetOfExactType<PressablePixelScope>();
+
+  @override
+  bool updateShouldNotify(PressablePixelScope oldWidget) => false;
+}
 
 /// Wraps [builder] in a tap target. [builder] gets `true` while the finger is
 /// down. With a null [onPressed] it is disabled: it reports a disabled button to
 /// accessibility and ignores taps.
+///
+/// Picture-bearing targets can dim without scaling (`scaleOnPress: false`), and
+/// `PixelView` descendants automatically disable press scaling to preserve
+/// whole-number pixel rendering.
 class Pressable extends StatefulWidget {
   const Pressable({
     super.key,
@@ -15,6 +56,8 @@ class Pressable extends StatefulWidget {
     this.semanticLabel,
     this.semanticsButton = true,
     this.selected,
+    this.disc = false,
+    this.scaleOnPress = true,
   });
 
   final VoidCallback? onPressed;
@@ -27,20 +70,66 @@ class Pressable extends StatefulWidget {
   /// `aria-pressed` of a toggle (the "Aa" text size button). Null: not a toggle.
   final bool? selected;
 
+  /// Whether this is a round disc target (uses `pressScaleDisc` instead of
+  /// `pressScale`).
+  final bool disc;
+
+  /// Whether pressing scales the target. Set to `false` for picture-bearing
+  /// targets that should only dim without fractional scaling.
+  final bool scaleOnPress;
+
   @override
   State<Pressable> createState() => _PressableState();
 }
 
-class _PressableState extends State<Pressable> {
+class _PressableState extends State<Pressable>
+    with SingleTickerProviderStateMixin {
   bool _down = false;
+  int _pixelViewCount = 0;
+  late final AnimationController _controller = AnimationController(vsync: this);
+
+  void _addPixelView() => _pixelViewCount++;
+
+  void _removePixelView() {
+    if (_pixelViewCount > 0) _pixelViewCount--;
+  }
 
   void _set(bool v) {
-    if (_down != v && mounted) setState(() => _down = v);
+    if (v && widget.onPressed == null) return;
+    if (_down == v || !mounted) return;
+    setState(() => _down = v);
+    final motion = NocheMotion.of(context);
+    if (v) {
+      _controller.animateTo(1.0, duration: motion.press, curve: motion.enter);
+    } else {
+      _controller.animateTo(
+        0.0,
+        duration: motion.pressBack,
+        curve: motion.enter,
+      );
+    }
+  }
+
+  @override
+  void didUpdateWidget(Pressable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.onPressed == null && (_down || _controller.value > 0)) {
+      _down = false;
+      _controller.value = 0.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final enabled = widget.onPressed != null;
+    final motion = NocheMotion.of(context);
+    final targetScale = widget.disc ? motion.pressScaleDisc : motion.pressScale;
     return Semantics(
       button: widget.semanticsButton,
       enabled: enabled,
@@ -57,10 +146,105 @@ class _PressableState extends State<Pressable> {
           onTap: widget.onPressed,
           child: ExcludeSemantics(
             excluding: widget.semanticLabel != null,
-            child: widget.builder(context, _down && enabled),
+            child: AnimatedBuilder(
+              animation: _controller,
+              child: PressablePixelScope(
+                owner: this,
+                onAttach: _addPixelView,
+                onDetach: _removePixelView,
+                parent: PressablePixelScope.maybeOf(context),
+                child: widget.builder(context, _down && enabled),
+              ),
+              builder: (context, child) {
+                final allowScale = widget.scaleOnPress && _pixelViewCount == 0;
+                final effectiveTargetScale = allowScale ? targetScale : 1.0;
+                final t = _controller.value;
+                final scale = 1.0 + (effectiveTargetScale - 1.0) * t;
+                final brightness = 1.0 - motion.pressDim * t;
+                return Transform.scale(
+                  scale: scale,
+                  child: _DimFilter(brightness: brightness, child: child!),
+                );
+              },
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Permanent render wrapper that applies a brightness [ColorFilterLayer] only
+/// when [brightness] < 1.0, keeping the child element subtree intact and
+/// avoiding any saveLayer overhead at rest.
+class _DimFilter extends SingleChildRenderObjectWidget {
+  const _DimFilter({required this.brightness, super.child});
+
+  final double brightness;
+
+  @override
+  RenderObject createRenderObject(BuildContext context) =>
+      _RenderDimFilter(brightness);
+
+  @override
+  void updateRenderObject(BuildContext context, _RenderDimFilter renderObject) {
+    renderObject.brightness = brightness;
+  }
+}
+
+class _RenderDimFilter extends RenderProxyBox {
+  _RenderDimFilter(this._brightness);
+
+  double _brightness;
+  double get brightness => _brightness;
+
+  set brightness(double value) {
+    if (_brightness == value) return;
+    final wasCompositing = _brightness < 1.0;
+    _brightness = value;
+    if (wasCompositing != (_brightness < 1.0)) {
+      markNeedsCompositingBitsUpdate();
+    }
+    markNeedsPaint();
+  }
+
+  @override
+  bool get alwaysNeedsCompositing => _brightness < 1.0;
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (_brightness >= 1.0) {
+      layer = null;
+      super.paint(context, offset);
+      return;
+    }
+    final b = _brightness;
+    layer = context.pushColorFilter(
+      offset,
+      ColorFilter.matrix(<double>[
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        b,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+      ]),
+      super.paint,
+      oldLayer: layer as ColorFilterLayer?,
     );
   }
 }

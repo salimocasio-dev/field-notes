@@ -139,6 +139,7 @@ class PictureChoice extends StatelessWidget {
     return Pressable(
       onPressed: onTap,
       semanticLabel: semanticLabel,
+      scaleOnPress: false,
       builder: (context, pressed) => picture,
     );
   }
