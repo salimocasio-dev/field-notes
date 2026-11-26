@@ -1143,6 +1143,13 @@ void main() {
       await override.load();
       expect(override.minApp, 99);
     });
+
+    test('subclasses overriding callFor are respected by callsFor', () async {
+      final sub = _CallOverrideCatalog();
+      await sub.load();
+      expect(sub.callsFor('casa'), isEmpty);
+      expect(sub.callsFor('cocina').map((c) => c.id), ['cocina']);
+    });
   });
 
   group('FakeClipPlayer VariableSpeedClipPlayer', () {
@@ -1176,4 +1183,17 @@ void main() {
       }
     });
   });
+}
+
+class _CallOverrideCatalog extends FakeCourseCatalog {
+  @override
+  CallBrief? callFor(String placeId) {
+    if (placeId != 'cocina') return null;
+    return CallBrief(
+      placeId: placeId,
+      minutes: 4,
+      job: 'Practice $placeId',
+      opening: 'Hola',
+    );
+  }
 }

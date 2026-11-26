@@ -270,8 +270,18 @@ class FakeCourseCatalog
   CallBrief? callFor(String placeId) => _calls[placeId];
 
   @override
-  List<CallBrief> callsFor(String placeId) =>
-      _callsByPlace[placeId] ?? const <CallBrief>[];
+  List<CallBrief> callsFor(String placeId) {
+    final loaded = _callsByPlace[placeId];
+    if (loaded != null && loaded.length > 1) return loaded;
+    final single = callFor(placeId);
+    if (single == null) return const <CallBrief>[];
+    if (loaded != null &&
+        loaded.length == 1 &&
+        identical(loaded.single, single)) {
+      return loaded;
+    }
+    return List<CallBrief>.unmodifiable([single]);
+  }
 
   @override
   ClipInfo? clip(String id) => _clips[id];
