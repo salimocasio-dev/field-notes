@@ -50,22 +50,40 @@ class _Turn {
   bool spoke = false;
 }
 
+/// Whether [brief] has an authored opening prompt and is ready to start live.
+///
+/// Multi-call `llamadas.json` data may list upcoming calls with an empty
+/// `opening` so their titles and jobs display as "Coming soon" without
+/// unlocking unauthored live calls.
+bool isCallBriefLive(CallBrief brief) => brief.opening.trim().isNotEmpty;
+
 /// Resolves the [CallBrief] for [placeId] and optional [callId].
 ///
 /// When [callId] is null, returns `course.callFor(placeId)` (the place's main
 /// call). When [callId] is non-null, returns the matching brief in
 /// `course.callsFor(placeId)`, or `null` if no call with that id exists (never
-/// falling back to a different call).
+/// falling back to a different call). Returns `null` when the resolved brief
+/// has no live opening prompt yet.
 CallBrief? resolveCallBrief(
   CourseCatalog course,
   String placeId, [
   String? callId,
 ]) {
-  if (callId == null) return course.callFor(placeId);
-  for (final brief in course.callsFor(placeId)) {
-    if (brief.id == callId) return brief;
+  final CallBrief? brief;
+  if (callId == null) {
+    brief = course.callFor(placeId);
+  } else {
+    CallBrief? found;
+    for (final candidate in course.callsFor(placeId)) {
+      if (candidate.id == callId) {
+        found = candidate;
+        break;
+      }
+    }
+    brief = found;
   }
-  return null;
+  if (brief == null || !isCallBriefLive(brief)) return null;
+  return brief;
 }
 
 /// One call, from the open screen to the summary. [place] and [brief] are the place and its call; with either
@@ -189,6 +207,7 @@ class CallController extends ChangeNotifier {
   double _floor = _floorStart;
   double _lvl = 0;
   bool _minutesCounted = false;
+  bool _callMarkedDone = false;
   String _err = '';
   int? _noteUntil;
   int? _helpUntil;
@@ -618,6 +637,24 @@ class CallController extends ChangeNotifier {
     } catch (_) {}
   }
 
+  String? get _completedCallId {
+    final b = brief?.id.trim();
+    if (b != null && b.isNotEmpty) return b;
+    final c = callId?.trim();
+    if (c != null && c.isNotEmpty) return c;
+    return place?.id;
+  }
+
+  void _markCallDone() {
+    if (_callMarkedDone || _t0 == null) return;
+    final id = _completedCallId;
+    if (id == null || id.isEmpty) return;
+    _callMarkedDone = true;
+    try {
+      progress.markCallDone(id);
+    } catch (_) {}
+  }
+
   double _elapsed() {
     final t0 = _t0;
     return t0 == null ? 0 : (_now() - t0) / 1000;
@@ -639,6 +676,7 @@ class CallController extends ChangeNotifier {
     _live = false;
     if (wasLive) _endSession();
     _cuenta(secs);
+    _markCallDone();
     _locked = false;
     _noteUntil = null;
     if (_closed) return;

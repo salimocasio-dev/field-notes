@@ -589,4 +589,61 @@ void main() {
       },
     );
   });
+
+  group('hablar: CallsCatalog readiness and CallProgressStore persistence', () {
+    testWidgets(
+      'finished call via progress.markCallDone stays marked done across restart without completedCallIds',
+      (tester) async {
+        Phone.android.use(tester);
+        final w = await World.create(seed: 'todo');
+        w.progress.markCallDone('casa');
+
+        final restoredProgress = RecordingProgress(clock: w.clock)
+          ..import(w.progress.export());
+        final restoredServices = fakeServices(
+          progress: restoredProgress,
+          course: w.course,
+          call: w.call,
+          nav: w.nav,
+          haptics: w.haptics,
+          speech: w.speech,
+          clock: w.clock,
+        );
+
+        final snap = buildHablarSnapshot(
+          course: w.course,
+          progress: restoredProgress,
+          callsAvailable: () => true,
+        );
+        expect(snap.stops.first.state, HablarCallState.done);
+        expect(snap.completedCount, 1);
+
+        await tester.pumpWidget(
+          w.app(HablarTab(key: UniqueKey(), services: restoredServices)),
+        );
+        expect(find.text('CALL WITH DANNY · 5 MIN · DONE'), findsOneWidget);
+        expect(find.byKey(const Key('speak-call-disc')), findsOneWidget);
+        w.dispose();
+      },
+    );
+
+    test('legacy casa completion counts once even when completedCallIds also includes casa_main', () async {
+      final course = FixtureCourse();
+      await course.load();
+      final p = RecordingProgress();
+      for (final id in course.places.first.stories) {
+        p.storyFinished(StoryResult(id: id));
+      }
+      p.markCallDone('casa');
+
+      final snap = buildHablarSnapshot(
+        course: course,
+        progress: p,
+        callsAvailable: () => true,
+        completedCallIds: const {'casa_main'},
+      );
+      expect(snap.stops.first.mainCall!.state, HablarCallState.done);
+      expect(snap.completedCount, 1);
+    });
+  });
 }
