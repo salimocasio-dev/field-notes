@@ -5,6 +5,20 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/reader_model.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// Resolves a settings radio-group accessibility label using the same switch as
+/// [NocheA11y.label] (`NocheA11y.lessonLabelsInCourseLanguage` + `a11yWords`).
+String _a11yGroup(
+  String role,
+  String englishFallback,
+  Map<String, String>? courseWords,
+) {
+  if (NocheA11y.lessonLabelsInCourseLanguage && courseWords != null) {
+    final candidate = courseWords[role];
+    if (candidate != null && candidate.isNotEmpty) return candidate;
+  }
+  return englishFallback;
+}
+
 /// Noche Text and page settings sheet body (`docs/proyecto/noche/Noche-Lector-Aa.dc.html`).
 class ReaderSettingsSheet extends StatelessWidget {
   const ReaderSettingsSheet({
@@ -30,6 +44,7 @@ class ReaderSettingsSheet extends StatelessWidget {
     final stepText = 'Step ${settings.step} of 7';
     final canDecrease = settings.step > 1;
     final canIncrease = settings.step < 7;
+    final activeFont = settings.effectiveFont;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -85,14 +100,14 @@ class ReaderSettingsSheet extends StatelessWidget {
         Semantics(
           container: true,
           role: SemanticsRole.radioGroup,
-          label: 'Font',
+          label: _a11yGroup('font', 'Font', a11yWords),
           child: Row(
             children: [
               Expanded(
                 child: _FontTile(
                   font: ReaderFont.literata,
                   name: 'Literata',
-                  selected: settings.font == ReaderFont.literata,
+                  selected: activeFont == ReaderFont.literata,
                   onTap: () =>
                       onChanged(settings.copyWith(font: ReaderFont.literata)),
                 ),
@@ -102,7 +117,7 @@ class ReaderSettingsSheet extends StatelessWidget {
                 child: _FontTile(
                   font: ReaderFont.atkinson,
                   name: 'Atkinson',
-                  selected: settings.font == ReaderFont.atkinson,
+                  selected: activeFont == ReaderFont.atkinson,
                   onTap: () =>
                       onChanged(settings.copyWith(font: ReaderFont.atkinson)),
                 ),
@@ -112,9 +127,14 @@ class ReaderSettingsSheet extends StatelessWidget {
                 child: _FontTile(
                   font: ReaderFont.lexend,
                   name: 'Lexend',
-                  selected: settings.font == ReaderFont.lexend,
-                  onTap: () =>
-                      onChanged(settings.copyWith(font: ReaderFont.lexend)),
+                  selected: activeFont == ReaderFont.lexend,
+                  // Disabled until coqui_ui exposes NocheType.bookBodyLexend
+                  // (coqui/requests/113-feature-library-needs-coqui-ui-reader-font-styles.md).
+                  onTap: ReaderSettings.lexendAvailable
+                      ? () => onChanged(
+                          settings.copyWith(font: ReaderFont.lexend),
+                        )
+                      : null,
                 ),
               ),
             ],
@@ -240,10 +260,12 @@ class _FontTile extends StatelessWidget {
   final ReaderFont font;
   final String name;
   final bool selected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final enabled = onTap != null;
+    final sampleColor = enabled ? NocheColors.text : NocheColors.label;
     return _RadioOption(
       semanticLabel: name,
       selected: selected,
@@ -267,7 +289,7 @@ class _FontTile extends StatelessWidget {
             children: [
               Text(
                 'Ag',
-                style: ReaderSettings.previewStyleFor(font, NocheColors.text),
+                style: ReaderSettings.previewStyleFor(font, sampleColor),
               ),
               const SizedBox(height: NocheSize.grid),
               Text(
@@ -321,7 +343,7 @@ class _LineSpacingControl extends StatelessWidget {
     return Semantics(
       container: true,
       role: SemanticsRole.radioGroup,
-      label: 'Line spacing',
+      label: _a11yGroup('lineSpacing', 'Line spacing', a11yWords),
       child: Container(
         height: NocheSize.touch + 2,
         decoration: BoxDecoration(
@@ -423,7 +445,7 @@ class _PageColorControl extends StatelessWidget {
     return Semantics(
       container: true,
       role: SemanticsRole.radioGroup,
-      label: 'Page colour',
+      label: _a11yGroup('pageColour', 'Page colour', a11yWords),
       child: Row(
         children: [
           for (var i = 0; i < options.length; i++) ...[
@@ -513,7 +535,7 @@ class _RadioOption extends StatefulWidget {
 
   final String semanticLabel;
   final bool selected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Widget Function(BuildContext context, bool pressed) builder;
 
   @override
@@ -529,19 +551,21 @@ class _RadioOptionState extends State<_RadioOption> {
 
   @override
   Widget build(BuildContext context) {
+    final enabled = widget.onTap != null;
     return Semantics(
       button: true,
+      enabled: enabled,
       inMutuallyExclusiveGroup: true,
       checked: widget.selected,
       label: widget.semanticLabel,
       onTap: widget.onTap,
       child: MouseRegion(
-        cursor: SystemMouseCursors.click,
+        cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTapDown: (_) => _set(true),
-          onTapUp: (_) => _set(false),
-          onTapCancel: () => _set(false),
+          onTapDown: enabled ? (_) => _set(true) : null,
+          onTapUp: enabled ? (_) => _set(false) : null,
+          onTapCancel: enabled ? () => _set(false) : null,
           onTap: widget.onTap,
           child: ExcludeSemantics(child: widget.builder(context, _down)),
         ),

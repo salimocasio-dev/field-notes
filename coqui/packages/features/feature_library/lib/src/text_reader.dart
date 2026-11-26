@@ -237,6 +237,12 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     _lastPaginatedSettings = _settings;
     _pages = newPages;
 
+    final activeSentencePage = _activeSentenceId == null || newPages.isEmpty
+        ? null
+        : _recordedSentences()
+              .where((e) => e.sentence.id == _activeSentenceId)
+              .firstOrNull;
+
     if (newPages.isEmpty) {
       _pageIndex = 0;
     } else if (_pendingSavedAnchor != null) {
@@ -252,6 +258,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     } else if (_pendingSavedPage != null) {
       _pageIndex = _pendingSavedPage!.clamp(0, newPages.length - 1);
       _pendingSavedPage = null;
+    } else if (activeSentencePage != null) {
+      _pageIndex = activeSentencePage.firstPage.clamp(0, newPages.length - 1);
     } else if (previousAnchor != null) {
       _pageIndex = pageForAnchor(
         newPages,
@@ -576,12 +584,17 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
       await _s.clips.stop();
       if (!mounted || request != _playback) return;
 
-      for (var i = startIdx; i < list.length; i++) {
+      final sentenceIds = [for (final e in list) e.sentence.id];
+      for (var i = startIdx; i < sentenceIds.length; i++) {
         if (!mounted || request != _playback) return;
-        final item = list[i];
+        final item = _recordedSentences()
+            .where((e) => e.sentence.id == sentenceIds[i])
+            .firstOrNull;
+        if (item == null) continue;
         setState(() {
-          if (_pageIndex < item.firstPage || _pageIndex > item.lastPage) {
-            _pageIndex = item.firstPage;
+          if (_pages.isNotEmpty &&
+              (_pageIndex < item.firstPage || _pageIndex > item.lastPage)) {
+            _pageIndex = item.firstPage.clamp(0, _pages.length - 1);
           }
           _activeSentenceId = item.sentence.id;
           _lastSentenceId = item.sentence.id;
@@ -799,9 +812,6 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
         return;
       }
       final lang = _s.course.language;
-      final courseDir = lang.direction == LanguageDirection.rtl
-          ? TextDirection.rtl
-          : TextDirection.ltr;
       await showNocheSheet<void>(
         context,
         title: NocheA11y.label(
@@ -812,15 +822,12 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
           NocheA11y.closeTextAndPage,
           courseWords: lang.a11yWords,
         ),
-        builder: (context, close) => Directionality(
-          textDirection: courseDir,
-          child: ValueListenableBuilder<ReaderSettings>(
-            valueListenable: _settingsNotifier,
-            builder: (context, current, _) => ReaderSettingsSheet(
-              settings: current,
-              language: lang,
-              onChanged: _updateSettings,
-            ),
+        builder: (context, close) => ValueListenableBuilder<ReaderSettings>(
+          valueListenable: _settingsNotifier,
+          builder: (context, current, _) => ReaderSettingsSheet(
+            settings: current,
+            language: lang,
+            onChanged: _updateSettings,
           ),
         ),
       );
@@ -999,9 +1006,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                       Pressable(
                         onPressed: _openSettings,
                         semanticLabel: NocheA11y.label(
-                          _settingsOpen
-                              ? NocheA11y.closeTextAndPage
-                              : NocheA11y.textAndPage,
+                          NocheA11y.textAndPage,
                           courseWords: lang.a11yWords,
                         ),
                         selected: _settingsOpen ? true : null,

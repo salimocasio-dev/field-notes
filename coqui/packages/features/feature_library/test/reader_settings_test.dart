@@ -15,7 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
-import 'support.dart' show TestCourse, TimedClips, settle;
+import 'support.dart' show TestCourse, TimedClips, line, settle;
 
 const List<Size> _shotViewports = [Size(390, 844), Size(412, 915)];
 
@@ -210,10 +210,12 @@ void main() {
         await custom.saveTo(kv);
         expect(ReaderSettings.loadFrom(kv), custom);
 
-        // Numeric double step (e.g. decoded on web) and out-of-range clamping.
+        // Numeric double step (e.g. decoded on web), clamping, and non-finite guards.
         expect(ReaderSettings.fromJson({'step': 5.0}).step, 5);
         expect(ReaderSettings.fromJson({'step': 0}).step, 1);
         expect(ReaderSettings.fromJson({'step': 99}).step, 7);
+        expect(ReaderSettings.fromJson({'step': double.nan}).step, 4);
+        expect(ReaderSettings.fromJson({'step': double.infinity}).step, 4);
 
         // Corrupt JSON falls back to defaults.
         await kv.write('settings', '{bad json');
@@ -378,24 +380,43 @@ void main() {
           expect(tester.getSize(tileFinder).height, 80);
         }
 
-        // Switch to Atkinson -> body style switches from Literata to Atkinson.
+        // Switch to Atkinson -> body style changes fontFamily from Literata to Atkinson.
+        final literataFamily = _firstBodyTextStyle(tester).fontFamily;
         await tester.tap(find.bySemanticsLabel('Atkinson'));
         await settle(tester);
         final atkinsonStyle = _firstBodyTextStyle(tester);
         expect(atkinsonStyle.fontFamily, NocheType.body.fontFamily);
-        expect(atkinsonStyle.fontWeight, FontWeight.w500);
-
-        // Switch to Lexend -> updates page style & persists 'lexend'.
-        await tester.tap(find.bySemanticsLabel('Lexend'));
-        await settle(tester);
-        final lexendStyle = _firstBodyTextStyle(tester);
-        expect(lexendStyle.fontWeight, FontWeight.w400);
+        expect(atkinsonStyle.fontFamily, isNot(literataFamily));
         expect(
           ReaderSettings.loadFrom(services.storage('leer')).font,
-          ReaderFont.lexend,
+          ReaderFont.atkinson,
         );
 
-        // Restart TextReader on same storage -> Lexend survives restart.
+        // Lexend tile stays disabled until coqui_ui exposes NocheType.bookBodyLexend
+        // so learners are never shown Atkinson mislabelled as Lexend.
+        final lexendSemantics = tester.getSemantics(
+          find.bySemanticsLabel('Lexend'),
+        );
+        if (ReaderSettings.lexendAvailable) {
+          await tester.tap(find.bySemanticsLabel('Lexend'));
+          await settle(tester);
+          final lexendStyle = _firstBodyTextStyle(tester);
+          expect(lexendStyle.fontFamily, endsWith(nocheFontLexend));
+          expect(lexendStyle.fontFamily, isNot(atkinsonStyle.fontFamily));
+        } else {
+          expect(
+            lexendSemantics.flagsCollection.isEnabled,
+            ui.Tristate.isFalse,
+          );
+          await tester.tap(find.bySemanticsLabel('Lexend'));
+          await settle(tester);
+          expect(
+            ReaderSettings.loadFrom(services.storage('leer')).font,
+            ReaderFont.atkinson,
+          );
+        }
+
+        // Restart TextReader on same storage -> Atkinson survives restart.
         await tester.pumpWidget(
           MaterialApp(
             key: const ValueKey('app-font2'),
@@ -407,13 +428,16 @@ void main() {
           ),
         );
         await settle(tester);
-        expect(_firstBodyTextStyle(tester).fontWeight, FontWeight.w400);
+        expect(
+          _firstBodyTextStyle(tester).fontFamily,
+          NocheType.body.fontFamily,
+        );
         await _openSettingsSheet(tester);
-        final lexendSemantics = tester.getSemantics(
-          find.bySemanticsLabel('Lexend'),
+        final atkinsonSemantics = tester.getSemantics(
+          find.bySemanticsLabel('Atkinson'),
         );
         expect(
-          lexendSemantics.flagsCollection.isChecked,
+          atkinsonSemantics.flagsCollection.isChecked,
           ui.CheckedState.isTrue,
         );
       },
@@ -755,9 +779,15 @@ void main() {
 
       await _openSettingsSheet(tester);
       expect(tester.takeException(), isNull);
+      // Arabic reader page behind the scrim stays RTL while English sheet chrome
+      // follows ambient app directionality.
+      expect(
+        Directionality.of(tester.element(find.byType(ReaderPageView))),
+        TextDirection.rtl,
+      );
       expect(
         Directionality.of(tester.element(find.byType(ReaderSettingsSheet))),
-        TextDirection.rtl,
+        TextDirection.ltr,
       );
 
       for (final label in [
@@ -778,6 +808,96 @@ void main() {
         expect(size.height, greaterThanOrEqualTo(48), reason: label);
       }
     });
+
+    testWidgets(
+      'changing text size during narration refreshes sentence page mapping without out-of-range page index',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final filler = List.filled(
+          18,
+          'Caminamos despacio por la orilla del mar escuchando las olas.',
+        ).join(' ');
+        final course = TestCourse(
+          books: {
+            'narr-reflow': Book(
+              id: 'narr-reflow',
+              title: 'Reflow',
+              readable: true,
+              pages: [
+                BookPage(image: 'img/1.png', clips: ['n1']),
+                BookPage(image: 'img/2.png', clips: ['n2']),
+                BookPage(image: 'img/3.png', clips: ['n3']),
+              ],
+            ),
+          },
+          stories: {
+            'narr-reflow': {
+              'title': 'Reflow',
+              'clips': {
+                'n1': line('narr', 'Primera frase corta.'),
+                'n2': line('narr', filler),
+                'n3': line('narr', 'Última frase del libro.'),
+              },
+            },
+          },
+          recorded: {'n1', 'n2', 'n3'},
+        );
+        final clips = TimedClips(length: const Duration(milliseconds: 600));
+        final services = fakeServices(course: course, clips: clips);
+
+        // Start at largest text size (step 7) so the book spans multiple pages.
+        await const ReaderSettings(step: 7).saveTo(services.storage('leer'));
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(services: services, id: 'narr-reflow'),
+          ),
+        );
+        await settle(tester);
+
+        // Start playback on n1, then shrink text size all the way down to step 1
+        // while playback is still running so total page count shrinks sharply.
+        await tester.tap(find.byType(NochePlayDisc));
+        await tester.pump();
+        expect(clips.played, ['n1']);
+
+        await _openSettingsSheet(tester);
+        final smaller = find.bySemanticsLabel(
+          NocheA11y.label(NocheA11y.smallerText),
+        );
+        for (var i = 0; i < 6; i++) {
+          await tester.tap(smaller);
+          await tester.pump();
+        }
+        await tester.tap(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.closeTextAndPage)),
+        );
+        await tester.pump();
+
+        // Advance into n2, then into n3; narration uses refreshed page indices
+        // and lights n3 cleanly without out-of-range page exceptions.
+        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pump(const Duration(milliseconds: 600));
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(tester.takeException(), isNull);
+        expect(clips.played, containsAllInOrder(['n1', 'n2', 'n3']));
+        final lit = _paintPageDecorations(tester);
+        expect(
+          lit.rrects.any((r) => r.argb == NocheColors.litSentence.toARGB32()),
+          isTrue,
+        );
+
+        // Let final clip finish cleanly.
+        await tester.pump(const Duration(milliseconds: 700));
+        await settle(tester);
+      },
+    );
   });
 
   group('Reader settings screenshots', () {

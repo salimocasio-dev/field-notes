@@ -1,14 +1,12 @@
-# Request: Reader body font styles (Atkinson & Lexend) in `coqui_ui`
+# Request: Reader body font styles (Atkinson & Lexend) and group a11y keys in `coqui_ui`
 
 ## What I need
 
-Expose `NocheType` reader body styles (or a script-aware helper) for the three reader font choices in `coqui/packages/core/coqui_ui/lib/src/noche_tokens.dart`:
-
-- `NocheType.bookBody` (`nocheFontLiterata`, weight 400, 19 / 31) — already exists.
-- `NocheType.bookBodyAtkinson` (`nocheFontAtkinson`, weight 400, 19 / 31) — or `NocheType.bookBodyFor(String family)` accepting `nocheFontLiterata`, `nocheFontAtkinson`, or `nocheFontLexend`.
-- `NocheType.bookBodyLexend` (`nocheFontLexend`, weight 400, 19 / 31).
-
-`coqui_ui` already bundles `Lexend-400.ttf` and `Lexend-500.ttf`, declares `Lexend` and `packages/coqui_ui/Lexend` in `pubspec.yaml`, and exports `const String nocheFontLexend = 'Lexend'`, but `NocheType` currently defines no `TextStyle` using `nocheFontLexend`.
+1. Expose `NocheType` reader body styles (or a script-aware helper) for the three reader font choices in `coqui/packages/core/coqui_ui/lib/src/noche_tokens.dart`:
+   - `NocheType.bookBody` (`nocheFontLiterata`, weight 400, 19 / 31) — already exists.
+   - `NocheType.bookBodyAtkinson` (`nocheFontAtkinson`, weight 400, 19 / 31).
+   - `NocheType.bookBodyLexend` (`nocheFontLexend`, weight 400, 19 / 31) — `coqui_ui` already bundles `Lexend-400.ttf`/`500.ttf` and exports `const String nocheFontLexend = 'Lexend'`, but `NocheType` currently exposes no `TextStyle` using `nocheFontLexend`.
+2. Add `NocheA11y` role keys in `coqui/packages/core/coqui_ui/lib/src/noche_a11y.dart` for the settings radio groups (`font`, `lineSpacing`, `pageColour`).
 
 ## Why
 
@@ -16,7 +14,9 @@ Story N5.2 ("Text and page settings", issue #113, board `docs/proyecto/noche/Noc
 
 ## What I am using meanwhile
 
-In `coqui/packages/features/feature_library/lib/src/reader_model.dart`, `ReaderFont.literata` uses `NocheType.bookBody` (Literata w400, preview w500), `ReaderFont.atkinson` uses `NocheType.body` (Atkinson Hyperlegible Next w500), and `ReaderFont.lexend` uses `NocheType.body` with `FontWeight.w400` (distinct weight from Atkinson, persisted as `'lexend'`) until `NocheType.bookBodyLexend` lands in `coqui_ui`.
+- In `coqui/packages/features/feature_library/lib/src/reader_model.dart`, `ReaderFont.literata` uses `NocheType.bookBody` (`Literata`) and `ReaderFont.atkinson` uses `NocheType.body` (`Atkinson Hyperlegible Next`).
+- The Lexend tile in `lib/src/reader_settings_sheet.dart` is intentionally disabled (`ReaderSettings.lexendAvailable = false`) so the UI never mislabels Atkinson as Lexend; once `NocheType.bookBodyLexend` lands in `coqui_ui`, flipping `ReaderSettings.lexendAvailable` and wiring `NocheType.bookBodyLexend` enables it in one place.
+- Radio-group semantic labels in `lib/src/reader_settings_sheet.dart` check `NocheA11y.lessonLabelsInCourseLanguage` and `course.language.a11yWords` for `'font'`, `'lineSpacing'`, and `'pageColour'` with English fallbacks until `NocheA11y` exports those constants.
 
 ## Order and branch
 

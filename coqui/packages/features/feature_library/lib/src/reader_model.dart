@@ -176,8 +176,21 @@ class ReaderSettings {
     return copyWith(speed: 0.75);
   }
 
+  /// Whether `coqui_ui` exposes a `NocheType` Lexend style.
+  ///
+  /// Pending `coqui/requests/113-feature-library-needs-coqui-ui-reader-font-styles.md`;
+  /// while `false`, the Lexend tile stays disabled so learners are never shown
+  /// Atkinson mislabelled as Lexend.
+  static const bool lexendAvailable = false;
+
+  ReaderFont get effectiveFont => font == ReaderFont.lexend && !lexendAvailable
+      ? ReaderFont.literata
+      : font;
+
   bool samePaginationAs(ReaderSettings other) =>
-      step == other.step && font == other.font && spacing == other.spacing;
+      step == other.step &&
+      effectiveFont == other.effectiveFont &&
+      spacing == other.spacing;
 
   static TextStyle previewStyleFor(ReaderFont font, Color color) {
     final base = switch (font) {
@@ -201,12 +214,11 @@ class ReaderSettings {
   }
 
   TextStyle bodyStyle(Language language, Color color) {
-    final base = switch (font) {
+    final activeFont = effectiveFont;
+    final base = switch (activeFont) {
       ReaderFont.literata => NocheType.bookBody,
       ReaderFont.atkinson => NocheType.body,
-      // Pending coqui/requests/113-feature-library-needs-coqui-ui-reader-font-styles.md
-      // for NocheType.bookBodyLexend; uses distinct w400 weight meanwhile.
-      ReaderFont.lexend => NocheType.body,
+      ReaderFont.lexend => NocheType.bookBody,
     };
     final adapted = NocheType.forScript(base, language.script);
     final fontSize = language.script == 'Arab'
@@ -217,11 +229,7 @@ class ReaderSettings {
         : bodyLineHeight;
     final weight = language.script == 'Arab'
         ? adapted.fontWeight
-        : switch (font) {
-            ReaderFont.literata => FontWeight.w400,
-            ReaderFont.atkinson => FontWeight.w500,
-            ReaderFont.lexend => FontWeight.w400,
-          };
+        : FontWeight.w400;
     return adapted.copyWith(
       fontSize: fontSize,
       height: lineHeight / fontSize,
@@ -243,7 +251,9 @@ class ReaderSettings {
   static ReaderSettings fromJson(Object? value) {
     if (value is! Map) return const ReaderSettings();
     final rawStep = value['step'];
-    final step = rawStep is num ? rawStep.round().clamp(1, 7) : 4;
+    final step = rawStep is num && rawStep.isFinite
+        ? rawStep.round().clamp(1, 7)
+        : 4;
     final page = ReaderPageTheme.values.firstWhere(
       (e) => e.name == value['page'],
       orElse: () => ReaderPageTheme.night,
