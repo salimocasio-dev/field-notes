@@ -1082,8 +1082,9 @@ class Sombrilla extends Escena implements SetScene, SetOverSprites {
           fr(c, x + 10 - k, y + 1 + k, 4, 3, OUT);
         }
         for (var k = 0; k < 11; k++) {
-          fr(c, x + 1 + k, y + 2 + k, 2, 1, 0xFF1E40C8);
-          fr(c, x + 11 - k, y + 2 + k, 2, 1, 0xFF1E40C8);
+          // #4A6C8C muted slate-blue (ABGR; no red anywhere per Noche rules).
+          fr(c, x + 1 + k, y + 2 + k, 2, 1, 0xFF8C6C4A);
+          fr(c, x + 11 - k, y + 2 + k, 2, 1, 0xFF8C6C4A);
         }
       } else {
         fr(c, x + 1, y + 13, 12, 1, 0xFFD4C8C8);

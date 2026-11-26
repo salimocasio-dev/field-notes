@@ -3,11 +3,11 @@
 // - frog-seen: 0 px of the frog hidden by the baked set, outside the picture/window [22, 218), or under a nearer
 //   sprite (excluding his own held/fx overlays);
 // - spots-in-view: every visible person, dog and interactive small thing lies inside the picture and view window [22, 218);
-// - face-clear: in story 75 (`dibujo == 'circulo'`), no person or frog covers any pixel of `ojo_izq`, `ojo_der`,
+// - face-clear: in story 75 (`dibujo == 'circulo'`), no person, frog or dog covers any pixel of `ojo_izq`, `ojo_der`,
 //   `nariz`, `boca`;
 // - figure-clear: in story 76 (`dibujo == 'figura'`), no person, frog or dog covers any pixel of `cabeza`,
 //   `brazo_izq`, `brazo_der`, `mano_izq`, `mano_der`;
-// - feet-things-clear: in story 77, no person or frog covers either foot box of `pies` (`[121,159,12,8]`,
+// - feet-things-clear: in story 77, no person, frog or dog covers either foot box of `pies` (`[121,159,12,8]`,
 //   `[162,159,12,8]`), and `sombreros`, `gafas`, `chancletas` have 0 px hidden by the set or covered by another sprite;
 // - players-whole: in story 77, every player at `sol1`/`sol2`/`sol3` has 0 px outside the window or hidden by the set;
 // - abuela-manta: when abuela is on `manta`/`manta2`/`manta3`, her 24-px box lies inside the blanket [48..110] and
@@ -357,7 +357,7 @@ class SombrillaRules {
     }
 
     // 3. face-clear: in story 75 (`circulo`), nobody covers the 4 face boxes
-    if (dibujo == 'circulo') {
+    if (story == 75 && dibujo == 'circulo') {
       final who = <String>{};
       final n = charOverlapBoxes(faceBoxes, who);
       if (n > 0) {

@@ -30,8 +30,13 @@ void main() {
       expect(at, hasLength(2));
       final all = sombrillaDrawsOf(story);
       final picks = <Map<String, String>>[all.first];
-      for (final k in all.first.keys) {
-        for (final v in {for (final d in all) d[k]!}) {
+      final keys = {for (final d in all) ...d.keys};
+      for (final k in keys) {
+        final values = {
+          for (final d in all)
+            if (d[k] != null) d[k]!,
+        };
+        for (final v in values) {
           if (v == all.first[k]) continue;
           final pick = all.firstWhere((d) => d[k] == v);
           if (!picks.contains(pick)) picks.add(pick);
