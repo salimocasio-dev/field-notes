@@ -129,6 +129,7 @@ No N8 story records audio, calls Danny, buys anything or adds a package. Motion 
 - feature_map and feature_library each hold several N8 stories. A lane holds one story at a time, so they run in the order written.
 - A feature story that is ready before N8.2 merges does not start: it would have to draw its own copy of a shared piece.
 - The Arabic tests of Part 1.5 use the fake course of N2.2 (#85), which is merged. No N8 story waits for it.
+- N8.15 also waits for N3.3 (#97): both rebuild the Speak screen, and the calls plan lock is N3.3's. *(Architecture and security review, Nov 26.)*
 
 ---
 
@@ -231,6 +232,12 @@ New pieces:
 | `NocheQuietLock` | Rule 7 for locked things: on tap the dashed outline turns solid in `press` and the reason text goes from label to text colour; both return after `lockHold` over `move`. |
 | `NocheLtr` | Keeps the app's own English left to right inside a right-to-left screen (Part 1.5). |
 
+Three more things, from the architecture and security review of Nov 26:
+
+- `TouchSign` (`game_tiles.dart`, this package) is changed here and not in N8.8: it keeps its place and timing but rises and falls on `travel` with no overshoot, and stands still with reduced motion. feature_story's lane cannot change a file of this package.
+- Every new piece takes plain Flutter values. No new file imports `coqui_contracts`, and `NocheWindow` takes its picture as a child widget: it does not build `PixelView` itself. coqui_ui is on its way to depending on Flutter only.
+- `NocheWindow` takes a tag. Two windows with the same tag on two screens are one picture: when the second screen arrives, the window travels from the first one's rect to its own, as Flutter's `Hero` does. So no feature hands another feature a rect (N8.4).
+
 **Done when**
 
 - The gallery (`tool/gallery/noche_pieces.dart`) has a page where each piece can be played.
@@ -286,12 +293,13 @@ New pieces:
 
 **Differs from the board**
 
-- The lesson is feature_story's screen. This story hands it the window's start rect through the route (if `StoryRoute` has no place for it, file a request and open the lesson with a plain `pageIn` fade until it lands).
+- The lesson is feature_story's screen. This story does not hand it a rect: `StoryRoute` is in `coqui_contracts`, which is plain Dart with no screen types, and routes compare by value in the recorded runs. Both screens wrap the picture in a `NocheWindow` with the same tag (the story's id) and the piece does the move (N8.2). If N8.2 merged without the tag, file the request against coqui_ui and open the lesson with a plain `pageIn` fade until it lands. *(Architecture and security review, Nov 26.)*
 
 **Done when**
 
 - A test opens the place from the card and reads the window's rect at the start, the middle and the end, and the picture's scale at each (always the same).
 - Back is tested and takes `pageOut`.
+- With the fake on `Plan.free`: the card's play disc for a story that is not in the plan opens no story (N3.4, #98, unchanged). *(Architecture and security review, Nov 26.)*
 
 **Lane** lane:feature_map.
 
@@ -366,6 +374,7 @@ New pieces:
 - Tests for: the height change; a drag of 20 (returns), of 40 up (opens), of 40 down (Up next); the tap; the button.
 - The card's screen reader actions: "Open" and "Show what is next".
 - Screenshots of the place card for a new place, a half-done place and a finished place, both sizes.
+- With the fake on `Plan.free` and the coquí at a place past the free one: the swipe, the tap and the arrow all open the place as N3.4 (#98) built it, and the card's play disc opens no story that is not in the plan. *(Architecture and security review, Nov 26.)*
 
 **Lane** lane:feature_map.
 
@@ -395,6 +404,7 @@ It plays once. Leaving the map during it finishes it at once.
 
 - A test finishes the last story of a place in the fake and reads the four steps in order and their start times.
 - With reduced motion: the coquí is placed, the picture changes, the card changes with a `quick` fade.
+- With the fake on `Plan.free`, after the last story of the free place: the four steps play, and "Play first" on the new card opens no story that is not in the plan (N3.4, #98). *(Architecture and security review, Nov 26.)*
 
 **Lane** lane:feature_map.
 
@@ -418,7 +428,7 @@ It plays once. Leaving the map during it finishes it at once.
 **Differs from the board**
 
 - The end of a story had no board and no screen to follow; this one is new. If the app has an end screen, keep its content and give it this motion, and say so in the pull request.
-- The touch turn's hint (`TouchSign`) bounces today. It keeps its place and timing but rises and falls on `travel` with no overshoot, and stands still with reduced motion.
+- The touch turn's hint (`TouchSign`) bounces today. It keeps its place and timing but rises and falls on `travel` with no overshoot, and stands still with reduced motion. `TouchSign` is coqui_ui's (`game_tiles.dart`), so this change is built in N8.2, not in this lane. *(Architecture and security review, Nov 26.)*
 
 **Done when**
 
@@ -581,7 +591,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 #### N8.15 Speak: locked calls, a call, "Call done" (#233)
 
-- Labels: `agent:gemini`, `lane:feature_speaking`. Waits for N8.2, N4.6.
+- Labels: `agent:gemini`, `lane:feature_speaking`. Waits for N8.2, N4.6, N3.3 (#97).
 
 **Board** [`Noche-Motion-Llamada.dc.html`](noche/Noche-Motion-Llamada.dc.html).
 
@@ -602,6 +612,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 - The recorded call runs pass.
 - Tests: a locked tap changes nothing but the outline and the reason; the summary's pills arrive in order.
 - Screenshots of the call in each mic state and of "Call done", both sizes.
+- With the fake on `Plan.course` (no calls): N3.3's card (#97) stands in place of the call disc, no call route or session opens from anything this story adds, and a call that is not in the plan keeps N3.3's look. `NocheQuietLock` is for calls not reached yet. *(Architecture and security review, Nov 26.)*
 
 **Lane** lane:feature_speaking.
 
