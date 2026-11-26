@@ -23,7 +23,7 @@ typedef FakeTone = ({
 /// unknown, and is reported no more when it is taken out.
 ///
 /// What it does not do: no sound, no decoding, no gaps between lines; [muted] changes nothing it returns.
-class FakeClipPlayer implements ClipPlayer {
+class FakeClipPlayer implements ClipPlayer, VariableSpeedClipPlayer {
   FakeClipPlayer({this.clock, this.lengthOf});
 
   /// Moved on by each clip's length, when given.
@@ -32,8 +32,14 @@ class FakeClipPlayer implements ClipPlayer {
   /// A clip's length in ms, or null when there is no such clip.
   final int? Function(String clipId)? lengthOf;
 
-  /// Every clip [play] was asked for, in order.
+  /// Every clip [play] or [playAtRate] was asked for, in order.
   final List<String> played = [];
+
+  /// Playback rate of every [play] or [playAtRate] call, in order (parallel to [played]).
+  final List<double> playedRates = [];
+
+  /// The playback rate of the most recent [play] or [playAtRate] call, or null if none.
+  double? get lastRate => playedRates.isEmpty ? null : playedRates.last;
 
   /// Every clip [preload] was given, in order (duplicates and all, as it was asked).
   final List<String> preloaded = [];
@@ -75,15 +81,32 @@ class FakeClipPlayer implements ClipPlayer {
   }
 
   @override
-  Future<bool> play(String clipId, {Duration? limit}) async {
+  Future<bool> play(String clipId, {Duration? limit}) =>
+      _play(clipId, rate: 1.0, limit: limit);
+
+  @override
+  Future<bool> playAtRate(String clipId, {double rate = 1.0, Duration? limit}) {
+    if (!rate.isFinite || rate <= 0) {
+      throw ArgumentError.value(rate, 'rate', 'must be finite and positive');
+    }
+    return _play(clipId, rate: rate, limit: limit);
+  }
+
+  Future<bool> _play(
+    String clipId, {
+    required double rate,
+    Duration? limit,
+  }) async {
     played.add(clipId);
+    playedRates.add(rate);
     final f = lengthOf;
     if (f == null) return true;
     final len = f(clipId);
     if (len == null) return false;
+    final scaledLen = (len / rate).round();
     final cap = limit?.inMilliseconds;
-    final cut = cap != null && cap < len;
-    clock?.advance(Duration(milliseconds: cut ? cap : len));
+    final cut = cap != null && cap < scaledLen;
+    clock?.advance(Duration(milliseconds: cut ? cap : scaledLen));
     return !cut;
   }
 

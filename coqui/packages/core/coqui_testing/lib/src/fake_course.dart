@@ -38,17 +38,24 @@ Future<String> sampleFile(String path) async {
 /// What it does not do: a story or book that is not in the sample: [story] throws, [book] gives null. A clip
 /// without marks in the sample: [clip] gives null. [fixedClip] throws on a role it does not know. No audio files.
 class FakeCourseCatalog
-    implements CourseCatalog, RepasoCatalog, LanguageCatalog {
+    implements
+        CourseCatalog,
+        RepasoCatalog,
+        LanguageCatalog,
+        CallsCatalog,
+        MinAppCatalog {
   FakeCourseCatalog({
     SampleFetch? fetch,
     Map<String, String>? fixedClips,
     List<String>? goodbyeWords,
     this.repaso,
     Language? language,
+    int? minApp,
   }) : fetch = fetch ?? sampleFile,
        _fixedGiven = fixedClips,
        _goodbyeGiven = goodbyeWords,
-       _language = language ?? Language.spanish;
+       _language = language ?? Language.spanish,
+       _minAppGiven = minApp;
 
   /// The same sample places and stories in a test Arabic course
   /// ([LanguageDirection.rtl], `script: 'Arab'`, Arabic lines and words
@@ -59,18 +66,25 @@ class FakeCourseCatalog
     List<String>? goodbyeWords,
     RepasoData? repaso,
     Language? language,
+    int? minApp,
   }) : this(
          fetch: fetch ?? arabicSampleFile,
          fixedClips: fixedClips,
          goodbyeWords: goodbyeWords,
          repaso: repaso,
          language: language ?? arabicTestLanguage,
+         minApp: minApp,
        );
 
   final Language _language;
+  final int? _minAppGiven;
+  int? _minApp;
 
   @override
   Language get language => _language;
+
+  @override
+  int? get minApp => _minAppGiven ?? _minApp;
 
   @override
   RepasoData? repaso;
@@ -94,6 +108,7 @@ class FakeCourseCatalog
   List<ReviewPair> _pairs = const [];
   List<LevelItem> _levelItems = const [];
   Map<String, CallBrief> _calls = const {};
+  Map<String, List<CallBrief>> _callsByPlace = const {};
   Map<String, ClipInfo> _clips = const {};
   final Map<String, Future<Map<String, dynamic>>> _stories = {};
 
@@ -107,6 +122,7 @@ class FakeCourseCatalog
 
   Future<void> _load() async {
     final curso = await _json('datos/curso.json') as Map<String, dynamic>;
+    _minApp = (curso['minApp'] as num?)?.toInt();
     _places = [
       for (final l in curso['lugares'] as List)
         Place.fromJson(l as Map<String, dynamic>),
@@ -133,19 +149,20 @@ class FakeCourseCatalog
         LevelItem.fromJson(q as Map<String, dynamic>),
     ];
     final calls = await _json('datos/llamadas.json') as Map<String, dynamic>;
-    _calls = {
-      for (final e in calls.entries)
-        e.key: () {
-          final v = e.value as Map<String, dynamic>;
-          return CallBrief.fromJson(
-            e.key,
-            v,
-            agentId: v['agentId'] == null && v['agentid'] == null
-                ? language.callAgentId
-                : null,
-          );
-        }(),
-    };
+    final callsByPlace = <String, List<CallBrief>>{};
+    final mainCalls = <String, CallBrief>{};
+    for (final e in calls.entries) {
+      final list = _parsePlaceCalls(e.key, e.value);
+      callsByPlace[e.key] = List<CallBrief>.unmodifiable(list);
+      if (list.isNotEmpty) {
+        mainCalls[e.key] = list.firstWhere(
+          (c) => c.isMain,
+          orElse: () => list.first,
+        );
+      }
+    }
+    _callsByPlace = callsByPlace;
+    _calls = mainCalls;
     final fijos = await _json('datos/fijos.json') as Map<String, dynamic>;
     _fixed = (fijos['clips'] as Map).cast<String, String>();
     _goodbye = (fijos['despedidas'] as List).cast<String>();
@@ -176,6 +193,20 @@ class FakeCourseCatalog
       }
     }
     _loaded = true;
+  }
+
+  List<CallBrief> _parsePlaceCalls(String placeId, Object? raw) {
+    CallBrief parseOne(Map<String, dynamic> v) => CallBrief.fromJson(
+      placeId,
+      v,
+      agentId: v['agentId'] == null && v['agentid'] == null
+          ? language.callAgentId
+          : null,
+    );
+    if (raw is List) {
+      return [for (final item in raw) parseOne(item as Map<String, dynamic>)];
+    }
+    return [parseOne(raw as Map<String, dynamic>)];
   }
 
   // marcas.json: [startMs, endMs, lengthMs]
@@ -237,6 +268,20 @@ class FakeCourseCatalog
 
   @override
   CallBrief? callFor(String placeId) => _calls[placeId];
+
+  @override
+  List<CallBrief> callsFor(String placeId) {
+    final loaded = _callsByPlace[placeId];
+    if (loaded != null && loaded.length > 1) return loaded;
+    final single = callFor(placeId);
+    if (single == null) return const <CallBrief>[];
+    if (loaded != null &&
+        loaded.length == 1 &&
+        identical(loaded.single, single)) {
+      return loaded;
+    }
+    return List<CallBrief>.unmodifiable([single]);
+  }
 
   @override
   ClipInfo? clip(String id) => _clips[id];

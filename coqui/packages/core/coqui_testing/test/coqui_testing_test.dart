@@ -985,4 +985,215 @@ void main() {
       e.dispose();
     });
   });
+
+  group('fakeServices entitlements and multi-language wiring (#181)', () {
+    test('defaults to FakeEntitlements and matches course language', () {
+      final s = fakeServices();
+      expect(s.entitlements, isA<FakeEntitlements>());
+      expect(s.entitlements.plan, Plan.courseAndCalls);
+      expect(s.progressStores, isNull);
+      expect(s.availableCourses, isEmpty);
+      expect(s.progress.language, Language.spanish);
+
+      final ar = fakeServices(course: FakeCourseCatalog.arabic());
+      expect(ar.progress.language, arabicTestLanguage);
+    });
+
+    test('accepts custom entitlements and availableCourses', () {
+      final entitlements = FakeEntitlements(plan: Plan.free);
+      final courses = <CourseCatalog>[
+        FakeCourseCatalog(),
+        FakeCourseCatalog.arabic(),
+      ];
+      final s = fakeServices(
+        entitlements: entitlements,
+        availableCourses: courses,
+      );
+      expect(identical(s.entitlements, entitlements), isTrue);
+      expect(s.entitlements.plan, Plan.free);
+      expect(s.availableCourses, same(courses));
+      entitlements.dispose();
+    });
+  });
+
+  group('FakeProgressStore CallProgressStore and LanguageProgressStore', () {
+    test('tracks completed calls idempotently and ignores blanks', () {
+      final clock = FakeClock(0);
+      final store = FakeProgressStore(clock: clock);
+      final ProgressStore asBase = store;
+      expect(store, isA<CallProgressStore>());
+      expect(asBase.callDone('casa'), isFalse);
+
+      final savesBefore = store.saves;
+      asBase.markCallDone('');
+      asBase.markCallDone('   ');
+      expect(store.saves, savesBefore);
+      expect(asBase.callDone(''), isFalse);
+
+      // Works even when clock is 0 and stays idempotent.
+      asBase.markCallDone('casa');
+      expect(asBase.callDone('casa'), isTrue);
+      expect(store.saves, savesBefore + 1);
+
+      asBase.markCallDone('casa');
+      expect(store.saves, savesBefore + 1);
+
+      // Persists across export/import and clears on reset.
+      final exported = store.export();
+      final restored = FakeProgressStore(json: exported);
+      expect(restored.callDone('casa'), isTrue);
+      expect(restored.callDone('casa_agua'), isFalse);
+
+      restored.reset();
+      expect(restored.callDone('casa'), isFalse);
+    });
+
+    test('exposes language, stageMax, streakFreezes, and minutesOn', () {
+      final day1 = DateTime.utc(2026, 5, 1, 10);
+      final day2 = DateTime.utc(2026, 5, 2, 15);
+      final clock = FakeClock(day1.millisecondsSinceEpoch);
+      final store = FakeProgressStore(
+        clock: clock,
+        language: arabicTestLanguage,
+        streakFreezes: 2,
+      );
+      final ProgressStore asBase = store;
+      expect(store, isA<LanguageProgressStore>());
+      expect(asBase.language, arabicTestLanguage);
+      expect(asBase.stageMax, 4);
+      expect(asBase.streakFreezes, 2);
+      expect(asBase.minutesOn(day1), 0);
+
+      store.addMinutes(3.5);
+      store.addMinutes(1.5);
+      clock.now = day2.millisecondsSinceEpoch;
+      store.addMinutes(4.0);
+
+      expect(asBase.minutesOn(day1), 5.0);
+      expect(asBase.minutesOn(day2), 4.0);
+      expect(asBase.minutesOn(DateTime.utc(2026, 5, 3)), 0);
+
+      store.reset();
+      expect(asBase.minutesOn(day1), 0);
+      expect(asBase.minutesOn(day2), 0);
+    });
+  });
+
+  group('FakeCourseCatalog CallsCatalog and MinAppCatalog', () {
+    test(
+      'exposes single-object sample call via callsFor and default null minApp',
+      () async {
+        final cat = FakeCourseCatalog();
+        final CourseCatalog asBase = cat;
+        expect(cat, isA<CallsCatalog>());
+        expect(cat, isA<MinAppCatalog>());
+        await cat.load();
+        expect(asBase.minApp, isNull);
+        expect(asBase.callsFor('casa'), hasLength(1));
+        expect(asBase.callsFor('casa').single.id, cat.callFor('casa')!.id);
+        expect(asBase.callsFor('unknown'), isEmpty);
+      },
+    );
+
+    test('parses multi-call arrays and curso.json minApp', () async {
+      final cat = FakeCourseCatalog(
+        fetch: (path) async {
+          if (path == 'datos/curso.json') {
+            final base =
+                jsonDecode(await sampleFile(path)) as Map<String, dynamic>;
+            base['minApp'] = 42;
+            return jsonEncode(base);
+          }
+          if (path == 'datos/llamadas.json') {
+            return jsonEncode({
+              'casa': [
+                {
+                  'id': 'casa_agua',
+                  'title': 'Pedir agua',
+                  'minutos': 2,
+                  'job': 'ask for water',
+                  'opening': 'Hola',
+                  'isMain': false,
+                },
+                {
+                  'id': 'casa_main',
+                  'title': 'Visita',
+                  'minutos': 3,
+                  'job': 'visit',
+                  'opening': 'Pasa',
+                  'isMain': true,
+                },
+              ],
+            });
+          }
+          return sampleFile(path);
+        },
+      );
+      await cat.load();
+      final CourseCatalog asBase = cat;
+      expect(asBase.minApp, 42);
+      expect(asBase.minAppFor('la-lluvia'), 42);
+      expect(asBase.callsFor('casa').map((c) => c.id), [
+        'casa_agua',
+        'casa_main',
+      ]);
+      expect(cat.callFor('casa')!.id, 'casa_main');
+
+      final override = FakeCourseCatalog(minApp: 99);
+      await override.load();
+      expect(override.minApp, 99);
+    });
+
+    test('subclasses overriding callFor are respected by callsFor', () async {
+      final sub = _CallOverrideCatalog();
+      await sub.load();
+      expect(sub.callsFor('casa'), isEmpty);
+      expect(sub.callsFor('cocina').map((c) => c.id), ['cocina']);
+    });
+  });
+
+  group('FakeClipPlayer VariableSpeedClipPlayer', () {
+    test('records playback rates and scales fake clock duration', () async {
+      final clock = FakeClock(1000);
+      final player = FakeClipPlayer(clock: clock, lengthOf: (_) => 1000);
+      final ClipPlayer asBase = player;
+      expect(player, isA<VariableSpeedClipPlayer>());
+      expect(player.lastRate, isNull);
+
+      expect(await asBase.play('c1'), isTrue);
+      expect(clock.nowMs(), 2000);
+      expect(await asBase.playAtRate('c2', rate: 0.5), isTrue);
+      expect(clock.nowMs(), 4000);
+      expect(
+        await asBase.playAtRate(
+          'c3',
+          rate: 0.5,
+          limit: const Duration(milliseconds: 700),
+        ),
+        isFalse,
+      );
+      expect(clock.nowMs(), 4700);
+
+      expect(player.played, ['c1', 'c2', 'c3']);
+      expect(player.playedRates, [1.0, 0.5, 0.5]);
+      expect(player.lastRate, 0.5);
+
+      for (final bad in [0.0, -0.5, double.nan, double.infinity]) {
+        expect(() => player.playAtRate('c1', rate: bad), throwsArgumentError);
+      }
+    });
+  });
+}
+
+class _CallOverrideCatalog extends FakeCourseCatalog {
+  @override
+  CallBrief? callFor(String placeId) {
+    if (placeId != 'cocina') return null;
+    return CallBrief(
+      placeId: placeId,
+      minutes: 4,
+      job: 'Practice $placeId',
+      opening: 'Hola',
+    );
+  }
 }

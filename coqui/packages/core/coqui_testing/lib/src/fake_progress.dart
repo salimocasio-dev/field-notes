@@ -26,18 +26,35 @@ import 'package:coqui_testing/src/fake_platform.dart';
 /// What it does NOT do: no gaps, no `due` dates, no steps (`paso` on answers), no runs (`seguidas`, `fallos`),
 /// no `aciertos`, no parking or flag, no "next morning at 4 am" and none of the old local-time mix. A test that
 /// needs a word due seeds it with [put]. Nothing is written to a [KeyValueStore].
-class FakeProgressStore implements ProgressStore {
-  FakeProgressStore({Clock? clock, String? json})
-    : clock = clock ?? FakeClock() {
+class FakeProgressStore
+    implements ProgressStore, CallProgressStore, LanguageProgressStore {
+  FakeProgressStore({
+    Clock? clock,
+    String? json,
+    Language? language,
+    this.streakFreezes,
+  }) : clock = clock ?? FakeClock(),
+       _language = language ?? Language.spanish {
     _db = _load(json);
   }
 
   final Clock clock;
+  final Language _language;
+  final Map<String, double> _minutesByDay = <String, double>{};
   late Map<String, dynamic> _db;
   final StreamController<void> _changes = StreamController<void>.broadcast();
 
   /// How many times it saved (one a change).
   int saves = 0;
+
+  @override
+  Language get language => _language;
+
+  @override
+  int get stageMax => 4;
+
+  @override
+  int? streakFreezes;
 
   static Map<String, dynamic> _defaults() => {
     'palabras': <String, dynamic>{},
@@ -270,14 +287,53 @@ class FakeProgressStore implements ProgressStore {
   }
 
   @override
+  bool callDone(String callId) {
+    if (callId.trim().isEmpty) return false;
+    final llamadas = _db['llamadas'];
+    if (llamadas is! Map) return false;
+    final v = llamadas[callId];
+    return v != null && v != 0 && v != false;
+  }
+
+  @override
+  void markCallDone(String callId) {
+    if (callId.trim().isEmpty) return;
+    final existing = _db['llamadas'];
+    final Map<String, dynamic> llamadas;
+    if (existing is Map<String, dynamic>) {
+      llamadas = existing;
+    } else if (existing is Map) {
+      llamadas = Map<String, dynamic>.from(existing);
+      _db['llamadas'] = llamadas;
+    } else {
+      llamadas = <String, dynamic>{};
+      _db['llamadas'] = llamadas;
+    }
+    final v = llamadas[callId];
+    if (v == null || v == 0 || v == false) {
+      final t = _now;
+      llamadas[callId] = t == 0 ? 1 : t;
+      _save();
+    }
+  }
+
+  @override
   void addMinutes(double m) {
+    final dayKey = _day(_now);
     _db['minutos'] = ((_db['minutos'] as num?) ?? 0) + m;
-    _sub('dias').putIfAbsent(_day(_now), () => 1);
+    _minutesByDay[dayKey] = (_minutesByDay[dayKey] ?? 0) + m;
+    _sub('dias').putIfAbsent(dayKey, () => 1);
     _save();
   }
 
   @override
   double get minutes => ((_db['minutos'] as num?) ?? 0).toDouble();
+
+  @override
+  double minutesOn(DateTime day) {
+    final dayKey = day.toUtc().toIso8601String().substring(0, 10);
+    return _minutesByDay[dayKey] ?? 0;
+  }
 
   @override
   int get streak {
@@ -330,12 +386,14 @@ class FakeProgressStore implements ProgressStore {
   @override
   void import(String json) {
     _db = _load(json);
+    _minutesByDay.clear();
     _save();
   }
 
   @override
   void reset() {
     _db = _defaults();
+    _minutesByDay.clear();
     _save();
   }
 }
