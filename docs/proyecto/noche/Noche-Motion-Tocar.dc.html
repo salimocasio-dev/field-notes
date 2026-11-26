@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: a touch turn, and the end of a story</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+.tb{color:#A7B8C8;font-weight:600}
+.pill{pointer-events:none}
+
+.dash{display:block;height:8px;border-radius:4px;background:#37424D;overflow:hidden}
+.dash i{display:block;height:8px;border-radius:4px;background:#EEF3F7;transform:scaleX(0);transform-origin:0 50%;transition:transform 220ms cubic-bezier(.4,0,.2,1)}
+.dash.on i,[data-seq="2"] .d7 i,[data-seq="3"] .d7 i{transform:scaleX(1)}
+
+/* a touch turn: what he touches gets an outline. A miss is white and the line plays again; right is green with one ring */
+.hot{position:absolute;padding:0;border:0;border-radius:12px;background:transparent;box-shadow:0 0 0 3px rgba(238,243,247,0);transition:box-shadow 220ms cubic-bezier(.4,0,1,1)}
+[data-seq="1"] .h-miss{box-shadow:0 0 0 3px #EEF3F7;transition:box-shadow 140ms cubic-bezier(.2,0,0,1)}
+[data-seq="2"] .h-hit{box-shadow:0 0 0 3px #009E73;transition:box-shadow 140ms cubic-bezier(.2,0,0,1)}
+.hring{position:absolute;left:0;top:0;width:100%;height:100%;box-sizing:border-box;border:2px solid #009E73;border-radius:12px;opacity:0;pointer-events:none}
+[data-seq="2"] .hring{animation:hringOut 480ms cubic-bezier(.2,0,0,1) both}
+@keyframes hringOut{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(1.08)}}
+.lv{display:flex;align-items:center;gap:4px;height:24px;opacity:0;transition:opacity 140ms cubic-bezier(.2,0,0,1)}
+.lv span{width:4px;height:24px;border-radius:2px;background:#CC79A7;transform:scaleY(.15);animation:lvl 640ms ease-in-out infinite alternate;animation-play-state:paused}
+.lv span:nth-child(2){animation-duration:480ms;animation-delay:-150ms}
+.lv span:nth-child(3){animation-duration:760ms;animation-delay:-420ms}
+@keyframes lvl{from{transform:scaleY(.15)}to{transform:scaleY(1)}}
+[data-seq="1"] .lv{opacity:1}
+[data-seq="1"] .lv span{animation-play-state:running}
+
+/* the end: the picture stays and its window closes to 296; the turn's words leave, the story's result rises */
+.pic{position:absolute;left:0;top:64px;width:390px;height:400px;overflow:hidden;transition:top 320ms cubic-bezier(.2,0,0,1),height 320ms cubic-bezier(.2,0,0,1)}
+.pic img{position:absolute;left:-1px;top:-24px;width:392px;height:432px;image-rendering:pixelated;transition:top 320ms cubic-bezier(.2,0,0,1)}
+[data-seq="3"] .pic{top:0;height:296px}
+[data-seq="3"] .pic img{top:-80px}
+.hd,.turn{transition:opacity 140ms cubic-bezier(.4,0,1,1),visibility 0s linear 140ms}
+[data-seq="3"] .hd,[data-seq="3"] .turn{opacity:0;visibility:hidden}
+.end{position:absolute;left:0;top:296px;width:390px;height:548px;opacity:0;visibility:hidden}
+[data-seq="3"] .end{opacity:1;visibility:visible}
+[data-seq="3"] .e1{animation:rise 220ms cubic-bezier(.2,0,0,1) 200ms both}
+[data-seq="3"] .e2{animation:rise 220ms cubic-bezier(.2,0,0,1) 230ms both}
+[data-seq="3"] .e3{animation:rise 220ms cubic-bezier(.2,0,0,1) 260ms both}
+[data-seq="3"] .nw{animation:rise 220ms cubic-bezier(.2,0,0,1) calc(290ms + var(--i) * 30ms) both}
+[data-seq="3"] .e4{animation:rise 220ms cubic-bezier(.2,0,0,1) 410ms both}
+/* what the story gave him: each new word takes its first stage, and today's minutes grow, once, 480 ms */
+.grow{transform-origin:0 50%;transform:scaleX(0)}
+[data-seq="3"] .grow{animation:stage 480ms cubic-bezier(.2,0,0,1) calc(520ms + var(--i) * 30ms) both}
+@keyframes stage{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.mins i{display:block;height:8px;border-radius:4px;background:#EEF3F7;width:40%}
+[data-seq="3"] .mins i{animation:mins 480ms cubic-bezier(.2,0,0,1) 700ms both}
+@keyframes mins{from{width:40%}to{width:57%}}
+[data-seq="3"] .next{animation:rise 220ms cubic-bezier(.2,0,0,1) 860ms both}
+@media (prefers-reduced-motion:reduce){
+.pic,.pic img{transition:none!important}
+.e1,.e2,.e3,.e4,.nw,.next{animation-name:fadeOnly!important;animation-duration:140ms!important}
+.grow,.hring,.lv span{animation:none!important}
+[data-seq="3"] .grow{transform:scaleX(1)}
+}
+</style>
+</helmet>
+<div data-seq="{{ seq }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #12171D; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<header class="hd" style="height: 64px; box-sizing: border-box; padding: 0 16px 0 8px; display: flex; align-items: center; gap: 8px">
+<span aria-hidden="true" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+<div role="img" aria-label="Parts of the story" style="flex-grow: 1; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px"><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash d7"><i></i></span></div>
+<span aria-hidden="true" style="margin-left: 8px; width: 56px; height: 48px; box-sizing: border-box; border-radius: 24px; background: #EEF3F7; color: #12171D; display: flex; align-items: center; justify-content: center; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em">TXT</span>
+</header>
+<div class="pic"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="La cocina. La mesa, las sillas y el coquí.">
+<button type="button" class="hot h-miss" onClick="{{ miss }}" aria-label="The door" style="left: 152px; top: 46px; width: 78px; height: 118px"></button>
+<button type="button" class="hot h-hit" onClick="{{ hit }}" aria-label="The table" style="left: 84px; top: 196px; width: 250px; height: 150px"><span class="hring" aria-hidden="true"></span></button>
+</div>
+<section class="turn" lang="es" style="position: absolute; left: 0; right: 0; top: 464px; box-sizing: border-box; padding: 24px 24px 0">
+<div style="font: 700 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .08em; color: #A7B8C8">ABUELA</div>
+<div style="margin-top: 8px; display: flex; align-items: center; gap: 12px"><p style="margin: 0; font: 600 28px/36px 'Atkinson Hyperlegible Next', Arial, sans-serif">¿Dónde está la mesa?</p><div class="lv" aria-hidden="true"><span></span><span></span><span></span></div></div>
+<p style="margin: 8px 0 0; font: 500 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Toca <strong style="font-weight: 700; color: #EEF3F7">la mesa.</strong></p>
+</section>
+<div class="end">
+<div style="box-sizing: border-box; padding: 24px 16px 0">
+<div class="e1" style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">STORY 3 OF 9 · <span lang="es">LA COCINA</span></div>
+<h1 class="e2" lang="es" style="margin: 8px 0 0; font: 800 32px/40px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</h1>
+<div class="e3" style="margin-top: 24px; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">3 NEW WORDS</div>
+<div style="margin-top: 4px">
+<div class="nw" style="--i:0; height: 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #37424D"><span lang="es" style="font: 600 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">tengo hambre</span><span role="img" aria-label="Stage 1 of 4" style="width: 96px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 25%"></i></span></div>
+<div class="nw" style="--i:1; height: 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #37424D"><span lang="es" style="font: 600 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">la mesa</span><span role="img" aria-label="Stage 1 of 4" style="width: 96px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 25%"></i></span></div>
+<div class="nw" style="--i:2; height: 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #37424D"><span lang="es" style="font: 600 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">la cuchara</span><span role="img" aria-label="Stage 1 of 4" style="width: 96px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 25%"></i></span></div>
+</div>
+<div class="e4" style="margin-top: 24px">
+<div style="display: flex; align-items: baseline; justify-content: space-between"><span style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">TODAY</span><span style="font: 700 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">{{ mins }} of 30 min</span></div>
+<span class="mins" role="img" aria-label="Minutes listened today" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i></i></span>
+</div>
+</div>
+<div class="next" style="position: absolute; left: 16px; right: 16px; bottom: 24px"><button type="button" class="pr" onClick="{{ again }}" style="width: 100%; height: 56px; border: 0; border-radius: 28px; background: #E69F00; color: #14110F; font: 700 18px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Next: review · 4 min</button></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+componentWillUnmount() { this.clearAll(); }
+st() { return this.state || {}; }
+later(ms, fn) { var self = this; if (!this._t) this._t = []; this._t.push(setTimeout(function () { fn(self); }, ms)); }
+clearAll() { (this._t || []).forEach(function (t) { clearTimeout(t); }); this._t = []; }
+renderVals() {
+var self = this, s = this.st(), seq = s.seq || 0;
+return {
+seq: String(seq), mins: s.mins || 12,
+// a miss: the outline stays 1.3 s while the line plays again
+miss: function () { if ((self.st().seq || 0) > 1) return; self.clearAll(); self.setState({ seq: 1 }); self.later(1300, function (c) { c.setState({ seq: 0 }); }); },
+// right: the ring, the last dash, and 900 ms later the story's end
+hit: function () { if ((self.st().seq || 0) > 1) return; self.clearAll(); self.setState({ seq: 2 }); self.later(900, function (c) { c.setState({ seq: 3 }); }); self.later(1700, function (c) { c.setState({ mins: 17 }); }); },
+again: function () { self.clearAll(); self.setState({ seq: 0, mins: 12 }); }
+};
+}
+}
+</script>
+</body>
+</html>
