@@ -845,6 +845,9 @@ class NocheWordTile extends StatelessWidget {
   final bool cross;
   final int? number;
   final bool sign;
+
+  /// Accepted for API parity with `WordTile`; Noche keeps miss feedback calm
+  /// (white outline, no shaking).
   final int shake;
   final bool still;
   final bool expand;

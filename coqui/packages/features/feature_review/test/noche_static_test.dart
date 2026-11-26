@@ -23,21 +23,20 @@ void main() {
       .replaceAll(RegExp(r'/\*[\s\S]*?\*/'), '')
       .replaceAll(RegExp(r'//.*$', multiLine: true), '');
 
-  test(
-    'lib/ has zero raw Color(0x...), fontFamily, or flutter/material.dart',
-    () {
-      for (final f in dartFiles(libDir)) {
-        final src = stripComments(f.readAsStringSync());
-        expect(src, isNot(contains('Color(0x')), reason: f.path);
-        expect(src, isNot(contains('fontFamily')), reason: f.path);
-        expect(
-          src,
-          isNot(contains('package:flutter/material.dart')),
-          reason: f.path,
-        );
-      }
-    },
-  );
+  test('lib/ has zero raw hex Color literals, fontFamily, or flutter/material.dart', () {
+    final hexColorRe = RegExp(r'Color\s*\(\s*0x');
+    final fontRe = RegExp(r'\bfontFamily\b');
+    for (final f in dartFiles(libDir)) {
+      final src = stripComments(f.readAsStringSync());
+      expect(hexColorRe.allMatches(src), isEmpty, reason: f.path);
+      expect(fontRe.allMatches(src), isEmpty, reason: f.path);
+      expect(
+        src,
+        isNot(contains('package:flutter/material.dart')),
+        reason: f.path,
+      );
+    }
+  });
 
   test('lib/src/ui/ has zero CoquiColors or CoquiText', () {
     for (final f in dartFiles(uiDir)) {
