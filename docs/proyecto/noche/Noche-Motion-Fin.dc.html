@@ -63,7 +63,7 @@ button{font-family:inherit}
 <div data-seq="{{ seq }}" data-miss="{{ miss1 }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #12171D; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
 
 <header style="height: 56px; box-sizing: border-box; padding: 0 16px 0 8px; display: flex; align-items: center; gap: 8px">
-<span class="hx" aria-hidden="true" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+<button type="button" class="hx" onClick="{{ again }}" aria-label="Close the review. Here it starts the board again." style="width: 48px; height: 48px; padding: 0; border: 0; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
 <div role="img" aria-label="Review: {{ parts }} of 9 parts done" style="flex-grow: 1; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px"><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash d9"><i></i></span></div>
 <span aria-hidden="true" style="width: 48px; height: 48px"></span>
 </header>
@@ -85,6 +85,7 @@ button{font-family:inherit}
 <h1 class="e1" style="margin: 0; font: 700 24px/28px 'Bricolage Grotesque', Arial, sans-serif">Done</h1>
 <div class="e2" style="margin-top: 8px; font: 500 16px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">7 moving up · 2 coming back soon</div>
 <div class="e3" style="margin-top: 24px"><div style="font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Moving up</div><div style="margin-top: 4px; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">You'll see these less often</div></div>
+<!-- The pictures on these word tiles are stand-ins cut from scene pictures. The build keeps the review's own word pictures, never a story's picture. -->
 <div class="up" style="margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 12px">
 <div class="wt" style="--i:0">
 <span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -150px; top: -60px; width: 392px; height: 432px; image-rendering: pixelated"></span>

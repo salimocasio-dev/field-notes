@@ -94,6 +94,7 @@ button{font-family:inherit}
 <div class="lk" style="width: 132px; height: 120px; box-sizing: border-box; padding: 0 12px; border: 1px dashed #33506B; border-radius: 12px 12px 2px 2px; color: #A7B8C8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span style="font: 600 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #EEF3F7">Come back when you learn more words.</span></div>
 <button type="button" class="op pr" onClick="{{ openSheet }}" style="width: 132px; height: 120px; box-sizing: border-box; padding: 0 12px; border: 1px dashed #A7B8C8; border-radius: 12px 12px 2px 2px; background: transparent; color: #EEF3F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; font: 700 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>A new story at your level</span></button>
 </div></div>
+<!-- The picture of the new story is a stand-in cut from a scene picture. The build shows a written story as the Library shows one today, never a story's picture reused. -->
 <div class="it newit"><div style="width: 104px">
 <span style="position: relative; display: block; height: 120px; overflow: hidden; border-radius: 12px 12px 2px 2px"><img src="/_blob/40d38295cde0422d18f57b9c9700ea0a" alt="" style="position: absolute; left: -150px; top: -150px; width: 392px; height: 432px; image-rendering: pixelated"><span style="position: absolute; left: 8px; top: 8px; height: 24px; padding: 0 8px; display: flex; align-items: center; border-radius: 12px; background: #0C1926; color: #EEF3F7; font: 700 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em">NEW</span></span>
 <span lang="es" style="display: block; margin-top: 20px; font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">En la cocina</span>
@@ -175,7 +176,8 @@ topic: String(s.topic || 0),
 // which topic is chosen, for screen readers
 a: { tp0: String((s.topic || 0) === 0), tp1: String(s.topic === 1), tp2: String(s.topic === 2) },
 isNew: s.isNew ? '1' : '0',
-openSheet: function () { self.clearAll(); self.setState({ sheet: 1, wait: 0 }); },   // a story already written stays on the shelf
+// while a story is being written the slot does nothing, so the story always lands; one already written stays on the shelf
+openSheet: function () { if ((self.state || {}).wait) return; self.clearAll(); self.setState({ sheet: 1 }); },
 closeSheet: function () { if (!(self.state || {}).wait) self.setState({ sheet: 0 }); },
 topic0: set({ topic: 0 }),
 topic1: set({ topic: 1 }),
