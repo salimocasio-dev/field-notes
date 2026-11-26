@@ -6,6 +6,7 @@ Fail-open on unknown stdin formats.
 """
 from __future__ import annotations
 
+import fnmatch
 import json
 import os
 import re
@@ -251,6 +252,48 @@ def _is_paid_workflow_dispatch(cmd: str) -> bool:
     return False
 
 
+def _is_glob_pathspec(pathspec: str) -> bool:
+    return any(ch in pathspec for ch in ("*", "?", "["))
+
+
+def _glob_covers_cuentos(pathspec: str, effective_cwd: str, cuentos_abs: str) -> bool:
+    norm = pathspec.replace("\\", "/")
+    is_abs = norm.startswith("/")
+    parts = [p for p in norm.split("/") if p not in ("", ".")]
+    static_parts: list[str] = []
+    glob_parts: list[str] = []
+    for idx, part in enumerate(parts):
+        if _is_glob_pathspec(part):
+            glob_parts = parts[idx:]
+            break
+        static_parts.append(part)
+
+    if is_abs:
+        prefix_raw = "/" + "/".join(static_parts)
+    else:
+        prefix_raw = os.path.join(effective_cwd, *static_parts) if static_parts else effective_cwd
+    prefix_abs = os.path.realpath(prefix_raw)
+
+    if prefix_abs == cuentos_abs or prefix_abs.startswith(cuentos_abs + os.sep):
+        return True
+    if not cuentos_abs.startswith(prefix_abs + os.sep):
+        return False
+
+    rel_cuentos = os.path.relpath(cuentos_abs, prefix_abs).replace("\\", "/")
+    rel_parts = rel_cuentos.split("/")
+    glob_pat = "/".join(glob_parts)
+    candidates = ["/".join(rel_parts[:i]) for i in range(1, len(rel_parts) + 1)]
+    candidates.append(rel_cuentos + "/story.json")
+    patterns = [glob_pat]
+    if glob_pat.startswith("**/"):
+        patterns.append(glob_pat[3:])
+    return any(
+        fnmatch.fnmatchcase(cand, pat)
+        for cand in candidates
+        for pat in patterns
+    )
+
+
 def _path_covers_cuentos(pathspec: str, git_cwd: str | None, repo_root: str | None) -> bool:
     if pathspec in ("*", ".", "./", "..", "../", "historia", "historia/", ":/", ":(top)"):
         if repo_root is None:
@@ -262,6 +305,12 @@ def _path_covers_cuentos(pathspec: str, git_cwd: str | None, repo_root: str | No
         return True
     if re.search(r"(^|[/\\])historia[/\\]cuentos([/\\]|$)", pathspec):
         return True
+    if _is_glob_pathspec(pathspec):
+        if repo_root is None:
+            return True
+        effective_cwd = os.path.realpath(git_cwd or os.getcwd())
+        cuentos_abs = os.path.realpath(os.path.join(repo_root, "historia", "cuentos"))
+        return _glob_covers_cuentos(pathspec, effective_cwd, cuentos_abs)
     if repo_root:
         effective_cwd = os.path.realpath(git_cwd or os.getcwd())
         target_abs = os.path.realpath(os.path.join(effective_cwd, pathspec))
