@@ -1,5 +1,6 @@
 /// Lesson direction gallery page (#49): Spanish (LTR) and Arabic (RTL)
-/// side-by-side proof of LessonFrame, LessonSpeechBubble, and unmirrored PixelView.
+/// side-by-side proof of Noche lesson chrome, LessonSpeechBubble, and
+/// unmirrored PixelView.
 library;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
@@ -35,8 +36,8 @@ final Language lessonDirectionArabicLanguage = Language(
   },
 );
 
-/// Renders a [LessonFrame] with a [LessonSpeechBubble] over an unmirrored
-/// [PixelView] scene for [language].
+/// Renders a Noche dark lesson layout with a [LessonSpeechBubble] over an
+/// unmirrored [PixelView] scene for [language].
 class LessonDirectionGalleryPage extends StatelessWidget {
   const LessonDirectionGalleryPage({super.key, required this.language});
 
@@ -53,39 +54,115 @@ class LessonDirectionGalleryPage extends StatelessWidget {
 
     return Directionality(
       textDirection: language.textDirection,
-      child: LessonFrame(
-        onClose: () {},
-        onSound: () {},
-        progress: const LessonProgressDashes(segments: 5, done: 2),
-        language: language,
-        caption: caption,
-        picture: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            PictureFrame(
-              child: PixelView(
-                pixels: sampleScene(196, 216),
-                width: 196,
-                height: 216,
-              ),
-            ),
-            PositionedDirectional(
-              top: 10,
-              start: 12,
-              end: 12,
-              child: Align(
-                alignment: AlignmentDirectional.topCenter,
-                child: LessonSpeechBubble(
-                  text: bubbleText,
-                  language: language,
-                  tailSide: BubbleTailSide.bottom,
-                  maxWidth: 230,
+      child: ColoredBox(
+        color: NocheColors.lessonGround,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 24),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 56,
+                  child: Row(
+                    children: [
+                      Pressable(
+                        onPressed: () {},
+                        semanticLabel: 'Close',
+                        builder: (context, _) => const SizedBox.square(
+                          dimension: NocheSize.touch,
+                          child: Center(
+                            child: NocheIcon(
+                              NocheIcons.close,
+                              size: 24,
+                              color: NocheColors.text,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      const Expanded(
+                        child: NocheDashes(
+                          states: [
+                            NocheDashState.done,
+                            NocheDashState.done,
+                            NocheDashState.current,
+                            NocheDashState.notYet,
+                            NocheDashState.notYet,
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Pressable(
+                        onPressed: () {},
+                        semanticLabel: 'Sound',
+                        builder: (context, _) => const SizedBox.square(
+                          dimension: NocheSize.touch,
+                          child: Center(
+                            child: NocheIcon(
+                              NocheIcons.speaker,
+                              size: 24,
+                              color: NocheColors.text,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            PictureFrame(
+                              child: PixelView(
+                                pixels: sampleScene(196, 216),
+                                width: 196,
+                                height: 216,
+                              ),
+                            ),
+                            PositionedDirectional(
+                              top: 10,
+                              start: 12,
+                              end: 12,
+                              child: Align(
+                                alignment: AlignmentDirectional.topCenter,
+                                child: LessonSpeechBubble(
+                                  text: bubbleText,
+                                  language: language,
+                                  tailSide: BubbleTailSide.bottom,
+                                  maxWidth: 230,
+                                  dark: true,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          caption,
+                          textAlign: TextAlign.center,
+                          textDirection: language.textDirection,
+                          locale: language.locale,
+                          style: NocheType.forScript(
+                            NocheType.lessonPrompt.copyWith(
+                              color: NocheColors.text,
+                            ),
+                            language.script,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                NochePlayDisc(onPressed: () {}, semanticLabel: 'Start'),
+              ],
             ),
-          ],
+          ),
         ),
-        bottom: [LessonStartButton(onPressed: () {})],
       ),
     );
   }

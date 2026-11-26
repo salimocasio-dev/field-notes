@@ -300,7 +300,7 @@ final d = 'plain \\ \' quote';
   });
 
   group('ligatures are off: "fi", "fl", "ffi" and "ffl" draw plain letters', () {
-    test('every CoquiText style, pixelifyStyle and the theme\'s text styles say so', () {
+    test('every CoquiText style and the theme\'s text styles say so', () {
       for (final e in CoquiText.all.entries) {
         expect(
           e.value.fontFeatures,
@@ -308,11 +308,6 @@ final d = 'plain \\ \' quote';
           reason: e.key,
         );
       }
-      expect(pixelifyStyle().fontFeatures, containsAll(coquiNoLigatures));
-      expect(
-        pixelifyStyle(fontWeight: FontWeight.w700).fontFeatures,
-        containsAll(coquiNoLigatures),
-      );
       expect(coquiNoLigatures, contains(const FontFeature.disable('liga')));
       expect(coquiNoLigatures, contains(const FontFeature.disable('clig')));
       // A style that asks for another feature (the page count's tabular figures) keeps both.
