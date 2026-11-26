@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:feature_story/src/runner/split_story.dart';
 
 /// The folder that holds `historia/`: [from] or its nearest parent that has one.
 Directory findRoot([Directory? from]) {
@@ -25,11 +26,18 @@ Directory findRoot([Directory? from]) {
   }
 }
 
-class DiskCourse implements CourseCatalog {
-  DiskCourse(this.root) : _hist = '${root.path}/historia';
+class DiskCourse implements CourseCatalog, LanguageCatalog {
+  DiskCourse(this.root, {this.useSplit = false, Language? language})
+    : language = language ?? Language.spanish,
+      _hist = '${root.path}/historia',
+      _content = '${root.path}/content';
 
   final Directory root;
+  final bool useSplit;
+  @override
+  final Language language;
   final String _hist;
+  final String _content;
   List<Place> _places = const [];
   Map<String, StoryMeta> _metas = const {};
   Map<String, String> _fixed = const {};
@@ -37,10 +45,18 @@ class DiskCourse implements CourseCatalog {
   Set<String> _have = {};
   Map<String, List<int>> _marks = {};
   String _version = '0';
+  Map<String, String> _wordTable = const {};
   final Map<String, Map<String, dynamic>> _stories = {};
+  final Map<String, Map<String, dynamic>> _games = {};
+  final Map<String, Map<String, dynamic>> _splitLines = {};
 
   dynamic _json(String path) =>
       jsonDecode(File('$_hist/$path').readAsStringSync());
+
+  dynamic _contentJson(String path) =>
+      jsonDecode(File('$_content/$path').readAsStringSync());
+
+  Map<String, String> get wordTable => _wordTable;
 
   @override
   Future<void> load() async {
@@ -70,6 +86,12 @@ class DiskCourse implements CourseCatalog {
       for (final e in marks.entries)
         e.key: [for (final m in e.value as List) (m as num).toInt()],
     };
+    if (useSplit) {
+      _wordTable = parseStoryWordTable(
+        _contentJson('lines/${language.code}/words.json'),
+        expectedLang: language.code,
+      );
+    }
   }
 
   @override
@@ -79,9 +101,34 @@ class DiskCourse implements CourseCatalog {
   @override
   StoryMeta? meta(String id) => _metas[id];
 
+  /// Reads a shared game file (`content/games/<id>.json`).
+  Future<Map<String, dynamic>> game(String id) async => _games[id] ??=
+      Map<String, dynamic>.from(_contentJson('games/$id.json') as Map);
+
+  /// Reads a per-language lines file (`content/lines/<lang>/<id>.json`).
+  Future<Map<String, dynamic>> lines(String id) async =>
+      _splitLines[id] ??= Map<String, dynamic>.from(
+        _contentJson('lines/${language.code}/$id.json') as Map,
+      );
+
   @override
-  Future<Map<String, dynamic>> story(String id) async => _stories[id] ??=
-      Map<String, dynamic>.from(_json('cuentos/$id.json') as Map);
+  Future<Map<String, dynamic>> story(String id) async {
+    final cached = _stories[id];
+    if (cached != null) return cached;
+    if (useSplit) {
+      final g = await game(id);
+      final l = await lines(id);
+      return _stories[id] = joinSplitStory(
+        game: g,
+        lines: l,
+        wordTable: _wordTable,
+        expectedLang: language.code,
+      );
+    }
+    return _stories[id] = Map<String, dynamic>.from(
+      _json('cuentos/$id.json') as Map,
+    );
+  }
 
   /// The bytes of a story file (for its SHA-256).
   List<int> storyBytes(String id) =>

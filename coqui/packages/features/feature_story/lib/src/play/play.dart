@@ -18,6 +18,7 @@ import 'package:feature_story/src/play/virtual_parts.dart';
 import 'package:feature_story/src/runner/observer.dart';
 import 'package:feature_story/src/runner/pending.dart';
 import 'package:feature_story/src/runner/renderer.dart';
+import 'package:feature_story/src/runner/split_story.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_runner.dart';
 import 'package:feature_story/src/runner/story_view.dart';
@@ -485,6 +486,8 @@ List<Map<String, dynamic>> speechInTimeOrder(
 /// - [onFrame]: optional callback run after each headless frame `(scene, W, F)` is drawn.
 Future<Map<String, dynamic>> play({
   required Map<String, dynamic> story,
+  Map<String, dynamic>? lines,
+  Map<String, String> wordTable = const {},
   required String plan,
   Map<String, String> draws = const {},
   required int seed,
@@ -512,12 +515,18 @@ Future<Map<String, dynamic>> play({
   if (!playPlans.contains(plan)) {
     throw ArgumentError.value(plan, 'plan', 'right, wrong or alternate');
   }
-  final id = story['id'] as String;
+  final assembled = assembleStory(
+    story,
+    lines: lines,
+    wordTable: wordTable,
+    expectedLang: lines != null ? course.language.code : null,
+  );
+  final id = assembled['id'] as String;
   final timers = StoryTimers();
   final rng = CountingRng(Mulberry32(seed));
   final scene = sceneFor(rng);
   final sounds = <Object?>[];
-  final watcher = _Watcher(timers, story, sounds);
+  final watcher = _Watcher(timers, assembled, sounds);
   final clock = _VirtualClock(timers);
   final player = VirtualClipPlayer(timers, course);
   final rec = RecordingProgress(progress, timers);
@@ -525,7 +534,8 @@ Future<Map<String, dynamic>> play({
   final mem = memory ?? _KeyValueMemory();
   final runner = StoryRunner(
     storyId: id,
-    story: story,
+    story: assembled,
+    wordTable: wordTable,
     E: scene,
     course: course,
     clips: player,
@@ -632,7 +642,7 @@ Future<Map<String, dynamic>> play({
           end: end,
           runner: runner,
           scene: scene,
-          story: story,
+          story: assembled,
           watcher: watcher,
           driver: driver,
           rec: rec,
@@ -651,7 +661,7 @@ Future<Map<String, dynamic>> play({
     },
   );
   final r = await done.future;
-  if (r == null) return _failed(story, plan, seed, errors, timers);
+  if (r == null) return _failed(assembled, plan, seed, errors, timers);
   final placeInfo = _where(course, id);
   return <String, dynamic>{
     'story': id,
@@ -659,8 +669,8 @@ Future<Map<String, dynamic>> play({
     'seed': seed,
     'list': list ?? placeInfo.$1,
     'place': place ?? placeInfo.$2,
-    'scene': story['scene'],
-    'tipo': jsTruthy(story['tipo']) ? story['tipo'] : null,
+    'scene': assembled['scene'],
+    'tipo': jsTruthy(assembled['tipo']) ? assembled['tipo'] : null,
     'storySha256': storySha256,
     'page':
         page ??
