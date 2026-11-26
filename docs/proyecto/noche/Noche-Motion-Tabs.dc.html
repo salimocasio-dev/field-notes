@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: tabs, chips and switches</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&family=Literata:wght@500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+
+/* press: 90 ms down, 140 ms back */
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+
+/* a tab's content: the old one fades in 90 ms, the new one comes 16 px from the side of the choice */
+.pane{position:absolute;left:0;top:0;width:390px;height:844px;overflow:hidden;opacity:0;visibility:hidden;transition:opacity 90ms cubic-bezier(.4,0,1,1),visibility 0s linear 90ms}
+.pane.on{opacity:1;visibility:visible;transition:opacity 220ms cubic-bezier(.2,0,0,1) 60ms,visibility 0s}
+.pane.on.fwd{animation:paneFwd 220ms cubic-bezier(.2,0,0,1) 60ms both}
+.pane.on.back{animation:paneBack 220ms cubic-bezier(.2,0,0,1) 60ms both}
+@keyframes paneFwd{from{transform:translateX(16px)}to{transform:translateX(0)}}
+@keyframes paneBack{from{transform:translateX(-16px)}to{transform:translateX(0)}}
+
+/* orange lands last: 80 ms after the content, 8 px up, once */
+.pane.on .next{animation:rise 220ms cubic-bezier(.2,0,0,1) 140ms both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* results settle: bars grow once when their screen arrives, 30 ms apart */
+.pane.on .bar{animation:grow 480ms cubic-bezier(.2,0,0,1) 120ms both}
+.pane.on .col:nth-child(2) .bar{animation-delay:150ms}
+.pane.on .col:nth-child(3) .bar{animation-delay:180ms}
+.pane.on .col:nth-child(4) .bar{animation-delay:210ms}
+.pane.on .col:nth-child(n+5) .bar{animation-delay:240ms}
+@keyframes grow{from{clip-path:inset(100% 0 0 0 round 8px)}to{clip-path:inset(0 0 0 0 round 8px)}}
+.pane.on .fillbar{animation:fill 480ms cubic-bezier(.2,0,0,1) 180ms both}
+@keyframes fill{from{clip-path:inset(0 100% 0 0 round 4px)}to{clip-path:inset(0 0 0 0 round 4px)}}
+
+.pill,.thumb,.mk{pointer-events:none}
+
+/* tab bar: one pill travels; it tucks under the Map disc */
+.tb{color:#A7B8C8;font-weight:600;transition:color 140ms cubic-bezier(.2,0,0,1)}
+[data-tab="lib"] .t-lib,[data-tab="words"] .t-words,[data-tab="map"] .t-map,[data-tab="speak"] .t-speak,[data-tab="me"] .t-me{color:#EEF3F7;font-weight:700}
+.ic,.disc{transition:transform 140ms cubic-bezier(.2,0,0,1)}
+.tb:active .ic{transform:scale(.9);transition-duration:90ms}
+.tb:active .disc{transform:scale(.94);transition-duration:90ms}
+.pill{transition:transform 220ms cubic-bezier(.4,0,.2,1),opacity 140ms cubic-bezier(.2,0,0,1)}
+[data-tab="lib"] .pill{transform:translateX(0)}
+[data-tab="words"] .pill{transform:translateX(71.2px)}
+[data-tab="map"] .pill{transform:translateX(142.4px) scale(.5);opacity:0}
+[data-tab="speak"] .pill{transform:translateX(213.6px)}
+[data-tab="me"] .pill{transform:translateX(284.8px)}
+
+/* segmented: the thumb travels, the words change colour in place */
+.thumb{transition:transform 220ms cubic-bezier(.4,0,.2,1)}
+[data-seg="1"] .thumb{transform:translateX(116px)}
+[data-seg="2"] .thumb{transform:translateX(232px)}
+.sg{color:#EEF3F7;font-weight:600;transition:color 140ms cubic-bezier(.2,0,0,1)}
+.sg2{color:#A7B8C8}
+[data-seg="0"] .sg0,[data-seg="1"] .sg1,[data-seg="2"] .sg2{color:#0C1926;font-weight:700}
+
+/* chips: one white mark slides from the old chip to the new one */
+.mk{transition:left 220ms cubic-bezier(.4,0,.2,1),width 220ms cubic-bezier(.4,0,.2,1)}
+.ch{color:#EEF3F7;font-weight:600;transition:color 140ms cubic-bezier(.2,0,0,1)}
+[data-topic="0"] .mk-t{left:0;width:96px}
+[data-topic="1"] .mk-t{left:104px;width:96px}
+[data-topic="2"] .mk-t{left:208px;width:112px}
+[data-topic="0"] .tp0,[data-topic="1"] .tp1,[data-topic="2"] .tp2{color:#0C1926;font-weight:700}
+[data-shelf="all"] .mk-s{left:0;width:52px}
+[data-shelf="stories"] .mk-s{left:60px;width:80px}
+[data-shelf="books"] .mk-s{left:148px;width:72px}
+[data-shelf="all"] .sh0,[data-shelf="stories"] .sh1,[data-shelf="books"] .sh2{color:#0C1926;font-weight:700}
+.pl{color:#A7B8C8}
+[data-place="0"] .mk-p{left:0;width:84px}
+[data-place="1"] .mk-p{left:92px;width:96px}
+[data-place="2"] .mk-p{left:196px;width:96px}
+[data-place="0"] .pl0,[data-place="1"] .pl1,[data-place="2"] .pl2{color:#0C1926;font-weight:700}
+
+/* a filtered shelf closes up: what leaves fades in 140 ms, the rest travels */
+.it{flex:none;overflow:hidden;max-width:110px;margin-right:12px;transition:max-width 220ms cubic-bezier(.4,0,.2,1),margin 220ms cubic-bezier(.4,0,.2,1),opacity 140ms cubic-bezier(.2,0,0,1)}
+[data-shelf="stories"] .it-book,[data-shelf="books"] .it-story{max-width:0;margin-right:0;opacity:0}
+
+/* content under a segmented control or a chip row follows the choice */
+.swA.fwd{animation:swFwdA 220ms cubic-bezier(.2,0,0,1) both}
+.swB.fwd{animation:swFwdB 220ms cubic-bezier(.2,0,0,1) both}
+.swA.back{animation:swBackA 220ms cubic-bezier(.2,0,0,1) both}
+.swB.back{animation:swBackB 220ms cubic-bezier(.2,0,0,1) both}
+@keyframes swFwdA{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes swFwdB{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes swBackA{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes swBackB{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+.due{color:#E69F00}
+.nd{color:#A7B8C8}
+
+/* reduced motion: every move is a 140 ms fade in place */
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+.pane.on.fwd,.pane.on.back{animation:none!important}
+.swA.fwd,.swB.fwd,.swA.back,.swB.back{animation:fadeOnly 140ms linear both!important}
+.pane.on .next,.pane.on .bar,.pane.on .fillbar{animation:none!important}
+.pill,.thumb,.mk,.it,.pr,.ic,.disc{transition-duration:0s!important}
+}
+</style>
+</helmet>
+<div data-tab="{{ tab }}" data-seg="{{ seg }}" data-topic="{{ topic }}" data-shelf="{{ shelf }}" data-place="{{ place }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0C1926; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+
+<!-- Biblioteca -->
+<div class="{{ cLib }}">
+<header style="height: 64px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<div><div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">SPANISH</div><h1 style="margin: 4px 0 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Library</h1></div>
+<button type="button" class="pr" style="height: 48px; padding: 0 16px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">+ Add your own</button>
+</header>
+<section style="box-sizing: border-box; padding: 8px 16px 0">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">A NEW STORY AT YOUR LEVEL · ABOUT WHAT?</div>
+<div role="radiogroup" aria-label="Story topic" style="position: relative; margin-top: 16px; display: flex; gap: 8px">
+<span class="mk mk-t" aria-hidden="true" style="position: absolute; top: 0; height: 48px; border-radius: 24px; background: #EEF3F7; z-index: 1"></span>
+<button type="button" role="radio" class="ch tp0" lang="es" onClick="{{ topic0 }}" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">La cocina</span></button>
+<button type="button" role="radio" class="ch tp1" lang="es" onClick="{{ topic1 }}" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">El parque</span></button>
+<button type="button" role="radio" class="ch tp2" onClick="{{ topic2 }}" style="width: 112px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">Surprise me</span></button>
+</div>
+<button type="button" class="pr" style="margin-top: 16px; width: 100%; height: 48px; border: 1px solid #EEF3F7; border-radius: 24px; background: transparent; color: #EEF3F7; font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Write my story</button>
+</section>
+<section style="box-sizing: border-box; padding: 24px 0 0 16px">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">YOUR SHELF · READING COUNTS FROM A2</div>
+<div style="position: relative; margin-top: 12px; display: flex; gap: 8px">
+<span class="mk mk-s" aria-hidden="true" style="position: absolute; top: 0; height: 48px; border-radius: 24px; background: #EEF3F7; z-index: 1"></span>
+<button type="button" class="ch sh0" onClick="{{ shelfAll }}" style="width: 52px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">All</span></button>
+<button type="button" class="ch sh1" onClick="{{ shelfStories }}" style="width: 80px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">Stories</span></button>
+<button type="button" class="ch sh2" onClick="{{ shelfBooks }}" style="width: 72px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">Books</span></button>
+</div>
+<div style="margin-top: 12px; display: flex">
+<div class="it it-book"><div style="width: 90px; display: flex; flex-direction: column">
+<span lang="es" aria-hidden="true" style="height: 120px; box-sizing: border-box; padding: 12px 8px 10px 10px; border-radius: 3px 8px 8px 3px; border-left: 5px solid #6B4059; background: #3A2433; display: flex; flex-direction: column; justify-content: space-between; font: 600 13px/16px 'Literata', Georgia, serif; color: #EEF3F7">Cuentos de la isla<span style="width: 20px; height: 2px; background: #CC79A7"></span></span>
+<span lang="es" style="margin-top: 8px; font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">Cuentos de la isla</span>
+<span style="margin-top: 4px; font: 500 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Book</span>
+</div></div>
+<div class="it it-story"><div style="width: 104px; display: flex; flex-direction: column">
+<span style="position: relative; height: 120px; overflow: hidden; border-radius: 16px"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -250px; top: -244px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="margin-top: 8px; font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">Un día en el parque</span>
+<span style="margin-top: 4px; font: 500 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Story</span>
+</div></div>
+<div class="it it-book"><div style="width: 90px; display: flex; flex-direction: column">
+<span lang="es" aria-hidden="true" style="height: 120px; box-sizing: border-box; padding: 12px 8px 10px 10px; border-radius: 3px 8px 8px 3px; border-left: 5px solid #4A6C8C; background: #213D57; display: flex; flex-direction: column; justify-content: space-between; font: 600 13px/16px 'Literata', Georgia, serif; color: #EEF3F7">Un verano en Cabo Rojo<span style="width: 20px; height: 2px; background: #E69F00"></span></span>
+<span lang="es" style="margin-top: 8px; font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">Un verano en Cabo Rojo</span>
+<span style="margin-top: 4px; font: 500 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Book</span>
+</div></div>
+<div class="it it-story"><div style="width: 104px; display: flex; flex-direction: column">
+<span style="position: relative; height: 120px; overflow: hidden; border-radius: 16px"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -40px; top: -230px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="margin-top: 8px; font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</span>
+<span style="margin-top: 4px; font: 500 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Story</span>
+</div></div>
+</div>
+</section>
+<section style="position: absolute; left: 16px; right: 16px; bottom: 104px; box-sizing: border-box; padding: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div style="display: flex; gap: 16px">
+<span lang="es" aria-hidden="true" style="flex: none; width: 60px; height: 84px; box-sizing: border-box; padding: 8px 6px 6px 8px; border-radius: 3px 6px 6px 3px; border-left: 4px solid #4A6C8C; background: #213D57; display: flex; flex-direction: column; justify-content: space-between; font: 600 10px/12px 'Literata', Georgia, serif; color: #EEF3F7">Un verano en Cabo Rojo<span style="width: 16px; height: 2px; background: #E69F00"></span></span>
+<div style="flex-grow: 1; min-width: 0">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">KEEP READING · CHAPTER 2</div>
+<h2 lang="es" style="margin: 8px 0 0; font: 700 20px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Un verano en Cabo Rojo</h2>
+<div style="margin-top: 8px; font: 500 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Page 14 of 86 · 4 min left in the chapter</div>
+<span role="img" aria-label="Page 14 of 86" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #33506B; display: flex"><span class="fillbar" style="width: 16%; border-radius: 4px; background: #E69F00"></span></span>
+</div>
+</div>
+<div class="next" style="margin-top: 16px"><button type="button" class="pr" style="width: 100%; height: 56px; border: 0; border-radius: 28px; background: #E69F00; color: #14110F; font: 700 17px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Continue reading</button></div>
+</section>
+</div>
+
+<!-- Palabras -->
+<div class="{{ cWords }}">
+<header style="height: 64px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<div><div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">SPANISH</div><h1 style="margin: 4px 0 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Words</h1></div>
+<button type="button" class="pr" style="height: 48px; padding: 0 16px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">+ Add a word or goal</button>
+</header>
+<section style="margin: 0 16px; box-sizing: border-box; padding: 16px; display: flex; align-items: center; gap: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div style="font: 800 64px/1 'Bricolage Grotesque', Arial, sans-serif; color: #E69F00">14</div>
+<div style="font: 600 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">words come<br>back today</div>
+</section>
+<section style="box-sizing: border-box; padding: 24px 16px 0">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">WHEN YOUR 96 WORDS COME BACK</div>
+<div role="img" aria-label="Words coming back: 14 today, 9 tomorrow, 21 in 3 days, 30 this week, 22 later" style="margin-top: 16px; height: 144px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; align-items: end; text-align: center; font: 600 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span style="font: 700 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #E69F00">14</span><span class="bar" style="height: 45px; border-radius: 8px; background: #E69F00"></span><span>Today</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span style="font: 700 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">9</span><span class="bar" style="height: 29px; border-radius: 8px; background: #4A6C8C"></span><span style="color: #A7B8C8">Tomorrow</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span style="font: 700 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">21</span><span class="bar" style="height: 67px; border-radius: 8px; background: #4A6C8C"></span><span style="color: #A7B8C8">3 days</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span style="font: 700 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">30</span><span class="bar" style="height: 96px; border-radius: 8px; background: #4A6C8C"></span><span style="color: #A7B8C8">This week</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span style="font: 700 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">22</span><span class="bar" style="height: 70px; border-radius: 8px; background: #4A6C8C"></span><span style="color: #A7B8C8">Later</span></div>
+</div>
+</section>
+<div role="tablist" aria-label="Skill" style="position: relative; margin: 24px 16px 0; box-sizing: border-box; padding: 4px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #152A3D; border: 1px solid #33506B; border-radius: 28px">
+<span class="thumb" aria-hidden="true" style="position: absolute; left: 4px; top: 4px; width: 116px; height: 48px; border-radius: 24px; background: #EEF3F7"></span>
+<button type="button" role="tab" class="sg sg0" onClick="{{ seg0 }}" style="position: relative; height: 48px; padding: 0; border: 0; border-radius: 24px; background: transparent; font-size: 14px; line-height: 1">Listening · 41</button>
+<button type="button" role="tab" class="sg sg1" onClick="{{ seg1 }}" style="position: relative; height: 48px; padding: 0; border: 0; border-radius: 24px; background: transparent; font-size: 14px; line-height: 1">Speaking · 17</button>
+<button type="button" role="tab" class="sg sg2" onClick="{{ seg2 }}" style="position: relative; height: 48px; padding: 0; border: 0; border-radius: 24px; background: transparent; font-size: 14px; line-height: 1">Reading · A2</button>
+</div>
+<div style="margin: 8px 16px 0; height: 172px; overflow: hidden">
+<div class="{{ listCls }}" style="display: flex; flex-direction: column">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+<div style="height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #33506B">
+<div><div lang="es" style="font: 600 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">{{ r.w }}</div><div class="{{ r.wc }}" style="font: 500 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">{{ r.when }}</div></div>
+<span role="img" aria-label="{{ r.label }}" style="width: 96px; height: 8px; border-radius: 4px; background: #33506B; display: flex"><span style="width: {{ r.pct }}; border-radius: 4px; background: #EEF3F7"></span></span>
+</div>
+</sc-for>
+<sc-if value="{{ isReading }}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; padding: 16px 0; font: 500 16px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Reading opens for tracking at A2.</p>
+</sc-if>
+</div>
+</div>
+<div class="next" style="position: absolute; left: 16px; right: 16px; bottom: 104px"><button type="button" class="pr" style="width: 100%; height: 56px; border: 0; border-radius: 28px; background: #E69F00; color: #14110F; font: 700 18px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Start review · 4 min</button></div>
+</div>
+
+<!-- Mapa -->
+<div class="{{ cMap }}">
+<img src="/_blob/cd86b3b25787a8864e826139635c0b84" alt="Course map, zoomed in on where you are: the coquí stands at stop 3, La cocina. Stops 1 and 2 are done." style="position: absolute; left: -122px; top: -280px; width: 512px; height: 960px; image-rendering: pixelated">
+<div style="position: absolute; left: 16px; right: 16px; top: 16px; display: flex; justify-content: space-between">
+<button type="button" class="pr" aria-label="Spanish, level A1. Change language." style="height: 48px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; color: #EEF3F7; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Spanish<span style="font-weight: 500; color: #A7B8C8">A1</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+<div style="height: 48px; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E69F00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg>6 days</div>
+</div>
+<div style="position: absolute; left: 145px; top: 372px; width: 160px; display: flex; flex-direction: column; align-items: center">
+<div style="height: 40px; padding: 0 16px; display: flex; align-items: center; background: #EEF3F7; color: #0C1926; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">You are here</div>
+<div aria-hidden="true" style="width: 12px; height: 12px; margin-top: -6px; background: #EEF3F7; transform: rotate(45deg)"></div>
+</div>
+<section style="position: absolute; left: 16px; right: 16px; bottom: 104px; box-sizing: border-box; padding: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="flex: none; position: relative; width: 72px; height: 72px; overflow: hidden; border-radius: 16px"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -154px; top: -308px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="flex-grow: 1">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">UP NEXT · <span lang="es">LA COCINA</span></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</span>
+<span style="display: block; margin-top: 8px; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">New story · 5 min</span>
+</span>
+<div class="next" style="flex: none"><button type="button" class="pr" aria-label="Play the story Tengo hambre" style="width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></button></div>
+</div>
+<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #33506B; display: flex; align-items: center; justify-content: space-between; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">
+<span>Then review, then a call</span>
+<span style="font-weight: 700; color: #EEF3F7">12 of 30 min today</span>
+</div>
+</section>
+</div>
+
+<!-- Hablar -->
+<div class="{{ cSpeak }}">
+<header style="height: 64px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<div><div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">SPANISH</div><h1 style="margin: 4px 0 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Speak</h1></div>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">41 words ready to say</span>
+</header>
+<div role="tablist" aria-label="Place" lang="es" style="position: relative; margin: 0 16px; display: flex; gap: 8px">
+<span class="mk mk-p" aria-hidden="true" style="position: absolute; top: 0; height: 48px; border-radius: 24px; background: #EEF3F7; z-index: 1"></span>
+<button type="button" role="tab" class="ch pl pl0" onClick="{{ place0 }}" style="width: 84px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">La casa</span></button>
+<button type="button" role="tab" class="ch pl pl1" onClick="{{ place1 }}" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">El parque</span></button>
+<button type="button" role="tab" class="ch pl pl2" onClick="{{ place2 }}" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">La cocina</span></button>
+<button type="button" disabled aria-label="El colmado, locked" style="width: 48px; height: 48px; padding: 0; border: 1px dashed #33506B; border-radius: 24px; background: transparent; color: #A7B8C8; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button>
+</div>
+<section style="margin: 16px 16px 0; box-sizing: border-box; padding: 16px; overflow: hidden; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div class="{{ callCls }}">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #E69F00">NEXT CALL WITH DANNY · 2 MIN</div>
+<h2 lang="es" style="margin: 8px 0 0; font: 800 32px/36px 'Atkinson Hyperlegible Next', Arial, sans-serif">{{ call.title }}</h2>
+<div style="margin-top: 8px; font: 500 16px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">{{ call.help }}</div>
+<div style="margin-top: 16px; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">WORDS YOU CAN USE</div>
+<div lang="es" style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<sc-for list="{{ call.words }}" as="w" hint-placeholder-count="4">
+<span style="height: 32px; padding: 0 12px; display: flex; align-items: center; border-radius: 16px; background: #213D57">{{ w.t }}</span>
+</sc-for>
+</div>
+</div>
+</section>
+<div style="position: absolute; left: 0; right: 0; bottom: 104px; display: flex; flex-direction: column; align-items: center; gap: 16px">
+<div style="font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Call Danny</div>
+<div class="next"><button type="button" class="pr" aria-label="Call Danny" style="width: 96px; height: 96px; padding: 0; border-radius: 50%; border: 0; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px #3D2E0F"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></div>
+</div>
+</div>
+
+<!-- Yo -->
+<div class="{{ cMe }}">
+<header style="height: 64px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<h1 style="margin: 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Me</h1>
+<button type="button" class="pr" style="height: 48px; padding: 0 16px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">How Coquí works</button>
+</header>
+<section style="margin: 0 16px; box-sizing: border-box; padding: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; align-items: flex-end; gap: 8px">
+<div style="font: 800 56px/48px 'Bricolage Grotesque', Arial, sans-serif">212</div>
+<div style="font: 600 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">minutes listened<br><span style="font-weight: 500; color: #A7B8C8">all languages</span></div>
+</div>
+<div style="display: inline-flex; align-items: center; gap: 8px; font: 700 16px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E69F00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg>6 days</div>
+</div>
+<div role="img" aria-label="Minutes listened in the last 7 days: 28, 35, 30, 41, 36, 30, and 12 so far today. Your goal is 30 a day." style="position: relative; margin-top: 16px; height: 88px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; align-items: end; text-align: center; font: 600 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span class="bar" style="height: 45px; border-radius: 8px; background: #4A6C8C"></span><span>T</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span class="bar" style="height: 56px; border-radius: 8px; background: #4A6C8C"></span><span>W</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span class="bar" style="height: 48px; border-radius: 8px; background: #4A6C8C"></span><span>T</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span class="bar" style="height: 64px; border-radius: 8px; background: #4A6C8C"></span><span>F</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span class="bar" style="height: 58px; border-radius: 8px; background: #4A6C8C"></span><span>S</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span class="bar" style="height: 48px; border-radius: 8px; background: #4A6C8C"></span><span>S</span></div>
+<div class="col" style="display: flex; flex-direction: column; gap: 8px"><span class="bar" style="height: 19px; border-radius: 8px; background: #E69F00"></span><span style="color: #E69F00; font-weight: 700">Today</span></div>
+<span style="position: absolute; left: 0; right: 0; bottom: 72px; border-top: 1px dashed #A7B8C8"></span>
+</div>
+</section>
+<section style="margin: 16px 16px 0; box-sizing: border-box; padding: 16px 16px 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<button type="button" class="pr" aria-label="Spanish. Change language." style="height: 48px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 8px; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; color: #EEF3F7; font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Spanish<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+<div style="text-align: right; font: 700 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">A1 · place 3 of 10<br><span lang="es" style="font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">La cocina</span></div>
+</div>
+<div role="img" aria-label="Places: 2 done, on place 3, 7 to go" style="margin-top: 16px; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 8px">
+<span style="height: 8px; border-radius: 4px; background: #EEF3F7"></span>
+<span style="height: 8px; border-radius: 4px; background: #EEF3F7"></span>
+<span style="height: 8px; border-radius: 4px; background: #E69F00"></span>
+<span style="height: 8px; border-radius: 4px; background: #33506B"></span>
+<span style="height: 8px; border-radius: 4px; background: #33506B"></span>
+<span style="height: 8px; border-radius: 4px; background: #33506B"></span>
+<span style="height: 8px; border-radius: 4px; background: #33506B"></span>
+<span style="height: 8px; border-radius: 4px; background: #33506B"></span>
+<span style="height: 8px; border-radius: 4px; background: #33506B"></span>
+<span style="height: 8px; border-radius: 4px; background: #33506B"></span>
+</div>
+<div style="margin-top: 8px; display: flex; flex-direction: column">
+<div style="height: 40px; display: grid; grid-template-columns: 80px minmax(0, 1fr) 96px; align-items: center; gap: 8px">
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Listening</span>
+<span role="img" aria-label="41 of 96 words good" style="height: 8px; border-radius: 4px; background: #33506B; display: flex"><span class="fillbar" style="width: 43%; border-radius: 4px; background: #EEF3F7"></span></span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; text-align: right">41 of 96 good</span>
+</div>
+<div style="height: 40px; display: grid; grid-template-columns: 80px minmax(0, 1fr) 96px; align-items: center; gap: 8px">
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Speaking</span>
+<span role="img" aria-label="17 of 96 words good" style="height: 8px; border-radius: 4px; background: #33506B; display: flex"><span class="fillbar" style="width: 18%; border-radius: 4px; background: #EEF3F7"></span></span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; text-align: right">17 of 96 good</span>
+</div>
+<div style="height: 40px; display: grid; grid-template-columns: 80px minmax(0, 1fr); align-items: center; gap: 8px">
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Reading</span>
+<span style="font: 500 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Open now. Counts from A2.</span>
+</div>
+</div>
+</section>
+</div>
+
+<!-- The tab bar: names in the course's language -->
+<nav aria-label="Tabs" lang="es" style="position: absolute; left: 16px; right: 16px; bottom: 16px; height: 64px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #152A3D; border: 1px solid #33506B; border-radius: 32px">
+<span class="pill" aria-hidden="true" style="position: absolute; left: 11.6px; top: 10px; width: 48px; height: 28px; border-radius: 14px; background: #33506B"></span>
+<button type="button" class="tb t-lib" onClick="{{ goLib }}" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>Biblioteca</button>
+<button type="button" class="tb t-words" onClick="{{ goWords }}" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg></span>Palabras</button>
+<button type="button" class="tb t-map" onClick="{{ goMap }}" style="position: relative; padding: 0 0 8px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; font-size: 12px; line-height: 1"><span class="disc" style="width: 56px; height: 56px; margin-top: -24px; border-radius: 50%; background: #E69F00; color: #14110F; box-shadow: 0 0 0 4px #0C1926; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></span>Mapa</button>
+<button type="button" class="tb t-speak" onClick="{{ goSpeak }}" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>Hablar</button>
+<button type="button" class="tb t-me" onClick="{{ goMe }}" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Yo</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var self = this;
+var s = this.state || {};
+var order = ['lib', 'words', 'map', 'speak', 'me'];
+var tab = s.tab || 'map';
+var dir = s.dir || '';
+var seg = s.seg || 0;
+var topic = s.topic || 0;
+var shelf = s.shelf || 'all';
+var place = s.place === undefined ? 2 : s.place;
+
+function st() { return self.state || {}; }
+function go(id) {
+return function () {
+var cur = st().tab || 'map';
+if (id === cur) return;
+self.setState({ tab: id, dir: order.indexOf(id) > order.indexOf(cur) ? 'fwd' : 'back' });
+};
+}
+function pane(id) { return 'pane' + (id === tab ? ' on' + (dir ? ' ' + dir : '') : ''); }
+function pickSeg(i) {
+return function () {
+var cur = st().seg || 0;
+if (i === cur) return;
+self.setState({ seg: i, segDir: i > cur ? 'fwd' : 'back', segFlip: !st().segFlip });
+};
+}
+function pickPlace(i) {
+return function () {
+var cur = st().place === undefined ? 2 : st().place;
+if (i === cur) return;
+self.setState({ place: i, placeDir: i > cur ? 'fwd' : 'back', placeFlip: !st().placeFlip });
+};
+}
+function set(key, val) { return function () { var o = {}; o[key] = val; self.setState(o); }; }
+
+var words = [
+[
+{ w: 'la cuchara', when: 'back today', wc: 'due', pct: '50%', label: 'Stage 2 of 4' },
+{ w: 'la leche', when: 'back in 2 days', wc: 'nd', pct: '75%', label: 'Stage 3 of 4' },
+{ w: 'la mesa', when: 'good · back in 3 weeks', wc: 'nd', pct: '100%', label: 'Stage 4 of 4' }
+],
+[
+{ w: 'tengo hambre', when: 'back today', wc: 'due', pct: '25%', label: 'Stage 1 of 4' },
+{ w: 'la cuchara', when: 'back tomorrow', wc: 'nd', pct: '50%', label: 'Stage 2 of 4' },
+{ w: 'buenos días', when: 'good · back in 2 weeks', wc: 'nd', pct: '100%', label: 'Stage 4 of 4' }
+],
+[]
+];
+var calls = [
+{ title: '¿Quién es?', help: 'Say who is at the door.', words: [{ t: 'hola' }, { t: 'la puerta' }, { t: 'abuela' }, { t: 'buenos días' }] },
+{ title: '¿Dónde está la bola?', help: 'Say where the ball is.', words: [{ t: 'la bola' }, { t: 'el árbol' }, { t: 'aquí' }, { t: 'allí' }] },
+{ title: '¿Qué quieres tomar?', help: 'Say what you want to drink.', words: [{ t: 'quiero' }, { t: 'jugo' }, { t: 'agua' }, { t: 'leche' }, { t: 'por favor' }] }
+];
+
+return {
+tab: tab,
+seg: String(seg),
+topic: String(topic),
+shelf: shelf,
+place: String(place),
+cLib: pane('lib'),
+cWords: pane('words'),
+cMap: pane('map'),
+cSpeak: pane('speak'),
+cMe: pane('me'),
+goLib: go('lib'),
+goWords: go('words'),
+goMap: go('map'),
+goSpeak: go('speak'),
+goMe: go('me'),
+seg0: pickSeg(0),
+seg1: pickSeg(1),
+seg2: pickSeg(2),
+rows: words[seg],
+isReading: seg === 2,
+listCls: s.segDir ? (s.segFlip ? 'swA ' : 'swB ') + s.segDir : '',
+topic0: set('topic', 0),
+topic1: set('topic', 1),
+topic2: set('topic', 2),
+shelfAll: set('shelf', 'all'),
+shelfStories: set('shelf', 'stories'),
+shelfBooks: set('shelf', 'books'),
+place0: pickPlace(0),
+place1: pickPlace(1),
+place2: pickPlace(2),
+call: calls[place],
+callCls: s.placeDir ? (s.placeFlip ? 'swA ' : 'swB ') + s.placeDir : ''
+};
+}
+}
+</script>
+</body>
+</html>

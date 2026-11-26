@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: the reader, pages and words</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&family=Literata:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+.tb{color:#A7B8C8;font-weight:600}
+.pill{pointer-events:none}
+
+/* a page turn: the old page leaves in 140 ms, the new one comes 24 px from the side he is going to */
+.pg{position:absolute;left:28px;top:56px;width:334px;opacity:0;visibility:hidden;transition:opacity 140ms cubic-bezier(.4,0,1,1),visibility 0s linear 140ms}
+.pg.on{opacity:1;visibility:visible;transition:none}
+.pg.on.fwd{animation:pgFwd 220ms cubic-bezier(.2,0,0,1) 60ms both}
+.pg.on.back{animation:pgBack 220ms cubic-bezier(.2,0,0,1) 60ms both}
+@keyframes pgFwd{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pgBack{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+.bar i{display:block;height:4px;border-radius:2px;background:#8C99A6;transition:width 220ms cubic-bezier(.4,0,.2,1)}
+.edge{position:absolute;top:56px;width:72px;height:560px;padding:0;border:0;background:transparent}
+.pg{pointer-events:none}
+.wb{pointer-events:auto}
+
+/* the sentence being read lights up, and the light moves on: 140 ms */
+.sn{border-radius:4px;box-shadow:0 0 0 3px rgba(36,49,63,0);transition:background-color 140ms cubic-bezier(.2,0,0,1),box-shadow 140ms cubic-bezier(.2,0,0,1)}
+[data-lit="0-0"] .s0-0,[data-lit="0-1"] .s0-1,[data-lit="0-2"] .s0-2,[data-lit="0-3"] .s0-3,[data-lit="0-4"] .s0-4,[data-lit="0-5"] .s0-5,[data-lit="1-0"] .s1-0,[data-lit="1-1"] .s1-1,[data-lit="1-2"] .s1-2,[data-lit="1-3"] .s1-3,[data-lit="1-4"] .s1-4,[data-lit="1-5"] .s1-5,[data-lit="2-0"] .s2-0,[data-lit="2-1"] .s2-1,[data-lit="2-2"] .s2-2,[data-lit="2-3"] .s2-3{background:#24313F;box-shadow:0 0 0 3px #24313F}
+.i-play,.i-pause{position:absolute;left:50%;top:50%;display:flex;transform:translate(-50%,-50%);transition:opacity 140ms cubic-bezier(.2,0,0,1)}
+.i-pause,[data-play="1"] .i-play{opacity:0}
+[data-play="1"] .i-pause{opacity:1}
+
+/* words: never heard has a solid line, still learning a dotted one; a tapped word turns blue and its bubble rises over it */
+.wb{padding:0 2px;margin:0 -2px;border:0;border-radius:6px;background:transparent;color:inherit;font:inherit;transition:background-color 140ms cubic-bezier(.2,0,0,1),color 140ms cubic-bezier(.2,0,0,1)}
+.nv .wb{text-decoration:underline solid #56B4E9 2px;text-underline-offset:5px}
+.lr .wb{text-decoration:underline dotted #8C99A6 2px;text-underline-offset:5px}
+[data-word="w0"] .xw0 .wb,[data-word="w1"] .xw1 .wb,[data-word="w2"] .xw2 .wb{background:#56B4E9;color:#12171D;text-decoration-color:transparent}
+.bub{opacity:0;visibility:hidden;transform:translate(var(--tx),8px);transition:opacity 90ms cubic-bezier(.4,0,1,1),transform 90ms cubic-bezier(.4,0,1,1),visibility 0s linear 90ms}
+[data-word="w0"] .bw0,[data-word="w1"] .bw1,[data-word="w2"] .bw2{opacity:1;visibility:visible;transform:translate(var(--tx),0);transition:opacity 140ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1),visibility 0s}
+.off{position:absolute;left:0;top:0;width:390px;height:844px;padding:0;border:0;background:transparent;visibility:hidden}
+[data-word^="w"] .off{visibility:visible}
+
+@media (prefers-reduced-motion:reduce){
+.pg.on.fwd,.pg.on.back{animation:fadeOnly 140ms linear both!important}
+.bub{transform:translate(var(--tx),0)!important}
+.bar i,.pr{transition-duration:0s!important}
+}
+</style>
+</helmet>
+<div data-lit="{{ lit }}" data-play="{{ play }}" data-word="{{ word }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #12171D; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #D8DEE4">
+<header style="height: 56px; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center">
+<span aria-hidden="true" style="flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
+<div lang="es" style="flex-grow: 1; text-align: center; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .1em; color: #8C99A6">UN VERANO EN CABO ROJO</div>
+<span aria-hidden="true" style="flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font: 500 20px/1 'Literata', Georgia, serif">Aa</span>
+<span aria-hidden="true" style="flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg></span>
+</header>
+<button type="button" class="edge" onClick="{{ prev }}" aria-label="Page before" style="left: 0"></button>
+<button type="button" class="edge" onClick="{{ next }}" aria-label="Next page" style="right: 0"></button>
+<button type="button" class="off" onClick="{{ closeWord }}" aria-label="Close the word"></button>
+<div class="{{ pg0 }}" lang="es"><div style="padding-top: 20px; text-align: center"><div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .14em; color: #8C99A6">CAPÍTULO 2</div><h1 style="margin: 8px 0 0; font: 600 26px/32px 'Literata', Georgia, serif">La cocina de Abuela</h1><div style="width: 32px; height: 1px; margin: 20px auto 24px; background: #37424D"></div></div><div style="font: 400 19px/31px 'Literata', Georgia, serif"><p style="margin: 0"><span class="sn s0-0">Cuando llegamos a Cabo Rojo, ya era de <span class="wd  xw0" style="position: relative"><button type="button" class="wb" onClick="{{ tapw0 }}">noche</button><span class="bub bw0" role="status" style="position: absolute; left: 50%; --tx: -50%; bottom: calc(100% + 10px); height: 44px; box-sizing: border-box; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 8px; border-radius: 22px; background: #EEF3F7; color: #12171D; white-space: nowrap; font: 700 17px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; text-indent: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 9a4 4 0 0 1 0 6"/></svg>noche<span role="img" aria-label="Stage 4 of 4" style="display: flex; gap: 4px"><i style="width: 6px; height: 6px; border-radius: 50%; background: #12171D"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #12171D"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #12171D"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #12171D"></i></span></span></span>.</span> <span class="sn s0-1">La casa de Abuela estaba al final de la calle, con la luz del <span class="wd nv xw1" style="position: relative"><button type="button" class="wb" onClick="{{ tapw1 }}">balcón</button><span class="bub bw1" role="status" style="position: absolute; right: -4px; --tx: 0px; bottom: calc(100% + 10px); height: 44px; box-sizing: border-box; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 8px; border-radius: 22px; background: #EEF3F7; color: #12171D; white-space: nowrap; font: 700 17px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; text-indent: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 9a4 4 0 0 1 0 6"/></svg>balcón<span role="img" aria-label="Stage 0 of 4" style="display: flex; gap: 4px"><i style="width: 6px; height: 6px; border-radius: 50%; background: #A7B8C8"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #A7B8C8"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #A7B8C8"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #A7B8C8"></i></span></span></span> <span class="wd lr xw2" style="position: relative"><button type="button" class="wb" onClick="{{ tapw2 }}">encendida</button><span class="bub bw2" role="status" style="position: absolute; left: -4px; --tx: 0px; bottom: calc(100% + 10px); height: 44px; box-sizing: border-box; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 8px; border-radius: 22px; background: #EEF3F7; color: #12171D; white-space: nowrap; font: 700 17px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; text-indent: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 9a4 4 0 0 1 0 6"/></svg>encendida<span role="img" aria-label="Stage 2 of 4" style="display: flex; gap: 4px"><i style="width: 6px; height: 6px; border-radius: 50%; background: #12171D"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #12171D"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #A7B8C8"></i><i style="width: 6px; height: 6px; border-radius: 50%; background: #A7B8C8"></i></span></span></span>.</span></p><p style="margin: 0; text-indent: 1.4em"><span class="sn s0-2">—¡Llegaron! —dijo Abuela desde la puerta—.</span> <span class="sn s0-3">Entren, que la comida está caliente.</span></p><p style="margin: 0; text-indent: 1.4em"><span class="sn s0-4">La cocina olía a sofrito y a café.</span> <span class="sn s0-5">En la estufa había una olla grande de arroz con gandules.</span></p></div></div>
+<div class="{{ pg1 }}" lang="es"><div style="height: 28px"></div><div style="font: 400 19px/31px 'Literata', Georgia, serif"><p style="margin: 0"><span class="sn s1-0">Abuela puso los platos en la mesa.</span> <span class="sn s1-1">—Siéntense —dijo—. Hoy hay arroz, habichuelas y pollo.</span></p><p style="margin: 0; text-indent: 1.4em"><span class="sn s1-2">Mi hermano comió dos platos.</span> <span class="sn s1-3">Yo comí uno, pero grande.</span></p><p style="margin: 0; text-indent: 1.4em"><span class="sn s1-4">Después de comer, salimos al balcón.</span> <span class="sn s1-5">El aire olía a mar.</span></p></div></div>
+<div class="{{ pg2 }}" lang="es"><div style="height: 28px"></div><div style="font: 400 19px/31px 'Literata', Georgia, serif"><p style="margin: 0"><span class="sn s2-0">A lo lejos se veía el faro.</span> <span class="sn s2-1">Su luz daba vueltas despacio, una y otra vez.</span></p><p style="margin: 0; text-indent: 1.4em"><span class="sn s2-2">—Mañana vamos a la playa —dijo Abuela—.</span> <span class="sn s2-3">Ahora, a dormir.</span></p></div></div>
+
+<footer style="position: absolute; left: 28px; right: 28px; bottom: 24px">
+<div style="display: flex; align-items: center; justify-content: space-between; font: 600 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #8C99A6">
+<span>{{ pageNo }} / 86</span>
+<span style="display: flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{{ minLeft }} min</span>
+</div>
+<div class="bar" role="img" aria-label="How far in the book" style="margin-top: 8px; height: 4px; border-radius: 2px; background: #37424D"><i style="width: {{ barW }}"></i></div>
+<div style="margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 32px">
+<button type="button" class="pr" onClick="{{ again }}" aria-label="The sentence again" style="width: 48px; height: 48px; padding: 0; border: 1px solid #4A5663; border-radius: 50%; background: transparent; color: #D8DEE4; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg></button>
+<button type="button" class="pr" onClick="{{ listen }}" aria-label="Listen" style="position: relative; width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: #E69F00; color: #14110F"><span class="i-play"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></span><span class="i-pause"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg></span></button>
+<span aria-hidden="true" style="width: 48px; height: 48px; box-sizing: border-box; border: 1px solid #4A5663; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 700 13px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">0.9×</span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+componentWillUnmount() { this.clearAll(); }
+st() { return this.state || {}; }
+later(ms, fn) { var self = this; if (!this._t) this._t = []; this._t.push(setTimeout(function () { fn(self); }, ms)); }
+clearAll() { (this._t || []).forEach(function (t) { clearTimeout(t); }); this._t = []; }
+turn(d) {
+var s = this.st(), p = (s.page || 0) + d;
+if (p < 0 || p > 2) return false;
+this.setState({ page: p, dir: d > 0 ? 'fwd' : 'back', word: '' });
+return true;
+}
+tick() {
+// the voice reads on: the light moves to the next sentence, and the page turns by itself at its end
+var self = this, s = this.st(), counts = [6, 6, 4], p = s.page || 0, k = (s.lit === undefined ? -1 : s.lit) + 1;
+if (!s.play) return;
+if (k >= counts[p]) { if (!this.turn(1)) { this.setState({ play: 0, lit: -1 }); return; } k = 0; }
+this.setState({ lit: k });
+this.later(1500, function (c) { c.tick(); });
+}
+renderVals() {
+var self = this, s = this.st(), p = s.page || 0;
+function pg(i) { return 'pg' + (i === p ? ' on' + (s.dir ? ' ' + s.dir : '') : ''); }
+function word(id) { return function () { self.setState({ word: self.st().word === id ? '' : id }); }; }
+return {
+pg0: pg(0), pg1: pg(1), pg2: pg(2),
+lit: s.lit === undefined || s.lit < 0 ? 'none' : p + '-' + s.lit,
+play: s.play ? '1' : '0',
+word: s.word || 'none',
+pageNo: 14 + p, minLeft: 4 - p, barW: (16 + p * 1.2).toFixed(1) + '%',
+next: function () { self.clearAll(); self.setState({ play: 0, lit: -1 }); self.turn(1); },
+prev: function () { self.clearAll(); self.setState({ play: 0, lit: -1 }); self.turn(-1); },
+listen: function () { self.clearAll(); if (self.st().play) { self.setState({ play: 0 }); return; } self.setState({ play: 1, word: '' }); self.later(100, function (c) { c.tick(); }); },
+again: function () { },
+tapw0: word('w0'), tapw1: word('w1'), tapw2: word('w2'),
+closeWord: function () { self.setState({ word: '' }); }
+};
+}
+}
+</script>
+</body>
+</html>

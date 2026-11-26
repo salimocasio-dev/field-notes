@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: going to another place</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+
+/* press: 90 ms down, 140 ms back */
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+
+/* the screens: the old one leaves in 140 ms, the new one comes 100 ms later */
+.L{position:absolute;left:0;top:0;width:390px;height:844px;opacity:0;visibility:hidden;transition:opacity 140ms cubic-bezier(.4,0,1,1),visibility 0s linear 140ms}
+.L-map{z-index:1;overflow:hidden}
+.L-place{z-index:3}
+[data-at="map"] .L-map,[data-at="place"] .L-place{opacity:1;visibility:visible;transition:opacity 220ms cubic-bezier(.2,0,0,1) 100ms,visibility 0s}
+[data-way="out"][data-at="map"] .L-map{transition:opacity 140ms cubic-bezier(.2,0,0,1) 40ms,visibility 0s}
+[data-place="2"] .P3,[data-place="3"] .P2{display:none}
+
+/* the camera follows the coquí: it travels for as long as he hops */
+.cam{position:absolute;left:0;top:0;width:512px;height:960px;transform:translate(-122px,-280px);transition:transform 800ms cubic-bezier(.4,0,.2,1) 90ms}
+[data-cam="2"] .cam{transform:translate(0px,-280px)}
+
+/* the coquí hops along the road: the map's own frames, 4 hops of 200 ms, then he settles */
+.hop{position:absolute;left:144px;top:684px;width:224px;height:100px;background-repeat:no-repeat;background-size:14560px 100px;image-rendering:pixelated;visibility:hidden}
+.h32{background-image:url(/_blob/8178102f107e75bdb559f91f062a9e3e)}
+.h23{background-image:url(/_blob/098d6d8b05226035b7dc77329123da96)}
+[data-trip="32"] .h32,[data-trip="23"] .h23{visibility:visible;animation:hopStrip 1067ms steps(64) 90ms both}
+@keyframes hopStrip{from{background-position:0 0}to{background-position:-14336px 0}}
+
+/* the name of the place he is going to answers the finger; "You are here" waits for him there */
+.dest{opacity:0;transform:scale(.92);transition:opacity 140ms cubic-bezier(.4,0,1,1),transform 140ms cubic-bezier(.4,0,1,1)}
+[data-dest="2"] .dest2,[data-dest="3"] .dest3{opacity:1;transform:scale(1);transition:opacity 90ms cubic-bezier(.2,0,0,1),transform 90ms cubic-bezier(.2,0,0,1)}
+.here{opacity:0;transition:opacity 140ms cubic-bezier(.4,0,1,1)}
+[data-here="2"] .here2,[data-here="3"] .here3{opacity:1;animation:rise 220ms cubic-bezier(.2,0,0,1) 120ms both}
+
+/* when he arrives, the card becomes that place and grows a little: a handle and an arrow say it opens */
+.card{height:155px;transition:height 220ms cubic-bezier(.4,0,.2,1),transform 220ms cubic-bezier(.4,0,.2,1)}
+[data-card^="p"] .card{height:216px}
+.cUp,.cPk{opacity:0;visibility:hidden;transition:opacity 90ms cubic-bezier(.4,0,1,1),visibility 0s linear 90ms}
+[data-card="up"] .cUp,[data-card="p2"] .cPk2,[data-card="p3"] .cPk3{opacity:1;visibility:visible;transition:none;animation:rise 220ms cubic-bezier(.2,0,0,1) 60ms both}
+[data-card^="p"] .nextP{animation:rise 220ms cubic-bezier(.2,0,0,1) 140ms both}
+
+/* a place that is not open yet answers quietly: its reason shows for 1.5 s. No hop, no shake, no colour */
+.lockpill{opacity:0;transform:translateY(4px);transition:opacity 220ms cubic-bezier(.4,0,1,1),transform 220ms cubic-bezier(.4,0,1,1)}
+[data-lock="1"] .lockpill{opacity:1;transform:translateY(0);transition:opacity 90ms cubic-bezier(.2,0,0,1),transform 90ms cubic-bezier(.2,0,0,1)}
+
+/* the card follows the finger; let go past 28 px up and the place opens, past 28 px down and the card goes back */
+[data-drag="1"] .card,[data-drag="1"] .win{transition:none!important}
+
+/* the place's picture sits in the card and grows into the full place: the window grows, the picture keeps its scale */
+.win{position:absolute;z-index:2;overflow:hidden;pointer-events:none;left:33px;top:553px;width:72px;height:72px;border-radius:16px;opacity:0;transition:left 200ms cubic-bezier(.2,0,0,1),top 200ms cubic-bezier(.2,0,0,1),width 200ms cubic-bezier(.2,0,0,1),height 200ms cubic-bezier(.2,0,0,1),border-radius 200ms cubic-bezier(.2,0,0,1),transform 220ms cubic-bezier(.4,0,.2,1),opacity 90ms cubic-bezier(.4,0,1,1)}
+[data-card^="p"] .win{opacity:1;transition:left 200ms cubic-bezier(.2,0,0,1),top 200ms cubic-bezier(.2,0,0,1),width 200ms cubic-bezier(.2,0,0,1),height 200ms cubic-bezier(.2,0,0,1),border-radius 200ms cubic-bezier(.2,0,0,1),transform 220ms cubic-bezier(.4,0,.2,1),opacity 220ms cubic-bezier(.2,0,0,1) 140ms}
+[data-at="place"] .win{left:0;top:0;width:390px;height:296px;border-radius:0;opacity:1;transition:left 320ms cubic-bezier(.2,0,0,1),top 320ms cubic-bezier(.2,0,0,1),width 320ms cubic-bezier(.2,0,0,1),height 320ms cubic-bezier(.2,0,0,1),border-radius 320ms cubic-bezier(.2,0,0,1),transform 220ms cubic-bezier(.4,0,.2,1),opacity 90ms linear}
+.win img{position:absolute;width:392px;height:432px;image-rendering:pixelated;opacity:0;transition:left 200ms cubic-bezier(.2,0,0,1),top 200ms cubic-bezier(.2,0,0,1),opacity 140ms cubic-bezier(.2,0,0,1)}
+.w2{left:-266px;top:-268px}
+.w3{left:-154px;top:-308px}
+[data-place="2"] .w2,[data-place="3"] .w3{opacity:1}
+[data-at="place"] .win img{left:-1px;top:-80px;transition:left 320ms cubic-bezier(.2,0,0,1),top 320ms cubic-bezier(.2,0,0,1),opacity 140ms cubic-bezier(.2,0,0,1)}
+
+/* the full place: rows rise 8 px, 30 ms apart; orange lands 80 ms after the last one */
+[data-at="place"] .L-place .s0{animation:fadeOnly 140ms cubic-bezier(.2,0,0,1) 200ms both}
+[data-at="place"] .L-place .s1{animation:rise 220ms cubic-bezier(.2,0,0,1) 120ms both}
+[data-at="place"] .L-place .s2{animation:rise 220ms cubic-bezier(.2,0,0,1) 150ms both}
+[data-at="place"] .L-place .s3{animation:rise 220ms cubic-bezier(.2,0,0,1) 180ms both}
+[data-at="place"] .L-place .next{animation:rise 220ms cubic-bezier(.2,0,0,1) 260ms both}
+
+/* reduced motion: he is placed at once, and every move is a 140 ms fade */
+@media (prefers-reduced-motion:reduce){
+.cam,.win,.win img,.pr,.card{transition:none!important}
+.hop{animation-duration:1ms!important;animation-delay:0s!important}
+.s0,.s1,.s2,.s3,.next,.here,.cUp,.cPk,.nextP{animation-name:fadeOnly!important;animation-duration:140ms!important}
+}
+</style>
+</helmet>
+<div data-at="{{ at }}" data-way="{{ way }}" data-place="{{ place }}" data-trip="{{ trip }}" data-cam="{{ cam }}" data-here="{{ here }}" data-dest="{{ dest }}" data-card="{{ card }}" data-drag="{{ drag }}" data-lock="{{ lock }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0C1926; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+
+<!-- The map: tap another open place and the coquí hops there; the card becomes that place -->
+<div class="L L-map">
+<div class="cam">
+<img src="/_blob/c249f8c3d0165f071d457751d1ef4dfe" alt="Course map. Places 1 and 2 are done; the coquí is at place 3, La cocina." style="position: absolute; left: 0; top: 0; width: 512px; height: 960px; image-rendering: pixelated">
+<div class="hop h32" aria-hidden="true"></div>
+<div class="hop h23" aria-hidden="true"></div>
+<button type="button" onClick="{{ go2 }}" aria-label="El parque, place 2" style="position: absolute; left: 60px; top: 690px; width: 160px; height: 100px; padding: 0; border: 0; background: transparent"></button>
+<button type="button" onClick="{{ go3 }}" aria-label="La cocina, place 3" style="position: absolute; left: 300px; top: 690px; width: 172px; height: 100px; padding: 0; border: 0; background: transparent"></button>
+<div class="here here3" style="position: absolute; left: 256px; top: 652px; width: 160px; display: flex; flex-direction: column; align-items: center; pointer-events: none">
+<div style="height: 40px; padding: 0 16px; display: flex; align-items: center; background: #EEF3F7; color: #0C1926; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">You are here</div>
+<div aria-hidden="true" style="width: 12px; height: 12px; margin-top: -6px; background: #EEF3F7; transform: rotate(45deg)"></div>
+</div>
+<div class="here here2" style="position: absolute; left: 96px; top: 652px; width: 160px; display: flex; flex-direction: column; align-items: center; pointer-events: none">
+<div style="height: 40px; padding: 0 16px; display: flex; align-items: center; background: #EEF3F7; color: #0C1926; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">You are here</div>
+<div aria-hidden="true" style="width: 12px; height: 12px; margin-top: -6px; background: #EEF3F7; transform: rotate(45deg)"></div>
+</div>
+<div class="dest dest3" style="position: absolute; left: 256px; top: 652px; width: 160px; display: flex; justify-content: center; pointer-events: none">
+<div style="height: 40px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; color: #EEF3F7; border: 1px solid #33506B; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span lang="es">La cocina</span></div>
+</div>
+<div class="dest dest2" style="position: absolute; left: 96px; top: 652px; width: 160px; display: flex; justify-content: center; pointer-events: none">
+<div style="height: 40px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; color: #EEF3F7; border: 1px solid #33506B; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span lang="es">El parque</span></div>
+</div>
+<button type="button" onClick="{{ locked4 }}" aria-label="El colmado, place 4: not open yet" style="position: absolute; left: 196px; top: 540px; width: 120px; height: 112px; padding: 0; border: 0; background: transparent"></button>
+<div class="lockpill" role="status" style="position: absolute; left: 156px; top: 488px; width: 200px; display: flex; justify-content: center; pointer-events: none"><div style="height: 40px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; color: #EEF3F7; border: 1px solid #33506B; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>After <span lang="es">La cocina</span></span></div></div>
+</div>
+<div style="position: absolute; left: 16px; right: 16px; top: 16px; display: flex; justify-content: space-between">
+<div style="height: 48px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Spanish<span style="font-weight: 500; color: #A7B8C8">A1</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>
+<div style="height: 48px; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E69F00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg>6 days</div>
+</div>
+
+<section class="card" onPointerDown="{{ pDown }}" onPointerMove="{{ pMove }}" onPointerUp="{{ pUp }}" onPointerCancel="{{ pUp }}" style="position: absolute; left: 16px; right: 16px; bottom: 104px; box-sizing: border-box; overflow: hidden; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; touch-action: none; transform: translateY({{ dy }}px)">
+<div class="cUp" style="position: absolute; left: 16px; right: 16px; top: 16px">
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="flex: none; position: relative; width: 72px; height: 72px; overflow: hidden; border-radius: 16px"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -154px; top: -308px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="flex-grow: 1">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">UP NEXT · <span lang="es">LA COCINA</span></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</span>
+<span style="display: block; margin-top: 8px; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">New story · 5 min</span>
+</span>
+<span aria-hidden="true" style="flex: none; width: 64px; height: 64px; border-radius: 50%; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></span>
+</div>
+<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #33506B; display: flex; align-items: center; justify-content: space-between; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">
+<span>Then review, then a call</span>
+<span style="font-weight: 700; color: #EEF3F7">12 of 30 min today</span>
+</div>
+</div>
+<div class="cPk cPk2" style="position: absolute; left: 16px; right: 16px; top: 12px">
+<div aria-hidden="true" style="width: 40px; height: 4px; margin: 0 auto 12px; border-radius: 2px; background: #4A6C8C"></div>
+<div style="display: flex; align-items: center; gap: 16px">
+<span aria-hidden="true" style="flex: none; width: 72px; height: 72px; border-radius: 16px; background: #213D57"></span>
+<span style="flex-grow: 1; min-width: 0">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">PLACE 2 OF 10</span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">El parque</span>
+<span style="display: block; margin-top: 8px; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">2 of 12 stories heard</span>
+</span>
+<button type="button" class="pr" onClick="{{ open }}" aria-label="Open El parque" style="flex: none; width: 48px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 50%; background: #0C1926; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+</div>
+<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #33506B; display: flex; align-items: center; gap: 16px">
+<span style="flex-grow: 1; min-width: 0">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">PLAY NEXT · STORY 3</span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Rápido, despacio</span>
+</span>
+<span style="flex: none; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">4 min</span>
+<span class="nextP" style="flex: none"><button type="button" class="pr" onPointerDown="{{ hold }}" aria-label="Play Rápido, despacio" style="width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></button></span>
+</div>
+</div>
+<div class="cPk cPk3" style="position: absolute; left: 16px; right: 16px; top: 12px">
+<div aria-hidden="true" style="width: 40px; height: 4px; margin: 0 auto 12px; border-radius: 2px; background: #4A6C8C"></div>
+<div style="display: flex; align-items: center; gap: 16px">
+<span aria-hidden="true" style="flex: none; width: 72px; height: 72px; border-radius: 16px; background: #213D57"></span>
+<span style="flex-grow: 1; min-width: 0">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">PLACE 3 OF 10</span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">La cocina</span>
+<span style="display: block; margin-top: 8px; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">2 of 9 stories heard</span>
+</span>
+<button type="button" class="pr" onClick="{{ open }}" aria-label="Open La cocina" style="flex: none; width: 48px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 50%; background: #0C1926; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+</div>
+<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #33506B; display: flex; align-items: center; gap: 16px">
+<span style="flex-grow: 1; min-width: 0">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">PLAY NEXT · STORY 3</span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</span>
+</span>
+<span style="flex: none; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">5 min</span>
+<span class="nextP" style="flex: none"><button type="button" class="pr" onPointerDown="{{ hold }}" aria-label="Play Tengo hambre" style="width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></button></span>
+</div>
+</div>
+</section>
+</div>
+
+<!-- The place's picture: in the card first, then the full place's -->
+<div class="win" aria-hidden="true" style="transform: translateY({{ dy }}px)"><img class="w2" src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt=""><img class="w3" src="/_blob/d197900360466bcd3fdc5f842352506e" alt=""></div>
+
+<!-- The place -->
+<div class="L L-place">
+<button type="button" class="pr s0" onClick="{{ back }}" aria-label="Back to the map" style="position: absolute; z-index: 1; left: 16px; top: 16px; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; background: #0C1926; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+<div class="P2">
+<div class="s0" style="position: absolute; right: 16px; top: 20px; height: 40px; padding: 0 16px; display: flex; align-items: center; background: #0C1926; border-radius: 20px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Place 2 of 10</div>
+<div style="position: absolute; left: 0; right: 0; top: 296px">
+<div class="s1" style="box-sizing: border-box; padding: 24px 16px 0; display: flex; align-items: baseline; justify-content: space-between">
+<h1 lang="es" style="margin: 0; font: 800 32px/40px 'Atkinson Hyperlegible Next', Arial, sans-serif">El parque</h1>
+<span style="font: 500 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">2 of 12 stories heard</span>
+</div>
+<section class="s2" style="box-sizing: border-box; padding: 24px 0 0 16px">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">ALL 12 STORIES</div>
+<div lang="es" style="margin-top: 16px; display: flex; gap: 16px; overflow: hidden">
+<div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 8px; color: #A7B8C8">
+<span style="position: relative; height: 80px; overflow: hidden; border-radius: 16px"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -250px; top: -244px; width: 392px; height: 432px; image-rendering: pixelated"><span style="position: absolute; right: 8px; top: 8px; width: 24px; height: 24px; border-radius: 50%; background: #0C1926; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
+<span style="font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">1 · Uno, dos, tres</span>
+</div>
+<div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 8px; color: #A7B8C8">
+<span style="position: relative; height: 80px; overflow: hidden; border-radius: 16px"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -120px; top: -200px; width: 392px; height: 432px; image-rendering: pixelated"><span style="position: absolute; right: 8px; top: 8px; width: 24px; height: 24px; border-radius: 50%; background: #0C1926; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
+<span style="font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">2 · ¿Dónde está el gato?</span>
+</div>
+<div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 8px">
+<span style="position: relative; height: 80px; box-sizing: border-box; overflow: hidden; border-radius: 16px; border: 3px solid #E69F00"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -40px; top: -270px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="font: 700 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">3 · Rápido, despacio</span>
+</div>
+<div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 8px;">
+<span style="position: relative; height: 80px; overflow: hidden; border-radius: 16px"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -200px; top: -120px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">4 · La bola</span>
+</div>
+</div>
+</section>
+<div class="s3" style="margin: 24px 16px 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<button type="button" class="pr" style="height: 48px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Listen again</button>
+<button type="button" class="pr" style="height: 48px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Read</button>
+<button type="button" class="pr" style="height: 48px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Call Danny</button>
+</div>
+</div>
+<div class="next" style="position: absolute; left: 16px; right: 16px; bottom: 104px">
+<button type="button" class="pr" style="width: 100%; height: 72px; box-sizing: border-box; padding: 0 24px 0 8px; border: 0; display: flex; align-items: center; gap: 16px; background: #E69F00; color: #14110F; border-radius: 36px; text-align: left">
+<span style="flex: none; width: 56px; height: 56px; border-radius: 50%; background: #14110F; color: #E69F00; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></span>
+<span style="flex-grow: 1">
+<span style="display: block; font: 700 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em">PLAY NEXT · STORY 3</span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Rápido, despacio</span>
+</span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">4 min</span>
+</button>
+</div>
+</div>
+<div class="P3">
+<div class="s0" style="position: absolute; right: 16px; top: 20px; height: 40px; padding: 0 16px; display: flex; align-items: center; background: #0C1926; border-radius: 20px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Place 3 of 10</div>
+<div style="position: absolute; left: 0; right: 0; top: 296px">
+<div class="s1" style="box-sizing: border-box; padding: 24px 16px 0; display: flex; align-items: baseline; justify-content: space-between">
+<h1 lang="es" style="margin: 0; font: 800 32px/40px 'Atkinson Hyperlegible Next', Arial, sans-serif">La cocina</h1>
+<span style="font: 500 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">2 of 9 stories heard</span>
+</div>
+<section class="s2" style="box-sizing: border-box; padding: 24px 0 0 16px">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">ALL 9 STORIES</div>
+<div lang="es" style="margin-top: 16px; display: flex; gap: 16px; overflow: hidden">
+<div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 8px; color: #A7B8C8">
+<span style="position: relative; height: 80px; overflow: hidden; border-radius: 16px"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -150px; top: -150px; width: 392px; height: 432px; image-rendering: pixelated"><span style="position: absolute; right: 8px; top: 8px; width: 24px; height: 24px; border-radius: 50%; background: #0C1926; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
+<span style="font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">1 · La mesa</span>
+</div>
+<div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 8px; color: #A7B8C8">
+<span style="position: relative; height: 80px; overflow: hidden; border-radius: 16px"><img src="/_blob/40d38295cde0422d18f57b9c9700ea0a" alt="" style="position: absolute; left: -140px; top: -170px; width: 392px; height: 432px; image-rendering: pixelated"><span style="position: absolute; right: 8px; top: 8px; width: 24px; height: 24px; border-radius: 50%; background: #0C1926; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
+<span style="font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">2 · La cuchara</span>
+</div>
+<div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 8px">
+<span style="position: relative; height: 80px; box-sizing: border-box; overflow: hidden; border-radius: 16px; border: 3px solid #E69F00"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -40px; top: -250px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="font: 700 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">3 · Tengo hambre</span>
+</div>
+<div style="flex: none; width: 104px; display: flex; flex-direction: column; gap: 8px;">
+<span style="position: relative; height: 80px; overflow: hidden; border-radius: 16px"><img src="/_blob/2cdd4e7070b2a10e5c1c1489f1aa40d1" alt="" style="position: absolute; left: -20px; top: -120px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="font: 600 14px/18px 'Atkinson Hyperlegible Next', Arial, sans-serif">4 · Arroz con habichuelas</span>
+</div>
+</div>
+</section>
+<div class="s3" style="margin: 24px 16px 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<button type="button" class="pr" style="height: 48px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Listen again</button>
+<button type="button" class="pr" style="height: 48px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Read</button>
+<button type="button" class="pr" style="height: 48px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Call Danny</button>
+</div>
+</div>
+<div class="next" style="position: absolute; left: 16px; right: 16px; bottom: 104px">
+<button type="button" class="pr" style="width: 100%; height: 72px; box-sizing: border-box; padding: 0 24px 0 8px; border: 0; display: flex; align-items: center; gap: 16px; background: #E69F00; color: #14110F; border-radius: 36px; text-align: left">
+<span style="flex: none; width: 56px; height: 56px; border-radius: 50%; background: #14110F; color: #E69F00; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></span>
+<span style="flex-grow: 1">
+<span style="display: block; font: 700 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em">PLAY NEXT · STORY 3</span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</span>
+</span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">5 min</span>
+</button>
+</div>
+</div>
+</div>
+
+<nav aria-label="Tabs" lang="es" style="position: absolute; z-index: 4; left: 16px; right: 16px; bottom: 16px; height: 64px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #152A3D; border: 1px solid #33506B; border-radius: 32px">
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A7B8C8; text-decoration: none; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>Biblioteca</span>
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A7B8C8; text-decoration: none; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg></span>Palabras</span>
+<span style="padding: 0 0 8px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; color: #EEF3F7; font: 700 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 56px; height: 56px; margin-top: -24px; border-radius: 50%; background: #E69F00; color: #14110F; box-shadow: 0 0 0 4px #0C1926; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></span>Mapa</span>
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A7B8C8; text-decoration: none; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>Hablar</span>
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A7B8C8; text-decoration: none; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Yo</span>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+componentWillUnmount() { clearTimeout(this._t); }
+st() { return this.state || {}; }
+open() { this._drag = false; this.setState({ at: 'place', way: 'in', drag: 0, dy: 0 }); }
+visit(k) {
+var self = this, s = this.st(), frog = s.frog || 3;
+if (s.at === 'place' || s.going) return;
+if (k === frog) {
+// tapping the place he is at: the card becomes it; tapping again opens it
+if (s.card === 'p' + k) this.open(); else this.setState({ card: 'p' + k, place: k });
+return;
+}
+// the name answers at once; he hops for 800 ms; as he settles the card becomes the place
+this.setState({ going: true, dest: k, here: 0, trip: '' + frog + k, cam: k });
+this._t = setTimeout(function () { self.setState({ frog: k, going: false, dest: 0, here: k, card: 'p' + k, place: k }); }, 1010);
+}
+down(e) {
+var s = this.st();
+if (s.at === 'place' || !s.card || s.card === 'up') return;
+this._drag = true;
+this._y0 = e.clientY;
+// the board may be shown smaller or larger than life: measure it
+this._k = (e.currentTarget.getBoundingClientRect().width / 358) || 1;
+try { e.currentTarget.setPointerCapture(e.pointerId); } catch (x) {}
+this.setState({ drag: 1, dy: 0 });
+}
+move(e) {
+if (!this._drag) return;
+this.setState({ dy: Math.max(-80, Math.min(48, (e.clientY - this._y0) / this._k)) });
+}
+up() {
+if (!this._drag) return;
+this._drag = false;
+var dy = this.st().dy || 0;
+if (dy < -28 || Math.abs(dy) < 6) this.open();                       // a swipe up, or a tap
+else if (dy > 28) this.setState({ drag: 0, dy: 0, card: 'up' });     // a swipe down: back to what is next
+else this.setState({ drag: 0, dy: 0 });
+}
+renderVals() {
+var self = this, s = this.st();
+return {
+at: s.at || 'map',
+way: s.way || '',
+place: String(s.place || 3),
+trip: s.trip || '',
+cam: String(s.cam || 3),
+here: String(s.here === undefined ? 3 : s.here),
+dest: String(s.dest || 0),
+card: s.card || 'up',
+drag: s.drag ? '1' : '0',
+lock: s.lock ? '1' : '0',
+locked4: function () { clearTimeout(self._l); self.setState({ lock: 1 }); self._l = setTimeout(function () { self.setState({ lock: 0 }); }, 1500); },
+dy: s.dy || 0,
+go2: function () { self.visit(2); },
+go3: function () { self.visit(3); },
+open: function () { self.open(); },
+back: function () { self.setState({ at: 'map', way: 'out' }); },
+pDown: function (e) { self.down(e); },
+pMove: function (e) { self.move(e); },
+pUp: function () { self.up(); },
+hold: function (e) { e.stopPropagation(); }
+};
+}
+}
+</script>
+</body>
+</html>

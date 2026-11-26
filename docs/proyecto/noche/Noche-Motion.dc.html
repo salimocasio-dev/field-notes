@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche: motion rules</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+.dot{transform:translateX(0)}
+[data-on="1"] .dot{transform:translateX(168px)}
+.d-press{transition:transform 90ms cubic-bezier(.2,0,0,1)}
+.d-quick{transition:transform 140ms cubic-bezier(.2,0,0,1)}
+.d-move{transition:transform 220ms cubic-bezier(.4,0,.2,1)}
+.d-page{transition:transform 200ms cubic-bezier(.4,0,1,1)}
+[data-on="1"] .d-page{transition:transform 320ms cubic-bezier(.2,0,0,1)}
+.d-settle{transition:transform 480ms cubic-bezier(.2,0,0,1)}
+@media (prefers-reduced-motion:reduce){
+.dot{transition:none!important}
+}
+</style>
+</helmet>
+<div data-on="{{ on }}" style="width: 808px; height: 1070px; box-sizing: border-box; padding: 24px; display: flex; flex-direction: column; gap: 32px; overflow: hidden; background: #0C1926; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+
+<header style="height: 56px; display: flex; align-items: center; justify-content: space-between">
+<div><div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">NOCHE · MOTION BETWEEN SELECTIONS</div><h1 style="margin: 8px 0 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">One thing moves, once</h1></div>
+<button type="button" class="pr" onClick="{{ play }}" style="height: 48px; padding: 0 24px; border: 0; border-radius: 24px; background: #E69F00; color: #14110F; font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Play the times</button>
+</header>
+
+<section>
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">FIVE TIMES</div>
+<div style="margin-top: 12px; display: flex; flex-direction: column">
+<div style="height: 48px; display: grid; grid-template-columns: 72px 128px minmax(0, 1fr) 184px; align-items: center; gap: 16px; border-bottom: 1px solid #33506B">
+<span style="font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">press</span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">90 ms</span>
+<span style="font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Finger down. The thing you touch answers.</span>
+<span aria-hidden="true" style="position: relative; height: 16px; display: flex; align-items: center"><span style="width: 100%; height: 4px; border-radius: 2px; background: #33506B"></span><span class="dot d-press" style="position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%; background: #EEF3F7"></span></span>
+</div>
+<div style="height: 48px; display: grid; grid-template-columns: 72px 128px minmax(0, 1fr) 184px; align-items: center; gap: 16px; border-bottom: 1px solid #33506B">
+<span style="font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">quick</span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">140 ms</span>
+<span style="font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Colour, outline and weight changing in place.</span>
+<span aria-hidden="true" style="position: relative; height: 16px; display: flex; align-items: center"><span style="width: 100%; height: 4px; border-radius: 2px; background: #33506B"></span><span class="dot d-quick" style="position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%; background: #EEF3F7"></span></span>
+</div>
+<div style="height: 48px; display: grid; grid-template-columns: 72px 128px minmax(0, 1fr) 184px; align-items: center; gap: 16px; border-bottom: 1px solid #33506B">
+<span style="font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">move</span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">220 ms</span>
+<span style="font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">A mark travelling inside a screen: pill, thumb, knob, dash.</span>
+<span aria-hidden="true" style="position: relative; height: 16px; display: flex; align-items: center"><span style="width: 100%; height: 4px; border-radius: 2px; background: #33506B"></span><span class="dot d-move" style="position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%; background: #EEF3F7"></span></span>
+</div>
+<div style="height: 48px; display: grid; grid-template-columns: 72px 128px minmax(0, 1fr) 184px; align-items: center; gap: 16px; border-bottom: 1px solid #33506B">
+<span style="font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">page</span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">320 in · 200 out</span>
+<span style="font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">A screen or a sheet. Leaving is always the shorter one.</span>
+<span aria-hidden="true" style="position: relative; height: 16px; display: flex; align-items: center"><span style="width: 100%; height: 4px; border-radius: 2px; background: #33506B"></span><span class="dot d-page" style="position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%; background: #EEF3F7"></span></span>
+</div>
+<div style="height: 48px; display: grid; grid-template-columns: 72px 128px minmax(0, 1fr) 184px; align-items: center; gap: 16px; border-bottom: 1px solid #33506B">
+<span style="font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">settle</span>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">480 ms</span>
+<span style="font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">A result: the ring on a right answer, bars growing, a count.</span>
+<span aria-hidden="true" style="position: relative; height: 16px; display: flex; align-items: center"><span style="width: 100%; height: 4px; border-radius: 2px; background: #33506B"></span><span class="dot d-settle" style="position: absolute; left: 0; top: 0; width: 16px; height: 16px; border-radius: 50%; background: #EEF3F7"></span></span>
+</div>
+</div>
+<p style="margin: 12px 0 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Distances: <strong style="font-weight: 700; color: #EEF3F7">8 px</strong> a row or a line · <strong style="font-weight: 700; color: #EEF3F7">16 px</strong> a tab's content · <strong style="font-weight: 700; color: #EEF3F7">24 px</strong> a page · rows follow each other <strong style="font-weight: 700; color: #EEF3F7">30 ms</strong> apart, the first five only.</p>
+</section>
+
+<section>
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">THREE CURVES · NO BOUNCE ANYWHERE</div>
+<div style="margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<div style="height: 96px; box-sizing: border-box; padding: 16px; display: flex; align-items: center; gap: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<svg width="64" height="64" viewBox="-2 -2 68 68" fill="none" role="img" aria-label="Enter curve: fast start, long soft landing" style="flex: none"><path d="M0 64H64M0 64V0" stroke="#33506B" stroke-width="2"/><path d="M0 64C12.8 64 0 0 64 0" stroke="#EEF3F7" stroke-width="3" stroke-linecap="round"/></svg>
+<div><div style="font: 700 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">enter</div><div style="margin-top: 4px; font: 600 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">.2, 0, 0, 1</div><div style="margin-top: 4px; font: 500 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Arriving, and all the finger starts.</div></div>
+</div>
+<div style="height: 96px; box-sizing: border-box; padding: 16px; display: flex; align-items: center; gap: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<svg width="64" height="64" viewBox="-2 -2 68 68" fill="none" role="img" aria-label="Travel curve: eases out of one place and into the next" style="flex: none"><path d="M0 64H64M0 64V0" stroke="#33506B" stroke-width="2"/><path d="M0 64C25.6 64 12.8 0 64 0" stroke="#EEF3F7" stroke-width="3" stroke-linecap="round"/></svg>
+<div><div style="font: 700 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">travel</div><div style="margin-top: 4px; font: 600 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">.4, 0, .2, 1</div><div style="margin-top: 4px; font: 500 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Between two places you can see.</div></div>
+</div>
+<div style="height: 96px; box-sizing: border-box; padding: 16px; display: flex; align-items: center; gap: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<svg width="64" height="64" viewBox="-2 -2 68 68" fill="none" role="img" aria-label="Exit curve: slow start, leaves at speed" style="flex: none"><path d="M0 64H64M0 64V0" stroke="#33506B" stroke-width="2"/><path d="M0 64C25.6 64 64 0 64 0" stroke="#EEF3F7" stroke-width="3" stroke-linecap="round"/></svg>
+<div><div style="font: 700 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">exit</div><div style="margin-top: 4px; font: 600 12px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif">.4, 0, 1, 1</div><div style="margin-top: 4px; font: 500 13px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Leaving. Nothing lingers.</div></div>
+</div>
+</div>
+</section>
+
+<section>
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">NINE RULES</div>
+<div style="margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px">
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">1</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">Answer the finger first.</strong> What is touched dims and shrinks to 97% in 90 ms, before anything else moves.</p></div>
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">2</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">One mark travels.</strong> The pill, thumb or outline slides from the old choice to the new one. It never blinks out and back in.</p></div>
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">3</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">Content follows the choice.</strong> Pick toward the end side and the new content comes in from the end side. Right-to-left mirrors it.</p></div>
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">4</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">Going in grows from what was touched.</strong> Going back returns to it, and faster: 320 ms in, 200 ms out.</p></div>
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">5</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">Pixel pictures never zoom.</strong> Their window grows and the picture slides behind it, at the same whole-number scale.</p></div>
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">6</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">Orange moves last, and once.</strong> The next action lands 80 ms after the content, rises 8 px, then stays still.</p></div>
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">7</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">A miss is quiet.</strong> A white outline draws in 140 ms and the line plays again. No shake, no colour.</p></div>
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">8</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">Only live things loop:</strong> mic bars, thinking dots, a voice playing. With reduced motion, every move is a 140 ms fade in place.</p></div>
+<div style="display: flex; gap: 12px"><span style="flex: none; width: 20px; font: 800 20px/20px 'Bricolage Grotesque', Arial, sans-serif; color: #A7B8C8">9</span><p style="margin: 0; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8; text-wrap: pretty"><strong style="font-weight: 700; color: #EEF3F7">A trip on the map is short.</strong> The coquí takes the shortest road in at most 6 hops of 200 ms. The camera travels with him. As he lands the card becomes that place and grows; a swipe up or a tap opens it.</p></div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":808,"height":1070}}'>
+class Component extends DCLogic {
+renderVals() {
+var self = this;
+var on = this.state && this.state.on ? 1 : 0;
+return {
+on: String(on),
+play: function () { self.setState({ on: on ? 0 : 1 }); }
+};
+}
+}
+</script>
+</body>
+</html>
