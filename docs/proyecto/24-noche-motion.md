@@ -22,7 +22,7 @@ A reviewer fails a pull request that breaks one.
 - A motion board is one HTML file. Its `<style>` block holds the motion: every rule has a comment in plain words above it, and the times and curves in it are the ones in 1.2. Its `<script type="text/x-dc">` block holds the order of events and the waits between them.
 - **What the board file decides:** which element moves, from where to where, in which order, and every wait between steps. Read them from the `<style>` and the script.
 - **What this page decides:** the names, the tokens, the behaviour, and every place where it says the build differs from the board. Where this page and a board disagree, this page wins.
-- Each board has a video of it playing at real speed, 60 frames a second, named `Noche motion <N> - <what>.mp4`. Story N8.0 says where they are kept. Watch the video before building the story.
+- Each board has a video of it playing at real speed, 60 frames a second, named `Noche motion <N> - <what>.mp4`, in the folder `noche-motion` of the Drive context folder. Watch the video before building the story.
 - Everything page 22, Part 1.1 says to ignore in a board file is ignored here too. The pictures on the boards (`/_blob/...`) are the app's own: the map, its frames of the coquí hopping, the scene pictures.
 - Every number, name and line on a motion board is sample data (page 22, Part 1.2). So are its pictures: where a board cuts a piece out of a scene picture to stand for something else (a word's picture, a new story's cover), the build uses the app's own picture for that thing and never a story's picture (repo-root `AGENTS.md`, guardrail 5).
 - The boards mark what is chosen with `aria-checked` on their radio and switch buttons. The build gives screen readers the same selected and on/off state.
@@ -150,7 +150,7 @@ Everything in the app that changes when the learner picks something moves by the
 
 - `docs/proyecto/noche/` holds the 15 files of the list below, each with a PNG of it at rest beside it (390 by 844; the rules board 808 by 1070).
 - This page is in the repo as `docs/proyecto/24-noche-motion.md`.
-- The 14 videos are in a place every agent can open, and this page says where. They are not in the repo unless Salim says so (together they are about 77 MB).
+- The 14 videos are in the Drive context folder `Coqui — Project Context (any AI)`, in its folder `noche-motion`, named `Noche motion <N> - <what>.mp4` (Salim, Nov 26: "videos can go into drive."). They are not in the repo (together they are about 77 MB).
 - One `type:epic` issue for N8, with stories N8.1 to N8.16 as sub-issues. Each story is posted with `type:story`, the agent and lane labels it lists, and a status: `status:ready` if everything it waits for is merged (N8.1 today), `status:blocked` if not. The issue number of each is written next to it on this page.
 - Page 22 gets one line under "Part 3. The epics" pointing here.
 
@@ -633,7 +633,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 - "Enough words" is "the generator has a story for him"; there is no number to show.
 - The stage bar under each word at the end of a review, and under each new word at the end of a story, is new.
 - The "Write my story" sheet's main button is text-filled, and "Call done"'s is orange.
-- The videos are not in the repo.
+- The videos are in Drive, not in the repo.
 
 ## Part 5. Not covered
 
