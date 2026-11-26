@@ -69,7 +69,7 @@ No bounce, no overshoot and no spring anywhere in the app's own interface. The c
 4. **Going in grows from what was touched.** Going back returns to it, and faster: `pageIn` in, `pageOut` out.
 5. **Pixel pictures never zoom.** Their window grows and the picture slides behind it, always at the same whole-number scale (`PixelView`).
 6. **Orange moves last, and once.** The next action lands `nextDelay` after the last row, rises `row`, then stays still. It never pulses.
-7. **A miss is quiet.** A white outline draws in `quick` and the line plays again. No shake, no colour. A locked thing answers the same way: its outline turns solid and its reason lights up for about 1.4 s.
+7. **A miss is quiet.** A white outline draws in `quick` and the line plays again. No shake, no colour. A locked thing answers the same way: its outline turns solid and its reason lights up for about 1.4 s. A locked thing that already shows its whole reason in text colour has nothing to light and does not answer a tap (the new-story slot, N8.11).
 8. **Only live things loop:** the mic's level bars, the thinking dots, a voice playing, the dots while something loads. Everything else moves once and stops.
 9. **A trip on the map is short.** The coquí takes the shortest road in at most 6 hops. The camera travels with him. As he lands the card becomes that place and grows; a swipe up or a tap opens it.
 
@@ -171,7 +171,7 @@ Everything in the app that changes when the learner picks something moves by the
 **What to build**
 
 - `NocheMotion` in `lib/src/noche_motion.dart`, exported from the package: the durations, curves and distances of Part 1.2, with exactly those names and values.
-- `NocheMotion.of(context)`: the same values, or their reduced form (Part 1.4) when `MediaQuery.disableAnimationsOf(context)` is true: every duration `quick`, every distance 0, `loops` false.
+- `NocheMotion.of(context)`: the same values, or their reduced form (Part 1.4) when `MediaQuery.disableAnimationsOf(context)` is true: every duration `quick`, every distance 0, `pressScale` 1.0 (the thing touched still dims, since that is a change in place), `loops` false.
 - `Pressable` (`pressable.dart`) gives its child rule 1: scale to `pressScale` and dim in `press`, back in `pressBack`. A parameter picks the disc scale.
 - Every duration and curve now written in coqui_ui (`fades.dart`, `sheet.dart`, `lesson_frame.dart`, `noche_chrome.dart`, `noche_controls.dart`, `cards.dart`, `game_tiles.dart`) reads from `NocheMotion`. No behaviour changes in this story except the values.
 
@@ -179,8 +179,8 @@ Everything in the app that changes when the learner picks something moves by the
 
 - A test reads every token and compares it with the table in Part 1.2.
 - A test presses a `Pressable` down and up and reads its scale at the end of `press` and of `pressBack`.
-- `grep -rn "Duration(milliseconds" coqui/packages/core/coqui_ui/lib` finds only `noche_motion.dart`.
-- The reduced form is tested.
+- `grep -rnE "Duration\(|Curves\.|Cubic\(" coqui/packages/core/coqui_ui/lib` finds only `noche_motion.dart`.
+- The reduced form is tested, value by value, and a test presses a `Pressable` with reduced motion and reads that its scale stays 1.0.
 
 **Lane** lane:coqui_ui.
 
@@ -480,7 +480,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 **The new-story slot**
 
 - Ask the generator first. `StoryGenerator` gets `canWrite(vocabulary, due, previous)`: true when `generate` with no practice words would return a story. The Library calls it when it opens and when progress changes.
-- **Locked** (it is false): a dashed `line` outline, a lock, and "Come back when you learn more words." It is not a button and nothing happens on a tap.
+- **Locked** (it is false): a dashed `line` outline, a lock, and "Come back when you learn more words." in text colour. It is not a button and nothing happens on a tap: its reason is already written on it in full, so rule 7 leaves it alone.
 - **Open:** a dashed label-colour outline, a plus, and "A new story at your level". A tap opens the sheet (N8.12).
 - Turning from locked to open while on screen: the lock fades out in `quick`, the open slot fades in.
 - The message "There's no new story that fits your known words yet." is no longer reachable from an empty prompt and is removed. The one for practice words that do not fit stays, in the sheet.
@@ -512,7 +512,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 **Differs from the board**
 
-- The board asks for a topic. Keep what the app's sheet asks today (practice words); topics only if #2 built them (page 22, N4.5).
+- The board asks for a topic. Keep what the app's sheet asks today (practice words); topics only if the Biblioteca story (issue #2) built them (page 22, N4.5).
 - The new story's picture on the board is a stand-in. Show a written story on the shelf as the Library shows one today (N4.5).
 
 **Done when**
