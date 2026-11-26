@@ -8,7 +8,7 @@ import 'package:coqui_progress/src/shared_progress.dart';
 /// [Clock], sharing cross-language streak, total minutes, minutes by day,
 /// recorded progress languages, and active language code under
 /// [PalabrasStore.sharedStorageKey].
-class ProgressStores {
+class ProgressStores implements ProgressStoreCollection {
   /// Creates a multi-language store collection, migrating any legacy
   /// `coqui.palabras.v1` Spanish record into `coqui.es.palabras.v1` and
   /// seeding `coqui.shared.v1` on first startup without overwriting existing
@@ -50,6 +50,7 @@ class ProgressStores {
 
   /// Returns the cached [PalabrasStore] for [language], creating it on first
   /// access.
+  @override
   PalabrasStore forLanguage(Language language) {
     languageStorageKey(language.code);
     _knownCodes.add(language.code);
@@ -66,6 +67,7 @@ class ProgressStores {
   }
 
   /// Whether [languageCode] currently has at least one saved word or story.
+  @override
   bool hasProgress(String languageCode) {
     final key = languageStorageKey(languageCode);
     final cached = _stores[languageCode];
@@ -75,6 +77,7 @@ class ProgressStores {
 
   /// Language codes that currently have saved progress (at least one word or
   /// story), deduplicated and ordered by recorded languages then known codes.
+  @override
   List<String> get languagesWithProgress {
     final candidates = <String>{..._shared.recordedLanguages, ..._knownCodes};
     return [
@@ -84,25 +87,31 @@ class ProgressStores {
   }
 
   /// The last selected language code, defaulting to `'es'`.
+  @override
   String get currentLanguageCode => _shared.currentLanguageCode;
 
   /// Updates and persists the selected language code, firing [changes].
+  @override
   set currentLanguageCode(String code) => _shared.currentLanguageCode = code;
 
   /// Shared day streak across all languages.
+  @override
   int get streak => _shared.streak(_clock.nowMs());
 
   /// Shared total minutes across all languages.
+  @override
   double get minutes => _shared.minutes;
 
   /// Shared minutes logged on the UTC calendar day of [day]'s instant across
   /// all languages (rolling 35-day window, matching the UTC day keys used by
   /// [streak]). Pass `DateTime.utc(y, m, d)` or a `DateTime` built from
   /// `clock.nowMs()` rather than local midnight in UTC+ time zones.
+  @override
   double minutesOn(DateTime day) => _shared.minutesOn(day);
 
   /// Fires after any store save or shared-state change (such as changing
   /// [currentLanguageCode]).
+  @override
   Stream<void> get changes => _changes.stream;
 
   /// Disposes cached stores, unsubscribes from shared updates, and closes [changes].

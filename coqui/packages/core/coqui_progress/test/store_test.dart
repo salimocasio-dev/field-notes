@@ -106,6 +106,28 @@ void main() {
       );
     });
 
+    test('heard(save: true) and heard() + flush() persist across reload and fire 1 changes event', () async {
+      final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+      final s = _store(kv: kv);
+
+      expect(await events(s, () => s.heard('agua', save: true)), 1);
+      expect(kv.writes, 1);
+
+      final reloadedAfterSave = _store(kv: kv);
+      expect(reloadedAfterSave.word('agua')?.oida, 1);
+
+      expect(await events(s, () => s.heard('fuego')), 0);
+      expect(kv.writes, 1);
+      expect(_store(kv: kv).word('fuego'), isNull);
+
+      expect(await events(s, s.flush), 1);
+      expect(kv.writes, 2);
+
+      final reloadedAfterFlush = _store(kv: kv);
+      expect(reloadedAfterFlush.word('agua')?.oida, 1);
+      expect(reloadedAfterFlush.word('fuego')?.oida, 1);
+    });
+
     test('presume and setSetting and import save too', () async {
       final s = _store();
       expect(await events(s, () => s.presume(['casa'], ['la-lluvia'], [])), 1);
@@ -283,8 +305,43 @@ void main() {
           ],
           'historias': 1,
         });
+        expect(s.levelResult!.containsKey('cefr'), isFalse);
       },
     );
+
+    test(
+      'presume with explicit cefr records cefr in legacy mode and persists it',
+      () {
+        final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+        final s = _store(kv: kv);
+        s.presume(['tú'], ['la-lluvia'], [
+          {'w': 'tú', 'ok': true},
+        ], cefr: 'A2');
+        expect(s.levelResult, {
+          't': _t0,
+          'log': [
+            {'w': 'tú', 'ok': true},
+          ],
+          'historias': 1,
+          'cefr': 'A2',
+        });
+        final reloaded = _store(kv: kv);
+        expect(reloaded.levelResult?['cefr'], 'A2');
+      },
+    );
+
+    test('PalabrasStore implements LanguageProgressStore in legacy mode', () {
+      final s = _store();
+      expect(s, isA<LanguageProgressStore>());
+      final ProgressStore p = s;
+      expect(p.language, Language.spanish);
+      expect(p.stageMax, 4);
+      expect(p.streakFreezes, isNull);
+      final day = DateTime.fromMillisecondsSinceEpoch(_t0, isUtc: true);
+      expect(p.minutesOn(day), 0);
+      p.addMinutes(2.5);
+      expect(p.minutesOn(day), 2.5);
+    });
 
     test('a store written by palabras.js, with a word that has no ear, is read, not repaired', () {
       final s = _store(
