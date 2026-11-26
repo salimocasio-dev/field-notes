@@ -7,7 +7,7 @@ Update `.github/scripts/claude_pr_review.py`'s `DIFF_EXCLUDES` to exclude only t
 Issue #254 (`First-version pages: keep, move or remove`) retires the public `prueba/` phone-test Flutter web build. Deleting `prueba/main.dart.js` (~1.83M chars) and `prueba/assets/NOTICES` (~1.44M chars) produced a 3,644,120-char diff that exceeded `.github/scripts/claude_pr_review.py`'s 330,000-char limit and prevented Claude API from reviewing PR #277.
 
 ## What I am using meanwhile
-Replaced `prueba/index.html` with a minimal unconditional redirect to `../app/` so public access to `prueba/` is blocked immediately while keeping the remaining 23 static build files in `prueba/` untouched on disk until `DIFF_EXCLUDES` excludes those generated artifacts for a clean follow-up deletion PR.
+Replaced `prueba/index.html` with a minimal unconditional redirect to `../app/` so public visitors to `prueba/` are redirected to `../app/` immediately while keeping the remaining 23 static build files in `prueba/` untouched on disk until `DIFF_EXCLUDES` excludes those generated artifacts for a clean follow-up deletion PR.
 
 ## Order and branch
 Issue `#254`, branch `content/254` (`lane:content`).
