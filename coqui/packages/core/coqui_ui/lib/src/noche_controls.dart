@@ -8,6 +8,7 @@ library;
 import 'dart:ui' as ui;
 
 import 'package:coqui_ui/src/noche_icons.dart';
+import 'package:coqui_ui/src/noche_motion.dart';
 import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:material_ui/material_ui.dart';
@@ -903,57 +904,60 @@ class NocheSwitchRow extends StatelessWidget {
       onPressed: enabled ? () => onChanged!(!value) : null,
       semanticLabel: subtitle == null ? label : '$label. $subtitle',
       selected: value,
-      builder: (context, _) => Container(
-        width: double.infinity,
-        constraints: const BoxConstraints(minHeight: 52),
-        padding: subtitle == null
-            ? EdgeInsetsDirectional.zero
-            : const EdgeInsetsDirectional.symmetric(vertical: 8),
-        decoration: showTopBorder
-            ? BoxDecoration(
-                border: Border(top: BorderSide(color: borderColor, width: 1)),
-              )
-            : null,
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(label, style: titleStyle),
-                  if (subtitle != null) Text(subtitle!, style: subtitleStyle),
-                ],
+      builder: (context, _) {
+        final motion = NocheMotion.of(context);
+        return Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 52),
+          padding: subtitle == null
+              ? EdgeInsetsDirectional.zero
+              : const EdgeInsetsDirectional.symmetric(vertical: 8),
+          decoration: showTopBorder
+              ? BoxDecoration(
+                  border: Border(top: BorderSide(color: borderColor, width: 1)),
+                )
+              : null,
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(label, style: titleStyle),
+                    if (subtitle != null) Text(subtitle!, style: subtitleStyle),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 140),
-              width: 52,
-              height: 32,
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                color: value ? NocheColors.text : NocheColors.line,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: AnimatedAlign(
-                duration: const Duration(milliseconds: 140),
-                alignment: value
-                    ? AlignmentDirectional.centerEnd
-                    : AlignmentDirectional.centerStart,
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: value ? NocheColors.ground : NocheColors.label,
-                    shape: BoxShape.circle,
+              const SizedBox(width: 12),
+              AnimatedContainer(
+                duration: motion.quick,
+                width: 52,
+                height: 32,
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                  color: value ? NocheColors.text : NocheColors.line,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: AnimatedAlign(
+                  duration: motion.quick,
+                  alignment: value
+                      ? AlignmentDirectional.centerEnd
+                      : AlignmentDirectional.centerStart,
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: value ? NocheColors.ground : NocheColors.label,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

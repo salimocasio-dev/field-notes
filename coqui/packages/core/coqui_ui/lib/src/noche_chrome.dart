@@ -5,6 +5,7 @@ import 'dart:ui' show SemanticsRole;
 
 import 'package:coqui_ui/src/noche_a11y.dart';
 import 'package:coqui_ui/src/noche_icons.dart';
+import 'package:coqui_ui/src/noche_motion.dart';
 import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:material_ui/material_ui.dart';
@@ -559,7 +560,10 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   String? get barrierLabel => null;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 200);
+  Duration get transitionDuration => NocheMotion.pageIn;
+
+  @override
+  Duration get reverseTransitionDuration => NocheMotion.pageOut;
 
   void _close() {
     final nav = navigator;
@@ -577,7 +581,12 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    final slide = CurvedAnimation(parent: animation, curve: Curves.easeOut);
+    final motion = NocheMotion.of(context);
+    final slide = CurvedAnimation(
+      parent: animation,
+      curve: motion.enter,
+      reverseCurve: motion.exit,
+    );
     return themes.wrap(
       PopScope(
         canPop: dismissible,
