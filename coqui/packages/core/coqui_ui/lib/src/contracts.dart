@@ -202,6 +202,9 @@ class Services {
     required this.pictures,
     required this.storage,
     this.reduceMotion = false,
+    this.entitlements = const AllowAllEntitlements(),
+    this.progressStores,
+    this.availableCourses = const [],
   });
 
   final ProgressStore progress;
@@ -217,6 +220,9 @@ class Services {
   final PictureSource pictures;
   final KeyValueStore Function(String space) storage;
   final bool reduceMotion;
+  final Entitlements entitlements;
+  final ProgressStoreCollection? progressStores;
+  final List<CourseCatalog> availableCourses;
 }
 
 /// A feature's tab in the tab bar.
