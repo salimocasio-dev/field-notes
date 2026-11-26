@@ -175,7 +175,7 @@ topic: String(s.topic || 0),
 // which topic is chosen, for screen readers
 a: { tp0: String((s.topic || 0) === 0), tp1: String(s.topic === 1), tp2: String(s.topic === 2) },
 isNew: s.isNew ? '1' : '0',
-openSheet: function () { self.clearAll(); self.setState({ sheet: 1, wait: 0, isNew: 0 }); },
+openSheet: function () { self.clearAll(); self.setState({ sheet: 1, wait: 0 }); },   // a story already written stays on the shelf
 closeSheet: function () { if (!(self.state || {}).wait) self.setState({ sheet: 0 }); },
 topic0: set({ topic: 0 }),
 topic1: set({ topic: 1 }),

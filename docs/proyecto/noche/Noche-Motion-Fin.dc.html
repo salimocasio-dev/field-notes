@@ -64,7 +64,7 @@ button{font-family:inherit}
 
 <header style="height: 56px; box-sizing: border-box; padding: 0 16px 0 8px; display: flex; align-items: center; gap: 8px">
 <span class="hx" aria-hidden="true" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
-<div role="img" aria-label="Parts of the review" style="flex-grow: 1; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px"><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash d9"><i></i></span></div>
+<div role="img" aria-label="Review: {{ parts }} of 9 parts done" style="flex-grow: 1; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px"><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash d9"><i></i></span></div>
 <span aria-hidden="true" style="width: 48px; height: 48px"></span>
 </header>
 
@@ -140,6 +140,7 @@ renderVals() {
 var self = this, seq = (this.state || {}).seq || 0;
 return {
 seq: String(seq),
+parts: seq === 0 ? 8 : 9,
 miss1: (this.state || {}).miss ? '1' : '0',
 miss: function () { if (((self.state || {}).seq || 0) === 0) self.setState({ miss: 1 }); },
 // the right answer, the last dash, and 900 ms later the end
