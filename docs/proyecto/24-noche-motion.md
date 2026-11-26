@@ -107,6 +107,7 @@ Beside what page 22, Part 1.6 asks:
 - A widget test for each move the story names, pumped at its start, its middle and its end (`tester.pump(NocheMotion.move ~/ 2)`), reading the position or the opacity, not a golden of a moving frame.
 - A test with `disableAnimations: true` showing the reduced form.
 - A screen recording of the screen on a phone or the simulator, beside the board's video, in the pull request.
+- Every wait the story names is a named constant (Part 1.2, "Waits"). The reviewer greps the changed files: `NocheMotion.ms(` appears only in the package's `lib/src/motion.dart`.
 
 ### 1.7 Things that cost money or need Salim
 
@@ -186,7 +187,7 @@ Everything in the app that changes when the learner picks something moves by the
 - `NocheMotion` in `lib/src/noche_motion.dart`, exported from the package: the durations, curves, distances and the four waits of Part 1.2, with exactly those names and values, and `NocheMotion.ms(int)` for a feature's own waits.
 - `NocheMotion.of(context)`: the same values, or their reduced form (Part 1.4) when `MediaQuery.disableAnimationsOf(context)` is true: every move's duration `quick`; `stagger`, `nextDelay` and `hop` zero; every distance 0; `pressScale` 1.0 (the thing touched still dims, since that is a change in place); `loops` false. The waits keep their values, so steps still come in order.
 - `Pressable` (`pressable.dart`) gives its child rule 1: scale to `pressScale` and dim in `press`, back in `pressBack`. A parameter picks the disc scale.
-- Every duration and curve now written in coqui_ui (`fades.dart`, `sheet.dart`, `lesson_frame.dart`, `noche_chrome.dart`, `noche_controls.dart`, `cards.dart`, `game_tiles.dart`) reads from `NocheMotion`. No behaviour changes in this story except the values.
+- Every duration and curve written in any file under coqui_ui's `lib/` reads from `NocheMotion`. On Nov 26 those files were `fades.dart`, `sheet.dart`, `lesson_frame.dart`, `noche_chrome.dart`, `noche_controls.dart`, `cards.dart` and `game_tiles.dart`; the grep below is the list that counts. No behaviour changes in this story except the values.
 
 **Done when**
 
@@ -312,7 +313,10 @@ New pieces:
   3. When he has landed and settled (about a quarter of a second): the name pill fades, "You are here" rises over him, and the card becomes that place (N8.6). The place does not open by itself.
 - **The trip is short** (rule 9). In `MapPicture`:
   - The route is the shortest way along the road. Today `route()` goes from pad to pad, so place 3 to place 2 passes through place 1: 18 hops, 3.6 s. It must go through the junction: 4 hops.
-  - A trip has at most 6 hops. Count the hops as now (one per 2.2 units of each leg, at least one per leg); if that is more than 6, share 6 among the legs by their length. Each hop stays `hop` long, so a trip is never more than 1.2 s. Longer trips make longer hops.
+  - A trip has at most 6 hops. A leg is one straight piece of the route. Count the hops as now: for each leg, its length divided by 2.2 and rounded, at least 1; add them up. Each hop stays `hop` long, so a trip is never more than 1.2 s.
+    - **6 or fewer:** hop as now.
+    - **More than 6, on a route of 6 legs or fewer:** share exactly 6 among the legs by length. Each leg first gets its share rounded down, and at least 1. Hops still to give go one at a time to the leg whose share lost the most by rounding down; a tie goes to the earlier leg. Hops still to take back (when the "at least 1" gave too many) come one at a time from the leg with the most hops; a tie comes from the later leg. So legs of 5 and 15 units get 2 and 4, as on the board. Longer trips make longer hops.
+    - **A route of more than 6 legs** (a far place): he does not hop. He fades out in `quick`, the camera travels to the stop in `pageIn` on `travel`, and he fades in there in `quick`. The rest of step 3 follows.
 - **Tapping the place he is at:** the card becomes that place (N8.6). Tapping it again opens it.
 - **Tapping a place that is not open yet** (rule 7): a pill over it with a lock and its reason (`"After <place>"`, the place before it) shows in `press` and leaves after `lockHold` over `move`. The coquí does not move. Nothing else changes. A place locked by plan keeps N3.4's behaviour.
 - With reduced motion: the coquí is placed at once, the camera jumps, the card changes with a `quick` fade.
@@ -324,7 +328,7 @@ New pieces:
 
 **Done when**
 
-- A test of `route` and the hops for every pair of places: never more than 6 hops, and never through a third place's stop when the road does not need it.
+- A test of `route` and the hops for every pair of places: never more than 6 hops, the count per leg as the rule above gives it, no hops at all on a route of more than 6 legs, and never through a third place's stop when the road does not need it.
 - The recorded map runs still pass, with their times updated where a trip got shorter. Each change is listed in the pull request.
 - A test taps a closed place and reads that the coquí's place did not change.
 
@@ -622,7 +626,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 - Treated every motion board as approved, including the ones drawn without a screen to follow: the end of a story, the wait while a story is written, the line while the course loads.
 - No bounce anywhere in the interface. The touch turn's hint loses its bounce.
-- Map trips are capped at 6 hops (1.2 s) and take the shortest road. This changes the map's route code and the times of some recorded runs.
+- Map trips are capped at 6 hops (1.2 s) and take the shortest road. This changes the map's route code and the times of some recorded runs. A place more than 6 legs away is not hopped to: the coquí fades out and in. No board shows that.
 - "You are here" moves above a place's house when the house is in the way.
 - Arriving at a place no longer opens it. The card becomes the place; a swipe up or a tap opens it. A swipe down goes back to Up next.
 - The Library loses its filter, its captions and "reading counts from A2".
