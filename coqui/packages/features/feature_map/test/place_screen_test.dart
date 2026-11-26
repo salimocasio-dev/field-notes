@@ -898,7 +898,11 @@ void main() {
                   body: Stack(
                     fit: StackFit.expand,
                     children: [
-                      PlaceScreen(placeId: 'cocina', services: services),
+                      PlaceScreen(
+                        placeId: 'cocina',
+                        services: services,
+                        entitlements: const AllowAllEntitlements(),
+                      ),
                       PositionedDirectional(
                         start: 0,
                         end: 0,
