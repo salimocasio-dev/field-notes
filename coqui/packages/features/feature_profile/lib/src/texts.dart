@@ -119,3 +119,32 @@ String meLevelCheckDoneSuffix(String skippedText, String storyWord) =>
     'Done: $skippedText $storyWord skipped.';
 
 String meBuildLabel(String build) => 'build $build';
+
+// ---- N3.2 Plans (docs/proyecto/noche/Noche-Planes.dc.html) ----
+
+const String plansTitle = 'Plans';
+const String plansBackLabel = 'Back';
+const String plansIntro = 'One plan covers every language you learn.';
+const String plansYourPlan = 'Your plan';
+const String plansNoCost = 'No cost';
+const List<String> plansFreeBullets = [
+  'The first place in every language',
+  'Review of the words you learn there',
+];
+const List<String> plansCourseBullets = [
+  'Every place and every story',
+  'Library: new stories written for your level',
+  'Review for listening, speaking and reading',
+];
+const String plansCallsEverythingInCourse = 'Everything in Course';
+const String plansCallsLiveCalls = 'Live calls with a speaking partner';
+const String plansRestorePurchases = 'Restore purchases';
+const String plansFootNote =
+    'You manage or cancel your plan in your app store account.';
+
+String plansPricePerMonth(String price) => '$price a month';
+
+String plansCallMinutesPerMonth(int minutes) =>
+    '$minutes minutes of calls a month';
+
+String plansGetLabel(String planName) => 'Get $planName';

@@ -179,7 +179,7 @@ MeViewData buildMeViewData({
   double Function(DateTime day)? minutesOn,
   int? streakFreezes,
   int? stageMax,
-  Entitlements entitlements = const AllowAllEntitlements(),
+  Entitlements? entitlements,
   String? level,
 }) {
   final progress = services.progress;
@@ -274,7 +274,7 @@ MeViewData buildMeViewData({
       .length;
 
   final resolvedLevel = resolveLevel(progress, level);
-  final plan = entitlements.plan;
+  final plan = (entitlements ?? services.entitlements).plan;
 
   return MeViewData(
     totalMinutes: totalMinutes,

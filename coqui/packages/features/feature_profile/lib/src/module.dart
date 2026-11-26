@@ -1,12 +1,14 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/src/languages_sheet.dart';
+import 'package:feature_profile/src/plans_screen.dart';
 import 'package:feature_profile/src/yo_screen.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// feature_profile's module: the Yo tab and the "Your languages" sheet
-/// ([LanguagesRoute]). The welcome is not a tab: the shell wraps the app in
-/// [WelcomeGate] (exported beside this module).
+/// feature_profile's module: the Yo tab, the "Your languages" sheet
+/// ([LanguagesRoute]), and the Plans screen ([PlansRoute]). The welcome is not
+/// a tab: the shell wraps the app in [WelcomeGate] (exported beside this
+/// module).
 class ProfileModule implements FeatureModule {
   const ProfileModule();
 
@@ -24,6 +26,7 @@ class ProfileModule implements FeatureModule {
   @override
   Widget? screenFor(AppRoute route, Services s) => switch (route) {
     LanguagesRoute() => LanguagesSheet(services: s),
+    PlansRoute() => PlansScreen(services: s),
     _ => null,
   };
 }

@@ -30,7 +30,7 @@ class YoScreen extends StatefulWidget {
     this.minutesOn,
     this.streakFreezes,
     this.stageMax,
-    this.entitlements = const AllowAllEntitlements(),
+    this.entitlements,
     this.level,
   });
 
@@ -56,9 +56,8 @@ class YoScreen extends StatefulWidget {
   /// (`LanguageProgressStore.stageMax`) lands; defaults to [defaultStageMax].
   final int? stageMax;
 
-  /// Injected entitlements until request 85 (`Services.entitlements`) lands in
-  /// `coqui_ui`; defaults to [AllowAllEntitlements].
-  final Entitlements entitlements;
+  /// Optional entitlements override; defaults to [Services.entitlements].
+  final Entitlements? entitlements;
 
   /// Optional CEFR level override; defaults to `levelResult['cefr']` or `A1`.
   final String? level;
@@ -82,6 +81,7 @@ class _YoScreenState extends State<YoScreen> {
 
   Services get _s => widget.services;
   ProgressStore get _progress => _s.progress;
+  Entitlements get _entitlements => widget.entitlements ?? _s.entitlements;
 
   @override
   void initState() {
@@ -114,7 +114,7 @@ class _YoScreenState extends State<YoScreen> {
 
   void _listenEntitlements() {
     _entitlementChanges?.cancel();
-    _entitlementChanges = widget.entitlements.changes.listen((_) {
+    _entitlementChanges = _entitlements.changes.listen((_) {
       if (!mounted) return;
       setState(() {});
     });
@@ -127,7 +127,7 @@ class _YoScreenState extends State<YoScreen> {
       _listen();
       _checkNote();
     }
-    if (old.entitlements != widget.entitlements) {
+    if ((old.entitlements ?? old.services.entitlements) != _entitlements) {
       _listenEntitlements();
     }
   }
@@ -226,7 +226,7 @@ class _YoScreenState extends State<YoScreen> {
       minutesOn: widget.minutesOn,
       streakFreezes: widget.streakFreezes,
       stageMax: widget.stageMax,
-      entitlements: widget.entitlements,
+      entitlements: _entitlements,
       level: widget.level,
     );
     final courseLocale = Locale(data.language.code);

@@ -15,6 +15,7 @@ void main() {
     'lib/src/about_sheet.dart',
     'lib/src/install_hint.dart',
     'lib/src/module.dart',
+    'lib/src/plans_screen.dart',
     'lib/src/welcome.dart',
     'lib/src/welcome_gate.dart',
   ];
