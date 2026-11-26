@@ -228,32 +228,7 @@ abstract final class CoquiIcons {
   ]);
 }
 
-/// The streak's flame at the size of the fire emoji glyph next to text of [fontSize]: the glyph is 0.86 em wide and
-/// 1.1 em tall (12.2 x 15.6 px next to the map chip's 14 px text; 20.6 x 26.3 next to Yo's 24 px
-/// number: measured on references 012 and 069), so the icon's box is 1.2 em. Put [gapFor] between it
-/// and the text (the ink of the glyph is 0.49 em from the text that follows). A flame is a picture of
-/// a flame, so a screen reader is told nothing.
-class CoquiFlame extends StatelessWidget {
-  const CoquiFlame({super.key, this.fontSize = 14});
-
-  /// The font size of the text beside it, in px.
-  final double fontSize;
-
-  /// The space between the flame's box and the text that follows it: 0.29 em.
-  static double gapFor(double fontSize) => fontSize * 0.29;
-
-  @override
-  Widget build(BuildContext context) => ExcludeSemantics(
-    child: CoquiIcon(
-      CoquiIcons.flame,
-      size: fontSize * 1.2,
-      color: CoquiColors.flameBody,
-    ),
-  );
-}
-
-/// An icon at [size] px (the old CSS sizes: 24 in the tab bar, 28 in the Mapa
-/// disc, 20 in a button, 24 in a play disc, 32 on the start disc).
+/// An icon at [size] px.
 class CoquiIcon extends StatelessWidget {
   const CoquiIcon(this.data, {super.key, this.size = 24, required this.color});
 

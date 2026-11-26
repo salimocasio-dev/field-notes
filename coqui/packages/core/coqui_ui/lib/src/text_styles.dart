@@ -298,28 +298,3 @@ abstract final class CoquiText {
     'lessonChip': lessonChip,
   };
 }
-
-/// The one way to write Pixelify Sans, with ligatures OFF.
-///
-/// Pixelify Sans' "fi" ligature reads as "A" (page 13, order 00, "State"), so
-/// `liga` and `clig` are disabled ([coquiNoLigatures]). Nobody writes `TextStyle(fontFamily: 'Pixelify Sans')`
-/// by hand. Weights are 400 and 700 (the two files in `fonts/`).
-TextStyle pixelifyStyle({
-  double fontSize = 16,
-  FontWeight fontWeight = FontWeight.w400,
-  Color color = CoquiColors.ink,
-  double? height,
-  double letterSpacing = 0,
-}) => TextStyle(
-  inherit: false,
-  fontFamily: 'Pixelify Sans',
-  package: 'coqui_ui',
-  fontSize: fontSize,
-  fontWeight: fontWeight,
-  color: color,
-  height: height,
-  letterSpacing: letterSpacing,
-  leadingDistribution: TextLeadingDistribution.even,
-  decoration: TextDecoration.none,
-  fontFeatures: coquiNoLigatures,
-);

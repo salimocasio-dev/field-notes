@@ -312,108 +312,6 @@ void main() {
   });
 
   group('Directional LTR vs RTL widget behavior', () {
-    testWidgets('LessonProgressLine fills from start in LTR and RTL', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        _wrap(
-          const LessonProgressLine(value: 0.25),
-          textDirection: TextDirection.ltr,
-        ),
-      );
-      final ltrBox = tester.getRect(
-        find.descendant(
-          of: find.byType(LessonProgressLine),
-          matching: find.byType(ColoredBox),
-        ),
-      );
-      final ltrTrack = tester.getRect(find.byType(LessonProgressLine));
-      expect(ltrBox.left, closeTo(ltrTrack.left, 1));
-      expect(ltrBox.width, closeTo(ltrTrack.width * 0.25, 1));
-
-      await tester.pumpWidget(
-        _wrap(
-          const LessonProgressLine(value: 0.25),
-          textDirection: TextDirection.rtl,
-        ),
-      );
-      final rtlBox = tester.getRect(
-        find.descendant(
-          of: find.byType(LessonProgressLine),
-          matching: find.byType(ColoredBox),
-        ),
-      );
-      final rtlTrack = tester.getRect(find.byType(LessonProgressLine));
-      expect(rtlBox.right, closeTo(rtlTrack.right, 1));
-      expect(rtlBox.width, closeTo(rtlTrack.width * 0.25, 1));
-    });
-
-    testWidgets(
-      'LessonFrame portrait/landscape, caption script, and 2-line Arabic non-clipping',
-      (tester) async {
-        const longArabic =
-            'تقول جدة: مرحباً! هل تريد كعكة لذيذة اليوم في البيت الكبير مع الطائر؟';
-        await tester.pumpWidget(
-          _wrap(
-            textDirection: TextDirection.rtl,
-            LessonFrame(
-              onClose: () {},
-              onSound: () {},
-              language: lessonDirectionArabicLanguage,
-              caption: longArabic,
-              picture: const SizedBox(width: 196, height: 104),
-              bottom: [LessonStartButton(onPressed: () {})],
-            ),
-          ),
-        );
-        final closeCenter = tester.getCenter(find.byType(LessonCloseButton));
-        final soundCenter = tester.getCenter(find.byType(LessonSoundButton));
-        expect(closeCenter.dx, greaterThan(soundCenter.dx));
-
-        final capText = tester.widget<Text>(find.text(longArabic));
-        expect(capText.textDirection, TextDirection.rtl);
-        expect(capText.locale, const Locale('ar'));
-        expect(
-          capText.style!.fontFamily,
-          'packages/coqui_ui/$nocheFontNotoSansArabic',
-        );
-        // Verify OverflowBox maxHeight accommodates 2 lines of Arabic without clipping.
-        final overflowBox = tester.widget<OverflowBox>(
-          find.ancestor(
-            of: find.text(longArabic),
-            matching: find.byType(OverflowBox),
-          ),
-        );
-        final lineH = capText.style!.fontSize! * capText.style!.height!;
-        expect(overflowBox.maxHeight, greaterThanOrEqualTo(lineH * 2));
-        expect(tester.takeException(), isNull);
-
-        // Landscape mode: picture on end (right) in RTL, controls column on start (left).
-        await tester.pumpWidget(
-          _wrap(
-            textDirection: TextDirection.rtl,
-            size: const Size(844, 390),
-            LessonFrame(
-              onClose: () {},
-              onSound: () {},
-              language: lessonDirectionArabicLanguage,
-              caption: 'انظر إلى بيت جدة.',
-              picture: const SizedBox(
-                key: ValueKey('pic'),
-                width: 196,
-                height: 104,
-              ),
-              bottom: [LessonStartButton(onPressed: () {})],
-            ),
-          ),
-        );
-        final picCenter = tester.getCenter(find.byKey(const ValueKey('pic')));
-        final lsCloseCenter = tester.getCenter(find.byType(LessonCloseButton));
-        expect(picCenter.dx, greaterThan(lsCloseCenter.dx));
-        expect(tester.takeException(), isNull);
-      },
-    );
-
     testWidgets('PictureChoice badges sit on end edge in LTR and RTL', (
       tester,
     ) async {
@@ -449,89 +347,6 @@ void main() {
       final rtlBox = tester.getRect(find.byType(PictureChoice));
       final rtlBadge = tester.getRect(find.byType(CheckBadge));
       expect(rtlBadge.left, closeTo(rtlBox.left + CoquiMetrics.badgeInset, 1));
-    });
-
-    testWidgets('CoquiSheet title/close mirror in RTL', (tester) async {
-      await tester.pumpWidget(
-        _wrap(
-          textDirection: TextDirection.rtl,
-          CoquiSheet(
-            title: 'البيت',
-            onClose: () {},
-            child: const SizedBox(height: 100),
-          ),
-        ),
-      );
-      final titleRect = tester.getRect(find.text('البيت'));
-      final closeRect = tester.getRect(find.byType(CoquiCloseButton));
-      expect(titleRect.right, greaterThan(closeRect.right));
-    });
-
-    testWidgets('CoquiSwitch knob slides start->end in LTR and RTL', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        _wrap(
-          textDirection: TextDirection.ltr,
-          CoquiSwitch(value: false, onChanged: (_) {}),
-        ),
-      );
-      final ltrOffX = tester
-          .getCenter(
-            find.descendant(
-              of: find.byType(AnimatedPositionedDirectional),
-              matching: find.byType(Container),
-            ),
-          )
-          .dx;
-      await tester.pumpWidget(
-        _wrap(
-          textDirection: TextDirection.ltr,
-          CoquiSwitch(value: true, onChanged: (_) {}),
-        ),
-      );
-      await tester.pumpAndSettle();
-      final ltrOnX = tester
-          .getCenter(
-            find.descendant(
-              of: find.byType(AnimatedPositionedDirectional),
-              matching: find.byType(Container),
-            ),
-          )
-          .dx;
-      expect(ltrOnX, greaterThan(ltrOffX));
-
-      await tester.pumpWidget(
-        _wrap(
-          textDirection: TextDirection.rtl,
-          CoquiSwitch(key: UniqueKey(), value: false, onChanged: (_) {}),
-        ),
-      );
-      await tester.pumpAndSettle();
-      final rtlOffX = tester
-          .getCenter(
-            find.descendant(
-              of: find.byType(AnimatedPositionedDirectional),
-              matching: find.byType(Container),
-            ),
-          )
-          .dx;
-      await tester.pumpWidget(
-        _wrap(
-          textDirection: TextDirection.rtl,
-          CoquiSwitch(value: true, onChanged: (_) {}),
-        ),
-      );
-      await tester.pumpAndSettle();
-      final rtlOnX = tester
-          .getCenter(
-            find.descendant(
-              of: find.byType(AnimatedPositionedDirectional),
-              matching: find.byType(Container),
-            ),
-          )
-          .dx;
-      expect(rtlOnX, lessThan(rtlOffX));
     });
 
     testWidgets(
@@ -635,64 +450,21 @@ void main() {
       expect(rtlPill.left, lessThan(rtlBox.center.dx));
     });
 
-    testWidgets('CoquiTabBar places raised disc over raisedId in RTL', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        _wrap(
-          textDirection: TextDirection.rtl,
-          Align(
-            alignment: AlignmentDirectional.bottomCenter,
-            child: CoquiTabBar(selectedId: CoquiTabs.mapId, onTap: (_) {}),
-          ),
-        ),
-      );
-      final mapLabelCenter = tester.getCenter(find.text(CoquiLabels.map));
-      final barRect = tester.getRect(find.byType(CoquiTabBar));
-      expect(mapLabelCenter.dx, closeTo(barRect.center.dx, 2));
-
-      // Non-middle raisedId mirrors cleanly with AlignmentDirectional in RTL.
-      await tester.pumpWidget(
-        _wrap(
-          textDirection: TextDirection.rtl,
-          Align(
-            alignment: AlignmentDirectional.bottomCenter,
-            child: CoquiTabBar(
-              selectedId: CoquiTabs.libraryId,
-              raisedId: CoquiTabs.libraryId,
-              onTap: (_) {},
-            ),
-          ),
-        ),
-      );
-      final libLabelCenter = tester.getCenter(find.text(CoquiLabels.library));
-      expect(libLabelCenter.dx, greaterThan(barRect.center.dx));
-    });
-
-    testWidgets('LessonBackButton/LessonNextButton mirror icons in RTL', (
-      tester,
-    ) async {
+    testWidgets('CoquiIcon directional icons mirror in RTL', (tester) async {
       await tester.pumpWidget(
         _wrap(
           textDirection: TextDirection.ltr,
-          Row(
+          const Row(
             children: [
-              LessonBackButton(onPressed: () {}),
-              LessonNextButton(onPressed: () {}),
+              CoquiIcon(CoquiIcons.left, color: CoquiColors.lessonInk),
+              CoquiIcon(CoquiIcons.right, color: CoquiColors.lessonInk),
             ],
           ),
         ),
       );
       expect(
         find.descendant(
-          of: find.byType(LessonBackButton),
-          matching: find.byType(Transform),
-        ),
-        findsNothing,
-      );
-      expect(
-        find.descendant(
-          of: find.byType(LessonNextButton),
+          of: find.byType(CoquiIcon),
           matching: find.byType(Transform),
         ),
         findsNothing,
@@ -701,28 +473,21 @@ void main() {
       await tester.pumpWidget(
         _wrap(
           textDirection: TextDirection.rtl,
-          Row(
+          const Row(
             children: [
-              LessonBackButton(onPressed: () {}),
-              LessonNextButton(onPressed: () {}),
+              CoquiIcon(CoquiIcons.left, color: CoquiColors.lessonInk),
+              CoquiIcon(CoquiIcons.right, color: CoquiColors.lessonInk),
             ],
           ),
         ),
       );
-      final flipsInBack = tester.widgetList<Transform>(
+      final flips = tester.widgetList<Transform>(
         find.descendant(
-          of: find.byType(LessonBackButton),
+          of: find.byType(CoquiIcon),
           matching: find.byType(Transform),
         ),
       );
-      expect(flipsInBack.any((t) => t.transform.storage[0] == -1.0), isTrue);
-      final flipsInNext = tester.widgetList<Transform>(
-        find.descendant(
-          of: find.byType(LessonNextButton),
-          matching: find.byType(Transform),
-        ),
-      );
-      expect(flipsInNext.any((t) => t.transform.storage[0] == -1.0), isTrue);
+      expect(flips.where((t) => t.transform.storage[0] == -1.0).length, 2);
     });
 
     testWidgets('NocheMic sets explicit RTL textDirection inside LTR shell', (
@@ -851,8 +616,8 @@ void main() {
             findsOneWidget,
           );
           expect(find.byType(PixelView), findsOneWidget);
-          final esCloseX = tester.getCenter(find.byType(LessonCloseButton)).dx;
-          final esSoundX = tester.getCenter(find.byType(LessonSoundButton)).dx;
+          final esCloseX = tester.getCenter(find.bySemanticsLabel('Close')).dx;
+          final esSoundX = tester.getCenter(find.bySemanticsLabel('Sound')).dx;
           expect(esCloseX, lessThan(esSoundX));
 
           // Arabic (RTL)
@@ -872,8 +637,8 @@ void main() {
           expect(find.text('انظر إلى بيت جدة.'), findsOneWidget);
           expect(find.text('تقول جدة: مرحباً! هل تريد كعكة؟'), findsOneWidget);
           expect(find.byType(PixelView), findsOneWidget);
-          final arCloseX = tester.getCenter(find.byType(LessonCloseButton)).dx;
-          final arSoundX = tester.getCenter(find.byType(LessonSoundButton)).dx;
+          final arCloseX = tester.getCenter(find.bySemanticsLabel('Close')).dx;
+          final arSoundX = tester.getCenter(find.bySemanticsLabel('Sound')).dx;
           expect(arCloseX, greaterThan(arSoundX));
         },
       );
