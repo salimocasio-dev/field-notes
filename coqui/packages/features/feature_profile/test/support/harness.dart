@@ -5,6 +5,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
+import 'package:feature_profile/src/welcome.dart';
 import 'package:feature_profile/src/yo_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -125,37 +126,12 @@ List<String> textsOf(
 List<String> yoTexts(WidgetTester tester) =>
     textsOf(tester, find.byKey(const Key('me-scroll')));
 
-/// A sheet is up: a [NocheSheet], the gate's `CoquiSheetLayer` when open, or a
-/// `showCoquiSheet` route above everything.
-bool sheetOpen(WidgetTester tester) {
-  if (find.byType(NocheSheet).evaluate().isNotEmpty) return true;
-  if (tester
-      .widgetList<CoquiSheetLayer>(find.byType(CoquiSheetLayer))
-      .any((l) => l.open)) {
-    return true;
-  }
-  final inLayers = find
-      .descendant(
-        of: find.byType(CoquiSheetLayer),
-        matching: find.byType(CoquiSheet),
-      )
-      .evaluate()
-      .length;
-  return find.byType(CoquiSheet).evaluate().length > inLayers;
-}
+/// A sheet is up: a [NocheSheet] in the gate overlay or opened via `showNocheSheet`.
+bool sheetOpen(WidgetTester tester) =>
+    find.byType(NocheSheet).evaluate().isNotEmpty;
 
-/// The pills of [SegmentedPills] (welcome sheet) or [NocheSegmented<int>] (Me screen).
+/// The pills of [NocheSegmented<int>] (welcome sheet or Me screen).
 List<({String text, bool on})> pillsOf(WidgetTester tester, [Finder? within]) {
-  final legacy = within == null
-      ? find.byType(SegmentedPills)
-      : find.descendant(of: within, matching: find.byType(SegmentedPills));
-  if (legacy.evaluate().isNotEmpty) {
-    final p = tester.widget<SegmentedPills>(legacy);
-    return [
-      for (var i = 0; i < p.labels.length; i++)
-        (text: p.labels[i], on: i == p.selected),
-    ];
-  }
   final noche = within == null
       ? find.byType(NocheSegmented<int>)
       : find.descendant(of: within, matching: find.byType(NocheSegmented<int>));
@@ -174,7 +150,7 @@ List<bool> switchesOf(WidgetTester tester) => [
 
 /// The dot of the welcome that is lit.
 int dotOf(WidgetTester tester) =>
-    tester.widget<PageDots>(find.byType(PageDots)).index;
+    tester.widget<WelcomePageDots>(find.byType(WelcomePageDots)).index;
 
 /// The settings the store holds, as the old `AJ()` has them.
 Map<String, dynamic> settingsOf(FakeProgressStore p) =>

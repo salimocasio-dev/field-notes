@@ -150,7 +150,7 @@ void main() {
         }
         if (onclick == 'bienvenida(0)') {
           final w = m(h['welcome']);
-          expect(textsOf(tester, find.byType(CoquiSheet)), [
+          expect(textsOf(tester, find.byType(NocheSheet)), [
             ...strings(w['texts']),
             ...strings(w['footer']),
           ]);
@@ -287,7 +287,7 @@ void main() {
   });
 
   // ---- Y6: How Coquí works ----
-  group('Y6 "How Coquí works" (opens today\'s welcome sheet)', () {
+  group('Y6 "How Coquí works" (opens the Noche welcome sheet)', () {
     testWidgets(
       'opens the welcome at step 1, as an ordinary sheet with its X',
       (tester) async {
@@ -298,11 +298,14 @@ void main() {
         await settle(tester);
         expect(sheetOpen(tester), isTrue);
         expect(
-          tester.widget<CoquiSheet>(find.byType(CoquiSheet)).modal,
-          isFalse,
+          tester.widget<NocheSheet>(find.byType(NocheSheet)).onClose,
+          isNotNull,
         );
         expect(find.text('Welcome to Coquí'), findsOneWidget);
-        expect(find.byType(CoquiCloseButton), findsOneWidget);
+        expect(
+          find.bySemanticsLabel(NocheA11y.label(NocheA11y.closeSheet)),
+          findsOneWidget,
+        );
         expect(dotOf(tester), 0);
       },
     );
@@ -316,7 +319,9 @@ void main() {
       await settle(tester);
       await tapText(tester, 'Next');
       expect(dotOf(tester), 1);
-      await tester.tap(find.byType(CoquiCloseButton));
+      await tester.tap(
+        find.bySemanticsLabel(NocheA11y.label(NocheA11y.closeSheet)),
+      );
       await settle(tester);
       expect(sheetOpen(tester), isFalse);
       await tester.tap(find.byKey(const Key('yo-how-it-works')));
@@ -376,11 +381,9 @@ void main() {
           await tester.tapAt(Offset(bar.center.dx - 120, bar.center.dy));
           await settle(tester);
           expect(taps, isEmpty);
-          if (about) {
-            // NocheSheet extends to the bottom over the tab bar; tapping the scrim above it closes it.
-            await tester.tapAt(const Offset(200, 20));
-            await settle(tester);
-          }
+          // NocheSheet extends to the bottom over the tab bar; tapping the scrim above it closes it.
+          await tester.tapAt(const Offset(200, 20));
+          await settle(tester);
           expect(sheetOpen(tester), isFalse);
           await tester.tapAt(Offset(bar.center.dx - 120, bar.center.dy));
           await tester.pump();

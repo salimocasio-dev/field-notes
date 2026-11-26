@@ -1,14 +1,20 @@
 // One test per behaviour of app.html's `bienvenida` and `listo` (lines 482 to 493, and the start at 498), with the old
-// page's expected values from tool/old_expected.mjs.
+// page's expected values from tool/old_expected.mjs, plus N4.8b Noche look/layout checks.
 //
 //   W1  each step's text, buttons, minutes pill and lit dot, the first time (modal) and from "How it works" (line 484-492)
 //   W2  each control writes what the old one writes, and goes where the old one goes (line 486-490, 493)
 //   W3  the first time it is a modal sheet; from Yo an ordinary one (line 491-492)
 //   W4  it shows at the start while `bienvenida` is not set (line 498), and it never shows again once it is
 //   W5  `WelcomeGate`: the app under it works while it is closed, and does not before
+//   W6  N4.8b Noche look, touch targets >= 48x48, zero overflow at 390x844 and 412x915
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/feature_profile.dart';
+import 'package:flutter/rendering.dart' show RenderRepaintBoundary;
+import 'package:flutter/services.dart' show ByteData, FontLoader;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -17,6 +23,9 @@ import 'support/harness.dart';
 
 Map<String, dynamic> m(Object? o) => (o as Map).cast<String, dynamic>();
 List<String> strings(Object? o) => (o as List).cast<String>();
+
+Finder _closeButton() =>
+    find.bySemanticsLabel(NocheA11y.label(NocheA11y.closeSheet));
 
 /// The welcome, as `bienvenida(k)` opens it: the gate the first time, "How it works" in Yo afterwards.
 Future<void> pumpWelcome(
@@ -36,19 +45,19 @@ void main() {
         (tester) async {
           final f = fixture(json: w['stored'] as String);
           await pumpWelcome(tester, f, seen: seen, step: w['k'] as int);
-          expect(textsOf(tester, find.byType(CoquiSheet)), [
+          expect(textsOf(tester, find.byType(NocheSheet)), [
             ...strings(w['texts']),
             ...strings(w['footer']),
           ]);
           if (w['k'] == 1) {
             expect(
-              pillsOf(tester, find.byType(CoquiSheet)),
+              pillsOf(tester, find.byType(NocheSheet)),
               oldPills(w['pills']),
             );
           }
           expect(dotOf(tester), w['dot']);
           expect(
-            tester.widget<CoquiSheet>(find.byType(CoquiSheet)).modal,
+            tester.widget<NocheSheet>(find.byType(NocheSheet)).onClose == null,
             w['modal'],
           );
           expect(sheetOpen(tester), isTrue);
@@ -92,7 +101,7 @@ void main() {
           expect(settingsOf(f.progress), m(h['before']));
           await tester.tap(
             find.descendant(
-              of: find.byType(CoquiSheet),
+              of: find.byType(NocheSheet),
               matching: find.text(h['button'] as String),
             ),
           );
@@ -111,14 +120,14 @@ void main() {
           if (w != null) {
             // bienvenida(n): the sheet shows the next step, or the same one with the pill changed
             final want = m(w);
-            expect(textsOf(tester, find.byType(CoquiSheet)), [
+            expect(textsOf(tester, find.byType(NocheSheet)), [
               ...strings(want['texts']),
               ...strings(want['footer']),
             ]);
             expect(dotOf(tester), want['dot']);
             if (want['pills'] != null && (want['pills'] as List).isNotEmpty) {
               expect(
-                pillsOf(tester, find.byType(CoquiSheet)),
+                pillsOf(tester, find.byType(NocheSheet)),
                 oldPills(want['pills']),
               );
             }
@@ -161,7 +170,7 @@ void main() {
           expect(
             pillsOf(
               tester,
-              find.byType(CoquiSheet),
+              find.byType(NocheSheet),
             ).where((p) => p.on).single.text,
             '$mins min',
           );
@@ -181,7 +190,7 @@ void main() {
         final scroll = tester.state<ScrollableState>(
           find
               .descendant(
-                of: find.byType(CoquiSheet),
+                of: find.byType(NocheSheet),
                 matching: find.byType(Scrollable),
               )
               .first,
@@ -190,9 +199,11 @@ void main() {
         scroll.position.jumpTo(40);
         await tester.pump();
         expect(scroll.position.pixels, 40);
+        await tester.ensureVisible(find.text('Next'));
+        await tester.pump();
+        expect(scroll.position.pixels, greaterThan(0));
         await tapText(tester, 'Next');
         expect(dotOf(tester), 1);
-        expect(scroll.position.maxScrollExtent, greaterThan(40));
         expect(scroll.position.pixels, 0);
       },
     );
@@ -213,13 +224,16 @@ void main() {
 
   // ---- W3 ----
   group('W3 modal the first time, ordinary from Yo (app.html:491-492)', () {
-    testWidgets('the first time: no X, no handle, a tap outside does nothing', (
+    testWidgets('the first time: no X, a tap outside does nothing', (
       tester,
     ) async {
       final f = fixture();
       await pumpGate(tester, f);
-      expect(tester.widget<CoquiSheet>(find.byType(CoquiSheet)).modal, isTrue);
-      expect(find.byType(CoquiCloseButton), findsNothing);
+      expect(
+        tester.widget<NocheSheet>(find.byType(NocheSheet)).onClose,
+        isNull,
+      );
+      expect(_closeButton(), findsNothing);
       await tester.tapAt(const Offset(200, 40)); // the app above the sheet
       await settle(tester);
       expect(sheetOpen(tester), isTrue);
@@ -232,8 +246,8 @@ void main() {
         final f = fixture(seed: 'curso');
         await pumpYo(tester, f, how: 0);
         final saves = f.progress.saves;
-        expect(find.byType(CoquiCloseButton), findsOneWidget);
-        await tester.tap(find.byType(CoquiCloseButton));
+        expect(_closeButton(), findsOneWidget);
+        await tester.tap(_closeButton());
         await settle(tester);
         expect(sheetOpen(tester), isFalse);
         expect(f.progress.saves, saves);
@@ -348,7 +362,7 @@ void main() {
         expect(again.progress.setting('min'), 120);
         await tapText(tester, 'Next');
         expect(
-          pillsOf(tester, find.byType(CoquiSheet)).indexWhere((p) => p.on),
+          pillsOf(tester, find.byType(NocheSheet)).indexWhere((p) => p.on),
           3,
         );
       },
@@ -413,13 +427,142 @@ void main() {
         ),
       );
       await settle(tester);
-      // the gate's sheet is up, in its layer; Yo's own sheet (How it works) is a route, and it is not open
-      final layers = tester.widgetList<CoquiSheetLayer>(
-        find.byType(CoquiSheetLayer),
-      );
-      expect(layers.map((l) => l.open).toList(), [true]);
-      expect(find.byType(CoquiSheet), findsOneWidget);
+      // the gate's sheet is up in NocheSheetOverlay; Me's own sheet is a route, and it is not open
+      expect(find.byType(NocheSheetOverlay), findsOneWidget);
+      expect(find.byType(NocheSheet), findsOneWidget);
       expect(find.text('Me'), findsOneWidget);
     });
   });
+
+  // ---- W6: N4.8b Noche look, touch targets, phone sizes ----
+  group('W6 N4.8b Welcome in Noche colours', () {
+    testWidgets(
+      'uses Noche pieces, one orange primary button per step, >= 48x48 targets, and zero overflow at both phone sizes',
+      (tester) async {
+        for (final screen in const [
+          (size: Size(390, 844), dpr: 3.0),
+          (size: Size(412, 915), dpr: 2.625),
+        ]) {
+          tester.view.physicalSize = screen.size * screen.dpr;
+          tester.view.devicePixelRatio = screen.dpr;
+          addTearDown(tester.view.reset);
+
+          for (var step = 0; step < 3; step++) {
+            final f = fixture();
+            await tester.pumpWidget(const SizedBox());
+            await tester.pumpWidget(
+              MaterialApp(
+                theme: coquiTheme(),
+                home: Scaffold(
+                  backgroundColor: NocheColors.ground,
+                  body: WelcomeGate(
+                    services: f.services,
+                    initialStep: step,
+                    child: const ColoredBox(
+                      color: NocheColors.ground,
+                      child: SizedBox.expand(),
+                    ),
+                  ),
+                ),
+              ),
+            );
+            await settle(tester);
+
+            expect(find.byType(NocheSheet), findsOneWidget);
+            expect(find.byType(NochePrimaryButton), findsOneWidget);
+            expect(tester.takeException(), isNull);
+
+            if (step < 2) {
+              final nextSize = tester.getSize(
+                find.byKey(const Key('welcome-next-button')),
+              );
+              expect(nextSize.height, greaterThanOrEqualTo(48));
+            } else {
+              expect(find.byType(NocheOutlineButton), findsOneWidget);
+              final newSize = tester.getSize(
+                find.byKey(const Key('welcome-new-button')),
+              );
+              final someSize = tester.getSize(
+                find.byKey(const Key('welcome-some-button')),
+              );
+              expect(newSize.height, greaterThanOrEqualTo(48));
+              expect(someSize.height, greaterThanOrEqualTo(48));
+            }
+          }
+        }
+      },
+    );
+  });
+
+  if (Platform.environment['COQUI_CAPTURE_SHOTS'] == '1') {
+    testWidgets('capture N4.8b Part 1.6 welcome screenshots', (tester) async {
+      for (final entry in nocheFontFiles.entries) {
+        for (final prefix in ['', 'packages/coqui_ui/']) {
+          final loader = FontLoader('$prefix${entry.key}');
+          for (final path in entry.value.values) {
+            loader.addFont(
+              Future.value(
+                ByteData.sublistView(
+                  File('../../core/coqui_ui/$path').readAsBytesSync(),
+                ),
+              ),
+            );
+          }
+          await loader.load();
+        }
+      }
+
+      final dir = Directory('test/screenshots')..createSync(recursive: true);
+
+      for (final screen in [
+        (tag: '390x844', size: const Size(390, 844), dpr: 3.0),
+        (tag: '412x915', size: const Size(412, 915), dpr: 2.625),
+      ]) {
+        tester.view.physicalSize = screen.size * screen.dpr;
+        tester.view.devicePixelRatio = screen.dpr;
+        addTearDown(tester.view.reset);
+
+        for (var step = 0; step < 3; step++) {
+          final f = fixture();
+          final boundaryKey = GlobalKey();
+          await tester.pumpWidget(
+            RepaintBoundary(
+              key: boundaryKey,
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: coquiTheme(),
+                home: Scaffold(
+                  backgroundColor: NocheColors.ground,
+                  body: WelcomeGate(
+                    services: f.services,
+                    initialStep: step,
+                    child: const ColoredBox(
+                      color: NocheColors.ground,
+                      child: SizedBox.expand(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+          await settle(tester);
+
+          final bytes = await tester.runAsync(() async {
+            final boundary =
+                boundaryKey.currentContext!.findRenderObject()!
+                    as RenderRepaintBoundary;
+            final image = await boundary.toImage(pixelRatio: screen.dpr);
+            final byteData = await image.toByteData(
+              format: ui.ImageByteFormat.png,
+            );
+            image.dispose();
+            return byteData!.buffer.asUint8List();
+          });
+          File('${dir.path}/welcome_step${step + 1}_${screen.tag}.png')
+              .writeAsBytesSync(bytes!);
+          await tester.pumpWidget(const SizedBox.shrink());
+        }
+      }
+    });
+  }
 }

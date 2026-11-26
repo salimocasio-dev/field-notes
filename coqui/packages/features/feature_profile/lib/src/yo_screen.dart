@@ -185,15 +185,15 @@ class _YoScreenState extends State<YoScreen> {
 
   // ---- the sheets ----
 
-  // app.html: bienvenida(0). Keeps today's How it works sheet until N4.8b (#109).
+  // app.html: bienvenida(0). Opens the Noche welcome sheet (N4.8b, #109).
   void _openHow([int step = 0]) {
     final seen = jsTruthy(_progress.setting('bienvenida'));
     final steps = ValueNotifier<int>(step);
     unawaited(
-      showCoquiSheet(
+      showNocheSheet<void>(
         context,
-        modal: !seen,
-        builder: (context, close) => welcomeRouteSheet(
+        dismissible: seen,
+        builder: (context, close) => welcomeRouteBody(
           services: _s,
           step: steps,
           onNew: () {
