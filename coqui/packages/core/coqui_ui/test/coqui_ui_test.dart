@@ -225,6 +225,62 @@ void main() {
       },
     );
   });
+
+  group('Services optional fields', () {
+    test(
+      'entitlements, progressStores, and availableCourses default safely',
+      () {
+        final s = Services(
+          progress: _StubProgressStore(),
+          course: _StubCourseCatalog(),
+          clips: _StubClipPlayer(),
+          speech: _StubSpeechListener(),
+          call: _StubCallSession(),
+          nav: _StubAppNavigator(),
+          clock: _StubClock(),
+          rng: _StubRng(),
+          haptics: _StubHaptics(),
+          info: _StubAppInfo(),
+          pictures: _RecordingSource(),
+          storage: (_) => _StubKeyValueStore(),
+        );
+        expect(s.entitlements, isA<AllowAllEntitlements>());
+        expect(s.entitlements.plan, Plan.courseAndCalls);
+        expect(s.entitlements.has(Feature.calls), isTrue);
+        expect(s.progressStores, isNull);
+        expect(s.availableCourses, isEmpty);
+      },
+    );
+
+    test(
+      'entitlements, progressStores, and availableCourses accept overrides',
+      () {
+        final entitlements = _StubEntitlements();
+        final stores = _StubProgressStoreCollection();
+        final courses = <CourseCatalog>[_StubCourseCatalog()];
+        final s = Services(
+          progress: _StubProgressStore(),
+          course: _StubCourseCatalog(),
+          clips: _StubClipPlayer(),
+          speech: _StubSpeechListener(),
+          call: _StubCallSession(),
+          nav: _StubAppNavigator(),
+          clock: _StubClock(),
+          rng: _StubRng(),
+          haptics: _StubHaptics(),
+          info: _StubAppInfo(),
+          pictures: _RecordingSource(),
+          storage: (_) => _StubKeyValueStore(),
+          entitlements: entitlements,
+          progressStores: stores,
+          availableCourses: courses,
+        );
+        expect(identical(s.entitlements, entitlements), isTrue);
+        expect(identical(s.progressStores, stores), isTrue);
+        expect(s.availableCourses, same(courses));
+      },
+    );
+  });
 }
 
 /// Implements the contract with exactly its signature: it stops compiling if the signature changes.
@@ -245,4 +301,69 @@ class _RecordingSource implements PictureSource {
 
   @override
   Future<void> warm(Iterable<PictureRef> refs) async => warmed.addAll(refs);
+}
+
+class _StubProgressStore implements ProgressStore {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubCourseCatalog implements CourseCatalog {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubClipPlayer implements ClipPlayer {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubSpeechListener implements SpeechListener {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubCallSession implements CallSession {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubAppNavigator implements AppNavigator {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubClock implements Clock {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubRng implements Rng {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubHaptics implements Haptics {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubAppInfo implements AppInfo {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubKeyValueStore implements KeyValueStore {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubEntitlements implements Entitlements {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _StubProgressStoreCollection implements ProgressStoreCollection {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
