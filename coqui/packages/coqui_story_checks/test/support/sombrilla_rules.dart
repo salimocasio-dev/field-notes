@@ -85,6 +85,10 @@ class SombrillaRules {
   List<List<int>>? _cachedFigBoxes;
   List<List<int>>? _cachedFeetBoxes;
 
+  static final Expando<int> _spriteIds = Expando<int>();
+  static int _nextSpriteId = 1;
+  static int _spriteId(Sprite s) => _spriteIds[s] ??= _nextSpriteId++;
+
   static final Map<String, List<({String rule, String what})>> _frameCache = {};
 
   static const Set<String> _inViewTags = {
@@ -112,10 +116,20 @@ class SombrillaRules {
   void check(String at) {
     final W = scene.host.W;
     checked++;
+    final rawStory = W['story'];
+    final rawDibujo = W['dibujo'];
+    if (rawStory is! num || rawDibujo is! String) {
+      breaches.add((
+        at: at,
+        rule: 'scene-state',
+        what: 'missing story ($rawStory) or dibujo ($rawDibujo) in W',
+      ));
+      return;
+    }
     final rawItems = (_m.placed(W, 0) as List);
     final setKey = scene.setKey(W);
-    final story = (W['story'] is num) ? (W['story'] as num).toInt() : 75;
-    final dibujo = (W['dibujo'] as String?) ?? 'circulo';
+    final story = rawStory.toInt();
+    final dibujo = rawDibujo;
     final gente = (W['gente'] as Map?) ?? const {};
     final cq = W['cq'] as Map?;
     final sig = StringBuffer()
@@ -141,6 +155,7 @@ class SombrillaRules {
         ..write(p?['spot']);
     }
     for (final dynamic it in rawItems) {
+      final s = it.s as Sprite;
       sig
         ..write(';')
         ..write(it.tag)
@@ -153,7 +168,7 @@ class SombrillaRules {
         ..write(',')
         ..write(it.d)
         ..write(',')
-        ..write(identityHashCode(it.s));
+        ..write(_spriteId(s));
     }
     final key = sig.toString();
     final cached = _frameCache[key];

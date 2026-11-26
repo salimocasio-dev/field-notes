@@ -52,31 +52,44 @@ List<Map<String, String>> sombrillaDrawsOf(Map<String, dynamic> story) {
       ];
     }
     if (v['if'] is String) {
-      final cond = v['if'] as String;
-      final eq = cond.indexOf('=');
-      if (eq > 0) {
-        final k = cond.substring(0, eq), val = cond.substring(eq + 1);
-        if (!cur.any((x) => x.containsKey(k))) return cur;
-        final yes = [
-          for (final x in cur)
-            if (x[k] == val) x,
-        ];
-        final no = [
-          for (final x in cur)
-            if (x[k] != val) x,
-        ];
-        return [
-          if (yes.isNotEmpty) ...walk(v['then'], yes),
-          if (no.isNotEmpty) ...walk(v['else'], no),
-        ];
+      final cond = (v['if'] as String).trim();
+      final m = RegExp(r'^([a-zA-Z0-9_]+)=([^=].*)$').firstMatch(cond);
+      if (m != null) {
+        final k = m.group(1)!, val = m.group(2)!;
+        if (cur.any((x) => x.containsKey(k))) {
+          final yes = [
+            for (final x in cur)
+              if (x[k] == val) x,
+          ];
+          final no = [
+            for (final x in cur)
+              if (x[k] != val) x,
+          ];
+          return [
+            if (yes.isNotEmpty) ...walk(v['then'], yes),
+            if (no.isNotEmpty) ...walk(v['else'], no),
+          ];
+        }
+      } else {
+        final draws = {for (final x in cur) ...x.keys};
+        if (draws.any(
+          (k) => RegExp('\\b${RegExp.escape(k)}\\b').hasMatch(cond),
+        )) {
+          throw StateError(
+            'unsupported if condition on drawn variable: "$cond"',
+          );
+        }
       }
-      final draws = {for (final x in cur) ...x.keys};
-      if (draws.any(
-        (k) => RegExp('\\b${RegExp.escape(k)}\\b').hasMatch(cond),
-      )) {
-        throw StateError('unsupported if condition on drawn variable: "$cond"');
+      // Non-drawn condition (e.g. `ok`, `lost=0`): walk both branches and
+      // return the deduplicated union so nested draws are never missed.
+      final seen = <String>{};
+      final out = <Map<String, String>>[];
+      for (final x in [...walk(v['then'], cur), ...walk(v['else'], cur)]) {
+        final keys = x.keys.toList()..sort();
+        final sig = [for (final k in keys) '$k=${x[k]}'].join('|');
+        if (seen.add(sig)) out.add(x);
       }
-      return cur;
+      return out;
     }
     return cur;
   }

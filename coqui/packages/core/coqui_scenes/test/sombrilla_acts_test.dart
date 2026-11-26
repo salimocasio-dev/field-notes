@@ -275,6 +275,12 @@ void main() {
     expect(scene75.hit(131, 117, w75), 'ojo_izq');
     expect(scene75.hit(163, 117, w75), 'ojo_der');
     expect(scene75.hit(110, 110, w75), 'cara');
+    // Frog at coqui.cara sits 1 px from the face boxes: all 4 frogBox corners must hit coqui.
+    final fb75 = host75.frogBox(w75['cq'] as Map<String, dynamic>);
+    expect(scene75.hit(fb75.x, fb75.y, w75), 'coqui');
+    expect(scene75.hit(fb75.x + fb75.w - 1, fb75.y, w75), 'coqui');
+    expect(scene75.hit(fb75.x, fb75.y + fb75.h - 1, w75), 'coqui');
+    expect(scene75.hit(fb75.x + fb75.w - 1, fb75.y + fb75.h - 1, w75), 'coqui');
 
     // Story 77: pies hits both individual foot boxes and never the gap between them.
     final s77 = _story('me-duele');
