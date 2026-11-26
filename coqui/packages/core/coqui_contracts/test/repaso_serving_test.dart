@@ -175,10 +175,130 @@ void main() {
 
   test('a course that has not read the file gives no rule: the caller keeps today\'s (a word with a pair)', () {
     final p = learner();
-    expect(repasoServing(_Course(data, [_pair('puerta')]), p), isNotNull);
+    final s = repasoServing(_Course(data, [_pair('puerta')]), p);
+    expect(s, isNotNull);
+    expect(s!.language, Language.spanish);
     expect(repasoServing(_Course(null, [_pair('puerta')]), p), isNull);
     expect(repasoServing(_CourseOnly([_pair('puerta')]), p), isNull);
   });
+
+  group('language-aware repasoTokens and RepasoServing', () {
+    final arabic = Language(
+      code: 'ar',
+      englishName: 'Arabic',
+      nativeName: 'العربية',
+      recognitionLocale: 'ar-SA',
+      direction: LanguageDirection.rtl,
+      script: 'Arab',
+      partnerName: 'Nadia',
+      callAgentId: 'agent_arabic_test',
+      micWords: const {
+        'ready': 'تحدث',
+        'listening': 'أستمع',
+        'thinking': 'لحظة',
+        'theySpeak': 'اسمع',
+        'right': 'ممتاز',
+        'notYet': 'مرة أخرى',
+      },
+      tabNames: const {
+        'library': 'المكتبة',
+        'words': 'الكلمات',
+        'map': 'الخريطة',
+        'speak': 'تحدث',
+        'me': 'أنا',
+      },
+    );
+
+    test(
+      'repasoTokens uses Spanish by default and honours explicit language',
+      () {
+        expect(repasoTokens('¡El café, por favor!'), [
+          'el',
+          'cafe',
+          'por',
+          'favor',
+        ]);
+        expect(repasoTokens('أُرِيدُ قَهْوَةً، مِنْ فَضْلِكَ!'), isEmpty);
+        expect(
+          repasoTokens('أُرِيدُ قَهْوَةً، مِنْ فَضْلِكَ!', language: arabic),
+          ['اريد', 'قهوة', 'من', 'فضلك'],
+        );
+      },
+    );
+
+    test('RepasoServing handles Arabic wrongTileChoices (single and multi-word) and hearSentences', () {
+      final arabicSentence = RepasoSentence(
+        clip: 'ar1',
+        story: 's1',
+        text: 'أُرِيدُ قَهْوَةً وَمَاءً.',
+        tokens: repasoTokens('أُرِيدُ قَهْوَةً وَمَاءً.', language: arabic),
+        forbidden: const ['قهوة'],
+        forHearing: true,
+        forBuilding: true,
+      );
+      final arabicData = RepasoData(
+        sentences: [arabicSentence],
+        words: [
+          _w('قهوة', sentences: [0]),
+          _w('أريد'), // in sentence (alef + diacritics variant)
+          _w('شاي'), // single-word valid distractor
+          _w('حليب'), // single-word valid distractor
+          _w('صباح الخير'), // multi-word distractor
+        ],
+      );
+      final progress = _Progress(
+        met: const ['قهوة', 'أريد', 'شاي', 'حليب', 'صباح الخير'],
+        stories: {'s1': _played()},
+      );
+
+      final serving = RepasoServing(
+        data: arabicData,
+        progress: progress,
+        pairs: const [],
+        language: arabic,
+      );
+
+      expect(serving.language, arabic);
+      final allWrong = serving.wrongTileChoices(
+        arabicData.word('قهوة')!,
+        arabicSentence,
+      );
+      expect([for (final w in allWrong) w.word], ['شاي', 'حليب', 'صباح الخير']);
+
+      final singleWrong = serving.wrongTileChoices(
+        arabicData.word('قهوة')!,
+        arabicSentence,
+        singleWords: true,
+      );
+      expect([for (final w in singleWrong) w.word], ['شاي', 'حليب']);
+
+      expect(serving.canServe('قهوة'), isTrue);
+      expect(serving.hearSentences(arabicData.word('قهوة')!), [arabicSentence]);
+
+      // repasoServing forwards course.language from LanguageCatalog.
+      final course = _LanguageRepasoCourse(arabicData, const [], arabic);
+      final fromCourse = repasoServing(course, progress)!;
+      expect(fromCourse.language, arabic);
+      expect(
+        [
+          for (final w in fromCourse.wrongTileChoices(
+            arabicData.word('قهوة')!,
+            arabicSentence,
+            singleWords: true,
+          ))
+            w.word,
+        ],
+        ['شاي', 'حليب'],
+      );
+    });
+  });
+}
+
+class _LanguageRepasoCourse extends _Course implements LanguageCatalog {
+  _LanguageRepasoCourse(super.repaso, super.pairs, this.language);
+
+  @override
+  final Language language;
 }
 
 /// A course that knows nothing of Repaso's data.

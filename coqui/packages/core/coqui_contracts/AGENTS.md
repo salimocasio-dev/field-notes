@@ -44,6 +44,11 @@ Models, interfaces, routes. Pure Dart.
   extension (`course.minApp` defaulting to `null`, `course.minAppFor(storyId)` returning the higher of course/story
   `minApp` or `null`); and `AppNumberInfo` + `AppInfoNumber` extension (`info.appNumber` parsing the leading numeric
   prefix of `build` or `0` for unnumbered/`'dev'` builds, and `info.supportsMinApp(minApp)`).
+- Issue `#171`: `CallProgressStore.markCallDone(callId)` + `CallProgress.markCallDone(callId)` (no-op fallback);
+  `LanguageProgressStore` + `LanguageProgress` extension (`language`, `minutesOn(day)`, `stageMax`, `streakFreezes`)
+  and `ProgressStoreCollection`; optional `Language? language` parameter on `repasoTokens` and `RepasoServing`
+  (with `repasoServing` forwarding `course.language`); `VariableSpeedClipPlayer` + `ClipPlayerSpeed.playAtRate`;
+  and `DeletableKeyValueStore` + `KeyValueStoreDelete.delete`.
 
 ## Run and test it alone
 
