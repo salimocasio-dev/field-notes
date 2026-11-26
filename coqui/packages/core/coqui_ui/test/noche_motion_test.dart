@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter/gestures.dart' show kPressTimeout;
 import 'package:flutter/rendering.dart'
@@ -582,5 +584,205 @@ void main() {
 
       await tester.pumpAndSettle();
     });
+  });
+
+  group('Pressable whole-number PixelView protection', () {
+    testWidgets('scaleOnPress: false keeps scale 1.0 while dimming to 0.90', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: MediaQuery(
+            data: const MediaQueryData(disableAnimations: false),
+            child: Center(
+              child: Pressable(
+                onPressed: () {},
+                scaleOnPress: false,
+                builder: (context, _) => const SizedBox(width: 80, height: 48),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(_pressableScale(tester), closeTo(1.0, 1e-6));
+      expect(_collectColorFilterLayers(), isEmpty);
+
+      final gesture = await tester.startGesture(
+        tester.getCenter(find.byType(Pressable)),
+      );
+      await tester.pump(kPressTimeout);
+      await tester.pump(NocheMotion.press);
+
+      expect(_pressableScale(tester), closeTo(1.0, 1e-6));
+      final layers = _collectColorFilterLayers();
+      expect(layers, hasLength(1));
+      expect(layers.single.colorFilter, _expectedDimFilter);
+
+      await gesture.up();
+      await tester.pump();
+      await tester.pump(NocheMotion.pressBack);
+
+      expect(_pressableScale(tester), closeTo(1.0, 1e-6));
+      expect(_collectColorFilterLayers(), isEmpty);
+    });
+
+    testWidgets(
+      'Pressable wrapping PixelView keeps scale 1.0, dims, and keeps PixelView mounted',
+      (tester) async {
+        final pixels = Uint32List.fromList(
+          List<int>.filled(16 * 16, 0xFF112233),
+        );
+        await tester.pumpWidget(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: MediaQuery(
+              data: const MediaQueryData(disableAnimations: false),
+              child: Center(
+                child: Pressable(
+                  onPressed: () {},
+                  builder: (context, _) => SizedBox(
+                    width: 64,
+                    height: 64,
+                    child: PixelView(pixels: pixels, width: 16, height: 16),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final initialPixelViewState = tester.state(find.byType(PixelView));
+        expect(_pressableScale(tester), closeTo(1.0, 1e-6));
+        expect(_collectColorFilterLayers(), isEmpty);
+
+        final gesture = await tester.startGesture(
+          tester.getCenter(find.byType(Pressable)),
+        );
+        await tester.pump(kPressTimeout);
+        await tester.pump(NocheMotion.press);
+
+        expect(_pressableScale(tester), closeTo(1.0, 1e-6));
+        final layers = _collectColorFilterLayers();
+        expect(layers, hasLength(1));
+        expect(layers.single.colorFilter, _expectedDimFilter);
+        expect(
+          identical(
+            tester.state(find.byType(PixelView)),
+            initialPixelViewState,
+          ),
+          isTrue,
+        );
+
+        await gesture.up();
+        await tester.pump();
+        await tester.pump(NocheMotion.pressBack);
+
+        expect(_pressableScale(tester), closeTo(1.0, 1e-6));
+        expect(_collectColorFilterLayers(), isEmpty);
+        expect(
+          identical(
+            tester.state(find.byType(PixelView)),
+            initialPixelViewState,
+          ),
+          isTrue,
+        );
+      },
+    );
+
+    testWidgets(
+      'nested Pressable -> Pressable -> PixelView keeps outer Pressable scale 1.0 too',
+      (tester) async {
+        final pixels = Uint32List.fromList(
+          List<int>.filled(16 * 16, 0xFF334455),
+        );
+        final outerKey = GlobalKey();
+        final outerHitKey = GlobalKey();
+        final innerKey = GlobalKey();
+
+        await tester.pumpWidget(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: MediaQuery(
+              data: const MediaQueryData(disableAnimations: false),
+              child: Center(
+                child: Pressable(
+                  key: outerKey,
+                  onPressed: () {},
+                  builder: (context, _) => Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(key: outerHitKey, width: 48, height: 64),
+                      Pressable(
+                        key: innerKey,
+                        onPressed: () {},
+                        builder: (context, _) => SizedBox(
+                          width: 64,
+                          height: 64,
+                          child: PixelView(
+                            pixels: pixels,
+                            width: 16,
+                            height: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final outerTransformFinder = find
+            .descendant(
+              of: find.byKey(outerKey),
+              matching: find.byType(Transform),
+            )
+            .first;
+        final innerTransformFinder = find.descendant(
+          of: find.byKey(innerKey),
+          matching: find.byType(Transform),
+        );
+
+        expect(
+          tester.widget<Transform>(outerTransformFinder).transform.storage[0],
+          closeTo(1.0, 1e-6),
+        );
+        expect(
+          tester.widget<Transform>(innerTransformFinder).transform.storage[0],
+          closeTo(1.0, 1e-6),
+        );
+
+        final gesture = await tester.startGesture(
+          tester.getCenter(find.byKey(outerHitKey)),
+        );
+        await tester.pump(kPressTimeout);
+        await tester.pump(NocheMotion.press);
+
+        expect(
+          tester.widget<Transform>(outerTransformFinder).transform.storage[0],
+          closeTo(1.0, 1e-6),
+        );
+        expect(
+          tester.widget<Transform>(innerTransformFinder).transform.storage[0],
+          closeTo(1.0, 1e-6),
+        );
+        final layers = _collectColorFilterLayers();
+        expect(layers, hasLength(1));
+        expect(layers.single.colorFilter, _expectedDimFilter);
+
+        await gesture.up();
+        await tester.pump();
+        await tester.pump(NocheMotion.pressBack);
+
+        expect(
+          tester.widget<Transform>(outerTransformFinder).transform.storage[0],
+          closeTo(1.0, 1e-6),
+        );
+        expect(_collectColorFilterLayers(), isEmpty);
+      },
+    );
   });
 }

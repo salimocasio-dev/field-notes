@@ -6,9 +6,48 @@ import 'package:coqui_ui/src/noche_motion.dart';
 import 'package:flutter/rendering.dart' show ColorFilterLayer, RenderProxyBox;
 import 'package:material_ui/material_ui.dart';
 
+/// Package-internal scope allowing `PixelView` descendants to opt enclosing
+/// `Pressable` targets out of fractional press scaling so pixel art always
+/// keeps whole-number device-pixel scaling.
+class PressablePixelScope extends InheritedWidget {
+  const PressablePixelScope({
+    super.key,
+    required this.owner,
+    required this.onAttach,
+    required this.onDetach,
+    required this.parent,
+    required super.child,
+  });
+
+  final Object owner;
+  final VoidCallback onAttach;
+  final VoidCallback onDetach;
+  final PressablePixelScope? parent;
+
+  void attach() {
+    onAttach();
+    parent?.attach();
+  }
+
+  void detach() {
+    onDetach();
+    parent?.detach();
+  }
+
+  static PressablePixelScope? maybeOf(BuildContext context) =>
+      context.getInheritedWidgetOfExactType<PressablePixelScope>();
+
+  @override
+  bool updateShouldNotify(PressablePixelScope oldWidget) => false;
+}
+
 /// Wraps [builder] in a tap target. [builder] gets `true` while the finger is
 /// down. With a null [onPressed] it is disabled: it reports a disabled button to
 /// accessibility and ignores taps.
+///
+/// Picture-bearing targets can dim without scaling (`scaleOnPress: false`), and
+/// `PixelView` descendants automatically disable press scaling to preserve
+/// whole-number pixel rendering.
 class Pressable extends StatefulWidget {
   const Pressable({
     super.key,
@@ -18,6 +57,7 @@ class Pressable extends StatefulWidget {
     this.semanticsButton = true,
     this.selected,
     this.disc = false,
+    this.scaleOnPress = true,
   });
 
   final VoidCallback? onPressed;
@@ -34,6 +74,10 @@ class Pressable extends StatefulWidget {
   /// `pressScale`).
   final bool disc;
 
+  /// Whether pressing scales the target. Set to `false` for picture-bearing
+  /// targets that should only dim without fractional scaling.
+  final bool scaleOnPress;
+
   @override
   State<Pressable> createState() => _PressableState();
 }
@@ -41,7 +85,14 @@ class Pressable extends StatefulWidget {
 class _PressableState extends State<Pressable>
     with SingleTickerProviderStateMixin {
   bool _down = false;
+  int _pixelViewCount = 0;
   late final AnimationController _controller = AnimationController(vsync: this);
+
+  void _addPixelView() => _pixelViewCount++;
+
+  void _removePixelView() {
+    if (_pixelViewCount > 0) _pixelViewCount--;
+  }
 
   void _set(bool v) {
     if (v && widget.onPressed == null) return;
@@ -97,10 +148,18 @@ class _PressableState extends State<Pressable>
             excluding: widget.semanticLabel != null,
             child: AnimatedBuilder(
               animation: _controller,
-              child: widget.builder(context, _down && enabled),
+              child: PressablePixelScope(
+                owner: this,
+                onAttach: _addPixelView,
+                onDetach: _removePixelView,
+                parent: PressablePixelScope.maybeOf(context),
+                child: widget.builder(context, _down && enabled),
+              ),
               builder: (context, child) {
+                final allowScale = widget.scaleOnPress && _pixelViewCount == 0;
+                final effectiveTargetScale = allowScale ? targetScale : 1.0;
                 final t = _controller.value;
-                final scale = 1.0 + (targetScale - 1.0) * t;
+                final scale = 1.0 + (effectiveTargetScale - 1.0) * t;
                 final brightness = 1.0 - motion.pressDim * t;
                 return Transform.scale(
                   scale: scale,
