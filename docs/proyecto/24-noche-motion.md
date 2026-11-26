@@ -24,7 +24,9 @@ A reviewer fails a pull request that breaks one.
 - **What this page decides:** the names, the tokens, the behaviour, and every place where it says the build differs from the board. Where this page and a board disagree, this page wins.
 - Each board has a video of it playing at real speed, 60 frames a second, named `Noche motion <N> - <what>.mp4`. Story N8.0 says where they are kept. Watch the video before building the story.
 - Everything page 22, Part 1.1 says to ignore in a board file is ignored here too. The pictures on the boards (`/_blob/...`) are the app's own: the map, its frames of the coquí hopping, the scene pictures.
-- Every number, name and line on a motion board is sample data (page 22, Part 1.2).
+- Every number, name and line on a motion board is sample data (page 22, Part 1.2). So are its pictures: where a board cuts a piece out of a scene picture to stand for something else (a word's picture, a new story's cover), the build uses the app's own picture for that thing and never a story's picture (repo-root `AGENTS.md`, guardrail 5).
+- The boards mark what is chosen with `aria-checked` on their radio and switch buttons. The build gives screen readers the same selected and on/off state.
+- The boards use `left` and `right` in places. Port every one as start and end (page 22, Part 1.4).
 
 ### 1.2 The tokens
 
@@ -425,6 +427,7 @@ It plays once. Leaving the map during it finishes it at once.
 **Differs from the board**
 
 - The stage bar under each word is new on this screen. It is what shows "moving up".
+- The pictures on the board's tiles are stand-ins cut from scene pictures. Keep the review's own word pictures as they are.
 
 **Done when**
 
@@ -510,6 +513,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 **Differs from the board**
 
 - The board asks for a topic. Keep what the app's sheet asks today (practice words); topics only if #2 built them (page 22, N4.5).
+- The new story's picture on the board is a stand-in. Show a written story on the shelf as the Library shows one today (N4.5).
 
 **Done when**
 
