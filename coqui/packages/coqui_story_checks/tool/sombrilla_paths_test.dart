@@ -31,7 +31,9 @@ void main() {
     for (final id in sombrillaStories) {
       if (_only.isNotEmpty && _only != id) continue;
       final story = jsonDecode(
-        File('test/fixtures/sombrilla/$id.json').readAsStringSync(),
+        File(
+          '${findRoot().path}/coqui/packages/core/coqui_scenes/test/support/fixtures/sombrilla/$id.json',
+        ).readAsStringSync(),
       ) as Map<String, dynamic>;
       final at = await sombrillaDecisionLetters(course, make, story);
       expect(at, hasLength(2), reason: '$id: the two decisions');
