@@ -247,7 +247,7 @@ void main() {
       await again.open(stored: seed('curso'), location: '/nivel');
       expect(again.lessonShown, isTrue);
       expect(byTypeName('LevelCheckScreen'), findsOneWidget);
-      await again.tap(find.byType(LessonCloseButton));
+      await again.tap(findReviewCloseButton());
       await again.settle(rounds: 5);
       expect(again.selectedTab, 'map');
 
