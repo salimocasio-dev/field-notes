@@ -5,6 +5,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/review_session.dart';
 import 'package:feature_review/src/ui/block_layout.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:feature_review/src/ui/review_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart'
@@ -198,7 +199,7 @@ void main() {
         final st = styleOf(t, s);
         expect(st.fontSize, 14);
         expect(
-          contrast(st.color!, CoquiColors.lessonBg),
+          contrast(st.color!, NocheColors.lessonGround),
           greaterThanOrEqualTo(4.5),
         );
       }
@@ -216,8 +217,8 @@ void main() {
                 .first,
           )
           .visible;
-      expect(shown(LessonCloseButton), isFalse);
-      expect(shown(LessonSoundButton), isFalse);
+      expect(shown(NocheLessonCloseButton), isFalse);
+      expect(shown(NocheLessonSoundButton), isFalse);
     });
 
     testWidgets(
@@ -259,32 +260,29 @@ void main() {
         expect(find.text('Done'), findsOneWidget);
         expect(find.text('Back to Palabras'), findsOneWidget);
         expect(
-          t.getSize(find.byType(LessonButton)).height,
+          t.getSize(find.byType(NochePrimaryButton)).height,
           greaterThanOrEqualTo(48),
         );
       },
     );
 
     testWidgets(
-      "end: the button is the app's green (page 10: the green button is the way out), not blue",
+      'end: the button is NochePrimaryButton (next amber fill, onAccent ink)',
       (t) async {
         await endOn(t);
-        expect(
-          t.widget<LessonButton>(find.byType(LessonButton)).kind,
-          LessonButtonKind.go,
-        );
-        expect(CoquiColors.lessonGreen.toARGB32(), 0xFF17803F);
+        expect(find.byType(NochePrimaryButton), findsOneWidget);
+        expect(styleOf(t, 'Back to Palabras').color, NocheColors.onAccent);
       },
     );
 
     testWidgets(
-      'end: sizes: title 24, group headings 18, words 16, button 16',
+      'end: sizes: title 24, group headings 18, words 16, button 18',
       (t) async {
         await endOn(t);
         expect(styleOf(t, 'Done').fontSize, 24);
         expect(styleOf(t, 'Moving up').fontSize, 18);
         expect(styleOf(t, ws.first).fontSize, 16);
-        expect(styleOf(t, 'Back to Palabras').fontSize, 16);
+        expect(styleOf(t, 'Back to Palabras').fontSize, 18);
       },
     );
 
@@ -294,15 +292,12 @@ void main() {
         await endOn(t);
         for (final s in ['Done', 'Moving up', ws.first]) {
           expect(
-            contrast(styleOf(t, s).color!, CoquiColors.lessonBg),
+            contrast(styleOf(t, s).color!, NocheColors.lessonGround),
             greaterThanOrEqualTo(4.5),
           );
         }
         expect(
-          contrast(
-            styleOf(t, 'Back to Palabras').color!,
-            CoquiColors.lessonGreen,
-          ),
+          contrast(styleOf(t, 'Back to Palabras').color!, NocheColors.next),
           greaterThanOrEqualTo(4.5),
         );
       },
@@ -316,7 +311,7 @@ void main() {
       final list = t.getBottomRight(find.byType(FadingEdges)).dy;
       expect(
         list,
-        lessThanOrEqualTo(t.getTopLeft(find.byType(LessonButton)).dy + 1),
+        lessThanOrEqualTo(t.getTopLeft(find.byType(NochePrimaryButton)).dy + 1),
       );
     });
 
@@ -324,10 +319,9 @@ void main() {
       'end: the progress bar has 9 segments (one per word, none for the second asks), all lit',
       (t) async {
         await endOn(t);
-        final bar = t.widget<LessonProgressDashes>(
-          find.byType(LessonProgressDashes),
-        );
-        expect([bar.segments, bar.done], [9, 9]);
+        final bar = t.widget<NocheDashes>(find.byType(NocheDashes));
+        final done = bar.states.where((s) => s == NocheDashState.done).length;
+        expect([bar.states.length, done], [9, 9]);
       },
     );
 
@@ -436,7 +430,7 @@ void main() {
             reason: 'whole-number scale',
           );
           expect(t.takeException(), isNull);
-          final btn = t.getRect(find.byType(LessonButton));
+          final btn = t.getRect(find.byType(NochePrimaryButton));
           expect(btn.height, greaterThanOrEqualTo(48));
           expect(btn.bottom, lessThanOrEqualTo(h + 1));
           expect(lab.s.screen, LessonScreen.end);

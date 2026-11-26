@@ -1,5 +1,5 @@
-/// The level check on screen: nivel.html, built from coqui_ui. The session (logic/level_check.dart) decides
-/// everything; this draws it and passes touches on.
+/// The level check on screen: nivel.html, built on Noche tokens and lesson parts. The session
+/// (logic/level_check.dart) decides everything; this draws it and passes touches on.
 library;
 
 import 'dart:async';
@@ -11,6 +11,7 @@ import 'package:feature_review/src/logic/level_check.dart';
 import 'package:feature_review/src/ui/block_layout.dart';
 import 'package:feature_review/src/ui/host_wait.dart';
 import 'package:feature_review/src/ui/lesson_parts.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:material_ui/material_ui.dart';
 
 class LevelCheckScreen extends StatefulWidget {
@@ -77,7 +78,7 @@ class LevelCheckScreenState extends State<LevelCheckScreen> {
     unawaited(session.run());
   }
 
-  /// The green disc pressed, for a dev entry or a test that cannot reach it by touch.
+  /// The start disc pressed, for a dev entry or a test that cannot reach it by touch.
   Future<void> pressStart() async => _start();
 
   // `#close`: the page it was opened from (nivel.js has no SALIDA: origen())
@@ -115,7 +116,7 @@ class LevelCheckScreenState extends State<LevelCheckScreen> {
           : OptionTouch(
               index: k,
               onTouch: s.touch,
-              child: PictureChoice(
+              child: NochePictureChoice(
                 ring: choiceRing(s.rings[k]),
                 child: _picture(panels[k], r),
               ),
@@ -131,14 +132,21 @@ class LevelCheckScreenState extends State<LevelCheckScreen> {
       final start = s.screen == LessonScreen.start;
       final end = s.screen == LessonScreen.end;
       final showPictures = s.screen == LessonScreen.play && s.panels != null;
-      return LessonFrame(
+      return NocheLessonFrame(
         onClose: _close,
         onSound: _toggleSound,
         muted: _s.clips.muted,
-        progress: LessonProgressDashes(
-          segments: s.barSegments,
-          done: s.barLit,
-          dense: s.barSegments > 24,
+        progress: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: nocheLessonColumnMax),
+            child: NocheDashes.progress(
+              count: s.barSegments,
+              done: s.barLit,
+              onLessonGround: true,
+              gap: s.barSegments > 24 ? 1 : 4,
+              semanticLabel: 'Progress: ${s.barLit} of ${s.barSegments}',
+            ),
+          ),
         ),
         picture: showPictures ? _choices(box) : null,
         caption: showPictures && s.caption.isNotEmpty ? s.caption : null,
@@ -151,11 +159,19 @@ class LevelCheckScreenState extends State<LevelCheckScreen> {
               )
             : null,
         bottom: [
-          if (start) LessonStartButton(onPressed: _start),
+          if (start)
+            Padding(
+              padding: const EdgeInsetsDirectional.only(bottom: 16),
+              child: NochePlayDisc(
+                size: nocheLessonStartDisc,
+                icon: NocheIcons.play,
+                semanticLabel: 'Start',
+                onPressed: _start,
+              ),
+            ),
           if (end)
-            LessonButton(
+            NochePrimaryButton(
               label: ReviewStrings.toTheMap,
-              kind: LessonButtonKind.blue,
               onPressed: _toMap,
             ),
         ],

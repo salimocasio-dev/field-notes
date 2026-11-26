@@ -160,7 +160,7 @@ class _DevAppState extends State<DevApp> {
       title: 'Coqui review dev',
       theme: coquiTheme(),
       home: Scaffold(
-        backgroundColor: CoquiColors.lessonBg,
+        backgroundColor: NocheColors.lessonGround,
         body: _error != null
             ? Center(child: Text('$_error'))
             : s == null

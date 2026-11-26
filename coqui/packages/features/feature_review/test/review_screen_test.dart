@@ -5,6 +5,7 @@
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/review_session.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart' show Visibility;
 
@@ -79,19 +80,14 @@ void main() {
                 .first,
           )
           .visible;
-      expect(shown(LessonCloseButton), isTrue);
-      expect(shown(LessonSoundButton), isTrue);
+      expect(shown(NocheLessonCloseButton), isTrue);
+      expect(shown(NocheLessonSoundButton), isTrue);
     });
 
     testWidgets('cap: the progress bar has 10 segments', (t) async {
       setPhone(t, 412, 915, 2.625);
       await Lab(t, db: db).openReview();
-      expect(
-        t
-            .widget<LessonProgressDashes>(find.byType(LessonProgressDashes))
-            .segments,
-        10,
-      );
+      expect(t.widget<NocheDashes>(find.byType(NocheDashes)).states.length, 10);
     });
 
     testWidgets('cap: all 10 asked, once each, none of the 4 waiting', (
@@ -466,10 +462,9 @@ void main() {
         'wrrrrrwrw',
         every: (k) async {
           await t.pump(const Duration(milliseconds: 250));
-          final bar = t.widget<LessonProgressDashes>(
-            find.byType(LessonProgressDashes),
-          );
-          bars.add((k, bar.segments, bar.done));
+          final bar = t.widget<NocheDashes>(find.byType(NocheDashes));
+          final done = bar.states.where((s) => s == NocheDashState.done).length;
+          bars.add((k, bar.states.length, done));
           if (k == 3) before3 = lab.store.word(ws[0])!.toJson();
           if (k == 8) before8 = lab.store.word(ws[5])!.toJson();
         },
@@ -594,10 +589,9 @@ void main() {
 
     testWidgets('reask: the bar is full at the end', (t) async {
       await play(t);
-      final bar = t.widget<LessonProgressDashes>(
-        find.byType(LessonProgressDashes),
-      );
-      expect([bar.segments, bar.done], [7, 7]);
+      final bar = t.widget<NocheDashes>(find.byType(NocheDashes));
+      final done = bar.states.where((s) => s == NocheDashState.done).length;
+      expect([bar.states.length, done], [7, 7]);
     });
 
     testWidgets('reask: no page errors', (t) async {

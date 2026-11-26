@@ -10,6 +10,7 @@ import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/word_picture.dart';
 import 'package:feature_review/src/ui/book_image.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -180,7 +181,7 @@ void main() {
   });
 
   testWidgets(
-    'default Repaso session (curso.json and everythingJson) has zero CualItem, zero WhereItem, zero BookImage, zero PictureChoice, and never calls PictureSource',
+    'default Repaso session (curso.json and everythingJson) has zero CualItem, zero WhereItem, zero BookImage, zero NochePictureChoice, and never calls PictureSource',
     (t) async {
       for (final json in [seedJson('curso'), everythingJson(realRepaso)]) {
         final sc = Screen(t, json: json, pictures: _ForbidPictures());
@@ -191,7 +192,11 @@ void main() {
             expect(it.kind, isNot(GameKind.cual), reason: moment);
             expect(it.kind, isNot(GameKind.where), reason: moment);
             expect(find.byType(BookImage), findsNothing, reason: moment);
-            expect(find.byType(PictureChoice), findsNothing, reason: moment);
+            expect(
+              find.byType(NochePictureChoice),
+              findsNothing,
+              reason: moment,
+            );
           },
         );
         expect(sc.s.screen, LessonScreen.end);
@@ -202,8 +207,8 @@ void main() {
   testWidgets(
     'dedicated WordPictureAsset activates CualItem for concrete words using word_assets/... URLs and never calls PictureSource',
     (t) async {
-      final yesImg = await wordAssetStandIn(t, color: CoquiColors.lessonGreen);
-      final noImg = await wordAssetStandIn(t, color: CoquiColors.lessonBlue);
+      final yesImg = await wordAssetStandIn(t, color: NocheColors.right);
+      final noImg = await wordAssetStandIn(t, color: NocheColors.listening);
       final requestedUrls = <String>[];
 
       final db = jsonDecode(seedJson('curso')) as Map<String, dynamic>;
@@ -238,12 +243,12 @@ void main() {
       expect((item as CualItem).asset, asset);
 
       sc.s.queue = [QueueEntry.scored(item)];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
       await sc.settle();
 
-      expect(find.byType(PictureChoice), findsNWidgets(2));
+      expect(find.byType(NochePictureChoice), findsNWidgets(2));
       expect(find.byType(BookImage), findsNWidgets(2));
       expect(
         requestedUrls,
@@ -291,7 +296,7 @@ void main() {
             ),
           ),
         ];
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await sc.settle();
         await sc.vt.runUntil(() => sc.s.screen == LessonScreen.end);
         await sc.settle();
@@ -301,7 +306,7 @@ void main() {
         expect(sc.s.barMarks, [DashMark.skipped]);
         expect(sc.store.calls.where((c) => c['op'] == 'responde'), isEmpty);
         expect(sc.store.word('puerta')!.ear.n, earBefore);
-        expect(find.byType(PictureChoice), findsNothing);
+        expect(find.byType(NochePictureChoice), findsNothing);
         expect(find.byType(BookImage), findsNothing);
       }
 
@@ -322,12 +327,12 @@ void main() {
             ),
           ),
         ];
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await sc.settle();
         await sc.vt.runUntil(() => sc.s.screen == LessonScreen.end);
         await sc.settle();
         expect(sc.s.screen, LessonScreen.end);
-        expect(find.byType(PictureChoice), findsNothing);
+        expect(find.byType(NochePictureChoice), findsNothing);
         expect(find.byType(BookImage), findsNothing);
       }
 
@@ -343,10 +348,10 @@ void main() {
         await sc.open();
         final hear = sc.s.planner.hearItem(targetWord, picSentence);
         sc.s.queue = [QueueEntry.scored(hear)];
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await sc.settle();
         await sc.vt.runUntil(() => sc.s.yourTurn);
-        await t.tap(find.byType(WordTile).at(hear.answer));
+        await t.tap(find.byType(NocheWordTile).at(hear.answer));
         await sc.vt.runUntil(() => sc.s.canNext);
         await sc.settle();
         expect(
@@ -367,7 +372,7 @@ void main() {
           pool: [...picSentence.tokens.reversed],
         );
         sc.s.queue = [QueueEntry.play(build)];
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await sc.settle();
         await sc.vt.runUntil(() => sc.s.yourTurn);
         await sc.settle();
@@ -375,8 +380,8 @@ void main() {
           final k = sc.s.choices.indexWhere((c) => !c.done && c.label == w);
           final tile = find
               .descendant(
-                of: find.byType(TileTray).last,
-                matching: find.byType(WordTile),
+                of: find.byType(NocheTileTray).last,
+                matching: find.byType(NocheWordTile),
               )
               .at(k);
           await t.ensureVisible(tile);
