@@ -405,6 +405,13 @@ void main() {
         );
         expect(
           () => joinSplitStory(
+            game: validGame(),
+            lines: validLines(extra: {'palabras': 'not-a-map'}),
+          ),
+          throwsFormatException,
+        );
+        expect(
+          () => joinSplitStory(
             game: validGame(
               extra: {
                 'tipo': 'cual',

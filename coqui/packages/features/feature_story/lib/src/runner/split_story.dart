@@ -289,7 +289,11 @@ Map<String, dynamic> joinSplitStory({
           context: 'lines',
         );
       } else if (lines.containsKey('palabras')) {
-        out['palabras'] = _deepCopy(lines['palabras'], 'lines.palabras');
+        final rawPalabras = lines['palabras'];
+        if (rawPalabras != null && rawPalabras is! Map) {
+          throw const FormatException('lines: palabras must be a JSON object');
+        }
+        out['palabras'] = _deepCopy(rawPalabras, 'lines.palabras');
       }
     } else if (game.containsKey(key)) {
       out[key] = _deepCopy(game[key], 'game.$key');
