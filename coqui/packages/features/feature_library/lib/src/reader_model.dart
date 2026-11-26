@@ -176,10 +176,38 @@ class ReaderSettings {
     return copyWith(speed: 0.75);
   }
 
+  bool samePaginationAs(ReaderSettings other) =>
+      step == other.step && font == other.font && spacing == other.spacing;
+
+  static TextStyle previewStyleFor(ReaderFont font, Color color) {
+    final base = switch (font) {
+      ReaderFont.literata => NocheType.bookTitle,
+      ReaderFont.atkinson => NocheType.body,
+      // Pending coqui/requests/113-feature-library-needs-coqui-ui-reader-font-styles.md
+      // for NocheType.bookBodyLexend.
+      ReaderFont.lexend => NocheType.body,
+    };
+    final weight = switch (font) {
+      ReaderFont.literata => FontWeight.w500,
+      ReaderFont.atkinson => FontWeight.w500,
+      ReaderFont.lexend => FontWeight.w400,
+    };
+    return base.copyWith(
+      fontWeight: weight,
+      fontSize: 26,
+      height: 1,
+      color: color,
+    );
+  }
+
   TextStyle bodyStyle(Language language, Color color) {
-    final base = font == ReaderFont.literata
-        ? NocheType.bookBody
-        : NocheType.body;
+    final base = switch (font) {
+      ReaderFont.literata => NocheType.bookBody,
+      ReaderFont.atkinson => NocheType.body,
+      // Pending coqui/requests/113-feature-library-needs-coqui-ui-reader-font-styles.md
+      // for NocheType.bookBodyLexend; uses distinct w400 weight meanwhile.
+      ReaderFont.lexend => NocheType.body,
+    };
     final adapted = NocheType.forScript(base, language.script);
     final fontSize = language.script == 'Arab'
         ? bodyFontSize + 2
@@ -187,12 +215,17 @@ class ReaderSettings {
     final lineHeight = language.script == 'Arab'
         ? ((fontSize * 1.7) / 4).round() * 4.0 * spacing.multiplier
         : bodyLineHeight;
+    final weight = language.script == 'Arab'
+        ? adapted.fontWeight
+        : switch (font) {
+            ReaderFont.literata => FontWeight.w400,
+            ReaderFont.atkinson => FontWeight.w500,
+            ReaderFont.lexend => FontWeight.w400,
+          };
     return adapted.copyWith(
       fontSize: fontSize,
       height: lineHeight / fontSize,
-      fontWeight: font == ReaderFont.literata
-          ? FontWeight.w400
-          : adapted.fontWeight,
+      fontWeight: weight,
       color: color,
     );
   }
@@ -210,7 +243,7 @@ class ReaderSettings {
   static ReaderSettings fromJson(Object? value) {
     if (value is! Map) return const ReaderSettings();
     final rawStep = value['step'];
-    final step = rawStep is int ? rawStep.clamp(1, 7) : 4;
+    final step = rawStep is num ? rawStep.round().clamp(1, 7) : 4;
     final page = ReaderPageTheme.values.firstWhere(
       (e) => e.name == value['page'],
       orElse: () => ReaderPageTheme.night,
