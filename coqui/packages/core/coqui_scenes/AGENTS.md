@@ -692,6 +692,13 @@ Written as La esquina is (`lib/src/parada/`: `parada_set.dart`, `parada_places.d
   palm fronds hide sprites behind them. Sprite sheet: `tool/make_orilla_sprites_test.dart` (53 sprites). Tests:
   `playa_kit_test`, `orilla_set_test`, `orilla_sprites_test`, `orilla_acts_test`; in `coqui_story_checks`
   `orilla_stories_test` and `tool/orilla_paths_test.dart` (rules: `orilla_rules.dart`).
+- **La sombrilla** (order 63b, `lib/src/sombrilla/`: `sombrilla_set.dart`, `sombrilla_places.dart`,
+  `sombrilla_sprites.dart`, `sombrilla.dart`): on `playa_base.dart`. 6 states in `coqui/ref/pp/sombrilla/`
+  (`mediodia`/`tarde`/`sol` × `circulo`/`figura`; 0 of 51,840 differ). Nothing sways, so `baked.zb` is the full depth;
+  `pies` hit-tests its two individual foot boxes and aims its hint hand at the left foot clear of Luis at `sol2`.
+  Sprite sheet: `tool/make_sombrilla_sprites_test.dart` (37 sprites). Tests: `sombrilla_set_test`,
+  `sombrilla_sprites_test`, `sombrilla_acts_test`; in `coqui_story_checks` `sombrilla_stories_test` and
+  `tool/sombrilla_paths_test.dart` (rules: `sombrilla_rules.dart`).
 
 ## Pictures: by name, the size rule, old pictures until converted
 
