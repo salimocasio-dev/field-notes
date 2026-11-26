@@ -8,7 +8,7 @@ So:
 
 - This page adds one epic, N8, to the Noche epics. Its stories are written in the board's story format (repo-root `AGENTS.md`, "A story").
 - Every N8 story follows the Noche rules of page 22, Part 1, and the motion rules of Part 1 below.
-- None of this is on the GitHub board yet. Posting it is story N8.0.
+- The epic (#218) and stories N8.1 to N8.16 (#219 to #234) were posted on the GitHub board on Nov 26 2026. Each number is beside its story below.
 
 ---
 
@@ -134,7 +134,7 @@ No N8 story records audio, calls Danny, buys anything or adds a package. Motion 
 
 ## Part 3. The epic
 
-### Epic N8. Motion between selections
+### Epic N8. Motion between selections (#218)
 
 Everything in the app that changes when the learner picks something moves by the rules of Part 1, so the app feels like one thing.
 
@@ -178,7 +178,7 @@ Everything in the app that changes when the learner picks something moves by the
 
 ---
 
-#### N8.1 Motion tokens
+#### N8.1 Motion tokens (#219)
 
 - Labels: `agent:claude`, `lane:coqui_ui`. Waits for nothing.
 
@@ -198,7 +198,7 @@ Everything in the app that changes when the learner picks something moves by the
 
 **Lane** lane:coqui_ui.
 
-#### N8.2 The shared pieces move
+#### N8.2 The shared pieces move (#220)
 
 - Labels: `agent:claude` (the same agent as N8.1), `lane:coqui_ui`. Waits for N8.1, N1.2, N1.3.
 
@@ -242,7 +242,7 @@ New pieces:
 
 ---
 
-#### N8.3 The shell: tabs, lessons, loading
+#### N8.3 The shell: tabs, lessons, loading (#221)
 
 - Labels: `agent:claude`, `lane:app`. Waits for N8.2, N4.9, N2.11.
 
@@ -271,7 +271,7 @@ New pieces:
 
 ---
 
-#### N8.4 Map: opening a place, and a story from the card
+#### N8.4 Map: opening a place, and a story from the card (#222)
 
 - Labels: `agent:gemini`, `lane:feature_map`. Waits for N8.2, N4.1, N4.2.
 
@@ -295,7 +295,7 @@ New pieces:
 
 **Lane** lane:feature_map.
 
-#### N8.5 Map: going to another place, and a locked place
+#### N8.5 Map: going to another place, and a locked place (#223)
 
 - Labels: `agent:gemini`, `lane:feature_map`. Waits for N8.4.
 
@@ -334,7 +334,7 @@ New pieces:
 
 **Lane** lane:feature_map.
 
-#### N8.6 Map: the place card
+#### N8.6 Map: the place card (#224)
 
 - Labels: `agent:gemini`, `lane:feature_map`. Waits for N8.5.
 
@@ -369,7 +369,7 @@ New pieces:
 
 **Lane** lane:feature_map.
 
-#### N8.7 Map: a new place opens
+#### N8.7 Map: a new place opens (#225)
 
 - Labels: `agent:gemini`, `lane:feature_map`. Waits for N8.6.
 
@@ -400,7 +400,7 @@ It plays once. Leaving the map during it finishes it at once.
 
 ---
 
-#### N8.8 Story lesson: turns, the touch turn, the end
+#### N8.8 Story lesson: turns, the touch turn, the end (#226)
 
 - Labels: `agent:gemini`, `lane:feature_story`. Waits for N8.2, N4.3.
 
@@ -428,7 +428,7 @@ It plays once. Leaving the map during it finishes it at once.
 
 **Lane** lane:feature_story.
 
-#### N8.9 Review: answers and the end
+#### N8.9 Review: answers and the end (#227)
 
 - Labels: `agent:gemini`, `lane:feature_review`. Waits for N8.2, N4.8a.
 
@@ -453,7 +453,7 @@ It plays once. Leaving the map during it finishes it at once.
 
 **Lane** lane:feature_review.
 
-#### N8.10 Words
+#### N8.10 Words (#228)
 
 - Labels: `agent:gemini`, `lane:feature_words`. Waits for N8.2, N4.4.
 
@@ -471,7 +471,7 @@ It plays once. Leaving the map during it finishes it at once.
 
 ---
 
-#### N8.11 Library: a bookcase, and a new story locked until he knows more words
+#### N8.11 Library: a bookcase, and a new story locked until he knows more words (#229)
 
 - Labels: `agent:gemini`, `lane:feature_library`. Waits for N8.2, N4.5.
 
@@ -514,7 +514,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 **Lane** lane:feature_library.
 
-#### N8.12 Library: writing a story
+#### N8.12 Library: writing a story (#230)
 
 - Labels: `agent:gemini`, `lane:feature_library`. Waits for N8.11.
 
@@ -539,7 +539,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 **Lane** lane:feature_library.
 
-#### N8.13 Reader: pages, the sentence being read, a word
+#### N8.13 Reader: pages, the sentence being read, a word (#231)
 
 - Labels: `agent:gemini`, `lane:feature_library`. Waits for N8.12, N5.1.
 
@@ -558,7 +558,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 **Lane** lane:feature_library.
 
-#### N8.14 Reader: text and page
+#### N8.14 Reader: text and page (#232)
 
 - Labels: `agent:gemini`, `lane:feature_library`. Waits for N8.13, N5.2.
 
@@ -579,7 +579,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 ---
 
-#### N8.15 Speak: locked calls, a call, "Call done"
+#### N8.15 Speak: locked calls, a call, "Call done" (#233)
 
 - Labels: `agent:gemini`, `lane:feature_speaking`. Waits for N8.2, N4.6.
 
@@ -605,7 +605,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 **Lane** lane:feature_speaking.
 
-#### N8.16 Me and Your languages
+#### N8.16 Me and Your languages (#234)
 
 - Labels: `agent:gemini`, `lane:feature_profile`. Waits for N8.2, N4.7, N2.10.
 
