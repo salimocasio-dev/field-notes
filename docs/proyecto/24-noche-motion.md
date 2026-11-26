@@ -236,7 +236,7 @@ Three more things, from the architecture and security review of Nov 26:
 
 - `TouchSign` (`game_tiles.dart`, this package) is changed here and not in N8.8: it keeps its place and timing but rises and falls on `travel` with no overshoot, and stands still with reduced motion. feature_story's lane cannot change a file of this package.
 - Every new piece takes plain Flutter values. No new file imports `coqui_contracts`, and `NocheWindow` takes its picture as a child widget: it does not build `PixelView` itself. coqui_ui is on its way to depending on Flutter only.
-- `NocheWindow` takes a tag. Two windows with the same tag on two screens are one picture: when the second screen arrives, the window travels from the first one's rect to its own, as Flutter's `Hero` does. So no feature hands another feature a rect (N8.4).
+- `NocheWindow` takes a tag. Two windows with the same tag on two screens are one picture: when the second screen arrives, the window travels from the first one's rect to its own, as Flutter's `Hero` does. So no feature hands another feature a rect (N8.4). A tag is used once on a screen: a second window on the same picture there takes no tag.
 
 **Done when**
 
@@ -244,6 +244,8 @@ Three more things, from the architecture and security review of Nov 26:
 - A test per piece: start, middle, end, and the reduced form.
 - `NocheMic`'s golden of its six states still matches.
 - The package's old tests pass.
+- A test reads `TouchSign` through one rise and fall: it never goes past its top, and with reduced motion it does not move. *(Architecture and security review, Nov 26.)*
+- A test opens a second screen whose `NocheWindow` has the tag of one on the first, and reads the window's rect at the start, the middle and the end. *(Architecture and security review, Nov 26.)*
 
 **Lane** lane:coqui_ui.
 
