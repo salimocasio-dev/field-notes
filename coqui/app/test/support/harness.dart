@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:app/src/app.dart';
 import 'package:app/src/content.dart';
+import 'package:app/src/entitlements.dart';
 import 'package:app/src/platform.dart';
 import 'package:app/src/previa.dart';
 import 'package:app/src/scoped_clip_player.dart';
@@ -116,6 +117,9 @@ class TestApp {
   /// Optional clip player factory passed to [AppPlatform.clipPlayer].
   ClipPlayer Function(ClipInfo? Function(String id) lookup)? clipPlayerFactory;
 
+  /// Explicit entitlements passed to [AppPlatform.entitlements].
+  Entitlements? entitlements;
+
   /// The stored progress for the active language, read back (falling back to
   /// the legacy key when no per-language record has been written yet).
   String? get stored {
@@ -211,6 +215,9 @@ class TestApp {
     call: (info) async => call,
     haptics: haptics,
     info: info,
+    entitlements:
+        entitlements ??
+        ReleaseEntitlements.preBilling(callsAllowed: info.callsAllowed),
     clock: clock,
     previa: previa,
     loadCourse: loadCourse,

@@ -26,6 +26,7 @@ class AppPlatform {
     required this.call,
     required this.haptics,
     required this.info,
+    required this.entitlements,
     required this.clock,
     this.bundle,
     this.historyBack,
@@ -51,6 +52,10 @@ class AppPlatform {
   final Future<CallSession> Function(AppInfo info) call;
   final Haptics haptics;
   final AppInfo info;
+
+  /// Explicit [Entitlements] supplied to services and modules (e.g. `ReleaseEntitlements.preBilling(...)` in release builds).
+  final Entitlements entitlements;
+
   final Clock clock;
 
   /// Where the scenes' sheets and old pictures are read from (the root bundle when null).

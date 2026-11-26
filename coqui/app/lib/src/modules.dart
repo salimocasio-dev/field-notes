@@ -7,7 +7,7 @@ library;
 
 import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
-import 'package:coqui_contracts/coqui_contracts.dart' show Rng;
+import 'package:coqui_contracts/coqui_contracts.dart' show Entitlements, Rng;
 import 'package:coqui_scenes/coqui_scenes.dart' show sceneRegistry;
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
@@ -23,11 +23,12 @@ import 'package:feature_words/feature_words.dart';
 List<FeatureModule> coquiModules({
   required AppSwitches switches,
   required String Function(String path) bookImageUrl,
+  required Entitlements entitlements,
   VoiceTestData? voiceTest,
 }) => [
   const LibraryModule(),
   const WordsModule(),
-  MapModule(showPerf: switches.perf),
+  MapModule(showPerf: switches.perf, entitlements: entitlements),
   speakingModule(voiceTest: voiceTest),
   const ProfileModule(),
   StoryModule(scenes: storyScenes, showPerf: switches.perf, txt: switches.txt),
