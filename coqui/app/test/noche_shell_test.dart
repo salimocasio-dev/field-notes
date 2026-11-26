@@ -152,6 +152,7 @@ void main() {
       }
 
       await pumpWithLanguage(spanishCatalog);
+      // CoquiTabBar was deleted in #82; AppShell only mounts NocheTabBar under ShellKeys.tabBar.
       expect(find.byType(NocheTabBar), findsOneWidget);
       expect(find.byKey(ShellKeys.tabBar), findsOneWidget);
       final spanishBar = tester.widget<NocheTabBar>(find.byType(NocheTabBar));

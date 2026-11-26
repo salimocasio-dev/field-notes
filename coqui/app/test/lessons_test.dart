@@ -1,9 +1,17 @@
 // Shell route-reaches-screen checks: every lesson and feature route mounts
 // under ShellKeys.route, toggles NocheTabBar as expected, throws no exceptions,
 // and returns cleanly on system back.
+// Feature-level playback & copy checks live in their owning packages on main:
+// - feature_review: repaso_pictures_policy_test.dart, repaso_session_test.dart,
+//   repaso_screen_test.dart, review_end_test.dart, level_screen_test.dart
+// - feature_library: module_test.dart, reading_home_test.dart, reader_test.dart
+// - feature_speaking: llamada_expected_test.dart, call_screen_test.dart,
+//   arabic_language_test.dart, voice_test_test.dart
+// - feature_story: screen_test.dart, lines_test.dart, not_converted_test.dart
 import 'package:app/src/shell.dart';
 import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_ui/coqui_ui.dart' show NochePlayDisc;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -47,7 +55,7 @@ void main() {
     'ReviewRoute (direct, practice, and from Words tab) reaches its screen under ShellKeys.route and returns cleanly',
     (tester) async {
       final app = TestApp(tester);
-      await app.open(stored: seed('curso'));
+      await app.open(stored: seed('curso'), speechAvailable: false);
 
       // Direct navigation via ReviewRoute() and ReviewRoute(practice: true).
       for (final route in const [ReviewRoute(), ReviewRoute(practice: true)]) {
@@ -57,7 +65,10 @@ void main() {
         expect(find.byKey(ShellKeys.tabBar), findsNothing, reason: '$route');
         // Shell-level defense-in-depth for product rule 4 (no story screenshots
         // as UI/flashcard pictures); full item policy lives in
-        // feature_review/test/repaso_pictures_policy_test.dart:184.
+        // feature_review/test/repaso_pictures_policy_test.dart
+        // ('default Repaso session (curso.json and everythingJson) has zero
+        // CualItem, zero WhereItem, zero BookImage, zero NochePictureChoice,
+        // and never calls PictureSource').
         expect(find.byType(Image), findsNothing, reason: '$route');
         expect(tester.takeException(), isNull, reason: '$route');
 
@@ -68,7 +79,8 @@ void main() {
         expect(app.selectedTab, 'map', reason: '$route');
       }
 
-      // From Words tab via Key('words-review-button').
+      // From Words tab via Key('words-review-button'), starting the first item
+      // so the rule-4 Image-free assertion runs against a live Repaso item.
       await app.openTab('words');
       final reviewButton = find.byKey(const Key('words-review-button'));
       await app.until(
@@ -81,11 +93,16 @@ void main() {
       expect(findShellRoute(const ReviewRoute()), findsOneWidget);
       expect(app.lessonShown, isTrue);
       expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      final playDisc = find.byType(NochePlayDisc);
+      expect(playDisc, findsOneWidget);
+      await app.tap(playDisc);
+      await app.advance(400);
       expect(find.byType(Image), findsNothing);
       expect(tester.takeException(), isNull);
 
       expect(await tester.binding.handlePopRoute(), isTrue);
       await app.settle(rounds: 5);
+      await app.advance(5000);
       expect(findShellRoute(const ReviewRoute()), findsNothing);
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'words');
@@ -144,7 +161,8 @@ void main() {
       expect(find.byKey(const ValueKey('book:la-familia')), findsOneWidget);
       // Shell-level defense-in-depth for product rule 4 (no story screenshots
       // as book pictures); feature guard lives in
-      // feature_library/test/module_test.dart:78.
+      // feature_library/test/module_test.dart
+      // ('BookRoute opens TextReader without pictures').
       expect(find.byType(Image), findsNothing);
       expect(app.lessonShown, isTrue);
       expect(find.byKey(ShellKeys.tabBar), findsNothing);
@@ -173,6 +191,7 @@ void main() {
       expect(direct.tabBarShown, isTrue);
       expect(direct.selectedTab, 'map');
     },
+    timeout: const Timeout(Duration(minutes: 2)),
   );
 
   testWidgets(
