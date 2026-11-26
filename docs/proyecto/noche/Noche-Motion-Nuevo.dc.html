@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: a new place opens</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+
+/* press: 90 ms down, 140 ms back */
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+
+.L-map{position:absolute;left:0;top:0;width:390px;height:844px;overflow:hidden}
+
+/* the camera follows the coquí: it travels for as long as he hops (6 hops, 1.2 s) */
+.cam{position:absolute;left:0;top:0;width:512px;height:960px;transform:translate(-122px,-280px)}
+[data-seq="3"] .cam,[data-seq="4"] .cam{transform:translate(-61px,-160px);transition:transform 1200ms cubic-bezier(.4,0,.2,1)}
+
+/* the new place gets its colours, the finished stop its flag: one settle, 480 ms */
+.mapB{opacity:0}
+[data-seq="2"] .mapB,[data-seq="3"] .mapB,[data-seq="4"] .mapB{opacity:1;transition:opacity 480ms cubic-bezier(.2,0,0,1) 100ms}
+
+/* the coquí hops to it: the map's own frames */
+.hop{position:absolute;left:224px;top:564px;width:144px;height:220px;background:url(/_blob/7bd9695ca953344cf616fe361c5492f1) 0 0/12816px 220px no-repeat;image-rendering:pixelated;visibility:hidden}
+[data-seq="3"] .hop,[data-seq="4"] .hop{visibility:visible;animation:hopStrip 1467ms steps(88) both}
+@keyframes hopStrip{from{background-position:0 0}to{background-position:-12672px 0}}
+
+/* "You are here" leaves first; the new place is named while he travels, and the name becomes "You are here" when he lands */
+.here{opacity:0;transition:opacity 140ms cubic-bezier(.4,0,1,1)}
+[data-seq="0"] .here3,[data-seq="1"] .here3{opacity:1}
+[data-seq="4"] .here4{opacity:1;transition:opacity 140ms cubic-bezier(.2,0,0,1) 100ms}
+.dest{opacity:0;transition:opacity 140ms cubic-bezier(.4,0,1,1)}
+[data-seq="2"] .dest,[data-seq="3"] .dest{opacity:1;animation:rise 220ms cubic-bezier(.2,0,0,1) 240ms both}
+
+/* the story he has just finished: the lesson's ground covers the map and lifts */
+.cover{position:absolute;z-index:5;left:0;top:0;width:390px;height:844px;background:#12171D;opacity:0;visibility:hidden;transition:opacity 200ms cubic-bezier(.4,0,1,1),visibility 0s linear 200ms}
+[data-seq="1"] .cover{opacity:1;visibility:visible;transition:opacity 320ms cubic-bezier(.2,0,0,1),visibility 0s}
+
+/* when he arrives, the card becomes that place and grows a little: a handle and an arrow say it opens */
+.card{height:155px;transition:height 220ms cubic-bezier(.4,0,.2,1),transform 220ms cubic-bezier(.4,0,.2,1)}
+[data-seq="4"] .card{height:216px}
+.cUp,.cPk{opacity:0;visibility:hidden;transition:opacity 90ms cubic-bezier(.4,0,1,1),visibility 0s linear 90ms}
+[data-seq="0"] .cUp,[data-seq="1"] .cUp,[data-seq="2"] .cUp,[data-seq="3"] .cUp,[data-seq="4"] .cPk{opacity:1;visibility:visible;transition:none;animation:rise 220ms cubic-bezier(.2,0,0,1) 60ms both}
+[data-seq="4"] .nextP{animation:rise 220ms cubic-bezier(.2,0,0,1) 140ms both}
+
+/* the tab bar is away while the story covers the screen */
+.tabs{transition:transform 220ms cubic-bezier(.2,0,0,1) 60ms,opacity 140ms cubic-bezier(.2,0,0,1) 60ms}
+[data-seq="1"] .tabs{transform:translateY(96px);opacity:0;transition:transform 200ms cubic-bezier(.4,0,1,1),opacity 200ms cubic-bezier(.4,0,1,1)}
+
+/* reduced motion: he is placed at once, and every move is a 140 ms fade */
+@media (prefers-reduced-motion:reduce){
+.cam,.pr,.card{transition:none!important}
+.tabs{transform:none!important}
+.hop{animation-duration:1ms!important}
+.dest,.cUp,.cPk,.nextP{animation-name:fadeOnly!important;animation-duration:140ms!important}
+}
+</style>
+</helmet>
+<div data-seq="{{ seq }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0C1926; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+
+<!-- The map, when the last story of a place is done: the next place opens and the card becomes it -->
+<div class="L-map">
+<div class="cam">
+<img src="/_blob/c249f8c3d0165f071d457751d1ef4dfe" alt="Course map. The coquí is at place 3, La cocina. Place 4 is grey: not open yet." style="position: absolute; left: 0; top: 0; width: 512px; height: 960px; image-rendering: pixelated">
+<img class="mapB" src="/_blob/209052f77b1f1a0771628b2d86e4c42b" alt="" style="position: absolute; left: 0; top: 0; width: 512px; height: 960px; image-rendering: pixelated">
+<div class="hop" aria-hidden="true"></div>
+<div class="here here3" style="position: absolute; left: 256px; top: 652px; width: 160px; display: flex; flex-direction: column; align-items: center; pointer-events: none">
+<div style="height: 40px; padding: 0 16px; display: flex; align-items: center; background: #EEF3F7; color: #0C1926; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">You are here</div>
+<div aria-hidden="true" style="width: 12px; height: 12px; margin-top: -6px; background: #EEF3F7; transform: rotate(45deg)"></div>
+</div>
+<div class="here here4" style="position: absolute; left: 176px; top: 482px; width: 160px; display: flex; flex-direction: column; align-items: center; pointer-events: none">
+<div style="height: 40px; padding: 0 16px; display: flex; align-items: center; background: #EEF3F7; color: #0C1926; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">You are here</div>
+<div aria-hidden="true" style="width: 12px; height: 12px; margin-top: -6px; background: #EEF3F7; transform: rotate(45deg)"></div>
+</div>
+<div class="dest" style="position: absolute; left: 156px; top: 488px; width: 200px; display: flex; justify-content: center; pointer-events: none">
+<div style="height: 40px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; color: #EEF3F7; border: 1px solid #33506B; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="font-weight: 600; color: #A7B8C8">New place</span><span lang="es">El colmado</span></div>
+</div>
+</div>
+<div style="position: absolute; left: 16px; right: 16px; top: 16px; display: flex; justify-content: space-between">
+<div style="height: 48px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Spanish<span style="font-weight: 500; color: #A7B8C8">A1</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>
+<div style="height: 48px; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E69F00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg>6 days</div>
+</div>
+
+<section class="card" style="position: absolute; left: 16px; right: 16px; bottom: 104px; box-sizing: border-box; overflow: hidden; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div class="cUp" style="position: absolute; left: 16px; right: 16px; top: 16px">
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="flex: none; position: relative; width: 72px; height: 72px; overflow: hidden; border-radius: 16px"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -154px; top: -308px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="flex-grow: 1">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">UP NEXT · <span lang="es">LA COCINA</span></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Jugo de china</span>
+<span style="display: block; margin-top: 8px; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Last story here · 5 min</span>
+</span>
+<span style="flex: none"><button type="button" class="pr" onClick="{{ play }}" aria-label="Play the last story of La cocina. On this board it plays what happens when he finishes it." style="width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></button></span>
+</div>
+<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #33506B; display: flex; align-items: center; justify-content: space-between; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">
+<span>Then review, then a call</span>
+<span style="font-weight: 700; color: #EEF3F7">12 of 30 min today</span>
+</div>
+</div>
+<div class="cPk cPkN" style="position: absolute; left: 16px; right: 16px; top: 12px">
+<div aria-hidden="true" style="width: 40px; height: 4px; margin: 0 auto 12px; border-radius: 2px; background: #4A6C8C"></div>
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="flex: none; position: relative; width: 72px; height: 72px; overflow: hidden; border-radius: 16px"><img src="/_blob/209052f77b1f1a0771628b2d86e4c42b" alt="" style="position: absolute; left: -218px; top: -534px; width: 512px; height: 960px; image-rendering: pixelated"></span>
+<span style="flex-grow: 1; min-width: 0">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">NEW PLACE · 4 OF 10</span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">El colmado</span>
+<span style="display: block; margin-top: 8px; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Nothing heard yet</span>
+</span>
+<span aria-hidden="true" style="flex: none; width: 48px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 50%; background: #0C1926; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span>
+</div>
+<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #33506B; display: flex; align-items: center; gap: 16px">
+<span style="flex-grow: 1; min-width: 0">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">PLAY FIRST · STORY 1</span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">El mostrador</span>
+</span>
+<span style="flex: none; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">5 min</span>
+<span class="nextP" style="flex: none"><button type="button" class="pr" onClick="{{ play }}" aria-label="Play. On this board it goes back to the start." style="width: 64px; height: 64px; padding: 0; border: 0; border-radius: 50%; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></button></span>
+</div>
+</div>
+</section>
+</div>
+
+<div class="cover" aria-hidden="true"></div>
+
+<nav class="tabs" aria-label="Tabs" lang="es" style="position: absolute; z-index: 4; left: 16px; right: 16px; bottom: 16px; height: 64px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #152A3D; border: 1px solid #33506B; border-radius: 32px">
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A7B8C8; text-decoration: none; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>Biblioteca</span>
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A7B8C8; text-decoration: none; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg></span>Palabras</span>
+<span style="padding: 0 0 8px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; color: #EEF3F7; font: 700 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 56px; height: 56px; margin-top: -24px; border-radius: 50%; background: #E69F00; color: #14110F; box-shadow: 0 0 0 4px #0C1926; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></span>Mapa</span>
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A7B8C8; text-decoration: none; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>Hablar</span>
+<span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #A7B8C8; text-decoration: none; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Yo</span>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+componentWillUnmount() { this.clearAll(); }
+later(ms, seq) {
+var self = this;
+if (!this._t) this._t = [];
+this._t.push(setTimeout(function () { self.setState({ seq: seq }); }, ms));
+}
+clearAll() { (this._t || []).forEach(function (t) { clearTimeout(t); }); this._t = []; }
+play() {
+var seq = (this.state || {}).seq || 0;
+this.clearAll();
+if (seq === 4) { this.setState({ seq: 0 }); return; }
+if (seq !== 0) return;
+this.setState({ seq: 1 });   // the story covers the screen
+this.later(900, 2);          // back on the map: "You are here" leaves, the new place gets its colours
+this.later(1600, 3);         // he hops there, the camera with him: 1.2 s
+this.later(2900, 4);         // he has settled: "You are here", and the card moves on
+}
+renderVals() {
+var self = this;
+return { seq: String((this.state || {}).seq || 0), play: function () { self.play(); } };
+}
+}
+</script>
+</body>
+</html>

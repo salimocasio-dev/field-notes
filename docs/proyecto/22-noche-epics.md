@@ -116,6 +116,8 @@ Stories already on the board that touch the same lanes:
 
 ## Part 3. The epics
 
+Epic N8 (motion between selections) is on its own page: [`24-noche-motion.md`](24-noche-motion.md).
+
 ### Epic N0. Get the boards to every agent
 
 Not a feature. One story, for Gemini.
