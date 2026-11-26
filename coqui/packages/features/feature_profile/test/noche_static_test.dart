@@ -15,6 +15,8 @@ void main() {
     'lib/src/about_sheet.dart',
     'lib/src/install_hint.dart',
     'lib/src/module.dart',
+    'lib/src/welcome.dart',
+    'lib/src/welcome_gate.dart',
   ];
 
   test('no left/right layout APIs in Noche files', () {

@@ -90,11 +90,8 @@ class _WelcomeGateState extends State<WelcomeGate> {
       fit: StackFit.expand,
       children: [
         widget.child,
-        ExcludeSemantics(
-          excluding: !open,
-          child: CoquiSheetLayer(
-            open: open,
-            modal: true,
+        if (open)
+          NocheSheetOverlay(
             sheet: welcomeSheet(
               services: widget.services,
               step: _step,
@@ -102,7 +99,6 @@ class _WelcomeGateState extends State<WelcomeGate> {
               onNew: _listo,
             ),
           ),
-        ),
       ],
     );
   }
