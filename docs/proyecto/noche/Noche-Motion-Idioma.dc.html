@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: changing language</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+.tb{color:#A7B8C8;font-weight:600}
+.pill{pointer-events:none}
+
+.t-map{color:#EEF3F7;font-weight:700}
+.pill{opacity:0}
+/* the sheet: 320 ms up, 200 ms down */
+.scrim{position:absolute;z-index:6;left:0;top:0;width:390px;height:844px;padding:0;border:0;background:rgba(12,25,38,.72);opacity:0;visibility:hidden;transition:opacity 200ms cubic-bezier(.4,0,1,1),visibility 0s linear 200ms}
+[data-sheet="1"] .scrim{opacity:1;visibility:visible;transition:opacity 220ms cubic-bezier(.2,0,0,1),visibility 0s}
+.sheet{position:absolute;z-index:7;left:0;right:0;bottom:0;transform:translateY(100%);visibility:hidden;transition:transform 200ms cubic-bezier(.4,0,1,1),visibility 0s linear 200ms}
+[data-sheet="1"] .sheet{transform:translateY(0);visibility:visible;transition:transform 320ms cubic-bezier(.2,0,0,1),visibility 0s}
+/* one mark travels: the outline slides from the language he had to the one he picks; the tick follows in place */
+.lm{pointer-events:none;transition:transform 220ms cubic-bezier(.4,0,.2,1)}
+[data-pick="1"] .lm{transform:translateY(80px)}
+.sw,.ck{transition:opacity 140ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1)}
+.ck{opacity:0;transform:scale(.8)}
+[data-pick="0"] .ck0,[data-pick="1"] .ck1{opacity:1;transform:scale(1)}
+[data-pick="0"] .sw0,[data-pick="1"] .sw1{opacity:0}
+/* the app turns over: everything in the course's language leaves in 140 ms and comes back in 220 ms, in its own direction */
+.turn{transition:opacity 220ms cubic-bezier(.2,0,0,1)}
+[data-turn="1"] .turn{opacity:0;transition:opacity 140ms cubic-bezier(.4,0,1,1)}
+@media (prefers-reduced-motion:reduce){
+.sheet{transition:opacity 140ms linear!important;transform:none!important;opacity:0}
+[data-sheet="1"] .sheet{opacity:1}
+.lm{transition-duration:0s!important}
+}
+</style>
+</helmet>
+<div data-sheet="{{ sheet }}" data-pick="{{ pick }}" data-turn="{{ turn }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0C1926; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<div style="position: absolute; left: 0; top: 0; width: 512px; height: 960px; transform: translate(-122px,-280px)"><img src="/_blob/c249f8c3d0165f071d457751d1ef4dfe" alt="Course map. The coquí is at place 3, La cocina." style="position: absolute; left: 0; top: 0; width: 512px; height: 960px; image-rendering: pixelated"><div  style="position: absolute; left: 256px; top: 652px; width: 160px; display: flex; flex-direction: column; align-items: center; pointer-events: none">
+<div style="height: 40px; padding: 0 16px; display: flex; align-items: center; background: #EEF3F7; color: #0C1926; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">You are here</div>
+<div aria-hidden="true" style="width: 12px; height: 12px; margin-top: -6px; background: #EEF3F7; transform: rotate(45deg)"></div>
+</div>
+</div>
+<div class="turn" dir="{{ t.dir }}">
+<div style="position: absolute; left: 16px; right: 16px; top: 16px; display: flex; justify-content: space-between">
+<button type="button" class="pr" onClick="{{ openSheet }}" aria-label="Change language" style="height: 48px; padding: 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; color: #EEF3F7; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">{{ t.name }}<span style="font-weight: 500; color: #A7B8C8">A1</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+<div style="height: 48px; padding: 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E69F00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg><span dir="ltr">6 days</span></div>
+</div>
+<section style="position: absolute; left: 16px; right: 16px; bottom: 104px; box-sizing: border-box; padding: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="flex: none; position: relative; width: 72px; height: 72px; overflow: hidden; border-radius: 16px"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -154px; top: -308px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="flex-grow: 1">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">UP NEXT · <span lang="{{ t.code }}" style="font-family: {{ t.font }}">{{ t.place }}</span></span>
+<span lang="{{ t.code }}" style="display: block; margin-top: 8px; font: 700 22px/28px {{ t.font }}">{{ t.title }}</span>
+<span style="display: block; margin-top: 4px; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8"><span dir="ltr" style="display: inline-block">New story · 5 min</span></span>
+</span>
+<span aria-hidden="true" style="flex: none; width: 64px; height: 64px; border-radius: 50%; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center; transform: {{ t.flip }}"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></span>
+</div>
+<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #33506B; display: flex; align-items: center; justify-content: space-between; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8"><span dir="ltr">Then review, then a call</span><span dir="ltr" style="font-weight: 700; color: #EEF3F7">12 of 30 min today</span></div>
+</section>
+<nav aria-label="Tabs" lang="{{ t.code }}" style="position: absolute; left: 16px; right: 16px; bottom: 16px; height: 64px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #152A3D; border: 1px solid #33506B; border-radius: 32px">
+<span class="pill" aria-hidden="true" style="position: absolute; left: 11.6px; top: 10px; width: 48px; height: 28px; border-radius: 14px; background: #33506B"></span>
+<button type="button" class="tb t-lib" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span><span class="tn" style="font-family: {{ t.font }}">{{ t.library }}</span></button>
+<button type="button" class="tb t-words" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg></span><span class="tn" style="font-family: {{ t.font }}">{{ t.words }}</span></button>
+<button type="button" class="tb t-map" style="position: relative; padding: 0 0 8px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; font-size: 12px; line-height: 1"><span class="disc" style="width: 56px; height: 56px; margin-top: -24px; border-radius: 50%; background: #E69F00; color: #14110F; box-shadow: 0 0 0 4px #0C1926; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></span><span class="tn" style="font-family: {{ t.font }}">{{ t.map }}</span></button>
+<button type="button" class="tb t-speak" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span class="tn" style="font-family: {{ t.font }}">{{ t.speak }}</span></button>
+<button type="button" class="tb t-me" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="tn" style="font-family: {{ t.font }}">{{ t.me }}</span></button>
+</nav>
+</div>
+<button type="button" class="scrim" onClick="{{ closeSheet }}" aria-label="Close"></button>
+<section class="sheet" aria-label="Languages" style="box-sizing: border-box; padding: 8px 16px 24px; background: #152A3D; border-top: 1px solid #33506B; border-radius: 24px 24px 0 0">
+<div aria-hidden="true" style="width: 40px; height: 4px; margin: 0 auto 8px; border-radius: 2px; background: #4A6C8C"></div>
+<div style="height: 48px; display: flex; align-items: center; justify-content: space-between"><h1 style="margin: 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Your languages</h1><button type="button" class="pr" onClick="{{ closeSheet }}" aria-label="Close" style="width: 48px; height: 48px; margin-inline-end: -12px; padding: 0; border: 0; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+<div role="radiogroup" aria-label="Language you are learning now" style="position: relative; margin-top: 8px; display: flex; flex-direction: column; gap: 8px">
+<button type="button" role="radio" aria-checked="{{ a.p0 }}" onClick="{{ pick0 }}" style="position: relative; height: 72px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; color: #EEF3F7; text-align: start">
+<span><span style="display: block; font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Spanish</span><span style="display: block; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">A1 · place 3 of 10 · 96 words</span></span>
+<span style="position: relative; flex: none; width: 56px; height: 32px"><span class="sw sw0" style="position: absolute; inset-inline-end: 0; top: 9px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Switch</span><span class="ck ck0" style="position: absolute; inset-inline-end: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: #EEF3F7; color: #0C1926; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
+</button>
+<button type="button" role="radio" aria-checked="{{ a.p1 }}" onClick="{{ pick1 }}" style="position: relative; height: 72px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #33506B; border-radius: 24px; background: #0C1926; color: #EEF3F7; text-align: start">
+<span><span style="display: block; font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Arabic <span lang="ar" dir="rtl" style="margin: 0 8px; font: 500 16px/1 'Noto Sans Arabic', Arial, sans-serif; color: #A7B8C8">العربية</span></span><span style="display: block; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">A1 · place 1 of 10 · 12 words</span></span>
+<span style="position: relative; flex: none; width: 56px; height: 32px"><span class="sw sw1" style="position: absolute; inset-inline-end: 0; top: 9px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Switch</span><span class="ck ck1" style="position: absolute; inset-inline-end: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: #EEF3F7; color: #0C1926; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span></span>
+</button>
+<span class="lm" aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 72px; box-sizing: border-box; border: 2px solid #EEF3F7; border-radius: 24px"></span>
+</div>
+<div style="margin-top: 24px; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">ADD A LANGUAGE</div>
+<div style="margin-top: 8px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #33506B; font: 600 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span>French <span lang="fr" style="margin-inline-start: 8px; font-weight: 500; color: #A7B8C8">Français</span></span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+componentWillUnmount() { this.clearAll(); }
+st() { return this.state || {}; }
+later(ms, fn) { var self = this; if (!this._t) this._t = []; this._t.push(setTimeout(function () { fn(self); }, ms)); }
+clearAll() { (this._t || []).forEach(function (t) { clearTimeout(t); }); this._t = []; }
+pick(i) {
+// the mark slides to the language he picks; then the sheet goes down and the app turns over into it
+var cur = this.st().pick || 0;
+if (i === cur) return;
+this.clearAll();
+this._switching = true;   // once he has picked, the change goes through; the sheet closes itself
+this.setState({ pick: i });
+this.later(420, function (c) { c.setState({ sheet: 0, turn: 1 }); });
+this.later(620, function (c) { c._switching = false; c.setState({ lang: i, turn: 0 }); });
+}
+renderVals() {
+var self = this, s = this.st();
+var langs = [
+{ name: 'Spanish', code: 'es', dir: 'ltr', font: "'Atkinson Hyperlegible Next', Arial, sans-serif", flip: 'none', place: 'LA COCINA', title: 'Tengo hambre', library: 'Biblioteca', words: 'Palabras', map: 'Mapa', speak: 'Hablar', me: 'Yo' },
+{ name: 'Arabic', code: 'ar', dir: 'rtl', font: "'Noto Sans Arabic', Arial, sans-serif", flip: 'scaleX(-1)', place: 'البيت', title: 'مرحباً', library: 'المكتبة', words: 'الكلمات', map: 'الخريطة', speak: 'التحدث', me: 'أنا' }
+];
+return {
+t: langs[s.lang || 0],
+sheet: s.sheet ? '1' : '0', pick: String(s.pick || 0), turn: s.turn ? '1' : '0',
+// which language is chosen, for screen readers
+a: { p0: String((s.pick || 0) === 0), p1: String(s.pick === 1) },
+openSheet: function () { self.setState({ sheet: 1 }); },
+closeSheet: function () { if (!self._switching) self.setState({ sheet: 0 }); },
+pick0: function () { self.pick(0); },
+pick1: function () { self.pick(1); }
+};
+}
+}
+</script>
+</body>
+</html>

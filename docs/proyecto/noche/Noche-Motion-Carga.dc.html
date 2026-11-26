@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: loading, and failing to load</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+.tb{color:#A7B8C8;font-weight:600}
+.pill{pointer-events:none}
+
+.t-map{color:#EEF3F7;font-weight:700}
+.pill{opacity:0}
+/* nothing for the first 300 ms; then three dots and one line. Only the dots move */
+.wait,.fail{position:absolute;left:24px;right:24px;top:360px;display:flex;flex-direction:column;align-items:center;opacity:0;visibility:hidden;transition:opacity 140ms cubic-bezier(.4,0,1,1),visibility 0s linear 140ms}
+[data-seq="1"] .wait{opacity:1;visibility:visible;transition:opacity 220ms cubic-bezier(.2,0,0,1) 300ms,visibility 0s}
+[data-seq="1"] .dots span{animation:dot 900ms ease-in-out infinite}
+[data-seq="1"] .dots span:nth-child(2){animation-delay:150ms}
+[data-seq="1"] .dots span:nth-child(3){animation-delay:300ms}
+@keyframes dot{0%,60%,100%{opacity:.35}30%{opacity:1}}
+/* it could not load: the line rises, the one orange button lands after it */
+[data-seq="2"] .fail{opacity:1;visibility:visible;transition:none}
+[data-seq="2"] .f1{animation:rise 220ms cubic-bezier(.2,0,0,1) 100ms both}
+[data-seq="2"] .next{animation:rise 220ms cubic-bezier(.2,0,0,1) 180ms both}
+/* it loaded: the map comes up from the ground in 320 ms, the chips and the card rise, the tab bar comes up, orange lands last */
+.app{position:absolute;left:0;top:0;width:390px;height:844px;visibility:hidden;pointer-events:none}
+[data-seq="3"] .app{visibility:visible}
+.map{opacity:0}
+[data-seq="3"] .map{opacity:1;transition:opacity 320ms cubic-bezier(.2,0,0,1)}
+.a1,.a2,.a3,.play{opacity:0}
+[data-seq="3"] .a1{animation:rise 220ms cubic-bezier(.2,0,0,1) 180ms both}
+[data-seq="3"] .a2{animation:rise 220ms cubic-bezier(.2,0,0,1) 240ms both}
+[data-seq="3"] .a3{animation:rise 220ms cubic-bezier(.2,0,0,1) 210ms both}
+.tabs{transform:translateY(96px);opacity:0}
+[data-seq="3"] .tabs{transform:translateY(0);opacity:1;transition:transform 320ms cubic-bezier(.2,0,0,1) 160ms,opacity 220ms cubic-bezier(.2,0,0,1) 160ms}
+[data-seq="3"] .play{animation:rise 220ms cubic-bezier(.2,0,0,1) 400ms both}
+@media (prefers-reduced-motion:reduce){
+.dots span{animation:none!important;opacity:1}
+.tabs{transform:none!important}
+.f1,.next,.a1,.a2,.a3,.play{animation-name:fadeOnly!important;animation-duration:140ms!important}
+}
+</style>
+</helmet>
+<div data-seq="{{ seq }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #0C1926; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<button type="button" onClick="{{ start }}" aria-label="Open the app again" style="position: absolute; left: 0; top: 0; width: 390px; height: 844px; padding: 0; border: 0; background: transparent"></button>
+<div class="wait" role="status">
+<div class="dots" aria-hidden="true" style="display: flex; gap: 8px"><span style="width: 12px; height: 12px; border-radius: 50%; background: #A7B8C8"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #A7B8C8"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #A7B8C8"></span></div>
+<div style="margin-top: 20px; font: 600 16px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Getting your course</div>
+</div>
+<div class="fail" role="alert">
+<p class="f1" style="margin: 0; text-align: center; font: 600 16px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Coquí could not load. Check your connection.</p>
+<div class="next" style="margin-top: 20px; width: 100%"><button type="button" class="pr" onClick="{{ retry }}" style="width: 100%; height: 56px; border: 0; border-radius: 28px; background: #E69F00; color: #14110F; font: 700 18px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Try again</button></div>
+</div>
+<div class="app">
+<div class="map" style="position: absolute; left: 0; top: 0; width: 512px; height: 960px; transform: translate(-122px,-280px)"><img src="/_blob/c249f8c3d0165f071d457751d1ef4dfe" alt="Course map. The coquí is at place 3, La cocina." style="position: absolute; left: 0; top: 0; width: 512px; height: 960px; image-rendering: pixelated"></div>
+<div style="position: absolute; left: 0; top: 0; width: 512px; height: 960px; transform: translate(-122px,-280px); pointer-events: none"><div class="a3" style="position: absolute; left: 0; top: 0; width: 512px; height: 960px"><div  style="position: absolute; left: 256px; top: 652px; width: 160px; display: flex; flex-direction: column; align-items: center; pointer-events: none">
+<div style="height: 40px; padding: 0 16px; display: flex; align-items: center; background: #EEF3F7; color: #0C1926; border-radius: 20px; white-space: nowrap; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">You are here</div>
+<div aria-hidden="true" style="width: 12px; height: 12px; margin-top: -6px; background: #EEF3F7; transform: rotate(45deg)"></div>
+</div>
+</div></div>
+<div class="a1" style="position: absolute; left: 0; right: 0; top: 0; height: 80px"><div style="position: absolute; left: 16px; right: 16px; top: 16px; display: flex; justify-content: space-between">
+<div style="height: 48px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Spanish<span style="font-weight: 500; color: #A7B8C8">A1</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>
+<div style="height: 48px; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E69F00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg>6 days</div>
+</div>
+
+</div>
+<section class="a2" style="position: absolute; left: 16px; right: 16px; bottom: 104px; box-sizing: border-box; padding: 16px; background: #152A3D; border: 1px solid #33506B; border-radius: 24px"><div>
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="flex: none; position: relative; width: 72px; height: 72px; overflow: hidden; border-radius: 16px"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -154px; top: -308px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span style="flex-grow: 1">
+<span style="display: block; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">UP NEXT · <span lang="es">LA COCINA</span></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 700 22px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</span>
+<span style="display: block; margin-top: 8px; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">New story · 5 min</span>
+</span>
+<span class="play" aria-hidden="true" style="flex: none; width: 64px; height: 64px; border-radius: 50%; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v16l12-8z" fill="currentColor"/></svg></span>
+</div>
+<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #33506B; display: flex; align-items: center; justify-content: space-between; font: 500 14px/16px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">
+<span>Then review, then a call</span>
+<span style="font-weight: 700; color: #EEF3F7">12 of 30 min today</span>
+</div>
+</div>
+</section>
+<nav class="tabs" aria-label="Tabs" lang="es" style="position: absolute; left: 16px; right: 16px; bottom: 16px; height: 64px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #152A3D; border: 1px solid #33506B; border-radius: 32px">
+<span class="pill" aria-hidden="true" style="position: absolute; left: 11.6px; top: 10px; width: 48px; height: 28px; border-radius: 14px; background: #33506B"></span>
+<button type="button" class="tb t-lib" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>Biblioteca</button>
+<button type="button" class="tb t-words" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg></span>Palabras</button>
+<button type="button" class="tb t-map" style="position: relative; padding: 0 0 8px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; font-size: 12px; line-height: 1"><span class="disc" style="width: 56px; height: 56px; margin-top: -24px; border-radius: 50%; background: #E69F00; color: #14110F; box-shadow: 0 0 0 4px #0C1926; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></span>Mapa</button>
+<button type="button" class="tb t-speak" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>Hablar</button>
+<button type="button" class="tb t-me" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Yo</button>
+</nav>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+componentWillUnmount() { this.clearAll(); }
+st() { return this.state || {}; }
+later(ms, fn) { var self = this; if (!this._t) this._t = []; this._t.push(setTimeout(function () { fn(self); }, ms)); }
+clearAll() { (this._t || []).forEach(function (t) { clearTimeout(t); }); this._t = []; }
+componentDidMount() { this.run(true); }
+run(fail) {
+// the first try fails so the screen for that can be seen; "Try again" loads
+this.clearAll();
+this.setState({ seq: 1 });
+this.later(fail ? 2000 : 1500, function (c) { c.setState({ seq: fail ? 2 : 3 }); });
+}
+renderVals() {
+var self = this, s = this.st();
+return {
+seq: String(s.seq || 0),
+retry: function () { self.run(false); },
+start: function () { if ((self.st().seq || 0) === 3) self.run(true); }
+};
+}
+}
+</script>
+</body>
+</html>

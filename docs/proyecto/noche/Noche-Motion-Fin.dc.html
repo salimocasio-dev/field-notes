@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: the end of a review</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+
+/* the last answer: green, one ring, the last dash fills; then the turn leaves in 140 ms */
+.dash{display:block;height:8px;border-radius:4px;background:#37424D;overflow:hidden}
+.dash i{display:block;height:8px;border-radius:4px;background:#EEF3F7;transform:scaleX(0);transform-origin:0 50%;transition:transform 220ms cubic-bezier(.4,0,.2,1)}
+.dash.on i,[data-seq="1"] .d9 i,[data-seq="2"] .d9 i{transform:scaleX(1)}
+.tile{position:relative;display:block;width:300px;height:160px;padding:0;border:0;background:#1B232C;box-shadow:0 0 0 1px #4A5663;transition:box-shadow 140ms cubic-bezier(.2,0,0,1),opacity 220ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1)}
+.tile:active{transform:scale(.97);transition-duration:90ms}
+[data-seq="1"] .tb,[data-seq="2"] .tb{box-shadow:0 0 0 3px #009E73}
+[data-seq="1"] .ta,[data-seq="2"] .ta{opacity:.4}
+.badge{position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:opacity 140ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1)}
+[data-seq="1"] .tb .badge,[data-seq="2"] .tb .badge,[data-miss="1"] .bm{opacity:1;transform:scale(1)}
+/* a miss is a white outline; the picture can still be chosen again */
+[data-miss="1"][data-seq="0"] .ta{box-shadow:0 0 0 3px #EEF3F7}
+.tring{position:absolute;left:0;top:0;width:300px;height:160px;box-sizing:border-box;border:2px solid #009E73;opacity:0;pointer-events:none}
+[data-seq="1"] .tring{animation:tringOut 480ms cubic-bezier(.2,0,0,1) both}
+@keyframes tringOut{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(1.08)}}
+.turn,.end{position:absolute;left:0;top:56px;width:390px;height:788px;opacity:0;visibility:hidden;transition:opacity 140ms cubic-bezier(.4,0,1,1),visibility 0s linear 140ms}
+[data-seq="0"] .turn,[data-seq="1"] .turn{opacity:1;visibility:visible;transition:none}
+[data-seq="2"] .end{opacity:1;visibility:visible;transition:none}
+.hx{transition:opacity 140ms cubic-bezier(.4,0,1,1)}
+[data-seq="2"] .hx{opacity:0;pointer-events:none}
+
+/* the end: lines rise 8 px, 30 ms apart; words arrive one by one, the first five only */
+[data-seq="2"] .e1{animation:rise 220ms cubic-bezier(.2,0,0,1) 160ms both}
+[data-seq="2"] .e2{animation:rise 220ms cubic-bezier(.2,0,0,1) 190ms both}
+[data-seq="2"] .e3{animation:rise 220ms cubic-bezier(.2,0,0,1) 220ms both}
+[data-seq="2"] .e4{animation:rise 220ms cubic-bezier(.2,0,0,1) 420ms both}
+[data-seq="2"] .up .wt{animation:rise 220ms cubic-bezier(.2,0,0,1) calc(250ms + min(var(--i),4) * 30ms) both}
+[data-seq="2"] .bk .wt{animation:rise 220ms cubic-bezier(.2,0,0,1) 450ms both}
+
+/* what the review changed: each word that moves up fills one more stage, once, 480 ms */
+.grow{transform-origin:0 50%}
+[data-seq="2"] .grow{animation:stage 480ms cubic-bezier(.2,0,0,1) calc(560ms + min(var(--i),4) * 30ms) both}
+@keyframes stage{from{transform:scaleX(var(--from))}to{transform:scaleX(1)}}
+
+/* orange lands last */
+[data-seq="2"] .next{animation:rise 220ms cubic-bezier(.2,0,0,1) 760ms both}
+
+@media (prefers-reduced-motion:reduce){
+.e1,.e2,.e3,.e4,.wt,.next{animation-name:fadeOnly!important;animation-duration:140ms!important}
+.grow,.tring{animation:none!important}
+}
+</style>
+</helmet>
+<div data-seq="{{ seq }}" data-miss="{{ miss1 }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #12171D; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+
+<header style="height: 56px; box-sizing: border-box; padding: 0 16px 0 8px; display: flex; align-items: center; gap: 8px">
+<button type="button" class="hx" onClick="{{ again }}" aria-label="Close the review. Here it starts the board again." style="width: 48px; height: 48px; padding: 0; border: 0; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+<div role="img" aria-label="Review: {{ parts }} of 9 parts done" style="flex-grow: 1; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px"><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash on"><i></i></span><span class="dash d9"><i></i></span></div>
+<span aria-hidden="true" style="width: 48px; height: 48px"></span>
+</header>
+
+<!-- the last turn of the review -->
+<div class="turn">
+<div style="box-sizing: border-box; height: 104px; padding: 24px 24px 0"><div style="font: 700 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .08em; color: #A7B8C8">ABUELA</div><p lang="es" style="margin: 8px 0 0; font: 600 28px/36px 'Atkinson Hyperlegible Next', Arial, sans-serif">la estufa</p></div>
+<div style="margin: 24px 45px 0"><button type="button" class="tile ta" onClick="{{ miss }}" aria-label="Picture 1"><span style="position: absolute; left: 0; top: 0; width: 300px; height: 160px; overflow: hidden"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -52px; top: -110px; width: 392px; height: 432px; image-rendering: pixelated"></span><span class="badge bm" aria-hidden="true" style="box-sizing: border-box; background: #12171D; border: 2px solid #EEF3F7; color: #EEF3F7"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span></button></div>
+<div style="margin: 20px 45px 0"><button type="button" class="tile tb" onClick="{{ pick }}" aria-label="Picture 2">
+<span style="position: absolute; left: 0; top: 0; width: 300px; height: 160px; overflow: hidden"><img src="/_blob/40d38295cde0422d18f57b9c9700ea0a" alt="" style="position: absolute; left: -42px; top: -130px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span class="tring" aria-hidden="true"></span>
+<span class="badge" aria-hidden="true" style="background: #009E73; color: #14110F"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+</button></div>
+</div>
+
+<!-- the end, laid out as the app has it -->
+<div class="end">
+<div style="box-sizing: border-box; padding: 16px 16px 0">
+<h1 class="e1" style="margin: 0; font: 700 24px/28px 'Bricolage Grotesque', Arial, sans-serif">Done</h1>
+<div class="e2" style="margin-top: 8px; font: 500 16px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">7 moving up · 2 coming back soon</div>
+<div class="e3" style="margin-top: 24px"><div style="font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Moving up</div><div style="margin-top: 4px; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">You'll see these less often</div></div>
+<!-- The pictures on these word tiles are stand-ins cut from scene pictures. The build keeps the review's own word pictures, never a story's picture. -->
+<div class="up" style="margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 12px">
+<div class="wt" style="--i:0">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -150px; top: -60px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">puerta</span>
+<span role="img" aria-label="Stage 2 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 50%; --from:0.500"></i></span>
+</div><div class="wt" style="--i:1">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -250px; top: -70px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">ventana</span>
+<span role="img" aria-label="Stage 3 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 75%; --from:0.667"></i></span>
+</div><div class="wt" style="--i:2">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/40d38295cde0422d18f57b9c9700ea0a" alt="" style="position: absolute; left: -60px; top: -90px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">abre</span>
+<span role="img" aria-label="Stage 2 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 50%; --from:0.500"></i></span>
+</div><div class="wt" style="--i:3">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/2cdd4e7070b2a10e5c1c1489f1aa40d1" alt="" style="position: absolute; left: -120px; top: -110px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">cierra</span>
+<span role="img" aria-label="Stage 4 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 100%; --from:0.750"></i></span>
+</div><div class="wt" style="--i:4">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -230px; top: -250px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">hola</span>
+<span role="img" aria-label="Stage 2 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 50%; --from:0.500"></i></span>
+</div><div class="wt" style="--i:5">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -60px; top: -150px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">adiós</span>
+<span role="img" aria-label="Stage 3 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 75%; --from:0.667"></i></span>
+</div><div class="wt" style="--i:6">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="" style="position: absolute; left: -130px; top: -300px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">sí</span>
+<span role="img" aria-label="Stage 4 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="grow" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 100%; --from:0.750"></i></span>
+</div>
+</div>
+<div class="e4" style="margin-top: 24px"><div style="font: 700 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif">Coming back soon</div><div style="margin-top: 4px; font: 500 14px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">You'll see these again soon</div></div>
+<div class="bk" style="margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 12px">
+<div class="wt" style="--i:0">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/82159964bc41d67bef57fd6fe6abbbfe" alt="" style="position: absolute; left: -150px; top: -60px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">casa</span>
+<span role="img" aria-label="Stage 1 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 25%; --from:1.000"></i></span>
+</div><div class="wt" style="--i:1">
+<span style="position: relative; display: block; height: 60px; overflow: hidden; background: #1B232C; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/40d38295cde0422d18f57b9c9700ea0a" alt="" style="position: absolute; left: -200px; top: -200px; width: 392px; height: 432px; image-rendering: pixelated"></span>
+<span lang="es" style="display: block; margin-top: 8px; font: 600 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">abuela</span>
+<span role="img" aria-label="Stage 2 of 4" style="margin-top: 8px; height: 8px; border-radius: 4px; background: #37424D; display: block; overflow: hidden"><i class="" style="display: block; height: 8px; border-radius: 4px; background: #EEF3F7; width: 50%; --from:1.000"></i></span>
+</div>
+</div>
+</div>
+<div class="next" style="position: absolute; left: 16px; right: 16px; bottom: 24px"><button type="button" class="pr" onClick="{{ again }}" style="width: 100%; height: 56px; border: 0; border-radius: 28px; background: #E69F00; color: #14110F; font: 700 18px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Back to <span lang="es">Palabras</span></button></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+componentWillUnmount() { clearTimeout(this._t); }
+renderVals() {
+var self = this, seq = (this.state || {}).seq || 0;
+return {
+seq: String(seq),
+parts: seq === 0 ? 8 : 9,
+miss1: (this.state || {}).miss ? '1' : '0',
+miss: function () { if (((self.state || {}).seq || 0) === 0) self.setState({ miss: 1 }); },
+// the right answer, the last dash, and 900 ms later the end
+pick: function () { if (((self.state || {}).seq || 0) !== 0) return; self.setState({ seq: 1 }); self._t = setTimeout(function () { self.setState({ seq: 2 }); }, 900); },
+again: function () { clearTimeout(self._t); self.setState({ seq: 0, miss: 0 }); }
+};
+}
+}
+</script>
+</body>
+</html>

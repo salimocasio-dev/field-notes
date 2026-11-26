@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: the reader, text and page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&family=Literata:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lexend:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+
+/* the page: its colours travel together in 220 ms; size, font and spacing change in place, at once */
+.rd{--pg:#F2E8D5;--tx:#2E2519;--lb:#6B5B45;--rl:#B9A682;--lit:#E4D6BA;--lh:1.63;background:var(--pg);color:var(--tx);transition:background-color 220ms cubic-bezier(.4,0,.2,1),color 220ms cubic-bezier(.4,0,.2,1)}
+.rd[data-page="0"]{--pg:#12171D;--tx:#D8DEE4;--lb:#8C99A6;--rl:#37424D;--lit:#24313F}
+.rd[data-page="2"]{--pg:#FAF8F3;--tx:#1B1B1B;--lb:#5C5C5C;--rl:#C9C4B8;--lit:#E9E4D8}
+.rd[data-size="1"]{--fs:15px}
+.rd[data-size="2"]{--fs:16px}
+.rd[data-size="3"]{--fs:17px}
+.rd[data-size="4"]{--fs:19px}
+.rd[data-size="5"]{--fs:21px}
+.rd[data-size="6"]{--fs:23px}
+.rd[data-size="7"]{--fs:26px}
+.rd[data-lh="0"]{--lh:1.42}
+.rd[data-lh="2"]{--lh:1.9}
+.body{font-family:'Literata', Georgia, serif;font-size:var(--fs);line-height:calc(var(--fs)*var(--lh))}
+.rd[data-font="1"] .body{font-family:'Atkinson Hyperlegible Next', Arial, sans-serif}
+.rd[data-font="2"] .body{font-family:'Lexend', Arial, sans-serif}
+.lb{color:var(--lb);transition:color 220ms cubic-bezier(.4,0,.2,1)}
+.tx{color:var(--tx);transition:color 220ms cubic-bezier(.4,0,.2,1)}
+.rl{background:var(--rl);transition:background-color 220ms cubic-bezier(.4,0,.2,1)}
+.aa{background:transparent;color:var(--tx);transition:background-color 140ms cubic-bezier(.2,0,0,1),color 140ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1)}
+[data-sheet="1"] .aa{background:var(--tx);color:var(--pg)}
+.aa:active{transform:scale(.94);transition-duration:90ms}
+
+/* the two switches change the page in place: 140 ms */
+.und{text-decoration:underline dotted transparent 2px;text-underline-offset:5px;transition:text-decoration-color 140ms cubic-bezier(.2,0,0,1)}
+[data-u="1"] .und{text-decoration-color:var(--lb)}
+.lit{border-radius:4px;box-shadow:0 0 0 3px transparent;transition:background-color 140ms cubic-bezier(.2,0,0,1),box-shadow 140ms cubic-bezier(.2,0,0,1)}
+[data-l="1"] .lit{background:var(--lit);box-shadow:0 0 0 3px var(--lit)}
+
+/* the sheet: 320 ms up, 200 ms down; the page stays in sight, so every change shows as it is made */
+.sheet{position:absolute;z-index:5;left:0;right:0;bottom:0;transform:translateY(100%);visibility:hidden;transition:transform 200ms cubic-bezier(.4,0,1,1),visibility 0s linear 200ms}
+[data-sheet="1"] .sheet{transform:translateY(0);visibility:visible;transition:transform 320ms cubic-bezier(.2,0,0,1),visibility 0s}
+.closer{position:absolute;z-index:4;left:0;top:56px;width:390px;height:788px;padding:0;border:0;background:transparent;visibility:hidden}
+[data-sheet="1"] .closer{visibility:visible}
+
+/* steps: a dash fills in 140 ms */
+.z{height:8px;border-radius:4px;background:#33506B;transition:background-color 140ms cubic-bezier(.2,0,0,1)}
+[data-size="1"] .z1,[data-size="2"] .z1,[data-size="3"] .z1,[data-size="4"] .z1,[data-size="5"] .z1,[data-size="6"] .z1,[data-size="7"] .z1{background:#EEF3F7}
+[data-size="2"] .z2,[data-size="3"] .z2,[data-size="4"] .z2,[data-size="5"] .z2,[data-size="6"] .z2,[data-size="7"] .z2{background:#EEF3F7}
+[data-size="3"] .z3,[data-size="4"] .z3,[data-size="5"] .z3,[data-size="6"] .z3,[data-size="7"] .z3{background:#EEF3F7}
+[data-size="4"] .z4,[data-size="5"] .z4,[data-size="6"] .z4,[data-size="7"] .z4{background:#EEF3F7}
+[data-size="5"] .z5,[data-size="6"] .z5,[data-size="7"] .z5{background:#EEF3F7}
+[data-size="6"] .z6,[data-size="7"] .z6{background:#EEF3F7}
+[data-size="7"] .z7{background:#EEF3F7}
+
+/* one mark travels: the outline between fonts, the thumb between spacings, the ring between pages */
+.fm,.lt,.pm{pointer-events:none;transition:transform 220ms cubic-bezier(.4,0,.2,1)}
+[data-font="1"] .fm{transform:translateX(122px)}
+[data-font="2"] .fm{transform:translateX(244px)}
+.fc{color:#A7B8C8;transition:color 140ms cubic-bezier(.2,0,0,1)}
+[data-font="0"] .f0,[data-font="1"] .f1,[data-font="2"] .f2{color:#EEF3F7}
+[data-lh="1"] .lt{transform:translateX(56.33px)}
+[data-lh="2"] .lt{transform:translateX(112.67px)}
+.lc{color:#A7B8C8;transition:color 140ms cubic-bezier(.2,0,0,1)}
+[data-lh="0"] .l0,[data-lh="1"] .l1,[data-lh="2"] .l2{color:#0C1926}
+[data-page="1"] .pm{transform:translateX(59.67px)}
+[data-page="2"] .pm{transform:translateX(119.33px)}
+
+/* a switch: the knob travels in 220 ms, the track changes colour in 140 ms */
+.sw{background:#33506B;transition:background-color 140ms cubic-bezier(.2,0,0,1)}
+.kn{background:#A7B8C8;transition:transform 220ms cubic-bezier(.4,0,.2,1),background-color 140ms cubic-bezier(.2,0,0,1)}
+[data-u="1"] .su,[data-l="1"] .sl{background:#EEF3F7}
+[data-u="1"] .su .kn,[data-l="1"] .sl .kn{transform:translateX(20px);background:#0C1926}
+
+@media (prefers-reduced-motion:reduce){
+.sheet{transition:opacity 140ms linear!important;transform:none!important;opacity:0}
+[data-sheet="1"] .sheet{opacity:1}
+.fm,.lt,.pm,.kn,.pr,.aa{transition-duration:0s!important}
+}
+</style>
+</helmet>
+<div class="rd" data-sheet="{{ sheet }}" data-size="{{ size }}" data-font="{{ font }}" data-lh="{{ lh }}" data-page="{{ page }}" data-u="{{ u }}" data-l="{{ l }}" style="width: 390px; height: 844px; position: relative; overflow: hidden; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+
+<header style="position: relative; z-index: 6; height: 56px; box-sizing: border-box; padding: 0 4px; display: flex; align-items: center">
+<span class="tx" aria-hidden="true" style="flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
+<div class="lb" lang="es" style="flex-grow: 1; text-align: center; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .1em">UN VERANO EN CABO ROJO</div>
+<button type="button" class="aa" onClick="{{ toggle }}" aria-label="Text and page" style="flex: none; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 500 20px/1 'Literata', Georgia, serif">Aa</button>
+<span class="tx" aria-hidden="true" style="flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg></span>
+</header>
+
+<main lang="es" style="box-sizing: border-box; padding: 0 28px">
+<div style="padding-top: 20px; text-align: center">
+<div class="lb" style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .14em">CAPÍTULO 2</div>
+<h1 style="margin: 8px 0 0; font: 600 26px/32px 'Literata', Georgia, serif">La cocina de Abuela</h1>
+<div class="rl" style="width: 32px; height: 1px; margin: 20px auto 24px"></div>
+</div>
+<div class="body">
+<p style="margin: 0">Cuando llegamos a Cabo Rojo, ya era de noche. <span class="lit">La casa de Abuela estaba al final de la calle, con la luz del balcón <span class="und">encendida</span>.</span></p>
+<p style="margin: 0; text-indent: 1.4em">—¡Llegaron! —dijo Abuela desde la puerta—. Entren, que la comida está caliente.</p>
+<p style="margin: 0; text-indent: 1.4em">La cocina olía a sofrito y a café. En la estufa había una olla grande de arroz con gandules.</p>
+</div>
+</main>
+
+<button type="button" class="closer" onClick="{{ close }}" aria-label="Close text and page"></button>
+
+<section class="sheet" aria-label="Text and page" style="box-sizing: border-box; padding: 12px 16px 24px; background: #152A3D; color: #EEF3F7; border-radius: 24px 24px 0 0; box-shadow: 0 -8px 28px rgba(20,14,4,.35)">
+<div aria-hidden="true" style="width: 40px; height: 4px; margin: 0 auto 16px; border-radius: 2px; background: #4A6C8C"></div>
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">TEXT SIZE</div>
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Step {{ size }} of 7</div>
+</div>
+<div style="margin-top: 8px; display: flex; align-items: center; gap: 12px">
+<button type="button" class="pr" onClick="{{ smaller }}" aria-label="Smaller text" style="flex: none; width: 56px; height: 48px; border: 1px solid #33506B; border-radius: 24px; background: transparent; color: #EEF3F7; font: 500 15px/1 'Literata', Georgia, serif">A</button>
+<div role="img" aria-label="Text size, step {{ size }} of 7" style="flex-grow: 1; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+<span class="z z1"></span><span class="z z2"></span><span class="z z3"></span><span class="z z4"></span><span class="z z5"></span><span class="z z6"></span><span class="z z7"></span>
+</div>
+<button type="button" class="pr" onClick="{{ larger }}" aria-label="Larger text" style="flex: none; width: 56px; height: 48px; border: 1px solid #33506B; border-radius: 24px; background: transparent; color: #EEF3F7; font: 500 24px/1 'Literata', Georgia, serif">A</button>
+</div>
+
+<div style="margin-top: 20px; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">FONT</div>
+<div role="radiogroup" aria-label="Font" style="position: relative; margin-top: 8px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<span class="fm" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 114px; height: 80px; box-sizing: border-box; border: 2px solid #EEF3F7; border-radius: 16px; background: #213D57"></span>
+<button type="button" role="radio" aria-checked="{{ a.f0 }}" class="fc f0" onClick="{{ font0 }}" style="position: relative; height: 80px; padding: 0; border: 1px solid #33506B; border-radius: 16px; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px"><span style="font: 500 26px/1 'Literata', Georgia, serif; color: #EEF3F7">Ag</span><span style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Literata</span></button>
+<button type="button" role="radio" aria-checked="{{ a.f1 }}" class="fc f1" onClick="{{ font1 }}" style="position: relative; height: 80px; padding: 0; border: 1px solid #33506B; border-radius: 16px; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px"><span style="font: 500 26px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #EEF3F7">Ag</span><span style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Atkinson</span></button>
+<button type="button" role="radio" aria-checked="{{ a.f2 }}" class="fc f2" onClick="{{ font2 }}" style="position: relative; height: 80px; padding: 0; border: 1px solid #33506B; border-radius: 16px; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px"><span style="font: 500 26px/1 'Lexend', Arial, sans-serif; color: #EEF3F7">Ag</span><span style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Lexend</span></button>
+</div>
+
+<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div>
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">LINE SPACING</div>
+<div role="radiogroup" aria-label="Line spacing" style="position: relative; margin-top: 8px; height: 48px; box-sizing: border-box; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid #33506B; border-radius: 24px">
+<span class="lt" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 56.33px; height: 46px; border-radius: 23px; background: #EEF3F7"></span>
+<button type="button" role="radio" aria-checked="{{ a.l0 }}" class="lc l0" onClick="{{ lh0 }}" aria-label="Tight" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14"/></svg></button>
+<button type="button" role="radio" aria-checked="{{ a.l1 }}" class="lc l1" onClick="{{ lh1 }}" aria-label="Normal" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h14"/></svg></button>
+<button type="button" role="radio" aria-checked="{{ a.l2 }}" class="lc l2" onClick="{{ lh2 }}" aria-label="Loose" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 4h14M5 12h14M5 20h14"/></svg></button>
+</div>
+</div>
+<div>
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">PAGE</div>
+<div role="radiogroup" aria-label="Page colour" style="position: relative; margin-top: 8px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<span class="pm" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 51.67px; height: 48px; border-radius: 24px; box-shadow: 0 0 0 2px #152A3D, 0 0 0 4px #EEF3F7"></span>
+<button type="button" role="radio" aria-checked="{{ a.p0 }}" onClick="{{ page0 }}" aria-label="Night" style="position: relative; height: 48px; padding: 0; border: 1px solid #4A6C8C; border-radius: 24px; background: #12171D; color: #D8DEE4; font: 500 16px/1 'Literata', Georgia, serif">A</button>
+<button type="button" role="radio" aria-checked="{{ a.p1 }}" onClick="{{ page1 }}" aria-label="Sepia" style="position: relative; height: 48px; padding: 0; border: 0; border-radius: 24px; background: #F2E8D5; color: #2E2519; font: 500 16px/1 'Literata', Georgia, serif">A</button>
+<button type="button" role="radio" aria-checked="{{ a.p2 }}" onClick="{{ page2 }}" aria-label="Day" style="position: relative; height: 48px; padding: 0; border: 0; border-radius: 24px; background: #FAF8F3; color: #1B1B1B; font: 500 16px/1 'Literata', Georgia, serif">A</button>
+</div>
+</div>
+</div>
+
+<div style="margin-top: 12px">
+<button type="button" role="switch" aria-checked="{{ a.su }}" onClick="{{ togU }}" style="width: 100%; height: 52px; padding: 0; border: 0; border-top: 1px solid #33506B; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: space-between; text-align: start; font: 600 15px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">Underline words I'm still learning<span class="sw su" style="flex: none; width: 52px; height: 32px; border-radius: 16px; display: flex; align-items: center; padding: 0 4px; box-sizing: border-box"><span class="kn" style="width: 24px; height: 24px; border-radius: 50%"></span></span></button>
+<button type="button" role="switch" aria-checked="{{ a.sl }}" onClick="{{ togL }}" style="width: 100%; height: 52px; padding: 0; border: 0; border-top: 1px solid #33506B; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: space-between; text-align: start; font: 600 15px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">Light up the sentence being read<span class="sw sl" style="flex: none; width: 52px; height: 32px; border-radius: 16px; display: flex; align-items: center; padding: 0 4px; box-sizing: border-box"><span class="kn" style="width: 24px; height: 24px; border-radius: 50%"></span></span></button>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var self = this, s = this.state || {};
+function v(k, d) { return s[k] === undefined ? d : s[k]; }
+function set(k, val) { return function () { var o = {}; o[k] = val; self.setState(o); }; }
+function st() { return self.state || {}; }
+function cur(k, d) { return st()[k] === undefined ? d : st()[k]; }
+return {
+sheet: v('sheet', 0) ? '1' : '0',
+size: String(v('size', 4)), font: String(v('font', 0)), lh: String(v('lh', 1)), page: String(v('page', 1)),
+u: v('u', 1) ? '1' : '0', l: v('l', 1) ? '1' : '0',
+// what is chosen, for screen readers
+a: (function () { var o = {}, f = v('font', 0), h = v('lh', 1), g = v('page', 1); [0, 1, 2].forEach(function (i) { o['f' + i] = String(f === i); o['l' + i] = String(h === i); o['p' + i] = String(g === i); }); o.su = String(!!v('u', 1)); o.sl = String(!!v('l', 1)); return o; })(),
+toggle: function () { self.setState({ sheet: cur('sheet', 0) ? 0 : 1 }); },
+close: set('sheet', 0),
+smaller: function () { self.setState({ size: Math.max(1, cur('size', 4) - 1) }); },
+larger: function () { self.setState({ size: Math.min(7, cur('size', 4) + 1) }); },
+font0: set('font', 0), font1: set('font', 1), font2: set('font', 2),
+lh0: set('lh', 0), lh1: set('lh', 1), lh2: set('lh', 2),
+page0: set('page', 0), page1: set('page', 1), page2: set('page', 2),
+togU: function () { self.setState({ u: cur('u', 1) ? 0 : 1 }); },
+togL: function () { self.setState({ l: cur('l', 1) ? 0 : 1 }); }
+};
+}
+}
+</script>
+</body>
+</html>

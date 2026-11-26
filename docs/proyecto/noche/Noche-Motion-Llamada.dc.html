@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Noche motion: a live call, and locked calls</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible+Next:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+.pr{transition:transform 140ms cubic-bezier(.2,0,0,1),filter 140ms cubic-bezier(.2,0,0,1)}
+.pr:active{transform:scale(.97);filter:brightness(.9);transition-duration:90ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+.tb{color:#A7B8C8;font-weight:600}
+.pill{pointer-events:none}
+
+.L{position:absolute;left:0;top:0;width:390px;height:844px;opacity:0;visibility:hidden;transition:opacity 140ms cubic-bezier(.4,0,1,1),visibility 0s linear 140ms}
+[data-at="speak"] .L-speak,[data-at="call"] .L-call,[data-at="done"] .L-done{opacity:1;visibility:visible;transition:opacity 220ms cubic-bezier(.2,0,0,1) 100ms,visibility 0s}
+.root{background:#0C1926;transition:background-color 320ms cubic-bezier(.2,0,0,1)}
+.root[data-at="call"],.root[data-at="done"]{background:#12171D}
+.t-speak{color:#EEF3F7;font-weight:700}
+.pill{transform:translateX(213.6px)}
+.mk{left:196px;width:96px}
+.ch{color:#A7B8C8;font-weight:600}
+.pl2{color:#0C1926;font-weight:700}
+[data-at="speak"] .L-speak .next{animation:rise 220ms cubic-bezier(.2,0,0,1) 200ms both}
+
+/* tapping something locked: no shake, no colour. Its outline turns solid and its reason lights up, then both go back */
+.lkchip{width:48px;height:48px;padding:0;border:1px dashed #33506B;border-radius:24px;background:transparent;color:#A7B8C8;display:flex;align-items:center;justify-content:center;transition:border-color 140ms cubic-bezier(.2,0,0,1),color 140ms cubic-bezier(.2,0,0,1)}
+.lkcard{border:1px dashed #33506B;color:#A7B8C8;transition:border-color 220ms cubic-bezier(.2,0,0,1),color 220ms cubic-bezier(.2,0,0,1)}
+.why,.lki{transition:color 220ms cubic-bezier(.2,0,0,1)}
+[data-hint="chip"] .lkchip,[data-hint="card"] .lkcard{border-style:solid;border-color:#A7B8C8;color:#EEF3F7;transition-duration:90ms}
+[data-hint="card"] .why{color:#EEF3F7;transition-duration:90ms}
+.chiphint{opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity 220ms cubic-bezier(.4,0,1,1),transform 220ms cubic-bezier(.4,0,1,1),visibility 0s linear 220ms}
+[data-hint="chip"] .chiphint{opacity:1;visibility:visible;transform:translateY(0);transition:opacity 90ms cubic-bezier(.2,0,0,1),transform 90ms cubic-bezier(.2,0,0,1),visibility 0s}
+
+/* the call: the disc he tapped stays where it is and becomes the call's mic; the tab bar sinks */
+.tabs{transition:transform 220ms cubic-bezier(.2,0,0,1) 60ms,opacity 140ms cubic-bezier(.2,0,0,1) 60ms}
+[data-at="call"] .tabs,[data-at="done"] .tabs{transform:translateY(96px);opacity:0;pointer-events:none;transition:transform 200ms cubic-bezier(.4,0,1,1),opacity 200ms cubic-bezier(.4,0,1,1)}
+/* the mic: one disc, six states; colour changes in 140 ms, the halo grows in 220 ms */
+.mic{background:#28323C;color:#8C99A6;box-shadow:inset 0 0 0 2px rgba(238,243,247,0),0 0 0 0 rgba(29,58,82,0);transition:background-color 140ms cubic-bezier(.2,0,0,1),color 140ms cubic-bezier(.2,0,0,1),box-shadow 220ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1)}
+.mic:active{transform:scale(.94);transition-duration:90ms}
+[data-mic="ready"] .mic{background:#E69F00;color:#14110F}
+[data-mic="listening"] .mic{background:#56B4E9;color:#0C1926;box-shadow:inset 0 0 0 2px rgba(86,180,233,0),0 0 0 8px #1D3A52}
+[data-mic="thinking"] .mic{background:#3A2433;color:#CC79A7;box-shadow:inset 0 0 0 2px #CC79A7,0 0 0 0 rgba(29,58,82,0)}
+[data-mic="right"] .mic{background:#009E73;color:#14110F}
+[data-mic="notyet"] .mic{background:rgba(18,23,29,0);color:#EEF3F7;box-shadow:inset 0 0 0 2px #EEF3F7,0 0 0 0 rgba(29,58,82,0)}
+
+/* what the disc holds changes in place */
+.i{position:absolute;left:50%;top:50%;display:flex;transform:translate(-50%,-50%) scale(.8);opacity:0;transition:opacity 140ms cubic-bezier(.2,0,0,1),transform 140ms cubic-bezier(.2,0,0,1)}
+[data-mic="they"] .i-mic,[data-mic="ready"] .i-mic,[data-mic="listening"] .i-mic,[data-mic="thinking"] .i-dots,[data-mic="right"] .i-ok,[data-mic="notyet"] .i-again{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+/* the word under it changes in place */
+.w{position:absolute;left:0;right:0;top:0;text-align:center;opacity:0;transition:opacity 140ms cubic-bezier(.2,0,0,1)}
+[data-mic="they"] .w-they,[data-mic="ready"] .w-ready,[data-mic="listening"] .w-listening,[data-mic="thinking"] .w-thinking,[data-mic="right"] .w-right,[data-mic="notyet"] .w-notyet{opacity:1}
+
+/* live things loop, and only while they are live: level bars and thinking dots */
+.lv{display:flex;align-items:center;gap:4px;height:56px;opacity:0;transition:opacity 140ms cubic-bezier(.2,0,0,1)}
+.lv span{width:4px;height:56px;border-radius:2px;background:#56B4E9;transform:scaleY(.15);animation:lvl 640ms ease-in-out infinite alternate;animation-play-state:paused;transition:background-color 140ms cubic-bezier(.2,0,0,1)}
+.lv span:nth-child(1){animation-delay:-330ms}
+.lv span:nth-child(2){animation-duration:480ms;animation-delay:-150ms}
+.lv span:nth-child(3){animation-duration:760ms;animation-delay:-420ms}
+.lv span:nth-child(4){animation-duration:560ms;animation-delay:-260ms}
+.lv span:nth-child(5){animation-duration:700ms;animation-delay:-610ms}
+@keyframes lvl{from{transform:scaleY(.15)}to{transform:scaleY(1)}}
+[data-mic="listening"] .lvm,[data-mic="they"] .lvm,[data-play="1"] .lvw{opacity:1}
+[data-mic="listening"] .lvm span,[data-mic="they"] .lvm span,[data-play="1"] .lvw span{animation-play-state:running}
+[data-mic="they"] .lvm span,.lvw span{background:#CC79A7}
+.lvw{height:24px}
+.lvw span{height:24px}
+[data-mic="thinking"] .i-dots span{animation:dot 900ms ease-in-out infinite}
+[data-mic="thinking"] .i-dots span:nth-child(2){animation-delay:150ms}
+[data-mic="thinking"] .i-dots span:nth-child(3){animation-delay:300ms}
+@keyframes dot{0%,60%,100%{opacity:.35}30%{opacity:1}}
+
+
+[data-mic="calling"] .mic{background:#3A2433;color:#CC79A7;box-shadow:inset 0 0 0 2px #CC79A7,0 0 0 0 rgba(29,58,82,0)}
+[data-mic="calling"] .i-dots,[data-mic="calling"] .w-calling{opacity:1}
+[data-mic="calling"] .i-dots{transform:translate(-50%,-50%) scale(1)}
+[data-mic="calling"] .i-dots span{animation:dot 900ms ease-in-out infinite}
+[data-mic="calling"] .i-dots span:nth-child(2){animation-delay:150ms}
+[data-mic="calling"] .i-dots span:nth-child(3){animation-delay:300ms}
+[data-at="call"] .c1{animation:fadeOnly 140ms cubic-bezier(.2,0,0,1) 200ms both}
+[data-at="call"] .c2{animation:rise 220ms cubic-bezier(.2,0,0,1) 160ms both}
+.sayA.go{animation:sayA 220ms cubic-bezier(.2,0,0,1) both}
+.sayB.go{animation:sayB 220ms cubic-bezier(.2,0,0,1) both}
+@keyframes sayA{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sayB{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* the call is done: its screen leaves in 140 ms; the result rises, the words he said arrive 30 ms apart, orange lands last */
+[data-at="done"] .d0{animation:fadeOnly 140ms cubic-bezier(.2,0,0,1) 160ms both}
+[data-at="done"] .d1{animation:rise 220ms cubic-bezier(.2,0,0,1) 160ms both}
+[data-at="done"] .d2{animation:rise 220ms cubic-bezier(.2,0,0,1) 190ms both}
+[data-at="done"] .sc{animation:rise 220ms cubic-bezier(.2,0,0,1) calc(220ms + min(var(--i),4) * 30ms) both}
+[data-at="done"] .L-done .next{animation:rise 220ms cubic-bezier(.2,0,0,1) 460ms both}
+@media (prefers-reduced-motion:reduce){
+.d1,.d2,.sc{animation-name:fadeOnly!important;animation-duration:140ms!important}
+.tabs{transform:none!important}
+.lv span,.i-dots span{animation:none!important}
+.c2,.next,.sayA.go,.sayB.go{animation-name:fadeOnly!important;animation-duration:140ms!important}
+}
+</style>
+</helmet>
+<div class="root" data-at="{{ at }}" data-mic="{{ mic }}" data-hint="{{ hint }}" data-place="2" style="width: 390px; height: 844px; position: relative; overflow: hidden; color: #EEF3F7; font-family: 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<div class="L L-speak">
+<header style="height: 64px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<div><div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">SPANISH</div><h1 style="margin: 4px 0 0; font: 700 24px/1 'Bricolage Grotesque', Arial, sans-serif">Speak</h1></div>
+<span style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">41 words ready to say</span>
+</header>
+<div role="tablist" aria-label="Place" lang="es" style="position: relative; margin: 0 16px; display: flex; gap: 8px">
+<span class="mk mk-p" aria-hidden="true" style="position: absolute; top: 0; height: 48px; border-radius: 24px; background: #EEF3F7; z-index: 1"></span>
+<button type="button" role="tab" class="ch pl pl0" style="width: 84px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">La casa</span></button>
+<button type="button" role="tab" class="ch pl pl1" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">El parque</span></button>
+<button type="button" role="tab" class="ch pl pl2" style="width: 96px; height: 48px; padding: 0; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; font-size: 14px; line-height: 1"><span style="position: relative; z-index: 2">La cocina</span></button>
+<button type="button" class="lkchip" onClick="{{ lockChip }}" aria-label="El colmado, locked"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button>
+</div>
+<section style="margin: 16px 16px 0; box-sizing: border-box; padding: 16px; overflow: hidden; background: #152A3D; border: 1px solid #33506B; border-radius: 24px">
+<div class="cc">
+<div style="font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #E69F00">NEXT CALL WITH DANNY · 2 MIN</div>
+<h2 lang="es" style="margin: 8px 0 0; font: 800 32px/36px 'Atkinson Hyperlegible Next', Arial, sans-serif">¿Qué quieres tomar?</h2>
+<div style="margin-top: 8px; font: 500 16px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">Say what you want to drink.</div>
+<div style="margin-top: 16px; font: 600 12px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; letter-spacing: .06em; color: #A7B8C8">WORDS YOU CAN USE</div>
+<div lang="es" style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<span style="height: 32px; padding: 0 12px; display: flex; align-items: center; border-radius: 16px; background: #213D57">quiero</span><span style="height: 32px; padding: 0 12px; display: flex; align-items: center; border-radius: 16px; background: #213D57">jugo</span><span style="height: 32px; padding: 0 12px; display: flex; align-items: center; border-radius: 16px; background: #213D57">agua</span><span style="height: 32px; padding: 0 12px; display: flex; align-items: center; border-radius: 16px; background: #213D57">leche</span><span style="height: 32px; padding: 0 12px; display: flex; align-items: center; border-radius: 16px; background: #213D57">por favor</span>
+</div>
+</div>
+</section>
+<div style="margin: 16px 16px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<button type="button" class="pr" style="box-sizing: border-box; height: 88px; padding: 16px; border: 1px solid #33506B; border-radius: 24px; background: #152A3D; color: #EEF3F7; text-align: left; display: flex; flex-direction: column; justify-content: space-between">
+<span lang="es" style="font: 700 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">¿Qué te gusta comer?</span>
+<span style="font: 500 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">2 min · open</span>
+</button>
+<button type="button" class="lkcard" onClick="{{ lockCard }}" aria-label="Tengo hambre, locked: opens after story 9" style="box-sizing: border-box; height: 88px; padding: 16px; border-radius: 24px; background: transparent; text-align: left; display: flex; flex-direction: column; justify-content: space-between">
+<span lang="es" style="font: 700 16px/20px 'Atkinson Hyperlegible Next', Arial, sans-serif">Tengo hambre</span>
+<span class="why" style="display: flex; align-items: center; gap: 6px; font: 500 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><span class="lki" style="display: flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>5 min · after story 9</span>
+</button>
+</div>
+<div class="chiphint" role="status" style="position: absolute; right: 16px; top: 120px; height: 40px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; gap: 8px; background: #152A3D; border: 1px solid #33506B; border-radius: 20px; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>After <span lang="es">La cocina</span></span></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 104px; display: flex; flex-direction: column; align-items: center; gap: 16px">
+<div style="font: 700 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Call Danny</div>
+<div class="next"><button type="button" class="pr" onClick="{{ call }}" aria-label="Call Danny" style="width: 96px; height: 96px; padding: 0; border-radius: 50%; border: 0; background: #E69F00; color: #14110F; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px #3D2E0F"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></div>
+</div>
+</div>
+
+
+<div class="L L-call">
+<header class="c1" style="height: 64px; box-sizing: border-box; padding: 0 24px 0 8px; display: flex; align-items: center; justify-content: space-between">
+<button type="button" class="pr" onClick="{{ hang }}" aria-label="End the call" style="width: 48px; height: 48px; padding: 0; border: 0; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+<span role="timer" style="font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">{{ clock }}</span>
+</header>
+<div class="c2" style="margin: 40px 30px 0; position: relative; height: 176px; overflow: hidden; box-shadow: 0 0 0 1px #4A5663"><img src="/_blob/d197900360466bcd3fdc5f842352506e" alt="La cocina" style="position: absolute; left: -31px; top: -120px; width: 392px; height: 432px; image-rendering: pixelated"></div>
+<div style="margin: 24px 30px 0; min-height: 72px; text-align: center"><p class="{{ sayCls }}" lang="es" style="margin: 0; font: 600 22px/30px 'Atkinson Hyperlegible Next', Arial, sans-serif">{{ say }}</p><p class="{{ heardCls }}" lang="es" style="margin: 12px 0 0; min-height: 24px; font: 600 18px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #009E73">{{ heard }}</p></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 88px; display: flex; flex-direction: column; align-items: center; gap: 16px">
+<div style="display: flex; align-items: center; gap: 16px">
+<div class="lv lvm" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+<div style="position: relative; width: 96px; height: 96px">
+<button type="button" class="mic"  aria-label="Microphone" style="position: relative; width: 96px; height: 96px; padding: 0; border: 0; border-radius: 50%">
+<span class="i i-mic"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+<span class="i i-dots" aria-hidden="true" style="gap: 8px"><span style="width: 12px; height: 12px; border-radius: 50%; background: #CC79A7"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #CC79A7"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #CC79A7"></span></span>
+<span class="i i-ok"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+<span class="i i-again"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg></span>
+</button>
+</div>
+<div class="lv lvm" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+</div>
+<div aria-live="polite" style="position: relative; width: 240px; height: 14px; font: 700 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">
+<span class="w w-calling" style="color: #CC79A7">Calling Danny</span>
+<span class="w w-they" lang="es" style="color: #CC79A7">Escucha</span>
+<span class="w w-listening" lang="es" style="color: #56B4E9">Te escucho</span>
+<span class="w w-thinking" lang="es" style="color: #CC79A7">Un momento</span>
+</div>
+</div>
+<div style="position: absolute; left: 0; right: 0; bottom: 24px; display: flex; justify-content: center"><button type="button" class="pr" style="width: 132px; height: 48px; border: 1px solid #4A5663; border-radius: 24px; background: transparent; color: #EEF3F7; font: 600 14px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Help</button></div>
+</div>
+<div class="L L-done">
+<header class="d0" style="height: 64px; box-sizing: border-box; padding: 0 8px; display: flex; align-items: center">
+<button type="button" class="pr" onClick="{{ back }}" aria-label="Close" style="width: 48px; height: 48px; padding: 0; border: 0; background: transparent; color: #EEF3F7; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+</header>
+<div style="position: absolute; left: 16px; right: 16px; top: 288px">
+<h1 class="d1" style="margin: 0; font: 700 24px/28px 'Bricolage Grotesque', Arial, sans-serif">Call done</h1>
+<div class="d2" style="margin-top: 8px; font: 500 16px/24px 'Atkinson Hyperlegible Next', Arial, sans-serif; color: #A7B8C8">{{ doneLine }}</div>
+<div lang="es" style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{ words }}" as="w" hint-placeholder-count="3">
+<span class="sc" style="--i: {{ w.i }}; height: 40px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; border: 1px solid #4A5663; border-radius: 20px; font: 600 16px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">{{ w.t }}</span>
+</sc-for>
+</div>
+</div>
+<div class="next" style="position: absolute; left: 16px; right: 16px; bottom: 24px"><button type="button" class="pr" onClick="{{ back }}" style="width: 100%; height: 56px; border: 0; border-radius: 28px; background: #E69F00; color: #14110F; font: 700 18px/1 'Atkinson Hyperlegible Next', Arial, sans-serif">Back to <span lang="es">Hablar</span></button></div>
+</div>
+<nav class="tabs" aria-label="Tabs" lang="es" style="position: absolute; left: 16px; right: 16px; bottom: 16px; height: 64px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #152A3D; border: 1px solid #33506B; border-radius: 32px">
+<span class="pill" aria-hidden="true" style="position: absolute; left: 11.6px; top: 10px; width: 48px; height: 28px; border-radius: 14px; background: #33506B"></span>
+<button type="button" class="tb t-lib" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>Biblioteca</button>
+<button type="button" class="tb t-words" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg></span>Palabras</button>
+<button type="button" class="tb t-map" style="position: relative; padding: 0 0 8px; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; font-size: 12px; line-height: 1"><span class="disc" style="width: 56px; height: 56px; margin-top: -24px; border-radius: 50%; background: #E69F00; color: #14110F; box-shadow: 0 0 0 4px #0C1926; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg></span>Mapa</button>
+<button type="button" class="tb t-speak" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>Hablar</button>
+<button type="button" class="tb t-me" style="position: relative; padding: 0; border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; line-height: 1"><span class="ic" style="width: 48px; height: 28px; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Yo</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+componentWillUnmount() { this.clearAll(); }
+st() { return this.state || {}; }
+later(ms, fn) { var self = this; if (!this._t) this._t = []; this._t.push(setTimeout(function () { fn(self); }, ms)); }
+clearAll() { (this._t || []).forEach(function (t) { clearTimeout(t); }); this._t = []; }
+hint(which) {
+// a locked thing answers quietly for 1.4 s
+clearTimeout(this._h); var self = this;
+this.setState({ hint: which });
+this._h = setTimeout(function () { self.setState({ hint: '' }); }, 1400);
+}
+clockTick() { this.setState({ secs: (this.st().secs || 0) + 1 }); this.later(1000, function (c) { if (c.st().at === 'call') c.clockTick(); }); }
+talk(i) {
+// Danny says a line, then it is his turn: listening, a moment of thinking, and Danny again
+var lines = ['¡Hola! ¿Qué quieres tomar?', '¡Muy bien! Aquí tienes el jugo.', '¿Quieres algo más?'];
+if (this.st().at !== 'call') return;
+var heard = ['Quiero jugo, por favor.', 'Gracias.', 'No, gracias. Adiós.'], said = [['quiero', 'jugo', 'por favor'], ['gracias'], ['no', 'adiós']];
+this.setState({ mic: 'they', say: lines[i % lines.length], heard: '', flip: !this.st().flip, said: 1 });
+this.later(1900, function (c) { if (c.st().at === 'call') c.setState({ mic: 'listening' }); });
+// he stops: thinking at once, and what it heard shows under Danny's line
+this.later(4000, function (c) { if (c.st().at === 'call') c.setState({ mic: 'thinking', heard: heard[i % 3], hflip: !c.st().hflip, words: (c.st().words || []).concat(said[i % 3]) }); });
+this.later(5500, function (c) { c.talk(i + 1); });
+}
+renderVals() {
+var self = this, s = this.st(), secs = s.secs || 0;
+return {
+at: s.at || 'speak', mic: s.mic || 'calling', hint: s.hint || 'none',
+clock: '0' + Math.floor(secs / 60) + ':' + (secs % 60 < 10 ? '0' : '') + (secs % 60),
+say: s.say || '', sayCls: s.said ? (s.flip ? 'sayA go' : 'sayB go') : '',
+heard: s.heard || '', heardCls: s.heard ? (s.hflip ? 'sayA go' : 'sayB go') : '',
+words: (s.words || []).map(function (t, i) { return { t: t, i: i }; }),
+doneLine: Math.max(1, Math.ceil(secs / 60)) + ' min · ' + (s.words || []).length + ((s.words || []).length === 1 ? ' word said' : ' words said'),
+back: function () { self.clearAll(); self.setState({ at: 'speak' }); },
+lockChip: function () { self.hint('chip'); },
+lockCard: function () { self.hint('card'); },
+call: function () { self.clearAll(); self.setState({ at: 'call', mic: 'calling', secs: 0, say: '', said: 0, heard: '', words: [] }); self.later(1000, function (c) { c.clockTick(); }); self.later(1500, function (c) { c.talk(0); }); },
+hang: function () { self.clearAll(); self.setState({ at: 'done' }); }
+};
+}
+}
+</script>
+</body>
+</html>
