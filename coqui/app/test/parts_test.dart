@@ -119,6 +119,34 @@ void main() {
         }
       },
     );
+    test('N6: gates stub switches off when COQUI_BUILD != dev unless COQUI_TEST_SWITCHES=true, keeping perf and txt active', () {
+      expect(testSwitchesAllowed(build: 'dev', forceEnabled: false), isTrue);
+      expect(testSwitchesAllowed(build: '42', forceEnabled: false), isFalse);
+      expect(testSwitchesAllowed(build: '42', forceEnabled: true), isTrue);
+
+      final prod = AppSwitches.fromQuery(const {
+        'perf': '1',
+        'callstub': '1',
+        'stub': 'manual,nofin',
+        'clock': '20',
+        'mic': 'stub:hola|none',
+        'txt': 'tras',
+      }, allowTestSwitches: false);
+      expect(prod.perf, isTrue);
+      expect(prod.txt, TxtMode.tras);
+      expect(prod.callStub, isFalse);
+      expect(prod.stubOptions, isEmpty);
+      expect(prod.stubClock, 1);
+      expect(prod.micStub, isNull);
+      expect(prod.micOff, isFalse);
+
+      final prodMicOff = AppSwitches.fromQuery(const {
+        'mic': 'off',
+        'txt': 'no',
+      }, allowTestSwitches: false);
+      expect(prodMicOff.micOff, isFalse);
+      expect(prodMicOff.txt, TxtMode.no);
+    });
   });
 
   group('the content base and the cache rules', () {

@@ -52,14 +52,7 @@ void main() {
       // without one), so every answer is a touch
       await app.open(stored: seed('vacio'), speechAvailable: false);
       expect(find.text('La lluvia'), findsOneWidget);
-      expect(
-        find.text(
-          isNocheMap()
-              ? 'New story · 4 min'
-              : 'New story · play it twice · 4 min',
-        ),
-        findsOneWidget,
-      );
+      expect(find.text('New story · 4 min'), findsOneWidget);
 
       await playFromToday(app);
       expect(app.clips!.played.first, 'esta_casa');
@@ -76,10 +69,7 @@ void main() {
       await app.settle(rounds: 5);
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'map');
-      expect(
-        find.text(isNocheMap() ? 'UP NEXT · LA CASA' : 'TODAY · 1 OF 3'),
-        findsOneWidget,
-      );
+      expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
       expect(find.text('La lluvia'), findsOneWidget);
       expect(find.text('Second play · 2 min'), findsOneWidget);
 
@@ -91,14 +81,7 @@ void main() {
       await app.settle(rounds: 5);
       expect(app.selectedTab, 'map');
       expect(find.text('El bizcocho'), findsOneWidget);
-      expect(
-        find.text(
-          isNocheMap()
-              ? 'New story · 6 min'
-              : 'New story · play it twice · 6 min',
-        ),
-        findsOneWidget,
-      );
+      expect(find.text('New story · 6 min'), findsOneWidget);
     },
     timeout: const Timeout(Duration(minutes: 10)),
   );

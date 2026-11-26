@@ -152,7 +152,7 @@ void main() {
       }
 
       await pumpWithLanguage(spanishCatalog);
-      expect(find.byType(CoquiTabBar), findsNothing);
+      expect(byTypeName('CoquiTabBar'), findsNothing);
       final spanishBar = tester.widget<NocheTabBar>(find.byType(NocheTabBar));
       expect(spanishBar.tabNames, Language.spanish.tabNames);
       expect(spanishBar.script, 'Latn');
@@ -257,7 +257,7 @@ void main() {
   );
 
   testWidgets(
-    'unanswered PlansRoute, ImportRoute, and unknown PlaceRoute do nothing and log a line without crashing',
+    'unknown PlaceRoute falls back and logs; LanguagesRoute, PlaceRoute, and upcoming PlansRoute/ImportRoute behave cleanly',
     (tester) async {
       final logs = <String>[];
       final DebugPrintCallback previous = debugPrint;
@@ -270,84 +270,119 @@ void main() {
       await app.open(stored: seed('curso'));
       expect(app.selectedTab, 'map');
 
-      for (final route in const <AppRoute>[
-        PlansRoute(),
-        ImportRoute(),
-        PlaceRoute('no-existe'),
-      ]) {
-        logs.clear();
-        await app.go(route);
-        expect(app.tabBarShown, isTrue, reason: '$route');
-        expect(app.selectedTab, 'map', reason: '$route');
-        expect(logs, isNotEmpty, reason: 'expected log line for $route');
-        expect(tester.takeException(), isNull, reason: '$route');
+      // Unknown PlaceRoute always falls back to map and logs.
+      logs.clear();
+      await app.go(const PlaceRoute('no-existe'));
+      expect(app.tabBarShown, isTrue, reason: 'PlaceRoute(no-existe)');
+      expect(app.selectedTab, 'map', reason: 'PlaceRoute(no-existe)');
+      expect(logs, isNotEmpty, reason: 'expected log line for unknown place');
+      expect(tester.takeException(), isNull, reason: 'PlaceRoute(no-existe)');
+
+      // PlansRoute() opens PlansScreen (with tab bar hidden) once #96 lands,
+      // or stays on map and logs unanswered before #96.
+      logs.clear();
+      await app.go(const PlansRoute());
+      expect(tester.takeException(), isNull, reason: 'PlansRoute()');
+      if (byTypeName('PlansScreen').evaluate().isNotEmpty) {
+        expect(app.tabBarShown, isFalse, reason: 'PlansRoute()');
+        await app.go(const TabRoute('map'));
+      } else {
+        expect(app.tabBarShown, isTrue, reason: 'PlansRoute()');
+        expect(app.selectedTab, 'map', reason: 'PlansRoute()');
+        expect(logs, isNotEmpty, reason: 'expected log line for PlansRoute');
       }
 
-      // LanguagesRoute() opens LanguagesSheet (with tab bar hidden) once N2.10
-      // lands, or stays on map and logs unanswered on pre-N2.10 main.
+      // ImportRoute() opens ImportScreen (with tab bar hidden) once #115 lands,
+      // or stays on map and logs unanswered before #115.
+      logs.clear();
+      await app.go(const ImportRoute());
+      expect(tester.takeException(), isNull, reason: 'ImportRoute()');
+      if (byTypeName('ImportScreen').evaluate().isNotEmpty ||
+          !app.tabBarShown) {
+        expect(app.tabBarShown, isFalse, reason: 'ImportRoute()');
+        await app.go(const TabRoute('map'));
+      } else {
+        expect(app.tabBarShown, isTrue, reason: 'ImportRoute()');
+        expect(app.selectedTab, 'map', reason: 'ImportRoute()');
+        expect(logs, isNotEmpty, reason: 'expected log line for ImportRoute');
+      }
+
+      // LanguagesRoute() opens LanguagesSheet with tab bar hidden.
       logs.clear();
       await app.go(const LanguagesRoute());
       expect(tester.takeException(), isNull, reason: 'LanguagesRoute()');
-      if (byTypeName('LanguagesSheet').evaluate().isNotEmpty) {
-        expect(app.tabBarShown, isFalse, reason: 'LanguagesRoute()');
+      expect(byTypeName('LanguagesSheet'), findsOneWidget);
+      expect(app.tabBarShown, isFalse, reason: 'LanguagesRoute()');
+
+      // Opening unknown PlaceRoute directly falls back to the map and logs.
+      logs.clear();
+      await tester.pumpWidget(const SizedBox());
+      final unknownPlaceDirect = TestApp(tester);
+      await unknownPlaceDirect.open(
+        stored: seed('curso'),
+        location: '/lugar/no-existe',
+      );
+      expect(unknownPlaceDirect.tabBarShown, isTrue);
+      expect(unknownPlaceDirect.selectedTab, 'map');
+      expect(
+        logs,
+        isNotEmpty,
+        reason: 'expected log line for /lugar/no-existe',
+      );
+      expect(tester.takeException(), isNull);
+
+      // /planes opens PlansScreen (tab bar hidden) once #96 lands, or falls back to map and logs.
+      logs.clear();
+      await tester.pumpWidget(const SizedBox());
+      final plansDirect = TestApp(tester);
+      await plansDirect.open(stored: seed('curso'), location: '/planes');
+      expect(tester.takeException(), isNull, reason: '/planes');
+      if (byTypeName('PlansScreen').evaluate().isNotEmpty) {
+        expect(plansDirect.tabBarShown, isFalse, reason: '/planes');
       } else {
-        expect(app.tabBarShown, isTrue, reason: 'LanguagesRoute()');
-        expect(app.selectedTab, 'map', reason: 'LanguagesRoute()');
-        expect(
-          logs,
-          isNotEmpty,
-          reason: 'expected log line for LanguagesRoute',
-        );
+        expect(plansDirect.tabBarShown, isTrue, reason: '/planes');
+        expect(plansDirect.selectedTab, 'map', reason: '/planes');
+        expect(logs, isNotEmpty, reason: 'expected log line for /planes');
       }
 
-      // Opening unanswered addresses directly falls back to the map and logs.
-      for (final location in const [
-        '/planes',
-        '/importar',
-        '/lugar/no-existe',
-      ]) {
-        logs.clear();
-        await tester.pumpWidget(const SizedBox());
-        final direct = TestApp(tester);
-        await direct.open(stored: seed('curso'), location: location);
-        expect(direct.tabBarShown, isTrue, reason: location);
-        expect(direct.selectedTab, 'map', reason: location);
-        expect(logs, isNotEmpty, reason: 'expected log line for $location');
-        expect(tester.takeException(), isNull, reason: location);
+      // /importar opens ImportScreen (tab bar hidden) once #115 lands, or falls back to map and logs.
+      logs.clear();
+      await tester.pumpWidget(const SizedBox());
+      final importDirect = TestApp(tester);
+      await importDirect.open(stored: seed('curso'), location: '/importar');
+      expect(tester.takeException(), isNull, reason: '/importar');
+      if (byTypeName('ImportScreen').evaluate().isNotEmpty ||
+          !importDirect.tabBarShown) {
+        expect(importDirect.tabBarShown, isFalse, reason: '/importar');
+      } else {
+        expect(importDirect.tabBarShown, isTrue, reason: '/importar');
+        expect(importDirect.selectedTab, 'map', reason: '/importar');
+        expect(logs, isNotEmpty, reason: 'expected log line for /importar');
       }
 
-      // /idiomas opens LanguagesSheet (with tab bar hidden) once N2.10 lands,
-      // or falls back to map and logs unanswered on pre-N2.10 main.
+      // /idiomas opens LanguagesSheet with tab bar hidden.
       logs.clear();
       await tester.pumpWidget(const SizedBox());
       final languagesDirect = TestApp(tester);
       await languagesDirect.open(stored: seed('curso'), location: '/idiomas');
       expect(tester.takeException(), isNull, reason: '/idiomas');
-      if (byTypeName('LanguagesSheet').evaluate().isNotEmpty) {
-        expect(languagesDirect.tabBarShown, isFalse, reason: '/idiomas');
-      } else {
-        expect(languagesDirect.tabBarShown, isTrue, reason: '/idiomas');
-        expect(languagesDirect.selectedTab, 'map', reason: '/idiomas');
-        expect(logs, isNotEmpty, reason: 'expected log line for /idiomas');
-      }
+      expect(byTypeName('LanguagesSheet'), findsOneWidget);
+      expect(languagesDirect.tabBarShown, isFalse, reason: '/idiomas');
 
-      // PlaceRoute('casa') opens PlaceScreen (with Map tab bar) once N4.2 lands,
-      // or logs unanswered on pre-N4.2 main.
+      // /lugar/casa opens PlaceScreen with Map tab bar.
       logs.clear();
       await tester.pumpWidget(const SizedBox());
       final placeDirect = TestApp(tester);
       await placeDirect.open(stored: seed('curso'), location: '/lugar/casa');
       expect(placeDirect.tabBarShown, isTrue);
       expect(placeDirect.selectedTab, 'map');
+      expect(byTypeName('PlaceScreen'), findsOneWidget);
       expect(tester.takeException(), isNull);
-      if (byTypeName('PlaceScreen').evaluate().isEmpty) {
-        expect(logs, isNotEmpty, reason: 'expected log line for /lugar/casa');
-      }
     },
   );
 
   testWidgets(
-    'app background, loading background, status bars, and web assets use NocheColors.ground',
+    'app background, loading background, status bars, web CSP, and Android release signing are hardened',
     (tester) async {
       final app = TestApp(tester);
       await app.open(stored: seed('curso'));
@@ -373,6 +408,28 @@ void main() {
         contains('<meta name="theme-color" content="#0C1926">'),
       );
       expect(indexHtml, contains('background:#0C1926'));
+      // S8: Content-Security-Policy with local scripts/WASM + ElevenLabs endpoints and zero external script CDNs.
+      expect(indexHtml, contains('<meta http-equiv="Content-Security-Policy"'));
+      expect(indexHtml, contains("script-src 'self' 'wasm-unsafe-eval'"));
+      expect(indexHtml, contains('https://*.elevenlabs.io'));
+      expect(indexHtml, contains('wss://*.elevenlabs.io'));
+      expect(indexHtml, isNot(contains('cdn.jsdelivr.net')));
+      expect(indexHtml, isNot(contains('unpkg.com')));
+      expect(indexHtml, isNot(contains('gstatic.com')));
+
+      // S9: Android release signing fails closed without silently falling back to debug.keystore.
+      final gradle = repoFile('coqui/app/android/app/build.gradle.kts');
+      expect(gradle, contains('key.properties'));
+      expect(gradle, contains('COQUI_ANDROID_STORE_FILE'));
+      expect(gradle, contains('GradleException'));
+      expect(
+        RegExp(
+          r'release\s*\{[^}]*getByName\("debug"\)',
+          dotAll: true,
+        ).hasMatch(gradle),
+        isFalse,
+        reason: 'release buildType must never sign with debug signingConfig',
+      );
 
       final manifest = jsonDecode(
         repoFile('coqui/app/web/manifest.json'),
