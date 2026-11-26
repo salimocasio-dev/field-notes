@@ -1,5 +1,5 @@
-/// Repaso (¿Cuál?) on screen: cual.html, built from coqui_ui. The session (logic/review_session.dart) decides
-/// everything; this draws it and passes touches on.
+/// Repaso (¿Cuál?) on screen: cual.html, built on Noche tokens and lesson parts. The session
+/// (logic/review_session.dart) decides everything; this draws it and passes touches on.
 library;
 
 import 'dart:async';
@@ -11,6 +11,7 @@ import 'package:feature_review/src/logic/review_session.dart';
 import 'package:feature_review/src/ui/block_layout.dart';
 import 'package:feature_review/src/ui/host_wait.dart';
 import 'package:feature_review/src/ui/lesson_parts.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:material_ui/material_ui.dart';
 
 class ReviewScreen extends StatefulWidget {
@@ -75,14 +76,13 @@ class ReviewScreenState extends State<ReviewScreen> {
     super.dispose();
   }
 
-  // the green disc: the first tap of the lesson wakes the audio (`ac().resume()`), then the session runs
   void _start() {
     if (session.screen != LessonScreen.start) return;
     unawaited(_s.clips.unlock());
     unawaited(session.run());
   }
 
-  /// The green disc pressed, for a dev entry or a test that cannot reach it by touch.
+  /// The start disc pressed, for a dev entry or a test that cannot reach it by touch.
   Future<void> pressStart() async => _start();
 
   // `#close`: all sound stops, back to Palabras (cual.js: SALIDA)
@@ -118,7 +118,7 @@ class ReviewScreenState extends State<ReviewScreen> {
       cell: (context, k, r) => OptionTouch(
         index: k,
         onTouch: s.touch,
-        child: PictureChoice(
+        child: NochePictureChoice(
           ring: choiceRing(s.rings[k]),
           dim: _dim(panels[k]),
           check: s.checks[k],
@@ -136,16 +136,23 @@ class ReviewScreenState extends State<ReviewScreen> {
       final start = s.screen == LessonScreen.start;
       final end = s.screen == LessonScreen.end;
       final showPictures = s.screen == LessonScreen.play && s.panels != null;
-      return LessonFrame(
+      return NocheLessonFrame(
         onClose: _close,
         showClose: !end,
         showSound: !end,
         onSound: _toggleSound,
         muted: _s.clips.muted,
-        progress: LessonProgressDashes(
-          segments: s.barSegments,
-          done: s.barLit,
-          dense: s.barSegments > 24,
+        progress: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: nocheLessonColumnMax),
+            child: NocheDashes.progress(
+              count: s.barSegments,
+              done: s.barLit,
+              onLessonGround: true,
+              gap: s.barSegments > 24 ? 1 : 4,
+              semanticLabel: 'Progress: ${s.barLit} of ${s.barSegments}',
+            ),
+          ),
         ),
         picture: showPictures ? _choices(box) : null,
         caption: showPictures && s.caption.isNotEmpty ? s.caption : null,
@@ -166,9 +173,18 @@ class ReviewScreenState extends State<ReviewScreen> {
               )
             : null,
         bottom: [
-          if (start) LessonStartButton(onPressed: _start),
+          if (start)
+            Padding(
+              padding: const EdgeInsetsDirectional.only(bottom: 16),
+              child: NochePlayDisc(
+                size: nocheLessonStartDisc,
+                icon: NocheIcons.play,
+                semanticLabel: 'Start',
+                onPressed: _start,
+              ),
+            ),
           if (end)
-            LessonButton(
+            NochePrimaryButton(
               label:
                   'Back to ${_s.course.language.tabNames['words'] ?? CoquiLabels.words}',
               onPressed: _back,
@@ -181,8 +197,8 @@ class ReviewScreenState extends State<ReviewScreen> {
 }
 
 /// `#fin.lis`: the end of a Repaso: the title, a summary line, and the session's words with their pictures under two
-/// headings, each with a grey line; one block as wide as the grid, centred; the list scrolls in the space above the
-/// 56 px button and fades out at both ends (cual.html:40-44; cual.js: cualGrupo, cualGrid).
+/// headings, each with a secondary line; one block as wide as the grid, centred; the list scrolls in the space above
+/// the 56 px button and fades out at both ends (cual.html:40-44; cual.js: cualGrupo, cualGrid).
 class ReviewEndScreen extends StatelessWidget {
   const ReviewEndScreen({
     super.key,
@@ -212,7 +228,10 @@ class ReviewEndScreen extends StatelessWidget {
           DecoratedBox(
             decoration: const BoxDecoration(
               boxShadow: [
-                BoxShadow(color: CoquiColors.lessonLine, spreadRadius: 1.5),
+                BoxShadow(
+                  color: NocheColors.lessonBorder,
+                  spreadRadius: nocheLessonBorder,
+                ),
               ],
             ),
             child: SizedBox(
@@ -231,7 +250,10 @@ class ReviewEndScreen extends StatelessWidget {
             pair.word,
             textDirection: _lang.textDirection,
             locale: _lang.locale,
-            style: NocheType.forScript(CoquiText.lessonWord, _lang.script),
+            style: NocheType.forScript(
+              NocheType.bodyLarge,
+              _lang.script,
+            ).copyWith(color: NocheColors.text),
           ),
         ],
       ),
@@ -247,10 +269,10 @@ class ReviewEndScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 24),
-        Text(g.title, style: CoquiText.lessonH2),
+        Text(g.title, style: NocheType.row.copyWith(color: NocheColors.text)),
         if (g.sub.isNotEmpty) ...[
           const SizedBox(height: 4),
-          Text(g.sub, style: CoquiText.lessonSub),
+          Text(g.sub, style: NocheType.body.copyWith(color: NocheColors.label)),
         ],
         const SizedBox(height: 12),
         Directionality(
@@ -308,9 +330,19 @@ class ReviewEndScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(ReviewStrings.doneTitle, style: CoquiText.lessonH1),
+                    Text(
+                      ReviewStrings.doneTitle,
+                      style: NocheType.pageTitle.copyWith(
+                        color: NocheColors.text,
+                      ),
+                    ),
                     const SizedBox(height: 8),
-                    Text(end.summary, style: CoquiText.lessonBody),
+                    Text(
+                      end.summary,
+                      style: NocheType.bodyLarge.copyWith(
+                        color: NocheColors.label,
+                      ),
+                    ),
                     for (final g in end.groups) _group(g, grid),
                   ],
                 ),

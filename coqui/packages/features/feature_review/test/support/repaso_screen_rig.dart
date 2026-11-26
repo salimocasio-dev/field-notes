@@ -11,6 +11,7 @@ import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
 import 'package:feature_review/src/logic/word_picture.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:feature_review/src/ui/repaso_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -47,7 +48,7 @@ Future<MemoryImage> bookPageStandIn(WidgetTester t) async {
 /// A dedicated single-word asset stand-in of size 196 x 104 picture pixels.
 Future<MemoryImage> wordAssetStandIn(
   WidgetTester t, {
-  Color color = CoquiColors.lessonGreen,
+  Color color = NocheColors.right,
 }) async {
   final bytes = await t.runAsync(() async {
     final recorder = ui.PictureRecorder();
@@ -213,7 +214,7 @@ class Screen {
   /// moment where he acts: 'asked KIND' the moment an item is asked (before its sentence has ended), 'turn KIND',
   /// 'shown KIND' (the sign is on the right one), 'next KIND' (Next is there), 'mic'.
   Future<void> play({Future<void> Function(String moment)? each}) async {
-    await t.tap(find.byType(LessonStartButton));
+    await t.tap(find.byType(NochePlayDisc));
     await settle();
     QueueEntry? acted;
     QueueEntry? asked;
@@ -245,7 +246,10 @@ class Screen {
         await _touch(it, k);
       } else if (s.mic == MicState.ready) {
         await each?.call('mic');
-        await t.tap(find.byType(RepasoMic));
+        final mic = find.byKey(const ValueKey('noche_mic_disc'));
+        await t.ensureVisible(mic);
+        await settle();
+        await t.tap(mic);
       } else if (s.yourTurn && !identical(acted, s.entry)) {
         acted = s.entry;
         await each?.call('turn ${it.kind.name}');
@@ -258,8 +262,8 @@ class Screen {
               final k = s.choices.indexWhere((c) => !c.done && c.label == w);
               final tile = find
                   .descendant(
-                    of: find.byType(TileTray).last,
-                    matching: find.byType(WordTile),
+                    of: find.byType(NocheTileTray).last,
+                    matching: find.byType(NocheWordTile),
                   )
                   .at(k);
               // the bank can reach below the visible part of the screen (the test font is wider than the real one)
@@ -269,13 +273,13 @@ class Screen {
             }
           case MatchItem():
             for (var i = 0; i < 4; i++) {
-              await t.ensureVisible(find.byType(SpeakerTile).at(i));
-              await t.tap(find.byType(SpeakerTile).at(i));
+              await t.ensureVisible(find.byType(NocheSpeakerTile).at(i));
+              await t.tap(find.byType(NocheSpeakerTile).at(i));
               await settle();
               final word = find
                   .descendant(
                     of: find.byType(Row),
-                    matching: find.byType(WordTile),
+                    matching: find.byType(NocheWordTile),
                   )
                   .at(it.wordOrder.indexOf(i));
               await t.ensureVisible(word);
@@ -294,10 +298,10 @@ class Screen {
 
   Future<void> _touch(GameItem it, int k) async {
     if (it is HearItem) {
-      await t.tap(find.byType(WordTile).at(k));
+      await t.tap(find.byType(NocheWordTile).at(k));
       await settle();
     } else {
-      await down(find.byType(PictureChoice).at(k));
+      await down(find.byType(NochePictureChoice).at(k));
     }
   }
 }

@@ -11,6 +11,7 @@ import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
 import 'package:feature_review/src/logic/repaso_words.dart';
 import 'package:feature_review/src/ui/level_check_screen.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:feature_review/src/ui/repaso_screen.dart';
 import 'package:feature_review/src/ui/review_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -604,7 +605,7 @@ void main() {
             QueueEntry.play(sayItem),
           ];
 
-          await t.tap(find.byType(LessonStartButton));
+          await t.tap(find.byType(NochePlayDisc));
           await vt.settle();
           await t.pump(const Duration(milliseconds: 50));
 
@@ -617,11 +618,14 @@ void main() {
           expect(hearInstr, findsOneWidget);
           expect(Directionality.of(t.element(hearInstr)), TextDirection.ltr);
           // Arabic WordTiles follow RTL direction and ar locale
-          final hearTile = find.byType(WordTile).first;
+          final hearTile = find.byType(NocheWordTile).first;
           expect(Directionality.of(t.element(hearTile)), TextDirection.rtl);
-          expect(t.widget<WordTile>(hearTile).language, arabicTestLanguage);
+          expect(
+            t.widget<NocheWordTile>(hearTile).language,
+            arabicTestLanguage,
+          );
           final answerIdx = session.choices.indexWhere((c) => c.right);
-          await t.tap(find.byType(WordTile).at(answerIdx));
+          await t.tap(find.byType(NocheWordTile).at(answerIdx));
           await vt.runUntil(() => session.canNext);
           await t.pump(const Duration(milliseconds: 50));
           // Reveal sentence is RTL with Locale('ar')
@@ -660,8 +664,8 @@ void main() {
             );
             final tile = find
                 .descendant(
-                  of: find.byType(TileTray).last,
-                  matching: find.byType(WordTile),
+                  of: find.byType(NocheTileTray).last,
+                  matching: find.byType(NocheWordTile),
                 )
                 .at(k);
             await t.ensureVisible(tile);
@@ -672,7 +676,7 @@ void main() {
           // In RTL, the first placed Arabic word sits to the right of the second
           final placedTiles = find.descendant(
             of: answerLineFinder,
-            matching: find.byType(WordTile),
+            matching: find.byType(NocheWordTile),
           );
           expect(placedTiles, findsNWidgets(buildItem.order.length));
           expect(
@@ -699,8 +703,8 @@ void main() {
             TextDirection.ltr,
           );
           // RTL Parejas row: speaker at start (right), word tile at end (left)
-          final firstSpeaker = find.byType(SpeakerTile).first;
-          final firstWord = find.byType(WordTile).first;
+          final firstSpeaker = find.byType(NocheSpeakerTile).first;
+          final firstWord = find.byType(NocheWordTile).first;
           expect(Directionality.of(t.element(firstWord)), TextDirection.rtl);
           expect(
             t.getRect(firstSpeaker).left,
@@ -708,12 +712,12 @@ void main() {
             reason: 'RTL Parejas places speaker at start (right) of word tile',
           );
           for (var i = 0; i < 4; i++) {
-            await t.ensureVisible(find.byType(SpeakerTile).at(i));
-            await t.tap(find.byType(SpeakerTile).at(i));
+            await t.ensureVisible(find.byType(NocheSpeakerTile).at(i));
+            await t.tap(find.byType(NocheSpeakerTile).at(i));
             await vt.settle();
             await t.pump(const Duration(milliseconds: 50));
             final wordTile = find
-                .byType(WordTile)
+                .byType(NocheWordTile)
                 .at(matchItem.wordOrder.indexOf(i));
             await t.ensureVisible(wordTile);
             await t.tap(wordTile);
@@ -756,8 +760,8 @@ void main() {
           );
           expect(saySentence.textDirection, TextDirection.rtl);
           expect(saySentence.locale, const Locale('ar'));
-          await t.ensureVisible(find.byType(RepasoMic));
-          await t.tap(find.byType(RepasoMic));
+          await t.ensureVisible(find.byType(NocheMic));
+          await t.tap(find.byType(NocheMic));
           await vt.runUntil(() => session.heardRight && session.canNext);
           await t.pump(const Duration(milliseconds: 50));
           expect(speech.listens.single.locale, 'ar-SA');
@@ -826,7 +830,7 @@ void main() {
         expect(t.takeException(), isNull);
         expect(find.text(ReviewStrings.startHint), findsOneWidget);
 
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await vt.settle();
         await t.pump(const Duration(milliseconds: 50));
 
@@ -855,7 +859,7 @@ void main() {
             await t.pump(const Duration(milliseconds: 50));
             expect(t.takeException(), isNull);
             final right = session.panels!.indexWhere((p) => p.right);
-            final pic = find.byType(PictureChoice).at(right);
+            final pic = find.byType(NochePictureChoice).at(right);
             final g = await t.startGesture(t.getCenter(pic));
             await g.up();
             await vt.settle();
@@ -935,7 +939,7 @@ void main() {
         expect(t.takeException(), isNull);
         expect(find.text(ReviewStrings.levelTitle), findsOneWidget);
 
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await vt.settle();
         await t.pump(const Duration(milliseconds: 50));
 
@@ -964,7 +968,7 @@ void main() {
             await t.pump(const Duration(milliseconds: 50));
             expect(t.takeException(), isNull);
             final right = session.panels!.indexWhere((p) => p.right);
-            final pic = find.byType(PictureChoice).at(right);
+            final pic = find.byType(NochePictureChoice).at(right);
             final g = await t.startGesture(t.getCenter(pic));
             await g.up();
             await vt.settle();

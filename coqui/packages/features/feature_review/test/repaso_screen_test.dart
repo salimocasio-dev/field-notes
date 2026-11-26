@@ -8,6 +8,7 @@ import 'package:feature_review/feature_review.dart';
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:feature_review/src/ui/repaso_screen.dart';
 import 'package:feature_review/src/ui/review_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -75,9 +76,9 @@ void main() {
             expect(find.text(gameInstruction(it.kind)), findsOneWidget);
             final screen = Rect.fromLTWH(0, 0, w, h);
             for (final f in [
-              find.byType(WordTile),
-              find.byType(PictureChoice),
-              find.byType(SpeakerTile),
+              find.byType(NocheWordTile),
+              find.byType(NochePictureChoice),
+              find.byType(NocheSpeakerTile),
             ]) {
               for (var i = 0; i < f.evaluate().length; i++) {
                 final r = t.getRect(f.at(i));
@@ -145,14 +146,14 @@ void main() {
       QueueEntry.play(SayItem(word: w.word, line: w.say.first)),
       QueueEntry.play(SayItem(word: w.word, line: w.say.first)),
     ];
-    await t.tap(find.byType(LessonStartButton));
+    await t.tap(find.byType(NochePlayDisc));
     await sc.settle();
     await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
     await sc.settle();
     expect(find.text(gameInstruction(GameKind.say)), findsOneWidget);
-    expect(find.byType(RepasoMic), findsOneWidget);
+    expect(find.byType(NocheMic), findsOneWidget);
     expect(find.text(RepasoStrings.cantSpeak), findsOneWidget);
-    await t.tap(find.byType(RepasoMic));
+    await t.tap(find.byType(NocheMic));
     await sc.settle();
     await sc.vt.runUntil(() => sc.s.heard.isNotEmpty);
     await sc.settle();

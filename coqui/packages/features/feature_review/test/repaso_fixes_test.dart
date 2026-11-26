@@ -14,6 +14,7 @@ import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
 import 'package:feature_review/src/logic/word_picture.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:feature_review/src/ui/repaso_screen.dart';
 import 'package:flutter/rendering.dart' show OffsetLayer;
 import 'package:flutter/scheduler.dart' show Ticker;
@@ -36,7 +37,7 @@ Map<String, WordPictureAsset> dedicatedWordAssets() => {
 
 /// A picture source whose pictures are as strict as a picture can be (a stand-in: `coqui_scenes`' own once were, and
 /// take another picture in place now): a state with a single ticker that, when it is handed another picture, disposes
-/// its ticker and starts another one, and that puts its own red box (0xFF3A1E24) with the error's text where a start
+/// its ticker and starts another one, and that puts its own error box (0xFF3A1E24) with the error's text where a start
 /// failed. Flutter lets a `SingleTickerProviderStateMixin` create one ticker in its life, so the second start fails.
 /// The screen keys the pictures of each item, so no picture is ever handed another.
 class TickerPictures implements PictureSource {
@@ -121,24 +122,22 @@ List<(String, Rect)> geometry(WidgetTester t) {
     }
   }
 
-  add(
-    'instruction',
-    find.byWidgetPredicate((w) => w is Text && w.style == CoquiText.lessonHint),
-  );
-  add('chip', find.byType(StreakChip));
-  add('speaker', find.byType(RoundSpeaker));
-  add('picture', find.byType(PictureChoice));
+  add('instruction', find.byKey(const ValueKey('game-instruction')));
+  add('chip', find.byType(NocheStreakChip));
+  add('speaker', find.byType(NocheRoundSpeaker));
+  add('picture', find.byType(NochePictureChoice));
   // the tiles of the game's own area; the tiles put on Arma la frase's line come and go, and the line itself does not
   final tiles = [
-    for (final e in find.byType(WordTile).evaluate())
-      if (e.findAncestorWidgetOfExactType<TileTray>()?.line != true) e.widget,
+    for (final e in find.byType(NocheWordTile).evaluate())
+      if (e.findAncestorWidgetOfExactType<NocheTileTray>()?.line != true)
+        e.widget,
   ];
   for (var i = 0; i < tiles.length; i++) {
     out.add(('tile[$i]', t.getRect(find.byWidget(tiles[i]))));
   }
   add('line', find.byKey(const ValueKey('answer-line')));
-  add('sound', find.byType(SpeakerTile));
-  add('mic', find.byType(RepasoMic));
+  add('sound', find.byType(NocheSpeakerTile));
+  add('mic', find.byKey(const ValueKey('noche_mic_disc')));
   add('reveal', find.byKey(const ValueKey('reveal')));
   add('next', find.byKey(const ValueKey('next-slot')));
   return out;
@@ -206,8 +205,8 @@ void main() {
   testWidgets(
     'A: consecutive ¿Cuál? items with dedicated assets each get their own pictures (and never call ScenePictures)',
     (t) async {
-      final imgA = await wordAssetStandIn(t, color: CoquiColors.lessonGreen);
-      final imgB = await wordAssetStandIn(t, color: CoquiColors.lessonBlue);
+      final imgA = await wordAssetStandIn(t, color: NocheColors.right);
+      final imgB = await wordAssetStandIn(t, color: NocheColors.listening);
       final sc = Screen(
         t,
         wordAssets: dedicatedWordAssets(),
@@ -222,16 +221,16 @@ void main() {
       ].take(3).toList();
       expect(words, hasLength(3));
       sc.s.queue = [for (final w in words) QueueEntry.scored(cualOf(sc, w))];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       for (var n = 0; n < 3; n++) {
         await sc.vt.runUntil(() => sc.s.yourTurn && sc.s.index == n);
         await sc.settle();
         expect(sceneError, findsNothing, reason: 'item $n asked');
-        expect(find.byType(PictureChoice), findsNWidgets(2));
+        expect(find.byType(NochePictureChoice), findsNWidgets(2));
         await sc.down(
           find
-              .byType(PictureChoice)
+              .byType(NochePictureChoice)
               .at(sc.s.choices.indexWhere((c) => c.right)),
         );
         await sc.vt.runUntil(() => sc.s.canNext);
@@ -244,7 +243,7 @@ void main() {
   );
 
   testWidgets(
-    'C: a wrong touch has the red-orange ring and a round X at the corner where a right one has its check; the right one then has the hand (inside the bottom-right corner of a picture, 12 px from both edges; at the right end of a word tile with the word clear of it), no ring and no check; touched, it gets the green ring and the check',
+    'C: a wrong touch has the white-outline ring and a round X at the corner where a right one has its check; the right one then has the hand (inside the bottom-right corner of a picture, 12 px from both edges; at the right end of a word tile with the word clear of it), no ring and no check; touched, it gets the green ring and the check',
     (t) async {
       final standIn = await wordAssetStandIn(t);
       for (final kind in [GameKind.cual, GameKind.hear]) {
@@ -257,13 +256,13 @@ void main() {
             .firstWhere((q) => q.item?.kind == kind)
             .item!;
         sc.s.queue = [QueueEntry.scored(item)];
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await sc.settle();
         await sc.vt.runUntil(() => sc.s.yourTurn);
         await sc.settle();
         final tiles = kind == GameKind.hear
-            ? find.byType(WordTile)
-            : find.byType(PictureChoice);
+            ? find.byType(NocheWordTile)
+            : find.byType(NochePictureChoice);
         final r = sc.s.choices.indexWhere((c) => c.right);
         final w = r == 0 ? 1 : 0;
         if (kind == GameKind.hear) {
@@ -274,31 +273,28 @@ void main() {
         await sc.vt.runUntil(() => sc.s.choices.any((c) => c.sign));
         await sc.settle();
         // his: the badge with an X, at the corner of a check
-        expect(find.byType(WrongBadge), findsOneWidget, reason: '$kind');
+        expect(find.byType(NocheWrongBadge), findsOneWidget, reason: '$kind');
         final wrongRect = t.getRect(tiles.at(w));
-        final x = t.getRect(find.byType(WrongBadge));
+        final x = t.getRect(find.byType(NocheWrongBadge));
         if (kind == GameKind.hear) {
           expect(x.right, closeTo(wrongRect.right + 6, .5));
           expect(x.top, closeTo(wrongRect.top - 10, .5));
         } else {
-          expect(
-            x.right,
-            closeTo(wrongRect.right - CoquiMetrics.badgeInset, .5),
-          );
-          expect(x.top, closeTo(wrongRect.top + CoquiMetrics.badgeInset, .5));
+          expect(x.right, closeTo(wrongRect.right - nocheBadgeInset, .5));
+          expect(x.top, closeTo(wrongRect.top + nocheBadgeInset, .5));
         }
         // the right one: the hand, no ring, no check
         expect(
-          find.byType(CheckBadge),
+          find.byType(NocheCheckBadge),
           findsNothing,
           reason: '$kind: not a hit yet',
         );
-        expect(find.byType(TouchSign), findsOneWidget);
+        expect(find.byType(NocheTouchSign), findsOneWidget);
         final rightRect = t.getRect(tiles.at(r));
-        final hand = t.getCenter(find.byType(TouchSign));
+        final hand = t.getCenter(find.byType(NocheTouchSign));
         if (kind == GameKind.hear) {
           // on a word: at the right end of its tile, inside it, level with its middle, and the word is not under it
-          final sign = t.getRect(find.byType(TouchSign));
+          final sign = t.getRect(find.byType(NocheTouchSign));
           final word = t.getRect(
             find.descendant(
               of: tiles.at(r),
@@ -316,7 +312,7 @@ void main() {
           expect(word.center.dx, closeTo(rightRect.center.dx, .5));
         } else {
           // on a picture: inside its bottom-right corner, 12 px from both edges, never over its middle
-          final sign = t.getRect(find.byType(TouchSign));
+          final sign = t.getRect(find.byType(NocheTouchSign));
           expect(
             rightRect.right - sign.right,
             closeTo(12, .01),
@@ -335,9 +331,12 @@ void main() {
           );
         }
         if (kind == GameKind.hear) {
-          expect(t.widget<WordTile>(tiles.at(r)).ring, ChoiceRing.none);
+          expect(t.widget<NocheWordTile>(tiles.at(r)).ring, ChoiceRing.none);
         } else {
-          expect(t.widget<PictureChoice>(tiles.at(r)).ring, ChoiceRing.none);
+          expect(
+            t.widget<NochePictureChoice>(tiles.at(r)).ring,
+            ChoiceRing.none,
+          );
         }
         // touched: the green ring and the check, the hand gone
         if (kind == GameKind.hear) {
@@ -347,17 +346,20 @@ void main() {
         }
         await sc.vt.runUntil(() => sc.s.canNext);
         await sc.settle();
-        expect(find.byType(TouchSign), findsNothing);
-        expect(find.byType(CheckBadge), findsOneWidget);
+        expect(find.byType(NocheTouchSign), findsNothing);
+        expect(find.byType(NocheCheckBadge), findsOneWidget);
         expect(
-          find.byType(WrongBadge),
+          find.byType(NocheWrongBadge),
           findsOneWidget,
           reason: 'his keeps its X',
         );
         if (kind == GameKind.hear) {
-          expect(t.widget<WordTile>(tiles.at(r)).ring, ChoiceRing.right);
+          expect(t.widget<NocheWordTile>(tiles.at(r)).ring, ChoiceRing.right);
         } else {
-          expect(t.widget<PictureChoice>(tiles.at(r)).ring, ChoiceRing.right);
+          expect(
+            t.widget<NochePictureChoice>(tiles.at(r)).ring,
+            ChoiceRing.right,
+          );
         }
         await sc.vt.runUntil(() => false, limit: 1);
       }
@@ -437,8 +439,8 @@ void main() {
         expect(
           speakers.values.first.size,
           const Size(
-            RoundSpeaker.size + 2 * RoundSpeaker.pulse,
-            RoundSpeaker.size + 2 * RoundSpeaker.pulse,
+            NocheRoundSpeaker.size + 2 * NocheRoundSpeaker.pulse,
+            NocheRoundSpeaker.size + 2 * NocheRoundSpeaker.pulse,
           ),
         );
         // every active game ended with Next
@@ -473,20 +475,20 @@ void main() {
             );
             expect(item.speakers, speakers);
             sc.s.queue = [QueueEntry.scored(item)];
-            await t.tap(find.byType(LessonStartButton));
+            await t.tap(find.byType(NochePlayDisc));
             await sc.settle();
             await sc.vt.runUntil(() => sc.s.yourTurn);
             await sc.settle();
-            final tiles = find.byType(WordTile);
+            final tiles = find.byType(NocheWordTile);
             expect(tiles, findsNWidgets(3), reason: reason);
             final r = sc.s.choices.indexWhere((c) => c.right);
             await t.tap(tiles.at(r == 0 ? 1 : 0));
             await sc.vt.runUntil(() => sc.s.choices.any((c) => c.sign));
             await sc.settle();
             // every tile's word is centred in its tile; the right one's is clear of the hand
-            expect(find.byType(TouchSign), findsOneWidget, reason: reason);
+            expect(find.byType(NocheTouchSign), findsOneWidget, reason: reason);
             final tile = t.getRect(tiles.at(r));
-            final sign = t.getRect(find.byType(TouchSign));
+            final sign = t.getRect(find.byType(NocheTouchSign));
             for (var k = 0; k < 3; k++) {
               final word = t.getRect(
                 find.descendant(
@@ -521,9 +523,9 @@ void main() {
             await t.tapAt(sign.center);
             await sc.vt.runUntil(() => sc.s.canNext);
             await sc.settle();
-            expect(find.byType(TouchSign), findsNothing, reason: reason);
+            expect(find.byType(NocheTouchSign), findsNothing, reason: reason);
             expect(
-              t.widget<WordTile>(tiles.at(r)).ring,
+              t.widget<NocheWordTile>(tiles.at(r)).ring,
               ChoiceRing.right,
               reason: reason,
             );
@@ -534,7 +536,7 @@ void main() {
   );
 
   testWidgets(
-    'D and L: Dilo has the same fixed layout whether it listens, did not hear (the X badge beside the mic), or is done (the X on the mic); the mic pulses and "Listening…" shows while the app listens; Can\'t speak now stands where Next will',
+    'D and L: Dilo has the same fixed layout whether it listens, did not hear (NocheMic notYet), or is done (NocheMic right / notYet); NocheMic bars show while the app listens; Can\'t speak now stands where Next will',
     (t) async {
       final w = realRepaso.words.firstWhere(
         (x) => x.say.isNotEmpty && x.say.first.story == 'la-lluvia',
@@ -543,69 +545,72 @@ void main() {
       final sc = Screen(t, listener: speech);
       await sc.open();
       sc.s.queue = [QueueEntry.play(SayItem(word: w.word, line: w.say.first))];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       final asked = geometry(t);
+      expect(
+        t.widget<NocheMic>(find.byType(NocheMic)).state,
+        NocheMicState.theySpeak,
+      );
       await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
       await sc.settle();
       expect(geometry(t), asked);
+      expect(
+        t.widget<NocheMic>(find.byType(NocheMic)).state,
+        NocheMicState.ready,
+      );
       expect(find.text(RepasoStrings.cantSpeak), findsOneWidget);
       expect(find.text('Listening…'), findsNothing);
       final cant = t.getRect(find.text(RepasoStrings.cantSpeak));
-      await t.tap(find.byType(RepasoMic));
+      await t.tap(find.byType(NocheMic));
       await sc.vt.runUntil(() => sc.s.mic == MicState.listening);
       await t.pump();
-      // while the app listens: the ring pulses round the mic, and "Listening…" is under it
-      expect(find.byKey(const ValueKey('mic-pulse')), findsOneWidget);
+      // while the app listens: NocheMic is listening with voice bars, and "Listening…" is under it
+      expect(
+        t.widget<NocheMic>(find.byType(NocheMic)).state,
+        NocheMicState.listening,
+      );
+      expect(
+        find.byKey(const ValueKey('noche_mic_bars_start')),
+        findsOneWidget,
+      );
       expect(find.text('Listening…'), findsOneWidget);
       expect(geometry(t), asked);
       expect(
         t.getTopLeft(find.text('Listening…')).dy,
-        greaterThan(t.getRect(find.byType(RepasoMic)).bottom),
+        greaterThan(t.getRect(find.byType(NocheMic)).bottom),
       );
       speech.hear('no sé');
       await sc.vt.runUntil(() => sc.s.notHeard && sc.s.mic == MicState.ready);
       await sc.settle();
-      // a try not heard right: "Heard: ..." in normal-size text, and "Try again" under the mic
+      // a try not heard right: "Heard: ..." in normal-size text, "Try again" under the mic, NocheMic in calm notYet state (no red)
       expect(find.text('Heard: no sé'), findsOneWidget);
       expect(find.text('Try again'), findsOneWidget);
       expect(find.text('Listening…'), findsNothing);
-      // ... and the X badge beside the mic, on the rim of its disc at the upper right
-      expect(find.byType(WrongBadge), findsOneWidget);
-      final mic = t.getRect(find.byType(RepasoMic));
-      final badge = t.getCenter(find.byType(WrongBadge));
       expect(
-        (badge - mic.center).distance,
-        closeTo(CoquiMetrics.startDisc / 2, 3),
-        reason: 'on the disc\'s rim',
+        t.widget<NocheMic>(find.byType(NocheMic)).state,
+        NocheMicState.notYet,
       );
-      expect(badge.dx, greaterThan(mic.center.dx));
-      expect(badge.dy, lessThan(mic.center.dy));
-      expect(find.byKey(const ValueKey('mic-pulse')), findsNothing);
+      expect(find.byKey(const ValueKey('noche_mic_bars_start')), findsNothing);
       final heard = t.widget<Text>(find.text('Heard: no sé'));
       expect(heard.style!.fontSize, greaterThanOrEqualTo(16));
       expect(
         t.getTopLeft(find.text('Try again')).dy,
-        greaterThan(t.getRect(find.byType(RepasoMic)).bottom),
+        greaterThan(t.getRect(find.byType(NocheMic)).bottom),
       );
       expect(geometry(t), asked);
-      await t.tap(find.byType(RepasoMic));
+      await t.tap(find.byType(NocheMic));
       await sc.vt.runUntil(() => sc.s.mic == MicState.listening);
       speech.hear('eso no');
       await sc.vt.runUntil(() => sc.s.canNext);
       await sc.settle();
-      // after the second: the mic shows the X, the line in the reveal area, then Next, where Can't speak now was
+      // after the second: calm NocheMic.notYet (never red), the line in the reveal area, then Next where Can't speak now was
       expect(find.text('Heard: eso no'), findsOneWidget);
       expect(find.text('Try again'), findsNothing);
-      expect(find.byType(WrongBadge), findsNothing);
-      final cross = find.descendant(
-        of: find.byType(RepasoMic),
-        matching: find.byWidgetPredicate(
-          (w) => w is CoquiIcon && w.data == CoquiIcons.close,
-        ),
+      expect(
+        t.widget<NocheMic>(find.byType(NocheMic)).state,
+        NocheMicState.notYet,
       );
-      expect(cross, findsOneWidget, reason: 'the mic shows the X');
-      expect(t.widget<CoquiIcon>(cross).color, CoquiColors.lessonBad);
       expect(
         find.textContaining(w.say.first.text, findRichText: true),
         findsOneWidget,
@@ -621,39 +626,39 @@ void main() {
   );
 
   testWidgets(
-    'J: Arma la frase on screen: an empty line with a baseline, no places; its height for two rows is there from the start; a right tile goes onto it from the left and is green at once, leaving an empty place of its size in the bank; a wrong tile stays in the bank red-orange with an X for about a second; a tile on the line cannot be taken back; a check after the last tile',
+    'J: Arma la frase on screen: an empty line with a baseline, no places; its height for two rows is there from the start; a right tile goes onto it from the left and is green at once, leaving an empty place of its size in the bank; a wrong tile stays in the bank with white outline and an X for about a second; a tile on the line cannot be taken back; a check after the last tile',
     (t) async {
       final sc = Screen(t);
       // a tall screen: the test font is wider than the real one, and nothing here should need scrolling to be reached
       await sc.open(h: 1600);
       sc.s.queue = [QueueEntry.play(playItemOf(sc, GameKind.build))];
       final it = sc.s.queue.single.item! as BuildItem;
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
       await sc.settle();
       final lineBox = find.byKey(const ValueKey('answer-line'));
       final line = find.descendant(
         of: lineBox,
-        matching: find.byType(WordTile),
+        matching: find.byType(NocheWordTile),
       );
       final bank = find.descendant(
-        of: find.byType(TileTray).last,
-        matching: find.byType(WordTile),
+        of: find.byType(NocheTileTray).last,
+        matching: find.byType(NocheWordTile),
       );
       // nothing on the line, and no empty places on it: the shapes of the words cannot be read
       expect(line, findsNothing);
       expect(
-        t.widget<TileTray>(lineBox).lineRows,
+        t.widget<NocheTileTray>(lineBox).lineRows,
         greaterThanOrEqualTo(2),
         reason: 'two rows are reserved',
       );
       final lineRect = t.getRect(lineBox);
       expect(
         lineRect.height,
-        TileTray.lineHeight(
-          t.widget<TileTray>(lineBox).lineRows,
-          tileHeight: t.widget<TileTray>(lineBox).lineTileHeight,
+        NocheTileTray.lineHeight(
+          t.widget<NocheTileTray>(lineBox).lineRows,
+          tileHeight: t.widget<NocheTileTray>(lineBox).lineTileHeight,
         ),
         reason: 'as high as its rows from the start',
       );
@@ -666,50 +671,60 @@ void main() {
       await t.tap(bank.at(k0));
       await sc.settle();
       expect(line, findsOneWidget);
-      expect(t.widget<WordTile>(line.at(0)).word, it.order[0]);
-      expect(t.widget<WordTile>(line.at(0)).ring, ChoiceRing.right);
+      expect(t.widget<NocheWordTile>(line.at(0)).word, it.order[0]);
+      expect(t.widget<NocheWordTile>(line.at(0)).ring, ChoiceRing.right);
       expect(t.getRect(line.at(0)).left, closeTo(lineRect.left, .01));
       // the line did not move or change size; the bank keeps its shape, with an empty place where the tile was
       expect(t.getRect(lineBox), lineRect);
       expect([
         for (var i = 0; i < it.pool.length; i++) t.getRect(bank.at(i)),
       ], bankRects);
-      expect(t.widget<WordTile>(bank.at(k0)).look, TileLook.empty);
+      expect(t.widget<NocheWordTile>(bank.at(k0)).look, TileLook.empty);
       for (var i = 0; i < it.pool.length; i++) {
         if (i != k0) {
-          expect(t.widget<WordTile>(bank.at(i)).look, isNot(TileLook.empty));
+          expect(
+            t.widget<NocheWordTile>(bank.at(i)).look,
+            isNot(TileLook.empty),
+          );
         }
       }
-      // a tile that is not the next word: it stays in the bank, red-orange, with the X badge, for about a second
+      // a tile that is not the next word: it stays in the bank with wrong ring and X badge for about a second
       final wrong = sc.s.choices.indexWhere(
         (c) => c.label != it.order[1] && !c.done,
       );
       await t.ensureVisible(bank.at(wrong));
       await t.tap(bank.at(wrong));
       await t.pump();
-      expect(t.widget<WordTile>(bank.at(wrong)).ring, ChoiceRing.wrong);
-      expect(find.byType(WrongBadge), findsOneWidget);
-      final x = t.getRect(find.byType(WrongBadge));
+      expect(t.widget<NocheWordTile>(bank.at(wrong)).ring, ChoiceRing.wrong);
+      expect(find.byType(NocheWrongBadge), findsOneWidget);
+      final x = t.getRect(find.byType(NocheWrongBadge));
       final wrongRect = t.getRect(bank.at(wrong));
       expect(x.right, closeTo(wrongRect.right + 6, .5));
       expect(x.top, closeTo(wrongRect.top - 10, .5));
       expect(line, findsOneWidget, reason: 'nothing went onto the line');
-      expect(t.widget<WordTile>(bank.at(wrong)).look, isNot(TileLook.empty));
+      expect(
+        t.widget<NocheWordTile>(bank.at(wrong)).look,
+        isNot(TileLook.empty),
+      );
       await sc.vt.advance(900);
       await t.pump();
-      expect(find.byType(WrongBadge), findsOneWidget, reason: 'about a second');
+      expect(
+        find.byType(NocheWrongBadge),
+        findsOneWidget,
+        reason: 'about a second',
+      );
       await sc.vt.advance(200);
       await t.pump();
-      expect(t.widget<WordTile>(bank.at(wrong)).ring, ChoiceRing.none);
-      expect(find.byType(WrongBadge), findsNothing);
+      expect(t.widget<NocheWordTile>(bank.at(wrong)).ring, ChoiceRing.none);
+      expect(find.byType(NocheWrongBadge), findsNothing);
       // a tile on the line cannot be taken back
       await t.tap(line.at(0));
       await sc.settle();
       expect(line, findsOneWidget);
-      expect(t.widget<WordTile>(bank.at(k0)).look, TileLook.empty);
+      expect(t.widget<NocheWordTile>(bank.at(k0)).look, TileLook.empty);
       // the whole sentence: one tile after another, left to right (a row below when the row is full), a check after
       // the last, the sentence in the reveal, Next
-      expect(find.byType(CheckBadge), findsNothing);
+      expect(find.byType(NocheCheckBadge), findsNothing);
       for (var i = 1; i < it.order.length; i++) {
         final k = sc.s.choices.indexWhere(
           (c) => !c.done && c.label == it.order[i],
@@ -724,12 +739,12 @@ void main() {
           isTrue,
           reason: 'one after another: to the right, or on the row below',
         );
-        expect(t.widget<WordTile>(line.at(i)).ring, ChoiceRing.right);
+        expect(t.widget<NocheWordTile>(line.at(i)).ring, ChoiceRing.right);
       }
       expect(t.getRect(lineBox), lineRect, reason: 'the line never grew');
-      expect(find.byType(CheckBadge), findsOneWidget);
+      expect(find.byType(NocheCheckBadge), findsOneWidget);
       // after the last tile, on its row (the check's own test, 'J (the check)', has where and how far)
-      final check = t.getRect(find.byType(CheckBadge));
+      final check = t.getRect(find.byType(NocheCheckBadge));
       final lastTile = t.getRect(line.at(it.order.length - 1));
       expect(
         check.left > lastTile.right || check.top > lastTile.bottom,
@@ -777,28 +792,28 @@ void main() {
           pool: [...words.reversed],
         );
         sc.s.queue = [QueueEntry.play(item)];
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await sc.settle();
         await sc.vt.runUntil(() => sc.s.yourTurn);
         await sc.settle();
         final lineBox = find.byKey(const ValueKey('answer-line'));
         final line = find.descendant(
           of: lineBox,
-          matching: find.byType(WordTile),
+          matching: find.byType(NocheWordTile),
         );
         final bank = find.descendant(
-          of: find.byType(TileTray).last,
-          matching: find.byType(WordTile),
+          of: find.byType(NocheTileTray).last,
+          matching: find.byType(NocheWordTile),
         );
         expect(line, findsNothing, reason: reason);
-        expect(find.byType(CheckBadge), findsNothing, reason: reason);
+        expect(find.byType(NocheCheckBadge), findsNothing, reason: reason);
         expect(
-          t.widget<TileTray>(lineBox).lineRows,
+          t.widget<NocheTileTray>(lineBox).lineRows,
           greaterThanOrEqualTo(2),
           reason: reason,
         );
         final trayBefore = t.getRect(lineBox);
-        final bankBefore = t.getRect(find.byType(TileTray).last);
+        final bankBefore = t.getRect(find.byType(NocheTileTray).last);
         final nextBefore = t.getRect(find.byKey(const ValueKey('next-slot')));
         for (final word in words) {
           final k = sc.s.choices.indexWhere((c) => !c.done && c.label == word);
@@ -806,16 +821,16 @@ void main() {
           await sc.settle();
         }
         expect(line, findsNWidgets(words.length), reason: reason);
-        expect(find.byType(CheckBadge), findsOneWidget, reason: reason);
+        expect(find.byType(NocheCheckBadge), findsOneWidget, reason: reason);
         final tiles = [
           for (var i = 0; i < words.length; i++) t.getRect(line.at(i)),
         ];
-        final badge = t.getRect(find.byType(CheckBadge));
+        final badge = t.getRect(find.byType(NocheCheckBadge));
         final last = tiles.last;
         final tray = t.getRect(lineBox);
         // nothing moved from the first moment: the line (as high as the whole sentence needs), the bank, Next
         expect(tray, trayBefore, reason: '$reason: the line');
-        expect(t.getRect(find.byType(TileTray).last), bankBefore);
+        expect(t.getRect(find.byType(NocheTileTray).last), bankBefore);
         expect(t.getRect(find.byKey(const ValueKey('next-slot'))), nextBefore);
         // the tiles and the check are inside the line, above its baseline
         for (final r in [...tiles, badge]) {
@@ -866,25 +881,25 @@ void main() {
       await sc.open();
       sc.s.queue = [QueueEntry.play(playItemOf(sc, GameKind.match))];
       final it = sc.s.queue.single.item! as MatchItem;
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
       await sc.settle();
-      final sounds = find.byType(SpeakerTile);
+      final sounds = find.byType(NocheSpeakerTile);
       final words = find.descendant(
         of: find.byType(Row),
-        matching: find.byType(WordTile),
+        matching: find.byType(NocheWordTile),
       );
       await t.tap(sounds.at(0));
       final wrong = (it.wordOrder.indexOf(0) + 1) % 4;
       await t.tap(words.at(wrong));
       await t.pump();
-      expect(find.byType(WrongBadge), findsNWidgets(2));
-      expect(t.widget<SpeakerTile>(sounds.at(0)).ring, ChoiceRing.wrong);
-      expect(t.widget<WordTile>(words.at(wrong)).ring, ChoiceRing.wrong);
+      expect(find.byType(NocheWrongBadge), findsNWidgets(2));
+      expect(t.widget<NocheSpeakerTile>(sounds.at(0)).ring, ChoiceRing.wrong);
+      expect(t.widget<NocheWordTile>(words.at(wrong)).ring, ChoiceRing.wrong);
       await sc.vt.advance(1100);
       await t.pump();
-      expect(find.byType(WrongBadge), findsNothing);
+      expect(find.byType(NocheWrongBadge), findsNothing);
       // the pairs, each number on both of its tiles, beside a check
       for (var n = 0; n < 4; n++) {
         final i = [1, 3, 0, 2][n];
@@ -892,17 +907,17 @@ void main() {
         await sc.settle();
         await t.tap(words.at(it.wordOrder.indexOf(i)));
         await sc.settle();
-        expect(t.widget<SpeakerTile>(sounds.at(i)).number, n + 1);
+        expect(t.widget<NocheSpeakerTile>(sounds.at(i)).number, n + 1);
         expect(
-          t.widget<WordTile>(words.at(it.wordOrder.indexOf(i))).number,
+          t.widget<NocheWordTile>(words.at(it.wordOrder.indexOf(i))).number,
           n + 1,
         );
       }
-      expect(find.byType(NumberBadge), findsNWidgets(8));
+      expect(find.byType(NocheNumberBadge), findsNWidgets(8));
       for (var n = 1; n <= 4; n++) {
-        expect(find.widgetWithText(NumberBadge, '$n'), findsNWidgets(2));
+        expect(find.widgetWithText(NocheNumberBadge, '$n'), findsNWidgets(2));
       }
-      expect(find.byType(CheckBadge), findsNWidgets(8));
+      expect(find.byType(NocheCheckBadge), findsNWidgets(8));
     },
   );
 
@@ -925,11 +940,11 @@ void main() {
           ),
         ),
       ];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
       await sc.settle();
-      expect(find.byType(PictureChoice), findsNothing);
+      expect(find.byType(NochePictureChoice), findsNothing);
     },
   );
 
@@ -971,7 +986,7 @@ void main() {
             .descendant(
               of: find.byType(RepasoEndView),
               matching: find.byWidgetPredicate(
-                (w) => w is CoquiIcon && w.data == CoquiIcons.lessonSound,
+                (w) => w is NocheIcon && w.data == NocheIcons.speaker,
               ),
             )
             .evaluate()
@@ -1007,7 +1022,7 @@ void main() {
   );
 
   testWidgets(
-    'L: Dilo heard right, on screen: prompt sentence and target word visible before speaking, the check on the mic, "Heard: ..." in green, Next at once; nothing moves',
+    'L: Dilo heard right, on screen: prompt sentence and target word visible before speaking, NocheMic.right, "Heard: ..." in green, Next at once; nothing moves',
     (t) async {
       final w = realRepaso.words.firstWhere(
         (x) => x.say.isNotEmpty && x.say.first.story == 'la-lluvia',
@@ -1016,7 +1031,7 @@ void main() {
       final sc = Screen(t, listener: speech);
       await sc.open();
       sc.s.queue = [QueueEntry.play(SayItem(word: w.word, line: w.say.first))];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       final asked = geometry(t);
       await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
@@ -1037,7 +1052,7 @@ void main() {
         findsOneWidget,
       );
       expect(geometry(t), asked);
-      await t.tap(find.byType(RepasoMic));
+      await t.tap(find.byType(NocheMic));
       await sc.vt.runUntil(() => sc.s.mic == MicState.listening);
       final said = w.say.first.forms.first;
       speech.hear(said);
@@ -1047,16 +1062,13 @@ void main() {
       expect(find.text(RepasoStrings.next), findsOneWidget);
       expect(find.text(RepasoStrings.cantSpeak), findsNothing);
       expect(find.text('Try again'), findsNothing);
-      expect(find.byType(WrongBadge), findsNothing);
+      expect(find.byType(NocheWrongBadge), findsNothing);
       final heard = t.widget<Text>(find.text('Heard: $said'));
-      expect(heard.style!.color, CoquiColors.heard);
-      final tick = find.descendant(
-        of: find.byType(RepasoMic),
-        matching: find.byWidgetPredicate(
-          (w) => w is CoquiIcon && w.data == CoquiIcons.check,
-        ),
+      expect(heard.style!.color, NocheColors.right);
+      expect(
+        t.widget<NocheMic>(find.byType(NocheMic)).state,
+        NocheMicState.right,
       );
-      expect(tick, findsOneWidget, reason: 'the check on the mic');
       expect(
         find.textContaining(w.say.first.text, findRichText: true),
         findsOneWidget,
@@ -1069,59 +1081,63 @@ void main() {
   );
 
   testWidgets(
-    'N: the bar tells how it went: each dash takes the colour of its item\'s first answer and keeps it (green right, red-orange wrong, grey not reached); the item on screen has the white outline; a return has no dash and repaints nothing',
+    'N: the bar tells how it went: each dash takes the Noche colour/outline of its item\'s first answer and keeps it (green right, white outline wrong, dark grey not reached); the item on screen has the white outline; a return has no dash and repaints nothing',
     (t) async {
       final sc = Screen(t);
       await sc.open();
-      List<(Color?, bool)> dashes() => [
+      List<(Color?, bool, bool)> dashes() => [
         for (final c in t.widgetList<AnimatedContainer>(
           find.descendant(
-            of: find.byType(LessonProgressDashes),
+            of: find.byType(NocheReviewDashes),
             matching: find.byType(AnimatedContainer),
           ),
         ))
           (
             (c.decoration! as BoxDecoration).color,
             (c.decoration! as BoxDecoration).boxShadow != null,
+            (c.decoration! as BoxDecoration).border != null,
           ),
       ];
       // the pictures or the tiles of the item on screen, whichever it has
       Finder choice(int k) =>
           (sc.s.item is HearItem
-                  ? find.byType(WordTile)
-                  : find.byType(PictureChoice))
+                  ? find.byType(NocheWordTile)
+                  : find.byType(NochePictureChoice))
               .at(k);
-      const off = CoquiColors.dotOff;
-      const ok = CoquiColors.lessonGreen;
-      const bad = CoquiColors.lessonBad;
-      await t.tap(find.byType(LessonStartButton));
+      const off = NocheColors.lessonLine;
+      const ok = NocheColors.right;
+      const ground = NocheColors.lessonGround;
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn && sc.s.index == 0);
       await t.pump(const Duration(milliseconds: 300));
-      expect(dashes(), [(off, true), ...List.filled(12, (off, false))]);
-      // the first answer wrong: the dash is red-orange (outlined: still the item on screen)
+      expect(dashes(), [
+        (off, true, false),
+        ...List.filled(12, (off, false, false)),
+      ]);
+      // the first answer wrong: the dash is lessonGround with white outline (never red) and outlined as current
       final r = sc.s.choices.indexWhere((c) => c.right);
       await sc.down(choice(r == 0 ? 1 : 0));
       await t.pump(const Duration(milliseconds: 300));
-      expect(dashes().first, (bad, true));
+      expect(dashes().first, (ground, true, true));
       await sc.vt.runUntil(() => sc.s.choices.any((c) => c.sign));
       await sc.down(choice(r));
       await sc.vt.runUntil(() => sc.s.canNext);
       await t.pump(const Duration(milliseconds: 300));
-      expect(dashes().first, (bad, true), reason: 'it keeps the colour');
+      expect(dashes().first, (ground, true, true), reason: 'it keeps the mark');
       await t.tap(find.text(RepasoStrings.next));
       await sc.vt.runUntil(() => sc.s.index == 1 && sc.s.yourTurn);
       await t.pump(const Duration(milliseconds: 300));
       expect(dashes(), [
-        (bad, false),
-        (off, true),
-        ...List.filled(11, (off, false)),
+        (ground, false, true),
+        (off, true, false),
+        ...List.filled(11, (off, false, false)),
       ]);
       // the next is answered right: green
       await sc.down(choice(sc.s.choices.indexWhere((c) => c.right)));
       await sc.vt.runUntil(() => sc.s.canNext);
       await t.pump(const Duration(milliseconds: 300));
-      expect(dashes().take(2), [(bad, false), (ok, true)]);
+      expect(dashes().take(2), [(ground, false, true), (ok, true, false)]);
       await t.tap(find.text(RepasoStrings.next));
       // the item between is answered right; then the return: the dash of the item it answers again is the outlined one
       QueueEntry? acted;
@@ -1147,21 +1163,21 @@ void main() {
       await t.pump(const Duration(milliseconds: 300));
       final d = dashes();
       expect(d, hasLength(13));
-      expect(d.first, (bad, true));
+      expect(d.first, (ground, true, true));
       expect(d.where((x) => x.$2), hasLength(1));
       await sc.down(choice(sc.s.choices.indexWhere((c) => c.right)));
       await sc.vt.runUntil(() => sc.s.canNext);
       await t.pump(const Duration(milliseconds: 300));
       expect(
         dashes().first.$1,
-        bad,
+        ground,
         reason: 'right on its return: not repainted',
       );
     },
   );
 
   testWidgets(
-    'N: a skipped dash (Dilo, "Can\'t speak now") is a grey lighter than the one not reached, neither green nor red-orange',
+    'N: a skipped dash (Dilo, "Can\'t speak now") is a grey lighter than the one not reached, neither green nor red',
     (t) async {
       final w = realRepaso.words.firstWhere(
         (x) => x.say.isNotEmpty && x.say.first.story == 'la-lluvia',
@@ -1173,7 +1189,7 @@ void main() {
         QueueEntry.play(SayItem(word: w.word, line: w.say.first)),
       ];
       sc.s.makeDots(2);
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
       await sc.settle();
@@ -1183,20 +1199,20 @@ void main() {
       final colors = [
         for (final c in t.widgetList<AnimatedContainer>(
           find.descendant(
-            of: find.byType(LessonProgressDashes),
+            of: find.byType(NocheReviewDashes),
             matching: find.byType(AnimatedContainer),
           ),
         ))
           (c.decoration! as BoxDecoration).color,
       ];
       // the item that was on screen is skipped; the one that was never asked (Dilo is off) stays "not reached"
-      expect(colors, [CoquiColors.dotSkipped, CoquiColors.dotOff]);
-      expect(CoquiColors.dotSkipped, isNot(CoquiColors.dotOff));
+      expect(colors, [NocheColors.lessonBorder, NocheColors.lessonLine]);
+      expect(NocheColors.lessonBorder, isNot(NocheColors.lessonLine));
     },
   );
 
   testWidgets(
-    'O: a picture\'s frame has the same outer edge marked or not: the ring is drawn inside the picture\'s box, so the picture does not look bigger when it is marked (¿Cuál? with dedicated word asset)',
+    'O: a picture\'s frame has the same outer edge marked or not: the ring is drawn inside the picture\'s box, so the picture does not look bigger when it is marked (¿Cuál? with dedicated word asset), and wrong ring is white outline (never red)',
     (t) async {
       final page = await wordAssetStandIn(t);
       final sc = Screen(t, wordAssets: dedicatedWordAssets());
@@ -1205,13 +1221,13 @@ void main() {
           .firstWhere((q) => q.item?.kind == GameKind.cual)
           .item!;
       sc.s.queue = [QueueEntry.scored(item)];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
       await t.pump(const Duration(milliseconds: 300));
-      final pics = find.byType(PictureChoice);
+      final pics = find.byType(NochePictureChoice);
       for (var i = 0; i < pics.evaluate().length; i++) {
-        expect(t.widget<PictureChoice>(pics.at(i)).inside, isTrue);
+        expect(t.widget<NochePictureChoice>(pics.at(i)).inside, isTrue);
       }
       final w = sc.s.choices.indexWhere((c) => !c.right);
       final box = t.getRect(pics.at(w));
@@ -1221,27 +1237,27 @@ void main() {
       final before = await shotOf(t);
       expect(
         out(before),
-        CoquiColors.lessonBg,
+        NocheColors.lessonGround,
         reason: '¿Cuál?: nothing round it',
       );
       expect(
         edge(before),
-        CoquiColors.lessonLine,
+        NocheColors.lessonBorder,
         reason: '¿Cuál?: the plain frame, inside',
       );
-      // a wrong touch: the red-orange ring, 3 px, and the frame is not bigger
+      // a wrong touch: the calm white-outline ring (never red), 3 px, and the frame is not bigger
       await sc.down(pics.at(w));
       await t.pump(const Duration(milliseconds: 300));
       final after = await shotOf(t);
       expect(t.getRect(pics.at(w)), box);
       expect(
         edge(after),
-        CoquiColors.lessonBad,
-        reason: '¿Cuál?: the ring, inside',
+        NocheColors.text,
+        reason: '¿Cuál?: the calm white wrong ring, inside (never red)',
       );
       expect(
         out(after),
-        CoquiColors.lessonBg,
+        NocheColors.lessonGround,
         reason: '¿Cuál?: nothing grew round it',
       );
       // the right one touched, too: the green ring, the same edge
@@ -1252,11 +1268,14 @@ void main() {
       await sc.vt.runUntil(() => sc.s.canNext);
       await t.pump(const Duration(milliseconds: 300));
       final done = await shotOf(t);
-      expect(done.at(rbox.left + 1, rbox.center.dy), CoquiColors.lessonGreen);
-      expect(done.at(rbox.left - 1, rbox.center.dy), CoquiColors.lessonBg);
-      expect(done.at(rbox.right + 1, rbox.center.dy), CoquiColors.lessonBg);
-      expect(done.at(rbox.center.dx, rbox.top - 1), CoquiColors.lessonBg);
-      expect(done.at(rbox.center.dx, rbox.bottom + 1), CoquiColors.lessonBg);
+      expect(done.at(rbox.left + 1, rbox.center.dy), NocheColors.right);
+      expect(done.at(rbox.left - 1, rbox.center.dy), NocheColors.lessonGround);
+      expect(done.at(rbox.right + 1, rbox.center.dy), NocheColors.lessonGround);
+      expect(done.at(rbox.center.dx, rbox.top - 1), NocheColors.lessonGround);
+      expect(
+        done.at(rbox.center.dx, rbox.bottom + 1),
+        NocheColors.lessonGround,
+      );
     },
   );
 }

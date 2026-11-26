@@ -5,7 +5,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
 import 'package:feature_review/src/logic/repaso_words.dart';
-import 'package:feature_review/src/ui/repaso_screen.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -21,14 +21,11 @@ List<(String, Rect)> _geometry(WidgetTester t) {
     }
   }
 
-  add(
-    'instruction',
-    find.byWidgetPredicate((w) => w is Text && w.style == CoquiText.lessonHint),
-  );
-  add('chip', find.byType(StreakChip));
-  add('speaker', find.byType(RoundSpeaker));
+  add('instruction', find.byKey(const ValueKey('game-instruction')));
+  add('chip', find.byType(NocheStreakChip));
+  add('speaker', find.byType(NocheRoundSpeaker));
   add('prompt', find.byKey(const ValueKey('say-prompt')));
-  add('mic', find.byType(RepasoMic));
+  add('mic', find.byKey(const ValueKey('noche_mic_disc')));
   add('reveal', find.byKey(const ValueKey('reveal')));
   add('next', find.byKey(const ValueKey('next-slot')));
   return out;
@@ -46,7 +43,7 @@ List<TextSpan> _highlightedSpans(WidgetTester t) {
   final out = <TextSpan>[];
   void walk(InlineSpan span) {
     if (span is TextSpan) {
-      if (span.style?.backgroundColor == CoquiColors.bookLineLit) {
+      if (span.style?.backgroundColor == NocheColors.litSentence) {
         out.add(span);
       }
       for (final c in span.children ?? const <InlineSpan>[]) {
@@ -83,7 +80,7 @@ void main() {
         );
         await sc.open();
         sc.s.queue = [QueueEntry.play(SayItem(word: w.word, line: line))];
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await sc.settle();
         await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
         await sc.settle();
@@ -138,12 +135,12 @@ void main() {
         );
         expect(
           highlighted.single.style?.backgroundColor,
-          CoquiColors.bookLineLit,
+          NocheColors.litSentence,
           reason: place,
         );
         expect(
           highlighted.single.style?.decorationColor,
-          CoquiColors.bookLineLitBar,
+          NocheColors.listening,
           reason: place,
         );
 
@@ -159,19 +156,31 @@ void main() {
           reason: '$place: does not play before clip ${line.before}',
         );
 
-        // No self-report bypass button: only RepasoMic and "Can't speak now"
+        // No self-report bypass button: only NocheMic and "Can't speak now"
         expect(find.textContaining('I said it'), findsNothing);
         expect(find.textContaining('Skip'), findsNothing);
-        expect(find.byType(RepasoMic), findsOneWidget);
-        final buttons = find.byType(LessonButton);
+        expect(find.byType(NocheMic), findsOneWidget);
+        expect(
+          t.widget<NocheMic>(find.byType(NocheMic)).state,
+          NocheMicState.ready,
+        );
+        final buttons = find.byType(NocheOutlineButton);
         expect(buttons, findsOneWidget);
-        expect(t.widget<LessonButton>(buttons).label, RepasoStrings.cantSpeak);
+        expect(
+          t.widget<NocheOutlineButton>(buttons).label,
+          RepasoStrings.cantSpeak,
+        );
 
         final beforeSpeaking = _geometry(t);
 
-        // First attempt: wrong text -> no mouth answer, Try again, mic ready
-        await t.tap(find.byType(RepasoMic));
+        // First attempt: wrong text -> no mouth answer, Try again, mic in notYet state (ready to tap again)
+        await t.tap(find.byType(NocheMic));
         await sc.vt.runUntil(() => sc.s.mic == MicState.listening);
+        await t.pump();
+        expect(
+          t.widget<NocheMic>(find.byType(NocheMic)).state,
+          NocheMicState.listening,
+        );
         speech.hear('algo');
         await sc.vt.runUntil(() => sc.s.notHeard && sc.s.mic == MicState.ready);
         await sc.settle();
@@ -187,10 +196,14 @@ void main() {
           reason: place,
         );
         expect(sc.s.mic, MicState.ready, reason: place);
+        expect(
+          t.widget<NocheMic>(find.byType(NocheMic)).state,
+          NocheMicState.notYet,
+        );
         expect(_geometry(t), beforeSpeaking, reason: '$place after miss');
 
-        // Second attempt: accepted form -> Mouth answer written (ok: true), green Heard, check on mic, Next shown
-        await t.tap(find.byType(RepasoMic));
+        // Second attempt: accepted form -> Mouth answer written (ok: true), green Heard, right NocheMic, Next shown
+        await t.tap(find.byType(NocheMic));
         await sc.vt.runUntil(() => sc.s.mic == MicState.listening);
         final accepted = line.forms.first;
         speech.hear(accepted);
@@ -209,14 +222,11 @@ void main() {
           true,
         ], reason: place);
         final heardText = t.widget<Text>(find.text('Heard: $accepted'));
-        expect(heardText.style?.color, CoquiColors.heard, reason: place);
-        final micCheck = find.descendant(
-          of: find.byType(RepasoMic),
-          matching: find.byWidgetPredicate(
-            (widget) => widget is CoquiIcon && widget.data == CoquiIcons.check,
-          ),
+        expect(heardText.style?.color, NocheColors.right, reason: place);
+        expect(
+          t.widget<NocheMic>(find.byType(NocheMic)).state,
+          NocheMicState.right,
         );
-        expect(micCheck, findsOneWidget, reason: place);
         expect(find.text(RepasoStrings.next), findsOneWidget, reason: place);
 
         // Zero layout shift before vs after speaking
@@ -268,7 +278,7 @@ void main() {
           );
           await sc.open();
           sc.s.queue = [QueueEntry.play(SayItem(word: w.word, line: line))];
-          await t.tap(find.byType(LessonStartButton));
+          await t.tap(find.byType(NochePlayDisc));
           await sc.settle();
           await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
           await sc.settle();
@@ -324,7 +334,7 @@ void main() {
         );
         await sc.open(w: width, h: 844, dpr: 2, text: 1.3);
         sc.s.queue = [QueueEntry.play(SayItem(word: w.word, line: line))];
-        await t.tap(find.byType(LessonStartButton));
+        await t.tap(find.byType(NochePlayDisc));
         await sc.settle();
         final asked = _geometry(t);
         await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
@@ -334,17 +344,17 @@ void main() {
         expect(t.takeException(), isNull, reason: tag);
         expect(find.byType(ErrorWidget), findsNothing, reason: tag);
         expect(find.byKey(const ValueKey('say-prompt')), findsOneWidget);
-        expect(find.byType(RepasoMic), findsOneWidget);
+        expect(find.byType(NocheMic), findsOneWidget);
         expect(_highlightedSpans(t), hasLength(1), reason: tag);
 
         // Prompt fits cleanly inside the viewport width and above the mic
         final promptRect = t.getRect(find.byKey(const ValueKey('say-prompt')));
-        final micRect = t.getRect(find.byType(RepasoMic));
+        final micRect = t.getRect(find.byType(NocheMic));
         expect(promptRect.left, greaterThanOrEqualTo(0), reason: tag);
         expect(promptRect.right, lessThanOrEqualTo(width + 0.01), reason: tag);
         expect(
           promptRect.bottom,
-          lessThanOrEqualTo(micRect.top - CoquiMetrics.s24 + 0.01),
+          lessThanOrEqualTo(micRect.top - 24 + 0.01),
           reason: tag,
         );
 
@@ -385,7 +395,7 @@ void main() {
 
         expectUnmoved('ready');
 
-        final mic = find.byType(RepasoMic);
+        final mic = find.byType(NocheMic);
         await t.ensureVisible(mic);
         await t.pump();
         await t.tap(mic);

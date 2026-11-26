@@ -10,6 +10,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/word_picture.dart';
 import 'package:feature_review/src/ui/book_image.dart';
+import 'package:feature_review/src/ui/noche_lesson_parts.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart' show FontLoader;
 import 'package:flutter_test/flutter_test.dart';
@@ -46,8 +47,12 @@ Future<void> _loadFonts() async {
     await loader.load();
   }
 
-  await load('packages/coqui_ui/Roboto', coquiFontFiles.values);
-  await load('Roboto', coquiFontFiles.values);
+  await load('packages/coqui_ui/$coquiFontFamily', coquiFontFiles.values);
+  await load(coquiFontFamily, coquiFontFiles.values);
+  for (final entry in nocheFontFiles.entries) {
+    await load('packages/coqui_ui/${entry.key}', entry.value.values);
+    await load(entry.key, entry.value.values);
+  }
 }
 
 Future<MemoryImage> _drawIconCard(WidgetTester t, {required bool door}) async {
@@ -57,54 +62,54 @@ Future<MemoryImage> _drawIconCard(WidgetTester t, {required bool door}) async {
     // Calm dark background
     canvas.drawRect(
       const Rect.fromLTWH(0, 0, 196, 104),
-      Paint()..color = CoquiColors.pictureBack,
+      Paint()..color = NocheColors.lessonGround,
     );
     if (door) {
-      // Simple door icon using CoquiColors tokens
+      // Simple door icon using NocheColors tokens
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           const Rect.fromLTWH(76, 14, 44, 76),
           const Radius.circular(4),
         ),
-        Paint()..color = CoquiColors.lessonBad,
+        Paint()..color = NocheColors.next,
       );
       canvas.drawRect(
         const Rect.fromLTWH(82, 22, 32, 24),
-        Paint()..color = CoquiColors.lessonBg,
+        Paint()..color = NocheColors.lessonPanel,
       );
       canvas.drawRect(
         const Rect.fromLTWH(82, 54, 32, 28),
-        Paint()..color = CoquiColors.lessonBg,
+        Paint()..color = NocheColors.lessonPanel,
       );
       canvas.drawCircle(
         const Offset(112, 52),
         3.5,
-        Paint()..color = CoquiColors.line,
+        Paint()..color = NocheColors.text,
       );
     } else {
-      // Simple window icon using CoquiColors tokens
+      // Simple window icon using NocheColors tokens
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           const Rect.fromLTWH(64, 18, 68, 68),
           const Radius.circular(4),
         ),
-        Paint()..color = CoquiColors.lessonInk2,
+        Paint()..color = NocheColors.label,
       );
       canvas.drawRect(
         const Rect.fromLTWH(70, 24, 25, 25),
-        Paint()..color = CoquiColors.mapWater,
+        Paint()..color = NocheColors.listening,
       );
       canvas.drawRect(
         const Rect.fromLTWH(101, 24, 25, 25),
-        Paint()..color = CoquiColors.mapWater,
+        Paint()..color = NocheColors.listening,
       );
       canvas.drawRect(
         const Rect.fromLTWH(70, 55, 25, 25),
-        Paint()..color = CoquiColors.mapWater,
+        Paint()..color = NocheColors.listening,
       );
       canvas.drawRect(
         const Rect.fromLTWH(101, 55, 25, 25),
-        Paint()..color = CoquiColors.mapWater,
+        Paint()..color = NocheColors.listening,
       );
     }
     final image = await recorder.endRecording().toImage(196, 104);
@@ -162,12 +167,12 @@ void main() {
       final sSi = sc.s.planner.hearSentences(wSi).first;
       final item = sc.s.planner.hearItem(wSi, sSi);
       sc.s.queue = [QueueEntry.scored(item)];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
       await sc.settle();
-      expect(find.byType(WordTile), findsNWidgets(3));
-      expect(find.byType(PictureChoice), findsNothing);
+      expect(find.byType(NocheWordTile), findsNWidgets(3));
+      expect(find.byType(NochePictureChoice), findsNothing);
       expect(find.byType(BookImage), findsNothing);
       await _saveShot(t, dir, 'pictures_01_hear_unpicturable_si.png');
     }
@@ -190,10 +195,10 @@ void main() {
       await sc.open(w: 390, h: 844, dpr: 2, text: 1);
       final hear = sc.s.planner.hearItem(targetWord, picSentence);
       sc.s.queue = [QueueEntry.scored(hear)];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
-      await t.tap(find.byType(WordTile).at(hear.answer));
+      await t.tap(find.byType(NocheWordTile).at(hear.answer));
       await sc.vt.runUntil(() => sc.s.canNext);
       await sc.settle();
       expect(find.byType(BookImage), findsNothing);
@@ -221,7 +226,7 @@ void main() {
         pool: [...picSentence.tokens.reversed, ...extra],
       );
       sc.s.queue = [QueueEntry.play(build)];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
       await sc.settle();
@@ -229,8 +234,8 @@ void main() {
         final k = sc.s.choices.indexWhere((c) => !c.done && c.label == w);
         final tile = find
             .descendant(
-              of: find.byType(TileTray).last,
-              matching: find.byType(WordTile),
+              of: find.byType(NocheTileTray).last,
+              matching: find.byType(NocheWordTile),
             )
             .at(k);
         await t.ensureVisible(tile);
@@ -273,11 +278,11 @@ void main() {
       final item = sc.s.planner.scoredItem(wPuerta);
       expect(item, isA<CualItem>());
       sc.s.queue = [QueueEntry.scored(item)];
-      await t.tap(find.byType(LessonStartButton));
+      await t.tap(find.byType(NochePlayDisc));
       await sc.settle();
       await sc.vt.runUntil(() => sc.s.yourTurn);
       await sc.settle();
-      expect(find.byType(PictureChoice), findsNWidgets(2));
+      expect(find.byType(NochePictureChoice), findsNWidgets(2));
       await _saveShot(t, dir, 'pictures_04_cual_dedicated_asset.png');
     }
   });
