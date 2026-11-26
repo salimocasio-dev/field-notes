@@ -290,98 +290,47 @@ Finder byTypeName(String name) =>
 dynamic stateNamed(WidgetTester tester, String name) =>
     tester.state(byTypeName(name));
 
-/// Whether the map tab currently renders N4.1's Noche UI (PR #127) rather than v=39's [MapChips]/[TodayCard].
-bool isNocheMap() =>
-    find.byKey(const Key('language-chip')).evaluate().isNotEmpty;
+/// The map's top chips bar (N4.1's `language-chip`).
+Finder findMapTopChips() => find.byKey(const Key('language-chip'));
 
-/// The map's top chips bar: N4.1's `language-chip`, or v=39's [MapChips].
-Finder findMapTopChips() => find.byWidgetPredicate(
-  (w) => w.key == const Key('language-chip') || w is MapChips,
-  description: 'map top chips (N4.1 language-chip or v=39 MapChips)',
-);
+/// The map's Up next card (N4.1's `up-next-card`).
+Finder findMapUpNextCard() => find.byKey(const Key('up-next-card'));
 
-/// The map's Up next / Today card: N4.1's `up-next-card`, or v=39's [TodayCard].
-Finder findMapUpNextCard() => find.byWidgetPredicate(
-  (w) => w.key == const Key('up-next-card') || w is TodayCard,
-  description: 'map up-next card (N4.1 up-next-card or v=39 TodayCard)',
-);
+/// The tap target that starts the map's Up next entry (N4.1's `up-next-play` disc).
+Finder findMapUpNextAction() => find.byKey(const Key('up-next-play'));
 
-/// The tap target that starts the map's Up next / Today entry: N4.1's `up-next-play` disc, or v=39's [TodayCard].
-Finder findMapUpNextAction() => find.byWidgetPredicate(
-  (w) => w.key == const Key('up-next-play') || w is TodayCard,
-  description: 'map up-next action (N4.1 up-next-play or v=39 TodayCard)',
-);
+/// The story lesson's header (N4.3's `StoryHeader`).
+Finder findStoryFrame() => byTypeName('StoryHeader');
 
-/// The story lesson's frame/header: N4.3's `StoryHeader`, or v=39's [LessonFrame].
-Finder findStoryFrame() => find.byWidgetPredicate(
-  (w) => w.runtimeType.toString() == 'StoryHeader' || w is LessonFrame,
-  description: 'story frame (N4.3 StoryHeader or v=39 LessonFrame)',
-);
+/// The story lesson's close button (N4.3's `StoryCloseButton`).
+Finder findStoryCloseButton() => byTypeName('StoryCloseButton');
 
-/// The story lesson's close button: N4.3's `StoryCloseButton`, or v=39's [LessonCloseButton].
-Finder findStoryCloseButton() => find.byWidgetPredicate(
-  (w) =>
-      w.runtimeType.toString() == 'StoryCloseButton' || w is LessonCloseButton,
-  description:
-      'story close button (N4.3 StoryCloseButton or v=39 LessonCloseButton)',
-);
+/// The story lesson's start disc (N4.3's `story-start-disc`).
+Finder findStoryStartButton() => find.byKey(const Key('story-start-disc'));
 
-/// The story lesson's start disc: N4.3's `story-start-disc`, or v=39's [LessonStartButton].
-Finder findStoryStartButton() => find.byWidgetPredicate(
-  (w) => w.key == const Key('story-start-disc') || w is LessonStartButton,
-  description:
-      'story start button (N4.3 story-start-disc or v=39 LessonStartButton)',
-);
+/// Review / level check close button (N4.8a's `NocheLessonCloseButton`).
+Finder findReviewCloseButton() => byTypeName('NocheLessonCloseButton');
 
-/// Review / level check close button: N4.8a's `NocheLessonCloseButton`, or v=39's [LessonCloseButton].
-Finder findReviewCloseButton() => find.byWidgetPredicate(
-  (w) =>
-      w.runtimeType.toString() == 'NocheLessonCloseButton' ||
-      w is LessonCloseButton,
-  description: 'review close button (N4.8a NocheLessonCloseButton or v=39 LessonCloseButton)',
-);
+/// Review / level check start disc (N4.8a's [NochePlayDisc]).
+Finder findReviewStartButton() => find.byType(NochePlayDisc);
 
-/// Review / level check start disc: N4.8a's [NochePlayDisc], or v=39's [LessonStartButton].
-Finder findReviewStartButton() => find.byWidgetPredicate(
-  (w) => w is NochePlayDisc || w is LessonStartButton,
-  description:
-      'review start button (N4.8a NochePlayDisc or v=39 LessonStartButton)',
-);
-
-/// Review Next button: N4.8a's [NochePrimaryButton] labelled 'Next', or v=39's [LessonButton] with text 'Next'.
+/// Review Next button (N4.8a's [NochePrimaryButton] labelled 'Next').
 Finder findReviewNextButton() => find.byWidgetPredicate(
-  (w) =>
-      (w is NochePrimaryButton && w.label == 'Next') ||
-      (w is LessonButton && w.label == 'Next'),
-  description:
-      'review Next button (N4.8a NochePrimaryButton or v=39 LessonButton)',
+  (w) => w is NochePrimaryButton && w.label == 'Next',
+  description: 'review Next button (NochePrimaryButton)',
 );
 
-/// Review picture choice: N4.8a's `NochePictureChoice`, or v=39's [PictureChoice].
-Finder findReviewPictureChoice() => find.byWidgetPredicate(
-  (w) => w.runtimeType.toString() == 'NochePictureChoice' || w is PictureChoice,
-  description:
-      'review picture choice (N4.8a NochePictureChoice or v=39 PictureChoice)',
-);
+/// Review picture choice (N4.8a's `NochePictureChoice`).
+Finder findReviewPictureChoice() => byTypeName('NochePictureChoice');
 
-/// Review word tile: N4.8a's `NocheWordTile`, or v=39's [WordTile].
-Finder findReviewWordTile() => find.byWidgetPredicate(
-  (w) => w.runtimeType.toString() == 'NocheWordTile' || w is WordTile,
-  description: 'review word tile (N4.8a NocheWordTile or v=39 WordTile)',
-);
+/// Review word tile (N4.8a's `NocheWordTile`).
+Finder findReviewWordTile() => byTypeName('NocheWordTile');
 
-/// Review tile tray: N4.8a's `NocheTileTray`, or v=39's [TileTray].
-Finder findReviewTileTray() => find.byWidgetPredicate(
-  (w) => w.runtimeType.toString() == 'NocheTileTray' || w is TileTray,
-  description: 'review tile tray (N4.8a NocheTileTray or v=39 TileTray)',
-);
+/// Review tile tray (N4.8a's `NocheTileTray`).
+Finder findReviewTileTray() => byTypeName('NocheTileTray');
 
-/// Review speaker tile: N4.8a's `NocheSpeakerTile`, or v=39's [SpeakerTile].
-Finder findReviewSpeakerTile() => find.byWidgetPredicate(
-  (w) => w.runtimeType.toString() == 'NocheSpeakerTile' || w is SpeakerTile,
-  description:
-      'review speaker tile (N4.8a NocheSpeakerTile or v=39 SpeakerTile)',
-);
+/// Review speaker tile (N4.8a's `NocheSpeakerTile`).
+Finder findReviewSpeakerTile() => byTypeName('NocheSpeakerTile');
 
 /// TEST-ONLY. A scene that is not converted and never will be: no scene of coqui_scenes' registry has its id. Its old
 /// pictures are order 06's pictures of El banco (coqui/ref/escenas/banco/pairs/), as they were before order 36b converted

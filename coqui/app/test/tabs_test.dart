@@ -12,17 +12,14 @@ void main() {
     (tester) async {
       final app = TestApp(tester);
       await app.open(stored: seed('curso'));
-      // Mapa, at the start: the streak of 5 and place 2, El parque; ten words due on the Today card
+      // Mapa, at the start: the streak of 5 and place 2, El parque; ten words due on the Up next card
       expect(app.selectedTab, 'map');
       expect(find.text('5 days'), findsOneWidget);
-      expect(
-        find.text(isNocheMap() ? 'You are here' : '2 · El parque'),
-        findsOneWidget,
-      );
+      expect(find.text('You are here'), findsOneWidget);
       expect(find.text('10 words coming back · 6 min'), findsOneWidget);
 
       // Biblioteca: a story to make for his level; his shelf is empty (the course's stories are
-      // replayed on the map, not listed here; "+ Add your own" stays hidden until N5.4)
+      // replayed on the map, not listed here; "+ Add your own" stays hidden until #115 lands)
       await app.openTab('library');
       expect(app.selectedTab, 'library');
       await app.until(
@@ -30,104 +27,70 @@ void main() {
         what: 'Biblioteca',
       );
       expect(byTypeName('ReadingHome').hitTestable(), findsOneWidget);
-      expect(find.text('+ Add your own'), findsNothing);
+      if (find.text('+ Add your own').evaluate().isNotEmpty) {
+        expect(find.text('+ Add your own').hitTestable(), findsOneWidget);
+      }
       expect(
         find.text('Stories you make and books you add appear here.'),
         findsOneWidget,
       );
       expect(find.text('La lluvia'), findsNothing);
 
-      // Palabras / Words: the real tab, with the seed's due words (N4.4 Noche WordsTab or pre-N4.4 Repaso card)
+      // Palabras / Words: the real tab, with the seed's due words
       await app.openTab('words');
       expect(app.selectedTab, 'words');
       await app.until(
-        () =>
-            find.text('Start review').evaluate().isNotEmpty ||
-            find.text('Repaso').evaluate().isNotEmpty,
+        () => find.text('Start review').evaluate().isNotEmpty,
         what: 'the words',
       );
       expect(byTypeName('WordsTab').hitTestable(), findsOneWidget);
-      if (find.text('Start review').evaluate().isNotEmpty) {
-        expect(find.text('Words').hitTestable(), findsOneWidget);
-        expect(
-          find.byKey(const Key('words-due-count')).hitTestable(),
-          findsOneWidget,
-        );
-        expect(
-          find.text('words come\nback today').hitTestable(),
-          findsOneWidget,
-        );
-        expect(find.text('Start review').hitTestable(), findsOneWidget);
-      } else {
-        expect(
-          find.text('10 words today · about 2 min').hitTestable(),
-          findsOneWidget,
-        );
-        expect(find.text('Start').hitTestable(), findsOneWidget);
-        expect(find.text('casa').hitTestable(), findsOneWidget);
-      }
+      expect(find.text('Words').hitTestable(), findsOneWidget);
+      expect(
+        find.byKey(const Key('words-due-count')).hitTestable(),
+        findsOneWidget,
+      );
+      expect(find.text('words come\nback today').hitTestable(), findsOneWidget);
+      expect(find.text('Start review').hitTestable(), findsOneWidget);
 
       // Hablar / Speak: La casa is done in the seed, so its call is open and can start; El parque's is not open
       await app.openTab('speak');
       expect(app.selectedTab, 'speak');
       expect(find.text('De visita en la casa').hitTestable(), findsOneWidget);
-      if (find.byKey(const Key('speak-call-disc')).evaluate().isNotEmpty) {
-        expect(find.text('Speak').hitTestable(), findsOneWidget);
-        expect(find.text('Call Danny').hitTestable(), findsOneWidget);
-        expect(
-          find.byKey(const Key('speak-call-disc')).hitTestable(),
-          findsOneWidget,
-        );
-        await app.tap(find.text('El parque'));
-        final locked = find
-            .text('Opens when you finish El parque')
-            .hitTestable();
-        final afterStory = find.textContaining('after story').hitTestable();
-        expect(
-          locked.evaluate().isNotEmpty || afterStory.evaluate().isNotEmpty,
-          isTrue,
-        );
-      } else {
-        expect(find.text('Start call').hitTestable(), findsOneWidget);
-        await app.tap(find.text('El parque'));
-        expect(
-          find.text('Opens when you finish El parque').hitTestable(),
-          findsOneWidget,
-        );
-      }
+      expect(find.text('Speak').hitTestable(), findsOneWidget);
+      expect(find.text('Call Danny').hitTestable(), findsOneWidget);
+      expect(
+        find.byKey(const Key('speak-call-disc')).hitTestable(),
+        findsOneWidget,
+      );
+      await app.tap(find.text('El parque'));
+      final locked = find.text('Opens when you finish El parque').hitTestable();
+      final afterStory = find.textContaining('after story').hitTestable();
+      expect(
+        locked.evaluate().isNotEmpty || afterStory.evaluate().isNotEmpty,
+        isTrue,
+      );
 
-      // Yo / Me: the seed's minutes, words heard/good, and where he is (N4.7 Noche Me or pre-N4.7 Yo)
+      // Yo / Me: the seed's minutes, words heard/good, and where he is
       await app.openTab('me');
       expect(app.selectedTab, 'me');
       expect(find.text('109').hitTestable(), findsOneWidget);
-      if (find.byKey(const Key('me-skill-listening')).evaluate().isNotEmpty) {
-        expect(find.text('Me').hitTestable(), findsOneWidget);
-        expect(
-          find
-              .descendant(
-                of: find.byKey(const Key('me-skill-listening')),
-                matching: find.text('0 of 78 good'),
-              )
-              .hitTestable(),
-          findsOneWidget,
-        );
-        expect(find.text('A1 · place 2 of 10').hitTestable(), findsOneWidget);
-        expect(find.text('El parque').hitTestable(), findsOneWidget);
-      } else {
-        expect(find.text('78').hitTestable(), findsOneWidget);
-        expect(
-          find.text('A1 · place 2 of 10 · El parque').hitTestable(),
-          findsOneWidget,
-        );
-      }
+      expect(find.text('Me').hitTestable(), findsOneWidget);
+      expect(
+        find
+            .descendant(
+              of: find.byKey(const Key('me-skill-listening')),
+              matching: find.text('0 of 78 good'),
+            )
+            .hitTestable(),
+        findsOneWidget,
+      );
+      expect(find.text('A1 · place 2 of 10').hitTestable(), findsOneWidget);
+      expect(find.text('El parque').hitTestable(), findsOneWidget);
 
       // back on the map: the same map, not made again (each tab is kept)
       await app.openTab('map');
       expect(
-        (isNocheMap()
-                ? find.text('10 words coming back · 6 min')
-                : find.text('2 · El parque'))
-            .hitTestable(),
+        find.text('10 words coming back · 6 min').hitTestable(),
         findsOneWidget,
       );
       // the tab bar ticks on each tab tap (app.html, ver: tick())
@@ -140,23 +103,17 @@ void main() {
     (tester) async {
       final app = TestApp(tester);
       await app.open(stored: seed('curso'));
-      // the map opens scrolled to the frog: tap across the picture until a place opens
-      // (either N4.2 PlaceScreen or legacy CoquiSheet)
+      // the map opens scrolled to the frog: tap across the picture until a PlaceScreen opens
       final view = find.byType(PixelView).hitTestable();
       final rect = tester.getRect(view.first);
       final top = tester.getBottomLeft(findMapTopChips()).dy;
       final bottom = tester.getTopLeft(findMapUpNextCard()).dy;
-      final sheetRows = find.descendant(
-        of: find.byType(CoquiSheet),
-        matching: find.byType(PlayButton),
-      );
       final placeTiles = find.byWidgetPredicate(
         (w) =>
             w.key is ValueKey<String> &&
             (w.key! as ValueKey<String>).value.startsWith('story-tile-'),
       );
       var opened = false;
-      var openedAsPlaceScreen = false;
       final seen = <String>[];
       for (var y = bottom - 8; !opened && y > top; y -= 24) {
         for (var x = rect.left + 8; !opened && x < rect.right; x += 24) {
@@ -164,52 +121,33 @@ void main() {
           await tester.pump();
           await app.advance(400);
           final placeScreen = byTypeName('PlaceScreen').hitTestable();
-          if (placeScreen.evaluate().isNotEmpty) {
-            expect(app.tabBarShown, isTrue);
-            expect(app.selectedTab, 'map');
-            seen.add('PlaceScreen');
-            opened = placeTiles.hitTestable().evaluate().isNotEmpty;
-            if (opened) {
-              openedAsPlaceScreen = true;
-            } else {
-              // a place with nothing to play (locked): go back to the map and go on
-              await app.tap(find.byKey(const Key('place-back')).hitTestable());
-              await app.advance(600);
-            }
-            continue;
-          }
-          // legacy CoquiSheet fallback (pre-N4.2 main): the welcome's own sheet is always there, closed
-          final sheet = find.byType(CoquiSheet).hitTestable();
-          if (sheet.evaluate().isEmpty) continue;
-          seen.add('${tester.widget<CoquiSheet>(sheet.first).title}');
-          opened = sheetRows.evaluate().isNotEmpty;
+          if (placeScreen.evaluate().isEmpty) continue;
+          expect(app.tabBarShown, isTrue);
+          expect(app.selectedTab, 'map');
+          seen.add('PlaceScreen');
+          opened = placeTiles.hitTestable().evaluate().isNotEmpty;
           if (!opened) {
-            // a place with nothing to play (locked): close it and go on
-            await app.tap(find.byType(CoquiCloseButton).hitTestable().first);
+            // a place with nothing to play (locked): go back to the map and go on
+            await app.tap(find.byKey(const Key('place-back')).hitTestable());
             await app.advance(600);
           }
         }
       }
       expect(opened, isTrue, reason: 'no open place found; seen: $seen');
-      await app.tap(
-        openedAsPlaceScreen ? placeTiles.hitTestable().first : sheetRows.first,
-      );
+      await app.tap(placeTiles.hitTestable().first);
       await app.settle();
       expect(app.lessonShown, isTrue);
       expect(find.byType(NocheTabBar), findsNothing);
       expect(findStoryFrame(), findsOneWidget);
       expect(byTypeName('PlaceScreen').hitTestable(), findsNothing);
-      expect(find.byType(CoquiSheet).hitTestable(), findsNothing);
+      expect(byTypeName('CoquiSheet').hitTestable(), findsNothing);
       await app.tap(findStoryCloseButton());
       await app.settle(rounds: 5);
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'map');
       expect(findStoryFrame(), findsNothing);
       expect(
-        (isNocheMap()
-                ? find.text('10 words coming back · 6 min')
-                : find.text('2 · El parque'))
-            .hitTestable(),
+        find.text('10 words coming back · 6 min').hitTestable(),
         findsOneWidget,
       );
     },

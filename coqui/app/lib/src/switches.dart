@@ -4,6 +4,24 @@ library;
 
 import 'package:feature_story/feature_story.dart' show TxtMode;
 
+const String _coquiBuild = String.fromEnvironment(
+  'COQUI_BUILD',
+  defaultValue: 'dev',
+);
+
+const bool _coquiTestSwitches = bool.fromEnvironment(
+  'COQUI_TEST_SWITCHES',
+  defaultValue: false,
+);
+
+/// Whether test-only query switches (`callstub`, `stub`, `clock`, `mic`) are
+/// enabled in this build: active when `COQUI_BUILD == 'dev'` or when
+/// `--dart-define=COQUI_TEST_SWITCHES=true` is passed.
+bool testSwitchesAllowed({
+  String build = _coquiBuild,
+  bool forceEnabled = _coquiTestSwitches,
+}) => build == 'dev' || forceEnabled;
+
 /// What the address asked for at the start.
 class AppSwitches {
   const AppSwitches({
@@ -17,21 +35,35 @@ class AppSwitches {
   });
 
   /// The query of the page's address, as the old pages read theirs (`new URLSearchParams(location.search)`).
-  factory AppSwitches.fromQuery(Map<String, String> q) {
-    final mic = q['mic'] ?? '';
+  ///
+  /// Test-only stub switches (`callStub`, `stubOptions`, `stubClock`, `micStub`,
+  /// `micOff`) are ignored when `COQUI_BUILD != 'dev'` unless
+  /// `--dart-define=COQUI_TEST_SWITCHES=true` is set (or [allowTestSwitches] is
+  /// passed explicitly in tests). `?perf=1` and `?txt=` remain active in every
+  /// build.
+  factory AppSwitches.fromQuery(
+    Map<String, String> q, {
+    bool? allowTestSwitches,
+  }) {
+    final allow = allowTestSwitches ?? testSwitchesAllowed();
+    final mic = allow ? (q['mic'] ?? '') : '';
     return AppSwitches(
       perf: q['perf'] == '1',
       // llamada.js: STUB=Q.get("callstub")==="1",STUBOPT=new Set((Q.get("stub")||"").split(",")),
       // CLK=STUB?Math.max(1,+(Q.get("clock")||1)||1):1
-      callStub: q['callstub'] == '1',
-      stubOptions: {
-        for (final o in (q['stub'] ?? '').split(','))
-          if (o.isNotEmpty) o,
-      },
-      stubClock: _clock(q['clock']),
+      callStub: allow && q['callstub'] == '1',
+      stubOptions: allow
+          ? {
+              for (final o in (q['stub'] ?? '').split(','))
+                if (o.isNotEmpty) o,
+            }
+          : const {},
+      stubClock: allow ? _clock(q['clock']) : 1,
       // juego.js: MQ=Q.get("mic")||"",MICOFF=MQ==="off",STUB=MQ.indexOf("stub:")===0?MQ.slice(5).split("|"):null
-      micStub: mic.startsWith('stub:') ? mic.substring(5).split('|') : null,
-      micOff: mic == 'off',
+      micStub: allow && mic.startsWith('stub:')
+          ? mic.substring(5).split('|')
+          : null,
+      micOff: allow && mic == 'off',
       // juego.js: TXT=["con","tras","no"].includes(Q.get("txt"))?Q.get("txt"):"con"
       txt: switch (q['txt']) {
         'tras' => TxtMode.tras,
