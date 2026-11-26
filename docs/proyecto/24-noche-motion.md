@@ -127,6 +127,7 @@ No N8 story records audio, calls Danny, buys anything or adds a package. Motion 
 - coqui_ui has one writer at a time. N8.1 and N8.2 go to the same agent, one after the other.
 - feature_map and feature_library each hold several N8 stories. A lane holds one story at a time, so they run in the order written.
 - A feature story that is ready before N8.2 merges does not start: it would have to draw its own copy of a shared piece.
+- The Arabic tests of Part 1.5 use the fake course of N2.2 (#85), which is merged. No N8 story waits for it.
 
 ---
 
@@ -313,7 +314,7 @@ New pieces:
   - The route is the shortest way along the road. Today `route()` goes from pad to pad, so place 3 to place 2 passes through place 1: 18 hops, 3.6 s. It must go through the junction: 4 hops.
   - A trip has at most 6 hops. Count the hops as now (one per 2.2 units of each leg, at least one per leg); if that is more than 6, share 6 among the legs by their length. Each hop stays `hop` long, so a trip is never more than 1.2 s. Longer trips make longer hops.
 - **Tapping the place he is at:** the card becomes that place (N8.6). Tapping it again opens it.
-- **Tapping a place that is not open yet** (rule 7): a pill over it with a lock and its reason (`"After <place>"`, the place before it) shows in `press` and leaves after 1.5 s over `move`. The coquí does not move. Nothing else changes. A place locked by plan keeps N3.4's behaviour.
+- **Tapping a place that is not open yet** (rule 7): a pill over it with a lock and its reason (`"After <place>"`, the place before it) shows in `press` and leaves after `lockHold` over `move`. The coquí does not move. Nothing else changes. A place locked by plan keeps N3.4's behaviour.
 - With reduced motion: the coquí is placed at once, the camera jumps, the card changes with a `quick` fade.
 
 **Differs from the board**
@@ -384,7 +385,7 @@ It plays once. Leaving the map during it finishes it at once.
 **Differs from the board**
 
 - The board's dark screen before step 1 stands for the story being played. Do not build it.
-- The board's card picture for El colmado is a piece of the map and its title is the scene's name. Use the place's first story and its scene picture.
+- The board's card picture for El colmado is a piece of the map and its title is the scene's name. Use the place's first story and its scene picture: the app's own, drawn by `PixelView`, as on N4.1's card. Never a screenshot.
 
 **Done when**
 
@@ -407,7 +408,7 @@ It plays once. Leaving the map during it finishes it at once.
 - **A speaking turn:** `NocheMic` follows the turn (N4.3). Thinking shows the moment he stops. On a miss: `notYet` for 900 ms, then the line plays again: the "hear it again" arrow turns once in `settle`, the mic goes to `theySpeak`, then `ready`. On right: `right`, 600 ms later the part's dash fills, and 700 ms after that the next turn comes.
 - **From turn to turn:** the frame (close, dashes, TXT) holds. The old turn fades out in `quick`; the new turn's rows rise by `row`, `stagger` apart.
 - **TXT** is a switch: fill, text and border change in `quick`; the lines fade in `quick`.
-- **A touch turn:** what he touches gets a 3 px outline with radius 12 around its hint box. Wrong: text colour, drawn in `quick`, held 1.3 s while the line plays again (small level bars beside the line), then gone in `move`. Right: `right` colour, with one ring leaving it in `settle`; then the dash and the next turn as above.
+- **A touch turn:** what he touches gets a 3 px outline with radius 12 around its hint box. Wrong: text colour, drawn in `quick`, held for as long as the line takes to play again (1.3 s on the board; a `motion.dart` wait where the app has no end-of-clip to listen for) (small level bars beside the line), then gone in `move`. Right: `right` colour, with one ring leaving it in `settle`; then the dash and the next turn as above.
 - **The end of the story:** the picture stays. Its window closes from 400 to 296 and moves to the top in `pageIn` (a `NocheWindow`); the header and the turn fade in `quick`. Under it, rising by `row`, `stagger` apart: `"Story <N> of <M> · <place>"` (`label`), the title (`placeTitle`), `"<N> new words"` and a row per new word with a `NocheStageBar` that grows from zero to its stage in `settle`, then `"Today"` with `"<N> of <M> min"` and a bar that grows from before the story to after it in `settle`. The orange next action lands last: the plan's next entry (`"Next: review · <N> min"`, `"Next: <story title>"`, or `"Back to the map"` with nothing left).
 
 **Differs from the board**
@@ -483,7 +484,7 @@ It plays once. Leaving the map during it finishes it at once.
 The page is three shelves. A shelf is a row of things standing on a plank: 4 of `line` on 8 of `chip`, from 16 at the start to the screen's end edge.
 
 - **Reading now** (only with a book in progress): its cover 90 by 126 facing out, and beside it `"Keep reading · Chapter <N>"`, the title, `"Page <P> of <Total> · <M> min left in the chapter"` and a progress bar in text colour.
-- **Stories:** the first place is the new-story slot (132 by 120, dashed). Then the stories, newest first: scene picture 104 by 120 with radius 12 at the top and 2 at the plank; the title under the plank.
+- **Stories:** the first place is the new-story slot (132 by 120, dashed). Then the stories, newest first, each with the picture the shelf shows for it today (N4.5: the app's own scene picture drawn by `PixelView`, never a screenshot), 104 by 120 with radius 12 at the top and 2 at the plank; the title under the plank.
 - **Books:** covers standing on the plank, 120 or 132 high, titles on the covers, nothing under the plank.
 - The orange "Continue reading" (56) above the tab bar, as now.
 
@@ -491,7 +492,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 **The new-story slot**
 
-- Ask the generator first. `StoryGenerator` gets `canWrite(vocabulary, due, previous)`: true when `generate` with no practice words would return a story. The Library calls it when it opens and when progress changes.
+- Ask the generator first. `StoryGenerator` (feature_library's own, `lib/src/story_generator.dart`, so no request is needed) gets `canWrite(vocabulary, due, previous)`: true when `generate` with no practice words would return a story. The Library calls it when it opens and when progress changes.
 - **Locked** (it is false): a dashed `line` outline, a lock, and "Come back when you learn more words." in text colour. It is not a button and nothing happens on a tap: its reason is already written on it in full, so rule 7 leaves it alone.
 - **Open:** a dashed label-colour outline, a plus, and "A new story at your level". A tap opens the sheet (N8.12).
 - Turning from locked to open while on screen: the lock fades out in `quick`, the open slot fades in.
@@ -582,7 +583,7 @@ Gone from the page: the topic pills and "Write my story" (they are in the sheet,
 
 **What to build**
 
-- **Locked** (rule 7, `NocheQuietLock`): the locked place pill shows a small pill under it with a lock and `"After <place>"`; the locked call card's outline turns solid and its `"<N> min · after story <M>"` lights up. Both for 1.4 s. The place pills use `NochePillGroup`, and the card under them a `NocheFollow` with distance `tab`.
+- **Locked** (rule 7, `NocheQuietLock`): the locked place pill shows a small pill under it with a lock and `"After <place>"`; the locked call card's outline turns solid and its `"<N> min · after story <M>"` lights up. Both for `lockHold`. The place pills use `NochePillGroup`, and the card under them a `NocheFollow` with distance `tab`.
 - **Calling:** the call disc stays where it is and becomes the call's mic. The Speak screen fades in `quick`; the shell does the tab bar and the ground (N8.3); the close button and the clock fade in after 200 ms; the picture rises by `row`.
 - **In the call:** `NocheMic` for every state. While it rings: the thinking look with the word "Calling <partner>". Then `theySpeak`, `listening`, `thinking`, with the course's mic words. Each line of the partner rises by `row` in `move`. When he stops, what the app heard rises under the partner's line in `right` colour, while the mic thinks.
 - **Hanging up:** the call fades in `quick`. "Call done" (`pageTitle`) and `"<N> min · <M> words said"` rise by `row`; the words he said arrive as outline pills (40 high), `stagger` apart, the first five only; the orange `"Back to <Speak tab name>"` lands last.

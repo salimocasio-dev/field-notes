@@ -51,7 +51,7 @@ button{font-family:inherit}
 [data-card="up"] .cUp,[data-card="p2"] .cPk2,[data-card="p3"] .cPk3{opacity:1;visibility:visible;transition:none;animation:rise 220ms cubic-bezier(.2,0,0,1) 60ms both}
 [data-card^="p"] .nextP{animation:rise 220ms cubic-bezier(.2,0,0,1) 140ms both}
 
-/* a place that is not open yet answers quietly: its reason shows for 1.5 s. No hop, no shake, no colour */
+/* a place that is not open yet answers quietly: its reason shows for 1.4 s. No hop, no shake, no colour */
 .lockpill{opacity:0;transform:translateY(4px);transition:opacity 220ms cubic-bezier(.4,0,1,1),transform 220ms cubic-bezier(.4,0,1,1)}
 [data-lock="1"] .lockpill{opacity:1;transform:translateY(0);transition:opacity 90ms cubic-bezier(.2,0,0,1),transform 90ms cubic-bezier(.2,0,0,1)}
 
@@ -333,7 +333,7 @@ dest: String(s.dest || 0),
 card: s.card || 'up',
 drag: s.drag ? '1' : '0',
 lock: s.lock ? '1' : '0',
-locked4: function () { clearTimeout(self._l); self.setState({ lock: 1 }); self._l = setTimeout(function () { self.setState({ lock: 0 }); }, 1500); },
+locked4: function () { clearTimeout(self._l); self.setState({ lock: 1 }); self._l = setTimeout(function () { self.setState({ lock: 0 }); }, 1400); },
 dy: s.dy || 0,
 go2: function () { self.visit(2); },
 go3: function () { self.visit(3); },
