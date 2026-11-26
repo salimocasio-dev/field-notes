@@ -943,4 +943,136 @@ void main() {
       storesWith.dispose();
     });
   });
+
+  group('contract interfaces, flush, and cefr persistence', () {
+    test('PalabrasStore implements LanguageProgressStore and ProgressStore.LanguageProgress delegates real values including non-Spanish', () {
+      final kv = MemoryKeyValueStore();
+      final clock = SettableClock(_t0);
+      final stores = ProgressStores(kv, clock, languages: [arabic, french]);
+
+      final es = stores.forLanguage(Language.spanish);
+      final ar = stores.forLanguage(arabic);
+      expect(es, isA<LanguageProgressStore>());
+      expect(ar, isA<LanguageProgressStore>());
+
+      final ProgressStore esAsInterface = es;
+      final ProgressStore arAsInterface = ar;
+      expect(esAsInterface.language, Language.spanish);
+      expect(arAsInterface.language, arabic);
+      expect(esAsInterface.stageMax, 4);
+      expect(arAsInterface.stageMax, 4);
+      expect(esAsInterface.streakFreezes, isNull);
+      expect(arAsInterface.streakFreezes, isNull);
+
+      arAsInterface.addMinutes(4.25);
+      expect(arAsInterface.minutesOn(_day1Utc), 4.25);
+      expect(esAsInterface.minutesOn(_day1Utc), 4.25);
+
+      stores.dispose();
+    });
+
+    test('ProgressStores implements ProgressStoreCollection and behaves identically through the interface', () async {
+      final kv = MemoryKeyValueStore();
+      final clock = SettableClock(_t0);
+      final concrete = ProgressStores(kv, clock, languages: [arabic]);
+      expect(concrete, isA<ProgressStoreCollection>());
+      final ProgressStoreCollection collection = concrete;
+
+      var collectionEvents = 0;
+      final sub = collection.changes.listen((_) => collectionEvents++);
+
+      expect(collection.currentLanguageCode, 'es');
+      collection.currentLanguageCode = 'ar';
+      expect(collection.currentLanguageCode, 'ar');
+      expect(concrete.currentLanguageCode, 'ar');
+
+      final ProgressStore arStore = collection.forLanguage(arabic);
+      arStore.answer('مرحبا', Skill.ear, ok: true, ms: 400);
+      arStore.addMinutes(3.5);
+      await pumpEventQueue();
+
+      expect(collection.hasProgress('ar'), isTrue);
+      expect(collection.hasProgress('es'), isFalse);
+      expect(collection.languagesWithProgress, ['ar']);
+      expect(collection.streak, 1);
+      expect(collection.minutes, 3.5);
+      expect(collection.minutesOn(_day1Utc), 3.5);
+      expect(collectionEvents, 3); // currentLanguageCode + answer + addMinutes
+
+      await sub.cancel();
+      concrete.dispose();
+    });
+
+    test('heard(save: true) and heard() + flush() persist across reload and fire 1 changes event in multi-language mode', () async {
+      final kv = MemoryKeyValueStore();
+      final clock = SettableClock(_t0);
+      final stores = ProgressStores(kv, clock, languages: [arabic, french]);
+      final ar = stores.forLanguage(arabic);
+      final fr = stores.forLanguage(french);
+
+      // Default heard() leaves storage unwritten and fires no event.
+      expect(await _countEvents(ar.changes, () => ar.heard('مرحبا')), 0);
+      expect(ar.word('مرحبا')?.oida, 1);
+      expect(kv.data.containsKey('coqui.ar.palabras.v1'), isFalse);
+      final beforeFlush = ProgressStores(kv, clock);
+      expect(beforeFlush.hasProgress('ar'), isFalse);
+      beforeFlush.dispose();
+
+      // flush() persists in-memory heard() mutation, fires 1 event, and survives reload.
+      var arEvents = 0;
+      var storesEvents = 0;
+      final subAr = ar.changes.listen((_) => arEvents++);
+      final subStores = stores.changes.listen((_) => storesEvents++);
+      ar.flush();
+      await pumpEventQueue();
+      expect(arEvents, 1);
+      expect(storesEvents, 1);
+      expect(stores.hasProgress('ar'), isTrue);
+
+      // heard(save: true) persists immediately and fires 1 event.
+      var frEvents = 0;
+      final subFr = fr.changes.listen((_) => frEvents++);
+      fr.heard('bonjour', save: true);
+      await pumpEventQueue();
+      expect(frEvents, 1);
+      expect(storesEvents, 2);
+      expect(stores.hasProgress('fr'), isTrue);
+
+      final reloaded = ProgressStores(kv, clock);
+      expect(reloaded.forLanguage(arabic).word('مرحبا')?.oida, 1);
+      expect(reloaded.forLanguage(french).word('bonjour')?.oida, 1);
+      expect(reloaded.languagesWithProgress, ['ar', 'fr']);
+
+      await subAr.cancel();
+      await subFr.cancel();
+      await subStores.cancel();
+      stores.dispose();
+      reloaded.dispose();
+    });
+
+    test('presume records cefr A1 by default in multi-language mode and persists explicit cefr', () {
+      final kv = MemoryKeyValueStore();
+      final clock = SettableClock(_t0);
+      final stores = ProgressStores(kv, clock, languages: [arabic]);
+
+      // Call through ProgressStore interface to verify default A1 in multi-language mode.
+      final ProgressStore esInterface = stores.forLanguage(Language.spanish);
+      esInterface.presume(['hola'], ['es-1'], [
+        {'w': 'hola', 'ok': true},
+      ]);
+      expect(esInterface.levelResult?['cefr'], 'A1');
+
+      // Explicit cefr overrides default in multi-language mode.
+      final ar = stores.forLanguage(arabic);
+      ar.presume(['مرحبا'], ['ar-1'], const [], cefr: 'A2');
+      expect(ar.levelResult?['cefr'], 'A2');
+
+      final reloaded = ProgressStores(kv, clock);
+      expect(reloaded.forLanguage(Language.spanish).levelResult?['cefr'], 'A1');
+      expect(reloaded.forLanguage(arabic).levelResult?['cefr'], 'A2');
+
+      stores.dispose();
+      reloaded.dispose();
+    });
+  });
 }

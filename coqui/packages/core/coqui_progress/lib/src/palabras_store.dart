@@ -18,7 +18,8 @@ import 'package:coqui_progress/src/shared_progress.dart' as shared_store;
 /// Page 12, section 2: "Day keys and the 4 am cut are computed exactly as palabras.js computes
 /// them (it mixes local time and UTC; keep the mix)". The day keys (`dias`) and the streak are
 /// the UTC date of a time; "the next morning" is 4:00 in the local time zone, plus 24 hours.
-class PalabrasStore implements ProgressStore, CallProgressStore {
+class PalabrasStore
+    implements ProgressStore, CallProgressStore, LanguageProgressStore {
   /// Loads what is under [storageKey] in [kv] (palabras.js lines 17 to 19), as the old file
   /// does when it starts. [clock] is the old `now()`: `Date.now()` and the `__PAL_NOW` hook.
   ///
@@ -232,11 +233,20 @@ class PalabrasStore implements ProgressStore, CallProgressStore {
     return r;
   }
 
-  /// palabras.js `oida`. It does not save, exactly as `oida` does not: the word is in the store
-  /// and in [raw] at once, but it reaches the storage with the next save (the answer, the story, the
-  /// minutes, any setting that follows), and [changes] does not fire for it.
+  /// Persists any unsaved in-memory mutations (such as [heard] calls with
+  /// `save: false`) to storage and emits [changes].
+  void flush() => _save();
+
+  /// palabras.js `oida`. By default (`save: false`) it does not save, matching
+  /// `oida`: the word is in the store and in [raw] at once, and reaches storage
+  /// on [flush] or the next saving call (answer, story, minutes, setting).
+  /// Pass `save: true` to persist and emit [changes] immediately.
   @override
-  WordRecord heard(String w) => WordRecord.fromJson(_oida(w));
+  WordRecord heard(String w, {bool save = false}) {
+    final record = WordRecord.fromJson(_oida(w));
+    if (save) _save();
+    return record;
+  }
 
   // ---- palabras.js lines 29 to 37: responde ---------------------------------------------------
 
@@ -381,7 +391,12 @@ class PalabrasStore implements ProgressStore, CallProgressStore {
   // are due for a cold check the next morning, and open for speaking at once. The stories that
   // teach them count as done.
   @override
-  void presume(List<String> words, List<String> stories, List<Object?> log) {
+  void presume(
+    List<String> words,
+    List<String> stories,
+    List<Object?> log, {
+    String? cefr,
+  }) {
     final t = _now();
     for (final w in words) {
       final r = _rec(w);
@@ -402,10 +417,14 @@ class PalabrasStore implements ProgressStore, CallProgressStore {
         c['presunto'] = 1;
       }
     }
+    final resolvedCefr = (cefr != null && cefr.isNotEmpty)
+        ? cefr
+        : (_shared != null ? 'A1' : null);
     _db['nivel'] = <String, dynamic>{
       't': t,
       'log': [...log],
       'historias': stories.length,
+      'cefr': ?resolvedCefr,
     };
     if (_shared != null) {
       _shared.recordDayActivity(
@@ -546,12 +565,15 @@ class PalabrasStore implements ProgressStore, CallProgressStore {
   // ---- the rest of ProgressStore ---------------------------------------------------------------
 
   /// The language this store holds progress for.
+  @override
   Language get language => _language;
 
   /// The highest mastery stage (`etapa`) a word can reach (4).
+  @override
   int get stageMax => maxStage;
 
   /// Streak freeze count (not yet active; reserved for future use).
+  @override
   int? get streakFreezes => null;
 
   /// Minutes logged on the UTC calendar day of [day]'s instant (rolling 35-day
@@ -562,6 +584,7 @@ class PalabrasStore implements ProgressStore, CallProgressStore {
   /// UTC+ time zones. In legacy single-store mode (`PalabrasStore(kv, clock)`
   /// without `language:`), this reflects only minutes added during the current
   /// session and is not persisted across restarts.
+  @override
   double minutesOn(DateTime day) {
     final shared = _shared;
     if (shared != null) return shared.minutesOn(day);
