@@ -20,93 +20,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Guard sensitive paths (paid audio, published app/, Danny call lock)
-        env:
-          BASE_REF: ${{ github.base_ref }}
-        run: |
-          CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD")
-          BAD=0
-          if echo "$CHANGED" | grep -q '^historia/cuentos/'; then
-            echo "::error::PR modifies historia/cuentos/ (triggers paid Azure audio). Direct PR edits are blocked."
-            BAD=1
-          fi
-          if echo "$CHANGED" | grep -q '^app/'; then
-            echo "::error::PR modifies root app/ directly. Only coqui-sitio.yml may publish to app/ on main."
-            BAD=1
-          fi
-          if echo "$CHANGED" | grep -q '^historia/llamada\.js$'; then
-            echo "::error::PR modifies historia/llamada.js (ElevenLabs/Danny call client lock)."
-            BAD=1
-          fi
-          if echo "$CHANGED" | grep -q '^historia/datos/llamadas\.json$'; then
-            echo "::error::PR modifies historia/datos/llamadas.json (ElevenLabs/Danny call config lock)."
-            BAD=1
-          fi
-          exit $BAD
-
-      - name: Check branch prefix & package boundaries under coqui/packages/
+      - name: Run PR guardrails
         env:
           BASE_REF: ${{ github.base_ref }}
           HEAD_REF: ${{ github.head_ref }}
-        run: |
-          set -o pipefail
-          CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD")
-          PKG_LINES=$(echo "$CHANGED" | grep '^coqui/packages/' || true)
-
-          if [[ "$HEAD_REF" =~ ^story/[0-9]+$ ]]; then
-            BAD=0
-            while IFS= read -r f; do
-              [ -z "$f" ] && continue
-              case "$f" in
-                coqui/packages/core/coqui_scenes/*|coqui/packages/features/feature_story/*|coqui/packages/coqui_story_checks/*|coqui/ref/pp/*|coqui/requests/*)
-                  ;;
-                *)
-                  echo "::error file=$f::story/<n> branch '$HEAD_REF' modifies disallowed path '$f' (allowed: coqui_scenes, feature_story, coqui_story_checks, coqui/ref/pp/, coqui/requests/)."
-                  BAD=1
-                  ;;
-              esac
-            done <<< "$CHANGED"
-            exit $BAD
-          fi
-
-          if [[ "$HEAD_REF" =~ ^lane/[^/]+/ ]]; then
-            if [ -n "$PKG_LINES" ]; then
-              PKGS=$(echo "$PKG_LINES" | sed -E 's#^coqui/packages/((core|features)/)?([^/]+)(/.*)?$#\1\3#' | sort -u)
-              COUNT=$(echo "$PKGS" | sed '/^$/d' | wc -l)
-              if [ "$COUNT" -gt 1 ]; then
-                echo "::error::PR touches multiple Flutter packages ($PKGS). One lane branch must change only one package."
-                exit 1
-              fi
-            fi
-            exit 0
-          fi
-
-          if [ -n "$PKG_LINES" ]; then
-            echo "::error::Branch '$HEAD_REF' modifies coqui/packages/ with an unauthorized prefix. Use lane/<package>/<n> or story/<n>."
-            exit 1
-          fi
-
-      - name: Noche token grep (added lines outside coqui_ui)
-        env:
-          BASE_REF: ${{ github.base_ref }}
-        run: |
-          UI_PATH="coqui/packages/core/coqui_ui/"
-          DART_FILES=$(git diff --name-only --diff-filter=AM "origin/${BASE_REF}...HEAD" -- 'coqui/packages/*.dart' 'coqui/packages/**/*.dart' | grep -v "^${UI_PATH}" || true)
-          if [ -z "$DART_FILES" ]; then
-            echo "No non-coqui_ui Dart files changed."
-            exit 0
-          fi
-          BAD=0
-          while IFS= read -r f; do
-            [ -z "$f" ] && continue
-            HITS=$(git diff -U0 "origin/${BASE_REF}...HEAD" -- "$f" | grep -E '^\+[^+]' | grep -nE 'Color\(0x|fontFamily\s*:' || true)
-            if [ -n "$HITS" ]; then
-              echo "::error file=$f::Found raw Color(0x...) or fontFamily outside coqui_ui. Use NocheColors/NocheType."
-              echo "$HITS"
-              BAD=1
-            fi
-          done <<< "$DART_FILES"
-          exit $BAD
+        run: bash .github/scripts/pr_guardrails.sh
 
   dart-boundaries-and-format:
     name: Boundaries & Format (Changed Dart Files)
@@ -136,10 +54,4 @@ jobs:
       - name: Check dart format on changed Dart files
         env:
           BASE_REF: ${{ github.base_ref }}
-        run: |
-          CHANGED_DART=$(git diff --name-only --diff-filter=AM "origin/${BASE_REF}...HEAD" -- '*.dart' || true)
-          if [ -n "$CHANGED_DART" ]; then
-            printf '%s\n' "$CHANGED_DART" | xargs -r -d '\n' dart format --output=none --set-exit-if-changed
-          else
-            echo "No Dart files changed."
-          fi
+        run: bash .github/scripts/check_dart_format.sh
