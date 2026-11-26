@@ -424,7 +424,7 @@ class NocheReviewDashes extends StatelessWidget {
                       boxShadow: current == i
                           ? [
                               BoxShadow(
-                                color: NocheColors.text,
+                                color: NocheColors.listening,
                                 spreadRadius: dense ? 1 : 1.5,
                               ),
                             ]
@@ -537,6 +537,19 @@ class NocheTouchSign extends StatefulWidget {
   State<NocheTouchSign> createState() => _NocheTouchSignState();
 }
 
+const _nocheTouchAppIcon = NocheIconData([
+  NocheIconShape(
+    'M9 11.24V7.5C9 6.12 10.12 5 11.5 5C12.88 5 14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74'
+    'C16 5.01 13.99 3 11.5 3C9.01 3 7 5.01 7 7.5c0 1.56.79 2.93 2 3.74z'
+    'm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5'
+    'C10.67 6 10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8'
+    ' 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2'
+    ' 0-.62-.38-1.16-.91-1.38z',
+    fill: true,
+    stroke: false,
+  ),
+], strokeWidth: 0);
+
 class _NocheTouchSignState extends State<NocheTouchSign>
     with SingleTickerProviderStateMixin {
   late final AnimationController _a = AnimationController(
@@ -596,8 +609,8 @@ class _NocheTouchSignState extends State<NocheTouchSign>
             color: NocheColors.right,
             boxShadow: [BoxShadow(color: NocheColors.text, spreadRadius: 2)],
           ),
-          child: const CoquiIcon(
-            CoquiIcons.touchApp,
+          child: const NocheIcon(
+            _nocheTouchAppIcon,
             size: 30,
             color: NocheColors.onAccent,
           ),
@@ -607,7 +620,8 @@ class _NocheTouchSignState extends State<NocheTouchSign>
   );
 }
 
-/// Noche picture choice frame (green right, white outline wrong/selected, never red).
+/// Noche picture choice frame (green right, white outline + calm wrong badge on
+/// wrong and never red, plain white outline on selected).
 class NochePictureChoice extends StatelessWidget {
   const NochePictureChoice({
     super.key,
@@ -632,6 +646,7 @@ class NochePictureChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showCross = cross || (!check && ring == ChoiceRing.wrong);
     final (color, width) = switch (ring) {
       ChoiceRing.none => (NocheColors.lessonBorder, nocheLessonBorder),
       ChoiceRing.right => (NocheColors.right, 3.0),
@@ -684,7 +699,7 @@ class NochePictureChoice extends StatelessWidget {
             top: nocheBadgeInset,
             child: NocheCheckBadge(),
           )
-        else if (cross)
+        else if (showCross)
           const PositionedDirectional(
             end: nocheBadgeInset,
             top: nocheBadgeInset,
@@ -780,6 +795,7 @@ class _NocheTileFace extends StatelessWidget {
       child: face,
     );
     final calm = still || MediaQuery.maybeDisableAnimationsOf(context) == true;
+    final showCross = !empty && (cross || (!check && ring == ChoiceRing.wrong));
     return Stack(
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,
@@ -791,7 +807,7 @@ class _NocheTileFace extends StatelessWidget {
             top: -10,
             child: NocheCheckBadge(),
           ),
-        if (cross)
+        if (showCross)
           const PositionedDirectional(
             end: -6,
             top: -10,
@@ -799,8 +815,8 @@ class _NocheTileFace extends StatelessWidget {
           ),
         if (number != null)
           PositionedDirectional(
-            end: (check || cross) ? 28 : -4,
-            top: (check || cross) ? -7 : -8,
+            end: (check || showCross) ? 28 : -4,
+            top: (check || showCross) ? -7 : -8,
             child: NocheNumberBadge(number: number!),
           ),
         if (sign)
