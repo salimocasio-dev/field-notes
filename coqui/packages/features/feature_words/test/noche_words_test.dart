@@ -8,6 +8,7 @@ import 'dart:ui' as ui;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:feature_words/src/words_tab.dart';
 import 'package:feature_words/src/words_view.dart';
 import 'package:flutter/rendering.dart' show RenderRepaintBoundary;
@@ -160,21 +161,36 @@ void main() {
     });
 
     test('formatWordDueLine covers all spec formats and top stage prefix', () {
-      expect(formatWordDueLine(days: 0, isGood: false), 'back today');
-      expect(formatWordDueLine(days: 0, isGood: true), 'good · back today');
-      expect(formatWordDueLine(days: 1, isGood: false), 'back tomorrow');
-      expect(formatWordDueLine(days: 2, isGood: false), 'back in 2 days');
-      expect(formatWordDueLine(days: 13, isGood: false), 'back in 13 days');
-      expect(formatWordDueLine(days: 14, isGood: false), 'back in 2 weeks');
+      expect(formatWordDueLine(days: 0, isGood: false), WordsWording.backToday);
+      expect(
+        formatWordDueLine(days: 0, isGood: true),
+        WordsWording.goodDue(WordsWording.backToday),
+      );
+      expect(
+        formatWordDueLine(days: 1, isGood: false),
+        WordsWording.backTomorrow,
+      );
+      expect(
+        formatWordDueLine(days: 2, isGood: false),
+        WordsWording.backInDays(2),
+      );
+      expect(
+        formatWordDueLine(days: 13, isGood: false),
+        WordsWording.backInDays(13),
+      );
+      expect(
+        formatWordDueLine(days: 14, isGood: false),
+        WordsWording.backInWeeks(2),
+      );
       expect(
         formatWordDueLine(days: 21, isGood: true),
-        'good · back in 3 weeks',
+        WordsWording.goodDue(WordsWording.backInWeeks(3)),
       );
       expect(
         formatWordDueLine(days: 20, isGood: true),
-        'good · back in 3 weeks',
+        WordsWording.goodDue(WordsWording.backInWeeks(3)),
       );
-      expect(formatWordDueLine(days: null, isGood: true), 'good');
+      expect(formatWordDueLine(days: null, isGood: true), WordsWording.good);
       expect(formatWordDueLine(days: null, isGood: false), '');
     });
 
@@ -191,22 +207,31 @@ void main() {
         await pumpTab(tester, rig);
 
         expect(dueCardCount(tester), '2');
-        expect(find.text('WHEN YOUR 6 WORDS COME BACK'), findsOneWidget);
+        expect(
+          find.text(WordsWording.chartHeading(6).toUpperCase()),
+          findsOneWidget,
+        );
 
         final chart = tester.widget<NocheBarChart>(find.byType(NocheBarChart));
         expect(
           [for (final i in chart.items) (i.label, i.value, i.highlighted)],
           [
-            ('Today', 2, true),
-            ('Tomorrow', 1, false),
-            ('3 days', 1, false),
-            ('This week', 1, false),
-            ('Later', 1, false),
+            (WordsWording.bucketToday, 2, true),
+            (WordsWording.bucketTomorrow, 1, false),
+            (WordsWording.bucketThreeDays, 1, false),
+            (WordsWording.bucketThisWeek, 1, false),
+            (WordsWording.bucketLater, 1, false),
           ],
         );
         expect(
           chart.semanticLabel,
-          'Words coming back: 2 today, 1 tomorrow, 1 in 3 days, 1 this week, 1 later',
+          WordsWording.chartSemanticLabel(
+            today: 2,
+            tomorrow: 1,
+            threeDays: 1,
+            thisWeek: 1,
+            later: 1,
+          ),
         );
         // Soonest-first ordering on the screen: ayer (-1) before hoy (0) before manana (1)...
         expect(rowOrder(tester).take(3).toList(), ['ayer', 'hoy', 'manana']);
@@ -221,26 +246,36 @@ void main() {
         final rig = _buildFewWordsRig();
         await pumpTab(tester, rig);
 
-        expect(find.text('SPANISH'), findsOneWidget);
-        expect(find.text('Words'), findsOneWidget);
-        expect(find.text('+ Add a word or goal'), findsOneWidget);
+        expect(
+          find.text(Language.spanish.englishName.toUpperCase()),
+          findsOneWidget,
+        );
+        expect(find.text(WordsWording.screenTitle), findsOneWidget);
+        expect(find.text(WordsWording.addPillLabel), findsOneWidget);
 
         expect(dueCardCount(tester), '1');
-        expect(find.text('word comes\nback today'), findsOneWidget);
-        expect(find.text('WHEN YOUR 3 WORDS COME BACK'), findsOneWidget);
+        expect(find.text(WordsWording.dueTodayLabel(1)), findsOneWidget);
+        expect(
+          find.text(WordsWording.chartHeading(3).toUpperCase()),
+          findsOneWidget,
+        );
 
-        expect(find.text('Listening · 1'), findsOneWidget);
-        expect(find.text('Speaking · 1'), findsOneWidget);
-        expect(find.text('Reading · A2'), findsOneWidget);
+        expect(find.text(WordsWording.listeningTab(1)), findsOneWidget);
+        expect(find.text(WordsWording.speakingTab(1)), findsOneWidget);
+        expect(find.text(WordsWording.readingLockedTab), findsOneWidget);
 
         // Soonest-first rows with exact due lines and colours.
         expect(rowOrder(tester), ['la cuchara', 'la leche', 'la mesa']);
-        final todayLine = tester.widget<Text>(find.text('back today'));
+        final todayLine = tester.widget<Text>(
+          find.text(WordsWording.backToday),
+        );
         expect(todayLine.style?.color, NocheColors.next);
-        final twoDaysLine = tester.widget<Text>(find.text('back in 2 days'));
+        final twoDaysLine = tester.widget<Text>(
+          find.text(WordsWording.backInDays(2)),
+        );
         expect(twoDaysLine.style?.color, NocheColors.label);
         final goodLine = tester.widget<Text>(
-          find.text('good · back in 3 weeks'),
+          find.text(WordsWording.goodDue(WordsWording.backInWeeks(3))),
         );
         expect(goodLine.style?.color, NocheColors.label);
 
@@ -261,9 +296,9 @@ void main() {
           [(2, 4), (3, 4), (4, 4)],
         );
 
-        // Orange Start review button has no minutes estimate.
-        expect(find.text('Start review'), findsOneWidget);
-        expect(find.textContaining('min'), findsNothing);
+        // Orange Start review button shows only the wording label (no minutes estimate).
+        expect(find.text(WordsWording.startReview), findsOneWidget);
+        expect(reviewButton(tester).label, WordsWording.startReview);
 
         // Every word row is at least 56 high.
         for (final w in ['la cuchara', 'la leche', 'la mesa']) {
@@ -293,15 +328,21 @@ void main() {
 
         // Listening: 2 due today, 3 total, 1 good.
         expect(dueCardCount(tester), '2');
-        expect(find.text('WHEN YOUR 3 WORDS COME BACK'), findsOneWidget);
-        expect(find.text('Listening · 1'), findsOneWidget);
-        expect(find.text('Speaking · 1'), findsOneWidget);
+        expect(
+          find.text(WordsWording.chartHeading(3).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(find.text(WordsWording.listeningTab(1)), findsOneWidget);
+        expect(find.text(WordsWording.speakingTab(1)), findsOneWidget);
 
         // Switch to Speaking: 0 due today, 2 total, rows ['uno', 'dos'].
-        await tester.tap(find.text('Speaking · 1'));
+        await tester.tap(find.text(WordsWording.speakingTab(1)));
         await tester.pumpAndSettle();
         expect(dueCardCount(tester), '0');
-        expect(find.text('WHEN YOUR 2 WORDS COME BACK'), findsOneWidget);
+        expect(
+          find.text(WordsWording.chartHeading(2).toUpperCase()),
+          findsOneWidget,
+        );
         expect(rowOrder(tester), ['uno', 'dos']);
 
         // Reading option is muted below A2 and tapping shows A2 gate message.
@@ -309,20 +350,20 @@ void main() {
           find.byType(NocheSegmented<WordsSkill>),
         );
         expect(seg.role, NocheSegmentedRole.tabList);
-        expect(seg.options[2].label, 'Reading · A2');
+        expect(seg.options[2].label, WordsWording.readingLockedTab);
         expect(seg.options[2].muted, isTrue);
 
-        await tester.tap(find.text('Reading · A2'));
+        await tester.tap(find.text(WordsWording.readingLockedTab));
         await tester.pumpAndSettle();
         expect(dueCardCount(tester), '0');
-        expect(find.text('Reading opens for tracking at A2.'), findsOneWidget);
+        expect(find.text(WordsWording.readingLockedMessage), findsOneWidget);
         expect(rowOrder(tester), isEmpty);
 
         // Once learner reaches A2, Reading is unmuted and does not show the gate line.
         rig.setCefr('A2');
         await tester.pumpAndSettle();
-        expect(find.text('Reading · 0'), findsOneWidget);
-        expect(find.text('Reading opens for tracking at A2.'), findsNothing);
+        expect(find.text(WordsWording.readingTab(0)), findsOneWidget);
+        expect(find.text(WordsWording.readingLockedMessage), findsNothing);
       },
     );
 
@@ -335,9 +376,12 @@ void main() {
         await pumpTab(tester, rig, stageMax: 5);
 
         // With stageMax = 5, stage 4 is NOT good yet; only stage 5 is good.
-        expect(find.text('Listening · 1'), findsOneWidget);
-        expect(find.text('back in 5 days'), findsOneWidget);
-        expect(find.text('good · back in 3 weeks'), findsOneWidget);
+        expect(find.text(WordsWording.listeningTab(1)), findsOneWidget);
+        expect(find.text(WordsWording.backInDays(5)), findsOneWidget);
+        expect(
+          find.text(WordsWording.goodDue(WordsWording.backInWeeks(3))),
+          findsOneWidget,
+        );
         expect(
           [
             for (final b in tester.widgetList<NocheStageBar>(

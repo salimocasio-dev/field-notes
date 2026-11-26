@@ -3,6 +3,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/feature_words.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:feature_words/src/words_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -50,7 +51,7 @@ void main() {
     final rig = Rig();
     await rig.playSampleStories();
     await pumpTab(tester, rig);
-    expect(find.text('Words'), findsOneWidget);
+    expect(find.text(WordsWording.screenTitle), findsOneWidget);
     expect(find.byType(NocheStageBar), findsWidgets);
   });
 
@@ -62,7 +63,7 @@ void main() {
         addTearDown(tester.view.reset);
         await tester.pumpWidget(devApp(state: state));
         await tester.pumpAndSettle();
-        expect(find.text('Words'), findsOneWidget);
+        expect(find.text(WordsWording.screenTitle), findsOneWidget);
         expect(find.byType(NocheTabBar), findsOneWidget);
         expect(tester.takeException(), isNull);
       });
@@ -99,9 +100,12 @@ void main() {
       addTearDown(tester.view.reset);
       await tester.pumpWidget(devApp(state: 'curso'));
       await tester.pumpAndSettle();
-      expect(find.text('SPANISH'), findsOneWidget);
-      expect(find.text('Words'), findsOneWidget);
-      expect(find.text('Start review'), findsOneWidget);
+      expect(
+        find.text(Language.spanish.englishName.toUpperCase()),
+        findsOneWidget,
+      );
+      expect(find.text(WordsWording.screenTitle), findsOneWidget);
+      expect(find.text(WordsWording.startReview), findsOneWidget);
       expect(find.byType(NocheBarChart), findsOneWidget);
       expect(find.byType(NocheSegmented<WordsSkill>), findsOneWidget);
     });

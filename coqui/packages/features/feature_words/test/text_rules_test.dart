@@ -1,5 +1,6 @@
 // app.html: occs and vuelve, as pure functions.
 import 'package:feature_words/src/text_rules.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -13,25 +14,43 @@ void main() {
     });
 
     test('due now or past: "Comes back today"', () {
-      expect(comesBack(now, now), 'Comes back today');
-      expect(comesBack(now - 5 * dayMs, now), 'Comes back today');
+      expect(comesBack(now, now), WordsWording.comesBackToday);
+      expect(comesBack(now - 5 * dayMs, now), WordsWording.comesBackToday);
     });
 
     test('a day or less (rounded, at least one): "Comes back in 1 day"', () {
-      expect(comesBack(now + 1, now), 'Comes back in 1 day');
-      expect(comesBack(now + dayMs ~/ 2 - 1, now), 'Comes back in 1 day');
-      expect(comesBack(now + dayMs, now), 'Comes back in 1 day');
-      expect(comesBack(now + 1.49 * dayMs, now), 'Comes back in 1 day');
+      expect(comesBack(now + 1, now), WordsWording.comesBackInDays(1));
+      expect(
+        comesBack(now + dayMs ~/ 2 - 1, now),
+        WordsWording.comesBackInDays(1),
+      );
+      expect(comesBack(now + dayMs, now), WordsWording.comesBackInDays(1));
+      expect(
+        comesBack(now + 1.49 * dayMs, now),
+        WordsWording.comesBackInDays(1),
+      );
     });
 
     test('more: "Comes back in N days", Math.round (a half goes up)', () {
-      expect(comesBack(now + 1.5 * dayMs, now), 'Comes back in 2 days');
-      expect(comesBack(now + 2.4 * dayMs, now), 'Comes back in 2 days');
-      expect(comesBack(now + 10 * dayMs, now), 'Comes back in 10 days');
+      expect(
+        comesBack(now + 1.5 * dayMs, now),
+        WordsWording.comesBackInDays(2),
+      );
+      expect(
+        comesBack(now + 2.4 * dayMs, now),
+        WordsWording.comesBackInDays(2),
+      );
+      expect(
+        comesBack(now + 10 * dayMs, now),
+        WordsWording.comesBackInDays(10),
+      );
     });
 
     test('a fraction of a millisecond in the stored date is read as it is', () {
-      expect(comesBack(now + 3 * dayMs + 0.25, now), 'Comes back in 3 days');
+      expect(
+        comesBack(now + 3 * dayMs + 0.25, now),
+        WordsWording.comesBackInDays(3),
+      );
     });
   });
 

@@ -292,7 +292,10 @@ Future<void> closeSheet(WidgetTester tester) async {
 /// All play buttons inside the open [WordSheet].
 Finder get sheetPlayButtons => inSheet(
   find.byWidgetPredicate(
-    (w) => w is Pressable && (w.semanticLabel?.startsWith('Play: ') ?? false),
+    (w) =>
+        w is Pressable &&
+        w.key is ValueKey<String> &&
+        (w.key! as ValueKey<String>).value.startsWith('heard-line-play:'),
   ),
 );
 

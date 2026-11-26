@@ -12,6 +12,7 @@ void main() {
     'lib/src/module.dart',
     'lib/src/text_rules.dart',
     'lib/src/word_sheet.dart',
+    'lib/src/wording.dart',
     'lib/src/words_tab.dart',
     'lib/src/words_view.dart',
   ];
