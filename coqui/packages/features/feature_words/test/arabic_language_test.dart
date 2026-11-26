@@ -4,6 +4,7 @@ import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/feature_words.dart';
 import 'package:feature_words/src/text_rules.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -85,8 +86,11 @@ void main() {
           final rig = await arabicRig();
           await pumpTab(tester, rig, size: size);
           expect(tester.takeException(), isNull);
-          expect(find.text('ARABIC'), findsOneWidget);
-          expect(find.text('Words'), findsOneWidget);
+          expect(
+            find.text(arabicTestLanguage.englishName.toUpperCase()),
+            findsOneWidget,
+          );
+          expect(find.text(WordsWording.screenTitle), findsOneWidget);
           for (final t in tester.widgetList<Text>(find.byType(Text))) {
             final r = tester.getRect(find.byWidget(t));
             expect(r.right, lessThanOrEqualTo(size.width + 0.5));
@@ -104,7 +108,7 @@ void main() {
         expect(tester.takeException(), isNull);
 
         // Whole screen mirrors for RTL course (Part 1.4).
-        final wordsHeader = find.text('Words');
+        final wordsHeader = find.text(WordsWording.screenTitle);
         final addPill = find.byKey(const Key('words-add-pill'));
         expect(
           Directionality.of(tester.element(wordsHeader)),
@@ -137,7 +141,7 @@ void main() {
         );
 
         // Tapping Start review navigates to ReviewRoute().
-        await tester.tap(find.text('Start review'));
+        await tester.tap(find.text(WordsWording.startReview));
         await tester.pumpAndSettle();
         expect(rig.nav.routes, [const ReviewRoute()]);
 
@@ -148,13 +152,13 @@ void main() {
           inSheet(find.byType(TextField)),
           'Speak with Tariq',
         );
-        await tester.tap(inSheet(find.text('Add')));
+        await tester.tap(inSheet(find.text(WordsWording.addAction)));
         await tester.pumpAndSettle();
+        expect(inSheet(find.text(WordsWording.addSavedNote)), findsOneWidget);
         expect(
-          inSheet(find.text('Saved. Material for it comes later.')),
+          inSheet(find.text(WordsWording.addedItem('Speak with Tariq'))),
           findsOneWidget,
         );
-        expect(inSheet(find.text('· Speak with Tariq')), findsOneWidget);
       },
     );
 

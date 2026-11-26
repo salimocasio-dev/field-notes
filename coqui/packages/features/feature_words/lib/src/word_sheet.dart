@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/text_rules.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:feature_words/src/words_view.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -148,13 +149,13 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _StageMeterRow(
-                  label: 'Ear',
+                  label: WordsWording.ear,
                   stage: r.ear.etapa,
                   max: _sheet.stageMax,
                 ),
                 const SizedBox(height: 12),
                 _StageMeterRow(
-                  label: 'Mouth',
+                  label: WordsWording.mouth,
                   stage: r.mouth.etapa,
                   max: _sheet.stageMax,
                 ),
@@ -166,13 +167,14 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
               padding: const EdgeInsetsDirectional.only(top: 16),
               child: Text(
                 back,
+                key: const Key('word-sheet-comes-back'),
                 textAlign: TextAlign.center,
                 style: NocheType.bodySmall.copyWith(color: NocheColors.label),
               ),
             ),
           if (_sheet.lines.isNotEmpty) ...[
             const SizedBox(height: 24),
-            const NocheSectionLabel('Heard in', bottomGap: 12),
+            const NocheSectionLabel(WordsWording.heardIn, bottomGap: 12),
             NocheCard(
               padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
               child: Column(
@@ -300,8 +302,9 @@ class _HeardLineRow extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Pressable(
+            key: ValueKey('heard-line-play:${line.clipId}'),
             onPressed: onPlay,
-            semanticLabel: 'Play: ${line.text}',
+            semanticLabel: WordsWording.playLineSemantic(line.text),
             builder: (context, pressed) => Transform.scale(
               scale: pressed ? 0.94 : 1,
               child: Container(

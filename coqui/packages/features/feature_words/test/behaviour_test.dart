@@ -7,6 +7,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/feature_words.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -41,7 +42,7 @@ void main() {
         await pumpTab(tester, rig);
         expect(rowOrder(tester), ['oida']);
 
-        await tester.tap(find.text('Speaking · 0'));
+        await tester.tap(find.text(WordsWording.speakingTab(0)));
         await tester.pumpAndSettle();
         expect(rowOrder(tester), ['dicha']);
       },
@@ -53,19 +54,17 @@ void main() {
         final rig = Rig();
         await pumpTab(tester, rig);
         expect(dueCardCount(tester), '0');
-        expect(find.text('words come\nback today'), findsOneWidget);
-        expect(find.text('WHEN YOUR 0 WORDS COME BACK'), findsOneWidget);
+        expect(find.text(WordsWording.dueTodayLabel(0)), findsOneWidget);
         expect(
-          find.text(
-            'Play the first story on the map. Your words show up here.',
-          ),
+          find.text(WordsWording.chartHeading(0).toUpperCase()),
           findsOneWidget,
         );
+        expect(find.text(WordsWording.emptyListening), findsOneWidget);
         expect(
           (reviewButton(tester).label, reviewButton(tester).enabled),
-          ('Practice', false),
+          (WordsWording.practice, false),
         );
-        expect(find.text('+ Add a word or goal'), findsOneWidget);
+        expect(find.text(WordsWording.addPillLabel), findsOneWidget);
       },
     );
 
@@ -86,7 +85,7 @@ void main() {
         due.played('s1');
         due.word('casa', ear: 3, due: -1);
         await pumpTab(tester, due);
-        await tester.tap(find.text('Start review'));
+        await tester.tap(find.text(WordsWording.startReview));
         await tester.pump();
         expect(due.nav.routes, [const ReviewRoute()]);
         expect(due.haptics.ticks, 1);
@@ -105,7 +104,7 @@ void main() {
         none.played('s1');
         none.word('casa', ear: 3, due: 4);
         await pumpTab(tester, none);
-        await tester.tap(find.text('Practice'));
+        await tester.tap(find.text(WordsWording.practice));
         await tester.pump();
         expect(none.nav.routes, [const ReviewRoute(practice: true)]);
       },
@@ -130,9 +129,9 @@ void main() {
         await pumpTab(tester, rig);
         expect(
           (reviewButton(tester).label, reviewButton(tester).enabled),
-          ('Practice', false),
+          (WordsWording.practice, false),
         );
-        await tester.tap(find.text('Practice'));
+        await tester.tap(find.text(WordsWording.practice));
         await tester.pump();
         expect(rig.nav.routes, isEmpty);
       },
@@ -166,7 +165,7 @@ void main() {
         expect(rowOrder(tester), ['puerta', 'casa']);
         expect(stageBarValues(tester, wordRow('puerta')), [1]);
         expect(stageBarValues(tester, wordRow('casa')), [4]);
-        expect(find.text('Listening · 1'), findsOneWidget);
+        expect(find.text(WordsWording.listeningTab(1)), findsOneWidget);
       },
     );
 
@@ -244,7 +243,7 @@ void main() {
     Future<Rig> openAddSheet(WidgetTester tester, {Rig? rig}) async {
       final r = rig ?? Rig();
       await pumpTab(tester, r);
-      await tester.tap(find.text('+ Add a word or goal'));
+      await tester.tap(find.text(WordsWording.addPillLabel));
       await tester.pumpAndSettle();
       expect(sheet, findsOneWidget);
       return r;
@@ -254,13 +253,13 @@ void main() {
       tester,
     ) async {
       final rig = await openAddSheet(tester);
-      await tester.tap(inSheet(find.text('Add')));
+      await tester.tap(inSheet(find.text(WordsWording.addAction)));
       await tester.pumpAndSettle();
       await tester.enterText(inSheet(find.byType(TextField)), '   ');
-      await tester.tap(inSheet(find.text('Add')));
+      await tester.tap(inSheet(find.text(WordsWording.addAction)));
       await tester.pumpAndSettle();
       expect(rig.progress.added, isEmpty);
-      expect(find.text('Saved. Material for it comes later.'), findsNothing);
+      expect(find.text(WordsWording.addSavedNote), findsNothing);
     });
 
     testWidgets(
@@ -271,7 +270,7 @@ void main() {
           inSheet(find.byType(TextField)),
           '  talk to my 1-year-old  ',
         );
-        await tester.tap(inSheet(find.text('Add')));
+        await tester.tap(inSheet(find.text(WordsWording.addAction)));
         await tester.pumpAndSettle();
         expect(rig.progress.added, ['talk to my 1-year-old']);
         expect(
@@ -281,19 +280,31 @@ void main() {
               .text,
           '',
         );
+        expect(inSheet(find.text(WordsWording.addSavedNote)), findsOneWidget);
         expect(
-          inSheet(find.text('Saved. Material for it comes later.')),
+          inSheet(find.text(WordsWording.addedItem('talk to my 1-year-old'))),
           findsOneWidget,
         );
-        expect(inSheet(find.text('· talk to my 1-year-old')), findsOneWidget);
 
         await tester.enterText(inSheet(find.byType(TextField)), 'abuela');
-        await tester.tap(inSheet(find.text('Add')));
+        await tester.tap(inSheet(find.text(WordsWording.addAction)));
         await tester.pumpAndSettle();
         expect(rig.progress.added, ['talk to my 1-year-old', 'abuela']);
         expect(
-          tester.getTopLeft(inSheet(find.text('· talk to my 1-year-old'))).dy,
-          lessThan(tester.getTopLeft(inSheet(find.text('· abuela'))).dy),
+          tester
+              .getTopLeft(
+                inSheet(
+                  find.text(WordsWording.addedItem('talk to my 1-year-old')),
+                ),
+              )
+              .dy,
+          lessThan(
+            tester
+                .getTopLeft(
+                  inSheet(find.text(WordsWording.addedItem('abuela'))),
+                )
+                .dy,
+          ),
         );
       },
     );
@@ -305,22 +316,23 @@ void main() {
       rig.progress.add('uno');
       rig.progress.add('dos');
       await openAddSheet(tester, rig: rig);
-      expect(inSheet(find.text('· uno')), findsOneWidget);
-      expect(inSheet(find.text('· dos')), findsOneWidget);
-      expect(
-        inSheet(find.text('Saved. Material for it comes later.')),
-        findsOneWidget,
-      );
+      expect(inSheet(find.text(WordsWording.addedItem('uno'))), findsOneWidget);
+      expect(inSheet(find.text(WordsWording.addedItem('dos'))), findsOneWidget);
+      expect(inSheet(find.text(WordsWording.addSavedNote)), findsOneWidget);
     });
 
     testWidgets(
       'add sheet lifts TextField and Add button above software keyboard viewInsets',
       (tester) async {
         await openAddSheet(tester);
-        final addBefore = tester.getBottomLeft(inSheet(find.text('Add'))).dy;
+        final addBefore = tester
+            .getBottomLeft(inSheet(find.text(WordsWording.addAction)))
+            .dy;
         tester.view.viewInsets = const FakeViewPadding(bottom: 300 * 3);
         await tester.pumpAndSettle();
-        final addAfter = tester.getBottomLeft(inSheet(find.text('Add'))).dy;
+        final addAfter = tester
+            .getBottomLeft(inSheet(find.text(WordsWording.addAction)))
+            .dy;
         expect(addAfter, lessThan(addBefore));
         expect(addAfter, lessThanOrEqualTo(844 - 300));
       },
@@ -457,7 +469,10 @@ void main() {
       );
       await pumpTab(tester, rig);
       await tapWordRow(tester, 'casa');
-      expect(inSheet(find.text('HEARD IN')), findsNothing);
+      expect(
+        inSheet(find.text(WordsWording.heardIn.toUpperCase())),
+        findsNothing,
+      );
       expect(sheetPlayButtons, findsNothing);
       expect(inSheet(find.byType(NocheStageBar)), findsNWidgets(2));
     });
@@ -557,20 +572,18 @@ void main() {
         rig.word('casa', ear: 3, due: due);
         await pumpTab(tester, rig);
         await tapWordRow(tester, 'casa');
-        final t = tester
-            .widgetList<Text>(inSheet(find.byType(Text)))
-            .map((w) => w.data)
-            .whereType<String>()
-            .where((s) => s.startsWith('Comes back'));
-        final res = t.isEmpty ? null : t.single;
+        final finder = inSheet(find.byKey(const Key('word-sheet-comes-back')));
+        final res = finder.evaluate().isEmpty
+            ? null
+            : tester.widget<Text>(finder).data;
         await closeSheet(tester);
         return res;
       }
 
       expect(await back(), isNull);
-      expect(await back(due: -3), 'Comes back today');
-      expect(await back(due: 1), 'Comes back in 1 day');
-      expect(await back(due: 4.4), 'Comes back in 4 days');
+      expect(await back(due: -3), WordsWording.comesBackToday);
+      expect(await back(due: 1), WordsWording.comesBackInDays(1));
+      expect(await back(due: 4.4), WordsWording.comesBackInDays(4));
     });
 
     testWidgets(
@@ -606,6 +619,10 @@ void main() {
             )
             .data;
 
+        expect(
+          tester.widget<Pressable>(sheetPlayButtons.at(0)).semanticLabel,
+          WordsWording.playLineSemantic('Una casa.'),
+        );
         expect(iconOf(0), NocheIcons.play);
         await tester.tap(sheetPlayButtons.at(0));
         await tester.pump();

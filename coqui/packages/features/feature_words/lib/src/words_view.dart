@@ -6,6 +6,7 @@ import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_words/src/wording.dart';
 
 /// Fallback maximum word mastery stage until request 87
 /// (`LanguageProgressStore.stageMax`) lands in `coqui_contracts`.
@@ -128,7 +129,8 @@ class WordsView {
   };
 
   /// Button label: "Start review" when words are due, "Practice" otherwise.
-  String get reviewButtonLabel => hasReviewDue ? 'Start review' : 'Practice';
+  String get reviewButtonLabel =>
+      hasReviewDue ? WordsWording.startReview : WordsWording.practice;
 
   /// Route parameter for [ReviewRoute].
   bool get reviewPractice => !hasReviewDue;
@@ -180,19 +182,19 @@ DueBucket? dueBucketFor(num dueMs, int nowMs) =>
 /// - 14+ days: `"back in <N> weeks"` (rounded to nearest week, >= 2)
 /// - top stage (`isGood`): prefixed with `"good · "` (or `"good"` if unscheduled)
 String formatWordDueLine({required int? days, required bool isGood}) {
-  if (days == null) return isGood ? 'good' : '';
+  if (days == null) return isGood ? WordsWording.good : '';
   final String when;
   if (days <= 0) {
-    when = 'back today';
+    when = WordsWording.backToday;
   } else if (days == 1) {
-    when = 'back tomorrow';
+    when = WordsWording.backTomorrow;
   } else if (days < 14) {
-    when = 'back in $days days';
+    when = WordsWording.backInDays(days);
   } else {
     final weeks = (days / 7 + 0.5).floor();
-    when = 'back in $weeks weeks';
+    when = WordsWording.backInWeeks(weeks);
   }
-  return isGood ? 'good · $when' : when;
+  return isGood ? WordsWording.goodDue(when) : when;
 }
 
 // app.html: pares().m (CU.items by `w`, the last one of a word wins, as Map.set does)

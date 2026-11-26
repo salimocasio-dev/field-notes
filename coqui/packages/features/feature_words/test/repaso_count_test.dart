@@ -1,6 +1,7 @@
 // The "Start review" / "Practice" button uses the one serving rule in
 // coqui_contracts (page 15: picture pair OR a heard sentence that scores it).
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support.dart';
@@ -65,7 +66,7 @@ void main() {
     (tester) async {
       await pumpTab(tester, _rig(games: _games(), puertaDue: false));
       final btn = reviewButton(tester);
-      expect((btn.label, btn.enabled), ('Start review', true));
+      expect((btn.label, btn.enabled), (WordsWording.startReview, true));
       expect(dueCardCount(tester), '1');
     },
   );
@@ -75,7 +76,7 @@ void main() {
     (tester) async {
       await pumpTab(tester, _rig(puertaDue: false, mesaDue: true));
       final btn = reviewButton(tester);
-      expect((btn.label, btn.enabled), ('Practice', true));
+      expect((btn.label, btn.enabled), (WordsWording.practice, true));
       // The due card still reflects the skill's due word (mesa).
       expect(dueCardCount(tester), '1');
     },
@@ -89,7 +90,7 @@ void main() {
         _rig(games: _games(), played: false, puertaDue: false, mesaDue: true),
       );
       final btn = reviewButton(tester);
-      expect((btn.label, btn.enabled), ('Practice', true));
+      expect((btn.label, btn.enabled), (WordsWording.practice, true));
     },
   );
 
@@ -101,7 +102,7 @@ void main() {
       await pumpTab(tester, withData);
       expect(
         (reviewButton(tester).label, reviewButton(tester).enabled),
-        ('Practice', true),
+        (WordsWording.practice, true),
       );
 
       final without = _rig(puertaDue: false, mesaDue: false);
@@ -109,7 +110,7 @@ void main() {
       await pumpTab(tester, without);
       expect(
         (reviewButton(tester).label, reviewButton(tester).enabled),
-        ('Practice', false),
+        (WordsWording.practice, false),
       );
     },
   );

@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The add box: example line, input field, primary Add button, and the saved
@@ -44,7 +45,7 @@ class AddBox extends StatelessWidget {
         Padding(
           padding: const EdgeInsetsDirectional.only(bottom: 16),
           child: Text(
-            'For example: "talk to my 1-year-old around the house".',
+            WordsWording.addExample,
             style: NocheType.bodySmall.copyWith(color: NocheColors.label),
           ),
         ),
@@ -59,7 +60,7 @@ class AddBox extends StatelessWidget {
               onSubmitted: (_) => onAdd(),
               decoration: InputDecoration(
                 isDense: true,
-                hintText: 'A word or a goal',
+                hintText: WordsWording.addHint,
                 hintStyle: text.copyWith(color: NocheColors.label),
                 filled: true,
                 fillColor: NocheColors.ground,
@@ -77,12 +78,12 @@ class AddBox extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        NocheOutlineButton(label: 'Add', onPressed: onAdd),
+        NocheOutlineButton(label: WordsWording.addAction, onPressed: onAdd),
         if (added.isNotEmpty) ...[
           Padding(
             padding: const EdgeInsetsDirectional.only(top: 16, bottom: 8),
             child: Text(
-              'Saved. Material for it comes later.',
+              WordsWording.addSavedNote,
               style: NocheType.bodySmall.copyWith(color: NocheColors.label),
             ),
           ),
@@ -90,7 +91,7 @@ class AddBox extends StatelessWidget {
             Padding(
               padding: const EdgeInsetsDirectional.only(bottom: 4),
               child: Text(
-                '· $x',
+                WordsWording.addedItem(x),
                 style: NocheType.body.copyWith(color: NocheColors.text),
               ),
             ),

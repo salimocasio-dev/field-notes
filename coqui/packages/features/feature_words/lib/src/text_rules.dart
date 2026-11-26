@@ -5,6 +5,7 @@ library;
 import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:feature_words/src/wording.dart';
 
 /// Where a phrase stands in a text: [a, z) are UTF-16 offsets and [k] is the phrase's index in the list.
 typedef Occurrence = ({int a, int z, int k});
@@ -57,8 +58,8 @@ List<String> wordTokens(String word, {Language? language}) {
 /// the palabras clock.
 String comesBack(num due, int now) {
   if (due == 0 || due.isNaN) return '';
-  if (due <= now) return 'Comes back today';
+  if (due <= now) return WordsWording.comesBackToday;
   // Math.round: the number is positive here
   final n = math.max(1, ((due - now) / 864e5 + 0.5).floor());
-  return 'Comes back in $n day${n > 1 ? 's' : ''}';
+  return WordsWording.comesBackInDays(n);
 }

@@ -11,6 +11,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/add_box.dart';
 import 'package:feature_words/src/word_sheet.dart';
+import 'package:feature_words/src/wording.dart';
 import 'package:feature_words/src/words_view.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -117,7 +118,7 @@ class _WordsTabState extends State<WordsTab> {
     try {
       await showNocheSheet<void>(
         context,
-        title: 'Add a word or goal',
+        title: WordsWording.addSheetTitle,
         builder: (context, close) =>
             AddBoxSheetBody(progress: _s.progress, haptics: _s.haptics),
       );
@@ -170,15 +171,15 @@ class _WordsTabState extends State<WordsTab> {
   Widget _buildContent(WordsView v, Language lang, Locale courseLocale) {
     final skillView = v.of(_skill);
     final b = skillView.buckets;
-    final dueLabel = skillView.dueToday == 1
-        ? 'word comes\nback today'
-        : 'words come\nback today';
-    final chartHeading = skillView.totalWords == 1
-        ? 'When your 1 word comes back'
-        : 'When your ${skillView.totalWords} words come back';
-    final chartSemanticLabel =
-        'Words coming back: ${b.today} today, ${b.tomorrow} tomorrow, '
-        '${b.threeDays} in 3 days, ${b.thisWeek} this week, ${b.later} later';
+    final dueLabel = WordsWording.dueTodayLabel(skillView.dueToday);
+    final chartHeading = WordsWording.chartHeading(skillView.totalWords);
+    final chartSemanticLabel = WordsWording.chartSemanticLabel(
+      today: b.today,
+      tomorrow: b.tomorrow,
+      threeDays: b.threeDays,
+      thisWeek: b.thisWeek,
+      later: b.later,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -239,20 +240,26 @@ class _WordsTabState extends State<WordsTab> {
                             semanticLabel: chartSemanticLabel,
                             items: [
                               NocheBarItem(
-                                label: 'Today',
+                                label: WordsWording.bucketToday,
                                 value: b.today,
                                 highlighted: true,
                               ),
                               NocheBarItem(
-                                label: 'Tomorrow',
+                                label: WordsWording.bucketTomorrow,
                                 value: b.tomorrow,
                               ),
-                              NocheBarItem(label: '3 days', value: b.threeDays),
                               NocheBarItem(
-                                label: 'This week',
+                                label: WordsWording.bucketThreeDays,
+                                value: b.threeDays,
+                              ),
+                              NocheBarItem(
+                                label: WordsWording.bucketThisWeek,
                                 value: b.thisWeek,
                               ),
-                              NocheBarItem(label: 'Later', value: b.later),
+                              NocheBarItem(
+                                label: WordsWording.bucketLater,
+                                value: b.later,
+                              ),
                             ],
                           ),
                         ],
@@ -267,23 +274,27 @@ class _WordsTabState extends State<WordsTab> {
                       ),
                       child: NocheSegmented<WordsSkill>(
                         role: NocheSegmentedRole.tabList,
-                        semanticLabel: 'Skill',
+                        semanticLabel: WordsWording.skillSwitchSemanticLabel,
                         selected: _skill,
                         onChanged: _selectSkill,
                         options: [
                           NocheSegmentOption(
                             value: WordsSkill.listening,
-                            label: 'Listening · ${v.listening.goodCount}',
+                            label: WordsWording.listeningTab(
+                              v.listening.goodCount,
+                            ),
                           ),
                           NocheSegmentOption(
                             value: WordsSkill.speaking,
-                            label: 'Speaking · ${v.speaking.goodCount}',
+                            label: WordsWording.speakingTab(
+                              v.speaking.goodCount,
+                            ),
                           ),
                           NocheSegmentOption(
                             value: WordsSkill.reading,
                             label: v.tracksReading
-                                ? 'Reading · ${v.reading.goodCount}'
-                                : 'Reading · A2',
+                                ? WordsWording.readingTab(v.reading.goodCount)
+                                : WordsWording.readingLockedTab,
                             muted: !v.tracksReading,
                           ),
                         ],
@@ -303,7 +314,7 @@ class _WordsTabState extends State<WordsTab> {
                       16,
                     ),
                     child: Text(
-                      'Reading opens for tracking at A2.',
+                      WordsWording.readingLockedMessage,
                       style: NocheType.body.copyWith(color: NocheColors.label),
                     ),
                   ),
@@ -319,10 +330,9 @@ class _WordsTabState extends State<WordsTab> {
                     ),
                     child: Text(
                       switch (_skill) {
-                        WordsSkill.listening => 'Play the first story on the map. Your words show up here.',
-                        WordsSkill.speaking =>
-                          'Words you say in stories and calls show up here.',
-                        WordsSkill.reading => 'Words you read show up here.',
+                        WordsSkill.listening => WordsWording.emptyListening,
+                        WordsSkill.speaking => WordsWording.emptySpeaking,
+                        WordsSkill.reading => WordsWording.emptyReading,
                       },
                       style: NocheType.body.copyWith(color: NocheColors.label),
                     ),
@@ -395,7 +405,7 @@ class _WordsHeader extends StatelessWidget {
                   Semantics(
                     header: true,
                     child: Text(
-                      'Words',
+                      WordsWording.screenTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: NocheType.pageTitle.copyWith(
@@ -411,7 +421,7 @@ class _WordsHeader extends StatelessWidget {
               textDirection: TextDirection.ltr,
               child: NochePill.outline(
                 key: const Key('words-add-pill'),
-                label: '+ Add a word or goal',
+                label: WordsWording.addPillLabel,
                 onPressed: onAddTap,
               ),
             ),
@@ -450,9 +460,12 @@ class _WordRow extends StatelessWidget {
       height: 16 / 12,
       color: entry.isDueToday ? NocheColors.next : NocheColors.label,
     );
-    final semanticLabel = entry.dueLine.isEmpty
-        ? '${entry.record.w}, Stage ${entry.stage} of $stageMax'
-        : '${entry.record.w}, ${entry.dueLine}, Stage ${entry.stage} of $stageMax';
+    final semanticLabel = WordsWording.wordRowSemanticLabel(
+      word: entry.record.w,
+      dueLine: entry.dueLine,
+      stage: entry.stage,
+      stageMax: stageMax,
+    );
 
     return Pressable(
       key: ValueKey('word-row:${entry.record.w}'),
