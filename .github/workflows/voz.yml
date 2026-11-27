@@ -1,7 +1,9 @@
-# Makes the recorded voice files with Azure Speech and saves them into this project.
+# Makes the recorded voice files with Azure Speech and saves them into a PR branch (never directly to main).
 # Starts by itself when a story file changes (story mode, Karina's voice), or by hand from the Actions tab.
-# Needs one repository secret:
+# Needs one repository/environment secret:
 #   AZURE_SPEECH_KEY   the key of the Azure Speech resource (coqui-voz-2611, region eastus)
+# Optional secret:
+#   VOZ_PR_TOKEN       fine-grained PAT/token if you want the workflow to auto-open PRs that trigger CI
 name: Voz
 on:
   push:
@@ -28,6 +30,7 @@ on:
         default: "-12%"
 permissions:
   contents: write
+  pull-requests: write
 concurrency: voz
 jobs:
   voz:
@@ -51,14 +54,10 @@ jobs:
           V_ABUELA: ${{ inputs.abuela }}
           V_TU: ${{ inputs.tu || 'es-PR-VictorNeural' }}
           RATE: ${{ inputs.rate || '-12%' }}
-      - name: Save the audio into the project
+      - name: Save the audio into a PR branch
         env:
           MODO: ${{ inputs.modo || 'cuento' }}
-        run: |
-          git config user.name "coqui-voz"
-          git config user.email "coqui-voz@users.noreply.github.com"
-          for d in historia/audio historia/muestras; do if [ -e "$d" ]; then git add "$d"; fi; done
-          git diff --cached --quiet && { echo "nothing new"; exit 0; }
-          git commit -m "Audio: $MODO"
-          git pull --rebase
-          git push
+          GH_TOKEN: ${{ secrets.VOZ_PR_TOKEN || github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python3 .github/scripts/voz_publish_pr.py
