@@ -1474,13 +1474,12 @@ void main() {
           expect(planTagWidget.onPressed, isNull);
           expect(tester.getSize(planTagFinder).height, 24);
 
-          // Locked place pill (dashedLocked, 48x48) is visually distinct from planTag (24).
+          // Locked place pill (NocheQuietLock, 48x48) is visually distinct from planTag (24).
           final lockedPillFinder = find.byKey(
             const Key('speak-locked-place-pill'),
           );
           expect(lockedPillFinder, findsOneWidget);
-          final lockedPillWidget = tester.widget<NochePill>(lockedPillFinder);
-          expect(lockedPillWidget.kind, NochePillKind.dashedLocked);
+          expect(tester.widget(lockedPillFinder), isA<NocheQuietLock>());
           expect(tester.getSize(lockedPillFinder), const Size(48, 48));
 
           // Other calls: threshold-met card is solid standard with white title and '2 min', non-tappable.
@@ -1506,14 +1505,12 @@ void main() {
             findsOneWidget,
           );
 
-          // Not-reached other call card is dashed with muted title and '5 min · after story 9', non-tappable.
+          // Not-reached other call card is NocheQuietLock with muted title and '5 min · after story 9'.
           final upcomingCardFinder = find.byKey(
             const Key('speak-other-call-cocina_main'),
           );
           expect(upcomingCardFinder, findsOneWidget);
-          final upcomingCard = tester.widget<NocheCard>(upcomingCardFinder);
-          expect(upcomingCard.variant, NocheCardVariant.dashed);
-          expect(upcomingCard.onPressed, isNull);
+          expect(tester.widget(upcomingCardFinder), isA<NocheQuietLock>());
           final upcomingTitle = tester.widget<Text>(
             find.descendant(
               of: upcomingCardFinder,

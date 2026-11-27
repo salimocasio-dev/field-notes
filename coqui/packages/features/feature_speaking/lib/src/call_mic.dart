@@ -4,6 +4,7 @@ library;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_controller.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Maps a [CallState] to the corresponding shared [NocheMicState].
@@ -28,6 +29,47 @@ double callMicLevel({
   CallState.danny => ((wave - 1.3) / 0.6).clamp(0.0, 1.0),
   _ => 0.0,
 };
+
+/// Builds the shared [NocheMic] for a call [state], showing `"Calling <partner>"`
+/// in the thinking look while ringing and course `micWords` in all other states.
+Widget buildCallNocheMic({
+  required CallState state,
+  required Language language,
+  double ring = 3,
+  double wave = 1.5,
+  bool compactLabel = true,
+  double labelGap = 8,
+  double barGroupGap = NocheMic.defaultBarGroupGap,
+  String? semanticLabel,
+  VoidCallback? onPressed,
+}) => state == CallState.connecting
+    ? NocheMic.custom(
+        state: NocheMicState.thinking,
+        micWords: {
+          ...language.micWords,
+          'thinking': SpeakWording.callingPartner(language.partnerName),
+        },
+        script: 'Latn',
+        textDirection: TextDirection.ltr,
+        locale: null,
+        a11yWords: language.a11yWords,
+        level: 0.0,
+        compactLabel: compactLabel,
+        labelGap: labelGap,
+        barGroupGap: barGroupGap,
+        semanticLabel: semanticLabel,
+        onPressed: null,
+      )
+    : NocheMic(
+        state: nocheMicStateForCall(state),
+        language: language,
+        level: callMicLevel(state: state, ring: ring, wave: wave),
+        compactLabel: compactLabel,
+        labelGap: labelGap,
+        barGroupGap: barGroupGap,
+        semanticLabel: semanticLabel,
+        onPressed: onPressed,
+      );
 
 /// Call microphone stage backed by [NocheMic].
 class CallMicStage extends StatelessWidget {
@@ -77,10 +119,11 @@ class CallMicStage extends StatelessWidget {
     final mq = MediaQuery.maybeOf(context);
     final ambientReduce = mq?.disableAnimations ?? false;
     final reduce = reduceMotion || ambientReduce;
-    final mic = NocheMic(
-      state: nocheMicStateForCall(state),
+    final mic = buildCallNocheMic(
+      state: state,
       language: language,
-      level: callMicLevel(state: state, ring: ring, wave: wave),
+      ring: ring,
+      wave: wave,
       compactLabel: compactLabel,
       labelGap: labelGap,
       barGroupGap: barGroupGap,
