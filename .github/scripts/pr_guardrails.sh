@@ -201,10 +201,15 @@ check_codeowners() {
   fi
 }
 
+check_claude_pr_review() {
+  python3 "$SCRIPT_DIR/test_claude_pr_review.py"
+}
+
 overall_rc=0
 check_sensitive_paths || overall_rc=1
 check_branch_boundaries || overall_rc=1
 check_noche_tokens || overall_rc=1
 check_codeowners || overall_rc=1
+check_claude_pr_review || overall_rc=1
 
 exit "$overall_rc"
