@@ -2755,7 +2755,7 @@ void main() {
         expect(crossOp160, lessThan(1.0));
         expect(picture.STATE.hecho[2], isTrue);
         expect(find.byKey(const Key('map-new-place-pill')), findsOneWidget);
-        expect(find.text('New place'), findsOneWidget);
+        expect(find.text(MapWording.newPlace), findsOneWidget);
         expect(find.text('El colmado'), findsOneWidget);
         final destOp160 = _slotOpacity(tester, const Key('map-dest-motion'));
         final destDy160 = _slotDy(tester, const Key('map-dest-motion'));
@@ -2812,9 +2812,15 @@ void main() {
         expect(_slotDy(tester, const Key('map-here-motion')), 0.0);
 
         expect(find.byKey(const Key('map-place-card')), findsOneWidget);
-        expect(find.text('NEW PLACE · 4 OF 10'), findsOneWidget);
+        expect(
+          find.text(MapWording.newPlaceCounter(4, 10).toUpperCase()),
+          findsOneWidget,
+        );
         expect(find.text('El colmado'), findsAtLeastNWidgets(1));
-        expect(find.text('PLAY FIRST · STORY 1'), findsOneWidget);
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
 
         // Finish pill crossfade and card swap, verify MapSceneWindow uses PixelView.
         await _runFrames(tester, 400, step: 50);
@@ -2902,8 +2908,14 @@ void main() {
         expect(picture.STATE.hecho[0], isTrue);
         expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
         expect(find.byKey(const Key('map-place-card')), findsOneWidget);
-        expect(find.text('NEW PLACE · 2 OF 10'), findsOneWidget);
-        expect(find.text('PLAY FIRST · STORY 1'), findsOneWidget);
+        expect(
+          find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
 
         // Toggling TickerMode off and back on must NOT replay the unlock sequence.
         visible.value = false;
@@ -2970,8 +2982,14 @@ void main() {
         expect(find.byKey(const Key('map-new-place-pill')), findsNothing);
         expect(_slotOpacity(tester, const Key('map-here-motion')), 1.0);
         expect(find.byKey(const Key('map-place-card')), findsOneWidget);
-        expect(find.text('NEW PLACE · 2 OF 10'), findsOneWidget);
-        expect(find.text('PLAY FIRST · STORY 1'), findsOneWidget);
+        expect(
+          find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
         expect(_slotOpacity(tester, const Key('map-card-motion')), 1.0);
 
         await tester.pumpWidget(const SizedBox.shrink());
@@ -3022,8 +3040,14 @@ void main() {
 
         await tester.pump(const Duration(milliseconds: 100));
         expect(_slotOpacity(tester, const Key('map-card-motion')), 1.0);
-        expect(find.text('NEW PLACE · 2 OF 10'), findsOneWidget);
-        expect(find.text('PLAY FIRST · STORY 1'), findsOneWidget);
+        expect(
+          find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
 
         await tester.pumpWidget(const SizedBox.shrink());
       },
@@ -3089,11 +3113,19 @@ void main() {
         expect(find.byKey(const Key('map-place-card')), findsOneWidget);
         expect(find.text('الحديقة'), findsOneWidget);
         expect(
-          Directionality.of(tester.element(find.text('NEW PLACE · 2 OF 3'))),
+          Directionality.of(
+            tester.element(
+              find.text(MapWording.newPlaceCounter(2, 3).toUpperCase()),
+            ),
+          ),
           TextDirection.ltr,
         );
         expect(
-          Directionality.of(tester.element(find.text('PLAY FIRST · STORY 1'))),
+          Directionality.of(
+            tester.element(
+              find.text(MapWording.playFirstStory(1).toUpperCase()),
+            ),
+          ),
           TextDirection.ltr,
         );
         expect(tester.takeException(), isNull);
@@ -3132,8 +3164,14 @@ void main() {
         await _runFrames(tester, 2600, step: 50);
 
         expect(picture.FROG.at, 1);
-        expect(find.text('NEW PLACE · 2 OF 10'), findsOneWidget);
-        expect(find.text('PLAY FIRST · STORY 1'), findsOneWidget);
+        expect(
+          find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(
+          find.text(MapWording.playFirstStory(1).toUpperCase()),
+          findsOneWidget,
+        );
         expect(nav.routes, isEmpty);
 
         await tester.tap(find.byKey(const Key('up-next-play')));

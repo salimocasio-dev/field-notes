@@ -8,6 +8,7 @@ import 'package:feature_map/src/map_model.dart';
 import 'package:feature_map/src/map_perf.dart';
 import 'package:feature_map/src/map_picture.dart';
 import 'package:feature_map/src/map_screen.dart';
+import 'package:feature_map/src/wording.dart';
 import 'package:flutter/rendering.dart' show RendererBinding;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -308,9 +309,15 @@ void main() {
       expect(m.FROG.y, closeTo(stop.y, 1e-9));
       expect(flagPixels(m, 0), greaterThan(20));
       expect(find.byKey(const Key('map-place-card')), findsOneWidget);
-      expect(find.text('NEW PLACE · 2 OF 10'), findsOneWidget);
+      expect(
+        find.text(MapWording.newPlaceCounter(2, 10).toUpperCase()),
+        findsOneWidget,
+      );
       expect(find.text('El parque'), findsOneWidget);
-      expect(find.text('PLAY FIRST · STORY 1'), findsOneWidget);
+      expect(
+        find.text(MapWording.playFirstStory(1).toUpperCase()),
+        findsOneWidget,
+      );
       // Play each story of La casa a second time so todayPlan advances to El parque,
       // then swipe down from the new place card back to Up next.
       f.clock.advance(const Duration(days: 1));
