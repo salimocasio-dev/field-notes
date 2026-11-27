@@ -72,6 +72,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
   );
   NocheMotionData _pictureSwapMotion = NocheMotion.normal;
   String? _lastPictureWord;
+  bool _lastPictureShown = false;
 
   late final AnimationController _exitController = AnimationController(
     vsync: this,
@@ -107,6 +108,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
     );
     c.open();
     _lastPictureWord = c.pictureWord;
+    _lastPictureShown = c.pictureShown;
     _lastDannyLine = c.dannyLine;
     _lastDannyMuted = c.lineMuted;
     _lastHeardLine = c.heardLine;
@@ -164,16 +166,22 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
     if (!mounted) return;
     final nowLive = c.state != CallState.done && c.state != CallState.err;
 
-    if (c.pictureWord != _lastPictureWord) {
-      _lastPictureWord = c.pictureWord;
-      if (_enterStarted && nowLive && c.pictureWord != null && c.pictureShown) {
-        _pictureSwapMotion = SpeakingMotion.resolve(
-          context,
-          serviceReduceMotion: widget.services.reduceMotion,
-        );
-        _pictureSwapController.duration = _pictureSwapMotion.move;
-        _pictureSwapController.forward(from: 0.0);
-      }
+    final pictureChanged =
+        c.pictureWord != _lastPictureWord ||
+        (c.pictureShown && !_lastPictureShown);
+    _lastPictureWord = c.pictureWord;
+    _lastPictureShown = c.pictureShown;
+    if (pictureChanged &&
+        _enterStarted &&
+        nowLive &&
+        c.pictureWord != null &&
+        c.pictureShown) {
+      _pictureSwapMotion = SpeakingMotion.resolve(
+        context,
+        serviceReduceMotion: widget.services.reduceMotion,
+      );
+      _pictureSwapController.duration = _pictureSwapMotion.move;
+      _pictureSwapController.forward(from: 0.0);
     }
 
     if (c.dannyLine != _lastDannyLine || c.lineMuted != _lastDannyMuted) {
@@ -439,6 +447,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
             child: _RisingLine(
               contentKey: partnerKey,
               animateInitial: partnerKey != null,
+              serviceReduceMotion: widget.services.reduceMotion,
               motionKey: const ValueKey('call-partner-line-motion'),
               child: Text(
                 c.dannyLine,
@@ -456,6 +465,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
             child: _RisingLine(
               contentKey: heardKey,
               animateInitial: heardKey != null,
+              serviceReduceMotion: widget.services.reduceMotion,
               motionKey: const ValueKey('call-heard-line-motion'),
               child: Text(
                 c.heardLine,
@@ -590,6 +600,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
         child: _RisingLine(
           contentKey: noteKey,
           animateInitial: noteKey != null,
+          serviceReduceMotion: widget.services.reduceMotion,
           motionKey: const ValueKey('call-note-motion'),
           child: c.note.isEmpty
               ? const SizedBox.shrink()
@@ -605,7 +616,10 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
   }
 
   /// One plain error line in the middle with calm arrival.
-  Widget _error() => _CallErrorArrival(errorLine: c.errorLine);
+  Widget _error() => _CallErrorArrival(
+    errorLine: c.errorLine,
+    serviceReduceMotion: widget.services.reduceMotion,
+  );
 
   /// End summary: "Call done", "N min · M words said", 40-high outline word
   /// pills, and primary back button.
@@ -625,11 +639,13 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
       topPadding: top < 0 ? 0 : top,
       bottomSafe: safe.bottom,
       summaryAlign: _englishAlign(lang, TextAlign.start),
+      serviceReduceMotion: widget.services.reduceMotion,
       onBack: c.close,
     );
   }
 
   Widget _outgoingLiveVisual(
+    BuildContext context,
     _OutgoingLiveSnapshot snap,
     Language lang,
     Size size,
@@ -683,7 +699,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
       shown: snap.pictureShown,
     );
     final passiveMic = MediaQuery(
-      data: const MediaQueryData(disableAnimations: true),
+      data: MediaQuery.of(context).copyWith(disableAnimations: true),
       child: buildCallNocheMic(
         state: snap.micState,
         language: lang,
@@ -756,6 +772,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
   }
 
   Widget _nonLiveArea(
+    BuildContext context,
     Language lang,
     Size size,
     double dpr,
@@ -785,6 +802,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
                   );
                 },
                 child: _outgoingLiveVisual(
+                  context,
                   snap,
                   lang,
                   size,
@@ -817,7 +835,7 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
         _bar(lang),
         Expanded(
           child: !live
-              ? _nonLiveArea(lang, size, dpr, safe, land: false)
+              ? _nonLiveArea(context, lang, size, dpr, safe, land: false)
               : Padding(
                   padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
@@ -875,7 +893,9 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
       return Column(
         children: [
           _bar(lang),
-          Expanded(child: _nonLiveArea(lang, size, dpr, safe, land: true)),
+          Expanded(
+            child: _nonLiveArea(context, lang, size, dpr, safe, land: true),
+          ),
         ],
       );
     }
@@ -942,12 +962,14 @@ class _RisingLine extends StatefulWidget {
   const _RisingLine({
     required this.contentKey,
     required this.animateInitial,
+    required this.serviceReduceMotion,
     required this.motionKey,
     required this.child,
   });
 
   final Object? contentKey;
   final bool animateInitial;
+  final bool serviceReduceMotion;
   final Key motionKey;
   final Widget child;
 
@@ -965,7 +987,10 @@ class _RisingLineState extends State<_RisingLine>
   bool _didInit = false;
 
   void _startRise() {
-    _motion = NocheMotion.of(context);
+    _motion = SpeakingMotion.resolve(
+      context,
+      serviceReduceMotion: widget.serviceReduceMotion,
+    );
     _controller.duration = _motion.move;
     _controller.forward(from: 0.0);
   }
@@ -973,8 +998,18 @@ class _RisingLineState extends State<_RisingLine>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_didInit) return;
+    if (_didInit) {
+      _motion = SpeakingMotion.resolve(
+        context,
+        serviceReduceMotion: widget.serviceReduceMotion,
+      );
+      return;
+    }
     _didInit = true;
+    _motion = SpeakingMotion.resolve(
+      context,
+      serviceReduceMotion: widget.serviceReduceMotion,
+    );
     if (widget.animateInitial && widget.contentKey != null) {
       _startRise();
     }
@@ -983,6 +1018,12 @@ class _RisingLineState extends State<_RisingLine>
   @override
   void didUpdateWidget(_RisingLine oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.serviceReduceMotion != oldWidget.serviceReduceMotion) {
+      _motion = SpeakingMotion.resolve(
+        context,
+        serviceReduceMotion: widget.serviceReduceMotion,
+      );
+    }
     if (widget.contentKey != null &&
         widget.contentKey != oldWidget.contentKey) {
       _startRise();
@@ -1029,6 +1070,7 @@ class _CallDoneSummary extends StatefulWidget {
     required this.topPadding,
     required this.bottomSafe,
     required this.summaryAlign,
+    required this.serviceReduceMotion,
     required this.onBack,
   });
 
@@ -1039,6 +1081,7 @@ class _CallDoneSummary extends StatefulWidget {
   final double topPadding;
   final double bottomSafe;
   final TextAlign summaryAlign;
+  final bool serviceReduceMotion;
   final VoidCallback onBack;
 
   @override
@@ -1072,13 +1115,40 @@ class _CallDoneSummaryState extends State<_CallDoneSummary>
     super.didChangeDependencies();
     if (_started) return;
     _started = true;
-    _motion = NocheMotion.of(context);
+    _motion = SpeakingMotion.resolve(
+      context,
+      serviceReduceMotion: widget.serviceReduceMotion,
+    );
     _total = _backStart() + _motion.move;
     if (_total <= Duration.zero) {
       _controller.value = 1.0;
     } else {
       _controller.duration = _total;
       _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void didUpdateWidget(_CallDoneSummary oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_started) return;
+    final motionChanged =
+        widget.serviceReduceMotion != oldWidget.serviceReduceMotion;
+    final saidChanged = widget.said.length != oldWidget.said.length;
+    if (!motionChanged && !saidChanged) return;
+    final prevElapsedUs = _controller.value * _total.inMicroseconds.toDouble();
+    _motion = SpeakingMotion.resolve(
+      context,
+      serviceReduceMotion: widget.serviceReduceMotion,
+    );
+    final newTotal = _backStart() + _motion.move;
+    _total = newTotal;
+    final newTotalUs = newTotal.inMicroseconds.toDouble();
+    if (newTotalUs <= 0 || prevElapsedUs >= newTotalUs) {
+      _controller.value = 1.0;
+    } else {
+      _controller.duration = newTotal;
+      _controller.forward(from: (prevElapsedUs / newTotalUs).clamp(0.0, 1.0));
     }
   }
 
@@ -1240,9 +1310,13 @@ class _CallDoneSummaryState extends State<_CallDoneSummary>
 
 /// Calm arrival for the plain error line after the live call fades out.
 class _CallErrorArrival extends StatefulWidget {
-  const _CallErrorArrival({required this.errorLine});
+  const _CallErrorArrival({
+    required this.errorLine,
+    required this.serviceReduceMotion,
+  });
 
   final String errorLine;
+  final bool serviceReduceMotion;
 
   @override
   State<_CallErrorArrival> createState() => _CallErrorArrivalState();
@@ -1260,7 +1334,10 @@ class _CallErrorArrivalState extends State<_CallErrorArrival>
     super.didChangeDependencies();
     if (_started) return;
     _started = true;
-    _motion = NocheMotion.of(context);
+    _motion = SpeakingMotion.resolve(
+      context,
+      serviceReduceMotion: widget.serviceReduceMotion,
+    );
     _total = SpeakingMotion.doneStartAfter + _motion.move;
     if (_total <= Duration.zero) {
       _controller.value = 1.0;

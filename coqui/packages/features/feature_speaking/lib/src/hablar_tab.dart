@@ -279,15 +279,18 @@ class _HablarTabState extends State<HablarTab> with TickerProviderStateMixin {
     return AnimatedBuilder(
       animation: secondaryAnimation,
       builder: (context, inner) {
-        final totalDuration =
-            secondaryAnimation.status == AnimationStatus.reverse
-            ? motion.pageOut
-            : motion.pageIn;
-        final opacity = SpeakingMotion.outgoingFadeOpacity(
-          routeValue: secondaryAnimation.value,
-          motion: motion,
-          totalDuration: totalDuration,
-        );
+        final isReturning =
+            secondaryAnimation.status == AnimationStatus.reverse;
+        final opacity = isReturning
+            ? SpeakingMotion.backReturnOpacity(
+                reverseProgress: 1.0 - secondaryAnimation.value,
+                motion: motion,
+              )
+            : SpeakingMotion.outgoingFadeOpacity(
+                routeValue: secondaryAnimation.value,
+                motion: motion,
+                totalDuration: motion.pageIn,
+              );
         return Opacity(key: opacityKey, opacity: opacity, child: inner);
       },
       child: child,

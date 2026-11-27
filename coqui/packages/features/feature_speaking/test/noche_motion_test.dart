@@ -1293,6 +1293,140 @@ void main() {
         await w.close(tester);
       },
     );
+
+    testWidgets(
+      'services.reduceMotion: true enforces zero travel even when ambient disableAnimations is false',
+      (tester) async {
+        Phone.iphone.use(tester);
+
+        // Live call -> partner/heard/help lines -> Call done
+        final w = await World.create(
+          seed: 'todo',
+          stub: const {'manual'},
+          reduceMotion: true,
+        );
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(
+              size: Size(390, 844),
+              disableAnimations: false,
+            ),
+            child: w.app(CallScreen(services: w.services, placeId: 'casa')),
+          ),
+        );
+        await tester.pump();
+        expect(
+          _translateY(
+            tester,
+            find.byKey(const ValueKey('call-picture-motion')),
+          ),
+          closeTo(0.0, 0.001),
+        );
+        await tester.pump(const Duration(milliseconds: 400));
+
+        await tester.tap(find.byKey(const Key('call-mic-stage')));
+        await tester.pump();
+        w.call.go('connect');
+        await w.elapse(tester, 100);
+        w.call.go('danny1');
+        await w.elapse(tester, 50);
+        expect(
+          _translateY(
+            tester,
+            find.byKey(const ValueKey('call-partner-line-motion')),
+          ),
+          closeTo(0.0, 0.001),
+        );
+
+        w.call.go('you1');
+        await w.elapse(tester, 100);
+        await tester.tap(find.text('Help'));
+        await w.elapse(tester, 50);
+        expect(
+          _translateY(tester, find.byKey(const ValueKey('call-note-motion'))),
+          closeTo(0.0, 0.001),
+        );
+
+        w.call.emit(const Heard('hola gracias bien casa puerta'));
+        await w.elapse(tester, 50);
+        expect(
+          _translateY(
+            tester,
+            find.byKey(const ValueKey('call-heard-line-motion')),
+          ),
+          closeTo(0.0, 0.001),
+        );
+
+        await tester.tap(find.byKey(const Key('call-close')));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 1));
+        await tester.pump(const Duration(milliseconds: 230));
+        expect(
+          _translateY(
+            tester,
+            find.byKey(const ValueKey('call-done-title-motion')),
+          ),
+          closeTo(0.0, 0.001),
+        );
+        expect(
+          _translateY(
+            tester,
+            find.byKey(const ValueKey('call-done-summary-motion')),
+          ),
+          closeTo(0.0, 0.001),
+        );
+        expect(
+          _translateY(
+            tester,
+            find.byKey(const ValueKey('call-done-word-motion-0')),
+          ),
+          closeTo(0.0, 0.001),
+        );
+        expect(
+          _translateY(
+            tester,
+            find.byKey(const ValueKey('call-done-back-motion')),
+          ),
+          closeTo(0.0, 0.001),
+        );
+        await w.close(tester);
+
+        // Error arrival under services.reduceMotion: true with disableAnimations: false
+        final errWorld = await World.create(
+          seed: 'todo',
+          stub: const {'mic'},
+          reduceMotion: true,
+        );
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(
+              size: Size(390, 844),
+              disableAnimations: false,
+            ),
+            child: errWorld.app(
+              CallScreen(services: errWorld.services, placeId: 'casa'),
+            ),
+          ),
+        );
+        await tester.pump(const Duration(milliseconds: 400));
+        await tester.tap(find.byKey(const Key('call-mic-stage')));
+        await tester.pump();
+        for (var i = 0; i < 20; i++) {
+          await errWorld.elapse(tester, 50);
+          if (find
+              .byKey(const ValueKey('call-error-motion'))
+              .evaluate()
+              .isNotEmpty) {
+            break;
+          }
+        }
+        expect(
+          _translateY(tester, find.byKey(const ValueKey('call-error-motion'))),
+          closeTo(0.0, 0.001),
+        );
+        await errWorld.close(tester);
+      },
+    );
   });
 
   group('N8.15 Arabic RTL CallScreen checks', () {

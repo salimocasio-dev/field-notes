@@ -19,6 +19,9 @@ abstract final class SpeakingMotion {
   /// Delay before the call screen's picture rises into place on arrival.
   static final Duration callPictureAfter = NocheMotion.ms(160);
 
+  /// Delay before returning Speak chrome fades in on back navigation (`pageOut`).
+  static final Duration backFadeAfter = NocheMotion.ms(40);
+
   /// Delay before the "Call done" summary or error message begins arriving
   /// after the live call fades out in `quick`.
   static final Duration doneStartAfter = NocheMotion.ms(160);
@@ -86,6 +89,27 @@ abstract final class SpeakingMotion {
       curve: motion.exit,
     );
     return (1.0 - progress).clamp(0.0, 1.0);
+  }
+
+  /// Opacity (`0 -> 1`) for Speak content returning via Back (`pageOut`): waits
+  /// [backFadeAfter] (`Duration.zero` under reduced motion), then fades in over
+  /// `motion.quick` on `motion.enter`.
+  static double backReturnOpacity({
+    required double reverseProgress,
+    required NocheMotionData motion,
+  }) {
+    final clamped = reverseProgress.clamp(0.0, 1.0);
+    if (clamped <= 0.0) return 0.0;
+    final totalUs = motion.pageOut.inMicroseconds.toDouble();
+    if (totalUs <= 0) return 1.0;
+    final delay = motion.reduced ? Duration.zero : backFadeAfter;
+    final elapsedUs = clamped * totalUs;
+    return segmentProgressUs(
+      elapsedUs: elapsedUs,
+      start: delay,
+      duration: motion.quick,
+      curve: motion.enter,
+    );
   }
 }
 
