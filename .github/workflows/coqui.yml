@@ -1,15 +1,16 @@
 # The checks of the Flutter app in coqui/: pub get, the boundary check, format, analyze,
 # every package's tests, and the web build. The steps are in coqui/tool/test_all.sh, which
 # is also what a builder runs on their own machine, so the two cannot drift.
-# The Flutter version is the one in coqui/.flutter-version.
+# Runs on every pull request to main under job name `coqui` so branch protection can
+# require it without stalling non-Coquí (e.g. docs-only) PRs; path gating is delegated to
+# .github/scripts/coqui_ci_gate.sh. The Flutter version is the one in coqui/.flutter-version.
 name: Coquí
 on:
   push:
     branches: [main]
-    paths: ["coqui/**", ".github/workflows/coqui.yml"]
+    paths: ["coqui/**", ".github/workflows/coqui.yml", ".github/scripts/coqui_ci_gate.sh"]
   pull_request:
     branches: [main]
-    paths: ["coqui/**", ".github/workflows/coqui.yml"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,17 +24,28 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          # The lane check compares the branch with main.
+          # The lane check and path gate compare the branch with main.
           fetch-depth: 0
+      - name: Check whether Coquí checks should run
+        id: gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: bash .github/scripts/coqui_ci_gate.sh
       - name: Read the pinned Flutter version
         id: pin
+        if: steps.gate.outputs.run == 'true'
         run: echo "flutter=$(tr -d '[:space:]' < coqui/.flutter-version)" >> "$GITHUB_OUTPUT"
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        if: steps.gate.outputs.run == 'true'
         with:
           flutter-version: ${{ steps.pin.outputs.flutter }}
           channel: stable
           cache: true
       - name: Pillow, for the data check (coqui/tool/make_repaso.py draws its readers' sheets with it)
+        if: steps.gate.outputs.run == 'true'
         run: python3 -c 'import PIL' 2>/dev/null || python3 -m pip install --quiet pillow
       - name: Run every check
+        if: steps.gate.outputs.run == 'true'
         run: bash coqui/tool/test_all.sh
