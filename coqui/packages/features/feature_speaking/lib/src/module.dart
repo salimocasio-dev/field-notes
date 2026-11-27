@@ -2,7 +2,6 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_screen.dart';
-import 'package:feature_speaking/src/entitlements_hook.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
 import 'package:feature_speaking/src/voice_test_controller.dart';
 import 'package:feature_speaking/src/voice_test_screen.dart';
@@ -20,7 +19,7 @@ import 'package:material_ui/material_ui.dart';
 ///   they come from somewhere, `VoiceTestRoute` is not answered;
 /// - [voiceTestEntry]: the title of the entry to the voice test on the Hablar tab; with none there is no entry.
 ///
-/// [entitlementCheck] lets callers gate live calls by plan, and
+/// Live calls are gated by `services.entitlements.has(Feature.calls)`.
 /// [completedCallIds] merges optional overrides with `ProgressStore.callDone`.
 class SpeakingModule implements FeatureModule {
   const SpeakingModule({
@@ -28,12 +27,11 @@ class SpeakingModule implements FeatureModule {
     this.voiceTest,
     this.voiceTestEntry,
     this.showSpeechNote = false,
-    this.entitlementCheck = defaultCallEntitlement,
     this.completedCallIds = const {},
     this.shortCallsEnabled = false,
   });
 
-  /// The line shown when the build cannot place a call; null uses `CallTexts.callsLaterFor(...)`.
+  /// The line shown when the build cannot place a call; null uses `SpeakWording.callsLaterFor(...)`.
   final String? callsLater;
 
   final VoiceTestContent? voiceTest;
@@ -41,9 +39,6 @@ class SpeakingModule implements FeatureModule {
 
   /// Shows `notaHabla` on the Hablar tab when requested.
   final bool showSpeechNote;
-
-  /// Subscription tier check hook for live calls.
-  final CallEntitlementCheck entitlementCheck;
 
   /// Optional override/test set of completed call IDs, merged with
   /// `ProgressStore.callDone`.
@@ -66,7 +61,6 @@ class SpeakingModule implements FeatureModule {
       callsLater: callsLater,
       voiceTestLabel: voiceTest == null ? null : voiceTestEntry,
       showSpeechNote: showSpeechNote,
-      entitlementCheck: entitlementCheck,
       completedCallIds: completedCallIds,
       shortCallsEnabled: shortCallsEnabled,
     ),
@@ -75,6 +69,7 @@ class SpeakingModule implements FeatureModule {
   @override
   Widget? screenFor(AppRoute route, Services s) {
     if (route is CallRoute) {
+      if (!s.entitlements.has(Feature.calls)) return null;
       final known =
           s.course.places.any((p) => p.id == route.placeId) &&
           resolveCallBrief(s.course, route.placeId, route.callId) != null;

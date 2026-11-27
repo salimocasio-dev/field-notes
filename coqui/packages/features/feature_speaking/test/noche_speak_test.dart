@@ -15,6 +15,7 @@ import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_screen.dart';
 import 'package:feature_speaking/src/hablar_model.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:flutter/rendering.dart' show RenderRepaintBoundary;
 import 'package:flutter/services.dart' show FontLoader;
 import 'package:flutter_test/flutter_test.dart';
@@ -22,6 +23,17 @@ import 'package:material_ui/material_ui.dart';
 
 import 'support/call_rig.dart';
 import 'support/scripted_call.dart';
+
+class _CountingCall extends ScriptedCall {
+  _CountingCall();
+  int asked = 0;
+
+  @override
+  bool get available {
+    asked++;
+    return super.available;
+  }
+}
 
 bool _nocheFontsLoaded = false;
 
@@ -83,6 +95,7 @@ class _SpeakRig {
     required this.haptics,
     required this.call,
     required this.services,
+    this.ownedEntitlements,
   });
 
   final _StructuredCourse course;
@@ -91,6 +104,7 @@ class _SpeakRig {
   final FakeHaptics haptics;
   final ScriptedCall call;
   final Services services;
+  final FakeEntitlements? ownedEntitlements;
 
   static _SpeakRig spanish({
     int casaPlayed = 11,
@@ -100,6 +114,9 @@ class _SpeakRig {
     bool colmadoHasStories = true,
     int openWordCount = 41,
     bool callAvailable = true,
+    ScriptedCall? call,
+    Entitlements? entitlements,
+    Plan? plan,
   }) {
     final places = [
       Place(
@@ -174,20 +191,27 @@ class _SpeakRig {
 
     final nav = FakeNavigator();
     final haptics = FakeHaptics();
-    final call = ScriptedCall(available: callAvailable);
+    final c = call ?? ScriptedCall(available: callAvailable);
+    final owned = plan != null && entitlements == null
+        ? FakeEntitlements(plan: plan)
+        : null;
+    final resolvedEntitlements =
+        entitlements ?? owned ?? const AllowAllEntitlements();
     return _SpeakRig._(
       course: course,
       progress: progress,
       nav: nav,
       haptics: haptics,
-      call: call,
+      call: c,
+      ownedEntitlements: owned,
       services: fakeServices(
         progress: progress,
         course: course,
-        call: call,
+        call: c,
         nav: nav,
         haptics: haptics,
         clock: clock,
+        entitlements: resolvedEntitlements,
       ),
     );
   }
@@ -197,6 +221,9 @@ class _SpeakRig {
     int parquePlayed = 6,
     int cocinaPlayed = 4,
     int openWordCount = 12,
+    ScriptedCall? call,
+    Entitlements? entitlements,
+    Plan? plan,
   }) {
     final places = [
       Place(
@@ -366,20 +393,27 @@ class _SpeakRig {
 
     final nav = FakeNavigator();
     final haptics = FakeHaptics();
-    final call = ScriptedCall();
+    final c = call ?? ScriptedCall();
+    final owned = plan != null && entitlements == null
+        ? FakeEntitlements(plan: plan)
+        : null;
+    final resolvedEntitlements =
+        entitlements ?? owned ?? const AllowAllEntitlements();
     return _SpeakRig._(
       course: course,
       progress: progress,
       nav: nav,
       haptics: haptics,
-      call: call,
+      call: c,
+      ownedEntitlements: owned,
       services: fakeServices(
         progress: progress,
         course: course,
-        call: call,
+        call: c,
         nav: nav,
         haptics: haptics,
         clock: clock,
+        entitlements: resolvedEntitlements,
       ),
     );
   }
@@ -414,7 +448,10 @@ class _SpeakRig {
     );
   }
 
-  void dispose() => call.dispose();
+  void dispose() {
+    ownedEntitlements?.dispose();
+    call.dispose();
+  }
 }
 
 void _seedOpenWords(RecordingProgress progress, List<String> words) {
@@ -971,7 +1008,7 @@ void main() {
         await tester.tap(find.byKey(const Key('speak-words-button')));
         await tester.pumpAndSettle();
         expect(find.byType(NocheSheet), findsOneWidget);
-        expect(find.text(HablarTexts.wordsTitle), findsOneWidget);
+        expect(find.text(SpeakWording.wordsTitle), findsOneWidget);
         expect(
           find.descendant(
             of: find.byType(NocheSheet),
@@ -986,18 +1023,21 @@ void main() {
         // 1 word (singular)
         final rig1 = _SpeakRig.spanish(openWordCount: 1);
         await tester.pumpWidget(rig1.screen());
-        expect(find.text('1 word ready to say'), findsOneWidget);
+        expect(find.text(SpeakWording.wordsReadyToSay(1)), findsOneWidget);
         rig1.dispose();
 
         // 0 words -> chips hidden on card, sheet shows wordsNone
         final rig0 = _SpeakRig.spanish(openWordCount: 0);
         await tester.pumpWidget(rig0.screen());
-        expect(find.text('0 words ready to say'), findsOneWidget);
-        expect(find.text('WORDS YOU CAN USE'), findsNothing);
+        expect(find.text(SpeakWording.wordsReadyToSay(0)), findsOneWidget);
+        expect(
+          find.text(SpeakWording.wordsYouCanUse.toUpperCase()),
+          findsNothing,
+        );
         expect(find.byType(NocheChip), findsNothing);
         await tester.tap(find.byKey(const Key('speak-words-button')));
         await tester.pumpAndSettle();
-        expect(find.text(HablarTexts.wordsNone), findsOneWidget);
+        expect(find.text(SpeakWording.wordsNone), findsOneWidget);
         rig0.dispose();
       },
     );
@@ -1018,7 +1058,7 @@ void main() {
             (w) =>
                 w is Semantics &&
                 w.properties.role == ui.SemanticsRole.tabBar &&
-                w.properties.label == HablarTexts.placeTabListLabel,
+                w.properties.label == SpeakWording.placeTabListLabel,
           ),
         );
         expect(tabBarWidget.properties.label, 'Place');
@@ -1269,11 +1309,17 @@ void main() {
             expect(wordsSize.height, greaterThanOrEqualTo(48));
             expect(wordsSize.width, greaterThanOrEqualTo(48));
 
-            // Every NochePill is >= 48x48
+            // Every NochePill is >= 48x48 except non-touchable planTag (24 high)
             for (final element in find.byType(NochePill).evaluate()) {
+              final pill = element.widget as NochePill;
               final box = element.renderObject! as RenderBox;
-              expect(box.size.height, greaterThanOrEqualTo(48));
-              expect(box.size.width, greaterThanOrEqualTo(48));
+              if (pill.kind == NochePillKind.planTag) {
+                expect(box.size.height, 24);
+                expect(pill.onPressed, isNull);
+              } else {
+                expect(box.size.height, greaterThanOrEqualTo(48));
+                expect(box.size.width, greaterThanOrEqualTo(48));
+              }
             }
 
             // Every other call card is >= 88 high
@@ -1304,7 +1350,9 @@ void main() {
 
             // Arabic RTL checks
             if (cfg.name == 'arabic') {
-              final titleRect = tester.getRect(find.text('Speak'));
+              final titleRect = tester.getRect(
+                find.text(SpeakWording.screenTitle),
+              );
               final wordsRect = tester.getRect(
                 find.byKey(const Key('speak-words-button')),
               );
@@ -1328,9 +1376,408 @@ void main() {
     );
   });
 
+  group('N3.3 Speak without the calls plan', () {
+    testWidgets(
+      'AllowAllEntitlements and Plan.courseAndCalls preserve normal Speak flow',
+      (tester) async {
+        tester.view.devicePixelRatio = 3.0;
+        tester.view.physicalSize = const Size(390, 844) * 3.0;
+        addTearDown(tester.view.reset);
+
+        for (final entry in <(String, Entitlements)>[
+          ('AllowAllEntitlements', const AllowAllEntitlements()),
+          ('Plan.courseAndCalls', FakeEntitlements(plan: Plan.courseAndCalls)),
+        ]) {
+          final rig = _SpeakRig.spanish(entitlements: entry.$2);
+          await tester.pumpWidget(rig.screen());
+
+          expect(
+            find.text(SpeakWording.wordsYouCanUse.toUpperCase()),
+            findsOneWidget,
+            reason: entry.$1,
+          );
+          expect(find.byType(NocheChip), findsNWidgets(5), reason: entry.$1);
+          expect(
+            find.byKey(const Key('speak-plan-tag')),
+            findsNothing,
+            reason: entry.$1,
+          );
+          expect(
+            find.byKey(const Key('speak-plan-card')),
+            findsNothing,
+            reason: entry.$1,
+          );
+          expect(
+            find.byKey(const Key('speak-call-disc')),
+            findsOneWidget,
+            reason: entry.$1,
+          );
+          expect(
+            find.text(SpeakWording.callPartner('Danny')),
+            findsOneWidget,
+            reason: entry.$1,
+          );
+
+          await tester.tap(find.byKey(const Key('speak-call-disc')));
+          await tester.pump();
+          expect(rig.nav.routes, [
+            const CallRoute('cocina', callId: 'cocina_tomar'),
+          ], reason: entry.$1);
+
+          await tester.pumpWidget(const SizedBox.shrink());
+          if (entry.$2 is FakeEntitlements) {
+            (entry.$2 as FakeEntitlements).dispose();
+          }
+          rig.dispose();
+        }
+      },
+    );
+
+    testWidgets(
+      'Plan.course and Plan.free render Noche-Hablar-Plan layout, distinct lock vs plan tag, and open PlansRoute on See plans',
+      (tester) async {
+        tester.view.devicePixelRatio = 3.0;
+        tester.view.physicalSize = const Size(390, 844) * 3.0;
+        addTearDown(tester.view.reset);
+
+        for (final plan in [Plan.course, Plan.free]) {
+          final countingCall = _CountingCall();
+          final rig = _SpeakRig.spanish(plan: plan, call: countingCall);
+          await tester.pumpWidget(rig.screen());
+          expect(tester.takeException(), isNull, reason: 'plan=$plan');
+
+          // Place pills and call titles stay visible.
+          expect(find.text('La casa'), findsOneWidget);
+          expect(find.text('El parque'), findsOneWidget);
+          expect(find.text('La cocina'), findsOneWidget);
+          expect(find.text('¿Qué quieres tomar?'), findsOneWidget);
+          expect(find.text('Say what you want to drink.'), findsOneWidget);
+
+          // Words you can use chips are hidden on the featured card.
+          expect(
+            find.text(SpeakWording.wordsYouCanUse.toUpperCase()),
+            findsNothing,
+          );
+          expect(find.byType(NocheChip), findsNothing);
+
+          // Eyebrow is muted (NocheColors.label) and ends with orange outlined planTag.
+          final eyebrow = tester.widget<Text>(
+            find.text(SpeakWording.nextCallEyebrow('Danny', 2).toUpperCase()),
+          );
+          expect(eyebrow.style?.color, NocheColors.label);
+
+          final planTagFinder = find.byKey(const Key('speak-plan-tag'));
+          expect(planTagFinder, findsOneWidget);
+          final planTagWidget = tester.widget<NochePill>(planTagFinder);
+          expect(planTagWidget.kind, NochePillKind.planTag);
+          expect(planTagWidget.label, SpeakWording.planTag);
+          expect(planTagWidget.onPressed, isNull);
+          expect(tester.getSize(planTagFinder).height, 24);
+
+          // Locked place pill (dashedLocked, 48x48) is visually distinct from planTag (24).
+          final lockedPillFinder = find.byKey(
+            const Key('speak-locked-place-pill'),
+          );
+          expect(lockedPillFinder, findsOneWidget);
+          final lockedPillWidget = tester.widget<NochePill>(lockedPillFinder);
+          expect(lockedPillWidget.kind, NochePillKind.dashedLocked);
+          expect(tester.getSize(lockedPillFinder), const Size(48, 48));
+
+          // Other calls: threshold-met card is solid standard with white title and '2 min', non-tappable.
+          final metCardFinder = find.byKey(
+            const Key('speak-other-call-cocina_comer'),
+          );
+          expect(metCardFinder, findsOneWidget);
+          final metCard = tester.widget<NocheCard>(metCardFinder);
+          expect(metCard.variant, NocheCardVariant.standard);
+          expect(metCard.onPressed, isNull);
+          final metTitle = tester.widget<Text>(
+            find.descendant(
+              of: metCardFinder,
+              matching: find.text('¿Qué te gusta comer?'),
+            ),
+          );
+          expect(metTitle.style?.color, NocheColors.text);
+          expect(
+            find.descendant(
+              of: metCardFinder,
+              matching: find.text(SpeakWording.minutesOnly(2)),
+            ),
+            findsOneWidget,
+          );
+
+          // Not-reached other call card is dashed with muted title and '5 min · after story 9', non-tappable.
+          final upcomingCardFinder = find.byKey(
+            const Key('speak-other-call-cocina_main'),
+          );
+          expect(upcomingCardFinder, findsOneWidget);
+          final upcomingCard = tester.widget<NocheCard>(upcomingCardFinder);
+          expect(upcomingCard.variant, NocheCardVariant.dashed);
+          expect(upcomingCard.onPressed, isNull);
+          final upcomingTitle = tester.widget<Text>(
+            find.descendant(
+              of: upcomingCardFinder,
+              matching: find.text('Tengo hambre'),
+            ),
+          );
+          expect(upcomingTitle.style?.color, NocheColors.label);
+          expect(
+            find.descendant(
+              of: upcomingCardFinder,
+              matching: find.text(SpeakWording.cardMetaAfterStory(5, 9)),
+            ),
+            findsOneWidget,
+          );
+
+          // Mic disc and "Call Danny" are absent; replaced by highlight plan card.
+          expect(find.byKey(const Key('speak-call-disc')), findsNothing);
+          expect(find.text(SpeakWording.callPartner('Danny')), findsNothing);
+
+          final planCardFinder = find.byKey(const Key('speak-plan-card'));
+          expect(planCardFinder, findsOneWidget);
+          final planCard = tester.widget<NocheCard>(planCardFinder);
+          expect(planCard.variant, NocheCardVariant.highlight);
+
+          final cardTitle = tester.widget<Text>(
+            find.text(SpeakWording.planCardTitle),
+          );
+          expect(cardTitle.style?.fontSize, NocheType.sheetTitle.fontSize);
+          expect(cardTitle.style?.color, NocheColors.text);
+          expect(find.text(SpeakWording.planCardBody('Danny')), findsOneWidget);
+
+          final seePlansFinder = find.byKey(
+            const Key('speak-see-plans-button'),
+          );
+          expect(seePlansFinder, findsOneWidget);
+          final seePlansBtn = tester.widget<NochePrimaryButton>(seePlansFinder);
+          expect(seePlansBtn.label, SpeakWording.seePlans);
+          expect(
+            tester.getSize(seePlansFinder).height,
+            greaterThanOrEqualTo(48),
+          );
+
+          // Tapping call cards, plan tag, and locked place pill opens no route, no sheet/dialog, and never touches call.
+          await tester.tap(find.byKey(const Key('speak-next-call-card')));
+          await tester.pump();
+          await tester.tap(planTagFinder);
+          await tester.pump();
+          await tester.tap(metCardFinder);
+          await tester.pump();
+          await tester.tap(upcomingCardFinder);
+          await tester.pump();
+          await tester.tap(lockedPillFinder);
+          await tester.pump();
+          expect(rig.nav.routes, isEmpty);
+          expect(find.byType(NocheSheet), findsNothing);
+          expect(find.byType(Dialog), findsNothing);
+          expect(countingCall.asked, 0);
+          expect(countingCall.starts, 0);
+
+          // Tapping "See plans" goes to PlansRoute with a haptic tick and zero call reads/starts.
+          await tester.tap(seePlansFinder);
+          await tester.pump();
+          expect(rig.nav.routes, [const PlansRoute()]);
+          expect(rig.haptics.ticks, 1);
+          expect(countingCall.asked, 0);
+          expect(countingCall.starts, 0);
+
+          await tester.pumpWidget(const SizedBox.shrink());
+          rig.dispose();
+        }
+      },
+    );
+
+    testWidgets(
+      'SpeakingModule.screenFor, CallController, and CallScreen block live calls when Feature.calls is denied',
+      (tester) async {
+        tester.view.devicePixelRatio = 3.0;
+        tester.view.physicalSize = const Size(390, 844) * 3.0;
+        addTearDown(tester.view.reset);
+
+        final countingCall = _CountingCall();
+        final entitlements = FakeEntitlements(plan: Plan.course);
+        final rig = _SpeakRig.spanish(
+          call: countingCall,
+          entitlements: entitlements,
+        );
+        const module = SpeakingModule(shortCallsEnabled: true);
+
+        expect(
+          module.screenFor(const CallRoute('cocina'), rig.services),
+          isNull,
+        );
+        expect(
+          module.screenFor(
+            const CallRoute('cocina', callId: 'cocina_tomar'),
+            rig.services,
+          ),
+          isNull,
+        );
+        expect(countingCall.asked, 0);
+        expect(countingCall.starts, 0);
+
+        final controller = CallController(
+          session: countingCall,
+          clock: FakeClock(),
+          course: rig.course,
+          progress: rig.progress,
+          placeId: 'cocina',
+          callId: 'cocina_tomar',
+          entitlements: entitlements,
+        );
+        expect(controller.available, isFalse);
+        controller.open();
+        await controller.start();
+        expect(countingCall.asked, 0);
+        expect(countingCall.starts, 0);
+        controller.dispose();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: coquiTheme(),
+            home: Scaffold(
+              body: CallScreen(
+                services: rig.services,
+                placeId: 'cocina',
+                callId: 'cocina_tomar',
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+        expect(countingCall.asked, 0);
+        expect(countingCall.starts, 0);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+        entitlements.dispose();
+        rig.dispose();
+      },
+    );
+
+    testWidgets(
+      'HablarTab updates live when FakeEntitlements.plan changes via entitlements.changes',
+      (tester) async {
+        tester.view.devicePixelRatio = 3.0;
+        tester.view.physicalSize = const Size(390, 844) * 3.0;
+        addTearDown(tester.view.reset);
+
+        final countingCall = _CountingCall();
+        final entitlements = FakeEntitlements(plan: Plan.course);
+        final rig = _SpeakRig.spanish(
+          call: countingCall,
+          entitlements: entitlements,
+        );
+        await tester.pumpWidget(rig.screen());
+
+        expect(find.byKey(const Key('speak-plan-card')), findsOneWidget);
+        expect(find.byKey(const Key('speak-call-disc')), findsNothing);
+        expect(countingCall.asked, 0);
+
+        // Upgrade live to Plan.courseAndCalls
+        entitlements.plan = Plan.courseAndCalls;
+        await tester.pump();
+        expect(find.byKey(const Key('speak-plan-card')), findsNothing);
+        expect(find.byKey(const Key('speak-plan-tag')), findsNothing);
+        expect(find.byKey(const Key('speak-call-disc')), findsOneWidget);
+        expect(find.byType(NocheChip), findsNWidgets(5));
+        expect(countingCall.asked, greaterThan(0));
+
+        // Downgrade live to Plan.free
+        final askedBeforeDowngrade = countingCall.asked;
+        entitlements.plan = Plan.free;
+        await tester.pump();
+        expect(find.byKey(const Key('speak-plan-card')), findsOneWidget);
+        expect(find.byKey(const Key('speak-plan-tag')), findsOneWidget);
+        expect(find.byKey(const Key('speak-call-disc')), findsNothing);
+        expect(find.byType(NocheChip), findsNothing);
+        expect(countingCall.asked, askedBeforeDowngrade);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+        entitlements.dispose();
+        rig.dispose();
+      },
+    );
+
+    testWidgets(
+      'Arabic RTL under Plan.course shows Tariq, mirrors eyebrow and plan tag, and has zero overflow',
+      (tester) async {
+        tester.view.devicePixelRatio = 3.0;
+        tester.view.physicalSize = const Size(390, 844) * 3.0;
+        addTearDown(tester.view.reset);
+
+        final countingCall = _CountingCall();
+        final rig = _SpeakRig.arabic(plan: Plan.course, call: countingCall);
+        await tester.pumpWidget(rig.screen());
+        expect(tester.takeException(), isNull);
+
+        expect(find.text(SpeakWording.planCardTitle), findsOneWidget);
+        expect(find.text(SpeakWording.planCardBody('Tariq')), findsOneWidget);
+        expect(find.textContaining('Danny'), findsNothing);
+        expect(find.byType(NocheChip), findsNothing);
+        expect(find.byKey(const Key('speak-call-disc')), findsNothing);
+        expect(countingCall.asked, 0);
+
+        // In RTL, eyebrow sits to the right of the plan tag.
+        final eyebrowRect = tester.getRect(
+          find.text(SpeakWording.nextCallEyebrow('Tariq', 2).toUpperCase()),
+        );
+        final tagRect = tester.getRect(find.byKey(const Key('speak-plan-tag')));
+        expect(eyebrowRect.left, greaterThan(tagRect.right));
+
+        await tester.pumpWidget(const SizedBox.shrink());
+        rig.dispose();
+      },
+    );
+
+    testWidgets(
+      'zero overflow across 390x844, 412x915, 360x640, and 844x390 for Plan.course and Plan.free',
+      (tester) async {
+        const screens = [
+          (name: '390x844', size: Size(390, 844), dpr: 3.0),
+          (name: '412x915', size: Size(412, 915), dpr: 2.625),
+          (name: '360x640', size: Size(360, 640), dpr: 3.0),
+          (name: '844x390', size: Size(844, 390), dpr: 3.0),
+        ];
+
+        for (final screen in screens) {
+          for (final plan in [Plan.course, Plan.free]) {
+            tester.view.devicePixelRatio = screen.dpr;
+            tester.view.physicalSize = screen.size * screen.dpr;
+
+            final rig = _SpeakRig.spanish(plan: plan);
+            await tester.pumpWidget(rig.screen());
+            await tester.pump();
+            expect(
+              tester.takeException(),
+              isNull,
+              reason: 'plan=$plan at ${screen.name}',
+            );
+
+            for (final element in find.byType(NochePill).evaluate()) {
+              final pill = element.widget as NochePill;
+              final box = element.renderObject! as RenderBox;
+              if (pill.kind == NochePillKind.planTag) {
+                expect(box.size.height, 24);
+                expect(pill.onPressed, isNull);
+              } else {
+                expect(box.size.height, greaterThanOrEqualTo(48));
+                expect(box.size.width, greaterThanOrEqualTo(48));
+              }
+            }
+
+            await tester.pumpWidget(const SizedBox.shrink());
+            rig.dispose();
+          }
+        }
+        tester.view.reset();
+      },
+    );
+  });
+
   if (Platform.environment['COQUI_CAPTURE_SHOTS'] == '1') {
     testWidgets(
-      'capture N4.6 Speak screenshots (board_cocina, one_open, all_open, none_open, arabic)',
+      'capture N4.6 and N3.3 Speak screenshots (board_cocina, one_open, all_open, none_open, arabic, plan_course, plan_arabic)',
       (tester) async {
         await _loadNocheFonts();
         final dir = Directory('test/screenshots')..createSync(recursive: true);
@@ -1393,6 +1840,14 @@ void main() {
               ),
             ),
             (tag: 'arabic', make: () => _SpeakRig.arabic()),
+            (
+              tag: 'plan_course',
+              make: () => _SpeakRig.spanish(plan: Plan.course),
+            ),
+            (
+              tag: 'plan_arabic',
+              make: () => _SpeakRig.arabic(plan: Plan.course),
+            ),
           ];
           for (final st in states) {
             await capture(

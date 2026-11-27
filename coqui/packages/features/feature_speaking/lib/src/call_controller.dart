@@ -96,6 +96,7 @@ class CallController extends ChangeNotifier {
     required this.progress,
     required this.placeId,
     this.callId,
+    this.entitlements = const AllowAllEntitlements(),
     this.clips,
     this.onClose,
   }) : place = _placeOf(course, placeId),
@@ -107,6 +108,7 @@ class CallController extends ChangeNotifier {
   final ProgressStore progress;
   final String placeId;
   final String? callId;
+  final Entitlements entitlements;
 
   /// Stopped when a call starts (llamada.js: `hush(); SFX.calla()`).
   final ClipPlayer? clips;
@@ -124,7 +126,8 @@ class CallController extends ChangeNotifier {
     return null;
   }
 
-  bool get available => place != null && brief != null;
+  bool get available =>
+      place != null && brief != null && entitlements.has(Feature.calls);
 
   // ---- what the screen shows ----
 
@@ -228,7 +231,7 @@ class CallController extends ChangeNotifier {
   void open() {
     final p = place;
     final b = brief;
-    if (p == null || b == null) return;
+    if (p == null || b == null || !entitlements.has(Feature.calls)) return;
     final photo = b.photo;
     pictureWord = photo;
     pictureShown = photo != null && course.pairFor(photo) != null;
@@ -309,7 +312,8 @@ class CallController extends ChangeNotifier {
         _closed ||
         _state != CallState.idle ||
         b == null ||
-        l == null) {
+        l == null ||
+        !entitlements.has(Feature.calls)) {
       return;
     }
     _locked = true;
