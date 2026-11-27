@@ -85,6 +85,8 @@ void main() {
       '/cuento/no-es-un-cuento',
       '/cuento/palabras-solas', // a file of historia/cuentos/ the course does not name (the word list, not a story)
       '/llamada/luna',
+      '/llamada/casa?call=',
+      '/llamada/casa?call=INVALID',
     ]) {
       final app = TestApp(tester);
       await app.open(stored: seed('curso'), location: at);

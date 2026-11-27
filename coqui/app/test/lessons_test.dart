@@ -8,6 +8,8 @@
 // - feature_speaking: llamada_expected_test.dart, call_screen_test.dart,
 //   arabic_language_test.dart, voice_test_test.dart
 // - feature_story: screen_test.dart, lines_test.dart, not_converted_test.dart
+import 'dart:convert';
+
 import 'package:app/src/shell.dart';
 import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
@@ -237,6 +239,118 @@ void main() {
       expect(findShellRoute(const CallRoute('casa')), findsNothing);
       expect(direct.tabBarShown, isTrue);
       expect(direct.selectedTab, 'map');
+    },
+  );
+
+  testWidgets(
+    'CallRoute with callId reaches the specific CallScreen from Speak tab and direct URL, and falls back to Map when unknown',
+    (tester) async {
+      final multiCallLlamadas = jsonEncode({
+        'casa': [
+          {
+            'id': 'casa_main',
+            'title': 'De visita en la casa',
+            'jobEn': 'Greet {partner}, introduce yourself, and accept a drink.',
+            'minutos': 5,
+            'job': 'Say hello, say who you are, accept a drink and say thanks.',
+            'opening': '¡Hola! Soy Danny. ¿Cómo estás?',
+            'foto': 'casa',
+          },
+          {
+            'id': 'casa_saludo',
+            'title': '¿Cómo estás?',
+            'jobEn': 'Greet {partner} and say how you are doing.',
+            'minutos': 2,
+            'job': 'Greet Danny and say how you are doing.',
+            'opening': '¡Hola! ¿Cómo estás hoy?',
+            'isMain': false,
+          },
+          {
+            'id': 'casa_agua',
+            'title': 'Un vaso de agua',
+            'jobEn': 'Ask for a drink and say thanks.',
+            'minutos': 2,
+            'job': 'Ask for a drink and say thanks.',
+            'opening': '¿Quieres un vaso de agua?',
+            'isMain': false,
+          },
+        ],
+      });
+      String editCalls(String path, String text) =>
+          path == 'datos/llamadas.json' ? multiCallLlamadas : text;
+
+      // (a) From Speak tab via Key('speak-other-call-casa_agua').
+      final app = TestApp(tester)..editContent = editCalls;
+      await app.open(
+        stored: seed('curso'),
+        switches: AppSwitches.fromQuery(const {'callstub': '1'}),
+      );
+
+      await app.openTab('speak');
+      final otherCall = find.byKey(const Key('speak-other-call-casa_agua'));
+      expect(otherCall, findsOneWidget);
+      await tester.ensureVisible(otherCall);
+      await app.tap(otherCall);
+      await app.settle(rounds: 10);
+      expect(
+        findShellRoute(const CallRoute('casa', callId: 'casa_agua')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('call-casa-casa_agua')), findsOneWidget);
+      expect(app.lessonShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await app.settle(rounds: 5);
+      expect(
+        findShellRoute(const CallRoute('casa', callId: 'casa_agua')),
+        findsNothing,
+      );
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'speak');
+
+      // (b) Direct location open with ?call=casa_agua.
+      await tester.pumpWidget(const SizedBox());
+      final direct = TestApp(tester)..editContent = editCalls;
+      await direct.open(
+        stored: seed('curso'),
+        location: '/llamada/casa?call=casa_agua',
+        switches: AppSwitches.fromQuery(const {'callstub': '1'}),
+      );
+      expect(
+        findShellRoute(const CallRoute('casa', callId: 'casa_agua')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('call-casa-casa_agua')), findsOneWidget);
+      expect(direct.lessonShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await direct.settle(rounds: 5);
+      expect(
+        findShellRoute(const CallRoute('casa', callId: 'casa_agua')),
+        findsNothing,
+      );
+      expect(direct.tabBarShown, isTrue);
+      expect(direct.selectedTab, 'map');
+
+      // (c) Direct location open with unknown callId falls back to Map tab.
+      await tester.pumpWidget(const SizedBox());
+      final unknown = TestApp(tester)..editContent = editCalls;
+      await unknown.open(
+        stored: seed('curso'),
+        location: '/llamada/casa?call=no_existe',
+        switches: AppSwitches.fromQuery(const {'callstub': '1'}),
+      );
+      expect(unknown.tabBarShown, isTrue);
+      expect(unknown.selectedTab, 'map');
+      expect(
+        findShellRoute(const CallRoute('casa', callId: 'no_existe')),
+        findsNothing,
+      );
+      expect(tester.takeException(), isNull);
     },
   );
 

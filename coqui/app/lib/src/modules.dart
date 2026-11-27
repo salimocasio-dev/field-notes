@@ -39,6 +39,7 @@ List<FeatureModule> coquiModules({
 /// address only (`#/prueba-voz`). With no [voiceTest] (its file could not be read) that address opens the map.
 FeatureModule speakingModule({VoiceTestData? voiceTest}) => SpeakingModule(
   voiceTest: voiceTest == null ? null : voiceTestContent(voiceTest),
+  shortCallsEnabled: true,
 );
 
 /// The voice test's content, from the file read at the start: its lines, each with its hint and its targets, and the
