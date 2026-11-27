@@ -1,53 +1,27 @@
-// Where each part of the call screen stands, against where llamada.js puts it on the page itself (test/fixtures/llamada_layout.json,
-// made by `node tool/llamada_layout.mjs`: getBoundingClientRect of each part of #llam at 412x915, 390x844, 360x640 and 844x390, before
-// the call and with Danny speaking). A part whose width is its text's (the timer, the state label) is held to its height and its
-// centre or edge: the old page draws text with Inter, this build with Roboto.
-import 'dart:convert';
-import 'dart:io';
-
+// Noche layout geometry checks for CallScreen across all 4 phone sizes
+// (412x915, 390x844, 360x640, 844x390) in idle, Danny (theySpeak with flanking
+// bars), and Your turn (listening with flanking bars) states.
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_look.dart';
-import 'package:feature_speaking/src/call_mic.dart';
 import 'package:feature_speaking/src/call_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'support/world.dart';
 
-final Map<String, dynamic> expected = jsonDecode(
-  File('test/fixtures/llamada_layout.json').readAsStringSync(),
-) as Map<String, dynamic>;
-
-/// [top, bottom, left, right] as the old page gave them.
-List<double> old(Map<String, dynamic> part, String k) => [
-  for (final v in part[k] as List) (v as num).toDouble(),
-];
-
-Finder textStyled(TextStyle style, [String? data]) => find.byWidgetPredicate(
-  (w) => w is Text && w.style == style && (data == null || w.data == data),
-);
-
 void main() {
   setUpAll(loadCoquiFonts);
 
-  final sizes = (expected['sizes'] as Map<String, dynamic>).entries.toList();
+  const phones = [Phone.android, Phone.iphone, Phone.small, Phone.side];
 
-  for (final e in sizes) {
-    final size = e.value as Map<String, dynamic>;
-    final phone = Phone(
-      e.key,
-      (size['width'] as num).toDouble(),
-      (size['height'] as num).toDouble(),
-      (size['ratio'] as num).toDouble(),
-    );
-
+  for (final phone in phones) {
     testWidgets(
-      'the layout is the old page\'s, before the call and with Danny speaking: ${e.key}',
+      'Noche call screen layout has zero overflows or overlaps in idle, Danny, and your turn: ${phone.name}',
       (tester) async {
         phone.use(tester);
         final w = await World.create(
           seed: 'todo',
-          stub: {'manual'},
+          stub: const {'manual'},
           reduceMotion: true,
         );
         await tester.pumpWidget(
@@ -55,95 +29,144 @@ void main() {
         );
         await tester.pump();
 
-        void compare(
-          String when,
-          Map<String, dynamic> parts,
-          String line,
-          String label,
-        ) {
-          void rect(
-            String k,
-            Rect r, {
-            bool top = true,
-            bool bottom = true,
-            bool left = true,
-            bool right = true,
-          }) {
-            final o = old(parts, k);
-            final why =
-                '$when $k in ${e.key}: old $o, here ${[r.top, r.bottom, r.left, r.right]}';
-            if (top) expect(r.top, closeTo(o[0], .6), reason: why);
-            if (bottom) expect(r.bottom, closeTo(o[1], .6), reason: why);
-            if (left) expect(r.left, closeTo(o[2], .6), reason: why);
-            if (right) expect(r.right, closeTo(o[3], .6), reason: why);
+        void verifyGeometry(
+          String stage, {
+          required String line,
+          required String label,
+        }) {
+          expect(
+            tester.takeException(),
+            isNull,
+            reason: '$stage in ${phone.name}',
+          );
+          final screen = Rect.fromLTWH(0, 0, phone.width, phone.height);
+          final closeRect = tester.getRect(find.byKey(const Key('call-close')));
+          final timerRect = tester.getRect(find.textContaining(':'));
+          final picRect = tester.getRect(find.byType(PictureFrame));
+          final lineRect = tester.getRect(find.text(line));
+          final micRect = tester.getRect(
+            find.byKey(const Key('call-mic-stage')),
+          );
+          final discRect = tester.getRect(
+            find.byKey(const ValueKey('noche_mic_disc')),
+          );
+          final labelRect = tester.getRect(find.text(label));
+          final noteRect = tester.getRect(
+            find.byKey(const ValueKey('call-note')),
+          );
+          final helpRect = tester.getRect(find.byType(NocheOutlineButton));
+
+          expect(closeRect.width, closeTo(48, 0.01), reason: stage);
+          expect(closeRect.height, closeTo(48, 0.01), reason: stage);
+          expect(discRect.width, closeTo(NocheSize.mic, 0.01), reason: stage);
+          expect(discRect.height, closeTo(NocheSize.mic, 0.01), reason: stage);
+          expect(
+            helpRect.width,
+            closeTo(CallMetrics.helpWidth, 0.01),
+            reason: stage,
+          );
+          expect(helpRect.height, closeTo(48, 0.01), reason: stage);
+
+          final parts = <String, Rect>{
+            'close': closeRect,
+            'timer': timerRect,
+            'picture': picRect,
+            'line': lineRect,
+            'mic': micRect,
+            'label': labelRect,
+            'note': noteRect,
+            'help': helpRect,
+          };
+          for (final entry in parts.entries) {
+            expect(
+              screen.contains(entry.value.topLeft) &&
+                  screen.contains(
+                    entry.value.bottomRight - const Offset(0.01, 0.01),
+                  ),
+              isTrue,
+              reason: '$stage ${entry.key} ${entry.value} outside $screen',
+            );
           }
 
-          rect('.lx', tester.getRect(find.byType(LessonCloseButton)));
-          rect('canvas', tester.getRect(find.byType(PictureFrame)));
-          rect('.lmic', tester.getRect(find.byType(CallMicStage)));
-          rect(
-            '.ldisc',
-            tester.getRect(
-              find
-                  .descendant(
-                    of: find.byType(CallMicStage),
-                    matching: find.byType(AnimatedContainer),
-                  )
-                  .last,
-            ),
-          );
-          rect('.lhelp', tester.getRect(find.byType(LessonButton)));
-          rect('.ld', tester.getRect(find.text(line)));
-          rect('.lh', tester.getRect(textStyled(CallText.heard)));
-          // the timer: its height and its right edge; the label: its height and its centre; the note: its height and its centre
-          rect('.lt', tester.getRect(textStyled(CallText.timer)), left: false);
-          rect(
-            '.ll',
-            tester.getRect(find.text(label)),
-            left: false,
-            right: false,
-          );
-          // centred under the disc in a portrait screen, starting where the old page starts it on its side
-          final lbl = tester.getRect(find.text(label));
-          final o = old(parts, '.ll');
-          if (phone.width > phone.height) {
-            expect(
-              lbl.left,
-              closeTo(o[2], .6),
-              reason: '$when label left in ${e.key}',
-            );
+          final names = parts.keys.toList();
+          for (var i = 0; i < names.length; i++) {
+            for (var j = i + 1; j < names.length; j++) {
+              final overlap = parts[names[i]]!.intersect(parts[names[j]]!);
+              expect(
+                overlap.width > 1 && overlap.height > 1,
+                isFalse,
+                reason:
+                    '$stage ${names[i]} and ${names[j]} overlap in ${phone.name}',
+              );
+            }
+          }
+
+          if (CallMetrics.landscape(Size(phone.width, phone.height))) {
+            expect(picRect.left, 16, reason: '$stage landscape pic left');
+            expect(micRect.left, greaterThan(picRect.right), reason: stage);
+            expect(lineRect.left, greaterThan(picRect.right), reason: stage);
+            expect(labelRect.left, greaterThan(micRect.right), reason: stage);
           } else {
             expect(
-              lbl.center.dx,
-              closeTo((o[2] + o[3]) / 2, .6),
-              reason: '$when label centre in ${e.key}',
+              picRect.bottom,
+              lessThanOrEqualTo(lineRect.top),
+              reason: stage,
+            );
+            expect(
+              lineRect.bottom,
+              lessThanOrEqualTo(micRect.top),
+              reason: stage,
+            );
+            expect(
+              micRect.bottom,
+              lessThanOrEqualTo(labelRect.top),
+              reason: stage,
+            );
+            expect(
+              labelRect.bottom,
+              lessThanOrEqualTo(noteRect.top),
+              reason: stage,
+            );
+            expect(
+              noteRect.bottom,
+              lessThanOrEqualTo(helpRect.top),
+              reason: stage,
+            );
+            expect(
+              discRect.center.dx,
+              closeTo(phone.width / 2, 1.0),
+              reason: '$stage portrait disc centered',
             );
           }
-          rect(
-            '.lo',
-            tester.getRect(find.byKey(const ValueKey('call-note'))),
-            left: false,
-            right: false,
-          );
         }
 
-        compare(
+        verifyGeometry(
           'idle',
-          size['idle'] as Map<String, dynamic>,
-          'La casa · about 5 min',
-          'Start call',
+          line: 'La casa · about 5 min',
+          label: 'Start call',
         );
-        await tester.tap(find.byType(CallMicStage));
+
+        await tester.tap(find.byKey(const Key('call-mic-stage')));
         await tester.pump();
         w.call.go('connect');
         w.call.go('danny1');
         await w.elapse(tester, 500);
-        compare(
-          'live',
-          size['live'] as Map<String, dynamic>,
-          '¡Hola! Soy Danny. ¿Cómo estás?',
-          'Danny',
+        verifyGeometry(
+          'danny',
+          line: '¡Hola! Soy Danny. ¿Cómo estás?',
+          label: 'Danny',
         );
+
+        w.call.go('you1');
+        await w.elapse(tester, 300);
+        w.call.go('talk1');
+        await w.elapse(tester, 400);
+        verifyGeometry(
+          'you',
+          line: '¡Hola! Soy Danny. ¿Cómo estás?',
+          label: 'Your turn',
+        );
+
         await w.close(tester);
       },
     );

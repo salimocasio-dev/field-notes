@@ -332,7 +332,7 @@ void main() {
           ),
         );
         await tester.pump();
-        final closeRect = tester.getRect(find.byType(LessonCloseButton));
+        final closeRect = tester.getRect(find.byKey(const Key('call-close')));
         final timerRect = tester.getRect(find.text('00:00'));
         expect(closeRect.center.dx, greaterThan(timerRect.center.dx));
         await portrait.close(tester);
@@ -390,30 +390,28 @@ void main() {
           );
 
           // Progress bar dash 0 is right of the last dash in RTL
-          Rect dash(int k) => tester.getRect(
-            find
-                .byWidgetPredicate(
-                  (x) =>
-                      x is AnimatedContainer && x.constraints?.maxHeight == 6,
-                )
-                .at(k),
-          );
+          Rect dash(int k) =>
+              tester.getRect(find.byKey(ValueKey('noche_dash_$k')));
           final firstDash = dash(0);
           final lastDash = dash(1);
           expect(firstDash.left, greaterThan(lastDash.right));
+          expect(
+            find.text(arabicTestLanguage.micWords['ready']!),
+            findsOneWidget,
+          );
 
           // Attempt line 1 (matches via Arabic diacritic/alef normalization)
-          await tester.tap(
-            find.byWidgetPredicate(
-              (x) => x is Semantics && x.properties.label == 'ميكروفون',
-            ),
-          );
+          await tester.tap(find.byKey(const Key('voice-test-mic')));
           await w.elapse(tester, 700);
           expect(
             speech.listens.single.locale,
             arabicTestLanguage.recognitionLocale,
           );
           expect(speech.listens.single.locale, 'ar-SA');
+          expect(
+            find.text(arabicTestLanguage.micWords['right']!),
+            findsOneWidget,
+          );
 
           final saved = jsonDecode(
             w.storage[voiceTestSpace]!.values[voiceTestRunKey]!,
@@ -423,18 +421,14 @@ void main() {
           expect(line0['ok'], isTrue);
 
           // Next -> line 2 (non-matching Arabic is rejected)
-          await tester.tap(
-            find.byWidgetPredicate(
-              (x) => x is Semantics && x.properties.label == 'التالي',
-            ),
-          );
+          await tester.tap(find.byKey(const Key('voice-test-next')));
           await tester.pump();
-          await tester.tap(
-            find.byWidgetPredicate(
-              (x) => x is Semantics && x.properties.label == 'ميكروفون',
-            ),
-          );
+          await tester.tap(find.byKey(const Key('voice-test-mic')));
           await w.elapse(tester, 700);
+          expect(
+            find.text(arabicTestLanguage.micWords['notYet']!),
+            findsOneWidget,
+          );
 
           final saved2 = jsonDecode(
             w.storage[voiceTestSpace]!.values[voiceTestRunKey]!,
@@ -443,11 +437,7 @@ void main() {
           expect(line1['ok'], isFalse);
 
           // Next -> end screen
-          await tester.tap(
-            find.byWidgetPredicate(
-              (x) => x is Semantics && x.properties.label == 'التالي',
-            ),
-          );
+          await tester.tap(find.byKey(const Key('voice-test-next')));
           await tester.pump();
           expect(tester.takeException(), isNull);
           expect(find.text('Heard right: 1 of 2'), findsOneWidget);
