@@ -23,18 +23,59 @@ const _micWords = {
   'notYet': 'Try again',
 };
 
+const _seg3 = [
+  NocheSegmentOption(value: 0, label: 'One'),
+  NocheSegmentOption(value: 1, label: 'Two'),
+  NocheSegmentOption(value: 2, label: 'Three'),
+];
+
+const _seg2 = [
+  NocheSegmentOption(value: 0, label: 'One'),
+  NocheSegmentOption(value: 1, label: 'Two'),
+];
+
+const _pillOpts = [
+  NochePillOption(value: 'short', label: 'A'),
+  NochePillOption(value: 'long', label: 'Much longer pill label'),
+];
+
+const _outlineHoriz = [
+  NocheOutlineOption(
+    value: 'a',
+    child: SizedBox(height: 64, child: Text('Font A')),
+  ),
+  NocheOutlineOption(
+    value: 'b',
+    child: SizedBox(height: 64, child: Text('Font B')),
+  ),
+];
+
+const _barItems2 = [
+  NocheBarItem(label: '1', value: 10),
+  NocheBarItem(label: '2', value: 20),
+];
+
+const _barItems6 = [
+  NocheBarItem(label: '1', value: 10),
+  NocheBarItem(label: '2', value: 20),
+  NocheBarItem(label: '3', value: 30),
+  NocheBarItem(label: '4', value: 40),
+  NocheBarItem(label: '5', value: 50),
+  NocheBarItem(label: '6', value: 40),
+];
+
 Widget _harness(
   Widget child, {
-  TextDirection textDirection = TextDirection.ltr,
-  bool disableAnimations = false,
+  TextDirection dir = TextDirection.ltr,
+  bool reduced = false,
   Size size = const Size(390, 844),
 }) => Directionality(
-  textDirection: textDirection,
+  textDirection: dir,
   child: MediaQuery(
     data: MediaQueryData(
       size: size,
       devicePixelRatio: 1,
-      disableAnimations: disableAnimations,
+      disableAnimations: reduced,
     ),
     child: Align(
       alignment: AlignmentDirectional.topStart,
@@ -47,196 +88,191 @@ Widget _harness(
   ),
 );
 
-double _translateX(WidgetTester tester, Finder finder) =>
-    tester.widget<Transform>(finder).transform.getTranslation().x;
+Future<StateSetter> _pumpState(
+  WidgetTester tester,
+  Widget Function(BuildContext, StateSetter) build, {
+  TextDirection dir = TextDirection.ltr,
+  bool reduced = false,
+}) async {
+  late StateSetter setOuter;
+  await tester.pumpWidget(
+    _harness(
+      dir: dir,
+      reduced: reduced,
+      StatefulBuilder(builder: (c, s) => build(c, setOuter = s)),
+    ),
+  );
+  return setOuter;
+}
 
-double _translateY(WidgetTester tester, Finder finder) =>
-    tester.widget<Transform>(finder).transform.getTranslation().y;
+Widget _app(Widget home, {bool reduced = false}) => MaterialApp(
+  theme: coquiTheme(),
+  builder: reduced
+      ? (c, child) => MediaQuery(
+          data: MediaQuery.of(c).copyWith(disableAnimations: true),
+          child: child!,
+        )
+      : null,
+  home: home,
+);
 
-double _scaleOf(WidgetTester tester, Finder finder) =>
-    tester.widget<Transform>(finder).transform.storage[0];
-
-double _opacityOfChild(WidgetTester tester, Finder descendant) => tester
+double _tx(WidgetTester t, Finder f) =>
+    t.widget<Transform>(f).transform.getTranslation().x;
+double _ty(WidgetTester t, Finder f) =>
+    t.widget<Transform>(f).transform.getTranslation().y;
+double _scale(WidgetTester t, Finder f) =>
+    t.widget<Transform>(f).transform.storage[0];
+double _op(WidgetTester t, Finder child) => t
     .widget<Opacity>(
-      find.ancestor(of: descendant, matching: find.byType(Opacity)).first,
+      find.ancestor(of: child, matching: find.byType(Opacity)).first,
     )
     .opacity;
+double _clipFrac(WidgetTester t, int i) =>
+    t
+        .widget<ClipRRect>(find.byKey(ValueKey('noche_bar_clip_$i')))
+        .clipper!
+        .getClip(const Size(20, 100))
+        .height /
+    100.0;
 
 void main() {
   // 1. NocheTabBar
   group('1. NocheTabBar motion', () {
     testWidgets(
       'regular -> regular pill slides in move on travel; label color in quick, weight immediate',
-      (tester) async {
+      (t) async {
         var selected = NocheTabs.library;
-        late StateSetter setOuter;
-        await tester.pumpWidget(
-          _harness(
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Align(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  child: NocheTabBar(
-                    selectedId: selected,
-                    tabNames: _tabs,
-                    onTap: (id) => setState(() => selected = id),
-                  ),
-                );
-              },
+        final set = await _pumpState(
+          t,
+          (c, s) => Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: NocheTabBar(
+              selectedId: selected,
+              tabNames: _tabs,
+              onTap: (id) => s(() => selected = id),
             ),
           ),
         );
+        final pill = find.byKey(const ValueKey('noche_tab_pill'));
+        final startX = t.getCenter(pill).dx;
 
-        final pillFinder = find.byKey(const ValueKey('noche_tab_pill'));
-        final startX = tester.getCenter(pillFinder).dx;
-
-        setOuter(() => selected = NocheTabs.me);
-        await tester.pump();
-
-        // Weight changes immediately on frame 0.
+        set(() => selected = NocheTabs.me);
+        await t.pump();
         expect(
-          tester.widget<Text>(find.text('Me')).style!.fontWeight,
+          t.widget<Text>(find.text('Me')).style!.fontWeight,
           FontWeight.w700,
         );
         expect(
-          tester.widget<Text>(find.text('Library')).style!.fontWeight,
+          t.widget<Text>(find.text('Library')).style!.fontWeight,
           FontWeight.w600,
         );
-        // Position at start (t = 0).
-        expect(tester.getCenter(pillFinder).dx, closeTo(startX, 0.01));
+        expect(t.getCenter(pill).dx, closeTo(startX, 0.01));
 
-        // Midpoint (move ~/ 2 = 110ms) follows travel curve.
-        await tester.pump(NocheMotion.move ~/ 2);
-        final midX = tester.getCenter(pillFinder).dx;
+        await t.pump(NocheMotion.move ~/ 2);
+        final midX = t.getCenter(pill).dx;
 
-        // Label color finishes at quick (140ms).
-        await tester.pump(NocheMotion.quick - (NocheMotion.move ~/ 2));
+        await t.pump(NocheMotion.quick - (NocheMotion.move ~/ 2));
+        expect(t.widget<Text>(find.text('Me')).style!.color, NocheColors.text);
         expect(
-          tester.widget<Text>(find.text('Me')).style!.color,
-          NocheColors.text,
-        );
-        expect(
-          tester.widget<Text>(find.text('Library')).style!.color,
+          t.widget<Text>(find.text('Library')).style!.color,
           NocheColors.label,
         );
 
-        // End (move = 220ms).
-        await tester.pump(NocheMotion.move - NocheMotion.quick);
-        final endX = tester.getCenter(pillFinder).dx;
+        await t.pump(NocheMotion.move - NocheMotion.quick);
+        final endX = t.getCenter(pill).dx;
         expect(endX, greaterThan(startX));
-        final expectedMid =
-            startX + (endX - startX) * NocheMotion.travel.transform(0.5);
-        expect(midX, closeTo(expectedMid, 1.0));
+        expect(
+          midX,
+          closeTo(
+            startX + (endX - startX) * NocheMotion.travel.transform(0.5),
+            1.0,
+          ),
+        );
       },
     );
 
     testWidgets(
       'regular -> Map tucks pill (scale 0.5 + fade in quick) and Map -> regular emerges',
-      (tester) async {
+      (t) async {
         var selected = NocheTabs.words;
-        late StateSetter setOuter;
-        await tester.pumpWidget(
-          _harness(
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Align(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  child: NocheTabBar(
-                    selectedId: selected,
-                    tabNames: _tabs,
-                    onTap: (id) => setState(() => selected = id),
-                  ),
-                );
-              },
+        final set = await _pumpState(
+          t,
+          (c, s) => Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: NocheTabBar(
+              selectedId: selected,
+              tabNames: _tabs,
+              onTap: (id) => s(() => selected = id),
             ),
           ),
         );
-
-        final pillFinder = find.byKey(const ValueKey('noche_tab_pill'));
-        final pillTransform = find
-            .ancestor(of: pillFinder, matching: find.byType(Transform))
+        final pill = find.byKey(const ValueKey('noche_tab_pill'));
+        final xform = find
+            .ancestor(of: pill, matching: find.byType(Transform))
             .first;
+        expect(_op(t, pill), closeTo(1.0, 0.01));
+        expect(_scale(t, xform), closeTo(1.0, 0.01));
 
-        expect(_opacityOfChild(tester, pillFinder), closeTo(1.0, 0.01));
-        expect(_scaleOf(tester, pillTransform), closeTo(1.0, 0.01));
+        set(() => selected = NocheTabs.map);
+        await t.pump();
+        await t.pump(NocheMotion.quick ~/ 2);
+        expect(_op(t, pill), inExclusiveRange(0.0, 1.0));
+        expect(_scale(t, xform), inExclusiveRange(0.5, 1.0));
 
-        // Go to Map: fades 1 -> 0 and scales 1 -> 0.5 in quick.
-        setOuter(() => selected = NocheTabs.map);
-        await tester.pump();
-        await tester.pump(NocheMotion.quick ~/ 2);
-        final midOpacity = _opacityOfChild(tester, pillFinder);
-        final midScale = _scaleOf(tester, pillTransform);
-        expect(midOpacity, greaterThan(0.0));
-        expect(midOpacity, lessThan(1.0));
-        expect(midScale, greaterThan(0.5));
-        expect(midScale, lessThan(1.0));
+        await t.pump(NocheMotion.move);
+        expect(_op(t, pill), closeTo(0.0, 0.01));
+        expect(_scale(t, xform), closeTo(0.5, 0.01));
 
-        await tester.pump(NocheMotion.move);
-        expect(_opacityOfChild(tester, pillFinder), closeTo(0.0, 0.01));
-        expect(_scaleOf(tester, pillTransform), closeTo(0.5, 0.01));
+        final mapX = t.getCenter(pill).dx;
+        set(() => selected = NocheTabs.speak);
+        await t.pump();
+        await t.pump(NocheMotion.quick ~/ 2);
+        expect(_op(t, pill), greaterThan(0.0));
+        expect(_scale(t, xform), greaterThan(0.5));
 
-        // Leave Map -> Speak: emerges back to opacity 1.0, scale 1.0.
-        final mapX = tester.getCenter(pillFinder).dx;
-        setOuter(() => selected = NocheTabs.speak);
-        await tester.pump();
-        await tester.pump(NocheMotion.quick ~/ 2);
-        expect(_opacityOfChild(tester, pillFinder), greaterThan(0.0));
-        expect(_scaleOf(tester, pillTransform), greaterThan(0.5));
-
-        await tester.pump(NocheMotion.move);
-        expect(_opacityOfChild(tester, pillFinder), closeTo(1.0, 0.01));
-        expect(_scaleOf(tester, pillTransform), closeTo(1.0, 0.01));
-        expect(tester.getCenter(pillFinder).dx, greaterThan(mapX));
+        await t.pump(NocheMotion.move);
+        expect(_op(t, pill), closeTo(1.0, 0.01));
+        expect(_scale(t, xform), closeTo(1.0, 0.01));
+        expect(t.getCenter(pill).dx, greaterThan(mapX));
       },
     );
 
     testWidgets(
       'reduced motion snaps position, keeps scale 1.0, fades in quick',
-      (tester) async {
+      (t) async {
         var selected = NocheTabs.library;
-        late StateSetter setOuter;
-        await tester.pumpWidget(
-          _harness(
-            disableAnimations: true,
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Align(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  child: NocheTabBar(
-                    selectedId: selected,
-                    tabNames: _tabs,
-                    onTap: (_) {},
-                  ),
-                );
-              },
+        final set = await _pumpState(
+          t,
+          reduced: true,
+          (c, s) => Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: NocheTabBar(
+              selectedId: selected,
+              tabNames: _tabs,
+              onTap: (_) {},
             ),
           ),
         );
-
-        final pillFinder = find.byKey(const ValueKey('noche_tab_pill'));
-        final pillTransform = find
-            .ancestor(of: pillFinder, matching: find.byType(Transform))
+        final pill = find.byKey(const ValueKey('noche_tab_pill'));
+        final xform = find
+            .ancestor(of: pill, matching: find.byType(Transform))
             .first;
-        final libX = tester.getCenter(pillFinder).dx;
+        final libX = t.getCenter(pill).dx;
 
-        setOuter(() => selected = NocheTabs.me);
-        await tester.pump();
-        final snappedX = tester.getCenter(pillFinder).dx;
+        set(() => selected = NocheTabs.me);
+        await t.pump();
+        final snappedX = t.getCenter(pill).dx;
         expect(snappedX, greaterThan(libX));
-        expect(_scaleOf(tester, pillTransform), closeTo(1.0, 0.001));
-        expect(_opacityOfChild(tester, pillFinder), closeTo(0.0, 0.01));
+        expect(_scale(t, xform), closeTo(1.0, 0.001));
+        expect(_op(t, pill), closeTo(0.0, 0.01));
 
-        await tester.pump(NocheMotion.quick ~/ 2);
-        expect(tester.getCenter(pillFinder).dx, closeTo(snappedX, 0.01));
-        expect(_scaleOf(tester, pillTransform), closeTo(1.0, 0.001));
-        expect(_opacityOfChild(tester, pillFinder), greaterThan(0.0));
-        expect(_opacityOfChild(tester, pillFinder), lessThan(1.0));
+        await t.pump(NocheMotion.quick ~/ 2);
+        expect(t.getCenter(pill).dx, closeTo(snappedX, 0.01));
+        expect(_scale(t, xform), closeTo(1.0, 0.001));
+        expect(_op(t, pill), inExclusiveRange(0.0, 1.0));
 
-        await tester.pump(NocheMotion.quick);
-        expect(_opacityOfChild(tester, pillFinder), closeTo(1.0, 0.01));
+        await t.pump(NocheMotion.quick);
+        expect(_op(t, pill), closeTo(1.0, 0.01));
       },
     );
   });
@@ -246,102 +282,78 @@ void main() {
     for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
       testWidgets(
         'thumb slides in move on travel ($dir) and label color in quick',
-        (tester) async {
+        (t) async {
           var selected = 0;
-          late StateSetter setOuter;
-          await tester.pumpWidget(
-            _harness(
-              textDirection: dir,
-              StatefulBuilder(
-                builder: (context, setState) {
-                  setOuter = setState;
-                  return Center(
-                    child: NocheSegmented<int>(
-                      selected: selected,
-                      onChanged: (v) => setState(() => selected = v),
-                      options: const [
-                        NocheSegmentOption(value: 0, label: 'One'),
-                        NocheSegmentOption(value: 1, label: 'Two'),
-                        NocheSegmentOption(value: 2, label: 'Three'),
-                      ],
-                    ),
-                  );
-                },
+          final set = await _pumpState(
+            t,
+            dir: dir,
+            (c, s) => Center(
+              child: NocheSegmented<int>(
+                selected: selected,
+                onChanged: (v) => s(() => selected = v),
+                options: _seg3,
               ),
             ),
           );
-
           final thumb = find.byKey(const ValueKey('noche_segmented_thumb'));
-          final startX = tester.getCenter(thumb).dx;
+          final startX = t.getCenter(thumb).dx;
 
-          setOuter(() => selected = 2);
-          await tester.pump();
-          expect(tester.getCenter(thumb).dx, closeTo(startX, 0.01));
+          set(() => selected = 2);
+          await t.pump();
+          expect(t.getCenter(thumb).dx, closeTo(startX, 0.01));
 
-          await tester.pump(NocheMotion.move ~/ 2);
-          final midX = tester.getCenter(thumb).dx;
+          await t.pump(NocheMotion.move ~/ 2);
+          final midX = t.getCenter(thumb).dx;
+          await t.pump(NocheMotion.move);
+          final endX = t.getCenter(thumb).dx;
 
-          await tester.pump(NocheMotion.move);
-          final endX = tester.getCenter(thumb).dx;
-
-          if (dir == TextDirection.ltr) {
-            expect(endX, greaterThan(startX));
-          } else {
-            expect(endX, lessThan(startX));
-          }
-          final expectedMid =
-              startX + (endX - startX) * NocheMotion.travel.transform(0.5);
-          expect(midX, closeTo(expectedMid, 1.0));
           expect(
-            tester.widget<Text>(find.text('Three')).style!.color,
+            dir == TextDirection.ltr ? endX > startX : endX < startX,
+            isTrue,
+          );
+          expect(
+            midX,
+            closeTo(
+              startX + (endX - startX) * NocheMotion.travel.transform(0.5),
+              1.0,
+            ),
+          );
+          expect(
+            t.widget<Text>(find.text('Three')).style!.color,
             NocheColors.ground,
           );
         },
       );
     }
 
-    testWidgets('reduced motion snaps thumb and fades in quick', (
-      tester,
-    ) async {
+    testWidgets('reduced motion snaps thumb and fades in quick', (t) async {
       var selected = 0;
-      late StateSetter setOuter;
-      await tester.pumpWidget(
-        _harness(
-          disableAnimations: true,
-          StatefulBuilder(
-            builder: (context, setState) {
-              setOuter = setState;
-              return Center(
-                child: NocheSegmented<int>(
-                  selected: selected,
-                  onChanged: (v) => setState(() => selected = v),
-                  options: const [
-                    NocheSegmentOption(value: 0, label: 'One'),
-                    NocheSegmentOption(value: 1, label: 'Two'),
-                  ],
-                ),
-              );
-            },
+      final set = await _pumpState(
+        t,
+        reduced: true,
+        (c, s) => Center(
+          child: NocheSegmented<int>(
+            selected: selected,
+            onChanged: (v) => s(() => selected = v),
+            options: _seg2,
           ),
         ),
       );
-
       final thumb = find.byKey(const ValueKey('noche_segmented_thumb'));
-      final startX = tester.getCenter(thumb).dx;
+      final startX = t.getCenter(thumb).dx;
 
-      setOuter(() => selected = 1);
-      await tester.pump();
-      final snappedX = tester.getCenter(thumb).dx;
+      set(() => selected = 1);
+      await t.pump();
+      final snappedX = t.getCenter(thumb).dx;
       expect(snappedX, greaterThan(startX));
-      expect(_opacityOfChild(tester, thumb), closeTo(0.0, 0.01));
+      expect(_op(t, thumb), closeTo(0.0, 0.01));
 
-      await tester.pump(NocheMotion.quick ~/ 2);
-      expect(tester.getCenter(thumb).dx, closeTo(snappedX, 0.01));
-      expect(_opacityOfChild(tester, thumb), greaterThan(0.0));
-      expect(_opacityOfChild(tester, thumb), lessThan(1.0));
+      await t.pump(NocheMotion.quick ~/ 2);
+      expect(t.getCenter(thumb).dx, closeTo(snappedX, 0.01));
+      expect(_op(t, thumb), inExclusiveRange(0.0, 1.0));
 
-      await tester.pump(NocheMotion.quick);
-      expect(_opacityOfChild(tester, thumb), closeTo(1.0, 0.01));
+      await t.pump(NocheMotion.quick);
+      expect(_op(t, thumb), closeTo(1.0, 0.01));
     });
   });
 
@@ -350,69 +362,49 @@ void main() {
     for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
       testWidgets(
         'variable-width pill mark slides start edge and width in move on travel ($dir)',
-        (tester) async {
+        (t) async {
           var selected = 'short';
-          late StateSetter setOuter;
-          await tester.pumpWidget(
-            _harness(
-              textDirection: dir,
-              StatefulBuilder(
-                builder: (context, setState) {
-                  setOuter = setState;
-                  return Center(
-                    child: NochePillGroup<String>(
-                      selected: selected,
-                      onChanged: (v) => setState(() => selected = v),
-                      options: const [
-                        NochePillOption(value: 'short', label: 'A'),
-                        NochePillOption(
-                          value: 'long',
-                          label: 'Much longer pill label',
-                        ),
-                      ],
-                    ),
-                  );
-                },
+          final set = await _pumpState(
+            t,
+            dir: dir,
+            (c, s) => Center(
+              child: NochePillGroup<String>(
+                selected: selected,
+                onChanged: (v) => s(() => selected = v),
+                options: _pillOpts,
               ),
             ),
           );
-
           final mark = find.byKey(const ValueKey('noche_pill_group_mark'));
-          final startRect = tester.getRect(mark);
+          final startR = t.getRect(mark);
 
-          setOuter(() => selected = 'long');
-          await tester.pump();
-          expect(tester.getRect(mark), startRect);
+          set(() => selected = 'long');
+          await t.pump();
+          expect(t.getRect(mark), startR);
 
-          await tester.pump(NocheMotion.move ~/ 2);
-          final midRect = tester.getRect(mark);
+          await t.pump(NocheMotion.move ~/ 2);
+          final midR = t.getRect(mark);
+          await t.pump(NocheMotion.move);
+          final endR = t.getRect(mark);
 
-          await tester.pump(NocheMotion.move);
-          final endRect = tester.getRect(mark);
-
-          expect(endRect.width, greaterThan(startRect.width + 40));
+          expect(endR.width, greaterThan(startR.width + 40));
           final p = NocheMotion.travel.transform(0.5);
           expect(
-            midRect.width,
-            closeTo(
-              startRect.width + (endRect.width - startRect.width) * p,
-              1.5,
-            ),
+            midR.width,
+            closeTo(startR.width + (endR.width - startR.width) * p, 1.5),
           );
           expect(
-            midRect.left,
-            closeTo(startRect.left + (endRect.left - startRect.left) * p, 1.5),
+            midR.left,
+            closeTo(startR.left + (endR.left - startR.left) * p, 1.5),
           );
-          if (dir == TextDirection.ltr) {
-            expect(endRect.center.dx, greaterThan(startRect.center.dx));
-          } else {
-            expect(endRect.center.dx, lessThan(startRect.center.dx));
-          }
           expect(
-            tester
-                .widget<Text>(find.text('Much longer pill label'))
-                .style!
-                .color,
+            dir == TextDirection.ltr
+                ? endR.center.dx > startR.center.dx
+                : endR.center.dx < startR.center.dx,
+            isTrue,
+          );
+          expect(
+            t.widget<Text>(find.text('Much longer pill label')).style!.color,
             NocheColors.ground,
           );
         },
@@ -420,45 +412,29 @@ void main() {
     }
 
     testWidgets('reduced motion snaps mark start/width and fades in quick', (
-      tester,
+      t,
     ) async {
       var selected = 'short';
-      late StateSetter setOuter;
-      await tester.pumpWidget(
-        _harness(
-          disableAnimations: true,
-          StatefulBuilder(
-            builder: (context, setState) {
-              setOuter = setState;
-              return Center(
-                child: NochePillGroup<String>(
-                  selected: selected,
-                  onChanged: (v) => setState(() => selected = v),
-                  options: const [
-                    NochePillOption(value: 'short', label: 'A'),
-                    NochePillOption(
-                      value: 'long',
-                      label: 'Much longer pill label',
-                    ),
-                  ],
-                ),
-              );
-            },
+      final set = await _pumpState(
+        t,
+        reduced: true,
+        (c, s) => Center(
+          child: NochePillGroup<String>(
+            selected: selected,
+            onChanged: (v) => s(() => selected = v),
+            options: _pillOpts,
           ),
         ),
       );
-
       final mark = find.byKey(const ValueKey('noche_pill_group_mark'));
-      final startRect = tester.getRect(mark);
+      final startR = t.getRect(mark);
 
-      setOuter(() => selected = 'long');
-      await tester.pump();
-      final snappedRect = tester.getRect(mark);
-      expect(snappedRect.width, greaterThan(startRect.width + 40));
-      expect(_opacityOfChild(tester, mark), closeTo(0.0, 0.01));
-
-      await tester.pump(NocheMotion.quick);
-      expect(_opacityOfChild(tester, mark), closeTo(1.0, 0.01));
+      set(() => selected = 'long');
+      await t.pump();
+      expect(t.getRect(mark).width, greaterThan(startR.width + 40));
+      expect(_op(t, mark), closeTo(0.0, 0.01));
+      await t.pump(NocheMotion.quick);
+      expect(_op(t, mark), closeTo(1.0, 0.01));
     });
   });
 
@@ -467,50 +443,43 @@ void main() {
     for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
       testWidgets(
         'knob travels in move on travel ($dir) and track/knob color in quick',
-        (tester) async {
+        (t) async {
           var on = false;
-          late StateSetter setOuter;
-          await tester.pumpWidget(
-            _harness(
-              textDirection: dir,
-              StatefulBuilder(
-                builder: (context, setState) {
-                  setOuter = setState;
-                  return Center(
-                    child: NocheSwitchRow(
-                      label: 'Toggle',
-                      value: on,
-                      onChanged: (v) => setState(() => on = v),
-                    ),
-                  );
-                },
+          final set = await _pumpState(
+            t,
+            dir: dir,
+            (c, s) => Center(
+              child: NocheSwitchRow(
+                label: 'Toggle',
+                value: on,
+                onChanged: (v) => s(() => on = v),
               ),
             ),
           );
-
           final knob = find.byKey(const ValueKey('noche_switch_knob'));
-          final startX = tester.getCenter(knob).dx;
+          final startX = t.getCenter(knob).dx;
 
-          setOuter(() => on = true);
-          await tester.pump();
-          expect(tester.getCenter(knob).dx, closeTo(startX, 0.01));
+          set(() => on = true);
+          await t.pump();
+          expect(t.getCenter(knob).dx, closeTo(startX, 0.01));
 
-          await tester.pump(NocheMotion.move ~/ 2);
-          final midX = tester.getCenter(knob).dx;
+          await t.pump(NocheMotion.move ~/ 2);
+          final midX = t.getCenter(knob).dx;
+          await t.pump(NocheMotion.move);
+          final endX = t.getCenter(knob).dx;
 
-          await tester.pump(NocheMotion.move);
-          final endX = tester.getCenter(knob).dx;
-
-          if (dir == TextDirection.ltr) {
-            expect(endX, greaterThan(startX));
-          } else {
-            expect(endX, lessThan(startX));
-          }
-          final expectedMid =
-              startX + (endX - startX) * NocheMotion.travel.transform(0.5);
-          expect(midX, closeTo(expectedMid, 1.0));
-
-          final track = tester.widget<AnimatedContainer>(
+          expect(
+            dir == TextDirection.ltr ? endX > startX : endX < startX,
+            isTrue,
+          );
+          expect(
+            midX,
+            closeTo(
+              startX + (endX - startX) * NocheMotion.travel.transform(0.5),
+              1.0,
+            ),
+          );
+          final track = t.widget<AnimatedContainer>(
             find.byKey(const ValueKey('noche_switch_track')),
           );
           expect(track.duration, NocheMotion.quick);
@@ -519,35 +488,25 @@ void main() {
       );
     }
 
-    testWidgets('reduced motion snaps knob without traveling', (tester) async {
+    testWidgets('reduced motion snaps knob without traveling', (t) async {
       var on = false;
-      late StateSetter setOuter;
-      await tester.pumpWidget(
-        _harness(
-          disableAnimations: true,
-          StatefulBuilder(
-            builder: (context, setState) {
-              setOuter = setState;
-              return Center(
-                child: NocheSwitchRow(
-                  label: 'Toggle',
-                  value: on,
-                  onChanged: (v) => setState(() => on = v),
-                ),
-              );
-            },
+      final set = await _pumpState(
+        t,
+        reduced: true,
+        (c, s) => Center(
+          child: NocheSwitchRow(
+            label: 'Toggle',
+            value: on,
+            onChanged: (v) => s(() => on = v),
           ),
         ),
       );
-
       final knob = find.byKey(const ValueKey('noche_switch_knob'));
-      final startX = tester.getCenter(knob).dx;
-
-      setOuter(() => on = true);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 1));
-      final snappedX = tester.getCenter(knob).dx;
-      expect(snappedX, greaterThan(startX));
+      final startX = t.getCenter(knob).dx;
+      set(() => on = true);
+      await t.pump();
+      await t.pump(const Duration(milliseconds: 1));
+      expect(t.getCenter(knob).dx, greaterThan(startX));
     });
   });
 
@@ -555,220 +514,152 @@ void main() {
   group('5. NocheSheet, showNocheSheet & NocheSheetSwap motion', () {
     testWidgets(
       'sheet slides up in pageIn, scrim fades in move, closes down in pageOut',
-      (tester) async {
-        await tester.pumpWidget(
-          MaterialApp(
-            theme: coquiTheme(),
-            home: Builder(
-              builder: (context) => Scaffold(
+      (t) async {
+        await t.pumpWidget(
+          _app(
+            Builder(
+              builder: (c) => Scaffold(
                 body: Center(
                   child: NocheOutlineButton(
                     label: 'Open',
-                    onPressed: () {
-                      showNocheSheet<void>(
-                        context,
-                        title: 'Menu',
-                        builder: (context, close) => NocheOutlineButton(
-                          label: 'Close now',
-                          onPressed: close,
-                        ),
-                      );
-                    },
+                    onPressed: () => showNocheSheet<void>(
+                      c,
+                      title: 'Menu',
+                      builder: (c, close) => NocheOutlineButton(
+                        label: 'Close now',
+                        onPressed: close,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         );
+        await t.tap(find.text('Open'));
+        await t.pump();
 
-        await tester.tap(find.text('Open'));
-        await tester.pump();
-
-        final surfaceFinder = find.byKey(const ValueKey('noche_sheet_surface'));
-        final scrimFinder = find.byKey(const ValueKey('noche_sheet_scrim'));
-
-        // Start (t = 0): translated down by 1.0, scrim at 0.0.
+        final surf = find.byKey(const ValueKey('noche_sheet_surface'));
+        final scrim = find.byKey(const ValueKey('noche_sheet_scrim'));
         expect(
-          tester.widget<FractionalTranslation>(surfaceFinder).translation.dy,
+          t.widget<FractionalTranslation>(surf).translation.dy,
           closeTo(1.0, 0.01),
         );
-        expect(tester.widget<Opacity>(scrimFinder).opacity, closeTo(0.0, 0.01));
+        expect(t.widget<Opacity>(scrim).opacity, closeTo(0.0, 0.01));
 
-        // Middle of pageIn (160ms): sheet mid-slide, scrim > 0.5.
-        await tester.pump(NocheMotion.pageIn ~/ 2);
-        final midDy = tester
-            .widget<FractionalTranslation>(surfaceFinder)
-            .translation
-            .dy;
-        expect(midDy, closeTo(1.0 - NocheMotion.enter.transform(0.5), 0.03));
-        expect(tester.widget<Opacity>(scrimFinder).opacity, greaterThan(0.5));
-
-        // At move (220ms): scrim has already reached 1.0!
-        await tester.pump(NocheMotion.move - (NocheMotion.pageIn ~/ 2));
-        expect(tester.widget<Opacity>(scrimFinder).opacity, closeTo(1.0, 0.01));
-
-        // At pageIn (320ms): sheet settled at dy = 0.0.
-        await tester.pump(NocheMotion.pageIn - NocheMotion.move);
+        await t.pump(NocheMotion.pageIn ~/ 2);
         expect(
-          tester.widget<FractionalTranslation>(surfaceFinder).translation.dy,
+          t.widget<FractionalTranslation>(surf).translation.dy,
+          closeTo(1.0 - NocheMotion.enter.transform(0.5), 0.03),
+        );
+        expect(t.widget<Opacity>(scrim).opacity, greaterThan(0.5));
+
+        await t.pump(NocheMotion.move - (NocheMotion.pageIn ~/ 2));
+        expect(t.widget<Opacity>(scrim).opacity, closeTo(1.0, 0.01));
+
+        await t.pump(NocheMotion.pageIn - NocheMotion.move);
+        expect(
+          t.widget<FractionalTranslation>(surf).translation.dy,
           closeTo(0.0, 0.01),
         );
 
-        // Close: slides down in pageOut (200ms) on exit, scrim fades out in pageOut.
-        await tester.tap(find.text('Close now'));
-        await tester.pump();
-        await tester.pump(NocheMotion.pageOut ~/ 2);
+        await t.tap(find.text('Close now'));
+        await t.pump();
+        await t.pump(NocheMotion.pageOut ~/ 2);
         expect(
-          tester.widget<FractionalTranslation>(surfaceFinder).translation.dy,
+          t.widget<FractionalTranslation>(surf).translation.dy,
           closeTo(NocheMotion.exit.transform(0.5), 0.03),
         );
         expect(
-          tester.widget<Opacity>(scrimFinder).opacity,
+          t.widget<Opacity>(scrim).opacity,
           closeTo(1.0 - NocheMotion.exit.transform(0.5), 0.03),
         );
 
-        await tester.pumpAndSettle();
+        await t.pumpAndSettle();
         expect(find.text('Menu'), findsNothing);
       },
     );
 
     testWidgets(
       'showNocheSheet reduced motion fades in place without sliding',
-      (tester) async {
-        await tester.pumpWidget(
-          MaterialApp(
-            theme: coquiTheme(),
-            builder: (context, child) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(disableAnimations: true),
-              child: child!,
-            ),
-            home: Builder(
-              builder: (context) => Scaffold(
+      (t) async {
+        await t.pumpWidget(
+          _app(
+            reduced: true,
+            Builder(
+              builder: (c) => Scaffold(
                 body: Center(
                   child: NocheOutlineButton(
                     label: 'Open',
-                    onPressed: () {
-                      showNocheSheet<void>(
-                        context,
-                        title: 'Reduced',
-                        builder: (context, close) => const Text('Body'),
-                      );
-                    },
+                    onPressed: () => showNocheSheet<void>(
+                      c,
+                      title: 'Reduced',
+                      builder: (c, close) => const Text('Body'),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         );
-
-        await tester.tap(find.text('Open'));
-        await tester.pump();
-
-        final surfaceFinder = find.byKey(const ValueKey('noche_sheet_surface'));
-        expect(tester.widget(surfaceFinder), isA<Opacity>());
-        expect(
-          tester.widget<Opacity>(surfaceFinder).opacity,
-          closeTo(0.0, 0.01),
-        );
-
-        await tester.pump(NocheMotion.quick ~/ 2);
-        final midOpacity = tester.widget<Opacity>(surfaceFinder).opacity;
-        expect(midOpacity, greaterThan(0.0));
-        expect(midOpacity, lessThan(1.0));
-
-        await tester.pump(NocheMotion.quick);
-        expect(
-          tester.widget<Opacity>(surfaceFinder).opacity,
-          closeTo(1.0, 0.01),
-        );
+        await t.tap(find.text('Open'));
+        await t.pump();
+        final surf = find.byKey(const ValueKey('noche_sheet_surface'));
+        expect(t.widget(surf), isA<Opacity>());
+        expect(t.widget<Opacity>(surf).opacity, closeTo(0.0, 0.01));
+        await t.pump(NocheMotion.quick ~/ 2);
+        expect(t.widget<Opacity>(surf).opacity, inExclusiveRange(0.0, 1.0));
+        await t.pump(NocheMotion.quick);
+        expect(t.widget<Opacity>(surf).opacity, closeTo(1.0, 0.01));
       },
     );
 
     testWidgets(
       'NocheSheet rows arrive after rowsAfter and NocheSheetSwap keeps exact height',
-      (tester) async {
+      (t) async {
         var step = 0;
-        late StateSetter setOuter;
-        await tester.pumpWidget(
-          _harness(
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Align(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  child: NocheSheet(
-                    title: 'Sheet',
-                    respectSafeArea: false,
-                    scrollable: false,
-                    contentKey: step,
-                    rows: step == 0
-                        ? const [
-                            SizedBox(height: 60, child: Text('Row A')),
-                            SizedBox(height: 60, child: Text('Row B')),
-                          ]
-                        : const [
-                            SizedBox(height: 30, child: Text('Short row')),
-                          ],
-                  ),
-                );
-              },
+        final set = await _pumpState(
+          t,
+          (c, s) => Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: NocheSheet(
+              title: 'Sheet',
+              respectSafeArea: false,
+              scrollable: false,
+              contentKey: step,
+              rows: step == 0
+                  ? const [
+                      SizedBox(height: 60, child: Text('Row A')),
+                      SizedBox(height: 60, child: Text('Row B')),
+                    ]
+                  : const [SizedBox(height: 30, child: Text('Short row'))],
             ),
           ),
         );
+        await t.pump(const Duration(milliseconds: 60));
+        expect(_op(t, find.text('Row A')), closeTo(0.0, 0.01));
+        await t.pumpAndSettle();
+        expect(_op(t, find.text('Row A')), closeTo(1.0, 0.01));
 
-        // Before rowsAfter (120ms), row 0 is still hidden.
-        await tester.pump(const Duration(milliseconds: 60));
-        expect(_opacityOfChild(tester, find.text('Row A')), closeTo(0.0, 0.01));
-        await tester.pumpAndSettle();
-        expect(_opacityOfChild(tester, find.text('Row A')), closeTo(1.0, 0.01));
+        final initialH = t.getSize(find.byType(NocheSheet)).height;
+        final outOp = find.byKey(const ValueKey('noche_sheet_swap_outgoing'));
+        final inOp = find.byKey(const ValueKey('noche_sheet_swap_incoming'));
 
-        final initialHeight = tester.getSize(find.byType(NocheSheet)).height;
+        set(() => step = 1);
+        await t.pump();
+        expect(t.getSize(find.byType(NocheSheet)).height, initialH);
 
-        // Trigger in-place swap to shorter content.
-        setOuter(() => step = 1);
-        await tester.pump();
-        expect(tester.getSize(find.byType(NocheSheet)).height, initialHeight);
+        await t.pump(const Duration(milliseconds: 70));
+        expect(t.widget<Opacity>(outOp).opacity, lessThan(1.0));
+        expect(t.widget<Opacity>(inOp).opacity, closeTo(0.0, 0.01));
+        expect(t.getSize(find.byType(NocheSheet)).height, initialH);
 
-        // Mid outgoing (70ms < swapAfter 100ms): outgoing fading, incoming still 0.
-        await tester.pump(const Duration(milliseconds: 70));
-        expect(
-          tester
-              .widget<Opacity>(
-                find.byKey(const ValueKey('noche_sheet_swap_outgoing')),
-              )
-              .opacity,
-          lessThan(1.0),
-        );
-        expect(
-          tester
-              .widget<Opacity>(
-                find.byKey(const ValueKey('noche_sheet_swap_incoming')),
-              )
-              .opacity,
-          closeTo(0.0, 0.01),
-        );
-        expect(tester.getSize(find.byType(NocheSheet)).height, initialHeight);
+        await t.pump(const Duration(milliseconds: 140));
+        expect(t.widget<Opacity>(inOp).opacity, inExclusiveRange(0.0, 1.0));
 
-        // After swapAfter + move/2 (210ms): incoming fading in.
-        await tester.pump(const Duration(milliseconds: 140));
-        final inMid = tester
-            .widget<Opacity>(
-              find.byKey(const ValueKey('noche_sheet_swap_incoming')),
-            )
-            .opacity;
-        expect(inMid, greaterThan(0.0));
-        expect(inMid, lessThan(1.0));
-
-        await tester.pumpAndSettle();
-        expect(
-          tester
-              .widget<Opacity>(
-                find.byKey(const ValueKey('noche_sheet_swap_incoming')),
-              )
-              .opacity,
-          closeTo(1.0, 0.01),
-        );
-        expect(tester.getSize(find.byType(NocheSheet)).height, initialHeight);
+        await t.pumpAndSettle();
+        expect(t.widget<Opacity>(inOp).opacity, closeTo(1.0, 0.01));
+        expect(t.getSize(find.byType(NocheSheet)).height, initialH);
       },
     );
   });
@@ -778,125 +669,95 @@ void main() {
     for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
       testWidgets(
         'dash transitioning to done fills from start in move on travel ($dir)',
-        (tester) async {
+        (t) async {
           var states = [
             NocheDashState.done,
             NocheDashState.current,
             NocheDashState.notYet,
           ];
-          late StateSetter setOuter;
-          await tester.pumpWidget(
-            _harness(
-              textDirection: dir,
-              StatefulBuilder(
-                builder: (context, setState) {
-                  setOuter = setState;
-                  return Center(child: NocheDashes(states: states));
-                },
-              ),
-            ),
+          final set = await _pumpState(
+            t,
+            dir: dir,
+            (c, s) => Center(child: NocheDashes(states: states)),
           );
 
-          setOuter(
+          set(
             () => states = [
               NocheDashState.done,
               NocheDashState.done,
               NocheDashState.current,
             ],
           );
-          await tester.pump();
-
+          await t.pump();
           final dash1 = find.byKey(const ValueKey('noche_dash_1'));
-          final fracFinder = find.descendant(
+          final frac = find.descendant(
             of: dash1,
             matching: find.byType(FractionallySizedBox),
           );
           expect(
-            tester.widget<FractionallySizedBox>(fracFinder).widthFactor,
+            t.widget<FractionallySizedBox>(frac).widthFactor,
             closeTo(0.0, 0.01),
           );
 
-          await tester.pump(NocheMotion.move ~/ 2);
+          await t.pump(NocheMotion.move ~/ 2);
           expect(
-            tester.widget<FractionallySizedBox>(fracFinder).widthFactor,
+            t.widget<FractionallySizedBox>(frac).widthFactor,
             closeTo(NocheMotion.travel.transform(0.5), 0.03),
           );
-          final dashRect = tester.getRect(dash1);
-          final fillRect = tester.getRect(
-            find.descendant(
-              of: fracFinder,
-              matching: find.byType(DecoratedBox),
-            ),
+          final dashR = t.getRect(dash1);
+          final fillR = t.getRect(
+            find.descendant(of: frac, matching: find.byType(DecoratedBox)),
           );
           if (dir == TextDirection.ltr) {
-            expect(fillRect.left, closeTo(dashRect.left, 0.5));
+            expect(fillR.left, closeTo(dashR.left, 0.5));
           } else {
-            expect(fillRect.right, closeTo(dashRect.right, 0.5));
+            expect(fillR.right, closeTo(dashR.right, 0.5));
           }
-
-          await tester.pump(NocheMotion.move);
-          // Settled back to plain Container.
-          expect(fracFinder, findsNothing);
+          await t.pump(NocheMotion.move);
+          expect(frac, findsNothing);
         },
       );
     }
 
     testWidgets('reduced motion fades done dash in place at full width', (
-      tester,
+      t,
     ) async {
       var states = [NocheDashState.notYet];
-      late StateSetter setOuter;
-      await tester.pumpWidget(
-        _harness(
-          disableAnimations: true,
-          StatefulBuilder(
-            builder: (context, setState) {
-              setOuter = setState;
-              return Center(child: NocheDashes(states: states));
-            },
-          ),
-        ),
+      final set = await _pumpState(
+        t,
+        reduced: true,
+        (c, s) => Center(child: NocheDashes(states: states)),
       );
-
-      setOuter(() => states = [NocheDashState.done]);
-      await tester.pump();
-      final dash0 = find.byKey(const ValueKey('noche_dash_0'));
-      final frac = tester.widget<FractionallySizedBox>(
-        find.descendant(of: dash0, matching: find.byType(FractionallySizedBox)),
-      );
-      expect(frac.widthFactor, 1.0);
+      set(() => states = [NocheDashState.done]);
+      await t.pump();
+      final d0 = find.byKey(const ValueKey('noche_dash_0'));
+      final opF = find.descendant(of: d0, matching: find.byType(Opacity));
       expect(
-        tester
-            .widget<Opacity>(
-              find.descendant(of: dash0, matching: find.byType(Opacity)),
+        t
+            .widget<FractionallySizedBox>(
+              find.descendant(
+                of: d0,
+                matching: find.byType(FractionallySizedBox),
+              ),
             )
-            .opacity,
-        closeTo(0.0, 0.01),
+            .widthFactor,
+        1.0,
       );
+      expect(t.widget<Opacity>(opF).opacity, closeTo(0.0, 0.01));
 
-      await tester.pump(NocheMotion.quick ~/ 2);
-      final midOp = tester
-          .widget<Opacity>(
-            find.descendant(of: dash0, matching: find.byType(Opacity)),
-          )
-          .opacity;
-      expect(midOp, greaterThan(0.0));
-      expect(midOp, lessThan(1.0));
-
-      await tester.pump(NocheMotion.quick);
-      expect(
-        find.descendant(of: dash0, matching: find.byType(Opacity)),
-        findsNothing,
-      );
+      await t.pump(NocheMotion.quick ~/ 2);
+      expect(t.widget<Opacity>(opF).opacity, inExclusiveRange(0.0, 1.0));
+      await t.pump(NocheMotion.quick);
+      expect(opF, findsNothing);
     });
   });
 
   // 7. NocheStageBar & NocheProgressBar
   group('7. NocheStageBar & NocheProgressBar motion', () {
     testWidgets('animateFrom grows once in settle on enter (start, mid, end)', (
-      tester,
+      t,
     ) async {
-      await tester.pumpWidget(
+      await t.pumpWidget(
         _harness(
           const Column(
             children: [
@@ -910,53 +771,51 @@ void main() {
           ),
         ),
       );
-
-      final stageFrac = find.descendant(
+      final sF = find.descendant(
         of: find.byType(NocheStageBar),
         matching: find.byType(FractionallySizedBox),
       );
-      final progFrac = find.descendant(
+      final pF = find.descendant(
         of: find.byType(NocheProgressBar),
         matching: find.byType(FractionallySizedBox),
       );
-
       expect(
-        tester.widget<FractionallySizedBox>(stageFrac).widthFactor,
+        t.widget<FractionallySizedBox>(sF).widthFactor,
         closeTo(0.25, 0.01),
       );
       expect(
-        tester.widget<FractionallySizedBox>(progFrac).widthFactor,
+        t.widget<FractionallySizedBox>(pF).widthFactor,
         closeTo(0.2, 0.01),
       );
 
-      await tester.pump(NocheMotion.settle ~/ 2);
+      await t.pump(NocheMotion.settle ~/ 2);
       final p = NocheMotion.enter.transform(0.5);
       expect(
-        tester.widget<FractionallySizedBox>(stageFrac).widthFactor,
+        t.widget<FractionallySizedBox>(sF).widthFactor,
         closeTo(0.25 + 0.75 * p, 0.03),
       );
       expect(
-        tester.widget<FractionallySizedBox>(progFrac).widthFactor,
+        t.widget<FractionallySizedBox>(pF).widthFactor,
         closeTo(0.2 + 0.6 * p, 0.03),
       );
 
-      await tester.pump(NocheMotion.settle);
+      await t.pump(NocheMotion.settle);
       expect(
-        tester.widget<FractionallySizedBox>(stageFrac).widthFactor,
+        t.widget<FractionallySizedBox>(sF).widthFactor,
         closeTo(1.0, 0.01),
       );
       expect(
-        tester.widget<FractionallySizedBox>(progFrac).widthFactor,
+        t.widget<FractionallySizedBox>(pF).widthFactor,
         closeTo(0.8, 0.01),
       );
     });
 
     testWidgets(
       'reduced motion renders target width immediately and fades in quick',
-      (tester) async {
-        await tester.pumpWidget(
+      (t) async {
+        await t.pumpWidget(
           _harness(
-            disableAnimations: true,
+            reduced: true,
             const Column(
               children: [
                 NocheStageBar(stage: 3, max: 4, animateFrom: 0.0),
@@ -969,121 +828,81 @@ void main() {
             ),
           ),
         );
-
-        final stageFrac = find.descendant(
+        final sF = find.descendant(
           of: find.byType(NocheStageBar),
           matching: find.byType(FractionallySizedBox),
         );
-        final stageOp = find.descendant(
+        final sOp = find.descendant(
           of: find.byType(NocheStageBar),
           matching: find.byType(Opacity),
         );
         expect(
-          tester.widget<FractionallySizedBox>(stageFrac).widthFactor,
+          t.widget<FractionallySizedBox>(sF).widthFactor,
           closeTo(0.75, 0.01),
         );
-        expect(tester.widget<Opacity>(stageOp).opacity, closeTo(0.0, 0.01));
-
-        await tester.pump(NocheMotion.quick);
-        expect(tester.widget<Opacity>(stageOp).opacity, closeTo(1.0, 0.01));
+        expect(t.widget<Opacity>(sOp).opacity, closeTo(0.0, 0.01));
+        await t.pump(NocheMotion.quick);
+        expect(t.widget<Opacity>(sOp).opacity, closeTo(1.0, 0.01));
       },
     );
   });
 
   // 8. NocheBarChart
   group('8. NocheBarChart motion', () {
-    double barClipFraction(WidgetTester tester, int i) {
-      final clip = tester.widget<ClipRRect>(
-        find.byKey(ValueKey('noche_bar_clip_$i')),
-      );
-      final rrect = clip.clipper!.getClip(const Size(20, 100));
-      return rrect.height / 100.0;
-    }
-
     testWidgets(
       'bars grow from 0 in settle on enter, first 5 stagger and 6th shares 5th start',
-      (tester) async {
-        await tester.pumpWidget(
-          _harness(
-            const Center(
-              child: NocheBarChart(
-                items: [
-                  NocheBarItem(label: '1', value: 10),
-                  NocheBarItem(label: '2', value: 20),
-                  NocheBarItem(label: '3', value: 30),
-                  NocheBarItem(label: '4', value: 40),
-                  NocheBarItem(label: '5', value: 50),
-                  NocheBarItem(label: '6', value: 40),
-                ],
-              ),
-            ),
-          ),
+      (t) async {
+        await t.pumpWidget(
+          _harness(const Center(child: NocheBarChart(items: _barItems6))),
         );
-
-        // Start (t = 0): all bars clipped to 0.
         for (var i = 0; i < 6; i++) {
-          expect(barClipFraction(tester, i), closeTo(0.0, 0.01));
+          expect(_clipFrac(t, i), closeTo(0.0, 0.01));
         }
+        await t.pump(const Duration(milliseconds: 150));
+        final f = [for (var i = 0; i < 6; i++) _clipFrac(t, i)];
+        for (var i = 0; i < 4; i++) {
+          expect(f[i], greaterThan(f[i + 1]));
+        }
+        expect(f[5], closeTo(f[4], 0.001));
 
-        // At 150ms: bar 0 > bar 1 > bar 2 > bar 3 > bar 4 == bar 5!
-        await tester.pump(const Duration(milliseconds: 150));
-        final fracs = [for (var i = 0; i < 6; i++) barClipFraction(tester, i)];
-        expect(fracs[0], greaterThan(fracs[1]));
-        expect(fracs[1], greaterThan(fracs[2]));
-        expect(fracs[2], greaterThan(fracs[3]));
-        expect(fracs[3], greaterThan(fracs[4]));
-        expect(fracs[5], closeTo(fracs[4], 0.001));
-
-        // End (stagger * 4 + settle = 120 + 480 = 600ms).
-        await tester.pump(const Duration(milliseconds: 500));
+        await t.pump(const Duration(milliseconds: 500));
         for (var i = 0; i < 6; i++) {
-          expect(barClipFraction(tester, i), closeTo(1.0, 0.01));
+          expect(_clipFrac(t, i), closeTo(1.0, 0.01));
         }
       },
     );
 
     testWidgets(
       'reduced motion fades all bars together at full height in quick',
-      (tester) async {
-        await tester.pumpWidget(
+      (t) async {
+        await t.pumpWidget(
           _harness(
-            disableAnimations: true,
-            const Center(
-              child: NocheBarChart(
-                items: [
-                  NocheBarItem(label: '1', value: 10),
-                  NocheBarItem(label: '2', value: 20),
-                  NocheBarItem(label: '3', value: 30),
-                ],
-              ),
-            ),
+            reduced: true,
+            Center(child: NocheBarChart(items: _barItems6.sublist(0, 3))),
           ),
         );
-
         for (var i = 0; i < 3; i++) {
-          expect(barClipFraction(tester, i), closeTo(1.0, 0.001));
+          expect(_clipFrac(t, i), closeTo(1.0, 0.001));
           expect(
-            _opacityOfChild(tester, find.byKey(ValueKey('noche_bar_clip_$i'))),
+            _op(t, find.byKey(ValueKey('noche_bar_clip_$i'))),
             closeTo(0.0, 0.01),
           );
         }
-
-        await tester.pump(NocheMotion.quick ~/ 2);
-        final o0 = _opacityOfChild(
-          tester,
-          find.byKey(const ValueKey('noche_bar_clip_0')),
-        );
-        final o2 = _opacityOfChild(
-          tester,
-          find.byKey(const ValueKey('noche_bar_clip_2')),
-        );
+        await t.pump(NocheMotion.quick ~/ 2);
+        final o0 = _op(t, find.byKey(const ValueKey('noche_bar_clip_0')));
         expect(o0, greaterThan(0.0));
-        expect(o0, closeTo(o2, 0.001));
+        expect(
+          o0,
+          closeTo(
+            _op(t, find.byKey(const ValueKey('noche_bar_clip_2'))),
+            0.001,
+          ),
+        );
 
-        await tester.pump(NocheMotion.quick);
+        await t.pump(NocheMotion.quick);
         for (var i = 0; i < 3; i++) {
           expect(
-            _opacityOfChild(tester, find.byKey(ValueKey('noche_bar_clip_$i'))),
+            _op(t, find.byKey(ValueKey('noche_bar_clip_$i'))),
             closeTo(1.0, 0.01),
           );
         }
@@ -1095,162 +914,123 @@ void main() {
   group('9. NocheMic motion', () {
     testWidgets(
       'halo in move, color/border/word/icon swap in quick, right ring once in settle, loops stop on leave',
-      (tester) async {
+      (t) async {
         var state = NocheMicState.ready;
-        late StateSetter setOuter;
-        await tester.pumpWidget(
-          _harness(
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Center(
-                  child: NocheMic.custom(
-                    state: state,
-                    micWords: _micWords,
-                    level: 0.6,
-                  ),
-                );
-              },
+        final set = await _pumpState(
+          t,
+          (c, s) => Center(
+            child: NocheMic.custom(
+              state: state,
+              micWords: _micWords,
+              level: 0.6,
             ),
           ),
         );
-
-        BoxDecoration discDec() =>
-            tester
+        BoxDecoration dec() =>
+            t
                     .widget<Container>(
                       find.byKey(const ValueKey('noche_mic_disc')),
                     )
                     .decoration!
                 as BoxDecoration;
 
-        // Initial mount on ready: no loops running, no halo.
-        expect(tester.hasRunningAnimations, isFalse);
-        expect(discDec().boxShadow, isNull);
+        expect(t.hasRunningAnimations, isFalse);
+        expect(dec().boxShadow, isNull);
 
-        // ready -> listening: halo grows 0 -> 8 in move; mic color animates in quick; level bars loop.
-        setOuter(() => state = NocheMicState.listening);
-        await tester.pump();
-        final barStart0Frame0 = tester
+        set(() => state = NocheMicState.listening);
+        await t.pump();
+        final bar0 = t
             .getSize(find.byKey(const ValueKey('noche_mic_bar_start_2')))
             .height;
-
-        await tester.pump(NocheMotion.move ~/ 2);
-        final midSpread = discDec().boxShadow!.single.spreadRadius;
-        expect(midSpread, greaterThan(0.0));
-        expect(midSpread, lessThan(8.0));
-
-        // Bars are looping and modulating smoothly within 8..56.
-        final barStart0Mid = tester
-            .getSize(find.byKey(const ValueKey('noche_mic_bar_start_2')))
-            .height;
-        expect(barStart0Mid, isNot(closeTo(barStart0Frame0, 0.1)));
-        expect(barStart0Mid, inInclusiveRange(8.0, 56.0));
-
-        await tester.pump(NocheMotion.move);
-        expect(discDec().boxShadow!.single.spreadRadius, closeTo(8.0, 0.01));
-        expect(discDec().color, NocheColors.listening);
-
-        // listening -> thinking: dots pulse in thinkingCycle; bars stopped.
-        setOuter(() => state = NocheMicState.thinking);
-        await tester.pump();
-        await tester.pump(NocheMotion.quick);
-        expect(discDec().color, NocheColors.otherSoft);
-        expect(tester.hasRunningAnimations, isTrue);
-
-        final dot0Finder = find.byKey(
-          const ValueKey('noche_mic_thinking_dot_0'),
+        await t.pump(NocheMotion.move ~/ 2);
+        expect(
+          dec().boxShadow!.single.spreadRadius,
+          inExclusiveRange(0.0, 8.0),
         );
-        final opA = _opacityOfChild(tester, dot0Finder);
-        await tester.pump(NocheMotion.thinkingCycle ~/ 3);
-        final opB = _opacityOfChild(tester, dot0Finder);
-        expect(opA, isNot(closeTo(opB, 0.05)));
+        final barMid = t
+            .getSize(find.byKey(const ValueKey('noche_mic_bar_start_2')))
+            .height;
+        expect(barMid, isNot(closeTo(bar0, 0.1)));
+        expect(barMid, inInclusiveRange(8.0, 56.0));
 
-        // thinking -> right: right ring expands 1.0 -> 1.5 and fades 0.9 -> 0 in settle once.
-        setOuter(() => state = NocheMicState.right);
-        await tester.pump();
-        final ringFinder = find.byKey(const ValueKey('noche_mic_right_ring'));
-        expect(ringFinder, findsOneWidget);
+        await t.pump(NocheMotion.move);
+        expect(dec().boxShadow!.single.spreadRadius, closeTo(8.0, 0.01));
+        expect(dec().color, NocheColors.listening);
 
-        await tester.pump(NocheMotion.settle ~/ 2);
-        final ringTransform = find
-            .ancestor(of: ringFinder, matching: find.byType(Transform))
+        set(() => state = NocheMicState.thinking);
+        await t.pump();
+        await t.pump(NocheMotion.quick);
+        expect(dec().color, NocheColors.otherSoft);
+        expect(t.hasRunningAnimations, isTrue);
+
+        final dot0 = find.byKey(const ValueKey('noche_mic_thinking_dot_0'));
+        final opA = _op(t, dot0);
+        await t.pump(NocheMotion.thinkingCycle ~/ 3);
+        expect(opA, isNot(closeTo(_op(t, dot0), 0.05)));
+
+        set(() => state = NocheMicState.right);
+        await t.pump();
+        final ring = find.byKey(const ValueKey('noche_mic_right_ring'));
+        expect(ring, findsOneWidget);
+        await t.pump(NocheMotion.settle ~/ 2);
+        final ringT = find
+            .ancestor(of: ring, matching: find.byType(Transform))
             .first;
-        final midRingScale = _scaleOf(tester, ringTransform);
-        final midRingOpacity = _opacityOfChild(tester, ringFinder);
-        expect(midRingScale, greaterThan(1.0));
-        expect(midRingScale, lessThan(1.5));
-        expect(midRingOpacity, greaterThan(0.0));
-        expect(midRingOpacity, lessThan(0.9));
+        expect(_scale(t, ringT), inExclusiveRange(1.0, 1.5));
+        expect(_op(t, ring), inExclusiveRange(0.0, 0.9));
 
-        await tester.pump(NocheMotion.settle);
-        // Right ring finished and all loops stopped!
-        expect(ringFinder, findsNothing);
-        expect(tester.hasRunningAnimations, isFalse);
+        await t.pump(NocheMotion.settle);
+        expect(ring, findsNothing);
+        expect(t.hasRunningAnimations, isFalse);
 
-        // right -> notYet: draws 2 px text border in quick, no fill when settled.
-        setOuter(() => state = NocheMicState.notYet);
-        await tester.pump();
-        await tester.pump(NocheMotion.quick);
-        await tester.pump(const Duration(milliseconds: 1));
-        expect(discDec().color, isNull);
-        expect((discDec().border! as Border).top.color, NocheColors.text);
-        expect(tester.hasRunningAnimations, isFalse);
+        set(() => state = NocheMicState.notYet);
+        await t.pump();
+        await t.pump(NocheMotion.quick);
+        await t.pump(const Duration(milliseconds: 1));
+        expect(dec().color, isNull);
+        expect((dec().border! as Border).top.color, NocheColors.text);
+        expect(t.hasRunningAnimations, isFalse);
       },
     );
 
     testWidgets(
       'reduced motion stops all loops, disables right ring, and holds still bars at level 0.5 when level == 0',
-      (tester) async {
+      (t) async {
         var state = NocheMicState.listening;
-        late StateSetter setOuter;
-        await tester.pumpWidget(
-          _harness(
-            disableAnimations: true,
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Center(
-                  child: NocheMic.custom(
-                    state: state,
-                    micWords: _micWords,
-                    level: 0.0,
-                  ),
-                );
-              },
+        final set = await _pumpState(
+          t,
+          reduced: true,
+          (c, s) => Center(
+            child: NocheMic.custom(
+              state: state,
+              micWords: _micWords,
+              level: 0.0,
             ),
           ),
         );
-
-        expect(tester.hasRunningAnimations, isFalse);
-        final expectedStill = NocheMic.barHeightsForLevel(0.5, startSide: true);
+        expect(t.hasRunningAnimations, isFalse);
+        final stillH = NocheMic.barHeightsForLevel(0.5, startSide: true);
         for (var i = 0; i < 5; i++) {
           expect(
-            tester
-                .getSize(find.byKey(ValueKey('noche_mic_bar_start_$i')))
-                .height,
-            closeTo(expectedStill[i], 0.01),
+            t.getSize(find.byKey(ValueKey('noche_mic_bar_start_$i'))).height,
+            closeTo(stillH[i], 0.01),
           );
         }
 
-        // Thinking in reduced motion: no loop, all 3 dots at opacity 1.0.
-        setOuter(() => state = NocheMicState.thinking);
-        await tester.pump();
-        await tester.pump(NocheMotion.quick);
-        await tester.pump(const Duration(milliseconds: 1));
-        expect(tester.hasRunningAnimations, isFalse);
+        set(() => state = NocheMicState.thinking);
+        await t.pump();
+        await t.pump(NocheMotion.quick);
+        await t.pump(const Duration(milliseconds: 1));
+        expect(t.hasRunningAnimations, isFalse);
         for (var i = 0; i < 3; i++) {
           expect(
-            _opacityOfChild(
-              tester,
-              find.byKey(ValueKey('noche_mic_thinking_dot_$i')),
-            ),
+            _op(t, find.byKey(ValueKey('noche_mic_thinking_dot_$i'))),
             closeTo(1.0, 0.01),
           );
         }
 
-        // Right in reduced motion: no expanding ring.
-        setOuter(() => state = NocheMicState.right);
-        await tester.pump();
+        set(() => state = NocheMicState.right);
+        await t.pump();
         expect(
           find.byKey(const ValueKey('noche_mic_right_ring')),
           findsNothing,
@@ -1261,110 +1041,76 @@ void main() {
 
   // 10. NocheOutlineGroup
   group('10. NocheOutlineGroup motion', () {
-    testWidgets('vertical outline mark slides in move on travel', (
-      tester,
-    ) async {
+    testWidgets('vertical outline mark slides in move on travel', (t) async {
       var selected = 'es';
-      late StateSetter setOuter;
-      await tester.pumpWidget(
-        _harness(
-          StatefulBuilder(
-            builder: (context, setState) {
-              setOuter = setState;
-              return Center(
-                child: NocheOutlineGroup<String>(
-                  axis: Axis.vertical,
-                  selected: selected,
-                  onChanged: (v) => setState(() => selected = v),
-                  options: const [
-                    NocheOutlineOption(
-                      value: 'es',
-                      child: SizedBox(height: 56, child: Text('Spanish')),
-                    ),
-                    NocheOutlineOption(
-                      value: 'ar',
-                      child: SizedBox(height: 56, child: Text('Arabic')),
-                    ),
-                  ],
-                ),
-              );
-            },
+      final set = await _pumpState(
+        t,
+        (c, s) => Center(
+          child: NocheOutlineGroup<String>(
+            axis: Axis.vertical,
+            selected: selected,
+            onChanged: (v) => s(() => selected = v),
+            options: const [
+              NocheOutlineOption(
+                value: 'es',
+                child: SizedBox(height: 56, child: Text('Spanish')),
+              ),
+              NocheOutlineOption(
+                value: 'ar',
+                child: SizedBox(height: 56, child: Text('Arabic')),
+              ),
+            ],
           ),
         ),
       );
-
       final mark = find.byKey(const ValueKey('noche_outline_group_mark'));
-      final startY = tester.getTopLeft(mark).dy;
-
-      setOuter(() => selected = 'ar');
-      await tester.pump();
-      expect(tester.getTopLeft(mark).dy, closeTo(startY, 0.01));
-
-      await tester.pump(NocheMotion.move ~/ 2);
-      final midY = tester.getTopLeft(mark).dy;
-
-      await tester.pump(NocheMotion.move);
-      final endY = tester.getTopLeft(mark).dy;
+      final startY = t.getTopLeft(mark).dy;
+      set(() => selected = 'ar');
+      await t.pump();
+      expect(t.getTopLeft(mark).dy, closeTo(startY, 0.01));
+      await t.pump(NocheMotion.move ~/ 2);
+      final midY = t.getTopLeft(mark).dy;
+      await t.pump(NocheMotion.move);
+      final endY = t.getTopLeft(mark).dy;
       expect(endY, greaterThan(startY));
       expect(
         midY,
         closeTo(
           startY + (endY - startY) * NocheMotion.travel.transform(0.5),
-          1,
+          1.0,
         ),
       );
     });
 
     for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
       testWidgets('horizontal outline mark slides in move on travel ($dir)', (
-        tester,
+        t,
       ) async {
         var selected = 'a';
-        late StateSetter setOuter;
-        await tester.pumpWidget(
-          _harness(
-            textDirection: dir,
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Center(
-                  child: NocheOutlineGroup<String>(
-                    axis: Axis.horizontal,
-                    selected: selected,
-                    onChanged: (v) => setState(() => selected = v),
-                    options: const [
-                      NocheOutlineOption(
-                        value: 'a',
-                        child: SizedBox(height: 64, child: Text('Font A')),
-                      ),
-                      NocheOutlineOption(
-                        value: 'b',
-                        child: SizedBox(height: 64, child: Text('Font B')),
-                      ),
-                    ],
-                  ),
-                );
-              },
+        final set = await _pumpState(
+          t,
+          dir: dir,
+          (c, s) => Center(
+            child: NocheOutlineGroup<String>(
+              axis: Axis.horizontal,
+              selected: selected,
+              onChanged: (v) => s(() => selected = v),
+              options: _outlineHoriz,
             ),
           ),
         );
-
         final mark = find.byKey(const ValueKey('noche_outline_group_mark'));
-        final startX = tester.getCenter(mark).dx;
-
-        setOuter(() => selected = 'b');
-        await tester.pump();
-        await tester.pump(NocheMotion.move ~/ 2);
-        final midX = tester.getCenter(mark).dx;
-
-        await tester.pump(NocheMotion.move);
-        final endX = tester.getCenter(mark).dx;
-
-        if (dir == TextDirection.ltr) {
-          expect(endX, greaterThan(startX));
-        } else {
-          expect(endX, lessThan(startX));
-        }
+        final startX = t.getCenter(mark).dx;
+        set(() => selected = 'b');
+        await t.pump();
+        await t.pump(NocheMotion.move ~/ 2);
+        final midX = t.getCenter(mark).dx;
+        await t.pump(NocheMotion.move);
+        final endX = t.getCenter(mark).dx;
+        expect(
+          dir == TextDirection.ltr ? endX > startX : endX < startX,
+          isTrue,
+        );
         expect(
           midX,
           closeTo(
@@ -1376,48 +1122,29 @@ void main() {
     }
 
     testWidgets('reduced motion snaps outline mark and fades in quick', (
-      tester,
+      t,
     ) async {
       var selected = 'a';
-      late StateSetter setOuter;
-      await tester.pumpWidget(
-        _harness(
-          disableAnimations: true,
-          StatefulBuilder(
-            builder: (context, setState) {
-              setOuter = setState;
-              return Center(
-                child: NocheOutlineGroup<String>(
-                  axis: Axis.horizontal,
-                  selected: selected,
-                  onChanged: (v) => setState(() => selected = v),
-                  options: const [
-                    NocheOutlineOption(
-                      value: 'a',
-                      child: SizedBox(height: 64, child: Text('Font A')),
-                    ),
-                    NocheOutlineOption(
-                      value: 'b',
-                      child: SizedBox(height: 64, child: Text('Font B')),
-                    ),
-                  ],
-                ),
-              );
-            },
+      final set = await _pumpState(
+        t,
+        reduced: true,
+        (c, s) => Center(
+          child: NocheOutlineGroup<String>(
+            axis: Axis.horizontal,
+            selected: selected,
+            onChanged: (v) => s(() => selected = v),
+            options: _outlineHoriz,
           ),
         ),
       );
-
       final mark = find.byKey(const ValueKey('noche_outline_group_mark'));
-      final startX = tester.getCenter(mark).dx;
-
-      setOuter(() => selected = 'b');
-      await tester.pump();
-      expect(tester.getCenter(mark).dx, greaterThan(startX));
-      expect(_opacityOfChild(tester, mark), closeTo(0.0, 0.01));
-
-      await tester.pump(NocheMotion.quick);
-      expect(_opacityOfChild(tester, mark), closeTo(1.0, 0.01));
+      final startX = t.getCenter(mark).dx;
+      set(() => selected = 'b');
+      await t.pump();
+      expect(t.getCenter(mark).dx, greaterThan(startX));
+      expect(_op(t, mark), closeTo(0.0, 0.01));
+      await t.pump(NocheMotion.quick);
+      expect(_op(t, mark), closeTo(1.0, 0.01));
     });
   });
 
@@ -1425,41 +1152,34 @@ void main() {
   group('11. TouchSign motion', () {
     testWidgets(
       'rises and falls on travel with no overshoot and stands still in reduced motion',
-      (tester) async {
-        await tester.pumpWidget(_harness(const Center(child: TouchSign())));
-
-        final transformFinder = find.descendant(
+      (t) async {
+        await t.pumpWidget(_harness(const Center(child: TouchSign())));
+        final xform = find.descendant(
           of: find.byType(TouchSign),
           matching: find.byType(Transform),
         );
+        expect(_ty(t, xform), closeTo(0.0, 0.01));
 
-        // Start at 0.
-        expect(_translateY(tester, transformFinder), closeTo(0.0, 0.01));
-
-        // Mid-rise (settle ~/ 2): matches travel curve.
-        await tester.pump(NocheMotion.settle ~/ 2);
+        await t.pump(NocheMotion.settle ~/ 2);
         expect(
-          _translateY(tester, transformFinder),
+          _ty(t, xform),
           closeTo(-TouchSign.bounce * NocheMotion.travel.transform(0.5), 0.1),
         );
 
-        // Peak (settle): reaches -TouchSign.bounce, never overshoots.
-        await tester.pump(NocheMotion.settle - (NocheMotion.settle ~/ 2));
-        final peak = _translateY(tester, transformFinder);
+        await t.pump(NocheMotion.settle - (NocheMotion.settle ~/ 2));
+        final peak = _ty(t, xform);
         expect(peak, closeTo(-TouchSign.bounce, 0.05));
         expect(peak, greaterThanOrEqualTo(-TouchSign.bounce));
 
-        // Full return (settle * 2): back to 0.
-        await tester.pump(NocheMotion.settle);
-        expect(_translateY(tester, transformFinder), closeTo(0.0, 0.05));
+        await t.pump(NocheMotion.settle);
+        expect(_ty(t, xform), closeTo(0.0, 0.05));
 
-        // Reduced motion: does not move at all.
-        await tester.pumpWidget(
-          _harness(disableAnimations: true, const Center(child: TouchSign())),
+        await t.pumpWidget(
+          _harness(reduced: true, const Center(child: TouchSign())),
         );
-        await tester.pump(NocheMotion.settle ~/ 2);
-        expect(_translateY(tester, transformFinder), 0.0);
-        expect(tester.hasRunningAnimations, isFalse);
+        await t.pump(NocheMotion.settle ~/ 2);
+        expect(_ty(t, xform), 0.0);
+        expect(t.hasRunningAnimations, isFalse);
       },
     );
   });
@@ -1468,8 +1188,8 @@ void main() {
   group('12. NocheArrive motion', () {
     testWidgets(
       'staggers first 5 rows, 6th shares 5th start, next lands nextDelay after last staggered row',
-      (tester) async {
-        await tester.pumpWidget(
+      (t) async {
+        await t.pumpWidget(
           _harness(
             NocheArrive(
               delay: NocheMotion.rowsAfter,
@@ -1478,97 +1198,69 @@ void main() {
             ),
           ),
         );
+        Finder item(int i) => find.byKey(ValueKey('noche_arrive_item_$i'));
+        final nextF = find.byKey(const ValueKey('noche_arrive_next'));
 
-        Finder itemFinder(int i) =>
-            find.byKey(ValueKey('noche_arrive_item_$i'));
-        final nextFinder = find.byKey(const ValueKey('noche_arrive_next'));
-
-        // Before delay (60ms < 120ms): all at dy == row (8), opacity == 0.
-        await tester.pump(const Duration(milliseconds: 60));
+        await t.pump(const Duration(milliseconds: 60));
         for (var i = 0; i < 6; i++) {
-          expect(
-            _translateY(tester, itemFinder(i)),
-            closeTo(NocheMotion.row, 0.01),
-          );
-          expect(
-            _opacityOfChild(tester, find.text('Row $i')),
-            closeTo(0.0, 0.01),
-          );
+          expect(_ty(t, item(i)), closeTo(NocheMotion.row, 0.01));
+          expect(_op(t, find.text('Row $i')), closeTo(0.0, 0.01));
         }
-        expect(_translateY(tester, nextFinder), closeTo(NocheMotion.row, 0.01));
+        expect(_ty(t, nextF), closeTo(NocheMotion.row, 0.01));
 
-        // At 260ms (rowsAfter 120 + stagger*4 120 + 20ms):
-        // Row 0..4 are strictly descending in progress; Row 5 == Row 4; Next starts at 120+120+80=320ms so still 0!
-        await tester.pump(const Duration(milliseconds: 200));
-        final ops = [
-          for (var i = 0; i < 6; i++)
-            _opacityOfChild(tester, find.text('Row $i')),
-        ];
-        expect(ops[0], greaterThan(ops[1]));
-        expect(ops[1], greaterThan(ops[2]));
-        expect(ops[2], greaterThan(ops[3]));
-        expect(ops[3], greaterThan(ops[4]));
+        await t.pump(const Duration(milliseconds: 200));
+        final ops = [for (var i = 0; i < 6; i++) _op(t, find.text('Row $i'))];
+        for (var i = 0; i < 4; i++) {
+          expect(ops[i], greaterThan(ops[i + 1]));
+        }
         expect(ops[4], greaterThan(0.0));
         expect(ops[5], closeTo(ops[4], 0.001));
-        expect(_opacityOfChild(tester, find.text('Next')), closeTo(0.0, 0.01));
+        expect(_op(t, find.text('Next')), closeTo(0.0, 0.01));
 
-        // At 430ms (next started at 320ms, so 110ms into move): Next is mid-rise.
-        await tester.pump(const Duration(milliseconds: 170));
-        final nextOp = _opacityOfChild(tester, find.text('Next'));
-        expect(nextOp, closeTo(NocheMotion.enter.transform(0.5), 0.03));
+        await t.pump(const Duration(milliseconds: 170));
         expect(
-          _translateY(tester, nextFinder),
+          _op(t, find.text('Next')),
+          closeTo(NocheMotion.enter.transform(0.5), 0.03),
+        );
+        expect(
+          _ty(t, nextF),
           closeTo(
             NocheMotion.row * (1.0 - NocheMotion.enter.transform(0.5)),
             0.3,
           ),
         );
 
-        // End: all settled at opacity 1.0, dy 0.0.
-        await tester.pumpAndSettle();
+        await t.pumpAndSettle();
         for (var i = 0; i < 6; i++) {
-          expect(_translateY(tester, itemFinder(i)), closeTo(0.0, 0.01));
-          expect(
-            _opacityOfChild(tester, find.text('Row $i')),
-            closeTo(1.0, 0.01),
-          );
+          expect(_ty(t, item(i)), closeTo(0.0, 0.01));
+          expect(_op(t, find.text('Row $i')), closeTo(1.0, 0.01));
         }
-        expect(_translateY(tester, nextFinder), closeTo(0.0, 0.01));
-        expect(_opacityOfChild(tester, find.text('Next')), closeTo(1.0, 0.01));
+        expect(_ty(t, nextF), closeTo(0.0, 0.01));
+        expect(_op(t, find.text('Next')), closeTo(1.0, 0.01));
       },
     );
 
     testWidgets('reduced motion arrives all together with dy == 0 in quick', (
-      tester,
+      t,
     ) async {
-      await tester.pumpWidget(
+      await t.pumpWidget(
         _harness(
-          disableAnimations: true,
+          reduced: true,
           const NocheArrive(
             next: Text('Next'),
             children: [Text('Row 0'), Text('Row 1'), Text('Row 2')],
           ),
         ),
       );
-
-      await tester.pump(NocheMotion.quick ~/ 2);
-      final o0 = _opacityOfChild(tester, find.text('Row 0'));
-      final o2 = _opacityOfChild(tester, find.text('Row 2'));
-      final oNext = _opacityOfChild(tester, find.text('Next'));
+      await t.pump(NocheMotion.quick ~/ 2);
+      final o0 = _op(t, find.text('Row 0'));
       expect(o0, greaterThan(0.0));
-      expect(o0, closeTo(o2, 0.001));
-      expect(o0, closeTo(oNext, 0.001));
-      expect(
-        _translateY(tester, find.byKey(const ValueKey('noche_arrive_item_0'))),
-        0.0,
-      );
-      expect(
-        _translateY(tester, find.byKey(const ValueKey('noche_arrive_next'))),
-        0.0,
-      );
-
-      await tester.pump(NocheMotion.quick);
-      expect(_opacityOfChild(tester, find.text('Next')), closeTo(1.0, 0.01));
+      expect(o0, closeTo(_op(t, find.text('Row 2')), 0.001));
+      expect(o0, closeTo(_op(t, find.text('Next')), 0.001));
+      expect(_ty(t, find.byKey(const ValueKey('noche_arrive_item_0'))), 0.0);
+      expect(_ty(t, find.byKey(const ValueKey('noche_arrive_next'))), 0.0);
+      await t.pump(NocheMotion.quick);
+      expect(_op(t, find.text('Next')), closeTo(1.0, 0.01));
     });
   });
 
@@ -1578,108 +1270,69 @@ void main() {
       for (final side in NocheFollowSide.values) {
         testWidgets(
           'old fades in press, new enters from $side in $dir after followAfter',
-          (tester) async {
+          (t) async {
             var key = 0;
-            late StateSetter setOuter;
-            await tester.pumpWidget(
-              _harness(
-                textDirection: dir,
-                StatefulBuilder(
-                  builder: (context, setState) {
-                    setOuter = setState;
-                    return NocheFollow(
-                      contentKey: key,
-                      side: side,
-                      distance: NocheMotion.page,
-                      child: Text('View $key'),
-                    );
-                  },
-                ),
+            final set = await _pumpState(
+              t,
+              dir: dir,
+              (c, s) => NocheFollow(
+                contentKey: key,
+                side: side,
+                distance: NocheMotion.page,
+                child: Text('View $key'),
               ),
             );
+            final inc = find.byKey(const ValueKey('noche_follow_incoming'));
+            final out = find.byKey(const ValueKey('noche_follow_outgoing'));
+            expect(_tx(t, inc), 0.0);
 
-            final incoming = find.byKey(
-              const ValueKey('noche_follow_incoming'),
-            );
-            expect(_translateX(tester, incoming), 0.0);
+            set(() => key = 1);
+            await t.pump();
+            await t.pump(const Duration(milliseconds: 30));
+            expect(out, findsOneWidget);
+            expect(t.widget<Opacity>(out).opacity, lessThan(1.0));
+            expect(_op(t, find.text('View 1')), closeTo(0.0, 0.01));
 
-            setOuter(() => key = 1);
-            await tester.pump();
-
-            // During followAfter (30ms < 60ms): outgoing fading, incoming hidden at +/-distance.
-            await tester.pump(const Duration(milliseconds: 30));
-            final outgoing = find.byKey(
-              const ValueKey('noche_follow_outgoing'),
-            );
-            expect(outgoing, findsOneWidget);
-            expect(tester.widget<Opacity>(outgoing).opacity, lessThan(1.0));
-            expect(
-              _opacityOfChild(tester, find.text('View 1')),
-              closeTo(0.0, 0.01),
-            );
-
-            final expectedSign = (dir == TextDirection.ltr)
+            final sign = (dir == TextDirection.ltr)
                 ? (side == NocheFollowSide.end ? 1.0 : -1.0)
                 : (side == NocheFollowSide.end ? -1.0 : 1.0);
-            expect(
-              _translateX(tester, incoming),
-              closeTo(expectedSign * NocheMotion.page, 0.01),
-            );
+            expect(_tx(t, inc), closeTo(sign * NocheMotion.page, 0.01));
 
-            // At followAfter + move/2 (170ms): outgoing gone (>= 90ms press), incoming mid-slide.
-            await tester.pump(const Duration(milliseconds: 140));
-            expect(outgoing, findsNothing);
+            await t.pump(const Duration(milliseconds: 140));
+            expect(out, findsNothing);
             final p = NocheMotion.enter.transform(0.5);
             expect(
-              _translateX(tester, incoming),
-              closeTo(expectedSign * NocheMotion.page * (1.0 - p), 0.8),
+              _tx(t, inc),
+              closeTo(sign * NocheMotion.page * (1.0 - p), 0.8),
             );
-            expect(
-              _opacityOfChild(tester, find.text('View 1')),
-              closeTo(p, 0.03),
-            );
+            expect(_op(t, find.text('View 1')), closeTo(p, 0.03));
 
-            await tester.pumpAndSettle();
-            expect(_translateX(tester, incoming), closeTo(0.0, 0.01));
-            expect(
-              _opacityOfChild(tester, find.text('View 1')),
-              closeTo(1.0, 0.01),
-            );
+            await t.pumpAndSettle();
+            expect(_tx(t, inc), closeTo(0.0, 0.01));
+            expect(_op(t, find.text('View 1')), closeTo(1.0, 0.01));
           },
         );
       }
     }
 
-    testWidgets('reduced motion has zero horizontal offset', (tester) async {
+    testWidgets('reduced motion has zero horizontal offset', (t) async {
       var key = 0;
-      late StateSetter setOuter;
-      await tester.pumpWidget(
-        _harness(
-          disableAnimations: true,
-          StatefulBuilder(
-            builder: (context, setState) {
-              setOuter = setState;
-              return NocheFollow(
-                contentKey: key,
-                distance: NocheMotion.page,
-                child: Text('View $key'),
-              );
-            },
-          ),
+      final set = await _pumpState(
+        t,
+        reduced: true,
+        (c, s) => NocheFollow(
+          contentKey: key,
+          distance: NocheMotion.page,
+          child: Text('View $key'),
         ),
       );
-
-      setOuter(() => key = 1);
-      await tester.pump();
-      await tester.pump(NocheMotion.followAfter + (NocheMotion.quick ~/ 2));
-      final incoming = find.byKey(const ValueKey('noche_follow_incoming'));
-      expect(_translateX(tester, incoming), 0.0);
-      final op = _opacityOfChild(tester, find.text('View 1'));
-      expect(op, greaterThan(0.0));
-      expect(op, lessThan(1.0));
-
-      await tester.pumpAndSettle();
-      expect(_opacityOfChild(tester, find.text('View 1')), closeTo(1.0, 0.01));
+      set(() => key = 1);
+      await t.pump();
+      await t.pump(NocheMotion.followAfter + (NocheMotion.quick ~/ 2));
+      expect(_tx(t, find.byKey(const ValueKey('noche_follow_incoming'))), 0.0);
+      expect(_op(t, find.text('View 1')), inExclusiveRange(0.0, 1.0));
+      await t.pumpAndSettle();
+      expect(_op(t, find.text('View 1')), closeTo(1.0, 0.01));
     });
   });
 
@@ -1687,121 +1340,90 @@ void main() {
   group('14. NocheWindow motion', () {
     testWidgets(
       'single-screen rect, borderRadius, pictureOffset animate together in pageIn/pageOut without scaling child',
-      (tester) async {
+      (t) async {
         var expanded = false;
-        late StateSetter setOuter;
-        const pictureKey = ValueKey('unscaled_pic');
-
-        await tester.pumpWidget(
-          _harness(
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Stack(
-                  children: [
-                    NocheWindow(
-                      rect: expanded
-                          ? const Rect.fromLTWH(20, 40, 300, 180)
-                          : const Rect.fromLTWH(40, 100, 140, 100),
-                      borderRadius: expanded ? 8 : 24,
-                      pictureOffset: expanded
-                          ? Offset.zero
-                          : const Offset(-40, -20),
-                      pictureSize: const Size(320, 200),
-                      leaving: !expanded,
-                      child: const SizedBox(
-                        key: pictureKey,
-                        width: 320,
-                        height: 200,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
+        const picKey = ValueKey('unscaled_pic');
+        final set = await _pumpState(
+          t,
+          (c, s) => Stack(
+            children: [
+              NocheWindow(
+                rect: expanded
+                    ? const Rect.fromLTWH(20, 40, 300, 180)
+                    : const Rect.fromLTWH(40, 100, 140, 100),
+                borderRadius: expanded ? 8 : 24,
+                pictureOffset: expanded ? Offset.zero : const Offset(-40, -20),
+                pictureSize: const Size(320, 200),
+                leaving: !expanded,
+                child: const SizedBox(key: picKey, width: 320, height: 200),
+              ),
+            ],
           ),
         );
+        final surf = find.byKey(const ValueKey('noche_window_surface'));
+        expect(t.getRect(surf), const Rect.fromLTWH(40, 100, 140, 100));
+        expect(t.getSize(find.byKey(picKey)), const Size(320, 200));
 
-        final surface = find.byKey(const ValueKey('noche_window_surface'));
-        expect(tester.getRect(surface), const Rect.fromLTWH(40, 100, 140, 100));
-        expect(tester.getSize(find.byKey(pictureKey)), const Size(320, 200));
-
-        // Expand (pageIn = 320ms).
-        setOuter(() => expanded = true);
-        await tester.pump();
-        await tester.pump(NocheMotion.pageIn ~/ 2);
         final p = NocheMotion.enter.transform(0.5);
-        final midRect = tester.getRect(surface);
-        expect(midRect.width, closeTo(140 + (300 - 140) * p, 2.0));
-        expect(midRect.height, closeTo(100 + (180 - 100) * p, 2.0));
-        // Child size NEVER scales!
-        expect(tester.getSize(find.byKey(pictureKey)), const Size(320, 200));
+        set(() => expanded = true);
+        await t.pump();
+        await t.pump(NocheMotion.pageIn ~/ 2);
+        expect(t.getRect(surf).width, closeTo(140 + 160 * p, 2.0));
+        expect(t.getRect(surf).height, closeTo(100 + 80 * p, 2.0));
+        expect(t.getSize(find.byKey(picKey)), const Size(320, 200));
 
-        await tester.pump(NocheMotion.pageIn);
-        expect(tester.getRect(surface), const Rect.fromLTWH(20, 40, 300, 180));
-        expect(tester.getSize(find.byKey(pictureKey)), const Size(320, 200));
+        await t.pump(NocheMotion.pageIn);
+        expect(t.getRect(surf), const Rect.fromLTWH(20, 40, 300, 180));
+        expect(t.getSize(find.byKey(picKey)), const Size(320, 200));
 
-        // Collapse (leaving: true -> pageOut = 200ms).
-        setOuter(() => expanded = false);
-        await tester.pump();
-        await tester.pump(NocheMotion.pageOut ~/ 2);
-        final outMidRect = tester.getRect(surface);
-        expect(outMidRect.width, closeTo(300 + (140 - 300) * p, 2.0));
-        expect(tester.getSize(find.byKey(pictureKey)), const Size(320, 200));
+        set(() => expanded = false);
+        await t.pump();
+        await t.pump(NocheMotion.pageOut ~/ 2);
+        expect(t.getRect(surf).width, closeTo(300 - 160 * p, 2.0));
+        expect(t.getSize(find.byKey(picKey)), const Size(320, 200));
 
-        await tester.pump(NocheMotion.pageOut);
-        expect(tester.getRect(surface), const Rect.fromLTWH(40, 100, 140, 100));
+        await t.pump(NocheMotion.pageOut);
+        expect(t.getRect(surf), const Rect.fromLTWH(40, 100, 140, 100));
       },
     );
 
     testWidgets('single-screen reduced motion snaps rect and fades in quick', (
-      tester,
+      t,
     ) async {
       var expanded = false;
-      late StateSetter setOuter;
-      await tester.pumpWidget(
-        _harness(
-          disableAnimations: true,
-          StatefulBuilder(
-            builder: (context, setState) {
-              setOuter = setState;
-              return Stack(
-                children: [
-                  NocheWindow(
-                    rect: expanded
-                        ? const Rect.fromLTWH(20, 40, 300, 180)
-                        : const Rect.fromLTWH(40, 100, 140, 100),
-                    pictureSize: const Size(320, 200),
-                    child: const SizedBox(width: 320, height: 200),
-                  ),
-                ],
-              );
-            },
-          ),
+      final set = await _pumpState(
+        t,
+        reduced: true,
+        (c, s) => Stack(
+          children: [
+            NocheWindow(
+              rect: expanded
+                  ? const Rect.fromLTWH(20, 40, 300, 180)
+                  : const Rect.fromLTWH(40, 100, 140, 100),
+              pictureSize: const Size(320, 200),
+              child: const SizedBox(width: 320, height: 200),
+            ),
+          ],
         ),
       );
-
-      final surface = find.byKey(const ValueKey('noche_window_surface'));
-      setOuter(() => expanded = true);
-      await tester.pump();
-      expect(tester.getRect(surface), const Rect.fromLTWH(20, 40, 300, 180));
-      expect(_opacityOfChild(tester, surface), closeTo(0.0, 0.01));
-
-      await tester.pump(NocheMotion.quick);
-      expect(_opacityOfChild(tester, surface), closeTo(1.0, 0.01));
+      final surf = find.byKey(const ValueKey('noche_window_surface'));
+      set(() => expanded = true);
+      await t.pump();
+      expect(t.getRect(surf), const Rect.fromLTWH(20, 40, 300, 180));
+      expect(_op(t, surf), closeTo(0.0, 0.01));
+      await t.pump(NocheMotion.quick);
+      expect(_op(t, surf), closeTo(1.0, 0.01));
     });
 
     testWidgets(
       'cross-screen tag transition flies rect on push and pop while keeping child unscaled',
-      (tester) async {
+      (t) async {
         const tag = 'story_hero';
         const picKey = ValueKey('hero_pic');
-
-        await tester.pumpWidget(
-          MaterialApp(
-            theme: coquiTheme(),
-            home: Builder(
-              builder: (context) => Scaffold(
+        await t.pumpWidget(
+          _app(
+            Builder(
+              builder: (c) => Scaffold(
                 body: Stack(
                   children: [
                     PositionedDirectional(
@@ -1814,40 +1436,38 @@ void main() {
                         borderRadius: 24,
                         pictureOffset: const Offset(-40, -20),
                         pictureSize: const Size(360, 220),
-                        onPressed: () {
-                          Navigator.of(context).push<void>(
-                            PageRouteBuilder<void>(
-                              transitionDuration: NocheMotion.pageIn,
-                              reverseTransitionDuration: NocheMotion.pageOut,
-                              pageBuilder: (c, a, sa) => Scaffold(
-                                body: Stack(
-                                  children: [
-                                    PositionedDirectional(
-                                      start: 10,
-                                      top: 20,
-                                      width: 360,
-                                      height: 220,
-                                      child: NocheWindow(
-                                        tag: tag,
-                                        borderRadius: 8,
-                                        pictureOffset: Offset.zero,
-                                        pictureSize: const Size(360, 220),
-                                        onPressed: () => Navigator.of(c).pop(),
-                                        child: const SizedBox(
-                                          key: picKey,
-                                          width: 360,
-                                          height: 220,
-                                        ),
+                        onPressed: () => Navigator.of(c).push<void>(
+                          PageRouteBuilder<void>(
+                            transitionDuration: NocheMotion.pageIn,
+                            reverseTransitionDuration: NocheMotion.pageOut,
+                            pageBuilder: (c2, a, sa) => Scaffold(
+                              body: Stack(
+                                children: [
+                                  PositionedDirectional(
+                                    start: 10,
+                                    top: 20,
+                                    width: 360,
+                                    height: 220,
+                                    child: NocheWindow(
+                                      tag: tag,
+                                      borderRadius: 8,
+                                      pictureOffset: Offset.zero,
+                                      pictureSize: const Size(360, 220),
+                                      onPressed: () => Navigator.of(c2).pop(),
+                                      child: const SizedBox(
+                                        key: picKey,
+                                        width: 360,
+                                        height: 220,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              transitionsBuilder: (c, a, sa, child) =>
-                                  FadeTransition(opacity: a, child: child),
                             ),
-                          );
-                        },
+                            transitionsBuilder: (c2, a, sa, child) =>
+                                FadeTransition(opacity: a, child: child),
+                          ),
+                        ),
                         child: const SizedBox(
                           key: picKey,
                           width: 360,
@@ -1861,46 +1481,37 @@ void main() {
             ),
           ),
         );
-
-        final surface = find.byKey(NocheWindow.surfaceKey(tag));
-        final rectA = tester.getRect(surface);
+        final surf = find.byKey(NocheWindow.surfaceKey(tag));
+        final rectA = t.getRect(surf);
         expect(rectA.size, const Size(140, 90));
 
-        // Push second route.
-        await tester.tap(find.byType(NocheWindow));
-        await tester.pump();
-        await tester.pump(NocheMotion.pageIn ~/ 2);
-        final pushMidRect = tester.getRect(surface);
-        expect(pushMidRect.width, greaterThan(140));
-        expect(pushMidRect.width, lessThan(360));
-        expect(pushMidRect.height, greaterThan(90));
-        expect(pushMidRect.height, lessThan(220));
-        expect(tester.getSize(find.byKey(picKey)), const Size(360, 220));
+        await t.tap(find.byType(NocheWindow));
+        await t.pump();
+        await t.pump(NocheMotion.pageIn ~/ 2);
+        expect(t.getRect(surf).width, inExclusiveRange(140.0, 360.0));
+        expect(t.getRect(surf).height, inExclusiveRange(90.0, 220.0));
+        expect(t.getSize(find.byKey(picKey)), const Size(360, 220));
 
-        await tester.pumpAndSettle();
-        final rectB = tester.getRect(surface);
-        expect(rectB.size, const Size(360, 220));
+        await t.pumpAndSettle();
+        expect(t.getRect(surf).size, const Size(360, 220));
 
-        // Pop back to first route.
-        await tester.tap(find.byType(NocheWindow));
-        await tester.pump();
-        await tester.pump(NocheMotion.pageOut ~/ 2);
-        final popMidRect = tester.getRect(surface);
-        expect(popMidRect.width, greaterThan(140));
-        expect(popMidRect.width, lessThan(360));
-        expect(tester.getSize(find.byKey(picKey)), const Size(360, 220));
+        await t.tap(find.byType(NocheWindow));
+        await t.pump();
+        await t.pump(NocheMotion.pageOut ~/ 2);
+        expect(t.getRect(surf).width, inExclusiveRange(140.0, 360.0));
+        expect(t.getSize(find.byKey(picKey)), const Size(360, 220));
 
-        await tester.pumpAndSettle();
-        expect(tester.getRect(surface), rectA);
+        await t.pumpAndSettle();
+        expect(t.getRect(surf), rectA);
       },
     );
 
     testWidgets(
       'cross-screen tag under reduced motion does not mount Hero / does not fly',
-      (tester) async {
-        await tester.pumpWidget(
+      (t) async {
+        await t.pumpWidget(
           _harness(
-            disableAnimations: true,
+            reduced: true,
             const SizedBox(
               width: 140,
               height: 90,
@@ -1912,12 +1523,11 @@ void main() {
             ),
           ),
         );
-
         expect(find.byType(Hero), findsNothing);
-        final surface = find.byKey(NocheWindow.surfaceKey('reduced_tag'));
-        expect(_opacityOfChild(tester, surface), closeTo(0.0, 0.01));
-        await tester.pump(NocheMotion.quick);
-        expect(_opacityOfChild(tester, surface), closeTo(1.0, 0.01));
+        final surf = find.byKey(NocheWindow.surfaceKey('reduced_tag'));
+        expect(_op(t, surf), closeTo(0.0, 0.01));
+        await t.pump(NocheMotion.quick);
+        expect(_op(t, surf), closeTo(1.0, 0.01));
       },
     );
   });
@@ -1926,111 +1536,93 @@ void main() {
   group('15. NocheQuietLock motion', () {
     testWidgets(
       'tap brightens in press, holds lockHold, returns in move; active: false ignores taps',
-      (tester) async {
-        Color? seenColor;
+      (t) async {
+        Color? seen;
         var taps = 0;
-
-        await tester.pumpWidget(
+        await t.pumpWidget(
           _harness(
             Center(
               child: NocheQuietLock(
                 onTap: () => taps++,
-                builder: (context, reasonColor) {
-                  seenColor = reasonColor;
-                  return Text('Locked', style: TextStyle(color: reasonColor));
-                },
+                builder: (c, color) =>
+                    Text('Locked', style: TextStyle(color: seen = color)),
               ),
             ),
           ),
         );
+        expect(seen, NocheColors.label);
 
-        expect(seenColor, NocheColors.label);
-
-        await tester.tap(find.text('Locked'));
-        await tester.pump();
+        await t.tap(find.text('Locked'));
+        await t.pump();
         expect(taps, 1);
 
-        // Mid-press (45ms): between label and text.
-        await tester.pump(NocheMotion.press ~/ 2);
-        expect(seenColor, isNot(NocheColors.label));
-        expect(seenColor, isNot(NocheColors.text));
+        await t.pump(NocheMotion.press ~/ 2);
+        expect(seen, isNot(NocheColors.label));
+        expect(seen, isNot(NocheColors.text));
 
-        // End of press (90ms): full text brightness.
-        await tester.pump(NocheMotion.press - (NocheMotion.press ~/ 2));
-        expect(seenColor, NocheColors.text);
+        await t.pump(NocheMotion.press - (NocheMotion.press ~/ 2));
+        expect(seen, NocheColors.text);
 
-        // During lockHold (e.g. +700ms): stays full text brightness.
-        await tester.pump(NocheMotion.lockHold ~/ 2);
-        expect(seenColor, NocheColors.text);
+        await t.pump(NocheMotion.lockHold ~/ 2);
+        expect(seen, NocheColors.text);
+        await t.pump(NocheMotion.lockHold - (NocheMotion.lockHold ~/ 2));
+        expect(seen, NocheColors.text);
 
-        // End of lockHold (+700ms): still at text.
-        await tester.pump(NocheMotion.lockHold - (NocheMotion.lockHold ~/ 2));
-        expect(seenColor, NocheColors.text);
+        await t.pump(NocheMotion.move ~/ 2);
+        expect(seen, isNot(NocheColors.text));
+        expect(seen, isNot(NocheColors.label));
+        await t.pump(NocheMotion.move);
+        expect(seen, NocheColors.label);
 
-        // Mid-return (+110ms = move/2): dimming back.
-        await tester.pump(NocheMotion.move ~/ 2);
-        expect(seenColor, isNot(NocheColors.text));
-        expect(seenColor, isNot(NocheColors.label));
-
-        // End of return (+110ms): back to label.
-        await tester.pump(NocheMotion.move);
-        expect(seenColor, NocheColors.label);
-
-        // active: false ignores taps.
-        await tester.pumpWidget(
+        await t.pumpWidget(
           _harness(
             Center(
               child: NocheQuietLock(
                 active: false,
                 onTap: () => taps++,
-                builder: (context, reasonColor) => const Text('Inactive lock'),
+                builder: (c, color) => const Text('Inactive lock'),
               ),
             ),
           ),
         );
-        await tester.tap(find.text('Inactive lock'));
-        await tester.pump();
+        await t.tap(find.text('Inactive lock'));
+        await t.pump();
         expect(taps, 1);
       },
     );
 
-    testWidgets('reduced motion holds same timing in place', (tester) async {
-      Color? seenColor;
-      await tester.pumpWidget(
+    testWidgets('reduced motion holds same timing in place', (t) async {
+      Color? seen;
+      await t.pumpWidget(
         _harness(
-          disableAnimations: true,
+          reduced: true,
           Center(
             child: NocheQuietLock(
-              builder: (context, reasonColor) {
-                seenColor = reasonColor;
+              builder: (c, color) {
+                seen = color;
                 return const Text('Locked');
               },
             ),
           ),
         ),
       );
-
-      await tester.tap(find.text('Locked'));
-      await tester.pump();
-      await tester.pump(NocheMotion.reduced.press);
-      expect(seenColor, NocheColors.text);
-
-      await tester.pump(NocheMotion.reduced.lockHold);
-      expect(seenColor, NocheColors.text);
-
-      await tester.pump(NocheMotion.reduced.move);
-      expect(seenColor, NocheColors.label);
+      await t.tap(find.text('Locked'));
+      await t.pump();
+      await t.pump(NocheMotion.reduced.press);
+      expect(seen, NocheColors.text);
+      await t.pump(NocheMotion.reduced.lockHold);
+      expect(seen, NocheColors.text);
+      await t.pump(NocheMotion.reduced.move);
+      expect(seen, NocheColors.label);
     });
   });
 
   // 16. NocheLtr
   group('16. NocheLtr', () {
-    testWidgets('forces TextDirection.ltr inside an RTL parent', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
+    testWidgets('forces TextDirection.ltr inside an RTL parent', (t) async {
+      await t.pumpWidget(
         _harness(
-          textDirection: TextDirection.rtl,
+          dir: TextDirection.rtl,
           const Center(
             child: NocheLtr(
               child: Row(
@@ -2041,10 +1633,9 @@ void main() {
           ),
         ),
       );
-
       expect(
-        tester.getCenter(find.text('First')).dx,
-        lessThan(tester.getCenter(find.text('Second')).dx),
+        t.getCenter(find.text('First')).dx,
+        lessThan(t.getCenter(find.text('Second')).dx),
       );
     });
   });
@@ -2053,32 +1644,28 @@ void main() {
   group('17. NocheMotionDevPage gallery', () {
     for (final dir in [TextDirection.ltr, TextDirection.rtl]) {
       testWidgets('renders cleanly in $dir and interactive controls respond', (
-        tester,
+        t,
       ) async {
-        tester.view.devicePixelRatio = 1;
-        tester.view.physicalSize = const Size(390, 844);
-        addTearDown(tester.view.reset);
+        t.view.devicePixelRatio = 1;
+        t.view.physicalSize = const Size(390, 844);
+        addTearDown(t.view.reset);
 
-        await tester.pumpWidget(
-          MaterialApp(
-            theme: coquiTheme(),
-            builder: (context, child) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(disableAnimations: true),
-              child: child!,
-            ),
-            home: Scaffold(body: NocheMotionDevPage(textDirection: dir)),
+        await t.pumpWidget(
+          _app(
+            reduced: true,
+            Scaffold(body: NocheMotionDevPage(textDirection: dir)),
           ),
         );
-        await tester.pumpAndSettle();
-        expect(tester.takeException(), isNull);
+        await t.pumpAndSettle();
+        expect(t.takeException(), isNull);
 
-        await tester.tap(find.text('Speaking'));
-        await tester.pumpAndSettle();
+        await t.tap(find.text('Speaking'));
+        await t.pumpAndSettle();
         expect(find.text('Active panel: speaking'), findsOneWidget);
 
-        await tester.tap(find.text('El parque'));
-        await tester.pumpAndSettle();
-        expect(tester.takeException(), isNull);
+        await t.tap(find.text('El parque'));
+        await t.pumpAndSettle();
+        expect(t.takeException(), isNull);
       });
     }
   });
@@ -2095,13 +1682,13 @@ void main() {
               .toList()
             ..sort((a, b) => a.path.compareTo(b.path));
       expect(dartFiles, isNotEmpty);
-
       for (final file in dartFiles) {
         if (file.path.endsWith('noche_motion.dart')) continue;
-        final src = file.readAsStringSync();
-        final matches = rawMotionRe.allMatches(src).toList();
         expect(
-          matches.map((m) => m.group(0)).toList(),
+          rawMotionRe
+              .allMatches(file.readAsStringSync())
+              .map((m) => m.group(0))
+              .toList(),
           isEmpty,
           reason: '${file.path} contains raw Duration(, Curves., or Cubic(',
         );
@@ -2109,39 +1696,26 @@ void main() {
     });
 
     test('zero coqui_contracts imports and zero left/right/raw tokens in Noche motion files', () {
-      const noContractsFiles = [
+      for (final path in const [
         'lib/src/noche_motion_pieces.dart',
         'lib/src/noche_chrome.dart',
         'lib/src/noche_controls.dart',
         'lib/src/noche_data.dart',
         'tool/gallery/noche_pieces.dart',
-      ];
-      for (final path in noContractsFiles) {
-        final src = File(path).readAsStringSync();
+      ]) {
         expect(
-          src.contains('package:coqui_contracts/'),
+          File(path).readAsStringSync().contains('package:coqui_contracts/'),
           isFalse,
-          reason: '$path must not import coqui_contracts',
+          reason: '$path imports coqui_contracts',
         );
       }
-
-      final piecesSrc = File('lib/src/noche_motion_pieces.dart')
-          .readAsStringSync();
+      final src = File('lib/src/noche_motion_pieces.dart').readAsStringSync();
       expect(
-        RegExp(r'\b(left|right)\b', caseSensitive: false).allMatches(piecesSrc),
+        RegExp(r'\b(left|right)\b', caseSensitive: false).allMatches(src),
         isEmpty,
-        reason: 'noche_motion_pieces.dart contains left/right',
       );
-      expect(
-        RegExp(r'Color\s*\(\s*0x').allMatches(piecesSrc),
-        isEmpty,
-        reason: 'noche_motion_pieces.dart contains raw Color(0x...)',
-      );
-      expect(
-        RegExp(r'\bfontFamily\b').allMatches(piecesSrc),
-        isEmpty,
-        reason: 'noche_motion_pieces.dart contains fontFamily',
-      );
+      expect(RegExp(r'Color\s*\(\s*0x').allMatches(src), isEmpty);
+      expect(RegExp(r'\bfontFamily\b').allMatches(src), isEmpty);
     });
   });
 
@@ -2149,153 +1723,101 @@ void main() {
   group('19. Review regression tests', () {
     testWidgets(
       'NocheSheetSwap preserves mounted outgoing State without remounting, isolates incoming State, and keeps exact fixed height for shorter and taller content',
-      (tester) async {
-        final initCounts = <String, int>{};
-        final createdWithLabel = <String, String>{};
+      (t) async {
+        final inits = <String, int>{};
+        final created = <String, String>{};
         var step = 'A';
-        late StateSetter setOuter;
-
-        await tester.pumpWidget(
-          _harness(
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                final double h = switch (step) {
+        final set = await _pumpState(
+          t,
+          (c, s) => Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: NocheSheet(
+              title: 'Swap regression',
+              respectSafeArea: false,
+              scrollable: false,
+              contentKey: step,
+              child: _SwapStateProbe(
+                id: step,
+                height: switch (step) {
                   'A' => 140,
-                  'B' => 48, // shorter than initial
-                  _ => 320, // taller than initial
-                };
-                return Align(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  child: NocheSheet(
-                    title: 'Swap regression',
-                    respectSafeArea: false,
-                    scrollable: false,
-                    contentKey: step,
-                    child: _SwapStateProbe(
-                      id: step,
-                      height: h,
-                      initCounts: initCounts,
-                      createdWithLabel: createdWithLabel,
-                    ),
-                  ),
-                );
-              },
+                  'B' => 48,
+                  _ => 320,
+                },
+                initCounts: inits,
+                createdWithLabel: created,
+              ),
             ),
           ),
         );
+        expect(inits['A'], 1);
+        final initialH = t.getSize(find.byType(NocheSheet)).height;
 
-        expect(initCounts['A'], 1);
-        final initialSheetHeight = tester
-            .getSize(find.byType(NocheSheet))
-            .height;
+        for (final (next, prev) in const [('B', 'A'), ('C', 'B')]) {
+          set(() => step = next);
+          await t.pump();
+          await t.pump(const Duration(milliseconds: 50));
+          expect(inits[prev], 1);
+          expect(inits[next], 1);
+          expect(created[next], next);
+          expect(t.getSize(find.byType(NocheSheet)).height, initialH);
+          expect(t.takeException(), isNull);
 
-        // Swap A -> B (shorter): A must NOT be remounted while fading out,
-        // B must get a brand-new State (no leaked initialId from A),
-        // and sheet height stays strictly fixed.
-        setOuter(() => step = 'B');
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 50));
-
-        expect(initCounts['A'], 1);
-        expect(initCounts['B'], 1);
-        expect(createdWithLabel['B'], 'B');
-        expect(
-          tester.getSize(find.byType(NocheSheet)).height,
-          initialSheetHeight,
-        );
-        expect(tester.takeException(), isNull);
-
-        await tester.pumpAndSettle();
-        expect(initCounts['A'], 1);
-        expect(initCounts['B'], 1);
-        expect(
-          tester.getSize(find.byType(NocheSheet)).height,
-          initialSheetHeight,
-        );
-        expect(tester.takeException(), isNull);
-
-        // Swap B -> C (taller than initial): height STILL stays strictly fixed
-        // with zero overflow exceptions!
-        setOuter(() => step = 'C');
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 50));
-        expect(initCounts['B'], 1);
-        expect(initCounts['C'], 1);
-        expect(createdWithLabel['C'], 'C');
-        expect(
-          tester.getSize(find.byType(NocheSheet)).height,
-          initialSheetHeight,
-        );
-        expect(tester.takeException(), isNull);
-
-        await tester.pumpAndSettle();
-        expect(
-          tester.getSize(find.byType(NocheSheet)).height,
-          initialSheetHeight,
-        );
-        expect(tester.takeException(), isNull);
+          await t.pumpAndSettle();
+          expect(inits[prev], 1);
+          expect(inits[next], 1);
+          expect(t.getSize(find.byType(NocheSheet)).height, initialH);
+          expect(t.takeException(), isNull);
+        }
       },
     );
 
     testWidgets(
       'showNocheSheet rapid double-tap on scrim during reverse animation does not pop underlying route',
-      (tester) async {
-        await tester.pumpWidget(
-          MaterialApp(
-            theme: coquiTheme(),
-            home: Builder(
-              builder: (homeContext) => Scaffold(
+      (t) async {
+        await t.pumpWidget(
+          _app(
+            Builder(
+              builder: (homeC) => Scaffold(
                 body: Center(
                   child: NocheOutlineButton(
                     label: 'Go to detail',
-                    onPressed: () {
-                      Navigator.of(homeContext).push<void>(
-                        MaterialPageRoute<void>(
-                          builder: (detailContext) => Scaffold(
-                            body: Center(
-                              child: NocheOutlineButton(
-                                label: 'Open sheet',
-                                onPressed: () {
-                                  showNocheSheet<void>(
-                                    detailContext,
-                                    title: 'Sheet',
-                                    builder: (c, close) => const SizedBox(
-                                      height: 120,
-                                      child: Text('Sheet content'),
-                                    ),
-                                  );
-                                },
+                    onPressed: () => Navigator.of(homeC).push<void>(
+                      MaterialPageRoute<void>(
+                        builder: (detailC) => Scaffold(
+                          body: Center(
+                            child: NocheOutlineButton(
+                              label: 'Open sheet',
+                              onPressed: () => showNocheSheet<void>(
+                                detailC,
+                                title: 'Sheet',
+                                builder: (c, close) => const SizedBox(
+                                  height: 120,
+                                  child: Text('Sheet content'),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         );
-
-        await tester.tap(find.text('Go to detail'));
-        await tester.pumpAndSettle();
-        expect(find.text('Open sheet'), findsOneWidget);
-
-        await tester.tap(find.text('Open sheet'));
-        await tester.pumpAndSettle();
+        await t.tap(find.text('Go to detail'));
+        await t.pumpAndSettle();
+        await t.tap(find.text('Open sheet'));
+        await t.pumpAndSettle();
         expect(find.text('Sheet content'), findsOneWidget);
 
-        // First tap on scrim starts dismissing the sheet.
-        await tester.tapAt(const Offset(195, 40));
-        await tester.pump();
-        // Rapid second tap on scrim halfway through reverse animation.
-        await tester.pump(NocheMotion.pageOut ~/ 2);
-        await tester.tapAt(const Offset(195, 40));
-        await tester.pumpAndSettle();
+        await t.tapAt(const Offset(195, 40));
+        await t.pump();
+        await t.pump(NocheMotion.pageOut ~/ 2);
+        await t.tapAt(const Offset(195, 40));
+        await t.pumpAndSettle();
 
-        // Sheet is closed, and Detail route is STILL visible (not popped!).
         expect(find.text('Sheet content'), findsNothing);
         expect(find.text('Open sheet'), findsOneWidget);
       },
@@ -2304,46 +1826,23 @@ void main() {
     for (final reduced in [false, true]) {
       testWidgets(
         'NocheBarChart growing items from 2 to 6 after settling renders all 6 bars at full height (reduced: $reduced)',
-        (tester) async {
-          var items = const [
-            NocheBarItem(label: '1', value: 10),
-            NocheBarItem(label: '2', value: 20),
-          ];
-          late StateSetter setOuter;
-
-          await tester.pumpWidget(
-            _harness(
-              disableAnimations: reduced,
-              StatefulBuilder(
-                builder: (context, setState) {
-                  setOuter = setState;
-                  return Center(child: NocheBarChart(items: items));
-                },
-              ),
-            ),
+        (t) async {
+          var items = _barItems2;
+          final set = await _pumpState(
+            t,
+            reduced: reduced,
+            (c, s) => Center(child: NocheBarChart(items: items)),
           );
-
-          await tester.pumpAndSettle();
-
-          setOuter(
-            () => items = const [
-              NocheBarItem(label: '1', value: 10),
-              NocheBarItem(label: '2', value: 20),
-              NocheBarItem(label: '3', value: 30),
-              NocheBarItem(label: '4', value: 40),
-              NocheBarItem(label: '5', value: 50),
-              NocheBarItem(label: '6', value: 25),
-            ],
-          );
-          await tester.pump();
-
+          await t.pumpAndSettle();
+          set(() => items = _barItems6);
+          await t.pump();
           for (var i = 0; i < 6; i++) {
-            final clipFinder = find.byKey(ValueKey('noche_bar_clip_$i'));
-            final clip = tester.widget<ClipRRect>(clipFinder);
-            final rrect = clip.clipper!.getClip(const Size(20, 100));
-            expect(rrect.height, closeTo(100.0, 0.01));
+            expect(_clipFrac(t, i), closeTo(1.0, 0.01));
             if (reduced) {
-              expect(_opacityOfChild(tester, clipFinder), closeTo(1.0, 0.01));
+              expect(
+                _op(t, find.byKey(ValueKey('noche_bar_clip_$i'))),
+                closeTo(1.0, 0.01),
+              );
             }
           }
         },
@@ -2352,43 +1851,17 @@ void main() {
 
     testWidgets(
       'NocheBarChart growing items mid-flight still finishes all 6 bars to 1.0',
-      (tester) async {
-        var items = const [
-          NocheBarItem(label: '1', value: 10),
-          NocheBarItem(label: '2', value: 20),
-        ];
-        late StateSetter setOuter;
-
-        await tester.pumpWidget(
-          _harness(
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return Center(child: NocheBarChart(items: items));
-              },
-            ),
-          ),
+      (t) async {
+        var items = _barItems2;
+        final set = await _pumpState(
+          t,
+          (c, s) => Center(child: NocheBarChart(items: items)),
         );
-
-        await tester.pump(NocheMotion.settle ~/ 2);
-        setOuter(
-          () => items = const [
-            NocheBarItem(label: '1', value: 10),
-            NocheBarItem(label: '2', value: 20),
-            NocheBarItem(label: '3', value: 30),
-            NocheBarItem(label: '4', value: 40),
-            NocheBarItem(label: '5', value: 50),
-            NocheBarItem(label: '6', value: 25),
-          ],
-        );
-        await tester.pumpAndSettle();
-
+        await t.pump(NocheMotion.settle ~/ 2);
+        set(() => items = _barItems6);
+        await t.pumpAndSettle();
         for (var i = 0; i < 6; i++) {
-          final clip = tester.widget<ClipRRect>(
-            find.byKey(ValueKey('noche_bar_clip_$i')),
-          );
-          final rrect = clip.clipper!.getClip(const Size(20, 100));
-          expect(rrect.height, closeTo(100.0, 0.01));
+          expect(_clipFrac(t, i), closeTo(1.0, 0.01));
         }
       },
     );
@@ -2396,103 +1869,71 @@ void main() {
     for (final reduced in [false, true]) {
       testWidgets(
         'NocheArrive growing children after initial entrance renders new children at opacity 1.0 and dy 0 (reduced: $reduced)',
-        (tester) async {
+        (t) async {
           var count = 2;
-          var includeNext = false;
-          late StateSetter setOuter;
-
-          await tester.pumpWidget(
-            _harness(
-              disableAnimations: reduced,
-              StatefulBuilder(
-                builder: (context, setState) {
-                  setOuter = setState;
-                  return NocheArrive(
-                    next: includeNext ? const Text('Added next') : null,
-                    children: [for (var i = 0; i < count; i++) Text('Item $i')],
-                  );
-                },
-              ),
+          var hasNext = false;
+          final set = await _pumpState(
+            t,
+            reduced: reduced,
+            (c, s) => NocheArrive(
+              next: hasNext ? const Text('Added next') : null,
+              children: [for (var i = 0; i < count; i++) Text('Item $i')],
             ),
           );
-
-          await tester.pumpAndSettle();
-
-          setOuter(() {
+          await t.pumpAndSettle();
+          set(() {
             count = 6;
-            includeNext = true;
+            hasNext = true;
           });
-          await tester.pump();
-
+          await t.pump();
           for (var i = 0; i < 6; i++) {
             expect(
-              _translateY(tester, find.byKey(ValueKey('noche_arrive_item_$i'))),
+              _ty(t, find.byKey(ValueKey('noche_arrive_item_$i'))),
               closeTo(0.0, 0.01),
             );
-            expect(
-              _opacityOfChild(tester, find.text('Item $i')),
-              closeTo(1.0, 0.01),
-            );
+            expect(_op(t, find.text('Item $i')), closeTo(1.0, 0.01));
           }
           expect(
-            _translateY(
-              tester,
-              find.byKey(const ValueKey('noche_arrive_next')),
-            ),
+            _ty(t, find.byKey(const ValueKey('noche_arrive_next'))),
             closeTo(0.0, 0.01),
           );
-          expect(
-            _opacityOfChild(tester, find.text('Added next')),
-            closeTo(1.0, 0.01),
-          );
+          expect(_op(t, find.text('Added next')), closeTo(1.0, 0.01));
         },
       );
     }
 
     testWidgets(
       'NocheFollow preserves mounted outgoing State without remounting and isolates incoming State',
-      (tester) async {
-        final initCounts = <String, int>{};
-        final createdWithLabel = <String, String>{};
+      (t) async {
+        final inits = <String, int>{};
+        final created = <String, String>{};
         var step = 'A';
-        late StateSetter setOuter;
-
-        await tester.pumpWidget(
-          _harness(
-            StatefulBuilder(
-              builder: (context, setState) {
-                setOuter = setState;
-                return NocheFollow(
-                  contentKey: step,
-                  child: _SwapStateProbe(
-                    id: step,
-                    height: 80,
-                    initCounts: initCounts,
-                    createdWithLabel: createdWithLabel,
-                  ),
-                );
-              },
+        final set = await _pumpState(
+          t,
+          (c, s) => NocheFollow(
+            contentKey: step,
+            child: _SwapStateProbe(
+              id: step,
+              height: 80,
+              initCounts: inits,
+              createdWithLabel: created,
             ),
           ),
         );
+        expect(inits['A'], 1);
 
-        expect(initCounts['A'], 1);
-
-        // Swap A -> B: A stays mounted without remounting while fading out,
-        // and B gets a fresh State with zero leakage from A.
-        setOuter(() => step = 'B');
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 30));
-
-        expect(initCounts['A'], 1);
-        expect(initCounts['B'], 1);
-        expect(createdWithLabel['B'], 'B');
+        set(() => step = 'B');
+        await t.pump();
+        await t.pump(const Duration(milliseconds: 30));
+        expect(inits['A'], 1);
+        expect(inits['B'], 1);
+        expect(created['B'], 'B');
         expect(find.text('Probe A (init=A)'), findsOneWidget);
         expect(find.text('Probe B (init=B)'), findsOneWidget);
 
-        await tester.pumpAndSettle();
-        expect(initCounts['A'], 1);
-        expect(initCounts['B'], 1);
+        await t.pumpAndSettle();
+        expect(inits['A'], 1);
+        expect(inits['B'], 1);
         expect(find.text('Probe A (init=A)'), findsNothing);
         expect(find.text('Probe B (init=B)'), findsOneWidget);
       },
@@ -2500,91 +1941,34 @@ void main() {
 
     testWidgets(
       'showNocheSheet close() removes non-current sheet route when another route is pushed on top',
-      (tester) async {
+      (t) async {
         late VoidCallback sheetClose;
-
-        await tester.pumpWidget(
-          MaterialApp(
-            theme: coquiTheme(),
-            home: Builder(
-              builder: (homeContext) => Scaffold(
+        await t.pumpWidget(
+          _app(
+            Builder(
+              builder: (homeC) => Scaffold(
                 body: Center(
                   child: NocheOutlineButton(
                     label: 'Open sheet',
-                    onPressed: () {
-                      showNocheSheet<void>(
-                        homeContext,
-                        title: 'Underneath sheet',
-                        builder: (sheetContext, close) {
-                          sheetClose = close;
-                          return NocheOutlineButton(
-                            label: 'Push top route',
-                            onPressed: () {
-                              Navigator.of(sheetContext).push<void>(
-                                MaterialPageRoute<void>(
-                                  builder: (topContext) => Scaffold(
-                                    body: Center(
-                                      child: NocheOutlineButton(
-                                        label: 'Pop top route',
-                                        onPressed: () =>
-                                            Navigator.of(topContext).pop(),
-                                      ),
-                                    ),
+                    onPressed: () => showNocheSheet<void>(
+                      homeC,
+                      title: 'Underneath sheet',
+                      builder: (sheetC, close) {
+                        sheetClose = close;
+                        return NocheOutlineButton(
+                          label: 'Push top route',
+                          onPressed: () => Navigator.of(sheetC).push<void>(
+                            MaterialPageRoute<void>(
+                              builder: (topC) => Scaffold(
+                                body: Center(
+                                  child: NocheOutlineButton(
+                                    label: 'Pop top route',
+                                    onPressed: () => Navigator.of(topC).pop(),
                                   ),
                                 ),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-
-        await tester.tap(find.text('Open sheet'));
-        await tester.pumpAndSettle();
-        expect(find.text('Underneath sheet'), findsOneWidget);
-
-        await tester.tap(find.text('Push top route'));
-        await tester.pumpAndSettle();
-        expect(find.text('Pop top route'), findsOneWidget);
-
-        // Call the sheet's close() while the top route is above it.
-        sheetClose();
-        await tester.pumpAndSettle();
-        // Top route remains visible!
-        expect(find.text('Pop top route'), findsOneWidget);
-
-        // Popping the top route returns straight to Home (sheet was removed!).
-        await tester.tap(find.text('Pop top route'));
-        await tester.pumpAndSettle();
-        expect(find.text('Underneath sheet'), findsNothing);
-        expect(find.text('Open sheet'), findsOneWidget);
-      },
-    );
-
-    testWidgets(
-      'showNocheSheet dismissible scrim exposes close semantics without breaking sheet Close button',
-      (tester) async {
-        final handle = tester.ensureSemantics();
-        try {
-          await tester.pumpWidget(
-            MaterialApp(
-              theme: coquiTheme(),
-              home: Builder(
-                builder: (context) => Scaffold(
-                  body: Center(
-                    child: NocheOutlineButton(
-                      label: 'Open',
-                      onPressed: () {
-                        showNocheSheet<void>(
-                          context,
-                          title: 'Accessible sheet',
-                          builder: (c, close) => const Text('Sheet body'),
+                              ),
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -2592,16 +1976,55 @@ void main() {
                 ),
               ),
             ),
-          );
+          ),
+        );
+        await t.tap(find.text('Open sheet'));
+        await t.pumpAndSettle();
+        await t.tap(find.text('Push top route'));
+        await t.pumpAndSettle();
 
-          await tester.tap(find.text('Open'));
-          await tester.pumpAndSettle();
+        sheetClose();
+        await t.pumpAndSettle();
+        expect(find.text('Pop top route'), findsOneWidget);
 
-          // Scrim exposes close semantics AND sheet Close button stays uniquely findable.
-          final scrimSemantics = tester.getSemantics(
-            find.byKey(const ValueKey('noche_sheet_scrim')),
+        await t.tap(find.text('Pop top route'));
+        await t.pumpAndSettle();
+        expect(find.text('Underneath sheet'), findsNothing);
+        expect(find.text('Open sheet'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'showNocheSheet dismissible scrim exposes close semantics without breaking sheet Close button',
+      (t) async {
+        final handle = t.ensureSemantics();
+        try {
+          await t.pumpWidget(
+            _app(
+              Builder(
+                builder: (c) => Scaffold(
+                  body: Center(
+                    child: NocheOutlineButton(
+                      label: 'Open',
+                      onPressed: () => showNocheSheet<void>(
+                        c,
+                        title: 'Accessible sheet',
+                        builder: (c, close) => const Text('Sheet body'),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           );
-          expect(scrimSemantics.label, NocheA11y.label(NocheA11y.closeSheet));
+          await t.tap(find.text('Open'));
+          await t.pumpAndSettle();
+          expect(
+            t
+                .getSemantics(find.byKey(const ValueKey('noche_sheet_scrim')))
+                .label,
+            NocheA11y.label(NocheA11y.closeSheet),
+          );
           expect(
             find.descendant(
               of: find.byType(NocheSheet),
@@ -2617,10 +2040,8 @@ void main() {
       },
     );
 
-    testWidgets('NocheTabBar hides pill when selectedId is unknown', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
+    testWidgets('NocheTabBar hides pill when selectedId is unknown', (t) async {
+      await t.pumpWidget(
         _harness(
           Align(
             alignment: AlignmentDirectional.bottomCenter,
@@ -2632,9 +2053,10 @@ void main() {
           ),
         ),
       );
-
-      final pillFinder = find.byKey(const ValueKey('noche_tab_pill'));
-      expect(_opacityOfChild(tester, pillFinder), closeTo(0.0, 0.01));
+      expect(
+        _op(t, find.byKey(const ValueKey('noche_tab_pill'))),
+        closeTo(0.0, 0.01),
+      );
     });
   });
 }
@@ -2646,19 +2068,16 @@ class _SwapStateProbe extends StatefulWidget {
     required this.initCounts,
     required this.createdWithLabel,
   });
-
   final String id;
   final double height;
   final Map<String, int> initCounts;
   final Map<String, String> createdWithLabel;
-
   @override
   State<_SwapStateProbe> createState() => _SwapStateProbeState();
 }
 
 class _SwapStateProbeState extends State<_SwapStateProbe> {
   late final String _initialId;
-
   @override
   void initState() {
     super.initState();
@@ -2668,10 +2087,8 @@ class _SwapStateProbeState extends State<_SwapStateProbe> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: widget.height,
-      child: Text('Probe ${widget.id} (init=$_initialId)'),
-    );
-  }
+  Widget build(BuildContext context) => SizedBox(
+    height: widget.height,
+    child: Text('Probe ${widget.id} (init=$_initialId)'),
+  );
 }
