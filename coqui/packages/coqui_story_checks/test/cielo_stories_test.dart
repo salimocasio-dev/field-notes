@@ -34,7 +34,8 @@ void main() {
           for (final pat in const ['rr', 'rw', 'wr', 'ww'])
             (d: d, pat: pat, seed: 1),
         // Cross-round seeded plays where Round A and Round B draw independently
-        for (var seed = 1; seed <= 8; seed++)
+        // (full 24-seed 336-path sweep runs in tool/cielo_paths_test.dart).
+        for (var seed = 1; seed <= 2; seed++)
           for (final pat in const ['rr', 'rw', 'wr', 'ww'])
             (d: const <String, String>{}, pat: pat, seed: seed),
       ];

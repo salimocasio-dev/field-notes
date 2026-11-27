@@ -345,7 +345,7 @@ class CieloRules {
     // 4. sky-clear (active sky landmarks: sun & cloud in azul; moon & star in noche)
     final skyBoxes = <(String, List<int>)>[
       if (cielo == 'azul') ...[
-        ('sun', const [187, 17, 18, 18]),
+        ('sun', (_m.places.skyBox('sun') as List).cast<int>()),
         ('cloud', (_m.places.box('nube') as List).cast<int>()),
       ],
       if (cielo == 'noche') ...[
@@ -400,7 +400,7 @@ class CieloRules {
 
     // 6. umbrella-canopy (story 81 when open and upright)
     if (story == 81 && sombOpen && tropiezo != 'sombrilla') {
-      const canopy = [119, 124, 64, 16];
+      final canopy = (_m.places.openUmbrellaBox as List).cast<int>();
       for (final targetTag in const ['coqui', 'cosa:jugos']) {
         final idx = items.indexWhere((it) => it.tag == targetTag);
         if (idx < 0) continue;
@@ -457,7 +457,7 @@ class CieloRules {
     final chars = <({String id, int sx, int sy, bool frog})>[];
     for (final k in const ['abuela', 'luis', 'carmen']) {
       final p = gente[k] as Map?;
-      if (p == null || p['vis'] == 0) continue;
+      if (p == null || !jsTruthy(p['vis'])) continue;
       final at = _m.places.atWorld(p['x'] as num, p['y'] as num, p['z'] as num);
       chars.add((
         id: k,

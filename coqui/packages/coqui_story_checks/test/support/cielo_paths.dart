@@ -42,6 +42,11 @@ List<Map<String, String>> cieloDrawsOf(Map<String, dynamic> story) {
       final name = v['draw'] as String;
       final ops = [for (final o in v['options'] as List) '$o'];
       final other = v['other'] as String?;
+      if (other != null && ops.length < 2) {
+        throw StateError(
+          'draw "$name" sets other "$other" with fewer than 2 options: $ops',
+        );
+      }
       if (cur.any((x) => x.containsKey(name))) {
         return cur;
       }
@@ -88,7 +93,7 @@ Future<Map<String, dynamic>> playCielo(
   bool watch = false,
   int seed = 1,
 }) async {
-  CieloRules? rules;
+  final allRules = <CieloRules>[];
   final t = await play(
     story: story,
     plan: 'alternate',
@@ -97,7 +102,10 @@ Future<Map<String, dynamic>> playCielo(
     seed: seed,
     sceneFor: (rng) {
       final s = make(rng) as SetScene;
-      if (watch) rules = CieloRules(s)..wrap();
+      if (watch) {
+        final r = CieloRules(s)..wrap();
+        allRules.add(r);
+      }
       return s;
     },
     course: course,
@@ -105,9 +113,9 @@ Future<Map<String, dynamic>> playCielo(
     startFrog: startFrogOf,
     frogShadow: frogShadowOf,
   );
-  if (rules != null) {
-    rules!.check('the end');
-    t['_rules'] = rules;
+  if (allRules.isNotEmpty) {
+    allRules.last.check('the end');
+    t['_rules'] = allRules;
   }
   return t;
 }
@@ -176,7 +184,15 @@ Future<List<Map<String, dynamic>>> playCieloSummaries(
             watch: true,
             seed: j.seed,
           );
-          final rules = t['_rules'] as CieloRules;
+          final allRules = t['_rules'] as List<CieloRules>;
+          var checked = 0;
+          final breaches = <Map<String, String>>[];
+          for (final r in allRules) {
+            checked += r.checked;
+            for (final b in r.breaches) {
+              breaches.add({'at': b.at, 'rule': b.rule, 'what': b.what});
+            }
+          }
           out.add({
             'story': id,
             'draws': j.d,
@@ -189,11 +205,8 @@ Future<List<Map<String, dynamic>>> playCieloSummaries(
             'end': t['end'],
             'lost': t['lost'],
             'errors': t['errors'],
-            'checks': rules.checked,
-            'breaches': [
-              for (final b in rules.breaches)
-                {'at': b.at, 'rule': b.rule, 'what': b.what},
-            ],
+            'checks': checked,
+            'breaches': breaches,
           });
         }
         return out;

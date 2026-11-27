@@ -104,6 +104,32 @@ class CieloPlaces {
     throw SheetError('cielo-sheet.json missing sky.$name.screen');
   }
 
+  /// Sky landmark screen box `[x, y, w, h]` from `sky.<name>.box` in cielo-sheet.json (e.g. `sun`).
+  List<int> skyBox(String name) {
+    final sky = sheet.raw['sky'];
+    if (sky is Map && sky[name] is Map) {
+      final b = (sky[name] as Map)['box'];
+      if (b is List && b.length == 4) {
+        return [for (final n in b) (n as num).toInt()];
+      }
+    }
+    throw SheetError('cielo-sheet.json missing sky.$name.box');
+  }
+
+  /// Open umbrella canopy screen box `[x, y, w, h]` from `spots.sombrilla.open.box` in cielo-sheet.json.
+  List<int> get openUmbrellaBox {
+    final spots = sheet.raw['spots'];
+    if (spots is Map && spots['sombrilla'] is Map) {
+      final open = (spots['sombrilla'] as Map)['open'];
+      if (open is Map &&
+          open['box'] is List &&
+          (open['box'] as List).length == 4) {
+        return [for (final n in open['box'] as List) (n as num).toInt()];
+      }
+    }
+    throw SheetError('cielo-sheet.json missing spots.sombrilla.open.box');
+  }
+
   /// front.bias: how much nearer than a character's feet a set pixel must be to hide it.
   double get bias => sheet.front.bias;
 
