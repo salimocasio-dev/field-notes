@@ -1,0 +1,87 @@
+{
+  "what": "engine reference: ropa",
+  "files": 16,
+  "totalBytes": 970822,
+  "entries": [
+    {
+      "path": "ocaso-1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "f4851f642628d3ef6c15a7a23f41cf8f643276b00943e950845dbd5dd3a22594"
+    },
+    {
+      "path": "ocaso-1/kinds.json",
+      "bytes": 305,
+      "sha256": "c07c4b13cdc2ed3dd08437bc2836ea6eb979b204de9183d638a45a4806934d92"
+    },
+    {
+      "path": "ocaso-1/pix.bin",
+      "bytes": 207360,
+      "sha256": "5a3f1d7d4a3ac8d1522d5ccbbb789b50fba5d79df25d2d380263882b3edcf373"
+    },
+    {
+      "path": "ocaso-1/pix.json",
+      "bytes": 370,
+      "sha256": "ac417b9fe7152d6c114f61988226e012bd55478d347c5bf26a373c070c4c16c6"
+    },
+    {
+      "path": "ocaso-1/pix.png",
+      "bytes": 16948,
+      "sha256": "76c4a923db83a9ffd5b4215e91a275e05bd065f4580ab1584896933ac246c3c8"
+    },
+    {
+      "path": "ocaso-1/state.json",
+      "bytes": 930,
+      "sha256": "cc1f8d464a0806ce460c73d986d222d00a1c55323cd317f48d8efb5aaebca06a"
+    },
+    {
+      "path": "ocaso-1/zb.bin",
+      "bytes": 207360,
+      "sha256": "44d23eeab5ba043083ef9eaa280a2e9af983bb96030c6f3963be567c28675f6d"
+    },
+    {
+      "path": "ocaso-1/zb.json",
+      "bytes": 322,
+      "sha256": "b27a0a7063f319e0b75d87d722f8612c8af0293a7c249cddfac4ed7ae5527b61"
+    },
+    {
+      "path": "tarde-0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "f4851f642628d3ef6c15a7a23f41cf8f643276b00943e950845dbd5dd3a22594"
+    },
+    {
+      "path": "tarde-0/kinds.json",
+      "bytes": 305,
+      "sha256": "c07c4b13cdc2ed3dd08437bc2836ea6eb979b204de9183d638a45a4806934d92"
+    },
+    {
+      "path": "tarde-0/pix.bin",
+      "bytes": 207360,
+      "sha256": "c0e57e40262f4932fc4b7387a8ba33538e66e88bf886f95ef3381b0b675940ee"
+    },
+    {
+      "path": "tarde-0/pix.json",
+      "bytes": 370,
+      "sha256": "e154b095cb21d8b6f92b8f59fcf2e217086e659799dbe714bca381f636845312"
+    },
+    {
+      "path": "tarde-0/pix.png",
+      "bytes": 16900,
+      "sha256": "05bbcdd7bb6c8fe5a38cc49900da4c3e928d7336771d7e42acfd90aa1969cfe1"
+    },
+    {
+      "path": "tarde-0/state.json",
+      "bytes": 930,
+      "sha256": "54471a69849d7071d77780d12ab56fee0d50ba0b21a711aa584d4ee37c43302c"
+    },
+    {
+      "path": "tarde-0/zb.bin",
+      "bytes": 207360,
+      "sha256": "22e0b4822b598fcc9a91567d3fbf429442eb25b2d7b7bc48c87fc936a1340fa2"
+    },
+    {
+      "path": "tarde-0/zb.json",
+      "bytes": 322,
+      "sha256": "a1497ca6a85192fef20ad26c1cba6beb4d5a53998d4f898cafc9ff7bd31492d6"
+    }
+  ]
+}
