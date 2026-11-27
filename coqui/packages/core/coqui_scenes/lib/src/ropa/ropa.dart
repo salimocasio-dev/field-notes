@@ -1412,7 +1412,7 @@ class Ropa extends Escena implements SetScene, SetOverSprites {
         await _hopToScreen(
           _round(at.sx) - 16,
           _round(at.sy) - 25,
-          at.d,
+          at.z,
           'coqui.orilla',
           steps: 5,
         );
@@ -1473,7 +1473,7 @@ class Ropa extends Escena implements SetScene, SetOverSprites {
         await _hopToScreen(
           _round(at.sx) - 16,
           _round(at.sy) - 25,
-          at.d,
+          at.z,
           'coqui.orilla',
           steps: 4,
         );

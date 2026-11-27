@@ -108,6 +108,8 @@ class RopaRules {
     'cosa:traje',
     'cosa:plato',
     'cosa:bolsa',
+    'fx:caja',
+    'fx:toalla_seca',
     'fx:chofer',
   };
 
@@ -401,7 +403,9 @@ class RopaRules {
     // 6. plate-clear: in story 78, `cosa:plato` has 0 px hidden by set or covered by another sprite
     if (story == 78) {
       final pi = items.indexWhere((it) => it.tag == 'cosa:plato');
-      if (pi >= 0) {
+      if (pi < 0) {
+        addBreach('plate-clear', 'cosa:plato missing in story 78');
+      } else {
         final c = covOf(
           pi,
           ignore: (t) => t == 'fx:pano_plato' || t == 'fx:nube',
@@ -418,7 +422,9 @@ class RopaRules {
     // 7. driver: when guagua = 1, `fx:chofer` has 0 px hidden by set, outside window, or under another sprite
     if (W['guagua'] == 1) {
       final di = items.indexWhere((it) => it.tag == 'fx:chofer');
-      if (di >= 0) {
+      if (di < 0) {
+        addBreach('driver', 'fx:chofer missing when guagua == 1');
+      } else {
         final c = covOf(di);
         if (c.hid > 0 || c.cov > 0 || c.out > 0) {
           addBreach(
@@ -449,9 +455,12 @@ class RopaRules {
       ));
     }
     for (final en in ninos.entries) {
-      final cid = en.key as String;
-      final spot = en.value as String;
-      if (!_m.places.has(spot)) continue;
+      final cid = '${en.key}';
+      final spot = en.value;
+      if (spot is! String || !_m.places.has(spot)) {
+        addBreach('scene-state', 'ninos[$cid] spot is $spot (invalid)');
+        continue;
+      }
       final at = _m.places.at(spot);
       chars.add((
         id: cid,

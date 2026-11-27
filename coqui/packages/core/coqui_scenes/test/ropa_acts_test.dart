@@ -9,6 +9,7 @@ library;
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
@@ -394,7 +395,107 @@ void main() {
     }
   });
 
+  test('story 79 far-out trae79 and lejos79 keep cq.z at 0.0 and 0 frog pixels hidden by tarde-0 water depth', () async {
+    final s79 = _story('mi-sombrero');
+    final scene = createRopa() as Ropa;
+    final bakes = SetBakes(scene);
+    final baked = bakes.bakeKey('tarde-0');
+    baked.restoreInto(bakes.engine);
+    bakes.engine.drawLeaves(0);
+    final zb = bakes.engine.zb;
+    final waterZb = baked.zb;
+    final kinds = baked.kinds;
+    final S = scene.places.e.S;
+    final bias = scene.places.bias;
+    final t30 = math.tan(math.pi / 6);
+
+    var ticks = 0;
+    var waveTicks = 0;
+    late final StillHost host;
+    void verifyFrogDepth(String phase, {bool checkFullZb = false}) {
+      ticks++;
+      final q = host.W['cq'] as Map<String, dynamic>;
+      final z = (q['z'] as num).toDouble();
+      expect(z, 0.0, reason: '$phase cq.z=$z');
+      final coqui = scene
+          .placed(host.W, host.F)
+          .firstWhere((it) => it.tag == 'coqui');
+      var hiddenWater = 0;
+      var hiddenAny = 0;
+      for (var y = 0; y < coqui.s.h; y++) {
+        final sy = coqui.top + y;
+        if (sy < 0 || sy >= 216) continue;
+        final plane = coqui.d + (coqui.sy - (sy + 0.5)) * t30 / S;
+        for (var x = 0; x < coqui.s.w; x++) {
+          if (coqui.s.px[y * coqui.s.w + x] >>> 24 == 0) continue;
+          final sx = coqui.left + x;
+          if (sx < 0 || sx >= 240) continue;
+          final i = sy * 240 + sx;
+          if (zb[i] > plane + bias) hiddenAny++;
+          if (sy < 55 && kinds[i] == 2 && waterZb[i] > plane + bias) {
+            hiddenWater++;
+          }
+        }
+      }
+      expect(
+        hiddenWater,
+        0,
+        reason: '$phase water-occluded frog pixels: $hiddenWater',
+      );
+      if (host.W['ola'] != null) {
+        waveTicks++;
+        // Wave stage in open water: 0 pixels hidden by the baked ground/water depth buffer.
+        var waveWaterHidden = 0;
+        for (var y = 0; y < coqui.s.h; y++) {
+          final sy = coqui.top + y;
+          if (sy < 0 || sy >= 216) continue;
+          final plane = coqui.d + (coqui.sy - (sy + 0.5)) * t30 / S;
+          for (var x = 0; x < coqui.s.w; x++) {
+            if (coqui.s.px[y * coqui.s.w + x] >>> 24 == 0) continue;
+            final sx = coqui.left + x;
+            if (sx < 0 || sx >= 240) continue;
+            if (waterZb[sy * 240 + sx] > plane + bias) waveWaterHidden++;
+          }
+        }
+        expect(
+          waveWaterHidden,
+          0,
+          reason: '$phase wave baked-water hidden pixels: $waveWaterHidden',
+        );
+      }
+      if (checkFullZb) {
+        expect(hiddenAny, 0, reason: '$phase occluded frog pixels: $hiddenAny');
+      }
+    }
+
+    host = _WaitWatchHost(scene, () => verifyFrogDepth('mid-wait'));
+    host.S = s79;
+    host.W = {...host.W, ...scene.fresh(s79)};
+    scene.setFramed(bakes.engine, baked, host.W);
+
+    // Verify far-out `trae79`.
+    host.W['agua'] = <String, String>{};
+    host.W['farOut'] = <String, dynamic>{'que': 'sombrero'};
+    await scene.acts['trae79']!({'que': 'sombrero'});
+    verifyFrogDepth('after-trae79', checkFullZb: true);
+
+    // Verify `lejos79` (mid-hop and wave ticks in shallow water).
+    host.W['farOut'] = <String, dynamic>{'que': 'gafas'};
+    await scene.acts['lejos79']!({'que': 'gafas'});
+    verifyFrogDepth('after-lejos79', checkFullZb: true);
+    expect(waveTicks, 3);
+    expect(ticks, greaterThan(15));
+  });
+
   tearDownAll(() {
     expect(answered, containsAll(needs), reason: 'answered: $answered');
   });
+}
+
+class _WaitWatchHost extends StillHost {
+  _WaitWatchHost(super.scene, this.onWait);
+  final void Function() onWait;
+
+  @override
+  Future<void> wait(num ms) async => onWait();
 }

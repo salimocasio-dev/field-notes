@@ -60,26 +60,47 @@ List<Map<String, String>> ropaDrawsOf(
 }) {
   final id = story['id'] as String?;
   if (id == 'mi-sombrero') {
-    Map<String, dynamic>? findReparte(Object? v) {
+    final repartes = <List<String>>[];
+    final draws = <String>{};
+    Map<String, dynamic>? repNode;
+    void scanSteps(Object? v) {
       if (v is List) {
         for (final item in v) {
-          final found = findReparte(item);
-          if (found != null) return found;
+          scanSteps(item);
         }
       } else if (v is Map<String, dynamic>) {
-        if (v['reparte'] is List) return v;
-        return findReparte(v['then']) ?? findReparte(v['else']);
+        if (v['reparte'] is List) {
+          repNode ??= v;
+          repartes.add([for (final n in v['reparte'] as List) '$n']);
+        }
+        if (v['draw'] is String) {
+          draws.add(v['draw'] as String);
+        }
+        scanSteps(v['then']);
+        scanSteps(v['else']);
       }
-      return null;
     }
 
-    final rep = findReparte(story['beats']);
-    if (rep == null) {
-      throw StateError('mi-sombrero fixture has no reparte step');
+    scanSteps([story['beats'], story['final']]);
+    final rep = repNode;
+    if (rep == null || repartes.length != 1) {
+      throw StateError(
+        'mi-sombrero fixture expected exactly 1 reparte step, got ${repartes.length}',
+      );
+    }
+    if (draws.length != 2 || !draws.contains('qa') || !draws.contains('qb')) {
+      throw StateError(
+        'mi-sombrero fixture draws drifted: expected {qa, qb}, got $draws',
+      );
     }
     final repNames = [for (final n in rep['reparte'] as List) '$n'];
     final items = [for (final o in rep['options'] as List) '$o'];
-    if (repNames.length != 4 || items.length != 4) {
+    if (repNames.length != 4 ||
+        items.length != 4 ||
+        !List.generate(
+          4,
+          (i) => repNames[i] == const ['oa', 'ob', 'oc', 'od'][i],
+        ).every((ok) => ok)) {
       throw StateError(
         'mi-sombrero reparte mismatch: names=$repNames options=$items',
       );
@@ -244,6 +265,11 @@ Future<List<int>> ropaDecisionLetters(
     for (var k = 0; k < ch.length; k++) {
       if (ch[k] == 'w' && at.length == k) at.add(i);
     }
+  }
+  if (at.length < 2) {
+    throw StateError(
+      '${story['id']}: found ${at.length} decision letters ($at), expected 2',
+    );
   }
   return at;
 }
