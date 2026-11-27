@@ -1,0 +1,783 @@
+{
+ "id": "la-ropa-seca",
+ "title": "La ropa seca",
+ "place": "La playa",
+ "scene": "ropa",
+ "next": "mi-sombrero",
+ "goal": "Hand abuela the piece of clothing she asks for (shirt, trousers, dress, shoes) so that the plate of three sandwiches stays clean: every wrong piece falls on the sand, and the sand lands on a sandwich that goes to the gulls.",
+ "stake": {
+  "thing": "panes",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "camisa",
+  "pantalón",
+  "vestido",
+  "zapatos"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "seco",
+  "mojado",
+  "rojo",
+  "azul",
+  "amarillo",
+  "blanco",
+  "dame",
+  "toma",
+  "gracias",
+  "come",
+  "quiero",
+  "quieres",
+  "¿dónde está?",
+  "¿cuál?",
+  "arena",
+  "sí",
+  "no",
+  "después",
+  "ropa",
+  "sándwich"
+ ],
+ "also_heard": [
+  "me ayudas",
+  "primero",
+  "comemos"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "perro": "c_n_perro"
+ },
+ "palabras": {
+  "camisa": "camisa",
+  "pantalon": "pantalón",
+  "vestido": "vestido",
+  "zapatos": "zapatos"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c78_agua": {
+   "who": "narr",
+   "text": "Luis y Carmen están en el agua. Abuela tiene la ropa seca."
+  },
+  "c78_ab_camisa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mira, Coquí: una camisa. La camisa roja de Luis."
+  },
+  "c78_donde_camisa": {
+   "who": "narr",
+   "text": "¿Dónde está la camisa?"
+  },
+  "c78_ab_pantalon": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y un pantalón. El pantalón azul."
+  },
+  "c78_ab_vestido": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un vestido. El vestido amarillo de Carmen."
+  },
+  "c78_cual_pantalon": {
+   "who": "narr",
+   "text": "¿Cuál es el pantalón?"
+  },
+  "c78_y_vestido": {
+   "who": "narr",
+   "text": "¿Y el vestido?"
+  },
+  "c78_ab_zapatos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y los zapatos. Zapatos blancos y zapatos negros."
+  },
+  "c78_donde_zapatos": {
+   "who": "narr",
+   "text": "¿Dónde están los zapatos?"
+  },
+  "c78_ab_ayudas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Camisa, pantalón, vestido y zapatos: ¡la ropa está seca! Coquí, ¿me ayudas?"
+  },
+  "cq_si": {
+   "who": "tu",
+   "text": "¡Sí!",
+   "tu_turno": [
+    {
+     "palabra": "sí",
+     "formas": [
+      "sí",
+      "si"
+     ]
+    }
+   ]
+  },
+  "c78_ab_primero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Primero la ropa. Y después comemos."
+  },
+  "c78_ab_quieres": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quieres un sándwich, Coquí?"
+  },
+  "c38_cq_si_quiero": {
+   "who": "tu",
+   "text": "¡Sí, quiero!",
+   "tu_turno": [
+    {
+     "palabra": "quiero",
+     "formas": [
+      "quiero",
+      "sí quiero"
+     ]
+    }
+   ]
+  },
+  "c78_fin": {
+   "who": "narr",
+   "text": "Luis y Carmen están secos. Y Coquí come."
+  },
+  "c78_a_camisa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, dame la camisa."
+  },
+  "c78_b_camisa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ahora, dame la camisa."
+  },
+  "c78_no_camisa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Dame la camisa."
+  },
+  "c78_a_pantalon": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, dame el pantalón."
+  },
+  "c78_b_pantalon": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ahora, dame el pantalón."
+  },
+  "c78_no_pantalon": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Dame el pantalón."
+  },
+  "c78_a_vestido": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, dame el vestido."
+  },
+  "c78_b_vestido": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ahora, dame el vestido."
+  },
+  "c78_no_vestido": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Dame el vestido."
+  },
+  "c78_a_zapatos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, dame los zapatos."
+  },
+  "c78_b_zapatos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ahora, dame los zapatos."
+  },
+  "c78_no_zapatos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Dame los zapatos."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "panes",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c78_agua",
+  {
+   "act": "tiende78",
+   "que": "camisa"
+  },
+  "c78_ab_camisa",
+  {
+   "ask": "camisa",
+   "lead": [],
+   "line": "c78_donde_camisa",
+   "then": [],
+   "after": []
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "tiende78",
+   "que": "pantalon"
+  },
+  "c78_ab_pantalon",
+  {
+   "act": "tiende78",
+   "que": "vestido"
+  },
+  "c78_ab_vestido",
+  {
+   "ask": "pantalon",
+   "lead": [],
+   "line": "c78_cual_pantalon",
+   "then": [],
+   "after": []
+  },
+  {
+   "ask": "vestido",
+   "lead": [],
+   "line": "c78_y_vestido",
+   "then": [],
+   "after": []
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "tiende78",
+   "que": "zapatos"
+  },
+  "c78_ab_zapatos",
+  {
+   "ask": "zapatos",
+   "lead": [],
+   "line": "c78_donde_zapatos",
+   "then": [],
+   "after": []
+  },
+  "c78_ab_ayudas",
+  "cq_si",
+  {
+   "dots": 4
+  },
+  {
+   "act": "salen78"
+  },
+  "c78_ab_primero",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "camisa",
+    "pantalon",
+    "vestido",
+    "zapatos"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "camisa",
+    "pantalon",
+    "vestido",
+    "zapatos"
+   ],
+   "pick": "$qa",
+   "tests": "$qa",
+   "lock": true,
+   "lead": [],
+   "line": "c78_a_$qa",
+   "right": [
+    {
+     "act": "baja78",
+     "que": "$qa",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "baja78",
+     "que": "$x",
+     "ok": 0,
+     "suelto": 1
+    },
+    "c78_no_$qa",
+    {
+     "act": "ya"
+    },
+    {
+     "act": "sacude78"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "panes",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "panes",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "if": "qa=camisa",
+   "then": [
+    {
+     "draw": "qb",
+     "options": [
+      "pantalon",
+      "vestido",
+      "zapatos"
+     ]
+    },
+    {
+     "decide": "do",
+     "options": [
+      "pantalon",
+      "vestido",
+      "zapatos"
+     ],
+     "pick": "$qb",
+     "tests": "$qb",
+     "lock": true,
+     "lead": [],
+     "line": "c78_b_$qb",
+     "right": [
+      {
+       "act": "baja78",
+       "que": "$qb",
+       "ok": 1
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "act": "baja78",
+       "que": "$x",
+       "ok": 0,
+       "suelto": 1
+      },
+      "c78_no_$qb",
+      {
+       "act": "ya"
+      },
+      {
+       "act": "sacude78"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "panes",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "panes",
+         "n": 1
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ]
+    }
+   ],
+   "else": [
+    {
+     "if": "qa=pantalon",
+     "then": [
+      {
+       "draw": "qb",
+       "options": [
+        "camisa",
+        "vestido",
+        "zapatos"
+       ]
+      },
+      {
+       "decide": "do",
+       "options": [
+        "camisa",
+        "vestido",
+        "zapatos"
+       ],
+       "pick": "$qb",
+       "tests": "$qb",
+       "lock": true,
+       "lead": [],
+       "line": "c78_b_$qb",
+       "right": [
+        {
+         "act": "baja78",
+         "que": "$qb",
+         "ok": 1
+        },
+        {
+         "if": "ok",
+         "then": [
+          {
+           "act": "marca",
+           "que": "ok"
+          }
+         ]
+        }
+       ],
+       "wrong": [
+        {
+         "act": "baja78",
+         "que": "$x",
+         "ok": 0,
+         "suelto": 1
+        },
+        "c78_no_$qb",
+        {
+         "act": "ya"
+        },
+        {
+         "act": "sacude78"
+        },
+        {
+         "if": "lost=0",
+         "then": [
+          {
+           "act": "panes",
+           "n": 2
+          }
+         ],
+         "else": [
+          {
+           "act": "panes",
+           "n": 1
+          }
+         ]
+        },
+        {
+         "act": "marca",
+         "que": "x"
+        },
+        {
+         "cost": 1
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "qa=vestido",
+       "then": [
+        {
+         "draw": "qb",
+         "options": [
+          "camisa",
+          "pantalon",
+          "zapatos"
+         ]
+        },
+        {
+         "decide": "do",
+         "options": [
+          "camisa",
+          "pantalon",
+          "zapatos"
+         ],
+         "pick": "$qb",
+         "tests": "$qb",
+         "lock": true,
+         "lead": [],
+         "line": "c78_b_$qb",
+         "right": [
+          {
+           "act": "baja78",
+           "que": "$qb",
+           "ok": 1
+          },
+          {
+           "if": "ok",
+           "then": [
+            {
+             "act": "marca",
+             "que": "ok"
+            }
+           ]
+          }
+         ],
+         "wrong": [
+          {
+           "act": "baja78",
+           "que": "$x",
+           "ok": 0,
+           "suelto": 1
+          },
+          "c78_no_$qb",
+          {
+           "act": "ya"
+          },
+          {
+           "act": "sacude78"
+          },
+          {
+           "if": "lost=0",
+           "then": [
+            {
+             "act": "panes",
+             "n": 2
+            }
+           ],
+           "else": [
+            {
+             "act": "panes",
+             "n": 1
+            }
+           ]
+          },
+          {
+           "act": "marca",
+           "que": "x"
+          },
+          {
+           "cost": 1
+          }
+         ]
+        }
+       ],
+       "else": [
+        {
+         "draw": "qb",
+         "options": [
+          "camisa",
+          "pantalon",
+          "vestido"
+         ]
+        },
+        {
+         "decide": "do",
+         "options": [
+          "camisa",
+          "pantalon",
+          "vestido"
+         ],
+         "pick": "$qb",
+         "tests": "$qb",
+         "lock": true,
+         "lead": [],
+         "line": "c78_b_$qb",
+         "right": [
+          {
+           "act": "baja78",
+           "que": "$qb",
+           "ok": 1
+          },
+          {
+           "if": "ok",
+           "then": [
+            {
+             "act": "marca",
+             "que": "ok"
+            }
+           ]
+          }
+         ],
+         "wrong": [
+          {
+           "act": "baja78",
+           "que": "$x",
+           "ok": 0,
+           "suelto": 1
+          },
+          "c78_no_$qb",
+          {
+           "act": "ya"
+          },
+          {
+           "act": "sacude78"
+          },
+          {
+           "if": "lost=0",
+           "then": [
+            {
+             "act": "panes",
+             "n": 2
+            }
+           ],
+           "else": [
+            {
+             "act": "panes",
+             "n": 1
+            }
+           ]
+          },
+          {
+           "act": "marca",
+           "que": "x"
+          },
+          {
+           "cost": 1
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final78",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final78",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final78",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c78_ab_quieres",
+  "c38_cq_si_quiero",
+  "c78_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c78_agua",
+  "c78_ab_camisa",
+  "c78_donde_camisa",
+  "c78_ab_pantalon",
+  "c78_ab_vestido",
+  "c78_cual_pantalon",
+  "c78_y_vestido",
+  "c78_ab_zapatos",
+  "c78_donde_zapatos",
+  "c78_ab_ayudas",
+  "cq_si",
+  "c78_ab_primero",
+  "c78_a_pantalon",
+  "c78_b_zapatos",
+  "c78_ab_quieres",
+  "c38_cq_si_quiero",
+  "c78_fin"
+ ]
+}

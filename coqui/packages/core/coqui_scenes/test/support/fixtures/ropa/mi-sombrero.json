@@ -1,0 +1,1425 @@
+{
+ "id": "mi-sombrero",
+ "title": "¡Mi sombrero!",
+ "place": "La playa",
+ "scene": "ropa",
+ "next": "se-pone-y-se-quita",
+ "goal": "Bring abuela the thing she asks for out of the water into her bag, so that nothing floats away to sea: every wrong thing the frog brings lets the next wave carry the one she asked for far out.",
+ "stake": {
+  "thing": "bolsa",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "chancletas",
+  "sombrero",
+  "gafas",
+  "traje de baño",
+  "toalla"
+ ],
+ "formas_foco": {},
+ "back_again": [
+  "mar",
+  "ola",
+  "playa",
+  "mojado",
+  "seco",
+  "mi",
+  "busca",
+  "¿dónde está?",
+  "mira",
+  "viene",
+  "se va",
+  "grande",
+  "cuidado",
+  "gracias",
+  "toma",
+  "sí",
+  "no",
+  "abuela",
+  "allá",
+  "está",
+  "ahí"
+ ],
+ "also_heard": [
+  "avanza"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "perro": "c_n_perro"
+ },
+ "palabras": {
+  "sombrero": "sombrero",
+  "chancletas": "chancletas",
+  "gafas": "gafas",
+  "traje": "traje de baño"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c79_ola": {
+   "who": "narr",
+   "text": "¡Una ola grande!"
+  },
+  "c79_ab_sombrero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay! ¡Mi sombrero! Coquí, busca mi sombrero."
+  },
+  "c79_donde_sombrero": {
+   "who": "narr",
+   "text": "¿Dónde está el sombrero?"
+  },
+  "c79_ab_mojado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias. ¡El sombrero está mojado!"
+  },
+  "c79_l_toalla": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mira: una toalla. La toalla está allá."
+  },
+  "c79_donde_toalla": {
+   "who": "narr",
+   "text": "¿Dónde está la toalla?"
+  },
+  "c79_ab_chancletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mira, ahí están las chancletas."
+  },
+  "c79_donde_chancletas": {
+   "who": "narr",
+   "text": "¿Dónde están las chancletas?"
+  },
+  "c79_ab_gafas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahí están las gafas."
+  },
+  "c79_y_gafas": {
+   "who": "narr",
+   "text": "¿Y las gafas?"
+  },
+  "c79_ca_traje": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Y mi traje de baño!"
+  },
+  "c79_ab_traje": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí, ahí está el traje de baño. Las chancletas, las gafas, el traje de baño y mi sombrero."
+  },
+  "c79_l_avanza": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Avanza, Coquí!"
+  },
+  "c60_cq_voy": {
+   "who": "tu",
+   "text": "¡Voy!",
+   "tu_turno": [
+    {
+     "palabra": "voy",
+     "formas": [
+      "voy"
+     ]
+    }
+   ]
+  },
+  "c79_ab_cuidado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Cuidado! Viene una ola. Ahora tú, Coquí."
+  },
+  "c79_ab_toma": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma, Coquí. Una toalla seca."
+  },
+  "c50_cq_gracias": {
+   "who": "tu",
+   "text": "¡Gracias!",
+   "tu_turno": [
+    {
+     "palabra": "gracias",
+     "formas": [
+      "gracias"
+     ]
+    }
+   ]
+  },
+  "c79_fin": {
+   "who": "narr",
+   "text": "El sombrero está mojado. Y Coquí está seco."
+  },
+  "c79_busca_sombrero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí, busca el sombrero!"
+  },
+  "c79_no_sombrero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! ¡El sombrero!"
+  },
+  "c79_busca_chancletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí, busca las chancletas!"
+  },
+  "c79_no_chancletas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! ¡Las chancletas!"
+  },
+  "c79_busca_gafas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí, busca las gafas!"
+  },
+  "c79_no_gafas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! ¡Las gafas!"
+  },
+  "c79_busca_traje": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí, busca el traje de baño!"
+  },
+  "c79_no_traje": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No! ¡El traje de baño!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "tarde"
+   }
+  },
+  {
+   "act": "flotan",
+   "orden": "sombrero,gafas,chancletas,traje,toalla"
+  },
+  {
+   "act": "bolsa",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c79_ola",
+  "c79_ab_sombrero",
+  {
+   "ask": "sombrero",
+   "lead": [],
+   "line": "c79_donde_sombrero",
+   "then": [],
+   "after": [
+    {
+     "act": "trae79",
+     "que": "sombrero"
+    }
+   ]
+  },
+  "c79_ab_mojado",
+  {
+   "dots": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "senala",
+   "a": "toalla"
+  },
+  "c79_l_toalla",
+  {
+   "ask": "toalla",
+   "lead": [],
+   "line": "c79_donde_toalla",
+   "then": [],
+   "after": [
+    {
+     "act": "trae79",
+     "que": "toalla"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "chancletas"
+  },
+  "c79_ab_chancletas",
+  {
+   "ask": "chancletas",
+   "lead": [],
+   "line": "c79_donde_chancletas",
+   "then": [],
+   "after": []
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "gafas"
+  },
+  "c79_ab_gafas",
+  {
+   "ask": "gafas",
+   "lead": [],
+   "line": "c79_y_gafas",
+   "then": [],
+   "after": []
+  },
+  "c79_ca_traje",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "senala",
+   "a": "traje"
+  },
+  "c79_ab_traje",
+  {
+   "dots": 4
+  },
+  "c79_l_avanza",
+  "c60_cq_voy",
+  {
+   "dots": 5
+  },
+  {
+   "reparte": [
+    "oa",
+    "ob",
+    "oc",
+    "od"
+   ],
+   "options": [
+    "sombrero",
+    "chancletas",
+    "gafas",
+    "traje"
+   ]
+  },
+  {
+   "act": "flotan",
+   "orden": "$oa,$ob,$oc,$od"
+  },
+  {
+   "act": "bolsa",
+   "n": 3
+  },
+  "c79_ab_cuidado",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "sombrero",
+    "chancletas",
+    "gafas",
+    "traje"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "sombrero",
+    "chancletas",
+    "gafas",
+    "traje"
+   ],
+   "pick": "$qa",
+   "tests": "$qa",
+   "lock": true,
+   "lead": [],
+   "line": "c79_busca_$qa",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "trae79",
+       "que": "$qa"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "calc": "fs",
+       "cond": "qa=sombrero",
+       "then": "0",
+       "else": "1"
+      },
+      {
+       "calc": "fc",
+       "cond": "qa=chancletas",
+       "then": "0",
+       "else": "1"
+      },
+      {
+       "calc": "fg",
+       "cond": "qa=gafas",
+       "then": "0",
+       "else": "1"
+      },
+      {
+       "calc": "ft",
+       "cond": "qa=traje",
+       "then": "0",
+       "else": "1"
+      }
+     ],
+     "else": [
+      {
+       "act": "lejos79",
+       "que": "$qa"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "trae79",
+     "que": "$x"
+    },
+    "c79_no_$qa",
+    {
+     "act": "ola79",
+     "lleva": "$qa"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "bolsa",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "bolsa",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "calc": "fs",
+     "cond": "qa=sombrero",
+     "then": "0",
+     "else": "1"
+    },
+    {
+     "calc": "fs",
+     "cond": "x=sombrero",
+     "then": "0",
+     "else": "$fs"
+    },
+    {
+     "calc": "fc",
+     "cond": "qa=chancletas",
+     "then": "0",
+     "else": "1"
+    },
+    {
+     "calc": "fc",
+     "cond": "x=chancletas",
+     "then": "0",
+     "else": "$fc"
+    },
+    {
+     "calc": "fg",
+     "cond": "qa=gafas",
+     "then": "0",
+     "else": "1"
+    },
+    {
+     "calc": "fg",
+     "cond": "x=gafas",
+     "then": "0",
+     "else": "$fg"
+    },
+    {
+     "calc": "ft",
+     "cond": "qa=traje",
+     "then": "0",
+     "else": "1"
+    },
+    {
+     "calc": "ft",
+     "cond": "x=traje",
+     "then": "0",
+     "else": "$ft"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "if": "fs=1",
+   "then": [
+    {
+     "if": "fc=1",
+     "then": [
+      {
+       "if": "fg=1",
+       "then": [
+        {
+         "if": "ft=1",
+         "then": [],
+         "else": [
+          {
+           "draw": "qb",
+           "options": [
+            "sombrero",
+            "chancletas",
+            "gafas"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "sombrero",
+            "chancletas",
+            "gafas"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "else": [
+        {
+         "if": "ft=1",
+         "then": [
+          {
+           "draw": "qb",
+           "options": [
+            "sombrero",
+            "chancletas",
+            "traje"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "sombrero",
+            "chancletas",
+            "traje"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ],
+         "else": [
+          {
+           "draw": "qb",
+           "options": [
+            "sombrero",
+            "chancletas"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "sombrero",
+            "chancletas"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "fg=1",
+       "then": [
+        {
+         "if": "ft=1",
+         "then": [
+          {
+           "draw": "qb",
+           "options": [
+            "sombrero",
+            "gafas",
+            "traje"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "sombrero",
+            "gafas",
+            "traje"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ],
+         "else": [
+          {
+           "draw": "qb",
+           "options": [
+            "sombrero",
+            "gafas"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "sombrero",
+            "gafas"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "else": [
+        {
+         "if": "ft=1",
+         "then": [
+          {
+           "draw": "qb",
+           "options": [
+            "sombrero",
+            "traje"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "sombrero",
+            "traje"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ],
+         "else": []
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "else": [
+    {
+     "if": "fc=1",
+     "then": [
+      {
+       "if": "fg=1",
+       "then": [
+        {
+         "if": "ft=1",
+         "then": [
+          {
+           "draw": "qb",
+           "options": [
+            "chancletas",
+            "gafas",
+            "traje"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "chancletas",
+            "gafas",
+            "traje"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ],
+         "else": [
+          {
+           "draw": "qb",
+           "options": [
+            "chancletas",
+            "gafas"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "chancletas",
+            "gafas"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "else": [
+        {
+         "if": "ft=1",
+         "then": [
+          {
+           "draw": "qb",
+           "options": [
+            "chancletas",
+            "traje"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "chancletas",
+            "traje"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ],
+         "else": []
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "fg=1",
+       "then": [
+        {
+         "if": "ft=1",
+         "then": [
+          {
+           "draw": "qb",
+           "options": [
+            "gafas",
+            "traje"
+           ]
+          },
+          {
+           "decide": "do",
+           "options": [
+            "gafas",
+            "traje"
+           ],
+           "pick": "$qb",
+           "tests": "$qb",
+           "lock": true,
+           "lead": [],
+           "line": "c79_busca_$qb",
+           "right": [
+            {
+             "if": "ok",
+             "then": [
+              {
+               "act": "trae79",
+               "que": "$qb"
+              },
+              {
+               "act": "marca",
+               "que": "ok"
+              }
+             ],
+             "else": [
+              {
+               "act": "lejos79",
+               "que": "$qb"
+              }
+             ]
+            }
+           ],
+           "wrong": [
+            {
+             "act": "trae79",
+             "que": "$x"
+            },
+            "c79_no_$qb",
+            {
+             "act": "ola79",
+             "lleva": "$qb"
+            },
+            {
+             "if": "lost=0",
+             "then": [
+              {
+               "act": "bolsa",
+               "n": 2
+              }
+             ],
+             "else": [
+              {
+               "act": "bolsa",
+               "n": 1
+              }
+             ]
+            },
+            {
+             "act": "marca",
+             "que": "x"
+            },
+            {
+             "cost": 1
+            }
+           ]
+          }
+         ],
+         "else": []
+        }
+       ],
+       "else": [
+        {
+         "if": "ft=1",
+         "then": [],
+         "else": []
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "bolsa"
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final79",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final79",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final79",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c79_ab_toma",
+  "c50_cq_gracias",
+  "c79_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c79_ola",
+  "c79_ab_sombrero",
+  "c79_donde_sombrero",
+  "c79_ab_mojado",
+  "c79_l_toalla",
+  "c79_donde_toalla",
+  "c79_ab_chancletas",
+  "c79_donde_chancletas",
+  "c79_ab_gafas",
+  "c79_y_gafas",
+  "c79_ca_traje",
+  "c79_ab_traje",
+  "c79_l_avanza",
+  "c60_cq_voy",
+  "c79_ab_cuidado",
+  "c79_busca_chancletas",
+  "c79_busca_gafas",
+  "c79_ab_toma",
+  "c50_cq_gracias",
+  "c79_fin"
+ ]
+}
