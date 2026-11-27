@@ -612,6 +612,67 @@ void main() {
         },
       );
     }
+
+    testWidgets(
+      'blocks pointer events and semantics while outgoing course is at opacity 0.0 awaiting slow async fetch, then restores interactivity',
+      (tester) async {
+        final arabicCompleter = Completer<CourseCatalog>();
+        final app = TestApp(tester)
+          ..loadCourse = (code) async =>
+              code == 'ar' ? arabicCompleter.future : FakeCourseCatalog();
+
+        await app.open(
+          reduceMotion: false,
+          initialStorage: {
+            PalabrasStore.sharedStorageKey: _sharedJson('es'),
+            PalabrasStore.storageKeyFor('es'): _storeJson(),
+            PalabrasStore.storageKeyFor('ar'): _storeJson(),
+          },
+        );
+        await app.advance(600);
+        expect(app.services.course.language.code, 'es');
+        expect(app.selectedTab, 'map');
+        final ticksBeforeSwitch = app.haptics.ticks;
+
+        // Trigger slow course switch es -> ar.
+        app.services.progress.setSetting('idioma', 'ar');
+        await tester.pump();
+        await tester.pump();
+
+        // Advance past quick (140ms) while Arabic fetch is still pending.
+        await tester.pump(const Duration(milliseconds: 141));
+        await tester.pump();
+        expect(
+          tester.widget<Opacity>(find.byKey(shellCourseTurnKey)).opacity,
+          0.0,
+        );
+        expect(app.services.course.language.code, 'es');
+
+        // Tapping a tab on the invisible old NocheTabBar must be blocked.
+        final spanishMeTab = find.descendant(
+          of: find.byType(NocheTabBar),
+          matching: find.text(Language.spanish.tabNames['me']!),
+        );
+        await tester.tap(spanishMeTab, warnIfMissed: false);
+        await tester.pump();
+        expect(app.haptics.ticks, ticksBeforeSwitch);
+        expect(app.selectedTab, 'map');
+
+        // Complete the Arabic course load, settle fade-in, and verify interactivity returns.
+        arabicCompleter.complete(FakeCourseCatalog.arabic());
+        await app.settle(rounds: 15);
+        await app.advance(300);
+        expect(app.services.course.language.code, 'ar');
+        expect(
+          tester.widget<Opacity>(find.byKey(shellCourseTurnKey)).opacity,
+          1.0,
+        );
+
+        await app.openTab('me');
+        expect(app.selectedTab, 'me');
+        expect(app.haptics.ticks, greaterThan(ticksBeforeSwitch));
+      },
+    );
   });
 
   group('CoquiApp boot loading, load arrival, and load failure', () {

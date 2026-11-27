@@ -120,6 +120,7 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
     value: 1.0,
     animationBehavior: AnimationBehavior.preserve,
   );
+  final ValueNotifier<bool> _courseTurnBlocking = ValueNotifier<bool>(false);
   BuildContext? _innerContext;
   Future<AppStorage>? _storage;
   ProgressStores? _stores;
@@ -182,6 +183,7 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
     final clips = _loaded?.clips;
     if (clips != null) unawaited(clips.stop());
     _courseTurnController.dispose();
+    _courseTurnBlocking.dispose();
     _nav.dispose();
     _router.dispose();
     _start.dispose();
@@ -226,12 +228,14 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
         goToMap && _loaded != null && _start.value.state == _Start.ready;
     Future<void>? fadeOutFuture;
     if (isCourseTurn) {
+      _courseTurnBlocking.value = true;
       final motion = _currentMotion();
       fadeOutFuture = _courseTurnController
           .animateTo(0.0, duration: motion.quick, curve: motion.exit)
           .orCancel
           .catchError((_) {});
     } else {
+      _courseTurnBlocking.value = false;
       _courseTurnController.value = 1.0;
       _start.value = (state: _Start.loading, generation: _generation);
     }
@@ -315,6 +319,7 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
               const TabRoute(startTab)) {
         _nav.go(const TabRoute(startTab));
       }
+      _courseTurnBlocking.value = false;
       _start.value = (state: _Start.ready, generation: _generation);
       if (isCourseTurn) {
         final motion = _currentMotion();
@@ -327,6 +332,7 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
       }
     } catch (_) {
       if (mounted && ticket == _loadTicket) {
+        _courseTurnBlocking.value = false;
         _courseTurnController.value = 1.0;
         _start.value = (state: _Start.failed, generation: _generation);
       }
@@ -537,12 +543,27 @@ class _ScreensState extends State<_Screens>
       builder: (context) {
         final s = widget.app._servicesFor(context);
         return AnimatedBuilder(
-          animation: widget.app._courseTurnController,
-          builder: (context, child) => Opacity(
-            key: shellCourseTurnKey,
-            opacity: widget.app._courseTurnController.value.clamp(0.0, 1.0),
-            child: child,
-          ),
+          animation: Listenable.merge([
+            widget.app._courseTurnController,
+            widget.app._courseTurnBlocking,
+          ]),
+          builder: (context, child) {
+            final blocking = widget.app._courseTurnBlocking.value;
+            return IgnorePointer(
+              ignoring: blocking,
+              child: ExcludeSemantics(
+                excluding: blocking,
+                child: Opacity(
+                  key: shellCourseTurnKey,
+                  opacity: widget.app._courseTurnController.value.clamp(
+                    0.0,
+                    1.0,
+                  ),
+                  child: child,
+                ),
+              ),
+            );
+          },
           child: Material(
             type: MaterialType.transparency,
             child: WelcomeGate(
