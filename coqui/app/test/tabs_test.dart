@@ -76,7 +76,7 @@ void main() {
   );
 
   testWidgets(
-    '(c) place -> story hides the tab bar and mounts under ShellKeys.route; system back returns to the map with the bar back',
+    '(c) place -> story hides the tab bar and mounts under ShellKeys.route; system back pops story -> place -> map with the bar back',
     (tester) async {
       final app = TestApp(tester);
       await app.open(stored: seed('curso'));
@@ -103,13 +103,24 @@ void main() {
       expect(findStoryStartButton(), findsOneWidget);
       expect(tester.takeException(), isNull);
 
-      final handled = await tester.binding.handlePopRoute();
-      await app.settle(rounds: 5);
-      expect(handled, isTrue);
+      final firstHandled = await tester.binding.handlePopRoute();
+      await app.settle(rounds: 10);
+      expect(firstHandled, isTrue);
       expect(app.tabBarShown, isTrue);
       expect(find.byKey(ShellKeys.tabBar), findsOneWidget);
       expect(app.selectedTab, 'map');
       expect(findShellRoute(const StoryRoute('la-lluvia')), findsNothing);
+      expect(findShellRoute(const PlaceRoute('casa')), findsOneWidget);
+      expect(find.byKey(const Key('place-back')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+
+      final secondHandled = await tester.binding.handlePopRoute();
+      await app.settle(rounds: 10);
+      expect(secondHandled, isTrue);
+      expect(app.tabBarShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsOneWidget);
+      expect(app.selectedTab, 'map');
+      expect(findShellRoute(const PlaceRoute('casa')), findsNothing);
       expect(findShellTab('map').hitTestable(), findsOneWidget);
       expect(findMapUpNextCard().hitTestable(), findsOneWidget);
       expect(tester.takeException(), isNull);
@@ -141,7 +152,7 @@ void main() {
       expect(app.lessonShown, isTrue);
       expect(findShellRoute(const StoryRoute('el-bizcocho')), findsOneWidget);
       await tester.binding.handlePopRoute();
-      await app.settle(rounds: 5);
+      await app.settle(rounds: 10);
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'speak');
       expect(findShellTab('speak').hitTestable(), findsOneWidget);
