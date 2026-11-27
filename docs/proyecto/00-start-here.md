@@ -1,5 +1,7 @@
 # Coquí: start here
 
+> **Standing rules only:** Do not append per-ticket notes to this page; record what a ticket did in its PR body and its issue (see `coqui/AGENTS.md`).
+
 ## Current Snapshot (Nov 24, 2026)
 
 - **Live Flutter app (`coqui/`):** Build 16 is on `main` (`coqui/BUILD`), with Noche shared pieces (`#80`) and the Noche shell (`#110`) merged, plus Biblioteca (`#2`) and Danny calls (`#4`) merged since build 15. `historia/` stays frozen (bug fixes only).

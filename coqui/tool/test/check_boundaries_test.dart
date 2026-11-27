@@ -1081,6 +1081,193 @@ final s = 'value: \${Alignment.centerLeft}';
     );
   });
 
+  group('[i] package AGENTS.md holds standing rules only (#257)', () {
+    late Git git;
+
+    setUp(() {
+      package('coqui_ui', deps: ['coqui_contracts']);
+      package('feature_words', deps: ['coqui_ui']);
+      package('coqui_story_checks', deps: ['coqui_scenes', 'feature_story']);
+      package('app', deps: ['coqui_ui', 'feature_words']);
+      src('feature_words', 'AGENTS.md', '''
+# feature_words
+
+- Historical line from #42 that already exists on main.
+- Another old note (#99) to delete in a test.
+- Keep wording in one file.
+''');
+      src('coqui_ui', 'AGENTS.md', '# coqui_ui\n');
+      src('coqui_story_checks', 'AGENTS.md', '# coqui_story_checks\n');
+      src('app', 'AGENTS.md', '# app\n');
+      write('AGENTS.md', '# Coquí runbook\n');
+      git = Git(repo)..init();
+    });
+
+    test(
+      'fails: adding a line with #<digits> to a feature package AGENTS.md',
+      () async {
+        git.branch('lane/feature_words/257');
+        src('feature_words', 'AGENTS.md', '''
+# feature_words
+
+- Historical line from #42 that already exists on main.
+- Another old note (#99) to delete in a test.
+- Keep wording in one file.
+- Added in #257: never do this.
+''');
+        git.commit('add issue ref to feature AGENTS.md');
+        final problems = await check(branch: null);
+        expect(problems, hasLength(1));
+        expect(
+          problems.single,
+          startsWith('packages/features/feature_words/AGENTS.md:6: [i]'),
+        );
+        expect(problems.single, contains('issue reference #257'));
+      },
+    );
+
+    test('fails: adding issue refs to core package, coqui_story_checks, and app AGENTS.md', () async {
+      git.branch('orden/257');
+      src('coqui_ui', 'AGENTS.md', '''
+# coqui_ui
+- Added gallery test (#257).
+- Backticked `#49` reference.
+''');
+      src('coqui_story_checks', 'AGENTS.md', '''
+# coqui_story_checks
+- Issue #6: check all paths.
+- Scenes #18–#20 ported.
+''');
+      src('app', 'AGENTS.md', '''
+# app
+- See salimocasio-dev/field-notes#257 for context.
+''');
+      git.commit('add issue refs across package AGENTS.md files');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(5));
+      expect(
+        problems,
+        containsAll([
+          allOf(
+            startsWith('packages/core/coqui_ui/AGENTS.md:2: [i]'),
+            contains('issue reference #257'),
+          ),
+          allOf(
+            startsWith('packages/core/coqui_ui/AGENTS.md:3: [i]'),
+            contains('issue reference #49'),
+          ),
+          allOf(
+            startsWith('packages/coqui_story_checks/AGENTS.md:2: [i]'),
+            contains('issue reference #6'),
+          ),
+          allOf(
+            startsWith('packages/coqui_story_checks/AGENTS.md:3: [i]'),
+            contains('issue reference #18'),
+          ),
+          allOf(
+            startsWith('app/AGENTS.md:2: [i]'),
+            contains('issue reference #257'),
+          ),
+        ]),
+      );
+    });
+
+    test('passes: unchanged existing lines with #<digits> are not flagged when adding clean lines or deleting old lines', () async {
+      git.branch('lane/feature_words/257');
+      src('feature_words', 'AGENTS.md', '''
+# feature_words
+
+- Historical line from #42 that already exists on main.
+- Keep wording in one file.
+- Every screen reads wording from lib/src/wording.dart.
+''');
+      git.commit('add clean standing rule and delete old note');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test(
+      'fails: modifying an existing line that still contains #<digits>',
+      () async {
+        git.branch('lane/feature_words/257');
+        src('feature_words', 'AGENTS.md', '''
+# feature_words
+
+- Historical line from #42 that was edited on this branch.
+- Another old note (#99) to delete in a test.
+- Keep wording in one file.
+''');
+        git.commit('edit existing line with issue ref');
+        final problems = await check(branch: null);
+        expect(problems, hasLength(1));
+        expect(
+          problems.single,
+          startsWith('packages/features/feature_words/AGENTS.md:3: [i]'),
+        );
+        expect(problems.single, contains('issue reference #42'));
+      },
+    );
+
+    test('passes: hex colors, CSS selectors, routes, markdown headings, and HTML entities', () async {
+      git.branch('lane/coqui_ui/257');
+      src('coqui_ui', 'AGENTS.md', '''
+# coqui_ui
+## 123
+- Palette: #0C1926, #17803F, #3B5BDB, #1B1B1F, #9AD5A8, #000000.
+- Legacy CSS hooks: #bub and #fin.
+- Story route format: #/cuento/123.
+- Non-breaking space entity: &#160;.
+''');
+      git.commit('add non-issue hash tokens');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test('passes: issue refs in coqui/AGENTS.md, repo-root AGENTS.md, tool/prueba_telefono/AGENTS.md, and requests/', () async {
+      git.branch('orden/257');
+      write('AGENTS.md', '''
+# Coquí runbook
+- Standing rules added in #257.
+''');
+      File('${repo.path}/AGENTS.md')
+        ..createSync(recursive: true)
+        ..writeAsStringSync('# Repo root\n- Tracked in #257.\n');
+      write(
+        'tool/prueba_telefono/AGENTS.md',
+        '# prueba_telefono\n- Note #257.\n',
+      );
+      write('requests/257-note.md', '# Request #257\n- Need a thing.\n');
+      git.commit('allowed issue refs outside package AGENTS.md');
+      expect(await check(branch: null), isEmpty);
+    });
+
+    test(
+      'respects explicit base ref (only checks lines added since base)',
+      () async {
+        git.branch('orden/257-base');
+        src('coqui_ui', 'AGENTS.md', '''
+# coqui_ui
+- Added before base (#100).
+''');
+        git.commit('before base');
+
+        git.branch('orden/257-head');
+        src('coqui_ui', 'AGENTS.md', '''
+# coqui_ui
+- Added before base (#100).
+- Clean standing rule added after base.
+''');
+        git.commit('after base');
+
+        // Against main, #100 is flagged.
+        final againstMain = await check(branch: null);
+        expect(againstMain, hasLength(1));
+        expect(againstMain.single, contains('issue reference #100'));
+
+        // Against orden/257-base, only the clean line is new.
+        expect(await check(branch: null, base: 'orden/257-base'), isEmpty);
+      },
+    );
+  });
+
   group('as a command', () {
     Future<ProcessResult> run() => Process.run(
       Platform.resolvedExecutable,
