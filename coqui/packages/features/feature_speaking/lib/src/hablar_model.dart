@@ -7,14 +7,13 @@
 /// - per-story unlock thresholds in unlock order (smaller calls first, then the
 ///   place's main call),
 /// - a featured next call plus other calls per reached place, and
-/// - a clean [CallEntitlement] hook for the live-calls subscription tier.
+/// - live-call gating via `Entitlements.has(Feature.calls)`.
 library;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:feature_speaking/src/call_catalog.dart';
 import 'package:feature_speaking/src/call_controller.dart' show isCallBriefLive;
-import 'package:feature_speaking/src/call_text.dart';
-import 'package:feature_speaking/src/entitlements_hook.dart';
+import 'package:feature_speaking/src/wording.dart';
 
 /// Maximum number of open-word chips shown on the featured next-call card.
 const int maxCallPreviewChips = 5;
@@ -71,21 +70,23 @@ class HablarCallItem {
 
   /// Compact meta line shown on secondary call cards.
   String get cardMetaLine {
-    if (state == HablarCallState.done) return '${spec.minutes} min · done';
-    if (canStart) return '${spec.minutes} min · open';
+    if (state == HablarCallState.done) {
+      return SpeakWording.cardMetaDone(spec.minutes);
+    }
+    if (canStart) return SpeakWording.cardMetaOpen(spec.minutes);
     if (state == HablarCallState.upcoming && unlockAfterStory > 0) {
-      return '${spec.minutes} min · after story $unlockAfterStory';
+      return SpeakWording.cardMetaAfterStory(spec.minutes, unlockAfterStory);
     }
     if (state == HablarCallState.soon) {
-      return '${spec.minutes} min · coming soon';
+      return SpeakWording.cardMetaComingSoon(spec.minutes);
     }
     if (state == HablarCallState.later) {
-      return '${spec.minutes} min · later';
+      return SpeakWording.cardMetaLater(spec.minutes);
     }
     if (state == HablarCallState.tierLocked) {
-      return '${spec.minutes} min · Course + Calls';
+      return SpeakWording.minutesOnly(spec.minutes);
     }
-    return '${spec.minutes} min';
+    return SpeakWording.minutesOnly(spec.minutes);
   }
 }
 
@@ -174,7 +175,7 @@ class HablarSnapshot {
     required this.nextCall,
     required this.stops,
     required this.openWords,
-    required this.entitlement,
+    required this.callsEntitled,
     required this.completedCount,
   });
 
@@ -188,8 +189,8 @@ class HablarSnapshot {
   /// Words open for speaking (`ear.etapa >= 3`).
   final List<String> openWords;
 
-  /// Current subscription tier status for live calls.
-  final CallEntitlement entitlement;
+  /// Whether live calls are included in the learner's current plan (`Entitlements.has(Feature.calls)`).
+  final bool callsEntitled;
 
   /// Number of calls completed at least once.
   final int completedCount;
@@ -260,7 +261,7 @@ bool _isCallDone({
 }
 
 /// Builds the [HablarSnapshot] from [course], [progress], lazy [callsAvailable],
-/// optional [entitlement], optional [completedCallIds], and [shortCallsEnabled].
+/// optional [entitlements], optional [completedCallIds], and [shortCallsEnabled].
 ///
 /// `callsAvailable` is read lazily and only when at least one startable call
 /// meets its story threshold, is backed by course data, and is entitled —
@@ -274,13 +275,14 @@ HablarSnapshot buildHablarSnapshot({
   required CourseCatalog course,
   required ProgressStore progress,
   required bool Function() callsAvailable,
-  CallEntitlement entitlement = CallEntitlement.included,
+  Entitlements entitlements = const AllowAllEntitlements(),
   Set<String> completedCallIds = const {},
   String? callsLater,
   bool shortCallsEnabled = false,
 }) {
+  final callsEntitled = entitlements.has(Feature.calls);
   final partnerName = course.language.partnerName;
-  final laterLine = callsLater ?? CallTexts.callsLaterFor(partnerName);
+  final laterLine = callsLater ?? SpeakWording.callsLaterFor(partnerName);
 
   var available = false;
   var asked = false;
@@ -429,20 +431,20 @@ HablarSnapshot buildHablarSnapshot({
       if (!thresholdMet) {
         itemState = HablarCallState.upcoming;
         itemStatus = unlockAfter > 0 && unlockAfter < totalStories
-            ? 'Opens after story $unlockAfter'
-            : 'Opens when you finish ${place.name}';
+            ? SpeakWording.opensAfterStory(unlockAfter)
+            : SpeakWording.opensWhenYouFinish(place.name);
       } else if (!backedByCourse || !canStartKind) {
         itemState = HablarCallState.soon;
-        itemStatus = 'Coming soon · ${place.name}';
-      } else if (entitlement == CallEntitlement.upgradeRequired) {
+        itemStatus = SpeakWording.comingSoonPlace(place.name);
+      } else if (!callsEntitled) {
         itemState = HablarCallState.tierLocked;
-        itemStatus = HablarTexts.tierLockedLineFor(partnerName);
+        itemStatus = SpeakWording.planCardBody(partnerName);
       } else if (!canCall()) {
         itemState = HablarCallState.later;
         itemStatus = laterLine;
       } else {
         itemState = done ? HablarCallState.done : HablarCallState.ready;
-        itemStatus = CallTexts.durationLine(spec.minutes);
+        itemStatus = SpeakWording.durationLine(spec.minutes);
       }
 
       items.add(
@@ -485,7 +487,7 @@ HablarSnapshot buildHablarSnapshot({
     nextCall: next,
     stops: stops,
     openWords: wordsOpenForSpeaking(progress),
-    entitlement: entitlement,
+    callsEntitled: callsEntitled,
     completedCount: completedCount,
   );
 }
@@ -524,9 +526,12 @@ HablarSnapshot buildHablarSnapshot({
     return (items.first.state, items.first.statusLine);
   }
   if (storiesDone) {
-    return (HablarCallState.soon, 'Coming soon · ${place.name}');
+    return (HablarCallState.soon, SpeakWording.comingSoonPlace(place.name));
   }
-  return (HablarCallState.upcoming, 'Opens when you finish ${place.name}');
+  return (
+    HablarCallState.upcoming,
+    SpeakWording.opensWhenYouFinish(place.name),
+  );
 }
 
 /// Picks the single best "Up next" call across all places:
@@ -574,26 +579,3 @@ List<String> wordsOpenForSpeaking(ProgressStore progress) => [
   for (final r in progress.words)
     if (r.ear.etapa >= 3) r.w,
 ];
-
-/// Static English UI labels for the Speak tab (menus in English).
-abstract final class HablarTexts {
-  static const screenTitle = 'Speak';
-  static const wordsYouCanUse = 'Words you can use';
-  static const placeTabListLabel = 'Place';
-  static String wordsReadyToSay(int count) =>
-      count == 1 ? '1 word ready to say' : '$count words ready to say';
-  static String nextCallEyebrow(String partnerName, int minutes) =>
-      'Next call with $partnerName · $minutes min';
-  static String doneCallEyebrow(String partnerName, int minutes) =>
-      'Call with $partnerName · $minutes min · done';
-  static String lockedPlaceLabel(String placeName) =>
-      '$placeName, not reached yet';
-
-  static const wordsTitle = 'Words open for speaking';
-  static const wordsNone =
-      'None yet. A word opens once your ear has held it for a few days.';
-  static String tierLockedLineFor(String partnerName) =>
-      'Live calls with $partnerName are included in the top plan.';
-  static String get tierLockedLine =>
-      tierLockedLineFor(Language.spanish.partnerName);
-}

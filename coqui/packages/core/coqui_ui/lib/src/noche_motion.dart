@@ -167,6 +167,10 @@ abstract final class NocheMotion {
   // Flag
   static const bool loops = true;
 
+  // Live-loop periods (`Noche-Motion-Cuento.dc.html`)
+  static const Duration thinkingCycle = Duration(milliseconds: 900);
+  static const Duration levelCycle = Duration(milliseconds: 640);
+
   /// Helper for feature `lib/src/motion.dart` files to declare screen-local
   /// waits without literal `Duration(` calls outside `coqui_ui`.
   static Duration ms(int milliseconds) {

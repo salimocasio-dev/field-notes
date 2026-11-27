@@ -43,6 +43,7 @@ class _CallScreenState extends State<CallScreen> {
       progress: s.progress,
       placeId: widget.placeId,
       callId: widget.callId,
+      entitlements: s.entitlements,
       clips: s.clips,
       onClose: s.nav.back,
     );
