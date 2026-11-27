@@ -42,7 +42,7 @@ void main() {
         expect(tester.takeException(), isNull, reason: '$route');
 
         expect(await tester.binding.handlePopRoute(), isTrue, reason: '$route');
-        await app.settle(rounds: 5);
+        await app.settle(rounds: 10);
         expect(findShellRoute(route), findsNothing, reason: '$route');
         expect(app.tabBarShown, isTrue, reason: '$route');
         expect(app.selectedTab, 'map', reason: '$route');
@@ -216,7 +216,7 @@ void main() {
       expect(tester.takeException(), isNull);
 
       expect(await tester.binding.handlePopRoute(), isTrue);
-      await app.settle(rounds: 5);
+      await app.settle(rounds: 10);
       expect(findShellRoute(const CallRoute('casa')), findsNothing);
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'speak');
@@ -235,7 +235,7 @@ void main() {
       expect(tester.takeException(), isNull);
 
       expect(await tester.binding.handlePopRoute(), isTrue);
-      await direct.settle(rounds: 5);
+      await direct.settle(rounds: 10);
       expect(findShellRoute(const CallRoute('casa')), findsNothing);
       expect(direct.tabBarShown, isTrue);
       expect(direct.selectedTab, 'map');
@@ -302,7 +302,7 @@ void main() {
       expect(tester.takeException(), isNull);
 
       expect(await tester.binding.handlePopRoute(), isTrue);
-      await app.settle(rounds: 5);
+      await app.settle(rounds: 10);
       expect(
         findShellRoute(const CallRoute('casa', callId: 'casa_agua')),
         findsNothing,
@@ -328,7 +328,7 @@ void main() {
       expect(tester.takeException(), isNull);
 
       expect(await tester.binding.handlePopRoute(), isTrue);
-      await direct.settle(rounds: 5);
+      await direct.settle(rounds: 10);
       expect(
         findShellRoute(const CallRoute('casa', callId: 'casa_agua')),
         findsNothing,
@@ -408,7 +408,7 @@ void main() {
       expect(tester.takeException(), isNull);
 
       expect(await tester.binding.handlePopRoute(), isTrue);
-      await app.settle(rounds: 5);
+      await app.settle(rounds: 10);
       expect(findShellRoute(const PlaceRoute('casa')), findsNothing);
       expect(app.selectedTab, 'map');
 

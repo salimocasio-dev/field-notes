@@ -8,6 +8,7 @@ import 'package:app/src/app.dart';
 import 'package:app/src/motion.dart';
 import 'package:app/src/navigator.dart';
 import 'package:app/src/shell.dart';
+import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_progress/coqui_progress.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -130,6 +131,36 @@ double _tabBarOpacity(WidgetTester tester) {
 
 Color _groundColor(WidgetTester tester) =>
     tester.widget<ColoredBox>(find.byKey(ShellKeys.ground)).color;
+
+void _expectMapPictureUnfaded(WidgetTester tester) {
+  final mapPixel = find.descendant(
+    of: findShellTab('map'),
+    matching: find.byWidgetPredicate(
+      (w) => w is PixelView && w.onTapPixel != null,
+    ),
+  );
+  expect(mapPixel, findsOneWidget);
+  for (final op in tester.widgetList<Opacity>(
+    find.ancestor(of: mapPixel, matching: find.byType(Opacity)),
+  )) {
+    expect(op.opacity, 1.0);
+  }
+}
+
+double _slotOpacity(WidgetTester tester, Key key) {
+  final finder = find.byKey(key);
+  expect(finder, findsOneWidget);
+  final widget = tester.widget(finder);
+  if (widget is Opacity) return widget.opacity;
+  return tester
+      .widget<Opacity>(
+        find.descendant(of: finder, matching: find.byType(Opacity)).first,
+      )
+      .opacity;
+}
+
+double _slotDy(WidgetTester tester, Key key) =>
+    tester.widget<Transform>(find.byKey(key)).transform.getTranslation().y;
 
 void main() {
   group('AppShell tab switching (NocheFollow keep-alive)', () {
@@ -569,6 +600,10 @@ void main() {
             tester.widget<Opacity>(find.byKey(shellCourseTurnKey)).opacity,
             1.0,
           );
+          _expectMapPictureUnfaded(tester);
+          expect(_slotOpacity(tester, const Key('map-load-chips')), 1.0);
+          expect(_slotOpacity(tester, const Key('map-here-motion')), 1.0);
+          expect(_slotOpacity(tester, const Key('map-load-card')), 1.0);
           expect(app.services.course.language.code, 'es');
 
           // Trigger course change es -> ar.
@@ -576,11 +611,26 @@ void main() {
           await tester.pump();
           await tester.pump();
 
-          // Mid fade-out (quick ~/ 2 = 70ms): fading out on exit, still Spanish.
+          // Mid fade-out (quick ~/ 2 = 70ms): fading out on exit, still Spanish,
+          // PixelView unfaded while MapScreen overlays fade with course turn.
           await tester.pump(const Duration(milliseconds: 70));
+          final expectedMidOut = 1.0 - NocheMotion.exit.transform(0.5);
           expect(
             tester.widget<Opacity>(find.byKey(shellCourseTurnKey)).opacity,
-            closeTo(1.0 - NocheMotion.exit.transform(0.5), 1e-2),
+            closeTo(expectedMidOut, 1e-2),
+          );
+          _expectMapPictureUnfaded(tester);
+          expect(
+            _slotOpacity(tester, const Key('map-load-chips')),
+            closeTo(expectedMidOut, 1e-2),
+          );
+          expect(
+            _slotOpacity(tester, const Key('map-here-motion')),
+            closeTo(expectedMidOut, 1e-2),
+          );
+          expect(
+            _slotOpacity(tester, const Key('map-load-card')),
+            closeTo(expectedMidOut, 1e-2),
           );
           expect(app.services.course.language.code, 'es');
 
@@ -591,16 +641,35 @@ void main() {
             tester.widget<Opacity>(find.byKey(shellCourseTurnKey)).opacity,
             0.0,
           );
+          _expectMapPictureUnfaded(tester);
+          expect(_slotOpacity(tester, const Key('map-load-chips')), 0.0);
+          expect(_slotOpacity(tester, const Key('map-here-motion')), 0.0);
+          expect(_slotOpacity(tester, const Key('map-load-card')), 0.0);
           await tester.pump(const Duration(milliseconds: 1));
           await tester.pump();
           expect(app.services.course.language.code, 'ar');
+          _expectMapPictureUnfaded(tester);
 
           // Mid fade-in: move ~/ 2 (110ms normal, 70ms reduced).
           final halfInMs = reduceMotion ? 70 : 110;
           await tester.pump(Duration(milliseconds: halfInMs));
+          final expectedMidIn = NocheMotion.enter.transform(0.5);
           expect(
             tester.widget<Opacity>(find.byKey(shellCourseTurnKey)).opacity,
-            closeTo(NocheMotion.enter.transform(0.5), 2e-2),
+            closeTo(expectedMidIn, 2e-2),
+          );
+          _expectMapPictureUnfaded(tester);
+          expect(
+            _slotOpacity(tester, const Key('map-load-chips')),
+            closeTo(expectedMidIn, 2e-2),
+          );
+          expect(
+            _slotOpacity(tester, const Key('map-here-motion')),
+            closeTo(expectedMidIn, 2e-2),
+          );
+          expect(
+            _slotOpacity(tester, const Key('map-load-card')),
+            closeTo(expectedMidIn, 2e-2),
           );
 
           // End of fade-in (+1ms for Simulation.isDone).
@@ -609,6 +678,10 @@ void main() {
             tester.widget<Opacity>(find.byKey(shellCourseTurnKey)).opacity,
             1.0,
           );
+          _expectMapPictureUnfaded(tester);
+          expect(_slotOpacity(tester, const Key('map-load-chips')), 1.0);
+          expect(_slotOpacity(tester, const Key('map-here-motion')), 1.0);
+          expect(_slotOpacity(tester, const Key('map-load-card')), 1.0);
         },
       );
     }
@@ -752,11 +825,14 @@ void main() {
         expect(_tabBarDy(tester), ShellMotion.tabBarSinkDistance);
         expect(_tabBarOpacity(tester), 0.0);
 
-        // At 140ms: outgoing loading unmounted, tab bar still waiting (< 160ms).
+        // At 140ms: outgoing loading unmounted, tab bar still waiting (< 160ms),
+        // and MapScreen cold-load chips still waiting (< 180ms) at opacity 0 / dy == row.
         await tester.pump(const Duration(milliseconds: 140));
         expect(find.byKey(shellLoadingKey), findsNothing);
         expect(_tabBarDy(tester), ShellMotion.tabBarSinkDistance);
         expect(_tabBarOpacity(tester), 0.0);
+        expect(_slotOpacity(tester, const Key('map-load-chips')), 0.0);
+        expect(_slotDy(tester, const Key('map-load-chips')), NocheMotion.row);
 
         // At 160ms (+20ms): tab bar about to start rising.
         await tester.pump(const Duration(milliseconds: 20));
@@ -780,10 +856,13 @@ void main() {
           closeTo(NocheMotion.enter.transform(160 / 220), 1e-2),
         );
 
-        // At 160 + 320 = 480ms (+160ms): tab bar at rest.
+        // At 160 + 320 = 480ms (+160ms): tab bar at rest and map-load-chips
+        // has completed its 180ms + 220ms = 400ms arrival.
         await tester.pump(const Duration(milliseconds: 160));
         expect(_tabBarDy(tester), 0.0);
         expect(_tabBarOpacity(tester), 1.0);
+        expect(_slotOpacity(tester, const Key('map-load-chips')), 1.0);
+        expect(_slotDy(tester, const Key('map-load-chips')), 0.0);
       },
     );
 
@@ -960,6 +1039,509 @@ void main() {
               .opacity,
           1.0,
         );
+      },
+    );
+  });
+
+  group('CoquiApp Noche PageRoute & HeroController transitions', () {
+    testWidgets(
+      'Map <-> Place(casa) <-> Story(la-lluvia) runs NocheWindow Hero flights, secondaryAnimation fades, and preserves MapScreen and PlaceScreen state',
+      (tester) async {
+        final app = TestApp(tester);
+        await app.open(
+          stored: seed('vacio'),
+          reduceMotion: false,
+          speechAvailable: false,
+        );
+        await app.advance(700);
+        await app.settle(rounds: 5);
+
+        final mapElement = tester.element(find.byKey(const Key('map-screen')));
+        final windowSurface = find.byKey(NocheWindow.surfaceKey('la-lluvia'));
+        expect(windowSurface, findsOneWidget);
+        final cardRect = tester.getRect(windowSurface);
+        expect(cardRect.width, closeTo(72, 1.0));
+        expect(cardRect.height, closeTo(72, 1.0));
+        expect(_slotOpacity(tester, const Key('map-motion-content')), 1.0);
+        expect(_tabBarDy(tester), 0.0);
+
+        // 1. Push Map -> Place('casa'): NocheWindow flies 72x72 -> 412x296,
+        // MapScreen fades via secondaryAnimation, NocheTabBar stays at dy == 0.
+        app.services.nav.go(const PlaceRoute('casa'));
+        await tester.pump();
+        await tester.pump();
+
+        // At 70ms (quick ~/ 2): MapScreen content is fading out, tab bar stays at 0.
+        await tester.pump(const Duration(milliseconds: 70));
+        final mapOutMid = _slotOpacity(tester, const Key('map-motion-content'));
+        expect(mapOutMid, greaterThan(0.0));
+        expect(mapOutMid, lessThan(1.0));
+        expect(_tabBarDy(tester), 0.0);
+
+        // At 160ms (pageIn ~/ 2, +90ms): NocheWindow Hero flight is mid-flight
+        // interpolating between 72x72 card thumbnail and full-width 296 hero.
+        await tester.pump(const Duration(milliseconds: 90));
+        final midForwardRect = tester.getRect(windowSurface);
+        expect(midForwardRect.width, greaterThan(cardRect.width + 10));
+        expect(midForwardRect.width, lessThan(412 - 10));
+        expect(midForwardRect.height, greaterThan(cardRect.height + 10));
+        expect(midForwardRect.height, lessThan(296 - 10));
+        expect(
+          _slotOpacity(tester, const Key('map-motion-content')),
+          closeTo(0.0, 0.01),
+        );
+        expect(_tabBarDy(tester), 0.0);
+
+        // Finish pageIn (+161ms) + PlaceScreen entrance.
+        await tester.pump(const Duration(milliseconds: 161));
+        await app.advance(400);
+        final placeHeroRect = tester.getRect(windowSurface);
+        expect(placeHeroRect.width, closeTo(412, 1.0));
+        expect(placeHeroRect.height, closeTo(296, 1.0));
+        expect(findShellRoute(const PlaceRoute('casa')), findsOneWidget);
+        expect(_tabBarDy(tester), 0.0);
+        expect(_groundColor(tester), NocheColors.ground);
+        final placeElement = tester.element(
+          find.byKey(const Key('place-screen')),
+        );
+
+        // 2. Push Place('casa') -> Story('la-lluvia'): NocheTabBar sinks, ground
+        // transitions to lessonGround, PlaceScreen stays mounted offstage.
+        app.services.nav.go(const StoryRoute('la-lluvia'));
+        await tester.pump();
+        await tester.pump();
+
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(_tabBarDy(tester), greaterThan(0.0));
+        expect(_groundColor(tester), isNot(NocheColors.ground));
+
+        await app.until(
+          () =>
+              findStoryStartButton().evaluate().isNotEmpty && !app.tabBarShown,
+          what: 'story start disc and tab bar sink',
+        );
+        await app.advance(200);
+        expect(find.byKey(ShellKeys.tabBar), findsNothing);
+        expect(_groundColor(tester), NocheColors.lessonGround);
+        expect(
+          find.byKey(const Key('place-screen'), skipOffstage: false),
+          findsOneWidget,
+        );
+        expect(
+          identical(
+            tester.element(
+              find.byKey(const Key('place-screen'), skipOffstage: false),
+            ),
+            placeElement,
+          ),
+          isTrue,
+        );
+
+        // 3. Pop Story -> Place: PlaceScreen Element is identical (not recreated),
+        // returns via secondaryAnimation after 40ms with zero rise, tab bar rises,
+        // StoryRoute unmounts at pageOut (200ms).
+        expect(await tester.binding.handlePopRoute(), isTrue);
+        await tester.pump();
+        await tester.pump();
+
+        await tester.pump(const Duration(milliseconds: 40));
+        expect(
+          identical(
+            tester.element(find.byKey(const Key('place-screen'))),
+            placeElement,
+          ),
+          isTrue,
+        );
+        expect(_slotDy(tester, const Key('place-motion-title')), 0.0);
+        expect(_slotOpacity(tester, const Key('place-motion-title')), 0.0);
+
+        await tester.pump(const Duration(milliseconds: 70));
+        final placeReturnMid = _slotOpacity(
+          tester,
+          const Key('place-motion-title'),
+        );
+        expect(_slotDy(tester, const Key('place-motion-title')), 0.0);
+        expect(placeReturnMid, greaterThan(0.0));
+        expect(placeReturnMid, lessThan(1.0));
+        expect(_tabBarDy(tester), greaterThan(0.0));
+        expect(_tabBarDy(tester), lessThan(ShellMotion.tabBarSinkDistance));
+        expect(findShellRoute(const StoryRoute('la-lluvia')), findsOneWidget);
+
+        await tester.pump(const Duration(milliseconds: 91));
+        expect(findShellRoute(const StoryRoute('la-lluvia')), findsNothing);
+        expect(
+          identical(
+            tester.element(find.byKey(const Key('place-screen'))),
+            placeElement,
+          ),
+          isTrue,
+        );
+        expect(_slotOpacity(tester, const Key('place-motion-title')), 1.0);
+        expect(_slotDy(tester, const Key('place-motion-title')), 0.0);
+
+        await tester.pump(const Duration(milliseconds: 80));
+        expect(_tabBarDy(tester), 0.0);
+        expect(_tabBarOpacity(tester), 1.0);
+        expect(_groundColor(tester), NocheColors.ground);
+
+        // 4. Pop Place -> Map: NocheWindow Hero flies back (296 -> 72), MapScreen
+        // Element is identical (not recreated), returns via secondaryAnimation,
+        // PlaceRoute unmounts at pageOut (200ms), tab bar stays at dy == 0.
+        expect(await tester.binding.handlePopRoute(), isTrue);
+        await tester.pump();
+        await tester.pump();
+
+        await tester.pump(const Duration(milliseconds: 100));
+        final midBackRect = tester.getRect(windowSurface);
+        expect(midBackRect.height, greaterThan(cardRect.height + 10));
+        expect(midBackRect.height, lessThan(placeHeroRect.height - 10));
+        expect(
+          identical(
+            tester.element(find.byKey(const Key('map-screen'))),
+            mapElement,
+          ),
+          isTrue,
+        );
+        final mapReturnMid = _slotOpacity(
+          tester,
+          const Key('map-motion-content'),
+        );
+        expect(mapReturnMid, greaterThan(0.0));
+        expect(mapReturnMid, lessThan(1.0));
+        expect(_tabBarDy(tester), 0.0);
+        expect(findShellRoute(const PlaceRoute('casa')), findsOneWidget);
+
+        await tester.pump(const Duration(milliseconds: 101));
+        expect(findShellRoute(const PlaceRoute('casa')), findsNothing);
+        expect(
+          identical(
+            tester.element(find.byKey(const Key('map-screen'))),
+            mapElement,
+          ),
+          isTrue,
+        );
+        expect(_slotOpacity(tester, const Key('map-motion-content')), 1.0);
+        final finalCardRect = tester.getRect(windowSurface);
+        expect(finalCardRect.width, closeTo(72, 1.0));
+        expect(finalCardRect.height, closeTo(72, 1.0));
+        expect(tester.takeException(), isNull);
+
+        await app.advance(500);
+      },
+    );
+
+    testWidgets(
+      'direct Map -> Story -> Map preserves MapScreen state and runs NocheWindow Hero flight',
+      (tester) async {
+        final app = TestApp(tester);
+        await app.open(
+          stored: seed('vacio'),
+          reduceMotion: false,
+          speechAvailable: false,
+        );
+        await app.advance(700);
+        await app.settle(rounds: 5);
+
+        final mapElement = tester.element(find.byKey(const Key('map-screen')));
+        final windowSurface = find.byKey(NocheWindow.surfaceKey('la-lluvia'));
+        final cardRect = tester.getRect(windowSurface);
+        expect(cardRect.width, closeTo(72, 1.0));
+        expect(cardRect.height, closeTo(72, 1.0));
+
+        await app.tap(findMapUpNextAction());
+        await app.until(
+          () =>
+              findStoryStartButton().evaluate().isNotEmpty && !app.tabBarShown,
+          what: 'story start disc and tab bar sink',
+        );
+        await app.advance(200);
+
+        final storyRect = tester.getRect(windowSurface);
+        expect(storyRect.height, greaterThan(296));
+        expect(
+          identical(
+            tester.element(
+              find.byKey(const Key('map-screen'), skipOffstage: false),
+            ),
+            mapElement,
+          ),
+          isTrue,
+        );
+
+        // Pop Story -> Map: NocheWindow flies back from Story window to 72x72 card.
+        expect(await tester.binding.handlePopRoute(), isTrue);
+        await tester.pump();
+        await tester.pump();
+
+        await tester.pump(const Duration(milliseconds: 100));
+        final midBackRect = tester.getRect(windowSurface);
+        expect(midBackRect.height, greaterThan(cardRect.height + 10));
+        expect(midBackRect.height, lessThan(storyRect.height - 10));
+        expect(
+          identical(
+            tester.element(find.byKey(const Key('map-screen'))),
+            mapElement,
+          ),
+          isTrue,
+        );
+        final mapReturnMid = _slotOpacity(
+          tester,
+          const Key('map-motion-content'),
+        );
+        expect(mapReturnMid, greaterThan(0.0));
+        expect(mapReturnMid, lessThan(1.0));
+
+        await tester.pump(const Duration(milliseconds: 101));
+        expect(findShellRoute(const StoryRoute('la-lluvia')), findsNothing);
+        expect(
+          identical(
+            tester.element(find.byKey(const Key('map-screen'))),
+            mapElement,
+          ),
+          isTrue,
+        );
+        expect(_slotOpacity(tester, const Key('map-motion-content')), 1.0);
+        final endCardRect = tester.getRect(windowSurface);
+        expect(endCardRect.width, closeTo(72, 1.0));
+        expect(endCardRect.height, closeTo(72, 1.0));
+        expect(tester.takeException(), isNull);
+
+        await app.advance(500);
+      },
+    );
+
+    testWidgets(
+      'HablarTab <-> CallScreen runs call-mic Hero flight, fades outgoing Speak tab, and preserves HablarTab state',
+      (tester) async {
+        final app = TestApp(tester);
+        await app.open(
+          stored: seed('curso'),
+          switches: AppSwitches.fromQuery(const {'callstub': '1'}),
+          reduceMotion: false,
+        );
+        await app.advance(700);
+
+        await app.openTab('speak');
+        await app.advance(500);
+
+        final hablarElement = tester.element(
+          find.byKey(const ValueKey('speak-outgoing-opacity')),
+        );
+        final callDisc = find.byKey(const Key('speak-call-disc'));
+        expect(callDisc, findsOneWidget);
+        expect(
+          find.ancestor(
+            of: callDisc,
+            matching: find.byWidgetPredicate(
+              (w) => w is Hero && w.tag == 'coqui_speaking_call_mic_disc',
+            ),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          _slotOpacity(tester, const ValueKey('speak-outgoing-opacity')),
+          1.0,
+        );
+
+        await tester.tap(callDisc);
+        await tester.pump();
+        await tester.pump();
+
+        // At 70ms (quick ~/ 2): HablarTab outgoing opacity fades via secondaryAnimation,
+        // tab bar sinks, ground lerps toward lessonGround.
+        await tester.pump(const Duration(milliseconds: 70));
+        final speakMidOut = _slotOpacity(
+          tester,
+          const ValueKey('speak-outgoing-opacity'),
+        );
+        expect(speakMidOut, greaterThan(0.0));
+        expect(speakMidOut, lessThan(1.0));
+        expect(_tabBarDy(tester), greaterThan(0.0));
+        expect(_groundColor(tester), isNot(NocheColors.ground));
+
+        // At 160ms (pageIn ~/ 2, +90ms): Hero flight is active (source disc and
+        // destination NocheMic are replaced by placeholders while CallScreen's
+        // flightShuttleBuilder renders the flying NochePlayDisc in Overlay).
+        await tester.pump(const Duration(milliseconds: 90));
+        expect(
+          _slotOpacity(tester, const ValueKey('speak-outgoing-opacity')),
+          closeTo(0.0, 0.01),
+        );
+        expect(find.byKey(const Key('speak-call-disc')), findsNothing);
+        expect(find.byKey(const Key('call-mic-stage')), findsNothing);
+        expect(
+          find.byWidgetPredicate(
+            (w) =>
+                w is NochePlayDisc &&
+                w.size == NocheSize.mic &&
+                w.onPressed == null,
+          ),
+          findsOneWidget,
+        );
+
+        // Finish pageIn (+161ms).
+        await tester.pump(const Duration(milliseconds: 161));
+        expect(findShellRoute(const CallRoute('casa')), findsOneWidget);
+        expect(find.byKey(const Key('call-screen')), findsOneWidget);
+        expect(find.byKey(const Key('call-mic-stage')), findsOneWidget);
+        expect(find.byType(NocheMic), findsOneWidget);
+        expect(find.byKey(ShellKeys.tabBar), findsNothing);
+        expect(_groundColor(tester), NocheColors.lessonGround);
+        expect(
+          identical(
+            tester.element(
+              find.byKey(
+                const ValueKey('speak-outgoing-opacity'),
+                skipOffstage: false,
+              ),
+            ),
+            hablarElement,
+          ),
+          isTrue,
+        );
+
+        // Pop CallRoute('casa') -> Speak tab: HablarTab Element stays identical,
+        // CallRoute unmounts at pageOut (200ms), NocheTabBar rises back.
+        expect(await tester.binding.handlePopRoute(), isTrue);
+        await tester.pump();
+        await tester.pump();
+
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(findShellRoute(const CallRoute('casa')), findsOneWidget);
+        expect(
+          identical(
+            tester.element(
+              find.byKey(const ValueKey('speak-outgoing-opacity')),
+            ),
+            hablarElement,
+          ),
+          isTrue,
+        );
+        expect(_tabBarDy(tester), greaterThan(0.0));
+
+        await tester.pump(const Duration(milliseconds: 101));
+        expect(findShellRoute(const CallRoute('casa')), findsNothing);
+        expect(
+          identical(
+            tester.element(
+              find.byKey(const ValueKey('speak-outgoing-opacity')),
+            ),
+            hablarElement,
+          ),
+          isTrue,
+        );
+
+        await tester.pump(const Duration(milliseconds: 80));
+        expect(_tabBarDy(tester), 0.0);
+        expect(_tabBarOpacity(tester), 1.0);
+        expect(app.selectedTab, 'speak');
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    testWidgets(
+      'reduced motion completes PlaceRoute, StoryRoute, and CallRoute push/pop in quick (140ms) while preserving state',
+      (tester) async {
+        final app = TestApp(tester);
+        await app.open(
+          stored: seed('vacio'),
+          switches: AppSwitches.fromQuery(const {'callstub': '1'}),
+          reduceMotion: true,
+          speechAvailable: false,
+        );
+        await app.advance(300);
+
+        final mapElement = tester.element(find.byKey(const Key('map-screen')));
+
+        // 1. PlaceRoute push + pop completes in quick (140ms), not 320ms / 200ms.
+        app.services.nav.go(const PlaceRoute('casa'));
+        await tester.pump();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 141));
+        expect(findShellRoute(const PlaceRoute('casa')), findsOneWidget);
+        expect(find.byKey(const Key('map-screen')), findsNothing);
+        expect(
+          identical(
+            tester.element(
+              find.byKey(const Key('map-screen'), skipOffstage: false),
+            ),
+            mapElement,
+          ),
+          isTrue,
+        );
+        final placeElement = tester.element(
+          find.byKey(const Key('place-screen')),
+        );
+
+        // 2. StoryRoute push from Place + pop completes in quick (140ms).
+        app.services.nav.go(const StoryRoute('la-lluvia'));
+        await tester.pump();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 141));
+        expect(findShellRoute(const StoryRoute('la-lluvia')), findsOneWidget);
+        expect(find.byKey(const Key('place-screen')), findsNothing);
+        expect(find.byKey(ShellKeys.tabBar), findsNothing);
+        expect(_groundColor(tester), NocheColors.lessonGround);
+
+        expect(await tester.binding.handlePopRoute(), isTrue);
+        await tester.pump();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 141));
+        expect(findShellRoute(const StoryRoute('la-lluvia')), findsNothing);
+        expect(findShellRoute(const PlaceRoute('casa')), findsOneWidget);
+        expect(
+          identical(
+            tester.element(find.byKey(const Key('place-screen'))),
+            placeElement,
+          ),
+          isTrue,
+        );
+
+        // Pop Place -> Map in quick (140ms).
+        expect(await tester.binding.handlePopRoute(), isTrue);
+        await tester.pump();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 141));
+        expect(findShellRoute(const PlaceRoute('casa')), findsNothing);
+        expect(
+          identical(
+            tester.element(find.byKey(const Key('map-screen'))),
+            mapElement,
+          ),
+          isTrue,
+        );
+
+        // 3. CallRoute push from Speak + pop completes in quick (140ms).
+        await app.openTab('speak');
+        await app.advance(300);
+        final hablarElement = tester.element(
+          find.byKey(const ValueKey('speak-outgoing-opacity')),
+        );
+        app.services.nav.go(const CallRoute('casa'));
+        await tester.pump();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 141));
+        expect(findShellRoute(const CallRoute('casa')), findsOneWidget);
+        expect(find.byKey(ShellKeys.tabBar), findsNothing);
+        expect(_groundColor(tester), NocheColors.lessonGround);
+
+        expect(await tester.binding.handlePopRoute(), isTrue);
+        await tester.pump();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 141));
+        expect(findShellRoute(const CallRoute('casa')), findsNothing);
+        expect(
+          identical(
+            tester.element(
+              find.byKey(const ValueKey('speak-outgoing-opacity')),
+            ),
+            hablarElement,
+          ),
+          isTrue,
+        );
+        expect(tester.takeException(), isNull);
+
+        await app.advance(500);
       },
     );
   });

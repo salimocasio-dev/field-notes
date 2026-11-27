@@ -17,6 +17,7 @@ import 'package:feature_review/feature_review.dart';
 import 'package:feature_speaking/feature_speaking.dart';
 import 'package:feature_story/feature_story.dart';
 import 'package:feature_words/feature_words.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 
 /// The modules, for the address switches [switches]. [bookImageUrl] turns a book page's picture (`img/<file>`) into its
 /// address (the moments of Repaso's games; Biblioteca shows no pictures since its rewrite of Nov 23, 2026); [voiceTest] is the voice test's content (null when its file could not be read).
@@ -25,10 +26,17 @@ List<FeatureModule> coquiModules({
   required String Function(String path) bookImageUrl,
   required Entitlements entitlements,
   VoiceTestData? voiceTest,
+  ValueListenable<double>? mapOverlayOpacity,
+  bool animateMapColdLoad = false,
 }) => [
   const LibraryModule(),
   const WordsModule(),
-  MapModule(showPerf: switches.perf, entitlements: entitlements),
+  MapModule(
+    showPerf: switches.perf,
+    entitlements: entitlements,
+    overlayOpacity: mapOverlayOpacity,
+    animateColdLoad: animateMapColdLoad,
+  ),
   speakingModule(voiceTest: voiceTest),
   const ProfileModule(),
   StoryModule(scenes: storyScenes, showPerf: switches.perf, txt: switches.txt),

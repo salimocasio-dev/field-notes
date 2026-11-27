@@ -8,7 +8,11 @@ import 'package:app/src/motion.dart';
 import 'package:app/src/navigator.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:material_ui/material_ui.dart';
+
+/// Stable shell-owned key for the course-turn opacity wrapper on shell chrome.
+const ValueKey<String> shellCourseTurnKey = ValueKey('shell-course-turn');
 
 /// Stable shell-owned keys for mounted tabs, route screens, and shell chrome.
 abstract final class ShellKeys {
@@ -45,6 +49,40 @@ abstract final class ShellKeys {
 
 enum _TabBarPhase { hidden, loadArrival, shown, sinking, rising }
 
+bool _isNochePageRoute(AppRoute route) =>
+    route is PlaceRoute || route is StoryRoute || route is CallRoute;
+
+class _ShellNavigatorHost extends StatefulWidget {
+  const _ShellNavigatorHost({
+    super.key,
+    required this.pages,
+    required this.onDidRemovePage,
+  });
+
+  final List<Page<Object?>> pages;
+  final void Function(Page<Object?> page) onDidRemovePage;
+
+  @override
+  State<_ShellNavigatorHost> createState() => _ShellNavigatorHostState();
+}
+
+class _ShellNavigatorHostState extends State<_ShellNavigatorHost> {
+  late final HeroController _heroController = HeroController();
+
+  @override
+  void dispose() {
+    _heroController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Navigator(
+    pages: widget.pages,
+    observers: [_heroController],
+    onDidRemovePage: widget.onDidRemovePage,
+  );
+}
+
 /// The app's screens for the address [route]: the five tabs, each kept alive once it has been shown (the map bakes
 /// once), with the tab bar drawn over the tab (each tab lays itself out under the bar and draws its own fade); or a
 /// lesson (story, Repaso, level check, book, call, voice test) over everything, full screen, the tab bar hidden.
@@ -60,6 +98,7 @@ class AppShell extends StatefulWidget {
     required this.nav,
     required this.route,
     this.animateLoadArrival = false,
+    this.courseTurnOpacity,
   });
 
   final Services services;
@@ -71,6 +110,11 @@ class AppShell extends StatefulWidget {
 
   /// Whether the initial mount animates load arrival (map fade + tab bar rise).
   final bool animateLoadArrival;
+
+  /// Optional shell-driven opacity (`0.0` to `1.0`) for course language turns.
+  /// Applied to non-map tabs, floating chrome, and pushed routes while keeping
+  /// the Map tab's `PixelView` unfaded (`MapScreen` fades its own overlays).
+  final ValueListenable<double>? courseTurnOpacity;
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -95,9 +139,12 @@ bool isLessonRoute(AppRoute route) => switch (route) {
 
 class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
   final Map<String, WidgetBuilder> _tabs = {};
+  final Map<AppRoute, Widget> _pageWidgets = {};
   int _epoch = 0;
 
   late AppRoute _resolvedRoute;
+  List<AppRoute> _navStack = const [];
+  AppRoute? _overlayRoute;
   late String _activeTab;
   String? _outgoingTab;
   NocheFollowSide _tabFollowSide = NocheFollowSide.end;
@@ -159,10 +206,14 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
     if (_initialized) return;
     _initialized = true;
 
-    final motion = NocheMotion.of(context);
-    final hasScreen =
-        _resolvedRoute is! TabRoute && _lesson(_resolvedRoute) != null;
-    final showsTabBar = !hasScreen || _resolvedRoute is PlaceRoute;
+    final motion = resolveShellMotion(
+      context,
+      serviceReduceMotion: widget.services.reduceMotion,
+    );
+    _syncRouteLayout();
+    final hasScreen = _navStack.isNotEmpty || _overlayRoute != null;
+    final showsTabBar =
+        !hasScreen || (_resolvedRoute is PlaceRoute && _overlayRoute == null);
     _lastHasScreen = hasScreen;
     _lastShowsTabBar = showsTabBar;
 
@@ -205,20 +256,23 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
         oldWidget.modules != widget.modules;
     if (servicesOrModulesChanged) {
       _tabs.clear();
+      _pageWidgets.clear();
       _epoch++;
     }
 
     if (widget.route != oldWidget.route || servicesOrModulesChanged) {
       _resolvedRoute = widget.nav.arrive(widget.route);
     }
+    _syncRouteLayout();
 
     final oldHasScreen = _lastHasScreen;
     final oldShowsTabBar = _lastShowsTabBar;
     final oldTab = _activeTab;
 
-    final newHasScreen =
-        _resolvedRoute is! TabRoute && _lesson(_resolvedRoute) != null;
-    final newShowsTabBar = !newHasScreen || _resolvedRoute is PlaceRoute;
+    final newHasScreen = _navStack.isNotEmpty || _overlayRoute != null;
+    final newShowsTabBar =
+        !newHasScreen ||
+        (_resolvedRoute is PlaceRoute && _overlayRoute == null);
     final newTab = _resolvedRoute is TabRoute
         ? (_resolvedRoute as TabRoute).tab
         : widget.nav.origin;
@@ -226,7 +280,10 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
     _lastHasScreen = newHasScreen;
     _lastShowsTabBar = newShowsTabBar;
 
-    final motion = NocheMotion.of(context);
+    final motion = resolveShellMotion(
+      context,
+      serviceReduceMotion: widget.services.reduceMotion,
+    );
     final nextGround = isLessonRoute(_resolvedRoute)
         ? NocheColors.lessonGround
         : NocheColors.ground;
@@ -442,12 +499,74 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
     return null;
   }
 
-  Widget? _lesson(AppRoute route) {
+  Widget? _screenFor(AppRoute route) {
     for (final m in widget.modules) {
       final w = m.screenFor(route, widget.services);
       if (w != null) return w;
     }
     return null;
+  }
+
+  Widget? _pageWidget(AppRoute route) {
+    if (_pageWidgets.containsKey(route)) return _pageWidgets[route];
+    final built = _screenFor(route);
+    if (built != null) _pageWidgets[route] = built;
+    return built;
+  }
+
+  void _syncRouteLayout() {
+    final route = _resolvedRoute;
+    if (route is TabRoute) {
+      _navStack = const [];
+      _overlayRoute = null;
+    } else if (_isNochePageRoute(route) && _pageWidget(route) != null) {
+      final parentPlace = route is PlaceRoute ? null : widget.nav.originPlace;
+      final hasParentPlace =
+          parentPlace != null && _pageWidget(parentPlace) != null;
+      _navStack = [if (hasParentPlace) parentPlace, route];
+      _overlayRoute = null;
+    } else if (_screenFor(route) != null) {
+      final parentPlace = widget.nav.originPlace;
+      final hasParentPlace =
+          parentPlace != null && _pageWidget(parentPlace) != null;
+      _navStack = [if (hasParentPlace) parentPlace];
+      _overlayRoute = route;
+    } else {
+      _navStack = const [];
+      _overlayRoute = null;
+    }
+    _pageWidgets.removeWhere((r, _) => !_navStack.contains(r));
+  }
+
+  double _courseTurnOpacityValue() =>
+      (widget.courseTurnOpacity?.value ?? 1.0).clamp(0.0, 1.0);
+
+  Widget _wrapCourseTurn(Widget child) {
+    final turn = widget.courseTurnOpacity;
+    if (turn == null) return child;
+    return AnimatedBuilder(
+      animation: turn,
+      builder: (context, inner) =>
+          Opacity(opacity: _courseTurnOpacityValue(), child: inner),
+      child: child,
+    );
+  }
+
+  void _handleDidRemovePage(Page<Object?> page) {
+    if (_navStack.isEmpty) return;
+    final topKey = ValueKey<String>(
+      'page:$_epoch:${addressOf(_navStack.last)}',
+    );
+    if (page.key == topKey) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted &&
+            _navStack.isNotEmpty &&
+            ValueKey<String>('page:$_epoch:${addressOf(_navStack.last)}') ==
+                page.key) {
+          widget.nav.back();
+        }
+      });
+    }
   }
 
   void _onTab(String id) {
@@ -458,10 +577,14 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final route = _resolvedRoute;
-    final screen = route is TabRoute ? null : _lesson(route);
+    final navStack = _navStack;
+    final overlayRoute = _overlayRoute;
+    final hasScreen = navStack.isNotEmpty || overlayRoute != null;
     final tab = route is TabRoute ? route.tab : widget.nav.origin;
-    final keepsTabBehind = screen != null && route is LanguagesRoute;
-    final selectedTab = route is PlaceRoute ? NocheTabs.map : tab;
+    final keepsTabBehind = overlayRoute is LanguagesRoute;
+    final selectedTab = route is PlaceRoute && overlayRoute == null
+        ? NocheTabs.map
+        : tab;
     _tab(tab);
     final language = widget.services.course.language;
     final isRtl = language.textDirection == TextDirection.rtl;
@@ -480,7 +603,12 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
         child: child,
       ),
       child: AnimatedBuilder(
-        animation: _tabFollowController,
+        animation: widget.courseTurnOpacity == null
+            ? _tabFollowController
+            : Listenable.merge([
+                _tabFollowController,
+                widget.courseTurnOpacity!,
+              ]),
         builder: (context, _) {
           final totalUs = (_tabFollowMotion.followAfter + _tabFollowMotion.move)
               .inMicroseconds
@@ -489,7 +617,8 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
           final isFollowing =
               _outgoingTab != null &&
               _tabFollowController.value < 1.0 &&
-              screen == null;
+              !hasScreen;
+          final turnOpacity = _courseTurnOpacityValue();
 
           return Stack(
             fit: StackFit.expand,
@@ -524,9 +653,9 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
                         opacity = 0.0;
                       }
                     } else if (id == tab) {
-                      isOffstage = screen != null && !keepsTabBehind;
+                      isOffstage = overlayRoute != null && !keepsTabBehind;
                       isPassive = false;
-                      isTicking = screen == null;
+                      isTicking = overlayRoute == null;
                       if (!isFollowing) {
                         dx = 0.0;
                         opacity = 1.0;
@@ -561,6 +690,10 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
                       opacity = 1.0;
                     }
 
+                    final effectiveOpacity = id == NocheTabs.map
+                        ? opacity
+                        : (opacity * turnOpacity).clamp(0.0, 1.0);
+
                     return KeyedSubtree(
                       key: ValueKey('tab:$_epoch:$id'),
                       child: Directionality(
@@ -578,7 +711,7 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
                                   offset: Offset(dx, 0),
                                   child: Opacity(
                                     key: ShellKeys.tabOpacity(id),
-                                    opacity: opacity,
+                                    opacity: effectiveOpacity,
                                     child: KeyedSubtree(
                                       key: ShellKeys.tab(id),
                                       child: Builder(builder: _tabs[id]!),
@@ -598,20 +731,63 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
       ),
     );
 
-    final Widget? screenLayer = screen == null
+    final routeMotion = resolveShellMotion(
+      context,
+      serviceReduceMotion: widget.services.reduceMotion,
+    );
+    final pages = <Page<Object?>>[
+      NocheShellPage<void>(
+        key: ValueKey('shell-tabs:$_epoch'),
+        name: 'tabs',
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+        child: tabsLayer,
+      ),
+      for (final r in navStack)
+        NocheShellPage<void>(
+          key: ValueKey('page:$_epoch:${addressOf(r)}'),
+          name: addressOf(r),
+          transitionDuration: routeMotion.pageIn,
+          reverseTransitionDuration: routeMotion.pageOut,
+          child: Directionality(
+            textDirection: isLessonRoute(r)
+                ? language.textDirection
+                : TextDirection.ltr,
+            child: _wrapCourseTurn(
+              KeyedSubtree(key: ShellKeys.route(r), child: _pageWidget(r)!),
+            ),
+          ),
+        ),
+    ];
+
+    final navigatorHost = _ShellNavigatorHost(
+      key: ValueKey('shell-nav:$_epoch'),
+      pages: pages,
+      onDidRemovePage: _handleDidRemovePage,
+    );
+
+    final overlayWidget = overlayRoute == null
+        ? null
+        : _screenFor(overlayRoute);
+    final Widget? screenOverlay = overlayRoute == null || overlayWidget == null
         ? null
         : KeyedSubtree(
-            key: ValueKey('lesson:$_epoch:${addressOf(route)}'),
+            key: ValueKey('lesson:$_epoch:${addressOf(overlayRoute)}'),
             child: Directionality(
-              textDirection: isLessonRoute(route)
+              textDirection: isLessonRoute(overlayRoute)
                   ? language.textDirection
                   : TextDirection.ltr,
-              child: KeyedSubtree(key: ShellKeys.route(route), child: screen),
+              child: _wrapCourseTurn(
+                KeyedSubtree(
+                  key: ShellKeys.route(overlayRoute),
+                  child: overlayWidget,
+                ),
+              ),
             ),
           );
 
     return PopScope(
-      canPop: screen == null,
+      canPop: !hasScreen,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) widget.nav.back();
       },
@@ -624,8 +800,8 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
         ),
         child: AnimatedBuilder(
           animation: _tabBarController,
-          child: tabsLayer,
-          builder: (context, tabs) {
+          child: navigatorHost,
+          builder: (context, navHost) {
             final mountTabBar =
                 _tabBarPhase != _TabBarPhase.hidden &&
                 !(_tabBarPhase == _TabBarPhase.sinking &&
@@ -633,8 +809,8 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
             return Stack(
               fit: StackFit.expand,
               children: [
-                tabs!,
-                ?screenLayer,
+                navHost!,
+                ?screenOverlay,
                 if (mountTabBar)
                   PositionedDirectional(
                     key: ShellKeys.tabBar,
@@ -650,14 +826,24 @@ class _AppShellState extends State<AppShell> with TickerProviderStateMixin {
                           offset: Offset(0, _currentTabBarDy()),
                           child: Opacity(
                             opacity: _currentTabBarOpacity(),
-                            child: Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: NocheTabBar(
-                                selectedId: selectedTab,
-                                tabNames: language.tabNames,
-                                script: language.script,
-                                languageCode: language.code,
-                                onTap: _onTab,
+                            child: AnimatedBuilder(
+                              animation:
+                                  widget.courseTurnOpacity ??
+                                  kAlwaysCompleteAnimation,
+                              builder: (context, child) => Opacity(
+                                key: shellCourseTurnKey,
+                                opacity: _courseTurnOpacityValue(),
+                                child: child,
+                              ),
+                              child: Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: NocheTabBar(
+                                  selectedId: selectedTab,
+                                  tabNames: language.tabNames,
+                                  script: language.script,
+                                  languageCode: language.code,
+                                  onTap: _onTab,
+                                ),
                               ),
                             ),
                           ),
