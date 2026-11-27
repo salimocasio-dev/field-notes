@@ -1,9 +1,190 @@
-import 'dart:ui' show SemanticsRole;
+import 'dart:ui' as ui show SemanticsRole, lerpDouble;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/reader_model.dart';
 import 'package:material_ui/material_ui.dart';
+
+/// Opens the Noche Text and page settings sheet without a scrim so the learner
+/// can see the book page change live behind it (`Noche-Motion-Lector.dc.html`,
+/// `Noche-Lector-Aa.dc.html`).
+Future<T?> showReaderSettingsSheet<T>(
+  BuildContext context, {
+  required Widget Function(BuildContext context, VoidCallback close) builder,
+  required String closeLabel,
+}) {
+  final motion = NocheMotion.of(context);
+  final navigator = Navigator.of(context, rootNavigator: true);
+  return navigator.push<T>(
+    _ReaderSettingsSheetRoute<T>(
+      builder: builder,
+      closeLabel: closeLabel,
+      themes: InheritedTheme.capture(from: context, to: navigator.context),
+      motion: motion,
+    ),
+  );
+}
+
+class _ReaderSettingsSheetRoute<T> extends PopupRoute<T> {
+  _ReaderSettingsSheetRoute({
+    required this.builder,
+    required this.closeLabel,
+    required this.themes,
+    required this.motion,
+  });
+
+  final Widget Function(BuildContext context, VoidCallback close) builder;
+  final String closeLabel;
+  final CapturedThemes themes;
+  final NocheMotionData motion;
+
+  bool _closing = false;
+
+  @override
+  Color? get barrierColor => null;
+
+  @override
+  bool get barrierDismissible => false;
+
+  @override
+  String? get barrierLabel => null;
+
+  @override
+  Duration get transitionDuration => motion.pageIn;
+
+  @override
+  Duration get reverseTransitionDuration => motion.pageOut;
+
+  void _close() {
+    if (_closing) return;
+    final nav = navigator;
+    if (nav == null || !isActive) return;
+    _closing = true;
+    if (isCurrent) {
+      nav.pop();
+    } else {
+      nav.removeRoute(this);
+    }
+  }
+
+  @override
+  Widget buildModalBarrier() => const SizedBox.shrink();
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    final sheetChild = _DraggableSheetDismiss(
+      onDismiss: _close,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height * 0.88,
+        ),
+        child: NocheSheet(child: Builder(builder: (c) => builder(c, _close))),
+      ),
+    );
+
+    return themes.wrap(
+      PopScope(
+        canPop: true,
+        child: AnimatedBuilder(
+          animation: animation,
+          child: sheetChild,
+          builder: (context, child) {
+            final currentMotion = NocheMotion.of(context);
+            final isReverse =
+                animation.status == AnimationStatus.reverse ||
+                animation.status == AnimationStatus.dismissed;
+            final t = animation.value.clamp(0.0, 1.0);
+
+            final Widget sheetTransition;
+            if (currentMotion.reduced) {
+              final sheetOpacity = isReverse
+                  ? (1.0 -
+                            currentMotion.exit.transform(
+                              (1.0 - t).clamp(0.0, 1.0),
+                            ))
+                        .clamp(0.0, 1.0)
+                  : currentMotion.enter.transform(t).clamp(0.0, 1.0);
+              sheetTransition = Opacity(
+                key: const ValueKey('reader_settings_sheet_surface'),
+                opacity: sheetOpacity,
+                child: child,
+              );
+            } else {
+              final dy = isReverse
+                  ? currentMotion.exit.transform((1.0 - t).clamp(0.0, 1.0))
+                  : (1.0 - currentMotion.enter.transform(t));
+              sheetTransition = FractionalTranslation(
+                key: const ValueKey('reader_settings_sheet_surface'),
+                translation: Offset(0, dy),
+                child: child,
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: IgnorePointer(
+                    ignoring: isReverse,
+                    child: Semantics(
+                      button: true,
+                      label: closeLabel,
+                      onTap: _close,
+                      child: GestureDetector(
+                        key: const Key('reader-settings-closer'),
+                        behavior: HitTestBehavior.opaque,
+                        onTap: _close,
+                        child: const SizedBox.expand(),
+                      ),
+                    ),
+                  ),
+                ),
+                sheetTransition,
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _DraggableSheetDismiss extends StatefulWidget {
+  const _DraggableSheetDismiss({required this.onDismiss, required this.child});
+
+  final VoidCallback onDismiss;
+  final Widget child;
+
+  @override
+  State<_DraggableSheetDismiss> createState() => _DraggableSheetDismissState();
+}
+
+class _DraggableSheetDismissState extends State<_DraggableSheetDismiss> {
+  double _drag = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: Offset(0, _drag),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onVerticalDragUpdate: (d) =>
+            setState(() => _drag = (_drag + d.delta.dy).clamp(0, 2000)),
+        onVerticalDragEnd: (_) {
+          final close = _drag > 72;
+          setState(() => _drag = 0);
+          if (close) widget.onDismiss();
+        },
+        onVerticalDragCancel: () => setState(() => _drag = 0),
+        child: widget.child,
+      ),
+    );
+  }
+}
 
 /// Resolves a settings radio-group accessibility label using the same switch as
 /// [NocheA11y.label] (`NocheA11y.lessonLabelsInCourseLanguage` + `a11yWords`).
@@ -75,10 +256,8 @@ class ReaderSettingsSheet extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: NocheDashes.progress(
-                count: 7,
-                done: settings.step,
-                gap: 4,
+              child: _TextSizeDashes(
+                step: settings.step,
                 semanticLabel: stepText,
               ),
             ),
@@ -97,51 +276,80 @@ class ReaderSettingsSheet extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         const NocheSectionLabel('Font', bottomGap: NocheSize.grid),
-        Semantics(
-          container: true,
-          role: SemanticsRole.radioGroup,
-          label: _a11yGroup('font', 'Font', a11yWords),
-          child: Row(
-            children: [
-              Expanded(
-                child: _FontTile(
+        NocheOutlineGroup<ReaderFont>(
+          key: const Key('reader-font-group'),
+          axis: Axis.horizontal,
+          gap: NocheSize.grid,
+          borderRadius: NocheSize.tileRadius,
+          outlineColor: NocheColors.text,
+          outlineWidth: 2,
+          markFill: NocheColors.chip,
+          semanticLabel: _a11yGroup('font', 'Font', a11yWords),
+          selected: activeFont,
+          onChanged: (font) {
+            // Disabled until coqui_ui exposes NocheType.bookBodyLexend
+            // (coqui/requests/113-feature-library-needs-coqui-ui-reader-font-styles.md).
+            if (font == ReaderFont.lexend && !ReaderSettings.lexendAvailable) {
+              return;
+            }
+            onChanged(settings.copyWith(font: font));
+          },
+          options: [
+            NocheOutlineOption<ReaderFont>(
+              value: ReaderFont.literata,
+              semanticLabel: 'Literata',
+              child: ExcludeSemantics(
+                child: _FontTileContent(
                   font: ReaderFont.literata,
                   name: 'Literata',
                   selected: activeFont == ReaderFont.literata,
-                  onTap: () =>
-                      onChanged(settings.copyWith(font: ReaderFont.literata)),
+                  enabled: true,
                 ),
               ),
-              const SizedBox(width: NocheSize.grid),
-              Expanded(
-                child: _FontTile(
+            ),
+            NocheOutlineOption<ReaderFont>(
+              value: ReaderFont.atkinson,
+              semanticLabel: 'Atkinson',
+              child: ExcludeSemantics(
+                child: _FontTileContent(
                   font: ReaderFont.atkinson,
                   name: 'Atkinson',
                   selected: activeFont == ReaderFont.atkinson,
-                  onTap: () =>
-                      onChanged(settings.copyWith(font: ReaderFont.atkinson)),
+                  enabled: true,
                 ),
               ),
-              const SizedBox(width: NocheSize.grid),
-              Expanded(
-                child: _FontTile(
-                  font: ReaderFont.lexend,
-                  name: 'Lexend',
-                  selected: activeFont == ReaderFont.lexend,
-                  semanticHint: ReaderSettings.lexendAvailable
-                      ? null
-                      : 'Unavailable until Lexend font style is added',
-                  // Disabled until coqui_ui exposes NocheType.bookBodyLexend
-                  // (coqui/requests/113-feature-library-needs-coqui-ui-reader-font-styles.md).
-                  onTap: ReaderSettings.lexendAvailable
-                      ? () => onChanged(
-                          settings.copyWith(font: ReaderFont.lexend),
-                        )
-                      : null,
-                ),
-              ),
-            ],
-          ),
+            ),
+            NocheOutlineOption<ReaderFont>(
+              value: ReaderFont.lexend,
+              semanticLabel: ReaderSettings.lexendAvailable ? 'Lexend' : null,
+              child: ReaderSettings.lexendAvailable
+                  ? ExcludeSemantics(
+                      child: _FontTileContent(
+                        font: ReaderFont.lexend,
+                        name: 'Lexend',
+                        selected: activeFont == ReaderFont.lexend,
+                        enabled: true,
+                      ),
+                    )
+                  : Semantics(
+                      container: true,
+                      button: true,
+                      enabled: false,
+                      inMutuallyExclusiveGroup: true,
+                      checked: false,
+                      label: 'Lexend',
+                      hint: 'Unavailable until Lexend font style is added',
+                      child: ExcludeSemantics(
+                        child: _FontTileContent(
+                          font: ReaderFont.lexend,
+                          name: 'Lexend',
+                          selected: activeFont == ReaderFont.lexend,
+                          enabled: false,
+                        ),
+                      ),
+                    ),
+            ),
+          ],
         ),
         const SizedBox(height: NocheSize.grid),
         Text(
@@ -166,6 +374,7 @@ class ReaderSettingsSheet extends StatelessWidget {
                     bottomGap: NocheSize.grid,
                   ),
                   _LineSpacingControl(
+                    key: const Key('reader-line-spacing-control'),
                     selected: settings.spacing,
                     a11yWords: a11yWords,
                     onChanged: (spacing) =>
@@ -182,6 +391,7 @@ class ReaderSettingsSheet extends StatelessWidget {
                 children: [
                   const NocheSectionLabel('Page', bottomGap: NocheSize.grid),
                   _PageColorControl(
+                    key: const Key('reader-page-color-control'),
                     selected: settings.page,
                     a11yWords: a11yWords,
                     onChanged: (page) =>
@@ -194,12 +404,14 @@ class ReaderSettingsSheet extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         NocheSwitchRow(
+          key: const Key('reader-switch-underline'),
           label: underlineWordsLabel,
           value: settings.underlineWords,
           onChanged: (value) =>
               onChanged(settings.copyWith(underlineWords: value)),
         ),
         NocheSwitchRow(
+          key: const Key('reader-switch-lit'),
           label: lightUpSentenceLabel,
           value: settings.lightUpSentence,
           onChanged: (value) =>
@@ -227,24 +439,21 @@ class _TextSizeButton extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: semanticLabel,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Container(
-          width: 56,
-          height: NocheSize.touch,
-          alignment: AlignmentDirectional.center,
-          decoration: BoxDecoration(
-            border: Border.all(color: NocheColors.line, width: 1),
-            borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-          ),
-          child: Text(
-            'A',
-            style: NocheType.bookTitle.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: fontSize,
-              height: 1,
-              color: enabled ? NocheColors.text : NocheColors.label,
-            ),
+      builder: (context, _) => Container(
+        width: 56,
+        height: NocheSize.touch,
+        alignment: AlignmentDirectional.center,
+        decoration: BoxDecoration(
+          border: Border.all(color: NocheColors.line, width: 1),
+          borderRadius: BorderRadius.circular(NocheSize.pillRadius),
+        ),
+        child: Text(
+          'A',
+          style: NocheType.bookTitle.copyWith(
+            fontWeight: FontWeight.w500,
+            fontSize: fontSize,
+            height: 1,
+            color: enabled ? NocheColors.text : NocheColors.label,
           ),
         ),
       ),
@@ -252,71 +461,101 @@ class _TextSizeButton extends StatelessWidget {
   }
 }
 
-class _FontTile extends StatelessWidget {
-  const _FontTile({
+class _TextSizeDashes extends StatelessWidget {
+  const _TextSizeDashes({required this.step, required this.semanticLabel});
+
+  final int step;
+  final String semanticLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
+    return Semantics(
+      label: semanticLabel,
+      readOnly: true,
+      child: ExcludeSemantics(
+        child: Row(
+          children: [
+            for (var i = 0; i < 7; i++) ...[
+              if (i > 0) const SizedBox(width: 4),
+              Expanded(
+                child: AnimatedContainer(
+                  key: ValueKey('reader-size-dash-$i'),
+                  duration: motion.quick,
+                  curve: motion.enter,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: i < step ? NocheColors.text : NocheColors.line,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FontTileContent extends StatelessWidget {
+  const _FontTileContent({
     required this.font,
     required this.name,
     required this.selected,
-    required this.onTap,
-    this.semanticHint,
+    required this.enabled,
   });
 
   final ReaderFont font;
   final String name;
   final bool selected;
-  final VoidCallback? onTap;
-  final String? semanticHint;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
-    final enabled = onTap != null;
+    final motion = NocheMotion.of(context);
     final sampleColor = enabled ? NocheColors.text : NocheColors.label;
-    return _RadioOption(
-      semanticLabel: name,
-      semanticHint: semanticHint,
-      selected: selected,
-      onTap: onTap,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.98 : 1,
-        child: Container(
-          height: 80,
-          alignment: AlignmentDirectional.center,
-          decoration: BoxDecoration(
-            color: selected ? NocheColors.chip : Colors.transparent,
-            border: Border.all(
-              color: selected ? NocheColors.text : NocheColors.line,
-              width: selected ? 2 : 1,
-            ),
-            borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Ag',
-                style: ReaderSettings.previewStyleFor(font, sampleColor),
-              ),
-              const SizedBox(height: NocheSize.grid),
-              Text(
-                name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: (selected ? NocheType.tabLabelOn : NocheType.tabLabel)
-                    .copyWith(
-                      color: selected ? NocheColors.text : NocheColors.label,
-                    ),
-              ),
-            ],
-          ),
+    final labelColor = selected ? NocheColors.text : NocheColors.label;
+    final labelStyle = selected ? NocheType.tabLabelOn : NocheType.tabLabel;
+
+    return AnimatedContainer(
+      duration: motion.quick,
+      curve: motion.enter,
+      height: 80,
+      alignment: AlignmentDirectional.center,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: selected ? Colors.transparent : NocheColors.line,
+          width: 1,
         ),
+        borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Ag', style: ReaderSettings.previewStyleFor(font, sampleColor)),
+          const SizedBox(height: NocheSize.grid),
+          TweenAnimationBuilder<Color?>(
+            tween: ColorTween(end: labelColor),
+            duration: motion.quick,
+            curve: motion.enter,
+            builder: (context, color, _) => Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: labelStyle.copyWith(color: color ?? labelColor),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _LineSpacingControl extends StatelessWidget {
+class _LineSpacingControl extends StatefulWidget {
   const _LineSpacingControl({
+    super.key,
     required this.selected,
     required this.a11yWords,
     required this.onChanged,
@@ -327,29 +566,102 @@ class _LineSpacingControl extends StatelessWidget {
   final ValueChanged<ReaderLineSpacing> onChanged;
 
   @override
+  State<_LineSpacingControl> createState() => _LineSpacingControlState();
+}
+
+class _LineSpacingControlState extends State<_LineSpacingControl>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+
+  late double _fromIndex;
+  late double _toIndex;
+  bool _reducedFade = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final initial = ReaderLineSpacing.values
+        .indexOf(widget.selected)
+        .toDouble();
+    _fromIndex = initial;
+    _toIndex = initial;
+  }
+
+  @override
+  void didUpdateWidget(_LineSpacingControl oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selected == oldWidget.selected) return;
+
+    final newIdx = ReaderLineSpacing.values.indexOf(widget.selected).toDouble();
+    final oldIdx = ReaderLineSpacing.values
+        .indexOf(oldWidget.selected)
+        .toDouble();
+    final motion = NocheMotion.of(context);
+    if (motion.reduced) {
+      _fromIndex = newIdx;
+      _toIndex = newIdx;
+      _reducedFade = true;
+      _controller.duration = motion.quick;
+      _controller.forward(from: 0.0);
+    } else {
+      final current =
+          ui.lerpDouble(
+            _fromIndex,
+            _toIndex,
+            motion.travel.transform(_controller.value),
+          ) ??
+          oldIdx;
+      _fromIndex = current;
+      _toIndex = newIdx;
+      _reducedFade = false;
+      _controller.duration = motion.move;
+      _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
     final options = <(ReaderLineSpacing, NocheIconData, String)>[
       (
         ReaderLineSpacing.tight,
         NocheIcons.lineSpacingTight,
-        NocheA11y.label(NocheA11y.lineSpacingTight, courseWords: a11yWords),
+        NocheA11y.label(
+          NocheA11y.lineSpacingTight,
+          courseWords: widget.a11yWords,
+        ),
       ),
       (
         ReaderLineSpacing.normal,
         NocheIcons.lineSpacingNormal,
-        NocheA11y.label(NocheA11y.lineSpacingNormal, courseWords: a11yWords),
+        NocheA11y.label(
+          NocheA11y.lineSpacingNormal,
+          courseWords: widget.a11yWords,
+        ),
       ),
       (
         ReaderLineSpacing.loose,
         NocheIcons.lineSpacingLoose,
-        NocheA11y.label(NocheA11y.lineSpacingLoose, courseWords: a11yWords),
+        NocheA11y.label(
+          NocheA11y.lineSpacingLoose,
+          courseWords: widget.a11yWords,
+        ),
       ),
     ];
 
     return Semantics(
       container: true,
-      role: SemanticsRole.radioGroup,
-      label: _a11yGroup('lineSpacing', 'Line spacing', a11yWords),
+      role: ui.SemanticsRole.radioGroup,
+      label: _a11yGroup('lineSpacing', 'Line spacing', widget.a11yWords),
       child: Container(
         height: NocheSize.touch + 2,
         decoration: BoxDecoration(
@@ -358,43 +670,96 @@ class _LineSpacingControl extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              for (final (value, icon, label) in options)
-                Expanded(
-                  child: _RadioOption(
-                    semanticLabel: label,
-                    selected: value == selected,
-                    onTap: () => onChanged(value),
-                    builder: (context, pressed) {
-                      final isSelected = value == selected;
-                      return Transform.scale(
-                        scale: pressed ? 0.96 : 1,
-                        child: Container(
-                          alignment: AlignmentDirectional.center,
-                          decoration: isSelected
-                              ? BoxDecoration(
-                                  color: NocheColors.text,
-                                  borderRadius: BorderRadius.circular(
-                                    NocheSize.pillRadius,
-                                  ),
-                                )
-                              : null,
-                          child: NocheIcon(
-                            icon,
-                            size: 22,
-                            strokeWidth: 2,
-                            color: isSelected
-                                ? NocheColors.ground
-                                : NocheColors.label,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final slotWidth = constraints.maxWidth / options.length;
+              return Stack(
+                children: [
+                  AnimatedBuilder(
+                    animation: _controller,
+                    builder: (context, _) {
+                      final activeMotion = NocheMotion.of(context);
+                      final double pos;
+                      final double opacity;
+                      if (_reducedFade || activeMotion.reduced) {
+                        pos = _toIndex;
+                        opacity = _reducedFade
+                            ? activeMotion.enter.transform(_controller.value)
+                            : 1.0;
+                      } else {
+                        pos =
+                            ui.lerpDouble(
+                              _fromIndex,
+                              _toIndex,
+                              activeMotion.travel.transform(_controller.value),
+                            ) ??
+                            _toIndex;
+                        opacity = 1.0;
+                      }
+                      return PositionedDirectional(
+                        start: pos * slotWidth,
+                        top: 0,
+                        width: slotWidth,
+                        height: NocheSize.touch,
+                        child: IgnorePointer(
+                          child: Opacity(
+                            opacity: opacity,
+                            child: DecoratedBox(
+                              key: const ValueKey('reader-line-spacing-thumb'),
+                              decoration: BoxDecoration(
+                                color: NocheColors.text,
+                                borderRadius: BorderRadius.circular(
+                                  NocheSize.pillRadius,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       );
                     },
                   ),
-                ),
-            ],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      for (final (value, icon, label) in options)
+                        Expanded(
+                          child: Semantics(
+                            button: true,
+                            inMutuallyExclusiveGroup: true,
+                            checked: value == widget.selected,
+                            label: label,
+                            child: Pressable(
+                              onPressed: () => widget.onChanged(value),
+                              semanticsButton: false,
+                              builder: (context, _) {
+                                final targetColor = value == widget.selected
+                                    ? NocheColors.ground
+                                    : NocheColors.label;
+                                return ExcludeSemantics(
+                                  child: Container(
+                                    alignment: AlignmentDirectional.center,
+                                    child: TweenAnimationBuilder<Color?>(
+                                      tween: ColorTween(end: targetColor),
+                                      duration: motion.quick,
+                                      curve: motion.enter,
+                                      builder: (context, color, _) => NocheIcon(
+                                        icon,
+                                        size: 22,
+                                        strokeWidth: 2,
+                                        color: color ?? targetColor,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -402,8 +767,9 @@ class _LineSpacingControl extends StatelessWidget {
   }
 }
 
-class _PageColorControl extends StatelessWidget {
+class _PageColorControl extends StatefulWidget {
   const _PageColorControl({
+    super.key,
     required this.selected,
     required this.a11yWords,
     required this.onChanged,
@@ -414,170 +780,205 @@ class _PageColorControl extends StatelessWidget {
   final ValueChanged<ReaderPageTheme> onChanged;
 
   @override
+  State<_PageColorControl> createState() => _PageColorControlState();
+}
+
+class _PageColorControlState extends State<_PageColorControl>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+
+  late double _fromIndex;
+  late double _toIndex;
+  bool _reducedFade = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final initial = ReaderPageTheme.values.indexOf(widget.selected).toDouble();
+    _fromIndex = initial;
+    _toIndex = initial;
+  }
+
+  @override
+  void didUpdateWidget(_PageColorControl oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selected == oldWidget.selected) return;
+
+    final newIdx = ReaderPageTheme.values.indexOf(widget.selected).toDouble();
+    final oldIdx = ReaderPageTheme.values
+        .indexOf(oldWidget.selected)
+        .toDouble();
+    final motion = NocheMotion.of(context);
+    if (motion.reduced) {
+      _fromIndex = newIdx;
+      _toIndex = newIdx;
+      _reducedFade = true;
+      _controller.duration = motion.quick;
+      _controller.forward(from: 0.0);
+    } else {
+      final current =
+          ui.lerpDouble(
+            _fromIndex,
+            _toIndex,
+            motion.travel.transform(_controller.value),
+          ) ??
+          oldIdx;
+      _fromIndex = current;
+      _toIndex = newIdx;
+      _reducedFade = false;
+      _controller.duration = motion.move;
+      _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final options =
-        <
-          (
-            ReaderPageTheme,
-            Color fill,
-            Color ink,
-            Color? unselectedBorder,
-            String,
-          )
-        >[
+        <(ReaderPageTheme, Color fill, Color ink, Color? borderColor, String)>[
           (
             ReaderPageTheme.night,
             NocheColors.lessonGround,
             NocheColors.nightText,
             NocheColors.bar,
-            NocheA11y.label(NocheA11y.pageNight, courseWords: a11yWords),
+            NocheA11y.label(NocheA11y.pageNight, courseWords: widget.a11yWords),
           ),
           (
             ReaderPageTheme.sepia,
             NocheColors.sepiaPage,
             NocheColors.sepiaText,
             null,
-            NocheA11y.label(NocheA11y.pageSepia, courseWords: a11yWords),
+            NocheA11y.label(NocheA11y.pageSepia, courseWords: widget.a11yWords),
           ),
           (
             ReaderPageTheme.day,
             NocheColors.dayPage,
             NocheColors.dayText,
             null,
-            NocheA11y.label(NocheA11y.pageDay, courseWords: a11yWords),
+            NocheA11y.label(NocheA11y.pageDay, courseWords: widget.a11yWords),
           ),
         ];
 
     return Semantics(
       container: true,
-      role: SemanticsRole.radioGroup,
-      label: _a11yGroup('pageColour', 'Page colour', a11yWords),
-      child: Row(
-        children: [
-          for (var i = 0; i < options.length; i++) ...[
-            if (i > 0) const SizedBox(width: NocheSize.grid),
-            Expanded(
-              child: _PageColorPill(
-                fill: options[i].$2,
-                ink: options[i].$3,
-                unselectedBorder: options[i].$4,
-                semanticLabel: options[i].$5,
-                selected: options[i].$1 == selected,
-                onTap: () => onChanged(options[i].$1),
+      role: ui.SemanticsRole.radioGroup,
+      label: _a11yGroup('pageColour', 'Page colour', widget.a11yWords),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final slotWidth = (constraints.maxWidth - 2 * NocheSize.grid) / 3;
+          final stride = slotWidth + NocheSize.grid;
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, _) {
+                  final activeMotion = NocheMotion.of(context);
+                  final double pos;
+                  final double opacity;
+                  if (_reducedFade || activeMotion.reduced) {
+                    pos = _toIndex;
+                    opacity = _reducedFade
+                        ? activeMotion.enter.transform(_controller.value)
+                        : 1.0;
+                  } else {
+                    pos =
+                        ui.lerpDouble(
+                          _fromIndex,
+                          _toIndex,
+                          activeMotion.travel.transform(_controller.value),
+                        ) ??
+                        _toIndex;
+                    opacity = 1.0;
+                  }
+                  return PositionedDirectional(
+                    start: pos * stride,
+                    top: 0,
+                    width: slotWidth,
+                    height: NocheSize.touch,
+                    child: IgnorePointer(
+                      child: Opacity(
+                        opacity: opacity,
+                        child: DecoratedBox(
+                          key: const ValueKey('reader-page-color-ring'),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              NocheSize.pillRadius,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: NocheColors.text,
+                                spreadRadius: 4,
+                              ),
+                              BoxShadow(
+                                color: NocheColors.panel,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class _PageColorPill extends StatelessWidget {
-  const _PageColorPill({
-    required this.fill,
-    required this.ink,
-    required this.unselectedBorder,
-    required this.semanticLabel,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final Color fill;
-  final Color ink;
-  final Color? unselectedBorder;
-  final String semanticLabel;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return _RadioOption(
-      semanticLabel: semanticLabel,
-      selected: selected,
-      onTap: onTap,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Container(
-          height: NocheSize.touch,
-          alignment: AlignmentDirectional.center,
-          decoration: BoxDecoration(
-            color: fill,
-            borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-            border: !selected && unselectedBorder != null
-                ? Border.all(color: unselectedBorder!, width: 1)
-                : null,
-            // Paint outer 4px text ring first, then inner 2px panel ring over it
-            // (matches CSS `box-shadow: 0 0 0 2px #152A3D, 0 0 0 4px #EEF3F7`).
-            boxShadow: selected
-                ? const [
-                    BoxShadow(color: NocheColors.text, spreadRadius: 4),
-                    BoxShadow(color: NocheColors.panel, spreadRadius: 2),
-                  ]
-                : null,
-          ),
-          child: Text(
-            'A',
-            style: NocheType.bookTitle.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-              height: 1,
-              color: ink,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _RadioOption extends StatefulWidget {
-  const _RadioOption({
-    required this.semanticLabel,
-    this.semanticHint,
-    required this.selected,
-    required this.onTap,
-    required this.builder,
-  });
-
-  final String semanticLabel;
-  final String? semanticHint;
-  final bool selected;
-  final VoidCallback? onTap;
-  final Widget Function(BuildContext context, bool pressed) builder;
-
-  @override
-  State<_RadioOption> createState() => _RadioOptionState();
-}
-
-class _RadioOptionState extends State<_RadioOption> {
-  bool _down = false;
-
-  void _set(bool v) {
-    if (_down != v && mounted) setState(() => _down = v);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final enabled = widget.onTap != null;
-    return Semantics(
-      button: true,
-      enabled: enabled,
-      inMutuallyExclusiveGroup: true,
-      checked: widget.selected,
-      label: widget.semanticLabel,
-      hint: widget.semanticHint,
-      onTap: widget.onTap,
-      child: MouseRegion(
-        cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTapDown: enabled ? (_) => _set(true) : null,
-          onTapUp: enabled ? (_) => _set(false) : null,
-          onTapCancel: enabled ? () => _set(false) : null,
-          onTap: widget.onTap,
-          child: ExcludeSemantics(child: widget.builder(context, _down)),
-        ),
+              Row(
+                children: [
+                  for (var i = 0; i < options.length; i++) ...[
+                    if (i > 0) const SizedBox(width: NocheSize.grid),
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        inMutuallyExclusiveGroup: true,
+                        checked: options[i].$1 == widget.selected,
+                        label: options[i].$5,
+                        child: Pressable(
+                          onPressed: () => widget.onChanged(options[i].$1),
+                          semanticsButton: false,
+                          builder: (context, _) => ExcludeSemantics(
+                            child: Container(
+                              height: NocheSize.touch,
+                              alignment: AlignmentDirectional.center,
+                              decoration: BoxDecoration(
+                                color: options[i].$2,
+                                borderRadius: BorderRadius.circular(
+                                  NocheSize.pillRadius,
+                                ),
+                                border: options[i].$4 != null
+                                    ? Border.all(
+                                        color: options[i].$4!,
+                                        width: 1,
+                                      )
+                                    : null,
+                              ),
+                              child: Text(
+                                'A',
+                                style: NocheType.bookTitle.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  height: 1,
+                                  color: options[i].$3,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

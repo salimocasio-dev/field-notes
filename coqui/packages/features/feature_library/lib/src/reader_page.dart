@@ -35,6 +35,7 @@ class ReaderPageView extends StatelessWidget {
     required this.document,
     required this.page,
     required this.settings,
+    this.palette,
     required this.language,
     required this.earIndex,
     required this.activeSentenceId,
@@ -46,6 +47,7 @@ class ReaderPageView extends StatelessWidget {
   final ReaderDocument document;
   final ReaderPage page;
   final ReaderSettings settings;
+  final ReaderPalette? palette;
   final Language language;
   final ReaderEarIndex earIndex;
   final String? activeSentenceId;
@@ -62,7 +64,7 @@ class ReaderPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = settings.palette;
+    final activePalette = palette ?? settings.palette;
     final chapter = document.chapters[page.chapterIndex];
     final hasLabel = chapter.label != null && chapter.label!.trim().isNotEmpty;
     final hasTitle = chapter.title.trim().isNotEmpty;
@@ -88,28 +90,37 @@ class ReaderPageView extends StatelessWidget {
                     if (hasLabel)
                       Text(
                         chapter.label!.toUpperCase(),
+                        key: const Key('reader-chapter-label'),
                         textAlign: TextAlign.center,
                         textDirection: textDirection,
                         locale: locale,
-                        style: chapterLabelStyleFor(language, palette.label),
+                        style: chapterLabelStyleFor(
+                          language,
+                          activePalette.label,
+                        ),
                       ),
                     if (hasLabel && hasTitle) const SizedBox(height: 8),
                     if (hasTitle)
                       Text(
                         chapter.title,
+                        key: const Key('reader-chapter-title'),
                         textAlign: TextAlign.center,
                         textDirection: textDirection,
                         locale: locale,
-                        style: chapterTitleStyleFor(language, palette.heading),
+                        style: chapterTitleStyleFor(
+                          language,
+                          activePalette.heading,
+                        ),
                       ),
                     Container(
+                      key: const Key('reader-chapter-rule'),
                       width: 32,
                       height: 1,
                       margin: const EdgeInsetsDirectional.only(
                         top: 20,
                         bottom: 24,
                       ),
-                      color: palette.rule,
+                      color: activePalette.rule,
                     ),
                   ],
                 ),
@@ -119,6 +130,7 @@ class ReaderPageView extends StatelessWidget {
                 context,
                 chapter.paragraphs[slice.paragraphIndex],
                 slice,
+                activePalette,
               ),
           ],
         ),
@@ -130,8 +142,8 @@ class ReaderPageView extends StatelessWidget {
     BuildContext context,
     ReaderParagraph paragraph,
     PageParagraphSlice slice,
+    ReaderPalette activePalette,
   ) {
-    final palette = settings.palette;
     final locale = Locale(language.code);
     final paragraphText = paragraph.text;
 
@@ -180,7 +192,7 @@ class ReaderPageView extends StatelessWidget {
                       style: dropCapStyleFor(
                         settings,
                         language,
-                        palette.heading,
+                        activePalette.heading,
                       ),
                     ),
                   ),
@@ -197,6 +209,7 @@ class ReaderPageView extends StatelessWidget {
                   hasIndent: false,
                   hasAudio: document.hasAudio,
                   settings: settings,
+                  palette: activePalette,
                   language: language,
                   earIndex: earIndex,
                   activeSentenceId: activeSentenceId,
@@ -218,6 +231,7 @@ class ReaderPageView extends StatelessWidget {
               hasIndent: false,
               hasAudio: document.hasAudio,
               settings: settings,
+              palette: activePalette,
               language: language,
               earIndex: earIndex,
               activeSentenceId: activeSentenceId,
@@ -239,6 +253,7 @@ class ReaderPageView extends StatelessWidget {
       hasIndent: slice.hasIndent,
       hasAudio: document.hasAudio,
       settings: settings,
+      palette: activePalette,
       language: language,
       earIndex: earIndex,
       activeSentenceId: activeSentenceId,
@@ -272,6 +287,7 @@ class _ReaderTextBlock extends StatefulWidget {
     required this.hasIndent,
     required this.hasAudio,
     required this.settings,
+    this.palette,
     required this.language,
     required this.earIndex,
     required this.activeSentenceId,
@@ -289,6 +305,7 @@ class _ReaderTextBlock extends StatefulWidget {
   final bool hasIndent;
   final bool hasAudio;
   final ReaderSettings settings;
+  final ReaderPalette? palette;
   final Language language;
   final ReaderEarIndex earIndex;
   final String? activeSentenceId;
@@ -329,6 +346,11 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock>
   int? _currentSelectedOffset;
   int? _outgoingSelectedOffset;
   double _outgoingWordStartAlpha = 0.0;
+
+  late final AnimationController _underlineController = AnimationController(
+    vsync: this,
+    value: widget.settings.underlineWords ? 1.0 : 0.0,
+  );
 
   String? _effectiveLitId({
     required bool hasAudio,
@@ -396,12 +418,21 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock>
       _wordController.duration = motion.quick;
       _wordController.forward(from: 0.0);
     }
+
+    if (oldWidget.settings.underlineWords != widget.settings.underlineWords) {
+      _underlineController.animateTo(
+        widget.settings.underlineWords ? 1.0 : 0.0,
+        duration: motion.quick,
+        curve: motion.enter,
+      );
+    }
   }
 
   @override
   void dispose() {
     _litController.dispose();
     _wordController.dispose();
+    _underlineController.dispose();
     for (final r in _recognizers) {
       r?.dispose();
     }
@@ -514,7 +545,7 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock>
     double currentWordAlpha = 1.0,
     double outgoingWordAlpha = 0.0,
   }) {
-    final palette = widget.settings.palette;
+    final palette = widget.palette ?? widget.settings.palette;
     final bodyStyle = widget.settings.bodyStyle(widget.language, palette.body);
     final indentWidth = widget.settings.bodyFontSize * 1.4;
 
@@ -624,9 +655,14 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock>
     final locale = Locale(widget.language.code);
     final textScaler = MediaQuery.textScalerOf(context);
     final motion = NocheMotion.of(context);
+    final activePalette = widget.palette ?? widget.settings.palette;
 
     return AnimatedBuilder(
-      animation: Listenable.merge([_litController, _wordController]),
+      animation: Listenable.merge([
+        _litController,
+        _wordController,
+        _underlineController,
+      ]),
       builder: (context, _) {
         final litT = motion.enter.transform(_litController.value);
         final currentLitAlpha = _currentLitId != null ? litT : 0.0;
@@ -670,6 +706,8 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock>
             hasIndent: widget.hasIndent,
             indentWidth: widget.settings.bodyFontSize * 1.4,
             settings: widget.settings,
+            palette: activePalette,
+            underlineVisibility: _underlineController.value,
             language: widget.language,
             earIndex: widget.earIndex,
             currentLitId: _currentLitId,
@@ -709,6 +747,8 @@ class _ReaderTextDecorator extends CustomPainter {
     required this.hasIndent,
     required this.indentWidth,
     required this.settings,
+    this.palette,
+    this.underlineVisibility = 1.0,
     required this.language,
     required this.earIndex,
     required this.currentLitId,
@@ -734,6 +774,8 @@ class _ReaderTextDecorator extends CustomPainter {
   final bool hasIndent;
   final double indentWidth;
   final ReaderSettings settings;
+  final ReaderPalette? palette;
+  final double underlineVisibility;
   final Language language;
   final ReaderEarIndex earIndex;
   final String? currentLitId;
@@ -787,7 +829,7 @@ class _ReaderTextDecorator extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final palette = settings.palette;
+    final activePalette = palette ?? settings.palette;
     final prefix = hasIndent ? 1 : 0;
     final tp = TextPainter(
       text: span,
@@ -817,7 +859,7 @@ class _ReaderTextDecorator extends CustomPainter {
         prefix,
         outgoingLitId!,
         outgoingLitAlpha,
-        palette.lit,
+        activePalette.lit,
       );
     }
     if (currentLitId != null && currentLitAlpha > 0) {
@@ -827,7 +869,7 @@ class _ReaderTextDecorator extends CustomPainter {
         prefix,
         currentLitId!,
         currentLitAlpha,
-        palette.lit,
+        activePalette.lit,
       );
     }
 
@@ -874,12 +916,12 @@ class _ReaderTextDecorator extends CustomPainter {
         }
       }
 
-      if (!settings.underlineWords || selectionAlpha >= 1.0) continue;
+      final underlineAlpha = underlineVisibility * (1.0 - selectionAlpha);
+      if (underlineAlpha <= 0.0) continue;
 
       final mark = earIndex.markFor(full.text);
       if (mark == WordMarkKind.none || mark == WordMarkKind.known) continue;
 
-      final underlineAlpha = 1.0 - selectionAlpha;
       final neverHeardPaint = Paint()
         ..color = NocheColors.listening.withValues(
           alpha: NocheColors.listening.a * underlineAlpha,
@@ -889,8 +931,8 @@ class _ReaderTextDecorator extends CustomPainter {
         ..strokeCap = StrokeCap.butt;
 
       final learningPaint = Paint()
-        ..color = palette.label.withValues(
-          alpha: palette.label.a * underlineAlpha,
+        ..color = activePalette.label.withValues(
+          alpha: activePalette.label.a * underlineAlpha,
         )
         ..style = PaintingStyle.fill;
 
@@ -903,7 +945,7 @@ class _ReaderTextDecorator extends CustomPainter {
             neverHeardPaint,
           );
         } else {
-          // Dotted 2px underline in palette.label (2px dots every 4px).
+          // Dotted 2px underline in activePalette.label (2px dots every 4px).
           var x = box.left;
           while (x + 1.0 <= box.right) {
             final dotW = math.min(2.0, box.right - x);
@@ -927,6 +969,8 @@ class _ReaderTextDecorator extends CustomPainter {
       old.paragraph != paragraph ||
       old.language != language ||
       old.settings != settings ||
+      (old.palette ?? old.settings.palette) != (palette ?? settings.palette) ||
+      old.underlineVisibility != underlineVisibility ||
       old.currentLitId != currentLitId ||
       old.outgoingLitId != outgoingLitId ||
       old.currentLitAlpha != currentLitAlpha ||
@@ -960,6 +1004,7 @@ class ReaderWordBubbleOverlay extends StatefulWidget {
     required this.selected,
     required this.viewportSize,
     required this.settings,
+    this.palette,
     required this.language,
     required this.stageMax,
     required this.onReplay,
@@ -968,6 +1013,7 @@ class ReaderWordBubbleOverlay extends StatefulWidget {
   final SelectedWord? selected;
   final Size viewportSize;
   final ReaderSettings settings;
+  final ReaderPalette? palette;
   final Language language;
   final int stageMax;
   final ValueChanged<SelectedWord>? onReplay;
@@ -1053,19 +1099,21 @@ class _ReaderWordBubbleOverlayState extends State<ReaderWordBubbleOverlay>
     if (displayed == null) {
       return const SizedBox.shrink();
     }
+    final activePalette = widget.palette ?? widget.settings.palette;
     final placement = ReaderWordBubble.computePlacement(
       context,
       selected: displayed,
       viewportSize: widget.viewportSize,
       language: widget.language,
       stageMax: widget.stageMax,
-      color: widget.settings.palette.bubbleText,
+      color: activePalette.bubbleText,
     );
 
     final bubble = ReaderWordBubble(
       selected: displayed,
       viewportSize: widget.viewportSize,
       settings: widget.settings,
+      palette: activePalette,
       language: widget.language,
       stageMax: widget.stageMax,
       positioned: false,
@@ -1117,6 +1165,7 @@ class ReaderWordBubble extends StatelessWidget {
     required this.selected,
     required this.viewportSize,
     required this.settings,
+    this.palette,
     required this.language,
     required this.stageMax,
     required this.onTap,
@@ -1126,6 +1175,7 @@ class ReaderWordBubble extends StatelessWidget {
   final SelectedWord selected;
   final Size viewportSize;
   final ReaderSettings settings;
+  final ReaderPalette? palette;
   final Language language;
   final int stageMax;
   final VoidCallback? onTap;
@@ -1229,14 +1279,14 @@ class ReaderWordBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = settings.palette;
+    final activePalette = palette ?? settings.palette;
     final p = computePlacement(
       context,
       selected: selected,
       viewportSize: viewportSize,
       language: language,
       stageMax: stageMax,
-      color: palette.bubbleText,
+      color: activePalette.bubbleText,
     );
 
     final bubbleBody = Container(
@@ -1245,12 +1295,12 @@ class ReaderWordBubble extends StatelessWidget {
       height: p.bubbleHeight,
       padding: EdgeInsetsDirectional.only(start: p.hasClip ? 12 : 14, end: 14),
       decoration: BoxDecoration(
-        color: palette.bubbleFill,
+        color: activePalette.bubbleFill,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: palette.bubbleShadowColor.withValues(
-              alpha: palette.bubbleShadowAlpha,
+            color: activePalette.bubbleShadowColor.withValues(
+              alpha: activePalette.bubbleShadowAlpha,
             ),
             blurRadius: 18,
             offset: const Offset(0, 6),
@@ -1265,7 +1315,7 @@ class ReaderWordBubble extends StatelessWidget {
               NocheIcons.speaker,
               size: 20,
               strokeWidth: 2.2,
-              color: palette.bubbleText,
+              color: activePalette.bubbleText,
             ),
             const SizedBox(width: 8),
           ],
@@ -1290,9 +1340,12 @@ class ReaderWordBubble extends StatelessWidget {
                   height: 6,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: i < selected.stage ? palette.bubbleText : null,
+                    color: i < selected.stage ? activePalette.bubbleText : null,
                     border: i >= selected.stage
-                        ? Border.all(color: palette.bubbleText, width: 1.5)
+                        ? Border.all(
+                            color: activePalette.bubbleText,
+                            width: 1.5,
+                          )
                         : null,
                   ),
                 ),
@@ -1321,7 +1374,7 @@ class ReaderWordBubble extends StatelessWidget {
                 child: Container(
                   width: 12,
                   height: 12,
-                  color: palette.bubbleFill,
+                  color: activePalette.bubbleFill,
                 ),
               ),
             ),
