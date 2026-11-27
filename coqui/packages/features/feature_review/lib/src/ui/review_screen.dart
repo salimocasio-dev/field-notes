@@ -429,10 +429,12 @@ class ReviewEndScreen extends StatelessWidget {
                       NocheRiseIn(
                         key: const ValueKey('end_summary'),
                         delay: timing.summaryStart,
-                        child: Text(
-                          end.summary,
-                          style: NocheType.bodyLarge.copyWith(
-                            color: NocheColors.label,
+                        child: NocheLtr(
+                          child: Text(
+                            end.summary,
+                            style: NocheType.bodyLarge.copyWith(
+                              color: NocheColors.label,
+                            ),
                           ),
                         ),
                       ),

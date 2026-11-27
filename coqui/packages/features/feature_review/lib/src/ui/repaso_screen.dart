@@ -1411,10 +1411,15 @@ class _RepasoEndViewState extends State<RepasoEndView> {
                     NocheRiseIn(
                       key: const ValueKey('end_summary'),
                       delay: timing.summaryStart,
-                      child: Text(
-                        end.summary,
-                        style: NocheType.bodyLarge.copyWith(
-                          color: NocheColors.label,
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: NocheLtr(
+                          child: Text(
+                            end.summary,
+                            style: NocheType.bodyLarge.copyWith(
+                              color: NocheColors.label,
+                            ),
+                          ),
                         ),
                       ),
                     ),

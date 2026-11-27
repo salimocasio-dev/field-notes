@@ -1549,9 +1549,11 @@ class NocheStreakChip extends StatelessWidget {
               color: NocheColors.right,
             ),
             const SizedBox(width: 6),
-            Text(
-              '$count in a row',
-              style: NocheType.button.copyWith(color: NocheColors.text),
+            NocheLtr(
+              child: Text(
+                '$count in a row',
+                style: NocheType.button.copyWith(color: NocheColors.text),
+              ),
             ),
           ],
         ),
