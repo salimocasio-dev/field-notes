@@ -7,24 +7,48 @@ import 'package:coqui_platform/src/call/conv.dart';
 import 'package:web/web.dart' as web;
 
 const _packageRootAssetUrl = 'assets/assets/elevenlabs/lib.iife.js';
+const _libsamplerateAssetUrl =
+    'assets/packages/coqui_platform/assets/elevenlabs/libsamplerate.worklet.js';
+const _packageRootLibsamplerateAssetUrl =
+    'assets/assets/elevenlabs/libsamplerate.worklet.js';
 
 /// The ElevenLabs client in the page, by interop, loaded as llamada.js loads it (precarga): a
 /// classic script tag for [url] that exposes `window.ElevenLabsClient.Conversation` and sets
 /// `window.ELConv` (or `window.ELConvError`). Never imported inside the tap, and uses no inline
 /// script or `eval`.
 class JsConvLibrary implements ConvLibrary {
-  JsConvLibrary(this.url);
+  JsConvLibrary(this.url, {String packageRootAssetUrl = _packageRootAssetUrl})
+    : _packageRootUrl = packageRootAssetUrl;
 
   /// The classic IIFE script to load (llamada.js: SDK).
   final String url;
+  final String _packageRootUrl;
 
   Future<bool>? _loading;
   bool? _loaded;
+  bool _loadedFromPackageRoot = false;
 
   static bool get _has => globalContext.has('ELConv');
 
   @override
   bool? get loaded => _has ? true : _loaded;
+
+  /// Self-hosted `libsamplerate.worklet.js` path matching the asset layout that
+  /// loaded `lib.iife.js` (published `assets/packages/coqui_platform/...` or
+  /// package-root dev `assets/assets/...`).
+  String get libsampleratePath {
+    if (_loadedFromPackageRoot || url == _packageRootUrl) {
+      return _packageRootLibsamplerateAssetUrl;
+    }
+    if (url == elevenLabsClientUrl &&
+        web.document.querySelector(
+              'script[data-coqui-elconv="1"][data-coqui-elconv-package-root="1"]',
+            ) !=
+            null) {
+      return _packageRootLibsamplerateAssetUrl;
+    }
+    return _libsamplerateAssetUrl;
+  }
 
   // llamada.js: precarga
   @override
@@ -34,7 +58,11 @@ class JsConvLibrary implements ConvLibrary {
     if (going != null) return going;
     final done = Completer<bool>();
     final f = _loading = done.future;
-    _loadUrl(url, done, canFallback: url == elevenLabsClientUrl);
+    _loadUrl(
+      url,
+      done,
+      canFallback: url == elevenLabsClientUrl && _packageRootUrl != url,
+    );
     return f;
   }
 
@@ -46,6 +74,9 @@ class JsConvLibrary implements ConvLibrary {
     final s = web.document.createElement('script') as web.HTMLScriptElement;
     s.async = true;
     s.setAttribute('data-coqui-elconv', '1');
+    if (currentUrl == _packageRootUrl) {
+      s.setAttribute('data-coqui-elconv-package-root', '1');
+    }
     final once = web.AddEventListenerOptions(once: true);
     s.addEventListener(
       'load',
@@ -68,6 +99,7 @@ class JsConvLibrary implements ConvLibrary {
           if (globalContext.has('ELConvError')) {
             globalContext.delete('ELConvError'.toJS);
           }
+          _loadedFromPackageRoot = currentUrl == _packageRootUrl;
           _loaded = true;
           done.complete(true);
           return;
@@ -79,6 +111,7 @@ class JsConvLibrary implements ConvLibrary {
         );
         _loading = null; // the next precarga tries again
         _loaded = false;
+        _loadedFromPackageRoot = false;
         done.complete(false);
       }).toJS,
       once,
@@ -89,7 +122,7 @@ class JsConvLibrary implements ConvLibrary {
         if (done.isCompleted) return;
         s.remove();
         if (canFallback) {
-          _loadUrl(_packageRootAssetUrl, done, canFallback: false);
+          _loadUrl(_packageRootUrl, done, canFallback: false);
           return;
         }
         globalContext.setProperty(
@@ -98,6 +131,7 @@ class JsConvLibrary implements ConvLibrary {
         );
         _loading = null; // the next precarga tries again
         _loaded = false;
+        _loadedFromPackageRoot = false;
         done.complete(false);
       }).toJS,
       once,
@@ -118,6 +152,7 @@ class JsConvLibrary implements ConvLibrary {
     }
     final opts = JSObject()
       ..setProperty('connectionType'.toJS, o.connectionType.toJS)
+      ..setProperty('libsampleratePath'.toJS, libsampleratePath.toJS)
       ..setProperty('clientTools'.toJS, tools)
       ..setProperty(
         'onConnect'.toJS,

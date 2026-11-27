@@ -10,6 +10,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/coqui_platform.dart'
     show CallStub, CallStubScript, CallToken, CallTokenSource;
 import 'package:coqui_platform/src/call/call_session.dart';
+import 'package:coqui_platform/src/call/conv.dart';
 import 'package:coqui_platform/src/web/el_conv.dart';
 import 'package:coqui_platform/src/web/web_platform.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -98,7 +99,7 @@ void main() {
     await _ms(10);
     expect(
       _js(
-        "(()=>{const o=CallStub.opts;return [o.agentId,o.connectionType,!('overrides' in o)&&!('signedUrl' in o)&&!('conversationToken' in o),Object.keys(o.dynamicVariables).join(','),o.dynamicVariables.minutes,o.dynamicVariables.opening,typeof o.clientTools.show_picture]})()",
+        "(()=>{const o=CallStub.opts;return [o.agentId,o.connectionType,!('overrides' in o)&&!('signedUrl' in o)&&!('conversationToken' in o),Object.keys(o.dynamicVariables).join(','),o.dynamicVariables.minutes,o.dynamicVariables.opening,typeof o.clientTools.show_picture,o.libsampleratePath]})()",
       ),
       [
         'agent_3301m795q3xtfpx8c99zc0s870vm',
@@ -108,6 +109,7 @@ void main() {
         '5',
         '¡Hola! Soy Danny. ¿Cómo estás?',
         'function',
+        'assets/packages/coqui_platform/assets/elevenlabs/libsamplerate.worklet.js',
       ],
     );
   });
@@ -131,9 +133,18 @@ void main() {
     expect(source.lastWordsHeard, ['agua']);
     expect(
       _js(
-        "(()=>{const o=CallStub.opts;return [o.signedUrl,o.connectionType,!('agentId' in o),!('dynamicVariables' in o),!('conversationToken' in o),!('overrides' in o),typeof o.clientTools.show_picture]})()",
+        "(()=>{const o=CallStub.opts;return [o.signedUrl,o.connectionType,!('agentId' in o),!('dynamicVariables' in o),!('conversationToken' in o),!('overrides' in o),typeof o.clientTools.show_picture,o.libsampleratePath]})()",
       ),
-      [signedUrl, 'websocket', true, true, true, true, 'function'],
+      [
+        signedUrl,
+        'websocket',
+        true,
+        true,
+        true,
+        true,
+        'function',
+        'assets/packages/coqui_platform/assets/elevenlabs/libsamplerate.worklet.js',
+      ],
     );
     _js("CallStub.go('connect')");
     await started;
@@ -153,9 +164,18 @@ void main() {
     expect(source.calls, 1);
     expect(
       _js(
-        "(()=>{const o=CallStub.opts;return [o.conversationToken,o.connectionType,!('agentId' in o),!('dynamicVariables' in o),!('signedUrl' in o),!('overrides' in o),typeof o.clientTools.show_picture]})()",
+        "(()=>{const o=CallStub.opts;return [o.conversationToken,o.connectionType,!('agentId' in o),!('dynamicVariables' in o),!('signedUrl' in o),!('overrides' in o),typeof o.clientTools.show_picture,o.libsampleratePath]})()",
       ),
-      [conversationToken, 'webrtc', true, true, true, true, 'function'],
+      [
+        conversationToken,
+        'webrtc',
+        true,
+        true,
+        true,
+        true,
+        'function',
+        'assets/packages/coqui_platform/assets/elevenlabs/libsamplerate.worklet.js',
+      ],
     );
     _js("CallStub.go('connect')");
     await started;
@@ -429,14 +449,29 @@ void main() {
   );
 
   group('loading the library (precarga)', () {
-    setUp(() {
+    void clearLibraryState() {
       globalContext.delete('ELConv'.toJS);
       globalContext.delete('ELConvError'.toJS);
       globalContext.delete('ElevenLabsClient'.toJS);
+      globalContext.delete('__capturedOpts'.toJS);
       _js(
         'document.querySelectorAll("script[data-coqui-elconv]").forEach(e=>e.remove()),0',
       );
-    });
+    }
+
+    ConvOptions dummyOpts() => ConvOptions(
+      agentId: 'agent_test',
+      connectionType: 'websocket',
+      clientTools: const {},
+      onConnect: (_) {},
+      onDisconnect: (_) {},
+      onError: (_) {},
+      onMessage: (_) {},
+      onModeChange: (_) {},
+    );
+
+    setUp(clearLibraryState);
+    tearDown(clearLibraryState);
 
     test('a classic script that gives ElevenLabsClient.Conversation: loaded, available', () async {
       final url =
@@ -482,6 +517,58 @@ void main() {
         libraryUrl: 'http://127.0.0.1:9/x.js',
       );
       expect(s.available, isFalse);
+    });
+    test('package-root library URL passes package-root libsampleratePath to startSession', () async {
+      _js(
+        'window.ELConv={startSession(o){window.__capturedOpts=o;return Promise.reject(new Error("no"));}};0',
+      );
+      final lib = JsConvLibrary('assets/assets/elevenlabs/lib.iife.js');
+      await expectLater(
+        lib.startSession(dummyOpts()),
+        throwsA(isA<ConvStartError>()),
+      );
+      expect(
+        _js('window.__capturedOpts.libsampleratePath'),
+        'assets/assets/elevenlabs/libsamplerate.worklet.js',
+      );
+    });
+    test('primary asset failure falls back to package-root URL and passes package-root libsampleratePath', () async {
+      final fallbackDataUrl =
+          'data:text/javascript,${Uri.encodeComponent('window.ElevenLabsClient={Conversation:{startSession(o){window.__capturedOpts=o;return Promise.reject(new Error("no"));}}};')}';
+      final lib = JsConvLibrary(
+        elevenLabsClientUrl,
+        packageRootAssetUrl: fallbackDataUrl,
+      );
+      expect(await lib.load(), isTrue);
+      expect(
+        _js(
+          'document.querySelectorAll("script[data-coqui-elconv=\\"1\\"][data-coqui-elconv-package-root=\\"1\\"]").length',
+        ),
+        1,
+      );
+      expect(
+        _js('document.querySelectorAll("script[data-coqui-elconv]").length'),
+        1,
+      );
+      await expectLater(
+        lib.startSession(dummyOpts()),
+        throwsA(isA<ConvStartError>()),
+      );
+      expect(
+        _js('window.__capturedOpts.libsampleratePath'),
+        'assets/assets/elevenlabs/libsamplerate.worklet.js',
+      );
+
+      _js('window.__capturedOpts=null;0');
+      final secondLib = JsConvLibrary(elevenLabsClientUrl);
+      await expectLater(
+        secondLib.startSession(dummyOpts()),
+        throwsA(isA<ConvStartError>()),
+      );
+      expect(
+        _js('window.__capturedOpts.libsampleratePath'),
+        'assets/assets/elevenlabs/libsamplerate.worklet.js',
+      );
     });
   });
 }
