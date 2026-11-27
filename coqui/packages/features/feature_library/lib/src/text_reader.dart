@@ -67,6 +67,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   ReaderDocument? _doc;
   List<ReaderPage> _pages = const [];
   int _pageIndex = 0;
+  int _pageTurnId = 0;
+  NocheFollowSide _pageTurnSide = NocheFollowSide.end;
   int? _pendingSavedPage;
   ({int chapterIndex, int paragraphIndex, int charOffset})? _pendingSavedAnchor;
   double? _lastWidth;
@@ -376,14 +378,25 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     unawaited(_s.clips.stop().catchError((Object _) {}));
   }
 
-  void _turnToPage(int nextIndex) {
+  void _setPageWithTurn(int nextIndex) {
     if (_pages.isEmpty) return;
     final clamped = nextIndex.clamp(0, _pages.length - 1);
+    if (clamped != _pageIndex) {
+      _pageTurnSide = clamped > _pageIndex
+          ? NocheFollowSide.end
+          : NocheFollowSide.start;
+      _pageTurnId++;
+      _pageIndex = clamped;
+    }
+  }
+
+  void _turnToPage(int nextIndex) {
+    if (_pages.isEmpty) return;
     _stopNarration();
     setState(() {
       _selectedWord = null;
       _activeSentenceId = null;
-      _pageIndex = clamped;
+      _setPageWithTurn(nextIndex);
     });
     _savePlace();
   }
@@ -595,7 +608,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
         setState(() {
           if (_pages.isNotEmpty &&
               (_pageIndex < item.firstPage || _pageIndex > item.lastPage)) {
-            _pageIndex = item.firstPage.clamp(0, _pages.length - 1);
+            _setPageWithTurn(item.firstPage);
           }
           _activeSentenceId = item.sentence.id;
           _lastSentenceId = item.sentence.id;
@@ -653,7 +666,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
       _playing = true;
       _selectedWord = null;
       if (_pageIndex < target!.firstPage || _pageIndex > target.lastPage) {
-        _pageIndex = target.firstPage;
+        _setPageWithTurn(target.firstPage);
       }
       _activeSentenceId = target.sentence.id;
       _lastSentenceId = target.sentence.id;
@@ -898,23 +911,21 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
       message: ReaderTexts.close,
       child: Pressable(
         key: const Key('reader-close-button'),
+        disc: true,
         onPressed: _close,
         semanticLabel: NocheA11y.label(
           NocheA11y.back,
           courseWords: lang.a11yWords,
         ),
-        builder: (context, pressed) => Transform.scale(
-          scale: pressed ? 0.94 : 1,
-          child: SizedBox(
-            width: NocheSize.touch,
-            height: NocheSize.touch,
-            child: Center(
-              child: NocheIcon(
-                NocheIcons.back,
-                size: 24,
-                strokeWidth: 2.2,
-                color: palette.chromeIcon,
-              ),
+        builder: (context, _) => SizedBox(
+          width: NocheSize.touch,
+          height: NocheSize.touch,
+          child: Center(
+            child: NocheIcon(
+              NocheIcons.back,
+              size: 24,
+              strokeWidth: 2.2,
+              color: palette.chromeIcon,
             ),
           ),
         ),
@@ -1006,56 +1017,52 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                         ),
                       ),
                       Pressable(
+                        disc: true,
                         onPressed: _openSettings,
                         semanticLabel: NocheA11y.label(
                           NocheA11y.textAndPage,
                           courseWords: lang.a11yWords,
                         ),
                         selected: _settingsOpen ? true : null,
-                        builder: (context, pressed) => Transform.scale(
-                          scale: pressed ? 0.94 : 1,
-                          child: Container(
-                            width: NocheSize.touch,
-                            height: NocheSize.touch,
-                            alignment: AlignmentDirectional.center,
-                            decoration: _settingsOpen
-                                ? BoxDecoration(
-                                    color: palette.chromeIcon,
-                                    shape: BoxShape.circle,
-                                  )
-                                : null,
-                            child: Text(
-                              'Aa',
-                              style: NocheType.bookTitle.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
-                                height: 1,
-                                color: _settingsOpen
-                                    ? palette.ground
-                                    : palette.chromeIcon,
-                              ),
+                        builder: (context, _) => Container(
+                          width: NocheSize.touch,
+                          height: NocheSize.touch,
+                          alignment: AlignmentDirectional.center,
+                          decoration: _settingsOpen
+                              ? BoxDecoration(
+                                  color: palette.chromeIcon,
+                                  shape: BoxShape.circle,
+                                )
+                              : null,
+                          child: Text(
+                            'Aa',
+                            style: NocheType.bookTitle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                              height: 1,
+                              color: _settingsOpen
+                                  ? palette.ground
+                                  : palette.chromeIcon,
                             ),
                           ),
                         ),
                       ),
                       Pressable(
+                        disc: true,
                         onPressed: _openChapters,
                         semanticLabel: NocheA11y.label(
                           NocheA11y.chapters,
                           courseWords: lang.a11yWords,
                         ),
-                        builder: (context, pressed) => Transform.scale(
-                          scale: pressed ? 0.94 : 1,
-                          child: SizedBox(
-                            width: NocheSize.touch,
-                            height: NocheSize.touch,
-                            child: Center(
-                              child: NocheIcon(
-                                NocheIcons.chapters,
-                                size: 24,
-                                strokeWidth: 2.2,
-                                color: palette.chromeIcon,
-                              ),
+                        builder: (context, _) => SizedBox(
+                          width: NocheSize.touch,
+                          height: NocheSize.touch,
+                          child: Center(
+                            child: NocheIcon(
+                              NocheIcons.chapters,
+                              size: 24,
+                              strokeWidth: 2.2,
+                              color: palette.chromeIcon,
                             ),
                           ),
                         ),
@@ -1111,34 +1118,44 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                           clipBehavior: Clip.none,
                           children: [
                             Positioned.fill(
-                              child: ReaderPageView(
-                                document: doc,
-                                page: currentPage,
-                                settings: _settings,
-                                language: lang,
-                                earIndex: earIndex,
-                                activeSentenceId: _activeSentenceId,
-                                selectedWord: _selectedWord,
-                                viewportKey: _viewportKey,
-                                onWordTap: (c, p, offset, tok, rect) =>
-                                    unawaited(
-                                      _handleWordTap(c, p, offset, tok, rect),
-                                    ),
+                              child: NocheFollow(
+                                key: const Key('reader-page-follow'),
+                                contentKey: _pageTurnId,
+                                side: _pageTurnSide,
+                                distance: NocheMotion.page,
+                                child: SizedBox.expand(
+                                  child: ReaderPageView(
+                                    document: doc,
+                                    page: currentPage,
+                                    settings: _settings,
+                                    language: lang,
+                                    earIndex: earIndex,
+                                    activeSentenceId: _activeSentenceId,
+                                    selectedWord: _selectedWord,
+                                    viewportKey: _viewportKey,
+                                    onWordTap: (c, p, offset, tok, rect) =>
+                                        unawaited(
+                                          _handleWordTap(
+                                            c,
+                                            p,
+                                            offset,
+                                            tok,
+                                            rect,
+                                          ),
+                                        ),
+                                  ),
+                                ),
                               ),
                             ),
-                            if (_selectedWord case final selected?)
-                              ReaderWordBubble(
-                                selected: selected,
-                                viewportSize: viewportSize,
-                                settings: _settings,
-                                language: lang,
-                                stageMax: widget.stageMax,
-                                onTap: selected.clipId == null
-                                    ? null
-                                    : () => unawaited(
-                                        _replaySelectedWord(selected),
-                                      ),
-                              ),
+                            ReaderWordBubbleOverlay(
+                              selected: _selectedWord,
+                              viewportSize: viewportSize,
+                              settings: _settings,
+                              language: lang,
+                              stageMax: widget.stageMax,
+                              onReplay: (selected) =>
+                                  unawaited(_replaySelectedWord(selected)),
+                            ),
                           ],
                         ),
                       ),
@@ -1146,7 +1163,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                   },
                 ),
               ),
-              _buildFooter(doc, lang, palette),
+              _buildFooter(context, doc, lang, palette),
             ],
           ),
         ),
@@ -1155,10 +1172,12 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   }
 
   Widget _buildFooter(
+    BuildContext context,
     ReaderDocument doc,
     Language lang,
     ReaderPalette palette,
   ) {
+    final motion = NocheMotion.of(context);
     final total = math.max(1, _pages.length);
     final current = _pages.isEmpty ? 1 : _pageIndex + 1;
     final minLeft = _pages.isEmpty
@@ -1182,12 +1201,14 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                   args: {'current': '$current', 'total': '$total'},
                 ),
                 child: ExcludeSemantics(
-                  child: Text(
-                    '$current / $total',
-                    key: const Key('reader-page-counter'),
-                    style: NocheType.bodySmall.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: palette.label,
+                  child: NocheLtr(
+                    child: Text(
+                      '$current / $total',
+                      key: const Key('reader-page-counter'),
+                      style: NocheType.bodySmall.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: palette.label,
+                      ),
                     ),
                   ),
                 ),
@@ -1200,35 +1221,43 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                   args: {'minutes': '$minLeft'},
                 ),
                 child: ExcludeSemantics(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      NocheIcon(
-                        NocheIcons.clock,
-                        size: 14,
-                        strokeWidth: 2.4,
-                        color: palette.label,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        '$minLeft min',
-                        style: NocheType.bodySmall.copyWith(
-                          fontWeight: FontWeight.w600,
+                  child: NocheLtr(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        NocheIcon(
+                          NocheIcons.clock,
+                          size: 14,
+                          strokeWidth: 2.4,
                           color: palette.label,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 6),
+                        Text(
+                          '$minLeft min',
+                          style: NocheType.bodySmall.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: palette.label,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          NocheProgressBar(
-            value: current / total,
-            height: 4,
-            trackColor: palette.track,
-            color: palette.label,
+          TweenAnimationBuilder<double>(
+            key: ValueKey('reader-progress-bar-anim:${_pages.isNotEmpty}'),
+            tween: Tween<double>(end: current / total),
+            duration: motion.reduced ? Duration.zero : motion.move,
+            curve: motion.travel,
+            builder: (context, animatedValue, _) => NocheProgressBar(
+              value: animatedValue,
+              height: 4,
+              trackColor: palette.track,
+              color: palette.label,
+            ),
           ),
           if (doc.hasAudio) ...[
             const SizedBox(height: 20),
@@ -1236,35 +1265,31 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Pressable(
+                  disc: true,
                   onPressed: () => unawaited(_repeatSentence()),
                   semanticLabel: NocheA11y.label(
                     NocheA11y.sentenceAgain,
                     courseWords: lang.a11yWords,
                   ),
-                  builder: (context, pressed) => Transform.scale(
-                    scale: pressed ? 0.94 : 1,
-                    child: Container(
-                      width: NocheSize.touch,
-                      height: NocheSize.touch,
-                      alignment: AlignmentDirectional.center,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: palette.rule, width: 1),
-                      ),
-                      child: NocheIcon(
-                        NocheIcons.sentenceAgain,
-                        size: 22,
-                        strokeWidth: 2.2,
-                        color: palette.chromeIcon,
-                      ),
+                  builder: (context, _) => Container(
+                    width: NocheSize.touch,
+                    height: NocheSize.touch,
+                    alignment: AlignmentDirectional.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: palette.rule, width: 1),
+                    ),
+                    child: NocheIcon(
+                      NocheIcons.sentenceAgain,
+                      size: 22,
+                      strokeWidth: 2.2,
+                      color: palette.chromeIcon,
                     ),
                   ),
                 ),
                 const SizedBox(width: 32),
-                NochePlayDisc(
-                  size: NocheSize.disc,
-                  icon: _playing ? NocheIcons.pause : NocheIcons.play,
-                  iconSize: _playing ? 26 : 28,
+                _ReaderPlayDisc(
+                  playing: _playing,
                   semanticLabel: NocheA11y.label(
                     _playing ? NocheA11y.pause : NocheA11y.listen,
                     courseWords: lang.a11yWords,
@@ -1273,19 +1298,19 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                 ),
                 const SizedBox(width: 32),
                 Pressable(
+                  disc: true,
                   onPressed: () => _updateSettings(_settings.cycleSpeed()),
                   semanticLabel:
                       '${NocheA11y.label(NocheA11y.speed, courseWords: lang.a11yWords)}: ${_settings.speedLabel}',
-                  builder: (context, pressed) => Transform.scale(
-                    scale: pressed ? 0.94 : 1,
-                    child: Container(
-                      width: NocheSize.touch,
-                      height: NocheSize.touch,
-                      alignment: AlignmentDirectional.center,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: palette.rule, width: 1),
-                      ),
+                  builder: (context, _) => Container(
+                    width: NocheSize.touch,
+                    height: NocheSize.touch,
+                    alignment: AlignmentDirectional.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: palette.rule, width: 1),
+                    ),
+                    child: NocheLtr(
                       child: Text(
                         _settings.speedLabel,
                         style: NocheType.bodySmall.copyWith(
@@ -1301,6 +1326,65 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _ReaderPlayDisc extends StatelessWidget {
+  const _ReaderPlayDisc({
+    required this.playing,
+    required this.semanticLabel,
+    required this.onPressed,
+  });
+
+  final bool playing;
+  final String semanticLabel;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
+    return Pressable(
+      key: const Key('reader-play-disc'),
+      onPressed: onPressed,
+      semanticLabel: semanticLabel,
+      disc: true,
+      builder: (context, _) => Container(
+        width: NocheSize.disc,
+        height: NocheSize.disc,
+        alignment: AlignmentDirectional.center,
+        decoration: const BoxDecoration(
+          color: NocheColors.next,
+          shape: BoxShape.circle,
+        ),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            AnimatedOpacity(
+              key: const Key('reader-play-icon'),
+              opacity: playing ? 0.0 : 1.0,
+              duration: motion.quick,
+              curve: motion.enter,
+              child: const NocheIcon(
+                NocheIcons.play,
+                size: 28,
+                color: NocheColors.onAccent,
+              ),
+            ),
+            AnimatedOpacity(
+              key: const Key('reader-pause-icon'),
+              opacity: playing ? 1.0 : 0.0,
+              duration: motion.quick,
+              curve: motion.enter,
+              child: const NocheIcon(
+                NocheIcons.pause,
+                size: 26,
+                color: NocheColors.onAccent,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1336,72 +1420,69 @@ class _ChapterRow extends StatelessWidget {
       onPressed: onPressed,
       semanticLabel: labelText,
       selected: selected,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.99 : 1,
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 56),
-          padding: const EdgeInsetsDirectional.symmetric(vertical: 8),
-          decoration: showTopBorder
-              ? const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(color: NocheColors.line, width: 1),
-                  ),
-                )
-              : null,
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (hasLabel) ...[
-                      Text(
-                        chapter.label!.toUpperCase(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textDirection: courseDir,
-                        locale: locale,
-                        style: NocheType.forScript(
-                          NocheType.label,
-                          language.script,
-                        ).copyWith(color: NocheColors.label),
-                      ),
-                      const SizedBox(height: 2),
-                    ],
+      builder: (context, _) => Container(
+        constraints: const BoxConstraints(minHeight: 56),
+        padding: const EdgeInsetsDirectional.symmetric(vertical: 8),
+        decoration: showTopBorder
+            ? const BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: NocheColors.line, width: 1),
+                ),
+              )
+            : null,
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (hasLabel) ...[
                     Text(
-                      chapter.title,
-                      maxLines: 2,
+                      chapter.label!.toUpperCase(),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textDirection: courseDir,
                       locale: locale,
                       style: NocheType.forScript(
-                        NocheType.row,
+                        NocheType.label,
                         language.script,
-                      ).copyWith(color: NocheColors.text),
+                      ).copyWith(color: NocheColors.label),
                     ),
+                    const SizedBox(height: 2),
                   ],
+                  Text(
+                    chapter.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textDirection: courseDir,
+                    locale: locale,
+                    style: NocheType.forScript(
+                      NocheType.row,
+                      language.script,
+                    ).copyWith(color: NocheColors.text),
+                  ),
+                ],
+              ),
+            ),
+            if (selected) ...[
+              const SizedBox(width: 12),
+              Container(
+                width: 32,
+                height: 32,
+                alignment: AlignmentDirectional.center,
+                decoration: const BoxDecoration(
+                  color: NocheColors.text,
+                  shape: BoxShape.circle,
+                ),
+                child: const NocheIcon(
+                  NocheIcons.check,
+                  size: 18,
+                  color: NocheColors.ground,
                 ),
               ),
-              if (selected) ...[
-                const SizedBox(width: 12),
-                Container(
-                  width: 32,
-                  height: 32,
-                  alignment: AlignmentDirectional.center,
-                  decoration: const BoxDecoration(
-                    color: NocheColors.text,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const NocheIcon(
-                    NocheIcons.check,
-                    size: 18,
-                    color: NocheColors.ground,
-                  ),
-                ),
-              ],
             ],
-          ),
+          ],
         ),
       ),
     );

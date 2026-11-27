@@ -307,15 +307,53 @@ class _ReaderTextBlock extends StatefulWidget {
   State<_ReaderTextBlock> createState() => _ReaderTextBlockState();
 }
 
-class _ReaderTextBlockState extends State<_ReaderTextBlock> {
+class _ReaderTextBlockState extends State<_ReaderTextBlock>
+    with TickerProviderStateMixin {
   final _blockKey = GlobalKey();
   final _recognizers = <TapGestureRecognizer?>[];
   late List<WordToken> _tokens;
   late List<WordToken> _fullTokens;
 
+  late final AnimationController _litController = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+  String? _currentLitId;
+  String? _outgoingLitId;
+  double _outgoingLitStartAlpha = 0.0;
+
+  late final AnimationController _wordController = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+  int? _currentSelectedOffset;
+  int? _outgoingSelectedOffset;
+  double _outgoingWordStartAlpha = 0.0;
+
+  String? _effectiveLitId({
+    required bool hasAudio,
+    required bool lightUpSentence,
+    required String? activeSentenceId,
+  }) => hasAudio && lightUpSentence ? activeSentenceId : null;
+
+  int? _selectedOffsetForBlock(SelectedWord? sel) {
+    if (sel == null) return null;
+    if (sel.chapterIndex != widget.chapterIndex ||
+        sel.paragraphIndex != widget.paragraphIndex) {
+      return null;
+    }
+    return sel.charOffset;
+  }
+
   @override
   void initState() {
     super.initState();
+    _currentLitId = _effectiveLitId(
+      hasAudio: widget.hasAudio,
+      lightUpSentence: widget.settings.lightUpSentence,
+      activeSentenceId: widget.activeSentenceId,
+    );
+    _currentSelectedOffset = _selectedOffsetForBlock(widget.selectedWord);
     _rebuildRecognizers();
   }
 
@@ -329,10 +367,41 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
         oldWidget.earIndex != widget.earIndex) {
       _rebuildRecognizers();
     }
+
+    final motion = NocheMotion.of(context);
+    final newLit = _effectiveLitId(
+      hasAudio: widget.hasAudio,
+      lightUpSentence: widget.settings.lightUpSentence,
+      activeSentenceId: widget.activeSentenceId,
+    );
+    if (newLit != _currentLitId) {
+      final prevAlpha = _currentLitId == null
+          ? 0.0
+          : motion.enter.transform(_litController.value);
+      _outgoingLitId = _currentLitId;
+      _outgoingLitStartAlpha = prevAlpha;
+      _currentLitId = newLit;
+      _litController.duration = motion.quick;
+      _litController.forward(from: 0.0);
+    }
+
+    final newWordOffset = _selectedOffsetForBlock(widget.selectedWord);
+    if (newWordOffset != _currentSelectedOffset) {
+      final prevAlpha = _currentSelectedOffset == null
+          ? 0.0
+          : motion.enter.transform(_wordController.value);
+      _outgoingSelectedOffset = _currentSelectedOffset;
+      _outgoingWordStartAlpha = prevAlpha;
+      _currentSelectedOffset = newWordOffset;
+      _wordController.duration = motion.quick;
+      _wordController.forward(from: 0.0);
+    }
   }
 
   @override
   void dispose() {
+    _litController.dispose();
+    _wordController.dispose();
     for (final r in _recognizers) {
       r?.dispose();
     }
@@ -426,39 +495,62 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
     );
   }
 
-  TextSpan _buildSpan({required bool includeRecognizers}) {
+  ({int start, int end})? _localRangeForSentence(String? sentenceId) {
+    if (sentenceId == null) return null;
+    for (final r in widget.paragraph.sentenceRanges) {
+      if (r.sentence.id == sentenceId) {
+        final s = math.max(r.start, widget.charStart) - widget.charStart;
+        final e = math.min(r.end, widget.charEnd) - widget.charStart;
+        return s < e ? (start: s, end: e) : null;
+      }
+    }
+    return null;
+  }
+
+  TextSpan _buildSpan({
+    required bool includeRecognizers,
+    double currentLitAlpha = 1.0,
+    double outgoingLitAlpha = 0.0,
+    double currentWordAlpha = 1.0,
+    double outgoingWordAlpha = 0.0,
+  }) {
     final palette = widget.settings.palette;
     final bodyStyle = widget.settings.bodyStyle(widget.language, palette.body);
     final indentWidth = widget.settings.bodyFontSize * 1.4;
-    final ranges = widget.paragraph.sentenceRanges;
 
-    ({int start, int end})? activeRange;
-    if (widget.hasAudio &&
-        widget.settings.lightUpSentence &&
-        widget.activeSentenceId != null) {
-      for (final r in ranges) {
-        if (r.sentence.id == widget.activeSentenceId) {
-          final s = math.max(r.start, widget.charStart) - widget.charStart;
-          final e = math.min(r.end, widget.charEnd) - widget.charStart;
-          if (s < e) {
-            activeRange = (start: s, end: e);
-          }
-          break;
-        }
+    final currentLitRange = currentLitAlpha > 0
+        ? _localRangeForSentence(_currentLitId)
+        : null;
+    final outgoingLitRange =
+        outgoingLitAlpha > 0 && _outgoingLitId != _currentLitId
+        ? _localRangeForSentence(_outgoingLitId)
+        : null;
+
+    double litAlphaAt(int localOffset) {
+      if (currentLitRange != null &&
+          localOffset >= currentLitRange.start &&
+          localOffset < currentLitRange.end) {
+        return currentLitAlpha;
       }
+      if (outgoingLitRange != null &&
+          localOffset >= outgoingLitRange.start &&
+          localOffset < outgoingLitRange.end) {
+        return outgoingLitAlpha;
+      }
+      return 0.0;
     }
 
-    bool isLitLocal(int localOffset) =>
-        activeRange != null &&
-        localOffset >= activeRange.start &&
-        localOffset < activeRange.end;
-
-    bool isSelectedToken(WordToken full) {
-      final sel = widget.selectedWord;
-      if (sel == null) return false;
-      return sel.chapterIndex == widget.chapterIndex &&
-          sel.paragraphIndex == widget.paragraphIndex &&
-          sel.charOffset == full.start;
+    double selectionAlphaFor(WordToken full) {
+      if (_currentSelectedOffset != null &&
+          full.start == _currentSelectedOffset) {
+        return currentWordAlpha;
+      }
+      if (_outgoingSelectedOffset != null &&
+          _outgoingSelectedOffset != _currentSelectedOffset &&
+          full.start == _outgoingSelectedOffset) {
+        return outgoingWordAlpha;
+      }
+      return 0.0;
     }
 
     final children = <InlineSpan>[];
@@ -468,28 +560,27 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
 
     void addGapText(int start, int end) {
       if (start >= end) return;
-      final active = activeRange;
-      if (active == null || end <= active.start || start >= active.end) {
-        children.add(TextSpan(text: widget.text.substring(start, end)));
-        return;
+      final cuts = <int>{start, end};
+      for (final r in [currentLitRange, outgoingLitRange]) {
+        if (r == null) continue;
+        if (r.start > start && r.start < end) cuts.add(r.start);
+        if (r.end > start && r.end < end) cuts.add(r.end);
       }
-      if (start < active.start) {
-        children.add(
-          TextSpan(text: widget.text.substring(start, active.start)),
-        );
-      }
-      final litS = math.max(start, active.start);
-      final litE = math.min(end, active.end);
-      if (litS < litE) {
+      final sorted = cuts.toList()..sort();
+      for (var i = 0; i < sorted.length - 1; i++) {
+        final s = sorted[i];
+        final e = sorted[i + 1];
+        if (s >= e) continue;
+        final alpha = litAlphaAt(s);
+        final color = alpha > 0
+            ? Color.lerp(palette.body, palette.litText, alpha)
+            : null;
         children.add(
           TextSpan(
-            text: widget.text.substring(litS, litE),
-            style: TextStyle(color: palette.litText),
+            text: widget.text.substring(s, e),
+            style: color == null ? null : TextStyle(color: color),
           ),
         );
-      }
-      if (end > active.end) {
-        children.add(TextSpan(text: widget.text.substring(active.end, end)));
       }
     }
 
@@ -499,18 +590,20 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
       if (token.start > cursor) {
         addGapText(cursor, token.start);
       }
-      final selected = isSelectedToken(_fullTokens[i]);
-      final lit = isLitLocal(token.start);
-      TextStyle? tokenStyle;
-      if (selected) {
-        tokenStyle = TextStyle(color: palette.ground);
-      } else if (lit) {
-        tokenStyle = TextStyle(color: palette.litText);
-      }
+      final litAlpha = litAlphaAt(token.start);
+      final selAlpha = selectionAlphaFor(_fullTokens[i]);
+      final litColor = litAlpha > 0
+          ? Color.lerp(palette.body, palette.litText, litAlpha)!
+          : palette.body;
+      final tokenColor = selAlpha > 0
+          ? Color.lerp(litColor, palette.ground, selAlpha)!
+          : litColor;
       children.add(
         TextSpan(
           text: token.text,
-          style: tokenStyle,
+          style: (litAlpha > 0 || selAlpha > 0)
+              ? TextStyle(color: tokenColor)
+              : null,
           recognizer: includeRecognizers ? _recognizers[i] : null,
         ),
       );
@@ -525,44 +618,81 @@ class _ReaderTextBlockState extends State<_ReaderTextBlock> {
 
   @override
   Widget build(BuildContext context) {
-    final span = _buildSpan(includeRecognizers: true);
-    final paintSpan = _buildSpan(includeRecognizers: false);
     final textDirection = widget.language.direction == LanguageDirection.rtl
         ? TextDirection.rtl
         : TextDirection.ltr;
     final locale = Locale(widget.language.code);
     final textScaler = MediaQuery.textScalerOf(context);
+    final motion = NocheMotion.of(context);
 
-    return CustomPaint(
-      painter: _ReaderTextDecorator(
-        span: paintSpan,
-        paragraph: widget.paragraph,
-        chapterIndex: widget.chapterIndex,
-        paragraphIndex: widget.paragraphIndex,
-        charStart: widget.charStart,
-        charEnd: widget.charEnd,
-        text: widget.text,
-        tokens: _tokens,
-        fullTokens: _fullTokens,
-        hasIndent: widget.hasIndent,
-        indentWidth: widget.settings.bodyFontSize * 1.4,
-        hasAudio: widget.hasAudio,
-        settings: widget.settings,
-        language: widget.language,
-        earIndex: widget.earIndex,
-        activeSentenceId: widget.activeSentenceId,
-        selectedWord: widget.selectedWord,
-        textDirection: textDirection,
-        locale: locale,
-        textScaler: textScaler,
-      ),
-      child: Text.rich(
-        span,
-        key: _blockKey,
-        textDirection: textDirection,
-        textAlign: TextAlign.start,
-        locale: locale,
-      ),
+    return AnimatedBuilder(
+      animation: Listenable.merge([_litController, _wordController]),
+      builder: (context, _) {
+        final litT = motion.enter.transform(_litController.value);
+        final currentLitAlpha = _currentLitId != null ? litT : 0.0;
+        final outgoingLitAlpha =
+            (_outgoingLitId != null && _outgoingLitId != _currentLitId)
+            ? _outgoingLitStartAlpha * (1.0 - litT)
+            : 0.0;
+
+        final wordT = motion.enter.transform(_wordController.value);
+        final currentWordAlpha = _currentSelectedOffset != null ? wordT : 0.0;
+        final outgoingWordAlpha =
+            (_outgoingSelectedOffset != null &&
+                _outgoingSelectedOffset != _currentSelectedOffset)
+            ? _outgoingWordStartAlpha * (1.0 - wordT)
+            : 0.0;
+
+        final span = _buildSpan(
+          includeRecognizers: true,
+          currentLitAlpha: currentLitAlpha,
+          outgoingLitAlpha: outgoingLitAlpha,
+          currentWordAlpha: currentWordAlpha,
+          outgoingWordAlpha: outgoingWordAlpha,
+        );
+        final paintSpan = _buildSpan(
+          includeRecognizers: false,
+          currentLitAlpha: currentLitAlpha,
+          outgoingLitAlpha: outgoingLitAlpha,
+          currentWordAlpha: currentWordAlpha,
+          outgoingWordAlpha: outgoingWordAlpha,
+        );
+
+        return CustomPaint(
+          painter: _ReaderTextDecorator(
+            span: paintSpan,
+            paragraph: widget.paragraph,
+            charStart: widget.charStart,
+            charEnd: widget.charEnd,
+            text: widget.text,
+            tokens: _tokens,
+            fullTokens: _fullTokens,
+            hasIndent: widget.hasIndent,
+            indentWidth: widget.settings.bodyFontSize * 1.4,
+            settings: widget.settings,
+            language: widget.language,
+            earIndex: widget.earIndex,
+            currentLitId: _currentLitId,
+            outgoingLitId: _outgoingLitId,
+            currentLitAlpha: currentLitAlpha,
+            outgoingLitAlpha: outgoingLitAlpha,
+            currentSelectedOffset: _currentSelectedOffset,
+            outgoingSelectedOffset: _outgoingSelectedOffset,
+            currentWordAlpha: currentWordAlpha,
+            outgoingWordAlpha: outgoingWordAlpha,
+            textDirection: textDirection,
+            locale: locale,
+            textScaler: textScaler,
+          ),
+          child: Text.rich(
+            span,
+            key: _blockKey,
+            textDirection: textDirection,
+            textAlign: TextAlign.start,
+            locale: locale,
+          ),
+        );
+      },
     );
   }
 }
@@ -571,8 +701,6 @@ class _ReaderTextDecorator extends CustomPainter {
   _ReaderTextDecorator({
     required this.span,
     required this.paragraph,
-    required this.chapterIndex,
-    required this.paragraphIndex,
     required this.charStart,
     required this.charEnd,
     required this.text,
@@ -580,12 +708,17 @@ class _ReaderTextDecorator extends CustomPainter {
     required this.fullTokens,
     required this.hasIndent,
     required this.indentWidth,
-    required this.hasAudio,
     required this.settings,
     required this.language,
     required this.earIndex,
-    required this.activeSentenceId,
-    required this.selectedWord,
+    required this.currentLitId,
+    required this.outgoingLitId,
+    required this.currentLitAlpha,
+    required this.outgoingLitAlpha,
+    required this.currentSelectedOffset,
+    required this.outgoingSelectedOffset,
+    required this.currentWordAlpha,
+    required this.outgoingWordAlpha,
     required this.textDirection,
     required this.locale,
     required this.textScaler,
@@ -593,8 +726,6 @@ class _ReaderTextDecorator extends CustomPainter {
 
   final TextSpan span;
   final ReaderParagraph paragraph;
-  final int chapterIndex;
-  final int paragraphIndex;
   final int charStart;
   final int charEnd;
   final String text;
@@ -602,15 +733,57 @@ class _ReaderTextDecorator extends CustomPainter {
   final List<WordToken> fullTokens;
   final bool hasIndent;
   final double indentWidth;
-  final bool hasAudio;
   final ReaderSettings settings;
   final Language language;
   final ReaderEarIndex earIndex;
-  final String? activeSentenceId;
-  final SelectedWord? selectedWord;
+  final String? currentLitId;
+  final String? outgoingLitId;
+  final double currentLitAlpha;
+  final double outgoingLitAlpha;
+  final int? currentSelectedOffset;
+  final int? outgoingSelectedOffset;
+  final double currentWordAlpha;
+  final double outgoingWordAlpha;
   final TextDirection textDirection;
   final Locale locale;
   final TextScaler textScaler;
+
+  void _paintSentenceHighlight(
+    Canvas canvas,
+    TextPainter tp,
+    int prefix,
+    String sentenceId,
+    double alpha,
+    Color baseColor,
+  ) {
+    if (alpha <= 0) return;
+    for (final r in paragraph.sentenceRanges) {
+      if (r.sentence.id != sentenceId) continue;
+      final overlapStart = math.max(r.start, charStart);
+      final overlapEnd = math.min(r.end, charEnd);
+      if (overlapStart >= overlapEnd) continue;
+      final boxes = tp.getBoxesForSelection(
+        TextSelection(
+          baseOffset: prefix + (overlapStart - charStart),
+          extentOffset: prefix + (overlapEnd - charStart),
+        ),
+      );
+      final litPaint = Paint()
+        ..color = baseColor.withValues(alpha: baseColor.a * alpha);
+      for (final box in boxes) {
+        final rect = Rect.fromLTWH(
+          box.left - 3,
+          box.top + 1,
+          (box.right - box.left) + 6,
+          (box.bottom - box.top) - 2,
+        );
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(rect, const Radius.circular(6)),
+          litPaint,
+        );
+      }
+    }
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -634,56 +807,45 @@ class _ReaderTextDecorator extends CustomPainter {
     }
     tp.layout(maxWidth: size.width);
 
-    // 1. Lit active sentence background.
-    if (hasAudio && settings.lightUpSentence && activeSentenceId != null) {
-      for (final r in paragraph.sentenceRanges) {
-        if (r.sentence.id != activeSentenceId) continue;
-        final overlapStart = math.max(r.start, charStart);
-        final overlapEnd = math.min(r.end, charEnd);
-        if (overlapStart >= overlapEnd) continue;
-        final boxes = tp.getBoxesForSelection(
-          TextSelection(
-            baseOffset: prefix + (overlapStart - charStart),
-            extentOffset: prefix + (overlapEnd - charStart),
-          ),
-        );
-        final litPaint = Paint()..color = palette.lit;
-        for (final box in boxes) {
-          final rect = Rect.fromLTWH(
-            box.left - 3,
-            box.top + 1,
-            (box.right - box.left) + 6,
-            (box.bottom - box.top) - 2,
-          );
-          canvas.drawRRect(
-            RRect.fromRectAndRadius(rect, const Radius.circular(6)),
-            litPaint,
-          );
-        }
-      }
+    // 1. Lit active & outgoing sentence backgrounds.
+    if (outgoingLitId != null &&
+        outgoingLitId != currentLitId &&
+        outgoingLitAlpha > 0) {
+      _paintSentenceHighlight(
+        canvas,
+        tp,
+        prefix,
+        outgoingLitId!,
+        outgoingLitAlpha,
+        palette.lit,
+      );
+    }
+    if (currentLitId != null && currentLitAlpha > 0) {
+      _paintSentenceHighlight(
+        canvas,
+        tp,
+        prefix,
+        currentLitId!,
+        currentLitAlpha,
+        palette.lit,
+      );
     }
 
     // 2. Underlines and selected word highlight.
-    final neverHeardPaint = Paint()
-      ..color = NocheColors.listening
-      ..strokeWidth = 2.0
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.butt;
-
-    final learningPaint = Paint()
-      ..color = palette.label
-      ..style = PaintingStyle.fill;
-
-    final selectedPaint = Paint()..color = NocheColors.listening;
-
     for (var i = 0; i < tokens.length; i++) {
       final token = tokens[i];
       final full = fullTokens[i];
-      final isSelected =
-          selectedWord != null &&
-          selectedWord!.chapterIndex == chapterIndex &&
-          selectedWord!.paragraphIndex == paragraphIndex &&
-          selectedWord!.charOffset == full.start;
+      final double selectionAlpha;
+      if (currentSelectedOffset != null &&
+          full.start == currentSelectedOffset) {
+        selectionAlpha = currentWordAlpha;
+      } else if (outgoingSelectedOffset != null &&
+          outgoingSelectedOffset != currentSelectedOffset &&
+          full.start == outgoingSelectedOffset) {
+        selectionAlpha = outgoingWordAlpha;
+      } else {
+        selectionAlpha = 0.0;
+      }
 
       final boxes = tp.getBoxesForSelection(
         TextSelection(
@@ -693,7 +855,11 @@ class _ReaderTextDecorator extends CustomPainter {
       );
       if (boxes.isEmpty) continue;
 
-      if (isSelected) {
+      if (selectionAlpha > 0) {
+        final selectedPaint = Paint()
+          ..color = NocheColors.listening.withValues(
+            alpha: NocheColors.listening.a * selectionAlpha,
+          );
         for (final box in boxes) {
           final rect = Rect.fromLTWH(
             box.left - 4,
@@ -706,13 +872,27 @@ class _ReaderTextDecorator extends CustomPainter {
             selectedPaint,
           );
         }
-        continue;
       }
 
-      if (!settings.underlineWords) continue;
+      if (!settings.underlineWords || selectionAlpha >= 1.0) continue;
 
       final mark = earIndex.markFor(full.text);
       if (mark == WordMarkKind.none || mark == WordMarkKind.known) continue;
+
+      final underlineAlpha = 1.0 - selectionAlpha;
+      final neverHeardPaint = Paint()
+        ..color = NocheColors.listening.withValues(
+          alpha: NocheColors.listening.a * underlineAlpha,
+        )
+        ..strokeWidth = 2.0
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.butt;
+
+      final learningPaint = Paint()
+        ..color = palette.label.withValues(
+          alpha: palette.label.a * underlineAlpha,
+        )
+        ..style = PaintingStyle.fill;
 
       for (final box in boxes) {
         final y = box.bottom - 2.0;
@@ -744,15 +924,191 @@ class _ReaderTextDecorator extends CustomPainter {
       old.charStart != charStart ||
       old.charEnd != charEnd ||
       old.hasIndent != hasIndent ||
-      old.hasAudio != hasAudio ||
       old.paragraph != paragraph ||
       old.language != language ||
       old.settings != settings ||
-      old.activeSentenceId != activeSentenceId ||
-      old.selectedWord != selectedWord ||
+      old.currentLitId != currentLitId ||
+      old.outgoingLitId != outgoingLitId ||
+      old.currentLitAlpha != currentLitAlpha ||
+      old.outgoingLitAlpha != outgoingLitAlpha ||
+      old.currentSelectedOffset != currentSelectedOffset ||
+      old.outgoingSelectedOffset != outgoingSelectedOffset ||
+      old.currentWordAlpha != currentWordAlpha ||
+      old.outgoingWordAlpha != outgoingWordAlpha ||
       old.earIndex != earIndex ||
       old.textDirection != textDirection ||
       old.textScaler != textScaler;
+}
+
+typedef WordBubblePlacement = ({
+  double bubbleWidth,
+  double bubbleHeight,
+  double bubbleStart,
+  double bubbleTop,
+  double pointerOffsetFromBubbleStart,
+  bool placeAbove,
+  bool hasClip,
+  TextStyle textStyle,
+  TextDirection wordDirection,
+  Locale locale,
+  int dotsCount,
+});
+
+class ReaderWordBubbleOverlay extends StatefulWidget {
+  const ReaderWordBubbleOverlay({
+    super.key,
+    required this.selected,
+    required this.viewportSize,
+    required this.settings,
+    required this.language,
+    required this.stageMax,
+    required this.onReplay,
+  });
+
+  final SelectedWord? selected;
+  final Size viewportSize;
+  final ReaderSettings settings;
+  final Language language;
+  final int stageMax;
+  final ValueChanged<SelectedWord>? onReplay;
+
+  @override
+  State<ReaderWordBubbleOverlay> createState() =>
+      _ReaderWordBubbleOverlayState();
+}
+
+class _ReaderWordBubbleOverlayState extends State<ReaderWordBubbleOverlay>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(vsync: this)
+    ..addStatusListener(_handleStatus);
+
+  SelectedWord? _displayed;
+  bool _exiting = false;
+
+  static bool _sameWord(SelectedWord a, SelectedWord b) =>
+      a.chapterIndex == b.chapterIndex &&
+      a.paragraphIndex == b.paragraphIndex &&
+      a.charOffset == b.charOffset &&
+      a.token == b.token;
+
+  void _handleStatus(AnimationStatus status) {
+    if (status == AnimationStatus.dismissed &&
+        _exiting &&
+        widget.selected == null &&
+        mounted) {
+      setState(() {
+        _displayed = null;
+        _exiting = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _displayed = widget.selected;
+    if (_displayed != null) {
+      _controller.value = 1.0;
+    }
+  }
+
+  @override
+  void didUpdateWidget(ReaderWordBubbleOverlay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final next = widget.selected;
+    final motion = NocheMotion.of(context);
+    if (next != null) {
+      if (_displayed == null || _exiting || !_sameWord(_displayed!, next)) {
+        _displayed = next;
+        _exiting = false;
+        _controller.duration = motion.quick;
+        _controller.forward(from: 0.0);
+      } else {
+        _displayed = next;
+      }
+    } else if (_displayed != null && !_exiting) {
+      if (_controller.value <= 0.0) {
+        _displayed = null;
+        _exiting = false;
+        _controller.stop();
+      } else {
+        _exiting = true;
+        _controller.reverseDuration = motion.press;
+        _controller.reverse(from: _controller.value);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller
+      ..removeStatusListener(_handleStatus)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final displayed = _displayed;
+    if (displayed == null) {
+      return const SizedBox.shrink();
+    }
+    final placement = ReaderWordBubble.computePlacement(
+      context,
+      selected: displayed,
+      viewportSize: widget.viewportSize,
+      language: widget.language,
+      stageMax: widget.stageMax,
+      color: widget.settings.palette.bubbleText,
+    );
+
+    final bubble = ReaderWordBubble(
+      selected: displayed,
+      viewportSize: widget.viewportSize,
+      settings: widget.settings,
+      language: widget.language,
+      stageMax: widget.stageMax,
+      positioned: false,
+      onTap: _exiting || displayed.clipId == null || widget.onReplay == null
+          ? null
+          : () => widget.onReplay!(displayed),
+    );
+
+    return PositionedDirectional(
+      start: placement.bubbleStart,
+      top: placement.bubbleTop,
+      child: AnimatedBuilder(
+        animation: _controller,
+        child: _exiting
+            ? IgnorePointer(child: ExcludeSemantics(child: bubble))
+            : bubble,
+        builder: (context, child) {
+          final motion = NocheMotion.of(context);
+          final double opacity;
+          final double dy;
+          if (_exiting) {
+            final u = (1.0 - _controller.value).clamp(0.0, 1.0);
+            final easedExit = motion.exit.transform(u);
+            opacity = (1.0 - easedExit).clamp(0.0, 1.0);
+            dy = motion.row * easedExit;
+          } else {
+            final t = motion.enter.transform(_controller.value.clamp(0.0, 1.0));
+            opacity = t.clamp(0.0, 1.0);
+            dy = motion.row * (1.0 - t);
+          }
+          return Transform.translate(
+            key: const Key('reader-word-bubble-motion'),
+            offset: Offset(0, dy),
+            child: Opacity(
+              key: const Key('reader-word-bubble-opacity'),
+              opacity: opacity,
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
 class ReaderWordBubble extends StatelessWidget {
@@ -764,6 +1120,7 @@ class ReaderWordBubble extends StatelessWidget {
     required this.language,
     required this.stageMax,
     required this.onTap,
+    this.positioned = true,
   });
 
   final SelectedWord selected;
@@ -772,15 +1129,21 @@ class ReaderWordBubble extends StatelessWidget {
   final Language language;
   final int stageMax;
   final VoidCallback? onTap;
+  final bool positioned;
 
-  @override
-  Widget build(BuildContext context) {
-    final palette = settings.palette;
+  static WordBubblePlacement computePlacement(
+    BuildContext context, {
+    required SelectedWord selected,
+    required Size viewportSize,
+    required Language language,
+    required int stageMax,
+    required Color color,
+  }) {
     final hasClip = selected.clipId != null;
     final textStyle = NocheType.forScript(
       NocheType.primarySmall,
       language.script,
-    ).copyWith(color: palette.bubbleText);
+    ).copyWith(color: color);
     final stackDirection = Directionality.of(context);
     final wordDirection = language.direction == LanguageDirection.rtl
         ? TextDirection.rtl
@@ -803,48 +1166,84 @@ class ReaderWordBubble extends StatelessWidget {
         .toDouble();
     const bubbleHeight = 44.0;
     const pointerGap = 8.0;
+    const minInset = 16.0;
+    const pageEdgeInset = 24.0;
 
     final wordRect = selected.rectInViewport;
     final wordCenterX = wordRect.center.dx;
-    final maxStart = math.max(16.0, viewportSize.width - 16.0 - bubbleWidth);
-
-    final double bubbleLeft;
+    final double wordStart;
+    final double wordEnd;
+    final double wordCenterFromStart;
     if (stackDirection == TextDirection.rtl) {
-      final wordCenterFromEnd = viewportSize.width - wordCenterX;
-      final start = (wordCenterFromEnd - bubbleWidth / 2)
-          .clamp(16.0, maxStart)
-          .toDouble();
-      bubbleLeft = viewportSize.width - start - bubbleWidth;
+      wordStart = viewportSize.width - wordRect.right;
+      wordEnd = viewportSize.width - wordRect.left;
+      wordCenterFromStart = viewportSize.width - wordCenterX;
     } else {
-      bubbleLeft = (wordCenterX - bubbleWidth / 2)
-          .clamp(16.0, maxStart)
-          .toDouble();
+      wordStart = wordRect.left;
+      wordEnd = wordRect.right;
+      wordCenterFromStart = wordCenterX;
     }
 
-    final placeAbove = wordRect.top >= bubbleHeight + pointerGap + 8.0;
-    final bubbleTop = placeAbove
-        ? (wordRect.top - bubbleHeight - pointerGap)
-        : (wordRect.bottom + pointerGap)
-              .clamp(
-                8.0,
-                math.max(8.0, viewportSize.height - bubbleHeight - 8.0),
-              )
-              .toDouble();
+    final maxStart = math.max(
+      minInset,
+      viewportSize.width - minInset - bubbleWidth,
+    );
+    final centered = wordCenterFromStart - bubbleWidth / 2;
+    final double rawStart;
+    if (centered < pageEdgeInset) {
+      rawStart = wordStart - 4.0;
+    } else if (centered + bubbleWidth > viewportSize.width - pageEdgeInset) {
+      rawStart = wordEnd + 4.0 - bubbleWidth;
+    } else {
+      rawStart = centered;
+    }
+    final bubbleStart = rawStart.clamp(minInset, maxStart).toDouble();
 
-    final bubbleStart = stackDirection == TextDirection.rtl
-        ? viewportSize.width - bubbleLeft - bubbleWidth
-        : bubbleLeft;
+    final placeAbove = wordRect.top >= bubbleHeight + pointerGap + 8.0;
+    final rawTop = placeAbove
+        ? (wordRect.top - bubbleHeight - pointerGap)
+        : (wordRect.bottom + pointerGap);
+    final bubbleTop = rawTop
+        .clamp(8.0, math.max(8.0, viewportSize.height - bubbleHeight - 8.0))
+        .toDouble();
+
     final pointerOffsetFromBubbleStart =
-        (stackDirection == TextDirection.rtl
-                ? (viewportSize.width - wordCenterX) - bubbleStart - 6.0
-                : wordCenterX - bubbleStart - 6.0)
+        (wordCenterFromStart - bubbleStart - 6.0)
             .clamp(12.0, math.max(12.0, bubbleWidth - 24.0))
             .toDouble();
 
+    return (
+      bubbleWidth: bubbleWidth,
+      bubbleHeight: bubbleHeight,
+      bubbleStart: bubbleStart,
+      bubbleTop: bubbleTop,
+      pointerOffsetFromBubbleStart: pointerOffsetFromBubbleStart,
+      placeAbove: placeAbove,
+      hasClip: hasClip,
+      textStyle: textStyle,
+      wordDirection: wordDirection,
+      locale: locale,
+      dotsCount: dotsCount,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = settings.palette;
+    final p = computePlacement(
+      context,
+      selected: selected,
+      viewportSize: viewportSize,
+      language: language,
+      stageMax: stageMax,
+      color: palette.bubbleText,
+    );
+
     final bubbleBody = Container(
-      width: bubbleWidth,
-      height: bubbleHeight,
-      padding: EdgeInsetsDirectional.only(start: hasClip ? 12 : 14, end: 14),
+      key: const Key('reader-word-bubble-body'),
+      width: p.bubbleWidth,
+      height: p.bubbleHeight,
+      padding: EdgeInsetsDirectional.only(start: p.hasClip ? 12 : 14, end: 14),
       decoration: BoxDecoration(
         color: palette.bubbleFill,
         borderRadius: BorderRadius.circular(22),
@@ -861,7 +1260,7 @@ class ReaderWordBubble extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (hasClip) ...[
+          if (p.hasClip) ...[
             NocheIcon(
               NocheIcons.speaker,
               size: 20,
@@ -875,16 +1274,16 @@ class ReaderWordBubble extends StatelessWidget {
               selected.token,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              textDirection: wordDirection,
-              locale: locale,
-              style: textStyle,
+              textDirection: p.wordDirection,
+              locale: p.locale,
+              style: p.textStyle,
             ),
           ),
           const SizedBox(width: 10),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              for (var i = 0; i < dotsCount; i++) ...[
+              for (var i = 0; i < p.dotsCount; i++) ...[
                 if (i > 0) const SizedBox(width: 3),
                 Container(
                   width: 6,
@@ -904,35 +1303,38 @@ class ReaderWordBubble extends StatelessWidget {
       ),
     );
 
-    return PositionedDirectional(
-      start: bubbleStart,
-      top: bubbleTop,
-      child: Semantics(
-        button: hasClip,
-        label: selected.token,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: onTap,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              bubbleBody,
-              PositionedDirectional(
-                start: pointerOffsetFromBubbleStart,
-                top: placeAbove ? bubbleHeight - 7.0 : -5.0,
-                child: Transform.rotate(
-                  angle: math.pi / 4,
-                  child: Container(
-                    width: 12,
-                    height: 12,
-                    color: palette.bubbleFill,
-                  ),
+    final content = Semantics(
+      button: p.hasClip,
+      label: selected.token,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            bubbleBody,
+            PositionedDirectional(
+              start: p.pointerOffsetFromBubbleStart,
+              top: p.placeAbove ? p.bubbleHeight - 7.0 : -5.0,
+              child: Transform.rotate(
+                angle: math.pi / 4,
+                child: Container(
+                  width: 12,
+                  height: 12,
+                  color: palette.bubbleFill,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+
+    if (!positioned) return content;
+    return PositionedDirectional(
+      start: p.bubbleStart,
+      top: p.bubbleTop,
+      child: content,
     );
   }
 }

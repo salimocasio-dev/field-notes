@@ -465,7 +465,7 @@ void main() {
         await settle(tester);
 
         // Unrecorded learner book hides audio footer controls.
-        expect(find.byType(NochePlayDisc), findsNothing);
+        expect(find.byKey(const Key('reader-play-disc')), findsNothing);
         expect(find.text('0.9×'), findsNothing);
 
         // Tap recorded word "Casa": opens bubble with speaker + 5 stage dots, plays solo clip.
@@ -485,7 +485,7 @@ void main() {
           find.textContaining('Casa', findRichText: true),
         );
         await tester.tapAt(centerOfWord('Casa'));
-        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pump(NocheMotion.quick);
         await settle(tester);
 
         expect(find.byType(ReaderWordBubble), findsOneWidget);
@@ -510,6 +510,8 @@ void main() {
 
         // Tap elsewhere dismisses bubble.
         await tester.tapAt(Offset(rect.left + 120, rect.bottom + 80));
+        await tester.pump();
+        await tester.pump(NocheMotion.press);
         await settle(tester);
         expect(find.byType(ReaderWordBubble), findsNothing);
 
@@ -520,6 +522,7 @@ void main() {
 
         // Tap unrecorded word "azul": bubble opens without speaker icon and plays nothing.
         await tester.tapAt(centerOfWord('azul'));
+        await tester.pump(NocheMotion.quick);
         await settle(tester);
         expect(find.byType(ReaderWordBubble), findsOneWidget);
         expect(clips.played, ['solo-casa', 'solo-casa']);
@@ -583,7 +586,7 @@ void main() {
           const Offset(300, 0),
           800,
         );
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(find.text('PART II'), findsNothing);
       },
     );
@@ -615,7 +618,7 @@ void main() {
         await settle(tester);
 
         // Audio controls visible for recorded book.
-        expect(find.byType(NochePlayDisc), findsOneWidget);
+        expect(find.byKey(const Key('reader-play-disc')), findsOneWidget);
         expect(find.text('0.9×'), findsOneWidget);
 
         // Touch targets >= 48x48 on header and footer buttons.
@@ -643,7 +646,7 @@ void main() {
         expect(find.text('0.9×'), findsOneWidget);
 
         // Start Listen: plays first clip, lights active sentence, shows Pause disc.
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         expect(clips.played, ['u1']);
         expect(
@@ -757,11 +760,11 @@ void main() {
           const Offset(-300, 0),
           800,
         );
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(find.textContaining('2 / '), findsOneWidget);
 
         // Pressing Listen on page 2 plays overlapping sentence s2 without jumping back to page 1.
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         expect(clips.played, ['s2']);
         expect(find.textContaining('2 / '), findsOneWidget);
@@ -1019,7 +1022,7 @@ void main() {
         );
         await settle(tester);
 
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         expect(clips.played, ['f1']);
 
@@ -1219,7 +1222,7 @@ void main() {
           ),
         );
         await settle(tester);
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         clock.advance(const Duration(seconds: 6));
         await tester.pump(const Duration(milliseconds: 250));
@@ -1242,7 +1245,7 @@ void main() {
         );
         await settle(tester);
 
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         expect(clips.played, ['l1']);
 
@@ -1320,7 +1323,7 @@ void main() {
         );
         await settle(tester);
 
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         expect(clips.preloaded, ['s1']);
         expect(clips.played, isEmpty);
@@ -1346,7 +1349,7 @@ void main() {
         );
         await settle(tester);
 
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         clock.advance(const Duration(seconds: 10));
         clips.finishPreload();
@@ -1409,7 +1412,7 @@ void main() {
         );
         await settle(tester);
 
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         expect(
           find.bySemanticsLabel(NocheA11y.label(NocheA11y.pause)),
@@ -1435,7 +1438,7 @@ void main() {
           findsOneWidget,
         );
 
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         clock.advance(const Duration(seconds: 6));
         await tester.pump(const Duration(milliseconds: 350));
@@ -1447,6 +1450,8 @@ void main() {
       },
     );
   });
+
+  _addMotionTests();
 
   group('Reader screenshots', () {
     for (final size in _shotViewports) {
@@ -1584,7 +1589,7 @@ void main() {
         await settle(tester);
 
         // Start playback on c1, advance into c2 ("La cocina olía a sofrito y a café."), then tap "parcha".
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 250));
         await tester.pump();
@@ -1686,5 +1691,599 @@ void main() {
         await _saveScreenshot(tester, 'reader_large_text_$tag.png');
       });
     }
+  });
+}
+
+class _MotionRecordingCanvas implements Canvas {
+  final List<({RRect rrect, int argb, double alpha})> rrects = [];
+
+  @override
+  void drawRRect(RRect rrect, Paint paint) {
+    rrects.add((
+      rrect: rrect,
+      argb: paint.color.toARGB32(),
+      alpha: paint.color.a,
+    ));
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+_MotionRecordingCanvas _paintReaderDecorations(WidgetTester tester) {
+  final canvas = _MotionRecordingCanvas();
+  final customPaints = find.descendant(
+    of: find.byType(ReaderPageView),
+    matching: find.byType(CustomPaint),
+  );
+  for (final element in customPaints.evaluate()) {
+    final widget = element.widget as CustomPaint;
+    final painter = widget.painter;
+    final box = element.renderObject as RenderBox?;
+    if (painter != null && box != null && box.hasSize) {
+      painter.paint(canvas, box.size);
+    }
+  }
+  return canvas;
+}
+
+double _followIncomingDx(WidgetTester tester) => tester
+    .widget<Transform>(find.byKey(const ValueKey('noche_follow_incoming')))
+    .transform
+    .getTranslation()
+    .x;
+
+double _bubbleMotionDy(WidgetTester tester) => tester
+    .widget<Transform>(find.byKey(const Key('reader-word-bubble-motion')))
+    .transform
+    .getTranslation()
+    .y;
+
+double _bubbleOpacity(WidgetTester tester) => tester
+    .widget<Opacity>(find.byKey(const Key('reader-word-bubble-opacity')))
+    .opacity;
+
+Offset _centerOfWordToken(WidgetTester tester, String word) {
+  final para = tester.renderObject(
+    find.textContaining(word, findRichText: true).first,
+  ) as RenderParagraph;
+  final plain = para.text.toPlainText();
+  final idx = plain.indexOf(word);
+  expect(idx, greaterThanOrEqualTo(0), reason: 'word "$word" not found');
+  final boxes = para.getBoxesForSelection(
+    TextSelection(baseOffset: idx, extentOffset: idx + word.length),
+  );
+  expect(boxes, isNotEmpty, reason: 'no box for "$word"');
+  return para.localToGlobal(boxes.first.toRect().center);
+}
+
+void _addMotionTests() {
+  group('N8.13 Reader motion', () {
+    testWidgets(
+      'page turn uses NocheFollow with distance page in Spanish LTR and animates progress bar',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final services = fakeServices();
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final book = await _addLongMultiChapterBook(store);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              services: services,
+              id: book.id,
+              initialSettings: const ReaderSettings(step: 1),
+            ),
+          ),
+        );
+        await settle(tester);
+
+        expect(find.text('1 / 2'), findsOneWidget);
+        final follow = tester.widget<NocheFollow>(
+          find.byKey(const Key('reader-page-follow')),
+        );
+        expect(follow.distance, NocheMotion.page);
+        expect(
+          tester.widget<NocheProgressBar>(find.byType(NocheProgressBar)).value,
+          closeTo(0.5, 1e-6),
+        );
+
+        // Turn forward via swipe left: incoming page arrives from end (+x in LTR).
+        await tester.fling(
+          find.byType(ReaderPageView),
+          const Offset(-300, 0),
+          800,
+        );
+        await tester.pump();
+        expect(_followIncomingDx(tester), closeTo(NocheMotion.page, 0.01));
+
+        await tester.pump(NocheMotion.followAfter + NocheMotion.move ~/ 2);
+        final midDxFwd = _followIncomingDx(tester);
+        expect(midDxFwd, greaterThan(0));
+        expect(midDxFwd, lessThan(NocheMotion.page));
+        final midProgress = tester
+            .widget<NocheProgressBar>(find.byType(NocheProgressBar))
+            .value;
+        expect(midProgress, greaterThan(0.5));
+        expect(midProgress, lessThan(1.0));
+
+        await tester.pump(NocheMotion.move);
+        await tester.pump();
+        expect(_followIncomingDx(tester), 0.0);
+        expect(
+          tester.widget<NocheProgressBar>(find.byType(NocheProgressBar)).value,
+          closeTo(1.0, 1e-6),
+        );
+        expect(find.text('2 / 2'), findsOneWidget);
+
+        // Turn back via tap on start edge: incoming page arrives from start (-x in LTR).
+        final readerRect = tester.getRect(find.byType(TextReader));
+        await tester.tapAt(Offset(readerRect.left + 20, readerRect.center.dy));
+        await tester.pump();
+        expect(_followIncomingDx(tester), closeTo(-NocheMotion.page, 0.01));
+
+        await tester.pump(NocheMotion.followAfter + NocheMotion.move ~/ 2);
+        final midDxBack = _followIncomingDx(tester);
+        expect(midDxBack, lessThan(0));
+        expect(midDxBack, greaterThan(-NocheMotion.page));
+
+        await tester.pump(NocheMotion.move);
+        await tester.pump();
+        expect(_followIncomingDx(tester), 0.0);
+        expect(find.text('1 / 2'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'page turn mirrors direction in Arabic RTL and keeps numbers LTR via NocheLtr',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final course = _CourseWithWords(language: _arabicLanguage());
+        final services = fakeServices(course: course);
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final longAr = List.filled(
+          18,
+          'هذا بيت جدة الكبير في المدينة القديمة والنافذة مفتوحة على البحر.',
+        ).join(' ');
+        final book = await store.add(
+          now: 20,
+          title: 'رحلة البيت',
+          body: longAr,
+          generated: false,
+          chapters: [
+            ReadingChapter(
+              label: 'القسم الأول',
+              title: 'بيت جدة',
+              paragraphs: [longAr],
+            ),
+            const ReadingChapter(
+              label: 'القسم الثاني',
+              title: 'باب البيت',
+              paragraphs: ['الآن جدة عند باب البيت.'],
+            ),
+          ],
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              services: services,
+              id: book.id,
+              initialSettings: const ReaderSettings(step: 6),
+            ),
+          ),
+        );
+        await settle(tester);
+
+        expect(
+          Directionality.of(
+            tester.element(find.byKey(const Key('reader-page-counter'))),
+          ),
+          TextDirection.ltr,
+        );
+        expect(
+          Directionality.of(tester.element(find.textContaining('min'))),
+          TextDirection.ltr,
+        );
+
+        // Turn forward in RTL: end side is left (-x).
+        final readerRect = tester.getRect(find.byType(TextReader));
+        await tester.tapAt(Offset(readerRect.left + 20, readerRect.center.dy));
+        await tester.pump();
+        expect(_followIncomingDx(tester), closeTo(-NocheMotion.page, 0.01));
+
+        await tester.pump(NocheMotion.followAfter + NocheMotion.move ~/ 2);
+        final midRtlFwd = _followIncomingDx(tester);
+        expect(midRtlFwd, lessThan(0));
+        expect(midRtlFwd, greaterThan(-NocheMotion.page));
+
+        await tester.pump(NocheMotion.move);
+        await tester.pump();
+        expect(_followIncomingDx(tester), 0.0);
+        expect(find.textContaining('2 / '), findsOneWidget);
+
+        // Turn back in RTL via swipe left: start side is right (+x).
+        await tester.fling(
+          find.byType(ReaderPageView),
+          const Offset(-300, 0),
+          800,
+        );
+        await tester.pump();
+        expect(_followIncomingDx(tester), closeTo(NocheMotion.page, 0.01));
+
+        await tester.pump(NocheMotion.followAfter + NocheMotion.move ~/ 2);
+        final midRtlBack = _followIncomingDx(tester);
+        expect(midRtlBack, greaterThan(0));
+        expect(midRtlBack, lessThan(NocheMotion.page));
+
+        await tester.pump(NocheMotion.move);
+        await tester.pump();
+        expect(_followIncomingDx(tester), 0.0);
+        expect(find.textContaining('1 / '), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'listening cross-fades play/pause icons, transitions lit sentence in quick, and auto-turns page with first sentence lit',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final filler = List.filled(
+          16,
+          'Caminamos despacio por la orilla del mar escuchando las olas.',
+        ).join(' ');
+        final course = _CourseWithWords(
+          books: {
+            'auto-turn': Book(
+              id: 'auto-turn',
+              title: 'Turno',
+              readable: true,
+              pages: [
+                BookPage(image: 'img/1.png', clips: ['a1', 'a2']),
+                BookPage(image: 'img/2.png', clips: ['b1']),
+              ],
+            ),
+          },
+          stories: {
+            'auto-turn': {
+              'title': 'Turno',
+              'clips': {
+                'a1': line('narr', 'Primera frase en la cocina.'),
+                'a2': line('narr', filler),
+                'b1': line('narr', 'Primera frase de la segunda página.'),
+              },
+            },
+          },
+          recorded: {'a1', 'a2', 'b1'},
+        );
+        final clips = TimedClips(length: const Duration(milliseconds: 300));
+        final services = fakeServices(course: course, clips: clips);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              services: services,
+              id: 'auto-turn',
+              initialSettings: const ReaderSettings(step: 7),
+            ),
+          ),
+        );
+        await settle(tester);
+
+        double playIconOpacity() => tester
+            .widget<FadeTransition>(
+              find.descendant(
+                of: find.byKey(const Key('reader-play-icon')),
+                matching: find.byType(FadeTransition),
+              ),
+            )
+            .opacity
+            .value;
+
+        double pauseIconOpacity() => tester
+            .widget<FadeTransition>(
+              find.descendant(
+                of: find.byKey(const Key('reader-pause-icon')),
+                matching: find.byType(FadeTransition),
+              ),
+            )
+            .opacity
+            .value;
+
+        expect(playIconOpacity(), 1.0);
+        expect(pauseIconOpacity(), 0.0);
+
+        // Tap Listen: play/pause cross-fade in quick.
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
+        await tester.pump();
+        await tester.pump(NocheMotion.quick ~/ 2);
+        expect(playIconOpacity(), greaterThan(0.0));
+        expect(playIconOpacity(), lessThan(1.0));
+        expect(pauseIconOpacity(), greaterThan(0.0));
+        expect(pauseIconOpacity(), lessThan(1.0));
+
+        await tester.pump(NocheMotion.quick ~/ 2);
+        expect(playIconOpacity(), 0.0);
+        expect(pauseIconOpacity(), 1.0);
+        expect(clips.played, ['a1']);
+
+        // Finish a1 (300 - 140 = 160ms left) -> advances to a2 on same page.
+        await tester.pump(const Duration(milliseconds: 160));
+        await tester.pump();
+        expect(clips.played, ['a1', 'a2']);
+
+        // Midpoint of quick sentence-lit transition: outgoing a1 and incoming a2 both have partial alpha.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midLit = _paintReaderDecorations(tester);
+        final litRectsMid = midLit.rrects
+            .where(
+              (r) =>
+                  (r.argb & 0x00FFFFFF) ==
+                  (NocheColors.litSentence.toARGB32() & 0x00FFFFFF),
+            )
+            .toList();
+        expect(litRectsMid.length, greaterThanOrEqualTo(2));
+        expect(litRectsMid.any((r) => r.alpha > 0.0 && r.alpha < 1.0), isTrue);
+
+        await tester.pump(NocheMotion.quick ~/ 2);
+        // Finish a2 (300 - 140 = 160ms left) -> auto-turns to page with b1 lit as it arrives.
+        await tester.pump(const Duration(milliseconds: 160));
+        await tester.pump();
+        expect(clips.played, ['a1', 'a2', 'b1']);
+        expect(_followIncomingDx(tester), greaterThan(0));
+
+        // First sentence of arrived page is already lit at full alpha during arrival.
+        final arrivedLit = _paintReaderDecorations(tester);
+        final fullLitRects = arrivedLit.rrects
+            .where((r) => r.argb == NocheColors.litSentence.toARGB32())
+            .toList();
+        expect(fullLitRects, isNotEmpty);
+
+        await tester.pump(NocheMotion.followAfter + NocheMotion.move);
+        await tester.pump(const Duration(milliseconds: 350));
+        await settle(tester);
+      },
+    );
+
+    testWidgets(
+      'word tap highlights in quick, bubble rises by row and exits in press, and stays clamped inside page in Spanish and Arabic',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        // 1. Spanish LTR edge-word clamping + rise/exit motion.
+        final courseEs = _CourseWithRepaso(
+          repaso: RepasoData(
+            sentences: const [],
+            words: [
+              RepasoWord(
+                word: 'extraordinaria',
+                place: 'casa',
+                scoring: RepasoScoring.cual,
+                solo: 'solo-casa',
+              ),
+            ],
+          ),
+        );
+        final clipsEs = TimedClips(length: const Duration(milliseconds: 50));
+        final servicesEs = fakeServices(course: courseEs, clips: clipsEs);
+        final storeEs = ReadingStore(servicesEs.storage(ReadingStore.space));
+        final bookEs = await storeEs.add(
+          now: 1,
+          title: 'Bordes',
+          body: '¡Extraordinaria! Ya extraordinariamente.',
+          generated: false,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('clamp-es'),
+              services: servicesEs,
+              id: bookEs.id,
+            ),
+          ),
+        );
+        await settle(tester);
+
+        // Tap first word ("Extraordinaria") on line -> bubble rises in quick and clamps to page start.
+        await tester.tapAt(_centerOfWordToken(tester, 'Extraordinaria'));
+        await tester.pump();
+        expect(_bubbleOpacity(tester), 0.0);
+        expect(_bubbleMotionDy(tester), closeTo(NocheMotion.row, 0.01));
+
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midBubbleDy = _bubbleMotionDy(tester);
+        expect(midBubbleDy, greaterThan(0.0));
+        expect(midBubbleDy, lessThan(NocheMotion.row));
+        expect(_bubbleOpacity(tester), greaterThan(0.0));
+        expect(_bubbleOpacity(tester), lessThan(1.0));
+        final midWordDec = _paintReaderDecorations(tester);
+        expect(
+          midWordDec.rrects.any(
+            (r) =>
+                (r.argb & 0x00FFFFFF) ==
+                    (NocheColors.listening.toARGB32() & 0x00FFFFFF) &&
+                r.alpha > 0.0 &&
+                r.alpha < 1.0,
+          ),
+          isTrue,
+        );
+
+        await tester.pump(NocheMotion.quick ~/ 2);
+        await tester.pump(const Duration(milliseconds: 60));
+        expect(_bubbleMotionDy(tester), 0.0);
+        expect(_bubbleOpacity(tester), 1.0);
+
+        final firstBubbleRect = tester.getRect(
+          find.byKey(const Key('reader-word-bubble-body')),
+        );
+        expect(firstBubbleRect.left, greaterThanOrEqualTo(16.0));
+        expect(firstBubbleRect.right, lessThanOrEqualTo(390.0 - 16.0));
+        // Guardrail 5: bubble holds only the word (plus speaker/dots), no translation.
+        final bubbleTexts = tester
+            .widgetList<Text>(
+              find.descendant(
+                of: find.byType(ReaderWordBubble),
+                matching: find.byType(Text),
+              ),
+            )
+            .map((t) => t.data)
+            .toList();
+        expect(bubbleTexts, ['Extraordinaria']);
+
+        // Dismiss bubble -> exits in press.
+        final readerRect = tester.getRect(find.byType(TextReader));
+        await tester.tapAt(
+          Offset(readerRect.center.dx, readerRect.bottom - 160),
+        );
+        await tester.pump();
+        await tester.pump(NocheMotion.press ~/ 2);
+        expect(find.byType(ReaderWordBubble), findsOneWidget);
+        expect(_bubbleOpacity(tester), greaterThan(0.0));
+        expect(_bubbleOpacity(tester), lessThan(1.0));
+        expect(_bubbleMotionDy(tester), greaterThan(0.0));
+
+        await tester.pump(NocheMotion.press);
+        await tester.pump();
+        expect(find.byType(ReaderWordBubble), findsNothing);
+
+        // Tap last word on line ("extraordinariamente") -> bubble clamps inside right/end edge.
+        await tester.tapAt(_centerOfWordToken(tester, 'extraordinariamente'));
+        await tester.pump();
+        await tester.pump(NocheMotion.quick);
+        final lastBubbleRect = tester.getRect(
+          find.byKey(const Key('reader-word-bubble-body')),
+        );
+        expect(lastBubbleRect.left, greaterThanOrEqualTo(16.0));
+        expect(lastBubbleRect.right, lessThanOrEqualTo(390.0 - 16.0));
+
+        // 2. Arabic RTL edge-word clamping (first word on right edge, last word on left edge).
+        final courseAr = _CourseWithWords(language: _arabicLanguage());
+        final servicesAr = fakeServices(course: courseAr);
+        final storeAr = ReadingStore(servicesAr.storage(ReadingStore.space));
+        final bookAr = await storeAr.add(
+          now: 2,
+          title: 'الحدود',
+          body: 'مستشفى المدينة الكبيرة.\n\nالنافذة المفتوحة.',
+          generated: false,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: TextReader(
+              key: const ValueKey('clamp-ar'),
+              services: servicesAr,
+              id: bookAr.id,
+            ),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tapAt(_centerOfWordToken(tester, 'مستشفى'));
+        await tester.pump();
+        await tester.pump(NocheMotion.quick);
+        final arFirstRect = tester.getRect(
+          find.byKey(const Key('reader-word-bubble-body')),
+        );
+        expect(arFirstRect.left, greaterThanOrEqualTo(16.0));
+        expect(arFirstRect.right, lessThanOrEqualTo(390.0 - 16.0));
+
+        await tester.tapAt(
+          Offset(readerRect.center.dx, readerRect.bottom - 160),
+        );
+        await tester.pump();
+        await tester.pump(NocheMotion.press);
+        await tester.pump();
+
+        await tester.tapAt(_centerOfWordToken(tester, 'المفتوحة'));
+        await tester.pump();
+        await tester.pump(NocheMotion.quick);
+        final arLastRect = tester.getRect(
+          find.byKey(const Key('reader-word-bubble-body')),
+        );
+        expect(arLastRect.left, greaterThanOrEqualTo(16.0));
+        expect(arLastRect.right, lessThanOrEqualTo(390.0 - 16.0));
+      },
+    );
+
+    testWidgets(
+      'reduced motion disables horizontal page travel and bubble rise while fading in place',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final services = fakeServices();
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final book = await _addLongMultiChapterBook(store);
+
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(
+              size: Size(390, 844),
+              disableAnimations: true,
+            ),
+            child: MaterialApp(
+              home: TextReader(
+                services: services,
+                id: book.id,
+                initialSettings: const ReaderSettings(step: 1),
+              ),
+            ),
+          ),
+        );
+        await settle(tester);
+
+        // Page turn keeps dx == 0 under reduced motion and progress snaps.
+        await tester.fling(
+          find.byType(ReaderPageView),
+          const Offset(-300, 0),
+          800,
+        );
+        await tester.pump();
+        expect(_followIncomingDx(tester), 0.0);
+        await tester.pump(NocheMotion.followAfter + NocheMotion.quick ~/ 2);
+        expect(_followIncomingDx(tester), 0.0);
+        await tester.pump(NocheMotion.quick);
+        expect(find.text('2 / 2'), findsOneWidget);
+
+        // Word bubble stays at dy == 0 while fading in.
+        await tester.tapAt(_centerOfWordToken(tester, 'mañana'));
+        await tester.pump();
+        expect(_bubbleMotionDy(tester), 0.0);
+        await tester.pump(NocheMotion.quick ~/ 2);
+        expect(_bubbleMotionDy(tester), 0.0);
+        expect(_bubbleOpacity(tester), greaterThan(0.0));
+        expect(_bubbleOpacity(tester), lessThan(1.0));
+        await tester.pump(NocheMotion.quick);
+        expect(_bubbleMotionDy(tester), 0.0);
+        expect(_bubbleOpacity(tester), 1.0);
+      },
+    );
   });
 }
