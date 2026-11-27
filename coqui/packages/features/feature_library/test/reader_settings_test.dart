@@ -695,9 +695,9 @@ void main() {
         await settle(tester);
 
         // Start playback so sentence u1 is active and lit.
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
-        await tester.pump(const Duration(milliseconds: 50));
+        await tester.pump(NocheMotion.quick);
 
         final litBefore = _paintPageDecorations(tester);
         expect(
@@ -710,7 +710,8 @@ void main() {
         // Open settings while active sentence is playing, turn light-up OFF.
         await _openSettingsSheet(tester);
         await tester.tap(find.text('Light up the sentence being read'));
-        await tester.pump(const Duration(milliseconds: 50));
+        await tester.pump();
+        await tester.pump(NocheMotion.quick);
 
         final litAfterOff = _paintPageDecorations(tester);
         expect(
@@ -733,7 +734,7 @@ void main() {
         );
         await settle(tester);
 
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 50));
 
@@ -867,7 +868,7 @@ void main() {
 
         // Start playback on n1, then shrink text size all the way down to step 1
         // while playback is still running so total page count shrinks sharply.
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         expect(clips.played, ['n1']);
 
@@ -889,6 +890,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 500));
         await tester.pump(const Duration(milliseconds: 600));
         await tester.pump(const Duration(milliseconds: 100));
+        await tester.pump(NocheMotion.followAfter + NocheMotion.move);
         expect(tester.takeException(), isNull);
         expect(clips.played, containsAllInOrder(['n1', 'n2', 'n3']));
         final lit = _paintPageDecorations(tester);
@@ -954,7 +956,7 @@ void main() {
 
         // Start playback on page 1, pause, turn to page 2, then increase text size:
         // repagination keeps page 2's reading anchor instead of jumping back to page 1.
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         await tester.tap(
           find.bySemanticsLabel(NocheA11y.label(NocheA11y.pause)),
@@ -966,7 +968,7 @@ void main() {
           const Offset(-300, 0),
           800,
         );
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(find.textContaining('2 / '), findsOneWidget);
 
         await _openSettingsSheet(tester);

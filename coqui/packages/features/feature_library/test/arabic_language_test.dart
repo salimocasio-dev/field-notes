@@ -715,8 +715,8 @@ void main() {
         );
 
         // Course book with Arabic clips shows audio controls and credits normalized Arabic words.
-        expect(find.byType(NochePlayDisc), findsOneWidget);
-        await tester.tap(find.byType(NochePlayDisc));
+        expect(find.byKey(const Key('reader-play-disc')), findsOneWidget);
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         expect(clips.played, isNotEmpty);
 
@@ -767,7 +767,7 @@ void main() {
         );
         await settle(tester);
 
-        await tester.tap(find.byType(NochePlayDisc));
+        await tester.tap(find.byKey(const Key('reader-play-disc')));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 100));
         await settle(tester);
@@ -906,6 +906,8 @@ void main() {
         // Dismiss bubble by tapping the empty horizontal margin of the viewport.
         final readerRect = tester.getRect(find.byType(TextReader));
         await tester.tapAt(Offset(readerRect.left + 8, readerRect.center.dy));
+        await tester.pump();
+        await tester.pump(NocheMotion.press);
         await settle(tester);
         expect(find.byType(ReaderWordBubble), findsNothing);
 
@@ -916,11 +918,11 @@ void main() {
 
         // RTL tap zones: tapping LEFT fifth advances forward (1 -> 2), RIGHT fifth goes back (2 -> 1).
         await tester.tapAt(Offset(readerRect.left + 20, readerRect.center.dy));
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(find.text('2 / $totalPages'), findsOneWidget);
 
         await tester.tapAt(Offset(readerRect.right - 20, readerRect.center.dy));
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(find.text('1 / $totalPages'), findsOneWidget);
 
         // RTL swipe: swiping RIGHT advances forward (1 -> 2), swiping LEFT goes back (2 -> 1).
@@ -929,7 +931,7 @@ void main() {
           const Offset(300, 0),
           800,
         );
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(find.text('2 / $totalPages'), findsOneWidget);
 
         await tester.fling(
@@ -937,7 +939,7 @@ void main() {
           const Offset(-300, 0),
           800,
         );
-        await settle(tester);
+        await tester.pumpAndSettle();
         expect(find.text('1 / $totalPages'), findsOneWidget);
 
         // Open Chapters sheet: English title 'Chapters', RTL Arabic chapter rows.
