@@ -53,6 +53,30 @@ class StoryFoot {
   int get hashCode => Object.hash(next, again, home, map);
 }
 
+/// Outcome of a learner's tap during a touch turn (`Noche-Motion-Tocar.dc.html`).
+enum TouchFeedbackKind { none, miss, right }
+
+/// Pure-Dart description of the most recent touch-turn tap so the screen can
+/// draw a 3 px radius-12 outline around the touched thing's box (`NocheColors.text`
+/// on a miss, `NocheColors.right` with one expanding ring on right).
+class TouchFeedback {
+  const TouchFeedback({
+    required this.seq,
+    required this.kind,
+    required this.thing,
+    required this.box,
+  });
+
+  /// Monotonically increasing sequence id so consecutive taps on the same
+  /// thing still trigger fresh feedback.
+  final int seq;
+  final TouchFeedbackKind kind;
+  final String thing;
+
+  /// Bounding box `[x, y, w, h]` in the scene's picture pixels.
+  final List<num> box;
+}
+
 /// The screen's state. Every field is what the old page sets on an element; the field's comment names it.
 class StoryView {
   final List<void Function()> _listeners = [];
@@ -113,6 +137,13 @@ class StoryView {
   /// True after a first miss in a speaking turn (`n == 1`) until the learner
   /// taps the mic again or the turn ends; maps to `NocheMicState.notYet`.
   bool micMissed = false;
+
+  /// Increments each time the prompt line replays in a speaking turn (manual
+  /// "hear it again" or post-miss replay) so the replay arrow turns once.
+  int replayCount = 0;
+
+  /// Most recent touch-turn tap feedback (null when none is active).
+  TouchFeedback? touchFeedback;
 
   /// Current speaker label from the story file (shown even when TXT is off).
   String speaker = '';

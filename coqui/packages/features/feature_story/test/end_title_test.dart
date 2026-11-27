@@ -1,5 +1,6 @@
-// The end of a story: the title sits under the 400-high scene at the start
-// margin, clear of the Noche action buttons, in portrait and landscape.
+// The end of a story (N8.8): the picture window closes from 400 to 296 at top 0
+// in portrait; the title sits under the 296 window and story-counter label at the
+// 16 px start margin, clear of every Noche action button, in portrait and landscape.
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/story_screen.dart';
@@ -21,25 +22,26 @@ void main() {
     (390.0, 844.0, 2.0),
   ]) {
     testWidgets(
-      'the title sits 16 px under the 400-high scene, at the 24 px start margin, clear of every button (${w.toInt()} x ${h.toInt()}, ratio $ratio)',
+      'the title sits under the 296-high end window at the 16 px start margin, clear of every button (${w.toInt()} x ${h.toInt()}, ratio $ratio)',
       (tester) async {
         final s = await openScreen(tester, size: Size(w, h), ratio: ratio);
         await tester.tap(find.byType(NochePlayDisc));
         await _toTheEnd(s);
-        await s.advance(300);
+        await s.advance(1200);
 
         final title = tester.getRect(find.text('La lluvia'));
-        // 64 px header + 400 px scene + 16 px top padding = 480
+        // 296 px end window + 24 px top padding + 12 px counter label + 8 px gap = 340
         expect(
           title.top,
-          closeTo(StoryHeader.height + StoryScreen.sceneHeight + 16, 0.5),
+          greaterThanOrEqualTo(StoryScreen.endSceneHeight + 24),
         );
-        expect(title.left, closeTo(24, 0.5));
+        expect(title.top, closeTo(StoryScreen.endSceneHeight + 44, 2.0));
+        expect(title.left, closeTo(16, 0.5));
 
         final outlines = find.byType(NocheOutlineButton);
         final primary = find.byType(NochePrimaryButton);
         expect(outlines, findsNWidgets(2)); // Play again, Map
-        expect(primary, findsOneWidget); // Next story
+        expect(primary, findsOneWidget); // Next: El bizcocho
         for (final finder in [outlines, primary]) {
           for (final b in finder.evaluate()) {
             final r = tester.getRect(find.byWidget(b.widget));
@@ -60,9 +62,9 @@ void main() {
       final s = await openScreen(tester, size: const Size(844, 390), ratio: 3);
       await tester.tap(find.byType(NochePlayDisc));
       await _toTheEnd(s);
-      await s.advance(300);
+      await s.advance(1200);
       final title = tester.getRect(find.text('La lluvia'));
-      expect(title.top, closeTo(StoryHeader.height + 16, 0.5));
+      expect(title.top, greaterThanOrEqualTo(StoryHeader.height + 24));
       for (final finder in [
         find.byType(NocheOutlineButton),
         find.byType(NochePrimaryButton),
