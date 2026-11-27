@@ -376,7 +376,7 @@ void main() {
   group('ReadingHome in FakeCourseCatalog.arabic()', () {
     for (final size in const [Size(390, 844), Size(412, 915)]) {
       testWidgets(
-        'renders RTL shelf, English menus, Arabic pair picture (LTR), and RTL prompt field at ${size.width.toInt()}x${size.height.toInt()}',
+        'renders RTL bookcase, English menus, NocheLtr progress, Arabic pair picture (LTR), and RTL prompt field at ${size.width.toInt()}x${size.height.toInt()}',
         (tester) async {
           tester.view.devicePixelRatio = 1;
           tester.view.physicalSize = size;
@@ -387,16 +387,27 @@ void main() {
 
           final course = _ReadableArabicCatalog();
           await course.load();
+          final progress = FakeProgressStore();
+          progress.import(
+            jsonEncode({
+              ...progress.raw,
+              'palabras': {
+                for (final w in ['هذا', 'بيت', 'جدة', 'الكبير'])
+                  w: _known(w).toJson(),
+              },
+            }),
+          );
           final pictures = FakePictureSource();
           final nav = FakeNavigator();
           final services = fakeServices(
             course: course,
+            progress: progress,
             pictures: pictures,
             nav: nav,
           );
           final store = ReadingStore(services.storage(ReadingStore.space));
 
-          final olderStory = await store.add(
+          final story = await store.add(
             now: 100,
             title: 'بيت جدة',
             body: 'هذا بيت جدة الكبير.',
@@ -408,17 +419,28 @@ void main() {
             body: 'انظر! جاء المطر؟ هذا بيت جدة.\n\nالنافذة مغلقة.\n\nهذا باب.',
             generated: false,
           );
-          await store.markOpened(olderStory.id, 1000);
+          await store.markOpened(story.id, 1000);
           await store.savePlace(
             newerBook.id,
             const ReadingPlace(page: 1, openedAt: 2000),
           );
 
+          final arabicGenerator = StoryGenerator([
+            (
+              title: 'في البيت',
+              beats: [
+                ['هذا بيت جدة.'],
+              ],
+            ),
+          ]);
+
           const module = LibraryModule();
           expect(module.tab(services).label, 'المكتبة');
 
           await tester.pumpWidget(
-            MaterialApp(home: ReadingHome(services: services)),
+            MaterialApp(
+              home: ReadingHome(services: services, generator: arabicGenerator),
+            ),
           );
           await settle(tester);
 
@@ -426,17 +448,29 @@ void main() {
           // Menus and chrome stay English; eyebrow uses language.englishName.
           expect(find.text('ARABIC'), findsOneWidget);
           expect(find.text('Library'), findsOneWidget);
-          expect(find.text('Write my story'), findsOneWidget);
-          expect(find.text('All'), findsOneWidget);
-          expect(find.text('Stories'), findsOneWidget);
-          expect(find.text('Books'), findsOneWidget);
+          expect(find.text('STORIES'), findsOneWidget);
+          expect(find.text('BOOKS'), findsOneWidget);
           expect(find.text('KEEP READING'), findsOneWidget);
           expect(find.text('Continue reading'), findsOneWidget);
+          expect(find.byKey(const Key('library-write-story')), findsOneWidget);
+          expect(find.text('All'), findsNothing);
 
-          // RTL shelf: most recently opened (Book) sits to the RIGHT of older item (Story).
-          final bookRect = tester.getRect(find.text('Book'));
-          final storyRect = tester.getRect(find.text('Story'));
-          expect(bookRect.left, greaterThan(storyRect.left));
+          // RTL Stories shelf: new-story slot sits to the RIGHT of the story tile.
+          final slotRect = tester.getRect(
+            find.byKey(const Key('library-write-story')),
+          );
+          final storyRect = tester.getRect(
+            find.byKey(ValueKey('library-book:${story.id}')),
+          );
+          expect(slotRect.left, greaterThan(storyRect.left));
+
+          // Page progress line stays LTR inside the RTL screen via NocheLtr.
+          final progressLine = find.textContaining('min left in the chapter');
+          expect(progressLine, findsOneWidget);
+          expect(
+            Directionality.of(tester.element(progressLine)),
+            TextDirection.ltr,
+          );
 
           // Story tile resolved the Arabic ReviewPair ('بيت') and kept its picture LTR.
           expect(pictures.shown, isNotEmpty);
@@ -447,23 +481,25 @@ void main() {
             TextDirection.ltr,
           );
 
-          // Open "Write my story" sheet: English chrome, RTL input for Arabic practice words.
-          await tester.tap(
-            find.widgetWithText(NocheOutlineButton, 'Write my story'),
-          );
+          // Open "Write my story" sheet from the open slot: English chrome, RTL input.
+          await tester.tap(find.byKey(const Key('library-write-story')));
           await tester.pumpAndSettle();
           expect(find.text('Practice words (optional)'), findsOneWidget);
           expect(find.text('Cancel'), findsOneWidget);
           final field = tester.widget<TextField>(find.byType(TextField));
           expect(field.textDirection, TextDirection.rtl);
 
-          // Enter Arabic words separated by Arabic comma (،) and submit cleanly.
-          await tester.enterText(find.byType(TextFormField), 'بيت، باب');
+          // Enter non-matching Arabic words separated by Arabic comma (،): message stays in sheet.
+          await tester.enterText(find.byType(TextFormField), 'قمر، شمس');
           await tester.tap(
             find.widgetWithText(NochePrimaryButton, 'Write my story'),
           );
           await tester.pumpAndSettle();
           expect(tester.takeException(), isNull);
+          expect(
+            find.textContaining('practice words and your current level'),
+            findsOneWidget,
+          );
         },
       );
     }
