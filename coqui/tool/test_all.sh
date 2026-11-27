@@ -23,6 +23,7 @@ step "flutter pub get"
 flutter pub get
 
 step "generate shared scene lists"
+dart run tool/make_scenes.dart --check-committed
 dart run tool/make_scenes.dart
 dart run tool/make_scenes.dart --check
 

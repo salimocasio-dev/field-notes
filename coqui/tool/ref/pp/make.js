@@ -5,18 +5,21 @@
    Options:  --states <file>   the list of page states to dump (default: states.json beside this script)
              --only <id,id>    make only these ids (a state id, "island" or "unit"); the index is rebuilt from the folder
              --out <dir>       where to write (default: coqui/ref/pp)
+             --index-only      skip rendering; rebuild per-folder <folder>/index.json and assemble top-level index.json
    Order 07 adds the states of El frente's set by adding lines to states.json. */
 const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
-const { chromium } = require('playwright');
 const L = require('./lib.js');
 
 const REPO = path.resolve(__dirname, '../../../..');
+const TOP_WHAT = 'engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values';
 const arg = (name, def) => { const i = process.argv.indexOf(name); return i < 0 ? def : process.argv[i + 1]; };
+const hasFlag = name => process.argv.includes(name);
 const OUT = path.resolve(arg('--out', path.join(REPO, 'coqui/ref/pp')));
 const STATES = JSON.parse(fs.readFileSync(path.resolve(arg('--states', path.join(__dirname, 'states.json'))), 'utf8'));
 const ONLY = arg('--only', null) && arg('--only').split(',');
+const INDEX_ONLY = hasFlag('--index-only');
 const want = id => !ONLY || ONLY.includes(id);
 
 // The clock and the dice the pages see. The old page files are not edited: this runs before them.
@@ -210,14 +213,45 @@ async function doUnit(browser) {
   }
 }
 
+function listSubdirs(root) {
+  return fs.readdirSync(root, { withFileTypes: true })
+    .filter(e => e.isDirectory())
+    .map(e => e.name)
+    .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+}
+
+function assembleIndex(root) {
+  const entries = [];
+  let totalBytes = 0;
+  for (const folder of listSubdirs(root)) {
+    const idx = JSON.parse(fs.readFileSync(path.join(root, folder, 'index.json'), 'utf8'));
+    for (const e of idx.entries) {
+      entries.push({ path: folder + '/' + e.path, bytes: e.bytes, sha256: e.sha256 });
+      totalBytes += e.bytes;
+    }
+  }
+  entries.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
+  L.write(path.join(root, 'index.json'), L.json({ what: TOP_WHAT, files: entries.length, totalBytes, entries }));
+  return { files: entries.length, totalBytes };
+}
+
 (async () => {
-  const browser = await chromium.launch();
-  BROWSER = 'Chromium ' + browser.version();
-  try {
-    if (want('island')) await doIsland(browser);
-    for (const job of STATES) if (want(job.id)) await doState(browser, job);
-    if (want('unit')) await doUnit(browser);
-  } finally { await browser.close(); }
-  const r = L.writeIndex(OUT, 'engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values');
+  const touchedFolders = new Set();
+  if (!INDEX_ONLY) {
+    const { chromium } = require('playwright');
+    const browser = await chromium.launch();
+    BROWSER = 'Chromium ' + browser.version();
+    try {
+      if (want('island')) { await doIsland(browser); touchedFolders.add('island'); }
+      for (const job of STATES) if (want(job.id)) { await doState(browser, job); touchedFolders.add(job.id.split('/')[0]); }
+      if (want('unit')) { await doUnit(browser); touchedFolders.add('unit'); }
+    } finally { await browser.close(); }
+  }
+  for (const folder of listSubdirs(OUT)) {
+    if (INDEX_ONLY || !ONLY || touchedFolders.has(folder) || !fs.existsSync(path.join(OUT, folder, 'index.json'))) {
+      L.writeIndex(path.join(OUT, folder), 'engine reference: ' + folder);
+    }
+  }
+  const r = assembleIndex(OUT);
   console.log('index  ' + r.files + ' files, ' + r.totalBytes + ' bytes');
 })().catch(e => { console.error(e); process.exit(1); });

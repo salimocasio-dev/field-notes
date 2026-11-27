@@ -2,7 +2,7 @@
 
 ## What I need
 
-1. Append the five `orilla` state entries to `coqui/tool/ref/pp/states.json`:
+1. ~~Append the five `orilla` state entries to `coqui/tool/ref/pp/states.json`:~~ **(Fulfilled in `#258` on `lane/tool/258`.)**
    ```json
    { "id": "orilla/manana-0-0", "kind": "set", "page": "docs/proyecto/pixel/orilla-set.html", "query": "?hora=manana&castillo=0&manta=0" },
    { "id": "orilla/manana-1-0", "kind": "set", "page": "docs/proyecto/pixel/orilla-set.html", "query": "?hora=manana&castillo=1&manta=0" },

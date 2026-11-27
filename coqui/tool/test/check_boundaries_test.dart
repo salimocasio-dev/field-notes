@@ -709,6 +709,43 @@ import 'package:material_ui/material_ui.dart';
     });
 
     test(
+      'passes: lane/tool changes coqui_scenes/tool/ and ref/pp/ (#258)',
+      () async {
+        git.branch('lane/tool/258');
+        write('packages/core/coqui_scenes/tool/dev_main.dart', '// dev main\n');
+        write('ref/pp/orilla/index.json', '{}\n');
+        git.commit('tool + ref/pp work');
+        expect(await check(branch: null), isEmpty);
+      },
+    );
+
+    test('fails: lane/tool changes coqui_scenes/lib/, ref/other/, or ref/pp_extra/', () async {
+      git.branch('lane/tool/258');
+      write('packages/core/coqui_scenes/lib/src/x.dart', '// disallowed\n');
+      write('ref/other/x.json', '{}\n');
+      write('ref/pp_extra/x.json', '{}\n');
+      git.commit('disallowed paths on lane/tool');
+      final problems = await check(branch: null);
+      expect(problems, hasLength(3));
+      expect(
+        problems.any(
+          (p) => p.startsWith(
+            'coqui/packages/core/coqui_scenes/lib/src/x.dart: [d]',
+          ),
+        ),
+        isTrue,
+      );
+      expect(
+        problems.any((p) => p.startsWith('coqui/ref/other/x.json: [d]')),
+        isTrue,
+      );
+      expect(
+        problems.any((p) => p.startsWith('coqui/ref/pp_extra/x.json: [d]')),
+        isTrue,
+      );
+    });
+
+    test(
       'fails: lane/tool changes a package outside tool/ and requests/',
       () async {
         git.branch('lane/tool/55');

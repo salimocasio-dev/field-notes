@@ -14,7 +14,67 @@ const bad = m => errs.push(m);
 const read = f => fs.readFileSync(path.join(ROOT, f));
 const BYTES = { uint32: 4, float32: 4, uint8: 1 };
 
-errs.push(...L.verifyIndex(ROOT));
+for (const e of fs.readdirSync(ROOT, { withFileTypes: true })) {
+  if (!e.isDirectory() && e.name !== 'index.json') {
+    bad(e.name + ': unexpected top-level file in ' + ROOT);
+  }
+}
+
+const subdirs = fs.readdirSync(ROOT, { withFileTypes: true })
+  .filter(e => e.isDirectory())
+  .map(e => e.name)
+  .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+
+const expectedEntries = [];
+let expectedTotalBytes = 0;
+for (const folder of subdirs) {
+  const folderPath = path.join(ROOT, folder);
+  for (const err of L.verifyIndex(folderPath)) {
+    bad(folder + '/' + err);
+  }
+  let subIdx;
+  try {
+    subIdx = JSON.parse(fs.readFileSync(path.join(folderPath, 'index.json'), 'utf8'));
+  } catch (e) {
+    continue;
+  }
+  if (!Array.isArray(subIdx.entries)) {
+    bad(folder + '/index.json: entries is not an array');
+    continue;
+  }
+  for (const e of subIdx.entries) {
+    expectedEntries.push({ path: folder + '/' + e.path, bytes: e.bytes, sha256: e.sha256 });
+    expectedTotalBytes += e.bytes;
+  }
+}
+expectedEntries.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
+
+try {
+  const topIdx = JSON.parse(fs.readFileSync(path.join(ROOT, 'index.json'), 'utf8'));
+  if (topIdx.files !== expectedEntries.length) {
+    bad('index.json: files is ' + topIdx.files + ', assembled count is ' + expectedEntries.length);
+  }
+  if (topIdx.totalBytes !== expectedTotalBytes) {
+    bad('index.json: totalBytes is ' + topIdx.totalBytes + ', assembled total is ' + expectedTotalBytes);
+  }
+  if (!Array.isArray(topIdx.entries)) {
+    bad('index.json: entries is not an array');
+  } else {
+    if (topIdx.entries.length !== expectedEntries.length) {
+      bad('index.json: entries length is ' + topIdx.entries.length + ', assembled length is ' + expectedEntries.length);
+    }
+    const len = Math.min(topIdx.entries.length, expectedEntries.length);
+    for (let i = 0; i < len; i++) {
+      const actual = topIdx.entries[i];
+      const expected = expectedEntries[i];
+      if (!actual || actual.path !== expected.path || actual.bytes !== expected.bytes || actual.sha256 !== expected.sha256) {
+        bad('index.json: entry ' + i + ' (' + (actual && actual.path) + ') does not match assembled ' + expected.path);
+      }
+    }
+  }
+} catch (e) {
+  bad('index.json: ' + e.message);
+}
 
 let dirs = 0, buffers = 0;
 for (const f of L.walk(ROOT)) {
@@ -65,7 +125,7 @@ for (const f of L.walk(ROOT)) {
 // the unit files
 const f32 = new Float32Array(1), u32 = new Uint32Array(f32.buffer);
 let units = 0;
-for (const f of L.walk(ROOT).filter(f => /^unit\/.*\.json$/.test(f))) {
+for (const f of L.walk(ROOT).filter(f => /^unit\/.*\.json$/.test(f) && f !== 'unit/index.json')) {
   const d = JSON.parse(read(f));
   units++;
   const need = f === 'unit/unit.json' ? ['hash', 'noise', 'project', 'unproject', 'rampOf'] : ['project', 'unproject'];

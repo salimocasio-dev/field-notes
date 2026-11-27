@@ -13,7 +13,7 @@ node coqui/tool/ref/pp/check.js       # reads it back: sizes and SHA-256 of ever
 
 A second run gives byte-identical files (`git status` stays clean). Needs Node 22 and the pre-installed Node Playwright (`require('playwright')`). Nothing is installed.
 `make.js` also renders every state twice in two fresh pages and stops if the three buffers differ.
-Options: `--only <id,id>` (a state id, `island` or `unit`), `--states <file>`, `--out <dir>`. The index is always rebuilt from the whole folder.
+Options: `--only <id,id>` (a state id, `island` or `unit`), `--states <file>`, `--out <dir>`, `--index-only` (skips rendering and rebuilds per-folder `<folder>/index.json` plus top-level `index.json`). Every folder's `<folder>/index.json` indexes its own files, and top-level `index.json` is assembled from all `<folder>/index.json` files.
 
 ## What it makes
 
@@ -24,7 +24,8 @@ Options: `--only <id,id>` (a state id, `island` or `unit`), `--states <file>`, `
 | `frente/<state>/` | `docs/proyecto/pixel/frente-set.html?door=…&win=…&lights=…&sky=…&hide=…&rustle=…&side=…`: the 25 baked states of El frente's set (order 07), one folder each, named after the query (`door-shut-win-shut-lights-0-sky-day`, … `-hide`, … `-rustle-casa-side--1`). The set's origin is its default (originX -2, originY 12); the frame is the bake plus `drawLeaves(0)` and `drawTufts(0)`, no characters |
 | `unit/unit.json` | `hash`, `noise`, `project`, `unproject`, `rampOf` on 200 fixed inputs each, with the map's settings |
 | `unit/unit-s26.json` | `project` and `unproject` on 200 fixed inputs, with S = 26, originX -30, originY 40 (El frente's origin before order 07; order 07 moved it to -2, 12. The file is kept as it was: it still tests the projection at S = 26) |
-| `index.json` | every file with its size and SHA-256 |
+| `<folder>/index.json` | every file in `<folder>/` with its size and SHA-256 |
+| `index.json` | assembled from every `<folder>/index.json` (total files, total bytes, and sorted entries) |
 
 Each dump folder holds:
 

@@ -12,7 +12,7 @@
 //   [b] a Dart file imports a package its pubspec does not list
 //   [c] a Dart file imports another package's src/
 //   [d] the branch is `lane/<package>/...` (or `lane/tool/...`) and changes a
-//       file outside that lane's folder and requests/, or `story/<n>` and
+//       file outside that lane's folder(s) and requests/, or `story/<n>` and
 //       changes a file outside coqui_scenes/, feature_story/,
 //       coqui_story_checks/, ref/pp/, and requests/
 //   [e] a feature's pubspec or imports name another feature
@@ -595,8 +595,13 @@ List<_Use> _packageUris(String source) {
 // --- [d]: the lane ------------------------------------------------------------
 
 /// Non-package lanes (not in [packageRules], so they cannot be listed as
-/// pubspec dependencies). Maps lane name -> folder relative to coqui/.
-const _nonPackageLaneDirs = <String, String>{'tool': 'tool'};
+/// pubspec dependencies). Maps lane name -> folders relative to coqui/.
+///
+/// Holds for #258 until #263 replaces branch rules with the lane map.
+const _nonPackageLaneDirs = <String, List<String>>{
+  // TODO(#263): remove packages/core/coqui_scenes/tool and ref/pp once #263 replaces branch rules with the lane map.
+  'tool': ['tool', 'packages/core/coqui_scenes/tool', 'ref/pp'],
+};
 
 /// Folders relative to coqui/ that a `story/<n>` branch may change (#170).
 const _storyBranchDirs = <String>[
@@ -617,11 +622,15 @@ Future<List<String>> _checkLane(
   final laneMatch = RegExp(r'^lane/([^/]+)/').firstMatch(branch);
   if (laneMatch != null) {
     final name = laneMatch.group(1)!;
-    final laneDir = packageRules[name]?.dir ?? _nonPackageLaneDirs[name];
-    if (laneDir == null) {
+    final pkgDir = packageRules[name]?.dir;
+    final extraDirs = _nonPackageLaneDirs[name];
+    if (pkgDir != null) {
+      allowedDirs = [pkgDir, 'requests'];
+    } else if (extraDirs != null) {
+      allowedDirs = [...extraDirs, 'requests'];
+    } else {
       return ['[d] branch $branch names $name, which is not a package'];
     }
-    allowedDirs = [laneDir, 'requests'];
   } else if (RegExp(r'^story/.+').hasMatch(branch)) {
     allowedDirs = _storyBranchDirs;
   } else {
