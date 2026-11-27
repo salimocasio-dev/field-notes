@@ -1,0 +1,617 @@
+{
+ "id": "se-pone-y-se-quita",
+ "title": "Se pone y se quita",
+ "place": "La playa",
+ "scene": "ropa",
+ "next": "como-esta-el-tiempo",
+ "goal": "Find abuela's child (Luis, then Carmen) among two children who look alike by what the narrator says he is doing (puts on or takes off a hat, shirt or dress), so that the guagua driver keeps waiting: every wrong child makes him sound the horn and put a finger down.",
+ "stake": {
+  "thing": "dedos",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "se pone",
+  "se quita",
+  "tiene puesto"
+ ],
+ "formas_foco": {
+  "tiene puesto": [
+   "tiene puestas",
+   "tiene puesta"
+  ]
+ },
+ "back_again": [
+  "camisa",
+  "pantalón",
+  "vestido",
+  "zapatos",
+  "chancletas",
+  "sombrero",
+  "gafas",
+  "traje de baño",
+  "toalla",
+  "rojo",
+  "amarillo",
+  "guagua",
+  "se va",
+  "espera",
+  "¿dónde está?",
+  "¿quién?",
+  "busca",
+  "allá",
+  "ven",
+  "voy",
+  "aquí",
+  "ahora",
+  "tarde",
+  "sol",
+  "no hay",
+  "mira"
+ ],
+ "also_heard": [],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "perro": "c_n_perro"
+ },
+ "palabras": {
+  "pone": "se pone",
+  "quita": "se quita"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c80_tarde": {
+   "who": "narr",
+   "text": "Es tarde. La guagua está esperando."
+  },
+  "c80_l_sombrero": {
+   "who": "narr",
+   "text": "Y se pone el sombrero."
+  },
+  "c80_quien_sombrero": {
+   "who": "narr",
+   "text": "¿Quién tiene puesto un sombrero?"
+  },
+  "c80_ca_gafas": {
+   "who": "narr",
+   "text": "Carmen tiene puestas las gafas."
+  },
+  "c80_ab_sol": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Carmen, ya no hay sol."
+  },
+  "c80_ca_quita": {
+   "who": "narr",
+   "text": "Carmen se quita las gafas."
+  },
+  "c80_quien_vestido": {
+   "who": "narr",
+   "text": "¿Quién tiene puesto un vestido?"
+  },
+  "c80_l_quita_pone": {
+   "who": "narr",
+   "text": "Luis se quita el sombrero... y se pone el sombrero."
+  },
+  "c80_ca_chancletas": {
+   "who": "narr",
+   "text": "Carmen se quita las chancletas."
+  },
+  "c80_l_vienes": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ¿vienes?"
+  },
+  "c60_cq_voy": {
+   "who": "tu",
+   "text": "¡Voy!",
+   "tu_turno": [
+    {
+     "palabra": "voy",
+     "formas": [
+      "voy"
+     ]
+    }
+   ]
+  },
+  "c80_ab_donde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Dónde está Luis? ¿Dónde está Carmen? Coquí, búscalos."
+  },
+  "c80_ab_canelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y Canelo? ¿Dónde está Canelo?"
+  },
+  "c59_cq_aqui": {
+   "who": "tu",
+   "text": "¡Aquí!",
+   "tu_turno": [
+    {
+     "palabra": "aquí",
+     "formas": [
+      "aquí",
+      "aqui"
+     ]
+    }
+   ]
+  },
+  "c80_fin": {
+   "who": "narr",
+   "text": "Canelo tiene puesto el sombrero de abuela. Y la guagua se va."
+  },
+  "c80_a_pone_sombrero": {
+   "who": "narr",
+   "text": "Luis se pone el sombrero."
+  },
+  "c80_no_a_pone_sombrero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Luis se pone el sombrero."
+  },
+  "c80_a_pone_camisa": {
+   "who": "narr",
+   "text": "Luis se pone la camisa."
+  },
+  "c80_no_a_pone_camisa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Luis se pone la camisa."
+  },
+  "c80_a_quita_sombrero": {
+   "who": "narr",
+   "text": "Luis se quita el sombrero."
+  },
+  "c80_no_a_quita_sombrero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Luis se quita el sombrero."
+  },
+  "c80_a_quita_camisa": {
+   "who": "narr",
+   "text": "Luis se quita la camisa."
+  },
+  "c80_no_a_quita_camisa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Luis se quita la camisa."
+  },
+  "c80_b_pone_sombrero": {
+   "who": "narr",
+   "text": "Carmen se pone el sombrero."
+  },
+  "c80_no_b_pone_sombrero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Carmen se pone el sombrero."
+  },
+  "c80_b_pone_vestido": {
+   "who": "narr",
+   "text": "Carmen se pone el vestido."
+  },
+  "c80_no_b_pone_vestido": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Carmen se pone el vestido."
+  },
+  "c80_b_quita_sombrero": {
+   "who": "narr",
+   "text": "Carmen se quita el sombrero."
+  },
+  "c80_no_b_quita_sombrero": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Carmen se quita el sombrero."
+  },
+  "c80_b_quita_vestido": {
+   "who": "narr",
+   "text": "Carmen se quita el vestido."
+  },
+  "c80_no_b_quita_vestido": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Coquí. Carmen se quita el vestido."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "ocaso",
+    "guagua": 1
+   }
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c80_tarde",
+  {
+   "act": "dedos",
+   "n": 3
+  },
+  {
+   "act": "pone80",
+   "quien": "luis",
+   "que": "camisa"
+  },
+  "c80_a_pone_camisa",
+  {
+   "act": "pone80",
+   "quien": "luis",
+   "que": "sombrero"
+  },
+  "c80_l_sombrero",
+  {
+   "ask": "luis",
+   "lead": [],
+   "line": "c80_quien_sombrero",
+   "then": [],
+   "after": []
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "pone80",
+   "quien": "carmen",
+   "que": "vestido"
+  },
+  "c80_b_pone_vestido",
+  {
+   "act": "pone80",
+   "quien": "carmen",
+   "que": "gafas"
+  },
+  "c80_ca_gafas",
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "no"
+  },
+  "c80_ab_sol",
+  {
+   "act": "quita80",
+   "quien": "carmen",
+   "que": "gafas"
+  },
+  "c80_ca_quita",
+  {
+   "ask": "carmen",
+   "lead": [],
+   "line": "c80_quien_vestido",
+   "then": [],
+   "after": [
+    {
+     "act": "gesto",
+     "quien": "carmen",
+     "que": "gira"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "quita80",
+   "quien": "luis",
+   "que": "sombrero"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "abanica"
+  },
+  {
+   "act": "pone80",
+   "quien": "luis",
+   "que": "sombrero"
+  },
+  "c80_l_quita_pone",
+  {
+   "act": "quita80",
+   "quien": "carmen",
+   "que": "chancletas"
+  },
+  "c80_ca_chancletas",
+  "c80_l_vienes",
+  "c60_cq_voy",
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "ojos"
+  },
+  "c80_ab_donde",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ha",
+   "options": [
+    "pone",
+    "quita"
+   ]
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "sombrero",
+    "camisa"
+   ]
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "act": "pareja80",
+   "quienes": "chicos",
+   "que": "$ka",
+   "hace": "$ha",
+   "cual": "$ca",
+   "suelto": 1
+  },
+  {
+   "decide": "do",
+   "options": [
+    "chico_a",
+    "chico_b"
+   ],
+   "pick": "chico_$ca",
+   "tests": "$ha",
+   "lock": true,
+   "lead": [],
+   "line": "c80_a_$ha_$ka",
+   "right": [
+    {
+     "act": "busca80",
+     "quien": "chico_$ca",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "busca80",
+     "quien": "$x",
+     "ok": 0
+    },
+    "c80_no_a_$ha_$ka",
+    {
+     "act": "bocina"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "dedos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "dedos",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "hb",
+   "options": [
+    "pone",
+    "quita"
+   ]
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "sombrero",
+    "vestido"
+   ]
+  },
+  {
+   "draw": "cb",
+   "options": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "act": "pareja80",
+   "quienes": "chicas",
+   "que": "$kb",
+   "hace": "$hb",
+   "cual": "$cb",
+   "suelto": 1
+  },
+  {
+   "decide": "do",
+   "options": [
+    "chica_a",
+    "chica_b"
+   ],
+   "pick": "chica_$cb",
+   "tests": "$hb",
+   "lock": true,
+   "lead": [],
+   "line": "c80_b_$hb_$kb",
+   "right": [
+    {
+     "act": "busca80",
+     "quien": "chica_$cb",
+     "ok": 1
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "busca80",
+     "quien": "$x",
+     "ok": 0
+    },
+    "c80_no_b_$hb_$kb",
+    {
+     "act": "bocina"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "dedos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "dedos",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final80",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final80",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final80",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c80_ab_canelo",
+  "c59_cq_aqui",
+  "c80_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c80_tarde",
+  "c80_a_pone_camisa",
+  "c80_l_sombrero",
+  "c80_quien_sombrero",
+  "c80_b_pone_vestido",
+  "c80_ca_gafas",
+  "c80_ab_sol",
+  "c80_ca_quita",
+  "c80_quien_vestido",
+  "c80_l_quita_pone",
+  "c80_ca_chancletas",
+  "c80_l_vienes",
+  "c60_cq_voy",
+  "c80_ab_donde",
+  "c80_a_quita_sombrero",
+  "c80_b_pone_sombrero",
+  "c80_ab_canelo",
+  "c59_cq_aqui",
+  "c80_fin"
+ ]
+}
