@@ -24,12 +24,23 @@ Biblioteca and the book reader (Leer).
 - `lib/feature_library.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
 - It holds one thing: `LibraryModule()` (a `FeatureModule`, boundary rule 4). Id `library`; its tab is Biblioteca (`ReadingHome`); `screenFor(BookRoute)` is the text reader (`TextReader`). Since the Biblioteca rewrite (Nov 23, 2026) the module takes no image address: nothing it shows is a picture.
-- What is in `lib/src/`: `reading_home.dart` (the tab: a story for his level or the next one, "Generate a story", "Add text", his shelf), `text_reader.dart` (the reader and `ReaderTexts`, its own English words), `reading.dart` (words and lines of a text, `ReadingStore`, `ReadingVocabulary`, the coverage rule), `story_generator.dart` (stories put together from the plots), `reading_audio.dart` (the recordings a word or a line may play), `reading_assets.dart`.
+- What is in `lib/src/`: `reading_home.dart` (the tab: three-plank bookcase with Reading now, Stories + locked/open new-story slot, Books, and pinned Continue reading), `text_reader.dart` (the reader and `ReaderTexts`, its own English words), `reading.dart` (words and lines of a text, `ReadingStore`, `ReadingVocabulary`, the coverage rule), `story_generator.dart` (stories put together from the plots + `canWrite`), `motion.dart` (Library-specific motion constants and waits — the only file in this package allowed to call `NocheMotion.ms`), `reading_audio.dart` (the recordings a word or a line may play), `reading_assets.dart`.
 - The course shelf of order 22 (each story with Listen and Read) and the picture book reader are gone: the map replays the stories. `BookRoute(id)` of a course book still opens, as its lines in text, without pictures. A text that is not there says so in one line; its X goes back.
+
+## Standing shell & integration keys (do not rename or remove)
+
+These keys are part of the shell/integration contract (folded from request #261) and must remain stable across refactors:
+
+- `ValueKey('book:${route.id}')` on `TextReader` returned by `LibraryModule.screenFor(BookRoute)` (`lib/src/module.dart`)
+- `Key('library-home')` on the `ReadingHome` shelf root (`lib/src/reading_home.dart`)
+- `Key('library-write-story')` on the **open** new-story slot in `ReadingHome` (`lib/src/reading_home.dart`) — omitted while the slot is locked
+- `ValueKey('library-book:<id>')` on each shelf item (story or book) in `ReadingHome` (`lib/src/reading_home.dart`)
+- `Key('reader-close-button')` on the reader back/close button (`lib/src/text_reader.dart`)
+- `Key('reader-page-counter')` on the reader page counter (`lib/src/text_reader.dart`)
 
 ## How Biblioteca works
 
-- A story is made on the phone, never over the network: `assets/story_plots.json` holds reviewed plots whose beats each have alternatives; every combination is a draft. A draft is offered only when at least 98% of its word tokens are known (ear stage 4, the threshold Yo uses), with at most 3 new words, each said at least twice. Words due for review come first; practice words he asks for must be in it. A story already on his shelf is not offered again. The plots are few (4 plots, 40 drafts): some learners will have no match, and the tab says so.
+- A story is made on the phone, never over the network: `assets/story_plots.json` holds reviewed plots whose beats each have alternatives; every combination is a draft. A draft is offered only when at least 98% of its word tokens are known (ear stage 4, the threshold Yo uses), with at most 3 new words, each said at least twice. Words due for review come first; practice words he asks for must be in it. A story already on his shelf is not offered again. The plots are few (4 plots, 40 drafts): `StoryGenerator.canWrite` checks whether an unprompted story exists, and when it is false the new-story slot on the shelf stays locked and non-interactive (`"Come back when you learn more words."`).
 - He can paste a text with a title. Generated and added texts are kept in the feature's own storage space, `Services.storage('biblioteca')` (`texts`, and `place:<id>` for the page he is on and the words met). The text size is `Services.storage('leer')`, key `tam`, as before.
 - The reader shows each word's ear stage by its colour. Tapping a word plays that word's own recording only (never a sentence in its place); a line with a recording has a speaker. A recording heard to its end counts as hearing those words (`progress.heard`); a failed or muted play does not. A text with no recording is read without sound.
 - Reading to the end (`progress.markRead`) and the count of words met are kept only with a verified level of A2 or more in `ProgressStore.levelResult['cefr']`. The level check does not write that field yet, so for now nobody's reading is marked finished; the page he is on is kept for everyone.

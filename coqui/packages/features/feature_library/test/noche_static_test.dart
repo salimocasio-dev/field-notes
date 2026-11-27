@@ -15,6 +15,9 @@ void main() {
     'lib/src/book_importer.dart',
     'lib/src/import_screen.dart',
     'lib/src/reading.dart',
+    'lib/src/story_generator.dart',
+    'lib/src/motion.dart',
+    'lib/src/module.dart',
   ];
 
   final forbidden = <String, RegExp>{
@@ -33,11 +36,14 @@ void main() {
     'TextAlign.justify': RegExp(r'TextAlign\.justify'),
     'direct flutter/material import': RegExp(r'package:flutter/material\.dart'),
     'Spanish literal CAPÍTULO': RegExp(r'CAPÍTULO', caseSensitive: false),
+    'Duration literal (Page 24 Part 1.2)': RegExp(r'\bDuration\('),
+    'Curves literal (Page 24 Part 1.2)': RegExp(r'\bCurves\.'),
+    'Cubic literal (Page 24 Part 1.2)': RegExp(r'\bCubic\('),
   };
 
   for (final path in files) {
     test(
-      '$path uses Noche tokens, directional layout, and material_ui only',
+      '$path uses Noche tokens, motion rules, directional layout, and material_ui only',
       () {
         final source = File(path).readAsStringSync();
         for (final entry in forbidden.entries) {
@@ -45,6 +51,13 @@ void main() {
             entry.value.hasMatch(source),
             isFalse,
             reason: '$path must not contain ${entry.key}',
+          );
+        }
+        if (path != 'lib/src/motion.dart') {
+          expect(
+            RegExp(r'NocheMotion\.ms\(').hasMatch(source),
+            isFalse,
+            reason: '$path must not call NocheMotion.ms( outside motion.dart',
           );
         }
       },
