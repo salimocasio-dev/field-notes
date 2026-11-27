@@ -231,12 +231,19 @@ class _NocheFollowState extends State<NocheFollow>
     value: 1.0,
   )..addStatusListener(_handleStatus);
 
-  Widget? _outgoing;
+  GlobalKey _currentChildKey = GlobalKey();
+  GlobalKey? _outgoingChildKey;
+  Widget? _outgoingChild;
   NocheMotionData _activeMotion = NocheMotion.normal;
 
   void _handleStatus(AnimationStatus status) {
-    if (status == AnimationStatus.completed && _outgoing != null && mounted) {
-      setState(() => _outgoing = null);
+    if (status == AnimationStatus.completed &&
+        _outgoingChild != null &&
+        mounted) {
+      setState(() {
+        _outgoingChild = null;
+        _outgoingChildKey = null;
+      });
     }
   }
 
@@ -244,7 +251,9 @@ class _NocheFollowState extends State<NocheFollow>
   void didUpdateWidget(NocheFollow oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.contentKey != oldWidget.contentKey) {
-      _outgoing = oldWidget.child;
+      _outgoingChild = oldWidget.child;
+      _outgoingChildKey = _currentChildKey;
+      _currentChildKey = GlobalKey();
       _activeMotion = NocheMotion.of(context);
       final total = _activeMotion.followAfter + _activeMotion.move;
       _controller.duration = total;
@@ -277,7 +286,7 @@ class _NocheFollowState extends State<NocheFollow>
         final elapsedUs = _controller.value * totalUs;
 
         Widget? outgoingLayer;
-        if (_outgoing != null && _controller.value < 1.0) {
+        if (_outgoingChild != null && _controller.value < 1.0) {
           final pressUs = motion.press.inMicroseconds.toDouble();
           final tOut = pressUs <= 0
               ? 1.0
@@ -293,7 +302,10 @@ class _NocheFollowState extends State<NocheFollow>
                   child: Opacity(
                     key: const ValueKey('noche_follow_outgoing'),
                     opacity: outOpacity,
-                    child: _outgoing,
+                    child: KeyedSubtree(
+                      key: _outgoingChildKey,
+                      child: _outgoingChild!,
+                    ),
                   ),
                 ),
               ),
@@ -326,7 +338,10 @@ class _NocheFollowState extends State<NocheFollow>
         final incoming = Transform.translate(
           key: const ValueKey('noche_follow_incoming'),
           offset: Offset(dx, 0),
-          child: Opacity(opacity: pIn, child: widget.child),
+          child: Opacity(
+            opacity: pIn,
+            child: KeyedSubtree(key: _currentChildKey, child: widget.child),
+          ),
         );
 
         return Stack(

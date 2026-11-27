@@ -76,7 +76,7 @@ class _NocheTabBarState extends State<NocheTabBar>
   );
   late final AnimationController _visController = AnimationController(
     vsync: this,
-    value: _isMap(widget.selectedId) ? 0.0 : 1.0,
+    value: _hidesPill(widget.selectedId) ? 0.0 : 1.0,
   );
 
   late double _fromIndex = _indexFor(widget.selectedId).toDouble();
@@ -87,7 +87,8 @@ class _NocheTabBarState extends State<NocheTabBar>
     return idx < 0 ? 2 : idx;
   }
 
-  static bool _isMap(String id) => id == NocheTabs.map;
+  static bool _hidesPill(String id) =>
+      id == NocheTabs.map || !NocheTabs.order.contains(id);
 
   @override
   void didUpdateWidget(NocheTabBar oldWidget) {
@@ -96,20 +97,20 @@ class _NocheTabBarState extends State<NocheTabBar>
 
     final motion = NocheMotion.of(context);
     final newIndex = _indexFor(widget.selectedId).toDouble();
-    final toMap = _isMap(widget.selectedId);
-    final fromMap = _isMap(oldWidget.selectedId);
+    final toHidden = _hidesPill(widget.selectedId);
+    final fromHidden = _hidesPill(oldWidget.selectedId);
 
     if (motion.reduced) {
       _fromIndex = newIndex;
       _toIndex = newIndex;
       _posController.value = 1.0;
-      if (toMap) {
+      if (toHidden) {
         _visController.animateTo(
           0.0,
           duration: motion.quick,
           curve: motion.enter,
         );
-      } else if (fromMap) {
+      } else if (fromHidden) {
         _visController.animateTo(
           1.0,
           duration: motion.quick,
@@ -138,13 +139,13 @@ class _NocheTabBarState extends State<NocheTabBar>
     _posController.duration = motion.move;
     _posController.forward(from: 0.0);
 
-    if (toMap) {
+    if (toHidden) {
       _visController.animateTo(
         0.0,
         duration: motion.quick,
         curve: motion.enter,
       );
-    } else if (fromMap || _visController.value < 1.0) {
+    } else if (fromHidden || _visController.value < 1.0) {
       _visController.animateTo(
         1.0,
         duration: motion.quick,
@@ -989,9 +990,13 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   void _close() {
     if (_closing) return;
     final nav = navigator;
-    if (nav == null || !isActive || !isCurrent) return;
+    if (nav == null || !isActive) return;
     _closing = true;
-    nav.pop();
+    if (isCurrent) {
+      nav.pop();
+    } else {
+      nav.removeRoute(this);
+    }
   }
 
   @override
@@ -1070,13 +1075,23 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
                 Positioned.fill(
                   child: IgnorePointer(
                     ignoring: !dismissible || isReverse,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: dismissible ? _close : null,
-                      child: Opacity(
-                        key: const ValueKey('noche_sheet_scrim'),
-                        opacity: scrimOpacity,
-                        child: const ColoredBox(color: NocheColors.scrim),
+                    child: Semantics(
+                      container: true,
+                      excludeSemantics: true,
+                      button: dismissible,
+                      label: dismissible
+                          ? (closeLabel ??
+                                NocheA11y.label(NocheA11y.closeSheet))
+                          : null,
+                      onTap: dismissible && !isReverse ? _close : null,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: dismissible ? _close : null,
+                        child: Opacity(
+                          key: const ValueKey('noche_sheet_scrim'),
+                          opacity: scrimOpacity,
+                          child: const ColoredBox(color: NocheColors.scrim),
+                        ),
                       ),
                     ),
                   ),

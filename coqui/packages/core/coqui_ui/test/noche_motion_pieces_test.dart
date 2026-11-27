@@ -2448,6 +2448,194 @@ void main() {
         },
       );
     }
+
+    testWidgets(
+      'NocheFollow preserves mounted outgoing State without remounting and isolates incoming State',
+      (tester) async {
+        final initCounts = <String, int>{};
+        final createdWithLabel = <String, String>{};
+        var step = 'A';
+        late StateSetter setOuter;
+
+        await tester.pumpWidget(
+          _harness(
+            StatefulBuilder(
+              builder: (context, setState) {
+                setOuter = setState;
+                return NocheFollow(
+                  contentKey: step,
+                  child: _SwapStateProbe(
+                    id: step,
+                    height: 80,
+                    initCounts: initCounts,
+                    createdWithLabel: createdWithLabel,
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        expect(initCounts['A'], 1);
+
+        // Swap A -> B: A stays mounted without remounting while fading out,
+        // and B gets a fresh State with zero leakage from A.
+        setOuter(() => step = 'B');
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 30));
+
+        expect(initCounts['A'], 1);
+        expect(initCounts['B'], 1);
+        expect(createdWithLabel['B'], 'B');
+        expect(find.text('Probe A (init=A)'), findsOneWidget);
+        expect(find.text('Probe B (init=B)'), findsOneWidget);
+
+        await tester.pumpAndSettle();
+        expect(initCounts['A'], 1);
+        expect(initCounts['B'], 1);
+        expect(find.text('Probe A (init=A)'), findsNothing);
+        expect(find.text('Probe B (init=B)'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'showNocheSheet close() removes non-current sheet route when another route is pushed on top',
+      (tester) async {
+        late VoidCallback sheetClose;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: coquiTheme(),
+            home: Builder(
+              builder: (homeContext) => Scaffold(
+                body: Center(
+                  child: NocheOutlineButton(
+                    label: 'Open sheet',
+                    onPressed: () {
+                      showNocheSheet<void>(
+                        homeContext,
+                        title: 'Underneath sheet',
+                        builder: (sheetContext, close) {
+                          sheetClose = close;
+                          return NocheOutlineButton(
+                            label: 'Push top route',
+                            onPressed: () {
+                              Navigator.of(sheetContext).push<void>(
+                                MaterialPageRoute<void>(
+                                  builder: (topContext) => Scaffold(
+                                    body: Center(
+                                      child: NocheOutlineButton(
+                                        label: 'Pop top route',
+                                        onPressed: () =>
+                                            Navigator.of(topContext).pop(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Open sheet'));
+        await tester.pumpAndSettle();
+        expect(find.text('Underneath sheet'), findsOneWidget);
+
+        await tester.tap(find.text('Push top route'));
+        await tester.pumpAndSettle();
+        expect(find.text('Pop top route'), findsOneWidget);
+
+        // Call the sheet's close() while the top route is above it.
+        sheetClose();
+        await tester.pumpAndSettle();
+        // Top route remains visible!
+        expect(find.text('Pop top route'), findsOneWidget);
+
+        // Popping the top route returns straight to Home (sheet was removed!).
+        await tester.tap(find.text('Pop top route'));
+        await tester.pumpAndSettle();
+        expect(find.text('Underneath sheet'), findsNothing);
+        expect(find.text('Open sheet'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'showNocheSheet dismissible scrim exposes close semantics without breaking sheet Close button',
+      (tester) async {
+        final handle = tester.ensureSemantics();
+        try {
+          await tester.pumpWidget(
+            MaterialApp(
+              theme: coquiTheme(),
+              home: Builder(
+                builder: (context) => Scaffold(
+                  body: Center(
+                    child: NocheOutlineButton(
+                      label: 'Open',
+                      onPressed: () {
+                        showNocheSheet<void>(
+                          context,
+                          title: 'Accessible sheet',
+                          builder: (c, close) => const Text('Sheet body'),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+
+          await tester.tap(find.text('Open'));
+          await tester.pumpAndSettle();
+
+          // Scrim exposes close semantics AND sheet Close button stays uniquely findable.
+          final scrimSemantics = tester.getSemantics(
+            find.byKey(const ValueKey('noche_sheet_scrim')),
+          );
+          expect(scrimSemantics.label, NocheA11y.label(NocheA11y.closeSheet));
+          expect(
+            find.descendant(
+              of: find.byType(NocheSheet),
+              matching: find.bySemanticsLabel(
+                NocheA11y.label(NocheA11y.closeSheet),
+              ),
+            ),
+            findsOneWidget,
+          );
+        } finally {
+          handle.dispose();
+        }
+      },
+    );
+
+    testWidgets('NocheTabBar hides pill when selectedId is unknown', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _harness(
+          Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: NocheTabBar(
+              selectedId: 'unknown_tab_id',
+              tabNames: _tabs,
+              onTap: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      final pillFinder = find.byKey(const ValueKey('noche_tab_pill'));
+      expect(_opacityOfChild(tester, pillFinder), closeTo(0.0, 0.01));
+    });
   });
 }
 
