@@ -1,0 +1,582 @@
+{
+ "id": "la-luna",
+ "title": "La luna",
+ "place": "La playa",
+ "scene": "cielo",
+ "next": "bienvenidos",
+ "goal": "Turn Luis's cardboard telescope to the moon or the big star, whichever is called, so Carmen can make her three wishes on the falling lights: every time it is turned to the wrong one the light is gone before it swings back.",
+ "stake": {
+  "thing": "deseos",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "luna",
+  "estrella",
+  "noche"
+ ],
+ "formas_foco": {
+  "estrella": [
+   "estrellas"
+  ]
+ },
+ "back_again": [
+  "cielo",
+  "nube",
+  "bonito",
+  "grande",
+  "blanco",
+  "mira",
+  "¿dónde está?",
+  "allá",
+  "hay",
+  "uno",
+  "dos",
+  "tres",
+  "mucho",
+  "duerme",
+  "cansado",
+  "no",
+  "me gusta",
+  "hasta mañana",
+  "abuela",
+  "al lado de",
+  "tarde",
+  "luz"
+ ],
+ "also_heard": [
+  "luz",
+  "avanza",
+  "a dormir"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "luna": "luna",
+  "estrella": "estrella"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c83_noche": {
+   "who": "narr",
+   "text": "Es de noche. El cielo está bonito."
+  },
+  "c83_ab_luna": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Mira, Coquí: la luna. Una luna grande y blanca."
+  },
+  "c83_donde_luna": {
+   "who": "narr",
+   "text": "¿Dónde está la luna?"
+  },
+  "c83_ca_estrella": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Y allá hay una estrella. ¡Una estrella grande!"
+  },
+  "c83_donde_estrella": {
+   "who": "narr",
+   "text": "¿Dónde está la estrella grande?"
+  },
+  "c83_l_estrellas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Una estrella, dos estrellas, tres estrellas... ¡Muchas estrellas! ¡Qué noche bonita!"
+  },
+  "c83_ca_luz": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Mira! ¡Una luz! ¡Al lado de la luna!"
+  },
+  "c83_ab_noche": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Me gusta la noche. Coquí, ¿estás cansado?"
+  },
+  "cq_no": {
+   "who": "tu",
+   "text": "¡No!",
+   "tu_turno": [
+    {
+     "palabra": "no",
+     "formas": [
+      "no"
+     ]
+    }
+   ]
+  },
+  "c83_l_ahora": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ahora tú, Coquí. ¡Avanza!"
+  },
+  "c83_ab_tarde": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Es tarde. A dormir, Coquí."
+  },
+  "p_cq_hm": {
+   "who": "tu",
+   "text": "¡Hasta mañana!",
+   "tu_turno": [
+    {
+     "palabra": "hasta mañana",
+     "formas": [
+      "hasta mañana",
+      "hasta manana"
+     ]
+    }
+   ]
+  },
+  "c83_fin": {
+   "who": "narr",
+   "text": "Es de noche. Hay luna y hay estrellas. Y Coquí duerme."
+  },
+  "c83_ll_abuela_luna": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí, mira la luna!"
+  },
+  "c83_no_abuela_luna": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! ¡La luna!"
+  },
+  "c83_ll_abuela_estrella": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Coquí, mira la estrella grande!"
+  },
+  "c83_no_abuela_estrella": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! ¡La estrella grande!"
+  },
+  "c83_ll_luis_luna": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Coquí, mira la luna!"
+  },
+  "c83_no_luis_luna": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! ¡La luna!"
+  },
+  "c83_ll_luis_estrella": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Coquí, mira la estrella grande!"
+  },
+  "c83_no_luis_estrella": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Coquí! ¡La estrella grande!"
+  },
+  "c83_ll_carmen_luna": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Coquí, mira la luna!"
+  },
+  "c83_no_carmen_luna": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! ¡La luna!"
+  },
+  "c83_ll_carmen_estrella": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Coquí, mira la estrella grande!"
+  },
+  "c83_no_carmen_estrella": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! ¡La estrella grande!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "cielo": "noche"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "telescopio"
+  },
+  {
+   "act": "chal",
+   "puesto": 1
+  },
+  {
+   "act": "deseos",
+   "n": 3
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c83_noche",
+  "c83_ab_luna",
+  {
+   "ask": "luna",
+   "lead": [],
+   "line": "c83_donde_luna",
+   "then": [],
+   "after": [
+    {
+     "act": "mira83",
+     "a": "luna",
+     "cae": 0
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  "c83_ca_estrella",
+  {
+   "ask": "estrella",
+   "lead": [],
+   "line": "c83_donde_estrella",
+   "then": [],
+   "after": [
+    {
+     "act": "mira83",
+     "a": "estrella",
+     "cae": 0
+    }
+   ]
+  },
+  "c83_l_estrellas",
+  {
+   "dots": 3
+  },
+  {
+   "act": "luz83",
+   "en": "luna"
+  },
+  "c83_ca_luz",
+  {
+   "act": "mira83",
+   "a": "luna",
+   "cae": 1
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "ojos"
+  },
+  {
+   "act": "canta83",
+   "n": 1
+  },
+  "c83_ab_noche",
+  "cq_no",
+  {
+   "dots": 4
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "dedos",
+   "n": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "mira",
+   "a": "cielo"
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "mira",
+   "a": "cielo"
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mira",
+   "a": "cielo"
+  },
+  "c83_l_ahora",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "quien",
+   "options": [
+    "abuela",
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "donde",
+   "options": [
+    "luna",
+    "estrella"
+   ],
+   "other": "otro"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "luna",
+    "estrella"
+   ],
+   "pick": "$donde",
+   "tests": "$donde",
+   "lock": true,
+   "lead": [],
+   "line": "c83_ll_$quien_$donde",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "mira83",
+       "a": "$donde",
+       "cae": 1
+      },
+      {
+       "act": "gesto",
+       "quien": "carmen",
+       "que": "ojos"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "mira83",
+       "a": "$donde",
+       "cae": 0
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "mira83",
+     "a": "$otro",
+     "cae": 0
+    },
+    "c83_no_$quien_$donde",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "deseos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "deseos",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "quien",
+   "options": [
+    "abuela",
+    "luis",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "donde",
+   "options": [
+    "luna",
+    "estrella"
+   ],
+   "other": "otro"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "luna",
+    "estrella"
+   ],
+   "pick": "$donde",
+   "tests": "$donde",
+   "lock": true,
+   "lead": [],
+   "line": "c83_ll_$quien_$donde",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "mira83",
+       "a": "$donde",
+       "cae": 1
+      },
+      {
+       "act": "gesto",
+       "quien": "carmen",
+       "que": "ojos"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "mira83",
+       "a": "$donde",
+       "cae": 0
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "mira83",
+     "a": "$otro",
+     "cae": 0
+    },
+    "c83_no_$quien_$donde",
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "deseos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "deseos",
+       "n": 1
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 7
+  },
+  {
+   "act": "canta83",
+   "n": 0
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final83",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final83",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final83",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  "c83_ab_tarde",
+  "p_cq_hm",
+  "c83_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c83_noche",
+  "c83_ab_luna",
+  "c83_donde_luna",
+  "c83_ca_estrella",
+  "c83_donde_estrella",
+  "c83_l_estrellas",
+  "c83_ca_luz",
+  "c83_ab_noche",
+  "cq_no",
+  "c83_l_ahora",
+  "c83_ll_luis_luna",
+  "c83_ll_abuela_estrella",
+  "c83_ab_tarde",
+  "p_cq_hm",
+  "c83_fin"
+ ]
+}

@@ -1,0 +1,705 @@
+{
+ "id": "como-esta-el-tiempo",
+ "title": "¿Cómo está el tiempo?",
+ "place": "La playa",
+ "scene": "cielo",
+ "next": "esta-lloviendo",
+ "goal": "Get the right thing ready for the weather the radio says is coming (the kite for wind, the umbrella for sun, the ball for clouds) so that the tray of three tall glasses of juice on the blanket stays upright: every wrong thing ends on the tray and a glass goes over.",
+ "stake": {
+  "thing": "jugos",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cielo",
+  "nube",
+  "viento",
+  "¿cómo está el tiempo?"
+ ],
+ "formas_foco": {
+  "nube": [
+   "nubes"
+  ]
+ },
+ "back_again": [
+  "hace calor",
+  "sol",
+  "hay",
+  "no hay",
+  "azul",
+  "grande",
+  "pequeño",
+  "mira",
+  "vuela",
+  "viene",
+  "sale",
+  "ahora",
+  "jugo",
+  "vaso",
+  "bola",
+  "juega",
+  "quiero",
+  "un poco",
+  "cuidado",
+  "abuela",
+  "tres",
+  "con",
+  "sombrilla",
+  "chiringa"
+ ],
+ "also_heard": [
+  "sombrilla",
+  "chiringa",
+  "a jugar"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "viento": "viento",
+  "sol": "sol",
+  "nubes": "nube"
+ },
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c81_radio_cielo": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: ¿Cómo está el tiempo? Hay sol. El cielo está azul."
+  },
+  "c81_donde_cielo": {
+   "who": "narr",
+   "text": "¿Dónde está el cielo?"
+  },
+  "c81_ab_calor": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ¿tienes calor?"
+  },
+  "c68_cq_un_poco": {
+   "who": "tu",
+   "text": "¡Un poco!",
+   "tu_turno": [
+    {
+     "palabra": "un poco",
+     "formas": [
+      "un poco"
+     ]
+    }
+   ]
+  },
+  "c81_ca_sombrilla": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hay sol. ¡La sombrilla!"
+  },
+  "c81_donde_sombrilla": {
+   "who": "narr",
+   "text": "Hay sol. ¿Dónde está la sombrilla?"
+  },
+  "c81_radio_viento": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: ¿Cómo está el tiempo ahora? Hay viento. Viene mucho viento."
+  },
+  "c81_ab_viento": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Viento! ¡Cuidado con la sombrilla!"
+  },
+  "c81_que_vuela": {
+   "who": "narr",
+   "text": "Hay viento. ¿Qué vuela con el viento?"
+  },
+  "c81_l_vuela": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Vuela! ¡Mira el cielo!"
+  },
+  "c81_l_nube": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mira: una nube. Una nube grande."
+  },
+  "c81_radio_nubes": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Ahora hay nubes. No hay sol."
+  },
+  "c81_ca_nubes": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Nubes! No hace calor. ¡A jugar bola!"
+  },
+  "c81_donde_bola": {
+   "who": "narr",
+   "text": "Hay nubes. ¿Dónde está la bola?"
+  },
+  "c81_ab_tiempo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Cómo está el tiempo? Coquí, ¿qué dice el radio?"
+  },
+  "c81_ab_jugo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quieres jugo, Coquí?"
+  },
+  "c38_cq_si_quiero": {
+   "who": "tu",
+   "text": "¡Sí, quiero!",
+   "tu_turno": [
+    {
+     "palabra": "quiero",
+     "formas": [
+      "quiero",
+      "sí quiero",
+      "si quiero"
+     ]
+    }
+   ]
+  },
+  "c81_fin": {
+   "who": "narr",
+   "text": "Hay una nube en el cielo. Y Coquí toma jugo."
+  },
+  "c81_a_viento": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Viene viento."
+  },
+  "c81_b_viento": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Ahora viene viento."
+  },
+  "c81_no_viento": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Hay viento."
+  },
+  "c81_a_sol": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Sale el sol."
+  },
+  "c81_b_sol": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Ahora sale el sol."
+  },
+  "c81_no_sol": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Hay sol."
+  },
+  "c81_a_nubes": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Vienen nubes."
+  },
+  "c81_b_nubes": {
+   "who": "narr",
+   "habla": "radio",
+   "text": "El radio dice: Ahora vienen nubes."
+  },
+  "c81_no_nubes": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡No, Coquí! Hay nubes."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "cielo": "azul"
+   }
+  },
+  {
+   "act": "ir",
+   "a": "manta"
+  },
+  {
+   "act": "jugos",
+   "n": 3
+  },
+  {
+   "act": "sombrilla81",
+   "abierta": 0
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "radio",
+   "on": 1
+  },
+  "c81_radio_cielo",
+  {
+   "ask": "cielo",
+   "lead": [],
+   "line": "c81_donde_cielo",
+   "then": [],
+   "after": []
+  },
+  "c81_ab_calor",
+  "c68_cq_un_poco",
+  {
+   "dots": 2
+  },
+  "c81_ca_sombrilla",
+  {
+   "ask": "sombrilla",
+   "lead": [],
+   "line": "c81_donde_sombrilla",
+   "then": [],
+   "after": [
+    {
+     "act": "sombrilla81",
+     "abierta": 1
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "radio",
+   "on": 1
+  },
+  "c81_radio_viento",
+  "c81_ab_viento",
+  {
+   "act": "sombrilla81",
+   "abierta": 0
+  },
+  {
+   "act": "tiempo81",
+   "que": "viento"
+  },
+  {
+   "ask": "chiringa",
+   "lead": [],
+   "line": "c81_que_vuela",
+   "then": [],
+   "after": [
+    {
+     "act": "vuela81",
+     "ok": 1
+    }
+   ]
+  },
+  "c81_l_vuela",
+  {
+   "dots": 4
+  },
+  {
+   "act": "tiempo81",
+   "que": "nubes"
+  },
+  "c81_l_nube",
+  "c81_radio_nubes",
+  "c81_ca_nubes",
+  {
+   "ask": "bola",
+   "lead": [],
+   "line": "c81_donde_bola",
+   "then": [],
+   "after": [
+    {
+     "act": "bola81",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "set": {
+    "cielo": "nublado"
+   }
+  },
+  {
+   "act": "gesto",
+   "quien": "abuela",
+   "que": "mano"
+  },
+  "c81_ab_tiempo",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "viene",
+   "options": [
+    "viento",
+    "sol",
+    "nubes"
+   ]
+  },
+  {
+   "calc": "p",
+   "cond": "viene=viento",
+   "then": "chiringa",
+   "else": "bola"
+  },
+  {
+   "calc": "p",
+   "cond": "viene=sol",
+   "then": "sombrilla",
+   "else": "$p"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "sombrilla",
+    "chiringa",
+    "bola"
+   ],
+   "pick": "$p",
+   "tests": "$viene",
+   "lock": true,
+   "lead": [],
+   "line": "c81_a_$viene",
+   "right": [
+    {
+     "if": "viene=viento",
+     "then": [
+      {
+       "act": "tiempo81",
+       "que": "viento",
+       "suelto": 1
+      },
+      {
+       "act": "vuela81",
+       "ok": 1,
+       "suelto": 1
+      },
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "if": "viene=sol",
+       "then": [
+        {
+         "act": "tiempo81",
+         "que": "sol",
+         "suelto": 1
+        },
+        {
+         "act": "sombrilla81",
+         "abierta": 1,
+         "suelto": 1
+        },
+        {
+         "act": "ya"
+        }
+       ],
+       "else": [
+        {
+         "act": "tiempo81",
+         "que": "nubes",
+         "suelto": 1
+        },
+        {
+         "act": "bola81",
+         "ok": 1,
+         "suelto": 1
+        },
+        {
+         "act": "ya"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "tiempo81",
+     "que": "$viene"
+    },
+    {
+     "act": "tropiezo81",
+     "que": "$x"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "jugos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "jugos",
+       "n": 1
+      }
+     ]
+    },
+    "c81_no_$viene",
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "sombrilla81",
+   "abierta": 0
+  },
+  {
+   "draw": "viene",
+   "options": [
+    "viento",
+    "sol",
+    "nubes"
+   ]
+  },
+  {
+   "calc": "p",
+   "cond": "viene=viento",
+   "then": "chiringa",
+   "else": "bola"
+  },
+  {
+   "calc": "p",
+   "cond": "viene=sol",
+   "then": "sombrilla",
+   "else": "$p"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "sombrilla",
+    "chiringa",
+    "bola"
+   ],
+   "pick": "$p",
+   "tests": "$viene",
+   "lock": true,
+   "lead": [],
+   "line": "c81_b_$viene",
+   "right": [
+    {
+     "if": "viene=viento",
+     "then": [
+      {
+       "act": "tiempo81",
+       "que": "viento",
+       "suelto": 1
+      },
+      {
+       "act": "vuela81",
+       "ok": 1,
+       "suelto": 1
+      },
+      {
+       "act": "ya"
+      }
+     ],
+     "else": [
+      {
+       "if": "viene=sol",
+       "then": [
+        {
+         "act": "tiempo81",
+         "que": "sol",
+         "suelto": 1
+        },
+        {
+         "act": "sombrilla81",
+         "abierta": 1,
+         "suelto": 1
+        },
+        {
+         "act": "ya"
+        }
+       ],
+       "else": [
+        {
+         "act": "tiempo81",
+         "que": "nubes",
+         "suelto": 1
+        },
+        {
+         "act": "bola81",
+         "ok": 1,
+         "suelto": 1
+        },
+        {
+         "act": "ya"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "tiempo81",
+     "que": "$viene"
+    },
+    {
+     "act": "tropiezo81",
+     "que": "$x"
+    },
+    {
+     "if": "lost=0",
+     "then": [
+      {
+       "act": "jugos",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "jugos",
+       "n": 1
+      }
+     ]
+    },
+    "c81_no_$viene",
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "set": {
+    "cielo": "rosa"
+   }
+  },
+  "c81_ab_jugo",
+  "c38_cq_si_quiero",
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final81",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final81",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final81",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c81_fin",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c81_radio_cielo",
+  "c81_donde_cielo",
+  "c81_ab_calor",
+  "c68_cq_un_poco",
+  "c81_ca_sombrilla",
+  "c81_donde_sombrilla",
+  "c81_radio_viento",
+  "c81_ab_viento",
+  "c81_que_vuela",
+  "c81_l_vuela",
+  "c81_l_nube",
+  "c81_radio_nubes",
+  "c81_ca_nubes",
+  "c81_donde_bola",
+  "c81_ab_tiempo",
+  "c81_a_viento",
+  "c81_b_nubes",
+  "c81_ab_jugo",
+  "c38_cq_si_quiero",
+  "c81_fin"
+ ]
+}

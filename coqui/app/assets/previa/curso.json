@@ -41,6 +41,20 @@
       "el-lunes-hay-frutas",
       "el-fin-de-semana",
       "hoy-y-manana"
+    ],
+    "playa": [
+      "la-playa",
+      "flota",
+      "puedo",
+      "la-cara",
+      "la-cabeza-y-los-brazos",
+      "me-duele",
+      "la-ropa-seca",
+      "mi-sombrero",
+      "se-pone-y-se-quita",
+      "como-esta-el-tiempo",
+      "esta-lloviendo",
+      "la-luna"
     ]
   },
   "cuentos": {
@@ -187,6 +201,54 @@
     "hoy-y-manana": {
       "t": "Hoy y mañana",
       "min": 7
+    },
+    "la-playa": {
+      "t": "La playa",
+      "min": 6
+    },
+    "flota": {
+      "t": "¿Flota?",
+      "min": 5
+    },
+    "puedo": {
+      "t": "¿Puedo?",
+      "min": 5
+    },
+    "la-cara": {
+      "t": "La cara",
+      "min": 6
+    },
+    "la-cabeza-y-los-brazos": {
+      "t": "La cabeza y los brazos",
+      "min": 6
+    },
+    "me-duele": {
+      "t": "Me duele",
+      "min": 6
+    },
+    "la-ropa-seca": {
+      "t": "La ropa seca",
+      "min": 5
+    },
+    "mi-sombrero": {
+      "t": "¡Mi sombrero!",
+      "min": 6
+    },
+    "se-pone-y-se-quita": {
+      "t": "Se pone y se quita",
+      "min": 5
+    },
+    "como-esta-el-tiempo": {
+      "t": "¿Cómo está el tiempo?",
+      "min": 6
+    },
+    "esta-lloviendo": {
+      "t": "Está lloviendo",
+      "min": 6
+    },
+    "la-luna": {
+      "t": "La luna",
+      "min": 5
     }
   }
 }

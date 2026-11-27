@@ -1,0 +1,830 @@
+{
+ "id": "la-cara",
+ "title": "La cara",
+ "place": "La playa",
+ "scene": "sombrilla",
+ "next": "la-cabeza-y-los-brazos",
+ "goal": "Press the shells into the right places of the face the children drew in the sand (an eye, the nose, the mouth) as Luis and Carmen say, so that abuela sleeps on under her umbrella until the surprise is ready: every shell in the wrong place clacks, and one of her three Z's goes.",
+ "stake": {
+  "thing": "zetas",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cara",
+  "ojo",
+  "nariz",
+  "boca"
+ ],
+ "formas_foco": {
+  "ojo": [
+   "ojos"
+  ]
+ },
+ "back_again": [
+  "abuela",
+  "duerme",
+  "grande",
+  "pequeño",
+  "dos",
+  "uno",
+  "una",
+  "otro",
+  "va",
+  "aquí",
+  "mira",
+  "tiene",
+  "cuidado",
+  "sí",
+  "no",
+  "contento",
+  "¿dónde está?",
+  "¿quién?",
+  "es",
+  "soy",
+  "yo",
+  "más",
+  "concha",
+  "arena"
+ ],
+ "also_heard": [
+  "durmiendo",
+  "linda"
+ ],
+ "names": {
+  "abuela": "abuela",
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {},
+ "clips": {
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c75_durmiendo": {
+   "who": "narr",
+   "text": "Abuela está durmiendo."
+  },
+  "c75_ca_mira": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mira, Coquí: una cara. La cara de abuela."
+  },
+  "c75_donde_cara": {
+   "who": "narr",
+   "text": "¿Dónde está la cara?"
+  },
+  "c75_ca_ojos": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Abuela tiene dos ojos. Un ojo va aquí."
+  },
+  "c75_ca_otro_ojo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Y el otro ojo?"
+  },
+  "c75_l_nariz": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y una nariz. Abuela tiene una nariz pequeña."
+  },
+  "c75_donde_nariz": {
+   "who": "narr",
+   "text": "¿Dónde va la nariz?"
+  },
+  "c75_l_boca": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y la boca. Una boca grande."
+  },
+  "c75_ca_boca_no": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No! La boca de abuela es pequeña."
+  },
+  "c75_donde_boca": {
+   "who": "narr",
+   "text": "¿Dónde va la boca?"
+  },
+  "c75_ca_mas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Más conchas. Ahora tú, Coquí."
+  },
+  "c75_l_no": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No!"
+  },
+  "c75_ab_cara": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Una cara! ¿Quién es?"
+  },
+  "c75_cq_abuela": {
+   "who": "tu",
+   "text": "¡Abuela!",
+   "tu_turno": [
+    {
+     "palabra": "abuela",
+     "formas": [
+      "abuela"
+     ]
+    }
+   ]
+  },
+  "c75_ab_linda": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Soy yo? ¡Qué cara más linda! Estoy contenta."
+  },
+  "c75_a_ojo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Esta concha va en un ojo."
+  },
+  "c75_b_ojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y esta concha va en un ojo."
+  },
+  "c75_no_ojo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Va en un ojo."
+  },
+  "c75_a_nariz": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Esta concha va en la nariz."
+  },
+  "c75_b_nariz": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y esta concha va en la nariz."
+  },
+  "c75_no_nariz": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Va en la nariz."
+  },
+  "c75_a_boca": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Esta concha va en la boca."
+  },
+  "c75_b_boca": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y esta concha va en la boca."
+  },
+  "c75_no_boca": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡No, Coquí! Va en la boca."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "hora": "mediodia",
+    "dibujo": "circulo"
+   }
+  },
+  {
+   "act": "zetas",
+   "n": 3
+  },
+  {
+   "act": "ir",
+   "a": "cubo"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  "c75_durmiendo",
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "calla"
+  },
+  "c75_ca_mira",
+  {
+   "ask": "cara",
+   "lead": [],
+   "line": "c75_donde_cara",
+   "then": [],
+   "after": [
+    {
+     "set": {
+      "twinkle": "cara"
+     }
+    },
+    {
+     "wait": 600
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "senala",
+   "a": "cara"
+  },
+  "c75_ca_ojos",
+  {
+   "act": "concha75",
+   "en": "ojo_izq",
+   "ok": 1
+  },
+  {
+   "ask": "ojo_der",
+   "lead": [],
+   "line": "c75_ca_otro_ojo",
+   "then": [],
+   "after": [
+    {
+     "act": "concha75",
+     "en": "ojo_der",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  "c75_l_nariz",
+  {
+   "ask": "nariz",
+   "lead": [],
+   "line": "c75_donde_nariz",
+   "then": [],
+   "after": [
+    {
+     "act": "concha75",
+     "en": "nariz",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "boca75",
+   "t": "grande"
+  },
+  "c75_l_boca",
+  {
+   "act": "gesto",
+   "quien": "carmen",
+   "que": "rie"
+  },
+  {
+   "act": "gesto",
+   "quien": "luis",
+   "que": "calla"
+  },
+  "c75_ca_boca_no",
+  {
+   "act": "boca75",
+   "t": "borrada"
+  },
+  {
+   "act": "boca75",
+   "t": "pequena"
+  },
+  {
+   "ask": "boca",
+   "lead": [],
+   "line": "c75_donde_boca",
+   "then": [],
+   "after": [
+    {
+     "act": "concha75",
+     "en": "boca",
+     "ok": 1
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  "c75_ca_mas",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "ojo",
+    "nariz",
+    "boca"
+   ]
+  },
+  {
+   "calc": "ka",
+   "cond": "pa=ojo",
+   "then": "ojo_izq",
+   "else": "$pa"
+  },
+  {
+   "if": "pa=ojo",
+   "then": [
+    {
+     "decide": "do",
+     "options": [
+      "ojo_izq",
+      "ojo_der",
+      "nariz",
+      "boca"
+     ],
+     "pick": "$ka",
+     "tests": "$pa",
+     "lock": true,
+     "lead": [],
+     "line": "c75_a_$pa",
+     "right": [
+      {
+       "calc": "ea",
+       "cond": "ok",
+       "then": "$x",
+       "else": "$ka"
+      },
+      {
+       "act": "concha75",
+       "en": "$ea",
+       "ok": 1
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "gesto",
+         "quien": "carmen",
+         "que": "si"
+        },
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "act": "concha75",
+       "en": "$x",
+       "ok": 0
+      },
+      "c75_l_no",
+      "c75_no_$pa",
+      {
+       "act": "gesto",
+       "quien": "luis",
+       "que": "calla",
+       "suelto": 1
+      },
+      {
+       "act": "gesto",
+       "quien": "carmen",
+       "que": "calla",
+       "suelto": 1
+      },
+      {
+       "act": "ya"
+      },
+      {
+       "act": "despierta75"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "zetas",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "zetas",
+         "n": 1
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ],
+     "vale": [
+      "ojo_der"
+     ]
+    }
+   ],
+   "else": [
+    {
+     "decide": "do",
+     "options": [
+      "ojo_izq",
+      "ojo_der",
+      "nariz",
+      "boca"
+     ],
+     "pick": "$ka",
+     "tests": "$pa",
+     "lock": true,
+     "lead": [],
+     "line": "c75_a_$pa",
+     "right": [
+      {
+       "calc": "ea",
+       "cond": "ok",
+       "then": "$x",
+       "else": "$ka"
+      },
+      {
+       "act": "concha75",
+       "en": "$ea",
+       "ok": 1
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "gesto",
+         "quien": "carmen",
+         "que": "si"
+        },
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "act": "concha75",
+       "en": "$x",
+       "ok": 0
+      },
+      "c75_l_no",
+      "c75_no_$pa",
+      {
+       "act": "gesto",
+       "quien": "luis",
+       "que": "calla",
+       "suelto": 1
+      },
+      {
+       "act": "gesto",
+       "quien": "carmen",
+       "que": "calla",
+       "suelto": 1
+      },
+      {
+       "act": "ya"
+      },
+      {
+       "act": "despierta75"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "zetas",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "zetas",
+         "n": 1
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "ojo",
+    "nariz",
+    "boca"
+   ]
+  },
+  {
+   "calc": "kb",
+   "cond": "pb=ojo",
+   "then": "ojo_izq",
+   "else": "$pb"
+  },
+  {
+   "if": "pb=ojo",
+   "then": [
+    {
+     "decide": "do",
+     "options": [
+      "ojo_izq",
+      "ojo_der",
+      "nariz",
+      "boca"
+     ],
+     "pick": "$kb",
+     "tests": "$pb",
+     "lock": true,
+     "lead": [],
+     "line": "c75_b_$pb",
+     "right": [
+      {
+       "calc": "eb",
+       "cond": "ok",
+       "then": "$x",
+       "else": "$kb"
+      },
+      {
+       "act": "concha75",
+       "en": "$eb",
+       "ok": 1
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "gesto",
+         "quien": "carmen",
+         "que": "si"
+        },
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "act": "concha75",
+       "en": "$x",
+       "ok": 0
+      },
+      "c75_l_no",
+      "c75_no_$pb",
+      {
+       "act": "gesto",
+       "quien": "luis",
+       "que": "calla",
+       "suelto": 1
+      },
+      {
+       "act": "gesto",
+       "quien": "carmen",
+       "que": "calla",
+       "suelto": 1
+      },
+      {
+       "act": "ya"
+      },
+      {
+       "act": "despierta75"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "zetas",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "zetas",
+         "n": 1
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ],
+     "vale": [
+      "ojo_der"
+     ]
+    }
+   ],
+   "else": [
+    {
+     "decide": "do",
+     "options": [
+      "ojo_izq",
+      "ojo_der",
+      "nariz",
+      "boca"
+     ],
+     "pick": "$kb",
+     "tests": "$pb",
+     "lock": true,
+     "lead": [],
+     "line": "c75_b_$pb",
+     "right": [
+      {
+       "calc": "eb",
+       "cond": "ok",
+       "then": "$x",
+       "else": "$kb"
+      },
+      {
+       "act": "concha75",
+       "en": "$eb",
+       "ok": 1
+      },
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "gesto",
+         "quien": "carmen",
+         "que": "si"
+        },
+        {
+         "act": "marca",
+         "que": "ok"
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      {
+       "act": "concha75",
+       "en": "$x",
+       "ok": 0
+      },
+      "c75_l_no",
+      "c75_no_$pb",
+      {
+       "act": "gesto",
+       "quien": "luis",
+       "que": "calla",
+       "suelto": 1
+      },
+      {
+       "act": "gesto",
+       "quien": "carmen",
+       "que": "calla",
+       "suelto": 1
+      },
+      {
+       "act": "ya"
+      },
+      {
+       "act": "despierta75"
+      },
+      {
+       "if": "lost=0",
+       "then": [
+        {
+         "act": "zetas",
+         "n": 2
+        }
+       ],
+       "else": [
+        {
+         "act": "zetas",
+         "n": 1
+        }
+       ]
+      },
+      {
+       "act": "marca",
+       "que": "x"
+      },
+      {
+       "cost": 1
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "if": "lost=0",
+   "then": [
+    {
+     "act": "final75",
+     "n": 3
+    }
+   ],
+   "else": [
+    {
+     "if": "lost=1",
+     "then": [
+      {
+       "act": "final75",
+       "n": 2
+      }
+     ],
+     "else": [
+      {
+       "act": "final75",
+       "n": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 9
+  },
+  "c75_ab_cara",
+  "c75_cq_abuela",
+  "c75_ab_linda",
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c75_durmiendo",
+  "c75_ca_mira",
+  "c75_donde_cara",
+  "c75_ca_ojos",
+  "c75_ca_otro_ojo",
+  "c75_l_nariz",
+  "c75_donde_nariz",
+  "c75_l_boca",
+  "c75_ca_boca_no",
+  "c75_donde_boca",
+  "c75_ca_mas",
+  "c75_a_boca",
+  "c75_b_nariz",
+  "c75_ab_cara",
+  "c75_cq_abuela",
+  "c75_ab_linda"
+ ]
+}
