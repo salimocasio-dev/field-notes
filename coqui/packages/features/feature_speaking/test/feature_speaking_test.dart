@@ -2,11 +2,13 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/feature_speaking.dart';
+import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_screen.dart';
 import 'package:feature_speaking/src/call_start_reason.dart';
 import 'package:feature_speaking/src/call_text.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
 import 'package:feature_speaking/src/voice_test_screen.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -51,6 +53,40 @@ void main() {
     });
 
     testWidgets(
+      'screenFor returns null for CallRoute when Feature.calls is not entitled',
+      (tester) async {
+        const m = SpeakingModule();
+        for (final plan in [Plan.course, Plan.free]) {
+          final entitlements = FakeEntitlements(plan: plan);
+          final w = await World.create(
+            seed: 'todo',
+            entitlements: entitlements,
+          );
+          expect(
+            m.screenFor(const CallRoute('casa'), w.services),
+            isNull,
+            reason: 'plan=$plan must not open CallScreen',
+          );
+          final ctrl = CallController(
+            session: w.call,
+            clock: w.clock,
+            course: w.course,
+            progress: w.progress,
+            placeId: 'casa',
+            entitlements: entitlements,
+          );
+          expect(ctrl.available, isFalse);
+          ctrl.open();
+          await ctrl.start();
+          expect(w.call.starts, 0);
+          ctrl.dispose();
+          entitlements.dispose();
+          w.dispose();
+        }
+      },
+    );
+
+    testWidgets(
       'the tab is the Hablar tab; the entry to the voice test shows only with its lines and its title',
       (tester) async {
         Phone.android.use(tester);
@@ -90,9 +126,20 @@ void main() {
       Phone.android.use(tester);
       await tester.pumpWidget(devApp());
       await tester.pumpAndSettle();
-      expect(find.text('Speak'), findsOneWidget);
+      expect(find.text(SpeakWording.screenTitle), findsOneWidget);
       expect(find.text('Hablar'), findsOneWidget);
       expect(find.text('De visita en la casa'), findsOneWidget);
+    });
+
+    testWidgets('?plan=course shows the calm plan card and no call disc', (
+      tester,
+    ) async {
+      Phone.android.use(tester);
+      await tester.pumpWidget(devApp(const {'plan': 'course', 'reduce': '1'}));
+      await tester.pumpAndSettle();
+      expect(find.text(SpeakWording.planCardTitle), findsOneWidget);
+      expect(find.text(SpeakWording.seePlans), findsOneWidget);
+      expect(find.byKey(const Key('speak-call-disc')), findsNothing);
     });
 
     testWidgets(

@@ -7,10 +7,10 @@ import 'package:feature_speaking/feature_speaking.dart';
 import 'package:feature_speaking/src/call_mic.dart';
 import 'package:feature_speaking/src/call_screen.dart';
 import 'package:feature_speaking/src/call_text.dart';
-import 'package:feature_speaking/src/entitlements_hook.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
 import 'package:feature_speaking/src/voice_test_controller.dart';
 import 'package:feature_speaking/src/voice_test_screen.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -47,6 +47,7 @@ class _ArabicWorld {
     Set<String> stub = const {'manual'},
     FakeSpeechListener? speech,
     bool reduceMotion = true,
+    Entitlements entitlements = const AllowAllEntitlements(),
   }) async {
     final clock = FakeClock();
     final progress = RecordingProgress(clock: clock);
@@ -79,6 +80,7 @@ class _ArabicWorld {
         haptics: haptics,
         speech: sp,
         clock: clock,
+        entitlements: entitlements,
         storage: (space) => stores.putIfAbsent(space, FakeKeyValueStore.new),
         reduceMotion: reduceMotion,
       ),
@@ -149,13 +151,16 @@ void main() {
       await tester.pumpWidget(w.app(HablarTab(services: w.services)));
       expect(tester.takeException(), isNull);
       expect(find.text('ARABIC'), findsOneWidget);
-      expect(find.text('Speak'), findsOneWidget);
-      expect(find.text('0 words ready to say'), findsOneWidget);
-      expect(find.text('Opens when you finish البيت'), findsOneWidget);
+      expect(find.text(SpeakWording.screenTitle), findsOneWidget);
+      expect(find.text(SpeakWording.wordsReadyToSay(0)), findsOneWidget);
+      expect(
+        find.text(SpeakWording.opensWhenYouFinish('البيت')),
+        findsOneWidget,
+      );
       expect(find.textContaining('Danny'), findsNothing);
-      await tester.tap(find.text('0 words ready to say'));
+      await tester.tap(find.text(SpeakWording.wordsReadyToSay(0)));
       await tester.pumpAndSettle();
-      expect(find.text('Words open for speaking'), findsOneWidget);
+      expect(find.text(SpeakWording.wordsTitle), findsOneWidget);
       await w.close(tester);
     });
 
@@ -166,8 +171,11 @@ void main() {
         final w = await _ArabicWorld.create(casaUnlocked: true);
         await tester.pumpWidget(w.app(HablarTab(services: w.services)));
         expect(tester.takeException(), isNull);
-        expect(find.text('NEXT CALL WITH TARIQ · 5 MIN'), findsOneWidget);
-        expect(find.text('Call Tariq'), findsOneWidget);
+        expect(
+          find.text(SpeakWording.nextCallEyebrow('Tariq', 5).toUpperCase()),
+          findsOneWidget,
+        );
+        expect(find.text(SpeakWording.callPartner('Tariq')), findsOneWidget);
         expect(find.byKey(const Key('speak-call-disc')), findsOneWidget);
         expect(find.textContaining('Tariq'), findsWidgets);
         expect(find.textContaining('Danny'), findsNothing);
@@ -177,8 +185,10 @@ void main() {
         );
 
         // HablarTab sets Directionality from course.language.direction (RTL for Arabic).
-        final rtlTitle = tester.getRect(find.text('Speak'));
-        final rtlWords = tester.getRect(find.text('0 words ready to say'));
+        final rtlTitle = tester.getRect(find.text(SpeakWording.screenTitle));
+        final rtlWords = tester.getRect(
+          find.text(SpeakWording.wordsReadyToSay(0)),
+        );
         expect(rtlTitle.left, greaterThan(rtlWords.right));
         await w.close(tester);
       },
@@ -188,21 +198,34 @@ void main() {
       tester,
     ) async {
       Phone.android.use(tester);
-      final lockedTier = await _ArabicWorld.create(casaUnlocked: true);
+      final entitlements = FakeEntitlements(plan: Plan.course);
+      final lockedTier = await _ArabicWorld.create(
+        casaUnlocked: true,
+        entitlements: entitlements,
+      );
       await tester.pumpWidget(
-        lockedTier.app(
-          HablarTab(
-            services: lockedTier.services,
-            entitlementCheck: () => CallEntitlement.upgradeRequired,
-          ),
-        ),
+        lockedTier.app(HablarTab(services: lockedTier.services)),
       );
       expect(tester.takeException(), isNull);
-      expect(
-        find.text('Live calls with Tariq are included in the top plan.'),
-        findsOneWidget,
-      );
+      expect(find.byKey(const Key('speak-plan-card')), findsOneWidget);
+      expect(find.text(SpeakWording.planCardTitle), findsOneWidget);
+      expect(find.text(SpeakWording.planCardBody('Tariq')), findsOneWidget);
+      expect(find.text(SpeakWording.planTag), findsOneWidget);
+      expect(find.text(SpeakWording.seePlans), findsOneWidget);
+      expect(find.byKey(const Key('speak-call-disc')), findsNothing);
       expect(find.textContaining('Danny'), findsNothing);
+
+      // In RTL, eyebrow sits to the right of the plan tag.
+      final eyebrowRect = tester.getRect(
+        find.text(SpeakWording.nextCallEyebrow('Tariq', 5).toUpperCase()),
+      );
+      final tagRect = tester.getRect(find.byKey(const Key('speak-plan-tag')));
+      expect(eyebrowRect.left, greaterThan(tagRect.right));
+
+      await tester.tap(find.byKey(const Key('speak-see-plans-button')));
+      await tester.pump();
+      expect(lockedTier.nav.routes, [const PlansRoute()]);
+      entitlements.dispose();
       await lockedTier.close(tester);
 
       final unavailable = await _ArabicWorld.create(
@@ -213,7 +236,7 @@ void main() {
         unavailable.app(HablarTab(services: unavailable.services)),
       );
       expect(tester.takeException(), isNull);
-      expect(find.text('Calls with Tariq open later.'), findsOneWidget);
+      expect(find.text(SpeakWording.callsLaterFor('Tariq')), findsOneWidget);
       expect(find.textContaining('Danny'), findsNothing);
       await unavailable.close(tester);
     });

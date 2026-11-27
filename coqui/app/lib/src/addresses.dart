@@ -1,24 +1,26 @@
 /// The app's addresses: every screen has a stable one, after the `#` (GitHub Pages has no fallback for path
 /// addresses, so the app uses hash addresses).
 ///
-/// | Screen                         | Address                     | Route                          |
-/// | ------------------------------ | --------------------------- | ------------------------------ |
-/// | a tab                          | `#/tab/<id>`                | `TabRoute(id)`                 |
-/// | a story                        | `#/cuento/<id>`             | `StoryRoute(id)`               |
-/// | a story told straight through  | `#/cuento/<id>?oir=1`       | `StoryRoute(id, listen: true)` |
-/// | Repaso                         | `#/repaso`                  | `ReviewRoute()`                |
-/// | Repaso, practice               | `#/repaso?practica=1`       | `ReviewRoute(practice: true)`  |
-/// | the level check                | `#/nivel`                   | `LevelCheckRoute()`            |
-/// | a book                         | `#/libro/<id>`              | `BookRoute(id)`                |
-/// | the call for a place           | `#/llamada/<placeId>`       | `CallRoute(placeId)`           |
-/// | the voice test                 | `#/prueba-voz`              | `VoiceTestRoute()`             |
-/// | the language picker            | `#/idiomas`                 | `LanguagesRoute()`             |
-/// | the subscription plans         | `#/planes`                  | `PlansRoute()`                 |
-/// | adding own books/texts         | `#/importar`                | `ImportRoute()`                |
-/// | one place on the map           | `#/lugar/<placeId>`         | `PlaceRoute(placeId)`          |
+/// | Screen                         | Address                             | Route                                |
+/// | ------------------------------ | ----------------------------------- | ------------------------------------ |
+/// | a tab                          | `#/tab/<id>`                        | `TabRoute(id)`                       |
+/// | a story                        | `#/cuento/<id>`                     | `StoryRoute(id)`                     |
+/// | a story told straight through  | `#/cuento/<id>?oir=1`               | `StoryRoute(id, listen: true)`       |
+/// | Repaso                         | `#/repaso`                          | `ReviewRoute()`                      |
+/// | Repaso, practice               | `#/repaso?practica=1`               | `ReviewRoute(practice: true)`        |
+/// | the level check                | `#/nivel`                           | `LevelCheckRoute()`                  |
+/// | a book                         | `#/libro/<id>`                      | `BookRoute(id)`                      |
+/// | the call for a place           | `#/llamada/<placeId>`               | `CallRoute(placeId)`                 |
+/// | a specific call for a place    | `#/llamada/<placeId>?call=<callId>` | `CallRoute(placeId, callId: callId)` |
+/// | the voice test                 | `#/prueba-voz`                      | `VoiceTestRoute()`                   |
+/// | the language picker            | `#/idiomas`                         | `LanguagesRoute()`                   |
+/// | the subscription plans         | `#/planes`                          | `PlansRoute()`                       |
+/// | adding own books/texts         | `#/importar`                        | `ImportRoute()`                      |
+/// | one place on the map           | `#/lugar/<placeId>`                 | `PlaceRoute(placeId)`                |
 ///
 /// Tab ids are `library`, `words`, `map`, `speak`, `me`. Story, book and place ids are the course's (lower-case
-/// letters, digits and hyphens). Anything else is not an address of the app.
+/// letters, digits and hyphens). Call ids also allow underscores (`[a-z0-9][a-z0-9_-]*`). Anything else is not an
+/// address of the app.
 library;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
@@ -31,6 +33,7 @@ const List<String> tabIds = NocheTabs.order;
 const String startTab = NocheTabs.map;
 
 final RegExp _id = RegExp(r'^[a-z0-9][a-z0-9-]*$');
+final RegExp _callId = RegExp(r'^[a-z0-9][a-z0-9_-]*$');
 
 /// The address of [route] (the part after `#`).
 String addressOf(AppRoute route) => switch (route) {
@@ -40,7 +43,10 @@ String addressOf(AppRoute route) => switch (route) {
   ReviewRoute(:final practice) => '/repaso${practice ? '?practica=1' : ''}',
   LevelCheckRoute() => '/nivel',
   BookRoute(:final id) => '/libro/$id',
-  CallRoute(:final placeId) => '/llamada/$placeId',
+  CallRoute(:final placeId, :final callId) =>
+    callId == null
+        ? '/llamada/$placeId'
+        : '/llamada/$placeId?call=${Uri.encodeQueryComponent(callId)}',
   VoiceTestRoute() => '/prueba-voz',
   LanguagesRoute() => '/idiomas',
   PlansRoute() => '/planes',
@@ -64,7 +70,12 @@ AppRoute? routeOf(Uri address) {
       case 'libro':
         return _id.hasMatch(id) ? BookRoute(id) : null;
       case 'llamada':
-        return _id.hasMatch(id) ? CallRoute(id) : null;
+        if (!_id.hasMatch(id)) return null;
+        final calls = address.queryParametersAll['call'];
+        if (calls == null || calls.isEmpty) return CallRoute(id);
+        if (calls.length != 1) return null;
+        final callId = calls.single;
+        return _callId.hasMatch(callId) ? CallRoute(id, callId: callId) : null;
       case 'lugar':
         return _id.hasMatch(id) ? PlaceRoute(id) : null;
     }

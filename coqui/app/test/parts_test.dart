@@ -31,6 +31,8 @@ void main() {
       LevelCheckRoute(),
       BookRoute('el-bizcocho'),
       CallRoute('casa'),
+      CallRoute('casa', callId: 'casa_agua'),
+      CallRoute('casa', callId: 'casa-2'),
       VoiceTestRoute(),
       LanguagesRoute(),
       PlansRoute(),
@@ -51,6 +53,14 @@ void main() {
           '/cuento/la-lluvia?oir=1',
         );
         expect(addressOf(const CallRoute('casa')), '/llamada/casa');
+        expect(
+          addressOf(const CallRoute('casa', callId: 'casa_agua')),
+          '/llamada/casa?call=casa_agua',
+        );
+        expect(
+          addressOf(const CallRoute('casa', callId: 'casa-2')),
+          '/llamada/casa?call=casa-2',
+        );
         expect(addressOf(const VoiceTestRoute()), '/prueba-voz');
         expect(addressOf(const LanguagesRoute()), '/idiomas');
         expect(addressOf(const PlansRoute()), '/planes');
@@ -58,6 +68,21 @@ void main() {
         expect(addressOf(const PlaceRoute('casa')), '/lugar/casa');
       },
     );
+    test('unrelated query parameters on /llamada/<placeId> are ignored', () {
+      expect(
+        routeOf(Uri.parse('/llamada/casa?other=1')),
+        const CallRoute('casa'),
+      );
+      expect(
+        routeOf(Uri.parse('/llamada/casa?call=casa_agua&other=1')),
+        const CallRoute('casa', callId: 'casa_agua'),
+      );
+    });
+    test('addressOf encodes special characters in callId safely', () {
+      final encoded = addressOf(const CallRoute('casa', callId: 'bad&other=1'));
+      expect(encoded, '/llamada/casa?call=bad%26other%3D1');
+      expect(routeOf(Uri.parse(encoded)), isNull);
+    });
     test('anything else names no route', () {
       for (final a in [
         '/',
@@ -69,6 +94,16 @@ void main() {
         '/cuento/a/b',
         '/repaso/x',
         '/x',
+        '/llamada/casa?call=',
+        '/llamada/casa?call',
+        '/llamada/casa?call=Casa_Agua',
+        '/llamada/casa?call=_casa',
+        '/llamada/casa?call=-casa',
+        '/llamada/casa?call=casa/agua',
+        '/llamada/casa?call=casa%20agua',
+        '/llamada/casa?call=casa.agua',
+        '/llamada/casa?call=a&call=b',
+        '/llamada/Casa?call=casa_agua',
       ]) {
         expect(routeOf(Uri.parse(a)), isNull, reason: a);
       }
@@ -299,10 +334,11 @@ void main() {
       isNotNull,
     );
     expect((speakingModule() as SpeakingModule).voiceTest, isNull);
+    expect((speakingModule() as SpeakingModule).shortCallsEnabled, isTrue);
   });
 
   group('module wiring', () {
-    test('coquiModules forwards switches.perf and switches.txt to MapModule and StoryModule', () {
+    test('coquiModules forwards switches.perf and switches.txt to MapModule and StoryModule and enables shortCallsEnabled', () {
       for (final (query, expectedPerf, expectedTxt) in const [
         (<String, String>{}, false, TxtMode.con),
         ({'perf': '1', 'txt': 'tras'}, true, TxtMode.tras),
@@ -314,8 +350,10 @@ void main() {
           entitlements: ReleaseEntitlements.preBilling(callsAllowed: true),
         );
         final map = modules.whereType<MapModule>().single;
+        final speaking = modules.whereType<SpeakingModule>().single;
         final story = modules.whereType<StoryModule>().single;
         expect(map.showPerf, expectedPerf, reason: '$query');
+        expect(speaking.shortCallsEnabled, isTrue, reason: '$query');
         expect(story.showPerf, expectedPerf, reason: '$query');
         expect(story.txt, expectedTxt, reason: '$query');
       }

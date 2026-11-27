@@ -24,6 +24,7 @@ DIFF_EXCLUDES = [
     ":(exclude)coqui/ref/*",
     ":(exclude)historia/audio/*",
     ":(exclude)historia/libros/*",
+    ":(glob,exclude)coqui/packages/core/coqui_platform/assets/elevenlabs/*.worklet.js",
 ]
 
 SYSTEM_PROMPT = """You are an independent, read-only code and spec reviewer for Coqui (a Flutter language-learning app).
@@ -38,8 +39,8 @@ Review ONLY the provided PR metadata and diff against these non-negotiable rules
 
 Output format (concise, phone-friendly, one point per line):
 - **Verdict:** APPROVE | CHANGES REQUESTED | COMMENT
-- **Blockers:** bullet list (or "None")
-- **Warnings / Notes:** bullet list (max 5, only real issues — do not invent nitpicks)
+- **Blockers:** bullet list (or literally "None" with no extra text if there are no blockers)
+- **Warnings / Notes:** bullet list (max 5, only real issues — do not invent nitpicks; or literally "None" if none)
 """
 
 
@@ -172,10 +173,54 @@ def get_diff_chunks(
     return chunk_file_diffs(file_diffs, max_chars=max_chars), total_chars
 
 
+_NONE_ITEM_RE = re.compile(
+    r"^(?:"
+    r"none(?:\s+found)?"
+    r"|n/a"
+    r"|no\s+(?:blockers|warnings|notes|warnings\s*(?:/|or)\s*notes)(?:\s+found)?"
+    r")"
+    r"(?:\s+(?:in|for)\s+(?:this\s+chunk|chunk\s+\d+(?:\s*(?:of|/)\s*\d+)?))?"
+    r"(?:\s*\(\s*(?:(?:(?:chunk|part)\s+)?\d+\s*(?:of|/)\s*\d+|(?:in\s+)?this\s+chunk)\s*\))?$",
+    re.IGNORECASE,
+)
+
+
+def _unwrap_outer_brackets(text: str) -> str:
+    """Strip wrapping () or [] only when a single pair encloses the entire string."""
+    pairs = {"(": ")", "[": "]"}
+    while len(text) >= 2 and text[0] in pairs and text[-1] == pairs[text[0]]:
+        open_ch, close_ch = text[0], pairs[text[0]]
+        depth = 0
+        encloses_all = True
+        for idx, ch in enumerate(text):
+            if ch == open_ch:
+                depth += 1
+            elif ch == close_ch:
+                depth -= 1
+                if depth == 0 and idx < len(text) - 1:
+                    encloses_all = False
+                    break
+        if not encloses_all or depth != 0:
+            break
+        text = text[1:-1].strip()
+    return text
+
+
 def _is_none_item(text: str) -> bool:
     cleaned = re.sub(r"^[-*•\s]+", "", text).strip()
-    cleaned = cleaned.strip("`*_()[]").rstrip(".").strip().lower()
-    return cleaned in ("", "none", "n/a", "no blockers", "no warnings", "no notes")
+    cleaned = re.sub(r"(?<!\w)[*_`]+|[*_`]+(?!\w)", "", cleaned).strip()
+    while cleaned:
+        prev = cleaned
+        if cleaned.endswith(".") and not cleaned.endswith(".."):
+            cleaned = cleaned[:-1].strip()
+        cleaned = _unwrap_outer_brackets(cleaned)
+        cleaned = re.sub(r"(?<!\w)[*_`]+|[*_`]+(?!\w)", "", cleaned).strip()
+        if cleaned == prev:
+            break
+    cleaned = re.sub(r"\s+", " ", cleaned)
+    if not cleaned:
+        return True
+    return _NONE_ITEM_RE.fullmatch(cleaned) is not None
 
 
 def parse_review(review_text: str) -> tuple[str, list[str], list[str]]:
@@ -294,6 +339,16 @@ def merge_chunk_reviews(reviews: list[str]) -> str:
         lines.append("- **Warnings / Notes:** None")
 
     return "\n".join(lines)
+
+
+def format_chunk_header(idx: int, total_chunks: int, chunk_files: list[str]) -> str:
+    if total_chunks <= 1:
+        return ""
+    return (
+        f"Chunk {idx} of {total_chunks} (files in this chunk: {', '.join(chunk_files)})\n"
+        "If this chunk has no blockers, write `- **Blockers:** None` "
+        "(literally `None`, with no extra commentary or chunk explanation).\n\n"
+    )
 
 
 def call_claude(api_key: str, model: str, user_prompt: str) -> str:
@@ -489,11 +544,7 @@ def main() -> int:
     else:
         total_chunks = len(chunks)
         for idx, (chunk_files, diff_text) in enumerate(chunks, 1):
-            chunk_header = (
-                f"Chunk {idx} of {total_chunks} (files in this chunk: {', '.join(chunk_files)})\n\n"
-                if total_chunks > 1
-                else ""
-            )
+            chunk_header = format_chunk_header(idx, total_chunks, chunk_files)
             prompt = (
                 f"PR #{pr_number}: {pr_title}\n\n"
                 f"Description:\n{pr_body}\n\n"

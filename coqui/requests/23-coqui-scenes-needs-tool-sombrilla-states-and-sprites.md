@@ -2,7 +2,7 @@
 
 ## What I need
 
-1. Append the six `sombrilla` state entries to `coqui/tool/ref/pp/states.json`:
+1. ~~Append the six `sombrilla` state entries to `coqui/tool/ref/pp/states.json`:~~ **(Fulfilled in `#258` on `lane/tool/258`.)**
    ```json
    { "id": "sombrilla/mediodia-circulo", "kind": "set", "page": "docs/proyecto/pixel/sombrilla-set.html", "query": "?hora=mediodia&dibujo=circulo" },
    { "id": "sombrilla/tarde-circulo", "kind": "set", "page": "docs/proyecto/pixel/sombrilla-set.html", "query": "?hora=tarde&dibujo=circulo" },

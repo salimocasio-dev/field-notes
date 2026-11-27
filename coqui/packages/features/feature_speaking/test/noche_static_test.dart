@@ -10,9 +10,18 @@ void main() {
     'lib/src/hablar_tab.dart',
     'lib/src/hablar_model.dart',
     'lib/src/module.dart',
+    'lib/src/wording.dart',
   ];
 
-  const layoutFiles = ['lib/src/hablar_tab.dart', 'lib/src/hablar_model.dart'];
+  const layoutFiles = [
+    'lib/src/hablar_tab.dart',
+    'lib/src/hablar_model.dart',
+    'lib/src/wording.dart',
+  ];
+
+  test('legacy entitlements_hook.dart is removed', () {
+    expect(File('lib/src/entitlements_hook.dart').existsSync(), isFalse);
+  });
 
   String stripComments(String path) =>
       File(path)

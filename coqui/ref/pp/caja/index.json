@@ -1,0 +1,87 @@
+{
+  "what": "engine reference: caja",
+  "files": 16,
+  "totalBytes": 952257,
+  "entries": [
+    {
+      "path": "hora-manana/kinds.bin",
+      "bytes": 51840,
+      "sha256": "8d15dc9ac4b02df9f7504105555903069872973388a189a32de40d0809f06462"
+    },
+    {
+      "path": "hora-manana/kinds.json",
+      "bytes": 305,
+      "sha256": "d0dae332cefdb8c1f5f58e785583c49a517f92a875c1b38aaa7ee9e91be5d4e0"
+    },
+    {
+      "path": "hora-manana/pix.bin",
+      "bytes": 207360,
+      "sha256": "8d831f814ec94e2a1c1bec8393ee8210a0f7b74934cbf551c2c54e53b075e9b5"
+    },
+    {
+      "path": "hora-manana/pix.json",
+      "bytes": 370,
+      "sha256": "b360550072fada17030b05eb70b46b69c104f713c73f06c624085d3c557573be"
+    },
+    {
+      "path": "hora-manana/pix.png",
+      "bytes": 7586,
+      "sha256": "a70f07e0ef19e142e0db7e731f7807afd0b60738368c046940d0f7809491aa01"
+    },
+    {
+      "path": "hora-manana/state.json",
+      "bytes": 927,
+      "sha256": "2521865541633a9b6ebd48c08bb9e544e589ca758a7c37d4fd1d8d14de3c7b25"
+    },
+    {
+      "path": "hora-manana/zb.bin",
+      "bytes": 207360,
+      "sha256": "6dea1fc98a50eb93385c9075ade572052cb3417bc68d2d6156772f329af5c88d"
+    },
+    {
+      "path": "hora-manana/zb.json",
+      "bytes": 322,
+      "sha256": "d1e7e54bac63bede8a588416f31f57a9aa671ddd07c40c32bf700e5da36d9fe8"
+    },
+    {
+      "path": "hora-tarde/kinds.bin",
+      "bytes": 51840,
+      "sha256": "8d15dc9ac4b02df9f7504105555903069872973388a189a32de40d0809f06462"
+    },
+    {
+      "path": "hora-tarde/kinds.json",
+      "bytes": 305,
+      "sha256": "d0dae332cefdb8c1f5f58e785583c49a517f92a875c1b38aaa7ee9e91be5d4e0"
+    },
+    {
+      "path": "hora-tarde/pix.bin",
+      "bytes": 207360,
+      "sha256": "d139cb372efdafe409ea39cbdb86dc36ca3d8f412678cd3d62845e9027579f7b"
+    },
+    {
+      "path": "hora-tarde/pix.json",
+      "bytes": 370,
+      "sha256": "9d3ac0198edc0660fefeba3554fc1d43bf42ad9ed5d974d398214a755893531c"
+    },
+    {
+      "path": "hora-tarde/pix.png",
+      "bytes": 7705,
+      "sha256": "24b24f7c1351c7fab25ea474b9292f074544d985fb204c201cd1718b28cc8188"
+    },
+    {
+      "path": "hora-tarde/state.json",
+      "bytes": 925,
+      "sha256": "db9a4a43193563be1c43c673e8952da43a8ff13521c7461595d9211168532747"
+    },
+    {
+      "path": "hora-tarde/zb.bin",
+      "bytes": 207360,
+      "sha256": "6dea1fc98a50eb93385c9075ade572052cb3417bc68d2d6156772f329af5c88d"
+    },
+    {
+      "path": "hora-tarde/zb.json",
+      "bytes": 322,
+      "sha256": "d1e7e54bac63bede8a588416f31f57a9aa671ddd07c40c32bf700e5da36d9fe8"
+    }
+  ]
+}

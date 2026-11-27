@@ -1,0 +1,47 @@
+{
+  "what": "engine reference: comer",
+  "files": 8,
+  "totalBytes": 477395,
+  "entries": [
+    {
+      "path": "comer/kinds.bin",
+      "bytes": 51840,
+      "sha256": "d20d95fd389ed918aca307a100f305d1d47d51165dd9c0f23588f3e70bb68f9a"
+    },
+    {
+      "path": "comer/kinds.json",
+      "bytes": 305,
+      "sha256": "89b14955e1afc49faed8aa29ea4f60f73431732c3f39117a2ca2ffcf7a4a02b3"
+    },
+    {
+      "path": "comer/pix.bin",
+      "bytes": 207360,
+      "sha256": "65023766cd494f3d9d07a4a79625935e23696bcbbf25413d0e4c91f50eb7852e"
+    },
+    {
+      "path": "comer/pix.json",
+      "bytes": 370,
+      "sha256": "635cf794c23d60236d9f8448cd4ebadeccac66d02e7bc3264b01c2eb4a43b1f6"
+    },
+    {
+      "path": "comer/pix.png",
+      "bytes": 8924,
+      "sha256": "255ae3e4394f13fb831eb1b14bcd0039e010451f023569a7278ee02e703780cb"
+    },
+    {
+      "path": "comer/state.json",
+      "bytes": 914,
+      "sha256": "bbc995c2591bdb53f9600e159db0c63ddf600ff4b2019d7fb8cbaa7efb5691f9"
+    },
+    {
+      "path": "comer/zb.bin",
+      "bytes": 207360,
+      "sha256": "9eb914a23ae04f76458723eb0a6ef3d7a465617cd1edef28387d78cca1b6b37b"
+    },
+    {
+      "path": "comer/zb.json",
+      "bytes": 322,
+      "sha256": "0b2c30c3ea79e35ed9c79169a84d85c93e802fb542dbabe2398c63e1b9ba5046"
+    }
+  ]
+}

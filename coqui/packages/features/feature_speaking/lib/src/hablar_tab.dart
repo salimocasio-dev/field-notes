@@ -1,8 +1,10 @@
-/// The Noche Speak tab (story N4.6, issue #106, board `Noche-Hablar.dc.html`):
+/// The Noche Speak tab (story N4.6, issue #106, board `Noche-Hablar.dc.html`,
+/// and story N3.3, issue #97, board `Noche-Hablar-Plan.dc.html`):
 /// header with language label, "Speak" title and tappable words-ready count,
 /// reached place pills plus one dashed-locked next place pill, featured
-/// next-call card with open-word chips, 2-per-row other calls, and the pinned
-/// 96 px orange mic disc above the floating tab bar.
+/// next-call card (with open-word chips when calls are in the plan, or a
+/// "Course + Calls" tag when not), 2-per-row other calls, and the pinned
+/// 96 px orange mic disc or calm plan card above the floating tab bar.
 library;
 
 import 'dart:async';
@@ -11,9 +13,9 @@ import 'dart:ui' as ui;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_text.dart';
-import 'package:feature_speaking/src/entitlements_hook.dart';
 import 'package:feature_speaking/src/hablar_model.dart';
 import 'package:feature_speaking/src/speech_note.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 class HablarTab extends StatefulWidget {
@@ -23,7 +25,6 @@ class HablarTab extends StatefulWidget {
     this.callsLater,
     this.voiceTestLabel,
     this.showSpeechNote = false,
-    this.entitlementCheck = defaultCallEntitlement,
     this.completedCallIds = const {},
     this.shortCallsEnabled = false,
   });
@@ -39,9 +40,6 @@ class HablarTab extends StatefulWidget {
   /// Shows `notaHabla` on the Speak tab when requested.
   final bool showSpeechNote;
 
-  /// Subscription tier check hook for live calls.
-  final CallEntitlementCheck entitlementCheck;
-
   /// Optional override/test set of completed call IDs, merged with
   /// `services.progress.callDone(callId)`.
   final Set<String> completedCallIds;
@@ -56,6 +54,7 @@ class HablarTab extends StatefulWidget {
 
 class _HablarTabState extends State<HablarTab> {
   StreamSubscription<void>? _sub;
+  StreamSubscription<void>? _entitlementSub;
   String? _note;
   bool _callsFailed = false;
   bool _openingWords = false;
@@ -65,6 +64,10 @@ class _HablarTabState extends State<HablarTab> {
   void initState() {
     super.initState();
     _sub = widget.services.progress.changes.listen((_) {
+      if (mounted) setState(() {});
+    });
+    _entitlementSub = widget.services.entitlements.changes.listen((_) {
+      _callsFailed = false;
       if (mounted) setState(() {});
     });
     unawaited(_loadNote());
@@ -81,6 +84,18 @@ class _HablarTabState extends State<HablarTab> {
       oldWidget.services.progress,
       widget.services.progress,
     );
+    final entitlementsChanged = !identical(
+      oldWidget.services.entitlements,
+      widget.services.entitlements,
+    );
+    if (entitlementsChanged) {
+      unawaited(_entitlementSub?.cancel());
+      _callsFailed = false;
+      _entitlementSub = widget.services.entitlements.changes.listen((_) {
+        _callsFailed = false;
+        if (mounted) setState(() {});
+      });
+    }
     if (courseChanged || progressChanged) {
       unawaited(_sub?.cancel());
       _sub = widget.services.progress.changes.listen((_) {
@@ -113,6 +128,7 @@ class _HablarTabState extends State<HablarTab> {
   @override
   void dispose() {
     unawaited(_sub?.cancel());
+    unawaited(_entitlementSub?.cancel());
     super.dispose();
   }
 
@@ -124,13 +140,20 @@ class _HablarTabState extends State<HablarTab> {
   }
 
   void _startCall(HablarCallItem item) {
-    if (!item.canStart) return;
+    if (!widget.services.entitlements.has(Feature.calls) || !item.canStart) {
+      return;
+    }
     widget.services.haptics.tick();
     widget.services.nav.go(
       item.spec.isMain
           ? CallRoute(item.place.id)
           : CallRoute(item.place.id, callId: item.spec.id),
     );
+  }
+
+  void _openPlans() {
+    widget.services.haptics.tick();
+    widget.services.nav.go(const PlansRoute());
   }
 
   void _selectPlace(String placeId) {
@@ -155,12 +178,12 @@ class _HablarTabState extends State<HablarTab> {
     try {
       await showNocheSheet<void>(
         context,
-        title: HablarTexts.wordsTitle,
+        title: SpeakWording.wordsTitle,
         builder: (ctx, close) => Directionality(
           textDirection: textDirection,
           child: openWords.isEmpty
               ? Text(
-                  HablarTexts.wordsNone,
+                  SpeakWording.wordsNone,
                   textDirection: TextDirection.ltr,
                   style: NocheType.body.copyWith(color: NocheColors.label),
                 )
@@ -189,7 +212,7 @@ class _HablarTabState extends State<HablarTab> {
     List<String> openWords,
     Locale courseLocale,
   ) {
-    final wordsLabel = HablarTexts.wordsReadyToSay(openWords.length);
+    final wordsLabel = SpeakWording.wordsReadyToSay(openWords.length);
     return SizedBox(
       height: 64,
       child: Padding(
@@ -213,7 +236,7 @@ class _HablarTabState extends State<HablarTab> {
                   Semantics(
                     header: true,
                     child: Text(
-                      HablarTexts.screenTitle,
+                      SpeakWording.screenTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textDirection: TextDirection.ltr,
@@ -231,7 +254,7 @@ class _HablarTabState extends State<HablarTab> {
               onPressed: () => unawaited(
                 _showWordsSheet(context, openWords, lang, courseLocale),
               ),
-              semanticLabel: '$wordsLabel. ${HablarTexts.wordsTitle}',
+              semanticLabel: SpeakWording.wordsButtonSemantic(openWords.length),
               builder: (context, pressed) => ConstrainedBox(
                 constraints: const BoxConstraints(
                   minHeight: NocheSize.touch,
@@ -276,7 +299,7 @@ class _HablarTabState extends State<HablarTab> {
       child: Semantics(
         container: true,
         role: ui.SemanticsRole.tabBar,
-        label: HablarTexts.placeTabListLabel,
+        label: SpeakWording.placeTabListLabel,
         child: Row(
           children: [
             for (var i = 0; i < reached.length; i++) ...[
@@ -297,7 +320,7 @@ class _HablarTabState extends State<HablarTab> {
                 enabled: false,
                 child: NochePill.dashedLocked(
                   key: const Key('speak-locked-place-pill'),
-                  semanticLabel: HablarTexts.lockedPlaceLabel(
+                  semanticLabel: SpeakWording.lockedPlaceLabel(
                     nextLocked.place.name,
                   ),
                 ),
@@ -341,20 +364,33 @@ class _HablarTabState extends State<HablarTab> {
     HablarCallItem featured,
     List<String> previewWords,
     Language lang,
-    Locale courseLocale,
-  ) {
+    Locale courseLocale, {
+    required bool callsEntitled,
+  }) {
+    final isRtl = lang.direction == LanguageDirection.rtl;
+    final englishAlign = isRtl ? TextAlign.end : TextAlign.start;
     final isDone = featured.state == HablarCallState.done;
     final eyebrow =
         (isDone
-                ? HablarTexts.doneCallEyebrow(
+                ? SpeakWording.doneCallEyebrow(
                     lang.partnerName,
                     featured.spec.minutes,
                   )
-                : HablarTexts.nextCallEyebrow(
+                : SpeakWording.nextCallEyebrow(
                     lang.partnerName,
                     featured.spec.minutes,
                   ))
             .toUpperCase();
+    final eyebrowText = Text(
+      eyebrow,
+      textAlign: englishAlign,
+      textDirection: TextDirection.ltr,
+      style: NocheType.label.copyWith(
+        color: featured.state == HablarCallState.ready
+            ? NocheColors.next
+            : NocheColors.label,
+      ),
+    );
     final titleStyle = NocheType.forScript(
       NocheType.placeTitle.copyWith(height: 36 / 32),
       lang.script,
@@ -368,15 +404,20 @@ class _HablarTabState extends State<HablarTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              eyebrow,
-              textDirection: TextDirection.ltr,
-              style: NocheType.label.copyWith(
-                color: featured.state == HablarCallState.ready
-                    ? NocheColors.next
-                    : NocheColors.label,
+            if (callsEntitled)
+              eyebrowText
+            else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(child: eyebrowText),
+                  const SizedBox(width: 8),
+                  const NochePill.planTag(
+                    key: Key('speak-plan-tag'),
+                    label: SpeakWording.planTag,
+                  ),
+                ],
               ),
-            ),
             const SizedBox(height: 8),
             Text(
               featured.spec.titleEs,
@@ -389,10 +430,10 @@ class _HablarTabState extends State<HablarTab> {
               textDirection: TextDirection.ltr,
               style: NocheType.bodyLarge.copyWith(color: NocheColors.label),
             ),
-            if (previewWords.isNotEmpty) ...[
+            if (callsEntitled && previewWords.isNotEmpty) ...[
               const SizedBox(height: 16),
               Text(
-                HablarTexts.wordsYouCanUse.toUpperCase(),
+                SpeakWording.wordsYouCanUse.toUpperCase(),
                 textDirection: TextDirection.ltr,
                 style: NocheType.label.copyWith(color: NocheColors.label),
               ),
@@ -458,7 +499,9 @@ class _HablarTabState extends State<HablarTab> {
     Language lang,
     Locale courseLocale,
   ) {
-    final titleColor = item.canStart ? NocheColors.text : NocheColors.label;
+    final isReachedCard =
+        item.canStart || item.state == HablarCallState.tierLocked;
+    final titleColor = isReachedCard ? NocheColors.text : NocheColors.label;
     final titleStyle = NocheType.forScript(
       NocheType.rowTitle,
       lang.script,
@@ -499,7 +542,18 @@ class _HablarTabState extends State<HablarTab> {
         variant: NocheCardVariant.standard,
         padding: const EdgeInsetsDirectional.all(15),
         onPressed: () => _startCall(item),
-        semanticLabel: '${item.spec.titleEs}, ${item.cardMetaLine}',
+        semanticLabel: SpeakWording.otherCallSemantic(
+          item.spec.titleEs,
+          item.cardMetaLine,
+        ),
+        child: content,
+      );
+    }
+    if (item.state == HablarCallState.tierLocked) {
+      return NocheCard(
+        key: Key('speak-other-call-${item.spec.id}'),
+        variant: NocheCardVariant.standard,
+        padding: const EdgeInsetsDirectional.all(15),
         child: content,
       );
     }
@@ -511,10 +565,61 @@ class _HablarTabState extends State<HablarTab> {
     );
   }
 
-  Widget? _footerControl(HablarCallItem? featured, Language lang) {
+  Widget? _footerControl(
+    HablarCallItem? featured,
+    Language lang, {
+    required bool callsEntitled,
+  }) {
+    if (!callsEntitled) {
+      final isRtl = lang.direction == LanguageDirection.rtl;
+      final englishAlign = isRtl ? TextAlign.end : TextAlign.start;
+      return Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+        child: NocheCard(
+          key: const Key('speak-plan-card'),
+          variant: NocheCardVariant.highlight,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Semantics(
+                header: true,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    SpeakWording.planCardTitle,
+                    textAlign: englishAlign,
+                    textDirection: TextDirection.ltr,
+                    style: NocheType.sheetTitle.copyWith(
+                      color: NocheColors.text,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  SpeakWording.planCardBody(lang.partnerName),
+                  textAlign: englishAlign,
+                  textDirection: TextDirection.ltr,
+                  style: NocheType.body.copyWith(color: NocheColors.label),
+                ),
+              ),
+              const SizedBox(height: 16),
+              NochePrimaryButton(
+                key: const Key('speak-see-plans-button'),
+                label: SpeakWording.seePlans,
+                onPressed: _openPlans,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     if (featured == null) return null;
     if (featured.canStart) {
-      final label = CallTexts.callPartner(lang.partnerName);
+      final label = SpeakWording.callPartner(lang.partnerName);
       return Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
         child: Column(
@@ -535,7 +640,10 @@ class _HablarTabState extends State<HablarTab> {
               size: NocheSize.mic,
               icon: NocheIcons.mic,
               halo: true,
-              semanticLabel: '$label: ${featured.spec.titleEs}',
+              semanticLabel: SpeakWording.callDiscSemantic(
+                lang.partnerName,
+                featured.spec.titleEs,
+              ),
               onPressed: () => _startCall(featured),
             ),
           ],
@@ -574,7 +682,7 @@ class _HablarTabState extends State<HablarTab> {
       course: s.course,
       progress: s.progress,
       callsAvailable: _callsAvailable,
-      entitlement: widget.entitlementCheck(),
+      entitlements: s.entitlements,
       completedCallIds: widget.completedCallIds,
       callsLater: widget.callsLater,
       shortCallsEnabled: widget.shortCallsEnabled,
@@ -584,7 +692,11 @@ class _HablarTabState extends State<HablarTab> {
     final featured = selectedStop?.featuredCall;
     final others = selectedStop?.otherCalls ?? const <HablarCallItem>[];
     final voiceTest = widget.voiceTestLabel;
-    final footer = _footerControl(featured, lang);
+    final footer = _footerControl(
+      featured,
+      lang,
+      callsEntitled: snap.callsEntitled,
+    );
 
     return Directionality(
       textDirection: textDirection,
@@ -621,6 +733,7 @@ class _HablarTabState extends State<HablarTab> {
                             snap.previewWords,
                             lang,
                             courseLocale,
+                            callsEntitled: snap.callsEntitled,
                           ),
                         if (others.isNotEmpty)
                           _otherCallsGrid(context, others, lang, courseLocale),

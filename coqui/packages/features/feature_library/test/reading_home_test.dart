@@ -6,6 +6,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_home.dart';
+import 'package:feature_library/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -17,7 +18,7 @@ Future<void> _pumpHome(
   WidgetTester tester, {
   required Services services,
   required Size size,
-  bool showAddYourOwn = false,
+  bool showAddYourOwn = true,
 }) async {
   tester.view.devicePixelRatio = 1;
   tester.view.physicalSize = size;
@@ -295,8 +296,8 @@ void main() {
 
           expect(tester.takeException(), isNull);
           expect(find.text('SPANISH'), findsOneWidget);
-          expect(find.text('Library'), findsOneWidget);
-          expect(find.text('+ Add your own'), findsNothing);
+          expect(find.text(LibraryWording.libraryTitle), findsOneWidget);
+          expect(find.text(LibraryWording.addYourOwnPill), findsOneWidget);
           expect(
             find.text('A NEW STORY AT YOUR LEVEL · ABOUT WHAT?'),
             findsOneWidget,
@@ -479,20 +480,23 @@ void main() {
   });
 
   testWidgets(
-    'showAddYourOwn displays + Add your own and navigates to ImportRoute',
+    'displays + Add your own by default, navigates to ImportRoute, and can be hidden',
     (tester) async {
       final rig = Rig();
+      await _pumpHome(tester, services: rig.services, size: _viewports.first);
+
+      expect(find.text(LibraryWording.addYourOwnPill), findsOneWidget);
+      await tester.tap(find.text(LibraryWording.addYourOwnPill));
+      await settle(tester);
+      expect(rig.nav.routes, [const ImportRoute()]);
+
       await _pumpHome(
         tester,
         services: rig.services,
         size: _viewports.first,
-        showAddYourOwn: true,
+        showAddYourOwn: false,
       );
-
-      expect(find.text('+ Add your own'), findsOneWidget);
-      await tester.tap(find.text('+ Add your own'));
-      await settle(tester);
-      expect(rig.nav.routes, [const ImportRoute()]);
+      expect(find.text(LibraryWording.addYourOwnPill), findsNothing);
     },
   );
 
