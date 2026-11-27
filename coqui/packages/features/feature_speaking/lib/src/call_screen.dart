@@ -1,4 +1,4 @@
-/// The call screen: `#llam` of llamada.js, on a [CallController].
+/// The live speaking call screen, powered by [CallController] and shared Noche components.
 library;
 
 import 'dart:async';
@@ -9,9 +9,10 @@ import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_look.dart';
 import 'package:feature_speaking/src/call_mic.dart';
 import 'package:feature_speaking/src/call_text.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The call with Danny for one place (`CallRoute`): full screen, calm dark grey, the tab bar is the shell's to hide.
+/// Full-screen speaking call for one place (`CallRoute`) on [NocheColors.lessonGround].
 class CallScreen extends StatefulWidget {
   const CallScreen({
     super.key,
@@ -57,7 +58,6 @@ class _CallScreenState extends State<CallScreen> {
     _syncTicker();
   }
 
-  // llamada.js: `LOOP=setInterval(bucle,50)` from the moment it connects until it is over.
   void _syncTicker() {
     if (c.ticking && _ticker == null) {
       _ticker = Timer.periodic(
@@ -74,7 +74,7 @@ class _CallScreenState extends State<CallScreen> {
   void dispose() {
     _ticker?.cancel();
     c.removeListener(_changed);
-    c.dispose(); // leaves a live call as the old page's pagehide did
+    c.dispose();
     super.dispose();
   }
 
@@ -92,18 +92,22 @@ class _CallScreenState extends State<CallScreen> {
     final dir = lang.direction == LanguageDirection.rtl
         ? TextDirection.rtl
         : Directionality.of(context);
-    return Directionality(
-      textDirection: dir,
-      child: Semantics(
-        container: true,
-        label: CallTexts.callPartner(lang.partnerName),
-        child: ColoredBox(
-          color: CoquiColors.lessonBg,
-          child: Padding(
-            padding: EdgeInsetsDirectional.only(top: land ? 0 : safe.top),
-            child: land
-                ? _landscape(context, size, safe, reduce, live)
-                : _portrait(context, size, safe, reduce, live),
+    return MediaQuery(
+      data: mq.copyWith(disableAnimations: reduce),
+      child: Directionality(
+        textDirection: dir,
+        child: Semantics(
+          key: const Key('call-screen'),
+          container: true,
+          label: CallTexts.callPartner(lang.partnerName),
+          child: ColoredBox(
+            color: NocheColors.lessonGround,
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(top: land ? 0 : safe.top),
+              child: land
+                  ? _landscape(context, lang, size, safe, reduce, live)
+                  : _portrait(context, lang, size, safe, reduce, live),
+            ),
           ),
         ),
       ),
@@ -112,14 +116,33 @@ class _CallScreenState extends State<CallScreen> {
 
   // ---- the pieces ----
 
-  /// `.lb`: the X at the start, the timer at the end; 8 px above, 16 at the end, 8 at the start.
-  Widget _bar(EdgeInsets safe) => SizedBox(
+  /// Top bar: 48x48 close button at the start, tabular mm:ss timer at the end.
+  Widget _bar(Language lang) => SizedBox(
     height: CallMetrics.bar,
     child: Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 16, 0),
       child: Row(
         children: [
-          LessonCloseButton(onPressed: c.closeX),
+          Pressable(
+            key: const Key('call-close'),
+            onPressed: c.closeX,
+            semanticLabel: NocheA11y.label(
+              NocheA11y.close,
+              courseWords: lang.a11yWords,
+            ),
+            builder: (context, _) => const SizedBox(
+              width: NocheSize.touch,
+              height: NocheSize.touch,
+              child: Center(
+                child: NocheIcon(
+                  NocheIcons.close,
+                  size: 24,
+                  strokeWidth: 2.5,
+                  color: NocheColors.text,
+                ),
+              ),
+            ),
+          ),
           const Spacer(),
           Visibility(
             visible: c.state != CallState.done,
@@ -135,7 +158,7 @@ class _CallScreenState extends State<CallScreen> {
     ),
   );
 
-  /// `.lp`: the picture Danny shows, whole-number scaled; with none it keeps its room (`visibility:hidden`).
+  /// The picture the partner shows, whole-number scaled; keeps its room when hidden.
   Widget _picture(Size size, double dpr) {
     final s = CallMetrics.pictureScale(size: size, devicePixelRatio: dpr);
     final w = CallMetrics.pictureW * s / dpr;
@@ -148,7 +171,7 @@ class _CallScreenState extends State<CallScreen> {
           ? DecoratedBox(
               decoration: const BoxDecoration(
                 boxShadow: [
-                  BoxShadow(color: CoquiColors.lessonLine, spreadRadius: 1.5),
+                  BoxShadow(color: NocheColors.lessonLine, spreadRadius: 1.5),
                 ],
               ),
               child: PictureFrame(
@@ -162,40 +185,49 @@ class _CallScreenState extends State<CallScreen> {
     );
   }
 
-  /// `.ltx`: Danny's line (two lines at most) and what the app heard under it.
-  Widget _texts({required TextAlign align}) => ConstrainedBox(
-    constraints: const BoxConstraints(maxWidth: CallMetrics.textMax),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SizedBox(
-          height: CallMetrics.lineBox,
-          child: Text(
-            c.dannyLine,
-            textAlign: align,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: c.lineMuted ? CallText.lineMuted : CallText.line,
+  /// Partner's line (two lines at most) and what the app heard under it.
+  Widget _texts(Language lang, {required TextAlign align}) {
+    final courseLocale = Locale(lang.code);
+    final lineStyle = c.lineMuted
+        ? CallText.lineMuted
+        : NocheType.forScript(CallText.line, lang.script);
+    final heardStyle = NocheType.forScript(CallText.heard, lang.script);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: CallMetrics.textMax),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: CallMetrics.lineBox),
+            child: Text(
+              c.dannyLine,
+              textAlign: align,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              locale: c.lineMuted ? null : courseLocale,
+              style: lineStyle,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: CallMetrics.heardBox,
-          child: Text(
-            c.heardLine,
-            textAlign: align,
-            maxLines: 1,
-            softWrap: false,
-            overflow: TextOverflow.ellipsis,
-            style: CallText.heard,
+          const SizedBox(height: 8),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: CallMetrics.heardBox),
+            child: Text(
+              c.heardLine,
+              textAlign: align,
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              locale: courseLocale,
+              style: heardStyle,
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 
-  /// `.lhelp`: the outline Help button; it keeps its room before the call (`visibility:hidden`).
+  /// Outline Help button; keeps its room before the call connects.
   Widget _help() {
     final show = c.state != CallState.idle && c.state != CallState.connecting;
     return Visibility(
@@ -208,51 +240,67 @@ class _CallScreenState extends State<CallScreen> {
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: c.helpPressed ? CallColors.helpPressed : null,
-            borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
+            borderRadius: BorderRadius.circular(NocheSize.pillRadius),
           ),
-          child: LessonButton(
-            kind: LessonButtonKind.outline,
-            fillWidth: false,
+          child: NocheOutlineButton(
+            label: CallTexts.help,
             semanticLabel: CallTexts.help,
+            expand: true,
             onPressed: show ? c.help : null,
-            child: Text(CallTexts.help, style: CoquiText.lessonButton),
           ),
         ),
       ),
     );
   }
 
-  Widget _mic(bool reduce) => CallMicStage(
+  Widget _mic(Language lang, bool reduce, {required bool land}) => CallMicStage(
+    key: const Key('call-mic-stage'),
     state: c.state,
+    language: lang,
     ring: c.ring,
     wave: c.wave,
     reduceMotion: reduce,
+    labelGap: 8,
+    barGroupGap: land ? 8 : NocheMic.defaultBarGroupGap,
     semanticLabel: c.state == CallState.idle ? CallTexts.startCall : c.label,
     onTap: () => unawaited(c.start()),
   );
 
-  Widget _label({required TextAlign align}) => Semantics(
+  TextAlign _englishAlign(Language lang, TextAlign align) =>
+      lang.direction == LanguageDirection.rtl && align == TextAlign.start
+      ? TextAlign.end
+      : align;
+
+  Widget _label(Language lang, {required TextAlign align}) => Semantics(
     liveRegion: true,
     child: ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 24),
-      child: Text(c.label, textAlign: align, style: CallText.label),
+      child: Text(
+        c.label,
+        textAlign: _englishAlign(lang, align),
+        textDirection: TextDirection.ltr,
+        style: CallText.label,
+      ),
     ),
   );
 
-  // `.lo`: at least 20 high. An empty line is nothing, not an empty Text: the text engine gives an empty paragraph 1.5 times its
-  // size, which is 21 here and not the 20 the page has.
-  Widget _note({required TextAlign align}) => Semantics(
+  Widget _note(Language lang, {required TextAlign align}) => Semantics(
     liveRegion: true,
     child: ConstrainedBox(
       key: const ValueKey('call-note'),
       constraints: const BoxConstraints(minHeight: 20),
       child: c.note.isEmpty
           ? const SizedBox.shrink()
-          : Text(c.note, textAlign: align, style: CallText.note),
+          : Text(
+              c.note,
+              textAlign: _englishAlign(lang, align),
+              textDirection: TextDirection.ltr,
+              style: CallText.note,
+            ),
     ),
   );
 
-  /// `.lerr`: one plain line, in the middle.
+  /// One plain error line in the middle.
   Widget _error() => Semantics(
     liveRegion: true,
     child: Center(
@@ -261,15 +309,24 @@ class _CallScreenState extends State<CallScreen> {
         child: Text(
           c.errorLine,
           textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
           style: CallText.error,
         ),
       ),
     ),
   );
 
-  /// `.lsum`: "Call done", "N min · M words said", the words as chips, a blue "Back to Hablar".
-  Widget _summary(Size size, EdgeInsets safe, {required bool land}) {
+  /// End summary: "Call done", "N min · M words said", said word chips, and primary back button.
+  Widget _summary(
+    Language lang,
+    Size size,
+    EdgeInsets safe, {
+    required bool land,
+  }) {
     final top = land ? 8.0 : size.height * .35 - 56;
+    final courseLocale = Locale(lang.code);
+    final speakTabName = lang.tabNames[CoquiTabs.speakId] ?? CoquiLabels.speak;
+    final summaryAlign = _englishAlign(lang, TextAlign.start);
     return Align(
       alignment: AlignmentDirectional.topCenter,
       child: ConstrainedBox(
@@ -284,24 +341,40 @@ class _CallScreenState extends State<CallScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(CallTexts.done, style: CoquiText.lessonH1),
+                      Text(
+                        CallTexts.done,
+                        textAlign: summaryAlign,
+                        textDirection: TextDirection.ltr,
+                        style: CallText.doneTitle,
+                      ),
                       const SizedBox(height: 8),
-                      Text(c.summaryLine, style: CoquiText.lessonBody),
+                      Text(
+                        c.summaryLine,
+                        textAlign: summaryAlign,
+                        textDirection: TextDirection.ltr,
+                        style: CallText.summary,
+                      ),
                       const SizedBox(height: 16),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
-                        children: [for (final w in c.said) _chip(w)],
+                        children: [
+                          for (final w in c.said)
+                            NocheChip(
+                              label: CallTexts.chip(w),
+                              script: lang.script,
+                              locale: courseLocale,
+                            ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              LessonButton(
-                kind: LessonButtonKind.blue,
-                label:
-                    'Back to ${widget.services.course.language.tabNames[CoquiTabs.speakId] ?? CoquiLabels.speak}',
+              NochePrimaryButton(
+                key: const Key('call-end-back'),
+                label: SpeakWording.backToSpeak(speakTabName),
                 onPressed: c.close,
               ),
             ],
@@ -311,31 +384,11 @@ class _CallScreenState extends State<CallScreen> {
     );
   }
 
-  /// `.lchips span`: at least 32 high, 12 px at the sides, a 1.5 px ring, a pill; as wide as its word.
-  Widget _chip(String word) => DecoratedBox(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(
-        color: CoquiColors.lessonLine,
-        width: CoquiLayout.border(context, 1.5),
-      ),
-    ),
-    child: ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 32),
-      child: Padding(
-        padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
-        child: Center(
-          widthFactor: 1,
-          child: Text(CallTexts.chip(word), style: CallText.chip),
-        ),
-      ),
-    ),
-  );
-
   // ---- portrait ----
 
   Widget _portrait(
     BuildContext context,
+    Language lang,
     Size size,
     EdgeInsets safe,
     bool reduce,
@@ -344,12 +397,12 @@ class _CallScreenState extends State<CallScreen> {
     final dpr = MediaQuery.devicePixelRatioOf(context);
     return Column(
       children: [
-        _bar(safe),
+        _bar(lang),
         Expanded(
           child: c.state == CallState.err
               ? _error()
               : c.state == CallState.done
-              ? _summary(size, safe, land: false)
+              ? _summary(lang, size, safe, land: false)
               : Padding(
                   padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
@@ -360,7 +413,7 @@ class _CallScreenState extends State<CallScreen> {
                       children: [
                         _picture(size, dpr),
                         const SizedBox(height: 16),
-                        _texts(align: TextAlign.center),
+                        _texts(lang, align: TextAlign.center),
                       ],
                     ),
                   ),
@@ -372,16 +425,16 @@ class _CallScreenState extends State<CallScreen> {
               16,
               0,
               16,
-              32 + safe.bottom,
+              24 + safe.bottom,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _mic(reduce),
-                const SizedBox(height: 8),
-                _label(align: TextAlign.center),
+                _mic(lang, reduce, land: false),
                 const SizedBox(height: 4),
-                _note(align: TextAlign.center),
+                _label(lang, align: TextAlign.center),
+                const SizedBox(height: 4),
+                _note(lang, align: TextAlign.center),
                 const SizedBox(height: 12),
                 _help(),
               ],
@@ -391,10 +444,11 @@ class _CallScreenState extends State<CallScreen> {
     );
   }
 
-  // ---- on its side (`@media (orientation:landscape) and (max-height:500px)`) ----
+  // ---- landscape ----
 
   Widget _landscape(
     BuildContext context,
+    Language lang,
     Size size,
     EdgeInsets safe,
     bool reduce,
@@ -404,11 +458,11 @@ class _CallScreenState extends State<CallScreen> {
     if (!live) {
       return Column(
         children: [
-          _bar(safe),
+          _bar(lang),
           Expanded(
             child: c.state == CallState.err
                 ? _error()
-                : _summary(size, safe, land: true),
+                : _summary(lang, size, safe, land: true),
           ),
         ],
       );
@@ -422,13 +476,13 @@ class _CallScreenState extends State<CallScreen> {
         Expanded(
           child: Column(
             children: [
-              _bar(safe),
+              _bar(lang),
               Expanded(
                 child: Align(
                   alignment: AlignmentDirectional.topStart,
                   child: Padding(
                     padding: const EdgeInsetsDirectional.only(end: 16),
-                    child: _texts(align: TextAlign.start),
+                    child: _texts(lang, align: TextAlign.start),
                   ),
                 ),
               ),
@@ -442,15 +496,15 @@ class _CallScreenState extends State<CallScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _mic(reduce),
+                    _mic(lang, reduce, land: true),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _label(align: TextAlign.start),
-                          _note(align: TextAlign.start),
+                          _label(lang, align: TextAlign.start),
+                          _note(lang, align: TextAlign.start),
                           const SizedBox(height: 8),
                           Align(
                             alignment: AlignmentDirectional.centerStart,

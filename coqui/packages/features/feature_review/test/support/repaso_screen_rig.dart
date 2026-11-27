@@ -194,7 +194,7 @@ class Screen {
 
   Future<void> settle() async {
     await vt.settle();
-    await t.pump(const Duration(milliseconds: 50));
+    await t.pump(const Duration(milliseconds: 200));
     expect(t.takeException(), isNull);
   }
 
@@ -228,7 +228,7 @@ class Screen {
       await vt.runUntil(
         () => s.screen == LessonScreen.end || newEntry() || _needsMe(acted),
       );
-      await t.pump(const Duration(milliseconds: 50));
+      await t.pump(const Duration(milliseconds: 200));
       expect(t.takeException(), isNull);
       if (s.screen == LessonScreen.end) break;
       final it = s.item!;
@@ -293,7 +293,7 @@ class Screen {
       }
       await settle();
     }
-    await t.pump(const Duration(milliseconds: 400));
+    await t.pump(const Duration(milliseconds: 1500));
   }
 
   Future<void> _touch(GameItem it, int k) async {

@@ -4,6 +4,9 @@ import 'dart:math' as math;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_map/src/map_model.dart';
+import 'package:feature_map/src/motion.dart';
+import 'package:feature_map/src/scene_window.dart';
+import 'package:feature_map/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Chooses the hero [PictureRef] for [place], preferring [preferredScene] when
@@ -88,6 +91,7 @@ class PlaceScreen extends StatefulWidget {
     required this.placeId,
     required this.services,
     required this.entitlements,
+    this.enteringFromBack = false,
   });
 
   final String placeId;
@@ -96,11 +100,23 @@ class PlaceScreen extends StatefulWidget {
   /// Explicit plan entitlements used to gate places beyond the free plan.
   final Entitlements entitlements;
 
+  /// When `true`, rows and chrome arrive with back-return fade only (`dy = 0`)
+  /// instead of the forward staggered rise.
+  final bool enteringFromBack;
+
   @override
   State<PlaceScreen> createState() => _PlaceScreenState();
 }
 
-class _PlaceScreenState extends State<PlaceScreen> {
+class _PlaceScreenState extends State<PlaceScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _entranceController = AnimationController(
+    vsync: this,
+  );
+  bool _entranceStarted = false;
+  NocheMotionData _entranceMotion = NocheMotion.normal;
+  double _entranceTotalUs = 0;
+
   StreamSubscription<void>? _changes;
   StreamSubscription<void>? _entitlementChanges;
   int _serviceGen = 0;
@@ -119,6 +135,40 @@ class _PlaceScreenState extends State<PlaceScreen> {
       if (mounted) setState(() {});
     });
     _loadData(_serviceGen);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_entranceStarted) return;
+    _entranceStarted = true;
+    final motion = MapMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+    _entranceMotion = motion;
+    final Duration total;
+    if (widget.enteringFromBack) {
+      final backDelay = motion.reduced
+          ? Duration.zero
+          : MapMotion.backFadeAfter;
+      total = backDelay + motion.quick;
+    } else {
+      final chromeEnd = MapMotion.placeChromeAfter + motion.quick;
+      final playBarEnd =
+          motion.rowsAfter +
+          motion.stagger * 2 +
+          motion.nextDelay +
+          motion.move;
+      total = chromeEnd >= playBarEnd ? chromeEnd : playBarEnd;
+    }
+    _entranceTotalUs = total.inMicroseconds.toDouble();
+    if (_entranceTotalUs <= 0) {
+      _entranceController.value = 1.0;
+    } else {
+      _entranceController.duration = total;
+      _entranceController.forward(from: 0.0);
+    }
   }
 
   @override
@@ -149,6 +199,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
     _serviceGen++;
     _changes?.cancel();
     _entitlementChanges?.cancel();
+    _entranceController.dispose();
     super.dispose();
   }
 
@@ -246,6 +297,108 @@ class _PlaceScreenState extends State<PlaceScreen> {
     _s.nav.go(StoryRoute(storyId, listen: listen));
   }
 
+  double _backgroundAlpha(
+    Animation<double>? routeAnim,
+    NocheMotionData motion,
+  ) {
+    if (routeAnim == null) return 1.0;
+    return switch (routeAnim.status) {
+      AnimationStatus.forward => MapMotion.segmentProgressUs(
+        elapsedUs: routeAnim.value * motion.pageIn.inMicroseconds.toDouble(),
+        start: Duration.zero,
+        duration: motion.quick,
+        curve: motion.enter,
+      ),
+      AnimationStatus.reverse => MapMotion.outgoingFadeOpacity(
+        routeValue: 1.0 - routeAnim.value,
+        motion: motion,
+        totalDuration: motion.pageOut,
+      ),
+      AnimationStatus.dismissed => 0.0,
+      AnimationStatus.completed => 1.0,
+    };
+  }
+
+  ({double opacity, double dy}) _slotMotion({
+    required Animation<double>? routeAnim,
+    required Animation<double>? secAnim,
+    required NocheMotionData motion,
+    required Duration start,
+    required Duration duration,
+    required bool rises,
+  }) {
+    final double entranceOpacity;
+    final double entranceDy;
+    if (_entranceController.isCompleted || _entranceTotalUs <= 0) {
+      entranceOpacity = 1.0;
+      entranceDy = 0.0;
+    } else {
+      final elapsedUs = _entranceController.value * _entranceTotalUs;
+      if (widget.enteringFromBack) {
+        final delay = _entranceMotion.reduced
+            ? Duration.zero
+            : MapMotion.backFadeAfter;
+        entranceOpacity = MapMotion.segmentProgressUs(
+          elapsedUs: elapsedUs,
+          start: delay,
+          duration: _entranceMotion.quick,
+          curve: _entranceMotion.enter,
+        );
+        entranceDy = 0.0;
+      } else {
+        final p = MapMotion.segmentProgressUs(
+          elapsedUs: elapsedUs,
+          start: start,
+          duration: duration,
+          curve: _entranceMotion.enter,
+        );
+        entranceOpacity = p;
+        entranceDy = rises ? _entranceMotion.row * (1.0 - p) : 0.0;
+      }
+    }
+
+    if (routeAnim?.status == AnimationStatus.reverse) {
+      final out = MapMotion.outgoingFadeOpacity(
+        routeValue: 1.0 - routeAnim!.value,
+        motion: motion,
+        totalDuration: motion.pageOut,
+      );
+      return (opacity: entranceOpacity * out, dy: 0.0);
+    }
+    if (routeAnim?.status == AnimationStatus.dismissed) {
+      return (opacity: 0.0, dy: 0.0);
+    }
+    if (secAnim?.status == AnimationStatus.forward) {
+      final out = MapMotion.outgoingFadeOpacity(
+        routeValue: secAnim!.value,
+        motion: motion,
+        totalDuration: motion.pageIn,
+      );
+      return (opacity: entranceOpacity * out, dy: 0.0);
+    }
+    if (secAnim?.status == AnimationStatus.completed) {
+      return (opacity: 0.0, dy: 0.0);
+    }
+    if (secAnim?.status == AnimationStatus.reverse) {
+      final ret = MapMotion.backReturnOpacity(
+        reverseProgress: 1.0 - secAnim!.value,
+        motion: motion,
+      );
+      return (opacity: ret, dy: 0.0);
+    }
+    return (opacity: entranceOpacity, dy: entranceDy);
+  }
+
+  Widget _motionRow({
+    required Key key,
+    required ({double opacity, double dy}) state,
+    required Widget child,
+  }) => Transform.translate(
+    key: key,
+    offset: Offset(0, state.dy),
+    child: Opacity(opacity: state.opacity, child: child),
+  );
+
   @override
   Widget build(BuildContext context) {
     final pad = MediaQuery.paddingOf(context);
@@ -254,6 +407,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
 
     if (place == null) {
       return ColoredBox(
+        key: const Key('place-screen'),
         color: NocheColors.ground,
         child: Stack(
           fit: StackFit.expand,
@@ -278,14 +432,26 @@ class _PlaceScreenState extends State<PlaceScreen> {
     final lastHeard = lastHeardStory(_s.progress, place);
     final calls = _s.course.callsFor(place.id);
 
-    final heroPreferredScene = nextId != null
-        ? _storyScenes[nextId]
-        : (place.stories.isNotEmpty ? _storyScenes[place.stories.first] : null);
+    final heroStoryId =
+        nextId ?? (place.stories.isNotEmpty ? place.stories.first : null);
+    final heroPreferredScene = heroStoryId != null
+        ? _storyScenes[heroStoryId]
+        : null;
     final heroRef = pickPlaceHeroPictureRef(
       place: place,
       course: _s.course,
       preferredScene: heroPreferredScene,
     );
+
+    final motion = MapMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+    final suppressHeroForServiceReduce =
+        _s.reduceMotion && !NocheMotion.of(context).reduced;
+    final Object? heroTag = !suppressHeroForServiceReduce && heroStoryId != null
+        ? MapMotion.storyWindowTag(heroStoryId)
+        : null;
 
     final showReadPill =
         lastHeard != null && (_bookAvailable[lastHeard] ?? false);
@@ -293,14 +459,14 @@ class _PlaceScreenState extends State<PlaceScreen> {
       if (lastHeard != null)
         NochePill.outline(
           key: const Key('place-pill-listen'),
-          label: 'Listen again',
+          label: MapWording.listenAgain,
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
           onPressed: () => _openStory(place, lastHeard, listen: true),
         ),
       if (showReadPill)
         NochePill.outline(
           key: const Key('place-pill-read'),
-          label: 'Read',
+          label: MapWording.read,
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
           onPressed: () {
             _s.haptics.tick();
@@ -310,7 +476,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
       if (calls.isNotEmpty)
         NochePill.outline(
           key: const Key('place-pill-call'),
-          label: 'Call ${lang.partnerName}',
+          label: MapWording.callPartner(lang.partnerName),
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
           onPressed: () {
             _s.haptics.tick();
@@ -325,247 +491,326 @@ class _PlaceScreenState extends State<PlaceScreen> {
               pad.bottom
         : NocheSize.aboveTabBar + 16 + pad.bottom;
 
-    return ColoredBox(
-      color: NocheColors.ground,
-      child: DefaultTextStyle.merge(
-        style: NocheType.body.copyWith(color: NocheColors.text),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            SingleChildScrollView(
-              padding: EdgeInsetsDirectional.only(bottom: scrollBottom),
+    final route = ModalRoute.of(context);
+    final routeAnim = route?.animation;
+    final secAnim = route?.secondaryAnimation;
+    final animListenable = Listenable.merge([
+      _entranceController,
+      ?routeAnim,
+      ?secAnim,
+    ]);
+
+    final heroWindow = MapSceneWindow(
+      key: const Key('place-hero-picture'),
+      pictures: _s.pictures,
+      pictureRef: heroRef,
+      borderRadius: 0,
+      tag: heroTag,
+      placeholder: ColoredBox(
+        color: NocheColors.panel,
+        child: const Center(
+          child: NocheIcon(NocheIcons.map, size: 48, color: NocheColors.line),
+        ),
+      ),
+    );
+
+    final titleRow = Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 24, 16, 0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          Expanded(
+            child: Text(
+              place.name,
+              locale: locale,
+              style: NocheType.forScript(
+                NocheType.placeTitle,
+                lang.script,
+              ).copyWith(color: NocheColors.text),
+            ),
+          ),
+          if (hasStories) ...[
+            const SizedBox(width: 12),
+            NocheLtr(
+              child: Text(
+                MapWording.storiesHeard(heardCount, place.stories.length),
+                style: NocheType.body.copyWith(color: NocheColors.label),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+
+    final storiesOrEmpty = hasStories
+        ? Padding(
+            padding: const EdgeInsetsDirectional.only(top: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 16,
+                  ),
+                  child: NocheSectionLabel(
+                    MapWording.allStories(place.stories.length),
+                    trailing: !inPlan
+                        ? const NochePill.planTag(
+                            key: Key('place-plan-tag'),
+                            label: MapWording.planCourse,
+                          )
+                        : null,
+                  ),
+                ),
+                SingleChildScrollView(
+                  key: const Key('place-stories-scroll'),
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 16,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (var i = 0; i < place.stories.length; i++) ...[
+                        if (i > 0) const SizedBox(width: 16),
+                        _buildStoryTile(
+                          place: place,
+                          index: i,
+                          storyId: place.stories[i],
+                          inPlan: inPlan,
+                          isNext: inPlan && place.stories[i] == nextId,
+                          lang: lang,
+                          locale: locale,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        : Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 24, 16, 0),
+            child: NocheCard(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    height: 296 + pad.top,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        _SceneArtBox(
-                          key: const Key('place-hero-picture'),
-                          pictures: _s.pictures,
-                          pictureRef: heroRef,
-                          placeholder: ColoredBox(
-                            color: NocheColors.panel,
-                            child: const Center(
-                              child: NocheIcon(
-                                NocheIcons.map,
-                                size: 48,
-                                color: NocheColors.line,
-                              ),
-                            ),
-                          ),
-                        ),
-                        PositionedDirectional(
-                          start: 16,
-                          top: pad.top + 16,
-                          child: _BackButton(onPressed: _goBack),
-                        ),
-                        PositionedDirectional(
-                          end: 16,
-                          top: pad.top + 20,
-                          child: Semantics(
-                            readOnly: true,
-                            child: Container(
-                              key: const Key('place-counter'),
-                              height: 40,
-                              padding: const EdgeInsetsDirectional.symmetric(
-                                horizontal: 16,
-                              ),
-                              alignment: AlignmentDirectional.center,
-                              decoration: BoxDecoration(
-                                color: NocheColors.ground,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                'Place ${place.n} of ${places.length}',
-                                maxLines: 1,
-                                softWrap: false,
-                                style: NocheType.button.copyWith(
-                                  color: NocheColors.text,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  Text(
+                    placeOpen(_s.progress, place)
+                        ? MapWording.notBuiltYet
+                        : MapWording.lockedUntilPreviousDone,
+                    style: NocheType.body.copyWith(color: NocheColors.text),
                   ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                      16,
-                      24,
-                      16,
-                      0,
+                  if (place.scenes.isNotEmpty) ...[
+                    const SizedBox(height: NocheSize.grid),
+                    Text(
+                      MapWording.scenesList(place.scenes),
+                      locale: locale,
+                      style: NocheType.forScript(
+                        NocheType.bodySmall,
+                        lang.script,
+                      ).copyWith(color: NocheColors.label),
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            place.name,
-                            locale: locale,
-                            style: NocheType.forScript(
-                              NocheType.placeTitle,
-                              lang.script,
-                            ).copyWith(color: NocheColors.text),
+                  ],
+                ],
+              ),
+            ),
+          );
+
+    final pillsRow = (hasStories && inPlan && pills.isNotEmpty)
+        ? Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 24, 16, 0),
+            child: Row(
+              children: [
+                for (var i = 0; i < pills.length; i++) ...[
+                  if (i > 0) const SizedBox(width: NocheSize.grid),
+                  Expanded(
+                    child: SizedBox(
+                      height: NocheSize.touch,
+                      child: LayoutBuilder(
+                        builder: (context, c) => FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(minWidth: c.maxWidth),
+                            child: pills[i],
                           ),
                         ),
-                        if (hasStories) ...[
-                          const SizedBox(width: 12),
-                          Text(
-                            '$heardCount of ${place.stories.length} stories heard',
-                            style: NocheType.body.copyWith(
-                              color: NocheColors.label,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  if (hasStories) ...[
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(top: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.symmetric(
-                              horizontal: 16,
-                            ),
-                            child: NocheSectionLabel(
-                              'All ${place.stories.length} stories',
-                              trailing: !inPlan
-                                  ? const NochePill.planTag(
-                                      key: Key('place-plan-tag'),
-                                      label: 'Course',
-                                    )
-                                  : null,
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            key: const Key('place-stories-scroll'),
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsetsDirectional.symmetric(
-                              horizontal: 16,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                for (
-                                  var i = 0;
-                                  i < place.stories.length;
-                                  i++
-                                ) ...[
-                                  if (i > 0) const SizedBox(width: 16),
-                                  _buildStoryTile(
-                                    place: place,
-                                    index: i,
-                                    storyId: place.stories[i],
-                                    inPlan: inPlan,
-                                    isNext:
-                                        inPlan && place.stories[i] == nextId,
-                                    lang: lang,
-                                    locale: locale,
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        ],
                       ),
                     ),
-                    if (inPlan && pills.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                          16,
-                          24,
-                          16,
-                          0,
-                        ),
-                        child: Row(
+                  ),
+                ],
+              ],
+            ),
+          )
+        : null;
+
+    final bottomAction = hasStories
+        ? (inPlan
+              ? _buildPlayBar(
+                  place: place,
+                  nextId: nextId,
+                  nextIndex: nextIndex,
+                  calls: calls,
+                  lang: lang,
+                  locale: locale,
+                )
+              : _buildPlanCard())
+        : null;
+
+    return AnimatedBuilder(
+      animation: animListenable,
+      builder: (context, _) {
+        final bgAlpha = _backgroundAlpha(routeAnim, motion);
+        final s0 = _slotMotion(
+          routeAnim: routeAnim,
+          secAnim: secAnim,
+          motion: motion,
+          start: MapMotion.placeChromeAfter,
+          duration: _entranceMotion.quick,
+          rises: false,
+        );
+        final s1 = _slotMotion(
+          routeAnim: routeAnim,
+          secAnim: secAnim,
+          motion: motion,
+          start: _entranceMotion.rowsAfter,
+          duration: _entranceMotion.move,
+          rises: true,
+        );
+        final s2 = _slotMotion(
+          routeAnim: routeAnim,
+          secAnim: secAnim,
+          motion: motion,
+          start: _entranceMotion.rowsAfter + _entranceMotion.stagger,
+          duration: _entranceMotion.move,
+          rises: true,
+        );
+        final s3 = _slotMotion(
+          routeAnim: routeAnim,
+          secAnim: secAnim,
+          motion: motion,
+          start: _entranceMotion.rowsAfter + _entranceMotion.stagger * 2,
+          duration: _entranceMotion.move,
+          rises: true,
+        );
+        final next = _slotMotion(
+          routeAnim: routeAnim,
+          secAnim: secAnim,
+          motion: motion,
+          start:
+              _entranceMotion.rowsAfter +
+              _entranceMotion.stagger * 2 +
+              _entranceMotion.nextDelay,
+          duration: _entranceMotion.move,
+          rises: true,
+        );
+
+        return ColoredBox(
+          key: const Key('place-screen'),
+          color: NocheColors.ground.withValues(alpha: bgAlpha),
+          child: DefaultTextStyle.merge(
+            style: NocheType.body.copyWith(color: NocheColors.text),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                SingleChildScrollView(
+                  padding: EdgeInsetsDirectional.only(bottom: scrollBottom),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: placeHeroBaseHeight + pad.top,
+                        child: Stack(
+                          fit: StackFit.expand,
                           children: [
-                            for (var i = 0; i < pills.length; i++) ...[
-                              if (i > 0) const SizedBox(width: NocheSize.grid),
-                              Expanded(
-                                child: SizedBox(
-                                  height: NocheSize.touch,
-                                  child: LayoutBuilder(
-                                    builder: (context, c) => FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          minWidth: c.maxWidth,
+                            heroWindow,
+                            PositionedDirectional(
+                              start: 16,
+                              top: pad.top + 16,
+                              child: Opacity(
+                                key: const Key('place-motion-back'),
+                                opacity: s0.opacity,
+                                child: _BackButton(onPressed: _goBack),
+                              ),
+                            ),
+                            PositionedDirectional(
+                              end: 16,
+                              top: pad.top + 20,
+                              child: Opacity(
+                                key: const Key('place-motion-counter'),
+                                opacity: s0.opacity,
+                                child: Semantics(
+                                  readOnly: true,
+                                  child: Container(
+                                    key: const Key('place-counter'),
+                                    height: 40,
+                                    padding:
+                                        const EdgeInsetsDirectional.symmetric(
+                                          horizontal: 16,
                                         ),
-                                        child: pills[i],
+                                    alignment: AlignmentDirectional.center,
+                                    decoration: BoxDecoration(
+                                      color: NocheColors.ground,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: NocheLtr(
+                                      child: Text(
+                                        MapWording.placeCounter(
+                                          place.n,
+                                          places.length,
+                                        ),
+                                        maxLines: 1,
+                                        softWrap: false,
+                                        style: NocheType.button.copyWith(
+                                          color: NocheColors.text,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ],
-                        ),
-                      ),
-                  ] else
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                        16,
-                        24,
-                        16,
-                        0,
-                      ),
-                      child: NocheCard(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              placeOpen(_s.progress, place) ? 'Not built yet.' : 'Locked until the places before it are done.',
-                              style: NocheType.body.copyWith(
-                                color: NocheColors.text,
-                              ),
                             ),
-                            if (place.scenes.isNotEmpty) ...[
-                              const SizedBox(height: NocheSize.grid),
-                              Text(
-                                'Scenes: ${place.scenes.join(' · ')}',
-                                locale: locale,
-                                style: NocheType.forScript(
-                                  NocheType.bodySmall,
-                                  lang.script,
-                                ).copyWith(color: NocheColors.label),
-                              ),
-                            ],
                           ],
                         ),
                       ),
+                      _motionRow(
+                        key: const Key('place-motion-title'),
+                        state: s1,
+                        child: titleRow,
+                      ),
+                      _motionRow(
+                        key: const Key('place-motion-stories'),
+                        state: s2,
+                        child: storiesOrEmpty,
+                      ),
+                      if (pillsRow != null)
+                        _motionRow(
+                          key: const Key('place-motion-pills'),
+                          state: s3,
+                          child: pillsRow,
+                        ),
+                    ],
+                  ),
+                ),
+                if (bottomAction != null)
+                  PositionedDirectional(
+                    start: 16,
+                    end: 16,
+                    bottom: NocheSize.aboveTabBar + pad.bottom,
+                    child: _motionRow(
+                      key: const Key('place-motion-play-bar'),
+                      state: next,
+                      child: bottomAction,
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
-            if (hasStories)
-              PositionedDirectional(
-                start: 16,
-                end: 16,
-                bottom: NocheSize.aboveTabBar + pad.bottom,
-                child: inPlan
-                    ? _buildPlayBar(
-                        place: place,
-                        nextId: nextId,
-                        nextIndex: nextIndex,
-                        calls: calls,
-                        lang: lang,
-                        locale: locale,
-                      )
-                    : _buildPlanCard(),
-              ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -587,96 +832,96 @@ class _PlaceScreenState extends State<PlaceScreen> {
       storyScene: _storyScenes[storyId],
     );
     final statusSuffix = !inPlan
-        ? ', in Course'
+        ? MapWording.storyTileStatusInCourse
         : isHeard
-        ? ', heard'
+        ? MapWording.storyTileStatusHeard
         : isNext
-        ? ', up next'
+        ? MapWording.storyTileStatusUpNext
         : '';
 
     return SizedBox(
       width: 104,
       child: Pressable(
         key: Key('story-tile-$storyId'),
-        semanticLabel: 'Story ${index + 1}: $title$statusSuffix',
+        scaleOnPress: false,
+        semanticLabel: MapWording.storyTileSemantic(
+          number: index + 1,
+          title: title,
+          statusSuffix: statusSuffix,
+        ),
         onPressed: inPlan ? () => _openStory(place, storyId) : null,
-        builder: (context, pressed) => Transform.scale(
-          scale: pressed ? 0.98 : 1,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 104,
-                height: 80,
-                foregroundDecoration: isNext
-                    ? BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                          NocheSize.tileRadius,
-                        ),
-                        border: Border.all(color: NocheColors.next, width: 3),
-                      )
-                    : null,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      _SceneArtBox(
-                        pictures: _s.pictures,
-                        pictureRef: tileRef,
-                        placeholder: ColoredBox(
-                          color: NocheColors.chip,
-                          child: const Center(
-                            child: NocheIcon(
-                              NocheIcons.map,
-                              size: 28,
-                              color: NocheColors.label,
-                            ),
+        builder: (context, _) => Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 104,
+              height: 80,
+              foregroundDecoration: isNext
+                  ? BoxDecoration(
+                      borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+                      border: Border.all(color: NocheColors.next, width: 3),
+                    )
+                  : null,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    _SceneArtBox(
+                      pictures: _s.pictures,
+                      pictureRef: tileRef,
+                      placeholder: ColoredBox(
+                        color: NocheColors.chip,
+                        child: const Center(
+                          child: NocheIcon(
+                            NocheIcons.map,
+                            size: 28,
+                            color: NocheColors.label,
                           ),
                         ),
                       ),
-                      if (isHeard)
-                        PositionedDirectional(
-                          start: 8,
-                          top: 8,
-                          child: Container(
-                            key: Key('story-heard-$storyId'),
-                            width: 24,
-                            height: 24,
-                            alignment: AlignmentDirectional.center,
-                            decoration: const BoxDecoration(
-                              color: NocheColors.ground,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const NocheIcon(
-                              NocheIcons.check,
-                              size: 14,
-                              color: NocheColors.text,
-                            ),
+                    ),
+                    if (isHeard)
+                      PositionedDirectional(
+                        start: 8,
+                        top: 8,
+                        child: Container(
+                          key: Key('story-heard-$storyId'),
+                          width: 24,
+                          height: 24,
+                          alignment: AlignmentDirectional.center,
+                          decoration: const BoxDecoration(
+                            color: NocheColors.ground,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const NocheIcon(
+                            NocheIcons.check,
+                            size: 14,
+                            color: NocheColors.text,
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
               ),
-              const SizedBox(height: NocheSize.grid),
-              Text(
-                '${index + 1} · $title',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                locale: locale,
-                style:
-                    NocheType.forScript(
-                      isNext ? NocheType.buttonStrong : NocheType.button,
-                      lang.script,
-                    ).copyWith(
-                      color: isHeard ? NocheColors.label : NocheColors.text,
-                      height: lang.script == 'Latn' ? 18 / 14 : null,
-                    ),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: NocheSize.grid),
+            Text(
+              MapWording.storyTileLabel(index + 1, title),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              locale: locale,
+              style:
+                  NocheType.forScript(
+                    isNext ? NocheType.buttonStrong : NocheType.button,
+                    lang.script,
+                  ).copyWith(
+                    color: isHeard ? NocheColors.label : NocheColors.text,
+                    height: lang.script == 'Latn' ? 18 / 14 : null,
+                  ),
+            ),
+          ],
         ),
       ),
     );
@@ -691,18 +936,18 @@ class _PlaceScreenState extends State<PlaceScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'This place is in Course',
+          MapWording.placeInCourseTitle,
           style: NocheType.sheetTitle.copyWith(color: NocheColors.text),
         ),
         const SizedBox(height: NocheSize.grid),
         Text(
-          'Every place and every story are in Course.',
+          MapWording.placeInCourseBody,
           style: NocheType.body.copyWith(color: NocheColors.label),
         ),
         const SizedBox(height: 16),
         NochePrimaryButton(
           key: const Key('place-see-plans'),
-          label: 'See plans',
+          label: MapWording.seePlans,
           onPressed: () {
             _s.haptics.tick();
             _s.nav.go(const PlansRoute());
@@ -724,9 +969,11 @@ class _PlaceScreenState extends State<PlaceScreen> {
       final nextMeta = _s.course.meta(nextId);
       return NochePlayBar(
         key: const Key('place-play-bar'),
-        eyebrow: 'Play next · Story ${nextIndex + 1}',
+        eyebrow: MapWording.playNextStory(nextIndex + 1),
         title: nextMeta?.title ?? nextId,
-        meta: nextMeta != null ? '${nextMeta.minutes} min' : null,
+        meta: nextMeta != null
+            ? MapWording.minutesLabel(nextMeta.minutes)
+            : null,
         icon: NocheIcons.play,
         script: lang.script,
         locale: locale,
@@ -743,9 +990,11 @@ class _PlaceScreenState extends State<PlaceScreen> {
       );
       return NochePlayBar(
         key: const Key('place-play-bar'),
-        eyebrow: 'All stories heard',
-        title: 'Call ${lang.partnerName}',
-        meta: mainCall.minutes > 0 ? '${mainCall.minutes} min' : null,
+        eyebrow: MapWording.allStoriesHeard,
+        title: MapWording.callPartner(lang.partnerName),
+        meta: mainCall.minutes > 0
+            ? MapWording.minutesLabel(mainCall.minutes)
+            : null,
         icon: NocheIcons.mic,
         onPressed: () {
           _s.haptics.tick();
@@ -755,8 +1004,8 @@ class _PlaceScreenState extends State<PlaceScreen> {
     }
     return NochePlayBar(
       key: const Key('place-play-bar'),
-      eyebrow: 'All stories heard',
-      title: 'Review',
+      eyebrow: MapWording.allStoriesHeard,
+      title: MapWording.reviewTitle,
       meta: null,
       icon: NocheIcons.play,
       onPressed: () {
@@ -776,23 +1025,20 @@ class _BackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Pressable(
       key: const Key('place-back'),
-      semanticLabel: 'Back to the map',
+      semanticLabel: MapWording.backToMapSemantic,
       onPressed: onPressed,
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Container(
-          width: NocheSize.touch,
-          height: NocheSize.touch,
-          alignment: AlignmentDirectional.center,
-          decoration: const BoxDecoration(
-            color: NocheColors.ground,
-            shape: BoxShape.circle,
-          ),
-          child: const NocheIcon(
-            NocheIcons.back,
-            size: 24,
-            color: NocheColors.text,
-          ),
+      builder: (context, _) => Container(
+        width: NocheSize.touch,
+        height: NocheSize.touch,
+        alignment: AlignmentDirectional.center,
+        decoration: const BoxDecoration(
+          color: NocheColors.ground,
+          shape: BoxShape.circle,
+        ),
+        child: const NocheIcon(
+          NocheIcons.back,
+          size: 24,
+          color: NocheColors.text,
         ),
       ),
     );
@@ -801,14 +1047,10 @@ class _BackButton extends StatelessWidget {
 
 class _SceneArtBox extends StatelessWidget {
   const _SceneArtBox({
-    super.key,
     required this.pictures,
     required this.pictureRef,
     required this.placeholder,
   });
-
-  static const int _picW = 196;
-  static const int _picH = 104;
 
   final PictureSource pictures;
   final PictureRef? pictureRef;
@@ -821,19 +1063,18 @@ class _SceneArtBox extends StatelessWidget {
     final dpr =
         MediaQuery.maybeDevicePixelRatioOf(context) ??
         View.of(context).devicePixelRatio;
-    return Directionality(
-      textDirection: TextDirection.ltr,
+    return NocheLtr(
       child: LayoutBuilder(
         builder: (context, c) {
           final scale = math.max(
             1,
             math.max(
-              (c.maxWidth * dpr / _picW - 1e-6).ceil(),
-              (c.maxHeight * dpr / _picH - 1e-6).ceil(),
+              (c.maxWidth * dpr / scenePictureWidth - 1e-6).ceil(),
+              (c.maxHeight * dpr / scenePictureHeight - 1e-6).ceil(),
             ),
           );
-          final availW = _picW * scale / dpr;
-          final availH = _picH * scale / dpr;
+          final availW = scenePictureWidth * scale / dpr;
+          final availH = scenePictureHeight * scale / dpr;
           return ClipRect(
             child: OverflowBox(
               minWidth: availW,
@@ -841,7 +1082,11 @@ class _SceneArtBox extends StatelessWidget {
               minHeight: availH,
               maxHeight: availH,
               alignment: AlignmentDirectional.center,
-              child: pictures.of(ref, width: _picW, height: _picH),
+              child: pictures.of(
+                ref,
+                width: scenePictureWidth,
+                height: scenePictureHeight,
+              ),
             ),
           );
         },

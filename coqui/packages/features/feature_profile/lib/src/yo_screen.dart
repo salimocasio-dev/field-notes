@@ -7,6 +7,7 @@ import 'package:feature_profile/src/install_hint.dart';
 import 'package:feature_profile/src/js.dart';
 import 'package:feature_profile/src/language_chip.dart';
 import 'package:feature_profile/src/me_data.dart';
+import 'package:feature_profile/src/motion.dart';
 import 'package:feature_profile/src/texts.dart';
 import 'package:feature_profile/src/welcome.dart';
 import 'package:material_ui/material_ui.dart';
@@ -436,13 +437,15 @@ class _YoScreenState extends State<YoScreen> {
                         0,
                       ),
                       child: Center(
-                        child: Text(
-                          meBuildLabel(_s.info.build),
-                          key: const Key('build-number'),
-                          style: NocheType.bodySmall.copyWith(
-                            fontSize: 12,
-                            height: 16 / 12,
-                            color: NocheColors.label,
+                        child: NocheLtr(
+                          child: Text(
+                            meBuildLabel(_s.info.build),
+                            key: const Key('build-number'),
+                            style: NocheType.bodySmall.copyWith(
+                              fontSize: 12,
+                              height: 16 / 12,
+                              color: NocheColors.label,
+                            ),
                           ),
                         ),
                       ),
@@ -519,11 +522,13 @@ class _StatsCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        '${data.totalMinutes}',
-                        key: const Key('me-total-minutes'),
-                        style: NocheType.statNumber.copyWith(
-                          color: NocheColors.text,
+                      NocheLtr(
+                        child: Text(
+                          '${data.totalMinutes}',
+                          key: const Key('me-total-minutes'),
+                          style: NocheType.statNumber.copyWith(
+                            color: NocheColors.text,
+                          ),
                         ),
                       ),
                       const SizedBox(width: NocheSize.grid),
@@ -571,24 +576,28 @@ class _StatsCard extends StatelessWidget {
                           color: NocheColors.next,
                         ),
                         const SizedBox(width: NocheSize.grid),
-                        Text(
-                          data.streakLabel,
-                          style: NocheType.rowTitle.copyWith(
-                            height: 16 / 16,
-                            color: NocheColors.text,
+                        NocheLtr(
+                          child: Text(
+                            data.streakLabel,
+                            style: NocheType.rowTitle.copyWith(
+                              height: 16 / 16,
+                              color: NocheColors.text,
+                            ),
                           ),
                         ),
                       ],
                     ),
                     if (data.streakFreezesLabel != null) ...[
                       const SizedBox(height: NocheSize.grid),
-                      Text(
-                        data.streakFreezesLabel!,
-                        key: const Key('me-streak-freezes'),
-                        style: NocheType.bodySmall.copyWith(
-                          fontSize: 12,
-                          height: 16 / 12,
-                          color: NocheColors.label,
+                      NocheLtr(
+                        child: Text(
+                          data.streakFreezesLabel!,
+                          key: const Key('me-streak-freezes'),
+                          style: NocheType.bodySmall.copyWith(
+                            fontSize: 12,
+                            height: 16 / 12,
+                            color: NocheColors.label,
+                          ),
                         ),
                       ),
                     ],
@@ -603,6 +612,7 @@ class _StatsCard extends StatelessWidget {
             showValues: false,
             goal: data.goalMinutes,
             barAreaHeight: 64,
+            delay: NocheMotion.rowsAfter,
             semanticLabel: data.weekChartSemanticLabel,
             items: [
               for (final day in data.weekBars)
@@ -657,18 +667,23 @@ class _LanguageCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        mePlaceProgressLabel(
-                          level: data.level,
-                          placeNumber: place.n,
-                          placeTotal: data.placeTotal,
-                        ),
-                        key: const Key('me-place-progress'),
-                        textAlign: TextAlign.end,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: NocheType.rowTitle.copyWith(
-                          color: NocheColors.text,
+                      NocheLtr(
+                        child: Text(
+                          mePlaceProgressLabel(
+                            level: data.level,
+                            placeNumber: place.n,
+                            placeTotal: data.placeTotal,
+                          ),
+                          key: const Key('me-place-progress'),
+                          textAlign:
+                              Directionality.of(context) == TextDirection.rtl
+                              ? TextAlign.start
+                              : TextAlign.end,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: NocheType.rowTitle.copyWith(
+                            color: NocheColors.text,
+                          ),
                         ),
                       ),
                       Text(
@@ -762,18 +777,25 @@ class _SkillProgressRow extends StatelessWidget {
               color: NocheColors.text,
               trackColor: NocheColors.line,
               height: 8,
+              animateFrom: 0,
+              delay: ProfileMotion.meSkillBarsDelay,
               semanticLabel: meSkillGoodSemanticLabel(good, total),
             ),
           ),
           const SizedBox(width: NocheSize.grid),
           ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 96),
-            child: Text(
-              meSkillGoodLabel(good, total),
-              textAlign: TextAlign.end,
-              maxLines: 1,
-              softWrap: false,
-              style: NocheType.button.copyWith(color: NocheColors.text),
+            child: Align(
+              alignment: AlignmentDirectional.centerEnd,
+              widthFactor: 1,
+              child: NocheLtr(
+                child: Text(
+                  meSkillGoodLabel(good, total),
+                  maxLines: 1,
+                  softWrap: false,
+                  style: NocheType.button.copyWith(color: NocheColors.text),
+                ),
+              ),
             ),
           ),
         ],
@@ -837,56 +859,49 @@ class _PlanRow extends StatelessWidget {
       key: const Key('me-plan-row'),
       onPressed: onPressed,
       semanticLabel: mePlanSemanticLabel(planName),
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.99 : 1,
-        child: Container(
-          constraints: const BoxConstraints(minHeight: NocheSize.primaryHeight),
-          padding: const EdgeInsetsDirectional.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-          decoration: BoxDecoration(
-            border: Border.all(color: NocheColors.line, width: 1),
-            borderRadius: BorderRadius.circular(NocheSize.primaryRadius),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      meYourPlan,
+      builder: (context, _) => Container(
+        constraints: const BoxConstraints(minHeight: NocheSize.primaryHeight),
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(color: NocheColors.line, width: 1),
+          borderRadius: BorderRadius.circular(NocheSize.primaryRadius),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    meYourPlan,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: NocheType.button.copyWith(color: NocheColors.label),
+                  ),
+                  const SizedBox(width: NocheSize.grid),
+                  Flexible(
+                    child: Text(
+                      planName,
                       maxLines: 1,
-                      softWrap: false,
-                      style: NocheType.button.copyWith(
-                        color: NocheColors.label,
-                      ),
+                      overflow: TextOverflow.ellipsis,
+                      style: NocheType.button.copyWith(color: NocheColors.text),
                     ),
-                    const SizedBox(width: NocheSize.grid),
-                    Flexible(
-                      child: Text(
-                        planName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: NocheType.button.copyWith(
-                          color: NocheColors.text,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(width: NocheSize.grid),
-              Text(
-                meManage,
-                maxLines: 1,
-                softWrap: false,
-                style: NocheType.button.copyWith(color: NocheColors.label),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(width: NocheSize.grid),
+            Text(
+              meManage,
+              maxLines: 1,
+              softWrap: false,
+              style: NocheType.button.copyWith(color: NocheColors.label),
+            ),
+          ],
         ),
       ),
     );

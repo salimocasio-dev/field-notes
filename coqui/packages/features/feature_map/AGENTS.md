@@ -29,7 +29,16 @@ The home map (page 11), the Today card, the place sheet.
 - The screen draws the whole screen: the card sits above the tab bar's height, as in coqui_ui's gallery, so the shell draws the bar over it. The place sheet opens with `showCoquiSheet` (a route of the root navigator), so its scrim dims the tab bar too, as v=39's does.
 - Order 26: `MapModule(showPerf: true)` (`MapScreen.showPerf`) shows the bake time and the frame times (slowest and mean) in a small chip in a corner, under the chips bar: the app's `?perf=1`. Off by default.
 - The Today card's review entry ("N words coming back") counts the words Repaso can serve (`repasoServing` in coqui_contracts, the rule the session asks), not only the words with a picture pair; with no games' data, today's rule (`test/map_model_test.dart`).
-- `MapScreen.reviewTitle`: the title of the Today card's review entry (app.html's `plan()`); the screen shows that entry only when it is given a title, and `MapModule` gives `CoquiLabels.reviewTitle`.
+- `MapScreen.reviewTitle`: the title of the Today card's review entry (app.html's `plan()`); the screen shows that entry only when it is given a title, and `MapModule` gives `MapWording.reviewTitle`.
+
+## Standing contracts & conventions
+
+- **Stable widget keys** (used by shell and integration tests; do not rename or drop):
+  - `MapScreen`: `Key('map-screen')`, `Key('language-chip')`, `Key('streak-chip')`, `Key('up-next-card')`, `Key('up-next-play')`, `Key('up-next-place')`, `Key('you-are-here')`, `Key('map-perf-chip')`.
+  - `PlaceScreen`: `Key('place-screen')`, `Key('place-back')`, `Key('place-counter')`, `Key('place-hero-picture')`, `Key('story-tile-$storyId')`, `Key('story-heard-$storyId')`, `Key('place-plan-card')`, `Key('place-see-plans')`, `Key('place-play-bar')`, `Key('place-plan-tag')`, `Key('place-stories-scroll')`, `Key('place-pill-listen')`, `Key('place-pill-read')`, `Key('place-pill-call')`.
+- **Wording (`lib/src/wording.dart`):** All English UI and semantic strings for `feature_map` live in `MapWording` so screens, models, and tests share one source of truth.
+- **Motion (`lib/src/motion.dart`):** Never use literal `Duration(`, `Curves.`, or `Cubic(` anywhere under `lib/`. `lib/src/motion.dart` is the only file under `lib/` allowed to call `NocheMotion.ms(...)`; all other timings, curves, and distances come from `NocheMotion` / `NocheMotionData`.
+- **Shared scene picture window (`NocheWindow` / `lib/src/scene_window.dart`):** The scene picture shared across the map card, the place hero, and the lesson uses `MapSceneWindow` with tag `MapMotion.storyWindowTag(storyId)` (`storyId`) and a single whole-number device-pixel scale so `PixelView` never zooms during transitions. A tag is used at most once per screen (story tiles take no tag), and `MapScreen` gates its tag on `TickerMode.valuesOf(context).enabled` so offstage tabs never collide with an active `PlaceScreen`.
 
 ## Run and test it alone
 

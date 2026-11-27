@@ -19,8 +19,9 @@ import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
 import 'package:feature_review/src/logic/repaso_words.dart';
 import 'package:feature_review/src/logic/review_session.dart'
-    show ReviewOptions;
+    show OptionRing, ReviewOptions;
 import 'package:feature_review/src/logic/word_picture.dart';
+import 'package:feature_review/src/motion.dart';
 import 'package:feature_review/src/ui/block_layout.dart'
     show pictureHeight, pictureWidth;
 import 'package:feature_review/src/ui/book_image.dart';
@@ -73,6 +74,71 @@ class _Area {
   const _Area(this.child, this.height);
   final Widget child;
   final double height;
+}
+
+/// Immutable snapshot of a [Choice] captured when building a game view so
+/// outgoing [NocheItemTransition] layers stay frozen while fading out.
+class _ChoiceSnap {
+  _ChoiceSnap.from(Choice c)
+    : label = c.label,
+      clip = c.clip,
+      right = c.right,
+      pre = c.pre,
+      dim = c.dim,
+      ring = c.ring,
+      check = c.check,
+      cross = c.cross,
+      number = c.number,
+      sign = c.sign,
+      done = c.done,
+      shakes = c.shakes;
+
+  final String label;
+  final String? clip;
+  final bool right;
+  final bool pre;
+  final bool dim;
+  final OptionRing ring;
+  final bool check;
+  final bool cross;
+  final int? number;
+  final bool sign;
+  final bool done;
+  final int shakes;
+}
+
+/// Immutable snapshot of the active item in [RepasoSession].
+class _GameSnap {
+  _GameSnap.from(RepasoSession s)
+    : entry = s.entry!,
+      item = s.item!,
+      streak = s.streak,
+      sentencePlaying = s.sentencePlaying,
+      replayCount = s.replayCount,
+      showText = s.showText,
+      choices = [for (final c in s.choices) _ChoiceSnap.from(c)],
+      speakers = [for (final c in s.speakers) _ChoiceSnap.from(c)],
+      selectedSpeaker = s.selectedSpeaker,
+      placed = List<int>.of(s.placed),
+      mic = s.mic,
+      heard = s.heard,
+      heardRight = s.heardRight,
+      notHeard = s.notHeard;
+
+  final QueueEntry entry;
+  final GameItem item;
+  final int streak;
+  final bool sentencePlaying;
+  final int replayCount;
+  final bool showText;
+  final List<_ChoiceSnap> choices;
+  final List<_ChoiceSnap> speakers;
+  final int? selectedSpeaker;
+  final List<int> placed;
+  final MicState mic;
+  final String heard;
+  final bool heardRight;
+  final bool notHeard;
 }
 
 class RepasoScreenState extends State<RepasoScreen> {
@@ -176,6 +242,7 @@ class RepasoScreenState extends State<RepasoScreen> {
     Widget? button;
     if (s.canNext) {
       button = NochePrimaryButton(
+        key: const Key('review-next-button'),
         label: RepasoStrings.next,
         onPressed: s.pressNext,
       );
@@ -209,8 +276,52 @@ class RepasoScreenState extends State<RepasoScreen> {
       final start = s.screen == LessonScreen.start;
       final end = s.screen == LessonScreen.end;
       final play = s.screen == LessonScreen.play && s.item != null;
+      final motion = NocheMotion.of(context);
+      final endSchedule = end
+          ? ReviewEndSchedule(motion, [
+              for (final g in s.end!.groups) g.rows.length,
+            ])
+          : null;
       // before the first item is asked: how many pictures a ¿Dónde? item can have on this screen
       s.wherePictures = _wherePlan(context, box, constraints).count;
+      final Object contentKey = start
+          ? LessonScreen.start
+          : end
+          ? LessonScreen.end
+          : play
+          ? s.entry!
+          : 'empty';
+      final Widget overlayChild = start
+          ? Stack(
+              fit: StackFit.expand,
+              children: [
+                LessonTextScreen(
+                  box: box,
+                  title: s.screenTitle,
+                  lines: s.screenLines,
+                ),
+              ],
+            )
+          : end
+          ? Stack(
+              fit: StackFit.expand,
+              children: [
+                RepasoEndView(
+                  box: box,
+                  end: s.end!,
+                  onRow: s.playRow,
+                  language: _lang,
+                  controller: widget.endScroll,
+                  schedule: endSchedule,
+                ),
+              ],
+            )
+          : play
+          ? Padding(
+              padding: const EdgeInsetsDirectional.only(bottom: _foot),
+              child: _game(context, box, _GameSnap.from(s)),
+            )
+          : const SizedBox.shrink();
       return NocheLessonFrame(
         onClose: _close,
         showClose: !end,
@@ -224,34 +335,19 @@ class RepasoScreenState extends State<RepasoScreen> {
           current: s.barCurrent,
           dense: s.barSegments > 24,
         ),
-        overlay: start
-            ? LessonTextScreen(
-                box: box,
-                title: s.screenTitle,
-                lines: s.screenLines,
-              )
-            : end
-            ? RepasoEndView(
-                box: box,
-                end: s.end!,
-                onRow: s.playRow,
-                language: _lang,
-                controller: widget.endScroll,
-              )
-            : play
-            ? PositionedDirectional(
-                start: 0,
-                end: 0,
-                top: 0,
-                bottom: _foot,
-                child: _game(context, box),
-              )
-            : null,
+        overlay: Positioned.fill(
+          child: NocheItemTransition(
+            contentKey: contentKey,
+            expand: true,
+            child: overlayChild,
+          ),
+        ),
         bottom: [
           if (start)
             Padding(
               padding: const EdgeInsetsDirectional.only(bottom: 16),
               child: NochePlayDisc(
+                key: const Key('review-start-disc'),
                 size: nocheLessonStartDisc,
                 icon: NocheIcons.play,
                 semanticLabel: 'Start',
@@ -259,12 +355,18 @@ class RepasoScreenState extends State<RepasoScreen> {
               ),
             ),
           if (end)
-            NochePrimaryButton(
-              label: 'Back to ${_lang.tabNames['words'] ?? CoquiLabels.words}',
-              onPressed: () {
-                s.leave();
-                _s.nav.go(const TabRoute('words'));
-              },
+            NocheRiseIn(
+              key: const ValueKey('review_end_action_rise'),
+              delay: endSchedule!.nextButtonStart,
+              child: NochePrimaryButton(
+                key: const Key('review-end-action'),
+                label:
+                    'Back to ${_lang.tabNames['words'] ?? CoquiLabels.words}',
+                onPressed: () {
+                  s.leave();
+                  _s.nav.go(const TabRoute('words'));
+                },
+              ),
             ),
           if (play) _next(),
         ],
@@ -366,107 +468,165 @@ class RepasoScreenState extends State<RepasoScreen> {
 
   // ---- a game
 
-  Widget _game(BuildContext context, LessonBox box) => LayoutBuilder(
-    builder: (context, c) {
-      final s = session;
-      final it = s.item!;
-      final side = box.landscape ? 0.0 : 16.0;
-      final width = _width(box, c);
-      final dpr = MediaQuery.devicePixelRatioOf(context);
-      final reveal = _reveal(it);
-      final textH = reveal.text == null
-          ? 0.0
-          : _textH(
+  Widget _game(BuildContext context, LessonBox box, _GameSnap snap) =>
+      LayoutBuilder(
+        builder: (context, c) {
+          final it = snap.item;
+          final side = box.landscape ? 0.0 : 16.0;
+          final width = _width(box, c);
+          final dpr = MediaQuery.devicePixelRatioOf(context);
+          final reveal = _reveal(it);
+          final textH = reveal.text == null
+              ? 0.0
+              : _textH(
+                  context,
+                  reveal.text!,
+                  _courseStyle(_revealStyle),
+                  width,
+                  textDirection: _lang.textDirection,
+                );
+          final above = _above(context, it, width);
+          final motion = NocheMotion.of(context);
+          final hasRound = _hasRound(it);
+          final areaStartIdx = hasRound ? 2 : 1;
+          Duration rowDelay(int idx) =>
+              ReviewMotion.itemRowsDelay + motion.stagger * math.min(idx, 4);
+          // the game's own area gets what is left when the reveal has its text
+          final budget = c.maxHeight - above - _gap - textH - _bottomPad;
+          final area = switch (it) {
+            CualItem() => _cual(
               context,
-              reveal.text!,
-              _courseStyle(_revealStyle),
+              snap,
+              it,
               width,
-              textDirection: _lang.textDirection,
-            );
-      final above = _above(context, it, width);
-      // the game's own area gets what is left when the reveal has its text
-      final budget = c.maxHeight - above - _gap - textH - _bottomPad;
-      final area = switch (it) {
-        CualItem() => _cual(context, it, width, budget, dpr),
-        HearItem() => _hear(it),
-        BuildItem() => _build(context, it, width),
-        MatchItem() => _match(it),
-        WhereItem() => _where(context, it, width, budget, dpr),
-        SayItem() => _say(context, it, width),
-      };
-      return SingleChildScrollView(
-        padding: EdgeInsetsDirectional.fromSTEB(
-          side,
-          _topPad,
-          side,
-          _bottomPad,
-        ),
-        child: Center(
-          child: SizedBox(
-            width: width,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // (1) the line saying what to do, and the chip's place: as high as the tallest of the six lines, so
-                // that what is under it is in the same place in every game
-                SizedBox(
-                  height: _headerH(context, it.kind, width),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          gameInstruction(it.kind),
-                          key: const ValueKey('game-instruction'),
-                          style: _instructionStyle,
+              budget,
+              dpr,
+              motion,
+              areaStartIdx,
+            ),
+            HearItem() => _hear(snap, it, motion, areaStartIdx),
+            BuildItem() => _build(context, snap, it, width),
+            MatchItem() => _match(snap, it, motion, areaStartIdx),
+            WhereItem() => _where(context, snap, it, width, budget, dpr),
+            SayItem() => _say(context, snap, it, width),
+          };
+          final areaHasOwnRise =
+              it is CualItem || it is HearItem || it is MatchItem;
+          final revealIdx = switch (it) {
+            CualItem() => areaStartIdx + snap.choices.length,
+            HearItem() => areaStartIdx + snap.choices.length,
+            MatchItem() => areaStartIdx + snap.speakers.length,
+            _ => areaStartIdx + 1,
+          };
+          return SingleChildScrollView(
+            padding: EdgeInsetsDirectional.fromSTEB(
+              side,
+              _topPad,
+              side,
+              _bottomPad,
+            ),
+            child: Center(
+              child: SizedBox(
+                width: width,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // (1) the line saying what to do, and the chip's place: as high as the tallest of the six lines, so
+                    // that what is under it is in the same place in every game
+                    NocheRiseIn(
+                      key: const ValueKey('review_item_row_0'),
+                      delay: rowDelay(0),
+                      child: SizedBox(
+                        height: _headerH(context, it.kind, width),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                gameInstruction(it.kind),
+                                key: const ValueKey('game-instruction'),
+                                style: _instructionStyle,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            NocheStreakChip(
+                              count: snap.streak,
+                              from: repasoStreakFrom,
+                              reserve: true,
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      NocheStreakChip(
-                        count: s.streak,
-                        from: repasoStreakFrom,
-                        reserve: true,
+                    ),
+                    const SizedBox(height: _gap),
+                    // (2) the round speaker
+                    if (hasRound) ...[
+                      NocheRiseIn(
+                        key: const ValueKey('review_item_row_1'),
+                        delay: rowDelay(1),
+                        child: _speaker(snap),
                       ),
+                      const SizedBox(height: _gap),
                     ],
-                  ),
+                    // (3) the game's own area
+                    if (areaHasOwnRise)
+                      area.child
+                    else
+                      NocheRiseIn(
+                        key: ValueKey('review_item_row_$areaStartIdx'),
+                        delay: rowDelay(areaStartIdx),
+                        child: area.child,
+                      ),
+                    const SizedBox(height: _gap),
+                    // (4) the reveal
+                    NocheRiseIn(
+                      key: const ValueKey('review_item_row_reveal'),
+                      delay: rowDelay(revealIdx),
+                      child: KeyedSubtree(
+                        key: const ValueKey('reveal'),
+                        child: _revealArea(snap, reveal, textH),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: _gap),
-                // (2) the round speaker
-                if (_hasRound(it)) ...[
-                  _speaker(it),
-                  const SizedBox(height: _gap),
-                ],
-                // (3) the game's own area
-                area.child,
-                const SizedBox(height: _gap),
-                // (4) the reveal
-                KeyedSubtree(
-                  key: const ValueKey('reveal'),
-                  child: _revealArea(reveal, textH),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       );
-    },
-  );
 
-  Widget _speaker(GameItem it) {
+  Widget _speaker(_GameSnap snap) {
     const room = NocheRoundSpeaker.size + 2 * NocheRoundSpeaker.pulse;
     return SizedBox(
       height: NocheRoundSpeaker.size,
-      child: OverflowBox(
-        minWidth: 0,
-        minHeight: 0,
-        maxWidth: room,
-        maxHeight: room,
-        child: NocheRoundSpeaker(
-          onTap: session.replay,
-          playing: session.sentencePlaying,
-          still: _still,
-        ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: AlignmentDirectional.center,
+        children: [
+          OverflowBox(
+            minWidth: 0,
+            minHeight: 0,
+            maxWidth: room,
+            maxHeight: room,
+            child: NocheRoundSpeaker(
+              onTap: session.replay,
+              playing: snap.sentencePlaying,
+              replayCount: snap.replayCount,
+              still: _still,
+            ),
+          ),
+          Align(
+            alignment: AlignmentDirectional.center,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(start: room + 24),
+              child: NocheSmallLevelBars(
+                playing: snap.sentencePlaying,
+                still: _still,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -508,12 +668,12 @@ class RepasoScreenState extends State<RepasoScreen> {
 
   /// (4) The reveal: a place of its own, as high as the sentence it will show, kept empty until the item is
   /// answered. Nothing round it moves when its content comes (no story-book screenshots under #10).
-  Widget _revealArea(_Reveal r, double textH) {
+  Widget _revealArea(_GameSnap snap, _Reveal r, double textH) {
     final text = r.text;
     if (text == null) return const SizedBox.shrink();
     return SizedBox(
       height: textH,
-      child: session.showText
+      child: snap.showText
           ? OverflowBox(
               alignment: AlignmentDirectional.topCenter,
               minHeight: 0,
@@ -524,7 +684,7 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  TileLook _look(Choice c) =>
+  TileLook _look(_ChoiceSnap c) =>
       c.dim ? TileLook.dim : (c.pre ? TileLook.waiting : TileLook.normal);
 
   /// A picture of a picture game with the sign inside its bottom-end corner when it is the one to touch: 12 px from
@@ -546,8 +706,8 @@ class RepasoScreenState extends State<RepasoScreen> {
         )
       : child;
 
-  Widget _choicePicture(int i, Widget picture) {
-    final c = session.choices[i];
+  Widget _choicePicture(_GameSnap snap, int i, Widget picture) {
+    final c = snap.choices[i];
     return _signed(
       OptionTouch(
         index: i,
@@ -572,22 +732,24 @@ class RepasoScreenState extends State<RepasoScreen> {
   // Never falls back to ScenePictures story crops (#10).
   _Area _cual(
     BuildContext context,
+    _GameSnap snap,
     CualItem it,
     double width,
     double budget,
     double dpr,
+    NocheMotionData motion,
+    int startIdx,
   ) {
     final asset = it.asset;
     if (asset == null || !asset.isUsable) {
       return const _Area(SizedBox.shrink(), 0);
     }
-    final s = session;
     final kw = (width * dpr / pictureWidth).floor();
     final kh = ((budget - _gap) / 2 * dpr / pictureHeight).floor();
     final k = math.max(1, math.min(kw, kh));
     final w = pictureWidth * k / dpr, h = pictureHeight * k / dpr;
     Widget pic(int i) {
-      final c = s.choices[i];
+      final c = snap.choices[i];
       final path = (c.right ? asset.yesAsset : asset.noAsset).trim();
       final picture = SizedBox(
         width: w,
@@ -600,16 +762,22 @@ class RepasoScreenState extends State<RepasoScreen> {
         ),
       );
       // each item's pictures are their own (a new picture is never an old one handed another pair)
-      return KeyedSubtree(
-        key: ValueKey((s.entry, i)),
-        child: _choicePicture(i, picture),
+      return NocheRiseIn(
+        key: ValueKey('review_item_row_${startIdx + i}'),
+        delay:
+            ReviewMotion.itemRowsDelay +
+            motion.stagger * math.min(startIdx + i, 4),
+        child: KeyedSubtree(
+          key: ValueKey((snap.entry, i)),
+          child: _choicePicture(snap, i, picture),
+        ),
       );
     }
 
     return _Area(
       Column(
         children: [
-          if (s.choices.length == 2) ...[
+          if (snap.choices.length == 2) ...[
             pic(0),
             const SizedBox(height: _gap),
             pic(1),
@@ -621,7 +789,12 @@ class RepasoScreenState extends State<RepasoScreen> {
   }
 
   // ¿Qué oyes?: three written tiles, each with its speaker when every tile has the word alone
-  _Area _hear(HearItem it) {
+  _Area _hear(
+    _GameSnap snap,
+    HearItem it,
+    NocheMotionData motion,
+    int startIdx,
+  ) {
     final s = session;
     return _Area(
       Directionality(
@@ -629,22 +802,28 @@ class RepasoScreenState extends State<RepasoScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            for (var k = 0; k < s.choices.length; k++) ...[
+            for (var k = 0; k < snap.choices.length; k++) ...[
               if (k > 0) const SizedBox(height: _gap),
-              NocheWordTile(
-                word: s.choices[k].label,
-                language: _lang,
-                expand: true,
-                look: _look(s.choices[k]),
-                ring: choiceRing(s.choices[k].ring),
-                check: s.choices[k].check,
-                cross: s.choices[k].cross,
-                sign: s.choices[k].sign,
-                still: _still,
-                onTap: () => s.touch(k),
-                onSpeaker: s.choices[k].clip == null
-                    ? null
-                    : () => s.touchSpeaker(k),
+              NocheRiseIn(
+                key: ValueKey('review_item_row_${startIdx + k}'),
+                delay:
+                    ReviewMotion.itemRowsDelay +
+                    motion.stagger * math.min(startIdx + k, 4),
+                child: NocheWordTile(
+                  word: snap.choices[k].label,
+                  language: _lang,
+                  expand: true,
+                  look: _look(snap.choices[k]),
+                  ring: choiceRing(snap.choices[k].ring),
+                  check: snap.choices[k].check,
+                  cross: snap.choices[k].cross,
+                  sign: snap.choices[k].sign,
+                  still: _still,
+                  onTap: () => s.touch(k),
+                  onSpeaker: snap.choices[k].clip == null
+                      ? null
+                      : () => s.touchSpeaker(k),
+                ),
               ),
             ],
           ],
@@ -701,9 +880,14 @@ class RepasoScreenState extends State<RepasoScreen> {
   // Arma la frase: an empty line with a baseline (no places: its tiles go onto it one after another from start to end
   // in the course's reading direction, and are green at once), the tiles in their mixed order under it; a tile put on
   // the line leaves an empty place of its size in the bank
-  _Area _build(BuildContext context, BuildItem it, double width) {
+  _Area _build(
+    BuildContext context,
+    _GameSnap snap,
+    BuildItem it,
+    double width,
+  ) {
     final s = session;
-    final done = s.showText;
+    final done = snap.showText;
     final rows = _lineRows(context, it, width);
     final tileH = _tileHeight(context);
     final line = NocheTileTray(
@@ -712,11 +896,11 @@ class RepasoScreenState extends State<RepasoScreen> {
       lineRows: rows,
       lineTileHeight: tileH,
       children: [
-        for (final k in s.placed)
+        for (final k in snap.placed)
           NocheWordTile(
-            word: s.choices[k].label,
+            word: snap.choices[k].label,
             language: _lang,
-            ring: choiceRing(s.choices[k].ring),
+            ring: choiceRing(snap.choices[k].ring),
             still: _still,
           ),
         SizedBox(
@@ -737,18 +921,18 @@ class RepasoScreenState extends State<RepasoScreen> {
             const SizedBox(height: 24),
             NocheTileTray(
               children: [
-                for (var k = 0; k < s.choices.length; k++)
+                for (var k = 0; k < snap.choices.length; k++)
                   NocheWordTile(
-                    word: s.choices[k].label,
+                    word: snap.choices[k].label,
                     language: _lang,
-                    look: s.choices[k].done
+                    look: snap.choices[k].done
                         ? TileLook.empty
-                        : _look(s.choices[k]),
-                    ring: choiceRing(s.choices[k].ring),
-                    cross: s.choices[k].cross,
-                    shake: s.choices[k].shakes,
+                        : _look(snap.choices[k]),
+                    ring: choiceRing(snap.choices[k].ring),
+                    cross: snap.choices[k].cross,
+                    shake: snap.choices[k].shakes,
                     still: _still,
-                    onTap: s.choices[k].done ? null : () => s.touch(k),
+                    onTap: snap.choices[k].done ? null : () => s.touch(k),
                   ),
               ],
             ),
@@ -763,43 +947,56 @@ class RepasoScreenState extends State<RepasoScreen> {
   }
 
   // Parejas: four sounds at the start, four words at the end; a found pair is green on both sides, with its number
-  _Area _match(MatchItem it) {
+  _Area _match(
+    _GameSnap snap,
+    MatchItem it,
+    NocheMotionData motion,
+    int startIdx,
+  ) {
     final s = session;
     return _Area(
       Directionality(
         textDirection: _lang.textDirection,
         child: Column(
           children: [
-            for (var i = 0; i < s.speakers.length; i++) ...[
+            for (var i = 0; i < snap.speakers.length; i++) ...[
               if (i > 0) const SizedBox(height: _gap),
-              Row(
-                children: [
-                  NocheSpeakerTile(
-                    onTap: s.speakers[i].done ? null : () => s.touchSpeaker(i),
-                    label: 'Sound ${i + 1}',
-                    ring: choiceRing(s.speakers[i].ring),
-                    check: s.speakers[i].check,
-                    cross: s.speakers[i].cross,
-                    number: s.speakers[i].number,
-                    playing: s.selectedSpeaker == i,
-                    still: _still,
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: NocheWordTile(
-                      word: s.choices[i].label,
-                      language: _lang,
-                      expand: true,
-                      ring: choiceRing(s.choices[i].ring),
-                      check: s.choices[i].check,
-                      cross: s.choices[i].cross,
-                      number: s.choices[i].number,
-                      shake: s.choices[i].shakes,
+              NocheRiseIn(
+                key: ValueKey('review_item_row_${startIdx + i}'),
+                delay:
+                    ReviewMotion.itemRowsDelay +
+                    motion.stagger * math.min(startIdx + i, 4),
+                child: Row(
+                  children: [
+                    NocheSpeakerTile(
+                      onTap: snap.speakers[i].done
+                          ? null
+                          : () => s.touchSpeaker(i),
+                      label: 'Sound ${i + 1}',
+                      ring: choiceRing(snap.speakers[i].ring),
+                      check: snap.speakers[i].check,
+                      cross: snap.speakers[i].cross,
+                      number: snap.speakers[i].number,
+                      playing: snap.selectedSpeaker == i,
                       still: _still,
-                      onTap: s.choices[i].done ? null : () => s.touch(i),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: NocheWordTile(
+                        word: snap.choices[i].label,
+                        language: _lang,
+                        expand: true,
+                        ring: choiceRing(snap.choices[i].ring),
+                        check: snap.choices[i].check,
+                        cross: snap.choices[i].cross,
+                        number: snap.choices[i].number,
+                        shake: snap.choices[i].shakes,
+                        still: _still,
+                        onTap: snap.choices[i].done ? null : () => s.touch(i),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ],
@@ -812,17 +1009,17 @@ class RepasoScreenState extends State<RepasoScreen> {
   // ¿Dónde?: defensive guard against story-book screenshots (#10).
   _Area _where(
     BuildContext context,
+    _GameSnap snap,
     WhereItem it,
     double width,
     double budget,
     double dpr,
   ) {
-    final s = session;
-    if (s.choices.isEmpty ||
-        s.choices.any((c) => !isDedicatedWordAssetPath(c.label))) {
+    if (snap.choices.isEmpty ||
+        snap.choices.any((c) => !isDedicatedWordAssetPath(c.label))) {
       return const _Area(SizedBox.shrink(), 0);
     }
-    final n = s.choices.length;
+    final n = snap.choices.length;
     final k = math.max(
       1,
       whereScaleFor(n: n, width: width, height: budget, dpr: dpr),
@@ -833,10 +1030,11 @@ class RepasoScreenState extends State<RepasoScreen> {
           for (var i = 0; i < n; i++) ...[
             if (i > 0) const SizedBox(height: whereGap),
             KeyedSubtree(
-              key: ValueKey((s.entry, i)),
+              key: ValueKey((snap.entry, i)),
               child: _choicePicture(
+                snap,
                 i,
-                BookImage(provider: _book(s.choices[i].label), k: k),
+                BookImage(provider: _book(snap.choices[i].label), k: k),
               ),
             ),
           ],
@@ -847,17 +1045,17 @@ class RepasoScreenState extends State<RepasoScreen> {
   }
 
   // Dilo: the speaking prompt card (target word + sentence with target word highlighted), NocheMic, status, and heard.
-  _Area _say(BuildContext context, SayItem it, double width) {
+  _Area _say(BuildContext context, _GameSnap snap, SayItem it, double width) {
     final s = session;
-    final status = switch (s.mic) {
+    final status = switch (snap.mic) {
       MicState.listening => RepasoStrings.listening,
-      MicState.ready when s.notHeard => RepasoStrings.tryAgain,
+      MicState.ready when snap.notHeard => RepasoStrings.tryAgain,
       _ => '',
     };
-    final heardLine = (s.notHeard || s.heardRight)
-        ? (s.heard.isEmpty
+    final heardLine = (snap.notHeard || snap.heardRight)
+        ? (snap.heard.isEmpty
               ? RepasoStrings.nothingHeard
-              : RepasoStrings.heard(s.heard))
+              : RepasoStrings.heard(snap.heard))
         : '';
     Widget statusBox(String text) => SizedBox(
       height: 24,
@@ -927,17 +1125,18 @@ class RepasoScreenState extends State<RepasoScreen> {
       textDirection: _lang.textDirection,
     );
     final cardH = 2 * (16 + nocheLessonBorder) + calloutH + 12 + sentenceH;
-    final micState = switch (s.mic) {
+    final micState = switch (snap.mic) {
       MicState.dead => NocheMicState.theySpeak,
-      MicState.ready => s.notHeard ? NocheMicState.notYet : NocheMicState.ready,
+      MicState.ready =>
+        snap.notHeard ? NocheMicState.notYet : NocheMicState.ready,
       MicState.listening => NocheMicState.listening,
       MicState.processing => NocheMicState.thinking,
       MicState.ok => NocheMicState.right,
       MicState.missed => NocheMicState.notYet,
     };
     final micLevel =
-        (s.mic == MicState.listening ||
-            (s.mic == MicState.dead && s.sentencePlaying))
+        (snap.mic == MicState.listening ||
+            (snap.mic == MicState.dead && snap.sentencePlaying))
         ? 0.6
         : 0.0;
     final micWordStyle = NocheType.forScript(
@@ -1016,7 +1215,7 @@ class RepasoScreenState extends State<RepasoScreen> {
             state: micState,
             language: _lang,
             level: micLevel,
-            onPressed: s.mic == MicState.ready ? s.pressMic : null,
+            onPressed: snap.mic == MicState.ready ? s.pressMic : null,
             compactLabel: true,
             labelGap: 12,
           ),
@@ -1024,8 +1223,8 @@ class RepasoScreenState extends State<RepasoScreen> {
           statusBox(status),
           heardBox(
             heardLine,
-            color: s.heardRight ? NocheColors.right : NocheColors.text,
-            lead: s.heardRight
+            color: snap.heardRight ? NocheColors.right : NocheColors.text,
+            lead: snap.heardRight
                 ? const NocheIcon(
                     NocheIcons.check,
                     size: 20,
@@ -1055,6 +1254,7 @@ class RepasoEndView extends StatefulWidget {
     required this.onRow,
     this.language,
     this.controller,
+    this.schedule,
   });
 
   final LessonBox box;
@@ -1062,6 +1262,7 @@ class RepasoEndView extends StatefulWidget {
   final void Function(RepasoEndRow r) onRow;
   final Language? language;
   final ScrollController? controller;
+  final ReviewEndSchedule? schedule;
 
   @override
   State<RepasoEndView> createState() => _RepasoEndViewState();
@@ -1078,65 +1279,97 @@ class _RepasoEndViewState extends State<RepasoEndView> {
     super.dispose();
   }
 
-  Widget _row(RepasoEndRow r) => Directionality(
-    textDirection: _lang.textDirection,
-    child: Pressable(
-      onPressed: () => widget.onRow(r),
-      semanticLabel: '${r.word}: ${r.text}',
-      builder: (context, pressed) => Container(
-        constraints: const BoxConstraints(minHeight: 56),
-        padding: const EdgeInsetsDirectional.symmetric(
-          horizontal: 12,
-          vertical: 8,
-        ),
-        decoration: BoxDecoration(
-          color: pressed ? NocheColors.lessonPanel : null,
-          borderRadius: BorderRadius.circular(NocheSize.tileRadius),
-        ),
-        child: Row(
+  Widget _row(RepasoEndRow r, Duration wordStart) {
+    final end = widget.end;
+    final animateFrom = (r.ok && r.newStage > r.oldStage && end.stageMax > 0)
+        ? (r.oldStage / end.stageMax).clamp(0.0, 1.0)
+        : null;
+    return NocheRiseIn(
+      key: ValueKey('end_word_${r.word}'),
+      delay: wordStart,
+      child: Directionality(
+        textDirection: _lang.textDirection,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    r.word,
-                    textDirection: _lang.textDirection,
-                    locale: _lang.locale,
-                    style: NocheType.forScript(
-                      NocheType.row,
-                      _lang.script,
-                    ).copyWith(color: NocheColors.text),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    r.text,
-                    textDirection: _lang.textDirection,
-                    locale: _lang.locale,
-                    style: NocheType.forScript(
-                      NocheType.bodyLarge,
-                      _lang.script,
-                    ).copyWith(color: NocheColors.label),
-                  ),
-                ],
+            Pressable(
+              onPressed: () => widget.onRow(r),
+              semanticLabel: '${r.word}: ${r.text}',
+              builder: (context, pressed) => Container(
+                constraints: const BoxConstraints(minHeight: 56),
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: pressed ? NocheColors.lessonPanel : null,
+                  borderRadius: BorderRadius.circular(NocheSize.tileRadius),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            r.word,
+                            textDirection: _lang.textDirection,
+                            locale: _lang.locale,
+                            style: NocheType.forScript(
+                              NocheType.row,
+                              _lang.script,
+                            ).copyWith(color: NocheColors.text),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            r.text,
+                            textDirection: _lang.textDirection,
+                            locale: _lang.locale,
+                            style: NocheType.forScript(
+                              NocheType.bodyLarge,
+                              _lang.script,
+                            ).copyWith(color: NocheColors.label),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const NocheIcon(
+                      NocheIcons.speaker,
+                      size: 22,
+                      color: NocheColors.lessonLabel,
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(width: 8),
-            const NocheIcon(
-              NocheIcons.speaker,
-              size: 22,
-              color: NocheColors.lessonLabel,
+            const SizedBox(height: 6),
+            SizedBox(
+              width: double.infinity,
+              child: NocheStageBar(
+                key: ValueKey('end_stage_bar_${r.word}'),
+                stage: r.newStage,
+                max: end.stageMax,
+                animateFrom: animateFrom,
+                delay: wordStart + ReviewMotion.stageBarDelay,
+              ),
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),
-    ),
-  );
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final box = widget.box;
     final end = widget.end;
+    final timing =
+        widget.schedule ??
+        ReviewEndSchedule(NocheMotion.of(context), [
+          for (final g in end.groups) g.rows.length,
+        ]);
     return PositionedDirectional(
       start: 0,
       end: 0,
@@ -1164,36 +1397,61 @@ class _RepasoEndViewState extends State<RepasoEndView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      RepasoStrings.doneTitle,
-                      style: NocheType.pageTitle.copyWith(
-                        color: NocheColors.text,
+                    NocheRiseIn(
+                      key: const ValueKey('end_done_title'),
+                      delay: timing.doneStart,
+                      child: Text(
+                        RepasoStrings.doneTitle,
+                        style: NocheType.pageTitle.copyWith(
+                          color: NocheColors.text,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      end.summary,
-                      style: NocheType.bodyLarge.copyWith(
-                        color: NocheColors.label,
-                      ),
-                    ),
-                    for (final g in end.groups) ...[
-                      const SizedBox(height: 24),
-                      Text(
-                        g.title,
-                        style: NocheType.row.copyWith(color: NocheColors.text),
-                      ),
-                      if (g.sub.isNotEmpty) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          g.sub,
-                          style: NocheType.body.copyWith(
-                            color: NocheColors.label,
+                    NocheRiseIn(
+                      key: const ValueKey('end_summary'),
+                      delay: timing.summaryStart,
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: NocheLtr(
+                          child: Text(
+                            end.summary,
+                            style: NocheType.bodyLarge.copyWith(
+                              color: NocheColors.label,
+                            ),
                           ),
                         ),
-                      ],
+                      ),
+                    ),
+                    for (var gi = 0; gi < end.groups.length; gi++) ...[
+                      const SizedBox(height: 24),
+                      NocheRiseIn(
+                        key: ValueKey('end_group_header_$gi'),
+                        delay: timing.groupHeaderStart[gi],
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              end.groups[gi].title,
+                              style: NocheType.row.copyWith(
+                                color: NocheColors.text,
+                              ),
+                            ),
+                            if (end.groups[gi].sub.isNotEmpty) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                end.groups[gi].sub,
+                                style: NocheType.body.copyWith(
+                                  color: NocheColors.label,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
                       const SizedBox(height: 8),
-                      for (final r in g.rows) _row(r),
+                      for (var ri = 0; ri < end.groups[gi].rows.length; ri++)
+                        _row(end.groups[gi].rows[ri], timing.wordStart[gi][ri]),
                     ],
                   ],
                 ),

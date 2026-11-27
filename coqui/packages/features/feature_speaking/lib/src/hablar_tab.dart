@@ -344,12 +344,14 @@ class _HablarTabState extends State<HablarTab> {
       selected: isSelected,
       child: isSelected
           ? NochePill.selected(
+              key: Key('speak-place-${stop.place.id}'),
               label: stop.place.name,
               script: lang.script,
               locale: courseLocale,
               onPressed: () => _selectPlace(stop.place.id),
             )
           : NochePill.outline(
+              key: Key('speak-place-${stop.place.id}'),
               label: stop.place.name,
               foregroundColor: NocheColors.label,
               script: lang.script,
@@ -567,6 +569,7 @@ class _HablarTabState extends State<HablarTab> {
 
   Widget? _footerControl(
     HablarCallItem? featured,
+    PlaceJourneyStop? selectedStop,
     Language lang, {
     required bool callsEntitled,
   }) {
@@ -617,7 +620,26 @@ class _HablarTabState extends State<HablarTab> {
         ),
       );
     }
-    if (featured == null) return null;
+    if (featured == null) {
+      if (selectedStop != null && selectedStop.statusLine.isNotEmpty) {
+        return Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+          child: NocheCard(
+            key: selectedStop.state == HablarCallState.soon
+                ? const Key('speak-coming-soon')
+                : const Key('speak-locked-status'),
+            variant: NocheCardVariant.dashed,
+            child: Text(
+              selectedStop.statusLine,
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
+              style: NocheType.body.copyWith(color: NocheColors.label),
+            ),
+          ),
+        );
+      }
+      return null;
+    }
     if (featured.canStart) {
       final label = SpeakWording.callPartner(lang.partnerName);
       return Padding(
@@ -654,7 +676,9 @@ class _HablarTabState extends State<HablarTab> {
       return Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
         child: NocheCard(
-          key: const Key('speak-locked-status'),
+          key: featured.state == HablarCallState.soon
+              ? const Key('speak-coming-soon')
+              : const Key('speak-locked-status'),
           variant: NocheCardVariant.dashed,
           child: Text(
             featured.statusLine,
@@ -694,6 +718,7 @@ class _HablarTabState extends State<HablarTab> {
     final voiceTest = widget.voiceTestLabel;
     final footer = _footerControl(
       featured,
+      selectedStop,
       lang,
       callsEntitled: snap.callsEntitled,
     );

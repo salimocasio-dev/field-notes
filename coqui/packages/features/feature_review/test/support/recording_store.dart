@@ -9,6 +9,13 @@ class RecordingStore extends FakeProgressStore {
   RecordingStore(this.vt, {required Clock super.clock, super.json});
   final VirtualTime vt;
   final List<Map<String, Object?>> calls = [];
+  final List<double> addedMinutes = [];
+
+  @override
+  void addMinutes(double m) {
+    super.addMinutes(m);
+    addedMinutes.add(m);
+  }
 
   @override
   List<String> due(Skill skill, {int? at}) {

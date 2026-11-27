@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -6,7 +8,10 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_home.dart';
+import 'package:feature_library/src/story_generator.dart';
 import 'package:feature_library/src/wording.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -14,11 +19,44 @@ import 'support.dart' show Rig, TestCourse, settle;
 
 const List<Size> _viewports = [Size(390, 844), Size(412, 915)];
 
+bool get _captureShots => Platform.environment['CAPTURE_LIBRARY_SHOTS'] == '1';
+
+Future<void> _loadNocheFonts() async {
+  for (final entry in nocheFontFiles.entries) {
+    for (final prefix in ['', 'packages/coqui_ui/']) {
+      final loader = FontLoader('$prefix${entry.key}');
+      for (final relPath in entry.value.values) {
+        final file = File('../../core/coqui_ui/$relPath');
+        loader.addFont(
+          Future.value(ByteData.sublistView(file.readAsBytesSync())),
+        );
+      }
+      await loader.load();
+    }
+  }
+}
+
+Future<void> _saveScreenshot(WidgetTester tester, String filename) async {
+  final boundary = tester.renderObject(
+    find.byType(RepaintBoundary).first,
+  ) as RenderRepaintBoundary;
+  final image = await tester.runAsync(() => boundary.toImage(pixelRatio: 1.0));
+  final byteData = await tester.runAsync(
+    () => image!.toByteData(format: ui.ImageByteFormat.png),
+  );
+  final outFile = File('test/screenshots/$filename');
+  outFile.parent.createSync(recursive: true);
+  outFile.writeAsBytesSync(byteData!.buffer.asUint8List());
+}
+
 Future<void> _pumpHome(
   WidgetTester tester, {
   required Services services,
   required Size size,
   bool showAddYourOwn = true,
+  bool withTabBar = false,
+  bool disableAnimations = false,
+  StoryGenerator? generator,
 }) async {
   tester.view.devicePixelRatio = 1;
   tester.view.physicalSize = size;
@@ -26,12 +64,73 @@ Future<void> _pumpHome(
     tester.view.resetPhysicalSize();
     tester.view.resetDevicePixelRatio();
   });
+  final lang = services.course.language;
+  final Widget home = withTabBar
+      ? ColoredBox(
+          color: NocheColors.ground,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ReadingHome(
+                  services: services,
+                  showAddYourOwn: showAddYourOwn,
+                  generator: generator,
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional.bottomCenter,
+                child: NocheTabBar(
+                  selectedId: NocheTabs.library,
+                  tabNames: lang.tabNames,
+                  script: lang.script,
+                  languageCode: lang.code,
+                  onTap: (_) {},
+                ),
+              ),
+            ],
+          ),
+        )
+      : ReadingHome(
+          services: services,
+          showAddYourOwn: showAddYourOwn,
+          generator: generator,
+        );
+
   await tester.pumpWidget(
     MaterialApp(
-      home: ReadingHome(services: services, showAddYourOwn: showAddYourOwn),
+      debugShowCheckedModeBanner: false,
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context)
+            .copyWith(disableAnimations: disableAnimations),
+        child: child!,
+      ),
+      home: home,
     ),
   );
   await settle(tester);
+}
+
+StoryGenerator _simpleGenerator() => StoryGenerator([
+  (
+    title: 'La casa',
+    beats: [
+      ['La casa es azul.'],
+    ],
+  ),
+]);
+
+void _learnWords(FakeProgressStore store, Iterable<String> words) {
+  final snapshot = store.raw;
+  store.import(
+    jsonEncode({
+      ...snapshot,
+      'palabras': {
+        ...?snapshot['palabras'] as Map?,
+        for (final w in words)
+          w: WordRecord(w: w, primera: 0, ear: SkillRecord(etapa: 4)).toJson(),
+      },
+    }),
+  );
 }
 
 class _RtlCatalog extends TestCourse implements LanguageCatalog {
@@ -286,204 +385,396 @@ void main() {
     );
   });
 
-  group('ReadingHome empty shelf', () {
+  group('ReadingHome empty shelf (zero words, locked slot)', () {
     for (final size in _viewports) {
       testWidgets(
-        'renders cleanly at ${size.width.toInt()}x${size.height.toInt()}',
+        'renders bookcase with locked non-interactive slot at ${size.width.toInt()}x${size.height.toInt()}',
         (tester) async {
           final rig = Rig();
-          await _pumpHome(tester, services: rig.services, size: size);
+          await _pumpHome(
+            tester,
+            services: rig.services,
+            size: size,
+            generator: _simpleGenerator(),
+          );
 
           expect(tester.takeException(), isNull);
+          expect(find.byKey(const Key('library-home')), findsOneWidget);
           expect(find.text('SPANISH'), findsOneWidget);
           expect(find.text(LibraryWording.libraryTitle), findsOneWidget);
           expect(find.text(LibraryWording.addYourOwnPill), findsOneWidget);
-          expect(
-            find.text('A NEW STORY AT YOUR LEVEL · ABOUT WHAT?'),
-            findsOneWidget,
+          expect(find.text('STORIES'), findsOneWidget);
+          expect(find.text('BOOKS'), findsOneWidget);
+
+          // Locked slot shows full reason in text color and is non-interactive.
+          expect(find.text(LibraryWording.newStoryLocked), findsOneWidget);
+          expect(find.byKey(const Key('library-slot-locked')), findsOneWidget);
+          expect(find.byKey(const Key('library-write-story')), findsNothing);
+          expect(find.text(LibraryWording.newStoryOpen), findsNothing);
+          final lockedText = tester.widget<Text>(
+            find.text(LibraryWording.newStoryLocked),
           );
-          expect(find.text('Write my story'), findsOneWidget);
-          expect(
-            find.text('YOUR SHELF · READING COUNTS FROM A2'),
-            findsOneWidget,
-          );
-          expect(find.text('All'), findsOneWidget);
-          expect(find.text('Stories'), findsOneWidget);
-          expect(find.text('Books'), findsOneWidget);
-          expect(find.text('YouTube'), findsNothing);
-          expect(
-            find.text('Stories you make and books you add appear here.'),
-            findsOneWidget,
-          );
+          expect(lockedText.style?.color, NocheColors.text);
+
+          // Tapping the locked slot cannot open the sheet (rule 7).
+          await tester.tap(find.byKey(const Key('library-slot-locked')));
+          await settle(tester);
+          expect(find.text(LibraryWording.writeMyStory), findsNothing);
+          expect(find.byType(TextFormField), findsNothing);
+
+          // Removed elements from pre-N8.11 are absent.
+          expect(find.text('Write my story'), findsNothing);
+          expect(find.text('All'), findsNothing);
+          expect(find.text('Stories'), findsNothing);
+          expect(find.text('Books'), findsNothing);
+          expect(find.text('Story'), findsNothing);
+          expect(find.text('Book'), findsNothing);
+          expect(find.textContaining('READING COUNTS FROM A2'), findsNothing);
+          expect(find.textContaining('YOUR SHELF'), findsNothing);
           expect(find.text('Continue reading'), findsNothing);
-          expect(find.text('KEEP READING'), findsNothing);
+          expect(find.textContaining('KEEP READING'), findsNothing);
+          expect(find.byType(NocheCard), findsNothing);
+          expect(find.byType(Image), findsNothing);
         },
       );
     }
   });
 
-  group('ReadingHome stories only', () {
+  group('ReadingHome stories only (open slot)', () {
     for (final size in _viewports) {
       testWidgets(
-        'renders stories, scene/fallback, and filters at ${size.width.toInt()}x${size.height.toInt()}',
+        'renders open slot first, then stories newest first with no captions or Reading now at ${size.width.toInt()}x${size.height.toInt()}',
         (tester) async {
           final rig = Rig();
+          _learnWords(rig.store, ['la', 'casa', 'es', 'azul']);
           final services = rig.services;
           final store = ReadingStore(services.storage(ReadingStore.space));
-          final withPair = await store.add(
+          final older = await store.add(
             now: 100,
-            title: 'La casa',
-            body: 'La casa es azul.',
-            generated: true,
-          );
-          final noPair = await store.add(
-            now: 200,
             title: 'Sin dibujo',
             body: 'Un texto nuevo.',
             generated: true,
           );
-          await store.markOpened(withPair.id, 300);
-          await store.markOpened(noPair.id, 200);
+          final newer = await store.add(
+            now: 200,
+            title: 'La casa',
+            body: 'La casa es grande.',
+            generated: true,
+          );
 
-          await _pumpHome(tester, services: services, size: size);
+          await _pumpHome(
+            tester,
+            services: services,
+            size: size,
+            generator: _simpleGenerator(),
+          );
 
           expect(tester.takeException(), isNull);
-          expect(find.text('Story'), findsNWidgets(2));
+          expect(find.byKey(const Key('library-write-story')), findsOneWidget);
+          expect(find.text(LibraryWording.newStoryOpen), findsOneWidget);
+          expect(find.text(LibraryWording.newStoryLocked), findsNothing);
           expect(find.text('La casa'), findsOneWidget);
           expect(find.text('Sin dibujo'), findsOneWidget);
+          expect(find.text('Story'), findsNothing);
           expect(find.text('Continue reading'), findsNothing);
-          expect(find.byType(NocheIcon), findsOneWidget);
+          expect(find.textContaining('KEEP READING'), findsNothing);
+          expect(find.byType(Image), findsNothing);
 
-          await tester.tap(find.text('Stories'));
-          await settle(tester);
-          expect(find.text('La casa'), findsOneWidget);
-          expect(find.text('Sin dibujo'), findsOneWidget);
-
-          await tester.tap(find.text('Books'));
-          await settle(tester);
-          expect(find.text('No books on your shelf yet.'), findsOneWidget);
-          expect(find.text('La casa'), findsNothing);
+          // Order: open slot -> newest story -> older story.
+          final slotRect = tester.getRect(
+            find.byKey(const Key('library-write-story')),
+          );
+          final newerRect = tester.getRect(
+            find.byKey(ValueKey('library-book:${newer.id}')),
+          );
+          final olderRect = tester.getRect(
+            find.byKey(ValueKey('library-book:${older.id}')),
+          );
+          expect(slotRect.width, 132);
+          expect(slotRect.height, 120);
+          expect(slotRect.left, lessThan(newerRect.left));
+          expect(newerRect.left, lessThan(olderRect.left));
         },
       );
     }
   });
 
-  group('ReadingHome stories and books', () {
+  group('ReadingHome stories and books with Reading now', () {
     for (final size in _viewports) {
       testWidgets(
-        'orders by recent, filters, shows Keep reading, and hides when finished at ${size.width.toInt()}x${size.height.toInt()}',
+        'renders three shelves, 90x126 Reading now cover, text-colour bar, 120/132 book covers, and hides when finished at ${size.width.toInt()}x${size.height.toInt()}',
         (tester) async {
           final rig = Rig();
+          _learnWords(rig.store, ['la', 'casa', 'es', 'azul']);
           final services = rig.services;
           final store = ReadingStore(services.storage(ReadingStore.space));
-          final olderStory = await store.add(
+          final story = await store.add(
             now: 100,
             title: 'Una casa',
             body: 'La casa es grande.',
             generated: true,
           );
-          final activeBook = await store.add(
-            now: 200,
+          final firstBook = await store.add(
+            now: 150,
             title: 'Cuentos de la isla',
-            body: 'Uno. Dos. Tres. Cuatro. Cinco. Seis.',
+            body: 'Capítulo uno.',
             generated: false,
           );
-          await store.markOpened(olderStory.id, 1000);
+          final activeBook = await store.add(
+            now: 200,
+            title: 'Un verano en Cabo Rojo',
+            body: 'Uno. Dos. Tres. Cuatro. Cinco. Seis.',
+            generated: false,
+            chapters: const [
+              ReadingChapter(title: 'Primero', paragraphs: ['Uno. Dos. Tres.']),
+              ReadingChapter(
+                title: 'Segundo',
+                paragraphs: ['Cuatro. Cinco. Seis.'],
+              ),
+            ],
+          );
+          await store.markOpened(story.id, 1000);
           await store.savePlace(
             activeBook.id,
-            const ReadingPlace(page: 1, openedAt: 2000),
+            const ReadingPlace(page: 1, openedAt: 2000, chapterIndex: 1),
           );
 
-          await _pumpHome(tester, services: services, size: size);
+          await _pumpHome(
+            tester,
+            services: services,
+            size: size,
+            generator: _simpleGenerator(),
+          );
 
           expect(tester.takeException(), isNull);
-          expect(find.text('Book'), findsOneWidget);
-          expect(find.text('Story'), findsOneWidget);
-
-          // Most recently opened (activeBook) appears before olderStory.
-          final bookRect = tester.getRect(find.text('Book'));
-          final storyRect = tester.getRect(find.text('Story'));
-          expect(bookRect.left, lessThan(storyRect.left));
-
-          // Covers: regular (90x120) on shelf + small (60x84) in Keep reading.
-          final covers = tester
-              .widgetList<NocheCover>(find.byType(NocheCover))
-              .toList();
-          expect(covers.map((c) => c.size).toSet(), {
-            NocheCoverSize.regular,
-            NocheCoverSize.small,
-          });
-
-          // Keep reading card details.
-          expect(find.text('KEEP READING'), findsOneWidget);
+          expect(find.byType(Image), findsNothing);
+          expect(find.text('Story'), findsNothing);
+          expect(find.text('Book'), findsNothing);
           expect(
-            find.text('Page 2 of 2 · 1 min left in the chapter'),
+            find.byKey(ValueKey('library-book:${story.id}')),
             findsOneWidget,
           );
+          expect(
+            find.byKey(ValueKey('library-book:${firstBook.id}')),
+            findsOneWidget,
+          );
+          expect(
+            find.byKey(ValueKey('library-book:${activeBook.id}')),
+            findsOneWidget,
+          );
+
+          // Reading now shelf: chapter eyebrow, page line wrapped in NocheLtr,
+          // 90x126 cover, and progress bar in NocheColors.text.
+          expect(find.text('KEEP READING · CHAPTER 2'), findsOneWidget);
+          final pageProgress = find.text(
+            'Page 2 of 2 · 1 min left in the chapter',
+          );
+          expect(pageProgress, findsOneWidget);
+          expect(
+            find.ancestor(of: pageProgress, matching: find.byType(NocheLtr)),
+            findsWidgets,
+          );
+
           final progressBar = tester.widget<NocheProgressBar>(
             find.byType(NocheProgressBar),
           );
           expect(progressBar.value, 0.5);
-          expect(find.text('Continue reading'), findsOneWidget);
+          expect(progressBar.color, NocheColors.text);
 
-          // Filter pills.
-          await tester.tap(find.text('Stories'));
-          await settle(tester);
-          expect(find.text('Story'), findsOneWidget);
-          expect(find.text('Book'), findsNothing);
+          // Verify Reading now cover is 90x126 and shelf book covers are 120 or 132 high.
+          final coverRects = [
+            for (final e in find.byType(NocheCover).evaluate())
+              tester.getRect(find.byWidget(e.widget)),
+          ];
+          expect(
+            coverRects.any((r) => r.width == 90 && r.height == 126),
+            isTrue,
+          );
+          final shelfBook1 = tester.getRect(
+            find.byKey(ValueKey('library-book:${firstBook.id}')),
+          );
+          final shelfBook2 = tester.getRect(
+            find.byKey(ValueKey('library-book:${activeBook.id}')),
+          );
+          expect(shelfBook1.height, anyOf(120, 132));
+          expect(shelfBook2.height, anyOf(120, 132));
 
-          await tester.tap(find.text('Books'));
-          await settle(tester);
-          expect(find.text('Book'), findsOneWidget);
-          expect(find.text('Story'), findsNothing);
-
-          await tester.tap(find.text('All'));
-          await settle(tester);
-          expect(find.text('Book'), findsOneWidget);
-          expect(find.text('Story'), findsOneWidget);
-
-          // Continue reading navigates to BookRoute.
-          await tester.tap(find.text('Continue reading'));
+          // Pinned orange Continue reading button (56 high) navigates to BookRoute.
+          final ctaFinder = find.widgetWithText(
+            NochePrimaryButton,
+            'Continue reading',
+          );
+          expect(ctaFinder, findsOneWidget);
+          expect(tester.getSize(ctaFinder).height, 56);
+          await tester.tap(ctaFinder);
           await settle(tester);
           expect(rig.nav.routes.last, BookRoute(activeBook.id));
 
-          // Mark finished -> Keep reading hides.
+          // Mark finished -> Reading now shelf and Continue reading button hide.
           await store.savePlace(
             activeBook.id,
             const ReadingPlace(page: 0, openedAt: 3000, finished: true),
           );
-          await tester.pumpWidget(
-            MaterialApp(home: ReadingHome(services: services)),
+          await _pumpHome(
+            tester,
+            services: services,
+            size: size,
+            generator: _simpleGenerator(),
           );
-          await settle(tester);
-          expect(find.text('KEEP READING'), findsNothing);
+          expect(find.textContaining('KEEP READING'), findsNothing);
           expect(find.text('Continue reading'), findsNothing);
         },
       );
     }
   });
 
-  testWidgets('verified A2 hides reading counts from A2 suffix', (
-    tester,
-  ) async {
-    final rig = Rig();
-    rig.store.import(
-      jsonEncode({
-        ...rig.store.raw,
-        'nivel': {'cefr': 'A2'},
-      }),
-    );
-    await _pumpHome(tester, services: rig.services, size: _viewports.first);
+  group('New-story slot motion (locked -> open in quick)', () {
+    testWidgets(
+      'fades lock out and open slot in over NocheMotion.quick when progress unlocks a story',
+      (tester) async {
+        final rig = Rig();
+        await _pumpHome(
+          tester,
+          services: rig.services,
+          size: _viewports.first,
+          generator: _simpleGenerator(),
+        );
 
-    expect(find.text('YOUR SHELF'), findsOneWidget);
-    expect(find.text('YOUR SHELF · READING COUNTS FROM A2'), findsNothing);
+        // Start: locked at opacity 1, open slot absent.
+        expect(find.byKey(const Key('library-slot-locked')), findsOneWidget);
+        expect(find.byKey(const Key('library-write-story')), findsNothing);
+        expect(
+          tester
+              .widget<Opacity>(
+                find.byKey(const ValueKey('library-slot-locked-opacity')),
+              )
+              .opacity,
+          1.0,
+        );
+
+        // Learn the plot words -> triggers progress.changes -> locked -> open.
+        _learnWords(rig.store, ['la', 'casa', 'es', 'azul']);
+        await tester.pump();
+        await tester.pump();
+
+        // At start (0 ms): locked 1.0, open 0.0.
+        expect(
+          tester
+              .widget<Opacity>(
+                find.byKey(const ValueKey('library-slot-locked-opacity')),
+              )
+              .opacity,
+          closeTo(1.0, 0.01),
+        );
+        expect(
+          tester
+              .widget<Opacity>(
+                find.byKey(const ValueKey('library-slot-open-opacity')),
+              )
+              .opacity,
+          closeTo(0.0, 0.01),
+        );
+
+        // At middle (quick ~/ 2 = 70 ms): both mid-fade.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midLocked = tester
+            .widget<Opacity>(
+              find.byKey(const ValueKey('library-slot-locked-opacity')),
+            )
+            .opacity;
+        final midOpen = tester
+            .widget<Opacity>(
+              find.byKey(const ValueKey('library-slot-open-opacity')),
+            )
+            .opacity;
+        expect(midLocked, greaterThan(0.0));
+        expect(midLocked, lessThan(1.0));
+        expect(midOpen, greaterThan(0.0));
+        expect(midOpen, lessThan(1.0));
+
+        // At end: lock gone, open slot settled at 1.0 and interactive.
+        await tester.pump(NocheMotion.quick);
+        await tester.pump();
+        expect(find.byKey(const Key('library-slot-locked')), findsNothing);
+        expect(find.byKey(const Key('library-write-story')), findsOneWidget);
+        expect(
+          tester
+              .widget<Opacity>(
+                find.byKey(const ValueKey('library-slot-open-opacity')),
+              )
+              .opacity,
+          1.0,
+        );
+
+        // Open slot now opens the story sheet, and unmatched practice words show error in sheet.
+        await tester.tap(find.byKey(const Key('library-write-story')));
+        await tester.pumpAndSettle();
+        expect(find.byType(TextFormField), findsOneWidget);
+        await tester.enterText(find.byType(TextFormField), 'elefante');
+        await tester.tap(
+          find.widgetWithText(NochePrimaryButton, LibraryWording.writeMyStory),
+        );
+        await tester.pumpAndSettle();
+        expect(find.text(LibraryWording.noStoryMatchFocused), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'honours disableAnimations: true with a quick in-place cross-fade and no scaling',
+      (tester) async {
+        final rig = Rig();
+        await _pumpHome(
+          tester,
+          services: rig.services,
+          size: _viewports.first,
+          disableAnimations: true,
+          generator: _simpleGenerator(),
+        );
+        final slotElement = tester.element(
+          find.byKey(const Key('library-slot-locked')),
+        );
+        expect(NocheMotion.of(slotElement).reduced, isTrue);
+
+        _learnWords(rig.store, ['la', 'casa', 'es', 'azul']);
+        await tester.pump();
+        await tester.pump();
+
+        // Midpoint of quick fade: opacities change in place.
+        await tester.pump(NocheMotion.quick ~/ 2);
+        final midLocked = tester
+            .widget<Opacity>(
+              find.byKey(const ValueKey('library-slot-locked-opacity')),
+            )
+            .opacity;
+        final midOpen = tester
+            .widget<Opacity>(
+              find.byKey(const ValueKey('library-slot-open-opacity')),
+            )
+            .opacity;
+        expect(midLocked, greaterThan(0.0));
+        expect(midLocked, lessThan(1.0));
+        expect(midOpen, greaterThan(0.0));
+        expect(midOpen, lessThan(1.0));
+
+        // End of quick fade: settled open, Pressable keeps scale 1.0 under reduced motion.
+        await tester.pump(NocheMotion.quick);
+        await tester.pump();
+        expect(find.byKey(const Key('library-write-story')), findsOneWidget);
+        expect(find.byKey(const Key('library-slot-locked')), findsNothing);
+      },
+    );
   });
 
   testWidgets(
     'displays + Add your own by default, navigates to ImportRoute, and can be hidden',
     (tester) async {
       final rig = Rig();
-      await _pumpHome(tester, services: rig.services, size: _viewports.first);
+      await _pumpHome(
+        tester,
+        services: rig.services,
+        size: _viewports.first,
+        generator: _simpleGenerator(),
+      );
 
       expect(find.text(LibraryWording.addYourOwnPill), findsOneWidget);
       await tester.tap(find.text(LibraryWording.addYourOwnPill));
@@ -495,13 +786,14 @@ void main() {
         services: rig.services,
         size: _viewports.first,
         showAddYourOwn: false,
+        generator: _simpleGenerator(),
       );
       expect(find.text(LibraryWording.addYourOwnPill), findsNothing);
     },
   );
 
   testWidgets(
-    'RTL course mirrors layout, shows englishName, and keeps scene picture LTR',
+    'RTL course mirrors bookcase, shows englishName, keeps page line NocheLtr and scene picture LTR',
     (tester) async {
       final rtlLang = _arabicLanguage();
       final course = _RtlCatalog(language: rtlLang);
@@ -514,12 +806,27 @@ void main() {
         body: 'casa',
         generated: true,
       );
+      final book = await store.add(
+        now: 200,
+        title: 'كتاب',
+        body: 'Uno. Dos. Tres. Cuatro.',
+        generated: false,
+      );
       await store.markOpened(story.id, 100);
+      await store.savePlace(
+        book.id,
+        const ReadingPlace(page: 1, openedAt: 200),
+      );
 
       const module = LibraryModule();
       expect(module.tab(services).label, 'المكتبة');
 
-      await _pumpHome(tester, services: services, size: _viewports.first);
+      await _pumpHome(
+        tester,
+        services: services,
+        size: _viewports.first,
+        generator: _simpleGenerator(),
+      );
 
       expect(tester.takeException(), isNull);
       expect(find.text('ARABIC'), findsOneWidget);
@@ -527,6 +834,14 @@ void main() {
 
       final libraryText = find.text('Library');
       expect(Directionality.of(tester.element(libraryText)), TextDirection.rtl);
+
+      // Page progress stays LTR inside RTL via NocheLtr.
+      final progressLine = find.textContaining('min left in the chapter');
+      expect(progressLine, findsOneWidget);
+      expect(
+        Directionality.of(tester.element(progressLine)),
+        TextDirection.ltr,
+      );
 
       // Scene picture inside the story tile stays LTR.
       final pictureOverflow = find.byType(OverflowBox);
@@ -538,4 +853,210 @@ void main() {
       expect(pictures.shown, isNotEmpty);
     },
   );
+
+  group('N8.11 Library bookcase screenshots', () {
+    setUpAll(() async {
+      if (_captureShots) await _loadNocheFonts();
+    });
+
+    Future<Services> buildServices({
+      required bool open,
+      required bool withStories,
+      required bool withBooks,
+      bool arabic = false,
+    }) async {
+      final progress = FakeProgressStore();
+      if (open) {
+        _learnWords(progress, [
+          'la',
+          'casa',
+          'es',
+          'azul',
+          'هذا',
+          'بيت',
+          'جدة',
+        ]);
+      }
+      final course = arabic ? FakeCourseCatalog.arabic() : TestCourse();
+      await course.load();
+      final services = fakeServices(
+        progress: progress,
+        course: course,
+        pictures: FakePictureSource(),
+      );
+      final store = ReadingStore(services.storage(ReadingStore.space));
+      if (withStories) {
+        if (arabic) {
+          final s1 = await store.add(
+            now: 100,
+            title: 'في المطبخ',
+            body: 'هذا بيت جدة.',
+            generated: true,
+          );
+          final s2 = await store.add(
+            now: 200,
+            title: 'يوم في البيت',
+            body: 'بيت جدة كبير.',
+            generated: true,
+          );
+          await store.markOpened(s1.id, 100);
+          await store.markOpened(s2.id, 200);
+        } else {
+          final s1 = await store.add(
+            now: 100,
+            title: 'Tengo hambre',
+            body: 'La hermana dice hola.',
+            generated: true,
+          );
+          final s2 = await store.add(
+            now: 200,
+            title: 'Un día en el parque',
+            body: 'La casa es grande.',
+            generated: true,
+          );
+          await store.markOpened(s1.id, 100);
+          await store.markOpened(s2.id, 200);
+        }
+      }
+      if (withBooks) {
+        if (arabic) {
+          final b1 = await store.add(
+            now: 301,
+            title: 'حكايات الجزيرة',
+            body: 'هذا بيت جدة.',
+            generated: false,
+          );
+          final b2 = await store.add(
+            now: 400,
+            title: 'صيف على البحر',
+            body: List.filled(36, 'هذا بيت جدة الكبير.').join('\n'),
+            generated: false,
+            chapters: const [
+              ReadingChapter(title: '١', paragraphs: ['هذا بيت جدة.']),
+              ReadingChapter(title: '٢', paragraphs: ['هذا بيت جدة الكبير.']),
+            ],
+          );
+          await store.savePlace(b1.id, const ReadingPlace(openedAt: 300));
+          await store.savePlace(
+            b2.id,
+            const ReadingPlace(
+              page: 13,
+              totalPages: 86,
+              openedAt: 400,
+              chapterIndex: 1,
+            ),
+          );
+        } else {
+          final b1 = await store.add(
+            now: 301,
+            title: 'Cuentos de la isla',
+            body: 'La casa es grande.',
+            generated: false,
+          );
+          final b2 = await store.add(
+            now: 400,
+            title: 'Un verano en Cabo Rojo',
+            body: List.filled(120, 'La casa es grande en la isla.').join('\n'),
+            generated: false,
+            chapters: const [
+              ReadingChapter(title: 'Uno', paragraphs: ['La casa es grande.']),
+              ReadingChapter(title: 'Dos', paragraphs: ['El mar es azul.']),
+            ],
+          );
+          await store.savePlace(b1.id, const ReadingPlace(openedAt: 300));
+          await store.savePlace(
+            b2.id,
+            const ReadingPlace(
+              page: 13,
+              totalPages: 86,
+              openedAt: 400,
+              chapterIndex: 1,
+            ),
+          );
+        }
+      }
+      return services;
+    }
+
+    final scenarios = [
+      (
+        name: 'library_locked',
+        open: false,
+        stories: true,
+        books: true,
+        arabic: false,
+      ),
+      (
+        name: 'library_open',
+        open: true,
+        stories: true,
+        books: true,
+        arabic: false,
+      ),
+      (
+        name: 'library_empty',
+        open: false,
+        stories: false,
+        books: false,
+        arabic: false,
+      ),
+      (
+        name: 'library_stories',
+        open: true,
+        stories: true,
+        books: false,
+        arabic: false,
+      ),
+      (
+        name: 'library_both',
+        open: true,
+        stories: true,
+        books: true,
+        arabic: false,
+      ),
+      (
+        name: 'library_arabic',
+        open: false,
+        stories: true,
+        books: true,
+        arabic: true,
+      ),
+    ];
+
+    for (final scenario in scenarios) {
+      for (final size in _viewports) {
+        final label =
+            '${scenario.name}_${size.width.toInt()}x${size.height.toInt()}';
+        testWidgets('renders $label without overflow', (tester) async {
+          final services = await buildServices(
+            open: scenario.open,
+            withStories: scenario.stories,
+            withBooks: scenario.books,
+            arabic: scenario.arabic,
+          );
+          final gen = scenario.arabic
+              ? StoryGenerator([
+                  (
+                    title: 'قصة',
+                    beats: [
+                      ['هذا بيت جدة.'],
+                    ],
+                  ),
+                ])
+              : _simpleGenerator();
+          await _pumpHome(
+            tester,
+            services: services,
+            size: size,
+            withTabBar: true,
+            generator: gen,
+          );
+          expect(tester.takeException(), isNull);
+          if (_captureShots) {
+            await _saveScreenshot(tester, '$label.png');
+          }
+        });
+      }
+    }
+  });
 }

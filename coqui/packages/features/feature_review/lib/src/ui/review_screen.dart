@@ -8,6 +8,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/review_session.dart';
+import 'package:feature_review/src/motion.dart';
 import 'package:feature_review/src/ui/block_layout.dart';
 import 'package:feature_review/src/ui/host_wait.dart';
 import 'package:feature_review/src/ui/lesson_parts.dart';
@@ -110,19 +111,24 @@ class ReviewScreenState extends State<ReviewScreen> {
     child: _s.pictures.of(p.ref, animated: true),
   );
 
-  Widget _choices(LessonBox box) {
+  Widget _choices(BuildContext context, LessonBox box) {
     final s = session;
     final panels = s.panels!;
+    final motion = NocheMotion.of(context);
     return PictureBlock(
       fit: box.fit(BlockSpec.review),
-      cell: (context, k, r) => OptionTouch(
-        index: k,
-        onTouch: s.touch,
-        child: NochePictureChoice(
-          ring: choiceRing(s.rings[k]),
-          dim: _dim(panels[k]),
-          check: s.checks[k],
-          child: _picture(panels[k], r),
+      cell: (context, k, r) => NocheRiseIn(
+        key: ValueKey('review_item_row_$k'),
+        delay: ReviewMotion.itemRowsDelay + motion.stagger * k,
+        child: OptionTouch(
+          index: k,
+          onTouch: s.touch,
+          child: NochePictureChoice(
+            ring: choiceRing(s.rings[k]),
+            dim: _dim(panels[k]),
+            check: s.checks[k],
+            child: _picture(panels[k], r),
+          ),
         ),
       ),
     );
@@ -136,6 +142,15 @@ class ReviewScreenState extends State<ReviewScreen> {
       final start = s.screen == LessonScreen.start;
       final end = s.screen == LessonScreen.end;
       final showPictures = s.screen == LessonScreen.play && s.panels != null;
+      final motion = NocheMotion.of(context);
+      final endSchedule = end
+          ? ReviewEndSchedule(motion, [
+              for (final g in s.end!.groups) g.pairs.length,
+            ])
+          : null;
+      final Object pictureKey = showPictures
+          ? ('review_play', s.index)
+          : s.screen;
       return NocheLessonFrame(
         onClose: _close,
         showClose: !end,
@@ -154,8 +169,14 @@ class ReviewScreenState extends State<ReviewScreen> {
             ),
           ),
         ),
-        picture: showPictures ? _choices(box) : null,
+        picture: NocheItemTransition(
+          contentKey: pictureKey,
+          child: showPictures
+              ? _choices(context, box)
+              : const SizedBox.shrink(),
+        ),
         caption: showPictures && s.caption.isNotEmpty ? s.caption : null,
+        speaking: showPictures && s.speaking > 0,
         language: _s.course.language,
         overlay: start
             ? LessonTextScreen(
@@ -170,6 +191,7 @@ class ReviewScreenState extends State<ReviewScreen> {
                 pictures: _s.pictures,
                 language: _s.course.language,
                 controller: widget.endScroll,
+                schedule: endSchedule,
               )
             : null,
         bottom: [
@@ -177,6 +199,7 @@ class ReviewScreenState extends State<ReviewScreen> {
             Padding(
               padding: const EdgeInsetsDirectional.only(bottom: 16),
               child: NochePlayDisc(
+                key: const Key('review-start-disc'),
                 size: nocheLessonStartDisc,
                 icon: NocheIcons.play,
                 semanticLabel: 'Start',
@@ -184,10 +207,15 @@ class ReviewScreenState extends State<ReviewScreen> {
               ),
             ),
           if (end)
-            NochePrimaryButton(
-              label:
-                  'Back to ${_s.course.language.tabNames['words'] ?? CoquiLabels.words}',
-              onPressed: _back,
+            NocheRiseIn(
+              key: const ValueKey('review_end_action_rise'),
+              delay: endSchedule!.nextButtonStart,
+              child: NochePrimaryButton(
+                key: const Key('review-end-action'),
+                label:
+                    'Back to ${_s.course.language.tabNames['words'] ?? CoquiLabels.words}',
+                onPressed: _back,
+              ),
             ),
         ],
         startState: start,
@@ -207,6 +235,7 @@ class ReviewEndScreen extends StatelessWidget {
     required this.pictures,
     this.language,
     this.controller,
+    this.schedule,
   });
 
   final ScrollController? controller;
@@ -215,65 +244,111 @@ class ReviewEndScreen extends StatelessWidget {
   final ReviewEnd end;
   final PictureSource pictures;
   final Language? language;
+  final ReviewEndSchedule? schedule;
 
   Language get _lang => language ?? Language.spanish;
 
-  Widget _cell(ReviewPair pair, EndGrid grid) => SizedBox(
-    width: grid.cellWidth,
-    child: Directionality(
-      textDirection: _lang.textDirection,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DecoratedBox(
-            decoration: const BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: NocheColors.lessonBorder,
-                  spreadRadius: nocheLessonBorder,
+  Widget _cell(ReviewPair pair, EndGrid grid, Duration wordStart) {
+    final st = end.stages[pair.word];
+    final before = st?.before ?? 0;
+    final after = st?.after ?? 0;
+    final movedUp =
+        end.up.contains(pair.word) && after > before && end.stageMax > 0;
+    return NocheRiseIn(
+      key: ValueKey('end_word_${pair.word}'),
+      delay: wordStart,
+      child: SizedBox(
+        width: grid.cellWidth,
+        child: Directionality(
+          textDirection: _lang.textDirection,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DecoratedBox(
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: NocheColors.lessonBorder,
+                      spreadRadius: nocheLessonBorder,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: SizedBox(
-              width: grid.cellWidth,
-              height: grid.pictureHeightCss,
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: ExcludeSemantics(
-                  child: pictures.of(PictureRef.of(pair, pair.yes)),
+                child: SizedBox(
+                  width: grid.cellWidth,
+                  height: grid.pictureHeightCss,
+                  child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: ExcludeSemantics(
+                      child: pictures.of(PictureRef.of(pair, pair.yes)),
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 8),
+              Text(
+                pair.word,
+                textDirection: _lang.textDirection,
+                locale: _lang.locale,
+                style: NocheType.forScript(
+                  NocheType.bodyLarge,
+                  _lang.script,
+                ).copyWith(color: NocheColors.text),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: NocheStageBar(
+                  key: ValueKey('end_stage_bar_${pair.word}'),
+                  stage: after,
+                  max: end.stageMax,
+                  animateFrom: movedUp
+                      ? (before / end.stageMax).clamp(0.0, 1.0)
+                      : null,
+                  delay: wordStart + ReviewMotion.stageBarDelay,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            pair.word,
-            textDirection: _lang.textDirection,
-            locale: _lang.locale,
-            style: NocheType.forScript(
-              NocheType.bodyLarge,
-              _lang.script,
-            ).copyWith(color: NocheColors.text),
-          ),
-        ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 
-  Widget _group(ReviewGroup g, EndGrid grid) {
-    final rows = <List<ReviewPair>>[];
+  Widget _group(
+    ReviewGroup g,
+    int groupIndex,
+    EndGrid grid,
+    ReviewEndSchedule timing,
+  ) {
+    final rows = <List<(int, ReviewPair)>>[];
     for (var i = 0; i < g.pairs.length; i += grid.columns) {
-      rows.add(g.pairs.sublist(i, (i + grid.columns).clamp(0, g.pairs.length)));
+      final sliceEnd = (i + grid.columns).clamp(0, g.pairs.length);
+      rows.add([for (var j = i; j < sliceEnd; j++) (j, g.pairs[j])]);
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 24),
-        Text(g.title, style: NocheType.row.copyWith(color: NocheColors.text)),
-        if (g.sub.isNotEmpty) ...[
-          const SizedBox(height: 4),
-          Text(g.sub, style: NocheType.body.copyWith(color: NocheColors.label)),
-        ],
+        NocheRiseIn(
+          key: ValueKey('end_group_header_$groupIndex'),
+          delay: timing.groupHeaderStart[groupIndex],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                g.title,
+                style: NocheType.row.copyWith(color: NocheColors.text),
+              ),
+              if (g.sub.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                Text(
+                  g.sub,
+                  style: NocheType.body.copyWith(color: NocheColors.label),
+                ),
+              ],
+            ],
+          ),
+        ),
         const SizedBox(height: 12),
         Directionality(
           textDirection: _lang.textDirection,
@@ -287,7 +362,11 @@ class ReviewEndScreen extends StatelessWidget {
                   children: [
                     for (var c = 0; c < rows[r].length; c++) ...[
                       if (c > 0) const SizedBox(width: 16),
-                      _cell(rows[r][c], grid),
+                      _cell(
+                        rows[r][c].$2,
+                        grid,
+                        timing.wordStart[groupIndex][rows[r][c].$1],
+                      ),
                     ],
                   ],
                 ),
@@ -300,57 +379,75 @@ class ReviewEndScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => PositionedDirectional(
-    start: 0,
-    end: 0,
-    top: 0,
-    bottom: 96,
-    child: FadingEdges(
-      top: 16,
-      bottom: 16,
-      child: LayoutBuilder(
-        builder: (context, c) {
-          final horizontal = box.landscape ? 0.0 : 16.0;
-          final grid = endGridFor(
-            clientWidth: c.maxWidth,
-            padding: 2 * horizontal,
-            dpr: box.dpr,
-          );
-          return SingleChildScrollView(
-            controller: controller,
-            padding: EdgeInsetsDirectional.fromSTEB(
-              horizontal,
-              box.landscape ? 8 : 16,
-              horizontal,
-              24,
-            ),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: grid.width),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      ReviewStrings.doneTitle,
-                      style: NocheType.pageTitle.copyWith(
-                        color: NocheColors.text,
+  Widget build(BuildContext context) {
+    final timing =
+        schedule ??
+        ReviewEndSchedule(NocheMotion.of(context), [
+          for (final g in end.groups) g.pairs.length,
+        ]);
+    return PositionedDirectional(
+      start: 0,
+      end: 0,
+      top: 0,
+      bottom: 96,
+      child: FadingEdges(
+        top: 16,
+        bottom: 16,
+        child: LayoutBuilder(
+          builder: (context, c) {
+            final horizontal = box.landscape ? 0.0 : 16.0;
+            final grid = endGridFor(
+              clientWidth: c.maxWidth,
+              padding: 2 * horizontal,
+              dpr: box.dpr,
+            );
+            return SingleChildScrollView(
+              controller: controller,
+              padding: EdgeInsetsDirectional.fromSTEB(
+                horizontal,
+                box.landscape ? 8 : 16,
+                horizontal,
+                24,
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: grid.width),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      NocheRiseIn(
+                        key: const ValueKey('end_done_title'),
+                        delay: timing.doneStart,
+                        child: Text(
+                          ReviewStrings.doneTitle,
+                          style: NocheType.pageTitle.copyWith(
+                            color: NocheColors.text,
+                          ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      end.summary,
-                      style: NocheType.bodyLarge.copyWith(
-                        color: NocheColors.label,
+                      const SizedBox(height: 8),
+                      NocheRiseIn(
+                        key: const ValueKey('end_summary'),
+                        delay: timing.summaryStart,
+                        child: NocheLtr(
+                          child: Text(
+                            end.summary,
+                            style: NocheType.bodyLarge.copyWith(
+                              color: NocheColors.label,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    for (final g in end.groups) _group(g, grid),
-                  ],
+                      for (var gi = 0; gi < end.groups.length; gi++)
+                        _group(end.groups[gi], gi, grid, timing),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

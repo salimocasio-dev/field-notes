@@ -68,4 +68,14 @@ abstract final class SpeakWording {
       'Calls with $partnerName open later.';
 
   static String durationLine(int minutes) => 'About $minutes min';
+
+  static String backToSpeak(String speakTabName) => 'Back to $speakTabName';
+
+  static String voiceTestInstruction(String languageName) =>
+      'Tap the mic and say each $languageName line.';
+
+  static String voiceTestResult(int right, int total) =>
+      'Heard right: $right of $total';
+
+  static const emptyHeard = '—';
 }

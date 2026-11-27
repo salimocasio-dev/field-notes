@@ -27,6 +27,20 @@ Hablar: the call with Danny, the voice test.
 - Two things v=39 does not settle are given to the module by whoever builds it (`voiceTest`, `voiceTestEntry`; see `coqui/requests/24-feature-speaking-needs-coqui-contracts-voice-test-lines.md`). The line on a call card when `call.available` is false is decided: "Calls with Danny open later." (`CallTexts.callsLater`); the module's `callsLater` overrides it. The voice test is reached only by its route. The Hablar tab asks `call.available` once for the open cards, and keeps an answer of false for as long as the tab lives: each read starts another try at loading the call library, and the tab is built again at every change of the progress. A tab made again asks again; the call screen's own start button loads the library again at each tap.
 - `tool/shots.mjs` takes each reference state on both phones and pairs it with its reference picture; `tool/llamada_expected.mjs` runs the old call code to give the expected values of `test/llamada_expected_test.dart`, and `tool/llamada_layout.mjs` the old page's boxes for `test/call_layout_test.dart` (both re-run with `--check`); `tool/make_seeds.dart` and `tool/make_fixtures.dart` make `test/support/speaking_seeds.dart` and `test/support/fixtures/course_fixture.dart`.
 
+## Stable widget keys
+
+Keep these widget keys stable as standing shell and integration test contracts:
+
+- `Key('speak-next-call-card')` — featured next-call card on the Speak tab (`HablarTab`)
+- `Key('speak-call-disc')` — primary call-start mic disc on the Speak tab (`HablarTab`)
+- `Key('speak-place-<placeId>')` — reached place selector pill on the Speak tab (`HablarTab`)
+- `Key('speak-coming-soon')` — dashed coming-soon status card on the Speak tab (`HablarTab`)
+- `Key('call-screen')` — root semantics container of `CallScreen` (alongside the route's `ValueKey('call-<placeId>-<callId>')` on `CallScreen`)
+- `Key('call-mic-stage')` — shared `NocheMic` call stage (`CallMicStage`) in `CallScreen`
+- `Key('call-end-back')` — primary back-to-Speak button on the `CallScreen` end summary
+- `Key('voice-test-screen')` — root surface of `VoiceTestScreen`
+- `Key('voice-test-mic')` — shared `NocheMic` control in `VoiceTestScreen`
+
 ## Run and test it alone
 
 ```

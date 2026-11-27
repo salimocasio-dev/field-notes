@@ -3,11 +3,11 @@
 library;
 
 import 'dart:async';
-import 'dart:ui' show SemanticsRole;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/src/languages_data.dart';
+import 'package:feature_profile/src/motion.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Sheet title (`Noche-Idiomas.dc.html:25`).
@@ -60,6 +60,8 @@ class LanguagesSheet extends StatefulWidget {
 class _LanguagesSheetState extends State<LanguagesSheet> {
   late LanguagesSource _source;
   StreamSubscription<void>? _changes;
+  String? _pendingCode;
+  Timer? _switchTimer;
 
   @override
   void initState() {
@@ -75,22 +77,31 @@ class _LanguagesSheetState extends State<LanguagesSheet> {
     });
   }
 
+  void _cancelPendingSwitch() {
+    _switchTimer?.cancel();
+    _switchTimer = null;
+    _pendingCode = null;
+  }
+
   @override
   void didUpdateWidget(LanguagesSheet oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!identical(oldWidget.source, widget.source) ||
         !identical(oldWidget.services, widget.services)) {
+      _cancelPendingSwitch();
       _bindSource();
     }
   }
 
   @override
   void dispose() {
+    _cancelPendingSwitch();
     _changes?.cancel();
     super.dispose();
   }
 
   void _close() {
+    if (_switchTimer != null) return;
     final close = widget.onClose;
     if (close != null) {
       close();
@@ -99,12 +110,26 @@ class _LanguagesSheetState extends State<LanguagesSheet> {
     }
   }
 
-  void _onSelectLanguage(LanguageEntry entry, {required bool isCurrent}) {
+  void _onSelectStartedLanguage(String code, {required String currentCode}) {
+    if (_switchTimer != null) return;
     widget.services.haptics.tick();
-    if (isCurrent) {
+    if (code == currentCode) {
       _close();
       return;
     }
+    setState(() => _pendingCode = code);
+    _switchTimer = Timer(ProfileMotion.languageSwitchDelay, () {
+      if (!mounted) return;
+      _switchTimer = null;
+      _pendingCode = null;
+      _source.selectLanguage(code);
+      widget.services.nav.go(const TabRoute(NocheTabs.map));
+    });
+  }
+
+  void _onAddLanguage(LanguageEntry entry) {
+    if (_switchTimer != null) return;
+    widget.services.haptics.tick();
     _source.selectLanguage(entry.language.code);
     widget.services.nav.go(const TabRoute(NocheTabs.map));
   }
@@ -114,8 +139,15 @@ class _LanguagesSheetState extends State<LanguagesSheet> {
     final partition = partitionLanguages(_source);
     final yourLanguages = partition.yourLanguages;
     final addable = partition.addableLanguages;
+    final pending = _pendingCode;
+    final selectedCode =
+        pending != null &&
+            yourLanguages.any((entry) => entry.language.code == pending)
+        ? pending
+        : partition.currentCode;
 
     return Semantics(
+      key: const Key('languages-sheet'),
       container: true,
       explicitChildNodes: true,
       label: languagesSectionA11y,
@@ -130,36 +162,35 @@ class _LanguagesSheetState extends State<LanguagesSheet> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Semantics(
-                container: true,
-                explicitChildNodes: true,
-                role: SemanticsRole.radioGroup,
-                label: languagesRadioGroupA11y,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (var i = 0; i < yourLanguages.length; i++) ...[
-                      if (i > 0) const SizedBox(height: NocheSize.grid),
-                      _LanguageRadioCard(
-                        key: ValueKey(
-                          'language-card-${yourLanguages[i].language.code}',
-                        ),
-                        entry: yourLanguages[i],
-                        selected:
-                            yourLanguages[i].language.code ==
-                            partition.currentCode,
-                        onPressed: () => _onSelectLanguage(
-                          yourLanguages[i],
-                          isCurrent:
-                              yourLanguages[i].language.code ==
-                              partition.currentCode,
+              if (yourLanguages.isNotEmpty)
+                NocheOutlineGroup<String>(
+                  axis: Axis.vertical,
+                  gap: NocheSize.grid,
+                  borderRadius: NocheSize.cardRadius,
+                  outlineColor: NocheColors.text,
+                  outlineWidth: 2,
+                  role: NocheSegmentedRole.radioGroup,
+                  semanticLabel: languagesRadioGroupA11y,
+                  selected: selectedCode,
+                  onChanged: (code) => _onSelectStartedLanguage(
+                    code,
+                    currentCode: partition.currentCode,
+                  ),
+                  options: [
+                    for (final entry in yourLanguages)
+                      NocheOutlineOption<String>(
+                        value: entry.language.code,
+                        semanticLabel: entry.language.code == selectedCode
+                            ? '${entry.language.englishName}, ${entry.summaryLine}, current language'
+                            : '${entry.language.englishName}, ${entry.summaryLine}, $switchLanguageLabel',
+                        child: _LanguageRadioCard(
+                          key: ValueKey('language-card-${entry.language.code}'),
+                          entry: entry,
+                          selected: entry.language.code == selectedCode,
                         ),
                       ),
-                    ],
                   ],
                 ),
-              ),
               if (addable.isNotEmpty) ...[
                 const SizedBox(height: NocheSize.grid * 3),
                 const NocheSectionLabel(
@@ -177,8 +208,7 @@ class _LanguagesSheetState extends State<LanguagesSheet> {
                         ),
                         language: addable[i].language,
                         showBottomBorder: i < addable.length - 1,
-                        onPressed: () =>
-                            _onSelectLanguage(addable[i], isCurrent: false),
+                        onPressed: () => _onAddLanguage(addable[i]),
                       ),
                   ],
                 ),
@@ -201,39 +231,20 @@ class _LanguagesSheetState extends State<LanguagesSheet> {
 }
 
 /// 72-high radio card for a language with progress (`Noche-Idiomas.dc.html:30-43`).
-class _LanguageRadioCard extends StatefulWidget {
+class _LanguageRadioCard extends StatelessWidget {
   const _LanguageRadioCard({
     super.key,
     required this.entry,
     required this.selected,
-    required this.onPressed,
   });
 
   final LanguageEntry entry;
   final bool selected;
-  final VoidCallback onPressed;
-
-  @override
-  State<_LanguageRadioCard> createState() => _LanguageRadioCardState();
-}
-
-class _LanguageRadioCardState extends State<_LanguageRadioCard> {
-  bool _down = false;
-
-  void _setDown(bool value) {
-    if (_down != value && mounted) setState(() => _down = value);
-  }
 
   @override
   Widget build(BuildContext context) {
-    final entry = widget.entry;
-    final selected = widget.selected;
     final name = entry.language.englishName;
     final summary = entry.summaryLine;
-    final semanticLabel = selected
-        ? '$name, $summary, current language'
-        : '$name, $summary, $switchLanguageLabel';
-
     final titleStyle = NocheType.row.copyWith(color: NocheColors.text);
     final summaryStyle = NocheType.bodySmall.copyWith(
       fontSize: 14,
@@ -241,90 +252,147 @@ class _LanguageRadioCardState extends State<_LanguageRadioCard> {
       color: NocheColors.label,
     );
 
-    return Semantics(
-      button: true,
-      inMutuallyExclusiveGroup: true,
-      checked: selected,
-      label: semanticLabel,
-      onTap: widget.onPressed,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTapDown: (_) => _setDown(true),
-          onTapUp: (_) => _setDown(false),
-          onTapCancel: () => _setDown(false),
-          onTap: widget.onPressed,
-          child: ExcludeSemantics(
-            child: Transform.scale(
-              scale: _down ? 0.99 : 1,
-              child: Container(
-                constraints: const BoxConstraints(minHeight: 72),
-                padding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: NocheColors.ground,
-                  border: Border.all(
-                    color: selected ? NocheColors.text : NocheColors.line,
-                    width: selected ? 2 : 1,
+    return ExcludeSemantics(
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 72),
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        decoration: BoxDecoration(
+          color: NocheColors.ground,
+          border: Border.all(color: NocheColors.line, width: 1),
+          borderRadius: BorderRadius.circular(NocheSize.cardRadius),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: titleStyle,
                   ),
-                  borderRadius: BorderRadius.circular(NocheSize.cardRadius),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: titleStyle,
-                          ),
-                          Text(
-                            summary,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: summaryStyle,
-                          ),
-                        ],
-                      ),
+                  NocheLtr(
+                    child: Text(
+                      summary,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: summaryStyle,
                     ),
-                    const SizedBox(width: 16),
-                    if (selected)
-                      Container(
-                        width: 32,
-                        height: 32,
-                        alignment: AlignmentDirectional.center,
-                        decoration: const BoxDecoration(
-                          color: NocheColors.text,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const NocheIcon(
-                          NocheIcons.check,
-                          size: 18,
-                          color: NocheColors.ground,
-                        ),
-                      )
-                    else
-                      Text(
-                        switchLanguageLabel,
-                        maxLines: 1,
-                        softWrap: false,
-                        style: NocheType.button.copyWith(
-                          color: NocheColors.label,
-                        ),
-                      ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ),
+            const SizedBox(width: 16),
+            _LanguageTrailingIndicator(
+              selected: selected,
+              code: entry.language.code,
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+/// Cross-fades the trailing check disc and `"Switch"` label in `quick`.
+class _LanguageTrailingIndicator extends StatefulWidget {
+  const _LanguageTrailingIndicator({
+    required this.selected,
+    required this.code,
+  });
+
+  final bool selected;
+  final String code;
+
+  @override
+  State<_LanguageTrailingIndicator> createState() =>
+      _LanguageTrailingIndicatorState();
+}
+
+class _LanguageTrailingIndicatorState extends State<_LanguageTrailingIndicator>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: widget.selected ? 1.0 : 0.0,
+  );
+
+  @override
+  void didUpdateWidget(_LanguageTrailingIndicator oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selected != oldWidget.selected) {
+      final motion = NocheMotion.of(context);
+      _controller.animateTo(
+        widget.selected ? 1.0 : 0.0,
+        duration: motion.quick,
+        curve: motion.enter,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
+    return SizedBox(
+      width: 56,
+      height: 32,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          final t = _controller.value;
+          final switchOpacity = (1.0 - t).clamp(0.0, 1.0);
+          final checkOpacity = t.clamp(0.0, 1.0);
+          return Stack(
+            alignment: AlignmentDirectional.centerEnd,
+            clipBehavior: Clip.none,
+            children: [
+              if (switchOpacity > 0.0)
+                Opacity(
+                  key: ValueKey('language-switch-${widget.code}'),
+                  opacity: switchOpacity,
+                  child: Text(
+                    switchLanguageLabel,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: NocheType.button.copyWith(color: NocheColors.label),
+                  ),
+                ),
+              if (checkOpacity > 0.0)
+                Opacity(
+                  key: ValueKey('language-check-${widget.code}'),
+                  opacity: checkOpacity,
+                  child: Transform.scale(
+                    scale: motion.reduced ? 1.0 : (0.8 + 0.2 * checkOpacity),
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      alignment: AlignmentDirectional.center,
+                      decoration: const BoxDecoration(
+                        color: NocheColors.text,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const NocheIcon(
+                        NocheIcons.check,
+                        size: 18,
+                        color: NocheColors.ground,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -361,54 +429,47 @@ class _AddLanguageRow extends StatelessWidget {
     return Pressable(
       onPressed: onPressed,
       semanticLabel: 'Add ${language.englishName}',
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.99 : 1,
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 56),
-          padding: const EdgeInsetsDirectional.symmetric(vertical: 8),
-          decoration: showBottomBorder
-              ? const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: NocheColors.line, width: 1),
+      builder: (context, _) => Container(
+        constraints: const BoxConstraints(minHeight: 56),
+        padding: const EdgeInsetsDirectional.symmetric(vertical: 8),
+        decoration: showBottomBorder
+            ? const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: NocheColors.line, width: 1),
+                ),
+              )
+            : null,
+        child: Row(
+          children: [
+            Expanded(
+              child: Wrap(
+                spacing: NocheSize.grid,
+                runSpacing: 4,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(
+                    language.englishName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: englishStyle,
                   ),
-                )
-              : null,
-          child: Row(
-            children: [
-              Expanded(
-                child: Wrap(
-                  spacing: NocheSize.grid,
-                  runSpacing: 4,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      language.englishName,
+                  Directionality(
+                    textDirection: nativeDirection,
+                    child: Text(
+                      language.nativeName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: englishStyle,
-                    ),
-                    Directionality(
+                      locale: Locale(language.code),
                       textDirection: nativeDirection,
-                      child: Text(
-                        language.nativeName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        locale: Locale(language.code),
-                        textDirection: nativeDirection,
-                        style: nativeStyle,
-                      ),
+                      style: nativeStyle,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(width: NocheSize.grid),
-              const NocheIcon(
-                NocheIcons.plus,
-                size: 22,
-                color: NocheColors.text,
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(width: NocheSize.grid),
+            const NocheIcon(NocheIcons.plus, size: 22, color: NocheColors.text),
+          ],
         ),
       ),
     );

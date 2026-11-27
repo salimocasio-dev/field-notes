@@ -195,6 +195,13 @@ check_noche_tokens() {
   return "$rc"
 }
 
+check_noche_motion() {
+  local rc=0
+  python3 "$SCRIPT_DIR/check_noche_motion.py" --base "$DIFF_BASE" || rc=1
+  python3 "$SCRIPT_DIR/test_check_noche_motion.py" || rc=1
+  return "$rc"
+}
+
 check_codeowners() {
   if [ -f "$REPO_ROOT/.github/CODEOWNERS" ]; then
     python3 "$SCRIPT_DIR/test_codeowners.py"
@@ -209,6 +216,7 @@ overall_rc=0
 check_sensitive_paths || overall_rc=1
 check_branch_boundaries || overall_rc=1
 check_noche_tokens || overall_rc=1
+check_noche_motion || overall_rc=1
 check_codeowners || overall_rc=1
 check_claude_pr_review || overall_rc=1
 

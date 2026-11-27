@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:flutter/foundation.dart';
 
 /// One word to be heard in a line, with the forms of it that count (habla-prueba.html: `g`, `[word, forms]`).
@@ -313,7 +314,7 @@ class VoiceTestController extends ChangeNotifier {
   }
 
   /// `#res`: "Heard right: N of 12".
-  String get result => 'Heard right: $right of $n';
+  String get result => SpeakWording.voiceTestResult(right, n);
 
   @override
   void dispose() {
