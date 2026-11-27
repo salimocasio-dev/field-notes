@@ -1,11 +1,13 @@
 /// Noche chrome: floating tab bar, bottom sheet, and screen frame.
 library;
 
-import 'dart:ui' show SemanticsRole;
+import 'dart:math' as math;
+import 'dart:ui' show SemanticsRole, lerpDouble;
 
 import 'package:coqui_ui/src/noche_a11y.dart';
 import 'package:coqui_ui/src/noche_icons.dart';
 import 'package:coqui_ui/src/noche_motion.dart';
+import 'package:coqui_ui/src/noche_motion_pieces.dart';
 import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:material_ui/material_ui.dart';
@@ -31,7 +33,7 @@ abstract final class NocheTabs {
 /// `NocheType.forScript`. The Map disc is a 56 circle in `next` with a 26
 /// `onAccent` map icon (stroke 2.2), raised 24 above the bar with a 4 px ring
 /// of `ground`, on every screen.
-class NocheTabBar extends StatelessWidget {
+class NocheTabBar extends StatefulWidget {
   const NocheTabBar({
     super.key,
     required this.selectedId,
@@ -64,16 +66,118 @@ class NocheTabBar extends StatelessWidget {
   };
 
   @override
+  State<NocheTabBar> createState() => _NocheTabBarState();
+}
+
+class _NocheTabBarState extends State<NocheTabBar>
+    with TickerProviderStateMixin {
+  late final AnimationController _posController = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+  late final AnimationController _visController = AnimationController(
+    vsync: this,
+    value: _isMap(widget.selectedId) ? 0.0 : 1.0,
+  );
+
+  late double _fromIndex = _indexFor(widget.selectedId).toDouble();
+  late double _toIndex = _indexFor(widget.selectedId).toDouble();
+
+  static int _indexFor(String id) {
+    final idx = NocheTabs.order.indexOf(id);
+    return idx < 0 ? 2 : idx;
+  }
+
+  static bool _isMap(String id) => id == NocheTabs.map;
+
+  @override
+  void didUpdateWidget(NocheTabBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedId == oldWidget.selectedId) return;
+
+    final motion = NocheMotion.of(context);
+    final newIndex = _indexFor(widget.selectedId).toDouble();
+    final toMap = _isMap(widget.selectedId);
+    final fromMap = _isMap(oldWidget.selectedId);
+
+    if (motion.reduced) {
+      _fromIndex = newIndex;
+      _toIndex = newIndex;
+      _posController.value = 1.0;
+      if (toMap) {
+        _visController.animateTo(
+          0.0,
+          duration: motion.quick,
+          curve: motion.enter,
+        );
+      } else if (fromMap) {
+        _visController.animateTo(
+          1.0,
+          duration: motion.quick,
+          curve: motion.enter,
+        );
+      } else {
+        _visController.value = 0.0;
+        _visController.animateTo(
+          1.0,
+          duration: motion.quick,
+          curve: motion.enter,
+        );
+      }
+      return;
+    }
+
+    final currentPos =
+        lerpDouble(
+          _fromIndex,
+          _toIndex,
+          motion.travel.transform(_posController.value),
+        ) ??
+        newIndex;
+    _fromIndex = currentPos;
+    _toIndex = newIndex;
+    _posController.duration = motion.move;
+    _posController.forward(from: 0.0);
+
+    if (toMap) {
+      _visController.animateTo(
+        0.0,
+        duration: motion.quick,
+        curve: motion.enter,
+      );
+    } else if (fromMap || _visController.value < 1.0) {
+      _visController.animateTo(
+        1.0,
+        duration: motion.quick,
+        curve: motion.enter,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _posController.dispose();
+    _visController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     assert(
-      NocheTabs.order.every((id) => (tabNames[id] ?? '').isNotEmpty),
+      NocheTabs.order.every((id) => (widget.tabNames[id] ?? '').isNotEmpty),
       'NocheTabBar requires non-empty tabNames for all five tabs: ${NocheTabs.order}',
     );
-    final safeBottom = respectSafeArea
+    final motion = NocheMotion.of(context);
+    final safeBottom = widget.respectSafeArea
         ? MediaQuery.paddingOf(context).bottom
         : 0.0;
-    final locale = languageCode == null ? null : Locale(languageCode!);
-    final totalBoxHeight = mapRise + NocheSize.tabBarHeight;
+    final locale = widget.languageCode == null
+        ? null
+        : Locale(widget.languageCode!);
+    final totalBoxHeight = NocheTabBar.mapRise + NocheSize.tabBarHeight;
+    final metricGlyph = widget.script == 'Arab'
+        ? String.fromCharCode(0x0627)
+        : 'x';
 
     return Semantics(
       container: true,
@@ -94,7 +198,7 @@ class NocheTabBar extends StatelessWidget {
               PositionedDirectional(
                 start: 0,
                 end: 0,
-                top: mapRise,
+                top: NocheTabBar.mapRise,
                 height: NocheSize.tabBarHeight,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
@@ -102,12 +206,98 @@ class NocheTabBar extends StatelessWidget {
                     border: Border.all(color: NocheColors.line, width: 1),
                     borderRadius: BorderRadius.circular(NocheSize.tabBarRadius),
                   ),
+                  child: NocheLtr(
+                    child: IgnorePointer(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 28,
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                final slotWidth =
+                                    constraints.maxWidth /
+                                    NocheTabs.order.length;
+                                return AnimatedBuilder(
+                                  animation: Listenable.merge([
+                                    _posController,
+                                    _visController,
+                                  ]),
+                                  builder: (context, _) {
+                                    final pos = motion.reduced
+                                        ? _toIndex
+                                        : (lerpDouble(
+                                                _fromIndex,
+                                                _toIndex,
+                                                motion.travel.transform(
+                                                  _posController.value,
+                                                ),
+                                              ) ??
+                                              _toIndex);
+                                    final pillOpacity = _visController.value
+                                        .clamp(0.0, 1.0);
+                                    final pillScale = motion.reduced
+                                        ? 1.0
+                                        : 0.5 + 0.5 * pillOpacity;
+                                    final pillStart =
+                                        pos * slotWidth + (slotWidth - 48) / 2;
+                                    return Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        PositionedDirectional(
+                                          start: pillStart,
+                                          top: 0,
+                                          width: 48,
+                                          height: 28,
+                                          child: Opacity(
+                                            opacity: pillOpacity,
+                                            child: Transform.scale(
+                                              scale: pillScale,
+                                              child: DecoratedBox(
+                                                key: const ValueKey(
+                                                  'noche_tab_pill',
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: NocheColors.line,
+                                                  borderRadius:
+                                                      BorderRadius.circular(14),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Opacity(
+                            opacity: 0,
+                            child: ExcludeSemantics(
+                              child: Text(
+                                metricGlyph,
+                                maxLines: 1,
+                                softWrap: false,
+                                locale: locale,
+                                style: NocheType.forScript(
+                                  NocheType.tabLabel,
+                                  widget.script,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
               // Fixed visual order: library, words, map, speak, me never mirrors.
               Positioned.fill(
-                child: Directionality(
-                  textDirection: TextDirection.ltr,
+                child: NocheLtr(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -115,23 +305,23 @@ class NocheTabBar extends StatelessWidget {
                         Expanded(
                           child: id == NocheTabs.map
                               ? _MapTab(
-                                  label: tabNames[id] ?? '',
-                                  selected: selectedId == id,
-                                  script: script,
+                                  label: widget.tabNames[id] ?? '',
+                                  selected: widget.selectedId == id,
+                                  script: widget.script,
                                   locale: locale,
-                                  onTap: () => onTap(id),
+                                  onTap: () => widget.onTap(id),
                                 )
                               : Padding(
                                   padding: const EdgeInsetsDirectional.only(
-                                    top: mapRise,
+                                    top: NocheTabBar.mapRise,
                                   ),
                                   child: _RegularTab(
-                                    icon: _iconFor(id),
-                                    label: tabNames[id] ?? '',
-                                    selected: selectedId == id,
-                                    script: script,
+                                    icon: NocheTabBar._iconFor(id),
+                                    label: widget.tabNames[id] ?? '',
+                                    selected: widget.selectedId == id,
+                                    script: widget.script,
                                     locale: locale,
-                                    onTap: () => onTap(id),
+                                    onTap: () => widget.onTap(id),
                                   ),
                                 ),
                         ),
@@ -166,11 +356,12 @@ class _RegularTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
     final fg = selected ? NocheColors.text : NocheColors.label;
-    final style = NocheType.forScript(
+    final baseStyle = NocheType.forScript(
       selected ? NocheType.tabLabelOn : NocheType.tabLabel,
       script,
-    ).copyWith(color: fg);
+    );
 
     return Semantics(
       role: SemanticsRole.tab,
@@ -179,29 +370,37 @@ class _RegularTab extends StatelessWidget {
         onPressed: onTap,
         semanticLabel: label,
         semanticsButton: false,
-        builder: (context, _) => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 48,
-              height: 28,
-              alignment: AlignmentDirectional.center,
-              decoration: BoxDecoration(
-                color: selected ? NocheColors.line : Colors.transparent,
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: NocheIcon(icon, size: 22, color: fg),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.ellipsis,
-              locale: locale,
-              style: style,
-            ),
-          ],
+        builder: (context, _) => TweenAnimationBuilder<Color?>(
+          tween: ColorTween(end: fg),
+          duration: motion.quick,
+          curve: motion.enter,
+          builder: (context, animatedColor, _) {
+            final color = animatedColor ?? fg;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 48,
+                  height: 28,
+                  alignment: AlignmentDirectional.center,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: NocheIcon(icon, size: 22, color: color),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  maxLines: 1,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  locale: locale,
+                  style: baseStyle.copyWith(color: color),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -225,11 +424,12 @@ class _MapTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
     final labelColor = selected ? NocheColors.text : NocheColors.label;
-    final style = NocheType.forScript(
+    final baseStyle = NocheType.forScript(
       selected ? NocheType.tabLabelOn : NocheType.tabLabel,
       script,
-    ).copyWith(color: labelColor);
+    );
     final bottomPad = script == 'Arab' ? 2.0 : 8.0;
 
     return Semantics(
@@ -274,14 +474,19 @@ class _MapTab extends StatelessWidget {
               start: 0,
               end: 0,
               bottom: bottomPad,
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                locale: locale,
-                style: style,
+              child: TweenAnimationBuilder<Color?>(
+                tween: ColorTween(end: labelColor),
+                duration: motion.quick,
+                curve: motion.enter,
+                builder: (context, animatedColor, _) => Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  locale: locale,
+                  style: baseStyle.copyWith(color: animatedColor ?? labelColor),
+                ),
               ),
             ),
           ],
@@ -318,21 +523,176 @@ class _SheetTopBorderPainter extends CustomPainter {
       old.color != color || old.radius != radius;
 }
 
+/// Swaps sheet body content in place when [contentKey] changes without
+/// changing height (locks `minHeight` to the measured height of the previous
+/// content).
+///
+/// The outgoing child fades out `1 -> 0` in `quick` on `exit` starting at
+/// `t = 0`. The incoming child waits `swapAfter` (100 ms), then fades in
+/// `0 -> 1` in `move` on `enter` (in reduced motion `quick` after
+/// `swapAfter`).
+class NocheSheetSwap extends StatefulWidget {
+  const NocheSheetSwap({
+    super.key,
+    required this.contentKey,
+    required this.child,
+    this.alignment = AlignmentDirectional.topStart,
+  });
+
+  final Object contentKey;
+  final Widget child;
+  final AlignmentGeometry alignment;
+
+  @override
+  State<NocheSheetSwap> createState() => _NocheSheetSwapState();
+}
+
+class _NocheSheetSwapState extends State<NocheSheetSwap>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey _measureKey = GlobalKey();
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: 1.0,
+  )..addStatusListener(_handleStatus);
+
+  Widget? _outgoing;
+  double _lockedMinHeight = 0;
+  NocheMotionData _activeMotion = NocheMotion.normal;
+
+  void _handleStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed && _outgoing != null && mounted) {
+      setState(() => _outgoing = null);
+    }
+  }
+
+  @override
+  void didUpdateWidget(NocheSheetSwap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.contentKey != oldWidget.contentKey) {
+      final ro = _measureKey.currentContext?.findRenderObject();
+      if (ro is RenderBox && ro.hasSize) {
+        _lockedMinHeight = math.max(_lockedMinHeight, ro.size.height);
+      }
+      _outgoing = oldWidget.child;
+      _activeMotion = NocheMotion.of(context);
+      _controller.duration = _activeMotion.swapAfter + _activeMotion.move;
+      _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller
+      ..removeStatusListener(_handleStatus)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      key: _measureKey,
+      constraints: BoxConstraints(minHeight: _lockedMinHeight),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          final motion = _controller.isAnimating
+              ? _activeMotion
+              : NocheMotion.of(context);
+          final totalUs = (motion.swapAfter + motion.move).inMicroseconds
+              .toDouble();
+          final elapsedUs = _controller.value * totalUs;
+
+          Widget? outgoingLayer;
+          if (_outgoing != null && _controller.value < 1.0) {
+            final quickUs = motion.quick.inMicroseconds.toDouble();
+            final tOut = quickUs <= 0
+                ? 1.0
+                : (elapsedUs / quickUs).clamp(0.0, 1.0);
+            if (tOut < 1.0) {
+              final outOpacity = (1.0 - motion.exit.transform(tOut)).clamp(
+                0.0,
+                1.0,
+              );
+              outgoingLayer = Positioned.fill(
+                child: IgnorePointer(
+                  child: ExcludeSemantics(
+                    child: Opacity(
+                      key: const ValueKey('noche_sheet_swap_outgoing'),
+                      opacity: outOpacity,
+                      child: _outgoing,
+                    ),
+                  ),
+                ),
+              );
+            }
+          }
+
+          final double inOpacity;
+          if (_controller.value >= 1.0) {
+            inOpacity = 1.0;
+          } else {
+            final swapAfterUs = motion.swapAfter.inMicroseconds.toDouble();
+            final moveUs = motion.move.inMicroseconds.toDouble();
+            if (elapsedUs <= swapAfterUs) {
+              inOpacity = 0.0;
+            } else if (moveUs <= 0) {
+              inOpacity = 1.0;
+            } else {
+              final rawIn = ((elapsedUs - swapAfterUs) / moveUs).clamp(
+                0.0,
+                1.0,
+              );
+              inOpacity = motion.enter.transform(rawIn);
+            }
+          }
+
+          return Stack(
+            alignment: widget.alignment,
+            clipBehavior: Clip.none,
+            children: [
+              ?outgoingLayer,
+              Opacity(
+                key: const ValueKey('noche_sheet_swap_incoming'),
+                opacity: inOpacity,
+                child: widget.child,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
 /// Bottom sheet surface (`Noche-Idiomas.dc.html`, `Noche-Lector-Aa.dc.html`):
 /// `panel` fill, radius 24 top corners, 40 by 4 `bar` handle 12 from the top,
 /// optional `pageTitle` header with a 48 close button at the end.
 class NocheSheet extends StatefulWidget {
   const NocheSheet({
     super.key,
-    required this.child,
+    this.child,
+    this.rows,
+    this.next,
+    this.rowsDelay = NocheMotion.rowsAfter,
+    this.rowSpacing = 0,
+    this.contentKey,
     this.title,
     this.onClose,
     this.closeLabel,
     this.respectSafeArea = true,
     this.scrollable = true,
-  });
+  }) : assert(
+         child != null || rows != null,
+         'NocheSheet requires either child or rows.',
+       );
 
-  final Widget child;
+  final Widget? child;
+  final List<Widget>? rows;
+  final Widget? next;
+  final Duration rowsDelay;
+  final double rowSpacing;
+  final Object? contentKey;
   final String? title;
   final VoidCallback? onClose;
   final String? closeLabel;
@@ -354,6 +714,19 @@ class _NocheSheetState extends State<NocheSheet> {
     final hasHeader = widget.title != null || widget.onClose != null;
     const sheetRadius = NocheSize.cardRadius;
 
+    Widget content = widget.rows != null
+        ? NocheArrive(
+            delay: widget.rowsDelay,
+            spacing: widget.rowSpacing,
+            next: widget.next,
+            children: widget.rows!,
+          )
+        : widget.child!;
+
+    if (widget.contentKey != null) {
+      content = NocheSheetSwap(contentKey: widget.contentKey!, child: content);
+    }
+
     final body = Padding(
       padding: EdgeInsetsDirectional.fromSTEB(
         16,
@@ -361,7 +734,7 @@ class _NocheSheetState extends State<NocheSheet> {
         16,
         24 + safeBottom,
       ),
-      child: widget.child,
+      child: content,
     );
 
     return Transform.translate(
@@ -547,10 +920,10 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   final NocheMotionData motion;
 
   @override
-  Color? get barrierColor => NocheColors.scrim;
+  Color? get barrierColor => null;
 
   @override
-  bool get barrierDismissible => dismissible;
+  bool get barrierDismissible => false;
 
   @override
   String? get barrierLabel => null;
@@ -577,34 +950,91 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    final motion = NocheMotion.of(context);
-    final slide = CurvedAnimation(
-      parent: animation,
-      curve: motion.enter,
-      reverseCurve: motion.exit,
+    final sheetChild = ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height * 0.88,
+      ),
+      child: NocheSheet(
+        title: title,
+        closeLabel: closeLabel,
+        onClose: dismissible ? _close : null,
+        child: Builder(builder: (c) => builder(c, _close)),
+      ),
     );
+
     return themes.wrap(
       PopScope(
         canPop: dismissible,
-        child: Align(
-          alignment: AlignmentDirectional.bottomCenter,
-          child: SlideTransition(
-            position: Tween(
-              begin: const Offset(0, 1),
-              end: Offset.zero,
-            ).animate(slide),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.sizeOf(context).height * 0.88,
-              ),
-              child: NocheSheet(
-                title: title,
-                closeLabel: closeLabel,
-                onClose: dismissible ? _close : null,
-                child: Builder(builder: (c) => builder(c, _close)),
-              ),
-            ),
-          ),
+        child: AnimatedBuilder(
+          animation: animation,
+          child: sheetChild,
+          builder: (context, child) {
+            final currentMotion = NocheMotion.of(context);
+            final isReverse =
+                animation.status == AnimationStatus.reverse ||
+                animation.status == AnimationStatus.dismissed;
+            final t = animation.value.clamp(0.0, 1.0);
+
+            final double scrimOpacity;
+            if (isReverse) {
+              final u = (1.0 - t).clamp(0.0, 1.0);
+              scrimOpacity = (1.0 - currentMotion.exit.transform(u)).clamp(
+                0.0,
+                1.0,
+              );
+            } else {
+              final pageInUs = currentMotion.pageIn.inMicroseconds.toDouble();
+              final moveUs = currentMotion.move.inMicroseconds.toDouble();
+              final ratio = pageInUs <= 0
+                  ? 1.0
+                  : (moveUs / pageInUs).clamp(0.0, 1.0);
+              final rawIn = ratio <= 0 ? 1.0 : (t / ratio).clamp(0.0, 1.0);
+              scrimOpacity = currentMotion.enter.transform(rawIn).clamp(0, 1);
+            }
+
+            final Widget sheetTransition;
+            if (currentMotion.reduced) {
+              final sheetOpacity = isReverse
+                  ? (1.0 - currentMotion.exit.transform((1.0 - t).clamp(0, 1)))
+                        .clamp(0.0, 1.0)
+                  : currentMotion.enter.transform(t).clamp(0.0, 1.0);
+              sheetTransition = Opacity(
+                key: const ValueKey('noche_sheet_surface'),
+                opacity: sheetOpacity,
+                child: child,
+              );
+            } else {
+              final dy = isReverse
+                  ? currentMotion.exit.transform((1.0 - t).clamp(0.0, 1.0))
+                  : (1.0 - currentMotion.enter.transform(t));
+              sheetTransition = FractionalTranslation(
+                key: const ValueKey('noche_sheet_surface'),
+                translation: Offset(0, dy),
+                child: child,
+              );
+            }
+
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                Positioned.fill(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: dismissible ? _close : null,
+                    child: Opacity(
+                      key: const ValueKey('noche_sheet_scrim'),
+                      opacity: scrimOpacity,
+                      child: const ColoredBox(color: NocheColors.scrim),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  child: sheetTransition,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

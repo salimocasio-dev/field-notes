@@ -208,6 +208,7 @@ void main() {
           _wrap(
             Center(
               child: NocheMic(
+                key: ValueKey(state),
                 state: state,
                 language: Language.spanish,
                 level: 1.0,
@@ -388,6 +389,7 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('One sec'), findsOneWidget);
+      await tester.pump(NocheMotion.quick);
       final dec = _discContainer(tester).decoration! as BoxDecoration;
       expect(dec.color, NocheColors.otherSoft);
     });
@@ -869,6 +871,7 @@ void main() {
             data: const MediaQueryData(
               size: Size(808, 568),
               devicePixelRatio: 1,
+              disableAnimations: true,
             ),
             child: Material(
               color: NocheColors.ground,
@@ -899,7 +902,11 @@ void main() {
 
             await tester.pumpWidget(
               MediaQuery(
-                data: MediaQueryData(size: size, devicePixelRatio: 1),
+                data: MediaQueryData(
+                  size: size,
+                  devicePixelRatio: 1,
+                  disableAnimations: true,
+                ),
                 child: Material(
                   color: NocheColors.ground,
                   child: NocheMicDevPage(textDirection: dir),
