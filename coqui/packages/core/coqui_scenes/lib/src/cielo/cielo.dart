@@ -1457,6 +1457,8 @@ class Cielo extends Escena implements SetScene, SetOverSprites {
           W['visorFrame'] = f;
           await wait(110);
         }
+        W['visorCae'] = 0;
+        W['visorFrame'] = 0;
       } else {
         W['visorFrame'] = 0;
         await wait(260);

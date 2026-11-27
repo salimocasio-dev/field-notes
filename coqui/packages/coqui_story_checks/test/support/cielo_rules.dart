@@ -433,7 +433,7 @@ class CieloRules {
       }
     }
 
-    // 7. visor (story 83: covers 0 px of any person's head or frog)
+    // 7. visor (whenever shown: covers 0 px of any person's head or frog)
     final visorIdx = items.indexWhere((it) => it.tag == 'cosa:visor');
     if (visorIdx >= 0) {
       for (var i = 0; i < items.length; i++) {

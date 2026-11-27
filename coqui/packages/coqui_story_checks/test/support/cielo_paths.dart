@@ -42,9 +42,9 @@ List<Map<String, String>> cieloDrawsOf(Map<String, dynamic> story) {
       final name = v['draw'] as String;
       final ops = [for (final o in v['options'] as List) '$o'];
       final other = v['other'] as String?;
-      if (other != null && ops.length < 2) {
+      if (other != null && ops.toSet().length < 2) {
         throw StateError(
-          'draw "$name" sets other "$other" with fewer than 2 options: $ops',
+          'draw "$name" sets other "$other" with fewer than 2 distinct options: $ops',
         );
       }
       if (cur.any((x) => x.containsKey(name))) {

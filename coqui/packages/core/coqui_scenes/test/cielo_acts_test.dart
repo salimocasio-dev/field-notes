@@ -273,6 +273,22 @@ void main() {
     answered.add('perro');
   });
 
+  test(
+    'mira83 clears falling light after animation while keeping visor view',
+    () async {
+      final story = _story('la-luna');
+      final scene = createCielo() as Cielo;
+      final host = StillHost(scene);
+      host.S = story;
+      host.W = {...host.W, ...scene.fresh(story)};
+      await scene.acts['mira83']!({'a': 'luna', 'cae': 1});
+      expect(host.W['telDir'], 'luna');
+      expect(host.W['visor'], 'luna');
+      expect(host.W['visorCae'], 0);
+      expect(host.W['visorFrame'], 0);
+    },
+  );
+
   test('every thing in cielo.md Needs list answered a touch', () {
     expect(answered, containsAll(needs));
   });
