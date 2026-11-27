@@ -1,6 +1,5 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
-import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/feature_speaking.dart';
 import 'package:feature_speaking/src/call_controller.dart';
 import 'package:feature_speaking/src/call_screen.dart';
@@ -153,7 +152,7 @@ void main() {
         await tester.pump();
         expect(find.text('Start call'), findsOneWidget);
         expect(find.text('La casa · about 5 min'), findsOneWidget);
-        await tester.tap(find.byType(LessonCloseButton));
+        await tester.tap(find.byKey(const Key('call-close')));
         await tester.pumpAndSettle();
         expect(find.text('De visita en la casa'), findsOneWidget);
       },

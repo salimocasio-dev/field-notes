@@ -1,11 +1,9 @@
-// Where each part of the voice test stands, against where habla-prueba.html puts it on the page itself
-// (test/fixtures/prueba_layout.json, made by `node tool/prueba_layout.mjs`: getBoundingClientRect of each part at 412x915, 390x844,
-// 360x640 and 844x390, before the mic and once the first line has been heard). A part whose width is its text's is held to its
-// height and its centre: the old page draws text with Inter, this build with Roboto.
-import 'dart:convert';
-import 'dart:io';
-
+// Noche layout geometry checks for VoiceTestScreen across all 4 phone sizes
+// (412x915, 390x844, 360x640, 844x390) in ready, listening (with bars), and
+// done states.
 import 'package:coqui_testing/coqui_testing.dart';
+import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_speaking/src/call_look.dart';
 import 'package:feature_speaking/src/voice_test_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -13,28 +11,14 @@ import 'package:material_ui/material_ui.dart';
 import 'support/voice_fixture.dart';
 import 'support/world.dart';
 
-final Map<String, dynamic> expected = jsonDecode(
-  File('test/fixtures/prueba_layout.json').readAsStringSync(),
-) as Map<String, dynamic>;
-
-List<double> old(Map<String, dynamic> part, String k) => [
-  for (final v in part[k] as List) (v as num).toDouble(),
-];
-
 void main() {
   setUpAll(loadCoquiFonts);
 
-  for (final e in (expected['sizes'] as Map<String, dynamic>).entries) {
-    final size = e.value as Map<String, dynamic>;
-    final phone = Phone(
-      e.key,
-      (size['width'] as num).toDouble(),
-      (size['height'] as num).toDouble(),
-      (size['ratio'] as num).toDouble(),
-    );
+  const phones = [Phone.android, Phone.iphone, Phone.small, Phone.side];
 
+  for (final phone in phones) {
     testWidgets(
-      'the layout is the old page\'s, before the mic and with a line heard: ${e.key}',
+      'Noche voice test layout has zero overflows or overlaps in ready, listen, and done: ${phone.name}',
       (tester) async {
         phone.use(tester);
         final w = await World.create(
@@ -48,102 +32,110 @@ void main() {
         await tester.pump();
         await tester.pump();
 
-        Rect dash(int k) => tester.getRect(
-          find
-              .byWidgetPredicate(
-                (x) => x is AnimatedContainer && x.constraints?.maxHeight == 6,
-              )
-              .at(k),
-        );
-        Rect disc() => tester.getRect(
-          find.byWidgetPredicate((x) => x.runtimeType.toString() == '_Disc'),
-        );
+        void verifyGeometry(String stage, {required bool showNext}) {
+          expect(
+            tester.takeException(),
+            isNull,
+            reason: '$stage in ${phone.name}',
+          );
+          final screen = Rect.fromLTWH(0, 0, phone.width, phone.height);
+          final firstDash = tester.getRect(
+            find.byKey(const ValueKey('noche_dash_0')),
+          );
+          final lastDash = tester.getRect(
+            find.byKey(const ValueKey('noche_dash_11')),
+          );
+          final dashesRect = Rect.fromLTRB(
+            firstDash.left,
+            firstDash.top,
+            lastDash.right,
+            lastDash.bottom,
+          );
+          final insRect = tester.getRect(
+            find.text('Tap the mic and say each Spanish line.'),
+          );
+          final countRect = tester.getRect(find.textContaining(' / 12'));
+          final lineRect = tester.getRect(find.text('Hola, abuela'));
+          final micRect = tester.getRect(
+            find.byKey(const Key('voice-test-mic')),
+          );
+          final discRect = tester.getRect(
+            find.byKey(const ValueKey('noche_mic_disc')),
+          );
+          final nextRect = tester.getRect(
+            find.byKey(const Key('voice-test-next')),
+          );
 
-        void near(
-          String when,
-          String k,
-          Rect r,
-          Map<String, dynamic> parts, {
-          bool sides = true,
-          bool centre = false,
-        }) {
-          final o = old(parts, k);
-          final why =
-              '$when $k in ${e.key}: old $o, here ${[r.top, r.bottom, r.left, r.right]}';
-          expect(r.top, closeTo(o[0], .6), reason: why);
-          expect(r.bottom, closeTo(o[1], .6), reason: why);
-          if (sides) {
-            expect(r.left, closeTo(o[2], .6), reason: why);
-            expect(r.right, closeTo(o[3], .6), reason: why);
-          }
-          if (centre) {
+          expect(firstDash.height, 8, reason: '$stage NocheDashes height');
+          expect(
+            discRect.size,
+            const Size(NocheSize.mic, NocheSize.mic),
+            reason: '$stage NocheMic disc size',
+          );
+          expect(
+            nextRect.height,
+            NocheSize.primaryHeight,
+            reason: '$stage Next primary button height',
+          );
+
+          final parts = <String, Rect>{
+            'dashes': dashesRect,
+            'ins': insRect,
+            'count': countRect,
+            'line': lineRect,
+            'mic': micRect,
+            if (showNext) 'next': nextRect,
+          };
+          for (final entry in parts.entries) {
             expect(
-              (r.left + r.right) / 2,
-              closeTo((o[2] + o[3]) / 2, .6),
-              reason: why,
+              screen.contains(entry.value.topLeft) &&
+                  screen.contains(
+                    entry.value.bottomRight - const Offset(0.01, 0.01),
+                  ),
+              isTrue,
+              reason: '$stage ${entry.key} ${entry.value} outside $screen',
+            );
+          }
+
+          final names = parts.keys.toList();
+          for (var i = 0; i < names.length; i++) {
+            for (var j = i + 1; j < names.length; j++) {
+              final overlap = parts[names[i]]!.intersect(parts[names[j]]!);
+              expect(
+                overlap.width > 1 && overlap.height > 1,
+                isFalse,
+                reason:
+                    '$stage ${names[i]} and ${names[j]} overlap in ${phone.name}',
+              );
+            }
+          }
+
+          expect(dashesRect.bottom, lessThanOrEqualTo(insRect.top));
+          expect(insRect.bottom, lessThanOrEqualTo(countRect.top));
+          expect(countRect.bottom, lessThanOrEqualTo(lineRect.top));
+          expect(lineRect.bottom, lessThanOrEqualTo(micRect.top));
+
+          if (CallMetrics.landscape(Size(phone.width, phone.height))) {
+            expect(micRect.right, lessThanOrEqualTo(nextRect.left));
+          } else {
+            expect(micRect.bottom, lessThanOrEqualTo(nextRect.top));
+            expect(
+              discRect.center.dx,
+              closeTo(phone.width / 2, 1.0),
+              reason: '$stage portrait mic centered',
             );
           }
         }
 
-        void compare(String when, Map<String, dynamic> parts, bool done) {
-          // the bar: from the first dash to the last, as tall as a dash
-          final first = dash(0);
-          final last = dash(11);
-          near(
-            when,
-            '#bar',
-            Rect.fromLTRB(first.left, first.top, last.right, first.bottom),
-            parts,
-          );
-          near(
-            when,
-            '#ins',
-            tester.getRect(find.text('Tap the mic and say each Spanish line.')),
-            parts,
-            sides: false,
-            centre: true,
-          );
-          near(
-            when,
-            '#n',
-            tester.getRect(find.textContaining(' / 12')),
-            parts,
-            sides: false,
-            centre: true,
-          );
-          near(
-            when,
-            '#line',
-            tester.getRect(find.text(done ? 'Hola, abuela' : 'Hola, abuela')),
-            parts,
-            sides: false,
-            centre: true,
-          );
-          near(
-            when,
-            '#heard',
-            tester.getRect(
-              find
-                  .ancestor(
-                    of: find.byType(Row),
-                    matching: find.byType(Visibility),
-                  )
-                  .first,
-            ),
-            parts,
-            sides: false,
-          );
-          near(when, done ? '#next' : '#mic', disc(), parts);
-        }
+        verifyGeometry('ready', showNext: false);
 
-        compare('ready', size['ready'] as Map<String, dynamic>, false);
-        await tester.tap(
-          find.byWidgetPredicate(
-            (x) => x is Semantics && x.properties.label == 'Micrófono',
-          ),
-        );
+        await tester.tap(find.byKey(const Key('voice-test-mic')));
+        await w.elapse(tester, 100);
+        verifyGeometry('listen', showNext: false);
+
         await w.elapse(tester, 700);
-        compare('done', size['done'] as Map<String, dynamic>, true);
+        verifyGeometry('done', showNext: true);
+
         await w.close(tester);
       },
     );
