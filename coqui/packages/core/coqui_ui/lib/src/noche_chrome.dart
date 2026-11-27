@@ -1,7 +1,6 @@
 /// Noche chrome: floating tab bar, bottom sheet, and screen frame.
 library;
 
-import 'dart:math' as math;
 import 'dart:ui' show SemanticsRole, lerpDouble;
 
 import 'package:coqui_ui/src/noche_a11y.dart';
@@ -524,8 +523,8 @@ class _SheetTopBorderPainter extends CustomPainter {
 }
 
 /// Swaps sheet body content in place when [contentKey] changes without
-/// changing height (locks `minHeight` to the measured height of the previous
-/// content).
+/// changing height (locks a fixed height to the measured height of the initial
+/// content and preserves the mounted outgoing element while it fades out).
 ///
 /// The outgoing child fades out `1 -> 0` in `quick` on `exit` starting at
 /// `t = 0`. The incoming child waits `swapAfter` (100 ms), then fades in
@@ -549,19 +548,26 @@ class NocheSheetSwap extends StatefulWidget {
 
 class _NocheSheetSwapState extends State<NocheSheetSwap>
     with SingleTickerProviderStateMixin {
-  final GlobalKey _measureKey = GlobalKey();
+  final GlobalKey _measureBoxKey = GlobalKey();
   late final AnimationController _controller = AnimationController(
     vsync: this,
     value: 1.0,
   )..addStatusListener(_handleStatus);
 
-  Widget? _outgoing;
-  double _lockedMinHeight = 0;
+  GlobalKey _currentChildKey = GlobalKey();
+  GlobalKey? _outgoingChildKey;
+  Widget? _outgoingChild;
+  double? _lockedHeight;
   NocheMotionData _activeMotion = NocheMotion.normal;
 
   void _handleStatus(AnimationStatus status) {
-    if (status == AnimationStatus.completed && _outgoing != null && mounted) {
-      setState(() => _outgoing = null);
+    if (status == AnimationStatus.completed &&
+        _outgoingChild != null &&
+        mounted) {
+      setState(() {
+        _outgoingChild = null;
+        _outgoingChildKey = null;
+      });
     }
   }
 
@@ -569,11 +575,15 @@ class _NocheSheetSwapState extends State<NocheSheetSwap>
   void didUpdateWidget(NocheSheetSwap oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.contentKey != oldWidget.contentKey) {
-      final ro = _measureKey.currentContext?.findRenderObject();
-      if (ro is RenderBox && ro.hasSize) {
-        _lockedMinHeight = math.max(_lockedMinHeight, ro.size.height);
+      if (_lockedHeight == null) {
+        final ro = _measureBoxKey.currentContext?.findRenderObject();
+        if (ro is RenderBox && ro.hasSize) {
+          _lockedHeight = ro.size.height;
+        }
       }
-      _outgoing = oldWidget.child;
+      _outgoingChild = oldWidget.child;
+      _outgoingChildKey = _currentChildKey;
+      _currentChildKey = GlobalKey();
       _activeMotion = NocheMotion.of(context);
       _controller.duration = _activeMotion.swapAfter + _activeMotion.move;
       _controller.forward(from: 0.0);
@@ -590,77 +600,117 @@ class _NocheSheetSwapState extends State<NocheSheetSwap>
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      key: _measureKey,
-      constraints: BoxConstraints(minHeight: _lockedMinHeight),
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, _) {
-          final motion = _controller.isAnimating
-              ? _activeMotion
-              : NocheMotion.of(context);
-          final totalUs = (motion.swapAfter + motion.move).inMicroseconds
-              .toDouble();
-          final elapsedUs = _controller.value * totalUs;
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, _) {
+        final motion = _controller.isAnimating
+            ? _activeMotion
+            : NocheMotion.of(context);
+        final totalUs = (motion.swapAfter + motion.move).inMicroseconds
+            .toDouble();
+        final elapsedUs = _controller.value * totalUs;
 
-          Widget? outgoingLayer;
-          if (_outgoing != null && _controller.value < 1.0) {
-            final quickUs = motion.quick.inMicroseconds.toDouble();
-            final tOut = quickUs <= 0
-                ? 1.0
-                : (elapsedUs / quickUs).clamp(0.0, 1.0);
-            if (tOut < 1.0) {
-              final outOpacity = (1.0 - motion.exit.transform(tOut)).clamp(
-                0.0,
-                1.0,
-              );
-              outgoingLayer = Positioned.fill(
-                child: IgnorePointer(
-                  child: ExcludeSemantics(
-                    child: Opacity(
-                      key: const ValueKey('noche_sheet_swap_outgoing'),
-                      opacity: outOpacity,
-                      child: _outgoing,
+        Widget? outgoingLayer;
+        if (_outgoingChild != null && _controller.value < 1.0) {
+          final quickUs = motion.quick.inMicroseconds.toDouble();
+          final tOut = quickUs <= 0
+              ? 1.0
+              : (elapsedUs / quickUs).clamp(0.0, 1.0);
+          if (tOut < 1.0) {
+            final outOpacity = (1.0 - motion.exit.transform(tOut)).clamp(
+              0.0,
+              1.0,
+            );
+            outgoingLayer = Positioned.fill(
+              child: IgnorePointer(
+                child: ExcludeSemantics(
+                  child: Opacity(
+                    key: const ValueKey('noche_sheet_swap_outgoing'),
+                    opacity: outOpacity,
+                    child: SingleChildScrollView(
+                      primary: false,
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Align(
+                        alignment: widget.alignment,
+                        child: KeyedSubtree(
+                          key: _outgoingChildKey,
+                          child: _outgoingChild!,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              );
-            }
+              ),
+            );
           }
+        }
 
-          final double inOpacity;
-          if (_controller.value >= 1.0) {
+        final double inOpacity;
+        if (_controller.value >= 1.0) {
+          inOpacity = 1.0;
+        } else {
+          final swapAfterUs = motion.swapAfter.inMicroseconds.toDouble();
+          final moveUs = motion.move.inMicroseconds.toDouble();
+          if (elapsedUs <= swapAfterUs) {
+            inOpacity = 0.0;
+          } else if (moveUs <= 0) {
             inOpacity = 1.0;
           } else {
-            final swapAfterUs = motion.swapAfter.inMicroseconds.toDouble();
-            final moveUs = motion.move.inMicroseconds.toDouble();
-            if (elapsedUs <= swapAfterUs) {
-              inOpacity = 0.0;
-            } else if (moveUs <= 0) {
-              inOpacity = 1.0;
-            } else {
-              final rawIn = ((elapsedUs - swapAfterUs) / moveUs).clamp(
-                0.0,
-                1.0,
-              );
-              inOpacity = motion.enter.transform(rawIn);
-            }
+            final rawIn = ((elapsedUs - swapAfterUs) / moveUs).clamp(0.0, 1.0);
+            inOpacity = motion.enter.transform(rawIn);
           }
+        }
 
-          return Stack(
-            alignment: widget.alignment,
-            clipBehavior: Clip.none,
-            children: [
-              ?outgoingLayer,
-              Opacity(
-                key: const ValueKey('noche_sheet_swap_incoming'),
-                opacity: inOpacity,
-                child: widget.child,
-              ),
-            ],
+        final keyedIncoming = KeyedSubtree(
+          key: _currentChildKey,
+          child: widget.child,
+        );
+
+        if (_lockedHeight == null) {
+          return SizedBox(
+            key: _measureBoxKey,
+            child: Stack(
+              alignment: widget.alignment,
+              clipBehavior: Clip.none,
+              children: [
+                ?outgoingLayer,
+                Opacity(
+                  key: const ValueKey('noche_sheet_swap_incoming'),
+                  opacity: inOpacity,
+                  child: keyedIncoming,
+                ),
+              ],
+            ),
           );
-        },
-      ),
+        }
+
+        return SizedBox(
+          key: _measureBoxKey,
+          height: _lockedHeight,
+          child: ClipRect(
+            child: Stack(
+              alignment: widget.alignment,
+              fit: StackFit.expand,
+              children: [
+                ?outgoingLayer,
+                Positioned.fill(
+                  child: Opacity(
+                    key: const ValueKey('noche_sheet_swap_incoming'),
+                    opacity: inOpacity,
+                    child: SingleChildScrollView(
+                      primary: false,
+                      child: Align(
+                        alignment: widget.alignment,
+                        child: keyedIncoming,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -934,14 +984,14 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   @override
   Duration get reverseTransitionDuration => motion.pageOut;
 
+  bool _closing = false;
+
   void _close() {
+    if (_closing) return;
     final nav = navigator;
-    if (nav == null || !isActive) return;
-    if (isCurrent) {
-      nav.pop();
-    } else {
-      nav.removeRoute(this);
-    }
+    if (nav == null || !isActive || !isCurrent) return;
+    _closing = true;
+    nav.pop();
   }
 
   @override
@@ -1018,13 +1068,16 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
               fit: StackFit.expand,
               children: [
                 Positioned.fill(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: dismissible ? _close : null,
-                    child: Opacity(
-                      key: const ValueKey('noche_sheet_scrim'),
-                      opacity: scrimOpacity,
-                      child: const ColoredBox(color: NocheColors.scrim),
+                  child: IgnorePointer(
+                    ignoring: !dismissible || isReverse,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: dismissible ? _close : null,
+                      child: Opacity(
+                        key: const ValueKey('noche_sheet_scrim'),
+                        opacity: scrimOpacity,
+                        child: const ColoredBox(color: NocheColors.scrim),
+                      ),
                     ),
                   ),
                 ),

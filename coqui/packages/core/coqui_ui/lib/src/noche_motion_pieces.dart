@@ -95,12 +95,45 @@ class _NocheArriveState extends State<NocheArrive>
   }
 
   @override
+  void didUpdateWidget(NocheArrive oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_started || !_controller.isAnimating) return;
+    if (widget.children.length != oldWidget.children.length ||
+        (widget.next != null) != (oldWidget.next != null) ||
+        widget.delay != oldWidget.delay) {
+      final prevElapsedUs = _controller.value * _totalUs;
+      final n = widget.children.length;
+      if (n == 0 && widget.next == null) {
+        _totalUs = 0;
+        _controller.value = 1.0;
+        return;
+      }
+      final maxStaggerIdx = n == 0 ? 0 : math.min(n - 1, 4);
+      final lastStart =
+          widget.delay +
+          _motion.stagger * maxStaggerIdx +
+          (widget.next != null ? _motion.nextDelay : Duration.zero);
+      final newTotal = lastStart + _motion.move;
+      _totalUs = newTotal.inMicroseconds.toDouble();
+      if (_totalUs <= 0 || prevElapsedUs >= _totalUs) {
+        _controller.value = 1.0;
+      } else {
+        _controller.duration = newTotal;
+        _controller.forward(from: (prevElapsedUs / _totalUs).clamp(0.0, 1.0));
+      }
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
   double _progressForStart(Duration start) {
+    if (_controller.isCompleted || (!_controller.isAnimating && _started)) {
+      return 1.0;
+    }
     if (_totalUs <= 0) return 1.0;
     final elapsedUs = _controller.value * _totalUs;
     final startUs = start.inMicroseconds.toDouble();

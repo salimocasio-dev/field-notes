@@ -558,12 +558,41 @@ class _NocheBarChartState extends State<NocheBarChart>
   }
 
   @override
+  void didUpdateWidget(NocheBarChart oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_started || !_controller.isAnimating) return;
+    if (widget.items.length != oldWidget.items.length ||
+        widget.delay != oldWidget.delay) {
+      final prevElapsedUs = _controller.value * _totalUs;
+      final n = widget.items.length;
+      if (n == 0) {
+        _totalUs = 0;
+        _controller.value = 1.0;
+        return;
+      }
+      final maxStaggerIdx = math.min(n - 1, 4);
+      final newTotal =
+          widget.delay + _motion.stagger * maxStaggerIdx + _barDuration;
+      _totalUs = newTotal.inMicroseconds.toDouble();
+      if (_totalUs <= 0 || prevElapsedUs >= _totalUs) {
+        _controller.value = 1.0;
+      } else {
+        _controller.duration = newTotal;
+        _controller.forward(from: (prevElapsedUs / _totalUs).clamp(0.0, 1.0));
+      }
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
   double _progressForBar(int index) {
+    if (_controller.isCompleted || (!_controller.isAnimating && _started)) {
+      return 1.0;
+    }
     if (_totalUs <= 0) return 1.0;
     final elapsedUs = _controller.value * _totalUs;
     final startUs = (widget.delay + _motion.stagger * math.min(index, 4))

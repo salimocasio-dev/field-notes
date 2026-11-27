@@ -2144,4 +2144,346 @@ void main() {
       );
     });
   });
+
+  // 19. Review regression tests
+  group('19. Review regression tests', () {
+    testWidgets(
+      'NocheSheetSwap preserves mounted outgoing State without remounting, isolates incoming State, and keeps exact fixed height for shorter and taller content',
+      (tester) async {
+        final initCounts = <String, int>{};
+        final createdWithLabel = <String, String>{};
+        var step = 'A';
+        late StateSetter setOuter;
+
+        await tester.pumpWidget(
+          _harness(
+            StatefulBuilder(
+              builder: (context, setState) {
+                setOuter = setState;
+                final double h = switch (step) {
+                  'A' => 140,
+                  'B' => 48, // shorter than initial
+                  _ => 320, // taller than initial
+                };
+                return Align(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  child: NocheSheet(
+                    title: 'Swap regression',
+                    respectSafeArea: false,
+                    scrollable: false,
+                    contentKey: step,
+                    child: _SwapStateProbe(
+                      id: step,
+                      height: h,
+                      initCounts: initCounts,
+                      createdWithLabel: createdWithLabel,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        expect(initCounts['A'], 1);
+        final initialSheetHeight = tester
+            .getSize(find.byType(NocheSheet))
+            .height;
+
+        // Swap A -> B (shorter): A must NOT be remounted while fading out,
+        // B must get a brand-new State (no leaked initialId from A),
+        // and sheet height stays strictly fixed.
+        setOuter(() => step = 'B');
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 50));
+
+        expect(initCounts['A'], 1);
+        expect(initCounts['B'], 1);
+        expect(createdWithLabel['B'], 'B');
+        expect(
+          tester.getSize(find.byType(NocheSheet)).height,
+          initialSheetHeight,
+        );
+        expect(tester.takeException(), isNull);
+
+        await tester.pumpAndSettle();
+        expect(initCounts['A'], 1);
+        expect(initCounts['B'], 1);
+        expect(
+          tester.getSize(find.byType(NocheSheet)).height,
+          initialSheetHeight,
+        );
+        expect(tester.takeException(), isNull);
+
+        // Swap B -> C (taller than initial): height STILL stays strictly fixed
+        // with zero overflow exceptions!
+        setOuter(() => step = 'C');
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 50));
+        expect(initCounts['B'], 1);
+        expect(initCounts['C'], 1);
+        expect(createdWithLabel['C'], 'C');
+        expect(
+          tester.getSize(find.byType(NocheSheet)).height,
+          initialSheetHeight,
+        );
+        expect(tester.takeException(), isNull);
+
+        await tester.pumpAndSettle();
+        expect(
+          tester.getSize(find.byType(NocheSheet)).height,
+          initialSheetHeight,
+        );
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    testWidgets(
+      'showNocheSheet rapid double-tap on scrim during reverse animation does not pop underlying route',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: coquiTheme(),
+            home: Builder(
+              builder: (homeContext) => Scaffold(
+                body: Center(
+                  child: NocheOutlineButton(
+                    label: 'Go to detail',
+                    onPressed: () {
+                      Navigator.of(homeContext).push<void>(
+                        MaterialPageRoute<void>(
+                          builder: (detailContext) => Scaffold(
+                            body: Center(
+                              child: NocheOutlineButton(
+                                label: 'Open sheet',
+                                onPressed: () {
+                                  showNocheSheet<void>(
+                                    detailContext,
+                                    title: 'Sheet',
+                                    builder: (c, close) => const SizedBox(
+                                      height: 120,
+                                      child: Text('Sheet content'),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Go to detail'));
+        await tester.pumpAndSettle();
+        expect(find.text('Open sheet'), findsOneWidget);
+
+        await tester.tap(find.text('Open sheet'));
+        await tester.pumpAndSettle();
+        expect(find.text('Sheet content'), findsOneWidget);
+
+        // First tap on scrim starts dismissing the sheet.
+        await tester.tapAt(const Offset(195, 40));
+        await tester.pump();
+        // Rapid second tap on scrim halfway through reverse animation.
+        await tester.pump(NocheMotion.pageOut ~/ 2);
+        await tester.tapAt(const Offset(195, 40));
+        await tester.pumpAndSettle();
+
+        // Sheet is closed, and Detail route is STILL visible (not popped!).
+        expect(find.text('Sheet content'), findsNothing);
+        expect(find.text('Open sheet'), findsOneWidget);
+      },
+    );
+
+    for (final reduced in [false, true]) {
+      testWidgets(
+        'NocheBarChart growing items from 2 to 6 after settling renders all 6 bars at full height (reduced: $reduced)',
+        (tester) async {
+          var items = const [
+            NocheBarItem(label: '1', value: 10),
+            NocheBarItem(label: '2', value: 20),
+          ];
+          late StateSetter setOuter;
+
+          await tester.pumpWidget(
+            _harness(
+              disableAnimations: reduced,
+              StatefulBuilder(
+                builder: (context, setState) {
+                  setOuter = setState;
+                  return Center(child: NocheBarChart(items: items));
+                },
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          setOuter(
+            () => items = const [
+              NocheBarItem(label: '1', value: 10),
+              NocheBarItem(label: '2', value: 20),
+              NocheBarItem(label: '3', value: 30),
+              NocheBarItem(label: '4', value: 40),
+              NocheBarItem(label: '5', value: 50),
+              NocheBarItem(label: '6', value: 25),
+            ],
+          );
+          await tester.pump();
+
+          for (var i = 0; i < 6; i++) {
+            final clipFinder = find.byKey(ValueKey('noche_bar_clip_$i'));
+            final clip = tester.widget<ClipRRect>(clipFinder);
+            final rrect = clip.clipper!.getClip(const Size(20, 100));
+            expect(rrect.height, closeTo(100.0, 0.01));
+            if (reduced) {
+              expect(_opacityOfChild(tester, clipFinder), closeTo(1.0, 0.01));
+            }
+          }
+        },
+      );
+    }
+
+    testWidgets(
+      'NocheBarChart growing items mid-flight still finishes all 6 bars to 1.0',
+      (tester) async {
+        var items = const [
+          NocheBarItem(label: '1', value: 10),
+          NocheBarItem(label: '2', value: 20),
+        ];
+        late StateSetter setOuter;
+
+        await tester.pumpWidget(
+          _harness(
+            StatefulBuilder(
+              builder: (context, setState) {
+                setOuter = setState;
+                return Center(child: NocheBarChart(items: items));
+              },
+            ),
+          ),
+        );
+
+        await tester.pump(NocheMotion.settle ~/ 2);
+        setOuter(
+          () => items = const [
+            NocheBarItem(label: '1', value: 10),
+            NocheBarItem(label: '2', value: 20),
+            NocheBarItem(label: '3', value: 30),
+            NocheBarItem(label: '4', value: 40),
+            NocheBarItem(label: '5', value: 50),
+            NocheBarItem(label: '6', value: 25),
+          ],
+        );
+        await tester.pumpAndSettle();
+
+        for (var i = 0; i < 6; i++) {
+          final clip = tester.widget<ClipRRect>(
+            find.byKey(ValueKey('noche_bar_clip_$i')),
+          );
+          final rrect = clip.clipper!.getClip(const Size(20, 100));
+          expect(rrect.height, closeTo(100.0, 0.01));
+        }
+      },
+    );
+
+    for (final reduced in [false, true]) {
+      testWidgets(
+        'NocheArrive growing children after initial entrance renders new children at opacity 1.0 and dy 0 (reduced: $reduced)',
+        (tester) async {
+          var count = 2;
+          var includeNext = false;
+          late StateSetter setOuter;
+
+          await tester.pumpWidget(
+            _harness(
+              disableAnimations: reduced,
+              StatefulBuilder(
+                builder: (context, setState) {
+                  setOuter = setState;
+                  return NocheArrive(
+                    next: includeNext ? const Text('Added next') : null,
+                    children: [for (var i = 0; i < count; i++) Text('Item $i')],
+                  );
+                },
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          setOuter(() {
+            count = 6;
+            includeNext = true;
+          });
+          await tester.pump();
+
+          for (var i = 0; i < 6; i++) {
+            expect(
+              _translateY(tester, find.byKey(ValueKey('noche_arrive_item_$i'))),
+              closeTo(0.0, 0.01),
+            );
+            expect(
+              _opacityOfChild(tester, find.text('Item $i')),
+              closeTo(1.0, 0.01),
+            );
+          }
+          expect(
+            _translateY(
+              tester,
+              find.byKey(const ValueKey('noche_arrive_next')),
+            ),
+            closeTo(0.0, 0.01),
+          );
+          expect(
+            _opacityOfChild(tester, find.text('Added next')),
+            closeTo(1.0, 0.01),
+          );
+        },
+      );
+    }
+  });
+}
+
+class _SwapStateProbe extends StatefulWidget {
+  const _SwapStateProbe({
+    required this.id,
+    required this.height,
+    required this.initCounts,
+    required this.createdWithLabel,
+  });
+
+  final String id;
+  final double height;
+  final Map<String, int> initCounts;
+  final Map<String, String> createdWithLabel;
+
+  @override
+  State<_SwapStateProbe> createState() => _SwapStateProbeState();
+}
+
+class _SwapStateProbeState extends State<_SwapStateProbe> {
+  late final String _initialId;
+
+  @override
+  void initState() {
+    super.initState();
+    _initialId = widget.id;
+    widget.initCounts[widget.id] = (widget.initCounts[widget.id] ?? 0) + 1;
+    widget.createdWithLabel[widget.id] = _initialId;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: widget.height,
+      child: Text('Probe ${widget.id} (init=$_initialId)'),
+    );
+  }
 }
