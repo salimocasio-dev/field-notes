@@ -955,4 +955,122 @@ void main() {
       },
     );
   });
+
+  group('ReadingStore split-body rollback and concurrency', () {
+    test('non-DeletableKeyValueStore shrinks orphaned body to empty string when texts write throws', () async {
+      final storeKv = _NonDeletableTextsThrowingStore();
+      final store = ReadingStore(storeKv);
+
+      await expectLater(
+        store.add(
+          now: 100,
+          title: 'Grande',
+          body: 'Mucho texto aquí.',
+          generated: false,
+          format: LibraryWording.formatTxt,
+        ),
+        throwsA(isA<ReadingStorageFullException>()),
+      );
+
+      final bodyKey = ReadingStore.bodyKeyFor('${personalBookPrefix}100-0');
+      expect(storeKv.data[bodyKey], '');
+      expect(storeKv.data['texts'], isNull);
+    });
+
+    test(
+      'KeyValueStore throwing on write throws ReadingStorageFullException',
+      () async {
+        final storeKv = _ThrowingWriteStore();
+        final store = ReadingStore(storeKv);
+
+        await expectLater(
+          store.add(
+            now: 200,
+            title: 'Lleno',
+            body: 'Casa azul.',
+            generated: false,
+          ),
+          throwsA(isA<ReadingStorageFullException>()),
+        );
+      },
+    );
+
+    test('concurrent add calls across separate ReadingStore instances preserve both books and keep bodyKey split', () async {
+      final sharedKv = _AsyncDelayStore();
+      final storeA = ReadingStore(sharedKv);
+      final storeB = ReadingStore(sharedKv);
+
+      final results = await Future.wait([
+        storeA.add(
+          now: 500,
+          title: 'Libro A',
+          body: 'Texto A.',
+          generated: false,
+          format: LibraryWording.formatTxt,
+        ),
+        storeB.add(
+          now: 500,
+          title: 'Libro B',
+          body: 'Texto B.',
+          generated: false,
+          format: LibraryWording.formatPasted,
+        ),
+      ]);
+
+      await storeA.markOpened(results[0].id, 600);
+
+      final loaded = storeA.texts();
+      expect(loaded.map((t) => t.title).toSet(), {'Libro A', 'Libro B'});
+      expect(loaded.map((t) => t.id).toSet().length, 2);
+
+      final rawIndex = jsonDecode(sharedKv.read('texts')!) as List;
+      for (final entry in rawIndex.cast<Map>()) {
+        expect(entry['bodyKey'], isA<String>());
+        expect(entry.containsKey('body'), isFalse);
+      }
+    });
+  });
+}
+
+class _NonDeletableTextsThrowingStore implements KeyValueStore {
+  final Map<String, String> data = {};
+
+  @override
+  String? read(String key) => data[key];
+
+  @override
+  Future<void> write(String key, String value) async {
+    if (key == 'texts') {
+      throw StateError('QuotaExceededError');
+    }
+    data[key] = value;
+  }
+}
+
+class _ThrowingWriteStore implements KeyValueStore {
+  @override
+  String? read(String key) => null;
+
+  @override
+  Future<void> write(String key, String value) async {
+    throw StateError('QuotaExceededError');
+  }
+}
+
+class _AsyncDelayStore implements KeyValueStore, DeletableKeyValueStore {
+  final Map<String, String> data = {};
+
+  @override
+  String? read(String key) => data[key];
+
+  @override
+  Future<void> write(String key, String value) async {
+    await Future<void>.delayed(const Duration(milliseconds: 5));
+    data[key] = value;
+  }
+
+  @override
+  Future<void> delete(String key) async {
+    data.remove(key);
+  }
 }

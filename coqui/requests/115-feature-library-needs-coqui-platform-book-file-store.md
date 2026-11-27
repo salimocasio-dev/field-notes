@@ -7,6 +7,7 @@
    - `Future<String?> readBook(String id)`
    - `Future<void> deleteBook(String id)`
 2. Platform implementations in `coqui_platform` (IndexedDB on web, local file directory on mobile, in-memory fake in `coqui_testing`) wired through `app`.
+3. In `coqui_platform/lib/src/storage/spaces.dart`, have `SpaceStore` implement `DeletableKeyValueStore` (it already has a `delete(String key)` method, so `KeyValueStoreDelete.delete` currently falls back to a no-op on production storage).
 
 ## Why
 
@@ -15,7 +16,7 @@ Story N5.4 ("Add your own: the screen, paste text and plain text files", issue #
 ## What I am using meanwhile
 
 - `ReadingStore` in `coqui/packages/features/feature_library/lib/src/reading.dart` splits each book's body into its own `KeyValueStore` entry (`body:<id>`) instead of duplicating the full text inside the `'texts'` index JSON, while remaining 100% backward compatible with legacy inline `'body'` entries.
-- `ReadingStore.add` verifies read-back of both `body:<id>` and `'texts'` after writing, cleans up `body:<id>` via `storage.delete(...)` on failure or silent browser quota drop, and throws `ReadingStorageFullException`, which `BookImporter` surfaces to the learner as a calm error card (`LibraryWording.errorStorageFull`).
+- `ReadingStore.add` serializes writes per `KeyValueStore` instance, verifies read-back of both `body:<id>` and `'texts'` after writing, cleans up `body:<id>` via `storage.delete(...)` (and shrinks any surviving key to `''` when the store does not implement `DeletableKeyValueStore`), and throws `ReadingStorageFullException`, which `BookImporter` surfaces to the learner as a calm error card (`LibraryWording.errorStorageFull`).
 
 ## Order and branch
 

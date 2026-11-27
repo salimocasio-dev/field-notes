@@ -205,8 +205,8 @@ String _extensionOf(String fileName) {
   return base.substring(dot + 1).toLowerCase();
 }
 
-/// Validates and decodes a plain-text `.txt` file into a [ParsedBook].
-ParsedBook decodeTxtFile(PickedImportFile file, Language language) {
+/// Validates extension, rejects binary NUL bytes, and decodes UTF-8 text.
+String decodeTxtBytes(PickedImportFile file) {
   final ext = _extensionOf(file.name);
   if (_lockedStoreExtensions.contains(ext)) {
     throw const ImportFailure(LibraryWording.errorLockedBook, locked: true);
@@ -219,13 +219,16 @@ ParsedBook decodeTxtFile(PickedImportFile file, Language language) {
   if (file.bytes.contains(0)) {
     throw const ImportFailure(LibraryWording.errorInvalidText);
   }
-  final String decoded;
   try {
-    decoded = utf8.decode(file.bytes, allowMalformed: false);
+    return utf8.decode(file.bytes, allowMalformed: false);
   } on FormatException {
     throw const ImportFailure(LibraryWording.errorInvalidText);
   }
+}
 
+/// Validates and decodes a plain-text `.txt` file into a [ParsedBook].
+ParsedBook decodeTxtFile(PickedImportFile file, Language language) {
+  final decoded = decodeTxtBytes(file);
   final paragraphs = parsePlainTextParagraphs(decoded);
   if (paragraphs.isEmpty) {
     throw const ImportFailure(LibraryWording.errorEmptyText);
@@ -314,13 +317,49 @@ class BookImporter {
         fileName: file.name,
         byteSize: file.byteSize,
         step: 1,
-        stepProgress: 0.45,
+        stepProgress: 0.5,
       ),
     );
     await _stepYield();
 
-    final parsed = decodeTxtFile(file, language);
-    return _finishParsedImport(
+    final decoded = decodeTxtBytes(file);
+
+    onProgress?.call(
+      ImportJobState(
+        id: jobId,
+        fileName: file.name,
+        byteSize: file.byteSize,
+        step: 2,
+        stepProgress: 0.5,
+      ),
+    );
+    await _stepYield();
+
+    final paragraphs = parsePlainTextParagraphs(decoded);
+    if (paragraphs.isEmpty) {
+      throw const ImportFailure(LibraryWording.errorEmptyText);
+    }
+    final title = deriveBookTitleFromFileName(file.name);
+    final body = paragraphs.join('\n\n');
+    final estimatedPages = estimateBookPagesFromText(
+      ReadingText(
+        id: '${personalBookPrefix}preview',
+        title: title,
+        body: body,
+        generated: false,
+      ),
+      language,
+    );
+    final parsed = ParsedBook(
+      title: title,
+      paragraphs: paragraphs,
+      body: body,
+      format: LibraryWording.formatTxt,
+      byteSize: file.byteSize,
+      estimatedPages: estimatedPages,
+    );
+
+    return _checkAndSave(
       parsed: parsed,
       jobId: jobId,
       displayName: file.name,
@@ -344,7 +383,18 @@ class BookImporter {
         fileName: initialName,
         byteSize: byteSize,
         step: 1,
-        stepProgress: 0.45,
+        stepProgress: 0.5,
+      ),
+    );
+    await _stepYield();
+
+    onProgress?.call(
+      ImportJobState(
+        id: jobId,
+        fileName: initialName,
+        byteSize: byteSize,
+        step: 2,
+        stepProgress: 0.5,
       ),
     );
     await _stepYield();
@@ -354,7 +404,7 @@ class BookImporter {
       title: title,
       language: language,
     );
-    return _finishParsedImport(
+    return _checkAndSave(
       parsed: parsed,
       jobId: jobId,
       displayName: parsed.title,
@@ -362,36 +412,19 @@ class BookImporter {
     );
   }
 
-  Future<({ReadingText book, BookCoverage coverage})> _finishParsedImport({
+  Future<({ReadingText book, BookCoverage coverage})> _checkAndSave({
     required ParsedBook parsed,
     required String jobId,
     required String displayName,
     void Function(ImportJobState state)? onProgress,
   }) async {
-    final pagesTotal = parsed.estimatedPages;
-    final pagesDone = pagesTotal > 1 ? (pagesTotal / 2).ceil() : null;
-    onProgress?.call(
-      ImportJobState(
-        id: jobId,
-        fileName: displayName,
-        byteSize: parsed.byteSize,
-        step: 2,
-        stepProgress: 0.55,
-        pagesDone: pagesDone,
-        pagesTotal: pagesTotal > 1 ? pagesTotal : null,
-      ),
-    );
-    await _stepYield();
-
     onProgress?.call(
       ImportJobState(
         id: jobId,
         fileName: displayName,
         byteSize: parsed.byteSize,
         step: 3,
-        stepProgress: 0.65,
-        pagesDone: pagesTotal > 1 ? pagesTotal : null,
-        pagesTotal: pagesTotal > 1 ? pagesTotal : null,
+        stepProgress: 0.5,
       ),
     );
     await _stepYield();

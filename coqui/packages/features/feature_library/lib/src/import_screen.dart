@@ -192,7 +192,7 @@ class _ImportScreenState extends State<ImportScreen> {
       _finishJobError(
         _nextJobId(),
         fileName: LibraryWording.chooseFileButton,
-        reason: LibraryWording.errorInvalidText,
+        reason: LibraryWording.errorCouldNotOpen,
       );
       return;
     }
@@ -223,7 +223,7 @@ class _ImportScreenState extends State<ImportScreen> {
       _finishJobError(
         jobId,
         fileName: picked.name,
-        reason: LibraryWording.errorInvalidText,
+        reason: LibraryWording.errorCouldNotOpen,
       );
     }
   }
@@ -265,7 +265,7 @@ class _ImportScreenState extends State<ImportScreen> {
       _finishJobError(
         jobId,
         fileName: displayName,
-        reason: LibraryWording.errorInvalidText,
+        reason: LibraryWording.errorCouldNotAdd,
       );
     }
   }

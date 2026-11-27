@@ -79,6 +79,8 @@ abstract final class LibraryWording {
       "Locked by the store it came from. Coquí can't open locked books.";
   static const String errorInvalidText =
       "Couldn't read this file as plain text.";
+  static const String errorCouldNotOpen = "Couldn't open this file.";
+  static const String errorCouldNotAdd = "Couldn't add this text.";
   static const String errorEmptyText = 'This file has no text to read.';
   static const String errorStorageFull =
       "Couldn't save this book on this device.";

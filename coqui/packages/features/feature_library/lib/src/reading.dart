@@ -240,6 +240,16 @@ class ReadingStore {
     } on Object {
       // Best-effort cleanup after a failed write.
     }
+    // Production `SpaceStore` currently omits `implements DeletableKeyValueStore`,
+    // making `KeyValueStoreDelete.delete` a no-op. Shrink any surviving key to
+    // empty string so an orphaned multi-MB body cannot consume storage quota.
+    if (storage.read(key) != null) {
+      try {
+        await storage.write(key, '');
+      } on Object {
+        // Best-effort cleanup after a failed write.
+      }
+    }
   }
 
   List<ReadingText> texts() {
@@ -262,7 +272,9 @@ class ReadingStore {
     return null;
   }
 
-  Future<void> _writeQueue = Future<void>.value();
+  static final Expando<Future<void>> _writeQueues = Expando<Future<void>>(
+    'ReadingStore.writeQueue',
+  );
 
   Future<ReadingText> add({
     required int now,
@@ -275,7 +287,7 @@ class ReadingStore {
     int? importedAt,
     int? estimatedPages,
   }) {
-    final prev = _writeQueue;
+    final prev = _writeQueues[storage] ?? Future<void>.value();
     final next = prev.catchError((Object _) {}).then((_) {
       return _addSerialized(
         now: now,
@@ -289,7 +301,7 @@ class ReadingStore {
         estimatedPages: estimatedPages,
       );
     });
-    _writeQueue = next.then<void>((_) {}, onError: (Object _) {});
+    _writeQueues[storage] = next.then<void>((_) {}, onError: (Object _) {});
     return next;
   }
 
