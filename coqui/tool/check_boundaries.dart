@@ -599,6 +599,7 @@ List<_Use> _packageUris(String source) {
 ///
 /// Holds for #258 until #263 replaces branch rules with the lane map.
 const _nonPackageLaneDirs = <String, List<String>>{
+  // TODO(#263): remove packages/core/coqui_scenes/tool and ref/pp once #263 replaces branch rules with the lane map.
   'tool': ['tool', 'packages/core/coqui_scenes/tool', 'ref/pp'],
 };
 

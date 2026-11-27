@@ -160,6 +160,7 @@ void _addScene(
   String? sheetJson,
   String? docsSheetJson,
   String? setDartSource,
+  bool omitSetDart = false,
 }) {
   final rng = takesRng ?? _rngScenes.contains(id);
   final sig = rng ? '{Rng? rng}' : '';
@@ -168,10 +169,15 @@ void _addScene(
     '${repo.path}/coqui/packages/core/coqui_scenes/lib/src/$id/$id.dart',
     'Scene $fn($sig) => throw UnimplementedError();\n',
   );
-  if (setDartSource != null) {
+  if (!omitSetDart) {
+    final stateClass = '${_pascal(id)}State';
     _writeFile(
       '${repo.path}/coqui/packages/core/coqui_scenes/lib/src/$id/${id}_set.dart',
-      setDartSource,
+      setDartSource ??
+          'class $stateClass {\n'
+              '  const $stateClass();\n'
+              '  factory $stateClass.fromQuery(String query) => const $stateClass();\n'
+              '}\n',
     );
   }
   if (sheetJson != null) {
@@ -762,6 +768,33 @@ const Map<String, String> oldHashes = {};
       );
       expect(() => buildRefPpIndex(tmp), throwsFormatException);
     });
+
+    test('buildRefPpIndex matches node make.js --index-only byte-for-byte', () {
+      final repoRoot = _findRealRepoRoot();
+      _writeRepoStubs(tmp);
+      _writeBytes('${tmp.path}/coqui/ref/pp/alpha/one/a.bin', [1, 2, 3, 4]);
+      _writeBytes(
+        '${tmp.path}/coqui/ref/pp/alpha/two.json',
+        utf8.encode('{"ok":true}\n'),
+      );
+      _writeBytes(
+        '${tmp.path}/coqui/ref/pp/beta/state.json',
+        utf8.encode('{"id":"beta"}\n'),
+      );
+
+      final res = Process.runSync('node', [
+        '${repoRoot.path}/coqui/tool/ref/pp/make.js',
+        '--index-only',
+        '--out',
+        '${tmp.path}/coqui/ref/pp',
+      ]);
+      expect(res.exitCode, 0, reason: '${res.stdout}\n${res.stderr}');
+
+      final jsIndex = File('${tmp.path}/coqui/ref/pp/index.json')
+          .readAsStringSync();
+      final dartIndex = buildRefPpIndex(tmp);
+      expect(dartIndex, jsIndex);
+    });
   });
 
   group('--check-committed and marker errors', () {
@@ -851,6 +884,11 @@ const Map<String, String> oldHashes = {};
   });
 
   group('error cases', () {
+    test('throws FormatException when <id>_set.dart is missing', () {
+      _addScene(tmp, 'frente', takesRng: false, omitSetDart: true);
+      expect(() => discoverScenes(tmp), throwsFormatException);
+    });
+
     test(
       'throws FormatException when <id>_set.dart lacks *State.fromQuery',
       () {
@@ -863,6 +901,12 @@ const Map<String, String> oldHashes = {};
         expect(() => discoverScenes(tmp), throwsFormatException);
       },
     );
+
+    test('throws FormatException when sheet JSON is not a JSON object', () {
+      _writeRepoStubs(tmp);
+      _addScene(tmp, 'frente', takesRng: false, sheetJson: '[]\n');
+      expect(() => buildGeneratedScenes(tmp), throwsFormatException);
+    });
     test('throws FormatException when <id>/<id>.dart lacks Scene create...', () {
       _writeFile(
         '${tmp.path}/coqui/packages/core/coqui_scenes/lib/src/frente/frente.dart',

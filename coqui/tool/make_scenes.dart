@@ -16,14 +16,12 @@ class SceneEntry {
     required this.factory,
     required this.takesRng,
     required this.stateClass,
-    required this.isSceneSheet,
   });
 
   final String id;
   final String factory;
   final bool takesRng;
   final String stateClass;
-  final bool isSceneSheet;
 }
 
 class GeneratedScenes {
@@ -154,44 +152,23 @@ List<SceneEntry> discoverScenes(Directory repoRoot) {
     }
 
     final setDart = File('${entity.path}/${id}_set.dart');
-    late final String stateClass;
-    if (setDart.existsSync()) {
-      final setSource = setDart.readAsStringSync();
-      final stateMatch = _stateFromQueryPattern.firstMatch(setSource);
-      final matchedName = stateMatch?.group(1) ?? stateMatch?.group(2);
-      if (matchedName == null || !matchedName.endsWith('State')) {
-        throw FormatException(
-          '${setDart.path}: missing *State.fromQuery factory',
-        );
-      }
-      stateClass = matchedName;
-    } else {
-      stateClass = '${_pascal(id)}State';
+    if (!setDart.existsSync()) {
+      throw FormatException('${setDart.path}: missing scene set file');
     }
-
-    final assetsSheet = File(
-      '${repoRoot.path}/coqui/packages/core/coqui_scenes/assets/sheets/$id-sheet.json',
-    );
-    final docsSheet = File(
-      '${repoRoot.path}/docs/proyecto/pixel/$id-sheet.json',
-    );
-    var isSceneSheet = false;
-    final sheetFile = assetsSheet.existsSync()
-        ? assetsSheet
-        : (docsSheet.existsSync() ? docsSheet : null);
-    if (sheetFile != null) {
-      final decoded = jsonDecode(sheetFile.readAsStringSync());
-      isSceneSheet =
-          decoded is Map<String, dynamic> &&
-          !decoded.containsKey('pairPicture');
+    final setSource = setDart.readAsStringSync();
+    final stateMatch = _stateFromQueryPattern.firstMatch(setSource);
+    final matchedName = stateMatch?.group(1) ?? stateMatch?.group(2);
+    if (matchedName == null || !matchedName.endsWith('State')) {
+      throw FormatException(
+        '${setDart.path}: missing *State.fromQuery factory',
+      );
     }
 
     discovered[id] = SceneEntry(
       id: id,
       factory: factory,
       takesRng: takesRng,
-      stateClass: stateClass,
-      isSceneSheet: isSceneSheet,
+      stateClass: matchedName,
     );
   }
 
@@ -262,17 +239,56 @@ List<SceneEntry> discoverScenes(Directory repoRoot) {
   ];
 }
 
+({String text, bool isSceneSheet}) _readCanonicalSheet(
+  Directory repoRoot,
+  Directory scenesPkg,
+  String id,
+) {
+  final assetsSheet = File('${scenesPkg.path}/assets/sheets/$id-sheet.json');
+  final docsSheet = File('${repoRoot.path}/docs/proyecto/pixel/$id-sheet.json');
+  final hasAssets = assetsSheet.existsSync();
+  final hasDocs = docsSheet.existsSync();
+
+  late final String text;
+  if (hasAssets && hasDocs) {
+    final aText = assetsSheet.readAsStringSync();
+    final dText = docsSheet.readAsStringSync();
+    if (aText != dText) {
+      throw FormatException(
+        'sheet mismatch for $id: ${assetsSheet.path} differs from ${docsSheet.path}',
+      );
+    }
+    text = aText;
+  } else if (hasAssets) {
+    text = assetsSheet.readAsStringSync();
+  } else if (hasDocs) {
+    text = docsSheet.readAsStringSync();
+  } else {
+    throw FormatException('missing sheet for $id');
+  }
+
+  final decoded = jsonDecode(text);
+  if (decoded is! Map<String, dynamic>) {
+    throw FormatException('sheet for $id must decode to a JSON object');
+  }
+  return (text: text, isSceneSheet: !decoded.containsKey('pairPicture'));
+}
+
 GeneratedScenes buildGeneratedScenes(Directory repoRoot) {
   final scenes = discoverScenes(repoRoot);
   final scenesPkg = Directory(
     '${repoRoot.path}/coqui/packages/core/coqui_scenes',
   );
+  final sheets = <String, ({String text, bool isSceneSheet})>{
+    for (final s in scenes)
+      s.id: _readCanonicalSheet(repoRoot, scenesPkg, s.id),
+  };
 
   final registryDart = _buildRegistryDart(scenes);
   final convertedScenesDart = _buildConvertedScenesDart(scenes);
-  final sheetsDart = _buildSheetsDart(repoRoot, scenesPkg, scenes);
+  final sheetsDart = _buildSheetsDart(scenes, sheets);
   final oldHashesDart = _buildOldHashesDart(repoRoot, scenes);
-  final devMainDart = _buildDevMainDart(scenesPkg, scenes);
+  final devMainDart = _buildDevMainDart(scenesPkg, scenes, sheets);
   final makeSetFixtureDart = _buildMakeSetFixtureDart(scenesPkg, scenes);
   final refPpIndexJson = buildRefPpIndex(repoRoot);
 
@@ -345,7 +361,11 @@ String replaceGeneratedBlock(String source, String tag, String replacement) {
   return '${source.substring(0, afterBegin)}$body${source.substring(end.start)}';
 }
 
-String _buildDevMainDart(Directory scenesPkg, List<SceneEntry> scenes) {
+String _buildDevMainDart(
+  Directory scenesPkg,
+  List<SceneEntry> scenes,
+  Map<String, ({String text, bool isSceneSheet})> sheets,
+) {
   final devMainFile = File('${scenesPkg.path}/tool/dev_main.dart');
   if (!devMainFile.existsSync()) {
     throw FormatException('missing ${devMainFile.path}');
@@ -359,7 +379,7 @@ String _buildDevMainDart(Directory scenesPkg, List<SceneEntry> scenes) {
 
   final newIds = [
     for (final s in scenes)
-      if (s.isSceneSheet) s.id,
+      if (sheets[s.id]!.isSceneSheet) s.id,
   ];
   final newSetBuf = StringBuffer();
   if (newIds.isEmpty) {
@@ -663,9 +683,8 @@ String _buildConvertedScenesDart(List<SceneEntry> scenes) {
 }
 
 String _buildSheetsDart(
-  Directory repoRoot,
-  Directory scenesPkg,
   List<SceneEntry> scenes,
+  Map<String, ({String text, bool isSceneSheet})> sheets,
 ) {
   final buf = StringBuffer()
     ..writeln(
@@ -684,33 +703,7 @@ String _buildSheetsDart(
 
   buf.writeln('const Map<String, String> sheetTexts = {');
   for (final s in scenes) {
-    final assetsSheet = File(
-      '${scenesPkg.path}/assets/sheets/${s.id}-sheet.json',
-    );
-    final docsSheet = File(
-      '${repoRoot.path}/docs/proyecto/pixel/${s.id}-sheet.json',
-    );
-    final hasAssets = assetsSheet.existsSync();
-    final hasDocs = docsSheet.existsSync();
-
-    late final String want;
-    if (hasAssets && hasDocs) {
-      final aText = assetsSheet.readAsStringSync();
-      final dText = docsSheet.readAsStringSync();
-      if (aText != dText) {
-        throw FormatException(
-          'sheet mismatch for ${s.id}: ${assetsSheet.path} differs from ${docsSheet.path}',
-        );
-      }
-      want = aText;
-    } else if (hasAssets) {
-      want = assetsSheet.readAsStringSync();
-    } else if (hasDocs) {
-      want = docsSheet.readAsStringSync();
-    } else {
-      throw FormatException('missing sheet for ${s.id}');
-    }
-
+    final want = sheets[s.id]!.text;
     if (want.contains("'''")) {
       throw FormatException('sheet for ${s.id} holds three quotes in a row');
     }
