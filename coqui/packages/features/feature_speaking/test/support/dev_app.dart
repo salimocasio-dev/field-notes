@@ -194,6 +194,7 @@ class _SpeakingDevAppState extends State<SpeakingDevApp> {
   late final DevClock clock;
   late final FixtureCourse course;
   late final DevCall call;
+  FakeEntitlements? _fakeEntitlements;
   late final Services services;
   late final SpeakingModule module;
   AppRoute? route;
@@ -226,6 +227,15 @@ class _SpeakingDevAppState extends State<SpeakingDevApp> {
       int.tryParse(q['micwait'] ?? '') ?? 0,
       int.tryParse(q['speechwait'] ?? '') ?? 0,
     );
+    final plan = switch (q['plan']) {
+      'free' => Plan.free,
+      'course' => Plan.course,
+      'courseAndCalls' => Plan.courseAndCalls,
+      _ => null,
+    };
+    final Entitlements entitlements = plan == null
+        ? const AllowAllEntitlements()
+        : (_fakeEntitlements = FakeEntitlements(plan: plan));
     final seed = speakingSeeds[q['seed'] ?? 'todo'] ?? speakingSeeds['todo']!;
     services = fakeServices(
       progress: FakeProgressStore(clock: clock, json: seed),
@@ -233,6 +243,7 @@ class _SpeakingDevAppState extends State<SpeakingDevApp> {
       call: call,
       speech: speech,
       clock: clock,
+      entitlements: entitlements,
       nav: DevNavigator(
         (r) => setState(() => route = r),
         () => setState(() => route = null),
@@ -254,6 +265,7 @@ class _SpeakingDevAppState extends State<SpeakingDevApp> {
 
   @override
   void dispose() {
+    _fakeEntitlements?.dispose();
     call.dispose();
     super.dispose();
   }
