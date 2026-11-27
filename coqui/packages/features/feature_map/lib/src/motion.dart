@@ -32,6 +32,11 @@ abstract final class MapMotion {
   /// Vertical rise/drop distance for the progress-closed lock pill (`4 px`).
   static const double lockDropOffset = 4.0;
 
+  /// Vertical drag limits and action threshold for the focused place card (`px`).
+  static const double cardDragUpLimit = -80.0;
+  static const double cardDragDownLimit = 48.0;
+  static const double cardDragThreshold = 28.0;
+
   /// Cold-load arrival stagger waits (`Noche-Motion-Carga.dc.html`).
   static final Duration loadChipsAfter = NocheMotion.ms(180);
   static final Duration loadHereAfter = NocheMotion.ms(210);
