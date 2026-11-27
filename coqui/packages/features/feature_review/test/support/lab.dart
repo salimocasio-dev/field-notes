@@ -243,6 +243,7 @@ class Lab {
     String plan, {
     Future<void> Function(int k)? every,
     int limit = 200000,
+    bool settleEnd = true,
   }) async {
     final seen = <String>[];
     var acted = -1;
@@ -270,7 +271,11 @@ class Lab {
         await vt.settle();
       }
     }
-    await tester.pump(const Duration(milliseconds: 400));
+    if (settleEnd) {
+      await tester.pump(const Duration(milliseconds: 1500));
+    } else {
+      await tester.pump();
+    }
     return seen;
   }
 

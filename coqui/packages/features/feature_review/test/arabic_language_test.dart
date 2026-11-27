@@ -639,13 +639,13 @@ void main() {
           expect(revealText.locale, const Locale('ar'));
           await t.tap(find.text(RepasoStrings.next));
           await vt.settle();
-          await t.pump(const Duration(milliseconds: 50));
+          await t.pump(const Duration(milliseconds: 200));
 
           // 2) Arma la frase (BuildItem)
           await vt.runUntil(
             () => session.yourTurn && session.item is BuildItem,
           );
-          await t.pump(const Duration(milliseconds: 50));
+          await t.pump(const Duration(milliseconds: 200));
           expect(t.takeException(), isNull);
           expect(
             Directionality.of(
@@ -688,13 +688,13 @@ void main() {
           await t.pump(const Duration(milliseconds: 50));
           await t.tap(find.text(RepasoStrings.next));
           await vt.settle();
-          await t.pump(const Duration(milliseconds: 50));
+          await t.pump(const Duration(milliseconds: 200));
 
           // 3) Parejas (MatchItem)
           await vt.runUntil(
             () => session.yourTurn && session.item is MatchItem,
           );
-          await t.pump(const Duration(milliseconds: 50));
+          await t.pump(const Duration(milliseconds: 200));
           expect(t.takeException(), isNull);
           expect(
             Directionality.of(
@@ -728,13 +728,13 @@ void main() {
           await t.pump(const Duration(milliseconds: 50));
           await t.tap(find.text(RepasoStrings.next));
           await vt.settle();
-          await t.pump(const Duration(milliseconds: 50));
+          await t.pump(const Duration(milliseconds: 200));
 
           // 4) Dilo (SayItem)
           await vt.runUntil(
             () => session.mic == MicState.ready && session.item is SayItem,
           );
-          await t.pump(const Duration(milliseconds: 50));
+          await t.pump(const Duration(milliseconds: 200));
           expect(t.takeException(), isNull);
           // English label stays English LTR
           expect(
@@ -767,7 +767,7 @@ void main() {
           expect(speech.listens.single.locale, 'ar-SA');
           await t.tap(find.text(RepasoStrings.next));
           await vt.runUntil(() => session.screen == LessonScreen.end);
-          await t.pump(const Duration(milliseconds: 50));
+          await t.pump(const Duration(milliseconds: 1500));
           expect(t.takeException(), isNull);
 
           // 5) End screen: English headings LTR, Arabic row RTL, course tab name on Back button
@@ -856,20 +856,20 @@ void main() {
               session.ready &&
               acted != session.index) {
             acted = session.index;
-            await t.pump(const Duration(milliseconds: 50));
+            await t.pump(const Duration(milliseconds: 200));
             expect(t.takeException(), isNull);
             final right = session.panels!.indexWhere((p) => p.right);
             final pic = find.byType(NochePictureChoice).at(right);
             final g = await t.startGesture(t.getCenter(pic));
             await g.up();
             await vt.settle();
-            await t.pump(const Duration(milliseconds: 50));
+            await t.pump(const Duration(milliseconds: 200));
           } else {
             if (!vt.fireNext()) break;
             await vt.settle();
           }
         }
-        await t.pump(const Duration(milliseconds: 50));
+        await t.pump(const Duration(milliseconds: 1500));
         expect(t.takeException(), isNull);
         expect(session.screen, LessonScreen.end);
         expect(sawArabicCaption, isTrue);

@@ -296,6 +296,7 @@ void main() {
           final sc = Screen(t);
           await sc.open(w: w, h: h, dpr: 2, text: 1);
           await sc.play();
+          await t.pump(const Duration(milliseconds: 1600));
           expect(sc.s.screen, LessonScreen.end);
           await _saveShot(t, dir, 'repaso_end_$tag.png', w, h);
         }
@@ -310,6 +311,7 @@ void main() {
           await lab.until(() => lab.s.ready);
           final wrongIdx = 1 - lab.right;
           await lab.touchPicture(wrongIdx);
+          await t.pump(const Duration(milliseconds: 500));
           expect(lab.s.rings[wrongIdx], OptionRing.bad);
           await _saveShot(t, dir, 'review_cual_wrong_$tag.png', w, h);
         }
@@ -322,6 +324,7 @@ void main() {
           await lab.openReview();
           await lab.start();
           await lab.drive('wrrrw');
+          await t.pump(const Duration(milliseconds: 1600));
           expect(lab.s.screen, LessonScreen.end);
           expect(find.text('Moving up'), findsOneWidget);
           expect(find.text('Coming back soon'), findsOneWidget);
@@ -457,7 +460,7 @@ void main() {
           await t.tap(find.byType(NocheWordTile).at(hear.answer));
           await vt.runUntil(() => session.canNext);
           await vt.settle();
-          await t.pump(const Duration(milliseconds: 50));
+          await t.pump(const Duration(milliseconds: 500));
           await _saveShot(t, dir, 'repaso_arabic_$tag.png', w, h);
         }
       }
