@@ -10,6 +10,7 @@ void main() {
     'lib/feature_words.dart',
     'lib/src/add_box.dart',
     'lib/src/module.dart',
+    'lib/src/motion.dart',
     'lib/src/text_rules.dart',
     'lib/src/word_sheet.dart',
     'lib/src/wording.dart',
@@ -88,6 +89,26 @@ void main() {
         isEmpty,
         reason: '$path contains a Spanish string literal',
       );
+    }
+  });
+
+  test('no raw Duration(, Curves., Cubic(, or stray NocheMotion.ms( in feature_words lib/', () {
+    final rawMotionRe = RegExp(r'Duration\s*\(|Curves\.|Cubic\s*\(');
+    final msRe = RegExp(r'NocheMotion\.ms\s*\(');
+    for (final path in libFiles) {
+      final content = File(path).readAsStringSync();
+      expect(
+        rawMotionRe.allMatches(content),
+        isEmpty,
+        reason: '$path contains a raw Duration/Curves/Cubic literal',
+      );
+      if (path != 'lib/src/motion.dart') {
+        expect(
+          msRe.allMatches(content),
+          isEmpty,
+          reason: '$path contains NocheMotion.ms( outside lib/src/motion.dart',
+        );
+      }
     }
   });
 }

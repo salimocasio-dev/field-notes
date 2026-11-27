@@ -10,9 +10,11 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/add_box.dart';
+import 'package:feature_words/src/motion.dart';
 import 'package:feature_words/src/word_sheet.dart';
 import 'package:feature_words/src/wording.dart';
 import 'package:feature_words/src/words_view.dart';
+import 'package:flutter/rendering.dart' show OverflowBoxFit;
 import 'package:material_ui/material_ui.dart';
 
 /// The Words tab. Reads [Services.progress], [Services.course], and
@@ -43,6 +45,7 @@ class _WordsTabState extends State<WordsTab> {
   StreamSubscription<void>? _changes;
   WordsView? _view;
   late WordsSkill _skill = widget.initialSkill;
+  NocheFollowSide _skillFollowSide = NocheFollowSide.end;
 
   // app.html: PALT (a drawing that a newer one has overtaken is dropped)
   int _gen = 0;
@@ -130,7 +133,10 @@ class _WordsTabState extends State<WordsTab> {
   void _selectSkill(WordsSkill skill) {
     if (skill == _skill) return;
     _s.haptics.tick();
-    setState(() => _skill = skill);
+    setState(() {
+      _skillFollowSide = WordsMotion.skillFollowSide(from: _skill, to: skill);
+      _skill = skill;
+    });
   }
 
   void _review(WordsView v) {
@@ -151,6 +157,7 @@ class _WordsTabState extends State<WordsTab> {
     return Directionality(
       textDirection: textDirection,
       child: ColoredBox(
+        key: const Key('words-tab'),
         color: NocheColors.ground,
         child: DefaultTextStyle.merge(
           style: NocheType.body.copyWith(color: NocheColors.text),
@@ -237,6 +244,7 @@ class _WordsTabState extends State<WordsTab> {
                         children: [
                           NocheSectionLabel(chartHeading, bottomGap: 16),
                           NocheBarChart(
+                            delay: WordsMotion.chartArrivalDelay,
                             semanticLabel: chartSemanticLabel,
                             items: [
                               NocheBarItem(
@@ -304,72 +312,96 @@ class _WordsTabState extends State<WordsTab> {
                   ],
                 ),
               ),
-              if (_skill == WordsSkill.reading && !v.tracksReading)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                      16,
-                      16,
-                      16,
-                      16,
-                    ),
-                    child: Text(
-                      WordsWording.readingLockedMessage,
-                      style: NocheType.body.copyWith(color: NocheColors.label),
-                    ),
-                  ),
-                )
-              else if (skillView.rows.isEmpty)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                      16,
-                      16,
-                      16,
-                      16,
-                    ),
-                    child: Text(
-                      switch (_skill) {
-                        WordsSkill.listening => WordsWording.emptyListening,
-                        WordsSkill.speaking => WordsWording.emptySpeaking,
-                        WordsSkill.reading => WordsWording.emptyReading,
-                      },
-                      style: NocheType.body.copyWith(color: NocheColors.label),
-                    ),
-                  ),
-                )
-              else
-                SliverPadding(
-                  padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: 16,
-                  ),
-                  sliver: SliverList.builder(
-                    itemCount: skillView.rows.length,
-                    itemBuilder: (context, index) {
-                      final entry = skillView.rows[index];
-                      return _WordRow(
-                        entry: entry,
-                        stageMax: v.stageMax,
-                        script: lang.script,
-                        locale: courseLocale,
-                        showDivider: index < skillView.rows.length - 1,
-                        onTap: () => unawaited(_openWord(entry.record.w)),
-                      );
-                    },
+              SliverToBoxAdapter(
+                child: NocheFollow(
+                  contentKey: _skill,
+                  side: _skillFollowSide,
+                  distance: WordsMotion.skillListDistance,
+                  child: _SkillListViewport(
+                    child: _buildSkillList(v, skillView, lang, courseLocale),
                   ),
                 ),
+              ),
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
-          child: NochePrimaryButton(
-            key: const Key('words-review-button'),
-            label: v.reviewButtonLabel,
-            onPressed: v.reviewEnabled ? () => _review(v) : null,
+          child: NocheArrive(
+            delay: WordsMotion.reviewActionDelay,
+            next: NochePrimaryButton(
+              key: const Key('words-review-button'),
+              label: v.reviewButtonLabel,
+              onPressed: v.reviewEnabled ? () => _review(v) : null,
+            ),
+            children: const [],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSkillList(
+    WordsView v,
+    SkillWordsView skillView,
+    Language lang,
+    Locale courseLocale,
+  ) {
+    if (_skill == WordsSkill.reading && !v.tracksReading) {
+      return Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+        child: Text(
+          WordsWording.readingLockedMessage,
+          style: NocheType.body.copyWith(color: NocheColors.label),
+        ),
+      );
+    }
+    if (skillView.rows.isEmpty) {
+      return Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+        child: Text(switch (_skill) {
+          WordsSkill.listening => WordsWording.emptyListening,
+          WordsSkill.speaking => WordsWording.emptySpeaking,
+          WordsSkill.reading => WordsWording.emptyReading,
+        }, style: NocheType.body.copyWith(color: NocheColors.label)),
+      );
+    }
+    return Padding(
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < skillView.rows.length; i++)
+            _WordRow(
+              entry: skillView.rows[i],
+              stageMax: v.stageMax,
+              script: lang.script,
+              locale: courseLocale,
+              showDivider: i < skillView.rows.length - 1,
+              onTap: () => unawaited(_openWord(skillView.rows[i].record.w)),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SkillListViewport extends StatelessWidget {
+  const _SkillListViewport({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRect(
+      child: OverflowBox(
+        alignment: AlignmentDirectional.topStart,
+        minHeight: 0,
+        maxHeight: double.infinity,
+        fit: OverflowBoxFit.deferToChild,
+        child: child,
+      ),
     );
   }
 }
