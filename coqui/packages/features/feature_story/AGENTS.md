@@ -3,16 +3,16 @@
 The story game: the step runner, the play screen, Listen mode, speaking turns.
 
 - Kind: Flutter package.
-- Replaces: juego.js, index.html.
+- Replaces: `juego.js`, `index.html`.
 - One package is one lane. Branch: `lane/feature_story/<order number>`.
-- Work orders: 15.
 - The runbook is `../../../AGENTS.md`. Read it first.
+- This file holds standing rules only. What a ticket did goes in its PR body and its issue.
 
 ## May depend on
 
 - The plan's row: contracts, ui, pixel, scenes.
 - Coquí packages: `coqui_contracts`, `coqui_pixel`, `coqui_scenes`, `coqui_ui`.
-- Third party: `material_ui` ^1.11.1.
+- Third party: `material_ui` ^1.11.1 (and `collection`, allowed anywhere).
 - Dev only: `flutter_lints`, `flutter_test` (from the SDK), and `coqui_testing` (the fakes).
 - `coqui_testing` goes under `dev_dependencies` only. Tests and `tool/` import it. Nothing under `lib/` does.
 - Material widgets come from `package:material_ui/material_ui.dart`. Nobody imports `package:flutter/material.dart`.
@@ -23,77 +23,46 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
 
 - `lib/feature_story.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- It exports the module, `StoryModule({scenes})` (a `FeatureModule`: no tab; it answers `StoryRoute`, played or, with `listen`, told straight through). `scenes` makes the scene a story file names: by default `registryScenes`, the real scenes of `coqui_scenes` (`loadScene`: its converted scenes; the others throw "not converted yet" and the screen then shows, in the lesson frame, centred, "This story is not in the new app yet." and a "Back to the map" button (what the X does), nothing else but the X: `StoryNotReady`. Any other failure to open a story shows the lesson frame and its X, and the framework hears why). It gives the runner the scene's start frog (`juego.js:16`, from the sheet) and whether the frog keeps the old flat shadow (not in a converted scene).
-- `StoryModule(txt:)` is the old page's `?txt=` (juego.js TXT): when a line's words show, `TxtMode.con` (while it is spoken; the default), `tras` (right after it) or `no` (never). `lib/feature_story.dart` exports `TxtMode`, with `show`, for it; the shell reads `?txt=` and gives it.
-- Issue #65: `lib/feature_story.dart` also exports `play`, with `show`, for `coqui_story_checks` (every scene's play-every-path and sheet-rules checks moved from `feature_story` to `coqui/packages/coqui_story_checks/`).
-- Order 26: `StoryModule(showPerf: true)` (`StoryScreen.showPerf`) shows, in a small chip in a corner under the top bar, how long the bake of the scene's state now on screen took (`FrameRenderer` times each bake by its set key, as `SetBakes` does): the app's `?perf=1`. Off by default.
-- The runner, the no-screen player and the screen are under `lib/src/`: `runner/` (pure Dart: `StoryRunner`, a port of historia/juego.js and a `SceneHost`; `StoryTimers`, `StoryView`, `bubble_place.dart`), `play/` (pure Dart: `play(story, plan, draws, seed)`, the trace), `screen/` (Flutter: `StoryScreen` and its widgets).
+- It exports:
+  - `StoryModule({scenes, txt, showPerf})`: a `FeatureModule` with no tab that answers `StoryRoute` (played or, with `listen`, told straight through).
+    - `scenes` defaults to `registryScenes` (`loadScene` from `coqui_scenes`). Scenes that throw `UnimplementedError('not converted yet')` render `StoryNotReady` inside the lesson frame (centred "This story is not in the new app yet." and a "Back to the map" button, plus the close X). Any other load failure shows the lesson frame with its X and reports the error.
+    - `txt` (`TxtMode`: `con`, `tras`, `no`) controls when captions appear (matching `?txt=` / `juego.js` `TXT`).
+    - `showPerf` (`StoryScreen.showPerf`, off by default) shows a small bake-time chip under the top bar for `?perf=1`.
+  - `TxtMode` (exported with `show`) for the shell's `?txt=` flag.
+  - `play` (exported with `show`) for `coqui_story_checks` (where all per-scene play-every-path and sheet-rules checks live).
+- Package layout under `lib/src/`:
+  - `runner/` (pure Dart): `StoryRunner` (port of `historia/juego.js` and `SceneHost`), `StoryTimers`, `StoryView`, `bubble_place.dart`.
+  - `play/` (pure Dart): `play(story, plan, draws, seed, {letters, ...})` trace runner.
+  - `screen/` (Flutter): `StoryScreen` and its widgets.
 - Screen wording lives in `lib/src/wording.dart` (`StoryWording`), and screen-local motion waits and hero tags live in `lib/src/motion.dart` (`StoryMotion`, the only file under `lib/` allowed to call `NocheMotion.ms`).
-- Keep these widget keys stable as the shell and integration test contract: `Key('story-start-disc')`, `Key('story-close-button')`, `Key('story-end-primary')`, `Key('story-end-replay')`, `Key('story-end-map')`, `Key('story-unconverted')`, and `Key('story-unconverted-back')`. When the end screen's primary action itself returns to the map (listen mode or no next story/review), `Key('story-end-map')` wraps `Key('story-end-primary')` on that orange button instead of rendering a separate outline Map button.
 - The scene picture window is wrapped in `NocheWindow` with `StoryMotion.storyWindowTag(storyId)` (the story id) as its hero tag so the picture travels cleanly across map, place, and story lesson screens without changing its whole-number pixel scale.
 
+## Stable widget keys
 
-## How it is built
+Keep these widget keys stable as the shell and integration test contract:
 
-- Time is `StoryTimers` (juego.js's `setTimeout`/`setInterval` on a clock a host moves: the screen's ticker moves it from `Services.clock`, the player from timer to timer). The runner never reads a real clock and never sleeps.
-- The story's clock does not advance while the app is out of sight: when the app's lifecycle state leaves `resumed` the screen calls `StoryRunner.holdClock` (`pump` then does nothing, so no timer fires and the virtual time stands), and on the return `resumeClock` takes the time spent away out of the clock's, so the story goes on from where it stopped: no burst of due timers, no jump (`test/lifecycle_test.dart`). The no-screen player never pumps and is not affected.
-- The runner knows nothing of the screen: what is shown is `StoryView` (caption, bubble, dashes, mic state, end buttons); the frame is a `StoryRenderer` (`FrameRenderer` on `drawFrame` for the screen, `HeadlessRenderer` for the player).
-- `play(...)` returns the trace in the shape of `coqui/ref/trazas/<story>/<plan>.json`. `tool/juega.dart <story> <plan> <seed>` plays one story of `historia/` on the stand-in scene and prints it; `tool/differential.dart` plays all 171 recorded runs and compares them whole (`test/differential_test.dart` runs the same). The stand-in is `tool/replay_scene.dart`: it replays what the OLD scene did in each run, recorded from the old page by `tool/ref/record_acts.mjs` into `test/fixtures/acts/` (remake them with that script whenever a story file or juego.js changes, after `coqui/tool/ref/trazas/juega.mjs`; for one changed story file: `juega.mjs --replace STORY`, then `record_acts.mjs --only STORY`). On the real El frente (`test/real_scene.dart`) the same runs are compared in everything but time (`forTimeless`), and whole where the scene's geometry allows; on the real El balcón (order 30b), La sala (order 31b), El patio (order 32b: its hops and random draws checked equal too) El camino (order 33b: hops and draws too; the places of Canelo and the cat its state line writes are left out as well, `caminoPlaceless`) El campo (order 34b: hops and draws too; Canelo's place its state line writes left out as well, `campoPlaceless`; all 15 runs equal timeless) El lago (order 35b: hops and draws too, the scene's own draws from the runner's source; the ducks' places its state line writes are left out by `placeless`; all 15 runs equal timeless) and El banco (order 36b: all 18 runs equal timeless, the draws the old ones, the hop sounds the old ones, every walk: the sheet's round 4 seats the man of el-bebe-duerme 1 px left, not 2) and La mesa (order 37b: all 12 runs equal timeless, the hop sounds and the draws the old ones, after the sheet's fix of rana.2), La estufa (order 38b: all 12 runs equal timeless, the hop sounds and the draws the old ones; arroz-con-habichuelas 70 ms shorter, cuidado 2.2 to 2.5 s longer, from the walks to the places the sheet moved) La nevera (order 39b: all 12 runs equal timeless, the hop sounds and the draws the old ones; h-nevera equal whole, para-los-pajaros equal in time, jugo-de-china 70 ms longer, no-hay-leche 1.4 to 1.7 s longer, from the walks to the places the sheet moved) and A comer (order 40b: all 9 runs equal timeless, the hop sounds and the draws the old ones; que-quieres 17.9 to 19.4 s longer, buen-provecho 4.2 s shorter, cafe-con-azucar 12.1 to 13.1 s longer, from the walks to the places the sheet moved) as well, the places their state lines write left out (`placeless`). El camino's rapido-despacio ends with the sheet's new act (acts.sevan: everyone leaves in a file), recorded with the old one: it and what follows are 140 ms later, nothing else differs. The tests of a story whose scene is not converted (`test/not_converted_test.dart`, `test/screen_test.dart`) play a test's own story at a test scene that is never converted (`test/support/test_scene.dart`: `prueba`, its factory throwing as a registry stub does), so that no port has to change them (order 36b; it was El banco's `la-piragua` until order 36b, La sala's `la-familia` until order 31b, El patio's `las-flores` until order 32b, El camino's `uno-dos-tres` until order 33b, El campo's `la-bola` until order 34b, El lago's `pan-para-el-pato` until order 35b).
-- The trace's `speech.events` are the speaking turns and the answers in time order, as the old page writes them (`speechInTimeOrder`: by `t`, a turn before an answer at the same `t`, a stable sort). A comer's stories are the first with speaking turns; until them the turns came all first and the answers after, which no recorded run could see (`test/speech_order_test.dart`).
-- `play(...)` returns the trace in the shape of `coqui/ref/trazas/<story>/<plan>.json`. `tool/juega.dart <story> <plan> <seed>` plays one story of `historia/` on the stand-in scene and prints it; `tool/differential.dart` plays all 153 recorded runs and compares them whole (`test/differential_test.dart` runs the same). The stand-in is `tool/replay_scene.dart`: it replays what the OLD scene did in each run, recorded from the old page by `tool/ref/record_acts.mjs` into `test/fixtures/acts/` (remake them with that script whenever a story file or juego.js changes, after `coqui/tool/ref/trazas/juega.mjs`; for one changed story file: `juega.mjs --replace STORY`, then `record_acts.mjs --only STORY`). On the real El frente (`test/real_scene.dart`) the same runs are compared in everything but time (`forTimeless`), and whole where the scene's geometry allows; on the real El balcón (order 30b), La sala (order 31b), El patio (order 32b: its hops and random draws checked equal too) El camino (order 33b: hops and draws too; the places of Canelo and the cat its state line writes are left out as well, `caminoPlaceless`) El campo (order 34b: hops and draws too; Canelo's place its state line writes left out as well, `campoPlaceless`; all 15 runs equal timeless) El lago (order 35b: hops and draws too, the scene's own draws from the runner's source; the ducks' places its state line writes are left out by `placeless`; all 15 runs equal timeless) and El banco (order 36b: all 18 runs equal timeless, the draws the old ones, the hop sounds the old ones, every walk: the sheet's round 4 seats the man of el-bebe-duerme 1 px left, not 2) as well, the places their state lines write left out (`placeless`). El camino's rapido-despacio ends with the sheet's new act (acts.sevan: everyone leaves in a file), recorded with the old one: it and what follows are 140 ms later, nothing else differs. The tests of a story whose scene is not converted (`test/not_converted_test.dart`, `test/screen_test.dart`) play a test's own story at a test scene that is never converted (`test/support/test_scene.dart`: `prueba`, its factory throwing as a registry stub does), so that no port has to change them (order 36b; it was El banco's `la-piragua` until order 36b, La sala's `la-familia` until order 31b, El patio's `las-flores` until order 32b, El camino's `uno-dos-tres` until order 33b, El campo's `la-bola` until order 34b, El lago's `pan-para-el-pato` until order 35b).
-- `play(letters:)` (order 50b): the plan as letters, one a choice point in order (`r`, `w`; past the end `r`), as
-  historia/tools/juega.py takes it, in place of `plan`'s rule (two decisions have four ways through them; the three plans
-  give three). Nothing else changes: without it every play is as before.
-- El mostrador (order 50b, the first new scene): its three story files are fixtures here (`test/fixtures/mostrador/`, never
-  under `historia/cuentos/`); `test/mostrador_stories_test.dart` plays them on the real scene (the four ways through the
-  decisions, each value of every draw), `tool/mostrador_paths_test.dart` (`--dart-define=SHARD=i/n`, `OUT=dir`) every path
-  (every draw combination times the four ways); both check the sheet's rules at every act's end
-  (`test/support/mostrador_rules.dart`, `mostrador_paths.dart`).
-- Los estantes (order 51b) the same way: `test/fixtures/estantes/`, `test/estantes_stories_test.dart`,
-  `tool/estantes_paths_test.dart` (96 paths), `test/support/estantes_rules.dart`, `estantes_paths.dart` (it uses
-  `drawsOf` and `letterPlan` of `mostrador_paths.dart`).
-- Las frutas (order 52b) the same way: `test/fixtures/frutas/`, `test/frutas_stories_test.dart`, `tool/frutas_paths_test.dart`
-  (144 paths), `test/support/frutas_rules.dart`, `frutas_paths.dart` (it uses `drawsOf`, `letterPlan` and `decisionLetters`
-  of `mostrador_paths.dart`).
-- La caja (order 53b): the same for its three stories (`test/fixtures/caja/`, `test/caja_stories_test.dart`,
-  `tool/caja_paths_test.dart`, `test/support/caja_rules.dart` and `caja_paths.dart`). No change to the runner.
-- La esquina (order 54b): its three story files are fixtures here (`test/fixtures/esquina/`, never under
-  `historia/cuentos/`); `test/esquina_stories_test.dart` and `tool/esquina_paths_test.dart` as El mostrador's, the draws by
-  `test/support/esquina_paths.dart` (a draw whose options name variables takes them as dealt), the rules by
-  `test/support/esquina_rules.dart` (checked at the end of every act waited for; a loose act at its `ya`).
-- La parada (order 55b) the same way: `test/fixtures/parada/`, `test/parada_stories_test.dart`, `tool/parada_paths_test.dart`,
-  `test/support/parada_rules.dart`, `parada_paths.dart` (its draws: `esquinaDrawsOf`, each distinct combination once; a
-  name drawn in both rounds of story 51 takes one value for both, as a fixed draw does; `SEEDS=n` adds n plays with the
-  draws left to the seed, for rounds that differ).
-- Las tiendas (order 56b): as La esquina's: fixtures in `test/fixtures/tiendas/`, `test/tiendas_stories_test.dart`,
-  `tool/tiendas_paths_test.dart`, `test/support/tiendas_paths.dart` and `tiendas_rules.dart` (the sheet's places that break
-  a rule by themselves are kept apart as `known`).
-- El cruce (order 57b): the same for its three stories (`test/fixtures/cruce/`, `test/cruce_stories_test.dart`,
-  `tool/cruce_paths_test.dart`, `test/support/cruce_rules.dart` and `cruce_paths.dart`, which uses `esquinaDrawsOf`). No
-  change to the runner.
-- When he waits at a decision (order 58b, La plaza): the lines said since the round's `dots` step (`StoryRunner.ronda`) are
-  said again, in order, when they are more than one (two people speak, or one says two things); a round of one line says
-  its `line` again, as before (`test/round_repeat_test.dart`). Asks and eliges are unchanged.
-- El banco de la plaza (order 58b): its three story files are fixtures here (`test/fixtures/plaza/`);
-  `test/plaza_stories_test.dart` and `tool/plaza_paths_test.dart` as El mostrador's, with `test/support/plaza_rules.dart`
-  (the frog whole, the piragüero's head, the hooks, the board's pictures, the bubbles, the frog on the cart, the view, people
-  apart; what the story's places and the sheet's checks do not settle together is counted apart, `notes`).
-- El reloj (order 59b): its three story files are fixtures here (`test/fixtures/reloj/`); `test/reloj_stories_test.dart`
-  and `tool/reloj_paths_test.dart` with `test/support/reloj_paths.dart` (condition-aware `relojDrawsOf`) and
-  `test/support/reloj_rules.dart` (frog-seen, frog-on-hand, tito-face, vendedor-head, cards-clear, carton-clear,
-  bingo-clear, table-heads, spots-in-view). No change to the runner.
-- El quiosco (order 60): its three story files are fixtures here (`test/fixtures/quiosco/`);
-  `test/quiosco_stories_test.dart` and `tool/quiosco_paths_test.dart` with `test/support/quiosco_paths.dart` and
-  `test/support/quiosco_rules.dart` (frog-seen, vendedor-head, candles-clear, sign-clear, spots-in-view). No change to
-  the runner.
-- El calendario (order 61): its three story files are fixtures here (`test/fixtures/calendario/`);
-  `test/calendario_stories_test.dart` and `tool/calendario_paths_test.dart` with `test/support/calendario_paths.dart`
-  and `test/support/calendario_rules.dart` (frog-seen, senora-col1, arch-card, balloons, seat-heads, spots-in-view). No
-  change to the runner.
-- A set step's positions go through the scene's `remap` (`remapPositions`): every map with a number `x` and `y`, and, since order 33b, where the answer cards stand (`respEn: [x, y]`, h-camino beats.5).
-- A change to the runner that moves any time, sound, clip, step or draw by one fails the differential test.
-- The end screen's "Next story" is the one place the runner differs from juego.js on purpose: juego.js shows it for any `next` (`!!(S.next&&!OIR)`), the runner only when `next` is a story the course names (`course.meta(next) != null`), because a story the course does not name is no story of the app (a staged one: coqui/AGENTS.md, "Stories staged by another session"); then the end screen is that of a story with no `next`. The recorded runs hold no end buttons (`ending.screen` only), so the comparison does not see this; `test/differential_test.dart` ("the end screen of the recorded runs") reads `view.foot` of the real tree's runs (`play(view:)`, `compareRun(view:)`), and the story, screen and Listen tests name the stories a test course has (`TestCourse(stories:)`, `meta`).
-- What is drawn over the picture takes no touch where the old page's does not (`pointer-events:none`): the speech bubble (`#bub`), the end title (`#fin`), the mic's tick (`#mic[data-s=ok]`), and the `?perf=1` chip (not in the old page). A finger on a bubble reaches the picture under it (`test/touch_through_test.dart`).
+- `Key('story-start-disc')`
+- `Key('story-close-button')`
+- `Key('story-end-primary')`
+- `Key('story-end-replay')`
+- `Key('story-end-map')`
+- `Key('story-unconverted')`
+- `Key('story-unconverted-back')`
+
+When the end screen's primary action itself returns to the map (listen mode or no next story/review), `Key('story-end-map')` wraps `Key('story-end-primary')` on that orange button instead of rendering a separate outline Map button.
+
+## Runner, player, and testing rules
+
+- **Virtual time and lifecycle:** Time is `StoryTimers` (`setTimeout`/`setInterval` on a host-driven clock). The runner never reads a real clock and never sleeps. When the app lifecycle leaves `resumed`, the screen calls `StoryRunner.holdClock` so virtual time pauses; on return, `resumeClock` subtracts elapsed wall time so there is no burst of due timers (`test/lifecycle_test.dart`).
+- **Renderer separation:** The runner knows nothing of Flutter widgets. UI state flows through `StoryView` (caption, bubble, dashes, mic state, end buttons), and frames through `StoryRenderer` (`FrameRenderer` on `drawFrame` for the screen, `HeadlessRenderer` for the no-screen player).
+- **Differential parity:** `play(...)` returns traces matching `coqui/ref/trazas/<story>/<plan>.json`. Any change to the runner that moves a time, sound, clip, step, or draw fails `test/differential_test.dart`. When a story file or `juego.js` changes intentionally, regenerate traces with `coqui/tool/ref/trazas/juega.mjs` and act fixtures with `tool/ref/record_acts.mjs`.
+- **Scene-level story checks live in `coqui_story_checks`:** Per-scene play-every-path and sheet-rules checks belong in `coqui/packages/coqui_story_checks/`, not here. `play(letters:)` accepts an explicit per-decision plan (`r`/`w`) for those checks.
+- **Unconverted-scene tests:** `test/not_converted_test.dart` and `test/screen_test.dart` use the never-converted test scene `prueba` (`test/support/test_scene.dart`) so scene ports never have to modify `feature_story` tests.
+- **Speech event order:** `speech.events` records speaking turns and answers in time order (stable sort by `t`, turn before answer on ties; `test/speech_order_test.dart`).
+- **Decision round replay:** When waiting at a decision, lines said since the round's `dots` step (`StoryRunner.ronda`) replay in order when more than one; a single-line round repeats its `line` (`test/round_repeat_test.dart`). Asks and eliges are unchanged.
+- **Position remapping:** A set step's positions (`x`/`y` maps and `respEn`) pass through the scene's `remap` (`remapPositions`).
+- **End screen "Next story":** Unlike `juego.js`, the runner shows "Next story" only when `course.meta(next) != null` so staged stories remain invisible to the app (`test/differential_test.dart`).
+- **Touch pass-through:** Overlays that take no touch in the old page (`#bub`, `#fin`, `#mic[data-s=ok]`, and the `?perf=1` chip) pass pointer events through to the picture underneath (`test/touch_through_test.dart`).
 
 ## Run and test it alone
 
@@ -111,7 +80,7 @@ dart format --output=none --set-exit-if-changed .
 flutter analyze
 ```
 
-A dev entry that starts the feature on the fakes comes with order 02. It lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_story`. Page 12, section 7 says `lib/dev_main.dart`; the orchestrator changed that on Nov 19, 2026.
+The dev entry lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_story`.
 
 ## Lines that apply
 
