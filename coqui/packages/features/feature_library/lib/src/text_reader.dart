@@ -6,6 +6,7 @@ import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/reader_model.dart';
 import 'package:feature_library/src/reader_page.dart';
 import 'package:feature_library/src/reader_pagination.dart';
+import 'package:feature_library/src/reader_settings_sheet.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_audio.dart';
 import 'package:flutter/semantics.dart';
@@ -61,6 +62,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   final _met = <String>{};
 
   late ReaderSettings _settings;
+  late final ValueNotifier<ReaderSettings> _settingsNotifier;
+  bool _settingsOpen = false;
   ReaderDocument? _doc;
   List<ReaderPage> _pages = const [];
   int _pageIndex = 0;
@@ -82,6 +85,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   bool _missing = false;
   bool _loading = true;
   Future<void> _writes = Future.value();
+  Future<void> _settingsWrites = Future.value();
   StreamSubscription<void>? _changes;
 
   @override
@@ -90,6 +94,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _settings =
         widget.initialSettings ?? ReaderSettings.loadFrom(_settingsStore);
+    _settingsNotifier = ValueNotifier<ReaderSettings>(_settings);
     _changes = _s.progress.changes.listen((_) {
       if (mounted) setState(() {});
     });
@@ -187,6 +192,7 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _playback++;
+    _settingsNotifier.dispose();
     unawaited(_changes?.cancel());
     _changes = null;
     _flushListeningProgress();
@@ -204,7 +210,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
         _lastWidth == contentWidth &&
         _lastHeight == contentHeight &&
         _lastScaler == textScaler &&
-        _lastPaginatedSettings == _settings &&
+        _lastPaginatedSettings != null &&
+        _lastPaginatedSettings!.samePaginationAs(_settings) &&
         _pages.isNotEmpty;
     if (unchanged) return;
 
@@ -230,6 +237,13 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     _lastPaginatedSettings = _settings;
     _pages = newPages;
 
+    final activeSentencePage =
+        !_playing || _activeSentenceId == null || newPages.isEmpty
+        ? null
+        : _recordedSentences()
+              .where((e) => e.sentence.id == _activeSentenceId)
+              .firstOrNull;
+
     if (newPages.isEmpty) {
       _pageIndex = 0;
     } else if (_pendingSavedAnchor != null) {
@@ -245,6 +259,8 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
     } else if (_pendingSavedPage != null) {
       _pageIndex = _pendingSavedPage!.clamp(0, newPages.length - 1);
       _pendingSavedPage = null;
+    } else if (activeSentencePage != null) {
+      _pageIndex = activeSentencePage.firstPage.clamp(0, newPages.length - 1);
     } else if (previousAnchor != null) {
       _pageIndex = pageForAnchor(
         newPages,
@@ -297,11 +313,15 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   }
 
   void _updateSettings(ReaderSettings next) {
+    if (!mounted || next == _settings) return;
     setState(() {
       _settings = next;
       _selectedWord = null;
     });
-    unawaited(_settings.saveTo(_settingsStore).catchError((Object _) {}));
+    _settingsNotifier.value = next;
+    _settingsWrites = _settingsWrites
+        .then<void>((_) => next.saveTo(_settingsStore))
+        .catchError((Object _) {});
   }
 
   void _beginAudioTiming() {
@@ -565,12 +585,17 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
       await _s.clips.stop();
       if (!mounted || request != _playback) return;
 
-      for (var i = startIdx; i < list.length; i++) {
+      final sentenceIds = [for (final e in list) e.sentence.id];
+      for (var i = startIdx; i < sentenceIds.length; i++) {
         if (!mounted || request != _playback) return;
-        final item = list[i];
+        final item = _recordedSentences()
+            .where((e) => e.sentence.id == sentenceIds[i])
+            .firstOrNull;
+        if (item == null) continue;
         setState(() {
-          if (_pageIndex < item.firstPage || _pageIndex > item.lastPage) {
-            _pageIndex = item.firstPage;
+          if (_pages.isNotEmpty &&
+              (_pageIndex < item.firstPage || _pageIndex > item.lastPage)) {
+            _pageIndex = item.firstPage.clamp(0, _pages.length - 1);
           }
           _activeSentenceId = item.sentence.id;
           _lastSentenceId = item.sentence.id;
@@ -777,37 +802,41 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
   }
 
   Future<void> _openSettings() async {
-    if (widget.onOpenSettings != null) {
-      await widget.onOpenSettings!(_settings, _updateSettings);
-      return;
-    }
-    final lang = _s.course.language;
-    await showNocheSheet<void>(
-      context,
-      title: NocheA11y.label(
-        NocheA11y.textAndPage,
-        courseWords: lang.a11yWords,
-      ),
-      closeLabel: NocheA11y.label(
-        NocheA11y.closeTextAndPage,
-        courseWords: lang.a11yWords,
-      ),
-      builder: (context, close) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          NocheSwitchRow(
-            label: 'Underline words',
-            value: _settings.underlineWords,
-            showTopBorder: false,
-            onChanged: (v) {
-              _updateSettings(_settings.copyWith(underlineWords: v));
-              close();
-            },
+    if (_settingsOpen) return;
+    setState(() {
+      _settingsOpen = true;
+      _selectedWord = null;
+    });
+    try {
+      if (widget.onOpenSettings != null) {
+        await widget.onOpenSettings!(_settings, _updateSettings);
+        return;
+      }
+      final lang = _s.course.language;
+      await showNocheSheet<void>(
+        context,
+        title: NocheA11y.label(
+          NocheA11y.textAndPage,
+          courseWords: lang.a11yWords,
+        ),
+        closeLabel: NocheA11y.label(
+          NocheA11y.closeTextAndPage,
+          courseWords: lang.a11yWords,
+        ),
+        builder: (context, close) => ValueListenableBuilder<ReaderSettings>(
+          valueListenable: _settingsNotifier,
+          builder: (context, current, _) => ReaderSettingsSheet(
+            settings: current,
+            language: lang,
+            onChanged: _updateSettings,
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _settingsOpen = false);
+      }
+    }
   }
 
   Future<void> _openChapters() async {
@@ -981,20 +1010,28 @@ class _TextReaderState extends State<TextReader> with WidgetsBindingObserver {
                           NocheA11y.textAndPage,
                           courseWords: lang.a11yWords,
                         ),
+                        selected: _settingsOpen ? true : null,
                         builder: (context, pressed) => Transform.scale(
                           scale: pressed ? 0.94 : 1,
-                          child: SizedBox(
+                          child: Container(
                             width: NocheSize.touch,
                             height: NocheSize.touch,
-                            child: Center(
-                              child: Text(
-                                'Aa',
-                                style: NocheType.bookTitle.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 20,
-                                  height: 1,
-                                  color: palette.chromeIcon,
-                                ),
+                            alignment: AlignmentDirectional.center,
+                            decoration: _settingsOpen
+                                ? BoxDecoration(
+                                    color: palette.chromeIcon,
+                                    shape: BoxShape.circle,
+                                  )
+                                : null,
+                            child: Text(
+                              'Aa',
+                              style: NocheType.bookTitle.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
+                                height: 1,
+                                color: _settingsOpen
+                                    ? palette.ground
+                                    : palette.chromeIcon,
                               ),
                             ),
                           ),

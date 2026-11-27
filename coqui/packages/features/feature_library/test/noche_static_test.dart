@@ -9,6 +9,7 @@ void main() {
     'lib/src/reader_model.dart',
     'lib/src/reader_pagination.dart',
     'lib/src/reader_page.dart',
+    'lib/src/reader_settings_sheet.dart',
     'lib/src/book_coverage.dart',
   ];
 
