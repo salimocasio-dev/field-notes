@@ -15,6 +15,9 @@ abstract final class LibraryWording {
   static const String newStoryLocked = 'Come back when you learn more words.';
   static const String newStoryOpen = 'A new story at your level';
   static const String writeMyStory = 'Write my story';
+  static const String writingStoryTitle = 'Writing your story';
+  static const String writingStorySubtitle = 'With the words you know.';
+  static const String newStoryTag = 'New';
   static const String noStoryMatchFocused =
       'There’s no new story that fits both your practice words and your current level.';
   static const String storySaveFailed =

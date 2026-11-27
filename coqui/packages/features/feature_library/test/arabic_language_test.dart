@@ -1,5 +1,6 @@
 // Arabic / RTL language coverage and package-wide language-routing audit for
 // feature_library (issue #54).
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,6 +8,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
+import 'package:feature_library/src/motion.dart';
 import 'package:feature_library/src/reader_model.dart';
 import 'package:feature_library/src/reader_page.dart';
 import 'package:feature_library/src/reader_pagination.dart';
@@ -15,6 +17,7 @@ import 'package:feature_library/src/reading_audio.dart';
 import 'package:feature_library/src/reading_home.dart';
 import 'package:feature_library/src/story_generator.dart';
 import 'package:feature_library/src/text_reader.dart';
+import 'package:feature_library/src/wording.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -53,6 +56,36 @@ Language _unsupportedScriptLanguage() => Language(
     'me': 'Я',
   },
 );
+
+class _ControllableArabicGenerator extends StoryGenerator {
+  _ControllableArabicGenerator(this.responses)
+    : super([
+        (
+          title: 'في البيت',
+          beats: [
+            ['هذا بيت جدة.'],
+          ],
+        ),
+        (
+          title: 'بيت كبير',
+          beats: [
+            ['بيت جدة هذا.'],
+          ],
+        ),
+      ]);
+
+  final List<Completer<StoryDraft?>> responses;
+  int _index = 0;
+
+  @override
+  Future<StoryDraft?> writeStory({
+    required ReadingVocabulary vocabulary,
+    required List<String> focus,
+    required Iterable<String> due,
+    required Set<String> previous,
+    required Rng rng,
+  }) => responses[_index++].future;
+}
 
 class _ReadableArabicCatalog extends FakeCourseCatalog {
   _ReadableArabicCatalog({super.repaso}) : super.arabic();
@@ -491,9 +524,7 @@ void main() {
 
           // Enter non-matching Arabic words separated by Arabic comma (،): message stays in sheet.
           await tester.enterText(find.byType(TextFormField), 'قمر، شمس');
-          await tester.tap(
-            find.widgetWithText(NochePrimaryButton, 'Write my story'),
-          );
+          await tester.tap(find.byKey(const Key('library-write-story-submit')));
           await tester.pumpAndSettle();
           expect(tester.takeException(), isNull);
           expect(
@@ -503,6 +534,139 @@ void main() {
         },
       );
     }
+
+    testWidgets(
+      'writes a new Arabic story in RTL with English writing chrome in NocheLtr, inserts it to the left of the open slot and right of older stories, and clears NEW tag when opened',
+      (tester) async {
+        tester.view.devicePixelRatio = 1;
+        tester.view.physicalSize = const Size(390, 844);
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final course = _ReadableArabicCatalog();
+        await course.load();
+        final progress = FakeProgressStore();
+        progress.import(
+          jsonEncode({
+            ...progress.raw,
+            'palabras': {
+              for (final w in ['هذا', 'بيت', 'جدة', 'الكبير'])
+                w: _known(w).toJson(),
+            },
+          }),
+        );
+        final nav = FakeNavigator();
+        final services = fakeServices(
+          course: course,
+          progress: progress,
+          pictures: FakePictureSource(),
+          nav: nav,
+        );
+        final store = ReadingStore(services.storage(ReadingStore.space));
+        final older = await store.add(
+          now: 100,
+          title: 'بيت جدة',
+          body: 'هذا بيت جدة الكبير.',
+          generated: true,
+        );
+        await store.markOpened(older.id, 100);
+
+        final completer = Completer<StoryDraft?>();
+        final slowArabicGenerator = _ControllableArabicGenerator([completer]);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ReadingHome(
+              services: services,
+              generator: slowArabicGenerator,
+            ),
+          ),
+        );
+        await settle(tester);
+
+        await tester.tap(find.byKey(const Key('library-write-story')));
+        await tester.pumpAndSettle();
+
+        final field = tester.widget<TextField>(find.byType(TextField));
+        expect(field.textDirection, TextDirection.rtl);
+
+        final submitFinder = find.byKey(
+          const Key('library-write-story-submit'),
+        );
+        final submitBox = tester.widget<Container>(
+          find.descendant(of: submitFinder, matching: find.byType(Container)),
+        );
+        expect((submitBox.decoration as BoxDecoration).color, NocheColors.text);
+
+        await tester.enterText(find.byType(TextFormField), 'بيت');
+        await tester.tap(submitFinder);
+        await tester.pump();
+        await tester.pump(NocheMotion.swapAfter + NocheMotion.move);
+
+        final writingTitle = find.text(LibraryWording.writingStoryTitle);
+        final writingSubtitle = find.text(LibraryWording.writingStorySubtitle);
+        expect(writingTitle, findsOneWidget);
+        expect(writingSubtitle, findsOneWidget);
+        expect(
+          Directionality.of(tester.element(writingTitle)),
+          TextDirection.ltr,
+        );
+        expect(
+          Directionality.of(tester.element(writingSubtitle)),
+          TextDirection.ltr,
+        );
+
+        completer.complete(const StoryDraft('في البيت', 'هذا بيت جدة.'));
+        await tester.pump();
+        await tester.pump(NocheMotion.pageOut);
+        await tester.pump(LibraryMotion.shelfInsertAfter);
+        await tester.pump(
+          LibraryMotion.shelfInsertFadeDelay + NocheMotion.move,
+        );
+        await tester.pumpAndSettle();
+
+        expect(nav.routes, isEmpty);
+        final texts = store.texts();
+        final newStory = texts.firstWhere((t) => t.title == 'في البيت');
+        expect(newStory.isNew, isTrue);
+
+        final slotRect = tester.getRect(
+          find.byKey(const Key('library-write-story')),
+        );
+        final newRect = tester.getRect(
+          find.byKey(ValueKey('library-book:${newStory.id}')),
+        );
+        final olderRect = tester.getRect(
+          find.byKey(ValueKey('library-book:${older.id}')),
+        );
+        expect(newRect.left, lessThan(slotRect.left));
+        expect(newRect.left, greaterThan(olderRect.left));
+
+        final badgeFinder = find.byKey(
+          Key('library-story-new-tag:${newStory.id}'),
+        );
+        expect(badgeFinder, findsOneWidget);
+        expect(
+          Directionality.of(
+            tester.element(
+              find.descendant(
+                of: badgeFinder,
+                matching: find.text(LibraryWording.newStoryTag.toUpperCase()),
+              ),
+            ),
+          ),
+          TextDirection.ltr,
+        );
+
+        await tester.tap(find.byKey(ValueKey('library-book:${newStory.id}')));
+        await settle(tester);
+        expect(nav.routes, [BookRoute(newStory.id)]);
+        expect(badgeFinder, findsNothing);
+        expect(store.text(newStory.id)?.isNew, isFalse);
+      },
+    );
   });
 
   group('TextReader in FakeCourseCatalog.arabic()', () {

@@ -87,6 +87,7 @@ class ReadingText {
     required this.title,
     required this.body,
     required this.generated,
+    this.isNew = false,
     this.chapters,
     this.format,
     this.byteSize,
@@ -98,6 +99,7 @@ class ReadingText {
   final String title;
   final String body;
   final bool generated;
+  final bool isNew;
   final List<ReadingChapter>? chapters;
   final String? format;
   final int? byteSize;
@@ -109,6 +111,7 @@ class ReadingText {
     'title': title,
     'body': body,
     'generated': generated,
+    if (isNew) 'isNew': true,
     if (chapters != null)
       'chapters': [for (final chapter in chapters!) chapter.toJson()],
     if (format != null && format!.isNotEmpty) 'format': format!,
@@ -165,6 +168,7 @@ class ReadingText {
         title: title,
         body: body,
         generated: generated,
+        isNew: value['isNew'] == true,
         chapters: parsedChapters,
         format: format,
         byteSize: byteSize,
@@ -224,6 +228,7 @@ class ReadingStore {
       'title': item.title,
       if (hasSeparateBody) 'bodyKey': bodyKey else 'body': item.body,
       'generated': item.generated,
+      if (item.isNew) 'isNew': true,
       if (item.chapters != null)
         'chapters': [for (final chapter in item.chapters!) chapter.toJson()],
       if (item.format != null && item.format!.isNotEmpty)
@@ -281,6 +286,7 @@ class ReadingStore {
     required String title,
     required String body,
     required bool generated,
+    bool isNew = false,
     List<ReadingChapter>? chapters,
     String? format,
     int? byteSize,
@@ -294,6 +300,7 @@ class ReadingStore {
         title: title,
         body: body,
         generated: generated,
+        isNew: isNew,
         chapters: chapters,
         format: format,
         byteSize: byteSize,
@@ -310,6 +317,7 @@ class ReadingStore {
     required String title,
     required String body,
     required bool generated,
+    bool isNew = false,
     List<ReadingChapter>? chapters,
     String? format,
     int? byteSize,
@@ -342,6 +350,7 @@ class ReadingStore {
       title: title,
       body: body,
       generated: generated,
+      isNew: isNew,
       chapters: chapters,
       format: format,
       byteSize: byteSize,
@@ -364,6 +373,33 @@ class ReadingStore {
     }
 
     return text;
+  }
+
+  Future<void> clearNew(String id) {
+    final prev = _writeQueues[storage] ?? Future<void>.value();
+    final next = prev
+        .catchError((Object _) {})
+        .then((_) => _clearNewSerialized(id));
+    _writeQueues[storage] = next.then<void>((_) {}, onError: (Object _) {});
+    return next;
+  }
+
+  Future<void> _clearNewSerialized(String id) async {
+    final saved = _read('texts');
+    if (saved is! List) return;
+    var changed = false;
+    final updated = <Object?>[];
+    for (final entry in saved) {
+      if (entry is Map && entry['id'] == id && entry['isNew'] == true) {
+        final copy = Map<String, Object?>.from(entry)..remove('isNew');
+        updated.add(copy);
+        changed = true;
+      } else {
+        updated.add(entry);
+      }
+    }
+    if (!changed) return;
+    await storage.write('texts', jsonEncode(updated));
   }
 
   ReadingPlace place(String id) {
@@ -414,9 +450,9 @@ class ReadingStore {
     }),
   );
 
-  Future<void> markOpened(String id, int now) {
+  Future<void> markOpened(String id, int now) async {
     final existing = place(id);
-    return savePlace(
+    await savePlace(
       id,
       ReadingPlace(
         page: existing.page,
@@ -429,6 +465,7 @@ class ReadingStore {
         charOffset: existing.charOffset,
       ),
     );
+    await clearNew(id);
   }
 }
 

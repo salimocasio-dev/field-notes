@@ -5,6 +5,7 @@ import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
 import 'package:feature_library/src/import_screen.dart';
+import 'package:feature_library/src/motion.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_home.dart';
 import 'package:feature_library/src/text_reader.dart';
@@ -80,7 +81,23 @@ void main() {
     await tester.tap(find.byKey(const Key('library-write-story')));
     await ready(tester);
     await tester.enterText(find.byType(TextFormField), 'jugo');
-    await tester.tap(find.widgetWithText(NochePrimaryButton, 'Write my story'));
+    await tester.tap(find.byKey(const Key('library-write-story-submit')));
+    await tester.pumpAndSettle();
+    await tester.pump(
+      LibraryMotion.shelfInsertAfter +
+          LibraryMotion.shelfInsertFadeDelay +
+          NocheMotion.move,
+    );
+    await tester.pumpAndSettle();
+
+    // New story lands on the shelf with a NEW tag; learner stays on Library.
+    expect(find.byType(ReadingHome), findsOneWidget);
+    expect(find.byType(NocheTabBar), findsOneWidget);
+    expect(find.byType(TextReader), findsNothing);
+    expect(find.text(LibraryWording.newStoryTag.toUpperCase()), findsOneWidget);
+
+    final newTagFinder = find.text(LibraryWording.newStoryTag.toUpperCase());
+    await tester.tap(newTagFinder);
     await ready(tester);
     expect(find.byType(TextReader), findsOneWidget);
     expect(find.byType(NocheTabBar), findsNothing);
@@ -91,6 +108,7 @@ void main() {
     await ready(tester);
     expect(find.byType(NocheTabBar), findsOneWidget);
     expect(find.text('STORIES'), findsOneWidget);
+    expect(find.text(LibraryWording.newStoryTag.toUpperCase()), findsNothing);
   });
 
   testWidgets('learner with no words sees locked slot and cannot open sheet', (

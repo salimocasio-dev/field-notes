@@ -127,4 +127,22 @@ class StoryGenerator {
     }
     return best.isEmpty ? null : best[(rng.next() * best.length).floor()];
   }
+
+  /// Async hook for writing a story (allows slow/async story generators in
+  /// production or tests while delegating to [generate] by default).
+  Future<StoryDraft?> writeStory({
+    required ReadingVocabulary vocabulary,
+    required List<String> focus,
+    required Iterable<String> due,
+    required Set<String> previous,
+    required Rng rng,
+  }) => Future.value(
+    generate(
+      vocabulary: vocabulary,
+      focus: focus,
+      due: due,
+      previous: previous,
+      rng: rng,
+    ),
+  );
 }
