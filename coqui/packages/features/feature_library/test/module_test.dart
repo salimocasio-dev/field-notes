@@ -4,9 +4,11 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/feature_library.dart';
+import 'package:feature_library/src/import_screen.dart';
 import 'package:feature_library/src/reading.dart';
 import 'package:feature_library/src/reading_home.dart';
 import 'package:feature_library/src/text_reader.dart';
+import 'package:feature_library/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -20,7 +22,7 @@ Future<void> ready(WidgetTester tester) async {
 }
 
 void main() {
-  test('the module owns Biblioteca and book routes', () {
+  test('the module owns Biblioteca, import, and book routes', () {
     final rig = Rig();
     const module = LibraryModule();
     expect(module.id, 'library');
@@ -28,6 +30,10 @@ void main() {
     expect(
       module.screenFor(const BookRoute('uno'), rig.services),
       isA<TextReader>(),
+    );
+    expect(
+      module.screenFor(const ImportRoute(), rig.services),
+      isA<ImportScreen>(),
     );
     for (final route in <AppRoute>[
       const StoryRoute('uno'),
@@ -56,8 +62,8 @@ void main() {
     );
     await ready(tester);
     expect(find.byType(ReadingHome), findsOneWidget);
-    expect(find.text('Write my story'), findsOneWidget);
-    expect(find.text('+ Add your own'), findsNothing);
+    expect(find.text(LibraryWording.writeMyStory), findsOneWidget);
+    expect(find.text(LibraryWording.addYourOwnPill), findsOneWidget);
     expect(find.text('Uno'), findsNothing);
     expect(rig.course.bookAsked, isEmpty);
   });

@@ -75,6 +75,12 @@ class ReadingChapter {
   }
 }
 
+/// Thrown when writing a personal text or book to local storage fails or is
+/// dropped (for example, when browser storage quota is exceeded).
+class ReadingStorageFullException implements Exception {
+  const ReadingStorageFullException();
+}
+
 class ReadingText {
   const ReadingText({
     required this.id,
@@ -82,6 +88,10 @@ class ReadingText {
     required this.body,
     required this.generated,
     this.chapters,
+    this.format,
+    this.byteSize,
+    this.importedAt,
+    this.estimatedPages,
   });
 
   final String id;
@@ -89,6 +99,10 @@ class ReadingText {
   final String body;
   final bool generated;
   final List<ReadingChapter>? chapters;
+  final String? format;
+  final int? byteSize;
+  final int? importedAt;
+  final int? estimatedPages;
 
   Map<String, Object> toJson() => {
     'id': id,
@@ -97,27 +111,65 @@ class ReadingText {
     'generated': generated,
     if (chapters != null)
       'chapters': [for (final chapter in chapters!) chapter.toJson()],
+    if (format != null && format!.isNotEmpty) 'format': format!,
+    'byteSize': ?byteSize,
+    'importedAt': ?importedAt,
+    'estimatedPages': ?estimatedPages,
   };
 
-  static ReadingText? fromJson(Object? value) {
+  static ReadingText? fromJson(
+    Object? value, {
+    String? Function(String key)? readBody,
+  }) {
     if (value
         case {
           'id': final String id,
           'title': final String title,
-          'body': final String body,
           'generated': final bool generated,
         }
         when id.startsWith(personalBookPrefix)) {
+      String? body;
+      final rawBodyKey = value['bodyKey'];
+      if (rawBodyKey is String && rawBodyKey.isNotEmpty && readBody != null) {
+        body = readBody(rawBodyKey);
+      }
+      if (body == null) {
+        final rawBody = value['body'];
+        if (rawBody is String) body = rawBody;
+      }
+      if (body == null) return null;
+
       final rawChapters = value['chapters'];
       final parsedChapters = rawChapters is List
           ? rawChapters.map(ReadingChapter.fromJson).nonNulls.toList()
           : null;
+      final rawFormat = value['format'];
+      final format = rawFormat is String && rawFormat.isNotEmpty
+          ? rawFormat
+          : null;
+      final rawByteSize = value['byteSize'];
+      final byteSize = rawByteSize is int && rawByteSize >= 0
+          ? rawByteSize
+          : null;
+      final rawImportedAt = value['importedAt'];
+      final importedAt = rawImportedAt is int && rawImportedAt >= 0
+          ? rawImportedAt
+          : null;
+      final rawEstimatedPages = value['estimatedPages'];
+      final estimatedPages = rawEstimatedPages is int && rawEstimatedPages > 0
+          ? rawEstimatedPages
+          : null;
+
       return ReadingText(
         id: id,
         title: title,
         body: body,
         generated: generated,
         chapters: parsedChapters,
+        format: format,
+        byteSize: byteSize,
+        importedAt: importedAt,
+        estimatedPages: estimatedPages,
       );
     }
     return null;
@@ -152,6 +204,8 @@ class ReadingStore {
   final KeyValueStore storage;
   static const space = 'biblioteca';
 
+  static String bodyKeyFor(String id) => 'body:$id';
+
   Object? _read(String key) {
     final text = storage.read(key);
     if (text == null) return null;
@@ -162,14 +216,53 @@ class ReadingStore {
     }
   }
 
+  Map<String, Object> _indexEntry(ReadingText item) {
+    final bodyKey = bodyKeyFor(item.id);
+    final hasSeparateBody = storage.read(bodyKey) != null;
+    return {
+      'id': item.id,
+      'title': item.title,
+      if (hasSeparateBody) 'bodyKey': bodyKey else 'body': item.body,
+      'generated': item.generated,
+      if (item.chapters != null)
+        'chapters': [for (final chapter in item.chapters!) chapter.toJson()],
+      if (item.format != null && item.format!.isNotEmpty)
+        'format': item.format!,
+      'byteSize': ?item.byteSize,
+      'importedAt': ?item.importedAt,
+      'estimatedPages': ?item.estimatedPages,
+    };
+  }
+
+  Future<void> _bestEffortDelete(String key) async {
+    try {
+      await storage.delete(key);
+    } on Object {
+      // Best-effort cleanup after a failed write.
+    }
+  }
+
   List<ReadingText> texts() {
     final saved = _read('texts');
     if (saved is! List) return [];
-    return saved.map(ReadingText.fromJson).nonNulls.toList();
+    return [
+      for (final entry in saved)
+        ?ReadingText.fromJson(entry, readBody: storage.read),
+    ];
   }
 
-  ReadingText? text(String id) =>
-      texts().where((text) => text.id == id).firstOrNull;
+  ReadingText? text(String id) {
+    final saved = _read('texts');
+    if (saved is! List) return null;
+    for (final entry in saved) {
+      if (entry is Map && entry['id'] == id) {
+        return ReadingText.fromJson(entry, readBody: storage.read);
+      }
+    }
+    return null;
+  }
+
+  Future<void> _writeQueue = Future<void>.value();
 
   Future<ReadingText> add({
     required int now,
@@ -177,16 +270,87 @@ class ReadingStore {
     required String body,
     required bool generated,
     List<ReadingChapter>? chapters,
+    String? format,
+    int? byteSize,
+    int? importedAt,
+    int? estimatedPages,
+  }) {
+    final prev = _writeQueue;
+    final next = prev.catchError((Object _) {}).then((_) {
+      return _addSerialized(
+        now: now,
+        title: title,
+        body: body,
+        generated: generated,
+        chapters: chapters,
+        format: format,
+        byteSize: byteSize,
+        importedAt: importedAt,
+        estimatedPages: estimatedPages,
+      );
+    });
+    _writeQueue = next.then<void>((_) {}, onError: (Object _) {});
+    return next;
+  }
+
+  Future<ReadingText> _addSerialized({
+    required int now,
+    required String title,
+    required String body,
+    required bool generated,
+    List<ReadingChapter>? chapters,
+    String? format,
+    int? byteSize,
+    int? importedAt,
+    int? estimatedPages,
   }) async {
     final previous = texts();
+    final existingIds = {for (final item in previous) item.id};
+    var suffix = previous.length;
+    var id = '$personalBookPrefix$now-$suffix';
+    while (existingIds.contains(id)) {
+      suffix++;
+      id = '$personalBookPrefix$now-$suffix';
+    }
+
+    final bodyKey = bodyKeyFor(id);
+    try {
+      await storage.write(bodyKey, body);
+    } on Object {
+      await _bestEffortDelete(bodyKey);
+      throw const ReadingStorageFullException();
+    }
+    if (storage.read(bodyKey) != body) {
+      await _bestEffortDelete(bodyKey);
+      throw const ReadingStorageFullException();
+    }
+
     final text = ReadingText(
-      id: '$personalBookPrefix$now-${previous.length}',
+      id: id,
       title: title,
       body: body,
       generated: generated,
       chapters: chapters,
+      format: format,
+      byteSize: byteSize,
+      importedAt: importedAt,
+      estimatedPages: estimatedPages,
     );
-    await storage.write('texts', jsonEncode([text, ...previous]));
+
+    final encoded = jsonEncode([
+      for (final item in [text, ...previous]) _indexEntry(item),
+    ]);
+    try {
+      await storage.write('texts', encoded);
+    } on Object {
+      await _bestEffortDelete(bodyKey);
+      throw const ReadingStorageFullException();
+    }
+    if (storage.read('texts') != encoded) {
+      await _bestEffortDelete(bodyKey);
+      throw const ReadingStorageFullException();
+    }
+
     return text;
   }
 
