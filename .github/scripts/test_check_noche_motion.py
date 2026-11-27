@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
@@ -346,6 +347,11 @@ class GitIntegrationTests(unittest.TestCase):
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(content, encoding="utf-8")
 
+    def _write_bytes(self, repo: Path, rel: str, content: bytes) -> None:
+        p = repo / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(content)
+
     def _commit(self, repo: Path, msg: str) -> None:
         self._run_git(repo, "add", "-A")
         self._run_git(repo, "commit", "-q", "-m", msg)
@@ -481,6 +487,88 @@ class GitIntegrationTests(unittest.TestCase):
             self._commit(repo, "rename within feature lib")
             violations, _, _ = mod.check_repo(repo, base_arg="main")
             self.assertEqual(violations, [])
+
+    def test_binary_and_non_utf8_bytes_do_not_crash_and_violations_still_fail(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            repo = self._init_repo(Path(tmpdir))
+
+            # Pass case: binary .bin files + fixture with invalid UTF-8 0x96 and valid Dart with 0x96 comment
+            self._run_git(repo, "checkout", "-q", "-b", "branch-binary-ok", "main")
+            self._write_bytes(
+                repo,
+                "coqui/ref/pp/ropa/frame.bin",
+                b"PIXEL\x96DATA\xff\xfe\n" * 64,
+            )
+            self._write_bytes(
+                repo,
+                "coqui/ref/pp/ropa/frame_nul.bin",
+                b"\x00\x96\xff\xfe",
+            )
+            self._write_bytes(
+                repo,
+                "coqui/ref/pp/ropa/fixture.txt",
+                b"fixture \x96 byte\n",
+            )
+            self._write_bytes(
+                repo,
+                "coqui/packages/features/feature_story/lib/src/ropa_ok.dart",
+                b"// cp1252 en-dash \x96 comment\nfinal ok = NocheMotion.move;\n",
+            )
+            self._commit(repo, "binary assets and valid dart with non-utf8 comment")
+
+            with mock.patch.object(mod, "_git", wraps=mod._git) as git_spy:
+                violations, checked_files, checked_lines = mod.check_repo(
+                    repo, base_arg="main"
+                )
+            self.assertEqual(violations, [])
+            self.assertEqual(checked_files, 1)
+            self.assertEqual(checked_lines, 2)
+            diff_calls = [
+                call.args[1]
+                for call in git_spy.call_args_list
+                if "diff" in call.args[1]
+            ]
+            self.assertEqual(len(diff_calls), 1)
+            self.assertEqual(diff_calls[0][-2:], ["--", "*.dart"])
+
+            stdout_buf, stderr_buf = io.StringIO(), io.StringIO()
+            with (
+                contextlib.redirect_stdout(stdout_buf),
+                contextlib.redirect_stderr(stderr_buf),
+            ):
+                rc = mod.main(["--repo", str(repo), "--base", "main"])
+            self.assertEqual(rc, 0)
+            self.assertIn("Noche motion guard passed", stdout_buf.getvalue())
+
+            # Fail case: binary .bin with 0x96 alongside Dart motion violation still exits 1
+            self._run_git(repo, "checkout", "-q", "-b", "branch-binary-bad", "main")
+            self._write_bytes(
+                repo,
+                "coqui/ref/pp/ropa/frame.bin",
+                b"PIXEL\x96DATA\xff\xfe\n" * 64,
+            )
+            self._write_bytes(
+                repo,
+                "coqui/packages/features/feature_story/lib/src/ropa_bad.dart",
+                b"// en-dash \x96 comment\nfinal bad = Curves.easeIn;\n",
+            )
+            self._commit(repo, "binary asset and violating dart file")
+
+            violations, _, _ = mod.check_repo(repo, base_arg="main")
+            self.assertEqual(
+                [(v.line, v.token) for v in violations],
+                [(2, "Curves.")],
+            )
+            stdout_buf, stderr_buf = io.StringIO(), io.StringIO()
+            with (
+                contextlib.redirect_stdout(stdout_buf),
+                contextlib.redirect_stderr(stderr_buf),
+            ):
+                rc = mod.main(["--repo", str(repo), "--base", "main"])
+            self.assertEqual(rc, 1)
+            self.assertIn("Noche motion guard failed", stderr_buf.getvalue())
 
 
 if __name__ == "__main__":
