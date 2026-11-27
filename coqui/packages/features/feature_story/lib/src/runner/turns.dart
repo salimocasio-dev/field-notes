@@ -474,6 +474,7 @@ extension _Turns on StoryRunner {
       }
       if (n == 1) {
         view.micMissed = true;
+        view.replayCount++;
         micEst('dead');
         await say(course.fixedClip('story_your_turn'), 200);
         continue; // first miss: "Ahora tú." again, the mic ready again

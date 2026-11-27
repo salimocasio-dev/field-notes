@@ -180,8 +180,10 @@ void main() {
           findsOneWidget,
         );
 
-        // Toggle TXT off -> only the speaker remains visible.
+        // Toggle TXT off -> lines fade out in quick while speaker stays visible.
         await tester.tap(find.byType(StoryTxtToggle));
+        await tester.pump();
+        await tester.pump(NocheMotion.quick);
         await tester.pump();
         expect(s.runner.txtOn, isFalse);
         expect(find.text(speakerUpper), findsOneWidget);
@@ -194,9 +196,10 @@ void main() {
           findsNothing,
         );
 
-        // Toggle TXT back on -> line and prompt return immediately.
+        // Toggle TXT back on -> line and prompt fade back in over quick.
         await tester.tap(find.byType(StoryTxtToggle));
         await tester.pump();
+        await tester.pump(NocheMotion.quick);
         expect(s.runner.txtOn, isTrue);
         expect(find.text(speakerUpper), findsOneWidget);
         expect(find.text(s.runner.view.turnLine), findsOneWidget);
@@ -468,10 +471,13 @@ void main() {
 
         await tester.tap(find.byType(StoryTxtToggle));
         await tester.pump();
+        await tester.pump(NocheMotion.quick);
+        await tester.pump();
         expect(find.text(activeLine), findsNothing);
 
         await tester.tap(find.byType(StoryTxtToggle));
         await tester.pump();
+        await tester.pump(NocheMotion.quick);
         expect(find.text(activeLine), findsOneWidget);
       },
     );

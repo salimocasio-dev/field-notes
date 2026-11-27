@@ -351,6 +351,7 @@ class StoryRunner implements SceneHost {
   String _lastLine = '';
   String? _turnReplayClip;
   int _untimedSpeaking = 0;
+  int _touchSeq = 0;
 
   // speaking
   final Hab HAB = Hab();
@@ -485,6 +486,7 @@ class StoryRunner implements SceneHost {
     _lastSpeaker = '';
     _lastLine = '';
     _turnReplayClip = null;
+    view.touchFeedback = null;
     LOG = [];
     for (final k in MEM.keys) {
       V['mem_$k'] = MEM[k];
@@ -647,11 +649,25 @@ class StoryRunner implements SceneHost {
     if (!canHearAgain) return;
     final id = _replayClipId();
     if (id == null) return;
+    view.replayCount++;
+    view.micMissed = false;
+    view.changed();
     if (VOICE && _has(id)) {
       unawaited(playClip(id));
     } else if (LINES[id] != null) {
       unawaited(say(id, 0).catchError((Object _) {}));
     }
+  }
+
+  void _emitTouchFeedback(TouchFeedbackKind kind, String thing) {
+    final box = respBox(thing) ?? bx(thing);
+    view.touchFeedback = TouchFeedback(
+      seq: ++_touchSeq,
+      kind: kind,
+      thing: thing,
+      box: List<num>.unmodifiable(box),
+    );
+    view.changed();
   }
 
   void _syncSpeakingNow() {
@@ -1182,6 +1198,7 @@ class StoryRunner implements SceneHost {
       }
       poke(what, p);
       if (what == 'coqui') return;
+      _emitTouchFeedback(TouchFeedbackKind.miss, what);
       if (nm != null && speaking == 0 && !pn.busy) {
         pn.busy = true;
         // name what was touched, then ask again
@@ -1422,6 +1439,7 @@ class StoryRunner implements SceneHost {
       // juego.js: `try{hush();SFX.calla();}catch(e){}`
     }
     habLimpia();
+    view.touchFeedback = null;
     callaLetras();
   }
 

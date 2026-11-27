@@ -257,6 +257,9 @@ extension _Steps on StoryRunner {
         turno: tu != null ? Turno.ask(sa!, tu) : null,
       ),
     );
+    if (!me.hablado && !OIR) {
+      _emitTouchFeedback(TouchFeedbackKind.right, t);
+    }
     senal(t, me.p, _quiet(st));
     if (me.hablado) {
       await me.okP;
@@ -298,6 +301,9 @@ extension _Steps on StoryRunner {
     );
     V['elegido'] = me.got;
     LOG.add(Decision(word: null, asked: 'libre', got: me.got, ok: true));
+    if (!me.hablado && !OIR && me.got != null) {
+      _emitTouchFeedback(TouchFeedbackKind.right, me.got!);
+    }
     SFX.blip();
     bounce(5);
     final said = saidMap != null && me.got != null ? saidMap[me.got] : null;
@@ -398,6 +404,12 @@ extension _Steps on StoryRunner {
       break;
     }
     final first = me.got == pick || vale.contains(me.got);
+    if (!OIR && me.got != null) {
+      _emitTouchFeedback(
+        first ? TouchFeedbackKind.right : TouchFeedbackKind.miss,
+        me.got!,
+      );
+    }
     V['ok'] = first ? '1' : '';
     V['x'] = me.got;
     if (!OIR && !jsTruthy(st['libre'])) {
@@ -487,6 +499,9 @@ extension _Steps on StoryRunner {
           ronda: enRonda,
         ),
       );
+      if (!OIR) {
+        _emitTouchFeedback(TouchFeedbackKind.right, pick);
+      }
       W['resp'] = null;
       if (jsTruthy(st['do'])) await _act(st['do'] as String, {'en': pick});
       if (habla && said != null && jsTruthy(said[pick])) {

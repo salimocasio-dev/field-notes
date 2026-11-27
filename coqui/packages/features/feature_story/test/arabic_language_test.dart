@@ -10,6 +10,7 @@ import 'package:feature_story/src/runner/story_runner.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/story_bubble.dart';
 import 'package:feature_story/src/screen/story_screen.dart';
+import 'package:feature_story/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -216,7 +217,7 @@ void main() {
         await ar.advance(300);
         expect(tester.takeException(), isNull);
 
-        // End title is Arabic ('المطر'), RTL, start-aligned at the right 24 px margin.
+        // End title is Arabic ('المطر'), RTL, start-aligned at the right 16 px margin.
         final arTitleFinder = find.text('المطر');
         expect(arTitleFinder, findsOneWidget);
         final arTitleWidget = tester.widget<Text>(arTitleFinder);
@@ -225,16 +226,16 @@ void main() {
         expect(arTitleWidget.textAlign, TextAlign.start);
         expect(arTitleWidget.style?.fontFamily, arabicFont);
         final arTitleRect = tester.getRect(arTitleFinder);
-        expect(arTitleRect.right, closeTo(390 - 24, 0.5));
+        expect(arTitleRect.right, closeTo(390 - 16, 0.5));
 
         // Chrome / menu buttons stay English!
-        expect(find.text('Play again'), findsOneWidget);
-        expect(find.text('Map'), findsOneWidget);
-        expect(find.text('Next story'), findsOneWidget);
+        expect(find.text(StoryWording.playAgain), findsOneWidget);
+        expect(find.text(StoryWording.map), findsOneWidget);
+        expect(find.byKey(const Key('story-end-primary')), findsOneWidget);
 
         // In RTL, the button row mirrors Play again (start=right) and Map (end=left).
-        final arAgain = tester.getRect(find.text('Play again'));
-        final arMap = tester.getRect(find.text('Map'));
+        final arAgain = tester.getRect(find.text(StoryWording.playAgain));
+        final arMap = tester.getRect(find.text(StoryWording.map));
         expect(arAgain.center.dx, greaterThan(arMap.center.dx));
       },
     );
@@ -285,10 +286,10 @@ void main() {
         expect(esTitleWidget.textDirection, TextDirection.ltr);
         expect(esTitleWidget.locale, const Locale('es'));
         final esTitleRect = tester.getRect(esTitleFinder);
-        expect(esTitleRect.left, closeTo(24, 0.5));
+        expect(esTitleRect.left, closeTo(16, 0.5));
 
-        final esAgain = tester.getRect(find.text('Play again'));
-        final esMap = tester.getRect(find.text('Map'));
+        final esAgain = tester.getRect(find.text(StoryWording.playAgain));
+        final esMap = tester.getRect(find.text(StoryWording.map));
         expect(esAgain.center.dx, lessThan(esMap.center.dx));
       },
     );

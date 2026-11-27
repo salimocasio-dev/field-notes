@@ -7,6 +7,19 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const nocheScreenFiles = [
+    'lib/src/motion.dart',
+    'lib/src/wording.dart',
+    'lib/src/screen/story_bubble.dart',
+    'lib/src/screen/story_end.dart',
+    'lib/src/screen/story_header.dart',
+    'lib/src/screen/story_mic.dart',
+    'lib/src/screen/story_not_ready.dart',
+    'lib/src/screen/story_picture.dart',
+    'lib/src/screen/story_screen.dart',
+  ];
+
+  const motionCheckedFiles = [
+    'lib/src/wording.dart',
     'lib/src/screen/story_bubble.dart',
     'lib/src/screen/story_end.dart',
     'lib/src/screen/story_header.dart',
@@ -103,6 +116,23 @@ void main() {
         nonEnglishUiRe.allMatches(code).map((m) => m.group(0)).toList(),
         isEmpty,
         reason: '$path contains a hardcoded Spanish or Arabic UI string',
+      );
+    }
+  });
+
+  test('no raw Duration(, Curves., Cubic(, or NocheMotion.ms( in Noche screen files outside motion.dart', () {
+    final motionRe = RegExp(
+      r'\b(Duration\s*\(|Curves\.|Cubic\s*\(|NocheMotion\.ms\s*\()',
+    );
+    for (final path in motionCheckedFiles) {
+      final code = File(path)
+          .readAsLinesSync()
+          .map((l) => l.replaceFirst(RegExp(r'//.*$'), ''))
+          .join('\n');
+      expect(
+        motionRe.allMatches(code).map((m) => m.group(0)).toList(),
+        isEmpty,
+        reason: '$path contains a forbidden raw motion token or NocheMotion.ms',
       );
     }
   });

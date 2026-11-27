@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_story/src/motion.dart';
 import 'package:feature_story/src/runner/bubble_place.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:material_ui/material_ui.dart';
@@ -45,7 +46,7 @@ class _StoryBubbleBodyState extends State<StoryBubbleBody>
     with TickerProviderStateMixin {
   late final AnimationController _a = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 1200),
+    duration: StoryMotion.bubbleLoopCycle,
   );
 
   bool get _moves =>
@@ -300,7 +301,7 @@ class StoryBubbleLayer extends StatelessWidget {
         delegate: _BubbleDelegate(placementFor, first.maxWidth),
         child: AnimatedOpacity(
           opacity: 1,
-          duration: const Duration(milliseconds: 120),
+          duration: StoryMotion.bubbleFade,
           child: Stack(
             clipBehavior: Clip.none,
             children: [

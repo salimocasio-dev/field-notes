@@ -1,13 +1,17 @@
 /// The play screen: a Noche story lesson, full screen on `NocheColors.lessonGround`
-/// (`Noche-Cuento.dc.html`, `Noche-Cuento-AR.dc.html`, `Noche-Mic.dc.html`).
+/// (`Noche-Cuento.dc.html`, `Noche-Cuento-AR.dc.html`, `Noche-Mic.dc.html`,
+/// `Noche-Motion-Cuento.dc.html`, `Noche-Motion-Tocar.dc.html`,
+/// `Noche-Motion-Lugar.dc.html`).
 library;
 
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_pixel/coqui_pixel.dart' show displayH, displayW;
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_story/src/motion.dart';
 import 'package:feature_story/src/runner/bubble_place.dart';
 import 'package:feature_story/src/runner/speech_session.dart';
 import 'package:feature_story/src/runner/story_check.dart';
@@ -21,6 +25,7 @@ import 'package:feature_story/src/screen/story_header.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:feature_story/src/screen/story_not_ready.dart';
 import 'package:feature_story/src/screen/story_picture.dart';
+import 'package:feature_story/src/wording.dart';
 import 'package:flutter/scheduler.dart' show Ticker;
 import 'package:material_ui/material_ui.dart';
 
@@ -30,11 +35,208 @@ class _Repaint extends ChangeNotifier {
   void ping() => notifyListeners();
 }
 
+/// Three small `other`-coloured level bars beside a touch-turn line while the
+/// line replays (`Noche-Motion-Tocar.dc.html`: 4 × 24, radius 2, gap 4).
+/// Loops only while [playing] and `motion.loops`; stands still at middle height
+/// under reduced motion.
+class StorySmallLevelBars extends StatefulWidget {
+  const StorySmallLevelBars({
+    super.key,
+    required this.playing,
+    this.reduceMotion = false,
+  });
+
+  final bool playing;
+  final bool reduceMotion;
+
+  static const double barWidth = 4;
+  static const double barHeight = 24;
+  static const double barRadius = 2;
+  static const double barGap = 4;
+
+  @override
+  State<StorySmallLevelBars> createState() => _StorySmallLevelBarsState();
+}
+
+class _StorySmallLevelBarsState extends State<StorySmallLevelBars>
+    with TickerProviderStateMixin {
+  late final AnimationController _barA = AnimationController(
+    vsync: this,
+    duration: StoryMotion.smallBarCycleA,
+  );
+  late final AnimationController _barB = AnimationController(
+    vsync: this,
+    duration: StoryMotion.smallBarCycleB,
+  );
+  late final AnimationController _barC = AnimationController(
+    vsync: this,
+    duration: StoryMotion.smallBarCycleC,
+  );
+
+  void _sync() {
+    if (!mounted) return;
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: widget.reduceMotion,
+    );
+    final loop = widget.playing && motion.loops;
+    for (final c in [_barA, _barB, _barC]) {
+      if (loop) {
+        if (!c.isAnimating) c.repeat(reverse: true);
+      } else if (c.isAnimating) {
+        c.stop();
+      }
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(StorySmallLevelBars old) {
+    super.didUpdateWidget(old);
+    _sync();
+  }
+
+  @override
+  void dispose() {
+    _barA.dispose();
+    _barB.dispose();
+    _barC.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: widget.reduceMotion,
+    );
+    return ExcludeSemantics(
+      child: AnimatedOpacity(
+        key: const ValueKey('story_touch_level_bars'),
+        opacity: widget.playing ? 1.0 : 0.0,
+        duration: motion.quick,
+        curve: motion.enter,
+        child: SizedBox(
+          height: StorySmallLevelBars.barHeight,
+          child: AnimatedBuilder(
+            animation: Listenable.merge([_barA, _barB, _barC]),
+            builder: (context, _) {
+              final scales = motion.loops
+                  ? [
+                      0.15 + 0.85 * _barA.value,
+                      0.15 + 0.85 * _barB.value,
+                      0.15 + 0.85 * _barC.value,
+                    ]
+                  : const [0.6, 0.6, 0.6];
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  for (var i = 0; i < 3; i++) ...[
+                    if (i > 0)
+                      const SizedBox(width: StorySmallLevelBars.barGap),
+                    Container(
+                      key: ValueKey('story_touch_level_bar_$i'),
+                      width: StorySmallLevelBars.barWidth,
+                      height: StorySmallLevelBars.barHeight * scales[i],
+                      decoration: BoxDecoration(
+                        color: NocheColors.other,
+                        borderRadius: BorderRadius.circular(
+                          StorySmallLevelBars.barRadius,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Fades the TXT-controlled lines (`line` and `prompt`) over `quick` when
+/// [visible] toggles, omitting them from the tree once fully faded out.
+class _QuickTxtFade extends StatefulWidget {
+  const _QuickTxtFade({
+    required this.visible,
+    required this.reduceMotion,
+    required this.child,
+  });
+
+  final bool visible;
+  final bool reduceMotion;
+  final Widget child;
+
+  @override
+  State<_QuickTxtFade> createState() => _QuickTxtFadeState();
+}
+
+class _QuickTxtFadeState extends State<_QuickTxtFade>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: widget.visible ? 1.0 : 0.0,
+  );
+
+  @override
+  void didUpdateWidget(_QuickTxtFade old) {
+    super.didUpdateWidget(old);
+    if (widget.visible != old.visible) {
+      final motion = StoryMotion.resolve(
+        context,
+        serviceReduceMotion: widget.reduceMotion,
+      );
+      _controller.animateTo(
+        widget.visible ? 1.0 : 0.0,
+        duration: motion.quick,
+        curve: motion.enter,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        if (!widget.visible && _controller.value <= 0.0) {
+          return const SizedBox.shrink();
+        }
+        return Opacity(
+          key: const ValueKey('story_txt_lines_opacity'),
+          opacity: _controller.value.clamp(0.0, 1.0),
+          child: IgnorePointer(
+            ignoring: !widget.visible,
+            child: ExcludeSemantics(excluding: !widget.visible, child: child),
+          ),
+        );
+      },
+      child: widget.child,
+    );
+  }
+}
+
 /// The text section under the 400-high scene (`Noche-Cuento.dc.html`,
-/// `Noche-Cuento-AR.dc.html`): speaker (`labelStrong`, `label` colour),
-/// line (`lessonLine`, `text` colour), and speaking prompt (`lessonPrompt` in
-/// `label` colour with bold `text` for the words to say). With TXT off, only
-/// the speaker shows.
+/// `Noche-Cuento-AR.dc.html`, `Noche-Motion-Cuento.dc.html`,
+/// `Noche-Motion-Tocar.dc.html`): speaker (`labelStrong`, `label` colour),
+/// line (`lessonLine`, `text` colour, with optional small level bars during
+/// touch-turn replay), and speaking prompt (`lessonPrompt` in `label` colour
+/// with bold `text` for the words to say). Rows rise by `row`, `stagger` apart;
+/// toggling TXT fades the lines in `quick` while keeping the speaker visible.
 class StoryLessonText extends StatelessWidget {
   const StoryLessonText({
     super.key,
@@ -44,6 +246,9 @@ class StoryLessonText extends StatelessWidget {
     this.line = '',
     this.promptPrefix = '',
     this.promptWords = '',
+    this.showReplayBars = false,
+    this.arriveDelay = Duration.zero,
+    this.reduceMotion = false,
   });
 
   final Language language;
@@ -52,6 +257,9 @@ class StoryLessonText extends StatelessWidget {
   final String line;
   final String promptPrefix;
   final String promptWords;
+  final bool showReplayBars;
+  final Duration arriveDelay;
+  final bool reduceMotion;
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +267,10 @@ class StoryLessonText extends StatelessWidget {
     final topPad = isArab ? 16.0 : 24.0;
     final itemGap = isArab ? 0.0 : 8.0;
 
-    final showSpeaker = speaker.isNotEmpty;
-    final showLine = txtOn && line.isNotEmpty;
-    final showPrompt = txtOn && promptWords.isNotEmpty;
-    if (!showSpeaker && !showLine && !showPrompt) {
+    final hasSpeaker = speaker.isNotEmpty;
+    final hasLine = line.isNotEmpty;
+    final hasPrompt = promptWords.isNotEmpty;
+    if (!hasSpeaker && !hasLine && !hasPrompt) {
       return const SizedBox.shrink();
     }
 
@@ -83,36 +291,61 @@ class StoryLessonText extends StatelessWidget {
       language.script,
     ).copyWith(color: NocheColors.text);
 
-    return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(24, topPad, 24, 0),
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (showSpeaker)
-              Text(
-                language.script == 'Latn' ? speaker.toUpperCase() : speaker,
-                textAlign: TextAlign.start,
-                textDirection: language.textDirection,
-                locale: language.locale,
-                style: speakerStyle,
-              ),
-            if (showLine) ...[
-              if (showSpeaker && itemGap > 0) SizedBox(height: itemGap),
-              Text(
-                line,
-                textAlign: TextAlign.start,
-                textDirection: language.textDirection,
-                locale: language.locale,
-                style: lineStyle,
-              ),
-            ],
-            if (showPrompt) ...[
-              if ((showSpeaker || showLine) && itemGap > 0)
-                SizedBox(height: itemGap),
-              Text.rich(
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: reduceMotion,
+    );
+    final effectiveDelay = motion.reduced ? Duration.zero : arriveDelay;
+
+    final lineWidget = hasLine
+        ? Padding(
+            padding: EdgeInsetsDirectional.only(
+              top: hasSpeaker && itemGap > 0 ? itemGap : 0,
+            ),
+            child: _QuickTxtFade(
+              visible: txtOn,
+              reduceMotion: reduceMotion,
+              child: showReplayBars
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            line,
+                            textAlign: TextAlign.start,
+                            textDirection: language.textDirection,
+                            locale: language.locale,
+                            style: lineStyle,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        StorySmallLevelBars(
+                          playing: showReplayBars,
+                          reduceMotion: reduceMotion,
+                        ),
+                      ],
+                    )
+                  : Text(
+                      line,
+                      textAlign: TextAlign.start,
+                      textDirection: language.textDirection,
+                      locale: language.locale,
+                      style: lineStyle,
+                    ),
+            ),
+          )
+        : null;
+
+    final promptWidget = hasPrompt
+        ? Padding(
+            padding: EdgeInsetsDirectional.only(
+              top: (hasSpeaker || hasLine) && itemGap > 0 ? itemGap : 0,
+            ),
+            child: _QuickTxtFade(
+              visible: txtOn,
+              reduceMotion: reduceMotion,
+              child: Text.rich(
                 TextSpan(
                   children: [
                     if (promptPrefix.isNotEmpty)
@@ -124,10 +357,224 @@ class StoryLessonText extends StatelessWidget {
                 textDirection: language.textDirection,
                 locale: language.locale,
               ),
-            ],
-          ],
+            ),
+          )
+        : null;
+
+    final rows = <Widget>[
+      if (hasSpeaker)
+        Text(
+          language.script == 'Latn' ? speaker.toUpperCase() : speaker,
+          textAlign: TextAlign.start,
+          textDirection: language.textDirection,
+          locale: language.locale,
+          style: speakerStyle,
+        ),
+      ?lineWidget,
+      ?promptWidget,
+    ];
+
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(24, topPad, 24, 0),
+      child: SizedBox(
+        width: double.infinity,
+        child: NocheArrive(
+          delay: effectiveDelay,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: rows,
         ),
       ),
+    );
+  }
+}
+
+/// Cross-transitions between turns: the outgoing turn fades out in `quick` on
+/// `exit` while the incoming turn's rows rise via [NocheArrive] (`row`,
+/// `stagger` apart).
+class _StoryTurnTransition extends StatefulWidget {
+  const _StoryTurnTransition({
+    required this.turnKey,
+    required this.reduceMotion,
+    required this.child,
+  });
+
+  final String turnKey;
+  final bool reduceMotion;
+  final Widget child;
+
+  @override
+  State<_StoryTurnTransition> createState() => _StoryTurnTransitionState();
+}
+
+class _StoryTurnTransitionState extends State<_StoryTurnTransition>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _out = AnimationController(
+    vsync: this,
+    value: 1.0,
+  )..addStatusListener(_onOutStatus);
+
+  Widget? _outgoing;
+  GlobalKey? _outgoingKey;
+  GlobalKey _currentKey = GlobalKey();
+
+  void _onOutStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed && _outgoing != null && mounted) {
+      setState(() {
+        _outgoing = null;
+        _outgoingKey = null;
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(_StoryTurnTransition old) {
+    super.didUpdateWidget(old);
+    if (widget.turnKey != old.turnKey) {
+      final motion = StoryMotion.resolve(
+        context,
+        serviceReduceMotion: widget.reduceMotion,
+      );
+      if (old.turnKey.isNotEmpty) {
+        _outgoing = old.child;
+        _outgoingKey = _currentKey;
+        _out.duration = motion.quick;
+        _out.forward(from: 0.0);
+      }
+      _currentKey = GlobalKey();
+    }
+  }
+
+  @override
+  void dispose() {
+    _out
+      ..removeStatusListener(_onOutStatus)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: widget.reduceMotion,
+    );
+    return Stack(
+      alignment: AlignmentDirectional.topStart,
+      children: [
+        if (_outgoing != null)
+          AnimatedBuilder(
+            animation: _out,
+            builder: (context, child) {
+              final opacity = (1.0 - motion.exit.transform(_out.value)).clamp(
+                0.0,
+                1.0,
+              );
+              return IgnorePointer(
+                child: ExcludeSemantics(
+                  child: Opacity(
+                    key: const ValueKey('story_turn_outgoing'),
+                    opacity: opacity,
+                    child: child,
+                  ),
+                ),
+              );
+            },
+            child: KeyedSubtree(key: _outgoingKey, child: _outgoing!),
+          ),
+        KeyedSubtree(key: _currentKey, child: widget.child),
+      ],
+    );
+  }
+}
+
+/// Single-child arrival wrapper matching `NocheArrive` (`row` rise + fade in
+/// `move` on `enter` after [delay]; `quick` fade in place under reduced motion)
+/// while keeping `alwaysIncludeSemantics: true` so controls remain discoverable
+/// to accessibility from frame 0.
+class _StoryArriveSlot extends StatefulWidget {
+  const _StoryArriveSlot({
+    super.key,
+    required this.delay,
+    required this.reduceMotion,
+    required this.child,
+  });
+
+  final Duration delay;
+  final bool reduceMotion;
+  final Widget child;
+
+  @override
+  State<_StoryArriveSlot> createState() => _StoryArriveSlotState();
+}
+
+class _StoryArriveSlotState extends State<_StoryArriveSlot>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(vsync: this);
+  late NocheMotionData _motion;
+  bool _started = false;
+  double _totalUs = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_started) return;
+    _started = true;
+    _motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: widget.reduceMotion,
+    );
+    final effectiveDelay = _motion.reduced ? Duration.zero : widget.delay;
+    final total = effectiveDelay + _motion.move;
+    _totalUs = total.inMicroseconds.toDouble();
+    if (_totalUs <= 0) {
+      _controller.value = 1.0;
+    } else {
+      _controller.duration = total;
+      _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final effectiveDelay = _motion.reduced ? Duration.zero : widget.delay;
+    final delayUs = effectiveDelay.inMicroseconds.toDouble();
+    final moveUs = _motion.move.inMicroseconds.toDouble();
+
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        final double p;
+        if (_controller.isCompleted || _totalUs <= 0) {
+          p = 1.0;
+        } else {
+          final elapsedUs = _controller.value * _totalUs;
+          if (elapsedUs <= delayUs) {
+            p = 0.0;
+          } else if (moveUs <= 0 || elapsedUs >= delayUs + moveUs) {
+            p = 1.0;
+          } else {
+            final raw = ((elapsedUs - delayUs) / moveUs).clamp(0.0, 1.0);
+            p = _motion.enter.transform(raw);
+          }
+        }
+        final dy = _motion.row * (1.0 - p);
+        return Transform.translate(
+          key: const ValueKey('story_arrive_controls'),
+          offset: Offset(0, dy),
+          child: Opacity(
+            opacity: p.clamp(0.0, 1.0),
+            alwaysIncludeSemantics: true,
+            child: child,
+          ),
+        );
+      },
+      child: widget.child,
     );
   }
 }
@@ -151,6 +598,7 @@ class StoryScreen extends StatefulWidget {
   });
 
   static const double sceneHeight = 400;
+  static const double endSceneHeight = 296;
   static const double controlsBottom = 32;
   static const double startDiscSize = 72;
 
@@ -175,13 +623,34 @@ class StoryScreen extends StatefulWidget {
 }
 
 class _StoryScreenState extends State<StoryScreen>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   StoryRunner? _runner;
   FrameRenderer? _frame;
   Ticker? _ticker;
   final _Repaint _repaint = _Repaint();
   Size _stage = Size.zero;
   final GlobalKey _stageKey = GlobalKey(), _micKey = GlobalKey();
+
+  /// Animates the scene window from `400` under the header (`0.0`) to `296` at
+  /// the top (`1.0`) when entering the end of the story (`pageIn` on `enter`).
+  late final AnimationController _endWindowAnim = AnimationController(
+    vsync: this,
+    value: 0.0,
+  );
+
+  /// Holds `notYet` for [StoryMotion.missHold] (`900 ms`) before replaying the
+  /// prompt line on a speaking-turn miss.
+  late final AnimationController _missHoldAnim = AnimationController(
+    vsync: this,
+    duration: StoryMotion.missHold,
+  )..addStatusListener(_onMissHoldStatus);
+
+  /// Holds any dash fill triggered during a speaking-turn `right` state for
+  /// [StoryMotion.rightDashDelay] (`600 ms`) before letting `NocheDashes` fill.
+  late final AnimationController _rightDashAnim = AnimationController(
+    vsync: this,
+    duration: StoryMotion.rightDashDelay,
+  )..addStatusListener(_onRightDashStatus);
 
   /// The app is not in the foreground (its lifecycle state is not `resumed`): the story's clock is held.
   bool _held = false;
@@ -191,6 +660,19 @@ class _StoryScreenState extends State<StoryScreen>
 
   /// The story needs a newer app (unsupported `minApp` or an act the scene does not have): the screen says so without starting.
   bool _needsUpdate = false;
+
+  StoryScreenState _lastScreen = StoryScreenState.start;
+  NocheMicState? _lastMic;
+  bool _rightDashHolding = false;
+  int _heldDotsLit = 0;
+
+  /// Snapshot taken right before the story runs so the end screen knows which
+  /// focus words are new and how many minutes were logged before the story.
+  Set<String> _knownBefore = const {};
+  double _beforeMinutes = 0;
+  StoryEndSummary? _endSummary;
+  StoryFoot? _endSummaryFoot;
+  String? _endSummaryTitle;
 
   Services get _s => widget.services;
 
@@ -215,6 +697,110 @@ class _StoryScreenState extends State<StoryScreen>
     } else {
       r.resumeClock();
     }
+  }
+
+  void _snapshotBeforeRun(Map<String, dynamic> story) {
+    final focus = <String>[
+      for (final w in (story['focus_words'] as List?) ?? const [])
+        if (w is String && w.isNotEmpty) w,
+    ];
+    _knownBefore = {
+      for (final w in focus)
+        if ((_s.progress.word(w)?.ear.etapa ?? 0) > 0) w,
+    };
+    final today = DateTime.fromMillisecondsSinceEpoch(
+      _s.clock.nowMs(),
+      isUtc: true,
+    );
+    final todayMins = _s.progress.minutesOn(today);
+    _beforeMinutes = todayMins > 0 ? todayMins : _s.progress.minutes;
+    _endSummary = null;
+    _endSummaryFoot = null;
+    _endSummaryTitle = null;
+  }
+
+  void _onMissHoldStatus(AnimationStatus status) {
+    if (status != AnimationStatus.completed || !mounted) return;
+    final r = _runner;
+    if (r == null) return;
+    if (nocheMicStateOf(r.view) == NocheMicState.notYet && r.canHearAgain) {
+      r.hearAgain();
+    }
+  }
+
+  void _onRightDashStatus(AnimationStatus status) {
+    if (status != AnimationStatus.completed || !mounted) return;
+    _rightDashHolding = false;
+    _repaint.ping();
+  }
+
+  void _onRunnerViewChanged() {
+    final r = _runner;
+    if (r == null || !mounted) return;
+    final v = r.view;
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+
+    if (v.screen != _lastScreen) {
+      final enteringEnd = v.screen == StoryScreenState.end;
+      final leavingEnd = _lastScreen == StoryScreenState.end;
+      _lastScreen = v.screen;
+      if (enteringEnd) {
+        _rightDashHolding = false;
+        _rightDashAnim.stop();
+        _missHoldAnim.stop();
+        _endSummary = null;
+        _endSummaryFoot = null;
+        _endSummaryTitle = null;
+        if (motion.reduced) {
+          _endWindowAnim.value = 1.0;
+        } else {
+          _endWindowAnim.duration = motion.pageIn;
+          _endWindowAnim.forward(from: _endWindowAnim.value);
+        }
+      } else if (leavingEnd) {
+        _endSummary = null;
+        _endSummaryFoot = null;
+        _endSummaryTitle = null;
+        if (motion.reduced) {
+          _endWindowAnim.value = 0.0;
+        } else {
+          _endWindowAnim.duration = motion.pageOut;
+          _endWindowAnim.reverse(from: _endWindowAnim.value);
+        }
+      }
+    }
+
+    final mic = nocheMicStateOf(v);
+    if (mic != _lastMic) {
+      final enteredNotYet =
+          mic == NocheMicState.notYet && _lastMic != NocheMicState.notYet;
+      final enteredRight =
+          mic == NocheMicState.right && _lastMic != NocheMicState.right;
+      _lastMic = mic;
+
+      if (enteredNotYet) {
+        _missHoldAnim.duration = StoryMotion.missHold;
+        _missHoldAnim.forward(from: 0.0);
+      } else if (mic != NocheMicState.notYet && _missHoldAnim.isAnimating) {
+        _missHoldAnim.stop();
+        _missHoldAnim.value = 0.0;
+      }
+
+      if (enteredRight && !motion.reduced) {
+        _rightDashHolding = true;
+        _heldDotsLit = v.dotsLit;
+        _rightDashAnim.duration = StoryMotion.rightDashDelay;
+        _rightDashAnim.forward(from: 0.0);
+      } else if (mic != NocheMicState.right && _rightDashHolding) {
+        _rightDashHolding = false;
+        _rightDashAnim.stop();
+      }
+    }
+
+    _repaint.ping();
   }
 
   Future<void> _open() async {
@@ -279,7 +865,8 @@ class _StoryScreenState extends State<StoryScreen>
         startFrog: scene.startFrog,
         frogShadow: scene.frogShadow,
       );
-      runner.view.addListener(_repaint.ping);
+      _snapshotBeforeRun(runner.S);
+      runner.view.addListener(_onRunnerViewChanged);
       runner.bubbleMetrics = _metrics;
       if (_held) runner.holdClock(); // opened while the app was out of sight
       await runner.init();
@@ -338,9 +925,16 @@ class _StoryScreenState extends State<StoryScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _ticker?.dispose();
+    _missHoldAnim
+      ..removeStatusListener(_onMissHoldStatus)
+      ..dispose();
+    _rightDashAnim
+      ..removeStatusListener(_onRightDashStatus)
+      ..dispose();
+    _endWindowAnim.dispose();
     final r = _runner;
     if (r != null) {
-      r.view.removeListener(_repaint.ping);
+      r.view.removeListener(_onRunnerViewChanged);
       r.leave();
     }
     _repaint.dispose();
@@ -352,88 +946,183 @@ class _StoryScreenState extends State<StoryScreen>
     _s.nav.back();
   }
 
-  Widget _buildTextArea(StoryView v, Language lang, NocheMicState? mic) {
-    if (v.screen == StoryScreenState.end) {
-      return Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(24, 16, 24, 0),
-        child: StoryEndTitle(title: v.title, language: lang),
-      );
+  void _startOrReplay(StoryRunner r) {
+    _snapshotBeforeRun(r.S);
+    unawaited(r.start());
+  }
+
+  void _onEndPrimary(StoryRunner r, StoryEndNextAction action) {
+    switch (action.kind) {
+      case StoryEndNextKind.review:
+        r.leave();
+        _s.nav.go(const ReviewRoute());
+      case StoryEndNextKind.story:
+        _s.nav.go(StoryRoute(action.storyId!));
+      case StoryEndNextKind.map:
+        r.leave();
+        _s.nav.go(const TabRoute('map'));
     }
+  }
+
+  void _onTapMic(StoryRunner r) {
+    if (_missHoldAnim.isAnimating) {
+      _missHoldAnim.stop();
+      _missHoldAnim.value = 0.0;
+    }
+    r.tapMic();
+  }
+
+  void _onHearAgain(StoryRunner r) {
+    if (_missHoldAnim.isAnimating) {
+      _missHoldAnim.stop();
+      _missHoldAnim.value = 0.0;
+    }
+    r.hearAgain();
+  }
+
+  int _displayedDotsLit(StoryView v) {
+    if (_rightDashHolding && v.screen != StoryScreenState.end) {
+      return _heldDotsLit;
+    }
+    return v.dotsLit;
+  }
+
+  ({String key, Widget child}) _buildPlayTextArea(
+    StoryRunner r,
+    Language lang,
+    NocheMicState? mic,
+  ) {
+    final v = r.view;
     if (v.screen != StoryScreenState.play) {
-      return const SizedBox.shrink();
+      return (key: '', child: const SizedBox.shrink());
     }
     if (mic != null) {
       final speaker = v.turnSpeaker.isNotEmpty ? v.turnSpeaker : v.speaker;
-      return StoryLessonText(
-        language: lang,
-        txtOn: v.txtOn,
-        speaker: speaker,
-        line: v.turnLine,
-        promptPrefix: v.turnPromptPrefix,
-        promptWords: v.turnPromptWords,
-      );
-    }
-    final bubbleShowingWords = v.bubbleOn && v.bubbleKind == BubbleKind.words;
-    final line = (v.captionOn && v.caption.isNotEmpty && !bubbleShowingWords)
-        ? v.caption
-        : '';
-    return StoryLessonText(
-      language: lang,
-      txtOn: v.txtOn,
-      speaker: v.speaker,
-      line: line,
-    );
-  }
-
-  Widget? _buildControls(StoryRunner r, Language lang, NocheMicState? mic) {
-    final v = r.view;
-    if (v.screen == StoryScreenState.start && v.startShown) {
-      return NochePlayDisc(
-        key: const Key('story-start-disc'),
-        size: StoryScreen.startDiscSize,
-        onPressed: () => unawaited(r.start()),
-        semanticLabel: 'Start story',
-      );
-    }
-    if (mic != null && v.screen == StoryScreenState.play) {
-      return KeyedSubtree(
-        key: _micKey,
-        child: StoryMicControls(
-          state: mic,
+      final key = 'speak|$speaker|${v.turnLine}|${v.turnPromptWords}';
+      return (
+        key: key,
+        child: StoryLessonText(
+          key: ValueKey('story_lesson_text_$key'),
           language: lang,
-          onTapMic: r.tapMic,
-          onHearAgain: r.canHearAgain ? r.hearAgain : null,
+          txtOn: v.txtOn,
+          speaker: speaker,
+          line: v.turnLine,
+          promptPrefix: v.turnPromptPrefix,
+          promptWords: v.turnPromptWords,
+          arriveDelay: StoryMotion.lessonArriveDelay,
           reduceMotion: _s.reduceMotion,
         ),
       );
     }
-    if (v.screen == StoryScreenState.end) {
-      final buttons = storyEndButtons(
-        foot: v.foot,
-        onAgain: () => unawaited(r.start()),
-        onNext: () => _s.nav.go(StoryRoute(r.S['next'] as String)),
-        onMap: () {
-          r.leave();
-          _s.nav.go(const TabRoute('map'));
-        },
+    final bubbleShowingWords = v.bubbleOn && v.bubbleKind == BubbleKind.words;
+    final line =
+        (v.caption.isNotEmpty &&
+            !bubbleShowingWords &&
+            (v.captionOn || !v.txtOn))
+        ? v.caption
+        : '';
+    final isTouchReplay =
+        v.speakingNow && v.touchFeedback?.kind == TouchFeedbackKind.miss;
+    final key = (v.speaker.isEmpty && line.isEmpty)
+        ? ''
+        : 'play|${v.speaker}|$line';
+    return (
+      key: key,
+      child: StoryLessonText(
+        key: ValueKey('story_lesson_text_$key'),
+        language: lang,
+        txtOn: v.txtOn,
+        speaker: v.speaker,
+        line: line,
+        showReplayBars: isTouchReplay,
+        arriveDelay: StoryMotion.lessonArriveDelay,
+        reduceMotion: _s.reduceMotion,
+      ),
+    );
+  }
+
+  Widget? _buildPlayControls(
+    StoryRunner r,
+    Language lang,
+    NocheMicState? mic,
+    NocheMotionData motion,
+  ) {
+    final v = r.view;
+    final controlsDelay = motion.reduced
+        ? Duration.zero
+        : StoryMotion.controlsArriveDelay;
+
+    if (v.screen == StoryScreenState.start && v.startShown) {
+      return _StoryArriveSlot(
+        key: const ValueKey('story_controls_start'),
+        delay: controlsDelay,
+        reduceMotion: _s.reduceMotion,
+        child: NochePlayDisc(
+          key: const Key('story-start-disc'),
+          size: StoryScreen.startDiscSize,
+          onPressed: () => _startOrReplay(r),
+          semanticLabel: StoryWording.startStorySemantic,
+        ),
       );
-      return Padding(
-        padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 480),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (var i = 0; i < buttons.length; i++) ...[
-                if (i > 0) const SizedBox(height: 16),
-                buttons[i],
-              ],
-            ],
+    }
+    if (mic != null && v.screen == StoryScreenState.play) {
+      return _StoryArriveSlot(
+        key: const ValueKey('story_controls_mic'),
+        delay: controlsDelay,
+        reduceMotion: _s.reduceMotion,
+        child: KeyedSubtree(
+          key: _micKey,
+          child: StoryMicControls(
+            state: mic,
+            language: lang,
+            onTapMic: () => _onTapMic(r),
+            onHearAgain: r.canHearAgain ? () => _onHearAgain(r) : null,
+            replayCount: v.replayCount,
+            reduceMotion: _s.reduceMotion,
           ),
         ),
       );
     }
     return null;
+  }
+
+  StoryEndSummary _currentEndSummary(StoryRunner r) {
+    final v = r.view;
+    if (_endSummary == null ||
+        _endSummaryFoot != v.foot ||
+        _endSummaryTitle != v.title) {
+      _endSummaryFoot = v.foot;
+      _endSummaryTitle = v.title;
+      _endSummary = buildStoryEndSummary(
+        storyId: widget.route.id,
+        story: r.S,
+        foot: v.foot,
+        listen: r.OIR,
+        course: _s.course,
+        progress: _s.progress,
+        clock: _s.clock,
+        knownBefore: _knownBefore,
+        beforeMinutes: _beforeMinutes,
+      );
+    }
+    return _endSummary!;
+  }
+
+  Widget _buildEndPanel(StoryRunner r, Language lang) {
+    final summary = _currentEndSummary(r);
+    return StoryEndPanel(
+      key: const ValueKey('story_end_panel'),
+      summary: summary,
+      foot: r.view.foot,
+      language: lang,
+      onAgain: () => _startOrReplay(r),
+      onPrimary: () => _onEndPrimary(r, summary.nextAction),
+      onMap: () {
+        r.leave();
+        _s.nav.go(const TabRoute('map'));
+      },
+      reduceMotion: _s.reduceMotion,
+    );
   }
 
   Widget _buildPortrait(
@@ -444,15 +1133,27 @@ class _StoryScreenState extends State<StoryScreen>
   ) {
     final v = r.view;
     final mic = nocheMicStateOf(v);
-    final controls = _buildControls(r, lang, mic);
-    final showBubble = mic == null;
+    final isEnd = v.screen == StoryScreenState.end;
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+    final dpr =
+        MediaQuery.maybeDevicePixelRatioOf(context) ??
+        View.of(context).devicePixelRatio;
+    final controls = _buildPlayControls(r, lang, mic, motion);
+    final playText = _buildPlayTextArea(r, lang, mic);
+    final showBubble = mic == null && !isEnd;
 
     return ColoredBox(
       color: NocheColors.lessonGround,
       child: SafeArea(
         child: LayoutBuilder(
           builder: (context, viewport) {
-            final sceneH = viewport.maxHeight.isFinite
+            final viewW = viewport.maxWidth.isFinite
+                ? viewport.maxWidth
+                : displayW.toDouble();
+            final playSceneH = viewport.maxHeight.isFinite
                 ? math.min(
                     StoryScreen.sceneHeight,
                     math.max(
@@ -461,66 +1162,146 @@ class _StoryScreenState extends State<StoryScreen>
                     ),
                   )
                 : StoryScreen.sceneHeight;
-            return Column(
+            final endSceneH = math.min(StoryScreen.endSceneHeight, playSceneH);
+            final maxW = math.min(viewW, playSceneH * displayW / displayH);
+            final picSize = storyPictureSize(
+              availableWidth: maxW,
+              devicePixelRatio: dpr,
+            );
+            final windowTag = StoryMotion.storyWindowTag(widget.route.id);
+
+            return Stack(
+              fit: StackFit.expand,
               children: [
-                StoryHeader(
-                  onClose: _close,
-                  language: lang,
-                  dots: v.dots,
-                  dotsLit: v.dotsLit,
-                  txtOn: v.txtOn,
-                  onToggleTxt: r.toggleTxt,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: sceneH,
-                  child: LayoutBuilder(
-                    builder: (context, c) {
-                      final maxW = math.min(
-                        c.maxWidth,
-                        sceneH * displayW / displayH,
-                      );
-                      return Center(
-                        child: KeyedSubtree(
-                          key: _stageKey,
-                          child: StoryPicture(
-                            runner: r,
-                            pixels: frame.display,
-                            repaint: _repaint,
-                            reduceMotion: _s.reduceMotion,
-                            language: lang,
-                            showBubble: showBubble,
-                            availableWidth: maxW,
-                            onSize: (s) => _stage = s,
+                // 1. Play text & controls area (fades out in quick on exit at end)
+                PositionedDirectional(
+                  key: const ValueKey('story_play_body_slot'),
+                  start: 0,
+                  end: 0,
+                  top: StoryHeader.height + playSceneH,
+                  bottom: 0,
+                  child: IgnorePointer(
+                    ignoring: isEnd,
+                    child: AnimatedOpacity(
+                      key: const ValueKey('story_play_body_opacity'),
+                      opacity: isEnd ? 0.0 : 1.0,
+                      duration: motion.quick,
+                      curve: motion.exit,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: SingleChildScrollView(
+                                physics: const ClampingScrollPhysics(),
+                                padding: const EdgeInsetsDirectional.only(
+                                  bottom: 8,
+                                ),
+                                child: _StoryTurnTransition(
+                                  turnKey: playText.key,
+                                  reduceMotion: _s.reduceMotion,
+                                  child: playText.child,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                          if (controls != null)
+                            Padding(
+                              padding: const EdgeInsetsDirectional.only(
+                                bottom: StoryScreen.controlsBottom,
+                              ),
+                              child: Center(child: controls),
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: AlignmentDirectional.topStart,
-                          child: SingleChildScrollView(
-                            physics: const ClampingScrollPhysics(),
-                            padding: const EdgeInsetsDirectional.only(
-                              bottom: 8,
-                            ),
-                            child: _buildTextArea(v, lang, mic),
-                          ),
+
+                // 2. End-of-story summary panel under the 296-high window
+                if (isEnd)
+                  PositionedDirectional(
+                    key: const ValueKey('story_end_panel_slot'),
+                    start: 0,
+                    end: 0,
+                    top: endSceneH,
+                    bottom: 0,
+                    child: _buildEndPanel(r, lang),
+                  )
+                else
+                  const SizedBox.shrink(key: ValueKey('story_end_empty_slot')),
+
+                // 3. 64-high header (holds across turns; fades in quick at end)
+                PositionedDirectional(
+                  key: const ValueKey('story_header_slot'),
+                  start: 0,
+                  end: 0,
+                  top: 0,
+                  height: StoryHeader.height,
+                  child: IgnorePointer(
+                    ignoring: isEnd,
+                    child: AnimatedOpacity(
+                      key: const ValueKey('story_header_opacity'),
+                      opacity: isEnd ? 0.0 : 1.0,
+                      duration: motion.quick,
+                      curve: motion.exit,
+                      child: StoryHeader(
+                        onClose: _close,
+                        language: lang,
+                        dots: v.dots,
+                        dotsLit: _displayedDotsLit(v),
+                        txtOn: v.txtOn,
+                        onToggleTxt: r.toggleTxt,
+                        reduceMotion: _s.reduceMotion,
+                      ),
+                    ),
+                  ),
+                ),
+
+                // 4. Shared NocheWindow (400 under header -> 296 at top in pageIn,
+                //    same whole-number PixelView scale throughout; keyed so the
+                //    picture never remounts when entering the end screen)
+                AnimatedBuilder(
+                  key: const ValueKey('story_scene_window_slot'),
+                  animation: _endWindowAnim,
+                  builder: (context, child) {
+                    final p = motion.reduced
+                        ? _endWindowAnim.value
+                        : motion.enter.transform(_endWindowAnim.value);
+                    final winTop = ui.lerpDouble(StoryHeader.height, 0.0, p)!;
+                    final winH = ui.lerpDouble(playSceneH, endSceneH, p)!;
+                    final offset = Offset(
+                      (viewW - picSize.width) / 2,
+                      (winH - picSize.height) / 2,
+                    );
+                    return PositionedDirectional(
+                      start: 0,
+                      end: 0,
+                      top: winTop,
+                      height: winH,
+                      child: NocheLtr(
+                        child: NocheWindow(
+                          tag: windowTag,
+                          borderRadius: 0,
+                          pictureSize: picSize,
+                          pictureOffset: offset,
+                          child: child!,
                         ),
                       ),
-                      if (controls != null)
-                        Padding(
-                          padding: const EdgeInsetsDirectional.only(
-                            bottom: StoryScreen.controlsBottom,
-                          ),
-                          child: Center(child: controls),
-                        ),
-                    ],
+                    );
+                  },
+                  child: KeyedSubtree(
+                    key: _stageKey,
+                    child: StoryPicture(
+                      runner: r,
+                      pixels: frame.display,
+                      repaint: _repaint,
+                      reduceMotion: _s.reduceMotion,
+                      language: lang,
+                      showBubble: showBubble,
+                      availableWidth: maxW,
+                      onSize: (s) => _stage = s,
+                    ),
                   ),
                 ),
               ],
@@ -539,9 +1320,19 @@ class _StoryScreenState extends State<StoryScreen>
   ) {
     final v = r.view;
     final mic = nocheMicStateOf(v);
-    final controls = _buildControls(r, lang, mic);
-    final showBubble = mic == null;
+    final isEnd = v.screen == StoryScreenState.end;
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+    final dpr =
+        MediaQuery.maybeDevicePixelRatioOf(context) ??
+        View.of(context).devicePixelRatio;
+    final controls = _buildPlayControls(r, lang, mic, motion);
+    final playText = _buildPlayTextArea(r, lang, mic);
+    final showBubble = mic == null && !isEnd;
     final width = MediaQuery.sizeOf(context).width;
+    final windowTag = StoryMotion.storyWindowTag(widget.route.id);
 
     return ColoredBox(
       color: NocheColors.lessonGround,
@@ -560,18 +1351,34 @@ class _StoryScreenState extends State<StoryScreen>
                             c.maxHeight * displayW / displayH,
                           )
                         : c.maxWidth;
+                    final picSize = storyPictureSize(
+                      availableWidth: maxW,
+                      devicePixelRatio: dpr,
+                    );
                     return Center(
-                      child: KeyedSubtree(
-                        key: _stageKey,
-                        child: StoryPicture(
-                          runner: r,
-                          pixels: frame.display,
-                          repaint: _repaint,
-                          reduceMotion: _s.reduceMotion,
-                          language: lang,
-                          showBubble: showBubble,
-                          availableWidth: maxW,
-                          onSize: (s) => _stage = s,
+                      child: SizedBox(
+                        width: picSize.width,
+                        height: picSize.height,
+                        child: NocheLtr(
+                          child: NocheWindow(
+                            tag: windowTag,
+                            borderRadius: 0,
+                            pictureSize: picSize,
+                            pictureOffset: Offset.zero,
+                            child: KeyedSubtree(
+                              key: _stageKey,
+                              child: StoryPicture(
+                                runner: r,
+                                pixels: frame.display,
+                                repaint: _repaint,
+                                reduceMotion: _s.reduceMotion,
+                                language: lang,
+                                showBubble: showBubble,
+                                availableWidth: maxW,
+                                onSize: (s) => _stage = s,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     );
@@ -582,17 +1389,28 @@ class _StoryScreenState extends State<StoryScreen>
             Expanded(
               child: Column(
                 children: [
-                  StoryHeader(
-                    onClose: _close,
-                    language: lang,
-                    dots: v.dots,
-                    dotsLit: v.dotsLit,
-                    txtOn: v.txtOn,
-                    onToggleTxt: r.toggleTxt,
+                  IgnorePointer(
+                    ignoring: isEnd,
+                    child: AnimatedOpacity(
+                      key: const ValueKey('story_header_opacity'),
+                      opacity: isEnd ? 0.0 : 1.0,
+                      duration: motion.quick,
+                      curve: motion.exit,
+                      child: StoryHeader(
+                        onClose: _close,
+                        language: lang,
+                        dots: v.dots,
+                        dotsLit: _displayedDotsLit(v),
+                        txtOn: v.txtOn,
+                        onToggleTxt: r.toggleTxt,
+                        reduceMotion: _s.reduceMotion,
+                      ),
+                    ),
                   ),
                   Expanded(
-                    child:
-                        v.screen == StoryScreenState.start && controls != null
+                    child: isEnd
+                        ? _buildEndPanel(r, lang)
+                        : v.screen == StoryScreenState.start && controls != null
                         ? Center(child: controls)
                         : Column(
                             children: [
@@ -604,7 +1422,11 @@ class _StoryScreenState extends State<StoryScreen>
                                     padding: const EdgeInsetsDirectional.only(
                                       bottom: 8,
                                     ),
-                                    child: _buildTextArea(v, lang, mic),
+                                    child: _StoryTurnTransition(
+                                      turnKey: playText.key,
+                                      reduceMotion: _s.reduceMotion,
+                                      child: playText.child,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -630,8 +1452,23 @@ class _StoryScreenState extends State<StoryScreen>
   @override
   Widget build(BuildContext context) {
     final lang = _s.course.language;
-    Widget directional(Widget child) =>
-        Directionality(textDirection: lang.textDirection, child: child);
+    final media = MediaQuery.maybeOf(context);
+    final disableAnimations =
+        (media?.disableAnimations ?? false) || _s.reduceMotion;
+    Widget directional(Widget child) {
+      final dir = Directionality(
+        textDirection: lang.textDirection,
+        child: child,
+      );
+      if (media == null || media.disableAnimations == disableAnimations) {
+        return dir;
+      }
+      return MediaQuery(
+        data: media.copyWith(disableAnimations: disableAnimations),
+        child: dir,
+      );
+    }
+
     final r = _runner, frame = _frame;
     if (_needsUpdate) {
       return directional(
@@ -659,6 +1496,7 @@ class _StoryScreenState extends State<StoryScreen>
                   dots: 5,
                   dotsLit: 0,
                   txtOn: widget.txt != TxtMode.no,
+                  reduceMotion: _s.reduceMotion,
                 ),
               ],
             ),
@@ -720,7 +1558,7 @@ class StoryPerfChip extends StatelessWidget {
           vertical: 4,
         ),
         child: Text(
-          'scene bake ${bakeMs == null ? '-' : bakeMs!.toStringAsFixed(0)} ms',
+          StoryWording.sceneBake(bakeMs),
           textDirection: TextDirection.ltr,
           style: NocheType.bodySmall.copyWith(color: NocheColors.text),
         ),

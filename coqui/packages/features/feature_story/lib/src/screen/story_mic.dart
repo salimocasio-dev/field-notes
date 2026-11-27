@@ -1,6 +1,7 @@
 /// Noche speaking-turn controls for a story lesson (`Noche-Cuento.dc.html`,
-/// `Noche-Cuento-AR.dc.html`, `Noche-Mic.dc.html`): a 48 "hear it again"
-/// outline button at the start, [NocheMic] centred in the middle, and an empty
+/// `Noche-Cuento-AR.dc.html`, `Noche-Mic.dc.html`, `Noche-Motion-Cuento.dc.html`):
+/// a 48 "hear it again" outline button at the start (whose replay arrow turns
+/// once in `settle` on replay), [NocheMic] centred in the middle, and an empty
 /// 48 spacer at the end.
 library;
 
@@ -8,6 +9,7 @@ import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_story/src/motion.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -26,38 +28,95 @@ NocheMicState? nocheMicStateOf(StoryView v) => switch (v.mic) {
 };
 
 /// 48 × 48 circular "hear it again" outline button on `lessonGround`
-/// (`Noche-Cuento.dc.html`: 1 px `lessonBorder` ring, 22 px `replay` icon).
-class StoryHearAgainButton extends StatelessWidget {
+/// (`Noche-Motion-Cuento.dc.html`: 1 px `lessonBorder` ring, 22 px `replay`
+/// icon turning once counter-clockwise in `settle` on `enter` when [replayCount]
+/// increments).
+class StoryHearAgainButton extends StatefulWidget {
   const StoryHearAgainButton({
     super.key,
     required this.onPressed,
     required this.language,
+    this.replayCount = 0,
+    this.reduceMotion = false,
   });
 
   final VoidCallback? onPressed;
   final Language language;
 
+  /// Increments whenever the prompt line replays (tap or post-miss replay),
+  /// spinning the replay arrow once in `settle` unless reduced motion is on.
+  final int replayCount;
+  final bool reduceMotion;
+
+  @override
+  State<StoryHearAgainButton> createState() => _StoryHearAgainButtonState();
+}
+
+class _StoryHearAgainButtonState extends State<StoryHearAgainButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _spin = AnimationController(vsync: this);
+
+  @override
+  void didUpdateWidget(StoryHearAgainButton old) {
+    super.didUpdateWidget(old);
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: widget.reduceMotion,
+    );
+    if (widget.replayCount > old.replayCount && !motion.reduced) {
+      _spin.duration = motion.settle;
+      _spin.forward(from: 0.0);
+    } else if (motion.reduced && _spin.isAnimating) {
+      _spin.stop();
+      _spin.value = 0.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _spin.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final enabled = onPressed != null;
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: widget.reduceMotion,
+    );
+    final enabled = widget.onPressed != null;
     final fg = enabled ? NocheColors.text : NocheColors.lessonLabel;
     final border = enabled ? NocheColors.lessonBorder : NocheColors.lessonLine;
+
     return Pressable(
-      onPressed: onPressed,
+      onPressed: widget.onPressed,
+      disc: true,
       semanticLabel: NocheA11y.label(
         NocheA11y.hearAgain,
-        courseWords: language.a11yWords,
+        courseWords: widget.language.a11yWords,
       ),
-      builder: (context, pressed) => Transform.scale(
-        scale: pressed ? 0.96 : 1,
-        child: Container(
-          width: NocheSize.touch,
-          height: NocheSize.touch,
-          alignment: AlignmentDirectional.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: border, width: 1),
-          ),
+      builder: (context, _) => AnimatedContainer(
+        duration: motion.quick,
+        curve: motion.enter,
+        width: NocheSize.touch,
+        height: NocheSize.touch,
+        alignment: AlignmentDirectional.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: border, width: 1),
+        ),
+        child: AnimatedBuilder(
+          animation: _spin,
+          builder: (context, child) {
+            final angle = motion.reduced || !_spin.isAnimating
+                ? 0.0
+                : -2 * math.pi * motion.enter.transform(_spin.value);
+            return Transform.rotate(
+              key: const ValueKey('story_replay_arrow'),
+              angle: angle,
+              child: child,
+            );
+          },
           child: NocheIcon(
             NocheIcons.replay,
             size: 22,
@@ -80,6 +139,7 @@ class StoryMicControls extends StatefulWidget {
     required this.language,
     required this.onTapMic,
     this.onHearAgain,
+    this.replayCount = 0,
     this.reduceMotion = false,
   });
 
@@ -87,6 +147,7 @@ class StoryMicControls extends StatefulWidget {
   final Language language;
   final VoidCallback onTapMic;
   final VoidCallback? onHearAgain;
+  final int replayCount;
   final bool reduceMotion;
 
   /// Width reserved for [NocheMic] with five bars on each side:
@@ -102,25 +163,36 @@ class _StoryMicControlsState extends State<StoryMicControls>
     with SingleTickerProviderStateMixin {
   late final AnimationController _levelAnim = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 900),
+    duration: StoryMotion.levelAnimCycle,
   );
 
-  bool get _animates => !widget.reduceMotion && widget.state.showsBars;
+  bool _shouldLoop(BuildContext context) {
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: widget.reduceMotion,
+    );
+    return motion.loops && widget.state.showsBars;
+  }
+
+  void _syncLevelLoop() {
+    if (!mounted) return;
+    if (_shouldLoop(context)) {
+      if (!_levelAnim.isAnimating) _levelAnim.repeat(reverse: true);
+    } else if (_levelAnim.isAnimating) {
+      _levelAnim.stop();
+    }
+  }
 
   @override
-  void initState() {
-    super.initState();
-    if (_animates) _levelAnim.repeat(reverse: true);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _syncLevelLoop();
   }
 
   @override
   void didUpdateWidget(StoryMicControls old) {
     super.didUpdateWidget(old);
-    if (_animates) {
-      if (!_levelAnim.isAnimating) _levelAnim.repeat(reverse: true);
-    } else {
-      _levelAnim.stop();
-    }
+    _syncLevelLoop();
   }
 
   @override
@@ -129,14 +201,18 @@ class _StoryMicControlsState extends State<StoryMicControls>
     super.dispose();
   }
 
-  double _currentLevel() {
+  double _currentLevel(NocheMotionData motion) {
     if (!widget.state.showsBars) return 0.0;
-    if (widget.reduceMotion) return 1.0;
+    if (!motion.loops) return 0.5;
     return 0.45 + 0.55 * (0.5 + 0.5 * math.sin(_levelAnim.value * math.pi));
   }
 
   @override
   Widget build(BuildContext context) {
+    final motion = StoryMotion.resolve(
+      context,
+      serviceReduceMotion: widget.reduceMotion,
+    );
     final s = widget.state;
     final tappable = s == NocheMicState.ready || s == NocheMicState.notYet;
     final labelGap = widget.language.script == 'Arab' ? 12.0 : 16.0;
@@ -179,6 +255,8 @@ class _StoryMicControlsState extends State<StoryMicControls>
               child: StoryHearAgainButton(
                 onPressed: widget.onHearAgain,
                 language: widget.language,
+                replayCount: widget.replayCount,
+                reduceMotion: widget.reduceMotion,
               ),
             ),
             SizedBox(width: flankGap),
@@ -191,7 +269,7 @@ class _StoryMicControlsState extends State<StoryMicControls>
                   builder: (context, _) => NocheMic(
                     state: s,
                     language: widget.language,
-                    level: _currentLevel(),
+                    level: _currentLevel(motion),
                     compactLabel: true,
                     labelGap: labelGap,
                     barGroupGap: barGroupGap,
