@@ -4,6 +4,7 @@ library;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_controller.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Maps a [CallState] to the corresponding shared [NocheMicState].
@@ -77,16 +78,34 @@ class CallMicStage extends StatelessWidget {
     final mq = MediaQuery.maybeOf(context);
     final ambientReduce = mq?.disableAnimations ?? false;
     final reduce = reduceMotion || ambientReduce;
-    final mic = NocheMic(
-      state: nocheMicStateForCall(state),
-      language: language,
-      level: callMicLevel(state: state, ring: ring, wave: wave),
-      compactLabel: compactLabel,
-      labelGap: labelGap,
-      barGroupGap: barGroupGap,
-      semanticLabel: semanticLabel,
-      onPressed: state == CallState.idle ? onTap : null,
-    );
+    final mic = state == CallState.connecting
+        ? NocheMic.custom(
+            state: NocheMicState.thinking,
+            micWords: {
+              ...language.micWords,
+              'thinking': SpeakWording.callingPartner(language.partnerName),
+            },
+            script: 'Latn',
+            textDirection: TextDirection.ltr,
+            locale: null,
+            a11yWords: language.a11yWords,
+            level: 0.0,
+            compactLabel: compactLabel,
+            labelGap: labelGap,
+            barGroupGap: barGroupGap,
+            semanticLabel: semanticLabel,
+            onPressed: null,
+          )
+        : NocheMic(
+            state: nocheMicStateForCall(state),
+            language: language,
+            level: callMicLevel(state: state, ring: ring, wave: wave),
+            compactLabel: compactLabel,
+            labelGap: labelGap,
+            barGroupGap: barGroupGap,
+            semanticLabel: semanticLabel,
+            onPressed: state == CallState.idle ? onTap : null,
+          );
     if (mq == null || reduce != ambientReduce) {
       return MediaQuery(
         data: (mq ?? const MediaQueryData()).copyWith(

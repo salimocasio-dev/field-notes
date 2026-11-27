@@ -14,6 +14,7 @@ void main() {
     'lib/src/call_look.dart',
     'lib/src/call_mic.dart',
     'lib/src/call_screen.dart',
+    'lib/src/motion.dart',
     'lib/src/voice_test_screen.dart',
   ];
 
@@ -139,6 +140,21 @@ void main() {
         petNameRe.allMatches(content).map((m) => m.group(0)).toList(),
         isEmpty,
         reason: '$path contains a disallowed pet name',
+      );
+    }
+  });
+
+  test('no raw Curves., Cubic(, Duration(, or NocheMotion.ms( in feature_speaking UI files outside lib/src/motion.dart', () {
+    final rawMotionRe = RegExp(
+      r'\bCurves\.|\bCubic\s*\(|\bDuration\s*\(|\bNocheMotion\.ms\s*\(',
+    );
+    for (final path in uiFiles) {
+      if (path == 'lib/src/motion.dart') continue;
+      final code = stripComments(path);
+      expect(
+        rawMotionRe.allMatches(code).map((m) => m.group(0)).toList(),
+        isEmpty,
+        reason: '$path contains raw motion literals outside motion.dart',
       );
     }
   });

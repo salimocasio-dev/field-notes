@@ -409,30 +409,35 @@ void main() {
 
   group('the end', () {
     testWidgets(
-      'the X ends a live call with the summary: Call done, N min · M words said, the words as NocheChips, a primary Back to Hablar of at least 48 px that goes back',
+      'the X ends a live call with the summary: Call done, N min · M words said, the words as 40-high outline pills, a primary Back to Hablar of at least 48 px that goes back',
       (tester) async {
         final w = await pump(tester);
         await toYourTurn(tester, w);
         w.call.emit(const Heard('Hola. Bien, gracias.'));
         await w.elapse(tester, 100);
         await tester.tap(find.byKey(const Key('call-close')));
-        await w.elapse(tester, 100);
+        await w.elapse(tester, 200);
         expect(find.text('Call done'), findsOneWidget);
         expect(find.text('1 min · 3 words said'), findsOneWidget);
         for (final word in ['hola', 'gracias', 'bien']) {
           expect(find.text(word), findsOneWidget);
         }
-        // each word is a NocheChip pill as wide as its word, side by side
-        Rect chip(String word) => rectOf(
-          tester,
-          find.ancestor(of: find.text(word), matching: find.byType(NocheChip)),
-        );
-        expect(chip('hola').width, lessThan(100));
-        expect(chip('hola').height, 32);
+        // each word is a 40-high outline pill with lessonBorder, side by side
+        final pill0Finder = find.byKey(const ValueKey('call-done-word-0'));
+        final pill1Finder = find.byKey(const ValueKey('call-done-word-1'));
+        expect(pill0Finder, findsOneWidget);
+        expect(pill1Finder, findsOneWidget);
+        final pill0 = tester.widget<Container>(pill0Finder);
+        final pill0Dec = pill0.decoration! as BoxDecoration;
         expect(
-          (chip('hola').center.dy - chip('gracias').center.dy).abs(),
-          lessThan(2),
+          (pill0Dec.border! as Border).top.color,
+          NocheColors.lessonBorder,
         );
+        final r0 = rectOf(tester, pill0Finder);
+        final r1 = rectOf(tester, pill1Finder);
+        expect(r0.width, lessThan(120));
+        expect(r0.height, 40);
+        expect((r0.center.dy - r1.center.dy).abs(), lessThan(2));
         expect(find.text('Start call'), findsNothing);
         expect(find.text('Help'), findsNothing);
         final back = find.byKey(const Key('call-end-back'));

@@ -14,6 +14,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_speaking/src/call_text.dart';
 import 'package:feature_speaking/src/hablar_model.dart';
+import 'package:feature_speaking/src/motion.dart';
 import 'package:feature_speaking/src/speech_note.dart';
 import 'package:feature_speaking/src/wording.dart';
 import 'package:material_ui/material_ui.dart';
@@ -52,7 +53,7 @@ class HablarTab extends StatefulWidget {
   State<HablarTab> createState() => _HablarTabState();
 }
 
-class _HablarTabState extends State<HablarTab> {
+class _HablarTabState extends State<HablarTab> with TickerProviderStateMixin {
   StreamSubscription<void>? _sub;
   StreamSubscription<void>? _entitlementSub;
   String? _note;
@@ -60,10 +61,36 @@ class _HablarTabState extends State<HablarTab> {
   bool _openingWords = false;
   String? _selectedPlaceId;
 
+  late final AnimationController _lockHintController = AnimationController(
+    vsync: this,
+  )..addStatusListener(_handleLockHintStatus);
+  Place? _lockHintPlace;
+  NocheMotionData _lockHintMotion = NocheMotion.normal;
+  NocheFollowSide _placeFollowSide = NocheFollowSide.end;
+  int _followEpoch = 0;
+
+  void _handleLockHintStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed &&
+        _lockHintPlace != null &&
+        mounted) {
+      setState(() {
+        _lockHintPlace = null;
+      });
+    }
+  }
+
+  void _clearLockHint() {
+    if (_lockHintPlace == null && !_lockHintController.isAnimating) return;
+    _lockHintController.stop();
+    _lockHintController.value = 0.0;
+    _lockHintPlace = null;
+  }
+
   @override
   void initState() {
     super.initState();
     _sub = widget.services.progress.changes.listen((_) {
+      _clearLockHint();
       if (mounted) setState(() {});
     });
     _entitlementSub = widget.services.entitlements.changes.listen((_) {
@@ -99,9 +126,12 @@ class _HablarTabState extends State<HablarTab> {
     if (courseChanged || progressChanged) {
       unawaited(_sub?.cancel());
       _sub = widget.services.progress.changes.listen((_) {
+        _clearLockHint();
         if (mounted) setState(() {});
       });
+      _clearLockHint();
       _selectedPlaceId = null;
+      _followEpoch++;
       _callsFailed = false;
       _note = null;
       unawaited(_loadNote());
@@ -127,6 +157,9 @@ class _HablarTabState extends State<HablarTab> {
 
   @override
   void dispose() {
+    _lockHintController
+      ..removeStatusListener(_handleLockHintStatus)
+      ..dispose();
     unawaited(_sub?.cancel());
     unawaited(_entitlementSub?.cancel());
     super.dispose();
@@ -156,11 +189,37 @@ class _HablarTabState extends State<HablarTab> {
     widget.services.nav.go(const PlansRoute());
   }
 
-  void _selectPlace(String placeId) {
+  void _selectPlace(
+    String placeId,
+    List<PlaceJourneyStop> reached,
+    String currentPlaceId,
+  ) {
+    final fromIndex = reached.indexWhere((s) => s.place.id == currentPlaceId);
+    final toIndex = reached.indexWhere((s) => s.place.id == placeId);
     widget.services.haptics.tick();
     setState(() {
+      _clearLockHint();
+      if (fromIndex >= 0 && toIndex >= 0 && fromIndex != toIndex) {
+        _placeFollowSide = SpeakingMotion.placeFollowSide(
+          fromIndex: fromIndex,
+          toIndex: toIndex,
+        );
+      }
       _selectedPlaceId = placeId;
     });
+  }
+
+  void _showLockedPlaceHint(Place precedingPlace) {
+    final motion = SpeakingMotion.resolve(
+      context,
+      serviceReduceMotion: widget.services.reduceMotion,
+    );
+    setState(() {
+      _lockHintPlace = precedingPlace;
+      _lockHintMotion = motion;
+    });
+    _lockHintController.duration = motion.press + motion.lockHold + motion.move;
+    _lockHintController.forward(from: 0.0);
   }
 
   Future<void> _showWordsSheet(
@@ -204,6 +263,35 @@ class _HablarTabState extends State<HablarTab> {
     } finally {
       _openingWords = false;
     }
+  }
+
+  Widget _fadeWithRoute({
+    required Animation<double>? secondaryAnimation,
+    required NocheMotionData motion,
+    required Widget child,
+    Key? opacityKey,
+  }) {
+    if (secondaryAnimation == null) {
+      return opacityKey == null
+          ? child
+          : Opacity(key: opacityKey, opacity: 1.0, child: child);
+    }
+    return AnimatedBuilder(
+      animation: secondaryAnimation,
+      builder: (context, inner) {
+        final totalDuration =
+            secondaryAnimation.status == AnimationStatus.reverse
+            ? motion.pageOut
+            : motion.pageIn;
+        final opacity = SpeakingMotion.outgoingFadeOpacity(
+          routeValue: secondaryAnimation.value,
+          motion: motion,
+          totalDuration: totalDuration,
+        );
+        return Opacity(key: opacityKey, opacity: opacity, child: inner);
+      },
+      child: child,
+    );
   }
 
   Widget _header(
@@ -265,13 +353,15 @@ class _HablarTabState extends State<HablarTab> {
                   widthFactor: 1,
                   child: Opacity(
                     opacity: pressed ? 0.7 : 1,
-                    child: Text(
-                      wordsLabel,
-                      maxLines: 1,
-                      softWrap: false,
-                      textDirection: TextDirection.ltr,
-                      style: NocheType.button.copyWith(
-                        color: NocheColors.label,
+                    child: NocheLtr(
+                      child: Text(
+                        wordsLabel,
+                        maxLines: 1,
+                        softWrap: false,
+                        textDirection: TextDirection.ltr,
+                        style: NocheType.button.copyWith(
+                          color: NocheColors.label,
+                        ),
                       ),
                     ),
                   ),
@@ -293,71 +383,155 @@ class _HablarTabState extends State<HablarTab> {
   ) {
     final reached = snap.reachedStops;
     final nextLocked = snap.nextLockedStop;
+    final selectedId = selectedStop?.place.id ?? reached.first.place.id;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-      child: Semantics(
-        container: true,
-        role: ui.SemanticsRole.tabBar,
-        label: SpeakWording.placeTabListLabel,
-        child: Row(
-          children: [
-            for (var i = 0; i < reached.length; i++) ...[
-              if (i > 0) const SizedBox(width: 8),
-              _placePill(
-                stop: reached[i],
-                isSelected: selectedStop?.place.id == reached[i].place.id,
-                lang: lang,
-                courseLocale: courseLocale,
-              ),
-            ],
-            if (nextLocked != null) ...[
-              const SizedBox(width: 8),
-              Semantics(
-                container: true,
-                role: ui.SemanticsRole.tab,
-                selected: false,
-                enabled: false,
-                child: NochePill.dashedLocked(
-                  key: const Key('speak-locked-place-pill'),
-                  semanticLabel: SpeakWording.lockedPlaceLabel(
-                    nextLocked.place.name,
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _placePill({
-    required PlaceJourneyStop stop,
-    required bool isSelected,
-    required Language lang,
-    required Locale courseLocale,
-  }) {
-    return Semantics(
-      container: true,
-      role: ui.SemanticsRole.tab,
-      selected: isSelected,
-      child: isSelected
-          ? NochePill.selected(
-              key: Key('speak-place-${stop.place.id}'),
-              label: stop.place.name,
-              script: lang.script,
-              locale: courseLocale,
-              onPressed: () => _selectPlace(stop.place.id),
-            )
-          : NochePill.outline(
-              key: Key('speak-place-${stop.place.id}'),
+      child: NochePillGroup<String>(
+        role: NocheSegmentedRole.tabList,
+        semanticLabel: SpeakWording.placeTabListLabel,
+        selected: selectedId,
+        onChanged: (id) => _selectPlace(id, reached, selectedId),
+        options: [
+          for (final stop in reached)
+            NochePillOption<String>(
+              value: stop.place.id,
               label: stop.place.name,
               foregroundColor: NocheColors.label,
               script: lang.script,
               locale: courseLocale,
-              onPressed: () => _selectPlace(stop.place.id),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
+              leading: MetaData(
+                key: Key('speak-place-${stop.place.id}'),
+                behavior: HitTestBehavior.translucent,
+                child: const SizedBox(width: 8, height: NocheSize.touch),
+              ),
             ),
+        ],
+        trailing: nextLocked != null
+            ? Semantics(
+                container: true,
+                role: ui.SemanticsRole.tab,
+                selected: false,
+                child: NocheQuietLock(
+                  key: const Key('speak-locked-place-pill'),
+                  borderRadius: NocheSize.pillRadius,
+                  padding: EdgeInsetsDirectional.zero,
+                  semanticLabel: SpeakWording.lockedPlaceLabel(
+                    nextLocked.place.name,
+                  ),
+                  onTap: () => _showLockedPlaceHint(reached.last.place),
+                  builder: (context, reasonColor) => SizedBox(
+                    width: 46,
+                    height: 46,
+                    child: Center(
+                      child: NocheIcon(
+                        NocheIcons.lock,
+                        size: 20,
+                        color: reasonColor,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : null,
+      ),
+    );
+  }
+
+  Widget _lockedPlaceHint(Place place, Language lang, Locale courseLocale) {
+    return IgnorePointer(
+      child: Semantics(
+        liveRegion: true,
+        excludeSemantics: true,
+        label: SpeakWording.afterPlace(place.name),
+        child: AnimatedBuilder(
+          animation: _lockHintController,
+          builder: (context, child) {
+            final motion = _lockHintMotion;
+            final total = motion.press + motion.lockHold + motion.move;
+            final totalUs = total.inMicroseconds.toDouble();
+            final elapsedUs = _lockHintController.value * totalUs;
+            final pressUs = motion.press.inMicroseconds.toDouble();
+            final holdEnd = motion.press + motion.lockHold;
+            final holdEndUs = holdEnd.inMicroseconds.toDouble();
+            final rise = motion.reduced ? 0.0 : SpeakingMotion.lockHintRise;
+
+            final double opacity;
+            final double dy;
+            if (elapsedUs < pressUs) {
+              final p = SpeakingMotion.segmentProgressUs(
+                elapsedUs: elapsedUs,
+                start: Duration.zero,
+                duration: motion.press,
+                curve: motion.enter,
+              );
+              opacity = p;
+              dy = -rise * (1.0 - p);
+            } else if (elapsedUs <= holdEndUs) {
+              opacity = 1.0;
+              dy = 0.0;
+            } else {
+              final pOut = SpeakingMotion.segmentProgressUs(
+                elapsedUs: elapsedUs,
+                start: holdEnd,
+                duration: motion.move,
+                curve: motion.exit,
+              );
+              opacity = (1.0 - pOut).clamp(0.0, 1.0);
+              dy = -rise * pOut;
+            }
+
+            return Transform.translate(
+              key: const ValueKey('speak-locked-place-hint-motion'),
+              offset: Offset(0, dy),
+              child: Opacity(opacity: opacity, child: child),
+            );
+          },
+          child: Container(
+            key: const Key('speak-locked-place-hint'),
+            height: 40,
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: NocheColors.panel,
+              border: Border.all(color: NocheColors.line, width: 1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                NocheIcon(NocheIcons.lock, size: 18, color: NocheColors.text),
+                const SizedBox(width: 8),
+                NocheLtr(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: SpeakWording.afterPrefix,
+                          style: NocheType.buttonStrong.copyWith(
+                            color: NocheColors.text,
+                          ),
+                        ),
+                        TextSpan(
+                          text: place.name,
+                          locale: courseLocale,
+                          style: NocheType.forScript(
+                            NocheType.buttonStrong,
+                            lang.script,
+                          ).copyWith(color: NocheColors.text),
+                        ),
+                      ],
+                    ),
+                    maxLines: 1,
+                    softWrap: false,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -501,6 +675,62 @@ class _HablarTabState extends State<HablarTab> {
     Language lang,
     Locale courseLocale,
   ) {
+    final isRtl = lang.direction == LanguageDirection.rtl;
+    final englishAlign = isRtl ? TextAlign.end : TextAlign.start;
+
+    if (item.state == HablarCallState.upcoming) {
+      return NocheQuietLock(
+        key: Key('speak-other-call-${item.spec.id}'),
+        borderRadius: NocheSize.cardRadius,
+        padding: const EdgeInsetsDirectional.all(15),
+        semanticLabel: SpeakWording.lockedOtherCallSemantic(
+          item.spec.titleEs,
+          item.cardMetaLine,
+        ),
+        builder: (context, reasonColor) => ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 56),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                item.spec.titleEs,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                locale: courseLocale,
+                style: NocheType.forScript(
+                  NocheType.rowTitle,
+                  lang.script,
+                ).copyWith(color: reasonColor),
+              ),
+              const SizedBox(height: 2),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  NocheIcon(NocheIcons.lock, size: 18, color: reasonColor),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: NocheLtr(
+                      child: Text(
+                        item.cardMetaLine,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: englishAlign,
+                        style: NocheType.body.copyWith(
+                          height: 1,
+                          color: reasonColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final isReachedCard =
         item.canStart || item.state == HablarCallState.tierLocked;
     final titleColor = isReachedCard ? NocheColors.text : NocheColors.label;
@@ -527,12 +757,15 @@ class _HablarTabState extends State<HablarTab> {
             style: titleStyle,
           ),
           const SizedBox(height: 2),
-          Text(
-            item.cardMetaLine,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textDirection: TextDirection.ltr,
-            style: metaStyle,
+          NocheLtr(
+            child: Text(
+              item.cardMetaLine,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: englishAlign,
+              textDirection: TextDirection.ltr,
+              style: metaStyle,
+            ),
           ),
         ],
       ),
@@ -567,126 +800,182 @@ class _HablarTabState extends State<HablarTab> {
     );
   }
 
+  Widget _statusCard({
+    required Key key,
+    required HablarCallState state,
+    required String statusLine,
+    required Animation<double>? secondaryAnimation,
+    required NocheMotionData motion,
+  }) {
+    final Widget card = state == HablarCallState.upcoming
+        ? NocheQuietLock(
+            key: key,
+            borderRadius: NocheSize.cardRadius,
+            padding: const EdgeInsetsDirectional.all(15),
+            semanticLabel: statusLine,
+            builder: (context, reasonColor) => Center(
+              child: Text(
+                statusLine,
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.ltr,
+                style: NocheType.body.copyWith(color: reasonColor),
+              ),
+            ),
+          )
+        : NocheCard(
+            key: key,
+            variant: NocheCardVariant.dashed,
+            child: Text(
+              statusLine,
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
+              style: NocheType.body.copyWith(color: NocheColors.label),
+            ),
+          );
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
+      child: _fadeWithRoute(
+        secondaryAnimation: secondaryAnimation,
+        motion: motion,
+        child: card,
+      ),
+    );
+  }
+
   Widget? _footerControl(
+    BuildContext context,
     HablarCallItem? featured,
     PlaceJourneyStop? selectedStop,
     Language lang, {
     required bool callsEntitled,
+    required NocheMotionData motion,
+    required Animation<double>? secondaryAnimation,
   }) {
     if (!callsEntitled) {
       final isRtl = lang.direction == LanguageDirection.rtl;
       final englishAlign = isRtl ? TextAlign.end : TextAlign.start;
       return Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-        child: NocheCard(
-          key: const Key('speak-plan-card'),
-          variant: NocheCardVariant.highlight,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Semantics(
-                header: true,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    SpeakWording.planCardTitle,
-                    textAlign: englishAlign,
-                    textDirection: TextDirection.ltr,
-                    style: NocheType.sheetTitle.copyWith(
-                      color: NocheColors.text,
+        child: _fadeWithRoute(
+          secondaryAnimation: secondaryAnimation,
+          motion: motion,
+          child: NocheCard(
+            key: const Key('speak-plan-card'),
+            variant: NocheCardVariant.highlight,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Semantics(
+                  header: true,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      SpeakWording.planCardTitle,
+                      textAlign: englishAlign,
+                      textDirection: TextDirection.ltr,
+                      style: NocheType.sheetTitle.copyWith(
+                        color: NocheColors.text,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: Text(
-                  SpeakWording.planCardBody(lang.partnerName),
-                  textAlign: englishAlign,
-                  textDirection: TextDirection.ltr,
-                  style: NocheType.body.copyWith(color: NocheColors.label),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    SpeakWording.planCardBody(lang.partnerName),
+                    textAlign: englishAlign,
+                    textDirection: TextDirection.ltr,
+                    style: NocheType.body.copyWith(color: NocheColors.label),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              NochePrimaryButton(
-                key: const Key('speak-see-plans-button'),
-                label: SpeakWording.seePlans,
-                onPressed: _openPlans,
-              ),
-            ],
+                const SizedBox(height: 16),
+                NochePrimaryButton(
+                  key: const Key('speak-see-plans-button'),
+                  label: SpeakWording.seePlans,
+                  onPressed: _openPlans,
+                ),
+              ],
+            ),
           ),
         ),
       );
     }
     if (featured == null) {
       if (selectedStop != null && selectedStop.statusLine.isNotEmpty) {
-        return Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-          child: NocheCard(
-            key: selectedStop.state == HablarCallState.soon
-                ? const Key('speak-coming-soon')
-                : const Key('speak-locked-status'),
-            variant: NocheCardVariant.dashed,
-            child: Text(
-              selectedStop.statusLine,
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.ltr,
-              style: NocheType.body.copyWith(color: NocheColors.label),
-            ),
-          ),
+        return _statusCard(
+          key: selectedStop.state == HablarCallState.soon
+              ? const Key('speak-coming-soon')
+              : const Key('speak-locked-status'),
+          state: selectedStop.state,
+          statusLine: selectedStop.statusLine,
+          secondaryAnimation: secondaryAnimation,
+          motion: motion,
         );
       }
       return null;
     }
     if (featured.canStart) {
       final label = SpeakWording.callPartner(lang.partnerName);
+      final canHero = !motion.reduced && TickerMode.valuesOf(context).enabled;
+      Widget disc = NochePlayDisc(
+        key: const Key('speak-call-disc'),
+        size: NocheSize.mic,
+        icon: NocheIcons.mic,
+        halo: true,
+        semanticLabel: SpeakWording.callDiscSemantic(
+          lang.partnerName,
+          featured.spec.titleEs,
+        ),
+        onPressed: () => _startCall(featured),
+      );
+      if (canHero) {
+        disc = Hero(
+          tag: SpeakingMotion.callMicHeroTag,
+          curve: motion.travel,
+          createRectTween: (begin, end) => RectTween(begin: begin, end: end),
+          child: disc,
+        );
+      }
       return Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: NocheArrive(
+          delay: NocheMotion.rowsAfter,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              label,
-              textDirection: TextDirection.ltr,
-              style: NocheType.rowTitle.copyWith(
-                height: 1,
-                color: NocheColors.text,
+          next: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _fadeWithRoute(
+                secondaryAnimation: secondaryAnimation,
+                motion: motion,
+                child: Text(
+                  label,
+                  textDirection: TextDirection.ltr,
+                  style: NocheType.rowTitle.copyWith(
+                    height: 1,
+                    color: NocheColors.text,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            NochePlayDisc(
-              key: const Key('speak-call-disc'),
-              size: NocheSize.mic,
-              icon: NocheIcons.mic,
-              halo: true,
-              semanticLabel: SpeakWording.callDiscSemantic(
-                lang.partnerName,
-                featured.spec.titleEs,
-              ),
-              onPressed: () => _startCall(featured),
-            ),
-          ],
+              const SizedBox(height: 16),
+              disc,
+            ],
+          ),
+          children: const [],
         ),
       );
     }
     if (featured.statusLine.isNotEmpty) {
-      return Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
-        child: NocheCard(
-          key: featured.state == HablarCallState.soon
-              ? const Key('speak-coming-soon')
-              : const Key('speak-locked-status'),
-          variant: NocheCardVariant.dashed,
-          child: Text(
-            featured.statusLine,
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.ltr,
-            style: NocheType.body.copyWith(color: NocheColors.label),
-          ),
-        ),
+      return _statusCard(
+        key: featured.state == HablarCallState.soon
+            ? const Key('speak-coming-soon')
+            : const Key('speak-locked-status'),
+        state: featured.state,
+        statusLine: featured.statusLine,
+        secondaryAnimation: secondaryAnimation,
+        motion: motion,
       );
     }
     return null;
@@ -700,7 +989,14 @@ class _HablarTabState extends State<HablarTab> {
         ? TextDirection.rtl
         : TextDirection.ltr;
     final courseLocale = Locale(lang.code);
-    final pad = MediaQuery.paddingOf(context);
+    final mq = MediaQuery.of(context);
+    final pad = mq.padding;
+    final reduce = s.reduceMotion || mq.disableAnimations;
+    final motion = SpeakingMotion.resolve(
+      context,
+      serviceReduceMotion: s.reduceMotion,
+    );
+    final secondaryAnimation = ModalRoute.of(context)?.secondaryAnimation;
 
     final snap = buildHablarSnapshot(
       course: s.course,
@@ -717,101 +1013,173 @@ class _HablarTabState extends State<HablarTab> {
     final others = selectedStop?.otherCalls ?? const <HablarCallItem>[];
     final voiceTest = widget.voiceTestLabel;
     final footer = _footerControl(
+      context,
       featured,
       selectedStop,
       lang,
       callsEntitled: snap.callsEntitled,
+      motion: motion,
+      secondaryAnimation: secondaryAnimation,
     );
+    final showLockHint =
+        snap.reachedStops.isNotEmpty &&
+        snap.nextLockedStop != null &&
+        _lockHintPlace != null;
 
-    return Directionality(
-      textDirection: textDirection,
-      child: ColoredBox(
-        color: NocheColors.ground,
-        child: DefaultTextStyle.merge(
-          style: NocheType.body.copyWith(color: NocheColors.text),
-          child: Padding(
-            padding: EdgeInsetsDirectional.only(
-              top: pad.top,
-              bottom: NocheSize.aboveTabBar + pad.bottom,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _header(context, lang, snap.openWords, courseLocale),
-                        if (snap.reachedStops.isNotEmpty)
-                          _placePills(
-                            context,
-                            snap,
-                            selectedStop,
-                            lang,
-                            courseLocale,
-                          ),
-                        if (featured != null)
-                          _nextCallCard(
-                            context,
-                            featured,
-                            snap.previewWords,
-                            lang,
-                            courseLocale,
-                            callsEntitled: snap.callsEntitled,
-                          ),
-                        if (others.isNotEmpty)
-                          _otherCallsGrid(context, others, lang, courseLocale),
-                        if (_note != null)
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                              16,
-                              16,
-                              16,
-                              0,
+    final body = MediaQuery(
+      data: mq.copyWith(disableAnimations: reduce),
+      child: Directionality(
+        textDirection: textDirection,
+        child: ColoredBox(
+          color: NocheColors.ground,
+          child: DefaultTextStyle.merge(
+            style: NocheType.body.copyWith(color: NocheColors.text),
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(
+                top: pad.top,
+                bottom: NocheSize.aboveTabBar + pad.bottom,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: _fadeWithRoute(
+                      secondaryAnimation: secondaryAnimation,
+                      motion: motion,
+                      opacityKey: const ValueKey('speak-outgoing-opacity'),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _header(
+                              context,
+                              lang,
+                              snap.openWords,
+                              courseLocale,
                             ),
-                            child: NocheCard(
-                              child: Text(
-                                _note!,
-                                style: NocheType.body.copyWith(
-                                  color: NocheColors.label,
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    if (snap.reachedStops.isNotEmpty)
+                                      _placePills(
+                                        context,
+                                        snap,
+                                        selectedStop,
+                                        lang,
+                                        courseLocale,
+                                      ),
+                                    KeyedSubtree(
+                                      key: ValueKey(_followEpoch),
+                                      child: NocheFollow(
+                                        key: const Key('speak-place-follow'),
+                                        contentKey:
+                                            selectedStop?.place.id ?? '',
+                                        side: _placeFollowSide,
+                                        distance: NocheMotion.tab,
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          primary: false,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsetsDirectional.zero,
+                                          children: [
+                                            if (featured != null)
+                                              _nextCallCard(
+                                                context,
+                                                featured,
+                                                snap.previewWords,
+                                                lang,
+                                                courseLocale,
+                                                callsEntitled:
+                                                    snap.callsEntitled,
+                                              ),
+                                            if (others.isNotEmpty)
+                                              _otherCallsGrid(
+                                                context,
+                                                others,
+                                                lang,
+                                                courseLocale,
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    if (_note != null)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.fromSTEB(
+                                              16,
+                                              16,
+                                              16,
+                                              0,
+                                            ),
+                                        child: NocheCard(
+                                          child: Text(
+                                            _note!,
+                                            style: NocheType.body.copyWith(
+                                              color: NocheColors.label,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    if (voiceTest != null)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.fromSTEB(
+                                              16,
+                                              16,
+                                              16,
+                                              0,
+                                            ),
+                                        child: NocheCard(
+                                          onPressed: () =>
+                                              s.nav.go(const VoiceTestRoute()),
+                                          semanticLabel: voiceTest,
+                                          child: Align(
+                                            alignment: AlignmentDirectional
+                                                .centerStart,
+                                            child: Text(
+                                              voiceTest,
+                                              style: NocheType.rowTitle
+                                                  .copyWith(
+                                                    color: NocheColors.text,
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    const SizedBox(height: 16),
+                                  ],
                                 ),
-                              ),
-                            ),
-                          ),
-                        if (voiceTest != null)
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                              16,
-                              16,
-                              16,
-                              0,
-                            ),
-                            child: NocheCard(
-                              onPressed: () => s.nav.go(const VoiceTestRoute()),
-                              semanticLabel: voiceTest,
-                              child: Align(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: Text(
-                                  voiceTest,
-                                  style: NocheType.rowTitle.copyWith(
-                                    color: NocheColors.text,
+                                if (showLockHint)
+                                  PositionedDirectional(
+                                    end: 16,
+                                    top: NocheSize.touch + NocheSize.grid,
+                                    child: _lockedPlaceHint(
+                                      _lockHintPlace!,
+                                      lang,
+                                      courseLocale,
+                                    ),
                                   ),
-                                ),
-                              ),
+                              ],
                             ),
-                          ),
-                        const SizedBox(height: 16),
-                      ],
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                ?footer,
-              ],
+                  ?footer,
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+    return body;
   }
 }

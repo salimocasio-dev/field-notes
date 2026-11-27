@@ -11,6 +11,7 @@ import 'package:feature_speaking/src/call_screen.dart';
 import 'package:feature_speaking/src/hablar_tab.dart';
 import 'package:feature_speaking/src/voice_test_controller.dart';
 import 'package:feature_speaking/src/voice_test_screen.dart';
+import 'package:feature_speaking/src/wording.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -227,7 +228,7 @@ void main() {
           NocheMicState.thinking,
         );
         expect(
-          find.text(Language.spanish.micWords['thinking']!),
+          find.text(SpeakWording.callingPartner(Language.spanish.partnerName)),
           findsOneWidget,
         );
 
@@ -281,6 +282,10 @@ void main() {
         expect(
           tester.widget<NocheMic>(find.byType(NocheMic)).state,
           NocheMicState.thinking,
+        );
+        expect(
+          find.text(Language.spanish.micWords['thinking']!),
+          findsOneWidget,
         );
 
         await w.close(tester);
