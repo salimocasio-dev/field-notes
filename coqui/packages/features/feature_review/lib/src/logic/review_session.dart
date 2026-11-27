@@ -108,6 +108,8 @@ class ReviewEnd {
     required this.practice,
     required this.summary,
     required this.groups,
+    required this.stageMax,
+    this.stages = const {},
   });
   final List<String> up;
   final List<String> soon;
@@ -116,6 +118,8 @@ class ReviewEnd {
   /// "8 moving up · 2 coming back soon" ("6 right · 2 missed").
   final String summary;
   final List<ReviewGroup> groups;
+  final int stageMax;
+  final Map<String, ({int before, int after})> stages;
 }
 
 class ReviewSession extends LessonBase {
@@ -156,6 +160,7 @@ class ReviewSession extends LessonBase {
   List<ReviewAnswer> secondAnswers = [];
   List<ReviewAsk> asks = [];
   ReviewEnd? end;
+  final Map<String, ({int before, int after})> _stages = {};
 
   /// PAN: the two pictures now on screen, or null.
   List<ReviewPanel>? panels;
@@ -255,6 +260,7 @@ class ReviewSession extends LessonBase {
     secondAnswers = [];
     asks = [];
     end = null;
+    _stages.clear();
     try {
       for (var i = 0; i < q.length; i++) {
         step(answers.length); // one segment per word, lit as each is answered
@@ -335,8 +341,16 @@ class ReviewSession extends LessonBase {
     t.ok = right;
     if (!again) {
       // due now, by the store's clock
+      final before = progress.word(it.word)?.ear.etapa ?? 0;
       final vence = progress.due(Skill.ear).contains(it.word);
-      progress.answer(it.word, Skill.ear, ok: right, ms: ms, intro: !vence);
+      final rec = progress.answer(
+        it.word,
+        Skill.ear,
+        ok: right,
+        ms: ms,
+        intro: !vence,
+      );
+      _stages[it.word] = (before: before, after: rec.etapa);
       answers.add(
         auto
             ? ReviewAnswer(it.word, ok: false, ms: ms, auto: true)
@@ -426,6 +440,8 @@ class ReviewSession extends LessonBase {
       soon: [for (final x in soon) x.word],
       practice: pr,
       summary: line,
+      stageMax: progress.stageMax,
+      stages: Map.unmodifiable(_stages),
       groups: [
         if (up.isNotEmpty)
           ReviewGroup(

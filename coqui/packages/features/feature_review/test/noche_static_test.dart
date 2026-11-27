@@ -75,6 +75,21 @@ void main() {
     }
   });
 
+  test('lib/ has zero raw Duration(, Curves., or Cubic( literals and NocheMotion.ms( appears only in lib/src/motion.dart', () {
+    final rawMotionRe = RegExp(r'Duration\(|Curves\.|Cubic\(');
+    final msRe = RegExp(r'NocheMotion\.ms\(');
+    for (final f in dartFiles(libDir)) {
+      final src = stripComments(f.readAsStringSync());
+      expect(rawMotionRe.allMatches(src), isEmpty, reason: f.path);
+      final isMotionFile = f.path.endsWith('/lib/src/motion.dart');
+      if (!isMotionFile) {
+        expect(msRe.allMatches(src), isEmpty, reason: f.path);
+      } else {
+        expect(msRe.allMatches(src), isNotEmpty, reason: f.path);
+      }
+    }
+  });
+
   testWidgets(
     'ChoiceRing.wrong and ChoiceRing.selected are visually distinct on pictures and tiles (white outline + badge vs plain white outline, never red)',
     (t) async {

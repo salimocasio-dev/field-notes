@@ -163,6 +163,7 @@ class LevelCheckScreenState extends State<LevelCheckScreen> {
             Padding(
               padding: const EdgeInsetsDirectional.only(bottom: 16),
               child: NochePlayDisc(
+                key: const Key('review-start-disc'),
                 size: nocheLessonStartDisc,
                 icon: NocheIcons.play,
                 semanticLabel: 'Start',
@@ -171,6 +172,7 @@ class LevelCheckScreenState extends State<LevelCheckScreen> {
             ),
           if (end)
             NochePrimaryButton(
+              key: const Key('level-check-end-action'),
               label: ReviewStrings.toTheMap,
               onPressed: _toMap,
             ),

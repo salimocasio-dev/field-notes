@@ -26,6 +26,16 @@ Repaso (¿Cuál?) and the level check.
 - It holds one thing: its module, `ReviewModule`, a `FeatureModule` (boundary rule 4). Since order 23 it answers `ReviewRoute` (Repaso) and `LevelCheckRoute` (the level check), full-screen lessons, and has no tab. `ReviewRoute.practice` is not read: like cual.js, the screen decides from the store whether anything is due.
 - The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
 
+## Stable widget keys
+
+The following keys are standing contracts relied on by cross-package and shell tests; keep them intact:
+
+- `Key('review-start-disc')` — start `NochePlayDisc` on `RepasoScreen`, `ReviewScreen`, and `LevelCheckScreen`.
+- `Key('review-close-button')` — close `NocheLessonCloseButton` in `NocheLessonFrame`.
+- `Key('review-next-button')` — Next `NochePrimaryButton` in `RepasoScreen`.
+- `Key('review-end-action')` — end-screen `NochePrimaryButton` in `RepasoScreen` and `ReviewScreen`.
+- `Key('level-check-end-action')` — end-screen `NochePrimaryButton` in `LevelCheckScreen`.
+
 ## What is where (order 23)
 
 - `lib/src/logic/`: the lessons as plain Dart taking `Rng`, `Clock`, the catalog, the store, a clip player and the host's `wait`: `review_session.dart` (cual.js), `level_check.dart` (nivel.js), `lesson_base.dart` (the voice, captions and sounds of juego.js), `js_sort.dart` (V8's `Array.prototype.sort`, so that `list.sort(() => Math.random() - .5)` draws as the old page does).
