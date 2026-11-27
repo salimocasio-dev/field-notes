@@ -156,6 +156,10 @@ _RoadGraph _buildRoadGraph() {
   for (final seg in SEGS) {
     final p0 = seg[0], p1 = seg[1];
     final du = p1[0] - p0[0], dv = p1[1] - p0[1];
+    assert(
+      du.abs() <= _coordEps || dv.abs() <= _coordEps,
+      'SEGS must be axis-aligned: $p0 -> $p1',
+    );
     final minU = math.min(p0[0], p1[0]) - _coordEps;
     final maxU = math.max(p0[0], p1[0]) + _coordEps;
     final minV = math.min(p0[1], p1[1]) - _coordEps;
@@ -204,13 +208,18 @@ _RoadGraph _buildRoadGraph() {
   final padVertex = [
     for (final pad in PADS) vertices.indexWhere((v) => _samePoint(v, pad)),
   ];
+  assert(
+    padVertex.every((v) => v >= 0),
+    'Every stop in PADS must match a vertex in SEGS',
+  );
   return _RoadGraph(vertices, adj, padVertex);
 }
 
 final _RoadGraph _roadGraph = _buildRoadGraph();
 
-/// Shortest path on the road-junction graph from stop [a] to stop [b]:
-/// road corners and junctions in between, as `[u, v]`.
+/// Shortest path on the road-junction graph (built from [SEGS], which derives
+/// from [ROAD] and [legs]) from stop [a] to stop [b]: road corners and
+/// junctions in between, as `[u, v]`.
 List<List<double>> route(int a, int b) {
   if (a == b) return [PADS[a]];
   final g = _roadGraph;
@@ -262,6 +271,10 @@ List<List<double>> route(int a, int b) {
     chain.add(cur);
     if (cur == start) break;
   }
+  assert(
+    chain.isNotEmpty && chain.last == start,
+    'Road graph disconnected between stop $a and stop $b',
+  );
   final pts = <List<double>>[];
   for (var i = chain.length - 1; i >= 0; i--) {
     final idx = chain[i];

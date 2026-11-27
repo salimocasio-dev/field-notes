@@ -690,6 +690,9 @@ class MapPicture {
       e.flushShadows();
       e.applyShadows(e.groundZ);
     } else if (frogAlpha > 0.0) {
+      e.flushShadows();
+      e.applyShadows(e.groundZ);
+      e.pendingShadows.clear();
       final before = Uint32List.fromList(e.pix);
       drawFrog(FROG.x, FROG.y, FROG.z, FROG.yaw, FROG.squash);
       e.flushShadows();

@@ -718,12 +718,15 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
 
     if (!await _waitTripDelay(MapMotion.tripStartDelay, token)) return;
 
-    final planned = _map.planHops(_map.FROG.at, k);
-    if (planned.isNotEmpty) {
+    final List<Hop> hops = _map.planHops(_map.FROG.at, k);
+    if (hops.isNotEmpty) {
+      // planHops expands per-leg counts into individual Hop segments, so
+      // hops.length is the total hop count across all legs (<= maxTripHops).
+      final totalHopCount = hops.length;
       unawaited(
         _animateCameraTo(
           k,
-          duration: motion.hop * planned.length,
+          duration: motion.hop * totalHopCount,
           curve: motion.travel,
           token: token,
         ),

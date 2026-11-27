@@ -1816,5 +1816,58 @@ void main() {
         await tester.pumpWidget(const SizedBox.shrink());
       },
     );
+
+    mapTest(
+      '9. Multi-leg capped trip (0 -> 3: 4 legs, 6 hops): camera travels for full 6 * hop (1200 ms), still moving past 4 * hop (800 ms)',
+      (tester) async {
+        _phone(tester, size: const Size(390, 844), dpr: 3.0);
+        final f = fixture(seed: 'todo', todo: true);
+        final clips = FakeClipPlayer();
+        late MapPicture picture;
+
+        await tester.pumpWidget(
+          _MapMotionHarness(
+            course: f.services.course,
+            progress: f.progress,
+            clock: f.clock,
+            clips: clips,
+            pictures: _pixelPictures(),
+            entitlements: const AllowAllEntitlements(),
+            onPicture: (p) => picture = p,
+          ),
+        );
+        await _pumpMapReady(tester);
+        expect(picture.FROG.at, 0);
+        // Verify 0 -> 3 has 4 legs but 6 total hops ([1, 2, 1, 2]).
+        expect(picture.planHops(0, 3), hasLength(6));
+
+        final scrollV = tester.state<ScrollableState>(
+          find.byType(Scrollable).at(0),
+        );
+        final startScrollY = scrollV.position.pixels;
+
+        // Tap stop 3 directly without pre-scrolling so camera starts at stop 0.
+        await _tapStopOnMap(tester, 3, scrollFirst: false);
+
+        // Advance past 90 ms tripStartDelay + 800 ms (4 * hop = leg count) = 900 ms.
+        // Because camera duration is 6 * hop (1200 ms), camera must still be mid-travel
+        // and not yet at stop 3's final scrollY.
+        await _runFrames(tester, 900, step: 50);
+        final scrollAt900 = scrollV.position.pixels;
+        expect(scrollAt900, lessThan(startScrollY));
+        expect(picture.FROG.path, isNotNull);
+
+        // Advance another 450 ms (total 1350 ms > 90 + 1200 ms): camera finishes moving
+        // further north and frog lands after 6 hops.
+        await _runFrames(tester, 450, step: 50);
+        final finalScrollY = scrollV.position.pixels;
+        expect(finalScrollY, lessThan(scrollAt900));
+        expect(picture.FROG.path, isNull);
+        expect(picture.FROG.at, 3);
+        expect(clips.tones, hasLength(6));
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
   });
 }
