@@ -230,8 +230,9 @@ List<Widget> storyEndButtons({
   bool primaryIsMap = false,
 }) {
   final hasPrimaryNext = !primaryIsMap && (onPrimary != null || foot.next);
-  final showOutlineMap =
-      hasPrimaryNext && (foot.map || foot.home || onPrimary != null);
+  final showOutlineMap = hasPrimaryNext
+      ? (foot.map || foot.home || onPrimary != null)
+      : (!foot.home && foot.map);
   final Widget? primaryButton;
   if (hasPrimaryNext) {
     primaryButton = NochePrimaryButton(

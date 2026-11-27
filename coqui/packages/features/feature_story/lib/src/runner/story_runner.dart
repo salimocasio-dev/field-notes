@@ -660,7 +660,8 @@ class StoryRunner implements SceneHost {
   }
 
   void _emitTouchFeedback(TouchFeedbackKind kind, String thing) {
-    final box = respBox(thing) ?? bx(thing);
+    final box = respBox(thing) ?? _signs.hintBoxOf(thing) ?? bx(thing);
+    if (box.length < 4) return;
     view.touchFeedback = TouchFeedback(
       seq: ++_touchSeq,
       kind: kind,

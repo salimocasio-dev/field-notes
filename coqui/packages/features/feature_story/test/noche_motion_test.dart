@@ -579,6 +579,38 @@ void main() {
       expect(summary.beforeMinutes, 0);
       expect(summary.afterMinutes, 0);
     });
+
+    testWidgets(
+      'storyEndButtons keeps outline Map exit when primaryIsMap is true, foot.home is false, and foot.map is true',
+      (tester) async {
+        var mapTapped = 0;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Column(
+                children: storyEndButtons(
+                  foot: const StoryFoot(
+                    next: false,
+                    again: true,
+                    home: false,
+                    map: true,
+                  ),
+                  onAgain: () {},
+                  onNext: () {},
+                  onMap: () => mapTapped++,
+                  primaryIsMap: true,
+                ),
+              ),
+            ),
+          ),
+        );
+        expect(find.byKey(const Key('story-end-replay')), findsOneWidget);
+        expect(find.byKey(const Key('story-end-map')), findsOneWidget);
+        expect(find.byType(NochePrimaryButton), findsNothing);
+        await tester.tap(find.byKey(const Key('story-end-map')));
+        expect(mapTapped, 1);
+      },
+    );
   });
 
   group('Reduced motion & Arabic RTL', () {
