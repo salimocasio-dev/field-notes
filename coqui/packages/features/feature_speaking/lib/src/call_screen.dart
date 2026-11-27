@@ -684,14 +684,11 @@ class _CallScreenState extends State<CallScreen> with TickerProviderStateMixin {
     );
     final passiveMic = MediaQuery(
       data: const MediaQueryData(disableAnimations: true),
-      child: NocheMic(
-        state: nocheMicStateForCall(snap.micState),
+      child: buildCallNocheMic(
+        state: snap.micState,
         language: lang,
-        level: callMicLevel(
-          state: snap.micState,
-          ring: snap.ring,
-          wave: snap.wave,
-        ),
+        ring: snap.ring,
+        wave: snap.wave,
         compactLabel: true,
         labelGap: 8,
         barGroupGap: land ? 8 : NocheMic.defaultBarGroupGap,

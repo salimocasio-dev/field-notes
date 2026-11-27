@@ -30,6 +30,47 @@ double callMicLevel({
   _ => 0.0,
 };
 
+/// Builds the shared [NocheMic] for a call [state], showing `"Calling <partner>"`
+/// in the thinking look while ringing and course `micWords` in all other states.
+Widget buildCallNocheMic({
+  required CallState state,
+  required Language language,
+  double ring = 3,
+  double wave = 1.5,
+  bool compactLabel = true,
+  double labelGap = 8,
+  double barGroupGap = NocheMic.defaultBarGroupGap,
+  String? semanticLabel,
+  VoidCallback? onPressed,
+}) => state == CallState.connecting
+    ? NocheMic.custom(
+        state: NocheMicState.thinking,
+        micWords: {
+          ...language.micWords,
+          'thinking': SpeakWording.callingPartner(language.partnerName),
+        },
+        script: 'Latn',
+        textDirection: TextDirection.ltr,
+        locale: null,
+        a11yWords: language.a11yWords,
+        level: 0.0,
+        compactLabel: compactLabel,
+        labelGap: labelGap,
+        barGroupGap: barGroupGap,
+        semanticLabel: semanticLabel,
+        onPressed: null,
+      )
+    : NocheMic(
+        state: nocheMicStateForCall(state),
+        language: language,
+        level: callMicLevel(state: state, ring: ring, wave: wave),
+        compactLabel: compactLabel,
+        labelGap: labelGap,
+        barGroupGap: barGroupGap,
+        semanticLabel: semanticLabel,
+        onPressed: onPressed,
+      );
+
 /// Call microphone stage backed by [NocheMic].
 class CallMicStage extends StatelessWidget {
   const CallMicStage({
@@ -78,34 +119,17 @@ class CallMicStage extends StatelessWidget {
     final mq = MediaQuery.maybeOf(context);
     final ambientReduce = mq?.disableAnimations ?? false;
     final reduce = reduceMotion || ambientReduce;
-    final mic = state == CallState.connecting
-        ? NocheMic.custom(
-            state: NocheMicState.thinking,
-            micWords: {
-              ...language.micWords,
-              'thinking': SpeakWording.callingPartner(language.partnerName),
-            },
-            script: 'Latn',
-            textDirection: TextDirection.ltr,
-            locale: null,
-            a11yWords: language.a11yWords,
-            level: 0.0,
-            compactLabel: compactLabel,
-            labelGap: labelGap,
-            barGroupGap: barGroupGap,
-            semanticLabel: semanticLabel,
-            onPressed: null,
-          )
-        : NocheMic(
-            state: nocheMicStateForCall(state),
-            language: language,
-            level: callMicLevel(state: state, ring: ring, wave: wave),
-            compactLabel: compactLabel,
-            labelGap: labelGap,
-            barGroupGap: barGroupGap,
-            semanticLabel: semanticLabel,
-            onPressed: state == CallState.idle ? onTap : null,
-          );
+    final mic = buildCallNocheMic(
+      state: state,
+      language: language,
+      ring: ring,
+      wave: wave,
+      compactLabel: compactLabel,
+      labelGap: labelGap,
+      barGroupGap: barGroupGap,
+      semanticLabel: semanticLabel,
+      onPressed: state == CallState.idle ? onTap : null,
+    );
     if (mq == null || reduce != ambientReduce) {
       return MediaQuery(
         data: (mq ?? const MediaQueryData()).copyWith(
