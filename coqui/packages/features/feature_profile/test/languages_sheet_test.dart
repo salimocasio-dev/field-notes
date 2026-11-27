@@ -9,6 +9,7 @@ import 'package:feature_profile/feature_profile.dart';
 import 'package:feature_profile/src/language_chip.dart';
 import 'package:feature_profile/src/languages_data.dart';
 import 'package:feature_profile/src/languages_sheet.dart';
+import 'package:feature_profile/src/motion.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -61,6 +62,7 @@ Future<void> _pumpSheet(
   LanguagesSource? source,
   VoidCallback? onClose,
   TextDirection textDirection = TextDirection.ltr,
+  bool disableAnimations = false,
   Size size = const Size(390, 844),
   double dpr = 3.0,
   Widget? backdrop,
@@ -90,9 +92,15 @@ Future<void> _pumpSheet(
     MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: coquiTheme(),
-      home: Directionality(
-        textDirection: textDirection,
-        child: Scaffold(backgroundColor: NocheColors.ground, body: body),
+      home: Builder(
+        builder: (context) => MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(disableAnimations: disableAnimations),
+          child: Directionality(
+            textDirection: textDirection,
+            child: Scaffold(backgroundColor: NocheColors.ground, body: body),
+          ),
+        ),
       ),
     ),
   );
@@ -246,11 +254,14 @@ void main() {
         expect(scrimBox, isNotEmpty);
 
         // Title and Spanish radio card.
+        expect(find.byKey(const Key('languages-sheet')), findsOneWidget);
         expect(find.text('Your languages'), findsOneWidget);
         expect(find.text('Spanish'), findsOneWidget);
         expect(find.text('A1 · place 3 of 10 · 96 words'), findsOneWidget);
 
-        // Card metrics: 72 high, 2 px text border, ground fill, 32 check disc.
+        // Card metrics: 72 high, 1 px line border on card, 2 px text outline
+        // mark painted over the active card by NocheOutlineGroup, ground fill,
+        // 32 check disc.
         final cardFinder = find.byKey(const ValueKey('language-card-es'));
         expect(cardFinder, findsOneWidget);
         expect(tester.getSize(cardFinder).height, 72);
@@ -264,8 +275,17 @@ void main() {
         expect(decoration.color, NocheColors.ground);
         expect(
           decoration.border,
-          Border.all(color: NocheColors.text, width: 2),
+          Border.all(color: NocheColors.line, width: 1),
         );
+
+        final markFinder = find.byKey(
+          const ValueKey('noche_outline_group_mark'),
+        );
+        expect(markFinder, findsOneWidget);
+        final markBox = tester.widget<DecoratedBox>(markFinder);
+        final markDeco = markBox.decoration as BoxDecoration;
+        expect(markDeco.border, Border.all(color: NocheColors.text, width: 2));
+        expect(tester.getRect(markFinder), tester.getRect(cardFinder));
 
         // 32 check disc with check icon.
         final checkDisc = tester
@@ -452,11 +472,16 @@ void main() {
         );
         expect(find.text('A1 · place 1 of 10 · 12 words'), findsOneWidget);
 
-        // Tap Arabic to switch.
+        // Tap Arabic to switch: haptics fire immediately, while the outline
+        // slides and switch/navigation happen after ProfileMotion.languageSwitchDelay.
         await tester.tap(arCard);
         await tester.pump();
-        expect(shared.setting(currentLanguageSettingKey), 'ar');
         expect(haptics.ticks, 1);
+        expect(shared.setting(currentLanguageSettingKey), isNull);
+        expect(nav.routes, isEmpty);
+
+        await tester.pump(ProfileMotion.languageSwitchDelay);
+        expect(shared.setting(currentLanguageSettingKey), 'ar');
         expect(nav.routes, [const TabRoute(NocheTabs.map)]);
       },
     );
@@ -634,6 +659,292 @@ void main() {
       expect(find.byKey(const ValueKey('language-card-ar')), findsOneWidget);
       expect(find.text('A1 · place 1 of 10 · 3 words'), findsOneWidget);
     });
+  });
+
+  group('LanguagesSheet — N8.16 motion', () {
+    Future<
+      ({
+        FakeProgressStore shared,
+        FakeNavigator nav,
+        FakeHaptics haptics,
+        Services services,
+        LanguagesSource source,
+      })
+    >
+    buildTwoLanguageFixture({String activeCode = 'es'}) async {
+      final clock = FakeClock(referenceNowMs);
+      final esCourse = DevCourse();
+      final arCourse = _TenPlaceCourse(
+        language: arabicTestLanguage,
+        fetch: arabicSampleFile,
+      );
+      await arCourse.load();
+      final shared = FakeProgressStore(clock: clock);
+      if (activeCode != 'es') {
+        shared.setSetting(currentLanguageSettingKey, activeCode);
+      }
+      final esStore = FakeProgressStore(clock: clock);
+      final arStore = FakeProgressStore(clock: clock);
+      _finishPlaces(esStore, esCourse, 2);
+      _seedWords(esStore, 96);
+      _seedWords(arStore, 12, prefix: 'ar');
+
+      final nav = FakeNavigator();
+      final haptics = FakeHaptics();
+      final services = fakeServices(
+        progress: shared,
+        course: activeCode == 'ar' ? arCourse : esCourse,
+        clock: clock,
+        nav: nav,
+        haptics: haptics,
+      );
+      final source = CatalogLanguagesSource(
+        courses: [esCourse, arCourse],
+        storeFor: (l) => l.code == 'ar' ? arStore : esStore,
+        sharedStore: shared,
+      );
+      return (
+        shared: shared,
+        nav: nav,
+        haptics: haptics,
+        services: services,
+        source: source,
+      );
+    }
+
+    testWidgets(
+      'sliding outline travels on move/travel, tick and Switch crossfade in quick, close is locked during switch, and course switches at 420 ms',
+      (tester) async {
+        final f = await buildTwoLanguageFixture();
+        await _pumpSheet(tester, services: f.services, source: f.source);
+
+        final esCard = find.byKey(const ValueKey('language-card-es'));
+        final arCard = find.byKey(const ValueKey('language-card-ar'));
+        final markFinder = find.byKey(
+          const ValueKey('noche_outline_group_mark'),
+        );
+        final esRect = tester.getRect(esCard);
+        final arRect = tester.getRect(arCard);
+
+        expect(tester.getRect(markFinder), esRect);
+
+        // Tap Arabic: switch begins; outline starts at Spanish rect.
+        await tester.tap(arCard);
+        await tester.pump();
+        expect(tester.getRect(markFinder).top, closeTo(esRect.top, 0.1));
+        expect(f.haptics.ticks, 1);
+        expect(f.shared.setting(currentLanguageSettingKey), isNull);
+        expect(f.nav.routes, isEmpty);
+
+        // Close button and scrim taps are ignored while switching.
+        await tester.tap(find.bySemanticsLabel('Close'));
+        await tester.tapAt(const Offset(195, 40));
+        await tester.pump();
+        expect(f.nav.backs, 0);
+        expect(f.haptics.ticks, 1);
+
+        // Midpoint of quick (70 ms): tick and Switch are mid-crossfade on both rows.
+        final halfQuick = NocheMotion.quick ~/ 2;
+        await tester.pump(halfQuick);
+        final arCheckMid = tester
+            .widget<Opacity>(find.byKey(const ValueKey('language-check-ar')))
+            .opacity;
+        final arSwitchMid = tester
+            .widget<Opacity>(find.byKey(const ValueKey('language-switch-ar')))
+            .opacity;
+        final esCheckMid = tester
+            .widget<Opacity>(find.byKey(const ValueKey('language-check-es')))
+            .opacity;
+        final esSwitchMid = tester
+            .widget<Opacity>(find.byKey(const ValueKey('language-switch-es')))
+            .opacity;
+        expect(arCheckMid, greaterThan(0.0));
+        expect(arCheckMid, lessThan(1.0));
+        expect(arSwitchMid, greaterThan(0.0));
+        expect(arSwitchMid, lessThan(1.0));
+        expect(esCheckMid, greaterThan(0.0));
+        expect(esCheckMid, lessThan(1.0));
+        expect(esSwitchMid, greaterThan(0.0));
+        expect(esSwitchMid, lessThan(1.0));
+
+        // Midpoint of move (110 ms): outline mark sits on travel(0.5) between cards.
+        final halfMove = NocheMotion.move ~/ 2;
+        await tester.pump(halfMove - halfQuick);
+        final expectedMidTop =
+            esRect.top +
+            (arRect.top - esRect.top) * NocheMotion.travel.transform(0.5);
+        expect(tester.getRect(markFinder).top, closeTo(expectedMidTop, 0.5));
+        expect(f.shared.setting(currentLanguageSettingKey), isNull);
+        expect(f.nav.routes, isEmpty);
+
+        // End of move (220 ms): outline reaches Arabic card, check/Switch swap is
+        // complete, but switch and close have NOT fired yet (< 420 ms).
+        await tester.pump(NocheMotion.move - halfMove);
+        expect(tester.getRect(markFinder).top, closeTo(arRect.top, 0.1));
+        expect(
+          tester
+              .widget<Opacity>(find.byKey(const ValueKey('language-check-ar')))
+              .opacity,
+          1.0,
+        );
+        expect(find.byKey(const ValueKey('language-switch-ar')), findsNothing);
+        expect(
+          tester
+              .widget<Opacity>(find.byKey(const ValueKey('language-switch-es')))
+              .opacity,
+          1.0,
+        );
+        expect(find.byKey(const ValueKey('language-check-es')), findsNothing);
+        expect(f.shared.setting(currentLanguageSettingKey), isNull);
+        expect(f.nav.routes, isEmpty);
+
+        // Still not fired 1 ms before 420 ms.
+        await tester.pump(
+          ProfileMotion.languageSwitchDelay -
+              NocheMotion.move -
+              const Duration(milliseconds: 1),
+        );
+        expect(f.shared.setting(currentLanguageSettingKey), isNull);
+        expect(f.nav.routes, isEmpty);
+
+        // At 420 ms total: course switches and navigates to map.
+        await tester.pump(const Duration(milliseconds: 1));
+        expect(f.shared.setting(currentLanguageSettingKey), 'ar');
+        expect(f.nav.routes, [const TabRoute(NocheTabs.map)]);
+      },
+    );
+
+    testWidgets(
+      'under reduced motion, outline snaps immediately to target and fades in quick without scaling check disc, switching at 420 ms',
+      (tester) async {
+        final f = await buildTwoLanguageFixture();
+        await _pumpSheet(
+          tester,
+          services: f.services,
+          source: f.source,
+          disableAnimations: true,
+        );
+
+        final arCard = find.byKey(const ValueKey('language-card-ar'));
+        final markFinder = find.byKey(
+          const ValueKey('noche_outline_group_mark'),
+        );
+        final arRect = tester.getRect(arCard);
+
+        await tester.tap(arCard);
+        await tester.pump();
+
+        // Mark snaps immediately to Arabic rect (never at an intermediate y).
+        expect(tester.getRect(markFinder), arRect);
+        final markOpacityAtStart = tester
+            .widget<Opacity>(
+              find
+                  .ancestor(of: markFinder, matching: find.byType(Opacity))
+                  .first,
+            )
+            .opacity;
+        expect(markOpacityAtStart, 0.0);
+
+        // Midpoint of quick: mark stays at arRect and fades in; check disc never scales.
+        final halfQuick = NocheMotion.quick ~/ 2;
+        await tester.pump(halfQuick);
+        expect(tester.getRect(markFinder), arRect);
+        final markOpacityMid = tester
+            .widget<Opacity>(
+              find
+                  .ancestor(of: markFinder, matching: find.byType(Opacity))
+                  .first,
+            )
+            .opacity;
+        expect(markOpacityMid, closeTo(NocheMotion.enter.transform(0.5), 0.05));
+        final checkTransform = tester.widget<Transform>(
+          find.descendant(
+            of: find.byKey(const ValueKey('language-check-ar')),
+            matching: find.byType(Transform),
+          ),
+        );
+        expect(checkTransform.transform.storage[0], 1.0);
+        expect(checkTransform.transform.storage[5], 1.0);
+
+        // End of quick: mark fully opaque.
+        await tester.pump(NocheMotion.quick - halfQuick);
+        final markOpacityEnd = tester
+            .widget<Opacity>(
+              find
+                  .ancestor(of: markFinder, matching: find.byType(Opacity))
+                  .first,
+            )
+            .opacity;
+        expect(markOpacityEnd, 1.0);
+        expect(f.shared.setting(currentLanguageSettingKey), isNull);
+
+        // At 420 ms total: course switches and navigates to map.
+        await tester.pump(
+          ProfileMotion.languageSwitchDelay - NocheMotion.quick,
+        );
+        expect(f.shared.setting(currentLanguageSettingKey), 'ar');
+        expect(f.nav.routes, [const TabRoute(NocheTabs.map)]);
+      },
+    );
+
+    testWidgets(
+      'in Arabic RTL course, outline slides cleanly from Arabic to Spanish, summaries stay LTR via NocheLtr, and switch fires at 420 ms',
+      (tester) async {
+        final f = await buildTwoLanguageFixture(activeCode: 'ar');
+        await _pumpSheet(
+          tester,
+          services: f.services,
+          source: f.source,
+          textDirection: TextDirection.rtl,
+        );
+
+        expect(
+          Directionality.of(
+            tester.element(find.byKey(const Key('languages-sheet'))),
+          ),
+          TextDirection.rtl,
+        );
+        for (final summary in const [
+          'A1 · place 1 of 10 · 12 words',
+          'A1 · place 3 of 10 · 96 words',
+        ]) {
+          expect(
+            Directionality.of(tester.element(find.text(summary))),
+            TextDirection.ltr,
+            reason: '$summary should stay LTR via NocheLtr in RTL',
+          );
+        }
+
+        final arCard = find.byKey(const ValueKey('language-card-ar'));
+        final esCard = find.byKey(const ValueKey('language-card-es'));
+        final markFinder = find.byKey(
+          const ValueKey('noche_outline_group_mark'),
+        );
+        final arRect = tester.getRect(arCard);
+        final esRect = tester.getRect(esCard);
+        expect(tester.getRect(markFinder), arRect);
+
+        await tester.tap(esCard);
+        await tester.pump();
+        expect(tester.getRect(markFinder).top, closeTo(arRect.top, 0.1));
+
+        final halfMove = NocheMotion.move ~/ 2;
+        await tester.pump(halfMove);
+        final expectedMidTop =
+            arRect.top +
+            (esRect.top - arRect.top) * NocheMotion.travel.transform(0.5);
+        expect(tester.getRect(markFinder).top, closeTo(expectedMidTop, 0.5));
+
+        await tester.pump(NocheMotion.move - halfMove);
+        expect(tester.getRect(markFinder).top, closeTo(esRect.top, 0.1));
+        expect(f.shared.setting(currentLanguageSettingKey), 'ar');
+        expect(f.nav.routes, isEmpty);
+
+        await tester.pump(ProfileMotion.languageSwitchDelay - NocheMotion.move);
+        expect(f.shared.setting(currentLanguageSettingKey), 'es');
+        expect(f.nav.routes, [const TabRoute(NocheTabs.map)]);
+      },
+    );
   });
 
   group('LanguageChip', () {

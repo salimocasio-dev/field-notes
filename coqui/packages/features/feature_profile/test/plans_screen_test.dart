@@ -82,6 +82,7 @@ void main() {
         await _pumpPlans(tester, services: services);
 
         expect(find.byType(PlansScreen), findsOneWidget);
+        expect(find.byKey(const Key('plans-screen')), findsOneWidget);
         expect(find.text('Plans'), findsOneWidget);
         expect(
           find.text('One plan covers every language you learn.'),
@@ -374,16 +375,35 @@ void main() {
           }
         }
 
-        // RTL check: back button sits to the right of the "Plans" title.
+        // RTL check: back button sits to the right of the "Plans" title, while
+        // price lines and digit-leading bullets stay LTR via NocheLtr.
         await _pumpPlans(
           tester,
           services: services,
           textDirection: TextDirection.rtl,
         );
         expect(tester.takeException(), isNull);
+        expect(
+          Directionality.of(
+            tester.element(find.byKey(const Key('plans-screen'))),
+          ),
+          TextDirection.rtl,
+        );
         final backRect = tester.getRect(find.byKey(const Key('plans-back')));
         final titleRect = tester.getRect(find.text('Plans'));
         expect(backRect.center.dx, greaterThan(titleRect.center.dx));
+
+        for (final ltrText in const [
+          r'$9.99 a month',
+          r'$19.99 a month',
+          '120 minutes of calls a month',
+        ]) {
+          expect(
+            Directionality.of(tester.element(find.text(ltrText))),
+            TextDirection.ltr,
+            reason: '$ltrText should stay LTR via NocheLtr in RTL',
+          );
+        }
       },
     );
   });
