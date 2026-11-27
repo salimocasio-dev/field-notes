@@ -351,6 +351,25 @@ void main() {
         findsNothing,
       );
       expect(tester.takeException(), isNull);
+
+      // (d) Direct location open with Feature.calls denied falls back to Map tab.
+      await tester.pumpWidget(const SizedBox());
+      final unentitled = TestApp(tester)
+        ..editContent = editCalls
+        ..info.callsAllowed = false;
+      await unentitled.open(
+        stored: seed('curso'),
+        location: '/llamada/casa?call=casa_agua',
+        switches: AppSwitches.fromQuery(const {'callstub': '1'}),
+      );
+      expect(
+        findShellRoute(const CallRoute('casa', callId: 'casa_agua')),
+        findsNothing,
+      );
+      expect(find.byKey(const ValueKey('call-casa-casa_agua')), findsNothing);
+      expect(unentitled.tabBarShown, isTrue);
+      expect(unentitled.selectedTab, 'map');
+      expect(tester.takeException(), isNull);
     },
   );
 
