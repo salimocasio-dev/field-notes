@@ -107,12 +107,17 @@ class _WriteStorySheetRoute<T> extends PopupRoute<T> {
   Duration get reverseTransitionDuration => motion.pageOut;
 
   void _close() {
-    if (!_dismissible.value || _closing) return;
+    if (!_dismissible.value) return;
+    _finish(null);
+  }
+
+  void _finish(T? result) {
+    if (_closing) return;
     final nav = navigator;
     if (nav == null || !isActive) return;
     _closing = true;
     if (isCurrent) {
-      nav.pop();
+      nav.pop(result);
     } else {
       nav.removeRoute(this);
     }
@@ -170,6 +175,7 @@ class _WriteStorySheetRoute<T> extends PopupRoute<T> {
       child: _StoryPromptSheet(
         language: language,
         onCancel: _close,
+        onFinish: (text) => _finish(text as T?),
         setDismissible: _setDismissible,
         onSubmit: onSubmit,
       ),
@@ -301,12 +307,14 @@ class _StoryPromptSheet extends StatefulWidget {
   const _StoryPromptSheet({
     required this.language,
     required this.onCancel,
+    required this.onFinish,
     required this.setDismissible,
     required this.onSubmit,
   });
 
   final Language language;
   final VoidCallback onCancel;
+  final ValueChanged<ReadingText?> onFinish;
   final ValueChanged<bool> setDismissible;
   final Future<WriteStoryResult> Function(String words) onSubmit;
 
@@ -333,7 +341,7 @@ class _StoryPromptSheetState extends State<_StoryPromptSheet> {
     FocusScope.of(context).unfocus();
     final formBox = _formKey.currentContext?.findRenderObject();
     if (formBox is RenderBox && formBox.hasSize) {
-      _measuredFormHeight = formBox.size.height;
+      _measuredFormHeight ??= formBox.size.height;
     }
     widget.setDismissible(false);
     setState(() {
@@ -355,7 +363,7 @@ class _StoryPromptSheetState extends State<_StoryPromptSheet> {
     }
     if (!mounted) return;
     if (result.close) {
-      Navigator.pop(context, result.text);
+      widget.onFinish(result.text);
       return;
     }
     widget.setDismissible(true);
