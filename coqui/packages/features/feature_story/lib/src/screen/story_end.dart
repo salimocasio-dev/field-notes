@@ -138,8 +138,7 @@ StoryEndSummary buildStoryEndSummary({
       ? minSetting.round()
       : 30;
   final today = DateTime.fromMillisecondsSinceEpoch(clock.nowMs(), isUtc: true);
-  final afterToday = progress.minutesOn(today);
-  final afterMinutes = afterToday > 0 ? afterToday : progress.minutes;
+  final afterMinutes = progress.minutesOn(today);
 
   final StoryEndNextAction nextAction;
   if (!listen) {
@@ -152,12 +151,13 @@ StoryEndSummary buildStoryEndSummary({
               : course.pairs.any((p) => p.word == w),
         )
         .toList();
+    final rawNext = story['next'];
+    final nextId = rawNext is String && rawNext.isNotEmpty ? rawNext : null;
     if (due.isNotEmpty) {
       final nd = math.min(due.length, 10);
       final reviewMinutes = math.min(6, 2 + (nd / 3).ceil());
       nextAction = StoryEndNextAction.review(minutes: reviewMinutes);
-    } else if (foot.next) {
-      final nextId = story['next'] as String;
+    } else if (foot.next && nextId != null) {
       final nextMeta = course.meta(nextId);
       nextAction = StoryEndNextAction.story(
         storyId: nextId,
@@ -239,7 +239,7 @@ List<Widget> storyEndButtons({
       label: primaryLabel ?? StoryWording.nextStoryFallback,
       onPressed: onPrimary ?? onNext,
     );
-  } else if (primaryIsMap || foot.home) {
+  } else if (foot.home) {
     primaryButton = KeyedSubtree(
       key: const Key('story-end-map'),
       child: NochePrimaryButton(

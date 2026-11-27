@@ -312,27 +312,21 @@ class _StoryTouchFeedbackOverlayState extends State<StoryTouchFeedbackOverlay>
 
   Rect? _stageRectFor(List<num> box) {
     if (box.length < 4 || widget.cam.length < 4) return null;
+    final camX = widget.cam[0].toDouble();
+    final camY = widget.cam[1].toDouble();
     final cw = widget.cam[2].toDouble();
     final ch = widget.cam[3].toDouble();
     if (cw <= 0 || ch <= 0) return null;
+    final bx = box[0].toDouble();
+    final by = box[1].toDouble();
+    final bw = box[2].toDouble();
+    final bh = box[3].toDouble();
     final zx = widget.stageSize.width / cw;
     final zy = widget.stageSize.height / ch;
-    final left = ((box[0] - widget.cam[0]) * zx).clamp(
-      0.0,
-      widget.stageSize.width,
-    );
-    final top = ((box[1] - widget.cam[1]) * zy).clamp(
-      0.0,
-      widget.stageSize.height,
-    );
-    final right = ((box[0] + box[2] - widget.cam[0]) * zx).clamp(
-      left,
-      widget.stageSize.width,
-    );
-    final bottom = ((box[1] + box[3] - widget.cam[1]) * zy).clamp(
-      top,
-      widget.stageSize.height,
-    );
+    final left = ((bx - camX) * zx).clamp(0.0, widget.stageSize.width);
+    final top = ((by - camY) * zy).clamp(0.0, widget.stageSize.height);
+    final right = ((bx + bw - camX) * zx).clamp(left, widget.stageSize.width);
+    final bottom = ((by + bh - camY) * zy).clamp(top, widget.stageSize.height);
     final w = math.max(16.0, right - left);
     final h = math.max(16.0, bottom - top);
     final clampedLeft = math.min(

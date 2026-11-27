@@ -1198,7 +1198,9 @@ class StoryRunner implements SceneHost {
       }
       poke(what, p);
       if (what == 'coqui') return;
-      _emitTouchFeedback(TouchFeedbackKind.miss, what);
+      if (pn.asked && !pn.turnoOn) {
+        _emitTouchFeedback(TouchFeedbackKind.miss, what);
+      }
       if (nm != null && speaking == 0 && !pn.busy) {
         pn.busy = true;
         // name what was touched, then ask again

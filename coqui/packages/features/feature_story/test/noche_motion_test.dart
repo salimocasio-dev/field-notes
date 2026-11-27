@@ -16,6 +16,7 @@ import 'package:feature_story/src/runner/speech_session.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
+import 'package:feature_story/src/screen/story_end.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:feature_story/src/wording.dart';
@@ -553,6 +554,31 @@ void main() {
         expect(s.nav.last, const ReviewRoute());
       },
     );
+
+    test('buildStoryEndSummary keeps today minutes at 0 when learner only has historical lifetime minutes', () async {
+      final clock = FakeClock();
+      final course = FakeCourseCatalog();
+      await course.load();
+      final progress = FakeProgressStore(clock: clock);
+      // Log 100 minutes yesterday, then advance to the next UTC day.
+      progress.addMinutes(100);
+      clock.advance(const Duration(days: 1));
+      final storyData = await course.story('la-lluvia');
+      final summary = buildStoryEndSummary(
+        storyId: 'la-lluvia',
+        story: storyData,
+        foot: const StoryFoot(next: true, again: true, home: false, map: true),
+        listen: false,
+        course: course,
+        progress: progress,
+        clock: clock,
+        knownBefore: const {},
+        beforeMinutes: 0,
+      );
+      expect(progress.minutes, 100);
+      expect(summary.beforeMinutes, 0);
+      expect(summary.afterMinutes, 0);
+    });
   });
 
   group('Reduced motion & Arabic RTL', () {

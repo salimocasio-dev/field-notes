@@ -712,8 +712,7 @@ class _StoryScreenState extends State<StoryScreen>
       _s.clock.nowMs(),
       isUtc: true,
     );
-    final todayMins = _s.progress.minutesOn(today);
-    _beforeMinutes = todayMins > 0 ? todayMins : _s.progress.minutes;
+    _beforeMinutes = _s.progress.minutesOn(today);
     _endSummary = null;
     _endSummaryFoot = null;
     _endSummaryTitle = null;
