@@ -5,12 +5,19 @@
 /// (`docs/proyecto/noche/Noche-*.dc.html`) and page 22, story N1.2.
 library;
 
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:coqui_ui/src/noche_icons.dart';
 import 'package:coqui_ui/src/noche_motion.dart';
 import 'package:coqui_ui/src/noche_tokens.dart';
 import 'package:coqui_ui/src/pressable.dart';
+import 'package:flutter/rendering.dart'
+    show
+        BoxHitTestResult,
+        ContainerBoxParentData,
+        ContainerRenderObjectMixin,
+        RenderBoxContainerDefaultsMixin;
 import 'package:material_ui/material_ui.dart';
 
 /// Paints a rounded-rectangle dashed border (`1 px dashed`) inside the box.
@@ -694,8 +701,8 @@ class NocheSegmentOption<T> {
 
 /// Segmented control (`Noche-Yo.dc.html` minutes, `Noche-Palabras.dc.html` skills):
 /// panel fill, 1 px line border, radius 28, padding 4; options 48 high, radius 24;
-/// selected = text fill and ground text.
-class NocheSegmented<T> extends StatelessWidget {
+/// single `text`-filled thumb slides behind the labels in `move` on `travel`.
+class NocheSegmented<T> extends StatefulWidget {
   const NocheSegmented({
     super.key,
     required this.options,
@@ -716,13 +723,84 @@ class NocheSegmented<T> extends StatelessWidget {
   final bool large;
 
   @override
+  State<NocheSegmented<T>> createState() => _NocheSegmentedState<T>();
+}
+
+class _NocheSegmentedState<T> extends State<NocheSegmented<T>>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+
+  late double _fromIndex;
+  late double _toIndex;
+  bool _reducedFade = false;
+
+  int _indexOfSelected(List<NocheSegmentOption<T>> options, T selected) {
+    final idx = options.indexWhere((o) => o.value == selected);
+    return idx < 0 ? 0 : idx;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final initial = _indexOfSelected(
+      widget.options,
+      widget.selected,
+    ).toDouble();
+    _fromIndex = initial;
+    _toIndex = initial;
+  }
+
+  @override
+  void didUpdateWidget(NocheSegmented<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newIdx = _indexOfSelected(widget.options, widget.selected).toDouble();
+    final oldIdx = _indexOfSelected(
+      oldWidget.options,
+      oldWidget.selected,
+    ).toDouble();
+    if (newIdx == oldIdx && widget.selected == oldWidget.selected) return;
+
+    final motion = NocheMotion.of(context);
+    if (motion.reduced) {
+      _fromIndex = newIdx;
+      _toIndex = newIdx;
+      _reducedFade = true;
+      _controller.duration = motion.quick;
+      _controller.forward(from: 0.0);
+    } else {
+      final current =
+          ui.lerpDouble(
+            _fromIndex,
+            _toIndex,
+            motion.travel.transform(_controller.value),
+          ) ??
+          oldIdx;
+      _fromIndex = current;
+      _toIndex = newIdx;
+      _reducedFade = false;
+      _controller.duration = motion.move;
+      _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final count = widget.options.length;
     return Semantics(
       container: true,
-      role: role == NocheSegmentedRole.tabList
+      role: widget.role == NocheSegmentedRole.tabList
           ? ui.SemanticsRole.tabBar
           : ui.SemanticsRole.radioGroup,
-      label: semanticLabel,
+      label: widget.semanticLabel,
       child: Container(
         padding: const EdgeInsetsDirectional.all(4),
         decoration: BoxDecoration(
@@ -730,28 +808,81 @@ class NocheSegmented<T> extends StatelessWidget {
           border: Border.all(color: NocheColors.line, width: 1),
           borderRadius: BorderRadius.circular(28),
         ),
-        child: Row(
-          children: [
-            for (final option in options)
-              Expanded(
-                child: _SegmentButton(
-                  label: option.label,
-                  semanticLabel: option.semanticLabel ?? option.label,
-                  isSelected: option.value == selected,
-                  muted: option.muted,
-                  role: role,
-                  large: large,
-                  onTap: () => onChanged(option.value),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final slotWidth = count == 0 ? 0.0 : constraints.maxWidth / count;
+            return Stack(
+              children: [
+                if (count > 0)
+                  AnimatedBuilder(
+                    animation: _controller,
+                    builder: (context, _) {
+                      final motion = NocheMotion.of(context);
+                      final double pos;
+                      final double opacity;
+                      if (_reducedFade || motion.reduced) {
+                        pos = _toIndex;
+                        opacity = _reducedFade
+                            ? motion.enter.transform(_controller.value)
+                            : 1.0;
+                      } else {
+                        pos =
+                            ui.lerpDouble(
+                              _fromIndex,
+                              _toIndex,
+                              motion.travel.transform(_controller.value),
+                            ) ??
+                            _toIndex;
+                        opacity = 1.0;
+                      }
+                      return PositionedDirectional(
+                        start: pos * slotWidth,
+                        top: 0,
+                        width: slotWidth,
+                        height: NocheSize.touch,
+                        child: IgnorePointer(
+                          child: Opacity(
+                            opacity: opacity,
+                            child: DecoratedBox(
+                              key: const ValueKey('noche_segmented_thumb'),
+                              decoration: BoxDecoration(
+                                color: NocheColors.text,
+                                borderRadius: BorderRadius.circular(
+                                  NocheSize.pillRadius,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                Row(
+                  children: [
+                    for (final option in widget.options)
+                      Expanded(
+                        child: _SegmentButton(
+                          label: option.label,
+                          semanticLabel: option.semanticLabel ?? option.label,
+                          isSelected: option.value == widget.selected,
+                          muted: option.muted,
+                          role: widget.role,
+                          large: widget.large,
+                          onTap: () => widget.onChanged(option.value),
+                        ),
+                      ),
+                  ],
                 ),
-              ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
   }
 }
 
-class _SegmentButton extends StatefulWidget {
+class _SegmentButton extends StatelessWidget {
   const _SegmentButton({
     required this.label,
     required this.semanticLabel,
@@ -771,76 +902,994 @@ class _SegmentButton extends StatefulWidget {
   final VoidCallback onTap;
 
   @override
-  State<_SegmentButton> createState() => _SegmentButtonState();
-}
-
-class _SegmentButtonState extends State<_SegmentButton> {
-  bool _down = false;
-
-  void _set(bool v) {
-    if (_down != v && mounted) setState(() => _down = v);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final bg = widget.isSelected ? NocheColors.text : Colors.transparent;
-    final fg = widget.isSelected
+    final motion = NocheMotion.of(context);
+    final fg = isSelected
         ? NocheColors.ground
-        : (widget.muted ? NocheColors.label : NocheColors.text);
-    final base = widget.isSelected ? NocheType.buttonStrong : NocheType.button;
-    final style = (widget.large ? base.copyWith(fontSize: 16) : base).copyWith(
-      color: fg,
-    );
+        : (muted ? NocheColors.label : NocheColors.text);
+    final base = isSelected ? NocheType.buttonStrong : NocheType.button;
+    final sizedBase = large ? base.copyWith(fontSize: 16) : base;
 
     return Semantics(
-      role: widget.role == NocheSegmentedRole.tabList
+      role: role == NocheSegmentedRole.tabList
           ? ui.SemanticsRole.tab
           : ui.SemanticsRole.none,
-      button: widget.role == NocheSegmentedRole.radioGroup,
-      inMutuallyExclusiveGroup: widget.role == NocheSegmentedRole.radioGroup,
-      checked: widget.role == NocheSegmentedRole.radioGroup
-          ? widget.isSelected
-          : null,
-      selected: widget.role == NocheSegmentedRole.tabList
-          ? widget.isSelected
-          : null,
-      label: widget.semanticLabel,
-      onTap: widget.onTap,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTapDown: (_) => _set(true),
-          onTapUp: (_) => _set(false),
-          onTapCancel: () => _set(false),
-          onTap: widget.onTap,
-          child: ExcludeSemantics(
-            child: Transform.scale(
-              scale: _down ? 0.98 : 1,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  minWidth: NocheSize.touch,
-                  minHeight: NocheSize.touch,
-                ),
-                child: Container(
-                  height: NocheSize.touch,
-                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-                  alignment: AlignmentDirectional.center,
-                  decoration: BoxDecoration(
-                    color: bg,
-                    borderRadius: BorderRadius.circular(NocheSize.pillRadius),
-                  ),
-                  child: Text(
-                    widget.label,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: style,
-                  ),
+      button: role == NocheSegmentedRole.radioGroup,
+      inMutuallyExclusiveGroup: role == NocheSegmentedRole.radioGroup,
+      checked: role == NocheSegmentedRole.radioGroup ? isSelected : null,
+      selected: role == NocheSegmentedRole.tabList ? isSelected : null,
+      label: semanticLabel,
+      child: Pressable(
+        onPressed: onTap,
+        semanticsButton: false,
+        builder: (context, _) => ExcludeSemantics(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: NocheSize.touch,
+              minHeight: NocheSize.touch,
+            ),
+            child: Container(
+              height: NocheSize.touch,
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+              alignment: AlignmentDirectional.center,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(NocheSize.pillRadius),
+              ),
+              child: TweenAnimationBuilder<Color?>(
+                tween: ColorTween(end: fg),
+                duration: motion.quick,
+                curve: motion.enter,
+                builder: (context, color, _) => Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: sizedBase.copyWith(color: color ?? fg),
                 ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _BoxSlot {
+  const _BoxSlot(this.dx, this.dy, this.width, this.height);
+
+  final double dx;
+  final double dy;
+  final double width;
+  final double height;
+
+  static _BoxSlot lerp(_BoxSlot a, _BoxSlot b, double t) => _BoxSlot(
+    ui.lerpDouble(a.dx, b.dx, t) ?? b.dx,
+    ui.lerpDouble(a.dy, b.dy, t) ?? b.dy,
+    ui.lerpDouble(a.width, b.width, t) ?? b.width,
+    ui.lerpDouble(a.height, b.height, t) ?? b.height,
+  );
+}
+
+enum _SlidingMarkMode { wrap, verticalEqual, horizontalEqual }
+
+class _SlidingMarkParentData extends ContainerBoxParentData<RenderBox> {}
+
+class _SlidingMarkLayout extends MultiChildRenderObjectWidget {
+  const _SlidingMarkLayout({
+    required this.mode,
+    required this.optionCount,
+    required this.fromIndex,
+    required this.toIndex,
+    required this.progress,
+    required this.transitionId,
+    required this.gap,
+    required this.runGap,
+    required this.textDirection,
+    required this.markBehindChildren,
+    this.unselectedPillFill,
+    required super.children,
+  });
+
+  final _SlidingMarkMode mode;
+  final int optionCount;
+  final int fromIndex;
+  final int toIndex;
+  final double progress;
+  final int transitionId;
+  final double gap;
+  final double runGap;
+  final TextDirection textDirection;
+  final bool markBehindChildren;
+  final Color? unselectedPillFill;
+
+  @override
+  _RenderSlidingMarkLayout createRenderObject(BuildContext context) =>
+      _RenderSlidingMarkLayout(
+        mode: mode,
+        optionCount: optionCount,
+        fromIndex: fromIndex,
+        toIndex: toIndex,
+        progress: progress,
+        transitionId: transitionId,
+        gap: gap,
+        runGap: runGap,
+        textDirection: textDirection,
+        markBehindChildren: markBehindChildren,
+        unselectedPillFill: unselectedPillFill,
+      );
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    _RenderSlidingMarkLayout renderObject,
+  ) {
+    renderObject
+      ..mode = mode
+      ..optionCount = optionCount
+      ..fromIndex = fromIndex
+      ..toIndex = toIndex
+      ..progress = progress
+      ..transitionId = transitionId
+      ..gap = gap
+      ..runGap = runGap
+      ..textDirection = textDirection
+      ..markBehindChildren = markBehindChildren
+      ..unselectedPillFill = unselectedPillFill;
+  }
+}
+
+class _RenderSlidingMarkLayout extends RenderBox
+    with
+        ContainerRenderObjectMixin<RenderBox, _SlidingMarkParentData>,
+        RenderBoxContainerDefaultsMixin<RenderBox, _SlidingMarkParentData> {
+  _RenderSlidingMarkLayout({
+    required this._mode,
+    required this._optionCount,
+    required this._fromIndex,
+    required this._toIndex,
+    required this._progress,
+    required this._transitionId,
+    required this._gap,
+    required this._runGap,
+    required this._textDirection,
+    required this._markBehindChildren,
+    required this._unselectedPillFill,
+  });
+
+  _SlidingMarkMode _mode;
+  set mode(_SlidingMarkMode v) {
+    if (_mode == v) return;
+    _mode = v;
+    markNeedsLayout();
+  }
+
+  int _optionCount;
+  set optionCount(int v) {
+    if (_optionCount == v) return;
+    _optionCount = v;
+    markNeedsLayout();
+  }
+
+  int _fromIndex;
+  set fromIndex(int v) {
+    if (_fromIndex == v) return;
+    _fromIndex = v;
+    markNeedsLayout();
+  }
+
+  int _toIndex;
+  set toIndex(int v) {
+    if (_toIndex == v) return;
+    _toIndex = v;
+    markNeedsLayout();
+  }
+
+  double _progress;
+  set progress(double v) {
+    if (_progress == v) return;
+    _progress = v;
+    markNeedsLayout();
+  }
+
+  int _transitionId;
+  set transitionId(int v) {
+    if (_transitionId == v) return;
+    _transitionId = v;
+    if (_currentMarkSlot != null && _fromIndex != _toIndex) {
+      _retargetStartSlot = _currentMarkSlot;
+    } else {
+      _retargetStartSlot = null;
+    }
+    markNeedsLayout();
+  }
+
+  double _gap;
+  set gap(double v) {
+    if (_gap == v) return;
+    _gap = v;
+    markNeedsLayout();
+  }
+
+  double _runGap;
+  set runGap(double v) {
+    if (_runGap == v) return;
+    _runGap = v;
+    markNeedsLayout();
+  }
+
+  TextDirection _textDirection;
+  set textDirection(TextDirection v) {
+    if (_textDirection == v) return;
+    _textDirection = v;
+    markNeedsLayout();
+  }
+
+  bool _markBehindChildren;
+  set markBehindChildren(bool v) {
+    if (_markBehindChildren == v) return;
+    _markBehindChildren = v;
+    markNeedsPaint();
+  }
+
+  Color? _unselectedPillFill;
+  set unselectedPillFill(Color? v) {
+    if (_unselectedPillFill == v) return;
+    _unselectedPillFill = v;
+    markNeedsPaint();
+  }
+
+  List<_BoxSlot> _optionSlots = const [];
+  _BoxSlot? _currentMarkSlot;
+  _BoxSlot? _retargetStartSlot;
+
+  @override
+  void setupParentData(RenderBox child) {
+    if (child.parentData is! _SlidingMarkParentData) {
+      child.parentData = _SlidingMarkParentData();
+    }
+  }
+
+  @override
+  void performLayout() {
+    final mark = firstChild;
+    if (mark == null) {
+      size = constraints.smallest;
+      _optionSlots = const [];
+      return;
+    }
+
+    final items = <RenderBox>[];
+    var child = childAfter(mark);
+    while (child != null) {
+      items.add(child);
+      child = childAfter(child);
+    }
+
+    final slots = List<_BoxSlot>.filled(
+      _optionCount,
+      const _BoxSlot(0, 0, 0, 0),
+    );
+    final isRtl = _textDirection == TextDirection.rtl;
+
+    switch (_mode) {
+      case _SlidingMarkMode.wrap:
+        final maxW = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : double.infinity;
+        final childConstraints = BoxConstraints(maxWidth: maxW);
+        final runs = <List<(RenderBox, int)>>[];
+        final runWidths = <double>[];
+        final runHeights = <double>[];
+
+        var currentRun = <(RenderBox, int)>[];
+        var currentW = 0.0;
+        var currentH = 0.0;
+
+        for (var i = 0; i < items.length; i++) {
+          final item = items[i];
+          item.layout(childConstraints, parentUsesSize: true);
+          final w = item.size.width;
+          final h = item.size.height;
+          if (currentRun.isNotEmpty && currentW + _gap + w > maxW) {
+            runs.add(currentRun);
+            runWidths.add(currentW);
+            runHeights.add(currentH);
+            currentRun = <(RenderBox, int)>[];
+            currentW = 0.0;
+            currentH = 0.0;
+          }
+          if (currentRun.isNotEmpty) currentW += _gap;
+          currentRun.add((item, i));
+          currentW += w;
+          if (h > currentH) currentH = h;
+        }
+        if (currentRun.isNotEmpty) {
+          runs.add(currentRun);
+          runWidths.add(currentW);
+          runHeights.add(currentH);
+        }
+
+        final widestRun = runWidths.fold<double>(0.0, math.max);
+        final totalH =
+            runHeights.fold<double>(0.0, (a, b) => a + b) +
+            (runs.length > 1 ? _runGap * (runs.length - 1) : 0.0);
+        final layoutW = constraints.constrainWidth(widestRun);
+        final layoutH = constraints.constrainHeight(totalH);
+
+        var y = 0.0;
+        for (var r = 0; r < runs.length; r++) {
+          final run = runs[r];
+          final rh = runHeights[r];
+          var cursor = isRtl ? layoutW : 0.0;
+          for (final entry in run) {
+            final item = entry.$1;
+            final idx = entry.$2;
+            final w = item.size.width;
+            final h = item.size.height;
+            final dy = y + (rh - h) / 2;
+            final double dx;
+            if (isRtl) {
+              cursor -= w;
+              dx = cursor;
+              cursor -= _gap;
+            } else {
+              dx = cursor;
+              cursor += w + _gap;
+            }
+            (item.parentData! as _SlidingMarkParentData).offset = Offset(
+              dx,
+              dy,
+            );
+            if (idx < _optionCount) {
+              slots[idx] = _BoxSlot(dx, dy, w, h);
+            }
+          }
+          y += rh + _runGap;
+        }
+        size = Size(layoutW, layoutH);
+
+      case _SlidingMarkMode.verticalEqual:
+        final childConstraints = BoxConstraints(
+          minWidth: constraints.maxWidth.isFinite ? constraints.maxWidth : 0.0,
+          maxWidth: constraints.maxWidth,
+        );
+        var maxW = 0.0;
+        var y = 0.0;
+        for (var i = 0; i < items.length; i++) {
+          if (i > 0) y += _gap;
+          final item = items[i];
+          item.layout(childConstraints, parentUsesSize: true);
+          final w = item.size.width;
+          final h = item.size.height;
+          if (w > maxW) maxW = w;
+          (item.parentData! as _SlidingMarkParentData).offset = Offset(0, y);
+          if (i < _optionCount) {
+            slots[i] = _BoxSlot(0, y, w, h);
+          }
+          y += h;
+        }
+        size = constraints.constrain(Size(maxW, y));
+
+      case _SlidingMarkMode.horizontalEqual:
+        final n = items.length;
+        if (n == 0) {
+          size = constraints.smallest;
+        } else if (constraints.maxWidth.isFinite) {
+          final slotW = math.max(
+            0.0,
+            (constraints.maxWidth - _gap * (n - 1)) / n,
+          );
+          var maxH = 0.0;
+          for (final item in items) {
+            item.layout(
+              BoxConstraints(minWidth: slotW, maxWidth: slotW),
+              parentUsesSize: true,
+            );
+            if (item.size.height > maxH) maxH = item.size.height;
+          }
+          for (var i = 0; i < n; i++) {
+            final item = items[i];
+            if (item.size.height != maxH) {
+              item.layout(
+                BoxConstraints.tightFor(width: slotW, height: maxH),
+                parentUsesSize: true,
+              );
+            }
+            final visualIndex = isRtl ? (n - 1 - i) : i;
+            final dx = visualIndex * (slotW + _gap);
+            (item.parentData! as _SlidingMarkParentData).offset = Offset(dx, 0);
+            if (i < _optionCount) {
+              slots[i] = _BoxSlot(dx, 0, slotW, maxH);
+            }
+          }
+          size = constraints.constrain(Size(constraints.maxWidth, maxH));
+        } else {
+          var maxH = 0.0;
+          var totalW = 0.0;
+          for (var i = 0; i < n; i++) {
+            items[i].layout(const BoxConstraints(), parentUsesSize: true);
+            if (items[i].size.height > maxH) maxH = items[i].size.height;
+            totalW += items[i].size.width + (i > 0 ? _gap : 0.0);
+          }
+          var cursor = isRtl ? totalW : 0.0;
+          for (var i = 0; i < n; i++) {
+            final item = items[i];
+            final w = item.size.width;
+            final double dx;
+            if (isRtl) {
+              cursor -= w;
+              dx = cursor;
+              cursor -= _gap;
+            } else {
+              dx = cursor;
+              cursor += w + _gap;
+            }
+            (item.parentData! as _SlidingMarkParentData).offset = Offset(dx, 0);
+            if (i < _optionCount) {
+              slots[i] = _BoxSlot(dx, 0, w, item.size.height);
+            }
+          }
+          size = constraints.constrain(Size(totalW, maxH));
+        }
+    }
+
+    _optionSlots = slots;
+    if (_optionCount == 0) {
+      mark.layout(BoxConstraints.tight(Size.zero), parentUsesSize: true);
+      (mark.parentData! as _SlidingMarkParentData).offset = Offset.zero;
+      _currentMarkSlot = null;
+      _retargetStartSlot = null;
+      return;
+    }
+
+    final safeFrom = _fromIndex.clamp(0, _optionCount - 1);
+    final safeTo = _toIndex.clamp(0, _optionCount - 1);
+    final fromSlot = (_fromIndex != _toIndex && _retargetStartSlot != null)
+        ? _retargetStartSlot!
+        : slots[safeFrom];
+    final toSlot = slots[safeTo];
+    final curSlot = _BoxSlot.lerp(fromSlot, toSlot, _progress.clamp(0.0, 1.0));
+    _currentMarkSlot = curSlot;
+    if (_progress >= 1.0) {
+      _retargetStartSlot = null;
+    }
+
+    mark.layout(
+      BoxConstraints.tight(Size(curSlot.width, curSlot.height)),
+      parentUsesSize: true,
+    );
+    (mark.parentData! as _SlidingMarkParentData).offset = Offset(
+      curSlot.dx,
+      curSlot.dy,
+    );
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    final mark = firstChild;
+    if (mark == null) return;
+
+    if (_unselectedPillFill != null) {
+      final fillPaint = Paint()
+        ..color = _unselectedPillFill!
+        ..style = PaintingStyle.fill;
+      final borderPaint = Paint()
+        ..color = NocheColors.line
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1;
+      for (final slot in _optionSlots) {
+        final fillRRect = RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+            offset.dx + slot.dx,
+            offset.dy + slot.dy,
+            slot.width,
+            slot.height,
+          ),
+          const Radius.circular(NocheSize.pillRadius),
+        );
+        context.canvas.drawRRect(fillRRect, fillPaint);
+        final borderRRect = RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+            offset.dx + slot.dx + 0.5,
+            offset.dy + slot.dy + 0.5,
+            math.max(0.0, slot.width - 1),
+            math.max(0.0, slot.height - 1),
+          ),
+          const Radius.circular(NocheSize.pillRadius - 0.5),
+        );
+        context.canvas.drawRRect(borderRRect, borderPaint);
+      }
+    }
+
+    final markOffset = (mark.parentData! as _SlidingMarkParentData).offset;
+    if (_markBehindChildren) {
+      context.paintChild(mark, offset + markOffset);
+    }
+
+    var child = childAfter(mark);
+    while (child != null) {
+      final pd = child.parentData! as _SlidingMarkParentData;
+      context.paintChild(child, offset + pd.offset);
+      child = childAfter(child);
+    }
+
+    if (!_markBehindChildren) {
+      context.paintChild(mark, offset + markOffset);
+    }
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    final mark = firstChild;
+    var child = lastChild;
+    while (child != null && !identical(child, mark)) {
+      final pd = child.parentData! as _SlidingMarkParentData;
+      final isHit = result.addWithPaintOffset(
+        offset: pd.offset,
+        position: position,
+        hitTest: (BoxHitTestResult result, Offset transformed) =>
+            child!.hitTest(result, position: transformed),
+      );
+      if (isHit) return true;
+      child = childBefore(child);
+    }
+    return false;
+  }
+}
+
+/// One option inside [NochePillGroup].
+class NochePillOption<T> {
+  const NochePillOption({
+    required this.value,
+    required this.label,
+    this.leading,
+    this.trailing,
+    this.foregroundColor,
+    this.script = 'Latn',
+    this.locale,
+    this.semanticLabel,
+    this.padding,
+  });
+
+  final T value;
+  final String label;
+  final Widget? leading;
+  final Widget? trailing;
+  final Color? foregroundColor;
+  final String script;
+  final Locale? locale;
+  final String? semanticLabel;
+  final EdgeInsetsDirectional? padding;
+}
+
+/// Group of selectable 48-high pills where a single `text`-filled mark slides
+/// behind the pill text from old pill to new pill, smoothly animating both
+/// start edge and width in `move` on `travel` (in LTR and RTL).
+class NochePillGroup<T> extends StatefulWidget {
+  const NochePillGroup({
+    super.key,
+    required this.options,
+    required this.selected,
+    required this.onChanged,
+    this.gap = NocheSize.grid,
+    this.runGap = NocheSize.grid,
+    this.unselectedFill = NocheColors.panel,
+    this.trailing,
+    this.role = NocheSegmentedRole.radioGroup,
+    this.semanticLabel,
+  });
+
+  final List<NochePillOption<T>> options;
+  final T selected;
+  final ValueChanged<T> onChanged;
+  final double gap;
+  final double runGap;
+  final Color unselectedFill;
+  final Widget? trailing;
+  final NocheSegmentedRole role;
+  final String? semanticLabel;
+
+  @override
+  State<NochePillGroup<T>> createState() => _NochePillGroupState<T>();
+}
+
+class _NochePillGroupState<T> extends State<NochePillGroup<T>>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+
+  late int _fromIndex;
+  late int _toIndex;
+  int _transitionId = 0;
+  bool _reducedFade = false;
+
+  int _indexOf(List<NochePillOption<T>> options, T selected) {
+    final idx = options.indexWhere((o) => o.value == selected);
+    return idx < 0 ? 0 : idx;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final initial = _indexOf(widget.options, widget.selected);
+    _fromIndex = initial;
+    _toIndex = initial;
+  }
+
+  @override
+  void didUpdateWidget(NochePillGroup<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newIdx = _indexOf(widget.options, widget.selected);
+    final oldIdx = _indexOf(oldWidget.options, oldWidget.selected);
+    if (newIdx == oldIdx && widget.selected == oldWidget.selected) return;
+
+    final motion = NocheMotion.of(context);
+    _transitionId++;
+    if (motion.reduced) {
+      _fromIndex = newIdx;
+      _toIndex = newIdx;
+      _reducedFade = true;
+      _controller.duration = motion.quick;
+      _controller.forward(from: 0.0);
+    } else {
+      _fromIndex = oldIdx;
+      _toIndex = newIdx;
+      _reducedFade = false;
+      _controller.duration = motion.move;
+      _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textDirection = Directionality.of(context);
+    return Semantics(
+      container: true,
+      role: widget.role == NocheSegmentedRole.tabList
+          ? ui.SemanticsRole.tabBar
+          : ui.SemanticsRole.radioGroup,
+      label: widget.semanticLabel,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          final motion = NocheMotion.of(context);
+          final isReduced = _reducedFade || motion.reduced;
+          final progress = isReduced
+              ? 1.0
+              : motion.travel.transform(_controller.value);
+          final markOpacity = _reducedFade
+              ? motion.enter.transform(_controller.value)
+              : 1.0;
+
+          return _SlidingMarkLayout(
+            mode: _SlidingMarkMode.wrap,
+            optionCount: widget.options.length,
+            fromIndex: isReduced ? _toIndex : _fromIndex,
+            toIndex: _toIndex,
+            progress: progress,
+            transitionId: _transitionId,
+            gap: widget.gap,
+            runGap: widget.runGap,
+            textDirection: textDirection,
+            markBehindChildren: true,
+            unselectedPillFill: widget.unselectedFill,
+            children: [
+              IgnorePointer(
+                child: Opacity(
+                  opacity: markOpacity,
+                  child: DecoratedBox(
+                    key: const ValueKey('noche_pill_group_mark'),
+                    decoration: BoxDecoration(
+                      color: NocheColors.text,
+                      borderRadius: BorderRadius.circular(NocheSize.pillRadius),
+                    ),
+                  ),
+                ),
+              ),
+              for (final option in widget.options)
+                _PillGroupItem(
+                  option: option,
+                  isSelected: option.value == widget.selected,
+                  role: widget.role,
+                  onTap: () => widget.onChanged(option.value),
+                ),
+              if (widget.trailing != null) widget.trailing!,
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _PillGroupItem<T> extends StatelessWidget {
+  const _PillGroupItem({
+    required this.option,
+    required this.isSelected,
+    required this.role,
+    required this.onTap,
+  });
+
+  final NochePillOption<T> option;
+  final bool isSelected;
+  final NocheSegmentedRole role;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = NocheMotion.of(context);
+    final fg = isSelected
+        ? NocheColors.ground
+        : (option.foregroundColor ?? NocheColors.text);
+    final baseStyle = NocheType.forScript(
+      isSelected ? NocheType.buttonStrong : NocheType.button,
+      option.script,
+    );
+    final innerPadding =
+        option.padding ?? const EdgeInsetsDirectional.symmetric(horizontal: 16);
+
+    return Semantics(
+      role: role == NocheSegmentedRole.tabList
+          ? ui.SemanticsRole.tab
+          : ui.SemanticsRole.none,
+      button: role == NocheSegmentedRole.radioGroup,
+      inMutuallyExclusiveGroup: role == NocheSegmentedRole.radioGroup,
+      checked: role == NocheSegmentedRole.radioGroup ? isSelected : null,
+      selected: role == NocheSegmentedRole.tabList ? isSelected : null,
+      label: option.semanticLabel ?? option.label,
+      child: Pressable(
+        onPressed: onTap,
+        semanticsButton: false,
+        builder: (context, _) => ExcludeSemantics(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: NocheSize.touch,
+              minHeight: NocheSize.touch,
+            ),
+            child: Container(
+              height: NocheSize.touch,
+              padding: innerPadding,
+              child: TweenAnimationBuilder<Color?>(
+                tween: ColorTween(end: fg),
+                duration: motion.quick,
+                curve: motion.enter,
+                builder: (context, animatedColor, _) {
+                  final color = animatedColor ?? fg;
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (option.leading != null) ...[
+                        IconTheme.merge(
+                          data: IconThemeData(color: color),
+                          child: option.leading!,
+                        ),
+                        const SizedBox(width: NocheSize.grid),
+                      ],
+                      Text(
+                        option.label,
+                        maxLines: 1,
+                        softWrap: false,
+                        locale: option.locale,
+                        style: baseStyle.copyWith(color: color),
+                      ),
+                      if (option.trailing != null) ...[
+                        const SizedBox(width: NocheSize.grid),
+                        IconTheme.merge(
+                          data: IconThemeData(color: color),
+                          child: option.trailing!,
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// One option inside [NocheOutlineGroup].
+class NocheOutlineOption<T> {
+  const NocheOutlineOption({
+    required this.value,
+    required this.child,
+    this.semanticLabel,
+  });
+
+  final T value;
+  final Widget child;
+  final String? semanticLabel;
+}
+
+/// Group of selectable cards or rows where a single outline mark slides
+/// between option rects in `move` on `travel`.
+///
+/// Use [Axis.vertical] for stacked language rows and [Axis.horizontal] for
+/// equal-width font cards (automatically mirroring in RTL). Under reduced
+/// motion, the mark snaps to the chosen option and fades in `quick`.
+class NocheOutlineGroup<T> extends StatefulWidget {
+  const NocheOutlineGroup({
+    super.key,
+    required this.options,
+    required this.selected,
+    required this.onChanged,
+    this.axis = Axis.vertical,
+    this.gap = NocheSize.grid,
+    this.borderRadius = NocheSize.cardRadius,
+    this.outlineColor = NocheColors.text,
+    this.outlineWidth = 2,
+    this.markFill,
+    this.role = NocheSegmentedRole.radioGroup,
+    this.semanticLabel,
+  });
+
+  final List<NocheOutlineOption<T>> options;
+  final T selected;
+  final ValueChanged<T> onChanged;
+  final Axis axis;
+  final double gap;
+  final double borderRadius;
+  final Color outlineColor;
+  final double outlineWidth;
+  final Color? markFill;
+  final NocheSegmentedRole role;
+  final String? semanticLabel;
+
+  @override
+  State<NocheOutlineGroup<T>> createState() => _NocheOutlineGroupState<T>();
+}
+
+class _NocheOutlineGroupState<T> extends State<NocheOutlineGroup<T>>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    value: 1.0,
+  );
+
+  late int _fromIndex;
+  late int _toIndex;
+  int _transitionId = 0;
+  bool _reducedFade = false;
+
+  int _indexOf(List<NocheOutlineOption<T>> options, T selected) {
+    final idx = options.indexWhere((o) => o.value == selected);
+    return idx < 0 ? 0 : idx;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final initial = _indexOf(widget.options, widget.selected);
+    _fromIndex = initial;
+    _toIndex = initial;
+  }
+
+  @override
+  void didUpdateWidget(NocheOutlineGroup<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newIdx = _indexOf(widget.options, widget.selected);
+    final oldIdx = _indexOf(oldWidget.options, oldWidget.selected);
+    if (newIdx == oldIdx && widget.selected == oldWidget.selected) return;
+
+    final motion = NocheMotion.of(context);
+    _transitionId++;
+    if (motion.reduced) {
+      _fromIndex = newIdx;
+      _toIndex = newIdx;
+      _reducedFade = true;
+      _controller.duration = motion.quick;
+      _controller.forward(from: 0.0);
+    } else {
+      _fromIndex = oldIdx;
+      _toIndex = newIdx;
+      _reducedFade = false;
+      _controller.duration = motion.move;
+      _controller.forward(from: 0.0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textDirection = Directionality.of(context);
+    final mode = widget.axis == Axis.vertical
+        ? _SlidingMarkMode.verticalEqual
+        : _SlidingMarkMode.horizontalEqual;
+
+    return Semantics(
+      container: true,
+      role: widget.role == NocheSegmentedRole.tabList
+          ? ui.SemanticsRole.tabBar
+          : ui.SemanticsRole.radioGroup,
+      label: widget.semanticLabel,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          final motion = NocheMotion.of(context);
+          final isReduced = _reducedFade || motion.reduced;
+          final progress = isReduced
+              ? 1.0
+              : motion.travel.transform(_controller.value);
+          final markOpacity = _reducedFade
+              ? motion.enter.transform(_controller.value)
+              : 1.0;
+
+          return _SlidingMarkLayout(
+            mode: mode,
+            optionCount: widget.options.length,
+            fromIndex: isReduced ? _toIndex : _fromIndex,
+            toIndex: _toIndex,
+            progress: progress,
+            transitionId: _transitionId,
+            gap: widget.gap,
+            runGap: widget.gap,
+            textDirection: textDirection,
+            markBehindChildren: widget.markFill != null,
+            children: [
+              IgnorePointer(
+                child: Opacity(
+                  opacity: markOpacity,
+                  child: DecoratedBox(
+                    key: const ValueKey('noche_outline_group_mark'),
+                    decoration: BoxDecoration(
+                      color: widget.markFill,
+                      border: Border.all(
+                        color: widget.outlineColor,
+                        width: widget.outlineWidth,
+                      ),
+                      borderRadius: BorderRadius.circular(widget.borderRadius),
+                    ),
+                  ),
+                ),
+              ),
+              for (final option in widget.options)
+                Semantics(
+                  role: widget.role == NocheSegmentedRole.tabList
+                      ? ui.SemanticsRole.tab
+                      : ui.SemanticsRole.none,
+                  button: widget.role == NocheSegmentedRole.radioGroup,
+                  inMutuallyExclusiveGroup:
+                      widget.role == NocheSegmentedRole.radioGroup,
+                  checked: widget.role == NocheSegmentedRole.radioGroup
+                      ? option.value == widget.selected
+                      : null,
+                  selected: widget.role == NocheSegmentedRole.tabList
+                      ? option.value == widget.selected
+                      : null,
+                  label: option.semanticLabel,
+                  child: Pressable(
+                    onPressed: () => widget.onChanged(option.value),
+                    semanticsButton: false,
+                    builder: (context, _) => ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minWidth: NocheSize.touch,
+                        minHeight: NocheSize.touch,
+                      ),
+                      child: option.child,
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -913,7 +1962,9 @@ class NocheSwitchRow extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               AnimatedContainer(
+                key: const ValueKey('noche_switch_track'),
                 duration: motion.quick,
+                curve: motion.enter,
                 width: 52,
                 height: 32,
                 padding: const EdgeInsetsDirectional.symmetric(horizontal: 4),
@@ -922,11 +1973,15 @@ class NocheSwitchRow extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: AnimatedAlign(
-                  duration: motion.quick,
+                  duration: motion.reduced ? Duration.zero : motion.move,
+                  curve: motion.travel,
                   alignment: value
                       ? AlignmentDirectional.centerEnd
                       : AlignmentDirectional.centerStart,
-                  child: Container(
+                  child: AnimatedContainer(
+                    key: const ValueKey('noche_switch_knob'),
+                    duration: motion.quick,
+                    curve: motion.enter,
                     width: 24,
                     height: 24,
                     decoration: BoxDecoration(

@@ -1,4 +1,5 @@
 // Services for widget tests: the fakes of coqui_testing on the whole course, at a phone's size.
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter/services.dart' show FontLoader, rootBundle;
@@ -59,6 +60,7 @@ class World {
     FakeSpeechListener? speech,
     bool reduceMotion = false,
     ScriptedCall? call,
+    Entitlements entitlements = const AllowAllEntitlements(),
   }) async {
     final clock = FakeClock();
     final progress = RecordingProgress(clock: clock);
@@ -87,6 +89,7 @@ class World {
         haptics: haptics,
         speech: sp,
         clock: clock,
+        entitlements: entitlements,
         reduceMotion: reduceMotion,
       ),
     );

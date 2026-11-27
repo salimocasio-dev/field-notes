@@ -614,6 +614,7 @@ void main() {
         await tester.tap(find.text('60'));
         await tester.tap(find.text('Speaking'));
         await tester.pump();
+        await tester.pump(NocheMotion.quick);
 
         expect(selectedMin, 60);
         expect(selectedSkill, 'speaking');
