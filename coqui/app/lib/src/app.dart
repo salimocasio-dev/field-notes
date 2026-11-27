@@ -40,6 +40,9 @@ const String loadFailedLine = 'Coquí could not load. Check your connection.';
 /// The button under [loadFailedLine].
 const String tryAgainLabel = 'Try again';
 
+/// Stable shell-owned key for the boot loading surface.
+const ValueKey<String> shellLoadingKey = ValueKey('shell-loading');
+
 /// Setting key used by language pickers to store the active language code.
 const String _languageSettingKey = 'idioma';
 
@@ -389,7 +392,10 @@ class _Screens extends StatelessWidget {
       ValueListenableBuilder<({_Start state, int generation})>(
         valueListenable: app._start,
         builder: (context, phase, _) => switch (phase.state) {
-          _Start.loading => const ColoredBox(color: NocheColors.ground),
+          _Start.loading => const ColoredBox(
+            key: shellLoadingKey,
+            color: NocheColors.ground,
+          ),
           _Start.failed => LoadFailed(onRetry: () => unawaited(app._load())),
           _Start.ready => Builder(
             builder: (context) {
@@ -418,10 +424,17 @@ class _Screens extends StatelessWidget {
 class LoadFailed extends StatelessWidget {
   const LoadFailed({super.key, required this.onRetry});
 
+  /// Stable shell-owned key for the failed-load surface.
+  static const ValueKey<String> screenKey = ValueKey('shell-load-failed');
+
+  /// Stable shell-owned key for the retry button on [LoadFailed].
+  static const ValueKey<String> retryKey = ValueKey('shell-load-failed-retry');
+
   final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) => ColoredBox(
+    key: screenKey,
     color: NocheColors.ground,
     child: SafeArea(
       child: Center(
@@ -436,7 +449,11 @@ class LoadFailed extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: NocheSize.grid * 2),
-              NochePrimaryButton(label: tryAgainLabel, onPressed: onRetry),
+              NochePrimaryButton(
+                key: retryKey,
+                label: tryAgainLabel,
+                onPressed: onRetry,
+              ),
             ],
           ),
         ),

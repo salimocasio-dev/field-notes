@@ -34,6 +34,7 @@ import 'package:flutter/services.dart' show FontLoader;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../test/support/harness.dart';
+import 'tool_probe.dart';
 
 const String _out = String.fromEnvironment('OUT');
 

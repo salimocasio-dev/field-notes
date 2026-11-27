@@ -1,380 +1,311 @@
-// The lessons the tabs open, end to end in the real app: Listen mode, Repaso, the level check, the call.
-import 'dart:convert';
-
+// Shell route-reaches-screen checks: every lesson and feature route mounts
+// under ShellKeys.route, toggles NocheTabBar as expected, throws no exceptions,
+// and returns cleanly on system back.
+// Feature-level playback & copy checks live in their owning packages on main:
+// - feature_review: repaso_pictures_policy_test.dart, repaso_session_test.dart,
+//   repaso_screen_test.dart, review_end_test.dart, level_screen_test.dart
+// - feature_library: module_test.dart, reading_home_test.dart, reader_test.dart
+// - feature_speaking: llamada_expected_test.dart, call_screen_test.dart,
+//   arabic_language_test.dart, voice_test_test.dart
+// - feature_story: screen_test.dart, lines_test.dart, not_converted_test.dart
+import 'package:app/src/shell.dart';
 import 'package:app/src/switches.dart';
-import 'package:app/src/voice_test_data.dart';
-import 'package:coqui_scenes/coqui_scenes.dart';
-import 'package:coqui_ui/coqui_ui.dart';
+import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_ui/coqui_ui.dart' show NochePlayDisc;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'support/harness.dart';
 
-Map<String, dynamic> storedDb(TestApp app) =>
-    jsonDecode(app.stored!) as Map<String, dynamic>;
-
-/// How many times each word has been answered by [skill] in the stored progress.
-Map<String, int> answers(TestApp app, String skill) => {
-  for (final e in (storedDb(app)['palabras'] as Map).entries)
-    e.key as String: ((e.value as Map)[skill] as Map)['n'] as int,
-};
-
-/// Answers a Repaso or level-check session through its screen until its end screen, touching the right picture of each
-/// ask, or, where [right] says no for the ask's number (from 0), a wrong one. [onAsk] is told each ask's panels.
-Future<void> answerRight(
-  TestApp app,
-  String screen, {
-  Future<void> Function(List<dynamic> panels)? onAsk,
-  bool Function(int ask)? right,
-  int maxMs = 10 * 60 * 1000,
-}) async {
-  final tester = app.tester;
-  Object? last;
-  var asks = -1;
-  for (var t = 0; ; t += 200) {
-    if (t > maxMs) fail('$screen did not end');
-    final s = stateNamed(tester, screen).session;
-    if ((s.screen as Enum).name == 'end') return;
-    final panels = s.panels as List<dynamic>?;
-    if (panels != null && (s.screen as Enum).name == 'play') {
-      if (!identical(panels, last)) {
-        last = panels;
-        asks++;
-        await app.settle(rounds: 4); // the pictures are read from the assets
-        await onAsk?.call(panels);
-      }
-      final ok = right?.call(asks) ?? true;
-      final k = panels.indexWhere((p) => (p.right as bool) == ok);
-      final touch = byTypeName('OptionTouch');
-      if (touch.evaluate().length > k) {
-        await tester.tap(touch.at(k), warnIfMissed: false);
-      }
-    }
-    await app.advance(200);
-  }
-}
-
-/// Plays a session of Repaso's games through its screen to its end screen, every answer right: the right picture or
-/// tile, the words of Arma la frase in order, each sound of Parejas to its word; a shown answer is touched, Next is
-/// pressed. [onItem] sees each item when his turn comes.
-Future<void> playRepaso(
-  TestApp app, {
-  Future<void> Function(dynamic session)? onItem,
-  int maxMs = 15 * 60 * 1000,
-}) async {
-  final tester = app.tester;
-  Object? acted;
-  for (var t = 0; ; t += 200) {
-    if (t > maxMs) fail('Repaso did not end');
-    final s = stateNamed(tester, 'RepasoScreen').session;
-    if ((s.screen as Enum).name == 'end') return;
-    final choices = (s.choices as List<dynamic>?) ?? const [];
-    final kind = s.item?.runtimeType.toString();
-    if (s.canNext as bool) {
-      await app.tap(findReviewNextButton());
-    } else if (choices.any((c) => c.sign as bool)) {
-      final k = choices.indexWhere((c) => c.sign as bool);
-      await _touchChoice(app, kind, k);
-    } else if ((s.yourTurn as bool) && !identical(acted, s.entry)) {
-      acted = s.entry;
-      await onItem?.call(s);
-      final r = choices.indexWhere((c) => c.right as bool);
-      switch (kind) {
-        case 'CualItem' || 'HearItem' || 'WhereItem':
-          await _touchChoice(app, kind, r);
-        case 'BuildItem':
-          for (final w in (s.item.order as List).cast<String>()) {
-            final k = (s.choices as List<dynamic>).indexWhere(
-              (c) => !(c.done as bool) && c.label == w,
-            );
-            await app.tap(
-              find
-                  .descendant(
-                    of: findReviewTileTray().last,
-                    matching: findReviewWordTile(),
-                  )
-                  .at(k),
-            );
-          }
-        case 'MatchItem':
-          final order = (s.item.wordOrder as List).cast<int>();
-          for (var i = 0; i < 4; i++) {
-            await app.tap(findReviewSpeakerTile().at(i));
-            await app.tap(findReviewWordTile().at(order.indexOf(i)));
-          }
-      }
-    }
-    await app.advance(200);
-  }
-}
-
-Future<void> _touchChoice(TestApp app, String? kind, int k) async {
-  if (kind == 'HearItem') {
-    await app.tap(findReviewWordTile().at(k));
-    return;
-  }
-  final g = await app.tester.startGesture(
-    app.tester.getCenter(findReviewPictureChoice().at(k)),
-  );
-  await g.up();
-  await app.tester.pump();
-}
-
 void main() {
   testWidgets(
-    '(f, g) Repaso from the Up next card: plays post-#10 games with no story screenshots, writes ear answers, and ends on Palabras',
+    'StoryRoute (play and listen) reaches its screen under ShellKeys.route and returns on back',
     (tester) async {
       final app = TestApp(tester);
-      final db = jsonDecode(seed('curso')) as Map<String, dynamic>;
-      await app.open(stored: jsonEncode(db), speechAvailable: false);
-      expect(app.services.pictures, isA<ScenePictures>());
-      final before = answers(app, 'ear');
-      // the Up next card's first entry is the review; Palabras' Start review goes the same way (test (m))
-      expect(find.text('Review'), findsOneWidget);
-      await app.tap(findMapUpNextAction());
-      await app.settle();
-      expect(app.lessonShown, isTrue);
-      expect(byTypeName('RepasoScreen'), findsOneWidget);
-      await app.tap(findReviewStartButton());
-      final kinds = <String>{};
-      await playRepaso(
-        app,
-        onItem: (s) async {
-          kinds.add(s.item.runtimeType.toString());
-          expect(find.byType(ErrorWidget), findsNothing);
-          expect(findReviewPictureChoice(), findsNothing);
-          expect(byTypeName('BookImage'), findsNothing);
-        },
-      );
-      // Issue #10: flashcards remove story-frame screenshots and story-scene crops until
-      // dedicated single-word assets exist in content.
-      expect(kinds, isNot(contains('CualItem')));
-      expect(kinds, isNot(contains('WhereItem')));
-      expect(kinds, containsAll(['HearItem', 'BuildItem', 'MatchItem']));
-      // ear answers, for the words asked
-      final after = answers(app, 'ear');
-      final moved = [
-        for (final w in after.keys)
-          if (after[w] != before[w]) w,
-      ];
-      expect(moved.length, greaterThanOrEqualTo(5));
-      // the session's minutes went to the shared cross-language progress store
-      final seedMinutes = jsonDecode(seed('curso'))['minutos'] as num;
-      final sharedDb = jsonDecode(app.sharedStored!) as Map<String, dynamic>;
-      expect(sharedDb['minutos'] as num, greaterThan(seedMinutes));
-      expect(app.services.progress.minutes, greaterThan(seedMinutes));
-      // "Back to Palabras": Repaso always ends on Palabras (cual.js: SALIDA)
-      await app.tap(find.text('Back to Palabras'));
-      await app.settle(rounds: 5);
-      expect(app.tabBarShown, isTrue);
-      expect(app.selectedTab, 'words');
-      // the praise of the last item, cut short by Next, is a clip of the harness still counting its length
+      await app.open(stored: seed('curso'), speechAvailable: false);
+
+      for (final route in const [
+        StoryRoute('la-lluvia'),
+        StoryRoute('la-lluvia', listen: true),
+      ]) {
+        await app.go(route);
+        await app.until(
+          () => findStoryStartButton().evaluate().isNotEmpty,
+          what: 'story start disc for $route',
+        );
+        expect(findShellRoute(route), findsOneWidget, reason: '$route');
+        expect(app.lessonShown, isTrue, reason: '$route');
+        expect(find.byKey(ShellKeys.tabBar), findsNothing, reason: '$route');
+        expect(findStoryStartButton(), findsOneWidget, reason: '$route');
+        expect(tester.takeException(), isNull, reason: '$route');
+
+        expect(await tester.binding.handlePopRoute(), isTrue, reason: '$route');
+        await app.settle(rounds: 5);
+        expect(findShellRoute(route), findsNothing, reason: '$route');
+        expect(app.tabBarShown, isTrue, reason: '$route');
+        expect(app.selectedTab, 'map', reason: '$route');
+        expect(findShellTab('map').hitTestable(), findsOneWidget);
+      }
+
       await app.advance(5000);
     },
-    timeout: const Timeout(Duration(minutes: 10)),
   );
 
-  testWidgets('(m) Palabras\' Start opens Repaso; its X returns to Palabras', (
-    tester,
-  ) async {
-    final app = TestApp(tester);
-    await app.open(stored: seed('curso'));
-    await app.openTab('words');
-    await app.until(
-      () => find.text('Start review').evaluate().isNotEmpty,
-      what: 'the Repaso action',
-    );
-    await app.tap(find.text('Start review'));
-    await app.settle();
-    expect(app.lessonShown, isTrue);
-    expect(byTypeName('RepasoScreen'), findsOneWidget);
-    await app.tap(findReviewCloseButton());
-    await app.settle(rounds: 5);
-    expect(app.tabBarShown, isTrue);
-    expect(app.selectedTab, 'words');
-  }, timeout: const Timeout(Duration(minutes: 5)));
+  testWidgets(
+    'ReviewRoute (direct, practice, and from Words tab) reaches its screen under ShellKeys.route and returns cleanly',
+    (tester) async {
+      final app = TestApp(tester);
+      await app.open(stored: seed('curso'), speechAvailable: false);
+
+      // Direct navigation via ReviewRoute() and ReviewRoute(practice: true).
+      for (final route in const [ReviewRoute(), ReviewRoute(practice: true)]) {
+        await app.go(route);
+        expect(findShellRoute(route), findsOneWidget, reason: '$route');
+        expect(app.lessonShown, isTrue, reason: '$route');
+        expect(find.byKey(ShellKeys.tabBar), findsNothing, reason: '$route');
+        // Shell-level defense-in-depth for product rule 4 (no story screenshots
+        // as UI/flashcard pictures); full item policy lives in
+        // feature_review/test/repaso_pictures_policy_test.dart
+        // ('default Repaso session (curso.json and everythingJson) has zero
+        // CualItem, zero WhereItem, zero BookImage, zero NochePictureChoice,
+        // and never calls PictureSource').
+        expect(find.byType(Image), findsNothing, reason: '$route');
+        expect(tester.takeException(), isNull, reason: '$route');
+
+        expect(await tester.binding.handlePopRoute(), isTrue, reason: '$route');
+        await app.settle(rounds: 5);
+        expect(findShellRoute(route), findsNothing, reason: '$route');
+        expect(app.tabBarShown, isTrue, reason: '$route');
+        expect(app.selectedTab, 'map', reason: '$route');
+      }
+
+      // From Words tab via Key('words-review-button'), starting the first item
+      // so the rule-4 Image-free assertion runs against a live Repaso item.
+      await app.openTab('words');
+      final reviewButton = find.byKey(const Key('words-review-button'));
+      await app.until(
+        () => reviewButton.evaluate().isNotEmpty,
+        what: 'words-review-button',
+      );
+      await tester.ensureVisible(reviewButton);
+      await app.tap(reviewButton);
+      await app.settle(rounds: 10);
+      expect(findShellRoute(const ReviewRoute()), findsOneWidget);
+      expect(app.lessonShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      final playDisc = find.byType(NochePlayDisc);
+      expect(playDisc, findsOneWidget);
+      await app.tap(playDisc);
+      await app.advance(400);
+      expect(find.byType(Image), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await app.settle(rounds: 5);
+      await app.advance(5000);
+      expect(findShellRoute(const ReviewRoute()), findsNothing);
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'words');
+      expect(findShellTab('words').hitTestable(), findsOneWidget);
+    },
+  );
 
   testWidgets(
-    '(n) Biblioteca: a book on the shelf opens in the reader, its X returns to Biblioteca; a book\'s address '
-    '#/libro/<id> opens its lines as text, its X returns to the map',
+    'LevelCheckRoute (direct and from Me tab) reaches its screen under ShellKeys.route and returns cleanly',
     (tester) async {
       final app = TestApp(tester);
       await app.open(stored: seed('curso'));
-      await app.services
-          .storage('biblioteca')
-          .write(
-            'texts',
-            jsonEncode([
-              {
-                'id': 'biblioteca-1-0',
-                'title': 'Mi cuaderno',
-                'body':
-                    'Tengo un cuaderno. Es azul. Tiene papel. Escribo aquí.',
-                'generated': false,
-              },
-            ]),
-          );
-      await app.openTab('library');
-      await app.until(
-        () => find.text('Mi cuaderno').evaluate().isNotEmpty,
-        what: 'Biblioteca',
-      );
-      await app.tap(find.text('Mi cuaderno').last);
-      await app.until(
-        () => byTypeName('TextReader').evaluate().isNotEmpty,
-        what: 'the reader',
-      );
-      await app.settle(rounds: 10);
+
+      // Direct navigation.
+      await app.go(const LevelCheckRoute());
+      expect(findShellRoute(const LevelCheckRoute()), findsOneWidget);
       expect(app.lessonShown, isTrue);
-      expect(find.byType(NocheTabBar), findsNothing);
-      expect(find.text('Mi cuaderno'), findsOneWidget);
-      expect(find.text('1 / 1'), findsOneWidget);
-      await app.tap(find.byTooltip('Close'));
-      await app.advance(10000);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await app.settle(rounds: 5);
+      expect(findShellRoute(const LevelCheckRoute()), findsNothing);
       expect(app.tabBarShown, isTrue);
-      expect(app.selectedTab, 'library');
-      expect(byTypeName('TextReader'), findsNothing);
-      // his shelf keeps it and offers Continue reading
-      expect(find.text('Mi cuaderno'), findsWidgets);
-      expect(find.text('Book'), findsOneWidget);
-      expect(find.text('Continue reading'), findsOneWidget);
-
-      // the address of a book, opened as it is (a reload): its lines as text; its X returns to the map
-      await tester.pumpWidget(const SizedBox());
-      final again = TestApp(tester);
-      await again.open(stored: seed('curso'), location: '/libro/la-familia');
-      await again.until(
-        () => byTypeName('TextReader').evaluate().isNotEmpty,
-        what: 'the reader',
-      );
-      await again.until(
-        () => find.textContaining(' / ').evaluate().isNotEmpty,
-        what: 'the book\'s pages',
-      );
-      expect(again.lessonShown, isTrue);
-      expect(find.byType(Image), findsNothing);
-      await again.tap(find.byTooltip('Close'));
-      await again.advance(10000);
-      expect(byTypeName('TextReader'), findsNothing);
-      expect(again.tabBarShown, isTrue);
-      expect(again.selectedTab, 'map');
-    },
-    timeout: const Timeout(Duration(minutes: 5)),
-  );
-
-  testWidgets(
-    '(o) the address #/prueba-voz opens the voice test, made from historia/datos/prueba-voz.json: its first line, the '
-    'file\'s mic label; one line said is heard; the system back returns to the map',
-    (tester) async {
-      final file = VoiceTestData.parse(
-        repoFile('historia/datos/prueba-voz.json'),
-      );
-      final app = TestApp(tester);
-      await app.open(
-        stored: seed('curso'),
-        location: '/prueba-voz',
-        micStub: const ['hola abuela'],
-      );
-      // not the map: the voice test, a lesson screen, on the first of the file's twelve lines
-      expect(byTypeName('VoiceTestScreen'), findsOneWidget);
-      expect(app.lessonShown, isTrue);
-      expect(find.text('1 / 12'), findsOneWidget);
-      expect(find.text(file.lines.first.text), findsOneWidget);
-      // the file's own words are the screen's: its mic label is the mic disc's
-      final mic = find.byWidgetPredicate(
-        (x) => x is Semantics && x.properties.label == file.labels['mic'],
-      );
-      expect(mic, findsOneWidget);
-      await app.tap(mic);
-      await app.advance(1500);
-      // the scripted answer is what the file's first line asks for (hola, abuela): heard
-      expect(find.text('hola abuela'), findsOneWidget);
-      expect(
-        tester.widget<Text>(find.text('hola abuela')).style!.color,
-        CoquiColors.heard,
-      );
-      final handled = await tester.binding.handlePopRoute();
-      await app.settle(rounds: 5);
-      expect(handled, isTrue);
-      expect(byTypeName('VoiceTestScreen'), findsNothing);
       expect(app.selectedTab, 'map');
-    },
-    timeout: const Timeout(Duration(minutes: 5)),
-  );
 
-  testWidgets(
-    '(h) the level check opened from Yo, answered and finished, calls presume; the map follows',
-    (tester) async {
-      final app = TestApp(tester);
-      await app.open(stored: seed('vacio'));
-      expect(find.text('UP NEXT · LA CASA'), findsOneWidget);
-      expect(find.text('New story · 4 min'), findsOneWidget);
+      // From Me tab via Key('yo-level-check').
       await app.openTab('me');
-      final start = find.byKey(const Key('yo-level-check'));
-      await tester.ensureVisible(start);
-      await app.tap(start);
-      await app.settle();
-      expect(byTypeName('LevelCheckScreen'), findsOneWidget);
+      final levelCheck = find.byKey(const Key('yo-level-check'));
+      expect(levelCheck, findsOneWidget);
+      await tester.ensureVisible(levelCheck);
+      await app.tap(levelCheck);
+      await app.settle(rounds: 10);
+      expect(findShellRoute(const LevelCheckRoute()), findsOneWidget);
       expect(app.lessonShown, isTrue);
-      await app.tap(findReviewStartButton());
-      // right on the first six pictures, then wrong: the check places him a little way in
-      await answerRight(app, 'LevelCheckScreen', right: (n) => n < 6);
-      // PAL.presume: the level, and the stories it skipped, presumed played
-      final db = storedDb(app);
-      expect(db['nivel'], isNotNull);
-      final presumed = [
-        for (final e in (db['cuentos'] as Map).entries)
-          if ((e.value as Map)['presunto'] != null) e.key,
-      ];
-      expect(presumed, contains('la-lluvia'));
-      expect((db['nivel'] as Map)['historias'], presumed.length);
-      await app.tap(find.text('To the map'));
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
       await app.settle(rounds: 5);
-      expect(app.selectedTab, 'map');
-      // the map follows: La casa is done, the frog has moved on to El parque
-      expect(find.text('New story · 4 min'), findsNothing);
-      expect(find.text('Second play · 2 min'), findsOneWidget);
-      expect(find.text('You are here'), findsOneWidget);
-      expect(findMapTopChips(), findsOneWidget);
+      expect(findShellRoute(const LevelCheckRoute()), findsNothing);
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'me');
+      expect(findShellTab('me').hitTestable(), findsOneWidget);
     },
-    timeout: const Timeout(Duration(minutes: 10)),
   );
 
   testWidgets(
-    '(i) a scripted call (?callstub=1) from Hablar writes mouth answers; it ends on Hablar',
+    'BookRoute (via go and direct /libro/la-familia) reaches TextReader under ShellKeys.route and returns cleanly',
+    (tester) async {
+      final app = TestApp(tester);
+      await app.open(stored: seed('curso'));
+
+      await app.go(const BookRoute('la-familia'));
+      expect(findShellRoute(const BookRoute('la-familia')), findsOneWidget);
+      expect(find.byKey(const ValueKey('book:la-familia')), findsOneWidget);
+      // Shell-level defense-in-depth for product rule 4 (no story screenshots
+      // as book pictures); feature guard lives in
+      // feature_library/test/module_test.dart
+      // ('BookRoute opens TextReader without pictures').
+      expect(find.byType(Image), findsNothing);
+      expect(app.lessonShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await app.advance(10000);
+      expect(findShellRoute(const BookRoute('la-familia')), findsNothing);
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'map');
+
+      // Direct location open (reload).
+      await tester.pumpWidget(const SizedBox());
+      final direct = TestApp(tester);
+      await direct.open(stored: seed('curso'), location: '/libro/la-familia');
+      expect(findShellRoute(const BookRoute('la-familia')), findsOneWidget);
+      expect(find.byKey(const ValueKey('book:la-familia')), findsOneWidget);
+      expect(find.byType(Image), findsNothing);
+      expect(direct.lessonShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await direct.advance(10000);
+      expect(findShellRoute(const BookRoute('la-familia')), findsNothing);
+      expect(direct.tabBarShown, isTrue);
+      expect(direct.selectedTab, 'map');
+    },
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
+
+  testWidgets(
+    'CallRoute (from Speak tab with ?callstub=1 and direct /llamada/casa) reaches CallScreen under ShellKeys.route',
     (tester) async {
       final app = TestApp(tester);
       await app.open(
         stored: seed('curso'),
         switches: AppSwitches.fromQuery(const {'callstub': '1'}),
       );
-      final before = answers(app, 'mouth');
+
       await app.openTab('speak');
-      await app.tap(find.byKey(const Key('speak-call-disc')));
-      await app.settle();
+      final callDisc = find.byKey(const Key('speak-call-disc'));
+      expect(callDisc, findsOneWidget);
+      await app.tap(callDisc);
+      await app.settle(rounds: 10);
+      expect(findShellRoute(const CallRoute('casa')), findsOneWidget);
       expect(app.lessonShown, isTrue);
-      expect(byTypeName('CallScreen'), findsOneWidget);
-      await app.tap(byTypeName('CallMicStage'));
-      for (
-        var t = 0;
-        find.text('Back to Hablar').evaluate().isEmpty;
-        t += 200
-      ) {
-        if (t > 3 * 60 * 1000) fail('the call did not end');
-        await app.advance(200);
-      }
-      expect(app.call.brief?.placeId, 'casa');
-      final after = answers(app, 'mouth');
-      final said = [
-        for (final w in after.keys)
-          if (after[w] != (before[w] ?? 0)) w,
-      ];
-      expect(said, isNotEmpty);
-      await app.tap(find.text('Back to Hablar'));
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
       await app.settle(rounds: 5);
+      expect(findShellRoute(const CallRoute('casa')), findsNothing);
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'speak');
+
+      // Direct location open (reload).
+      await tester.pumpWidget(const SizedBox());
+      final direct = TestApp(tester);
+      await direct.open(
+        stored: seed('curso'),
+        location: '/llamada/casa',
+        switches: AppSwitches.fromQuery(const {'callstub': '1'}),
+      );
+      expect(findShellRoute(const CallRoute('casa')), findsOneWidget);
+      expect(direct.lessonShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await direct.settle(rounds: 5);
+      expect(findShellRoute(const CallRoute('casa')), findsNothing);
+      expect(direct.tabBarShown, isTrue);
+      expect(direct.selectedTab, 'map');
     },
-    timeout: const Timeout(Duration(minutes: 5)),
+  );
+
+  testWidgets(
+    'VoiceTestRoute (/prueba-voz) reaches its screen under ShellKeys.route and returns to map on back',
+    (tester) async {
+      final app = TestApp(tester);
+      await app.open(stored: seed('curso'), location: '/prueba-voz');
+
+      expect(findShellRoute(const VoiceTestRoute()), findsOneWidget);
+      expect(app.lessonShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await app.settle(rounds: 5);
+      expect(findShellRoute(const VoiceTestRoute()), findsNothing);
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'map');
+    },
+  );
+
+  testWidgets(
+    'PlaceRoute, LanguagesRoute, and PlansRoute reach their screens under ShellKeys.route with expected tab-bar visibility',
+    (tester) async {
+      final app = TestApp(tester);
+      await app.open(stored: seed('curso'));
+
+      // PlaceRoute('casa'): keeps tab bar visible with map selected.
+      await app.go(const PlaceRoute('casa'));
+      expect(findShellRoute(const PlaceRoute('casa')), findsOneWidget);
+      expect(find.byKey(const Key('place-back')), findsOneWidget);
+      expect(app.tabBarShown, isTrue);
+      expect(find.byKey(ShellKeys.tabBar), findsOneWidget);
+      expect(app.selectedTab, 'map');
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await app.settle(rounds: 5);
+      expect(findShellRoute(const PlaceRoute('casa')), findsNothing);
+      expect(app.selectedTab, 'map');
+
+      // LanguagesRoute(): hides tab bar, exposes language-card-es.
+      await app.go(const LanguagesRoute());
+      expect(findShellRoute(const LanguagesRoute()), findsOneWidget);
+      expect(find.byKey(const ValueKey('language-card-es')), findsOneWidget);
+      expect(app.tabBarShown, isFalse);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await app.settle(rounds: 5);
+      expect(findShellRoute(const LanguagesRoute()), findsNothing);
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'map');
+
+      // PlansRoute(): hides tab bar, exposes plans-scroll.
+      await app.go(const PlansRoute());
+      expect(findShellRoute(const PlansRoute()), findsOneWidget);
+      expect(find.byKey(const Key('plans-scroll')), findsOneWidget);
+      expect(app.tabBarShown, isFalse);
+      expect(find.byKey(ShellKeys.tabBar), findsNothing);
+      expect(tester.takeException(), isNull);
+
+      expect(await tester.binding.handlePopRoute(), isTrue);
+      await app.settle(rounds: 5);
+      expect(findShellRoute(const PlansRoute()), findsNothing);
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'map');
+    },
   );
 }

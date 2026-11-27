@@ -6,6 +6,7 @@ import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:feature_map/feature_map.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'support/harness.dart';
 
@@ -186,5 +187,40 @@ void main() {
         expect(mapModule.entitlements.has(f), isFalse);
       }
     });
+
+    testWidgets(
+      'paid place route locks behind place-plan-card unless granted and routes to PlansRoute',
+      (tester) async {
+        final lockedApp = TestApp(tester)
+          ..entitlements = ReleaseEntitlements(allowed: const {});
+        await lockedApp.open(stored: seed('curso'));
+        await lockedApp.go(const PlaceRoute('parque'));
+
+        expect(findShellRoute(const PlaceRoute('parque')), findsOneWidget);
+        expect(find.byKey(const Key('place-plan-card')), findsOneWidget);
+        expect(find.byKey(const Key('place-see-plans')), findsOneWidget);
+        expect(find.byKey(const Key('place-play-bar')), findsNothing);
+        expect(tester.takeException(), isNull);
+
+        await lockedApp.tap(find.byKey(const Key('place-see-plans')));
+        await lockedApp.settle(rounds: 10);
+        expect(findShellRoute(const PlansRoute()), findsOneWidget);
+        expect(find.byKey(const Key('plans-scroll')), findsOneWidget);
+        expect(lockedApp.tabBarShown, isFalse);
+        expect(tester.takeException(), isNull);
+
+        await tester.pumpWidget(const SizedBox());
+
+        final unlockedApp = TestApp(tester)
+          ..entitlements = ReleaseEntitlements.preBilling(callsAllowed: true);
+        await unlockedApp.open(stored: seed('curso'));
+        await unlockedApp.go(const PlaceRoute('parque'));
+
+        expect(findShellRoute(const PlaceRoute('parque')), findsOneWidget);
+        expect(find.byKey(const Key('place-play-bar')), findsOneWidget);
+        expect(find.byKey(const Key('place-plan-card')), findsNothing);
+        expect(tester.takeException(), isNull);
+      },
+    );
   });
 }
