@@ -7,6 +7,7 @@ import 'package:coqui_platform/src/audio/graph_clip_player.dart';
 import 'package:coqui_platform/src/audio/sound_core.dart';
 import 'package:coqui_platform/src/call/call_session.dart';
 import 'package:coqui_platform/src/call/call_stub.dart';
+import 'package:coqui_platform/src/call/call_token.dart';
 import 'package:coqui_platform/src/web/el_conv.dart';
 import 'package:coqui_platform/src/info/app_info.dart';
 import 'package:coqui_platform/src/speech/recognition.dart';
@@ -149,16 +150,19 @@ AppInfo createAppInfo() => FixedAppInfo.web(browserFacts());
 
 /// The call with Danny: the ElevenLabs client at the old page's pinned version, by interop. With [stub],
 /// the old page's `?callstub=1` instead (a scripted call, no network). [libraryUrl] is for tests and the
-/// dev screen: the module to import in place of the pinned client.
+/// dev screen: the module to import in place of the pinned client. When [tokenSource] is given, the
+/// session requests a short-lived [CallToken] and omits `agentId` and client `dynamicVariables`.
 CallSession createCallSession({
   required AppInfo appInfo,
   CallStub? stub,
   String libraryUrl = elevenLabsClientUrl,
+  CallTokenSource? tokenSource,
 }) => ConvCallSession(
   library: stub ?? JsConvLibrary(libraryUrl),
   callsAllowed: appInfo.callsAllowed,
   beforeStart: _suspendSound,
   afterCall: _resumeSound,
+  tokenSource: tokenSource,
 );
 
 // order 19b: when the call is over, the sound comes back (the old page reloaded instead)

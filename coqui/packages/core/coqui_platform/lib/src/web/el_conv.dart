@@ -117,9 +117,7 @@ class JsConvLibrary implements ConvLibrary {
       );
     }
     final opts = JSObject()
-      ..setProperty('agentId'.toJS, o.agentId.toJS)
       ..setProperty('connectionType'.toJS, o.connectionType.toJS)
-      ..setProperty('dynamicVariables'.toJS, o.dynamicVariables.jsify())
       ..setProperty('clientTools'.toJS, tools)
       ..setProperty(
         'onConnect'.toJS,
@@ -138,6 +136,16 @@ class JsConvLibrary implements ConvLibrary {
         'onModeChange'.toJS,
         ((JSAny? m) => o.onModeChange(m.dartify())).toJS,
       );
+    if (o.signedUrl != null) {
+      opts.setProperty('signedUrl'.toJS, o.signedUrl!.toJS);
+    } else if (o.conversationToken != null) {
+      opts.setProperty('conversationToken'.toJS, o.conversationToken!.toJS);
+    } else if (o.agentId != null) {
+      opts.setProperty('agentId'.toJS, o.agentId!.toJS);
+    }
+    if (o.dynamicVariables != null) {
+      opts.setProperty('dynamicVariables'.toJS, o.dynamicVariables!.jsify());
+    }
     final done = Completer<Conv>();
     try {
       final p = el.callMethod<JSPromise<JSObject>>('startSession'.toJS, opts);

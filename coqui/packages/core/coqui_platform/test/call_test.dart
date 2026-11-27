@@ -237,6 +237,8 @@ void main() {
       await s.start(_brief, _vars);
       final o = lib.opts!;
       expect(o.agentId, 'agent_3301m795q3xtfpx8c99zc0s870vm');
+      expect(o.signedUrl, isNull);
+      expect(o.conversationToken, isNull);
       expect(o.connectionType, 'websocket');
       expect(o.clientTools.keys, ['show_picture']);
       expect(suspended, 1); // AC.suspend() before the microphone opens
@@ -252,7 +254,7 @@ void main() {
         'minutes': '5',
         'opening': '¡Hola! Soy Danny. ¿Cómo estás?',
       });
-      expect(lib.opts!.dynamicVariables.keys.toList(), [
+      expect(lib.opts!.dynamicVariables!.keys.toList(), [
         'place',
         'job',
         'words_open',
@@ -562,7 +564,7 @@ void main() {
       ]);
       expect(stub.sent, ['(fin)']);
       expect(stub.ended, isTrue);
-      expect(stub.opts!.dynamicVariables['place'], 'La casa');
+      expect(stub.opts!.dynamicVariables!['place'], 'La casa');
       stub.dispose();
     });
     testWidgets('refused microphone and failed start throw', (tester) async {
@@ -716,6 +718,351 @@ void main() {
       },
     );
   });
+
+  group('signed link / token source (#249)', () {
+    test('CallToken.signedUrl passes signedUrl, websocket, clientTools without agentId or dynamicVariables, forwards wordsOpen/wordsHeard, and runs events/send/end', () async {
+      final lib = _Lib();
+      const signedUrl = 'wss://call-api.example.com/v1/call/ws?ticket=abc123';
+      final token = CallToken.signedUrl(
+        signedUrl,
+        expiresAt: DateTime.utc(2026, 11, 26, 18, 1),
+        maxDurationSeconds: 420,
+        dailyLimit: 3,
+        remainingToday: 2,
+      );
+      expect(token.signedUrl, signedUrl);
+      expect(token.conversationToken, isNull);
+      expect(token.connectionType, 'websocket');
+      expect(token.expiresAt, DateTime.utc(2026, 11, 26, 18, 1));
+      expect(token.maxDurationSeconds, 420);
+      expect(token.dailyLimit, 3);
+      expect(token.remainingToday, 2);
+
+      final source = _FakeTokenSource(token: token);
+      final calls = <String>[];
+      final s = ConvCallSession(
+        library: lib,
+        callsAllowed: true,
+        beforeStart: () => calls.add('suspend'),
+        afterCall: () => calls.add('resume'),
+        tokenSource: source,
+      );
+      final ev = <String>[];
+      s.events.listen((e) => ev.add(_show(e)));
+
+      // First start: empty words_heard
+      await s.start(_brief, _vars);
+      expect(source.calls, 1);
+      expect(source.lastBrief, _brief);
+      expect(source.lastWordsOpen, ['hola', 'casa']);
+      expect(source.lastWordsHeard, isEmpty);
+
+      final o = lib.opts!;
+      expect(o.signedUrl, signedUrl);
+      expect(o.conversationToken, isNull);
+      expect(o.agentId, isNull);
+      expect(o.dynamicVariables, isNull);
+      expect(o.connectionType, 'websocket');
+      expect(o.clientTools.keys, ['show_picture']);
+
+      o.onConnect({'conversationId': 'conv_1'});
+      o.onMessage({'role': 'agent', 'message': '¡Hola!'});
+      expect(o.clientTools['show_picture']!({'picture': 'jugo'}), 'shown');
+      s.send('(ayuda)');
+      await s.end();
+      expect(ev, [
+        'Connected',
+        'AgentLine ¡Hola!',
+        'Tool show_picture {picture: jugo}',
+      ]);
+      expect(lib.conv!.calls, ['send (ayuda)', 'end']);
+      expect(calls, ['suspend', 'resume']);
+
+      // Second start: non-empty words_heard with extra whitespace/empty segments
+      await s.start(_brief, {
+        'place': 'La casa',
+        'words_open': ' hola ,  puerta , ',
+        'words_heard': ' agua , jugo ',
+      });
+      expect(source.calls, 2);
+      expect(source.lastWordsOpen, ['hola', 'puerta']);
+      expect(source.lastWordsHeard, ['agua', 'jugo']);
+      await s.end();
+    });
+
+    test('CallToken.conversationToken passes conversationToken and webrtc without agentId, signedUrl, or dynamicVariables', () async {
+      final lib = _Lib();
+      final source = _FakeTokenSource(
+        token: CallToken.conversationToken('conv_tok_xyz'),
+      );
+      final s = ConvCallSession(
+        library: lib,
+        callsAllowed: true,
+        tokenSource: source,
+      );
+      await s.start(_brief, _vars);
+      final o = lib.opts!;
+      expect(o.conversationToken, 'conv_tok_xyz');
+      expect(o.connectionType, 'webrtc');
+      expect(o.agentId, isNull);
+      expect(o.signedUrl, isNull);
+      expect(o.dynamicVariables, isNull);
+      expect(o.clientTools.keys, ['show_picture']);
+    });
+
+    test('tokenSource.fetchToken throwing CallStartError rethrows intact, resumes once, and does not startSession', () async {
+      final lib = _Lib();
+      const err = CallStartError(
+        CallStartFailure.failed,
+        'Daily call limit reached.',
+        name: 'DailyLimitReached',
+      );
+      final source = _FakeTokenSource(error: err);
+      final calls = <String>[];
+      final s = ConvCallSession(
+        library: lib,
+        callsAllowed: true,
+        beforeStart: () => calls.add('suspend'),
+        afterCall: () => calls.add('resume'),
+        tokenSource: source,
+      );
+      await expectLater(s.start(_brief, _vars), throwsA(same(err)));
+      expect(calls, ['suspend', 'resume']);
+      expect(lib.opts, isNull);
+    });
+
+    test('tokenSource.fetchToken throwing arbitrary exception wraps in CallStartFailure.failed, resumes once, and does not startSession', () async {
+      final lib = _Lib();
+      final source = _FakeTokenSource(error: StateError('network down'));
+      final calls = <String>[];
+      final s = ConvCallSession(
+        library: lib,
+        callsAllowed: true,
+        beforeStart: () => calls.add('suspend'),
+        afterCall: () => calls.add('resume'),
+        tokenSource: source,
+      );
+      await expectLater(
+        s.start(_brief, _vars),
+        throwsA(
+          isA<CallStartError>()
+              .having((e) => e.kind, 'kind', CallStartFailure.failed)
+              .having((e) => e.message, 'message', contains('network down')),
+        ),
+      );
+      expect(calls, ['suspend', 'resume']);
+      expect(lib.opts, isNull);
+    });
+
+    test('library.load() returning false skips tokenSource.fetchToken, throws library, and resumes once', () async {
+      final lib = _Lib(loads: false);
+      final source = _FakeTokenSource(
+        token: CallToken.signedUrl('wss://call-api.example.com/v1/call/ws?t=1'),
+      );
+      final calls = <String>[];
+      final s = ConvCallSession(
+        library: lib,
+        callsAllowed: true,
+        beforeStart: () => calls.add('suspend'),
+        afterCall: () => calls.add('resume'),
+        tokenSource: source,
+      );
+      await expectLater(
+        s.start(_brief, _vars),
+        throwsA(
+          isA<CallStartError>().having(
+            (e) => e.kind,
+            'kind',
+            CallStartFailure.library,
+          ),
+        ),
+      );
+      expect(source.calls, 0);
+      expect(calls, ['suspend', 'resume']);
+      expect(lib.opts, isNull);
+    });
+
+    test('end() while tokenSource.fetchToken is pending resumes once and does not call startSession when token resolves', () async {
+      final lib = _Lib();
+      final gate = Completer<void>();
+      final source = _FakeTokenSource(
+        token: CallToken.signedUrl('wss://call-api.example.com/v1/call/ws?t=2'),
+        gate: gate,
+      );
+      final calls = <String>[];
+      final s = ConvCallSession(
+        library: lib,
+        callsAllowed: true,
+        beforeStart: () => calls.add('suspend'),
+        afterCall: () => calls.add('resume'),
+        tokenSource: source,
+      );
+      final startFuture = s.start(_brief, _vars);
+      while (source.calls == 0) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      await s.end();
+      expect(calls, ['suspend', 'resume']);
+      gate.complete();
+      await startFuture;
+      expect(lib.opts, isNull);
+      expect(calls, ['suspend', 'resume']);
+    });
+
+    test(
+      'CallToken constructor enforces credential and connectionType invariants',
+      () {
+        expect(() => CallToken(), throwsArgumentError);
+        expect(
+          () => CallToken(
+            signedUrl: 'wss://example.com/ws',
+            conversationToken: 'tok_1',
+          ),
+          throwsArgumentError,
+        );
+        expect(() => CallToken.signedUrl(''), throwsArgumentError);
+        expect(() => CallToken.signedUrl('   '), throwsArgumentError);
+        expect(() => CallToken.conversationToken(''), throwsArgumentError);
+        expect(() => CallToken.conversationToken('   '), throwsArgumentError);
+        expect(
+          () => CallToken.signedUrl(
+            'wss://example.com/ws',
+            connectionType: 'webrtc',
+          ),
+          throwsArgumentError,
+        );
+        expect(
+          () => CallToken.signedUrl('wss://example.com/ws', connectionType: ''),
+          throwsArgumentError,
+        );
+        expect(
+          () => CallToken.conversationToken('tok_1', connectionType: '  '),
+          throwsArgumentError,
+        );
+      },
+    );
+
+    test('ConvOptions constructor enforces credential, dynamicVariables, and connectionType invariants', () {
+      ConvOptions make({
+        String? agentId,
+        String? signedUrl,
+        String? conversationToken,
+        String connectionType = 'websocket',
+        Map<String, String>? dynamicVariables,
+      }) => ConvOptions(
+        agentId: agentId,
+        signedUrl: signedUrl,
+        conversationToken: conversationToken,
+        connectionType: connectionType,
+        dynamicVariables: dynamicVariables,
+        clientTools: const {},
+        onConnect: (_) {},
+        onDisconnect: (_) {},
+        onError: (_) {},
+        onMessage: (_) {},
+        onModeChange: (_) {},
+      );
+
+      // Neither credential
+      expect(() => make(), throwsArgumentError);
+      // Multiple credentials
+      expect(
+        () => make(agentId: 'agent_1', signedUrl: 'wss://example.com/ws'),
+        throwsArgumentError,
+      );
+      expect(
+        () => make(agentId: 'agent_1', conversationToken: 'tok_1'),
+        throwsArgumentError,
+      );
+      expect(
+        () =>
+            make(signedUrl: 'wss://example.com/ws', conversationToken: 'tok_1'),
+        throwsArgumentError,
+      );
+      // Blank credentials / connectionType
+      expect(() => make(agentId: ''), throwsArgumentError);
+      expect(() => make(agentId: '   '), throwsArgumentError);
+      expect(() => make(signedUrl: '  '), throwsArgumentError);
+      expect(() => make(conversationToken: ''), throwsArgumentError);
+      expect(
+        () => make(agentId: 'agent_1', connectionType: ''),
+        throwsArgumentError,
+      );
+      expect(
+        () => make(agentId: 'agent_1', connectionType: '   '),
+        throwsArgumentError,
+      );
+      // signedUrl must be websocket
+      expect(
+        () => make(signedUrl: 'wss://example.com/ws', connectionType: 'webrtc'),
+        throwsArgumentError,
+      );
+      // dynamicVariables forbidden with signedUrl or conversationToken
+      expect(
+        () => make(
+          signedUrl: 'wss://example.com/ws',
+          dynamicVariables: const {'place': 'La casa'},
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => make(
+          conversationToken: 'tok_1',
+          connectionType: 'webrtc',
+          dynamicVariables: const {},
+        ),
+        throwsArgumentError,
+      );
+    });
+
+    test('phone build createCallSession with tokenSource still throws unavailable without calling tokenSource', () async {
+      final source = _FakeTokenSource(
+        token: CallToken.signedUrl('wss://call-api.example.com/v1/call/ws?t=3'),
+      );
+      final s = createCallSession(
+        appInfo: createAppInfo(),
+        tokenSource: source,
+      );
+      expect(s.available, isFalse);
+      await expectLater(
+        s.start(_brief, _vars),
+        throwsA(
+          isA<CallStartError>()
+              .having((e) => e.name, 'name', 'NotAvailable')
+              .having((e) => e.kind, 'kind', CallStartFailure.unavailable),
+        ),
+      );
+      expect(source.calls, 0);
+    });
+  });
+}
+
+class _FakeTokenSource implements CallTokenSource {
+  _FakeTokenSource({this.token, this.error, this.gate});
+
+  final CallToken? token;
+  final Object? error;
+  final Completer<void>? gate;
+  int calls = 0;
+  CallBrief? lastBrief;
+  List<String>? lastWordsOpen;
+  List<String>? lastWordsHeard;
+
+  @override
+  Future<CallToken> fetchToken(
+    CallBrief brief, {
+    List<String> wordsOpen = const [],
+    List<String> wordsHeard = const [],
+  }) async {
+    calls++;
+    lastBrief = brief;
+    lastWordsOpen = wordsOpen;
+    lastWordsHeard = wordsHeard;
+    await gate?.future;
+    final e = error;
+    if (e != null) throw e;
+    return token!;
+  }
 }
 
 String _show(CallEvent e) => switch (e) {
