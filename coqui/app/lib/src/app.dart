@@ -24,6 +24,8 @@ import 'package:flutter/services.dart' show SystemChrome, SystemUiOverlayStyle;
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+export 'package:app/src/shell.dart' show shellCourseTurnKey;
+
 /// System bar styling for Noche: `NocheColors.ground` bars with light icons.
 const SystemUiOverlayStyle nocheSystemUiStyle = SystemUiOverlayStyle(
   statusBarColor: NocheColors.ground,
@@ -52,9 +54,6 @@ const ValueKey<String> shellLoadingDotsKey = ValueKey('shell-loading-dots');
 
 /// Stable shell-owned key for the loading status line on [_ShellLoading].
 const ValueKey<String> shellLoadingLineKey = ValueKey('shell-loading-line');
-
-/// Stable shell-owned key for the course-turn opacity wrapper.
-const ValueKey<String> shellCourseTurnKey = ValueKey('shell-course-turn');
 
 /// Setting key used by language pickers to store the active language code.
 const String _languageSettingKey = 'idioma';
@@ -398,6 +397,8 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
       bookImageUrl: (path) => bookImageUrl(p.contentBase, path),
       entitlements: p.entitlements,
       voiceTest: l.voiceTest,
+      mapOverlayOpacity: _courseTurnController,
+      animateMapColdLoad: _animateInitialLoadArrival,
     );
     _modules = modules;
     _nav.answers = (route) {
@@ -546,25 +547,12 @@ class _ScreensState extends State<_Screens>
       builder: (context) {
         final s = widget.app._servicesFor(context);
         return AnimatedBuilder(
-          animation: Listenable.merge([
-            widget.app._courseTurnController,
-            widget.app._courseTurnBlocking,
-          ]),
+          animation: widget.app._courseTurnBlocking,
           builder: (context, child) {
             final blocking = widget.app._courseTurnBlocking.value;
             return IgnorePointer(
               ignoring: blocking,
-              child: ExcludeSemantics(
-                excluding: blocking,
-                child: Opacity(
-                  key: shellCourseTurnKey,
-                  opacity: widget.app._courseTurnController.value.clamp(
-                    0.0,
-                    1.0,
-                  ),
-                  child: child,
-                ),
-              ),
+              child: ExcludeSemantics(excluding: blocking, child: child),
             );
           },
           child: Material(
@@ -579,6 +567,7 @@ class _ScreensState extends State<_Screens>
                 nav: widget.app._nav,
                 route: routeOf(widget.address) ?? const TabRoute(startTab),
                 animateLoadArrival: widget.app._animateInitialLoadArrival,
+                courseTurnOpacity: widget.app._courseTurnController,
               ),
             ),
           ),

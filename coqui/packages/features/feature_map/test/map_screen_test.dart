@@ -766,7 +766,7 @@ void main() {
   });
 
   mapTest(
-    'Plan.free: place 2 keeps normal map state and opens PlaceRoute; Up next gates place 2 stories',
+    'Plan.free: place 2 focuses its place card first and gates PlaceRoute across Up next and place card',
     (tester) async {
       phone(tester);
       final entitlements = FakeEntitlements(plan: Plan.free);
@@ -805,20 +805,33 @@ void main() {
       await tester.pump();
       expect(fCurso.nav.routes, [const PlaceRoute('parque')]);
 
-      // Tapping plan-locked place 2 on map preserves N3.4: opens PlaceRoute('parque') directly
+      // Tapping plan-locked place 2 on map focuses its place card first (N8.6),
+      // and all open/play actions gate Place 2 on Plan.free (N3.4).
       await tapStop(tester, 1);
       await run(tester, 400);
+      expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+      expect(find.text('PLACE 2 OF 10'), findsOneWidget);
+      expect(fCurso.nav.routes, [const PlaceRoute('parque')]);
+
+      await tester.tap(find.byKey(const Key('up-next-play')));
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('place-card-open')));
+      await tester.pump();
+      await tapStop(tester, 1);
       expect(fCurso.nav.routes, [
         const PlaceRoute('parque'),
         const PlaceRoute('parque'),
+        const PlaceRoute('parque'),
+        const PlaceRoute('parque'),
       ]);
+      expect(fCurso.nav.routes.whereType<StoryRoute>(), isEmpty);
 
-      // Upgrading to Plan.course restores direct StoryRoute playback from Up next
+      // Upgrading to Plan.course restores direct StoryRoute playback from the card play disc
       entitlements.plan = Plan.course;
       await tester.pump();
       await tester.tap(find.byKey(const Key('up-next-play')));
       await tester.pump();
-      expect(fCurso.nav.routes.last, const StoryRoute('la-bola'));
+      expect(fCurso.nav.routes.last, const StoryRoute('arriba-abajo'));
     },
   );
 

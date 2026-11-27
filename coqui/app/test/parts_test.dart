@@ -12,6 +12,7 @@ import 'package:coqui_scenes/coqui_scenes.dart' show sceneRegistry;
 import 'package:feature_map/feature_map.dart';
 import 'package:feature_speaking/feature_speaking.dart';
 import 'package:feature_story/feature_story.dart' show StoryModule, TxtMode;
+import 'package:flutter/foundation.dart' show ValueNotifier;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/harness.dart';
@@ -353,10 +354,27 @@ void main() {
         final speaking = modules.whereType<SpeakingModule>().single;
         final story = modules.whereType<StoryModule>().single;
         expect(map.showPerf, expectedPerf, reason: '$query');
+        expect(map.overlayOpacity, isNull, reason: '$query');
+        expect(map.animateColdLoad, isFalse, reason: '$query');
         expect(speaking.shortCallsEnabled, isTrue, reason: '$query');
         expect(story.showPerf, expectedPerf, reason: '$query');
         expect(story.txt, expectedTxt, reason: '$query');
       }
+    });
+
+    test('coquiModules forwards mapOverlayOpacity and animateMapColdLoad into MapModule', () {
+      final overlayOpacity = ValueNotifier<double>(0.5);
+      addTearDown(overlayOpacity.dispose);
+      final modules = coquiModules(
+        switches: const AppSwitches(),
+        bookImageUrl: (path) => 'https://example.com/$path',
+        entitlements: ReleaseEntitlements.preBilling(callsAllowed: true),
+        mapOverlayOpacity: overlayOpacity,
+        animateMapColdLoad: true,
+      );
+      final map = modules.whereType<MapModule>().single;
+      expect(map.overlayOpacity, same(overlayOpacity));
+      expect(map.animateColdLoad, isTrue);
     });
 
     test('storyScenes throws UnimplementedError for an unknown scene id not in sceneRegistry', () async {
