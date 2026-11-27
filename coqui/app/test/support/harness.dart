@@ -308,3 +308,47 @@ Finder findMapUpNextAction() => find.byKey(const Key('up-next-play'));
 
 /// The story lesson's start disc (N4.3's `story-start-disc`).
 Finder findStoryStartButton() => find.byKey(const Key('story-start-disc'));
+
+/// Opens the Up Next story from the map (`Key('up-next-play')`) and plays it to
+/// completion using scattered grid taps over `PixelView` (driven strictly by
+/// keys and progress state — zero feature wording, zero type-name probes).
+/// Returns the virtual ms elapsed.
+Future<int> playUpNextStoryToEnd(TestApp app, String storyId) async {
+  final tester = app.tester;
+  await app.tap(findMapUpNextAction());
+  await app.until(
+    () =>
+        findShellRoute(StoryRoute(storyId)).evaluate().isNotEmpty &&
+        findStoryStartButton().evaluate().isNotEmpty,
+    what: 'story $storyId start disc',
+  );
+  expect(findShellRoute(StoryRoute(storyId)), findsOneWidget);
+  expect(app.lessonShown, isTrue);
+  expect(find.byKey(ShellKeys.tabBar), findsNothing);
+  expect(findStoryStartButton(), findsOneWidget);
+
+  await app.tap(findStoryStartButton());
+  final pic = tester.getRect(find.byType(PixelView));
+  final points = <Offset>[
+    for (var j = 0; j < 9; j++)
+      for (var i = 0; i < 7; i++)
+        Offset(
+          pic.left + pic.width * (i + .5) / 7,
+          pic.top + pic.height * (j + .5) / 9,
+        ),
+  ];
+  final endAction = find.byType(NochePrimaryButton);
+  var k = 0;
+  var t = 0;
+  for (
+    ;
+    !(app.services.progress.played(storyId) && endAction.evaluate().isNotEmpty);
+    t += 700
+  ) {
+    if (t > 15 * 60 * 1000) fail('story $storyId did not end in 15 minutes');
+    await tester.tapAt(points[(k * 17) % points.length]);
+    k++;
+    await app.advance(700);
+  }
+  return t;
+}

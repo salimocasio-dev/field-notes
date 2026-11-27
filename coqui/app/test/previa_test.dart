@@ -292,8 +292,25 @@ void main() {
   });
 
   group('in the app', () {
+    // Progress of a learner who has played every story of the site twice and
+    // has no word due: the map's Up Next card picks the first unplayed story,
+    // which is the bundled preview story.
+    String allPlayed() {
+      final db = obj(seed('todo'));
+      db['palabras'] = <String, dynamic>{};
+      // The seed predates A comer in the course: mark its three stories played
+      // twice like jugo-de-china so the bundled preview story is Up Next.
+      final cuentos = db['cuentos'] as Map<String, dynamic>;
+      for (final id in ['que-quieres', 'buen-provecho', 'cafe-con-azucar']) {
+        cuentos[id] = Map<String, dynamic>.of(
+          cuentos['jugo-de-china'] as Map<String, dynamic>,
+        );
+      }
+      return jsonEncode(db);
+    }
+
     testWidgets(
-      'a preview story with a converted scene mounts from the bundle and all shell tabs and lesson routes stay clean',
+      'a preview story with a converted scene reaches Up Next, plays silently to completion, persists played, and keeps all tabs and lesson routes clean',
       (tester) async {
         final app = TestApp(tester);
         final story = previewStory('la-lluvia', 'previa-uno');
@@ -308,24 +325,25 @@ void main() {
           }),
           'cuentos/previa-uno.json': story,
         });
-        await app.open(stored: seed('curso'), speechAvailable: false);
+        await app.open(stored: allPlayed(), speechAvailable: false);
 
         expect(app.services.course.meta('previa-uno'), isNotNull);
         expect(findShellTab('map').hitTestable(), findsOneWidget);
+        expect(findMapUpNextAction().hitTestable(), findsOneWidget);
 
-        await app.go(const StoryRoute('previa-uno'));
-        await app.until(
-          () => findStoryStartButton().evaluate().isNotEmpty,
-          what: 'preview story start disc',
-        );
-        expect(findShellRoute(const StoryRoute('previa-uno')), findsOneWidget);
-        expect(app.lessonShown, isTrue);
-        expect(findStoryStartButton(), findsOneWidget);
+        // Tapping Up Next launches the bundled preview story and plays it to completion.
+        await playUpNextStoryToEnd(app, 'previa-uno');
+
+        // Silent: no clip of the preview story was played (it has an unrecorded line).
+        final lines = (obj(story)['clips'] as Map).keys.toSet();
+        expect(app.clips!.played.where(lines.contains), isEmpty);
+        expect(app.services.progress.played('previa-uno'), isTrue);
         expect(app.fetched, isNot(contains('cuentos/previa-uno.json')));
         expect(tester.takeException(), isNull);
 
         expect(await tester.binding.handlePopRoute(), isTrue);
         await app.settle(rounds: 5);
+        await app.advance(5000);
         expect(app.tabBarShown, isTrue);
         expect(app.selectedTab, 'map');
 
@@ -349,6 +367,7 @@ void main() {
         expect(app.lessonShown, isTrue);
         expect(tester.takeException(), isNull);
       },
+      timeout: const Timeout(Duration(minutes: 10)),
     );
 
     testWidgets(

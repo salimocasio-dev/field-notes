@@ -9,8 +9,6 @@
 import 'dart:convert';
 
 import 'package:app/src/shell.dart';
-import 'package:coqui_contracts/coqui_contracts.dart';
-import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/harness.dart';
@@ -38,39 +36,7 @@ void main() {
         expect(tester.takeException(), isNull, reason: id);
       }
 
-      await app.tap(findMapUpNextAction());
-      await app.until(
-        () => findStoryStartButton().evaluate().isNotEmpty,
-        what: 'story start disc',
-      );
-      expect(findShellRoute(const StoryRoute('la-lluvia')), findsOneWidget);
-      expect(app.lessonShown, isTrue);
-      expect(find.byKey(ShellKeys.tabBar), findsNothing);
-      expect(findStoryStartButton(), findsOneWidget);
-
-      await app.tap(findStoryStartButton());
-      final pic = tester.getRect(find.byType(PixelView));
-      final points = <Offset>[
-        for (var j = 0; j < 9; j++)
-          for (var i = 0; i < 7; i++)
-            Offset(
-              pic.left + pic.width * (i + .5) / 7,
-              pic.top + pic.height * (j + .5) / 9,
-            ),
-      ];
-      final endAction = find.byType(NochePrimaryButton);
-      var k = 0;
-      for (
-        var t = 0;
-        !(app.services.progress.played('la-lluvia') &&
-            endAction.evaluate().isNotEmpty);
-        t += 700
-      ) {
-        if (t > 15 * 60 * 1000) fail('the story did not end in 15 minutes');
-        await tester.tapAt(points[(k * 17) % points.length]);
-        k++;
-        await app.advance(700);
-      }
+      await playUpNextStoryToEnd(app, 'la-lluvia');
 
       expect(app.clips!.played.first, 'esta_casa');
       final db = jsonDecode(app.stored!) as Map<String, dynamic>;
