@@ -489,11 +489,19 @@ class SitioPublishGateTests(unittest.TestCase):
                 self.assertFalse(gate.is_coqui_main_ci_path(p))
 
     def test_parse_args_require_green_main_default_and_overrides(self) -> None:
-        old_val = os.environ.pop("REQUIRE_GREEN_MAIN", None)
+        old_req = os.environ.pop("REQUIRE_GREEN_MAIN", None)
+        old_to = os.environ.pop("WAIT_MAIN_CI_TIMEOUT_SECONDS", None)
+        old_poll = os.environ.pop("WAIT_MAIN_CI_POLL_SECONDS", None)
         try:
-            self.assertTrue(gate.parse_args([]).require_green_main)
+            defaults = gate.parse_args([])
+            self.assertTrue(defaults.require_green_main)
+            self.assertIsNone(defaults.wait_ci_timeout)
+            self.assertEqual(defaults.wait_ci_interval, gate.DEFAULT_WAIT_POLL_SECONDS)
+
             self.assertFalse(gate.parse_args(["--no-require-green-main"]).require_green_main)
             self.assertTrue(gate.parse_args(["--require-green-main"]).require_green_main)
+            self.assertEqual(gate.parse_args(["--wait-ci-timeout", "90"]).wait_ci_timeout, 90.0)
+            self.assertEqual(gate.parse_args(["--wait-ci-interval", "5"]).wait_ci_interval, 5.0)
 
             for falsy in ("0", "false", "FALSE", "no", "off"):
                 os.environ["REQUIRE_GREEN_MAIN"] = falsy
@@ -501,13 +509,23 @@ class SitioPublishGateTests(unittest.TestCase):
                 self.assertTrue(gate.parse_args(["--require-green-main"]).require_green_main)
 
             os.environ["REQUIRE_GREEN_MAIN"] = "1"
-            self.assertTrue(gate.parse_args([]).require_green_main)
+            os.environ["WAIT_MAIN_CI_TIMEOUT_SECONDS"] = "600"
+            os.environ["WAIT_MAIN_CI_POLL_SECONDS"] = "15"
+            parsed = gate.parse_args([])
+            self.assertTrue(parsed.require_green_main)
+            self.assertEqual(parsed.wait_ci_timeout, 600.0)
+            self.assertEqual(parsed.wait_ci_interval, 15.0)
             self.assertFalse(gate.parse_args(["--no-require-green-main"]).require_green_main)
         finally:
-            if old_val is None:
-                os.environ.pop("REQUIRE_GREEN_MAIN", None)
-            else:
-                os.environ["REQUIRE_GREEN_MAIN"] = old_val
+            for k, old in (
+                ("REQUIRE_GREEN_MAIN", old_req),
+                ("WAIT_MAIN_CI_TIMEOUT_SECONDS", old_to),
+                ("WAIT_MAIN_CI_POLL_SECONDS", old_poll),
+            ):
+                if old is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = old
 
     def test_green_main_ci_gate_passes_and_refuses_correctly(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -589,7 +607,7 @@ class SitioPublishGateTests(unittest.TestCase):
             self.assertTrue(dec_anc.should_build)
             self.assertTrue(dec_anc.should_deploy)
 
-            # Refuses when coqui/BUILD changed since last green ancestor run
+            # Refuses immediately when wait_timeout_seconds=0 and coqui/BUILD changed since last green ancestor run
             _write_file(root / "coqui" / "BUILD", "18\n")
             sha_build = _commit_all(root, "bump coqui/BUILD")
             stderr_build = io.StringIO()
@@ -602,6 +620,7 @@ class SitioPublishGateTests(unittest.TestCase):
                 repository="o/r",
                 token="tok",
                 skip_api=True,
+                wait_timeout_seconds=0.0,
                 api_get=api_green_on_sha0,
                 stderr=stderr_build,
             )
@@ -765,6 +784,252 @@ class SitioPublishGateTests(unittest.TestCase):
             self.assertFalse(dec_tok.should_build)
             self.assertFalse(dec_tok.should_deploy)
             self.assertIn("GITHUB_TOKEN", dec_tok.reason)
+
+    def test_green_main_bounded_wait_and_polling(self) -> None:
+        def make_run(
+            head_sha: str,
+            *,
+            status: str = "completed",
+            conclusion: str | None = "success",
+            event: str = "push",
+        ) -> dict[str, Any]:
+            return {
+                "head_branch": "main",
+                "event": event,
+                "status": status,
+                "conclusion": conclusion,
+                "head_sha": head_sha,
+            }
+
+        def make_clock() -> tuple[list[float], Any, Any]:
+            now = [0.0]
+            sleeps: list[float] = []
+
+            def fake_monotonic() -> float:
+                return now[0]
+
+            def fake_sleep(dt: float) -> None:
+                sleeps.append(dt)
+                now[0] += dt
+
+            return sleeps, fake_sleep, fake_monotonic
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sha0 = self._make_base_repo(root)
+            _write_file(root / "coqui" / "BUILD", "18\n")
+            sha1 = _commit_all(root, "bump BUILD to 18")
+            _write_file(root / "coqui" / "BUILD", "19\n")
+            sha2 = _commit_all(root, "bump BUILD to 19")
+
+            # 1. Push waiting: pending -> pending -> success => PASS with exact sleeps
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            responses = iter(
+                [
+                    {"workflow_runs": [make_run(sha1, status="queued", conclusion=None)]},
+                    {"workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]},
+                    {"workflow_runs": [make_run(sha1, status="completed", conclusion="success")]},
+                ]
+            )
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                poll_interval_seconds=30.0,
+                api_get=lambda _u, _t: next(responses),
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 0)
+            self.assertTrue(dec.should_build)
+            self.assertTrue(dec.should_deploy)
+            self.assertEqual(sleeps, [30.0, 30.0])
+            self.assertIn("waiting for full 'coqui' CI on main", err_buf.getvalue())
+
+            # 2. Push registration race: ancestor green (coqui/BUILD changed) -> pending -> success => PASS
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            race_responses = iter(
+                [
+                    {"workflow_runs": [make_run(sha0, status="completed", conclusion="success")]},
+                    {"workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]},
+                    {"workflow_runs": [make_run(sha1, status="completed", conclusion="success")]},
+                ]
+            )
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                poll_interval_seconds=25.0,
+                registration_grace_seconds=120.0,
+                api_get=lambda _u, _t: next(race_responses),
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 0)
+            self.assertTrue(dec.should_build)
+            self.assertTrue(dec.should_deploy)
+            self.assertEqual(sleeps, [25.0, 25.0])
+            self.assertIn("awaiting_registration", err_buf.getvalue())
+
+            # 3. Push registration race timeout beyond registration_grace_seconds => REFUSE (exit 1)
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                poll_interval_seconds=50.0,
+                registration_grace_seconds=120.0,
+                api_get=lambda _u, _t: {
+                    "workflow_runs": [make_run(sha0, status="completed", conclusion="success")]
+                },
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(sleeps, [50.0, 50.0, 20.0])
+            self.assertIn("timed out", err_buf.getvalue())
+            self.assertIn("coqui/BUILD", dec.reason)
+
+            # 4. Push pending -> failure => REFUSE IMMEDIATELY (no further polling after failure)
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            poll_count = [0]
+            fail_seq = [
+                {"workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]},
+                {"workflow_runs": [make_run(sha1, status="completed", conclusion="failure")]},
+                {"workflow_runs": [make_run(sha1, status="completed", conclusion="success")]},
+            ]
+
+            def api_fail_seq(_u: str, _t: str) -> Any:
+                idx = poll_count[0]
+                poll_count[0] += 1
+                return fail_seq[idx]
+
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                poll_interval_seconds=30.0,
+                api_get=api_fail_seq,
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(poll_count[0], 2)
+            self.assertEqual(sleeps, [30.0])
+            self.assertIn("not green", dec.reason)
+
+            # 5. Push pending until wait_timeout_seconds expires => REFUSE (exit 1, "timed out" in stderr)
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="push",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha=sha0,
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                wait_timeout_seconds=75.0,
+                poll_interval_seconds=30.0,
+                api_get=lambda _u, _t: {
+                    "workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]
+                },
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(sleeps, [30.0, 30.0, 15.0])
+            self.assertIn("timed out", err_buf.getvalue())
+
+            # 6. workflow_dispatch on pending main fails fast (0 sleeps, exit 1) by default
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="workflow_dispatch",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha="",
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                api_get=lambda _u, _t: {
+                    "workflow_runs": [make_run(sha1, status="in_progress", conclusion=None)]
+                },
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(sleeps, [])
+            self.assertIn("pending", dec.reason)
+
+            # 7. Newer commit (sha2) pending on main blocks publishing earlier already-green sha1 (strict full_runs[0])
+            sleeps, fake_sleep, fake_monotonic = make_clock()
+            err_buf = io.StringIO()
+            dec, rc = gate.evaluate_gate(
+                repo_root=root,
+                event="workflow_dispatch",
+                ref="refs/heads/main",
+                sha=sha1,
+                before_sha="",
+                repository="o/r",
+                token="tok",
+                skip_api=True,
+                api_get=lambda _u, _t: {
+                    "workflow_runs": [
+                        make_run(sha2, status="in_progress", conclusion=None),
+                        make_run(sha1, status="completed", conclusion="success"),
+                    ]
+                },
+                sleep_fn=fake_sleep,
+                monotonic_fn=fake_monotonic,
+                stderr=err_buf,
+            )
+            self.assertEqual(rc, 1)
+            self.assertFalse(dec.should_build)
+            self.assertFalse(dec.should_deploy)
+            self.assertEqual(sleeps, [])
+            self.assertIn("pending", dec.reason)
+            self.assertIn(sha2[:12], dec.reason)
 
 
 class StagePagesSiteTests(unittest.TestCase):

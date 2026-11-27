@@ -355,16 +355,22 @@ class RealWorkspacePlanTests(unittest.TestCase):
             {"feature_story", "coqui_story_checks", "app"},
         )
 
-    def test_ref_pp_maps_to_coqui_scenes(self) -> None:
-        plan = plan_tests.plan_from_paths(
-            COQUI_DIR,
-            ["coqui/ref/pp/frente/set.json"],
-        )
-        self.assertEqual(plan.mode, "selective")
-        self.assertEqual(
-            {p.name for p in plan.packages_to_test},
-            {"coqui_scenes", "feature_story", "coqui_story_checks", "app"},
-        )
+    def test_ref_pp_maps_to_coqui_pixel_and_coqui_scenes(self) -> None:
+        for ref_path in ("coqui/ref/pp/unit/unit.json", "coqui/ref/pp/frente/set.json"):
+            with self.subTest(ref_path=ref_path):
+                plan = plan_tests.plan_from_paths(COQUI_DIR, [ref_path])
+                self.assertEqual(plan.mode, "selective")
+                self.assertEqual(
+                    {p.name for p in plan.packages_to_test},
+                    {
+                        "coqui_pixel",
+                        "coqui_scenes",
+                        "feature_map",
+                        "feature_story",
+                        "coqui_story_checks",
+                        "app",
+                    },
+                )
 
     def test_feature_words_plus_requests_and_docs_stays_selective(self) -> None:
         plan = plan_tests.plan_from_paths(
@@ -399,6 +405,37 @@ class RealWorkspacePlanTests(unittest.TestCase):
         self.assertFalse(plan.run_web_build)
         self.assertEqual(plan.packages_to_test, ())
         self.assertGreaterEqual(len(plan.skipped_packages), 17)
+
+    def test_mixed_content_and_coqui_metadata_runs_boundaries_check(self) -> None:
+        for meta_path in ("coqui/requests/999-note.md", "coqui/AGENTS.md"):
+            with self.subTest(meta_path=meta_path):
+                plan = plan_tests.plan_from_paths(
+                    COQUI_DIR,
+                    ["content/games/la-lluvia.json", meta_path],
+                )
+                self.assertEqual(plan.mode, "content_only")
+                self.assertFalse(plan.run_dart_checks)
+                self.assertTrue(plan.run_boundaries_only)
+                self.assertTrue(plan.run_content_checks)
+                self.assertFalse(plan.run_data_checks)
+                self.assertFalse(plan.run_web_build)
+                self.assertEqual(plan.packages_to_test, ())
+                self.assertTrue(
+                    any("boundary check" in r for r in plan.reasons),
+                    plan.reasons,
+                )
+                dart_skip = next(
+                    s for s in plan.skipped_steps if s.step == "dart_checks"
+                )
+                self.assertIn("boundary check only", dart_skip.reason)
+
+    def test_git_quoted_path_triggers_full_suite_failsafe(self) -> None:
+        quoted = '"coqui/packages/core/coqui_ui/lib/coqu\\303\\255.dart"'
+        plan = plan_tests.plan_from_paths(COQUI_DIR, [quoted])
+        self.assertEqual(plan.mode, "full")
+        self.assertTrue(plan.run_dart_checks)
+        self.assertTrue(plan.run_web_build)
+        self.assertIn(quoted, plan.full_triggers)
 
     def test_historia_data_runs_coqui_content_and_data_checks(self) -> None:
         plan = plan_tests.plan_from_paths(

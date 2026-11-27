@@ -464,6 +464,7 @@ def plan_from_paths(
         reverse=True,
     )
     scenes_pkg = next((p for p in packages if p.name == "coqui_scenes"), None)
+    pixel_pkg = next((p for p in packages if p.name == "coqui_pixel"), None)
 
     full_triggers: list[str] = []
     full_triggers_seen: set[str] = set()
@@ -479,7 +480,16 @@ def plan_from_paths(
             full_triggers.append(path)
 
     for raw in changed_paths:
-        p = normalize_repo_path(raw)
+        stripped_raw = raw.strip()
+        if not stripped_raw:
+            continue
+        # Fail-safe: git `core.quotepath=true` emits C-quoted paths for non-ASCII
+        # names. Never let an undecoded quoted path fall through to `skip`.
+        if stripped_raw.startswith('"'):
+            add_full_trigger(stripped_raw)
+            continue
+
+        p = normalize_repo_path(stripped_raw)
         if not p:
             continue
 
@@ -510,11 +520,16 @@ def plan_from_paths(
                     has_previa_changes = True
             continue
 
-        # 3. Scene reference paths (`coqui/ref/pp/*`)
+        # 3. Scene & pixel-engine reference paths (`coqui/ref/pp/*`)
         if _matches_prefix(p, "coqui/ref/pp"):
+            seeded = False
+            if pixel_pkg is not None:
+                changed_packages_set.add(pixel_pkg.name)
+                seeded = True
             if scenes_pkg is not None:
                 changed_packages_set.add(scenes_pkg.name)
-            else:
+                seeded = True
+            if not seeded:
                 add_full_trigger(p)
             continue
 
@@ -627,10 +642,16 @@ def plan_from_paths(
 
     if has_content_changes or has_historia_data_changes:
         run_data_checks = has_historia_data_changes
+        run_boundaries_only = has_coqui_meta_changes
+        dart_skip_reason = (
+            "content + coqui metadata change; running boundary check only (no package suites)"
+            if has_coqui_meta_changes
+            else "content-only change; skipping Dart/Flutter checks"
+        )
         skipped_steps = [
             SkippedStep(
                 step="dart_checks",
-                reason="content-only change; skipping Dart/Flutter checks",
+                reason=dart_skip_reason,
             ),
             SkippedStep(
                 step="tool_tests",
@@ -663,13 +684,17 @@ def plan_from_paths(
             reasons.append("content/ changed without Dart package changes")
         if has_historia_data_changes:
             reasons.append("historia/ data changed without Dart package changes")
+        if has_coqui_meta_changes:
+            reasons.append(
+                "coqui metadata paths also changed (coqui/requests/ or coqui/AGENTS.md); running boundary check"
+            )
         return TestPlan(
             mode="content_only",
             reasons=tuple(reasons),
             changed_packages=(),
             full_triggers=(),
             run_dart_checks=False,
-            run_boundaries_only=False,
+            run_boundaries_only=run_boundaries_only,
             run_tool_tests=False,
             run_content_checks=True,
             run_data_checks=run_data_checks,
