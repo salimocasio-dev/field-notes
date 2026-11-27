@@ -121,7 +121,7 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
     animationBehavior: AnimationBehavior.preserve,
   );
   final ValueNotifier<bool> _courseTurnBlocking = ValueNotifier<bool>(false);
-  BuildContext? _innerContext;
+  NocheMotionData? _cachedMotion;
   Future<AppStorage>? _storage;
   ProgressStores? _stores;
   StreamSubscription<void>? _storesChanges;
@@ -190,19 +190,15 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  NocheMotionData _currentMotion() {
-    final ctx = _innerContext;
-    if (ctx != null && ctx.mounted) {
-      return NocheMotion.of(ctx);
-    }
-    return WidgetsBinding
-            .instance
-            .platformDispatcher
-            .accessibilityFeatures
-            .disableAnimations
-        ? NocheMotion.reduced
-        : NocheMotion.normal;
-  }
+  NocheMotionData _currentMotion() =>
+      _cachedMotion ??
+      (WidgetsBinding
+              .instance
+              .platformDispatcher
+              .accessibilityFeatures
+              .disableAnimations
+          ? NocheMotion.reduced
+          : NocheMotion.normal);
 
   Future<CourseCatalog> _loadCourse(String languageCode) async {
     final loader = widget.platform.loadCourse;
@@ -431,7 +427,7 @@ class _CoquiAppState extends State<CoquiApp> with TickerProviderStateMixin {
     ),
     routerConfig: _router,
     builder: (context, child) {
-      _innerContext = context;
+      _cachedMotion = NocheMotion.of(context);
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: nocheSystemUiStyle,
         // Android 16 enforces transparent system bars. Paint their background
@@ -470,6 +466,7 @@ class _ScreensState extends State<_Screens>
   late ({_Start state, int generation}) _phase = widget.app._start.value;
   _Start? _lastBuiltState;
   _Start? _outgoingState;
+  NocheMotionData _motion = NocheMotion.normal;
   NocheMotionData _outgoingMotion = NocheMotion.normal;
 
   late final AnimationController _outgoingController = AnimationController(
@@ -482,6 +479,12 @@ class _ScreensState extends State<_Screens>
   void initState() {
     super.initState();
     widget.app._start.addListener(_onStartChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _motion = NocheMotion.of(context);
   }
 
   @override
@@ -522,7 +525,7 @@ class _ScreensState extends State<_Screens>
       if (next.state != fromState &&
           (fromState == _Start.loading || fromState == _Start.failed)) {
         _outgoingState = fromState;
-        _outgoingMotion = NocheMotion.of(context);
+        _outgoingMotion = _motion;
         _outgoingController.duration = _outgoingMotion.quick;
         _outgoingController.forward(from: 0.0);
       } else if (next.state == _outgoingState) {
@@ -718,8 +721,13 @@ class _ShellLoadingState extends State<_ShellLoading>
           ),
           child: AnimatedBuilder(
             animation: _enterController,
-            builder: (context, child) =>
-                Opacity(opacity: _enterOpacity(), child: child),
+            builder: (context, child) {
+              final enterOpacity = _enterOpacity();
+              return ExcludeSemantics(
+                excluding: enterOpacity == 0.0,
+                child: Opacity(opacity: enterOpacity, child: child),
+              );
+            },
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
