@@ -22,17 +22,21 @@ final double _t30 = math.tan(math.pi / 6);
 
 /// Watches a real La ropa while a story plays: [wrap] its acts, then read [breaches] and [checked].
 class RopaRules {
-  RopaRules(this.scene) : _m = scene;
+  RopaRules(this.scene) : _m = scene {
+    if (scene.id != 'ropa') {
+      throw StateError('RopaRules expects scene "ropa", got "${scene.id}"');
+    }
+  }
 
   final SetScene scene;
   final dynamic _m;
 
   static final Map<String, Float32List> _zb = {};
-  static SetBakes? _bakes;
+  static final Map<String, SetBakes> _bakes = {};
 
   /// Live depth after `drawLeaves(0)` (ropa-sheet.json `front.plane`: `window.DEPTH.live()`).
-  Float32List _zbOf(String key) => _zb[key] ??= () {
-    final bakes = _bakes ??= SetBakes(scene);
+  Float32List _zbOf(String key) => _zb['${scene.id}:$key'] ??= () {
+    final bakes = _bakes[scene.id] ??= SetBakes(scene);
     final baked = bakes.bakeKey(key);
     baked.restoreInto(bakes.engine);
     bakes.engine.drawLeaves(0);
@@ -146,6 +150,8 @@ class RopaRules {
     final ninos = (W['ninos'] as Map?) ?? const {};
     final cq = W['cq'] as Map?;
     final sig = StringBuffer()
+      ..write(scene.id)
+      ..write('|')
       ..write(setKey)
       ..write('|')
       ..write(story)
@@ -175,6 +181,8 @@ class RopaRules {
       sig
         ..write(';')
         ..write(it.tag)
+        ..write(',')
+        ..write(it.spot)
         ..write(',')
         ..write(it.left)
         ..write(',')
@@ -212,6 +220,7 @@ class RopaRules {
             double sy,
             double d,
             String? tag,
+            String? spot,
             bool flat,
             List<int>? ink,
           })
@@ -226,6 +235,7 @@ class RopaRules {
               sy: (it.sy as num).toDouble(),
               d: it.d as double,
               tag: it.tag as String?,
+              spot: it.spot as String?,
               flat: it.flat as bool,
               ink: _inkOf(it.s as Sprite),
             ),
@@ -292,12 +302,12 @@ class RopaRules {
     }
 
     // 1. frog-seen: 0 px hidden by live set (including fronds), outside window, or under another sprite
+    // Only ignore the frog's own held-item overlay (`held:coqui_*`), never props/fx like `fx:chofer` or `fx:toalla_seca`.
     final fi = items.indexWhere((it) => it.tag == 'coqui');
     if (fi >= 0) {
       final c = covOf(
         fi,
-        ignore: (t) =>
-            t != null && (t.startsWith('held:coqui_') || t.startsWith('fx:')),
+        ignore: (t) => t != null && t.startsWith('held:coqui_'),
       );
       if (c.hid > 0 || c.cov > 0 || c.out > 0) {
         addBreach(
@@ -322,30 +332,45 @@ class RopaRules {
       }
     }
 
-    // 3. pieces-on-line: clothes/towels hanging on `cuerda1..5` (top >= 56) clear of set/fronds and nearer sprites
+    // 3. pieces-on-line: clothes/towels hanging on `cuerda1..5` (classified explicitly by spot, never by pixel row)
     for (var i = 0; i < items.length; i++) {
       final it = items[i];
-      if (it.tag == null || !_lineItems.contains(it.tag)) continue;
-      if (it.top < 56) continue;
+      if (it.spot == null || !it.spot!.startsWith('cuerda')) continue;
+      if (it.tag == null || !_lineItems.contains(it.tag)) {
+        addBreach(
+          'pieces-on-line',
+          'unexpected line item tag ${it.tag} at ${it.spot}',
+        );
+        continue;
+      }
       final c = covOf(i);
       if (c.hid > 0 || c.cov > 0 || c.out > 0) {
         addBreach(
           'pieces-on-line',
-          '${it.tag}: ${c.hid} hidden by set/fronds, ${c.cov} under ${c.by}, ${c.out} outside',
+          '${it.tag}@${it.spot}: ${c.hid} hidden by set/fronds, ${c.cov} under ${c.by}, ${c.out} outside',
         );
       }
     }
 
-    // 4. things-afloat: floating things (`agua1..5` / `farOut`, bottom <= 55) clear of set/fronds and nearer sprites
+    // 4. things-afloat: floating things (`agua1..5` / `farOut`, classified explicitly by spot)
     for (var i = 0; i < items.length; i++) {
       final it = items[i];
-      if (it.tag == null || !_afloatItems.contains(it.tag)) continue;
-      if (it.bottom > 55) continue;
+      if (it.spot == null ||
+          (!it.spot!.startsWith('agua') && it.spot != 'farOut')) {
+        continue;
+      }
+      if (it.tag == null || !_afloatItems.contains(it.tag)) {
+        addBreach(
+          'things-afloat',
+          'unexpected afloat tag ${it.tag} at ${it.spot}',
+        );
+        continue;
+      }
       final c = covOf(i);
       if (c.hid > 0 || c.cov > 0 || c.out > 0) {
         addBreach(
           'things-afloat',
-          '${it.tag}: ${c.hid} hidden by set/fronds, ${c.cov} under ${c.by}, ${c.out} outside',
+          '${it.tag}@${it.spot}: ${c.hid} hidden by set/fronds, ${c.cov} under ${c.by}, ${c.out} outside',
         );
       }
     }
@@ -408,7 +433,12 @@ class RopaRules {
     final chars = <({String id, String spot, int cx, int sy, int w})>[];
     for (final k in const ['abuela', 'luis', 'carmen']) {
       final p = gente[k];
-      if (p is! Map || p['vis'] == 0) continue;
+      if (p is! Map) continue;
+      final vis = p['vis'];
+      if (vis != 0 && vis != 1) {
+        addBreach('scene-state', 'gente[$k].vis is $vis (expected 0 or 1)');
+      }
+      if (vis != 1) continue;
       final at = _m.places.atWorld(p['x'] as num, p['y'] as num, p['z'] as num);
       chars.add((
         id: k,

@@ -45,6 +45,7 @@ class RopaItem {
     this.sy,
     this.d, {
     this.tag,
+    this.spot,
     this.flat = false,
   });
 
@@ -53,6 +54,7 @@ class RopaItem {
   final num sy;
   final double d;
   final String? tag;
+  final String? spot;
 
   /// Wave / sand cloud drawn directly without occluding standing sprites.
   final bool flat;
@@ -498,7 +500,9 @@ class Ropa extends Escena implements SetScene, SetOverSprites {
       final at = _p.at(spot);
       final sx = _round(at.sx), sy = _round(at.sy);
       final s = _aguaSprite(que);
-      out.add(RopaItem(s, sx - 7, sy - s.h, sy, at.d, tag: 'cosa:$que'));
+      out.add(
+        RopaItem(s, sx - 7, sy - s.h, sy, at.d, tag: 'cosa:$que', spot: spot),
+      );
     }
     final far = w['farOut'];
     if (far is Map) {
@@ -507,7 +511,17 @@ class Ropa extends Escena implements SetScene, SetOverSprites {
       final at = _p.atWorld(pw[0], pw[1], 0);
       final sx = _round(at.sx), sy = _round(at.sy);
       final s = _aguaSprite(que);
-      out.add(RopaItem(s, sx - 7, sy - s.h, sy, at.d, tag: 'cosa:$que'));
+      out.add(
+        RopaItem(
+          s,
+          sx - 7,
+          sy - s.h,
+          sy,
+          at.d,
+          tag: 'cosa:$que',
+          spot: 'farOut',
+        ),
+      );
     }
 
     // 3. Clothes & towels pegged on the line (`cuerda1..5`, top-anchored)
@@ -524,7 +538,7 @@ class Ropa extends Escena implements SetScene, SetOverSprites {
       final tag = kind == 'toalla'
           ? 'fx:toalla_seca'
           : (kind == 'toalla_mojada' ? 'cosa:toalla' : 'cosa:$kind');
-      out.add(RopaItem(s, sx - 8, sy, sy, at.d, tag: tag));
+      out.add(RopaItem(s, sx - 8, sy, sy, at.d, tag: tag, spot: spot));
     }
 
     // 4. Two pairs of shoes on the sand (`zapatos`, 24 x 8, bottom-anchored)
@@ -1008,6 +1022,13 @@ class Ropa extends Escena implements SetScene, SetOverSprites {
     ];
   }
 
+  bool _opaqueAt(RopaItem it, int ix, int iy) =>
+      ix >= it.left &&
+      ix < it.left + it.s.w &&
+      iy >= it.top &&
+      iy < it.top + it.s.h &&
+      (it.s.px[(iy - it.top) * it.s.w + (ix - it.left)] >>> 24) != 0;
+
   @override
   String? hit(num x, num y, Map<String, dynamic> w) {
     bool inBox(List<num> b, num m) =>
@@ -1017,25 +1038,57 @@ class Ropa extends Escena implements SetScene, SetOverSprites {
         y < b[1] + b[3] + m;
 
     if (aveHit(x, y)) return 'pajaro';
+    final ix = x.floor(), iy = y.floor();
+    final byTag = <String, RopaItem>{};
+    for (final it in placed(w, host.F)) {
+      if (it.tag != null) byTag[it.tag!] = it;
+    }
+
+    var inFrogBox = false;
     final q = w['cq'] as Map<String, dynamic>;
     if (jsTruthy(q['vis'])) {
       final fb = host.frogBox(q);
       if (x >= fb.x && x < fb.x + fb.w && y >= fb.y && y < fb.y + fb.h) {
-        return 'coqui';
+        final coquiItem = byTag['coqui'];
+        if (coquiItem != null && _opaqueAt(coquiItem, ix, iy)) {
+          return 'coqui';
+        }
+        // Transparent corner inside frogBox: let exact `cosas` hits (e.g. adjacent child shoes) win first.
+        inFrogBox = true;
       }
     }
 
     // Two-pass hit resolution: exact boxes first (margin 0) so adjacent clothes on the line,
     // afloat items, and look-alike children never steal pixels across close boundaries, then margin slack.
-    final visible = <(Thing, List<num>)>[];
+    final visible = <(Thing, List<num>, RopaItem?)>[];
+    final exactMatches = <(Thing, RopaItem?)>[];
     for (final t in cosas) {
       if (t.si != null && !t.si!(w)) continue;
       final b = box(t.id, w);
       if (b == null) continue;
-      if (inBox(b, 0)) return t.id;
-      visible.add((t, b));
+      final it = t.id == 'guagua'
+          ? null
+          : (ROPA_PERSONAS.contains(t.id) ||
+                    ROPA_NINOS.contains(t.id) ||
+                    t.id == 'perro'
+                ? byTag['persona:${t.id}']
+                : byTag['cosa:${t.id}']);
+      if (inBox(b, 0)) exactMatches.add((t, it));
+      visible.add((t, b, it));
     }
-    for (final (t, b) in visible) {
+    if (exactMatches.isNotEmpty) {
+      Thing? opaqueBest;
+      var bestDepth = double.negativeInfinity;
+      for (final (t, it) in exactMatches) {
+        if (it != null && _opaqueAt(it, ix, iy) && it.d > bestDepth) {
+          bestDepth = it.d;
+          opaqueBest = t;
+        }
+      }
+      return (opaqueBest ?? exactMatches.first.$1).id;
+    }
+    if (inFrogBox) return 'coqui';
+    for (final (t, b, _) in visible) {
       final m = t.m ?? 3;
       if (inBox(b, m)) return t.id;
     }

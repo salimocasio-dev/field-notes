@@ -27,6 +27,7 @@ void main() {
   final parts = _shard.split('/').map(int.parse).toList();
   test('La ropa: every path of its three stories ($_shard)', () async {
     final make = await realSceneFor('ropa');
+    final cosaOrder = ropaCosaOrder(make);
     var n = 0;
     for (final id in ropaStories) {
       if (_only.isNotEmpty && _only != id) continue;
@@ -39,7 +40,11 @@ void main() {
       expect(at, hasLength(2), reason: '$id: the two decisions');
       final jobs = <({Map<String, String> d, String pat})>[];
       for (final pat in const ['rr', 'rw', 'wr', 'ww']) {
-        for (final d in ropaDrawsOf(story, pattern: pat)) {
+        for (final d in ropaDrawsOf(
+          story,
+          pattern: pat,
+          cosaOrder: cosaOrder,
+        )) {
           if (n++ % parts[1] != parts[0]) continue;
           jobs.add((d: d, pat: pat));
         }

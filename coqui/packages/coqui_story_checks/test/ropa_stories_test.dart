@@ -26,11 +26,12 @@ void main() {
         ).readAsStringSync(),
       ) as Map<String, dynamic>;
       final make = await realSceneFor('ropa');
+      final cosaOrder = ropaCosaOrder(make);
       final at = await ropaDecisionLetters(course, make, story);
       expect(at, hasLength(2));
       final jobs = <({Map<String, String> d, String pat})>[];
       for (final pat in const ['rr', 'rw', 'wr', 'ww']) {
-        final all = ropaDrawsOf(story, pattern: pat);
+        final all = ropaDrawsOf(story, pattern: pat, cosaOrder: cosaOrder);
         final picks = <Map<String, String>>[all.first];
         if (pat == 'rr') {
           final keys = {for (final d in all) ...d.keys};

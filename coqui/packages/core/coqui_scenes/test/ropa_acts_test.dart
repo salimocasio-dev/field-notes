@@ -322,6 +322,78 @@ void main() {
     expect(scene80.hit(180, 170, w80), 'guagua');
   });
 
+  test('story 80 moment 6: transparent frogBox corners never swallow chica_a or chico_b opaque pixels', () async {
+    final s80 = _story('se-pone-y-se-quita');
+    final scene = createRopa() as Ropa;
+    final host = StillHost(scene);
+    host.S = s80;
+    host.W = {
+      ...host.W,
+      ...scene.fresh(s80),
+      'ninos': {
+        'chico_a': 'ninos1',
+        'chico_b': 'ninos2',
+        'chica_a': 'ninos3',
+        'chica_b': 'ninos4',
+      },
+    };
+    // Move Coquí to `coqui.busca` just as story 80's moment-6 decision does.
+    await scene.acts['ir']!({'a': 'coqui.busca'});
+    final w = host.W;
+    final q = w['cq'] as Map<String, dynamic>;
+    final fb = host.frogBox(q);
+    // Explicit overlap point flagged in review: chica_a's left shoe inside coqui.busca's frogBox.
+    expect(
+      100 >= fb.x && 100 < fb.x + fb.w && 123 >= fb.y && 123 < fb.y + fb.h,
+      isTrue,
+    );
+    expect(scene.hit(100, 123, w), 'chica_a');
+
+    final placed = scene.placed(w, host.F);
+    final coquiItem = placed.firstWhere((it) => it.tag == 'coqui');
+    var checkedCoqui = 0;
+    for (var y = 0; y < coquiItem.s.h; y++) {
+      for (var x = 0; x < coquiItem.s.w; x++) {
+        if (coquiItem.s.px[y * coquiItem.s.w + x] >>> 24 == 0) continue;
+        final sx = coquiItem.left + x, sy = coquiItem.top + y;
+        if (sx >= fb.x && sx < fb.x + fb.w && sy >= fb.y && sy < fb.y + fb.h) {
+          checkedCoqui++;
+          expect(
+            scene.hit(sx, sy, w),
+            'coqui',
+            reason: 'coqui opaque pixel at ($sx, $sy)',
+          );
+        }
+      }
+    }
+    expect(checkedCoqui, greaterThan(50));
+
+    for (final cid in const ['chico_b', 'chica_a']) {
+      final child = placed.firstWhere((it) => it.tag == 'persona:$cid');
+      var checkedOverlap = 0;
+      for (var y = 0; y < child.s.h; y++) {
+        for (var x = 0; x < child.s.w; x++) {
+          if (child.s.px[y * child.s.w + x] >>> 24 == 0) continue;
+          final sx = child.left + x, sy = child.top + y;
+          if (sx >= fb.x &&
+              sx < fb.x + fb.w &&
+              sy >= fb.y &&
+              sy < fb.y + fb.h) {
+            checkedOverlap++;
+            expect(
+              scene.hit(sx, sy, w),
+              cid,
+              reason: '$cid opaque pixel inside frogBox at ($sx, $sy)',
+            );
+          }
+        }
+      }
+      if (cid == 'chica_a') {
+        expect(checkedOverlap, greaterThan(0));
+      }
+    }
+  });
+
   tearDownAll(() {
     expect(answered, containsAll(needs), reason: 'answered: $answered');
   });

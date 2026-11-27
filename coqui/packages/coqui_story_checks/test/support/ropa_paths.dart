@@ -7,7 +7,7 @@ import 'dart:isolate';
 import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
-import 'package:coqui_pixel/coqui_pixel.dart' show Scene;
+import 'package:coqui_pixel/coqui_pixel.dart' show Escena, Scene;
 import 'package:coqui_scenes/coqui_scenes.dart'
     show SetScene, loadSheet, sceneRegistry;
 import 'package:feature_story/feature_story.dart';
@@ -45,24 +45,73 @@ List<Map<String, String>> _permutations(List<String> names, List<String> ops) {
   return out;
 }
 
+/// The ordered touch-target IDs registered on a live `Ropa` scene's `cosas` list.
+List<String> ropaCosaOrder(Scene Function(Rng rng) make) => [
+  for (final t in (make(Mulberry32(1)) as Escena).cosas) t.id,
+];
+
 /// Every reachable combination of a ropa story's random draws (for `mi-sombrero`, pairs each `reparte` order and
-/// `qa` with the valid `qb` options for [pattern], accounting for the deterministic wrong pick `x` when Round A is `w`).
+/// `qa` with the valid `qb` options for [pattern], accounting for the deterministic wrong pick `x` when Round A is `w`,
+/// tied directly to the story fixture's `reparte` options and `Ropa.cosas` order).
 List<Map<String, String>> ropaDrawsOf(
   Map<String, dynamic> story, {
   String pattern = 'rr',
+  List<String>? cosaOrder,
 }) {
   final id = story['id'] as String?;
   if (id == 'mi-sombrero') {
-    const items = ['sombrero', 'chancletas', 'gafas', 'traje'];
-    final orders = _permutations(['oa', 'ob', 'oc', 'od'], items);
+    Map<String, dynamic>? findReparte(Object? v) {
+      if (v is List) {
+        for (final item in v) {
+          final found = findReparte(item);
+          if (found != null) return found;
+        }
+      } else if (v is Map<String, dynamic>) {
+        if (v['reparte'] is List) return v;
+        return findReparte(v['then']) ?? findReparte(v['else']);
+      }
+      return null;
+    }
+
+    final rep = findReparte(story['beats']);
+    if (rep == null) {
+      throw StateError('mi-sombrero fixture has no reparte step');
+    }
+    final repNames = [for (final n in rep['reparte'] as List) '$n'];
+    final items = [for (final o in rep['options'] as List) '$o'];
+    if (repNames.length != 4 || items.length != 4) {
+      throw StateError(
+        'mi-sombrero reparte mismatch: names=$repNames options=$items',
+      );
+    }
+    final expectedOrder = const ['sombrero', 'chancletas', 'gafas', 'traje'];
+    if (cosaOrder != null) {
+      final subset = [
+        for (final id in cosaOrder)
+          if (items.contains(id)) id,
+      ];
+      if (subset.length != items.length ||
+          !List.generate(
+            expectedOrder.length,
+            (i) => subset[i] == expectedOrder[i],
+          ).every((ok) => ok)) {
+        throw StateError(
+          'Ropa.cosas order for mi-sombrero drifted: got $subset, expected $expectedOrder',
+        );
+      }
+    }
+    final touchOrder = cosaOrder != null
+        ? [
+            for (final c in cosaOrder)
+              if (items.contains(c)) c,
+          ]
+        : expectedOrder;
+    final orders = _permutations(repNames, items);
     final wrongA = pattern.startsWith('w');
     final out = <Map<String, String>>[];
     for (final ord in orders) {
       for (final qa in items) {
-        // In Ropa.cosas, `sombrero` precedes `chancletas` precedes `gafas` precedes `traje`.
-        final x = wrongA
-            ? (qa == 'sombrero' ? 'chancletas' : 'sombrero')
-            : null;
+        final x = wrongA ? touchOrder.firstWhere((c) => c != qa) : null;
         for (final qb in items) {
           if (qb == qa || qb == x) continue;
           out.add({...ord, 'qa': qa, 'qb': qb});
