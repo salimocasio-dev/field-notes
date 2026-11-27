@@ -541,21 +541,27 @@ void main() {
 
         final surf = find.byKey(const ValueKey('noche_sheet_surface'));
         final scrim = find.byKey(const ValueKey('noche_sheet_scrim'));
+        double scrimAlpha() =>
+            t.widget<AnimatedModalBarrier>(scrim).color.value?.a ?? 0.0;
+
         expect(
           t.widget<FractionalTranslation>(surf).translation.dy,
           closeTo(1.0, 0.01),
         );
-        expect(t.widget<Opacity>(scrim).opacity, closeTo(0.0, 0.01));
+        expect(scrimAlpha(), closeTo(0.0, 0.01));
 
-        await t.pump(NocheMotion.pageIn ~/ 2);
+        await t.pump(NocheMotion.move ~/ 2);
+        expect(scrimAlpha(), inExclusiveRange(0.0, NocheColors.scrim.a));
+
+        await t.pump(NocheMotion.pageIn ~/ 2 - (NocheMotion.move ~/ 2));
         expect(
           t.widget<FractionalTranslation>(surf).translation.dy,
           closeTo(1.0 - NocheMotion.enter.transform(0.5), 0.03),
         );
-        expect(t.widget<Opacity>(scrim).opacity, greaterThan(0.5));
+        expect(scrimAlpha(), greaterThan(NocheColors.scrim.a * 0.5));
 
         await t.pump(NocheMotion.move - (NocheMotion.pageIn ~/ 2));
-        expect(t.widget<Opacity>(scrim).opacity, closeTo(1.0, 0.01));
+        expect(scrimAlpha(), closeTo(NocheColors.scrim.a, 0.01));
 
         await t.pump(NocheMotion.pageIn - NocheMotion.move);
         expect(
@@ -571,8 +577,11 @@ void main() {
           closeTo(NocheMotion.exit.transform(0.5), 0.03),
         );
         expect(
-          t.widget<Opacity>(scrim).opacity,
-          closeTo(1.0 - NocheMotion.exit.transform(0.5), 0.03),
+          scrimAlpha(),
+          closeTo(
+            NocheColors.scrim.a * (1.0 - NocheMotion.exit.transform(0.5)),
+            0.03,
+          ),
         );
 
         await t.pumpAndSettle();
@@ -1995,7 +2004,7 @@ void main() {
     );
 
     testWidgets(
-      'showNocheSheet dismissible scrim exposes close semantics without breaking sheet Close button',
+      'showNocheSheet dismissible barrier keeps dismiss semantics without duplicating closeLabel',
       (t) async {
         final handle = t.ensureSemantics();
         try {
@@ -2009,6 +2018,7 @@ void main() {
                       onPressed: () => showNocheSheet<void>(
                         c,
                         title: 'Accessible sheet',
+                        closeLabel: 'Close text and page',
                         builder: (c, close) => const Text('Sheet body'),
                       ),
                     ),
@@ -2019,21 +2029,13 @@ void main() {
           );
           await t.tap(find.text('Open'));
           await t.pumpAndSettle();
-          expect(
-            t
-                .getSemantics(find.byKey(const ValueKey('noche_sheet_scrim')))
-                .label,
-            NocheA11y.label(NocheA11y.closeSheet),
+          final barrier = t.widget<AnimatedModalBarrier>(
+            find.byKey(const ValueKey('noche_sheet_scrim')),
           );
-          expect(
-            find.descendant(
-              of: find.byType(NocheSheet),
-              matching: find.bySemanticsLabel(
-                NocheA11y.label(NocheA11y.closeSheet),
-              ),
-            ),
-            findsOneWidget,
-          );
+          expect(barrier.dismissible, isTrue);
+          expect(barrier.barrierSemanticsDismissible, isTrue);
+          expect(barrier.semanticsLabel, isNull);
+          expect(find.bySemanticsLabel('Close text and page'), findsOneWidget);
         } finally {
           handle.dispose();
         }

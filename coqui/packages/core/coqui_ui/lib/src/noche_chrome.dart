@@ -953,6 +953,40 @@ Future<T?> showNocheSheet<T>(
   );
 }
 
+class _NocheScrimColorAnimation extends Animation<Color?>
+    with AnimationWithParentMixin<double> {
+  _NocheScrimColorAnimation({
+    required this.parent,
+    required this.motion,
+    required this.targetColor,
+  });
+
+  @override
+  final Animation<double> parent;
+  final NocheMotionData motion;
+  final Color targetColor;
+
+  @override
+  Color? get value {
+    final t = parent.value.clamp(0.0, 1.0);
+    final isReverse =
+        parent.status == AnimationStatus.reverse ||
+        parent.status == AnimationStatus.dismissed;
+    final double eased;
+    if (isReverse) {
+      final u = (1.0 - t).clamp(0.0, 1.0);
+      eased = (1.0 - motion.exit.transform(u)).clamp(0.0, 1.0);
+    } else {
+      final pageInUs = motion.pageIn.inMicroseconds.toDouble();
+      final moveUs = motion.move.inMicroseconds.toDouble();
+      final ratio = pageInUs <= 0 ? 1.0 : (moveUs / pageInUs).clamp(0.0, 1.0);
+      final rawIn = ratio <= 0 ? 1.0 : (t / ratio).clamp(0.0, 1.0);
+      eased = motion.enter.transform(rawIn).clamp(0.0, 1.0);
+    }
+    return Color.lerp(targetColor.withValues(alpha: 0.0), targetColor, eased);
+  }
+}
+
 class _NocheSheetRoute<T> extends PopupRoute<T> {
   _NocheSheetRoute({
     required this.builder,
@@ -971,10 +1005,10 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
   final NocheMotionData motion;
 
   @override
-  Color? get barrierColor => null;
+  Color? get barrierColor => NocheColors.scrim;
 
   @override
-  bool get barrierDismissible => false;
+  bool get barrierDismissible => dismissible;
 
   @override
   String? get barrierLabel => null;
@@ -997,6 +1031,40 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
     } else {
       nav.removeRoute(this);
     }
+  }
+
+  @override
+  Widget buildModalBarrier() {
+    if (offstage) {
+      return ModalBarrier(
+        dismissible: barrierDismissible,
+        semanticsLabel: barrierLabel,
+        barrierSemanticsDismissible: semanticsDismissible,
+        onDismiss: barrierDismissible ? _close : null,
+      );
+    }
+    final barrier = AnimatedModalBarrier(
+      key: const ValueKey<String>('noche_sheet_scrim'),
+      color: _NocheScrimColorAnimation(
+        parent: animation!,
+        motion: motion,
+        targetColor: NocheColors.scrim,
+      ),
+      dismissible: barrierDismissible,
+      semanticsLabel: barrierLabel,
+      barrierSemanticsDismissible: semanticsDismissible,
+      onDismiss: barrierDismissible ? _close : null,
+    );
+    return AnimatedBuilder(
+      animation: animation!,
+      child: barrier,
+      builder: (context, child) {
+        final isReverse =
+            animation!.status == AnimationStatus.reverse ||
+            animation!.status == AnimationStatus.dismissed;
+        return IgnorePointer(ignoring: isReverse, child: child);
+      },
+    );
   }
 
   @override
@@ -1030,23 +1098,6 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
                 animation.status == AnimationStatus.dismissed;
             final t = animation.value.clamp(0.0, 1.0);
 
-            final double scrimOpacity;
-            if (isReverse) {
-              final u = (1.0 - t).clamp(0.0, 1.0);
-              scrimOpacity = (1.0 - currentMotion.exit.transform(u)).clamp(
-                0.0,
-                1.0,
-              );
-            } else {
-              final pageInUs = currentMotion.pageIn.inMicroseconds.toDouble();
-              final moveUs = currentMotion.move.inMicroseconds.toDouble();
-              final ratio = pageInUs <= 0
-                  ? 1.0
-                  : (moveUs / pageInUs).clamp(0.0, 1.0);
-              final rawIn = ratio <= 0 ? 1.0 : (t / ratio).clamp(0.0, 1.0);
-              scrimOpacity = currentMotion.enter.transform(rawIn).clamp(0, 1);
-            }
-
             final Widget sheetTransition;
             if (currentMotion.reduced) {
               final sheetOpacity = isReverse
@@ -1069,38 +1120,9 @@ class _NocheSheetRoute<T> extends PopupRoute<T> {
               );
             }
 
-            return Stack(
-              fit: StackFit.expand,
-              children: [
-                Positioned.fill(
-                  child: IgnorePointer(
-                    ignoring: !dismissible || isReverse,
-                    child: Semantics(
-                      container: true,
-                      excludeSemantics: true,
-                      button: dismissible,
-                      label: dismissible
-                          ? (closeLabel ??
-                                NocheA11y.label(NocheA11y.closeSheet))
-                          : null,
-                      onTap: dismissible && !isReverse ? _close : null,
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: dismissible ? _close : null,
-                        child: Opacity(
-                          key: const ValueKey('noche_sheet_scrim'),
-                          opacity: scrimOpacity,
-                          child: const ColoredBox(color: NocheColors.scrim),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  child: sheetTransition,
-                ),
-              ],
+            return Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: sheetTransition,
             );
           },
         ),
