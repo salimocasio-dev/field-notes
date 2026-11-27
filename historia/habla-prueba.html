@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8">
+<html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8"><noscript><meta http-equiv="refresh" content="0; url=../app/"></noscript>
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#1B1B1F">
@@ -100,6 +100,7 @@ button:focus-visible{outline:2px solid var(--blu);outline-offset:2px}
 <script>
 "use strict";
 (()=>{
+  const _h=location.hostname,_local=_h==="127.0.0.1"||_h==="localhost"||_h==="[::1]";if(!(navigator.webdriver&&_local)){if(window.stop)window.stop();location.replace("../app/");return;}
   const norm=s=>" "+String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()+" ";   // accents, case and punctuation ignored
   // The rule for "heard right" (docs/hablar/01-decisiones.md): for EVERY target, at least one accepted form has (" "+norm(f).trim()+" ") inside norm(alternative), for ANY alternative.
   const heard=(L,alts)=>L.g.every(g=>g[1].some(f=>{const k=" "+norm(f).trim()+" ";return alts.some(a=>norm(a).indexOf(k)>=0);}));

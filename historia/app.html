@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8"><script>/* Cutover (Nov 23): visitors go to the new app. The old app stays here for legacy/ (?legacy=1, kept for the tab) and for the tools that drive this page. */(function(){var old=/[?&]legacy=1/.test(location.search);try{if(old)sessionStorage.setItem("coqui.legacy","1");else old=sessionStorage.getItem("coqui.legacy")==="1"}catch(e){}if(!old&&!navigator.webdriver)location.replace("../app/")})();</script>
+<html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8"><script>/* Tooling-only harness: public visitors always go to ../app/. Stays open only for local headless tools on loopback. */(function(){var h=location.hostname,local=h==="127.0.0.1"||h==="localhost"||h==="[::1]";if(!(navigator.webdriver&&local)){if(window.stop)window.stop();location.replace("../app/");}})();</script><noscript><meta http-equiv="refresh" content="0; url=../app/"></noscript>
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#5C94FC">
