@@ -299,6 +299,7 @@ void main() {
       expect(flagPixels(m, 0), 0);
       finishStory(f.progress, ids.last);
       await tester.pump();
+      await run(tester, 2600);
       expect(m.STATE.hecho.take(3), [true, false, false]);
       expect(m.STATE.aqui, 1);
       expect(m.FROG.at, 1);
@@ -306,13 +307,22 @@ void main() {
       expect(m.FROG.x, closeTo(stop.x, 1e-9));
       expect(m.FROG.y, closeTo(stop.y, 1e-9));
       expect(flagPixels(m, 0), greaterThan(20));
-      // Play each story of La casa a second time so todayPlan advances to El parque.
-      // Advance a day first so todayPlan's 3-new-stories/day cap does not hold us on La casa.
+      expect(find.byKey(const Key('map-place-card')), findsOneWidget);
+      expect(find.text('NEW PLACE · 2 OF 10'), findsOneWidget);
+      expect(find.text('El parque'), findsOneWidget);
+      expect(find.text('PLAY FIRST · STORY 1'), findsOneWidget);
+      // Play each story of La casa a second time so todayPlan advances to El parque,
+      // then swipe down from the new place card back to Up next.
       f.clock.advance(const Duration(days: 1));
       for (final id in ids) {
         finishStory(f.progress, id);
       }
       await tester.pump();
+      await tester.drag(
+        find.byKey(const Key('up-next-card')),
+        const Offset(0, 40),
+      );
+      await run(tester, 400);
       expect(find.text('UP NEXT · EL PARQUE'), findsOneWidget);
     },
   );

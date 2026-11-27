@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -148,15 +149,19 @@ class _FrameSignal extends ChangeNotifier {
 
 class _CardSnapshot {
   const _CardSnapshot.upNext({required this.entry, required this.thenLine})
-    : placeIndex = null;
+    : placeIndex = null,
+      isNewPlace = false;
 
-  const _CardSnapshot.place({required int this.placeIndex})
-    : entry = null,
-      thenLine = null;
+  const _CardSnapshot.place({
+    required int this.placeIndex,
+    this.isNewPlace = false,
+  }) : entry = null,
+       thenLine = null;
 
   final TodayEntry? entry;
   final String? thenLine;
   final int? placeIndex;
+  final bool isNewPlace;
 }
 
 class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
@@ -208,6 +213,8 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     vsync: this,
     value: 1.0,
   );
+  late final AnimationController _unlockCrossfadeController =
+      AnimationController(vsync: this, value: 1.0);
 
   bool _baked = false;
   bool _openedInitialPlace = false;
@@ -217,9 +224,17 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   int _cardToken = 0;
 
   bool _visiting = false;
+  ({int from, int to, MapState oldState, MapState newState})? _pendingNewPlace;
+  bool _unlockActive = false;
+  MapState? _unlockFinalState;
+  int? _unlockTargetPlace;
+  Uint32List? _unlockOldPix;
+  bool _focusedIsNewPlace = false;
   int _hereStopIndex = 0;
   bool _hereRising = false;
+  bool _hereCrossfading = false;
   int? _destPlaceIndex;
+  bool _destIsNewPlace = false;
   bool _destExiting = false;
   int? _lockPlaceIndex;
   bool _lockReduced = false;
@@ -276,6 +291,36 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) => _bake(gen));
   }
 
+  bool _isMapVisible(BuildContext context) =>
+      TickerMode.valuesOf(context).enabled &&
+      (ModalRoute.of(context)?.isCurrent ?? true);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final visible = _isMapVisible(context);
+    if (!visible && _unlockActive) {
+      _finishNewPlaceUnlockImmediately(notify: false);
+    }
+    if (visible && _baked && _pendingNewPlace != null) {
+      final pending = _pendingNewPlace!;
+      _pendingNewPlace = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || !_baked) return;
+        if (!_isMapVisible(context)) {
+          _pendingNewPlace ??= pending;
+          return;
+        }
+        _startNewPlaceUnlock(
+          from: pending.from,
+          to: pending.to,
+          oldState: pending.oldState,
+          newState: pending.newState,
+        );
+      });
+    }
+  }
+
   @override
   void didUpdateWidget(MapScreen old) {
     super.didUpdateWidget(old);
@@ -289,8 +334,16 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       final gen = ++_serviceGen;
       _cancelActiveTrip();
       _clearLockPill();
+      _pendingNewPlace = null;
+      _unlockActive = false;
+      _unlockFinalState = null;
+      _unlockTargetPlace = null;
+      _unlockOldPix = null;
+      _unlockCrossfadeController.stop();
+      _unlockCrossfadeController.value = 1.0;
       _cardToken++;
       _focusedPlaceIndex = null;
+      _focusedIsNewPlace = false;
       _outgoingCard = null;
       _cardSwapping = false;
       _cardSwapToPlace = false;
@@ -301,9 +354,11 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       _cardDragDy = 0.0;
       _cardDragStartDy = 0.0;
       _hereRising = false;
+      _hereCrossfading = false;
       _hereController.stop();
       _hereController.value = 1.0;
       _destPlaceIndex = null;
+      _destIsNewPlace = false;
       _destExiting = false;
       _destController.stop();
       _destController.value = 0.0;
@@ -343,6 +398,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     _cardDragController.removeListener(_onCardDragTick);
     _cardDragController.dispose();
     _coldLoadController.dispose();
+    _unlockCrossfadeController.dispose();
     _scrollV.dispose();
     _scrollH.dispose();
     _frames.dispose();
@@ -463,11 +519,19 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   void _cancelActiveTrip() {
     _tripToken++;
     _visiting = false;
+    _unlockActive = false;
+    _unlockFinalState = null;
+    _unlockTargetPlace = null;
+    _unlockOldPix = null;
+    _destIsNewPlace = false;
+    _hereCrossfading = false;
     _frogFadeActive = false;
     _camTarget = null;
     _tripDelayController.stop();
     _cameraController.stop();
     _frogFadeController.stop();
+    _unlockCrossfadeController.stop();
+    _unlockCrossfadeController.value = 1.0;
     _map.FROG
       ..opacity = 1.0
       ..hideArrow = false;
@@ -481,15 +545,69 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
 
   void _progressChanged() {
     if (!mounted || !_baked) return;
-    final prevAqui = _map.STATE.aqui;
     final st = mapStateOf(_s.progress, _s.course);
+    if (_unlockActive) {
+      if (st == _unlockFinalState) return;
+      _finishNewPlaceUnlockImmediately();
+    }
+    final prevState = _map.STATE;
+    final prevAqui = prevState.aqui;
     final moved = st.aqui != prevAqui;
+    final advancedToNewPlace =
+        moved &&
+        prevAqui >= 0 &&
+        prevAqui < prevState.hecho.length &&
+        !prevState.hecho[prevAqui] &&
+        st.hecho[prevAqui] &&
+        st.aqui >= 0 &&
+        st.aqui < st.hecho.length &&
+        !st.hecho[st.aqui];
+
+    if (advancedToNewPlace) {
+      if (_isMapVisible(context)) {
+        unawaited(
+          _startNewPlaceUnlock(
+            from: prevAqui,
+            to: st.aqui,
+            oldState: prevState,
+            newState: st,
+          ),
+        );
+      } else {
+        final orig = _pendingNewPlace;
+        _pendingNewPlace = (
+          from: orig?.from ?? prevAqui,
+          to: st.aqui,
+          oldState: orig?.oldState ?? prevState,
+          newState: st,
+        );
+      }
+      return;
+    }
+
+    if (_pendingNewPlace != null && !moved) {
+      final pendingFrom = _pendingNewPlace!.from;
+      if (st.aqui == pendingFrom &&
+          pendingFrom >= 0 &&
+          pendingFrom < st.hecho.length &&
+          !st.hecho[pendingFrom]) {
+        _pendingNewPlace = null;
+        _map.setState(st);
+      }
+      _redraw();
+      _primeNextStoryScene();
+      setState(() {});
+      return;
+    }
+
     _map.setState(st);
     if (moved) {
+      _pendingNewPlace = null;
       _cancelActiveTrip();
       _clearLockPill();
       _cardToken++;
       _focusedPlaceIndex = null;
+      _focusedIsNewPlace = false;
       _outgoingCard = null;
       _cardSwapping = false;
       _cardSwapToPlace = false;
@@ -501,9 +619,11 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       _cardDragStartDy = 0.0;
       _hereStopIndex = st.aqui;
       _hereRising = false;
+      _hereCrossfading = false;
       _hereController.stop();
       _hereController.value = 1.0;
       _destPlaceIndex = null;
+      _destIsNewPlace = false;
       _destExiting = false;
       _destController.stop();
       _destController.value = 0.0;
@@ -516,6 +636,283 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => _centerOnStop(st.aqui),
       );
+    }
+  }
+
+  Future<void> _startNewPlaceUnlock({
+    required int from,
+    required int to,
+    required MapState oldState,
+    required MapState newState,
+  }) async {
+    if (!mounted || !_baked) return;
+    final places = _s.course.places;
+    if (to < 0 || to >= places.length) return;
+
+    _cancelActiveTrip();
+    _clearLockPill();
+    _cardDragController.stop();
+    _cardDragging = false;
+    _cardDragDy = 0.0;
+    _cardDragStartDy = 0.0;
+    _coldLoadActive = false;
+    _coldLoadPending = false;
+    _coldLoadController.stop();
+    _coldLoadController.value = 1.0;
+
+    _primePlaceHeroScene(places[to]);
+
+    final motion = MapMotion.resolve(
+      context,
+      serviceReduceMotion: _s.reduceMotion,
+    );
+    if (motion.reduced) {
+      _map.setState(newState);
+      _map.placeFrog(to);
+      _redraw();
+      _centerOnStop(to);
+      _hereController.stop();
+      _hereController.value = 1.0;
+      _destController.stop();
+      _destController.value = 0.0;
+      _hereStopIndex = to;
+      _hereRising = false;
+      _hereCrossfading = false;
+      _destPlaceIndex = null;
+      _destIsNewPlace = false;
+      _destExiting = false;
+      _switchCardToPlace(to, isNewPlace: true);
+      return;
+    }
+
+    if (_map.STATE != oldState) {
+      _map.setState(oldState);
+    }
+    if (_map.FROG.at != from) {
+      _map.placeFrog(from);
+    }
+    _redraw();
+
+    final token = ++_tripToken;
+    final startHereOpacity = _herePillMotion(motion).opacity;
+    setState(() {
+      _unlockActive = true;
+      _visiting = true;
+      _unlockFinalState = newState;
+      _unlockTargetPlace = to;
+      _unlockOldPix = null;
+      _hereStopIndex = from;
+      _hereRising = false;
+      _hereCrossfading = false;
+      _destPlaceIndex = null;
+      _destIsNewPlace = false;
+      _destExiting = false;
+    });
+
+    // Step 1 (t = 0 ms): "You are here" fades out over `from` in quick.
+    _hereController.stop();
+    if (startHereOpacity <= 0.0) {
+      _hereController.value = 0.0;
+    } else {
+      _hereController.duration = motion.quick;
+      unawaited(_hereController.reverse(from: startHereOpacity));
+    }
+
+    // Step 2 (t = 100 ms): crossfade map picture in settle & rise "New place" pill.
+    if (!await _waitTripDelay(MapMotion.newPlaceRevealAfter, token)) return;
+    if (!mounted || token != _tripToken) return;
+
+    final oldSnapshot = Uint32List.fromList(_map.pix);
+    _map.setState(newState);
+    _redraw();
+    setState(() {
+      _unlockOldPix = oldSnapshot;
+      _destPlaceIndex = to;
+      _destIsNewPlace = true;
+      _destExiting = false;
+    });
+    _unlockCrossfadeController.stop();
+    _unlockCrossfadeController.duration = motion.settle;
+    unawaited(
+      _unlockCrossfadeController.forward(from: 0.0).whenComplete(() {
+        if (mounted && token == _tripToken) {
+          setState(() => _unlockOldPix = null);
+        }
+      }),
+    );
+    _destController.stop();
+    _destController.duration = motion.move;
+    unawaited(_destController.forward(from: 0.0));
+
+    // Step 3 (t = 600 ms): frog hops to `to` while camera travels with him.
+    final hopWait = MapMotion.newPlaceHopAfter - MapMotion.newPlaceRevealAfter;
+    if (!await _waitTripDelay(hopWait, token)) return;
+    if (!mounted || token != _tripToken) return;
+
+    final List<Hop> hops = _map.planHops(from, to);
+    if (hops.isNotEmpty) {
+      final totalHopCount = hops.length;
+      unawaited(
+        _animateCameraTo(
+          to,
+          duration: motion.hop * totalHopCount,
+          curve: motion.travel,
+          token: token,
+        ),
+      );
+      _map.hopTo(to, () {
+        if (mounted && token == _tripToken) {
+          unawaited(_finishNewPlaceAfterSettle(to, motion, token));
+        }
+      });
+      return;
+    }
+
+    // Far route (> 6 legs): fade coquí out, travel camera in pageIn, fade coquí in.
+    _map.FROG.hideArrow = true;
+    if (!await _runFrogFade(
+      fadeIn: false,
+      duration: motion.quick,
+      motion: motion,
+      token: token,
+    )) {
+      return;
+    }
+    _map.placeFrog(to);
+    _map.FROG
+      ..opacity = 0.0
+      ..hideArrow = true;
+    _redraw();
+
+    if (!await _animateCameraTo(
+      to,
+      duration: motion.pageIn,
+      curve: motion.travel,
+      token: token,
+    )) {
+      return;
+    }
+
+    if (!await _runFrogFade(
+      fadeIn: true,
+      duration: motion.quick,
+      motion: motion,
+      token: token,
+    )) {
+      return;
+    }
+    _map.FROG
+      ..opacity = 1.0
+      ..hideArrow = false;
+    _redraw();
+
+    await _finishNewPlaceAfterSettle(to, motion, token);
+  }
+
+  Future<void> _finishNewPlaceAfterSettle(
+    int to,
+    NocheMotionData motion,
+    int token,
+  ) async {
+    if (!await _waitTripDelay(MapMotion.tripSettleDelay, token)) return;
+    if (!mounted || token != _tripToken) return;
+
+    setState(() {
+      _unlockActive = false;
+      _visiting = false;
+      _unlockFinalState = null;
+      _unlockTargetPlace = null;
+      _unlockOldPix = null;
+      _destExiting = true;
+      _hereStopIndex = to;
+      _hereRising = false;
+      _hereCrossfading = true;
+    });
+    _destController.stop();
+    _destController.duration = motion.quick;
+    unawaited(
+      _destController.reverse(from: _destController.value).whenComplete(() {
+        if (mounted &&
+            token == _tripToken &&
+            _destExiting &&
+            _destController.isDismissed) {
+          setState(() {
+            _destPlaceIndex = null;
+            _destIsNewPlace = false;
+          });
+        }
+      }),
+    );
+    _hereController.stop();
+    _hereController.duration = motion.quick;
+    unawaited(
+      _hereController.forward(from: 0.0).whenComplete(() {
+        if (mounted && token == _tripToken && _hereController.isCompleted) {
+          _hereCrossfading = false;
+        }
+      }),
+    );
+    _switchCardToPlace(to, isNewPlace: true);
+  }
+
+  void _finishNewPlaceUnlockImmediately({bool notify = true}) {
+    _tripToken++;
+    _tripDelayController.stop();
+    _cameraController.stop();
+    _frogFadeController.stop();
+    _unlockCrossfadeController.stop();
+    _unlockCrossfadeController.value = 1.0;
+    _destController.stop();
+    _destController.value = 0.0;
+    _hereController.stop();
+    _hereController.value = 1.0;
+    _cardController.stop();
+    _cardController.value = 1.0;
+    _cardDragController.stop();
+    _frogFadeActive = false;
+    _camTarget = null;
+    _coldLoadActive = false;
+    _coldLoadPending = false;
+    _coldLoadController.stop();
+    _coldLoadController.value = 1.0;
+
+    if (_unlockFinalState != null) {
+      _map.setState(_unlockFinalState!);
+    }
+    final target = _unlockTargetPlace;
+    if (target != null) {
+      _map.placeFrog(target);
+      _map.FROG
+        ..opacity = 1.0
+        ..hideArrow = false;
+      _redraw();
+      _hereStopIndex = target;
+      _hereRising = false;
+      _hereCrossfading = false;
+      _destPlaceIndex = null;
+      _destIsNewPlace = false;
+      _destExiting = false;
+      _focusedPlaceIndex = target;
+      _focusedIsNewPlace = true;
+      _outgoingCard = null;
+      _cardSwapping = false;
+      _cardSwapToPlace = false;
+      _cardDragDy = 0.0;
+      _cardDragStartDy = 0.0;
+      _cardDragging = false;
+      _centerOnStop(target);
+      final places = _s.course.places;
+      if (target >= 0 && target < places.length) {
+        _primePlaceHeroScene(places[target]);
+      }
+    }
+    _unlockActive = false;
+    _visiting = false;
+    _unlockFinalState = null;
+    _unlockTargetPlace = null;
+    _unlockOldPix = null;
+    if (notify && mounted) {
+      setState(() {});
     }
   }
 
@@ -727,8 +1124,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     setState(() {
       _visiting = true;
       _destPlaceIndex = k;
+      _destIsNewPlace = false;
       _destExiting = false;
       _hereRising = false;
+      _hereCrossfading = false;
     });
     _destController.stop();
     _destController.duration = motion.press;
@@ -861,7 +1260,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     );
   }
 
-  void _switchCardToPlace(int k) {
+  void _switchCardToPlace(int k, {bool isNewPlace = false}) {
     final places = _s.course.places;
     if (k < 0 || k >= places.length) return;
     _primePlaceHeroScene(places[k]);
@@ -869,7 +1268,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     final plan = _plan();
     final _CardSnapshot? prevSnapshot;
     if (_focusedPlaceIndex != null && _focusedPlaceIndex! < places.length) {
-      prevSnapshot = _CardSnapshot.place(placeIndex: _focusedPlaceIndex!);
+      prevSnapshot = _CardSnapshot.place(
+        placeIndex: _focusedPlaceIndex!,
+        isNewPlace: _focusedIsNewPlace,
+      );
     } else if (plan.isNotEmpty) {
       prevSnapshot = _CardSnapshot.upNext(
         entry: plan.first,
@@ -891,6 +1293,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     setState(() {
       _outgoingCard = prevSnapshot;
       _focusedPlaceIndex = k;
+      _focusedIsNewPlace = isNewPlace;
       _cardSwapping = prevSnapshot != null;
       _cardSwapToPlace = true;
       _cardSwapReduced = motion.reduced;
@@ -926,7 +1329,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       return;
     }
     _primeNextStoryScene();
-    final prevSnapshot = _CardSnapshot.place(placeIndex: idx);
+    final prevSnapshot = _CardSnapshot.place(
+      placeIndex: idx,
+      isNewPlace: _focusedIsNewPlace,
+    );
     final motion = MapMotion.resolve(
       context,
       serviceReduceMotion: _s.reduceMotion,
@@ -935,6 +1341,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     setState(() {
       _outgoingCard = prevSnapshot;
       _focusedPlaceIndex = null;
+      _focusedIsNewPlace = false;
       _cardSwapping = true;
       _cardSwapToPlace = false;
       _cardSwapReduced = motion.reduced;
@@ -1020,6 +1427,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
 
   void _openPlace(int k) {
     if (!mounted) return;
+    if (_unlockActive) _finishNewPlaceUnlockImmediately();
     final places = _s.course.places;
     if (k < 0 || k >= places.length) return;
     _s.nav.go(PlaceRoute(places[k].id));
@@ -1027,6 +1435,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
 
   void _start(TodayEntry e) {
     _s.haptics.tick();
+    if (_unlockActive) _finishNewPlaceUnlockImmediately();
     final route = e.route;
     if (route is StoryRoute &&
         !storyInPlan(route.id, _s.course.places, widget.entitlements)) {
@@ -1042,6 +1451,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   }
 
   void _playFocusedPlace(int placeIdx) {
+    if (_unlockActive) _finishNewPlaceUnlockImmediately();
     final places = _s.course.places;
     if (placeIdx < 0 || placeIdx >= places.length) return;
     final place = places[placeIdx];
@@ -1167,6 +1577,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   }
 
   ({double opacity, double dy}) _herePillMotion(NocheMotionData motion) {
+    if (_hereCrossfading) {
+      final p = motion.enter.transform(_hereController.value.clamp(0.0, 1.0));
+      return (opacity: p.clamp(0.0, 1.0), dy: 0.0);
+    }
     if (!_hereRising) {
       final v = _hereController.value.clamp(0.0, 1.0);
       if (v >= 1.0) return (opacity: 1.0, dy: 0.0);
@@ -1186,8 +1600,19 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     return (opacity: p, dy: motion.row * (1.0 - p));
   }
 
-  ({double opacity, double scale}) _destPillMotion(NocheMotionData motion) {
+  ({double opacity, double scale, double dy}) _destPillMotion(
+    NocheMotionData motion,
+  ) {
     final v = _destController.value.clamp(0.0, 1.0);
+    if (_destIsNewPlace) {
+      if (_destExiting) {
+        final p = (1.0 - motion.exit.transform((1.0 - v).clamp(0.0, 1.0)))
+            .clamp(0.0, 1.0);
+        return (opacity: p, scale: 1.0, dy: 0.0);
+      }
+      final p = motion.enter.transform(v).clamp(0.0, 1.0);
+      return (opacity: p, scale: 1.0, dy: motion.row * (1.0 - p));
+    }
     final double p;
     if (_destExiting) {
       p = (1.0 - motion.exit.transform((1.0 - v).clamp(0.0, 1.0))).clamp(
@@ -1199,7 +1624,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
     }
     final scale =
         MapMotion.destEnterScale + (1.0 - MapMotion.destEnterScale) * p;
-    return (opacity: p, scale: scale);
+    return (opacity: p, scale: scale, dy: 0.0);
   }
 
   ({double opacity, double dy}) _lockPillMotion(NocheMotionData motion) {
@@ -1352,6 +1777,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         place: place,
         totalPlaces: places.length,
         heardCount: heard,
+        isNewPlace: snapshot.isNewPlace,
         language: lang,
         pictures: _s.pictures,
         pictureRef: _pictureRefForPlace(place),
@@ -1428,7 +1854,10 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
         _focusedPlaceIndex != null &&
         _focusedPlaceIndex! >= 0 &&
         _focusedPlaceIndex! < places.length) {
-      activeSnapshot = _CardSnapshot.place(placeIndex: _focusedPlaceIndex!);
+      activeSnapshot = _CardSnapshot.place(
+        placeIndex: _focusedPlaceIndex!,
+        isNewPlace: _focusedIsNewPlace,
+      );
     } else if (plan.isNotEmpty) {
       activeSnapshot = _CardSnapshot.upNext(
         entry: plan.first,
@@ -1480,6 +1909,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                 streak: _s.progress.streak,
                 onLanguageTap: () {
                   _s.haptics.tick();
+                  if (_unlockActive) _finishNewPlaceUnlockImmediately();
                   _s.nav.go(const LanguagesRoute());
                 },
               ),
@@ -1745,6 +2175,48 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
+                    if (_unlockOldPix != null)
+                      PositionedDirectional(
+                        start: 0,
+                        top: 0,
+                        width: cam.mapWidth,
+                        height: cam.mapHeight,
+                        child: IgnorePointer(
+                          child: ExcludeSemantics(
+                            child: Align(
+                              alignment: AlignmentDirectional.topStart,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: availWidth,
+                                ),
+                                child: AnimatedBuilder(
+                                  animation: _unlockCrossfadeController,
+                                  builder: (context, child) {
+                                    final op =
+                                        (1.0 -
+                                                motion.enter.transform(
+                                                  _unlockCrossfadeController
+                                                      .value
+                                                      .clamp(0.0, 1.0),
+                                                ))
+                                            .clamp(0.0, 1.0);
+                                    return Opacity(
+                                      key: const Key('map-unlock-crossfade'),
+                                      opacity: op,
+                                      child: child,
+                                    );
+                                  },
+                                  child: PixelView(
+                                    pixels: _unlockOldPix!,
+                                    width: mapW,
+                                    height: mapH,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     if (_baked)
                       PositionedDirectional(
                         start: _pillStartForStop(_hereStopIndex, cam, contentW),
@@ -1821,18 +2293,29 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                                         .clamp(0.0, 1.0);
                                 return ExcludeSemantics(
                                   excluding: op == 0.0,
-                                  child: Transform.scale(
+                                  child: Transform(
                                     key: const Key('map-dest-motion'),
-                                    scale: dest.scale,
+                                    alignment: AlignmentDirectional.center,
+                                    transform: Matrix4.diagonal3Values(
+                                      dest.scale,
+                                      dest.scale,
+                                      1.0,
+                                    )..setTranslationRaw(0.0, dest.dy, 0.0),
                                     child: Opacity(opacity: op, child: child),
                                   ),
                                 );
                               },
-                              child: _DestPlacePill(
-                                key: const Key('map-dest-pill'),
-                                placeName: places[destIdx].name,
-                                language: lang,
-                              ),
+                              child: _destIsNewPlace
+                                  ? _NewPlacePill(
+                                      key: const Key('map-new-place-pill'),
+                                      placeName: places[destIdx].name,
+                                      language: lang,
+                                    )
+                                  : _DestPlacePill(
+                                      key: const Key('map-dest-pill'),
+                                      placeName: places[destIdx].name,
+                                      language: lang,
+                                    ),
                             ),
                           ),
                         ),
@@ -2103,6 +2586,57 @@ class _DestPlacePill extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Flexible(
+              child: Text(
+                placeName,
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                locale: Locale(language.code),
+                style: NocheType.forScript(
+                  NocheType.buttonStrong,
+                  language.script,
+                ).copyWith(color: NocheColors.text),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NewPlacePill extends StatelessWidget {
+  const _NewPlacePill({
+    super.key,
+    required this.placeName,
+    required this.language,
+  });
+
+  final String placeName;
+  final Language language;
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: Container(
+        height: 40,
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: NocheColors.panel,
+          border: Border.all(color: NocheColors.line, width: 1),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              MapWording.newPlace,
+              maxLines: 1,
+              softWrap: false,
+              style: NocheType.button.copyWith(color: NocheColors.label),
+            ),
+            const SizedBox(width: NocheSize.grid),
             Flexible(
               child: Text(
                 placeName,
@@ -2400,6 +2934,7 @@ class _FocusedPlaceCardBody extends StatelessWidget {
     required this.place,
     required this.totalPlaces,
     required this.heardCount,
+    this.isNewPlace = false,
     required this.language,
     required this.pictures,
     required this.pictureRef,
@@ -2418,6 +2953,7 @@ class _FocusedPlaceCardBody extends StatelessWidget {
   final Place place;
   final int totalPlaces;
   final int heardCount;
+  final bool isNewPlace;
   final Language language;
   final PictureSource pictures;
   final PictureRef? pictureRef;
@@ -2508,7 +3044,10 @@ class _FocusedPlaceCardBody extends StatelessWidget {
             children: [
               NocheLtr(
                 child: Text(
-                  MapWording.placeCounter(place.n, totalPlaces).toUpperCase(),
+                  (isNewPlace
+                          ? MapWording.newPlaceCounter(place.n, totalPlaces)
+                          : MapWording.placeCounter(place.n, totalPlaces))
+                      .toUpperCase(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: labelStyle,
@@ -2553,7 +3092,11 @@ class _FocusedPlaceCardBody extends StatelessWidget {
 
       if (hasNextStory) {
         final nextTitle = nextStoryMeta?.title ?? nextStoryId!;
-        eyebrowText = MapWording.playNextStory(nextStoryNumber!).toUpperCase();
+        eyebrowText =
+            (isNewPlace && nextStoryNumber == 1
+                    ? MapWording.playFirstStory(1)
+                    : MapWording.playNextStory(nextStoryNumber!))
+                .toUpperCase();
         titleWidget = Text(
           nextTitle,
           maxLines: 1,

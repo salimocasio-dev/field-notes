@@ -23,6 +23,14 @@ abstract final class MapMotion {
   /// Pause after the coquí lands before switching pills and bottom card.
   static final Duration tripSettleDelay = NocheMotion.ms(250);
 
+  /// Delay after `"You are here"` starts fading before revealing the unlocked
+  /// place on the map (N8.7 Step 2).
+  static final Duration newPlaceRevealAfter = NocheMotion.ms(100);
+
+  /// Delay after Step 1 before the coquí starts hopping to the unlocked place
+  /// (N8.7 Step 3).
+  static final Duration newPlaceHopAfter = NocheMotion.ms(600);
+
   /// Delay before `"You are here"` rises into place over the destination stop.
   static const Duration hereRiseAfter = NocheMotion.rowsAfter;
 
