@@ -1639,7 +1639,11 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                           ? (_) => _finishCardDrag(focusedPlaceIdx, motion)
                           : null,
                       onVerticalDragCancel: focusedPlaceIdx != null
-                          ? () => _finishCardDrag(focusedPlaceIdx, motion)
+                          ? () {
+                              if (!_cardDragging) return;
+                              _cardDragging = false;
+                              _animateCardDragBack(motion);
+                            }
                           : null,
                       child: card,
                     ),

@@ -2437,7 +2437,7 @@ void main() {
         );
 
         // Trigger "Show what is next" -> returns to Up next card.
-        tester.binding.rootPipelineOwner.semanticsOwner!.performAction(
+        cardNode.owner!.performAction(
           cardNode.id,
           SemanticsAction.customAction,
           showUpNextId,
@@ -2453,7 +2453,7 @@ void main() {
         final cardNode2 = tester.getSemantics(
           find.byKey(const Key('up-next-card')),
         );
-        tester.binding.rootPipelineOwner.semanticsOwner!.performAction(
+        cardNode2.owner!.performAction(
           cardNode2.id,
           SemanticsAction.customAction,
           openId,
