@@ -1,5 +1,7 @@
 # Request: Self-host `libsamplerate.worklet.js` in `coqui_platform`
 
+> **Status:** Step 1 landed in `#290` (`lane/coqui_platform/290`): `libsamplerate.worklet.js` is vendored, licensed, declared in `pubspec.yaml`, and passed via `libsampleratePath` in `el_conv.dart` with `lib.iife.js` unchanged. See [290-coqui-platform-needs-tool-retire-libsamplerate-cdn-exception.md](290-coqui-platform-needs-tool-retire-libsamplerate-cdn-exception.md) for the Step 2 pin handoff.
+
 ## What I need
 
 1. In `coqui_platform` (`lane/coqui_platform/<n>`, touching only `coqui_platform/`):

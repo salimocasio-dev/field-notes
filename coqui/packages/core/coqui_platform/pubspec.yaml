@@ -26,4 +26,5 @@ flutter:
   assets:
     - assets/call_stub.json
     - assets/elevenlabs/lib.iife.js
+    - assets/elevenlabs/libsamplerate.worklet.js
     - assets/elevenlabs/LICENSE
