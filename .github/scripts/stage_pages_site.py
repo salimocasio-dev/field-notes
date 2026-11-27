@@ -64,6 +64,41 @@ def _is_same_or_parent(candidate: Path, target: Path) -> bool:
         return False
 
 
+def _reject_symlinks(
+    root: Path,
+    *,
+    top_level_excludes: frozenset[str] = frozenset(),
+    any_depth_excludes: frozenset[str] = frozenset(),
+) -> None:
+    """Fail if `root` or any non-excluded entry inside it is a symlink."""
+    if root.is_symlink():
+        raise ValueError(f"refusing to stage symlink: {root}")
+    root_resolved = root.resolve()
+    for dirpath, dirnames, filenames in os.walk(root, followlinks=False):
+        current = Path(dirpath)
+        is_top = current.resolve() == root_resolved
+        excluded = set(any_depth_excludes)
+        if is_top:
+            excluded.update(top_level_excludes)
+
+        kept_dirs: list[str] = []
+        for name in dirnames:
+            if name in excluded:
+                continue
+            entry = current / name
+            if entry.is_symlink():
+                raise ValueError(f"refusing to stage symlink: {entry}")
+            kept_dirs.append(name)
+        dirnames[:] = kept_dirs
+
+        for name in filenames:
+            if name in excluded:
+                continue
+            entry = current / name
+            if entry.is_symlink():
+                raise ValueError(f"refusing to stage symlink: {entry}")
+
+
 def stage_site(
     *,
     repo_root: Path,
@@ -72,28 +107,59 @@ def stage_site(
     clean: bool = False,
 ) -> tuple[str, int]:
     """Validate inputs, stage the Pages site into `out_dir`, and return `(sha256, file_count)`."""
+    repo_root_raw = repo_root
+    app_dir_raw = app_dir
     repo_root = repo_root.resolve()
     app_dir = app_dir.resolve()
     out_dir = out_dir.resolve()
 
-    if _is_same_or_parent(out_dir, repo_root) or _is_same_or_parent(out_dir, app_dir):
-        raise ValueError(
-            f"refusing to use --out {out_dir}: overlaps with --repo-root or --app-dir"
-        )
-
     root_index = repo_root / "index.html"
     historia_dir = repo_root / "historia"
+    historia_resolved = historia_dir.resolve()
     app_index = app_dir / "index.html"
     app_main_js = app_dir / "main.dart.js"
 
+    if (
+        _is_same_or_parent(out_dir, repo_root)
+        or _is_same_or_parent(out_dir, app_dir)
+        or _is_same_or_parent(app_dir, out_dir)
+        or _is_same_or_parent(out_dir, historia_resolved)
+        or _is_same_or_parent(historia_resolved, out_dir)
+    ):
+        raise ValueError(
+            f"refusing to use --out {out_dir}: overlaps with --repo-root, --app-dir, or historia/"
+        )
+
+    if repo_root_raw.is_symlink():
+        raise ValueError(f"refusing to stage symlink repo root: {repo_root_raw}")
+    if app_dir_raw.is_symlink():
+        raise ValueError(f"refusing to stage symlink app dir: {app_dir_raw}")
+    if root_index.is_symlink():
+        raise ValueError(f"refusing to stage symlink: {root_index}")
     if not root_index.is_file():
         raise ValueError(f"missing required repo file: {root_index}")
+    if historia_dir.is_symlink():
+        raise ValueError(f"refusing to stage symlink: {historia_dir}")
     if not historia_dir.is_dir():
         raise ValueError(f"missing required historia directory: {historia_dir}")
     if not app_index.is_file():
         raise ValueError(f"missing required built app file: {app_index}")
     if not app_main_js.is_file():
         raise ValueError(f"missing required built app file: {app_main_js}")
+
+    _reject_symlinks(app_dir)
+    _reject_symlinks(
+        historia_dir,
+        top_level_excludes=HISTORIA_TOP_EXCLUDES,
+        any_depth_excludes=ANY_DEPTH_EXCLUDES,
+    )
+
+    prueba_dir = repo_root / "prueba"
+    prueba_index = prueba_dir / "index.html"
+    if prueba_dir.is_symlink():
+        raise ValueError(f"refusing to stage symlink: {prueba_dir}")
+    if prueba_index.is_symlink():
+        raise ValueError(f"refusing to stage symlink: {prueba_index}")
 
     if out_dir.exists():
         if out_dir.is_file() or out_dir.is_symlink():
@@ -119,8 +185,6 @@ def stage_site(
     shutil.copytree(app_dir, out_dir / "app")
 
     # 3. Runtime historia/ tree (excluding top-level tools/ and notas/, plus cache/junk)
-    historia_resolved = historia_dir.resolve()
-
     def _ignore_historia(directory: str, names: list[str]) -> set[str]:
         ignored = {name for name in names if name in ANY_DEPTH_EXCLUDES}
         if Path(directory).resolve() == historia_resolved:
@@ -130,7 +194,6 @@ def stage_site(
     shutil.copytree(historia_dir, out_dir / "historia", ignore=_ignore_historia)
 
     # 4. Lightweight /prueba/ -> ../app/ redirect only (no stale prueba binaries)
-    prueba_index = repo_root / "prueba" / "index.html"
     if prueba_index.is_file():
         prueba_out = out_dir / "prueba"
         prueba_out.mkdir(parents=True, exist_ok=True)

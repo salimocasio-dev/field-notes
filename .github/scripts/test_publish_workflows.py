@@ -575,6 +575,80 @@ class StagePagesSiteTests(unittest.TestCase):
                 )
             self.assertIn("historia/audio/ready.json", str(ctx.exception))
 
+    def test_stage_rejects_out_nested_inside_app_or_historia(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            repo = base / "repo"
+            app_dir = base / "built_app"
+            self._populate_fixture(repo, app_dir)
+
+            for bad_out in (
+                app_dir / "nested_out",
+                repo / "historia" / "nested_out",
+                repo,
+                app_dir,
+                repo / "historia",
+            ):
+                with self.subTest(bad_out=str(bad_out)):
+                    with self.assertRaises(ValueError) as ctx:
+                        stage.stage_site(
+                            repo_root=repo,
+                            app_dir=app_dir,
+                            out_dir=bad_out,
+                            clean=True,
+                        )
+                    self.assertIn("overlaps", str(ctx.exception))
+
+    def test_stage_refuses_symlinks_in_app_or_runtime_historia_but_ignores_excluded(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            repo = base / "repo"
+            app_dir = base / "built_app"
+            out_dir = base / "pages_out"
+            outside = base / "outside.txt"
+            _write_file(outside, "sensitive")
+            self._populate_fixture(repo, app_dir)
+
+            # Symlinks inside excluded historia/tools/ and historia/notas/ are ignored.
+            (repo / "historia" / "tools" / "link.txt").symlink_to(outside)
+            (repo / "historia" / "notas" / "link.txt").symlink_to(outside)
+            sha, count = stage.stage_site(
+                repo_root=repo, app_dir=app_dir, out_dir=out_dir, clean=True
+            )
+            self.assertEqual(len(sha), 64)
+            self.assertGreaterEqual(count, 7)
+
+            # Symlink inside app_dir is refused.
+            app_link = app_dir / "leak.txt"
+            app_link.symlink_to(outside)
+            with self.assertRaises(ValueError) as ctx_app:
+                stage.stage_site(
+                    repo_root=repo, app_dir=app_dir, out_dir=out_dir, clean=True
+                )
+            self.assertIn("symlink", str(ctx_app.exception).lower())
+            app_link.unlink()
+
+            # Symlink inside runtime historia/ is refused.
+            his_link = repo / "historia" / "audio" / "leak.mp3"
+            his_link.symlink_to(outside)
+            with self.assertRaises(ValueError) as ctx_his:
+                stage.stage_site(
+                    repo_root=repo, app_dir=app_dir, out_dir=out_dir, clean=True
+                )
+            self.assertIn("symlink", str(ctx_his.exception).lower())
+            his_link.unlink()
+
+            # Symlinked directory inside runtime historia/ is also refused.
+            outside_dir = base / "outside_dir"
+            outside_dir.mkdir()
+            his_dir_link = repo / "historia" / "linked_dir"
+            his_dir_link.symlink_to(outside_dir)
+            with self.assertRaises(ValueError) as ctx_dir:
+                stage.stage_site(
+                    repo_root=repo, app_dir=app_dir, out_dir=out_dir, clean=True
+                )
+            self.assertIn("symlink", str(ctx_dir.exception).lower())
+
 
 class VozPublishPrTests(unittest.TestCase):
     def _setup_clone_with_origin(self, base: Path) -> tuple[Path, Path]:
@@ -761,6 +835,36 @@ class VozPublishPrTests(unittest.TestCase):
             self.assertEqual(_git(work, "rev-parse", "--abbrev-ref", "HEAD"), "main")
             self.assertEqual(_git(origin, "branch", "--list"), "* main")
 
+    def test_default_branch_name_includes_run_attempt_when_set(self) -> None:
+        self.assertEqual(
+            voz_pr.default_branch_name("12345", "1"),
+            "audio/voz-12345-a1",
+        )
+        self.assertEqual(
+            voz_pr.default_branch_name("12345", "2"),
+            "audio/voz-12345-a2",
+        )
+        self.assertEqual(
+            voz_pr.default_branch_name("12345", ""),
+            "audio/voz-12345",
+        )
+        self.assertRegex(
+            voz_pr.default_branch_name("", ""),
+            r"^audio/voz-\d{8}T\d{6}Z$",
+        )
+
+        # End-to-end CLI check using GITHUB_RUN_ID + GITHUB_RUN_ATTEMPT env vars
+        with tempfile.TemporaryDirectory() as tmp:
+            _, work = self._setup_clone_with_origin(Path(tmp))
+            _write_file(work / "historia" / "audio" / "clip4.mp3", "audio")
+            res = self._run_voz_script(
+                work,
+                ["--dry-run"],
+                extra_env={"GITHUB_RUN_ID": "98765", "GITHUB_RUN_ATTEMPT": "2"},
+            )
+            self.assertEqual(res.returncode, 0, res.stderr)
+            self.assertIn("audio/voz-98765-a2", res.stdout)
+
 
 class WorkflowStaticValidationTests(unittest.TestCase):
     USES_RE = re.compile(r"^\s*-?\s*uses:\s*([^\s#]+)", re.M)
@@ -812,6 +916,7 @@ class WorkflowStaticValidationTests(unittest.TestCase):
         # No inline git push in workflow YAML; delegates to voz_publish_pr.py
         self.assertNotIn("git push", text)
         self.assertIn("python3 .github/scripts/voz_publish_pr.py", text)
+        self.assertIn("GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}", text)
 
         # Required permissions, concurrency, and paid-audio environment
         self.assertRegex(text, re.compile(r"^\s*contents:\s*write\b", re.M))

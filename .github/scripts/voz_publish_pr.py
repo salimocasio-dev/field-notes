@@ -41,10 +41,18 @@ def _run_git(repo_root: Path, *args: str) -> subprocess.CompletedProcess[str]:
     return _run(["git", "-C", str(repo_root), *args], cwd=repo_root)
 
 
-def default_branch_name(run_id: str | None = None) -> str:
+def default_branch_name(
+    run_id: str | None = None,
+    run_attempt: str | None = None,
+) -> str:
     rid = (run_id if run_id is not None else os.environ.get("GITHUB_RUN_ID", "")).strip()
+    att = (
+        run_attempt
+        if run_attempt is not None
+        else os.environ.get("GITHUB_RUN_ATTEMPT", "")
+    ).strip()
     if rid:
-        return f"audio/voz-{rid}"
+        return f"audio/voz-{rid}-a{att}" if att else f"audio/voz-{rid}"
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return f"audio/voz-{stamp}"
 
